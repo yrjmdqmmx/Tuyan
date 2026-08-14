@@ -9,6 +9,19 @@ chain="PAPERBANANA-EGRESS"
 
 test "${EUID}" -eq 0 || { echo "run as root" >&2; exit 1; }
 command -v iptables >/dev/null || { echo "iptables is required" >&2; exit 1; }
+command -v modprobe >/dev/null || { echo "modprobe is required" >&2; exit 1; }
+
+# Docker bridge traffic does not traverse DOCKER-USER until br_netfilter is
+# loaded. Persist both prerequisites so the isolation survives host reboots.
+modprobe br_netfilter
+install -m 0644 /dev/stdin /etc/modules-load.d/paperbanana.conf <<'EOF'
+br_netfilter
+EOF
+install -m 0644 /dev/stdin /etc/sysctl.d/99-paperbanana-bridge.conf <<'EOF'
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+EOF
+sysctl -q -w net.bridge.bridge-nf-call-iptables=1 net.bridge.bridge-nf-call-ip6tables=1
 
 iptables -N "$chain" 2>/dev/null || true
 iptables -F "$chain"

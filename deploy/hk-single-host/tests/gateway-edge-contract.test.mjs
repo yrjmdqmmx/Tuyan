@@ -11,6 +11,10 @@ test('gateway uses a dedicated routable edge for loopback publishing with fail-c
   assert.match(compose, /edge:\s*\n\s+driver:\s*bridge/);
   assert.doesNotMatch(compose, /edge:\s*\n\s+internal:\s*true/);
   assert.match(firewall, /172\.31\.0\.10\/32/);
+  assert.match(firewall, /modprobe br_netfilter/);
+  assert.match(firewall, /net\.bridge\.bridge-nf-call-iptables=1/);
+  assert.match(firewall, /\/etc\/modules-load\.d\/paperbanana\.conf/);
+  assert.match(firewall, /\/etc\/sysctl\.d\/99-paperbanana-bridge\.conf/);
   assert.match(firewall, /--ctstate ESTABLISHED,RELATED -j ACCEPT/);
   assert.match(firewall, /--ctstate NEW -j REJECT/);
 });
