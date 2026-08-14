@@ -84,6 +84,7 @@ export async function createAuthRuntime(
     async ready() {
       try {
         await db.command({ ping: 1 });
+        await probeTransactionSupport(mongoClient, db);
         status = { ok: true, checkedAt: new Date().toISOString() };
         return { ok: true };
       } catch {
@@ -95,6 +96,25 @@ export async function createAuthRuntime(
       await mongoClient.close();
     },
   };
+}
+
+async function probeTransactionSupport(mongoClient, db) {
+  const session = mongoClient.startSession();
+  try {
+    session.startTransaction({
+      readConcern: { level: 'snapshot' },
+      writeConcern: { w: 'majority' },
+    });
+    await db.collection('user').findOne({}, { projection: { _id: 1 }, session });
+    await session.abortTransaction();
+  } catch (error) {
+    if (session.inTransaction?.()) {
+      await session.abortTransaction().catch(() => {});
+    }
+    throw error;
+  } finally {
+    await session.endSession();
+  }
 }
 
 async function deleteAuthUser(mongoClient, db, userId) {

@@ -37,6 +37,9 @@ export function loadGatewayConfig(env = process.env) {
     throw new Error('COOKIE_SAME_SITE must be lax, strict, or none');
   }
   const adminUserIds = parseList(required(env, 'ADMIN_USER_IDS'));
+  if (!adminUserIds.length) {
+    throw new Error('ADMIN_USER_IDS must contain at least one immutable user ID');
+  }
   if (adminUserIds.some((id) => !/^[A-Za-z0-9._:-]{3,200}$/.test(id))) {
     throw new Error('ADMIN_USER_IDS must contain immutable user IDs');
   }

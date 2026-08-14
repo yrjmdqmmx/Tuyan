@@ -11,20 +11,33 @@ export class BodyLimitError extends Error {
 }
 
 export async function readBoundedBody(request, limit = BODY_LIMIT) {
-  const chunks = [];
+  if (!Number.isSafeInteger(limit) || limit < 1) throw new Error('Body limit must be a positive integer');
+  let body = Buffer.alloc(0);
   let size = 0;
-  let tooLarge = false;
   for await (const value of request) {
     const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value);
-    size += chunk.byteLength;
-    if (size > limit) {
-      tooLarge = true;
-      continue;
+    if (chunk.byteLength > limit - size) {
+      drainRequest(request);
+      throw new BodyLimitError();
     }
-    chunks.push(chunk);
+    const required = size + chunk.byteLength;
+    if (required > body.byteLength) {
+      let capacity = Math.min(limit, Math.max(1024, body.byteLength || 1024));
+      while (capacity < required) capacity = Math.min(limit, capacity * 2);
+      const grown = Buffer.allocUnsafe(capacity);
+      body.copy(grown, 0, 0, size);
+      body = grown;
+    }
+    chunk.copy(body, size);
+    size += chunk.byteLength;
   }
-  if (tooLarge) throw new BodyLimitError();
-  return Buffer.concat(chunks, size);
+  return body.subarray(0, size);
+}
+
+function drainRequest(request) {
+  if (request?.readableEnded || request?.destroyed) return;
+  if (typeof request?.on === 'function') request.on('error', () => {});
+  if (typeof request?.resume === 'function') request.resume();
 }
 
 export function createBoundedAuthHandler(webHandler, { limit = BODY_LIMIT } = {}) {

@@ -78,6 +78,10 @@ test('requires immutable admin user IDs and rejects email-shaped values', () => 
     () => loadGatewayConfig(validEnv({ ADMIN_USER_IDS: 'owner@example.com' })),
     /ADMIN_USER_IDS must contain immutable user IDs/,
   );
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ ADMIN_USER_IDS: ',,,' })),
+    /ADMIN_USER_IDS must contain at least one immutable user ID/,
+  );
 
   const config = loadGatewayConfig(validEnv({ ADMIN_USER_IDS: 'admin-1,admin-2,admin-1' }));
   assert.deepEqual([...config.adminUserIds], ['admin-1', 'admin-2']);

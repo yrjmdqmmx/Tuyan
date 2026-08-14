@@ -17,6 +17,7 @@ function fakeDatabase() {
     },
     user: {
       async deleteOne(query) { operations.push(['user.deleteOne', query]); },
+      async findOne(query, options) { operations.push(['user.findOne', query, options]); return null; },
       find() {
         return {
           sort() { return this; },
@@ -41,6 +42,15 @@ test('auth runtime connects only when constructed and exposes readiness and grac
     constructor(uri) { events.push(`construct:${uri}`); }
     async connect() { events.push('connect'); }
     db(name) { events.push(`db:${name}`); return db; }
+    startSession() {
+      let active = false;
+      return {
+        startTransaction() { active = true; events.push('transaction:start'); },
+        async abortTransaction() { active = false; events.push('transaction:abort'); },
+        inTransaction() { return active; },
+        async endSession() { events.push('transaction:end'); },
+      };
+    }
     async close() { events.push('close'); }
   }
   let betterConfig;
@@ -86,9 +96,56 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   assert.deepEqual(runtime.cachedStatus(), { ok: true, checkedAt: null });
   assert.deepEqual(await runtime.ready(), { ok: true });
   assert.deepEqual(db.commands, [{ ping: 1 }]);
+  assert.deepEqual(events.slice(-3), ['transaction:start', 'transaction:abort', 'transaction:end']);
   assert.ok(runtime.cachedStatus().checkedAt);
   await runtime.close();
   assert.equal(events.at(-1), 'close');
+});
+
+test('readiness fails closed when MongoDB does not support auth deletion transactions', async () => {
+  const db = fakeDatabase();
+  db.collection = () => ({
+    async findOne() {
+      throw new Error('Transaction numbers are only allowed on a replica set member or mongos');
+    },
+  });
+  class StandaloneMongoClient {
+    async connect() {}
+    db() { return db; }
+    startSession() {
+      let active = false;
+      return {
+        startTransaction() { active = true; },
+        async abortTransaction() { active = false; },
+        inTransaction() { return active; },
+        async endSession() {},
+      };
+    }
+    async close() {}
+  }
+  const runtime = await createAuthRuntime(
+    {
+      mongoUri: 'mongodb://standalone:27017',
+      mongoDbName: 'paperbanana_auth',
+      authSecret: 'auth-secret',
+      authBaseUrl: 'https://api.paperbanana.asia/',
+      frontendOrigins: [],
+      production: true,
+      cookieDomain: '',
+      cookieSameSite: 'lax',
+    },
+    {
+      MongoClientClass: StandaloneMongoClient,
+      adapterFactory: () => ({}),
+      betterAuthFactory: () => ({ handler: async () => Response.json({ ok: true }), api: {} }),
+    },
+  );
+
+  assert.deepEqual(await runtime.ready(), {
+    ok: false,
+    error: 'mongodb unavailable',
+  });
+  assert.equal(runtime.cachedStatus().ok, false);
 });
 
 test('verifyPassword uses the current session endpoint and never creates a new session', async () => {
