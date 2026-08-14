@@ -88,6 +88,8 @@ test('operations are project-scoped and avoid broad destructive Docker commands'
   assert.match(deploy, /--project-name\s+paperbanana-hk/);
   assert.match(deploy, /control_dir="\/opt\/paperbanana\/control"/);
   assert.match(deploy, /maintenance_file="\$control_dir\/maintenance"/);
+  assert.match(deploy, /install -d -m 0750 -o 0 -g 1000 "\$control_dir"/);
+  assert.match(deploy, /install -m 0640 -o 0 -g 1000 \/dev\/null "\$maintenance_file"/);
   assert.match(deploy, /--remove-orphans/);
   assert.ok(
     deploy.indexOf('install-worker-firewall.sh') < deploy.indexOf('up -d --remove-orphans'),

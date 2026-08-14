@@ -36,9 +36,8 @@ if [[ "$mode" == "--dry-run" ]]; then
   exit 0
 fi
 
-install -d -m 0750 "$control_dir"
-touch "$maintenance_file"
-chmod 0640 "$maintenance_file"
+install -d -m 0750 -o 0 -g 1000 "$control_dir"
+install -m 0640 -o 0 -g 1000 /dev/null "$maintenance_file"
 
 deployment_succeeded=false
 finish() {
