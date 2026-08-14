@@ -42,6 +42,8 @@ pnpm-debug.log*
 .turbo/
 .cache/
 .expo/
+__pycache__/
+*.py[cod]
 apps/android/.expo/
 
 # SwiftPM and local macOS app builds

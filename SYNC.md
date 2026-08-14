@@ -50,7 +50,7 @@
 各端待办：
 - [x] auth-gateway（Node 24、固定后端、guest/owner/refine/maintenance/health/delete、测试与非 root 镜像）
 - [x] paperbanana-api / laf-functions（可信 client-IP 传输与 Laf 兼容 fallback）
-- [ ] 部署/运维（补齐新 env；Compose 仅发布 `127.0.0.1:3020:3005`；Nginx 必须覆盖 forwarding headers；切流前维护/排空）
+- [ ] 部署/运维（补齐新 env；Compose 仅发布 `127.0.0.1:13005:3005`；Nginx 必须覆盖 forwarding headers；切流前维护/排空）
 - [x] web/iOS（公开 action/envelope 不变；既有 credentials/cookie transport 与 objectKey 字段兼容，无代码改动）
 - [ ] 其他客户端（本次发布范围外；后续仍须确认 cookie 持久化及 API base）
 

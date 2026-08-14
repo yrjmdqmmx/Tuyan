@@ -1,0 +1,82 @@
+name: Deploy Hong Kong Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      gateway_image:
+        description: Auth gateway image including @sha256 digest.
+        required: true
+      core_image:
+        description: Core API image including @sha256 digest.
+        required: true
+      worker_image:
+        description: Plot worker image including @sha256 digest.
+        required: true
+      mongodb_image:
+        description: Mongo image including @sha256 digest.
+        required: true
+      confirm:
+        description: Type deploy-hk to continue.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event.inputs.confirm == 'deploy-hk'
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate immutable image references
+        env:
+          GATEWAY_IMAGE: ${{ inputs.gateway_image }}
+          CORE_IMAGE: ${{ inputs.core_image }}
+          WORKER_IMAGE: ${{ inputs.worker_image }}
+          MONGODB_IMAGE: ${{ inputs.mongodb_image }}
+        run: |
+          set -Eeuo pipefail
+          digest='@sha256:[0-9a-f]{64}$'
+          [[ "$GATEWAY_IMAGE" =~ ^ghcr\.io/[a-z0-9_.-]+/paperbanana-auth-gateway${digest} ]]
+          [[ "$CORE_IMAGE" =~ ^ghcr\.io/[a-z0-9_.-]+/paperbanana-core-api${digest} ]]
+          [[ "$WORKER_IMAGE" =~ ^ghcr\.io/[a-z0-9_.-]+/paperbanana-plot-worker${digest} ]]
+          [[ "$MONGODB_IMAGE" =~ ^mongo:8\.0\.[0-9]+-noble${digest} ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Install image lock and deploy
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          GATEWAY_IMAGE: ${{ inputs.gateway_image }}
+          CORE_IMAGE: ${{ inputs.core_image }}
+          WORKER_IMAGE: ${{ inputs.worker_image }}
+          MONGODB_IMAGE: ${{ inputs.mongodb_image }}
+        run: |
+          set -Eeuo pipefail
+          image_lock="$(mktemp)"
+          trap 'rm -f "$image_lock"' EXIT
+          {
+            printf 'PAPERBANANA_GATEWAY_IMAGE=%s\n' "$GATEWAY_IMAGE"
+            printf 'PAPERBANANA_CORE_IMAGE=%s\n' "$CORE_IMAGE"
+            printf 'PAPERBANANA_PLOT_WORKER_IMAGE=%s\n' "$WORKER_IMAGE"
+            printf 'PAPERBANANA_MONGODB_IMAGE=%s\n' "$MONGODB_IMAGE"
+          } > "$image_lock"
+          scp "$image_lock" "$DEPLOY_USER@$DEPLOY_HOST:/opt/paperbanana/repo/deploy/hk-single-host/.env.next"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd /opt/paperbanana/repo && git fetch --quiet origin '${GITHUB_SHA}' && git checkout --detach '${GITHUB_SHA}' && mv deploy/hk-single-host/.env.next deploy/hk-single-host/.env && chmod 0600 deploy/hk-single-host/.env && deploy/hk-single-host/scripts/deploy.sh --apply"

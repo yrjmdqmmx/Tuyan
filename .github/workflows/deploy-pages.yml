@@ -1,10 +1,15 @@
 name: Deploy GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to deploy.
+        required: true
+        default: main
+      confirm:
+        description: Type deploy-pages to continue.
+        required: true
 
 permissions:
   contents: read
@@ -17,10 +22,13 @@ concurrency:
 
 jobs:
   build:
+    if: github.event.inputs.confirm == 'deploy-pages'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -41,9 +49,9 @@ jobs:
         run: pnpm --filter @paperbanana/web build
         env:
           VITE_BACKEND_MODE: gateway
-          VITE_API_BASE: https://yifbnnzrwmxn.sealoshzh.site
+          VITE_API_BASE: https://api.paperbanana.asia
           VITE_AUTH_ENABLED: true
-          VITE_AUTH_BASE: https://yifbnnzrwmxn.sealoshzh.site
+          VITE_AUTH_BASE: https://api.paperbanana.asia
           VITE_BASE_PATH: /
 
       - name: Upload Pages artifact

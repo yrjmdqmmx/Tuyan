@@ -37,6 +37,7 @@ from fastapi import FastAPI, Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
+from production_auth import load_worker_token
 from render_worker import run_render, WALL_CLOCK_TIMEOUT_S
 
 app = FastAPI(title="plot-worker", docs_url=None, redoc_url=None, openapi_url=None)
@@ -49,7 +50,7 @@ MAX_CODE_CHARS = 256 * 1024
 # longer lives in the environment, so the spawned render child (which would
 # otherwise inherit os.environ) has nothing to steal even if untrusted code
 # fully escapes the in-process sandbox. `None` means open mode (local dev only).
-_PLOT_WORKER_TOKEN: Optional[str] = os.environ.pop("PLOT_WORKER_TOKEN", None)
+_PLOT_WORKER_TOKEN: Optional[str] = load_worker_token()
 
 
 class RenderRequest(BaseModel):

@@ -1,0 +1,244 @@
+name: paperbanana-hk
+
+x-logging: &paperbanana-logging
+  driver: local
+  options:
+    max-size: 10m
+    max-file: "5"
+
+x-service-hardening: &service-hardening
+  init: true
+  read_only: true
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  logging: *paperbanana-logging
+
+services:
+  mongodb:
+    image: ${PAPERBANANA_MONGODB_IMAGE:?set PAPERBANANA_MONGODB_IMAGE}
+    hostname: mongodb
+    command:
+      - mongod
+      - --bind_ip_all
+      - --auth
+      - --replSet
+      - rs0
+      - --keyFile
+      - /run/paperbanana/mongo-keyfile
+      - --wiredTigerCacheSizeGB
+      - "1.5"
+    environment:
+      MONGO_INITDB_DATABASE: admin
+      MONGO_INITDB_ROOT_USERNAME: paperbanana_root
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_root_password
+    secrets:
+      - mongo_root_password
+    volumes:
+      - /opt/paperbanana/data/mongodb:/data/db
+      - /opt/paperbanana/secrets/mongo-keyfile:/run/paperbanana/mongo-keyfile:ro
+    networks:
+      backend:
+        ipv4_address: 172.28.0.30
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          mongosh --quiet --host 127.0.0.1 --username "$${MONGO_INITDB_ROOT_USERNAME}"
+          --password "$$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin
+          --eval "quit(db.adminCommand({ping:1}).ok ? 0 : 2)"
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+    stop_grace_period: 2m
+    cpus: 1.0
+    mem_limit: 3584m
+    mem_reservation: 1536m
+    pids_limit: 256
+    logging: *paperbanana-logging
+
+  mongo-init:
+    image: ${PAPERBANANA_MONGODB_IMAGE:?set PAPERBANANA_MONGODB_IMAGE}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      MONGO_ROOT_USERNAME: paperbanana_root
+      MONGO_ROOT_PASSWORD_FILE: /run/secrets/mongo_root_password
+      MONGO_AUTH_PASSWORD_FILE: /run/secrets/mongo_auth_password
+      MONGO_BUSINESS_PASSWORD_FILE: /run/secrets/mongo_business_password
+    secrets:
+      - mongo_root_password
+      - mongo_auth_password
+      - mongo_business_password
+    volumes:
+      - ./scripts/init-mongo.sh:/usr/local/bin/init-paperbanana-mongo:ro
+    command: ["bash", "/usr/local/bin/init-paperbanana-mongo"]
+    networks:
+      backend:
+        ipv4_address: 172.28.0.40
+    restart: "no"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging: *paperbanana-logging
+
+  plot-worker:
+    <<: *service-hardening
+    image: ${PAPERBANANA_PLOT_WORKER_IMAGE:?set PAPERBANANA_PLOT_WORKER_IMAGE}
+    runtime: runsc
+    env_file:
+      - /opt/paperbanana/secrets/worker.env
+    environment:
+      PLOT_WORKER_REQUIRE_TOKEN: "true"
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m,uid=10001,gid=10001,mode=1777
+    networks:
+      worker:
+        ipv4_address: 172.29.0.30
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import json,urllib.request;
+          data=json.load(urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=2));
+          raise SystemExit(0 if data.get('ok') else 1)
+      interval: 15s
+      timeout: 4s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+    stop_grace_period: 30s
+    cpus: 1.0
+    mem_limit: 2048m
+    mem_reservation: 512m
+    pids_limit: 96
+    ulimits:
+      nofile:
+        soft: 256
+        hard: 256
+      nproc:
+        soft: 64
+        hard: 64
+
+  paperbanana-api:
+    <<: *service-hardening
+    image: ${PAPERBANANA_CORE_IMAGE:?set PAPERBANANA_CORE_IMAGE}
+    env_file:
+      - /opt/paperbanana/secrets/core.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3000"
+      PAPERBANANA_SINGLE_REPLICA: "true"
+      PAPERBANANA_STRICT_OBJECT_STORAGE: "true"
+      PLOT_WORKER_URL: http://plot-worker:8000
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+      plot-worker:
+        condition: service_healthy
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m,uid=1000,gid=1000,mode=1777
+    networks:
+      backend:
+        ipv4_address: 172.28.0.20
+      worker:
+        ipv4_address: 172.29.0.20
+      egress:
+        ipv4_address: 172.30.0.20
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:3000/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    restart: unless-stopped
+    stop_grace_period: 30m
+    cpus: 1.5
+    mem_limit: 3072m
+    mem_reservation: 768m
+    pids_limit: 192
+
+  auth-gateway:
+    <<: *service-hardening
+    image: ${PAPERBANANA_GATEWAY_IMAGE:?set PAPERBANANA_GATEWAY_IMAGE}
+    env_file:
+      - /opt/paperbanana/secrets/gateway.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3005"
+      PAPERBANANA_API_URL: http://paperbanana-api:3000/paperbanana-api
+      PAPERBANANA_MAINTENANCE_FILE: /opt/paperbanana/control/maintenance
+    depends_on:
+      paperbanana-api:
+        condition: service_healthy
+    volumes:
+      - /opt/paperbanana/control:/opt/paperbanana/control:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,uid=1000,gid=1000,mode=1777
+    networks:
+      backend:
+        ipv4_address: 172.28.0.10
+    ports:
+      - 127.0.0.1:13005:3005
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:3005/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    restart: unless-stopped
+    stop_grace_period: 2m
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 128m
+    pids_limit: 128
+
+networks:
+  backend:
+    internal: true
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: pbback0
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24
+  worker:
+    internal: true
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: pbworker0
+    ipam:
+      config:
+        - subnet: 172.29.0.0/24
+  egress:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: pbegress0
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+secrets:
+  mongo_root_password:
+    file: /opt/paperbanana/secrets/mongo-root-password
+  mongo_auth_password:
+    file: /opt/paperbanana/secrets/mongo-auth-password
+  mongo_business_password:
+    file: /opt/paperbanana/secrets/mongo-business-password

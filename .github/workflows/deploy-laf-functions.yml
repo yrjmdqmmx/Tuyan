@@ -1,14 +1,11 @@
 name: Deploy Laf Functions
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - apps/laf-functions/paperbanana-api.ts
-      - .github/workflows/deploy-laf-functions.yml
   workflow_dispatch:
     inputs:
+      confirm:
+        description: Type deploy-legacy-laf to continue.
+        required: true
       function_name:
         description: Laf function name to deploy.
         required: true
@@ -27,6 +24,8 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event.inputs.confirm == 'deploy-legacy-laf'
+    environment: legacy-sealos
     runs-on: ubuntu-latest
     env:
       LAF_APPID: ${{ secrets.LAF_APPID }}

@@ -1,0 +1,55 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @paperbanana/auth-gateway test
+      - run: pnpm --filter @paperbanana/paperbanana-api test
+      - run: pnpm --filter @paperbanana/paperbanana-api check
+      - run: pnpm --filter @paperbanana/paperbanana-api build
+      - run: node --test apps/laf-functions/tests/*.test.cjs
+      - run: node --test deploy/hk-single-host/tests/contracts.test.mjs
+
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/auth-gateway/Dockerfile
+          push: false
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/paperbanana-api/Dockerfile
+          push: false
+      - uses: docker/build-push-action@v6
+        with:
+          context: apps/plot-worker
+          file: apps/plot-worker/Dockerfile
+          push: false
+      - run: python3 -m unittest discover -s apps/plot-worker/tests -p 'test_*.py'

@@ -1,13 +1,15 @@
-name: Build Plot Worker Image
+name: Publish Plot Worker Image
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/build-plot-worker.yml
-      - apps/plot-worker/**
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to publish.
+        required: true
+        default: main
+      confirm:
+        description: Type publish-hk to continue.
+        required: true
 
 permissions:
   contents: read
@@ -23,10 +25,13 @@ env:
 
 jobs:
   build:
+    if: github.event.inputs.confirm == 'publish-hk'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -44,7 +49,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest
             type=sha,prefix=sha-
 
       - name: Build and push image
@@ -57,19 +61,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
-
-      - name: Roll out to Sealos
-        env:
-          KUBECONFIG_DATA: ${{ secrets.SEALOS_KUBECONFIG }}
-          DEPLOYMENT: paperbanana-plot-worker
-          IMAGE_REF: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}
-        run: |
-          set -euo pipefail
-          mkdir -p "$HOME/.kube"
-          printf '%s' "$KUBECONFIG_DATA" > "$HOME/.kube/config"
-          chmod 600 "$HOME/.kube/config"
-          container="$(kubectl get deployment "$DEPLOYMENT" -o jsonpath='{.spec.template.spec.containers[0].name}')"
-          kubectl set image "deployment/$DEPLOYMENT" "$container=$IMAGE_REF"
-          kubectl rollout status "deployment/$DEPLOYMENT" --timeout=180s
+      - name: Record immutable image
+        run: echo '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}' >> "$GITHUB_STEP_SUMMARY"

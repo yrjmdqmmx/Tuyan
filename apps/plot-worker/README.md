@@ -46,6 +46,7 @@ failures are `401`; oversized payloads are `413`.
 | Var | Meaning |
 | --- | --- |
 | `PLOT_WORKER_TOKEN` | Shared secret. If **set**, every `/render` must present a matching `token` (body) or `X-Plot-Worker-Token` (header), compared in constant time. If **unset**, the service runs in **open mode** (local dev / no-egress-only). **`app.py` reads this once at startup, caches it in a private variable, and then `os.environ.pop()`s it** — so it is gone from the environment the render child would inherit. The token is never forwarded to the child. |
+| `PLOT_WORKER_REQUIRE_TOKEN` | Set to `true` in production. Startup then fails unless `PLOT_WORKER_TOKEN` is at least 32 bytes. Local development remains backward compatible when the flag is absent. |
 | `MPLBACKEND=Agg` | Headless backend (set in the Dockerfile and re-set in the child's scrubbed env). |
 | `MPLCONFIGDIR=/tmp/mpl` | Writable matplotlib cache dir for the non-root user. |
 
@@ -162,7 +163,10 @@ code/image; layers 2 and 3 are your responsibility at deploy time:
 
 1. **Apply the NetworkPolicy.** `kubectl apply -f networkpolicy.yaml` (adjust
    namespace, `podSelector` labels, and the ingress source to your gateway/Laf).
-   Confirm your CNI enforces NetworkPolicy.
+   Confirm your CNI enforces NetworkPolicy. On the supported Hong Kong
+   single-host deployment, use `deploy/hk-single-host/compose.yaml` plus
+   `scripts/install-worker-firewall.sh`; the worker joins only the internal
+   `172.29.0.0/24` bridge and `DOCKER-USER` rejects worker-initiated traffic.
 2. **Run read-only rootfs + non-root + drop capabilities** via the pod's
    `securityContext`, e.g.:
 

@@ -19,10 +19,11 @@ RUN apt-get update \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py render_worker.py ./
+COPY app.py production_auth.py render_worker.py ./
 
 # Non-root user. The child render process inherits this uid; combined with the
-# RLIMIT_* caps and a no-egress NetworkPolicy this is the intended posture.
+# RLIMIT_* caps and a deployment-level no-egress boundary this is the intended
+# posture (Kubernetes NetworkPolicy or the single-host Compose firewall).
 RUN useradd --create-home --uid 10001 plot \
     && mkdir -p /tmp/mpl \
     && chown -R plot:plot /app /tmp/mpl
