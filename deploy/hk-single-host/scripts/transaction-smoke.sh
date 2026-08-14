@@ -5,9 +5,9 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 deploy_dir="$(cd -- "$script_dir/.." && pwd)"
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
 
-"${compose[@]}" exec -T mongodb sh -c '
+"${compose[@]}" run --rm --no-deps -T mongo-init sh -c '
   export AUTH_SMOKE_PASSWORD="$(cat /run/secrets/mongo_auth_password)"
-  exec mongosh --quiet --host 127.0.0.1 --username paperbanana_auth \
+  exec mongosh --quiet --host mongodb --username paperbanana_auth \
     --password "$AUTH_SMOKE_PASSWORD" --authenticationDatabase paperbanana_auth \
     --eval '\''
       const target = db.getSiblingDB("paperbanana_auth")

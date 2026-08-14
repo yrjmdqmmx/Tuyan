@@ -127,6 +127,14 @@ test('backup and restore drill use compressed archives and an external OSS targe
   assert.match(restore, /--nsTo/);
 });
 
+test('transaction smoke runs in the secret-bearing init service', () => {
+  const transactionSmoke = read('scripts/transaction-smoke.sh');
+
+  assert.match(transactionSmoke, /run\s+--rm\s+--no-deps\s+-T\s+mongo-init/);
+  assert.doesNotMatch(transactionSmoke, /exec\s+-T\s+mongodb/);
+  assert.match(transactionSmoke, /\/run\/secrets\/mongo_auth_password/);
+});
+
 test('repository templates contain placeholders, never concrete credentials', () => {
   const template = read('secrets/README.md');
   assert.doesNotMatch(template, /LTAI[A-Za-z0-9]{12,}/);
