@@ -1,9 +1,27 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { test } from 'node:test';
 
 const root = new URL('../', import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), 'utf8');
+
+test('operator scripts are committed as executables', () => {
+  for (const path of [
+    'scripts/backup-mongo.sh',
+    'scripts/bootstrap-host.sh',
+    'scripts/build-images.sh',
+    'scripts/deploy.sh',
+    'scripts/generate-runtime-secrets.sh',
+    'scripts/init-mongo.sh',
+    'scripts/install-gvisor.sh',
+    'scripts/install-worker-firewall.sh',
+    'scripts/restore-drill.sh',
+    'scripts/smoke.sh',
+    'scripts/transaction-smoke.sh',
+  ]) {
+    assert.equal(statSync(new URL(path, root)).mode & 0o111, 0o111, `${path} must be executable`);
+  }
+});
 
 test('compose keeps the public edge on loopback and all data services private', () => {
   const compose = read('compose.yaml');
