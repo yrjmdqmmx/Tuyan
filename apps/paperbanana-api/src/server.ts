@@ -26,6 +26,7 @@ export type ServiceLogger = {
 
 export type AppConfig = {
   gatewayToken: string
+  adminToken?: string
   serviceName: string
   version: string
 }
@@ -43,6 +44,14 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-Admin-Token,X-Paperbanana-Gateway-Token',
   'Access-Control-Max-Age': '86400',
 }
+
+const adminActions = new Set([
+  'adminJobs',
+  'adminFeedback',
+  'importReferences',
+  'evaluateJob',
+  'pingPlotWorker',
+])
 
 function tokensMatch(actual: string, expected: string): boolean {
   const actualDigest = createHash('sha256').update(actual).digest()
@@ -63,11 +72,14 @@ function normalizedBody(value: unknown): Record<string, unknown> {
   return { ...(body as Record<string, unknown>) }
 }
 
-function transportBody(value: unknown, gatewayToken: string): Record<string, unknown> {
+function transportBody(value: unknown, config: AppConfig): Record<string, unknown> {
   const body = normalizedBody(value)
   delete body.gatewayToken
   delete body.adminToken
-  body.gatewayToken = gatewayToken
+  body.gatewayToken = config.gatewayToken
+  if (config.adminToken && adminActions.has(String(body.action || ''))) {
+    body.adminToken = config.adminToken
+  }
   return body
 }
 
@@ -129,7 +141,7 @@ export function createApp({ handler, readinessProbe, config, logger }: AppDepend
     const incoming = request.method === 'GET' ? request.query : request.body
     const ctx: LegacyContext = {
       request: { method: request.method },
-      body: transportBody(incoming, config.gatewayToken),
+      body: transportBody(incoming, config),
       headers: request.headers,
       response: {
         setHeader(name, value) { response.setHeader(name, value) },

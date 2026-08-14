@@ -10,7 +10,7 @@ type OssConfig = {
 }
 
 type OssClient = {
-  signatureUrl(key: string, options: Record<string, unknown>): string
+  signatureUrlV4(method: 'GET' | 'PUT', expires: number, request: undefined, key: string): Promise<string>
   put(key: string, content: unknown, options?: Record<string, unknown>): Promise<unknown>
   get?(key: string): Promise<unknown>
   getBucketACL(name: string): Promise<{ acl: string }>
@@ -60,10 +60,10 @@ export function createOssAdapter(
     if (name !== config.bucket) throw new Error(`Unexpected OSS bucket: ${name}`)
     return {
       async getUploadUrl(key: string, expires: number): Promise<string> {
-        return client.signatureUrl(key, { method: 'PUT', expires })
+        return client.signatureUrlV4('PUT', expires, undefined, key)
       },
       async getDownloadUrl(key: string, expires: number): Promise<string> {
-        return client.signatureUrl(key, { method: 'GET', expires })
+        return client.signatureUrlV4('GET', expires, undefined, key)
       },
       async put(key: string, content: unknown, metadata: Record<string, unknown> = {}): Promise<unknown> {
         return client.put(key, content, { headers: normalizeHeaders(metadata) })

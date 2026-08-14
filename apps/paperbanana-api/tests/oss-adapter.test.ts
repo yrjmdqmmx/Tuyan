@@ -56,8 +56,8 @@ test('listFiles follows every OSS marker and normalizes keys while preserving me
 test('signed URLs and writes preserve object keys, HTTP method, and metadata', async () => {
   const calls: unknown[] = []
   const client = {
-    signatureUrl(key: string, options: unknown) {
-      calls.push(['signatureUrl', key, options])
+    async signatureUrlV4(method: string, expires: number, request: unknown, key: string) {
+      calls.push(['signatureUrlV4', method, expires, request, key])
       return `https://signed.invalid/${key}`
     },
     async put(key: string, content: unknown, options: unknown) {
@@ -77,11 +77,26 @@ test('signed URLs and writes preserve object keys, HTTP method, and metadata', a
   await bucket.deleteFile('results/a.png')
 
   assert.deepEqual(calls, [
-    ['signatureUrl', 'references/a.png', { method: 'PUT', expires: 900 }],
-    ['signatureUrl', 'results/a.png', { method: 'GET', expires: 3600 }],
+    ['signatureUrlV4', 'PUT', 900, undefined, 'references/a.png'],
+    ['signatureUrlV4', 'GET', 3600, undefined, 'results/a.png'],
     ['put', 'results/a.png', bytes, { headers: { 'Content-Type': 'image/png', 'x-oss-meta-origin': 'paperbanana' } }],
     ['delete', 'results/a.png'],
   ])
+})
+
+test('default ali-oss client emits V4 virtual-hosted signed URLs', async () => {
+  const bucket = createOssAdapter({
+    ...config,
+    accessKeyId: 'test-access-id',
+    accessKeySecret: 'test-access-secret',
+  }).bucket('paperbanana-private')
+
+  const signed = new URL(await bucket.getDownloadUrl('results/a.png', 60))
+
+  assert.equal(signed.hostname, 'paperbanana-private.oss-cn-hongkong.aliyuncs.com')
+  assert.equal(signed.pathname, '/results/a.png')
+  assert.equal(signed.searchParams.get('x-oss-signature-version'), 'OSS4-HMAC-SHA256')
+  assert.equal(signed.searchParams.get('x-oss-expires'), '60')
 })
 
 test('object-store write failures propagate without a Mongo data-URL fallback', async () => {

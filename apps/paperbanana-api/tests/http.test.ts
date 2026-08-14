@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import type { AddressInfo } from 'node:net'
 import test from 'node:test'
 
-import { createServer } from '../src/server.js'
+import { createServer, type AppConfig } from '../src/server.js'
 
 const config = {
   gatewayToken: 'configured-service-token',
@@ -14,8 +14,9 @@ async function withServer(
   handler: (ctx: any) => unknown | Promise<unknown>,
   run: (baseUrl: string) => Promise<void>,
   readinessProbe: () => Promise<any> = async () => ({ ready: true, dependencies: { mongodb: 'ready', oss: 'ready' } }),
+  serverConfig: AppConfig = config,
 ) {
-  const server = createServer({ handler, readinessProbe, config, logger: { info() {}, warn() {}, error() {} } })
+  const server = createServer({ handler, readinessProbe, config: serverConfig, logger: { info() {}, warn() {}, error() {} } })
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
   const { port } = server.address() as AddressInfo
   try {
@@ -79,6 +80,33 @@ test('POST accepts a JSON string request body before token sanitization', async 
 
     assert.equal(response.status, 200)
     assert.deepEqual(receivedBody, { action: 'modelCapability', gatewayToken: config.gatewayToken })
+  })
+})
+
+test('admin actions replace caller adminToken with the server-side admin token', async () => {
+  let receivedBody: unknown
+  await withServer(async (ctx) => {
+    receivedBody = ctx.body
+    return { code: 0, jobs: [] }
+  }, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/paperbanana-api`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-paperbanana-gateway-token': config.gatewayToken,
+      },
+      body: JSON.stringify({ action: 'adminJobs', adminToken: 'caller-admin-token' }),
+    })
+
+    assert.equal(response.status, 200)
+    assert.deepEqual(receivedBody, {
+      action: 'adminJobs',
+      gatewayToken: config.gatewayToken,
+      adminToken: 'configured-server-admin-token',
+    })
+  }, async () => ({ ready: true }), {
+    ...config,
+    adminToken: 'configured-server-admin-token',
   })
 })
 

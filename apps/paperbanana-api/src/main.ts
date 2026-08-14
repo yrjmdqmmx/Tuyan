@@ -2,6 +2,7 @@ import path from 'node:path'
 
 import { loadConfig } from './config.js'
 import { configureLafCloud } from './laf-cloud.js'
+import { listenWithCleanup } from './listen.js'
 import { createLogger } from './logger.js'
 import { createMongoAdapter } from './mongo-adapter.js'
 import { createOssAdapter } from './oss-adapter.js'
@@ -32,7 +33,7 @@ async function main(): Promise<void> {
   const server = createServer({
     handler: runtime.handler,
     readinessProbe: runtime.readinessProbe,
-    config: { gatewayToken: config.gatewayToken, serviceName, version },
+    config: { gatewayToken: config.gatewayToken, adminToken: config.adminToken, serviceName, version },
     logger,
   })
 
@@ -44,10 +45,7 @@ async function main(): Promise<void> {
   process.once('SIGTERM', () => void shutdown('SIGTERM'))
   process.once('SIGINT', () => void shutdown('SIGINT'))
 
-  await new Promise<void>((resolve, reject) => {
-    server.once('error', reject)
-    server.listen(config.port, config.host, resolve)
-  })
+  await listenWithCleanup(server, config.port, config.host, runtime.close)
   logger.info('service listening', { service: serviceName, host: config.host, port: config.port })
 }
 

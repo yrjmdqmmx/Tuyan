@@ -2,6 +2,7 @@ export type ServiceConfig = {
   host: string
   port: number
   gatewayToken: string
+  adminToken?: string
   singleReplica: true
   mongodb: {
     uri: string
@@ -38,6 +39,7 @@ export function loadConfig(env: Environment = process.env): ServiceConfig {
     host: env.HOST?.trim() || '0.0.0.0',
     port,
     gatewayToken,
+    adminToken: env.ADMIN_TOKEN?.trim() || undefined,
     singleReplica: true,
     mongodb: {
       uri: required(env, 'MONGODB_URI'),
