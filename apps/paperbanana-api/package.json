@@ -1,0 +1,30 @@
+{
+  "name": "@paperbanana/paperbanana-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "test": "node --import tsx --test tests/*.test.ts",
+    "check": "tsc --noEmit",
+    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --alias:@lafjs/cloud=./src/laf-cloud.ts --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb",
+    "start": "node dist/server.cjs"
+  },
+  "dependencies": {
+    "@resvg/resvg-wasm": "2.6.2",
+    "ali-oss": "^6.23.0",
+    "express": "^5.1.0",
+    "fflate": "0.8.3",
+    "mongodb": "^6.18.0"
+  },
+  "devDependencies": {
+    "@types/ali-oss": "^6.16.11",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "esbuild": "^0.25.9",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
