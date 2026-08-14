@@ -77,6 +77,7 @@ jobs:
             printf 'PAPERBANANA_PLOT_WORKER_IMAGE=%s\n' "$WORKER_IMAGE"
             printf 'PAPERBANANA_MONGODB_IMAGE=%s\n' "$MONGODB_IMAGE"
           } > "$image_lock"
-          scp "$image_lock" "$DEPLOY_USER@$DEPLOY_HOST:/opt/paperbanana/repo/deploy/hk-single-host/.env.next"
+          REMOTE_LOCK="/tmp/paperbanana-image-lock-${GITHUB_RUN_ID}"
+          scp "$image_lock" "$DEPLOY_USER@$DEPLOY_HOST:$REMOTE_LOCK"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd /opt/paperbanana/repo && git fetch --quiet origin '${GITHUB_SHA}' && git checkout --detach '${GITHUB_SHA}' && mv deploy/hk-single-host/.env.next deploy/hk-single-host/.env && chmod 0600 deploy/hk-single-host/.env && deploy/hk-single-host/scripts/deploy.sh --apply"
+            "set -Eeuo pipefail; cd /opt/paperbanana/repo && git fetch --quiet origin '${GITHUB_SHA}' && git checkout --detach '${GITHUB_SHA}' && install -m 0600 '$REMOTE_LOCK' deploy/hk-single-host/.env && rm -f '$REMOTE_LOCK' && deploy/hk-single-host/scripts/deploy.sh --apply"
