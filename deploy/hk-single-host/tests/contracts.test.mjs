@@ -15,7 +15,10 @@ test('operator scripts are committed as executables', () => {
     'scripts/init-mongo.sh',
     'scripts/install-gvisor.sh',
     'scripts/install-backup-timer.sh',
+    'scripts/install-health-monitor.sh',
     'scripts/install-worker-firewall.sh',
+    'scripts/monitor-health.sh',
+    'scripts/report-cms-event.py',
     'scripts/restore-drill.sh',
     'scripts/smoke.sh',
     'scripts/transaction-smoke.sh',
@@ -39,6 +42,34 @@ test('daily Mongo backup timer is persistent, bounded and installed explicitly',
   assert.match(installer, /systemctl daemon-reload/);
   assert.match(installer, /systemctl enable --now paperbanana-backup\.timer/);
   assert.match(installer, /install -m 0644/);
+});
+
+test('production health monitor covers application, data, backup, TLS and 5xx signals', () => {
+  const monitor = read('scripts/monitor-health.sh');
+  const reporter = read('scripts/report-cms-event.py');
+  const service = read('systemd/paperbanana-health-monitor.service');
+  const timer = read('systemd/paperbanana-health-monitor.timer');
+  const installer = read('scripts/install-health-monitor.sh');
+
+  assert.match(monitor, /https:\/\/api\.paperbanana\.asia\/health/);
+  assert.match(monitor, /https:\/\/api\.paperbanana\.asia\/ready/);
+  assert.match(monitor, /127\.0\.0\.1:3010\/api\/health/);
+  assert.match(monitor, /countDocuments/);
+  assert.match(monitor, /queued/);
+  assert.match(monitor, /running/);
+  assert.match(monitor, /paperbanana-backup\.service/);
+  assert.match(monitor, /paperbanana-backup\.timer/);
+  assert.match(monitor, /openssl x509 -checkend/);
+  assert.match(monitor, /paperbanana-api\.access\.log/);
+  assert.match(monitor, /PaperBananaProductionHealthFailure/);
+  assert.match(reporter, /cms:PutCustomEvent|PutCustomEvent/);
+  assert.match(reporter, /ALIBABA_CLOUD_ACCESS_KEY_ID/);
+  assert.match(reporter, /ALIBABA_CLOUD_ACCESS_KEY_SECRET/);
+  assert.match(reporter, /HMAC-SHA1/);
+  assert.match(service, /EnvironmentFile=\/opt\/paperbanana\/secrets\/monitor\.env/);
+  assert.match(timer, /OnUnitActiveSec=5m/);
+  assert.match(timer, /Persistent=true/);
+  assert.match(installer, /systemctl enable --now paperbanana-health-monitor\.timer/);
 });
 
 test('compose keeps the public edge on loopback and all data services private', () => {
@@ -76,6 +107,7 @@ test('nginx overwrites forwarding headers and enforces the JSON body limit', () 
   assert.match(nginx, /client_max_body_size\s+1100k;/);
   assert.match(nginx, /proxy_set_header\s+X-Forwarded-For\s+\$remote_addr;/);
   assert.match(nginx, /proxy_set_header\s+X-Real-IP\s+\$remote_addr;/);
+  assert.match(nginx, /access_log\s+\/var\/log\/nginx\/paperbanana-api\.access\.log;/);
   assert.doesNotMatch(nginx, /\$proxy_add_x_forwarded_for/);
 });
 

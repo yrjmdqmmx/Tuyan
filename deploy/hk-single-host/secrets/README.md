@@ -10,6 +10,7 @@ Required host files:
 - `mongo-keyfile` (owned by the MongoDB container uid and mode `0400`)
 - `gateway.env`, `core.env`, `worker.env`
 - `backup.env` and an OSS utility config limited to the backup bucket prefix
+- `monitor.env` containing only the dedicated `cms:PutCustomEvent` RAM key
 
 Use long random placeholders while testing, for example
 `replace-with-at-least-32-random-bytes`. Never commit access keys, MongoDB

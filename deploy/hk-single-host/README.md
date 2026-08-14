@@ -55,6 +55,16 @@ Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
 inspect each result with `systemctl status paperbanana-backup.service` plus the
 corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.
 
+The production health monitor requires a root-only
+`/opt/paperbanana/secrets/monitor.env` containing a dedicated RAM user's
+`ALIBABA_CLOUD_ACCESS_KEY_ID` and `ALIBABA_CLOUD_ACCESS_KEY_SECRET`. That user
+must be limited to `cms:PutCustomEvent`. Run
+`scripts/install-health-monitor.sh --apply` after the CMS custom-event rule and
+contact group exist. Every five minutes it checks public health/readiness,
+OpenVac, all PaperBanana containers, Mongo connectivity and stuck jobs, backup
+freshness, TLS lifetime, and new Nginx 5xx responses. It reports state changes
+and hourly reminders through `PaperBananaProductionHealthFailure`.
+
 Rollback is an explicit image-tag change followed by the same project-scoped
 deploy script. After the new MongoDB accepts writes, do not point clients back
 to the old Laf database without first entering maintenance and reconciling the

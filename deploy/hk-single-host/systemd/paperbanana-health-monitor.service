@@ -1,0 +1,26 @@
+[Unit]
+Description=PaperBanana production health and alert check
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/paperbanana/secrets/monitor.env
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+WorkingDirectory=/opt/paperbanana/repo/deploy/hk-single-host
+EnvironmentFile=/opt/paperbanana/secrets/monitor.env
+ExecStart=/opt/paperbanana/repo/deploy/hk-single-host/scripts/monitor-health.sh
+TimeoutStartSec=2m
+UMask=0077
+StateDirectory=paperbanana-monitor
+StateDirectoryMode=0700
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
