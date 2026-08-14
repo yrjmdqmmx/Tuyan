@@ -36,7 +36,7 @@ In-app account deletion is implemented. Path: **Settings tab → Account section
 - No third-party ads or analytics SDKs. No tracking. See the App Privacy section and bundled `PrivacyInfo.xcprivacy`.
 
 **Backend availability**
-The app requires our online gateway (`https://yifbnnzrwmxn.sealoshzh.site`) for auth and job orchestration. The backend will remain online throughout the review period.
+The app requires our online gateway (`https://api.paperbanana.asia`) for auth and job orchestration. The backend will remain online throughout the review period.
 
 **Contact**
 `[联系邮箱 / 联系方式占位]`
@@ -57,7 +57,7 @@ App 不内置模型密钥。要跑通真实生成，必须填入受支持平台�
 
 **隐私**：API Key 仅存本机 Keychain，从不上传我方服务器，调用时由用户设备经网关转发到用户选定的大模型平台。无第三方广告/分析 SDK，无追踪。
 
-**后端**：依赖在线网关 `https://yifbnnzrwmxn.sealoshzh.site`，审核期间保持在线。
+**后端**：依赖在线网关 `https://api.paperbanana.asia`，审核期间保持在线。
 
 ---
 
@@ -66,5 +66,5 @@ App 不内置模型密钥。要跑通真实生成，必须填入受支持平台�
 - [ ] **`[demo 邮箱]` / `[demo 密码]`** —— 创建一个真实可登录的测试账号并填入。
 - [ ] **`[demo bailian key]`** —— 必须是当前有效、有额度的真实 key。**这是 BYOK App 过审的关键**：审核员用它跑生成，过期/无额度会直接导致被拒（审核员会认为功能不可用）。提交前当天再验证一次该 key 能成功生成。
 - [ ] **`[联系邮箱 / 联系方式]`** —— 填一个审核期间能及时回复的邮箱，便于审核员在 key 失效时联系换新。
-- [ ] 确认审核期间后端网关 `yifbnnzrwmxn.sealoshzh.site` 在线。
+- [ ] 确认审核期间后端网关 `api.paperbanana.asia` 在线。
 - [ ] （建议）在 ASC 的「附件」里上传 1-2 张生成结果示例图，降低审核员对"生成是否真能用"的疑虑。

@@ -97,7 +97,7 @@ GuideResource(
 本初稿严格依据 iOS 源码撰写，关键事实点：
 
 - **API Key 仅本机存储不上传**：`Core/Storage/KeychainService.swift` 用 `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`（仅本设备、不随 iCloud 同步）。生成时 Key 经 `JobCreatePayload.apiKeys` 随请求转发给所选第三方平台，运营方不持久化。
-- **网关地址**：`Core/AppDefaults.swift` → `https://yifbnnzrwmxn.sealoshzh.site`；官网 `https://www.paperbanana.asia`。
+- **网关地址**：`Core/AppDefaults.swift` → `https://api.paperbanana.asia`；官网 `https://www.paperbanana.asia`。
 - **生成输入**：方法描述、图题、参考图、任务参数发往网关（`GenerationStore.submitJob`）。
 - **四家第三方平台**：阿里百炼 / OpenRouter / Gemini / OpenAI（`Catalog/ProviderCatalog.swift`）。
 - **账号**：邮箱+密码（Better Auth），session cookie（`httpShouldHandleCookies = true`）。

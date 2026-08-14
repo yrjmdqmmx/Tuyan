@@ -1,9 +1,9 @@
 # PaperBanana iOS
 
-PaperBanana iOS 是原生 SwiftUI 客户端，默认连接 Sealos 上的 auth-gateway：
+PaperBanana iOS 是原生 SwiftUI 客户端，默认连接阿里云香港生产网关：
 
 ```text
-https://yifbnnzrwmxn.sealoshzh.site
+https://api.paperbanana.asia
 ```
 
 ## Requirements

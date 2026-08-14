@@ -29,7 +29,7 @@ final class SettingsStore {
 
   init(apiClient: PaperBananaAPIClient) {
     self.apiClient = apiClient
-    let storedBase = UserDefaults.standard.string(forKey: AppDefaults.apiBaseKey) ?? AppDefaults.sealosAPIBase
+    let storedBase = UserDefaults.standard.string(forKey: AppDefaults.apiBaseKey) ?? AppDefaults.productionAPIBase
     apiBase = AppDefaults.normalizedAPIBase(storedBase)
   }
 
@@ -49,7 +49,7 @@ final class SettingsStore {
   }
 
   func resetBackendBase() {
-    apiBase = AppDefaults.sealosAPIBase
+    apiBase = AppDefaults.productionAPIBase
   }
 
   func submitFeedback() async {

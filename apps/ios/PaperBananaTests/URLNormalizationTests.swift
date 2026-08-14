@@ -4,10 +4,10 @@ import XCTest
 final class URLNormalizationTests: XCTestCase {
   func testAPIBaseNormalizationTrimsWhitespaceAndTrailingSlashes() {
     XCTAssertEqual(
-      AppDefaults.normalizedAPIBase("  https://yifbnnzrwmxn.sealoshzh.site///  "),
-      "https://yifbnnzrwmxn.sealoshzh.site"
+      AppDefaults.normalizedAPIBase("  https://api.paperbanana.asia///  "),
+      "https://api.paperbanana.asia"
     )
-    XCTAssertEqual(AppDefaults.normalizedAPIBase(""), AppDefaults.sealosAPIBase)
+    XCTAssertEqual(AppDefaults.normalizedAPIBase(""), AppDefaults.productionAPIBase)
   }
 
   func testRelativeImageURLsResolveAgainstConfiguredBase() {

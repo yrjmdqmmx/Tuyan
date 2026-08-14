@@ -130,10 +130,10 @@ iOS 原生客户端工程位于：
 apps/ios/
 ```
 
-用 Xcode 打开 `apps/ios/paperbanana.xcodeproj`，选择 `PaperBanana` scheme 后运行。当前最低系统版本为 iOS 26.0，默认连接 Sealos 上的 auth-gateway：
+用 Xcode 打开 `apps/ios/paperbanana.xcodeproj`，选择 `PaperBanana` scheme 后运行。当前最低系统版本为 iOS 26.0，默认连接阿里云香港生产网关：
 
 ```text
-https://yifbnnzrwmxn.sealoshzh.site
+https://api.paperbanana.asia
 ```
 
 命令行构建验证：

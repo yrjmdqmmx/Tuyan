@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-15] 生产后端切换到阿里云香港单机栈 — by Codex
+变更：`api.paperbanana.asia` 已切到现有香港轻量应用服务器；Nginx 后仅运行 Auth Gateway、Node 24 核心、单成员副本集 MongoDB 与 gVisor Plot Worker，旧 Laf/Auth Gateway 已暂停并保留只读回滚数据。
+契约（影响其他端 / 共享）：
+- **公开入口**：Web 与 iOS 的默认 API/Auth base 为 `https://api.paperbanana.asia`；公开 `/paperbanana-api`、`/api/auth/*`、`POST /api/account/delete` 和业务 envelope 不变。旧 Sealos 网关不再是生产入口。
+- **发布范围**：本次只切 Web 与 iOS。HarmonyOS、微信小程序、Android、Windows、macOS 仍含旧默认地址，必须在各自完成 Cookie/上传/CORS/备案验收后再切，不得把旧地址当成仍在线的生产后端。
+- **数据与对象**：Better Auth 与业务 Mongo 全量迁移；生产 OSS 保持原 object key、content type 与字节内容。新环境开始写入后禁止仅靠 DNS 回滚到旧数据库。
+- **运维**：每日 Mongo 逻辑备份到独立加密 OSS，并有恢复演练；云监控覆盖 CPU/内存/磁盘，主机健康定时器覆盖 API、Mongo、卡住任务、备份、TLS、Nginx 5xx 与 OpenVac。
+各端待办：
+- [x] Web（生产构建已使用新域名并发布）
+- [x] iOS（默认地址、冒烟脚本与上架说明已更新；新构建需由 App Store 发布流程上传）
+- [x] 后端/部署（香港单机栈、数据/OSS、DNS/TLS、备份/告警、旧环境停写）
+- [ ] HarmonyOS/微信小程序/Android/Windows/macOS（本次发布范围外，后续逐端迁移）
+
 ### [2026-08-15] Auth Gateway 复审加固：Auth 限流、不可变管理员 ID、事务注销与权威就绪 — by Codex
 变更：修复迁移复审发现的认证请求体绕过、邮箱管理员竞态、非事务注销、健康字段兼容与 readiness 污染问题；公开业务 action/请求/响应字段不变。
 契约（影响其他端 / 共享）：
@@ -34,7 +47,7 @@
 - **错误卫生**：未预期的 Mongo/内部异常仅返回稳定 `{code:500,error:'Internal server error'}`，详细错误只写入脱敏日志；明确的后端 502/504 类型仍保持公开。
 各端待办：
 - [x] auth-gateway / paperbanana-api 传输（实现、测试、文档）
-- [ ] 部署/运维（配置 `ADMIN_USER_IDS`，删除 `ADMIN_EMAILS`；Auth Mongo 以 replica set 启动并完成 transaction smoke）
+- [x] 部署/运维（配置 `ADMIN_USER_IDS`，删除 `ADMIN_EMAILS`；Auth Mongo 以 replica set 启动并完成 transaction smoke）
 - [x] Web/iOS（公开 API action/envelope 不变，无代码改动）
 
 ### [2026-08-14] Auth Gateway 切换香港 Node 核心、访客归属与精修授权 — by Codex (auth-gateway + shared transport)
@@ -50,7 +63,7 @@
 各端待办：
 - [x] auth-gateway（Node 24、固定后端、guest/owner/refine/maintenance/health/delete、测试与非 root 镜像）
 - [x] paperbanana-api / laf-functions（可信 client-IP 传输与 Laf 兼容 fallback）
-- [ ] 部署/运维（补齐新 env；Compose 仅发布 `127.0.0.1:13005:3005`；Nginx 必须覆盖 forwarding headers；切流前维护/排空）
+- [x] 部署/运维（补齐新 env；Compose 仅发布 `127.0.0.1:13005:3005`；Nginx 必须覆盖 forwarding headers；切流前维护/排空）
 - [x] web/iOS（公开 action/envelope 不变；既有 credentials/cookie transport 与 objectKey 字段兼容，无代码改动）
 - [ ] 其他客户端（本次发布范围外；后续仍须确认 cookie 持久化及 API base）
 
@@ -65,7 +78,7 @@
 - **健康检查**：`/health` 只读进程内缓存、绝不发 Mongo/OSS 网络请求；`/ready` 使用 `PAPERBANANA_READINESS_PROBE_TIMEOUT_MS`（默认 2000ms）的单飞有期限探测并更新缓存，依赖卡死时仍会有限时间返回 503。
 各端待办：
 - [x] paperbanana-api / laf-functions（准入、生命周期、OSS 双端点/校验/上限、健康检查与测试）
-- [ ] 部署/运维（补齐 OSS 两端点及可选限额 env；保持 Recreate；切流前完成真实 Chrome+iOS OSS PUT smoke；Compose 后续设置足够 `stop_grace_period`）
+- [ ] 部署/运维（OSS 两端点、Recreate、`stop_grace_period` 与真实 Web/通用签名 PUT 已完成；新 iOS 构建发布前仍需在真机/模拟器做一次 OSS PUT smoke）
 - [x] auth-gateway / clients（本次未改公开 route/action/envelope；现有已知大小直传逻辑无代码变更）
 
 ### [2026-08-14] Node API 收紧 BYOK、对象存储与请求体契约 — by Codex (paperbanana-api + laf compatibility)
@@ -76,7 +89,7 @@
 - **请求体上限**：Node `POST /paperbanana-api` JSON 上限为 1 MiB，超限返回 HTTP `413 {code:413,error:'Request body too large'}`；参考图继续走既有预签名直传，不应放进 JSON/base64。
 各端待办：
 - [x] paperbanana-api / laf-functions（无密钥后台 DTO、严格存储开关、1 MiB 限制、组合测试）
-- [ ] 部署/运维（Node env 增加 `PAPERBANANA_STRICT_OBJECT_STORAGE=true`）
+- [x] 部署/运维（Node env 增加 `PAPERBANANA_STRICT_OBJECT_STORAGE=true`）
 - [x] auth-gateway / clients（公开 action/envelope 与预签名上传流程不变，无代码改动）
 
 ### [2026-08-14] 新增阿里云香港 Node 24 内部业务 API — by Codex (paperbanana-api)
@@ -91,7 +104,7 @@
 各端待办：
 - [x] paperbanana-api（Node 24 服务、Mongo/OSS 适配、恢复、鉴权、健康检查、测试与镜像）
 - [x] auth-gateway（内部目标切到 Node，并用 header `x-paperbanana-gateway-token` 传服务 token；不得继续把 token 当客户端字段透传）
-- [ ] 部署/运维（配置上述必需 env；仅运行 1 副本且使用 Recreate/先停后启，禁止滚动更新时新旧实例重叠；把健康/就绪探针分别指向 `/health`、`/ready`）
+- [x] 部署/运维（配置上述必需 env；仅运行 1 副本且使用 Recreate/先停后启，禁止滚动更新时新旧实例重叠；把健康/就绪探针分别指向 `/health`、`/ready`）
 - [x] web/miniprogram/android/ios/windows/macos（公开路由与业务 envelope 无变化，无需改客户端）
 
 ### [2026-06-20] 新增「删除账号」链路（App Store 5.1.1(v)）— by Claude (backend + ios)

@@ -214,3 +214,17 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
   assert.match(workflows[0], /VITE_API_BASE:\s*https:\/\/api\.paperbanana\.asia/);
   assert.match(workflows[0], /VITE_AUTH_BASE:\s*https:\/\/api\.paperbanana\.asia/);
 });
+
+test('shipping Web and iOS clients default to the Aliyun production edge', () => {
+  const clientFiles = [
+    '../../apps/ios/PaperBanana/Core/AppDefaults.swift',
+    '../../apps/ios/Scripts/e2e-gateway-smoke.mjs',
+    '../../apps/ios/README.md',
+    '../../apps/web/.env.example',
+  ].map(read);
+
+  for (const file of clientFiles) {
+    assert.match(file, /https:\/\/api\.paperbanana\.asia/);
+    assert.doesNotMatch(file, /yifbnnzrwmxn\.sealoshzh\.site/);
+  }
+});

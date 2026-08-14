@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const DEFAULT_API_BASE = "https://yifbnnzrwmxn.sealoshzh.site";
+const DEFAULT_API_BASE = "https://api.paperbanana.asia";
 const DEFAULT_WEB_ORIGIN = "https://www.paperbanana.asia";
 const DEFAULT_TIMEOUT_MS = 10 * 60 * 1000;
 const DEFAULT_POLL_INTERVAL_MS = 5_000;
