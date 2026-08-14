@@ -57,6 +57,7 @@ test('production health monitor covers application, data, backup, TLS and 5xx si
   assert.match(monitor, /https:\/\/yifbnnzrwmxn\.sealoshzh\.site\/health/);
   assert.match(monitor, /127\.0\.0\.1:3010\/api\/health/);
   assert.match(monitor, /countDocuments/);
+  assert.match(monitor, /getCollection\("paperbanana_jobs"\)/);
   assert.match(monitor, /queued/);
   assert.match(monitor, /running/);
   assert.match(monitor, /paperbanana-backup\.service/);

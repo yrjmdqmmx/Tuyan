@@ -57,7 +57,7 @@ do
   fi
 done
 
-mongo_query='db.getSiblingDB("paperbanana_business").jobs.countDocuments({status:{$in:["queued","running"]},updatedAt:{$lt:new Date(Date.now()-3600000)}})'
+mongo_query='db.getSiblingDB("paperbanana_business").getCollection("paperbanana_jobs").countDocuments({status:{$in:["queued","running"]},updatedAt:{$lt:new Date(Date.now()-3600000)}})'
 if ! stuck_jobs="$(docker exec paperbanana-hk-mongodb-1 sh -c \
   'mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin --eval "$1"' \
   sh "$mongo_query" 2>/dev/null | tail -n 1)"; then
