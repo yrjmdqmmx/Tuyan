@@ -21,4 +21,4 @@ EXPOSE 3005
 
 USER node
 
-CMD ["pnpm", "start"]
+CMD ["node", "src/server.js"]
