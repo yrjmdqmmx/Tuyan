@@ -34,6 +34,7 @@ export type AppConfig = {
 type AppDependencies = {
   handler: LegacyHandler
   readinessProbe: ReadinessProbe
+  healthSnapshot: () => Readiness
   config: AppConfig
   logger: ServiceLogger
 }
@@ -87,7 +88,7 @@ function applyCors(response: Response): void {
   for (const [name, value] of Object.entries(corsHeaders)) response.setHeader(name, value)
 }
 
-export function createApp({ handler, readinessProbe, config, logger }: AppDependencies): Express {
+export function createApp({ handler, readinessProbe, healthSnapshot, config, logger }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
   app.use(express.json({ limit: '1mb', strict: false }))
@@ -105,32 +106,29 @@ export function createApp({ handler, readinessProbe, config, logger }: AppDepend
 
   app.options('/paperbanana-api', (_request, response) => response.status(204).send())
 
-  async function healthResponse(response: Response, readinessOnly: boolean) {
+  function sendHealth(response: Response, readiness: Readiness, readinessOnly: boolean) {
+    return response.status(readinessOnly && !readiness.ready ? 503 : 200).json({
+      ok: readinessOnly ? readiness.ready : true,
+      service: config.serviceName,
+      runtime: 'node',
+      version: config.version,
+      ready: readiness.ready,
+      dependencies: readiness.dependencies || {},
+    })
+  }
+
+  async function readyResponse(response: Response) {
     try {
       const readiness = await readinessProbe()
-      return response.status(readinessOnly && !readiness.ready ? 503 : 200).json({
-        ok: readinessOnly ? readiness.ready : true,
-        service: config.serviceName,
-        runtime: 'node',
-        version: config.version,
-        ready: readiness.ready,
-        dependencies: readiness.dependencies || {},
-      })
+      return sendHealth(response, readiness, true)
     } catch (error) {
       logger.error('readiness probe failed', redactLogValue(error))
-      return response.status(503).json({
-        ok: false,
-        service: config.serviceName,
-        runtime: 'node',
-        version: config.version,
-        ready: false,
-        dependencies: {},
-      })
+      return sendHealth(response, { ready: false, dependencies: {} }, true)
     }
   }
 
-  app.get('/health', (_request, response) => healthResponse(response, false))
-  app.get('/ready', (_request, response) => healthResponse(response, true))
+  app.get('/health', (_request, response) => sendHealth(response, healthSnapshot(), false))
+  app.get('/ready', (_request, response) => readyResponse(response))
 
   async function invokeLegacy(request: Request, response: Response) {
     const token = request.get('x-paperbanana-gateway-token') || ''

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-import { prepareRuntime } from '../src/runtime.js'
+import { createReadinessController, prepareRuntime } from '../src/runtime.js'
 
 test('runtime reconciles interrupted jobs before dependency readiness and legacy handler loading', async () => {
   const calls: string[] = []
@@ -87,4 +87,33 @@ test('runtime closes Mongo when startup readiness fails', async () => {
     /startup ping failed/,
   )
   assert.equal(closed, true)
+})
+
+test('readiness probes are deadline-bounded and single-flight while updating the cached snapshot', async () => {
+  let mongoCalls = 0
+  let ossCalls = 0
+  let resolveMongo!: () => void
+  let resolveOss!: () => void
+  const mongoPending = new Promise<void>((resolve) => { resolveMongo = resolve })
+  const ossPending = new Promise<void>((resolve) => { resolveOss = resolve })
+  const controller = createReadinessController({
+    timeoutMs: 20,
+    probes: {
+      mongodb: async () => { mongoCalls += 1; await mongoPending },
+      oss: async () => { ossCalls += 1; await ossPending },
+    },
+    initial: { ready: true, dependencies: { mongodb: 'ready', oss: 'ready' } },
+  })
+
+  const [first, second] = await Promise.all([controller.probe(), controller.probe()])
+  assert.deepEqual(first, { ready: false, dependencies: { mongodb: 'unavailable', oss: 'unavailable' } })
+  assert.deepEqual(second, first)
+  assert.equal(mongoCalls, 1)
+  assert.equal(ossCalls, 1)
+  assert.deepEqual(controller.snapshot(), first)
+
+  resolveMongo()
+  resolveOss()
+  await new Promise((resolve) => setImmediate(resolve))
+  assert.deepEqual(controller.snapshot(), { ready: true, dependencies: { mongodb: 'ready', oss: 'ready' } })
 })

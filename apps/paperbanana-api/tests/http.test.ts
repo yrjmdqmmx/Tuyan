@@ -15,8 +15,9 @@ async function withServer(
   run: (baseUrl: string) => Promise<void>,
   readinessProbe: () => Promise<any> = async () => ({ ready: true, dependencies: { mongodb: 'ready', oss: 'ready' } }),
   serverConfig: AppConfig = config,
+  healthSnapshot: () => any = () => ({ ready: true, dependencies: { mongodb: 'ready', oss: 'ready' } }),
 ) {
-  const server = createServer({ handler, readinessProbe, config: serverConfig, logger: { info() {}, warn() {}, error() {} } })
+  const server = createServer({ handler, readinessProbe, healthSnapshot, config: serverConfig, logger: { info() {}, warn() {}, error() {} } })
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
   const { port } = server.address() as AddressInfo
   try {
@@ -208,5 +209,60 @@ test('health remains a liveness success while reporting dependencies as not read
       })
     },
     async () => ({ ready: false, dependencies: { mongodb: 'unavailable', oss: 'ready' } }),
+    config,
+    () => ({ ready: false, dependencies: { mongodb: 'unavailable', oss: 'ready' } }),
+  )
+})
+
+test('health is process-local and does not invoke a stalled readiness probe', async () => {
+  let probeCalls = 0
+  await withServer(
+    async () => assert.fail('handler must not run for health'),
+    async (baseUrl) => {
+      const response = await fetch(`${baseUrl}/health`)
+      assert.equal(response.status, 200)
+      assert.equal(probeCalls, 0)
+      assert.deepEqual(await response.json(), {
+        ok: true,
+        service: 'paperbanana-api',
+        runtime: 'node',
+        version: '0.1.0',
+        ready: false,
+        dependencies: { mongodb: 'unavailable', oss: 'unavailable' },
+      })
+    },
+    async () => {
+      probeCalls += 1
+      return await new Promise(() => {})
+    },
+    config,
+    () => ({ ready: false, dependencies: { mongodb: 'unavailable', oss: 'unavailable' } }),
+  )
+})
+
+test('health remains responsive while a readiness request is actively stalled', async () => {
+  let probeCalls = 0
+  let releaseProbe!: () => void
+  await withServer(
+    async () => assert.fail('handler must not run for health'),
+    async (baseUrl) => {
+      const readyRequest = fetch(`${baseUrl}/ready`)
+      while (!probeCalls) await new Promise((resolve) => setImmediate(resolve))
+
+      const health = await fetch(`${baseUrl}/health`)
+      assert.equal(health.status, 200)
+      assert.equal((await health.json()).ready, false)
+      assert.equal(probeCalls, 1)
+
+      releaseProbe()
+      assert.equal((await readyRequest).status, 503)
+    },
+    async () => {
+      probeCalls += 1
+      await new Promise<void>((resolve) => { releaseProbe = resolve })
+      return { ready: false, dependencies: { mongodb: 'unavailable', oss: 'unavailable' } }
+    },
+    config,
+    () => ({ ready: false, dependencies: { mongodb: 'unavailable', oss: 'unavailable' } }),
   )
 })

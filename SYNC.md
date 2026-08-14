@@ -24,6 +24,20 @@
 
 ## 条目（最新在上）
 
+### [2026-08-14] Node API 有界任务准入、OSS 直传校验与无阻塞健康检查 — by Codex (paperbanana-api + laf compatibility)
+变更：Node 单副本运行时新增进程级任务准入/排队、可追踪优雅退出、OSS 内外双端点与上传后权威校验；旧 Laf 只增加向后兼容的共享调度/校验能力，公开 action、字段和响应 envelope 不变。
+契约（影响其他端 / 共享）：
+- **任务准入**：`createJob`/`refineImage` 在任何异步预检和 Mongo insert 前预留容量；默认全服务 active=1、pending=2、每 owner=1、每 client IP=1。满载时仍走既有 HTTP 200 业务响应，返回稳定 `{code:429,error:...}`，且不插入孤儿任务。新增可选 env：`PAPERBANANA_MAX_ACTIVE_JOBS`、`PAPERBANANA_MAX_PENDING_JOBS`、`PAPERBANANA_MAX_JOBS_PER_OWNER`、`PAPERBANANA_MAX_JOBS_PER_IP`。
+- **退出契约**：首次 SIGTERM/SIGINT 先停止准入和 HTTP 接入，再保持 Mongo 打开直至 reserved/queued/running 全部 drain；第二次信号才强制退出。仍必须 `PAPERBANANA_SINGLE_REPLICA=true` 且 Recreate/先停后启，禁止新旧实例重叠。
+- **OSS 双端点**：Node 新增必需 env `OSS_INTERNAL_ENDPOINT=https://<region>-internal.aliyuncs.com`（服务端 put/list/stat/get/delete/probe）与 `OSS_PUBLIC_ENDPOINT=https://<region>.aliyuncs.com`（预签名）；二者必须分离，V4 virtual-hosted，禁止 path-style，桶启动时仍校验 private ACL。
+- **直传签名与消费校验**：`prepareReferenceUpload` 的公开响应形状不变，但 PUT V4 签名现在同时绑定声明的精确 `Content-Type` 和 `Content-Length`。Web 继续上传已知大小 `File`/`Blob`、iOS 继续上传已知大小 `Data`：客户端设置精确 Content-Type，由 HTTP transport 自动产生匹配长度，**不得由客户端代码手写禁用的 Content-Length**。切流前必须各做一次真实 Chrome/iOS→OSS smoke；若 transport 不满足签名，后续由网关增加流式上传 fallback，不得静默削弱签名。服务端消费前会 stat 实际 size/type，错配/超 5 MiB 即拒绝并尽力删除。
+- **下载上限**：参考图/精修图流式读取硬上限 5 MiB；provider 出图上限由 `PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES` 控制（默认 20 MiB），即使响应缺失或伪造 Content-Length 也按实际字节截断拒绝。
+- **健康检查**：`/health` 只读进程内缓存、绝不发 Mongo/OSS 网络请求；`/ready` 使用 `PAPERBANANA_READINESS_PROBE_TIMEOUT_MS`（默认 2000ms）的单飞有期限探测并更新缓存，依赖卡死时仍会有限时间返回 503。
+各端待办：
+- [x] paperbanana-api / laf-functions（准入、生命周期、OSS 双端点/校验/上限、健康检查与测试）
+- [ ] 部署/运维（补齐 OSS 两端点及可选限额 env；保持 Recreate；切流前完成真实 Chrome+iOS OSS PUT smoke；Compose 后续设置足够 `stop_grace_period`）
+- [x] auth-gateway / clients（本次未改公开 route/action/envelope；现有已知大小直传逻辑无代码变更）
+
 ### [2026-08-14] Node API 收紧 BYOK、对象存储与请求体契约 — by Codex (paperbanana-api + laf compatibility)
 变更：Node 运行时新增三项安全约束；旧 Laf 处理器仅增加向后兼容开关与无密钥后台 DTO，默认 Laf 行为仍可用于回滚。
 契约（影响其他端 / 共享）：

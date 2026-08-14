@@ -1,13 +1,18 @@
 import assert from 'node:assert/strict'
+import { Readable } from 'node:stream'
 import test from 'node:test'
 
-import { createOssAdapter } from '../src/oss-adapter.js'
+import * as ossAdapter from '../src/oss-adapter.js'
+
+const { createOssAdapter } = ossAdapter
 
 const config = {
   region: 'oss-cn-hongkong',
   accessKeyId: 'access-id',
   accessKeySecret: 'access-secret',
   bucket: 'paperbanana-private',
+  internalEndpoint: 'https://oss-cn-hongkong-internal.aliyuncs.com',
+  publicEndpoint: 'https://oss-cn-hongkong.aliyuncs.com',
   secure: true as const,
   pathStyle: false as const,
 }
@@ -30,7 +35,7 @@ test('listFiles follows every OSS marker and normalizes keys while preserving me
       }
     },
   }
-  const bucket = createOssAdapter(config, { client: client as any }).bucket('paperbanana-private')
+  const bucket = createOssAdapter(config, { serverClient: client as any, publicSigner: {} as any }).bucket('paperbanana-private')
 
   const result = await bucket.listFiles({ Prefix: 'references/a/' })
 
@@ -55,11 +60,13 @@ test('listFiles follows every OSS marker and normalizes keys while preserving me
 
 test('signed URLs and writes preserve object keys, HTTP method, and metadata', async () => {
   const calls: unknown[] = []
-  const client = {
-    async signatureUrlV4(method: string, expires: number, request: unknown, key: string) {
-      calls.push(['signatureUrlV4', method, expires, request, key])
+  const publicSigner = {
+    async signatureUrlV4(method: string, expires: number, request: unknown, key: string, additionalHeaders?: string[]) {
+      calls.push(['signatureUrlV4', method, expires, request, key, additionalHeaders])
       return `https://signed.invalid/${key}`
     },
+  }
+  const serverClient = {
     async put(key: string, content: unknown, options: unknown) {
       calls.push(['put', key, content, options])
       return { name: key }
@@ -68,42 +75,57 @@ test('signed URLs and writes preserve object keys, HTTP method, and metadata', a
       calls.push(['delete', key])
     },
   }
-  const bucket = createOssAdapter(config, { client: client as any }).bucket('paperbanana-private')
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: publicSigner as any }).bucket('paperbanana-private')
   const bytes = Buffer.from('png')
 
-  assert.equal(await bucket.getUploadUrl('references/a.png', 900), 'https://signed.invalid/references/a.png')
+  assert.equal(
+    await bucket.getUploadUrl('references/a.png', 900, { ContentType: 'image/png', ContentLength: 3 }),
+    'https://signed.invalid/references/a.png',
+  )
   assert.equal(await bucket.getDownloadUrl('results/a.png', 3600), 'https://signed.invalid/results/a.png')
   await bucket.writeFile('results/a.png', bytes, { ContentType: 'image/png', 'x-oss-meta-origin': 'paperbanana' })
   await bucket.deleteFile('results/a.png')
 
   assert.deepEqual(calls, [
-    ['signatureUrlV4', 'PUT', 900, undefined, 'references/a.png'],
-    ['signatureUrlV4', 'GET', 3600, undefined, 'results/a.png'],
+    ['signatureUrlV4', 'PUT', 900, {
+      headers: { 'Content-Type': 'image/png', 'Content-Length': '3' },
+    }, 'references/a.png', ['Content-Length']],
+    ['signatureUrlV4', 'GET', 3600, undefined, 'results/a.png', undefined],
     ['put', 'results/a.png', bytes, { headers: { 'Content-Type': 'image/png', 'x-oss-meta-origin': 'paperbanana' } }],
     ['delete', 'results/a.png'],
   ])
 })
 
-test('default ali-oss client emits V4 virtual-hosted signed URLs', async () => {
-  const bucket = createOssAdapter({
+test('real ali-oss clients keep server traffic internal and signed URLs public', async () => {
+  assert.equal(typeof (ossAdapter as any).createOssClients, 'function')
+  const clients = (ossAdapter as any).createOssClients({
     ...config,
     accessKeyId: 'test-access-id',
     accessKeySecret: 'test-access-secret',
-  }).bucket('paperbanana-private')
+  })
 
-  const signed = new URL(await bucket.getDownloadUrl('results/a.png', 60))
+  const internal = new URL(await clients.serverClient.signatureUrlV4('GET', 60, undefined, 'results/a.png'))
+  const signed = new URL(await clients.publicSigner.signatureUrlV4(
+    'PUT',
+    60,
+    { headers: { 'Content-Type': 'image/png', 'Content-Length': '3' } },
+    'references/a.png',
+    ['Content-Length'],
+  ))
 
+  assert.equal(internal.hostname, 'paperbanana-private.oss-cn-hongkong-internal.aliyuncs.com')
   assert.equal(signed.hostname, 'paperbanana-private.oss-cn-hongkong.aliyuncs.com')
-  assert.equal(signed.pathname, '/results/a.png')
+  assert.equal(signed.pathname, '/references/a.png')
   assert.equal(signed.searchParams.get('x-oss-signature-version'), 'OSS4-HMAC-SHA256')
   assert.equal(signed.searchParams.get('x-oss-expires'), '60')
+  assert.equal(signed.searchParams.get('x-oss-additional-headers'), 'content-length')
 })
 
 test('object-store write failures propagate without a Mongo data-URL fallback', async () => {
   const client = {
     async put() { throw new Error('OSS unavailable') },
   }
-  const bucket = createOssAdapter(config, { client: client as any }).bucket('paperbanana-private')
+  const bucket = createOssAdapter(config, { serverClient: client as any, publicSigner: {} as any }).bucket('paperbanana-private')
 
   await assert.rejects(
     bucket.writeFile('results/a.png', Buffer.from('png'), { ContentType: 'image/png' }),
@@ -119,7 +141,58 @@ test('OSS readiness rejects any bucket that is not private', async () => {
     },
     async list() { return { objects: [], isTruncated: false } },
   }
-  const adapter = createOssAdapter(config, { client: client as any })
+  const adapter = createOssAdapter(config, { serverClient: client as any, publicSigner: {} as any })
 
   await assert.rejects(adapter.probe(), /OSS bucket must be private/)
+})
+
+test('headFile normalizes authoritative object size and content type from the internal client', async () => {
+  const serverClient = {
+    async getObjectMeta(key: string) {
+      assert.equal(key, 'references/a.png')
+      return {
+        status: 200,
+        res: { headers: { 'content-length': '123', 'content-type': 'image/png', etag: 'etag-1' } },
+      }
+    },
+  }
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
+    .bucket('paperbanana-private')
+
+  assert.deepEqual(await bucket.headFile('references/a.png'), {
+    size: 123,
+    mimeType: 'image/png',
+    etag: 'etag-1',
+  })
+})
+
+test('readFile enforces a hard stream cap even when metadata is missing or misleading', async () => {
+  const streams = [
+    { headers: {}, chunks: [Buffer.from('123'), Buffer.from('456')] },
+    { headers: { 'content-length': '2' }, chunks: [Buffer.from('123456')] },
+  ]
+  const serverClient = {
+    async getStream(_key: string, options: any) {
+      assert.deepEqual(options, { headers: { Range: 'bytes=0-5' } })
+      const next = streams.shift()!
+      return { stream: Readable.from(next.chunks), res: { status: 206, headers: next.headers } }
+    },
+  }
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
+    .bucket('paperbanana-private')
+
+  await assert.rejects(bucket.readFile('references/a.png', 5), /exceeds 5 byte limit/)
+  await assert.rejects(bucket.readFile('references/a.png', 5), /exceeds 5 byte limit/)
+})
+
+test('readFile never exposes an unbounded whole-object fallback', async () => {
+  let wholeObjectReads = 0
+  const serverClient = {
+    async get() { wholeObjectReads += 1; return Buffer.from('unbounded') },
+  }
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
+    .bucket('paperbanana-private')
+
+  await assert.rejects(bucket.readFile('references/a.png'), /byte limit must be a positive integer/)
+  assert.equal(wholeObjectReads, 0)
 })

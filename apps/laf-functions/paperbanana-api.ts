@@ -68,6 +68,21 @@ type RefineImageBody = {
 
 type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'>
 type RefineExecutionBody = Omit<RefineImageBody, 'apiKeys'>
+type JobAdmissionConfig = {
+  maxActive: number
+  maxPending: number
+  maxPerOwner: number
+  maxPerIp: number
+}
+type JobPrincipal = { ownerKey: string; ipKey: string }
+type AdmittedJobTask = {
+  jobId: string
+  kind: 'create' | 'refine'
+  body: CreateExecutionBody | RefineExecutionBody
+  apiKey: string
+  numCandidates?: number
+  maxCriticRounds?: number
+}
 
 export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody {
   const { apiKeys: _apiKeys, ...executionBody } = body
@@ -77,6 +92,154 @@ export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody 
 export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBody {
   const { apiKeys: _apiKeys, ...executionBody } = body
   return executionBody
+}
+
+export function createJobAdmissionController(
+  config: JobAdmissionConfig,
+  dependencies: {
+    execute(task: AdmittedJobTask): Promise<void>
+    markFailed(jobId: string, error: string): Promise<void>
+    logError(message: string): void
+  },
+) {
+  type Entry = {
+    id: number
+    principal: JobPrincipal
+    slot: 'active' | 'queued'
+    committed: boolean
+    task?: AdmittedJobTask
+  }
+
+  let accepting = true
+  let nextId = 1
+  const entries = new Map<number, Entry>()
+  const pendingOrder: Entry[] = []
+  const tracked = new Set<Promise<void>>()
+  const ownerCounts = new Map<string, number>()
+  const ipCounts = new Map<string, number>()
+  const drainWaiters = new Set<() => void>()
+
+  const countFor = (counts: Map<string, number>, key: string) => key ? (counts.get(key) || 0) : 0
+  const increment = (counts: Map<string, number>, key: string) => {
+    if (key) counts.set(key, countFor(counts, key) + 1)
+  }
+  const decrement = (counts: Map<string, number>, key: string) => {
+    if (!key) return
+    const next = countFor(counts, key) - 1
+    if (next > 0) counts.set(key, next)
+    else counts.delete(key)
+  }
+  const activeSlots = () => [...entries.values()].filter((entry) => entry.slot === 'active').length
+  const notifyDrained = () => {
+    if (entries.size || tracked.size) return
+    for (const resolve of drainWaiters) resolve()
+    drainWaiters.clear()
+  }
+
+  const release = (entry: Entry) => {
+    if (!entries.delete(entry.id)) return
+    const pendingIndex = pendingOrder.indexOf(entry)
+    if (pendingIndex >= 0) pendingOrder.splice(pendingIndex, 1)
+    decrement(ownerCounts, entry.principal.ownerKey)
+    decrement(ipCounts, entry.principal.ipKey)
+    pump()
+    notifyDrained()
+  }
+
+  const launch = (entry: Entry) => {
+    if (!entry.task) return
+    const task = entry.task
+    const promise = (async () => {
+      try {
+        await dependencies.execute(task)
+      } catch (error: any) {
+        try {
+          await dependencies.markFailed(task.jobId, error?.message || String(error))
+        } catch (persistenceError: any) {
+          try {
+            dependencies.logError(
+              `Failed to persist terminal state for ${task.jobId}: ${persistenceError?.message || String(persistenceError)}`,
+            )
+          } catch {
+            // Logging must never re-reject a tracked job.
+          }
+        }
+      } finally {
+        release(entry)
+      }
+    })()
+    tracked.add(promise)
+    void promise.finally(() => {
+      tracked.delete(promise)
+      notifyDrained()
+    })
+  }
+
+  function pump() {
+    while (activeSlots() < config.maxActive && pendingOrder.length) {
+      const entry = pendingOrder.shift()!
+      entry.slot = 'active'
+      if (!entry.committed) break
+      launch(entry)
+    }
+  }
+
+  return {
+    reserve(principal: JobPrincipal) {
+      if (!accepting) {
+        return { ok: false as const, code: 503, error: 'Job admission is draining. Please retry after restart.' }
+      }
+      if (countFor(ownerCounts, principal.ownerKey) >= config.maxPerOwner) {
+        return { ok: false as const, code: 429, error: 'Job owner limit exceeded. Please wait for the current job to finish.' }
+      }
+      if (countFor(ipCounts, principal.ipKey) >= config.maxPerIp) {
+        return { ok: false as const, code: 429, error: 'Job IP limit exceeded. Please wait for the current job to finish.' }
+      }
+
+      const slot = activeSlots() < config.maxActive
+        ? 'active' as const
+        : pendingOrder.length < config.maxPending
+          ? 'queued' as const
+          : null
+      if (!slot) return { ok: false as const, code: 429, error: 'Job queue is full. Please try again later.' }
+
+      const entry: Entry = { id: nextId++, principal, slot, committed: false }
+      entries.set(entry.id, entry)
+      if (slot === 'queued') pendingOrder.push(entry)
+      increment(ownerCounts, principal.ownerKey)
+      increment(ipCounts, principal.ipKey)
+      return { ok: true as const, id: entry.id }
+    },
+    commit(reservation: { ok: true; id: number }, task: AdmittedJobTask) {
+      const entry = entries.get(reservation.id)
+      if (!entry || entry.committed) return
+      entry.committed = true
+      entry.task = task
+      if (entry.slot === 'active') launch(entry)
+      else pump()
+    },
+    cancel(reservation: { ok: true; id: number }) {
+      const entry = entries.get(reservation.id)
+      if (entry) release(entry)
+    },
+    stop() {
+      accepting = false
+    },
+    snapshot() {
+      const values = [...entries.values()]
+      return {
+        accepting,
+        active: values.filter((entry) => entry.committed && entry.slot === 'active').length,
+        queued: values.filter((entry) => entry.committed && entry.slot === 'queued').length,
+        reserved: values.filter((entry) => !entry.committed).length,
+        tracked: tracked.size,
+      }
+    },
+    drain() {
+      if (!entries.size && !tracked.size) return Promise.resolve()
+      return new Promise<void>((resolve) => drainWaiters.add(resolve))
+    },
+  }
 }
 
 type PrepareReferenceUploadBody = {
@@ -208,6 +371,7 @@ type VisionImageInput = {
   filename: string
   mimeType: string
   url: string
+  objectKey?: string
 }
 
 type ResvgWasmModule = {
@@ -263,6 +427,8 @@ const references = db.collection('paperbanana_references')
 const bucketName = process.env.PAPERBANANA_BUCKET || 'paperbanana'
 const maxReferenceImages = Number(process.env.PAPERBANANA_MAX_REFERENCE_IMAGES || 3)
 const maxReferenceBytes = Number(process.env.PAPERBANANA_MAX_REFERENCE_BYTES || 5 * 1024 * 1024)
+const maxProviderImageBytes = Number(process.env.PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES || 20 * 1024 * 1024)
+const maxProviderImageResponseBytes = Math.ceil(maxProviderImageBytes * 4 / 3) + 1024 * 1024
 const referenceUploadTtlSeconds = Number(process.env.PAPERBANANA_REFERENCE_UPLOAD_TTL_SECONDS || 900)
 const allowedReferenceMimeTypes = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'])
 const allowedAnalysisMimeTypes = new Set(['image/png', 'image/jpeg', 'image/webp'])
@@ -358,6 +524,55 @@ const fallbackReferences: RetrievedReference[] = [
     source: 'paperbanana-fallback',
   },
 ]
+
+function newGlobalJobAdmission(config: JobAdmissionConfig) {
+  return createJobAdmissionController(config, {
+    async execute(task) {
+      if (task.kind === 'create') {
+        await runJob(
+          task.jobId,
+          task.body as CreateExecutionBody,
+          task.apiKey,
+          task.numCandidates || 1,
+          task.maxCriticRounds || 0,
+        )
+      } else {
+        await runRefineJob(task.jobId, task.body as RefineExecutionBody, task.apiKey)
+      }
+    },
+    markFailed,
+    logError(message) {
+      console.error(`[paperbanana-api] ${message}`)
+    },
+  })
+}
+
+let jobAdmission = newGlobalJobAdmission({
+  maxActive: Number.MAX_SAFE_INTEGER,
+  maxPending: 0,
+  maxPerOwner: Number.MAX_SAFE_INTEGER,
+  maxPerIp: Number.MAX_SAFE_INTEGER,
+})
+
+export function configureJobAdmission(config: JobAdmissionConfig) {
+  const state = jobAdmission.snapshot()
+  if (state.active || state.queued || state.reserved || state.tracked) {
+    throw new Error('Cannot reconfigure job admission while jobs are reserved or running')
+  }
+  jobAdmission = newGlobalJobAdmission(config)
+}
+
+export function getJobAdmissionState() {
+  return jobAdmission.snapshot()
+}
+
+export function stopJobAdmission() {
+  jobAdmission.stop()
+}
+
+export function drainJobAdmission() {
+  return jobAdmission.drain()
+}
 
 // Actions that read or write a specific user's data while trusting
 // caller-supplied userId/userEmail. These must arrive through the auth-gateway
@@ -467,7 +682,10 @@ async function prepareReferenceUpload(body: PrepareReferenceUploadBody) {
     const objectKey = `references/${owner}/${randomId()}-${role}.${ext}`
     const expiresAt = Date.now() + referenceUploadTtlSeconds * 1000
     const uploadToken = signReferenceUpload(objectKey, descriptor.mimeType, descriptor.size, expiresAt)
-    const uploadResult = await bucket.getUploadUrl(objectKey, referenceUploadTtlSeconds)
+    const uploadResult = await bucket.getUploadUrl(objectKey, referenceUploadTtlSeconds, {
+      ContentType: descriptor.mimeType,
+      ContentLength: descriptor.size,
+    })
     const uploadUrl = typeof uploadResult === 'string'
       ? uploadResult
       : uploadResult?.url || uploadResult?.uploadUrl || uploadResult?.signedUrl || ''
@@ -534,16 +752,25 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   }
 
   const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
+  const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
+  if (!reservation.ok) return fail(reservation.error, reservation.code)
+  let committed = false
 
-  const modeResolution = await resolveReferenceImageMode(normalizedBody)
-  if (modeResolution.error) {
-    return fail(modeResolution.error, 400)
-  }
-  const jobBody = {
-    ...normalizedBody,
-    referenceImageMode: modeResolution.referenceImageMode,
-    referenceImageModeUsed: modeResolution.referenceImageModeUsed,
-  }
+  try {
+    try {
+      await verifyUploadedReferenceObjects(normalizedReferenceImages)
+    } catch (error: any) {
+      return fail(error?.message || String(error), Number(error?.statusCode || 503))
+    }
+    const modeResolution = await resolveReferenceImageMode(normalizedBody)
+    if (modeResolution.error) {
+      return fail(modeResolution.error, 400)
+    }
+    const jobBody = {
+      ...normalizedBody,
+      referenceImageMode: modeResolution.referenceImageMode,
+      referenceImageModeUsed: modeResolution.referenceImageModeUsed,
+    }
 
   const now = new Date()
   const jobId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
@@ -591,13 +818,17 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     completedAt: null,
   }
 
-  await jobs.insertOne(record)
+    await jobs.insertOne(record)
 
-  // BYOK 只把已选中的单个 key 作为独立参数交给后台执行；jobBody 已移除
-  // 完整 apiKeys map，避免其它 provider key 被后台 Promise/DTO 继续持有。
-  startCreateJobInBackground(jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds)
+    // BYOK 只把已选中的单个 key 作为独立参数交给后台执行；jobBody 已移除
+    // 完整 apiKeys map，避免其它 provider key 被后台 Promise/DTO 继续持有。
+    startCreateJobInBackground(reservation, jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds)
+    committed = true
 
-  return ok({ jobId, status: 'queued' })
+    return ok({ jobId, status: 'queued' })
+  } finally {
+    if (!committed) jobAdmission.cancel(reservation)
+  }
 }
 
 async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
@@ -618,10 +849,14 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   }
 
   const normalizedBody = toRefineExecutionBody(normalizedBodyWithSecrets)
+  const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
+  if (!reservation.ok) return fail(reservation.error, reservation.code)
+  let committed = false
 
-  const now = new Date()
-  const jobId = `refine-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
-  const record = {
+  try {
+    const now = new Date()
+    const jobId = `refine-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+    const record = {
     _id: jobId,
     status: 'queued' as JobStatus,
     jobType: 'refine',
@@ -663,11 +898,15 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     completedAt: null,
   }
 
-  await jobs.insertOne(record)
+    await jobs.insertOne(record)
 
-  startRefineJobInBackground(jobId, normalizedBody, apiKey)
+    startRefineJobInBackground(reservation, jobId, normalizedBody, apiKey)
+    committed = true
 
-  return ok({ jobId, status: 'queued' })
+    return ok({ jobId, status: 'queued' })
+  } finally {
+    if (!committed) jobAdmission.cancel(reservation)
+  }
 }
 
 async function getJob(jobId: string) {
@@ -876,20 +1115,34 @@ async function resolveReferenceImageMode(body: CreateExecutionBody & { reference
 }
 
 function startCreateJobInBackground(
+  reservation: { ok: true; id: number },
   jobId: string,
   body: CreateExecutionBody,
   apiKey: string,
   numCandidates: number,
   maxCriticRounds: number,
 ) {
-  void runJob(jobId, body, apiKey, numCandidates, maxCriticRounds).catch(async (error) => {
-    await markFailed(jobId, error?.message || String(error))
+  jobAdmission.commit(reservation, {
+    jobId,
+    kind: 'create',
+    body,
+    apiKey,
+    numCandidates,
+    maxCriticRounds,
   })
 }
 
-function startRefineJobInBackground(jobId: string, body: RefineExecutionBody, apiKey: string) {
-  void runRefineJob(jobId, body, apiKey).catch(async (error) => {
-    await markFailed(jobId, error?.message || String(error))
+function startRefineJobInBackground(
+  reservation: { ok: true; id: number },
+  jobId: string,
+  body: RefineExecutionBody,
+  apiKey: string,
+) {
+  jobAdmission.commit(reservation, {
+    jobId,
+    kind: 'refine',
+    body,
+    apiKey,
   })
 }
 
@@ -1811,6 +2064,7 @@ async function buildRetrievedVisionInputs(items: RetrievedReference[]) {
       filename: `${item.id}.png`,
       mimeType: inferMimeTypeFromUrl(url),
       url,
+      objectKey: item.imageObjectKey || undefined,
     })
   }
   return inputs
@@ -1955,6 +2209,7 @@ async function buildVisionImageInputs(referenceImages: ReferenceImageInput[], jo
       filename: image.filename,
       mimeType,
       url,
+      objectKey,
     })
   }
 
@@ -1969,8 +2224,9 @@ async function buildVisionImageInputs(referenceImages: ReferenceImageInput[], jo
 }
 
 async function rasterizeSvgReferenceImage(bucket: any, image: ReferenceImageInput) {
-  const sourceUrl = await bucket.getDownloadUrl(image.objectKey, 3600)
-  const svgText = await fetchText(sourceUrl, `SVG reference image ${image.filename || ''} download`)
+  const label = `SVG reference image ${image.filename || ''} download`
+  const svgText = (await readStoredObject(bucket, image.objectKey, maxReferenceBytes, label)).toString('utf8')
+  if (!svgText.trim()) throw new Error(`${label} returned empty content`)
   const pngBuffer = await rasterizeSvgReferenceToPng(svgText)
   if (!pngBuffer.length) throw new Error('SVG reference image rasterization returned empty PNG')
   if (pngBuffer.length > maxReferenceBytes) throw new Error('SVG reference image rasterized PNG exceeds 5MB limit')
@@ -2012,9 +2268,8 @@ async function loadResvgWasm(): Promise<ResvgWasmModule> {
 async function fetchText(url: string, label: string) {
   const response = await fetchWithRetry(url, undefined, label)
   if (!response.ok) throw new Error(`${label} failed: HTTP ${response.status}`)
-  const text = await response.text()
+  const text = (await readResponseWithLimit(response, maxReferenceBytes, label)).toString('utf8')
   if (!text.trim()) throw new Error(`${label} returned empty content`)
-  if (Buffer.byteLength(text, 'utf8') > maxReferenceBytes) throw new Error('SVG reference image exceeds 5MB limit')
   return text
 }
 
@@ -2147,7 +2402,7 @@ async function callGeminiVision(
     parts.push({
       inlineData: {
         mimeType: image.mimeType,
-        data: await fetchImageAsBase64(image.url, 'Gemini reference image download'),
+        data: await visionImageBase64(image, 'Gemini reference image download'),
       },
     })
   }
@@ -2279,8 +2534,8 @@ async function callImageModel(
         output_format: 'png',
       }),
     }, `openai image model ${model}`)
-    const data = await parseModelResponse(response)
-    return data.data?.[0]?.b64_json
+    const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'OpenAI image response')
+    return validateProviderImageBase64(data.data?.[0]?.b64_json || '', maxProviderImageBytes, 'OpenAI image')
   }
 
   if (provider === 'gemini') {
@@ -2313,12 +2568,14 @@ async function callImageModel(
       },
     }),
   }, `openrouter image model ${toOpenRouterModel(model)}`)
-  const data = await parseModelResponse(response)
+  const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'OpenRouter image response')
   const message = data.choices?.[0]?.message || {}
   const imageUrl = message.images?.[0]?.image_url?.url || ''
-  if (imageUrl.includes(',')) return imageUrl.split(',', 2)[1]
+  if (imageUrl.includes(',')) {
+    return validateProviderImageBase64(imageUrl.split(',', 2)[1] || '', maxProviderImageBytes, 'OpenRouter image')
+  }
   if (typeof message.content === 'string' && message.content.startsWith('data:image')) {
-    return message.content.split(',', 2)[1]
+    return validateProviderImageBase64(message.content.split(',', 2)[1] || '', maxProviderImageBytes, 'OpenRouter image')
   }
   throw new Error('Image model did not return image data')
 }
@@ -2341,7 +2598,7 @@ async function normalizeSourceImage(sourceImage: string): Promise<NormalizedSour
 
   if (/^https?:\/\//i.test(value)) {
     const mimeType = inferMimeTypeFromUrl(value)
-    const base64 = await fetchImageAsBase64(value, 'Refine source image download')
+    const base64 = await fetchImageAsBase64(value, 'Refine source image download', maxReferenceBytes)
     if (!base64) return null
     return { base64, mimeType, dataUrl: `data:${mimeType};base64,${base64}` }
   }
@@ -2367,10 +2624,10 @@ async function callOpenAiImageEdit(model: string, apiKey: string, prompt: string
     },
     body: form as any,
   }, `openai image edit model ${model}`)
-  const data = await parseModelResponse(response)
+  const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'OpenAI image edit response')
   const b64 = data.data?.[0]?.b64_json
   if (!b64) throw new Error('OpenAI image edit did not return image data')
-  return b64
+  return validateProviderImageBase64(b64, maxProviderImageBytes, 'OpenAI edited image')
 }
 
 function textApiBaseUrl(provider: Provider) {
@@ -2391,7 +2648,7 @@ async function callGeminiText(
     parts.push({
       inlineData: {
         mimeType: image.mimeType,
-        data: await fetchImageAsBase64(image.url, 'Gemini main model reference image download'),
+        data: await visionImageBase64(image, 'Gemini main model reference image download'),
       },
     })
   }
@@ -2430,10 +2687,14 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
       },
     }),
   }, `gemini image model ${actualModel}`)
-  const data = await parseModelResponse(response)
+  const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Gemini image response')
   for (const part of data.candidates?.[0]?.content?.parts || []) {
-    if (part.inlineData?.data) return part.inlineData.data
-    if (part.inline_data?.data) return part.inline_data.data
+    if (part.inlineData?.data) {
+      return validateProviderImageBase64(part.inlineData.data, maxProviderImageBytes, 'Gemini image')
+    }
+    if (part.inline_data?.data) {
+      return validateProviderImageBase64(part.inline_data.data, maxProviderImageBytes, 'Gemini image')
+    }
   }
   throw new Error('Gemini image model did not return image data')
 }
@@ -2471,10 +2732,10 @@ async function callBailianImage(model: string, apiKey: string, prompt: string, a
       },
     }),
   }, `bailian image model ${model}`)
-  const data = await parseDashScopeResponse(response)
+  const data = await parseDashScopeResponse(response, maxProviderImageResponseBytes, 'Bailian image response')
   const imageUrl = extractDashScopeImageUrl(data)
   if (!imageUrl) throw new Error('阿里百炼图片模型没有返回图片地址')
-  return await fetchImageAsBase64(imageUrl, 'Bailian generated image download')
+  return await fetchImageAsBase64(imageUrl, 'Bailian generated image download', maxProviderImageBytes)
 }
 
 function extractDashScopeImageUrl(data: any) {
@@ -2502,11 +2763,76 @@ function bailianImageSize(aspectRatio: string, imageSize = '1K') {
   return hires ? '1664*936' : '1536*864'
 }
 
-async function fetchImageAsBase64(url: string, label = 'image download') {
+export async function readResponseWithLimit(response: Response, maxBytes: number, label: string): Promise<Buffer> {
+  if (!Number.isSafeInteger(maxBytes) || maxBytes <= 0) throw new Error('Response byte limit must be a positive integer')
+  const advertised = Number(response.headers.get('content-length'))
+  if (Number.isFinite(advertised) && advertised > maxBytes) {
+    await response.body?.cancel().catch(() => {})
+    throw new Error(`${label} exceeds ${maxBytes} byte limit`)
+  }
+  if (!response.body) throw new Error(`${label} returned no response body`)
+
+  const reader = response.body.getReader()
+  const chunks: Buffer[] = []
+  let total = 0
+  try {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      const chunk = Buffer.from(value)
+      total += chunk.byteLength
+      if (total > maxBytes) {
+        await reader.cancel().catch(() => {})
+        throw new Error(`${label} exceeds ${maxBytes} byte limit`)
+      }
+      chunks.push(chunk)
+    }
+  } finally {
+    reader.releaseLock()
+  }
+  return Buffer.concat(chunks, total)
+}
+
+export async function readStoredObject(bucket: any, key: string, maxBytes: number, label: string): Promise<Buffer> {
+  if (typeof bucket?.readFile === 'function') {
+    const value = await bucket.readFile(key, maxBytes)
+    if (Buffer.isBuffer(value)) return value
+    if (value instanceof Uint8Array) return Buffer.from(value)
+    if (Buffer.isBuffer(value?.content)) return value.content
+    if (value?.content instanceof Uint8Array) return Buffer.from(value.content)
+    throw new Error(`${label} returned unsupported object bytes`)
+  }
+  if (process.env.PAPERBANANA_STRICT_OBJECT_STORAGE === 'true') {
+    throw new Error('Bounded internal object download is unavailable')
+  }
+  const url = await bucket.getDownloadUrl(key, 3600)
   const response = await fetchWithRetry(url, undefined, label)
   if (!response.ok) throw new Error(`${label} failed: HTTP ${response.status}`)
-  const arrayBuffer = await response.arrayBuffer()
-  return Buffer.from(arrayBuffer).toString('base64')
+  return await readResponseWithLimit(response, maxBytes, label)
+}
+
+async function visionImageBase64(image: VisionImageInput, label: string) {
+  if (image.objectKey) {
+    const bucket = cloud.storage.bucket(bucketName)
+    return (await readStoredObject(bucket, image.objectKey, maxReferenceBytes, label)).toString('base64')
+  }
+  return await fetchImageAsBase64(image.url, label, maxReferenceBytes)
+}
+
+export function validateProviderImageBase64(value: string, maxBytes: number, label: string): string {
+  const normalized = String(value || '').replace(/\s+/g, '')
+  if (!normalized) throw new Error(`${label} did not return image data`)
+  if (!/^[A-Za-z0-9+/]*={0,2}$/.test(normalized)) throw new Error(`${label} returned invalid base64 data`)
+  const padding = normalized.endsWith('==') ? 2 : normalized.endsWith('=') ? 1 : 0
+  const decodedBytes = Math.floor(normalized.length * 3 / 4) - padding
+  if (decodedBytes > maxBytes) throw new Error(`${label} exceeds ${maxBytes} byte limit`)
+  return normalized
+}
+
+async function fetchImageAsBase64(url: string, label = 'image download', maxBytes = maxProviderImageBytes) {
+  const response = await fetchWithRetry(url, undefined, label)
+  if (!response.ok) throw new Error(`${label} failed: HTTP ${response.status}`)
+  return (await readResponseWithLimit(response, maxBytes, label)).toString('base64')
 }
 
 export async function saveResult(
@@ -2784,7 +3110,15 @@ async function fetchOpenRouterModelModalities() {
 }
 
 async function parseModelResponse(response: Response) {
-  const text = await response.text()
+  return parseModelResponseText(response, await response.text())
+}
+
+export async function parseBoundedModelResponse(response: Response, maxBytes: number, label: string) {
+  const text = (await readResponseWithLimit(response, maxBytes, label)).toString('utf8')
+  return parseModelResponseText(response, text)
+}
+
+function parseModelResponseText(response: Response, text: string) {
   let data: any = {}
   try {
     data = text ? JSON.parse(text) : {}
@@ -2797,8 +3131,10 @@ async function parseModelResponse(response: Response) {
   return data
 }
 
-async function parseDashScopeResponse(response: Response) {
-  const data = await parseModelResponse(response)
+async function parseDashScopeResponse(response: Response, maxBytes?: number, label = 'DashScope response') {
+  const data = maxBytes
+    ? await parseBoundedModelResponse(response, maxBytes, label)
+    : await parseModelResponse(response)
   if (data?.status_code && data.status_code !== 200) {
     throw new Error(data?.message || data?.code || `DashScope HTTP ${data.status_code}`)
   }
@@ -3581,6 +3917,60 @@ function normalizeReferenceImages(images: ReferenceImageInput[]): StoredReferenc
   })
 }
 
+export async function verifyUploadedReferenceObjects(
+  images: StoredReferenceImage[],
+  storageBucket: any = cloud.storage.bucket(bucketName),
+): Promise<void> {
+  if (!images.length) return
+  if (typeof storageBucket?.headFile !== 'function') {
+    if (process.env.PAPERBANANA_STRICT_OBJECT_STORAGE === 'true') {
+      const error: any = new Error('Object metadata verification is unavailable')
+      error.statusCode = 503
+      throw error
+    }
+    // Historical Laf buckets did not expose HEAD/stat. Keep the rollback path
+    // backward compatible; the Node service always enables strict mode and its
+    // adapter always implements headFile.
+    return
+  }
+
+  const declaredObjects: Array<{ key: string; mimeType: string; size: number }> = []
+  for (const image of images) {
+    declaredObjects.push({ key: image.objectKey, mimeType: image.mimeType, size: image.size })
+    if (image.analysisObjectKey) {
+      declaredObjects.push({
+        key: image.analysisObjectKey,
+        mimeType: image.analysisMimeType || '',
+        size: Number(image.analysisSize || 0),
+      })
+    }
+  }
+
+  for (const declared of declaredObjects) {
+    let actual: { size?: number; mimeType?: string }
+    try {
+      actual = await storageBucket.headFile(declared.key)
+    } catch (cause: any) {
+      const error: any = new Error(`Unable to verify uploaded reference object ${declared.key}: ${cause?.message || String(cause)}`)
+      error.statusCode = 503
+      throw error
+    }
+    const actualSize = Number(actual?.size)
+    const actualMimeType = String(actual?.mimeType || '').split(';', 1)[0]!.trim().toLowerCase()
+    const matches = Number.isSafeInteger(actualSize)
+      && actualSize >= 1
+      && actualSize <= maxReferenceBytes
+      && actualSize === declared.size
+      && actualMimeType === declared.mimeType.toLowerCase()
+    if (!matches) {
+      try { await storageBucket.deleteFile(declared.key) } catch {}
+      const error: any = new Error(`Uploaded reference metadata does not match the signed declaration: ${declared.key}`)
+      error.statusCode = 400
+      throw error
+    }
+  }
+}
+
 function validateReferenceFileMeta(mimeType: string, size: number, allowedTypes: Set<string>) {
   if (!allowedTypes.has(mimeType)) throw new Error(`Unsupported reference image type: ${mimeType || 'unknown'}`)
   if (!size || size < 1) throw new Error('Reference image size is required')
@@ -3866,6 +4256,17 @@ function getClientIp(ctx: FunctionContext) {
   return String(ctx.headers?.['x-real-ip'] || '').split(',')[0].trim()
 }
 
+function jobAdmissionPrincipal(
+  body: Pick<CreateExecutionBody | RefineExecutionBody, 'userId' | 'userEmail'>,
+  ctx: FunctionContext,
+): JobPrincipal {
+  const ip = getClientIp(ctx) || 'unknown'
+  const userId = String(body.userId || '').trim()
+  const userEmail = String(body.userEmail || '').trim().toLowerCase()
+  const owner = userId ? `user:${userId}` : userEmail ? `email:${userEmail}` : `anonymous:${ip}`
+  return { ownerKey: owner, ipKey: `ip:${ip}` }
+}
+
 function toOpenRouterModel(model: string) {
   const raw = normalizeModelName('openrouter', model).replace(/^openrouter\//, '')
   if (raw.includes('/')) return raw
@@ -3922,7 +4323,14 @@ async function resolveSourceImageUrl(body: RefineExecutionBody) {
   if (direct) return direct
   const objectKey = limitText(body.sourceImageObjectKey, 300)
   if (!objectKey) throw new Error('source image is required')
-  return await cloud.storage.bucket(bucketName).getDownloadUrl(objectKey, 3600)
+  const mimeType = inferMimeTypeFromUrl(objectKey)
+  const bytes = await readStoredObject(
+    cloud.storage.bucket(bucketName),
+    objectKey,
+    maxReferenceBytes,
+    'Refine source image download',
+  )
+  return `data:${mimeType};base64,${bytes.toString('base64')}`
 }
 
 function inferMimeTypeFromUrl(url: string) {
