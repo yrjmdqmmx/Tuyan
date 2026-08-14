@@ -88,6 +88,20 @@ function applyCors(response: Response): void {
   for (const [name, value] of Object.entries(corsHeaders)) response.setHeader(name, value)
 }
 
+function safeLegacyHeader(value: string | undefined, maxLength: number): string | undefined {
+  const normalized = String(value || '').replace(/[\r\n]/g, '').trim().slice(0, maxLength)
+  return normalized || undefined
+}
+
+function legacyHeaders(request: Request): Request['headers'] {
+  const headers: Request['headers'] = {}
+  const clientIp = safeLegacyHeader(request.get('x-paperbanana-client-ip'), 128)
+  const userAgent = safeLegacyHeader(request.get('user-agent'), 512)
+  if (clientIp) headers['x-paperbanana-client-ip'] = clientIp
+  if (userAgent) headers['user-agent'] = userAgent
+  return headers
+}
+
 export function createApp({ handler, readinessProbe, healthSnapshot, config, logger }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
@@ -140,7 +154,7 @@ export function createApp({ handler, readinessProbe, healthSnapshot, config, log
     const ctx: LegacyContext = {
       request: { method: request.method },
       body: transportBody(incoming, config),
-      headers: request.headers,
+      headers: legacyHeaders(request),
       response: {
         setHeader(name, value) { response.setHeader(name, value) },
         status(code) { response.status(code) },

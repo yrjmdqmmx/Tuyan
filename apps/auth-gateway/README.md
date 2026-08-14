@@ -1,80 +1,88 @@
 # PaperBanana Auth Gateway
 
-This app contains the Node.js gateway deployed on Sealos for PaperBanana account login and authenticated task-record access.
+The public Node 24 gateway for Better Auth and the stable `/paperbanana-api`
+contract. In the Hong Kong deployment it talks to the internal Node core; Laf
+is retained only as an explicit rollback target.
 
-## Responsibilities
+## Trust boundaries
 
-- Serve Better Auth email/password APIs under `/api/auth/*`.
-- Store users, accounts, and sessions in MongoDB through Better Auth.
-- Proxy PaperBanana job requests to the Laf function at `/paperbanana-api`.
-- Attach the logged-in user's `userId` and `userEmail` to `createJob` requests.
-- Protect `myJobs` and owner-scoped `getJob` access.
-- Expose an admin-only account list for registered/logged-in users.
+- Set `PAPERBANANA_API_URL` for normal operation. `LAF_API_URL` is used only
+  when the Node URL is absent. Configuring both always selects Node; there is
+  no request-time fallback.
+- `PAPERBANANA_GATEWAY_TOKEN` is required. Node receives it only in
+  `x-paperbanana-gateway-token`; caller-supplied gateway/admin tokens are
+  removed. Laf rollback receives an overwritten body token and a server-side
+  admin token only for authenticated admin actions.
+- The container accepts one trusted proxy hop. Production Compose must publish
+  it as `127.0.0.1:3020:3005`, and Nginx must overwrite (not append) the incoming
+  forwarding headers. The gateway derives `req.ip` and sends only
+  `x-paperbanana-client-ip` to the core. The core removes all raw forwarding
+  and internal-auth headers before invoking the shared Laf handler.
+- The JSON request ceiling is 1 MiB. Oversized bodies return
+  `413 {"code":413,"error":"Request body too large"}`.
 
-## Production
+## Identity and ownership
 
-- Sealos app: `paperbanana-auth-gateway`
-- Runtime image: `node:22-alpine`
-- Port: `3005`
-- Current public URL: `https://yifbnnzrwmxn.sealoshzh.site`
-- Laf API URL: `https://sdswgya641.sealoshzh.site/paperbanana-api`
+Logged-in writes use the Better Auth account id/email. Anonymous
+`createJob`, `refineImage`, and `prepareReferenceUpload` calls use a signed
+30-day guest identity stored in a host-only HttpOnly cookie. Production uses
+`__Host-paperbanana_guest` with `Secure; Path=/; SameSite=Lax` and no Domain.
+The Mongo owner is an irreversible `guest:<sha256>` value; the random cookie
+secret is never written to Mongo or forwarded publicly. A previous signing key
+can verify and rotate cookies without changing the owner.
 
-## Environment
+`getJob` fails closed unless its stored owner matches the current account id,
+historical account email, valid guest owner, or an authenticated admin email.
+Guest identity never grants `myJobs`, account deletion, or admin/list access.
 
-Copy `.env.example` and configure real values in Sealos. Do not commit real secrets.
+Before `refineImage`, result object keys are mapped to their first path segment
+(the source job id), fetched through `getJob`, and ownership checked. A source
+URL is accepted in Node mode only when it is a V4-signed virtual-hosted URL for
+the configured private OSS bucket; it is then converted back to the owned
+object key. Arbitrary URLs are rejected. The external-URL compatibility switch
+exists only for a deliberate Laf rollback.
 
-Required variables:
+## Maintenance and health
 
-- `AUTH_BASE_URL`: public URL of this gateway.
-- `FRONTEND_ORIGINS`: comma-separated allowed frontend origins.
-- `BETTER_AUTH_SECRET`: long random secret used by Better Auth.
-- `MONGODB_URI`: MongoDB connection string.
-- `MONGODB_DB`: MongoDB database name.
-- `LAF_API_URL`: Laf function URL.
-- `PAPERBANANA_GATEWAY_TOKEN`: shared token forwarded to Laf when direct public writes are restricted.
-- `ADMIN_TOKEN`: shared owner token for the website admin panel.
+Maintenance mode is evaluated on every request from either
+`PAPERBANANA_MAINTENANCE_MODE` or the marker file. It returns 503 plus
+`Retry-After` for exactly:
 
-## Local Development
+- `createJob`
+- `refineImage`
+- `prepareReferenceUpload`
+- `submitFeedback`
+- `importReferences`
+- `evaluateJob`
+- `initDatabase`
+- `POST /api/account/delete`
 
-From the repository root:
+Authentication, `/health`, `/ready`, `getJob`, `myJobs`, `modelCapability`,
+`referenceLibrary`, `adminJobs`, `adminFeedback`, `adminUsers`, and
+`pingPlotWorker` remain available. `/health` is cached liveness and never waits
+for dependencies. `/ready` probes MongoDB and the selected backend and returns
+503 unless both are ready. Health responses keep the top-level
+`runtime:"gateway"`; `laf` is a one-release alias of `backend`.
+
+Account deletion purges business data first. Auth cookies/users are removed
+only after an HTTP 2xx cleanup response with semantic `{code:0,ok:true}`.
+Business failures and HTTP/timeout failures leave auth intact.
+
+## Development
 
 ```bash
 pnpm install
 cp apps/auth-gateway/.env.example apps/auth-gateway/.env
+pnpm --filter @paperbanana/auth-gateway test
+pnpm --filter @paperbanana/auth-gateway check
 pnpm --filter @paperbanana/auth-gateway dev
 ```
 
-`dev` requires valid MongoDB and Better Auth environment variables.
-
-Syntax check:
-
-```bash
-pnpm --filter @paperbanana/auth-gateway check
-```
-
-## Docker
-
-Build from the repository root so the Dockerfile can use the workspace lockfile:
+Build the non-root Node 24 image from the repository root:
 
 ```bash
 docker build -f apps/auth-gateway/Dockerfile -t paperbanana-auth-gateway .
 ```
 
-For Sealos, keep the same environment variables as `.env.example` and expose port `3005`.
-
-## GitHub Actions Image
-
-The workflow `.github/workflows/build-auth-gateway.yml` builds and pushes this app to GitHub Container Registry:
-
-```text
-ghcr.io/zdywrnm/paperbanana-auth-gateway:latest
-```
-
-After the first successful workflow run, make the GHCR package public or configure Sealos with registry credentials. Then update the existing Sealos app image to the GHCR image above and redeploy.
-
-## Notes
-
-- This app does not store model API keys. User-provided model keys are forwarded only as part of the job request.
-- `PAPERBANANA_GATEWAY_TOKEN` only blocks direct Laf writes if the Laf function also validates it.
-- `adminUsers` returns only sanitized user profile and session summary fields; it does not expose passwords, session tokens, or auth account secrets.
-- The archived Laf function source lives in `apps/laf-functions/`.
+Never commit real MongoDB, Better Auth, gateway, guest-cookie, admin, or model
+provider secrets.

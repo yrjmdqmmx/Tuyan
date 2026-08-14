@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "check": "node --check src/auth.js && node --check src/server.js"
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/*.js tests/*.test.js"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "dependencies": {
     "@better-auth/mongo-adapter": "^1.6.0",

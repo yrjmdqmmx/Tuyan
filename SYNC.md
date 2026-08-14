@@ -24,6 +24,23 @@
 
 ## 条目（最新在上）
 
+### [2026-08-14] Auth Gateway 切换香港 Node 核心、访客归属与精修授权 — by Codex (auth-gateway + shared transport)
+变更：网关重构为 Node 24 可测试常驻服务，优先固定转发香港内部 Node 核心；新增匿名访客的稳定任务归属、精修源任务授权、动态维护模式和依赖就绪检查。公开 `/paperbanana-api` action/字段/业务 envelope 不变。
+契约（影响其他端 / 共享）：
+- **固定后端选择**：新增首选 env `PAPERBANANA_API_URL`；仅当它缺失时才使用 `LAF_API_URL` 回滚。两者同时存在时只选 Node，运行时故障绝不自动落回 Laf。`PAPERBANANA_GATEWAY_TOKEN` 必填；Node 通过内部 header 收 token，Laf 回滚才使用覆盖后的 body token。
+- **HTTP 语义**：网关逐字转发后端 HTTP 状态和 JSON envelope；既有业务错误仍保持其上游语义，特别是任务准入满载的 HTTP 200 `{code:429,...}` 不改成公开 HTTP 429。网关 JSON 上限固定 1 MiB，超限返回稳定 413 envelope。
+- **可信来源 IP**：网关只信一跳 Nginx，并从 `req.ip` 生成内部 `x-paperbanana-client-ip`，不转发客户端原始 X-Forwarded-For/X-Real-IP。Node 核心只把这个已认证值和安全 User-Agent 暴露给共享处理器；Laf 处理器优先读取新 header，同时保留旧 Laf forwarding fallback。
+- **匿名任务归属**：`createJob`/`refineImage`/`prepareReferenceUpload` 未登录时由网关设置 30 天 `__Host-paperbanana_guest`（Secure、HttpOnly、Path=/、SameSite=Lax、无 Domain），Mongo 仅保存不可逆 `guest:<SHA-256>` owner。新增必需 env `PAPERBANANA_GUEST_COOKIE_SECRET`（至少 32 bytes），可选 `PAPERBANANA_GUEST_COOKIE_SECRET_PREVIOUS` 用于无 owner 变化的轮换。`getJob` 允许匹配 account id、历史 email、有效 guest owner 或登录管理员；owner 缺失/不匹配一律 403。guest 不获得 myJobs、删除账号或任何 admin/list 权限。
+- **精修授权/SSRF**：`refineImage.sourceImageObjectKey`（或属于配置香港 OSS Bucket 的 V4 签名 URL）先从首段解析源 job id，再用 `getJob` 校验归属；有 object key 时丢弃 URL 并走内部 OSS 读取。Node 生产拒绝任意外部 URL。`PAPERBANANA_ALLOW_LEGACY_EXTERNAL_REFINE_URL=true` 只允许在明确 Laf 回滚模式临时兼容。
+- **维护/健康**：`PAPERBANANA_MAINTENANCE_MODE` 或 `PAPERBANANA_MAINTENANCE_FILE` 动态阻断 create/refine/upload/submitFeedback/account delete 及 importReferences/evaluateJob/initDatabase，返回 503+Retry-After；auth、health、ready、getJob、myJobs 与只读/admin read 保持可用。`/health` 顶层仍为 `runtime:'gateway'` 且只读缓存；`/ready` 实探 Auth Mongo+所选后端；`laf` 作为 `backend` 的一版兼容别名。
+- **账号删除**：只有业务清理同时满足 HTTP 2xx 与 `{code:0,ok:true}` 才清 Cookie/硬删 Auth；业务 code、`ok:false`/缺失、HTTP 错误或超时均原样返还且 Auth 不变。
+各端待办：
+- [x] auth-gateway（Node 24、固定后端、guest/owner/refine/maintenance/health/delete、测试与非 root 镜像）
+- [x] paperbanana-api / laf-functions（可信 client-IP 传输与 Laf 兼容 fallback）
+- [ ] 部署/运维（补齐新 env；Compose 仅发布 `127.0.0.1:3020:3005`；Nginx 必须覆盖 forwarding headers；切流前维护/排空）
+- [x] web/iOS（公开 action/envelope 不变；既有 credentials/cookie transport 与 objectKey 字段兼容，无代码改动）
+- [ ] 其他客户端（本次发布范围外；后续仍须确认 cookie 持久化及 API base）
+
 ### [2026-08-14] Node API 有界任务准入、OSS 直传校验与无阻塞健康检查 — by Codex (paperbanana-api + laf compatibility)
 变更：Node 单副本运行时新增进程级任务准入/排队、可追踪优雅退出、OSS 内外双端点与上传后权威校验；旧 Laf 只增加向后兼容的共享调度/校验能力，公开 action、字段和响应 envelope 不变。
 契约（影响其他端 / 共享）：
@@ -60,7 +77,7 @@
 - **健康检查**：`/health` 标识 `service='paperbanana-api'`、`runtime='node'` 并报告依赖 readiness；`/ready` 在 Mongo/OSS 任一不可用时返回 503。
 各端待办：
 - [x] paperbanana-api（Node 24 服务、Mongo/OSS 适配、恢复、鉴权、健康检查、测试与镜像）
-- [ ] auth-gateway（内部目标切到 Node，并用 header `x-paperbanana-gateway-token` 传服务 token；不得继续把 token 当客户端字段透传）
+- [x] auth-gateway（内部目标切到 Node，并用 header `x-paperbanana-gateway-token` 传服务 token；不得继续把 token 当客户端字段透传）
 - [ ] 部署/运维（配置上述必需 env；仅运行 1 副本且使用 Recreate/先停后启，禁止滚动更新时新旧实例重叠；把健康/就绪探针分别指向 `/health`、`/ready`）
 - [x] web/miniprogram/android/ios/windows/macos（公开路由与业务 envelope 无变化，无需改客户端）
 

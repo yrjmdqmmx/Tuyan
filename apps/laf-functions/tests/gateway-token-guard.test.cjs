@@ -45,6 +45,18 @@ assert.ok(
   'Dispatch must reject identity-scoped actions that fail requireTrustedCaller.',
 );
 
+const clientIpMatch = source.match(/function getClientIp\(ctx: FunctionContext\) \{([\s\S]*?)\n\}/);
+assert.ok(clientIpMatch, 'getClientIp must exist.');
+assert.ok(
+  clientIpMatch[1].includes("ctx.headers?.['x-paperbanana-client-ip']"),
+  'Laf compatibility must accept the gateway-authenticated client IP header.',
+);
+assert.ok(
+  clientIpMatch[1].indexOf("ctx.headers?.['x-paperbanana-client-ip']") <
+    clientIpMatch[1].indexOf("ctx.headers?.['x-forwarded-for']"),
+  'The authenticated client IP must take precedence over legacy forwarding headers.',
+);
+
 // Admin actions must keep their own ADMIN_TOKEN gate (must NOT be downgraded to
 // the gateway token), so they stay callable directly with ADMIN_TOKEN.
 for (const adminAction of ['adminJobs', 'adminFeedback', 'importReferences', 'evaluateJob', 'pingPlotWorker']) {

@@ -4250,6 +4250,9 @@ function normalizeBody(body: any) {
 }
 
 function getClientIp(ctx: FunctionContext) {
+  const authenticated = ctx.headers?.['x-paperbanana-client-ip']
+  if (Array.isArray(authenticated)) return String(authenticated[0] || '').split(',')[0].trim()
+  if (authenticated) return String(authenticated).split(',')[0].trim()
   const forwarded = ctx.headers?.['x-forwarded-for']
   if (Array.isArray(forwarded)) return String(forwarded[0] || '').split(',')[0].trim()
   if (forwarded) return String(forwarded).split(',')[0].trim()

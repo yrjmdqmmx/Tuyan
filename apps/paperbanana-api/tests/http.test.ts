@@ -64,6 +64,36 @@ test('POST strips caller tokens, injects the service token, and preserves HTTP-2
   })
 })
 
+test('POST exposes only the gateway-authenticated client IP and safe user agent to the legacy handler', async () => {
+  let receivedHeaders: Record<string, unknown> = {}
+  await withServer(async (ctx) => {
+    receivedHeaders = ctx.headers
+    return { code: 0 }
+  }, async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/paperbanana-api`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-paperbanana-gateway-token': config.gatewayToken,
+        'x-paperbanana-client-ip': '203.0.113.17',
+        'x-forwarded-for': '198.51.100.66',
+        'x-real-ip': '198.51.100.77',
+        'forwarded': 'for=198.51.100.88',
+        'user-agent': 'safe-client',
+      },
+      body: JSON.stringify({ action: 'createJob' }),
+    })
+
+    assert.equal(response.status, 200)
+    assert.equal(receivedHeaders['x-paperbanana-client-ip'], '203.0.113.17')
+    assert.equal(receivedHeaders['user-agent'], 'safe-client')
+    assert.equal(receivedHeaders['x-forwarded-for'], undefined)
+    assert.equal(receivedHeaders['x-real-ip'], undefined)
+    assert.equal(receivedHeaders.forwarded, undefined)
+    assert.equal(receivedHeaders['x-paperbanana-gateway-token'], undefined)
+  })
+})
+
 test('POST accepts a JSON string request body before token sanitization', async () => {
   let receivedBody: unknown
   await withServer(async (ctx) => {

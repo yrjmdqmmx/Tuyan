@@ -1,0 +1,69 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+
+import { loadGatewayConfig } from '../src/config.js';
+
+function validEnv(overrides = {}) {
+  return {
+    NODE_ENV: 'production',
+    AUTH_BASE_URL: 'https://api.paperbanana.asia',
+    BETTER_AUTH_SECRET: 'better-auth-secret-with-at-least-32-bytes',
+    MONGODB_URI: 'mongodb://mongo:27017/paperbanana_auth',
+    PAPERBANANA_API_URL: 'http://paperbanana-api:3006/paperbanana-api',
+    PAPERBANANA_GATEWAY_TOKEN: 'gateway-token',
+    PAPERBANANA_GUEST_COOKIE_SECRET: 'guest-cookie-secret-with-at-least-32-bytes',
+    ...overrides,
+  };
+}
+
+test('requires an explicit backend URL', () => {
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ PAPERBANANA_API_URL: '', LAF_API_URL: '' })),
+    /PAPERBANANA_API_URL or LAF_API_URL is required/,
+  );
+});
+
+test('prefers the Node API when both backend URLs are configured', () => {
+  const config = loadGatewayConfig(validEnv({ LAF_API_URL: 'https://legacy.example/paperbanana-api' }));
+
+  assert.equal(config.backend.mode, 'node');
+  assert.equal(config.backend.url, 'http://paperbanana-api:3006/paperbanana-api');
+});
+
+test('uses Laf only as an explicit rollback backend', () => {
+  const config = loadGatewayConfig(
+    validEnv({ PAPERBANANA_API_URL: '', LAF_API_URL: 'https://legacy.example/paperbanana-api' }),
+  );
+
+  assert.equal(config.backend.mode, 'laf');
+  assert.equal(config.backend.url, 'https://legacy.example/paperbanana-api');
+});
+
+test('rejects a missing shared gateway token', () => {
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ PAPERBANANA_GATEWAY_TOKEN: '   ' })),
+    /PAPERBANANA_GATEWAY_TOKEN is required/,
+  );
+});
+
+test('requires a 32-byte guest cookie secret', () => {
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ PAPERBANANA_GUEST_COOKIE_SECRET: 'too-short' })),
+    /PAPERBANANA_GUEST_COOKIE_SECRET must be at least 32 bytes/,
+  );
+});
+
+test('validates the previous guest cookie secret when configured', () => {
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ PAPERBANANA_GUEST_COOKIE_SECRET_PREVIOUS: 'too-short' })),
+    /PAPERBANANA_GUEST_COOKIE_SECRET_PREVIOUS must be at least 32 bytes/,
+  );
+});
+
+test('parses bounded timeouts and the single trusted ingress hop', () => {
+  const config = loadGatewayConfig(validEnv({ PAPERBANANA_BACKEND_TIMEOUT_MS: '2500' }));
+
+  assert.equal(config.backend.timeoutMs, 2500);
+  assert.equal(config.trustProxy, 1);
+  assert.equal(config.listenHost, '0.0.0.0');
+});
