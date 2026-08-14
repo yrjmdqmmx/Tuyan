@@ -21,7 +21,7 @@ compose=(docker compose --project-name paperbanana-hk --project-directory "$depl
         if (target.getCollection("_migration_transaction_smoke").countDocuments({_id: marker}) !== 1) {
           throw new Error("transaction did not commit")
         }
-        target.getCollection("_migration_transaction_smoke").deleteOne({_id: marker})
+        target.getCollection("_migration_transaction_smoke").drop()
       } finally {
         session.endSession()
       }

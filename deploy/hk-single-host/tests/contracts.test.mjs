@@ -138,6 +138,7 @@ test('transaction smoke runs in the secret-bearing init service', () => {
   assert.match(transactionSmoke, /run\s+--rm\s+--no-deps\s+-T\s+mongo-init/);
   assert.doesNotMatch(transactionSmoke, /exec\s+-T\s+mongodb/);
   assert.match(transactionSmoke, /\/run\/secrets\/mongo_auth_password/);
+  assert.match(transactionSmoke, /getCollection\("_migration_transaction_smoke"\)\.drop\(\)/);
 });
 
 test('repository templates contain placeholders, never concrete credentials', () => {
