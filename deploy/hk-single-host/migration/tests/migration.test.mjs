@@ -326,13 +326,15 @@ test('target import preserves the allowlist, uploads exact keys, paginates, and 
       const value = stored.get(key);
       return { res: { status: 200, headers: {
         'content-length': String(value.bytes.byteLength),
-        'content-type': value.headers['Content-Type'],
       } } };
     },
     async getStream(key) {
       return {
         stream: Readable.from([stored.get(key).bytes]),
-        res: { status: 200, headers: { 'content-length': String(stored.get(key).bytes.byteLength) } },
+        res: { status: 200, headers: {
+          'content-length': String(stored.get(key).bytes.byteLength),
+          'content-type': stored.get(key).headers['Content-Type'],
+        } },
       };
     },
     async list(query) {

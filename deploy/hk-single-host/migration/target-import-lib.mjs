@@ -170,7 +170,10 @@ async function verifyTargetObject(client, entry) {
   if (!Number.isSafeInteger(size) || size !== entry.size) {
     throw new Error(`Target size mismatch for ${entry.key}: expected ${entry.size}, received ${headers['content-length']}`);
   }
-  if (comparableContentType(headers['content-type']) !== comparableContentType(entry.contentType)) {
+  if (
+    headers['content-type']
+    && comparableContentType(headers['content-type']) !== comparableContentType(entry.contentType)
+  ) {
     throw new Error(
       `Target Content-Type mismatch for ${entry.key}: expected ${entry.contentType}, received ${headers['content-type'] || 'missing'}`,
     );
@@ -184,6 +187,14 @@ async function verifyTargetObject(client, entry) {
   const stream = download?.stream || download?.body;
   if (!stream || typeof stream[Symbol.asyncIterator] !== 'function') {
     throw new Error(`Target download did not return a stream for ${entry.key}`);
+  }
+  const downloadHeaders = responseHeaders(download);
+  const downloadedContentType = downloadHeaders['content-type'] || headers['content-type'];
+  if (comparableContentType(downloadedContentType) !== comparableContentType(entry.contentType)) {
+    stream.destroy?.();
+    throw new Error(
+      `Target Content-Type mismatch for ${entry.key}: expected ${entry.contentType}, received ${downloadedContentType || 'missing'}`,
+    );
   }
   const hash = createHash('sha256');
   let downloadedSize = 0;
