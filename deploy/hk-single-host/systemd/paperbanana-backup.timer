@@ -1,0 +1,12 @@
+[Unit]
+Description=Run the PaperBanana MongoDB backup every day
+
+[Timer]
+OnCalendar=*-*-* 19:17:00 UTC
+RandomizedDelaySec=15m
+Persistent=true
+Unit=paperbanana-backup.service
+
+[Install]
+WantedBy=timers.target
+

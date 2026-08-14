@@ -47,6 +47,13 @@ documents. It refuses to overwrite an initialized environment.
    the webroot `/var/www/letsencrypt`, then install the TLS vhost.
 5. Run `backup-mongo.sh`; pass that archive to `restore-drill.sh` before
    accepting production writes.
+6. Run `scripts/install-backup-timer.sh` first as a dry run and then as root
+   with `--apply`. It schedules a persistent daily backup at 03:17 China time
+   with up to 15 minutes of jitter and prevents overlapping backup processes.
+
+Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
+inspect each result with `systemctl status paperbanana-backup.service` plus the
+corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.
 
 Rollback is an explicit image-tag change followed by the same project-scoped
 deploy script. After the new MongoDB accepts writes, do not point clients back

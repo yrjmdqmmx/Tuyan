@@ -1,0 +1,27 @@
+[Unit]
+Description=PaperBanana encrypted off-host MongoDB backup
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/paperbanana/repo/deploy/hk-single-host/.env
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+WorkingDirectory=/opt/paperbanana/repo/deploy/hk-single-host
+ExecStart=/usr/bin/flock -n /run/lock/paperbanana-mongo-backup.lock /opt/paperbanana/repo/deploy/hk-single-host/scripts/backup-mongo.sh
+TimeoutStartSec=2h
+UMask=0077
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+

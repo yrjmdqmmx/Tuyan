@@ -14,6 +14,7 @@ test('operator scripts are committed as executables', () => {
     'scripts/generate-runtime-secrets.sh',
     'scripts/init-mongo.sh',
     'scripts/install-gvisor.sh',
+    'scripts/install-backup-timer.sh',
     'scripts/install-worker-firewall.sh',
     'scripts/restore-drill.sh',
     'scripts/smoke.sh',
@@ -21,6 +22,23 @@ test('operator scripts are committed as executables', () => {
   ]) {
     assert.equal(statSync(new URL(path, root)).mode & 0o111, 0o111, `${path} must be executable`);
   }
+});
+
+test('daily Mongo backup timer is persistent, bounded and installed explicitly', () => {
+  const service = read('systemd/paperbanana-backup.service');
+  const timer = read('systemd/paperbanana-backup.timer');
+  const installer = read('scripts/install-backup-timer.sh');
+
+  assert.match(service, /Type=oneshot/);
+  assert.match(service, /ExecStart=\/usr\/bin\/flock -n \/run\/lock\/paperbanana-mongo-backup\.lock \/opt\/paperbanana\/repo\/deploy\/hk-single-host\/scripts\/backup-mongo\.sh/);
+  assert.match(service, /TimeoutStartSec=2h/);
+  assert.match(service, /UMask=0077/);
+  assert.match(timer, /OnCalendar=\*-\*-\* 19:17:00 UTC/);
+  assert.match(timer, /RandomizedDelaySec=15m/);
+  assert.match(timer, /Persistent=true/);
+  assert.match(installer, /systemctl daemon-reload/);
+  assert.match(installer, /systemctl enable --now paperbanana-backup\.timer/);
+  assert.match(installer, /install -m 0644/);
 });
 
 test('compose keeps the public edge on loopback and all data services private', () => {
