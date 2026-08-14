@@ -48,6 +48,8 @@ printf '%s\n' "$mongo_root_password" > "$secret_dir/mongo-root-password"
 printf '%s\n' "$mongo_auth_password" > "$secret_dir/mongo-auth-password"
 printf '%s\n' "$mongo_business_password" > "$secret_dir/mongo-business-password"
 openssl rand -base64 756 > "$secret_dir/mongo-keyfile"
+chown 0:999 "$secret_dir/mongo-root-password"
+chmod 0440 "$secret_dir/mongo-root-password"
 chown 999:999 "$secret_dir/mongo-keyfile"
 chmod 0400 "$secret_dir/mongo-keyfile"
 
@@ -124,7 +126,7 @@ EOF
 chmod 0600 \
   "$secret_dir/gateway.env" "$secret_dir/core.env" "$secret_dir/worker.env" \
   "$secret_dir/backup.env" "$secret_dir/ossutil-backup.conf" \
-  "$secret_dir/mongo-root-password" "$secret_dir/mongo-auth-password" "$secret_dir/mongo-business-password"
+  "$secret_dir/mongo-auth-password" "$secret_dir/mongo-business-password"
 
 unset mongo_root_password mongo_auth_password mongo_business_password gateway_token guest_secret admin_token plot_token reference_token better_auth_secret prod_access_key_id prod_access_key_secret backup_access_key_id backup_access_key_secret
 echo "Runtime secret files created without printing credential values."
