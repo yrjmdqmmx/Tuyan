@@ -65,6 +65,19 @@ OpenVac, all PaperBanana containers, Mongo connectivity and stuck jobs, backup
 freshness, TLS lifetime, and new Nginx 5xx responses. It reports state changes
 and hourly reminders through `PaperBananaProductionHealthFailure`.
 
+## Legacy hostname compatibility window
+
+Through 2026-09-14, the existing Sealos application for
+`yifbnnzrwmxn.sealoshzh.site` is a credential-free reverse proxy to
+`https://api.paperbanana.asia`. It uses the immutable image
+`caddy@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d`
+with `/bin/sh -c` and an `env -i` command that starts `caddy reverse-proxy` on
+port 3005. The production monitor checks this legacy hostname while the window
+is active. Do not restore the old Auth Gateway image or resume Laf. On or after
+the deadline, first confirm that no distributed client still uses the legacy
+hostname, then pause the proxy; resource deletion still requires a separate
+explicit approval.
+
 Rollback is an explicit image-tag change followed by the same project-scoped
 deploy script. After the new MongoDB accepts writes, do not point clients back
 to the old Laf database without first entering maintenance and reconciling the
