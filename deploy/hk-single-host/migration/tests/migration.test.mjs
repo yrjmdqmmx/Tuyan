@@ -312,6 +312,7 @@ test('target import preserves the allowlist, uploads exact keys, paginates, and 
   const stored = new Map();
   const putCalls = [];
   const listCalls = [];
+  const logs = [];
   const client = {
     async put(key, stream, options) {
       const chunks = [];
@@ -341,7 +342,12 @@ test('target import preserves the allowlist, uploads exact keys, paginates, and 
     },
   };
 
-  const result = await importTargetBundle({ bundleDir, client, concurrency: 2 });
+  const result = await importTargetBundle({
+    bundleDir,
+    client,
+    concurrency: 2,
+    logger: { info(message) { logs.push(String(message)); } },
+  });
 
   assert.deepEqual(putCalls, [{
     key: 'results/精修 a.svg',
@@ -367,6 +373,31 @@ test('target import preserves the allowlist, uploads exact keys, paginates, and 
     targetObjectCount: 1,
     totalBytes: 6,
   });
+  assert.equal(logs.length, 1);
+  assert.match(logs[0], /manifestCount=1/u);
+  assert.match(logs[0], /totalBytes=6/u);
+});
+
+test('target pagination falls back to a lowercase key when nextMarker is absent', async () => {
+  const { listAllTargetObjects } = await subject('../target-import-lib.mjs');
+  const calls = [];
+  const pages = [
+    { objects: [{ key: 'a', size: 1 }], isTruncated: true },
+    { objects: [{ key: 'b', size: 2 }], isTruncated: false },
+  ];
+  const result = await listAllTargetObjects({
+    async list(query) {
+      calls.push(query);
+      return pages.shift();
+    },
+  });
+
+  assert.deepEqual(calls, [
+    { marker: undefined, 'max-keys': 1000 },
+    { marker: 'a', 'max-keys': 1000 },
+  ]);
+  assert.deepEqual(result.objects.map((object) => object.key), ['a', 'b']);
+  assert.equal(result.pageCount, 2);
 });
 
 test('target pagination stalls and unsupported verification clients fail closed', async () => {

@@ -137,7 +137,7 @@ export async function listAllTargetObjects(client, { initialMarker } = {}) {
     }
     if (typeof page.isTruncated !== 'boolean') throw new Error('Target listing is missing an explicit truncation flag');
     if (!page.isTruncated) break;
-    const nextMarker = page.nextMarker || page.objects.at(-1)?.name || page.objects.at(-1)?.Key;
+    const nextMarker = page.nextMarker || firstDefined(page.objects.at(-1), ['name', 'Key', 'key']);
     if (typeof nextMarker !== 'string' || !nextMarker || nextMarker === marker || usedMarkers.has(nextMarker)) {
       throw new Error('Target object pagination did not advance');
     }
@@ -240,8 +240,9 @@ export async function importTargetBundle({ bundleDir, client, concurrency = 4, l
     totalBytes: bundle.summary.totalBytes,
   };
   logger?.info?.(
-    `Import complete: ${result.uploadedCount} uploaded, ${result.verifiedCount} verified, `
-    + `${result.targetObjectCount} target objects over ${result.targetPageCount} pages`,
+    `Import complete: manifestCount=${result.manifestCount}, uploadedCount=${result.uploadedCount}, `
+    + `verifiedCount=${result.verifiedCount}, targetObjectCount=${result.targetObjectCount}, `
+    + `targetPageCount=${result.targetPageCount}, totalBytes=${result.totalBytes}`,
   );
   return result;
 }
