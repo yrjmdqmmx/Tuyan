@@ -30,12 +30,14 @@ cleanup
 cat "$archive" | "${compose[@]}" exec -T mongodb sh -c '
   exec mongorestore --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" \
     --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin \
-    --archive --gzip --nsFrom="paperbanana_auth.*" --nsTo="paperbanana_restore_drill_auth.*"
+    --archive --gzip --stopOnError --nsInclude="paperbanana_auth.*" \
+    --nsFrom="paperbanana_auth.*" --nsTo="paperbanana_restore_drill_auth.*"
 '
 cat "$archive" | "${compose[@]}" exec -T mongodb sh -c '
   exec mongorestore --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" \
     --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin \
-    --archive --gzip --nsFrom="paperbanana_business.*" --nsTo="paperbanana_restore_drill_business.*"
+    --archive --gzip --stopOnError --nsInclude="paperbanana_business.*" \
+    --nsFrom="paperbanana_business.*" --nsTo="paperbanana_restore_drill_business.*"
 '
 
 mongo_eval '

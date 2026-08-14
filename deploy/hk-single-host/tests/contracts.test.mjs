@@ -127,6 +127,9 @@ test('backup and restore drill use compressed archives and an external OSS targe
   assert.match(restore, /--gzip/);
   assert.match(restore, /--nsFrom/);
   assert.match(restore, /--nsTo/);
+  assert.match(restore, /--nsInclude="paperbanana_auth\.\*"/);
+  assert.match(restore, /--nsInclude="paperbanana_business\.\*"/);
+  assert.match(restore, /--stopOnError/);
 });
 
 test('transaction smoke runs in the secret-bearing init service', () => {
