@@ -418,6 +418,22 @@ test('target pagination stalls and unsupported verification clients fail closed'
   );
 });
 
+test('target import reports the failing operation and object key without swallowing the SDK error', async () => {
+  const { importTargetBundle } = await subject('../target-import-lib.mjs');
+  const bundleDir = await makeBundle([{ key: 'objects/problem key.png', bytes: 'one' }]);
+  const client = {
+    async put() { throw new Error('signature mismatch'); },
+    async getObjectMeta() {},
+    async getStream() {},
+    async list() {},
+  };
+
+  await assert.rejects(
+    importTargetBundle({ bundleDir, client }),
+    /target upload failed for objects\/problem key\.png: signature mismatch/i,
+  );
+});
+
 test('target endpoint validation permits only HTTPS Alibaba internal endpoints', async () => {
   const { validateInternalEndpoint } = await subject('../target-import-lib.mjs');
 

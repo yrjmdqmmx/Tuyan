@@ -226,11 +226,17 @@ export async function importTargetBundle({ bundleDir, client, concurrency = 4, l
       await client.put(entry.key, stream, { headers: uploadHeaders(entry), contentLength: entry.size });
     } catch (error) {
       stream.destroy();
-      throw error;
+      throw new Error(`Target upload failed for ${entry.key}: ${error?.message || error}`, { cause: error });
     }
   });
 
-  await mapLimit(bundle.entries, concurrency, (entry) => verifyTargetObject(client, entry));
+  await mapLimit(bundle.entries, concurrency, async (entry) => {
+    try {
+      await verifyTargetObject(client, entry);
+    } catch (error) {
+      throw new Error(`Target verification failed for ${entry.key}: ${error?.message || error}`, { cause: error });
+    }
+  });
   const target = await listAllTargetObjects(client);
   const manifestKeys = new Set(bundle.entries.map((entry) => entry.key));
   const targetKeys = new Set(target.objects.map((object) => object.key));
