@@ -90,7 +90,7 @@ function applyCors(response: Response): void {
 export function createApp({ handler, readinessProbe, config, logger }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
-  app.use(express.json({ limit: '16mb', strict: false }))
+  app.use(express.json({ limit: '1mb', strict: false }))
   app.use((request, response, next) => {
     applyCors(response)
     response.on('finish', () => {
@@ -162,6 +162,9 @@ export function createApp({ handler, readinessProbe, config, logger }: AppDepend
   app.post('/paperbanana-api', invokeLegacy)
 
   app.use((error: unknown, _request: Request, response: Response, next: NextFunction) => {
+    if ((error as { type?: string })?.type === 'entity.too.large') {
+      return response.status(413).json({ code: 413, error: 'Request body too large' })
+    }
     if ((error as { type?: string })?.type === 'entity.parse.failed') {
       return response.status(400).json({ code: 400, error: 'Invalid JSON body' })
     }

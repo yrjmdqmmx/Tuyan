@@ -24,6 +24,17 @@
 
 ## 条目（最新在上）
 
+### [2026-08-14] Node API 收紧 BYOK、对象存储与请求体契约 — by Codex (paperbanana-api + laf compatibility)
+变更：Node 运行时新增三项安全约束；旧 Laf 处理器仅增加向后兼容开关与无密钥后台 DTO，默认 Laf 行为仍可用于回滚。
+契约（影响其他端 / 共享）：
+- **BYOK 生命周期**：`createJob`/`refineImage` 选出当前 provider key 后，后台执行 DTO 会删除完整 `apiKeys` map，只把选中的单个 key 作为独立内存参数传递；不新增 Redis、队列或密钥持久化。
+- **Node 严格对象存储**：新增必需 env `PAPERBANANA_STRICT_OBJECT_STORAGE=true`。Node 中结果图/阶段图写 OSS 失败会让任务失败，禁止写入 Mongo `database-data-url`/`data:` URL。Laf 未设置或设为 false 时保留历史回退，便于回滚。
+- **请求体上限**：Node `POST /paperbanana-api` JSON 上限为 1 MiB，超限返回 HTTP `413 {code:413,error:'Request body too large'}`；参考图继续走既有预签名直传，不应放进 JSON/base64。
+各端待办：
+- [x] paperbanana-api / laf-functions（无密钥后台 DTO、严格存储开关、1 MiB 限制、组合测试）
+- [ ] 部署/运维（Node env 增加 `PAPERBANANA_STRICT_OBJECT_STORAGE=true`）
+- [x] auth-gateway / clients（公开 action/envelope 与预签名上传流程不变，无代码改动）
+
 ### [2026-08-14] 新增阿里云香港 Node 24 内部业务 API — by Codex (paperbanana-api)
 变更：新增 `apps/paperbanana-api`，构建时直接复用原 `apps/laf-functions/paperbanana-api.ts`，通过 Node 版 `@lafjs/cloud` 兼容层接入 MongoDB 与私有阿里云 OSS；旧 Laf 文件保持不变，可继续用于回滚。
 契约（影响其他端 / 共享）：

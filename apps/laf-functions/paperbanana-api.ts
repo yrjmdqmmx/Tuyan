@@ -66,6 +66,19 @@ type RefineImageBody = {
   userEmail?: string
 }
 
+type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'>
+type RefineExecutionBody = Omit<RefineImageBody, 'apiKeys'>
+
+export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody {
+  const { apiKeys: _apiKeys, ...executionBody } = body
+  return executionBody
+}
+
+export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBody {
+  const { apiKeys: _apiKeys, ...executionBody } = body
+  return executionBody
+}
+
 type PrepareReferenceUploadBody = {
   action: 'prepareReferenceUpload'
   files?: ReferenceUploadDescriptor[]
@@ -499,7 +512,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   // 二选一：用户上传了参考图时，以上传图为唯一视觉风格锚点，自动关闭检索
   // （否则检索到的多张图会与上传图的风格相互打架）。检索一律不跑、不附检索图、徽标显示“不检索”。
   const hasUploadedReference = normalizedReferenceImages.length > 0
-  const normalizedBody = {
+  const normalizedBodyWithSecrets = {
     ...body,
     taskName: normalizeTaskName(body.taskName),
     infographicCategory: limitText(body.infographicCategory, 80),
@@ -515,10 +528,12 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     retrievalSetting: hasUploadedReference ? ('none' as const) : normalizeRetrievalSetting(body.retrievalSetting),
     manualReferenceIds: hasUploadedReference ? [] : normalizeManualReferenceIds(body.manualReferenceIds || []),
   }
-  const apiKey = selectApiKey(normalizedBody.provider, normalizedBody.apiKeys)
+  const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
   if (!apiKey) {
-    return fail(`Missing API key for provider ${normalizedBody.provider}`, 400)
+    return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
   }
+
+  const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
 
   const modeResolution = await resolveReferenceImageMode(normalizedBody)
   if (modeResolution.error) {
@@ -578,18 +593,16 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
 
   await jobs.insertOne(record)
 
-  // Laf 云函数是常驻 Node.js Runtime。API key 只保留在本次闭包中，
-  // 不写入数据库，不进入日志。
-  void runJob(jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds).catch(async (error) => {
-    await markFailed(jobId, error?.message || String(error))
-  })
+  // BYOK 只把已选中的单个 key 作为独立参数交给后台执行；jobBody 已移除
+  // 完整 apiKeys map，避免其它 provider key 被后台 Promise/DTO 继续持有。
+  startCreateJobInBackground(jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds)
 
   return ok({ jobId, status: 'queued' })
 }
 
 async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   validateRefineBody(body)
-  const normalizedBody = {
+  const normalizedBodyWithSecrets = {
     ...body,
     mainModelName: normalizeModelName(body.provider, body.mainModelName || body.imageModelName),
     imageModelName: normalizeModelName(body.provider, body.imageModelName),
@@ -599,10 +612,12 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     aspectRatio: normalizeAspectRatio(body.aspectRatio),
     imageSize: body.imageSize === '4K' ? '4K' as const : '2K' as const,
   }
-  const apiKey = selectApiKey(normalizedBody.provider, normalizedBody.apiKeys)
+  const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
   if (!apiKey) {
-    return fail(`Missing API key for provider ${normalizedBody.provider}`, 400)
+    return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
   }
+
+  const normalizedBody = toRefineExecutionBody(normalizedBodyWithSecrets)
 
   const now = new Date()
   const jobId = `refine-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
@@ -650,9 +665,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
 
   await jobs.insertOne(record)
 
-  void runRefineJob(jobId, normalizedBody, apiKey).catch(async (error) => {
-    await markFailed(jobId, error?.message || String(error))
-  })
+  startRefineJobInBackground(jobId, normalizedBody, apiKey)
 
   return ok({ jobId, status: 'queued' })
 }
@@ -819,7 +832,7 @@ async function deleteReferenceObjectsForOwner(owner: string): Promise<number> {
   return deleted
 }
 
-async function resolveReferenceImageMode(body: CreateJobBody & { referenceImageMode: ReferenceImageMode }) {
+async function resolveReferenceImageMode(body: CreateExecutionBody & { referenceImageMode: ReferenceImageMode }) {
   const requestedMode = body.referenceImageMode
   const hasReferences = Boolean((body.referenceImages || []).length)
   if (!hasReferences) {
@@ -862,9 +875,27 @@ async function resolveReferenceImageMode(body: CreateJobBody & { referenceImageM
   }
 }
 
+function startCreateJobInBackground(
+  jobId: string,
+  body: CreateExecutionBody,
+  apiKey: string,
+  numCandidates: number,
+  maxCriticRounds: number,
+) {
+  void runJob(jobId, body, apiKey, numCandidates, maxCriticRounds).catch(async (error) => {
+    await markFailed(jobId, error?.message || String(error))
+  })
+}
+
+function startRefineJobInBackground(jobId: string, body: RefineExecutionBody, apiKey: string) {
+  void runRefineJob(jobId, body, apiKey).catch(async (error) => {
+    await markFailed(jobId, error?.message || String(error))
+  })
+}
+
 async function runJob(
   jobId: string,
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   numCandidates: number,
   maxCriticRounds: number,
@@ -943,7 +974,7 @@ async function runJob(
 async function runCandidate(
   jobId: string,
   candidateId: number,
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   maxCriticRounds: number,
   referenceAnalysis = '',
@@ -1100,7 +1131,7 @@ async function runCandidate(
 async function runPlotCandidate(
   jobId: string,
   candidateId: number,
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   maxCriticRounds: number,
   referenceAnalysis = '',
@@ -1245,7 +1276,7 @@ async function runPlotCandidate(
 async function enhanceCandidateToResolution(
   jobId: string,
   candidateId: number,
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   baseBase64: string,
   baseDescription: string,
@@ -1318,7 +1349,7 @@ async function enhanceCandidateToResolution(
 async function buildPlotDescription(
   jobId: string,
   candidateId: number,
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   referenceAnalysis = '',
   retrievalContext = '',
@@ -1368,7 +1399,7 @@ async function buildPlotDescription(
 }
 
 // Turn a plot description into self-contained matplotlib code (visualizer).
-async function generatePlotCode(body: CreateJobBody, apiKey: string, description: string) {
+async function generatePlotCode(body: CreateExecutionBody, apiKey: string, description: string) {
   const raw = await callTextModel(
     body.provider,
     body.mainModelName,
@@ -1463,7 +1494,7 @@ async function pingPlotWorker(body: any) {
 // the PLOT critic rubric and routes a worker render error into the [SYSTEM
 // NOTICE] failure path so the critic repairs the code (mirrors critic_agent.py).
 async function critiqueRenderedPlot(
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   description: string,
   imageBase64: string,
@@ -1501,7 +1532,7 @@ async function critiqueRenderedPlot(
 async function buildVisualDescription(
   jobId: string,
   candidateId: number,
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   textCriticRounds: number,
   referenceAnalysis = '',
@@ -1587,7 +1618,7 @@ async function buildVisualDescription(
   return description
 }
 
-async function runRefineJob(jobId: string, body: RefineImageBody, apiKey: string) {
+async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: string) {
   await jobs.updateOne(
     { _id: jobId },
     { $set: { status: 'running', startedAt: new Date(), updatedAt: new Date() } },
@@ -1684,7 +1715,7 @@ async function runRefineJob(jobId: string, body: RefineImageBody, apiKey: string
   )
 }
 
-async function resolveRetrievedReferences(body: CreateJobBody, apiKey: string): Promise<RetrievedReference[]> {
+async function resolveRetrievedReferences(body: CreateExecutionBody, apiKey: string): Promise<RetrievedReference[]> {
   const setting = normalizeRetrievalSetting(body.retrievalSetting)
   if (setting === 'none') return []
 
@@ -1710,7 +1741,7 @@ async function resolveRetrievedReferences(body: CreateJobBody, apiKey: string): 
   return selected.slice(0, 10)
 }
 
-async function autoSelectReferenceIds(body: CreateJobBody, apiKey: string, library: RetrievedReference[]) {
+async function autoSelectReferenceIds(body: CreateExecutionBody, apiKey: string, library: RetrievedReference[]) {
   const candidates = library.slice(0, 200).map((item) => ({
     id: item.id,
     title: item.title,
@@ -1794,7 +1825,7 @@ function buildRetrievalContext(items: RetrievedReference[]) {
 }
 
 async function critiqueRenderedDiagram(
-  body: CreateJobBody,
+  body: CreateExecutionBody,
   apiKey: string,
   description: string,
   imageBase64: string,
@@ -1866,7 +1897,7 @@ function extractRevisedDescription(critique: string, previous: string) {
   return criticDecision(critique, previous).description
 }
 
-async function analyzeReferenceImages(jobId: string, body: CreateJobBody, apiKey: string) {
+async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, apiKey: string) {
   const references = body.referenceImages || []
   if (!references.length) return ''
 
@@ -2478,7 +2509,7 @@ async function fetchImageAsBase64(url: string, label = 'image download') {
   return Buffer.from(arrayBuffer).toString('base64')
 }
 
-async function saveResult(
+export async function saveResult(
   jobId: string,
   candidateId: number,
   content: string,
@@ -2497,6 +2528,7 @@ async function saveResult(
       url: await bucket.getDownloadUrl(filename, 3600 * 24 * 7),
     }
   } catch (error: any) {
+    if (process.env.PAPERBANANA_STRICT_OBJECT_STORAGE === 'true') throw error
     return {
       storage: 'database-data-url',
       filename,
@@ -2506,7 +2538,7 @@ async function saveResult(
   }
 }
 
-async function saveStageImage(
+export async function saveStageImage(
   jobId: string,
   candidateId: number,
   stageName: string,
@@ -2528,6 +2560,7 @@ async function saveStageImage(
       mimeType,
     }
   } catch (error: any) {
+    if (process.env.PAPERBANANA_STRICT_OBJECT_STORAGE === 'true') throw error
     return {
       storage: 'database-data-url',
       filename,
@@ -3884,7 +3917,7 @@ function limitText(value: any, maxLength: number) {
   return String(value || '').trim().slice(0, maxLength)
 }
 
-async function resolveSourceImageUrl(body: RefineImageBody) {
+async function resolveSourceImageUrl(body: RefineExecutionBody) {
   const direct = limitText(body.sourceImageUrl, 1200)
   if (direct) return direct
   const objectKey = limitText(body.sourceImageObjectKey, 300)

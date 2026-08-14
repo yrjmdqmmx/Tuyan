@@ -6,6 +6,7 @@ import { loadConfig } from '../src/config.js'
 const validEnv = {
   PAPERBANANA_GATEWAY_TOKEN: 'service-secret',
   PAPERBANANA_SINGLE_REPLICA: 'true',
+  PAPERBANANA_STRICT_OBJECT_STORAGE: 'true',
   MONGODB_URI: 'mongodb://mongo.internal:27017',
   MONGODB_BUSINESS_DB: 'paperbanana_business',
   PAPERBANANA_BUCKET: 'paperbanana-private',
@@ -26,6 +27,15 @@ test('startup config rejects multi-replica mode until job leases exist', () => {
     () => loadConfig({ ...validEnv, PAPERBANANA_SINGLE_REPLICA: 'false' }),
     /PAPERBANANA_SINGLE_REPLICA=true is required/,
   )
+})
+
+test('startup config requires strict object storage mode', () => {
+  for (const value of ['', 'false', ' true ']) {
+    assert.throws(
+      () => loadConfig({ ...validEnv, PAPERBANANA_STRICT_OBJECT_STORAGE: value }),
+      /PAPERBANANA_STRICT_OBJECT_STORAGE=true is required/,
+    )
+  }
 })
 
 test('startup config requires Mongo and private OSS settings', () => {

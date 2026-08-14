@@ -83,6 +83,22 @@ test('POST accepts a JSON string request body before token sanitization', async 
   })
 })
 
+test('POST rejects JSON bodies larger than 1 MiB', async () => {
+  await withServer(async () => assert.fail('handler must not run for oversized JSON'), async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/paperbanana-api`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-paperbanana-gateway-token': config.gatewayToken,
+      },
+      body: JSON.stringify({ action: 'createJob', padding: 'x'.repeat(1024 * 1024) }),
+    })
+
+    assert.equal(response.status, 413)
+    assert.deepEqual(await response.json(), { code: 413, error: 'Request body too large' })
+  })
+})
+
 test('admin actions replace caller adminToken with the server-side admin token', async () => {
   let receivedBody: unknown
   await withServer(async (ctx) => {
