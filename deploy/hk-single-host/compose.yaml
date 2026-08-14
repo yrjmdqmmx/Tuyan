@@ -190,6 +190,8 @@ services:
     networks:
       backend:
         ipv4_address: 172.28.0.10
+      edge:
+        ipv4_address: 172.31.0.10
     ports:
       - 127.0.0.1:13005:3005
     healthcheck:
@@ -234,6 +236,13 @@ networks:
     ipam:
       config:
         - subnet: 172.30.0.0/24
+  edge:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: pbedge0
+    ipam:
+      config:
+        - subnet: 172.31.0.0/24
 
 secrets:
   mongo_root_password:

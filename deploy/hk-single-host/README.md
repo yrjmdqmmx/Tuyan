@@ -15,6 +15,9 @@ VPC peering.
 - The plot worker joins only an internal bridge, runs under gVisor, uses a
   read-only root filesystem/tmpfs, and is blocked from initiating connections
   by a persistent `DOCKER-USER` rule.
+- The gateway also joins a dedicated routable edge bridge so Docker can publish
+  its loopback-only port; `DOCKER-USER` blocks gateway-initiated egress while
+  allowing established replies to host Nginx.
 - Existing `openvac-production-*` containers and port `3010` are outside this
   Compose project and are health-checked before and after maintenance.
 

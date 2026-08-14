@@ -1,0 +1,17 @@
+{
+  "name": "paperbanana-object-migration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "export:source": "node source-export.mjs",
+    "import:target": "node target-import.mjs"
+  },
+  "dependencies": {
+    "ali-oss": "^6.23.0"
+  }
+}
