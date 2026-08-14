@@ -103,8 +103,9 @@ export async function loadBundle(bundleDir) {
 }
 
 function assertVerificationClient(client) {
-  const required = ['put', 'getObjectMeta', 'getStream', 'list'];
-  if (!client || required.some((name) => typeof client[name] !== 'function')) {
+  const required = ['put', 'getObjectMeta', 'getStream'];
+  const hasList = typeof client?.listV2 === 'function' || typeof client?.list === 'function';
+  if (!client || required.some((name) => typeof client[name] !== 'function') || !hasList) {
     throw new Error('Target client is missing put, metadata, stream, or list verification interfaces');
   }
 }
@@ -117,7 +118,10 @@ function firstDefined(object, names) {
 }
 
 export async function listAllTargetObjects(client, { initialMarker } = {}) {
-  if (!client || typeof client.list !== 'function') throw new Error('Target client has no list verification interface');
+  const useV2 = typeof client?.listV2 === 'function';
+  if (!useV2 && typeof client?.list !== 'function') {
+    throw new Error('Target client has no list verification interface');
+  }
   let marker = initialMarker;
   let pageCount = 0;
   const objects = [];
@@ -126,7 +130,9 @@ export async function listAllTargetObjects(client, { initialMarker } = {}) {
   if (marker !== undefined) usedMarkers.add(marker);
 
   do {
-    const page = await client.list({ marker, 'max-keys': 1000 });
+    const query = { 'max-keys': 1000 };
+    if (marker !== undefined) query[useV2 ? 'continuation-token' : 'marker'] = marker;
+    const page = useV2 ? await client.listV2(query) : await client.list(query);
     pageCount += 1;
     if (!Array.isArray(page?.objects)) throw new Error('Target object listing is missing an object array');
     for (const rawObject of page.objects) {
@@ -137,7 +143,9 @@ export async function listAllTargetObjects(client, { initialMarker } = {}) {
     }
     if (typeof page.isTruncated !== 'boolean') throw new Error('Target listing is missing an explicit truncation flag');
     if (!page.isTruncated) break;
-    const nextMarker = page.nextMarker || firstDefined(page.objects.at(-1), ['name', 'Key', 'key']);
+    const nextMarker = useV2
+      ? page.nextContinuationToken
+      : page.nextMarker || firstDefined(page.objects.at(-1), ['name', 'Key', 'key']);
     if (typeof nextMarker !== 'string' || !nextMarker || nextMarker === marker || usedMarkers.has(nextMarker)) {
       throw new Error('Target object pagination did not advance');
     }

@@ -337,9 +337,11 @@ test('target import preserves the allowlist, uploads exact keys, paginates, and 
         } },
       };
     },
-    async list(query) {
+    async listV2(query) {
       listCalls.push(query);
-      if (!query.marker) return { objects: [], isTruncated: true, nextMarker: 'page-2' };
+      if (!query['continuation-token']) {
+        return { objects: [], isTruncated: true, nextContinuationToken: 'page-2' };
+      }
       return { objects: [{ name: 'results/精修 a.svg', size: 6 }], isTruncated: false };
     },
   };
@@ -364,8 +366,8 @@ test('target import preserves the allowlist, uploads exact keys, paginates, and 
     contentLength: 6,
   }]);
   assert.deepEqual(listCalls, [
-    { marker: undefined, 'max-keys': 1000 },
-    { marker: 'page-2', 'max-keys': 1000 },
+    { 'max-keys': 1000 },
+    { 'max-keys': 1000, 'continuation-token': 'page-2' },
   ]);
   assert.deepEqual(result, {
     manifestCount: 1,
@@ -395,7 +397,7 @@ test('target pagination falls back to a lowercase key when nextMarker is absent'
   });
 
   assert.deepEqual(calls, [
-    { marker: undefined, 'max-keys': 1000 },
+    { 'max-keys': 1000 },
     { marker: 'a', 'max-keys': 1000 },
   ]);
   assert.deepEqual(result.objects.map((object) => object.key), ['a', 'b']);
