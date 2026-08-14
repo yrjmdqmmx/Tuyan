@@ -127,3 +127,87 @@ test('aborts expired requests and maps them to a typed 504', async () => {
     (error) => error instanceof BackendError && error.status === 504 && error.code === 'BACKEND_TIMEOUT',
   );
 });
+
+test('Node readiness calls the protected core GET /ready and requires ready true', async () => {
+  const requests = [];
+  const client = createBackendClient({
+    mode: 'node',
+    url: 'http://core:3006/paperbanana-api',
+    timeoutMs: 500,
+    gatewayToken: 'gateway-token',
+    fetchImpl: async (url, init) => {
+      requests.push({ url, init });
+      return jsonResponse({ ready: true, dependencies: { mongodb: 'ready', oss: 'ready' } });
+    },
+  });
+
+  const result = await client.ready({ clientIp: '203.0.113.30' });
+  assert.equal(result.ok, true);
+  assert.equal(requests[0].url, 'http://core:3006/ready');
+  assert.equal(requests[0].init.method, 'GET');
+  assert.equal(requests[0].init.body, undefined);
+  assert.equal(requests[0].init.headers['x-paperbanana-gateway-token'], 'gateway-token');
+  assert.equal(client.cachedStatus().ok, true);
+});
+
+test('Node readiness rejects ready false or a non-success HTTP status', async () => {
+  for (const [status, body] of [
+    [200, { ready: false }],
+    [503, { ready: true }],
+  ]) {
+    const client = createBackendClient({
+      mode: 'node',
+      url: 'http://core:3006/paperbanana-api',
+      timeoutMs: 500,
+      gatewayToken: 'gateway-token',
+      fetchImpl: async () => jsonResponse(body, status),
+    });
+    const result = await client.ready();
+    assert.equal(result.ok, false);
+    assert.equal(client.cachedStatus().ok, false);
+  }
+});
+
+test('Laf rollback readiness uses the legacy health action', async () => {
+  let captured;
+  const client = createBackendClient({
+    mode: 'laf',
+    url: 'https://legacy.example/paperbanana-api',
+    timeoutMs: 500,
+    gatewayToken: 'gateway-token',
+    fetchImpl: async (url, init) => {
+      captured = { url, init, body: JSON.parse(init.body) };
+      return jsonResponse({ code: 0, ok: true });
+    },
+  });
+
+  assert.equal((await client.ready()).ok, true);
+  assert.equal(captured.url, 'https://legacy.example/paperbanana-api');
+  assert.equal(captured.init.method, 'POST');
+  assert.deepEqual(captured.body, { action: 'health', gatewayToken: 'gateway-token' });
+});
+
+test('business envelopes never poison or heal probe-derived readiness', async () => {
+  let readinessHealthy = true;
+  const client = createBackendClient({
+    mode: 'node',
+    url: 'http://core:3006/paperbanana-api',
+    timeoutMs: 500,
+    gatewayToken: 'gateway-token',
+    fetchImpl: async (_url, init) => {
+      if (init.method === 'GET') return jsonResponse({ ready: readinessHealthy });
+      return jsonResponse(readinessHealthy ? { code: 429, error: 'busy' } : { code: 0, ok: true });
+    },
+  });
+
+  await client.ready();
+  const healthySnapshot = client.cachedStatus();
+  await client.call({ action: 'createJob' });
+  assert.deepEqual(client.cachedStatus(), healthySnapshot);
+
+  readinessHealthy = false;
+  await client.ready();
+  const unhealthySnapshot = client.cachedStatus();
+  await client.call({ action: 'createJob' });
+  assert.deepEqual(client.cachedStatus(), unhealthySnapshot);
+});

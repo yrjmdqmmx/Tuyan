@@ -42,7 +42,7 @@ type AppDependencies = {
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-Admin-Token,X-Paperbanana-Gateway-Token',
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-Paperbanana-Gateway-Token',
   'Access-Control-Max-Age': '86400',
 }
 

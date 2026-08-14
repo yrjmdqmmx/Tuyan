@@ -16,22 +16,47 @@ export function createBackendClient({
   adminToken = '',
   fetchImpl = globalThis.fetch,
 }) {
-  let cachedStatus = {
+  let readinessStatus = {
     mode,
     ok: false,
     checkedAt: null,
     code: 'NOT_CHECKED',
   };
 
+  async function requestJson(target, init) {
+    const controller = new AbortController();
+    const timeout = setTimeout(
+      () => controller.abort(new DOMException('Backend request timed out', 'TimeoutError')),
+      timeoutMs,
+    );
+    timeout.unref?.();
+    try {
+      const response = await fetchImpl(target, { ...init, signal: controller.signal });
+      const text = await response.text();
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        data = {
+          code: response.status || 502,
+          error: text || `Backend HTTP ${response.status}`,
+        };
+      }
+      return { status: response.status, data };
+    } catch (error) {
+      if (controller.signal.aborted || error?.name === 'TimeoutError') {
+        throw new BackendError(504, 'BACKEND_TIMEOUT', 'Backend request timed out');
+      }
+      throw new BackendError(502, 'BACKEND_UNAVAILABLE', 'Backend unavailable');
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
   async function call(inputBody = {}, requestContext = {}, options = {}) {
     const body = sanitizeBody(inputBody);
-    const headers = {
-      'content-type': 'application/json',
-    };
-    const clientIp = safeHeader(requestContext.clientIp, 128);
-    const userAgent = safeHeader(requestContext.userAgent, 512);
-    if (clientIp) headers['x-paperbanana-client-ip'] = clientIp;
-    if (userAgent) headers['user-agent'] = userAgent;
+    const headers = transportHeaders(requestContext);
+    headers['content-type'] = 'application/json';
 
     if (mode === 'node') {
       headers['x-paperbanana-gateway-token'] = gatewayToken;
@@ -47,62 +72,55 @@ export function createBackendClient({
       throw new BackendError(500, 'BACKEND_CONFIG_INVALID', `Unsupported backend mode: ${mode}`);
     }
 
-    const controller = new AbortController();
-    const timeout = setTimeout(
-      () => controller.abort(new DOMException('Backend request timed out', 'TimeoutError')),
-      timeoutMs,
-    );
-    timeout.unref?.();
+    return requestJson(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+    });
+  }
 
+  async function ready(requestContext = {}) {
     try {
-      const response = await fetchImpl(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-        signal: controller.signal,
-      });
-      const text = await response.text();
-      let data;
-      try {
-        data = text ? JSON.parse(text) : {};
-      } catch {
-        data = {
-          code: response.status || 502,
-          error: text || `Backend HTTP ${response.status}`,
-        };
+      let result;
+      let ok;
+      if (mode === 'node') {
+        const headers = transportHeaders(requestContext);
+        headers['x-paperbanana-gateway-token'] = gatewayToken;
+        result = await requestJson(nodeReadinessUrl(url), { method: 'GET', headers });
+        ok = isHttpSuccess(result.status) && result.data?.ready === true;
+      } else if (mode === 'laf') {
+        result = await call({ action: 'health' }, requestContext);
+        ok = isHttpSuccess(result.status) && Number(result.data?.code || 0) === 0 && result.data?.ok !== false;
+      } else {
+        throw new BackendError(500, 'BACKEND_CONFIG_INVALID', `Unsupported backend mode: ${mode}`);
       }
-      cachedStatus = {
+      readinessStatus = {
         mode,
-        ok: response.ok && Number(data?.code || 0) === 0,
+        ok,
         checkedAt: new Date().toISOString(),
-        status: response.status,
-        code: Number(data?.code || 0),
+        status: result.status,
+        ready: mode === 'node' ? result.data?.ready === true : ok,
+        dependencies: result.data?.dependencies || {},
       };
-      return { status: response.status, data };
+      return { ok, ...result };
     } catch (error) {
-      if (controller.signal.aborted || error?.name === 'TimeoutError') {
-        cachedStatus = failedStatus(mode, 504, 'BACKEND_TIMEOUT');
-        throw new BackendError(504, 'BACKEND_TIMEOUT', 'Backend request timed out');
-      }
-      cachedStatus = failedStatus(mode, 502, 'BACKEND_UNAVAILABLE');
-      throw new BackendError(502, 'BACKEND_UNAVAILABLE', 'Backend unavailable');
-    } finally {
-      clearTimeout(timeout);
+      readinessStatus = {
+        mode,
+        ok: false,
+        checkedAt: new Date().toISOString(),
+        status: error?.status || 502,
+        code: error?.code || 'BACKEND_UNAVAILABLE',
+      };
+      throw error;
     }
   }
 
   return {
     mode,
     call,
+    ready,
     cachedStatus() {
-      return { ...cachedStatus };
-    },
-    async ready(requestContext = {}) {
-      const result = await call({ action: 'health' }, requestContext);
-      return {
-        ok: result.status >= 200 && result.status < 300 && Number(result.data?.code || 0) === 0,
-        result,
-      };
+      return { ...readinessStatus };
     },
   };
 }
@@ -114,6 +132,15 @@ function sanitizeBody(input) {
   return body;
 }
 
+function transportHeaders(context = {}) {
+  const headers = {};
+  const clientIp = safeHeader(context.clientIp, 128);
+  const userAgent = safeHeader(context.userAgent, 512);
+  if (clientIp) headers['x-paperbanana-client-ip'] = clientIp;
+  if (userAgent) headers['user-agent'] = userAgent;
+  return headers;
+}
+
 function safeHeader(value, maxLength) {
   return String(value || '')
     .replace(/[\r\n]/g, '')
@@ -121,12 +148,10 @@ function safeHeader(value, maxLength) {
     .slice(0, maxLength);
 }
 
-function failedStatus(mode, status, code) {
-  return {
-    mode,
-    ok: false,
-    checkedAt: new Date().toISOString(),
-    status,
-    code,
-  };
+function nodeReadinessUrl(apiUrl) {
+  return new URL('/ready', apiUrl).toString();
+}
+
+function isHttpSuccess(status) {
+  return status >= 200 && status < 300;
 }

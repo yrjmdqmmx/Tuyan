@@ -14,6 +14,7 @@ function env(overrides = {}) {
     PAPERBANANA_API_URL: 'http://paperbanana-api:3006/paperbanana-api',
     PAPERBANANA_GATEWAY_TOKEN: 'gateway-token',
     PAPERBANANA_GUEST_COOKIE_SECRET: 'guest-cookie-secret-with-at-least-32-bytes',
+    ADMIN_USER_IDS: 'admin-id',
     ...overrides,
   };
 }

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
+import { request as httpRequest } from 'node:http';
 import test from 'node:test';
 
 import { createApp } from '../src/app.js';
@@ -11,7 +12,7 @@ function config(overrides = {}) {
     frontendOrigins: ['https://paperbanana.asia'],
     trustProxy: 1,
     adminToken: 'internal-admin-token',
-    adminEmails: new Set(['admin@example.com']),
+    adminUserIds: new Set(['admin-id']),
     guestCookie: {
       name: '__Host-paperbanana_guest',
       secret: 'current-guest-cookie-secret-32-bytes-long',
@@ -32,10 +33,17 @@ function config(overrides = {}) {
 
 function fakeAuth(overrides = {}) {
   const events = [];
+  const webRequests = [];
   return {
     events,
+    webRequests,
     handler(_req, res) {
       res.status(200).json({ code: 0, auth: true });
+    },
+    async webHandler(request) {
+      const body = request.method === 'GET' ? '' : await request.text();
+      webRequests.push({ request, body });
+      return Response.json({ code: 0, auth: true, body });
     },
     async optionalSession(req) {
       const value = req.get('x-test-session');
@@ -87,7 +95,13 @@ function fakeBackend(resolver = async () => ({ status: 200, data: { code: 0, ok:
   };
 }
 
-async function withApp({ auth = fakeAuth(), backend = fakeBackend(), appConfig = config(), isMaintenance = () => false }, run) {
+async function withApp({
+  auth = fakeAuth(),
+  backend = fakeBackend(),
+  appConfig = config(),
+  isMaintenance = () => false,
+  logger = { info() {}, warn() {}, error() {} },
+}, run) {
   const app = createApp({
     config: appConfig,
     auth,
@@ -95,7 +109,7 @@ async function withApp({ auth = fakeAuth(), backend = fakeBackend(), appConfig =
     isMaintenance,
     nowSeconds: () => 1_800_000_000,
     randomBytes: () => Buffer.alloc(32, 5),
-    logger: { info() {}, warn() {}, error() {} },
+    logger,
   });
   const server = app.listen(0, '127.0.0.1');
   await once(server, 'listening');
@@ -119,6 +133,92 @@ async function post(baseUrl, body, headers = {}) {
 function cookiePair(response) {
   return String(response.headers.get('set-cookie') || '').split(';', 1)[0];
 }
+
+function chunkedRequest(url, chunks) {
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url);
+    const request = httpRequest(
+      {
+        hostname: parsed.hostname,
+        port: parsed.port,
+        path: parsed.pathname,
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'transfer-encoding': 'chunked',
+        },
+      },
+      (response) => {
+        const body = [];
+        response.on('data', (chunk) => body.push(chunk));
+        response.on('end', () => resolve({
+          status: response.statusCode,
+          body: Buffer.concat(body).toString('utf8'),
+        }));
+      },
+    );
+    request.on('error', reject);
+    for (const chunk of chunks) request.write(chunk);
+    request.end();
+  });
+}
+
+test('Better Auth receives bounded request bodies through the Web handler bridge', async () => {
+  const auth = fakeAuth();
+  await withApp({ auth }, async ({ baseUrl }) => {
+    const payload = JSON.stringify({ email: 'owner@example.com', password: 'secret' });
+    const response = await fetch(`${baseUrl}/api/auth/sign-up/email`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: payload,
+    });
+    assert.equal(response.status, 200);
+    assert.equal(auth.webRequests.length, 1);
+    assert.equal(auth.webRequests[0].body, payload);
+  });
+});
+
+test('Better Auth rejects bodies larger than 1 MiB with the stable envelope', async () => {
+  const auth = fakeAuth();
+  await withApp({ auth }, async ({ baseUrl }) => {
+    const response = await fetch(`${baseUrl}/api/auth/sign-up/email`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ padding: 'x'.repeat(1024 * 1024) }),
+    });
+    assert.equal(response.status, 413);
+    assert.deepEqual(await response.json(), { code: 413, error: 'Request body too large' });
+    assert.equal(auth.webRequests.length, 0);
+  });
+});
+
+test('Better Auth counts chunked bytes instead of trusting Content-Length', async () => {
+  const auth = fakeAuth();
+  await withApp({ auth }, async ({ baseUrl }) => {
+    const response = await chunkedRequest(`${baseUrl}/api/auth/sign-up/email`, [
+      '{"padding":"',
+      'x'.repeat(600 * 1024),
+      'x'.repeat(600 * 1024),
+      '"}',
+    ]);
+    assert.equal(response.status, 413);
+    assert.deepEqual(JSON.parse(response.body), { code: 413, error: 'Request body too large' });
+    assert.equal(auth.webRequests.length, 0);
+  });
+});
+
+test('Better Auth still receives a valid chunked body below the limit', async () => {
+  const auth = fakeAuth();
+  await withApp({ auth }, async ({ baseUrl }) => {
+    const response = await chunkedRequest(`${baseUrl}/api/auth/sign-up/email`, [
+      '{"email":"owner@',
+      'example.com"}',
+    ]);
+    assert.equal(response.status, 200);
+    assert.equal(auth.webRequests.length, 1);
+    assert.equal(auth.webRequests[0].body, '{"email":"owner@example.com"}');
+  });
+});
 
 test('keeps HTTP-200 business envelopes including public saturation code 429', async () => {
   const backend = fakeBackend(async () => ({ status: 200, data: { code: 429, error: 'busy' } }));
@@ -197,7 +297,7 @@ test('getJob allows a matching guest owner and rejects missing or mismatched own
   });
 });
 
-test('getJob accepts historical account email and real admins', async () => {
+test('getJob accepts historical account email and immutable-id admins', async () => {
   let job = { id: 'job-1', userEmail: 'old@example.com' };
   const backend = fakeBackend(async () => ({ status: 200, data: { code: 0, job } }));
   await withApp({ backend }, async ({ baseUrl }) => {
@@ -210,6 +310,35 @@ test('getJob accepts historical account email and real admins', async () => {
       (await post(baseUrl, { action: 'getJob' }, { 'x-test-session': 'admin-id|admin@example.com' })).status,
       200,
     );
+  });
+});
+
+test('matching an admin email or caller token never grants admin access', async () => {
+  const backend = fakeBackend(async () => ({ status: 200, data: { code: 0, job: {} } }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const sameEmail = await post(
+      baseUrl,
+      { action: 'adminUsers', adminToken: 'internal-admin-token' },
+      {
+        'x-test-session': 'attacker-id|admin@example.com',
+        'x-admin-token': 'internal-admin-token',
+      },
+    );
+    assert.equal(sameEmail.status, 403);
+
+    const unauthenticated = await post(
+      baseUrl,
+      { action: 'adminUsers', adminToken: 'internal-admin-token' },
+      { 'x-admin-token': 'internal-admin-token' },
+    );
+    assert.equal(unauthenticated.status, 401);
+
+    const getJob = await post(
+      baseUrl,
+      { action: 'getJob', adminToken: 'internal-admin-token' },
+      { 'x-test-session': 'attacker-id|admin@example.com' },
+    );
+    assert.equal(getJob.status, 403);
   });
 });
 
@@ -350,9 +479,14 @@ test('health is cached liveness, ready probes dependencies, and compatibility ro
       code: 0,
       ok: true,
       runtime: 'gateway',
-      auth: { ok: true, checkedAt: 'cached-auth' },
+      auth: 'better-auth',
+      authReady: true,
       backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
       laf: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
+      dependencies: {
+        auth: { ok: true, checkedAt: 'cached-auth' },
+        backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
+      },
     });
     assert.equal(backend.calls.length, 0);
 
@@ -379,8 +513,8 @@ test('account deletion mutates auth only after semantic backend success', async 
   const order = [];
   const auth = fakeAuth({
     async verifyPassword() { order.push('password'); return true; },
-    async clearSessionCookie(_req, res) { order.push('clear'); res.append('set-cookie', 'session=; Max-Age=0'); },
     async deleteUser() { order.push('delete'); },
+    async clearSessionCookie(_req, res) { order.push('clear'); res.append('set-cookie', 'session=; Max-Age=0'); },
   });
   const backend = fakeBackend(async () => {
     order.push('backend');
@@ -393,8 +527,82 @@ test('account deletion mutates auth only after semantic backend success', async 
       body: JSON.stringify({ email: 'OWNER@example.com', password: 'secret' }),
     });
     assert.equal(response.status, 200);
-    assert.deepEqual(order, ['password', 'backend', 'clear', 'delete']);
+    assert.deepEqual(order, ['password', 'backend', 'delete', 'clear']);
   });
+});
+
+test('account deletion succeeds after commit even when cookie clearing fails', async () => {
+  const order = [];
+  const auth = fakeAuth({
+    async verifyPassword() { order.push('password'); return true; },
+    async deleteUser() { order.push('delete'); },
+    async clearSessionCookie() { order.push('clear'); throw new Error('cookie secret leaked'); },
+  });
+  const backend = fakeBackend(async () => {
+    order.push('backend');
+    return { status: 200, data: { code: 0, ok: true } };
+  });
+  await withApp({ auth, backend }, async ({ baseUrl }) => {
+    const response = await fetch(`${baseUrl}/api/account/delete`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
+      body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
+    });
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { code: 0, ok: true });
+    assert.deepEqual(order, ['password', 'backend', 'delete', 'clear']);
+  });
+});
+
+test('account deletion treats password-store failures as internal errors, not bad passwords', async () => {
+  const auth = fakeAuth({
+    async verifyPassword() {
+      throw new Error('Mongo failed: mongodb://owner:super-secret@mongodb:27017/auth');
+    },
+  });
+  const backend = fakeBackend();
+  await withApp({ auth, backend }, async ({ baseUrl }) => {
+    const response = await fetch(`${baseUrl}/api/account/delete`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
+      body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
+    });
+    assert.equal(response.status, 500);
+    assert.deepEqual(await response.json(), { code: 500, error: 'Internal server error' });
+    assert.equal(backend.calls.length, 0);
+  });
+});
+
+test('unexpected internal failures return a generic 500 and log only redacted detail', async () => {
+  const logEntries = [];
+  const auth = fakeAuth({
+    async listUsers() {
+      throw new Error('Mongo failed: mongodb://owner:super-secret@mongodb:27017/auth');
+    },
+  });
+  await withApp(
+    {
+      auth,
+      logger: {
+        info() {},
+        warn() {},
+        error(message, fields) { logEntries.push({ message, fields }); },
+      },
+    },
+    async ({ baseUrl }) => {
+      const response = await post(
+        baseUrl,
+        { action: 'adminUsers' },
+        { 'x-test-session': 'admin-id|changed@example.com' },
+      );
+      assert.equal(response.status, 500);
+      assert.deepEqual(await response.json(), { code: 500, error: 'Internal server error' });
+      const serialized = JSON.stringify(logEntries);
+      assert.match(serialized, /Mongo failed/);
+      assert.match(serialized, /\[REDACTED\]/);
+      assert.doesNotMatch(serialized, /super-secret/);
+    },
+  );
 });
 
 test('account deletion preserves auth on business failure and returns the original envelope', async () => {

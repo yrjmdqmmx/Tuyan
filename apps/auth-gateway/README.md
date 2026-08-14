@@ -18,8 +18,14 @@ is retained only as an explicit rollback target.
   forwarding headers. The gateway derives `req.ip` and sends only
   `x-paperbanana-client-ip` to the core. The core removes all raw forwarding
   and internal-auth headers before invoking the shared Laf handler.
-- The JSON request ceiling is 1 MiB. Oversized bodies return
+- Every JSON/auth request, including chunked `/api/auth/*` bodies, has a measured
+  1 MiB ceiling. Oversized bodies return
   `413 {"code":413,"error":"Request body too large"}`.
+- Admin actions require a logged-in Better Auth user id listed in
+  `ADMIN_USER_IDS`. Email addresses, request body `adminToken`, and
+  `X-Admin-Token` are never authorization inputs. `ADMIN_TOKEN` remains
+  server-only and is injected into a Laf rollback request only after the id
+  check succeeds.
 
 ## Identity and ownership
 
@@ -32,7 +38,8 @@ secret is never written to Mongo or forwarded publicly. A previous signing key
 can verify and rotate cookies without changing the owner.
 
 `getJob` fails closed unless its stored owner matches the current account id,
-historical account email, valid guest owner, or an authenticated admin email.
+historical account email, valid guest owner, or an authenticated immutable
+admin user id.
 Guest identity never grants `myJobs`, account deletion, or admin/list access.
 
 Before `refineImage`, result object keys are mapped to their first path segment
@@ -61,12 +68,24 @@ Authentication, `/health`, `/ready`, `getJob`, `myJobs`, `modelCapability`,
 `referenceLibrary`, `adminJobs`, `adminFeedback`, `adminUsers`, and
 `pingPlotWorker` remain available. `/health` is cached liveness and never waits
 for dependencies. `/ready` probes MongoDB and the selected backend and returns
-503 unless both are ready. Health responses keep the top-level
-`runtime:"gateway"`; `laf` is a one-release alias of `backend`.
+503 unless both are ready. Node mode probes the core's authenticated
+`GET /ready` and requires both HTTP success and `ready:true`; Laf rollback uses
+its legacy `health` action. Ordinary business responses never change this
+probe-derived readiness cache. Health responses keep top-level
+`runtime:"gateway"` and `auth:"better-auth"`; dependency detail lives under
+`dependencies`, while `laf` is a one-release alias of `backend`.
 
-Account deletion purges business data first. Auth cookies/users are removed
-only after an HTTP 2xx cleanup response with semantic `{code:0,ok:true}`.
-Business failures and HTTP/timeout failures leave auth intact.
+Account deletion verifies the current session password without signing in or
+creating another session, then purges business data. Only after an HTTP 2xx
+cleanup response with semantic `{code:0,ok:true}` does it atomically remove the
+session/account/user rows in one Mongo transaction. Cookie clearing happens
+after commit and is best-effort. Business failures, HTTP/timeout failures, and
+transaction failures leave auth rows intact. This requires the deployment's
+MongoDB to run as the documented single-member replica set.
+
+Unexpected internal errors always return a generic 500 envelope; redacted
+detail is retained only in server logs. Typed backend 502/504 envelopes remain
+public so clients can distinguish unavailable and timed-out dependencies.
 
 ## Development
 

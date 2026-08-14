@@ -1,6 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { mongodbAdapter } from 'better-auth/adapters/mongodb';
-import { fromNodeHeaders, toNodeHandler } from 'better-auth/node';
+import { fromNodeHeaders } from 'better-auth/node';
 import { MongoClient, ObjectId } from 'mongodb';
 
 export async function createAuthRuntime(
@@ -9,7 +9,6 @@ export async function createAuthRuntime(
     MongoClientClass = MongoClient,
     adapterFactory = mongodbAdapter,
     betterAuthFactory = betterAuth,
-    handlerFactory = toNodeHandler,
     fromNodeHeadersImpl = fromNodeHeaders,
   } = {},
 ) {
@@ -46,18 +45,23 @@ export async function createAuthRuntime(
   });
 
   return {
-    handler: handlerFactory(auth),
+    webHandler: auth.handler,
     async optionalSession(request) {
       return auth.api.getSession({
         headers: fromNodeHeadersImpl(request.headers),
       });
     },
-    async verifyPassword({ email, password, headers }) {
-      await auth.api.signInEmail({
-        body: { email, password },
-        headers: fromNodeHeadersImpl(headers),
-      });
-      return true;
+    async verifyPassword({ password, headers }) {
+      try {
+        const result = await auth.api.verifyPassword({
+          body: { password },
+          headers: fromNodeHeadersImpl(headers),
+        });
+        return result?.status === true;
+      } catch (error) {
+        if (error?.body?.code === 'INVALID_PASSWORD') return false;
+        throw error;
+      }
     },
     async clearSessionCookie(request, response) {
       const signOutResponse = await auth.api.signOut({
@@ -69,7 +73,7 @@ export async function createAuthRuntime(
       }
     },
     async deleteUser(userId) {
-      await deleteAuthUser(db, userId);
+      await deleteAuthUser(mongoClient, db, userId);
     },
     async listUsers(body = {}) {
       return listAuthUsers(db, body);
@@ -93,20 +97,35 @@ export async function createAuthRuntime(
   };
 }
 
-async function deleteAuthUser(db, userId) {
+async function deleteAuthUser(mongoClient, db, userId) {
   const id = String(userId || '');
-  if (!id) return;
+  if (!id) throw new Error('Auth user id is required');
   const candidates = [id];
   let objectId = null;
   if (ObjectId.isValid(id)) {
     objectId = new ObjectId(id);
     candidates.push(objectId);
   }
-  await db.collection('session').deleteMany({ userId: { $in: candidates } });
-  await db.collection('account').deleteMany({ userId: { $in: candidates } });
-  await db.collection('user').deleteOne(
-    objectId ? { $or: [{ _id: objectId }, { id }] } : { $or: [{ _id: id }, { id }] },
-  );
+  const session = mongoClient.startSession();
+  try {
+    await session.withTransaction(async () => {
+      const options = { session };
+      await db.collection('session').deleteMany({ userId: { $in: candidates } }, options);
+      await db.collection('account').deleteMany({ userId: { $in: candidates } }, options);
+      const userDeletion = await db.collection('user').deleteOne(
+        objectId ? { $or: [{ _id: objectId }, { id }] } : { $or: [{ _id: id }, { id }] },
+        options,
+      );
+      if (userDeletion.deletedCount !== 1) {
+        throw new Error('Auth user deletion did not match exactly one user');
+      }
+    }, {
+      readConcern: { level: 'snapshot' },
+      writeConcern: { w: 'majority' },
+    });
+  } finally {
+    await session.endSession();
+  }
 }
 
 async function listAuthUsers(db, body = {}) {

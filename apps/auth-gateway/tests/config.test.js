@@ -12,6 +12,7 @@ function validEnv(overrides = {}) {
     PAPERBANANA_API_URL: 'http://paperbanana-api:3006/paperbanana-api',
     PAPERBANANA_GATEWAY_TOKEN: 'gateway-token',
     PAPERBANANA_GUEST_COOKIE_SECRET: 'guest-cookie-secret-with-at-least-32-bytes',
+    ADMIN_USER_IDS: 'admin-id',
     ...overrides,
   };
 }
@@ -66,4 +67,19 @@ test('parses bounded timeouts and the single trusted ingress hop', () => {
   assert.equal(config.backend.timeoutMs, 2500);
   assert.equal(config.trustProxy, 1);
   assert.equal(config.listenHost, '0.0.0.0');
+});
+
+test('requires immutable admin user IDs and rejects email-shaped values', () => {
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ ADMIN_USER_IDS: '' })),
+    /ADMIN_USER_IDS is required/,
+  );
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ ADMIN_USER_IDS: 'owner@example.com' })),
+    /ADMIN_USER_IDS must contain immutable user IDs/,
+  );
+
+  const config = loadGatewayConfig(validEnv({ ADMIN_USER_IDS: 'admin-1,admin-2,admin-1' }));
+  assert.deepEqual([...config.adminUserIds], ['admin-1', 'admin-2']);
+  assert.equal(config.adminEmails, undefined);
 });

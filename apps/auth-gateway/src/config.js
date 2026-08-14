@@ -36,6 +36,10 @@ export function loadGatewayConfig(env = process.env) {
   if (sameSite && !['lax', 'strict', 'none'].includes(sameSite)) {
     throw new Error('COOKIE_SAME_SITE must be lax, strict, or none');
   }
+  const adminUserIds = parseList(required(env, 'ADMIN_USER_IDS'));
+  if (adminUserIds.some((id) => !/^[A-Za-z0-9._:-]{3,200}$/.test(id))) {
+    throw new Error('ADMIN_USER_IDS must contain immutable user IDs');
+  }
 
   return {
     production,
@@ -53,7 +57,7 @@ export function loadGatewayConfig(env = process.env) {
     backend,
     gatewayToken: required(env, 'PAPERBANANA_GATEWAY_TOKEN'),
     adminToken: stringValue(env.ADMIN_TOKEN),
-    adminEmails: new Set(parseList(env.ADMIN_EMAILS).map((email) => email.toLowerCase())),
+    adminUserIds: new Set(adminUserIds),
     guestCookie: {
       name: production ? '__Host-paperbanana_guest' : 'paperbanana_guest',
       secret: guestSecret,

@@ -1,10 +1,10 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
-
 import cors from 'cors';
 import express from 'express';
 
+import { createBoundedAuthHandler } from './auth-http.js';
 import { readGuestIdentity, resolveGuestIdentity } from './guest-identity.js';
 import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
+import { redactErrorForLog } from './redaction.js';
 
 const ADMIN_BACKEND_ACTIONS = new Set([
   'adminJobs',
@@ -47,11 +47,11 @@ export function createApp({
       },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Admin-Token'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
     }),
   );
 
-  app.all('/api/auth/*', auth.handler);
+  app.all('/api/auth/*', createBoundedAuthHandler(auth.webHandler));
   app.use(express.json({ limit: '1mb' }));
   app.use((request, response, next) => {
     response.on('finish', () => {
@@ -65,16 +65,22 @@ export function createApp({
   });
 
   const cachedHealth = () => {
+    const authStatus = auth.cachedStatus();
     const backendStatus = backend.cachedStatus();
     return {
       code: 0,
       ok: true,
       runtime: 'gateway',
-      auth: auth.cachedStatus(),
+      auth: 'better-auth',
+      authReady: authStatus.ok === true,
       backend: backendStatus,
       // One-release compatibility alias. This now describes whichever backend
       // is selected and can therefore report mode=node.
       laf: backendStatus,
+      dependencies: {
+        auth: authStatus,
+        backend: backendStatus,
+      },
     };
   };
 
@@ -93,9 +99,14 @@ export function createApp({
         code: ok ? 0 : 503,
         ok,
         runtime: 'gateway',
-        auth: authStatus,
+        auth: 'better-auth',
+        authReady: authStatus?.ok === true,
         backend: backendStatus,
         laf: backendStatus,
+        dependencies: {
+          auth: authStatus,
+          backend: backendStatus,
+        },
       });
     }),
   );
@@ -115,16 +126,10 @@ export function createApp({
         return response.status(403).json({ code: 403, error: 'EMAIL_MISMATCH' });
       }
 
-      let passwordValid = false;
-      try {
-        passwordValid = await auth.verifyPassword({
-          email: session.user.email,
-          password,
-          headers: request.headers,
-        });
-      } catch {
-        passwordValid = false;
-      }
+      const passwordValid = await auth.verifyPassword({
+        password,
+        headers: request.headers,
+      });
       if (!passwordValid) {
         return response.status(401).json({ code: 401, error: 'INVALID_PASSWORD' });
       }
@@ -146,8 +151,14 @@ export function createApp({
         return relay(response, cleanup);
       }
 
-      await auth.clearSessionCookie(request, response);
       await auth.deleteUser(String(session.user.id || ''));
+      try {
+        await auth.clearSessionCookie(request, response);
+      } catch (error) {
+        logger.warn?.('account deleted but session cookie clearing failed', {
+          error: redactErrorForLog(error),
+        });
+      }
       return response.status(200).json({ code: 0, ok: true });
     }),
   );
@@ -303,8 +314,12 @@ export function createApp({
     }
     if (response.headersSent) return next(error);
     const status = boundedStatus(error?.status || error?.statusCode || 500);
-    const publicError = error?.code || safeMessage(error);
-    logger.error?.('request failed', { status, code: error?.code || 'REQUEST_FAILED' });
+    const publicError = publicErrorMessage(error, status);
+    logger.error?.('request failed', {
+      status,
+      code: error?.code || 'REQUEST_FAILED',
+      error: redactErrorForLog(error),
+    });
     return response.status(status).json({ code: status, error: publicError });
   });
 
@@ -368,22 +383,14 @@ async function requireSession(auth, request) {
 async function requireAdmin(config, auth, request) {
   const session = await auth.optionalSession(request);
   if (isAdminUser(config, session?.user)) return session;
-  if (tokensMatch(String(request.body?.adminToken || ''), config.adminToken)) return session;
   const error = new Error(session?.user ? 'Forbidden' : '请先登录管理员账号。');
   error.status = session?.user ? 403 : 401;
   throw error;
 }
 
 function isAdminUser(config, user) {
-  const email = normalizedEmail(user?.email);
-  return Boolean(email && config.adminEmails.has(email));
-}
-
-function tokensMatch(actual, expected) {
-  if (!actual || !expected) return false;
-  const left = createHash('sha256').update(actual).digest();
-  const right = createHash('sha256').update(expected).digest();
-  return timingSafeEqual(left, right);
+  const userId = String(user?.id || '').trim();
+  return Boolean(userId && config.adminUserIds.has(userId));
 }
 
 function forbidden(response) {
@@ -428,6 +435,14 @@ function boundedStatus(value) {
 
 function safeMessage(error) {
   return String(error?.message || error || 'Internal server error');
+}
+
+function publicErrorMessage(error, status) {
+  if (status < 500) return safeMessage(error);
+  if (['BACKEND_UNAVAILABLE', 'BACKEND_TIMEOUT', 'ADMIN_API_DISABLED'].includes(error?.code)) {
+    return error.code;
+  }
+  return 'Internal server error';
 }
 
 export const maintenanceActions = new Set(MAINTENANCE_ACTIONS);

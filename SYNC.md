@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-15] Auth Gateway 复审加固：Auth 限流、不可变管理员 ID、事务注销与权威就绪 — by Codex
+变更：修复迁移复审发现的认证请求体绕过、邮箱管理员竞态、非事务注销、健康字段兼容与 readiness 污染问题；公开业务 action/请求/响应字段不变。
+契约（影响其他端 / 共享）：
+- **全路由 1 MiB**：`/api/auth/*` 现在与 `/paperbanana-api` 一样按实际流字节计数，包含 chunked 请求且不信任 Content-Length；超限统一返回 HTTP 413 `{code:413,error:'Request body too large'}`，限内 body 原样交给 Better Auth。
+- **管理员只认不可变 ID**：新增必需 env `ADMIN_USER_IDS`（逗号分隔 Better Auth `user.id`）；废弃 `ADMIN_EMAILS`。邮箱、body `adminToken`、`X-Admin-Token` 一律不能授权；服务端 `ADMIN_TOKEN` 仅在已通过 ID 会话鉴权的 Laf 回滚管理员请求中内部注入。即使攻击者注册/改成相同邮箱也没有管理员权限。
+- **账号注销原子性**：改用当前 session 的 `auth.api.verifyPassword`，不再通过 sign-in 产生新 session。业务数据先清理且仍须 HTTP 2xx + `{code:0,ok:true}`；随后在 Mongo transaction 内一次提交 session/account/user 删除，任一步失败全部回滚。提交后才尽力清 Cookie，清理 Cookie 失败不改变注销成功。Auth Mongo 必须运行单成员副本集以支持事务。
+- **健康兼容/就绪权威**：`/health` 与兼容 health 响应恢复顶层 `auth:'better-auth'`，细节放入 `authReady`/`dependencies`，只增加 `backend` 状态并保留一版 `laf` 别名。Node readiness 固定调用核心 `GET /ready` 且要求 HTTP 2xx + `ready:true`；Laf 回滚才调用 health action。业务成功或 `{code:429}` 等业务 envelope 不再治愈/污染 readiness 缓存。
+- **错误卫生**：未预期的 Mongo/内部异常仅返回稳定 `{code:500,error:'Internal server error'}`，详细错误只写入脱敏日志；明确的后端 502/504 类型仍保持公开。
+各端待办：
+- [x] auth-gateway / paperbanana-api 传输（实现、测试、文档）
+- [ ] 部署/运维（配置 `ADMIN_USER_IDS`，删除 `ADMIN_EMAILS`；Auth Mongo 以 replica set 启动并完成 transaction smoke）
+- [x] Web/iOS（公开 API action/envelope 不变，无代码改动）
+
 ### [2026-08-14] Auth Gateway 切换香港 Node 核心、访客归属与精修授权 — by Codex (auth-gateway + shared transport)
 变更：网关重构为 Node 24 可测试常驻服务，优先固定转发香港内部 Node 核心；新增匿名访客的稳定任务归属、精修源任务授权、动态维护模式和依赖就绪检查。公开 `/paperbanana-api` action/字段/业务 envelope 不变。
 契约（影响其他端 / 共享）：

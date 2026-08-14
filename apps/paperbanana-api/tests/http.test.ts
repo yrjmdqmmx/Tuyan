@@ -185,6 +185,7 @@ test('OPTIONS preserves CORS behavior and returns 204 without transport authenti
     assert.equal(response.headers.get('access-control-allow-origin'), '*')
     assert.equal(response.headers.get('access-control-allow-methods'), 'GET,POST,OPTIONS')
     assert.match(response.headers.get('access-control-allow-headers') || '', /X-Paperbanana-Gateway-Token/i)
+    assert.doesNotMatch(response.headers.get('access-control-allow-headers') || '', /X-Admin-Token/i)
   })
 })
 

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { ObjectId } from 'mongodb';
 
 import { createAuthRuntime } from '../src/auth.js';
 
@@ -44,9 +45,10 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   }
   let betterConfig;
   const fakeAuth = {
+    handler: async () => Response.json({ ok: true }),
     api: {
       async getSession() { return { user: { id: 'u1' } }; },
-      async signInEmail() { return { user: { id: 'u1' } }; },
+      async verifyPassword() { return { status: true }; },
       async signOut() {
         return { headers: { getSetCookie: () => ['session=; Max-Age=0'] } };
       },
@@ -69,7 +71,6 @@ test('auth runtime connects only when constructed and exposes readiness and grac
       MongoClientClass: FakeMongoClient,
       adapterFactory: (value) => ({ adapterDb: value }),
       betterAuthFactory(config) { betterConfig = config; return fakeAuth; },
-      handlerFactory: () => 'auth-handler',
       fromNodeHeadersImpl: (headers) => headers,
     },
   );
@@ -81,7 +82,7 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   ]);
   assert.equal(betterConfig.database.adapterDb, db);
   assert.equal(betterConfig.advanced.useSecureCookies, true);
-  assert.equal(runtime.handler, 'auth-handler');
+  assert.equal(runtime.webHandler, fakeAuth.handler);
   assert.deepEqual(runtime.cachedStatus(), { ok: true, checkedAt: null });
   assert.deepEqual(await runtime.ready(), { ok: true });
   assert.deepEqual(db.commands, [{ ping: 1 }]);
@@ -90,7 +91,7 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   assert.equal(events.at(-1), 'close');
 });
 
-test('verifyPassword, cookie clearing, and hard deletion use the configured auth store', async () => {
+test('verifyPassword uses the current session endpoint and never creates a new session', async () => {
   const db = fakeDatabase();
   class FakeMongoClient {
     async connect() {}
@@ -113,22 +114,23 @@ test('verifyPassword, cookie clearing, and hard deletion use the configured auth
       MongoClientClass: FakeMongoClient,
       adapterFactory: () => ({}),
       betterAuthFactory: () => ({
+        handler: async () => Response.json({ ok: true }),
         api: {
           async getSession() { return null; },
-          async signInEmail(input) { authApiCalls.push(['signInEmail', input]); return {}; },
+          async signInEmail() { throw new Error('must not create a session'); },
+          async verifyPassword(input) { authApiCalls.push(['verifyPassword', input]); return { status: true }; },
           async signOut(input) {
             authApiCalls.push(['signOut', input]);
             return { headers: { getSetCookie: () => ['paperbanana.session=; Max-Age=0'] } };
           },
         },
       }),
-      handlerFactory: () => () => {},
       fromNodeHeadersImpl: (headers) => ({ converted: headers }),
     },
   );
 
   assert.equal(
-    await runtime.verifyPassword({ email: 'owner@example.com', password: 'secret', headers: { cookie: 'x' } }),
+    await runtime.verifyPassword({ password: 'secret', headers: { cookie: 'session=x' } }),
     true,
   );
   const appended = [];
@@ -136,13 +138,184 @@ test('verifyPassword, cookie clearing, and hard deletion use the configured auth
     { headers: { cookie: 'x' } },
     { append(name, value) { appended.push([name, value]); } },
   );
-  await runtime.deleteUser('507f1f77bcf86cd799439011');
-
-  assert.equal(authApiCalls[0][0], 'signInEmail');
+  assert.equal(authApiCalls[0][0], 'verifyPassword');
+  assert.deepEqual(authApiCalls[0][1], {
+    body: { password: 'secret' },
+    headers: { converted: { cookie: 'session=x' } },
+  });
   assert.deepEqual(appended, [['Set-Cookie', 'paperbanana.session=; Max-Age=0']]);
-  assert.deepEqual(db.operations.map(([name]) => name), [
-    'session.deleteMany',
-    'account.deleteMany',
-    'user.deleteOne',
-  ]);
+});
+
+test('verifyPassword maps only Better Auth INVALID_PASSWORD and propagates internal failures', async () => {
+  const db = fakeDatabase();
+  class FakeMongoClient {
+    async connect() {}
+    db() { return db; }
+    async close() {}
+  }
+  let failure = Object.assign(new Error('Invalid password'), {
+    statusCode: 400,
+    body: { code: 'INVALID_PASSWORD', message: 'Invalid password' },
+  });
+  const runtime = await createAuthRuntime(
+    {
+      mongoUri: 'mongodb://mongo:27017',
+      mongoDbName: 'paperbanana_auth',
+      authSecret: 'auth-secret',
+      authBaseUrl: 'https://api.paperbanana.asia/',
+      frontendOrigins: [],
+      production: true,
+      cookieDomain: '',
+      cookieSameSite: 'lax',
+    },
+    {
+      MongoClientClass: FakeMongoClient,
+      adapterFactory: () => ({}),
+      betterAuthFactory: () => ({
+        handler: async () => Response.json({ ok: true }),
+        api: {
+          async getSession() { return null; },
+          async verifyPassword() { throw failure; },
+          async signOut() { return { headers: { getSetCookie: () => [] } }; },
+        },
+      }),
+      fromNodeHeadersImpl: (headers) => headers,
+    },
+  );
+
+  assert.equal(await runtime.verifyPassword({ password: 'wrong', headers: {} }), false);
+  failure = new Error('Mongo connection failed');
+  await assert.rejects(
+    () => runtime.verifyPassword({ password: 'secret', headers: {} }),
+    /Mongo connection failed/,
+  );
+});
+
+function transactionalFixture(failAt = '') {
+  const id = new ObjectId('507f1f77bcf86cd799439011');
+  const state = {
+    session: [{ userId: id }, { userId: String(id) }],
+    account: [{ userId: id }, { userId: String(id) }],
+    user: [{ _id: id, id: String(id) }],
+  };
+  const operations = [];
+  let ended = 0;
+  const mongoSession = {
+    async withTransaction(work) {
+      const snapshot = Object.fromEntries(Object.entries(state).map(([name, rows]) => [name, [...rows]]));
+      try {
+        await work();
+      } catch (error) {
+        for (const [name, rows] of Object.entries(snapshot)) state[name] = rows;
+        throw error;
+      }
+    },
+    async endSession() { ended += 1; },
+  };
+  const db = {
+    async command() { return { ok: 1 }; },
+    collection(name) {
+      return {
+        async deleteMany(query, options) {
+          operations.push({ name, query, options });
+          assert.equal(options.session, mongoSession);
+          if (failAt === name) throw new Error(`injected ${name} failure`);
+          state[name] = [];
+        },
+        async deleteOne(query, options) {
+          operations.push({ name, query, options });
+          assert.equal(options.session, mongoSession);
+          if (failAt === name) throw new Error(`injected ${name} failure`);
+          if (failAt === 'user-missing') return { deletedCount: 0 };
+          state[name] = [];
+          return { deletedCount: 1 };
+        },
+        find() {
+          return { sort() { return this; }, limit() { return this; }, async toArray() { return []; } };
+        },
+        aggregate() { return { async toArray() { return []; } }; },
+      };
+    },
+  };
+  class FakeMongoClient {
+    async connect() {}
+    db() { return db; }
+    startSession() { return mongoSession; }
+    async close() {}
+  }
+  return { id, state, operations, FakeMongoClient, ended: () => ended };
+}
+
+async function runtimeForTransaction(fixture) {
+  return createAuthRuntime(
+    {
+      mongoUri: 'mongodb://mongo:27017',
+      mongoDbName: 'paperbanana_auth',
+      authSecret: 'auth-secret',
+      authBaseUrl: 'https://api.paperbanana.asia/',
+      frontendOrigins: [],
+      production: true,
+      cookieDomain: '',
+      cookieSameSite: 'lax',
+    },
+    {
+      MongoClientClass: fixture.FakeMongoClient,
+      adapterFactory: () => ({}),
+      betterAuthFactory: () => ({
+        handler: async () => Response.json({ ok: true }),
+        api: {
+          async getSession() { return null; },
+          async verifyPassword() { return { status: true }; },
+          async signOut() { return { headers: { getSetCookie: () => [] } }; },
+        },
+      }),
+      fromNodeHeadersImpl: (headers) => headers,
+    },
+  );
+}
+
+test('hard deletion commits session, account, and user removal in one Mongo transaction', async () => {
+  const fixture = transactionalFixture();
+  const runtime = await runtimeForTransaction(fixture);
+
+  await runtime.deleteUser(String(fixture.id));
+
+  assert.deepEqual(Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])), {
+    session: 0,
+    account: 0,
+    user: 0,
+  });
+  assert.equal(fixture.ended(), 1);
+  assert.deepEqual(fixture.operations.map(({ name }) => name), ['session', 'account', 'user']);
+  const candidates = fixture.operations[0].query.userId.$in;
+  assert.ok(candidates.some((value) => typeof value === 'string'));
+  assert.ok(candidates.some((value) => value instanceof ObjectId));
+});
+
+test('hard deletion rolls back without partial auth loss on every injected delete failure', async () => {
+  for (const failAt of ['session', 'account', 'user', 'user-missing']) {
+    const fixture = transactionalFixture(failAt);
+    const runtime = await runtimeForTransaction(fixture);
+
+    await assert.rejects(
+      () => runtime.deleteUser(String(fixture.id)),
+      failAt === 'user-missing' ? /Auth user deletion did not match/ : new RegExp(`injected ${failAt} failure`),
+    );
+    assert.deepEqual(
+      Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])),
+      { session: 2, account: 2, user: 1 },
+      failAt,
+    );
+    assert.equal(fixture.ended(), 1);
+  }
+});
+
+test('hard deletion rejects an empty current-session user id', async () => {
+  const fixture = transactionalFixture();
+  const runtime = await runtimeForTransaction(fixture);
+  await assert.rejects(() => runtime.deleteUser(''), /Auth user id is required/);
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])),
+    { session: 2, account: 2, user: 1 },
+  );
 });
