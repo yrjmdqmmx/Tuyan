@@ -20,6 +20,10 @@ type OssClient = {
     additionalHeaders?: string[],
   ): Promise<string>
   put(key: string, content: unknown, options?: Record<string, unknown>): Promise<unknown>
+  head?(key: string): Promise<{
+    status?: number
+    res?: { status?: number; headers?: Record<string, string | string[] | undefined> }
+  }>
   getObjectMeta?(key: string): Promise<{
     status?: number
     res?: { status?: number; headers?: Record<string, string | string[] | undefined> }
@@ -122,8 +126,8 @@ export function createOssAdapter(
         return serverClient.put(key, content, { headers: normalizeHeaders(metadata) })
       },
       async headFile(key: string): Promise<{ size: number; mimeType: string; etag: string }> {
-        if (!serverClient.getObjectMeta) throw new Error('OSS client does not support object metadata')
-        const result = await serverClient.getObjectMeta(key)
+        if (!serverClient.head) throw new Error('OSS client does not support object HEAD metadata')
+        const result = await serverClient.head(key)
         const headers = result.res?.headers
         const size = Number(firstHeader(headers, 'content-length'))
         if (!Number.isFinite(size) || size < 0) throw new Error(`OSS object ${key} has invalid content length`)

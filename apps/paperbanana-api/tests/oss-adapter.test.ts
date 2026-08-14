@@ -148,7 +148,7 @@ test('OSS readiness rejects any bucket that is not private', async () => {
 
 test('headFile normalizes authoritative object size and content type from the internal client', async () => {
   const serverClient = {
-    async getObjectMeta(key: string) {
+    async head(key: string) {
       assert.equal(key, 'references/a.png')
       return {
         status: 200,
