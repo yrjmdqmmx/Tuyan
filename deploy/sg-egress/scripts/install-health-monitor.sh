@@ -105,19 +105,38 @@ timer_target="$systemd_dir/paperbanana-hk-egress-health@.timer"
 timer_unit="paperbanana-hk-egress-health@${wg_interface}.timer"
 timer_was_enabled=false
 timer_was_active=false
-if timer_enabled_state="$(systemctl is-enabled "$timer_unit" 2>/dev/null)"; then
-  :
-else
-  timer_enabled_status=$?
-  if [[ -z "$timer_enabled_state" ]]; then
-    echo "cannot determine whether $timer_unit is enabled (systemctl query exited $timer_enabled_status)" >&2
-    exit 2
-  fi
+if ! timer_unit_state="$(systemctl show --property=LoadState --property=UnitFileState "$timer_unit")"; then
+  echo "cannot determine prior unit state for $timer_unit" >&2
+  exit 2
 fi
-case "$timer_enabled_state" in
-  enabled|enabled-runtime) timer_was_enabled=true ;;
-  disabled|static|indirect|masked|not-found) ;;
-  *) echo "unexpected enablement state for $timer_unit: $timer_enabled_state" >&2; exit 2 ;;
+timer_load_state=""
+timer_file_state=""
+timer_load_seen=false
+timer_file_seen=false
+while IFS='=' read -r property value; do
+  case "$property" in
+    LoadState)
+      [[ "$timer_load_seen" == false ]] || { echo "duplicate LoadState for $timer_unit" >&2; exit 2; }
+      timer_load_state="$value"
+      timer_load_seen=true
+      ;;
+    UnitFileState)
+      [[ "$timer_file_seen" == false ]] || { echo "duplicate UnitFileState for $timer_unit" >&2; exit 2; }
+      timer_file_state="$value"
+      timer_file_seen=true
+      ;;
+    *) echo "unexpected systemd state property for $timer_unit" >&2; exit 2 ;;
+  esac
+done <<<"$timer_unit_state"
+[[ "$timer_load_seen" == true && "$timer_file_seen" == true ]] || {
+  echo "incomplete prior unit state for $timer_unit" >&2
+  exit 2
+}
+case "$timer_load_state:$timer_file_state" in
+  not-found:|not-found:disabled) ;;
+  loaded:enabled|loaded:enabled-runtime) timer_was_enabled=true ;;
+  loaded:disabled|loaded:static|loaded:indirect|loaded:masked|loaded:masked-runtime) ;;
+  *) echo "unexpected prior unit state for $timer_unit: $timer_load_state/$timer_file_state" >&2; exit 2 ;;
 esac
 if systemctl is-active --quiet "$timer_unit"; then
   timer_was_active=true

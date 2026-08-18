@@ -240,10 +240,18 @@ case " $* " in
   *' is-enabled paperbanana-hk-egress-health@pbhk0.timer '*)
     test ${overrides.failHkTimerEnabledQuery ? 1 : 0} = 1 && exit 1
     if test -e "${state.hkHealthTimerEnabled}"; then printf '%s\\n' enabled; exit 0; fi
-    printf '%s\\n' disabled; exit 1 ;;
+    exit 1 ;;
   *' is-active --quiet paperbanana-hk-egress-health@pbhk0.service '*) test -e "${state.hkHealthServiceActive}" && exit 0 || exit 3 ;;
   *' show --property=Result --value paperbanana-hk-egress-health@pbhk0.service '*) printf '%s\\n' '${overrides.hkServiceResult ?? 'success'}'; exit 0 ;;
   *' show --property=ExecMainStatus --value paperbanana-hk-egress-health@pbhk0.service '*) printf '%s\\n' '${overrides.hkServiceExecMainStatus ?? '0'}'; exit 0 ;;
+  *' show --property=LoadState --property=UnitFileState paperbanana-hk-egress-health@pbhk0.timer '*)
+    test ${overrides.failHkTimerEnabledQuery ? 1 : 0} = 1 && exit 1
+    if test -e "${state.hkHealthTimerLoaded}"; then
+      printf '%s\\n' 'LoadState=loaded' 'UnitFileState=${overrides.hkTimerUnitFileState ?? (overrides.hkHealthTimerEnabled ?? overrides.hkHealthTimerActive ? 'enabled' : 'disabled')}'
+    else
+      printf '%s\\n' 'LoadState=not-found' 'UnitFileState='
+    fi
+    exit 0 ;;
   *' show --property=LoadState --value wg-quick@pbsg0 '*) test -e "${state.wgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value wg-quick@pbhk0 '*) test ${overrides.hkWgTemplateAlwaysLoaded ? 1 : 0} = 1 && printf '%s\\n' loaded && exit 0; test -e "${state.hkWgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value squid '*) test -e "${state.squidLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
@@ -1725,6 +1733,44 @@ test('health monitor installation requires an explicit Hong Kong host and WireGu
     assert.ok(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.service')));
     assert.ok(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.timer')));
     assert.match(commandLog(fixture), /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('health monitor installation accepts Debian absent-unit state with empty is-enabled output', () => {
+  const fixture = makeFixture();
+  try {
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    const log = commandLog(fixture);
+    assert.match(log, /systemctl show --property=LoadState --property=UnitFileState paperbanana-hk-egress-health@pbhk0\.timer/);
+    assert.doesNotMatch(log, /systemctl is-enabled paperbanana-hk-egress-health@pbhk0\.timer/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('health monitor installation accepts known loaded non-enabled timer states', () => {
+  for (const hkTimerUnitFileState of ['disabled', 'static', 'indirect', 'masked']) {
+    const fixture = makeFixture({ hkHealthTimerLoaded: true, hkTimerUnitFileState });
+    try {
+      const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+      assert.equal(result.status, 0, `${hkTimerUnitFileState}: ${result.stderr}`);
+    } finally {
+      fixture.cleanup();
+    }
+  }
+});
+
+test('health monitor installation fails closed on an unexpected loaded timer state', () => {
+  const fixture = makeFixture({ hkHealthTimerLoaded: true, hkTimerUnitFileState: 'bad' });
+  try {
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /unexpected.*state|cannot determine/i);
+    assert.equal(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.service')), false);
+    assert.doesNotMatch(commandLog(fixture), /systemctl start paperbanana-hk-egress-health@pbhk0\.service/);
   } finally {
     fixture.cleanup();
   }
