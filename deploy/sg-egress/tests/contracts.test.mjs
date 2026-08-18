@@ -13,6 +13,7 @@ const scripts = [
   'scripts/smoke.sh',
   'scripts/monitor-health.sh',
   'scripts/install-health-monitor.sh',
+  'scripts/wait-and-verify-core.sh',
   'scripts/uninstall.sh',
 ];
 
@@ -83,6 +84,8 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
   const workflowPath = new URL('../../../.github/workflows/deploy-sg-egress.yml', import.meta.url);
   assert.ok(existsSync(workflowPath), 'manual Singapore delivery workflow must be committed');
   const workflow = readFileSync(workflowPath, 'utf8');
+  const verifier = read('scripts/wait-and-verify-core.sh');
+  const deliveryContract = `${workflow}\n${verifier}`;
   const runBlocks = [...workflow.matchAll(/\n\s+run:\s*\|\n([\s\S]*?)(?=\n\s+(?:- name:|- uses:|[a-zA-Z][a-zA-Z_-]*:)|$)/g)]
     .map((match) => match[1])
     .join('\n');
@@ -129,17 +132,12 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
   assert.match(workflow, /original_status=\$\?/);
   assert.match(workflow, /rollback_failed/);
   assert.match(workflow, /PAPERBANANA_PROVIDER_EGRESS_MODE=disabled/);
-  assert.match(workflow, /compose\[?@?\]?.*exec|-T paperbanana-api/);
-  assert.match(workflow, /providerEgress[\s\S]*degraded/);
-  assert.match(workflow, /PAPERBANANA_PROVIDER_EGRESS_MODE[\s\S]*sg-required/);
-  assert.match(workflow, /docker inspect[\s\S]*\.State\.Health\.Status[\s\S]*healthy/);
-  assert.match(workflow, /fetch\("http:\/\/127\.0\.0\.1:3000\/ready"\)/);
-  assert.match(workflow, /\.ready == true/);
-  assert.match(workflow, /has\("providerEgress"\)/);
-  assert.ok(
-    workflow.lastIndexOf('trap - ERR') > workflow.lastIndexOf('has("providerEgress")'),
-    'activation rollback must remain armed until Core mode, health and readiness are verified',
-  );
+  assert.match(deliveryContract, /compose\[?@?\]?.*exec|-T paperbanana-api/);
+  assert.match(deliveryContract, /providerEgress[\s\S]*degraded/);
+  assert.match(deliveryContract, /PAPERBANANA_PROVIDER_EGRESS_MODE[\s\S]*sg-required/);
+  assert.match(deliveryContract, /docker inspect[\s\S]*\.State\.Health\.Status[\s\S]*healthy/);
+  assert.match(deliveryContract, /fetch\("http:\/\/127\.0\.0\.1:3000\/ready"\)/);
+  assert.match(deliveryContract, /\.ready == true/);
   assert.match(workflow, /rollback verification failed|rollback failed/i);
   assert.match(workflow, /stop(?:\s+-t\s+[0-9]+)?\s+paperbanana-api/);
   assert.match(workflow, /ps --status running -q paperbanana-api/);
@@ -149,6 +147,52 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
   assert.doesNotMatch(workflow, /(?:rm\s+-rf|git\s+reset\s+--hard|docker\s+(?:compose\s+)?down|systemctl\s+(?:stop|disable)[^\n]*(?:docker|nginx|mongod)|scripts\/uninstall\.sh)/);
   assert.doesNotMatch(workflow, /Authorization:|OPENAI_API_KEY|GEMINI_API_KEY|OPENROUTER_API_KEY|sk-[A-Za-z0-9]/i);
   assert.doesNotMatch(workflow, /\\\[[0-9A-Fa-f:]+\\\]:51820|\[2001:/);
+});
+
+test('Core delivery state verification is bounded, ordered and reused by every workflow transition', () => {
+  const workflow = readFileSync(new URL('../../../.github/workflows/deploy-sg-egress.yml', import.meta.url), 'utf8');
+  const verifier = read('scripts/wait-and-verify-core.sh');
+  const calls = [...workflow.matchAll(/wait-and-verify-core\.sh (disabled degraded|sg-required degraded-or-ready)/g)]
+    .map((match) => ({ state: match[1], index: match.index }));
+
+  assert.deepEqual(calls.map(({ state }) => state), [
+    'disabled degraded',
+    'disabled degraded',
+    'sg-required degraded-or-ready',
+  ]);
+  assert.match(verifier, /for attempt in \$\(seq 1 [1-9][0-9]*\)/);
+  assert.match(verifier, /sleep [1-9][0-9]*/);
+  assert.match(verifier, /expected_mode="\$1"/);
+  assert.match(verifier, /expected_provider_state="\$2"/);
+  assert.match(verifier, /response\.status !== 200/);
+  assert.match(verifier, /PAPERBANANA_PROVIDER_EGRESS_MODE/);
+  assert.match(verifier, /disabled:degraded/);
+  assert.match(verifier, /sg-required:degraded-or-ready/);
+  assert.match(verifier, /providerEgress/);
+
+  const orderedChecks = [
+    'ps --status running -q paperbanana-api',
+    'docker inspect',
+    'http://127.0.0.1:3000/ready',
+    'printenv PAPERBANANA_PROVIDER_EGRESS_MODE',
+    'http://127.0.0.1:3000/health',
+  ].map((needle) => verifier.indexOf(needle));
+  assert.ok(orderedChecks.every((index) => index >= 0), 'verifier must contain every required state check');
+  assert.deepEqual([...orderedChecks].sort((a, b) => a - b), orderedChecks, 'async checks must run in safe startup order');
+
+  const initialUp = workflow.indexOf('up -d --no-deps --force-recreate paperbanana-api');
+  const tunnelStep = workflow.indexOf('- name: Dry-run then install SG and HK tunnel assets');
+  assert.ok(initialUp < calls[0].index && calls[0].index < tunnelStep, 'disabled Core must verify before tunnel work');
+
+  const rollbackStart = workflow.indexOf('rollback_disabled()');
+  const activationSwitch = workflow.lastIndexOf('--mode sg-required --apply');
+  const finalTrapClear = workflow.lastIndexOf('trap - ERR');
+  assert.ok(rollbackStart < calls[1].index && calls[1].index < activationSwitch, 'rollback must use the bounded disabled verifier');
+  assert.ok(activationSwitch < calls[2].index && calls[2].index < finalTrapClear, 'activation must verify before disarming rollback');
+
+  const rollbackPrefix = workflow.slice(rollbackStart, calls[1].index);
+  assert.doesNotMatch(rollbackPrefix, /(?:switch|compose\[@\]).*\n[\s\S]{0,180}rollback_failed=true/);
+  assert.match(workflow.slice(calls[1].index, activationSwitch), /rollback_failed=true/);
 });
 
 test('WireGuard endpoint parsers share the IPv4-or-DNS host:51820 contract and reject brackets', () => {

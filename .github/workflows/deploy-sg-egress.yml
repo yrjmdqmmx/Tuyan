@@ -171,6 +171,7 @@ jobs:
           "$switch" --mode disabled --apply
           cd /opt/paperbanana/repo/deploy/hk-single-host
           docker compose --project-name paperbanana-hk --project-directory . --env-file .env -f compose.yaml up -d --no-deps --force-recreate paperbanana-api
+          /opt/paperbanana-sg-egress/scripts/wait-and-verify-core.sh disabled degraded
           REMOTE
 
       - name: Dry-run then install SG and HK tunnel assets
@@ -222,28 +223,17 @@ jobs:
             trap - ERR
             rollback_failed=false
             if ! "$switch" --mode disabled --apply; then
-              echo "rollback failed: could not set disabled mode" >&2
-              rollback_failed=true
+              echo "rollback warning: disabled mode switch command failed; verifying observed state" >&2
             fi
             if ! "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api; then
-              echo "rollback failed: could not recreate paperbanana-api" >&2
-              rollback_failed=true
+              echo "rollback warning: Core recreate command failed; waiting for observed state" >&2
             fi
             if ! grep -Fqx 'PAPERBANANA_PROVIDER_EGRESS_MODE=disabled' /opt/paperbanana/secrets/core.env; then
               echo "rollback verification failed: core.env is not disabled" >&2
               rollback_failed=true
             fi
-            if ! container_mode="$("${compose[@]}" exec -T paperbanana-api printenv PAPERBANANA_PROVIDER_EGRESS_MODE)" || [[ "$container_mode" != "disabled" ]]; then
-              echo "rollback verification failed: running Core mode is not disabled" >&2
-              rollback_failed=true
-            fi
-            if ! health_payload="$("${compose[@]}" exec -T paperbanana-api node -e '
-              fetch("http://127.0.0.1:3000/health")
-                .then((response) => response.text())
-                .then((body) => process.stdout.write(body))
-                .catch(() => process.exit(1))
-            ')" || ! jq -e '.ready == true and .dependencies.providerEgress == "degraded"' >/dev/null <<<"$health_payload"; then
-              echo "rollback verification failed: Core health is not ready with providerEgress degraded" >&2
+            if ! /opt/paperbanana-sg-egress/scripts/wait-and-verify-core.sh disabled degraded; then
+              echo "rollback verification failed: Core did not converge to verified disabled state" >&2
               rollback_failed=true
             fi
             if [[ "$rollback_failed" == true ]]; then
@@ -278,34 +268,6 @@ jobs:
           "$switch" --mode sg-required --apply
           "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api
           /opt/paperbanana-sg-egress/scripts/smoke.sh --hk --wg-interface pbhk0
-          core_id=""
-          core_health=""
-          for attempt in $(seq 1 60); do
-            if core_id="$("${compose[@]}" ps --status running -q paperbanana-api)" && [[ "$core_id" =~ ^[0-9a-f]{12,64}$ ]]; then
-              if core_health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' "$core_id")" && [[ "$core_health" == "healthy" ]]; then
-                break
-              fi
-            fi
-            core_id=""
-            core_health=""
-            sleep 2
-          done
-          [[ -n "$core_id" && "$core_health" == "healthy" ]] || { echo "Core did not become running and healthy after activation" >&2; false; }
-          container_mode="$("${compose[@]}" exec -T paperbanana-api printenv PAPERBANANA_PROVIDER_EGRESS_MODE)"
-          [[ "$container_mode" == "sg-required" ]] || { echo "Core did not start in sg-required mode" >&2; false; }
-          ready_payload="$("${compose[@]}" exec -T paperbanana-api node -e '
-            fetch("http://127.0.0.1:3000/ready")
-              .then((response) => response.text())
-              .then((body) => process.stdout.write(body))
-              .catch(() => process.exit(1))
-          ')"
-          jq -e '.ready == true' >/dev/null <<<"$ready_payload" || { echo "Core readiness verification failed after activation" >&2; false; }
-          health_payload="$("${compose[@]}" exec -T paperbanana-api node -e '
-            fetch("http://127.0.0.1:3000/health")
-              .then((response) => response.text())
-              .then((body) => process.stdout.write(body))
-              .catch(() => process.exit(1))
-          ')"
-          jq -e '.ready == true and (.dependencies | has("providerEgress")) and (.dependencies.providerEgress == "ready" or .dependencies.providerEgress == "degraded")' >/dev/null <<<"$health_payload" || { echo "Core provider-egress health dependency is missing after activation" >&2; false; }
+          /opt/paperbanana-sg-egress/scripts/wait-and-verify-core.sh sg-required degraded-or-ready
           trap - ERR
           REMOTE
