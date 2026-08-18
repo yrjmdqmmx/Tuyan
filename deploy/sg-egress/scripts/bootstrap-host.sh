@@ -76,8 +76,67 @@ fi
 sshd_dir="$(host_path /etc/ssh/sshd_config.d)"
 sshd_config="$(host_path /etc/ssh/sshd_config)"
 drop_in="$sshd_dir/00-paperbanana-sg-egress.conf"
+
+fail_ecs_user_key_preflight() {
+  echo "ecs-user authorized_keys preflight failed: $1" >&2
+  exit 1
+}
+
+check_ecs_user_key_path() {
+  local path="$1"
+  local expected_type="$2"
+  local allowed_owners="$3"
+  local require_0600_or_stricter="$4"
+  local metadata
+  local file_type
+  local owner
+  local mode
+  local extra
+  local mode_value
+
+  [[ ! -L "$path" ]] || fail_ecs_user_key_preflight "key path must not be a symlink"
+  if ! metadata="$(stat -c '%F:%u:%a' -- "$path")"; then
+    fail_ecs_user_key_preflight "could not inspect key path"
+  fi
+  IFS=: read -r file_type owner mode extra <<<"$metadata"
+  if [[ -n "$extra" || "$file_type" != "$expected_type" || ! "$owner" =~ ^[0-9]+$ || ! "$mode" =~ ^[0-7]{3,4}$ ]]; then
+    fail_ecs_user_key_preflight "key path metadata is unsafe"
+  fi
+  if [[ ":$allowed_owners:" != *":$owner:"* ]]; then
+    fail_ecs_user_key_preflight "key path ownership is unsafe"
+  fi
+  mode_value=$((8#$mode))
+  if (( mode_value & 0022 )); then
+    fail_ecs_user_key_preflight "key path is group or world writable"
+  fi
+  if [[ "$require_0600_or_stricter" == true ]] && (( mode_value & ~0600 || !(mode_value & 0400) )); then
+    fail_ecs_user_key_preflight "authorized_keys permissions must be 0600 or stricter"
+  fi
+}
+
+ecs_user_record="$(getent passwd ecs-user)" || fail_ecs_user_key_preflight "could not query ecs-user"
+IFS=: read -r ecs_user_name _ecs_user_password ecs_user_uid _ecs_user_gid _ecs_user_gecos ecs_user_home _ecs_user_shell ecs_user_extra <<<"$ecs_user_record"
+if [[ "$ecs_user_name" != "ecs-user" || ! "$ecs_user_uid" =~ ^[0-9]+$ || -n "$ecs_user_extra" || "$ecs_user_home" != /* || "$ecs_user_home" == "/" || "$ecs_user_home" == *$'\n'* ]]; then
+  fail_ecs_user_key_preflight "ecs-user account record is invalid"
+fi
+actual_ecs_user_uid="$(id -u ecs-user)" || fail_ecs_user_key_preflight "could not query ecs-user uid"
+if [[ "$actual_ecs_user_uid" != "$ecs_user_uid" ]]; then
+  fail_ecs_user_key_preflight "ecs-user uid lookup is inconsistent"
+fi
+
+ecs_user_ssh_dir="$ecs_user_home/.ssh"
+ecs_user_authorized_keys="$ecs_user_ssh_dir/authorized_keys"
+[[ -d "$ecs_user_home" ]] || fail_ecs_user_key_preflight "ecs-user home is not a directory"
+[[ -d "$ecs_user_ssh_dir" ]] || fail_ecs_user_key_preflight "ecs-user .ssh is not a directory"
+[[ -f "$ecs_user_authorized_keys" ]] || fail_ecs_user_key_preflight "ecs-user authorized_keys is not a regular file"
+check_ecs_user_key_path "$ecs_user_home" directory "0:$ecs_user_uid" false
+check_ecs_user_key_path "$ecs_user_ssh_dir" directory "0:$ecs_user_uid" false
+check_ecs_user_key_path "$ecs_user_authorized_keys" "regular file" "0:$ecs_user_uid" true
+if ! ssh-keygen -l -f "$ecs_user_authorized_keys" >/dev/null 2>&1; then
+  fail_ecs_user_key_preflight "ecs-user authorized_keys has no valid public key"
+fi
+
 install -d -m 0755 "$sshd_dir"
-id -u ecs-user >/dev/null
 
 backup="$sshd_dir/.00-paperbanana-sg-egress.backup.$$"
 candidate="$(mktemp "$sshd_dir/.00-paperbanana-sg-egress.tmp.XXXXXX")"

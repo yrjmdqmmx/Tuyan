@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { chmodSync, existsSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +12,7 @@ const policyValidator = join(deployRoot, 'tests', 'squid-policy-validator.mjs');
 const secretScanner = join(deployRoot, 'tests', 'scan-egress-secrets.mjs');
 const validPublicKey = 'AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=';
 const zeroPublicKey = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
+const validSshPublicKey = 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBf9m5RJJPnGczaTU6Fxrn2WiyqaiThvgfHjeWpCVNe1 paperbanana-fixture';
 const fixtureRoots = new Set();
 
 function cleanupFixtureRoots() {
@@ -40,6 +41,9 @@ function makeFixture(overrides = {}) {
   const commandLog = join(root, 'commands.log');
   const sshdOutput = join(root, 'sshd-effective.txt');
   const rootSshdOutput = join(root, 'sshd-root-effective.txt');
+  const ecsHome = join(root, 'home', 'ecs-user');
+  const ecsSshDir = join(ecsHome, '.ssh');
+  const ecsAuthorizedKeys = join(ecsSshDir, 'authorized_keys');
   const state = {
     wgActive: join(root, 'state-wg-active'),
     wgInterface: join(root, 'state-wg-interface'),
@@ -62,6 +66,7 @@ function makeFixture(overrides = {}) {
   mkdirSync(join(root, 'etc', 'wireguard'), { recursive: true });
   mkdirSync(join(root, 'etc', 'squid'), { recursive: true });
   mkdirSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts'), { recursive: true });
+  mkdirSync(ecsSshDir, { recursive: true });
   writeFileSync(join(root, 'etc', 'os-release'), 'ID=ubuntu\nVERSION_ID="24.04"\n');
   writeFileSync(join(root, 'etc', 'ssh', 'sshd_config'), 'Include /etc/ssh/sshd_config.d/*.conf\n');
   writeFileSync(join(root, 'etc', 'squid', 'squid.conf'), '# package squid configuration\n');
@@ -70,6 +75,10 @@ function makeFixture(overrides = {}) {
   writeFileSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts', 'smoke.sh'), '#!/usr/bin/env bash\n');
   chmodSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts', 'monitor-health.sh'), 0o750);
   chmodSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts', 'smoke.sh'), 0o750);
+  writeFileSync(ecsAuthorizedKeys, `${validSshPublicKey}\n`);
+  chmodSync(ecsHome, 0o750);
+  chmodSync(ecsSshDir, 0o700);
+  chmodSync(ecsAuthorizedKeys, 0o600);
   writeFileSync(sshdOutput, [
     'permitrootlogin no',
     'passwordauthentication no',
@@ -102,12 +111,21 @@ function makeFixture(overrides = {}) {
 
   const stub = (name, body) => writeExecutable(join(bin, name), `#!/bin/sh\nset -eu\nprintf '%s %s\\n' '${name}' "$*" >> "${commandLog}"\n${body}\n`);
   stub('apt-get', overrides.stallAptGet ? 'sleep 2' : 'exit 0');
-  stub('id', 'test "$1" = "-u" && test "$2" = "ecs-user"');
+  stub('id', `
+test "$1" = "-u" && test "$2" = "ecs-user" || exit 1
+printf '%s\\n' '${overrides.ecsUserId ?? '1001'}'`);
+  stub('getent', `
+test "$1" = passwd && test "$2" = ecs-user || exit 2
+exit_code='${overrides.getentExit ?? 0}'
+test "$exit_code" = 0 || exit "$exit_code"
+printf '%s\\n' 'ecs-user:x:${overrides.ecsUserId ?? '1001'}:1001::${ecsHome}:/bin/bash'`);
   stub('fallocate', 'mkdir -p "$(dirname "$3")"; : > "$3"');
   stub('mkswap', 'exit 0');
   stub('swapon', 'exit 0');
   stub('stat', `
 if test "$1" = "-c"; then
+  path="$3"
+  test "$path" = -- && path="$4"
   case "$2" in
     %a:%u) printf '%s\\n' "${overrides.keyMetadata ?? '600:0'}" ;;
     %s) printf '%s\\n' "${overrides.swapSize ?? '1073741824'}" ;;
@@ -115,7 +133,10 @@ if test "$1" = "-c"; then
     %F) printf '%s\\n' "${overrides.swapType ?? 'regular file'}" ;;
     %u) printf '%s\\n' "${overrides.swapOwner ?? '0'}" ;;
     %F:%u:%a)
-      case "$3" in
+      case "$path" in
+        "${ecsHome}") printf '%s\\n' "${overrides.ecsHomeMetadata ?? `directory:${overrides.ecsUserId ?? '1001'}:750`}" ;;
+        "${ecsSshDir}") printf '%s\\n' "${overrides.ecsSshDirectoryMetadata ?? `directory:${overrides.ecsUserId ?? '1001'}:700`}" ;;
+        "${ecsAuthorizedKeys}") printf '%s\\n' "${overrides.ecsAuthorizedKeysMetadata ?? `regular file:${overrides.ecsUserId ?? '1001'}:600`}" ;;
         */monitor-health.sh) printf '%s\\n' "${overrides.runtimeMonitorMetadata ?? 'regular file:0:750'}" ;;
         */smoke.sh) printf '%s\\n' "${overrides.runtimeSmokeMetadata ?? 'regular file:0:750'}" ;;
         *) printf '%s\\n' "${overrides.runtimeDirectoryMetadata ?? 'directory:0:750'}" ;;
@@ -249,6 +270,9 @@ esac`);
 
   return {
     root,
+    ecsHome,
+    ecsSshDir,
+    ecsAuthorizedKeys,
     env,
     commandLog,
     sshdOutput,
@@ -272,6 +296,20 @@ function run(fixture, script, args = [], options = {}) {
 
 function commandLog(fixture) {
   return existsSync(fixture.commandLog) ? readFileSync(fixture.commandLog, 'utf8') : '';
+}
+
+function assertEcsUserKeyPreflightFailure(fixture) {
+  const dropIn = join(fixture.root, 'etc', 'ssh', 'sshd_config.d', '00-paperbanana-sg-egress.conf');
+  const priorDropIn = '# previous safe operator content\n';
+  writeFileSync(dropIn, priorDropIn);
+
+  const result = run(fixture, 'bootstrap-host.sh', ['--apply']);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /ecs-user.*authorized_keys|authorized_keys.*ecs-user/i);
+  assert.equal(readFileSync(dropIn, 'utf8'), priorDropIn);
+  assert.doesNotMatch(commandLog(fixture), /sshd (?:-t|-T)/);
+  assert.doesNotMatch(commandLog(fixture), /systemctl reload ssh/);
 }
 
 function writeHkMonitorAssets(fixture) {
@@ -388,6 +426,75 @@ test('bootstrap validates ecs-user and root against actual management and loopba
     assert.match(log, /sshd -T -C user=root,host=sg-admin\.example\.invalid,addr=127\.0\.0\.1/);
     const dropIn = readFileSync(join(fixture.root, 'etc', 'ssh', 'sshd_config.d', '00-paperbanana-sg-egress.conf'), 'utf8');
     assert.match(dropIn, /PubkeyAuthentication yes/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('bootstrap refuses SSH hardening when ecs-user authorized_keys is missing', () => {
+  const fixture = makeFixture();
+  try {
+    unlinkSync(fixture.ecsAuthorizedKeys);
+    assertEcsUserKeyPreflightFailure(fixture);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('bootstrap refuses SSH hardening when ecs-user authorized_keys is empty or comment-only', () => {
+  for (const contents of ['', '# operator key pending\n\n']) {
+    const fixture = makeFixture();
+    try {
+      writeFileSync(fixture.ecsAuthorizedKeys, contents);
+      assertEcsUserKeyPreflightFailure(fixture);
+    } finally {
+      fixture.cleanup();
+    }
+  }
+});
+
+test('bootstrap refuses SSH hardening when ecs-user authorized_keys cannot be parsed by ssh-keygen', () => {
+  const fixture = makeFixture();
+  try {
+    writeFileSync(fixture.ecsAuthorizedKeys, 'ssh-ed25519 not-a-public-key\n');
+    assertEcsUserKeyPreflightFailure(fixture);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('bootstrap refuses SSH hardening when ecs-user key path ownership is unsafe', () => {
+  const fixture = makeFixture({ ecsAuthorizedKeysMetadata: 'regular file:2002:600' });
+  try {
+    assertEcsUserKeyPreflightFailure(fixture);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('bootstrap refuses SSH hardening when ecs-user key path permissions are unsafe', () => {
+  for (const overrides of [
+    { ecsHomeMetadata: 'directory:1001:770' },
+    { ecsSshDirectoryMetadata: 'directory:1001:770' },
+    { ecsAuthorizedKeysMetadata: 'regular file:1001:640' },
+  ]) {
+    const fixture = makeFixture(overrides);
+    try {
+      assertEcsUserKeyPreflightFailure(fixture);
+    } finally {
+      fixture.cleanup();
+    }
+  }
+});
+
+test('bootstrap refuses SSH hardening when ecs-user authorized_keys is a symlink', () => {
+  const fixture = makeFixture();
+  try {
+    const alternateKeyFile = join(fixture.root, 'alternate-authorized-keys');
+    writeFileSync(alternateKeyFile, `${validSshPublicKey}\n`);
+    unlinkSync(fixture.ecsAuthorizedKeys);
+    symlinkSync(alternateKeyFile, fixture.ecsAuthorizedKeys);
+    assertEcsUserKeyPreflightFailure(fixture);
   } finally {
     fixture.cleanup();
   }
