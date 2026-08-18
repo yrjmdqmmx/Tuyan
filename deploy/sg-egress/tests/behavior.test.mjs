@@ -196,6 +196,7 @@ for arg in "$@"; do
 done
 exit ${overrides.squidParseExit ?? 0}`);
   stub('ss', `
+test ${overrides.ssQueryExit ?? 0} = 0 || exit ${overrides.ssQueryExit ?? 0}
 if test -e "${state.proxyListener}"; then
   printf '%s\\n' 'LISTEN 0 4096 10.77.0.2:3128 0.0.0.0:*'
 fi
@@ -204,11 +205,12 @@ ${overrides.extraProxyListener ? "printf '%s\\n' 'LISTEN 0 4096 0.0.0.0:3128 0.0
 case " $* " in
   *' -4 addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.1/30 scope global pbhk0'; exit 0 ;;
   *' -4 addr show dev pbsg0 '*) printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.2/30 scope global pbsg0'; exit 0 ;;
-  *' link show dev pbsg0 '*) test -e "${state.wgInterface}" && printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420'; exit $? ;;
+  *' link show dev pbsg0 '*) test ${overrides.ipLinkQueryExit ?? 0} = 0 || exit ${overrides.ipLinkQueryExit ?? 0}; test -e "${state.wgInterface}" && printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420'; exit $? ;;
   *' link delete dev pbsg0 '*) rm -f -- "${state.wgInterface}"; exit 0 ;;
 esac
 exit 1`);
   stub('pgrep', `
+test ${overrides.pgrepQueryExit ?? 0} = 0 || exit ${overrides.pgrepQueryExit ?? 0}
 if test "$1" = -x && test "$2" = squid && test -e "${state.squidProcess}"; then
   printf '%s\\n' 123
   exit 0
@@ -286,6 +288,22 @@ function writeHkMonitorAssets(fixture) {
     monitor: join(runtimeScripts, 'monitor-health.sh'),
     smoke: join(runtimeScripts, 'smoke.sh'),
   };
+}
+
+function writeSgEgressAssets(fixture) {
+  const wireguardDir = join(fixture.root, 'etc', 'wireguard');
+  const squidDir = join(fixture.root, 'etc', 'squid');
+  const assets = {
+    wgConfig: join(wireguardDir, 'pbsg0.conf'),
+    wgKey: join(wireguardDir, 'paperbanana-sg-egress.private'),
+    squidConfig: join(squidDir, 'squid.conf'),
+    squidBackup: join(squidDir, 'squid.conf.paperbanana-sg-egress.backup'),
+  };
+  writeFileSync(assets.wgConfig, '# Managed by PaperBanana Singapore egress\n');
+  writeFileSync(assets.wgKey, 'private-material-not-real\n');
+  writeFileSync(assets.squidConfig, '# Managed by PaperBanana Singapore egress\n');
+  writeFileSync(assets.squidBackup, '# package squid configuration\n');
+  return assets;
 }
 
 test('fixture command runner returns a bounded timeout instead of allowing a child script to hang', () => {
@@ -574,6 +592,48 @@ test('uninstall stops an active loaded Squid unit even when its project marker a
     assert.equal(result.status, 0, result.stderr);
     assert.match(commandLog(fixture), /systemctl disable --now squid/);
     assert.equal(existsSync(fixture.state.squidActive), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall fails closed and preserves assets when pbsg0 interface query exits 2', () => {
+  const fixture = makeFixture({ ipLinkQueryExit: 2 });
+  try {
+    const assets = writeSgEgressAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /cannot determine.*pbsg0|pbsg0.*query/i);
+    for (const path of Object.values(assets)) assert.equal(existsSync(path), true, `${path} must remain after an ip query failure`);
+    assert.doesNotMatch(commandLog(fixture), /systemctl disable --now/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall fails closed and preserves assets when Squid listener query exits 2', () => {
+  const fixture = makeFixture({ ssQueryExit: 2 });
+  try {
+    const assets = writeSgEgressAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /cannot determine.*Squid listener|Squid listener.*query/i);
+    for (const path of Object.values(assets)) assert.equal(existsSync(path), true, `${path} must remain after an ss query failure`);
+    assert.doesNotMatch(commandLog(fixture), /systemctl disable --now/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall fails closed and preserves assets when Squid process query exits 2', () => {
+  const fixture = makeFixture({ pgrepQueryExit: 2 });
+  try {
+    const assets = writeSgEgressAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /cannot determine.*Squid process|Squid process.*query/i);
+    for (const path of Object.values(assets)) assert.equal(existsSync(path), true, `${path} must remain after a pgrep query failure`);
+    assert.doesNotMatch(commandLog(fixture), /systemctl disable --now/);
   } finally {
     fixture.cleanup();
   }

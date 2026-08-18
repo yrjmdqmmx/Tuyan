@@ -205,13 +205,55 @@ uninstall_hk() {
 }
 
 interface_present() {
-  ip link show dev pbsg0 >/dev/null 2>&1
+  local status
+  if ip link show dev pbsg0 >/dev/null 2>&1; then
+    return 0
+  else
+    status=$?
+  fi
+  case "$status" in
+    1) return 1 ;;
+    *)
+      echo "cannot determine whether pbsg0 interface is present (ip query exited $status)" >&2
+      return 2
+      ;;
+  esac
 }
 project_proxy_listener_present() {
-  ss -lntH 'sport = :3128' | awk '$4 == "10.77.0.2:3128" { found=1 } END { exit !found }'
+  local listeners
+  local status
+  if listeners="$(ss -lntH 'sport = :3128')"; then
+    :
+  else
+    status=$?
+    echo "cannot determine whether the PaperBanana Squid listener is present (ss query exited $status)" >&2
+    return 2
+  fi
+  if awk '$4 == "10.77.0.2:3128" { found=1 } END { exit !found }' <<<"$listeners"; then
+    return 0
+  else
+    status=$?
+  fi
+  if (( status == 1 )); then
+    return 1
+  fi
+  echo "cannot determine whether the PaperBanana Squid listener is present (listener parse exited $status)" >&2
+  return 2
 }
 squid_process_present() {
-  pgrep -x squid >/dev/null 2>&1
+  local status
+  if pgrep -x squid >/dev/null 2>&1; then
+    return 0
+  else
+    status=$?
+  fi
+  case "$status" in
+    1) return 1 ;;
+    *)
+      echo "cannot determine whether the Squid process is present (pgrep query exited $status)" >&2
+      return 2
+      ;;
+  esac
 }
 
 uninstall_sg() {
@@ -225,12 +267,43 @@ uninstall_sg() {
   local managed_squid=false
   local wg_runtime=false
   local squid_runtime=false
+  local interface_initial=false
+  local proxy_listener_initial=false
+  local squid_process_initial=false
 
   if [[ -e "$wg_config" ]] && grep -Fqx "$managed_marker" "$wg_config"; then
     managed_wg=true
   fi
   if [[ -e "$squid_config" ]] && grep -Fqx "$managed_marker" "$squid_config"; then
     managed_squid=true
+  fi
+
+  # Query all runtime state before stopping units. A query error must never be
+  # treated as absence or allow a partial teardown to start.
+  local state_status
+  if interface_present; then
+    interface_initial=true
+  else
+    state_status=$?
+    if (( state_status != 1 )); then
+      return "$state_status"
+    fi
+  fi
+  if project_proxy_listener_present; then
+    proxy_listener_initial=true
+  else
+    state_status=$?
+    if (( state_status != 1 )); then
+      return "$state_status"
+    fi
+  fi
+  if squid_process_present; then
+    squid_process_initial=true
+  else
+    state_status=$?
+    if (( state_status != 1 )); then
+      return "$state_status"
+    fi
   fi
 
   # Stop project names and live kernel/socket/process state even if a marker
@@ -241,7 +314,6 @@ uninstall_sg() {
   assert_project_unit_inactive paperbanana-sg-egress-health.timer || return $?
   assert_project_unit_inactive paperbanana-sg-egress-health.service || return $?
 
-  local state_status
   if unit_needs_stop wg-quick@pbsg0; then
     wg_runtime=true
   else
@@ -250,7 +322,7 @@ uninstall_sg() {
       return "$state_status"
     fi
   fi
-  if interface_present; then
+  if [[ "$interface_initial" == true ]]; then
     wg_runtime=true
   fi
   if [[ "$wg_runtime" == true ]]; then
@@ -258,11 +330,21 @@ uninstall_sg() {
   fi
   if interface_present; then
     ip link delete dev pbsg0 || return $?
+  else
+    state_status=$?
+    if (( state_status != 1 )); then
+      return "$state_status"
+    fi
   fi
   assert_unit_inactive wg-quick@pbsg0 || return $?
   if interface_present; then
     echo "pbsg0 interface remains after uninstall" >&2
     exit 1
+  else
+    state_status=$?
+    if (( state_status != 1 )); then
+      return "$state_status"
+    fi
   fi
 
   if unit_needs_stop squid; then
@@ -273,7 +355,7 @@ uninstall_sg() {
       return "$state_status"
     fi
   fi
-  if [[ "$managed_squid" == true ]] || project_proxy_listener_present || squid_process_present; then
+  if [[ "$managed_squid" == true || "$proxy_listener_initial" == true || "$squid_process_initial" == true ]]; then
     squid_runtime=true
   fi
   if [[ "$squid_runtime" == true ]]; then
@@ -283,10 +365,31 @@ uninstall_sg() {
   if project_proxy_listener_present; then
     echo "the PaperBanana Squid listener remains on 10.77.0.2:3128 after uninstall" >&2
     exit 1
+  else
+    state_status=$?
+    if (( state_status != 1 )); then
+      return "$state_status"
+    fi
   fi
-  if [[ "$squid_runtime" == true ]] && ( unit_active squid || squid_process_present ); then
-    echo "Squid remains active after project listener teardown" >&2
-    exit 1
+  if [[ "$squid_runtime" == true ]]; then
+    if unit_active squid; then
+      echo "Squid remains active after project listener teardown" >&2
+      exit 1
+    else
+      state_status=$?
+      if (( state_status != 1 )); then
+        return "$state_status"
+      fi
+    fi
+    if squid_process_present; then
+      echo "Squid remains active after project listener teardown" >&2
+      exit 1
+    else
+      state_status=$?
+      if (( state_status != 1 )); then
+        return "$state_status"
+      fi
+    fi
   fi
 
   rm -f -- "$health_service" || return $?
