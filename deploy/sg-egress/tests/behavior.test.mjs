@@ -13,6 +13,7 @@ const secretScanner = join(deployRoot, 'tests', 'scan-egress-secrets.mjs');
 const validPublicKey = ['AQEBAQEBAQEBAQEBAQEBAQ', 'EBAQEBAQEBAQEBAQEBAQE='].join('');
 const zeroPublicKey = `${'A'.repeat(43)}=`;
 const validSshPublicKey = 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBf9m5RJJPnGczaTU6Fxrn2WiyqaiThvgfHjeWpCVNe1 paperbanana-fixture';
+const fixtureUid = process.getuid?.();
 const fixtureRoots = new Set();
 
 function cleanupFixtureRoots() {
@@ -49,6 +50,7 @@ function makeFixture(overrides = {}) {
     wgActive: join(root, 'state-wg-active'),
     wgInterface: join(root, 'state-wg-interface'),
     wgLoaded: join(root, 'state-wg-loaded'),
+    wgConfigPresentOnStop: join(root, 'state-wg-config-present-on-stop'),
     squidActive: join(root, 'state-squid-active'),
     squidProcess: join(root, 'state-squid-process'),
     squidLoaded: join(root, 'state-squid-loaded'),
@@ -58,6 +60,7 @@ function makeFixture(overrides = {}) {
     healthServiceActive: join(root, 'state-health-service-active'),
     healthServiceLoaded: join(root, 'state-health-service-loaded'),
     hkHealthTimerActive: join(root, 'state-hk-health-timer-active'),
+    hkHealthTimerEnabled: join(root, 'state-hk-health-timer-enabled'),
     hkHealthTimerLoaded: join(root, 'state-hk-health-timer-loaded'),
     hkHealthServiceActive: join(root, 'state-hk-health-service-active'),
     hkHealthServiceLoaded: join(root, 'state-hk-health-service-loaded'),
@@ -112,6 +115,7 @@ function makeFixture(overrides = {}) {
   touchState(state.healthServiceActive, overrides.healthServiceActive);
   touchState(state.healthServiceLoaded, overrides.healthServiceLoaded ?? overrides.healthServiceActive);
   touchState(state.hkHealthTimerActive, overrides.hkHealthTimerActive);
+  touchState(state.hkHealthTimerEnabled, overrides.hkHealthTimerEnabled ?? overrides.hkHealthTimerActive);
   touchState(state.hkHealthTimerLoaded, overrides.hkHealthTimerLoaded ?? overrides.hkHealthTimerActive);
   touchState(state.hkHealthServiceActive, overrides.hkHealthServiceActive);
   touchState(state.hkHealthServiceLoaded, overrides.hkHealthServiceLoaded ?? overrides.hkHealthServiceActive);
@@ -141,8 +145,8 @@ if test "$1" = "-c"; then
     %u) printf '%s\\n' "${overrides.swapOwner ?? '0'}" ;;
     %F:%u:%a)
       case "$path" in
-        "${root}") printf '%s\\n' "${overrides.testRootDirectoryMetadata ?? 'directory:501:700'}" ;;
-        "${root}/.paperbanana-sg-egress-test-root") printf '%s\\n' "${overrides.testRootMarkerMetadata ?? 'regular file:501:600'}" ;;
+        "${root}") printf '%s\\n' "${overrides.testRootDirectoryMetadata ?? `directory:${fixtureUid}:700`}" ;;
+        "${root}/.paperbanana-sg-egress-test-root") printf '%s\\n' "${overrides.testRootMarkerMetadata ?? `regular file:${fixtureUid}:600`}" ;;
         */unit-source/paperbanana-hk-egress-health@.service|*/unit-source/paperbanana-hk-egress-health@.timer) printf '%s\\n' "${overrides.unitSourceMetadata ?? 'regular file:0:644'}" ;;
         */unit-source) printf '%s\\n' "${overrides.unitSourceDirectoryMetadata ?? 'directory:0:755'}" ;;
         "${ecsHome}") printf '%s\\n' "${overrides.ecsHomeMetadata ?? `directory:${overrides.ecsUserId ?? '1001'}:750`}" ;;
@@ -168,8 +172,13 @@ case " $* " in
   *' list-unit-files --no-legend '*) test ${overrides.hbrUnitListed ? 1 : 0} = 1 && printf '%s\\n' 'hbrclient.service enabled'; exit 0 ;;
   *' enable --now wg-quick@pbsg0 '*) : > "${state.wgActive}"; : > "${state.wgInterface}"; : > "${state.wgLoaded}"; exit 0 ;;
   *' enable --now squid '*) : > "${state.squidActive}"; : > "${state.squidProcess}"; : > "${state.squidLoaded}"; : > "${state.proxyListener}"; exit 0 ;;
-  *' enable --now paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
-  *' start paperbanana-hk-egress-health@pbhk0.service '*) test ${overrides.failHkServiceStart ? 1 : 0} = 1 && exit 1; : > "${state.hkHealthServiceActive}"; : > "${state.hkHealthServiceLoaded}"; exit 0 ;;
+  *' enable --now paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
+  *' enable paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
+  *' start paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
+  *' start paperbanana-hk-egress-health@pbhk0.service '*)
+    test ${overrides.failHkServiceStart ? 1 : 0} = 1 && exit 1
+    test ${overrides.hkServiceStartsInactive ? 1 : 0} = 1 || : > "${state.hkHealthServiceActive}"
+    : > "${state.hkHealthServiceLoaded}"; exit 0 ;;
   *' is-active --quiet wg-quick@pbsg0 '*) test -e "${state.wgActive}" && exit 0 || exit 3 ;;
   *' is-active --quiet squid '*) test -e "${state.squidActive}" && exit 0 || exit 3 ;;
   *' reload wg-quick@pbsg0 '*)
@@ -183,7 +192,13 @@ case " $* " in
   *' is-active --quiet paperbanana-sg-egress-health.timer '*) test -e "${state.healthTimerActive}" && exit 0 || exit 3 ;;
   *' is-active --quiet paperbanana-sg-egress-health.service '*) test -e "${state.healthServiceActive}" && exit 0 || exit 3 ;;
   *' is-active --quiet paperbanana-hk-egress-health@pbhk0.timer '*) test ${overrides.failHkTimerStateQuery ? 1 : 0} = 1 && exit 1; test -e "${state.hkHealthTimerActive}" && exit 0 || exit 3 ;;
+  *' is-enabled paperbanana-hk-egress-health@pbhk0.timer '*)
+    test ${overrides.failHkTimerEnabledQuery ? 1 : 0} = 1 && exit 1
+    if test -e "${state.hkHealthTimerEnabled}"; then printf '%s\\n' enabled; exit 0; fi
+    printf '%s\\n' disabled; exit 1 ;;
   *' is-active --quiet paperbanana-hk-egress-health@pbhk0.service '*) test -e "${state.hkHealthServiceActive}" && exit 0 || exit 3 ;;
+  *' show --property=Result --value paperbanana-hk-egress-health@pbhk0.service '*) printf '%s\\n' '${overrides.hkServiceResult ?? 'success'}'; exit 0 ;;
+  *' show --property=ExecMainStatus --value paperbanana-hk-egress-health@pbhk0.service '*) printf '%s\\n' '${overrides.hkServiceExecMainStatus ?? '0'}'; exit 0 ;;
   *' show --property=LoadState --value wg-quick@pbsg0 '*) test -e "${state.wgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value squid '*) test -e "${state.squidLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value paperbanana-sg-egress-health.timer '*) test -e "${state.healthTimerLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
@@ -195,6 +210,7 @@ case " $* " in
     exit ${overrides.failSshReload ? 1 : 0} ;;
   *' disable --now wg-quick@pbsg0 '*|*' stop wg-quick@pbsg0 '*)
     test ${overrides.failWgStop ? 1 : 0} = 1 && exit 1
+    if test ${overrides.recordWgConfigOnStop ? 1 : 0} = 1 && test -e "${root}/etc/wireguard/pbsg0.conf"; then : > "${state.wgConfigPresentOnStop}"; fi
     rm -f -- "${state.wgActive}" "${state.wgLoaded}" "${state.wgInterface}"
     exit 0 ;;
   *' disable --now squid '*|*' stop squid '*)
@@ -210,7 +226,7 @@ case " $* " in
   *' disable --now paperbanana-hk-egress-health@pbhk0.timer '*|*' stop paperbanana-hk-egress-health@pbhk0.timer '*)
     test ${overrides.failHkTimerStop ? 1 : 0} = 1 && exit 1
     test ${overrides.leaveHkTimerActive ? 1 : 0} = 1 && exit 0
-    rm -f -- "${state.hkHealthTimerActive}" "${state.hkHealthTimerLoaded}"
+    rm -f -- "${state.hkHealthTimerActive}" "${state.hkHealthTimerEnabled}" "${state.hkHealthTimerLoaded}"
     exit 0 ;;
   *' disable --now paperbanana-hk-egress-health@pbhk0.service '*|*' stop paperbanana-hk-egress-health@pbhk0.service '*)
     test ${overrides.failHkServiceStop ? 1 : 0} = 1 && exit 1
@@ -231,7 +247,10 @@ case "$1" in
     fi
     exit 0 ;;
 esac`);
-  stub('wg-quick', 'test "$1" = strip && test -r "$2" && exit 0; exit 1');
+  stub('wg-quick', `
+test "$1" = strip && test -r "$2" || exit 1
+if test ${overrides.wgQuickRequiresInterfaceBasename ? 1 : 0} = 1; then test "$(basename "$2")" = pbsg0.conf || exit 1; fi
+exit 0`);
   stub('squid', `
 for arg in "$@"; do
   case "$arg" in
@@ -702,6 +721,17 @@ test('install parses the Squid candidate before replacing the live configuration
   }
 });
 
+test('install validates the WireGuard candidate from a private pbsg0.conf basename', () => {
+  const fixture = makeFixture({ wgQuickRequiresInterfaceBasename: true });
+  try {
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(commandLog(fixture), /wg-quick strip .*\/pbsg0\.conf/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
 test('install reloads an active pbsg0 and restores its prior managed configuration when rotation reload fails', () => {
   const fixture = makeFixture({ pbsg0Active: true, pbsg0Loaded: true, pbsg0Interface: true, failWgReload: true });
   try {
@@ -727,6 +757,20 @@ test('install restores the prior active WireGuard configuration after a one-time
     assert.notEqual(result.status, 0);
     assert.equal(readFileSync(config, 'utf8'), previous);
     assert.equal((commandLog(fixture).match(/systemctl reload wg-quick@pbsg0/g) ?? []).length, 2);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('fresh WireGuard verification rollback stops the candidate before deleting its configuration', () => {
+  const fixture = makeFixture({ livePeerKey: zeroPublicKey, recordWgConfigOnStop: true });
+  try {
+    const config = join(fixture.root, 'etc', 'wireguard', 'pbsg0.conf');
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.ok(existsSync(fixture.state.wgConfigPresentOnStop), 'candidate config must exist while the candidate service is stopped');
+    assert.equal(existsSync(fixture.state.wgInterface), false);
+    assert.equal(existsSync(config), false);
   } finally {
     fixture.cleanup();
   }
@@ -1076,7 +1120,7 @@ test('health monitor installation requires an explicit Hong Kong host and WireGu
 });
 
 test('health monitor installation refuses a writable or non-root-owned runtime script tree before enabling root timer', () => {
-  const fixture = makeFixture({ runtimeMonitorMetadata: 'regular file:501:777' });
+  const fixture = makeFixture({ runtimeMonitorMetadata: `regular file:${fixtureUid}:777` });
   try {
     const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
     assert.notEqual(result.status, 0);
@@ -1131,6 +1175,47 @@ test('health monitor installation starts the exact service before enabling its t
     assert.doesNotMatch(commandLog(fixture), /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
     assert.equal(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.service')), false);
     assert.equal(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.timer')), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('failed Hong Kong monitor upgrade restores an already enabled and active timer', () => {
+  const fixture = makeFixture({ hkHealthTimerActive: true, hkHealthTimerEnabled: true, failHkServiceStart: true });
+  try {
+    writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.equal(existsSync(fixture.state.hkHealthTimerActive), true);
+    assert.match(commandLog(fixture), /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('health monitor installation fails closed when prior timer enablement cannot be queried', () => {
+  const fixture = makeFixture({ failHkTimerEnabledQuery: true });
+  try {
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /enabled|cannot determine/i);
+    assert.equal(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.service')), false);
+    assert.doesNotMatch(commandLog(fixture), /systemctl start paperbanana-hk-egress-health@pbhk0\.service/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('health monitor installation accepts a successful inactive Type=oneshot service by its Result and exit status', () => {
+  const fixture = makeFixture({ hkServiceStartsInactive: true });
+  try {
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    const log = commandLog(fixture);
+    assert.match(log, /systemctl start paperbanana-hk-egress-health@pbhk0\.service/);
+    assert.match(log, /systemctl show --property=Result --value paperbanana-hk-egress-health@pbhk0\.service/);
+    assert.match(log, /systemctl show --property=ExecMainStatus --value paperbanana-hk-egress-health@pbhk0\.service/);
+    assert.match(log, /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
   } finally {
     fixture.cleanup();
   }

@@ -102,6 +102,29 @@ done
 systemd_dir="$(host_path /etc/systemd/system)"
 service_target="$systemd_dir/paperbanana-hk-egress-health@.service"
 timer_target="$systemd_dir/paperbanana-hk-egress-health@.timer"
+timer_unit="paperbanana-hk-egress-health@${wg_interface}.timer"
+timer_was_enabled=false
+timer_was_active=false
+if timer_enabled_state="$(systemctl is-enabled "$timer_unit" 2>/dev/null)"; then
+  :
+else
+  timer_enabled_status=$?
+  if [[ -z "$timer_enabled_state" ]]; then
+    echo "cannot determine whether $timer_unit is enabled (systemctl query exited $timer_enabled_status)" >&2
+    exit 2
+  fi
+fi
+case "$timer_enabled_state" in
+  enabled|enabled-runtime) timer_was_enabled=true ;;
+  disabled|static|indirect|masked|not-found) ;;
+  *) echo "unexpected enablement state for $timer_unit: $timer_enabled_state" >&2; exit 2 ;;
+esac
+if systemctl is-active --quiet "$timer_unit"; then
+  timer_was_active=true
+else
+  timer_active_status=$?
+  case "$timer_active_status" in 3|4) ;; *) echo "cannot determine whether $timer_unit is active" >&2; exit 2 ;; esac
+fi
 install -d -m 0755 "$systemd_dir"
 service_previous=""
 timer_previous=""
@@ -109,10 +132,19 @@ if [[ -e "$service_target" ]]; then service_previous="$(mktemp "$systemd_dir/.pa
 if [[ -e "$timer_target" ]]; then timer_previous="$(mktemp "$systemd_dir/.paperbanana-hk-timer.previous.XXXXXX")"; cp -p -- "$timer_target" "$timer_previous"; fi
 rollback_monitor_install() {
   local reason="$1"
-  if systemctl disable --now "paperbanana-hk-egress-health@${wg_interface}.timer" >/dev/null 2>&1; then :; fi
+  if systemctl disable --now "$timer_unit" >/dev/null 2>&1; then :; fi
   if [[ -n "$service_previous" ]]; then mv -f -- "$service_previous" "$service_target"; else rm -f -- "$service_target"; fi
   if [[ -n "$timer_previous" ]]; then mv -f -- "$timer_previous" "$timer_target"; else rm -f -- "$timer_target"; fi
   systemctl daemon-reload || { echo "$reason; failed to restore systemd unit state" >&2; return 1; }
+  if [[ "$timer_was_enabled" == true ]]; then
+    if [[ "$timer_was_active" == true ]]; then
+      systemctl enable --now "$timer_unit" || { echo "$reason; failed to restore active Hong Kong health timer" >&2; return 1; }
+    else
+      systemctl enable "$timer_unit" || { echo "$reason; failed to restore enabled Hong Kong health timer" >&2; return 1; }
+    fi
+  elif [[ "$timer_was_active" == true ]]; then
+    systemctl start "$timer_unit" || { echo "$reason; failed to restore active Hong Kong health timer" >&2; return 1; }
+  fi
   echo "$reason; rolled back copied Hong Kong health-monitor units" >&2
   return 1
 }
@@ -123,7 +155,11 @@ if command -v systemd-analyze >/dev/null 2>&1; then
   systemd-analyze verify "$service_target" "$timer_target" || rollback_monitor_install "systemd unit verification failed"
 fi
 systemctl start "paperbanana-hk-egress-health@${wg_interface}.service" || rollback_monitor_install "Hong Kong health service start failed"
-systemctl is-active --quiet "paperbanana-hk-egress-health@${wg_interface}.service" || rollback_monitor_install "Hong Kong health service did not become active"
-systemctl enable --now "paperbanana-hk-egress-health@${wg_interface}.timer" || rollback_monitor_install "Hong Kong health timer enable/start failed"
-systemctl is-active --quiet "paperbanana-hk-egress-health@${wg_interface}.timer" || rollback_monitor_install "Hong Kong health timer did not become active"
+service_result="$(systemctl show --property=Result --value "paperbanana-hk-egress-health@${wg_interface}.service")" || rollback_monitor_install "cannot determine Hong Kong health service result"
+service_status="$(systemctl show --property=ExecMainStatus --value "paperbanana-hk-egress-health@${wg_interface}.service")" || rollback_monitor_install "cannot determine Hong Kong health service exit status"
+if [[ "$service_result" != "success" || "$service_status" != "0" ]]; then
+  rollback_monitor_install "Hong Kong health service did not complete successfully"
+fi
+systemctl enable --now "$timer_unit" || rollback_monitor_install "Hong Kong health timer enable/start failed"
+systemctl is-active --quiet "$timer_unit" || rollback_monitor_install "Hong Kong health timer did not become active"
 rm -f -- "$service_previous" "$timer_previous"

@@ -87,7 +87,9 @@ fi
 chmod 0600 "$sg_key_file"
 sg_private_key="$(<"$sg_key_file")"
 
-wg_candidate="$(mktemp "$wg_dir/.${interface_name}.tmp.XXXXXX")"
+wg_candidate_dir="$(mktemp -d "$wg_dir/.${interface_name}.candidate.XXXXXX")"
+chmod 0700 "$wg_candidate_dir"
+wg_candidate="$wg_candidate_dir/${interface_name}.conf"
 cat > "$wg_candidate" <<EOF
 $managed_marker
 [Interface]
@@ -104,6 +106,7 @@ EOF
 chmod 0600 "$wg_candidate"
 if ! wg-quick strip "$wg_candidate" >/dev/null; then
   rm -f -- "$wg_candidate"
+  rmdir -- "$wg_candidate_dir"
   echo "WireGuard candidate validation failed; live configuration was not replaced" >&2
   exit 1
 fi
@@ -121,17 +124,28 @@ if [[ -e "$wg_config" ]]; then
 fi
 restore_wireguard() {
   local reason="$1"
-  if [[ -n "$wg_previous" ]]; then mv -f -- "$wg_previous" "$wg_config"; else rm -f -- "$wg_config"; fi
   if [[ "$wg_was_active" == true ]]; then
+    mv -f -- "$wg_previous" "$wg_config"
     systemctl reload "wg-quick@${interface_name}" || { echo "$reason; restored prior WireGuard file but could not restore its live configuration" >&2; return 1; }
   else
     systemctl disable --now "wg-quick@${interface_name}" || { echo "$reason; restored prior WireGuard file but could not stop candidate service" >&2; return 1; }
-    if ip link show dev "$interface_name" >/dev/null 2>&1; then ip link delete dev "$interface_name" || return 1; fi
+    if ip link show dev "$interface_name" >/dev/null 2>&1; then
+      echo "$reason; candidate WireGuard interface remains after stop" >&2
+      return 1
+    else
+      wg_interface_status=$?
+      if (( wg_interface_status != 1 )); then
+        echo "$reason; cannot verify candidate WireGuard interface teardown" >&2
+        return 1
+      fi
+    fi
+    rm -f -- "$wg_config"
   fi
   echo "$reason; restored the prior WireGuard configuration" >&2
   return 1
 }
 mv -f -- "$wg_candidate" "$wg_config"
+rmdir -- "$wg_candidate_dir"
 if [[ "$wg_was_active" == true ]]; then
   systemctl reload "wg-quick@${interface_name}" || restore_wireguard "WireGuard reload failed"
 else
