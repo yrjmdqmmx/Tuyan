@@ -63,8 +63,18 @@ test('bounded reader does not retain and concatenate one object per tiny chunk',
 });
 
 test('a one-byte slow request does not reserve the full one MiB limit', async () => {
-  const request = fakeRequest(['x']);
-  const body = await readBoundedBody(request, 1024 * 1024);
-  assert.equal(body.byteLength, 1);
-  assert.ok(body.buffer.byteLength <= 16 * 1024, `unexpected backing buffer: ${body.buffer.byteLength}`);
+  const originalAllocUnsafe = Buffer.allocUnsafe;
+  const requestedCapacities = [];
+  Buffer.allocUnsafe = (size) => {
+    requestedCapacities.push(size);
+    return originalAllocUnsafe(size);
+  };
+  try {
+    const request = fakeRequest(['x']);
+    const body = await readBoundedBody(request, 1024 * 1024);
+    assert.equal(body.byteLength, 1);
+    assert.deepEqual(requestedCapacities, [1024]);
+  } finally {
+    Buffer.allocUnsafe = originalAllocUnsafe;
+  }
 });
