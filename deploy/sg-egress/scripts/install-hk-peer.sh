@@ -212,9 +212,14 @@ ip -4 -o addr show dev "$interface_name" | awk '
 ip -4 route show dev "$interface_name" | awk -v interface_name="$interface_name" '
   NF {
     total++
-    if (($1 == "10.77.0.2" || $1 == "10.77.0.2/32") && $2 == "dev" && $3 == interface_name) exact++
+    has_expected_dev=0
+    for (field=2; field<NF; field++) {
+      if ($field == "dev" && $(field + 1) == interface_name) has_expected_dev=1
+    }
+    if (has_expected_dev && $1 == "10.77.0.0/30") connected++
+    if (has_expected_dev && ($1 == "10.77.0.2" || $1 == "10.77.0.2/32")) peer++
   }
-  END { exit !(total == 1 && exact == 1) }
+  END { exit !(total == 2 && connected == 1 && peer == 1) }
 ' || restore_wireguard "Hong Kong route verification failed"
 [[ "$(wg show "$interface_name" peers)" == "$sg_public_key" ]] || restore_wireguard "Hong Kong peer verification failed"
 wg show "$interface_name" endpoints | awk -v key="$sg_public_key" '$1 == key && $2 ~ /:51820$/ { found=1 } END { exit !found }' || restore_wireguard "Hong Kong endpoint verification failed"

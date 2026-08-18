@@ -237,7 +237,18 @@ jobs:
                 echo "critical rollback failure: could not stop unverifiable paperbanana-api" >&2
                 exit 71
               fi
-              if [[ -n "$("${compose[@]}" ps --status running -q paperbanana-api)" ]]; then
+              running_ids=""
+              ps_status=0
+              if running_ids="$("${compose[@]}" ps --status running -q paperbanana-api)"; then
+                ps_status=0
+              else
+                ps_status=$?
+              fi
+              if (( ps_status != 0 )); then
+                echo "critical rollback failure: could not query paperbanana-api running state" >&2
+                exit 71
+              fi
+              if [[ -n "$running_ids" ]]; then
                 echo "critical rollback failure: unverifiable paperbanana-api is still running" >&2
                 exit 71
               fi

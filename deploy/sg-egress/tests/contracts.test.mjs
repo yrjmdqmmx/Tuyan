@@ -69,6 +69,7 @@ test('Hong Kong peer installer owns only the fixed pbhk0 tunnel and protects pri
   assert.match(installer, /systemctl restart "wg-quick@\$\{interface_name\}"/);
   assert.doesNotMatch(installer, /systemctl reload "wg-quick@\$\{interface_name\}"/);
   assert.match(installer, /ip -4 route show dev "\$interface_name"/);
+  assert.match(installer, /10\.77\.0\.0\/30/);
   assert.match(installer, /10\.77\.0\.2(?:\/32)?/);
   assert.match(installer, /chmod 0600/);
   assert.match(installer, /umask 077/);
@@ -127,6 +128,9 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
   assert.match(workflow, /rollback verification failed|rollback failed/i);
   assert.match(workflow, /stop(?:\s+-t\s+[0-9]+)?\s+paperbanana-api/);
   assert.match(workflow, /ps --status running -q paperbanana-api/);
+  assert.match(workflow, /if\s+running_ids=.*ps --status running -q paperbanana-api[\s\S]*?ps_status=0[\s\S]*?else[\s\S]*?ps_status=\$\?/);
+  assert.match(workflow, /if \(\( ps_status != 0 \)\)/);
+  assert.match(workflow, /\[\[ -n "\$running_ids" \]\]/);
   assert.doesNotMatch(workflow, /(?:rm\s+-rf|git\s+reset\s+--hard|docker\s+(?:compose\s+)?down|systemctl\s+(?:stop|disable)[^\n]*(?:docker|nginx|mongod)|scripts\/uninstall\.sh)/);
   assert.doesNotMatch(workflow, /Authorization:|OPENAI_API_KEY|GEMINI_API_KEY|OPENROUTER_API_KEY|sk-[A-Za-z0-9]/i);
 });
