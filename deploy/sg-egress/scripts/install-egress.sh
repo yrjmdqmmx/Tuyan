@@ -104,21 +104,41 @@ if [[ -e "$wg_config" ]] && ! grep -Fqx "$managed_marker" "$wg_config"; then
   exit 1
 fi
 sg_key_created=false
+sg_key_candidate=""
 cleanup_new_wg_key() {
   local status=$?
   if (( status != 0 )) && [[ "$sg_key_created" == true ]]; then
-    rm -f -- "$sg_key_file" "$sg_key_marker"
+    rm -f -- "$sg_key_candidate" "$sg_key_file" "$sg_key_marker"
   fi
 }
 trap cleanup_new_wg_key EXIT
 if [[ ! -s "$sg_key_file" ]]; then
-  wg genkey > "$sg_key_file"
   sg_key_created=true
+  sg_key_candidate="$(mktemp "$wg_dir/.paperbanana-sg-egress.private.XXXXXX")"
+  if ! wg genkey > "$sg_key_candidate"; then
+    echo "WireGuard private-key generation failed" >&2
+    exit 1
+  fi
+  sg_private_key="$(tr -d '[:space:]' < "$sg_key_candidate")"
+  if [[ ${#sg_private_key} -ne 44 || ! "$sg_private_key" =~ ^[A-Za-z0-9+/]{43}=$ ]]; then
+    echo "generated WireGuard private key is malformed" >&2
+    exit 1
+  fi
+  if ! wg pubkey < "$sg_key_candidate" >/dev/null 2>&1; then
+    echo "generated WireGuard private key is not accepted by wg pubkey" >&2
+    exit 1
+  fi
+  chown root:root "$sg_key_candidate"
+  chmod 0600 "$sg_key_candidate"
+  mv -f -- "$sg_key_candidate" "$sg_key_file"
+  sg_key_candidate=""
   printf '%s\n' "$managed_marker" > "$sg_key_marker"
+  chown root:root "$sg_key_marker"
   chmod 0600 "$sg_key_marker"
+else
+  sg_private_key="$(<"$sg_key_file")"
 fi
 chmod 0600 "$sg_key_file"
-sg_private_key="$(<"$sg_key_file")"
 
 wg_candidate_dir="$(mktemp -d "$wg_dir/.${interface_name}.candidate.XXXXXX")"
 chmod 0700 "$wg_candidate_dir"

@@ -134,6 +134,7 @@ test "$exit_code" = 0 || exit "$exit_code"
 printf '%s\\n' 'ecs-user:x:${overrides.ecsUserId ?? '1001'}:1001::${ecsHome}:/bin/bash'`);
   stub('fallocate', 'mkdir -p "$(dirname "$3")"; : > "$3"');
   stub('mkswap', `test ${overrides.mkswapExit ?? 0} = 0`);
+  stub('chown', 'exit 0');
   stub('blkid', `test ${overrides.swapSignature ?? 'swap'} = swap && printf '%s\\n' swap || exit 2`);
   stub('swapon', 'exit 0');
   stub('stat', `
@@ -244,8 +245,19 @@ esac
 exit 0`);
   stub('wg', `
 case "$1" in
-  genkey) printf '%s=' "$(printf 'B%.0s' $(seq 1 43))"; printf '\\n' ;;
-  pubkey) cat >/dev/null; exit ${overrides.wgPubkeyExit ?? 0} ;;
+  genkey)
+    if test ${overrides.wgGenkeyPartialFailureOnce ? 1 : 0} = 1 && test ! -e "${root}/wg-genkey-once"; then
+      : > "${root}/wg-genkey-once"
+      printf '%s' partial
+      exit 1
+    fi
+    printf '%s=' "$(printf 'B%.0s' $(seq 1 43))"; printf '\\n' ;;
+  pubkey)
+    key_material="$(cat)"
+    case "$key_material" in
+      B*) exit ${overrides.generatedWgPubkeyExit ?? 0} ;;
+      *) exit ${overrides.wgPubkeyExit ?? 0} ;;
+    esac ;;
   show)
     if test "\${2:-}" = pbsg0 && test "\${3:-}" = peers; then printf '%s\\n' '${overrides.livePeerKey ?? validPublicKey}'; exit 0; fi
     if test "\${2:-}" = pbsg0 && test "\${3:-}" = endpoints; then printf '%s\\t%s\\n' '${overrides.livePeerKey ?? validPublicKey}' '${overrides.liveEndpoint ?? 'hk-egress.example.invalid:51820'}'; exit 0; fi
@@ -538,7 +550,7 @@ test('bootstrap restores the prior SSH drop-in when effective sshd policy is uns
 });
 
 test('bootstrap rejects unusable AuthorizedKeysFile and multi-factor AuthenticationMethods before SSH reload', () => {
-  for (const unsafe of ['authorizedkeysfile none\nauthenticationmethods any', 'authorizedkeysfile .ssh/authorized_keys none\nauthenticationmethods any', 'authorizedkeysfile .ssh/authorized_keys\nauthenticationmethods publickey,password']) {
+  for (const unsafe of ['authorizedkeysfile none\nauthenticationmethods any', 'authorizedkeysfile .ssh/authorized_keys none\nauthenticationmethods any', 'authorizedkeysfile /root/.ssh/authorized_keys\nauthenticationmethods any', 'authorizedkeysfile .ssh/authorized_keys\nauthenticationmethods publickey,password']) {
     const fixture = makeFixture();
     try {
       writeFileSync(fixture.sshdOutput, [
@@ -759,6 +771,40 @@ test('install rejects an all-zero WireGuard peer public key', () => {
     const result = run(fixture, 'install-egress.sh', ['--apply']);
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /all-zero|invalid WireGuard public key/i);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('install atomically removes a partial WireGuard key generation and succeeds on rerun', () => {
+  const fixture = makeFixture({ wgGenkeyPartialFailureOnce: true });
+  try {
+    const key = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private');
+    const marker = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private.owner');
+    const first = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.notEqual(first.status, 0);
+    assert.equal(existsSync(key), false);
+    assert.equal(existsSync(marker), false);
+    assert.deepEqual(readdirSync(join(fixture.root, 'etc', 'wireguard')).filter((name) => name.startsWith('.paperbanana-sg-egress.private.')), []);
+    const retry = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.equal(retry.status, 0, retry.stderr);
+    assert.equal(existsSync(key), true);
+    assert.equal(existsSync(marker), true);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('install removes a generated WireGuard key when its public-key validation fails', () => {
+  const fixture = makeFixture({ generatedWgPubkeyExit: 1 });
+  try {
+    const key = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private');
+    const marker = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private.owner');
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.equal(existsSync(key), false);
+    assert.equal(existsSync(marker), false);
+    assert.deepEqual(readdirSync(join(fixture.root, 'etc', 'wireguard')).filter((name) => name.startsWith('.paperbanana-sg-egress.private.')), []);
   } finally {
     fixture.cleanup();
   }

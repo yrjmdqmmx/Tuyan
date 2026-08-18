@@ -311,15 +311,17 @@ validate_connection() {
     echo "effective sshd policy disables ecs-user public-key access for $match_connection; restored the previous SSH drop-in" >&2
     exit 1
   fi
-  if [[ "$user" == "ecs-user" ]] && ! awk '
+  if [[ "$user" == "ecs-user" ]] && ! awk -v expected="$ecs_user_authorized_keys" -v home="$ecs_user_home" '
     $1 == "authorizedkeysfile" {
       found = 1
-      for (field_index = 2; field_index <= NF; field_index++) {
-        if ($field_index == "none") invalid = 1
-        if ($field_index ~ /(^|\/)authorized_keys$/) usable = 1
-      }
+      if (NF != 2 || $2 == "none") { invalid = 1; next }
+      if ($2 == ".ssh/authorized_keys") resolved = home "/.ssh/authorized_keys"
+      else if ($2 == "%h/.ssh/authorized_keys") resolved = home "/.ssh/authorized_keys"
+      else if (substr($2, 1, 1) == "/") resolved = $2
+      else { invalid = 1; next }
+      if (resolved != expected) invalid = 1
     }
-    END { exit !(found && usable && !invalid) }
+    END { exit !(found && !invalid) }
   ' <<<"$effective"; then
     restore_drop_in
     echo "effective sshd policy has no usable AuthorizedKeysFile for ecs-user; restored the previous SSH drop-in" >&2
