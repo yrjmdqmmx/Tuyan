@@ -1,6 +1,6 @@
 [Unit]
 Description=PaperBanana Singapore egress health check
-After=network-online.target wg-quick@wg0.service squid.service
+After=network-online.target wg-quick@pbsg0.service squid.service
 Wants=network-online.target
 
 [Service]
