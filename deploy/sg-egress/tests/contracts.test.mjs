@@ -66,6 +66,10 @@ test('Hong Kong peer installer owns only the fixed pbhk0 tunnel and protects pri
   assert.match(installer, /systemctl (?:reload|enable --now) "wg-quick@\$\{interface_name\}"/);
   assert.match(installer, /10\.77\.0\.1\/30/);
   assert.match(installer, /wg show "\$interface_name" peers/);
+  assert.match(installer, /systemctl restart "wg-quick@\$\{interface_name\}"/);
+  assert.doesNotMatch(installer, /systemctl reload "wg-quick@\$\{interface_name\}"/);
+  assert.match(installer, /ip -4 route show dev "\$interface_name"/);
+  assert.match(installer, /10\.77\.0\.2(?:\/32)?/);
   assert.match(installer, /chmod 0600/);
   assert.match(installer, /umask 077/);
   assert.doesNotMatch(installer, /AllowedIPs\s*=\s*(?:0\.0\.0\.0\/0|::\/0)/);
@@ -114,6 +118,15 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
     'sg-required activation must happen only after tunnel smoke',
   );
   assert.match(workflow, /docker compose[\s\S]*up -d --no-deps --force-recreate paperbanana-api/);
+  assert.doesNotMatch(workflow, /rollback_disabled[\s\S]*?\|\| true/);
+  assert.match(workflow, /original_status=\$\?/);
+  assert.match(workflow, /rollback_failed/);
+  assert.match(workflow, /PAPERBANANA_PROVIDER_EGRESS_MODE=disabled/);
+  assert.match(workflow, /compose\[?@?\]?.*exec|-T paperbanana-api/);
+  assert.match(workflow, /providerEgress[\s\S]*degraded/);
+  assert.match(workflow, /rollback verification failed|rollback failed/i);
+  assert.match(workflow, /stop(?:\s+-t\s+[0-9]+)?\s+paperbanana-api/);
+  assert.match(workflow, /ps --status running -q paperbanana-api/);
   assert.doesNotMatch(workflow, /(?:rm\s+-rf|git\s+reset\s+--hard|docker\s+(?:compose\s+)?down|systemctl\s+(?:stop|disable)[^\n]*(?:docker|nginx|mongod)|scripts\/uninstall\.sh)/);
   assert.doesNotMatch(workflow, /Authorization:|OPENAI_API_KEY|GEMINI_API_KEY|OPENROUTER_API_KEY|sk-[A-Za-z0-9]/i);
 });

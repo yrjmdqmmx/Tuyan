@@ -78,14 +78,33 @@ hk_interface_present() {
   esac
 }
 
+pbhk_instance_enabled() {
+  local state status
+  if state="$(systemctl is-enabled wg-quick@pbhk0 2>/dev/null)"; then
+    status=0
+  else
+    status=$?
+  fi
+  case "$state:$status" in
+    enabled:0|enabled-runtime:0) return 0 ;;
+    disabled:*|static:*|indirect:*|masked:*|not-found:*) return 1 ;;
+    *) echo "cannot determine whether wg-quick@pbhk0 is enabled" >&2; return 2 ;;
+  esac
+}
+
 preflight_hk_peer_removal() {
   local wg_config="$(host_path /etc/wireguard/pbhk0.conf)"
   local key_file="$(host_path /etc/wireguard/paperbanana-hk-egress.private)"
   local key_marker="$(host_path /etc/wireguard/paperbanana-hk-egress.private.owner)"
-  local metadata state_status runtime_present=false
+  local metadata state_status runtime_present=false active=false interface_present=false
 
-  if unit_loaded wg-quick@pbhk0 || unit_active wg-quick@pbhk0; then runtime_present=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
-  if hk_interface_present; then runtime_present=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+  if unit_active wg-quick@pbhk0; then active=true; runtime_present=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+  if pbhk_instance_enabled; then runtime_present=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+  if hk_interface_present; then interface_present=true; runtime_present=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+  if [[ "$active" == true && "$interface_present" != true ]]; then
+    echo "refusing active wg-quick@pbhk0 without its actual interface" >&2
+    return 1
+  fi
 
   if [[ -e "$wg_config" ]]; then
     [[ -f "$wg_config" && ! -L "$wg_config" ]] || { echo "refusing to remove non-regular pbhk0 configuration" >&2; return 1; }
@@ -118,8 +137,20 @@ uninstall_hk_peer() {
   local key_marker="$(host_path /etc/wireguard/paperbanana-hk-egress.private.owner)"
   local state_status
 
-  stop_project_unit wg-quick@pbhk0 || return $?
+  local active=false enabled=false
+  if unit_active wg-quick@pbhk0; then active=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+  if pbhk_instance_enabled; then enabled=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+  if [[ "$active" == true || "$enabled" == true ]]; then
+    systemctl disable --now wg-quick@pbhk0 || return $?
+  fi
   assert_project_unit_inactive wg-quick@pbhk0 || return $?
+  if pbhk_instance_enabled; then
+    echo "wg-quick@pbhk0 remains enabled after uninstall" >&2
+    return 1
+  else
+    state_status=$?
+    [[ "$state_status" == "1" ]] || return "$state_status"
+  fi
   if hk_interface_present; then
     ip link delete dev pbhk0 || return $?
   else
@@ -130,7 +161,6 @@ uninstall_hk_peer() {
 
   if [[ -e "$wg_config" ]] && grep -Fqx "$managed_marker" "$wg_config"; then rm -f -- "$wg_config"; fi
   if [[ -e "$key_marker" ]] && grep -Fqx "$managed_marker" "$key_marker"; then rm -f -- "$key_file" "$key_marker"; fi
-  assert_project_unit_gone wg-quick@pbhk0 || return $?
   echo "Hong Kong PaperBanana pbhk0 peer and marked local key removed; generic wg0 and application services were not changed."
 }
 

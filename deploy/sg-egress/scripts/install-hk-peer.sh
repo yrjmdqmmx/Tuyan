@@ -174,7 +174,7 @@ restore_wireguard() {
   local reason="$1"
   if [[ "$wg_was_active" == true ]]; then
     mv -f -- "$previous" "$wg_config"
-    systemctl reload "wg-quick@${interface_name}" || {
+    systemctl restart "wg-quick@${interface_name}" || {
       echo "$reason; restored the prior file but could not restore its live configuration" >&2
       return 1
     }
@@ -199,12 +199,23 @@ restore_wireguard() {
 mv -f -- "$candidate" "$wg_config"
 rmdir -- "$candidate_dir"
 if [[ "$wg_was_active" == true ]]; then
-  systemctl reload "wg-quick@${interface_name}" || restore_wireguard "Hong Kong WireGuard reload failed"
+  systemctl restart "wg-quick@${interface_name}" || restore_wireguard "Hong Kong WireGuard restart failed"
 else
   systemctl enable --now "wg-quick@${interface_name}" || restore_wireguard "Hong Kong WireGuard start failed"
 fi
 systemctl is-active --quiet "wg-quick@${interface_name}" || restore_wireguard "Hong Kong WireGuard is not active after apply"
-ip -4 -o addr show dev "$interface_name" | awk '$4 == "10.77.0.1/30" { found=1 } END { exit !found }' || restore_wireguard "Hong Kong tunnel address verification failed"
+ip -4 -o addr show dev "$interface_name" | awk '
+  NF { total++ }
+  $4 == "10.77.0.1/30" { exact++ }
+  END { exit !(total == 1 && exact == 1) }
+' || restore_wireguard "Hong Kong tunnel address verification failed"
+ip -4 route show dev "$interface_name" | awk -v interface_name="$interface_name" '
+  NF {
+    total++
+    if (($1 == "10.77.0.2" || $1 == "10.77.0.2/32") && $2 == "dev" && $3 == interface_name) exact++
+  }
+  END { exit !(total == 1 && exact == 1) }
+' || restore_wireguard "Hong Kong route verification failed"
 [[ "$(wg show "$interface_name" peers)" == "$sg_public_key" ]] || restore_wireguard "Hong Kong peer verification failed"
 wg show "$interface_name" endpoints | awk -v key="$sg_public_key" '$1 == key && $2 ~ /:51820$/ { found=1 } END { exit !found }' || restore_wireguard "Hong Kong endpoint verification failed"
 

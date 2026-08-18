@@ -202,19 +202,54 @@ jobs:
           [[ "$commit_sha" =~ ^[0-9a-f]{40}$ ]]
           switch=/opt/paperbanana-sg-egress/releases/${commit_sha}/deploy/hk-single-host/scripts/set-provider-egress-mode.sh
           compose=(docker compose --project-name paperbanana-hk --project-directory /opt/paperbanana/repo/deploy/hk-single-host --env-file /opt/paperbanana/repo/deploy/hk-single-host/.env -f /opt/paperbanana/repo/deploy/hk-single-host/compose.yaml)
-          required_applied=false
           rollback_disabled() {
-            status=$?
-            if [[ "$required_applied" == true ]]; then
-              "$switch" --mode disabled --apply || true
-              "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api || true
+            original_status=$?
+            trap - ERR
+            rollback_failed=false
+            if ! "$switch" --mode disabled --apply; then
+              echo "rollback failed: could not set disabled mode" >&2
+              rollback_failed=true
             fi
-            exit "$status"
+            if ! "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api; then
+              echo "rollback failed: could not recreate paperbanana-api" >&2
+              rollback_failed=true
+            fi
+            if ! grep -Fqx 'PAPERBANANA_PROVIDER_EGRESS_MODE=disabled' /opt/paperbanana/secrets/core.env; then
+              echo "rollback verification failed: core.env is not disabled" >&2
+              rollback_failed=true
+            fi
+            if ! container_mode="$("${compose[@]}" exec -T paperbanana-api printenv PAPERBANANA_PROVIDER_EGRESS_MODE)" || [[ "$container_mode" != "disabled" ]]; then
+              echo "rollback verification failed: running Core mode is not disabled" >&2
+              rollback_failed=true
+            fi
+            if ! health_payload="$("${compose[@]}" exec -T paperbanana-api node -e '
+              fetch("http://127.0.0.1:3000/health")
+                .then((response) => response.text())
+                .then((body) => process.stdout.write(body))
+                .catch(() => process.exit(1))
+            ')" || ! jq -e '.ready == true and .dependencies.providerEgress == "degraded"' >/dev/null <<<"$health_payload"; then
+              echo "rollback verification failed: Core health is not ready with providerEgress degraded" >&2
+              rollback_failed=true
+            fi
+            if [[ "$rollback_failed" == true ]]; then
+              echo "activation failed and disabled rollback verification failed" >&2
+              if ! "${compose[@]}" stop -t 30 paperbanana-api; then
+                echo "critical rollback failure: could not stop unverifiable paperbanana-api" >&2
+                exit 71
+              fi
+              if [[ -n "$("${compose[@]}" ps --status running -q paperbanana-api)" ]]; then
+                echo "critical rollback failure: unverifiable paperbanana-api is still running" >&2
+                exit 71
+              fi
+              echo "unverifiable paperbanana-api was stopped fail-closed" >&2
+              exit 70
+            fi
+            echo "activation failed; disabled rollback verified" >&2
+            exit "$original_status"
           }
           trap rollback_disabled ERR
           "$switch" --mode sg-required --dry-run
           "$switch" --mode sg-required --apply
-          required_applied=true
           "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api
           /opt/paperbanana-sg-egress/scripts/smoke.sh --hk --wg-interface pbhk0
           trap - ERR

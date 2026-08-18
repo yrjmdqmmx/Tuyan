@@ -68,6 +68,9 @@ function makeFixture(overrides = {}) {
     hkWgInterface: join(root, 'state-hk-wg-interface'),
     hkWgLoaded: join(root, 'state-hk-wg-loaded'),
     hkWgConfigPresentOnStop: join(root, 'state-hk-wg-config-present-on-stop'),
+    hkWgEnabled: join(root, 'state-hk-wg-enabled'),
+    hkStaleAddress: join(root, 'state-hk-stale-address'),
+    hkStaleRoute: join(root, 'state-hk-stale-route'),
   };
   mkdirSync(bin, { recursive: true });
   mkdirSync(join(root, 'etc', 'ssh', 'sshd_config.d'), { recursive: true });
@@ -128,6 +131,9 @@ function makeFixture(overrides = {}) {
   touchState(state.hkWgActive, overrides.pbhk0Active);
   touchState(state.hkWgInterface, overrides.pbhk0Interface ?? overrides.pbhk0Active);
   touchState(state.hkWgLoaded, overrides.pbhk0Loaded ?? overrides.pbhk0Active);
+  touchState(state.hkWgEnabled, overrides.pbhk0Enabled ?? overrides.pbhk0Active);
+  touchState(state.hkStaleAddress, overrides.hkStaleAddress);
+  touchState(state.hkStaleRoute, overrides.hkStaleRoute);
 
   const stub = (name, body) => writeExecutable(join(bin, name), `#!/bin/sh\nset -eu\nprintf '%s %s\\n' '${name}' "$*" >> "${commandLog}"\n${body}\n`);
   stub('apt-get', overrides.stallAptGet ? 'exec sleep 2' : 'exit 0');
@@ -198,7 +204,7 @@ case " $* " in
     : > "${state.wgActive}"; : > "${state.wgInterface}"; : > "${state.wgLoaded}"; exit 0 ;;
   *' enable --now wg-quick@pbhk0 '*)
     test ${overrides.failHkWgStart ? 1 : 0} = 1 && exit 1
-    : > "${state.hkWgActive}"; : > "${state.hkWgInterface}"; : > "${state.hkWgLoaded}"; exit 0 ;;
+    : > "${state.hkWgActive}"; : > "${state.hkWgInterface}"; : > "${state.hkWgLoaded}"; : > "${state.hkWgEnabled}"; exit 0 ;;
   *' enable --now squid '*) : > "${state.squidActive}"; : > "${state.squidProcess}"; : > "${state.squidLoaded}"; : > "${state.proxyListener}"; exit 0 ;;
   *' enable --now paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
   *' enable paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
@@ -209,6 +215,7 @@ case " $* " in
     : > "${state.hkHealthServiceLoaded}"; exit 0 ;;
   *' is-active --quiet wg-quick@pbsg0 '*) test -e "${state.wgActive}" && exit 0 || exit 3 ;;
   *' is-active --quiet wg-quick@pbhk0 '*) test -e "${state.hkWgActive}" && exit 0 || exit 3 ;;
+  *' is-enabled wg-quick@pbhk0 '*) test -e "${state.hkWgEnabled}" && printf '%s\\n' enabled && exit 0; printf '%s\\n' disabled; exit 1 ;;
   *' is-active --quiet squid '*) test -e "${state.squidActive}" && exit 0 || exit 3 ;;
   *' reload wg-quick@pbsg0 '*)
     test ${overrides.failWgReload ? 1 : 0} = 1 && exit 1
@@ -218,6 +225,11 @@ case " $* " in
     test ${overrides.failHkWgReload ? 1 : 0} = 1 && exit 1
     if test ${overrides.failHkWgReloadOnce ? 1 : 0} = 1 && test ! -e "${root}/hk-wg-reload-once"; then : > "${root}/hk-wg-reload-once"; exit 1; fi
     : > "${state.hkWgActive}"; : > "${state.hkWgInterface}"; : > "${state.hkWgLoaded}"; exit 0 ;;
+  *' restart wg-quick@pbhk0 '*)
+    test ${overrides.failHkWgRestart ? 1 : 0} = 1 && exit 1
+    : > "${state.hkWgActive}"; : > "${state.hkWgInterface}"; : > "${state.hkWgLoaded}"; : > "${state.hkWgEnabled}"
+    if test ${overrides.hkStaleAfterRestartOnce ? 1 : 0} = 1 && test ! -e "${root}/hk-restart-once"; then : > "${root}/hk-restart-once"; else rm -f -- "${state.hkStaleAddress}" "${state.hkStaleRoute}"; fi
+    exit 0 ;;
   *' restart squid '*)
     test ${overrides.failSquidRestart ? 1 : 0} = 1 && exit 1
     if test ${overrides.failSquidRestartOnce ? 1 : 0} = 1 && test ! -e "${root}/squid-restart-once"; then : > "${root}/squid-restart-once"; exit 1; fi
@@ -233,7 +245,7 @@ case " $* " in
   *' show --property=Result --value paperbanana-hk-egress-health@pbhk0.service '*) printf '%s\\n' '${overrides.hkServiceResult ?? 'success'}'; exit 0 ;;
   *' show --property=ExecMainStatus --value paperbanana-hk-egress-health@pbhk0.service '*) printf '%s\\n' '${overrides.hkServiceExecMainStatus ?? '0'}'; exit 0 ;;
   *' show --property=LoadState --value wg-quick@pbsg0 '*) test -e "${state.wgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
-  *' show --property=LoadState --value wg-quick@pbhk0 '*) test -e "${state.hkWgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
+  *' show --property=LoadState --value wg-quick@pbhk0 '*) test ${overrides.hkWgTemplateAlwaysLoaded ? 1 : 0} = 1 && printf '%s\\n' loaded && exit 0; test -e "${state.hkWgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value squid '*) test -e "${state.squidLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value paperbanana-sg-egress-health.timer '*) test -e "${state.healthTimerLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value paperbanana-sg-egress-health.service '*) test -e "${state.healthServiceLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
@@ -250,7 +262,7 @@ case " $* " in
   *' disable --now wg-quick@pbhk0 '*|*' stop wg-quick@pbhk0 '*)
     test ${overrides.failHkWgStop ? 1 : 0} = 1 && exit 1
     if test ${overrides.recordHkWgConfigOnStop ? 1 : 0} = 1 && test -e "${root}/etc/wireguard/pbhk0.conf"; then : > "${state.hkWgConfigPresentOnStop}"; fi
-    rm -f -- "${state.hkWgActive}" "${state.hkWgLoaded}" "${state.hkWgInterface}"
+    rm -f -- "${state.hkWgActive}" "${state.hkWgLoaded}" "${state.hkWgInterface}" "${state.hkWgEnabled}" "${state.hkStaleAddress}" "${state.hkStaleRoute}"
     exit 0 ;;
   *' disable --now squid '*|*' stop squid '*)
     test ${overrides.failSquidStop ? 1 : 0} = 1 && exit 1
@@ -328,7 +340,8 @@ ${overrides.extraProxyListener ? "printf '%s\\n' 'LISTEN 0 4096 0.0.0.0:3128 0.0
   stub('ip', `
 case " $* " in
   *' -4 addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.1/30 scope global pbhk0'; exit 0 ;;
-  *' -4 -o addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0    inet 10.77.0.1/30 scope global pbhk0'; exit 0 ;;
+  *' -4 -o addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0    inet 10.77.0.1/30 scope global pbhk0'; test -e "${state.hkStaleAddress}" && printf '%s\\n' '7: pbhk0    inet 10.77.9.1/24 scope global pbhk0'; exit 0 ;;
+  *' -4 route show dev pbhk0 '*) printf '%s\\n' '10.77.0.2 dev pbhk0 scope link'; test -e "${state.hkStaleRoute}" && printf '%s\\n' 'default dev pbhk0 scope link'; exit 0 ;;
   *' -4 addr show dev pbsg0 '*) printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.2/30 scope global pbsg0'; exit 0 ;;
   *' -4 -o addr show dev pbsg0 '*) printf '%s\\n' '7: pbsg0    inet 10.77.0.2/30 scope global pbsg0'; exit 0 ;;
   *' link show dev pbsg0 '*) test ${overrides.ipLinkQueryExit ?? 0} = 0 || exit ${overrides.ipLinkQueryExit ?? 0}; test -e "${state.wgInterface}" && printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420'; exit $? ;;
@@ -553,6 +566,48 @@ test('Hong Kong peer installer rolls back a failed first start including a newly
   }
 });
 
+test('Hong Kong active peer update restarts away stale addresses and routes before exact verification', () => {
+  const fixture = makeFixture({ pbhk0Active: true, hkStaleAddress: true, hkStaleRoute: true });
+  try {
+    const wgDir = join(fixture.root, 'etc', 'wireguard');
+    const previous = '# Managed by PaperBanana Singapore egress\n# previous config\n';
+    writeFileSync(join(wgDir, 'pbhk0.conf'), previous);
+    writeFileSync(join(wgDir, 'paperbanana-hk-egress.private'), `${'B'.repeat(43)}=\n`);
+    writeFileSync(join(wgDir, 'paperbanana-hk-egress.private.owner'), '# Managed by PaperBanana Singapore egress\n');
+    const result = run(fixture, 'install-hk-peer.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    const log = commandLog(fixture);
+    assert.match(log, /systemctl restart wg-quick@pbhk0/);
+    assert.doesNotMatch(log, /systemctl reload wg-quick@pbhk0/);
+    assert.match(log, /ip -4 -o addr show dev pbhk0/);
+    assert.match(log, /ip -4 route show dev pbhk0/);
+    assert.equal(existsSync(fixture.state.hkStaleAddress), false);
+    assert.equal(existsSync(fixture.state.hkStaleRoute), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong active peer update restores prior file and live state when exact route verification fails', () => {
+  const fixture = makeFixture({ pbhk0Active: true, hkStaleRoute: true, hkStaleAfterRestartOnce: true });
+  try {
+    const wgDir = join(fixture.root, 'etc', 'wireguard');
+    const configPath = join(wgDir, 'pbhk0.conf');
+    const previous = '# Managed by PaperBanana Singapore egress\n# previous config\n';
+    writeFileSync(configPath, previous);
+    writeFileSync(join(wgDir, 'paperbanana-hk-egress.private'), `${'B'.repeat(43)}=\n`);
+    writeFileSync(join(wgDir, 'paperbanana-hk-egress.private.owner'), '# Managed by PaperBanana Singapore egress\n');
+    const result = run(fixture, 'install-hk-peer.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /route verification failed|restored.*prior/i);
+    assert.equal(readFileSync(configPath, 'utf8'), previous);
+    assert.equal((commandLog(fixture).match(/systemctl restart wg-quick@pbhk0/g) ?? []).length, 2);
+    assert.equal(existsSync(fixture.state.hkStaleRoute), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
 test('Hong Kong peer uninstall removes marked pbhk0 only after the monitor is removed', () => {
   const fixture = makeFixture({
     hkHealthTimerActive: true,
@@ -597,6 +652,36 @@ test('Hong Kong peer uninstall preserves an unmarked pbhk0 configuration and key
     assert.equal(readFileSync(join(wgDir, 'pbhk0.conf'), 'utf8'), '# operator-owned pbhk0\n');
     assert.equal(readFileSync(join(wgDir, 'paperbanana-hk-egress.private'), 'utf8'), 'operator-key\n');
     assert.doesNotMatch(commandLog(fixture), /systemctl disable --now wg-quick@pbhk0/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong peer uninstall ignores the always-loaded wg-quick template and clean reruns are idempotent', () => {
+  const fixture = makeFixture({ hkWgTemplateAlwaysLoaded: true });
+  try {
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const result = run(fixture, 'uninstall.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--remove-peer', '--apply']);
+      assert.equal(result.status, 0, result.stderr);
+    }
+    assert.doesNotMatch(commandLog(fixture), /systemctl disable --now wg-quick@pbhk0/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong peer uninstall disables an enabled instance even though its template remains loaded', () => {
+  const fixture = makeFixture({ hkWgTemplateAlwaysLoaded: true, pbhk0Active: true, pbhk0Enabled: true });
+  try {
+    const wgDir = join(fixture.root, 'etc', 'wireguard');
+    writeFileSync(join(wgDir, 'pbhk0.conf'), '# Managed by PaperBanana Singapore egress\n');
+    writeFileSync(join(wgDir, 'paperbanana-hk-egress.private'), 'private-material-not-real\n');
+    writeFileSync(join(wgDir, 'paperbanana-hk-egress.private.owner'), '# Managed by PaperBanana Singapore egress\n');
+    const result = run(fixture, 'uninstall.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--remove-peer', '--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(commandLog(fixture), /systemctl disable --now wg-quick@pbhk0/);
+    assert.match(commandLog(fixture), /systemctl is-enabled wg-quick@pbhk0/);
+    assert.equal(existsSync(fixture.state.hkWgInterface), false);
   } finally {
     fixture.cleanup();
   }
