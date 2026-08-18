@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Managed by PaperBanana Singapore egress
 set -Eeuo pipefail
 
 usage() {

@@ -52,6 +52,10 @@ function makeFixture(overrides = {}) {
     healthTimerLoaded: join(root, 'state-health-timer-loaded'),
     healthServiceActive: join(root, 'state-health-service-active'),
     healthServiceLoaded: join(root, 'state-health-service-loaded'),
+    hkHealthTimerActive: join(root, 'state-hk-health-timer-active'),
+    hkHealthTimerLoaded: join(root, 'state-hk-health-timer-loaded'),
+    hkHealthServiceActive: join(root, 'state-hk-health-service-active'),
+    hkHealthServiceLoaded: join(root, 'state-hk-health-service-loaded'),
   };
   mkdirSync(bin, { recursive: true });
   mkdirSync(join(root, 'etc', 'ssh', 'sshd_config.d'), { recursive: true });
@@ -91,6 +95,10 @@ function makeFixture(overrides = {}) {
   touchState(state.healthTimerLoaded, overrides.healthTimerLoaded ?? overrides.healthTimerActive);
   touchState(state.healthServiceActive, overrides.healthServiceActive);
   touchState(state.healthServiceLoaded, overrides.healthServiceLoaded ?? overrides.healthServiceActive);
+  touchState(state.hkHealthTimerActive, overrides.hkHealthTimerActive);
+  touchState(state.hkHealthTimerLoaded, overrides.hkHealthTimerLoaded ?? overrides.hkHealthTimerActive);
+  touchState(state.hkHealthServiceActive, overrides.hkHealthServiceActive);
+  touchState(state.hkHealthServiceLoaded, overrides.hkHealthServiceLoaded ?? overrides.hkHealthServiceActive);
 
   const stub = (name, body) => writeExecutable(join(bin, name), `#!/bin/sh\nset -eu\nprintf '%s %s\\n' '${name}' "$*" >> "${commandLog}"\n${body}\n`);
   stub('apt-get', overrides.stallAptGet ? 'sleep 2' : 'exit 0');
@@ -128,14 +136,19 @@ case " $* " in
   *' list-unit-files --no-legend '*) test ${overrides.hbrUnitListed ? 1 : 0} = 1 && printf '%s\\n' 'hbrclient.service enabled'; exit 0 ;;
   *' enable --now wg-quick@pbsg0 '*) : > "${state.wgActive}"; : > "${state.wgInterface}"; : > "${state.wgLoaded}"; exit 0 ;;
   *' enable --now squid '*) : > "${state.squidActive}"; : > "${state.squidProcess}"; : > "${state.squidLoaded}"; : > "${state.proxyListener}"; exit 0 ;;
+  *' enable --now paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
   *' is-active --quiet wg-quick@pbsg0 '*) test -e "${state.wgActive}" && exit 0 || exit 3 ;;
   *' is-active --quiet squid '*) test -e "${state.squidActive}" && exit 0 || exit 3 ;;
   *' is-active --quiet paperbanana-sg-egress-health.timer '*) test -e "${state.healthTimerActive}" && exit 0 || exit 3 ;;
   *' is-active --quiet paperbanana-sg-egress-health.service '*) test -e "${state.healthServiceActive}" && exit 0 || exit 3 ;;
+  *' is-active --quiet paperbanana-hk-egress-health@pbhk0.timer '*) test ${overrides.failHkTimerStateQuery ? 1 : 0} = 1 && exit 1; test -e "${state.hkHealthTimerActive}" && exit 0 || exit 3 ;;
+  *' is-active --quiet paperbanana-hk-egress-health@pbhk0.service '*) test -e "${state.hkHealthServiceActive}" && exit 0 || exit 3 ;;
   *' show --property=LoadState --value wg-quick@pbsg0 '*) test -e "${state.wgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value squid '*) test -e "${state.squidLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value paperbanana-sg-egress-health.timer '*) test -e "${state.healthTimerLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' show --property=LoadState --value paperbanana-sg-egress-health.service '*) test -e "${state.healthServiceLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
+  *' show --property=LoadState --value paperbanana-hk-egress-health@pbhk0.timer '*) test ${overrides.failHkTimerStateQuery ? 1 : 0} = 1 && exit 1; test -e "${state.hkHealthTimerLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
+  *' show --property=LoadState --value paperbanana-hk-egress-health@pbhk0.service '*) test -e "${state.hkHealthServiceLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' reload ssh '*)
     if test ${overrides.failSshReloadOnce ? 1 : 0} = 1 && test ! -e "${root}/reload-once"; then : > "${root}/reload-once"; exit 1; fi
     exit ${overrides.failSshReload ? 1 : 0} ;;
@@ -152,6 +165,16 @@ case " $* " in
     exit 0 ;;
   *' disable --now paperbanana-sg-egress-health.service '*|*' stop paperbanana-sg-egress-health.service '*)
     rm -f -- "${state.healthServiceActive}" "${state.healthServiceLoaded}"
+    exit 0 ;;
+  *' disable --now paperbanana-hk-egress-health@pbhk0.timer '*|*' stop paperbanana-hk-egress-health@pbhk0.timer '*)
+    test ${overrides.failHkTimerStop ? 1 : 0} = 1 && exit 1
+    test ${overrides.leaveHkTimerActive ? 1 : 0} = 1 && exit 0
+    rm -f -- "${state.hkHealthTimerActive}" "${state.hkHealthTimerLoaded}"
+    exit 0 ;;
+  *' disable --now paperbanana-hk-egress-health@pbhk0.service '*|*' stop paperbanana-hk-egress-health@pbhk0.service '*)
+    test ${overrides.failHkServiceStop ? 1 : 0} = 1 && exit 1
+    test ${overrides.leaveHkServiceActive ? 1 : 0} = 1 && exit 0
+    rm -f -- "${state.hkHealthServiceActive}" "${state.hkHealthServiceLoaded}"
     exit 0 ;;
 esac
 exit 0`);
@@ -247,6 +270,22 @@ function run(fixture, script, args = [], options = {}) {
 
 function commandLog(fixture) {
   return existsSync(fixture.commandLog) ? readFileSync(fixture.commandLog, 'utf8') : '';
+}
+
+function writeHkMonitorAssets(fixture) {
+  const unitDir = join(fixture.root, 'etc', 'systemd', 'system');
+  const runtimeScripts = join(fixture.root, 'opt', 'paperbanana-sg-egress', 'scripts');
+  mkdirSync(unitDir, { recursive: true });
+  writeFileSync(join(unitDir, 'paperbanana-hk-egress-health@.service'), '# Managed by PaperBanana Singapore egress\n');
+  writeFileSync(join(unitDir, 'paperbanana-hk-egress-health@.timer'), '# Managed by PaperBanana Singapore egress\n');
+  writeFileSync(join(runtimeScripts, 'monitor-health.sh'), '#!/usr/bin/env bash\n# Managed by PaperBanana Singapore egress\n');
+  writeFileSync(join(runtimeScripts, 'smoke.sh'), '#!/usr/bin/env bash\n# Managed by PaperBanana Singapore egress\n');
+  return {
+    service: join(unitDir, 'paperbanana-hk-egress-health@.service'),
+    timer: join(unitDir, 'paperbanana-hk-egress-health@.timer'),
+    monitor: join(runtimeScripts, 'monitor-health.sh'),
+    smoke: join(runtimeScripts, 'smoke.sh'),
+  };
 }
 
 test('fixture command runner returns a bounded timeout instead of allowing a child script to hang', () => {
@@ -540,6 +579,77 @@ test('uninstall stops an active loaded Squid unit even when its project marker a
   }
 });
 
+test('Hong Kong uninstall separately stops active monitor instances and removes only HK monitoring assets', () => {
+  const fixture = makeFixture({ hkHealthTimerActive: true, hkHealthServiceActive: true });
+  try {
+    const assets = writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(commandLog(fixture), /systemctl disable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+    assert.match(commandLog(fixture), /systemctl disable --now paperbanana-hk-egress-health@pbhk0\.service/);
+    assert.equal(existsSync(fixture.state.hkHealthTimerActive), false);
+    assert.equal(existsSync(fixture.state.hkHealthServiceActive), false);
+    for (const path of Object.values(assets)) assert.equal(existsSync(path), false, `${path} must be removed on Hong Kong`);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong uninstall fails closed when an active monitor timer cannot be stopped', () => {
+  const fixture = makeFixture({ hkHealthTimerActive: true, failHkTimerStop: true });
+  try {
+    const assets = writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(commandLog(fixture), /systemctl disable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+    assert.equal(existsSync(fixture.state.hkHealthTimerActive), true);
+    assert.equal(existsSync(assets.timer), true, 'assets must remain when the stop fails');
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong uninstall rejects a monitor timer that remains active after a successful stop command', () => {
+  const fixture = makeFixture({ hkHealthTimerActive: true, leaveHkTimerActive: true });
+  try {
+    const assets = writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /paperbanana-hk-egress-health@pbhk0\.timer remains active/i);
+    assert.equal(existsSync(fixture.state.hkHealthTimerActive), true);
+    for (const path of Object.values(assets)) assert.equal(existsSync(path), true, `${path} must remain when the timer still runs`);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong uninstall fails closed without deleting assets when timer state cannot be queried', () => {
+  const fixture = makeFixture({ hkHealthTimerActive: true, failHkTimerStateQuery: true });
+  try {
+    const assets = writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /cannot determine.*paperbanana-hk-egress-health@pbhk0\.timer|state.*query/i);
+    for (const path of Object.values(assets)) assert.equal(existsSync(path), true, `${path} must remain when state inspection fails`);
+    assert.doesNotMatch(commandLog(fixture), /systemctl disable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Singapore uninstall does not remove Hong Kong timer templates or monitoring assets', () => {
+  const fixture = makeFixture();
+  try {
+    const assets = writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    for (const path of Object.values(assets)) assert.equal(existsSync(path), true, `${path} must remain on Singapore`);
+    assert.doesNotMatch(commandLog(fixture), /paperbanana-hk-egress-health@pbhk0/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
 test('HK smoke accepts explicit proxy 403 after curl exits nonzero and rejects only exact 403', () => {
   const fixture = makeFixture({ deniedExit: 22 });
   try {
@@ -645,6 +755,14 @@ test('generated Squid policy permits only Hong Kong approved CONNECT traffic', (
       ['Singapore source', { source: '10.77.0.2', authority: 'api.openai.com:443', resolved: '198.51.100.10' }, 'deny'],
       ['IPv4 authority', { source: '10.77.0.1', authority: '192.0.2.1:443', resolved: '192.0.2.1' }, 'deny'],
       ['IPv6 authority', { source: '10.77.0.1', authority: '[2001:db8::1]:443', resolved: '2001:db8::1' }, 'deny'],
+      ['native IPv6 DNS result', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '2001:4860:4860::8888' }, 'deny'],
+      ['IPv4-mapped literal authority', { source: '10.77.0.1', authority: '[::ffff:8.8.8.8]:443', resolved: '::ffff:0808:0808' }, 'deny'],
+      ['IPv4 unspecified resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '0.0.0.0' }, 'deny'],
+      ['IPv6 unspecified resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '::' }, 'deny'],
+      ['IPv4-mapped loopback resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '::ffff:7f00:1' }, 'deny'],
+      ['IPv4-mapped private resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '::ffff:0a00:8' }, 'deny'],
+      ['IPv4-mapped dotted loopback resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '::ffff:127.0.0.1' }, 'deny'],
+      ['IPv4-mapped dotted private resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '::ffff:10.0.0.8' }, 'deny'],
       ['private resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '10.0.0.8' }, 'deny'],
       ['PTR cannot bless an unapproved name', { source: '10.77.0.1', authority: 'unapproved.invalid:443', resolved: '198.51.100.10', ptr: 'api.openai.com' }, 'deny'],
       ['non-443 port', { source: '10.77.0.1', authority: 'api.openai.com:444', resolved: '198.51.100.10' }, 'deny'],
@@ -676,7 +794,7 @@ test('recursive egress secret scan fails a leaked fixture and accepts deploy ass
     ].join('\n'));
     writeFileSync(join(leakRoot, 'scripts', 'leak.sh'), 'export TOKEN=sk-fixture-secret\n');
     writeFileSync(join(leakRoot, 'systemd', 'fixture.service'), 'Environment=PUBLIC=8.8.8.8\n');
-    writeFileSync(join(leakRoot, 'docs', 'leak.md'), 'Bearer docs-fixture-secret\n198.51.42.7\n203.0.5.7\n');
+    writeFileSync(join(leakRoot, 'docs', 'leak.md'), 'Bearer docs-fixture-secret\n192.0.0.1\n192.0.1.1\n192.2.1.1\n198.51.42.7\n203.0.5.7\n2001:4860:4860::8888\n');
     const leak = spawnSync(process.execPath, [secretScanner, leakRoot], { encoding: 'utf8' });
     assert.notEqual(leak.status, 0);
     const leakReport = `${leak.stdout}\n${leak.stderr}`;
@@ -686,6 +804,10 @@ test('recursive egress secret scan fails a leaked fixture and accepts deploy ass
     assert.match(leakReport, /docs\/leak\.md: Bearer token/);
     assert.match(leakReport, /non-reserved public IPv4 198\.51\.42\.7/);
     assert.match(leakReport, /non-reserved public IPv4 203\.0\.5\.7/);
+    assert.match(leakReport, /non-reserved public IPv4 192\.0\.1\.1/);
+    assert.match(leakReport, /non-reserved public IPv4 192\.2\.1\.1/);
+    assert.doesNotMatch(leakReport, /non-reserved public IPv4 192\.0\.0\.1/);
+    assert.match(leakReport, /non-reserved public IPv6 2001:4860:4860::8888/);
 
     const clean = spawnSync(process.execPath, [secretScanner, deployRoot], { encoding: 'utf8' });
     assert.equal(clean.status, 0, clean.stderr);

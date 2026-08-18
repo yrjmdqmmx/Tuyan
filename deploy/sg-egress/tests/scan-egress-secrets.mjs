@@ -18,10 +18,54 @@ function isReservedIPv4(value) {
     (a === 100 && b >= 64 && b <= 127) ||
     (a === 169 && b === 254) ||
     (a === 172 && b >= 16 && b <= 31) ||
-    (a === 192 && (b === 0 || b === 2 || b === 168)) ||
+    (a === 192 && ((b === 0 && (c === 0 || c === 2)) || b === 168)) ||
     (a === 198 && (b === 18 || b === 19 || (b === 51 && c === 100))) ||
     (a === 203 && b === 0 && c === 113) ||
     a === 255;
+}
+
+function ipv6ToBigInt(value) {
+  const normalized = value.replace(/^\[|\]$/g, '').toLowerCase();
+  if (!/^[0-9a-f:.]+$/.test(normalized)) return null;
+  const halves = normalized.split('::');
+  if (halves.length > 2) return null;
+  const expand = (half) => (half ? half.split(':') : []);
+  const left = expand(halves[0]);
+  const right = halves.length === 2 ? expand(halves[1]) : [];
+  if (left.some((part) => part.includes('.')) || right.some((part) => part.includes('.'))) return null;
+  if (left.length + right.length > 8 || (halves.length === 1 && left.length !== 8)) return null;
+  const groups = [...left, ...Array(8 - left.length - right.length).fill('0'), ...right];
+  let result = 0n;
+  for (const group of groups) {
+    if (!/^[0-9a-f]{1,4}$/.test(group)) return null;
+    result = (result << 16n) + BigInt(`0x${group}`);
+  }
+  return result;
+}
+
+function ipv6InCidr(value, cidr) {
+  const [network, prefixText] = cidr.split('/');
+  const address = ipv6ToBigInt(value);
+  const networkAddress = ipv6ToBigInt(network);
+  const prefix = Number(prefixText);
+  if (address === null || networkAddress === null || !Number.isInteger(prefix) || prefix < 0 || prefix > 128) return false;
+  const mask = prefix === 0 ? 0n : ((1n << BigInt(prefix)) - 1n) << BigInt(128 - prefix);
+  return (address & mask) === (networkAddress & mask);
+}
+
+function isReservedIPv6(value) {
+  return [
+    '::/128',
+    '::1/128',
+    '::/96',
+    '::ffff:0:0/96',
+    '64:ff9b::/96',
+    '100::/64',
+    '2001:db8::/32',
+    'fc00::/7',
+    'fe80::/10',
+    'ff00::/8',
+  ].some((cidr) => ipv6InCidr(value, cidr));
 }
 
 function inspectFile(path) {
@@ -39,6 +83,12 @@ function inspectFile(path) {
   }
   for (const match of text.matchAll(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g)) {
     if (!isReservedIPv4(match[0])) findings.push(`${relative(root, path)}: non-reserved public IPv4 ${match[0]}`);
+  }
+  for (const match of text.matchAll(/(?:[0-9A-Fa-f]{0,4}:){2,}[0-9A-Fa-f:.]*/g)) {
+    const candidate = match[0];
+    if (ipv6ToBigInt(candidate) !== null && !isReservedIPv6(candidate)) {
+      findings.push(`${relative(root, path)}: non-reserved public IPv6 ${candidate}`);
+    }
   }
 }
 

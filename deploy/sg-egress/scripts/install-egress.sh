@@ -121,21 +121,32 @@ acl literal_ipv4 url_regex -i ^[0-9]{1,3}(\.[0-9]{1,3}){3}:[0-9]+$
 acl literal_ipv6 url_regex -i ^\[[0-9a-f:.]+\]:[0-9]+$
 acl literal_ipv4_url url_regex -i ^https?://[0-9]{1,3}(\.[0-9]{1,3}){3}[:/]
 acl literal_ipv6_url url_regex -i ^https?://\[[0-9a-f:.]+\][:/]
+acl private_dst dst 0.0.0.0/8
 acl private_dst dst 10.0.0.0/8
 acl private_dst dst 100.64.0.0/10
 acl private_dst dst 127.0.0.0/8
 acl private_dst dst 169.254.0.0/16
 acl private_dst dst 172.16.0.0/12
 acl private_dst dst 192.168.0.0/16
+acl private_dst dst ::/128
 acl private_dst dst ::1/128
 acl private_dst dst fc00::/7
 acl private_dst dst fe80::/10
+# Squid's parser-supported "ipv6" token matches every routed IPv6-unicast
+# destination. Deny it before the allow rule: this egress host never makes
+# native IPv6 provider connections, even when DNS returns AAAA records.
+acl destination_ipv6 dst ipv6
+# Squid represents ordinary IPv4 addresses as IPv4-mapped internally. Do not
+# use ::ffff:0:0/96 here: it would match and block every normal IPv4 A record.
+# Raw mapped literals are denied above; mapped private/loopback values are
+# normalized to IPv4 and matched by the CIDRs above.
 
 http_access deny literal_ipv4
 http_access deny literal_ipv6
 http_access deny literal_ipv4_url
 http_access deny literal_ipv6_url
 http_access deny private_dst
+http_access deny destination_ipv6
 http_access allow hk CONNECT SSL_ports approved
 http_access deny all
 

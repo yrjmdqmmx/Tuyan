@@ -70,12 +70,16 @@ test('WireGuard and Squid are constrained to the fixed tunnel and approved CONNE
   assert.match(installer, /cache deny all/);
   assert.match(installer, /acl literal_ipv4 url_regex/);
   assert.ok(installer.includes('acl literal_ipv6 url_regex -i ^\\[[0-9a-f:.]+\\]:[0-9]+$'));
+  assert.match(installer, /acl private_dst dst 0\.0\.0\.0\/8/);
   assert.match(installer, /acl private_dst dst 10\.0\.0\.0\/8/);
+  assert.match(installer, /acl private_dst dst ::\/128/);
   assert.match(installer, /acl private_dst dst ::1\/128/);
   assert.match(installer, /acl private_dst dst fc00::\/7/);
   assert.match(installer, /acl private_dst dst fe80::\/10/);
+  assert.match(installer, /acl destination_ipv6 dst ipv6/);
   assert.match(installer, /http_access deny literal_ip/);
   assert.match(installer, /http_access deny private_dst/);
+  assert.match(installer, /http_access deny destination_ipv6/);
   assert.match(installer, /host_verify_strict on/);
   assert.match(installer, /logformat paperbanana_egress .*%>rd:%>rP/);
   assert.doesNotMatch(installer, /%\{Host\}>h/);
@@ -180,6 +184,10 @@ test('uninstall is dry-run by default and removes only egress-owned paths', () =
   assert.match(uninstall, /\/etc\/wireguard\/pbsg0\.conf/);
   assert.match(uninstall, /\/etc\/squid\/squid\.conf/);
   assert.match(uninstall, /paperbanana-sg-egress-health/);
+  assert.match(uninstall, /--host/);
+  assert.match(uninstall, /paperbanana-hk-egress-health@/);
+  assert.match(uninstall, /--wg-interface/);
+  assert.match(uninstall, /\/opt\/paperbanana-sg-egress\/scripts\/monitor-health\.sh/);
   assert.doesNotMatch(uninstall, /rm\s+-rf/);
   assert.doesNotMatch(uninstall, /\|\| true/);
   assert.match(uninstall, /wg-quick@pbsg0/);

@@ -50,6 +50,16 @@ function ipv6ToBigInt(value) {
   const expand = (half) => (half ? half.split(':') : []);
   const left = expand(halves[0]);
   const right = halves.length === 2 ? expand(halves[1]) : [];
+  const dottedParts = [...left, ...right].filter((part) => part.includes('.'));
+  if (dottedParts.length > 1) return null;
+  if (dottedParts.length === 1) {
+    const dotted = dottedParts[0];
+    const tail = halves.length === 2 ? right : left;
+    if (tail.at(-1) !== dotted) return null;
+    const ipv4 = ipv4ToNumber(dotted);
+    if (ipv4 === null) return null;
+    tail.splice(-1, 1, (ipv4 >>> 16).toString(16), (ipv4 & 0xffff).toString(16));
+  }
   if (left.some((part) => part.includes('.')) || right.some((part) => part.includes('.'))) return null;
   if (left.length + right.length > 8 || (halves.length === 1 && left.length !== 8)) return null;
   const groups = [...left, ...Array(8 - left.length - right.length).fill('0'), ...right];
@@ -61,10 +71,36 @@ function ipv6ToBigInt(value) {
   return result;
 }
 
+function mappedIpv4ToNumber(value) {
+  const address = ipv6ToBigInt(value);
+  if (address === null || (address >> 32n) !== 0xffffn) return null;
+  return Number(address & 0xffffffffn);
+}
+
+function squidPublicIpv6(value) {
+  // Squid's parser magic `dst ipv6` intentionally excludes ::/4, where
+  // IPv4-mapped values live, and expands to the routed IPv6-unicast ranges.
+  // Keep this model aligned with Squid 6's acl_ip_data::FactoryParse("ipv6").
+  if (ipv4ToNumber(value) !== null || mappedIpv4ToNumber(value) !== null) return false;
+  return [
+    '1000::/4',
+    '2000::/3',
+    '4000::/2',
+    '8000::/2',
+    'c000::/3',
+    'e000::/4',
+    'fc00::/7',
+    'fe80::/10',
+  ].some((cidr) => cidrContains(value, cidr));
+}
+
 function cidrContains(address, cidr) {
   const [network, prefixText] = cidr.split('/');
   const prefix = Number(prefixText);
-  const addressV4 = ipv4ToNumber(address);
+  // Squid stores both normal IPv4 and an IPv4-mapped address as its IPv4
+  // representation, so IPv4 private CIDRs cover mapped loopback/private DNS
+  // answers too. Treating the forms as different would overstate protection.
+  const addressV4 = ipv4ToNumber(address) ?? mappedIpv4ToNumber(address);
   const networkV4 = ipv4ToNumber(network);
   if (addressV4 !== null || networkV4 !== null) {
     if (addressV4 === null || networkV4 === null || !Number.isInteger(prefix) || prefix < 0 || prefix > 32) return false;
@@ -100,7 +136,9 @@ function matchDefinition(definition, request, authority) {
       return new RegExp(pattern, insensitive ? 'i' : '').test(request.authority);
     }
     case 'dst':
-      return definition.values.some((cidr) => cidrContains(request.resolved, cidr));
+      return definition.values.some((cidr) => cidr === 'ipv6'
+        ? squidPublicIpv6(request.resolved)
+        : cidrContains(request.resolved, cidr));
     default:
       die(`unsupported ACL type: ${definition.type}`);
   }

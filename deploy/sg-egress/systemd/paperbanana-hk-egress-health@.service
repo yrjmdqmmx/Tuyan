@@ -1,4 +1,5 @@
 [Unit]
+# Managed by PaperBanana Singapore egress
 Description=PaperBanana Hong Kong egress health check (%i)
 After=network-online.target wg-quick@%i.service
 Wants=network-online.target

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Managed by PaperBanana Singapore egress
 set -Eeuo pipefail
 
 proxy_url="${PAPERBANANA_SG_EGRESS_PROXY:-http://10.77.0.2:3128}"
