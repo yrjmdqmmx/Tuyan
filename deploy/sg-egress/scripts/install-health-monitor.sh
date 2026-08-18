@@ -103,7 +103,7 @@ systemd_dir="$(host_path /etc/systemd/system)"
 service_target="$systemd_dir/paperbanana-hk-egress-health@.service"
 timer_target="$systemd_dir/paperbanana-hk-egress-health@.timer"
 timer_unit="paperbanana-hk-egress-health@${wg_interface}.timer"
-timer_was_enabled=false
+timer_prior_enablement=""
 timer_was_active=false
 if ! timer_unit_state="$(systemctl show --property=LoadState --property=UnitFileState "$timer_unit")"; then
   echo "cannot determine prior unit state for $timer_unit" >&2
@@ -133,9 +133,11 @@ done <<<"$timer_unit_state"
   exit 2
 }
 case "$timer_load_state:$timer_file_state" in
-  not-found:|not-found:disabled) ;;
-  loaded:enabled|loaded:enabled-runtime) timer_was_enabled=true ;;
-  loaded:disabled|loaded:static|loaded:indirect|loaded:masked|loaded:masked-runtime) ;;
+  not-found:) timer_prior_enablement=not-found ;;
+  not-found:disabled) timer_prior_enablement=disabled ;;
+  loaded:enabled|loaded:enabled-runtime|loaded:disabled|loaded:static|loaded:indirect|loaded:masked|loaded:masked-runtime)
+    timer_prior_enablement="$timer_file_state"
+    ;;
   *) echo "unexpected prior unit state for $timer_unit: $timer_load_state/$timer_file_state" >&2; exit 2 ;;
 esac
 if systemctl is-active --quiet "$timer_unit"; then
@@ -155,15 +157,27 @@ rollback_monitor_install() {
   if [[ -n "$service_previous" ]]; then mv -f -- "$service_previous" "$service_target"; else rm -f -- "$service_target"; fi
   if [[ -n "$timer_previous" ]]; then mv -f -- "$timer_previous" "$timer_target"; else rm -f -- "$timer_target"; fi
   systemctl daemon-reload || { echo "$reason; failed to restore systemd unit state" >&2; return 1; }
-  if [[ "$timer_was_enabled" == true ]]; then
-    if [[ "$timer_was_active" == true ]]; then
-      systemctl enable --now "$timer_unit" || { echo "$reason; failed to restore active Hong Kong health timer" >&2; return 1; }
-    else
-      systemctl enable "$timer_unit" || { echo "$reason; failed to restore enabled Hong Kong health timer" >&2; return 1; }
-    fi
-  elif [[ "$timer_was_active" == true ]]; then
-    systemctl start "$timer_unit" || { echo "$reason; failed to restore active Hong Kong health timer" >&2; return 1; }
-  fi
+  case "$timer_prior_enablement" in
+    enabled)
+      if [[ "$timer_was_active" == true ]]; then
+        systemctl enable --now "$timer_unit" || { echo "$reason; failed to restore active persistent Hong Kong health timer" >&2; return 1; }
+      else
+        systemctl enable "$timer_unit" || { echo "$reason; failed to restore persistent Hong Kong health timer" >&2; return 1; }
+      fi
+      ;;
+    enabled-runtime)
+      if [[ "$timer_was_active" == true ]]; then
+        systemctl enable --runtime --now "$timer_unit" || { echo "$reason; failed to restore active runtime Hong Kong health timer" >&2; return 1; }
+      else
+        systemctl enable --runtime "$timer_unit" || { echo "$reason; failed to restore runtime Hong Kong health timer" >&2; return 1; }
+      fi
+      ;;
+    disabled|static|indirect|masked|masked-runtime|not-found)
+      if [[ "$timer_was_active" == true ]]; then
+        systemctl start "$timer_unit" || { echo "$reason; failed to restore active Hong Kong health timer" >&2; return 1; }
+      fi
+      ;;
+  esac
   echo "$reason; rolled back copied Hong Kong health-monitor units" >&2
   return 1
 }

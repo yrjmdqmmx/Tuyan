@@ -206,6 +206,8 @@ case " $* " in
     test ${overrides.failHkWgStart ? 1 : 0} = 1 && exit 1
     : > "${state.hkWgActive}"; : > "${state.hkWgInterface}"; : > "${state.hkWgLoaded}"; : > "${state.hkWgEnabled}"; exit 0 ;;
   *' enable --now squid '*) : > "${state.squidActive}"; : > "${state.squidProcess}"; : > "${state.squidLoaded}"; : > "${state.proxyListener}"; exit 0 ;;
+  *' enable --runtime --now paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
+  *' enable --runtime paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
   *' enable --now paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
   *' enable paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
   *' start paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
@@ -1845,6 +1847,46 @@ test('failed Hong Kong monitor upgrade restores an already enabled and active ti
     assert.notEqual(result.status, 0);
     assert.equal(existsSync(fixture.state.hkHealthTimerActive), true);
     assert.match(commandLog(fixture), /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('failed Hong Kong monitor upgrade restores active enabled-runtime without persistent enablement', () => {
+  const fixture = makeFixture({
+    hkHealthTimerActive: true,
+    hkHealthTimerLoaded: true,
+    hkTimerUnitFileState: 'enabled-runtime',
+    failHkServiceStart: true,
+  });
+  try {
+    writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    const log = commandLog(fixture);
+    assert.match(log, /systemctl enable --runtime --now paperbanana-hk-egress-health@pbhk0\.timer/);
+    assert.doesNotMatch(log, /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+    assert.equal(existsSync(fixture.state.hkHealthTimerActive), true);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('failed Hong Kong monitor upgrade restores inactive enabled-runtime without starting or persistent enablement', () => {
+  const fixture = makeFixture({
+    hkHealthTimerLoaded: true,
+    hkTimerUnitFileState: 'enabled-runtime',
+    failHkServiceStart: true,
+  });
+  try {
+    writeHkMonitorAssets(fixture);
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    const log = commandLog(fixture);
+    assert.match(log, /systemctl enable --runtime paperbanana-hk-egress-health@pbhk0\.timer/);
+    assert.doesNotMatch(log, /systemctl enable(?: --now)? paperbanana-hk-egress-health@pbhk0\.timer/);
+    assert.equal(existsSync(fixture.state.hkHealthTimerEnabled), true);
+    assert.equal(existsSync(fixture.state.hkHealthTimerActive), false);
   } finally {
     fixture.cleanup();
   }
