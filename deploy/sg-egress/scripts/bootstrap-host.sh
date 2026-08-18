@@ -220,6 +220,7 @@ cat > "$candidate" <<'EOF'
 PermitRootLogin no
 PasswordAuthentication no
 PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
 KbdInteractiveAuthentication no
 AllowTcpForwarding no
 MaxAuthTries 3

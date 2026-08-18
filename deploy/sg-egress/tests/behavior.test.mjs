@@ -97,7 +97,7 @@ function makeFixture(overrides = {}) {
     'allowtcpforwarding no',
     'maxauthtries 3',
     'allowusers ecs-user',
-    'authorizedkeysfile .ssh/authorized_keys',
+    `authorizedkeysfile ${overrides.ubuntuDefaultAuthorizedKeyPaths ? '.ssh/authorized_keys .ssh/authorized_keys2' : '.ssh/authorized_keys'}`,
     'authenticationmethods any',
   ].join('\n'));
   writeFileSync(rootSshdOutput, overrides.rootSshdOutput ?? readFileSync(sshdOutput, 'utf8'));
@@ -167,7 +167,13 @@ fi`);
   stub('sshd', `
 case " $* " in
   *' -T '*'user=root'*) cat "${rootSshdOutput}"; exit ${overrides.sshdTestExit ?? 0} ;;
-  *' -T '*) cat "${sshdOutput}"; exit ${overrides.sshdTestExit ?? 0} ;;
+  *' -T '*)
+    if test ${overrides.ubuntuDefaultAuthorizedKeyPaths ? 1 : 0} = 1 && grep -Fqx 'AuthorizedKeysFile .ssh/authorized_keys' "${root}/etc/ssh/sshd_config.d/00-paperbanana-sg-egress.conf"; then
+      sed 's|^authorizedkeysfile .*|authorizedkeysfile .ssh/authorized_keys|'
+    else
+      cat "${sshdOutput}"
+    fi < "${sshdOutput}"
+    exit ${overrides.sshdTestExit ?? 0} ;;
   *' -t '*) exit ${overrides.sshdSyntaxExit ?? 0} ;;
 esac
 exit 0`);
@@ -579,6 +585,19 @@ test('bootstrap validates ecs-user and root against actual management and loopba
     assert.match(log, /sshd -T -C user=root,host=sg-admin\.example\.invalid,addr=127\.0\.0\.1/);
     const dropIn = readFileSync(join(fixture.root, 'etc', 'ssh', 'sshd_config.d', '00-paperbanana-sg-egress.conf'), 'utf8');
     assert.match(dropIn, /PubkeyAuthentication yes/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('bootstrap pins Ubuntu default multiple AuthorizedKeysFile paths to the inspected key path', () => {
+  const fixture = makeFixture({ ubuntuDefaultAuthorizedKeyPaths: true });
+  try {
+    assert.match(readFileSync(fixture.sshdOutput, 'utf8'), /authorizedkeysfile \.ssh\/authorized_keys \.ssh\/authorized_keys2/);
+    const result = run(fixture, 'bootstrap-host.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    const dropIn = readFileSync(join(fixture.root, 'etc', 'ssh', 'sshd_config.d', '00-paperbanana-sg-egress.conf'), 'utf8');
+    assert.match(dropIn, /^AuthorizedKeysFile \.ssh\/authorized_keys$/m);
   } finally {
     fixture.cleanup();
   }
