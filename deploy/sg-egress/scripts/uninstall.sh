@@ -2,13 +2,14 @@
 set -Eeuo pipefail
 
 usage() {
-  echo "usage: $0 [--host sg|hk] [--wg-interface <Hong-Kong-interface>] [--dry-run|--apply]" >&2
+  echo "usage: $0 [--host sg|hk] [--wg-interface <Hong-Kong-interface>] [--remove-peer] [--dry-run|--apply]" >&2
   exit 2
 }
 
 mode="--dry-run"
 host="sg"
 wg_interface=""
+remove_peer=false
 while (( $# > 0 )); do
   case "$1" in
     --apply|--dry-run)
@@ -25,6 +26,10 @@ while (( $# > 0 )); do
       wg_interface="$2"
       shift 2
       ;;
+    --remove-peer)
+      remove_peer=true
+      shift
+      ;;
     *) usage ;;
   esac
 done
@@ -34,6 +39,7 @@ if [[ "$host" == "hk" ]]; then
 elif [[ -n "$wg_interface" ]]; then
   usage
 fi
+if [[ "$host" != "hk" && "$remove_peer" == true ]]; then usage; fi
 
 test_root="${PAPERBANANA_SG_EGRESS_TEST_ROOT:-}"
 validate_test_root() {
@@ -62,6 +68,71 @@ if [[ "$mode" == "--apply" && "$EUID" -ne 0 && -z "$test_root" ]]; then
 fi
 
 managed_marker="# Managed by PaperBanana Singapore egress"
+
+hk_interface_present() {
+  local status
+  if ip link show dev pbhk0 >/dev/null 2>&1; then return 0; else status=$?; fi
+  case "$status" in
+    1) return 1 ;;
+    *) echo "cannot determine whether pbhk0 is present" >&2; return 2 ;;
+  esac
+}
+
+preflight_hk_peer_removal() {
+  local wg_config="$(host_path /etc/wireguard/pbhk0.conf)"
+  local key_file="$(host_path /etc/wireguard/paperbanana-hk-egress.private)"
+  local key_marker="$(host_path /etc/wireguard/paperbanana-hk-egress.private.owner)"
+  local metadata state_status runtime_present=false
+
+  if unit_loaded wg-quick@pbhk0 || unit_active wg-quick@pbhk0; then runtime_present=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+  if hk_interface_present; then runtime_present=true; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+
+  if [[ -e "$wg_config" ]]; then
+    [[ -f "$wg_config" && ! -L "$wg_config" ]] || { echo "refusing to remove non-regular pbhk0 configuration" >&2; return 1; }
+    metadata="$(stat -c '%F:%u:%a' -- "$wg_config")" || return 2
+    [[ "$metadata" == "regular file:0:600" ]] && grep -Fqx "$managed_marker" "$wg_config" || {
+      echo "refusing to remove unmarked or unsafe pbhk0 configuration" >&2
+      return 1
+    }
+  elif [[ "$runtime_present" == true ]]; then
+    echo "refusing to remove live pbhk0 without its marked configuration" >&2
+    return 1
+  fi
+
+  if [[ -e "$key_file" || -e "$key_marker" ]]; then
+    [[ -f "$key_file" && ! -L "$key_file" && -f "$key_marker" && ! -L "$key_marker" ]] || {
+      echo "refusing incomplete or symlinked Hong Kong key state" >&2
+      return 1
+    }
+    [[ "$(stat -c '%F:%u:%a' -- "$key_file")" == "regular file:0:600" ]] || { echo "refusing unsafe Hong Kong key ownership" >&2; return 1; }
+    [[ "$(stat -c '%F:%u:%a' -- "$key_marker")" == "regular file:0:600" ]] && grep -Fqx "$managed_marker" "$key_marker" || {
+      echo "refusing unmarked Hong Kong private key" >&2
+      return 1
+    }
+  fi
+}
+
+uninstall_hk_peer() {
+  local wg_config="$(host_path /etc/wireguard/pbhk0.conf)"
+  local key_file="$(host_path /etc/wireguard/paperbanana-hk-egress.private)"
+  local key_marker="$(host_path /etc/wireguard/paperbanana-hk-egress.private.owner)"
+  local state_status
+
+  stop_project_unit wg-quick@pbhk0 || return $?
+  assert_project_unit_inactive wg-quick@pbhk0 || return $?
+  if hk_interface_present; then
+    ip link delete dev pbhk0 || return $?
+  else
+    state_status=$?
+    [[ "$state_status" == "1" ]] || return "$state_status"
+  fi
+  if hk_interface_present; then echo "pbhk0 remains after uninstall" >&2; return 1; else state_status=$?; [[ "$state_status" == "1" ]] || return "$state_status"; fi
+
+  if [[ -e "$wg_config" ]] && grep -Fqx "$managed_marker" "$wg_config"; then rm -f -- "$wg_config"; fi
+  if [[ -e "$key_marker" ]] && grep -Fqx "$managed_marker" "$key_marker"; then rm -f -- "$key_file" "$key_marker"; fi
+  assert_project_unit_gone wg-quick@pbhk0 || return $?
+  echo "Hong Kong PaperBanana pbhk0 peer and marked local key removed; generic wg0 and application services were not changed."
+}
 
 unit_load_state() {
   local state
@@ -196,6 +267,8 @@ uninstall_hk() {
   local runtime_monitor="$(host_path /opt/paperbanana-sg-egress/scripts/monitor-health.sh)"
   local runtime_smoke="$(host_path /opt/paperbanana-sg-egress/scripts/smoke.sh)"
 
+  if [[ "$remove_peer" == true ]]; then preflight_hk_peer_removal || return $?; fi
+
   # Stop by loaded/active state even if template files or an ownership marker
   # have already been lost. Do not touch pbhk0, Hong Kong app services, or SG.
   stop_project_unit "$health_timer" || return $?
@@ -216,7 +289,12 @@ uninstall_hk() {
 
   assert_project_unit_gone "$health_timer" || return $?
   assert_project_unit_gone "$health_service" || return $?
-  echo "Hong Kong PaperBanana egress monitoring removed; pbhk0 and the primary stack were not changed."
+  if [[ "$remove_peer" == true ]]; then
+    uninstall_hk_peer || return $?
+    echo "Hong Kong PaperBanana egress monitoring and marked pbhk0 peer were removed; the primary stack was not changed."
+  else
+    echo "Hong Kong PaperBanana egress monitoring removed; pbhk0 and the primary stack were not changed."
+  fi
 }
 
 interface_present() {
@@ -457,7 +535,11 @@ uninstall_sg() {
 if [[ "$mode" == "--dry-run" ]]; then
   if [[ "$host" == "hk" ]]; then
     echo "Would stop/disable paperbanana-hk-egress-health@${wg_interface} timer and service, then remove only marked Hong Kong monitor templates and runtime scripts."
-    echo "Would not change pbhk0, the Hong Kong primary stack, or Singapore services."
+    if [[ "$remove_peer" == true ]]; then
+      echo "Would then remove only the marked pbhk0 configuration and marked local key; generic wg0 and the Hong Kong application stack remain untouched."
+    else
+      echo "Would not change pbhk0, the Hong Kong primary stack, or Singapore services."
+    fi
   else
     echo "Would stop only Singapore PaperBanana egress units and remove the managed /etc/wireguard/pbsg0.conf plus its private key."
     echo "Would restore the narrowly saved Squid package configuration only when the current Squid configuration is PaperBanana-managed. SSH and user data are untouched."

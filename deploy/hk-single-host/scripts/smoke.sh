@@ -5,8 +5,18 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 deploy_dir="$(cd -- "$script_dir/.." && pwd)"
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
 
+gateway_ready="$(curl --fail --silent --show-error http://127.0.0.1:13005/ready)"
+if ! jq -e '
+  .ok == true and
+  .backend.ok == true and
+  .backend.data.ready == true and
+  (.backend.data.dependencies.providerEgress == "ready" or
+   .backend.data.dependencies.providerEgress == "degraded")
+' >/dev/null <<<"$gateway_ready"; then
+  echo "Gateway readiness payload does not contain an authoritative Core readiness state" >&2
+  exit 1
+fi
 curl --fail --silent --show-error http://127.0.0.1:13005/health >/dev/null
-curl --fail --silent --show-error http://127.0.0.1:13005/ready >/dev/null
 curl --fail --silent --show-error http://127.0.0.1:3010/ >/dev/null
 curl --fail --silent --show-error http://127.0.0.1:3010/api/health >/dev/null
 

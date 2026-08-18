@@ -31,6 +31,7 @@ jobs:
       - run: pnpm --filter @paperbanana/paperbanana-api build
       - run: node --test apps/laf-functions/tests/*.test.cjs
       - run: node --test deploy/hk-single-host/tests/*.test.mjs
+      - run: node --test deploy/sg-egress/tests/*.test.mjs
 
   images:
     runs-on: ubuntu-latest

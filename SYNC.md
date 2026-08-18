@@ -24,6 +24,17 @@
 
 ## 条目（最新在上）
 
+### [2026-08-18] 新加坡模型出口交付契约 — by Codex
+变更：香港 Core 新增显式 `disabled|sg-required` 出口模式、固定 `http://10.77.0.2:3128` 代理配置、可复现 `pbhk0` peer、独立手动 GitHub Environment 工作流与 fail-closed 回滚顺序；公开 API/action/envelope 不变。
+契约（影响其他端 / 共享）：
+- **Core env**：`PAPERBANANA_PROVIDER_EGRESS_MODE=disabled` 为安全上新/回滚值；OpenAI/Gemini/OpenRouter 在此模式下失败关闭，绝不恢复香港直连。`sg-required` 只允许在 SG/HK tunnel smoke 成功后启用。`PAPERBANANA_SG_PROXY_URL` 固定为 `http://10.77.0.2:3128`。
+- **健康/就绪**：`providerEgress=degraded` 是可观察状态，但不改变 MongoDB/OSS 权威 `/ready`；隧道/代理路径由香港专用 monitor 独立告警。
+- **运维顺序**：新 Core 先以 disabled 运行 → 安装 SG 与 HK `pbhk0` → monitor/smoke → 显式切 `sg-required` 且只重建 `paperbanana-api`。失败回滚到 disabled；不走香港直连。工作流不含卸载或 provider key。
+各端待办：
+- [x] paperbanana-api / 后端（Core 路由与健康契约、测试、README）
+- [x] 部署/运维（HK env 原子切换、pbhk0、手动工作流、smoke/monitor、回滚文档）
+- [x] Web/iOS/微信小程序/Android/Windows/macOS（公开 API 不变，客户端无需改动）
+
 ### [2026-08-15] 生产后端切换到阿里云香港单机栈 — by Codex
 变更：`api.paperbanana.asia` 已切到现有香港轻量应用服务器；Nginx 后仅运行 Auth Gateway、Node 24 核心、单成员副本集 MongoDB 与 gVisor Plot Worker。旧 Laf 已暂停，旧 Auth Gateway 镜像已替换成无凭据 Caddy 兼容代理，源 Mongo 仅作回滚保留且关闭外网。
 契约（影响其他端 / 共享）：

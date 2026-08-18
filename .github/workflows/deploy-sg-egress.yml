@@ -1,0 +1,221 @@
+name: Deliver Singapore Provider Egress
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Validate only, or install the reviewed SG/HK delivery assets.
+        required: true
+        type: choice
+        options:
+          - validate
+          - deploy
+        default: validate
+      activate_core:
+        description: After tunnel smoke, explicitly switch Core from disabled to sg-required.
+        required: true
+        type: boolean
+        default: false
+      confirm:
+        description: Type deploy-sg-egress when action is deploy.
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-sg-egress
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @paperbanana/paperbanana-api test
+      - run: pnpm --filter @paperbanana/paperbanana-api check
+      - run: pnpm --filter @paperbanana/paperbanana-api build
+      - run: node --test apps/laf-functions/tests/*.test.cjs
+      - run: node --test deploy/hk-single-host/tests/*.test.mjs
+      - run: node --test deploy/sg-egress/tests/*.test.mjs
+      - name: Validate shell and committed-secret boundaries
+        run: |
+          set -Eeuo pipefail
+          bash -n deploy/hk-single-host/scripts/set-provider-egress-mode.sh
+          for script in deploy/sg-egress/scripts/*.sh; do bash -n "$script"; done
+          node deploy/sg-egress/tests/scan-egress-secrets.mjs deploy/sg-egress
+
+  deploy:
+    needs: validate
+    if: github.event.inputs.action == 'deploy' && github.event.inputs.confirm == 'deploy-sg-egress'
+    environment: paperbanana-sg-egress
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SG_HOST: ${{ secrets.ALIYUN_SG_EGRESS_HOST }}
+      SG_USER: ${{ secrets.ALIYUN_SG_EGRESS_USER }}
+      SG_SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_SG_EGRESS_SSH_PRIVATE_KEY }}
+      SG_SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_SG_EGRESS_SSH_KNOWN_HOSTS }}
+      HK_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+      HK_USER: ${{ secrets.ALIYUN_HK_USER }}
+      HK_SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+      HK_SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+      SG_WG_PUBLIC_KEY: ${{ secrets.PAPERBANANA_SG_WG_PUBLIC_KEY }}
+      SG_WG_ENDPOINT: ${{ secrets.PAPERBANANA_SG_WG_ENDPOINT }}
+      HK_WG_PUBLIC_KEY: ${{ secrets.PAPERBANANA_HK_WG_PUBLIC_KEY }}
+      HK_WG_ENDPOINT: ${{ secrets.PAPERBANANA_HK_WG_ENDPOINT }}
+      ACTIVATE_CORE: ${{ inputs.activate_core }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare protected SSH and peer files
+        env:
+          DELIVERY_DIR: ${{ runner.temp }}/paperbanana-sg-egress-delivery
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          install -d -m 0700 "$DELIVERY_DIR/ssh" "$DELIVERY_DIR/peers"
+          test -n "$SG_HOST" && test -n "$SG_USER" && test -n "$HK_HOST" && test -n "$HK_USER"
+          printf '%s\n' "$SG_SSH_PRIVATE_KEY" > "$DELIVERY_DIR/ssh/sg.key"
+          printf '%s\n' "$SG_SSH_KNOWN_HOSTS" > "$DELIVERY_DIR/ssh/sg.known_hosts"
+          printf '%s\n' "$HK_SSH_PRIVATE_KEY" > "$DELIVERY_DIR/ssh/hk.key"
+          printf '%s\n' "$HK_SSH_KNOWN_HOSTS" > "$DELIVERY_DIR/ssh/hk.known_hosts"
+          printf '%s\n' "$SG_WG_PUBLIC_KEY" > "$DELIVERY_DIR/peers/sg-wg-public.key"
+          printf '%s\n' "$SG_WG_ENDPOINT" > "$DELIVERY_DIR/peers/sg-wg-endpoint"
+          printf '%s\n' "$HK_WG_PUBLIC_KEY" > "$DELIVERY_DIR/peers/hk-wg-public.key"
+          printf '%s\n' "$HK_WG_ENDPOINT" > "$DELIVERY_DIR/peers/hk-wg-endpoint"
+          chmod 0600 "$DELIVERY_DIR"/ssh/* "$DELIVERY_DIR"/peers/*
+          grep -Eq '^[A-Za-z0-9+/]{43}=$' "$DELIVERY_DIR/peers/sg-wg-public.key"
+          grep -Eq '^[A-Za-z0-9+/]{43}=$' "$DELIVERY_DIR/peers/hk-wg-public.key"
+          grep -Eq '^([A-Za-z0-9.-]+|\[[0-9A-Fa-f:]+\]):51820$' "$DELIVERY_DIR/peers/sg-wg-endpoint"
+          grep -Eq '^([A-Za-z0-9.-]+|\[[0-9A-Fa-f:]+\]):51820$' "$DELIVERY_DIR/peers/hk-wg-endpoint"
+
+      - name: Stage commit-scoped reviewed assets on both hosts
+        env:
+          DELIVERY_DIR: ${{ runner.temp }}/paperbanana-sg-egress-delivery
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          archive="$DELIVERY_DIR/paperbanana-sg-egress-${GITHUB_SHA}.tgz"
+          tar -czf "$archive" deploy/sg-egress deploy/hk-single-host/scripts/set-provider-egress-mode.sh
+          ssh_base=(-o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=15)
+          sg_ssh=(-i "$DELIVERY_DIR/ssh/sg.key" -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/sg.known_hosts" "${ssh_base[@]}")
+          hk_ssh=(-i "$DELIVERY_DIR/ssh/hk.key" -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/hk.known_hosts" "${ssh_base[@]}")
+          scp "${sg_ssh[@]}" "$archive" "$SG_USER@$SG_HOST:/tmp/paperbanana-sg-egress-${GITHUB_SHA}.tgz"
+          scp "${hk_ssh[@]}" "$archive" "$HK_USER@$HK_HOST:/tmp/paperbanana-sg-egress-${GITHUB_SHA}.tgz"
+          scp "${sg_ssh[@]}" "$DELIVERY_DIR/peers/hk-wg-public.key" "$DELIVERY_DIR/peers/hk-wg-endpoint" "$SG_USER@$SG_HOST:/tmp/"
+          scp "${hk_ssh[@]}" "$DELIVERY_DIR/peers/sg-wg-public.key" "$DELIVERY_DIR/peers/sg-wg-endpoint" "$HK_USER@$HK_HOST:/tmp/"
+
+          install_remote() {
+            local user_host="$1"
+            shift
+            ssh "$@" "$user_host" "sudo bash -s -- '$GITHUB_SHA'" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          commit_sha="$1"
+          [[ "$commit_sha" =~ ^[0-9a-f]{40}$ ]]
+          archive="/tmp/paperbanana-sg-egress-${commit_sha}.tgz"
+          release="/opt/paperbanana-sg-egress/releases/${commit_sha}"
+          install -d -o root -g root -m 0750 "$release" /opt/paperbanana-sg-egress/scripts /opt/paperbanana-sg-egress/systemd
+          tar -xzf "$archive" -C "$release"
+          chown -R root:root "$release"
+          find "$release" -type d -exec chmod go-w {} +
+          find "$release" -type f -exec chmod go-w {} +
+          install -o root -g root -m 0750 "$release"/deploy/sg-egress/scripts/*.sh /opt/paperbanana-sg-egress/scripts/
+          install -o root -g root -m 0644 "$release"/deploy/sg-egress/systemd/* /opt/paperbanana-sg-egress/systemd/
+          rm -f -- "$archive"
+          REMOTE
+          }
+          install_remote "$SG_USER@$SG_HOST" "${sg_ssh[@]}"
+          install_remote "$HK_USER@$HK_HOST" "${hk_ssh[@]}"
+
+          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          install -d -o root -g root -m 0700 /root/.config/paperbanana-sg-egress
+          install -o root -g root -m 0600 /tmp/hk-wg-public.key /root/.config/paperbanana-sg-egress/hk-wg-public.key
+          install -o root -g root -m 0600 /tmp/hk-wg-endpoint /root/.config/paperbanana-sg-egress/hk-wg-endpoint
+          rm -f -- /tmp/hk-wg-public.key /tmp/hk-wg-endpoint
+          REMOTE
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          install -d -o root -g root -m 0700 /root/.config/paperbanana-sg-egress
+          install -o root -g root -m 0600 /tmp/sg-wg-public.key /root/.config/paperbanana-sg-egress/sg-wg-public.key
+          install -o root -g root -m 0600 /tmp/sg-wg-endpoint /root/.config/paperbanana-sg-egress/sg-wg-endpoint
+          rm -f -- /tmp/sg-wg-public.key /tmp/sg-wg-endpoint
+          REMOTE
+
+      - name: Put Core in disabled fail-closed mode before tunnel changes
+        env:
+          DELIVERY_DIR: ${{ runner.temp }}/paperbanana-sg-egress-delivery
+        run: |
+          set -Eeuo pipefail
+          hk_ssh=(-i "$DELIVERY_DIR/ssh/hk.key" -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/hk.known_hosts" -o BatchMode=yes -o IdentitiesOnly=yes)
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo bash -s -- '$GITHUB_SHA'" <<'REMOTE'
+          set -Eeuo pipefail
+          commit_sha="$1"
+          [[ "$commit_sha" =~ ^[0-9a-f]{40}$ ]]
+          switch=/opt/paperbanana-sg-egress/releases/${commit_sha}/deploy/hk-single-host/scripts/set-provider-egress-mode.sh
+          "$switch" --mode disabled --dry-run
+          "$switch" --mode disabled --apply
+          cd /opt/paperbanana/repo/deploy/hk-single-host
+          docker compose --project-name paperbanana-hk --project-directory . --env-file .env -f compose.yaml up -d --no-deps --force-recreate paperbanana-api
+          REMOTE
+
+      - name: Dry-run then install SG and HK tunnel assets
+        env:
+          DELIVERY_DIR: ${{ runner.temp }}/paperbanana-sg-egress-delivery
+        run: |
+          set -Eeuo pipefail
+          sg_ssh=(-i "$DELIVERY_DIR/ssh/sg.key" -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/sg.known_hosts" -o BatchMode=yes -o IdentitiesOnly=yes)
+          hk_ssh=(-i "$DELIVERY_DIR/ssh/hk.key" -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/hk.known_hosts" -o BatchMode=yes -o IdentitiesOnly=yes)
+          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo /opt/paperbanana-sg-egress/scripts/bootstrap-host.sh --dry-run"
+          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo /opt/paperbanana-sg-egress/scripts/bootstrap-host.sh --apply"
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo /opt/paperbanana-sg-egress/scripts/install-hk-peer.sh --dry-run"
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo /opt/paperbanana-sg-egress/scripts/install-hk-peer.sh --apply"
+          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo env HK_WG_ENDPOINT_FILE=/root/.config/paperbanana-sg-egress/hk-wg-endpoint /opt/paperbanana-sg-egress/scripts/install-egress.sh --dry-run"
+          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo env HK_WG_ENDPOINT_FILE=/root/.config/paperbanana-sg-egress/hk-wg-endpoint /opt/paperbanana-sg-egress/scripts/install-egress.sh --apply"
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo /opt/paperbanana-sg-egress/scripts/install-health-monitor.sh --host hk --wg-interface pbhk0 --dry-run"
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo /opt/paperbanana-sg-egress/scripts/install-health-monitor.sh --host hk --wg-interface pbhk0 --apply"
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo /opt/paperbanana-sg-egress/scripts/smoke.sh --hk --wg-interface pbhk0"
+
+      - name: Optionally activate Core only after tunnel smoke
+        if: inputs.activate_core
+        env:
+          DELIVERY_DIR: ${{ runner.temp }}/paperbanana-sg-egress-delivery
+        run: |
+          set -Eeuo pipefail
+          hk_ssh=(-i "$DELIVERY_DIR/ssh/hk.key" -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/hk.known_hosts" -o BatchMode=yes -o IdentitiesOnly=yes)
+          ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo bash -s -- '$GITHUB_SHA'" <<'REMOTE'
+          set -Eeuo pipefail
+          commit_sha="$1"
+          [[ "$commit_sha" =~ ^[0-9a-f]{40}$ ]]
+          switch=/opt/paperbanana-sg-egress/releases/${commit_sha}/deploy/hk-single-host/scripts/set-provider-egress-mode.sh
+          compose=(docker compose --project-name paperbanana-hk --project-directory /opt/paperbanana/repo/deploy/hk-single-host --env-file /opt/paperbanana/repo/deploy/hk-single-host/.env -f /opt/paperbanana/repo/deploy/hk-single-host/compose.yaml)
+          required_applied=false
+          rollback_disabled() {
+            status=$?
+            if [[ "$required_applied" == true ]]; then
+              "$switch" --mode disabled --apply || true
+              "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api || true
+            fi
+            exit "$status"
+          }
+          trap rollback_disabled ERR
+          "$switch" --mode sg-required --dry-run
+          "$switch" --mode sg-required --apply
+          required_applied=true
+          "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api
+          /opt/paperbanana-sg-egress/scripts/smoke.sh --hk --wg-interface pbhk0
+          trap - ERR
+          REMOTE

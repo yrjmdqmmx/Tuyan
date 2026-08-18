@@ -32,6 +32,7 @@ interface_name="pbsg0"
 # Fixed WireGuard transit network: 10.77.0.0/30 (Hong Kong .1, Singapore .2).
 runtime_dir="$(host_path /opt/paperbanana-sg-egress)"
 key_file="${HK_WG_PUBLIC_KEY_FILE:-$(host_path /root/.config/paperbanana-sg-egress/hk-wg-public.key)}"
+endpoint_file="${HK_WG_ENDPOINT_FILE:-}"
 endpoint="${HK_WG_ENDPOINT:-}"
 
 if [[ "$mode" == "--dry-run" ]]; then
@@ -47,6 +48,13 @@ fi
 if [[ "$(stat -c '%a:%u' "$key_file")" != "600:0" ]]; then
   echo "HK_WG_PUBLIC_KEY_FILE must be owned by root with mode 0600" >&2
   exit 1
+fi
+if [[ -n "$endpoint_file" ]]; then
+  if [[ ! -f "$endpoint_file" || -L "$endpoint_file" || "$(stat -c '%F:%u:%a' -- "$endpoint_file")" != "regular file:0:600" ]]; then
+    echo "HK_WG_ENDPOINT_FILE must point to a root-owned regular file with mode 0600" >&2
+    exit 1
+  fi
+  endpoint="$(tr -d '\r\n' < "$endpoint_file")"
 fi
 if [[ -z "$endpoint" || ! "$endpoint" =~ ^[A-Za-z0-9._:-]+:51820$ ]]; then
   echo "HK_WG_ENDPOINT must be a Hong Kong endpoint ending in :51820" >&2

@@ -9,6 +9,7 @@ const read = (name) => readFileSync(path(name), 'utf8');
 const scripts = [
   'scripts/bootstrap-host.sh',
   'scripts/install-egress.sh',
+  'scripts/install-hk-peer.sh',
   'scripts/smoke.sh',
   'scripts/monitor-health.sh',
   'scripts/install-health-monitor.sh',
@@ -38,6 +39,7 @@ test('all mutating operator scripts require an explicit apply gate', () => {
   for (const name of [
     'scripts/bootstrap-host.sh',
     'scripts/install-egress.sh',
+    'scripts/install-hk-peer.sh',
     'scripts/install-health-monitor.sh',
     'scripts/uninstall.sh',
   ]) {
@@ -47,6 +49,110 @@ test('all mutating operator scripts require an explicit apply gate', () => {
     assert.match(script, /--dry-run/);
     assert.match(script, /if \[\[ "\$mode" == "--dry-run" \]\]/, `${name} must make dry-run the default`);
   }
+});
+
+test('Hong Kong peer installer owns only the fixed pbhk0 tunnel and protects private material', () => {
+  const installer = read('scripts/install-hk-peer.sh');
+
+  assert.match(installer, /interface_name="pbhk0"/);
+  assert.match(installer, /Address = 10\.77\.0\.1\/30/);
+  assert.match(installer, /ListenPort = 51820/);
+  assert.match(installer, /AllowedIPs = 10\.77\.0\.2\/32/);
+  assert.match(installer, /:51820/);
+  assert.match(installer, /SG_WG_PUBLIC_KEY_FILE/);
+  assert.match(installer, /SG_WG_ENDPOINT_FILE/);
+  assert.match(installer, /stat -c '%F:%u:%a'/);
+  assert.match(installer, /wg-quick strip/);
+  assert.match(installer, /systemctl (?:reload|enable --now) "wg-quick@\$\{interface_name\}"/);
+  assert.match(installer, /10\.77\.0\.1\/30/);
+  assert.match(installer, /wg show "\$interface_name" peers/);
+  assert.match(installer, /chmod 0600/);
+  assert.match(installer, /umask 077/);
+  assert.doesNotMatch(installer, /AllowedIPs\s*=\s*(?:0\.0\.0\.0\/0|::\/0)/);
+  assert.doesNotMatch(installer, /net\.ipv4\.ip_forward|\biptables\b|\bnft\b|\bufw\b|firewall-cmd|\/etc\/wireguard\/wg0|wg-quick@wg0|interface_name="wg0"/);
+  assert.doesNotMatch(installer, /(?:echo|printf)[^\n]*\$hk_private_key/i);
+});
+
+test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail-closed', () => {
+  const workflowPath = new URL('../../../.github/workflows/deploy-sg-egress.yml', import.meta.url);
+  assert.ok(existsSync(workflowPath), 'manual Singapore delivery workflow must be committed');
+  const workflow = readFileSync(workflowPath, 'utf8');
+  const runBlocks = [...workflow.matchAll(/\n\s+run:\s*\|\n([\s\S]*?)(?=\n\s+(?:- name:|- uses:|[a-zA-Z][a-zA-Z_-]*:)|$)/g)]
+    .map((match) => match[1])
+    .join('\n');
+
+  assert.match(workflow, /^on:\s*\n\s+workflow_dispatch:/m);
+  assert.doesNotMatch(workflow, /^\s+(?:push|pull_request|schedule):/m);
+  assert.match(workflow, /permissions:\s*\n\s+contents: read/);
+  assert.match(workflow, /group: paperbanana-sg-egress/);
+  assert.match(workflow, /environment: paperbanana-sg-egress/);
+  assert.match(workflow, /action:[\s\S]*type: choice[\s\S]*- validate[\s\S]*- deploy/);
+  assert.match(workflow, /activate_core:[\s\S]*type: boolean[\s\S]*default: false/);
+  assert.match(workflow, /jobs:\s*\n\s+validate:/);
+  assert.match(workflow, /\n\s+deploy:\s*\n[\s\S]*needs: validate/);
+  assert.match(workflow, /StrictHostKeyChecking=yes/);
+  assert.match(workflow, /UserKnownHostsFile=/);
+  assert.match(workflow, /chmod 0600/);
+  assert.match(workflow, /GITHUB_SHA/);
+  assert.match(workflow, /scan-egress-secrets\.mjs deploy\/sg-egress/);
+  assert.match(workflow, /sudo/);
+  assert.doesNotMatch(runBlocks, /\$\{\{\s*secrets\./);
+  assert.doesNotMatch(workflow, /switch=\/opt\/paperbanana-sg-egress\/releases\/\$\{GITHUB_SHA\}/);
+  for (const name of [
+    'ALIYUN_SG_EGRESS_HOST', 'ALIYUN_SG_EGRESS_USER', 'ALIYUN_SG_EGRESS_SSH_PRIVATE_KEY',
+    'ALIYUN_SG_EGRESS_SSH_KNOWN_HOSTS', 'ALIYUN_HK_HOST', 'ALIYUN_HK_USER',
+    'ALIYUN_HK_SSH_PRIVATE_KEY', 'ALIYUN_HK_SSH_KNOWN_HOSTS',
+    'PAPERBANANA_SG_WG_PUBLIC_KEY', 'PAPERBANANA_SG_WG_ENDPOINT',
+    'PAPERBANANA_HK_WG_PUBLIC_KEY', 'PAPERBANANA_HK_WG_ENDPOINT',
+  ]) assert.match(workflow, new RegExp(`secrets\\.${name}\\b`));
+  assert.ok(
+    workflow.indexOf('--mode disabled') < workflow.indexOf('scripts/smoke.sh --hk'),
+    'Core must enter disabled fail-closed mode before tunnel smoke',
+  );
+  assert.ok(
+    workflow.indexOf('scripts/smoke.sh --hk') < workflow.indexOf('--mode sg-required'),
+    'sg-required activation must happen only after tunnel smoke',
+  );
+  assert.match(workflow, /docker compose[\s\S]*up -d --no-deps --force-recreate paperbanana-api/);
+  assert.doesNotMatch(workflow, /(?:rm\s+-rf|git\s+reset\s+--hard|docker\s+(?:compose\s+)?down|systemctl\s+(?:stop|disable)[^\n]*(?:docker|nginx|mongod)|scripts\/uninstall\.sh)/);
+  assert.doesNotMatch(workflow, /Authorization:|OPENAI_API_KEY|GEMINI_API_KEY|OPENROUTER_API_KEY|sk-[A-Za-z0-9]/i);
+});
+
+test('operator documentation records env semantics, secret placeholders and fail-closed order', () => {
+  const coreReadme = readFileSync(new URL('../../../apps/paperbanana-api/README.md', import.meta.url), 'utf8');
+  const hkReadme = readFileSync(new URL('../../hk-single-host/README.md', import.meta.url), 'utf8');
+  const secretsReadme = readFileSync(new URL('../../hk-single-host/secrets/README.md', import.meta.url), 'utf8');
+  const sgReadme = read('README.md');
+  const sync = readFileSync(new URL('../../../SYNC.md', import.meta.url), 'utf8');
+  const joined = [coreReadme, hkReadme, secretsReadme, sgReadme].join('\n');
+
+  assert.match(coreReadme, /PAPERBANANA_PROVIDER_EGRESS_MODE/);
+  assert.match(coreReadme, /disabled[\s\S]*fail-closed|fail-closed[\s\S]*disabled/i);
+  assert.match(coreReadme, /PAPERBANANA_SG_PROXY_URL[\s\S]*http:\/\/10\.77\.0\.2:3128/);
+  assert.match(hkReadme, /set-provider-egress-mode\.sh/);
+  assert.match(hkReadme, /disabled[\s\S]*smoke[\s\S]*sg-required/i);
+  assert.match(hkReadme, /recreate only|only.*paperbanana-api/i);
+  assert.match(hkReadme, /rollback[\s\S]*disabled[\s\S]*(?:never|not)[\s\S]*(?:direct|直连)/i);
+  assert.match(secretsReadme, /core\.env[\s\S]*0600/);
+  for (const name of [
+    'ALIYUN_SG_EGRESS_HOST', 'ALIYUN_SG_EGRESS_USER', 'ALIYUN_SG_EGRESS_SSH_PRIVATE_KEY',
+    'ALIYUN_SG_EGRESS_SSH_KNOWN_HOSTS', 'ALIYUN_HK_HOST', 'ALIYUN_HK_USER',
+    'ALIYUN_HK_SSH_PRIVATE_KEY', 'ALIYUN_HK_SSH_KNOWN_HOSTS',
+    'PAPERBANANA_SG_WG_PUBLIC_KEY', 'PAPERBANANA_SG_WG_ENDPOINT',
+    'PAPERBANANA_HK_WG_PUBLIC_KEY', 'PAPERBANANA_HK_WG_ENDPOINT',
+  ]) assert.match(joined, new RegExp(name));
+  assert.match(sgReadme, /--remove-peer/);
+  assert.match(sgReadme, /monitor[\s\S]*--remove-peer/i);
+  assert.match(joined, /providerEgress[\s\S]*degraded[\s\S]*(?:ready|readiness)/i);
+  assert.match(sync, /新加坡模型出口交付契约/);
+  assert.match(sync, /\[x\].*(?:paperbanana-api|后端)/i);
+  assert.match(sync, /\[x\].*(?:部署|运维)/i);
+  assert.match(sync, /客户端.*无需|无需.*客户端/);
+});
+
+test('CI runs the bounded Singapore delivery and workflow contract suite', () => {
+  const workflow = readFileSync(new URL('../../../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /node --test deploy\/sg-egress\/tests\/\*\.test\.mjs/);
 });
 
 test('WireGuard and Squid are constrained to the fixed tunnel and approved CONNECT destinations', () => {
@@ -97,6 +203,7 @@ test('egress installation protects peer and server private material', () => {
   const readme = read('README.md');
 
   assert.match(installer, /HK_WG_PUBLIC_KEY/);
+  assert.match(installer, /HK_WG_ENDPOINT_FILE/);
   assert.match(installer, /\{43\}=/);
   assert.match(installer, /wg pubkey/);
   assert.match(installer, /stat -c '%a:%u'/);

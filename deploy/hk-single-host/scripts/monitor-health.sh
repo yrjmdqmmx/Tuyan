@@ -39,7 +39,8 @@ check_json_endpoint() {
 check_json_endpoint "API health" "https://api.paperbanana.asia/health" \
   '.ok == true and .runtime == "gateway" and .backend.ok == true'
 check_json_endpoint "API readiness" "https://api.paperbanana.asia/ready" \
-  '.ok == true and .runtime == "gateway" and .backend.ok == true and .backend.data.ready == true'
+  '.ok == true and .runtime == "gateway" and .backend.ok == true and .backend.data.ready == true and
+   (.backend.data.dependencies.providerEgress == "ready" or .backend.data.dependencies.providerEgress == "degraded")'
 check_json_endpoint "Legacy compatibility proxy" "https://yifbnnzrwmxn.sealoshzh.site/health" \
   '.ok == true and .runtime == "gateway" and .backend.ok == true'
 check_json_endpoint "OpenVac health" "http://127.0.0.1:3010/api/health" \

@@ -55,6 +55,32 @@ Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
 inspect each result with `systemctl status paperbanana-backup.service` plus the
 corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.
 
+## Singapore provider egress activation
+
+`paperbanana-api` receives `PAPERBANANA_PROVIDER_EGRESS_MODE` and
+`PAPERBANANA_SG_PROXY_URL` only through the existing root-only
+`/opt/paperbanana/secrets/core.env` `env_file`. Generated environments start at
+`disabled` with the fixed proxy placeholder `http://10.77.0.2:3128`.
+`disabled` is fail-closed for OpenAI, Gemini, and OpenRouter; it never restores
+Hong Kong direct access to those providers. `sg-required` is permitted only
+after the reviewed Singapore/Hong Kong tunnel smoke succeeds.
+
+Delivery order is strict: deploy the new Core image while mode remains
+`disabled`; dry-run/apply the SG host and `pbhk0` assets; install the HK monitor;
+run `scripts/smoke.sh --hk --wg-interface pbhk0`; then optionally run
+`scripts/set-provider-egress-mode.sh --mode sg-required --dry-run` followed by
+`--apply`. After either mode change, recreate only `paperbanana-api`:
+
+```sh
+docker compose --project-name paperbanana-hk --project-directory . --env-file .env -f compose.yaml \
+  up -d --no-deps --force-recreate paperbanana-api
+```
+
+The switcher requires root, validates the existing env without sourcing it,
+preserves every unrelated line plus owner/mode, and atomically replaces only
+the two routing fields. Rollback always sets `disabled` and recreates only
+`paperbanana-api`; rollback never uses Hong Kong direct provider access.
+
 The production health monitor requires a root-only
 `/opt/paperbanana/secrets/monitor.env` containing a dedicated RAM user's
 `ALIBABA_CLOUD_ACCESS_KEY_ID` and `ALIBABA_CLOUD_ACCESS_KEY_SECRET`. That user
@@ -64,6 +90,9 @@ contact group exist. Every five minutes it checks public health/readiness,
 OpenVac, all PaperBanana containers, Mongo connectivity and stuck jobs, backup
 freshness, TLS lifetime, and new Nginx 5xx responses. It reports state changes
 and hourly reminders through `PaperBananaProductionHealthFailure`.
+Core `providerEgress: degraded` remains an explicit health signal but does not
+make `/ready` fail when MongoDB and OSS are ready; the separate HK egress timer
+is authoritative for tunnel/provider-path alerting.
 
 ## Legacy hostname compatibility window
 
