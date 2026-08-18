@@ -40,6 +40,7 @@ elif [[ -n "$wg_interface" ]]; then
   usage
 fi
 if [[ "$host" != "hk" && "$remove_peer" == true ]]; then usage; fi
+if [[ "$remove_peer" == true && "$wg_interface" != "pbhk0" ]]; then usage; fi
 
 test_root="${PAPERBANANA_SG_EGRESS_TEST_ROOT:-}"
 validate_test_root() {

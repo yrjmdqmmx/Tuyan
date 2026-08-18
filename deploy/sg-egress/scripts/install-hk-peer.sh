@@ -62,7 +62,8 @@ zero_public_key="$(printf 'A%.0s' {1..43}; printf '=')"
 printf '%s\n' "$sg_public_key" | wg pubkey >/dev/null 2>&1 || { echo "Singapore peer public key is not accepted by wg pubkey" >&2; exit 1; }
 
 sg_endpoint="$(tr -d '\r\n' < "$sg_endpoint_file")"
-if [[ ! "$sg_endpoint" =~ ^([A-Za-z0-9.-]+|\[[0-9A-Fa-f:]+\]):51820$ ]]; then
+endpoint_pattern='^([A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?:51820$'
+if [[ ! "$sg_endpoint" =~ $endpoint_pattern ]]; then
   echo "Singapore peer endpoint file must contain exactly host:51820" >&2
   exit 1
 fi
@@ -219,10 +220,20 @@ ip -4 route show dev "$interface_name" | awk -v interface_name="$interface_name"
     if (has_expected_dev && $1 == "10.77.0.0/30") connected++
     if (has_expected_dev && ($1 == "10.77.0.2" || $1 == "10.77.0.2/32")) peer++
   }
-  END { exit !(total == 2 && connected == 1 && peer == 1) }
+  END { exit !(connected == 1 && peer <= 1 && total == 1 + peer) }
 ' || restore_wireguard "Hong Kong route verification failed"
 [[ "$(wg show "$interface_name" peers)" == "$sg_public_key" ]] || restore_wireguard "Hong Kong peer verification failed"
-wg show "$interface_name" endpoints | awk -v key="$sg_public_key" '$1 == key && $2 ~ /:51820$/ { found=1 } END { exit !found }' || restore_wireguard "Hong Kong endpoint verification failed"
+wg show "$interface_name" allowed-ips | awk -v key="$sg_public_key" '
+  NF { total++; if (NF == 2 && $1 == key && $2 == "10.77.0.2/32") exact++ }
+  END { exit !(total == 1 && exact == 1) }
+' || restore_wireguard "Hong Kong live AllowedIPs verification failed"
+if ! live_endpoint="$(wg show "$interface_name" endpoints | awk -v key="$sg_public_key" '
+  NF { total++; if (NF == 2 && $1 == key) { exact++; endpoint=$2 } }
+  END { if (total == 1 && exact == 1) print endpoint; else exit 1 }
+')"; then
+  restore_wireguard "Hong Kong endpoint verification failed"
+fi
+[[ "$live_endpoint" =~ $endpoint_pattern ]] || restore_wireguard "Hong Kong endpoint verification failed"
 
 rm -f -- "$previous"
 key_created=false

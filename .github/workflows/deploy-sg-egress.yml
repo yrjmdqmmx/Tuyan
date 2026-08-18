@@ -98,8 +98,9 @@ jobs:
           chmod 0600 "$DELIVERY_DIR"/ssh/* "$DELIVERY_DIR"/peers/*
           grep -Eq '^[A-Za-z0-9+/]{43}=$' "$DELIVERY_DIR/peers/sg-wg-public.key"
           grep -Eq '^[A-Za-z0-9+/]{43}=$' "$DELIVERY_DIR/peers/hk-wg-public.key"
-          grep -Eq '^([A-Za-z0-9.-]+|\[[0-9A-Fa-f:]+\]):51820$' "$DELIVERY_DIR/peers/sg-wg-endpoint"
-          grep -Eq '^([A-Za-z0-9.-]+|\[[0-9A-Fa-f:]+\]):51820$' "$DELIVERY_DIR/peers/hk-wg-endpoint"
+          endpoint_pattern='^([A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?:51820$'
+          grep -Eq "$endpoint_pattern" "$DELIVERY_DIR/peers/sg-wg-endpoint"
+          grep -Eq "$endpoint_pattern" "$DELIVERY_DIR/peers/hk-wg-endpoint"
 
       - name: Stage commit-scoped reviewed assets on both hosts
         env:
@@ -179,8 +180,22 @@ jobs:
           set -Eeuo pipefail
           sg_ssh=(-i "$DELIVERY_DIR/ssh/sg.key" -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/sg.known_hosts" -o BatchMode=yes -o IdentitiesOnly=yes)
           hk_ssh=(-i "$DELIVERY_DIR/ssh/hk.key" -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$DELIVERY_DIR/ssh/hk.known_hosts" -o BatchMode=yes -o IdentitiesOnly=yes)
-          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo /opt/paperbanana-sg-egress/scripts/bootstrap-host.sh --dry-run"
-          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo /opt/paperbanana-sg-egress/scripts/bootstrap-host.sh --apply"
+          ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          [[ -n "${SSH_CONNECTION:-}" ]] || { echo "remote SSH management source is unavailable" >&2; exit 1; }
+          source="${SSH_CONNECTION%% *}"
+          python3 - "$source" <<'PY'
+          import ipaddress
+          import sys
+          try:
+              address = ipaddress.IPv4Address(sys.argv[1])
+          except ipaddress.AddressValueError:
+              raise SystemExit(1)
+          raise SystemExit(0 if address.is_global else 1)
+          PY
+          sudo env "PAPERBANANA_SG_EGRESS_MANAGEMENT_SOURCE_IP=$source" /opt/paperbanana-sg-egress/scripts/bootstrap-host.sh --dry-run
+          sudo env "PAPERBANANA_SG_EGRESS_MANAGEMENT_SOURCE_IP=$source" /opt/paperbanana-sg-egress/scripts/bootstrap-host.sh --apply
+          REMOTE
           ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo /opt/paperbanana-sg-egress/scripts/install-hk-peer.sh --dry-run"
           ssh "${hk_ssh[@]}" "$HK_USER@$HK_HOST" "sudo /opt/paperbanana-sg-egress/scripts/install-hk-peer.sh --apply"
           ssh "${sg_ssh[@]}" "$SG_USER@$SG_HOST" "sudo env HK_WG_ENDPOINT_FILE=/root/.config/paperbanana-sg-egress/hk-wg-endpoint /opt/paperbanana-sg-egress/scripts/install-egress.sh --dry-run"
@@ -263,5 +278,34 @@ jobs:
           "$switch" --mode sg-required --apply
           "${compose[@]}" up -d --no-deps --force-recreate paperbanana-api
           /opt/paperbanana-sg-egress/scripts/smoke.sh --hk --wg-interface pbhk0
+          core_id=""
+          core_health=""
+          for attempt in $(seq 1 60); do
+            if core_id="$("${compose[@]}" ps --status running -q paperbanana-api)" && [[ "$core_id" =~ ^[0-9a-f]{12,64}$ ]]; then
+              if core_health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' "$core_id")" && [[ "$core_health" == "healthy" ]]; then
+                break
+              fi
+            fi
+            core_id=""
+            core_health=""
+            sleep 2
+          done
+          [[ -n "$core_id" && "$core_health" == "healthy" ]] || { echo "Core did not become running and healthy after activation" >&2; false; }
+          container_mode="$("${compose[@]}" exec -T paperbanana-api printenv PAPERBANANA_PROVIDER_EGRESS_MODE)"
+          [[ "$container_mode" == "sg-required" ]] || { echo "Core did not start in sg-required mode" >&2; false; }
+          ready_payload="$("${compose[@]}" exec -T paperbanana-api node -e '
+            fetch("http://127.0.0.1:3000/ready")
+              .then((response) => response.text())
+              .then((body) => process.stdout.write(body))
+              .catch(() => process.exit(1))
+          ')"
+          jq -e '.ready == true' >/dev/null <<<"$ready_payload" || { echo "Core readiness verification failed after activation" >&2; false; }
+          health_payload="$("${compose[@]}" exec -T paperbanana-api node -e '
+            fetch("http://127.0.0.1:3000/health")
+              .then((response) => response.text())
+              .then((body) => process.stdout.write(body))
+              .catch(() => process.exit(1))
+          ')"
+          jq -e '.ready == true and (.dependencies | has("providerEgress")) and (.dependencies.providerEgress == "ready" or .dependencies.providerEgress == "degraded")' >/dev/null <<<"$health_payload" || { echo "Core provider-egress health dependency is missing after activation" >&2; false; }
           trap - ERR
           REMOTE

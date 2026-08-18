@@ -309,6 +309,7 @@ case "$1" in
     fi
     if test "\${2:-}" = pbhk0 && test "\${3:-}" = peers; then printf '%s\\n' '${overrides.liveSgPeerKey ?? validPublicKey}'; exit 0; fi
     if test "\${2:-}" = pbhk0 && test "\${3:-}" = endpoints; then printf '%s\\t%s\\n' '${overrides.liveSgPeerKey ?? validPublicKey}' '${overrides.liveSgEndpoint ?? 'sg-egress.example.invalid:51820'}'; exit 0; fi
+    if test "\${2:-}" = pbhk0 && test "\${3:-}" = allowed-ips; then printf '%s\\t%s\\n' '${overrides.liveSgPeerKey ?? validPublicKey}' '${overrides.liveSgAllowedIps ?? '10.77.0.2/32'}'; exit 0; fi
     exit 0 ;;
 esac`);
   stub('wg-quick', `
@@ -342,7 +343,8 @@ case " $* " in
   *' -4 addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.1/30 scope global pbhk0'; exit 0 ;;
   *' -4 -o addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0    inet 10.77.0.1/30 scope global pbhk0'; test -e "${state.hkStaleAddress}" && printf '%s\\n' '7: pbhk0    inet 10.77.9.1/24 scope global pbhk0'; exit 0 ;;
   *' -4 route show dev pbhk0 '*)
-    printf '%s\\n' '10.77.0.0/30 dev pbhk0 proto kernel scope link src 10.77.0.1' '10.77.0.2 dev pbhk0 scope link proto static'
+    printf '%s\\n' '10.77.0.0/30 dev pbhk0 proto kernel scope link src 10.77.0.1'
+    test ${overrides.hkExplicitPeerRoute ? 1 : 0} = 1 && printf '%s\\n' '10.77.0.2 dev pbhk0 scope link proto static'
     test -e "${state.hkStaleRoute}" && printf '%s\\n' 'default dev pbhk0 scope link'
     exit 0 ;;
   *' -4 addr show dev pbsg0 '*) printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.2/30 scope global pbsg0'; exit 0 ;;
@@ -532,8 +534,31 @@ test('Hong Kong peer apply creates only pbhk0 with exact transit routing and pro
     assert.equal(readFileSync(markerPath, 'utf8'), '# Managed by PaperBanana Singapore egress\n');
     assert.match(commandLog(fixture), /systemctl enable --now wg-quick@pbhk0/);
     assert.match(commandLog(fixture), /wg show pbhk0 peers/);
+    assert.match(commandLog(fixture), /wg show pbhk0 allowed-ips/);
     assert.doesNotMatch(`${result.stdout}${result.stderr}`, /BBBBBBBB|PrivateKey|do-not-print/i);
     assert.equal(existsSync(join(fixture.root, 'etc', 'wireguard', 'wg0.conf')), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong peer apply accepts an optional explicit peer route alongside the connected route', () => {
+  const fixture = makeFixture({ hkExplicitPeerRoute: true });
+  try {
+    const result = run(fixture, 'install-hk-peer.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(commandLog(fixture), /ip -4 route show dev pbhk0/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong peer apply rejects live AllowedIPs broader than the fixed Singapore peer', () => {
+  const fixture = makeFixture({ liveSgAllowedIps: '0.0.0.0/0' });
+  try {
+    const result = run(fixture, 'install-hk-peer.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /AllowedIPs|allowed IP/i);
   } finally {
     fixture.cleanup();
   }
@@ -655,6 +680,18 @@ test('Hong Kong peer uninstall preserves an unmarked pbhk0 configuration and key
     assert.equal(readFileSync(join(wgDir, 'pbhk0.conf'), 'utf8'), '# operator-owned pbhk0\n');
     assert.equal(readFileSync(join(wgDir, 'paperbanana-hk-egress.private'), 'utf8'), 'operator-key\n');
     assert.doesNotMatch(commandLog(fixture), /systemctl disable --now wg-quick@pbhk0/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong peer uninstall rejects every requested interface except exact pbhk0', () => {
+  const fixture = makeFixture({ pbhk0Active: true });
+  try {
+    const result = run(fixture, 'uninstall.sh', ['--host', 'hk', '--wg-interface', 'wg0', '--remove-peer', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.equal(existsSync(fixture.state.hkWgInterface), true);
+    assert.doesNotMatch(commandLog(fixture), /wg-quick@(?:wg0|pbhk0)|link delete dev/);
   } finally {
     fixture.cleanup();
   }
@@ -1037,6 +1074,55 @@ test('Singapore install reads the Hong Kong endpoint from a protected file witho
     assert.match(readFileSync(join(fixture.root, 'etc', 'wireguard', 'pbsg0.conf'), 'utf8'), /^Endpoint = hk-egress\.example\.invalid:51820$/m);
   } finally {
     fixture.cleanup();
+  }
+});
+
+test('both WireGuard installers consistently reject bracketed IPv6 endpoints', () => {
+  for (const [script, configure] of [
+    ['install-egress.sh', (fixture) => { fixture.env.HK_WG_ENDPOINT = '[2001:db8::1]:51820'; }],
+    ['install-hk-peer.sh', (fixture) => { writeFileSync(fixture.env.SG_WG_ENDPOINT_FILE, '[2001:db8::2]:51820\n'); }],
+  ]) {
+    const fixture = makeFixture();
+    try {
+      configure(fixture);
+      const result = run(fixture, script, ['--apply']);
+      assert.notEqual(result.status, 0, `${script} unexpectedly accepted bracketed IPv6`);
+      assert.match(result.stderr, /endpoint.*host:51820|host:51820.*endpoint/i);
+    } finally {
+      fixture.cleanup();
+    }
+  }
+});
+
+test('both WireGuard installers reject a live peer resolved to bracketed IPv6', () => {
+  for (const [script, overrides] of [
+    ['install-egress.sh', { liveEndpoint: '[2001:db8::1]:51820' }],
+    ['install-hk-peer.sh', { liveSgEndpoint: '[2001:db8::2]:51820' }],
+  ]) {
+    const fixture = makeFixture(overrides);
+    try {
+      const result = run(fixture, script, ['--apply']);
+      assert.notEqual(result.status, 0, `${script} unexpectedly accepted a live IPv6 endpoint`);
+      assert.match(result.stderr, /endpoint verification failed/i);
+    } finally {
+      fixture.cleanup();
+    }
+  }
+});
+
+test('both WireGuard installers reject malformed live endpoint authorities', () => {
+  for (const [script, overrides] of [
+    ['install-egress.sh', { liveEndpoint: 'sg/egress:51820' }],
+    ['install-hk-peer.sh', { liveSgEndpoint: 'sg/egress:51820' }],
+  ]) {
+    const fixture = makeFixture(overrides);
+    try {
+      const result = run(fixture, script, ['--apply']);
+      assert.notEqual(result.status, 0, `${script} unexpectedly accepted a malformed live endpoint`);
+      assert.match(result.stderr, /endpoint verification failed/i);
+    } finally {
+      fixture.cleanup();
+    }
   }
 });
 

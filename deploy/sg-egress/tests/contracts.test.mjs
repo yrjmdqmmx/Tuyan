@@ -66,6 +66,7 @@ test('Hong Kong peer installer owns only the fixed pbhk0 tunnel and protects pri
   assert.match(installer, /systemctl (?:reload|enable --now) "wg-quick@\$\{interface_name\}"/);
   assert.match(installer, /10\.77\.0\.1\/30/);
   assert.match(installer, /wg show "\$interface_name" peers/);
+  assert.match(installer, /wg show "\$interface_name" allowed-ips/);
   assert.match(installer, /systemctl restart "wg-quick@\$\{interface_name\}"/);
   assert.doesNotMatch(installer, /systemctl reload "wg-quick@\$\{interface_name\}"/);
   assert.match(installer, /ip -4 route show dev "\$interface_name"/);
@@ -101,6 +102,11 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
   assert.match(workflow, /GITHUB_SHA/);
   assert.match(workflow, /scan-egress-secrets\.mjs deploy\/sg-egress/);
   assert.match(workflow, /sudo/);
+  assert.match(workflow, /source="\$\{SSH_CONNECTION%% \*\}"/);
+  assert.match(workflow, /ipaddress\.IPv4Address/);
+  assert.match(workflow, /\.is_global/);
+  assert.match(workflow, /sudo env "PAPERBANANA_SG_EGRESS_MANAGEMENT_SOURCE_IP=\$source"/);
+  assert.doesNotMatch(workflow, /echo[^\n]*\$source|printf[^\n]*\$source/);
   assert.doesNotMatch(runBlocks, /\$\{\{\s*secrets\./);
   assert.doesNotMatch(workflow, /switch=\/opt\/paperbanana-sg-egress\/releases\/\$\{GITHUB_SHA\}/);
   for (const name of [
@@ -125,6 +131,15 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
   assert.match(workflow, /PAPERBANANA_PROVIDER_EGRESS_MODE=disabled/);
   assert.match(workflow, /compose\[?@?\]?.*exec|-T paperbanana-api/);
   assert.match(workflow, /providerEgress[\s\S]*degraded/);
+  assert.match(workflow, /PAPERBANANA_PROVIDER_EGRESS_MODE[\s\S]*sg-required/);
+  assert.match(workflow, /docker inspect[\s\S]*\.State\.Health\.Status[\s\S]*healthy/);
+  assert.match(workflow, /fetch\("http:\/\/127\.0\.0\.1:3000\/ready"\)/);
+  assert.match(workflow, /\.ready == true/);
+  assert.match(workflow, /has\("providerEgress"\)/);
+  assert.ok(
+    workflow.lastIndexOf('trap - ERR') > workflow.lastIndexOf('has("providerEgress")'),
+    'activation rollback must remain armed until Core mode, health and readiness are verified',
+  );
   assert.match(workflow, /rollback verification failed|rollback failed/i);
   assert.match(workflow, /stop(?:\s+-t\s+[0-9]+)?\s+paperbanana-api/);
   assert.match(workflow, /ps --status running -q paperbanana-api/);
@@ -133,6 +148,20 @@ test('manual Singapore delivery workflow is isolated, strict-host-keyed and fail
   assert.match(workflow, /\[\[ -n "\$running_ids" \]\]/);
   assert.doesNotMatch(workflow, /(?:rm\s+-rf|git\s+reset\s+--hard|docker\s+(?:compose\s+)?down|systemctl\s+(?:stop|disable)[^\n]*(?:docker|nginx|mongod)|scripts\/uninstall\.sh)/);
   assert.doesNotMatch(workflow, /Authorization:|OPENAI_API_KEY|GEMINI_API_KEY|OPENROUTER_API_KEY|sk-[A-Za-z0-9]/i);
+  assert.doesNotMatch(workflow, /\\\[[0-9A-Fa-f:]+\\\]:51820|\[2001:/);
+});
+
+test('WireGuard endpoint parsers share the IPv4-or-DNS host:51820 contract and reject brackets', () => {
+  const sgInstaller = read('scripts/install-egress.sh');
+  const hkInstaller = read('scripts/install-hk-peer.sh');
+  const workflow = readFileSync(new URL('../../../.github/workflows/deploy-sg-egress.yml', import.meta.url), 'utf8');
+  const patterns = [sgInstaller, hkInstaller, workflow].map((source) => source.match(/endpoint_pattern='([^']+)'/)?.[1]);
+  assert.ok(patterns.every(Boolean), 'every delivery layer must declare the endpoint pattern');
+  assert.equal(new Set(patterns).size, 1, 'workflow and both installers must use the same endpoint parser');
+  for (const installer of [sgInstaller, hkInstaller]) {
+    assert.doesNotMatch(installer, /\\\[[0-9A-Fa-f:]+\\\]|A-Za-z0-9\._:-/);
+  }
+  assert.match(read('scripts/uninstall.sh'), /"\$remove_peer" == true[\s\S]*"\$wg_interface" != "pbhk0"/);
 });
 
 test('operator documentation records env semantics, secret placeholders and fail-closed order', () => {

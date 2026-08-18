@@ -56,8 +56,9 @@ if [[ -n "$endpoint_file" ]]; then
   fi
   endpoint="$(tr -d '\r\n' < "$endpoint_file")"
 fi
-if [[ -z "$endpoint" || ! "$endpoint" =~ ^[A-Za-z0-9._:-]+:51820$ ]]; then
-  echo "HK_WG_ENDPOINT must be a Hong Kong endpoint ending in :51820" >&2
+endpoint_pattern='^([A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?:51820$'
+if [[ -z "$endpoint" || ! "$endpoint" =~ $endpoint_pattern ]]; then
+  echo "HK_WG_ENDPOINT must contain exactly host:51820" >&2
   exit 1
 fi
 
@@ -212,7 +213,11 @@ fi
 if ! systemctl is-active --quiet "wg-quick@${interface_name}"; then restore_wireguard "WireGuard is not active after applying the candidate"; fi
 if ! ip -4 -o addr show dev "$interface_name" | awk '$4 == "10.77.0.2/30" { found=1 } END { exit !found }'; then restore_wireguard "WireGuard tunnel address verification failed"; fi
 if [[ "$(wg show "$interface_name" peers)" != "$HK_WG_PUBLIC_KEY" ]]; then restore_wireguard "WireGuard peer verification failed"; fi
-if ! wg show "$interface_name" endpoints | awk -v key="$HK_WG_PUBLIC_KEY" '$1 == key && $2 ~ /:51820$/ { found=1 } END { exit !found }'; then restore_wireguard "WireGuard endpoint verification failed"; fi
+if ! live_endpoint="$(wg show "$interface_name" endpoints | awk -v key="$HK_WG_PUBLIC_KEY" '
+  NF { total++; if (NF == 2 && $1 == key) { exact++; endpoint=$2 } }
+  END { if (total == 1 && exact == 1) print endpoint; else exit 1 }
+')"; then restore_wireguard "WireGuard endpoint verification failed"; fi
+if [[ ! "$live_endpoint" =~ $endpoint_pattern ]]; then restore_wireguard "WireGuard endpoint verification failed"; fi
 rm -f -- "$wg_previous"
 
 install -d -m 0755 "$squid_dir"
