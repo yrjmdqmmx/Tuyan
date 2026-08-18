@@ -210,15 +210,11 @@ ip -4 -o addr show dev "$interface_name" | awk '
   $4 == "10.77.0.1/30" { exact++ }
   END { exit !(total == 1 && exact == 1) }
 ' || restore_wireguard "Hong Kong tunnel address verification failed"
-ip -4 route show dev "$interface_name" | awk -v interface_name="$interface_name" '
+ip -4 route show dev "$interface_name" | awk '
   NF {
     total++
-    has_expected_dev=0
-    for (field=2; field<NF; field++) {
-      if ($field == "dev" && $(field + 1) == interface_name) has_expected_dev=1
-    }
-    if (has_expected_dev && $1 == "10.77.0.0/30") connected++
-    if (has_expected_dev && ($1 == "10.77.0.2" || $1 == "10.77.0.2/32")) peer++
+    if ($1 == "10.77.0.0/30") connected++
+    if ($1 == "10.77.0.2" || $1 == "10.77.0.2/32") peer++
   }
   END { exit !(connected == 1 && peer <= 1 && total == 1 + peer) }
 ' || restore_wireguard "Hong Kong route verification failed"

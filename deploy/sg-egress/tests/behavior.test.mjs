@@ -343,9 +343,11 @@ case " $* " in
   *' -4 addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.1/30 scope global pbhk0'; exit 0 ;;
   *' -4 -o addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0    inet 10.77.0.1/30 scope global pbhk0'; test -e "${state.hkStaleAddress}" && printf '%s\\n' '7: pbhk0    inet 10.77.9.1/24 scope global pbhk0'; exit 0 ;;
   *' -4 route show dev pbhk0 '*)
-    printf '%s\\n' '10.77.0.0/30 dev pbhk0 proto kernel scope link src 10.77.0.1'
-    test ${overrides.hkExplicitPeerRoute ? 1 : 0} = 1 && printf '%s\\n' '10.77.0.2 dev pbhk0 scope link proto static'
-    test -e "${state.hkStaleRoute}" && printf '%s\\n' 'default dev pbhk0 scope link'
+    printf '%s\\n' '10.77.0.0/30 proto kernel scope link src 10.77.0.1'
+    test ${overrides.hkExplicitPeerRoute ? 1 : 0} = 1 && printf '%s\\n' '10.77.0.2 scope link proto static'
+    test -e "${state.hkStaleRoute}" && printf '%s\\n' 'default scope link'
+    test ${overrides.hkUnexpectedRoute ? 1 : 0} = 1 && printf '%s\\n' '10.77.9.0/24 proto kernel scope link src 10.77.9.1'
+    test ${overrides.hkDuplicateRoute ? 1 : 0} = 1 && printf '%s\\n' '10.77.0.0/30 proto kernel scope link src 10.77.0.1'
     exit 0 ;;
   *' -4 addr show dev pbsg0 '*) printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.2/30 scope global pbsg0'; exit 0 ;;
   *' -4 -o addr show dev pbsg0 '*) printf '%s\\n' '7: pbsg0    inet 10.77.0.2/30 scope global pbsg0'; exit 0 ;;
@@ -550,6 +552,30 @@ test('Hong Kong peer apply accepts an optional explicit peer route alongside the
     assert.match(commandLog(fixture), /ip -4 route show dev pbhk0/);
   } finally {
     fixture.cleanup();
+  }
+});
+
+test('Hong Kong peer apply accepts Debian device-filtered route output without a dev field', () => {
+  const fixture = makeFixture();
+  try {
+    const result = run(fixture, 'install-hk-peer.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(commandLog(fixture), /ip -4 route show dev pbhk0/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('Hong Kong peer apply rejects unexpected and duplicate device-filtered routes', () => {
+  for (const overrides of [{ hkUnexpectedRoute: true }, { hkDuplicateRoute: true }]) {
+    const fixture = makeFixture(overrides);
+    try {
+      const result = run(fixture, 'install-hk-peer.sh', ['--apply']);
+      assert.notEqual(result.status, 0);
+      assert.match(result.stderr, /route verification failed/i);
+    } finally {
+      fixture.cleanup();
+    }
   }
 });
 
