@@ -8,8 +8,24 @@ import { test } from 'node:test';
 
 const deployRoot = fileURLToPath(new URL('../', import.meta.url));
 const scripts = join(deployRoot, 'scripts');
+const policyValidator = join(deployRoot, 'tests', 'squid-policy-validator.mjs');
+const secretScanner = join(deployRoot, 'tests', 'scan-egress-secrets.mjs');
 const validPublicKey = 'AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=';
 const zeroPublicKey = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
+const fixtureRoots = new Set();
+
+function cleanupFixtureRoots() {
+  for (const root of fixtureRoots) rmSync(root, { recursive: true, force: true });
+  fixtureRoots.clear();
+}
+
+process.once('exit', cleanupFixtureRoots);
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.once(signal, () => {
+    cleanupFixtureRoots();
+    process.exit(signal === 'SIGINT' ? 130 : 143);
+  });
+}
 
 function writeExecutable(path, body) {
   mkdirSync(dirname(path), { recursive: true });
@@ -19,18 +35,37 @@ function writeExecutable(path, body) {
 
 function makeFixture(overrides = {}) {
   const root = mkdtempSync(join(tmpdir(), 'paperbanana-sg-egress-'));
+  fixtureRoots.add(root);
   const bin = join(root, 'bin');
   const commandLog = join(root, 'commands.log');
   const sshdOutput = join(root, 'sshd-effective.txt');
+  const rootSshdOutput = join(root, 'sshd-root-effective.txt');
+  const state = {
+    wgActive: join(root, 'state-wg-active'),
+    wgInterface: join(root, 'state-wg-interface'),
+    wgLoaded: join(root, 'state-wg-loaded'),
+    squidActive: join(root, 'state-squid-active'),
+    squidProcess: join(root, 'state-squid-process'),
+    squidLoaded: join(root, 'state-squid-loaded'),
+    proxyListener: join(root, 'state-project-proxy-listener'),
+    healthTimerActive: join(root, 'state-health-timer-active'),
+    healthTimerLoaded: join(root, 'state-health-timer-loaded'),
+    healthServiceActive: join(root, 'state-health-service-active'),
+    healthServiceLoaded: join(root, 'state-health-service-loaded'),
+  };
   mkdirSync(bin, { recursive: true });
   mkdirSync(join(root, 'etc', 'ssh', 'sshd_config.d'), { recursive: true });
   mkdirSync(join(root, 'etc', 'wireguard'), { recursive: true });
   mkdirSync(join(root, 'etc', 'squid'), { recursive: true });
-  mkdirSync(join(root, 'opt', 'paperbanana-sg-egress'), { recursive: true });
+  mkdirSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts'), { recursive: true });
   writeFileSync(join(root, 'etc', 'os-release'), 'ID=ubuntu\nVERSION_ID="24.04"\n');
   writeFileSync(join(root, 'etc', 'ssh', 'sshd_config'), 'Include /etc/ssh/sshd_config.d/*.conf\n');
   writeFileSync(join(root, 'etc', 'squid', 'squid.conf'), '# package squid configuration\n');
   writeFileSync(join(root, 'etc', 'fstab'), '');
+  writeFileSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts', 'monitor-health.sh'), '#!/usr/bin/env bash\n');
+  writeFileSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts', 'smoke.sh'), '#!/usr/bin/env bash\n');
+  chmodSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts', 'monitor-health.sh'), 0o750);
+  chmodSync(join(root, 'opt', 'paperbanana-sg-egress', 'scripts', 'smoke.sh'), 0o750);
   writeFileSync(sshdOutput, [
     'permitrootlogin no',
     'passwordauthentication no',
@@ -40,9 +75,25 @@ function makeFixture(overrides = {}) {
     'maxauthtries 3',
     'allowusers ecs-user',
   ].join('\n'));
+  writeFileSync(rootSshdOutput, overrides.rootSshdOutput ?? readFileSync(sshdOutput, 'utf8'));
+
+  const touchState = (path, enabled) => {
+    if (enabled) writeFileSync(path, '1');
+  };
+  touchState(state.wgActive, overrides.pbsg0Active);
+  touchState(state.wgInterface, overrides.pbsg0Interface ?? overrides.pbsg0Active);
+  touchState(state.wgLoaded, overrides.pbsg0Loaded ?? overrides.pbsg0Active);
+  touchState(state.squidActive, overrides.squidActive);
+  touchState(state.squidProcess, overrides.squidProcess ?? overrides.squidActive);
+  touchState(state.squidLoaded, overrides.squidLoaded ?? overrides.squidActive);
+  touchState(state.proxyListener, overrides.projectProxyListener);
+  touchState(state.healthTimerActive, overrides.healthTimerActive);
+  touchState(state.healthTimerLoaded, overrides.healthTimerLoaded ?? overrides.healthTimerActive);
+  touchState(state.healthServiceActive, overrides.healthServiceActive);
+  touchState(state.healthServiceLoaded, overrides.healthServiceLoaded ?? overrides.healthServiceActive);
 
   const stub = (name, body) => writeExecutable(join(bin, name), `#!/bin/sh\nset -eu\nprintf '%s %s\\n' '${name}' "$*" >> "${commandLog}"\n${body}\n`);
-  stub('apt-get', 'exit 0');
+  stub('apt-get', overrides.stallAptGet ? 'sleep 2' : 'exit 0');
   stub('id', 'test "$1" = "-u" && test "$2" = "ecs-user"');
   stub('fallocate', 'mkdir -p "$(dirname "$3")"; : > "$3"');
   stub('mkswap', 'exit 0');
@@ -55,10 +106,17 @@ if test "$1" = "-c"; then
     %a) printf '%s\\n' "${overrides.swapMode ?? '600'}" ;;
     %F) printf '%s\\n' "${overrides.swapType ?? 'regular file'}" ;;
     %u) printf '%s\\n' "${overrides.swapOwner ?? '0'}" ;;
+    %F:%u:%a)
+      case "$3" in
+        */monitor-health.sh) printf '%s\\n' "${overrides.runtimeMonitorMetadata ?? 'regular file:0:750'}" ;;
+        */smoke.sh) printf '%s\\n' "${overrides.runtimeSmokeMetadata ?? 'regular file:0:750'}" ;;
+        *) printf '%s\\n' "${overrides.runtimeDirectoryMetadata ?? 'directory:0:750'}" ;;
+      esac ;;
   esac
 fi`);
   stub('sshd', `
 case " $* " in
+  *' -T '*'user=root'*) cat "${rootSshdOutput}"; exit ${overrides.sshdTestExit ?? 0} ;;
   *' -T '*) cat "${sshdOutput}"; exit ${overrides.sshdTestExit ?? 0} ;;
   *' -t '*) exit ${overrides.sshdSyntaxExit ?? 0} ;;
 esac
@@ -68,19 +126,44 @@ case " $* " in
   *' is-active --quiet hbrclient.service '*) exit ${overrides.hbrClientActive ? 0 : 3} ;;
   *' is-active --quiet hbrclientupdater.service '*) exit ${overrides.hbrUpdaterActive ? 0 : 3} ;;
   *' list-unit-files --no-legend '*) test ${overrides.hbrUnitListed ? 1 : 0} = 1 && printf '%s\\n' 'hbrclient.service enabled'; exit 0 ;;
-  *' is-active --quiet wg-quick@pbsg0 '*) exit ${overrides.pbsg0Active ? 0 : 3} ;;
+  *' enable --now wg-quick@pbsg0 '*) : > "${state.wgActive}"; : > "${state.wgInterface}"; : > "${state.wgLoaded}"; exit 0 ;;
+  *' enable --now squid '*) : > "${state.squidActive}"; : > "${state.squidProcess}"; : > "${state.squidLoaded}"; : > "${state.proxyListener}"; exit 0 ;;
+  *' is-active --quiet wg-quick@pbsg0 '*) test -e "${state.wgActive}" && exit 0 || exit 3 ;;
+  *' is-active --quiet squid '*) test -e "${state.squidActive}" && exit 0 || exit 3 ;;
+  *' is-active --quiet paperbanana-sg-egress-health.timer '*) test -e "${state.healthTimerActive}" && exit 0 || exit 3 ;;
+  *' is-active --quiet paperbanana-sg-egress-health.service '*) test -e "${state.healthServiceActive}" && exit 0 || exit 3 ;;
+  *' show --property=LoadState --value wg-quick@pbsg0 '*) test -e "${state.wgLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
+  *' show --property=LoadState --value squid '*) test -e "${state.squidLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
+  *' show --property=LoadState --value paperbanana-sg-egress-health.timer '*) test -e "${state.healthTimerLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
+  *' show --property=LoadState --value paperbanana-sg-egress-health.service '*) test -e "${state.healthServiceLoaded}" && printf '%s\\n' loaded || printf '%s\\n' not-found; exit 0 ;;
   *' reload ssh '*)
     if test ${overrides.failSshReloadOnce ? 1 : 0} = 1 && test ! -e "${root}/reload-once"; then : > "${root}/reload-once"; exit 1; fi
     exit ${overrides.failSshReload ? 1 : 0} ;;
-  *' disable --now wg-quick@pbsg0 '*) exit ${overrides.failWgStop ? 1 : 0} ;;
-  *' disable --now squid '*) exit ${overrides.failSquidStop ? 1 : 0} ;;
+  *' disable --now wg-quick@pbsg0 '*|*' stop wg-quick@pbsg0 '*)
+    test ${overrides.failWgStop ? 1 : 0} = 1 && exit 1
+    rm -f -- "${state.wgActive}" "${state.wgLoaded}" "${state.wgInterface}"
+    exit 0 ;;
+  *' disable --now squid '*|*' stop squid '*)
+    test ${overrides.failSquidStop ? 1 : 0} = 1 && exit 1
+    rm -f -- "${state.squidActive}" "${state.squidLoaded}" "${state.squidProcess}" "${state.proxyListener}"
+    exit 0 ;;
+  *' disable --now paperbanana-sg-egress-health.timer '*|*' stop paperbanana-sg-egress-health.timer '*)
+    rm -f -- "${state.healthTimerActive}" "${state.healthTimerLoaded}"
+    exit 0 ;;
+  *' disable --now paperbanana-sg-egress-health.service '*|*' stop paperbanana-sg-egress-health.service '*)
+    rm -f -- "${state.healthServiceActive}" "${state.healthServiceLoaded}"
+    exit 0 ;;
 esac
 exit 0`);
   stub('wg', `
 case "$1" in
   genkey) printf '%s\\n' 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=' ;;
   pubkey) cat >/dev/null; exit ${overrides.wgPubkeyExit ?? 0} ;;
-  show) exit 0 ;;
+  show)
+    if test "\${2:-}" = pbhk0 && test "\${3:-}" = latest-handshakes; then
+      printf '%s %s\\n' 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC=' '${overrides.latestHandshake ?? Math.floor(Date.now() / 1000)}'
+    fi
+    exit 0 ;;
 esac`);
   stub('squid', `
 for arg in "$@"; do
@@ -90,8 +173,32 @@ for arg in "$@"; do
 done
 exit ${overrides.squidParseExit ?? 0}`);
   stub('ss', `
-printf '%s\\n' 'LISTEN 0 4096 10.77.0.2:3128 0.0.0.0:*'
+if test -e "${state.proxyListener}"; then
+  printf '%s\\n' 'LISTEN 0 4096 10.77.0.2:3128 0.0.0.0:*'
+fi
 ${overrides.extraProxyListener ? "printf '%s\\n' 'LISTEN 0 4096 0.0.0.0:3128 0.0.0.0:*'" : ''}`);
+  stub('ip', `
+case " $* " in
+  *' -4 addr show dev pbhk0 '*) printf '%s\\n' '7: pbhk0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.1/30 scope global pbhk0'; exit 0 ;;
+  *' -4 addr show dev pbsg0 '*) printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420' '    inet 10.77.0.2/30 scope global pbsg0'; exit 0 ;;
+  *' link show dev pbsg0 '*) test -e "${state.wgInterface}" && printf '%s\\n' '7: pbsg0: <POINTOPOINT,UP> mtu 1420'; exit $? ;;
+  *' link delete dev pbsg0 '*) rm -f -- "${state.wgInterface}"; exit 0 ;;
+esac
+exit 1`);
+  stub('pgrep', `
+if test "$1" = -x && test "$2" = squid && test -e "${state.squidProcess}"; then
+  printf '%s\\n' 123
+  exit 0
+fi
+exit 1`);
+  stub('date', `
+if test "$1" = +%s; then
+  printf '%s\\n' '${overrides.now ?? Math.floor(Date.now() / 1000)}'
+  exit 0
+fi
+exit 1`);
+  stub('hostname', `
+printf '%s\\n' '${overrides.hostname ?? 'sg-admin.example.invalid'}'`);
   stub('logger', 'exit 0');
   stub('curl', `
 last=''
@@ -110,6 +217,7 @@ esac`);
     PAPERBANANA_SG_EGRESS_TEST_ROOT: root,
     HK_WG_PUBLIC_KEY_FILE: join(root, 'root', 'hk-wg-public.key'),
     HK_WG_ENDPOINT: 'hk-egress.example.invalid:51820',
+    SSH_CONNECTION: overrides.sshConnection ?? '198.51.100.77 51515 10.77.0.2 22',
   };
   mkdirSync(dirname(env.HK_WG_PUBLIC_KEY_FILE), { recursive: true });
   writeFileSync(env.HK_WG_PUBLIC_KEY_FILE, validPublicKey);
@@ -119,14 +227,21 @@ esac`);
     env,
     commandLog,
     sshdOutput,
-    cleanup: () => rmSync(root, { recursive: true, force: true }),
+    rootSshdOutput,
+    state,
+    cleanup: () => {
+      fixtureRoots.delete(root);
+      rmSync(root, { recursive: true, force: true });
+    },
   };
 }
 
-function run(fixture, script, args = []) {
+function run(fixture, script, args = [], options = {}) {
   return spawnSync(join(scripts, script), args, {
     encoding: 'utf8',
     env: fixture.env,
+    timeout: options.timeout ?? 30_000,
+    killSignal: 'SIGTERM',
   });
 }
 
@@ -134,12 +249,27 @@ function commandLog(fixture) {
   return existsSync(fixture.commandLog) ? readFileSync(fixture.commandLog, 'utf8') : '';
 }
 
+test('fixture command runner returns a bounded timeout instead of allowing a child script to hang', () => {
+  const fixture = makeFixture({ stallAptGet: true });
+  try {
+    const result = run(fixture, 'bootstrap-host.sh', ['--apply'], { timeout: 100 });
+    assert.equal(result.error?.code, 'ETIMEDOUT');
+  } finally {
+    fixture.cleanup();
+  }
+});
+
 test('dry-run gates execute without writes in a temporary host root', () => {
   const fixture = makeFixture();
   try {
     const before = readdirSync(join(fixture.root, 'etc', 'wireguard'));
-    for (const script of ['bootstrap-host.sh', 'install-egress.sh', 'install-health-monitor.sh', 'uninstall.sh']) {
-      const result = run(fixture, script);
+    for (const [script, args] of [
+      ['bootstrap-host.sh', []],
+      ['install-egress.sh', []],
+      ['install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0']],
+      ['uninstall.sh', []],
+    ]) {
+      const result = run(fixture, script, args);
       assert.equal(result.status, 0, `${script}: ${result.stderr}`);
     }
     assert.deepEqual(readdirSync(join(fixture.root, 'etc', 'wireguard')), before);
@@ -189,15 +319,50 @@ test('bootstrap restores the prior SSH drop-in when effective sshd policy is uns
   }
 });
 
-test('bootstrap validates the ecs-user Match-effective SSH policy and retains public-key access', () => {
+test('bootstrap validates ecs-user and root against actual management and loopback connection matrices', () => {
   const fixture = makeFixture();
   try {
     const result = run(fixture, 'bootstrap-host.sh', ['--apply']);
     assert.equal(result.status, 0, result.stderr);
     const log = commandLog(fixture);
-    assert.match(log, /sshd -T -C user=ecs-user,host=localhost,addr=127\.0\.0\.1/);
+    assert.match(log, /sshd -T -C user=ecs-user,host=sg-admin\.example\.invalid,addr=198\.51\.100\.77/);
+    assert.match(log, /sshd -T -C user=root,host=sg-admin\.example\.invalid,addr=198\.51\.100\.77/);
+    assert.match(log, /sshd -T -C user=ecs-user,host=sg-admin\.example\.invalid,addr=127\.0\.0\.1/);
+    assert.match(log, /sshd -T -C user=root,host=sg-admin\.example\.invalid,addr=127\.0\.0\.1/);
     const dropIn = readFileSync(join(fixture.root, 'etc', 'ssh', 'sshd_config.d', '00-paperbanana-sg-egress.conf'), 'utf8');
     assert.match(dropIn, /PubkeyAuthentication yes/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('bootstrap rejects a later Match User root security override and restores the prior drop-in', () => {
+  const fixture = makeFixture({
+    rootSshdOutput: [
+      'permitrootlogin yes',
+      'passwordauthentication yes',
+      'pubkeyauthentication yes',
+      'kbdinteractiveauthentication no',
+      'allowtcpforwarding yes',
+      'maxauthtries 3',
+      'allowusers ecs-user',
+    ].join('\n'),
+  });
+  try {
+    const dropIn = join(fixture.root, 'etc', 'ssh', 'sshd_config.d', '00-paperbanana-sg-egress.conf');
+    writeFileSync(dropIn, '# previous safe operator content\n');
+    writeFileSync(join(fixture.root, 'etc', 'ssh', 'sshd_config'), [
+      'Include /etc/ssh/sshd_config.d/*.conf',
+      'Match User root',
+      '  PermitRootLogin yes',
+      '  PasswordAuthentication yes',
+      '  AllowTcpForwarding yes',
+    ].join('\n'));
+    const result = run(fixture, 'bootstrap-host.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /Match.*security|security.*Match|effective sshd policy/i);
+    assert.equal(readFileSync(dropIn, 'utf8'), '# previous safe operator content\n');
+    assert.doesNotMatch(commandLog(fixture), /systemctl reload ssh/);
   } finally {
     fixture.cleanup();
   }
@@ -283,7 +448,13 @@ test('install parses the Squid candidate before replacing the live configuration
 });
 
 test('uninstall removes only marked egress configuration when the Squid package backup is absent', () => {
-  const fixture = makeFixture();
+  const fixture = makeFixture({
+    pbsg0Active: true,
+    pbsg0Interface: true,
+    squidActive: true,
+    squidProcess: true,
+    projectProxyListener: true,
+  });
   try {
     const wgConfig = join(fixture.root, 'etc', 'wireguard', 'pbsg0.conf');
     const wgKey = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private');
@@ -301,12 +472,69 @@ test('uninstall removes only marked egress configuration when the Squid package 
   }
 });
 
-test('uninstall fails closed when pbsg0 remains active without a marked configuration', () => {
-  const fixture = makeFixture({ pbsg0Active: true });
+test('uninstall stops project runtime state even when WireGuard and Squid markers are already missing', () => {
+  const fixture = makeFixture({
+    pbsg0Active: true,
+    pbsg0Interface: true,
+    pbsg0Loaded: true,
+    squidActive: true,
+    squidProcess: true,
+    squidLoaded: true,
+    projectProxyListener: true,
+    healthTimerActive: true,
+    healthServiceActive: true,
+  });
+  try {
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(commandLog(fixture), /systemctl disable --now wg-quick@pbsg0/);
+    assert.match(commandLog(fixture), /systemctl disable --now squid/);
+    assert.equal(existsSync(fixture.state.wgInterface), false);
+    assert.equal(existsSync(fixture.state.proxyListener), false);
+    assert.equal(existsSync(fixture.state.healthTimerActive), false);
+    assert.equal(existsSync(fixture.state.healthServiceActive), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall returns nonzero when a live pbsg0 stop fails after its marker is lost', () => {
+  const fixture = makeFixture({ pbsg0Active: true, pbsg0Interface: true, failWgStop: true });
   try {
     const result = run(fixture, 'uninstall.sh', ['--apply']);
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /pbsg0.*active.*configuration|active.*pbsg0/i);
+    assert.match(commandLog(fixture), /systemctl disable --now wg-quick@pbsg0/);
+    assert.equal(existsSync(fixture.state.wgInterface), true);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall returns nonzero when a project Squid listener stop fails after its marker is lost', () => {
+  const fixture = makeFixture({
+    squidActive: true,
+    squidProcess: true,
+    squidLoaded: true,
+    projectProxyListener: true,
+    failSquidStop: true,
+  });
+  try {
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(commandLog(fixture), /systemctl disable --now squid/);
+    assert.equal(existsSync(fixture.state.proxyListener), true);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall stops an active loaded Squid unit even when its project marker and listener are gone', () => {
+  const fixture = makeFixture({ squidActive: true, squidLoaded: true, squidProcess: false, projectProxyListener: false });
+  try {
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(commandLog(fixture), /systemctl disable --now squid/);
+    assert.equal(existsSync(fixture.state.squidActive), false);
   } finally {
     fixture.cleanup();
   }
@@ -324,7 +552,7 @@ test('HK smoke accepts explicit proxy 403 after curl exits nonzero and rejects o
 last=''
 for arg in "$@"; do last="$arg"; done
 case "$last" in
-  https://api.openai.com:444/|https://example.com/|https://1.1.1.1/) printf '500:200'; exit 0 ;;
+  https://api.openai.com:444/|https://example.com/|https://192.0.2.1/) printf '500:200'; exit 0 ;;
   https://api.openai.com/v1/models) printf '401:200' ;;
   https://generativelanguage.googleapis.com/v1beta/models) printf '403:200' ;;
   https://openrouter.ai/api/v1/models) printf '200:200' ;;
@@ -341,13 +569,14 @@ esac
   }
 });
 
-test('SG health monitor probes the three unauthenticated provider status contracts through its proxy', () => {
+test('Hong Kong health monitor verifies a recent pbhk0 handshake and probes provider statuses through Singapore', () => {
   const fixture = makeFixture();
   try {
-    const result = run(fixture, 'monitor-health.sh');
+    const result = run(fixture, 'monitor-health.sh', ['--host', 'hk', '--wg-interface', 'pbhk0']);
     assert.equal(result.status, 0, result.stderr);
     const log = commandLog(fixture);
-    assert.match(log, /curl .*--interface pbsg0 .*api\.openai\.com/);
+    assert.match(log, /wg show pbhk0 latest-handshakes/);
+    assert.match(log, /wg show pbhk0/);
     assert.match(log, /curl .*api\.openai\.com/);
     assert.match(log, /curl .*generativelanguage\.googleapis\.com/);
     assert.match(log, /curl .*openrouter\.ai/);
@@ -356,13 +585,112 @@ test('SG health monitor probes the three unauthenticated provider status contrac
   }
 });
 
-test('SG health monitor fails when Squid has any additional 3128 listener', () => {
-  const fixture = makeFixture({ extraProxyListener: true });
+test('Hong Kong health monitor rejects a stale WireGuard handshake before reporting success', () => {
+  const fixture = makeFixture({ now: 1_700_000_000, latestHandshake: 1_699_999_000 });
   try {
-    const result = run(fixture, 'monitor-health.sh');
+    const result = run(fixture, 'monitor-health.sh', ['--host', 'hk', '--wg-interface', 'pbhk0']);
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /not restricted to 10\.77\.0\.2:3128/i);
+    assert.match(result.stderr, /handshake.*stale|stale.*handshake/i);
   } finally {
     fixture.cleanup();
+  }
+});
+
+test('Hong Kong health monitor refuses a Singapore-addressed interface even when passed --host hk', () => {
+  const fixture = makeFixture();
+  try {
+    const result = run(fixture, 'monitor-health.sh', ['--host', 'hk', '--wg-interface', 'pbsg0']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /10\.77\.0\.1\/30.*Hong Kong|Hong Kong.*10\.77\.0\.1\/30/i);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('health monitor installation requires an explicit Hong Kong host and WireGuard interface', () => {
+  const fixture = makeFixture();
+  try {
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.ok(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.service')));
+    assert.ok(existsSync(join(fixture.root, 'etc', 'systemd', 'system', 'paperbanana-hk-egress-health@.timer')));
+    assert.match(commandLog(fixture), /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('health monitor installation refuses a writable or non-root-owned runtime script tree before enabling root timer', () => {
+  const fixture = makeFixture({ runtimeMonitorMetadata: 'regular file:501:777' });
+  try {
+    const result = run(fixture, 'install-health-monitor.sh', ['--host', 'hk', '--wg-interface', 'pbhk0', '--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /root-owned|group- or world-writable|secure runtime/i);
+    assert.doesNotMatch(commandLog(fixture), /systemctl enable --now paperbanana-hk-egress-health@pbhk0\.timer/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('generated Squid policy permits only Hong Kong approved CONNECT traffic', () => {
+  const fixture = makeFixture();
+  try {
+    const install = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.equal(install.status, 0, install.stderr);
+    const policy = join(fixture.root, 'etc', 'squid', 'squid.conf');
+    const cases = [
+      ['OpenAI from Hong Kong', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '198.51.100.10' }, 'allow'],
+      ['Gemini from Hong Kong', { source: '10.77.0.1', authority: 'generativelanguage.googleapis.com:443', resolved: '198.51.100.10' }, 'allow'],
+      ['OpenRouter from Hong Kong', { source: '10.77.0.1', authority: 'openrouter.ai:443', resolved: '198.51.100.10' }, 'allow'],
+      ['Singapore source', { source: '10.77.0.2', authority: 'api.openai.com:443', resolved: '198.51.100.10' }, 'deny'],
+      ['IPv4 authority', { source: '10.77.0.1', authority: '192.0.2.1:443', resolved: '192.0.2.1' }, 'deny'],
+      ['IPv6 authority', { source: '10.77.0.1', authority: '[2001:db8::1]:443', resolved: '2001:db8::1' }, 'deny'],
+      ['private resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '10.0.0.8' }, 'deny'],
+      ['PTR cannot bless an unapproved name', { source: '10.77.0.1', authority: 'unapproved.invalid:443', resolved: '198.51.100.10', ptr: 'api.openai.com' }, 'deny'],
+      ['non-443 port', { source: '10.77.0.1', authority: 'api.openai.com:444', resolved: '198.51.100.10' }, 'deny'],
+      ['other hostname', { source: '10.77.0.1', authority: 'example.com:443', resolved: '198.51.100.10' }, 'deny'],
+    ];
+    for (const [label, request, expected] of cases) {
+      const result = spawnSync(process.execPath, [policyValidator, policy, JSON.stringify(request)], { encoding: 'utf8' });
+      assert.equal(result.status, 0, `${label}: ${result.stderr}`);
+      assert.equal(result.stdout.trim(), expected, label);
+    }
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('recursive egress secret scan fails a leaked fixture and accepts deploy assets', () => {
+  const fixture = makeFixture();
+  const leakRoot = mkdtempSync(join(tmpdir(), 'paperbanana-sg-egress-leak-'));
+  try {
+    mkdirSync(join(leakRoot, 'scripts'), { recursive: true });
+    mkdirSync(join(leakRoot, 'systemd'), { recursive: true });
+    mkdirSync(join(leakRoot, 'docs'), { recursive: true });
+    writeFileSync(join(leakRoot, 'README.md'), [
+      '-----BEGIN PRIVATE KEY-----',
+      'LTAI1234567890abcdef',
+      'AIzaFixtureSecretValue',
+      'Bearer fixture-secret-value',
+      'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC=',
+    ].join('\n'));
+    writeFileSync(join(leakRoot, 'scripts', 'leak.sh'), 'export TOKEN=sk-fixture-secret\n');
+    writeFileSync(join(leakRoot, 'systemd', 'fixture.service'), 'Environment=PUBLIC=8.8.8.8\n');
+    writeFileSync(join(leakRoot, 'docs', 'leak.md'), 'Bearer docs-fixture-secret\n198.51.42.7\n203.0.5.7\n');
+    const leak = spawnSync(process.execPath, [secretScanner, leakRoot], { encoding: 'utf8' });
+    assert.notEqual(leak.status, 0);
+    const leakReport = `${leak.stdout}\n${leak.stderr}`;
+    for (const expected of ['PEM private key', 'Alibaba access key', 'Gemini secret', 'Bearer token', 'WireGuard key-shaped literal', 'OpenAI secret', '8.8.8.8']) {
+      assert.match(leakReport, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    }
+    assert.match(leakReport, /docs\/leak\.md: Bearer token/);
+    assert.match(leakReport, /non-reserved public IPv4 198\.51\.42\.7/);
+    assert.match(leakReport, /non-reserved public IPv4 203\.0\.5\.7/);
+
+    const clean = spawnSync(process.execPath, [secretScanner, deployRoot], { encoding: 'utf8' });
+    assert.equal(clean.status, 0, clean.stderr);
+  } finally {
+    fixture.cleanup();
+    rmSync(leakRoot, { recursive: true, force: true });
   }
 });

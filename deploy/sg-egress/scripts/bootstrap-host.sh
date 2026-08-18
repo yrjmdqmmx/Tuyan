@@ -110,27 +110,90 @@ if ! sshd -t -f "$sshd_config"; then
   echo "sshd syntax validation failed; restored the previous SSH drop-in" >&2
   exit 1
 fi
-match_connection='user=ecs-user,host=localhost,addr=127.0.0.1'
-if ! effective="$(sshd -T -C "$match_connection" -f "$sshd_config")"; then
+
+# This dedicated host has one management identity and does not permit conditional
+# SSH policy. A later Match can override a value from the early 00 drop-in.
+ssh_policy_files=("$sshd_config")
+for ssh_policy_file in "$sshd_dir"/*.conf; do
+  [[ -e "$ssh_policy_file" ]] || continue
+  ssh_policy_files+=("$ssh_policy_file")
+done
+if unsafe_directive="$(awk -v main_config="$sshd_config" '
+  /^[[:space:]]*#/ || /^[[:space:]]*$/ { next }
+  {
+    key = tolower($1)
+    if (key == "match") {
+      print FILENAME ":" FNR ": Match"
+      found = 1
+      exit
+    }
+    if (key == "include" && (FILENAME != main_config || $2 != "/etc/ssh/sshd_config.d/*.conf" || NF != 2)) {
+      print FILENAME ":" FNR ": Include"
+      found = 1
+      exit
+    }
+  }
+  END { exit(found ? 0 : 1) }
+' "${ssh_policy_files[@]}")"; then
   restore_drop_in
-  echo "could not read effective sshd policy; restored the previous SSH drop-in" >&2
+  echo "conditional Match or nonstandard Include directive ($unsafe_directive) can override SSH security; restored the previous SSH drop-in" >&2
   exit 1
 fi
-for expected in \
+
+management_source=""
+if [[ -n "${SSH_CONNECTION:-}" ]]; then
+  read -r management_source _management_source_port _management_local_address _management_local_port _ <<<"$SSH_CONNECTION"
+fi
+management_source="${management_source:-${PAPERBANANA_SG_EGRESS_MANAGEMENT_SOURCE_IP:-}}"
+if [[ -z "$management_source" || ! "$management_source" =~ ^[0-9A-Fa-f:.]+$ ]]; then
+  restore_drop_in
+  echo "could not determine the actual SSH management source IP; set PAPERBANANA_SG_EGRESS_MANAGEMENT_SOURCE_IP only from a verified console session" >&2
+  exit 1
+fi
+actual_hostname="$(hostname -f 2>/dev/null || hostname)"
+if [[ -z "$actual_hostname" || ! "$actual_hostname" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  restore_drop_in
+  echo "could not determine a safe actual hostname for SSH policy validation" >&2
+  exit 1
+fi
+
+protected_expectations=(
   'permitrootlogin no' \
   'passwordauthentication no' \
-  'pubkeyauthentication yes' \
   'kbdinteractiveauthentication no' \
   'allowtcpforwarding no' \
   'maxauthtries 3' \
   'allowusers ecs-user'
-do
-  if ! grep -Fqx "$expected" <<<"$effective"; then
+)
+validate_connection() {
+  local user="$1"
+  local address="$2"
+  local match_connection="user=${user},host=${actual_hostname},addr=${address}"
+  local effective
+  local expected
+  if ! effective="$(sshd -T -C "$match_connection" -f "$sshd_config")"; then
     restore_drop_in
-    echo "effective sshd policy is unsafe or overridden ($expected); restored the previous SSH drop-in" >&2
+    echo "could not read effective sshd policy for $match_connection; restored the previous SSH drop-in" >&2
     exit 1
   fi
-done
+  for expected in "${protected_expectations[@]}"; do
+    if ! grep -Fqx "$expected" <<<"$effective"; then
+      restore_drop_in
+      echo "effective sshd policy is unsafe or overridden for $match_connection ($expected); restored the previous SSH drop-in" >&2
+      exit 1
+    fi
+  done
+  if [[ "$user" == "ecs-user" ]] && ! grep -Fqx 'pubkeyauthentication yes' <<<"$effective"; then
+    restore_drop_in
+    echo "effective sshd policy disables ecs-user public-key access for $match_connection; restored the previous SSH drop-in" >&2
+    exit 1
+  fi
+}
+
+validate_connection ecs-user "$management_source"
+validate_connection root "$management_source"
+validate_connection ecs-user 127.0.0.1
+validate_connection root 127.0.0.1
 if ! systemctl reload ssh; then
   restore_drop_in
   if ! sshd -t -f "$sshd_config"; then

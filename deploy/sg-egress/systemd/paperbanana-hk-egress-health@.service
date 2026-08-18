@@ -1,14 +1,14 @@
 [Unit]
-Description=PaperBanana Singapore egress health check
-After=network-online.target wg-quick@pbsg0.service squid.service
+Description=PaperBanana Hong Kong egress health check (%i)
+After=network-online.target wg-quick@%i.service
 Wants=network-online.target
 
 [Service]
 Type=oneshot
 User=root
 Group=root
-ExecStart=/opt/paperbanana-sg-egress/scripts/monitor-health.sh
-TimeoutStartSec=30s
+ExecStart=/opt/paperbanana-sg-egress/scripts/monitor-health.sh --host hk --wg-interface %i
+TimeoutStartSec=150s
 UMask=0077
 NoNewPrivileges=true
 PrivateTmp=true

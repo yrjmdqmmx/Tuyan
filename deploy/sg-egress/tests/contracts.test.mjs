@@ -16,11 +16,21 @@ const scripts = [
 ];
 
 test('Singapore egress operator assets exist and scripts are executable', () => {
-  for (const name of ['README.md', ...scripts, 'systemd/paperbanana-sg-egress-health.service', 'systemd/paperbanana-sg-egress-health.timer']) {
+  for (const name of [
+    'README.md',
+    ...scripts,
+    'systemd/paperbanana-hk-egress-health@.service',
+    'systemd/paperbanana-hk-egress-health@.timer',
+    'tests/squid-policy-validator.mjs',
+    'tests/scan-egress-secrets.mjs',
+  ]) {
     assert.ok(existsSync(path(name)), `${name} must be committed`);
   }
   for (const name of scripts) {
     assert.equal(statSync(path(name)).mode & 0o111, 0o111, `${name} must be executable`);
+  }
+  for (const name of ['tests/squid-policy-validator.mjs', 'tests/scan-egress-secrets.mjs']) {
+    assert.equal(statSync(path(name)).mode & 0o111, 0o111, `${name} must be independently executable`);
   }
 });
 
@@ -49,12 +59,13 @@ test('WireGuard and Squid are constrained to the fixed tunnel and approved CONNE
   assert.match(installer, /AllowedIPs = 10\.77\.0\.1\/32/);
   assert.match(installer, /http_port 10\.77\.0\.2:3128/);
   assert.match(installer, /acl hk src 10\.77\.0\.1\/32/);
-  assert.match(installer, /acl sg_health src 10\.77\.0\.2\/32/);
+  assert.doesNotMatch(installer, /acl sg_health src/);
   assert.match(installer, /acl CONNECT method CONNECT/);
   assert.match(installer, /acl SSL_ports port 443/);
   assert.match(installer, /acl approved dstdomain -n api\.openai\.com generativelanguage\.googleapis\.com openrouter\.ai/);
   assert.doesNotMatch(installer, /acl approved dstdomain \./);
   assert.match(installer, /http_access allow hk CONNECT SSL_ports approved/);
+  assert.doesNotMatch(installer, /http_access allow sg_health/);
   assert.match(installer, /http_access deny all/);
   assert.match(installer, /cache deny all/);
   assert.match(installer, /acl literal_ipv4 url_regex/);
@@ -109,7 +120,10 @@ test('host bootstrap hardens SSH only after syntax validation and handles HBR na
   assert.ok(bootstrap.indexOf('id -u ecs-user') < bootstrap.indexOf('PermitRootLogin no'), 'ecs-user must be verified before restricting SSH users');
   assert.ok(bootstrap.indexOf('sshd -t') < bootstrap.indexOf('systemctl reload ssh'), 'sshd must be verified before reload');
   assert.match(bootstrap, /sshd -T/);
-  assert.match(bootstrap, /-C "\$match_connection"/);
+  assert.match(bootstrap, /validate_connection root/);
+  assert.match(bootstrap, /validate_connection ecs-user/);
+  assert.match(bootstrap, /management_source/);
+  assert.match(bootstrap, /Match/);
   assert.match(bootstrap, /effective sshd policy/);
   assert.match(bootstrap, /\/opt\/alibabacloud\/hbrclient\/uninstall/);
   assert.match(bootstrap, /hbr/);
@@ -126,30 +140,37 @@ test('smoke tests only exercise safe expected statuses and assert the deny bound
   assert.match(smoke, /generativelanguage\.googleapis\.com.*403|403.*generativelanguage\.googleapis\.com/s);
   assert.match(smoke, /openrouter\.ai.*200|200.*openrouter\.ai/s);
   assert.match(smoke, /example\.com/);
-  assert.match(smoke, /1\.1\.1\.1/);
+  assert.match(smoke, /192\.0\.2\.1/);
   assert.match(smoke, /:444/);
   assert.match(smoke, /http_connect/);
   assert.match(smoke, /--hk/);
+  assert.doesNotMatch(smoke, /--sg-monitor/);
   assert.doesNotMatch(smoke, /systemctl is-active --quiet squid/);
   assert.doesNotMatch(smoke, /Authorization:|api[_-]?key=|sk-[A-Za-z0-9]/i);
 });
 
-test('health monitor runs every five minutes and sends failures to journal', () => {
+test('health monitor runs only from Hong Kong every five minutes and sends failures to journal', () => {
   const monitor = read('scripts/monitor-health.sh');
   const installer = read('scripts/install-health-monitor.sh');
-  const service = read('systemd/paperbanana-sg-egress-health.service');
-  const timer = read('systemd/paperbanana-sg-egress-health.timer');
+  const service = read('systemd/paperbanana-hk-egress-health@.service');
+  const timer = read('systemd/paperbanana-hk-egress-health@.timer');
 
-  assert.match(monitor, /wg show pbsg0/);
-  assert.match(monitor, /squid/);
+  assert.match(monitor, /wg show "\$wg_interface" latest-handshakes/);
+  assert.match(monitor, /--host hk/);
+  assert.match(monitor, /--wg-interface/);
+  assert.match(monitor, /handshake/);
   assert.match(monitor, /logger/);
-  assert.match(monitor, /smoke\.sh" --sg-monitor/);
-  assert.match(monitor, /unexpected\+\+/);
-  assert.match(service, /ExecStart=\/opt\/paperbanana-sg-egress\/scripts\/monitor-health\.sh/);
+  assert.doesNotMatch(monitor, /systemctl is-active --quiet squid/);
+  assert.doesNotMatch(monitor, /--sg-monitor/);
+  assert.match(service, /ExecStart=\/opt\/paperbanana-sg-egress\/scripts\/monitor-health\.sh --host hk --wg-interface %i/);
+  assert.doesNotMatch(service, /squid\.service/);
   assert.match(service, /StandardError=journal/);
   assert.match(timer, /OnUnitActiveSec=5m/);
   assert.match(timer, /Persistent=true/);
-  assert.match(installer, /systemctl enable --now paperbanana-sg-egress-health\.timer/);
+  assert.match(installer, /--host hk/);
+  assert.match(installer, /--wg-interface/);
+  assert.match(installer, /10\.77\.0\.1\/30/);
+  assert.match(installer, /paperbanana-hk-egress-health@\$\{wg_interface\}\.timer/);
 });
 
 test('uninstall is dry-run by default and removes only egress-owned paths', () => {
@@ -162,6 +183,9 @@ test('uninstall is dry-run by default and removes only egress-owned paths', () =
   assert.doesNotMatch(uninstall, /rm\s+-rf/);
   assert.doesNotMatch(uninstall, /\|\| true/);
   assert.match(uninstall, /wg-quick@pbsg0/);
+  assert.match(uninstall, /LoadState/);
+  assert.match(uninstall, /ip link show dev pbsg0/);
+  assert.match(uninstall, /sport = :3128/);
   assert.doesNotMatch(uninstall, /\/etc\/ssh/);
   assert.doesNotMatch(uninstall, /userdel|deluser|\/home\//);
 });

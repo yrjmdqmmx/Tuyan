@@ -28,7 +28,7 @@ endpoint="${HK_WG_ENDPOINT:-}"
 
 if [[ "$mode" == "--dry-run" ]]; then
   echo "Would generate a restricted Singapore WireGuard private key and write the project-owned ${interface_name} and Squid configuration."
-  echo "Would bind Squid only to 10.77.0.2:3128, permit only HK plus local health traffic to the three approved HTTPS hosts, and enable ${interface_name}."
+  echo "Would bind Squid only to 10.77.0.2:3128 and permit only Hong Kong 10.77.0.1 to the three approved HTTPS hosts."
   exit 0
 fi
 
@@ -50,7 +50,8 @@ if [[ ${#HK_WG_PUBLIC_KEY} -ne 44 || ! "$HK_WG_PUBLIC_KEY" =~ ^[A-Za-z0-9+/]{43}
   echo "HK peer public key must be a 44-character WireGuard base64 key" >&2
   exit 1
 fi
-if [[ "$HK_WG_PUBLIC_KEY" == 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=' ]]; then
+zero_public_key="$(printf 'A%.0s' {1..43}; printf '=')"
+if [[ "$HK_WG_PUBLIC_KEY" == "$zero_public_key" ]]; then
   echo "HK peer public key is the invalid all-zero WireGuard public key" >&2
   exit 1
 fi
@@ -112,8 +113,6 @@ visible_hostname paperbanana-sg-egress
 host_verify_strict on
 
 acl hk src 10.77.0.1/32
-# This permits the local five-minute health probe through the same tunnel-bound listener.
-acl sg_health src 10.77.0.2/32
 acl CONNECT method CONNECT
 acl SSL_ports port 443
 # -n prevents reverse-DNS/PTR lookups from turning an IP literal into an approved name.
@@ -138,7 +137,6 @@ http_access deny literal_ipv4_url
 http_access deny literal_ipv6_url
 http_access deny private_dst
 http_access allow hk CONNECT SSL_ports approved
-http_access allow sg_health CONNECT SSL_ports approved
 http_access deny all
 
 cache deny all

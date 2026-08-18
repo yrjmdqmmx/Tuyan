@@ -1,0 +1,12 @@
+[Unit]
+Description=Run PaperBanana Hong Kong egress health check every five minutes (%i)
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=5m
+RandomizedDelaySec=30s
+Persistent=true
+Unit=paperbanana-hk-egress-health@%i.service
+
+[Install]
+WantedBy=timers.target

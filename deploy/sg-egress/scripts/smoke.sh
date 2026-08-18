@@ -1,24 +1,33 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-origin="${1:---hk}"
-if [[ "$origin" != "--hk" && "$origin" != "--sg-monitor" ]]; then
-  echo "usage: $0 [--hk|--sg-monitor]" >&2
+proxy_url="${PAPERBANANA_SG_EGRESS_PROXY:-http://10.77.0.2:3128}"
+wg_interface="${PAPERBANANA_SG_EGRESS_WG_INTERFACE:-pbhk0}"
+while (( $# > 0 )); do
+  case "$1" in
+    --hk)
+      shift
+      ;;
+    --wg-interface)
+      [[ $# -ge 2 ]] || { echo "--wg-interface requires a value" >&2; exit 2; }
+      wg_interface="$2"
+      shift 2
+      ;;
+    *)
+      echo "usage: $0 [--hk] [--wg-interface pbhk0]" >&2
+      exit 2
+      ;;
+  esac
+done
+if [[ ! "$wg_interface" =~ ^[A-Za-z0-9_.-]{1,15}$ ]]; then
+  echo "WireGuard interface name is invalid" >&2
   exit 2
 fi
 
-proxy_url="${PAPERBANANA_SG_EGRESS_PROXY:-http://10.77.0.2:3128}"
-wg_interface="${PAPERBANANA_SG_EGRESS_WG_INTERFACE:-pbsg0}"
-
 run_proxy_curl() {
   local url="$1"
-  if [[ "$origin" == "--sg-monitor" ]]; then
-    curl --interface "$wg_interface" --noproxy '' --proxy "$proxy_url" --connect-timeout 10 --max-time 20 \
-      --output /dev/null --silent --show-error --write-out '%{http_code}:%{http_connect}' "$url"
-  else
-    curl --noproxy '' --proxy "$proxy_url" --connect-timeout 10 --max-time 20 \
-      --output /dev/null --silent --show-error --write-out '%{http_code}:%{http_connect}' "$url"
-  fi
+  curl --noproxy '' --proxy "$proxy_url" --connect-timeout 10 --max-time 20 \
+    --output /dev/null --silent --show-error --write-out '%{http_code}:%{http_connect}' "$url"
 }
 
 proxy_result() {
@@ -66,7 +75,7 @@ expect_proxy_rejection() {
   fi
 }
 
-# --hk is the normal operator path: run this on Hong Kong after its pbsg0 peer is up.
+# This script runs on Hong Kong after its pbhk0 peer is up.
 # It intentionally never checks a local Squid service; reachability is proven by CONNECT via 10.77.0.2.
 wg show "$wg_interface" >/dev/null
 
@@ -75,11 +84,7 @@ expect_status "OpenAI" "https://api.openai.com/v1/models" "401"
 expect_status "Gemini" "https://generativelanguage.googleapis.com/v1beta/models" "403"
 expect_status "OpenRouter" "https://openrouter.ai/api/v1/models" "200"
 expect_proxy_rejection "unapproved hostname" "https://example.com/"
-expect_proxy_rejection "IPv4 literal" "https://1.1.1.1/"
+expect_proxy_rejection "IPv4 literal" "https://192.0.2.1/"
 expect_proxy_rejection "non-443 port" "https://api.openai.com:444/"
 
-if [[ "$origin" == "--hk" ]]; then
-  echo "Hong Kong WireGuard egress smoke passed: expected provider statuses and explicit proxy rejects confirmed."
-else
-  echo "Singapore local health probe passed through the tunnel-bound Squid listener."
-fi
+echo "Hong Kong WireGuard egress smoke passed: expected provider statuses and explicit proxy rejects confirmed."
