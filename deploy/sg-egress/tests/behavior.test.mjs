@@ -794,7 +794,7 @@ test('recursive egress secret scan fails a leaked fixture and accepts deploy ass
     ].join('\n'));
     writeFileSync(join(leakRoot, 'scripts', 'leak.sh'), 'export TOKEN=sk-fixture-secret\n');
     writeFileSync(join(leakRoot, 'systemd', 'fixture.service'), 'Environment=PUBLIC=8.8.8.8\n');
-    writeFileSync(join(leakRoot, 'docs', 'leak.md'), 'Bearer docs-fixture-secret\n192.0.0.1\n192.0.1.1\n192.2.1.1\n198.51.42.7\n203.0.5.7\n2001:4860:4860::8888\n');
+    writeFileSync(join(leakRoot, 'docs', 'leak.md'), 'Bearer docs-fixture-secret\n192.0.0.1\n192.0.1.1\n192.2.1.1\n198.51.42.7\n203.0.5.7\n2001:4860:4860::8888\n2001:4860::10.0.0.1\n::ffff:0808:0808\n::ffff:0a00:8\n');
     const leak = spawnSync(process.execPath, [secretScanner, leakRoot], { encoding: 'utf8' });
     assert.notEqual(leak.status, 0);
     const leakReport = `${leak.stdout}\n${leak.stderr}`;
@@ -808,6 +808,9 @@ test('recursive egress secret scan fails a leaked fixture and accepts deploy ass
     assert.match(leakReport, /non-reserved public IPv4 192\.2\.1\.1/);
     assert.doesNotMatch(leakReport, /non-reserved public IPv4 192\.0\.0\.1/);
     assert.match(leakReport, /non-reserved public IPv6 2001:4860:4860::8888/);
+    assert.match(leakReport, /non-reserved public IPv6 2001:4860::10\.0\.0\.1/);
+    assert.match(leakReport, /non-reserved public IPv6 ::ffff:0808:0808/);
+    assert.doesNotMatch(leakReport, /non-reserved public IPv6 ::ffff:0a00:8/);
 
     const clean = spawnSync(process.execPath, [secretScanner, deployRoot], { encoding: 'utf8' });
     assert.equal(clean.status, 0, clean.stderr);

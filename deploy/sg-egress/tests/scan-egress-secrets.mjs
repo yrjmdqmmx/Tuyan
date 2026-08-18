@@ -32,6 +32,16 @@ function ipv6ToBigInt(value) {
   const expand = (half) => (half ? half.split(':') : []);
   const left = expand(halves[0]);
   const right = halves.length === 2 ? expand(halves[1]) : [];
+  const dottedParts = [...left, ...right].filter((part) => part.includes('.'));
+  if (dottedParts.length > 1) return null;
+  if (dottedParts.length === 1) {
+    const dotted = dottedParts[0];
+    const tail = halves.length === 2 ? right : left;
+    if (tail.at(-1) !== dotted) return null;
+    const ipv4 = ipv4ToNumber(dotted);
+    if (ipv4 === null) return null;
+    tail.splice(-1, 1, (ipv4 >>> 16).toString(16), (ipv4 & 0xffff).toString(16));
+  }
   if (left.some((part) => part.includes('.')) || right.some((part) => part.includes('.'))) return null;
   if (left.length + right.length > 8 || (halves.length === 1 && left.length !== 8)) return null;
   const groups = [...left, ...Array(8 - left.length - right.length).fill('0'), ...right];
@@ -41,6 +51,19 @@ function ipv6ToBigInt(value) {
     result = (result << 16n) + BigInt(`0x${group}`);
   }
   return result;
+}
+
+function ipv4ToNumber(value) {
+  const parts = value.split('.');
+  if (parts.length !== 4 || parts.some((part) => !/^\d+$/.test(part) || Number(part) > 255)) return null;
+  return parts.reduce((number, part) => (number << 8) + Number(part), 0) >>> 0;
+}
+
+function mappedIPv4(value) {
+  const address = ipv6ToBigInt(value);
+  if (address === null || (address >> 32n) !== 0xffffn) return null;
+  const mapped = Number(address & 0xffffffffn);
+  return [mapped >>> 24, (mapped >>> 16) & 0xff, (mapped >>> 8) & 0xff, mapped & 0xff].join('.');
 }
 
 function ipv6InCidr(value, cidr) {
@@ -54,11 +77,12 @@ function ipv6InCidr(value, cidr) {
 }
 
 function isReservedIPv6(value) {
+  const mapped = mappedIPv4(value);
+  if (mapped !== null) return isReservedIPv4(mapped);
   return [
     '::/128',
     '::1/128',
     '::/96',
-    '::ffff:0:0/96',
     '64:ff9b::/96',
     '100::/64',
     '2001:db8::/32',
