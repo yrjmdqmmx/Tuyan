@@ -288,8 +288,10 @@ squid_process_present() {
 uninstall_sg() {
   local wg_config="$(host_path /etc/wireguard/pbsg0.conf)"
   local wg_private_key="$(host_path /etc/wireguard/paperbanana-sg-egress.private)"
+  local wg_private_key_marker="$(host_path /etc/wireguard/paperbanana-sg-egress.private.owner)"
   local squid_config="$(host_path /etc/squid/squid.conf)"
   local squid_backup="$(host_path /etc/squid/squid.conf.paperbanana-sg-egress.backup)"
+  local squid_dropin="$(host_path /etc/systemd/system/squid.service.d/10-paperbanana-sg-egress.conf)"
   local health_service="$(host_path /etc/systemd/system/paperbanana-sg-egress-health.service)"
   local health_timer="$(host_path /etc/systemd/system/paperbanana-sg-egress-health.timer)"
   local managed_wg=false
@@ -430,8 +432,11 @@ uninstall_sg() {
   if [[ "$managed_wg" == true ]]; then
     rm -f -- "$wg_config" || return $?
   fi
-  if [[ "$managed_wg" == true || "$wg_runtime" == true ]]; then
-    rm -f -- "$wg_private_key" || return $?
+  if [[ -f "$wg_private_key_marker" && ! -L "$wg_private_key_marker" && -f "$wg_private_key" && ! -L "$wg_private_key" ]] &&
+     [[ "$(stat -c '%F:%u:%a' -- "$wg_private_key_marker")" == "regular file:0:600" ]] &&
+     [[ "$(stat -c '%F:%u:%a' -- "$wg_private_key")" == "regular file:0:600" ]] &&
+     grep -Fqx "$managed_marker" "$wg_private_key_marker"; then
+    rm -f -- "$wg_private_key" "$wg_private_key_marker" || return $?
   fi
   if [[ "$managed_squid" == true ]]; then
     if [[ -e "$squid_backup" ]]; then
@@ -440,6 +445,7 @@ uninstall_sg() {
       rm -f -- "$squid_config" || return $?
     fi
   fi
+  remove_if_marked "$squid_dropin" || return $?
   systemctl daemon-reload || return $?
 
   assert_project_unit_gone paperbanana-sg-egress-health.timer || return $?

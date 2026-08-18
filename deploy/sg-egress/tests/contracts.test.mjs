@@ -76,10 +76,12 @@ test('WireGuard and Squid are constrained to the fixed tunnel and approved CONNE
   assert.match(installer, /acl private_dst dst ::1\/128/);
   assert.match(installer, /acl private_dst dst fc00::\/7/);
   assert.match(installer, /acl private_dst dst fe80::\/10/);
-  assert.match(installer, /acl destination_ipv6 dst ipv6/);
   assert.match(installer, /http_access deny literal_ip/);
   assert.match(installer, /http_access deny private_dst/);
-  assert.match(installer, /http_access deny destination_ipv6/);
+  assert.doesNotMatch(installer, /destination_ipv6 dst ipv6|http_access deny destination_ipv6/);
+  assert.match(installer, /Requires=wg-quick@\$\{interface_name\}\.service/);
+  assert.match(installer, /After=wg-quick@\$\{interface_name\}\.service/);
+  assert.match(installer, /RestrictAddressFamilies=AF_UNIX AF_INET/);
   assert.match(installer, /host_verify_strict on/);
   assert.match(installer, /logformat paperbanana_egress .*%>rd:%>rP/);
   assert.doesNotMatch(installer, /%\{Host\}>h/);
@@ -112,7 +114,10 @@ test('host bootstrap hardens SSH only after syntax validation and handles HBR na
 
   assert.match(bootstrap, /VERSION_ID:-\}" != "24\.04"/);
   assert.match(bootstrap, /wireguard squid chrony unattended-upgrades/);
-  assert.match(bootstrap, /fallocate -l 1G "\$swapfile"/);
+  assert.match(bootstrap, /mktemp "\$\(dirname -- "\$swapfile"\)\/\.swapfile\.paperbanana\.XXXXXX"/);
+  assert.match(bootstrap, /fallocate -l 1G "\$swap_candidate"/);
+  assert.match(bootstrap, /mkswap "\$swap_candidate"/);
+  assert.match(bootstrap, /blkid -o value -s TYPE -- "\$swapfile"/);
   assert.match(bootstrap, /PermitRootLogin no/);
   assert.match(bootstrap, /PasswordAuthentication no/);
   assert.match(bootstrap, /AllowTcpForwarding no/);

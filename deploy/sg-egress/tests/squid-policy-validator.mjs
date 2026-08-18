@@ -136,9 +136,9 @@ function matchDefinition(definition, request, authority) {
       return new RegExp(pattern, insensitive ? 'i' : '').test(request.authority);
     }
     case 'dst':
-      return definition.values.some((cidr) => cidr === 'ipv6'
-        ? squidPublicIpv6(request.resolved)
-        : cidrContains(request.resolved, cidr));
+      return definition.values.some((cidr) => request.resolved.some((address) => cidr === 'ipv6'
+        ? squidPublicIpv6(address)
+        : cidrContains(address, cidr)));
     default:
       die(`unsupported ACL type: ${definition.type}`);
   }
@@ -155,7 +155,11 @@ function matchesAcl(acls, name, request, authority) {
 function evaluate(policy, request) {
   const authority = parseAuthority(request.authority);
   if (!authority || !Number.isInteger(authority.port)) die('invalid CONNECT authority');
-  if (typeof request.source !== 'string' || typeof request.resolved !== 'string') die('source and resolved destination are required');
+  if (typeof request.source !== 'string') die('source is required');
+  if (typeof request.resolved === 'string') request.resolved = [request.resolved];
+  if (!Array.isArray(request.resolved) || request.resolved.length === 0 || request.resolved.some((address) => typeof address !== 'string')) {
+    die('resolved destination must be a non-empty address list');
+  }
   for (const rule of policy.accessRules) {
     const matches = rule.names.every((rawName) => {
       const negated = rawName.startsWith('!');

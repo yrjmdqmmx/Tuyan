@@ -97,6 +97,8 @@ function makeFixture(overrides = {}) {
     'allowtcpforwarding no',
     'maxauthtries 3',
     'allowusers ecs-user',
+    'authorizedkeysfile .ssh/authorized_keys',
+    'authenticationmethods any',
   ].join('\n'));
   writeFileSync(rootSshdOutput, overrides.rootSshdOutput ?? readFileSync(sshdOutput, 'utf8'));
 
@@ -131,7 +133,8 @@ exit_code='${overrides.getentExit ?? 0}'
 test "$exit_code" = 0 || exit "$exit_code"
 printf '%s\\n' 'ecs-user:x:${overrides.ecsUserId ?? '1001'}:1001::${ecsHome}:/bin/bash'`);
   stub('fallocate', 'mkdir -p "$(dirname "$3")"; : > "$3"');
-  stub('mkswap', 'exit 0');
+  stub('mkswap', `test ${overrides.mkswapExit ?? 0} = 0`);
+  stub('blkid', `test ${overrides.swapSignature ?? 'swap'} = swap && printf '%s\\n' swap || exit 2`);
   stub('swapon', 'exit 0');
   stub('stat', `
 if test "$1" = "-c"; then
@@ -148,6 +151,7 @@ if test "$1" = "-c"; then
         "${root}") printf '%s\\n' "${overrides.testRootDirectoryMetadata ?? `directory:${fixtureUid}:700`}" ;;
         "${root}/.paperbanana-sg-egress-test-root") printf '%s\\n' "${overrides.testRootMarkerMetadata ?? `regular file:${fixtureUid}:600`}" ;;
         */wireguard/pbsg0.conf) printf '%s\\n' "${overrides.wgConfigMetadata ?? 'regular file:0:600'}" ;;
+        */wireguard/paperbanana-sg-egress.private|*/wireguard/paperbanana-sg-egress.private.owner) printf '%s\\n' "${overrides.wgKeyMetadata ?? 'regular file:0:600'}" ;;
         */unit-source/paperbanana-hk-egress-health@.service|*/unit-source/paperbanana-hk-egress-health@.timer) printf '%s\\n' "${overrides.unitSourceMetadata ?? 'regular file:0:644'}" ;;
         */unit-source) printf '%s\\n' "${overrides.unitSourceDirectoryMetadata ?? 'directory:0:755'}" ;;
         "${ecsHome}") printf '%s\\n' "${overrides.ecsHomeMetadata ?? `directory:${overrides.ecsUserId ?? '1001'}:750`}" ;;
@@ -171,7 +175,9 @@ case " $* " in
   *' is-active --quiet hbrclient.service '*) test ${overrides.hbrClientQueryExit ?? 3} = 3 || exit ${overrides.hbrClientQueryExit ?? 3}; exit ${overrides.hbrClientActive ? 0 : 3} ;;
   *' is-active --quiet hbrclientupdater.service '*) test ${overrides.hbrUpdaterQueryExit ?? 3} = 3 || exit ${overrides.hbrUpdaterQueryExit ?? 3}; exit ${overrides.hbrUpdaterActive ? 0 : 3} ;;
   *' list-unit-files --no-legend '*) test ${overrides.hbrUnitListed ? 1 : 0} = 1 && printf '%s\\n' 'hbrclient.service enabled'; exit 0 ;;
-  *' enable --now wg-quick@pbsg0 '*) : > "${state.wgActive}"; : > "${state.wgInterface}"; : > "${state.wgLoaded}"; exit 0 ;;
+  *' enable --now wg-quick@pbsg0 '*)
+    test ${overrides.failWgStart ? 1 : 0} = 1 && exit 1
+    : > "${state.wgActive}"; : > "${state.wgInterface}"; : > "${state.wgLoaded}"; exit 0 ;;
   *' enable --now squid '*) : > "${state.squidActive}"; : > "${state.squidProcess}"; : > "${state.squidLoaded}"; : > "${state.proxyListener}"; exit 0 ;;
   *' enable --now paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerActive}"; : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
   *' enable paperbanana-hk-egress-health@pbhk0.timer '*) : > "${state.hkHealthTimerEnabled}"; : > "${state.hkHealthTimerLoaded}"; exit 0 ;;
@@ -258,6 +264,10 @@ for arg in "$@"; do
     *.conf) test -r "$arg" || exit 1 ;;
   esac
 done
+if test ${overrides.squidParseExitOnce ? 1 : 0} = 1 && test ! -e "${root}/squid-parse-once"; then
+  : > "${root}/squid-parse-once"
+  exit 1
+fi
 exit ${overrides.squidParseExit ?? 0}`);
   stub('systemd-analyze', `test ${overrides.systemdAnalyzeExit ?? 0} = 0`);
   stub('ss', `
@@ -390,11 +400,13 @@ function writeSgEgressAssets(fixture) {
   const assets = {
     wgConfig: join(wireguardDir, 'pbsg0.conf'),
     wgKey: join(wireguardDir, 'paperbanana-sg-egress.private'),
+    wgKeyMarker: join(wireguardDir, 'paperbanana-sg-egress.private.owner'),
     squidConfig: join(squidDir, 'squid.conf'),
     squidBackup: join(squidDir, 'squid.conf.paperbanana-sg-egress.backup'),
   };
   writeFileSync(assets.wgConfig, '# Managed by PaperBanana Singapore egress\n');
   writeFileSync(assets.wgKey, 'private-material-not-real\n');
+  writeFileSync(assets.wgKeyMarker, '# Managed by PaperBanana Singapore egress\n');
   writeFileSync(assets.squidConfig, '# Managed by PaperBanana Singapore egress\n');
   writeFileSync(assets.squidBackup, '# package squid configuration\n');
   return assets;
@@ -522,6 +534,24 @@ test('bootstrap restores the prior SSH drop-in when effective sshd policy is uns
     assert.doesNotMatch(commandLog(fixture), /systemctl reload ssh/);
   } finally {
     fixture.cleanup();
+  }
+});
+
+test('bootstrap rejects unusable AuthorizedKeysFile and multi-factor AuthenticationMethods before SSH reload', () => {
+  for (const unsafe of ['authorizedkeysfile none\nauthenticationmethods any', 'authorizedkeysfile .ssh/authorized_keys none\nauthenticationmethods any', 'authorizedkeysfile .ssh/authorized_keys\nauthenticationmethods publickey,password']) {
+    const fixture = makeFixture();
+    try {
+      writeFileSync(fixture.sshdOutput, [
+        'permitrootlogin no', 'passwordauthentication no', 'pubkeyauthentication yes', 'kbdinteractiveauthentication no',
+        'allowtcpforwarding no', 'maxauthtries 3', 'allowusers ecs-user', unsafe,
+      ].join('\n'));
+      const result = run(fixture, 'bootstrap-host.sh', ['--apply']);
+      assert.notEqual(result.status, 0);
+      assert.match(result.stderr, /AuthorizedKeysFile|AuthenticationMethods/i);
+      assert.doesNotMatch(commandLog(fixture), /systemctl reload ssh/);
+    } finally {
+      fixture.cleanup();
+    }
   }
 });
 
@@ -683,6 +713,31 @@ test('bootstrap rejects an existing swapfile that is not root-owned regular mode
   }
 });
 
+test('bootstrap refuses a root-owned mode-0600 swapfile that lacks a swap signature', () => {
+  const fixture = makeFixture({ swapSignature: 'not-swap' });
+  try {
+    writeFileSync(join(fixture.root, 'swapfile'), 'unformatted fixture');
+    const result = run(fixture, 'bootstrap-host.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /not formatted as swap/i);
+    assert.equal(commandLog(fixture).split('\n').some((line) => line.startsWith('swapon ') && !line.includes('--noheadings')), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('bootstrap removes its transactional swap candidate when formatting fails', () => {
+  const fixture = makeFixture({ mkswapExit: 1 });
+  try {
+    const result = run(fixture, 'bootstrap-host.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.equal(existsSync(join(fixture.root, 'swapfile')), false);
+    assert.deepEqual(readdirSync(fixture.root).filter((name) => name.startsWith('.swapfile.paperbanana.')), []);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
 test('install refuses to overwrite a non-PaperBanana project WireGuard interface', () => {
   const fixture = makeFixture();
   try {
@@ -710,13 +765,20 @@ test('install rejects an all-zero WireGuard peer public key', () => {
 });
 
 test('install parses the Squid candidate before replacing the live configuration', () => {
-  const fixture = makeFixture({ squidParseExit: 1 });
+  const fixture = makeFixture({ squidParseExitOnce: true });
   try {
     const squidConfig = join(fixture.root, 'etc', 'squid', 'squid.conf');
     const original = readFileSync(squidConfig, 'utf8');
     const result = run(fixture, 'install-egress.sh', ['--apply']);
     assert.notEqual(result.status, 0);
     assert.equal(readFileSync(squidConfig, 'utf8'), original);
+    assert.equal(existsSync(join(fixture.root, 'etc', 'squid', 'squid.conf.paperbanana-sg-egress.backup')), false);
+    assert.equal(existsSync(join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private')), false);
+    assert.equal(existsSync(join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private.owner')), false);
+    const retry = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.equal(retry.status, 0, retry.stderr);
+    assert.match(readFileSync(squidConfig, 'utf8'), /Managed by PaperBanana Singapore egress/);
+    assert.equal(readFileSync(join(fixture.root, 'etc', 'squid', 'squid.conf.paperbanana-sg-egress.backup'), 'utf8'), original);
   } finally {
     fixture.cleanup();
   }
@@ -794,16 +856,81 @@ test('fresh WireGuard verification rollback stops the candidate before deleting 
   }
 });
 
+test('inactive managed WireGuard configuration is restored after candidate verification failure', () => {
+  const fixture = makeFixture({ livePeerKey: zeroPublicKey });
+  try {
+    const config = join(fixture.root, 'etc', 'wireguard', 'pbsg0.conf');
+    const previous = '# Managed by PaperBanana Singapore egress\n# inactive-last-good\n';
+    writeFileSync(config, previous);
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.equal(readFileSync(config, 'utf8'), previous);
+    assert.equal(existsSync(fixture.state.wgInterface), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('inactive managed WireGuard configuration is restored after candidate start failure', () => {
+  const fixture = makeFixture({ failWgStart: true });
+  try {
+    const config = join(fixture.root, 'etc', 'wireguard', 'pbsg0.conf');
+    const previous = '# Managed by PaperBanana Singapore egress\n# inactive-before-start\n';
+    writeFileSync(config, previous);
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.equal(readFileSync(config, 'utf8'), previous);
+    assert.equal(existsSync(fixture.state.wgInterface), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
 test('install rolls back a replacement Squid configuration and restarts the prior service when activation fails', () => {
   const fixture = makeFixture({ squidActive: true, squidLoaded: true, squidProcess: true, projectProxyListener: true, failSquidRestart: true });
   try {
     const config = join(fixture.root, 'etc', 'squid', 'squid.conf');
+    const dropin = join(fixture.root, 'etc', 'systemd', 'system', 'squid.service.d', '10-paperbanana-sg-egress.conf');
     const previous = '# package last-good squid configuration\n';
     writeFileSync(config, previous);
     const result = run(fixture, 'install-egress.sh', ['--apply']);
     assert.notEqual(result.status, 0);
     assert.equal(readFileSync(config, 'utf8'), previous);
+    assert.equal(existsSync(dropin), false);
     assert.match(commandLog(fixture), /systemctl restart squid/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('install adds a marked Squid IPv4-only systemd drop-in before enabling Squid', () => {
+  const fixture = makeFixture();
+  try {
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    const dropin = readFileSync(join(fixture.root, 'etc', 'systemd', 'system', 'squid.service.d', '10-paperbanana-sg-egress.conf'), 'utf8');
+    assert.match(dropin, /^# Managed by PaperBanana Singapore egress$/m);
+    assert.match(dropin, /Requires=wg-quick@pbsg0\.service/);
+    assert.match(dropin, /After=wg-quick@pbsg0\.service/);
+    assert.match(dropin, /RestrictAddressFamilies=AF_UNIX AF_INET/);
+    const log = commandLog(fixture);
+    assert.ok(log.indexOf('systemctl daemon-reload') < log.indexOf('systemctl enable --now squid'));
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('install restores a prior marked Squid systemd drop-in after candidate activation failure', () => {
+  const fixture = makeFixture({ squidActive: true, squidLoaded: true, squidProcess: true, projectProxyListener: true, failSquidRestart: true });
+  try {
+    const dropin = join(fixture.root, 'etc', 'systemd', 'system', 'squid.service.d', '10-paperbanana-sg-egress.conf');
+    const previous = '# Managed by PaperBanana Singapore egress\n[Service]\nRestrictAddressFamilies=AF_UNIX AF_INET AF_INET6\n';
+    mkdirSync(dirname(dropin), { recursive: true });
+    writeFileSync(dropin, previous);
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.equal(readFileSync(dropin, 'utf8'), previous);
+    assert.equal((commandLog(fixture).match(/systemctl daemon-reload/g) ?? []).length, 2);
   } finally {
     fixture.cleanup();
   }
@@ -835,15 +962,59 @@ test('uninstall removes only marked egress configuration when the Squid package 
   try {
     const wgConfig = join(fixture.root, 'etc', 'wireguard', 'pbsg0.conf');
     const wgKey = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private');
+    const wgKeyMarker = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private.owner');
     const squidConfig = join(fixture.root, 'etc', 'squid', 'squid.conf');
     writeFileSync(wgConfig, '# Managed by PaperBanana Singapore egress\n');
     writeFileSync(wgKey, 'private-material-not-real\n');
+    writeFileSync(wgKeyMarker, '# Managed by PaperBanana Singapore egress\n');
     writeFileSync(squidConfig, '# Managed by PaperBanana Singapore egress\n');
     const result = run(fixture, 'uninstall.sh', ['--apply']);
     assert.equal(result.status, 0, result.stderr);
     assert.equal(existsSync(wgConfig), false);
     assert.equal(existsSync(wgKey), false);
     assert.equal(existsSync(squidConfig), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall removes a validated PaperBanana WireGuard key even when pbsg0.conf is already absent', () => {
+  const fixture = makeFixture();
+  try {
+    const assets = writeSgEgressAssets(fixture);
+    unlinkSync(assets.wgConfig);
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(existsSync(assets.wgKey), false);
+    assert.equal(existsSync(assets.wgKeyMarker), false);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall never deletes an unmarked WireGuard key when its ownership cannot be proven', () => {
+  const fixture = makeFixture();
+  try {
+    const key = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private');
+    writeFileSync(key, 'unknown-private-material\n');
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(existsSync(key), true);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('uninstall removes the marker-owned Squid systemd dependency drop-in', () => {
+  const fixture = makeFixture();
+  try {
+    const dropin = join(fixture.root, 'etc', 'systemd', 'system', 'squid.service.d', '10-paperbanana-sg-egress.conf');
+    mkdirSync(dirname(dropin), { recursive: true });
+    writeFileSync(dropin, '# Managed by PaperBanana Singapore egress\n[Unit]\nRequires=wg-quick@pbsg0.service\n');
+    const result = run(fixture, 'uninstall.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(existsSync(dropin), false);
+    assert.match(commandLog(fixture), /systemctl daemon-reload/);
   } finally {
     fixture.cleanup();
   }
@@ -1247,12 +1418,14 @@ test('generated Squid policy permits only Hong Kong approved CONNECT traffic', (
     const policy = join(fixture.root, 'etc', 'squid', 'squid.conf');
     const cases = [
       ['OpenAI from Hong Kong', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '198.51.100.10' }, 'allow'],
+      ['approved dual-stack hostname', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: ['198.51.100.10', '2001:4860:4860::8888'] }, 'allow'],
+      ['approved hostname with a private answer', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: ['198.51.100.10', '10.0.0.8'] }, 'deny'],
       ['Gemini from Hong Kong', { source: '10.77.0.1', authority: 'generativelanguage.googleapis.com:443', resolved: '198.51.100.10' }, 'allow'],
       ['OpenRouter from Hong Kong', { source: '10.77.0.1', authority: 'openrouter.ai:443', resolved: '198.51.100.10' }, 'allow'],
       ['Singapore source', { source: '10.77.0.2', authority: 'api.openai.com:443', resolved: '198.51.100.10' }, 'deny'],
       ['IPv4 authority', { source: '10.77.0.1', authority: '192.0.2.1:443', resolved: '192.0.2.1' }, 'deny'],
       ['IPv6 authority', { source: '10.77.0.1', authority: '[2001:db8::1]:443', resolved: '2001:db8::1' }, 'deny'],
-      ['native IPv6 DNS result', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '2001:4860:4860::8888' }, 'deny'],
+      ['public IPv6 DNS result is an access-policy match; the systemd IPv4 socket boundary prevents an outbound IPv6 connection', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '2001:4860:4860::8888' }, 'allow'],
       ['IPv4-mapped literal authority', { source: '10.77.0.1', authority: '[::ffff:8.8.8.8]:443', resolved: '::ffff:0808:0808' }, 'deny'],
       ['IPv4 unspecified resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '0.0.0.0' }, 'deny'],
       ['IPv6 unspecified resolved address', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: '::' }, 'deny'],

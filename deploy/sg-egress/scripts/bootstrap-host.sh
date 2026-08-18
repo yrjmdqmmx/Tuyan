@@ -117,10 +117,20 @@ if [[ -e "$swapfile" ]]; then
     echo "existing swapfile must be an exactly 1GiB, root-owned regular file with mode 0600; refusing to modify it" >&2
     exit 1
   fi
+  if swap_signature="$(blkid -o value -s TYPE -- "$swapfile" 2>/dev/null)"; then :; else swap_signature=""; fi
+  if [[ "$swap_signature" != "swap" ]]; then
+    echo "existing swapfile is not formatted as swap; refusing to reuse it" >&2
+    exit 1
+  fi
 else
-  fallocate -l 1G "$swapfile"
-  chmod 0600 "$swapfile"
-  mkswap "$swapfile"
+  swap_candidate="$(mktemp "$(dirname -- "$swapfile")/.swapfile.paperbanana.XXXXXX")"
+  cleanup_swap_candidate() { rm -f -- "$swap_candidate"; }
+  trap cleanup_swap_candidate EXIT
+  fallocate -l 1G "$swap_candidate"
+  chmod 0600 "$swap_candidate"
+  mkswap "$swap_candidate"
+  mv -f -- "$swap_candidate" "$swapfile"
+  trap - EXIT
 fi
 grep -Fqx '/swapfile none swap sw 0 0' "$fstab" || echo '/swapfile none swap sw 0 0' >> "$fstab"
 if [[ "$swap_active" != true ]]; then
@@ -299,6 +309,26 @@ validate_connection() {
   if [[ "$user" == "ecs-user" ]] && ! grep -Fqx 'pubkeyauthentication yes' <<<"$effective"; then
     restore_drop_in
     echo "effective sshd policy disables ecs-user public-key access for $match_connection; restored the previous SSH drop-in" >&2
+    exit 1
+  fi
+  if [[ "$user" == "ecs-user" ]] && ! awk '
+    $1 == "authorizedkeysfile" {
+      found = 1
+      for (field_index = 2; field_index <= NF; field_index++) {
+        if ($field_index == "none") invalid = 1
+        if ($field_index ~ /(^|\/)authorized_keys$/) usable = 1
+      }
+    }
+    END { exit !(found && usable && !invalid) }
+  ' <<<"$effective"; then
+    restore_drop_in
+    echo "effective sshd policy has no usable AuthorizedKeysFile for ecs-user; restored the previous SSH drop-in" >&2
+    exit 1
+  fi
+  if auth_methods="$(awk '$1 == "authenticationmethods" { print $2 }' <<<"$effective")"; then :; fi
+  if [[ -n "$auth_methods" && "$auth_methods" != "any" && "$auth_methods" != "publickey" ]]; then
+    restore_drop_in
+    echo "effective sshd AuthenticationMethods is incompatible with publickey-only ecs-user access; restored the previous SSH drop-in" >&2
     exit 1
   fi
 }

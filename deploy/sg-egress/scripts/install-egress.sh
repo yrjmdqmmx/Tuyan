@@ -72,9 +72,12 @@ managed_marker="# Managed by PaperBanana Singapore egress"
 wg_dir="$(host_path /etc/wireguard)"
 wg_config="$wg_dir/${interface_name}.conf"
 sg_key_file="$wg_dir/paperbanana-sg-egress.private"
+sg_key_marker="$wg_dir/paperbanana-sg-egress.private.owner"
 squid_dir="$(host_path /etc/squid)"
 squid_config="$squid_dir/squid.conf"
 squid_backup="$squid_dir/squid.conf.paperbanana-sg-egress.backup"
+squid_dropin_dir="$(host_path /etc/systemd/system/squid.service.d)"
+squid_dropin="$squid_dropin_dir/10-paperbanana-sg-egress.conf"
 
 install -d -m 0700 "$wg_dir"
 wg_was_active=false
@@ -100,8 +103,19 @@ if [[ -e "$wg_config" ]] && ! grep -Fqx "$managed_marker" "$wg_config"; then
   echo "refusing to overwrite pbsg0: its configuration is not PaperBanana-managed" >&2
   exit 1
 fi
+sg_key_created=false
+cleanup_new_wg_key() {
+  local status=$?
+  if (( status != 0 )) && [[ "$sg_key_created" == true ]]; then
+    rm -f -- "$sg_key_file" "$sg_key_marker"
+  fi
+}
+trap cleanup_new_wg_key EXIT
 if [[ ! -s "$sg_key_file" ]]; then
   wg genkey > "$sg_key_file"
+  sg_key_created=true
+  printf '%s\n' "$managed_marker" > "$sg_key_marker"
+  chmod 0600 "$sg_key_marker"
 fi
 chmod 0600 "$sg_key_file"
 sg_private_key="$(<"$sg_key_file")"
@@ -151,7 +165,11 @@ restore_wireguard() {
         return 1
       fi
     fi
-    rm -f -- "$wg_config"
+    if [[ -n "$wg_previous" ]]; then
+      mv -f -- "$wg_previous" "$wg_config"
+    else
+      rm -f -- "$wg_config"
+    fi
   fi
   echo "$reason; restored the prior WireGuard configuration" >&2
   return 1
@@ -170,13 +188,6 @@ if ! wg show "$interface_name" endpoints | awk -v key="$HK_WG_PUBLIC_KEY" '$1 ==
 rm -f -- "$wg_previous"
 
 install -d -m 0755 "$squid_dir"
-if [[ -e "$squid_config" ]] && ! grep -Fqx "$managed_marker" "$squid_config"; then
-  if [[ -e "$squid_backup" ]]; then
-    echo "refusing to overwrite a non-PaperBanana Squid configuration after its package backup was recorded" >&2
-    exit 1
-  fi
-  cp -p "$squid_config" "$squid_backup"
-fi
 squid_candidate="$(mktemp "$squid_dir/.paperbanana-sg-egress.tmp.XXXXXX")"
 cat > "$squid_candidate" <<'EOF'
 # Managed by PaperBanana Singapore egress
@@ -205,10 +216,6 @@ acl private_dst dst ::/128
 acl private_dst dst ::1/128
 acl private_dst dst fc00::/7
 acl private_dst dst fe80::/10
-# Squid's parser-supported "ipv6" token matches every routed IPv6-unicast
-# destination. Deny it before the allow rule: this egress host never makes
-# native IPv6 provider connections, even when DNS returns AAAA records.
-acl destination_ipv6 dst ipv6
 # Squid represents ordinary IPv4 addresses as IPv4-mapped internally. Do not
 # use ::ffff:0:0/96 here: it would match and block every normal IPv4 A record.
 # Raw mapped literals are denied above; mapped private/loopback values are
@@ -219,7 +226,6 @@ http_access deny literal_ipv6
 http_access deny literal_ipv4_url
 http_access deny literal_ipv6_url
 http_access deny private_dst
-http_access deny destination_ipv6
 http_access allow hk CONNECT SSL_ports approved
 http_access deny all
 
@@ -236,6 +242,38 @@ if ! squid -f "$squid_candidate" -k parse; then
   echo "Squid candidate parse failed; live configuration was not replaced" >&2
   exit 1
 fi
+if [[ -e "$squid_config" ]] && ! grep -Fqx "$managed_marker" "$squid_config"; then
+  if [[ -e "$squid_backup" ]] && ! cmp -s -- "$squid_config" "$squid_backup"; then
+    rm -f -- "$squid_candidate"
+    echo "refusing to overwrite a changed package Squid configuration after its backup was recorded" >&2
+    exit 1
+  fi
+  [[ -e "$squid_backup" ]] || cp -p -- "$squid_config" "$squid_backup"
+fi
+install -d -m 0755 "$squid_dropin_dir"
+if [[ -e "$squid_dropin" ]] && ! grep -Fqx "$managed_marker" "$squid_dropin"; then
+  rm -f -- "$squid_candidate"
+  echo "refusing to overwrite an unowned Squid systemd drop-in" >&2
+  exit 1
+fi
+squid_dropin_previous=""
+if [[ -e "$squid_dropin" ]]; then
+  squid_dropin_previous="$(mktemp "$squid_dropin_dir/.10-paperbanana-sg-egress.previous.XXXXXX")"
+  cp -p -- "$squid_dropin" "$squid_dropin_previous"
+fi
+squid_dropin_candidate="$(mktemp "$squid_dropin_dir/.10-paperbanana-sg-egress.tmp.XXXXXX")"
+cat > "$squid_dropin_candidate" <<EOF
+$managed_marker
+[Unit]
+Requires=wg-quick@${interface_name}.service
+After=wg-quick@${interface_name}.service
+
+[Service]
+# Squid 6 no longer honors dns_v4_first. Limit this process to IPv4 sockets;
+# DNS may still return AAAA records, but outbound provider connections cannot use them.
+RestrictAddressFamilies=AF_UNIX AF_INET
+EOF
+chmod 0644 "$squid_dropin_candidate"
 squid_was_active=false
 if systemctl is-active --quiet squid; then
   squid_was_active=true
@@ -248,6 +286,8 @@ cp -p -- "$squid_config" "$squid_previous"
 restore_squid() {
   local reason="$1"
   mv -f -- "$squid_previous" "$squid_config"
+  if [[ -n "$squid_dropin_previous" ]]; then mv -f -- "$squid_dropin_previous" "$squid_dropin"; else rm -f -- "$squid_dropin"; fi
+  systemctl daemon-reload || { echo "$reason; restored files but could not reload systemd" >&2; return 1; }
   if [[ "$squid_was_active" == true ]]; then
     systemctl restart squid || { echo "$reason; restored prior Squid file but could not restart last-good Squid" >&2; return 1; }
   else
@@ -257,9 +297,13 @@ restore_squid() {
   return 1
 }
 mv -f -- "$squid_candidate" "$squid_config"
+mv -f -- "$squid_dropin_candidate" "$squid_dropin"
+systemctl daemon-reload || restore_squid "systemd reload failed after Squid candidate install"
 if ! systemctl enable --now squid; then restore_squid "Squid enable/start failed"; fi
 if ! systemctl restart squid; then restore_squid "Squid restart failed"; fi
 if ! systemctl is-active --quiet squid; then restore_squid "Squid is not active after applying the candidate"; fi
 rm -f -- "$squid_previous"
+rm -f -- "$squid_dropin_previous"
+sg_key_created=false
 install -d -m 0750 "$runtime_dir"
 echo "Singapore egress services are active."
