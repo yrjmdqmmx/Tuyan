@@ -32,10 +32,18 @@ done
 [[ "$wg_interface" =~ ^[A-Za-z0-9_.-]{1,15}$ ]] || usage
 
 test_root="${PAPERBANANA_SG_EGRESS_TEST_ROOT:-}"
-if [[ -n "$test_root" && ( "$test_root" != /* || "$test_root" == "/" ) ]]; then
-  echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be an absolute non-root test directory" >&2
-  exit 2
-fi
+validate_test_root() {
+  [[ -n "$test_root" ]] || return 0
+  if (( EUID == 0 )); then echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is forbidden while running as root" >&2; exit 2; fi
+  if [[ "$test_root" != /* || "$test_root" == "/" || "$test_root" == *"/../"* || "$test_root" == */.. || "$test_root" == *"/./"* || "$test_root" == */. ]]; then echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be a canonical absolute test root" >&2; exit 2; fi
+  local canonical marker metadata file_type owner mode_bits
+  canonical="$(cd -P -- "$test_root" 2>/dev/null && pwd -P)" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is not a usable test root" >&2; exit 2; }
+  [[ "$canonical" == "$test_root" && ! -L "$test_root" ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must not contain a symlink or non-canonical path" >&2; exit 2; }
+  marker="$test_root/.paperbanana-sg-egress-test-root"
+  [[ -f "$marker" && ! -L "$marker" && "$(<"$marker")" == "paperbanana-sg-egress-test-root-v1" ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT lacks the required fixture marker" >&2; exit 2; }
+  for path in "$test_root" "$marker"; do metadata="$(stat -c '%F:%u:%a' -- "$path")" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT metadata is unsafe" >&2; exit 2; }; IFS=: read -r file_type owner mode_bits <<<"$metadata"; [[ "$owner" == "$EUID" && "$mode_bits" =~ ^[0-7]{3,4}$ && $((8#$mode_bits & 0022)) -eq 0 ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT fixture owner or permissions are unsafe" >&2; exit 2; }; done
+}
+validate_test_root
 host_path() { printf '%s%s' "$test_root" "$1"; }
 if [[ "$mode" == "--apply" && "$EUID" -ne 0 && -z "$test_root" ]]; then
   echo "install-health-monitor.sh --apply must run as root" >&2
@@ -43,7 +51,11 @@ if [[ "$mode" == "--apply" && "$EUID" -ne 0 && -z "$test_root" ]]; then
 fi
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-unit_dir="$(cd -- "$script_dir/.." && pwd)/systemd"
+if [[ -n "$test_root" ]]; then
+  unit_dir="${PAPERBANANA_SG_EGRESS_TEST_UNIT_DIR:-$(host_path /unit-source)}"
+else
+  unit_dir="$(cd -- "$script_dir/.." && pwd)/systemd"
+fi
 runtime_dir="$(host_path /opt/paperbanana-sg-egress)"
 runtime_scripts_dir="$runtime_dir/scripts"
 if [[ "$mode" == "--dry-run" ]]; then
@@ -63,7 +75,7 @@ require_secure_runtime_path() {
   local path="$1"
   local expected_type="$2"
   local metadata file_type owner mode_bits
-  if ! metadata="$(stat -c '%F:%u:%a' "$path")"; then
+  if [[ -L "$path" ]] || ! metadata="$(stat -c '%F:%u:%a' "$path")"; then
     echo "required secure runtime path is missing: $path" >&2
     exit 1
   fi
@@ -83,11 +95,35 @@ for runtime_script in "$runtime_scripts_dir/monitor-health.sh" "$runtime_scripts
     exit 1
   fi
 done
-test -r "$unit_dir/paperbanana-hk-egress-health@.service"
-test -r "$unit_dir/paperbanana-hk-egress-health@.timer"
-install -d -m 0755 "$(host_path /etc/systemd/system)"
-install -m 0644 "$unit_dir/paperbanana-hk-egress-health@.service" "$(host_path /etc/systemd/system/paperbanana-hk-egress-health@.service)"
-install -m 0644 "$unit_dir/paperbanana-hk-egress-health@.timer" "$(host_path /etc/systemd/system/paperbanana-hk-egress-health@.timer)"
-systemctl daemon-reload
-systemctl enable --now "paperbanana-hk-egress-health@${wg_interface}.timer"
-systemctl is-active --quiet "paperbanana-hk-egress-health@${wg_interface}.timer"
+require_secure_runtime_path "$unit_dir" directory
+for unit_template in "$unit_dir/paperbanana-hk-egress-health@.service" "$unit_dir/paperbanana-hk-egress-health@.timer"; do
+  require_secure_runtime_path "$unit_template" 'regular file'
+done
+systemd_dir="$(host_path /etc/systemd/system)"
+service_target="$systemd_dir/paperbanana-hk-egress-health@.service"
+timer_target="$systemd_dir/paperbanana-hk-egress-health@.timer"
+install -d -m 0755 "$systemd_dir"
+service_previous=""
+timer_previous=""
+if [[ -e "$service_target" ]]; then service_previous="$(mktemp "$systemd_dir/.paperbanana-hk-service.previous.XXXXXX")"; cp -p -- "$service_target" "$service_previous"; fi
+if [[ -e "$timer_target" ]]; then timer_previous="$(mktemp "$systemd_dir/.paperbanana-hk-timer.previous.XXXXXX")"; cp -p -- "$timer_target" "$timer_previous"; fi
+rollback_monitor_install() {
+  local reason="$1"
+  if systemctl disable --now "paperbanana-hk-egress-health@${wg_interface}.timer" >/dev/null 2>&1; then :; fi
+  if [[ -n "$service_previous" ]]; then mv -f -- "$service_previous" "$service_target"; else rm -f -- "$service_target"; fi
+  if [[ -n "$timer_previous" ]]; then mv -f -- "$timer_previous" "$timer_target"; else rm -f -- "$timer_target"; fi
+  systemctl daemon-reload || { echo "$reason; failed to restore systemd unit state" >&2; return 1; }
+  echo "$reason; rolled back copied Hong Kong health-monitor units" >&2
+  return 1
+}
+install -m 0644 "$unit_dir/paperbanana-hk-egress-health@.service" "$service_target"
+install -m 0644 "$unit_dir/paperbanana-hk-egress-health@.timer" "$timer_target"
+systemctl daemon-reload || rollback_monitor_install "systemd daemon-reload failed"
+if command -v systemd-analyze >/dev/null 2>&1; then
+  systemd-analyze verify "$service_target" "$timer_target" || rollback_monitor_install "systemd unit verification failed"
+fi
+systemctl start "paperbanana-hk-egress-health@${wg_interface}.service" || rollback_monitor_install "Hong Kong health service start failed"
+systemctl is-active --quiet "paperbanana-hk-egress-health@${wg_interface}.service" || rollback_monitor_install "Hong Kong health service did not become active"
+systemctl enable --now "paperbanana-hk-egress-health@${wg_interface}.timer" || rollback_monitor_install "Hong Kong health timer enable/start failed"
+systemctl is-active --quiet "paperbanana-hk-egress-health@${wg_interface}.timer" || rollback_monitor_install "Hong Kong health timer did not become active"
+rm -f -- "$service_previous" "$timer_previous"

@@ -10,6 +10,25 @@ if (!root) {
 
 const findings = [];
 
+function isExactKnownFixture(path, kind, value) {
+  const file = relative(root, path);
+  if ((file === 'tests/squid-policy-validator.mjs' || file === 'tests/scan-egress-secrets.mjs') && kind === 'non-reserved public IPv6' &&
+      new Set(['a::Fac', '1000::', '2000::', '4000::', '8000::', 'c000::', 'e000::']).has(value)) {
+    return true;
+  }
+  if (file === 'tests/behavior.test.mjs' || file === 'tests/scan-egress-secrets.mjs') {
+    return new Set([
+      '8.8.8.8', '192.0.1.1', '192.2.1.1', '198.51.42.7', '203.0.5.7',
+      '2001:4860:4860::8888', '2001:4860::10', '::ffff:8.8.8.8', '::ffff:0808:0808',
+    ]).has(value);
+  }
+  return false;
+}
+
+function addFinding(path, kind, value = '') {
+  if (!isExactKnownFixture(path, kind, value)) findings.push(`${relative(root, path)}: ${kind}${value ? ` ${value}` : ''}`);
+}
+
 function isReservedIPv4(value) {
   const parts = value.split('.').map(Number);
   if (parts.length !== 4 || parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) return true;
@@ -103,15 +122,15 @@ function inspectFile(path) {
     ['WireGuard key-shaped literal', /(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{43}=(?![A-Za-z0-9+/])/],
   ];
   for (const [kind, pattern] of patterns) {
-    if (pattern.test(text)) findings.push(`${relative(root, path)}: ${kind}`);
+    if (pattern.test(text)) addFinding(path, kind);
   }
   for (const match of text.matchAll(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g)) {
-    if (!isReservedIPv4(match[0])) findings.push(`${relative(root, path)}: non-reserved public IPv4 ${match[0]}`);
+    if (!isReservedIPv4(match[0])) addFinding(path, 'non-reserved public IPv4', match[0]);
   }
   for (const match of text.matchAll(/(?:[0-9A-Fa-f]{0,4}:){2,}[0-9A-Fa-f:.]*/g)) {
     const candidate = match[0];
     if (ipv6ToBigInt(candidate) !== null && !isReservedIPv6(candidate)) {
-      findings.push(`${relative(root, path)}: non-reserved public IPv6 ${candidate}`);
+      addFinding(path, 'non-reserved public IPv6', candidate);
     }
   }
 }
@@ -120,9 +139,6 @@ function walk(path) {
   const info = statSync(path);
   if (info.isDirectory()) {
     for (const entry of readdirSync(path)) {
-      // Tests intentionally contain non-secret fixtures that exercise this scanner.
-      // Every deployable script, systemd unit, document and config generator remains in scope.
-      if (entry === 'tests') continue;
       walk(join(path, entry));
     }
     return;

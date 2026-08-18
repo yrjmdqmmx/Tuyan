@@ -9,10 +9,18 @@ if [[ "$mode" != "--apply" && "$mode" != "--dry-run" ]]; then
 fi
 
 test_root="${PAPERBANANA_SG_EGRESS_TEST_ROOT:-}"
-if [[ -n "$test_root" && ( "$test_root" != /* || "$test_root" == "/" ) ]]; then
-  echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be an absolute non-root test directory" >&2
-  exit 2
-fi
+validate_test_root() {
+  [[ -n "$test_root" ]] || return 0
+  if (( EUID == 0 )); then echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is forbidden while running as root" >&2; exit 2; fi
+  if [[ "$test_root" != /* || "$test_root" == "/" || "$test_root" == *"/../"* || "$test_root" == */.. || "$test_root" == *"/./"* || "$test_root" == */. ]]; then echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be a canonical absolute test root" >&2; exit 2; fi
+  local canonical marker metadata file_type owner mode_bits
+  canonical="$(cd -P -- "$test_root" 2>/dev/null && pwd -P)" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is not a usable test root" >&2; exit 2; }
+  [[ "$canonical" == "$test_root" && ! -L "$test_root" ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must not contain a symlink or non-canonical path" >&2; exit 2; }
+  marker="$test_root/.paperbanana-sg-egress-test-root"
+  [[ -f "$marker" && ! -L "$marker" && "$(<"$marker")" == "paperbanana-sg-egress-test-root-v1" ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT lacks the required fixture marker" >&2; exit 2; }
+  for path in "$test_root" "$marker"; do metadata="$(stat -c '%F:%u:%a' -- "$path")" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT metadata is unsafe" >&2; exit 2; }; IFS=: read -r file_type owner mode_bits <<<"$metadata"; [[ "$owner" == "$EUID" && "$mode_bits" =~ ^[0-7]{3,4}$ && $((8#$mode_bits & 0022)) -eq 0 ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT fixture owner or permissions are unsafe" >&2; exit 2; }; done
+}
+validate_test_root
 host_path() { printf '%s%s' "$test_root" "$1"; }
 
 if [[ "$mode" == "--apply" && "$EUID" -ne 0 && -z "$test_root" ]]; then
@@ -94,7 +102,46 @@ Endpoint = $endpoint
 PersistentKeepalive = 25
 EOF
 chmod 0600 "$wg_candidate"
+if ! wg-quick strip "$wg_candidate" >/dev/null; then
+  rm -f -- "$wg_candidate"
+  echo "WireGuard candidate validation failed; live configuration was not replaced" >&2
+  exit 1
+fi
+wg_was_active=false
+if systemctl is-active --quiet "wg-quick@${interface_name}"; then
+  wg_was_active=true
+else
+  wg_status=$?
+  case "$wg_status" in 3|4) ;; *) echo "cannot determine whether wg-quick@${interface_name} is active" >&2; exit 2 ;; esac
+fi
+wg_previous=""
+if [[ -e "$wg_config" ]]; then
+  wg_previous="$(mktemp "$wg_dir/.${interface_name}.previous.XXXXXX")"
+  cp -p -- "$wg_config" "$wg_previous"
+fi
+restore_wireguard() {
+  local reason="$1"
+  if [[ -n "$wg_previous" ]]; then mv -f -- "$wg_previous" "$wg_config"; else rm -f -- "$wg_config"; fi
+  if [[ "$wg_was_active" == true ]]; then
+    systemctl reload "wg-quick@${interface_name}" || { echo "$reason; restored prior WireGuard file but could not restore its live configuration" >&2; return 1; }
+  else
+    systemctl disable --now "wg-quick@${interface_name}" || { echo "$reason; restored prior WireGuard file but could not stop candidate service" >&2; return 1; }
+    if ip link show dev "$interface_name" >/dev/null 2>&1; then ip link delete dev "$interface_name" || return 1; fi
+  fi
+  echo "$reason; restored the prior WireGuard configuration" >&2
+  return 1
+}
 mv -f -- "$wg_candidate" "$wg_config"
+if [[ "$wg_was_active" == true ]]; then
+  systemctl reload "wg-quick@${interface_name}" || restore_wireguard "WireGuard reload failed"
+else
+  systemctl enable --now "wg-quick@${interface_name}" || restore_wireguard "WireGuard start failed"
+fi
+if ! systemctl is-active --quiet "wg-quick@${interface_name}"; then restore_wireguard "WireGuard is not active after applying the candidate"; fi
+if ! ip -4 -o addr show dev "$interface_name" | awk '$4 == "10.77.0.2/30" { found=1 } END { exit !found }'; then restore_wireguard "WireGuard tunnel address verification failed"; fi
+if [[ "$(wg show "$interface_name" peers)" != "$HK_WG_PUBLIC_KEY" ]]; then restore_wireguard "WireGuard peer verification failed"; fi
+if ! wg show "$interface_name" endpoints | awk -v key="$HK_WG_PUBLIC_KEY" '$1 == key && $2 ~ /:51820$/ { found=1 } END { exit !found }'; then restore_wireguard "WireGuard endpoint verification failed"; fi
+rm -f -- "$wg_previous"
 
 install -d -m 0755 "$squid_dir"
 if [[ -e "$squid_config" ]] && ! grep -Fqx "$managed_marker" "$squid_config"; then
@@ -163,12 +210,30 @@ if ! squid -f "$squid_candidate" -k parse; then
   echo "Squid candidate parse failed; live configuration was not replaced" >&2
   exit 1
 fi
+squid_was_active=false
+if systemctl is-active --quiet squid; then
+  squid_was_active=true
+else
+  squid_status=$?
+  case "$squid_status" in 3|4) ;; *) rm -f -- "$squid_candidate"; echo "cannot determine whether Squid is active" >&2; exit 2 ;; esac
+fi
+squid_previous="$(mktemp "$squid_dir/.paperbanana-sg-egress.previous.XXXXXX")"
+cp -p -- "$squid_config" "$squid_previous"
+restore_squid() {
+  local reason="$1"
+  mv -f -- "$squid_previous" "$squid_config"
+  if [[ "$squid_was_active" == true ]]; then
+    systemctl restart squid || { echo "$reason; restored prior Squid file but could not restart last-good Squid" >&2; return 1; }
+  else
+    systemctl disable --now squid || { echo "$reason; restored prior Squid file but could not stop candidate Squid" >&2; return 1; }
+  fi
+  echo "$reason; restored the prior Squid configuration" >&2
+  return 1
+}
 mv -f -- "$squid_candidate" "$squid_config"
-
-systemctl enable --now "wg-quick@${interface_name}"
-systemctl enable --now squid
-systemctl restart squid
-systemctl is-active --quiet "wg-quick@${interface_name}"
-systemctl is-active --quiet squid
+if ! systemctl enable --now squid; then restore_squid "Squid enable/start failed"; fi
+if ! systemctl restart squid; then restore_squid "Squid restart failed"; fi
+if ! systemctl is-active --quiet squid; then restore_squid "Squid is not active after applying the candidate"; fi
+rm -f -- "$squid_previous"
 install -d -m 0750 "$runtime_dir"
 echo "Singapore egress services are active."

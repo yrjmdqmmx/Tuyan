@@ -36,11 +36,26 @@ elif [[ -n "$wg_interface" ]]; then
 fi
 
 test_root="${PAPERBANANA_SG_EGRESS_TEST_ROOT:-}"
-if [[ -n "$test_root" && ( "$test_root" != /* || "$test_root" == "/" ) ]]; then
-  echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be an absolute non-root test directory" >&2
-  exit 2
-fi
+validate_test_root() {
+  [[ -n "$test_root" ]] || return 0
+  if (( EUID == 0 )); then echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is forbidden while running as root" >&2; exit 2; fi
+  if [[ "$test_root" != /* || "$test_root" == "/" || "$test_root" == *"/../"* || "$test_root" == */.. || "$test_root" == *"/./"* || "$test_root" == */. ]]; then echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be a canonical absolute test root" >&2; exit 2; fi
+  local canonical marker metadata file_type owner mode_bits
+  canonical="$(cd -P -- "$test_root" 2>/dev/null && pwd -P)" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is not a usable test root" >&2; exit 2; }
+  [[ "$canonical" == "$test_root" && ! -L "$test_root" ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must not contain a symlink or non-canonical path" >&2; exit 2; }
+  marker="$test_root/.paperbanana-sg-egress-test-root"
+  [[ -f "$marker" && ! -L "$marker" && "$(<"$marker")" == "paperbanana-sg-egress-test-root-v1" ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT lacks the required fixture marker" >&2; exit 2; }
+  for path in "$test_root" "$marker"; do metadata="$(stat -c '%F:%u:%a' -- "$path")" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT metadata is unsafe" >&2; exit 2; }; IFS=: read -r file_type owner mode_bits <<<"$metadata"; [[ "$owner" == "$EUID" && "$mode_bits" =~ ^[0-7]{3,4}$ && $((8#$mode_bits & 0022)) -eq 0 ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT fixture owner or permissions are unsafe" >&2; exit 2; }; done
+}
+validate_test_root
 host_path() { printf '%s%s' "$test_root" "$1"; }
+terminate_exact_process() {
+  if [[ -n "$test_root" ]]; then
+    "$test_root/bin/kill" "$@"
+  else
+    kill "$@"
+  fi
+}
 if [[ "$mode" == "--apply" && "$EUID" -ne 0 && -z "$test_root" ]]; then
   echo "uninstall.sh --apply must run as root" >&2
   exit 1
@@ -240,6 +255,20 @@ project_proxy_listener_present() {
   echo "cannot determine whether the PaperBanana Squid listener is present (listener parse exited $status)" >&2
   return 2
 }
+project_proxy_listener_pids() {
+  local listeners pids status
+  if ! listeners="$(ss -lntH -p 'sport = :3128')"; then
+    status=$?
+    echo "cannot determine the exact PaperBanana Squid listener PID (ss query exited $status)" >&2
+    return 2
+  fi
+  pids="$(awk '$4 == "10.77.0.2:3128" { print }' <<<"$listeners" | sed -n 's/.*pid=\([0-9][0-9]*\).*/\1/p' | sort -u)"
+  if [[ -z "$pids" ]]; then
+    echo "the exact PaperBanana Squid listener has no attributable Squid PID; refusing to kill an unrelated Squid process" >&2
+    return 2
+  fi
+  printf '%s\n' "$pids"
+}
 squid_process_present() {
   local status
   if pgrep -x squid >/dev/null 2>&1; then
@@ -316,17 +345,17 @@ uninstall_sg() {
 
   if unit_needs_stop wg-quick@pbsg0; then
     wg_runtime=true
+    systemctl disable --now wg-quick@pbsg0 || return $?
   else
     state_status=$?
     if (( state_status != 1 )); then
       return "$state_status"
     fi
-  fi
-  if [[ "$interface_initial" == true ]]; then
-    wg_runtime=true
-  fi
-  if [[ "$wg_runtime" == true ]]; then
-    systemctl disable --now wg-quick@pbsg0 || return $?
+    # pbsg0 is this project's fixed, non-generic interface name. If the
+    # unit metadata has been lost, delete only that exact kernel interface.
+    if [[ "$interface_initial" == true ]]; then
+      ip link delete dev pbsg0 || return $?
+    fi
   fi
   if interface_present; then
     ip link delete dev pbsg0 || return $?
@@ -349,17 +378,21 @@ uninstall_sg() {
 
   if unit_needs_stop squid; then
     squid_runtime=true
+    systemctl disable --now squid || return $?
   else
     state_status=$?
     if (( state_status != 1 )); then
       return "$state_status"
     fi
-  fi
-  if [[ "$managed_squid" == true || "$proxy_listener_initial" == true || "$squid_process_initial" == true ]]; then
-    squid_runtime=true
-  fi
-  if [[ "$squid_runtime" == true ]]; then
-    systemctl disable --now squid || return $?
+    # With no project unit left, only the process which owns the exact fixed
+    # 10.77.0.2:3128 listener is in scope. A generic `squid` process is not.
+    if [[ "$proxy_listener_initial" == true ]]; then
+      while IFS= read -r squid_pid; do
+        squid_comm="$(ps -p "$squid_pid" -o comm=)" || { echo "cannot inspect exact Squid listener PID $squid_pid" >&2; return 2; }
+        [[ "${squid_comm##*/}" == "squid" ]] || { echo "exact project listener PID $squid_pid is not squid; refusing to kill it" >&2; return 2; }
+        terminate_exact_process -TERM "$squid_pid" || return $?
+      done < <(project_proxy_listener_pids)
+    fi
   fi
   assert_unit_inactive squid || return $?
   if project_proxy_listener_present; then

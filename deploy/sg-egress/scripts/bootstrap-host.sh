@@ -8,10 +8,31 @@ if [[ "$mode" != "--apply" && "$mode" != "--dry-run" ]]; then
 fi
 
 test_root="${PAPERBANANA_SG_EGRESS_TEST_ROOT:-}"
-if [[ -n "$test_root" && ( "$test_root" != /* || "$test_root" == "/" ) ]]; then
-  echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be an absolute non-root test directory" >&2
-  exit 2
-fi
+validate_test_root() {
+  [[ -n "$test_root" ]] || return 0
+  if (( EUID == 0 )); then
+    echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is forbidden while running as root" >&2
+    exit 2
+  fi
+  if [[ "$test_root" != /* || "$test_root" == "/" || "$test_root" == *"/../"* || "$test_root" == */.. || "$test_root" == *"/./"* || "$test_root" == */. ]]; then
+    echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must be a canonical absolute test root" >&2
+    exit 2
+  fi
+  local canonical marker metadata file_type owner mode_bits
+  canonical="$(cd -P -- "$test_root" 2>/dev/null && pwd -P)" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT is not a usable test root" >&2; exit 2; }
+  if [[ "$canonical" != "$test_root" || -L "$test_root" ]]; then
+    echo "PAPERBANANA_SG_EGRESS_TEST_ROOT must not contain a symlink or non-canonical path" >&2
+    exit 2
+  fi
+  marker="$test_root/.paperbanana-sg-egress-test-root"
+  [[ -f "$marker" && ! -L "$marker" && "$(<"$marker")" == "paperbanana-sg-egress-test-root-v1" ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT lacks the required fixture marker" >&2; exit 2; }
+  for path in "$test_root" "$marker"; do
+    metadata="$(stat -c '%F:%u:%a' -- "$path")" || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT metadata is unsafe" >&2; exit 2; }
+    IFS=: read -r file_type owner mode_bits <<<"$metadata"
+    [[ "$owner" == "$EUID" && "$mode_bits" =~ ^[0-7]{3,4}$ && $((8#$mode_bits & 0022)) -eq 0 ]] || { echo "PAPERBANANA_SG_EGRESS_TEST_ROOT fixture owner or permissions are unsafe" >&2; exit 2; }
+  done
+}
+validate_test_root
 host_path() { printf '%s%s' "$test_root" "$1"; }
 
 if [[ "$mode" == "--apply" && "$EUID" -ne 0 && -z "$test_root" ]]; then
@@ -35,11 +56,44 @@ hbr_uninstaller="$(host_path /opt/alibabacloud/hbrclient/uninstall)"
 if [[ -x "$hbr_uninstaller" ]]; then
   "$hbr_uninstaller"
 fi
-if systemctl is-active --quiet hbrclient.service || systemctl is-active --quiet hbrclientupdater.service; then
-  echo "hbrclient or hbrclientupdater remains active; refusing to continue" >&2
-  exit 1
+hbr_service_inactive_or_absent() {
+  local unit="$1" status
+  if systemctl is-active --quiet "$unit"; then
+    return 1
+  else
+    status=$?
+  fi
+  case "$status" in
+    3|4) return 0 ;;
+    *)
+      echo "cannot determine HBR state for $unit (systemctl query exited $status)" >&2
+      return 2
+      ;;
+  esac
+}
+if hbr_service_inactive_or_absent hbrclient.service; then
+  :
+else
+  status=$?
+  if (( status == 1 )); then
+    echo "hbrclient or hbrclientupdater remains active; refusing to continue" >&2
+  fi
+  exit "$status"
 fi
-if systemctl list-unit-files --no-legend | awk '{print $1}' | grep -Eq '^(hbrclient|hbrclientupdater)(\.service)?$'; then
+if hbr_service_inactive_or_absent hbrclientupdater.service; then
+  :
+else
+  status=$?
+  if (( status == 1 )); then
+    echo "hbrclient or hbrclientupdater remains active; refusing to continue" >&2
+  fi
+  exit "$status"
+fi
+if ! hbr_units="$(systemctl list-unit-files --no-legend)"; then
+  echo "cannot determine whether HBR units are installed (systemctl query failed)" >&2
+  exit 2
+fi
+if grep -Eq '^(hbrclient|hbrclientupdater)(\.service)?[[:space:]]' <<<"$hbr_units"; then
   echo "hbrclient or hbrclientupdater remains installed; refusing to continue" >&2
   exit 1
 fi
