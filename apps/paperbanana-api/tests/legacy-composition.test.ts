@@ -22,7 +22,84 @@ type LegacyPolicyModule = {
   validateProviderImageBase64(value: string, maxBytes: number, label: string): string
   readStoredObject(bucket: Record<string, any>, key: string, maxBytes: number, label: string): Promise<Buffer>
   verifyUploadedReferenceObjects(images: Array<Record<string, unknown>>, bucket?: Record<string, unknown>): Promise<void>
+  configureRuntimeFetch(fetchImpl?: typeof fetch): void
+  fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts?: number): Promise<Response>
 }
+
+test('legacy Laf defaults to global fetch and supports a Node-injected runtime fetch without importing Undici', async () => {
+  const legacy = await loadLegacy()
+  const previousFetch = globalThis.fetch
+  const calls: string[] = []
+  try {
+    legacy.configureRuntimeFetch()
+    globalThis.fetch = async (input) => {
+      calls.push(`global:${String(input)}`)
+      return new Response('{}')
+    }
+    await legacy.fetchWithRetry('https://example.com/global', undefined, 'global', 1)
+
+    legacy.configureRuntimeFetch(async (input) => {
+      calls.push(`injected:${String(input)}`)
+      return new Response('{}')
+    })
+    await legacy.fetchWithRetry('https://example.com/injected', undefined, 'injected', 1)
+  } finally {
+    legacy.configureRuntimeFetch()
+    globalThis.fetch = previousFetch
+  }
+
+  assert.deepEqual(calls, [
+    'global:https://example.com/global',
+    'injected:https://example.com/injected',
+  ])
+  assert.doesNotMatch(fs.readFileSync(legacyPath, 'utf8'), /from\s+['"]undici['"]|require\(['"]undici['"]\)/)
+})
+
+test('legacy bounded retries preserve the stable provider egress error', async () => {
+  const legacy = await loadLegacy()
+  let attempts = 0
+  legacy.configureRuntimeFetch(async () => {
+    attempts += 1
+    const error: any = new Error('海外模型出口暂不可用，请稍后重试。')
+    error.code = 'PROVIDER_EGRESS_UNAVAILABLE'
+    throw error
+  })
+  try {
+    await assert.rejects(
+      legacy.fetchWithRetry('https://api.openai.com/v1/models', undefined, 'OpenAI secret label', 2),
+      (error: any) => {
+        assert.equal(error.message, '海外模型出口暂不可用，请稍后重试。')
+        assert.equal(error.code, 'PROVIDER_EGRESS_UNAVAILABLE')
+        return true
+      },
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+  assert.equal(attempts, 2)
+})
+
+test('OpenRouter model catalog failures expose only the stable provider egress message', async () => {
+  const legacy = await loadLegacy()
+  legacy.configureRuntimeFetch(async () => {
+    const error: any = new Error('海外模型出口暂不可用，请稍后重试。')
+    error.code = 'PROVIDER_EGRESS_UNAVAILABLE'
+    throw error
+  })
+  try {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: { action: 'modelCapability', provider: 'openrouter', model: 'openai/gpt-5' },
+      headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(result.code, 0)
+    assert.equal(result.reason, '海外模型出口暂不可用，请稍后重试。')
+    assert.doesNotMatch(JSON.stringify(result), /OpenRouter metadata unavailable|openai\/gpt-5/)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const legacyPath = path.resolve(packageRoot, '../laf-functions/paperbanana-api.ts')

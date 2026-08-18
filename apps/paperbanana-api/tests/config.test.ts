@@ -7,6 +7,7 @@ const validEnv = {
   PAPERBANANA_GATEWAY_TOKEN: 'service-secret',
   PAPERBANANA_SINGLE_REPLICA: 'true',
   PAPERBANANA_STRICT_OBJECT_STORAGE: 'true',
+  PAPERBANANA_PROVIDER_EGRESS_MODE: 'disabled',
   MONGODB_URI: 'mongodb://mongo.internal:27017',
   MONGODB_BUSINESS_DB: 'paperbanana_business',
   PAPERBANANA_BUCKET: 'paperbanana-private',
@@ -16,6 +17,53 @@ const validEnv = {
   OSS_ACCESS_KEY_ID: 'access-id',
   OSS_ACCESS_KEY_SECRET: 'access-secret',
 }
+
+test('startup config requires an explicit provider egress mode', () => {
+  for (const value of ['', 'Disabled', 'sg', 'direct', ' disabled ']) {
+    assert.throws(
+      () => loadConfig({ ...validEnv, PAPERBANANA_PROVIDER_EGRESS_MODE: value }),
+      /PAPERBANANA_PROVIDER_EGRESS_MODE must be exactly disabled or sg-required/,
+    )
+  }
+})
+
+test('sg-required accepts only the fixed credential-free Singapore proxy origin', () => {
+  const accepted = loadConfig({
+    ...validEnv,
+    PAPERBANANA_PROVIDER_EGRESS_MODE: 'sg-required',
+    PAPERBANANA_SG_PROXY_URL: 'http://10.77.0.2:3128',
+  })
+  assert.deepEqual(accepted.providerEgress, {
+    mode: 'sg-required',
+    proxyUrl: 'http://10.77.0.2:3128',
+  })
+
+  for (const value of [
+    '',
+    'https://10.77.0.2:3128',
+    'http://user:password@10.77.0.2:3128',
+    'http://10.77.0.2:3128/path',
+    'http://10.77.0.2:3128?target=evil',
+    'http://10.77.0.2:3128#fragment',
+    'http://127.0.0.1:3128',
+    'http://10.77.0.3:3128',
+    'http://10.77.0.2:8080',
+    'not-a-url',
+  ]) {
+    assert.throws(
+      () => loadConfig({
+        ...validEnv,
+        PAPERBANANA_PROVIDER_EGRESS_MODE: 'sg-required',
+        PAPERBANANA_SG_PROXY_URL: value,
+      }),
+      /PAPERBANANA_SG_PROXY_URL must be the approved Singapore proxy origin/,
+    )
+  }
+})
+
+test('disabled provider egress does not require or expose a proxy URL', () => {
+  assert.deepEqual(loadConfig(validEnv).providerEgress, { mode: 'disabled' })
+})
 
 test('startup config requires the internal gateway token', () => {
   assert.throws(

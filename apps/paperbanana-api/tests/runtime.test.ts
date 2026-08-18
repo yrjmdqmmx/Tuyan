@@ -89,6 +89,66 @@ test('runtime closes Mongo when startup readiness fails', async () => {
   assert.equal(closed, true)
 })
 
+test('provider egress health is observable but never changes Mongo and OSS readiness', async () => {
+  let providerState: 'ready' | 'degraded' = 'ready'
+  const closed: string[] = []
+  const mongo = {
+    db: { collection() {} },
+    async connect() {},
+    async reconcileInterruptedJobs() { return 0 },
+    async probe() {},
+    async close() { closed.push('mongo') },
+  }
+  const oss = { bucket() {}, async probe() {} }
+  const providerEgress = {
+    snapshot: () => providerState,
+    async close() { closed.push('providerEgress') },
+  }
+  const runtime = await prepareRuntime({
+    mongo: mongo as any,
+    oss: oss as any,
+    providerEgress,
+    configureCloud() {},
+    async loadHandler() { return async () => ({ code: 0 }) },
+    logger: { info() {}, warn() {}, error() {} },
+  })
+
+  assert.deepEqual(runtime.healthSnapshot(), {
+    ready: true,
+    dependencies: { mongodb: 'ready', oss: 'ready', providerEgress: 'ready' },
+  })
+  providerState = 'degraded'
+  assert.deepEqual(await runtime.readinessProbe(), {
+    ready: true,
+    dependencies: { mongodb: 'ready', oss: 'ready', providerEgress: 'degraded' },
+  })
+
+  await runtime.close()
+  assert.deepEqual(closed, ['mongo', 'providerEgress'])
+})
+
+test('runtime closes provider egress when startup fails', async () => {
+  const closed: string[] = []
+  await assert.rejects(prepareRuntime({
+    mongo: {
+      db: { collection() {} },
+      async connect() {},
+      async reconcileInterruptedJobs() { return 0 },
+      async probe() { throw new Error('startup failed') },
+      async close() { closed.push('mongo') },
+    } as any,
+    oss: { bucket() {}, async probe() {} } as any,
+    providerEgress: {
+      snapshot: () => 'ready' as const,
+      async close() { closed.push('providerEgress') },
+    },
+    configureCloud() {},
+    async loadHandler() { return async () => ({ code: 0 }) },
+    logger: { info() {}, warn() {}, error() {} },
+  }), /startup failed/)
+  assert.deepEqual(closed, ['mongo', 'providerEgress'])
+})
+
 test('readiness probes are deadline-bounded and single-flight while updating the cached snapshot', async () => {
   let mongoCalls = 0
   let ossCalls = 0

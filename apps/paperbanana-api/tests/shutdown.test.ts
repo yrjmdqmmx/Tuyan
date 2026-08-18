@@ -73,6 +73,9 @@ test('shutdown still drains jobs and closes runtime if listener close reports an
 test('service composition configures legacy admission, cached health, and tracked shutdown hooks', () => {
   const source = fs.readFileSync(path.join(packageRoot, 'src/main.ts'), 'utf8')
   assert.match(source, /legacy\.configureJobAdmission\(config\.admission\)/)
+  assert.match(source, /createProviderEgress\(config\.providerEgress\)/)
+  assert.match(source, /legacy\.configureRuntimeFetch\(providerEgress\.fetch\)/)
+  assert.match(source, /providerEgress,/)
   assert.match(source, /readinessProbeTimeoutMs: config\.readinessProbeTimeoutMs/)
   assert.match(source, /healthSnapshot: runtime\.healthSnapshot/)
   assert.match(source, /stopAdmission: legacyLifecycle\.stop/)

@@ -1,6 +1,7 @@
 import type { LegacyHandler } from './server.js'
 
 declare const handler: LegacyHandler
+export function configureRuntimeFetch(fetchImpl?: typeof fetch): void
 export function configureJobAdmission(config: {
   maxActive: number
   maxPending: number

@@ -224,6 +224,34 @@ test('ready returns 503 until every startup dependency is ready', async () => {
   )
 })
 
+test('provider egress degradation is visible while ready remains authoritative for Mongo and OSS', async () => {
+  const snapshot = {
+    ready: true,
+    dependencies: { mongodb: 'ready', oss: 'ready', providerEgress: 'degraded' },
+  }
+  await withServer(
+    async () => assert.fail('handler must not run for health endpoints'),
+    async (baseUrl) => {
+      const ready = await fetch(`${baseUrl}/ready`)
+      assert.equal(ready.status, 200)
+      assert.deepEqual(await ready.json(), {
+        ok: true,
+        service: 'paperbanana-api',
+        runtime: 'node',
+        version: '0.1.0',
+        ...snapshot,
+      })
+
+      const health = await fetch(`${baseUrl}/health`)
+      assert.equal(health.status, 200)
+      assert.deepEqual((await health.json()).dependencies, snapshot.dependencies)
+    },
+    async () => snapshot,
+    config,
+    () => snapshot,
+  )
+})
+
 test('health remains a liveness success while reporting dependencies as not ready', async () => {
   await withServer(
     async () => assert.fail('handler must not run for health'),

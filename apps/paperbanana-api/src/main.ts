@@ -6,6 +6,7 @@ import { listenWithCleanup } from './listen.js'
 import { createLogger } from './logger.js'
 import { createMongoAdapter } from './mongo-adapter.js'
 import { createOssAdapter } from './oss-adapter.js'
+import { createProviderEgress } from './provider-egress.js'
 import { prepareRuntime } from './runtime.js'
 import { createServer, type LegacyHandler } from './server.js'
 import { createGracefulShutdown } from './shutdown.js'
@@ -20,6 +21,7 @@ async function main(): Promise<void> {
 
   const mongo = createMongoAdapter(config.mongodb)
   const oss = createOssAdapter(config.oss)
+  const providerEgress = createProviderEgress(config.providerEgress)
   let legacyLifecycle = {
     stop() {},
     async drain() {},
@@ -27,9 +29,11 @@ async function main(): Promise<void> {
   const runtime = await prepareRuntime({
     mongo,
     oss,
+    providerEgress,
     configureCloud: configureLafCloud,
     async loadHandler() {
       const legacy = await import('./legacy-entry.mjs')
+      legacy.configureRuntimeFetch(providerEgress.fetch)
       legacy.configureJobAdmission(config.admission)
       legacyLifecycle = {
         stop: legacy.stopJobAdmission,

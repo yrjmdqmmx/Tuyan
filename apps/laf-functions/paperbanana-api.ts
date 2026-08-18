@@ -3,6 +3,26 @@ import * as crypto from 'crypto'
 
 declare const require: any
 
+let configuredRuntimeFetch: typeof fetch | undefined
+const providerEgressUnavailableCode = 'PROVIDER_EGRESS_UNAVAILABLE'
+const providerEgressUnavailableMessage = '海外模型出口暂不可用，请稍后重试。'
+
+// The Node Core injects a controlled transport before invoking this handler.
+// Standalone Laf intentionally keeps using its own global fetch and has no
+// dependency on Node-only transport packages such as Undici.
+export function configureRuntimeFetch(fetchImpl?: typeof fetch) {
+  configuredRuntimeFetch = fetchImpl
+}
+
+function runtimeFetch(input: string | URL | Request, init?: RequestInit): Promise<Response> {
+  const fetchImpl = configuredRuntimeFetch || globalThis.fetch
+  return fetchImpl(input, init)
+}
+
+function isProviderEgressUnavailable(error: any): boolean {
+  return error?.code === providerEgressUnavailableCode
+}
+
 type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian'
 type JobStatus = 'queued' | 'running' | 'succeeded' | 'failed'
 type OutputFormat = 'png' | 'svg'
@@ -1692,7 +1712,7 @@ async function renderPlotViaWorker(code: string): Promise<{ base64: string; erro
   let timer: any
   try {
     response = await Promise.race([
-      fetch(endpoint, {
+      runtimeFetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, token: process.env.PLOT_WORKER_TOKEN || '' }),
@@ -2969,11 +2989,11 @@ async function runWithConcurrency<T>(items: T[], concurrency: number, worker: (i
   await Promise.all(workers)
 }
 
-async function fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts = 2) {
+export async function fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts = 2) {
   let lastError: any
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     try {
-      return await fetch(url, options)
+      return await runtimeFetch(url, options)
     } catch (error: any) {
       lastError = error
       if (attempt < attempts) {
@@ -2981,6 +3001,7 @@ async function fetchWithRetry(url: string, options: RequestInit | undefined, lab
       }
     }
   }
+  if (isProviderEgressUnavailable(lastError)) throw lastError
   throw new Error(`${label} request failed: ${lastError?.message || String(lastError)}`)
 }
 
@@ -3000,6 +3021,7 @@ function chatUserContent(user: string, images: VisionImageInput[]) {
 }
 
 function mainModelReferenceError(provider: Provider, model: string, error: any) {
+  if (isProviderEgressUnavailable(error)) return providerEgressUnavailableMessage
   const message = error?.message || String(error)
   const hint = '请改用独立识别模型或更换主模型。'
   if (message.includes(hint)) return message
@@ -3077,7 +3099,9 @@ async function openRouterReferenceCapability(model: string): Promise<ModelCapabi
     return {
       status: 'unknown',
       supportsReferenceImages: false,
-      reason: `OpenRouter metadata unavailable: ${error?.message || String(error)}`,
+      reason: isProviderEgressUnavailable(error)
+        ? providerEgressUnavailableMessage
+        : `OpenRouter metadata unavailable: ${error?.message || String(error)}`,
       source: 'openrouter-models',
       cached: false,
     }
@@ -4784,7 +4808,7 @@ async function importReferences(body: ImportReferencesBody) {
   // PROBE: must NOT require fflate. Range GET because HEAD may be unsupported.
   if (mode === 'probe') {
     try {
-      const response = await fetch(zipUrl, { method: 'GET', headers: { Range: 'bytes=0-0' } })
+      const response = await runtimeFetch(zipUrl, { method: 'GET', headers: { Range: 'bytes=0-0' } })
       const contentRange = response.headers.get('content-range') || ''
       const contentLength = response.headers.get('content-length') || ''
       let totalBytes = ''
@@ -4942,7 +4966,7 @@ async function ensureBenchImport(zipUrl: string, taskName: TaskName): Promise<Be
   if (fs.existsSync(benchZipCachePath) && fs.statSync(benchZipCachePath).size > 0) {
     zipBuffer = fs.readFileSync(benchZipCachePath)
   } else {
-    const response = await fetch(zipUrl, { method: 'GET' })
+    const response = await runtimeFetch(zipUrl, { method: 'GET' })
     if (!response.ok) throw new Error(`Failed to download zip: HTTP ${response.status}`)
     const arrayBuffer = await response.arrayBuffer()
     zipBuffer = Buffer.from(arrayBuffer)

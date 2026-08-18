@@ -14,6 +14,9 @@ export type ServiceConfig = {
   readinessProbeTimeoutMs: number
   referenceImageMaxBytes: number
   providerImageMaxBytes: number
+  providerEgress:
+    | { mode: 'disabled' }
+    | { mode: 'sg-required'; proxyUrl: string }
   mongodb: {
     uri: string
     database: string
@@ -70,6 +73,34 @@ function ossEndpoint(env: Environment, name: string, expectedHostname: string): 
   return url.origin
 }
 
+function providerEgressConfig(env: Environment): ServiceConfig['providerEgress'] {
+  const mode = env.PAPERBANANA_PROVIDER_EGRESS_MODE
+  if (mode !== 'disabled' && mode !== 'sg-required') {
+    throw new Error('PAPERBANANA_PROVIDER_EGRESS_MODE must be exactly disabled or sg-required')
+  }
+  if (mode === 'disabled') return { mode }
+
+  const proxyUrl = env.PAPERBANANA_SG_PROXY_URL || ''
+  let parsed: URL
+  try {
+    parsed = new URL(proxyUrl)
+  } catch {
+    throw new Error('PAPERBANANA_SG_PROXY_URL must be the approved Singapore proxy origin')
+  }
+  if (
+    !/^http:\/\/10\.77\.0\.2:3128\/?$/.test(proxyUrl)
+    || parsed.origin !== 'http://10.77.0.2:3128'
+    || parsed.pathname !== '/'
+    || parsed.username
+    || parsed.password
+    || parsed.search
+    || parsed.hash
+  ) {
+    throw new Error('PAPERBANANA_SG_PROXY_URL must be the approved Singapore proxy origin')
+  }
+  return { mode, proxyUrl: parsed.origin }
+}
+
 export function loadConfig(env: Environment = process.env): ServiceConfig {
   const gatewayToken = required(env, 'PAPERBANANA_GATEWAY_TOKEN')
   if (env.PAPERBANANA_SINGLE_REPLICA?.trim() !== 'true') {
@@ -103,6 +134,7 @@ export function loadConfig(env: Environment = process.env): ServiceConfig {
     readinessProbeTimeoutMs: boundedInteger(env, 'PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', 2000, 100, 10_000),
     referenceImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_BYTES', 5 * 1024 * 1024, 5 * 1024 * 1024, 5 * 1024 * 1024),
     providerImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', 20 * 1024 * 1024, 5 * 1024 * 1024, 50 * 1024 * 1024),
+    providerEgress: providerEgressConfig(env),
     mongodb: {
       uri: required(env, 'MONGODB_URI'),
       database: env.MONGODB_BUSINESS_DB?.trim() || 'paperbanana_business',

@@ -5,6 +5,10 @@ import type { LegacyHandler, Readiness, ReadinessProbe, ServiceLogger } from './
 type RuntimeDependencies = {
   mongo: MongoAdapter
   oss: OssAdapter
+  providerEgress?: {
+    snapshot(): 'ready' | 'degraded'
+    close(): Promise<void>
+  }
   configureCloud(adapters: { mongo: MongoAdapter; storage: OssAdapter }): void
   loadHandler(): Promise<LegacyHandler>
   logger: ServiceLogger
@@ -108,6 +112,7 @@ async function withinDeadline<T>(promise: Promise<T>, timeoutMs: number, label: 
 export async function prepareRuntime({
   mongo,
   oss,
+  providerEgress,
   configureCloud,
   loadHandler,
   logger,
@@ -118,6 +123,20 @@ export async function prepareRuntime({
   healthSnapshot: () => Readiness
   close(): Promise<void>
 }> {
+  const closeResources = async () => {
+    let failure: unknown
+    try {
+      await mongo.close()
+    } catch (error) {
+      failure = error
+    }
+    try {
+      await providerEgress?.close()
+    } catch (error) {
+      failure ||= error
+    }
+    if (failure) throw failure
+  }
   let handler: LegacyHandler
   try {
     await mongo.connect()
@@ -131,7 +150,7 @@ export async function prepareRuntime({
     configureCloud({ mongo, storage: oss })
     handler = await loadHandler()
   } catch (error) {
-    await mongo.close()
+    await closeResources().catch(() => {})
     throw error
   }
 
@@ -140,13 +159,20 @@ export async function prepareRuntime({
     probes: { mongodb: () => mongo.probe(), oss: () => oss.probe() },
     initial: { ready: true, dependencies: { mongodb: 'ready', oss: 'ready' } },
   })
+  const withProviderEgress = (snapshot: Readiness): Readiness => providerEgress
+    ? {
+        ...snapshot,
+        dependencies: {
+          ...(snapshot.dependencies || {}),
+          providerEgress: providerEgress.snapshot(),
+        },
+      }
+    : snapshot
 
   return {
     handler,
-    readinessProbe: readiness.probe,
-    healthSnapshot: readiness.snapshot,
-    async close() {
-      await mongo.close()
-    },
+    async readinessProbe() { return withProviderEgress(await readiness.probe()) },
+    healthSnapshot: () => withProviderEgress(readiness.snapshot()),
+    close: closeResources,
   }
 }
