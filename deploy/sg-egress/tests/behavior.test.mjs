@@ -147,6 +147,7 @@ if test "$1" = "-c"; then
       case "$path" in
         "${root}") printf '%s\\n' "${overrides.testRootDirectoryMetadata ?? `directory:${fixtureUid}:700`}" ;;
         "${root}/.paperbanana-sg-egress-test-root") printf '%s\\n' "${overrides.testRootMarkerMetadata ?? `regular file:${fixtureUid}:600`}" ;;
+        */wireguard/pbsg0.conf) printf '%s\\n' "${overrides.wgConfigMetadata ?? 'regular file:0:600'}" ;;
         */unit-source/paperbanana-hk-egress-health@.service|*/unit-source/paperbanana-hk-egress-health@.timer) printf '%s\\n' "${overrides.unitSourceMetadata ?? 'regular file:0:644'}" ;;
         */unit-source) printf '%s\\n' "${overrides.unitSourceDirectoryMetadata ?? 'directory:0:755'}" ;;
         "${ecsHome}") printf '%s\\n' "${overrides.ecsHomeMetadata ?? `directory:${overrides.ecsUserId ?? '1001'}:750`}" ;;
@@ -742,6 +743,23 @@ test('install reloads an active pbsg0 and restores its prior managed configurati
     assert.notEqual(result.status, 0);
     assert.match(commandLog(fixture), /systemctl reload wg-quick@pbsg0/);
     assert.equal(readFileSync(config, 'utf8'), previous);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('install rejects active pbsg0 without a readable marked configuration before candidate mutation', () => {
+  const fixture = makeFixture({ pbsg0Active: true, pbsg0Loaded: true, pbsg0Interface: true });
+  try {
+    const config = join(fixture.root, 'etc', 'wireguard', 'pbsg0.conf');
+    const key = join(fixture.root, 'etc', 'wireguard', 'paperbanana-sg-egress.private');
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /active.*pbsg0|pbsg0.*active|configuration.*missing/i);
+    assert.equal(existsSync(config), false);
+    assert.equal(existsSync(key), false);
+    assert.equal(existsSync(fixture.state.wgInterface), true);
+    assert.doesNotMatch(commandLog(fixture), /wg genkey|wg-quick strip|systemctl reload wg-quick@pbsg0/);
   } finally {
     fixture.cleanup();
   }

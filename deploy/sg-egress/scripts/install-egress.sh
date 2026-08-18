@@ -77,6 +77,25 @@ squid_config="$squid_dir/squid.conf"
 squid_backup="$squid_dir/squid.conf.paperbanana-sg-egress.backup"
 
 install -d -m 0700 "$wg_dir"
+wg_was_active=false
+if systemctl is-active --quiet "wg-quick@${interface_name}"; then
+  wg_was_active=true
+else
+  wg_status=$?
+  case "$wg_status" in 3|4) ;; *) echo "cannot determine whether wg-quick@${interface_name} is active" >&2; exit 2 ;; esac
+fi
+if [[ "$wg_was_active" == true ]]; then
+  if [[ ! -f "$wg_config" || -L "$wg_config" || ! -r "$wg_config" ]]; then
+    echo "refusing to replace active pbsg0 without a readable canonical PaperBanana configuration" >&2
+    exit 1
+  fi
+  wg_config_metadata="$(stat -c '%F:%u:%a' -- "$wg_config")" || { echo "cannot inspect active pbsg0 configuration ownership" >&2; exit 2; }
+  IFS=: read -r wg_config_type wg_config_owner wg_config_mode <<<"$wg_config_metadata"
+  if [[ "$wg_config_type" != "regular file" || "$wg_config_owner" != "0" || "$wg_config_mode" != "600" ]] || ! grep -Fqx "$managed_marker" "$wg_config"; then
+    echo "refusing to replace active pbsg0 without a root-owned 0600 marked PaperBanana configuration" >&2
+    exit 1
+  fi
+fi
 if [[ -e "$wg_config" ]] && ! grep -Fqx "$managed_marker" "$wg_config"; then
   echo "refusing to overwrite pbsg0: its configuration is not PaperBanana-managed" >&2
   exit 1
@@ -109,13 +128,6 @@ if ! wg-quick strip "$wg_candidate" >/dev/null; then
   rmdir -- "$wg_candidate_dir"
   echo "WireGuard candidate validation failed; live configuration was not replaced" >&2
   exit 1
-fi
-wg_was_active=false
-if systemctl is-active --quiet "wg-quick@${interface_name}"; then
-  wg_was_active=true
-else
-  wg_status=$?
-  case "$wg_status" in 3|4) ;; *) echo "cannot determine whether wg-quick@${interface_name} is active" >&2; exit 2 ;; esac
 fi
 wg_previous=""
 if [[ -e "$wg_config" ]]; then
