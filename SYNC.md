@@ -33,7 +33,8 @@
 - **注册表**：`modelRegistry` 顶层新增 `routeContractVersion:1` 和 `supportsModelRoutes:true`。Core 类型已预留 `ark`，但未提供 Ark registry/adapter/egress，因此 Ark route 当前 fail-closed，不得在客户端标记为可用。
 各端待办：
 - [x] paperbanana-api / Laf Core（解析、校验、持久化/公开 DTO、阶段路由、最小密钥闭包与回归测试）
-- [ ] packages-api / Web（转发与消费 `modelRoutes`，专业模式支持分角色选 provider/model；普通模式仍单 provider）
+- [x] packages-api / auth-gateway（转发/归一 `modelRoutes`，保留旧字段与模型目录路由元数据；网关按写入主体安全转发 provider account catalog）
+- [ ] Web（专业模式支持分角色选 provider/model；普通模式仍单 provider）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续按需接入；旧请求保持兼容）
 - [ ] Ark adapter / registry / egress（后续独立任务，本次未实现）
 - [ ] 部署 / 运维（本次未发布，须等后续合并与联调）

@@ -293,6 +293,89 @@ test('logged-in writes use the account identity and never create a guest cookie'
   });
 });
 
+test('create and refine preserve explicit mixed routes and legacy fields without top-provider rewrites', async () => {
+  const modelRoutes = {
+    main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+    vision: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+  };
+  const backend = fakeBackend(async (body) => body.action === 'getJob'
+    ? { status: 200, data: { code: 0, job: { id: body.jobId, userId: 'account-1' } } }
+    : { status: 200, data: { code: 0, jobId: `${body.action}-1` } });
+  await withApp({ backend }, async ({ baseUrl }) => {
+    await post(baseUrl, {
+      action: 'createJob',
+      provider: 'openai',
+      modelRoutes,
+      mainModelName: 'gpt-5.6-sol',
+      imageModelName: 'wan2.7-image-pro',
+      referenceVisionModelName: 'gemini-3.7-flash',
+      apiKeys: { openai: 'openai-secret', bailian: 'bailian-secret', gemini: 'gemini-secret' },
+      gatewayToken: 'forged-gateway-token',
+      adminToken: 'forged-admin-token',
+    }, { 'x-test-session': 'account-1|owner@example.com' });
+    await post(baseUrl, {
+      action: 'refineImage',
+      provider: 'openai',
+      modelRoutes,
+      mainModelName: 'gpt-5.6-sol',
+      imageModelName: 'wan2.7-image-pro',
+      referenceVisionModelName: 'gemini-3.7-flash',
+      apiKeys: { openai: 'openai-secret', bailian: 'bailian-secret', gemini: 'gemini-secret' },
+      sourceImageObjectKey: 'source-job/candidate.png',
+      gatewayToken: 'forged-gateway-token',
+      adminToken: 'forged-admin-token',
+    }, { 'x-test-session': 'account-1|owner@example.com' });
+    await post(baseUrl, {
+      action: 'createJob',
+      provider: 'gemini',
+      modelRoutes: {
+        main: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+        image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image-preview' },
+        vision: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+      },
+      mainModelName: 'gemini-3.7-flash',
+      imageModelName: 'gemini-3.1-flash-image-preview',
+    }, { 'x-test-session': 'account-1|owner@example.com' });
+
+    const [created, sourceLookup, refined, aliasCreate] = backend.calls;
+    for (const call of [created, refined]) {
+      assert.equal(call.body.provider, 'openai');
+      assert.deepEqual(call.body.modelRoutes, modelRoutes);
+      assert.equal(call.body.mainModelName, 'gpt-5.6-sol');
+      assert.equal(call.body.imageModelName, 'wan2.7-image-pro');
+      assert.equal(call.body.referenceVisionModelName, 'gemini-3.7-flash');
+      assert.equal(call.body.userId, 'account-1');
+      assert.equal(call.body.userEmail, 'owner@example.com');
+      assert.equal(call.body.gatewayToken, 'forged-gateway-token');
+      assert.equal(call.body.adminToken, 'forged-admin-token');
+    }
+    assert.equal(sourceLookup.body.action, 'getJob');
+    assert.equal(aliasCreate.body.imageModelName, 'gemini-3.1-flash-image-preview');
+    assert.equal(aliasCreate.body.modelRoutes.image.modelId, 'gemini-3.1-flash-image-preview');
+  });
+});
+
+test('providerAccountCatalog receives the same authenticated-or-guest write principal as jobs', async () => {
+  await withApp({}, async ({ baseUrl, backend }) => {
+    const anonymous = await post(baseUrl, {
+      action: 'providerAccountCatalog',
+      apiKeys: { ark: 'ark-secret', openai: 'openai-secret' },
+    });
+    assert.equal(anonymous.status, 200);
+    assert.match(cookiePair(anonymous), /^__Host-paperbanana_guest=/);
+    assert.match(backend.calls[0].body.userId, /^guest:/);
+    assert.equal(backend.calls[0].body.userEmail, '');
+    assert.deepEqual(backend.calls[0].body.apiKeys, { ark: 'ark-secret', openai: 'openai-secret' });
+
+    await post(baseUrl, { action: 'providerAccountCatalog', apiKeys: { ark: 'ark-secret' } }, {
+      'x-test-session': 'account-1|owner@example.com',
+    });
+    assert.equal(backend.calls[1].body.userId, 'account-1');
+    assert.equal(backend.calls[1].body.userEmail, 'owner@example.com');
+  });
+});
+
 test('getJob allows a matching guest owner and rejects missing or mismatched ownership', async () => {
   let owner = '';
   let job = null;
@@ -693,6 +776,34 @@ test('unexpected internal failures return a generic 500 and log only redacted de
       assert.match(serialized, /Mongo failed/);
       assert.match(serialized, /\[REDACTED\]/);
       assert.doesNotMatch(serialized, /super-secret/);
+    },
+  );
+});
+
+test('route-shaped multi-key failures keep every BYOK secret out of logs and the public 500', async () => {
+  const logEntries = [];
+  const backend = fakeBackend(async () => {
+    throw new Error('routing failed ' + JSON.stringify({
+      apiKeys: { ark: 'ark-secret', openai: 'openai-secret', bailian: 'bailian-secret' },
+      modelRoutes: { image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' } },
+    }));
+  });
+  await withApp(
+    {
+      backend,
+      logger: { info() {}, warn() {}, error(message, fields) { logEntries.push({ message, fields }); } },
+    },
+    async ({ baseUrl }) => {
+      const response = await post(baseUrl, {
+        action: 'createJob',
+        apiKeys: { ark: 'ark-secret', openai: 'openai-secret', bailian: 'bailian-secret' },
+        modelRoutes: { image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' } },
+      });
+      assert.equal(response.status, 500);
+      assert.deepEqual(await response.json(), { code: 500, error: 'Internal server error' });
+      const serialized = JSON.stringify(logEntries);
+      assert.doesNotMatch(serialized, /ark-secret|openai-secret|bailian-secret/);
+      assert.match(serialized, /\[REDACTED\]/);
     },
   );
 });

@@ -21,6 +21,7 @@ const MAINTENANCE_ACTIONS = new Set([
   'prepareReferenceUpload',
   'finalizeReferenceUpload',
   'abortReferenceUpload',
+  'providerAccountCatalog',
   'submitFeedback',
   ...ADMIN_MUTATING_ACTIONS,
 ]);
@@ -249,7 +250,8 @@ export function createApp({
         action === 'createJob' ||
         action === 'prepareReferenceUpload' ||
         action === 'finalizeReferenceUpload' ||
-        action === 'abortReferenceUpload'
+        action === 'abortReferenceUpload' ||
+        action === 'providerAccountCatalog'
       ) {
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const body = action === 'createJob' ? normalizeCreateJobBody(request.body) : { ...request.body };
@@ -288,8 +290,12 @@ export function createApp({
         const body = {
           ...request.body,
           ...source.payload,
-          mainModelName: normalizeModelName(request.body?.provider, request.body?.mainModelName),
-          imageModelName: normalizeModelName(request.body?.provider, request.body?.imageModelName),
+          ...(hasModelRoutes(request.body)
+            ? {}
+            : {
+                mainModelName: normalizeModelName(request.body?.provider, request.body?.mainModelName),
+                imageModelName: normalizeModelName(request.body?.provider, request.body?.imageModelName),
+              }),
           userId: principal.userId,
           userEmail: principal.userEmail,
         };
@@ -450,11 +456,16 @@ function forbidden(response) {
 }
 
 function normalizeCreateJobBody(body) {
+  if (hasModelRoutes(body)) return { ...body };
   return {
     ...body,
     mainModelName: normalizeModelName(body?.provider, body?.mainModelName),
     imageModelName: normalizeModelName(body?.provider, body?.imageModelName),
   };
+}
+
+function hasModelRoutes(body) {
+  return body?.modelRoutes !== undefined && body?.modelRoutes !== null;
 }
 
 function normalizeFeedbackBody(body) {
