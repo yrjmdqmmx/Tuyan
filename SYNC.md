@@ -62,7 +62,7 @@
 契约（影响其他端 / 共享）：
 - **模型目录**：新增公开只读 action `modelRegistry`，返回静态厂商目录、默认模型、角色/图像能力与协议；OpenRouter 动态目录不可用时只标记该厂商不可用，静态厂商仍可返回。OpenRouter 图片模型以官方 `GET /api/v1/images/models` 为权威并统一调用 `POST /api/v1/images`；未知模型、错角色或目录故障均 fail-closed。`modelCapability` 与注册表保持同一能力来源。
 - **参考库中文字段**：`referenceLibrary`/检索结果新增 `titleZh`、`introZh`，单次上限提高到 295；英文 `title`/`summary` 继续作为原始检索字段。版本 `2026-08-19.v1` 的 295 条元数据由香港部署脚本按既有 reference id 幂等同步，缺项或数量不符时部署失败关闭。
-- **任务来源端**：`createJob`/`refineImage` 新增可选 `clientPlatform`，只允许 `web|miniprogram|android|ios|windows|macos|harmony`；缺失保持历史兼容，公开任务 DTO 同时归一 `clientPlatform`/`client_platform`，展示为“未记录”，不得按 User-Agent 猜测或回填。
+- **任务来源端**：`createJob`/`refineImage` 新增可选 `clientPlatform`，只允许 `web|miniprogram|android|ios|windows|macos|harmony`；缺失保持历史兼容，公开任务 DTO 同时归一 `clientPlatform`/`client_platform`，展示为“未记录”，不得按 User-Agent 猜测或回填。`submitFeedback.platform` 使用同一七端枚举，包含 `harmony`。
 - **输入/上传/删除语义**：方法正文最多 12000 字、图注最多 1000 字；参考图上传新增 `finalizeReferenceUpload` / `abortReferenceUpload` 生命周期 action，现有客户端均在 PUT 后确认、失败时中止，旧客户端在创建任务时仍由服务端校验并兼容确认。账号注销先持久化不可变 user-id owner tombstone，拒绝新建/精修/上传/反馈并排空跨进程运行任务；仍有效的预签名上传返回可重试 409，删除请求执行多轮静默清扫，Core 后台继续清除迟到 PUT。网关必须先调用无副作用 `accountDeletionCapability` 确认 `deletionContractVersion=2`，随后才允许业务清理与 Auth 硬删；旧 Laf 回滚不得先执行破坏性删除。
 各端待办：
 - [x] paperbanana-api / Laf 回滚（注册表、OpenRouter 协议、中文字段、平台校验/持久化/公开 DTO、删除与输入限制）

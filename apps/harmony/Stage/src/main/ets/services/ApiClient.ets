@@ -12,6 +12,7 @@ import {
 } from '../models/Types'
 import { normalizeJob, normalizeJobList, normalizeRetrievedReference, stringValue } from '../utils/Normalize'
 import { authBase, formatErrorMessage, normalizeApiBase, paperbananaEndpoint } from '../utils/Format'
+import { CLIENT_PLATFORM } from '../utils/Payload'
 import { StorageService } from './StorageService'
 
 interface RequestOptions {
@@ -270,7 +271,7 @@ export class ApiClient {
       message,
       category,
       jobId,
-      platform: 'harmony',
+      platform: CLIENT_PLATFORM,
       clientVersion: CLIENT_VERSION,
       contact,
     }

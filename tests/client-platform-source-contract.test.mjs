@@ -9,7 +9,8 @@ const windowsClient = source('apps/windows/PaperBananaApiClient.cs');
 const windowsModel = source('apps/windows/Models.cs');
 const windowsView = source('apps/windows/MainWindow.xaml');
 const windowsCodeBehind = source('apps/windows/MainWindow.xaml.cs');
-assert.match(windowsClient, /\["clientPlatform"\]\s*=\s*"windows"/);
+assert.match(windowsClient, /internal const string ClientPlatform = "windows"/);
+assert.equal((windowsClient.match(/\["clientPlatform"\]\s*=\s*ClientPlatform/g) || []).length, 2);
 assert.match(windowsModel, /ClientPlatformDisplayName/);
 assert.match(windowsView, /\{Binding ClientPlatformDisplayText\}/);
 assert.doesNotMatch(windowsView, /Binding\.StringFormat|StringFormat=/);
@@ -24,7 +25,8 @@ assert.match(androidView, /formatClientPlatform\(.*client_platform/);
 
 const harmonyPayload = source('apps/harmony/Stage/src/main/ets/utils/Payload.ets');
 const harmonyView = source('apps/harmony/Stage/src/main/ets/pages/Index.ets');
-assert.match(harmonyPayload, /clientPlatform:\s*'harmony'/);
+assert.match(harmonyPayload, /CLIENT_PLATFORM:\s*string\s*=\s*'harmony'/);
+assert.match(harmonyPayload, /clientPlatform:\s*CLIENT_PLATFORM/);
 assert.match(harmonyView, /formatClientPlatform\(job\.client_platform\)/);
 
 const iosSmoke = source('apps/ios/Scripts/e2e-gateway-smoke.mjs');
@@ -36,7 +38,8 @@ assert.match(miniprogramRecords, /history-meta[^\n]*client_platform_text/);
 const laf = source('apps/laf-functions/paperbanana-api.ts');
 assert.match(laf, /type ClientPlatform = 'web' \| 'miniprogram' \| 'android' \| 'ios' \| 'windows' \| 'macos' \| 'harmony'/);
 assert.match(laf, /clientPlatform:\s*normalizeClientPlatform\(body\.clientPlatform\)/);
-assert.match(laf, /clientPlatform:\s*normalizeClientPlatform\(job\.clientPlatform \|\| job\.client_platform\)/);
+assert.match(laf, /const clientPlatform = normalizeClientPlatform\(job\.clientPlatform\) \|\| normalizeClientPlatform\(job\.client_platform\)/);
+assert.match(laf, /clientPlatform,\s*client_platform:\s*clientPlatform/);
 assert.match(laf, /Invalid clientPlatform/);
 
 console.log('client-platform-source-contract.test.mjs passed');

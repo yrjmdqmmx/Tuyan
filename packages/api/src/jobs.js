@@ -393,11 +393,13 @@ function toLafPipeline(mode) {
 
 function normalizeJob(job = {}) {
   const rawReferenceImages = job.reference_images || job.referenceImages || [];
+  const clientPlatform = normalizeClientPlatform(job.clientPlatform) || normalizeClientPlatform(job.client_platform);
   return {
     id: job.id || job._id,
     status: job.status,
     provider: job.provider,
-    client_platform: normalizeClientPlatform(job.client_platform ?? job.clientPlatform),
+    clientPlatform,
+    client_platform: clientPlatform,
     job_type: job.job_type || job.jobType || 'generate',
     user_id: job.user_id || job.userId || '',
     user_email: job.user_email || job.userEmail || '',

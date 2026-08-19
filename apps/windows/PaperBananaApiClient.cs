@@ -10,6 +10,7 @@ namespace PaperBanana.WinUI;
 public sealed class PaperBananaApiClient
 {
     public const string DefaultApiBase = "https://yifbnnzrwmxn.sealoshzh.site";
+    internal const string ClientPlatform = "windows";
 
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.Web);
@@ -63,7 +64,7 @@ public sealed class PaperBananaApiClient
             var body = new Dictionary<string, object?>
             {
                 ["action"] = "createJob",
-                ["clientPlatform"] = "windows",
+                ["clientPlatform"] = ClientPlatform,
                 ["configurationMode"] = payload.ConfigurationMode,
                 ["provider"] = payload.Provider,
                 ["apiKeys"] = ApiKeysBody(payload.Provider, payload.ApiKey),
@@ -85,7 +86,7 @@ public sealed class PaperBananaApiClient
 
         var fastApiBody = new Dictionary<string, object?>
         {
-            ["clientPlatform"] = "windows",
+            ["clientPlatform"] = ClientPlatform,
             ["provider"] = payload.Provider,
             ["configuration_mode"] = payload.ConfigurationMode,
             ["api_keys"] = ApiKeysBody(payload.Provider, payload.ApiKey),

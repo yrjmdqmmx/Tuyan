@@ -1,6 +1,8 @@
 import { PLOT_CATEGORY_ID } from '../constants/AppConstants'
 import { CreateJobInput, UploadedReferenceImage } from '../models/Types'
 
+export const CLIENT_PLATFORM: string = 'harmony'
+
 export interface ApiKeysPayload {
   openrouter: string
   gemini: string
@@ -49,7 +51,7 @@ export function buildCreateJobPayload(input: CreateJobInput): CreateJobPayload {
 
   return {
     action: 'createJob',
-    clientPlatform: 'harmony',
+    clientPlatform: CLIENT_PLATFORM,
     configurationMode: input.configurationMode,
     provider: input.provider,
     apiKeys,

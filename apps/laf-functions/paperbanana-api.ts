@@ -52,7 +52,7 @@ type ModelProtocol =
   | 'openrouter-chat-completions'
   | 'openrouter-images'
 type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
-type FeedbackPlatform = 'web' | 'miniprogram' | 'android' | 'ios' | 'windows' | 'macos'
+type FeedbackPlatform = 'web' | 'miniprogram' | 'android' | 'ios' | 'windows' | 'macos' | 'harmony'
 type ClientPlatform = 'web' | 'miniprogram' | 'android' | 'ios' | 'windows' | 'macos' | 'harmony'
 
 type ApiKeys = {
@@ -588,7 +588,7 @@ const openRouterModelCacheTtlMs = Number(process.env.OPENROUTER_MODEL_CACHE_TTL_
 const feedbackRateLimitWindowMs = 10 * 60 * 1000
 const feedbackRateLimitMax = 5
 const allowedFeedbackCategories = new Set<FeedbackCategory>(['bug', 'feature', 'experience', 'other'])
-const allowedFeedbackPlatforms = new Set<FeedbackPlatform>(['web', 'miniprogram', 'android', 'ios', 'windows', 'macos'])
+const allowedFeedbackPlatforms = new Set<FeedbackPlatform>(['web', 'miniprogram', 'android', 'ios', 'windows', 'macos', 'harmony'])
 const allowedClientPlatforms = new Set<ClientPlatform>(['web', 'miniprogram', 'android', 'ios', 'windows', 'macos', 'harmony'])
 const allowedRetrievalSettings = new Set<RetrievalSetting>(['none', 'auto', 'random', 'manual'])
 type OpenRouterCatalogModel = {
@@ -879,6 +879,9 @@ export default async function (ctx: FunctionContext) {
     if (identityScopedActions.has(action)) {
       const denied = requireTrustedCaller(body)
       if (denied) return denied
+    }
+    if ((action === 'createJob' || action === 'refineImage') && body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) {
+      return fail('Invalid clientPlatform', 400)
     }
 
     if (action === 'health') {
@@ -5209,11 +5212,13 @@ function selectApiKey(provider: Provider, apiKeys: ApiKeys) {
 }
 
 async function publicJob(job: any) {
+  const clientPlatform = normalizeClientPlatform(job.clientPlatform) || normalizeClientPlatform(job.client_platform)
   return {
     id: job._id,
     status: job.status,
     provider: job.provider,
-    clientPlatform: normalizeClientPlatform(job.clientPlatform || job.client_platform),
+    clientPlatform,
+    client_platform: clientPlatform,
     jobType: job.jobType || 'generate',
     userId: job.userId || job.user_id || '',
     userEmail: job.userEmail || job.user_email || '',

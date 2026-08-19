@@ -1182,6 +1182,7 @@ test('refine prefers owned object bytes over a preview URL when both source fiel
   testState.ossWriteMode = 'race'
   testState.deletedOwnerKeys = []
   testState.storedObjectBytes = { 'owned/source.png': 'owned-object-bytes' }
+  const insertCount = testState.inserts.length
   legacy.configureRuntimeFetch(async (input, init) => {
     const url = String(input)
     if (url === 'https://signed.invalid/expired-preview.png') {
@@ -1199,6 +1200,7 @@ test('refine prefers owned object bytes over a preview URL when both source fiel
       request: { method: 'POST' },
       body: {
         action: 'refineImage',
+        clientPlatform: 'ios',
         provider: 'gemini',
         apiKeys: { gemini: 'selected-key' },
         userId: 'owner-1',
@@ -1212,6 +1214,7 @@ test('refine prefers owned object bytes over a preview URL when both source fiel
       response: { setHeader() {}, status() {} },
     })
     assert.equal(queued.code, 0)
+    assert.equal(testState.inserts[insertCount].clientPlatform, 'ios')
     await legacy.drainJobAdmission()
   } finally {
     legacy.configureRuntimeFetch()
@@ -1249,7 +1252,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
-                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, ossWriteMode: 'fail', referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
+                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], jobRows: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, ossWriteMode: 'fail', referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
                 const matches = (row, query = {}) => Object.entries(query).every(([field, expected]) => {
                   const actual = row[field];
                   if (expected && typeof expected === 'object' && '$in' in expected) return expected.$in.includes(actual);
@@ -1257,6 +1260,10 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                 });
                 const collectionFor = (name) => ({
                   find(query = {}) {
+                    if (name === 'paperbanana_jobs') {
+                      let rows = [...(state.jobRows || [])];
+                      return { sort() { return this }, skip() { return this }, limit(value) { rows = rows.slice(0, Number(value || 0)); return this }, async toArray() { return rows.map((row) => ({ ...row })) } };
+                    }
                     if (name !== 'paperbanana_references') return { sort() { return this }, skip() { return this }, limit() { return this }, async toArray() { return [] } };
                     state.referenceFindQueries.push(structuredClone(query));
                     let rows = (state.referenceRows || []).filter((row) => matches(row, query));
@@ -1280,7 +1287,11 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                     };
                   },
                   async findOne(query) {
-                    if (name === 'paperbanana_jobs' && query?._id === 'job-1') return { _id: 'job-1', userId: 'owner-1' };
+                    if (name === 'paperbanana_jobs') {
+                      const configured = (state.jobRows || []).find((row) => row._id === query?._id);
+                      if (configured) return { ...configured };
+                      if (query?._id === 'job-1') return { _id: 'job-1', userId: 'owner-1' };
+                    }
                     if (name === 'paperbanana_account_deletions') {
                       const keys = query?._id?.$in || [];
                       return keys.some((key) => state.deletedOwnerKeys.includes(key)) ? { _id: keys[0] } : null;
@@ -1326,6 +1337,100 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
   }
   return legacyPromise
 }
+
+test('public task detail and admin/user lists expose both normalized platform aliases without guessing history', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  const previousAdmin = process.env.ADMIN_TOKEN
+  state.jobRows = [
+    { _id: 'job-camel', status: 'succeeded', userId: 'user-1', clientPlatform: 'windows', resultImages: [], stages: [] },
+    { _id: 'job-snake', status: 'succeeded', userId: 'user-1', client_platform: 'harmony', resultImages: [], stages: [] },
+    { _id: 'job-legacy', status: 'succeeded', userId: 'user-1', resultImages: [], stages: [] },
+    { _id: 'job-invalid', status: 'succeeded', userId: 'user-1', clientPlatform: 'mobile', resultImages: [], stages: [] },
+    { _id: 'job-alias-fallback', status: 'succeeded', userId: 'user-1', clientPlatform: 'mobile', client_platform: 'harmony', resultImages: [], stages: [] },
+    { _id: 'job-canonical-wins', status: 'succeeded', userId: 'user-1', clientPlatform: 'windows', client_platform: 'ios', resultImages: [], stages: [] },
+  ]
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
+  process.env.ADMIN_TOKEN = 'test-admin'
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body, headers: { 'user-agent': 'Mobile client that must never be inferred' }, response: { setHeader() {}, status() {} },
+  })
+
+  try {
+    const detail = await invoke({ action: 'getJob', jobId: 'job-camel', gatewayToken: 'test-gateway' })
+    const user = await invoke({ action: 'userJobs', userId: 'user-1', gatewayToken: 'test-gateway' })
+    const admin = await invoke({ action: 'adminJobs', adminToken: 'test-admin' })
+
+    assert.equal(detail.job.id, 'job-camel', JSON.stringify(detail))
+    assert.deepEqual(
+      { clientPlatform: detail.job.clientPlatform, client_platform: detail.job.client_platform },
+      { clientPlatform: 'windows', client_platform: 'windows' },
+    )
+    for (const response of [user, admin]) {
+      assert.deepEqual(
+        response.jobs.map((job: any) => [job.id, job.clientPlatform, job.client_platform]),
+        [
+          ['job-camel', 'windows', 'windows'],
+          ['job-snake', 'harmony', 'harmony'],
+          ['job-legacy', '', ''],
+          ['job-invalid', '', ''],
+          ['job-alias-fallback', 'harmony', 'harmony'],
+          ['job-canonical-wins', 'windows', 'windows'],
+        ],
+      )
+    }
+  } finally {
+    state.jobRows = []
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+    if (previousAdmin === undefined) delete process.env.ADMIN_TOKEN
+    else process.env.ADMIN_TOKEN = previousAdmin
+  }
+})
+
+test('Harmony feedback is accepted while unknown feedback platforms remain rejected', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
+  state.inserts.length = 0
+  const invoke = (platform: string) => legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'submitFeedback', message: 'Harmony feedback contract', platform, gatewayToken: 'test-gateway' },
+    headers: { 'x-real-ip': '203.0.113.30' },
+    response: { setHeader() {}, status() {} },
+  })
+  try {
+    const accepted = await invoke('harmony')
+    assert.equal(accepted.code, 0)
+    assert.equal(state.inserts.at(-1).platform, 'harmony')
+    const insertCount = state.inserts.length
+    const rejected = await invoke('mobile')
+    assert.deepEqual(rejected, { code: 400, error: 'platform is required' })
+    assert.equal(state.inserts.length, insertCount)
+  } finally {
+    state.inserts.length = 0
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('invalid task platform is rejected without persistence and missing history is not backfilled', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const insertCount = state.inserts.length
+  for (const action of ['createJob', 'refineImage']) {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: { action, clientPlatform: 'desktop' },
+      headers: { 'user-agent': 'Desktop UA must not become a platform' },
+      response: { setHeader() {}, status() {} },
+    })
+    assert.deepEqual(result, { code: 400, error: 'Invalid clientPlatform' })
+  }
+  assert.equal(state.inserts.length, insertCount)
+})
 
 test('create background execution DTO omits the complete apiKeys map', async () => {
   const legacy = await loadLegacy()
@@ -1609,6 +1714,7 @@ test('saturated legacy admission returns a 429 business envelope without inserti
     headers: { 'x-real-ip': '203.0.113.10' },
     body: {
       action: 'createJob',
+      clientPlatform: 'android',
       provider: 'gemini',
       apiKeys: { gemini: 'selected-key', openai: 'must-not-survive' },
       gatewayToken: 'test-gateway-token',
@@ -1628,6 +1734,7 @@ test('saturated legacy admission returns a 429 business envelope without inserti
     assert.equal(accepted.code, 0)
     assert.deepEqual(rejected, { code: 429, error: 'Job queue is full. Please try again later.' })
     assert.equal(testState.inserts.length, 1)
+    assert.equal(testState.inserts[0].clientPlatform, 'android')
 
     while (!resolveFetch) await new Promise((resolve) => setImmediate(resolve))
     resolveFetch(new Response('provider failed', { status: 400 }))

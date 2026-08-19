@@ -36,6 +36,8 @@ jobs:
       - run: node --test apps/miniprogram/tests/*.test.cjs
       - run: pnpm --filter @paperbanana/android typecheck
       - run: node --test apps/android/tests/*.test.mjs
+      - name: Run Linux-feasible client-platform contracts
+        run: node --test tests/client-platform/*.test.mjs
       - run: node --test tests/*.test.mjs
       - run: node --test apps/laf-functions/tests/*.test.cjs
       - run: node --test deploy/hk-single-host/tests/*.test.mjs

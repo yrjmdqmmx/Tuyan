@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import {
   createJobRequest,
+  adminJobsRequest,
   abortReferenceUploadRequest,
   finalizeReferenceUploadRequest,
   formatClientPlatform,
@@ -99,6 +100,7 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
   try {
     const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'job-2');
     assert.equal(job.client_platform, 'miniprogram');
+    assert.equal(job.clientPlatform, 'miniprogram');
     assert.equal(job.task_name, 'diagram');
     assert.equal(job.retrieval_setting, 'auto');
     assert.deepEqual(job.retrieved_reference_ids, ['ref-a']);
@@ -319,6 +321,61 @@ test('formatClientPlatform translates the complete canonical enum without guessi
   assert.equal(formatClientPlatform(''), '未记录');
   assert.equal(formatClientPlatform(undefined), '未记录');
   assert.equal(formatClientPlatform('mobile'), '未记录');
+});
+
+test('admin and user task normalization retain both platform aliases without backfilling history', async () => {
+  const responses = [
+    { code: 0, jobs: [
+      { id: 'admin-camel', clientPlatform: ' WINDOWS ' },
+      { id: 'admin-empty-alias', clientPlatform: 'macos', client_platform: '' },
+      { id: 'admin-invalid-alias', clientPlatform: 'harmony', client_platform: 'mobile' },
+      { id: 'admin-conflict', clientPlatform: 'windows', client_platform: 'ios' },
+      { id: 'admin-legacy' },
+    ] },
+    { code: 0, jobs: [{ id: 'user-snake', client_platform: 'harmony' }, { id: 'user-invalid', clientPlatform: 'mobile' }] },
+  ];
+  const fetchMock = mockJsonFetch(() => ({ body: responses.shift() }));
+  try {
+    const admin = await adminJobsRequest('https://gateway.example', { backendMode: 'gateway' });
+    const user = await userJobsRequest('https://gateway.example', { backendMode: 'gateway' });
+
+    assert.deepEqual(
+      admin.jobs.map(({ id, clientPlatform, client_platform }) => ({ id, clientPlatform, client_platform })),
+      [
+        { id: 'admin-camel', clientPlatform: 'windows', client_platform: 'windows' },
+        { id: 'admin-empty-alias', clientPlatform: 'macos', client_platform: 'macos' },
+        { id: 'admin-invalid-alias', clientPlatform: 'harmony', client_platform: 'harmony' },
+        { id: 'admin-conflict', clientPlatform: 'windows', client_platform: 'windows' },
+        { id: 'admin-legacy', clientPlatform: '', client_platform: '' },
+      ],
+    );
+    assert.deepEqual(
+      user.jobs.map(({ id, clientPlatform, client_platform }) => ({ id, clientPlatform, client_platform })),
+      [
+        { id: 'user-snake', clientPlatform: 'harmony', client_platform: 'harmony' },
+        { id: 'user-invalid', clientPlatform: '', client_platform: '' },
+      ],
+    );
+    assert.equal(formatClientPlatform(admin.jobs.at(-1).clientPlatform), '未记录');
+    assert.equal(formatClientPlatform(user.jobs[1].client_platform), '未记录');
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('createJobRequest sends web on the FastAPI compatibility transport', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { id: 'fast-job', status: 'queued' } }));
+  try {
+    await createJobRequest('https://fast.example', { backendMode: 'fastapi' }, {
+      configurationMode: 'advanced', provider: 'openai', apiKeys: { openai: 'key' }, taskName: 'diagram',
+      methodContent: 'A sufficiently long method section.', caption: 'Figure 1', infographicCategory: '方法框架图',
+      mainModelName: 'gpt-5.6-sol', imageGenModelName: 'gpt-image-2', pipelineMode: 'planner_critic',
+      retrievalSetting: 'none', aspectRatio: '16:9', numCandidates: 1, maxCriticRounds: 1,
+    });
+    assert.equal(JSON.parse(fetchMock.calls[0].options.body).clientPlatform, 'web');
+  } finally {
+    fetchMock.restore();
+  }
 });
 
 test('userJobsRequest trusts the freshly signed list response without N+1 detail requests', async () => {
