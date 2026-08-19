@@ -24,6 +24,17 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] 结果图公开权威 objectKey — by Codex
+变更：生产百炼 smoke 发现结果图已写入 OSS，但公开任务 DTO 只有 `filename/url`，导致独立精修页无法按约定优先使用对象键；现在新任务持久化并返回 `resultImages[].objectKey`，历史 bucket 结果从既有 `filename` 只读补出该字段，本条待重新部署。
+契约（影响其他端 / 共享）：
+- **公开任务 DTO**：`getJob/userJobs/adminJobs` 的 bucket 结果图新增稳定 `objectKey`；签名 `url` 仍只用于预览，客户端发起精修时优先传 `sourceImageObjectKey`。
+- **兼容边界**：历史 `storage=bucket` 且只有 `filename` 的记录映射为同值 `objectKey`；数据库 data URL 回退不会伪造对象键。
+各端待办：
+- [x] paperbanana-api / Laf 回滚（新记录持久化、历史 DTO 兼容与测试）
+- [x] packages-api / Web（已优先消费 `objectKey`，保留签名 URL 预览）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续精修入口改用 `sourceImageObjectKey`；旧签名 URL 仍兼容）
+- [ ] 部署 / 运维（重建 Core 并复测真实百炼精修）
+
 ### [2026-08-19] zh-CN.v2 固定语料补齐历史空白英文 — by Codex
 变更：生产前置校验发现 306 条有图 bench 记录中 `ref_260`、`ref_305` 的历史英文 `summary` 为空；同步器现在只对缺失或纯空白的 `title/summary` 使用固定 PaperBananaBench 快照补齐，已有非空英文保持原值，本条待重新部署。
 契约（影响其他端 / 共享）：

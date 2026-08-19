@@ -1481,6 +1481,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                       state.deletedOwnerKeys = ['user:owner-1'];
                       return;
                     }
+                    if (state.ossWriteMode === 'success') return;
                     throw new Error('OSS write failed');
                   },
                   async getDownloadUrl(key) {
@@ -2075,5 +2076,37 @@ test('legacy default retains the historical data URL fallback for rollback', asy
   } finally {
     if (previous === undefined) delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
     else process.env.PAPERBANANA_STRICT_OBJECT_STORAGE = previous
+  }
+})
+
+test('new and historical result DTOs expose the authoritative bucket object key', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  state.ossWriteMode = 'success'
+  state.jobRows = [{
+    _id: 'historical-result-job',
+    status: 'succeeded',
+    userId: 'owner-1',
+    resultImages: [{ filename: 'historical-result-job/candidate-0.png', storage: 'bucket', url: '' }],
+    stages: [],
+  }]
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
+  try {
+    const saved = await legacy.saveResult('job-1', 0, 'cG5n', 'image/png', 'base64')
+    assert.equal(saved.objectKey, 'job-1/candidate-0.png')
+
+    const detail = await legacy.default({
+      request: { method: 'POST' },
+      body: { action: 'getJob', jobId: 'historical-result-job', gatewayToken: 'test-gateway' },
+      headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(detail.job.resultImages[0].objectKey, 'historical-result-job/candidate-0.png')
+  } finally {
+    state.ossWriteMode = 'fail'
+    state.jobRows = []
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
   }
 })

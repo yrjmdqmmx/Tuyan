@@ -1923,6 +1923,7 @@ async function runJob(
     results[i] = {
       candidateId: i,
       filename: saved.filename,
+      objectKey: saved.objectKey || saved.filename,
       url: saved.url,
       storage: saved.storage,
       mimeType: result.mimeType,
@@ -2676,6 +2677,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
         resultImages: [{
           candidateId: 0,
           filename: saved.filename,
+          objectKey: saved.objectKey || saved.filename,
           url: saved.url,
           storage: saved.storage,
           mimeType: 'image/png',
@@ -3819,6 +3821,7 @@ export async function saveResult(
     return {
       storage: 'bucket',
       filename,
+      objectKey: filename,
       url: await bucket.getDownloadUrl(filename, 3600 * 24 * 7),
     }
   } catch (error: any) {
@@ -5336,11 +5339,12 @@ async function refreshStoredImageUrls(images: any[]) {
   if (!images.length) return []
   const bucket = cloud.storage.bucket(bucketName)
   return await Promise.all(images.map(async (image) => {
-    const objectKey = image?.objectKey || image?.filename
+    const objectKey = image?.objectKey || (image?.storage === 'bucket' ? image?.filename : '')
     if (!objectKey || String(image.url || '').startsWith('data:')) return image
     try {
       return {
         ...image,
+        objectKey,
         url: await bucket.getDownloadUrl(objectKey, 3600 * 24 * 7),
       }
     } catch {
