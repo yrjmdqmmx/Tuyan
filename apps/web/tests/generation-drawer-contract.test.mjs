@@ -70,3 +70,9 @@ test('model picker supports provider grouping, search, disabled reasons and wind
   assert.match(source, /INCOMPATIBLE_PAGE_SIZE/u)
   assert.match(source, /previousFocusRef\.current\?\.focus/u)
 })
+
+test('mobile top tabs stay on one line and use the existing horizontal scroller', () => {
+  const styles = readSource('../src/styles.css')
+  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.paper-tabs\s*\{[\s\S]*?overflow-x:\s*auto/u)
+  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.paper-tabs button\s*\{[\s\S]*?white-space:\s*nowrap;[\s\S]*?flex:\s*0 0 auto;[\s\S]*?min-width:\s*max-content;[\s\S]*?padding:\s*0 13px;[\s\S]*?font-size:\s*13px/u)
+})

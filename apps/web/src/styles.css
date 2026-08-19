@@ -3820,6 +3820,15 @@ figcaption {
     overflow-x: auto;
   }
 
+  .paper-tabs button {
+    white-space: nowrap;
+    flex: 0 0 auto;
+    min-width: max-content;
+    min-height: 36px;
+    padding: 0 13px;
+    font-size: 13px;
+  }
+
   .generator,
   .input-results,
   .refine-form,
