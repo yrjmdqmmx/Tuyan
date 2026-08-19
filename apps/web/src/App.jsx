@@ -180,7 +180,7 @@ export default function App() {
   const activeMainModelName = isAdvancedMode ? mainModelName : providerConfig.mainModel;
   const activeImageGenModelName = isAdvancedMode ? imageGenModelName : providerConfig.imageModel;
   const selectedModelNotes = providerConfig.registryModels
-    ? uniqueRegistryModels([activeMainModelName, activeImageGenModelName, isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel]
+    ? uniqueRegistryModels([activeMainModelName, ...(outputFormat === 'svg' ? [] : [activeImageGenModelName]), isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel]
         .map((id) => providerConfig.registryModels.find((model) => model.id === id))
         .filter(Boolean))
     : [];
@@ -208,7 +208,9 @@ export default function App() {
         ? '当前主模型支持图像理解，将用主模型直读参考图。'
         : '当前主模型为文本模型，将使用独立识别模型读取参考图。')
     : '';
-  const generationConfigSummary = `${providerConfig.label} · ${findModelLabel(providerConfig.imageModels, activeImageGenModelName)} · ${isAdvancedMode ? `${aspectRatio} / ${imageSize}` : `16:9 / ${imageSize}`} · ${formatOutputFormat(outputFormat)}`;
+  const generationConfigSummary = outputFormat === 'svg'
+    ? `${providerConfig.label} · ${findModelLabel(providerConfig.mainModels, activeMainModelName)} · SVG 由主模型生成`
+    : `${providerConfig.label} · ${findModelLabel(providerConfig.imageModels, activeImageGenModelName)} · ${isAdvancedMode ? `${aspectRatio} / ${imageSize}` : `16:9 / ${imageSize}`} · ${formatOutputFormat(outputFormat)}`;
 
   useEffect(() => {
     let cancelled = false;
@@ -432,6 +434,10 @@ export default function App() {
   function addReferenceFiles(files) {
     setReferenceUploadError('');
     if (!files.length) return;
+    if (isAdvancedMode && retrievalSetting !== 'none') {
+      setReferenceUploadError('请先将检索设置切换为“不使用检索”，再上传参考图。');
+      return;
+    }
 
     const availableSlots = REFERENCE_IMAGE_LIMITS.maxCount - referenceImages.length;
     if (availableSlots <= 0) {
@@ -1038,7 +1044,9 @@ export default function App() {
 
           <div className="output-format-field">
             <Select label="导出格式" value={outputFormat} onChange={setOutputFormat} options={OUTPUT_FORMATS} />
-            <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />
+            {outputFormat === 'svg'
+              ? <div className="plot-note svg-output-note">SVG 由主模型直接生成；图像生成模型和输出清晰度不参与本次任务。</div>
+              : <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
           </div>
 
           <details className="api-keys-panel" data-focus-setting="api-key" open>
@@ -1063,7 +1071,7 @@ export default function App() {
           {!isAdvancedMode ? (
             <div className="default-summary" aria-label="默认生成配置">
               <span>{defaultMainModelLabel}</span>
-              <span>{defaultImageModelLabel}</span>
+              <span>{outputFormat === 'svg' ? 'SVG 由主模型直接生成' : defaultImageModelLabel}</span>
               <span>{defaultVisionModelLabel}</span>
               <span>规划器 + 评审器</span>
               <span>16:9</span>
@@ -1117,7 +1125,9 @@ export default function App() {
 
               <div className="model-grid">
                 <ModelPicker label="主模型" role="main" provider={provider} models={providerConfig.registryModels || []} value={mainModelName} onChange={setMainModelName} focusSetting="main-model" />
-                <ModelPicker label="图像生成模型" role="image" provider={provider} models={providerConfig.registryModels || []} value={imageGenModelName} outputFormat={outputFormat} onChange={setImageGenModelName} focusSetting="image-model" />
+                {outputFormat === 'svg'
+                  ? <div className="plot-note svg-output-note" data-focus-setting="image-model">SVG 模式不使用图像生成模型。</div>
+                  : <ModelPicker label="图像生成模型" role="image" provider={provider} models={providerConfig.registryModels || []} value={imageGenModelName} outputFormat={outputFormat} onChange={setImageGenModelName} focusSetting="image-model" />}
                 {referenceImages.length && referenceImageMode === 'main_model' ? null : (
                   <ModelPicker label="参考图识别模型" role="vision" provider={provider} models={providerConfig.registryModels || []} value={referenceVisionModelName} onChange={setReferenceVisionModelName} focusSetting="vision-model" />
                 )}
@@ -1218,6 +1228,7 @@ export default function App() {
               error={referenceUploadError}
               disabled={isSubmitting}
               isUploading={isUploadingReferences}
+              retrievalBlocked={isAdvancedMode && retrievalSetting !== 'none'}
               onAddFiles={addReferenceFiles}
               onRemove={removeReferenceImage}
             />
@@ -1382,9 +1393,11 @@ function firstMissingGenerationSetting({
   if (!selectedKey.trim() && !canMock) return { setting: 'api-key', message: '请填写当前模型平台的 API 密钥。' };
   const main = registryModels?.find((model) => model.id === activeMainModelName);
   if (!main || main.selectable === false || !main.roles?.includes('main')) return { setting: 'main-model', message: main?.disabledReason || '请选择可用的主模型。' };
-  const image = registryModels?.find((model) => model.id === activeImageGenModelName);
-  if (!image || image.selectable === false || !image.roles?.includes('image')) return { setting: 'image-model', message: image?.disabledReason || '请选择可用的图像生成模型。' };
-  if (image.capabilities?.outputFormats?.length && !image.capabilities.outputFormats.includes(outputFormat)) return { setting: 'image-model', message: `当前图像模型不支持 ${outputFormat.toUpperCase()} 输出。` };
+  if (outputFormat !== 'svg') {
+    const image = registryModels?.find((model) => model.id === activeImageGenModelName);
+    if (!image || image.selectable === false || !image.roles?.includes('image')) return { setting: 'image-model', message: image?.disabledReason || '请选择可用的图像生成模型。' };
+    if (image.capabilities?.outputFormats?.length && !image.capabilities.outputFormats.includes(outputFormat)) return { setting: 'image-model', message: `当前图像模型不支持 ${outputFormat.toUpperCase()} 输出。` };
+  }
   if (isAdvancedMode && retrievalSetting === 'manual' && !manualReferenceIds.length) return { setting: 'manual-reference', message: '手动参考模式至少需要选用一个案例。' };
   if (needsReferenceVisionModel && !referenceVisionModelName?.trim()) return { setting: 'vision-model', message: '请选择参考图识别模型。' };
   if (mainModelDirectUnsupported) return { setting: 'main-model', message: '当前主模型不能直接读取参考图，请更换模型或处理方式。' };

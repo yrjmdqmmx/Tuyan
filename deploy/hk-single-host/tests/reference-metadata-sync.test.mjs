@@ -203,6 +203,8 @@ test('rollback removes only v2 metadata from bench IDs without deleting document
   assert.doesNotMatch(rollbackOutput, /imageObjectKey[^\n]*\$unset|imageUrl[^\n]*\$unset/)
 
   const { documents, fallback, references } = migrationFixture()
+  const legacyTaskName = 'legacy-custom-task'
+  documents.get('ref_0').taskName = legacyTaskName
   const context = () => ({
     db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
   })
@@ -211,6 +213,7 @@ test('rollback removes only v2 metadata from bench IDs without deleting document
   assert.equal(documents.size, 307)
   assert.equal(documents.get('ref_0').imageObjectKey, 'references/bench/plot/ref_0.jpg')
   assert.equal(documents.get('ref_0').corpusVersion, undefined)
+  assert.equal(documents.get('ref_0').taskName, legacyTaskName, 'metadata sync and rollback must preserve the pre-v2 taskName')
   assert.equal(fallback.titleZh, '不应改变')
 })
 

@@ -32,17 +32,20 @@ const VENDOR_ORDER = ['OpenAI', 'Google', 'Anthropic', 'Alibaba Qwen', 'Alibaba 
 export function filterRegistryModels(models, { role, query = '', outputFormat = '', recommendedOnly = false } = {}) {
   const needle = query.trim().toLocaleLowerCase('zh-CN')
   return (models || [])
-    .filter((model) => model?.roles?.includes(role))
+    .filter((model) => model?.roles?.includes(role)
+      || (role === 'image' && (model?.outputModalities?.includes('image') || model?.protocol === 'openrouter-images')))
     .filter((model) => !recommendedOnly || model.recommended === true)
     .filter((model) => !needle || [model.id, model.label, model.vendor, model.availabilityNotes, model.disabledReason]
       .some((value) => String(value || '').toLocaleLowerCase('zh-CN').includes(needle)))
     .map((model) => {
       const outputFormats = model.capabilities?.outputFormats || []
+      const roleMismatch = !model.roles?.includes(role)
       const formatMismatch = role === 'image' && outputFormat && outputFormats.length && !outputFormats.includes(outputFormat)
       return {
         ...model,
-        selectionDisabled: model.selectable === false || Boolean(formatMismatch),
+        selectionDisabled: model.selectable === false || roleMismatch || Boolean(formatMismatch),
         selectionDisabledReason: model.disabledReason
+          || (roleMismatch ? `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
           || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
       }
     })

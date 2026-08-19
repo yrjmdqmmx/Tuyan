@@ -3587,9 +3587,7 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
       }),
     }, `gemini interactions image model ${actualModel}`)
     const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Gemini Interactions image response')
-    const image = data.output_image || data.outputImage
-    if (image?.data) return validateProviderImageBase64(image.data, maxProviderImageBytes, 'Gemini image')
-    throw new Error('Gemini Interactions image model did not return output_image data')
+    return await geminiInteractionImageBase64(data)
   }
 
   const parts: any[] = [{ text: prompt }]
@@ -3618,6 +3616,42 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
     }
   }
   throw new Error('Gemini image model did not return image data')
+}
+
+async function geminiInteractionImageBase64(data: any): Promise<string> {
+  const officialImage = (Array.isArray(data?.steps) ? data.steps : [])
+    .filter((step: any) => step?.type === 'model_output')
+    .flatMap((step: any) => Array.isArray(step.content) ? step.content : [])
+    .find((content: any) => content?.type === 'image')
+  const image = officialImage || data?.output_image || data?.outputImage
+  const directValue = typeof image === 'string' ? image.trim() : ''
+  const imageData = typeof image?.data === 'string'
+    ? image.data.trim()
+    : typeof image?.data?.data === 'string'
+      ? image.data.data.trim()
+      : directValue && !geminiInteractionRemoteUrl(directValue)
+        ? directValue
+        : ''
+
+  const imageUri = [image?.uri, image?.url, image?.data?.uri, image?.data?.url, directValue]
+    .map(geminiInteractionRemoteUrl)
+    .find(Boolean) || ''
+  if (imageData) return validateProviderImageBase64(imageData, maxProviderImageBytes, 'Gemini image')
+  if (imageUri) return await fetchImageAsBase64(imageUri, 'Gemini image download', maxProviderImageBytes)
+  throw new Error('Gemini Interactions image model did not return image data')
+}
+
+function geminiInteractionRemoteUrl(value: any): string {
+  let candidate = value
+  for (let depth = 0; depth < 3; depth += 1) {
+    if (typeof candidate === 'string') {
+      const url = candidate.trim()
+      return /^https?:\/\//i.test(url) ? url : ''
+    }
+    if (!candidate || typeof candidate !== 'object') return ''
+    candidate = candidate.url ?? candidate.uri
+  }
+  return ''
 }
 
 function geminiImageSize(model: string, imageSize: string) {
@@ -5598,7 +5632,7 @@ async function resolveSourceImageUrl(body: RefineExecutionBody) {
     const bytes = await readStoredObject(
       cloud.storage.bucket(bucketName),
       objectKey,
-      maxReferenceBytes,
+      maxProviderImageBytes,
       'Refine source image download',
     )
     return `data:${mimeType};base64,${bytes.toString('base64')}`

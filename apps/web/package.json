@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "test": "node --test",
+    "test": "node --import tsx --import ./tests/dom-setup.mjs --test",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0"
   },
@@ -18,7 +18,11 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.5",
     "@vitejs/plugin-react": "^5.0.0",
+    "jsdom": "^30.0.1",
+    "tsx": "^4.23.12",
     "vite": "^7.0.0"
   }
 }

@@ -21,7 +21,6 @@ for (const item of REFERENCE_METADATA_ZH_CN_V2) {
 
 const metadata = REFERENCE_METADATA_ZH_CN_V2.map(({
   id,
-  taskName,
   titleZh,
   shortIntroZh,
   detailZh,
@@ -30,7 +29,6 @@ const metadata = REFERENCE_METADATA_ZH_CN_V2.map(({
   keywords,
 }) => ({
   id,
-  taskName,
   titleZh,
   shortIntroZh,
   detailZh,
@@ -70,7 +68,6 @@ const result = references.bulkWrite(metadata.map((item) => ({
       source: "paperbanana-bench",
       $or: [
         {corpusVersion: {$ne: version}},
-        {taskName: {$ne: item.taskName}},
         {titleZh: {$ne: item.titleZh}},
         {introZh: {$ne: item.shortIntroZh}},
         {shortIntroZh: {$ne: item.shortIntroZh}},
@@ -81,7 +78,6 @@ const result = references.bulkWrite(metadata.map((item) => ({
       ],
     },
     update: {$set: {
-      taskName: item.taskName,
       titleZh: item.titleZh,
       introZh: item.shortIntroZh,
       shortIntroZh: item.shortIntroZh,
@@ -100,7 +96,6 @@ const localizedFilter = {
   id: {$in: ids},
   source: "paperbanana-bench",
   corpusVersion: version,
-  taskName: {$in: ["diagram", "plot"]},
   titleZh: {$type: "string", $ne: ""},
   shortIntroZh: {$type: "string", $ne: ""},
   detailZh: {$type: "string", $ne: ""},

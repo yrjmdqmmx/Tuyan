@@ -310,6 +310,120 @@ test('Gemini 3 text and vision use generateContent while current image models us
   assert.doesNotMatch(JSON.stringify(interaction?.body), /temperature|topP|topK|top_p|top_k/)
 })
 
+test('Gemini Interactions reads the official REST model_output image content before SDK conveniences', async () => {
+  const legacy = await loadLegacy()
+  legacy.configureRuntimeFetch(async (input) => {
+    assert.match(String(input), /\/v1beta\/interactions$/)
+    return Response.json({
+      object: 'interaction',
+      status: 'completed',
+      steps: [{
+        type: 'model_output',
+        content: [
+          { type: 'text', text: 'Generated image follows.' },
+          { type: 'image', data: 'b2ZmaWNpYWw=', mime_type: 'image/png' },
+        ],
+      }],
+      output_image: { data: 'ZmFsbGJhY2s=', mime_type: 'image/png' },
+    })
+  })
+  try {
+    assert.equal(
+      await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9'),
+      'b2ZmaWNpYWw=',
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('Gemini Interactions accepts an official image URI and keeps its download byte-bounded', async () => {
+  const legacy = await loadLegacy()
+  const calls: string[] = []
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    calls.push(url)
+    if (url.endsWith('/v1beta/interactions')) {
+      return Response.json({
+        steps: [{ type: 'model_output', content: [{ type: 'image', uri: 'https://images.invalid/generated.png', mime_type: 'image/png' }] }],
+      })
+    }
+    if (url === 'https://images.invalid/generated.png') return new Response('remote-image')
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    assert.equal(
+      await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9'),
+      Buffer.from('remote-image').toString('base64'),
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+  assert.deepEqual(calls, [
+    'https://generativelanguage.googleapis.com/v1beta/interactions',
+    'https://images.invalid/generated.png',
+  ])
+})
+
+test('Gemini Interactions normalizes URL objects and SDK string fallbacks without bypassing remote size guards', async () => {
+  const legacy = await loadLegacy()
+  const interactions = [
+    { steps: [{ type: 'model_output', content: [{ type: 'image', data: { url: 'https://images.invalid/nested-data.png' }, mime_type: 'image/png' }] }] },
+    { steps: [{ type: 'model_output', content: [{ type: 'image', url: { url: 'https://images.invalid/nested-url.png' }, mime_type: 'image/png' }] }] },
+    { output_image: 'c2RrLXN0cmluZw==' },
+    { outputImage: 'https://images.invalid/oversized.png' },
+  ]
+  let interactionIndex = 0
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/v1beta/interactions')) return Response.json(interactions[interactionIndex++])
+    if (url === 'https://images.invalid/nested-data.png') return new Response('nested-data')
+    if (url === 'https://images.invalid/nested-url.png') return new Response('nested-url')
+    if (url === 'https://images.invalid/oversized.png') {
+      return new Response('', { headers: { 'Content-Length': String(20 * 1024 * 1024 + 1) } })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    assert.equal(
+      await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9'),
+      Buffer.from('nested-data').toString('base64'),
+    )
+    assert.equal(
+      await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9'),
+      Buffer.from('nested-url').toString('base64'),
+    )
+    assert.equal(
+      await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9'),
+      'c2RrLXN0cmluZw==',
+    )
+    await assert.rejects(
+      legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9'),
+      /exceeds 20971520 byte limit/,
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('Gemini Interactions official image content rejects missing, invalid, and oversized bytes', async () => {
+  const legacy = await loadLegacy()
+  const responses = [
+    { steps: [{ type: 'model_output', content: [{ type: 'image', mime_type: 'image/png' }] }] },
+    { steps: [{ type: 'model_output', content: [{ type: 'image', data: 'not-base64!', mime_type: 'image/png' }] }] },
+    { steps: [{ type: 'model_output', content: [{ type: 'image', data: Buffer.alloc(20 * 1024 * 1024 + 1).toString('base64'), mime_type: 'image/png' }] }] },
+  ]
+  const expected = [/did not return image data/, /invalid base64 data/, /exceeds 20971520 byte limit/]
+  for (let index = 0; index < responses.length; index += 1) {
+    legacy.configureRuntimeFetch(async () => Response.json(responses[index]))
+    await assert.rejects(
+      legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9'),
+      expected[index],
+    )
+  }
+  legacy.configureRuntimeFetch()
+})
+
 test('Gemini 2.5 image generation retains generateContent compatibility at 1K', async () => {
   const legacy = await loadLegacy()
   const requests: Array<{ url: string; body: any }> = []
@@ -1229,6 +1343,58 @@ test('refine prefers owned object bytes over a preview URL when both source fiel
   )
 })
 
+test('owned refine outputs use the 20MiB provider-image cap instead of the 5MiB reference-upload cap', async () => {
+  const legacy = await loadLegacy()
+  const testState = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = testState.ossWriteMode
+  const previousStoredObjects = testState.storedObjectBytes
+  const previousReadFileLimits = testState.readFileLimits
+  let interactionCalls = 0
+  testState.ossWriteMode = 'race'
+  testState.readFileLimits = []
+  legacy.configureRuntimeFetch(async (input) => {
+    assert.match(String(input), /\/v1beta\/interactions$/)
+    interactionCalls += 1
+    return Response.json({ output_image: { data: 'cmVmaW5lZA==', mime_type: 'image/png' } })
+  })
+
+  const invoke = async (objectKey: string, bytes: Buffer) => {
+    testState.deletedOwnerKeys = []
+    testState.storedObjectBytes = { [objectKey]: bytes }
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'refineImage',
+        provider: 'gemini',
+        apiKeys: { gemini: 'selected-key' },
+        userId: 'owner-1',
+        mainModelName: 'gemini-3.6-flash',
+        imageModelName: 'gemini-3.1-flash-image',
+        sourceImageObjectKey: objectKey,
+        editInstruction: 'Make the labels clearer.',
+      },
+      headers: { 'x-real-ip': '203.0.113.21' },
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0)
+    await legacy.drainJobAdmission()
+  }
+
+  try {
+    await invoke('owned/large-source.png', Buffer.alloc(5 * 1024 * 1024 + 1, 1))
+    assert.equal(interactionCalls, 1, 'a stored generated output above 5MiB should reach the image model')
+    await invoke('owned/oversized-source.png', Buffer.alloc(20 * 1024 * 1024 + 1, 1))
+    assert.equal(interactionCalls, 1, 'a stored generated output above 20MiB must fail before provider dispatch')
+    assert.deepEqual(testState.readFileLimits, [20 * 1024 * 1024, 20 * 1024 * 1024])
+  } finally {
+    legacy.configureRuntimeFetch()
+    testState.ossWriteMode = previousWriteMode
+    testState.storedObjectBytes = previousStoredObjects
+    testState.readFileLimits = previousReadFileLimits
+    testState.deletedOwnerKeys = []
+  }
+})
+
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const legacyPath = path.resolve(packageRoot, '../laf-functions/paperbanana-api.ts')
 const legacyBridgePath = path.resolve(packageRoot, 'src/legacy-entry.mjs')
@@ -1252,7 +1418,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
-                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], jobRows: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, ossWriteMode: 'fail', referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
+                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], jobRows: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, readFileLimits: [], ossWriteMode: 'fail', referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
                 const matches = (row, query = {}) => Object.entries(query).every(([field, expected]) => {
                   const actual = row[field];
                   if (expected && typeof expected === 'object' && '$in' in expected) return expected.$in.includes(actual);
@@ -1303,6 +1469,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                 });
                 const bucket = {
                   async readFile(key, maxBytes) {
+                    (state.readFileLimits ||= []).push(maxBytes);
                     const value = state.storedObjectBytes?.[key];
                     if (value === undefined) throw new Error('stored object not found');
                     const bytes = Buffer.from(value);

@@ -56,13 +56,16 @@ test('role and output format filters keep incompatible entries visible but disab
     { id: 'ok', vendor: 'OpenAI', roles: ['image'], selectable: true, outputModalities: ['image'], capabilities: { outputFormats: ['png'] } },
     { id: 'wrong-format', vendor: 'OpenAI', roles: ['image'], selectable: true, outputModalities: ['image'], capabilities: { outputFormats: ['jpeg'] } },
     { id: 'catalog-disabled', vendor: 'Google', roles: ['image'], selectable: false, disabledReason: '区域不可用', capabilities: { outputFormats: ['png'] } },
+    { id: 'protocol-disabled', vendor: 'Google', roles: [], selectable: false, protocol: 'openrouter-images', outputModalities: ['image'], disabledReason: '未声明 PNG/SVG 输出' },
     { id: 'text-only', vendor: 'Anthropic', roles: ['main'], selectable: true },
   ]
   const visible = filterRegistryModels(models, { role: 'image', outputFormat: 'png' })
-  assert.deepEqual(visible.map((model) => model.id), ['ok', 'wrong-format', 'catalog-disabled'])
+  assert.deepEqual(visible.map((model) => model.id), ['ok', 'wrong-format', 'catalog-disabled', 'protocol-disabled'])
   assert.equal(visible[0].selectionDisabled, false)
   assert.match(visible[1].selectionDisabledReason, /PNG/u)
   assert.equal(visible[2].selectionDisabledReason, '区域不可用')
+  assert.equal(visible[3].selectionDisabled, true)
+  assert.equal(visible[3].selectionDisabledReason, '未声明 PNG/SVG 输出')
 })
 
 test('refine presentation never calls a model direct edit without input references', () => {

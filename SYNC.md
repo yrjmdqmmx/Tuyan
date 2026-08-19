@@ -24,6 +24,16 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] v2 参考元数据同步保留历史 taskName — by Codex
+变更：zh-CN.v2 元数据同步与回滚不再覆盖 `paperbanana_references.taskName`，避免旧数据或自定义分类在回滚后被永久改写；本条未部署。
+契约（影响其他端 / 共享）：
+- **迁移边界**：v2 脚本只写本地化与语料版本字段；`taskName` 继续由原始 bench/import 记录所有，前向同步和元数据回滚都不改它。
+- **306 条联合语料**：Web/Core 的 `scope=bench` 分页仍按业务 `id` + `source=paperbanana-bench` + `corpusVersion` 联合 306 条，不依赖迁移重写 `taskName`。
+各端待办：
+- [x] 语料迁移 / 回滚脚本与 306 条验收测试
+- [x] paperbanana-api / Web（公开分页请求与响应字段不变，无额外改造）
+- [ ] 部署 / 运维（下次执行 v2 元数据同步或回滚时使用更正后脚本）
+
 ### [2026-08-19] PaperBananaBench 306 条 zh-CN.v2 语料与服务端分页— by Codex
 变更：参考库固定为当前 PaperBananaBench 306 条有图案例（66 diagram + 240 plot），4 条无图内部 fallback 与 bench 计数彻底分离；本条未部署。
 契约（影响其他端 / 共享）：
@@ -189,7 +199,8 @@
 - 手动参考库仍只在 `retrievalSetting='manual'` 且没有上传参考图时展示。
 各端待办：
 - [x] ios（上传入口禁用/导入管线兜底/指南文案/契约测试）
-- [ ] web/miniprogram/android/windows/macos（同步 UI：检索非 none 时禁用本地参考图上传，并提示先选择“不使用检索”）
+- [x] web（检索非 none 时禁用本地参考图上传，显示切换提示且不自动更改检索选择）
+- [ ] miniprogram/android/windows/macos（同步 UI：检索非 none 时禁用本地参考图上传，并提示先选择“不使用检索”）
 
 ### [2026-06-10] 更正：getJob"非法 JSON"系误报，后端无需修改 — by Claude (miniprogram)
 变更：此前怀疑 `getJob` 响应含未转义控制字符——**已排除，系测试脚本误报**。复现验证：响应本身是合法 JSON（含 229 个正确的 `\n`/`\t` 转义序列）；测试脚本用 zsh 的 `echo "$RESP"` 中转响应，zsh echo 默认解释反斜杠转义，把合法的 `\n` 二字符序列变成裸换行字节，才导致严格解析失败。`printf '%s'` 对照实验解析通过，失败位置（char 936）与原报错完全一致。

@@ -15,7 +15,12 @@ test('Web fails closed until the server model registry loads and offers a retry 
 
 test('OpenRouter catalog scope changes reset the virtual window before rendering fewer rows', () => {
   assert.match(modelPicker, /function changeCatalogMode\(mode\)/u)
-  assert.match(modelPicker, /setCatalogMode\(mode\); setScrollTop\(0\)/u)
+  assert.match(modelPicker, /function resetVirtualWindow\(\)/u)
+  assert.match(modelPicker, /setScrollTop\(0\)/u)
+  assert.match(modelPicker, /windowRef\.current\.scrollTop = 0/u)
+  assert.match(modelPicker, /setCatalogMode\(mode\); resetVirtualWindow\(\)/u)
+  assert.match(modelPicker, /setQuery\(event\.target\.value\); resetVirtualWindow\(\)/u)
+  assert.match(modelPicker, /useEffect\(resetVirtualWindow, \[models, role, outputFormat, provider\]\)/u)
   assert.match(modelPicker, /onClick=\{\(\) => changeCatalogMode\('recommended'\)\}/u)
   assert.match(modelPicker, /onClick=\{\(\) => changeCatalogMode\('all'\)\}/u)
 })

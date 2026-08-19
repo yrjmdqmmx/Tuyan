@@ -1,7 +1,8 @@
 import { FileImage, UploadCloud, X } from 'lucide-react';
 import { REFERENCE_IMAGE_LIMITS } from '../constants';
 
-export default function ReferenceUploadPanel({ images, error, disabled, isUploading, onAddFiles, onRemove }) {
+export default function ReferenceUploadPanel({ images, error, disabled, isUploading, retrievalBlocked = false, onAddFiles, onRemove }) {
+  const uploadDisabled = disabled || isUploading || retrievalBlocked;
   return (
     <section className="reference-upload-panel">
       <div className="reference-upload-head">
@@ -9,15 +10,19 @@ export default function ReferenceUploadPanel({ images, error, disabled, isUpload
           <strong>参考图</strong>
           <span>PNG/JPG/WebP/SVG，最多 {REFERENCE_IMAGE_LIMITS.maxCount} 张，单张 5MB。</span>
         </div>
-        <label className={`reference-upload-button ${disabled ? 'disabled' : ''}`}>
+        <label className={`reference-upload-button ${uploadDisabled ? 'disabled' : ''}`}>
           <UploadCloud size={16} />
           {isUploading ? '上传中' : '选择图片'}
           <input
             type="file"
             accept={REFERENCE_IMAGE_LIMITS.accept}
             multiple
-            disabled={disabled || isUploading}
+            disabled={uploadDisabled}
             onChange={(event) => {
+              if (retrievalBlocked) {
+                event.target.value = '';
+                return;
+              }
               onAddFiles(Array.from(event.target.files || []));
               event.target.value = '';
             }}
@@ -25,6 +30,7 @@ export default function ReferenceUploadPanel({ images, error, disabled, isUpload
         </label>
       </div>
 
+      {retrievalBlocked ? <div className="reference-upload-error">请先将检索设置切换为“不使用检索”，再上传参考图。系统不会自动更改当前检索选择。</div> : null}
       {error ? <div className="reference-upload-error">{error}</div> : null}
 
       {images.length ? (

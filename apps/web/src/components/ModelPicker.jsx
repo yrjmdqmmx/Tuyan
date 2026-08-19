@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Check, ChevronDown, Search, Sparkles } from 'lucide-react'
 import { filterRegistryModels, groupRegistryModels } from '../lib/modelRegistry'
 
@@ -24,7 +24,12 @@ export default function ModelPicker({ label, models, role, value, outputFormat =
   const visibleStart = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - WINDOW_OVERSCAN)
   const visibleEnd = Math.min(rows.length, Math.ceil((scrollTop + WINDOW_HEIGHT) / ROW_HEIGHT) + WINDOW_OVERSCAN)
   const selectedModel = models?.find((model) => model.id === value)
-  function changeCatalogMode(mode) { setCatalogMode(mode); setScrollTop(0); if (windowRef.current) windowRef.current.scrollTop = 0 }
+  function resetVirtualWindow() {
+    setScrollTop(0)
+    if (windowRef.current) windowRef.current.scrollTop = 0
+  }
+  function changeCatalogMode(mode) { setCatalogMode(mode); resetVirtualWindow() }
+  useEffect(resetVirtualWindow, [models, role, outputFormat, provider])
 
   return (
     <div className="model-picker" data-focus-setting={focusSetting || undefined} tabIndex={focusSetting ? -1 : undefined}>
@@ -47,7 +52,7 @@ export default function ModelPicker({ label, models, role, value, outputFormat =
           <label className="model-picker-search">
             <Search size={16} />
             <span className="sr-only">搜索{label}</span>
-            <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setScrollTop(0) }} placeholder="搜索模型、厂商或能力" />
+            <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); resetVirtualWindow() }} placeholder="搜索模型、厂商或能力" />
           </label>
           <div ref={windowRef} className="model-picker-window" style={{ height: WINDOW_HEIGHT }} onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}>
             <div style={{ height: rows.length * ROW_HEIGHT, position: 'relative' }}>
