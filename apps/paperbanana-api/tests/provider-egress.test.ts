@@ -64,11 +64,16 @@ test('request and URL compatibility does not depend on realm-specific instanceof
 test('credential-bearing request URLs are rejected without dispatching or echoing credentials', async () => {
   await withMockRouting('sg-required', async ({ create }) => {
     const egress = create()
-    await assert.rejects(egress.fetch('https://user:password@api.openai.com/v1/models'), (error: any) => {
-      assert.equal(error.message, 'Request URL must not include credentials')
-      assert.doesNotMatch(JSON.stringify(error), /user|password|api\.openai/i)
-      return true
-    })
+    for (const url of [
+      'https://user:password@api.openai.com/v1/models',
+      'https://user:password@ark.cn-beijing.volces.com/api/v3/models',
+    ]) {
+      await assert.rejects(egress.fetch(url), (error: any) => {
+        assert.equal(error.message, 'Request URL must not include credentials')
+        assert.doesNotMatch(JSON.stringify(error), /user|password|api\.openai|volces/i)
+        return true
+      })
+    }
     assert.equal(egress.snapshot(), 'degraded')
   })
 })
@@ -79,6 +84,7 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
       ['https://api.openai.com', '/v1/models'],
       ['https://generativelanguage.googleapis.com', '/v1/models'],
       ['https://openrouter.ai', '/api/v1/models'],
+      ['https://ark.cn-beijing.volces.com', '/api/v3/models'],
     ] as const
     const bypassed = [
       ['https://dashscope.aliyuncs.com', '/compatible-mode/v1/models'],
@@ -86,6 +92,8 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
       ['https://bucket.oss-cn-hongkong.aliyuncs.com', '/result.png?Signature=signed'],
       ['http://plot-worker.internal', '/render'],
       ['https://api.openai.com.evil.example', '/v1/models'],
+      ['https://ark.cn-beijing.volces.com.evil.example', '/api/v3/models'],
+      ['https://ark.cn-beijing.volces.com..', '/api/v3/models'],
     ] as const
     for (const [origin, requestPath] of proxied) {
       direct.get(origin).intercept({ path: requestPath }).reply(200, 'DIRECT-LEAK')
@@ -112,10 +120,16 @@ test('equivalent root-dot and percent-dot provider hosts always use the proxy di
       direct.get('https://api.openai.com.').intercept({ path }).reply(200, `DIRECT:${path}`)
       proxy.get('https://api.openai.com.').intercept({ path }).reply(200, `PROXY:${path}`)
     }
+    for (const path of ['/ark-root-dot', '/ark-percent-dot']) {
+      direct.get('https://ark.cn-beijing.volces.com.').intercept({ path }).reply(200, `DIRECT:${path}`)
+      proxy.get('https://ark.cn-beijing.volces.com.').intercept({ path }).reply(200, `PROXY:${path}`)
+    }
     const egress = create()
 
     assert.equal(await (await egress.fetch('https://api.openai.com./root-dot')).text(), 'PROXY:/root-dot')
     assert.equal(await (await egress.fetch(new URL('https://api.openai.com%2e/percent-dot'))).text(), 'PROXY:/percent-dot')
+    assert.equal(await (await egress.fetch('https://ark.cn-beijing.volces.com./ark-root-dot')).text(), 'PROXY:/ark-root-dot')
+    assert.equal(await (await egress.fetch(new URL('https://ark.cn-beijing.volces.com%2e/ark-percent-dot'))).text(), 'PROXY:/ark-percent-dot')
   })
 })
 
@@ -123,11 +137,14 @@ test('disabled mode fails closed for equivalent provider FQDNs instead of using 
   await withMockRouting('disabled', async ({ direct, create }) => {
     direct.get('https://openrouter.ai.').intercept({ path: '/models' }).reply(200, 'DIRECT')
     direct.get('https://generativelanguage.googleapis.com.').intercept({ path: '/models' }).reply(200, 'DIRECT')
+    direct.get('https://ark.cn-beijing.volces.com.').intercept({ path: '/models' }).reply(200, 'DIRECT')
     const egress = create()
 
     for (const url of [
       'https://openrouter.ai./models',
       'https://generativelanguage.googleapis.com%2e/models',
+      'https://ark.cn-beijing.volces.com./models',
+      'https://ark.cn-beijing.volces.com%2e/models',
     ]) {
       await assert.rejects(egress.fetch(url), (error: any) => {
         assert.equal(error.message, PROVIDER_EGRESS_UNAVAILABLE_MESSAGE)
@@ -188,7 +205,7 @@ test('a non-target redirect to a provider is re-dispatched through the proxy', a
 test('a target redirect to another origin follows direct policy without leaking provider secrets', async () => {
   await withMockRouting('sg-required', async ({ direct, proxy, create }) => {
     let directOptions: any
-    proxy.get('https://api.openai.com').intercept({ path: '/start?key=gemini-secret' }).reply(302, '', {
+    proxy.get('https://ark.cn-beijing.volces.com').intercept({ path: '/api/v3/start?key=ark-query-secret' }).reply(302, '', {
       headers: { location: 'https://result.example/final' },
     })
     proxy.get('https://result.example').intercept({ path: '/final' }).reply(200, 'PROXY-LEAK')
@@ -197,15 +214,15 @@ test('a target redirect to another origin follows direct policy without leaking 
       return { statusCode: 200, data: 'DIRECT-RESULT' }
     })
     const egress = create()
-    const request = new UndiciRequest('https://api.openai.com/start?key=gemini-secret', {
-      headers: { authorization: 'Bearer provider-secret', 'x-safe': 'preserved' },
+    const request = new UndiciRequest('https://ark.cn-beijing.volces.com/api/v3/start?key=ark-query-secret', {
+      headers: { authorization: 'Bearer ark-provider-secret', 'x-safe': 'preserved' },
     })
 
     const response = await egress.fetch(request)
     assert.equal(await response.text(), 'DIRECT-RESULT')
     assert.equal(directOptions.headers.authorization, undefined)
     assert.equal(directOptions.headers['x-safe'], 'preserved')
-    assert.doesNotMatch(JSON.stringify(directOptions), /provider-secret|gemini-secret/)
+    assert.doesNotMatch(JSON.stringify(directOptions), /ark-provider-secret|ark-query-secret/)
   })
 })
 

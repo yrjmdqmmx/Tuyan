@@ -37,7 +37,7 @@ endpoint="${HK_WG_ENDPOINT:-}"
 
 if [[ "$mode" == "--dry-run" ]]; then
   echo "Would generate a restricted Singapore WireGuard private key and write the project-owned ${interface_name} and Squid configuration."
-  echo "Would bind Squid only to 10.77.0.2:3128 and permit only Hong Kong 10.77.0.1 to the three approved HTTPS hosts."
+  echo "Would bind Squid only to 10.77.0.2:3128 and permit only Hong Kong 10.77.0.1 to the four approved HTTPS hosts."
   exit 0
 fi
 
@@ -233,7 +233,7 @@ acl hk src 10.77.0.1/32
 acl CONNECT method CONNECT
 acl SSL_ports port 443
 # -n prevents reverse-DNS/PTR lookups from turning an IP literal into an approved name.
-acl approved dstdomain -n api.openai.com generativelanguage.googleapis.com openrouter.ai
+acl approved dstdomain -n api.openai.com generativelanguage.googleapis.com openrouter.ai ark.cn-beijing.volces.com
 acl literal_ipv4 url_regex -i ^[0-9]{1,3}(\.[0-9]{1,3}){3}:[0-9]+$
 acl literal_ipv6 url_regex -i ^\[[0-9a-f:.]+\]:[0-9]+$
 acl literal_ipv4_url url_regex -i ^https?://[0-9]{1,3}(\.[0-9]{1,3}){3}[:/]

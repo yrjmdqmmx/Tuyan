@@ -24,6 +24,16 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] Ark CN 数据面出站白名单与香港健康探针 — by Codex
+变更：Core `providerEgress` 与新加坡 Squid 仅新增精确数据面主机 `ark.cn-beijing.volces.com`；`sg-required` 走固定新加坡代理，`disabled` 对该主机及其单个根点等价形式继续失败关闭。香港定时 smoke 增加无鉴权、只读、非计费的 `GET /api/v3/models`，预期 401；未登记任何 Ark 控制面、CDN、通配符或后缀域名。
+契约（影响其他端 / 共享）：
+- **出站策略**：仅香港 WireGuard 源可通过 Squid CONNECT 到上述精确主机的 443；私网/混合 DNS、PTR、字面量、非 443、额外点及 lookalike 继续拒绝。TLS 不解密、不缓存。
+- **发布边界**：本条只提交 Core/SG/HK 运维契约和测试；生产部署仍须由人工工作流完成，客户端不得因本条自动将 Ark 标记为已上线。
+各端待办：
+- [x] provider egress（Core 精确 origin、SG ACL、HK smoke/monitor、负路径与密钥扫描测试）
+- [ ] 部署 / 运维（未发布；须先完成 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
+- [ ] Web / 原生端（未验证条目不得显示为账号可用）
+
 ### [2026-08-19] Core Ark 适配器、账号推理验证与模型注册表 v3 — by Codex
 变更：Core 新增火山方舟（Ark）静态注册表、CN 数据面适配器和不冒充账号全量目录的 `providerAccountCatalog` 推理 smoke；同时更新 Gemini/OpenRouter/百炼当前默认项，并为所有 provider/model 补充访问类型、账号目录要求和官方来源元数据。本条不包含 Web、生产出口策略、原生端或部署。
 契约（影响其他端 / 共享）：
@@ -35,7 +45,7 @@
 - [x] paperbanana-api / Laf Core（注册表、适配器、账号推理验证、混合路由、TDD 与文档）
 - [x] packages-api / auth-gateway（账号目录 action 的安全转发与共享类型已在前序并行任务完成）
 - [ ] Web（消费 v3 元数据、显式触发账号 probe 与付费图片确认；未验证条目不得显示为账号可用）
-- [ ] provider egress（登记 Ark CN origin，disabled 与负路径必须失败关闭；不得扩展到控制面/CDN）
+- [x] provider egress（登记 Ark CN origin，disabled 与负路径必须失败关闭；不得扩展到控制面/CDN）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需消费新注册表；旧请求继续兼容）
 - [ ] 部署 / 运维（未发布；须先完成出口策略、确认 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
 

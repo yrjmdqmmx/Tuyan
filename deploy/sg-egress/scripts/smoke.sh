@@ -84,6 +84,7 @@ wg show "$wg_interface" >/dev/null
 expect_status "OpenAI" "https://api.openai.com/v1/models" "401"
 expect_status "Gemini" "https://generativelanguage.googleapis.com/v1beta/models" "403"
 expect_status "OpenRouter" "https://openrouter.ai/api/v1/models" "200"
+expect_status "Ark" "https://ark.cn-beijing.volces.com/api/v3/models" "401"
 expect_proxy_rejection "unapproved hostname" "https://example.com/"
 expect_proxy_rejection "IPv4 literal" "https://192.0.2.1/"
 expect_proxy_rejection "non-443 port" "https://api.openai.com:444/"
