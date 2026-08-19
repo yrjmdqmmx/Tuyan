@@ -102,17 +102,49 @@ export async function createJobRequest(apiBase, health, payload) {
 
 export async function referenceLibraryRequest(apiBase, health, opts = {}) {
   if (shouldUsePaperbananaApi(apiBase, health)) {
+    const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'researchDomain']
+      .some((field) => opts[field] !== undefined);
+    const legacyRequest = !hasV2OnlyField && (opts.taskName !== undefined || opts.limit !== undefined);
+    const paginatedRequest = !legacyRequest;
+    const requestBody = paginatedRequest
+      ? {
+          action: 'referenceLibrary',
+          ...(opts.scope ? { scope: opts.scope } : {}),
+          ...(opts.page !== undefined ? { page: opts.page } : {}),
+          ...(opts.pageSize !== undefined ? { pageSize: opts.pageSize } : {}),
+          ...(opts.query !== undefined ? { query: opts.query || '' } : {}),
+          ...(opts.visualCategory ? { visualCategory: opts.visualCategory } : {}),
+          ...(opts.researchDomain ? { researchDomain: opts.researchDomain } : {}),
+          ...(opts.taskName ? { taskName: opts.taskName } : {}),
+        }
+      : {
+          action: 'referenceLibrary',
+          taskName: opts.taskName || 'diagram',
+          query: opts.query || '',
+          limit: opts.limit || 24,
+        };
     const data = await fetchJson(lafEndpoint(apiBase), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'referenceLibrary',
-        taskName: opts.taskName || 'diagram',
-        query: opts.query || '',
-        limit: opts.limit || 24,
-      }),
+      body: JSON.stringify(requestBody),
     });
-    return { references: (data.references || []).map(normalizeRetrievedReference) };
+    const references = (data.references || []).map(normalizeRetrievedReference);
+    const pageSize = positiveInteger(data.pageSize)
+      || positiveInteger(paginatedRequest ? opts.pageSize : opts.limit)
+      || 12;
+    const totalItems = nonNegativeInteger(data.totalItems, references.length);
+    return {
+      references,
+      totalItems,
+      totalPages: positiveInteger(data.totalPages) || Math.max(1, Math.ceil(totalItems / pageSize)),
+      page: positiveInteger(data.page) || 1,
+      pageSize,
+      facets: {
+        visualCategories: normalizeReferenceFacets(data.facets?.visualCategories),
+        researchDomains: normalizeReferenceFacets(data.facets?.researchDomains),
+      },
+      corpusVersion: String(data.corpusVersion || ''),
+    };
   }
 
   throw new Error('参考案例库需要使用 Laf 或登录网关后端。');
@@ -430,6 +462,7 @@ export function formatClientPlatform(value) {
 }
 
 function normalizeRetrievedReference(item = {}) {
+  const shortIntroZh = item.shortIntroZh || item.short_intro_zh || item.introZh || item.intro_zh || '';
   return {
     id: item.id || item._id || '',
     task_name: item.task_name || item.taskName || 'diagram',
@@ -437,10 +470,33 @@ function normalizeRetrievedReference(item = {}) {
     summary: item.summary || item.content || item.methodExcerpt || '',
     titleZh: item.titleZh || item.title_zh || '',
     introZh: item.introZh || item.intro_zh || '',
+    shortIntroZh,
+    detailZh: item.detailZh || item.detail_zh || shortIntroZh,
+    visualCategory: item.visualCategory || item.visual_category || '',
+    researchDomain: item.researchDomain || item.research_domain || '',
+    keywords: Array.isArray(item.keywords) ? item.keywords.map(String).filter(Boolean) : [],
+    corpusVersion: item.corpusVersion || item.corpus_version || item.localizationVersion || '',
     image_url: item.image_url || item.imageUrl || item.url || '',
     image_object_key: item.image_object_key || item.imageObjectKey || item.objectKey || '',
     source: item.source || 'paperbanana-bench',
   };
+}
+
+function normalizeReferenceFacets(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => ({ value: String(item?.value || ''), count: nonNegativeInteger(item?.count, 0) }))
+    .filter((item) => item.value && item.count > 0);
+}
+
+function positiveInteger(value) {
+  const number = Number(value);
+  return Number.isInteger(number) && number > 0 ? number : 0;
+}
+
+function nonNegativeInteger(value, fallback = 0) {
+  const number = Number(value);
+  return Number.isInteger(number) && number >= 0 ? number : fallback;
 }
 
 function normalizeJobStage(stage = {}) {

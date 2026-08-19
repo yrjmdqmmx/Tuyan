@@ -158,14 +158,32 @@ test('referenceLibraryRequest preserves English search copy and Chinese display 
         summary: 'English searchable summary',
         titleZh: '中文标题',
         introZh: '中文简介',
+        shortIntroZh: '中文短介绍',
+        detailZh: '中文详细说明，展示具体的数据和视觉关系。',
+        visualCategory: '方法框架图',
+        researchDomain: '计算机视觉',
+        keywords: ['数据流', '视觉模块'],
+        corpusVersion: 'zh-CN.v2',
       }],
+      totalItems: '306',
+      totalPages: '26',
+      page: '2',
+      pageSize: '12',
+      facets: {
+        visualCategories: [{ value: '方法框架图', count: '66' }],
+        researchDomains: [{ value: '计算机视觉', count: '42' }],
+      },
+      corpusVersion: 'zh-CN.v2',
     },
   }));
   try {
     const result = await referenceLibraryRequest(
       'https://gateway.example',
       { backendMode: 'gateway' },
-      { taskName: 'diagram', limit: 295 },
+      {
+        scope: 'bench', page: 2, pageSize: 12, query: 'vision',
+        visualCategory: '方法框架图', researchDomain: '计算机视觉', taskName: 'diagram',
+      },
     );
     assert.deepEqual(result.references[0], {
       id: 'ref_1',
@@ -174,10 +192,82 @@ test('referenceLibraryRequest preserves English search copy and Chinese display 
       summary: 'English searchable summary',
       titleZh: '中文标题',
       introZh: '中文简介',
+      shortIntroZh: '中文短介绍',
+      detailZh: '中文详细说明，展示具体的数据和视觉关系。',
+      visualCategory: '方法框架图',
+      researchDomain: '计算机视觉',
+      keywords: ['数据流', '视觉模块'],
+      corpusVersion: 'zh-CN.v2',
       image_url: '',
       image_object_key: '',
       source: 'paperbanana-bench',
     });
+    assert.deepEqual(result, {
+      references: [result.references[0]],
+      totalItems: 306,
+      totalPages: 26,
+      page: 2,
+      pageSize: 12,
+      facets: {
+        visualCategories: [{ value: '方法框架图', count: 66 }],
+        researchDomains: [{ value: '计算机视觉', count: 42 }],
+      },
+      corpusVersion: 'zh-CN.v2',
+    });
+    assert.deepEqual(JSON.parse(fetchMock.calls[0].options.body), {
+      action: 'referenceLibrary',
+      scope: 'bench',
+      page: 2,
+      pageSize: 12,
+      query: 'vision',
+      visualCategory: '方法框架图',
+      researchDomain: '计算机视觉',
+      taskName: 'diagram',
+    });
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('referenceLibraryRequest normalizes legacy reference-only responses with default pagination', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, references: [{ id: 'ref_1' }] } }));
+  try {
+    const result = await referenceLibraryRequest(
+      'https://gateway.example',
+      { backendMode: 'gateway' },
+      { taskName: 'plot', limit: 24 },
+    );
+    assert.equal(result.totalItems, 1);
+    assert.equal(result.totalPages, 1);
+    assert.equal(result.page, 1);
+    assert.equal(result.pageSize, 24);
+    assert.deepEqual(result.facets, { visualCategories: [], researchDomains: [] });
+    assert.equal(result.corpusVersion, '');
+    assert.deepEqual(JSON.parse(fetchMock.calls[0].options.body), {
+      action: 'referenceLibrary', taskName: 'plot', query: '', limit: 24,
+    });
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('referenceLibraryRequest defaults new callers to the cross-task bench scope', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0, references: [], totalItems: 306, totalPages: 26, page: 1, pageSize: 12,
+    facets: { visualCategories: [], researchDomains: [] }, corpusVersion: 'zh-CN.v2',
+  } }));
+  try {
+    const result = await referenceLibraryRequest('https://gateway.example', { backendMode: 'gateway' });
+    const queried = await referenceLibraryRequest(
+      'https://gateway.example',
+      { backendMode: 'gateway' },
+      { query: 'cell' },
+    );
+    assert.equal(result.totalItems, 306);
+    assert.equal(result.pageSize, 12);
+    assert.equal(queried.totalItems, 306);
+    assert.deepEqual(JSON.parse(fetchMock.calls[0].options.body), { action: 'referenceLibrary' });
+    assert.deepEqual(JSON.parse(fetchMock.calls[1].options.body), { action: 'referenceLibrary', query: 'cell' });
   } finally {
     fetchMock.restore();
   }

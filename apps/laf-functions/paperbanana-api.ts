@@ -112,7 +112,9 @@ type RefineImageBody = {
   refineReason?: string
 }
 
-type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'>
+type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'> & {
+  prevalidatedManualReferences?: RetrievedReference[]
+}
 type RefineExecutionBody = Omit<RefineImageBody, 'apiKeys'>
 type JobAdmissionConfig = {
   maxActive: number
@@ -476,7 +478,12 @@ type ProviderModelRegistry = {
 type ReferenceLibraryBody = {
   action: 'referenceLibrary'
   taskName?: TaskName
+  scope?: 'bench' | 'fallback'
+  page?: number
+  pageSize?: number
   query?: string
+  visualCategory?: string
+  researchDomain?: string
   limit?: number
 }
 
@@ -514,6 +521,12 @@ type RetrievedReference = {
   summary: string
   titleZh: string
   introZh: string
+  shortIntroZh: string
+  detailZh: string
+  visualCategory: string
+  researchDomain: string
+  keywords: string[]
+  corpusVersion: string
   imageUrl: string
   imageObjectKey: string
   source: string
@@ -605,6 +618,7 @@ type BenchImportCache = {
 let importCache: BenchImportCache | null = null
 
 const modelRegistryVersion = '2026-08-19.v2'
+const referenceCorpusVersion = 'zh-CN.v2'
 
 type RegistryEntryMetadata = Partial<Pick<
   ModelRegistryEntry,
@@ -720,6 +734,12 @@ const fallbackReferences: RetrievedReference[] = [
     summary: 'Use a left-to-right multi-agent workflow: input paper content, retrieval examples, planner, stylist, visualizer, critic loop, and final figure. Group agents in soft rounded containers with arrows showing feedback.',
     titleZh: '多智能体学术图示生成流程',
     introZh: '从论文输入、参考检索到规划、生成与评审闭环的横向流程图。',
+    shortIntroZh: '从论文输入、参考检索到规划、生成与评审闭环的横向流程图。',
+    detailZh: '以横向流程组织检索、规划、风格、生成和批评节点，并用反馈箭头表达迭代关系。',
+    visualCategory: '方法框架图',
+    researchDomain: '人工智能',
+    keywords: ['多智能体', '工作流', '评审闭环'],
+    corpusVersion: 'internal.v1',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -731,6 +751,12 @@ const fallbackReferences: RetrievedReference[] = [
     summary: 'Use a modular scientific diagram with input data on the left, stacked processing blocks in the center, auxiliary losses or memory paths in dashed connectors, and output artifacts on the right.',
     titleZh: '模块化模型与数据流管线',
     introZh: '以模块堆叠、数据流和辅助分支清晰表达模型结构与训练路径。',
+    shortIntroZh: '以模块堆叠、数据流和辅助分支清晰表达模型结构与训练路径。',
+    detailZh: '将输入、中央处理模块、辅助损失和输出从左至右排列，用虚线标出内存或训练分支。',
+    visualCategory: '模型结构图',
+    researchDomain: '人工智能',
+    keywords: ['模型管线', '数据流', '辅助损失'],
+    corpusVersion: 'internal.v1',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -742,6 +768,12 @@ const fallbackReferences: RetrievedReference[] = [
     summary: 'Use one large system container plus a zoomed-in breakout box for an important module. Connect the high-level block to the detail view with thin lines and keep labels short.',
     titleZh: '宏观系统与局部模块放大图',
     introZh: '用全局框架配合局部放大框，同时说明系统关系和关键模块细节。',
+    shortIntroZh: '用全局框架配合局部放大框，同时说明系统关系和关键模块细节。',
+    detailZh: '主视图呈现完整系统，旁侧通过引导线展开关键模块，便于同时理解全局路径与内部细节。',
+    visualCategory: '局部放大图',
+    researchDomain: '综合研究',
+    keywords: ['全局框架', '局部放大', '模块细节'],
+    corpusVersion: 'internal.v1',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -753,6 +785,12 @@ const fallbackReferences: RetrievedReference[] = [
     summary: 'Use parallel lanes for baseline and proposed method. Highlight the added component with one accent color, keep shared parts grey or muted, and show the final performance/output comparison at the right edge.',
     titleZh: '方法对比与消融实验图',
     introZh: '用平行路径突出基线与改进模块，并在末端呈现结果差异。',
+    shortIntroZh: '用平行路径突出基线与改进模块，并在末端呈现结果差异。',
+    detailZh: '将基线和改进方法排成平行通道，以强调色标出新增模块，在右侧对齐展示输出或性能差异。',
+    visualCategory: '对比实验图',
+    researchDomain: '综合研究',
+    keywords: ['基线对比', '消融实验', '平行路径'],
+    corpusVersion: 'internal.v1',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -1022,14 +1060,85 @@ async function modelRegistry(body: ModelRegistryBody) {
 }
 
 async function referenceLibrary(body: ReferenceLibraryBody) {
-  const taskName = normalizeTaskName(body.taskName)
-  const limit = clamp(Number(body.limit || 24), 1, 295)
+  if (body.scope && body.scope !== 'bench' && body.scope !== 'fallback') return fail('Invalid reference scope', 400)
+  if (body.taskName && body.taskName !== 'diagram' && body.taskName !== 'plot') return fail('Invalid taskName', 400)
+  const parsedPage = referenceLibraryPositiveInteger(body.page, 1)
+  if (parsedPage === null) return fail('page must be a positive integer', 400)
+  const parsedPageSize = referenceLibraryPositiveInteger(body.pageSize ?? body.limit, 12, 306)
+  if (parsedPageSize === null) return fail('pageSize must be a positive integer', 400)
+  const scope = body.scope === 'fallback' ? 'fallback' : 'bench'
+  const taskName = body.taskName as TaskName | undefined
+  const pageSize = parsedPageSize
+  const requestedPage = parsedPage
   const query = limitText(body.query, 120).toLowerCase()
-  const docs = await loadReferenceLibrary(taskName, { limit: Math.max(limit, 24) })
-  const filtered = query
-    ? docs.filter((item) => [item.title, item.summary, item.titleZh, item.introZh, item.id].join(' ').toLowerCase().includes(query))
-    : docs
-  return ok({ references: filtered.slice(0, limit) })
+  const visualCategory = limitText(body.visualCategory, 80)
+  const researchDomain = limitText(body.researchDomain, 80)
+  const rawRows = scope === 'fallback'
+    ? fallbackReferences.filter((item) => !taskName || item.taskName === taskName)
+    : await references.find({
+      source: 'paperbanana-bench',
+      corpusVersion: referenceCorpusVersion,
+      ...(taskName ? { taskName } : {}),
+    }).sort({ taskName: 1, id: 1 }).toArray()
+  const metadataRows = rawRows.map(normalizeReferenceMetadata)
+  const searchMatched = query
+    ? metadataRows.filter((item) => referenceSearchText(item).includes(query))
+    : metadataRows
+  const facets = {
+    visualCategories: countReferenceFacet(searchMatched, 'visualCategory'),
+    researchDomains: countReferenceFacet(searchMatched, 'researchDomain'),
+  }
+  const filtered = searchMatched.filter((item) =>
+    (!visualCategory || item.visualCategory === visualCategory)
+    && (!researchDomain || item.researchDomain === researchDomain))
+  const totalItems = filtered.length
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
+  const page = Math.min(requestedPage, totalPages)
+  const pageRows = filtered.slice((page - 1) * pageSize, page * pageSize)
+  const pageReferences = scope === 'fallback'
+    ? pageRows
+    : await Promise.all(pageRows.map(normalizeStoredReference))
+  return ok({
+    references: pageReferences,
+    totalItems,
+    totalPages,
+    page,
+    pageSize,
+    facets,
+    corpusVersion: scope === 'bench' ? referenceCorpusVersion : 'internal.v1',
+  })
+}
+
+function referenceLibraryPositiveInteger(value: unknown, fallback: number, maximum?: number): number | null {
+  if (value === undefined || value === null || value === '') return fallback
+  const number = Number(value)
+  if (!Number.isInteger(number) || number <= 0) return null
+  return maximum ? Math.min(number, maximum) : number
+}
+
+function referenceSearchText(item: RetrievedReference) {
+  return [
+    item.id,
+    item.title,
+    item.summary,
+    item.titleZh,
+    item.shortIntroZh,
+    item.detailZh,
+    item.visualCategory,
+    item.researchDomain,
+    ...item.keywords,
+  ].join(' ').toLowerCase()
+}
+
+function countReferenceFacet(items: RetrievedReference[], field: 'visualCategory' | 'researchDomain') {
+  const counts = new Map<string, number>()
+  for (const item of items) {
+    const value = item[field]
+    if (value) counts.set(value, (counts.get(value) || 0) + 1)
+  }
+  return [...counts.entries()]
+    .map(([value, count]) => ({ value, count }))
+    .sort((left, right) => right.count - left.count || left.value.localeCompare(right.value, 'zh-CN'))
 }
 
 async function createJob(body: CreateJobBody, ctx: FunctionContext) {
@@ -1078,6 +1187,16 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   }
 
   const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
+  if (normalizedBody.retrievalSetting === 'manual') {
+    try {
+      normalizedBody.prevalidatedManualReferences = await resolveManualRetrievedReferences(body.manualReferenceIds || [])
+    } catch (error: any) {
+      return {
+        ...fail(error?.message || 'Manual reference selection is invalid', Number(error?.statusCode || 422)),
+        businessCode: error?.code || 'REFERENCE_SELECTION_INVALID',
+      }
+    }
+  }
   const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
   if (!reservation.ok) return fail(reservation.error, reservation.code)
   let committed = false
@@ -2566,21 +2685,21 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
   )
 }
 
-async function resolveRetrievedReferences(body: CreateExecutionBody, apiKey: string): Promise<RetrievedReference[]> {
+export async function resolveRetrievedReferences(body: CreateExecutionBody, apiKey: string): Promise<RetrievedReference[]> {
   const setting = normalizeRetrievalSetting(body.retrievalSetting)
   if (setting === 'none') return []
 
-  const taskName = normalizeTaskName(body.taskName)
-  const library = await loadReferenceLibrary(taskName, { limit: 200 })
-  if (!library.length) return []
-
   if (setting === 'manual') {
-    const ids = new Set(normalizeManualReferenceIds(body.manualReferenceIds || []))
-    return library.filter((item) => ids.has(item.id)).slice(0, 10)
+    return body.prevalidatedManualReferences
+      || resolveManualRetrievedReferences(body.manualReferenceIds || [])
   }
 
+  const taskName = normalizeTaskName(body.taskName)
+  const library = await loadReferenceLibrary(taskName, { limit: 306 })
+  if (!library.length) return []
+
   if (setting === 'random') {
-    return shuffle(library).slice(0, 10)
+    return normalizeSelectedReferenceRows(shuffle(library).slice(0, 10))
   }
 
   const selectedIds = await autoSelectReferenceIds(body, apiKey, library)
@@ -2589,7 +2708,7 @@ async function resolveRetrievedReferences(body: CreateExecutionBody, apiKey: str
     .filter(Boolean) as RetrievedReference[]
   // On an empty/garbled auto result, return no references rather than dumping
   // the entire library (which would flood the prompt with irrelevant context).
-  return selected.slice(0, 10)
+  return normalizeSelectedReferenceRows(selected.slice(0, 10))
 }
 
 async function autoSelectReferenceIds(body: CreateExecutionBody, apiKey: string, library: RetrievedReference[]) {
@@ -2610,19 +2729,105 @@ async function autoSelectReferenceIds(body: CreateExecutionBody, apiKey: string,
 }
 
 async function loadReferenceLibrary(taskName: TaskName, options: { limit: number }): Promise<RetrievedReference[]> {
-  const limit = clamp(Number(options.limit || 24), 1, 295)
-  const rows = await references.find({ taskName }).sort({ createdAt: -1, _id: 1 }).limit(limit).toArray()
-  const normalizedRows = await Promise.all(rows.map(normalizeStoredReference))
-  const fallback = fallbackReferences.filter((item) => item.taskName === taskName)
-  const seen = new Set(normalizedRows.map((item) => item.id))
-  return [
-    ...normalizedRows,
-    ...fallback.filter((item) => !seen.has(item.id)),
-  ].slice(0, limit)
+  const limit = clamp(Number(options.limit || 24), 1, 306)
+  const rows = await references.find({
+    taskName,
+    source: 'paperbanana-bench',
+    corpusVersion: referenceCorpusVersion,
+  }).sort({ id: 1 }).limit(limit).toArray()
+  return rows
+    .map(normalizeReferenceMetadata)
+    .filter((item) => item.imageObjectKey || item.imageUrl)
+    .slice(0, limit)
+}
+
+async function normalizeSelectedReferenceRows(items: RetrievedReference[]): Promise<RetrievedReference[]> {
+  const normalized = await Promise.all(items.map(normalizeStoredReference))
+  return normalized.filter((item) => item.imageUrl)
+}
+
+export async function resolveManualRetrievedReferences(requestedIds: string[]): Promise<RetrievedReference[]> {
+  if (!Array.isArray(requestedIds) || !requestedIds.length) {
+    throw referenceSelectionError('Select at least one reference image.', 400, 'REFERENCE_SELECTION_REQUIRED')
+  }
+  if (requestedIds.length > 10) {
+    throw referenceSelectionError('Manual reference selection supports at most 10 IDs.', 400, 'REFERENCE_SELECTION_LIMIT')
+  }
+  const ids = requestedIds.map((id) => limitText(id, 120))
+  if (ids.some((id) => !id) || new Set(ids).size !== ids.length) {
+    throw referenceSelectionError('Manual reference IDs must be non-empty and unique.', 400, 'REFERENCE_SELECTION_INVALID')
+  }
+  const rows = await references.find({
+    id: { $in: ids },
+    source: 'paperbanana-bench',
+    corpusVersion: referenceCorpusVersion,
+  }).toArray()
+  const byId = new Map(rows.map((row: any) => [String(row.id || ''), row]))
+  const missingOrUnusable = ids.filter((id) => {
+    const row: any = byId.get(id)
+    if (!row) return true
+    const normalized = normalizeReferenceMetadata(row)
+    return !normalized.imageObjectKey && !normalized.imageUrl
+  })
+  if (missingOrUnusable.length) {
+    throw referenceSelectionError(
+      `Selected references are missing or have no usable image: ${missingOrUnusable.join(', ')}`,
+      422,
+      'REFERENCE_SELECTION_INVALID',
+    )
+  }
+  const selected = await Promise.all(ids.map((id) => normalizeStoredReference(byId.get(id))))
+  const unsigned = selected.filter((item) => !item.imageUrl).map((item) => item.id)
+  if (unsigned.length) {
+    throw referenceSelectionError(
+      `Selected references could not be prepared for use: ${unsigned.join(', ')}`,
+      422,
+      'REFERENCE_SELECTION_INVALID',
+    )
+  }
+  return selected
+}
+
+function referenceSelectionError(message: string, statusCode: number, code: string) {
+  const error: any = new Error(message)
+  error.statusCode = statusCode
+  error.code = code
+  return error
+}
+
+function normalizeReferenceMetadata(item: any): RetrievedReference {
+  const shortIntroZh = limitText(item.shortIntroZh || item.short_intro_zh || item.introZh || item.intro_zh, 300)
+  return {
+    id: String(item.id || item._id || ''),
+    taskName: normalizeTaskName(item.taskName || item.task_name),
+    title: limitText(item.title || item.visualIntent || item.caption || item.id, 160),
+    summary: limitText(item.summary || item.methodExcerpt || item.content || item.description, 2000),
+    titleZh: limitText(item.titleZh || item.title_zh, 160),
+    introZh: shortIntroZh,
+    shortIntroZh,
+    detailZh: limitText(item.detailZh || item.detail_zh || shortIntroZh, 2000),
+    visualCategory: limitText(item.visualCategory || item.visual_category || item.category, 80),
+    researchDomain: limitText(item.researchDomain || item.research_domain, 80),
+    keywords: normalizeReferenceKeywords(item.keywords),
+    corpusVersion: limitText(item.corpusVersion || item.corpus_version || item.localizationVersion, 80),
+    imageUrl: normalizeReferenceImageField(item.imageUrl || item.image_url || item.url),
+    imageObjectKey: normalizeReferenceImageField(item.imageObjectKey || item.image_object_key || item.objectKey),
+    source: limitText(item.source, 80) || 'paperbanana-bench',
+  }
+}
+
+function normalizeReferenceImageField(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+function normalizeReferenceKeywords(value: unknown): string[] {
+  const items = Array.isArray(value) ? value : typeof value === 'string' ? value.split(',') : []
+  return [...new Set(items.map((item) => limitText(item, 60)).filter(Boolean))].slice(0, 12)
 }
 
 async function normalizeStoredReference(item: any): Promise<RetrievedReference> {
-  const imageObjectKey = item.imageObjectKey || item.image_object_key || item.objectKey || ''
+  const normalized = normalizeReferenceMetadata(item)
+  const imageObjectKey = normalized.imageObjectKey
   // Always re-sign from the object key so seeded references never serve a stale
   // (expired) presigned URL; fall back to a stored direct URL only when there is
   // no object key (e.g. external http reference links).
@@ -2634,17 +2839,12 @@ async function normalizeStoredReference(item: any): Promise<RetrievedReference> 
       imageUrl = ''
     }
   }
-  if (!imageUrl) imageUrl = item.imageUrl || item.image_url || item.url || ''
+  // Stored signatures expire. If an object key exists, a fresh signing failure
+  // must stay unusable instead of silently resurrecting a stale stored URL.
+  if (!imageUrl && !imageObjectKey) imageUrl = normalized.imageUrl
   return {
-    id: String(item.id || item._id || ''),
-    taskName: normalizeTaskName(item.taskName || item.task_name),
-    title: limitText(item.title || item.visualIntent || item.caption || item.id, 160),
-    summary: limitText(item.summary || item.methodExcerpt || item.content || item.description, 1200),
-    titleZh: limitText(item.titleZh || item.title_zh, 160),
-    introZh: limitText(item.introZh || item.intro_zh, 300),
+    ...normalized,
     imageUrl,
-    imageObjectKey,
-    source: limitText(item.source, 80) || 'paperbanana-bench',
   }
 }
 

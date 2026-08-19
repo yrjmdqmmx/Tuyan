@@ -6,6 +6,21 @@ deploy_dir="$(cd -- "$script_dir/.." && pwd)"
 repo_dir="$(cd -- "$deploy_dir/../.." && pwd)"
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
 
+mode="sync"
+if [[ $# -eq 2 && "$1" == "--rollback" && "$2" == "--legacy-core-active" ]]; then
+  mode="rollback"
+elif [[ "${1:-}" == "--rollback" ]]; then
+  echo "Refusing metadata rollback: the legacy Core image must be active before metadata rollback. Re-run with --rollback --legacy-core-active after that cutover." >&2
+  exit 2
+elif [[ $# -ne 0 ]]; then
+  echo "Usage: $0 [--rollback --legacy-core-active]" >&2
+  exit 2
+fi
+emitter_name="emit-reference-metadata-mongosh.mjs"
+if [[ "$mode" == "rollback" ]]; then
+  emitter_name="emit-reference-metadata-rollback-mongosh.mjs"
+fi
+
 metadata_script="$(mktemp)"
 cleanup() {
   rm -f -- "$metadata_script"
@@ -21,8 +36,10 @@ docker image inspect "$core_image" >/dev/null
 docker run --rm --network none --read-only --cap-drop ALL \
   --security-opt no-new-privileges \
   -v "$script_dir/emit-reference-metadata-mongosh.mjs:/paperbanana/deploy/hk-single-host/scripts/emit-reference-metadata-mongosh.mjs:ro" \
+  -v "$script_dir/emit-reference-metadata-rollback-mongosh.mjs:/paperbanana/deploy/hk-single-host/scripts/emit-reference-metadata-rollback-mongosh.mjs:ro" \
   -v "$repo_dir/apps/web/src/data/reference-metadata.zh-CN.v1.js:/paperbanana/apps/web/src/data/reference-metadata.zh-CN.v1.js:ro" \
-  --entrypoint node "$core_image" /paperbanana/deploy/hk-single-host/scripts/emit-reference-metadata-mongosh.mjs > "$metadata_script"
+  -v "$repo_dir/apps/web/src/data/reference-metadata.zh-CN.v2.js:/paperbanana/apps/web/src/data/reference-metadata.zh-CN.v2.js:ro" \
+  --entrypoint node "$core_image" "/paperbanana/deploy/hk-single-host/scripts/$emitter_name" > "$metadata_script"
 chmod 0444 "$metadata_script"
 
 "${compose[@]}" run --rm --no-deps -T \
@@ -34,4 +51,4 @@ chmod 0444 "$metadata_script"
       paperbanana_business /tmp/paperbanana-reference-metadata.js
   '
 
-echo "PaperBanana reference localization metadata is synchronized."
+echo "PaperBanana reference localization metadata mode '$mode' completed."

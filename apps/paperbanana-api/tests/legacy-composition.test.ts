@@ -30,6 +30,8 @@ type LegacyPolicyModule = {
   callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>): Promise<string>
   callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string): Promise<string>
   normalizeModelName(provider: string, model: string): string
+  resolveManualRetrievedReferences(ids: string[]): Promise<Array<Record<string, any>>>
+  resolveRetrievedReferences(body: Record<string, any>, apiKey: string): Promise<Array<Record<string, any>>>
 }
 
 test('legacy Laf defaults to global fetch and supports a Node-injected runtime fetch without importing Undici', async () => {
@@ -587,6 +589,298 @@ test('modelCapability returns UI-usable model-level refine mode and reason', asy
   assert.match(redraw.refineReason, /analy/i)
 })
 
+test('referenceLibrary paginates the full bench scope before signing only the current page', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = Array.from({ length: 15 }, (_, index) => ({
+    id: `ref_${index}`,
+    taskName: index < 6 ? 'diagram' : 'plot',
+    title: `English source ${index}`,
+    summary: `Searchable source summary ${index}`,
+    titleZh: `中文标题${index}`,
+    shortIntroZh: `这是第 ${index} 个案例的简短说明。`,
+    detailZh: `该案例使用编号 ${index} 的数据与视觉结构，详细呈现研究方法与结果。`,
+    visualCategory: index % 2 ? '折线图' : '方法框架图',
+    researchDomain: index % 3 ? '计算机视觉' : '生命科学',
+    keywords: [`keyword-${index}`, index % 2 ? '趋势' : '流程'],
+    imageObjectKey: `references/bench/${index}.jpg`,
+    source: 'paperbanana-bench',
+    corpusVersion: 'zh-CN.v2',
+  }))
+  state.referenceRows.push({
+    id: 'paperbanana-style-internal', taskName: 'diagram', title: 'Internal fallback', summary: '',
+    imageObjectKey: '', source: 'paperbanana-fallback',
+  })
+  state.referenceFindQueries = []
+  state.signedReferenceKeys = []
+
+  const result = await legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'referenceLibrary' },
+    headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+
+  assert.equal(result.code, 0)
+  assert.equal(result.corpusVersion, 'zh-CN.v2')
+  assert.equal(result.totalItems, 15)
+  assert.equal(result.totalPages, 2)
+  assert.equal(result.page, 1)
+  assert.equal(result.pageSize, 12)
+  assert.equal(result.references.length, 12)
+  assert.equal(result.references.some((item: any) => item.source === 'paperbanana-fallback'), false)
+  assert.equal(state.signedReferenceKeys.length, 12, 'only current-page image objects may be signed')
+  assert.deepEqual(result.facets.visualCategories, [
+    { value: '方法框架图', count: 8 },
+    { value: '折线图', count: 7 },
+  ])
+})
+
+test('referenceLibrary applies English search and both facets before pagination across task names', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = [
+    {
+      id: 'ref_250', taskName: 'diagram', title: 'Cell architecture', summary: 'biology workflow',
+      titleZh: '细胞架构', shortIntroZh: '展示细胞流程。', detailZh: '详细展示细胞模块间的处理流程。',
+      visualCategory: '方法框架图', researchDomain: '生命科学', keywords: ['cell'],
+      imageObjectKey: 'references/bench/diagram/ref_250.jpg', source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+    {
+      id: 'ref_7', taskName: 'plot', title: 'Cell response curve', summary: 'biology measurements',
+      titleZh: '细胞响应曲线', shortIntroZh: '比较细胞响应变化。', detailZh: '用曲线详细展示细胞测量值的趋势。',
+      visualCategory: '折线图', researchDomain: '生命科学', keywords: ['cell'],
+      imageObjectKey: 'references/bench/plot/ref_7.jpg', source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+    {
+      id: 'ref_8', taskName: 'plot', title: 'Vision benchmark', summary: 'computer vision scores',
+      titleZh: '视觉基准', shortIntroZh: '比较模型得分。', detailZh: '详细比较不同视觉模型的得分。',
+      visualCategory: '折线图', researchDomain: '计算机视觉', keywords: ['vision'],
+      imageObjectKey: 'references/bench/plot/ref_8.jpg', source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+  ]
+  state.signedReferenceKeys = []
+
+  const result = await legacy.default({
+    request: { method: 'POST' },
+    body: {
+      action: 'referenceLibrary', scope: 'bench', query: 'biology',
+      visualCategory: '折线图', researchDomain: '生命科学', page: 1, pageSize: 1,
+    },
+    headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+
+  assert.equal(result.totalItems, 1)
+  assert.deepEqual(result.references.map((item: any) => item.id), ['ref_7'])
+  assert.equal(state.signedReferenceKeys.length, 1)
+  assert.deepEqual(result.facets.researchDomains, [{ value: '生命科学', count: 2 }])
+  assert.deepEqual(result.facets.visualCategories, [
+    { value: '方法框架图', count: 1 },
+    { value: '折线图', count: 1 },
+  ])
+})
+
+test('referenceLibrary keeps legacy taskName and limit callers compatible', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = Array.from({ length: 5 }, (_, index) => ({
+    id: `ref_${index}`, taskName: index < 2 ? 'diagram' : 'plot', title: `Plot ${index}`, summary: '',
+    titleZh: `图表${index}`, shortIntroZh: `图表${index}简介。`, detailZh: `图表${index}的详细说明。`,
+    visualCategory: '折线图', researchDomain: '综合研究', keywords: ['plot'],
+    imageObjectKey: `references/bench/plot/${index}.jpg`, source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+  }))
+  const result = await legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'referenceLibrary', taskName: 'plot', limit: 2 },
+    headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+  assert.equal(result.pageSize, 2)
+  assert.equal(result.totalItems, 3)
+  assert.equal(result.references.length, 2)
+  assert.equal(result.references.every((item: any) => item.taskName === 'plot'), true)
+})
+
+test('referenceLibrary rejects malformed page and pageSize values with a stable 400 envelope', async () => {
+  const legacy = await loadLegacy()
+  const context = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body: { action: 'referenceLibrary', ...body }, headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+  const malformedPage = await context({ page: 'abc' })
+  assert.equal(malformedPage.code, 400)
+  assert.match(malformedPage.error, /page must be a positive integer/i)
+
+  const fractionalPageSize = await context({ pageSize: 1.5 })
+  assert.equal(fractionalPageSize.code, 400)
+  assert.match(fractionalPageSize.error, /pageSize must be a positive integer/i)
+})
+
+test('manual reference selection queries exact IDs directly, preserves order, and reaches beyond the old 200-row boundary', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = Array.from({ length: 251 }, (_, index) => ({
+    id: `ref_${index}`, taskName: index < 240 ? 'plot' : 'diagram', title: `Reference ${index}`, summary: '',
+    titleZh: `参考${index}`, shortIntroZh: `参考${index}简介。`, detailZh: `参考${index}的详细说明。`,
+    visualCategory: '方法框架图', researchDomain: '综合研究', keywords: ['reference'],
+    imageObjectKey: `references/bench/${index}.jpg`, source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+  }))
+  state.referenceFindQueries = []
+  state.signedReferenceKeys = []
+
+  const selected = await legacy.resolveManualRetrievedReferences(['ref_250', 'ref_1'])
+
+  assert.deepEqual(selected.map((item) => item.id), ['ref_250', 'ref_1'])
+  assert.deepEqual(state.referenceFindQueries.at(-1), {
+    id: { $in: ['ref_250', 'ref_1'] },
+    source: 'paperbanana-bench',
+    corpusVersion: 'zh-CN.v2',
+  })
+  assert.deepEqual(state.signedReferenceKeys, ['references/bench/250.jpg', 'references/bench/1.jpg'])
+})
+
+test('automatic and random retrieval exclude internal fallbacks and sign only selected bench rows', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = [{
+    id: 'ref_240', taskName: 'diagram', title: 'Only bench diagram', summary: 'source summary',
+    titleZh: '唯一基准案例', shortIntroZh: '该案例展示基准图示。', detailZh: '该案例用于验证内部回退项不会混入基准检索结果。',
+    visualCategory: '方法框架图', researchDomain: '人工智能', keywords: ['bench'],
+    imageObjectKey: 'references/bench/diagram/ref_240.jpg', source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+  }]
+  state.signedReferenceKeys = []
+
+  const single = await legacy.resolveRetrievedReferences({ taskName: 'diagram', retrievalSetting: 'random' }, '')
+  assert.deepEqual(single.map((item) => item.id), ['ref_240'])
+  assert.deepEqual(state.signedReferenceKeys, ['references/bench/diagram/ref_240.jpg'])
+
+  state.referenceRows = Array.from({ length: 15 }, (_, index) => ({
+    id: `ref_${index}`, taskName: 'plot', title: `Plot ${index}`, summary: `Summary ${index}`,
+    titleZh: `图表${index}`, shortIntroZh: `图表${index}简介。`, detailZh: `图表${index}的详细说明。`,
+    visualCategory: '折线图', researchDomain: '综合研究', keywords: ['plot'],
+    imageObjectKey: `references/bench/plot/${index}.jpg`, source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+  }))
+  state.signedReferenceKeys = []
+  const selected = await legacy.resolveRetrievedReferences({ taskName: 'plot', retrievalSetting: 'random' }, '')
+  assert.equal(selected.length, 10)
+  assert.equal(state.signedReferenceKeys.length, 10, 'discarded random candidates must not be signed')
+
+  state.signedReferenceKeys = []
+  legacy.configureRuntimeFetch(async () => Response.json({
+    output: [{ type: 'message', content: [{ type: 'output_text', text: '["ref_1", "ref_12"]' }] }],
+  }))
+  try {
+    const automatic = await legacy.resolveRetrievedReferences({
+      taskName: 'plot', retrievalSetting: 'auto', provider: 'openai', mainModelName: 'gpt-5.5-pro',
+      methodContent: 'Compare representative trends.', caption: 'Trend comparison.',
+    }, 'test-key')
+    assert.deepEqual(automatic.map((item) => item.id), ['ref_1', 'ref_12'])
+    assert.equal(state.signedReferenceKeys.length, 2, 'discarded automatic candidates must not be signed')
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('manual reference selection fails explicitly for missing, image-less, or oversized selections', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = [
+    {
+      id: 'ref_1', taskName: 'plot', title: 'No image', summary: '', titleZh: '无图案例',
+      shortIntroZh: '该案例没有图像。', detailZh: '该案例缺少可用的图像数据。',
+      visualCategory: '折线图', researchDomain: '综合研究', keywords: ['missing'],
+      imageObjectKey: '', imageUrl: '', source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+    {
+      id: 'ref_2', taskName: 'plot', title: 'Whitespace image', summary: '', titleZh: '空白图片字段',
+      shortIntroZh: '该案例只有空白图片字段。', detailZh: '该案例用于验证空白图片字段不会被当作可用链接。',
+      visualCategory: '折线图', researchDomain: '综合研究', keywords: ['missing'],
+      imageObjectKey: '   ', imageUrl: '\t', source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+  ]
+
+  for (const ids of [
+    ['missing-ref'],
+    ['ref_1'],
+    ['ref_2'],
+    Array.from({ length: 11 }, (_, index) => `ref_${index}`),
+  ]) {
+    await assert.rejects(
+      legacy.resolveManualRetrievedReferences(ids),
+      (error: any) => {
+        assert.equal(error.statusCode, ids.length > 10 ? 400 : 422)
+        assert.equal(error.code, ids.length > 10 ? 'REFERENCE_SELECTION_LIMIT' : 'REFERENCE_SELECTION_INVALID')
+        return true
+      },
+    )
+  }
+})
+
+test('manual reference selection rejects a stale stored URL when fresh object signing fails', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = [{
+    id: 'ref_250', taskName: 'diagram', title: 'Reference', summary: 'Reference summary',
+    titleZh: '可用参考', shortIntroZh: '这是一条可用参考的完整简介。',
+    detailZh: '这是一条可用参考的详细中文说明，用于验证对象存储签名失败时不会回退到过期链接。',
+    visualCategory: '方法框架图', researchDomain: '人工智能', keywords: ['签名', '参考'],
+    imageObjectKey: 'references/bench/diagram/ref_250.jpg',
+    imageUrl: 'https://expired.invalid/ref_250.jpg',
+    source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+  }]
+  state.signingFailures = ['references/bench/diagram/ref_250.jpg']
+  try {
+    await assert.rejects(
+      legacy.resolveManualRetrievedReferences(['ref_250']),
+      (error: any) => {
+        assert.equal(error.statusCode, 422)
+        assert.equal(error.code, 'REFERENCE_SELECTION_INVALID')
+        return true
+      },
+    )
+  } finally {
+    state.signingFailures = []
+  }
+})
+
+test('createJob returns a stable 4xx business error before admission for an unusable manual reference', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = []
+  legacy.configureJobAdmission({ maxActive: 0, maxPending: 0, maxPerOwner: 1, maxPerIp: 1 })
+  try {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob',
+        provider: 'openai',
+        apiKeys: { openai: 'selected-key' },
+        taskName: 'diagram',
+        methodContent: 'A sufficiently detailed method section for validating manual references.',
+        caption: 'A valid figure caption.',
+        mainModelName: 'gpt-5.6-sol',
+        imageModelName: 'gpt-image-2',
+        referenceVisionModelName: 'gpt-5.6-sol',
+        retrievalSetting: 'manual',
+        manualReferenceIds: ['missing-ref'],
+      },
+      headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(result.code, 422)
+    assert.equal(result.businessCode, 'REFERENCE_SELECTION_INVALID')
+    assert.match(result.error, /missing-ref/)
+  } finally {
+    legacy.configureJobAdmission({
+      maxActive: Number.MAX_SAFE_INTEGER,
+      maxPending: 0,
+      maxPerOwner: Number.MAX_SAFE_INTEGER,
+      maxPerIp: Number.MAX_SAFE_INTEGER,
+    })
+  }
+})
+
 test('OpenRouter vector image responses are rasterized before the PNG pipeline saves them', async () => {
   const legacy = await loadLegacy()
   const previousWasm = process.env.RESVG_WASM_PATH
@@ -955,9 +1249,36 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
-                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, ossWriteMode: 'fail' };
+                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, ossWriteMode: 'fail', referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
+                const matches = (row, query = {}) => Object.entries(query).every(([field, expected]) => {
+                  const actual = row[field];
+                  if (expected && typeof expected === 'object' && '$in' in expected) return expected.$in.includes(actual);
+                  return actual === expected;
+                });
                 const collectionFor = (name) => ({
-                  find() { return { sort() { return this }, limit() { return this }, async toArray() { return [] } } },
+                  find(query = {}) {
+                    if (name !== 'paperbanana_references') return { sort() { return this }, skip() { return this }, limit() { return this }, async toArray() { return [] } };
+                    state.referenceFindQueries.push(structuredClone(query));
+                    let rows = (state.referenceRows || []).filter((row) => matches(row, query));
+                    let offset = 0;
+                    let count = Number.MAX_SAFE_INTEGER;
+                    return {
+                      sort(spec = {}) {
+                        const entries = Object.entries(spec);
+                        rows = [...rows].sort((left, right) => {
+                          for (const [field, direction] of entries) {
+                            const compared = String(left[field] ?? '').localeCompare(String(right[field] ?? ''), 'en', { numeric: true });
+                            if (compared) return compared * Number(direction || 1);
+                          }
+                          return 0;
+                        });
+                        return this;
+                      },
+                      skip(value) { offset = Number(value || 0); return this },
+                      limit(value) { count = Number(value || 0); return this },
+                      async toArray() { return rows.slice(offset, offset + count).map((row) => ({ ...row })) },
+                    };
+                  },
                   async findOne(query) {
                     if (name === 'paperbanana_jobs' && query?._id === 'job-1') return { _id: 'job-1', userId: 'owner-1' };
                     if (name === 'paperbanana_account_deletions') {
@@ -984,7 +1305,11 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                     }
                     throw new Error('OSS write failed');
                   },
-                  async getDownloadUrl() { return 'https://signed.invalid/object' },
+                  async getDownloadUrl(key) {
+                    if (String(key).startsWith('references/bench/')) state.signedReferenceKeys.push(key);
+                    if ((state.signingFailures || []).includes(key)) throw new Error('signing failed');
+                    return 'https://signed.invalid/object';
+                  },
                   async getUploadUrl() { return 'https://signed.invalid/upload' },
                   async listFiles() { return { Contents: [], IsTruncated: false } },
                   async deleteFile(key) { state.deletedObjects.push(key) }

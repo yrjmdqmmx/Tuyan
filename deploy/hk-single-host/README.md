@@ -51,6 +51,19 @@ documents. It refuses to overwrite an initialized environment.
    with `--apply`. It schedules a persistent daily backup at 03:17 China time
    with up to 15 minutes of jitter and prevents overlapping backup processes.
 
+The deploy apply path runs `scripts/sync-reference-metadata.sh` before smoke
+testing. It updates exactly the 306 image-backed `paperbanana-bench` documents
+by business `id`, preserves English search fields and image/job/selection data,
+and fails closed unless all required `zh-CN.v2` metadata and image fields pass
+the postcondition. The four `paperbanana-fallback` records are outside this
+count and are never modified. Metadata rollback must be coordinated: first
+deploy the pre-`zh-CN.v2` legacy Core image, then run
+`scripts/sync-reference-metadata.sh --rollback --legacy-core-active`. The
+explicit acknowledgement prevents an active v2 Core (which intentionally
+queries only `zh-CN.v2`) from losing its reference library. Rollback restores
+the prior v1 copy where available and removes v2-only metadata without deleting
+reference documents, images, jobs, or saved selections.
+
 Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
 inspect each result with `systemctl status paperbanana-backup.service` plus the
 corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.

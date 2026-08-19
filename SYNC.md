@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] PaperBananaBench 306 条 zh-CN.v2 语料与服务端分页— by Codex
+变更：参考库固定为当前 PaperBananaBench 306 条有图案例（66 diagram + 240 plot），4 条无图内部 fallback 与 bench 计数彻底分离；本条未部署。
+契约（影响其他端 / 共享）：
+- **语料字段**：`RetrievedReference`/`referenceLibrary` 在旧字段上新增 `shortIntroZh/detailZh/visualCategory/researchDomain/keywords/corpusVersion`；当前版本为 `zh-CN.v2`，英文 `title/summary` 继续用于检索。
+- **分页请求**：`referenceLibrary` 支持 `scope/page/pageSize/query/visualCategory/researchDomain/taskName`，`pageSize` 默认 12；响应返回 `totalItems/totalPages/page/pageSize/facets/corpusVersion`。默认 `scope=bench` 且跨 taskName 暴露 306 条；仅发 `taskName/limit` 的旧端保持兼容。查询/分面在服务端分页前完成，只给当页图片签名。
+- **手选参考**：`manualReferenceIds` 最多 10 个唯一 ID，服务端用 `$in` 直查且保留请求顺序，不再只扫前 200 条；缺失/无图返回 `422 + REFERENCE_SELECTION_INVALID`，超限返回 `400 + REFERENCE_SELECTION_LIMIT`，不再静默丢弃。
+- **迁移/回滚**：香港同步脚本按业务 `id` 幂等更新且必须验收 306 条有图 v2 记录；`--rollback` 仅回滚元数据版本，不删图片、任务或选择记录。
+各端待办：
+- [x] paperbanana-api / Laf / packages-api（分页、分面、搜索、当页签名、手选严格错误）
+- [x] 语料与迁移工具（306 条固定快照、质量门禁、幂等同步/元数据回滚）
+- [ ] Web（消费服务端分页/分面/详情字段，不再一次拉取 295 条本地过滤）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需接入新分页响应；旧 `taskName/limit` 请求仍可用）
+
 ### [2026-08-19] 模型注册表 v2 与模型级精修能力 — by Codex
 变更：服务端 `modelRegistry` 成为模型可用性与精修语义的唯一权威，修正 Gemini/OpenAI/百炼直连目录与适配器，OpenRouter 继续以官方动态目录 fail-closed；本条未部署。
 契约（影响其他端 / 共享）：

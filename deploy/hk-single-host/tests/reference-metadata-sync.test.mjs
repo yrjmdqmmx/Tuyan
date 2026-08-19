@@ -1,60 +1,103 @@
 import assert from 'node:assert/strict'
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 import vm from 'node:vm'
-import { REFERENCE_METADATA_ZH_CN } from '../../../apps/web/src/data/reference-metadata.zh-CN.v1.js'
+import {
+  REFERENCE_METADATA_ZH_CN_V2,
+  REFERENCE_METADATA_ZH_CN_V2_VERSION,
+} from '../../../apps/web/src/data/reference-metadata.zh-CN.v2.js'
 
 const root = new URL('../../../', import.meta.url)
 const emitter = new URL('../scripts/emit-reference-metadata-mongosh.mjs', import.meta.url)
-const syncScript = readFileSync(new URL('../scripts/sync-reference-metadata.sh', import.meta.url), 'utf8')
+const rollbackEmitter = new URL('../scripts/emit-reference-metadata-rollback-mongosh.mjs', import.meta.url)
+const syncScriptUrl = new URL('../scripts/sync-reference-metadata.sh', import.meta.url)
+const syncScript = readFileSync(syncScriptUrl, 'utf8')
 const deployScript = readFileSync(new URL('../scripts/deploy.sh', import.meta.url), 'utf8')
 
-test('emitter produces a versioned 295-item idempotent Mongo update with postcondition checks', () => {
+function matches(document, query = {}) {
+  return Object.entries(query).every(([field, condition]) => {
+    if (field === '$or') return condition.some((branch) => matches(document, branch))
+    const actual = document[field]
+    if (condition && typeof condition === 'object') {
+      if ('$in' in condition && !condition.$in.includes(actual)) return false
+      if ('$type' in condition && condition.$type === 'string' && typeof actual !== 'string') return false
+      if ('$type' in condition && condition.$type === 'array' && !Array.isArray(actual)) return false
+      if ('$ne' in condition && JSON.stringify(actual) === JSON.stringify(condition.$ne)) return false
+      if ('$regex' in condition && !condition.$regex.test(String(actual ?? ''))) return false
+      if ('$exists' in condition && (actual !== undefined) !== condition.$exists) return false
+      return true
+    }
+    return actual === condition
+  })
+}
+
+function migrationFixture() {
+  const documents = new Map(REFERENCE_METADATA_ZH_CN_V2.map(({ id, taskName }, index) => [id, {
+    _id: `object-id-${index + 1}`,
+    id,
+    taskName,
+    source: 'paperbanana-bench',
+    title: `Preserved English title ${id}`,
+    summary: `Preserved English summary ${id}`,
+    imageObjectKey: `references/bench/${taskName}/${id}.jpg`,
+  }]))
+  const fallback = {
+    _id: 'fallback-object-id', id: 'paperbanana-style-internal', taskName: 'diagram',
+    source: 'paperbanana-fallback', titleZh: '不应改变', imageObjectKey: '',
+  }
+  documents.set(fallback.id, fallback)
+  const references = {
+    countDocuments(query) {
+      return [...documents.values()].filter((document) => matches(document, query)).length
+    },
+    distinct(field, query) {
+      return [...new Set([...documents.values()].filter((document) => matches(document, query)).map((document) => document[field]))]
+    },
+    bulkWrite(operations) {
+      let matchedCount = 0
+      let modifiedCount = 0
+      for (const operation of operations) {
+        const { filter, update } = operation.updateOne
+        const document = documents.get(filter.id)
+        if (!document || !matches(document, filter)) continue
+        matchedCount += 1
+        const before = JSON.stringify(document)
+        Object.assign(document, update.$set || {})
+        for (const field of Object.keys(update.$unset || {})) delete document[field]
+        if (JSON.stringify(document) !== before) modifiedCount += 1
+      }
+      return { matchedCount, modifiedCount }
+    },
+  }
+  return { documents, fallback, references }
+}
+
+test('emitter produces an idempotent 306-item v2 Mongo update by business id with exact metadata postconditions', () => {
   const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
-  assert.match(output, /2026-08-19\.v1/)
-  assert.match(output, /metadata\.length !== 295/)
+  assert.match(output, new RegExp(REFERENCE_METADATA_ZH_CN_V2_VERSION.replace('.', '\\.')))
+  assert.match(output, /metadata\.length !== 306/)
   assert.match(output, /bulkWrite/)
-  assert.match(output, /localizationVersion/)
+  assert.match(output, /corpusVersion/)
+  assert.match(output, /shortIntroZh/)
+  assert.match(output, /detailZh/)
+  assert.match(output, /visualCategory/)
+  assert.match(output, /researchDomain/)
+  assert.match(output, /keywords/)
   assert.match(output, /countDocuments/)
-  assert.match(output, /countDocuments\(\{id: \{\$in: ids\}\}\)/)
-  assert.match(output, /filter: \{\s*id: item\.id,\s*\$or:/)
+  assert.match(output, /distinct\("id"/)
+  assert.match(output, /source: "paperbanana-bench"/)
+  assert.match(output, /imageObjectKey/)
+  assert.match(output, /title: \{\$type: "string", \$regex: \/\\S\/\}/)
+  assert.match(output, /summary: \{\$type: "string", \$regex: \/\\S\/\}/)
+  assert.match(output, /filter: \{\s*id: item\.id,\s*source: "paperbanana-bench"/)
   assert.doesNotMatch(output, /_id: \{\$in: ids\}|filter: \{_id: item\.id\}/)
   assert.doesNotMatch(output, /password|mongodb:\/\//i)
 
-  const documents = new Map(REFERENCE_METADATA_ZH_CN.map(({ id }, index) => [id, { _id: `object-id-${index + 1}`, id }]))
+  const { documents, fallback, references } = migrationFixture()
   const run = () => {
     let summary
-    const references = {
-      countDocuments(query) {
-        const ids = query?.id?.$in || []
-        return ids.filter((id) => {
-          const document = documents.get(id)
-          if (!document) return false
-          if (query.localizationVersion && document.localizationVersion !== query.localizationVersion) return false
-          if (query.titleZh && !document.titleZh) return false
-          if (query.introZh && !document.introZh) return false
-          return true
-        }).length
-      },
-      bulkWrite(operations) {
-        let modifiedCount = 0
-        for (const operation of operations) {
-          const { filter, update } = operation.updateOne
-          const document = documents.get(filter.id)
-          if (!document) continue
-          const differs = (filter.$or || []).some((condition) => {
-            const [field, predicate] = Object.entries(condition)[0]
-            return document[field] !== predicate.$ne
-          })
-          if (!differs) continue
-          Object.assign(document, update.$set)
-          modifiedCount += 1
-        }
-        return { matchedCount: operations.length, modifiedCount }
-      },
-    }
     vm.runInNewContext(output, {
       db: { getSiblingDB: () => ({ getCollection: () => references }) },
       print: (value) => { summary = JSON.parse(value) },
@@ -64,20 +107,131 @@ test('emitter produces a versioned 295-item idempotent Mongo update with postcon
     })
     return summary
   }
-  assert.equal(run().modified, 295)
+  assert.equal(run().modified, 306)
+  assert.equal(run().localized, 306)
   assert.equal(run().modified, 0)
+  assert.equal(documents.get('ref_0').title, 'Preserved English title ref_0')
+  assert.equal(documents.get('ref_0').summary, 'Preserved English summary ref_0')
+  assert.equal(fallback.titleZh, '不应改变')
+  assert.equal(fallback.corpusVersion, undefined)
 })
 
-test('deployment syncs metadata through the secret-mounted mongo-init container before smoke', () => {
+test('emitter rejects duplicate business ids even when the image-backed document count is 306', () => {
+  const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
+  const ids = REFERENCE_METADATA_ZH_CN_V2.map(({ id }) => id)
+  const references = {
+    countDocuments() { return 306 },
+    distinct(field) {
+      assert.equal(field, 'id')
+      return ids.slice(0, 305)
+    },
+    bulkWrite() { throw new Error('migration must fail before writing duplicate business ids') },
+  }
+  assert.throws(
+    () => vm.runInNewContext(output, {
+      db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
+    }),
+    /306 distinct business ids/,
+  )
+})
+
+test('emitter rejects a bench row whose preserved English search fields are blank', () => {
+  const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
+  const ids = REFERENCE_METADATA_ZH_CN_V2.map(({ id }) => id)
+  const references = {
+    countDocuments(query) { return query.title && query.summary ? 305 : 306 },
+    distinct() { return ids },
+    bulkWrite() { throw new Error('migration must validate English search fields before writing') },
+  }
+  assert.throws(
+    () => vm.runInNewContext(output, {
+      db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
+    }),
+    /306 image-backed records with complete English title\/summary/,
+  )
+})
+
+test('emitter rejects whitespace-only preserved English search fields before writing', () => {
+  const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
+  const { documents, references } = migrationFixture()
+  documents.get('ref_0').title = '   \t'
+  assert.throws(
+    () => vm.runInNewContext(output, {
+      db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
+    }),
+    /306 image-backed records with complete English title\/summary/,
+  )
+  assert.equal(documents.get('ref_1').corpusVersion, undefined, 'migration must fail before writing')
+})
+
+test('emitter rejects whitespace-only image fields before counting a bench row as image-backed', () => {
+  const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
+  const { documents, references } = migrationFixture()
+  documents.get('ref_0').imageObjectKey = '   \t'
+  assert.throws(
+    () => vm.runInNewContext(output, {
+      db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
+    }),
+    /306 image-backed records with complete English title\/summary/,
+  )
+  assert.equal(documents.get('ref_1').corpusVersion, undefined, 'migration must fail before writing')
+})
+
+test('emitter rejects any extra bench document tagged as the current corpus version', () => {
+  const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
+  const ids = REFERENCE_METADATA_ZH_CN_V2.map(({ id }) => id)
+  const references = {
+    countDocuments(query) { return query.corpusVersion && !query.id ? 307 : 306 },
+    distinct() { return ids },
+    bulkWrite() { return { matchedCount: 306, modifiedCount: 306 } },
+  }
+  assert.throws(
+    () => vm.runInNewContext(output, {
+      db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
+    }),
+    /current corpus version contains 307 documents instead of 306/,
+  )
+})
+
+test('rollback removes only v2 metadata from bench IDs without deleting documents or image fields', () => {
+  const syncOutput = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
+  const rollbackOutput = execFileSync(process.execPath, [fileURLToPath(rollbackEmitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
+  assert.match(rollbackOutput, /corpusVersion: version/)
+  assert.match(rollbackOutput, /source: "paperbanana-bench"/)
+  assert.match(rollbackOutput, /\$unset/)
+  assert.doesNotMatch(rollbackOutput, /deleteOne|deleteMany|drop\(/)
+  assert.doesNotMatch(rollbackOutput, /imageObjectKey[^\n]*\$unset|imageUrl[^\n]*\$unset/)
+
+  const { documents, fallback, references } = migrationFixture()
+  const context = () => ({
+    db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
+  })
+  vm.runInNewContext(syncOutput, context())
+  vm.runInNewContext(rollbackOutput, context())
+  assert.equal(documents.size, 307)
+  assert.equal(documents.get('ref_0').imageObjectKey, 'references/bench/plot/ref_0.jpg')
+  assert.equal(documents.get('ref_0').corpusVersion, undefined)
+  assert.equal(fallback.titleZh, '不应改变')
+})
+
+test('deployment sync supports an explicit rollback using secret-mounted isolated tooling before smoke', () => {
   assert.match(syncScript, /mongo_business_password/)
   assert.match(syncScript, /--authenticationDatabase paperbanana_business/)
   assert.match(syncScript, /emit-reference-metadata-mongosh\.mjs/)
+  assert.match(syncScript, /emit-reference-metadata-rollback-mongosh\.mjs/)
+  assert.match(syncScript, /--rollback/)
   assert.doesNotMatch(syncScript, /(?:^|\n)node\s+"\$script_dir\/emit-reference-metadata-mongosh\.mjs"/)
   assert.match(syncScript, /PAPERBANANA_CORE_IMAGE/)
   assert.match(syncScript, /docker run --rm --network none --read-only --cap-drop ALL/)
   assert.match(syncScript, /--security-opt no-new-privileges/)
+  assert.match(syncScript, /reference-metadata\.zh-CN\.v2\.js:\/paperbanana\/apps\/web\/src\/data\/reference-metadata\.zh-CN\.v2\.js:ro/)
   assert.match(syncScript, /reference-metadata\.zh-CN\.v1\.js:\/paperbanana\/apps\/web\/src\/data\/reference-metadata\.zh-CN\.v1\.js:ro/)
-  assert.match(syncScript, /\/paperbanana\/deploy\/hk-single-host\/scripts\/emit-reference-metadata-mongosh\.mjs/)
   assert.match(syncScript, /-v "\$metadata_script:\/tmp\/paperbanana-reference-metadata\.js:ro"/)
   assert.ok(deployScript.indexOf('sync-reference-metadata.sh') < deployScript.indexOf('smoke.sh'))
+
+  const uncoordinated = spawnSync('bash', [fileURLToPath(syncScriptUrl), '--rollback'], {
+    cwd: fileURLToPath(root), encoding: 'utf8',
+  })
+  assert.equal(uncoordinated.status, 2)
+  assert.match(uncoordinated.stderr, /legacy Core image must be active before metadata rollback/i)
 })

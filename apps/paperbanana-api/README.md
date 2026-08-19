@@ -34,6 +34,13 @@ Internal-only Node 24 runtime for the PaperBanana business handler. The build im
 - Gemini 3.x text and vision calls omit legacy `temperature`, `topP`, and `topK` overrides so provider defaults remain authoritative.
 - Current protocol references: [OpenRouter Image Generation](https://openrouter.ai/docs/guides/overview/multimodal/image-generation), [OpenRouter Models API](https://openrouter.ai/docs/guides/overview/models), [Gemini models](https://ai.google.dev/gemini-api/docs/models), [Gemini image generation and Interactions](https://ai.google.dev/gemini-api/docs/image-generation), [OpenAI Responses migration](https://developers.openai.com/api/docs/guides/migrate-to-responses), [OpenAI image generation](https://developers.openai.com/api/docs/guides/images-vision), [Alibaba Cloud Model Studio models](https://help.aliyun.com/en/model-studio/models), and [Alibaba image generation/editing](https://help.aliyun.com/en/model-studio/image-model/).
 
+## Reference corpus and retrieval
+
+- Public read-only action `referenceLibrary` defaults to `scope: "bench"` and corpus `zh-CN.v2`. The fixed corpus contains exactly 306 image-backed PaperBananaBench cases: 66 diagrams and 240 plots. The four image-less internal style fallbacks are available only through `scope: "fallback"`; they are never included in bench counts or facets.
+- The paginated request accepts `scope`, `page`, `pageSize`, `query`, `visualCategory`, `researchDomain`, and optional `taskName`. `pageSize` defaults to 12. Search covers preserved English `title`/`summary` plus Chinese display metadata and keywords. Query and facet filters run before pagination; OSS download URLs are generated only for the current page.
+- The response adds `totalItems`, `totalPages`, `page`, `pageSize`, `facets`, and `corpusVersion`. Each reference preserves legacy fields and adds `shortIntroZh`, `detailZh`, `visualCategory`, `researchDomain`, `keywords`, and item `corpusVersion`. Callers that send only `taskName` and `limit` retain the legacy first-page behavior.
+- Manual selection supports one to ten unique IDs. The service queries the exact IDs directly with `$in`, independent of the diagram/plot split, preserves request order, and preflights the selection before job admission. Missing or image-less IDs return `code: 422` with `businessCode: "REFERENCE_SELECTION_INVALID"`; more than ten IDs returns `code: 400` with `businessCode: "REFERENCE_SELECTION_LIMIT"`. IDs are never silently dropped.
+
 Copy `.env.example`, set every required value, then run:
 
 ```sh
