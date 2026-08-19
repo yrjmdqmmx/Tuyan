@@ -2,12 +2,10 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Check, ChevronDown, Search, Sparkles, X } from 'lucide-react'
 import { groupRegistryModels, partitionRegistryModels } from '../lib/modelRegistry'
 
-const ROW_HEIGHT = 112
-const WINDOW_HEIGHT = 448
-const WINDOW_OVERSCAN = 4
+const COMPATIBLE_PAGE_SIZE = 24
 const INCOMPATIBLE_PAGE_SIZE = 24
 const COMPACT_MEDIA_QUERY = '(max-width: 1076px)'
-const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'
 
 function providerDisplayName(provider, providerConfigs) {
   if (provider === 'gemini') return 'Google Gemini API'
@@ -64,10 +62,11 @@ export default function ModelPicker({
   const [selectedVendor, setSelectedVendor] = useState('')
   const [mobileStep, setMobileStep] = useState('providers')
   const [compact, setCompact] = useState(false)
-  const [scrollTop, setScrollTop] = useState(0)
+  const [compatibleLimit, setCompatibleLimit] = useState(COMPATIBLE_PAGE_SIZE)
   const [showIncompatible, setShowIncompatible] = useState(false)
   const [incompatibleLimit, setIncompatibleLimit] = useState(INCOMPATIBLE_PAGE_SIZE)
   const windowRef = useRef(null)
+  const listRef = useRef(null)
   const panelRef = useRef(null)
   const previousFocusRef = useRef(null)
   const labelId = useId()
@@ -97,13 +96,11 @@ export default function ModelPicker({
     () => (isAggregator ? grouped.find((group) => group.vendor === activeVendor)?.models || [] : compatible),
     [activeVendor, compatible, grouped, isAggregator],
   )
-  const visibleStart = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - WINDOW_OVERSCAN)
-  const visibleEnd = Math.min(rows.length, Math.ceil((scrollTop + WINDOW_HEIGHT) / ROW_HEIGHT) + WINDOW_OVERSCAN)
   const selectedModel = activeProviderRegistry.models?.find((model) => model.id === effectiveRoute.modelId)
     || models?.find((model) => model.id === value)
 
-  function resetVirtualWindow() {
-    setScrollTop(0)
+  function resetModelList() {
+    setCompatibleLimit(COMPATIBLE_PAGE_SIZE)
     if (windowRef.current) windowRef.current.scrollTop = 0
   }
 
@@ -112,9 +109,20 @@ export default function ModelPicker({
     setIncompatibleLimit(INCOMPATIBLE_PAGE_SIZE)
   }
 
-  function changeCatalogMode(mode) { setCatalogMode(mode); resetVirtualWindow(); resetIncompatible() }
+  function changeCatalogMode(mode) { setCatalogMode(mode); resetModelList(); resetIncompatible() }
 
-  useEffect(resetVirtualWindow, [models, role, outputFormat, provider])
+  useEffect(() => {
+    resetModelList()
+  }, [models, role, outputFormat, provider])
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia?.(COMPACT_MEDIA_QUERY)
+    if (!mediaQuery) return undefined
+    const updateCompactMode = (event) => setCompact(event.matches)
+    setCompact(mediaQuery.matches)
+    mediaQuery.addEventListener?.('change', updateCompactMode)
+    return () => mediaQuery.removeEventListener?.('change', updateCompactMode)
+  }, [])
 
   useEffect(() => {
     if (!open) return undefined
@@ -154,12 +162,11 @@ export default function ModelPicker({
     const nextGroups = groupRegistryModels(partitionRegistryModels(nextRegistry?.models || [], { role, outputFormat }).compatible)
     setSelectedProvider(nextProvider)
     setSelectedVendor(nextGroups.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || nextGroups[0]?.vendor || '')
-    setCompact(Boolean(window.matchMedia?.(COMPACT_MEDIA_QUERY)?.matches))
     setMobileStep('providers')
     setQuery('')
     setCatalogMode('recommended')
     resetIncompatible()
-    resetVirtualWindow()
+    resetModelList()
     setOpen(true)
   }
 
@@ -170,13 +177,13 @@ export default function ModelPicker({
     setSelectedVendor(nextGroups[0]?.vendor || '')
     setQuery('')
     resetIncompatible()
-    resetVirtualWindow()
+    resetModelList()
     if (compact) setMobileStep(nextRegistry.accessKind === 'aggregator' ? 'vendors' : 'models')
   }
 
   function chooseVendor(vendor) {
     setSelectedVendor(vendor)
-    resetVirtualWindow()
+    resetModelList()
     if (compact) setMobileStep('models')
   }
 
@@ -191,54 +198,64 @@ export default function ModelPicker({
     setMobileStep(isAggregator ? 'vendors' : 'providers')
   }
 
+  function revealMoreModels() {
+    setCompatibleLimit((current) => Math.min(rows.length, current + COMPATIBLE_PAGE_SIZE))
+  }
+
+  function scheduleFocusFirstRevealedModel(event) {
+    if (!['Enter', ' '].includes(event.key)) return
+    const rowIndex = Number(event.currentTarget.dataset.nextModelIndex)
+    window.setTimeout(() => {
+      listRef.current?.querySelector(`[data-model-index="${rowIndex}"]`)?.focus()
+    }, 50)
+  }
+
   const providerRail = (
-    <nav className="model-provider-rail" aria-label="API 接入渠道">
+    <div className="model-provider-rail" role="group" aria-label="API 接入渠道">
       <h3>API 接入渠道</h3>
       {providerIds.map((id) => (
-        <button type="button" key={id} aria-label={providerDisplayName(id, providerConfigs)} className={selectedProvider === id ? 'active' : ''} onClick={() => chooseProvider(id)}>
+        <button type="button" key={id} aria-label={providerDisplayName(id, providerConfigs)} aria-pressed={selectedProvider === id} className={selectedProvider === id ? 'active' : ''} onClick={() => chooseProvider(id)}>
           <strong>{providerDisplayName(id, providerConfigs)}</strong>
           <small>{effectiveRegistry.providers[id].accessKind === 'aggregator' ? '聚合渠道' : '官方直连'}</small>
         </button>
       ))}
-    </nav>
+    </div>
   )
 
   const vendorRail = isAggregator ? (
-    <nav className="model-vendor-rail" aria-label="模型开发厂商">
+    <div className="model-vendor-rail" role="group" aria-label="模型开发厂商">
       <h3>模型开发厂商</h3>
       {availableVendors.map((vendor) => (
-        <button type="button" key={vendor} aria-label={`厂商 ${vendor}`} className={activeVendor === vendor ? 'active' : ''} onClick={() => chooseVendor(vendor)}>
+        <button type="button" key={vendor} aria-label={`厂商 ${vendor}`} aria-pressed={activeVendor === vendor} className={activeVendor === vendor ? 'active' : ''} onClick={() => chooseVendor(vendor)}>
           {vendor}
         </button>
       ))}
-    </nav>
+    </div>
   ) : null
 
   const modelBrowser = (
     <section className="model-browser" aria-label="具体模型列表">
       <div className="model-browser-tools">
         {isOpenRouter ? (
-          <div className="model-catalog-tabs" role="tablist" aria-label="OpenRouter 模型范围">
-            <button type="button" className={catalogMode === 'recommended' ? 'active' : ''} onClick={() => changeCatalogMode('recommended')}>推荐模型</button>
-            <button type="button" className={catalogMode === 'all' ? 'active' : ''} onClick={() => changeCatalogMode('all')}>全部兼容模型</button>
+          <div className="model-catalog-tabs" role="group" aria-label="OpenRouter 模型范围">
+            <button type="button" aria-pressed={catalogMode === 'recommended'} className={catalogMode === 'recommended' ? 'active' : ''} onClick={() => changeCatalogMode('recommended')}>推荐模型</button>
+            <button type="button" aria-pressed={catalogMode === 'all'} className={catalogMode === 'all' ? 'active' : ''} onClick={() => changeCatalogMode('all')}>全部兼容模型</button>
           </div>
         ) : <div className="model-catalog-title"><Sparkles size={15} /> 服务端模型目录</div>}
         <label className="model-picker-search">
           <Search size={16} />
           <span className="sr-only">搜索{label}</span>
-          <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); resetVirtualWindow(); resetIncompatible() }} placeholder="搜索模型、厂商或能力" />
+          <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); resetModelList(); resetIncompatible() }} placeholder="搜索模型、厂商或能力" />
         </label>
       </div>
-      <div ref={windowRef} className="model-picker-window" style={{ height: WINDOW_HEIGHT }} onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}>
-        <div style={{ height: rows.length * ROW_HEIGHT, position: 'relative' }}>
-          {rows.slice(visibleStart, visibleEnd).map((model, offset) => {
-            const rowIndex = visibleStart + offset
-            return (
+      <div ref={windowRef} className="model-picker-window">
+        <div ref={listRef} className="model-picker-list">
+          {rows.slice(0, compatibleLimit).map((model, rowIndex) => (
               <button
                 key={model.id}
                 type="button"
                 className={`model-option ${effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}
-                style={{ transform: `translateY(${rowIndex * ROW_HEIGHT}px)` }}
+                data-model-index={rowIndex}
                 aria-disabled="false"
                 onClick={() => chooseModel(model)}
               >
@@ -252,9 +269,17 @@ export default function ModelPicker({
                 <span className="model-option-meta">{providerDisplayName(selectedProvider, providerConfigs)} · {capabilityLabel(model)}{model.releasedAt ? ` · ${model.releasedAt}` : ' · 发布时间未知'}</span>
                 <span className="model-option-note">{model.entitlement ? `权益要求：${model.entitlement}` : '无需额外模型权益'}{model.availabilityNotes ? ` · ${model.availabilityNotes}` : ''}</span>
               </button>
-            )
-          })}
+          ))}
         </div>
+        {compatibleLimit < rows.length ? (
+          <button
+            type="button"
+            className="model-picker-more"
+            data-next-model-index={compatibleLimit}
+            onClick={revealMoreModels}
+            onKeyDown={scheduleFocusFirstRevealedModel}
+          >显示更多模型</button>
+        ) : null}
       </div>
       {!rows.length ? <p className="model-picker-empty">没有匹配当前角色与输出格式的可用模型。</p> : null}
       {isOpenRouter && allPartition.incompatible.length ? (

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React from 'react'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
 import GenerationSettingsDrawer from '../src/components/GenerationSettingsDrawer.jsx'
@@ -87,6 +87,7 @@ test('rendered OpenRouter full catalog shows incompatible image entries disabled
 
   await user.click(screen.getByRole('button', { name: '图像生成模型' }))
   await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
+  assert.equal(screen.getByRole('button', { name: '全部兼容模型' }).getAttribute('aria-pressed'), 'true')
   assert.equal(container.querySelector('.model-incompatible .model-option'), null)
   await user.click(screen.getByText(/暂不兼容/))
   assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 24)
@@ -117,13 +118,15 @@ test('rendered route picker shows vendor rail only for aggregator access channel
   }))
 
   await user.click(screen.getByRole('button', { name: '主模型' }))
-  assert.ok(screen.getByRole('navigation', { name: 'API 接入渠道' }))
-  assert.ok(screen.getByRole('navigation', { name: '模型开发厂商' }))
+  const providerGroup = screen.getByRole('group', { name: 'API 接入渠道' })
+  assert.equal(providerGroup.querySelector('button[aria-pressed="true"]')?.getAttribute('aria-label'), 'OpenRouter')
+  const vendorGroup = screen.getByRole('group', { name: '模型开发厂商' })
+  assert.equal(vendorGroup.querySelector('button[aria-pressed="true"]')?.getAttribute('aria-label'), '厂商 OpenAI')
   assert.equal(screen.queryByRole('button', { name: '厂商 Sourceful' }), null)
   await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
   assert.ok(screen.getByRole('button', { name: '厂商 Sourceful' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
-  assert.equal(screen.queryByRole('navigation', { name: '模型开发厂商' }), null)
+  assert.equal(screen.queryByRole('group', { name: '模型开发厂商' }), null)
   assert.ok(screen.getByText('Direct GPT'))
   assert.ok(screen.getByText(/usage-tier/))
   assert.ok(screen.getByText(/需开通组织用量等级/))
@@ -159,6 +162,44 @@ test('rendered mobile route picker replaces settings content and supports layere
     assert.ok(screen.getByText('GPT Image'))
     fireEvent.click(screen.queryByRole('button', { name: /返回 API 接入渠道/ }))
     assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'model back returns to provider layer for direct access')
+  } finally {
+    window.matchMedia = previousMatchMedia
+  }
+})
+
+test('rendered route picker reacts to the compact media query while open and removes its listener', async () => {
+  const previousMatchMedia = window.matchMedia
+  let changeListener = null
+  let removedListener = null
+  const media = {
+    matches: false,
+    addEventListener(type, listener) { if (type === 'change') changeListener = listener },
+    removeEventListener(type, listener) { if (type === 'change') removedListener = listener },
+  }
+  window.matchMedia = () => media
+  try {
+    const rendered = render(React.createElement(ModelPicker, {
+      label: '主模型', role: 'main', provider: 'openai', value: 'main', outputFormat: 'png', onChange() {},
+      models: [{ id: 'main', label: 'Main', vendor: 'OpenAI', roles: ['main'], selectable: true }],
+    }))
+    await userEvent.setup().click(screen.getByRole('button', { name: '主模型' }))
+    assert.ok(screen.getByRole('region', { name: '具体模型列表' }))
+    assert.equal(typeof changeListener, 'function')
+
+    act(() => {
+      media.matches = true
+      changeListener({ matches: true })
+    })
+    assert.ok(screen.getByRole('heading', { name: '选择 API 接入渠道' }))
+    assert.equal(screen.queryByRole('region', { name: '具体模型列表' }), null)
+
+    act(() => {
+      media.matches = false
+      changeListener({ matches: false })
+    })
+    assert.ok(screen.getByRole('region', { name: '具体模型列表' }))
+    rendered.unmount()
+    assert.equal(removedListener, changeListener)
   } finally {
     window.matchMedia = previousMatchMedia
   }
@@ -246,7 +287,7 @@ for (const [retrievalValue, retrievalLabel] of [
   })
 }
 
-test('rendered model search resets both virtual state and a deeply scrolled DOM window', async () => {
+test('rendered model search resets both incremental state and a deeply scrolled DOM window', async () => {
   const models = Array.from({ length: 36 }, (_, index) => ({
     id: `model-${index}`,
     label: `Model ${index}`,
@@ -271,6 +312,40 @@ test('rendered model search resets both virtual state and a deeply scrolled DOM 
 
   assert.equal(modelWindow.scrollTop, 0)
   assert.ok(screen.getByText('Model 35'))
+})
+
+test('rendered model list reveals compatible batches and keeps keyboard focus moving into native incompatible details', async () => {
+  const models = [
+    ...Array.from({ length: 26 }, (_, index) => ({
+      id: `model-${index}`,
+      label: `Model ${index}`,
+      vendor: 'OpenAI',
+      roles: ['main'],
+      selectable: true,
+      recommended: true,
+      lifecycle: 'stable',
+    })),
+    { id: 'blocked', label: 'Blocked', vendor: 'OpenAI', roles: [], selectable: false, disabledReason: '不兼容' },
+  ]
+  const user = userEvent.setup()
+  const { container } = render(React.createElement(ModelPicker, {
+    label: '主模型', role: 'main', provider: 'openrouter', value: 'model-0', outputFormat: 'png', models, onChange() {},
+  }))
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  assert.equal(container.querySelectorAll('.model-picker-window .model-option').length, 24)
+
+  const showMore = screen.getByRole('button', { name: '显示更多模型' })
+  await new Promise((resolve) => setTimeout(resolve, 40))
+  showMore.focus()
+  await user.keyboard('{Enter}')
+  const model24 = screen.getByRole('button', { name: /Model 24/ })
+  await new Promise((resolve) => setTimeout(resolve, 80))
+  assert.equal(document.activeElement, model24)
+  await user.tab()
+  assert.match(document.activeElement?.textContent || '', /Model 25/)
+  await user.tab()
+  const summary = screen.getByText(/暂不兼容/).closest('summary')
+  assert.equal(document.activeElement, summary)
 })
 
 test('rendered generation drawer focuses its target, closes on Escape, restores focus, and preserves mounted state', async () => {

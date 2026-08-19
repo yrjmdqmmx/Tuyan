@@ -152,19 +152,27 @@ test('Ark verification always finishes free roles before a separately confirmed 
   })
 })
 
-test('route validation checks only execution-reachable roles', () => {
+test('explicit route validation rejects an invalid unreachable route', () => {
   const entries = {
     main: { id: 'main', roles: ['main'], selectable: true },
     image: { id: 'image', roles: ['vision'], selectable: false, selectionDisabledReason: '图像权益未开通' },
-    vision: null,
+    vision: { id: 'vision', roles: ['vision'], selectable: true },
   }
-  assert.equal(firstInvalidRequiredRoute({ roles: ['main'], entries, outputFormat: 'svg' }), null)
-  assert.deepEqual(firstInvalidRequiredRoute({ roles: ['image'], entries, outputFormat: 'png' }), {
+  assert.deepEqual(firstInvalidRequiredRoute({ roles: ['main'], entries, outputFormat: 'svg' }), {
     setting: 'image-model',
     message: '图像权益未开通',
   })
-  assert.deepEqual(firstInvalidRequiredRoute({ roles: ['vision'], entries, outputFormat: 'png' }), {
-    setting: 'vision-model',
-    message: '请选择可用的参考图识别模型。',
+})
+
+test('unreachable image route still needs registry role capability but not the current output format', () => {
+  const entries = {
+    main: { id: 'main', roles: ['main'], selectable: true },
+    image: { id: 'image', roles: ['image'], selectable: true, capabilities: { outputFormats: ['png'] } },
+    vision: { id: 'vision', roles: ['vision'], selectable: true },
+  }
+  assert.equal(firstInvalidRequiredRoute({ roles: ['main'], entries, outputFormat: 'svg' }), null)
+  assert.deepEqual(firstInvalidRequiredRoute({ roles: ['image'], entries, outputFormat: 'svg' }), {
+    setting: 'image-model',
+    message: '当前图像模型不支持 SVG 输出。',
   })
 })

@@ -49,7 +49,7 @@ const registryV1 = {
 
 let restoreFetch = null
 
-function installBackend(registry = registryV1) {
+function installBackend(registry = registryV1, options = {}) {
   const requests = []
   const previousFetch = globalThis.fetch
   globalThis.fetch = async (input, init = {}) => {
@@ -58,6 +58,7 @@ function installBackend(registry = registryV1) {
     if (!body) return Response.json({ code: 0, runtime: 'laf' })
     if (body.action === 'modelRegistry') return Response.json({ code: 0, ...registry })
     if (body.action === 'providerAccountCatalog') {
+      if (options.providerAccountCatalog) return options.providerAccountCatalog(body)
       return Response.json({
         code: 0,
         provider: 'ark',
@@ -84,6 +85,12 @@ async function renderReadyApp(registry = registryV1) {
   return { requests, user }
 }
 
+function deferred() {
+  let resolve
+  const promise = new Promise((next) => { resolve = next })
+  return { promise, resolve }
+}
+
 function submitButton() {
   return screen.getAllByRole('button', { name: '生成候选图' }).find((button) => button.type === 'submit')
 }
@@ -98,7 +105,12 @@ afterEach(() => {
 test('simple mode uses one access channel default routes and sends only its reachable key', async () => {
   const { requests, user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '生成设置' }))
+  const modeGroup = screen.getByRole('group', { name: '使用模式' })
+  assert.equal(modeGroup.querySelector('button[aria-pressed="true"]')?.textContent.includes('普通模式'), true)
+  const providerGroup = screen.getByRole('group', { name: 'API 接入渠道' })
+  assert.equal(providerGroup.querySelector('button[aria-pressed="true"]')?.textContent.includes('阿里百炼'), true)
   assert.ok(screen.getByText('接入凭据'))
+  await new Promise((resolve) => setTimeout(resolve, 100))
   await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
@@ -185,6 +197,51 @@ test('Ark never probes on key input, requires paid confirmation, gates submit, a
   assert.ok(screen.getAllByText(/验证所选 Ark 模型/).length >= 1)
 })
 
+test('Ark discards an in-flight verification response after the key changes', async () => {
+  const gate = deferred()
+  const requests = installBackend(registryV1, {
+    providerAccountCatalog: () => gate.promise,
+  })
+  const user = userEvent.setup()
+  render(React.createElement(App))
+  await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
+
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '火山方舟' }))
+  const keyInput = screen.getByLabelText('火山方舟 接入密钥')
+  await user.type(keyInput, 'first-key')
+  await user.click(screen.getByRole('button', { name: '验证所选模型' }))
+  await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'providerAccountCatalog').length, 1))
+
+  fireEvent.change(keyInput, { target: { value: 'replacement-key' } })
+  gate.resolve(Response.json({
+    code: 0,
+    provider: 'ark',
+    probeResults: [
+      { role: 'main', modelId: 'doubao-text', state: 'verified' },
+      { role: 'vision', modelId: 'doubao-vision', state: 'verified' },
+    ],
+  }))
+
+  await waitFor(() => assert.equal(screen.getByRole('button', { name: '验证所选模型' }).disabled, false))
+  assert.equal(screen.queryAllByText('已验证').length, 0)
+})
+
+test('SVG generation rejects a disabled image route even though image execution is unreachable', async () => {
+  const invalidRegistry = structuredClone(registryV1)
+  const image = invalidRegistry.providers.bailian.models.find((model) => model.id === 'wan2.7-image-pro')
+  image.selectable = false
+  image.disabledReason = '图像模型已停用'
+  const { requests, user } = await renderReadyApp(invalidRegistry)
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
+  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
+  await user.click(submitButton())
+
+  assert.equal(requests.some((request) => request.body?.action === 'createJob'), false)
+  assert.ok(screen.getByText('图像模型已停用'))
+})
+
 test('legacy registry keeps simple fallback without explicit routes', async () => {
   const legacyRegistry = { ...registryV1, routeContractVersion: 0, supportsModelRoutes: false }
   const { requests, user } = await renderReadyApp(legacyRegistry)
@@ -227,9 +284,17 @@ test('refine model selection stays PNG-capable after the generation output was c
   await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '精修图片' }))
+  await user.selectOptions(await screen.findByLabelText('清晰度'), '4K')
+  await user.selectOptions(screen.getByLabelText('目标比例'), '1:1')
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
+  assert.equal(screen.queryByLabelText('导出格式'), null)
+  assert.equal(screen.queryByLabelText('输出清晰度'), null)
+  assert.ok(screen.getByText(/精修固定输出 PNG/))
   await user.click(screen.getByRole('button', { name: /专业模式/ }))
   await user.click(screen.getByRole('button', { name: '图像生成模型' }))
   const modelBrowser = screen.getByRole('region', { name: '具体模型列表' })
   assert.ok([...modelBrowser.querySelectorAll('button')].some((button) => button.textContent.includes('Wan Image')))
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  assert.equal(screen.getByLabelText('清晰度').value, '4K')
+  assert.equal(screen.getByLabelText('目标比例').value, '1:1')
 })

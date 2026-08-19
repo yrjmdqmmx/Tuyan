@@ -439,28 +439,36 @@
   width: 100%;
   min-width: 0;
   border: 0;
-  outline: 0;
+  outline: none;
   background: transparent;
 }
 
+.model-picker-search input:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--sage);
+  outline-offset: 3px;
+}
+
 .model-picker-window {
+  max-height: 448px;
   margin-top: 8px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
 
-.model-option {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 104px;
+.model-picker-list {
+  display: grid;
+  gap: 8px;
 }
 
 .model-option {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-content: center;
   gap: 4px 8px;
   width: 100%;
+  min-height: 104px;
   padding: 7px 9px;
   text-align: left;
   color: var(--ink-soft);
@@ -546,8 +554,11 @@
   transform: none !important;
 }
 
+.model-picker-more,
 .model-incompatible-more {
+  width: 100%;
   min-height: 40px;
+  margin-top: 8px;
   color: var(--sage);
   background: #edf5ef;
   border: 1px solid #c8d8cc;
@@ -1728,6 +1739,16 @@ button {
   border-radius: 8px;
   font-size: 12px;
   line-height: 1.5;
+}
+
+.refine-settings-note {
+  padding: 11px 12px;
+  color: #285c3b;
+  background: #f1f8ef;
+  border: 1px solid #cbdcc8;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .model-route-grid {

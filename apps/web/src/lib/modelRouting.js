@@ -94,7 +94,7 @@ export function firstInvalidRequiredRoute({ roles, entries, outputFormat }) {
     image: '请选择可用的图像生成模型。',
     vision: '请选择可用的参考图识别模型。',
   }
-  for (const role of orderedUniqueRoles(roles)) {
+  for (const role of MODEL_ROUTE_ROLES) {
     const entry = entries?.[role]
     if (!entry || entry.selectable === false || !entry.roles?.includes(role)) {
       return {
@@ -102,7 +102,7 @@ export function firstInvalidRequiredRoute({ roles, entries, outputFormat }) {
         message: entry?.selectionDisabledReason || entry?.disabledReason || messages[role],
       }
     }
-    if (role === 'image' && entry.capabilities?.outputFormats?.length && !entry.capabilities.outputFormats.includes(outputFormat)) {
+    if (role === 'image' && roles?.includes(role) && entry.capabilities?.outputFormats?.length && !entry.capabilities.outputFormats.includes(outputFormat)) {
       return { setting: 'image-model', message: `当前图像模型不支持 ${String(outputFormat).toUpperCase()} 输出。` }
     }
   }

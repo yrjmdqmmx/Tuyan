@@ -175,6 +175,9 @@ export default function App() {
   const [arkProbePaidConfirmed, setArkProbePaidConfirmed] = useState(false);
   const [isVerifyingArk, setIsVerifyingArk] = useState(false);
   const [arkVerificationError, setArkVerificationError] = useState('');
+  const arkProbeGenerationRef = useRef(0);
+  const arkKeySnapshotRef = useRef('');
+  const arkProbeRoutesSnapshotRef = useRef('');
   const currentUser = AUTH_ENABLED ? authSession.session?.user : null;
   const authReady = !AUTH_REQUIRED || Boolean(!authSession.isPending && currentUser);
   const apiBaseNormalized = useMemo(() => {
@@ -242,6 +245,9 @@ export default function App() {
   const credentialRouteRoles = activeTab === 'refine' ? refineRouteRoles : createRouteRoles;
   const credentialProviders = uniqueProvidersForRoles(activeModelRoutes, credentialRouteRoles);
   const activeArkProbes = arkProbesForRoles(activeModelRoutes, credentialRouteRoles);
+  const activeArkProbeSignature = activeArkProbes.map(arkVerificationKey).join('|');
+  arkKeySnapshotRef.current = apiKeys.ark;
+  arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
   const missingCredentialProviders = credentialProviders.filter((routeProvider) => !apiKeys[routeProvider]?.trim());
   const missingVerifiedArkRoutes = missingArkVerifications(activeArkProbes, arkVerification);
   const generationConfigSummary = `主：${providerConfig.label} · ${activeMainRegistryEntry?.label || activeMainModelName} / 图：${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName} / 识：${visionProviderConfig.label} · ${activeVisionRegistryEntry?.label || activeReferenceVisionModelName}`;
@@ -630,6 +636,8 @@ export default function App() {
     if (nextMode === configurationMode) return;
     if (nextMode === 'advanced') setModelRoutes(simpleModelRoutes);
     if (nextMode === 'simple') setProvider(activeModelRoutes.main.accessProvider);
+    arkProbeGenerationRef.current += 1;
+    setIsVerifyingArk(false);
     setArkVerification({});
     setArkProbePaidConfirmed(false);
     setArkVerificationError('');
@@ -638,6 +646,8 @@ export default function App() {
 
   function handleSimpleProviderChange(nextProvider) {
     setProvider(nextProvider);
+    arkProbeGenerationRef.current += 1;
+    setIsVerifyingArk(false);
     setArkVerification({});
     setArkProbePaidConfirmed(false);
     setArkVerificationError('');
@@ -645,6 +655,8 @@ export default function App() {
 
   function handleModelRouteChange(role, route) {
     setModelRoutes((current) => ({ ...current, [role]: route }));
+    arkProbeGenerationRef.current += 1;
+    setIsVerifyingArk(false);
     setArkVerification((current) => clearArkVerificationForRole(current, role));
     if (role === 'image') setArkProbePaidConfirmed(false);
     setArkVerificationError('');
@@ -653,6 +665,9 @@ export default function App() {
   function handleApiKeyChange(routeProvider, value) {
     setApiKeys((current) => ({ ...current, [routeProvider]: value }));
     if (routeProvider === 'ark') {
+      arkKeySnapshotRef.current = value;
+      arkProbeGenerationRef.current += 1;
+      setIsVerifyingArk(false);
       setArkVerification({});
       setArkProbePaidConfirmed(false);
       setArkVerificationError('');
@@ -662,6 +677,16 @@ export default function App() {
   async function verifySelectedArkModels() {
     const { probes, confirmPaidImageProbe } = nextArkVerificationBatch(activeArkProbes, arkVerification, arkProbePaidConfirmed);
     if (!probes.length || !apiKeys.ark?.trim()) return;
+    const requestSnapshot = {
+      generation: arkProbeGenerationRef.current + 1,
+      arkKey: apiKeys.ark,
+      selectedProbeRoutes: activeArkProbeSignature,
+    };
+    arkProbeGenerationRef.current = requestSnapshot.generation;
+    const requestedProbeKeys = new Set(probes.map(arkVerificationKey));
+    const isCurrentRequest = () => arkProbeGenerationRef.current === requestSnapshot.generation
+      && arkKeySnapshotRef.current === requestSnapshot.arkKey
+      && arkProbeRoutesSnapshotRef.current === requestSnapshot.selectedProbeRoutes;
     setIsVerifyingArk(true);
     setArkVerificationError('');
     try {
@@ -671,14 +696,17 @@ export default function App() {
         probes,
         confirmPaidImageProbe,
       });
+      if (!isCurrentRequest()) return;
       setArkVerification((current) => ({
         ...current,
-        ...Object.fromEntries((result.probeResults || []).map((probe) => [arkVerificationKey(probe), probe.state])),
+        ...Object.fromEntries((result.probeResults || [])
+          .filter((probe) => requestedProbeKeys.has(arkVerificationKey(probe)))
+          .map((probe) => [arkVerificationKey(probe), probe.state])),
       }));
     } catch (verificationError) {
-      setArkVerificationError(verificationError?.message || String(verificationError));
+      if (isCurrentRequest()) setArkVerificationError(verificationError?.message || String(verificationError));
     } finally {
-      setIsVerifyingArk(false);
+      if (isCurrentRequest()) setIsVerifyingArk(false);
     }
   }
 
@@ -818,6 +846,9 @@ export default function App() {
     referenceImagesRef.current = [];
     setReferenceImages([]);
     setApiKeys({ openrouter: '', gemini: '', openai: '', bailian: '', ark: '' });
+    arkKeySnapshotRef.current = '';
+    arkProbeGenerationRef.current += 1;
+    setIsVerifyingArk(false);
     setArkVerification({});
     setArkProbePaidConfirmed(false);
     setArkVerificationError('');
@@ -977,6 +1008,7 @@ export default function App() {
         modelRegistry={modelRegistry}
         providerConfigs={PROVIDERS}
         outputFormat={activeTab === 'refine' ? 'png' : outputFormat}
+        executionRouteRoles={credentialRouteRoles}
         credentialProviders={credentialProviders}
         apiKeys={apiKeys}
         onApiKeyChange={handleApiKeyChange}
@@ -989,14 +1021,17 @@ export default function App() {
         onVerifyArk={verifySelectedArkModels}
       />
 
-      <div className="output-format-field">
-        <Select label="导出格式" value={outputFormat} onChange={setOutputFormat} options={OUTPUT_FORMATS} />
-        {outputFormat === 'svg'
-          ? <div className="plot-note svg-output-note">SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。</div>
-          : <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
-      </div>
+      {activeTab === 'refine' ? (
+        <div className="refine-settings-note" role="note">精修固定输出 PNG；清晰度（{refineImageSize}）与目标比例（{refineAspectRatio}）请在精修面板设置。</div>
+      ) : (<>
+        <div className="output-format-field">
+          <Select label="导出格式" value={outputFormat} onChange={setOutputFormat} options={OUTPUT_FORMATS} />
+          {outputFormat === 'svg'
+            ? <div className="plot-note svg-output-note">SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。</div>
+            : <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
+        </div>
 
-      {!isAdvancedMode ? (
+        {!isAdvancedMode ? (
         <div className="default-summary" aria-label="默认生成配置">
           <span>主模型：{defaultMainModelLabel}</span>
           <span>图像：{defaultImageModelLabel}</span>
@@ -1005,7 +1040,7 @@ export default function App() {
           <span>16:9</span>
           <span>{formatOutputFormat(outputFormat)}</span>
         </div>
-      ) : (
+        ) : (
         <>
           {CUSTOM_API_BASE_ENABLED ? (
             <label className="field">
@@ -1102,7 +1137,8 @@ export default function App() {
             </div>
           ) : null}
         </>
-      )}
+        )}
+      </>)}
     </GenerationSettingsDrawer>
   );
 

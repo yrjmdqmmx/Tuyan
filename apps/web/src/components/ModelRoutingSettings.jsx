@@ -24,6 +24,7 @@ export default function ModelRoutingSettings({
   modelRegistry,
   providerConfigs,
   outputFormat,
+  executionRouteRoles = [],
   credentialProviders,
   apiKeys,
   onApiKeyChange,
@@ -46,11 +47,11 @@ export default function ModelRoutingSettings({
     <>
       <div className="field" data-focus-setting="configuration-mode" tabIndex={-1}>
         <span>使用模式</span>
-        <div className="mode-switch" role="tablist" aria-label="使用模式">
-          <button type="button" className={!isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('simple')}>
+        <div className="mode-switch" role="group" aria-label="使用模式">
+          <button type="button" aria-pressed={!isAdvancedMode} className={!isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('simple')}>
             <Sparkles size={16} /><span>普通模式</span><small>单渠道 + 单 Key</small>
           </button>
-          <button type="button" className={isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('advanced')}>
+          <button type="button" aria-pressed={isAdvancedMode} className={isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('advanced')}>
             <Settings2 size={16} /><span>专业模式</span><small>按角色独立路由</small>
           </button>
         </div>
@@ -60,12 +61,13 @@ export default function ModelRoutingSettings({
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>API 接入渠道</span>
-          <div className="segmented provider-segmented">
+          <div className="segmented provider-segmented" role="group" aria-label="API 接入渠道">
             {Object.entries(providerConfigs).map(([id, item]) => (
               <button
                 type="button"
                 key={id}
                 className={simpleProvider === id ? 'active' : ''}
+                aria-pressed={simpleProvider === id}
                 disabled={Boolean(modelRegistry && !modelRegistry.providers?.[id])}
                 title={modelRegistry?.unavailableProviders?.[id] || ''}
                 onClick={() => onSimpleProviderChange(id)}
@@ -83,7 +85,7 @@ export default function ModelRoutingSettings({
             onRouteChange={(route) => onRouteChange('main', route)} focusSetting="main-model"
           />
           <ModelPicker
-            label="图像生成模型" role="image" route={modelRoutes.image} outputFormat={outputFormat}
+            label="图像生成模型" role="image" route={modelRoutes.image} outputFormat={executionRouteRoles.includes('image') ? outputFormat : ''}
             registry={modelRegistry} providerConfigs={providerConfigs}
             onRouteChange={(route) => onRouteChange('image', route)} focusSetting="image-model"
           />
