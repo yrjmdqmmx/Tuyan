@@ -14,6 +14,8 @@ test('privacy policy describes the live multi-platform data flow without placeho
   assert.match(source, /IP 地址|IP address/)
   assert.match(source, /User-Agent/)
   assert.match(source, /不会持久化|not persist/i)
+  assert.match(source, /失效前已经开始[\s\S]*后台持续重扫/,
+    'privacy policy must disclose delayed cleanup for uploads that finish after URL expiry')
   assert.doesNotMatch(source, /仅存储在您设备本机的 iOS Keychain|stored ONLY in your device's local iOS Keychain/)
   assert.doesNotMatch(source, /Sealos.*杭州|Sealos.*Hangzhou/)
 })

@@ -20,7 +20,6 @@ enum ProviderCatalog {
         option("openrouter/openai/gpt-5.4-mini", "GPT-5.4 Mini", "OpenAI"),
         option("openrouter/openai/gpt-5.4-nano", "GPT-5.4 Nano", "OpenAI"),
         option("openrouter/openai/gpt-chat-latest", "GPT Chat Latest", "OpenAI"),
-        option("openrouter/openai/gpt-5.3-chat", "GPT-5.3 Chat", "OpenAI"),
         option("openrouter/~openai/gpt-latest", "GPT Latest", "OpenAI"),
         option("openrouter/~openai/gpt-mini-latest", "GPT Mini Latest", "OpenAI"),
         option("openrouter/anthropic/claude-opus-4.8", "Claude Opus 4.8", "Anthropic"),

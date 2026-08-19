@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] 模型目录下线项与注销迟到写保护 — by Codex
+变更：按 OpenRouter 实时官方目录从全部客户端静态回退表移除已下线的 `openrouter/openai/gpt-5.3-chat`；账号注销增加 OSS 写入后的持久 tombstone 复核，并把所属 job id 保留在删除墓碑中供 Core 后台持续清扫迟到结果对象。公开 action、字段和成功 envelope 不变。
+各端待办：
+- [x] Web / 微信小程序 / Android / iOS / Windows / macOS（移除下线模型；HarmonyOS 原目录不含该值）
+- [x] paperbanana-api / Laf 回滚（结果与阶段图写后复核、迟到 job prefix 后台清扫、轮转 tombstone 扫描）
+- [x] 隐私披露（说明预签名链接失效前开始、失效后完成的上传由持久墓碑与后台重扫继续清理）
+
 ### [2026-08-19] 权威模型目录、中文参考库与任务来源端 — by Codex
 变更：新增服务端权威 `modelRegistry`，OpenRouter 图片生成按官方当前 Dedicated Image API 分流；参考库增加 295 条版本化中文元数据；任务创建/精修与任务记录增加规范化 `clientPlatform`；Web 账号删除同步删除任务关联对象。
 契约（影响其他端 / 共享）：

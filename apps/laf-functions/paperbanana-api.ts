@@ -1382,6 +1382,15 @@ async function deleteAccount(body: DeleteAccountBody) {
   }
 
   const ownedJobs = await jobs.find({ $or: jobIdConditions }).toArray()
+  const ownedJobIds = [...new Set(ownedJobs.map((job: any) => String(job?._id || '').trim()).filter(Boolean))]
+  if (ownedJobIds.length) {
+    for (const ownerKey of ownerKeys) {
+      await accountDeletions.updateOne(
+        { _id: ownerKey },
+        { $addToSet: { jobIds: { $each: ownedJobIds } }, $set: { updatedAt: new Date() } },
+      )
+    }
+  }
   const deletedResultObjectCount = await deleteStoredObjectsForJobs(ownedJobs)
 
   // Purge the user's uploaded reference images. They are stored
@@ -1447,6 +1456,31 @@ async function deleteStoredObjectsForJobs(ownedJobs: any[]): Promise<number> {
       throw new Error('Unable to remove all stored account data. Please retry account deletion.')
     }
   }
+  return deleted
+}
+
+async function deleteStoredObjectsForJobPrefix(jobId: string): Promise<number> {
+  const prefix = `${sanitizePathPart(jobId)}/`
+  const bucket = cloud.storage.bucket(bucketName)
+  let deleted = 0
+  let continuationMarker: string | undefined
+  do {
+    const listing: any = await bucket.listFiles({ Prefix: prefix, Marker: continuationMarker })
+    const contents: any[] = listing?.Contents || []
+    for (const object of contents) {
+      const key = String(object?.Key || '').trim()
+      if (!key) continue
+      try {
+        await bucket.deleteFile(key)
+        deleted += 1
+      } catch (error: any) {
+        console.warn(`[deleteAccount] failed to sweep late job object ${key}: ${error?.message || error}`)
+      }
+    }
+    continuationMarker = listing?.IsTruncated
+      ? (listing?.NextMarker || (contents.length ? contents[contents.length - 1]?.Key : undefined))
+      : undefined
+  } while (continuationMarker)
   return deleted
 }
 
@@ -1546,6 +1580,16 @@ async function sweepDeletedAccountObjects() {
     for (const owner of ownerPrefixes) {
       await deleteReferenceObjectsForOwner(owner, false)
     }
+    const jobIds = Array.isArray(tombstone?.jobIds)
+      ? tombstone.jobIds.map(String).filter(Boolean)
+      : []
+    for (const jobId of jobIds) {
+      await deleteStoredObjectsForJobPrefix(jobId)
+    }
+    await accountDeletions.updateOne(
+      { _id: tombstone._id },
+      { $set: { lastSweptAt: new Date(), updatedAt: new Date() } },
+    )
   }
   // Lifecycle rows are only needed while a signed PUT can still be in flight.
   // Keep a full-day grace period beyond expiry, then prune them during the
@@ -3365,19 +3409,26 @@ export async function saveResult(
   mimeType: string,
   encoding: 'base64' | 'utf8',
 ) {
-  await assertJobOwnerAcceptingWork(jobId)
+  const ownerKeys = await assertJobOwnerAcceptingWork(jobId)
   const filename = `${jobId}/candidate-${candidateId}.${resultExtension(mimeType)}`
   const buffer = encoding === 'base64' ? Buffer.from(content, 'base64') : Buffer.from(content, 'utf8')
   const base64 = encoding === 'base64' ? content : buffer.toString('base64')
   try {
     const bucket = cloud.storage.bucket(bucketName)
     await bucket.writeFile(filename, buffer, { ContentType: mimeType })
+    try {
+      await assertOwnerKeysAcceptingWork(ownerKeys)
+    } catch (error) {
+      try { await bucket.deleteFile(filename) } catch {}
+      throw error
+    }
     return {
       storage: 'bucket',
       filename,
       url: await bucket.getDownloadUrl(filename, 3600 * 24 * 7),
     }
   } catch (error: any) {
+    if (error?.code === 'ACCOUNT_DELETION_IN_PROGRESS') throw error
     if (process.env.PAPERBANANA_STRICT_OBJECT_STORAGE === 'true') throw error
     return {
       storage: 'database-data-url',
@@ -3396,7 +3447,7 @@ export async function saveStageImage(
   mimeType: string,
   encoding: 'base64' | 'utf8',
 ) {
-  await assertJobOwnerAcceptingWork(jobId)
+  const ownerKeys = await assertJobOwnerAcceptingWork(jobId)
   const safeStageName = sanitizePathPart(stageName)
   const filename = `${jobId}/candidate-${candidateId}-${safeStageName}.${resultExtension(mimeType)}`
   const buffer = encoding === 'base64' ? Buffer.from(content, 'base64') : Buffer.from(content, 'utf8')
@@ -3404,6 +3455,12 @@ export async function saveStageImage(
   try {
     const bucket = cloud.storage.bucket(bucketName)
     await bucket.writeFile(filename, buffer, { ContentType: mimeType })
+    try {
+      await assertOwnerKeysAcceptingWork(ownerKeys)
+    } catch (error) {
+      try { await bucket.deleteFile(filename) } catch {}
+      throw error
+    }
     return {
       storage: 'bucket',
       filename,
@@ -3411,6 +3468,7 @@ export async function saveStageImage(
       mimeType,
     }
   } catch (error: any) {
+    if (error?.code === 'ACCOUNT_DELETION_IN_PROGRESS') throw error
     if (process.env.PAPERBANANA_STRICT_OBJECT_STORAGE === 'true') throw error
     return {
       storage: 'database-data-url',
@@ -4919,14 +4977,21 @@ async function ensureAccountAcceptingWork(body: { userId?: string; userEmail?: s
   return !(await accountDeletions.findOne({ _id: { $in: ownerKeys } }))
 }
 
-async function assertJobOwnerAcceptingWork(jobId: string) {
-  const job = await jobs.findOne({ _id: jobId })
-  if (!job) throw new Error('Job not found while checking account deletion state')
-  if (!(await ensureAccountAcceptingWork(job))) {
+async function assertOwnerKeysAcceptingWork(ownerKeys: string[]) {
+  if (!ownerKeys.length) return
+  if (await accountDeletions.findOne({ _id: { $in: ownerKeys } })) {
     const error: any = new Error('Account deletion is in progress. Stored output was cancelled.')
     error.code = 'ACCOUNT_DELETION_IN_PROGRESS'
     throw error
   }
+}
+
+async function assertJobOwnerAcceptingWork(jobId: string): Promise<string[]> {
+  const job = await jobs.findOne({ _id: jobId })
+  if (!job) throw new Error('Job not found while checking account deletion state')
+  const ownerKeys = accountOwnerKeys(job)
+  await assertOwnerKeysAcceptingWork(ownerKeys)
+  return ownerKeys
 }
 
 async function recordPreparedReferenceUploads(ownerKey: string, uploads: any[]) {

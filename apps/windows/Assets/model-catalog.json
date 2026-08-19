@@ -43,11 +43,6 @@
           "OpenAI"
         ],
         [
-          "openrouter/openai/gpt-5.3-chat",
-          "GPT-5.3 Chat",
-          "OpenAI"
-        ],
-        [
           "openrouter/~openai/gpt-latest",
           "GPT Latest",
           "OpenAI"

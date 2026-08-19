@@ -48,7 +48,6 @@ export const PROVIDERS: Record<ProviderId, ProviderConfig> = {
       ['openrouter/openai/gpt-5.4-mini', 'GPT-5.4 Mini', 'OpenAI'],
       ['openrouter/openai/gpt-5.4-nano', 'GPT-5.4 Nano', 'OpenAI'],
       ['openrouter/openai/gpt-chat-latest', 'GPT Chat Latest', 'OpenAI'],
-      ['openrouter/openai/gpt-5.3-chat', 'GPT-5.3 Chat', 'OpenAI'],
       ['openrouter/~openai/gpt-latest', 'GPT Latest', 'OpenAI'],
       ['openrouter/~openai/gpt-mini-latest', 'GPT Mini Latest', 'OpenAI'],
       ['openrouter/anthropic/claude-opus-4.8', 'Claude Opus 4.8', 'Anthropic'],

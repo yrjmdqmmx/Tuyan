@@ -565,22 +565,32 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
-                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [] };
+                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], deletedOwnerKeys: [], deletedObjects: [], ossWriteMode: 'fail' };
                 const collectionFor = (name) => ({
                   find() { return { sort() { return this }, limit() { return this }, async toArray() { return [] } } },
                   async findOne(query) {
-                    if (name === 'paperbanana_jobs' && query?._id === 'job-1') return { _id: 'job-1', userId: '' };
+                    if (name === 'paperbanana_jobs' && query?._id === 'job-1') return { _id: 'job-1', userId: 'owner-1' };
+                    if (name === 'paperbanana_account_deletions') {
+                      const keys = query?._id?.$in || [];
+                      return keys.some((key) => state.deletedOwnerKeys.includes(key)) ? { _id: keys[0] } : null;
+                    }
                     return null;
                   },
                   async insertOne(document) { state.inserts.push(document) },
                   async updateOne() {}, async deleteMany() { return { deletedCount: 0 } }
                 });
                 const bucket = {
-                  async writeFile() { throw new Error('OSS write failed') },
+                  async writeFile(key) {
+                    if (state.ossWriteMode === 'race') {
+                      state.deletedOwnerKeys = ['user:owner-1'];
+                      return;
+                    }
+                    throw new Error('OSS write failed');
+                  },
                   async getDownloadUrl() { return 'https://signed.invalid/object' },
                   async getUploadUrl() { return 'https://signed.invalid/upload' },
                   async listFiles() { return { Contents: [], IsTruncated: false } },
-                  async deleteFile() {}
+                  async deleteFile(key) { state.deletedObjects.push(key) }
                 };
                 export default { mongo: { db: { collection(name) { return collectionFor(name) } } }, storage: { bucket() { return bucket } } };
               `,
@@ -639,6 +649,33 @@ test('request handlers delegate background closures with secret-free DTOs', () =
   assert.ok(createSection.indexOf('await verifyUploadedReferenceObjects(') < createSection.indexOf('await resolveReferenceImageMode('))
   assert.ok(createSection.indexOf('await verifyUploadedReferenceObjects(') < createSection.indexOf('await jobs.insertOne('))
   assert.ok(refineSection.indexOf('jobAdmission.reserve(') < refineSection.indexOf('await jobs.insertOne('))
+})
+
+test('result and stage writes delete objects when account deletion starts during OSS write', async () => {
+  const legacy = await loadLegacy()
+  const testState = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  testState.ossWriteMode = 'race'
+  testState.deletedOwnerKeys = []
+  testState.deletedObjects = []
+  try {
+    await assert.rejects(
+      legacy.saveResult('job-1', 0, 'cG5n', 'image/png', 'base64'),
+      /Account deletion is in progress/,
+    )
+    testState.deletedOwnerKeys = []
+    await assert.rejects(
+      legacy.saveStageImage('job-1', 0, 'render-0', 'cG5n', 'image/png', 'base64'),
+      /Account deletion is in progress/,
+    )
+    assert.deepEqual(testState.deletedObjects, [
+      'job-1/candidate-0.png',
+      'job-1/candidate-0-render-0.png',
+    ])
+  } finally {
+    testState.ossWriteMode = 'fail'
+    testState.deletedOwnerKeys = []
+    testState.deletedObjects = []
+  }
 })
 
 test('reference upload signing binds the declared content type and length without changing the response shape', () => {

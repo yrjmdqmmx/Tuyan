@@ -104,7 +104,6 @@ enum ProviderCatalog {
         .init(value: "openrouter/openai/gpt-5.4-mini", label: "GPT-5.4 Mini", group: "OpenAI"),
         .init(value: "openrouter/openai/gpt-5.4-nano", label: "GPT-5.4 Nano", group: "OpenAI"),
         .init(value: "openrouter/openai/gpt-chat-latest", label: "GPT Chat Latest", group: "OpenAI"),
-        .init(value: "openrouter/openai/gpt-5.3-chat", label: "GPT-5.3 Chat", group: "OpenAI"),
         .init(value: "openrouter/~openai/gpt-latest", label: "GPT Latest", group: "OpenAI"),
         .init(value: "openrouter/~openai/gpt-mini-latest", label: "GPT Mini Latest", group: "OpenAI"),
         .init(value: "openrouter/anthropic/claude-opus-4.8", label: "Claude Opus 4.8", group: "Anthropic"),

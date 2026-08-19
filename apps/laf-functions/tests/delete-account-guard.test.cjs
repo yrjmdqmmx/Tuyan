@@ -147,6 +147,15 @@ assert.match(deleteAccountSource, /purgeReferencePrefixesUntilQuiet/,
   'Deletion must repeat reference-prefix cleanup for a quiet period.');
 assert.match(source, /scheduleAccountDeletionSweep/,
   'Persistent deleted-owner tombstones must schedule later cleanup for delayed PUT completion.');
+assert.match(deleteAccountSource, /\$addToSet:\s*\{\s*jobIds:\s*\{\s*\$each:/,
+  'Deletion tombstones must retain owned job IDs for late result-object cleanup.');
+const sweepStart = source.indexOf('async function sweepDeletedAccountObjects(');
+const sweepEnd = source.indexOf('\nasync function ', sweepStart + 1);
+const sweepSource = source.slice(sweepStart, sweepEnd);
+assert.match(sweepSource, /deleteStoredObjectsForJobPrefix/,
+  'The background tombstone sweep must remove result objects written after the first deletion pass.');
+assert.match(sweepSource, /lastSweptAt/,
+  'The bounded tombstone sweep must advance processed rows instead of starving later deletions.');
 assert.match(source, /referenceUploadState\.deleteMany\([\s\S]*expiresAt:\s*\{\s*\$lt:/,
   'The background sweep must prune expired upload lifecycle rows after their safety window.');
 assert.doesNotMatch(deleteAccountSource, /accountDeletions\.delete/,
@@ -155,8 +164,11 @@ assert.doesNotMatch(deleteAccountSource, /accountDeletions\.delete/,
 for (const saver of ['saveResult', 'saveStageImage']) {
   const start = source.indexOf(`export async function ${saver}`);
   const end = source.indexOf('\nexport async function ', start + 1);
-  assert.ok(source.slice(start, end < 0 ? undefined : end).includes('assertJobOwnerAcceptingWork'),
-    `${saver} must recheck the persistent owner tombstone before an OSS write.`);
+  const saverSource = source.slice(start, end < 0 ? undefined : end);
+  assert.ok((saverSource.match(/assert(?:JobOwner|OwnerKeys)AcceptingWork/g) || []).length >= 2,
+    `${saver} must recheck the persistent owner tombstone before and after an OSS write.`);
+  assert.match(saverSource, /bucket\.deleteFile\(filename\)/,
+    `${saver} must remove an object written during the deletion race.`);
 }
 
 const ownerKeysStart = source.indexOf('function accountOwnerKeys(');

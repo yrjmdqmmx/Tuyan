@@ -41,6 +41,10 @@ const currentDirectIds = [
   'qwen-image-3.0-pro',
 ]
 
+const retiredOpenRouterIds = [
+  'openrouter/openai/gpt-5.3-chat',
+]
+
 function hasExactLiteral(source, value) {
   return source.includes(`'${value}'`) || source.includes(`"${value}"`)
 }
@@ -53,6 +57,9 @@ test('every shipped client catalog submits only current direct-provider IDs', ()
     }
     for (const current of currentDirectIds) {
       assert.equal(hasExactLiteral(source, current), true, `${relative} is missing ${current}`)
+    }
+    for (const retired of retiredOpenRouterIds) {
+      assert.equal(hasExactLiteral(source, retired), false, `${relative} still publishes ${retired}`)
     }
   }
 })

@@ -173,6 +173,7 @@
   </ul>
   <p><strong>此操作不可恢复。</strong> 删除完成后，服务端将清除您的会话并真删账号，本应用将自动退回未登录状态。该入口呼应 Apple App Store 审核指南 5.1.1(v) 对应用内账号删除的要求。</p>
   <p>若账号仍有运行中的生成任务或尚未失效的参考图直传链接，服务会先冻结该账号的新任务与新上传，等待任务结束或上传链接失效后再完成清理；在清理完成前不会删除登录账号，您可按页面提示重试。</p>
+  <p>对于在直传链接失效前已经开始、但在失效后才完成的上传，账号删除墓碑会继续阻止相关账号写入，服务端也会在保留的安全窗口内后台持续重扫并删除迟到对象。</p>
 
   <h2>8. 数据安全</h2>
   <p>我们采取合理的技术与管理措施保护您的信息，包括 HTTPS 加密传输、密码哈希、HttpOnly 会话 Cookie、受限海外模型出口和日志脱敏。API Key 仅在完成请求所需期间经过服务端内存，不持久化保存。没有任何传输或存储方式能保证绝对安全。</p>
@@ -287,6 +288,7 @@
     <li>Local data on this device, including stored API Keys.</li>
   </ul>
   <p><strong>This action cannot be undone.</strong> Once complete, the server clears your session and deletes your account, and the App returns to a signed-out state. This corresponds to Apple App Store Review Guideline 5.1.1(v).</p>
+  <p>If jobs are still running or a reference-image upload URL remains valid, the Service first freezes new work and waits before removing the login account. If a direct upload started before URL expiry but finishes afterwards, the persistent deletion tombstone continues to reject account writes and the backend repeatedly sweeps delayed objects during the retained safety window.</p>
 
   <h2>8. Data Security</h2>
   <p>We use reasonable technical and organizational safeguards, including HTTPS in transit, password hashing, HttpOnly session cookies, restricted provider egress, and redacted logs. API Keys pass through server memory only for the time needed to fulfill a request and are not persisted. No transmission or storage method is completely secure.</p>

@@ -93,7 +93,6 @@ export const PROVIDERS: ProviderConfig[] = [
       { label: 'OpenAI / GPT-5.4 Mini', value: 'openrouter/openai/gpt-5.4-mini' },
       { label: 'OpenAI / GPT-5.4 Nano', value: 'openrouter/openai/gpt-5.4-nano' },
       { label: 'OpenAI / GPT Chat Latest', value: 'openrouter/openai/gpt-chat-latest' },
-      { label: 'OpenAI / GPT-5.3 Chat', value: 'openrouter/openai/gpt-5.3-chat' },
       { label: 'OpenAI / GPT Latest', value: 'openrouter/~openai/gpt-latest' },
       { label: 'OpenAI / GPT Mini Latest', value: 'openrouter/~openai/gpt-mini-latest' },
       { label: 'Anthropic / Claude Opus 4.8', value: 'openrouter/anthropic/claude-opus-4.8' },
