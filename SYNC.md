@@ -25,7 +25,7 @@
 ## 条目（最新在上）
 
 ### [2026-08-19] 结果图公开权威 objectKey — by Codex
-变更：生产百炼 smoke 发现结果图已写入 OSS，但公开任务 DTO 只有 `filename/url`，导致独立精修页无法按约定优先使用对象键；现在新任务持久化并返回 `resultImages[].objectKey`，历史 bucket 结果从既有 `filename` 只读补出该字段，本条待重新部署。
+变更：生产百炼 smoke 发现结果图已写入 OSS，但公开任务 DTO 只有 `filename/url`，导致独立精修页无法按约定优先使用对象键；现在新任务持久化并返回 `resultImages[].objectKey`，历史 bucket 结果从既有 `filename` 只读补出该字段；已部署并完成百炼生成→`direct-edit` 精修验收。
 契约（影响其他端 / 共享）：
 - **公开任务 DTO**：`getJob/userJobs/adminJobs` 的 bucket 结果图新增稳定 `objectKey`；签名 `url` 仍只用于预览，客户端发起精修时优先传 `sourceImageObjectKey`。
 - **兼容边界**：历史 `storage=bucket` 且只有 `filename` 的记录映射为同值 `objectKey`；数据库 data URL 回退不会伪造对象键。
@@ -33,30 +33,30 @@
 - [x] paperbanana-api / Laf 回滚（新记录持久化、历史 DTO 兼容与测试）
 - [x] packages-api / Web（已优先消费 `objectKey`，保留签名 URL 预览）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续精修入口改用 `sourceImageObjectKey`；旧签名 URL 仍兼容）
-- [ ] 部署 / 运维（重建 Core 并复测真实百炼精修）
+- [x] 部署 / 运维（Core 不可变镜像已发布；真实百炼 1K 生成与 2K `direct-edit` 精修成功，两个结果 DTO 均返回 `objectKey`）
 
 ### [2026-08-19] zh-CN.v2 固定语料补齐历史空白英文 — by Codex
-变更：生产前置校验发现 306 条有图 bench 记录中 `ref_260`、`ref_305` 的历史英文 `summary` 为空；同步器现在只对缺失或纯空白的 `title/summary` 使用固定 PaperBananaBench 快照补齐，已有非空英文保持原值，本条待重新部署。
+变更：生产前置校验发现 306 条有图 bench 记录中 `ref_260`、`ref_305` 的历史英文 `summary` 为空；同步器现在只对缺失或纯空白的 `title/summary` 使用固定 PaperBananaBench 快照补齐，已有非空英文保持原值；已部署并完成 306/306 验收。
 契约（影响其他端 / 共享）：
 - **数据来源**：英文补齐值与中文元数据来自同一固定提交 `a876264bcd1e826a0320f805f8fb1cd705cf510f`，同步前后仍强制 306 个唯一业务 ID、306 条有图记录和 306 份完整英文搜索字段。
 - **保留边界**：只补缺失、非字符串或纯空白英文；任何已有非空 `title/summary`、图片字段、`taskName`、任务和用户选择均不覆盖。
 各端待办：
 - [x] 语料迁移与 304→306、幂等及保留现有英文测试
 - [x] paperbanana-api / Web / 其他客户端（公开字段和请求响应不变，无需改造）
-- [ ] 部署 / 运维（重跑 v2 元数据同步并验收 306/306）
+- [x] 部署 / 运维（首次补齐 2 条、同步 306 条；随后幂等重跑为 0 变更且仍 localized=306）
 
 ### [2026-08-19] v2 参考元数据同步保留历史 taskName — by Codex
-变更：zh-CN.v2 元数据同步与回滚不再覆盖 `paperbanana_references.taskName`，避免旧数据或自定义分类在回滚后被永久改写；本条未部署。
+变更：zh-CN.v2 元数据同步与回滚不再覆盖 `paperbanana_references.taskName`，避免旧数据或自定义分类在回滚后被永久改写；已随 zh-CN.v2 生产迁移部署。
 契约（影响其他端 / 共享）：
 - **迁移边界**：v2 脚本只写本地化与语料版本字段；`taskName` 继续由原始 bench/import 记录所有，前向同步和元数据回滚都不改它。
 - **306 条联合语料**：Web/Core 的 `scope=bench` 分页仍按业务 `id` + `source=paperbanana-bench` + `corpusVersion` 联合 306 条，不依赖迁移重写 `taskName`。
 各端待办：
 - [x] 语料迁移 / 回滚脚本与 306 条验收测试
 - [x] paperbanana-api / Web（公开分页请求与响应字段不变，无额外改造）
-- [ ] 部署 / 运维（下次执行 v2 元数据同步或回滚时使用更正后脚本）
+- [x] 部署 / 运维（生产前向同步使用更正后脚本，未触发回滚）
 
 ### [2026-08-19] PaperBananaBench 306 条 zh-CN.v2 语料与服务端分页— by Codex
-变更：参考库固定为当前 PaperBananaBench 306 条有图案例（66 diagram + 240 plot），4 条无图内部 fallback 与 bench 计数彻底分离；本条未部署。
+变更：参考库固定为当前 PaperBananaBench 306 条有图案例（66 diagram + 240 plot），4 条无图内部 fallback 与 bench 计数彻底分离；已部署香港 Core、Mongo 元数据与 Web。
 契约（影响其他端 / 共享）：
 - **语料字段**：`RetrievedReference`/`referenceLibrary` 在旧字段上新增 `shortIntroZh/detailZh/visualCategory/researchDomain/keywords/corpusVersion`；当前版本为 `zh-CN.v2`，英文 `title/summary` 继续用于检索。
 - **分页请求**：`referenceLibrary` 支持 `scope/page/pageSize/query/visualCategory/researchDomain/taskName`，`pageSize` 默认 12；响应返回 `totalItems/totalPages/page/pageSize/facets/corpusVersion`。默认 `scope=bench` 且跨 taskName 暴露 306 条；仅发 `taskName/limit` 的旧端保持兼容。查询/分面在服务端分页前完成，只给当页图片签名。
@@ -66,10 +66,11 @@
 - [x] paperbanana-api / Laf / packages-api（分页、分面、搜索、当页签名、手选严格错误）
 - [x] 语料与迁移工具（306 条固定快照、质量门禁、幂等同步/元数据回滚）
 - [x] Web（消费服务端分页/分面/详情字段，不再一次拉取 295 条本地过滤）
+- [x] 部署 / 运维（生产返回 totalItems=306、pageSize=12、totalPages=26、corpusVersion=zh-CN.v2；当页图片与中文字段完整）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需接入新分页响应；旧 `taskName/limit` 请求仍可用）
 
 ### [2026-08-19] 模型注册表 v2 与模型级精修能力 — by Codex
-变更：服务端 `modelRegistry` 成为模型可用性与精修语义的唯一权威，修正 Gemini/OpenAI/百炼直连目录与适配器，OpenRouter 继续以官方动态目录 fail-closed；本条未部署。
+变更：服务端 `modelRegistry` 成为模型可用性与精修语义的唯一权威，修正 Gemini/OpenAI/百炼直连目录与适配器，OpenRouter 继续以官方动态目录 fail-closed；已部署香港 Core 与 Web。
 契约（影响其他端 / 共享）：
 - **注册表字段**：每个 model 在旧有 `id/label/roles/capabilities/protocol/availabilityNotes` 上新增 `vendor`、`lifecycle`、`recommended`、`requiresEntitlement`、可选 `entitlement`、`inputModalities`、`outputModalities`、`verified`、`selectable`、可选 `disabledReason`、`roleReasons`；`capabilities` 新增 `imageEditMode: direct-edit|analyze-redraw|none` 和 `outputFormats`，保留旧字段向后兼容。OpenRouter 不兼容图像模型仍在目录可见，但 `selectable=false`、无 `image` role，且有精确禁用原因；客户可展示但不得提交。
 - **精修契约**：`modelCapability` 新增 `supportsDirectEdit/refineMode/refineReason`；`refineImage` 成功响应新增 `refineCapability {mode,directEdit,reason}`，任务 DTO 新增 `refineMode/refineReason`。`direct-edit` 必须将源图传入图像模型；`analyze-redraw` 明确先视觉分析再重绘。`sourceImageObjectKey` 仍是受支持的权威源图输入。
@@ -80,6 +81,7 @@
 - [x] packages-api / Web 共享传输（保留 refine capability 与任务字段）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续以新注册表字段展示推荐、生命周期、权益与精修方式；不得再由 provider 或模型名猜测）
 - [x] CI / 运维代码（只报告漂移，不自动改推荐；未触发生产部署）
+- [x] 生产部署 / 实测（百炼注册表默认值与 15 条目录已验收；`qwen3.7-plus` + `wan2.7-image-pro` 真实生成和直接精修成功）
 
 ### [2026-08-19] 模型目录下线项与注销迟到写保护 — by Codex
 变更：按 OpenRouter 实时官方目录从全部客户端静态回退表移除已下线的 `openrouter/openai/gpt-5.3-chat`；账号注销增加 OSS 写入后的持久 tombstone 复核，并把所属 job id 保留在删除墓碑中供 Core 后台持续清扫迟到结果对象。公开 action、字段和成功 envelope 不变。
