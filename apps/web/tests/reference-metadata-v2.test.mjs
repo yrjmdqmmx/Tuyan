@@ -29,6 +29,11 @@ const latinShare = (value) => {
   const text = String(value || '').replace(/\s/gu, '');
   return text ? (text.match(/[A-Za-z]/gu)?.length || 0) / text.length : 0;
 };
+const looksLikeKeywordProse = (value) => {
+  const text = String(value || '').trim();
+  return /(?:^#{1,6}\s*|\b(?:as shown in|we (?:propose|present|introduce)|figure\s*\d|table\s*\d|section\s*\d)\b|(?:^|\s)\d+(?:\.\d+)*\s+(?:method|methods|introduction|results?|discussion)\b)/iu.test(text)
+    || (text.split(/\s+/u).length > 10 && /[.,;:]/u.test(text));
+};
 const visibleSentences = (item) => `${item.shortIntroZh}${item.detailZh}`
   .split(/(?<=[。！？])/u)
   .map((sentence) => sentence.trim())
@@ -74,6 +79,8 @@ test('every entry has complete Chinese copy and useful nonempty facets', () => {
     assert.ok(item.summary.trim(), `${item.id}.summary must preserve source English`);
     assert.ok(Array.isArray(item.keywords) && item.keywords.length >= 2, `${item.id}.keywords needs at least two facets`);
     assert.ok(item.keywords.every((keyword) => String(keyword).trim()), `${item.id}.keywords cannot contain blanks`);
+    assert.ok(item.keywords.every((keyword) => keyword.length <= 60), `${item.id}.keywords must fit backend normalization`);
+    assert.ok(item.keywords.every((keyword) => !looksLikeKeywordProse(keyword)), `${item.id}.keywords cannot contain prose or section excerpts`);
     assert.ok(containsChinese(item.titleZh), `${item.id}.titleZh must contain Chinese`);
     assert.ok(containsChinese(item.shortIntroZh), `${item.id}.shortIntroZh must contain Chinese`);
     assert.ok(containsChinese(item.detailZh), `${item.id}.detailZh must contain Chinese`);
@@ -110,6 +117,8 @@ test('quality validator rejects corpus mutations that would weaken v2', () => {
     ['empty_english', (items) => items.map((item, index) => index ? item : { ...item, title: '', summary: '' })],
     ['generic_structure', (items) => items.map((item, index) => index < 3 ? { ...item, detailZh: `围绕「${item.titleZh}」，对比 ${index + 1} 组 ABC 数据并呈现关键关系。${item.detailZh}` } : item)],
     ['unnatural_copy', (items) => items.map((item, index) => index ? item : { ...item, shortIntroZh: '这是党与党的度量排名相关数量并相关行性的展示。' })],
+    ['long_keyword', (items) => items.map((item, index) => index ? item : { ...item, keywords: ['关键词', '过'.repeat(61)] })],
+    ['prose_keyword', (items) => items.map((item, index) => index ? item : { ...item, keywords: ['关键词', '3 Method As shown in Figure 2, we present the complete architecture and training pipeline.'] })],
   ];
   for (const [expectedCode, mutate] of mutations) {
     const codes = validateReferenceCorpusV2(mutate(clone())).map(({ code }) => code);

@@ -19,6 +19,11 @@ const latinShare = (value) => {
   const text = String(value || '').replace(/\s/gu, '');
   return text ? (text.match(/[A-Za-z]/gu)?.length || 0) / text.length : 0;
 };
+const looksLikeKeywordProse = (value) => {
+  const text = String(value || '').trim();
+  return /(?:^#{1,6}\s*|\b(?:as shown in|we (?:propose|present|introduce)|figure\s*\d|table\s*\d|section\s*\d)\b|(?:^|\s)\d+(?:\.\d+)*\s+(?:method|methods|introduction|results?|discussion)\b)/iu.test(text)
+    || (text.split(/\s+/u).length > 10 && /[.,;:]/u.test(text));
+};
 
 export function normalizeVisibleSentenceStructure(sentence, item) {
   let normalized = String(sentence || '');
@@ -72,6 +77,13 @@ export function validateReferenceCorpusV2(corpus) {
     }
     if (!Array.isArray(item?.keywords) || item.keywords.length < 2 || item.keywords.some((keyword) => !String(keyword).trim())) {
       errors.push({ code: 'empty_keywords', id, message: `${id}.keywords needs at least two nonempty values` });
+    } else {
+      if (item.keywords.some((keyword) => String(keyword).length > 60)) {
+        errors.push({ code: 'long_keyword', id, message: `${id}.keywords must not exceed 60 characters` });
+      }
+      if (item.keywords.some(looksLikeKeywordProse)) {
+        errors.push({ code: 'prose_keyword', id, message: `${id}.keywords cannot contain prose or section excerpts` });
+      }
     }
     if (item?.taskName && item.taskName !== 'plot' && item.taskName !== 'diagram') {
       errors.push({ code: 'invalid_task', id, message: `${id}.taskName is invalid` });

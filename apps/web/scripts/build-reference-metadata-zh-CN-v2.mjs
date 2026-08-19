@@ -256,10 +256,37 @@ function sourceEnglishTitle(source, taskName) {
 
 function contentKeys(source) {
   if (source.content && typeof source.content === 'object' && !Array.isArray(source.content)) {
-    return Object.keys(source.content).map(cleanText).filter(Boolean).slice(0, 8);
+    return Object.keys(source.content).map(conciseKeyword).filter(Boolean).slice(0, 8);
   }
-  const heading = cleanText(source.content).match(/^#{1,6}\s*([^#]{3,90})/u)?.[1];
-  return [heading || '方法结构', '模块关系'];
+  const heading = String(source.content || '').match(/^#{1,6}\s*([^\r\n]+)/mu)?.[1];
+  return [conciseKeyword(heading) || '方法结构', '模块关系'];
+}
+
+function conciseKeyword(value) {
+  let text = cleanText(value)
+    .replace(/!\[[^\]]*\]\([^)]*\)/gu, ' ')
+    .replace(/\[[^\]]+\]\([^)]*\)/gu, ' ')
+    .replace(/[`*_#$\\{}]+/gu, ' ')
+    .replace(/^\d+(?:\.\d+)*\s*/u, '')
+    .replace(/\s+/gu, ' ')
+    .trim();
+  if (!text) return '';
+  if (/^(?:proposed\s+)?(?:method|methods|methodology|approach|introduction|results?|discussion)$/iu.test(text)) return '方法结构';
+  text = text.split(/\b(?:as shown in|in this section|we (?:propose|present|introduce|now)|this section|figure\s*\d|table\s*\d|section\s*\d|given an?\b|to address\b)/iu)[0].trim();
+  if (/^(?:proposed\s+)?(?:method|methods|methodology|approach)\b/iu.test(text)) return '方法结构';
+  const firstClause = text.split(/[.;]|:\s+(?=[A-Z])/u)[0].trim();
+  if (firstClause) text = firstClause;
+  const words = text.split(/\s+/u).filter(Boolean);
+  if (words.length > 8) text = words.slice(0, 8).join(' ');
+  if (text.length > 60) {
+    const bounded = [];
+    for (const word of text.split(/\s+/u)) {
+      if ([...bounded, word].join(' ').length > 60) break;
+      bounded.push(word);
+    }
+    text = bounded.join(' ') || [...text].slice(0, 60).join('').trim();
+  }
+  return text.replace(/[,;:.\s]+$/u, '').trim();
 }
 
 function sourceSignalsZh(source, fallback, taskName) {
@@ -311,8 +338,12 @@ function researchDomain(source, englishTitle, keys) {
 }
 
 function keywordsFor(source, category, domain, title, keys, copyTerms = []) {
-  const candidates = [domain, categoryLabel(category, source.taskName), ...copyTerms, ...keys.slice(0, 4), ...title.split(/[^A-Za-z0-9\u3400-\u9fff+-]+/u).filter((word) => word.length >= 3).slice(0, 3)];
-  return [...new Set(candidates.map(cleanText).filter(Boolean))].slice(0, 14);
+  const stopwords = new Set(['and', 'the', 'for', 'with', 'via', 'from', 'into', 'over']);
+  const titleTerms = title.split(/[^A-Za-z0-9\u3400-\u9fff+-]+/u)
+    .filter((word) => word.length >= 3 && !stopwords.has(word.toLowerCase()))
+    .slice(0, 3);
+  const candidates = [domain, categoryLabel(category, source.taskName), ...copyTerms, ...keys.slice(0, 4), ...titleTerms];
+  return [...new Set(candidates.map(conciseKeyword).filter(Boolean))].slice(0, 14);
 }
 
 function stableHash(value) {
@@ -342,7 +373,7 @@ function buildPlotEntry(source) {
   const signals = sourceSignalsZh(source, '数据差异', taskName);
   const fields = localizedFieldCue(keys, topicCue(titleZh));
   const context = { title: titleZh, category: visualLabel, domain, fields, signals };
-  const seed = `${source.id}|${englishTitle}|${keys.join('|')}|${cleanText(source.visual_intent)}`;
+  const seed = `${source.id}|${source.path_to_gt_image || ''}|${englishTitle}|${keys.join('|')}|${cleanText(source.visual_intent)}`;
   const override = COPY_OVERRIDES[source.id];
   const shortIntroZh = override?.shortIntroZh || composeSentence(PLOT_OPENERS, PLOT_ACTIONS, PLOT_CLOSERS, context, seed, 'short');
   const detailZh = override?.detailZh || `${composeSentence(PLOT_OPENERS, PLOT_ACTIONS, PLOT_CLOSERS, context, seed, 'detail-a')}${composeSentence(PLOT_OPENERS, PLOT_ACTIONS, PLOT_CLOSERS, context, seed, 'detail-b')}`;
@@ -364,7 +395,7 @@ function buildDiagramEntry(source, legacyById) {
   const titleZh = DIAGRAM_TITLE_OVERRIDES[source.id] || cleanText(legacy?.titleZh) || `研究框架｜${englishTitle}`;
   const signals = sourceSignalsZh(source, '模块协作', taskName);
   const context = { title: titleZh, category: visualLabel, domain, fields: '输入、模块与输出', signals };
-  const seed = `${source.id}|${englishTitle}|${cleanText(source.visual_intent)}|${cleanText(source.content).slice(0, 240)}`;
+  const seed = `${source.id}|${source.path_to_gt_image || ''}|${englishTitle}|${cleanText(source.visual_intent)}|${cleanText(source.content).slice(0, 240)}`;
   const override = COPY_OVERRIDES[source.id];
   const shortIntroZh = override?.shortIntroZh || composeSentence(DIAGRAM_OPENERS, DIAGRAM_ACTIONS, DIAGRAM_CLOSERS, context, seed, 'short');
   const detailZh = override?.detailZh || `${composeSentence(DIAGRAM_OPENERS, DIAGRAM_ACTIONS, DIAGRAM_CLOSERS, context, seed, 'detail-a')}${composeSentence(DIAGRAM_OPENERS, DIAGRAM_ACTIONS, DIAGRAM_CLOSERS, context, seed, 'detail-b')}`;
