@@ -1,30 +1,30 @@
-# PaperBanana Laf Functions
+# PaperBanana Laf Functions (Rollback Only)
 
-这里归档 Laf 云开发中的云函数代码。当前线上函数仍在 Laf 控制台运行，本目录只是源码备份和维护入口。
+这里仅归档已暂停的 Laf 云函数回滚源码。当前生产后端是香港 Node 运行时；本目录不是常规发布入口，自动 Laf 源码发布保持禁用。
 
 ## Functions
 
 - `paperbanana-api.ts`: 生成任务、任务查询、管理员任务列表、模型调用、图片保存。
 
-## Production
+## Archived Laf Runtime
 
-- Laf 应用名: `paperbanana-web`
-- 云函数名: `paperbanana-api`
-- 线上调用地址: `https://sdswgya641.sealoshzh.site/paperbanana-api`
+- 回滚应用名: `paperbanana-web`
+- 回滚云函数名: `paperbanana-api`
+- 状态: 已暂停，不是当前生产主路径。
 - 数据集合: `paperbanana_jobs`
-- 存储 bucket: 通过 `PAPERBANANA_BUCKET` 环境变量指定，生产环境使用 Sealaf 完整桶名。
+- 存储 bucket: 通过 `PAPERBANANA_BUCKET` 环境变量指定；只在获批的应急回滚中核对。
 
-## Deploy Manually
+## Emergency Rollback via the Laf Console Only
 
-1. 打开 Laf 云开发控制台。
-2. 进入 `paperbanana-web` 应用。
-3. 打开云函数 `paperbanana-api`。
-4. 将 `paperbanana-api.ts` 内容复制到 Laf 函数编辑器。
-5. 配置 `.env.example` 中列出的环境变量。
-6. 在 Laf custom dependency 面板确认已配置精确版本 `jpeg-js@0.4.4`（Ark Seedream JPEG 回滚源码解码所必需）。
-7. 发布函数。
+Laf 回滚仅能在 Laf 控制台手动执行，且必须先获得明确的回滚批准。
 
-## Deploy From GitHub Actions
+1. 在暂停的 `paperbanana-web` 应用中打开 custom dependency 面板，直接核对已配置的精确版本是 `jpeg-js@0.4.4`。
+2. 若无法从控制台权威元数据确认该版本，停止回滚；不能以 workflow 输入、口头确认或仓库 `package.json` 代替。
+3. 在 Laf 控制台打开 `paperbanana-api`，核对回滚所需环境变量和其他 custom dependencies。
+4. 复核本目录的 `paperbanana-api.ts`，再手动粘贴到 Laf 编辑器并手动发布。
+5. 按回滚运维清单验证 health 和代表性受保护流程。
+
+## Verification-only GitHub Actions Workflow
 
 仓库提供了手动触发的 workflow:
 
@@ -32,30 +32,22 @@
 .github/workflows/deploy-laf-functions.yml
 ```
 
-需要先在 GitHub 仓库配置 Secrets:
-
-- `LAF_APPID`: Laf 应用 ID。
-- `LAF_PAT`: Laf 个人访问凭证。
-- `LAF_SERVER`: Laf API 服务地址，可选；不配置时默认 `https://api.laf.run`。
-
-手动触发时必须在非 Secret 输入 `laf_jpeg_js_dependency_version` 中填写精确值 `0.4.4`。该输入只是“Laf 应用已配置 custom dependency”的失败关闭确认；workflow **does not install or provision** `jpeg-js`，版本不匹配时会在 `laf func push` 前拒绝发布。
-
-第一次不要改成 push 自动部署。先在 GitHub Actions 页面手动运行 `Deploy Laf Functions`，确认 `paperbanana-api` 能正常发布并通过 health 检查后，再考虑自动化。
+该 workflow 是 **verification-only**：只检查仓库中回滚源码和 Node 绑定版本，不登录 Laf、不使用 Laf 凭据、不编辑或发布云函数。它无法读取 Laf custom dependency 的权威元数据，因此不能代替上述 Laf 控制台手动核对。在有经过身份验证的机器可读元数据检查之前，自动 Laf 发布保持禁用。
 
 ## Release Checklist
 
 - `ADMIN_TOKEN` 已配置。
 - `PAPERBANANA_BUCKET` 对应的 bucket 已存在。
 - `paperbanana_jobs` 集合可写。
-- 函数允许 HTTP 调用。
-- `OPTIONS` 预检请求正常返回。
-- 发布后先调用 `health` 动作确认 `{ runtime: "laf" }`。
+- 仅在获批的应急回滚中恢复函数 HTTP 调用。
+- 回滚后 `OPTIONS` 预检请求正常返回。
+- 回滚后调用 `health` 动作确认 `{ runtime: "laf" }`。
 - Laf custom dependency 已安装 `@resvg/resvg-wasm`，用于服务端栅格化 SVG 参考图。
-- Laf custom dependency 已安装精确版本 `jpeg-js@0.4.4`，用于 Ark Seedream JPEG 解码；源码推送不会安装它。
+- Laf custom dependency 已在控制台权威元数据中确认为精确版本 `jpeg-js@0.4.4`，用于 Ark Seedream JPEG 解码。
 
 ## Notes
 
 - 用户填写的模型 API Key 只在单次任务执行闭包中使用，不写入数据库。
 - `modelRegistry` v2 是多端模型列表和精修能力的权威；客户端不得从 provider 或模型名猜测图生图。`direct-edit` 必须传入源图，`analyze-redraw` 则是明示的分析后重绘。
 - 不要把真实 `ADMIN_TOKEN` 或其他密钥提交到仓库。
-- `@lafjs/cloud` 由 Laf 运行时提供；`@resvg/resvg-wasm` 与精确版本 `jpeg-js@0.4.4` 由 Laf custom dependency 提供，本目录和 source-push workflow 都不安装这些依赖。
+- `@lafjs/cloud` 由 Laf 运行时提供；`@resvg/resvg-wasm` 与精确版本 `jpeg-js@0.4.4` 由 Laf custom dependency 提供，本目录和 verification-only workflow 都不安装或配置这些依赖。

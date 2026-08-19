@@ -1,23 +1,11 @@
-name: Deploy Laf Functions
+name: Verify Laf Rollback Prerequisites
 
 on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: Type deploy-legacy-laf to continue.
+        description: Type verify-legacy-laf-rollback to inspect the repository prerequisites.
         required: true
-      function_name:
-        description: Laf function name to deploy.
-        required: true
-        default: paperbanana-api
-      source_file:
-        description: Source file path in this repository.
-        required: true
-        default: apps/laf-functions/paperbanana-api.ts
-      laf_jpeg_js_dependency_version:
-        description: Confirm the Laf custom dependency is already configured as jpeg-js@0.4.4 by entering 0.4.4.
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -27,60 +15,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    if: github.event.inputs.confirm == 'deploy-legacy-laf'
+  verify:
+    if: github.event.inputs.confirm == 'verify-legacy-laf-rollback'
     environment: legacy-sealos
     runs-on: ubuntu-latest
-    env:
-      LAF_APPID: ${{ secrets.LAF_APPID }}
-      LAF_PAT: ${{ secrets.LAF_PAT }}
-      LAF_SERVER: ${{ secrets.LAF_SERVER }}
-      FUNCTION_NAME: ${{ inputs.function_name || 'paperbanana-api' }}
-      SOURCE_FILE: ${{ inputs.source_file || 'apps/laf-functions/paperbanana-api.ts' }}
-      LAF_JPEG_JS_DEPENDENCY_VERSION: ${{ inputs.laf_jpeg_js_dependency_version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Validate required secrets and source file
-        run: |
-          test -n "$LAF_APPID" || (echo "Missing GitHub secret: LAF_APPID" && exit 1)
-          test -n "$LAF_PAT" || (echo "Missing GitHub secret: LAF_PAT" && exit 1)
-          test -f "$SOURCE_FILE" || (echo "Missing source file: $SOURCE_FILE" && exit 1)
-          test "$LAF_JPEG_JS_DEPENDENCY_VERSION" = "0.4.4" || (echo "Refusing Laf source push: first configure custom dependency jpeg-js@0.4.4, then confirm version input 0.4.4" && exit 1)
-
-      - name: Install Laf CLI
-        run: npm install -g laf-cli@1.0.0-patch.0
-
-      - name: Deploy function
+      - name: Verify repository rollback prerequisites
         run: |
           set -euo pipefail
 
-          workdir="$(mktemp -d)"
-          cp "$SOURCE_FILE" "$workdir/source.ts"
-          cd "$workdir"
+          test -f apps/laf-functions/paperbanana-api.ts
+          test -f apps/paperbanana-api/package.json
+          grep -Fq "from 'jpeg-js/lib/decoder'" apps/laf-functions/paperbanana-api.ts
+          node -e 'const pkg=require("./apps/paperbanana-api/package.json"); if (pkg.dependencies?.["jpeg-js"] !== "0.4.4") process.exit(1)'
 
-          laf_server="${LAF_SERVER:-https://api.laf.run}"
-          laf user add ci -r "$laf_server"
-          laf user switch ci
-          laf login "$LAF_PAT"
-
-          laf app init "$LAF_APPID"
-
-          mkdir -p functions
-          cp "$workdir/source.ts" "functions/${FUNCTION_NAME}.ts"
-          cat > "functions/${FUNCTION_NAME}.yaml" <<YAML
-          name: ${FUNCTION_NAME}
-          desc: PaperBanana API
-          methods:
-            - GET
-            - POST
-          tags: []
-          YAML
-
-          laf func push "$FUNCTION_NAME"
+      - name: Record manual-console guidance
+        run: |
+          {
+            echo "## Laf rollback verification-only check"
+            echo "This workflow does not publish source or authenticate to Laf."
+            echo "Any approved rollback must be completed manually in the Laf console."
+            echo "Before pasting or publishing the reviewed source, inspect the paused Laf application's custom dependency metadata and verify exactly jpeg-js@0.4.4."
+            echo "Until that console metadata has an authenticated machine-readable check, automated Laf publishing remains disabled."
+          } >> "$GITHUB_STEP_SUMMARY"

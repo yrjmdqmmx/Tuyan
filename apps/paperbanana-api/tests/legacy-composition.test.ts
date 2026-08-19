@@ -16,6 +16,7 @@ type LegacyPolicyModule = {
   requiredCreateRouteRoles(body: Record<string, unknown>, maxCriticRounds: number): string[]
   requiredRefineRouteRoles(body: Record<string, unknown>): string[]
   selectRequiredRouteSecrets(routes: Record<string, any>, apiKeys: Record<string, string>, roles: string[]): Record<string, string>
+  modelRoleSelectionError(provider: string, registry: Record<string, any>, selections: Array<Record<string, string>>): string
   resolveReferenceImageMode(body: Record<string, unknown>): Promise<Record<string, unknown>>
   saveResult(jobId: string, candidateId: number, content: string, mimeType: string, encoding: 'base64' | 'utf8'): Promise<any>
   saveStageImage(jobId: string, candidateId: number, stage: string, content: string, mimeType: string, encoding: 'base64' | 'utf8'): Promise<any>
@@ -275,6 +276,20 @@ test('createJob rejects explicit route conflicts, malformed routes, wrong roles,
   assert.equal(wrongRole.code, 400)
   assert.match(wrongRole.error, /not registered for main/)
 
+  const wrongUnusedImageRole = await invoke({
+    outputFormat: 'svg', retrievalSetting: 'none', maxCriticRounds: 0,
+    modelRoutes: { ...base.modelRoutes, image: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' } },
+  })
+  assert.equal(wrongUnusedImageRole.code, 400)
+  assert.match(wrongUnusedImageRole.error, /not registered for image/)
+
+  const wrongUnusedVisionRole = await invoke({
+    outputFormat: 'svg', retrievalSetting: 'none', maxCriticRounds: 0,
+    modelRoutes: { ...base.modelRoutes, vision: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' } },
+  })
+  assert.equal(wrongUnusedVisionRole.code, 400)
+  assert.match(wrongUnusedVisionRole.error, /not registered for vision/)
+
   const simpleMixed = await invoke({ configurationMode: 'simple' })
   assert.deepEqual(simpleMixed, {
     code: 400,
@@ -357,6 +372,13 @@ test('execution DTO builders allowlist complete routing contracts and discard ar
     authorization: 'Bearer authorization-secret',
     accessToken: 'access-token-secret',
     nestedCredentials: { token: 'nested-secret' },
+    prevalidatedManualReferences: [{
+      id: 'caller-controlled-reference',
+      api_keys: ['nested-reference-api-key'],
+      credentials: { password: 'nested-reference-password' },
+    }],
+    imageRefineMode: 'direct-edit',
+    imageRefineReason: 'caller-controlled-capability',
   }
 
   const create = legacy.toCreateExecutionBody({
@@ -381,6 +403,10 @@ test('execution DTO builders allowlist complete routing contracts and discard ar
     )
   }
   assert.equal(create.methodContent, 'Allowed method')
+  assert.equal(Object.hasOwn(create, 'prevalidatedManualReferences'), false)
+  assert.equal(Object.hasOwn(create, 'imageRefineMode'), false)
+  assert.equal(Object.hasOwn(create, 'imageRefineReason'), false)
+  assert.doesNotMatch(JSON.stringify(create), /nested-reference-api-key|nested-reference-password|caller-controlled-reference/)
   assert.equal(refine.sourceImageObjectKey, 'owned/source.png')
   assert.equal(refine.configurationMode, 'simple')
 })
@@ -405,6 +431,146 @@ test('route secret selection keeps only providers reachable by the requested sta
     bailian: 'vision-secret',
     gemini: 'image-secret',
   })
+})
+
+test('high-resolution plot reaches the image route only for a resolved direct-edit capability', async () => {
+  const legacy = await loadLegacy()
+
+  assert.deepEqual(legacy.requiredCreateRouteRoles({
+    taskName: 'plot', outputFormat: 'png', pipelineMode: 'planner_critic', imageSize: '2K', imageRefineMode: 'analyze-redraw',
+  }, 1), ['main', 'vision'])
+  assert.deepEqual(legacy.requiredCreateRouteRoles({
+    taskName: 'plot', outputFormat: 'png', pipelineMode: 'planner_critic', imageSize: '4K', imageRefineMode: 'direct-edit',
+  }, 1), ['main', 'image', 'vision'])
+})
+
+test('registry role validation rejects a non-selectable entry even when its role metadata is present', async () => {
+  const legacy = await loadLegacy()
+  const error = legacy.modelRoleSelectionError('openai', {
+    models: [{ id: 'disabled-main', roles: ['main'], selectable: false }],
+  }, [{ model: 'disabled-main', role: 'main' }])
+
+  assert.match(error, /not selectable for main/)
+})
+
+test('legacy high-resolution plot ignores caller-forged direct-edit capability', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  state.inserts = []
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'bailian', apiKeys: { bailian: 'main-route-secret' },
+        methodContent: 'A sufficiently detailed methodology for a legacy high-resolution statistical plot.',
+        caption: 'Ignore forged image capability.', taskName: 'plot', outputFormat: 'png', imageSize: '2K',
+        retrievalSetting: 'none', maxCriticRounds: 0, mainModelName: 'qwen3.7-plus', imageModelName: 'qwen3.8-max',
+        imageRefineMode: 'direct-edit', imageRefineReason: 'caller-forged',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    assert.equal(state.inserts.length, 1)
+    assert.equal(state.inserts[0].imageRefineMode, 'none')
+    await legacy.drainJobAdmission()
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+  }
+})
+
+test('mixed high-resolution plot accepts a valid analyze-redraw image route without its provider key', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  state.inserts = []
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'openai', configurationMode: 'advanced',
+        apiKeys: { openai: 'main-route-secret', gemini: 'vision-route-secret' },
+        methodContent: 'A sufficiently detailed methodology for a mixed high-resolution statistical plot.',
+        caption: 'Mixed plot capability routing.', taskName: 'plot', outputFormat: 'png', imageSize: '2K',
+        retrievalSetting: 'none', maxCriticRounds: 1,
+        modelRoutes: {
+          main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+          image: { accessProvider: 'bailian', modelId: 'z-image-turbo' },
+          vision: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+        },
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    assert.equal(state.inserts.length, 1)
+    assert.equal(state.inserts[0].imageRefineMode, 'analyze-redraw')
+    await legacy.drainJobAdmission()
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+  }
+})
+
+test('explicit maxCriticRounds zero adds no vision key, call, or critic stage', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousInserts = state.inserts
+  const previousUpdates = state.updates
+  const calls: string[] = []
+  state.ossWriteMode = 'success'
+  state.inserts = []
+  state.updates = []
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    calls.push(url)
+    if (url.includes('dashscope.aliyuncs.com/compatible-mode/v1/chat/completions')) {
+      return Response.json({ choices: [{ message: { content: 'A clear academic diagram description.' } }] })
+    }
+    if (url.includes('generativelanguage.googleapis.com/v1beta/interactions')) {
+      return Response.json({ output_image: { data: Buffer.alloc(120, 4).toString('base64'), mime_type: 'image/png' } })
+    }
+    throw new Error(`unexpected zero-critic dispatch ${url}`)
+  })
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
+        apiKeys: { bailian: 'main-route-secret', gemini: 'image-route-secret' },
+        methodContent: 'A sufficiently detailed methodology for explicit zero-critic execution verification.',
+        caption: 'Zero critic execution.', outputFormat: 'png', imageSize: '1K', pipelineMode: 'planner_critic',
+        retrievalSetting: 'none', maxCriticRounds: 0,
+        modelRoutes: {
+          main: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+          image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+          vision: { accessProvider: 'openai', modelId: 'gpt-5.4-pro' },
+        },
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    assert.equal(state.inserts[0].maxCriticRounds, 0)
+    await legacy.drainJobAdmission()
+    assert.deepEqual(calls.map((url) => new URL(url).hostname), [
+      'dashscope.aliyuncs.com',
+      'generativelanguage.googleapis.com',
+    ])
+    const pushedStages = state.updates.flatMap((entry: any) => entry.update?.$push?.stages ? [entry.update.$push.stages] : [])
+    assert.equal(pushedStages.some((stage: any) => stage.type === 'critic'), false)
+    const terminalStatuses = state.updates
+      .map((entry: any) => entry.update?.$set?.status)
+      .filter((status: unknown) => status === 'succeeded' || status === 'failed')
+    assert.deepEqual(terminalStatuses, ['succeeded'])
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.inserts = previousInserts
+    state.updates = previousUpdates
+  }
 })
 
 test('legacy create keeps main-only Bailian models valid when no vision stage was explicitly selected', async () => {
@@ -493,6 +659,50 @@ test('legacy analyze-redraw refine validates its derived vision role and preserv
     assert.equal(compatible.code, 0, JSON.stringify(compatible))
     assert.equal(state.inserts.length, 1)
     await legacy.drainJobAdmission()
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+    state.storedObjectBytes = previousStoredObjects
+  }
+})
+
+test('explicit direct refine rejects invalid unused main and vision routes without requiring their keys', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  const previousStoredObjects = state.storedObjectBytes
+  state.inserts = []
+  state.storedObjectBytes = { 'owned/explicit-direct.png': Buffer.from('source') }
+  const base = {
+    action: 'refineImage', provider: 'openai', configurationMode: 'advanced',
+    apiKeys: { gemini: 'image-route-secret' }, sourceImageObjectKey: 'owned/explicit-direct.png',
+    editInstruction: 'Improve label clarity while preserving all content.',
+    modelRoutes: {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+      vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+    },
+  }
+  const invoke = (modelRoutes: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body: { ...base, modelRoutes }, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  try {
+    const wrongMain = await invoke({
+      ...base.modelRoutes,
+      main: { accessProvider: 'openai', modelId: 'gpt-image-2' },
+    })
+    await legacy.drainJobAdmission()
+    const wrongVision = await invoke({
+      ...base.modelRoutes,
+      vision: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+    })
+    await legacy.drainJobAdmission()
+
+    assert.equal(wrongMain.code, 400)
+    assert.match(wrongMain.error, /not registered for main/)
+    assert.equal(wrongVision.code, 400)
+    assert.match(wrongVision.error, /not registered for vision/)
   } finally {
     legacy.configureRuntimeFetch()
     state.inserts = previousInserts

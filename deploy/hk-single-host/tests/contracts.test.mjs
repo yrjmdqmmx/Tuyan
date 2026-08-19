@@ -217,20 +217,26 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
   assert.match(workflows[0], /VITE_AUTH_BASE:\s*https:\/\/api\.paperbanana\.asia/);
 });
 
-test('legacy Laf source push requires an explicit jpeg-js rollback dependency confirmation', () => {
+test('legacy Laf rollback remains verification-only until the console dependency can be checked', () => {
   const workflow = read('../../.github/workflows/deploy-laf-functions.yml');
   const lafReadme = read('../../apps/laf-functions/README.md');
+  const coreReadme = read('../../apps/paperbanana-api/README.md');
+  const sync = read('../../SYNC.md');
 
-  assert.match(workflow, /laf_jpeg_js_dependency_version:\s*\n\s+description:.*jpeg-js@0\.4\.4/i);
-  assert.match(workflow, /laf_jpeg_js_dependency_version:\s*\n(?:\s+.*\n)*?\s+required:\s*true/);
-  assert.match(workflow, /LAF_JPEG_JS_DEPENDENCY_VERSION:\s*\$\{\{\s*inputs\.laf_jpeg_js_dependency_version/);
-  const preflight = workflow.indexOf('test "$LAF_JPEG_JS_DEPENDENCY_VERSION" = "0.4.4"');
-  const push = workflow.indexOf('laf func push "$FUNCTION_NAME"');
-  assert.ok(preflight >= 0 && push > preflight, 'jpeg-js confirmation must fail closed before source push');
+  assert.doesNotMatch(workflow, /\blaf\s+func\s+push\b/i);
+  assert.doesNotMatch(workflow, /\blaf\s+(?:login|app\s+init)\b|LAF_(?:PAT|APPID)/i);
+  assert.match(workflow, /environment:\s*legacy-sealos/);
+  assert.match(workflow, /verification[- ]only/i);
+  assert.match(workflow, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual/i);
   assert.doesNotMatch(workflow, /(?:npm|pnpm|yarn)\s+(?:install|add)[^\n]*jpeg-js|laf\s+(?:dependency|deps?)\s+/i);
+  assert.match(lafReadme, /^# .*rollback only/im);
   assert.match(lafReadme, /jpeg-js@0\.4\.4/);
   assert.match(lafReadme, /custom dependency/i);
-  assert.match(lafReadme, /does not (?:install|provision)|不(?:安装|配置|供应)/i);
+  assert.match(lafReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|仅能[^\n]*Laf 控制台/i);
+  assert.match(coreReadme, /verification[- ]only/i);
+  assert.match(coreReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|手动[^\n]*Laf 控制台/i);
+  assert.match(sync, /jpeg-js@0\.4\.4/);
+  assert.match(sync, /仅验证[^\n]*不含[^\n]*push|仅能[^\n]*控制台手动/);
 });
 
 test('Core operations documentation includes Ark in the four-origin Singapore egress contract', () => {

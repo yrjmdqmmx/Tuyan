@@ -163,7 +163,7 @@ function definedExecutionFields<T extends Record<string, unknown>>(fields: T): T
 }
 
 export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody {
-  const routed = body as CreateJobBody & ModelRoutingMetadata & { prevalidatedManualReferences?: RetrievedReference[] }
+  const routed = body as CreateJobBody & ModelRoutingMetadata
   return definedExecutionFields({
     action: 'createJob',
     provider: routed.provider,
@@ -191,9 +191,6 @@ export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody 
     manualReferenceIds: routed.manualReferenceIds,
     aspectRatio: routed.aspectRatio,
     imageSize: routed.imageSize,
-    imageRefineMode: routed.imageRefineMode,
-    imageRefineReason: routed.imageRefineReason,
-    prevalidatedManualReferences: routed.prevalidatedManualReferences,
   })
 }
 
@@ -327,7 +324,7 @@ export function requiredCreateRouteRoles(body: Record<string, any>, maxCriticRou
   const pipelineMode = body.pipelineMode || 'planner_critic'
   if (outputFormat === 'svg' || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
   if (outputFormat === 'png' && taskName !== 'plot') roles.push('image')
-  if (taskName === 'plot' && (body.imageSize === '2K' || body.imageSize === '4K')) roles.push('image')
+  if (taskName === 'plot' && (body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') roles.push('image')
   if ((body.referenceImages || []).length) roles.push(body.referenceImageModeUsed === 'main_model' ? 'main' : 'vision')
   if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
   return uniqueRouteRoles(roles)
@@ -1721,26 +1718,32 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     referenceImageModeUsed: modeResolution.referenceImageModeUsed,
   }
   const safeNumCandidates = clamp(Number(body.numCandidates || 1), 1, Number(process.env.PAPERBANANA_MAX_CANDIDATES || 3))
-  const safeCriticRounds = clamp(Number(body.maxCriticRounds || 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
-  const requiredRoles = requiredCreateRouteRoles(roleResolvedBody, safeCriticRounds)
-  let registries: Map<Provider, ProviderModelRegistry>
+  const safeCriticRounds = clamp(Number(body.maxCriticRounds ?? 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
+  let requiredRoles: ModelRole[]
+  let jobBody: CreateExecutionBody
   try {
-    registries = await validateModelRouting(routing.modelRoutes, requiredRoles)
+    const capabilityAgnosticRoles = requiredCreateRouteRoles(roleResolvedBody, safeCriticRounds)
+    const registryValidationRoles = routing.modelRoutingSource === 'explicit'
+      ? (['main', 'image', 'vision'] as ModelRole[])
+      : capabilityAgnosticRoles
+    const registries = await validateModelRouting(routing.modelRoutes, registryValidationRoles)
+    const imageRoute = routing.modelRoutes.image
+    const imageRegistry = registries.get(imageRoute.accessProvider)
+    const imageRefineCapability = imageRegistry
+      ? registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
+      : { mode: 'none' as const, reason: 'Image route is not reachable for this job' }
+    jobBody = {
+      ...roleResolvedBody,
+      imageRefineMode: imageRefineCapability.mode,
+      imageRefineReason: imageRefineCapability.reason,
+    }
+    requiredRoles = requiredCreateRouteRoles(jobBody, safeCriticRounds)
+    await validateModelRouting(routing.modelRoutes, requiredRoles, registries)
   } catch (error: any) {
     return {
       ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
       ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
     }
-  }
-  const imageRoute = routing.modelRoutes.image
-  const imageRegistry = registries.get(imageRoute.accessProvider)
-  const imageRefineCapability = imageRegistry
-    ? registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
-    : { mode: 'none' as const, reason: 'Image route is not reachable for this job' }
-  const jobBody = {
-    ...roleResolvedBody,
-    imageRefineMode: imageRefineCapability.mode,
-    imageRefineReason: imageRefineCapability.reason,
   }
   const routeSecrets = selectRequiredRouteSecrets(jobBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
   for (const role of requiredRoles) {
@@ -1858,7 +1861,10 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   }
   let registries: Map<Provider, ProviderModelRegistry>
   try {
-    registries = await validateModelRouting(routing.modelRoutes, ['image'])
+    const registryValidationRoles = routing.modelRoutingSource === 'explicit'
+      ? (['main', 'image', 'vision'] as ModelRole[])
+      : (['image'] as ModelRole[])
+    registries = await validateModelRouting(routing.modelRoutes, registryValidationRoles)
   } catch (error: any) {
     return {
       ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
@@ -5066,7 +5072,7 @@ async function validateModelRouting(
   return registries
 }
 
-function modelRoleSelectionError(
+export function modelRoleSelectionError(
   provider: Provider,
   registry: ProviderModelRegistry,
   selections: Array<{ model: string; role: ModelRole }>,
@@ -5078,6 +5084,9 @@ function modelRoleSelectionError(
     const entry = registry.models.find((candidate) => candidate.id === model)
     if (!entry?.roles.includes(selection.role)) {
       return `Model ${model} is not registered for ${selection.role} on ${provider}`
+    }
+    if (!entry.selectable) {
+      return `Model ${model} is not selectable for ${selection.role} on ${provider}`
     }
   }
   return ''

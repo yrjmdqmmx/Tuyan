@@ -24,19 +24,31 @@
 
 ## 条目（最新在上）
 
+### [2026-08-20] 显式路由目录校验、plot 可达能力与 Laf 手动回滚边界 — by Codex
+变更：Core 将“显式 `modelRoutes` 的三路注册表合法性”与“本任务真实可达阶段”分开：显式三路均必须存在、role 正确且可选，但只有真实可达路线需要 key/调用成本。`prevalidatedManualReferences` 改为仅服务端手选查询后附加，客户端同名字段永不进入后台 DTO。2K/4K plot 仅当注册表解析为 `direct-edit` 时可达 image；显式 `maxCriticRounds=0` 不再被默认值覆盖。Laf 回滚 workflow 改为只读验证指引，暂停任何自动源码发布。
+契约（影响其他端 / 共享）：
+- **路由准入**：显式三路完整性与注册表合法性必须全部通过；key、Ark 账号 probe 和执行输出协议只对任务可达 role 生效。legacy 请求仍只校验实际可达路线。
+- **createJob 语义**：`prevalidatedManualReferences` 是服务端内部字段，客户端不得传入或依赖；`maxCriticRounds=0` 精确表示无 critic。plot 的 2K/4K 只在 image route 为 `direct-edit` 时产生图像路线调用。
+- **Laf 回滚**：`.github/workflows/deploy-laf-functions.yml` 仅验证仓库先决条件，不含任何 source push。获批回滚仅能在 Laf 控制台手动执行，且须先从控制台权威 custom dependency 元数据确认精确版本 `jpeg-js@0.4.4`；本条未部署、未改环境绑定。
+各端待办：
+- [x] paperbanana-api / Laf Core（服务端手选字段、双层路由校验、plot 能力与 zero-critic 回归）
+- [x] CI / 回滚文档（verification-only，Laf README 标明 rollback-only）
+- [ ] Web（保留显式三路 role/selectable 预校验契约回归；本后端会话不修改 Web 文件）
+- [ ] 部署 / 运维（仅在获批回滚时按上述控制台流程处理；本条未发布）
+
 ### [2026-08-20] 多路由精确准入、Ark 探针截止时间与 Laf 回滚依赖门禁 — by Codex
-变更：Core 在入队/持久化前按实际可达执行阶段校验 `main/image/vision`，精修任务保留归一后的 `configurationMode=simple|advanced`（旧请求默认 `simple`）；后台 DTO 改为字段白名单。Gateway 的 `providerAccountCatalog` 仅转发 `apiKeys.ark` 与探针契约字段。Ark 账号 probe 增加可中止端到端截止时间。Laf 原始源码回滚在 push 前强制人工确认 custom dependency 精确版本 `jpeg-js@0.4.4`。注册表 v4 仅为有厂商官方精确证据的模型写入 ISO 发布日并按已知日期倒序、未知日期置后。
+变更：Core 在入队/持久化前按实际可达执行阶段校验 `main/image/vision`，精修任务保留归一后的 `configurationMode=simple|advanced`（旧请求默认 `simple`）；后台 DTO 改为字段白名单。Gateway 的 `providerAccountCatalog` 仅转发 `apiKeys.ark` 与探针契约字段。Ark 账号 probe 增加可中止端到端截止时间。Laf 原始源码回滚要求 custom dependency 精确版本 `jpeg-js@0.4.4`；其自动发布边界由上方新条目取代。注册表 v4 仅为有厂商官方精确证据的模型写入 ISO 发布日并按已知日期倒序、未知日期置后。
 契约（影响其他端 / 共享）：
 - **路由与任务 DTO**：`requiredCreateRouteRoles` / `requiredRefineRouteRoles` 的完整实际角色必须在 admission 前通过注册表校验；不会触达 vision 的旧 main-only 请求仍兼容。公开精修任务的 `configurationMode` 不再强制为 `advanced`，`routingMode` 仍完全由服务端路由推导。
 - **密钥与探针**：后台 create/refine DTO 只含执行字段；账号目录网关丢弃 Ark 以外 provider key 和任意凭证别名。`PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS` 可选，默认 `12000`，限制 `100..30000` 毫秒，超时会 abort 并释放全局/owner/IP 槽位。
-- **回滚发布**：`.github/workflows/deploy-laf-functions.yml` 的非 Secret 输入 `laf_jpeg_js_dependency_version` 必须精确为 `0.4.4`；它只确认 Laf custom dependency 已配置，workflow 不安装依赖，也没有执行部署。
+- **回滚发布**：此条当时的输入自证设计已被上方新条目取代；当前 workflow 仅做仓库验证，Laf 回滚仅能经控制台权威元数据核对后手动完成。
 - **注册表日期**：`registryVersion=2026-08-20.v4`；`releasedAt` 只采信精确官方发布日期，已知日期倒序、`null` 置后，`officialSourceUrl` 继续保留。
 各端待办：
 - [x] paperbanana-api / Laf Core（精确准入、模式持久化、DTO 白名单、探针 deadline、注册表日期与测试）
 - [x] auth-gateway（Ark key 透明转发收窄、全形态 `apiKeys/api_keys` 日志清洗）
-- [x] CI / 回滚文档（Laf `jpeg-js@0.4.4` 失败关闭确认；未部署）
+- [x] CI / 回滚文档（已由上方新条目收紧为 verification-only；未部署）
 - [ ] Web / 原生端（无需请求改造；展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
-- [ ] 部署 / 运维（人工确认 Laf custom dependency 后才可运行回滚 workflow；本条未改环境绑定、未发布）
+- [ ] 部署 / 运维（获批回滚时仅能在 Laf 控制台核对 custom dependency 后手动发布；本条未改环境绑定、未发布）
 
 ### [2026-08-19] Ark CN 数据面出站白名单与香港健康探针 — by Codex
 变更：Core `providerEgress` 与新加坡 Squid 仅新增精确数据面主机 `ark.cn-beijing.volces.com`；`sg-required` 走固定新加坡代理，`disabled` 对该主机及其单个根点等价形式继续失败关闭。香港定时 smoke 增加无鉴权、只读、非计费的 `GET /api/v3/models`，预期 401；未登记任何 Ark 控制面、CDN、通配符或后缀域名。
