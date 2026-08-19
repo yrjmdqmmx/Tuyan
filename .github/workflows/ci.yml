@@ -76,11 +76,12 @@ jobs:
               -project apps/ios/paperbanana.xcodeproj \
               -scheme PaperBanana |
               awk -F'id:' '/platform:iOS Simulator/ && /name:iPhone/ {
-                split($2, fields, ",")
-                gsub(/[[:space:]]/, "", fields[1])
-                print fields[1]
-                exit
-              }'
+                if (selected == "") {
+                  split($2, fields, ",")
+                  gsub(/[[:space:]]/, "", fields[1])
+                  selected = fields[1]
+                }
+              } END { print selected }'
           )"
           test -n "$destination_id"
           xcodebuild test \

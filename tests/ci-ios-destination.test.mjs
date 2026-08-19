@@ -9,4 +9,5 @@ test('CI selects an iOS destination eligible for the PaperBanana scheme', () => 
   assert.match(workflow, /xcodebuild -showdestinations/)
   assert.match(workflow, /platform:iOS Simulator[\s\S]*name:iPhone/)
   assert.match(workflow, /test -n "\$destination_id"/)
+  assert.doesNotMatch(workflow, /print fields\[1\]\s*\n\s*exit/)
 })
