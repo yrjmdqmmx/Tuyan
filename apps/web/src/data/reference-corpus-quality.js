@@ -21,14 +21,25 @@ const latinShare = (value) => {
 };
 
 export function normalizeVisibleSentenceStructure(sentence, item) {
-  return String(sentence || '')
-    .replaceAll(`「${item?.titleZh || ''}」`, '「标题」')
-    .replaceAll(item?.titleZh || '', '标题')
-    .replaceAll(item?.visualCategory || '', '图类')
-    .replaceAll(item?.researchDomain || '', '领域')
+  let normalized = String(sentence || '');
+  const replacements = [
+    [item?.titleZh ? `「${item.titleZh}」` : '', '「标题」'],
+    [item?.titleZh || '', '标题'],
+    [item?.visualCategory || '', '图类'],
+    [item?.researchDomain || '', '领域'],
+    ...[...(item?.keywords || [])].sort((left, right) => String(right).length - String(left).length).map((keyword) => [String(keyword), '关键词']),
+  ];
+  for (const [token, replacement] of replacements) if (token) normalized = normalized.replaceAll(token, replacement);
+  return normalized
     .replace(/\b[A-Za-z][A-Za-z0-9_.+/-]*\b/gu, '术语')
     .replace(/\d+(?:\.\d+)?/gu, '数字')
-    .replace(/\s+/gu, '');
+    .replace(/\s+/gu, '')
+    .replace(/「标题」以.+?为观察重点，图类结合.+?呈现.+?[。！？]$/u, '「标题」以主题为观察重点，图类结合字段呈现关系。')
+    .replace(/源图围绕.+?组织.+?，通过图类的位置、分组与图例设计说明.+?[。！？]$/u, '源图围绕主题组织字段，通过图类说明关系。')
+    .replace(/在.+?的表达中，画面将主要差异与辅助信息分层展开.+?[。！？]$/u, '在主题表达中，画面分层展开信息。')
+    .replace(/「标题」围绕.+?展开，图类突出.+?及模块间的信息流向[。！？]$/u, '「标题」围绕主题展开，图类突出关系与信息流向。')
+    .replace(/源图以.+?为主线，依据原始方法内容将.+?拆解为可跟踪的步骤与模块[。！？]$/u, '源图以主题为主线，将关系拆解为步骤与模块。')
+    .replace(/为了说明.+?的实现路径，画面利用分层、连接和强调关系区分.+?[。！？]$/u, '为了说明主题的实现路径，画面用视觉关系区分流程。');
 }
 
 export function validateReferenceCorpusV2(corpus) {
@@ -82,6 +93,9 @@ export function validateReferenceCorpusV2(corpus) {
     if (shortIntro.length > 120) errors.push({ code: 'long_intro', id, message: `${id}.shortIntroZh is too long` });
     if (detail.length < 64 || !/[。！？]$/u.test(detail)) errors.push({ code: 'short_detail', id, message: `${id}.detailZh is incomplete` });
     if (/^聚焦/u.test(shortIntro)) errors.push({ code: 'focus_prefix', id, message: `${id}.shortIntroZh starts with 聚焦` });
+    if (/党与党的|相关数量|并相关行性/u.test(`${shortIntro}${detail}`)) {
+      errors.push({ code: 'unnatural_copy', id, message: `${id} contains a known unnatural machine phrase` });
+    }
     if (/(?:\.\.\.|…)/u.test(`${item?.titleZh || ''}${shortIntro}${detail}`)) errors.push({ code: 'ellipsis', id, message: `${id} contains an ellipsis placeholder` });
     if (latinShare(title) > 0.45 || latinShare(shortIntro) > 0.35 || latinShare(detail) > 0.25) {
       errors.push({ code: 'latin_leakage', id, message: `${id} leaks excessive source English into visible Chinese copy` });

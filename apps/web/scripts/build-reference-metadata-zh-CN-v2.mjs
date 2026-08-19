@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -105,6 +106,59 @@ const DIAGRAM_TITLE_OVERRIDES = Object.freeze({
   ref_307: 'Wonder：基于多智能体上下文校准的好奇心探索',
 });
 
+const COPY_OVERRIDES = Object.freeze({
+  ref_169: Object.freeze({
+    shortIntroZh: '热力图并列展示 A 党与 B 党在各项指标上的排名，便于辨认双方优势。',
+    detailZh: '横向类别作为共用标尺，两个热力矩阵分别对应 A 党和 B 党；色块深浅编码排名高低，使同一指标上的差距一目了然。并排布局也能快速显示双方的强项与短板。',
+  }),
+  ref_239: Object.freeze({
+    shortIntroZh: '三维柱状图按地区和宗教组织信众规模，通过高度与色阶呈现数量差异。',
+    detailZh: '底面的两条轴分别对应地区与宗教，每根立柱的高度表示信众人数。配色同步反映数值大小，读者既可比较同一地区内的宗教构成，也可跨地区寻找规模差异。',
+  }),
+  ref_308: Object.freeze({
+    shortIntroZh: '框架图解释 ZeCO 如何为线性注意力实现零通信开销的序列并行，并展示其扩展方式。',
+    detailZh: '图中对照数据并行与序列并行的通信路径，标出 ZeCO 在线性注意力计算中消除额外交换的关键位置。三组视觉分支分别说明并行扩展、内存占用与执行效率。',
+  }),
+});
+
+const PLOT_OPENERS = Object.freeze([
+  '这张{category}从{fields}切入', '围绕「{title}」', '在{domain}语境下', '面对{fields}这组信息',
+  '读图时先看{fields}', '为了说明「{title}」', '{fields}构成画面的首要线索', '该{category}集中组织{fields}',
+  '以{fields}作为比较入口', '从{fields}的排列出发', '图面把{fields}置于核心', '针对「{title}」',
+  '沿着{fields}的展开顺序', '结合{domain}问题', '把{fields}放在统一视图中', '「{title}」的主要数据由{fields}承载',
+]);
+const PLOT_ACTIONS = Object.freeze([
+  '视觉编码直接对准{signals}', '{category}把数值关系转成{signals}', '横纵方向共同解释{signals}', '画面用层次差异回答{signals}',
+  '颜色、位置与形状合力表达{signals}', '各组记号围绕{signals}建立对照', '信息层级按{signals}逐步展开', '同一标尺让{signals}可直接比较',
+  '主图形优先突出{signals}', '数据标记依照{signals}排布', '阅读顺序从局部数值转向{signals}', '布局将{signals}放在视线中心',
+  '类别与数值共同勾勒{signals}', '可视化语法围绕{signals}展开', '编码方式避免遮蔽{signals}', '尺度与分组同时服务于{signals}',
+]);
+const PLOT_CLOSERS = Object.freeze([
+  '读者可据此快速找到差异', '整体与局部因而能够相互印证', '重点类别不会被次要信息淹没', '比较路径因此保持清晰',
+  '数值高低可以循序读取', '不同组别之间的距离更容易判断', '趋势、构成与异常点都有明确落点', '视线会自然落到最关键的数据上',
+  '多个维度之间的联系得以保留', '差距的方向和幅度都便于辨认', '图例与标尺共同降低理解成本', '主要结论可以从画面中直接读出',
+  '各项度量不需额外换算即可对照', '阅读者能先掌握全局再检查细节', '数据关联因而具有连续的阅读节奏', '图形与主题的对应关系保持紧密',
+]);
+
+const DIAGRAM_OPENERS = Object.freeze([
+  '该框架从{signals}开始铺开', '围绕「{title}」的方法主线', '在{domain}问题中', '为了交代「{title}」的实现路径',
+  '图中先界定{signals}', '从输入端向结果端阅读', '各模块依照{signals}串联', '针对「{title}」',
+  '该{category}将{signals}放在中心', '顺着箭头所示方向', '方法概览以{signals}为索引', '读者可从「{title}」的核心模块入手',
+  '在同一视图中', '图示把抽象方法转成可追踪流程', '从任务条件出发', '为区分学习与执行阶段',
+]);
+const DIAGRAM_ACTIONS = Object.freeze([
+  '模块连接说明{signals}如何传递', '箭头和分组界定{signals}的先后次序', '输入、中间状态与输出共同解释{signals}', '层级布局将{signals}拆成若干可验证环节',
+  '主干流程与辅助分支共同支撑{signals}', '视觉连线展示{signals}在模块间的变化', '不同色块分别承担{signals}的子任务', '顺序编号把{signals}转成清晰步骤',
+  '上下文关系揭示{signals}的依赖', '模块边界帮助区分{signals}的职责', '训练信号与推理路径围绕{signals}交汇', '反馈连接补充{signals}的迭代方式',
+  '并行分支展示{signals}的协作', '起点与终点的对照突出{signals}', '画面的主次层级对应{signals}的处理深度', '局部细节围绕{signals}回到整体架构',
+]);
+const DIAGRAM_CLOSERS = Object.freeze([
+  '因而可以定位每一步的作用', '整体逻辑从原始输入一直保持到结果端', '关键决策点与数据流向清晰分离', '复杂步骤被压缩成可循序阅读的结构',
+  '方法的核心贡献可以沿连线逐项检查', '训练与使用阶段不会混在同一层级中', '模块间的依赖与反馈因而更易辨认', '读者能先理解主干再查看子步骤',
+  '输入条件、处理过程与输出目标形成闭环', '设计选择与最终结果建立直接对应', '多个子系统的职责保持独立又彼此衔接', '视觉层级与研究论证的先后关系保持一致',
+  '箭头方向与文本标注共同降低理解成本', '结构细节可以回溯到对应的方法目标', '主要路径与备选分支各自保持完整', '整幅图最终形成可用于复现的方法地图',
+]);
+
 const VISUAL_CATEGORY_LABELS = Object.freeze({
   '3d': '三维图', area: '面积图', bar: '柱状图', box: '箱线图', contour: '等高线图',
   density: '密度图', diagram: '研究框架图', donut: '环形图', errorbar: '误差棒图',
@@ -161,6 +215,9 @@ const FIELD_LABEL_RULES = Object.freeze([
   ['得分', /\b(?:score|accuracy|performance|metric|value)\b/iu], ['收入', /\b(?:income|revenue|earnings?|sales?)\b/iu],
   ['人口', /\bpopulation\b/iu], ['温度', /\btemperature\b/iu], ['能耗', /\b(?:energy|consumption|fuel)\b/iu],
   ['地区', /\b(?:region|country|city|location)\b/iu], ['方法', /\b(?:method|model|strategy|treatment)\b/iu],
+  ['类别', /\blabels?\b/iu], ['排名', /\brank(?:ing)?s?\b/iu], ['政策', /\bpolicy\b/iu], ['政党', /\bparty\b/iu],
+  ['品牌', /\bbrands?\b/iu], ['年龄', /\bage\b/iu], ['预算', /\bbudget\b/iu], ['支出', /\b(?:expense|expenditure)s?\b/iu],
+  ['部门', /\bdepartments?\b/iu], ['作者', /\bauthors?\b/iu], ['项目', /\bprojects?\b/iu], ['队伍', /\bteams?\b/iu],
 ]);
 
 const cleanText = (value) => String(value ?? '')
@@ -243,7 +300,7 @@ function localizedFieldCue(keys, fallback) {
     labels.push(...chinese);
     for (const [label, pattern] of FIELD_LABEL_RULES) if (pattern.test(key)) labels.push(label);
   }
-  return [...new Set(labels)].slice(0, 3).join('、') || '主题度量';
+  return [...new Set(labels)].slice(0, 3).join('、') || '关键数值';
 }
 
 function researchDomain(source, englishTitle, keys) {
@@ -253,9 +310,25 @@ function researchDomain(source, englishTitle, keys) {
   return DOMAIN_RULES.find(([, pattern]) => pattern.test(haystack))?.[0] || '综合数据分析';
 }
 
-function keywordsFor(source, category, domain, title, keys) {
-  const candidates = [domain, categoryLabel(category, source.taskName), ...keys.slice(0, 4), ...title.split(/[^A-Za-z0-9\u3400-\u9fff+-]+/u).filter((word) => word.length >= 3).slice(0, 3)];
-  return [...new Set(candidates.map(cleanText).filter(Boolean))].slice(0, 8);
+function keywordsFor(source, category, domain, title, keys, copyTerms = []) {
+  const candidates = [domain, categoryLabel(category, source.taskName), ...copyTerms, ...keys.slice(0, 4), ...title.split(/[^A-Za-z0-9\u3400-\u9fff+-]+/u).filter((word) => word.length >= 3).slice(0, 3)];
+  return [...new Set(candidates.map(cleanText).filter(Boolean))].slice(0, 14);
+}
+
+function stableHash(value) {
+  return Number.parseInt(createHash('sha256').update(String(value)).digest('hex').slice(0, 8), 16);
+}
+
+function interpolate(template, context) {
+  return template.replace(/\{(\w+)\}/gu, (_, key) => context[key] || '');
+}
+
+function composeSentence(openers, actions, closers, context, seed, salt) {
+  const opener = openers[stableHash(`${seed}:${salt}:opener`) % openers.length];
+  const action = actions[stableHash(`${seed}:${salt}:action`) % actions.length];
+  const closer = closers[stableHash(`${seed}:${salt}:closer`) % closers.length];
+  const lead = salt === 'detail-a' ? '具体来看，' : salt === 'detail-b' ? '进一步看，' : '';
+  return finishChineseSentence(`${lead}${interpolate(opener, context)}，${interpolate(action, context)}，${interpolate(closer, context)}`);
 }
 
 function buildPlotEntry(source) {
@@ -266,15 +339,17 @@ function buildPlotEntry(source) {
   const keys = contentKeys(source);
   const domain = researchDomain(source, englishTitle, keys);
   const titleZh = PLOT_TITLES_ZH[Number(source.id.slice(4))] || `${visualLabel}案例｜${englishTitle}`;
-  const cue = topicCue(titleZh);
   const signals = sourceSignalsZh(source, '数据差异', taskName);
-  const fields = localizedFieldCue(keys, cue);
-  const shortIntroZh = finishChineseSentence(`「${titleZh}」以${cue}为观察重点，${visualLabel}结合${fields}呈现${signals}`);
-  const detailZh = finishChineseSentence(`源图围绕${cue}组织${fields}，通过${visualLabel}的位置、分组与图例设计说明${signals}。在${cue}的表达中，画面将主要差异与辅助信息分层展开，便于读者快速识别数据关联与重点`);
+  const fields = localizedFieldCue(keys, topicCue(titleZh));
+  const context = { title: titleZh, category: visualLabel, domain, fields, signals };
+  const seed = `${source.id}|${englishTitle}|${keys.join('|')}|${cleanText(source.visual_intent)}`;
+  const override = COPY_OVERRIDES[source.id];
+  const shortIntroZh = override?.shortIntroZh || composeSentence(PLOT_OPENERS, PLOT_ACTIONS, PLOT_CLOSERS, context, seed, 'short');
+  const detailZh = override?.detailZh || `${composeSentence(PLOT_OPENERS, PLOT_ACTIONS, PLOT_CLOSERS, context, seed, 'detail-a')}${composeSentence(PLOT_OPENERS, PLOT_ACTIONS, PLOT_CLOSERS, context, seed, 'detail-b')}`;
   return {
     id: source.id, taskName, title: englishTitle, summary: cleanText(source.visual_intent), titleZh,
     shortIntroZh, detailZh, visualCategory: visualLabel, researchDomain: domain,
-    keywords: keywordsFor({ ...source, taskName }, category, domain, englishTitle, keys),
+    keywords: keywordsFor({ ...source, taskName }, category, domain, englishTitle, keys, [fields, signals, ...fields.split('、'), ...signals.split('、')]),
   };
 }
 
@@ -287,14 +362,16 @@ function buildDiagramEntry(source, legacyById) {
   const keys = contentKeys(source);
   const domain = researchDomain(source, englishTitle, keys);
   const titleZh = DIAGRAM_TITLE_OVERRIDES[source.id] || cleanText(legacy?.titleZh) || `研究框架｜${englishTitle}`;
-  const cue = topicCue(titleZh);
   const signals = sourceSignalsZh(source, '模块协作', taskName);
-  const shortIntroZh = finishChineseSentence(`「${titleZh}」围绕${cue}展开，${visualLabel}突出${signals}及模块间的信息流向`);
-  const detailZh = finishChineseSentence(`源图以${cue}为主线，依据原始方法内容将${signals}拆解为可跟踪的步骤与模块。为了说明${cue}的实现路径，画面利用分层、连接和强调关系区分输入、中间处理与结果端`);
+  const context = { title: titleZh, category: visualLabel, domain, fields: '输入、模块与输出', signals };
+  const seed = `${source.id}|${englishTitle}|${cleanText(source.visual_intent)}|${cleanText(source.content).slice(0, 240)}`;
+  const override = COPY_OVERRIDES[source.id];
+  const shortIntroZh = override?.shortIntroZh || composeSentence(DIAGRAM_OPENERS, DIAGRAM_ACTIONS, DIAGRAM_CLOSERS, context, seed, 'short');
+  const detailZh = override?.detailZh || `${composeSentence(DIAGRAM_OPENERS, DIAGRAM_ACTIONS, DIAGRAM_CLOSERS, context, seed, 'detail-a')}${composeSentence(DIAGRAM_OPENERS, DIAGRAM_ACTIONS, DIAGRAM_CLOSERS, context, seed, 'detail-b')}`;
   return {
     id: source.id, taskName, title: englishTitle, summary: cleanText(source.visual_intent), titleZh,
     shortIntroZh, detailZh, visualCategory: visualLabel, researchDomain: domain,
-    keywords: keywordsFor({ ...source, taskName }, category, domain, englishTitle, keys),
+    keywords: keywordsFor({ ...source, taskName }, category, domain, englishTitle, keys, [signals, ...signals.split('、')]),
   };
 }
 

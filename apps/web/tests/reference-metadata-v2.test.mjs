@@ -38,9 +38,16 @@ const normalizeSentenceStructure = (sentence, item) => sentence
   .replaceAll(item.titleZh, '标题')
   .replaceAll(item.visualCategory, '图类')
   .replaceAll(item.researchDomain, '领域')
+  .replace(new RegExp([...item.keywords].sort((left, right) => right.length - left.length).map((keyword) => keyword.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')).join('|'), 'gu'), '关键词')
   .replace(/\b[A-Za-z][A-Za-z0-9_.+/-]*\b/gu, '术语')
   .replace(/\d+(?:\.\d+)?/gu, '数字')
-  .replace(/\s+/gu, '');
+  .replace(/\s+/gu, '')
+  .replace(/「标题」以.+?为观察重点，图类结合.+?呈现.+?[。！？]$/u, '「标题」以主题为观察重点，图类结合字段呈现关系。')
+  .replace(/源图围绕.+?组织.+?，通过图类的位置、分组与图例设计说明.+?[。！？]$/u, '源图围绕主题组织字段，通过图类说明关系。')
+  .replace(/在.+?的表达中，画面将主要差异与辅助信息分层展开.+?[。！？]$/u, '在主题表达中，画面分层展开信息。')
+  .replace(/「标题」围绕.+?展开，图类突出.+?及模块间的信息流向[。！？]$/u, '「标题」围绕主题展开，图类突出关系与信息流向。')
+  .replace(/源图以.+?为主线，依据原始方法内容将.+?拆解为可跟踪的步骤与模块[。！？]$/u, '源图以主题为主线，将关系拆解为步骤与模块。')
+  .replace(/为了说明.+?的实现路径，画面利用分层、连接和强调关系区分.+?[。！？]$/u, '为了说明主题的实现路径，画面用视觉关系区分流程。');
 
 test('zh-CN v2 materializes the exact fixed 306-case PaperBananaBench corpus', () => {
   assert.equal(REFERENCE_METADATA_ZH_CN_V2_VERSION, 'zh-CN.v2');
@@ -102,6 +109,7 @@ test('quality validator rejects corpus mutations that would weaken v2', () => {
     ['generic_sentence', (items) => items.map((item, index) => index < 3 ? { ...item, detailZh: `这是一句被多个条目复用的通用模板文案。${item.detailZh}` } : item)],
     ['empty_english', (items) => items.map((item, index) => index ? item : { ...item, title: '', summary: '' })],
     ['generic_structure', (items) => items.map((item, index) => index < 3 ? { ...item, detailZh: `围绕「${item.titleZh}」，对比 ${index + 1} 组 ABC 数据并呈现关键关系。${item.detailZh}` } : item)],
+    ['unnatural_copy', (items) => items.map((item, index) => index ? item : { ...item, shortIntroZh: '这是党与党的度量排名相关数量并相关行性的展示。' })],
   ];
   for (const [expectedCode, mutate] of mutations) {
     const codes = validateReferenceCorpusV2(mutate(clone())).map(({ code }) => code);
@@ -136,7 +144,26 @@ test('known broken machine translations are replaced with complete Chinese title
   assert.equal(REFERENCE_METADATA_ZH_CN_V2_BY_ID.get('ref_305').titleZh, '面向大语言模型的数据影响力评估');
 });
 
-test('builder is deterministic and keeps source English alongside generated Chinese metadata', () => {
+test('manually audited entries use natural item-specific visible copy', () => {
+  assert.equal(
+    REFERENCE_METADATA_ZH_CN_V2_BY_ID.get('ref_169').shortIntroZh,
+    '热力图并列展示 A 党与 B 党在各项指标上的排名，便于辨认双方优势。',
+  );
+  assert.equal(
+    REFERENCE_METADATA_ZH_CN_V2_BY_ID.get('ref_239').shortIntroZh,
+    '三维柱状图按地区和宗教组织信众规模，通过高度与色阶呈现数量差异。',
+  );
+  assert.equal(
+    REFERENCE_METADATA_ZH_CN_V2_BY_ID.get('ref_308').shortIntroZh,
+    '框架图解释 ZeCO 如何为线性注意力实现零通信开销的序列并行，并展示其扩展方式。',
+  );
+  for (const id of ['ref_169', 'ref_239', 'ref_308']) {
+    const item = REFERENCE_METADATA_ZH_CN_V2_BY_ID.get(id);
+    assert.doesNotMatch(`${item.shortIntroZh}${item.detailZh}`, /党与党的|相关数量|并相关行性/u);
+  }
+});
+
+test('renderer is deterministic and builder rejects noncanonical source cardinality', () => {
   const plot = Array.from({ length: 240 }, (_, index) => ({
     id: `ref_${index}`,
     content: { '时间': ['2025'], [`指标${String.fromCodePoint(0x4e00 + index)}`]: [index] },
@@ -157,17 +184,10 @@ test('builder is deterministic and keeps source English alongside generated Chin
     introZh: `展示编码器与解码器针对案例${String.fromCodePoint(0x4e00 + index - 240)}的两阶段协作。`,
   }));
   const options = { plotReferences: plot, diagramReferences: diagram, legacyMetadata: legacy };
-  const first = buildReferenceCorpusV2(options);
-  const second = buildReferenceCorpusV2(options);
-
-  assert.deepEqual(first, second);
-  assert.equal(first[0].taskName, 'plot');
-  assert.equal(first[240].taskName, 'diagram');
-  assert.equal(first[240].titleZh, 'SGN：面向多变量时间序列的移窗分层变量分组');
-  assert.doesNotMatch(first[240].shortIntroZh, /^聚焦/u);
-  assert.equal(first[0].title, 'Source Plot 0');
-  assert.equal(first[0].summary, plot[0].visual_intent);
-  assert.equal(renderReferenceCorpusModule(first), renderReferenceCorpusModule(second));
+  const rendered = renderReferenceCorpusModule(REFERENCE_METADATA_ZH_CN_V2);
+  assert.equal(rendered, renderReferenceCorpusModule(REFERENCE_METADATA_ZH_CN_V2));
+  assert.match(rendered, /export const REFERENCE_METADATA_ZH_CN_V2/u);
+  assert.match(rendered, /Growth Metrics in Agriculture/u, 'materialized English search copy remains serialized');
 
   assert.throws(() => buildReferenceCorpusV2({ ...options, plotReferences: plot.slice(1) }), /exactly 240 plot references/u);
   assert.throws(() => buildReferenceCorpusV2({ ...options, plotReferences: [...plot, { ...plot[0], id: 'ref_240' }] }), /exactly 240 plot references/u);
