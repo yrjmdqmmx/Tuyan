@@ -10,6 +10,11 @@ type LegacyPolicyModule = {
   default(ctx: Record<string, any>): Promise<any>
   toCreateExecutionBody(body: Record<string, unknown>): Record<string, unknown>
   toRefineExecutionBody(body: Record<string, unknown>): Record<string, unknown>
+  resolveModelRouting(body: Record<string, unknown>): Record<string, unknown>
+  requiredCreateRouteRoles(body: Record<string, unknown>, maxCriticRounds: number): string[]
+  requiredRefineRouteRoles(body: Record<string, unknown>): string[]
+  selectRequiredRouteSecrets(routes: Record<string, any>, apiKeys: Record<string, string>, roles: string[]): Record<string, string>
+  resolveReferenceImageMode(body: Record<string, unknown>): Promise<Record<string, unknown>>
   saveResult(jobId: string, candidateId: number, content: string, mimeType: string, encoding: 'base64' | 'utf8'): Promise<any>
   saveStageImage(jobId: string, candidateId: number, stage: string, content: string, mimeType: string, encoding: 'base64' | 'utf8'): Promise<any>
   createJobAdmissionController(config: Record<string, number>, dependencies: Record<string, unknown>): any
@@ -124,6 +129,8 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
       response: { setHeader() {}, status() {} },
     })
     assert.equal(result.code, 0)
+    assert.equal(result.routeContractVersion, 1)
+    assert.equal(result.supportsModelRoutes, true)
     assert.equal(result.providers.gemini.defaults.main, 'gemini-3.6-flash')
     assert.equal(result.providers.bailian.defaults.main, 'qwen3.7-plus')
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
@@ -132,6 +139,401 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     assert.doesNotMatch(JSON.stringify(result), /OpenRouter model metadata|request failed/)
   } finally {
     legacy.configureRuntimeFetch()
+  }
+})
+
+test('model routing resolves legacy fields and complete explicit routes without inventing mixed providers', async () => {
+  const legacy = await loadLegacy()
+  assert.equal(typeof legacy.resolveModelRouting, 'function')
+
+  assert.deepEqual(legacy.resolveModelRouting({
+    provider: 'openai',
+    mainModelName: 'gpt-5.6-sol',
+    imageModelName: 'gpt-image-2',
+  }), {
+    modelRoutes: {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'openai', modelId: 'gpt-image-2' },
+      vision: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    },
+    routingMode: 'single',
+    modelRoutingVersion: 1,
+    modelRoutingSource: 'legacy-derived',
+    provider: 'openai',
+    mainModelName: 'gpt-5.6-sol',
+    imageModelName: 'gpt-image-2',
+    referenceVisionModelName: 'gpt-5.6-sol',
+  })
+
+  assert.deepEqual(legacy.resolveModelRouting({
+    provider: 'openai',
+    configurationMode: 'advanced',
+    modelRoutes: {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+      vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+    },
+  }), {
+    modelRoutes: {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+      vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+    },
+    routingMode: 'mixed',
+    modelRoutingVersion: 1,
+    modelRoutingSource: 'explicit',
+    provider: 'openai',
+    mainModelName: 'gpt-5.6-sol',
+    imageModelName: 'gemini-3.1-flash-image',
+    referenceVisionModelName: 'qwen3.7-plus',
+  })
+})
+
+test('createJob rejects explicit route conflicts, malformed routes, wrong roles, and mixed simple mode before persistence', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const base = {
+    action: 'createJob',
+    provider: 'openai',
+    apiKeys: { openai: 'main-secret', gemini: 'image-secret', bailian: 'vision-secret' },
+    methodContent: 'A sufficiently detailed method section for explicit model route validation.',
+    caption: 'Validate explicit routes.',
+    configurationMode: 'advanced',
+    modelRoutes: {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+      vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+    },
+  }
+  const invoke = (overrides: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' },
+    body: { ...base, ...overrides },
+    headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+  const insertCount = state.inserts.length
+
+  const conflict = await invoke({ imageModelName: 'gpt-image-2' })
+  assert.deepEqual(conflict, {
+    code: 400,
+    error: 'Legacy model fields conflict with modelRoutes',
+    businessCode: 'MODEL_ROUTE_CONFLICT',
+  })
+
+  const incomplete = await invoke({ modelRoutes: { main: base.modelRoutes.main, image: base.modelRoutes.image } })
+  assert.equal(incomplete.code, 400)
+  assert.equal(incomplete.businessCode, 'MODEL_ROUTE_INVALID')
+
+  for (const invalidMain of [
+    { accessProvider: 'unknown-provider', modelId: 'gpt-5.6-sol' },
+    { accessProvider: 'openai', modelId: '   ' },
+    { accessProvider: 'openai', modelId: 'x'.repeat(121) },
+  ]) {
+    const invalid = await invoke({ modelRoutes: { ...base.modelRoutes, main: invalidMain } })
+    assert.equal(invalid.code, 400)
+    assert.equal(invalid.businessCode, 'MODEL_ROUTE_INVALID')
+  }
+
+  const wrongRole = await invoke({
+    modelRoutes: { ...base.modelRoutes, main: { accessProvider: 'openai', modelId: 'gpt-image-2' } },
+  })
+  assert.equal(wrongRole.code, 400)
+  assert.match(wrongRole.error, /not registered for main/)
+
+  const simpleMixed = await invoke({ configurationMode: 'simple' })
+  assert.deepEqual(simpleMixed, {
+    code: 400,
+    error: 'Mixed model routes require advanced configuration mode',
+    businessCode: 'MODEL_ROUTE_MIXED_NOT_ALLOWED',
+  })
+  assert.equal(state.inserts.length, insertCount)
+})
+
+test('advanced explicit routing persists canonical public fields while retaining only reachable provider secrets', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousInserts = state.inserts
+  state.ossWriteMode = 'fail'
+  state.inserts = []
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob',
+        provider: 'openai',
+        apiKeys: { openai: 'main-secret' },
+        methodContent: 'A sufficiently detailed method section for persisted model route validation.',
+        caption: 'Persist explicit route metadata.',
+        configurationMode: 'advanced',
+        outputFormat: 'svg',
+        retrievalSetting: 'none',
+        maxCriticRounds: 0,
+        modelRoutes: {
+          main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+          image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+          vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+        },
+      },
+      headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    await legacy.drainJobAdmission()
+
+    const record = state.inserts[0]
+    assert.equal(record.provider, 'openai')
+    assert.equal(record.routingMode, 'mixed')
+    assert.equal(record.modelRoutingVersion, 1)
+    assert.equal(record.modelRoutingSource, 'explicit')
+    assert.deepEqual(record.modelRoutes, {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+      vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+    })
+    assert.equal(record.mainModelName, 'gpt-5.6-sol')
+    assert.equal(record.imageModelName, 'gemini-3.1-flash-image')
+    assert.equal(record.referenceVisionModelName, 'qwen3.7-plus')
+    assert.doesNotMatch(JSON.stringify(record), /main-secret|apiKeys|routeSecrets/)
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+    state.ossWriteMode = previousWriteMode
+  }
+})
+
+test('route secret selection keeps only providers reachable by the requested stages', async () => {
+  const legacy = await loadLegacy()
+  const routes = {
+    main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+    vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+  }
+  const keys = { openai: 'main-secret', gemini: 'image-secret', bailian: 'vision-secret', openrouter: 'unused-secret' }
+
+  assert.deepEqual(legacy.requiredCreateRouteRoles({ outputFormat: 'svg', retrievalSetting: 'none' }, 0), ['main'])
+  assert.deepEqual(legacy.requiredCreateRouteRoles({ outputFormat: 'png', pipelineMode: 'vanilla', retrievalSetting: 'none', imageSize: '1K' }, 1), ['image'])
+  assert.deepEqual(legacy.requiredCreateRouteRoles({ outputFormat: 'png', pipelineMode: 'planner_critic', retrievalSetting: 'auto', imageSize: '2K' }, 1), ['main', 'image', 'vision'])
+  assert.deepEqual(legacy.requiredCreateRouteRoles({ taskName: 'plot', outputFormat: 'svg', pipelineMode: 'planner_critic', imageSize: '1K' }, 1), ['main', 'vision'])
+  assert.deepEqual(legacy.requiredRefineRouteRoles({ refineMode: 'direct-edit' }), ['image'])
+  assert.deepEqual(legacy.requiredRefineRouteRoles({ refineMode: 'analyze-redraw' }), ['vision', 'image'])
+  assert.deepEqual(legacy.selectRequiredRouteSecrets(routes, keys, ['main']), { openai: 'main-secret' })
+  assert.deepEqual(legacy.selectRequiredRouteSecrets(routes, keys, ['vision', 'image']), {
+    bailian: 'vision-secret',
+    gemini: 'image-secret',
+  })
+})
+
+test('legacy create keeps main-only Bailian models valid when no vision stage was explicitly selected', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  state.inserts = []
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'bailian', apiKeys: { bailian: 'legacy-key' },
+        methodContent: 'A sufficiently detailed legacy method using a main-only Bailian model.',
+        caption: 'Legacy main-only model compatibility.', outputFormat: 'svg', maxCriticRounds: 0,
+        mainModelName: 'deepseek-v4-pro', imageModelName: 'z-image-turbo', retrievalSetting: 'none',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    await legacy.drainJobAdmission()
+    assert.equal(state.inserts.length, 1)
+    assert.equal(state.inserts[0].modelRoutingSource, 'legacy-derived')
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+  }
+})
+
+test('explicit auto reference routing defaults to vision while legacy auto retains main-model compatibility', async () => {
+  const legacy = await loadLegacy()
+  const routes = {
+    main: { accessProvider: 'gemini', modelId: 'gemini-3.6-flash' },
+    image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+    vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+  }
+  const common = {
+    provider: 'gemini', mainModelName: 'gemini-3.6-flash', imageModelName: 'gemini-3.1-flash-image',
+    referenceVisionModelName: 'qwen3.7-plus', modelRoutes: routes, referenceImageMode: 'auto', referenceImages: [{}],
+  }
+  assert.deepEqual(await legacy.resolveReferenceImageMode({ ...common, modelRoutingSource: 'explicit' }), {
+    referenceImageMode: 'auto',
+    referenceImageModeUsed: 'vision_model',
+  })
+  const legacyMode = await legacy.resolveReferenceImageMode({ ...common, modelRoutingSource: 'legacy-derived' })
+  assert.equal(legacyMode.referenceImageModeUsed, 'main_model')
+})
+
+test('pipeline dispatches model work through role routes instead of the top-level provider shadow', () => {
+  const source = fs.readFileSync(legacyPath, 'utf8')
+  const section = (start: string, end: string) => source.slice(source.indexOf(start), source.indexOf(end))
+
+  const candidate = section('async function runCandidate(', 'async function runPlotCandidate(')
+  assert.match(candidate, /modelRouteAccess\(body, routeSecrets, 'main'\)/)
+  assert.match(candidate, /modelRouteAccess\(body, routeSecrets, 'image'\)/)
+  assert.doesNotMatch(candidate, /call(?:Text|Image|Svg)Model\(body\.provider/)
+
+  const visualCritic = section('async function critiqueRenderedDiagram(', 'function isNoChangesSignal(')
+  assert.match(visualCritic, /modelRouteAccess\(body, routeSecrets, 'vision'\)/)
+  assert.match(visualCritic, /modelRouteAccess\(body, routeSecrets, 'main'\)/)
+
+  const referenceAnalysis = section('async function analyzeReferenceImages(', 'async function buildVisionImageInputs(')
+  assert.match(referenceAnalysis, /modelRouteAccess\(body, routeSecrets, 'vision'\)/)
+  assert.doesNotMatch(referenceAnalysis, /callVisionModel\(\s*body\.provider/)
+
+  const refine = section('async function runRefineJob(', 'export async function resolveRetrievedReferences(')
+  assert.match(refine, /modelRouteAccess\(body, routeSecrets, 'vision'\)/)
+  assert.match(refine, /modelRouteAccess\(body, routeSecrets, 'image'\)/)
+  assert.doesNotMatch(refine, /call(?:Text|Image)Model\(body\.provider/)
+
+  const plotWorker = section('async function renderPlotViaWorker(', 'async function pingPlotWorker(')
+  assert.doesNotMatch(plotWorker, /apiKey|routeSecrets|modelRouteAccess/)
+})
+
+test('mixed create dispatches main, image, and visual critic calls with only their route credentials', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousInserts = state.inserts
+  const calls: Array<{ url: string; authorization: string; googleKey: string }> = []
+  state.ossWriteMode = 'success'
+  state.inserts = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    const headers = new Headers(init?.headers)
+    calls.push({
+      url,
+      authorization: headers.get('authorization') || '',
+      googleKey: headers.get('x-goog-api-key') || '',
+    })
+    if (url.includes('dashscope.aliyuncs.com/compatible-mode/v1/chat/completions')) {
+      return Response.json({ choices: [{ message: { content: 'A clear academic diagram description.' } }] })
+    }
+    if (url.includes('generativelanguage.googleapis.com/v1beta/interactions')) {
+      return Response.json({ output_image: { data: Buffer.alloc(120, 1).toString('base64'), mime_type: 'image/png' } })
+    }
+    if (url === 'https://api.openai.com/v1/responses') {
+      return Response.json({ output_text: '{"critic_suggestions":"","revised_description":"No changes needed."}' })
+    }
+    throw new Error(`unexpected dispatch ${url}`)
+  })
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
+        apiKeys: { bailian: 'main-route-secret', gemini: 'image-route-secret', openai: 'vision-route-secret', openrouter: 'unused-secret' },
+        methodContent: 'A sufficiently detailed methodology for runtime provider route dispatch verification.',
+        caption: 'Runtime route dispatch verification.', outputFormat: 'png', imageSize: '1K',
+        retrievalSetting: 'none', maxCriticRounds: 1,
+        modelRoutes: {
+          main: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+          image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+          vision: { accessProvider: 'openai', modelId: 'gpt-5.4-pro' },
+        },
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    await legacy.drainJobAdmission()
+
+    assert.deepEqual(calls.map((call) => [new URL(call.url).hostname, call.authorization, call.googleKey]), [
+      ['dashscope.aliyuncs.com', 'Bearer main-route-secret', ''],
+      ['generativelanguage.googleapis.com', '', 'image-route-secret'],
+      ['api.openai.com', 'Bearer vision-route-secret', ''],
+    ])
+    assert.doesNotMatch(JSON.stringify(calls), /unused-secret/)
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.inserts = previousInserts
+  }
+})
+
+test('refine dispatch retains image only for direct edit and vision plus image for analyze-redraw', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousStoredObjects = state.storedObjectBytes
+  const previousInserts = state.inserts
+  state.ossWriteMode = 'success'
+  state.storedObjectBytes = {
+    'owned/direct.png': Buffer.from('direct-source'),
+    'owned/analyze.png': Buffer.from('analyze-source'),
+  }
+  state.inserts = []
+  const calls: Array<{ url: string; authorization: string; googleKey: string }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    const headers = new Headers(init?.headers)
+    calls.push({
+      url,
+      authorization: headers.get('authorization') || '',
+      googleKey: headers.get('x-goog-api-key') || '',
+    })
+    if (url.includes('generativelanguage.googleapis.com/v1beta/interactions')) {
+      return Response.json({ output_image: { data: Buffer.alloc(120, 2).toString('base64'), mime_type: 'image/png' } })
+    }
+    if (url === 'https://api.openai.com/v1/responses') {
+      return Response.json({ output_text: 'Preserve the source composition and improve label clarity.' })
+    }
+    if (url.includes('dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation')) {
+      return Response.json({ output: { choices: [{ message: { content: [{ image: 'https://cdn.invalid/refined.png' }] } }] } })
+    }
+    if (url === 'https://cdn.invalid/refined.png') return new Response(Buffer.alloc(120, 3), { headers: { 'Content-Type': 'image/png' } })
+    throw new Error(`unexpected dispatch ${url}`)
+  })
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const direct = await invoke({
+      action: 'refineImage', provider: 'bailian', configurationMode: 'advanced',
+      apiKeys: { gemini: 'direct-image-secret' }, sourceImageObjectKey: 'owned/direct.png', editInstruction: 'Make labels clearer.',
+      modelRoutes: {
+        main: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+        image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+        vision: { accessProvider: 'openai', modelId: 'gpt-5.4-pro' },
+      },
+    })
+    assert.equal(direct.code, 0, JSON.stringify(direct))
+    await legacy.drainJobAdmission()
+    assert.deepEqual(calls.map((call) => [new URL(call.url).hostname, call.authorization, call.googleKey]), [
+      ['generativelanguage.googleapis.com', '', 'direct-image-secret'],
+    ])
+
+    calls.length = 0
+    const analyzed = await invoke({
+      action: 'refineImage', provider: 'gemini', configurationMode: 'advanced',
+      apiKeys: { openai: 'analyze-vision-secret', bailian: 'redraw-image-secret' },
+      sourceImageObjectKey: 'owned/analyze.png', editInstruction: 'Improve contrast without changing content.',
+      modelRoutes: {
+        main: { accessProvider: 'gemini', modelId: 'gemini-3.6-flash' },
+        image: { accessProvider: 'bailian', modelId: 'z-image-turbo' },
+        vision: { accessProvider: 'openai', modelId: 'gpt-5.4-pro' },
+      },
+    })
+    assert.equal(analyzed.code, 0, JSON.stringify(analyzed))
+    assert.equal(analyzed.refineCapability.mode, 'analyze-redraw')
+    await legacy.drainJobAdmission()
+    assert.deepEqual(calls.map((call) => [call.url, call.authorization, call.googleKey]), [
+      ['https://api.openai.com/v1/responses', 'Bearer analyze-vision-secret', ''],
+      ['https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', 'Bearer redraw-image-secret', ''],
+      ['https://cdn.invalid/refined.png', '', ''],
+    ])
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.storedObjectBytes = previousStoredObjects
+    state.inserts = previousInserts
+    state.deletedOwnerKeys = []
   }
 })
 
@@ -1454,7 +1856,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                   },
                   async findOne(query) {
                     if (name === 'paperbanana_jobs') {
-                      const configured = (state.jobRows || []).find((row) => row._id === query?._id);
+                      const configured = [...(state.jobRows || []), ...(state.inserts || [])].find((row) => row._id === query?._id);
                       if (configured) return { ...configured };
                       if (query?._id === 'job-1') return { _id: 'job-1', userId: 'owner-1' };
                     }
@@ -1465,7 +1867,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                     return null;
                   },
                   async insertOne(document) { state.inserts.push(document) },
-                  async updateOne() {}, async deleteMany() { return { deletedCount: 0 } }
+                  async updateOne(query, update) { (state.updates ||= []).push({ name, query: structuredClone(query), update: structuredClone(update) }) }, async deleteMany() { return { deletedCount: 0 } }
                 });
                 const bucket = {
                   async readFile(key, maxBytes) {
@@ -1608,6 +2010,10 @@ test('create background execution DTO omits the complete apiKeys map', async () 
     action: 'createJob',
     provider: 'gemini',
     apiKeys: { gemini: 'selected', openai: 'must-not-survive', bailian: 'must-not-survive' },
+    routeSecrets: { gemini: 'must-not-survive-either' },
+    gatewayToken: 'gateway-secret',
+    adminToken: 'admin-secret',
+    apiKey: 'single-secret',
     caption: 'caption',
   })
 
@@ -1623,6 +2029,10 @@ test('refine background execution DTO omits the complete apiKeys map', async () 
     action: 'refineImage',
     provider: 'openai',
     apiKeys: { openai: 'selected', gemini: 'must-not-survive' },
+    routeSecrets: { openai: 'must-not-survive-either' },
+    gatewayToken: 'gateway-secret',
+    adminToken: 'admin-secret',
+    apiKey: 'single-secret',
     editInstruction: 'make labels clearer',
   })
 
@@ -1630,10 +2040,134 @@ test('refine background execution DTO omits the complete apiKeys map', async () 
   assert.deepEqual(result, { action: 'refineImage', provider: 'openai', editInstruction: 'make labels clearer' })
 })
 
+test('public jobs expose stored routes and derive only complete legacy routing history', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  state.jobRows = [
+    {
+      _id: 'stored-routes', status: 'succeeded', provider: 'mixed', userId: 'owner-1',
+      mainModelName: 'gpt-5.6-sol', imageModelName: 'gemini-3.1-flash-image', referenceVisionModelName: 'qwen3.7-plus',
+      modelRoutes: {
+        main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+        image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+        vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+      },
+      routingMode: 'mixed', modelRoutingVersion: 1, modelRoutingSource: 'explicit', resultImages: [], stages: [],
+      apiKeys: { openai: 'stored-secret-must-not-leak' }, routeSecrets: { openai: 'stored-route-secret-must-not-leak' },
+    },
+    {
+      _id: 'complete-legacy-routes', status: 'succeeded', provider: 'openai', userId: 'owner-1',
+      mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', resultImages: [], stages: [],
+    },
+    {
+      _id: 'incomplete-legacy-routes', status: 'succeeded', provider: 'openai', userId: 'owner-1',
+      mainModelName: 'gpt-5.6-sol', resultImages: [], stages: [],
+    },
+  ]
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
+  const invoke = (jobId: string) => legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'getJob', jobId, gatewayToken: 'test-gateway' },
+    headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+  try {
+    const stored = (await invoke('stored-routes')).job
+    assert.equal(stored.provider, 'openai')
+    assert.equal(stored.routingMode, 'mixed')
+    assert.equal(stored.modelRoutingVersion, 1)
+    assert.equal(stored.modelRoutingSource, 'explicit')
+    assert.deepEqual(stored.modelRoutes, state.jobRows[0].modelRoutes)
+    assert.doesNotMatch(JSON.stringify(stored), /stored-secret|routeSecrets|apiKeys/)
+
+    const complete = (await invoke('complete-legacy-routes')).job
+    assert.deepEqual(complete.modelRoutes, {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'openai', modelId: 'gpt-image-2' },
+      vision: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    })
+    assert.equal(complete.routingMode, 'single')
+    assert.equal(complete.modelRoutingVersion, 1)
+    assert.equal(complete.modelRoutingSource, 'legacy-derived')
+
+    const incomplete = (await invoke('incomplete-legacy-routes')).job
+    assert.equal(Object.hasOwn(incomplete, 'modelRoutes'), false)
+    assert.equal(Object.hasOwn(incomplete, 'routingMode'), false)
+    assert.equal(Object.hasOwn(incomplete, 'modelRoutingVersion'), false)
+    assert.equal(Object.hasOwn(incomplete, 'modelRoutingSource'), false)
+  } finally {
+    state.jobRows = []
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('persisted and public job errors and logs redact credential-bearing text', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  const previousInserts = state.inserts
+  const previousUpdates = state.updates
+  state.inserts = []
+  state.updates = []
+  state.jobRows = [{
+    _id: 'secret-history', status: 'failed', provider: 'openai', userId: 'owner-1',
+    mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', resultImages: [],
+    error: 'request failed at https://provider.invalid/run?key=history-query-secret',
+    logs: ['Authorization: Bearer history-bearer-secret'],
+    stages: [{
+      error: 'Bearer history-stage-secret', title: 'failed stage',
+      image: { storageError: 'x-goog-api-key: history-nested-secret' },
+    }],
+  }]
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
+  legacy.configureRuntimeFetch(async () => Response.json({
+    error: {
+      message: 'provider rejected https://provider.invalid/run?key=persisted-query-secret Authorization: Bearer persisted-bearer-secret api_key: persisted-colon-secret x-goog-api-key: persisted-google-secret raw=request-secret',
+    },
+  }, { status: 400 }))
+  try {
+    const detail = await legacy.default({
+      request: { method: 'POST' },
+      body: { action: 'getJob', jobId: 'secret-history', gatewayToken: 'test-gateway' },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    const publicText = JSON.stringify(detail)
+    assert.doesNotMatch(publicText, /history-query-secret|history-bearer-secret|history-stage-secret|history-nested-secret/)
+    assert.match(publicText, /REDACTED/)
+
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'openai', gatewayToken: 'test-gateway', apiKeys: { openai: 'request-secret' },
+        methodContent: 'A sufficiently detailed method for persisted error redaction verification.',
+        caption: 'Persisted error redaction.', outputFormat: 'svg', retrievalSetting: 'none',
+        mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-5.6-sol',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    await legacy.drainJobAdmission()
+    const persistedText = JSON.stringify(state.updates)
+    assert.doesNotMatch(persistedText, /persisted-query-secret|persisted-bearer-secret|persisted-colon-secret|persisted-google-secret|request-secret/)
+    assert.match(persistedText, /REDACTED/)
+    const terminalUpdate = state.updates.findLast((entry: any) => entry.update?.$set?.status === 'failed')
+    assert.equal(terminalUpdate.update.$set.error, 'Model execution failed. Please retry.')
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.jobRows = []
+    state.inserts = previousInserts
+    state.updates = previousUpdates
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
 test('request handlers delegate background closures with secret-free DTOs', () => {
   const source = fs.readFileSync(legacyPath, 'utf8')
-  assert.match(source, /startCreateJobInBackground\(reservation, jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds\)/)
-  assert.match(source, /startRefineJobInBackground\(reservation, jobId, normalizedBody, apiKey\)/)
+  assert.match(source, /startCreateJobInBackground\(reservation, jobId, jobBody, routeSecrets, safeNumCandidates, safeCriticRounds\)/)
+  assert.match(source, /startRefineJobInBackground\(reservation, jobId, normalizedBody, routeSecrets\)/)
   const createStart = source.indexOf('async function createJob')
   const refineStart = source.indexOf('async function refineImage')
   const createSection = source.slice(createStart, refineStart)

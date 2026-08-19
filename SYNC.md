@@ -24,6 +24,20 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] Core 多 Provider 模型路由契约 v1 — by Codex
+变更：`createJob` / `refineImage` 新增完整 `modelRoutes {main,image,vision}`，Core 按阶段路由主模型、图像模型和视觉模型；旧请求仍从 `provider/mainModelName/imageModelName/referenceVisionModelName` 派生单路由。本条仅交付 Laf/Core 契约与执行，未接入 Ark 适配器或任何客户端。
+契约（影响其他端 / 共享）：
+- **请求**：`modelRoutes.main/image/vision` 每项为 `{accessProvider,modelId}` 且必须完整；`configurationMode=simple` 禁止混合 provider，`advanced` 允许。显式 routes 与旧 `provider/*ModelName` 冲突时返回 `400 + businessCode=MODEL_ROUTE_CONFLICT`；顶层 `provider` 永远是 main route 的兼容影子，不会返回 `mixed`。
+- **任务 DTO**：新建任务持久化并公开 `modelRoutes`、`routingMode=single|mixed`、`modelRoutingVersion=1`、`modelRoutingSource=explicit|legacy-derived`，同时保留旧模型字段。历史记录仅在 `provider + mainModelName + imageModelName` 完整时按旧语义补出 routes，不猜测不完整记录。
+- **执行 / BYOK**：planner、stylist、文本 critic、SVG、plot 模型调用走 main；参考图分析和成图视觉 critic 走 vision；PNG 生成、重渲染、升清和 direct edit 走 image；plot-worker 不持有 key。后台 DTO 无密钥，准入闭包仅持有实际可达阶段所需 provider key；`direct-edit` 仅 image，`analyze-redraw` 仅 vision+image。
+- **注册表**：`modelRegistry` 顶层新增 `routeContractVersion:1` 和 `supportsModelRoutes:true`。Core 类型已预留 `ark`，但未提供 Ark registry/adapter/egress，因此 Ark route 当前 fail-closed，不得在客户端标记为可用。
+各端待办：
+- [x] paperbanana-api / Laf Core（解析、校验、持久化/公开 DTO、阶段路由、最小密钥闭包与回归测试）
+- [ ] packages-api / Web（转发与消费 `modelRoutes`，专业模式支持分角色选 provider/model；普通模式仍单 provider）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续按需接入；旧请求保持兼容）
+- [ ] Ark adapter / registry / egress（后续独立任务，本次未实现）
+- [ ] 部署 / 运维（本次未发布，须等后续合并与联调）
+
 ### [2026-08-19] 结果图公开权威 objectKey — by Codex
 变更：生产百炼 smoke 发现结果图已写入 OSS，但公开任务 DTO 只有 `filename/url`，导致独立精修页无法按约定优先使用对象键；现在新任务持久化并返回 `resultImages[].objectKey`，历史 bucket 结果从既有 `filename` 只读补出该字段；已部署并完成百炼生成→`direct-edit` 精修验收。
 契约（影响其他端 / 共享）：

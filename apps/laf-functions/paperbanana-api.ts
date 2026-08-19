@@ -29,7 +29,7 @@ function isProviderEgressUnavailable(error: any): boolean {
   return error?.code === providerEgressUnavailableCode
 }
 
-type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian'
+type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark'
 type JobStatus = 'queued' | 'running' | 'succeeded' | 'failed'
 type OutputFormat = 'png' | 'svg'
 type TaskName = 'diagram' | 'plot'
@@ -39,6 +39,11 @@ type ReferenceImageMode = 'auto' | 'main_model' | 'vision_model'
 type ReferenceImageModeUsed = 'none' | 'main_model' | 'vision_model'
 type ModelCapabilityStatus = 'supported' | 'unsupported' | 'unknown'
 type ModelRole = 'main' | 'image' | 'vision'
+type ModelRoute = { accessProvider: Provider; modelId: string }
+type ModelRoutes = { main: ModelRoute; image: ModelRoute; vision: ModelRoute }
+type ModelRoutingMode = 'single' | 'mixed'
+type ModelRoutingSource = 'explicit' | 'legacy-derived'
+type RouteSecrets = Partial<Record<Provider, string>>
 type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
 type ModelProtocol =
@@ -60,12 +65,14 @@ type ApiKeys = {
   gemini?: string
   openai?: string
   bailian?: string
+  ark?: string
 }
 
 type CreateJobBody = {
   action: 'createJob'
   provider: Provider
   apiKeys: ApiKeys
+  modelRoutes?: ModelRoutes
   configurationMode?: string
   clientPlatform?: ClientPlatform
   taskName?: TaskName
@@ -76,8 +83,8 @@ type CreateJobBody = {
   userEmail?: string
   outputFormat?: OutputFormat
   output_format?: OutputFormat
-  mainModelName: string
-  imageModelName: string
+  mainModelName?: string
+  imageModelName?: string
   referenceVisionModelName?: string
   referenceImageMode?: ReferenceImageMode
   referenceImageModeUsed?: ReferenceImageModeUsed
@@ -97,8 +104,9 @@ type RefineImageBody = {
   action: 'refineImage'
   provider: Provider
   apiKeys: ApiKeys
+  modelRoutes?: ModelRoutes
   mainModelName?: string
-  imageModelName: string
+  imageModelName?: string
   referenceVisionModelName?: string
   sourceImageUrl?: string
   sourceImageObjectKey?: string
@@ -112,10 +120,21 @@ type RefineImageBody = {
   refineReason?: string
 }
 
-type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'> & {
+type ModelRoutingMetadata = {
+  provider: Provider
+  modelRoutes: ModelRoutes
+  routingMode: ModelRoutingMode
+  modelRoutingVersion: 1
+  modelRoutingSource: ModelRoutingSource
+  mainModelName: string
+  imageModelName: string
+  referenceVisionModelName: string
+}
+
+type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys' | keyof ModelRoutingMetadata> & ModelRoutingMetadata & {
   prevalidatedManualReferences?: RetrievedReference[]
 }
-type RefineExecutionBody = Omit<RefineImageBody, 'apiKeys'>
+type RefineExecutionBody = Omit<RefineImageBody, 'apiKeys' | keyof ModelRoutingMetadata> & ModelRoutingMetadata
 type JobAdmissionConfig = {
   maxActive: number
   maxPending: number
@@ -127,19 +146,161 @@ type AdmittedJobTask = {
   jobId: string
   kind: 'create' | 'refine'
   body: CreateExecutionBody | RefineExecutionBody
-  apiKey: string
+  routeSecrets: RouteSecrets
   numCandidates?: number
   maxCriticRounds?: number
 }
 
 export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody {
-  const { apiKeys: _apiKeys, ...executionBody } = body
-  return executionBody
+  const {
+    apiKeys: _apiKeys,
+    routeSecrets: _routeSecrets,
+    gatewayToken: _gatewayToken,
+    adminToken: _adminToken,
+    apiKey: _apiKey,
+    ...executionBody
+  } = body as CreateJobBody & { routeSecrets?: RouteSecrets; gatewayToken?: string; adminToken?: string; apiKey?: string }
+  return executionBody as CreateExecutionBody
 }
 
 export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBody {
-  const { apiKeys: _apiKeys, ...executionBody } = body
-  return executionBody
+  const {
+    apiKeys: _apiKeys,
+    routeSecrets: _routeSecrets,
+    gatewayToken: _gatewayToken,
+    adminToken: _adminToken,
+    apiKey: _apiKey,
+    ...executionBody
+  } = body as RefineImageBody & { routeSecrets?: RouteSecrets; gatewayToken?: string; adminToken?: string; apiKey?: string }
+  return executionBody as RefineExecutionBody
+}
+
+const routeContractVersion = 1 as const
+const modelIdMaxLength = 120
+const recognizedRouteProviders = new Set<Provider>(['openrouter', 'gemini', 'openai', 'bailian', 'ark'])
+
+function modelRouteError(message: string, businessCode = 'MODEL_ROUTE_INVALID') {
+  const error: any = new Error(message)
+  error.statusCode = 400
+  error.businessCode = businessCode
+  return error
+}
+
+function normalizeModelRoute(value: any, role: ModelRole): ModelRoute {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw modelRouteError(`modelRoutes.${role} must be an object`)
+  }
+  const accessProvider = String(value.accessProvider || '').trim() as Provider
+  const rawModelId = typeof value.modelId === 'string' ? value.modelId.trim() : ''
+  if (!recognizedRouteProviders.has(accessProvider)) {
+    throw modelRouteError(`modelRoutes.${role}.accessProvider is invalid`)
+  }
+  if (!rawModelId || rawModelId.length > modelIdMaxLength) {
+    throw modelRouteError(`modelRoutes.${role}.modelId must be between 1 and ${modelIdMaxLength} characters`)
+  }
+  return { accessProvider, modelId: normalizeModelName(accessProvider, rawModelId) }
+}
+
+function hasLegacyModelValue(value: unknown) {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
+export function resolveModelRouting(body: Record<string, any>): ModelRoutingMetadata {
+  const explicit = body.modelRoutes !== undefined && body.modelRoutes !== null
+  let modelRoutes: ModelRoutes
+  let modelRoutingSource: ModelRoutingSource
+
+  if (explicit) {
+    if (!body.modelRoutes || typeof body.modelRoutes !== 'object' || Array.isArray(body.modelRoutes)) {
+      throw modelRouteError('modelRoutes must be an object')
+    }
+    modelRoutes = {
+      main: normalizeModelRoute(body.modelRoutes.main, 'main'),
+      image: normalizeModelRoute(body.modelRoutes.image, 'image'),
+      vision: normalizeModelRoute(body.modelRoutes.vision, 'vision'),
+    }
+    const legacyProvider = String(body.provider || '').trim()
+    const conflicts = [
+      Boolean(legacyProvider && legacyProvider !== modelRoutes.main.accessProvider),
+      Boolean(hasLegacyModelValue(body.mainModelName)
+        && normalizeModelName(modelRoutes.main.accessProvider, String(body.mainModelName).trim()) !== modelRoutes.main.modelId),
+      Boolean(hasLegacyModelValue(body.imageModelName)
+        && normalizeModelName(modelRoutes.image.accessProvider, String(body.imageModelName).trim()) !== modelRoutes.image.modelId),
+      Boolean(hasLegacyModelValue(body.referenceVisionModelName)
+        && normalizeModelName(modelRoutes.vision.accessProvider, String(body.referenceVisionModelName).trim()) !== modelRoutes.vision.modelId),
+    ]
+    if (conflicts.some(Boolean)) {
+      throw modelRouteError('Legacy model fields conflict with modelRoutes', 'MODEL_ROUTE_CONFLICT')
+    }
+    modelRoutingSource = 'explicit'
+  } else {
+    const provider = String(body.provider || '').trim() as Provider
+    if (!recognizedRouteProviders.has(provider)) throw modelRouteError('Invalid provider')
+    const mainModelName = typeof body.mainModelName === 'string' ? body.mainModelName.trim() : ''
+    const imageModelName = typeof body.imageModelName === 'string' ? body.imageModelName.trim() : ''
+    const visionModelName = typeof body.referenceVisionModelName === 'string' && body.referenceVisionModelName.trim()
+      ? body.referenceVisionModelName.trim()
+      : mainModelName
+    modelRoutes = {
+      main: normalizeModelRoute({ accessProvider: provider, modelId: mainModelName }, 'main'),
+      image: normalizeModelRoute({ accessProvider: provider, modelId: imageModelName }, 'image'),
+      vision: normalizeModelRoute({ accessProvider: provider, modelId: visionModelName }, 'vision'),
+    }
+    modelRoutingSource = 'legacy-derived'
+  }
+
+  const routingMode: ModelRoutingMode = new Set(Object.values(modelRoutes).map((route) => route.accessProvider)).size === 1
+    ? 'single'
+    : 'mixed'
+  if (body.configurationMode === 'simple' && routingMode === 'mixed') {
+    throw modelRouteError('Mixed model routes require advanced configuration mode', 'MODEL_ROUTE_MIXED_NOT_ALLOWED')
+  }
+  return {
+    modelRoutes,
+    routingMode,
+    modelRoutingVersion: routeContractVersion,
+    modelRoutingSource,
+    provider: modelRoutes.main.accessProvider,
+    mainModelName: modelRoutes.main.modelId,
+    imageModelName: modelRoutes.image.modelId,
+    referenceVisionModelName: modelRoutes.vision.modelId,
+  }
+}
+
+function uniqueRouteRoles(roles: ModelRole[]) {
+  const requested = new Set(roles)
+  return (['main', 'image', 'vision'] as ModelRole[]).filter((role) => requested.has(role))
+}
+
+export function requiredCreateRouteRoles(body: Record<string, any>, maxCriticRounds: number): ModelRole[] {
+  const roles: ModelRole[] = []
+  const outputFormat = normalizeOutputFormat(body.outputFormat || body.output_format)
+  const taskName = normalizeTaskName(body.taskName)
+  const pipelineMode = body.pipelineMode || 'planner_critic'
+  if (outputFormat === 'svg' || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
+  if (outputFormat === 'png' && taskName !== 'plot') roles.push('image')
+  if (taskName === 'plot' && (body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') roles.push('image')
+  if ((body.referenceImages || []).length) roles.push(body.referenceImageModeUsed === 'main_model' ? 'main' : 'vision')
+  if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
+  return uniqueRouteRoles(roles)
+}
+
+export function requiredRefineRouteRoles(body: Record<string, any>): ModelRole[] {
+  return body.refineMode === 'direct-edit' ? ['image'] : ['vision', 'image']
+}
+
+export function selectRequiredRouteSecrets(
+  routes: ModelRoutes,
+  apiKeys: ApiKeys,
+  roles: ModelRole[],
+): RouteSecrets {
+  const selected: RouteSecrets = {}
+  for (const role of roles) {
+    const provider = routes[role].accessProvider
+    const secret = selectApiKey(provider, apiKeys)
+    if (secret) selected[provider] = secret
+  }
+  return selected
 }
 
 export function createJobAdmissionController(
@@ -210,8 +371,12 @@ export function createJobAdmissionController(
       try {
         await dependencies.execute(task)
       } catch (error: any) {
+        const safeTaskError = redactSecretText(
+          error?.message || String(error),
+          Object.values(task.routeSecrets || {}).filter(Boolean) as string[],
+        )
         try {
-          await dependencies.markFailed(task.jobId, error?.message || String(error))
+          await dependencies.markFailed(task.jobId, safeTaskError)
         } catch (persistenceError: any) {
           try {
             dependencies.logError(
@@ -665,7 +830,7 @@ function registryEntry(
   }
 }
 
-const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModelRegistry> = {
+const staticModelRegistry: Record<Exclude<Provider, 'openrouter' | 'ark'>, ProviderModelRegistry> = {
   gemini: {
     defaults: { main: 'gemini-3.6-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.6-flash' },
     models: [
@@ -804,12 +969,12 @@ function newGlobalJobAdmission(config: JobAdmissionConfig) {
         await runJob(
           task.jobId,
           task.body as CreateExecutionBody,
-          task.apiKey,
+          task.routeSecrets,
           task.numCandidates || 1,
           task.maxCriticRounds || 0,
         )
       } else {
-        await runRefineJob(task.jobId, task.body as RefineExecutionBody, task.apiKey)
+        await runRefineJob(task.jobId, task.body as RefineExecutionBody, task.routeSecrets)
       }
     },
     markFailed,
@@ -943,7 +1108,8 @@ export default async function (ctx: FunctionContext) {
     }
     return fail(`Unknown action: ${action}`, 400)
   } catch (error: any) {
-    return fail(error?.message || String(error), 500)
+    console.error(`[paperbanana-api] request failed: ${redactSecretText(error?.message || String(error))}`)
+    return fail('Internal server error', 500)
   }
 }
 
@@ -1057,6 +1223,8 @@ async function modelRegistry(body: ModelRegistryBody) {
   }
   return ok({
     registryVersion: modelRegistryVersion,
+    routeContractVersion,
+    supportsModelRoutes: true,
     providers,
     ...(Object.keys(unavailableProviders).length ? { unavailableProviders } : {}),
   })
@@ -1145,7 +1313,11 @@ function countReferenceFacet(items: RetrievedReference[], field: 'visualCategory
 }
 
 async function createJob(body: CreateJobBody, ctx: FunctionContext) {
-  validateCreateBody(body)
+  try {
+    validateCreateBody(body)
+  } catch (error: any) {
+    return fail(error?.message || 'Invalid createJob request', 400)
+  }
   if (!(await ensureAccountAcceptingWork(body))) {
     return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
@@ -1153,13 +1325,20 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   // 二选一：用户上传了参考图时，以上传图为唯一视觉风格锚点，自动关闭检索
   // （否则检索到的多张图会与上传图的风格相互打架）。检索一律不跑、不附检索图、徽标显示“不检索”。
   const hasUploadedReference = normalizedReferenceImages.length > 0
+  let routing: ModelRoutingMetadata
+  try {
+    routing = resolveModelRouting(body as any)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Invalid model routes', Number(error?.statusCode || 400)),
+      businessCode: error?.businessCode || 'MODEL_ROUTE_INVALID',
+    }
+  }
   const normalizedBodyWithSecrets = {
     ...body,
+    ...routing,
     taskName: normalizeTaskName(body.taskName),
     infographicCategory: limitText(body.infographicCategory, 80),
-    mainModelName: normalizeModelName(body.provider, body.mainModelName),
-    imageModelName: normalizeModelName(body.provider, body.imageModelName),
-    referenceVisionModelName: normalizeModelName(body.provider, body.referenceVisionModelName || body.mainModelName),
     referenceImageMode: normalizeReferenceImageMode(body.referenceImageMode),
     referenceImages: normalizedReferenceImages,
     outputFormat: normalizeOutputFormat(body.outputFormat || body.output_format),
@@ -1169,25 +1348,26 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     retrievalSetting: hasUploadedReference ? ('none' as const) : normalizeRetrievalSetting(body.retrievalSetting),
     manualReferenceIds: hasUploadedReference ? [] : normalizeManualReferenceIds(body.manualReferenceIds || []),
   }
-  let registry: ProviderModelRegistry
+  let registries: Map<Provider, ProviderModelRegistry>
   try {
-    registry = await providerModelRegistry(body.provider)
+    registries = await validateModelRouting(
+      routing.modelRoutes,
+      routing.modelRoutingSource === 'explicit'
+        ? ['main', 'image', 'vision']
+        : ['main', 'image', ...(normalizedReferenceImages.length ? ['vision' as const] : [])],
+    )
   } catch (error: any) {
-    return fail(providerRegistryFailure(body.provider, error), 503)
+    return {
+      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
   }
-  const modelError = modelRoleSelectionError(body.provider, registry, [
-    { model: normalizedBodyWithSecrets.mainModelName, role: 'main' },
-    { model: normalizedBodyWithSecrets.imageModelName, role: 'image' },
-    ...(normalizedReferenceImages.length
-      ? [{ model: normalizedBodyWithSecrets.referenceVisionModelName, role: 'vision' as ModelRole }]
-      : []),
-  ])
-  if (modelError) return fail(modelError, 400)
-  const imageRefineCapability = registryImageRefineCapability(body.provider, registry, normalizedBodyWithSecrets.imageModelName)
-  const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
-  if (!apiKey) {
-    return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
-  }
+  const imageRoute = routing.modelRoutes.image
+  const imageRefineCapability = registryImageRefineCapability(
+    imageRoute.accessProvider,
+    registries.get(imageRoute.accessProvider)!,
+    imageRoute.modelId,
+  )
 
   const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
   if (normalizedBody.retrievalSetting === 'manual') {
@@ -1226,11 +1406,21 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   const jobId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
   const safeNumCandidates = clamp(Number(body.numCandidates || 1), 1, Number(process.env.PAPERBANANA_MAX_CANDIDATES || 3))
   const safeCriticRounds = clamp(Number(body.maxCriticRounds || 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
+  const requiredRoles = requiredCreateRouteRoles(jobBody, safeCriticRounds)
+  const routeSecrets = selectRequiredRouteSecrets(jobBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
+  for (const role of requiredRoles) {
+    const provider = jobBody.modelRoutes[role].accessProvider
+    if (!routeSecrets[provider]) return fail(`Missing API key for provider ${provider}`, 400)
+  }
 
   const record = {
     _id: jobId,
     status: 'queued' as JobStatus,
     provider: normalizedBody.provider,
+    modelRoutes: normalizedBody.modelRoutes,
+    routingMode: normalizedBody.routingMode,
+    modelRoutingVersion: normalizedBody.modelRoutingVersion,
+    modelRoutingSource: normalizedBody.modelRoutingSource,
     clientPlatform: normalizeClientPlatform(body.clientPlatform),
     configurationMode: limitText(normalizedBody.configurationMode, 40) || 'advanced',
     taskName: normalizedBody.taskName,
@@ -1278,9 +1468,9 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
     }
 
-    // BYOK 只把已选中的单个 key 作为独立参数交给后台执行；jobBody 已移除
-    // 完整 apiKeys map，避免其它 provider key 被后台 Promise/DTO 继续持有。
-    startCreateJobInBackground(reservation, jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds)
+    // The persisted/execution body is secret-free. Only credentials for route
+    // providers reachable by this job remain in the in-memory admission closure.
+    startCreateJobInBackground(reservation, jobId, jobBody, routeSecrets, safeNumCandidates, safeCriticRounds)
     committed = true
 
     return ok({ jobId, status: 'queued' })
@@ -1290,45 +1480,70 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
 }
 
 async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
-  validateRefineBody(body)
+  try {
+    validateRefineBody(body)
+  } catch (error: any) {
+    return fail(error?.message || 'Invalid refineImage request', 400)
+  }
   if (!(await ensureAccountAcceptingWork(body))) {
     return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
-  let registry: ProviderModelRegistry
+  let routingInput: RefineImageBody = body
+  if (!body.modelRoutes && !hasLegacyModelValue(body.mainModelName)) {
+    try {
+      const legacyRegistry = await providerModelRegistry(body.provider)
+      routingInput = { ...body, mainModelName: legacyRegistry.defaults.main }
+    } catch (error: any) {
+      return fail(providerRegistryFailure(body.provider, error), 503)
+    }
+  }
+  let routing: ModelRoutingMetadata
   try {
-    registry = await providerModelRegistry(body.provider)
+    routing = resolveModelRouting(routingInput as any)
   } catch (error: any) {
-    return fail(providerRegistryFailure(body.provider, error), 503)
+    return {
+      ...fail(error?.message || 'Invalid model routes', Number(error?.statusCode || 400)),
+      businessCode: error?.businessCode || 'MODEL_ROUTE_INVALID',
+    }
+  }
+  let registries: Map<Provider, ProviderModelRegistry>
+  try {
+    registries = await validateModelRouting(
+      routing.modelRoutes,
+      routing.modelRoutingSource === 'explicit'
+        ? ['main', 'image', 'vision']
+        : ['main', 'image', ...(body.referenceVisionModelName ? ['vision' as const] : [])],
+    )
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
   }
   const normalizedBodyWithSecrets = {
     ...body,
-    mainModelName: normalizeModelName(body.provider, body.mainModelName || registry.defaults.main),
-    imageModelName: normalizeModelName(body.provider, body.imageModelName),
-    referenceVisionModelName: body.referenceVisionModelName
-      ? normalizeModelName(body.provider, body.referenceVisionModelName)
-      : undefined,
+    ...routing,
     aspectRatio: normalizeAspectRatio(body.aspectRatio),
     imageSize: body.imageSize === '4K' ? '4K' as const : '2K' as const,
   }
-  const modelError = modelRoleSelectionError(body.provider, registry, [
-    { model: normalizedBodyWithSecrets.mainModelName, role: 'main' },
-    { model: normalizedBodyWithSecrets.imageModelName, role: 'image' },
-    ...(normalizedBodyWithSecrets.referenceVisionModelName
-      ? [{ model: normalizedBodyWithSecrets.referenceVisionModelName, role: 'vision' as ModelRole }]
-      : []),
-  ])
-  if (modelError) return fail(modelError, 400)
-  const imageRefineCapability = registryImageRefineCapability(body.provider, registry, normalizedBodyWithSecrets.imageModelName)
-  const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
-  if (!apiKey) {
-    return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
-  }
+  const imageRoute = routing.modelRoutes.image
+  const imageRefineCapability = registryImageRefineCapability(
+    imageRoute.accessProvider,
+    registries.get(imageRoute.accessProvider)!,
+    imageRoute.modelId,
+  )
 
   const normalizedBody = toRefineExecutionBody({
     ...normalizedBodyWithSecrets,
     refineMode: imageRefineCapability.mode,
     refineReason: imageRefineCapability.reason,
   })
+  const requiredRoles = requiredRefineRouteRoles(normalizedBody)
+  const routeSecrets = selectRequiredRouteSecrets(normalizedBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
+  for (const role of requiredRoles) {
+    const provider = normalizedBody.modelRoutes[role].accessProvider
+    if (!routeSecrets[provider]) return fail(`Missing API key for provider ${provider}`, 400)
+  }
   const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
   if (!reservation.ok) return fail(reservation.error, reservation.code)
   let committed = false
@@ -1341,6 +1556,10 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     status: 'queued' as JobStatus,
     jobType: 'refine',
     provider: normalizedBody.provider,
+    modelRoutes: normalizedBody.modelRoutes,
+    routingMode: normalizedBody.routingMode,
+    modelRoutingVersion: normalizedBody.modelRoutingVersion,
+    modelRoutingSource: normalizedBody.modelRoutingSource,
     clientPlatform: normalizeClientPlatform(body.clientPlatform),
     configurationMode: 'advanced',
     taskName: 'diagram',
@@ -1388,7 +1607,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
       return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
     }
 
-    startRefineJobInBackground(reservation, jobId, normalizedBody, apiKey)
+    startRefineJobInBackground(reservation, jobId, normalizedBody, routeSecrets)
     committed = true
 
     return ok({
@@ -1791,7 +2010,7 @@ async function sweepDeletedAccountObjects() {
   })
 }
 
-async function resolveReferenceImageMode(body: CreateExecutionBody & { referenceImageMode: ReferenceImageMode }) {
+export async function resolveReferenceImageMode(body: CreateExecutionBody & { referenceImageMode: ReferenceImageMode }) {
   const requestedMode = body.referenceImageMode
   const hasReferences = Boolean((body.referenceImages || []).length)
   if (!hasReferences) {
@@ -1808,7 +2027,15 @@ async function resolveReferenceImageMode(body: CreateExecutionBody & { reference
     }
   }
 
-  const capability = await referenceModelCapability(body.provider, body.mainModelName)
+  if (requestedMode === 'auto' && body.modelRoutingSource === 'explicit') {
+    return {
+      referenceImageMode: requestedMode,
+      referenceImageModeUsed: 'vision_model' as ReferenceImageModeUsed,
+    }
+  }
+
+  const mainRoute = body.modelRoutes.main
+  const capability = await referenceModelCapability(mainRoute.accessProvider, mainRoute.modelId)
   if (requestedMode === 'auto') {
     return {
       referenceImageMode: requestedMode,
@@ -1838,7 +2065,7 @@ function startCreateJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   numCandidates: number,
   maxCriticRounds: number,
 ) {
@@ -1846,7 +2073,7 @@ function startCreateJobInBackground(
     jobId,
     kind: 'create',
     body,
-    apiKey,
+    routeSecrets,
     numCandidates,
     maxCriticRounds,
   })
@@ -1856,20 +2083,34 @@ function startRefineJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: RefineExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
 ) {
   jobAdmission.commit(reservation, {
     jobId,
     kind: 'refine',
     body,
-    apiKey,
+    routeSecrets,
   })
+}
+
+function modelRouteAccess(body: CreateExecutionBody | RefineExecutionBody, routeSecrets: RouteSecrets, role: ModelRole) {
+  const route = body.modelRoutes?.[role] || {
+    accessProvider: body.provider,
+    modelId: role === 'image'
+      ? body.imageModelName
+      : role === 'vision'
+        ? body.referenceVisionModelName || body.mainModelName
+        : body.mainModelName,
+  }
+  const apiKey = routeSecrets[route.accessProvider] || ''
+  if (!apiKey) throw new Error(`Missing API key for provider ${route.accessProvider}`)
+  return { provider: route.accessProvider, model: route.modelId, apiKey }
 }
 
 async function runJob(
   jobId: string,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   numCandidates: number,
   maxCriticRounds: number,
 ) {
@@ -1878,7 +2119,7 @@ async function runJob(
     { $set: { status: 'running', startedAt: new Date(), updatedAt: new Date() } },
   )
 
-  const retrievedReferences = await resolveRetrievedReferences(body, apiKey)
+  const retrievedReferences = await resolveRetrievedReferences(body, routeSecrets)
   await jobs.updateOne(
     { _id: jobId },
     {
@@ -1902,7 +2143,7 @@ async function runJob(
       uploadedVisionInputs = await buildVisionImageInputs(body.referenceImages || [], jobId)
     } else {
       await appendLog(jobId, 'Reference mode: independent vision model')
-      referenceAnalysis = await analyzeReferenceImages(jobId, body, apiKey)
+      referenceAnalysis = await analyzeReferenceImages(jobId, body, routeSecrets)
     }
   }
 
@@ -1915,7 +2156,7 @@ async function runJob(
   await runWithConcurrency(candidateIndexes, concurrency, async (i) => {
     const candidateNo = i + 1
     await appendLog(jobId, `Candidate ${candidateNo}: planning`)
-    const result = await runCandidate(jobId, i, body, apiKey, maxCriticRounds, referenceAnalysis, retrievalContext, referenceVisionInputs, async (message) => {
+    const result = await runCandidate(jobId, i, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceVisionInputs, async (message) => {
       await appendLog(jobId, `Candidate ${candidateNo}: ${message}`)
     })
     await appendLog(jobId, `Candidate ${candidateNo}: saving result`)
@@ -1949,7 +2190,7 @@ async function runCandidate(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   maxCriticRounds: number,
   referenceAnalysis = '',
   retrievalContext = '',
@@ -1959,15 +2200,16 @@ async function runCandidate(
   // Plot task: instead of calling an image model, generate matplotlib CODE and
   // render it via the external plot-worker. Keep the diagram path 100% intact.
   if (normalizeTaskName(body.taskName) === 'plot') {
-    return await runPlotCandidate(jobId, candidateId, body, apiKey, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, logStage)
+    return await runPlotCandidate(jobId, candidateId, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, logStage)
   }
 
   if (normalizeOutputFormat(body.outputFormat) === 'svg') {
-    const description = await buildVisualDescription(jobId, candidateId, body, apiKey, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, true)
+    const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
+    const description = await buildVisualDescription(jobId, candidateId, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, true)
     await logStage('plan ready')
     await logStage('rendering SVG')
     const svgRenderStartedAt = new Date()
-    const svg = await callSvgModel(body.provider, body.mainModelName, apiKey, description)
+    const svg = await callSvgModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, description)
     const stageImage = await saveStageImage(jobId, candidateId, 'svg-final', svg, 'image/svg+xml', 'utf8')
     await recordStage(jobId, {
       candidateId,
@@ -1982,6 +2224,7 @@ async function runCandidate(
   }
 
   if ((body.pipelineMode || 'planner_critic') === 'vanilla') {
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     const prompt = diagramPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext)
     await recordStage(jobId, {
       candidateId,
@@ -1991,7 +2234,7 @@ async function runCandidate(
     })
     await logStage('rendering PNG')
     const vanillaRenderStartedAt = new Date()
-    const base64 = await callImageModel(body.provider, body.imageModelName, apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
+    const base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
     const stageImage = await saveStageImage(jobId, candidateId, 'vanilla-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId,
@@ -2005,12 +2248,13 @@ async function runCandidate(
     return { content: base64, encoding: 'base64' as const, mimeType: 'image/png', description: prompt }
   }
 
-  let description = await buildVisualDescription(jobId, candidateId, body, apiKey, 0, referenceAnalysis, retrievalContext, referenceImages, false)
+  const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
+  let description = await buildVisualDescription(jobId, candidateId, body, routeSecrets, 0, referenceAnalysis, retrievalContext, referenceImages, false)
   await logStage('plan ready')
   let imagePrompt = diagramPromptFromDescription(description)
   await logStage('rendering PNG')
   const initialRenderStartedAt = new Date()
-  let base64 = await callImageModel(body.provider, body.imageModelName, apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
+  let base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
   let stageImage = await saveStageImage(jobId, candidateId, 'render-0', base64, 'image/png', 'base64')
   await recordStage(jobId, {
     candidateId,
@@ -2030,7 +2274,7 @@ async function runCandidate(
   for (let round = 1; round <= maxCriticRounds; round += 1) {
     await logStage(`critic round ${round}`)
     const criticStartedAt = new Date()
-    const critique = await critiqueRenderedDiagram(body, apiKey, description, base64, referenceAnalysis, retrievalContext)
+    const critique = await critiqueRenderedDiagram(body, routeSecrets, description, base64, referenceAnalysis, retrievalContext)
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
@@ -2051,7 +2295,7 @@ async function runCandidate(
     await logStage(`rerender round ${round}`)
     const rerenderStartedAt = new Date()
     try {
-      base64 = await callImageModel(body.provider, body.imageModelName, apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
+      base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
       stageImage = await saveStageImage(jobId, candidateId, `render-${round}`, base64, 'image/png', 'base64')
       await recordStage(jobId, {
         candidateId,
@@ -2068,7 +2312,7 @@ async function runCandidate(
     } catch (error: any) {
       // Re-render failed this round: roll back to the last successful
       // image+description and stop the loop rather than failing the candidate.
-      const message = error?.message || String(error)
+      const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
       await logStage(`rerender round ${round} failed, rolling back: ${message}`)
       await recordStage(jobId, {
         candidateId,
@@ -2089,7 +2333,7 @@ async function runCandidate(
   // 清晰度驱动的自动精修：1K 仅基础渲染；2K/4K 在 PNG 图（非 SVG）最终图上再跑一遍
   // 升清放大。失败时 enhanceCandidateToResolution 内部已回退到基础图。
   if (body.imageSize === '2K' || body.imageSize === '4K') {
-    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, apiKey, base64, description, body.imageSize, logStage)
+    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, routeSecrets, base64, description, body.imageSize, logStage)
   }
 
   return { content: base64, encoding: 'base64' as const, mimeType: 'image/png', description }
@@ -2106,19 +2350,19 @@ async function runPlotCandidate(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   maxCriticRounds: number,
   referenceAnalysis = '',
   retrievalContext = '',
   referenceImages: VisionImageInput[] = [],
   logStage: (message: string) => Promise<void> = async () => {},
 ) {
-  let description = await buildPlotDescription(jobId, candidateId, body, apiKey, referenceAnalysis, retrievalContext, referenceImages)
+  let description = await buildPlotDescription(jobId, candidateId, body, routeSecrets, referenceAnalysis, retrievalContext, referenceImages)
   await logStage('plan ready')
 
   // Generate the matplotlib code from the plot description and render it.
   await logStage('generating matplotlib code')
-  let code = await generatePlotCode(body, apiKey, description)
+  let code = await generatePlotCode(body, routeSecrets, description)
   await logStage('rendering plot via worker')
   let renderStartedAt = new Date()
   let rendered = await renderPlotViaWorker(code)
@@ -2146,7 +2390,7 @@ async function runPlotCandidate(
   for (let round = 1; round <= maxCriticRounds; round += 1) {
     await logStage(`plot critic round ${round}`)
     const criticStartedAt = new Date()
-    const critique = await critiqueRenderedPlot(body, apiKey, description, base64, rendered.error, referenceAnalysis, retrievalContext)
+    const critique = await critiqueRenderedPlot(body, routeSecrets, description, base64, rendered.error, referenceAnalysis, retrievalContext)
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
@@ -2169,7 +2413,7 @@ async function runPlotCandidate(
     await logStage(`regenerating matplotlib code round ${round}`)
     renderStartedAt = new Date()
     try {
-      code = await generatePlotCode(body, apiKey, description)
+      code = await generatePlotCode(body, routeSecrets, description)
       rendered = await renderPlotViaWorker(code)
       if (rendered.error || !rendered.base64) {
         // Worker rejected the code this round. Record the failure and let the
@@ -2205,7 +2449,7 @@ async function runPlotCandidate(
       lastGoodDescription = description
       lastGoodCode = code
     } catch (error: any) {
-      const message = error?.message || String(error)
+      const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
       await logStage(`plot rerender round ${round} failed, rolling back: ${message}`)
       await recordStage(jobId, {
         candidateId,
@@ -2234,7 +2478,7 @@ async function runPlotCandidate(
   // direct-edit 的任务做像素级升清；其他模型跳过（避免用图描述
   // 重画统计图导致内容失真）。1K 不做额外处理。
   if ((body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') {
-    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, apiKey, base64, description, body.imageSize, logStage)
+    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, routeSecrets, base64, description, body.imageSize, logStage)
   }
 
   return { content: base64, encoding: 'base64' as const, mimeType: 'image/png', description }
@@ -2251,7 +2495,7 @@ async function enhanceCandidateToResolution(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   baseBase64: string,
   baseDescription: string,
   targetSize: string,
@@ -2259,6 +2503,7 @@ async function enhanceCandidateToResolution(
 ): Promise<string> {
   const startedAt = new Date()
   try {
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     await logStage(`enhancing candidate to ${targetSize}`)
     let upscaled: string
     if (body.imageRefineMode === 'direct-edit') {
@@ -2268,9 +2513,9 @@ async function enhanceCandidateToResolution(
         targetSize,
       )
       upscaled = await callImageModel(
-        body.provider,
-        body.imageModelName,
-        apiKey,
+        imageRoute.provider,
+        imageRoute.model,
+        imageRoute.apiKey,
         editPrompt,
         body.aspectRatio || '16:9',
         'data:image/png;base64,' + baseBase64,
@@ -2279,9 +2524,9 @@ async function enhanceCandidateToResolution(
     } else {
       // 无图生图能力（bailian）：用最终描述以更大的安全尺寸重渲染一次。
       upscaled = await callImageModel(
-        body.provider,
-        body.imageModelName,
-        apiKey,
+        imageRoute.provider,
+        imageRoute.model,
+        imageRoute.apiKey,
         diagramPromptFromDescription(baseDescription),
         body.aspectRatio || '16:9',
         '',
@@ -2302,7 +2547,7 @@ async function enhanceCandidateToResolution(
     return upscaled
   } catch (error: any) {
     // 升清失败绝不连累整张候选图：回退到基础图并记录。
-    const message = error?.message || String(error)
+    const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
     await logStage(`enhance to ${targetSize} failed, keeping base image: ${message}`)
     await recordStage(jobId, {
       candidateId,
@@ -2324,17 +2569,18 @@ async function buildPlotDescription(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   referenceAnalysis = '',
   retrievalContext = '',
   referenceImages: VisionImageInput[] = [],
 ) {
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
   const planner = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     plotPlannerSystemPrompt(),
     plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages),
     referenceImages,
@@ -2353,9 +2599,9 @@ async function buildPlotDescription(
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
     description = await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       plotStylistSystemPrompt(),
       plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages),
     )
@@ -2373,11 +2619,12 @@ async function buildPlotDescription(
 }
 
 // Turn a plot description into self-contained matplotlib code (visualizer).
-async function generatePlotCode(body: CreateExecutionBody, apiKey: string, description: string) {
+async function generatePlotCode(body: CreateExecutionBody, routeSecrets: RouteSecrets, description: string) {
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const raw = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     plotVisualizerSystemPrompt(),
     plotVisualizerUserPrompt(description),
   )
@@ -2469,7 +2716,7 @@ async function pingPlotWorker(body: any) {
 // NOTICE] failure path so the critic repairs the code (mirrors critic_agent.py).
 async function critiqueRenderedPlot(
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   description: string,
   imageBase64: string,
   renderError = '',
@@ -2478,13 +2725,14 @@ async function critiqueRenderedPlot(
 ) {
   const hasImage = typeof imageBase64 === 'string' && imageBase64.trim().length > 100
   if (!hasImage) {
+    const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
     const notice = renderError
       ? `[SYSTEM NOTICE] The plot image could not be generated based on the current description (likely due to invalid code). Worker error: ${renderError}. Please check the description for errors (e.g., syntax issues, missing data) and provide a revised, simplified, and robust version.`
       : '[SYSTEM NOTICE] The plot image could not be generated based on the current description (likely due to invalid code). Please check the description for errors (e.g., syntax issues, missing data) and provide a revised, simplified, and robust version.'
     return await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       plotCriticSystemPrompt(),
       [
         notice,
@@ -2493,10 +2741,11 @@ async function critiqueRenderedPlot(
       ].join('\n'),
     )
   }
+  const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
   return await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    visionRoute.provider,
+    visionRoute.model,
+    visionRoute.apiKey,
     plotCriticSystemPrompt(),
     plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
     [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }],
@@ -2507,7 +2756,7 @@ async function buildVisualDescription(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   textCriticRounds: number,
   referenceAnalysis = '',
   retrievalContext = '',
@@ -2522,12 +2771,13 @@ async function buildVisualDescription(
   }
 
   const infographicCategory = limitText(body.infographicCategory, 80)
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
   const planner = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     plannerSystemPrompt(),
     plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages),
     referenceImages,
@@ -2546,9 +2796,9 @@ async function buildVisualDescription(
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
     description = await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       stylistSystemPrompt(),
       stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages),
     )
@@ -2567,9 +2817,9 @@ async function buildVisualDescription(
   for (let round = 1; round <= textCriticRounds; round += 1) {
     const criticStartedAt = new Date()
     const critique = await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       criticSystemPrompt(),
       criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
     )
@@ -2592,7 +2842,7 @@ async function buildVisualDescription(
   return description
 }
 
-async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: string) {
+async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecrets: RouteSecrets) {
   await jobs.updateOne(
     { _id: jobId },
     { $set: { status: 'running', startedAt: new Date(), updatedAt: new Date() } },
@@ -2609,13 +2859,14 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
   let description: string
 
   if (body.refineMode === 'direct-edit') {
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     // True image-to-image: forward the source image bytes directly to the
     // image model so it edits the actual pixels (mirrors polish_agent.py).
     await appendLog(jobId, 'Refine: editing source image (image-to-image)')
     const editPrompt = refineEditPrompt(body.editInstruction, body.imageSize || '2K')
     description = editPrompt
     const renderStartedAt = new Date()
-    base64 = await callImageModel(body.provider, body.imageModelName, apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl)
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl)
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -2627,6 +2878,8 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
       completedAt: new Date(),
     })
   } else {
+    const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     // Model-level analyze-redraw fallback: describe the source image, then
     // regenerate from that description using the selected image model.
     await appendLog(jobId, 'Refine: analyzing source image')
@@ -2637,9 +2890,9 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
     // For bailian the existing toBailianImageUrl + isBailianImageContentError
     // fallback to qwen-vl in callTextModel handles the image read.
     description = await callTextModel(
-      body.provider,
-      body.referenceVisionModelName || body.mainModelName,
-      apiKey,
+      visionRoute.provider,
+      visionRoute.model,
+      visionRoute.apiKey,
       refineSystemPrompt(),
       refineUserPrompt(body.editInstruction, body.imageSize || '2K'),
       [sourceImage],
@@ -2655,7 +2908,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
 
     await appendLog(jobId, 'Refine: rendering edited image')
     const renderStartedAt = new Date()
-    base64 = await callImageModel(body.provider, body.imageModelName, apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9')
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9')
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -2690,7 +2943,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
   )
 }
 
-export async function resolveRetrievedReferences(body: CreateExecutionBody, apiKey: string): Promise<RetrievedReference[]> {
+export async function resolveRetrievedReferences(body: CreateExecutionBody, secrets: RouteSecrets | string): Promise<RetrievedReference[]> {
   const setting = normalizeRetrievalSetting(body.retrievalSetting)
   if (setting === 'none') return []
 
@@ -2707,7 +2960,8 @@ export async function resolveRetrievedReferences(body: CreateExecutionBody, apiK
     return normalizeSelectedReferenceRows(shuffle(library).slice(0, 10))
   }
 
-  const selectedIds = await autoSelectReferenceIds(body, apiKey, library)
+  const routeSecrets: RouteSecrets = typeof secrets === 'string' ? { [body.provider]: secrets } : secrets
+  const selectedIds = await autoSelectReferenceIds(body, routeSecrets, library)
   const selected = selectedIds
     .map((id) => library.find((item) => item.id === id))
     .filter(Boolean) as RetrievedReference[]
@@ -2716,16 +2970,17 @@ export async function resolveRetrievedReferences(body: CreateExecutionBody, apiK
   return normalizeSelectedReferenceRows(selected.slice(0, 10))
 }
 
-async function autoSelectReferenceIds(body: CreateExecutionBody, apiKey: string, library: RetrievedReference[]) {
+async function autoSelectReferenceIds(body: CreateExecutionBody, routeSecrets: RouteSecrets, library: RetrievedReference[]) {
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const candidates = library.slice(0, 200).map((item) => ({
     id: item.id,
     title: item.title,
     summary: item.summary.slice(0, 1500),
   }))
   const raw = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     retrievalSystemPrompt(),
     retrievalUserPrompt(body.methodContent, body.caption, candidates),
   )
@@ -2885,7 +3140,7 @@ function buildRetrievalContext(items: RetrievedReference[]) {
 
 async function critiqueRenderedDiagram(
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   description: string,
   imageBase64: string,
   referenceAnalysis = '',
@@ -2896,10 +3151,11 @@ async function critiqueRenderedDiagram(
   // image (mirrors critic_agent.py's text-only fallback).
   const hasImage = typeof imageBase64 === 'string' && imageBase64.trim().length > 100
   if (!hasImage) {
+    const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
     return await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       imageCriticSystemPrompt(),
       [
         '[SYSTEM NOTICE] The diagram image could not be generated based on the current description. Check the description for errors and revise it.',
@@ -2908,10 +3164,11 @@ async function critiqueRenderedDiagram(
       ].join('\n'),
     )
   }
+  const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
   return await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    visionRoute.provider,
+    visionRoute.model,
+    visionRoute.apiKey,
     imageCriticSystemPrompt(),
     imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
     [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }],
@@ -2956,7 +3213,7 @@ function extractRevisedDescription(critique: string, previous: string) {
   return criticDecision(critique, previous).description
 }
 
-async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, apiKey: string) {
+async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, routeSecrets: RouteSecrets) {
   const references = body.referenceImages || []
   if (!references.length) return ''
 
@@ -2966,10 +3223,11 @@ async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, 
 
   await appendLog(jobId, `Analyzing ${references.length} reference image${references.length > 1 ? 's' : ''}`)
   const visionInputs = await buildVisionImageInputs(references, jobId)
+  const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
   const analysis = await callVisionModel(
-    body.provider,
-    body.referenceVisionModelName,
-    apiKey,
+    visionRoute.provider,
+    visionRoute.model,
+    visionRoute.apiKey,
     body.methodContent,
     body.caption,
     visionInputs,
@@ -3885,26 +4143,28 @@ function resultExtension(mimeType: string) {
 }
 
 async function markFailed(jobId: string, error: string) {
+  const safeError = redactSecretText(error)
   await jobs.updateOne(
     { _id: jobId },
     {
       $set: {
         status: 'failed',
-        error,
+        error: stablePublicJobFailure(safeError),
         completedAt: new Date(),
         updatedAt: new Date(),
       },
-      $push: { logs: `ERROR: ${error}` },
+      $push: { logs: `ERROR: ${safeError}` },
     },
   )
 }
 
 async function appendLog(jobId: string, message: string) {
+  const safeMessage = redactSecretText(message)
   await jobs.updateOne(
     { _id: jobId },
     {
       $set: { updatedAt: new Date() },
-      $push: { logs: `${new Date().toISOString()} ${message}` },
+      $push: { logs: `${new Date().toISOString()} ${safeMessage}` },
     },
   )
 }
@@ -3919,13 +4179,13 @@ async function recordStage(jobId: string, input: Partial<JobStage> & { candidate
     type: input.type,
     title: input.title,
     round: Number(input.round || 0),
-    text: limitText(input.text, 12000),
-    suggestion: limitText(input.suggestion, 6000),
+    text: redactSecretText(limitText(input.text, 12000)),
+    suggestion: redactSecretText(limitText(input.suggestion, 6000)),
     image: input.image || null,
     startedAt,
     completedAt,
     durationMs: Number(input.durationMs || (completedAt.getTime() - startedAt.getTime())),
-    error: limitText(input.error, 1200),
+    error: redactSecretText(limitText(input.error, 1200)),
   }
   await jobs.updateOne(
     { _id: jobId },
@@ -4235,7 +4495,9 @@ function openRouterOutputFormats(parameters: any) {
 }
 
 async function providerModelRegistry(provider: Provider): Promise<ProviderModelRegistry> {
-  return provider === 'openrouter' ? openRouterProviderRegistry() : staticModelRegistry[provider]
+  if (provider === 'openrouter') return openRouterProviderRegistry()
+  if (provider === 'ark') throw new Error('Ark model registry is not available')
+  return staticModelRegistry[provider]
 }
 
 function providerRegistryFailure(provider: Provider, error: any): string {
@@ -4244,7 +4506,32 @@ function providerRegistryFailure(provider: Provider, error: any): string {
       ? providerEgressUnavailableMessage
       : 'OpenRouter model catalog is temporarily unavailable'
   }
+  if (provider === 'ark') return 'Ark model registry is not available'
   return `${provider} model registry is temporarily unavailable`
+}
+
+async function validateModelRouting(
+  modelRoutes: ModelRoutes,
+  roles: ModelRole[] = ['main', 'image', 'vision'],
+): Promise<Map<Provider, ProviderModelRegistry>> {
+  const registries = new Map<Provider, ProviderModelRegistry>()
+  for (const provider of new Set(Object.values(modelRoutes).map((route) => route.accessProvider))) {
+    try {
+      registries.set(provider, await providerModelRegistry(provider))
+    } catch (error: any) {
+      const routeError: any = new Error(providerRegistryFailure(provider, error))
+      routeError.statusCode = 503
+      throw routeError
+    }
+  }
+  for (const role of roles) {
+    const route = modelRoutes[role]
+    const error = modelRoleSelectionError(route.accessProvider, registries.get(route.accessProvider)!, [
+      { model: route.modelId, role },
+    ])
+    if (error) throw modelRouteError(error)
+  }
+  return registries
 }
 
 function modelRoleSelectionError(
@@ -5212,7 +5499,7 @@ function randomId() {
 }
 
 function validateCreateBody(body: CreateJobBody) {
-  if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) throw new Error('Invalid provider')
+  if (!recognizedRouteProviders.has(body.provider)) throw new Error('Invalid provider')
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
   if (body.taskName && !['diagram', 'plot'].includes(body.taskName)) throw new Error('Invalid taskName. Must be diagram or plot.')
   if (!body.methodContent || body.methodContent.trim().length < 20) throw new Error('methodContent is too short')
@@ -5221,8 +5508,8 @@ function validateCreateBody(body: CreateJobBody) {
   if (body.caption.trim().length > 1000) throw new Error('caption exceeds 1000 characters')
   const requestedFormat = body.outputFormat || body.output_format
   if (requestedFormat && !['png', 'svg'].includes(requestedFormat)) throw new Error('Invalid outputFormat')
-  if (!body.mainModelName) throw new Error('mainModelName is required')
-  if (!body.imageModelName) throw new Error('imageModelName is required')
+  if (!body.modelRoutes && !body.mainModelName) throw new Error('mainModelName is required')
+  if (!body.modelRoutes && !body.imageModelName) throw new Error('imageModelName is required')
   if (body.referenceImageMode && !['auto', 'main_model', 'vision_model'].includes(body.referenceImageMode)) throw new Error('Invalid referenceImageMode')
   if (body.retrievalSetting && !allowedRetrievalSettings.has(body.retrievalSetting)) throw new Error('Invalid retrievalSetting')
   if (body.retrievalSetting === 'manual' && !normalizeManualReferenceIds(body.manualReferenceIds || []).length) {
@@ -5231,9 +5518,9 @@ function validateCreateBody(body: CreateJobBody) {
 }
 
 function validateRefineBody(body: RefineImageBody) {
-  if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) throw new Error('Invalid provider')
+  if (!recognizedRouteProviders.has(body.provider)) throw new Error('Invalid provider')
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
-  if (!body.imageModelName) throw new Error('imageModelName is required')
+  if (!body.modelRoutes && !body.imageModelName) throw new Error('imageModelName is required')
   if (!body.sourceImageUrl && !body.sourceImageObjectKey) throw new Error('source image is required')
   const instruction = String(body.editInstruction || '').trim()
   if (instruction.length < 3) throw new Error('editInstruction is required')
@@ -5245,15 +5532,29 @@ function selectApiKey(provider: Provider, apiKeys: ApiKeys) {
   if (provider === 'gemini') return apiKeys?.gemini?.trim() || ''
   if (provider === 'openai') return apiKeys?.openai?.trim() || ''
   if (provider === 'bailian') return apiKeys?.bailian?.trim() || ''
+  if (provider === 'ark') return apiKeys?.ark?.trim() || ''
   return ''
 }
 
 async function publicJob(job: any) {
   const clientPlatform = normalizeClientPlatform(job.clientPlatform) || normalizeClientPlatform(job.client_platform)
+  const storedModelRoutes = normalizeStoredModelRoutes(job.modelRoutes)
+  const historicalModelRoutes = storedModelRoutes || deriveHistoricalModelRoutes(job)
+  const routingMetadata = historicalModelRoutes
+    ? {
+        modelRoutes: historicalModelRoutes,
+        routingMode: job.routingMode === 'mixed' || job.routingMode === 'single'
+          ? job.routingMode
+          : modelRoutingMode(historicalModelRoutes),
+        modelRoutingVersion: 1,
+        modelRoutingSource: job.modelRoutingSource === 'explicit' ? 'explicit' : 'legacy-derived',
+      }
+    : {}
   return {
     id: job._id,
     status: job.status,
-    provider: job.provider,
+    provider: historicalModelRoutes?.main.accessProvider || job.provider,
+    ...routingMetadata,
     clientPlatform,
     client_platform: clientPlatform,
     jobType: job.jobType || 'generate',
@@ -5279,7 +5580,7 @@ async function publicJob(job: any) {
     manualReferenceIds: job.manualReferenceIds || [],
     retrievedReferenceIds: job.retrievedReferenceIds || [],
     retrievedReferences: job.retrievedReferences || [],
-    stages: await refreshStageImages(job.stages || []),
+    stages: redactPublicValue(await refreshStageImages(job.stages || [])),
     criticMode: job.criticMode || '',
     aspectRatio: job.aspectRatio,
     imageSize: job.imageSize || '',
@@ -5288,13 +5589,47 @@ async function publicJob(job: any) {
     promptCharCount: job.promptCharCount,
     referenceImageCount: (job.referenceImages || []).length,
     referenceImages: await refreshReferenceImageUrls(job.referenceImages || []),
-    resultImages: await refreshStoredImageUrls(job.resultImages || []),
-    logs: job.logs || [],
-    error: job.error || '',
+    resultImages: redactPublicValue(await refreshStoredImageUrls(job.resultImages || [])),
+    logs: redactPublicValue(job.logs || []),
+    error: redactSecretText(job.error || ''),
     createdAt: job.createdAt,
     updatedAt: job.updatedAt,
     startedAt: job.startedAt,
     completedAt: job.completedAt,
+  }
+}
+
+function modelRoutingMode(routes: ModelRoutes): ModelRoutingMode {
+  return new Set(Object.values(routes).map((route) => route.accessProvider)).size === 1 ? 'single' : 'mixed'
+}
+
+function normalizeStoredModelRoutes(value: any): ModelRoutes | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+  try {
+    return {
+      main: normalizeModelRoute(value.main, 'main'),
+      image: normalizeModelRoute(value.image, 'image'),
+      vision: normalizeModelRoute(value.vision, 'vision'),
+    }
+  } catch {
+    return null
+  }
+}
+
+function deriveHistoricalModelRoutes(job: any): ModelRoutes | null {
+  const provider = String(job?.provider || '').trim() as Provider
+  const mainModelName = typeof job?.mainModelName === 'string' ? job.mainModelName.trim() : ''
+  const imageModelName = typeof job?.imageModelName === 'string' ? job.imageModelName.trim() : ''
+  if (!recognizedRouteProviders.has(provider) || !mainModelName || !imageModelName) return null
+  try {
+    return resolveModelRouting({
+      provider,
+      mainModelName,
+      imageModelName,
+      referenceVisionModelName: typeof job.referenceVisionModelName === 'string' ? job.referenceVisionModelName : '',
+    }).modelRoutes
+  } catch {
+    return null
   }
 }
 
@@ -5359,6 +5694,31 @@ function ok(data: any) {
 
 function fail(message: string, status = 400) {
   return { code: status, error: message }
+}
+
+function redactSecretText(value: any, secrets: Array<string | undefined> = []) {
+  let redacted = String(value || '')
+  for (const secret of secrets) {
+    if (secret && secret.length >= 6) redacted = redacted.split(secret).join('[REDACTED]')
+  }
+  return redacted
+    .replace(/([?&](?:key|api[_-]?key|token|access[_-]?token)=)[^&#\s]+/gi, '$1[REDACTED]')
+    .replace(/(authorization\s*[:=]\s*)bearer\s+[^\s,;]+/gi, '$1Bearer [REDACTED]')
+    .replace(/((?:x-goog-api-key|api[_-]?key|access[_-]?token|token)\s*[:=]\s*)[^\s,;]+/gi, '$1[REDACTED]')
+    .replace(/\bbearer\s+[^\s,;]+/gi, 'Bearer [REDACTED]')
+}
+
+function redactPublicValue(value: any): any {
+  if (typeof value === 'string') return redactSecretText(value)
+  if (Array.isArray(value)) return value.map(redactPublicValue)
+  if (!value || typeof value !== 'object' || value instanceof Date) return value
+  return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, redactPublicValue(entry)]))
+}
+
+function stablePublicJobFailure(error: string) {
+  if (error.includes(providerEgressUnavailableMessage)) return providerEgressUnavailableMessage
+  if (/account deletion is in progress/i.test(error)) return 'Account deletion is in progress. Please retry.'
+  return 'Model execution failed. Please retry.'
 }
 
 // ---------------------------------------------------------------------------
