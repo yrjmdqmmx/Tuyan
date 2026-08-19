@@ -8,7 +8,7 @@ if (REFERENCE_METADATA_ZH_CN_V2.length !== 306) {
 }
 
 const requiredFields = [
-  'id', 'taskName', 'titleZh', 'shortIntroZh', 'detailZh',
+  'id', 'taskName', 'title', 'summary', 'titleZh', 'shortIntroZh', 'detailZh',
   'visualCategory', 'researchDomain', 'keywords',
 ]
 for (const item of REFERENCE_METADATA_ZH_CN_V2) {
@@ -21,6 +21,8 @@ for (const item of REFERENCE_METADATA_ZH_CN_V2) {
 
 const metadata = REFERENCE_METADATA_ZH_CN_V2.map(({
   id,
+  title,
+  summary,
   titleZh,
   shortIntroZh,
   detailZh,
@@ -29,6 +31,8 @@ const metadata = REFERENCE_METADATA_ZH_CN_V2.map(({
   keywords,
 }) => ({
   id,
+  title,
+  summary,
   titleZh,
   shortIntroZh,
   detailZh,
@@ -53,14 +57,52 @@ const imageFilter = {$or: [
 const sourceFilter = {
   id: {$in: ids},
   source: "paperbanana-bench",
-  title: {$type: "string", $regex: /\\S/},
-  summary: {$type: "string", $regex: /\\S/},
   ...imageFilter,
 }
 const existing = references.countDocuments(sourceFilter)
-if (existing !== 306) throw new Error("reference v2 source mismatch: expected 306 image-backed records with complete English title/summary, found " + existing)
+if (existing !== 306) throw new Error("reference v2 source mismatch: expected 306 image-backed records, found " + existing)
 const existingIds = references.distinct("id", sourceFilter)
 if (existingIds.length !== 306) throw new Error("reference v2 source mismatch: expected 306 distinct business ids, found " + existingIds.length)
+const englishBackfill = references.bulkWrite(metadata.flatMap((item) => ([
+  {
+    updateOne: {
+      filter: {
+        id: item.id,
+        source: "paperbanana-bench",
+        $and: [imageFilter, {$or: [
+          {title: {$not: {$type: "string"}}},
+          {title: {$not: /\\S/}},
+        ]}],
+      },
+      update: {$set: {title: item.title}},
+      upsert: false,
+    },
+  },
+  {
+    updateOne: {
+      filter: {
+        id: item.id,
+        source: "paperbanana-bench",
+        $and: [imageFilter, {$or: [
+          {summary: {$not: {$type: "string"}}},
+          {summary: {$not: /\\S/}},
+        ]}],
+      },
+      update: {$set: {summary: item.summary}},
+      upsert: false,
+    },
+  },
+])), {ordered: false})
+const completeEnglishFilter = {
+  ...sourceFilter,
+  title: {$type: "string", $regex: /\\S/},
+  summary: {$type: "string", $regex: /\\S/},
+}
+const completeEnglishDocuments = references.countDocuments(completeEnglishFilter)
+const completeEnglishIds = references.distinct("id", completeEnglishFilter)
+if (completeEnglishDocuments !== 306 || completeEnglishIds.length !== 306) {
+  throw new Error("reference v2 English backfill failed: " + completeEnglishDocuments + " documents / " + completeEnglishIds.length + " distinct ids")
+}
 const result = references.bulkWrite(metadata.map((item) => ({
   updateOne: {
     filter: {
@@ -114,5 +156,5 @@ const versionedDocuments = references.countDocuments({source: "paperbanana-bench
 const versionedIds = references.distinct("id", {source: "paperbanana-bench", corpusVersion: version})
 if (versionedDocuments !== 306) throw new Error("current corpus version contains " + versionedDocuments + " documents instead of 306")
 if (versionedIds.length !== 306) throw new Error("current corpus version contains " + versionedIds.length + " distinct business ids instead of 306")
-print(JSON.stringify({version, matched: result.matchedCount, modified: result.modifiedCount, localized}))
+print(JSON.stringify({version, backfilledEnglish: englishBackfill.modifiedCount, matched: result.matchedCount, modified: result.modifiedCount, localized}))
 `)

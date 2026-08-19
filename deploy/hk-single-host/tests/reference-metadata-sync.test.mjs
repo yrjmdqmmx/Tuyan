@@ -19,6 +19,7 @@ const deployScript = readFileSync(new URL('../scripts/deploy.sh', import.meta.ur
 function matches(document, query = {}) {
   return Object.entries(query).every(([field, condition]) => {
     if (field === '$or') return condition.some((branch) => matches(document, branch))
+    if (field === '$and') return condition.every((branch) => matches(document, branch))
     const actual = document[field]
     if (condition && typeof condition === 'object') {
       if ('$in' in condition && !condition.$in.includes(actual)) return false
@@ -27,6 +28,14 @@ function matches(document, query = {}) {
       if ('$ne' in condition && JSON.stringify(actual) === JSON.stringify(condition.$ne)) return false
       if ('$regex' in condition && !condition.$regex.test(String(actual ?? ''))) return false
       if ('$exists' in condition && (actual !== undefined) !== condition.$exists) return false
+      if ('$not' in condition) {
+        const negated = condition.$not
+        if (negated && typeof negated.test === 'function') {
+          if (negated.test(String(actual ?? ''))) return false
+        } else if (negated && typeof negated === 'object' && matches({ [field]: actual }, { [field]: negated })) {
+          return false
+        }
+      }
       return true
     }
     return actual === condition
@@ -135,33 +144,23 @@ test('emitter rejects duplicate business ids even when the image-backed document
   )
 })
 
-test('emitter rejects a bench row whose preserved English search fields are blank', () => {
-  const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
-  const ids = REFERENCE_METADATA_ZH_CN_V2.map(({ id }) => id)
-  const references = {
-    countDocuments(query) { return query.title && query.summary ? 305 : 306 },
-    distinct() { return ids },
-    bulkWrite() { throw new Error('migration must validate English search fields before writing') },
-  }
-  assert.throws(
-    () => vm.runInNewContext(output, {
-      db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
-    }),
-    /306 image-backed records with complete English title\/summary/,
-  )
-})
-
-test('emitter rejects whitespace-only preserved English search fields before writing', () => {
+test('emitter backfills only blank legacy English fields from the pinned 306-item corpus', () => {
   const output = execFileSync(process.execPath, [fileURLToPath(emitter)], { cwd: fileURLToPath(root), encoding: 'utf8' })
   const { documents, references } = migrationFixture()
-  documents.get('ref_0').title = '   \t'
-  assert.throws(
-    () => vm.runInNewContext(output, {
-      db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
-    }),
-    /306 image-backed records with complete English title\/summary/,
-  )
-  assert.equal(documents.get('ref_1').corpusVersion, undefined, 'migration must fail before writing')
+  documents.get('ref_260').summary = ''
+  documents.get('ref_305').summary = '   \t'
+  documents.get('ref_0').title = 'Existing curated English title'
+  let result
+  vm.runInNewContext(output, {
+    db: { getSiblingDB: () => ({ getCollection: () => references }) },
+    print: (value) => { result = JSON.parse(value) },
+    Date, JSON, Error,
+  })
+  assert.equal(documents.get('ref_260').summary, REFERENCE_METADATA_ZH_CN_V2.find(({ id }) => id === 'ref_260').summary)
+  assert.equal(documents.get('ref_305').summary, REFERENCE_METADATA_ZH_CN_V2.find(({ id }) => id === 'ref_305').summary)
+  assert.equal(documents.get('ref_0').title, 'Existing curated English title')
+  assert.equal(result.backfilledEnglish, 2)
+  assert.equal(result.localized, 306)
 })
 
 test('emitter rejects whitespace-only image fields before counting a bench row as image-backed', () => {
@@ -172,7 +171,7 @@ test('emitter rejects whitespace-only image fields before counting a bench row a
     () => vm.runInNewContext(output, {
       db: { getSiblingDB: () => ({ getCollection: () => references }) }, print() {}, Date, JSON, Error,
     }),
-    /306 image-backed records with complete English title\/summary/,
+    /expected 306 image-backed records/,
   )
   assert.equal(documents.get('ref_1').corpusVersion, undefined, 'migration must fail before writing')
 })
