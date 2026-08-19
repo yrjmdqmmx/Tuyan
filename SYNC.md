@@ -36,7 +36,7 @@
 - [x] auth-gateway / packages-api（公开只读 action 转发、共享请求/响应归一）
 - [x] Web（动态模型目录、295 条中文宽屏图库/大图预览、任务来源、性能/错误恢复/账号删除/隐私一致性）
 - [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（创建参数与任务列表/详情来源展示；不支持精修入口的端无需发送 refine）
-- [ ] 部署/运维（发布香港 Core/Gateway/Web，同步 295 条 Mongo 元数据并完成生产只读验收）
+- [x] 部署/运维（已发布香港 Core/Gateway/Web，295 条 Mongo 元数据同步为 `2026-08-19.v1`；生产模型目录、中文图库、大图预览、健康/就绪与 SG 出口已只读验收）
 
 ### [2026-08-18] 新加坡模型出口交付契约 — by Codex
 变更：香港 Core 新增显式 `disabled|sg-required` 出口模式、固定 `http://10.77.0.2:3128` 代理配置、可复现 `pbhk0` peer、独立手动 GitHub Environment 工作流与 fail-closed 回滚顺序；公开 API/action/envelope 不变。
