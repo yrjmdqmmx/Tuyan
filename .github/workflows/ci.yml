@@ -71,7 +71,18 @@ jobs:
       - name: Test iOS shared job contracts
         shell: bash
         run: |
-          destination_id="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; data=json.load(sys.stdin); print(next(device["udid"] for runtime in data["devices"].values() for device in runtime if device.get("isAvailable") and device.get("name", "").startswith("iPhone")))')"
+          destination_id="$(
+            xcodebuild -showdestinations \
+              -project apps/ios/paperbanana.xcodeproj \
+              -scheme PaperBanana |
+              awk -F'id:' '/platform:iOS Simulator/ && /name:iPhone/ {
+                split($2, fields, ",")
+                gsub(/[[:space:]]/, "", fields[1])
+                print fields[1]
+                exit
+              }'
+          )"
+          test -n "$destination_id"
           xcodebuild test \
             -project apps/ios/paperbanana.xcodeproj \
             -scheme PaperBanana \
