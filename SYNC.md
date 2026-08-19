@@ -24,6 +24,21 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] Core Ark 适配器、账号推理验证与模型注册表 v3 — by Codex
+变更：Core 新增火山方舟（Ark）静态注册表、CN 数据面适配器和不冒充账号全量目录的 `providerAccountCatalog` 推理 smoke；同时更新 Gemini/OpenRouter/百炼当前默认项，并为所有 provider/model 补充访问类型、账号目录要求和官方来源元数据。本条不包含 Web、生产出口策略、原生端或部署。
+契约（影响其他端 / 共享）：
+- **注册表 v3**：provider 新增 `accessKind: direct|aggregator`、`routeContractVersion:1`、`accountCatalogRequired`；model 新增 nullable `releasedAt` 与 `officialSourceUrl`，未知发布时间固定为 `null`，OpenRouter `created` 不作为厂商发布时间。默认值更新为 Gemini `gemini-3.7-flash`、OpenRouter `openai/gpt-5.6-sol` / `sourceful/riverflow-v2.5-pro` / `google/gemini-3.7-flash`、百炼 `qwen3.8-max` / `wan2.7-image-pro` / `qwen3.7-plus`。
+- **Ark 注册表/执行**：仅登记官方 ID `doubao-seed-2-0-lite-260428`、`doubao-seed-2-0-mini-260428`、`doubao-seedream-4-0-250828`；条目均 `verified:false`、需 entitlement。文本/视觉固定走 `https://ark.cn-beijing.volces.com/api/v3/chat/completions`；Seedream 4.0 生成/同模型直编走 `/images/generations`，强制 `response_format=b64_json`，URL-only 结果失败关闭且不下载；返回的 JPEG 经有界解码后转为真实 PNG 再进入既有存储/视觉链。未知 ID、错 role 和隐式替换均禁止。
+- **账号验证 action**：`providerAccountCatalog` 只接受内存中的 `apiKeys.ark` 与最多 3 个去重显式 probe，固定返回 `accountCatalogAvailable:false`、`catalogAuth:access-key-required`、`verificationMode:inference-smoke`；main/vision 做最小推理，image 必须 `confirmPaidImageProbe:true`。绝不把 inference key 发往需 AK/SK 签名的 `ListModelActivations`，不持久化/缓存/回显密钥或原始失败。
+- **发布边界**：当前 Core 已能通过注入 transport 保留标准出口失败信号，但生产 egress 尚未登记 Ark origin；Node 构建会内联 `jpeg-js`，原始 Laf 回滚源码则必须先在 Laf custom dependency 中确认 `jpeg-js@0.4.4`（现有源码推送 workflow 不负责安装）。出口策略与 Laf 依赖门禁完成前客户端不得把 Ark 标成生产可用，亦不得把静态条目当作账号已开通目录。
+各端待办：
+- [x] paperbanana-api / Laf Core（注册表、适配器、账号推理验证、混合路由、TDD 与文档）
+- [x] packages-api / auth-gateway（账号目录 action 的安全转发与共享类型已在前序并行任务完成）
+- [ ] Web（消费 v3 元数据、显式触发账号 probe 与付费图片确认；未验证条目不得显示为账号可用）
+- [ ] provider egress（登记 Ark CN origin，disabled 与负路径必须失败关闭；不得扩展到控制面/CDN）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需消费新注册表；旧请求继续兼容）
+- [ ] 部署 / 运维（未发布；须先完成出口策略、确认 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
+
 ### [2026-08-19] Core 多 Provider 模型路由契约 v1 — by Codex
 变更：`createJob` / `refineImage` 新增完整 `modelRoutes {main,image,vision}`，Core 按阶段路由主模型、图像模型和视觉模型；旧请求仍从 `provider/mainModelName/imageModelName/referenceVisionModelName` 派生单路由。本条仅交付 Laf/Core 契约与执行，未接入 Ark 适配器或任何客户端。
 契约（影响其他端 / 共享）：

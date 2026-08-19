@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url'
 
 import { build } from 'esbuild'
 
+const onePixelPngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+VP5TAAAAAElFTkSuQmCC'
+
 type LegacyPolicyModule = {
   default(ctx: Record<string, any>): Promise<any>
   toCreateExecutionBody(body: Record<string, unknown>): Record<string, unknown>
@@ -39,6 +41,19 @@ type LegacyPolicyModule = {
   resolveRetrievedReferences(body: Record<string, any>, apiKey: string): Promise<Array<Record<string, any>>>
 }
 
+function installProviderAccountTestGateway() {
+  const previous = process.env.PAPERBANANA_GATEWAY_TOKEN
+  const token = 'provider-account-test-gateway'
+  process.env.PAPERBANANA_GATEWAY_TOKEN = token
+  return {
+    token,
+    restore() {
+      if (previous === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+      else process.env.PAPERBANANA_GATEWAY_TOKEN = previous
+    },
+  }
+}
+
 test('legacy Laf defaults to global fetch and supports a Node-injected runtime fetch without importing Undici', async () => {
   const legacy = await loadLegacy()
   const previousFetch = globalThis.fetch
@@ -66,6 +81,25 @@ test('legacy Laf defaults to global fetch and supports a Node-injected runtime f
     'injected:https://example.com/injected',
   ])
   assert.doesNotMatch(fs.readFileSync(legacyPath, 'utf8'), /from\s+['"]undici['"]|require\(['"]undici['"]\)/)
+})
+
+test('production build explicitly resolves and bundles the Ark JPEG decoder', async () => {
+  const packageJson = JSON.parse(fs.readFileSync(path.resolve(packageRoot, 'package.json'), 'utf8'))
+  assert.match(packageJson.scripts.build, /--alias:jpeg-js=\.\/node_modules\/jpeg-js(?:\s|$)/)
+  await build({
+    entryPoints: [path.resolve(packageRoot, 'src/main.ts')],
+    absWorkingDir: packageRoot,
+    bundle: true,
+    platform: 'node',
+    target: 'node24',
+    format: 'cjs',
+    write: false,
+    alias: {
+      '@lafjs/cloud': './src/laf-cloud.ts',
+      'jpeg-js': './node_modules/jpeg-js',
+    },
+    external: ['@resvg/resvg-wasm', 'ali-oss', 'express', 'mongodb'],
+  })
 })
 
 test('legacy bounded retries preserve the stable provider egress error', async () => {
@@ -131,9 +165,10 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     assert.equal(result.code, 0)
     assert.equal(result.routeContractVersion, 1)
     assert.equal(result.supportsModelRoutes, true)
-    assert.equal(result.providers.gemini.defaults.main, 'gemini-3.6-flash')
-    assert.equal(result.providers.bailian.defaults.main, 'qwen3.7-plus')
+    assert.equal(result.providers.gemini.defaults.main, 'gemini-3.7-flash')
+    assert.equal(result.providers.bailian.defaults.main, 'qwen3.8-max')
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
+    assert.equal(result.providers.ark.defaults.main, 'doubao-seed-2-0-mini-260428')
     assert.equal(Object.hasOwn(result.providers, 'openrouter'), false)
     assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。' })
     assert.doesNotMatch(JSON.stringify(result), /OpenRouter model metadata|request failed/)
@@ -537,6 +572,73 @@ test('refine dispatch retains image only for direct edit and vision plus image f
   }
 })
 
+test('mixed create and direct refine route Ark stages without substituting models or secrets', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousStoredObjects = state.storedObjectBytes
+  const previousInserts = state.inserts
+  state.ossWriteMode = 'success'
+  state.storedObjectBytes = { 'owned/ark-source.png': Buffer.from('ark-source') }
+  state.inserts = []
+  const calls: Array<{ url: string; model: string; authorization: string }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    const body = init?.body ? JSON.parse(String(init.body)) : {}
+    calls.push({ url, model: body.model, authorization: new Headers(init?.headers).get('authorization') || '' })
+    if (url.endsWith('/images/generations')) {
+      return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
+    }
+    throw new Error(`unexpected Ark route: ${url}`)
+  })
+  const routes = {
+    main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    image: { accessProvider: 'ark', modelId: 'doubao-seedream-4-0-250828' },
+    vision: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-lite-260428' },
+  }
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const created = await invoke({
+      action: 'createJob', provider: 'openai', configurationMode: 'advanced', apiKeys: { ark: 'ark-stage-secret' },
+      methodContent: 'A sufficiently detailed methodology for exact Ark stage routing verification.',
+      caption: 'Exact Ark stage routing.', outputFormat: 'png', imageSize: '1K', pipelineMode: 'vanilla',
+      retrievalSetting: 'none', maxCriticRounds: 0, modelRoutes: routes,
+    })
+    assert.equal(created.code, 0, JSON.stringify(created))
+    await legacy.drainJobAdmission()
+    assert.deepEqual(calls.map((call) => [call.url, call.model, call.authorization]), [[
+      'https://ark.cn-beijing.volces.com/api/v3/images/generations',
+      'doubao-seedream-4-0-250828',
+      'Bearer ark-stage-secret',
+    ]])
+
+    calls.length = 0
+    const refined = await invoke({
+      action: 'refineImage', provider: 'openai', configurationMode: 'advanced', apiKeys: { ark: 'ark-stage-secret' },
+      sourceImageObjectKey: 'owned/ark-source.png', editInstruction: 'Improve hierarchy without changing content.',
+      modelRoutes: routes,
+    })
+    assert.equal(refined.code, 0, JSON.stringify(refined))
+    assert.equal(refined.refineCapability.mode, 'direct-edit')
+    await legacy.drainJobAdmission()
+    assert.deepEqual(calls.map((call) => [call.url, call.model, call.authorization]), [
+      [
+        'https://ark.cn-beijing.volces.com/api/v3/images/generations',
+        'doubao-seedream-4-0-250828',
+        'Bearer ark-stage-secret',
+      ],
+    ])
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.storedObjectBytes = previousStoredObjects
+    state.inserts = previousInserts
+    state.deletedOwnerKeys = []
+  }
+})
+
 test('filtered OpenRouter registry uses the same structured unavailable envelope', async () => {
   const legacy = await loadLegacy()
   legacy.configureRuntimeFetch(async () => { throw new Error('catalog offline') })
@@ -589,14 +691,15 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.equal(gemini.code, 0)
   assert.match(gemini.registryVersion, /^2026-08-/)
   assert.deepEqual(gemini.providers.gemini.defaults, {
-    main: 'gemini-3.6-flash',
+    main: 'gemini-3.7-flash',
     image: 'gemini-3.1-flash-image',
-    vision: 'gemini-3.6-flash',
+    vision: 'gemini-3.7-flash',
   })
   const geminiModels = new Map<string, any>(gemini.providers.gemini.models.map((model: any) => [model.id, model]))
-  assert.equal(geminiModels.has('gemini-3.7-flash'), false)
+  assert.equal(geminiModels.has('gemini-3.7-flash'), true)
+  assert.equal(geminiModels.get('gemini-3.7-flash')?.recommended, true)
+  assert.equal(geminiModels.get('gemini-3.6-flash')?.recommended, false)
   assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.roles, ['main', 'vision'])
-  assert.equal(geminiModels.get('gemini-3.6-flash')?.recommended, true)
   assert.equal(geminiModels.get('gemini-3.6-flash')?.verified, true)
   assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.inputModalities, ['text', 'image'])
   assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.outputModalities, ['text'])
@@ -611,17 +714,19 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   const bailian = await legacy.default(context({ action: 'modelRegistry', provider: 'bailian' }))
   assert.equal(bailian.code, 0)
   assert.deepEqual(bailian.providers.bailian.defaults, {
-    main: 'qwen3.7-plus',
+    main: 'qwen3.8-max',
     image: 'wan2.7-image-pro',
     vision: 'qwen3.7-plus',
   })
   const bailianModels = new Map<string, any>(bailian.providers.bailian.models.map((model: any) => [model.id, model]))
-  for (const current of ['qwen3.8-max-preview', 'qwen3.7-plus', 'qwen3.7-flash', 'glm-5.2', 'kimi/kimi-k3', 'MiniMax/MiniMax-M3', 'qwen-image-3.0-pro', 'qwen-image-2.0-pro', 'qwen-image-2.0', 'z-image-turbo']) {
+  for (const current of ['qwen3.8-max', 'qwen3.8-max-preview', 'qwen3.7-plus', 'qwen3.7-flash', 'glm-5.2', 'kimi/kimi-k3', 'MiniMax/MiniMax-M3', 'qwen-image-3.0-pro', 'qwen-image-2.0-pro', 'qwen-image-2.0', 'z-image-turbo']) {
     assert.equal(bailianModels.has(current), true, current)
   }
-  for (const retired of ['qwen3.8-max', 'qwen3.7-max', 'qwen3.6-flash', 'glm-5.1', 'kimi-k2.6', 'MiniMax/MiniMax-M2.7', 'qwen-image-3.0']) {
+  for (const retired of ['qwen3.7-max', 'qwen3.6-flash', 'glm-5.1', 'kimi-k2.6', 'MiniMax/MiniMax-M2.7', 'qwen-image-3.0']) {
     assert.equal(bailianModels.has(retired), false, retired)
   }
+  assert.deepEqual(bailianModels.get('qwen3.8-max')?.roles, ['main'])
+  assert.deepEqual(bailianModels.get('qwen3.8-max-preview')?.roles, ['main'])
   assert.deepEqual(bailianModels.get('qwen3.7-plus')?.roles, ['main', 'vision'])
   assert.deepEqual(bailianModels.get('qwen3.7-flash')?.roles, ['main', 'vision'])
   assert.deepEqual(bailianModels.get('MiniMax/MiniMax-M3')?.roles, ['main', 'vision'])
@@ -646,6 +751,522 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.equal(openaiModels.get('gpt-image-2')?.lifecycle, 'stable')
   assert.equal(openaiModels.get('gpt-image-1')?.lifecycle, 'legacy')
   assert.equal(openaiModels.get('gpt-image-1-mini')?.lifecycle, 'legacy')
+
+  for (const [providerName, providerRegistry] of Object.entries({
+    gemini: gemini.providers.gemini,
+    bailian: bailian.providers.bailian,
+    openai: openai.providers.openai,
+  })) {
+    assert.equal(providerRegistry.routeContractVersion, 1, providerName)
+    assert.equal(typeof providerRegistry.accountCatalogRequired, 'boolean', providerName)
+    assert.equal(providerRegistry.accessKind, providerName === 'bailian' ? 'aggregator' : 'direct', providerName)
+    for (const model of providerRegistry.models) {
+      assert.equal(typeof model.officialSourceUrl, 'string', `${providerName}/${model.id}`)
+      assert.match(model.officialSourceUrl, /^https:\/\//, `${providerName}/${model.id}`)
+      assert.equal(model.releasedAt, null, `${providerName}/${model.id} must not guess a release date`)
+    }
+  }
+
+  const ark = await legacy.default(context({ action: 'modelRegistry', provider: 'ark' }))
+  assert.equal(ark.code, 0)
+  assert.equal(ark.providers.ark.accessKind, 'aggregator')
+  assert.equal(ark.providers.ark.routeContractVersion, 1)
+  assert.equal(ark.providers.ark.accountCatalogRequired, true)
+  assert.deepEqual(ark.providers.ark.defaults, {
+    main: 'doubao-seed-2-0-mini-260428',
+    image: 'doubao-seedream-4-0-250828',
+    vision: 'doubao-seed-2-0-mini-260428',
+  })
+  const arkModels = new Map<string, any>(ark.providers.ark.models.map((model: any) => [model.id, model]))
+  assert.deepEqual([...arkModels.keys()], [
+    'doubao-seed-2-0-lite-260428',
+    'doubao-seed-2-0-mini-260428',
+    'doubao-seedream-4-0-250828',
+  ])
+  assert.deepEqual(arkModels.get('doubao-seed-2-0-mini-260428')?.roles, ['main', 'vision'])
+  assert.deepEqual(arkModels.get('doubao-seedream-4-0-250828')?.roles, ['image'])
+  assert.equal(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.imageEditMode, 'direct-edit')
+  assert.equal(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.imageEditing, true)
+  assert.deepEqual(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.outputFormats, ['png'])
+  for (const model of arkModels.values()) {
+    assert.equal(model.verified, false)
+    assert.equal(model.requiresEntitlement, true)
+    assert.equal(model.releasedAt, null)
+    assert.match(model.officialSourceUrl, /^https:\/\//)
+  }
+})
+
+test('Ark text, vision, and image generation use the exact CN data plane with bearer-only secrets', async () => {
+  const legacy = await loadLegacy()
+  const secret = 'ark-request-secret'
+  const arkJpegBase64 = fs.readFileSync(path.resolve(packageRoot, '../web/public/logo.jpg')).toString('base64')
+  const calls: Array<{ url: string; headers: Headers; body: any }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const call = {
+      url: String(input),
+      headers: new Headers(init?.headers),
+      body: init?.body ? JSON.parse(String(init.body)) : undefined,
+    }
+    calls.push(call)
+    if (call.url.endsWith('/chat/completions')) {
+      return Response.json({ choices: [{ message: { content: `ok-${calls.length}` } }] })
+    }
+    if (call.url.endsWith('/images/generations')) {
+      return Response.json({ data: [{ b64_json: arkJpegBase64 }] })
+    }
+    throw new Error(`unexpected Ark request: ${call.url}`)
+  })
+  try {
+    assert.equal(
+      await legacy.callTextModel('ark', 'doubao-seed-2-0-mini-260428', secret, 'system', 'user'),
+      'ok-1',
+    )
+    assert.equal(
+      await legacy.callVisionModel('ark', 'doubao-seed-2-0-lite-260428', secret, 'method', 'caption', [{
+        filename: 'probe.png', mimeType: 'image/png', url: 'data:image/png;base64,YQ==',
+      }]),
+      'ok-2',
+    )
+    const generated = await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', secret, 'diagram', '16:9', '', '2K')
+    const edited = await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', secret, 'edit diagram', '16:9', 'data:image/png;base64,YQ==', '2K')
+    assert.equal(Buffer.from(generated, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+    assert.equal(Buffer.from(edited, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+
+  assert.deepEqual(calls.map((call) => call.url), [
+    'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
+    'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
+    'https://ark.cn-beijing.volces.com/api/v3/images/generations',
+    'https://ark.cn-beijing.volces.com/api/v3/images/generations',
+  ])
+  for (const call of calls) {
+    assert.equal(call.headers.get('authorization'), `Bearer ${secret}`)
+    assert.equal(call.headers.get('content-type'), 'application/json')
+    assert.doesNotMatch(JSON.stringify(call.body), new RegExp(secret))
+  }
+  assert.equal(calls[0].body.model, 'doubao-seed-2-0-mini-260428')
+  assert.equal(calls[1].body.model, 'doubao-seed-2-0-lite-260428')
+  assert.deepEqual(calls[1].body.messages[1].content, [
+    { type: 'text', text: calls[1].body.messages[1].content[0].text },
+    { type: 'image_url', image_url: { url: 'data:image/png;base64,YQ==' } },
+  ])
+  assert.deepEqual(calls[2].body, {
+    model: 'doubao-seedream-4-0-250828',
+    prompt: 'diagram',
+    size: '2K',
+    sequential_image_generation: 'disabled',
+    stream: false,
+    response_format: 'b64_json',
+  })
+  assert.deepEqual(calls[3].body, {
+    model: 'doubao-seedream-4-0-250828',
+    prompt: 'edit diagram',
+    image: ['data:image/png;base64,YQ=='],
+    size: '2K',
+    sequential_image_generation: 'disabled',
+    stream: false,
+    response_format: 'b64_json',
+  })
+})
+
+test('modelCapability accepts Ark while unknown IDs and wrong route roles remain fail-closed', async () => {
+  const legacy = await loadLegacy()
+  const context = (body: Record<string, unknown>) => ({
+    request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  const capability = await legacy.default(context({
+    action: 'modelCapability', provider: 'ark', model: 'doubao-seedream-4-0-250828',
+  }))
+  assert.equal(capability.code, 0)
+  assert.equal(capability.status, 'supported')
+  assert.equal(capability.refineMode, 'direct-edit')
+
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const insertCount = state.inserts.length
+  const base = {
+    action: 'createJob', provider: 'ark', configurationMode: 'advanced', apiKeys: { ark: 'key' },
+    methodContent: 'A sufficiently detailed method for fail-closed Ark registry validation.',
+    caption: 'Ark registry validation.', outputFormat: 'png', pipelineMode: 'vanilla', retrievalSetting: 'none',
+    modelRoutes: {
+      main: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-mini-260428' },
+      image: { accessProvider: 'ark', modelId: 'unknown-seedream' },
+      vision: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-lite-260428' },
+    },
+  }
+  const unknown = await legacy.default(context(base))
+  assert.equal(unknown.code, 400)
+  assert.match(unknown.error, /not registered for image/)
+  const wrongRole = await legacy.default(context({
+    ...base,
+    modelRoutes: { ...base.modelRoutes, image: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-mini-260428' } },
+  }))
+  assert.equal(wrongRole.code, 400)
+  assert.match(wrongRole.error, /not registered for image/)
+  assert.equal(state.inserts.length, insertCount)
+})
+
+test('Ark image generation rejects URL-only output, invalid base64, and oversized responses without CDN fetches', async () => {
+  const legacy = await loadLegacy()
+  let calls = 0
+  const oversizedJpegHeader = Buffer.from([
+    0xff, 0xd8, 0xff, 0xc0, 0x00, 0x11, 0x08, 0x20, 0x01, 0x20, 0x01,
+    0x03, 0x01, 0x11, 0x00, 0x02, 0x11, 0x00, 0x03, 0x11, 0x00,
+  ]).toString('base64')
+  legacy.configureRuntimeFetch(async () => {
+    calls += 1
+    if (calls === 1) return Response.json({ data: [{ url: 'https://cdn.invalid/ark.png' }] })
+    if (calls === 2) return Response.json({ data: [{ b64_json: 'not-base64!' }] })
+    if (calls === 3) return Response.json({ data: [{ b64_json: 'a' }] })
+    if (calls === 4) return Response.json({ data: [{ b64_json: 'YQ=' }] })
+    if (calls === 5) return Response.json({ data: [{ b64_json: '/9j/' }] })
+    if (calls === 6) return Response.json({ data: [{ b64_json: oversizedJpegHeader }] })
+    return new Response('', { headers: { 'Content-Length': String(30 * 1024 * 1024) } })
+  })
+  try {
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      /did not return image data/,
+    )
+    assert.equal(calls, 1, 'URL-only results must not trigger a CDN fetch')
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      /invalid base64 data/,
+    )
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      /invalid base64 data/,
+    )
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      /invalid base64 data/,
+    )
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      /invalid or oversized JPEG dimensions/,
+    )
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      /invalid or oversized JPEG dimensions/,
+    )
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9'),
+      /Ark image response exceeds/,
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('a registry model without direct edit fails before downloading its remote source', async () => {
+  const legacy = await loadLegacy()
+  let calls = 0
+  legacy.configureRuntimeFetch(async () => {
+    calls += 1
+    return new Response('source')
+  })
+  try {
+    await assert.rejects(
+      legacy.callImageModel('bailian', 'z-image-turbo', 'key', 'edit', '16:9', 'https://source.invalid/image.png'),
+      /does not accept a source image; direct edit is unavailable/,
+    )
+    assert.equal(calls, 0)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('Ark adapters propagate the injected production egress fail-closed signal without exposing a key', async () => {
+  const legacy = await loadLegacy()
+  const secret = 'ark-egress-secret'
+  let requestedUrl = ''
+  legacy.configureRuntimeFetch(async (input) => {
+    requestedUrl = String(input)
+    const error: any = new Error('海外模型出口暂不可用，请稍后重试。')
+    error.code = 'PROVIDER_EGRESS_UNAVAILABLE'
+    throw error
+  })
+  try {
+    await assert.rejects(
+      legacy.callTextModel('ark', 'doubao-seed-2-0-mini-260428', secret, 'system', 'user'),
+      (error: any) => {
+        assert.equal(error.code, 'PROVIDER_EGRESS_UNAVAILABLE')
+        assert.equal(error.message, '海外模型出口暂不可用，请稍后重试。')
+        assert.doesNotMatch(error.message, new RegExp(secret))
+        return true
+      },
+    )
+    assert.equal(requestedUrl, 'https://ark.cn-beijing.volces.com/api/v3/chat/completions')
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('providerAccountCatalog truthfully uses only bounded Ark inference smoke probes', async () => {
+  const legacy = await loadLegacy()
+  const gateway = installProviderAccountTestGateway()
+  const secret = 'ark-account-secret'
+  const calls: Array<{ url: string; body: any; authorization: string }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    const body = init?.body ? JSON.parse(String(init.body)) : undefined
+    calls.push({ url, body, authorization: new Headers(init?.headers).get('authorization') || '' })
+    if (url.endsWith('/chat/completions')) return Response.json({ choices: [{ message: { content: 'OK' } }] })
+    if (url.endsWith('/images/generations')) return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
+    throw new Error(`unexpected account probe: ${url}`)
+  })
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body: { ...body, gatewayToken: gateway.token }, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const unconfirmed = await invoke({
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: secret },
+      probes: [
+        { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
+        { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
+        { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+      ],
+    })
+    assert.equal(unconfirmed.code, 0, JSON.stringify(unconfirmed))
+    assert.equal(unconfirmed.provider, 'ark')
+    assert.equal(unconfirmed.accountCatalogAvailable, false)
+    assert.equal(unconfirmed.catalogAuth, 'access-key-required')
+    assert.equal(unconfirmed.verificationMode, 'inference-smoke')
+    assert.equal(unconfirmed.providerRegistry.accessKind, 'aggregator')
+    assert.equal(unconfirmed.providerRegistry.accountCatalogRequired, true)
+    assert.deepEqual(unconfirmed.probeResults.map((result: any) => ({
+      role: result.role,
+      modelId: result.modelId,
+      state: result.state,
+      accountAvailable: result.accountAvailable,
+      verifiedBy: result.verifiedBy,
+    })), [
+      {
+        role: 'main', modelId: 'doubao-seed-2-0-mini-260428', state: 'verified',
+        accountAvailable: true, verifiedBy: 'inference-smoke',
+      },
+      {
+        role: 'image', modelId: 'doubao-seedream-4-0-250828', state: 'paid-probe-required',
+        accountAvailable: false, verifiedBy: undefined,
+      },
+    ])
+    assert.equal(calls.length, 1, 'duplicate and unconfirmed paid probes must not make calls')
+    assert.equal(calls[0].url, 'https://ark.cn-beijing.volces.com/api/v3/chat/completions')
+    assert.equal(calls[0].body.max_tokens, 8)
+
+    const confirmed = await invoke({
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: secret }, confirmPaidImageProbe: true,
+      probes: [
+        { role: 'vision', modelId: 'doubao-seed-2-0-lite-260428' },
+        { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+      ],
+    })
+    assert.deepEqual(confirmed.probeResults.map((result: any) => [result.role, result.state, result.verifiedBy]), [
+      ['vision', 'verified', 'inference-smoke'],
+      ['image', 'verified', 'inference-smoke'],
+    ])
+    assert.equal(calls.length, 3)
+    assert.deepEqual(calls.slice(1).map((call) => call.url), [
+      'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
+      'https://ark.cn-beijing.volces.com/api/v3/images/generations',
+    ])
+    assert.match(JSON.stringify(calls[1].body), /data:image\/png;base64/)
+    assert.equal(calls[1].body.max_tokens, 8)
+    assert.equal(calls[2].body.response_format, 'b64_json')
+    assert.equal(calls[2].body.size, '1K')
+    assert.equal(calls[2].body.sequential_image_generation, 'disabled')
+    assert.equal(calls[2].body.stream, false)
+    assert.equal(calls.some((call) => /ListModelActivations|openapi\.volcengine/i.test(call.url)), false)
+    for (const call of calls) assert.equal(call.authorization, `Bearer ${secret}`)
+    assert.doesNotMatch(JSON.stringify(unconfirmed) + JSON.stringify(confirmed), new RegExp(secret))
+  } finally {
+    legacy.configureRuntimeFetch()
+    gateway.restore()
+  }
+})
+
+test('providerAccountCatalog bounds probes and reports unknown, wrong-role, missing-key, and redacted failures', async () => {
+  const legacy = await loadLegacy()
+  const gateway = installProviderAccountTestGateway()
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body: { ...body, gatewayToken: gateway.token }, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  let calls = 0
+  legacy.configureRuntimeFetch(async () => {
+    calls += 1
+    return Response.json({ error: { message: 'denied ark-redaction-secret' } }, { status: 403 })
+  })
+  try {
+    const tooMany = await invoke({
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' },
+      probes: [
+        { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
+        { role: 'vision', modelId: 'doubao-seed-2-0-mini-260428' },
+        { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+        { role: 'main', modelId: 'doubao-seed-2-0-lite-260428' },
+      ],
+    })
+    assert.equal(tooMany.code, 400)
+    assert.match(tooMany.error, /at most 3 probes/)
+
+    const invalid = await invoke({
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: {},
+      probes: [
+        { role: 'main', modelId: 'unknown-ark-model' },
+        { role: 'main', modelId: 'doubao-seedream-4-0-250828' },
+        { role: 'vision', modelId: 'doubao-seed-2-0-mini-260428' },
+      ],
+    })
+    assert.deepEqual(invalid.probeResults.map((result: any) => [result.state, result.accountAvailable]), [
+      ['unknown-model', false],
+      ['wrong-role', false],
+      ['missing-key', false],
+    ])
+    assert.equal(calls, 0)
+
+    const failed = await invoke({
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'ark-redaction-secret' },
+      probes: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }],
+    })
+    assert.equal(failed.probeResults[0].state, 'failed')
+    assert.equal(failed.probeResults[0].accountAvailable, false)
+    assert.equal(failed.probeResults[0].reason, 'Ark inference probe failed')
+    assert.doesNotMatch(JSON.stringify(failed), /ark-redaction-secret|denied/)
+    assert.equal(calls, 1)
+  } finally {
+    legacy.configureRuntimeFetch()
+    gateway.restore()
+  }
+})
+
+test('providerAccountCatalog never verifies empty or malformed successful Ark chat responses', async () => {
+  const legacy = await loadLegacy()
+  const gateway = installProviderAccountTestGateway()
+  let calls = 0
+  legacy.configureRuntimeFetch(async () => {
+    calls += 1
+    if (calls === 1) return Response.json({})
+    if (calls === 2) return Response.json({ choices: [{ message: { content: '' } }] })
+    return Response.json({ choices: [{ message: { content: 'x'.repeat(70 * 1024) } }] })
+  })
+  try {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' },
+        gatewayToken: gateway.token,
+        probes: [
+          { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
+          { role: 'vision', modelId: 'doubao-seed-2-0-lite-260428' },
+          { role: 'main', modelId: 'doubao-seed-2-0-lite-260428' },
+        ],
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.deepEqual(result.probeResults.map((probe: any) => [probe.role, probe.state, probe.accountAvailable]), [
+      ['main', 'failed', false],
+      ['vision', 'failed', false],
+      ['main', 'failed', false],
+    ])
+    assert.equal(calls, 3)
+  } finally {
+    legacy.configureRuntimeFetch()
+    gateway.restore()
+  }
+})
+
+test('providerAccountCatalog performs exactly one bounded dispatch per logical probe', async () => {
+  const legacy = await loadLegacy()
+  const gateway = installProviderAccountTestGateway()
+  let calls = 0
+  legacy.configureRuntimeFetch(async () => {
+    calls += 1
+    throw new Error('network unavailable')
+  })
+  try {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' }, confirmPaidImageProbe: true,
+        gatewayToken: gateway.token,
+        probes: [
+          { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
+          { role: 'vision', modelId: 'doubao-seed-2-0-lite-260428' },
+          { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+        ],
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.deepEqual(result.probeResults.map((probe: any) => probe.state), ['failed', 'failed', 'failed'])
+    assert.equal(calls, 3, 'one logical probe must never retry or duplicate a paid image request')
+  } finally {
+    legacy.configureRuntimeFetch()
+    gateway.restore()
+  }
+})
+
+test('providerAccountCatalog requires the configured trusted caller boundary', async () => {
+  const legacy = await loadLegacy()
+  const previous = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'catalog-gateway-token'
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const denied = await invoke({ action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' } })
+    assert.equal(denied.code, 401)
+    const allowed = await invoke({
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' }, gatewayToken: 'catalog-gateway-token',
+    })
+    assert.equal(allowed.code, 0)
+    assert.equal(allowed.accountCatalogAvailable, false)
+  } finally {
+    if (previous === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previous
+  }
+})
+
+test('providerAccountCatalog bounds concurrent probes by principal and client IP', async () => {
+  const legacy = await loadLegacy()
+  const gateway = installProviderAccountTestGateway()
+  let calls = 0
+  let releaseFirst!: () => void
+  let markStarted!: () => void
+  const firstBlocked = new Promise<void>((resolve) => { releaseFirst = resolve })
+  const firstStarted = new Promise<void>((resolve) => { markStarted = resolve })
+  legacy.configureRuntimeFetch(async () => {
+    calls += 1
+    if (calls === 1) {
+      markStarted()
+      await firstBlocked
+    }
+    return Response.json({ choices: [{ message: { content: 'OK' } }] })
+  })
+  const invoke = (userId: string, ip: string) => legacy.default({
+    request: { method: 'POST' },
+    body: {
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' },
+      gatewayToken: gateway.token, userId,
+      probes: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }],
+    },
+    headers: { 'x-forwarded-for': ip }, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const first = invoke('owner-a', '203.0.113.10')
+    await firstStarted
+    const sameOwner = await invoke('owner-a', '203.0.113.11')
+    const sameIp = await invoke('owner-b', '203.0.113.10')
+    assert.equal(sameOwner.code, 429)
+    assert.equal(sameIp.code, 429)
+    assert.equal(calls, 1)
+    releaseFirst()
+    assert.equal((await first).probeResults[0].state, 'verified')
+  } finally {
+    releaseFirst()
+    legacy.configureRuntimeFetch()
+    gateway.restore()
+  }
 })
 
 test('legacy client defaults map explicitly to current registered model IDs', async () => {
@@ -1025,7 +1646,8 @@ test('OpenRouter recommendations sort first without hiding the complete compatib
   const legacy = await loadLegacy()
   const textModels = [
     { id: 'vendor/zeta', name: 'Aardvark', architecture: { input_modalities: ['text'], output_modalities: ['text'] } },
-    { id: 'openai/gpt-5.5', name: 'GPT-5.5', architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] } },
+    { id: 'openai/gpt-5.6-sol', name: 'GPT-5.6 Sol', created: 1780000000, architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] } },
+    { id: 'google/gemini-3.7-flash', name: 'Gemini 3.7 Flash', created: 1780000001, architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] } },
   ]
   const imageModels = [
     {
@@ -1051,12 +1673,24 @@ test('OpenRouter recommendations sort first without hiding the complete compatib
       response: { setHeader() {}, status() {} },
     })
     assert.deepEqual(registry.providers.openrouter.models.map((model: any) => model.id), [
-      'openai/gpt-5.5', 'sourceful/riverflow-v2.5-pro', 'vendor/alpha', 'vendor/zeta',
+      'openai/gpt-5.6-sol', 'sourceful/riverflow-v2.5-pro', 'google/gemini-3.7-flash', 'vendor/alpha', 'vendor/zeta',
     ])
-    assert.equal(registry.providers.openrouter.models.length, 4)
+    assert.equal(registry.providers.openrouter.models.length, 5)
     assert.equal(registry.providers.openrouter.models[0].recommended, true)
     assert.equal(registry.providers.openrouter.models[1].recommended, true)
-    assert.equal(registry.providers.openrouter.models[2].recommended, false)
+    assert.equal(registry.providers.openrouter.models[2].recommended, true)
+    assert.deepEqual(registry.providers.openrouter.defaults, {
+      main: 'openai/gpt-5.6-sol',
+      image: 'sourceful/riverflow-v2.5-pro',
+      vision: 'google/gemini-3.7-flash',
+    })
+    assert.equal(registry.providers.openrouter.accessKind, 'aggregator')
+    assert.equal(registry.providers.openrouter.routeContractVersion, 1)
+    assert.equal(registry.providers.openrouter.accountCatalogRequired, false)
+    for (const model of registry.providers.openrouter.models) {
+      assert.equal(model.releasedAt, null, `${model.id} must not reuse OpenRouter created as a vendor release date`)
+      assert.match(model.officialSourceUrl, /^https:\/\//)
+    }
   } finally {
     legacy.configureRuntimeFetch()
   }
@@ -1820,7 +2454,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
-                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], jobRows: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, readFileLimits: [], ossWriteMode: 'fail', referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
+                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], jobRows: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, readFileLimits: [], ossWriteMode: 'fail', ossWrites: [], referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
                 const matches = (row, query = {}) => Object.entries(query).every(([field, expected]) => {
                   const actual = row[field];
                   if (expected && typeof expected === 'object' && '$in' in expected) return expected.$in.includes(actual);
@@ -1878,12 +2512,15 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                     if (bytes.length > maxBytes) throw new Error('stored object exceeds limit');
                     return bytes;
                   },
-                  async writeFile(key) {
+                  async writeFile(key, _content, metadata) {
                     if (state.ossWriteMode === 'race') {
                       state.deletedOwnerKeys = ['user:owner-1'];
                       return;
                     }
-                    if (state.ossWriteMode === 'success') return;
+                    if (state.ossWriteMode === 'success') {
+                      (state.ossWrites ||= []).push({ key, metadata: structuredClone(metadata) });
+                      return;
+                    }
                     throw new Error('OSS write failed');
                   },
                   async getDownloadUrl(key) {
@@ -2608,6 +3245,37 @@ test('legacy default retains the historical data URL fallback for rollback', asy
     assert.equal(result.storage, 'database-data-url')
     assert.match(result.url, /^data:image\/png;base64,/)
   } finally {
+    if (previous === undefined) delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
+    else process.env.PAPERBANANA_STRICT_OBJECT_STORAGE = previous
+  }
+})
+
+test('Ark-normalized PNG bytes retain PNG content type and extension through result and stage persistence', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previous = process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
+  const previousWriteMode = state.ossWriteMode
+  const previousWrites = state.ossWrites
+  const jpegBase64 = fs.readFileSync(path.resolve(packageRoot, '../web/public/logo.jpg')).toString('base64')
+  delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
+  try {
+    legacy.configureRuntimeFetch(async () => Response.json({ data: [{ b64_json: jpegBase64 }] }))
+    const pngBase64 = await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9')
+    assert.equal(Buffer.from(pngBase64, 'base64').subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+    state.ossWriteMode = 'success'
+    state.ossWrites = []
+    const persisted = await legacy.saveResult('job-1', 1, pngBase64, 'image/png', 'base64')
+    const persistedStage = await legacy.saveStageImage('job-1', 1, 'ark-render', pngBase64, 'image/png', 'base64')
+    assert.equal(persisted.objectKey, 'job-1/candidate-1.png')
+    assert.equal(persistedStage.filename, 'job-1/candidate-1-ark-render.png')
+    assert.deepEqual(state.ossWrites, [
+      { key: 'job-1/candidate-1.png', metadata: { ContentType: 'image/png' } },
+      { key: 'job-1/candidate-1-ark-render.png', metadata: { ContentType: 'image/png' } },
+    ])
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.ossWrites = previousWrites
     if (previous === undefined) delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
     else process.env.PAPERBANANA_STRICT_OBJECT_STORAGE = previous
   }

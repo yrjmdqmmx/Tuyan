@@ -2,6 +2,9 @@ import cloud from '@lafjs/cloud'
 import * as resvgWasm from '@resvg/resvg-wasm'
 import * as crypto from 'crypto'
 import * as fs from 'fs'
+import * as zlib from 'zlib'
+// @ts-expect-error jpeg-js exposes this pure decoder without a declaration file.
+import decodeJpeg from 'jpeg-js/lib/decoder'
 
 declare const require: any
 
@@ -45,6 +48,7 @@ type ModelRoutingMode = 'single' | 'mixed'
 type ModelRoutingSource = 'explicit' | 'legacy-derived'
 type RouteSecrets = Partial<Record<Provider, string>>
 type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only'
+type ProviderAccessKind = 'direct' | 'aggregator'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
 type ModelProtocol =
   | 'openai-chat-completions'
@@ -54,6 +58,8 @@ type ModelProtocol =
   | 'gemini-interactions'
   | 'bailian-openai-chat'
   | 'bailian-multimodal-generation'
+  | 'ark-openai-chat'
+  | 'ark-images'
   | 'openrouter-chat-completions'
   | 'openrouter-images'
 type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
@@ -608,6 +614,16 @@ type ModelRegistryBody = {
   provider?: Provider
 }
 
+type ProviderAccountCatalogBody = {
+  action: 'providerAccountCatalog'
+  provider?: Provider
+  apiKeys?: ApiKeys
+  userId?: string
+  userEmail?: string
+  probes?: Array<{ role: ModelRole; modelId: string }>
+  confirmPaidImageProbe?: boolean
+}
+
 type ModelRegistryEntry = {
   id: string
   label: string
@@ -620,6 +636,8 @@ type ModelRegistryEntry = {
   outputModalities: string[]
   verified: boolean
   selectable: boolean
+  releasedAt: string | null
+  officialSourceUrl: string
   disabledReason?: string
   roles: ModelRole[]
   roleReasons: Partial<Record<ModelRole, string>>
@@ -636,6 +654,9 @@ type ModelRegistryEntry = {
 }
 
 type ProviderModelRegistry = {
+  accessKind: ProviderAccessKind
+  routeContractVersion: 1
+  accountCatalogRequired: boolean
   defaults: { main: string; image: string; vision: string }
   models: ModelRegistryEntry[]
 }
@@ -726,6 +747,7 @@ type RequestBody =
   | AccountDeletionCapabilityBody
   | ModelCapabilityBody
   | ModelRegistryBody
+  | ProviderAccountCatalogBody
   | ReferenceLibraryBody
   | ImportReferencesBody
   | EvaluateJobBody
@@ -769,6 +791,10 @@ let lastAccountDeletionSweepAt = 0
 let accountDeletionSweepTimer: any = null
 let openRouterDedicatedImageModelCache: { expiresAt: number; models: Map<string, OpenRouterCatalogModel> } | null = null
 let resvgWasmPromise: Promise<ResvgWasmModule> | null = null
+const providerAccountProbeMaxActive = 4
+let providerAccountProbeActive = 0
+const providerAccountProbeOwners = new Map<string, number>()
+const providerAccountProbeIps = new Map<string, number>()
 
 const benchZipUrlDefault = 'https://huggingface.co/datasets/dwzhu/PaperBananaBench/resolve/main/PaperBananaBench.zip'
 const benchZipCachePath = '/tmp/paperbananabench.zip'
@@ -782,14 +808,35 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-19.v2'
+const modelRegistryVersion = '2026-08-19.v3'
 const referenceCorpusVersion = 'zh-CN.v2'
 
 type RegistryEntryMetadata = Partial<Pick<
   ModelRegistryEntry,
   'vendor' | 'lifecycle' | 'recommended' | 'requiresEntitlement' | 'entitlement' |
-  'inputModalities' | 'outputModalities' | 'verified' | 'selectable' | 'disabledReason' | 'roleReasons'
+  'inputModalities' | 'outputModalities' | 'verified' | 'selectable' | 'releasedAt' |
+  'officialSourceUrl' | 'disabledReason' | 'roleReasons'
 >>
+
+function officialSourceUrlForProtocol(protocol: ModelProtocol) {
+  if (protocol === 'gemini-generate-content' || protocol === 'gemini-interactions') {
+    return 'https://ai.google.dev/gemini-api/docs/models'
+  }
+  if (protocol === 'openai-images') return 'https://developers.openai.com/api/docs/guides/images-vision'
+  if (protocol === 'openai-chat-completions' || protocol === 'openai-responses') {
+    return 'https://developers.openai.com/api/docs/models'
+  }
+  if (protocol === 'bailian-openai-chat' || protocol === 'bailian-multimodal-generation') {
+    return 'https://help.aliyun.com/en/model-studio/models'
+  }
+  if (protocol === 'ark-openai-chat' || protocol === 'ark-images') {
+    return 'https://www.volcengine.com/docs/82379'
+  }
+  if (protocol === 'openrouter-images') {
+    return 'https://openrouter.ai/docs/guides/overview/multimodal/image-generation'
+  }
+  return 'https://openrouter.ai/docs/guides/overview/models'
+}
 
 function registryEntry(
   id: string,
@@ -815,6 +862,8 @@ function registryEntry(
     outputModalities: metadata.outputModalities || (imageGeneration ? ['image'] : ['text']),
     verified: metadata.verified !== false,
     selectable: metadata.selectable !== false,
+    releasedAt: metadata.releasedAt ?? null,
+    officialSourceUrl: metadata.officialSourceUrl || officialSourceUrlForProtocol(protocol),
     ...(metadata.disabledReason ? { disabledReason: metadata.disabledReason } : {}),
     roles,
     roleReasons: metadata.roleReasons || Object.fromEntries(roles.map((role) => [role, `${label} is registered for ${role}`])),
@@ -830,11 +879,15 @@ function registryEntry(
   }
 }
 
-const staticModelRegistry: Record<Exclude<Provider, 'openrouter' | 'ark'>, ProviderModelRegistry> = {
+const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModelRegistry> = {
   gemini: {
-    defaults: { main: 'gemini-3.6-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.6-flash' },
+    accessKind: 'direct',
+    routeContractVersion,
+    accountCatalogRequired: false,
+    defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
     models: [
-      registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; recommended Gemini text and vision model', {}, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.7-flash', 'Gemini 3.7 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; recommended Gemini text and vision model', {}, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini Flash model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.5-flash', 'Gemini 3.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable frontier Flash model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.5-flash-lite', 'Gemini 3.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable low-cost model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.1-flash-lite', 'Gemini 3.1 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable high-volume model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
@@ -850,11 +903,15 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter' | 'ark'>, Provi
     ],
   },
   bailian: {
-    defaults: { main: 'qwen3.7-plus', image: 'wan2.7-image-pro', vision: 'qwen3.7-plus' },
+    accessKind: 'aggregator',
+    routeContractVersion,
+    accountCatalogRequired: true,
+    defaults: { main: 'qwen3.8-max', image: 'wan2.7-image-pro', vision: 'qwen3.7-plus' },
     models: [
+      registryEntry('qwen3.8-max', 'Qwen3.8 Max', ['main'], 'bailian-openai-chat', 'Stable main model; access varies by account, workspace, and region', {}, { vendor: 'Alibaba Qwen', recommended: true, requiresEntitlement: true, entitlement: 'workspace-access' }),
       registryEntry('qwen3.7-plus', 'Qwen3.7 Plus', ['main', 'vision'], 'bailian-openai-chat', 'Stable visual model; recommended default', {}, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('qwen3.7-flash', 'Qwen3.7 Flash', ['main', 'vision'], 'bailian-openai-chat', 'Stable lower-latency visual model', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('qwen3.8-max-preview', 'Qwen3.8 Max Preview', ['main', 'vision'], 'bailian-openai-chat', 'Preview; requires Model Studio Token Plan entitlement', {}, { vendor: 'Alibaba Qwen', lifecycle: 'preview', requiresEntitlement: true, entitlement: 'token-plan', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('qwen3.8-max-preview', 'Qwen3.8 Max Preview', ['main'], 'bailian-openai-chat', 'Preview compatibility entry; requires Model Studio Token Plan entitlement', {}, { vendor: 'Alibaba Qwen', lifecycle: 'preview', requiresEntitlement: true, entitlement: 'token-plan' }),
       registryEntry('deepseek-v4-pro', 'DeepSeek V4 Pro', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'DeepSeek' }),
       registryEntry('deepseek-v4-flash', 'DeepSeek V4 Flash', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'DeepSeek' }),
       registryEntry('glm-5.2', 'GLM 5.2', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'Zhipu' }),
@@ -870,6 +927,9 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter' | 'ark'>, Provi
     ],
   },
   openai: {
+    accessKind: 'direct',
+    routeContractVersion,
+    accountCatalogRequired: false,
     defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
     models: [
       registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model', {}, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
@@ -887,6 +947,71 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter' | 'ark'>, Provi
       registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
       registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
       registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+    ],
+  },
+  ark: {
+    accessKind: 'aggregator',
+    routeContractVersion,
+    accountCatalogRequired: true,
+    defaults: {
+      main: 'doubao-seed-2-0-mini-260428',
+      image: 'doubao-seedream-4-0-250828',
+      vision: 'doubao-seed-2-0-mini-260428',
+    },
+    models: [
+      registryEntry(
+        'doubao-seed-2-0-lite-260428',
+        'Doubao Seed 2.0 Lite',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Static official model scaffold; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao',
+          requiresEntitlement: true,
+          entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'],
+          outputModalities: ['text'],
+          verified: false,
+          officialSourceUrl: 'https://www.volcengine.com/docs/82379/1330310',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-2-0-mini-260428',
+        'Doubao Seed 2.0 Mini',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Static official model scaffold; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao',
+          recommended: true,
+          requiresEntitlement: true,
+          entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'],
+          outputModalities: ['text'],
+          verified: false,
+          officialSourceUrl: 'https://www.volcengine.com/docs/82379/1330310',
+        },
+      ),
+      registryEntry(
+        'doubao-seedream-4-0-250828',
+        'Doubao Seedream 4.0',
+        ['image'],
+        'ark-images',
+        'Static official generation and direct-edit model scaffold; account availability requires an explicit inference smoke probe',
+        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png'] },
+        {
+          vendor: 'ByteDance Seedream',
+          recommended: true,
+          requiresEntitlement: true,
+          entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'],
+          outputModalities: ['image'],
+          verified: false,
+          officialSourceUrl: 'https://api.volcengine.com/api-docs/view?action=ImageGenerations&serviceCode=ark&version=2024-01-01',
+        },
+      ),
     ],
   },
 }
@@ -1026,6 +1151,7 @@ const identityScopedActions = new Set([
   'prepareReferenceUpload',
   'finalizeReferenceUpload',
   'abortReferenceUpload',
+  'providerAccountCatalog',
   'deleteAccount',
 ])
 
@@ -1072,6 +1198,9 @@ export default async function (ctx: FunctionContext) {
     }
     if (action === 'modelRegistry') {
       return await modelRegistry(body as ModelRegistryBody)
+    }
+    if (action === 'providerAccountCatalog') {
+      return await providerAccountCatalog(body as ProviderAccountCatalogBody, ctx)
     }
     if (action === 'accountDeletionCapability') {
       return ok({ deletionContractVersion: 2 })
@@ -1196,20 +1325,20 @@ async function abortReferenceUpload(body: ReferenceUploadLifecycleBody) {
 }
 
 async function modelCapability(body: ModelCapabilityBody) {
-  if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) return fail('Invalid provider', 400)
+  if (!['openrouter', 'gemini', 'openai', 'bailian', 'ark'].includes(body.provider)) return fail('Invalid provider', 400)
   if (!body.model) return fail('model is required', 400)
   return ok(await referenceModelCapability(body.provider, normalizeModelName(body.provider, body.model)))
 }
 
 async function modelRegistry(body: ModelRegistryBody) {
   const requestedProvider = body.provider
-  if (requestedProvider && !['openrouter', 'gemini', 'openai', 'bailian'].includes(requestedProvider)) {
+  if (requestedProvider && !['openrouter', 'gemini', 'openai', 'bailian', 'ark'].includes(requestedProvider)) {
     return fail('Invalid provider', 400)
   }
 
   const providers: Partial<Record<Provider, ProviderModelRegistry>> = {}
   const unavailableProviders: Partial<Record<Provider, string>> = {}
-  for (const provider of ['gemini', 'openai', 'bailian'] as const) {
+  for (const provider of ['gemini', 'openai', 'bailian', 'ark'] as const) {
     if (!requestedProvider || requestedProvider === provider) providers[provider] = staticModelRegistry[provider]
   }
   if (!requestedProvider || requestedProvider === 'openrouter') {
@@ -1228,6 +1357,129 @@ async function modelRegistry(body: ModelRegistryBody) {
     providers,
     ...(Object.keys(unavailableProviders).length ? { unavailableProviders } : {}),
   })
+}
+
+const arkInferenceProbeImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+VP5TAAAAAElFTkSuQmCC'
+const maxArkInferenceProbeResponseBytes = 64 * 1024
+
+async function arkChatInferenceProbe(model: string, apiKey: string, role: 'main' | 'vision') {
+  const content = role === 'vision'
+    ? [
+        { type: 'text', text: 'Reply OK if this image is readable.' },
+        { type: 'image_url', image_url: { url: arkInferenceProbeImage } },
+      ]
+    : 'Reply OK.'
+  const response = await fetchWithRetry('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content }],
+      max_tokens: 8,
+      temperature: 0,
+    }),
+  }, `ark ${role} account probe`, 1)
+  const data = await parseBoundedModelResponse(response, maxArkInferenceProbeResponseBytes, 'Ark inference probe response')
+  const output = data.choices?.[0]?.message?.content
+  if (typeof output !== 'string' || !output.trim()) throw new Error('Empty Ark inference probe output')
+  return output
+}
+
+function reserveProviderAccountProbe(body: ProviderAccountCatalogBody, ctx: FunctionContext): (() => void) | null {
+  const principal = jobAdmissionPrincipal(body, ctx)
+  const ownerActive = providerAccountProbeOwners.get(principal.ownerKey) || 0
+  const ipActive = providerAccountProbeIps.get(principal.ipKey) || 0
+  if (providerAccountProbeActive >= providerAccountProbeMaxActive || ownerActive >= 1 || ipActive >= 1) return null
+  providerAccountProbeActive += 1
+  providerAccountProbeOwners.set(principal.ownerKey, ownerActive + 1)
+  providerAccountProbeIps.set(principal.ipKey, ipActive + 1)
+  let released = false
+  return () => {
+    if (released) return
+    released = true
+    providerAccountProbeActive = Math.max(0, providerAccountProbeActive - 1)
+    decrementProbeAdmission(providerAccountProbeOwners, principal.ownerKey)
+    decrementProbeAdmission(providerAccountProbeIps, principal.ipKey)
+  }
+}
+
+function decrementProbeAdmission(counts: Map<string, number>, key: string) {
+  const next = (counts.get(key) || 0) - 1
+  if (next > 0) counts.set(key, next)
+  else counts.delete(key)
+}
+
+async function providerAccountCatalog(body: ProviderAccountCatalogBody, ctx: FunctionContext) {
+  const provider = body.provider || 'ark'
+  if (provider !== 'ark') return fail('Invalid provider', 400)
+  if (body.probes !== undefined && !Array.isArray(body.probes)) return fail('probes must be an array', 400)
+  const rawProbes = body.probes || []
+  if (rawProbes.length > 3) return fail('providerAccountCatalog accepts at most 3 probes', 400)
+
+  const probes: Array<{ role: ModelRole; modelId: string }> = []
+  const seen = new Set<string>()
+  for (const probe of rawProbes) {
+    if (!probe || typeof probe !== 'object' || !['main', 'vision', 'image'].includes(String(probe.role))) {
+      return fail('Each probe must include a valid role', 400)
+    }
+    const modelId = typeof probe.modelId === 'string' ? probe.modelId.trim() : ''
+    if (!modelId || modelId.length > modelIdMaxLength) return fail('Each probe must include a valid modelId', 400)
+    const normalized = normalizeModelName('ark', modelId)
+    const key = `${probe.role}:${normalized}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    probes.push({ role: probe.role as ModelRole, modelId: normalized })
+  }
+
+  const providerRegistry = staticModelRegistry.ark
+  const apiKey = selectApiKey('ark', body.apiKeys || {})
+  const releaseProbe = probes.length ? reserveProviderAccountProbe(body, ctx) : () => {}
+  if (!releaseProbe) return fail('Provider account probe is already running for this principal or client IP', 429)
+  try {
+    const probeResults = []
+    for (const probe of probes) {
+      const entry = providerRegistry.models.find((candidate) => candidate.id === probe.modelId)
+      if (!entry) {
+        probeResults.push({ ...probe, state: 'unknown-model', accountAvailable: false, reason: 'Model is not in the Ark registry' })
+        continue
+      }
+      if (!entry.roles.includes(probe.role)) {
+        probeResults.push({ ...probe, state: 'wrong-role', accountAvailable: false, reason: 'Model is not registered for this role' })
+        continue
+      }
+      if (!apiKey) {
+        probeResults.push({ ...probe, state: 'missing-key', accountAvailable: false, reason: 'Ark inference API key is required' })
+        continue
+      }
+      if (probe.role === 'image' && body.confirmPaidImageProbe !== true) {
+        probeResults.push({ ...probe, state: 'paid-probe-required', accountAvailable: false, reason: 'Explicit confirmation is required for a paid image probe' })
+        continue
+      }
+      try {
+        const probeOutput = probe.role === 'image'
+          ? await callArkImage(probe.modelId, apiKey, 'A single black dot on a white background.', null, '1K', 1)
+          : await arkChatInferenceProbe(probe.modelId, apiKey, probe.role)
+        if (typeof probeOutput !== 'string' || !probeOutput.trim()) throw new Error('Empty Ark inference probe output')
+        probeResults.push({ ...probe, state: 'verified', accountAvailable: true, verifiedBy: 'inference-smoke' })
+      } catch {
+        probeResults.push({ ...probe, state: 'failed', accountAvailable: false, reason: 'Ark inference probe failed' })
+      }
+    }
+
+    return ok({
+      provider: 'ark',
+      accountCatalogAvailable: false,
+      catalogAuth: 'access-key-required',
+      verificationMode: 'inference-smoke',
+      providerRegistry,
+      probeResults,
+    })
+  } finally {
+    releaseProbe()
+  }
 }
 
 async function referenceLibrary(body: ReferenceLibraryBody) {
@@ -3622,13 +3874,13 @@ export async function callImageModel(
   // When a source image is supplied, route to a true image-to-image / edit
   // request for providers that support image input. Otherwise fall back to
   // plain text-to-image generation.
-  const source = await normalizeSourceImage(sourceImage)
-  if (source && provider !== 'openrouter') {
+  if (String(sourceImage || '').trim() && provider !== 'openrouter') {
     const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizeModelName(provider, model))
     if (entry && entry.capabilities.imageEditMode !== 'direct-edit') {
       throw new Error(`Model ${entry.id} does not accept a source image; direct edit is unavailable`)
     }
   }
+  const source = await normalizeSourceImage(sourceImage)
 
   if (provider === 'openai') {
     if (source) {
@@ -3664,7 +3916,170 @@ export async function callImageModel(
     return callBailianImage(model, apiKey, prompt, aspectRatio, imageSize, source)
   }
 
+  if (provider === 'ark') {
+    return callArkImage(model, apiKey, prompt, source, imageSize)
+  }
+
   return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize)
+}
+
+async function callArkImage(
+  model: string,
+  apiKey: string,
+  prompt: string,
+  source: NormalizedSourceImage | null,
+  imageSize = '2K',
+  attempts = 2,
+): Promise<string> {
+  const size = ['1K', '2K', '4K'].includes(imageSize) ? imageSize : '2K'
+  const body: Record<string, unknown> = {
+    model,
+    prompt,
+    size,
+    sequential_image_generation: 'disabled',
+    stream: false,
+  }
+  if (source) body.image = [source.dataUrl]
+  body.response_format = 'b64_json'
+  const response = await fetchWithRetry('https://ark.cn-beijing.volces.com/api/v3/images/generations', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  }, `ark image model ${model}`, attempts)
+  const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Ark image response')
+  const base64 = validateProviderImageBase64(data.data?.[0]?.b64_json || '', maxProviderImageBytes, 'Ark image')
+  return await normalizeArkImageToPng(base64)
+}
+
+const arkImageMaxPixels = 20 * 1024 * 1024
+const arkImageMaxDimension = 8192
+
+async function normalizeArkImageToPng(base64: string): Promise<string> {
+  const bytes = Buffer.from(base64, 'base64')
+  if (isPngBytes(bytes)) return base64
+  if (!isJpegBytes(bytes)) throw new Error('Ark image returned an unsupported image format')
+
+  const dimensions = jpegDimensions(bytes)
+  if (
+    !dimensions
+    || dimensions.width > arkImageMaxDimension
+    || dimensions.height > arkImageMaxDimension
+    || dimensions.width * dimensions.height > arkImageMaxPixels
+  ) {
+    throw new Error('Ark image returned invalid or oversized JPEG dimensions')
+  }
+
+  try {
+    const image = decodeJpeg(bytes, {
+      useTArray: true,
+      formatAsRGBA: true,
+      maxMemoryUsageInMB: 96,
+      maxResolutionInMP: 20,
+      tolerantDecoding: false,
+    })
+    if (
+      image?.width !== dimensions.width
+      || image?.height !== dimensions.height
+      || image?.data?.length !== dimensions.width * dimensions.height * 4
+    ) {
+      throw new Error('decoded dimensions do not match the JPEG header')
+    }
+    const png = encodeRgbaPng(dimensions.width, dimensions.height, Buffer.from(image.data))
+    if (!isPngBytes(png)) throw new Error('encoder returned non-PNG bytes')
+    return validateProviderImageBase64(png.toString('base64'), maxProviderImageBytes, 'Ark normalized PNG')
+  } catch (error: any) {
+    if (String(error?.message || '').includes('exceeds')) throw error
+    throw new Error('Ark image JPEG normalization failed')
+  }
+}
+
+function isPngBytes(bytes: Buffer) {
+  return bytes.length >= 8 && bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
+}
+
+function isJpegBytes(bytes: Buffer) {
+  return bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+}
+
+function jpegDimensions(bytes: Buffer): { width: number; height: number } | null {
+  let offset = 2
+  while (offset + 3 < bytes.length) {
+    while (offset < bytes.length && bytes[offset] !== 0xff) offset += 1
+    while (offset < bytes.length && bytes[offset] === 0xff) offset += 1
+    if (offset >= bytes.length) break
+    const marker = bytes[offset]
+    offset += 1
+    if (marker === 0xd8 || marker === 0xd9 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue
+    if (offset + 2 > bytes.length) return null
+    const segmentLength = bytes.readUInt16BE(offset)
+    if (segmentLength < 2 || offset + segmentLength > bytes.length) return null
+    const isStartOfFrame = (
+      (marker >= 0xc0 && marker <= 0xc3)
+      || (marker >= 0xc5 && marker <= 0xc7)
+      || (marker >= 0xc9 && marker <= 0xcb)
+      || (marker >= 0xcd && marker <= 0xcf)
+    )
+    if (isStartOfFrame) {
+      if (segmentLength < 7) return null
+      const height = bytes.readUInt16BE(offset + 3)
+      const width = bytes.readUInt16BE(offset + 5)
+      return width > 0 && height > 0 ? { width, height } : null
+    }
+    if (marker === 0xda) return null
+    offset += segmentLength
+  }
+  return null
+}
+
+function encodeRgbaPng(width: number, height: number, rgba: Buffer) {
+  const bytesPerRow = width * 4
+  const scanlines = Buffer.alloc((bytesPerRow + 1) * height)
+  for (let row = 0; row < height; row += 1) {
+    const scanlineOffset = row * (bytesPerRow + 1)
+    scanlines[scanlineOffset] = 0
+    rgba.copy(scanlines, scanlineOffset + 1, row * bytesPerRow, (row + 1) * bytesPerRow)
+  }
+
+  const ihdr = Buffer.alloc(13)
+  ihdr.writeUInt32BE(width, 0)
+  ihdr.writeUInt32BE(height, 4)
+  ihdr[8] = 8
+  ihdr[9] = 6
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    pngChunk('IHDR', ihdr),
+    pngChunk('IDAT', zlib.deflateSync(scanlines, { level: 6 })),
+    pngChunk('IEND', Buffer.alloc(0)),
+  ])
+}
+
+function pngChunk(type: string, data: Buffer) {
+  const typeBytes = Buffer.from(type, 'ascii')
+  const length = Buffer.alloc(4)
+  length.writeUInt32BE(data.length, 0)
+  const crc = Buffer.alloc(4)
+  crc.writeUInt32BE(pngCrc32(Buffer.concat([typeBytes, data])), 0)
+  return Buffer.concat([length, typeBytes, data, crc])
+}
+
+let pngCrcTable: number[] | null = null
+
+function pngCrc32(bytes: Buffer) {
+  if (!pngCrcTable) {
+    pngCrcTable = Array.from({ length: 256 }, (_, index) => {
+      let value = index
+      for (let bit = 0; bit < 8; bit += 1) {
+        value = (value & 1) ? 0xedb88320 ^ (value >>> 1) : value >>> 1
+      }
+      return value >>> 0
+    })
+  }
+  let crc = 0xffffffff
+  for (const byte of bytes) crc = pngCrcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8)
+  return (crc ^ 0xffffffff) >>> 0
 }
 
 async function callOpenRouterImage(
@@ -3780,6 +4195,7 @@ async function callOpenAiImageEdit(model: string, apiKey: string, prompt: string
 function textApiBaseUrl(provider: Provider) {
   if (provider === 'openrouter') return 'https://openrouter.ai/api/v1'
   if (provider === 'bailian') return 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+  if (provider === 'ark') return 'https://ark.cn-beijing.volces.com/api/v3'
   return 'https://api.openai.com/v1'
 }
 
@@ -4044,9 +4460,19 @@ export function validateProviderImageBase64(value: string, maxBytes: number, lab
   const normalized = String(value || '').replace(/\s+/g, '')
   if (!normalized) throw new Error(`${label} did not return image data`)
   if (!/^[A-Za-z0-9+/]*={0,2}$/.test(normalized)) throw new Error(`${label} returned invalid base64 data`)
+  if (normalized.length % 4 === 1 || (normalized.includes('=') && normalized.length % 4 !== 0)) {
+    throw new Error(`${label} returned invalid base64 data`)
+  }
   const padding = normalized.endsWith('==') ? 2 : normalized.endsWith('=') ? 1 : 0
   const decodedBytes = Math.floor(normalized.length * 3 / 4) - padding
   if (decodedBytes > maxBytes) throw new Error(`${label} exceeds ${maxBytes} byte limit`)
+  const decoded = Buffer.from(normalized, 'base64')
+  if (!decoded.length || decoded.length > maxBytes) {
+    if (decoded.length > maxBytes) throw new Error(`${label} exceeds ${maxBytes} byte limit`)
+    throw new Error(`${label} returned invalid base64 data`)
+  }
+  const canonical = decoded.toString('base64').replace(/=+$/, '')
+  if (canonical !== normalized.replace(/=+$/, '')) throw new Error(`${label} returned invalid base64 data`)
   return normalized
 }
 
@@ -4460,19 +4886,22 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
   const firstForRole = (role: ModelRole) => models.find((model) => model.roles.includes(role))?.id || ''
   const preferred = (id: string, role: ModelRole) => entries.get(id)?.roles.includes(role) ? id : firstForRole(role)
   return {
+    accessKind: 'aggregator',
+    routeContractVersion,
+    accountCatalogRequired: false,
     defaults: {
-      main: preferred('openai/gpt-5.5', 'main'),
+      main: preferred('openai/gpt-5.6-sol', 'main'),
       image: preferred('sourceful/riverflow-v2.5-pro', 'image'),
-      vision: preferred('google/gemini-3.6-flash', 'vision'),
+      vision: preferred('google/gemini-3.7-flash', 'vision'),
     },
     models,
   }
 }
 
 const openRouterRecommendationRank = new Map([
-  ['openai/gpt-5.5', 0],
+  ['openai/gpt-5.6-sol', 0],
   ['sourceful/riverflow-v2.5-pro', 1],
-  ['google/gemini-3.6-flash', 2],
+  ['google/gemini-3.7-flash', 2],
 ])
 const openRouterRecommendedModelIds = new Set(openRouterRecommendationRank.keys())
 
@@ -4496,7 +4925,6 @@ function openRouterOutputFormats(parameters: any) {
 
 async function providerModelRegistry(provider: Provider): Promise<ProviderModelRegistry> {
   if (provider === 'openrouter') return openRouterProviderRegistry()
-  if (provider === 'ark') throw new Error('Ark model registry is not available')
   return staticModelRegistry[provider]
 }
 
@@ -4506,7 +4934,6 @@ function providerRegistryFailure(provider: Provider, error: any): string {
       ? providerEgressUnavailableMessage
       : 'OpenRouter model catalog is temporarily unavailable'
   }
-  if (provider === 'ark') return 'Ark model registry is not available'
   return `${provider} model registry is temporarily unavailable`
 }
 
