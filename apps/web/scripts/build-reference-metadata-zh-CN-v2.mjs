@@ -6,7 +6,10 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { REFERENCE_METADATA_ZH_CN as DEFAULT_LEGACY_METADATA } from '../src/data/reference-metadata.zh-CN.v1.js';
-import { PAPERBANANA_BENCH_V2_DIAGRAM_NUMBERS } from '../src/data/reference-corpus-quality.js';
+import {
+  PAPERBANANA_BENCH_V2_DIAGRAM_NUMBERS,
+  validateReferenceCorpusV2,
+} from '../src/data/reference-corpus-quality.js';
 
 export const PAPERBANANA_BENCH_COMMIT = 'a876264bcd1e826a0320f805f8fb1cd705cf510f';
 export const REFERENCE_METADATA_ZH_CN_V2_VERSION = 'zh-CN.v2';
@@ -77,10 +80,29 @@ const PLOT_TITLES_ZH = Object.freeze([
 ]);
 
 const DIAGRAM_TITLE_OVERRIDES = Object.freeze({
+  ref_240: 'SGN：面向多变量时间序列的移窗分层变量分组',
+  ref_241: 'SQS：自动驾驶稀疏感知的查询式高斯泼溅增强',
+  ref_242: 'SSR：原理引导空间推理增强深度感知',
+  ref_251: 'SpaceServe：多模态模型互补编解码器的空间复用',
+  ref_252: '级联稀疏—稠密表征的统一生成推荐',
   ref_254: '频谱调节注意力机制的性能提升',
+  ref_255: 'Spike4DGS：脉冲相机阵列驱动的高速动态场景渲染',
+  ref_256: '伪影解释驱动的合成图像检测',
   ref_257: '近无限上下文训练的同心环序列并行框架',
+  ref_260: '时间序列基础模型的序列—符号合成数据生成',
+  ref_263: 'TP-MDDN：支持自主决策的任务优先多需求导航',
+  ref_268: '推理模型中的霍桑效应：测试意识评估与引导',
+  ref_270: '球面 B 样条等变网络的管状流形拓扑学习',
+  ref_271: '知识图训练赋能通用图迁移',
+  ref_275: '合成到真实图像质量评估的数据分布重塑',
   ref_278: '直线斯坦纳最小树的针点训练与障碍测试',
+  ref_287: '光谱重建同色异谱困境的半监督高保真方法',
   ref_297: '视频对话模型的智能体推理',
+  ref_303: 'TriSense：多模态视听语音时刻理解',
+  ref_304: '成员推断的投毒干扰机制',
+  ref_305: '面向大语言模型的数据影响力评估',
+  ref_306: '身份信息驱动的大语言模型增强推荐',
+  ref_307: 'Wonder：基于多智能体上下文校准的好奇心探索',
 });
 
 const VISUAL_CATEGORY_LABELS = Object.freeze({
@@ -115,6 +137,31 @@ const DOMAIN_RULES = [
   ['工程技术', /\b(?:engineering|manufactur\w*|network\w*|transport\w*|traffic|vehicle\w*|construction)\b/iu],
   ['社会科学', /\b(?:population|demograph\w*|religion\w*|social|country|region\w*|crime|survey)\b/iu],
 ];
+
+const VISUAL_SIGNAL_RULES = Object.freeze([
+  ['时间趋势', /\b(?:trend|time|year|month|week|season|iteration)\w*\b/iu],
+  ['群组对比', /\b(?:compar\w*|versus|across|between|different)\b/iu],
+  ['构成分布', /\b(?:distribution|share|ratio|proportion|prevalence)\w*\b/iu],
+  ['相关关系', /\b(?:correlation|relationship|association)\w*\b/iu],
+  ['误差范围', /\b(?:error|uncertainty|variance|deviation)\w*\b/iu],
+  ['局部放大', /\b(?:inset|zoom)\w*\b/iu],
+  ['累积层次', /\b(?:stacked|cumulative|hierarch)\w*\b/iu],
+  ['模块流程', /\b(?:pipeline|framework|module|stage|process)\w*\b/iu],
+  ['编解码协作', /\b(?:encoder|decoder|encoding|decoding)\w*\b/iu],
+  ['训练与推理', /\b(?:training|inference|optimization|learning)\w*\b/iu],
+  ['注意力交互', /\b(?:attention|transformer|token)\w*\b/iu],
+  ['图结构传播', /\b(?:graph|node|edge|topology)\w*\b/iu],
+  ['生成与重建', /\b(?:generation|generative|diffusion|reconstruction)\w*\b/iu],
+  ['记忆与检索', /\b(?:memory|retrieval|retrieve)\w*\b/iu],
+]);
+
+const FIELD_LABEL_RULES = Object.freeze([
+  ['年份', /\b(?:year|date|time)\b/iu], ['类别', /\b(?:category|type|class|group)\b/iu],
+  ['数量', /\b(?:count|number|volume|publications?|users?)\b/iu], ['比率', /\b(?:rate|ratio|percent|percentage|share)\b/iu],
+  ['得分', /\b(?:score|accuracy|performance|metric|value)\b/iu], ['收入', /\b(?:income|revenue|earnings?|sales?)\b/iu],
+  ['人口', /\bpopulation\b/iu], ['温度', /\btemperature\b/iu], ['能耗', /\b(?:energy|consumption|fuel)\b/iu],
+  ['地区', /\b(?:region|country|city|location)\b/iu], ['方法', /\b(?:method|model|strategy|treatment)\b/iu],
+]);
 
 const cleanText = (value) => String(value ?? '')
   .replace(/\r?\n+/gu, ' ')
@@ -158,6 +205,47 @@ function contentKeys(source) {
   return [heading || '方法结构', '模块关系'];
 }
 
+function sourceSignalsZh(source, fallback, taskName) {
+  const haystack = cleanText(source.visual_intent);
+  const rules = taskName === 'plot' ? VISUAL_SIGNAL_RULES.slice(0, 7) : VISUAL_SIGNAL_RULES.slice(7);
+  const matches = rules.filter(([, pattern]) => pattern.test(haystack)).map(([label]) => label);
+  return [...new Set(matches)].slice(0, 3).join('、') || fallback;
+}
+
+function topicCue(titleZh) {
+  const chinese = cleanText(titleZh)
+    .replace(/[A-Za-z][A-Za-z0-9_.+/-]*/gu, '')
+    .replace(/\d+(?:\.\d+)?/gu, '')
+    .replace(/[^\u3400-\u9fff、，：—与和及的]+/gu, '')
+    .replace(/^[：、，—]+|[：、，—]+$/gu, '');
+  const substitutions = [
+    ['时间序列', '时序'], ['平均', '均值'], ['分布', '构成'], ['对比', '比较'], ['趋势', '走势'],
+    ['分析', '研判'], ['变化', '变动'], ['指标', '度量'], ['绩效', '成效'], ['得分', '评分'],
+    ['准确率', '识别率'], ['增长率', '增速'], ['关系', '关联'], ['影响', '作用'], ['使用', '采用'], ['效果', '成效'],
+    ['份额', '占比'], ['水平', '程度'], ['评估', '评价'], ['模型', '系统'], ['框架', '架构'],
+    ['方法', '方案'], ['图像', '影像'], ['数据', '资料'], ['训练', '学习'], ['推理', '推断'],
+    ['检测', '识别'], ['生成', '合成'], ['视觉', '图形'], ['分类', '类别判定'], ['优化', '改进'],
+    ['分配', '配置'], ['理解', '认知'], ['机制', '机理'], ['反应', '响应'], ['检查', '核查'],
+    ['计算', '测算'], ['选择', '筛选'], ['增长', '增幅'], ['占比', '比重'], ['理论', '理论逻辑'],
+  ];
+  let paraphrase = (chinese || '研究主题').replace(/^(与|和|及|至)+/u, '');
+  for (const [from, to] of substitutions) paraphrase = paraphrase.replaceAll(from, to);
+  if (paraphrase !== chinese || !chinese) return paraphrase;
+  if (paraphrase.includes('与')) return paraphrase.replace('与', '和');
+  if (paraphrase.length > 3) return `${paraphrase.slice(0, -2)}相关${paraphrase.slice(-2)}`;
+  return `${paraphrase}相关议题`;
+}
+
+function localizedFieldCue(keys, fallback) {
+  const labels = [];
+  for (const key of keys) {
+    const chinese = key.match(/[\u3400-\u9fff]{2,}/gu) || [];
+    labels.push(...chinese);
+    for (const [label, pattern] of FIELD_LABEL_RULES) if (pattern.test(key)) labels.push(label);
+  }
+  return [...new Set(labels)].slice(0, 3).join('、') || '主题度量';
+}
+
 function researchDomain(source, englishTitle, keys) {
   const category = cleanText(source.category).toLowerCase().replace(/[^a-z0-9]+/gu, '_');
   if (RESEARCH_DOMAIN_LABELS[category]) return RESEARCH_DOMAIN_LABELS[category];
@@ -178,15 +266,11 @@ function buildPlotEntry(source) {
   const keys = contentKeys(source);
   const domain = researchDomain(source, englishTitle, keys);
   const titleZh = PLOT_TITLES_ZH[Number(source.id.slice(4))] || `${visualLabel}案例｜${englishTitle}`;
-  const sourceIndex = Number(source.id.slice(4));
-  const shortTemplates = [
-    `以${visualLabel}呈现「${titleZh}」，依据源数据中的 ${keys.length} 个关键字段完成分组、对比与趋势表达`,
-    `采用${visualLabel}组织「${titleZh}」，将源数据的 ${keys.length} 组维度转化为清晰的视觉对比`,
-    `围绕「${titleZh}」构建${visualLabel}，用 ${keys.length} 组源数据展示分布、差异与变化关系`,
-    `该${visualLabel}解读「${titleZh}」，按原始视觉意图突出 ${keys.length} 组数据维度间的关联`,
-  ];
-  const shortIntroZh = finishChineseSentence(shortTemplates[sourceIndex % shortTemplates.length]);
-  const detailZh = finishChineseSentence(`该${domain}案例根据源数据的 ${keys.length} 组字段与原始视觉意图，将「${titleZh}」组织为${visualLabel}。围绕「${titleZh}」，图中通过坐标、分组、图例和视觉层次传达数据关系，适合参考其信息结构、比较方式与重点强调策略`);
+  const cue = topicCue(titleZh);
+  const signals = sourceSignalsZh(source, '数据差异', taskName);
+  const fields = localizedFieldCue(keys, cue);
+  const shortIntroZh = finishChineseSentence(`「${titleZh}」以${cue}为观察重点，${visualLabel}结合${fields}呈现${signals}`);
+  const detailZh = finishChineseSentence(`源图围绕${cue}组织${fields}，通过${visualLabel}的位置、分组与图例设计说明${signals}。在${cue}的表达中，画面将主要差异与辅助信息分层展开，便于读者快速识别数据关联与重点`);
   return {
     id: source.id, taskName, title: englishTitle, summary: cleanText(source.visual_intent), titleZh,
     shortIntroZh, detailZh, visualCategory: visualLabel, researchDomain: domain,
@@ -203,8 +287,10 @@ function buildDiagramEntry(source, legacyById) {
   const keys = contentKeys(source);
   const domain = researchDomain(source, englishTitle, keys);
   const titleZh = DIAGRAM_TITLE_OVERRIDES[source.id] || cleanText(legacy?.titleZh) || `研究框架｜${englishTitle}`;
-  const shortIntroZh = finishChineseSentence(`以${visualLabel}梳理「${titleZh}」的核心模块、信息流向与方法关系`);
-  const detailZh = finishChineseSentence(`该${domain}案例围绕「${titleZh}」展开，依据原始方法内容与视觉意图，用${visualLabel}串联整体方法、模块关系与信息流向。围绕「${titleZh}」，图示保留既有中文标题所概括的研究重点，可用于参考研究逻辑的分层、连接与视觉强调方式`);
+  const cue = topicCue(titleZh);
+  const signals = sourceSignalsZh(source, '模块协作', taskName);
+  const shortIntroZh = finishChineseSentence(`「${titleZh}」围绕${cue}展开，${visualLabel}突出${signals}及模块间的信息流向`);
+  const detailZh = finishChineseSentence(`源图以${cue}为主线，依据原始方法内容将${signals}拆解为可跟踪的步骤与模块。为了说明${cue}的实现路径，画面利用分层、连接和强调关系区分输入、中间处理与结果端`);
   return {
     id: source.id, taskName, title: englishTitle, summary: cleanText(source.visual_intent), titleZh,
     shortIntroZh, detailZh, visualCategory: visualLabel, researchDomain: domain,
@@ -218,19 +304,31 @@ export function buildReferenceCorpusV2({
   diagramIds = DEFAULT_DIAGRAM_IDS,
   legacyMetadata = DEFAULT_LEGACY_METADATA,
 }) {
+  if (!Array.isArray(plotReferences) || plotReferences.length !== 240) {
+    throw new Error(`PaperBananaBench v2 requires exactly 240 plot references; received ${plotReferences?.length ?? 'invalid'}`);
+  }
+  if (!Array.isArray(diagramReferences)) throw new Error('PaperBananaBench v2 diagram references must be an array');
+  if (diagramIds.length !== DEFAULT_DIAGRAM_IDS.length || diagramIds.some((id, index) => id !== DEFAULT_DIAGRAM_IDS[index])) {
+    throw new Error('PaperBananaBench v2 requires the exact fixed 66 diagram IDs');
+  }
   const plotById = new Map(plotReferences.map((item) => [item.id, item]));
   const diagramById = new Map(diagramReferences.map((item) => [item.id, item]));
   const legacyById = new Map(legacyMetadata.map((item) => [item.id, item]));
-  const expectedPlotIds = Array.from({ length: plotReferences.length }, (_, index) => `ref_${index}`);
+  const expectedPlotIds = Array.from({ length: 240 }, (_, index) => `ref_${index}`);
   const missing = [
     ...expectedPlotIds.filter((id) => !plotById.has(id)),
     ...diagramIds.filter((id) => !diagramById.has(id)),
   ];
   if (missing.length) throw new Error(`Source corpus is missing: ${missing.join(', ')}`);
-  return [
+  const corpus = [
     ...expectedPlotIds.map((id) => buildPlotEntry(plotById.get(id))),
     ...diagramIds.map((id) => buildDiagramEntry(diagramById.get(id), legacyById)),
   ];
+  const validationErrors = validateReferenceCorpusV2(corpus);
+  if (validationErrors.length) {
+    throw new Error(`Generated zh-CN.v2 corpus failed validation: ${validationErrors.slice(0, 8).map(({ code, id, value }) => `${code}${id ? `:${id}` : ''}${value ? `:${value}` : ''}`).join(', ')}`);
+  }
+  return corpus;
 }
 
 export function renderReferenceCorpusModule(corpus) {

@@ -33,6 +33,14 @@ const visibleSentences = (item) => `${item.shortIntroZh}${item.detailZh}`
   .split(/(?<=[。！？])/u)
   .map((sentence) => sentence.trim())
   .filter((sentence) => sentence.length >= 12);
+const normalizeSentenceStructure = (sentence, item) => sentence
+  .replaceAll(`「${item.titleZh}」`, '「标题」')
+  .replaceAll(item.titleZh, '标题')
+  .replaceAll(item.visualCategory, '图类')
+  .replaceAll(item.researchDomain, '领域')
+  .replace(/\b[A-Za-z][A-Za-z0-9_.+/-]*\b/gu, '术语')
+  .replace(/\d+(?:\.\d+)?/gu, '数字')
+  .replace(/\s+/gu, '');
 
 test('zh-CN v2 materializes the exact fixed 306-case PaperBananaBench corpus', () => {
   assert.equal(REFERENCE_METADATA_ZH_CN_V2_VERSION, 'zh-CN.v2');
@@ -55,6 +63,8 @@ test('every entry has complete Chinese copy and useful nonempty facets', () => {
     for (const field of ['id', 'taskName', 'titleZh', 'shortIntroZh', 'detailZh', 'visualCategory', 'researchDomain']) {
       assert.ok(String(item[field] || '').trim(), `${item.id}.${field} must be nonempty`);
     }
+    assert.ok(item.title.trim(), `${item.id}.title must preserve source English`);
+    assert.ok(item.summary.trim(), `${item.id}.summary must preserve source English`);
     assert.ok(Array.isArray(item.keywords) && item.keywords.length >= 2, `${item.id}.keywords needs at least two facets`);
     assert.ok(item.keywords.every((keyword) => String(keyword).trim()), `${item.id}.keywords cannot contain blanks`);
     assert.ok(containsChinese(item.titleZh), `${item.id}.titleZh must contain Chinese`);
@@ -90,6 +100,8 @@ test('quality validator rejects corpus mutations that would weaken v2', () => {
     ['long_title', (items) => items.map((item, index) => index ? item : { ...item, titleZh: '过长标题'.repeat(20) })],
     ['latin_leakage', (items) => items.map((item, index) => index ? item : { ...item, detailZh: `${'English template leakage '.repeat(10)}中文结尾。` })],
     ['generic_sentence', (items) => items.map((item, index) => index < 3 ? { ...item, detailZh: `这是一句被多个条目复用的通用模板文案。${item.detailZh}` } : item)],
+    ['empty_english', (items) => items.map((item, index) => index ? item : { ...item, title: '', summary: '' })],
+    ['generic_structure', (items) => items.map((item, index) => index < 3 ? { ...item, detailZh: `围绕「${item.titleZh}」，对比 ${index + 1} 组 ABC 数据并呈现关键关系。${item.detailZh}` } : item)],
   ];
   for (const [expectedCode, mutate] of mutations) {
     const codes = validateReferenceCorpusV2(mutate(clone())).map(({ code }) => code);
@@ -106,32 +118,57 @@ test('visible copy does not hide generic repeated sentences inside unique paragr
   assert.deepEqual(repeated, [], `visible sentences reused more than twice: ${JSON.stringify(repeated.slice(0, 5))}`);
 });
 
+test('visible sentence structures stay item-specific after volatile tokens are removed', () => {
+  const frequencies = new Map();
+  for (const item of REFERENCE_METADATA_ZH_CN_V2) {
+    for (const sentence of visibleSentences(item)) {
+      const structure = normalizeSentenceStructure(sentence, item);
+      frequencies.set(structure, (frequencies.get(structure) || 0) + 1);
+    }
+  }
+  const repeated = [...frequencies].filter(([, count]) => count > 2);
+  assert.deepEqual(repeated, [], `generic visible structures: ${JSON.stringify(repeated.slice(0, 5))}`);
+});
+
+test('known broken machine translations are replaced with complete Chinese titles', () => {
+  assert.equal(REFERENCE_METADATA_ZH_CN_V2_BY_ID.get('ref_303').titleZh, 'TriSense：多模态视听语音时刻理解');
+  assert.equal(REFERENCE_METADATA_ZH_CN_V2_BY_ID.get('ref_304').titleZh, '成员推断的投毒干扰机制');
+  assert.equal(REFERENCE_METADATA_ZH_CN_V2_BY_ID.get('ref_305').titleZh, '面向大语言模型的数据影响力评估');
+});
+
 test('builder is deterministic and keeps source English alongside generated Chinese metadata', () => {
-  const plot = [{
-    id: 'ref_0',
-    content: { Year: ['2025'], Revenue: [10] },
-    visual_intent: 'A line chart titled Annual Revenue Trend',
+  const plot = Array.from({ length: 240 }, (_, index) => ({
+    id: `ref_${index}`,
+    content: { '时间': ['2025'], [`指标${String.fromCodePoint(0x4e00 + index)}`]: [index] },
+    visual_intent: `A line chart titled Source Plot ${index}`,
     original_category: 'line',
     category: 'business',
-  }];
-  const diagram = [{
-    id: 'ref_240',
-    content: '# Method\nA two-stage encoder and decoder.',
-    visual_intent: 'Figure 1: An encoder-decoder research pipeline.',
+  }));
+  const diagram = DIAGRAM_NUMBERS.map((index) => ({
+    id: `ref_${index}`,
+    content: `# Method\nA source-specific encoder and decoder pipeline for case ${index}.`,
+    visual_intent: `Figure 1: A source-specific research pipeline for case ${index}.`,
     category: 'vision_perception',
-    additional_info: { file_name: 'Reliable Vision Pipeline.pdf' },
-  }];
-  const legacy = [{ id: 'ref_240', titleZh: '可靠视觉流水线', introZh: '聚焦「可靠视觉流水线」，展示编码器与解码器的两阶段协作。' }];
-  const options = { plotReferences: plot, diagramReferences: diagram, diagramIds: ['ref_240'], legacyMetadata: legacy };
+    additional_info: { file_name: `Reliable Vision Pipeline ${index}.pdf` },
+  }));
+  const legacy = DIAGRAM_NUMBERS.map((index) => ({
+    id: `ref_${index}`,
+    titleZh: `可靠视觉流水线${String.fromCodePoint(0x4e00 + index - 240)}`,
+    introZh: `展示编码器与解码器针对案例${String.fromCodePoint(0x4e00 + index - 240)}的两阶段协作。`,
+  }));
+  const options = { plotReferences: plot, diagramReferences: diagram, legacyMetadata: legacy };
   const first = buildReferenceCorpusV2(options);
   const second = buildReferenceCorpusV2(options);
 
   assert.deepEqual(first, second);
   assert.equal(first[0].taskName, 'plot');
-  assert.equal(first[1].taskName, 'diagram');
-  assert.equal(first[1].titleZh, '可靠视觉流水线');
-  assert.doesNotMatch(first[1].shortIntroZh, /^聚焦/u);
-  assert.equal(first[0].title, 'Annual Revenue Trend');
+  assert.equal(first[240].taskName, 'diagram');
+  assert.equal(first[240].titleZh, 'SGN：面向多变量时间序列的移窗分层变量分组');
+  assert.doesNotMatch(first[240].shortIntroZh, /^聚焦/u);
+  assert.equal(first[0].title, 'Source Plot 0');
   assert.equal(first[0].summary, plot[0].visual_intent);
   assert.equal(renderReferenceCorpusModule(first), renderReferenceCorpusModule(second));
+
+  assert.throws(() => buildReferenceCorpusV2({ ...options, plotReferences: plot.slice(1) }), /exactly 240 plot references/u);
+  assert.throws(() => buildReferenceCorpusV2({ ...options, plotReferences: [...plot, { ...plot[0], id: 'ref_240' }] }), /exactly 240 plot references/u);
 });

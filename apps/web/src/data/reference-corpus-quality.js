@@ -20,6 +20,17 @@ const latinShare = (value) => {
   return text ? (text.match(/[A-Za-z]/gu)?.length || 0) / text.length : 0;
 };
 
+export function normalizeVisibleSentenceStructure(sentence, item) {
+  return String(sentence || '')
+    .replaceAll(`「${item?.titleZh || ''}」`, '「标题」')
+    .replaceAll(item?.titleZh || '', '标题')
+    .replaceAll(item?.visualCategory || '', '图类')
+    .replaceAll(item?.researchDomain || '', '领域')
+    .replace(/\b[A-Za-z][A-Za-z0-9_.+/-]*\b/gu, '术语')
+    .replace(/\d+(?:\.\d+)?/gu, '数字')
+    .replace(/\s+/gu, '');
+}
+
 export function validateReferenceCorpusV2(corpus) {
   const errors = [];
   if (!Array.isArray(corpus)) return [{ code: 'invalid_corpus', message: 'corpus must be an array' }];
@@ -39,10 +50,14 @@ export function validateReferenceCorpusV2(corpus) {
 
   const introFrequencies = new Map();
   const sentenceFrequencies = new Map();
+  const sentenceStructureFrequencies = new Map();
   for (const item of corpus) {
     const id = String(item?.id || '').trim() || '(unknown)';
     for (const field of REQUIRED_TEXT_FIELDS) {
       if (!String(item?.[field] || '').trim()) errors.push({ code: 'empty_facet', id, field, message: `${id}.${field} is empty` });
+    }
+    if (!String(item?.title || '').trim() || !String(item?.summary || '').trim()) {
+      errors.push({ code: 'empty_english', id, message: `${id} must preserve source English title and summary` });
     }
     if (!Array.isArray(item?.keywords) || item.keywords.length < 2 || item.keywords.some((keyword) => !String(keyword).trim())) {
       errors.push({ code: 'empty_keywords', id, message: `${id}.keywords needs at least two nonempty values` });
@@ -74,6 +89,8 @@ export function validateReferenceCorpusV2(corpus) {
     if (shortIntro) introFrequencies.set(shortIntro, (introFrequencies.get(shortIntro) || 0) + 1);
     for (const sentence of `${shortIntro}${detail}`.split(/(?<=[。！？])/u).map((value) => value.trim()).filter((value) => value.length >= 12)) {
       sentenceFrequencies.set(sentence, (sentenceFrequencies.get(sentence) || 0) + 1);
+      const structure = normalizeVisibleSentenceStructure(sentence, item);
+      sentenceStructureFrequencies.set(structure, (sentenceStructureFrequencies.get(structure) || 0) + 1);
     }
   }
   for (const [intro, count] of introFrequencies) {
@@ -81,6 +98,9 @@ export function validateReferenceCorpusV2(corpus) {
   }
   for (const [sentence, count] of sentenceFrequencies) {
     if (count > 2) errors.push({ code: 'generic_sentence', message: `visible sentence is reused ${count} times`, value: sentence });
+  }
+  for (const [structure, count] of sentenceStructureFrequencies) {
+    if (count > 2) errors.push({ code: 'generic_structure', message: `visible sentence structure is reused ${count} times`, value: structure });
   }
   if (corpus.filter(({ taskName }) => taskName === 'plot').length !== 240) {
     errors.push({ code: 'wrong_split_count', taskName: 'plot', message: 'v2 needs exactly 240 plots' });
