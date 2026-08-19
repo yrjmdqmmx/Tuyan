@@ -48,6 +48,16 @@ test('redacts API key maps with unquoted keys and brace-containing values', () =
   assert.match(value, /\[REDACTED\]/);
 });
 
+test('redacts apiKeys and api_keys values regardless of scalar, array, or malformed serialized shape', () => {
+  const value = redactText(
+    `{"apiKeys":["array-secret",{"nested":"second-secret"}]} `
+      + `{ api_keys: 'string-secret' } `
+      + `{"apiKeys":"malformed-secret`,
+  );
+  assert.doesNotMatch(value, /array-secret|second-secret|string-secret|malformed-secret/);
+  assert.equal((value.match(/\[REDACTED\]/g) || []).length, 3);
+});
+
 test('does not redact unrelated key-like words', () => {
   const value = redactText(`{"monkey":"banana","tokenizer":"safe","safe":"visible"}`);
   assert.match(value, /monkey/);

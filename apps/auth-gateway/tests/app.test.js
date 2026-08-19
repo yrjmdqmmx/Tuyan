@@ -361,12 +361,20 @@ test('providerAccountCatalog receives the same authenticated-or-guest write prin
     const anonymous = await post(baseUrl, {
       action: 'providerAccountCatalog',
       apiKeys: { ark: 'ark-secret', openai: 'openai-secret' },
+      api_keys: { bailian: 'alias-secret' },
+      accessToken: 'unrelated-secret',
+      probes: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }],
+      confirmPaidImageProbe: false,
     });
     assert.equal(anonymous.status, 200);
     assert.match(cookiePair(anonymous), /^__Host-paperbanana_guest=/);
     assert.match(backend.calls[0].body.userId, /^guest:/);
     assert.equal(backend.calls[0].body.userEmail, '');
-    assert.deepEqual(backend.calls[0].body.apiKeys, { ark: 'ark-secret', openai: 'openai-secret' });
+    assert.deepEqual(backend.calls[0].body.apiKeys, { ark: 'ark-secret' });
+    assert.equal(Object.hasOwn(backend.calls[0].body, 'api_keys'), false);
+    assert.equal(Object.hasOwn(backend.calls[0].body, 'accessToken'), false);
+    assert.deepEqual(backend.calls[0].body.probes, [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }]);
+    assert.equal(backend.calls[0].body.confirmPaidImageProbe, false);
 
     await post(baseUrl, { action: 'providerAccountCatalog', apiKeys: { ark: 'ark-secret' } }, {
       'x-test-session': 'account-1|owner@example.com',

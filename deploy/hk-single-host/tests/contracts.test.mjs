@@ -217,6 +217,32 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
   assert.match(workflows[0], /VITE_AUTH_BASE:\s*https:\/\/api\.paperbanana\.asia/);
 });
 
+test('legacy Laf source push requires an explicit jpeg-js rollback dependency confirmation', () => {
+  const workflow = read('../../.github/workflows/deploy-laf-functions.yml');
+  const lafReadme = read('../../apps/laf-functions/README.md');
+
+  assert.match(workflow, /laf_jpeg_js_dependency_version:\s*\n\s+description:.*jpeg-js@0\.4\.4/i);
+  assert.match(workflow, /laf_jpeg_js_dependency_version:\s*\n(?:\s+.*\n)*?\s+required:\s*true/);
+  assert.match(workflow, /LAF_JPEG_JS_DEPENDENCY_VERSION:\s*\$\{\{\s*inputs\.laf_jpeg_js_dependency_version/);
+  const preflight = workflow.indexOf('test "$LAF_JPEG_JS_DEPENDENCY_VERSION" = "0.4.4"');
+  const push = workflow.indexOf('laf func push "$FUNCTION_NAME"');
+  assert.ok(preflight >= 0 && push > preflight, 'jpeg-js confirmation must fail closed before source push');
+  assert.doesNotMatch(workflow, /(?:npm|pnpm|yarn)\s+(?:install|add)[^\n]*jpeg-js|laf\s+(?:dependency|deps?)\s+/i);
+  assert.match(lafReadme, /jpeg-js@0\.4\.4/);
+  assert.match(lafReadme, /custom dependency/i);
+  assert.match(lafReadme, /does not (?:install|provision)|不(?:安装|配置|供应)/i);
+});
+
+test('Core operations documentation includes Ark in the four-origin Singapore egress contract', () => {
+  const coreReadme = read('../../apps/paperbanana-api/README.md');
+
+  assert.match(coreReadme, /OpenAI, Gemini, OpenRouter, and Ark/);
+  assert.match(coreReadme, /four canonical origins/);
+  assert.match(coreReadme, /ark\.cn-beijing\.volces\.com/);
+  assert.doesNotMatch(coreReadme, /only those three canonical origins/);
+  assert.doesNotMatch(coreReadme, /does not yet classify the Ark origin/);
+});
+
 test('shipping Web and iOS clients default to the Aliyun production edge', () => {
   const clientFiles = [
     '../../apps/ios/PaperBanana/Core/AppDefaults.swift',

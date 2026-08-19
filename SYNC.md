@@ -24,6 +24,20 @@
 
 ## 条目（最新在上）
 
+### [2026-08-20] 多路由精确准入、Ark 探针截止时间与 Laf 回滚依赖门禁 — by Codex
+变更：Core 在入队/持久化前按实际可达执行阶段校验 `main/image/vision`，精修任务保留归一后的 `configurationMode=simple|advanced`（旧请求默认 `simple`）；后台 DTO 改为字段白名单。Gateway 的 `providerAccountCatalog` 仅转发 `apiKeys.ark` 与探针契约字段。Ark 账号 probe 增加可中止端到端截止时间。Laf 原始源码回滚在 push 前强制人工确认 custom dependency 精确版本 `jpeg-js@0.4.4`。注册表 v4 仅为有厂商官方精确证据的模型写入 ISO 发布日并按已知日期倒序、未知日期置后。
+契约（影响其他端 / 共享）：
+- **路由与任务 DTO**：`requiredCreateRouteRoles` / `requiredRefineRouteRoles` 的完整实际角色必须在 admission 前通过注册表校验；不会触达 vision 的旧 main-only 请求仍兼容。公开精修任务的 `configurationMode` 不再强制为 `advanced`，`routingMode` 仍完全由服务端路由推导。
+- **密钥与探针**：后台 create/refine DTO 只含执行字段；账号目录网关丢弃 Ark 以外 provider key 和任意凭证别名。`PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS` 可选，默认 `12000`，限制 `100..30000` 毫秒，超时会 abort 并释放全局/owner/IP 槽位。
+- **回滚发布**：`.github/workflows/deploy-laf-functions.yml` 的非 Secret 输入 `laf_jpeg_js_dependency_version` 必须精确为 `0.4.4`；它只确认 Laf custom dependency 已配置，workflow 不安装依赖，也没有执行部署。
+- **注册表日期**：`registryVersion=2026-08-20.v4`；`releasedAt` 只采信精确官方发布日期，已知日期倒序、`null` 置后，`officialSourceUrl` 继续保留。
+各端待办：
+- [x] paperbanana-api / Laf Core（精确准入、模式持久化、DTO 白名单、探针 deadline、注册表日期与测试）
+- [x] auth-gateway（Ark key 透明转发收窄、全形态 `apiKeys/api_keys` 日志清洗）
+- [x] CI / 回滚文档（Laf `jpeg-js@0.4.4` 失败关闭确认；未部署）
+- [ ] Web / 原生端（无需请求改造；展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [ ] 部署 / 运维（人工确认 Laf custom dependency 后才可运行回滚 workflow；本条未改环境绑定、未发布）
+
 ### [2026-08-19] Ark CN 数据面出站白名单与香港健康探针 — by Codex
 变更：Core `providerEgress` 与新加坡 Squid 仅新增精确数据面主机 `ark.cn-beijing.volces.com`；`sg-required` 走固定新加坡代理，`disabled` 对该主机及其单个根点等价形式继续失败关闭。香港定时 smoke 增加无鉴权、只读、非计费的 `GET /api/v3/models`，预期 401；未登记任何 Ark 控制面、CDN、通配符或后缀域名。
 契约（影响其他端 / 共享）：

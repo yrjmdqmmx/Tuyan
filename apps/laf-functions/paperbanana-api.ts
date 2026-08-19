@@ -110,6 +110,7 @@ type RefineImageBody = {
   action: 'refineImage'
   provider: Provider
   apiKeys: ApiKeys
+  configurationMode?: string
   modelRoutes?: ModelRoutes
   mainModelName?: string
   imageModelName?: string
@@ -157,28 +158,69 @@ type AdmittedJobTask = {
   maxCriticRounds?: number
 }
 
+function definedExecutionFields<T extends Record<string, unknown>>(fields: T): T {
+  return Object.fromEntries(Object.entries(fields).filter(([, value]) => value !== undefined)) as T
+}
+
 export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody {
-  const {
-    apiKeys: _apiKeys,
-    routeSecrets: _routeSecrets,
-    gatewayToken: _gatewayToken,
-    adminToken: _adminToken,
-    apiKey: _apiKey,
-    ...executionBody
-  } = body as CreateJobBody & { routeSecrets?: RouteSecrets; gatewayToken?: string; adminToken?: string; apiKey?: string }
-  return executionBody as CreateExecutionBody
+  const routed = body as CreateJobBody & ModelRoutingMetadata & { prevalidatedManualReferences?: RetrievedReference[] }
+  return definedExecutionFields({
+    action: 'createJob',
+    provider: routed.provider,
+    modelRoutes: routed.modelRoutes,
+    routingMode: routed.routingMode,
+    modelRoutingVersion: routed.modelRoutingVersion,
+    modelRoutingSource: routed.modelRoutingSource,
+    mainModelName: routed.mainModelName,
+    imageModelName: routed.imageModelName,
+    referenceVisionModelName: routed.referenceVisionModelName,
+    configurationMode: routed.configurationMode,
+    clientPlatform: routed.clientPlatform,
+    taskName: routed.taskName,
+    methodContent: routed.methodContent,
+    caption: routed.caption,
+    infographicCategory: routed.infographicCategory,
+    userId: routed.userId,
+    userEmail: routed.userEmail,
+    outputFormat: routed.outputFormat,
+    referenceImageMode: routed.referenceImageMode,
+    referenceImageModeUsed: routed.referenceImageModeUsed,
+    referenceImages: routed.referenceImages,
+    pipelineMode: routed.pipelineMode,
+    retrievalSetting: routed.retrievalSetting,
+    manualReferenceIds: routed.manualReferenceIds,
+    aspectRatio: routed.aspectRatio,
+    imageSize: routed.imageSize,
+    imageRefineMode: routed.imageRefineMode,
+    imageRefineReason: routed.imageRefineReason,
+    prevalidatedManualReferences: routed.prevalidatedManualReferences,
+  })
 }
 
 export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBody {
-  const {
-    apiKeys: _apiKeys,
-    routeSecrets: _routeSecrets,
-    gatewayToken: _gatewayToken,
-    adminToken: _adminToken,
-    apiKey: _apiKey,
-    ...executionBody
-  } = body as RefineImageBody & { routeSecrets?: RouteSecrets; gatewayToken?: string; adminToken?: string; apiKey?: string }
-  return executionBody as RefineExecutionBody
+  const routed = body as RefineImageBody & ModelRoutingMetadata
+  return definedExecutionFields({
+    action: 'refineImage',
+    provider: routed.provider,
+    modelRoutes: routed.modelRoutes,
+    routingMode: routed.routingMode,
+    modelRoutingVersion: routed.modelRoutingVersion,
+    modelRoutingSource: routed.modelRoutingSource,
+    mainModelName: routed.mainModelName,
+    imageModelName: routed.imageModelName,
+    referenceVisionModelName: routed.referenceVisionModelName,
+    configurationMode: routed.configurationMode,
+    sourceImageUrl: routed.sourceImageUrl,
+    sourceImageObjectKey: routed.sourceImageObjectKey,
+    editInstruction: routed.editInstruction,
+    aspectRatio: routed.aspectRatio,
+    imageSize: routed.imageSize,
+    userId: routed.userId,
+    userEmail: routed.userEmail,
+    clientPlatform: routed.clientPlatform,
+    refineMode: routed.refineMode,
+    refineReason: routed.refineReason,
+  })
 }
 
 const routeContractVersion = 1 as const
@@ -285,7 +327,7 @@ export function requiredCreateRouteRoles(body: Record<string, any>, maxCriticRou
   const pipelineMode = body.pipelineMode || 'planner_critic'
   if (outputFormat === 'svg' || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
   if (outputFormat === 'png' && taskName !== 'plot') roles.push('image')
-  if (taskName === 'plot' && (body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') roles.push('image')
+  if (taskName === 'plot' && (body.imageSize === '2K' || body.imageSize === '4K')) roles.push('image')
   if ((body.referenceImages || []).length) roles.push(body.referenceImageModeUsed === 'main_model' ? 'main' : 'vision')
   if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
   return uniqueRouteRoles(roles)
@@ -792,6 +834,7 @@ let accountDeletionSweepTimer: any = null
 let openRouterDedicatedImageModelCache: { expiresAt: number; models: Map<string, OpenRouterCatalogModel> } | null = null
 let resvgWasmPromise: Promise<ResvgWasmModule> | null = null
 const providerAccountProbeMaxActive = 4
+const providerAccountProbeDefaultTimeoutMs = 12_000
 let providerAccountProbeActive = 0
 const providerAccountProbeOwners = new Map<string, number>()
 const providerAccountProbeIps = new Map<string, number>()
@@ -808,7 +851,7 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-19.v3'
+const modelRegistryVersion = '2026-08-20.v4'
 const referenceCorpusVersion = 'zh-CN.v2'
 
 type RegistryEntryMetadata = Partial<Pick<
@@ -932,9 +975,9 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
     accountCatalogRequired: false,
     defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
     models: [
-      registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model', {}, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model', {}, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
+      registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
+      registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
       registryEntry('gpt-5.5', 'GPT-5.5', ['main', 'vision'], 'openai-chat-completions', 'Current general model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-5.5-pro', 'GPT-5.5 Pro', ['main', 'vision'], 'openai-responses', 'Responses API Pro model', {}, { vendor: 'OpenAI', requiresEntitlement: true, entitlement: 'usage-tier', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-5.4', 'GPT-5.4', ['main', 'vision'], 'openai-chat-completions', 'Current general model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
@@ -1339,7 +1382,7 @@ async function modelRegistry(body: ModelRegistryBody) {
   const providers: Partial<Record<Provider, ProviderModelRegistry>> = {}
   const unavailableProviders: Partial<Record<Provider, string>> = {}
   for (const provider of ['gemini', 'openai', 'bailian', 'ark'] as const) {
-    if (!requestedProvider || requestedProvider === provider) providers[provider] = staticModelRegistry[provider]
+    if (!requestedProvider || requestedProvider === provider) providers[provider] = publicProviderModelRegistry(staticModelRegistry[provider])
   }
   if (!requestedProvider || requestedProvider === 'openrouter') {
     try {
@@ -1359,10 +1402,32 @@ async function modelRegistry(body: ModelRegistryBody) {
   })
 }
 
+function publicProviderModelRegistry(registry: ProviderModelRegistry): ProviderModelRegistry {
+  return {
+    ...registry,
+    models: registry.models
+      .map((model, index) => ({ model, index }))
+      .sort((left, right) => {
+        if (left.model.releasedAt === null && right.model.releasedAt !== null) return 1
+        if (left.model.releasedAt !== null && right.model.releasedAt === null) return -1
+        if (left.model.releasedAt !== right.model.releasedAt) {
+          return String(right.model.releasedAt).localeCompare(String(left.model.releasedAt))
+        }
+        return left.index - right.index
+      })
+      .map(({ model }) => model),
+  }
+}
+
 const arkInferenceProbeImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+VP5TAAAAAElFTkSuQmCC'
 const maxArkInferenceProbeResponseBytes = 64 * 1024
 
-async function arkChatInferenceProbe(model: string, apiKey: string, role: 'main' | 'vision') {
+async function arkChatInferenceProbe(
+  model: string,
+  apiKey: string,
+  role: 'main' | 'vision',
+  signal?: AbortSignal,
+) {
   const content = role === 'vision'
     ? [
         { type: 'text', text: 'Reply OK if this image is readable.' },
@@ -1381,11 +1446,46 @@ async function arkChatInferenceProbe(model: string, apiKey: string, role: 'main'
       max_tokens: 8,
       temperature: 0,
     }),
+    signal,
   }, `ark ${role} account probe`, 1)
   const data = await parseBoundedModelResponse(response, maxArkInferenceProbeResponseBytes, 'Ark inference probe response')
   const output = data.choices?.[0]?.message?.content
   if (typeof output !== 'string' || !output.trim()) throw new Error('Empty Ark inference probe output')
   return output
+}
+
+function providerAccountProbeTimeoutMs() {
+  const configured = Number(process.env.PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS || providerAccountProbeDefaultTimeoutMs)
+  if (!Number.isFinite(configured)) return providerAccountProbeDefaultTimeoutMs
+  return clamp(Math.round(configured), 100, 30_000)
+}
+
+async function runArkAccountProbe(
+  probe: { role: ModelRole; modelId: string },
+  apiKey: string,
+  deadline: { controller?: AbortController; expiresAt: number },
+) {
+  const remainingMs = deadline.expiresAt - Date.now()
+  if (remainingMs <= 0 || deadline.controller?.signal.aborted) {
+    throw new Error('Ark account probe deadline exceeded')
+  }
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const operation = probe.role === 'image'
+    ? callArkImage(probe.modelId, apiKey, 'A single black dot on a white background.', null, '1K', 1, deadline.controller?.signal)
+    : arkChatInferenceProbe(probe.modelId, apiKey, probe.role, deadline.controller?.signal)
+  try {
+    return await Promise.race([
+      operation,
+      new Promise<never>((_resolve, reject) => {
+        timer = setTimeout(() => {
+          deadline.controller?.abort(new Error('Ark account probe deadline exceeded'))
+          reject(new Error('Ark account probe deadline exceeded'))
+        }, remainingMs)
+      }),
+    ])
+  } finally {
+    if (timer) clearTimeout(timer)
+  }
 }
 
 function reserveProviderAccountProbe(body: ProviderAccountCatalogBody, ctx: FunctionContext): (() => void) | null {
@@ -1438,6 +1538,10 @@ async function providerAccountCatalog(body: ProviderAccountCatalogBody, ctx: Fun
   const apiKey = selectApiKey('ark', body.apiKeys || {})
   const releaseProbe = probes.length ? reserveProviderAccountProbe(body, ctx) : () => {}
   if (!releaseProbe) return fail('Provider account probe is already running for this principal or client IP', 429)
+  const probeDeadline = {
+    controller: typeof AbortController === 'function' ? new AbortController() : undefined,
+    expiresAt: Date.now() + providerAccountProbeTimeoutMs(),
+  }
   try {
     const probeResults = []
     for (const probe of probes) {
@@ -1459,9 +1563,7 @@ async function providerAccountCatalog(body: ProviderAccountCatalogBody, ctx: Fun
         continue
       }
       try {
-        const probeOutput = probe.role === 'image'
-          ? await callArkImage(probe.modelId, apiKey, 'A single black dot on a white background.', null, '1K', 1)
-          : await arkChatInferenceProbe(probe.modelId, apiKey, probe.role)
+        const probeOutput = await runArkAccountProbe(probe, apiKey, probeDeadline)
         if (typeof probeOutput !== 'string' || !probeOutput.trim()) throw new Error('Empty Ark inference probe output')
         probeResults.push({ ...probe, state: 'verified', accountAvailable: true, verifiedBy: 'inference-smoke' })
       } catch {
@@ -1600,27 +1702,6 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     retrievalSetting: hasUploadedReference ? ('none' as const) : normalizeRetrievalSetting(body.retrievalSetting),
     manualReferenceIds: hasUploadedReference ? [] : normalizeManualReferenceIds(body.manualReferenceIds || []),
   }
-  let registries: Map<Provider, ProviderModelRegistry>
-  try {
-    registries = await validateModelRouting(
-      routing.modelRoutes,
-      routing.modelRoutingSource === 'explicit'
-        ? ['main', 'image', 'vision']
-        : ['main', 'image', ...(normalizedReferenceImages.length ? ['vision' as const] : [])],
-    )
-  } catch (error: any) {
-    return {
-      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
-      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
-    }
-  }
-  const imageRoute = routing.modelRoutes.image
-  const imageRefineCapability = registryImageRefineCapability(
-    imageRoute.accessProvider,
-    registries.get(imageRoute.accessProvider)!,
-    imageRoute.modelId,
-  )
-
   const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
   if (normalizedBody.retrievalSetting === 'manual') {
     try {
@@ -1632,6 +1713,40 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       }
     }
   }
+  const modeResolution = await resolveReferenceImageMode(normalizedBody)
+  if (modeResolution.error) return fail(modeResolution.error, 400)
+  const roleResolvedBody = {
+    ...normalizedBody,
+    referenceImageMode: modeResolution.referenceImageMode,
+    referenceImageModeUsed: modeResolution.referenceImageModeUsed,
+  }
+  const safeNumCandidates = clamp(Number(body.numCandidates || 1), 1, Number(process.env.PAPERBANANA_MAX_CANDIDATES || 3))
+  const safeCriticRounds = clamp(Number(body.maxCriticRounds || 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
+  const requiredRoles = requiredCreateRouteRoles(roleResolvedBody, safeCriticRounds)
+  let registries: Map<Provider, ProviderModelRegistry>
+  try {
+    registries = await validateModelRouting(routing.modelRoutes, requiredRoles)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
+  }
+  const imageRoute = routing.modelRoutes.image
+  const imageRegistry = registries.get(imageRoute.accessProvider)
+  const imageRefineCapability = imageRegistry
+    ? registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
+    : { mode: 'none' as const, reason: 'Image route is not reachable for this job' }
+  const jobBody = {
+    ...roleResolvedBody,
+    imageRefineMode: imageRefineCapability.mode,
+    imageRefineReason: imageRefineCapability.reason,
+  }
+  const routeSecrets = selectRequiredRouteSecrets(jobBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
+  for (const role of requiredRoles) {
+    const provider = jobBody.modelRoutes[role].accessProvider
+    if (!routeSecrets[provider]) return fail(`Missing API key for provider ${provider}`, 400)
+  }
   const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
   if (!reservation.ok) return fail(reservation.error, reservation.code)
   let committed = false
@@ -1642,28 +1757,8 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     } catch (error: any) {
       return fail(error?.message || String(error), Number(error?.statusCode || 503))
     }
-    const modeResolution = await resolveReferenceImageMode(normalizedBody)
-    if (modeResolution.error) {
-      return fail(modeResolution.error, 400)
-    }
-    const jobBody = {
-      ...normalizedBody,
-      imageRefineMode: imageRefineCapability.mode,
-      imageRefineReason: imageRefineCapability.reason,
-      referenceImageMode: modeResolution.referenceImageMode,
-      referenceImageModeUsed: modeResolution.referenceImageModeUsed,
-    }
-
   const now = new Date()
   const jobId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
-  const safeNumCandidates = clamp(Number(body.numCandidates || 1), 1, Number(process.env.PAPERBANANA_MAX_CANDIDATES || 3))
-  const safeCriticRounds = clamp(Number(body.maxCriticRounds || 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
-  const requiredRoles = requiredCreateRouteRoles(jobBody, safeCriticRounds)
-  const routeSecrets = selectRequiredRouteSecrets(jobBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
-  for (const role of requiredRoles) {
-    const provider = jobBody.modelRoutes[role].accessProvider
-    if (!routeSecrets[provider]) return fail(`Missing API key for provider ${provider}`, 400)
-  }
 
   const record = {
     _id: jobId,
@@ -1740,11 +1835,14 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   if (!(await ensureAccountAcceptingWork(body))) {
     return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
-  let routingInput: RefineImageBody = body
+  let routingInput: RefineImageBody = {
+    ...body,
+    configurationMode: normalizeConfigurationMode(body.configurationMode),
+  }
   if (!body.modelRoutes && !hasLegacyModelValue(body.mainModelName)) {
     try {
       const legacyRegistry = await providerModelRegistry(body.provider)
-      routingInput = { ...body, mainModelName: legacyRegistry.defaults.main }
+      routingInput = { ...routingInput, mainModelName: legacyRegistry.defaults.main }
     } catch (error: any) {
       return fail(providerRegistryFailure(body.provider, error), 503)
     }
@@ -1760,12 +1858,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   }
   let registries: Map<Provider, ProviderModelRegistry>
   try {
-    registries = await validateModelRouting(
-      routing.modelRoutes,
-      routing.modelRoutingSource === 'explicit'
-        ? ['main', 'image', 'vision']
-        : ['main', 'image', ...(body.referenceVisionModelName ? ['vision' as const] : [])],
-    )
+    registries = await validateModelRouting(routing.modelRoutes, ['image'])
   } catch (error: any) {
     return {
       ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
@@ -1773,7 +1866,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     }
   }
   const normalizedBodyWithSecrets = {
-    ...body,
+    ...routingInput,
     ...routing,
     aspectRatio: normalizeAspectRatio(body.aspectRatio),
     imageSize: body.imageSize === '4K' ? '4K' as const : '2K' as const,
@@ -1791,6 +1884,14 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     refineReason: imageRefineCapability.reason,
   })
   const requiredRoles = requiredRefineRouteRoles(normalizedBody)
+  try {
+    await validateModelRouting(routing.modelRoutes, requiredRoles, registries)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
+  }
   const routeSecrets = selectRequiredRouteSecrets(normalizedBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
   for (const role of requiredRoles) {
     const provider = normalizedBody.modelRoutes[role].accessProvider
@@ -1813,7 +1914,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     modelRoutingVersion: normalizedBody.modelRoutingVersion,
     modelRoutingSource: normalizedBody.modelRoutingSource,
     clientPlatform: normalizeClientPlatform(body.clientPlatform),
-    configurationMode: 'advanced',
+    configurationMode: normalizedBody.configurationMode,
     taskName: 'diagram',
     userId: normalizedBody.userId || '',
     userEmail: normalizedBody.userEmail || '',
@@ -3930,6 +4031,7 @@ async function callArkImage(
   source: NormalizedSourceImage | null,
   imageSize = '2K',
   attempts = 2,
+  signal?: AbortSignal,
 ): Promise<string> {
   const size = ['1K', '2K', '4K'].includes(imageSize) ? imageSize : '2K'
   const body: Record<string, unknown> = {
@@ -3948,6 +4050,7 @@ async function callArkImage(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
+    signal,
   }, `ark image model ${model}`, attempts)
   const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Ark image response')
   const base64 = validateProviderImageBase64(data.data?.[0]?.b64_json || '', maxProviderImageBytes, 'Ark image')
@@ -4940,9 +5043,11 @@ function providerRegistryFailure(provider: Provider, error: any): string {
 async function validateModelRouting(
   modelRoutes: ModelRoutes,
   roles: ModelRole[] = ['main', 'image', 'vision'],
+  registries = new Map<Provider, ProviderModelRegistry>(),
 ): Promise<Map<Provider, ProviderModelRegistry>> {
-  const registries = new Map<Provider, ProviderModelRegistry>()
-  for (const provider of new Set(Object.values(modelRoutes).map((route) => route.accessProvider))) {
+  const requiredRoles = uniqueRouteRoles(roles)
+  for (const provider of new Set(requiredRoles.map((role) => modelRoutes[role].accessProvider))) {
+    if (registries.has(provider)) continue
     try {
       registries.set(provider, await providerModelRegistry(provider))
     } catch (error: any) {
@@ -4951,7 +5056,7 @@ async function validateModelRouting(
       throw routeError
     }
   }
-  for (const role of roles) {
+  for (const role of requiredRoles) {
     const route = modelRoutes[role]
     const error = modelRoleSelectionError(route.accessProvider, registries.get(route.accessProvider)!, [
       { model: route.modelId, role },
@@ -5987,7 +6092,7 @@ async function publicJob(job: any) {
     jobType: job.jobType || 'generate',
     userId: job.userId || job.user_id || '',
     userEmail: job.userEmail || job.user_email || '',
-    configurationMode: job.configurationMode || 'advanced',
+    configurationMode: normalizeConfigurationMode(job.configurationMode),
     taskName: job.taskName || 'diagram',
     methodContent: job.methodContent,
     caption: job.caption,
@@ -6135,11 +6240,19 @@ function redactSecretText(value: any, secrets: Array<string | undefined> = []) {
     .replace(/\bbearer\s+[^\s,;]+/gi, 'Bearer [REDACTED]')
 }
 
-function redactPublicValue(value: any): any {
+const publicSensitiveKeys = new Set([
+  'authorization', 'cookie', 'password', 'token', 'secret', 'apikey', 'apikeys',
+  'gatewaytoken', 'admintoken', 'accesstoken', 'refreshtoken', 'sessiontoken',
+  'accesskeyid', 'accesskeysecret',
+])
+
+function redactPublicValue(value: any, key = ''): any {
+  const normalizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, '')
+  if (publicSensitiveKeys.has(normalizedKey)) return '[REDACTED]'
   if (typeof value === 'string') return redactSecretText(value)
-  if (Array.isArray(value)) return value.map(redactPublicValue)
+  if (Array.isArray(value)) return value.map((entry) => redactPublicValue(entry))
   if (!value || typeof value !== 'object' || value instanceof Date) return value
-  return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, redactPublicValue(entry)]))
+  return Object.fromEntries(Object.entries(value).map(([entryKey, entry]) => [entryKey, redactPublicValue(entry, entryKey)]))
 }
 
 function stablePublicJobFailure(error: string) {
@@ -6379,6 +6492,10 @@ function normalizeOutputFormat(format?: string): OutputFormat {
 
 function normalizeTaskName(taskName?: string): TaskName {
   return taskName === 'plot' ? 'plot' : 'diagram'
+}
+
+function normalizeConfigurationMode(mode?: string): 'simple' | 'advanced' {
+  return mode === 'advanced' ? 'advanced' : 'simple'
 }
 
 function normalizeRetrievalSetting(setting?: string): RetrievalSetting {

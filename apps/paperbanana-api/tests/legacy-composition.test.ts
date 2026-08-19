@@ -338,6 +338,53 @@ test('advanced explicit routing persists canonical public fields while retaining
   }
 })
 
+test('execution DTO builders allowlist complete routing contracts and discard arbitrary secret aliases', async () => {
+  const legacy = await loadLegacy()
+  const modelRoutes = {
+    main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
+    vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+  }
+  const routing = {
+    provider: 'openai', modelRoutes, routingMode: 'mixed', modelRoutingVersion: 1,
+    modelRoutingSource: 'explicit', mainModelName: 'gpt-5.6-sol',
+    imageModelName: 'gemini-3.1-flash-image', referenceVisionModelName: 'qwen3.7-plus',
+  }
+  const secretAliases = {
+    apiKeys: { openai: 'official-secret' },
+    api_keys: ['array-secret'],
+    apiKey: 'singular-secret',
+    authorization: 'Bearer authorization-secret',
+    accessToken: 'access-token-secret',
+    nestedCredentials: { token: 'nested-secret' },
+  }
+
+  const create = legacy.toCreateExecutionBody({
+    action: 'createJob', ...routing, ...secretAliases,
+    configurationMode: 'advanced', methodContent: 'Allowed method', caption: 'Allowed caption',
+    outputFormat: 'png', referenceImages: [], pipelineMode: 'vanilla', retrievalSetting: 'none',
+  })
+  const refine = legacy.toRefineExecutionBody({
+    action: 'refineImage', ...routing, ...secretAliases,
+    configurationMode: 'simple', sourceImageObjectKey: 'owned/source.png', editInstruction: 'Improve labels.',
+    refineMode: 'direct-edit', refineReason: 'Supported',
+  })
+
+  for (const executionBody of [create, refine]) {
+    assert.deepEqual(executionBody.modelRoutes, modelRoutes)
+    assert.equal(executionBody.routingMode, 'mixed')
+    assert.equal(executionBody.modelRoutingVersion, 1)
+    assert.equal(executionBody.modelRoutingSource, 'explicit')
+    assert.doesNotMatch(
+      JSON.stringify(executionBody),
+      /official-secret|array-secret|singular-secret|authorization-secret|access-token-secret|nested-secret|apiKeys|api_keys|authorization|accessToken|nestedCredentials/,
+    )
+  }
+  assert.equal(create.methodContent, 'Allowed method')
+  assert.equal(refine.sourceImageObjectKey, 'owned/source.png')
+  assert.equal(refine.configurationMode, 'simple')
+})
+
 test('route secret selection keeps only providers reachable by the requested stages', async () => {
   const legacy = await loadLegacy()
   const routes = {
@@ -384,6 +431,72 @@ test('legacy create keeps main-only Bailian models valid when no vision stage wa
   } finally {
     legacy.configureRuntimeFetch()
     state.inserts = previousInserts
+  }
+})
+
+test('legacy create validates the exact execution-required vision role before persistence', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  state.inserts = []
+  const invoke = (mainModelName: string, maxCriticRounds: number) => legacy.default({
+    request: { method: 'POST' },
+    body: {
+      action: 'createJob', provider: 'bailian', apiKeys: { bailian: 'legacy-key' },
+      methodContent: 'A sufficiently detailed legacy method for exact reachable role validation.',
+      caption: 'Validate reachable legacy vision.', outputFormat: 'png', pipelineMode: 'planner_critic',
+      maxCriticRounds, mainModelName, imageModelName: 'wan2.7-image-pro', retrievalSetting: 'none',
+    },
+    headers: {}, response: { setHeader() {}, status() {} },
+  })
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  try {
+    const incompatible = await invoke('qwen3.8-max', 1)
+    assert.equal(incompatible.code, 400)
+    assert.match(incompatible.error, /qwen3\.8-max is not registered for vision/)
+    assert.equal(state.inserts.length, 0)
+
+    const compatible = await invoke('qwen3.7-plus', 1)
+    assert.equal(compatible.code, 0, JSON.stringify(compatible))
+    assert.equal(state.inserts.length, 1)
+    await legacy.drainJobAdmission()
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+  }
+})
+
+test('legacy analyze-redraw refine validates its derived vision role and preserves compatible routing', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  const previousStoredObjects = state.storedObjectBytes
+  state.inserts = []
+  state.storedObjectBytes = { 'owned/refine.png': Buffer.from('source') }
+  const invoke = (mainModelName: string) => legacy.default({
+    request: { method: 'POST' },
+    body: {
+      action: 'refineImage', provider: 'bailian', apiKeys: { bailian: 'legacy-key' },
+      mainModelName, imageModelName: 'z-image-turbo', sourceImageObjectKey: 'owned/refine.png',
+      editInstruction: 'Improve labels while preserving all content.',
+    },
+    headers: {}, response: { setHeader() {}, status() {} },
+  })
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  try {
+    const incompatible = await invoke('qwen3.8-max')
+    assert.equal(incompatible.code, 400)
+    assert.match(incompatible.error, /qwen3\.8-max is not registered for vision/)
+    assert.equal(state.inserts.length, 0)
+
+    const compatible = await invoke('qwen3.7-plus')
+    assert.equal(compatible.code, 0, JSON.stringify(compatible))
+    assert.equal(state.inserts.length, 1)
+    await legacy.drainJobAdmission()
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+    state.storedObjectBytes = previousStoredObjects
   }
 })
 
@@ -569,6 +682,65 @@ test('refine dispatch retains image only for direct edit and vision plus image f
     state.storedObjectBytes = previousStoredObjects
     state.inserts = previousInserts
     state.deletedOwnerKeys = []
+  }
+})
+
+test('refine persistence and public DTO preserve normalized configuration mode with a simple legacy default', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousStoredObjects = state.storedObjectBytes
+  const previousInserts = state.inserts
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  state.ossWriteMode = 'success'
+  state.storedObjectBytes = {
+    'owned/simple.png': Buffer.from('simple-source'),
+    'owned/advanced.png': Buffer.from('advanced-source'),
+    'owned/legacy.png': Buffer.from('legacy-source'),
+  }
+  state.inserts = []
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'refine-mode-gateway'
+  legacy.configureRuntimeFetch(async () => Response.json({
+    output_image: { data: Buffer.alloc(120, 4).toString('base64'), mime_type: 'image/png' },
+  }))
+  const invoke = (configurationMode: unknown, sourceImageObjectKey: string) => legacy.default({
+    request: { method: 'POST' },
+    body: {
+      action: 'refineImage', provider: 'gemini', apiKeys: { gemini: 'mode-secret' },
+      gatewayToken: 'refine-mode-gateway',
+      ...(configurationMode === undefined ? {} : { configurationMode }),
+      mainModelName: 'gemini-3.6-flash', imageModelName: 'gemini-3.1-flash-image',
+      sourceImageObjectKey, editInstruction: 'Improve label clarity without changing content.',
+    },
+    headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const simple = await invoke('simple', 'owned/simple.png')
+    const advanced = await invoke('advanced', 'owned/advanced.png')
+    const legacyDefault = await invoke(undefined, 'owned/legacy.png')
+    assert.equal(simple.code, 0, JSON.stringify(simple))
+    assert.equal(advanced.code, 0, JSON.stringify(advanced))
+    assert.equal(legacyDefault.code, 0, JSON.stringify(legacyDefault))
+    await legacy.drainJobAdmission()
+    assert.deepEqual(state.inserts.map((record: any) => record.configurationMode), ['simple', 'advanced', 'simple'])
+    assert.deepEqual(state.inserts.map((record: any) => record.routingMode), ['single', 'single', 'single'])
+
+    for (const [response, expectedMode] of [[simple, 'simple'], [advanced, 'advanced'], [legacyDefault, 'simple']] as const) {
+      const detail = await legacy.default({
+        request: { method: 'POST' },
+        body: { action: 'getJob', jobId: response.jobId, gatewayToken: 'refine-mode-gateway' },
+        headers: {}, response: { setHeader() {}, status() {} },
+      })
+      assert.equal(detail.job.configurationMode, expectedMode)
+      assert.equal(detail.job.routingMode, 'single')
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.storedObjectBytes = previousStoredObjects
+    state.inserts = previousInserts
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
   }
 })
 
@@ -763,9 +935,19 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     for (const model of providerRegistry.models) {
       assert.equal(typeof model.officialSourceUrl, 'string', `${providerName}/${model.id}`)
       assert.match(model.officialSourceUrl, /^https:\/\//, `${providerName}/${model.id}`)
-      assert.equal(model.releasedAt, null, `${providerName}/${model.id} must not guess a release date`)
+      assert.equal(model.releasedAt === null || /^\d{4}-\d{2}-\d{2}$/.test(model.releasedAt), true, `${providerName}/${model.id}`)
     }
   }
+
+  const openaiOrdered = openai.providers.openai.models
+  assert.deepEqual(openaiOrdered.slice(0, 3).map((model: any) => [model.id, model.releasedAt]), [
+    ['gpt-5.6-sol', '2026-07-09'],
+    ['gpt-5.6-terra', '2026-07-09'],
+    ['gpt-5.6-luna', '2026-07-09'],
+  ])
+  const firstUnknownOpenAiRelease = openaiOrdered.findIndex((model: any) => model.releasedAt === null)
+  assert.ok(firstUnknownOpenAiRelease >= 3)
+  assert.equal(openaiOrdered.slice(firstUnknownOpenAiRelease).every((model: any) => model.releasedAt === null), true)
 
   const ark = await legacy.default(context({ action: 'modelRegistry', provider: 'ark' }))
   assert.equal(ark.code, 0)
@@ -1266,6 +1448,55 @@ test('providerAccountCatalog bounds concurrent probes by principal and client IP
     releaseFirst()
     legacy.configureRuntimeFetch()
     gateway.restore()
+  }
+})
+
+test('providerAccountCatalog aborts a hung Ark probe by deadline and immediately releases principal capacity', async () => {
+  const legacy = await loadLegacy()
+  const gateway = installProviderAccountTestGateway()
+  const previousTimeout = process.env.PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS
+  const secret = 'ark-hung-probe-secret'
+  const observedSignals: AbortSignal[] = []
+  let hungCalls = 0
+  process.env.PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS = '100'
+  legacy.configureRuntimeFetch(async (_input, init) => {
+    hungCalls += 1
+    if (init?.signal) observedSignals.push(init.signal as AbortSignal)
+    return await new Promise<Response>(() => {})
+  })
+  const invoke = (probes = [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }]) => legacy.default({
+    request: { method: 'POST' },
+    body: {
+      action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: secret }, gatewayToken: gateway.token,
+      userId: 'hung-owner', probes,
+    },
+    headers: { 'x-forwarded-for': '203.0.113.55' }, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const first = await Promise.race([
+      invoke([
+        { role: 'main', modelId: 'doubao-seed-2-0-mini-260428' },
+        { role: 'vision', modelId: 'doubao-seed-2-0-lite-260428' },
+        { role: 'main', modelId: 'doubao-seed-2-0-lite-260428' },
+      ]),
+      new Promise((resolve) => setTimeout(() => resolve({ testTimeout: true }), 750)),
+    ]) as any
+    assert.equal(first.testTimeout, undefined, 'the provider-account deadline must settle a fetch that ignores abort')
+    assert.equal(first.code, 0)
+    assert.deepEqual(first.probeResults.map((probe: any) => probe.state), ['failed', 'failed', 'failed'])
+    assert.doesNotMatch(JSON.stringify(first), /ark-hung-probe-secret|timed out|abort/i)
+    assert.equal(hungCalls, 1, 'one end-to-end deadline must prevent dispatching later probes after abort')
+    assert.equal(observedSignals[0]?.aborted, true)
+
+    legacy.configureRuntimeFetch(async () => Response.json({ choices: [{ message: { content: 'OK' } }] }))
+    const recovered = await invoke()
+    assert.equal(recovered.code, 0)
+    assert.equal(recovered.probeResults[0].state, 'verified')
+  } finally {
+    legacy.configureRuntimeFetch()
+    gateway.restore()
+    if (previousTimeout === undefined) delete process.env.PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS
+    else process.env.PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS = previousTimeout
   }
 })
 
@@ -2752,7 +2983,10 @@ test('persisted and public job errors and logs redact credential-bearing text', 
     _id: 'secret-history', status: 'failed', provider: 'openai', userId: 'owner-1',
     mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', resultImages: [],
     error: 'request failed at https://provider.invalid/run?key=history-query-secret',
-    logs: ['Authorization: Bearer history-bearer-secret'],
+    logs: [
+      'Authorization: Bearer history-bearer-secret',
+      { api_keys: ['history-array-secret'], nested: { apiKeys: 'history-string-secret' }, safe: 'visible' },
+    ],
     stages: [{
       error: 'Bearer history-stage-secret', title: 'failed stage',
       image: { storageError: 'x-goog-api-key: history-nested-secret' },
@@ -2771,7 +3005,8 @@ test('persisted and public job errors and logs redact credential-bearing text', 
       headers: {}, response: { setHeader() {}, status() {} },
     })
     const publicText = JSON.stringify(detail)
-    assert.doesNotMatch(publicText, /history-query-secret|history-bearer-secret|history-stage-secret|history-nested-secret/)
+    assert.doesNotMatch(publicText, /history-query-secret|history-bearer-secret|history-stage-secret|history-nested-secret|history-array-secret|history-string-secret/)
+    assert.match(publicText, /visible/)
     assert.match(publicText, /REDACTED/)
 
     const queued = await legacy.default({
@@ -2810,10 +3045,12 @@ test('request handlers delegate background closures with secret-free DTOs', () =
   const createSection = source.slice(createStart, refineStart)
   const refineSection = source.slice(refineStart, source.indexOf('async function getJob'))
   assert.ok(createSection.includes('await verifyUploadedReferenceObjects('))
-  assert.ok(createSection.indexOf('jobAdmission.reserve(') < createSection.indexOf('await resolveReferenceImageMode('))
+  assert.ok(createSection.indexOf('await resolveReferenceImageMode(') < createSection.indexOf('jobAdmission.reserve('))
+  assert.ok(createSection.indexOf('await validateModelRouting(') < createSection.indexOf('jobAdmission.reserve('))
   assert.ok(createSection.indexOf('jobAdmission.reserve(') < createSection.indexOf('await jobs.insertOne('))
-  assert.ok(createSection.indexOf('await verifyUploadedReferenceObjects(') < createSection.indexOf('await resolveReferenceImageMode('))
+  assert.ok(createSection.indexOf('jobAdmission.reserve(') < createSection.indexOf('await verifyUploadedReferenceObjects('))
   assert.ok(createSection.indexOf('await verifyUploadedReferenceObjects(') < createSection.indexOf('await jobs.insertOne('))
+  assert.ok(refineSection.lastIndexOf('await validateModelRouting(') < refineSection.indexOf('jobAdmission.reserve('))
   assert.ok(refineSection.indexOf('jobAdmission.reserve(') < refineSection.indexOf('await jobs.insertOne('))
 })
 

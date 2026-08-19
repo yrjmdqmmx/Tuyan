@@ -254,7 +254,11 @@ export function createApp({
         action === 'providerAccountCatalog'
       ) {
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
-        const body = action === 'createJob' ? normalizeCreateJobBody(request.body) : { ...request.body };
+        const body = action === 'createJob'
+          ? normalizeCreateJobBody(request.body)
+          : action === 'providerAccountCatalog'
+            ? normalizeProviderAccountCatalogBody(request.body)
+            : { ...request.body };
         return relay(
           response,
           await backend.call(
@@ -477,6 +481,17 @@ function normalizeFeedbackBody(body) {
     platform: body?.platform,
     clientVersion: body?.clientVersion,
     contact: body?.contact,
+  };
+}
+
+function normalizeProviderAccountCatalogBody(body) {
+  const arkKey = typeof body?.apiKeys?.ark === 'string' ? body.apiKeys.ark : undefined;
+  return {
+    action: 'providerAccountCatalog',
+    provider: body?.provider,
+    apiKeys: arkKey === undefined ? {} : { ark: arkKey },
+    probes: body?.probes,
+    confirmPaidImageProbe: body?.confirmPaidImageProbe,
   };
 }
 

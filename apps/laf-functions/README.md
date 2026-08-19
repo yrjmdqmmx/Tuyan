@@ -21,7 +21,8 @@
 3. 打开云函数 `paperbanana-api`。
 4. 将 `paperbanana-api.ts` 内容复制到 Laf 函数编辑器。
 5. 配置 `.env.example` 中列出的环境变量。
-6. 发布函数。
+6. 在 Laf custom dependency 面板确认已配置精确版本 `jpeg-js@0.4.4`（Ark Seedream JPEG 回滚源码解码所必需）。
+7. 发布函数。
 
 ## Deploy From GitHub Actions
 
@@ -37,6 +38,8 @@
 - `LAF_PAT`: Laf 个人访问凭证。
 - `LAF_SERVER`: Laf API 服务地址，可选；不配置时默认 `https://api.laf.run`。
 
+手动触发时必须在非 Secret 输入 `laf_jpeg_js_dependency_version` 中填写精确值 `0.4.4`。该输入只是“Laf 应用已配置 custom dependency”的失败关闭确认；workflow **does not install or provision** `jpeg-js`，版本不匹配时会在 `laf func push` 前拒绝发布。
+
 第一次不要改成 push 自动部署。先在 GitHub Actions 页面手动运行 `Deploy Laf Functions`，确认 `paperbanana-api` 能正常发布并通过 health 检查后，再考虑自动化。
 
 ## Release Checklist
@@ -48,10 +51,11 @@
 - `OPTIONS` 预检请求正常返回。
 - 发布后先调用 `health` 动作确认 `{ runtime: "laf" }`。
 - Laf custom dependency 已安装 `@resvg/resvg-wasm`，用于服务端栅格化 SVG 参考图。
+- Laf custom dependency 已安装精确版本 `jpeg-js@0.4.4`，用于 Ark Seedream JPEG 解码；源码推送不会安装它。
 
 ## Notes
 
 - 用户填写的模型 API Key 只在单次任务执行闭包中使用，不写入数据库。
 - `modelRegistry` v2 是多端模型列表和精修能力的权威；客户端不得从 provider 或模型名猜测图生图。`direct-edit` 必须传入源图，`analyze-redraw` 则是明示的分析后重绘。
 - 不要把真实 `ADMIN_TOKEN` 或其他密钥提交到仓库。
-- `@lafjs/cloud` 由 Laf 运行时提供；`@resvg/resvg-wasm` 由 Laf custom dependency 提供，本目录不单独安装依赖。
+- `@lafjs/cloud` 由 Laf 运行时提供；`@resvg/resvg-wasm` 与精确版本 `jpeg-js@0.4.4` 由 Laf custom dependency 提供，本目录和 source-push workflow 都不安装这些依赖。

@@ -14,6 +14,10 @@ on:
         description: Source file path in this repository.
         required: true
         default: apps/laf-functions/paperbanana-api.ts
+      laf_jpeg_js_dependency_version:
+        description: Confirm the Laf custom dependency is already configured as jpeg-js@0.4.4 by entering 0.4.4.
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -33,6 +37,7 @@ jobs:
       LAF_SERVER: ${{ secrets.LAF_SERVER }}
       FUNCTION_NAME: ${{ inputs.function_name || 'paperbanana-api' }}
       SOURCE_FILE: ${{ inputs.source_file || 'apps/laf-functions/paperbanana-api.ts' }}
+      LAF_JPEG_JS_DEPENDENCY_VERSION: ${{ inputs.laf_jpeg_js_dependency_version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,6 +52,7 @@ jobs:
           test -n "$LAF_APPID" || (echo "Missing GitHub secret: LAF_APPID" && exit 1)
           test -n "$LAF_PAT" || (echo "Missing GitHub secret: LAF_PAT" && exit 1)
           test -f "$SOURCE_FILE" || (echo "Missing source file: $SOURCE_FILE" && exit 1)
+          test "$LAF_JPEG_JS_DEPENDENCY_VERSION" = "0.4.4" || (echo "Refusing Laf source push: first configure custom dependency jpeg-js@0.4.4, then confirm version input 0.4.4" && exit 1)
 
       - name: Install Laf CLI
         run: npm install -g laf-cli@1.0.0-patch.0
