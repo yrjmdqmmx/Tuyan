@@ -40,13 +40,38 @@ test('reference cards separate preview and selection with article and button sem
   assert.match(source, /<ImagePreviewDialog/u);
 });
 
-test('App requests the complete gallery and CSS provides wide desktop plus mobile layouts', () => {
+test('App requests paginated bench results and CSS provides 3/2/1 responsive layouts', () => {
   const appSource = readSource('../src/App.jsx');
   const cssSource = readSource('../src/styles.css');
 
-  assert.match(appSource, /referenceLibraryRequest[\s\S]*limit:\s*295/u);
-  assert.match(cssSource, /\.reference-gallery-dialog\s*\{[\s\S]*width:\s*min\(1480px,/u);
-  assert.match(cssSource, /\.reference-library-grid\s*\{[\s\S]*repeat\(auto-fill,\s*minmax\(260px,\s*1fr\)\)/u);
+  assert.match(appSource, /buildReferencePageRequest/u);
+  assert.match(appSource, /referenceLibraryRequest\(apiBaseNormalized, health, \{ \.\.\.request, signal:/u);
+  assert.match(cssSource, /\.reference-library-grid\s*\{[\s\S]*repeat\(3,\s*minmax\(0,\s*1fr\)\)/u);
+  assert.match(cssSource, /\.reference-library-grid\s*\{[\s\S]*grid-auto-rows:\s*max-content/u);
+  assert.match(cssSource, /@media\s*\(max-width:\s*1100px\)[\s\S]*\.reference-library-grid[\s\S]*repeat\(2,/u);
   assert.match(cssSource, /@media\s*\(max-width:\s*720px\)[\s\S]*\.reference-gallery-dialog/u);
+  assert.match(cssSource, /@media\s*\(max-width:\s*720px\)[\s\S]*\.reference-library-grid[\s\S]*grid-template-columns:\s*1fr/u);
+  assert.match(cssSource, /\.reference-card-image-button img\s*\{[\s\S]*object-fit:\s*contain/u);
   assert.match(cssSource, /\.image-preview-dialog\s*\{/u);
 });
+
+test('gallery exposes facets, corpus metadata, persistent tray and complete preview controls', () => {
+  const gallery = readSource('../src/components/ReferenceLibraryPanel.jsx');
+  const preview = readSource('../src/components/ImagePreviewDialog.jsx');
+  assert.match(gallery, /corpusVersion/u);
+  assert.match(gallery, /visualCategories/u);
+  assert.match(gallery, /researchDomains/u);
+  assert.match(gallery, /reference-selection-tray/u);
+  assert.match(gallery, /清空/u);
+  assert.match(gallery, /确认选择/u);
+  assert.match(gallery, /总计.*totalItems/u);
+  assert.match(preview, /放大/u);
+  assert.match(preview, /缩小/u);
+  assert.match(preview, /重置/u);
+  assert.match(preview, /onWheel/u);
+  assert.match(preview, /detailZh/u);
+  assert.match(preview, /keywords/u);
+  assert.match(preview, /英文原文/u);
+  assert.match(preview, /上一张/u);
+  assert.match(preview, /下一张/u);
+})

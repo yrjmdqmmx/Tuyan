@@ -69,16 +69,20 @@ import AuthPanel from './components/AuthPanel';
 import AuthUnavailablePanel from './components/AuthUnavailablePanel';
 import ExampleTemplates from './components/ExampleTemplates';
 import FeedbackDialog from './components/FeedbackDialog';
+import GenerationSettingsDrawer from './components/GenerationSettingsDrawer';
 import GuidePanel from './components/GuidePanel';
 import JobStatus from './components/JobStatus';
 import JobTable from './components/JobTable';
+import ModelPicker from './components/ModelPicker';
 import ReferenceUploadPanel from './components/ReferenceUploadPanel';
 import Select from './components/Select';
 import TaskRecordsPanel from './components/TaskRecordsPanel';
 import { useAuthSession } from './hooks/useAuthSession';
 import { formatErrorMessage, formatOutputFormat, pollRetryDelay, shouldClearAuthForJobError } from './utils';
 import { INPUT_LIMITS, officialApiBase, shouldPollJob, validateApiBase } from './lib/runtimePolicy';
-import { mergeProviderRegistry, uniqueRegistryModels } from './lib/modelRegistry';
+import { mergeProviderRegistry, modelRefinePresentation, uniqueRegistryModels } from './lib/modelRegistry';
+import { buildReferencePageRequest } from './lib/referenceGallery';
+import { normalizeRefineSource, refineRequestSource } from './lib/refineSource';
 
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
@@ -92,6 +96,8 @@ export default function App() {
   const [contactQrFailed, setContactQrFailed] = useState(false);
   const [showAuthPanel, setShowAuthPanel] = useState(false);
   const [showAccountDialog, setShowAccountDialog] = useState(false);
+  const [showGenerationSettings, setShowGenerationSettings] = useState(false);
+  const [generationFocusSetting, setGenerationFocusSetting] = useState('');
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
   const [configurationMode, setConfigurationMode] = useState('simple');
   const [provider, setProvider] = useState('bailian');
@@ -114,6 +120,8 @@ export default function App() {
   const [retrievalSetting, setRetrievalSetting] = useState('none');
   const [manualReferenceIds, setManualReferenceIds] = useState([]);
   const [referenceLibrary, setReferenceLibrary] = useState([]);
+  const [referencePageInfo, setReferencePageInfo] = useState({ page: 1, pageSize: 12, totalItems: 0, totalPages: 1, facets: { visualCategories: [], researchDomains: [] }, corpusVersion: '' });
+  const referenceRequestRef = useRef({ sequence: 0, controller: null });
   const [referenceLibraryError, setReferenceLibraryError] = useState('');
   const [isLoadingReferenceLibrary, setIsLoadingReferenceLibrary] = useState(false);
   const [aspectRatio, setAspectRatio] = useState('16:9');
@@ -145,7 +153,7 @@ export default function App() {
   const [feedbackError, setFeedbackError] = useState('');
   const [feedbackSuccess, setFeedbackSuccess] = useState(false);
   const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
-  const [refineSourceUrl, setRefineSourceUrl] = useState('');
+  const [refineSource, setRefineSource] = useState({ url: '', objectKey: '' });
   const [refineInstruction, setRefineInstruction] = useState('');
   const [refineImageSize, setRefineImageSize] = useState('2K');
   const [refineAspectRatio, setRefineAspectRatio] = useState('16:9');
@@ -178,6 +186,7 @@ export default function App() {
     : [];
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
   const activeImageRegistryEntry = providerConfig.registryModels?.find((model) => model.id === activeImageGenModelName);
+  const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
   const resolutionValues = activeImageRegistryEntry?.capabilities?.resolutions?.length
     ? activeImageRegistryEntry.capabilities.resolutions
     : supportedResolutions(provider, activeImageGenModelName);
@@ -199,6 +208,7 @@ export default function App() {
         ? '当前主模型支持图像理解，将用主模型直读参考图。'
         : '当前主模型为文本模型，将使用独立识别模型读取参考图。')
     : '';
+  const generationConfigSummary = `${providerConfig.label} · ${findModelLabel(providerConfig.imageModels, activeImageGenModelName)} · ${isAdvancedMode ? `${aspectRatio} / ${imageSize}` : `16:9 / ${imageSize}`} · ${formatOutputFormat(outputFormat)}`;
 
   useEffect(() => {
     let cancelled = false;
@@ -369,27 +379,13 @@ export default function App() {
   }, [apiBaseNormalized, currentJobId, health, pollRetryNonce]);
 
   useEffect(() => {
-    setManualReferenceIds([]);
-    setReferenceLibrary([]);
-    setReferenceLibraryError('');
-  }, [isPlotCategory]);
-
-  useEffect(() => {
     if (!isAdvancedMode || retrievalSetting !== 'manual' || referenceImages.length) return undefined;
     let cancelled = false;
-    loadReferenceLibrary({ silent: true, cancelledRef: () => cancelled });
+    loadReferenceLibrary({ silent: true, cancelledRef: () => cancelled, page: 1 });
     return () => {
       cancelled = true;
     };
-  }, [apiBaseNormalized, health, isAdvancedMode, retrievalSetting, isPlotCategory, referenceImages.length]);
-
-  const canSubmit = useMemo(() => {
-    const hasKey = selectedKey.trim();
-    const canMock = isAdvancedMode && mock && health?.mock_enabled;
-    const hasVisionModel = !needsReferenceVisionModel || Boolean((isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel)?.trim());
-    const hasManualReferences = !isAdvancedMode || retrievalSetting !== 'manual' || manualReferenceIds.length > 0;
-    return modelRegistryReady && authReady && hasManualReferences && hasVisionModel && !mainModelDirectUnsupported && (hasKey || canMock) && methodContent.trim().length >= 20 && caption.trim().length >= 3 && !isSubmitting && !isUploadingReferences;
-  }, [modelRegistryReady, authReady, selectedKey, methodContent, caption, isSubmitting, mock, health, isAdvancedMode, retrievalSetting, manualReferenceIds.length, needsReferenceVisionModel, referenceVisionModelName, providerConfig.visionModel, isUploadingReferences, mainModelDirectUnsupported]);
+  }, [apiBaseNormalized, health, isAdvancedMode, retrievalSetting, referenceImages.length]);
 
   useEffect(() => {
     if (!AUTH_ENABLED || !currentUser) return undefined;
@@ -562,16 +558,29 @@ export default function App() {
 
   async function loadReferenceLibrary(options = {}) {
     if (!options.silent) setReferenceLibraryError('');
+    const sequence = referenceRequestRef.current.sequence + 1;
+    referenceRequestRef.current.controller?.abort();
+    const controller = new AbortController();
+    referenceRequestRef.current = { sequence, controller };
     setIsLoadingReferenceLibrary(true);
     try {
-      const data = await referenceLibraryRequest(apiBaseNormalized, health, { taskName: isPlotCategory ? 'plot' : 'diagram', limit: 295 });
-      if (options.cancelledRef?.()) return;
+      const request = buildReferencePageRequest(options);
+      const data = await referenceLibraryRequest(apiBaseNormalized, health, { ...request, signal: controller.signal });
+      if (options.cancelledRef?.() || referenceRequestRef.current.sequence !== sequence) return;
       setReferenceLibrary(data.references || []);
+      setReferencePageInfo({
+        page: data.page,
+        pageSize: data.pageSize,
+        totalItems: data.totalItems,
+        totalPages: data.totalPages,
+        facets: data.facets,
+        corpusVersion: data.corpusVersion,
+      });
     } catch (err) {
-      if (options.cancelledRef?.()) return;
+      if (options.cancelledRef?.() || err.name === 'AbortError' || referenceRequestRef.current.sequence !== sequence) return;
       setReferenceLibraryError(err.message);
     } finally {
-      if (!options.cancelledRef?.()) setIsLoadingReferenceLibrary(false);
+      if (!options.cancelledRef?.() && referenceRequestRef.current.sequence === sequence) setIsLoadingReferenceLibrary(false);
     }
   }
 
@@ -587,6 +596,33 @@ export default function App() {
     event.preventDefault();
     setError('');
     setErrorContext('');
+    const missingSetting = firstMissingGenerationSetting({
+      modelRegistryReady,
+      selectedKey,
+      canMock: isAdvancedMode && mock && health?.mock_enabled,
+      isAdvancedMode,
+      retrievalSetting,
+      manualReferenceIds,
+      needsReferenceVisionModel,
+      referenceVisionModelName: isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel,
+      mainModelDirectUnsupported,
+      activeMainModelName,
+      activeImageGenModelName,
+      outputFormat,
+      registryModels: providerConfig.registryModels,
+    });
+    if (missingSetting) {
+      setGenerationFocusSetting(missingSetting.setting);
+      setShowGenerationSettings(true);
+      setError(missingSetting.message);
+      setErrorContext('configuration');
+      return;
+    }
+    if (methodContent.trim().length < 20 || caption.trim().length < 3) {
+      setError(methodContent.trim().length < 20 ? '论文方法内容至少需要 20 个字符。' : '目标图注至少需要 3 个字符。');
+      setErrorContext('input');
+      return;
+    }
     setIsSubmitting(true);
     setJob(null);
     latestJobRef.current = null;
@@ -700,7 +736,7 @@ export default function App() {
     latestJobRef.current = null;
     setJob(null);
     setUserJobs([]);
-    setRefineSourceUrl('');
+    setRefineSource({ url: '', objectKey: '' });
     setRefineInstruction('');
     setRefineError('');
     setError('');
@@ -767,8 +803,8 @@ export default function App() {
     }
   }
 
-  function useResultForRefine(url) {
-    setRefineSourceUrl(url);
+  function useResultForRefine(url, image) {
+    setRefineSource(normalizeRefineSource(url, image));
     setRefineInstruction('');
     setRefineError('');
     setActiveTab('refine');
@@ -788,7 +824,7 @@ export default function App() {
         mainModelName: activeMainModelName,
         imageModelName: activeImageGenModelName,
         referenceVisionModelName: isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel,
-        sourceImageUrl: refineSourceUrl,
+        ...refineRequestSource(refineSource),
         editInstruction: refineInstruction,
         aspectRatio: refineAspectRatio,
         imageSize: refineImageSize,
@@ -947,16 +983,18 @@ export default function App() {
 
       {activeTab === 'generate' ? (
         <section className="workspace">
-        <form className="generator" onSubmit={submitJob}>
-          <div className="section-head">
-            <Settings2 size={20} />
-            <div>
-              <h2>生成设置</h2>
-              <p>{isAdvancedMode ? '选择模型接口、生成流程和图像渲染参数。' : '选择模型平台并粘贴 API 密钥。'}</p>
-            </div>
+        <form className="generation-form" onSubmit={submitJob}>
+          <div className="generation-toolbar">
+            <button type="button" className="generation-settings-trigger" onClick={() => { setGenerationFocusSetting(''); setShowGenerationSettings(true) }}><Settings2 size={18} /><span>生成设置</span></button>
+            <div className="generation-config-summary" aria-label="当前生成配置"><span>当前配置</span><strong>{generationConfigSummary}</strong></div>
+            <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences}>
+              {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isUploadingReferences ? '上传参考图' : '生成候选图'}
+            </button>
           </div>
 
-          <div className="field">
+          <GenerationSettingsDrawer open={showGenerationSettings} onClose={() => setShowGenerationSettings(false)} focusSetting={generationFocusSetting}>
+
+          <div className="field" data-focus-setting="configuration-mode" tabIndex={-1}>
             <span>使用模式</span>
             <div className="mode-switch" role="tablist" aria-label="使用模式">
               <button
@@ -980,7 +1018,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="field">
+          <div className="field" data-focus-setting="provider" tabIndex={-1}>
             <span>{isAdvancedMode ? '模型接口' : '模型平台'}</span>
             <div className="segmented">
               {Object.entries(PROVIDERS).map(([id, item]) => (
@@ -1003,7 +1041,7 @@ export default function App() {
             <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />
           </div>
 
-          <details className="api-keys-panel" open>
+          <details className="api-keys-panel" data-focus-setting="api-key" open>
             <summary><KeyRound size={17} /> API 密钥</summary>
             <p>不需要填写全部密钥，只填当前选中的模型接口即可。</p>
             <label className="field">
@@ -1078,16 +1116,16 @@ export default function App() {
               </div>
 
               <div className="model-grid">
-                <Select label="主模型" value={mainModelName} onChange={setMainModelName} options={providerConfig.mainModels} />
-                <Select label="图像生成模型" value={imageGenModelName} onChange={setImageGenModelName} options={providerConfig.imageModels} />
+                <ModelPicker label="主模型" role="main" provider={provider} models={providerConfig.registryModels || []} value={mainModelName} onChange={setMainModelName} focusSetting="main-model" />
+                <ModelPicker label="图像生成模型" role="image" provider={provider} models={providerConfig.registryModels || []} value={imageGenModelName} outputFormat={outputFormat} onChange={setImageGenModelName} focusSetting="image-model" />
                 {referenceImages.length && referenceImageMode === 'main_model' ? null : (
-                  <Select label="参考图识别模型" value={referenceVisionModelName} onChange={setReferenceVisionModelName} options={providerConfig.visionModels || []} />
+                  <ModelPicker label="参考图识别模型" role="vision" provider={provider} models={providerConfig.registryModels || []} value={referenceVisionModelName} onChange={setReferenceVisionModelName} focusSetting="vision-model" />
                 )}
               </div>
               {selectedModelNotes.length ? (
                 <div className="model-availability-notes" aria-label="模型可用性说明">
                   {selectedModelNotes.map((model) => (
-                    <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{model.availabilityNotes}</span>
+                    <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{model.availabilityNotes || '服务端目录可用'} · {formatLifecycle(model.lifecycle)}{model.requiresEntitlement ? ` · 权益：${model.entitlement || '需开通'}` : ' · 无额外权益'}{model.roles?.includes('image') ? ` · ${modelRefinePresentation(model).label}` : ''}</span>
                   ))}
                 </div>
               ) : null}
@@ -1120,24 +1158,24 @@ export default function App() {
               ) : null}
 
               {retrievalSetting === 'manual' && !referenceImages.length ? (
+                <div data-focus-setting="manual-reference" tabIndex={-1}>
                 <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入参考图库</div>}>
                   <ReferenceLibraryPanel
                     references={referenceLibrary}
                     selectedIds={manualReferenceIds}
+                    pageInfo={referencePageInfo}
                     isLoading={isLoadingReferenceLibrary}
                     error={referenceLibraryError}
                     onToggle={toggleManualReference}
-                    onRefresh={() => loadReferenceLibrary()}
+                    onClear={() => setManualReferenceIds([])}
+                    onRequest={loadReferenceLibrary}
                   />
                 </Suspense>
+                </div>
               ) : null}
             </>
           )}
-
-          <button className="primary-button" type="submit" disabled={!canSubmit}>
-            {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}
-            {isUploadingReferences ? '上传参考图' : '生成候选图'}
-          </button>
+          </GenerationSettingsDrawer>
           {error ? (
             <div className="error-line">
               <AlertTriangle size={16} /> {formatErrorMessage(error, errorContext)}
@@ -1214,11 +1252,13 @@ export default function App() {
       ) : activeTab === 'refine' ? (
         <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
           <RefinePanel
-            sourceUrl={refineSourceUrl}
+            sourceUrl={refineSource.url}
+            sourceObjectKey={refineSource.objectKey}
+            capability={refineCapability}
             instruction={refineInstruction}
             imageSize={refineImageSize}
             aspectRatio={refineAspectRatio}
-            canSubmit={authReady && Boolean(selectedKey.trim()) && refineSourceUrl.trim().length > 0 && refineInstruction.trim().length >= 3 && !isSubmittingRefine}
+            canSubmit={authReady && Boolean(selectedKey.trim()) && Boolean(refineSource.objectKey || refineSource.url) && refineInstruction.trim().length >= 3 && !isSubmittingRefine && refineCapability.mode !== 'none'}
             isSubmitting={isSubmittingRefine}
             error={refineError}
             job={job}
@@ -1313,6 +1353,42 @@ function extensionForMimeType(mimeType) {
 function findModelLabel(options, value) {
   const option = options.find(([id]) => id === value);
   return option ? option[1] : value;
+}
+
+function formatLifecycle(value) {
+  if (value === 'preview') return '预览版';
+  if (value === 'legacy') return '旧版维护';
+  if (value === 'invite-only') return '邀请制';
+  if (value === 'deprecated') return '即将下线';
+  return '稳定版';
+}
+
+function firstMissingGenerationSetting({
+  modelRegistryReady,
+  selectedKey,
+  canMock,
+  isAdvancedMode,
+  retrievalSetting,
+  manualReferenceIds,
+  needsReferenceVisionModel,
+  referenceVisionModelName,
+  mainModelDirectUnsupported,
+  activeMainModelName,
+  activeImageGenModelName,
+  outputFormat,
+  registryModels,
+}) {
+  if (!modelRegistryReady) return { setting: 'provider', message: '模型目录尚未就绪，请重试后选择模型平台。' };
+  if (!selectedKey.trim() && !canMock) return { setting: 'api-key', message: '请填写当前模型平台的 API 密钥。' };
+  const main = registryModels?.find((model) => model.id === activeMainModelName);
+  if (!main || main.selectable === false || !main.roles?.includes('main')) return { setting: 'main-model', message: main?.disabledReason || '请选择可用的主模型。' };
+  const image = registryModels?.find((model) => model.id === activeImageGenModelName);
+  if (!image || image.selectable === false || !image.roles?.includes('image')) return { setting: 'image-model', message: image?.disabledReason || '请选择可用的图像生成模型。' };
+  if (image.capabilities?.outputFormats?.length && !image.capabilities.outputFormats.includes(outputFormat)) return { setting: 'image-model', message: `当前图像模型不支持 ${outputFormat.toUpperCase()} 输出。` };
+  if (isAdvancedMode && retrievalSetting === 'manual' && !manualReferenceIds.length) return { setting: 'manual-reference', message: '手动参考模式至少需要选用一个案例。' };
+  if (needsReferenceVisionModel && !referenceVisionModelName?.trim()) return { setting: 'vision-model', message: '请选择参考图识别模型。' };
+  if (mainModelDirectUnsupported) return { setting: 'main-model', message: '当前主模型不能直接读取参考图，请更换模型或处理方式。' };
+  return null;
 }
 
 function describeReferenceCapability(capability) {

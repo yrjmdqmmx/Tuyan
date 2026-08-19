@@ -92,7 +92,7 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
           { id: 'stage-1', candidateId: 0, type: 'planner', title: 'Planner', text: 'plan' },
           { id: 'stage-2', candidateId: 0, type: 'critic', round: 1, text: 'revise spacing' },
         ],
-        resultImages: [{ filename: 'candidate.png', url: 'data:image/png;base64,AAAA', candidateId: 0 }],
+        resultImages: [{ filename: 'candidate.png', url: 'data:image/png;base64,AAAA', candidateId: 0, objectKey: 'jobs/job-2/result/candidate.png' }],
       },
     },
   }));
@@ -110,6 +110,7 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
     assert.equal(job.refine_reason, 'Refine used source pixels.');
     assert.equal(job.stages.length, 2);
     assert.equal(job.stages[1].type, 'critic');
+    assert.equal(job.result_images[0].object_key, 'jobs/job-2/result/candidate.png');
   } finally {
     fetchMock.restore();
   }
@@ -268,6 +269,20 @@ test('referenceLibraryRequest defaults new callers to the cross-task bench scope
     assert.equal(queried.totalItems, 306);
     assert.deepEqual(JSON.parse(fetchMock.calls[0].options.body), { action: 'referenceLibrary' });
     assert.deepEqual(JSON.parse(fetchMock.calls[1].options.body), { action: 'referenceLibrary', query: 'cell' });
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('referenceLibraryRequest forwards AbortSignal without serializing it', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, references: [] } }));
+  const controller = new AbortController();
+  try {
+    await referenceLibraryRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      scope: 'bench', page: 1, pageSize: 12, signal: controller.signal,
+    });
+    assert.equal(fetchMock.calls[0].options.signal, controller.signal);
+    assert.equal('signal' in JSON.parse(fetchMock.calls[0].options.body), false);
   } finally {
     fetchMock.restore();
   }

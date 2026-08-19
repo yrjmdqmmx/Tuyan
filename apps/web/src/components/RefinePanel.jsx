@@ -5,6 +5,8 @@ import Select from './Select';
 
 export default function RefinePanel({
   sourceUrl,
+  sourceObjectKey,
+  capability,
   instruction,
   imageSize,
   aspectRatio,
@@ -36,6 +38,11 @@ export default function RefinePanel({
         ) : (
           <div className="refine-source-empty">尚未选择图片。请从“生成结果”或“任务记录”点击“精修”。</div>
         )}
+        <div className={`refine-capability ${capability?.mode || 'none'}`}>
+          <strong>{capability?.directEdit ? '直接编辑' : capability?.mode === 'analyze-redraw' ? '分析后重绘' : '当前模型不支持精修'}</strong>
+          <span>{capability?.directEdit ? '所选图像模型会直接接收源图。' : capability?.mode === 'analyze-redraw' ? '系统先分析源图，再依据指令重新绘制。' : '请在生成设置中选择支持精修的图像模型。'}</span>
+          {sourceObjectKey ? <small>已锁定任务源文件，签名链接仅用于预览。</small> : null}
+        </div>
         <label className="field">
           <span>精修指令</span>
           <textarea value={instruction} onChange={(event) => onInstructionChange(event.target.value)} rows={8} placeholder="例如：放大标签、减少装饰、让流程箭头更清晰。" />

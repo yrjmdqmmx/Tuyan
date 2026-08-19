@@ -127,6 +127,7 @@ export async function referenceLibraryRequest(apiBase, health, opts = {}) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody),
+      signal: opts.signal,
     });
     const references = (data.references || []).map(normalizeRetrievedReference);
     const pageSize = positiveInteger(data.pageSize)
@@ -429,6 +430,7 @@ function normalizeJob(job = {}) {
     result_image_count: job.result_image_count || job.resultImageCount || (job.result_images || job.resultImages || []).length || 0,
     result_images: (job.result_images || job.resultImages || []).map((image, index) => ({
       filename: image.filename || image.url || `${index}`,
+      object_key: image.object_key || image.objectKey || '',
       url: image.url,
       storage: image.storage || '',
       candidate_id: image.candidate_id ?? image.candidateId ?? index,
