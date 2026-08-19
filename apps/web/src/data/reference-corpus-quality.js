@@ -1,0 +1,92 @@
+export const PAPERBANANA_BENCH_V2_DIAGRAM_NUMBERS = Object.freeze([
+  240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256,
+  257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273,
+  274, 275, 276, 278, 279, 280, 281, 282, 283, 285, 286, 287, 288, 289, 290, 291, 292,
+  293, 294, 295, 296, 297, 298, 299, 301, 302, 303, 304, 305, 306, 307, 308,
+]);
+
+export const PAPERBANANA_BENCH_V2_IDS = Object.freeze([
+  ...Array.from({ length: 240 }, (_, index) => `ref_${index}`),
+  ...PAPERBANANA_BENCH_V2_DIAGRAM_NUMBERS.map((index) => `ref_${index}`),
+]);
+
+const EXPECTED_ID_SET = new Set(PAPERBANANA_BENCH_V2_IDS);
+const REQUIRED_TEXT_FIELDS = [
+  'id', 'taskName', 'titleZh', 'shortIntroZh', 'detailZh', 'visualCategory', 'researchDomain',
+];
+const containsChinese = (value) => /[\u3400-\u9fff]/u.test(String(value || ''));
+const latinShare = (value) => {
+  const text = String(value || '').replace(/\s/gu, '');
+  return text ? (text.match(/[A-Za-z]/gu)?.length || 0) / text.length : 0;
+};
+
+export function validateReferenceCorpusV2(corpus) {
+  const errors = [];
+  if (!Array.isArray(corpus)) return [{ code: 'invalid_corpus', message: 'corpus must be an array' }];
+
+  const frequencies = new Map();
+  for (const item of corpus) {
+    const id = String(item?.id || '').trim();
+    frequencies.set(id, (frequencies.get(id) || 0) + 1);
+  }
+  for (const id of PAPERBANANA_BENCH_V2_IDS) {
+    if (!frequencies.has(id)) errors.push({ code: 'missing_id', id, message: `${id} is missing` });
+  }
+  for (const [id, count] of frequencies) {
+    if (count > 1) errors.push({ code: 'duplicate_id', id, message: `${id} occurs ${count} times` });
+    if (id && !EXPECTED_ID_SET.has(id)) errors.push({ code: 'unexpected_id', id, message: `${id} is not part of v2` });
+  }
+
+  const introFrequencies = new Map();
+  const sentenceFrequencies = new Map();
+  for (const item of corpus) {
+    const id = String(item?.id || '').trim() || '(unknown)';
+    for (const field of REQUIRED_TEXT_FIELDS) {
+      if (!String(item?.[field] || '').trim()) errors.push({ code: 'empty_facet', id, field, message: `${id}.${field} is empty` });
+    }
+    if (!Array.isArray(item?.keywords) || item.keywords.length < 2 || item.keywords.some((keyword) => !String(keyword).trim())) {
+      errors.push({ code: 'empty_keywords', id, message: `${id}.keywords needs at least two nonempty values` });
+    }
+    if (item?.taskName && item.taskName !== 'plot' && item.taskName !== 'diagram') {
+      errors.push({ code: 'invalid_task', id, message: `${id}.taskName is invalid` });
+    }
+    if (item?.taskName === 'plot' && !/^ref_(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-3][0-9])$/u.test(id)) {
+      errors.push({ code: 'wrong_split', id, message: `${id} cannot be a plot` });
+    }
+    if (item?.taskName === 'diagram' && !PAPERBANANA_BENCH_V2_DIAGRAM_NUMBERS.includes(Number(id.slice(4)))) {
+      errors.push({ code: 'wrong_split', id, message: `${id} cannot be a diagram` });
+    }
+    for (const field of ['titleZh', 'shortIntroZh', 'detailZh']) {
+      if (item?.[field] && !containsChinese(item[field])) errors.push({ code: 'missing_chinese', id, field, message: `${id}.${field} needs Chinese copy` });
+    }
+    const shortIntro = String(item?.shortIntroZh || '').trim();
+    const detail = String(item?.detailZh || '').trim();
+    const title = String(item?.titleZh || '').trim();
+    if (title.length > 64) errors.push({ code: 'long_title', id, message: `${id}.titleZh is too long` });
+    if (shortIntro.length < 24 || !/[。！？]$/u.test(shortIntro)) errors.push({ code: 'short_intro', id, message: `${id}.shortIntroZh is incomplete` });
+    if (shortIntro.length > 120) errors.push({ code: 'long_intro', id, message: `${id}.shortIntroZh is too long` });
+    if (detail.length < 64 || !/[。！？]$/u.test(detail)) errors.push({ code: 'short_detail', id, message: `${id}.detailZh is incomplete` });
+    if (/^聚焦/u.test(shortIntro)) errors.push({ code: 'focus_prefix', id, message: `${id}.shortIntroZh starts with 聚焦` });
+    if (/(?:\.\.\.|…)/u.test(`${item?.titleZh || ''}${shortIntro}${detail}`)) errors.push({ code: 'ellipsis', id, message: `${id} contains an ellipsis placeholder` });
+    if (latinShare(title) > 0.45 || latinShare(shortIntro) > 0.35 || latinShare(detail) > 0.25) {
+      errors.push({ code: 'latin_leakage', id, message: `${id} leaks excessive source English into visible Chinese copy` });
+    }
+    if (shortIntro) introFrequencies.set(shortIntro, (introFrequencies.get(shortIntro) || 0) + 1);
+    for (const sentence of `${shortIntro}${detail}`.split(/(?<=[。！？])/u).map((value) => value.trim()).filter((value) => value.length >= 12)) {
+      sentenceFrequencies.set(sentence, (sentenceFrequencies.get(sentence) || 0) + 1);
+    }
+  }
+  for (const [intro, count] of introFrequencies) {
+    if (count > 1) errors.push({ code: 'generic_intro', message: `introduction is reused ${count} times`, value: intro });
+  }
+  for (const [sentence, count] of sentenceFrequencies) {
+    if (count > 2) errors.push({ code: 'generic_sentence', message: `visible sentence is reused ${count} times`, value: sentence });
+  }
+  if (corpus.filter(({ taskName }) => taskName === 'plot').length !== 240) {
+    errors.push({ code: 'wrong_split_count', taskName: 'plot', message: 'v2 needs exactly 240 plots' });
+  }
+  if (corpus.filter(({ taskName }) => taskName === 'diagram').length !== 66) {
+    errors.push({ code: 'wrong_split_count', taskName: 'diagram', message: 'v2 needs exactly 66 diagrams' });
+  }
+  return errors;
+}
