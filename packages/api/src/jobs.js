@@ -160,6 +160,7 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
       body: JSON.stringify({
         action: 'refineImage',
         clientPlatform: CLIENT_PLATFORM,
+        configurationMode: payload.configurationMode,
         provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
         apiKeys: payload.apiKeys,
         modelRoutes: payload.modelRoutes,
@@ -246,6 +247,24 @@ export async function modelRegistryRequest(apiBase, health, provider = '') {
     });
   }
   throw new Error('当前后端不支持服务端模型目录。');
+}
+
+export async function providerAccountCatalogRequest(apiBase, health, payload = {}) {
+  if (payload.provider !== 'ark') throw new Error('账号模型验证仅支持 Ark。');
+  if (!Array.isArray(payload.probes)) throw new Error('Ark 验证模型列表必须是数组。');
+  if (payload.probes.length > 3) throw new Error('Ark 每次最多验证 3 个模型。');
+  if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('Ark 模型验证需要使用 Laf 或登录网关后端。');
+  return fetchJson(lafEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'providerAccountCatalog',
+      provider: 'ark',
+      apiKeys: { ark: payload.apiKeys?.ark || '' },
+      probes: payload.probes,
+      confirmPaidImageProbe: payload.confirmPaidImageProbe === true,
+    }),
+  });
 }
 
 export async function getJobRequest(apiBase, health, jobId, options = {}) {

@@ -1,4 +1,4 @@
-import { AlertTriangle, ImagePlus, Loader2, Send } from 'lucide-react';
+import { AlertTriangle, ImagePlus, Loader2, Send, Settings2 } from 'lucide-react';
 import { formatErrorMessage } from '../utils';
 import JobStatus from './JobStatus';
 import Select from './Select';
@@ -10,6 +10,7 @@ export default function RefinePanel({
   instruction,
   imageSize,
   aspectRatio,
+  settingsSummary,
   canSubmit,
   isSubmitting,
   error,
@@ -18,6 +19,7 @@ export default function RefinePanel({
   onInstructionChange,
   onImageSizeChange,
   onAspectRatioChange,
+  onOpenSettings,
   onSubmit,
 }) {
   return (
@@ -42,6 +44,10 @@ export default function RefinePanel({
           <strong>{capability?.directEdit ? '直接编辑' : capability?.mode === 'analyze-redraw' ? '分析后重绘' : '当前模型不支持精修'}</strong>
           <span>{capability?.directEdit ? '所选图像模型会直接接收源图。' : capability?.mode === 'analyze-redraw' ? '系统先分析源图，再依据指令重新绘制。' : '请在生成设置中选择支持精修的图像模型。'}</span>
           {sourceObjectKey ? <small>已锁定任务源文件，签名链接仅用于预览。</small> : null}
+        </div>
+        <div className="refine-routing-summary" aria-label="精修模型路由">
+          <div><span>当前精修路由</span><strong>{settingsSummary}</strong></div>
+          <button type="button" className="generation-settings-trigger" onClick={onOpenSettings}><Settings2 size={17} /> 精修设置</button>
         </div>
         <label className="field">
           <span>精修指令</span>

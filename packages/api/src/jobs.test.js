@@ -9,6 +9,7 @@ import {
   formatClientPlatform,
   getJobRequest,
   modelRegistryRequest,
+  providerAccountCatalogRequest,
   referenceLibraryRequest,
   refineImageRequest,
   userJobsRequest,
@@ -222,6 +223,7 @@ test('job requests forward explicit multi-provider model routes unchanged with t
       maxCriticRounds: 1,
     });
     await refineImageRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      configurationMode: 'advanced',
       provider: 'openai',
       apiKeys: { openai: 'openai-key', bailian: 'bailian-key', gemini: 'gemini-key' },
       modelRoutes,
@@ -236,6 +238,7 @@ test('job requests forward explicit multi-provider model routes unchanged with t
 
     for (const call of fetchMock.calls) {
       const body = JSON.parse(call.options.body);
+      assert.equal(body.configurationMode, 'advanced');
       assert.equal(body.provider, 'openai');
       assert.deepEqual(body.modelRoutes, modelRoutes);
       assert.equal(body.mainModelName, 'gpt-5.6-sol');
@@ -243,6 +246,67 @@ test('job requests forward explicit multi-provider model routes unchanged with t
       assert.equal(body.referenceVisionModelName, 'gemini-3.7-flash');
       assert.notEqual(body.provider, 'mixed');
     }
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('providerAccountCatalogRequest sends only explicit bounded Ark inference probes', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    provider: 'ark',
+    accountCatalogAvailable: false,
+    catalogAuth: 'access-key-required',
+    verificationMode: 'inference-smoke',
+    providerRegistry: { accessKind: 'aggregator', models: [] },
+    probeResults: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428', state: 'verified' }],
+  } }));
+  try {
+    const result = await providerAccountCatalogRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      provider: 'ark',
+      apiKeys: { ark: 'ark-secret' },
+      probes: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }],
+      confirmPaidImageProbe: false,
+    });
+
+    const body = JSON.parse(fetchMock.calls[0].options.body);
+    assert.deepEqual(body, {
+      action: 'providerAccountCatalog',
+      provider: 'ark',
+      apiKeys: { ark: 'ark-secret' },
+      probes: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }],
+      confirmPaidImageProbe: false,
+    });
+    assert.equal(result.accountCatalogAvailable, false);
+    assert.equal(result.catalogAuth, 'access-key-required');
+    assert.equal(result.verificationMode, 'inference-smoke');
+    assert.equal(result.probeResults[0].state, 'verified');
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('providerAccountCatalogRequest rejects non-Ark and over-broad probes before transport', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0 } }));
+  try {
+    await assert.rejects(
+      providerAccountCatalogRequest('https://gateway.example', { backendMode: 'gateway' }, {
+        provider: 'bailian', apiKeys: { bailian: 'key' }, probes: [],
+      }),
+      /Ark/,
+    );
+    await assert.rejects(
+      providerAccountCatalogRequest('https://gateway.example', { backendMode: 'gateway' }, {
+        provider: 'ark', apiKeys: { ark: 'key' }, probes: [
+          { role: 'main', modelId: 'one' },
+          { role: 'image', modelId: 'two' },
+          { role: 'vision', modelId: 'three' },
+          { role: 'main', modelId: 'four' },
+        ],
+      }),
+      /3/,
+    );
+    assert.equal(fetchMock.calls.length, 0);
   } finally {
     fetchMock.restore();
   }

@@ -72,7 +72,7 @@ test('rendered SVG submit ignores the image model format because the main model 
 
 test('rendered OpenRouter full catalog shows incompatible image entries disabled with the server reason', async () => {
   const user = userEvent.setup()
-  render(React.createElement(ModelPicker, {
+  const { container } = render(React.createElement(ModelPicker, {
     label: '图像生成模型',
     role: 'image',
     provider: 'openrouter',
@@ -81,16 +81,87 @@ test('rendered OpenRouter full catalog shows incompatible image entries disabled
     onChange() {},
     models: [
       { id: 'compatible', label: 'Compatible Model', vendor: 'OpenAI', roles: ['image'], selectable: true, recommended: true, outputModalities: ['image'], capabilities: { outputFormats: ['png'] } },
-      { id: 'blocked', label: 'Blocked Model', vendor: 'Google', roles: [], selectable: false, protocol: 'openrouter-images', outputModalities: ['image'], disabledReason: '未声明 PNG/SVG 输出' },
+      ...Array.from({ length: 26 }, (_, index) => ({ id: `blocked-${index}`, label: `Blocked Model ${index}`, vendor: 'Google', roles: [], selectable: false, protocol: 'openrouter-images', outputModalities: ['image'], disabledReason: '未声明 PNG/SVG 输出' })),
     ],
   }))
 
   await user.click(screen.getByRole('button', { name: '图像生成模型' }))
   await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
-  const blocked = screen.getByText('Blocked Model').closest('button')
+  assert.equal(container.querySelector('.model-incompatible .model-option'), null)
+  await user.click(screen.getByText(/暂不兼容/))
+  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 24)
+  await user.click(screen.getByRole('button', { name: /显示更多不兼容模型/ }))
+  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 26)
+  const blocked = screen.getByText('Blocked Model 0').closest('button')
   assert.ok(blocked)
   assert.equal(blocked.disabled, true)
   assert.match(blocked.textContent, /未声明 PNG\/SVG 输出/)
+})
+
+test('rendered route picker shows vendor rail only for aggregator access channels', async () => {
+  const user = userEvent.setup()
+  render(React.createElement(ModelPicker, {
+    label: '主模型', role: 'main', outputFormat: 'png',
+    route: { accessProvider: 'openrouter', modelId: 'openai/gpt' },
+    onRouteChange() {},
+    providerConfigs: { openrouter: { label: 'OpenRouter' }, openai: { label: 'OpenAI' } },
+    registry: {
+      providers: {
+        openrouter: { accessKind: 'aggregator', models: [
+          { id: 'openai/gpt', label: 'GPT', vendor: 'OpenAI', roles: ['main'], selectable: true, recommended: true },
+          { id: 'sourceful/other', label: 'Other', vendor: 'Sourceful', roles: ['main'], selectable: true },
+        ] },
+        openai: { accessKind: 'direct', models: [{ id: 'gpt', label: 'Direct GPT', vendor: 'OpenAI', roles: ['main'], selectable: true, entitlement: 'usage-tier', availabilityNotes: '需开通组织用量等级' }] },
+      },
+    },
+  }))
+
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  assert.ok(screen.getByRole('navigation', { name: 'API 接入渠道' }))
+  assert.ok(screen.getByRole('navigation', { name: '模型开发厂商' }))
+  assert.equal(screen.queryByRole('button', { name: '厂商 Sourceful' }), null)
+  await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
+  assert.ok(screen.getByRole('button', { name: '厂商 Sourceful' }))
+  await user.click(screen.getByRole('button', { name: 'OpenAI' }))
+  assert.equal(screen.queryByRole('navigation', { name: '模型开发厂商' }), null)
+  assert.ok(screen.getByText('Direct GPT'))
+  assert.ok(screen.getByText(/usage-tier/))
+  assert.ok(screen.getByText(/需开通组织用量等级/))
+})
+
+test('rendered mobile route picker replaces settings content and supports layered back navigation', async () => {
+  const previousMatchMedia = window.matchMedia
+  window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} })
+  try {
+    render(React.createElement(ModelPicker, {
+      label: '图像生成模型', role: 'image', outputFormat: 'png',
+      route: { accessProvider: 'openrouter', modelId: 'sourceful/image' },
+      onRouteChange() {},
+      providerConfigs: { openrouter: { label: 'OpenRouter' }, openai: { label: 'OpenAI' } },
+      registry: {
+        providers: {
+          openrouter: { accessKind: 'aggregator', models: [{ id: 'sourceful/image', label: 'Riverflow', vendor: 'Sourceful', roles: ['image'], selectable: true }] },
+          openai: { accessKind: 'direct', models: [{ id: 'gpt-image', label: 'GPT Image', vendor: 'OpenAI', roles: ['image'], selectable: true }] },
+        },
+      },
+    }))
+    const trigger = screen.queryByRole('button', { name: '图像生成模型' })
+    assert.ok(trigger, 'model route trigger should render')
+    fireEvent.click(trigger)
+    assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'mobile opens at provider layer')
+    assert.equal(screen.queryByRole('region', { name: '具体模型列表' }), null)
+    fireEvent.click(screen.queryByRole('button', { name: 'OpenRouter' }))
+    assert.ok(screen.queryByRole('heading', { name: '选择模型开发厂商' }), 'aggregator opens vendor layer')
+    fireEvent.click(screen.queryByRole('button', { name: /返回 API 接入渠道/ }))
+    assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'vendor back returns to provider layer')
+    fireEvent.click(screen.queryByRole('button', { name: 'OpenAI' }))
+    assert.ok(screen.queryByRole('heading', { name: '选择具体模型' }), 'direct provider skips vendor layer')
+    assert.ok(screen.getByText('GPT Image'))
+    fireEvent.click(screen.queryByRole('button', { name: /返回 API 接入渠道/ }))
+    assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'model back returns to provider layer for direct access')
+  } finally {
+    window.matchMedia = previousMatchMedia
+  }
 })
 
 test('rendered reference upload blocks file selection until advanced retrieval is set to none', () => {

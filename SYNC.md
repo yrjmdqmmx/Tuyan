@@ -32,7 +32,8 @@
 各端待办：
 - [x] provider egress（Core 精确 origin、SG ACL、HK smoke/monitor、负路径与密钥扫描测试）
 - [ ] 部署 / 运维（未发布；须先完成 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
-- [ ] Web / 原生端（未验证条目不得显示为账号可用）
+- [x] Web（仅将当前任务可达 Ark 角色在显式推理 probe 成功后视为可提交；不把静态目录冒充账号已开通）
+- [ ] 原生端（未验证条目不得显示为账号可用）
 
 ### [2026-08-19] Core Ark 适配器、账号推理验证与模型注册表 v3 — by Codex
 变更：Core 新增火山方舟（Ark）静态注册表、CN 数据面适配器和不冒充账号全量目录的 `providerAccountCatalog` 推理 smoke；同时更新 Gemini/OpenRouter/百炼当前默认项，并为所有 provider/model 补充访问类型、账号目录要求和官方来源元数据。本条不包含 Web、生产出口策略、原生端或部署。
@@ -44,7 +45,7 @@
 各端待办：
 - [x] paperbanana-api / Laf Core（注册表、适配器、账号推理验证、混合路由、TDD 与文档）
 - [x] packages-api / auth-gateway（账号目录 action 的安全转发与共享类型已在前序并行任务完成）
-- [ ] Web（消费 v3 元数据、显式触发账号 probe 与付费图片确认；未验证条目不得显示为账号可用）
+- [x] Web（消费 v3 元数据、显式触发账号 probe 与付费图片确认；未验证条目不得显示为账号可用）
 - [x] provider egress（登记 Ark CN origin，disabled 与负路径必须失败关闭；不得扩展到控制面/CDN）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需消费新注册表；旧请求继续兼容）
 - [ ] 部署 / 运维（未发布；须先完成出口策略、确认 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
@@ -59,7 +60,7 @@
 各端待办：
 - [x] paperbanana-api / Laf Core（解析、校验、持久化/公开 DTO、阶段路由、最小密钥闭包与回归测试）
 - [x] packages-api / auth-gateway（转发/归一 `modelRoutes`，保留旧字段与模型目录路由元数据；网关按写入主体安全转发 provider account catalog）
-- [ ] Web（专业模式支持分角色选 provider/model；普通模式仍单 provider）
+- [x] Web（专业模式支持分角色选 provider/model；普通模式仍单 provider）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续按需接入；旧请求保持兼容）
 - [ ] Ark adapter / registry / egress（后续独立任务，本次未实现）
 - [ ] 部署 / 运维（本次未发布，须等后续合并与联调）

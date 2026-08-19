@@ -29,6 +29,7 @@ export default function GenerationSettingsDrawer({ open, onClose, focusSetting =
     })
     const handleKeyDown = (event) => {
       if (event.key === 'Escape' && document.querySelector('.accessible-dialog-backdrop')) return
+      if (event.key === 'Escape' && document.querySelector('.model-route-backdrop')) return
       if (event.key === 'Escape') {
         event.preventDefault()
         onCloseRef.current()
