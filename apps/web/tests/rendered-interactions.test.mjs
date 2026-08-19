@@ -32,6 +32,7 @@ const bailianRegistry = {
 afterEach(() => {
   cleanup()
   document.body.innerHTML = ''
+  window.localStorage.clear()
 })
 
 test('rendered SVG submit ignores the image model format because the main model generates SVG', async () => {
@@ -111,6 +112,68 @@ test('rendered reference upload blocks file selection until advanced retrieval i
   fireEvent.change(input, { target: { files: [new window.File(['image'], 'reference.png', { type: 'image/png' })] } })
   assert.deepEqual(added, [])
 })
+
+for (const [retrievalValue, retrievalLabel] of [
+  ['auto', '自动检索'],
+  ['random', '随机参考'],
+  ['manual', '手动参考'],
+]) {
+  test(`rendered App keeps reference upload blocked for ${retrievalValue} retrieval until the user selects none`, async () => {
+    const requests = []
+    const previousFetch = globalThis.fetch
+    globalThis.fetch = async (input, init = {}) => {
+      const body = init.body ? JSON.parse(String(init.body)) : null
+      requests.push({ url: String(input), body })
+      if (!body) return Response.json({ code: 0, runtime: 'laf' })
+      if (body.action === 'modelRegistry') return Response.json({ code: 0, ...bailianRegistry })
+      if (body.action === 'referenceLibrary') {
+        return Response.json({
+          code: 0,
+          references: [],
+          page: 1,
+          pageSize: 12,
+          totalItems: 0,
+          totalPages: 1,
+          corpusVersion: 'zh-CN.v2',
+          facets: { visualCategories: [], researchDomains: [] },
+        })
+      }
+      throw new Error(`unexpected request ${JSON.stringify(body)}`)
+    }
+
+    try {
+      const user = userEvent.setup()
+      const { container } = render(React.createElement(App))
+      await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
+      await user.click(screen.getByRole('button', { name: '生成设置' }))
+      await user.click(screen.getByRole('button', { name: /专业模式/ }))
+
+      const retrieval = screen.getByLabelText('检索设置')
+      fireEvent.change(retrieval, { target: { value: retrievalValue } })
+      assert.equal(retrieval.value, retrievalValue)
+      assert.ok(screen.getByText(/请先将检索设置切换为“不使用检索”/))
+      if (retrievalValue === 'manual') {
+        await screen.findByRole('button', { name: /打开参考图库/ })
+      }
+
+      const fileInput = container.querySelector('.reference-upload-panel input[type="file"]')
+      assert.ok(fileInput)
+      assert.equal(fileInput.disabled, true)
+      fireEvent.change(fileInput, {
+        target: { files: [new window.File(['image'], `${retrievalValue}-reference.png`, { type: 'image/png' })] },
+      })
+      assert.equal(retrieval.value, retrievalValue, `${retrievalLabel} must not be changed silently`)
+      assert.equal(screen.queryByText(`${retrievalValue}-reference.png`), null)
+
+      fireEvent.change(retrieval, { target: { value: 'none' } })
+      assert.equal(retrieval.value, 'none')
+      assert.equal(fileInput.disabled, false)
+      assert.equal(screen.queryByText(/请先将检索设置切换为“不使用检索”/), null)
+    } finally {
+      globalThis.fetch = previousFetch
+    }
+  })
+}
 
 test('rendered model search resets both virtual state and a deeply scrolled DOM window', async () => {
   const models = Array.from({ length: 36 }, (_, index) => ({
