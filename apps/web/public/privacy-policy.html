@@ -71,17 +71,11 @@
 <body>
 <div class="wrap">
 
-  <div class="note">
-    <strong>⚠️ 初稿模板声明 / DRAFT TEMPLATE NOTICE</strong><br>
-    本文件为 PaperBanana iOS 应用隐私政策的<strong>初稿模板</strong>。正式发布前，必须经具备资质的法律专业人士审阅并定稿；本文不构成法律意见。<br>
-    This is a <strong>draft template</strong> of the PaperBanana iOS Privacy Policy. It must be reviewed and finalized by a qualified legal professional before release, and does not constitute legal advice.
-  </div>
-
   <h1>隐私政策 / Privacy Policy</h1>
 
   <div class="meta">
-    <p><strong>生效日期 / Effective Date:</strong> <span class="ph">2026-06-20</span></p>
-    <p><strong>最近更新 / Last Updated:</strong> <span class="ph">2026-06-20</span></p>
+    <p><strong>生效日期 / Effective Date:</strong> <span class="ph">2026-08-19</span></p>
+    <p><strong>最近更新 / Last Updated:</strong> <span class="ph">2026-08-19</span></p>
     <p><strong>运营方 / Operator:</strong> <span class="ph">赵鼎熠 / Zhao Dingyi</span></p>
     <p><strong>联系邮箱 / Contact Email:</strong> <span class="ph">yrjmdqmmx@gmail.com</span></p>
     <p><strong>官方网站 / Website:</strong> <a href="https://www.paperbanana.asia/">https://www.paperbanana.asia/</a></p>
@@ -90,7 +84,7 @@
   <p class="lang-sep">— 中文版 —</p>
 
   <h2>1. 引言</h2>
-  <p>PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员的 AI 学术论文配图与图表生成工具。您输入论文方法描述与图题，本应用通过后端多智能体流水线为您生成配图。本隐私政策说明我们在您使用本应用时如何收集、使用、存储、共享和保护您的个人信息，以及您对自己信息所享有的权利。使用本应用即表示您理解并同意本政策所述的信息处理方式。</p>
+  <p>PaperBanana（以下简称“本服务”或“我们”）是一款面向科研人员的 AI 学术论文配图与图表生成工具，可通过 Web、微信小程序、iOS、Android、Windows、macOS 与 HarmonyOS 客户端使用。本隐私政策说明我们如何处理您在各端使用本服务时提供的信息。</p>
 
   <h2>2. 我们收集的信息</h2>
   <p>我们仅收集为提供和改进本应用功能所必需的信息：</p>
@@ -108,14 +102,19 @@
   <ul>
     <li>当您提交反馈时，我们收集您填写的<strong>反馈内容文本</strong>、<strong>反馈类型</strong>，以及您<strong>可选填写的联系方式</strong>。若您在提交反馈时存在进行中的任务，反馈会一并附上该<strong>任务 ID</strong>，以便我们排查问题。</li>
   </ul>
-  <h3>2.4 设备本地缓存（不额外上传）</h3>
+  <h3>2.4 运行与安全信息</h3>
+  <ul>
+    <li>为保障登录安全、防止滥用和排查故障，我们会处理并限期保留请求的<strong>可信客户端 IP 地址</strong>、精简的 <strong>User-Agent</strong>、时间、状态码和任务 ID。</li>
+    <li>任务记录会保存规范化的 <strong>clientPlatform</strong>（如 web、miniprogram、ios、android、windows、macos、harmony），用于向您显示任务来源和定位跨端问题；历史任务可能显示“未记录”。</li>
+  </ul>
+  <h3>2.5 设备本地缓存（不额外上传）</h3>
   <ul>
     <li>为提升体验，本应用会在您的设备本机缓存<strong>最近的任务记录（JSON）</strong>和<strong>结果图（通过系统 URLCache）</strong>。这些是本地缓存，除生成与展示流程本身已涉及的传输外，不会被额外上传。</li>
   </ul>
-  <h3>2.5 关于您的第三方平台 API Key（重要）</h3>
+  <h3>2.6 关于您的第三方平台 API Key（重要）</h3>
   <ul>
-    <li>本应用采用 <strong>BYOK（自带密钥，Bring Your Own Key）</strong> 模式。您自行填入的第三方大模型平台 API Key <strong>仅存储在您设备本机的 iOS Keychain 中（仅限本设备、不随 iCloud 同步），不会上传到 PaperBanana 服务器，也不会被运营方存储</strong>。</li>
-    <li>在您发起生成任务时，该 API Key 会随请求经我们的网关<strong>转发</strong>给您所选择的第三方大模型平台，仅用于完成该次模型调用。我们不持久化保存您的 API Key。</li>
+    <li>本服务采用 <strong>BYOK（自带密钥，Bring Your Own Key）</strong> 模式。不同客户端会将 API Key 保存在其本地内存或系统安全存储中，具体能力取决于客户端平台。</li>
+    <li>在您发起生成任务时，该 API Key 会经 PaperBanana 网关和任务处理服务在内存中处理，并转发给您选择的第三方模型平台。我们<strong>不会持久化保存 API Key，也不会把它写入任务数据库或应用日志</strong>。</li>
     <li>请妥善保管您的 API Key，并对其安全及在第三方平台产生的用量与费用负责。</li>
   </ul>
 
@@ -140,15 +139,15 @@
   <ul>
     <li><strong>您选择哪个平台，您的生成输入就会被传输给哪个平台并由其处理。</strong> 这些第三方对您数据的收集、使用、留存与跨境传输，受其各自的隐私政策与服务条款约束，超出本应用的控制范围。</li>
     <li>我们建议您在使用前阅读所选平台的隐私政策，并避免在生成输入中提交敏感、保密或受合规约束的内容。</li>
-    <li>我们仅作为传输通道转发请求，不对第三方平台的数据处理行为承担责任。</li>
+    <li>OpenAI、Gemini 与 OpenRouter 请求会通过位于新加坡的受限模型出口节点建立不解密内容的 TLS CONNECT 通道；阿里云百炼与 OSS 不经过该出口。出口节点不保存 API Key、提示词、图片或完整 URL。</li>
   </ul>
 
   <h2>5. 数据存储位置与留存期限</h2>
   <ul>
-    <li>您的账号信息与任务记录存储于运营方托管的后端数据库（基于 Sealos 托管的 MongoDB，服务器位于 <span class="ph">中国杭州（Sealos 云）</span>）。</li>
+    <li>您的账号、任务记录与生成结果存储在运营方位于<strong>阿里云香港</strong>的主服务、MongoDB 与 OSS 中。</li>
     <li>我们仅在为实现本政策所述目的所必需的期间内保留您的信息。当您删除账号后，相关数据将按第 7 条所述被永久删除。</li>
     <li>本地缓存随您卸载本应用或在应用内清理而被清除。</li>
-    <li>跨境数据传输：当您选择的第三方大模型平台服务器位于其他国家/地区时，您的生成输入将发生跨境传输。<span class="ph">[如适用，请补充跨境传输的合规依据与说明]</span></li>
+    <li>跨境数据传输：当您主动选择境外第三方模型平台时，您的生成输入和 API Key 会传输到该平台所在国家或地区。请在提交前确认您有权进行该传输。</li>
   </ul>
 
   <h2>6. 您的权利</h2>
@@ -170,13 +169,13 @@
     <li>您的所有任务记录与生成结果；</li>
     <li>您提交的反馈；</li>
     <li>您上传的参考图；</li>
-    <li>您已保存的模板；</li>
     <li>本设备本机保存的 API Key 等本地数据。</li>
   </ul>
   <p><strong>此操作不可恢复。</strong> 删除完成后，服务端将清除您的会话并真删账号，本应用将自动退回未登录状态。该入口呼应 Apple App Store 审核指南 5.1.1(v) 对应用内账号删除的要求。</p>
+  <p>若账号仍有运行中的生成任务或尚未失效的参考图直传链接，服务会先冻结该账号的新任务与新上传，等待任务结束或上传链接失效后再完成清理；在清理完成前不会删除登录账号，您可按页面提示重试。</p>
 
   <h2>8. 数据安全</h2>
-  <p>我们采取合理的技术与管理措施保护您的信息，包括：通过 HTTPS 加密传输数据、密码以哈希形式存储、API Key 仅存于设备本机 Keychain 而不上传服务器、会话凭据通过安全 Cookie 管理等。但请注意，没有任何一种传输或存储方式能保证绝对安全，您理解并接受使用本服务存在的固有风险。</p>
+  <p>我们采取合理的技术与管理措施保护您的信息，包括 HTTPS 加密传输、密码哈希、HttpOnly 会话 Cookie、受限海外模型出口和日志脱敏。API Key 仅在完成请求所需期间经过服务端内存，不持久化保存。没有任何传输或存储方式能保证绝对安全。</p>
 
   <h2>9. 儿童隐私</h2>
   <p>本应用面向科研与学术用户，<strong>不面向 13 周岁以下（或您所在司法辖区规定的相应年龄以下）的儿童</strong>。我们不会在知情的情况下收集儿童的个人信息。若我们发现误收了儿童信息，将尽快删除。如您认为我们可能持有儿童信息，请通过第 12 条联系我们。</p>
@@ -200,7 +199,7 @@
   <p class="lang-sep">— English Version —</p>
 
   <h2>1. Introduction</h2>
-  <p>PaperBanana ("the App", "we", "us", or "our") is an AI-powered tool that generates academic figures and diagrams for research papers. You provide a description of your paper's method and a figure caption, and the App generates figures through a backend multi-agent pipeline. This Privacy Policy explains how we collect, use, store, share, and protect your personal information when you use the App, and the rights you have over your information. By using the App, you acknowledge and agree to the practices described here.</p>
+  <p>PaperBanana (the “Service”, “we”, “us”, or “our”) is an AI-powered academic figure and chart generation tool available on the Web, WeChat Mini Program, iOS, Android, Windows, macOS, and HarmonyOS. This Privacy Policy explains how we process information when you use the Service on any supported client.</p>
 
   <h2>2. Information We Collect</h2>
   <p>We collect only the information necessary to provide and improve the App:</p>
@@ -218,14 +217,19 @@
   <ul>
     <li>When you submit feedback, we collect your <strong>feedback text</strong>, <strong>feedback category</strong>, and an optional <strong>contact detail</strong>. If a job is in progress, the relevant <strong>job ID</strong> is included to help us diagnose issues.</li>
   </ul>
-  <h3>2.4 On-Device Local Cache (not separately uploaded)</h3>
+  <h3>2.4 Operations and Security Information</h3>
+  <ul>
+    <li>To protect sign-in flows, prevent abuse, and diagnose failures, we process and retain for a limited period the trusted client <strong>IP address</strong>, a shortened <strong>User-Agent</strong>, timestamps, status codes, and job IDs.</li>
+    <li>Job records include a normalized <strong>clientPlatform</strong> value (such as web, miniprogram, ios, android, windows, macos, or harmony) so you can see where a job originated and we can diagnose cross-client issues. Older jobs may show “Not recorded”.</li>
+  </ul>
+  <h3>2.5 On-Device Local Cache (not separately uploaded)</h3>
   <ul>
     <li>To improve your experience, the App caches your <strong>recent job records (JSON)</strong> and <strong>output images (via the system URLCache)</strong> locally on your device. These are local caches and are not uploaded beyond the transfers already involved in the generation and display flows.</li>
   </ul>
-  <h3>2.5 About Your Third-Party Platform API Key (Important)</h3>
+  <h3>2.6 About Your Third-Party Platform API Key (Important)</h3>
   <ul>
-    <li>The App uses a <strong>BYOK (Bring Your Own Key)</strong> model. The API Key you enter is <strong>stored ONLY in your device's local iOS Keychain (this device only; not synced via iCloud). It is NOT uploaded to PaperBanana servers and is NOT stored by the Operator.</strong></li>
-    <li>When you start a generation job, your API Key is <strong>forwarded</strong> with the request through our gateway to the third-party platform you selected, solely to complete that model call. We do not persist your API Key.</li>
+    <li>The Service uses a <strong>BYOK (Bring Your Own Key)</strong> model. Each client keeps API Keys in local memory or platform secure storage according to that client's capabilities.</li>
+    <li>When you start a generation job, the key is processed in memory by the PaperBanana gateway and job service and forwarded to the selected model platform. We <strong>do not persist API Keys in the job database or application logs</strong>.</li>
     <li>Please keep your API Key secure. You are responsible for its safety and for any usage and charges it incurs on the third-party platform.</li>
   </ul>
 
@@ -250,15 +254,15 @@
   <ul>
     <li><strong>Whichever platform you select is the platform to which your generation inputs are transmitted and by which they are processed.</strong> Those third parties' practices are governed by their own policies and are beyond the App's control.</li>
     <li>We recommend reading the privacy policy of the platform you select and avoiding sensitive, confidential, or regulated content in your inputs.</li>
-    <li>We act only as a transmission channel and are not responsible for the data-processing practices of third-party platforms.</li>
+    <li>OpenAI, Gemini, and OpenRouter requests establish a TLS CONNECT tunnel through a restricted provider-egress node in Singapore. The node does not decrypt content or retain API Keys, prompts, images, or full URLs. Alibaba Cloud Bailian and OSS traffic does not use this egress node.</li>
   </ul>
 
   <h2>5. Where Data Is Stored and Retention</h2>
   <ul>
-    <li>Your account information and job records are stored in a backend database hosted by the Operator (MongoDB hosted on Sealos, servers located in <span class="ph">[fill in region, e.g., Mainland China]</span>).</li>
+    <li>Your account, job records, and generated results are stored by the Operator on the primary service, MongoDB, and OSS in <strong>Alibaba Cloud Hong Kong</strong>.</li>
     <li>We retain your information only as long as necessary for the purposes described here. When you delete your account, data is permanently deleted as described in Section 7.</li>
     <li>Local caches are removed when you uninstall the App or clear them in-app.</li>
-    <li>Cross-border transfers: where the platform you select operates servers in another country/region, your inputs will be transferred across borders. <span class="ph">[If applicable, add the legal basis and details.]</span></li>
+    <li>Cross-border transfers: when you actively select an overseas third-party model platform, your generation inputs and API Key are transferred to the country or region where that platform operates. Confirm that you are authorized to make that transfer before submitting content.</li>
   </ul>
 
   <h2>6. Your Rights</h2>
@@ -280,13 +284,12 @@
     <li>All your job records and generated results;</li>
     <li>Feedback you submitted;</li>
     <li>Reference images you uploaded;</li>
-    <li>Templates you saved;</li>
     <li>Local data on this device, including stored API Keys.</li>
   </ul>
   <p><strong>This action cannot be undone.</strong> Once complete, the server clears your session and deletes your account, and the App returns to a signed-out state. This corresponds to Apple App Store Review Guideline 5.1.1(v).</p>
 
   <h2>8. Data Security</h2>
-  <p>We use reasonable technical and organizational measures, including HTTPS encryption in transit, hashed password storage, keeping API Keys only in the device's local Keychain (never uploaded), and secure session cookies. However, no method of transmission or storage is completely secure, and you accept the inherent risks of using the service.</p>
+  <p>We use reasonable technical and organizational safeguards, including HTTPS in transit, password hashing, HttpOnly session cookies, restricted provider egress, and redacted logs. API Keys pass through server memory only for the time needed to fulfill a request and are not persisted. No transmission or storage method is completely secure.</p>
 
   <h2>9. Children's Privacy</h2>
   <p>The App is intended for research and academic users and is <strong>not directed to children under 13</strong> (or the applicable age in your jurisdiction). We do not knowingly collect personal information from children and will delete any such information promptly if discovered. Contact us via Section 12 if you have concerns.</p>

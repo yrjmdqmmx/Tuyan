@@ -45,6 +45,9 @@ jobs:
       - name: Install web dependencies
         run: pnpm install --filter @paperbanana/web... --frozen-lockfile
 
+      - name: Test web
+        run: pnpm --filter @paperbanana/web test
+
       - name: Build web
         run: pnpm --filter @paperbanana/web build
         env:

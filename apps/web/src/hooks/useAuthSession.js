@@ -21,6 +21,12 @@ export function useAuthSession() {
     return data || null;
   }
 
+  function clear() {
+    setSession(null);
+    setError(null);
+    setIsPending(false);
+  }
+
   useEffect(() => {
     let cancelled = false;
     if (!AUTH_ENABLED) {
@@ -41,5 +47,5 @@ export function useAuthSession() {
     };
   }, []);
 
-  return { session, isPending, error, refresh };
+  return { session, isPending, error, refresh, clear };
 }

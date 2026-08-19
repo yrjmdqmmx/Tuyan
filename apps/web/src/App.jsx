@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Apple,
@@ -27,12 +27,16 @@ import {
   adminJobsRequest,
   adminStatusRequest,
   adminUsersRequest,
+  abortReferenceUploadRequest,
   createJobRequest,
   fetchBackendHealth,
   getJobRequest,
   modelCapabilityRequest,
+  modelRegistryRequest,
+  finalizeReferenceUploadRequest,
   prepareReferenceUploadRequest,
   referenceLibraryRequest,
+  refineImageRequest,
   submitFeedbackRequest,
   userJobsRequest,
 } from '@paperbanana/api';
@@ -42,6 +46,7 @@ import {
   AUTH_REQUIRED,
   AUTH_UI_ENABLED,
   CLIENT_VERSION,
+  CUSTOM_API_BASE_ENABLED,
   authClient,
   logoUrl,
 } from './config';
@@ -67,20 +72,27 @@ import FeedbackDialog from './components/FeedbackDialog';
 import GuidePanel from './components/GuidePanel';
 import JobStatus from './components/JobStatus';
 import JobTable from './components/JobTable';
-import ReferenceLibraryPanel from './components/ReferenceLibraryPanel';
 import ReferenceUploadPanel from './components/ReferenceUploadPanel';
 import Select from './components/Select';
 import TaskRecordsPanel from './components/TaskRecordsPanel';
 import { useAuthSession } from './hooks/useAuthSession';
-import { formatErrorMessage, formatOutputFormat } from './utils';
+import { formatErrorMessage, formatOutputFormat, pollRetryDelay, shouldClearAuthForJobError } from './utils';
+import { INPUT_LIMITS, officialApiBase, shouldPollJob, validateApiBase } from './lib/runtimePolicy';
+import { mergeProviderRegistry, uniqueRegistryModels } from './lib/modelRegistry';
+
+const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
+const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
+const RefinePanel = lazy(() => import('./components/RefinePanel'));
 
 export default function App() {
   const authSession = useAuthSession();
   const [activeTab, setActiveTab] = useState('generate');
   const [showContactDialog, setShowContactDialog] = useState(false);
+  const contactCloseRef = useRef(null);
   const [contactQrFailed, setContactQrFailed] = useState(false);
   const [showAuthPanel, setShowAuthPanel] = useState(false);
-  const [apiBase, setApiBase] = useState(API_BASE_DEFAULT);
+  const [showAccountDialog, setShowAccountDialog] = useState(false);
+  const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
   const [configurationMode, setConfigurationMode] = useState('simple');
   const [provider, setProvider] = useState('bailian');
   const [apiKeys, setApiKeys] = useState({ openrouter: '', gemini: '', openai: '', bailian: '' });
@@ -108,12 +120,18 @@ export default function App() {
   const [numCandidates, setNumCandidates] = useState(1);
   const [maxCriticRounds, setMaxCriticRounds] = useState(1);
   const [health, setHealth] = useState(null);
+  const [healthError, setHealthError] = useState('');
+  const [modelRegistry, setModelRegistry] = useState(null);
+  const [modelRegistryError, setModelRegistryError] = useState('');
+  const [modelRegistryRetryNonce, setModelRegistryRetryNonce] = useState(0);
   const [mock, setMock] = useState(false);
   const [currentJobId, setCurrentJobId] = useState('');
   const [job, setJob] = useState(null);
   const latestJobRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [errorContext, setErrorContext] = useState('');
+  const [pollRetryNonce, setPollRetryNonce] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminJobs, setAdminJobs] = useState([]);
   const [adminUsers, setAdminUsers] = useState([]);
@@ -127,11 +145,24 @@ export default function App() {
   const [feedbackError, setFeedbackError] = useState('');
   const [feedbackSuccess, setFeedbackSuccess] = useState(false);
   const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
+  const [refineSourceUrl, setRefineSourceUrl] = useState('');
+  const [refineInstruction, setRefineInstruction] = useState('');
+  const [refineImageSize, setRefineImageSize] = useState('2K');
+  const [refineAspectRatio, setRefineAspectRatio] = useState('16:9');
+  const [refineError, setRefineError] = useState('');
+  const [isSubmittingRefine, setIsSubmittingRefine] = useState(false);
   const currentUser = AUTH_ENABLED ? authSession.session?.user : null;
   const authReady = !AUTH_REQUIRED || Boolean(!authSession.isPending && currentUser);
-  const providerConfig = PROVIDERS[provider];
+  const modelRegistryReady = Boolean(modelRegistry?.providers?.[provider]);
+  const providerConfig = mergeProviderRegistry(PROVIDERS[provider], modelRegistry?.providers?.[provider]);
   const selectedKey = apiKeys[providerConfig.keyName] || '';
-  const apiBaseNormalized = apiBase.replace(/\/$/, '');
+  const apiBaseNormalized = useMemo(() => {
+    try {
+      return validateApiBase(apiBase, CUSTOM_API_BASE_ENABLED);
+    } catch {
+      return officialApiBase(globalThis.location?.origin);
+    }
+  }, [apiBase]);
   const selectedInfographicCategory = INFOGRAPHIC_CATEGORIES.find(([id]) => id === infographicCategory) || INFOGRAPHIC_CATEGORIES[0];
   const isAdvancedMode = configurationMode === 'advanced';
   const isPlotCategory = infographicCategory === 'data_stat';
@@ -140,11 +171,21 @@ export default function App() {
   const defaultVisionModelLabel = findModelLabel(providerConfig.visionModels || [], providerConfig.visionModel);
   const activeMainModelName = isAdvancedMode ? mainModelName : providerConfig.mainModel;
   const activeImageGenModelName = isAdvancedMode ? imageGenModelName : providerConfig.imageModel;
+  const selectedModelNotes = providerConfig.registryModels
+    ? uniqueRegistryModels([activeMainModelName, activeImageGenModelName, isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel]
+        .map((id) => providerConfig.registryModels.find((model) => model.id === id))
+        .filter(Boolean))
+    : [];
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
-  const resolutionValues = supportedResolutions(provider, activeImageGenModelName);
+  const activeImageRegistryEntry = providerConfig.registryModels?.find((model) => model.id === activeImageGenModelName);
+  const resolutionValues = activeImageRegistryEntry?.capabilities?.resolutions?.length
+    ? activeImageRegistryEntry.capabilities.resolutions
+    : supportedResolutions(provider, activeImageGenModelName);
   const resolutionOptions = RESOLUTION_OPTIONS.filter(([value]) => resolutionValues.includes(value));
-  // 固定能力：主模型能否直读参考图由 mainModelCanReadImages 同步判定（不再依赖异步探测/自动选择）。
-  const mainModelCanRead = mainModelCanReadImages(provider, activeMainModelName);
+  // 有参考图时以后端能力目录为权威；能力未知时默认走独立识别，避免把文本模型误当视觉模型。
+  const mainModelCanRead = referenceImages.length
+    ? mainModelCapability?.status === 'supported' && mainModelCapability?.supportsReferenceImages !== false
+    : mainModelCanReadImages(provider, activeMainModelName);
   const activeReferenceImageMode = isAdvancedMode
     ? referenceImageMode
     : (mainModelCanRead ? 'main_model' : 'vision_model');
@@ -163,10 +204,16 @@ export default function App() {
     let cancelled = false;
     fetchBackendHealth(apiBaseNormalized)
       .then((data) => {
-        if (!cancelled) setHealth(data);
+        if (!cancelled) {
+          setHealth(data);
+          setHealthError('');
+        }
       })
-      .catch(() => {
-        if (!cancelled) setHealth(null);
+      .catch((healthRequestError) => {
+        if (!cancelled) {
+          setHealth(null);
+          setHealthError(healthRequestError?.message || '后端健康检查失败');
+        }
       });
     return () => {
       cancelled = true;
@@ -174,16 +221,44 @@ export default function App() {
   }, [apiBaseNormalized]);
 
   useEffect(() => {
-    setMainModelName(PROVIDERS[provider].mainModel);
-    setImageGenModelName(PROVIDERS[provider].imageModel);
-    setReferenceVisionModelName(PROVIDERS[provider].visionModel);
-  }, [provider]);
+    if (!health) return undefined;
+    let cancelled = false;
+    modelRegistryRequest(apiBaseNormalized, health)
+      .then((registry) => {
+        if (cancelled) return;
+        setModelRegistry(registry);
+        const unavailable = Object.values(registry.unavailableProviders || {}).filter(Boolean);
+        setModelRegistryError(unavailable.join('；'));
+      })
+      .catch((registryRequestError) => {
+        if (!cancelled) {
+          setModelRegistry(null);
+          setModelRegistryError(registryRequestError?.message || '模型目录加载失败');
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [apiBaseNormalized, health, modelRegistryRetryNonce]);
+
+  useEffect(() => {
+    const latest = mergeProviderRegistry(PROVIDERS[provider], modelRegistry?.providers?.[provider]);
+    setMainModelName(latest.mainModel);
+    setImageGenModelName(latest.imageModel);
+    setReferenceVisionModelName(latest.visionModel);
+  }, [provider, modelRegistry?.registryVersion]);
+
+  useEffect(() => {
+    if (modelRegistry && !modelRegistry.providers?.[provider]) setProvider('bailian');
+  }, [modelRegistry, provider]);
 
   // provider / 图像生成模型变化时，若当前清晰度不再被支持则收敛到第一档。
   useEffect(() => {
-    const supported = supportedResolutions(provider, activeImageGenModelName);
+    const supported = activeImageRegistryEntry?.capabilities?.resolutions?.length
+      ? activeImageRegistryEntry.capabilities.resolutions
+      : supportedResolutions(provider, activeImageGenModelName);
     if (!supported.includes(imageSize)) setImageSize(supported[0]);
-  }, [provider, activeImageGenModelName, imageSize]);
+  }, [provider, activeImageGenModelName, imageSize, activeImageRegistryEntry]);
 
   // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立识别模型。
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
@@ -221,6 +296,13 @@ export default function App() {
   }, [apiBaseNormalized, health, provider, activeMainModelName, referenceImages.length]);
 
   useEffect(() => {
+    if (!referenceImages.length || !mainModelCapability || mainModelCapability.status === 'loading') return;
+    setReferenceImageMode(mainModelCapability.status === 'supported' && mainModelCapability.supportsReferenceImages !== false
+      ? 'main_model'
+      : 'vision_model');
+  }, [mainModelCapability, referenceImages.length]);
+
+  useEffect(() => {
     referenceImagesRef.current = referenceImages;
   }, [referenceImages]);
 
@@ -229,29 +311,68 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (!showContactDialog) return undefined;
+    const previous = document.activeElement;
+    contactCloseRef.current?.focus();
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setShowContactDialog(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      previous?.focus?.();
+    };
+  }, [showContactDialog]);
+
+  useEffect(() => {
     if (!currentJobId) return undefined;
     let cancelled = false;
+    let timer;
+    let retryAttempt = 0;
     const load = async () => {
       try {
         const data = await getJobRequest(apiBaseNormalized, health, currentJobId);
         if (!cancelled) {
+          retryAttempt = 0;
           latestJobRef.current = data;
           setJob(data);
           setError('');
+          setErrorContext('');
+          if (shouldPollJob(data)) {
+            timer = setTimeout(load, globalThis.document?.hidden ? 10000 : 3000);
+          }
         }
       } catch (err) {
         const latestJob = latestJobRef.current;
         const hasVisibleResult = latestJob?.status === 'succeeded' || (latestJob?.result_images || []).some((image) => image.url);
-        if (!cancelled && !hasVisibleResult) setError(err.message);
+        if (!cancelled) {
+          if (!hasVisibleResult) {
+            setError(err.message);
+            setErrorContext('poll');
+          }
+          retryAttempt += 1;
+          const delay = pollRetryDelay(err, retryAttempt, Boolean(globalThis.document?.hidden));
+          if (delay === null) {
+            setErrorContext('poll-stopped');
+            if (shouldClearAuthForJobError(err)) authSession.clear();
+          } else {
+            timer = setTimeout(load, delay);
+          }
+        }
       }
     };
     load();
-    const timer = setInterval(load, 3000);
     return () => {
       cancelled = true;
-      clearInterval(timer);
+      clearTimeout(timer);
     };
-  }, [apiBaseNormalized, currentJobId, health]);
+  }, [apiBaseNormalized, currentJobId, health, pollRetryNonce]);
+
+  useEffect(() => {
+    setManualReferenceIds([]);
+    setReferenceLibrary([]);
+    setReferenceLibraryError('');
+  }, [isPlotCategory]);
 
   useEffect(() => {
     if (!isAdvancedMode || retrievalSetting !== 'manual' || referenceImages.length) return undefined;
@@ -267,8 +388,8 @@ export default function App() {
     const canMock = isAdvancedMode && mock && health?.mock_enabled;
     const hasVisionModel = !needsReferenceVisionModel || Boolean((isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel)?.trim());
     const hasManualReferences = !isAdvancedMode || retrievalSetting !== 'manual' || manualReferenceIds.length > 0;
-    return authReady && hasManualReferences && hasVisionModel && !mainModelDirectUnsupported && (hasKey || canMock) && methodContent.trim().length >= 20 && caption.trim().length >= 3 && !isSubmitting && !isUploadingReferences;
-  }, [authReady, selectedKey, methodContent, caption, isSubmitting, mock, health, isAdvancedMode, retrievalSetting, manualReferenceIds.length, needsReferenceVisionModel, referenceVisionModelName, providerConfig.visionModel, isUploadingReferences, mainModelDirectUnsupported]);
+    return modelRegistryReady && authReady && hasManualReferences && hasVisionModel && !mainModelDirectUnsupported && (hasKey || canMock) && methodContent.trim().length >= 20 && caption.trim().length >= 3 && !isSubmitting && !isUploadingReferences;
+  }, [modelRegistryReady, authReady, selectedKey, methodContent, caption, isSubmitting, mock, health, isAdvancedMode, retrievalSetting, manualReferenceIds.length, needsReferenceVisionModel, referenceVisionModelName, providerConfig.visionModel, isUploadingReferences, mainModelDirectUnsupported]);
 
   useEffect(() => {
     if (!AUTH_ENABLED || !currentUser) return undefined;
@@ -365,6 +486,7 @@ export default function App() {
 
     setIsUploadingReferences(true);
     setReferenceUploadError('');
+    let prepared;
     try {
       const uploadItems = [];
       for (const image of referenceImages) {
@@ -379,7 +501,7 @@ export default function App() {
         });
       }
 
-      const prepared = await prepareReferenceUploadRequest(
+      prepared = await prepareReferenceUploadRequest(
         apiBaseNormalized,
         health,
         uploadItems.map(({ clientId, role, filename, mimeType, size }) => ({ clientId, role, filename, mimeType, size })),
@@ -397,6 +519,15 @@ export default function App() {
         if (!response.ok) throw new Error(`参考图上传失败：HTTP ${response.status}`);
       }));
 
+      const lifecycleUploads = (prepared.uploads || []).map((upload) => ({
+        objectKey: upload.objectKey,
+        uploadToken: upload.uploadToken,
+        mimeType: upload.mimeType,
+        size: upload.size,
+        filename: upload.filename,
+      }));
+      await finalizeReferenceUploadRequest(apiBaseNormalized, health, lifecycleUploads);
+
       const references = [];
       for (const image of referenceImages) {
         const original = uploadMap.get(`${image.id}:original`);
@@ -412,6 +543,18 @@ export default function App() {
       }
 
       return references;
+    } catch (uploadError) {
+      if (typeof prepared !== 'undefined' && prepared?.uploads?.length) {
+        const lifecycleUploads = prepared.uploads.map((upload) => ({
+          objectKey: upload.objectKey,
+          uploadToken: upload.uploadToken,
+          mimeType: upload.mimeType,
+          size: upload.size,
+          filename: upload.filename,
+        }));
+        await abortReferenceUploadRequest(apiBaseNormalized, health, lifecycleUploads).catch(() => {});
+      }
+      throw uploadError;
     } finally {
       setIsUploadingReferences(false);
     }
@@ -421,7 +564,7 @@ export default function App() {
     if (!options.silent) setReferenceLibraryError('');
     setIsLoadingReferenceLibrary(true);
     try {
-      const data = await referenceLibraryRequest(apiBaseNormalized, health, { taskName: isPlotCategory ? 'plot' : 'diagram', limit: 24 });
+      const data = await referenceLibraryRequest(apiBaseNormalized, health, { taskName: isPlotCategory ? 'plot' : 'diagram', limit: 295 });
       if (options.cancelledRef?.()) return;
       setReferenceLibrary(data.references || []);
     } catch (err) {
@@ -443,6 +586,7 @@ export default function App() {
   async function submitJob(event) {
     event.preventDefault();
     setError('');
+    setErrorContext('');
     setIsSubmitting(true);
     setJob(null);
     latestJobRef.current = null;
@@ -484,6 +628,7 @@ export default function App() {
       if (currentUser) void loadUserJobs({ silent: true });
     } catch (err) {
       setError(err.message);
+      setErrorContext('submit');
     } finally {
       setIsSubmitting(false);
     }
@@ -542,15 +687,49 @@ export default function App() {
     setCaption(example.caption);
   }
 
+  function clearPrivateWorkspace() {
+    referenceImagesRef.current.forEach((image) => URL.revokeObjectURL(image.previewUrl));
+    referenceImagesRef.current = [];
+    setReferenceImages([]);
+    setApiKeys({ openrouter: '', gemini: '', openai: '', bailian: '' });
+    setMethodContent(SAMPLE_METHOD);
+    setCaption('图 1：所提出的多智能体学术图示生成框架总览。');
+    setManualReferenceIds([]);
+    setReferenceLibrary([]);
+    setCurrentJobId('');
+    latestJobRef.current = null;
+    setJob(null);
+    setUserJobs([]);
+    setRefineSourceUrl('');
+    setRefineInstruction('');
+    setRefineError('');
+    setError('');
+    setErrorContext('');
+  }
+
   async function handleSignOut() {
+    clearPrivateWorkspace();
     await authClient.signOut();
     await authSession.refresh();
     setShowAuthPanel(false);
+    setShowAccountDialog(false);
     setIsAdmin(false);
     setActiveTab('generate');
-    setCurrentJobId('');
-    setJob(null);
-    setUserJobs([]);
+  }
+
+  async function handleAccountDeleted() {
+    clearPrivateWorkspace();
+    authSession.clear();
+    setShowAccountDialog(false);
+    setIsAdmin(false);
+    setActiveTab('generate');
+    try {
+      await authSession.refresh();
+    } catch {
+      // The deletion is already committed. A transient session refresh failure
+      // must not reverse the local signed-out state or report deletion as failed.
+      authSession.clear();
+    }
   }
 
   function openFeedbackDialog() {
@@ -585,6 +764,41 @@ export default function App() {
       return false;
     } finally {
       setIsSubmittingFeedback(false);
+    }
+  }
+
+  function useResultForRefine(url) {
+    setRefineSourceUrl(url);
+    setRefineInstruction('');
+    setRefineError('');
+    setActiveTab('refine');
+  }
+
+  async function submitRefine(event) {
+    event.preventDefault();
+    setRefineError('');
+    setIsSubmittingRefine(true);
+    setJob(null);
+    latestJobRef.current = null;
+    try {
+      const scopedApiKeys = { openrouter: '', gemini: '', openai: '', bailian: '', [providerConfig.keyName]: selectedKey };
+      const created = await refineImageRequest(apiBaseNormalized, health, {
+        provider,
+        apiKeys: scopedApiKeys,
+        mainModelName: activeMainModelName,
+        imageModelName: activeImageGenModelName,
+        referenceVisionModelName: isAdvancedMode ? referenceVisionModelName : providerConfig.visionModel,
+        sourceImageUrl: refineSourceUrl,
+        editInstruction: refineInstruction,
+        aspectRatio: refineAspectRatio,
+        imageSize: refineImageSize,
+      });
+      setCurrentJobId(created.id);
+      if (currentUser) void loadUserJobs({ silent: true });
+    } catch (refineRequestError) {
+      setRefineError(refineRequestError?.message || String(refineRequestError));
+    } finally {
+      setIsSubmittingRefine(false);
     }
   }
 
@@ -623,11 +837,14 @@ export default function App() {
           <a href="https://github.com/zdywrnm/PaperBanana-clients/tree/main/apps/miniprogram" target="_blank" rel="noreferrer">
             <MessageCircle size={16} /> 微信小程序
           </a>
+          <a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a>
+          <a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a>
           {AUTH_UI_ENABLED ? (
             currentUser ? (
               <div className="auth-user">
                 <ShieldCheck size={16} />
                 <span title={currentUser.email}>{currentUser.email}</span>
+                <button type="button" onClick={() => setShowAccountDialog(true)}>账号</button>
                 <button type="button" onClick={handleSignOut}>退出</button>
               </div>
             ) : (
@@ -638,6 +855,30 @@ export default function App() {
           ) : null}
         </div>
       </header>
+
+      {healthError ? (
+        <div className="service-alert" role="status"><AlertTriangle size={16} />后端连接异常：{formatErrorMessage(healthError)}</div>
+      ) : null}
+      {modelRegistryError ? (
+        <div className="service-alert" role="status">
+          <AlertTriangle size={16} />部分模型目录暂不可用：{formatErrorMessage(modelRegistryError)}
+          <button type="button" className="inline-retry" onClick={() => setModelRegistryRetryNonce((value) => value + 1)}>重试目录</button>
+        </div>
+      ) : null}
+      {authSession.error ? (
+        <div className="service-alert" role="status"><AlertTriangle size={16} />登录状态检查失败：{formatErrorMessage(authSession.error.message || String(authSession.error))}</div>
+      ) : null}
+
+      {showAccountDialog && currentUser ? (
+        <Suspense fallback={null}>
+          <AccountSettingsDialog
+            apiBase={apiBaseNormalized}
+            email={currentUser.email || ''}
+            onClose={() => setShowAccountDialog(false)}
+            onDeleted={handleAccountDeleted}
+          />
+        </Suspense>
+      ) : null}
 
       <FeedbackDialog
         open={showFeedbackDialog}
@@ -650,18 +891,18 @@ export default function App() {
 
       {showContactDialog ? (
         <div className="feedback-dialog-backdrop" onClick={() => setShowContactDialog(false)}>
-          <div className="contact-dialog" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="contact-dialog-close" aria-label="关闭" onClick={() => setShowContactDialog(false)}>
+          <section className="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title" onClick={(event) => event.stopPropagation()}>
+            <button ref={contactCloseRef} type="button" className="contact-dialog-close" aria-label="关闭" onClick={() => setShowContactDialog(false)}>
               <X size={18} />
             </button>
-            <h2>联系作者</h2>
+            <h2 id="contact-dialog-title">联系作者</h2>
             <p>使用中有任何问题、建议或合作意向，欢迎扫码添加作者微信。</p>
             {contactQrFailed ? (
               <div className="contact-qr-fallback">二维码即将上线，可先点右下角「意见反馈」联系作者。</div>
             ) : (
               <img className="contact-qr" src="/contact-qr.png" alt="作者微信二维码（赵）" onError={() => setContactQrFailed(true)} />
             )}
-          </div>
+          </section>
         </div>
       ) : null}
 
@@ -673,6 +914,7 @@ export default function App() {
       <nav className="paper-tabs">
         <button type="button" className={activeTab === 'generate' ? 'active' : ''} onClick={() => setActiveTab('generate')}>生成候选图</button>
         <button type="button" className={activeTab === 'records' ? 'active' : ''} onClick={() => setActiveTab('records')}>任务记录</button>
+        <button type="button" className={activeTab === 'refine' ? 'active' : ''} onClick={() => setActiveTab('refine')}>精修图片</button>
         <button type="button" className={activeTab === 'guide' ? 'active' : ''} onClick={() => setActiveTab('guide')}>使用教程</button>
         {isAdmin ? (
           <button type="button" className={activeTab === 'admin' ? 'active' : ''} onClick={() => setActiveTab('admin')}>站长</button>
@@ -746,6 +988,8 @@ export default function App() {
                   type="button"
                   key={id}
                   className={provider === id ? 'active' : ''}
+                  disabled={Boolean(modelRegistry && !modelRegistry.providers?.[id])}
+                  title={modelRegistry?.unavailableProviders?.[id] || ''}
                   onClick={() => setProvider(id)}
                 >
                   {item.label}
@@ -789,10 +1033,14 @@ export default function App() {
             </div>
           ) : (
             <>
-              <label className="field">
-                <span>后端地址</span>
-                <input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder="留空则使用同源后端" />
-              </label>
+              {CUSTOM_API_BASE_ENABLED ? (
+                <label className="field">
+                  <span>开发后端地址</span>
+                  <input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder="仅本地开发构建可修改" />
+                </label>
+              ) : (
+                <div className="service-boundary-note"><ShieldCheck size={16} />已锁定 PaperBanana 官方后端，API 密钥不会发送到用户指定的第三方地址。</div>
+              )}
 
               <div className="settings-grid">
                 <Select label="生成流程" value={pipelineMode} onChange={setPipelineMode} options={[
@@ -824,7 +1072,8 @@ export default function App() {
                 </label>
                 <label className="field compact">
                   <span>评审轮数</span>
-                  <input type="number" min="0" max="3" value={maxCriticRounds} onChange={(event) => setMaxCriticRounds(event.target.value)} />
+                  <input type="number" min="0" max={INPUT_LIMITS.maxCriticRounds} value={maxCriticRounds} onChange={(event) => setMaxCriticRounds(event.target.value)} />
+                  <small>最多 {INPUT_LIMITS.maxCriticRounds} 轮；候选图与评审轮数会增加模型调用费用。</small>
                 </label>
               </div>
 
@@ -835,6 +1084,13 @@ export default function App() {
                   <Select label="参考图识别模型" value={referenceVisionModelName} onChange={setReferenceVisionModelName} options={providerConfig.visionModels || []} />
                 )}
               </div>
+              {selectedModelNotes.length ? (
+                <div className="model-availability-notes" aria-label="模型可用性说明">
+                  {selectedModelNotes.map((model) => (
+                    <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{model.availabilityNotes}</span>
+                  ))}
+                </div>
+              ) : null}
 
               {referenceImages.length ? (
                 <div className="reference-mode-panel">
@@ -864,14 +1120,16 @@ export default function App() {
               ) : null}
 
               {retrievalSetting === 'manual' && !referenceImages.length ? (
-                <ReferenceLibraryPanel
-                  references={referenceLibrary}
-                  selectedIds={manualReferenceIds}
-                  isLoading={isLoadingReferenceLibrary}
-                  error={referenceLibraryError}
-                  onToggle={toggleManualReference}
-                  onRefresh={() => loadReferenceLibrary()}
-                />
+                <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入参考图库</div>}>
+                  <ReferenceLibraryPanel
+                    references={referenceLibrary}
+                    selectedIds={manualReferenceIds}
+                    isLoading={isLoadingReferenceLibrary}
+                    error={referenceLibraryError}
+                    onToggle={toggleManualReference}
+                    onRefresh={() => loadReferenceLibrary()}
+                  />
+                </Suspense>
               ) : null}
             </>
           )}
@@ -880,7 +1138,14 @@ export default function App() {
             {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}
             {isUploadingReferences ? '上传参考图' : '生成候选图'}
           </button>
-          {error ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
+          {error ? (
+            <div className="error-line">
+              <AlertTriangle size={16} /> {formatErrorMessage(error, errorContext)}
+              {errorContext === 'poll-stopped' ? (
+                <button type="button" className="inline-retry" onClick={() => setPollRetryNonce((value) => value + 1)}>重新刷新</button>
+              ) : null}
+            </div>
+          ) : null}
         </form>
 
         <section className="input-results">
@@ -922,12 +1187,14 @@ export default function App() {
             <div className="two-col input-copy">
               <label className="field">
                 <span>论文方法内容</span>
-                <textarea value={methodContent} onChange={(event) => setMethodContent(event.target.value)} rows={12} />
+                <textarea value={methodContent} onChange={(event) => setMethodContent(event.target.value)} rows={12} maxLength={INPUT_LIMITS.methodContent} />
+                <small>{methodContent.length.toLocaleString()} / {INPUT_LIMITS.methodContent.toLocaleString()} 字符</small>
               </label>
 
               <label className="field">
                 <span>目标图注</span>
-                <textarea value={caption} onChange={(event) => setCaption(event.target.value)} rows={12} />
+                <textarea value={caption} onChange={(event) => setCaption(event.target.value)} rows={12} maxLength={INPUT_LIMITS.caption} />
+                <small>{caption.length.toLocaleString()} / {INPUT_LIMITS.caption.toLocaleString()} 字符</small>
               </label>
             </div>
           </div>
@@ -940,10 +1207,28 @@ export default function App() {
                 <p>{currentJobId ? `任务编号 ${currentJobId}` : '提交任务后显示生成结果。'}</p>
               </div>
             </div>
-            <JobStatus job={job} apiBase={apiBaseNormalized} />
+            <JobStatus job={job} apiBase={apiBaseNormalized} onUseForRefine={useResultForRefine} />
           </div>
         </section>
         </section>
+      ) : activeTab === 'refine' ? (
+        <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
+          <RefinePanel
+            sourceUrl={refineSourceUrl}
+            instruction={refineInstruction}
+            imageSize={refineImageSize}
+            aspectRatio={refineAspectRatio}
+            canSubmit={authReady && Boolean(selectedKey.trim()) && refineSourceUrl.trim().length > 0 && refineInstruction.trim().length >= 3 && !isSubmittingRefine}
+            isSubmitting={isSubmittingRefine}
+            error={refineError}
+            job={job}
+            apiBase={apiBaseNormalized}
+            onInstructionChange={setRefineInstruction}
+            onImageSizeChange={setRefineImageSize}
+            onAspectRatioChange={setRefineAspectRatio}
+            onSubmit={submitRefine}
+          />
+        </Suspense>
       ) : activeTab === 'admin' && isAdmin ? (
         <section className="admin-panel">
           <div className="section-head">
@@ -996,6 +1281,7 @@ export default function App() {
           apiBase={apiBaseNormalized}
           onLogin={() => setShowAuthPanel(true)}
           onRefresh={() => loadUserJobs()}
+          onUseForRefine={useResultForRefine}
         />
       )}
         </>

@@ -10,6 +10,7 @@ export interface ApiKeysPayload {
 
 export interface CreateJobPayload {
   action: string
+  clientPlatform: string
   configurationMode: string
   provider: string
   apiKeys: ApiKeysPayload
@@ -48,6 +49,7 @@ export function buildCreateJobPayload(input: CreateJobInput): CreateJobPayload {
 
   return {
     action: 'createJob',
+    clientPlatform: 'harmony',
     configurationMode: input.configurationMode,
     provider: input.provider,
     apiKeys,

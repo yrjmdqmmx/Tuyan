@@ -205,6 +205,33 @@ final class APIClientTests: XCTestCase {
     XCTAssertEqual(upload.uploadToken, "token-1")
   }
 
+  func testReferenceUploadLifecycleUsesExplicitFinalizeAndAbortActions() async throws {
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+    var actions: [String] = []
+    URLProtocolStub.requestHandler = { request in
+      let json = try XCTUnwrap(
+        JSONSerialization.jsonObject(with: try request.bodyData()) as? [String: Any]
+      )
+      actions.append(try XCTUnwrap(json["action"] as? String))
+      let uploads = try XCTUnwrap(json["uploads"] as? [[String: Any]])
+      XCTAssertEqual(uploads.first?["objectKey"] as? String, "references/user/reference.png")
+      XCTAssertEqual(uploads.first?["uploadToken"] as? String, "token")
+      return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"code":0,"ok":true}"#)
+    }
+    let upload = ReferenceImageAsset(
+      filename: "reference.png",
+      mimeType: "image/png",
+      size: 123,
+      objectKey: "references/user/reference.png",
+      uploadToken: "token"
+    )
+
+    try await client.finalizeReferenceUploads(apiBase: "https://gateway.example", uploads: [upload])
+    try await client.abortReferenceUploads(apiBase: "https://gateway.example", uploads: [upload])
+
+    XCTAssertEqual(actions, ["finalizeReferenceUpload", "abortReferenceUpload"])
+  }
+
   func testCurrentUserDecodesMissingNameFromBetterAuthSession() throws {
     let json = Data(#"{"id":"user-1","email":"founder@paperbanana.asia"}"#.utf8)
 

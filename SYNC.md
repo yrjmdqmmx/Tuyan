@@ -24,6 +24,20 @@
 
 ## 条目（最新在上）
 
+### [2026-08-19] 权威模型目录、中文参考库与任务来源端 — by Codex
+变更：新增服务端权威 `modelRegistry`，OpenRouter 图片生成按官方当前 Dedicated Image API 分流；参考库增加 295 条版本化中文元数据；任务创建/精修与任务记录增加规范化 `clientPlatform`；Web 账号删除同步删除任务关联对象。
+契约（影响其他端 / 共享）：
+- **模型目录**：新增公开只读 action `modelRegistry`，返回静态厂商目录、默认模型、角色/图像能力与协议；OpenRouter 动态目录不可用时只标记该厂商不可用，静态厂商仍可返回。OpenRouter 图片模型以官方 `GET /api/v1/images/models` 为权威并统一调用 `POST /api/v1/images`；未知模型、错角色或目录故障均 fail-closed。`modelCapability` 与注册表保持同一能力来源。
+- **参考库中文字段**：`referenceLibrary`/检索结果新增 `titleZh`、`introZh`，单次上限提高到 295；英文 `title`/`summary` 继续作为原始检索字段。版本 `2026-08-19.v1` 的 295 条元数据由香港部署脚本按既有 reference id 幂等同步，缺项或数量不符时部署失败关闭。
+- **任务来源端**：`createJob`/`refineImage` 新增可选 `clientPlatform`，只允许 `web|miniprogram|android|ios|windows|macos|harmony`；缺失保持历史兼容，公开任务 DTO 同时归一 `clientPlatform`/`client_platform`，展示为“未记录”，不得按 User-Agent 猜测或回填。
+- **输入/上传/删除语义**：方法正文最多 12000 字、图注最多 1000 字；参考图上传新增 `finalizeReferenceUpload` / `abortReferenceUpload` 生命周期 action，现有客户端均在 PUT 后确认、失败时中止，旧客户端在创建任务时仍由服务端校验并兼容确认。账号注销先持久化不可变 user-id owner tombstone，拒绝新建/精修/上传/反馈并排空跨进程运行任务；仍有效的预签名上传返回可重试 409，删除请求执行多轮静默清扫，Core 后台继续清除迟到 PUT。网关必须先调用无副作用 `accountDeletionCapability` 确认 `deletionContractVersion=2`，随后才允许业务清理与 Auth 硬删；旧 Laf 回滚不得先执行破坏性删除。
+各端待办：
+- [x] paperbanana-api / Laf 回滚（注册表、OpenRouter 协议、中文字段、平台校验/持久化/公开 DTO、删除与输入限制）
+- [x] auth-gateway / packages-api（公开只读 action 转发、共享请求/响应归一）
+- [x] Web（动态模型目录、295 条中文宽屏图库/大图预览、任务来源、性能/错误恢复/账号删除/隐私一致性）
+- [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（创建参数与任务列表/详情来源展示；不支持精修入口的端无需发送 refine）
+- [ ] 部署/运维（发布香港 Core/Gateway/Web，同步 295 条 Mongo 元数据并完成生产只读验收）
+
 ### [2026-08-18] 新加坡模型出口交付契约 — by Codex
 变更：香港 Core 新增显式 `disabled|sg-required` 出口模式、固定 `http://10.77.0.2:3128` 代理配置、可复现 `pbhk0` peer、独立手动 GitHub Environment 工作流与 fail-closed 回滚顺序；公开 API/action/envelope 不变。
 契约（影响其他端 / 共享）：
@@ -130,7 +144,7 @@
 - [x] laf-functions（`deleteAccount` action + best-effort 删参考图 + policy test）
 - [x] auth-gateway（`POST /api/account/delete`：session/邮箱校验 + signInEmail 验密 + 调 Laf + 删 user/session/account + 清 cookie）
 - [x] iOS（设置页「删除账号」入口：二次确认重输密码 → 调本接口 → 成功后登出清本地态）
-- [ ] web（设置/账户页加删除入口，契约同上）
+- [x] web（设置/账户页已增加删除入口并在退出/注销时清理本地 BYOK 与稿件状态）
 - [ ] miniprogram（同步删除入口）
 - [ ] android/macos/windows（同步删除入口）
 

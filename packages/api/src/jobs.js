@@ -2,6 +2,16 @@ import { fetchJson } from './client.js';
 
 const META_ENV = import.meta.env || {};
 const BACKEND_MODE = META_ENV.VITE_BACKEND_MODE || '';
+const CLIENT_PLATFORM = 'web';
+const CLIENT_PLATFORM_LABELS = Object.freeze({
+  web: 'Web 网页',
+  miniprogram: '微信小程序',
+  android: 'Android',
+  ios: 'iOS',
+  windows: 'Windows',
+  macos: 'macOS',
+  harmony: 'HarmonyOS',
+});
 
 export async function fetchBackendHealth(apiBase) {
   const candidates = BACKEND_MODE === 'gateway'
@@ -35,6 +45,7 @@ export async function createJobRequest(apiBase, health, payload) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         action: 'createJob',
+        clientPlatform: CLIENT_PLATFORM,
         configurationMode: payload.configurationMode,
         provider: payload.provider,
         apiKeys: payload.apiKeys,
@@ -64,6 +75,7 @@ export async function createJobRequest(apiBase, health, payload) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      clientPlatform: CLIENT_PLATFORM,
       provider: payload.provider,
       configuration_mode: payload.configurationMode,
       api_keys: payload.apiKeys,
@@ -113,6 +125,7 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         action: 'refineImage',
+        clientPlatform: CLIENT_PLATFORM,
         provider: payload.provider,
         apiKeys: payload.apiKeys,
         mainModelName: payload.mainModelName,
@@ -144,6 +157,25 @@ export async function prepareReferenceUploadRequest(apiBase, health, files) {
   throw new Error('参考图上传需要使用 Laf 或登录网关后端。');
 }
 
+export async function finalizeReferenceUploadRequest(apiBase, health, uploads) {
+  return referenceUploadLifecycleRequest(apiBase, health, 'finalizeReferenceUpload', uploads)
+}
+
+export async function abortReferenceUploadRequest(apiBase, health, uploads) {
+  return referenceUploadLifecycleRequest(apiBase, health, 'abortReferenceUpload', uploads)
+}
+
+async function referenceUploadLifecycleRequest(apiBase, health, action, uploads) {
+  if (shouldUsePaperbananaApi(apiBase, health)) {
+    return fetchJson(lafEndpoint(apiBase), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, uploads }),
+    })
+  }
+  throw new Error('参考图上传生命周期需要使用 Laf 或登录网关后端。')
+}
+
 export async function modelCapabilityRequest(apiBase, health, provider, model) {
   if (shouldUsePaperbananaApi(apiBase, health)) {
     return fetchJson(lafEndpoint(apiBase), {
@@ -160,6 +192,17 @@ export async function modelCapabilityRequest(apiBase, health, provider, model) {
     source: 'client-fallback',
     cached: false,
   };
+}
+
+export async function modelRegistryRequest(apiBase, health, provider = '') {
+  if (shouldUsePaperbananaApi(apiBase, health)) {
+    return fetchJson(lafEndpoint(apiBase), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'modelRegistry', provider: provider || undefined }),
+    });
+  }
+  throw new Error('当前后端不支持服务端模型目录。');
 }
 
 export async function getJobRequest(apiBase, health, jobId, options = {}) {
@@ -194,7 +237,7 @@ export async function adminJobsRequest(apiBase, health) {
       body: JSON.stringify({ action: 'adminJobs', limit: 50 }),
     });
     const jobs = (data.jobs || []).map(normalizeJob);
-    return { jobs: await hydrateRecordImages(apiBase, health, jobs) };
+    return { jobs };
   }
   throw new Error('站长后台需要先启用登录网关。');
 }
@@ -255,12 +298,12 @@ export async function userJobsRequest(apiBase, health) {
       body: JSON.stringify({ action: 'myJobs', limit: 50 }),
     });
     const jobs = (data.jobs || []).map(normalizeJob);
-    return { jobs: await hydrateRecordImages(apiBase, health, jobs) };
+    return { jobs };
   }
   if (!shouldUseLaf(apiBase, health)) {
     const data = await fetchJson(`${apiBase}/api/jobs?scope=mine&limit=50`);
     const jobs = (data.jobs || []).map(normalizeJob);
-    return { jobs: await hydrateRecordImages(apiBase, health, jobs) };
+    return { jobs };
   }
   throw new Error('任务记录需要先启用登录网关。');
 }
@@ -313,6 +356,7 @@ function normalizeJob(job = {}) {
     id: job.id || job._id,
     status: job.status,
     provider: job.provider,
+    client_platform: normalizeClientPlatform(job.client_platform ?? job.clientPlatform),
     job_type: job.job_type || job.jobType || 'generate',
     user_id: job.user_id || job.userId || '',
     user_email: job.user_email || job.userEmail || '',
@@ -364,12 +408,23 @@ function normalizeJob(job = {}) {
   };
 }
 
+function normalizeClientPlatform(value) {
+  const platform = typeof value === 'string' ? value.trim().toLowerCase() : '';
+  return Object.hasOwn(CLIENT_PLATFORM_LABELS, platform) ? platform : '';
+}
+
+export function formatClientPlatform(value) {
+  return CLIENT_PLATFORM_LABELS[normalizeClientPlatform(value)] || '未记录';
+}
+
 function normalizeRetrievedReference(item = {}) {
   return {
     id: item.id || item._id || '',
     task_name: item.task_name || item.taskName || 'diagram',
     title: item.title || item.visualIntent || item.caption || '',
     summary: item.summary || item.content || item.methodExcerpt || '',
+    titleZh: item.titleZh || item.title_zh || '',
+    introZh: item.introZh || item.intro_zh || '',
     image_url: item.image_url || item.imageUrl || item.url || '',
     image_object_key: item.image_object_key || item.imageObjectKey || item.objectKey || '',
     source: item.source || 'paperbanana-bench',

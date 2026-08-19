@@ -61,6 +61,7 @@ import {
   STATUS_LABELS,
 } from './src/constants';
 import type { AuthMode, ConfigurationMode, CurrentUser, HealthInfo, Job, ModelOption, ProviderId, QuickStartExample } from './src/types';
+import { formatClientPlatform } from './src/client-platform';
 
 const EMPTY_KEYS: Record<ProviderId, string> = {
   bailian: '',
@@ -267,6 +268,7 @@ export default function App() {
         id: created.id,
         status: created.status,
         provider,
+        client_platform: 'android',
         user_id: currentUser?.id || '',
         user_email: currentUser?.email || '',
         configuration_mode: configurationMode,
@@ -740,6 +742,7 @@ function JobDetail({ job, apiBase, onPreview }: { job: Job | null; apiBase: stri
       </View>
       <Text style={styles.jobCaption}>{job.caption || '未记录图注'}</Text>
       <View style={styles.jobMetaRow}>
+        <Text style={styles.jobMeta}>任务来源：{formatClientPlatform(job.client_platform)}</Text>
         <Text style={styles.jobMeta}>{job.infographic_category || '方法框架图'}</Text>
         <Text style={styles.jobMeta}>{job.provider || '模型服务'}</Text>
         <Text style={styles.jobMeta}>{formatConfigurationMode(job.configuration_mode)}</Text>
@@ -771,6 +774,7 @@ function JobList({ jobs, apiBase, showUser, emptyText, onPreview }: { jobs: Job[
             </View>
             <Text style={styles.jobCaption}>{item.caption || '未记录图注'}</Text>
             <View style={styles.jobMetaRow}>
+              <Text style={styles.jobMeta}>任务来源：{formatClientPlatform(item.client_platform)}</Text>
               <Text style={styles.jobMeta}>{item.infographic_category || '方法框架图'}</Text>
               <Text style={styles.jobMeta}>{item.provider || '模型服务'}</Text>
               <Text style={styles.jobMeta}>{formatConfigurationMode(item.configuration_mode)}</Text>

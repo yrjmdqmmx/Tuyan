@@ -19,6 +19,11 @@ let package = Package(
         .linkedFramework("Security"),
         .linkedFramework("UserNotifications")
       ]
+    ),
+    .testTarget(
+      name: "PaperBananaMacTests",
+      dependencies: ["PaperBananaMac"],
+      path: "Tests/PaperBananaMacTests"
     )
   ]
 )

@@ -8,20 +8,20 @@ final class ProviderCatalogTests: XCTestCase {
     let imageValues = config.imageModels.map(\.value)
     let visionValues = config.visionModels.map(\.value)
 
-    XCTAssertEqual(config.mainModel, "qwen3.7-max")
+    XCTAssertEqual(config.mainModel, "qwen3.8-max")
     XCTAssertEqual(config.imageModel, "wan2.7-image-pro")
-    XCTAssertEqual(config.visionModel, "qwen3.7-plus")
-    XCTAssertTrue(mainValues.contains("MiniMax/MiniMax-M2.7"))
+    XCTAssertEqual(config.visionModel, "qwen3.8-max")
+    XCTAssertTrue(mainValues.contains("MiniMax/MiniMax-M3"))
     XCTAssertFalse(mainValues.contains("mimo-v2.5-pro"))
     XCTAssertFalse(mainValues.contains("MiniMax-M2.7"))
-    XCTAssertEqual(imageValues, ["wan2.7-image-pro", "qwen-image-2.0-pro"])
-    XCTAssertEqual(visionValues, ["qwen3.7-plus", "qwen3.5-omni-plus", "kimi-k2.6"])
+    XCTAssertEqual(imageValues, ["wan2.7-image-pro", "qwen-image-3.0-pro", "qwen-image-3.0"])
+    XCTAssertEqual(visionValues, ["qwen3.8-max", "qwen3.7-plus", "qwen3.5-omni-plus", "kimi/kimi-k3"])
   }
 
   func testMainModelImageCapabilityMatchesWebHelper() {
-    XCTAssertFalse(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "qwen3.7-max"))
+    XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "qwen3.8-max"))
     XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "qwen3.7-plus"))
-    XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "kimi-k2.6"))
+    XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "kimi/kimi-k3"))
     XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .gemini, model: "gemini-3.5-flash"))
     XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .openrouter, model: "anything"))
     XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .openai, model: "gpt-4.1"))

@@ -30,7 +30,8 @@ is retained only as an explicit rollback target.
 ## Identity and ownership
 
 Logged-in writes use the Better Auth account id/email. Anonymous
-`createJob`, `refineImage`, and `prepareReferenceUpload` calls use a signed
+`createJob`, `refineImage`, `prepareReferenceUpload`,
+`finalizeReferenceUpload`, and `abortReferenceUpload` calls use a signed
 30-day guest identity stored in a host-only HttpOnly cookie. Production uses
 `__Host-paperbanana_guest` with `Secure; Path=/; SameSite=Lax` and no Domain.
 The Mongo owner is an irreversible `guest:<sha256>` value; the random cookie
@@ -58,14 +59,16 @@ Maintenance mode is evaluated on every request from either
 - `createJob`
 - `refineImage`
 - `prepareReferenceUpload`
+- `finalizeReferenceUpload`
+- `abortReferenceUpload`
 - `submitFeedback`
 - `importReferences`
 - `evaluateJob`
 - `initDatabase`
 - `POST /api/account/delete`
 
-Authentication, `/health`, `/ready`, `getJob`, `myJobs`, `modelCapability`,
-`referenceLibrary`, `adminJobs`, `adminFeedback`, `adminUsers`, and
+Authentication, `/health`, `/ready`, `getJob`, `myJobs`, `modelRegistry`,
+`modelCapability`, `referenceLibrary`, `adminJobs`, `adminFeedback`, `adminUsers`, and
 `pingPlotWorker` remain available. `/health` is cached liveness and never waits
 for dependencies. `/ready` probes MongoDB and the selected backend and returns
 503 unless both are ready. Node mode probes the core's authenticated
@@ -76,8 +79,12 @@ probe-derived readiness cache. Health responses keep top-level
 `dependencies`, while `laf` is a one-release alias of `backend`.
 
 Account deletion verifies the current session password without signing in or
-creating another session, then purges business data. Only after an HTTP 2xx
-cleanup response with semantic `{code:0,ok:true}` does it atomically remove the
+creating another session. Before any destructive backend action, the gateway
+calls the read-only `accountDeletionCapability` action and requires
+`deletionContractVersion:2`; rollback runtimes that cannot prove this contract
+leave both business data and Auth untouched. Concurrent deletion requests for
+one account share a single in-flight cleanup. Only after an HTTP 2xx cleanup
+response with semantic `{code:0,ok:true,deletionContractVersion:2}` does it atomically remove the
 session/account/user rows in one Mongo transaction. Cookie clearing happens
 after commit and is best-effort. Business failures, HTTP/timeout failures, and
 transaction failures leave auth rows intact. This requires the deployment's

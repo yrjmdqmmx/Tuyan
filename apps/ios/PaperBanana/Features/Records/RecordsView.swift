@@ -520,7 +520,7 @@ struct JobRow: View {
   }
 
   private var metadataLine: String {
-    [relativeCreatedAt, displayCategory, "\(job.outputFormat.rawValue.uppercased()) · \(job.imageSize.rawValue)"]
+    [relativeCreatedAt, "任务来源：\(job.clientPlatformDisplayName)", displayCategory, "\(job.outputFormat.rawValue.uppercased()) · \(job.imageSize.rawValue)"]
       .filter { !$0.isEmpty }
       .joined(separator: " · ")
   }

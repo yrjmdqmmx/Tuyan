@@ -47,6 +47,7 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
 
   return {
     action: 'createJob',
+    clientPlatform: 'miniprogram',
     configurationMode: input.configurationMode,
     provider: input.provider,
     apiKeys,

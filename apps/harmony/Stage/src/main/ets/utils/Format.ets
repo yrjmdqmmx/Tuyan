@@ -22,6 +22,17 @@ export function statusLabel(status: string): string {
   return status || '未知'
 }
 
+export function formatClientPlatform(value: string): string {
+  if (value === 'web') return 'Web 网页'
+  if (value === 'miniprogram') return '微信小程序'
+  if (value === 'android') return 'Android'
+  if (value === 'ios') return 'iOS'
+  if (value === 'windows') return 'Windows'
+  if (value === 'macos') return 'macOS'
+  if (value === 'harmony') return 'HarmonyOS'
+  return '未记录'
+}
+
 export function formatDate(value: string | number | undefined): string {
   if (value === undefined || value === null) return ''
   const date = new Date(value)

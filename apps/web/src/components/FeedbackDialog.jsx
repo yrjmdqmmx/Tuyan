@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, CheckCircle2, Loader2, MessageSquare, Send, X } from 'lucide-react';
 import { formatErrorMessage } from '../utils';
 
@@ -13,6 +13,21 @@ export default function FeedbackDialog({ open, isSubmitting, error, success, onC
   const [category, setCategory] = useState('experience');
   const [message, setMessage] = useState('');
   const [contact, setContact] = useState('');
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const previous = document.activeElement;
+    closeButtonRef.current?.focus();
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape' && !isSubmitting) onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      previous?.focus?.();
+    };
+  }, [isSubmitting, onClose, open]);
 
   if (!open) return null;
 
@@ -26,7 +41,7 @@ export default function FeedbackDialog({ open, isSubmitting, error, success, onC
   const canSubmit = messageLength >= 1 && messageLength <= 2000 && !isSubmitting;
 
   return (
-    <div className="feedback-dialog-backdrop" role="presentation">
+    <div className="feedback-dialog-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && !isSubmitting && onClose()}>
       <section className="feedback-dialog" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
         <div className="feedback-dialog-head">
           <div className="section-head">
@@ -36,7 +51,7 @@ export default function FeedbackDialog({ open, isSubmitting, error, success, onC
               <p>告诉我们哪里需要修复或改进。</p>
             </div>
           </div>
-          <button type="button" className="feedback-close-button" onClick={onClose} aria-label="关闭意见反馈">
+          <button ref={closeButtonRef} type="button" className="feedback-close-button" onClick={onClose} aria-label="关闭意见反馈" disabled={isSubmitting}>
             <X size={18} />
           </button>
         </div>

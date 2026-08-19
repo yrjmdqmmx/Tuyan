@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 import { API_BASE_DEFAULT } from './constants';
+import { CLIENT_PLATFORM, normalizeClientPlatform } from './client-platform';
 import type { BackendMode, CurrentUser, HealthInfo, Job, JobPayload, ResultImage } from './types';
 
 const AUTH_COOKIE_KEY = 'paperbanana_android_auth_cookie';
@@ -76,6 +77,7 @@ export async function createJobRequest(apiBase: string, health: HealthInfo | nul
       method: 'POST',
       body: {
         action: 'createJob',
+        clientPlatform: CLIENT_PLATFORM,
         configurationMode: payload.configurationMode,
         provider: payload.provider,
         apiKeys: payload.apiKeys,
@@ -98,6 +100,7 @@ export async function createJobRequest(apiBase: string, health: HealthInfo | nul
   return fetchJson<{ id: string; status: string }>(`${base}/api/jobs`, {
     method: 'POST',
     body: {
+      clientPlatform: CLIENT_PLATFORM,
       provider: payload.provider,
       configuration_mode: payload.configurationMode,
       api_keys: payload.apiKeys,
@@ -414,6 +417,7 @@ function normalizeJob(input: unknown): Job {
     id,
     status: stringValue(job.status || 'queued'),
     provider: stringValue(job.provider),
+    client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),
     user_id: stringValue(job.user_id || job.userId),
     user_email: stringValue(job.user_email || job.userEmail),
     configuration_mode: stringValue(job.configuration_mode || job.configurationMode || 'advanced'),

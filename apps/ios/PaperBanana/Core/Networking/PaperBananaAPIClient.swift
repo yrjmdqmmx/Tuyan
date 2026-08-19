@@ -73,6 +73,23 @@ final class PaperBananaAPIClient {
     }
   }
 
+  func finalizeReferenceUploads(apiBase: String, uploads: [ReferenceImageAsset]) async throws {
+    try await referenceUploadLifecycle(apiBase: apiBase, action: "finalizeReferenceUpload", uploads: uploads)
+  }
+
+  func abortReferenceUploads(apiBase: String, uploads: [ReferenceImageAsset]) async throws {
+    try await referenceUploadLifecycle(apiBase: apiBase, action: "abortReferenceUpload", uploads: uploads)
+  }
+
+  private func referenceUploadLifecycle(apiBase: String, action: String, uploads: [ReferenceImageAsset]) async throws {
+    let encodedUploads = try uploads.map { try dictionary(from: $0) }
+    let _: EmptyEnvelope = try await requestJSON(
+      try lafEndpoint(apiBase: apiBase),
+      method: "POST",
+      body: ["action": action, "uploads": encodedUploads]
+    )
+  }
+
   func referenceLibrary(apiBase: String, taskName: TaskName, query: String = "", limit: Int = 24) async throws -> [ReferenceLibraryItem] {
     let response: ReferenceLibraryEnvelope = try await requestJSON(
       try lafEndpoint(apiBase: apiBase),

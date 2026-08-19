@@ -131,6 +131,7 @@ struct Job: Decodable, Identifiable, Equatable {
   let id: String
   let status: String
   let provider: String
+  let clientPlatform: String
   let jobType: String
   let userID: String
   let userEmail: String
@@ -201,6 +202,7 @@ struct Job: Decodable, Identifiable, Equatable {
   var metadataItems: [JobMetadataItem] {
     [
       JobMetadataItem(label: "时间", value: formattedRecordDate(createdAt)),
+      JobMetadataItem(label: "任务来源", value: clientPlatformDisplayName),
       JobMetadataItem(label: "模式", value: displayConfigurationMode),
       JobMetadataItem(label: "类别", value: displayValue(infographicCategory, fallback: taskName == .plot ? "数据统计图" : "方法框架图")),
       JobMetadataItem(label: "平台", value: displayProvider),
@@ -236,6 +238,7 @@ struct Job: Decodable, Identifiable, Equatable {
     self.id = id
     self.status = status
     provider = ""
+    clientPlatform = ""
     jobType = "generate"
     userID = ""
     userEmail = ""
@@ -277,6 +280,7 @@ struct Job: Decodable, Identifiable, Equatable {
     self.id = id
     self.status = status
     provider = payload.provider.rawValue
+    clientPlatform = "ios"
     jobType = "generate"
     userID = ""
     userEmail = ""
@@ -320,6 +324,7 @@ struct Job: Decodable, Identifiable, Equatable {
     id = container.string("id", "_id")
     status = container.string("status", default: "unknown")
     provider = container.string("provider")
+    clientPlatform = Self.normalizeClientPlatform(container.string("client_platform", "clientPlatform"))
     jobType = container.string("job_type", "jobType", default: "generate")
     userID = container.string("user_id", "userId")
     userEmail = container.string("user_email", "userEmail")
@@ -367,6 +372,24 @@ struct Job: Decodable, Identifiable, Equatable {
       return ProviderCatalog.config(for: providerID).label
     }
     return displayValue(provider)
+  }
+
+  var clientPlatformDisplayName: String {
+    switch clientPlatform {
+    case "web": "Web 网页"
+    case "miniprogram": "微信小程序"
+    case "android": "Android"
+    case "ios": "iOS"
+    case "windows": "Windows"
+    case "macos": "macOS"
+    case "harmony": "HarmonyOS"
+    default: "未记录"
+    }
+  }
+
+  private static func normalizeClientPlatform(_ value: String) -> String {
+    let platform = value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    return ["web", "miniprogram", "android", "ios", "windows", "macos", "harmony"].contains(platform) ? platform : ""
   }
 
   private static let localTimestampFormatter: ISO8601DateFormatter = {

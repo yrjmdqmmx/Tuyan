@@ -3,6 +3,7 @@ import { formatConfigurationMode, formatDate, formatErrorMessage, formatOutputFo
 import DownloadJobZipButton from './DownloadJobZipButton';
 import ResultFigure from './ResultFigure';
 import StatusBadge from './StatusBadge';
+import { formatClientPlatform } from '@paperbanana/api';
 
 export default function JobTable({ jobs, showUser, apiBase, onUseForRefine }) {
   return (
@@ -19,6 +20,10 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine }) {
               <span>
                 <strong>状态</strong>
                 <StatusBadge status={item.status} />
+              </span>
+              <span>
+                <strong>任务来源</strong>
+                {formatClientPlatform(item.client_platform)}
               </span>
               <span>
                 <strong>模式</strong>
@@ -85,8 +90,8 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine }) {
             </div>
           </div>
 
-          {item.status === 'failed' && item.error ? (
-            <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(item.error)}</div>
+          {item.status === 'failed' && (item.error || item.logs_tail) ? (
+            <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(item.error || lastDiagnosticLine(item.logs_tail))}</div>
           ) : null}
 
           {(item.reference_images || []).some((image) => image.url) ? (
@@ -129,4 +134,9 @@ function formatRetrievalSetting(setting) {
   if (setting === 'random') return '随机';
   if (setting === 'manual') return '手动';
   return '无';
+}
+
+function lastDiagnosticLine(logs) {
+  const lines = String(logs || '').split('\n').map((line) => line.trim()).filter(Boolean);
+  return lines.at(-1) || '任务失败，暂无更多诊断信息。';
 }

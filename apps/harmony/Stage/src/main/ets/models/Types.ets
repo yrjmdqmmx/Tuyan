@@ -128,6 +128,7 @@ export interface Job {
   id: string
   status: JobStatus
   provider: string
+  client_platform: string
   job_type: string
   user_id: string
   user_email: string

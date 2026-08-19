@@ -63,6 +63,7 @@ public sealed class PaperBananaApiClient
             var body = new Dictionary<string, object?>
             {
                 ["action"] = "createJob",
+                ["clientPlatform"] = "windows",
                 ["configurationMode"] = payload.ConfigurationMode,
                 ["provider"] = payload.Provider,
                 ["apiKeys"] = ApiKeysBody(payload.Provider, payload.ApiKey),
@@ -84,6 +85,7 @@ public sealed class PaperBananaApiClient
 
         var fastApiBody = new Dictionary<string, object?>
         {
+            ["clientPlatform"] = "windows",
             ["provider"] = payload.Provider,
             ["configuration_mode"] = payload.ConfigurationMode,
             ["api_keys"] = ApiKeysBody(payload.Provider, payload.ApiKey),

@@ -17,4 +17,6 @@ export function getJobAdmissionState(): {
 }
 export function stopJobAdmission(): void
 export function drainJobAdmission(): Promise<void>
+export function startAccountDeletionSweep(intervalMs?: number): void
+export function stopAccountDeletionSweep(): void
 export default handler

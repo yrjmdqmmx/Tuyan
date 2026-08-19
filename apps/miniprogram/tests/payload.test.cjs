@@ -28,6 +28,7 @@ const baseInput = {
 // 专业模式 + 手动参考：透传 retrievalSetting 与 manualReferenceIds
 const advanced = buildCreateJobPayload(baseInput)
 assert.equal(advanced.action, 'createJob')
+assert.equal(advanced.clientPlatform, 'miniprogram')
 assert.equal(advanced.taskName, 'diagram')
 assert.equal(advanced.imageSize, '2K')
 assert.equal(advanced.retrievalSetting, 'manual')

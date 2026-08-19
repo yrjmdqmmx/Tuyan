@@ -52,6 +52,7 @@ export interface Job {
   id: string;
   status: JobStatus;
   provider: string;
+  client_platform: string;
   user_id: string;
   user_email: string;
   configuration_mode: ConfigurationMode | string;

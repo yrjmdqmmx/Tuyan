@@ -17,6 +17,7 @@ enum PaperBananaAPIError: LocalizedError {
 }
 
 final class PaperBananaAPIClient {
+  static let createJobClientPlatform = "macos"
   private let session: URLSession
   private let decoder = JSONDecoder()
 
@@ -52,6 +53,7 @@ final class PaperBananaAPIClient {
     if shouldUsePaperBananaEndpoint(apiBase: base, health: health) {
       let body: [String: Any] = [
         "action": "createJob",
+        "clientPlatform": Self.createJobClientPlatform,
         "configurationMode": payload.configurationMode.rawValue,
         "provider": payload.provider.rawValue,
         "apiKeys": payload.apiKeysBody(),
@@ -76,6 +78,7 @@ final class PaperBananaAPIClient {
     }
 
     let body: [String: Any] = [
+      "clientPlatform": Self.createJobClientPlatform,
       "provider": payload.provider.rawValue,
       "configuration_mode": payload.configurationMode.rawValue,
       "api_keys": payload.apiKeysBody(),

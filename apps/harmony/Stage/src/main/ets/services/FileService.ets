@@ -57,6 +57,23 @@ export class FileService {
     })
     const prepared = await this.api.prepareReferenceUpload(prepareFiles)
     const result: UploadedReferenceImage[] = []
+    const lifecycleUploads: UploadedReferenceImage[] = []
+    for (const file of files) {
+      const upload = prepared.find((item: PreparedUpload) => item.clientId === `${file.id}:original`)
+      if (!upload) continue
+      lifecycleUploads.push({
+        filename: file.filename,
+        mimeType: file.mimeType,
+        size: file.size,
+        objectKey: upload.objectKey,
+        uploadToken: upload.uploadToken,
+      })
+    }
+    if (lifecycleUploads.length !== files.length) {
+      await this.api.abortReferenceUploads(lifecycleUploads)
+      throw new Error('参考图上传地址创建失败。')
+    }
+    try {
     for (const file of files) {
       const upload = prepared.find((item: PreparedUpload) => item.clientId === `${file.id}:original`)
       if (!upload || !upload.uploadUrl.length) throw new Error('参考图上传地址创建失败。')
@@ -68,6 +85,11 @@ export class FileService {
         objectKey: upload.objectKey,
         uploadToken: upload.uploadToken,
       })
+    }
+      await this.api.finalizeReferenceUploads(lifecycleUploads)
+    } catch (error) {
+      await this.api.abortReferenceUploads(lifecycleUploads)
+      throw error
     }
     return result
   }

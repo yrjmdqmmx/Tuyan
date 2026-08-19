@@ -99,6 +99,7 @@ export function normalizeJob(input: Object | undefined): Job {
     id: stringValue(job.id || job._id),
     status: stringValue(job.status, 'queued'),
     provider: stringValue(job.provider),
+    client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),
     job_type: stringValue(job.job_type || job.jobType, 'generate'),
     user_id: stringValue(job.user_id || job.userId),
     user_email: stringValue(job.user_email || job.userEmail),
@@ -135,6 +136,13 @@ export function normalizeJob(input: Object | undefined): Job {
     started_at: dateValue(job.started_at, job.startedAt),
     completed_at: dateValue(job.completed_at, job.completedAt),
   }
+}
+
+function normalizeClientPlatform(value: Object | string | number | boolean | undefined): string {
+  const platform = stringValue(value).trim().toLowerCase()
+  if (platform === 'web' || platform === 'miniprogram' || platform === 'android' || platform === 'ios' ||
+    platform === 'windows' || platform === 'macos' || platform === 'harmony') return platform
+  return ''
 }
 
 export function normalizeJobList(value: Object | undefined): Job[] {

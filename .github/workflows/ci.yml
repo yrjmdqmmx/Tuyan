@@ -29,6 +29,14 @@ jobs:
       - run: pnpm --filter @paperbanana/paperbanana-api test
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/paperbanana-api build
+      - run: node --test packages/api/src/*.test.js
+      - run: pnpm --filter @paperbanana/web test
+      - run: pnpm --filter @paperbanana/web build
+      - run: pnpm --filter @paperbanana/miniprogram check
+      - run: node --test apps/miniprogram/tests/*.test.cjs
+      - run: pnpm --filter @paperbanana/android typecheck
+      - run: node --test apps/android/tests/*.test.mjs
+      - run: node --test tests/*.test.mjs
       - run: node --test apps/laf-functions/tests/*.test.cjs
       - run: node --test deploy/hk-single-host/tests/*.test.mjs
       - run: node --test deploy/sg-egress/tests/*.test.mjs
@@ -54,3 +62,31 @@ jobs:
           file: apps/plot-worker/Dockerfile
           push: false
       - run: python3 -m unittest discover -s apps/plot-worker/tests -p 'test_*.py'
+
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --package-path apps/macos
+      - name: Test iOS shared job contracts
+        shell: bash
+        run: |
+          destination_id="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; data=json.load(sys.stdin); print(next(device["udid"] for runtime in data["devices"].values() for device in runtime if device.get("isAvailable") and device.get("name", "").startswith("iPhone")))')"
+          xcodebuild test \
+            -project apps/ios/paperbanana.xcodeproj \
+            -scheme PaperBanana \
+            -destination "platform=iOS Simulator,id=${destination_id}" \
+            -only-testing:PaperBananaTests/JobDecodingTests \
+            -only-testing:PaperBananaTests/PayloadEncodingTests \
+            -only-testing:PaperBananaTests/ProviderCatalogTests \
+            -only-testing:PaperBananaTests/APIClientTests \
+            CODE_SIGNING_ALLOWED=NO
+
+  windows:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet build apps/windows/PaperBanana.Windows.csproj -c Release -p:Platform=x64

@@ -55,6 +55,7 @@ fi
 "$script_dir/install-worker-firewall.sh"
 "${compose[@]}" up -d --remove-orphans --wait --wait-timeout 1800
 "$script_dir/install-worker-firewall.sh"
+"$script_dir/sync-reference-metadata.sh"
 "$script_dir/smoke.sh"
 
 deployment_succeeded=true

@@ -74,6 +74,7 @@ struct JobRecordRow: View {
         Text(job.title)
           .lineLimit(1)
         HStack(spacing: 8) {
+          Text("任务来源：\(job.clientPlatformDisplayName)")
           Text(job.provider.ifEmpty("未知平台"))
           Text(job.mainModelDisplayName.ifEmpty("主模型未知"))
           Text(job.imageModelDisplayName.ifEmpty("图像模型未知"))

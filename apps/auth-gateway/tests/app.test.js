@@ -238,6 +238,23 @@ test('relays a real upstream HTTP status and envelope unchanged', async () => {
   });
 });
 
+test('modelRegistry is a public read-only backend action', async () => {
+  const backend = fakeBackend(async (body) => ({
+    status: 200,
+    data: { code: 0, registryVersion: '2026-08-19', provider: body.provider },
+  }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const response = await post(baseUrl, { action: 'modelRegistry', provider: 'gemini' });
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), {
+      code: 0,
+      registryVersion: '2026-08-19',
+      provider: 'gemini',
+    });
+    assert.equal(backend.calls[0].body.action, 'modelRegistry');
+  });
+});
+
 test('anonymous writes receive a stable guest owner while raw forwarding headers are not relayed', async () => {
   await withApp({}, async ({ baseUrl, backend }) => {
     const first = await post(
@@ -258,6 +275,8 @@ test('anonymous writes receive a stable guest owner while raw forwarding headers
 
     await post(baseUrl, { action: 'prepareReferenceUpload' }, { cookie });
     assert.equal(backend.calls[1].body.userId, backend.calls[0].body.userId);
+    await post(baseUrl, { action: 'finalizeReferenceUpload', uploads: [] }, { cookie });
+    assert.equal(backend.calls[2].body.userId, backend.calls[0].body.userId);
   });
 });
 
@@ -452,6 +471,8 @@ test('maintenance mode dynamically blocks the exact mutating set but preserves r
       'createJob',
       'refineImage',
       'prepareReferenceUpload',
+      'finalizeReferenceUpload',
+      'abortReferenceUpload',
       'submitFeedback',
       'importReferences',
       'evaluateJob',
@@ -516,9 +537,12 @@ test('account deletion mutates auth only after semantic backend success', async 
     async deleteUser() { order.push('delete'); },
     async clearSessionCookie(_req, res) { order.push('clear'); res.append('set-cookie', 'session=; Max-Age=0'); },
   });
-  const backend = fakeBackend(async () => {
-    order.push('backend');
-    return { status: 200, data: { code: 0, ok: true } };
+  const backend = fakeBackend(async (body) => {
+    order.push(body.action);
+    if (body.action === 'accountDeletionCapability') {
+      return { status: 200, data: { code: 0, deletionContractVersion: 2 } };
+    }
+    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 2 } };
   });
   await withApp({ auth, backend }, async ({ baseUrl }) => {
     const response = await fetch(`${baseUrl}/api/account/delete`, {
@@ -527,7 +551,72 @@ test('account deletion mutates auth only after semantic backend success', async 
       body: JSON.stringify({ email: 'OWNER@example.com', password: 'secret' }),
     });
     assert.equal(response.status, 200);
-    assert.deepEqual(order, ['password', 'backend', 'delete', 'clear']);
+    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'deleteAccount', 'delete', 'clear']);
+  });
+});
+
+test('account deletion preflights the v2 contract before any destructive backend call', async () => {
+  const auth = fakeAuth({
+    async verifyPassword() { return true; },
+    async deleteUser() { assert.fail('Auth must remain intact when the backend lacks deletion v2'); },
+  });
+  const backend = fakeBackend(async (body) => {
+    assert.equal(body.action, 'accountDeletionCapability');
+    return { status: 400, data: { code: 400, error: 'Unknown action: accountDeletionCapability' } };
+  });
+
+  await withApp({ auth, backend }, async ({ baseUrl }) => {
+    const response = await fetch(`${baseUrl}/api/account/delete`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
+      body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
+    });
+    assert.equal(response.status, 503);
+    assert.deepEqual(await response.json(), { code: 503, error: 'ACCOUNT_DELETION_CONTRACT_UNAVAILABLE' });
+    assert.deepEqual(backend.calls.map((call) => call.body.action), ['accountDeletionCapability']);
+  });
+});
+
+test('concurrent account deletion requests share one destructive operation', async () => {
+  let backendDeletes = 0;
+  let authDeletes = 0;
+  let releaseDelete;
+  const deleteGate = new Promise((resolve) => { releaseDelete = resolve; });
+  let passwordCalls = 0;
+  let releasePasswords;
+  const passwordsReady = new Promise((resolve) => { releasePasswords = resolve; });
+  const auth = fakeAuth({
+    async verifyPassword() {
+      passwordCalls += 1;
+      if (passwordCalls === 2) releasePasswords();
+      await passwordsReady;
+      return true;
+    },
+    async deleteUser() { authDeletes += 1; },
+  });
+  const backend = fakeBackend(async (body) => {
+    if (body.action === 'accountDeletionCapability') {
+      return { status: 200, data: { code: 0, deletionContractVersion: 2 } };
+    }
+    backendDeletes += 1;
+    await deleteGate;
+    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 2 } };
+  });
+
+  await withApp({ auth, backend }, async ({ baseUrl }) => {
+    const request = () => fetch(`${baseUrl}/api/account/delete`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
+      body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
+    });
+    const first = request();
+    const second = request();
+    while (backendDeletes !== 1) await new Promise((resolve) => setImmediate(resolve));
+    releaseDelete();
+    const responses = await Promise.all([first, second]);
+    assert.deepEqual(responses.map((response) => response.status), [200, 200]);
+    assert.equal(backendDeletes, 1);
+    assert.equal(authDeletes, 1);
   });
 });
 
@@ -538,9 +627,12 @@ test('account deletion succeeds after commit even when cookie clearing fails', a
     async deleteUser() { order.push('delete'); },
     async clearSessionCookie() { order.push('clear'); throw new Error('cookie secret leaked'); },
   });
-  const backend = fakeBackend(async () => {
-    order.push('backend');
-    return { status: 200, data: { code: 0, ok: true } };
+  const backend = fakeBackend(async (body) => {
+    order.push(body.action);
+    if (body.action === 'accountDeletionCapability') {
+      return { status: 200, data: { code: 0, deletionContractVersion: 2 } };
+    }
+    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 2 } };
   });
   await withApp({ auth, backend }, async ({ baseUrl }) => {
     const response = await fetch(`${baseUrl}/api/account/delete`, {
@@ -550,7 +642,7 @@ test('account deletion succeeds after commit even when cookie clearing fails', a
     });
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), { code: 0, ok: true });
-    assert.deepEqual(order, ['password', 'backend', 'delete', 'clear']);
+    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'deleteAccount', 'delete', 'clear']);
   });
 });
 
@@ -607,7 +699,9 @@ test('unexpected internal failures return a generic 500 and log only redacted de
 
 test('account deletion preserves auth on business failure and returns the original envelope', async () => {
   const auth = fakeAuth();
-  const backend = fakeBackend(async () => ({ status: 200, data: { code: 503, ok: false, error: 'cleanup failed' } }));
+  const backend = fakeBackend(async (body) => body.action === 'accountDeletionCapability'
+    ? { status: 200, data: { code: 0, deletionContractVersion: 2 } }
+    : { status: 200, data: { code: 503, ok: false, error: 'cleanup failed' } });
   await withApp({ auth, backend }, async ({ baseUrl }) => {
     const response = await fetch(`${baseUrl}/api/account/delete`, {
       method: 'POST',
@@ -622,7 +716,9 @@ test('account deletion preserves auth on business failure and returns the origin
 
 test('account deletion preserves auth when cleanup success fields are missing', async () => {
   const auth = fakeAuth();
-  const backend = fakeBackend(async () => ({ status: 200, data: { code: 0 } }));
+  const backend = fakeBackend(async (body) => body.action === 'accountDeletionCapability'
+    ? { status: 200, data: { code: 0, deletionContractVersion: 2 } }
+    : { status: 200, data: { code: 0 } });
   await withApp({ auth, backend }, async ({ baseUrl }) => {
     const response = await fetch(`${baseUrl}/api/account/delete`, {
       method: 'POST',
@@ -631,6 +727,21 @@ test('account deletion preserves auth when cleanup success fields are missing', 
     });
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), { code: 0 });
+    assert.deepEqual(auth.events, ['password']);
+  });
+});
+
+test('account deletion refuses a legacy cleanup response that cannot prove complete object deletion', async () => {
+  const auth = fakeAuth();
+  const backend = fakeBackend(async () => ({ status: 200, data: { code: 0, ok: true } }));
+  await withApp({ auth, backend }, async ({ baseUrl }) => {
+    const response = await fetch(`${baseUrl}/api/account/delete`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
+      body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
+    });
+    assert.equal(response.status, 503);
+    assert.deepEqual(await response.json(), { code: 503, error: 'ACCOUNT_DELETION_CONTRACT_UNAVAILABLE' });
     assert.deepEqual(auth.events, ['password']);
   });
 });

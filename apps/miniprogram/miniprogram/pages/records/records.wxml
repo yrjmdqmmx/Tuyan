@@ -39,6 +39,7 @@
         </view>
         <view class="job-record-title">{{item.caption || '未记录图注'}}</view>
         <view class="job-record-meta">
+          <text>任务来源：{{item.client_platform_text}}</text>
           <text>{{item.infographic_category}}</text>
           <text>{{item.provider || '模型服务'}}</text>
           <text>{{item.configuration_mode === 'simple' ? '普通模式' : '专业模式'}}</text>
@@ -151,7 +152,7 @@
     <view class="history-item" wx:for="{{localJobs}}" wx:key="id" data-id="{{item.id}}" bindtap="openJob">
       <view class="history-main">
         <view class="history-title">{{item.caption || item.id}}</view>
-        <view class="history-meta">{{item.infographic_category}} · {{item.provider || '模型服务'}}</view>
+        <view class="history-meta">任务来源：{{item.client_platform_text}} · {{item.infographic_category}} · {{item.provider || '模型服务'}}</view>
       </view>
       <view class="history-status {{item.status}}">{{item.status_text}}</view>
     </view>

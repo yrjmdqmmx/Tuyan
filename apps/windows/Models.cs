@@ -92,6 +92,7 @@ public sealed class PaperBananaJob
     public string Id { get; init; } = "";
     public string Status { get; init; } = "queued";
     public string Provider { get; init; } = "";
+    public string ClientPlatform { get; init; } = "";
     public string UserEmail { get; init; } = "";
     public string ConfigurationMode { get; init; } = "simple";
     public string MethodContent { get; init; } = "";
@@ -115,6 +116,17 @@ public sealed class PaperBananaJob
     public bool IsTerminal => Status is "succeeded" or "failed";
     public string Title => string.IsNullOrWhiteSpace(Caption) ? Id : Caption;
     public string FailureText => string.IsNullOrWhiteSpace(Error) ? LogsTail : Error;
+    public string ClientPlatformDisplayName => ClientPlatform switch
+    {
+        "web" => "Web 网页",
+        "miniprogram" => "微信小程序",
+        "android" => "Android",
+        "ios" => "iOS",
+        "windows" => "Windows",
+        "macos" => "macOS",
+        "harmony" => "HarmonyOS",
+        _ => "未记录"
+    };
 
     public static PaperBananaJob FromJson(JsonElement element)
     {
@@ -124,6 +136,7 @@ public sealed class PaperBananaJob
             Id = GetString(element, "id", "_id"),
             Status = GetString(element, "status", fallback: "queued"),
             Provider = GetString(element, "provider"),
+            ClientPlatform = NormalizeClientPlatform(GetString(element, "client_platform", "clientPlatform")),
             UserEmail = GetString(element, "user_email", "userEmail"),
             ConfigurationMode = GetString(element, "configuration_mode", "configurationMode", fallback: "simple"),
             MethodContent = GetString(element, "method_content", "methodContent"),
@@ -144,6 +157,14 @@ public sealed class PaperBananaJob
             UpdatedAt = GetDate(element, "updated_at", "updatedAt"),
             CompletedAt = GetDate(element, "completed_at", "completedAt")
         };
+    }
+
+    private static string NormalizeClientPlatform(string value)
+    {
+        var platform = value.Trim().ToLowerInvariant();
+        return platform is "web" or "miniprogram" or "android" or "ios" or "windows" or "macos" or "harmony"
+            ? platform
+            : "";
     }
 
     private static List<ResultImage> ReadImages(JsonElement? element)
@@ -245,6 +266,8 @@ public sealed class JobListItem
     public IReadOnlyList<ResultImageViewModel> Images { get; init; } = [];
     public string Title => Job.Title;
     public string Meta => $"{Job.Provider} · {Job.MainModelName} · {Job.ImageModelName}";
+    public string ClientPlatformDisplayName => Job.ClientPlatformDisplayName;
+    public string ClientPlatformDisplayText => $"任务来源：{ClientPlatformDisplayName}";
     public string CreatedText => Job.CreatedAt?.ToLocalTime().ToString("MM-dd HH:mm") ?? "";
     public string Error => Job.Status == "failed" ? ErrorFormatter.Format(Job.FailureText) : "";
 }

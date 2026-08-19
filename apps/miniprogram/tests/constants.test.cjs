@@ -12,20 +12,20 @@ const {
 // bailian 模型常量与 apps/web/src/constants.js（SYNC.md 2026-06-08 条目）同步
 const bailian = PROVIDERS.find((provider) => provider.id === 'bailian')
 assert.ok(bailian)
-assert.equal(bailian.mainModel, 'qwen3.7-max')
+assert.equal(bailian.mainModel, 'qwen3.8-max')
 assert.equal(bailian.imageModel, 'wan2.7-image-pro')
-assert.equal(bailian.visionModel, 'qwen3.7-plus')
+assert.equal(bailian.visionModel, 'qwen3.8-max')
 assert.deepEqual(
   bailian.mainModels.map((option) => option.value),
-  ['qwen3.7-max', 'qwen3.7-plus', 'qwen3.6-flash', 'deepseek-v4-pro', 'deepseek-v4-flash', 'kimi-k2.6', 'glm-5.1', 'MiniMax/MiniMax-M2.7'],
+  ['qwen3.8-max', 'qwen3.7-plus', 'qwen3.7-flash', 'deepseek-v4-pro', 'deepseek-v4-flash', 'kimi/kimi-k3', 'glm-5.2', 'MiniMax/MiniMax-M3'],
 )
 assert.deepEqual(
   bailian.imageModels.map((option) => option.value),
-  ['wan2.7-image-pro', 'qwen-image-2.0-pro'],
+  ['wan2.7-image-pro', 'qwen-image-3.0-pro', 'qwen-image-3.0'],
 )
 assert.deepEqual(
   bailian.visionModels.map((option) => option.value),
-  ['qwen3.7-plus', 'qwen3.5-omni-plus', 'kimi-k2.6'],
+  ['qwen3.8-max', 'qwen3.7-plus', 'qwen3.5-omni-plus', 'kimi/kimi-k3'],
 )
 
 // 已剔除的旧模型不应再出现
@@ -44,10 +44,10 @@ assert.deepEqual(RESOLUTION_OPTIONS.map((option) => option.value), ['1K', '2K', 
 // 主模型读图能力正则（bailian 固定能力，SYNC.md 2026-06-08）
 assert.equal(mainModelCanReadImages('bailian', 'qwen3.7-plus'), true)
 assert.equal(mainModelCanReadImages('bailian', 'qwen3.5-omni-plus'), true)
-assert.equal(mainModelCanReadImages('bailian', 'kimi-k2.6'), true)
-assert.equal(mainModelCanReadImages('bailian', 'qwen3.7-max'), false)
+assert.equal(mainModelCanReadImages('bailian', 'kimi/kimi-k3'), true)
+assert.equal(mainModelCanReadImages('bailian', 'qwen3.8-max'), true)
 assert.equal(mainModelCanReadImages('bailian', 'deepseek-v4-pro'), false)
-assert.equal(mainModelCanReadImages('bailian', 'MiniMax/MiniMax-M2.7'), false)
+assert.equal(mainModelCanReadImages('bailian', 'MiniMax/MiniMax-M3'), false)
 assert.equal(mainModelCanReadImages('gemini', 'gemini-3.5-flash'), true)
 assert.equal(mainModelCanReadImages('openrouter', 'openrouter/anthropic/claude-opus-4.8'), true)
 assert.equal(mainModelCanReadImages('openai', 'gpt-5.5'), true)

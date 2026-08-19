@@ -26,6 +26,7 @@ struct JobCreatePayload {
     let hasUploadedReferences = !referenceImages.isEmpty
     var body: [String: Any] = [
       "action": "createJob",
+      "clientPlatform": "ios",
       "configurationMode": configurationMode.rawValue,
       "provider": provider.rawValue,
       "apiKeys": apiKeysBody(),
@@ -72,6 +73,7 @@ struct RefineImagePayload {
   func paperBananaBody() -> [String: Any] {
     var body: [String: Any] = [
       "action": "refineImage",
+      "clientPlatform": "ios",
       "provider": provider.rawValue,
       "apiKeys": Dictionary(uniqueKeysWithValues: ProviderID.allCases.map { ($0.rawValue, apiKeys[$0] ?? "") }),
       "mainModelName": mainModelName,

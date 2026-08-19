@@ -19,6 +19,8 @@ const MAINTENANCE_ACTIONS = new Set([
   'createJob',
   'refineImage',
   'prepareReferenceUpload',
+  'finalizeReferenceUpload',
+  'abortReferenceUpload',
   'submitFeedback',
   ...ADMIN_MUTATING_ACTIONS,
 ]);
@@ -33,6 +35,7 @@ export function createApp({
   logger = console,
 }) {
   const app = express();
+  const accountDeletionOperations = new Map();
   app.disable('x-powered-by');
   app.set('trust proxy', config.trustProxy);
 
@@ -134,15 +137,49 @@ export function createApp({
         return response.status(401).json({ code: 401, error: 'INVALID_PASSWORD' });
       }
 
-      const cleanup = await backend.call(
-        {
-          action: 'deleteAccount',
-          userId: String(session.user.id || ''),
-          userEmail: String(session.user.email || ''),
-        },
-        requestContext(request),
-      );
+      const userId = String(session.user.id || '');
+      const deletion = await runOnce(accountDeletionOperations, userId, async () => {
+        const context = requestContext(request);
+        const capability = await backend.call({ action: 'accountDeletionCapability' }, context);
+        if (
+          capability.status < 200 ||
+          capability.status >= 300 ||
+          Number(capability.data?.code) !== 0 ||
+          Number(capability.data?.deletionContractVersion) !== 2
+        ) {
+          return { contractUnavailable: true };
+        }
+
+        const cleanup = await backend.call(
+          {
+            action: 'deleteAccount',
+            userId,
+            userEmail: String(session.user.email || ''),
+          },
+          context,
+        );
+        if (
+          cleanup.status < 200 ||
+          cleanup.status >= 300 ||
+          Number(cleanup.data?.code) !== 0 ||
+          cleanup.data?.ok !== true
+        ) {
+          return { cleanup };
+        }
+        if (Number(cleanup.data?.deletionContractVersion) !== 2) {
+          return { contractUnavailable: true };
+        }
+
+        await auth.deleteUser(userId);
+        return { cleanup, committed: true };
+      });
+
+      if (deletion.contractUnavailable) {
+        return response.status(503).json({ code: 503, error: 'ACCOUNT_DELETION_CONTRACT_UNAVAILABLE' });
+      }
+      const cleanup = deletion.cleanup;
       if (
+        !cleanup ||
         cleanup.status < 200 ||
         cleanup.status >= 300 ||
         Number(cleanup.data?.code) !== 0 ||
@@ -150,8 +187,6 @@ export function createApp({
       ) {
         return relay(response, cleanup);
       }
-
-      await auth.deleteUser(String(session.user.id || ''));
       try {
         await auth.clearSessionCookie(request, response);
       } catch (error) {
@@ -191,7 +226,7 @@ export function createApp({
         );
       }
 
-      if (action === 'modelCapability' || action === 'referenceLibrary') {
+      if (action === 'modelRegistry' || action === 'modelCapability' || action === 'referenceLibrary') {
         return relay(response, await backend.call(request.body, context));
       }
 
@@ -210,7 +245,12 @@ export function createApp({
         );
       }
 
-      if (action === 'createJob' || action === 'prepareReferenceUpload') {
+      if (
+        action === 'createJob' ||
+        action === 'prepareReferenceUpload' ||
+        action === 'finalizeReferenceUpload' ||
+        action === 'abortReferenceUpload'
+      ) {
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const body = action === 'createJob' ? normalizeCreateJobBody(request.body) : { ...request.body };
         return relay(
@@ -324,6 +364,18 @@ export function createApp({
   });
 
   return app;
+}
+
+async function runOnce(operations, key, operation) {
+  const existing = operations.get(key);
+  if (existing) return existing;
+  const pending = Promise.resolve().then(operation);
+  operations.set(key, pending);
+  try {
+    return await pending;
+  } finally {
+    if (operations.get(key) === pending) operations.delete(key);
+  }
 }
 
 function asyncRoute(handler) {

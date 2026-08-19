@@ -91,18 +91,16 @@ enum ProviderCatalog {
       label: "Gemini",
       keyName: "gemini",
       keyPlaceholder: "AIza...",
-      mainModel: "gemini-3.5-flash",
+      mainModel: "gemini-3.7-flash",
       imageModel: "gemini-3.1-flash-image",
-      visionModel: "gemini-3.5-flash",
+      visionModel: "gemini-3.7-flash",
       mainModels: [
+        option("gemini-3.7-flash", "Gemini 3.7 Flash", "Gemini 3.7"),
+        option("gemini-3.6-flash", "Gemini 3.6 Flash", "Gemini 3.6"),
         option("gemini-3.5-flash", "Gemini 3.5 Flash", "Gemini 3.5"),
         option("gemini-3.1-pro-preview", "Gemini 3.1 Pro Preview", "Gemini 3.1"),
-        option("gemini-3.1-pro", "Gemini 3.1 Pro", "Gemini 3.1"),
         option("gemini-3.1-flash-lite", "Gemini 3.1 Flash Lite", "Gemini 3.1"),
-        option("gemini-3.1-flash-lite-preview", "Gemini 3.1 Flash Lite Preview", "Gemini 3.1"),
-        option("gemini-3-flash", "Gemini 3 Flash", "Gemini 3"),
         option("gemini-3-flash-preview", "Gemini 3 Flash Preview", "Gemini 3"),
-        option("gemini-3-pro-preview", "Gemini 3 Pro Preview", "Gemini 3"),
         option("gemini-2.5-pro", "Gemini 2.5 Pro", "Gemini 2.5"),
         option("gemini-2.5-flash", "Gemini 2.5 Flash", "Gemini 2.5"),
         option("gemini-2.5-flash-lite", "Gemini 2.5 Flash-Lite", "Gemini 2.5")
@@ -113,8 +111,9 @@ enum ProviderCatalog {
         option("gemini-2.5-flash-image", "Nano Banana / Gemini 2.5 Flash Image", "Nano Banana")
       ],
       visionModels: [
+        option("gemini-3.7-flash", "Gemini 3.7 Flash", "Gemini 3.7"),
+        option("gemini-3.6-flash", "Gemini 3.6 Flash", "Gemini 3.6"),
         option("gemini-3.5-flash", "Gemini 3.5 Flash", "Gemini 3.5"),
-        option("gemini-3.1-pro", "Gemini 3.1 Pro", "Gemini 3.1"),
         option("gemini-3.1-pro-preview", "Gemini 3.1 Pro Preview", "Gemini 3.1"),
         option("gemini-2.5-pro", "Gemini 2.5 Pro", "Gemini 2.5"),
         option("gemini-2.5-flash", "Gemini 2.5 Flash", "Gemini 2.5"),
@@ -132,36 +131,32 @@ enum ProviderCatalog {
       label: "OpenAI",
       keyName: "openai",
       keyPlaceholder: "sk-...",
-      mainModel: "gpt-5.5",
+      mainModel: "gpt-5.6-sol",
       imageModel: "gpt-image-2",
-      visionModel: "gpt-4.1",
+      visionModel: "gpt-5.6-sol",
       mainModels: [
+        option("gpt-5.6-sol", "GPT-5.6 Sol", "GPT-5.6"),
+        option("gpt-5.6-terra", "GPT-5.6 Terra", "GPT-5.6"),
+        option("gpt-5.6-luna", "GPT-5.6 Luna", "GPT-5.6"),
         option("gpt-5.5", "GPT-5.5", "GPT-5.5"),
-        option("gpt-5.5-pro", "GPT-5.5 Pro", "GPT-5.5"),
         option("gpt-5.4", "GPT-5.4", "GPT-5.4"),
-        option("gpt-5.4-pro", "GPT-5.4 Pro", "GPT-5.4"),
         option("gpt-5.4-mini", "GPT-5.4 Mini", "GPT-5.4"),
         option("gpt-5.4-nano", "GPT-5.4 Nano", "GPT-5.4"),
-        option("gpt-5.2", "GPT-5.2", "GPT-5"),
-        option("gpt-5.1", "GPT-5.1", "GPT-5"),
         option("gpt-5-mini", "GPT-5 Mini", "GPT-5"),
         option("gpt-4.1", "GPT-4.1", "GPT-4.1"),
         option("gpt-4.1-mini", "GPT-4.1 Mini", "GPT-4.1"),
-        option("gpt-4o", "GPT-4o", "GPT-4o"),
-        option("gpt-4o-mini", "GPT-4o Mini", "GPT-4o")
       ],
       imageModels: [
         option("gpt-image-2", "GPT Image 2", "GPT Image"),
-        option("gpt-image-1.5", "GPT Image 1.5", "GPT Image"),
         option("gpt-image-1", "GPT Image 1", "GPT Image"),
         option("gpt-image-1-mini", "GPT Image 1 Mini", "GPT Image")
       ],
       visionModels: [
+        option("gpt-5.6-sol", "GPT-5.6 Sol", "GPT-5.6"),
+        option("gpt-5.6-terra", "GPT-5.6 Terra", "GPT-5.6"),
+        option("gpt-5.6-luna", "GPT-5.6 Luna", "GPT-5.6"),
         option("gpt-4.1", "GPT-4.1", "GPT-4.1"),
         option("gpt-4.1-mini", "GPT-4.1 Mini", "GPT-4.1"),
-        option("gpt-4o", "GPT-4o", "GPT-4o"),
-        option("gpt-4o-mini", "GPT-4o Mini", "GPT-4o"),
-        option("gpt-5.1", "GPT-5.1", "GPT-5"),
         option("gpt-5-mini", "GPT-5 Mini", "GPT-5")
       ],
       guideURL: URL(string: "https://platform.openai.com/api-keys")!,
@@ -176,27 +171,29 @@ enum ProviderCatalog {
       label: "阿里百炼",
       keyName: "bailian",
       keyPlaceholder: "sk-...",
-      mainModel: "qwen3.7-max",
+      mainModel: "qwen3.8-max",
       imageModel: "wan2.7-image-pro",
-      visionModel: "qwen3.7-plus",
+      visionModel: "qwen3.8-max",
       mainModels: [
-        option("qwen3.7-max", "Qwen3.7 Max", "通义千问"),
+        option("qwen3.8-max", "Qwen3.8 Max", "通义千问"),
         option("qwen3.7-plus", "Qwen3.7 Plus（可直读图）", "通义千问"),
-        option("qwen3.6-flash", "Qwen3.6 Flash", "通义千问"),
+        option("qwen3.7-flash", "Qwen3.7 Flash", "通义千问"),
         option("deepseek-v4-pro", "DeepSeek V4 Pro", "百炼第三方"),
         option("deepseek-v4-flash", "DeepSeek V4 Flash", "百炼第三方"),
-        option("kimi-k2.6", "Kimi K2.6（可直读图）", "百炼第三方"),
-        option("glm-5.1", "GLM 5.1", "百炼第三方"),
-        option("MiniMax/MiniMax-M2.7", "MiniMax M2.7", "百炼第三方")
+        option("kimi/kimi-k3", "Kimi K3（可直读图）", "百炼第三方"),
+        option("glm-5.2", "GLM 5.2", "百炼第三方"),
+        option("MiniMax/MiniMax-M3", "MiniMax M3", "百炼第三方")
       ],
       imageModels: [
         option("wan2.7-image-pro", "Wan 2.7 Image Pro", "通义万相"),
-        option("qwen-image-2.0-pro", "Qwen Image 2.0 Pro", "通义千问 Image")
+        option("qwen-image-3.0-pro", "Qwen Image 3.0 Pro", "通义千问 Image"),
+        option("qwen-image-3.0", "Qwen Image 3.0", "通义千问 Image")
       ],
       visionModels: [
+        option("qwen3.8-max", "Qwen3.8 Max（图像理解）", "通义千问"),
         option("qwen3.7-plus", "Qwen3.7 Plus（图像理解）", "通义千问"),
         option("qwen3.5-omni-plus", "Qwen3.5 Omni Plus（全模态）", "通义千问"),
-        option("kimi-k2.6", "Kimi K2.6（图像理解）", "百炼第三方")
+        option("kimi/kimi-k3", "Kimi K3（图像理解）", "百炼第三方")
       ],
       guideURL: URL(string: "https://help.aliyun.com/zh/model-studio/get-api-key")!,
       guideSteps: [
@@ -215,7 +212,7 @@ enum ProviderCatalog {
     let m = model.lowercased()
     switch provider {
     case .bailian:
-      return m.range(of: #"qwen3\.7-plus|qwen3\.5-omni|omni|kimi-k2\.6|qwen-?vl|qwen3-?vl|-vl-|qvq"#, options: .regularExpression) != nil
+      return m.range(of: #"qwen3\.8-max|qwen3\.7-plus|qwen3\.5-omni|omni|kimi[\/-]kimi-k3|qwen-?vl|qwen3-?vl|-vl-|qvq"#, options: .regularExpression) != nil
     case .gemini, .openrouter:
       return true
     case .openai:

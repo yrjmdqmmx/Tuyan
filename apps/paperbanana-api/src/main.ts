@@ -35,8 +35,12 @@ async function main(): Promise<void> {
       const legacy = await import('./legacy-entry.mjs')
       legacy.configureRuntimeFetch(providerEgress.fetch)
       legacy.configureJobAdmission(config.admission)
+      legacy.startAccountDeletionSweep()
       legacyLifecycle = {
-        stop: legacy.stopJobAdmission,
+        stop() {
+          legacy.stopJobAdmission()
+          legacy.stopAccountDeletionSweep()
+        },
         drain: legacy.drainJobAdmission,
       }
       return legacy.default as unknown as LegacyHandler

@@ -1,4 +1,6 @@
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
+import { formatClientPlatform } from '../../main/ets/utils/Format';
+import { buildCreateJobPayload } from '../../main/ets/utils/Payload';
 
 export default function localUnitTest() {
   describe('localUnitTest', () => {
@@ -28,6 +30,18 @@ export default function localUnitTest() {
       // Defines a variety of assertion methods, which are used to declare expected boolean conditions.
       expect(a).assertContain(b);
       expect(a).assertEqual(a);
+    });
+    it('usesFixedHarmonyPlatformAndFormatsMissingHistory', 0, () => {
+      const payload = buildCreateJobPayload({
+        configurationMode: 'simple', provider: 'bailian', apiKey: 'key', categoryId: 'method_framework',
+        categoryLabel: '方法框架图', methodContent: 'method', caption: 'caption', outputFormat: 'png', imageSize: '1K',
+        mainModelName: 'main', imageModelName: 'image', referenceVisionModelName: 'vision', referenceImageMode: 'vision_model',
+        uploadedReferenceImages: [], pipelineMode: 'planner_critic', retrievalSetting: 'none', manualReferenceIds: [],
+        aspectRatio: '16:9', numCandidates: 1, maxCriticRounds: 1,
+      });
+      expect(payload.clientPlatform).assertEqual('harmony');
+      expect(formatClientPlatform('harmony')).assertEqual('HarmonyOS');
+      expect(formatClientPlatform('')).assertEqual('未记录');
     });
   });
 }

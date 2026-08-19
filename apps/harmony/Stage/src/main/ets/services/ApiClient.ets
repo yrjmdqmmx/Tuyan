@@ -7,6 +7,7 @@ import {
   Job,
   PreparedUpload,
   RetrievedReference,
+  UploadedReferenceImage,
   UploadPrepareFile,
 } from '../models/Types'
 import { normalizeJob, normalizeJobList, normalizeRetrievedReference, stringValue } from '../utils/Normalize'
@@ -230,6 +231,23 @@ export class ApiClient {
         uploadUrl: stringValue(upload.uploadUrl),
       }
       return prepared
+    })
+  }
+
+  async finalizeReferenceUploads(uploads: UploadedReferenceImage[]): Promise<void> {
+    await this.referenceUploadLifecycle('finalizeReferenceUpload', uploads)
+  }
+
+  async abortReferenceUploads(uploads: UploadedReferenceImage[]): Promise<void> {
+    await this.referenceUploadLifecycle('abortReferenceUpload', uploads)
+  }
+
+  private async referenceUploadLifecycle(action: string, uploads: UploadedReferenceImage[]): Promise<void> {
+    await this.requestJson(paperbananaEndpoint(this.apiBase), {
+      method: http.RequestMethod.POST,
+      body: { action, uploads },
+      includeAuth: true,
+      timeoutMs: 30000,
     })
   }
 

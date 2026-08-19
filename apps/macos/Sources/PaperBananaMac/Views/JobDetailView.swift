@@ -24,6 +24,7 @@ struct JobDetailView: View {
           }
 
           Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 8) {
+            detailRow("任务来源", job.clientPlatformDisplayName)
             detailRow("模型平台", job.provider)
             detailRow("信息图类别", job.infographicCategory)
             detailRow("主模型", job.mainModelDisplayName)

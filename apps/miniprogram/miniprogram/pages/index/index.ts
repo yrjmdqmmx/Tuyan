@@ -650,6 +650,7 @@ Component({
       })
       this.refreshCanSubmit()
 
+      let preparedUploads: ReferenceUpload[] = []
       try {
         const files = this.data.referenceImages.map((image) => ({
           clientId: `${image.id}:original`,
@@ -662,7 +663,8 @@ Component({
           action: 'prepareReferenceUpload',
           files,
         })
-        const uploadMap = new Map((prepared.uploads || []).map((upload) => [upload.clientId, upload]))
+        preparedUploads = prepared.uploads || []
+        const uploadMap = new Map(preparedUploads.map((upload) => [upload.clientId, upload]))
 
         for (const image of this.data.referenceImages) {
           const upload = uploadMap.get(`${image.id}:original`)
@@ -670,7 +672,7 @@ Component({
           await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType)
         }
 
-        return this.data.referenceImages.map((image) => {
+        const uploaded = this.data.referenceImages.map((image) => {
           const upload = uploadMap.get(`${image.id}:original`)
           if (!upload) throw new Error('参考图上传结果缺少原图记录。')
           return {
@@ -681,7 +683,12 @@ Component({
             uploadToken: upload.uploadToken,
           }
         })
+        await requestJson({ action: 'finalizeReferenceUpload', uploads: uploaded })
+        return uploaded
       } catch (error) {
+        if (preparedUploads.length) {
+          await requestJson({ action: 'abortReferenceUpload', uploads: preparedUploads }).catch(() => undefined)
+        }
         const message = formatError(error)
         this.setData({ referenceUploadError: message })
         throw new Error(message)

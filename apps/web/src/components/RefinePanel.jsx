@@ -13,7 +13,6 @@ export default function RefinePanel({
   error,
   job,
   apiBase,
-  onSourceUrlChange,
   onInstructionChange,
   onImageSizeChange,
   onAspectRatioChange,
@@ -26,13 +25,17 @@ export default function RefinePanel({
           <ImagePlus size={20} />
           <div>
             <h2>精修图片</h2>
-            <p>上传结果图 URL 或从生成结果带入图片，再描述需要调整的内容。</p>
+            <p>从“生成结果”或“任务记录”选择本人图片，再描述需要调整的内容。</p>
           </div>
         </div>
-        <label className="field">
-          <span>源图片 URL</span>
-          <input value={sourceUrl} onChange={(event) => onSourceUrlChange(event.target.value)} placeholder="https://... 或 data:image/..." />
-        </label>
+        {sourceUrl ? (
+          <figure className="refine-source-preview">
+            <img src={sourceUrl} alt="已选择的待精修图片" />
+            <figcaption>已选择本人任务中的结果图；如需更换，请返回生成结果或任务记录重新选择。</figcaption>
+          </figure>
+        ) : (
+          <div className="refine-source-empty">尚未选择图片。请从“生成结果”或“任务记录”点击“精修”。</div>
+        )}
         <label className="field">
           <span>精修指令</span>
           <textarea value={instruction} onChange={(event) => onInstructionChange(event.target.value)} rows={8} placeholder="例如：放大标签、减少装饰、让流程箭头更清晰。" />

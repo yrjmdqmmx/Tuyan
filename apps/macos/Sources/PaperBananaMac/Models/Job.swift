@@ -65,6 +65,7 @@ struct Job: Decodable, Identifiable, Equatable {
   let id: String
   let status: String
   let provider: String
+  let clientPlatform: String
   let userEmail: String
   let configurationMode: String
   let methodContent: String
@@ -123,6 +124,7 @@ struct Job: Decodable, Identifiable, Equatable {
     id: String,
     status: String,
     provider: String = "",
+    clientPlatform: String = "",
     userEmail: String = "",
     configurationMode: String = "",
     methodContent: String = "",
@@ -147,6 +149,7 @@ struct Job: Decodable, Identifiable, Equatable {
     self.id = id
     self.status = status
     self.provider = provider
+    self.clientPlatform = Self.normalizeClientPlatform(clientPlatform)
     self.userEmail = userEmail
     self.configurationMode = configurationMode
     self.methodContent = methodContent
@@ -174,6 +177,7 @@ struct Job: Decodable, Identifiable, Equatable {
     id = container.string("id", "_id")
     status = container.string("status")
     provider = container.string("provider")
+    clientPlatform = Self.normalizeClientPlatform(container.string("client_platform", "clientPlatform"))
     userEmail = container.string("user_email", "userEmail")
     configurationMode = container.string("configuration_mode", "configurationMode")
     methodContent = container.string("method_content", "methodContent")
@@ -194,6 +198,24 @@ struct Job: Decodable, Identifiable, Equatable {
     updatedAt = container.string("updated_at", "updatedAt")
     startedAt = container.string("started_at", "startedAt")
     completedAt = container.string("completed_at", "completedAt")
+  }
+
+  var clientPlatformDisplayName: String {
+    switch clientPlatform {
+    case "web": "Web 网页"
+    case "miniprogram": "微信小程序"
+    case "android": "Android"
+    case "ios": "iOS"
+    case "windows": "Windows"
+    case "macos": "macOS"
+    case "harmony": "HarmonyOS"
+    default: "未记录"
+    }
+  }
+
+  private static func normalizeClientPlatform(_ value: String) -> String {
+    let platform = value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    return ["web", "miniprogram", "android", "ios", "windows", "macos", "harmony"].contains(platform) ? platform : ""
   }
 }
 

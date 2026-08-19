@@ -119,6 +119,7 @@ final class JobDecodingTests: XCTestCase {
         "id": "record-1",
         "status": "succeeded",
         "provider": "openai",
+        "client_platform": "macos",
         "configuration_mode": "advanced",
         "method_content": "A long method section",
         "caption": "A caption",
@@ -144,6 +145,7 @@ final class JobDecodingTests: XCTestCase {
     let metadata = Dictionary(uniqueKeysWithValues: job.metadataItems.map { ($0.label, $0.value) })
 
     XCTAssertEqual(metadata["时间"], "2026-06-10 13:45")
+    XCTAssertEqual(metadata["任务来源"], "macOS")
     XCTAssertEqual(metadata["模式"], "专业模式")
     XCTAssertEqual(metadata["类别"], "系统架构图")
     XCTAssertEqual(metadata["平台"], "OpenAI")
@@ -157,6 +159,14 @@ final class JobDecodingTests: XCTestCase {
     XCTAssertEqual(metadata["评审模式"], "图像评审")
     XCTAssertEqual(metadata["候选图"], "3 张")
     XCTAssertEqual(metadata["阶段"], "2 个")
+  }
+
+  func testMissingOrUnknownClientPlatformDisplaysUnrecordedWithoutInference() throws {
+    let missing = try JSONDecoder().decode(Job.self, from: Data(#"{"id":"legacy","status":"succeeded"}"#.utf8))
+    let unknown = try JSONDecoder().decode(Job.self, from: Data(#"{"id":"unknown","status":"succeeded","clientPlatform":"mobile"}"#.utf8))
+
+    XCTAssertEqual(missing.clientPlatformDisplayName, "未记录")
+    XCTAssertEqual(unknown.clientPlatformDisplayName, "未记录")
   }
 
   // MARK: - stage id 合成（后端缺 id 时的确定性回退）

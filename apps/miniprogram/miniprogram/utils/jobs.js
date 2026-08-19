@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.normalizeJob = normalizeJob;
+exports.formatClientPlatform = formatClientPlatform;
 exports.normalizeRetrievedReference = normalizeRetrievedReference;
 exports.normalizeJobStage = normalizeJobStage;
 exports.formatRetrievalSetting = formatRetrievalSetting;
@@ -52,6 +53,8 @@ function normalizeJob(input) {
         id: jobId,
         status,
         provider: String(job.provider || ''),
+        client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),
+        client_platform_text: formatClientPlatform(job.client_platform || job.clientPlatform),
         user_email: String(job.user_email || job.userEmail || ''),
         configuration_mode: String(job.configuration_mode || job.configurationMode || 'simple'),
         output_format: outputFormat,
@@ -88,6 +91,17 @@ function normalizeJob(input) {
         created_text: formatDate(job.created_at || job.createdAt),
         status_text: constants_1.STATUS_LABELS[status] || status || '未知',
     };
+}
+function normalizeClientPlatform(value) {
+    const platform = String(value || '').trim().toLowerCase();
+    return ['web', 'miniprogram', 'android', 'ios', 'windows', 'macos', 'harmony'].includes(platform) ? platform : '';
+}
+function formatClientPlatform(value) {
+    const labels = {
+        web: 'Web 网页', miniprogram: '微信小程序', android: 'Android', ios: 'iOS',
+        windows: 'Windows', macos: 'macOS', harmony: 'HarmonyOS',
+    };
+    return labels[normalizeClientPlatform(value)] || '未记录';
 }
 function normalizeRetrievedReference(input) {
     const item = (input || {});

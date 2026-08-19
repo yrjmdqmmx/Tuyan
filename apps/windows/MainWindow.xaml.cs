@@ -212,8 +212,8 @@ public sealed partial class MainWindow : Window
 
             var created = await _apiClient.CreateJobAsync(ApiBase, _health, payload);
             _currentJobId = created.Id;
-            _currentJob = new PaperBananaJob { Id = created.Id, Status = created.Status };
-            CurrentJobText.Text = $"任务编号 {_currentJobId}";
+            _currentJob = new PaperBananaJob { Id = created.Id, Status = created.Status, ClientPlatform = "windows" };
+            CurrentJobText.Text = $"任务来源：{_currentJob.ClientPlatformDisplayName} · 任务编号 {_currentJobId}";
             _pollingTimer.Start();
             await LoadCurrentJobAsync();
         }
@@ -239,7 +239,7 @@ public sealed partial class MainWindow : Window
         try
         {
             _currentJob = await _apiClient.GetJobAsync(ApiBase, _health, _currentJobId);
-            CurrentJobText.Text = $"{StatusLabel(_currentJob.Status)} · 任务编号 {_currentJob.Id}";
+            CurrentJobText.Text = $"{StatusLabel(_currentJob.Status)} · 任务来源：{_currentJob.ClientPlatformDisplayName} · 任务编号 {_currentJob.Id}";
             if (_currentJob.Status == "failed" && !string.IsNullOrWhiteSpace(_currentJob.FailureText))
             {
                 ShowError(JobErrorInfoBar, ErrorFormatter.Format(_currentJob.FailureText));

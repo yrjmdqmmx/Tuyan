@@ -103,10 +103,21 @@ async function runSmokeTest() {
   if (!putResponse.ok) {
     throw new Error(`reference upload failed with HTTP ${putResponse.status}`);
   }
+  await requestJSON("/paperbanana-api", {
+    action: "finalizeReferenceUpload",
+    uploads: [{
+      filename: path.basename(config.referenceImagePath),
+      mimeType: referenceMimeType,
+      size: referenceStat.size,
+      objectKey,
+      uploadToken
+    }]
+  });
   console.log(`[ios-e2e] uploaded reference objectKey=${objectKey}`);
 
   const create = await requestJSON("/paperbanana-api", {
     action: "createJob",
+    clientPlatform: "ios",
     configurationMode: "advanced",
     provider: "bailian",
     apiKeys: {

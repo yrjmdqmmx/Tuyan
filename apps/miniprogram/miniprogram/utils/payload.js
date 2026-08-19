@@ -16,6 +16,7 @@ function buildCreateJobPayload(input) {
     apiKeys[input.provider] = input.apiKey.trim();
     return {
         action: 'createJob',
+        clientPlatform: 'miniprogram',
         configurationMode: input.configurationMode,
         provider: input.provider,
         apiKeys,

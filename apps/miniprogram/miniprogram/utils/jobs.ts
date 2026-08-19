@@ -41,6 +41,8 @@ export interface Job {
   id: string
   status: JobStatus
   provider: string
+  client_platform: string
+  client_platform_text: string
   user_email: string
   configuration_mode: string
   output_format: OutputFormat
@@ -116,6 +118,8 @@ export function normalizeJob(input: unknown): Job {
     id: jobId,
     status,
     provider: String(job.provider || ''),
+    client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),
+    client_platform_text: formatClientPlatform(job.client_platform || job.clientPlatform),
     user_email: String(job.user_email || job.userEmail || ''),
     configuration_mode: String(job.configuration_mode || job.configurationMode || 'simple'),
     output_format: outputFormat,
@@ -152,6 +156,19 @@ export function normalizeJob(input: unknown): Job {
     created_text: formatDate(job.created_at || job.createdAt),
     status_text: STATUS_LABELS[status] || status || '未知',
   }
+}
+
+function normalizeClientPlatform(value: unknown): string {
+  const platform = String(value || '').trim().toLowerCase()
+  return ['web', 'miniprogram', 'android', 'ios', 'windows', 'macos', 'harmony'].includes(platform) ? platform : ''
+}
+
+export function formatClientPlatform(value: unknown): string {
+  const labels: Record<string, string> = {
+    web: 'Web 网页', miniprogram: '微信小程序', android: 'Android', ios: 'iOS',
+    windows: 'Windows', macos: 'macOS', harmony: 'HarmonyOS',
+  }
+  return labels[normalizeClientPlatform(value)] || '未记录'
 }
 
 export function normalizeRetrievedReference(input: unknown): RetrievedReference {

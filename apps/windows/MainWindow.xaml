@@ -427,6 +427,7 @@
                                     <StackPanel Spacing="6">
                                         <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
                                         <TextBlock Text="{Binding Meta}" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding ClientPlatformDisplayText}" Foreground="{StaticResource MutedBrush}" />
                                         <TextBlock Text="{Binding StatusLabel}" />
                                         <TextBlock Text="{Binding CreatedText}" Foreground="{StaticResource MutedBrush}" />
                                         <TextBlock Text="{Binding Error}" Foreground="{ThemeResource SystemFillColorCriticalBrush}" TextWrapping="Wrap" />

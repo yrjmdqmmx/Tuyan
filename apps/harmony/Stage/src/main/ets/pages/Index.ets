@@ -29,7 +29,7 @@ import {
   SelectOption,
 } from '../models/Types'
 import { AppStore } from '../stores/AppStore'
-import { formatDate, statusLabel } from '../utils/Format'
+import { formatClientPlatform, formatDate, statusLabel } from '../utils/Format'
 import { formatReferenceImageMode } from '../utils/ReferenceMode'
 
 @Entry
@@ -661,6 +661,10 @@ struct Index {
         .fontColor('#111827')
         .margin({ top: 8 })
       Text(`${job.provider} · ${job.output_format || 'png'} · ${job.image_size || '1K'} · ${formatReferenceImageMode(job.reference_image_mode_used)}`)
+        .fontSize(12)
+        .fontColor('#6b7280')
+        .margin({ top: 4 })
+      Text(`任务来源：${formatClientPlatform(job.client_platform)}`)
         .fontSize(12)
         .fontColor('#6b7280')
         .margin({ top: 4 })

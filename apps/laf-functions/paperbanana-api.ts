@@ -1,5 +1,7 @@
 import cloud from '@lafjs/cloud'
+import * as resvgWasm from '@resvg/resvg-wasm'
 import * as crypto from 'crypto'
+import * as fs from 'fs'
 
 declare const require: any
 
@@ -12,6 +14,10 @@ const providerEgressUnavailableMessage = '海外模型出口暂不可用，请�
 // dependency on Node-only transport packages such as Undici.
 export function configureRuntimeFetch(fetchImpl?: typeof fetch) {
   configuredRuntimeFetch = fetchImpl
+  // A transport replacement represents a new runtime boundary (or a test
+  // fixture). Never reuse provider catalogs fetched through a prior transport.
+  openRouterModelCache = null
+  openRouterDedicatedImageModelCache = null
 }
 
 function runtimeFetch(input: string | URL | Request, init?: RequestInit): Promise<Response> {
@@ -32,8 +38,18 @@ type ReferenceImageRole = 'original' | 'analysis'
 type ReferenceImageMode = 'auto' | 'main_model' | 'vision_model'
 type ReferenceImageModeUsed = 'none' | 'main_model' | 'vision_model'
 type ModelCapabilityStatus = 'supported' | 'unsupported' | 'unknown'
+type ModelRole = 'main' | 'image' | 'vision'
+type ModelProtocol =
+  | 'openai-chat-completions'
+  | 'openai-images'
+  | 'gemini-generate-content'
+  | 'bailian-openai-chat'
+  | 'bailian-multimodal-generation'
+  | 'openrouter-chat-completions'
+  | 'openrouter-images'
 type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
 type FeedbackPlatform = 'web' | 'miniprogram' | 'android' | 'ios' | 'windows' | 'macos'
+type ClientPlatform = 'web' | 'miniprogram' | 'android' | 'ios' | 'windows' | 'macos' | 'harmony'
 
 type ApiKeys = {
   openrouter?: string
@@ -47,6 +63,7 @@ type CreateJobBody = {
   provider: Provider
   apiKeys: ApiKeys
   configurationMode?: string
+  clientPlatform?: ClientPlatform
   taskName?: TaskName
   methodContent: string
   caption: string
@@ -84,6 +101,7 @@ type RefineImageBody = {
   imageSize?: '2K' | '4K'
   userId?: string
   userEmail?: string
+  clientPlatform?: ClientPlatform
 }
 
 type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'>
@@ -138,6 +156,8 @@ export function createJobAdmissionController(
   const ownerCounts = new Map<string, number>()
   const ipCounts = new Map<string, number>()
   const drainWaiters = new Set<() => void>()
+  const frozenOwners = new Set<string>()
+  const ownerDrainWaiters = new Set<{ ownerKeys: Set<string>; resolve: () => void }>()
 
   const countFor = (counts: Map<string, number>, key: string) => key ? (counts.get(key) || 0) : 0
   const increment = (counts: Map<string, number>, key: string) => {
@@ -151,6 +171,13 @@ export function createJobAdmissionController(
   }
   const activeSlots = () => [...entries.values()].filter((entry) => entry.slot === 'active').length
   const notifyDrained = () => {
+    for (const waiter of [...ownerDrainWaiters]) {
+      const ownerBusy = [...entries.values()].some((entry) => waiter.ownerKeys.has(entry.principal.ownerKey))
+      if (!ownerBusy) {
+        ownerDrainWaiters.delete(waiter)
+        waiter.resolve()
+      }
+    }
     if (entries.size || tracked.size) return
     for (const resolve of drainWaiters) resolve()
     drainWaiters.clear()
@@ -198,6 +225,10 @@ export function createJobAdmissionController(
   function pump() {
     while (activeSlots() < config.maxActive && pendingOrder.length) {
       const entry = pendingOrder.shift()!
+      if (frozenOwners.has(entry.principal.ownerKey)) {
+        release(entry)
+        continue
+      }
       entry.slot = 'active'
       if (!entry.committed) break
       launch(entry)
@@ -208,6 +239,9 @@ export function createJobAdmissionController(
     reserve(principal: JobPrincipal) {
       if (!accepting) {
         return { ok: false as const, code: 503, error: 'Job admission is draining. Please retry after restart.' }
+      }
+      if (frozenOwners.has(principal.ownerKey)) {
+        return { ok: false as const, code: 409, error: 'Account deletion is in progress. New jobs and uploads are disabled.' }
       }
       if (countFor(ownerCounts, principal.ownerKey) >= config.maxPerOwner) {
         return { ok: false as const, code: 429, error: 'Job owner limit exceeded. Please wait for the current job to finish.' }
@@ -245,6 +279,21 @@ export function createJobAdmissionController(
     stop() {
       accepting = false
     },
+    freezeOwners(ownerKeys: string[]) {
+      for (const ownerKey of ownerKeys) {
+        if (ownerKey) frozenOwners.add(ownerKey)
+      }
+      const keys = new Set(ownerKeys.filter(Boolean))
+      for (const entry of [...entries.values()]) {
+        if (keys.has(entry.principal.ownerKey) && entry.slot === 'queued') release(entry)
+      }
+    },
+    drainOwners(ownerKeys: string[]) {
+      const keys = new Set(ownerKeys.filter(Boolean))
+      const ownerBusy = [...entries.values()].some((entry) => keys.has(entry.principal.ownerKey))
+      if (!ownerBusy) return Promise.resolve()
+      return new Promise<void>((resolve) => ownerDrainWaiters.add({ ownerKeys: keys, resolve }))
+    },
     snapshot() {
       const values = [...entries.values()]
       return {
@@ -265,6 +314,13 @@ export function createJobAdmissionController(
 type PrepareReferenceUploadBody = {
   action: 'prepareReferenceUpload'
   files?: ReferenceUploadDescriptor[]
+  userId?: string
+  userEmail?: string
+}
+
+type ReferenceUploadLifecycleBody = {
+  action: 'finalizeReferenceUpload' | 'abortReferenceUpload'
+  uploads?: ReferenceImageInput[]
   userId?: string
   userEmail?: string
 }
@@ -343,6 +399,10 @@ type DeleteAccountBody = {
   userEmail?: string
 }
 
+type AccountDeletionCapabilityBody = {
+  action: 'accountDeletionCapability'
+}
+
 type ImportReferencesBody = {
   action: 'importReferences'
   adminToken: string
@@ -366,6 +426,30 @@ type ModelCapabilityBody = {
   action: 'modelCapability'
   provider: Provider
   model: string
+}
+
+type ModelRegistryBody = {
+  action: 'modelRegistry'
+  provider?: Provider
+}
+
+type ModelRegistryEntry = {
+  id: string
+  label: string
+  roles: ModelRole[]
+  capabilities: {
+    referenceImages: boolean
+    imageGeneration: boolean
+    imageEditing: boolean
+    resolutions?: string[]
+  }
+  protocol: ModelProtocol
+  availabilityNotes: string
+}
+
+type ProviderModelRegistry = {
+  defaults: { main: string; image: string; vision: string }
+  models: ModelRegistryEntry[]
 }
 
 type ReferenceLibraryBody = {
@@ -404,6 +488,8 @@ type RetrievedReference = {
   taskName: TaskName
   title: string
   summary: string
+  titleZh: string
+  introZh: string
   imageUrl: string
   imageObjectKey: string
   source: string
@@ -428,13 +514,16 @@ type RequestBody =
   | CreateJobBody
   | RefineImageBody
   | PrepareReferenceUploadBody
+  | ReferenceUploadLifecycleBody
   | GetJobBody
   | AdminJobsBody
   | SubmitFeedbackBody
   | AdminFeedbackBody
   | UserJobsBody
   | DeleteAccountBody
+  | AccountDeletionCapabilityBody
   | ModelCapabilityBody
+  | ModelRegistryBody
   | ReferenceLibraryBody
   | ImportReferencesBody
   | EvaluateJobBody
@@ -444,12 +533,17 @@ const db = cloud.mongo.db
 const jobs = db.collection('paperbanana_jobs')
 const feedback = db.collection('paperbanana_feedback')
 const references = db.collection('paperbanana_references')
+const accountDeletions = db.collection('paperbanana_account_deletions')
+const referenceUploadState = db.collection('paperbanana_reference_upload_state')
 const bucketName = process.env.PAPERBANANA_BUCKET || 'paperbanana'
 const maxReferenceImages = Number(process.env.PAPERBANANA_MAX_REFERENCE_IMAGES || 3)
 const maxReferenceBytes = Number(process.env.PAPERBANANA_MAX_REFERENCE_BYTES || 5 * 1024 * 1024)
 const maxProviderImageBytes = Number(process.env.PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES || 20 * 1024 * 1024)
 const maxProviderImageResponseBytes = Math.ceil(maxProviderImageBytes * 4 / 3) + 1024 * 1024
 const referenceUploadTtlSeconds = Number(process.env.PAPERBANANA_REFERENCE_UPLOAD_TTL_SECONDS || 900)
+const referenceUploadStateRetentionMs = 24 * 60 * 60 * 1000
+const accountDeletionQuietMs = clamp(Number(process.env.PAPERBANANA_ACCOUNT_DELETION_QUIET_MS || 1000), 100, 5000)
+const accountDeletionSweepIntervalMs = clamp(Number(process.env.PAPERBANANA_ACCOUNT_DELETION_SWEEP_INTERVAL_MS || 30000), 5000, 300000)
 const allowedReferenceMimeTypes = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'])
 const allowedAnalysisMimeTypes = new Set(['image/png', 'image/jpeg', 'image/webp'])
 const svgReferenceRasterWidth = clamp(Number(process.env.PAPERBANANA_SVG_REFERENCE_RASTER_WIDTH || 1024), 320, 1536)
@@ -458,8 +552,20 @@ const feedbackRateLimitWindowMs = 10 * 60 * 1000
 const feedbackRateLimitMax = 5
 const allowedFeedbackCategories = new Set<FeedbackCategory>(['bug', 'feature', 'experience', 'other'])
 const allowedFeedbackPlatforms = new Set<FeedbackPlatform>(['web', 'miniprogram', 'android', 'ios', 'windows', 'macos'])
+const allowedClientPlatforms = new Set<ClientPlatform>(['web', 'miniprogram', 'android', 'ios', 'windows', 'macos', 'harmony'])
 const allowedRetrievalSettings = new Set<RetrievalSetting>(['none', 'auto', 'random', 'manual'])
-let openRouterModelCache: { expiresAt: number; modalities: Map<string, string[]> } | null = null
+type OpenRouterCatalogModel = {
+  id: string
+  name: string
+  inputModalities: string[]
+  outputModalities: string[]
+  supportedParameters: any
+}
+let openRouterModelCache: { expiresAt: number; models: Map<string, OpenRouterCatalogModel> } | null = null
+let accountDeletionSweepPromise: Promise<void> | null = null
+let lastAccountDeletionSweepAt = 0
+let accountDeletionSweepTimer: any = null
+let openRouterDedicatedImageModelCache: { expiresAt: number; models: Map<string, OpenRouterCatalogModel> } | null = null
 let resvgWasmPromise: Promise<ResvgWasmModule> | null = null
 
 const benchZipUrlDefault = 'https://huggingface.co/datasets/dwzhu/PaperBananaBench/resolve/main/PaperBananaBench.zip'
@@ -474,37 +580,88 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const openaiVisionMainModels = new Set([
-  'gpt-4.1',
-  'gpt-4.1-mini',
-  'gpt-4o',
-  'gpt-4o-mini',
-  'gpt-5.1',
-  'gpt-5-mini',
-  'gpt-5.2',
-  'gpt-5.3-chat',
-  'gpt-5.4',
-  'gpt-5.4-pro',
-  'gpt-5.4-mini',
-  'gpt-5.4-nano',
-  'gpt-5.5',
-  'gpt-5.5-pro',
-  'gpt-chat-latest',
-])
+const modelRegistryVersion = '2026-08-19'
 
-const geminiVisionMainModels = new Set([
-  'gemini-2.5-pro',
-  'gemini-2.5-flash',
-  'gemini-2.5-flash-lite',
-  'gemini-3-flash',
-  'gemini-3-flash-preview',
-  'gemini-3-pro-preview',
-  'gemini-3.1-pro',
-  'gemini-3.1-pro-preview',
-  'gemini-3.1-flash-lite',
-  'gemini-3.1-flash-lite-preview',
-  'gemini-3.5-flash',
-])
+function registryEntry(
+  id: string,
+  label: string,
+  roles: ModelRole[],
+  protocol: ModelProtocol,
+  availabilityNotes: string,
+  options: Partial<ModelRegistryEntry['capabilities']> = {},
+): ModelRegistryEntry {
+  return {
+    id,
+    label,
+    roles,
+    protocol,
+    availabilityNotes,
+    capabilities: {
+      referenceImages: roles.includes('vision'),
+      imageGeneration: roles.includes('image'),
+      imageEditing: false,
+      ...options,
+    },
+  }
+}
+
+const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModelRegistry> = {
+  gemini: {
+    defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
+    models: [
+      registryEntry('gemini-3.7-flash', 'Gemini 3.7 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; current recommended Flash model'),
+      registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; previous-generation Flash model'),
+      registryEntry('gemini-3.5-flash', 'Gemini 3.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable legacy Flash model'),
+      registryEntry('gemini-3.5-flash-lite', 'Gemini 3.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable low-cost model'),
+      registryEntry('gemini-3.1-flash-lite', 'Gemini 3.1 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable'),
+      registryEntry('gemini-3.1-pro-preview', 'Gemini 3.1 Pro Preview', ['main', 'vision'], 'gemini-generate-content', 'Preview; subject to shorter deprecation notice'),
+      registryEntry('gemini-3-flash-preview', 'Gemini 3 Flash Preview', ['main', 'vision'], 'gemini-generate-content', 'Preview'),
+      registryEntry('gemini-2.5-pro', 'Gemini 2.5 Pro', ['main', 'vision'], 'gemini-generate-content', 'Stable Gemini 2.5'),
+      registryEntry('gemini-2.5-flash', 'Gemini 2.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable Gemini 2.5'),
+      registryEntry('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable Gemini 2.5'),
+      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-generate-content', 'Stable image generation and editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
+      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-generate-content', 'Stable low-latency image generation and editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-generate-content', 'Stable professional image generation and editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
+      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Stable legacy image model', { referenceImages: true, imageEditing: true, resolutions: ['1K'] }),
+    ],
+  },
+  bailian: {
+    defaults: { main: 'qwen3.8-max', image: 'wan2.7-image-pro', vision: 'qwen3.8-max' },
+    models: [
+      registryEntry('qwen3.8-max', 'Qwen3.8 Max', ['main', 'vision'], 'bailian-openai-chat', 'Available in Beijing and international workspaces'),
+      registryEntry('qwen3.7-plus', 'Qwen3.7 Plus', ['main', 'vision'], 'bailian-openai-chat', 'Available in Beijing and international workspaces'),
+      registryEntry('qwen3.7-flash', 'Qwen3.7 Flash', ['main'], 'bailian-openai-chat', 'Available in Beijing and international workspaces'),
+      registryEntry('deepseek-v4-pro', 'DeepSeek V4 Pro', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region'),
+      registryEntry('deepseek-v4-flash', 'DeepSeek V4 Flash', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region'),
+      registryEntry('glm-5.2', 'GLM 5.2', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region'),
+      registryEntry('kimi/kimi-k3', 'Kimi K3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party model; Beijing availability'),
+      registryEntry('MiniMax/MiniMax-M3', 'MiniMax M3', ['main'], 'bailian-openai-chat', 'Third-party model; Beijing availability'),
+      registryEntry('qwen3.5-omni-plus', 'Qwen3.5 Omni Plus', ['vision'], 'bailian-openai-chat', 'Multimodal understanding; Beijing and Singapore'),
+      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
+      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Current Qwen Image Pro; generation and editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+      registryEntry('qwen-image-3.0', 'Qwen Image 3.0', ['image'], 'bailian-multimodal-generation', 'Current Qwen Image; generation and editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+    ],
+  },
+  openai: {
+    defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
+    models: [
+      registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model'),
+      registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model'),
+      registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model'),
+      registryEntry('gpt-5.5', 'GPT-5.5', ['main', 'vision'], 'openai-chat-completions', 'Current general model'),
+      registryEntry('gpt-5.4', 'GPT-5.4', ['main', 'vision'], 'openai-chat-completions', 'Current general model'),
+      registryEntry('gpt-5.4-mini', 'GPT-5.4 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model'),
+      registryEntry('gpt-5.4-nano', 'GPT-5.4 Nano', ['main', 'vision'], 'openai-chat-completions', 'Current high-volume model'),
+      registryEntry('gpt-5-mini', 'GPT-5 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model'),
+      registryEntry('gpt-4.1', 'GPT-4.1', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable model'),
+      registryEntry('gpt-4.1-mini', 'GPT-4.1 Mini', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable small model'),
+      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Dedicated Images API', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
+      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Dedicated Images API', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Dedicated Images API', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+    ],
+  },
+}
 
 const fallbackReferences: RetrievedReference[] = [
   {
@@ -512,6 +669,8 @@ const fallbackReferences: RetrievedReference[] = [
     taskName: 'diagram',
     title: 'Agent workflow with retrieval, planning, generation, and critique',
     summary: 'Use a left-to-right multi-agent workflow: input paper content, retrieval examples, planner, stylist, visualizer, critic loop, and final figure. Group agents in soft rounded containers with arrows showing feedback.',
+    titleZh: '多智能体学术图示生成流程',
+    introZh: '从论文输入、参考检索到规划、生成与评审闭环的横向流程图。',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -521,6 +680,8 @@ const fallbackReferences: RetrievedReference[] = [
     taskName: 'diagram',
     title: 'Academic model pipeline with modules and tensor/data flow',
     summary: 'Use a modular scientific diagram with input data on the left, stacked processing blocks in the center, auxiliary losses or memory paths in dashed connectors, and output artifacts on the right.',
+    titleZh: '模块化模型与数据流管线',
+    introZh: '以模块堆叠、数据流和辅助分支清晰表达模型结构与训练路径。',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -530,6 +691,8 @@ const fallbackReferences: RetrievedReference[] = [
     taskName: 'diagram',
     title: 'Macro-micro layout with zoomed module detail',
     summary: 'Use one large system container plus a zoomed-in breakout box for an important module. Connect the high-level block to the detail view with thin lines and keep labels short.',
+    titleZh: '宏观系统与局部模块放大图',
+    introZh: '用全局框架配合局部放大框，同时说明系统关系和关键模块细节。',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -539,6 +702,8 @@ const fallbackReferences: RetrievedReference[] = [
     taskName: 'diagram',
     title: 'Method comparison or ablation diagram',
     summary: 'Use parallel lanes for baseline and proposed method. Highlight the added component with one accent color, keep shared parts grey or muted, and show the final performance/output comparison at the right edge.',
+    titleZh: '方法对比与消融实验图',
+    introZh: '用平行路径突出基线与改进模块，并在末端呈现结果差异。',
     imageUrl: '',
     imageObjectKey: '',
     source: 'paperbanana-fallback',
@@ -598,7 +763,7 @@ export function drainJobAdmission() {
 // caller-supplied userId/userEmail. These must arrive through the auth-gateway
 // (which injects the shared PAPERBANANA_GATEWAY_TOKEN) or carry a valid
 // ADMIN_TOKEN. See requireTrustedCaller — this is the IDOR / direct-call guard.
-// Public read-only actions (health/modelCapability/referenceLibrary) and
+// Public read-only actions (health/modelRegistry/modelCapability/referenceLibrary) and
 // ADMIN_TOKEN-gated actions are intentionally NOT listed here.
 const identityScopedActions = new Set([
   'createJob',
@@ -607,6 +772,8 @@ const identityScopedActions = new Set([
   'userJobs',
   'getJob',
   'prepareReferenceUpload',
+  'finalizeReferenceUpload',
+  'abortReferenceUpload',
   'deleteAccount',
 ])
 
@@ -621,6 +788,7 @@ export default async function (ctx: FunctionContext) {
   const action = body?.action || 'health'
 
   try {
+    scheduleAccountDeletionSweep()
     if (identityScopedActions.has(action)) {
       const denied = requireTrustedCaller(body)
       if (denied) return denied
@@ -638,8 +806,20 @@ export default async function (ctx: FunctionContext) {
     if (action === 'prepareReferenceUpload') {
       return await prepareReferenceUpload(body as PrepareReferenceUploadBody)
     }
+    if (action === 'finalizeReferenceUpload') {
+      return await finalizeReferenceUpload(body as ReferenceUploadLifecycleBody)
+    }
+    if (action === 'abortReferenceUpload') {
+      return await abortReferenceUpload(body as ReferenceUploadLifecycleBody)
+    }
     if (action === 'modelCapability') {
       return await modelCapability(body as ModelCapabilityBody)
+    }
+    if (action === 'modelRegistry') {
+      return await modelRegistry(body as ModelRegistryBody)
+    }
+    if (action === 'accountDeletionCapability') {
+      return ok({ deletionContractVersion: 2 })
     }
     if (action === 'referenceLibrary') {
       return await referenceLibrary(body as ReferenceLibraryBody)
@@ -690,8 +870,12 @@ async function prepareReferenceUpload(body: PrepareReferenceUploadBody) {
   const originalCount = files.filter((file) => file?.role !== 'analysis').length
   if (originalCount > maxReferenceImages) return fail(`Reference image count exceeds ${maxReferenceImages}`, 400)
   if (files.length > maxReferenceImages * 2) return fail('Too many reference upload files', 400)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+  }
 
   const owner = sanitizePathPart(body.userId || body.userEmail || 'anon')
+  const ownerKeys = accountOwnerKeys(body)
   const bucket = cloud.storage.bucket(bucketName)
   const uploads = []
 
@@ -724,7 +908,35 @@ async function prepareReferenceUpload(body: PrepareReferenceUploadBody) {
     })
   }
 
+  await recordPreparedReferenceUploads(ownerKeys[0] || '', uploads)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+  }
+
   return ok({ uploads })
+}
+
+async function finalizeReferenceUpload(body: ReferenceUploadLifecycleBody) {
+  const uploads = normalizeReferenceImages(body.uploads || [])
+  if (!uploads.length) return fail('uploads is required', 400)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    await abortPreparedReferenceUploads(body, uploads)
+    return fail('Account deletion is in progress. Uploaded references were removed.', 409)
+  }
+  await verifyUploadedReferenceObjects(uploads)
+  await markReferenceUploadsFinalized(uploads)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    await abortPreparedReferenceUploads(body, uploads)
+    return fail('Account deletion is in progress. Uploaded references were removed.', 409)
+  }
+  return ok({ ok: true })
+}
+
+async function abortReferenceUpload(body: ReferenceUploadLifecycleBody) {
+  const uploads = Array.isArray(body.uploads) ? body.uploads : []
+  if (!uploads.length) return fail('uploads is required', 400)
+  await abortPreparedReferenceUploads(body, uploads)
+  return ok({ ok: true })
 }
 
 async function modelCapability(body: ModelCapabilityBody) {
@@ -733,19 +945,49 @@ async function modelCapability(body: ModelCapabilityBody) {
   return ok(await referenceModelCapability(body.provider, normalizeModelName(body.provider, body.model)))
 }
 
+async function modelRegistry(body: ModelRegistryBody) {
+  const requestedProvider = body.provider
+  if (requestedProvider && !['openrouter', 'gemini', 'openai', 'bailian'].includes(requestedProvider)) {
+    return fail('Invalid provider', 400)
+  }
+
+  const providers: Partial<Record<Provider, ProviderModelRegistry>> = {}
+  const unavailableProviders: Partial<Record<Provider, string>> = {}
+  for (const provider of ['gemini', 'openai', 'bailian'] as const) {
+    if (!requestedProvider || requestedProvider === provider) providers[provider] = staticModelRegistry[provider]
+  }
+  if (!requestedProvider || requestedProvider === 'openrouter') {
+    try {
+      providers.openrouter = await openRouterProviderRegistry()
+    } catch (error: any) {
+      unavailableProviders.openrouter = isProviderEgressUnavailable(error)
+        ? providerEgressUnavailableMessage
+        : 'OpenRouter model catalog is temporarily unavailable'
+    }
+  }
+  return ok({
+    registryVersion: modelRegistryVersion,
+    providers,
+    ...(Object.keys(unavailableProviders).length ? { unavailableProviders } : {}),
+  })
+}
+
 async function referenceLibrary(body: ReferenceLibraryBody) {
   const taskName = normalizeTaskName(body.taskName)
-  const limit = clamp(Number(body.limit || 24), 1, 60)
+  const limit = clamp(Number(body.limit || 24), 1, 295)
   const query = limitText(body.query, 120).toLowerCase()
   const docs = await loadReferenceLibrary(taskName, { limit: Math.max(limit, 24) })
   const filtered = query
-    ? docs.filter((item) => [item.title, item.summary, item.id].join(' ').toLowerCase().includes(query))
+    ? docs.filter((item) => [item.title, item.summary, item.titleZh, item.introZh, item.id].join(' ').toLowerCase().includes(query))
     : docs
   return ok({ references: filtered.slice(0, limit) })
 }
 
 async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   validateCreateBody(body)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+  }
   const normalizedReferenceImages = normalizeReferenceImages(body.referenceImages || [])
   // 二选一：用户上传了参考图时，以上传图为唯一视觉风格锚点，自动关闭检索
   // （否则检索到的多张图会与上传图的风格相互打架）。检索一律不跑、不附检索图、徽标显示“不检索”。
@@ -766,6 +1008,20 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     retrievalSetting: hasUploadedReference ? ('none' as const) : normalizeRetrievalSetting(body.retrievalSetting),
     manualReferenceIds: hasUploadedReference ? [] : normalizeManualReferenceIds(body.manualReferenceIds || []),
   }
+  let registry: ProviderModelRegistry
+  try {
+    registry = await providerModelRegistry(body.provider)
+  } catch (error: any) {
+    return fail(providerRegistryFailure(body.provider, error), 503)
+  }
+  const modelError = modelRoleSelectionError(body.provider, registry, [
+    { model: normalizedBodyWithSecrets.mainModelName, role: 'main' },
+    { model: normalizedBodyWithSecrets.imageModelName, role: 'image' },
+    ...(normalizedReferenceImages.length
+      ? [{ model: normalizedBodyWithSecrets.referenceVisionModelName, role: 'vision' as ModelRole }]
+      : []),
+  ])
+  if (modelError) return fail(modelError, 400)
   const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
   if (!apiKey) {
     return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
@@ -801,6 +1057,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     _id: jobId,
     status: 'queued' as JobStatus,
     provider: normalizedBody.provider,
+    clientPlatform: normalizeClientPlatform(body.clientPlatform),
     configurationMode: limitText(normalizedBody.configurationMode, 40) || 'advanced',
     taskName: normalizedBody.taskName,
     userId: normalizedBody.userId || '',
@@ -840,6 +1097,11 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
 
     await jobs.insertOne(record)
 
+    if (!(await ensureAccountAcceptingWork(jobBody))) {
+      await jobs.deleteOne({ _id: jobId })
+      return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+    }
+
     // BYOK 只把已选中的单个 key 作为独立参数交给后台执行；jobBody 已移除
     // 完整 apiKeys map，避免其它 provider key 被后台 Promise/DTO 继续持有。
     startCreateJobInBackground(reservation, jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds)
@@ -853,9 +1115,18 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
 
 async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   validateRefineBody(body)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+  }
+  let registry: ProviderModelRegistry
+  try {
+    registry = await providerModelRegistry(body.provider)
+  } catch (error: any) {
+    return fail(providerRegistryFailure(body.provider, error), 503)
+  }
   const normalizedBodyWithSecrets = {
     ...body,
-    mainModelName: normalizeModelName(body.provider, body.mainModelName || body.imageModelName),
+    mainModelName: normalizeModelName(body.provider, body.mainModelName || registry.defaults.main),
     imageModelName: normalizeModelName(body.provider, body.imageModelName),
     referenceVisionModelName: body.referenceVisionModelName
       ? normalizeModelName(body.provider, body.referenceVisionModelName)
@@ -863,6 +1134,14 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     aspectRatio: normalizeAspectRatio(body.aspectRatio),
     imageSize: body.imageSize === '4K' ? '4K' as const : '2K' as const,
   }
+  const modelError = modelRoleSelectionError(body.provider, registry, [
+    { model: normalizedBodyWithSecrets.mainModelName, role: 'main' },
+    { model: normalizedBodyWithSecrets.imageModelName, role: 'image' },
+    ...(normalizedBodyWithSecrets.referenceVisionModelName
+      ? [{ model: normalizedBodyWithSecrets.referenceVisionModelName, role: 'vision' as ModelRole }]
+      : []),
+  ])
+  if (modelError) return fail(modelError, 400)
   const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
   if (!apiKey) {
     return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
@@ -881,6 +1160,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     status: 'queued' as JobStatus,
     jobType: 'refine',
     provider: normalizedBody.provider,
+    clientPlatform: normalizeClientPlatform(body.clientPlatform),
     configurationMode: 'advanced',
     taskName: 'diagram',
     userId: normalizedBody.userId || '',
@@ -920,6 +1200,11 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
 
     await jobs.insertOne(record)
 
+    if (!(await ensureAccountAcceptingWork(normalizedBody))) {
+      await jobs.deleteOne({ _id: jobId })
+      return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+    }
+
     startRefineJobInBackground(reservation, jobId, normalizedBody, apiKey)
     committed = true
 
@@ -952,6 +1237,9 @@ async function submitFeedback(body: SubmitFeedbackBody, ctx: FunctionContext) {
 
   const platform = normalizeFeedbackPlatform(body.platform)
   if (!platform) return fail('platform is required', 400)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. Feedback is disabled.', 409)
+  }
 
   const clientIp = getClientIp(ctx) || 'unknown'
   const recentSince = new Date(Date.now() - feedbackRateLimitWindowMs)
@@ -979,6 +1267,10 @@ async function submitFeedback(body: SubmitFeedbackBody, ctx: FunctionContext) {
   }
 
   await feedback.insertOne(record)
+  if (!(await ensureAccountAcceptingWork(body))) {
+    await feedback.deleteOne({ _id: id })
+    return fail('Account deletion is in progress. Feedback is disabled.', 409)
+  }
   return ok({ ok: true, id })
 }
 
@@ -1011,10 +1303,10 @@ async function userJobs(body: UserJobsBody) {
 // caller-supplied userId/userEmail. The gateway has already re-authenticated the
 // user (session + password) before forwarding this call.
 //
-// Scope: purge this user's business data. Generation jobs and feedback are hard
-// deleted. Reference images in object storage are best-effort deleted (failures
-// only logged, never block). Result images (`<jobId>/...`) are intentionally
-// kept. Deletion of the Better Auth user/session lives in the gateway.
+// Scope: purge this user's business data. Stored result, stage and reference
+// objects are deleted before the authoritative job records. A storage failure
+// aborts the operation so the gateway can retry without losing the object keys.
+// Deletion of the Better Auth user/session lives in the gateway.
 //
 // Idempotent: deleteMany / deleteFile are safe to re-run, so the gateway can
 // retry this action without leaving the account half-deleted.
@@ -1022,6 +1314,39 @@ async function deleteAccount(body: DeleteAccountBody) {
   const userId = String(body.userId || '').trim()
   const userEmail = String(body.userEmail || '').trim()
   if (!userId && !userEmail) return fail('userId or userEmail is required', 400)
+  const ownerKeys = accountOwnerKeys({ userId, userEmail })
+  const ownerPrefixes = [...new Set([userId, userEmail].filter(Boolean).map((value) => sanitizePathPart(String(value))))]
+  const now = new Date()
+  for (const ownerKey of ownerKeys) {
+    await accountDeletions.updateOne(
+      { _id: ownerKey },
+      {
+        $set: { status: 'deleting', ownerPrefixes, updatedAt: now },
+        $setOnInsert: { createdAt: now, userId, userEmail },
+      },
+      { upsert: true },
+    )
+  }
+  jobAdmission.freezeOwners(ownerKeys)
+
+  const uploadStates = ownerKeys.length
+    ? await referenceUploadState.find({
+        ownerKey: { $in: ownerKeys },
+        status: 'prepared',
+        expiresAt: { $gt: now },
+      }).sort({ expiresAt: -1 }).limit(1).toArray()
+    : []
+  const latestUploadExpiry = uploadStates.reduce(
+    (latest: number, item: any) => Math.max(latest, new Date(item?.expiresAt || 0).getTime() || 0),
+    0,
+  )
+  if (latestUploadExpiry > Date.now()) {
+    return {
+      code: 409,
+      error: 'ACCOUNT_DELETION_WAITING_FOR_UPLOADS',
+      retryAfterSeconds: Math.max(1, Math.ceil((latestUploadExpiry - Date.now()) / 1000)),
+    }
+  }
 
   const jobIdConditions: any[] = []
   const feedbackIdConditions: any[] = []
@@ -1034,33 +1359,100 @@ async function deleteAccount(body: DeleteAccountBody) {
     feedbackIdConditions.push({ userEmail }, { user_email: userEmail })
   }
 
-  const jobsResult = await jobs.deleteMany({ $or: jobIdConditions })
-  const feedbackResult = await feedback.deleteMany({ $or: feedbackIdConditions })
+  await jobs.updateMany(
+    { $or: jobIdConditions, status: 'queued' },
+    {
+      $set: {
+        status: 'failed',
+        error: 'Account deletion cancelled this queued job.',
+        errorCode: 'ACCOUNT_DELETION_IN_PROGRESS',
+        retryable: false,
+        completedAt: new Date(),
+        updatedAt: new Date(),
+      },
+    },
+  )
 
-  // Best-effort purge of the user's uploaded reference images. They are stored
+  const activeJobs = await jobs.find({
+    $or: jobIdConditions,
+    status: { $in: ['reserved', 'queued', 'running'] },
+  }).limit(1).toArray()
+  if (activeJobs.length) {
+    return { code: 409, error: 'ACCOUNT_DELETION_WAITING_FOR_JOBS', retryAfterSeconds: 2 }
+  }
+
+  const ownedJobs = await jobs.find({ $or: jobIdConditions }).toArray()
+  const deletedResultObjectCount = await deleteStoredObjectsForJobs(ownedJobs)
+
+  // Purge the user's uploaded reference images. They are stored
   // under references/<owner>/... where owner = sanitizePathPart(userId || userEmail
   // || 'anon') at upload time (see prepareReferenceUpload). We try both possible
-  // owner prefixes. Any storage error is logged and swallowed so it never blocks
-  // account deletion.
-  const ownerPrefixes = new Set<string>()
-  if (userId) ownerPrefixes.add(sanitizePathPart(userId))
-  if (userEmail) ownerPrefixes.add(sanitizePathPart(userEmail))
-  let deletedReferenceObjectCount = 0
-  for (const owner of ownerPrefixes) {
-    deletedReferenceObjectCount += await deleteReferenceObjectsForOwner(owner)
+  // owner prefixes. Storage errors abort deletion so no private object is left
+  // behind after the account row is removed.
+  const deletedReferenceObjectCount = await purgeReferencePrefixesUntilQuiet(ownerPrefixes)
+
+  const jobsResult = await jobs.deleteMany({ $or: jobIdConditions })
+  const feedbackResult = await feedback.deleteMany({ $or: feedbackIdConditions })
+  for (const ownerKey of ownerKeys) {
+    await accountDeletions.updateOne(
+      { _id: ownerKey },
+      { $set: { status: 'deleted', deletedAt: new Date(), ownerPrefixes, updatedAt: new Date() } },
+    )
   }
+  scheduleAccountDeletionSweep(true)
 
   return ok({
     ok: true,
+    deletionContractVersion: 2,
     deletedJobCount: jobsResult?.deletedCount || 0,
     deletedFeedbackCount: feedbackResult?.deletedCount || 0,
+    deletedResultObjectCount,
     deletedReferenceObjectCount,
   })
 }
 
-// List and delete every object under references/<owner>/. Pure best-effort:
-// returns the number of objects deleted, logs and swallows all errors.
-async function deleteReferenceObjectsForOwner(owner: string): Promise<number> {
+function storedObjectKeysForJob(job: any): string[] {
+  const keys = new Set<string>()
+  const addImage = (image: any) => {
+    if (!image || String(image.url || '').startsWith('data:')) return
+    const key = String(image.objectKey || image.object_key || image.filename || '').trim()
+    if (key) keys.add(key)
+    const analysisKey = String(image.analysisObjectKey || image.analysis_object_key || '').trim()
+    if (analysisKey) keys.add(analysisKey)
+  }
+
+  for (const image of job?.resultImages || job?.result_images || []) addImage(image)
+  for (const image of job?.referenceImages || job?.reference_images || []) addImage(image)
+  for (const stage of job?.stages || []) addImage(stage?.image)
+  const sourceKey = String(job?.sourceImageObjectKey || job?.source_image_object_key || '').trim()
+  if (sourceKey) keys.add(sourceKey)
+  return [...keys]
+}
+
+async function deleteStoredObjectsForJobs(ownedJobs: any[]): Promise<number> {
+  const keys = new Set<string>()
+  for (const job of ownedJobs || []) {
+    for (const key of storedObjectKeysForJob(job)) keys.add(key)
+  }
+  if (!keys.size) return 0
+
+  const bucket = cloud.storage.bucket(bucketName)
+  let deleted = 0
+  for (const key of keys) {
+    try {
+      await bucket.deleteFile(key)
+      deleted += 1
+    } catch (error: any) {
+      console.warn(`[deleteAccount] failed to delete stored job object ${key}: ${error?.message || error}`)
+      throw new Error('Unable to remove all stored account data. Please retry account deletion.')
+    }
+  }
+  return deleted
+}
+
+// List and delete every object under references/<owner>/. Cleanup callers may
+// keep the historical best-effort behavior; account deletion uses strict mode.
+async function deleteReferenceObjectsForOwner(owner: string, strict = false): Promise<number> {
   const prefix = `references/${owner}/`
   let deleted = 0
   try {
@@ -1079,6 +1471,7 @@ async function deleteReferenceObjectsForOwner(owner: string): Promise<number> {
           deleted += 1
         } catch (error: any) {
           console.warn(`[deleteAccount] failed to delete reference object ${key}: ${error?.message || error}`)
+          if (strict) throw error
         }
       }
       continuationMarker = listing?.IsTruncated
@@ -1087,8 +1480,80 @@ async function deleteReferenceObjectsForOwner(owner: string): Promise<number> {
     } while (continuationMarker)
   } catch (error: any) {
     console.warn(`[deleteAccount] failed to list reference objects for ${prefix}: ${error?.message || error}`)
+    if (strict) throw new Error('Unable to remove all uploaded reference images. Please retry account deletion.')
   }
   return deleted
+}
+
+async function purgeReferencePrefixesUntilQuiet(ownerPrefixes: string[]): Promise<number> {
+  let deletedTotal = 0
+  let observedQuietRound = false
+  for (let round = 0; round < 3; round += 1) {
+    let deletedThisRound = 0
+    for (const owner of ownerPrefixes) {
+      deletedThisRound += await deleteReferenceObjectsForOwner(owner, true)
+    }
+    deletedTotal += deletedThisRound
+    if (deletedThisRound === 0 && round > 0) {
+      observedQuietRound = true
+      break
+    }
+    if (round < 2) await sleep(accountDeletionQuietMs)
+  }
+  if (!observedQuietRound) {
+    // The persistent tombstone remains active and the scheduled sweep will
+    // continue removing PUTs that finish after this bounded request window.
+    scheduleAccountDeletionSweep(true)
+  }
+  return deletedTotal
+}
+
+function scheduleAccountDeletionSweep(force = false) {
+  const now = Date.now()
+  if (accountDeletionSweepPromise) return
+  if (!force && now - lastAccountDeletionSweepAt < accountDeletionSweepIntervalMs) return
+  lastAccountDeletionSweepAt = now
+  accountDeletionSweepPromise = sweepDeletedAccountObjects()
+    .catch((error: any) => {
+      console.warn(`[deleteAccount] delayed object sweep failed: ${error?.message || error}`)
+    })
+    .finally(() => { accountDeletionSweepPromise = null })
+}
+
+export function startAccountDeletionSweep(intervalMs = accountDeletionSweepIntervalMs) {
+  if (accountDeletionSweepTimer) return
+  scheduleAccountDeletionSweep(true)
+  const safeInterval = clamp(Number(intervalMs || accountDeletionSweepIntervalMs), 5000, 300000)
+  accountDeletionSweepTimer = setInterval(() => scheduleAccountDeletionSweep(true), safeInterval)
+  accountDeletionSweepTimer?.unref?.()
+}
+
+export function stopAccountDeletionSweep() {
+  if (accountDeletionSweepTimer) clearInterval(accountDeletionSweepTimer)
+  accountDeletionSweepTimer = null
+}
+
+async function sweepDeletedAccountObjects() {
+  const tombstones = await accountDeletions
+    .find({ status: { $in: ['deleting', 'deleted'] } })
+    .sort({ updatedAt: 1 })
+    .limit(25)
+    .toArray()
+  for (const tombstone of tombstones) {
+    const ownerPrefixes = Array.isArray(tombstone?.ownerPrefixes)
+      ? tombstone.ownerPrefixes.map(String).filter(Boolean)
+      : []
+    for (const owner of ownerPrefixes) {
+      await deleteReferenceObjectsForOwner(owner, false)
+    }
+  }
+  // Lifecycle rows are only needed while a signed PUT can still be in flight.
+  // Keep a full-day grace period beyond expiry, then prune them during the
+  // existing bounded sweep so successful uploads do not grow this collection
+  // indefinitely.
+  await referenceUploadState.deleteMany({
+    expiresAt: { $lt: new Date(Date.now() - referenceUploadStateRetentionMs) },
+  })
 }
 
 async function resolveReferenceImageMode(body: CreateExecutionBody & { referenceImageMode: ReferenceImageMode }) {
@@ -2032,7 +2497,7 @@ async function autoSelectReferenceIds(body: CreateExecutionBody, apiKey: string,
 }
 
 async function loadReferenceLibrary(taskName: TaskName, options: { limit: number }): Promise<RetrievedReference[]> {
-  const limit = clamp(Number(options.limit || 24), 1, 200)
+  const limit = clamp(Number(options.limit || 24), 1, 295)
   const rows = await references.find({ taskName }).sort({ createdAt: -1, _id: 1 }).limit(limit).toArray()
   const normalizedRows = await Promise.all(rows.map(normalizeStoredReference))
   const fallback = fallbackReferences.filter((item) => item.taskName === taskName)
@@ -2058,10 +2523,12 @@ async function normalizeStoredReference(item: any): Promise<RetrievedReference> 
   }
   if (!imageUrl) imageUrl = item.imageUrl || item.image_url || item.url || ''
   return {
-    id: String(item._id || item.id || ''),
+    id: String(item.id || item._id || ''),
     taskName: normalizeTaskName(item.taskName || item.task_name),
     title: limitText(item.title || item.visualIntent || item.caption || item.id, 160),
     summary: limitText(item.summary || item.methodExcerpt || item.content || item.description, 1200),
+    titleZh: limitText(item.titleZh || item.title_zh, 160),
+    introZh: limitText(item.introZh || item.intro_zh, 300),
     imageUrl,
     imageObjectKey,
     source: limitText(item.source, 80) || 'paperbanana-bench',
@@ -2273,8 +2740,7 @@ async function rasterizeSvgReferenceToPng(rawSvg: string) {
 async function loadResvgWasm(): Promise<ResvgWasmModule> {
   if (!resvgWasmPromise) {
     resvgWasmPromise = (async () => {
-      const fs = require('fs')
-      const resvg = require('@resvg/resvg-wasm') as ResvgWasmModule
+      const resvg = resvgWasm as ResvgWasmModule
       const basePath = process.env.CUSTOM_DEPENDENCY_BASE_PATH || '/tmp/custom_dependency'
       const wasmPath = process.env.RESVG_WASM_PATH || `${basePath}/node_modules/@resvg/resvg-wasm/index_bg.wasm`
       const wasmBytes = fs.readFileSync(wasmPath)
@@ -2303,7 +2769,7 @@ function analysisObjectKeyForSvg(objectKey: string) {
 // content entirely ([Unexpected item type in content.]). Route all bailian
 // image reads through this VL model regardless of the configured main model.
 function bailianVisionModel(): string {
-  return (process.env.BAILIAN_VISION_MODEL || 'qwen-vl-max').trim()
+  return (process.env.BAILIAN_VISION_MODEL || staticModelRegistry.bailian.defaults.vision).trim()
 }
 
 // True when a Bailian/DashScope error means the chosen model cannot accept image
@@ -2350,7 +2816,7 @@ async function toBailianImageUrl(url: string): Promise<string> {
   }
 }
 
-async function callVisionModel(
+export async function callVisionModel(
   provider: Provider,
   model: string,
   apiKey: string,
@@ -2379,20 +2845,21 @@ async function callVisionModel(
   const chosenModel = provider === 'openrouter' ? toOpenRouterModel(model) : model
 
   const runVision = async (visionModelName: string) => {
+    const requestBody: any = {
+      model: visionModelName,
+      messages: [
+        { role: 'system', content: referenceVisionSystemPrompt() },
+        { role: 'user', content },
+      ],
+    }
+    if (!usesGemini3ProviderDefaults(provider, visionModelName)) requestBody.temperature = 0.2
     const response = await fetchWithRetry(`${baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: visionModelName,
-        messages: [
-          { role: 'system', content: referenceVisionSystemPrompt() },
-          { role: 'user', content },
-        ],
-        temperature: 0.2,
-      }),
+      body: JSON.stringify(requestBody),
     }, `${provider} vision model ${visionModelName}`)
     const data = await parseModelResponse(response)
     return data.choices?.[0]?.message?.content || ''
@@ -2417,6 +2884,7 @@ async function callGeminiVision(
   caption: string,
   images: VisionImageInput[],
 ): Promise<string> {
+  const actualModel = normalizeModelName('gemini', model)
   const parts: any[] = [{ text: referenceVisionUserPrompt(methodContent, caption) }]
   for (const image of images) {
     parts.push({
@@ -2427,20 +2895,22 @@ async function callGeminiVision(
     })
   }
 
-  const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+  const requestBody: any = {
+    systemInstruction: { parts: [{ text: referenceVisionSystemPrompt() }] },
+    contents: [{ role: 'user', parts }],
+  }
+  const sampling = geminiSamplingConfig(actualModel, 0.2)
+  if (sampling) requestBody.generationConfig = sampling
+  const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/${actualModel}:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: referenceVisionSystemPrompt() }] },
-      contents: [{ role: 'user', parts }],
-      generationConfig: { temperature: 0.2 },
-    }),
-  }, `gemini vision model ${model}`)
+    body: JSON.stringify(requestBody),
+  }, `gemini vision model ${actualModel}`)
   const data = await parseModelResponse(response)
   return data.candidates?.[0]?.content?.parts?.map((part: any) => part.text || '').join('') || ''
 }
 
-async function callTextModel(
+export async function callTextModel(
   provider: Provider,
   model: string,
   apiKey: string,
@@ -2471,20 +2941,21 @@ async function callTextModel(
   }
 
   const runText = async (textModelName: string) => {
+    const requestBody: any = {
+      model: textModelName,
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: chatUserContent(user, requestImages) },
+      ],
+    }
+    if (!usesGemini3ProviderDefaults(provider, textModelName)) requestBody.temperature = 1
     const response = await fetchWithRetry(`${baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: textModelName,
-        messages: [
-          { role: 'system', content: system },
-          { role: 'user', content: chatUserContent(user, requestImages) },
-        ],
-        temperature: 1,
-      }),
+      body: JSON.stringify(requestBody),
     }, `${provider} text model ${textModelName}`)
     const data = await parseModelResponse(response)
     return data.choices?.[0]?.message?.content || ''
@@ -2518,7 +2989,7 @@ async function callSvgModel(provider: Provider, model: string, apiKey: string, d
   return sanitizeSvg(rawSvg)
 }
 
-async function callImageModel(
+export async function callImageModel(
   provider: Provider,
   model: string,
   apiKey: string,
@@ -2568,36 +3039,59 @@ async function callImageModel(
     return callBailianImage(model, apiKey, prompt, aspectRatio, imageSize)
   }
 
-  const userContent: any[] = [{ type: 'text', text: prompt }]
-  if (source) {
-    userContent.push({ type: 'image_url', image_url: { url: source.dataUrl } })
+  return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize)
+}
+
+async function callOpenRouterImage(
+  model: string,
+  apiKey: string,
+  prompt: string,
+  aspectRatio: string,
+  source: NormalizedSourceImage | null,
+  imageSize: string,
+): Promise<string> {
+  const actualModel = toOpenRouterModel(model)
+  const route = await resolveOpenRouterImageRoute(actualModel)
+  const body: any = { model: actualModel, prompt }
+  const parameters = route.model.supportedParameters || {}
+  const resolution = supportedOpenRouterValue(parameters.resolution, imageSize, ['2K', '1K', '4K', '512'])
+  const ratio = supportedOpenRouterValue(parameters.aspect_ratio, aspectRatio, ['16:9', '3:2', '1:1', '21:9', 'auto'])
+  if (resolution) body.resolution = resolution
+  if (ratio) body.aspect_ratio = ratio
+  if (route.outputFormat) body.output_format = route.outputFormat
+  if (source && parameters.input_references) {
+    body.input_references = [{ type: 'image_url', image_url: { url: source.dataUrl } }]
   }
-  const response = await fetchWithRetry('https://openrouter.ai/api/v1/chat/completions', {
+  const response = await fetchWithRetry('https://openrouter.ai/api/v1/images', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      model: toOpenRouterModel(model),
-      messages: [{ role: 'user', content: userContent }],
-      modalities: ['image', 'text'],
-      image_config: {
-        aspect_ratio: aspectRatio,
-        image_size: '1k',
-      },
-    }),
-  }, `openrouter image model ${toOpenRouterModel(model)}`)
+    body: JSON.stringify(body),
+  }, `openrouter dedicated image model ${actualModel}`)
   const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'OpenRouter image response')
-  const message = data.choices?.[0]?.message || {}
-  const imageUrl = message.images?.[0]?.image_url?.url || ''
-  if (imageUrl.includes(',')) {
-    return validateProviderImageBase64(imageUrl.split(',', 2)[1] || '', maxProviderImageBytes, 'OpenRouter image')
+  return await normalizeOpenRouterDedicatedImage(data.data?.[0])
+}
+
+async function normalizeOpenRouterDedicatedImage(image: any): Promise<string> {
+  const base64 = validateProviderImageBase64(image?.b64_json || '', maxProviderImageBytes, 'OpenRouter image')
+  const mediaType = String(image?.media_type || 'image/png').trim().toLowerCase()
+  if (!mediaType || mediaType === 'image/png') return base64
+  if (mediaType === 'image/svg+xml') {
+    const png = await rasterizeSvgReferenceToPng(Buffer.from(base64, 'base64').toString('utf8'))
+    if (!png.length) throw new Error('OpenRouter SVG rasterization returned an empty PNG')
+    if (png.length > maxProviderImageBytes) throw new Error(`OpenRouter rasterized image exceeds ${maxProviderImageBytes} byte limit`)
+    return png.toString('base64')
   }
-  if (typeof message.content === 'string' && message.content.startsWith('data:image')) {
-    return validateProviderImageBase64(message.content.split(',', 2)[1] || '', maxProviderImageBytes, 'OpenRouter image')
-  }
-  throw new Error('Image model did not return image data')
+  throw new Error(`OpenRouter image returned unsupported media type ${mediaType}`)
+}
+
+function supportedOpenRouterValue(descriptor: any, requested: string, fallbacks: string[]) {
+  const values = Array.isArray(descriptor?.values) ? descriptor.values.map(String) : []
+  if (!values.length) return ''
+  if (values.includes(requested)) return requested
+  return fallbacks.find((value) => values.includes(value)) || ''
 }
 
 type NormalizedSourceImage = { base64: string; mimeType: string; dataUrl: string }
@@ -2663,6 +3157,7 @@ async function callGeminiText(
   user: string,
   images: VisionImageInput[] = [],
 ): Promise<string> {
+  const actualModel = normalizeModelName('gemini', model)
   const parts: any[] = [{ text: user }]
   for (const image of images) {
     parts.push({
@@ -2673,17 +3168,30 @@ async function callGeminiText(
     })
   }
 
-  const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+  const requestBody: any = {
+    systemInstruction: { parts: [{ text: system }] },
+    contents: [{ role: 'user', parts }],
+  }
+  const sampling = geminiSamplingConfig(actualModel, 1)
+  if (sampling) requestBody.generationConfig = sampling
+  const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/${actualModel}:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: 'user', parts }],
-      generationConfig: { temperature: 1 },
-    }),
-  }, `gemini text model ${model}`)
+    body: JSON.stringify(requestBody),
+  }, `gemini text model ${actualModel}`)
   const data = await parseModelResponse(response)
   return data.candidates?.[0]?.content?.parts?.map((part: any) => part.text || '').join('') || ''
+}
+
+function geminiSamplingConfig(model: string, temperature: number) {
+  // Gemini 3.x is calibrated for provider sampling defaults. Do not forward
+  // the legacy temperature/topP/topK tuning used for older model families.
+  if (/^gemini-3(?:[.-]|$)/.test(model)) return undefined
+  return { temperature }
+}
+
+function usesGemini3ProviderDefaults(provider: Provider, model: string) {
+  return provider === 'openrouter' && /^google\/gemini-3(?:[.-]|$)/.test(model)
 }
 
 async function callGeminiImage(model: string, apiKey: string, prompt: string, aspectRatio: string, source: NormalizedSourceImage | null = null, imageSize = '2K'): Promise<string> {
@@ -2703,7 +3211,7 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
         // safe accepted value: '2K' → '2K', '4K' → '2K' (4K not supported here),
         // anything else (incl. legacy '1K') → '1K'. A wrong size must not break
         // generation, so keep to known-good Gemini values.
-        imageConfig: { aspectRatio, imageSize: geminiImageSize(imageSize) },
+        imageConfig: { aspectRatio, imageSize: geminiImageSize(actualModel, imageSize) },
       },
     }),
   }, `gemini image model ${actualModel}`)
@@ -2719,16 +3227,20 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
   throw new Error('Gemini image model did not return image data')
 }
 
-// Gemini imageConfig.imageSize only accepts '1K'/'2K'. CLAMP our resolution
-// setting onto a known-good value: '4K' → '2K' (4K unsupported here), '2K' → '2K',
-// '1K'/unknown → '1K'. Never emit '4K' (unsupported → would 400).
-function geminiImageSize(imageSize: string) {
-  if (imageSize === '4K') return '2K'
-  if (imageSize === '2K') return '2K'
+function geminiImageSize(model: string, imageSize: string) {
+  if (imageSize === '4K' && /^(gemini-3\.1-flash-image|gemini-3-pro-image)$/.test(model)) return '4K'
+  if ((imageSize === '4K' || imageSize === '2K') && model !== 'gemini-2.5-flash-image') return '2K'
   return '1K'
 }
 
 async function callBailianImage(model: string, apiKey: string, prompt: string, aspectRatio: string, imageSize = '2K'): Promise<string> {
+  const parameters: any = {
+    size: bailianImageSize(model, aspectRatio, imageSize),
+    n: 1,
+    watermark: false,
+  }
+  if (/^wan2\.7-image/.test(model)) parameters.thinking_mode = true
+  if (/^qwen-image-3\.0/.test(model)) parameters.prompt_extend = true
   const response = await fetchWithRetry('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', {
     method: 'POST',
     headers: {
@@ -2745,11 +3257,7 @@ async function callBailianImage(model: string, apiKey: string, prompt: string, a
           },
         ],
       },
-      parameters: {
-        size: bailianImageSize(aspectRatio, imageSize),
-        n: 1,
-        watermark: false,
-      },
+      parameters,
     }),
   }, `bailian image model ${model}`)
   const data = await parseDashScopeResponse(response, maxProviderImageResponseBytes, 'Bailian image response')
@@ -2767,20 +3275,15 @@ function extractDashScopeImageUrl(data: any) {
   return ''
 }
 
-// Resolve a model-SAFE pixel size for DashScope wan/qwen-image. The non-hires
-// sizes below are the existing known-good values already used in production and
-// are also reused for '1K' (the base render just uses the safe default size).
-// The '4K' sizes are modestly larger but are CLAMPED to stay inside the
-// wan/qwen-image limit (long side <= ~1664 px, total area < ~1.6M px) so a
-// too-large request can NEVER 400. When unsure, fall through to the safe size.
-function bailianImageSize(aspectRatio: string, imageSize = '1K') {
-  // Only '4K' bumps to the larger (still clamped) size; '1K'/'2K'/unknown use
-  // the conservative base size.
-  const hires = imageSize === '4K'
-  if (aspectRatio === '21:9') return hires ? '1664*720' : '1792*768'
-  if (aspectRatio === '3:2') return hires ? '1664*1108' : '1536*1024'
-  if (aspectRatio === '1:1') return hires ? '1328*1328' : '1024*1024'
-  return hires ? '1664*936' : '1536*864'
+function bailianImageSize(model: string, aspectRatio: string, imageSize = '1K') {
+  const supports4K = model === 'wan2.7-image-pro'
+  const tier = imageSize === '4K' && supports4K ? '4K' : imageSize === '1K' ? '1K' : '2K'
+  const dimensions: Record<string, Record<string, string>> = {
+    '1K': { '21:9': '1792*768', '3:2': '1152*768', '1:1': '1024*1024', '16:9': '1360*768' },
+    '2K': { '21:9': '2048*878', '3:2': '2048*1365', '1:1': '2048*2048', '16:9': '2048*1152' },
+    '4K': { '21:9': '4096*1755', '3:2': '4096*2731', '1:1': '4096*4096', '16:9': '4096*2304' },
+  }
+  return dimensions[tier][aspectRatio] || dimensions[tier]['16:9']
 }
 
 export async function readResponseWithLimit(response: Response, maxBytes: number, label: string): Promise<Buffer> {
@@ -2862,6 +3365,7 @@ export async function saveResult(
   mimeType: string,
   encoding: 'base64' | 'utf8',
 ) {
+  await assertJobOwnerAcceptingWork(jobId)
   const filename = `${jobId}/candidate-${candidateId}.${resultExtension(mimeType)}`
   const buffer = encoding === 'base64' ? Buffer.from(content, 'base64') : Buffer.from(content, 'utf8')
   const base64 = encoding === 'base64' ? content : buffer.toString('base64')
@@ -2892,6 +3396,7 @@ export async function saveStageImage(
   mimeType: string,
   encoding: 'base64' | 'utf8',
 ) {
+  await assertJobOwnerAcceptingWork(jobId)
   const safeStageName = sanitizePathPart(stageName)
   const filename = `${jobId}/candidate-${candidateId}-${safeStageName}.${resultExtension(mimeType)}`
   const buffer = encoding === 'base64' ? Buffer.from(content, 'base64') : Buffer.from(content, 'utf8')
@@ -3030,40 +3535,18 @@ function mainModelReferenceError(provider: Provider, model: string, error: any) 
 
 async function referenceModelCapability(provider: Provider, model: string): Promise<ModelCapabilityResult> {
   const normalizedModel = normalizeModelName(provider, model)
-  if (provider === 'bailian') {
-    // 阿里百炼"图像理解"模型可直读参考图:qwen3.7-plus / qwen3.5-omni-plus / kimi-k2.6
-    // (+ omni、遗留 qwen-vl/qvq 容错)。纯文本模型(qwen3.7-max、deepseek、glm、MiniMax…)
-    // 需经独立识别模型读图。
-    const isVisionModel = /qwen3\.7-plus|qwen3\.5-omni|omni|kimi-k2\.6|qwen-?vl|qwen3-?vl|-vl-|qvq/i.test(normalizedModel)
+  if (provider !== 'openrouter') {
+    const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizedModel)
+    const supported = entry?.capabilities.referenceImages === true
     return {
-      status: isVisionModel ? 'supported' : 'unsupported',
-      supportsReferenceImages: isVisionModel,
-      reason: isVisionModel
-        ? '该主模型支持图像理解，可直读参考图'
-        : '该主模型为文本模型，已自动改用独立识别模型读参考图',
-      source: 'paperbanana-static',
-      cached: true,
-    }
-  }
-
-  if (provider === 'openai') {
-    const supported = openaiVisionMainModels.has(normalizedModel)
-    return {
-      status: supported ? 'supported' : 'unknown',
+      status: entry ? (supported ? 'supported' : 'unsupported') : 'unknown',
       supportsReferenceImages: supported,
-      reason: supported ? 'OpenAI static vision-capable model list' : '模型不在当前 OpenAI 静态白名单内，能力未知',
-      source: 'paperbanana-static',
-      cached: true,
-    }
-  }
-
-  if (provider === 'gemini') {
-    const supported = geminiVisionMainModels.has(normalizedModel)
-    return {
-      status: supported ? 'supported' : 'unknown',
-      supportsReferenceImages: supported,
-      reason: supported ? 'Gemini static vision-capable model list' : '模型不在当前 Gemini 静态白名单内，能力未知',
-      source: 'paperbanana-static',
+      reason: !entry
+        ? '模型不在服务端权威注册表内，能力未知'
+        : supported
+          ? '服务端权威注册表标记该模型支持图像输入'
+          : '服务端权威注册表标记该模型不支持图像输入',
+      source: 'paperbanana-model-registry',
       cached: true,
     }
   }
@@ -3074,8 +3557,8 @@ async function referenceModelCapability(provider: Provider, model: string): Prom
 async function openRouterReferenceCapability(model: string): Promise<ModelCapabilityResult> {
   const actualModel = toOpenRouterModel(model)
   try {
-    const { modalities, cached } = await fetchOpenRouterModelModalities()
-    if (!modalities.has(actualModel)) {
+    const { models, cached } = await fetchOpenRouterTextModels()
+    if (!models.has(actualModel)) {
       return {
         status: 'unknown',
         supportsReferenceImages: false,
@@ -3084,7 +3567,7 @@ async function openRouterReferenceCapability(model: string): Promise<ModelCapabi
         cached,
       }
     }
-    const inputModalities = modalities.get(actualModel) || []
+    const inputModalities = models.get(actualModel)?.inputModalities || []
     const supported = inputModalities.includes('image')
     return {
       status: supported ? 'supported' : 'unsupported',
@@ -3108,29 +3591,161 @@ async function openRouterReferenceCapability(model: string): Promise<ModelCapabi
   }
 }
 
-async function fetchOpenRouterModelModalities() {
+async function fetchOpenRouterTextModels() {
   const now = Date.now()
   if (openRouterModelCache && openRouterModelCache.expiresAt > now) {
-    return { modalities: openRouterModelCache.modalities, cached: true }
+    return { models: openRouterModelCache.models, cached: true }
   }
-
   const response = await fetchWithRetry('https://openrouter.ai/api/v1/models', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }, 'OpenRouter model metadata')
   const data = await parseModelResponse(response)
-  const modalities = new Map<string, string[]>()
+  const models = parseOpenRouterCatalog(data)
+  openRouterModelCache = { expiresAt: now + openRouterModelCacheTtlMs, models }
+  return { models, cached: false }
+}
+
+async function fetchOpenRouterDedicatedImageModels() {
+  const now = Date.now()
+  if (openRouterDedicatedImageModelCache && openRouterDedicatedImageModelCache.expiresAt > now) {
+    return { models: openRouterDedicatedImageModelCache.models, cached: true }
+  }
+  const response = await fetchWithRetry('https://openrouter.ai/api/v1/images/models', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }, 'OpenRouter dedicated image model metadata')
+  const data = await parseModelResponse(response)
+  const models = parseOpenRouterCatalog(data)
+  openRouterDedicatedImageModelCache = { expiresAt: now + openRouterModelCacheTtlMs, models }
+  return { models, cached: false }
+}
+
+function parseOpenRouterCatalog(data: any) {
+  const models = new Map<string, OpenRouterCatalogModel>()
   for (const model of data?.data || []) {
-    if (!model?.id) continue
-    modalities.set(String(model.id), Array.isArray(model?.architecture?.input_modalities)
-      ? model.architecture.input_modalities.map((item: any) => String(item))
-      : [])
+    const id = String(model?.id || '').trim()
+    if (!id) continue
+    models.set(id, {
+      id,
+      name: String(model?.name || id),
+      inputModalities: Array.isArray(model?.architecture?.input_modalities)
+        ? model.architecture.input_modalities.map(String)
+        : [],
+      outputModalities: Array.isArray(model?.architecture?.output_modalities)
+        ? model.architecture.output_modalities.map(String)
+        : [],
+      supportedParameters: model?.supported_parameters || {},
+    })
   }
-  openRouterModelCache = {
-    expiresAt: now + openRouterModelCacheTtlMs,
-    modalities,
+  return models
+}
+
+async function resolveOpenRouterImageRoute(model: string) {
+  const { models: dedicatedModels } = await fetchOpenRouterDedicatedImageModels()
+  const dedicated = dedicatedModels.get(model)
+  if (!dedicated || !dedicated.outputModalities.includes('image')) {
+    throw new Error(`Model ${model} is not available in the authoritative OpenRouter image catalog`)
   }
-  return { modalities, cached: false }
+  const outputFormat = safeOpenRouterOutputFormat(dedicated.supportedParameters)
+  if (outputFormat === null) {
+    throw new Error(`Model ${model} does not expose a PNG or SVG output format`)
+  }
+  return { protocol: 'openrouter-images' as const, model: dedicated, outputFormat }
+}
+
+function safeOpenRouterOutputFormat(supportedParameters: any): '' | 'png' | 'svg' | null {
+  const descriptor = supportedParameters?.output_format
+  if (!descriptor) return ''
+  const values = Array.isArray(descriptor?.values)
+    ? descriptor.values.map((value: any) => String(value).trim().toLowerCase())
+    : []
+  if (!values.length) return ''
+  if (values.includes('png')) return 'png'
+  if (values.includes('svg')) return 'svg'
+  return null
+}
+
+async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
+  const [{ models: textModels }, { models: dedicatedModels }] = await Promise.all([
+    fetchOpenRouterTextModels(),
+    fetchOpenRouterDedicatedImageModels(),
+  ])
+  const entries = new Map<string, ModelRegistryEntry>()
+  for (const model of textModels.values()) {
+    const dedicated = dedicatedModels.get(model.id)
+    if (dedicated && safeOpenRouterOutputFormat(dedicated.supportedParameters) !== null) continue
+    if (!model.inputModalities.includes('text') || !model.outputModalities.includes('text')) continue
+    const roles: ModelRole[] = ['main']
+    if (model.inputModalities.includes('image')) roles.push('vision')
+    entries.set(model.id, registryEntry(
+      model.id,
+      model.name,
+      roles,
+      'openrouter-chat-completions',
+      'Live OpenRouter model catalog; availability may change',
+    ))
+  }
+  for (const model of dedicatedModels.values()) {
+    if (!model.outputModalities.includes('image')) continue
+    if (safeOpenRouterOutputFormat(model.supportedParameters) === null) continue
+    const resolutionValues = Array.isArray(model.supportedParameters?.resolution?.values)
+      ? model.supportedParameters.resolution.values.map(String)
+      : undefined
+    entries.set(model.id, registryEntry(
+      model.id,
+      model.name,
+      ['image'],
+      'openrouter-images',
+      'Live OpenRouter Dedicated Image API catalog',
+      {
+        referenceImages: model.inputModalities.includes('image'),
+        imageEditing: model.inputModalities.includes('image'),
+        resolutions: resolutionValues,
+      },
+    ))
+  }
+  const models = [...entries.values()].sort((a, b) => a.label.localeCompare(b.label))
+  const firstForRole = (role: ModelRole) => models.find((model) => model.roles.includes(role))?.id || ''
+  const preferred = (id: string, role: ModelRole) => entries.get(id)?.roles.includes(role) ? id : firstForRole(role)
+  return {
+    defaults: {
+      main: preferred('openai/gpt-5.5', 'main'),
+      image: preferred('openai/gpt-5.4-image-2', 'image'),
+      vision: preferred('google/gemini-3.7-flash', 'vision'),
+    },
+    models,
+  }
+}
+
+async function providerModelRegistry(provider: Provider): Promise<ProviderModelRegistry> {
+  return provider === 'openrouter' ? openRouterProviderRegistry() : staticModelRegistry[provider]
+}
+
+function providerRegistryFailure(provider: Provider, error: any): string {
+  if (provider === 'openrouter') {
+    return isProviderEgressUnavailable(error)
+      ? providerEgressUnavailableMessage
+      : 'OpenRouter model catalog is temporarily unavailable'
+  }
+  return `${provider} model registry is temporarily unavailable`
+}
+
+function modelRoleSelectionError(
+  provider: Provider,
+  registry: ProviderModelRegistry,
+  selections: Array<{ model: string; role: ModelRole }>,
+): string {
+  for (const selection of selections) {
+    const model = provider === 'openrouter'
+      ? toOpenRouterModel(selection.model)
+      : normalizeModelName(provider, selection.model)
+    const entry = registry.models.find((candidate) => candidate.id === model)
+    if (!entry?.roles.includes(selection.role)) {
+      return `Model ${model} is not registered for ${selection.role} on ${provider}`
+    }
+  }
+  return ''
 }
 
 async function parseModelResponse(response: Response) {
@@ -3955,6 +4570,7 @@ export async function verifyUploadedReferenceObjects(
     // Historical Laf buckets did not expose HEAD/stat. Keep the rollback path
     // backward compatible; the Node service always enables strict mode and its
     // adapter always implements headFile.
+    await markReferenceUploadsFinalized(images)
     return
   }
 
@@ -3993,6 +4609,7 @@ export async function verifyUploadedReferenceObjects(
       throw error
     }
   }
+  await markReferenceUploadsFinalized(images)
 }
 
 function validateReferenceFileMeta(mimeType: string, size: number, allowedTypes: Set<string>) {
@@ -4080,9 +4697,12 @@ function randomId() {
 
 function validateCreateBody(body: CreateJobBody) {
   if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) throw new Error('Invalid provider')
+  if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
   if (body.taskName && !['diagram', 'plot'].includes(body.taskName)) throw new Error('Invalid taskName. Must be diagram or plot.')
   if (!body.methodContent || body.methodContent.trim().length < 20) throw new Error('methodContent is too short')
+  if (body.methodContent.trim().length > 12000) throw new Error('methodContent exceeds 12000 characters')
   if (!body.caption || body.caption.trim().length < 3) throw new Error('caption is required')
+  if (body.caption.trim().length > 1000) throw new Error('caption exceeds 1000 characters')
   const requestedFormat = body.outputFormat || body.output_format
   if (requestedFormat && !['png', 'svg'].includes(requestedFormat)) throw new Error('Invalid outputFormat')
   if (!body.mainModelName) throw new Error('mainModelName is required')
@@ -4096,6 +4716,7 @@ function validateCreateBody(body: CreateJobBody) {
 
 function validateRefineBody(body: RefineImageBody) {
   if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) throw new Error('Invalid provider')
+  if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
   if (!body.imageModelName) throw new Error('imageModelName is required')
   if (!body.sourceImageUrl && !body.sourceImageObjectKey) throw new Error('source image is required')
   const instruction = String(body.editInstruction || '').trim()
@@ -4123,6 +4744,7 @@ async function publicJob(job: any) {
     id: job._id,
     status: job.status,
     provider: job.provider,
+    clientPlatform: normalizeClientPlatform(job.clientPlatform || job.client_platform),
     jobType: job.jobType || 'generate',
     userId: job.userId || job.user_id || '',
     userEmail: job.userEmail || job.user_email || '',
@@ -4283,6 +4905,88 @@ function getClientIp(ctx: FunctionContext) {
   return String(ctx.headers?.['x-real-ip'] || '').split(',')[0].trim()
 }
 
+function accountOwnerKeys(body: { userId?: string; userEmail?: string }): string[] {
+  const userId = String(body.userId || '').trim()
+  const userEmail = String(body.userEmail || '').trim().toLowerCase()
+  if (userId) return [`user:${userId}`]
+  if (userEmail) return [`email:${userEmail}`]
+  return []
+}
+
+async function ensureAccountAcceptingWork(body: { userId?: string; userEmail?: string }): Promise<boolean> {
+  const ownerKeys = accountOwnerKeys(body)
+  if (!ownerKeys.length) return true
+  return !(await accountDeletions.findOne({ _id: { $in: ownerKeys } }))
+}
+
+async function assertJobOwnerAcceptingWork(jobId: string) {
+  const job = await jobs.findOne({ _id: jobId })
+  if (!job) throw new Error('Job not found while checking account deletion state')
+  if (!(await ensureAccountAcceptingWork(job))) {
+    const error: any = new Error('Account deletion is in progress. Stored output was cancelled.')
+    error.code = 'ACCOUNT_DELETION_IN_PROGRESS'
+    throw error
+  }
+}
+
+async function recordPreparedReferenceUploads(ownerKey: string, uploads: any[]) {
+  if (!ownerKey) return
+  const now = new Date()
+  for (const upload of uploads) {
+    const objectKey = String(upload?.objectKey || '').trim()
+    const expiresAt = Number(upload?.expiresAt || 0)
+    if (!objectKey || !Number.isFinite(expiresAt) || expiresAt <= 0) continue
+    await referenceUploadState.updateOne(
+      { _id: objectKey },
+      {
+        $set: {
+          ownerKey,
+          status: 'prepared',
+          expiresAt: new Date(expiresAt),
+          mimeType: String(upload?.mimeType || ''),
+          size: Number(upload?.size || 0),
+          updatedAt: now,
+        },
+        $setOnInsert: { createdAt: now },
+      },
+      { upsert: true },
+    )
+  }
+}
+
+async function markReferenceUploadsFinalized(images: Array<Pick<StoredReferenceImage, 'objectKey' | 'analysisObjectKey'>>) {
+  const now = new Date()
+  for (const image of images) {
+    for (const objectKey of [image.objectKey, image.analysisObjectKey].filter(Boolean)) {
+      await referenceUploadState.updateOne(
+        { _id: objectKey },
+        { $set: { status: 'finalized', finalizedAt: now, updatedAt: now } },
+      )
+    }
+  }
+}
+
+async function abortPreparedReferenceUploads(
+  body: { userId?: string; userEmail?: string },
+  uploads: Array<Partial<ReferenceImageInput>>,
+) {
+  const ownerKeys = accountOwnerKeys(body)
+  if (!ownerKeys.length) return
+  const bucket = cloud.storage.bucket(bucketName)
+  const now = new Date()
+  for (const upload of uploads) {
+    for (const objectKey of [upload.objectKey, upload.analysisObjectKey].filter(Boolean).map(String)) {
+      const state = await referenceUploadState.findOne({ _id: objectKey, ownerKey: { $in: ownerKeys } })
+      if (!state) continue
+      try { await bucket.deleteFile(objectKey) } catch {}
+      await referenceUploadState.updateOne(
+        { _id: objectKey, ownerKey: { $in: ownerKeys } },
+        { $set: { status: 'aborted', abortedAt: now, updatedAt: now } },
+      )
+    }
+  }
+}
+
 function jobAdmissionPrincipal(
   body: Pick<CreateExecutionBody | RefineExecutionBody, 'userId' | 'userEmail'>,
   ctx: FunctionContext,
@@ -4301,8 +5005,68 @@ function toOpenRouterModel(model: string) {
   return raw
 }
 
-function normalizeModelName(provider: string, model: string) {
-  if (provider === 'gemini' && model === 'gemini-3.1-flash-image-preview') return 'gemini-3.1-flash-image'
+export function normalizeModelName(provider: string, model: string) {
+  if (provider === 'gemini') {
+    const aliases: Record<string, string> = {
+      'gemini-3.1-flash-image-preview': 'gemini-3.1-flash-image',
+      'gemini-3.1-pro': 'gemini-3.1-pro-preview',
+      'gemini-3-flash': 'gemini-3-flash-preview',
+      'gemini-3-pro-preview': 'gemini-3.1-pro-preview',
+      'gemini-3.1-flash-lite-preview': 'gemini-3.1-flash-lite',
+    }
+    return aliases[model] || model
+  }
+  if (provider === 'openai') {
+    const aliases: Record<string, string> = {
+      'gpt-5.5-pro': 'gpt-5.6-sol',
+      'gpt-5.4-pro': 'gpt-5.6-sol',
+      'gpt-5.2': 'gpt-5.5',
+      'gpt-5.1': 'gpt-5.5',
+      'gpt-4o': 'gpt-4.1',
+      'gpt-4o-mini': 'gpt-4.1-mini',
+      'gpt-image-1.5': 'gpt-image-2',
+    }
+    return aliases[model] || model
+  }
+  if (provider === 'openrouter') {
+    const aliases: Record<string, string> = {
+      'openrouter/google/gemini-3.1-flash-image-preview': 'openrouter/google/gemini-3.1-flash-image',
+      'openrouter/google/gemini-3-pro-image-preview': 'openrouter/google/gemini-3-pro-image',
+      'openrouter/openai/gpt-5-image': 'openrouter/openai/gpt-image-2',
+      'openrouter/openai/gpt-5-image-mini': 'openrouter/openai/gpt-image-1-mini',
+      'openrouter/openai/gpt-5.5-pro': 'openrouter/openai/gpt-5.5',
+      'openrouter/openai/gpt-5.4-pro': 'openrouter/openai/gpt-5.4',
+    }
+    return aliases[model] || model
+  }
+  if (provider === 'bailian') {
+    const aliases: Record<string, string> = {
+      'qwen3.7-max': 'qwen3.8-max',
+      'qwen3.7-max-2026-05-20': 'qwen3.8-max',
+      'qwen3.6-flash': 'qwen3.7-flash',
+      'qwen3.6-plus': 'qwen3.7-plus',
+      'qwen-plus-latest': 'qwen3.8-max',
+      'qwen-max-latest': 'qwen3.8-max',
+      'qwen-flash': 'qwen3.7-flash',
+      'glm-5.1': 'glm-5.2',
+      'kimi-k2.6': 'kimi/kimi-k3',
+      'MiniMax-M2.7': 'MiniMax/MiniMax-M3',
+      'MiniMax/MiniMax-M2.7': 'MiniMax/MiniMax-M3',
+      'qwen-image-2.0-pro': 'qwen-image-3.0-pro',
+      'qwen-image-2.0': 'qwen-image-3.0',
+      'qwen-image-max': 'qwen-image-3.0-pro',
+      'qwen-image-plus': 'qwen-image-3.0',
+      'qwen-image': 'qwen-image-3.0',
+      'wan2.6-image': 'wan2.7-image',
+      'wan2.6-t2i': 'wan2.7-image',
+      'wan2.5-t2i-preview': 'wan2.7-image',
+      'wan2.2-t2i-plus': 'wan2.7-image',
+      'wan2.2-t2i-flash': 'wan2.7-image',
+      'z-image-turbo': 'wan2.7-image',
+      'mimo-v2.5-pro': 'qwen3.8-max',
+    }
+    return aliases[model] || model
+  }
   return model
 }
 
@@ -4316,6 +5080,10 @@ function normalizeTaskName(taskName?: string): TaskName {
 
 function normalizeRetrievalSetting(setting?: string): RetrievalSetting {
   return allowedRetrievalSettings.has(setting as RetrievalSetting) ? setting as RetrievalSetting : 'none'
+}
+
+function normalizeClientPlatform(platform?: string): ClientPlatform | '' {
+  return allowedClientPlatforms.has(platform as ClientPlatform) ? platform as ClientPlatform : ''
 }
 
 function normalizeManualReferenceIds(ids: string[]) {

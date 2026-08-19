@@ -36,6 +36,7 @@ final class PayloadEncodingTests: XCTestCase {
     let body = payload.paperBananaBody()
 
     XCTAssertEqual(body["action"] as? String, "createJob")
+    XCTAssertEqual(body["clientPlatform"] as? String, "ios")
     XCTAssertEqual(body["taskName"] as? String, "plot")
     XCTAssertEqual(body["outputFormat"] as? String, "svg")
     XCTAssertEqual(body["imageSize"] as? String, "2K")
@@ -96,6 +97,7 @@ final class PayloadEncodingTests: XCTestCase {
     let body = payload.paperBananaBody()
 
     XCTAssertEqual(body["action"] as? String, "refineImage")
+    XCTAssertEqual(body["clientPlatform"] as? String, "ios")
     XCTAssertEqual(body["mainModelName"] as? String, "gpt-5.5")
     XCTAssertEqual(body["imageModelName"] as? String, "gpt-image-2")
     XCTAssertEqual(body["referenceVisionModelName"] as? String, "gpt-4.1")

@@ -25,6 +25,7 @@
 
       <view class="detail-badges">
         <view class="status-badge {{job.status}}">{{job.status_text}}</view>
+        <view class="status-pill">任务来源：{{job.client_platform_text}}</view>
         <view class="status-pill">{{job.configuration_mode === 'simple' ? '普通模式' : '专业模式'}}</view>
         <view class="status-pill" wx:if="{{job.provider}}">{{job.provider}}</view>
         <view class="status-pill" wx:if="{{job.aspect_ratio}}">{{job.aspect_ratio}}</view>
