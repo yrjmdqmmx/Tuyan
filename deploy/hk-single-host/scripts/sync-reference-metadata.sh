@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 deploy_dir="$(cd -- "$script_dir/.." && pwd)"
+repo_dir="$(cd -- "$deploy_dir/../.." && pwd)"
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
 
 metadata_script="$(mktemp)"
@@ -19,8 +20,9 @@ fi
 docker image inspect "$core_image" >/dev/null
 docker run --rm --network none --read-only --cap-drop ALL \
   --security-opt no-new-privileges \
-  -v "$script_dir/emit-reference-metadata-mongosh.mjs:/tmp/emit-reference-metadata-mongosh.mjs:ro" \
-  --entrypoint node "$core_image" /tmp/emit-reference-metadata-mongosh.mjs > "$metadata_script"
+  -v "$script_dir/emit-reference-metadata-mongosh.mjs:/paperbanana/deploy/hk-single-host/scripts/emit-reference-metadata-mongosh.mjs:ro" \
+  -v "$repo_dir/apps/web/src/data/reference-metadata.zh-CN.v1.js:/paperbanana/apps/web/src/data/reference-metadata.zh-CN.v1.js:ro" \
+  --entrypoint node "$core_image" /paperbanana/deploy/hk-single-host/scripts/emit-reference-metadata-mongosh.mjs > "$metadata_script"
 chmod 0444 "$metadata_script"
 
 "${compose[@]}" run --rm --no-deps -T \

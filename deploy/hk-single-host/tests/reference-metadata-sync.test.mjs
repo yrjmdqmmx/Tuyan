@@ -76,6 +76,8 @@ test('deployment syncs metadata through the secret-mounted mongo-init container 
   assert.match(syncScript, /PAPERBANANA_CORE_IMAGE/)
   assert.match(syncScript, /docker run --rm --network none --read-only --cap-drop ALL/)
   assert.match(syncScript, /--security-opt no-new-privileges/)
+  assert.match(syncScript, /reference-metadata\.zh-CN\.v1\.js:\/paperbanana\/apps\/web\/src\/data\/reference-metadata\.zh-CN\.v1\.js:ro/)
+  assert.match(syncScript, /\/paperbanana\/deploy\/hk-single-host\/scripts\/emit-reference-metadata-mongosh\.mjs/)
   assert.match(syncScript, /-v "\$metadata_script:\/tmp\/paperbanana-reference-metadata\.js:ro"/)
   assert.ok(deployScript.indexOf('sync-reference-metadata.sh') < deployScript.indexOf('smoke.sh'))
 })
