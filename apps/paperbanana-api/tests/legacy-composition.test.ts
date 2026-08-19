@@ -401,13 +401,18 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     id: 'google/gemini-3.1-flash-image',
     name: 'Nano Banana 2',
     architecture: { input_modalities: ['text', 'image'], output_modalities: ['text', 'image'] },
-    supported_parameters: ['modalities', 'image_config'],
+    supported_parameters: { output_format: { values: ['png'] } },
   }
   const dedicatedModel = {
     id: 'black-forest-labs/flux.2-pro',
     name: 'FLUX.2 Pro',
     architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
-    supported_parameters: ['aspect_ratio', 'resolution', 'input_references'],
+    supported_parameters: {
+      aspect_ratio: { values: ['1:1', '16:9'] },
+      resolution: { values: ['1K', '2K'] },
+      input_references: { max: 1 },
+      output_format: { values: ['png'] },
+    },
   }
   legacy.configureRuntimeFetch(async (input, init) => {
     const url = String(input)
@@ -436,6 +441,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
             aspect_ratio: { type: 'enum', values: ['1:1', '16:9'] },
             resolution: { type: 'enum', values: ['1K', '2K'] },
             input_references: { type: 'range', min: 0, max: 1 },
+            output_format: { type: 'enum', values: ['png'] },
           },
         }],
       })
@@ -486,6 +492,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     prompt: 'diagram',
     resolution: '2K',
     aspect_ratio: '16:9',
+    output_format: 'png',
     input_references: [{ type: 'image_url', image_url: { url: 'data:image/png;base64,YQ==' } }],
   })
   assert.equal(calls.some((call) => call.url.endsWith('/chat/completions')), false)
@@ -671,6 +678,53 @@ test('OpenRouter excludes paid image models whose declared output formats cannot
   }
 })
 
+async function assertOpenRouterUnknownOutputFormatFailsClosed(model: Record<string, any>) {
+  const legacy = await loadLegacy()
+  let generated = false
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      generated = true
+      return Response.json({ data: [{ b64_json: 'aW1hZ2U=', media_type: 'image/png' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(registry.providers.openrouter.models.some((entry: any) => entry.id === model.id), false)
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '16:9'),
+      /does not expose a PNG or SVG output format/,
+    )
+    assert.equal(generated, false)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+}
+
+test('OpenRouter fails closed when a dedicated image model omits output_format', async () => {
+  await assertOpenRouterUnknownOutputFormatFailsClosed({
+    id: 'vendor/missing-output-format',
+    name: 'Missing Output Format',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: { resolution: { values: ['1K'] } },
+  })
+})
+
+test('OpenRouter fails closed when a dedicated image model declares no output_format values', async () => {
+  await assertOpenRouterUnknownOutputFormatFailsClosed({
+    id: 'vendor/empty-output-format',
+    name: 'Empty Output Format',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: { output_format: { values: [] } },
+  })
+})
+
 test('Bailian current image models use their official multimodal parameters and resolution limits', async () => {
   const legacy = await loadLegacy()
   const payloads: any[] = []
@@ -742,6 +796,60 @@ test('Bailian direct-edit models forward source pixels as an image input', async
   assert.equal(generationPayload.parameters.size, '2048*1152')
 })
 
+test('refine prefers owned object bytes over a preview URL when both source fields are present', async () => {
+  const legacy = await loadLegacy()
+  const testState = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = testState.ossWriteMode
+  const previousStoredObjects = testState.storedObjectBytes
+  let previewUrlFetched = false
+  let interactionPayload: any
+  testState.ossWriteMode = 'race'
+  testState.deletedOwnerKeys = []
+  testState.storedObjectBytes = { 'owned/source.png': 'owned-object-bytes' }
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url === 'https://signed.invalid/expired-preview.png') {
+      previewUrlFetched = true
+      return new Response('preview-url-bytes', { headers: { 'Content-Type': 'image/png' } })
+    }
+    if (url.endsWith('/v1beta/interactions')) {
+      interactionPayload = JSON.parse(String(init?.body || '{}'))
+      return Response.json({ output_image: { data: 'cmVmaW5lZA==', mime_type: 'image/png' } })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'refineImage',
+        provider: 'gemini',
+        apiKeys: { gemini: 'selected-key' },
+        userId: 'owner-1',
+        mainModelName: 'gemini-3.6-flash',
+        imageModelName: 'gemini-3.1-flash-image',
+        sourceImageUrl: 'https://signed.invalid/expired-preview.png',
+        sourceImageObjectKey: 'owned/source.png',
+        editInstruction: 'Make the labels clearer.',
+      },
+      headers: { 'x-real-ip': '203.0.113.20' },
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0)
+    await legacy.drainJobAdmission()
+  } finally {
+    legacy.configureRuntimeFetch()
+    testState.ossWriteMode = previousWriteMode
+    testState.storedObjectBytes = previousStoredObjects
+    testState.deletedOwnerKeys = []
+  }
+  assert.equal(previewUrlFetched, false)
+  assert.equal(
+    interactionPayload.input.find((item: any) => item.type === 'image')?.data,
+    Buffer.from('owned-object-bytes').toString('base64'),
+  )
+})
+
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const legacyPath = path.resolve(packageRoot, '../laf-functions/paperbanana-api.ts')
 const legacyBridgePath = path.resolve(packageRoot, 'src/legacy-entry.mjs')
@@ -765,7 +873,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
-                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], deletedOwnerKeys: [], deletedObjects: [], ossWriteMode: 'fail' };
+                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, ossWriteMode: 'fail' };
                 const collectionFor = (name) => ({
                   find() { return { sort() { return this }, limit() { return this }, async toArray() { return [] } } },
                   async findOne(query) {
@@ -780,6 +888,13 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                   async updateOne() {}, async deleteMany() { return { deletedCount: 0 } }
                 });
                 const bucket = {
+                  async readFile(key, maxBytes) {
+                    const value = state.storedObjectBytes?.[key];
+                    if (value === undefined) throw new Error('stored object not found');
+                    const bytes = Buffer.from(value);
+                    if (bytes.length > maxBytes) throw new Error('stored object exceeds limit');
+                    return bytes;
+                  },
                   async writeFile(key) {
                     if (state.ossWriteMode === 'race') {
                       state.deletedOwnerKeys = ['user:owner-1'];

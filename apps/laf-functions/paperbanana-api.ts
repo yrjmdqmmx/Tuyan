@@ -3862,13 +3862,13 @@ async function resolveOpenRouterImageRoute(model: string) {
   return { protocol: 'openrouter-images' as const, model: dedicated, outputFormat }
 }
 
-function safeOpenRouterOutputFormat(supportedParameters: any): '' | 'png' | 'svg' | null {
+function safeOpenRouterOutputFormat(supportedParameters: any): 'png' | 'svg' | null {
   const descriptor = supportedParameters?.output_format
-  if (!descriptor) return ''
+  if (!descriptor) return null
   const values = Array.isArray(descriptor?.values)
     ? descriptor.values.map((value: any) => String(value).trim().toLowerCase())
     : []
-  if (!values.length) return ''
+  if (!values.length) return null
   if (values.includes('png')) return 'png'
   if (values.includes('svg')) return 'svg'
   return null
@@ -3973,7 +3973,7 @@ function openRouterVendor(modelId: string) {
 
 function openRouterOutputFormats(parameters: any) {
   const descriptor = parameters?.output_format
-  if (!descriptor) return ['png']
+  if (!descriptor) return []
   const values = Array.isArray(descriptor?.values) ? descriptor.values.map((value: any) => String(value).toLowerCase()) : []
   return values.filter((value: string) => ['png', 'svg'].includes(value))
 }
@@ -5371,18 +5371,20 @@ function limitText(value: any, maxLength: number) {
 }
 
 async function resolveSourceImageUrl(body: RefineExecutionBody) {
+  const objectKey = limitText(body.sourceImageObjectKey, 300)
+  if (objectKey) {
+    const mimeType = inferMimeTypeFromUrl(objectKey)
+    const bytes = await readStoredObject(
+      cloud.storage.bucket(bucketName),
+      objectKey,
+      maxReferenceBytes,
+      'Refine source image download',
+    )
+    return `data:${mimeType};base64,${bytes.toString('base64')}`
+  }
   const direct = limitText(body.sourceImageUrl, 1200)
   if (direct) return direct
-  const objectKey = limitText(body.sourceImageObjectKey, 300)
-  if (!objectKey) throw new Error('source image is required')
-  const mimeType = inferMimeTypeFromUrl(objectKey)
-  const bytes = await readStoredObject(
-    cloud.storage.bucket(bucketName),
-    objectKey,
-    maxReferenceBytes,
-    'Refine source image download',
-  )
-  return `data:${mimeType};base64,${bytes.toString('base64')}`
+  throw new Error('source image is required')
 }
 
 function inferMimeTypeFromUrl(url: string) {
