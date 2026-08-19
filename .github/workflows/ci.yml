@@ -64,30 +64,36 @@ jobs:
       - run: python3 -m unittest discover -s apps/plot-worker/tests -p 'test_*.py'
 
   macos:
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
       - run: swift test --package-path apps/macos
+      - name: Select newest Xcode 26
+        shell: bash
+        run: |
+          xcode_path="$(
+            python3 - <<'PY'
+          from glob import glob
+          from pathlib import Path
+
+          def version(path: str) -> tuple[int, ...]:
+              name = Path(path).stem.removeprefix("Xcode_")
+              return tuple(int(part) for part in name.split(".") if part.isdigit())
+
+          candidates = glob("/Applications/Xcode_26*.app")
+          if candidates:
+              print(max(candidates, key=version))
+          PY
+          )"
+          test -x "${xcode_path}/Contents/Developer/usr/bin/xcodebuild"
+          echo "DEVELOPER_DIR=${xcode_path}/Contents/Developer" >> "$GITHUB_ENV"
       - name: Test iOS shared job contracts
         shell: bash
         run: |
-          destination_id="$(
-            xcodebuild -showdestinations \
-              -project apps/ios/paperbanana.xcodeproj \
-              -scheme PaperBanana |
-              awk -F'id:' '/platform:iOS Simulator/ && /name:iPhone/ {
-                if (selected == "") {
-                  split($2, fields, ",")
-                  gsub(/[[:space:]]/, "", fields[1])
-                  selected = fields[1]
-                }
-              } END { print selected }'
-          )"
-          test -n "$destination_id"
           xcodebuild test \
             -project apps/ios/paperbanana.xcodeproj \
             -scheme PaperBanana \
-            -destination "platform=iOS Simulator,id=${destination_id}" \
+            -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" \
             -only-testing:PaperBananaTests/JobDecodingTests \
             -only-testing:PaperBananaTests/PayloadEncodingTests \
             -only-testing:PaperBananaTests/ProviderCatalogTests \
