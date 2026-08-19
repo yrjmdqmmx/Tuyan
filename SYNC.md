@@ -27,10 +27,10 @@
 ### [2026-08-19] 模型注册表 v2 与模型级精修能力 — by Codex
 变更：服务端 `modelRegistry` 成为模型可用性与精修语义的唯一权威，修正 Gemini/OpenAI/百炼直连目录与适配器，OpenRouter 继续以官方动态目录 fail-closed；本条未部署。
 契约（影响其他端 / 共享）：
-- **注册表字段**：每个 model 在旧有 `id/label/roles/capabilities/protocol/availabilityNotes` 上新增 `vendor`、`lifecycle`、`recommended`、`requiresEntitlement`、可选 `entitlement`、`inputModalities`、`outputModalities`、`verified`、`roleReasons`；`capabilities` 新增 `imageEditMode: direct-edit|analyze-redraw|none` 和 `outputFormats`，保留旧字段向后兼容。
+- **注册表字段**：每个 model 在旧有 `id/label/roles/capabilities/protocol/availabilityNotes` 上新增 `vendor`、`lifecycle`、`recommended`、`requiresEntitlement`、可选 `entitlement`、`inputModalities`、`outputModalities`、`verified`、`selectable`、可选 `disabledReason`、`roleReasons`；`capabilities` 新增 `imageEditMode: direct-edit|analyze-redraw|none` 和 `outputFormats`，保留旧字段向后兼容。OpenRouter 不兼容图像模型仍在目录可见，但 `selectable=false`、无 `image` role，且有精确禁用原因；客户可展示但不得提交。
 - **精修契约**：`modelCapability` 新增 `supportsDirectEdit/refineMode/refineReason`；`refineImage` 成功响应新增 `refineCapability {mode,directEdit,reason}`，任务 DTO 新增 `refineMode/refineReason`。`direct-edit` 必须将源图传入图像模型；`analyze-redraw` 明确先视觉分析再重绘。`sourceImageObjectKey` 仍是受支持的权威源图输入。
 - **适配器**：Gemini 3 图像模型使用 Interactions API，2.5 图像模型保留 `generateContent`；OpenAI Pro 模型使用 Responses API；OpenRouter 图像仍只使用 `GET/POST /api/v1/images*`，无 `input_references` 时禁止直编。
-- **漂移检查**：新增只读定时/手动 workflow，只报告 OpenRouter 目录与推荐项漂移，永不自动把新模型提升为推荐。
+- **漂移检查**：新增只读定时/手动 workflow，用与运行时一致的“必须显式声明 PNG/SVG”规则报告 OpenRouter 目录与推荐项漂移；任一推荐项不可运行时输出 warning，永不自动把新模型提升为推荐。
 各端待办：
 - [x] paperbanana-api / Laf 回滚（注册表 v2、适配器、模型级精修执行）
 - [x] packages-api / Web 共享传输（保留 refine capability 与任务字段）

@@ -516,7 +516,7 @@ test('OpenRouter recommendations sort first without hiding the complete compatib
       supported_parameters: { output_format: { values: ['png'] } },
     },
     {
-      id: 'openai/gpt-image-2', name: 'GPT Image 2',
+      id: 'sourceful/riverflow-v2.5-pro', name: 'Riverflow 2.5 Pro',
       architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
       supported_parameters: { output_format: { values: ['png'] }, input_references: { max: 4 } },
     },
@@ -533,7 +533,7 @@ test('OpenRouter recommendations sort first without hiding the complete compatib
       response: { setHeader() {}, status() {} },
     })
     assert.deepEqual(registry.providers.openrouter.models.map((model: any) => model.id), [
-      'openai/gpt-5.5', 'openai/gpt-image-2', 'vendor/alpha', 'vendor/zeta',
+      'openai/gpt-5.5', 'sourceful/riverflow-v2.5-pro', 'vendor/alpha', 'vendor/zeta',
     ])
     assert.equal(registry.providers.openrouter.models.length, 4)
     assert.equal(registry.providers.openrouter.models[0].recommended, true)
@@ -617,7 +617,7 @@ test('OpenRouter vector image responses are rasterized before the PNG pipeline s
   }
 })
 
-test('OpenRouter excludes paid image models whose declared output formats cannot enter the PNG pipeline', async () => {
+test('OpenRouter keeps incompatible image models visible but non-selectable', async () => {
   const legacy = await loadLegacy()
   const incompatible = [
     {
@@ -660,7 +660,17 @@ test('OpenRouter excludes paid image models whose declared output formats cannot
     })
     const ids = registry.providers.openrouter.models.map((model: any) => model.id)
     assert.equal(ids.includes(safe.id), true)
-    for (const model of incompatible) assert.equal(ids.includes(model.id), false, model.id)
+    const registryModels = new Map<string, any>(registry.providers.openrouter.models.map((model: any) => [model.id, model]))
+    for (const model of incompatible) {
+      const entry = registryModels.get(model.id)
+      assert.ok(entry, model.id)
+      assert.equal(entry.selectable, false)
+      assert.equal(entry.roles.includes('image'), false)
+      assert.match(entry.disabledReason, /PNG or SVG/)
+      assert.deepEqual(entry.capabilities.outputFormats, model.supported_parameters.output_format.values)
+    }
+    assert.equal(registryModels.get(safe.id)?.selectable, true)
+    assert.equal(registryModels.get(safe.id)?.roles.includes('image'), true)
     for (const model of incompatible) {
       await assert.rejects(
         legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '16:9'),
@@ -696,7 +706,11 @@ async function assertOpenRouterUnknownOutputFormatFailsClosed(model: Record<stri
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.providers.openrouter.models.some((entry: any) => entry.id === model.id), false)
+    const entry = registry.providers.openrouter.models.find((candidate: any) => candidate.id === model.id)
+    assert.ok(entry)
+    assert.equal(entry.selectable, false)
+    assert.deepEqual(entry.roles, [])
+    assert.match(entry.disabledReason, /explicit PNG or SVG output_format/)
     await assert.rejects(
       legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '16:9'),
       /does not expose a PNG or SVG output format/,
@@ -723,6 +737,74 @@ test('OpenRouter fails closed when a dedicated image model declares no output_fo
     architecture: { input_modalities: ['text'], output_modalities: ['image'] },
     supported_parameters: { output_format: { values: [] } },
   })
+})
+
+test('OpenRouter image default is always a live explicitly compatible image-role model', async () => {
+  const legacy = await loadLegacy()
+  const textModels = [
+    { id: 'openai/gpt-5.5', name: 'GPT-5.5', architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] } },
+    { id: 'google/gemini-3.6-flash', name: 'Gemini 3.6 Flash', architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] } },
+  ]
+  const imageModels = [
+    {
+      id: 'openai/gpt-image-2', name: 'GPT Image 2',
+      architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+      supported_parameters: { input_references: { max: 4 } },
+    },
+    {
+      id: 'openai/gpt-5.4-image-2', name: 'GPT-5.4 Image 2',
+      architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+      supported_parameters: { resolution: { values: ['2K'] } },
+    },
+    {
+      id: 'google/gemini-3.1-flash-image', name: 'Gemini 3.1 Flash Image',
+      architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+      supported_parameters: {},
+    },
+    {
+      id: 'sourceful/jpeg-only', name: 'JPEG Only',
+      architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+      supported_parameters: { output_format: { values: ['jpeg'] } },
+    },
+    {
+      id: 'sourceful/riverflow-v2.5-pro', name: 'Riverflow 2.5 Pro',
+      architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+      supported_parameters: { output_format: { values: ['png', 'jpeg'] }, input_references: { max: 1 } },
+    },
+  ]
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: textModels })
+    if (url.endsWith('/images/models')) return Response.json({ data: imageModels })
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const context = (body: Record<string, any>) => ({
+      request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+    })
+    const result = await legacy.default(context({ action: 'modelRegistry', provider: 'openrouter' }))
+    const models = new Map<string, any>(result.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
+    const imageDefault = result.providers.openrouter.defaults.image
+    assert.equal(imageDefault, 'sourceful/riverflow-v2.5-pro')
+    assert.equal(models.get(imageDefault)?.roles.includes('image'), true)
+    assert.equal(models.get(imageDefault)?.selectable, true)
+    assert.equal(models.get(imageDefault)?.recommended, true)
+    for (const id of ['openai/gpt-image-2', 'openai/gpt-5.4-image-2', 'google/gemini-3.1-flash-image', 'sourceful/jpeg-only']) {
+      assert.equal(models.get(id)?.selectable, false, id)
+      assert.equal(models.get(id)?.roles.includes('image'), false, id)
+      assert.equal(models.get(id)?.recommended, false, id)
+    }
+
+    const rejected = await legacy.default(context({
+      action: 'createJob', provider: 'openrouter', apiKeys: { openrouter: 'key' },
+      methodContent: 'A sufficiently detailed method section for rejecting an incompatible image model.',
+      caption: 'A valid caption.', mainModelName: 'openai/gpt-5.5', imageModelName: 'openai/gpt-image-2',
+    }))
+    assert.equal(rejected.code, 400)
+    assert.match(rejected.error, /not registered for image/)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
 })
 
 test('Bailian current image models use their official multimodal parameters and resolution limits', async () => {

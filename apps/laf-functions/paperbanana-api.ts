@@ -452,6 +452,8 @@ type ModelRegistryEntry = {
   inputModalities: string[]
   outputModalities: string[]
   verified: boolean
+  selectable: boolean
+  disabledReason?: string
   roles: ModelRole[]
   roleReasons: Partial<Record<ModelRole, string>>
   capabilities: {
@@ -607,7 +609,7 @@ const modelRegistryVersion = '2026-08-19.v2'
 type RegistryEntryMetadata = Partial<Pick<
   ModelRegistryEntry,
   'vendor' | 'lifecycle' | 'recommended' | 'requiresEntitlement' | 'entitlement' |
-  'inputModalities' | 'outputModalities' | 'verified' | 'roleReasons'
+  'inputModalities' | 'outputModalities' | 'verified' | 'selectable' | 'disabledReason' | 'roleReasons'
 >>
 
 function registryEntry(
@@ -633,6 +635,8 @@ function registryEntry(
     inputModalities: metadata.inputModalities || (referenceImages ? ['text', 'image'] : ['text']),
     outputModalities: metadata.outputModalities || (imageGeneration ? ['image'] : ['text']),
     verified: metadata.verified !== false,
+    selectable: metadata.selectable !== false,
+    ...(metadata.disabledReason ? { disabledReason: metadata.disabledReason } : {}),
     roles,
     roleReasons: metadata.roleReasons || Object.fromEntries(roles.map((role) => [role, `${label} is registered for ${role}`])),
     protocol,
@@ -3908,19 +3912,26 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
   }
   for (const model of dedicatedModels.values()) {
     if (!model.outputModalities.includes('image')) continue
-    if (safeOpenRouterOutputFormat(model.supportedParameters) === null) continue
+    const compatibleOutputFormat = safeOpenRouterOutputFormat(model.supportedParameters)
+    const selectable = compatibleOutputFormat !== null
     const resolutionValues = Array.isArray(model.supportedParameters?.resolution?.values)
       ? model.supportedParameters.resolution.values.map(String)
       : undefined
-    const directEdit = supportsOpenRouterParameter(model.supportedParameters, 'input_references')
+    const directEdit = selectable && supportsOpenRouterParameter(model.supportedParameters, 'input_references')
     const outputFormats = openRouterOutputFormats(model.supportedParameters)
+    const disabledReason = selectable
+      ? ''
+      : `OpenRouter catalog does not declare explicit PNG or SVG output_format values${outputFormats.length ? ` (declared: ${outputFormats.join(', ')})` : ''}; unavailable for PaperBanana submission`
     entries.set(model.id, registryEntry(
       model.id,
       model.name,
-      ['image'],
+      selectable ? ['image'] : [],
       'openrouter-images',
-      'Live OpenRouter Dedicated Image API catalog',
+      selectable
+        ? 'Live OpenRouter Dedicated Image API catalog'
+        : `Live OpenRouter Dedicated Image API catalog; ${disabledReason}`,
       {
+        imageGeneration: true,
         referenceImages: directEdit,
         imageEditing: directEdit,
         resolutions: resolutionValues,
@@ -3928,11 +3939,15 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
       },
       {
         vendor: openRouterVendor(model.id),
-        recommended: openRouterRecommendedModelIds.has(model.id),
+        recommended: selectable && openRouterRecommendedModelIds.has(model.id),
         inputModalities: model.inputModalities,
         outputModalities: model.outputModalities,
         verified: true,
-        roleReasons: { image: 'OpenRouter Dedicated Image API catalog declares image output' },
+        selectable,
+        disabledReason,
+        roleReasons: selectable
+          ? { image: 'OpenRouter Dedicated Image API catalog declares image output with explicit PNG or SVG compatibility' }
+          : {},
       },
     ))
   }
@@ -3947,7 +3962,7 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
   return {
     defaults: {
       main: preferred('openai/gpt-5.5', 'main'),
-      image: preferred('openai/gpt-image-2', 'image'),
+      image: preferred('sourceful/riverflow-v2.5-pro', 'image'),
       vision: preferred('google/gemini-3.6-flash', 'vision'),
     },
     models,
@@ -3956,7 +3971,7 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
 
 const openRouterRecommendationRank = new Map([
   ['openai/gpt-5.5', 0],
-  ['openai/gpt-image-2', 1],
+  ['sourceful/riverflow-v2.5-pro', 1],
   ['google/gemini-3.6-flash', 2],
 ])
 const openRouterRecommendedModelIds = new Set(openRouterRecommendationRank.keys())
@@ -3974,8 +3989,9 @@ function openRouterVendor(modelId: string) {
 function openRouterOutputFormats(parameters: any) {
   const descriptor = parameters?.output_format
   if (!descriptor) return []
-  const values = Array.isArray(descriptor?.values) ? descriptor.values.map((value: any) => String(value).toLowerCase()) : []
-  return values.filter((value: string) => ['png', 'svg'].includes(value))
+  return Array.isArray(descriptor?.values)
+    ? descriptor.values.map((value: any) => String(value).trim().toLowerCase()).filter(Boolean)
+    : []
 }
 
 async function providerModelRegistry(provider: Provider): Promise<ProviderModelRegistry> {
