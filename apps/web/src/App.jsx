@@ -176,6 +176,7 @@ export default function App() {
   const [isVerifyingArk, setIsVerifyingArk] = useState(false);
   const [arkVerificationError, setArkVerificationError] = useState('');
   const arkProbeGenerationRef = useRef(0);
+  const arkActiveProbeRequestRef = useRef(0);
   const arkKeySnapshotRef = useRef('');
   const arkProbeRoutesSnapshotRef = useRef('');
   const currentUser = AUTH_ENABLED ? authSession.session?.user : null;
@@ -637,6 +638,7 @@ export default function App() {
     if (nextMode === 'advanced') setModelRoutes(simpleModelRoutes);
     if (nextMode === 'simple') setProvider(activeModelRoutes.main.accessProvider);
     arkProbeGenerationRef.current += 1;
+    arkActiveProbeRequestRef.current = 0;
     setIsVerifyingArk(false);
     setArkVerification({});
     setArkProbePaidConfirmed(false);
@@ -647,6 +649,7 @@ export default function App() {
   function handleSimpleProviderChange(nextProvider) {
     setProvider(nextProvider);
     arkProbeGenerationRef.current += 1;
+    arkActiveProbeRequestRef.current = 0;
     setIsVerifyingArk(false);
     setArkVerification({});
     setArkProbePaidConfirmed(false);
@@ -656,6 +659,7 @@ export default function App() {
   function handleModelRouteChange(role, route) {
     setModelRoutes((current) => ({ ...current, [role]: route }));
     arkProbeGenerationRef.current += 1;
+    arkActiveProbeRequestRef.current = 0;
     setIsVerifyingArk(false);
     setArkVerification((current) => clearArkVerificationForRole(current, role));
     if (role === 'image') setArkProbePaidConfirmed(false);
@@ -667,6 +671,7 @@ export default function App() {
     if (routeProvider === 'ark') {
       arkKeySnapshotRef.current = value;
       arkProbeGenerationRef.current += 1;
+      arkActiveProbeRequestRef.current = 0;
       setIsVerifyingArk(false);
       setArkVerification({});
       setArkProbePaidConfirmed(false);
@@ -683,8 +688,11 @@ export default function App() {
       selectedProbeRoutes: activeArkProbeSignature,
     };
     arkProbeGenerationRef.current = requestSnapshot.generation;
+    arkActiveProbeRequestRef.current = requestSnapshot.generation;
     const requestedProbeKeys = new Set(probes.map(arkVerificationKey));
-    const isCurrentRequest = () => arkProbeGenerationRef.current === requestSnapshot.generation
+    const ownsBusyState = () => arkActiveProbeRequestRef.current === requestSnapshot.generation;
+    const canApplyResult = () => ownsBusyState()
+      && arkProbeGenerationRef.current === requestSnapshot.generation
       && arkKeySnapshotRef.current === requestSnapshot.arkKey
       && arkProbeRoutesSnapshotRef.current === requestSnapshot.selectedProbeRoutes;
     setIsVerifyingArk(true);
@@ -696,7 +704,7 @@ export default function App() {
         probes,
         confirmPaidImageProbe,
       });
-      if (!isCurrentRequest()) return;
+      if (!canApplyResult()) return;
       setArkVerification((current) => ({
         ...current,
         ...Object.fromEntries((result.probeResults || [])
@@ -704,9 +712,12 @@ export default function App() {
           .map((probe) => [arkVerificationKey(probe), probe.state])),
       }));
     } catch (verificationError) {
-      if (isCurrentRequest()) setArkVerificationError(verificationError?.message || String(verificationError));
+      if (canApplyResult()) setArkVerificationError(verificationError?.message || String(verificationError));
     } finally {
-      if (isCurrentRequest()) setIsVerifyingArk(false);
+      if (ownsBusyState()) {
+        arkActiveProbeRequestRef.current = 0;
+        setIsVerifyingArk(false);
+      }
     }
   }
 
@@ -848,6 +859,7 @@ export default function App() {
     setApiKeys({ openrouter: '', gemini: '', openai: '', bailian: '', ark: '' });
     arkKeySnapshotRef.current = '';
     arkProbeGenerationRef.current += 1;
+    arkActiveProbeRequestRef.current = 0;
     setIsVerifyingArk(false);
     setArkVerification({});
     setArkProbePaidConfirmed(false);

@@ -227,6 +227,78 @@ test('Ark discards an in-flight verification response after the key changes', as
   assert.equal(screen.queryAllByText('已验证').length, 0)
 })
 
+test('Ark stale completion releases its own busy state after generation switches to refine', async () => {
+  const gate = deferred()
+  const requests = installBackend(registryV1, {
+    providerAccountCatalog: () => gate.promise,
+  })
+  const user = userEvent.setup()
+  render(React.createElement(App))
+  await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
+
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '火山方舟' }))
+  await user.type(screen.getByLabelText('火山方舟 接入密钥'), 'context-key')
+  await user.click(screen.getByRole('button', { name: '验证所选模型' }))
+  await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'providerAccountCatalog').length, 1))
+
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  await user.click(screen.getByRole('button', { name: '精修图片' }))
+  await user.click(await screen.findByRole('button', { name: '精修设置' }))
+  await user.click(screen.getByLabelText('会产生一次 1K 图片调用费用'))
+  const verifyButton = screen.getByRole('button', { name: '验证所选模型' })
+  assert.equal(verifyButton.disabled, true)
+
+  gate.resolve(Response.json({
+    code: 0,
+    provider: 'ark',
+    probeResults: [
+      { role: 'main', modelId: 'doubao-text', state: 'verified' },
+      { role: 'vision', modelId: 'doubao-vision', state: 'verified' },
+    ],
+  }))
+
+  await waitFor(() => assert.equal(verifyButton.disabled, false))
+  assert.equal(screen.queryAllByText('已验证').length, 0)
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  await user.click(screen.getByRole('button', { name: '生成候选图' }))
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  assert.equal(screen.queryAllByText('已验证').length, 0, 'stale generation probes must not be restored after returning from refine')
+})
+
+test('an older Ark completion cannot clear the busy state owned by a newer request', async () => {
+  const firstGate = deferred()
+  const secondGate = deferred()
+  let probeRequestCount = 0
+  const requests = installBackend(registryV1, {
+    providerAccountCatalog: () => [firstGate, secondGate][probeRequestCount++].promise,
+  })
+  const user = userEvent.setup()
+  render(React.createElement(App))
+  await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
+
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '火山方舟' }))
+  const keyInput = screen.getByLabelText('火山方舟 接入密钥')
+  await user.type(keyInput, 'first-key')
+  const verifyButton = screen.getByRole('button', { name: '验证所选模型' })
+  await user.click(verifyButton)
+  await waitFor(() => assert.equal(probeRequestCount, 1))
+
+  fireEvent.change(keyInput, { target: { value: 'second-key' } })
+  await user.click(verifyButton)
+  await waitFor(() => assert.equal(probeRequestCount, 2))
+  assert.ok(verifyButton.querySelector('.spin'))
+
+  firstGate.resolve(Response.json({ code: 0, provider: 'ark', probeResults: [] }))
+  await Promise.resolve()
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  assert.ok(verifyButton.querySelector('.spin'), 'older completion must not clear the newer request spinner')
+
+  secondGate.resolve(Response.json({ code: 0, provider: 'ark', probeResults: [] }))
+  await waitFor(() => assert.equal(Boolean(verifyButton.querySelector('.spin')), false))
+})
+
 test('SVG generation rejects a disabled image route even though image execution is unreachable', async () => {
   const invalidRegistry = structuredClone(registryV1)
   const image = invalidRegistry.providers.bailian.models.find((model) => model.id === 'wan2.7-image-pro')

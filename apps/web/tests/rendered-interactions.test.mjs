@@ -122,9 +122,9 @@ test('rendered route picker shows vendor rail only for aggregator access channel
   assert.equal(providerGroup.querySelector('button[aria-pressed="true"]')?.getAttribute('aria-label'), 'OpenRouter')
   const vendorGroup = screen.getByRole('group', { name: '模型开发厂商' })
   assert.equal(vendorGroup.querySelector('button[aria-pressed="true"]')?.getAttribute('aria-label'), '厂商 OpenAI')
-  assert.equal(screen.queryByRole('button', { name: '厂商 Sourceful' }), null)
-  await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
-  assert.ok(screen.getByRole('button', { name: '厂商 Sourceful' }))
+  await user.click(screen.getByRole('button', { name: '厂商 Sourceful' }))
+  assert.equal(screen.getByRole('button', { name: '全部兼容模型' }).getAttribute('aria-pressed'), 'true')
+  assert.ok(screen.getByText('Other'))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   assert.equal(screen.queryByRole('group', { name: '模型开发厂商' }), null)
   assert.ok(screen.getByText('Direct GPT'))
@@ -136,6 +136,7 @@ test('rendered mobile route picker replaces settings content and supports layere
   const previousMatchMedia = window.matchMedia
   window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} })
   try {
+    const user = userEvent.setup()
     render(React.createElement(ModelPicker, {
       label: '图像生成模型', role: 'image', outputFormat: 'png',
       route: { accessProvider: 'openrouter', modelId: 'sourceful/image' },
@@ -150,18 +151,70 @@ test('rendered mobile route picker replaces settings content and supports layere
     }))
     const trigger = screen.queryByRole('button', { name: '图像生成模型' })
     assert.ok(trigger, 'model route trigger should render')
-    fireEvent.click(trigger)
+    await user.click(trigger)
     assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'mobile opens at provider layer')
     assert.equal(screen.queryByRole('region', { name: '具体模型列表' }), null)
-    fireEvent.click(screen.queryByRole('button', { name: 'OpenRouter' }))
+    await user.click(screen.getByRole('button', { name: 'OpenRouter' }))
     assert.ok(screen.queryByRole('heading', { name: '选择模型开发厂商' }), 'aggregator opens vendor layer')
-    fireEvent.click(screen.queryByRole('button', { name: /返回 API 接入渠道/ }))
+    const vendorBack = screen.getByRole('button', { name: /返回 API 接入渠道/ })
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === vendorBack, true, 'provider to vendor should focus the new back button')
+    await user.click(screen.getByRole('button', { name: '厂商 Sourceful' }))
+    const aggregatorModelBack = screen.getByRole('button', { name: /返回 模型开发厂商/ })
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === aggregatorModelBack, true, 'vendor to model should focus the new back button')
+    await user.click(aggregatorModelBack)
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: '厂商 Sourceful' }), true, 'model back should restore the selected vendor')
+    await user.click(screen.getByRole('button', { name: /返回 API 接入渠道/ }))
     assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'vendor back returns to provider layer')
-    fireEvent.click(screen.queryByRole('button', { name: 'OpenAI' }))
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: 'OpenRouter' }), true, 'vendor back should restore the selected provider')
+    await user.click(screen.getByRole('button', { name: 'OpenAI' }))
     assert.ok(screen.queryByRole('heading', { name: '选择具体模型' }), 'direct provider skips vendor layer')
+    const directModelBack = screen.getByRole('button', { name: /返回 API 接入渠道/ })
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === directModelBack, true, 'direct provider should focus the model back button')
     assert.ok(screen.getByText('GPT Image'))
-    fireEvent.click(screen.queryByRole('button', { name: /返回 API 接入渠道/ }))
+    await user.click(directModelBack)
     assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'model back returns to provider layer for direct access')
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: 'OpenAI' }), true, 'direct model back should restore the selected provider')
+  } finally {
+    window.matchMedia = previousMatchMedia
+  }
+})
+
+test('compact aggregator with compatible drift but no recommendations exposes vendors and all models', async () => {
+  const previousMatchMedia = window.matchMedia
+  window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} })
+  try {
+    const user = userEvent.setup()
+    render(React.createElement(ModelPicker, {
+      label: '主模型', role: 'main', outputFormat: 'png',
+      route: { accessProvider: 'openrouter', modelId: 'drift/model-a' },
+      onRouteChange() {},
+      providerConfigs: { openrouter: { label: 'OpenRouter' } },
+      registry: {
+        providers: {
+          openrouter: { accessKind: 'aggregator', models: [
+            { id: 'drift/model-a', label: 'Drift Model A', vendor: 'Drift Labs', roles: ['main'], selectable: true, lifecycle: 'stable', recommended: false },
+            { id: 'other/model-b', label: 'Other Model B', vendor: 'Other Labs', roles: ['main'], selectable: true, lifecycle: 'stable' },
+          ] },
+        },
+      },
+    }))
+
+    await user.click(screen.getByRole('button', { name: '主模型' }))
+    await user.click(screen.getByRole('button', { name: 'OpenRouter' }))
+    assert.ok(screen.getByRole('button', { name: '厂商 Drift Labs' }))
+    assert.ok(screen.getByRole('button', { name: '厂商 Other Labs' }))
+    await user.click(screen.getByRole('button', { name: '厂商 Drift Labs' }))
+
+    assert.equal(screen.getByRole('button', { name: '全部兼容模型' }).getAttribute('aria-pressed'), 'true')
+    assert.ok(screen.getByRole('button', { name: /Drift Model A/ }))
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: /返回 模型开发厂商/ }), true)
   } finally {
     window.matchMedia = previousMatchMedia
   }

@@ -6,6 +6,12 @@ const COMPATIBLE_PAGE_SIZE = 24
 const INCOMPATIBLE_PAGE_SIZE = 24
 const COMPACT_MEDIA_QUERY = '(max-width: 1076px)'
 const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'
+const MOBILE_FOCUS_SELECTORS = Object.freeze({
+  'providers-back': '[data-mobile-focus="providers-back"]',
+  'models-back': '[data-mobile-focus="models-back"]',
+  'selected-provider': '.model-provider-rail button[aria-pressed="true"]',
+  'selected-vendor': '.model-vendor-rail button[aria-pressed="true"]',
+})
 
 function providerDisplayName(provider, providerConfigs) {
   if (provider === 'gemini') return 'Google Gemini API'
@@ -69,6 +75,7 @@ export default function ModelPicker({
   const listRef = useRef(null)
   const panelRef = useRef(null)
   const previousFocusRef = useRef(null)
+  const pendingMobileFocusRef = useRef('')
   const labelId = useId()
   const dialogTitleId = useId()
 
@@ -79,19 +86,26 @@ export default function ModelPicker({
     () => partitionRegistryModels(activeProviderRegistry.models, { role, query, outputFormat }),
     [activeProviderRegistry.models, role, query, outputFormat],
   )
-  const compatible = useMemo(
-    () => isOpenRouter && catalogMode === 'recommended'
-      ? allPartition.compatible.filter((model) => model.recommended === true && (model.lifecycle || 'stable') === 'stable')
-      : allPartition.compatible,
-    [allPartition.compatible, catalogMode, isOpenRouter],
+  const recommendedCompatible = useMemo(
+    () => allPartition.compatible.filter((model) => model.recommended === true && (model.lifecycle || 'stable') === 'stable'),
+    [allPartition.compatible],
   )
-  const grouped = useMemo(() => groupRegistryModels(compatible), [compatible])
-  const availableVendors = grouped.map((group) => group.vendor)
+  const allCompatibleGrouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
+  const recommendedGrouped = useMemo(() => groupRegistryModels(recommendedCompatible), [recommendedCompatible])
+  const availableVendors = isAggregator ? allCompatibleGrouped.map((group) => group.vendor) : []
   const activeVendor = isAggregator
     ? (availableVendors.includes(selectedVendor)
         ? selectedVendor
-        : grouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || '')
+        : allCompatibleGrouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || '')
     : ''
+  const hasRecommendedInScope = isAggregator
+    ? recommendedGrouped.some((group) => group.vendor === activeVendor && group.models.length)
+    : recommendedCompatible.length > 0
+  const effectiveCatalogMode = isOpenRouter && catalogMode === 'recommended' && allPartition.compatible.length && !hasRecommendedInScope
+    ? 'all'
+    : catalogMode
+  const compatible = isOpenRouter && effectiveCatalogMode === 'recommended' ? recommendedCompatible : allPartition.compatible
+  const grouped = useMemo(() => groupRegistryModels(compatible), [compatible])
   const rows = useMemo(
     () => (isAggregator ? grouped.find((group) => group.vendor === activeVendor)?.models || [] : compatible),
     [activeVendor, compatible, grouped, isAggregator],
@@ -110,6 +124,11 @@ export default function ModelPicker({
   }
 
   function changeCatalogMode(mode) { setCatalogMode(mode); resetModelList(); resetIncompatible() }
+
+  function moveMobileStep(step, focusTarget) {
+    pendingMobileFocusRef.current = focusTarget
+    setMobileStep(step)
+  }
 
   useEffect(() => {
     resetModelList()
@@ -156,6 +175,14 @@ export default function ModelPicker({
     }
   }, [open])
 
+  useEffect(() => {
+    if (!open || !compact || !pendingMobileFocusRef.current) return undefined
+    const selector = MOBILE_FOCUS_SELECTORS[pendingMobileFocusRef.current]
+    pendingMobileFocusRef.current = ''
+    const frame = window.requestAnimationFrame(() => panelRef.current?.querySelector(selector)?.focus())
+    return () => window.cancelAnimationFrame(frame)
+  }, [activeVendor, compact, mobileStep, open, selectedProvider])
+
   function openPicker() {
     const nextProvider = effectiveRoute.accessProvider || providerIds[0] || ''
     const nextRegistry = effectiveRegistry.providers?.[nextProvider]
@@ -178,13 +205,13 @@ export default function ModelPicker({
     setQuery('')
     resetIncompatible()
     resetModelList()
-    if (compact) setMobileStep(nextRegistry.accessKind === 'aggregator' ? 'vendors' : 'models')
+    if (compact) moveMobileStep(nextRegistry.accessKind === 'aggregator' ? 'vendors' : 'models', nextRegistry.accessKind === 'aggregator' ? 'providers-back' : 'models-back')
   }
 
   function chooseVendor(vendor) {
     setSelectedVendor(vendor)
     resetModelList()
-    if (compact) setMobileStep('models')
+    if (compact) moveMobileStep('models', 'models-back')
   }
 
   function chooseModel(model) {
@@ -195,7 +222,7 @@ export default function ModelPicker({
   }
 
   function backFromModels() {
-    setMobileStep(isAggregator ? 'vendors' : 'providers')
+    moveMobileStep(isAggregator ? 'vendors' : 'providers', isAggregator ? 'selected-vendor' : 'selected-provider')
   }
 
   function revealMoreModels() {
@@ -238,8 +265,8 @@ export default function ModelPicker({
       <div className="model-browser-tools">
         {isOpenRouter ? (
           <div className="model-catalog-tabs" role="group" aria-label="OpenRouter 模型范围">
-            <button type="button" aria-pressed={catalogMode === 'recommended'} className={catalogMode === 'recommended' ? 'active' : ''} onClick={() => changeCatalogMode('recommended')}>推荐模型</button>
-            <button type="button" aria-pressed={catalogMode === 'all'} className={catalogMode === 'all' ? 'active' : ''} onClick={() => changeCatalogMode('all')}>全部兼容模型</button>
+            <button type="button" aria-pressed={effectiveCatalogMode === 'recommended'} className={effectiveCatalogMode === 'recommended' ? 'active' : ''} onClick={() => changeCatalogMode('recommended')}>推荐模型</button>
+            <button type="button" aria-pressed={effectiveCatalogMode === 'all'} className={effectiveCatalogMode === 'all' ? 'active' : ''} onClick={() => changeCatalogMode('all')}>全部兼容模型</button>
           </div>
         ) : <div className="model-catalog-title"><Sparkles size={15} /> 服务端模型目录</div>}
         <label className="model-picker-search">
@@ -327,13 +354,13 @@ export default function ModelPicker({
                 ) : null}
                 {mobileStep === 'vendors' ? (
                   <>
-                    <button type="button" className="model-route-back" onClick={() => setMobileStep('providers')}><ArrowLeft size={16} /> 返回 API 接入渠道</button>
+                    <button type="button" className="model-route-back" data-mobile-focus="providers-back" onClick={() => moveMobileStep('providers', 'selected-provider')}><ArrowLeft size={16} /> 返回 API 接入渠道</button>
                     <h3>选择模型开发厂商</h3>{vendorRail}
                   </>
                 ) : null}
                 {mobileStep === 'models' ? (
                   <>
-                    <button type="button" className="model-route-back" onClick={backFromModels}><ArrowLeft size={16} /> 返回 {isAggregator ? '模型开发厂商' : 'API 接入渠道'}</button>
+                    <button type="button" className="model-route-back" data-mobile-focus="models-back" onClick={backFromModels}><ArrowLeft size={16} /> 返回 {isAggregator ? '模型开发厂商' : 'API 接入渠道'}</button>
                     <h3>选择具体模型</h3>{modelBrowser}
                   </>
                 ) : null}
