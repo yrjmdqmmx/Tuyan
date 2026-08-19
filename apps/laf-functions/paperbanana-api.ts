@@ -39,10 +39,14 @@ type ReferenceImageMode = 'auto' | 'main_model' | 'vision_model'
 type ReferenceImageModeUsed = 'none' | 'main_model' | 'vision_model'
 type ModelCapabilityStatus = 'supported' | 'unsupported' | 'unknown'
 type ModelRole = 'main' | 'image' | 'vision'
+type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only'
+type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
 type ModelProtocol =
   | 'openai-chat-completions'
+  | 'openai-responses'
   | 'openai-images'
   | 'gemini-generate-content'
+  | 'gemini-interactions'
   | 'bailian-openai-chat'
   | 'bailian-multimodal-generation'
   | 'openrouter-chat-completions'
@@ -85,6 +89,8 @@ type CreateJobBody = {
   imageSize?: '1K' | '2K' | '4K'
   numCandidates?: number
   maxCriticRounds?: number
+  imageRefineMode?: ImageEditMode
+  imageRefineReason?: string
 }
 
 type RefineImageBody = {
@@ -102,6 +108,8 @@ type RefineImageBody = {
   userId?: string
   userEmail?: string
   clientPlatform?: ClientPlatform
+  refineMode?: ImageEditMode
+  refineReason?: string
 }
 
 type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'>
@@ -436,12 +444,23 @@ type ModelRegistryBody = {
 type ModelRegistryEntry = {
   id: string
   label: string
+  vendor: string
+  lifecycle: ModelLifecycle
+  recommended: boolean
+  requiresEntitlement: boolean
+  entitlement?: string
+  inputModalities: string[]
+  outputModalities: string[]
+  verified: boolean
   roles: ModelRole[]
+  roleReasons: Partial<Record<ModelRole, string>>
   capabilities: {
     referenceImages: boolean
     imageGeneration: boolean
     imageEditing: boolean
+    imageEditMode: ImageEditMode
     resolutions?: string[]
+    outputFormats?: string[]
   }
   protocol: ModelProtocol
   availabilityNotes: string
@@ -466,6 +485,9 @@ type HealthBody = {
 type ModelCapabilityResult = {
   status: ModelCapabilityStatus
   supportsReferenceImages: boolean
+  supportsDirectEdit?: boolean
+  refineMode?: ImageEditMode
+  refineReason?: string
   reason: string
   source: string
   cached: boolean
@@ -580,7 +602,13 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-19'
+const modelRegistryVersion = '2026-08-19.v2'
+
+type RegistryEntryMetadata = Partial<Pick<
+  ModelRegistryEntry,
+  'vendor' | 'lifecycle' | 'recommended' | 'requiresEntitlement' | 'entitlement' |
+  'inputModalities' | 'outputModalities' | 'verified' | 'roleReasons'
+>>
 
 function registryEntry(
   id: string,
@@ -589,17 +617,31 @@ function registryEntry(
   protocol: ModelProtocol,
   availabilityNotes: string,
   options: Partial<ModelRegistryEntry['capabilities']> = {},
+  metadata: RegistryEntryMetadata = {},
 ): ModelRegistryEntry {
+  const imageGeneration = roles.includes('image')
+  const imageEditing = options.imageEditing === true
+  const referenceImages = options.referenceImages ?? roles.includes('vision')
   return {
     id,
     label,
+    vendor: metadata.vendor || 'Unknown',
+    lifecycle: metadata.lifecycle || 'stable',
+    recommended: metadata.recommended === true,
+    requiresEntitlement: metadata.requiresEntitlement === true,
+    ...(metadata.entitlement ? { entitlement: metadata.entitlement } : {}),
+    inputModalities: metadata.inputModalities || (referenceImages ? ['text', 'image'] : ['text']),
+    outputModalities: metadata.outputModalities || (imageGeneration ? ['image'] : ['text']),
+    verified: metadata.verified !== false,
     roles,
+    roleReasons: metadata.roleReasons || Object.fromEntries(roles.map((role) => [role, `${label} is registered for ${role}`])),
     protocol,
     availabilityNotes,
     capabilities: {
-      referenceImages: roles.includes('vision'),
-      imageGeneration: roles.includes('image'),
-      imageEditing: false,
+      referenceImages,
+      imageGeneration,
+      imageEditing,
+      imageEditMode: imageGeneration ? (imageEditing ? 'direct-edit' : 'analyze-redraw') : 'none',
       ...options,
     },
   }
@@ -607,58 +649,61 @@ function registryEntry(
 
 const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModelRegistry> = {
   gemini: {
-    defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
+    defaults: { main: 'gemini-3.6-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.6-flash' },
     models: [
-      registryEntry('gemini-3.7-flash', 'Gemini 3.7 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; current recommended Flash model'),
-      registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; previous-generation Flash model'),
-      registryEntry('gemini-3.5-flash', 'Gemini 3.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable legacy Flash model'),
-      registryEntry('gemini-3.5-flash-lite', 'Gemini 3.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable low-cost model'),
-      registryEntry('gemini-3.1-flash-lite', 'Gemini 3.1 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable'),
-      registryEntry('gemini-3.1-pro-preview', 'Gemini 3.1 Pro Preview', ['main', 'vision'], 'gemini-generate-content', 'Preview; subject to shorter deprecation notice'),
-      registryEntry('gemini-3-flash-preview', 'Gemini 3 Flash Preview', ['main', 'vision'], 'gemini-generate-content', 'Preview'),
-      registryEntry('gemini-2.5-pro', 'Gemini 2.5 Pro', ['main', 'vision'], 'gemini-generate-content', 'Stable Gemini 2.5'),
-      registryEntry('gemini-2.5-flash', 'Gemini 2.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable Gemini 2.5'),
-      registryEntry('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable Gemini 2.5'),
-      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-generate-content', 'Stable image generation and editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
-      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-generate-content', 'Stable low-latency image generation and editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
-      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-generate-content', 'Stable professional image generation and editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
-      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Stable legacy image model', { referenceImages: true, imageEditing: true, resolutions: ['1K'] }),
+      registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; recommended Gemini text and vision model', {}, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.5-flash', 'Gemini 3.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable frontier Flash model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.5-flash-lite', 'Gemini 3.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable low-cost model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.1-flash-lite', 'Gemini 3.1 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable high-volume model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.1-pro-preview', 'Gemini 3.1 Pro Preview', ['main', 'vision'], 'gemini-generate-content', 'Preview; subject to shorter deprecation notice', {}, { vendor: 'Google', lifecycle: 'preview', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3-flash-preview', 'Gemini 3 Flash Preview', ['main', 'vision'], 'gemini-generate-content', 'Preview', {}, { vendor: 'Google', lifecycle: 'preview', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-2.5-pro', 'Gemini 2.5 Pro', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-2.5-flash', 'Gemini 2.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-interactions', 'Stable image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-interactions', 'Stable low-latency image generation and direct editing; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-interactions', 'Stable professional image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Legacy generateContent image model; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], outputFormats: ['png'] }, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
     ],
   },
   bailian: {
-    defaults: { main: 'qwen3.8-max', image: 'wan2.7-image-pro', vision: 'qwen3.8-max' },
+    defaults: { main: 'qwen3.7-plus', image: 'wan2.7-image-pro', vision: 'qwen3.7-plus' },
     models: [
-      registryEntry('qwen3.8-max', 'Qwen3.8 Max', ['main', 'vision'], 'bailian-openai-chat', 'Available in Beijing and international workspaces'),
-      registryEntry('qwen3.7-plus', 'Qwen3.7 Plus', ['main', 'vision'], 'bailian-openai-chat', 'Available in Beijing and international workspaces'),
-      registryEntry('qwen3.7-flash', 'Qwen3.7 Flash', ['main'], 'bailian-openai-chat', 'Available in Beijing and international workspaces'),
-      registryEntry('deepseek-v4-pro', 'DeepSeek V4 Pro', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region'),
-      registryEntry('deepseek-v4-flash', 'DeepSeek V4 Flash', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region'),
-      registryEntry('glm-5.2', 'GLM 5.2', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region'),
-      registryEntry('kimi/kimi-k3', 'Kimi K3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party model; Beijing availability'),
-      registryEntry('MiniMax/MiniMax-M3', 'MiniMax M3', ['main'], 'bailian-openai-chat', 'Third-party model; Beijing availability'),
-      registryEntry('qwen3.5-omni-plus', 'Qwen3.5 Omni Plus', ['vision'], 'bailian-openai-chat', 'Multimodal understanding; Beijing and Singapore'),
-      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
-      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
-      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Current Qwen Image Pro; generation and editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
-      registryEntry('qwen-image-3.0', 'Qwen Image 3.0', ['image'], 'bailian-multimodal-generation', 'Current Qwen Image; generation and editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+      registryEntry('qwen3.7-plus', 'Qwen3.7 Plus', ['main', 'vision'], 'bailian-openai-chat', 'Stable visual model; recommended default', {}, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('qwen3.7-flash', 'Qwen3.7 Flash', ['main', 'vision'], 'bailian-openai-chat', 'Stable lower-latency visual model', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('qwen3.8-max-preview', 'Qwen3.8 Max Preview', ['main', 'vision'], 'bailian-openai-chat', 'Preview; requires Model Studio Token Plan entitlement', {}, { vendor: 'Alibaba Qwen', lifecycle: 'preview', requiresEntitlement: true, entitlement: 'token-plan', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('deepseek-v4-pro', 'DeepSeek V4 Pro', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'DeepSeek' }),
+      registryEntry('deepseek-v4-flash', 'DeepSeek V4 Flash', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'DeepSeek' }),
+      registryEntry('glm-5.2', 'GLM 5.2', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'Zhipu' }),
+      registryEntry('kimi/kimi-k3', 'Kimi K3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'Moonshot AI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('MiniMax/MiniMax-M3', 'MiniMax M3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'MiniMax', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('qwen3.5-omni-plus', 'Qwen3.5 Omni Plus', ['vision'], 'bailian-openai-chat', 'Multimodal understanding; Beijing and Singapore', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image', 'audio', 'video'], outputModalities: ['text'] }),
+      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('z-image-turbo', 'Z-Image Turbo', ['image'], 'bailian-multimodal-generation', 'Fast text-to-image model; refine uses analyze and redraw', { resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Tongyi-MAI', inputModalities: ['text'], outputModalities: ['image'] }),
     ],
   },
   openai: {
     defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
     models: [
-      registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model'),
-      registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model'),
-      registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model'),
-      registryEntry('gpt-5.5', 'GPT-5.5', ['main', 'vision'], 'openai-chat-completions', 'Current general model'),
-      registryEntry('gpt-5.4', 'GPT-5.4', ['main', 'vision'], 'openai-chat-completions', 'Current general model'),
-      registryEntry('gpt-5.4-mini', 'GPT-5.4 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model'),
-      registryEntry('gpt-5.4-nano', 'GPT-5.4 Nano', ['main', 'vision'], 'openai-chat-completions', 'Current high-volume model'),
-      registryEntry('gpt-5-mini', 'GPT-5 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model'),
-      registryEntry('gpt-4.1', 'GPT-4.1', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable model'),
-      registryEntry('gpt-4.1-mini', 'GPT-4.1 Mini', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable small model'),
-      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Dedicated Images API', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'] }),
-      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Dedicated Images API', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
-      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Dedicated Images API', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'] }),
+      registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model', {}, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.5', 'GPT-5.5', ['main', 'vision'], 'openai-chat-completions', 'Current general model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.5-pro', 'GPT-5.5 Pro', ['main', 'vision'], 'openai-responses', 'Responses API Pro model', {}, { vendor: 'OpenAI', requiresEntitlement: true, entitlement: 'usage-tier', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.4', 'GPT-5.4', ['main', 'vision'], 'openai-chat-completions', 'Current general model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.4-pro', 'GPT-5.4 Pro', ['main', 'vision'], 'openai-responses', 'Responses API Pro model', {}, { vendor: 'OpenAI', requiresEntitlement: true, entitlement: 'usage-tier', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.4-mini', 'GPT-5.4 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.4-nano', 'GPT-5.4 Nano', ['main', 'vision'], 'openai-chat-completions', 'Current high-volume model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5-mini', 'GPT-5 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-4.1', 'GPT-4.1', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-4.1-mini', 'GPT-4.1 Mini', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
     ],
   },
 }
@@ -1022,6 +1067,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       : []),
   ])
   if (modelError) return fail(modelError, 400)
+  const imageRefineCapability = registryImageRefineCapability(body.provider, registry, normalizedBodyWithSecrets.imageModelName)
   const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
   if (!apiKey) {
     return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
@@ -1044,6 +1090,8 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     }
     const jobBody = {
       ...normalizedBody,
+      imageRefineMode: imageRefineCapability.mode,
+      imageRefineReason: imageRefineCapability.reason,
       referenceImageMode: modeResolution.referenceImageMode,
       referenceImageModeUsed: modeResolution.referenceImageModeUsed,
     }
@@ -1067,6 +1115,8 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     infographicCategory: normalizedBody.infographicCategory,
     mainModelName: normalizedBody.mainModelName,
     imageModelName: normalizedBody.imageModelName,
+    imageRefineMode: jobBody.imageRefineMode,
+    imageRefineReason: jobBody.imageRefineReason,
     referenceVisionModelName: normalizedBody.referenceVisionModelName,
     referenceImageMode: jobBody.referenceImageMode,
     referenceImageModeUsed: jobBody.referenceImageModeUsed,
@@ -1142,12 +1192,17 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
       : []),
   ])
   if (modelError) return fail(modelError, 400)
+  const imageRefineCapability = registryImageRefineCapability(body.provider, registry, normalizedBodyWithSecrets.imageModelName)
   const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
   if (!apiKey) {
     return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
   }
 
-  const normalizedBody = toRefineExecutionBody(normalizedBodyWithSecrets)
+  const normalizedBody = toRefineExecutionBody({
+    ...normalizedBodyWithSecrets,
+    refineMode: imageRefineCapability.mode,
+    refineReason: imageRefineCapability.reason,
+  })
   const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
   if (!reservation.ok) return fail(reservation.error, reservation.code)
   let committed = false
@@ -1170,6 +1225,8 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     infographicCategory: '图片精修',
     mainModelName: normalizedBody.mainModelName,
     imageModelName: normalizedBody.imageModelName,
+    refineMode: normalizedBody.refineMode,
+    refineReason: normalizedBody.refineReason,
     referenceVisionModelName: normalizedBody.referenceVisionModelName || '',
     outputFormat: 'png',
     pipelineMode: 'refine',
@@ -1208,7 +1265,15 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     startRefineJobInBackground(reservation, jobId, normalizedBody, apiKey)
     committed = true
 
-    return ok({ jobId, status: 'queued' })
+    return ok({
+      jobId,
+      status: 'queued',
+      refineCapability: {
+        mode: normalizedBody.refineMode,
+        directEdit: normalizedBody.refineMode === 'direct-edit',
+        reason: normalizedBody.refineReason,
+      },
+    })
   } finally {
     if (!committed) jobAdmission.cancel(reservation)
   }
@@ -2038,10 +2103,10 @@ async function runPlotCandidate(
     throw new Error(`Plot generation failed: the plot-worker could not render the matplotlib code${rendered.error ? ` (${rendered.error})` : ''}`)
   }
 
-  // 清晰度驱动的自动精修（plot）：仅对支持图生图的 provider 做"像素级升清"——把
-  // plot-worker 渲染出的 PNG 直接放大；不支持图生图的 provider 跳过（避免用图描述
+  // 清晰度驱动的自动精修（plot）：仅对注册表中当前图像模型标记为
+  // direct-edit 的任务做像素级升清；其他模型跳过（避免用图描述
   // 重画统计图导致内容失真）。1K 不做额外处理。
-  if ((body.imageSize === '2K' || body.imageSize === '4K') && providerSupportsImageEdit(body.provider)) {
+  if ((body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') {
     base64 = await enhanceCandidateToResolution(jobId, candidateId, body, apiKey, base64, description, body.imageSize, logStage)
   }
 
@@ -2049,9 +2114,9 @@ async function runPlotCandidate(
 }
 
 // 清晰度驱动的自动精修放大。在 2K/4K 模式下，基础候选图渲染完成后再跑一遍
-// "升清"：能做图生图的 provider（gemini/openrouter/openai）直接以基础图为输入做
-// 高清重绘（保内容、保排版、保文字、保配色，仅提升清晰度与分辨率）；不支持图生图
-// 的 provider（bailian）则用既有的最终描述以更大尺寸重渲染一次。
+// "升清"：当且仅当当前图像模型的注册表能力为 direct-edit 时，直接以
+// 基础图为输入做高清重绘（保内容、保排版、保文字、保配色）；
+// analyze-redraw 模型则用既有的最终描述以更大尺寸重渲染一次。
 //
 // 该步永远不能让整个候选失败：任何错误都回退到 baseBase64 并记录日志。返回值是新的
 // base64（成功）或 baseBase64（失败回退）。
@@ -2069,7 +2134,7 @@ async function enhanceCandidateToResolution(
   try {
     await logStage(`enhancing candidate to ${targetSize}`)
     let upscaled: string
-    if (providerSupportsImageEdit(body.provider)) {
+    if (body.imageRefineMode === 'direct-edit') {
       // 图生图升清：把基础图作为源图直接交给图像模型，只让它提升清晰度/分辨率。
       const editPrompt = refineEditPrompt(
         'Upscale and sharpen this academic diagram; preserve ALL content, text, layout and colors exactly — only increase resolution and crispness.',
@@ -2416,7 +2481,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
   let base64: string
   let description: string
 
-  if (providerSupportsImageEdit(body.provider)) {
+  if (body.refineMode === 'direct-edit') {
     // True image-to-image: forward the source image bytes directly to the
     // image model so it edits the actual pixels (mirrors polish_agent.py).
     await appendLog(jobId, 'Refine: editing source image (image-to-image)')
@@ -2435,8 +2500,8 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
       completedAt: new Date(),
     })
   } else {
-    // Fallback for providers without image-edit support: describe the source
-    // image, then regenerate from the description.
+    // Model-level analyze-redraw fallback: describe the source image, then
+    // regenerate from that description using the selected image model.
     await appendLog(jobId, 'Refine: analyzing source image')
     const planStartedAt = new Date()
     // This analysis step reads the source image as a CHAT/VISION request — it
@@ -2872,6 +2937,9 @@ export async function callVisionModel(
   if (provider === 'gemini') {
     return callGeminiVision(model, apiKey, methodContent, caption, images)
   }
+  if (provider === 'openai' && usesOpenAiResponses(model)) {
+    return callOpenAiResponses(model, apiKey, referenceVisionSystemPrompt(), referenceVisionUserPrompt(methodContent, caption), images)
+  }
 
   const baseUrl = textApiBaseUrl(provider)
   // Respect the chosen recognition model. bailian only needs a PUBLIC image url
@@ -2970,6 +3038,14 @@ export async function callTextModel(
       throw error
     }
   }
+  if (provider === 'openai' && usesOpenAiResponses(model)) {
+    try {
+      return await callOpenAiResponses(model, apiKey, system, user, images)
+    } catch (error: any) {
+      if (images.length) throw new Error(mainModelReferenceError(provider, model, error))
+      throw error
+    }
+  }
   const baseUrl = textApiBaseUrl(provider)
   const chosenModel = provider === 'openrouter' ? toOpenRouterModel(model) : model
   // Bailian only accepts PUBLIC image urls (data: URLs are rejected), so when a
@@ -3022,6 +3098,40 @@ export async function callTextModel(
   }
 }
 
+function usesOpenAiResponses(model: string) {
+  return model === 'gpt-5.5-pro' || model === 'gpt-5.4-pro'
+}
+
+async function callOpenAiResponses(
+  model: string,
+  apiKey: string,
+  instructions: string,
+  user: string,
+  images: VisionImageInput[] = [],
+) {
+  const input: any = images.length
+    ? [{
+        role: 'user',
+        content: [
+          { type: 'input_text', text: user },
+          ...images.map((image) => ({ type: 'input_image', image_url: image.url })),
+        ],
+      }]
+    : user
+  const response = await fetchWithRetry('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model, instructions, input, store: false }),
+  }, `openai responses model ${model}`)
+  const data = await parseModelResponse(response)
+  if (typeof data.output_text === 'string') return data.output_text
+  return (data.output || [])
+    .flatMap((item: any) => item?.type === 'message' ? item.content || [] : [])
+    .filter((item: any) => item?.type === 'output_text')
+    .map((item: any) => item.text || '')
+    .join('')
+}
+
 async function callSvgModel(provider: Provider, model: string, apiKey: string, description: string): Promise<string> {
   const rawSvg = await callTextModel(
     provider,
@@ -3046,6 +3156,12 @@ export async function callImageModel(
   // request for providers that support image input. Otherwise fall back to
   // plain text-to-image generation.
   const source = await normalizeSourceImage(sourceImage)
+  if (source && provider !== 'openrouter') {
+    const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizeModelName(provider, model))
+    if (entry && entry.capabilities.imageEditMode !== 'direct-edit') {
+      throw new Error(`Model ${entry.id} does not accept a source image; direct edit is unavailable`)
+    }
+  }
 
   if (provider === 'openai') {
     if (source) {
@@ -3078,9 +3194,7 @@ export async function callImageModel(
   }
 
   if (provider === 'bailian') {
-    // Bailian image model does not support a conditioned edit here; fall back
-    // to the describe-then-regenerate path (source image is ignored).
-    return callBailianImage(model, apiKey, prompt, aspectRatio, imageSize)
+    return callBailianImage(model, apiKey, prompt, aspectRatio, imageSize, source)
   }
 
   return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize)
@@ -3103,7 +3217,10 @@ async function callOpenRouterImage(
   if (resolution) body.resolution = resolution
   if (ratio) body.aspect_ratio = ratio
   if (route.outputFormat) body.output_format = route.outputFormat
-  if (source && parameters.input_references) {
+  if (source && !supportsOpenRouterParameter(parameters, 'input_references')) {
+    throw new Error(`Model ${actualModel} does not support input_references; direct edit is unavailable`)
+  }
+  if (source) {
     body.input_references = [{ type: 'image_url', image_url: { url: source.dataUrl } }]
   }
   const response = await fetchWithRetry('https://openrouter.ai/api/v1/images', {
@@ -3136,6 +3253,11 @@ function supportedOpenRouterValue(descriptor: any, requested: string, fallbacks:
   if (!values.length) return ''
   if (values.includes(requested)) return requested
   return fallbacks.find((value) => values.includes(value)) || ''
+}
+
+function supportsOpenRouterParameter(parameters: any, name: string) {
+  if (Array.isArray(parameters)) return parameters.map(String).includes(name)
+  return Boolean(parameters && Object.prototype.hasOwnProperty.call(parameters, name))
 }
 
 type NormalizedSourceImage = { base64: string; mimeType: string; dataUrl: string }
@@ -3240,6 +3362,29 @@ function usesGemini3ProviderDefaults(provider: Provider, model: string) {
 
 async function callGeminiImage(model: string, apiKey: string, prompt: string, aspectRatio: string, source: NormalizedSourceImage | null = null, imageSize = '2K'): Promise<string> {
   const actualModel = normalizeModelName('gemini', model)
+  if (actualModel !== 'gemini-2.5-flash-image') {
+    const input: any[] = [{ type: 'text', text: prompt }]
+    if (source) input.push({ type: 'image', mime_type: source.mimeType, data: source.base64 })
+    const response = await fetchWithRetry('https://generativelanguage.googleapis.com/v1beta/interactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+      body: JSON.stringify({
+        model: actualModel,
+        input,
+        response_format: {
+          type: 'image',
+          mime_type: 'image/png',
+          aspect_ratio: aspectRatio,
+          image_size: geminiImageSize(actualModel, imageSize),
+        },
+      }),
+    }, `gemini interactions image model ${actualModel}`)
+    const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Gemini Interactions image response')
+    const image = data.output_image || data.outputImage
+    if (image?.data) return validateProviderImageBase64(image.data, maxProviderImageBytes, 'Gemini image')
+    throw new Error('Gemini Interactions image model did not return output_image data')
+  }
+
   const parts: any[] = [{ text: prompt }]
   if (source) {
     parts.push({ inlineData: { mimeType: source.mimeType, data: source.base64 } })
@@ -3251,10 +3396,7 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
       contents: [{ role: 'user', parts }],
       generationConfig: {
         responseModalities: ['IMAGE'],
-        // Gemini imageConfig.imageSize accepts '1K'/'2K'. Map our '2K'/'4K' to a
-        // safe accepted value: '2K' → '2K', '4K' → '2K' (4K not supported here),
-        // anything else (incl. legacy '1K') → '1K'. A wrong size must not break
-        // generation, so keep to known-good Gemini values.
+        // Gemini 2.5 image generation remains on generateContent and is 1K-only.
         imageConfig: { aspectRatio, imageSize: geminiImageSize(actualModel, imageSize) },
       },
     }),
@@ -3272,19 +3414,30 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
 }
 
 function geminiImageSize(model: string, imageSize: string) {
+  if (model === 'gemini-3.1-flash-lite-image' || model === 'gemini-2.5-flash-image') return '1K'
   if (imageSize === '4K' && /^(gemini-3\.1-flash-image|gemini-3-pro-image)$/.test(model)) return '4K'
-  if ((imageSize === '4K' || imageSize === '2K') && model !== 'gemini-2.5-flash-image') return '2K'
+  if (imageSize === '4K' || imageSize === '2K') return '2K'
   return '1K'
 }
 
-async function callBailianImage(model: string, apiKey: string, prompt: string, aspectRatio: string, imageSize = '2K'): Promise<string> {
+async function callBailianImage(
+  model: string,
+  apiKey: string,
+  prompt: string,
+  aspectRatio: string,
+  imageSize = '2K',
+  source: NormalizedSourceImage | null = null,
+): Promise<string> {
   const parameters: any = {
-    size: bailianImageSize(model, aspectRatio, imageSize),
+    size: bailianImageSize(model, aspectRatio, imageSize, Boolean(source)),
     n: 1,
     watermark: false,
   }
   if (/^wan2\.7-image/.test(model)) parameters.thinking_mode = true
-  if (/^qwen-image-3\.0/.test(model)) parameters.prompt_extend = true
+  if (/^qwen-image-(?:2\.0|3\.0)/.test(model)) parameters.prompt_extend = true
+  const content: any[] = []
+  if (source) content.push({ image: await toBailianImageUrl(source.dataUrl) })
+  content.push({ text: prompt })
   const response = await fetchWithRetry('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', {
     method: 'POST',
     headers: {
@@ -3297,7 +3450,7 @@ async function callBailianImage(model: string, apiKey: string, prompt: string, a
         messages: [
           {
             role: 'user',
-            content: [{ text: prompt }],
+            content,
           },
         ],
       },
@@ -3319,8 +3472,8 @@ function extractDashScopeImageUrl(data: any) {
   return ''
 }
 
-function bailianImageSize(model: string, aspectRatio: string, imageSize = '1K') {
-  const supports4K = model === 'wan2.7-image-pro'
+function bailianImageSize(model: string, aspectRatio: string, imageSize = '1K', editing = false) {
+  const supports4K = model === 'wan2.7-image-pro' && !editing
   const tier = imageSize === '4K' && supports4K ? '4K' : imageSize === '1K' ? '1K' : '2K'
   const dimensions: Record<string, Record<string, string>> = {
     '1K': { '21:9': '1792*768', '3:2': '1152*768', '1:1': '1024*1024', '16:9': '1360*768' },
@@ -3593,60 +3746,57 @@ function mainModelReferenceError(provider: Provider, model: string, error: any) 
 
 async function referenceModelCapability(provider: Provider, model: string): Promise<ModelCapabilityResult> {
   const normalizedModel = normalizeModelName(provider, model)
-  if (provider !== 'openrouter') {
-    const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizedModel)
+  try {
+    const registry = await providerModelRegistry(provider)
+    const resolvedId = provider === 'openrouter' ? toOpenRouterModel(normalizedModel) : normalizedModel
+    const entry = registry.models.find((candidate) => candidate.id === resolvedId)
     const supported = entry?.capabilities.referenceImages === true
+    const refine = entry
+      ? registryImageRefineCapability(provider, registry, resolvedId)
+      : { mode: 'none' as const, reason: 'Model is not in the server-authoritative registry' }
     return {
       status: entry ? (supported ? 'supported' : 'unsupported') : 'unknown',
       supportsReferenceImages: supported,
+      supportsDirectEdit: refine.mode === 'direct-edit',
+      refineMode: refine.mode,
+      refineReason: refine.reason,
       reason: !entry
         ? '模型不在服务端权威注册表内，能力未知'
         : supported
           ? '服务端权威注册表标记该模型支持图像输入'
           : '服务端权威注册表标记该模型不支持图像输入',
-      source: 'paperbanana-model-registry',
-      cached: true,
-    }
-  }
-
-  return await openRouterReferenceCapability(normalizedModel)
-}
-
-async function openRouterReferenceCapability(model: string): Promise<ModelCapabilityResult> {
-  const actualModel = toOpenRouterModel(model)
-  try {
-    const { models, cached } = await fetchOpenRouterTextModels()
-    if (!models.has(actualModel)) {
-      return {
-        status: 'unknown',
-        supportsReferenceImages: false,
-        reason: 'OpenRouter metadata did not include this model id',
-        source: 'openrouter-models',
-        cached,
-      }
-    }
-    const inputModalities = models.get(actualModel)?.inputModalities || []
-    const supported = inputModalities.includes('image')
-    return {
-      status: supported ? 'supported' : 'unsupported',
-      supportsReferenceImages: supported,
-      reason: supported
-        ? 'OpenRouter input_modalities includes image'
-        : `OpenRouter input_modalities: ${inputModalities.join(', ') || 'none'}`,
-      source: 'openrouter-models',
-      cached,
+      source: provider === 'openrouter' ? 'openrouter-models' : 'paperbanana-model-registry',
+      cached: provider !== 'openrouter',
     }
   } catch (error: any) {
     return {
       status: 'unknown',
       supportsReferenceImages: false,
+      supportsDirectEdit: false,
+      refineMode: 'none',
+      refineReason: isProviderEgressUnavailable(error)
+        ? providerEgressUnavailableMessage
+        : `Model registry unavailable: ${error?.message || String(error)}`,
       reason: isProviderEgressUnavailable(error)
         ? providerEgressUnavailableMessage
-        : `OpenRouter metadata unavailable: ${error?.message || String(error)}`,
-      source: 'openrouter-models',
+        : `${provider} model metadata unavailable: ${error?.message || String(error)}`,
+      source: provider === 'openrouter' ? 'openrouter-models' : 'paperbanana-model-registry',
       cached: false,
     }
   }
+}
+
+function registryImageRefineCapability(provider: Provider, registry: ProviderModelRegistry, model: string) {
+  const resolvedId = provider === 'openrouter' ? toOpenRouterModel(model) : normalizeModelName(provider, model)
+  const entry = registry.models.find((candidate) => candidate.id === resolvedId)
+  const mode = entry?.capabilities.imageEditMode || 'none'
+  if (mode === 'direct-edit') {
+    return { mode, reason: `${entry?.label || resolvedId} accepts the source image for direct image-to-image editing` }
+  }
+  if (mode === 'analyze-redraw') {
+    return { mode, reason: `${entry?.label || resolvedId} cannot accept a source image; refine analyzes the source and redraws it` }
+  }
+  return { mode: 'none' as const, reason: `${entry?.label || resolvedId} is not registered for image refinement` }
 }
 
 async function fetchOpenRouterTextModels() {
@@ -3742,6 +3892,18 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
       roles,
       'openrouter-chat-completions',
       'Live OpenRouter model catalog; availability may change',
+      {},
+      {
+        vendor: openRouterVendor(model.id),
+        recommended: openRouterRecommendedModelIds.has(model.id),
+        inputModalities: model.inputModalities,
+        outputModalities: model.outputModalities,
+        verified: true,
+        roleReasons: {
+          main: 'OpenRouter Models API declares text input and text output',
+          ...(roles.includes('vision') ? { vision: 'OpenRouter Models API input_modalities includes image' } : {}),
+        },
+      },
     ))
   }
   for (const model of dedicatedModels.values()) {
@@ -3750,6 +3912,8 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
     const resolutionValues = Array.isArray(model.supportedParameters?.resolution?.values)
       ? model.supportedParameters.resolution.values.map(String)
       : undefined
+    const directEdit = supportsOpenRouterParameter(model.supportedParameters, 'input_references')
+    const outputFormats = openRouterOutputFormats(model.supportedParameters)
     entries.set(model.id, registryEntry(
       model.id,
       model.name,
@@ -3757,23 +3921,61 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
       'openrouter-images',
       'Live OpenRouter Dedicated Image API catalog',
       {
-        referenceImages: model.inputModalities.includes('image'),
-        imageEditing: model.inputModalities.includes('image'),
+        referenceImages: directEdit,
+        imageEditing: directEdit,
         resolutions: resolutionValues,
+        outputFormats,
+      },
+      {
+        vendor: openRouterVendor(model.id),
+        recommended: openRouterRecommendedModelIds.has(model.id),
+        inputModalities: model.inputModalities,
+        outputModalities: model.outputModalities,
+        verified: true,
+        roleReasons: { image: 'OpenRouter Dedicated Image API catalog declares image output' },
       },
     ))
   }
-  const models = [...entries.values()].sort((a, b) => a.label.localeCompare(b.label))
+  const models = [...entries.values()].sort((a, b) => {
+    if (a.recommended !== b.recommended) return a.recommended ? -1 : 1
+    const recommendationOrder = (openRouterRecommendationRank.get(a.id) ?? Number.MAX_SAFE_INTEGER)
+      - (openRouterRecommendationRank.get(b.id) ?? Number.MAX_SAFE_INTEGER)
+    return recommendationOrder || a.vendor.localeCompare(b.vendor) || a.id.localeCompare(b.id)
+  })
   const firstForRole = (role: ModelRole) => models.find((model) => model.roles.includes(role))?.id || ''
   const preferred = (id: string, role: ModelRole) => entries.get(id)?.roles.includes(role) ? id : firstForRole(role)
   return {
     defaults: {
       main: preferred('openai/gpt-5.5', 'main'),
-      image: preferred('openai/gpt-5.4-image-2', 'image'),
-      vision: preferred('google/gemini-3.7-flash', 'vision'),
+      image: preferred('openai/gpt-image-2', 'image'),
+      vision: preferred('google/gemini-3.6-flash', 'vision'),
     },
     models,
   }
+}
+
+const openRouterRecommendationRank = new Map([
+  ['openai/gpt-5.5', 0],
+  ['openai/gpt-image-2', 1],
+  ['google/gemini-3.6-flash', 2],
+])
+const openRouterRecommendedModelIds = new Set(openRouterRecommendationRank.keys())
+
+function openRouterVendor(modelId: string) {
+  const slug = String(modelId || '').split('/')[0].replace(/^~/, '')
+  const known: Record<string, string> = {
+    openai: 'OpenAI', google: 'Google', anthropic: 'Anthropic', qwen: 'Qwen',
+    'black-forest-labs': 'Black Forest Labs', recraft: 'Recraft', xai: 'xAI', 'x-ai': 'xAI',
+    minimax: 'MiniMax', deepseek: 'DeepSeek', moonshotai: 'Moonshot AI',
+  }
+  return known[slug] || slug.split('-').filter(Boolean).map((part) => part[0]?.toUpperCase() + part.slice(1)).join(' ') || 'Unknown'
+}
+
+function openRouterOutputFormats(parameters: any) {
+  const descriptor = parameters?.output_format
+  if (!descriptor) return ['png']
+  const values = Array.isArray(descriptor?.values) ? descriptor.values.map((value: any) => String(value).toLowerCase()) : []
+  return values.filter((value: string) => ['png', 'svg'].includes(value))
 }
 
 async function providerModelRegistry(provider: Provider): Promise<ProviderModelRegistry> {
@@ -4790,13 +4992,6 @@ function selectApiKey(provider: Provider, apiKeys: ApiKeys) {
   return ''
 }
 
-// Providers whose image model accepts a source image for a conditioned edit
-// (true image-to-image). Bailian only supports text-to-image here, so it falls
-// back to the describe-then-regenerate path.
-function providerSupportsImageEdit(provider: Provider) {
-  return provider === 'gemini' || provider === 'openrouter' || provider === 'openai'
-}
-
 async function publicJob(job: any) {
   return {
     id: job._id,
@@ -4814,6 +5009,10 @@ async function publicJob(job: any) {
     outputFormat: job.outputFormat || 'png',
     mainModelName: job.mainModelName,
     imageModelName: job.imageModelName,
+    imageRefineMode: job.imageRefineMode || '',
+    imageRefineReason: job.imageRefineReason || '',
+    refineMode: job.refineMode || '',
+    refineReason: job.refineReason || '',
     referenceVisionModelName: job.referenceVisionModelName || '',
     referenceImageMode: job.referenceImageMode || 'vision_model',
     referenceImageModeUsed: job.referenceImageModeUsed || ((job.referenceImages || []).length ? 'vision_model' : 'none'),
@@ -5083,8 +5282,6 @@ export function normalizeModelName(provider: string, model: string) {
   }
   if (provider === 'openai') {
     const aliases: Record<string, string> = {
-      'gpt-5.5-pro': 'gpt-5.6-sol',
-      'gpt-5.4-pro': 'gpt-5.6-sol',
       'gpt-5.2': 'gpt-5.5',
       'gpt-5.1': 'gpt-5.5',
       'gpt-4o': 'gpt-4.1',
@@ -5099,36 +5296,31 @@ export function normalizeModelName(provider: string, model: string) {
       'openrouter/google/gemini-3-pro-image-preview': 'openrouter/google/gemini-3-pro-image',
       'openrouter/openai/gpt-5-image': 'openrouter/openai/gpt-image-2',
       'openrouter/openai/gpt-5-image-mini': 'openrouter/openai/gpt-image-1-mini',
-      'openrouter/openai/gpt-5.5-pro': 'openrouter/openai/gpt-5.5',
-      'openrouter/openai/gpt-5.4-pro': 'openrouter/openai/gpt-5.4',
     }
     return aliases[model] || model
   }
   if (provider === 'bailian') {
     const aliases: Record<string, string> = {
-      'qwen3.7-max': 'qwen3.8-max',
-      'qwen3.7-max-2026-05-20': 'qwen3.8-max',
+      'qwen3.7-max': 'qwen3.7-plus',
+      'qwen3.7-max-2026-05-20': 'qwen3.7-plus',
       'qwen3.6-flash': 'qwen3.7-flash',
       'qwen3.6-plus': 'qwen3.7-plus',
-      'qwen-plus-latest': 'qwen3.8-max',
-      'qwen-max-latest': 'qwen3.8-max',
+      'qwen-plus-latest': 'qwen3.7-plus',
+      'qwen-max-latest': 'qwen3.7-plus',
       'qwen-flash': 'qwen3.7-flash',
       'glm-5.1': 'glm-5.2',
       'kimi-k2.6': 'kimi/kimi-k3',
       'MiniMax-M2.7': 'MiniMax/MiniMax-M3',
       'MiniMax/MiniMax-M2.7': 'MiniMax/MiniMax-M3',
-      'qwen-image-2.0-pro': 'qwen-image-3.0-pro',
-      'qwen-image-2.0': 'qwen-image-3.0',
-      'qwen-image-max': 'qwen-image-3.0-pro',
-      'qwen-image-plus': 'qwen-image-3.0',
-      'qwen-image': 'qwen-image-3.0',
+      'qwen-image-max': 'qwen-image-2.0-pro',
+      'qwen-image-plus': 'qwen-image-2.0',
+      'qwen-image': 'qwen-image-2.0',
       'wan2.6-image': 'wan2.7-image',
       'wan2.6-t2i': 'wan2.7-image',
       'wan2.5-t2i-preview': 'wan2.7-image',
       'wan2.2-t2i-plus': 'wan2.7-image',
       'wan2.2-t2i-flash': 'wan2.7-image',
-      'z-image-turbo': 'wan2.7-image',
-      'mimo-v2.5-pro': 'qwen3.8-max',
+      'mimo-v2.5-pro': 'qwen3.7-plus',
     }
     return aliases[model] || model
   }

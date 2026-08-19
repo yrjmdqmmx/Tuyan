@@ -122,8 +122,8 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
       response: { setHeader() {}, status() {} },
     })
     assert.equal(result.code, 0)
-    assert.equal(result.providers.gemini.defaults.main, 'gemini-3.7-flash')
-    assert.equal(result.providers.bailian.defaults.main, 'qwen3.8-max')
+    assert.equal(result.providers.gemini.defaults.main, 'gemini-3.6-flash')
+    assert.equal(result.providers.bailian.defaults.main, 'qwen3.7-plus')
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
     assert.equal(Object.hasOwn(result.providers, 'openrouter'), false)
     assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。' })
@@ -172,7 +172,7 @@ test('createJob rejects a registered model used in the wrong role before inserti
   assert.match(result.error, /not registered for main/)
 })
 
-test('modelRegistry is the public server authority for current Gemini and Bailian roles', async () => {
+test('modelRegistry exposes rich model-level metadata and current direct-provider catalogs', async () => {
   const legacy = await loadLegacy()
   const context = (body: Record<string, unknown>) => ({
     request: { method: 'POST' },
@@ -185,32 +185,45 @@ test('modelRegistry is the public server authority for current Gemini and Bailia
   assert.equal(gemini.code, 0)
   assert.match(gemini.registryVersion, /^2026-08-/)
   assert.deepEqual(gemini.providers.gemini.defaults, {
-    main: 'gemini-3.7-flash',
+    main: 'gemini-3.6-flash',
     image: 'gemini-3.1-flash-image',
-    vision: 'gemini-3.7-flash',
+    vision: 'gemini-3.6-flash',
   })
   const geminiModels = new Map<string, any>(gemini.providers.gemini.models.map((model: any) => [model.id, model]))
-  assert.deepEqual(geminiModels.get('gemini-3.7-flash')?.roles, ['main', 'vision'])
-  assert.equal(geminiModels.get('gemini-3.7-flash')?.capabilities.referenceImages, true)
-  assert.equal(geminiModels.get('gemini-3.7-flash')?.protocol, 'gemini-generate-content')
+  assert.equal(geminiModels.has('gemini-3.7-flash'), false)
+  assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.roles, ['main', 'vision'])
+  assert.equal(geminiModels.get('gemini-3.6-flash')?.recommended, true)
+  assert.equal(geminiModels.get('gemini-3.6-flash')?.verified, true)
+  assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.inputModalities, ['text', 'image'])
+  assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.outputModalities, ['text'])
+  assert.equal(geminiModels.get('gemini-3.6-flash')?.protocol, 'gemini-generate-content')
   assert.deepEqual(geminiModels.get('gemini-3.1-flash-image')?.roles, ['image'])
+  assert.equal(geminiModels.get('gemini-3.1-flash-image')?.capabilities.imageEditMode, 'direct-edit')
+  assert.deepEqual(geminiModels.get('gemini-3.1-flash-image')?.capabilities.resolutions, ['1K', '2K', '4K'])
+  assert.deepEqual(geminiModels.get('gemini-3.1-flash-lite-image')?.capabilities.resolutions, ['1K'])
   assert.equal(geminiModels.has('gemini-3.1-pro'), false)
   assert.equal(geminiModels.has('gemini-3-flash'), false)
 
   const bailian = await legacy.default(context({ action: 'modelRegistry', provider: 'bailian' }))
   assert.equal(bailian.code, 0)
   assert.deepEqual(bailian.providers.bailian.defaults, {
-    main: 'qwen3.8-max',
+    main: 'qwen3.7-plus',
     image: 'wan2.7-image-pro',
-    vision: 'qwen3.8-max',
+    vision: 'qwen3.7-plus',
   })
   const bailianModels = new Map<string, any>(bailian.providers.bailian.models.map((model: any) => [model.id, model]))
-  for (const current of ['qwen3.8-max', 'qwen3.7-flash', 'glm-5.2', 'kimi/kimi-k3', 'MiniMax/MiniMax-M3', 'qwen-image-3.0-pro']) {
+  for (const current of ['qwen3.8-max-preview', 'qwen3.7-plus', 'qwen3.7-flash', 'glm-5.2', 'kimi/kimi-k3', 'MiniMax/MiniMax-M3', 'qwen-image-3.0-pro', 'qwen-image-2.0-pro', 'qwen-image-2.0', 'z-image-turbo']) {
     assert.equal(bailianModels.has(current), true, current)
   }
-  for (const retired of ['qwen3.7-max', 'qwen3.6-flash', 'glm-5.1', 'kimi-k2.6', 'MiniMax/MiniMax-M2.7']) {
+  for (const retired of ['qwen3.8-max', 'qwen3.7-max', 'qwen3.6-flash', 'glm-5.1', 'kimi-k2.6', 'MiniMax/MiniMax-M2.7', 'qwen-image-3.0']) {
     assert.equal(bailianModels.has(retired), false, retired)
   }
+  assert.deepEqual(bailianModels.get('qwen3.7-plus')?.roles, ['main', 'vision'])
+  assert.deepEqual(bailianModels.get('qwen3.7-flash')?.roles, ['main', 'vision'])
+  assert.deepEqual(bailianModels.get('MiniMax/MiniMax-M3')?.roles, ['main', 'vision'])
+  assert.equal(bailianModels.get('qwen3.8-max-preview')?.requiresEntitlement, true)
+  assert.equal(bailianModels.get('qwen3.8-max-preview')?.entitlement, 'token-plan')
+  assert.equal(bailianModels.get('qwen-image-3.0-pro')?.lifecycle, 'invite-only')
 
   const openai = await legacy.default(context({ action: 'modelRegistry', provider: 'openai' }))
   assert.equal(openai.code, 0)
@@ -220,20 +233,26 @@ test('modelRegistry is the public server authority for current Gemini and Bailia
     vision: 'gpt-5.6-sol',
   })
   const openaiModels = new Map<string, any>(openai.providers.openai.models.map((model: any) => [model.id, model]))
-  for (const current of ['gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna', 'gpt-image-2']) {
+  for (const current of ['gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna', 'gpt-5.5', 'gpt-5.5-pro', 'gpt-5.4', 'gpt-5.4-pro', 'gpt-5-mini', 'gpt-4.1', 'gpt-image-2']) {
     assert.equal(openaiModels.has(current), true, current)
   }
+  assert.equal(openaiModels.get('gpt-5.5-pro')?.protocol, 'openai-responses')
+  assert.equal(openaiModels.get('gpt-5.4-pro')?.protocol, 'openai-responses')
+  assert.equal(openaiModels.get('gpt-image-2')?.recommended, true)
+  assert.equal(openaiModels.get('gpt-image-2')?.lifecycle, 'stable')
+  assert.equal(openaiModels.get('gpt-image-1')?.lifecycle, 'legacy')
+  assert.equal(openaiModels.get('gpt-image-1-mini')?.lifecycle, 'legacy')
 })
 
 test('legacy client defaults map explicitly to current registered model IDs', async () => {
   const legacy = await loadLegacy()
   assert.equal(legacy.normalizeModelName('gemini', 'gemini-3.1-pro'), 'gemini-3.1-pro-preview')
   assert.equal(legacy.normalizeModelName('gemini', 'gemini-3-flash'), 'gemini-3-flash-preview')
-  assert.equal(legacy.normalizeModelName('openai', 'gpt-5.5-pro'), 'gpt-5.6-sol')
-  assert.equal(legacy.normalizeModelName('openai', 'gpt-5.4-pro'), 'gpt-5.6-sol')
+  assert.equal(legacy.normalizeModelName('openai', 'gpt-5.5-pro'), 'gpt-5.5-pro')
+  assert.equal(legacy.normalizeModelName('openai', 'gpt-5.4-pro'), 'gpt-5.4-pro')
   assert.equal(legacy.normalizeModelName('openai', 'gpt-image-1.5'), 'gpt-image-2')
-  assert.equal(legacy.normalizeModelName('bailian', 'qwen3.7-max'), 'qwen3.8-max')
-  assert.equal(legacy.normalizeModelName('bailian', 'qwen-image-2.0-pro'), 'qwen-image-3.0-pro')
+  assert.equal(legacy.normalizeModelName('bailian', 'qwen3.7-max'), 'qwen3.7-plus')
+  assert.equal(legacy.normalizeModelName('bailian', 'qwen-image-2.0-pro'), 'qwen-image-2.0-pro')
   assert.equal(legacy.normalizeModelName('bailian', 'kimi-k2.6'), 'kimi/kimi-k3')
   assert.equal(legacy.normalizeModelName('bailian', 'MiniMax-M2.7'), 'MiniMax/MiniMax-M3')
   assert.equal(
@@ -246,37 +265,87 @@ test('legacy client defaults map explicitly to current registered model IDs', as
   )
 })
 
-test('Gemini 3 text and vision requests keep provider sampling defaults', async () => {
+test('Gemini 3 text and vision use generateContent while current image models use Interactions', async () => {
   const legacy = await loadLegacy()
   const requests: Array<{ url: string; body: any }> = []
   legacy.configureRuntimeFetch(async (input, init) => {
     requests.push({ url: String(input), body: JSON.parse(String(init?.body || '{}')) })
-    const isImage = String(input).includes('gemini-3.1-flash-image')
-    return new Response(JSON.stringify({ candidates: [{ content: { parts: [isImage ? { inlineData: { data: 'aW1hZ2U=' } } : { text: 'ok' }] } }] }), {
+    const isImage = String(input).endsWith('/v1beta/interactions')
+    return new Response(JSON.stringify(isImage
+      ? { output_image: { data: 'aW1hZ2U=', mime_type: 'image/png' } }
+      : { candidates: [{ content: { parts: [{ text: 'ok' }] } }] }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     })
   })
   try {
-    assert.equal(await legacy.callTextModel('gemini', 'gemini-3.7-flash', 'key', 'system', 'user'), 'ok')
-    assert.equal(await legacy.callVisionModel('gemini', 'gemini-3.7-flash', 'key', 'method', 'caption', [{
+    assert.equal(await legacy.callTextModel('gemini', 'gemini-3.6-flash', 'key', 'system', 'user'), 'ok')
+    assert.equal(await legacy.callVisionModel('gemini', 'gemini-3.6-flash', 'key', 'method', 'caption', [{
       url: 'data:image/png;base64,YQ==',
       mimeType: 'image/png',
     }]), 'ok')
-    assert.equal(await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9', '', '4K'), 'aW1hZ2U=')
+    assert.equal(await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'diagram', '16:9', 'data:image/png;base64,YQ==', '4K'), 'aW1hZ2U=')
   } finally {
     legacy.configureRuntimeFetch()
   }
 
   const generationRequests = requests.filter((request) => request.url.includes(':generateContent'))
-  assert.equal(generationRequests.length, 3)
-  for (const request of generationRequests.slice(0, 2)) {
-    assert.match(request.url, /models\/gemini-3\.7-flash:generateContent/)
+  assert.equal(generationRequests.length, 2)
+  for (const request of generationRequests) {
+    assert.match(request.url, /models\/gemini-3\.6-flash:generateContent/)
     const serialized = JSON.stringify(request.body)
     assert.doesNotMatch(serialized, /temperature|topP|topK|top_p|top_k/)
   }
-  assert.equal(generationRequests[2].body.generationConfig.imageConfig.imageSize, '4K')
-  assert.doesNotMatch(JSON.stringify(generationRequests[2].body), /temperature|topP|topK|top_p|top_k/)
+  const interaction = requests.find((request) => request.url.endsWith('/v1beta/interactions'))
+  assert.equal(interaction?.body.model, 'gemini-3.1-flash-image')
+  assert.deepEqual(interaction?.body.input, [
+    { type: 'text', text: 'diagram' },
+    { type: 'image', mime_type: 'image/png', data: 'YQ==' },
+  ])
+  assert.deepEqual(interaction?.body.response_format, {
+    type: 'image', mime_type: 'image/png', aspect_ratio: '16:9', image_size: '4K',
+  })
+  assert.doesNotMatch(JSON.stringify(interaction?.body), /temperature|topP|topK|top_p|top_k/)
+})
+
+test('Gemini 2.5 image generation retains generateContent compatibility at 1K', async () => {
+  const legacy = await loadLegacy()
+  const requests: Array<{ url: string; body: any }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    requests.push({ url: String(input), body: JSON.parse(String(init?.body || '{}')) })
+    return Response.json({ candidates: [{ content: { parts: [{ inlineData: { data: 'bGVnYWN5' } }] } }] })
+  })
+  try {
+    assert.equal(await legacy.callImageModel('gemini', 'gemini-2.5-flash-image', 'key', 'diagram', '16:9', '', '4K'), 'bGVnYWN5')
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+  assert.match(requests[0].url, /models\/gemini-2\.5-flash-image:generateContent/)
+  assert.equal(requests[0].body.generationConfig.imageConfig.imageSize, '1K')
+})
+
+test('OpenAI Responses-only Pro models use /responses for text and vision', async () => {
+  const legacy = await loadLegacy()
+  const calls: Array<{ url: string; body: any }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    calls.push({ url: String(input), body: JSON.parse(String(init?.body || '{}')) })
+    return Response.json({ output: [{ type: 'message', content: [{ type: 'output_text', text: 'response-ok' }] }] })
+  })
+  try {
+    assert.equal(await legacy.callTextModel('openai', 'gpt-5.5-pro', 'key', 'system', 'user'), 'response-ok')
+    assert.equal(await legacy.callVisionModel('openai', 'gpt-5.4-pro', 'key', 'method', 'caption', [{
+      url: 'data:image/png;base64,YQ==', mimeType: 'image/png',
+    }]), 'response-ok')
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+  assert.equal(calls.length, 2)
+  assert.equal(calls.every((call) => call.url === 'https://api.openai.com/v1/responses'), true)
+  assert.equal(calls[0].body.model, 'gpt-5.5-pro')
+  assert.equal(calls[0].body.instructions, 'system')
+  assert.equal(calls[0].body.store, false)
+  assert.deepEqual(calls[0].body.input, 'user')
+  assert.equal(calls[1].body.input[0].content[1].type, 'input_image')
 })
 
 test('OpenRouter Gemini 3 text and vision requests also omit legacy sampling overrides', async () => {
@@ -322,7 +391,7 @@ test('Bailian image-content fallback uses the current registered vision model', 
     if (previous === undefined) delete process.env.BAILIAN_VISION_MODEL
     else process.env.BAILIAN_VISION_MODEL = previous
   }
-  assert.deepEqual(models, ['glm-5.2', 'qwen3.8-max'])
+  assert.deepEqual(models, ['glm-5.2', 'qwen3.7-plus'])
 })
 
 test('OpenRouter routes every dedicated image catalog model to POST /images', async () => {
@@ -351,8 +420,8 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
       return Response.json({
         data: [
           {
-            id: 'google/gemini-3.7-flash',
-            name: 'Gemini 3.7 Flash',
+            id: 'google/gemini-3.6-flash',
+            name: 'Gemini 3.6 Flash',
             architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] },
           },
           textAndImageModel,
@@ -381,7 +450,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
   })
   try {
     assert.equal(
-      await legacy.callImageModel('openrouter', 'openrouter/black-forest-labs/flux.2-pro', 'key', 'diagram', '16:9', '', '2K'),
+      await legacy.callImageModel('openrouter', 'openrouter/black-forest-labs/flux.2-pro', 'key', 'diagram', '16:9', 'data:image/png;base64,YQ==', '2K'),
       'ZGVkaWNhdGVk',
     )
     assert.equal(
@@ -398,7 +467,11 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     const registryModels = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(registryModels.get('black-forest-labs/flux.2-pro')?.protocol, 'openrouter-images')
     assert.equal(registryModels.get('google/gemini-3.1-flash-image')?.protocol, 'openrouter-images')
-    assert.deepEqual(registryModels.get('google/gemini-3.7-flash')?.roles, ['main', 'vision'])
+    assert.deepEqual(registryModels.get('google/gemini-3.6-flash')?.roles, ['main', 'vision'])
+    assert.equal(registryModels.get('black-forest-labs/flux.2-pro')?.vendor, 'Black Forest Labs')
+    assert.deepEqual(registryModels.get('black-forest-labs/flux.2-pro')?.inputModalities, ['text', 'image'])
+    assert.equal(registryModels.get('black-forest-labs/flux.2-pro')?.capabilities.imageEditMode, 'direct-edit')
+    assert.match(registryModels.get('black-forest-labs/flux.2-pro')?.roleReasons.image, /Dedicated Image API/)
     await assert.rejects(
       legacy.callImageModel('openrouter', 'openrouter/recraft/not-in-catalog', 'key', 'diagram', '16:9'),
       /not available in the authoritative OpenRouter image catalog/,
@@ -413,6 +486,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     prompt: 'diagram',
     resolution: '2K',
     aspect_ratio: '16:9',
+    input_references: [{ type: 'image_url', image_url: { url: 'data:image/png;base64,YQ==' } }],
   })
   assert.equal(calls.some((call) => call.url.endsWith('/chat/completions')), false)
   assert.equal(calls.some((call) => call.url.endsWith('/images/generations')), false)
@@ -420,6 +494,90 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     calls.some((call) => call.url.endsWith('/chat/completions') && call.body?.model === 'black-forest-labs/flux.2-pro'),
     false,
   )
+})
+
+test('OpenRouter recommendations sort first without hiding the complete compatible catalog', async () => {
+  const legacy = await loadLegacy()
+  const textModels = [
+    { id: 'vendor/zeta', name: 'Aardvark', architecture: { input_modalities: ['text'], output_modalities: ['text'] } },
+    { id: 'openai/gpt-5.5', name: 'GPT-5.5', architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] } },
+  ]
+  const imageModels = [
+    {
+      id: 'vendor/alpha', name: 'Alpha Image',
+      architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+      supported_parameters: { output_format: { values: ['png'] } },
+    },
+    {
+      id: 'openai/gpt-image-2', name: 'GPT Image 2',
+      architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+      supported_parameters: { output_format: { values: ['png'] }, input_references: { max: 4 } },
+    },
+  ]
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: textModels })
+    if (url.endsWith('/images/models')) return Response.json({ data: imageModels })
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.deepEqual(registry.providers.openrouter.models.map((model: any) => model.id), [
+      'openai/gpt-5.5', 'openai/gpt-image-2', 'vendor/alpha', 'vendor/zeta',
+    ])
+    assert.equal(registry.providers.openrouter.models.length, 4)
+    assert.equal(registry.providers.openrouter.models[0].recommended, true)
+    assert.equal(registry.providers.openrouter.models[1].recommended, true)
+    assert.equal(registry.providers.openrouter.models[2].recommended, false)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter refuses a claimed direct edit when input_references is absent', async () => {
+  const legacy = await loadLegacy()
+  let generated = false
+  const model = {
+    id: 'vendor/text-to-image-only', name: 'Text to Image Only',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: { output_format: { values: ['png'] } },
+  }
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) { generated = true; return Response.json({ data: [{ b64_json: 'aW1hZ2U=' }] }) }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'edit it', '16:9', 'data:image/png;base64,YQ=='),
+      /does not support input_references; direct edit is unavailable/,
+    )
+    assert.equal(generated, false)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('modelCapability returns UI-usable model-level refine mode and reason', async () => {
+  const legacy = await loadLegacy()
+  const context = (provider: string, model: string) => ({
+    request: { method: 'POST' }, body: { action: 'modelCapability', provider, model }, headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+  const direct = await legacy.default(context('openai', 'gpt-image-2'))
+  assert.equal(direct.status, 'supported')
+  assert.equal(direct.refineMode, 'direct-edit')
+  assert.equal(direct.supportsDirectEdit, true)
+  assert.match(direct.refineReason, /source image/i)
+
+  const redraw = await legacy.default(context('bailian', 'z-image-turbo'))
+  assert.equal(redraw.refineMode, 'analyze-redraw')
+  assert.equal(redraw.supportsDirectEdit, false)
+  assert.match(redraw.refineReason, /analy/i)
 })
 
 test('OpenRouter vector image responses are rasterized before the PNG pipeline saves them', async () => {
@@ -529,7 +687,8 @@ test('Bailian current image models use their official multimodal parameters and 
   })
   try {
     await legacy.callImageModel('bailian', 'wan2.7-image-pro', 'key', 'diagram', '16:9', '', '4K')
-    await legacy.callImageModel('bailian', 'qwen-image-3.0-pro', 'key', 'diagram', '16:9', '', '4K')
+    await legacy.callImageModel('bailian', 'qwen-image-2.0-pro', 'key', 'diagram', '16:9', '', '4K')
+    await legacy.callImageModel('bailian', 'z-image-turbo', 'key', 'diagram', '16:9', '', '4K')
   } finally {
     legacy.configureRuntimeFetch()
   }
@@ -540,6 +699,47 @@ test('Bailian current image models use their official multimodal parameters and 
   assert.equal(payloads[1].parameters.size, '2048*1152')
   assert.equal(payloads[1].parameters.prompt_extend, true)
   assert.equal(Object.hasOwn(payloads[1].parameters, 'thinking_mode'), false)
+  assert.equal(payloads[1].model, 'qwen-image-2.0-pro')
+  assert.equal(payloads[2].parameters.size, '2048*1152')
+  assert.equal(Object.hasOwn(payloads[2].parameters, 'prompt_extend'), false)
+  assert.equal(Object.hasOwn(payloads[2].parameters, 'thinking_mode'), false)
+})
+
+test('Bailian direct-edit models forward source pixels as an image input', async () => {
+  const legacy = await loadLegacy()
+  const testState = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = testState.ossWriteMode
+  let generationPayload: any
+  testState.ossWriteMode = 'race'
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url === 'https://images.invalid/source.png') {
+      return new Response('source-bytes', { headers: { 'Content-Type': 'image/png' } })
+    }
+    if (url.includes('/multimodal-generation/generation')) {
+      generationPayload = JSON.parse(String(init?.body || '{}'))
+      return Response.json({ output: { choices: [{ message: { content: [{ image: 'https://images.invalid/result.png' }] } }] } })
+    }
+    if (url === 'https://images.invalid/result.png') {
+      return new Response('result-bytes', { headers: { 'Content-Type': 'image/png' } })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    await legacy.callImageModel(
+      'bailian', 'qwen-image-2.0-pro', 'key', 'Make labels clearer', '16:9',
+      'https://images.invalid/source.png', '4K',
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+    testState.ossWriteMode = previousWriteMode
+    testState.deletedOwnerKeys = []
+  }
+  assert.deepEqual(generationPayload.input.messages[0].content, [
+    { image: 'https://signed.invalid/object' },
+    { text: 'Make labels clearer' },
+  ])
+  assert.equal(generationPayload.parameters.size, '2048*1152')
 })
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')

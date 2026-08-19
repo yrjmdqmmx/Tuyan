@@ -84,6 +84,10 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
         retrievedReferenceIds: ['ref-a'],
         retrievedReferences: [{ id: 'ref-a', title: 'Reference A', imageUrl: 'https://example.com/ref.png' }],
         criticMode: 'image',
+        imageRefineMode: 'direct-edit',
+        imageRefineReason: 'Image model accepts a source image.',
+        refineMode: 'direct-edit',
+        refineReason: 'Refine used source pixels.',
         stages: [
           { id: 'stage-1', candidateId: 0, type: 'planner', title: 'Planner', text: 'plan' },
           { id: 'stage-2', candidateId: 0, type: 'critic', round: 1, text: 'revise spacing' },
@@ -100,6 +104,10 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
     assert.deepEqual(job.retrieved_reference_ids, ['ref-a']);
     assert.equal(job.retrieved_references[0].id, 'ref-a');
     assert.equal(job.critic_mode, 'image');
+    assert.equal(job.image_refine_mode, 'direct-edit');
+    assert.equal(job.image_refine_reason, 'Image model accepts a source image.');
+    assert.equal(job.refine_mode, 'direct-edit');
+    assert.equal(job.refine_reason, 'Refine used source pixels.');
     assert.equal(job.stages.length, 2);
     assert.equal(job.stages[1].type, 'critic');
   } finally {
@@ -108,7 +116,12 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
 });
 
 test('refineImageRequest sends image edit payload to gateway/Laf', async () => {
-  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, jobId: 'refine-1', status: 'queued' } }));
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    jobId: 'refine-1',
+    status: 'queued',
+    refineCapability: { mode: 'direct-edit', directEdit: true, reason: 'Model accepts the source image.' },
+  } }));
   try {
     const result = await refineImageRequest('https://gateway.example', { backendMode: 'gateway' }, {
       provider: 'openai',
@@ -120,7 +133,11 @@ test('refineImageRequest sends image edit payload to gateway/Laf', async () => {
       imageSize: '2K',
     });
 
-    assert.deepEqual(result, { id: 'refine-1', status: 'queued' });
+    assert.deepEqual(result, {
+      id: 'refine-1',
+      status: 'queued',
+      refineCapability: { mode: 'direct-edit', directEdit: true, reason: 'Model accepts the source image.' },
+    });
     const body = JSON.parse(fetchMock.calls[0].options.body);
     assert.equal(body.action, 'refineImage');
     assert.equal(body.clientPlatform, 'web');

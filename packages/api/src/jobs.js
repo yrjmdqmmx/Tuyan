@@ -138,7 +138,15 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
         imageSize: payload.imageSize,
       }),
     });
-    return { id: data.jobId, status: data.status };
+    return {
+      id: data.jobId,
+      status: data.status,
+      refineCapability: data.refineCapability || {
+        mode: 'none',
+        directEdit: false,
+        reason: '当前后端未返回精修能力说明',
+      },
+    };
   }
 
   throw new Error('图片精修需要使用 Laf 或登录网关后端。');
@@ -367,6 +375,10 @@ function normalizeJob(job = {}) {
     output_format: job.output_format || job.outputFormat || 'png',
     main_model_name: job.main_model_name || job.mainModelName || '',
     image_gen_model_name: job.image_gen_model_name || job.imageModelName || '',
+    image_refine_mode: job.image_refine_mode || job.imageRefineMode || '',
+    image_refine_reason: job.image_refine_reason || job.imageRefineReason || '',
+    refine_mode: job.refine_mode || job.refineMode || '',
+    refine_reason: job.refine_reason || job.refineReason || '',
     reference_vision_model_name: job.reference_vision_model_name || job.referenceVisionModelName || '',
     reference_image_mode: job.reference_image_mode || job.referenceImageMode || (rawReferenceImages.length ? 'vision_model' : ''),
     reference_image_mode_used: job.reference_image_mode_used || job.referenceImageModeUsed || (rawReferenceImages.length ? 'vision_model' : 'none'),

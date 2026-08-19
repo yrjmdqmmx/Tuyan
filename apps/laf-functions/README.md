@@ -52,5 +52,6 @@
 ## Notes
 
 - 用户填写的模型 API Key 只在单次任务执行闭包中使用，不写入数据库。
+- `modelRegistry` v2 是多端模型列表和精修能力的权威；客户端不得从 provider 或模型名猜测图生图。`direct-edit` 必须传入源图，`analyze-redraw` 则是明示的分析后重绘。
 - 不要把真实 `ADMIN_TOKEN` 或其他密钥提交到仓库。
 - `@lafjs/cloud` 由 Laf 运行时提供；`@resvg/resvg-wasm` 由 Laf custom dependency 提供，本目录不单独安装依赖。

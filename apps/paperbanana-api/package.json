@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "node --import tsx --test tests/*.test.ts",
+    "check:model-drift": "tsx scripts/check-openrouter-model-drift.ts",
     "check": "tsc --noEmit",
     "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --alias:@lafjs/cloud=./src/laf-cloud.ts --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb",
     "start": "node dist/server.cjs"
