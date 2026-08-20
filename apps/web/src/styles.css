@@ -2561,6 +2561,22 @@ button {
   margin-bottom: 14px;
 }
 
+.refine-resolution-unavailable {
+  min-height: 68px;
+  margin-bottom: 0;
+  padding: 10px 12px;
+  color: #7d3028;
+  background: #fff3f0;
+  border: 1px solid #e7c5bf;
+  border-radius: var(--radius-control);
+}
+
+.refine-resolution-unavailable small {
+  color: #8c4a42;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .field.compact {
   margin-bottom: 0;
 }

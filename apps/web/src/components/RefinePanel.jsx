@@ -9,6 +9,7 @@ export default function RefinePanel({
   capability,
   instruction,
   imageSize,
+  resolutionOptions = [],
   aspectRatio,
   settingsSummary,
   canSubmit,
@@ -60,10 +61,14 @@ export default function RefinePanel({
             ['3:2', '3:2'],
             ['1:1', '1:1'],
           ]} />
-          <Select label="清晰度" value={imageSize} onChange={onImageSizeChange} options={[
-            ['2K', '2K'],
-            ['4K', '4K'],
-          ]} />
+          {resolutionOptions.length ? (
+            <Select label="清晰度" value={imageSize} onChange={onImageSizeChange} options={resolutionOptions} />
+          ) : (
+            <div className="field refine-resolution-unavailable" role="status" aria-label="精修清晰度不可用">
+              <span>精修清晰度不可用</span>
+              <small>当前图像模型未声明可执行的精修清晰度，请在精修设置中更换模型。</small>
+            </div>
+          )}
         </div>
         <button className="primary-button" type="submit" disabled={!canSubmit}>
           {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}

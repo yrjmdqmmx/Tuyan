@@ -212,6 +212,13 @@ export default function App() {
     ? activeImageRegistryEntry.capabilities.resolutions
     : supportedResolutions(activeModelRoutes.image.accessProvider, activeImageGenModelName);
   const resolutionOptions = RESOLUTION_OPTIONS.filter(([value]) => resolutionValues.includes(value));
+  const refineResolutionMetadata = activeImageRegistryEntry?.capabilities;
+  const refineResolutionValues = refineResolutionMetadata
+    && Object.prototype.hasOwnProperty.call(refineResolutionMetadata, 'refineResolutions')
+    ? (Array.isArray(refineResolutionMetadata.refineResolutions) ? refineResolutionMetadata.refineResolutions : [])
+    : ['2K'];
+  const refineResolutionOptions = RESOLUTION_OPTIONS.filter(([value]) => refineResolutionValues.includes(value));
+  const defaultRefineImageSize = refineResolutionOptions[0]?.[0] || '';
   // 有参考图时以后端能力目录为权威；能力未知时默认走独立识别，避免把文本模型误当视觉模型。
   const mainModelCanRead = referenceImages.length
     ? mainModelCapability?.status === 'supported' && mainModelCapability?.supportsReferenceImages !== false
@@ -306,6 +313,11 @@ export default function App() {
       : supportedResolutions(activeModelRoutes.image.accessProvider, activeImageGenModelName);
     if (!supported.includes(imageSize)) setImageSize(supported[0]);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, imageSize, activeImageRegistryEntry]);
+
+  // 精修清晰度是独立执行能力；路由或目录变化时回到新模型声明的第一档。
+  useEffect(() => {
+    setRefineImageSize(defaultRefineImageSize);
+  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, modelRegistry, defaultRefineImageSize]);
 
   // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立识别模型。
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
@@ -949,6 +961,14 @@ export default function App() {
   async function submitRefine(event) {
     event.preventDefault();
     setRefineError('');
+    if (!refineResolutionOptions.length) {
+      setRefineError('当前图像模型未声明可执行的精修清晰度，请更换模型后重试。');
+      return;
+    }
+    if (!refineResolutionOptions.some(([value]) => value === refineImageSize)) {
+      setRefineError('当前精修清晰度已不受所选模型支持，请重新选择。');
+      return;
+    }
     if (missingCredentialProviders.length) {
       setRefineError(`请先填写${missingCredentialProviders.map((item) => PROVIDERS[item]?.label || item).join('、')}接入密钥。`);
       setGenerationFocusSetting('api-key');
@@ -1034,7 +1054,11 @@ export default function App() {
       />
 
       {activeTab === 'refine' ? (
-        <div className="refine-settings-note" role="note">精修固定输出 PNG；清晰度（{refineImageSize}）与目标比例（{refineAspectRatio}）请在精修面板设置。</div>
+        <div className="refine-settings-note" role="note">
+          {refineResolutionOptions.length
+            ? `精修固定输出 PNG；清晰度（${refineImageSize}）与目标比例（${refineAspectRatio}）请在精修面板设置。`
+            : '精修固定输出 PNG；当前图像模型未声明可执行的精修清晰度，请更换模型。'}
+        </div>
       ) : (<>
         <div className="output-format-field">
           <Select label="导出格式" value={outputFormat} onChange={setOutputFormat} options={OUTPUT_FORMATS} />
@@ -1390,9 +1414,10 @@ export default function App() {
             capability={refineCapability}
             instruction={refineInstruction}
             imageSize={refineImageSize}
+            resolutionOptions={refineResolutionOptions}
             aspectRatio={refineAspectRatio}
             settingsSummary={refineConfigSummary}
-            canSubmit={authReady && !missingCredentialProviders.length && !missingVerifiedArkRoutes.length && Boolean(refineSource.objectKey || refineSource.url) && refineInstruction.trim().length >= 3 && !isSubmittingRefine && refineCapability.mode !== 'none'}
+            canSubmit={authReady && refineResolutionOptions.length > 0 && !missingCredentialProviders.length && !missingVerifiedArkRoutes.length && Boolean(refineSource.objectKey || refineSource.url) && refineInstruction.trim().length >= 3 && !isSubmittingRefine && refineCapability.mode !== 'none'}
             isSubmitting={isSubmittingRefine}
             error={refineError}
             job={job}

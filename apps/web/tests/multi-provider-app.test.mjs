@@ -16,7 +16,7 @@ const registryV1 = {
       models: [
         { id: 'qwen3.8-max', label: 'Qwen Main', vendor: 'Alibaba Qwen', roles: ['main'], lifecycle: 'stable', selectable: true, recommended: true, capabilities: {} },
         { id: 'qwen3.7-plus', label: 'Qwen Vision', vendor: 'Alibaba Qwen', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'wan2.7-image-pro', label: 'Wan Image', vendor: 'Alibaba Wan', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'wan2.7-image-pro', label: 'Wan Image', vendor: 'Alibaba Wan', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
     openai: {
@@ -24,7 +24,7 @@ const registryV1 = {
       defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
       models: [
         { id: 'gpt-5.6-sol', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'gpt-image-2', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'gpt-image-2', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
     gemini: {
@@ -32,7 +32,7 @@ const registryV1 = {
       defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
       models: [
         { id: 'gemini-3.7-flash', label: 'Google Vision', vendor: 'Google', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'gemini-3.1-flash-image', label: 'Google Image', vendor: 'Google', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'gemini-3.1-flash-image', label: 'Google Image', vendor: 'Google', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
     ark: {
@@ -41,7 +41,7 @@ const registryV1 = {
       models: [
         { id: 'doubao-text', label: 'Doubao Main', vendor: 'ByteDance Doubao', roles: ['main'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, capabilities: {} },
         { id: 'doubao-vision', label: 'Doubao Vision', vendor: 'ByteDance Doubao', roles: ['vision'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'doubao-image', label: 'Seedream Image', vendor: 'ByteDance Seedream', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'doubao-image', label: 'Seedream Image', vendor: 'ByteDance Seedream', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
   },
@@ -70,15 +70,19 @@ function installBackend(registry = registryV1, options = {}) {
       })
     }
     if (body.action === 'createJob') return Response.json({ code: 0, jobId: `job-${requests.length}`, status: 'queued' })
-    if (body.action === 'getJob') return Response.json({ code: 0, job: { id: body.jobId, status: 'succeeded', resultImages: [], stages: [] } })
+    if (body.action === 'refineImage') return Response.json({ code: 0, jobId: `refine-${requests.length}`, status: 'queued' })
+    if (body.action === 'getJob') {
+      if (options.getJob) return Response.json({ code: 0, job: options.getJob(body) })
+      return Response.json({ code: 0, job: { id: body.jobId, status: 'succeeded', resultImages: [], stages: [] } })
+    }
     throw new Error(`unexpected request ${JSON.stringify(body)}`)
   }
   restoreFetch = () => { globalThis.fetch = previousFetch }
   return requests
 }
 
-async function renderReadyApp(registry = registryV1) {
-  const requests = installBackend(registry)
+async function renderReadyApp(registry = registryV1, options = {}) {
+  const requests = installBackend(registry, options)
   const user = userEvent.setup()
   render(React.createElement(App))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
@@ -341,6 +345,89 @@ test('refine tab independently shows route summary and opens shared settings foc
   assert.ok(screen.getByLabelText('阿里百炼 接入密钥'))
 })
 
+test('refine resolution choices use refine metadata while generation keeps its separate resolution metadata', async () => {
+  const { user } = await renderReadyApp()
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  assert.deepEqual([...screen.getByLabelText('输出清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+
+  await user.click(screen.getByRole('button', { name: '精修图片' }))
+  const refineResolutionSelect = await screen.findByLabelText('清晰度')
+  assert.deepEqual([...refineResolutionSelect.options].map((option) => option.value), ['1K', '2K'])
+
+  await user.click(screen.getByRole('button', { name: '精修设置' }))
+  await user.click(screen.getByRole('button', { name: 'OpenAI' }))
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  assert.deepEqual([...screen.getByLabelText('清晰度').options].map((option) => option.value), ['2K'])
+})
+
+test('Gemini and Ark expose their declared 4K refine capability', async () => {
+  const { user } = await renderReadyApp()
+  await user.click(screen.getByRole('button', { name: '精修图片' }))
+  await user.click(await screen.findByRole('button', { name: '精修设置' }))
+  await user.click(screen.getByRole('button', { name: 'Google Gemini API' }))
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  assert.deepEqual([...screen.getByLabelText('清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
+
+  await user.click(screen.getByRole('button', { name: '精修设置' }))
+  await user.click(screen.getByRole('button', { name: '火山方舟' }))
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  assert.deepEqual([...screen.getByLabelText('清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
+})
+
+test('legacy registry without refine resolution metadata fails safe to 2K only', async () => {
+  const legacyRegistry = structuredClone(registryV1)
+  delete legacyRegistry.providers.bailian.models.find((model) => model.id === 'wan2.7-image-pro').capabilities.refineResolutions
+  const { user } = await renderReadyApp(legacyRegistry)
+  await user.click(screen.getByRole('button', { name: '精修图片' }))
+  const refineResolutionSelect = await screen.findByLabelText('清晰度')
+  assert.deepEqual([...refineResolutionSelect.options].map((option) => option.value), ['2K'])
+})
+
+test('model without supported refine resolutions shows an honest disabled capability state', async () => {
+  const unsupportedRegistry = structuredClone(registryV1)
+  unsupportedRegistry.providers.bailian.models.find((model) => model.id === 'wan2.7-image-pro').capabilities.refineResolutions = []
+  const { user } = await renderReadyApp(unsupportedRegistry)
+  await user.click(screen.getByRole('button', { name: '精修图片' }))
+  assert.ok((await screen.findAllByText(/未声明可执行的精修清晰度/)).length >= 1)
+  assert.equal(screen.queryByLabelText('清晰度'), null)
+  assert.equal(screen.getByRole('button', { name: '提交精修' }).disabled, true)
+})
+
+test('switching from a 4K refine model to a 2K-only model normalizes before rendered submit', async () => {
+  const { requests, user } = await renderReadyApp(registryV1, {
+    getJob: ({ jobId }) => ({
+      id: jobId,
+      status: 'succeeded',
+      outputFormat: 'png',
+      resultImages: [{ filename: 'result.png', candidateId: 0, mimeType: 'image/png', url: '/result.png', objectKey: `jobs/${jobId}/result.png` }],
+      stages: [],
+    }),
+  })
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  await user.click(submitButton())
+  await user.click(await screen.findByRole('button', { name: '精修候选图 1' }))
+
+  await user.click(await screen.findByRole('button', { name: '精修设置' }))
+  await user.click(screen.getByRole('button', { name: 'Google Gemini API' }))
+  await user.type(screen.getByLabelText('Google Gemini API 接入密钥'), 'gemini-key')
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  await user.selectOptions(screen.getByLabelText('清晰度'), '4K')
+
+  await user.click(screen.getByRole('button', { name: '精修设置' }))
+  await user.click(screen.getByRole('button', { name: 'OpenAI' }))
+  await user.type(screen.getByLabelText('OpenAI 接入密钥'), 'openai-key')
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  await waitFor(() => assert.equal(screen.getByLabelText('清晰度').value, '2K'))
+  await user.type(screen.getByLabelText('精修指令'), '放大标签并保持版式')
+  await user.click(screen.getByRole('button', { name: '提交精修' }))
+
+  await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'refineImage')))
+  assert.equal(requests.find((request) => request.body?.action === 'refineImage').body.imageSize, '2K')
+})
+
 test('opening refine settings preserves legacy simple routing instead of forcing unsupported advanced mode', async () => {
   const legacyRegistry = { ...registryV1, routeContractVersion: 0, supportsModelRoutes: false }
   const { user } = await renderReadyApp(legacyRegistry)
@@ -356,7 +443,7 @@ test('refine model selection stays PNG-capable after the generation output was c
   await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  await user.selectOptions(await screen.findByLabelText('清晰度'), '4K')
+  await user.selectOptions(await screen.findByLabelText('清晰度'), '1K')
   await user.selectOptions(screen.getByLabelText('目标比例'), '1:1')
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
   assert.equal(screen.queryByLabelText('导出格式'), null)
@@ -367,6 +454,6 @@ test('refine model selection stays PNG-capable after the generation output was c
   const modelBrowser = screen.getByRole('region', { name: '具体模型列表' })
   assert.ok([...modelBrowser.querySelectorAll('button')].some((button) => button.textContent.includes('Wan Image')))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
-  assert.equal(screen.getByLabelText('清晰度').value, '4K')
+  assert.equal(screen.getByLabelText('清晰度').value, '1K')
   assert.equal(screen.getByLabelText('目标比例').value, '1:1')
 })

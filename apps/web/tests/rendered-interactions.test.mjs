@@ -22,7 +22,7 @@ const bailianRegistry = {
         {
           id: 'image-png', label: 'PNG Image Model', vendor: 'Alibaba Wan', roles: ['image'],
           selectable: true, inputModalities: ['text'], outputModalities: ['image'],
-          capabilities: { resolutions: ['1K'], outputFormats: ['png'] },
+          capabilities: { resolutions: ['1K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] },
         },
       ],
     },
