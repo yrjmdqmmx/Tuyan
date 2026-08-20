@@ -156,6 +156,19 @@ test('getJobRequest preserves Core routing metadata in camel and snake forms wit
   }
 });
 
+test('getJobRequest treats a missing historical configuration mode as simple', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    job: { _id: 'legacy-simple-job', status: 'succeeded' },
+  } }));
+  try {
+    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'legacy-simple-job');
+    assert.equal(job.configuration_mode, 'simple');
+  } finally {
+    fetchMock.restore();
+  }
+});
+
 test('refineImageRequest sends image edit payload to gateway/Laf', async () => {
   const fetchMock = mockJsonFetch(() => ({ body: {
     code: 0,

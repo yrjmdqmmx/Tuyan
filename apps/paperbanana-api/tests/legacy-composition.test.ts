@@ -827,7 +827,7 @@ test('refine dispatch retains image only for direct edit and vision plus image f
     'owned/analyze.png': Buffer.from('analyze-source'),
   }
   state.inserts = []
-  const calls: Array<{ url: string; authorization: string; googleKey: string }> = []
+  const calls: Array<{ url: string; authorization: string; googleKey: string; body: any }> = []
   legacy.configureRuntimeFetch(async (input, init) => {
     const url = String(input)
     const headers = new Headers(init?.headers)
@@ -835,6 +835,7 @@ test('refine dispatch retains image only for direct edit and vision plus image f
       url,
       authorization: headers.get('authorization') || '',
       googleKey: headers.get('x-goog-api-key') || '',
+      body: typeof init?.body === 'string' ? JSON.parse(init.body) : init?.body,
     })
     if (url.includes('generativelanguage.googleapis.com/v1beta/interactions')) {
       return Response.json({ output_image: { data: Buffer.alloc(120, 2).toString('base64'), mime_type: 'image/png' } })
@@ -855,6 +856,7 @@ test('refine dispatch retains image only for direct edit and vision plus image f
     const direct = await invoke({
       action: 'refineImage', provider: 'bailian', configurationMode: 'advanced',
       apiKeys: { gemini: 'direct-image-secret' }, sourceImageObjectKey: 'owned/direct.png', editInstruction: 'Make labels clearer.',
+      imageSize: '4K',
       modelRoutes: {
         main: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
         image: { accessProvider: 'gemini', modelId: 'gemini-3.1-flash-image' },
@@ -866,6 +868,7 @@ test('refine dispatch retains image only for direct edit and vision plus image f
     assert.deepEqual(calls.map((call) => [new URL(call.url).hostname, call.authorization, call.googleKey]), [
       ['generativelanguage.googleapis.com', '', 'direct-image-secret'],
     ])
+    assert.equal(calls[0].body.response_format.image_size, '4K')
 
     calls.length = 0
     const analyzed = await invoke({
@@ -886,6 +889,9 @@ test('refine dispatch retains image only for direct edit and vision plus image f
       ['https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', 'Bearer redraw-image-secret', ''],
       ['https://cdn.invalid/refined.png', '', ''],
     ])
+    const source = fs.readFileSync(legacyPath, 'utf8')
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K'\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K'\)/)
   } finally {
     legacy.configureRuntimeFetch()
     state.ossWriteMode = previousWriteMode

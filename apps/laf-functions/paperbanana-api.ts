@@ -3225,7 +3225,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
     const editPrompt = refineEditPrompt(body.editInstruction, body.imageSize || '2K')
     description = editPrompt
     const renderStartedAt = new Date()
-    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl)
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K')
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -3267,7 +3267,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
 
     await appendLog(jobId, 'Refine: rendering edited image')
     const renderStartedAt = new Date()
-    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9')
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K')
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,

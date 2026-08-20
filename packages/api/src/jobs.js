@@ -436,7 +436,7 @@ function normalizeJob(job = {}) {
     job_type: job.job_type || job.jobType || 'generate',
     user_id: job.user_id || job.userId || '',
     user_email: job.user_email || job.userEmail || '',
-    configuration_mode: job.configuration_mode || job.configurationMode || 'advanced',
+    configuration_mode: job.configuration_mode || job.configurationMode || 'simple',
     method_content: job.method_content || job.methodContent || '',
     caption: job.caption || '',
     infographic_category: job.infographic_category || job.infographicCategory || '方法框架图',
