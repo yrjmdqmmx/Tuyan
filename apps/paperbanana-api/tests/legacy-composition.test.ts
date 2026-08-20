@@ -1786,6 +1786,12 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
       'https://ark.cn-beijing.volces.com/api/v3/images/generations',
     ])
     assert.match(JSON.stringify(calls[1].body), /data:image\/png;base64/)
+    const visionProbeImageUrl = calls[1].body.messages[0].content
+      .find((part: any) => part.type === 'image_url')?.image_url?.url
+    const visionProbeImage = Buffer.from(String(visionProbeImageUrl).split(',', 2)[1] || '', 'base64')
+    assert.equal(visionProbeImage.subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+    assert.ok(visionProbeImage.readUInt32BE(16) >= 14, 'Ark vision probe must meet the provider minimum width')
+    assert.ok(visionProbeImage.readUInt32BE(20) >= 14, 'Ark vision probe must meet the provider minimum height')
     assert.equal(calls[1].body.max_tokens, 8)
     assert.equal(calls[2].body.response_format, 'b64_json')
     assert.equal(calls[2].body.size, '2K')

@@ -1661,7 +1661,10 @@ function publicProviderModelRegistry(registry: ProviderModelRegistry): ProviderM
   }
 }
 
-const arkInferenceProbeImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+VP5TAAAAAElFTkSuQmCC'
+// Ark rejects vision inputs smaller than 14px on either edge. Keep this tiny
+// 16x16 probe local and deterministic so account verification remains cheap
+// without producing a provider-side false negative.
+const arkInferenceProbeImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGklEQVR4nGP4TwAwMDDglx81YNSAUQOGiwEAgQHMXu6Cv40AAAAASUVORK5CYII='
 const maxArkInferenceProbeResponseBytes = 64 * 1024
 
 async function arkChatInferenceProbe(
