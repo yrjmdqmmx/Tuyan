@@ -2,6 +2,9 @@ import cloud from '@lafjs/cloud'
 import * as resvgWasm from '@resvg/resvg-wasm'
 import * as crypto from 'crypto'
 import * as fs from 'fs'
+import * as zlib from 'zlib'
+// @ts-expect-error jpeg-js exposes this pure decoder without a declaration file.
+import decodeJpeg from 'jpeg-js/lib/decoder'
 
 declare const require: any
 
@@ -29,7 +32,7 @@ function isProviderEgressUnavailable(error: any): boolean {
   return error?.code === providerEgressUnavailableCode
 }
 
-type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian'
+type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark'
 type JobStatus = 'queued' | 'running' | 'succeeded' | 'failed'
 type OutputFormat = 'png' | 'svg'
 type TaskName = 'diagram' | 'plot'
@@ -39,8 +42,15 @@ type ReferenceImageMode = 'auto' | 'main_model' | 'vision_model'
 type ReferenceImageModeUsed = 'none' | 'main_model' | 'vision_model'
 type ModelCapabilityStatus = 'supported' | 'unsupported' | 'unknown'
 type ModelRole = 'main' | 'image' | 'vision'
+type ModelRoute = { accessProvider: Provider; modelId: string }
+type ModelRoutes = { main: ModelRoute; image: ModelRoute; vision: ModelRoute }
+type ModelRoutingMode = 'single' | 'mixed'
+type ModelRoutingSource = 'explicit' | 'legacy-derived'
+type RouteSecrets = Partial<Record<Provider, string>>
 type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only'
+type ProviderAccessKind = 'direct' | 'aggregator'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
+type ImageResolution = '1K' | '2K' | '4K'
 type ModelProtocol =
   | 'openai-chat-completions'
   | 'openai-responses'
@@ -49,6 +59,8 @@ type ModelProtocol =
   | 'gemini-interactions'
   | 'bailian-openai-chat'
   | 'bailian-multimodal-generation'
+  | 'ark-openai-chat'
+  | 'ark-images'
   | 'openrouter-chat-completions'
   | 'openrouter-images'
 type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
@@ -60,12 +72,14 @@ type ApiKeys = {
   gemini?: string
   openai?: string
   bailian?: string
+  ark?: string
 }
 
 type CreateJobBody = {
   action: 'createJob'
   provider: Provider
   apiKeys: ApiKeys
+  modelRoutes?: ModelRoutes
   configurationMode?: string
   clientPlatform?: ClientPlatform
   taskName?: TaskName
@@ -76,8 +90,8 @@ type CreateJobBody = {
   userEmail?: string
   outputFormat?: OutputFormat
   output_format?: OutputFormat
-  mainModelName: string
-  imageModelName: string
+  mainModelName?: string
+  imageModelName?: string
   referenceVisionModelName?: string
   referenceImageMode?: ReferenceImageMode
   referenceImageModeUsed?: ReferenceImageModeUsed
@@ -86,7 +100,7 @@ type CreateJobBody = {
   retrievalSetting?: RetrievalSetting
   manualReferenceIds?: string[]
   aspectRatio?: '16:9' | '21:9' | '3:2' | '1:1'
-  imageSize?: '1K' | '2K' | '4K'
+  imageSize?: ImageResolution
   numCandidates?: number
   maxCriticRounds?: number
   imageRefineMode?: ImageEditMode
@@ -97,14 +111,16 @@ type RefineImageBody = {
   action: 'refineImage'
   provider: Provider
   apiKeys: ApiKeys
+  configurationMode?: string
+  modelRoutes?: ModelRoutes
   mainModelName?: string
-  imageModelName: string
+  imageModelName?: string
   referenceVisionModelName?: string
   sourceImageUrl?: string
   sourceImageObjectKey?: string
   editInstruction: string
   aspectRatio?: '16:9' | '21:9' | '3:2' | '1:1'
-  imageSize?: '2K' | '4K'
+  imageSize?: ImageResolution
   userId?: string
   userEmail?: string
   clientPlatform?: ClientPlatform
@@ -112,10 +128,21 @@ type RefineImageBody = {
   refineReason?: string
 }
 
-type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys'> & {
+type ModelRoutingMetadata = {
+  provider: Provider
+  modelRoutes: ModelRoutes
+  routingMode: ModelRoutingMode
+  modelRoutingVersion: 1
+  modelRoutingSource: ModelRoutingSource
+  mainModelName: string
+  imageModelName: string
+  referenceVisionModelName: string
+}
+
+type CreateExecutionBody = Omit<CreateJobBody, 'apiKeys' | keyof ModelRoutingMetadata> & ModelRoutingMetadata & {
   prevalidatedManualReferences?: RetrievedReference[]
 }
-type RefineExecutionBody = Omit<RefineImageBody, 'apiKeys'>
+type RefineExecutionBody = Omit<RefineImageBody, 'apiKeys' | keyof ModelRoutingMetadata> & ModelRoutingMetadata
 type JobAdmissionConfig = {
   maxActive: number
   maxPending: number
@@ -127,19 +154,199 @@ type AdmittedJobTask = {
   jobId: string
   kind: 'create' | 'refine'
   body: CreateExecutionBody | RefineExecutionBody
-  apiKey: string
+  routeSecrets: RouteSecrets
   numCandidates?: number
   maxCriticRounds?: number
 }
 
+function definedExecutionFields<T extends Record<string, unknown>>(fields: T): T {
+  return Object.fromEntries(Object.entries(fields).filter(([, value]) => value !== undefined)) as T
+}
+
 export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody {
-  const { apiKeys: _apiKeys, ...executionBody } = body
-  return executionBody
+  const routed = body as CreateJobBody & ModelRoutingMetadata
+  return definedExecutionFields({
+    action: 'createJob',
+    provider: routed.provider,
+    modelRoutes: routed.modelRoutes,
+    routingMode: routed.routingMode,
+    modelRoutingVersion: routed.modelRoutingVersion,
+    modelRoutingSource: routed.modelRoutingSource,
+    mainModelName: routed.mainModelName,
+    imageModelName: routed.imageModelName,
+    referenceVisionModelName: routed.referenceVisionModelName,
+    configurationMode: routed.configurationMode,
+    clientPlatform: routed.clientPlatform,
+    taskName: routed.taskName,
+    methodContent: routed.methodContent,
+    caption: routed.caption,
+    infographicCategory: routed.infographicCategory,
+    userId: routed.userId,
+    userEmail: routed.userEmail,
+    outputFormat: routed.outputFormat,
+    referenceImageMode: routed.referenceImageMode,
+    referenceImageModeUsed: routed.referenceImageModeUsed,
+    referenceImages: routed.referenceImages,
+    pipelineMode: routed.pipelineMode,
+    retrievalSetting: routed.retrievalSetting,
+    manualReferenceIds: routed.manualReferenceIds,
+    aspectRatio: routed.aspectRatio,
+    imageSize: routed.imageSize,
+  })
 }
 
 export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBody {
-  const { apiKeys: _apiKeys, ...executionBody } = body
-  return executionBody
+  const routed = body as RefineImageBody & ModelRoutingMetadata
+  return definedExecutionFields({
+    action: 'refineImage',
+    provider: routed.provider,
+    modelRoutes: routed.modelRoutes,
+    routingMode: routed.routingMode,
+    modelRoutingVersion: routed.modelRoutingVersion,
+    modelRoutingSource: routed.modelRoutingSource,
+    mainModelName: routed.mainModelName,
+    imageModelName: routed.imageModelName,
+    referenceVisionModelName: routed.referenceVisionModelName,
+    configurationMode: routed.configurationMode,
+    sourceImageUrl: routed.sourceImageUrl,
+    sourceImageObjectKey: routed.sourceImageObjectKey,
+    editInstruction: routed.editInstruction,
+    aspectRatio: routed.aspectRatio,
+    imageSize: routed.imageSize,
+    userId: routed.userId,
+    userEmail: routed.userEmail,
+    clientPlatform: routed.clientPlatform,
+    refineMode: routed.refineMode,
+    refineReason: routed.refineReason,
+  })
+}
+
+const routeContractVersion = 1 as const
+const modelIdMaxLength = 120
+const recognizedRouteProviders = new Set<Provider>(['openrouter', 'gemini', 'openai', 'bailian', 'ark'])
+
+function modelRouteError(message: string, businessCode = 'MODEL_ROUTE_INVALID') {
+  const error: any = new Error(message)
+  error.statusCode = 400
+  error.businessCode = businessCode
+  return error
+}
+
+function normalizeModelRoute(value: any, role: ModelRole): ModelRoute {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw modelRouteError(`modelRoutes.${role} must be an object`)
+  }
+  const accessProvider = String(value.accessProvider || '').trim() as Provider
+  const rawModelId = typeof value.modelId === 'string' ? value.modelId.trim() : ''
+  if (!recognizedRouteProviders.has(accessProvider)) {
+    throw modelRouteError(`modelRoutes.${role}.accessProvider is invalid`)
+  }
+  if (!rawModelId || rawModelId.length > modelIdMaxLength) {
+    throw modelRouteError(`modelRoutes.${role}.modelId must be between 1 and ${modelIdMaxLength} characters`)
+  }
+  return { accessProvider, modelId: normalizeModelName(accessProvider, rawModelId) }
+}
+
+function hasLegacyModelValue(value: unknown) {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
+export function resolveModelRouting(body: Record<string, any>): ModelRoutingMetadata {
+  const explicit = body.modelRoutes !== undefined && body.modelRoutes !== null
+  let modelRoutes: ModelRoutes
+  let modelRoutingSource: ModelRoutingSource
+
+  if (explicit) {
+    if (!body.modelRoutes || typeof body.modelRoutes !== 'object' || Array.isArray(body.modelRoutes)) {
+      throw modelRouteError('modelRoutes must be an object')
+    }
+    modelRoutes = {
+      main: normalizeModelRoute(body.modelRoutes.main, 'main'),
+      image: normalizeModelRoute(body.modelRoutes.image, 'image'),
+      vision: normalizeModelRoute(body.modelRoutes.vision, 'vision'),
+    }
+    const legacyProvider = String(body.provider || '').trim()
+    const conflicts = [
+      Boolean(legacyProvider && legacyProvider !== modelRoutes.main.accessProvider),
+      Boolean(hasLegacyModelValue(body.mainModelName)
+        && normalizeModelName(modelRoutes.main.accessProvider, String(body.mainModelName).trim()) !== modelRoutes.main.modelId),
+      Boolean(hasLegacyModelValue(body.imageModelName)
+        && normalizeModelName(modelRoutes.image.accessProvider, String(body.imageModelName).trim()) !== modelRoutes.image.modelId),
+      Boolean(hasLegacyModelValue(body.referenceVisionModelName)
+        && normalizeModelName(modelRoutes.vision.accessProvider, String(body.referenceVisionModelName).trim()) !== modelRoutes.vision.modelId),
+    ]
+    if (conflicts.some(Boolean)) {
+      throw modelRouteError('Legacy model fields conflict with modelRoutes', 'MODEL_ROUTE_CONFLICT')
+    }
+    modelRoutingSource = 'explicit'
+  } else {
+    const provider = String(body.provider || '').trim() as Provider
+    if (!recognizedRouteProviders.has(provider)) throw modelRouteError('Invalid provider')
+    const mainModelName = typeof body.mainModelName === 'string' ? body.mainModelName.trim() : ''
+    const imageModelName = typeof body.imageModelName === 'string' ? body.imageModelName.trim() : ''
+    const visionModelName = typeof body.referenceVisionModelName === 'string' && body.referenceVisionModelName.trim()
+      ? body.referenceVisionModelName.trim()
+      : mainModelName
+    modelRoutes = {
+      main: normalizeModelRoute({ accessProvider: provider, modelId: mainModelName }, 'main'),
+      image: normalizeModelRoute({ accessProvider: provider, modelId: imageModelName }, 'image'),
+      vision: normalizeModelRoute({ accessProvider: provider, modelId: visionModelName }, 'vision'),
+    }
+    modelRoutingSource = 'legacy-derived'
+  }
+
+  const routingMode: ModelRoutingMode = new Set(Object.values(modelRoutes).map((route) => route.accessProvider)).size === 1
+    ? 'single'
+    : 'mixed'
+  if (body.configurationMode === 'simple' && routingMode === 'mixed') {
+    throw modelRouteError('Mixed model routes require advanced configuration mode', 'MODEL_ROUTE_MIXED_NOT_ALLOWED')
+  }
+  return {
+    modelRoutes,
+    routingMode,
+    modelRoutingVersion: routeContractVersion,
+    modelRoutingSource,
+    provider: modelRoutes.main.accessProvider,
+    mainModelName: modelRoutes.main.modelId,
+    imageModelName: modelRoutes.image.modelId,
+    referenceVisionModelName: modelRoutes.vision.modelId,
+  }
+}
+
+function uniqueRouteRoles(roles: ModelRole[]) {
+  const requested = new Set(roles)
+  return (['main', 'image', 'vision'] as ModelRole[]).filter((role) => requested.has(role))
+}
+
+export function requiredCreateRouteRoles(body: Record<string, any>, maxCriticRounds: number): ModelRole[] {
+  const roles: ModelRole[] = []
+  const outputFormat = normalizeOutputFormat(body.outputFormat || body.output_format)
+  const taskName = normalizeTaskName(body.taskName)
+  const pipelineMode = body.pipelineMode || 'planner_critic'
+  if (outputFormat === 'svg' || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
+  if (outputFormat === 'png' && taskName !== 'plot') roles.push('image')
+  if (taskName === 'plot' && (body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') roles.push('image')
+  if ((body.referenceImages || []).length) roles.push(body.referenceImageModeUsed === 'main_model' ? 'main' : 'vision')
+  if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
+  return uniqueRouteRoles(roles)
+}
+
+export function requiredRefineRouteRoles(body: Record<string, any>): ModelRole[] {
+  return body.refineMode === 'direct-edit' ? ['image'] : ['vision', 'image']
+}
+
+export function selectRequiredRouteSecrets(
+  routes: ModelRoutes,
+  apiKeys: ApiKeys,
+  roles: ModelRole[],
+): RouteSecrets {
+  const selected: RouteSecrets = {}
+  for (const role of roles) {
+    const provider = routes[role].accessProvider
+    const secret = selectApiKey(provider, apiKeys)
+    if (secret) selected[provider] = secret
+  }
+  return selected
 }
 
 export function createJobAdmissionController(
@@ -210,8 +417,12 @@ export function createJobAdmissionController(
       try {
         await dependencies.execute(task)
       } catch (error: any) {
+        const safeTaskError = redactSecretText(
+          error?.message || String(error),
+          Object.values(task.routeSecrets || {}).filter(Boolean) as string[],
+        )
         try {
-          await dependencies.markFailed(task.jobId, error?.message || String(error))
+          await dependencies.markFailed(task.jobId, safeTaskError)
         } catch (persistenceError: any) {
           try {
             dependencies.logError(
@@ -443,6 +654,16 @@ type ModelRegistryBody = {
   provider?: Provider
 }
 
+type ProviderAccountCatalogBody = {
+  action: 'providerAccountCatalog'
+  provider?: Provider
+  apiKeys?: ApiKeys
+  userId?: string
+  userEmail?: string
+  probes?: Array<{ role: ModelRole; modelId: string }>
+  confirmPaidImageProbe?: boolean
+}
+
 type ModelRegistryEntry = {
   id: string
   label: string
@@ -455,6 +676,8 @@ type ModelRegistryEntry = {
   outputModalities: string[]
   verified: boolean
   selectable: boolean
+  releasedAt: string | null
+  officialSourceUrl: string
   disabledReason?: string
   roles: ModelRole[]
   roleReasons: Partial<Record<ModelRole, string>>
@@ -463,6 +686,7 @@ type ModelRegistryEntry = {
     imageGeneration: boolean
     imageEditing: boolean
     imageEditMode: ImageEditMode
+    refineResolutions: ImageResolution[]
     resolutions?: string[]
     outputFormats?: string[]
   }
@@ -471,6 +695,9 @@ type ModelRegistryEntry = {
 }
 
 type ProviderModelRegistry = {
+  accessKind: ProviderAccessKind
+  routeContractVersion: 1
+  accountCatalogRequired: boolean
   defaults: { main: string; image: string; vision: string }
   models: ModelRegistryEntry[]
 }
@@ -561,6 +788,7 @@ type RequestBody =
   | AccountDeletionCapabilityBody
   | ModelCapabilityBody
   | ModelRegistryBody
+  | ProviderAccountCatalogBody
   | ReferenceLibraryBody
   | ImportReferencesBody
   | EvaluateJobBody
@@ -604,6 +832,11 @@ let lastAccountDeletionSweepAt = 0
 let accountDeletionSweepTimer: any = null
 let openRouterDedicatedImageModelCache: { expiresAt: number; models: Map<string, OpenRouterCatalogModel> } | null = null
 let resvgWasmPromise: Promise<ResvgWasmModule> | null = null
+const providerAccountProbeMaxActive = 4
+const providerAccountProbeDefaultTimeoutMs = 12_000
+let providerAccountProbeActive = 0
+const providerAccountProbeOwners = new Map<string, number>()
+const providerAccountProbeIps = new Map<string, number>()
 
 const benchZipUrlDefault = 'https://huggingface.co/datasets/dwzhu/PaperBananaBench/resolve/main/PaperBananaBench.zip'
 const benchZipCachePath = '/tmp/paperbananabench.zip'
@@ -617,14 +850,41 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-19.v2'
+const modelRegistryVersion = '2026-08-20.v5'
 const referenceCorpusVersion = 'zh-CN.v2'
+const canonicalImageResolutions: ImageResolution[] = ['1K', '2K', '4K']
+
+function canonicalRefineResolutions(values: unknown): ImageResolution[] {
+  const declared = new Set(Array.isArray(values) ? values.map(String) : [])
+  return canonicalImageResolutions.filter((value) => declared.has(value))
+}
 
 type RegistryEntryMetadata = Partial<Pick<
   ModelRegistryEntry,
   'vendor' | 'lifecycle' | 'recommended' | 'requiresEntitlement' | 'entitlement' |
-  'inputModalities' | 'outputModalities' | 'verified' | 'selectable' | 'disabledReason' | 'roleReasons'
+  'inputModalities' | 'outputModalities' | 'verified' | 'selectable' | 'releasedAt' |
+  'officialSourceUrl' | 'disabledReason' | 'roleReasons'
 >>
+
+function officialSourceUrlForProtocol(protocol: ModelProtocol) {
+  if (protocol === 'gemini-generate-content' || protocol === 'gemini-interactions') {
+    return 'https://ai.google.dev/gemini-api/docs/models'
+  }
+  if (protocol === 'openai-images') return 'https://developers.openai.com/api/docs/guides/images-vision'
+  if (protocol === 'openai-chat-completions' || protocol === 'openai-responses') {
+    return 'https://developers.openai.com/api/docs/models'
+  }
+  if (protocol === 'bailian-openai-chat' || protocol === 'bailian-multimodal-generation') {
+    return 'https://help.aliyun.com/en/model-studio/models'
+  }
+  if (protocol === 'ark-openai-chat' || protocol === 'ark-images') {
+    return 'https://www.volcengine.com/docs/82379'
+  }
+  if (protocol === 'openrouter-images') {
+    return 'https://openrouter.ai/docs/guides/overview/multimodal/image-generation'
+  }
+  return 'https://openrouter.ai/docs/guides/overview/models'
+}
 
 function registryEntry(
   id: string,
@@ -650,6 +910,8 @@ function registryEntry(
     outputModalities: metadata.outputModalities || (imageGeneration ? ['image'] : ['text']),
     verified: metadata.verified !== false,
     selectable: metadata.selectable !== false,
+    releasedAt: metadata.releasedAt ?? null,
+    officialSourceUrl: metadata.officialSourceUrl || officialSourceUrlForProtocol(protocol),
     ...(metadata.disabledReason ? { disabledReason: metadata.disabledReason } : {}),
     roles,
     roleReasons: metadata.roleReasons || Object.fromEntries(roles.map((role) => [role, `${label} is registered for ${role}`])),
@@ -661,15 +923,20 @@ function registryEntry(
       imageEditing,
       imageEditMode: imageGeneration ? (imageEditing ? 'direct-edit' : 'analyze-redraw') : 'none',
       ...options,
+      refineResolutions: canonicalRefineResolutions(options.refineResolutions),
     },
   }
 }
 
 const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModelRegistry> = {
   gemini: {
-    defaults: { main: 'gemini-3.6-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.6-flash' },
+    accessKind: 'direct',
+    routeContractVersion,
+    accountCatalogRequired: false,
+    defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
     models: [
-      registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; recommended Gemini text and vision model', {}, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.7-flash', 'Gemini 3.7 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; recommended Gemini text and vision model', {}, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini Flash model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.5-flash', 'Gemini 3.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable frontier Flash model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.5-flash-lite', 'Gemini 3.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable low-cost model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.1-flash-lite', 'Gemini 3.1 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Stable high-volume model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
@@ -678,38 +945,45 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('gemini-2.5-pro', 'Gemini 2.5 Pro', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-2.5-flash', 'Gemini 2.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-interactions', 'Stable image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-interactions', 'Stable low-latency image generation and direct editing; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-interactions', 'Stable professional image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Legacy generateContent image model; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], outputFormats: ['png'] }, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-interactions', 'Stable image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-interactions', 'Stable low-latency image generation and direct editing; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-interactions', 'Stable professional image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Legacy generateContent image model; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], outputFormats: ['png'] }, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
     ],
   },
   bailian: {
-    defaults: { main: 'qwen3.7-plus', image: 'wan2.7-image-pro', vision: 'qwen3.7-plus' },
+    accessKind: 'aggregator',
+    routeContractVersion,
+    accountCatalogRequired: true,
+    defaults: { main: 'qwen3.8-max', image: 'wan2.7-image-pro', vision: 'qwen3.7-plus' },
     models: [
+      registryEntry('qwen3.8-max', 'Qwen3.8 Max', ['main'], 'bailian-openai-chat', 'Stable main model; access varies by account, workspace, and region', {}, { vendor: 'Alibaba Qwen', recommended: true, requiresEntitlement: true, entitlement: 'workspace-access' }),
       registryEntry('qwen3.7-plus', 'Qwen3.7 Plus', ['main', 'vision'], 'bailian-openai-chat', 'Stable visual model; recommended default', {}, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('qwen3.7-flash', 'Qwen3.7 Flash', ['main', 'vision'], 'bailian-openai-chat', 'Stable lower-latency visual model', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('qwen3.8-max-preview', 'Qwen3.8 Max Preview', ['main', 'vision'], 'bailian-openai-chat', 'Preview; requires Model Studio Token Plan entitlement', {}, { vendor: 'Alibaba Qwen', lifecycle: 'preview', requiresEntitlement: true, entitlement: 'token-plan', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('qwen3.8-max-preview', 'Qwen3.8 Max Preview', ['main'], 'bailian-openai-chat', 'Preview compatibility entry; requires Model Studio Token Plan entitlement', {}, { vendor: 'Alibaba Qwen', lifecycle: 'preview', requiresEntitlement: true, entitlement: 'token-plan' }),
       registryEntry('deepseek-v4-pro', 'DeepSeek V4 Pro', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'DeepSeek' }),
       registryEntry('deepseek-v4-flash', 'DeepSeek V4 Flash', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'DeepSeek' }),
       registryEntry('glm-5.2', 'GLM 5.2', ['main'], 'bailian-openai-chat', 'Third-party model; availability varies by workspace region', {}, { vendor: 'Zhipu' }),
       registryEntry('kimi/kimi-k3', 'Kimi K3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'Moonshot AI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('MiniMax/MiniMax-M3', 'MiniMax M3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'MiniMax', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('qwen3.5-omni-plus', 'Qwen3.5 Omni Plus', ['vision'], 'bailian-openai-chat', 'Multimodal understanding; Beijing and Singapore', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image', 'audio', 'video'], outputModalities: ['text'] }),
-      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('z-image-turbo', 'Z-Image Turbo', ['image'], 'bailian-multimodal-generation', 'Fast text-to-image model; refine uses analyze and redraw', { resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Tongyi-MAI', inputModalities: ['text'], outputModalities: ['image'] }),
+      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('z-image-turbo', 'Z-Image Turbo', ['image'], 'bailian-multimodal-generation', 'Fast text-to-image model; refine uses analyze and redraw', { resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Tongyi-MAI', inputModalities: ['text'], outputModalities: ['image'] }),
     ],
   },
   openai: {
+    accessKind: 'direct',
+    routeContractVersion,
+    accountCatalogRequired: false,
     defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
     models: [
-      registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model', {}, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
+      registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model', {}, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
+      registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
+      registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
       registryEntry('gpt-5.5', 'GPT-5.5', ['main', 'vision'], 'openai-chat-completions', 'Current general model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-5.5-pro', 'GPT-5.5 Pro', ['main', 'vision'], 'openai-responses', 'Responses API Pro model', {}, { vendor: 'OpenAI', requiresEntitlement: true, entitlement: 'usage-tier', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-5.4', 'GPT-5.4', ['main', 'vision'], 'openai-chat-completions', 'Current general model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
@@ -719,9 +993,74 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('gpt-5-mini', 'GPT-5 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-4.1', 'GPT-4.1', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-4.1-mini', 'GPT-4.1 Mini', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+    ],
+  },
+  ark: {
+    accessKind: 'aggregator',
+    routeContractVersion,
+    accountCatalogRequired: true,
+    defaults: {
+      main: 'doubao-seed-2-0-mini-260428',
+      image: 'doubao-seedream-4-0-250828',
+      vision: 'doubao-seed-2-0-mini-260428',
+    },
+    models: [
+      registryEntry(
+        'doubao-seed-2-0-lite-260428',
+        'Doubao Seed 2.0 Lite',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Static official model scaffold; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao',
+          requiresEntitlement: true,
+          entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'],
+          outputModalities: ['text'],
+          verified: false,
+          officialSourceUrl: 'https://www.volcengine.com/docs/82379/1330310',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-2-0-mini-260428',
+        'Doubao Seed 2.0 Mini',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Static official model scaffold; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao',
+          recommended: true,
+          requiresEntitlement: true,
+          entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'],
+          outputModalities: ['text'],
+          verified: false,
+          officialSourceUrl: 'https://www.volcengine.com/docs/82379/1330310',
+        },
+      ),
+      registryEntry(
+        'doubao-seedream-4-0-250828',
+        'Doubao Seedream 4.0',
+        ['image'],
+        'ark-images',
+        'Static official generation and direct-edit model scaffold; account availability requires an explicit inference smoke probe',
+        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png'] },
+        {
+          vendor: 'ByteDance Seedream',
+          recommended: true,
+          requiresEntitlement: true,
+          entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'],
+          outputModalities: ['image'],
+          verified: false,
+          officialSourceUrl: 'https://api.volcengine.com/api-docs/view?action=ImageGenerations&serviceCode=ark&version=2024-01-01',
+        },
+      ),
     ],
   },
 }
@@ -804,12 +1143,12 @@ function newGlobalJobAdmission(config: JobAdmissionConfig) {
         await runJob(
           task.jobId,
           task.body as CreateExecutionBody,
-          task.apiKey,
+          task.routeSecrets,
           task.numCandidates || 1,
           task.maxCriticRounds || 0,
         )
       } else {
-        await runRefineJob(task.jobId, task.body as RefineExecutionBody, task.apiKey)
+        await runRefineJob(task.jobId, task.body as RefineExecutionBody, task.routeSecrets)
       }
     },
     markFailed,
@@ -861,6 +1200,7 @@ const identityScopedActions = new Set([
   'prepareReferenceUpload',
   'finalizeReferenceUpload',
   'abortReferenceUpload',
+  'providerAccountCatalog',
   'deleteAccount',
 ])
 
@@ -908,6 +1248,9 @@ export default async function (ctx: FunctionContext) {
     if (action === 'modelRegistry') {
       return await modelRegistry(body as ModelRegistryBody)
     }
+    if (action === 'providerAccountCatalog') {
+      return await providerAccountCatalog(body as ProviderAccountCatalogBody, ctx)
+    }
     if (action === 'accountDeletionCapability') {
       return ok({ deletionContractVersion: 2 })
     }
@@ -943,7 +1286,8 @@ export default async function (ctx: FunctionContext) {
     }
     return fail(`Unknown action: ${action}`, 400)
   } catch (error: any) {
-    return fail(error?.message || String(error), 500)
+    console.error(`[paperbanana-api] request failed: ${redactSecretText(error?.message || String(error))}`)
+    return fail('Internal server error', 500)
   }
 }
 
@@ -1030,21 +1374,21 @@ async function abortReferenceUpload(body: ReferenceUploadLifecycleBody) {
 }
 
 async function modelCapability(body: ModelCapabilityBody) {
-  if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) return fail('Invalid provider', 400)
+  if (!['openrouter', 'gemini', 'openai', 'bailian', 'ark'].includes(body.provider)) return fail('Invalid provider', 400)
   if (!body.model) return fail('model is required', 400)
   return ok(await referenceModelCapability(body.provider, normalizeModelName(body.provider, body.model)))
 }
 
 async function modelRegistry(body: ModelRegistryBody) {
   const requestedProvider = body.provider
-  if (requestedProvider && !['openrouter', 'gemini', 'openai', 'bailian'].includes(requestedProvider)) {
+  if (requestedProvider && !['openrouter', 'gemini', 'openai', 'bailian', 'ark'].includes(requestedProvider)) {
     return fail('Invalid provider', 400)
   }
 
   const providers: Partial<Record<Provider, ProviderModelRegistry>> = {}
   const unavailableProviders: Partial<Record<Provider, string>> = {}
-  for (const provider of ['gemini', 'openai', 'bailian'] as const) {
-    if (!requestedProvider || requestedProvider === provider) providers[provider] = staticModelRegistry[provider]
+  for (const provider of ['gemini', 'openai', 'bailian', 'ark'] as const) {
+    if (!requestedProvider || requestedProvider === provider) providers[provider] = publicProviderModelRegistry(staticModelRegistry[provider])
   }
   if (!requestedProvider || requestedProvider === 'openrouter') {
     try {
@@ -1057,9 +1401,193 @@ async function modelRegistry(body: ModelRegistryBody) {
   }
   return ok({
     registryVersion: modelRegistryVersion,
+    routeContractVersion,
+    supportsModelRoutes: true,
     providers,
     ...(Object.keys(unavailableProviders).length ? { unavailableProviders } : {}),
   })
+}
+
+function publicProviderModelRegistry(registry: ProviderModelRegistry): ProviderModelRegistry {
+  return {
+    ...registry,
+    models: registry.models
+      .map((model, index) => ({ model, index }))
+      .sort((left, right) => {
+        if (left.model.releasedAt === null && right.model.releasedAt !== null) return 1
+        if (left.model.releasedAt !== null && right.model.releasedAt === null) return -1
+        if (left.model.releasedAt !== right.model.releasedAt) {
+          return String(right.model.releasedAt).localeCompare(String(left.model.releasedAt))
+        }
+        return left.index - right.index
+      })
+      .map(({ model }) => model),
+  }
+}
+
+const arkInferenceProbeImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+VP5TAAAAAElFTkSuQmCC'
+const maxArkInferenceProbeResponseBytes = 64 * 1024
+
+async function arkChatInferenceProbe(
+  model: string,
+  apiKey: string,
+  role: 'main' | 'vision',
+  signal?: AbortSignal,
+) {
+  const content = role === 'vision'
+    ? [
+        { type: 'text', text: 'Reply OK if this image is readable.' },
+        { type: 'image_url', image_url: { url: arkInferenceProbeImage } },
+      ]
+    : 'Reply OK.'
+  const response = await fetchWithRetry('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content }],
+      max_tokens: 8,
+      temperature: 0,
+    }),
+    signal,
+  }, `ark ${role} account probe`, 1)
+  const data = await parseBoundedModelResponse(response, maxArkInferenceProbeResponseBytes, 'Ark inference probe response')
+  const output = data.choices?.[0]?.message?.content
+  if (typeof output !== 'string' || !output.trim()) throw new Error('Empty Ark inference probe output')
+  return output
+}
+
+function providerAccountProbeTimeoutMs() {
+  const configured = Number(process.env.PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS || providerAccountProbeDefaultTimeoutMs)
+  if (!Number.isFinite(configured)) return providerAccountProbeDefaultTimeoutMs
+  return clamp(Math.round(configured), 100, 30_000)
+}
+
+async function runArkAccountProbe(
+  probe: { role: ModelRole; modelId: string },
+  apiKey: string,
+  deadline: { controller?: AbortController; expiresAt: number },
+) {
+  const remainingMs = deadline.expiresAt - Date.now()
+  if (remainingMs <= 0 || deadline.controller?.signal.aborted) {
+    throw new Error('Ark account probe deadline exceeded')
+  }
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const operation = probe.role === 'image'
+    ? callArkImage(probe.modelId, apiKey, 'A single black dot on a white background.', null, '1K', 1, deadline.controller?.signal)
+    : arkChatInferenceProbe(probe.modelId, apiKey, probe.role, deadline.controller?.signal)
+  try {
+    return await Promise.race([
+      operation,
+      new Promise<never>((_resolve, reject) => {
+        timer = setTimeout(() => {
+          deadline.controller?.abort(new Error('Ark account probe deadline exceeded'))
+          reject(new Error('Ark account probe deadline exceeded'))
+        }, remainingMs)
+      }),
+    ])
+  } finally {
+    if (timer) clearTimeout(timer)
+  }
+}
+
+function reserveProviderAccountProbe(body: ProviderAccountCatalogBody, ctx: FunctionContext): (() => void) | null {
+  const principal = jobAdmissionPrincipal(body, ctx)
+  const ownerActive = providerAccountProbeOwners.get(principal.ownerKey) || 0
+  const ipActive = providerAccountProbeIps.get(principal.ipKey) || 0
+  if (providerAccountProbeActive >= providerAccountProbeMaxActive || ownerActive >= 1 || ipActive >= 1) return null
+  providerAccountProbeActive += 1
+  providerAccountProbeOwners.set(principal.ownerKey, ownerActive + 1)
+  providerAccountProbeIps.set(principal.ipKey, ipActive + 1)
+  let released = false
+  return () => {
+    if (released) return
+    released = true
+    providerAccountProbeActive = Math.max(0, providerAccountProbeActive - 1)
+    decrementProbeAdmission(providerAccountProbeOwners, principal.ownerKey)
+    decrementProbeAdmission(providerAccountProbeIps, principal.ipKey)
+  }
+}
+
+function decrementProbeAdmission(counts: Map<string, number>, key: string) {
+  const next = (counts.get(key) || 0) - 1
+  if (next > 0) counts.set(key, next)
+  else counts.delete(key)
+}
+
+async function providerAccountCatalog(body: ProviderAccountCatalogBody, ctx: FunctionContext) {
+  const provider = body.provider || 'ark'
+  if (provider !== 'ark') return fail('Invalid provider', 400)
+  if (body.probes !== undefined && !Array.isArray(body.probes)) return fail('probes must be an array', 400)
+  const rawProbes = body.probes || []
+  if (rawProbes.length > 3) return fail('providerAccountCatalog accepts at most 3 probes', 400)
+
+  const probes: Array<{ role: ModelRole; modelId: string }> = []
+  const seen = new Set<string>()
+  for (const probe of rawProbes) {
+    if (!probe || typeof probe !== 'object' || !['main', 'vision', 'image'].includes(String(probe.role))) {
+      return fail('Each probe must include a valid role', 400)
+    }
+    const modelId = typeof probe.modelId === 'string' ? probe.modelId.trim() : ''
+    if (!modelId || modelId.length > modelIdMaxLength) return fail('Each probe must include a valid modelId', 400)
+    const normalized = normalizeModelName('ark', modelId)
+    const key = `${probe.role}:${normalized}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    probes.push({ role: probe.role as ModelRole, modelId: normalized })
+  }
+
+  const providerRegistry = staticModelRegistry.ark
+  const apiKey = selectApiKey('ark', body.apiKeys || {})
+  const releaseProbe = probes.length ? reserveProviderAccountProbe(body, ctx) : () => {}
+  if (!releaseProbe) return fail('Provider account probe is already running for this principal or client IP', 429)
+  const probeDeadline = {
+    controller: typeof AbortController === 'function' ? new AbortController() : undefined,
+    expiresAt: Date.now() + providerAccountProbeTimeoutMs(),
+  }
+  try {
+    const probeResults = []
+    for (const probe of probes) {
+      const entry = providerRegistry.models.find((candidate) => candidate.id === probe.modelId)
+      if (!entry) {
+        probeResults.push({ ...probe, state: 'unknown-model', accountAvailable: false, reason: 'Model is not in the Ark registry' })
+        continue
+      }
+      if (!entry.roles.includes(probe.role)) {
+        probeResults.push({ ...probe, state: 'wrong-role', accountAvailable: false, reason: 'Model is not registered for this role' })
+        continue
+      }
+      if (!apiKey) {
+        probeResults.push({ ...probe, state: 'missing-key', accountAvailable: false, reason: 'Ark inference API key is required' })
+        continue
+      }
+      if (probe.role === 'image' && body.confirmPaidImageProbe !== true) {
+        probeResults.push({ ...probe, state: 'paid-probe-required', accountAvailable: false, reason: 'Explicit confirmation is required for a paid image probe' })
+        continue
+      }
+      try {
+        const probeOutput = await runArkAccountProbe(probe, apiKey, probeDeadline)
+        if (typeof probeOutput !== 'string' || !probeOutput.trim()) throw new Error('Empty Ark inference probe output')
+        probeResults.push({ ...probe, state: 'verified', accountAvailable: true, verifiedBy: 'inference-smoke' })
+      } catch {
+        probeResults.push({ ...probe, state: 'failed', accountAvailable: false, reason: 'Ark inference probe failed' })
+      }
+    }
+
+    return ok({
+      provider: 'ark',
+      accountCatalogAvailable: false,
+      catalogAuth: 'access-key-required',
+      verificationMode: 'inference-smoke',
+      providerRegistry,
+      probeResults,
+    })
+  } finally {
+    releaseProbe()
+  }
 }
 
 async function referenceLibrary(body: ReferenceLibraryBody) {
@@ -1145,7 +1673,11 @@ function countReferenceFacet(items: RetrievedReference[], field: 'visualCategory
 }
 
 async function createJob(body: CreateJobBody, ctx: FunctionContext) {
-  validateCreateBody(body)
+  try {
+    validateCreateBody(body)
+  } catch (error: any) {
+    return fail(error?.message || 'Invalid createJob request', 400)
+  }
   if (!(await ensureAccountAcceptingWork(body))) {
     return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
@@ -1153,13 +1685,20 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   // 二选一：用户上传了参考图时，以上传图为唯一视觉风格锚点，自动关闭检索
   // （否则检索到的多张图会与上传图的风格相互打架）。检索一律不跑、不附检索图、徽标显示“不检索”。
   const hasUploadedReference = normalizedReferenceImages.length > 0
+  let routing: ModelRoutingMetadata
+  try {
+    routing = resolveModelRouting(body as any)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Invalid model routes', Number(error?.statusCode || 400)),
+      businessCode: error?.businessCode || 'MODEL_ROUTE_INVALID',
+    }
+  }
   const normalizedBodyWithSecrets = {
     ...body,
+    ...routing,
     taskName: normalizeTaskName(body.taskName),
     infographicCategory: limitText(body.infographicCategory, 80),
-    mainModelName: normalizeModelName(body.provider, body.mainModelName),
-    imageModelName: normalizeModelName(body.provider, body.imageModelName),
-    referenceVisionModelName: normalizeModelName(body.provider, body.referenceVisionModelName || body.mainModelName),
     referenceImageMode: normalizeReferenceImageMode(body.referenceImageMode),
     referenceImages: normalizedReferenceImages,
     outputFormat: normalizeOutputFormat(body.outputFormat || body.output_format),
@@ -1169,26 +1708,6 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     retrievalSetting: hasUploadedReference ? ('none' as const) : normalizeRetrievalSetting(body.retrievalSetting),
     manualReferenceIds: hasUploadedReference ? [] : normalizeManualReferenceIds(body.manualReferenceIds || []),
   }
-  let registry: ProviderModelRegistry
-  try {
-    registry = await providerModelRegistry(body.provider)
-  } catch (error: any) {
-    return fail(providerRegistryFailure(body.provider, error), 503)
-  }
-  const modelError = modelRoleSelectionError(body.provider, registry, [
-    { model: normalizedBodyWithSecrets.mainModelName, role: 'main' },
-    { model: normalizedBodyWithSecrets.imageModelName, role: 'image' },
-    ...(normalizedReferenceImages.length
-      ? [{ model: normalizedBodyWithSecrets.referenceVisionModelName, role: 'vision' as ModelRole }]
-      : []),
-  ])
-  if (modelError) return fail(modelError, 400)
-  const imageRefineCapability = registryImageRefineCapability(body.provider, registry, normalizedBodyWithSecrets.imageModelName)
-  const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
-  if (!apiKey) {
-    return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
-  }
-
   const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
   if (normalizedBody.retrievalSetting === 'manual') {
     try {
@@ -1200,6 +1719,46 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       }
     }
   }
+  const modeResolution = await resolveReferenceImageMode(normalizedBody)
+  if (modeResolution.error) return fail(modeResolution.error, 400)
+  const roleResolvedBody = {
+    ...normalizedBody,
+    referenceImageMode: modeResolution.referenceImageMode,
+    referenceImageModeUsed: modeResolution.referenceImageModeUsed,
+  }
+  const safeNumCandidates = clamp(Number(body.numCandidates || 1), 1, Number(process.env.PAPERBANANA_MAX_CANDIDATES || 3))
+  const safeCriticRounds = clamp(Number(body.maxCriticRounds ?? 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
+  let requiredRoles: ModelRole[]
+  let jobBody: CreateExecutionBody
+  try {
+    const capabilityAgnosticRoles = requiredCreateRouteRoles(roleResolvedBody, safeCriticRounds)
+    const registryValidationRoles = routing.modelRoutingSource === 'explicit'
+      ? (['main', 'image', 'vision'] as ModelRole[])
+      : capabilityAgnosticRoles
+    const registries = await validateModelRouting(routing.modelRoutes, registryValidationRoles)
+    const imageRoute = routing.modelRoutes.image
+    const imageRegistry = registries.get(imageRoute.accessProvider)
+    const imageRefineCapability = imageRegistry
+      ? registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
+      : { mode: 'none' as const, reason: 'Image route is not reachable for this job' }
+    jobBody = {
+      ...roleResolvedBody,
+      imageRefineMode: imageRefineCapability.mode,
+      imageRefineReason: imageRefineCapability.reason,
+    }
+    requiredRoles = requiredCreateRouteRoles(jobBody, safeCriticRounds)
+    await validateModelRouting(routing.modelRoutes, requiredRoles, registries)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
+  }
+  const routeSecrets = selectRequiredRouteSecrets(jobBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
+  for (const role of requiredRoles) {
+    const provider = jobBody.modelRoutes[role].accessProvider
+    if (!routeSecrets[provider]) return fail(`Missing API key for provider ${provider}`, 400)
+  }
   const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
   if (!reservation.ok) return fail(reservation.error, reservation.code)
   let committed = false
@@ -1210,27 +1769,17 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     } catch (error: any) {
       return fail(error?.message || String(error), Number(error?.statusCode || 503))
     }
-    const modeResolution = await resolveReferenceImageMode(normalizedBody)
-    if (modeResolution.error) {
-      return fail(modeResolution.error, 400)
-    }
-    const jobBody = {
-      ...normalizedBody,
-      imageRefineMode: imageRefineCapability.mode,
-      imageRefineReason: imageRefineCapability.reason,
-      referenceImageMode: modeResolution.referenceImageMode,
-      referenceImageModeUsed: modeResolution.referenceImageModeUsed,
-    }
-
   const now = new Date()
   const jobId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
-  const safeNumCandidates = clamp(Number(body.numCandidates || 1), 1, Number(process.env.PAPERBANANA_MAX_CANDIDATES || 3))
-  const safeCriticRounds = clamp(Number(body.maxCriticRounds || 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
 
   const record = {
     _id: jobId,
     status: 'queued' as JobStatus,
     provider: normalizedBody.provider,
+    modelRoutes: normalizedBody.modelRoutes,
+    routingMode: normalizedBody.routingMode,
+    modelRoutingVersion: normalizedBody.modelRoutingVersion,
+    modelRoutingSource: normalizedBody.modelRoutingSource,
     clientPlatform: normalizeClientPlatform(body.clientPlatform),
     configurationMode: limitText(normalizedBody.configurationMode, 40) || 'advanced',
     taskName: normalizedBody.taskName,
@@ -1278,9 +1827,9 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
     }
 
-    // BYOK 只把已选中的单个 key 作为独立参数交给后台执行；jobBody 已移除
-    // 完整 apiKeys map，避免其它 provider key 被后台 Promise/DTO 继续持有。
-    startCreateJobInBackground(reservation, jobId, jobBody, apiKey, safeNumCandidates, safeCriticRounds)
+    // The persisted/execution body is secret-free. Only credentials for route
+    // providers reachable by this job remain in the in-memory admission closure.
+    startCreateJobInBackground(reservation, jobId, jobBody, routeSecrets, safeNumCandidates, safeCriticRounds)
     committed = true
 
     return ok({ jobId, status: 'queued' })
@@ -1290,38 +1839,67 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
 }
 
 async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
-  validateRefineBody(body)
-  if (!(await ensureAccountAcceptingWork(body))) {
-    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
-  }
-  let registry: ProviderModelRegistry
   try {
-    registry = await providerModelRegistry(body.provider)
+    validateRefineBody(body)
   } catch (error: any) {
-    return fail(providerRegistryFailure(body.provider, error), 503)
+    return fail(error?.message || 'Invalid refineImage request', 400)
+  }
+  let routingInput: RefineImageBody = {
+    ...body,
+    configurationMode: normalizeConfigurationMode(body.configurationMode),
+  }
+  if (!body.modelRoutes && !hasLegacyModelValue(body.mainModelName)) {
+    try {
+      const legacyRegistry = await providerModelRegistry(body.provider)
+      routingInput = { ...routingInput, mainModelName: legacyRegistry.defaults.main }
+    } catch (error: any) {
+      return fail(providerRegistryFailure(body.provider, error), 503)
+    }
+  }
+  let routing: ModelRoutingMetadata
+  try {
+    routing = resolveModelRouting(routingInput as any)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Invalid model routes', Number(error?.statusCode || 400)),
+      businessCode: error?.businessCode || 'MODEL_ROUTE_INVALID',
+    }
+  }
+  let registries: Map<Provider, ProviderModelRegistry>
+  try {
+    const registryValidationRoles = routing.modelRoutingSource === 'explicit'
+      ? (['main', 'image', 'vision'] as ModelRole[])
+      : (['image'] as ModelRole[])
+    registries = await validateModelRouting(routing.modelRoutes, registryValidationRoles)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
   }
   const normalizedBodyWithSecrets = {
-    ...body,
-    mainModelName: normalizeModelName(body.provider, body.mainModelName || registry.defaults.main),
-    imageModelName: normalizeModelName(body.provider, body.imageModelName),
-    referenceVisionModelName: body.referenceVisionModelName
-      ? normalizeModelName(body.provider, body.referenceVisionModelName)
-      : undefined,
+    ...routingInput,
+    ...routing,
     aspectRatio: normalizeAspectRatio(body.aspectRatio),
-    imageSize: body.imageSize === '4K' ? '4K' as const : '2K' as const,
+    imageSize: body.imageSize === '4K' ? '4K' as const : body.imageSize === '1K' ? '1K' as const : '2K' as const,
   }
-  const modelError = modelRoleSelectionError(body.provider, registry, [
-    { model: normalizedBodyWithSecrets.mainModelName, role: 'main' },
-    { model: normalizedBodyWithSecrets.imageModelName, role: 'image' },
-    ...(normalizedBodyWithSecrets.referenceVisionModelName
-      ? [{ model: normalizedBodyWithSecrets.referenceVisionModelName, role: 'vision' as ModelRole }]
-      : []),
-  ])
-  if (modelError) return fail(modelError, 400)
-  const imageRefineCapability = registryImageRefineCapability(body.provider, registry, normalizedBodyWithSecrets.imageModelName)
-  const apiKey = selectApiKey(normalizedBodyWithSecrets.provider, normalizedBodyWithSecrets.apiKeys)
-  if (!apiKey) {
-    return fail(`Missing API key for provider ${normalizedBodyWithSecrets.provider}`, 400)
+  const imageRoute = routing.modelRoutes.image
+  const imageRefineCapability = registryImageRefineCapability(
+    imageRoute.accessProvider,
+    registries.get(imageRoute.accessProvider)!,
+    imageRoute.modelId,
+  )
+  if (!imageRefineCapability.resolutions.includes(normalizedBodyWithSecrets.imageSize)) {
+    return {
+      ...fail(
+        `Refinement resolution ${normalizedBodyWithSecrets.imageSize} is not supported by ${imageRoute.accessProvider}/${imageRoute.modelId}. Supported resolutions: ${imageRefineCapability.resolutions.join(', ') || 'none'}.`,
+        400,
+      ),
+      businessCode: 'REFINE_RESOLUTION_UNSUPPORTED',
+    }
+  }
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
 
   const normalizedBody = toRefineExecutionBody({
@@ -1329,6 +1907,20 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     refineMode: imageRefineCapability.mode,
     refineReason: imageRefineCapability.reason,
   })
+  const requiredRoles = requiredRefineRouteRoles(normalizedBody)
+  try {
+    await validateModelRouting(routing.modelRoutes, requiredRoles, registries)
+  } catch (error: any) {
+    return {
+      ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
+  }
+  const routeSecrets = selectRequiredRouteSecrets(normalizedBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
+  for (const role of requiredRoles) {
+    const provider = normalizedBody.modelRoutes[role].accessProvider
+    if (!routeSecrets[provider]) return fail(`Missing API key for provider ${provider}`, 400)
+  }
   const reservation = jobAdmission.reserve(jobAdmissionPrincipal(normalizedBody, ctx))
   if (!reservation.ok) return fail(reservation.error, reservation.code)
   let committed = false
@@ -1341,8 +1933,12 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     status: 'queued' as JobStatus,
     jobType: 'refine',
     provider: normalizedBody.provider,
+    modelRoutes: normalizedBody.modelRoutes,
+    routingMode: normalizedBody.routingMode,
+    modelRoutingVersion: normalizedBody.modelRoutingVersion,
+    modelRoutingSource: normalizedBody.modelRoutingSource,
     clientPlatform: normalizeClientPlatform(body.clientPlatform),
-    configurationMode: 'advanced',
+    configurationMode: normalizedBody.configurationMode,
     taskName: 'diagram',
     userId: normalizedBody.userId || '',
     userEmail: normalizedBody.userEmail || '',
@@ -1388,7 +1984,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
       return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
     }
 
-    startRefineJobInBackground(reservation, jobId, normalizedBody, apiKey)
+    startRefineJobInBackground(reservation, jobId, normalizedBody, routeSecrets)
     committed = true
 
     return ok({
@@ -1791,7 +2387,7 @@ async function sweepDeletedAccountObjects() {
   })
 }
 
-async function resolveReferenceImageMode(body: CreateExecutionBody & { referenceImageMode: ReferenceImageMode }) {
+export async function resolveReferenceImageMode(body: CreateExecutionBody & { referenceImageMode: ReferenceImageMode }) {
   const requestedMode = body.referenceImageMode
   const hasReferences = Boolean((body.referenceImages || []).length)
   if (!hasReferences) {
@@ -1808,7 +2404,15 @@ async function resolveReferenceImageMode(body: CreateExecutionBody & { reference
     }
   }
 
-  const capability = await referenceModelCapability(body.provider, body.mainModelName)
+  if (requestedMode === 'auto' && body.modelRoutingSource === 'explicit') {
+    return {
+      referenceImageMode: requestedMode,
+      referenceImageModeUsed: 'vision_model' as ReferenceImageModeUsed,
+    }
+  }
+
+  const mainRoute = body.modelRoutes.main
+  const capability = await referenceModelCapability(mainRoute.accessProvider, mainRoute.modelId)
   if (requestedMode === 'auto') {
     return {
       referenceImageMode: requestedMode,
@@ -1838,7 +2442,7 @@ function startCreateJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   numCandidates: number,
   maxCriticRounds: number,
 ) {
@@ -1846,7 +2450,7 @@ function startCreateJobInBackground(
     jobId,
     kind: 'create',
     body,
-    apiKey,
+    routeSecrets,
     numCandidates,
     maxCriticRounds,
   })
@@ -1856,20 +2460,34 @@ function startRefineJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: RefineExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
 ) {
   jobAdmission.commit(reservation, {
     jobId,
     kind: 'refine',
     body,
-    apiKey,
+    routeSecrets,
   })
+}
+
+function modelRouteAccess(body: CreateExecutionBody | RefineExecutionBody, routeSecrets: RouteSecrets, role: ModelRole) {
+  const route = body.modelRoutes?.[role] || {
+    accessProvider: body.provider,
+    modelId: role === 'image'
+      ? body.imageModelName
+      : role === 'vision'
+        ? body.referenceVisionModelName || body.mainModelName
+        : body.mainModelName,
+  }
+  const apiKey = routeSecrets[route.accessProvider] || ''
+  if (!apiKey) throw new Error(`Missing API key for provider ${route.accessProvider}`)
+  return { provider: route.accessProvider, model: route.modelId, apiKey }
 }
 
 async function runJob(
   jobId: string,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   numCandidates: number,
   maxCriticRounds: number,
 ) {
@@ -1878,7 +2496,7 @@ async function runJob(
     { $set: { status: 'running', startedAt: new Date(), updatedAt: new Date() } },
   )
 
-  const retrievedReferences = await resolveRetrievedReferences(body, apiKey)
+  const retrievedReferences = await resolveRetrievedReferences(body, routeSecrets)
   await jobs.updateOne(
     { _id: jobId },
     {
@@ -1902,7 +2520,7 @@ async function runJob(
       uploadedVisionInputs = await buildVisionImageInputs(body.referenceImages || [], jobId)
     } else {
       await appendLog(jobId, 'Reference mode: independent vision model')
-      referenceAnalysis = await analyzeReferenceImages(jobId, body, apiKey)
+      referenceAnalysis = await analyzeReferenceImages(jobId, body, routeSecrets)
     }
   }
 
@@ -1915,7 +2533,7 @@ async function runJob(
   await runWithConcurrency(candidateIndexes, concurrency, async (i) => {
     const candidateNo = i + 1
     await appendLog(jobId, `Candidate ${candidateNo}: planning`)
-    const result = await runCandidate(jobId, i, body, apiKey, maxCriticRounds, referenceAnalysis, retrievalContext, referenceVisionInputs, async (message) => {
+    const result = await runCandidate(jobId, i, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceVisionInputs, async (message) => {
       await appendLog(jobId, `Candidate ${candidateNo}: ${message}`)
     })
     await appendLog(jobId, `Candidate ${candidateNo}: saving result`)
@@ -1949,7 +2567,7 @@ async function runCandidate(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   maxCriticRounds: number,
   referenceAnalysis = '',
   retrievalContext = '',
@@ -1959,15 +2577,16 @@ async function runCandidate(
   // Plot task: instead of calling an image model, generate matplotlib CODE and
   // render it via the external plot-worker. Keep the diagram path 100% intact.
   if (normalizeTaskName(body.taskName) === 'plot') {
-    return await runPlotCandidate(jobId, candidateId, body, apiKey, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, logStage)
+    return await runPlotCandidate(jobId, candidateId, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, logStage)
   }
 
   if (normalizeOutputFormat(body.outputFormat) === 'svg') {
-    const description = await buildVisualDescription(jobId, candidateId, body, apiKey, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, true)
+    const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
+    const description = await buildVisualDescription(jobId, candidateId, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, true)
     await logStage('plan ready')
     await logStage('rendering SVG')
     const svgRenderStartedAt = new Date()
-    const svg = await callSvgModel(body.provider, body.mainModelName, apiKey, description)
+    const svg = await callSvgModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, description)
     const stageImage = await saveStageImage(jobId, candidateId, 'svg-final', svg, 'image/svg+xml', 'utf8')
     await recordStage(jobId, {
       candidateId,
@@ -1982,6 +2601,7 @@ async function runCandidate(
   }
 
   if ((body.pipelineMode || 'planner_critic') === 'vanilla') {
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     const prompt = diagramPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext)
     await recordStage(jobId, {
       candidateId,
@@ -1991,7 +2611,7 @@ async function runCandidate(
     })
     await logStage('rendering PNG')
     const vanillaRenderStartedAt = new Date()
-    const base64 = await callImageModel(body.provider, body.imageModelName, apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
+    const base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
     const stageImage = await saveStageImage(jobId, candidateId, 'vanilla-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId,
@@ -2005,12 +2625,13 @@ async function runCandidate(
     return { content: base64, encoding: 'base64' as const, mimeType: 'image/png', description: prompt }
   }
 
-  let description = await buildVisualDescription(jobId, candidateId, body, apiKey, 0, referenceAnalysis, retrievalContext, referenceImages, false)
+  const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
+  let description = await buildVisualDescription(jobId, candidateId, body, routeSecrets, 0, referenceAnalysis, retrievalContext, referenceImages, false)
   await logStage('plan ready')
   let imagePrompt = diagramPromptFromDescription(description)
   await logStage('rendering PNG')
   const initialRenderStartedAt = new Date()
-  let base64 = await callImageModel(body.provider, body.imageModelName, apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
+  let base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
   let stageImage = await saveStageImage(jobId, candidateId, 'render-0', base64, 'image/png', 'base64')
   await recordStage(jobId, {
     candidateId,
@@ -2030,7 +2651,7 @@ async function runCandidate(
   for (let round = 1; round <= maxCriticRounds; round += 1) {
     await logStage(`critic round ${round}`)
     const criticStartedAt = new Date()
-    const critique = await critiqueRenderedDiagram(body, apiKey, description, base64, referenceAnalysis, retrievalContext)
+    const critique = await critiqueRenderedDiagram(body, routeSecrets, description, base64, referenceAnalysis, retrievalContext)
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
@@ -2051,7 +2672,7 @@ async function runCandidate(
     await logStage(`rerender round ${round}`)
     const rerenderStartedAt = new Date()
     try {
-      base64 = await callImageModel(body.provider, body.imageModelName, apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
+      base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
       stageImage = await saveStageImage(jobId, candidateId, `render-${round}`, base64, 'image/png', 'base64')
       await recordStage(jobId, {
         candidateId,
@@ -2068,7 +2689,7 @@ async function runCandidate(
     } catch (error: any) {
       // Re-render failed this round: roll back to the last successful
       // image+description and stop the loop rather than failing the candidate.
-      const message = error?.message || String(error)
+      const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
       await logStage(`rerender round ${round} failed, rolling back: ${message}`)
       await recordStage(jobId, {
         candidateId,
@@ -2089,7 +2710,7 @@ async function runCandidate(
   // 清晰度驱动的自动精修：1K 仅基础渲染；2K/4K 在 PNG 图（非 SVG）最终图上再跑一遍
   // 升清放大。失败时 enhanceCandidateToResolution 内部已回退到基础图。
   if (body.imageSize === '2K' || body.imageSize === '4K') {
-    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, apiKey, base64, description, body.imageSize, logStage)
+    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, routeSecrets, base64, description, body.imageSize, logStage)
   }
 
   return { content: base64, encoding: 'base64' as const, mimeType: 'image/png', description }
@@ -2106,19 +2727,19 @@ async function runPlotCandidate(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   maxCriticRounds: number,
   referenceAnalysis = '',
   retrievalContext = '',
   referenceImages: VisionImageInput[] = [],
   logStage: (message: string) => Promise<void> = async () => {},
 ) {
-  let description = await buildPlotDescription(jobId, candidateId, body, apiKey, referenceAnalysis, retrievalContext, referenceImages)
+  let description = await buildPlotDescription(jobId, candidateId, body, routeSecrets, referenceAnalysis, retrievalContext, referenceImages)
   await logStage('plan ready')
 
   // Generate the matplotlib code from the plot description and render it.
   await logStage('generating matplotlib code')
-  let code = await generatePlotCode(body, apiKey, description)
+  let code = await generatePlotCode(body, routeSecrets, description)
   await logStage('rendering plot via worker')
   let renderStartedAt = new Date()
   let rendered = await renderPlotViaWorker(code)
@@ -2146,7 +2767,7 @@ async function runPlotCandidate(
   for (let round = 1; round <= maxCriticRounds; round += 1) {
     await logStage(`plot critic round ${round}`)
     const criticStartedAt = new Date()
-    const critique = await critiqueRenderedPlot(body, apiKey, description, base64, rendered.error, referenceAnalysis, retrievalContext)
+    const critique = await critiqueRenderedPlot(body, routeSecrets, description, base64, rendered.error, referenceAnalysis, retrievalContext)
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
@@ -2169,7 +2790,7 @@ async function runPlotCandidate(
     await logStage(`regenerating matplotlib code round ${round}`)
     renderStartedAt = new Date()
     try {
-      code = await generatePlotCode(body, apiKey, description)
+      code = await generatePlotCode(body, routeSecrets, description)
       rendered = await renderPlotViaWorker(code)
       if (rendered.error || !rendered.base64) {
         // Worker rejected the code this round. Record the failure and let the
@@ -2205,7 +2826,7 @@ async function runPlotCandidate(
       lastGoodDescription = description
       lastGoodCode = code
     } catch (error: any) {
-      const message = error?.message || String(error)
+      const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
       await logStage(`plot rerender round ${round} failed, rolling back: ${message}`)
       await recordStage(jobId, {
         candidateId,
@@ -2234,7 +2855,7 @@ async function runPlotCandidate(
   // direct-edit 的任务做像素级升清；其他模型跳过（避免用图描述
   // 重画统计图导致内容失真）。1K 不做额外处理。
   if ((body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') {
-    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, apiKey, base64, description, body.imageSize, logStage)
+    base64 = await enhanceCandidateToResolution(jobId, candidateId, body, routeSecrets, base64, description, body.imageSize, logStage)
   }
 
   return { content: base64, encoding: 'base64' as const, mimeType: 'image/png', description }
@@ -2251,7 +2872,7 @@ async function enhanceCandidateToResolution(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   baseBase64: string,
   baseDescription: string,
   targetSize: string,
@@ -2259,6 +2880,7 @@ async function enhanceCandidateToResolution(
 ): Promise<string> {
   const startedAt = new Date()
   try {
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     await logStage(`enhancing candidate to ${targetSize}`)
     let upscaled: string
     if (body.imageRefineMode === 'direct-edit') {
@@ -2268,9 +2890,9 @@ async function enhanceCandidateToResolution(
         targetSize,
       )
       upscaled = await callImageModel(
-        body.provider,
-        body.imageModelName,
-        apiKey,
+        imageRoute.provider,
+        imageRoute.model,
+        imageRoute.apiKey,
         editPrompt,
         body.aspectRatio || '16:9',
         'data:image/png;base64,' + baseBase64,
@@ -2279,9 +2901,9 @@ async function enhanceCandidateToResolution(
     } else {
       // 无图生图能力（bailian）：用最终描述以更大的安全尺寸重渲染一次。
       upscaled = await callImageModel(
-        body.provider,
-        body.imageModelName,
-        apiKey,
+        imageRoute.provider,
+        imageRoute.model,
+        imageRoute.apiKey,
         diagramPromptFromDescription(baseDescription),
         body.aspectRatio || '16:9',
         '',
@@ -2302,7 +2924,7 @@ async function enhanceCandidateToResolution(
     return upscaled
   } catch (error: any) {
     // 升清失败绝不连累整张候选图：回退到基础图并记录。
-    const message = error?.message || String(error)
+    const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
     await logStage(`enhance to ${targetSize} failed, keeping base image: ${message}`)
     await recordStage(jobId, {
       candidateId,
@@ -2324,17 +2946,18 @@ async function buildPlotDescription(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   referenceAnalysis = '',
   retrievalContext = '',
   referenceImages: VisionImageInput[] = [],
 ) {
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
   const planner = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     plotPlannerSystemPrompt(),
     plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages),
     referenceImages,
@@ -2353,9 +2976,9 @@ async function buildPlotDescription(
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
     description = await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       plotStylistSystemPrompt(),
       plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages),
     )
@@ -2373,11 +2996,12 @@ async function buildPlotDescription(
 }
 
 // Turn a plot description into self-contained matplotlib code (visualizer).
-async function generatePlotCode(body: CreateExecutionBody, apiKey: string, description: string) {
+async function generatePlotCode(body: CreateExecutionBody, routeSecrets: RouteSecrets, description: string) {
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const raw = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     plotVisualizerSystemPrompt(),
     plotVisualizerUserPrompt(description),
   )
@@ -2469,7 +3093,7 @@ async function pingPlotWorker(body: any) {
 // NOTICE] failure path so the critic repairs the code (mirrors critic_agent.py).
 async function critiqueRenderedPlot(
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   description: string,
   imageBase64: string,
   renderError = '',
@@ -2478,13 +3102,14 @@ async function critiqueRenderedPlot(
 ) {
   const hasImage = typeof imageBase64 === 'string' && imageBase64.trim().length > 100
   if (!hasImage) {
+    const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
     const notice = renderError
       ? `[SYSTEM NOTICE] The plot image could not be generated based on the current description (likely due to invalid code). Worker error: ${renderError}. Please check the description for errors (e.g., syntax issues, missing data) and provide a revised, simplified, and robust version.`
       : '[SYSTEM NOTICE] The plot image could not be generated based on the current description (likely due to invalid code). Please check the description for errors (e.g., syntax issues, missing data) and provide a revised, simplified, and robust version.'
     return await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       plotCriticSystemPrompt(),
       [
         notice,
@@ -2493,10 +3118,11 @@ async function critiqueRenderedPlot(
       ].join('\n'),
     )
   }
+  const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
   return await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    visionRoute.provider,
+    visionRoute.model,
+    visionRoute.apiKey,
     plotCriticSystemPrompt(),
     plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
     [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }],
@@ -2507,7 +3133,7 @@ async function buildVisualDescription(
   jobId: string,
   candidateId: number,
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   textCriticRounds: number,
   referenceAnalysis = '',
   retrievalContext = '',
@@ -2522,12 +3148,13 @@ async function buildVisualDescription(
   }
 
   const infographicCategory = limitText(body.infographicCategory, 80)
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
   const planner = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     plannerSystemPrompt(),
     plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages),
     referenceImages,
@@ -2546,9 +3173,9 @@ async function buildVisualDescription(
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
     description = await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       stylistSystemPrompt(),
       stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages),
     )
@@ -2567,9 +3194,9 @@ async function buildVisualDescription(
   for (let round = 1; round <= textCriticRounds; round += 1) {
     const criticStartedAt = new Date()
     const critique = await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       criticSystemPrompt(),
       criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
     )
@@ -2592,7 +3219,7 @@ async function buildVisualDescription(
   return description
 }
 
-async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: string) {
+async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecrets: RouteSecrets) {
   await jobs.updateOne(
     { _id: jobId },
     { $set: { status: 'running', startedAt: new Date(), updatedAt: new Date() } },
@@ -2609,13 +3236,14 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
   let description: string
 
   if (body.refineMode === 'direct-edit') {
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     // True image-to-image: forward the source image bytes directly to the
     // image model so it edits the actual pixels (mirrors polish_agent.py).
     await appendLog(jobId, 'Refine: editing source image (image-to-image)')
     const editPrompt = refineEditPrompt(body.editInstruction, body.imageSize || '2K')
     description = editPrompt
     const renderStartedAt = new Date()
-    base64 = await callImageModel(body.provider, body.imageModelName, apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl)
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K', true)
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -2627,6 +3255,8 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
       completedAt: new Date(),
     })
   } else {
+    const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
+    const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
     // Model-level analyze-redraw fallback: describe the source image, then
     // regenerate from that description using the selected image model.
     await appendLog(jobId, 'Refine: analyzing source image')
@@ -2637,9 +3267,9 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
     // For bailian the existing toBailianImageUrl + isBailianImageContentError
     // fallback to qwen-vl in callTextModel handles the image read.
     description = await callTextModel(
-      body.provider,
-      body.referenceVisionModelName || body.mainModelName,
-      apiKey,
+      visionRoute.provider,
+      visionRoute.model,
+      visionRoute.apiKey,
       refineSystemPrompt(),
       refineUserPrompt(body.editInstruction, body.imageSize || '2K'),
       [sourceImage],
@@ -2655,7 +3285,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
 
     await appendLog(jobId, 'Refine: rendering edited image')
     const renderStartedAt = new Date()
-    base64 = await callImageModel(body.provider, body.imageModelName, apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9')
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K', true)
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -2690,7 +3320,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, apiKey: st
   )
 }
 
-export async function resolveRetrievedReferences(body: CreateExecutionBody, apiKey: string): Promise<RetrievedReference[]> {
+export async function resolveRetrievedReferences(body: CreateExecutionBody, secrets: RouteSecrets | string): Promise<RetrievedReference[]> {
   const setting = normalizeRetrievalSetting(body.retrievalSetting)
   if (setting === 'none') return []
 
@@ -2707,7 +3337,8 @@ export async function resolveRetrievedReferences(body: CreateExecutionBody, apiK
     return normalizeSelectedReferenceRows(shuffle(library).slice(0, 10))
   }
 
-  const selectedIds = await autoSelectReferenceIds(body, apiKey, library)
+  const routeSecrets: RouteSecrets = typeof secrets === 'string' ? { [body.provider]: secrets } : secrets
+  const selectedIds = await autoSelectReferenceIds(body, routeSecrets, library)
   const selected = selectedIds
     .map((id) => library.find((item) => item.id === id))
     .filter(Boolean) as RetrievedReference[]
@@ -2716,16 +3347,17 @@ export async function resolveRetrievedReferences(body: CreateExecutionBody, apiK
   return normalizeSelectedReferenceRows(selected.slice(0, 10))
 }
 
-async function autoSelectReferenceIds(body: CreateExecutionBody, apiKey: string, library: RetrievedReference[]) {
+async function autoSelectReferenceIds(body: CreateExecutionBody, routeSecrets: RouteSecrets, library: RetrievedReference[]) {
+  const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const candidates = library.slice(0, 200).map((item) => ({
     id: item.id,
     title: item.title,
     summary: item.summary.slice(0, 1500),
   }))
   const raw = await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    mainRoute.provider,
+    mainRoute.model,
+    mainRoute.apiKey,
     retrievalSystemPrompt(),
     retrievalUserPrompt(body.methodContent, body.caption, candidates),
   )
@@ -2885,7 +3517,7 @@ function buildRetrievalContext(items: RetrievedReference[]) {
 
 async function critiqueRenderedDiagram(
   body: CreateExecutionBody,
-  apiKey: string,
+  routeSecrets: RouteSecrets,
   description: string,
   imageBase64: string,
   referenceAnalysis = '',
@@ -2896,10 +3528,11 @@ async function critiqueRenderedDiagram(
   // image (mirrors critic_agent.py's text-only fallback).
   const hasImage = typeof imageBase64 === 'string' && imageBase64.trim().length > 100
   if (!hasImage) {
+    const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
     return await callTextModel(
-      body.provider,
-      body.mainModelName,
-      apiKey,
+      mainRoute.provider,
+      mainRoute.model,
+      mainRoute.apiKey,
       imageCriticSystemPrompt(),
       [
         '[SYSTEM NOTICE] The diagram image could not be generated based on the current description. Check the description for errors and revise it.',
@@ -2908,10 +3541,11 @@ async function critiqueRenderedDiagram(
       ].join('\n'),
     )
   }
+  const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
   return await callTextModel(
-    body.provider,
-    body.mainModelName,
-    apiKey,
+    visionRoute.provider,
+    visionRoute.model,
+    visionRoute.apiKey,
     imageCriticSystemPrompt(),
     imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
     [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }],
@@ -2956,7 +3590,7 @@ function extractRevisedDescription(critique: string, previous: string) {
   return criticDecision(critique, previous).description
 }
 
-async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, apiKey: string) {
+async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, routeSecrets: RouteSecrets) {
   const references = body.referenceImages || []
   if (!references.length) return ''
 
@@ -2966,10 +3600,11 @@ async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, 
 
   await appendLog(jobId, `Analyzing ${references.length} reference image${references.length > 1 ? 's' : ''}`)
   const visionInputs = await buildVisionImageInputs(references, jobId)
+  const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
   const analysis = await callVisionModel(
-    body.provider,
-    body.referenceVisionModelName,
-    apiKey,
+    visionRoute.provider,
+    visionRoute.model,
+    visionRoute.apiKey,
     body.methodContent,
     body.caption,
     visionInputs,
@@ -3360,17 +3995,18 @@ export async function callImageModel(
   aspectRatio: string,
   sourceImage = '',
   imageSize = '2K',
+  strictImageSize = false,
 ): Promise<string> {
   // When a source image is supplied, route to a true image-to-image / edit
   // request for providers that support image input. Otherwise fall back to
   // plain text-to-image generation.
-  const source = await normalizeSourceImage(sourceImage)
-  if (source && provider !== 'openrouter') {
+  if (String(sourceImage || '').trim() && provider !== 'openrouter') {
     const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizeModelName(provider, model))
     if (entry && entry.capabilities.imageEditMode !== 'direct-edit') {
       throw new Error(`Model ${entry.id} does not accept a source image; direct edit is unavailable`)
     }
   }
+  const source = await normalizeSourceImage(sourceImage)
 
   if (provider === 'openai') {
     if (source) {
@@ -3406,7 +4042,172 @@ export async function callImageModel(
     return callBailianImage(model, apiKey, prompt, aspectRatio, imageSize, source)
   }
 
-  return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize)
+  if (provider === 'ark') {
+    return callArkImage(model, apiKey, prompt, source, imageSize)
+  }
+
+  return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize, strictImageSize)
+}
+
+async function callArkImage(
+  model: string,
+  apiKey: string,
+  prompt: string,
+  source: NormalizedSourceImage | null,
+  imageSize = '2K',
+  attempts = 2,
+  signal?: AbortSignal,
+): Promise<string> {
+  const size = ['1K', '2K', '4K'].includes(imageSize) ? imageSize : '2K'
+  const body: Record<string, unknown> = {
+    model,
+    prompt,
+    size,
+    sequential_image_generation: 'disabled',
+    stream: false,
+  }
+  if (source) body.image = [source.dataUrl]
+  body.response_format = 'b64_json'
+  const response = await fetchWithRetry('https://ark.cn-beijing.volces.com/api/v3/images/generations', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+    signal,
+  }, `ark image model ${model}`, attempts)
+  const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Ark image response')
+  const base64 = validateProviderImageBase64(data.data?.[0]?.b64_json || '', maxProviderImageBytes, 'Ark image')
+  return await normalizeArkImageToPng(base64)
+}
+
+const arkImageMaxPixels = 20 * 1024 * 1024
+const arkImageMaxDimension = 8192
+
+async function normalizeArkImageToPng(base64: string): Promise<string> {
+  const bytes = Buffer.from(base64, 'base64')
+  if (isPngBytes(bytes)) return base64
+  if (!isJpegBytes(bytes)) throw new Error('Ark image returned an unsupported image format')
+
+  const dimensions = jpegDimensions(bytes)
+  if (
+    !dimensions
+    || dimensions.width > arkImageMaxDimension
+    || dimensions.height > arkImageMaxDimension
+    || dimensions.width * dimensions.height > arkImageMaxPixels
+  ) {
+    throw new Error('Ark image returned invalid or oversized JPEG dimensions')
+  }
+
+  try {
+    const image = decodeJpeg(bytes, {
+      useTArray: true,
+      formatAsRGBA: true,
+      maxMemoryUsageInMB: 96,
+      maxResolutionInMP: 20,
+      tolerantDecoding: false,
+    })
+    if (
+      image?.width !== dimensions.width
+      || image?.height !== dimensions.height
+      || image?.data?.length !== dimensions.width * dimensions.height * 4
+    ) {
+      throw new Error('decoded dimensions do not match the JPEG header')
+    }
+    const png = encodeRgbaPng(dimensions.width, dimensions.height, Buffer.from(image.data))
+    if (!isPngBytes(png)) throw new Error('encoder returned non-PNG bytes')
+    return validateProviderImageBase64(png.toString('base64'), maxProviderImageBytes, 'Ark normalized PNG')
+  } catch (error: any) {
+    if (String(error?.message || '').includes('exceeds')) throw error
+    throw new Error('Ark image JPEG normalization failed')
+  }
+}
+
+function isPngBytes(bytes: Buffer) {
+  return bytes.length >= 8 && bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
+}
+
+function isJpegBytes(bytes: Buffer) {
+  return bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+}
+
+function jpegDimensions(bytes: Buffer): { width: number; height: number } | null {
+  let offset = 2
+  while (offset + 3 < bytes.length) {
+    while (offset < bytes.length && bytes[offset] !== 0xff) offset += 1
+    while (offset < bytes.length && bytes[offset] === 0xff) offset += 1
+    if (offset >= bytes.length) break
+    const marker = bytes[offset]
+    offset += 1
+    if (marker === 0xd8 || marker === 0xd9 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue
+    if (offset + 2 > bytes.length) return null
+    const segmentLength = bytes.readUInt16BE(offset)
+    if (segmentLength < 2 || offset + segmentLength > bytes.length) return null
+    const isStartOfFrame = (
+      (marker >= 0xc0 && marker <= 0xc3)
+      || (marker >= 0xc5 && marker <= 0xc7)
+      || (marker >= 0xc9 && marker <= 0xcb)
+      || (marker >= 0xcd && marker <= 0xcf)
+    )
+    if (isStartOfFrame) {
+      if (segmentLength < 7) return null
+      const height = bytes.readUInt16BE(offset + 3)
+      const width = bytes.readUInt16BE(offset + 5)
+      return width > 0 && height > 0 ? { width, height } : null
+    }
+    if (marker === 0xda) return null
+    offset += segmentLength
+  }
+  return null
+}
+
+function encodeRgbaPng(width: number, height: number, rgba: Buffer) {
+  const bytesPerRow = width * 4
+  const scanlines = Buffer.alloc((bytesPerRow + 1) * height)
+  for (let row = 0; row < height; row += 1) {
+    const scanlineOffset = row * (bytesPerRow + 1)
+    scanlines[scanlineOffset] = 0
+    rgba.copy(scanlines, scanlineOffset + 1, row * bytesPerRow, (row + 1) * bytesPerRow)
+  }
+
+  const ihdr = Buffer.alloc(13)
+  ihdr.writeUInt32BE(width, 0)
+  ihdr.writeUInt32BE(height, 4)
+  ihdr[8] = 8
+  ihdr[9] = 6
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    pngChunk('IHDR', ihdr),
+    pngChunk('IDAT', zlib.deflateSync(scanlines, { level: 6 })),
+    pngChunk('IEND', Buffer.alloc(0)),
+  ])
+}
+
+function pngChunk(type: string, data: Buffer) {
+  const typeBytes = Buffer.from(type, 'ascii')
+  const length = Buffer.alloc(4)
+  length.writeUInt32BE(data.length, 0)
+  const crc = Buffer.alloc(4)
+  crc.writeUInt32BE(pngCrc32(Buffer.concat([typeBytes, data])), 0)
+  return Buffer.concat([length, typeBytes, data, crc])
+}
+
+let pngCrcTable: number[] | null = null
+
+function pngCrc32(bytes: Buffer) {
+  if (!pngCrcTable) {
+    pngCrcTable = Array.from({ length: 256 }, (_, index) => {
+      let value = index
+      for (let bit = 0; bit < 8; bit += 1) {
+        value = (value & 1) ? 0xedb88320 ^ (value >>> 1) : value >>> 1
+      }
+      return value >>> 0
+    })
+  }
+  let crc = 0xffffffff
+  for (const byte of bytes) crc = pngCrcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8)
+  return (crc ^ 0xffffffff) >>> 0
 }
 
 async function callOpenRouterImage(
@@ -3416,12 +4217,16 @@ async function callOpenRouterImage(
   aspectRatio: string,
   source: NormalizedSourceImage | null,
   imageSize: string,
+  strictImageSize = false,
 ): Promise<string> {
   const actualModel = toOpenRouterModel(model)
   const route = await resolveOpenRouterImageRoute(actualModel)
   const body: any = { model: actualModel, prompt }
   const parameters = route.model.supportedParameters || {}
   const resolution = supportedOpenRouterValue(parameters.resolution, imageSize, ['2K', '1K', '4K', '512'])
+  if (strictImageSize && resolution !== imageSize) {
+    throw new Error(`Model ${actualModel} no longer declares requested refinement resolution ${imageSize}`)
+  }
   const ratio = supportedOpenRouterValue(parameters.aspect_ratio, aspectRatio, ['16:9', '3:2', '1:1', '21:9', 'auto'])
   if (resolution) body.resolution = resolution
   if (ratio) body.aspect_ratio = ratio
@@ -3522,6 +4327,7 @@ async function callOpenAiImageEdit(model: string, apiKey: string, prompt: string
 function textApiBaseUrl(provider: Provider) {
   if (provider === 'openrouter') return 'https://openrouter.ai/api/v1'
   if (provider === 'bailian') return 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+  if (provider === 'ark') return 'https://ark.cn-beijing.volces.com/api/v3'
   return 'https://api.openai.com/v1'
 }
 
@@ -3786,9 +4592,19 @@ export function validateProviderImageBase64(value: string, maxBytes: number, lab
   const normalized = String(value || '').replace(/\s+/g, '')
   if (!normalized) throw new Error(`${label} did not return image data`)
   if (!/^[A-Za-z0-9+/]*={0,2}$/.test(normalized)) throw new Error(`${label} returned invalid base64 data`)
+  if (normalized.length % 4 === 1 || (normalized.includes('=') && normalized.length % 4 !== 0)) {
+    throw new Error(`${label} returned invalid base64 data`)
+  }
   const padding = normalized.endsWith('==') ? 2 : normalized.endsWith('=') ? 1 : 0
   const decodedBytes = Math.floor(normalized.length * 3 / 4) - padding
   if (decodedBytes > maxBytes) throw new Error(`${label} exceeds ${maxBytes} byte limit`)
+  const decoded = Buffer.from(normalized, 'base64')
+  if (!decoded.length || decoded.length > maxBytes) {
+    if (decoded.length > maxBytes) throw new Error(`${label} exceeds ${maxBytes} byte limit`)
+    throw new Error(`${label} returned invalid base64 data`)
+  }
+  const canonical = decoded.toString('base64').replace(/=+$/, '')
+  if (canonical !== normalized.replace(/=+$/, '')) throw new Error(`${label} returned invalid base64 data`)
   return normalized
 }
 
@@ -3885,26 +4701,28 @@ function resultExtension(mimeType: string) {
 }
 
 async function markFailed(jobId: string, error: string) {
+  const safeError = redactSecretText(error)
   await jobs.updateOne(
     { _id: jobId },
     {
       $set: {
         status: 'failed',
-        error,
+        error: stablePublicJobFailure(safeError),
         completedAt: new Date(),
         updatedAt: new Date(),
       },
-      $push: { logs: `ERROR: ${error}` },
+      $push: { logs: `ERROR: ${safeError}` },
     },
   )
 }
 
 async function appendLog(jobId: string, message: string) {
+  const safeMessage = redactSecretText(message)
   await jobs.updateOne(
     { _id: jobId },
     {
       $set: { updatedAt: new Date() },
-      $push: { logs: `${new Date().toISOString()} ${message}` },
+      $push: { logs: `${new Date().toISOString()} ${safeMessage}` },
     },
   )
 }
@@ -3919,13 +4737,13 @@ async function recordStage(jobId: string, input: Partial<JobStage> & { candidate
     type: input.type,
     title: input.title,
     round: Number(input.round || 0),
-    text: limitText(input.text, 12000),
-    suggestion: limitText(input.suggestion, 6000),
+    text: redactSecretText(limitText(input.text, 12000)),
+    suggestion: redactSecretText(limitText(input.suggestion, 6000)),
     image: input.image || null,
     startedAt,
     completedAt,
     durationMs: Number(input.durationMs || (completedAt.getTime() - startedAt.getTime())),
-    error: limitText(input.error, 1200),
+    error: redactSecretText(limitText(input.error, 1200)),
   }
   await jobs.updateOne(
     { _id: jobId },
@@ -4034,13 +4852,14 @@ function registryImageRefineCapability(provider: Provider, registry: ProviderMod
   const resolvedId = provider === 'openrouter' ? toOpenRouterModel(model) : normalizeModelName(provider, model)
   const entry = registry.models.find((candidate) => candidate.id === resolvedId)
   const mode = entry?.capabilities.imageEditMode || 'none'
+  const resolutions = entry?.capabilities.refineResolutions || []
   if (mode === 'direct-edit') {
-    return { mode, reason: `${entry?.label || resolvedId} accepts the source image for direct image-to-image editing` }
+    return { mode, resolutions, reason: `${entry?.label || resolvedId} accepts the source image for direct image-to-image editing` }
   }
   if (mode === 'analyze-redraw') {
-    return { mode, reason: `${entry?.label || resolvedId} cannot accept a source image; refine analyzes the source and redraws it` }
+    return { mode, resolutions, reason: `${entry?.label || resolvedId} cannot accept a source image; refine analyzes the source and redraws it` }
   }
-  return { mode: 'none' as const, reason: `${entry?.label || resolvedId} is not registered for image refinement` }
+  return { mode: 'none' as const, resolutions, reason: `${entry?.label || resolvedId} is not registered for image refinement` }
 }
 
 async function fetchOpenRouterTextModels() {
@@ -4175,6 +4994,7 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         referenceImages: directEdit,
         imageEditing: directEdit,
         resolutions: resolutionValues,
+        refineResolutions: canonicalRefineResolutions(resolutionValues),
         outputFormats,
       },
       {
@@ -4200,19 +5020,22 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
   const firstForRole = (role: ModelRole) => models.find((model) => model.roles.includes(role))?.id || ''
   const preferred = (id: string, role: ModelRole) => entries.get(id)?.roles.includes(role) ? id : firstForRole(role)
   return {
+    accessKind: 'aggregator',
+    routeContractVersion,
+    accountCatalogRequired: false,
     defaults: {
-      main: preferred('openai/gpt-5.5', 'main'),
+      main: preferred('openai/gpt-5.6-sol', 'main'),
       image: preferred('sourceful/riverflow-v2.5-pro', 'image'),
-      vision: preferred('google/gemini-3.6-flash', 'vision'),
+      vision: preferred('google/gemini-3.7-flash', 'vision'),
     },
     models,
   }
 }
 
 const openRouterRecommendationRank = new Map([
-  ['openai/gpt-5.5', 0],
+  ['openai/gpt-5.6-sol', 0],
   ['sourceful/riverflow-v2.5-pro', 1],
-  ['google/gemini-3.6-flash', 2],
+  ['google/gemini-3.7-flash', 2],
 ])
 const openRouterRecommendedModelIds = new Set(openRouterRecommendationRank.keys())
 
@@ -4235,7 +5058,8 @@ function openRouterOutputFormats(parameters: any) {
 }
 
 async function providerModelRegistry(provider: Provider): Promise<ProviderModelRegistry> {
-  return provider === 'openrouter' ? openRouterProviderRegistry() : staticModelRegistry[provider]
+  if (provider === 'openrouter') return openRouterProviderRegistry()
+  return staticModelRegistry[provider]
 }
 
 function providerRegistryFailure(provider: Provider, error: any): string {
@@ -4247,7 +5071,33 @@ function providerRegistryFailure(provider: Provider, error: any): string {
   return `${provider} model registry is temporarily unavailable`
 }
 
-function modelRoleSelectionError(
+async function validateModelRouting(
+  modelRoutes: ModelRoutes,
+  roles: ModelRole[] = ['main', 'image', 'vision'],
+  registries = new Map<Provider, ProviderModelRegistry>(),
+): Promise<Map<Provider, ProviderModelRegistry>> {
+  const requiredRoles = uniqueRouteRoles(roles)
+  for (const provider of new Set(requiredRoles.map((role) => modelRoutes[role].accessProvider))) {
+    if (registries.has(provider)) continue
+    try {
+      registries.set(provider, await providerModelRegistry(provider))
+    } catch (error: any) {
+      const routeError: any = new Error(providerRegistryFailure(provider, error))
+      routeError.statusCode = 503
+      throw routeError
+    }
+  }
+  for (const role of requiredRoles) {
+    const route = modelRoutes[role]
+    const error = modelRoleSelectionError(route.accessProvider, registries.get(route.accessProvider)!, [
+      { model: route.modelId, role },
+    ])
+    if (error) throw modelRouteError(error)
+  }
+  return registries
+}
+
+export function modelRoleSelectionError(
   provider: Provider,
   registry: ProviderModelRegistry,
   selections: Array<{ model: string; role: ModelRole }>,
@@ -4259,6 +5109,9 @@ function modelRoleSelectionError(
     const entry = registry.models.find((candidate) => candidate.id === model)
     if (!entry?.roles.includes(selection.role)) {
       return `Model ${model} is not registered for ${selection.role} on ${provider}`
+    }
+    if (!entry.selectable) {
+      return `Model ${model} is not selectable for ${selection.role} on ${provider}`
     }
   }
   return ''
@@ -5212,7 +6065,7 @@ function randomId() {
 }
 
 function validateCreateBody(body: CreateJobBody) {
-  if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) throw new Error('Invalid provider')
+  if (!recognizedRouteProviders.has(body.provider)) throw new Error('Invalid provider')
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
   if (body.taskName && !['diagram', 'plot'].includes(body.taskName)) throw new Error('Invalid taskName. Must be diagram or plot.')
   if (!body.methodContent || body.methodContent.trim().length < 20) throw new Error('methodContent is too short')
@@ -5221,8 +6074,8 @@ function validateCreateBody(body: CreateJobBody) {
   if (body.caption.trim().length > 1000) throw new Error('caption exceeds 1000 characters')
   const requestedFormat = body.outputFormat || body.output_format
   if (requestedFormat && !['png', 'svg'].includes(requestedFormat)) throw new Error('Invalid outputFormat')
-  if (!body.mainModelName) throw new Error('mainModelName is required')
-  if (!body.imageModelName) throw new Error('imageModelName is required')
+  if (!body.modelRoutes && !body.mainModelName) throw new Error('mainModelName is required')
+  if (!body.modelRoutes && !body.imageModelName) throw new Error('imageModelName is required')
   if (body.referenceImageMode && !['auto', 'main_model', 'vision_model'].includes(body.referenceImageMode)) throw new Error('Invalid referenceImageMode')
   if (body.retrievalSetting && !allowedRetrievalSettings.has(body.retrievalSetting)) throw new Error('Invalid retrievalSetting')
   if (body.retrievalSetting === 'manual' && !normalizeManualReferenceIds(body.manualReferenceIds || []).length) {
@@ -5231,9 +6084,12 @@ function validateCreateBody(body: CreateJobBody) {
 }
 
 function validateRefineBody(body: RefineImageBody) {
-  if (!['openrouter', 'gemini', 'openai', 'bailian'].includes(body.provider)) throw new Error('Invalid provider')
+  if (!recognizedRouteProviders.has(body.provider)) throw new Error('Invalid provider')
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
-  if (!body.imageModelName) throw new Error('imageModelName is required')
+  if (body.imageSize !== undefined && !canonicalImageResolutions.includes(body.imageSize)) {
+    throw new Error('Invalid imageSize. Must be 1K, 2K, or 4K.')
+  }
+  if (!body.modelRoutes && !body.imageModelName) throw new Error('imageModelName is required')
   if (!body.sourceImageUrl && !body.sourceImageObjectKey) throw new Error('source image is required')
   const instruction = String(body.editInstruction || '').trim()
   if (instruction.length < 3) throw new Error('editInstruction is required')
@@ -5245,21 +6101,35 @@ function selectApiKey(provider: Provider, apiKeys: ApiKeys) {
   if (provider === 'gemini') return apiKeys?.gemini?.trim() || ''
   if (provider === 'openai') return apiKeys?.openai?.trim() || ''
   if (provider === 'bailian') return apiKeys?.bailian?.trim() || ''
+  if (provider === 'ark') return apiKeys?.ark?.trim() || ''
   return ''
 }
 
 async function publicJob(job: any) {
   const clientPlatform = normalizeClientPlatform(job.clientPlatform) || normalizeClientPlatform(job.client_platform)
+  const storedModelRoutes = normalizeStoredModelRoutes(job.modelRoutes)
+  const historicalModelRoutes = storedModelRoutes || deriveHistoricalModelRoutes(job)
+  const routingMetadata = historicalModelRoutes
+    ? {
+        modelRoutes: historicalModelRoutes,
+        routingMode: job.routingMode === 'mixed' || job.routingMode === 'single'
+          ? job.routingMode
+          : modelRoutingMode(historicalModelRoutes),
+        modelRoutingVersion: 1,
+        modelRoutingSource: job.modelRoutingSource === 'explicit' ? 'explicit' : 'legacy-derived',
+      }
+    : {}
   return {
     id: job._id,
     status: job.status,
-    provider: job.provider,
+    provider: historicalModelRoutes?.main.accessProvider || job.provider,
+    ...routingMetadata,
     clientPlatform,
     client_platform: clientPlatform,
     jobType: job.jobType || 'generate',
     userId: job.userId || job.user_id || '',
     userEmail: job.userEmail || job.user_email || '',
-    configurationMode: job.configurationMode || 'advanced',
+    configurationMode: normalizeConfigurationMode(job.configurationMode),
     taskName: job.taskName || 'diagram',
     methodContent: job.methodContent,
     caption: job.caption,
@@ -5279,7 +6149,7 @@ async function publicJob(job: any) {
     manualReferenceIds: job.manualReferenceIds || [],
     retrievedReferenceIds: job.retrievedReferenceIds || [],
     retrievedReferences: job.retrievedReferences || [],
-    stages: await refreshStageImages(job.stages || []),
+    stages: redactPublicValue(await refreshStageImages(job.stages || [])),
     criticMode: job.criticMode || '',
     aspectRatio: job.aspectRatio,
     imageSize: job.imageSize || '',
@@ -5288,13 +6158,47 @@ async function publicJob(job: any) {
     promptCharCount: job.promptCharCount,
     referenceImageCount: (job.referenceImages || []).length,
     referenceImages: await refreshReferenceImageUrls(job.referenceImages || []),
-    resultImages: await refreshStoredImageUrls(job.resultImages || []),
-    logs: job.logs || [],
-    error: job.error || '',
+    resultImages: redactPublicValue(await refreshStoredImageUrls(job.resultImages || [])),
+    logs: redactPublicValue(job.logs || []),
+    error: redactSecretText(job.error || ''),
     createdAt: job.createdAt,
     updatedAt: job.updatedAt,
     startedAt: job.startedAt,
     completedAt: job.completedAt,
+  }
+}
+
+function modelRoutingMode(routes: ModelRoutes): ModelRoutingMode {
+  return new Set(Object.values(routes).map((route) => route.accessProvider)).size === 1 ? 'single' : 'mixed'
+}
+
+function normalizeStoredModelRoutes(value: any): ModelRoutes | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+  try {
+    return {
+      main: normalizeModelRoute(value.main, 'main'),
+      image: normalizeModelRoute(value.image, 'image'),
+      vision: normalizeModelRoute(value.vision, 'vision'),
+    }
+  } catch {
+    return null
+  }
+}
+
+function deriveHistoricalModelRoutes(job: any): ModelRoutes | null {
+  const provider = String(job?.provider || '').trim() as Provider
+  const mainModelName = typeof job?.mainModelName === 'string' ? job.mainModelName.trim() : ''
+  const imageModelName = typeof job?.imageModelName === 'string' ? job.imageModelName.trim() : ''
+  if (!recognizedRouteProviders.has(provider) || !mainModelName || !imageModelName) return null
+  try {
+    return resolveModelRouting({
+      provider,
+      mainModelName,
+      imageModelName,
+      referenceVisionModelName: typeof job.referenceVisionModelName === 'string' ? job.referenceVisionModelName : '',
+    }).modelRoutes
+  } catch {
+    return null
   }
 }
 
@@ -5359,6 +6263,39 @@ function ok(data: any) {
 
 function fail(message: string, status = 400) {
   return { code: status, error: message }
+}
+
+function redactSecretText(value: any, secrets: Array<string | undefined> = []) {
+  let redacted = String(value || '')
+  for (const secret of secrets) {
+    if (secret && secret.length >= 6) redacted = redacted.split(secret).join('[REDACTED]')
+  }
+  return redacted
+    .replace(/([?&](?:key|api[_-]?key|token|access[_-]?token)=)[^&#\s]+/gi, '$1[REDACTED]')
+    .replace(/(authorization\s*[:=]\s*)bearer\s+[^\s,;]+/gi, '$1Bearer [REDACTED]')
+    .replace(/((?:x-goog-api-key|api[_-]?key|access[_-]?token|token)\s*[:=]\s*)[^\s,;]+/gi, '$1[REDACTED]')
+    .replace(/\bbearer\s+[^\s,;]+/gi, 'Bearer [REDACTED]')
+}
+
+const publicSensitiveKeys = new Set([
+  'authorization', 'cookie', 'password', 'token', 'secret', 'apikey', 'apikeys',
+  'gatewaytoken', 'admintoken', 'accesstoken', 'refreshtoken', 'sessiontoken',
+  'accesskeyid', 'accesskeysecret',
+])
+
+function redactPublicValue(value: any, key = ''): any {
+  const normalizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, '')
+  if (publicSensitiveKeys.has(normalizedKey)) return '[REDACTED]'
+  if (typeof value === 'string') return redactSecretText(value)
+  if (Array.isArray(value)) return value.map((entry) => redactPublicValue(entry))
+  if (!value || typeof value !== 'object' || value instanceof Date) return value
+  return Object.fromEntries(Object.entries(value).map(([entryKey, entry]) => [entryKey, redactPublicValue(entry, entryKey)]))
+}
+
+function stablePublicJobFailure(error: string) {
+  if (error.includes(providerEgressUnavailableMessage)) return providerEgressUnavailableMessage
+  if (/account deletion is in progress/i.test(error)) return 'Account deletion is in progress. Please retry.'
+  return 'Model execution failed. Please retry.'
 }
 
 // ---------------------------------------------------------------------------
@@ -5594,6 +6531,10 @@ function normalizeTaskName(taskName?: string): TaskName {
   return taskName === 'plot' ? 'plot' : 'diagram'
 }
 
+function normalizeConfigurationMode(mode?: string): 'simple' | 'advanced' {
+  return mode === 'advanced' ? 'advanced' : 'simple'
+}
+
 function normalizeRetrievalSetting(setting?: string): RetrievalSetting {
   return allowedRetrievalSettings.has(setting as RetrievalSetting) ? setting as RetrievalSetting : 'none'
 }
@@ -5751,9 +6692,14 @@ async function evaluateJob(body: EvaluateJobBody) {
 
   // Resolve the judge model. Default to the job's main model + provider, but
   // allow the caller to override provider/model/apiKey for a dedicated judge.
-  const provider = (['openrouter', 'gemini', 'openai', 'bailian'].includes(String(body.provider))
-    ? body.provider
-    : job.provider) as Provider
+  const requestedProvider = body.provider === undefined || body.provider === null
+    ? ''
+    : String(body.provider).trim()
+  if (requestedProvider && !recognizedRouteProviders.has(requestedProvider as Provider)) {
+    return fail('Invalid judge provider', 400)
+  }
+  const provider = (requestedProvider || String(job.provider || '').trim()) as Provider
+  if (!recognizedRouteProviders.has(provider)) return fail('Invalid judge provider', 400)
   const model = normalizeModelName(provider, limitText(body.model, 120) || job.mainModelName || job.referenceVisionModelName)
   const apiKey = limitText(body.apiKey, 400)
   if (!apiKey) return fail('apiKey is required to run the LLM judge', 400)

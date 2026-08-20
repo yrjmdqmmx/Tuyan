@@ -1,9 +1,9 @@
 import { pathToFileURL } from 'node:url'
 
 const recommendationPolicy = [
-  { id: 'openai/gpt-5.5', catalog: 'text' as const },
+  { id: 'openai/gpt-5.6-sol', catalog: 'text' as const },
   { id: 'sourceful/riverflow-v2.5-pro', catalog: 'image' as const },
-  { id: 'google/gemini-3.6-flash', catalog: 'text' as const },
+  { id: 'google/gemini-3.7-flash', catalog: 'text' as const },
 ]
 
 type CatalogModel = string | { id?: string; supported_parameters?: any }

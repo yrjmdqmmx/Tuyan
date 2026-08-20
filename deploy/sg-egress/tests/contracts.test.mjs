@@ -345,6 +345,7 @@ test('smoke tests only exercise safe expected statuses and assert the deny bound
   assert.match(smoke, /api\.openai\.com.*401|401.*api\.openai\.com/s);
   assert.match(smoke, /generativelanguage\.googleapis\.com.*403|403.*generativelanguage\.googleapis\.com/s);
   assert.match(smoke, /openrouter\.ai.*200|200.*openrouter\.ai/s);
+  assert.match(smoke, /ark\.cn-beijing\.volces\.com\/api\/v3\/models.*401|401.*ark\.cn-beijing\.volces\.com\/api\/v3\/models/s);
   assert.match(smoke, /example\.com/);
   assert.match(smoke, /192\.0\.2\.1/);
   assert.match(smoke, /:444/);
@@ -353,6 +354,20 @@ test('smoke tests only exercise safe expected statuses and assert the deny bound
   assert.doesNotMatch(smoke, /--sg-monitor/);
   assert.doesNotMatch(smoke, /systemctl is-active --quiet squid/);
   assert.doesNotMatch(smoke, /Authorization:|api[_-]?key=|sk-[A-Za-z0-9]/i);
+});
+
+test('Singapore policy has exactly four approved data-plane provider hosts including Ark', () => {
+  const installer = read('scripts/install-egress.sh');
+  const approved = installer.match(/^acl approved dstdomain -n (.+)$/m);
+  assert.ok(approved, 'Singapore Squid policy must declare approved exact hosts without PTR lookup');
+  assert.deepEqual(approved[1].split(' '), [
+    'api.openai.com',
+    'generativelanguage.googleapis.com',
+    'openrouter.ai',
+    'ark.cn-beijing.volces.com',
+  ]);
+  assert.match(installer, /four approved HTTPS hosts/);
+  assert.match(read('README.md'), /four exact hosts[\s\S]*ark\.cn-beijing\.volces\.com/);
 });
 
 test('health monitor runs only from Hong Kong every five minutes and sends failures to journal', () => {

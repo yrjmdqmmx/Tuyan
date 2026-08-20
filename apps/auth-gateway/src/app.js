@@ -21,6 +21,7 @@ const MAINTENANCE_ACTIONS = new Set([
   'prepareReferenceUpload',
   'finalizeReferenceUpload',
   'abortReferenceUpload',
+  'providerAccountCatalog',
   'submitFeedback',
   ...ADMIN_MUTATING_ACTIONS,
 ]);
@@ -249,10 +250,15 @@ export function createApp({
         action === 'createJob' ||
         action === 'prepareReferenceUpload' ||
         action === 'finalizeReferenceUpload' ||
-        action === 'abortReferenceUpload'
+        action === 'abortReferenceUpload' ||
+        action === 'providerAccountCatalog'
       ) {
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
-        const body = action === 'createJob' ? normalizeCreateJobBody(request.body) : { ...request.body };
+        const body = action === 'createJob'
+          ? normalizeCreateJobBody(request.body)
+          : action === 'providerAccountCatalog'
+            ? normalizeProviderAccountCatalogBody(request.body)
+            : { ...request.body };
         return relay(
           response,
           await backend.call(
@@ -288,8 +294,12 @@ export function createApp({
         const body = {
           ...request.body,
           ...source.payload,
-          mainModelName: normalizeModelName(request.body?.provider, request.body?.mainModelName),
-          imageModelName: normalizeModelName(request.body?.provider, request.body?.imageModelName),
+          ...(hasModelRoutes(request.body)
+            ? {}
+            : {
+                mainModelName: normalizeModelName(request.body?.provider, request.body?.mainModelName),
+                imageModelName: normalizeModelName(request.body?.provider, request.body?.imageModelName),
+              }),
           userId: principal.userId,
           userEmail: principal.userEmail,
         };
@@ -450,11 +460,16 @@ function forbidden(response) {
 }
 
 function normalizeCreateJobBody(body) {
+  if (hasModelRoutes(body)) return { ...body };
   return {
     ...body,
     mainModelName: normalizeModelName(body?.provider, body?.mainModelName),
     imageModelName: normalizeModelName(body?.provider, body?.imageModelName),
   };
+}
+
+function hasModelRoutes(body) {
+  return body?.modelRoutes !== undefined && body?.modelRoutes !== null;
 }
 
 function normalizeFeedbackBody(body) {
@@ -466,6 +481,17 @@ function normalizeFeedbackBody(body) {
     platform: body?.platform,
     clientVersion: body?.clientVersion,
     contact: body?.contact,
+  };
+}
+
+function normalizeProviderAccountCatalogBody(body) {
+  const arkKey = typeof body?.apiKeys?.ark === 'string' ? body.apiKeys.ark : undefined;
+  return {
+    action: 'providerAccountCatalog',
+    provider: body?.provider,
+    apiKeys: arkKey === undefined ? {} : { ark: arkKey },
+    probes: body?.probes,
+    confirmPaidImageProbe: body?.confirmPaidImageProbe,
   };
 }
 

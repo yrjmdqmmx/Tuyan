@@ -1,4 +1,4 @@
-import { AlertTriangle, ImagePlus, Loader2, Send } from 'lucide-react';
+import { AlertTriangle, ImagePlus, Loader2, Send, Settings2 } from 'lucide-react';
 import { formatErrorMessage } from '../utils';
 import JobStatus from './JobStatus';
 import Select from './Select';
@@ -9,7 +9,9 @@ export default function RefinePanel({
   capability,
   instruction,
   imageSize,
+  resolutionOptions = [],
   aspectRatio,
+  settingsSummary,
   canSubmit,
   isSubmitting,
   error,
@@ -18,6 +20,7 @@ export default function RefinePanel({
   onInstructionChange,
   onImageSizeChange,
   onAspectRatioChange,
+  onOpenSettings,
   onSubmit,
 }) {
   return (
@@ -43,6 +46,10 @@ export default function RefinePanel({
           <span>{capability?.directEdit ? '所选图像模型会直接接收源图。' : capability?.mode === 'analyze-redraw' ? '系统先分析源图，再依据指令重新绘制。' : '请在生成设置中选择支持精修的图像模型。'}</span>
           {sourceObjectKey ? <small>已锁定任务源文件，签名链接仅用于预览。</small> : null}
         </div>
+        <div className="refine-routing-summary" aria-label="精修模型路由">
+          <div><span>当前精修路由</span><strong>{settingsSummary}</strong></div>
+          <button type="button" className="generation-settings-trigger" onClick={onOpenSettings}><Settings2 size={17} /> 精修设置</button>
+        </div>
         <label className="field">
           <span>精修指令</span>
           <textarea value={instruction} onChange={(event) => onInstructionChange(event.target.value)} rows={8} placeholder="例如：放大标签、减少装饰、让流程箭头更清晰。" />
@@ -54,10 +61,14 @@ export default function RefinePanel({
             ['3:2', '3:2'],
             ['1:1', '1:1'],
           ]} />
-          <Select label="清晰度" value={imageSize} onChange={onImageSizeChange} options={[
-            ['2K', '2K'],
-            ['4K', '4K'],
-          ]} />
+          {resolutionOptions.length ? (
+            <Select label="清晰度" value={imageSize} onChange={onImageSizeChange} options={resolutionOptions} />
+          ) : (
+            <div className="field refine-resolution-unavailable" role="status" aria-label="精修清晰度不可用">
+              <span>精修清晰度不可用</span>
+              <small>当前图像模型未声明可执行的精修清晰度，请在精修设置中更换模型。</small>
+            </div>
+          )}
         </div>
         <button className="primary-button" type="submit" disabled={!canSubmit}>
           {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}

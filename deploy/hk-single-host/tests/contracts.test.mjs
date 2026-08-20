@@ -217,6 +217,38 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
   assert.match(workflows[0], /VITE_AUTH_BASE:\s*https:\/\/api\.paperbanana\.asia/);
 });
 
+test('legacy Laf rollback remains verification-only until the console dependency can be checked', () => {
+  const workflow = read('../../.github/workflows/deploy-laf-functions.yml');
+  const lafReadme = read('../../apps/laf-functions/README.md');
+  const coreReadme = read('../../apps/paperbanana-api/README.md');
+  const sync = read('../../SYNC.md');
+
+  assert.doesNotMatch(workflow, /\blaf\s+func\s+push\b/i);
+  assert.doesNotMatch(workflow, /\blaf\s+(?:login|app\s+init)\b|LAF_(?:PAT|APPID)/i);
+  assert.match(workflow, /environment:\s*legacy-sealos/);
+  assert.match(workflow, /verification[- ]only/i);
+  assert.match(workflow, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual/i);
+  assert.doesNotMatch(workflow, /(?:npm|pnpm|yarn)\s+(?:install|add)[^\n]*jpeg-js|laf\s+(?:dependency|deps?)\s+/i);
+  assert.match(lafReadme, /^# .*rollback only/im);
+  assert.match(lafReadme, /jpeg-js@0\.4\.4/);
+  assert.match(lafReadme, /custom dependency/i);
+  assert.match(lafReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|仅能[^\n]*Laf 控制台/i);
+  assert.match(coreReadme, /verification[- ]only/i);
+  assert.match(coreReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|手动[^\n]*Laf 控制台/i);
+  assert.match(sync, /jpeg-js@0\.4\.4/);
+  assert.match(sync, /仅验证[^\n]*不含[^\n]*push|仅能[^\n]*控制台手动/);
+});
+
+test('Core operations documentation includes Ark in the four-origin Singapore egress contract', () => {
+  const coreReadme = read('../../apps/paperbanana-api/README.md');
+
+  assert.match(coreReadme, /OpenAI, Gemini, OpenRouter, and Ark/);
+  assert.match(coreReadme, /four canonical origins/);
+  assert.match(coreReadme, /ark\.cn-beijing\.volces\.com/);
+  assert.doesNotMatch(coreReadme, /only those three canonical origins/);
+  assert.doesNotMatch(coreReadme, /does not yet classify the Ark origin/);
+});
+
 test('shipping Web and iOS clients default to the Aliyun production edge', () => {
   const clientFiles = [
     '../../apps/ios/PaperBanana/Core/AppDefaults.swift',

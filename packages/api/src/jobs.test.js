@@ -9,6 +9,7 @@ import {
   formatClientPlatform,
   getJobRequest,
   modelRegistryRequest,
+  providerAccountCatalogRequest,
   referenceLibraryRequest,
   refineImageRequest,
   userJobsRequest,
@@ -118,6 +119,56 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
   }
 });
 
+test('getJobRequest preserves Core routing metadata in camel and snake forms without deriving routes', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    job: {
+      _id: 'job-routed',
+      model_routes: {
+        main: { accessProvider: ' openai ', modelId: ' gpt-5.6-sol ' },
+        image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+        vision: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+        ignored: { accessProvider: 'ark', modelId: 'should-not-leak' },
+      },
+      routing_mode: 'mixed',
+      model_routing_version: 1,
+      model_routing_source: 'explicit',
+    },
+  } }));
+  try {
+    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'job-routed');
+    const expectedRoutes = {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+      vision: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+    };
+    assert.deepEqual(job.modelRoutes, expectedRoutes);
+    assert.deepEqual(job.model_routes, expectedRoutes);
+    assert.equal(job.routingMode, 'mixed');
+    assert.equal(job.routing_mode, 'mixed');
+    assert.equal(job.modelRoutingVersion, 1);
+    assert.equal(job.model_routing_version, 1);
+    assert.equal(job.modelRoutingSource, 'explicit');
+    assert.equal(job.model_routing_source, 'explicit');
+    assert.equal(job.provider, undefined);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('getJobRequest treats a missing historical configuration mode as simple', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    job: { _id: 'legacy-simple-job', status: 'succeeded' },
+  } }));
+  try {
+    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'legacy-simple-job');
+    assert.equal(job.configuration_mode, 'simple');
+  } finally {
+    fetchMock.restore();
+  }
+});
+
 test('refineImageRequest sends image edit payload to gateway/Laf', async () => {
   const fetchMock = mockJsonFetch(() => ({ body: {
     code: 0,
@@ -146,6 +197,129 @@ test('refineImageRequest sends image edit payload to gateway/Laf', async () => {
     assert.equal(body.clientPlatform, 'web');
     assert.equal(body.sourceImageUrl, 'https://example.com/source.png');
     assert.equal(body.editInstruction, 'Make the labels larger.');
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('job requests forward explicit multi-provider model routes unchanged with the main provider shadow', async () => {
+  const fetchMock = mockJsonFetch((_url, _options, index) => ({ body: {
+    code: 0,
+    jobId: index === 0 ? 'create-routed' : 'refine-routed',
+    status: 'queued',
+  } }));
+  const modelRoutes = {
+    main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+    vision: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+  };
+  try {
+    await createJobRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      configurationMode: 'advanced',
+      provider: 'openai',
+      apiKeys: { openai: 'openai-key', bailian: 'bailian-key', gemini: 'gemini-key' },
+      modelRoutes,
+      taskName: 'diagram',
+      methodContent: 'A sufficiently long method section for the routing transport test.',
+      caption: 'Figure 1',
+      infographicCategory: '方法框架图',
+      outputFormat: 'png',
+      imageSize: '2K',
+      mainModelName: 'gpt-5.6-sol',
+      imageGenModelName: 'wan2.7-image-pro',
+      referenceVisionModelName: 'gemini-3.7-flash',
+      referenceImageMode: 'auto',
+      pipelineMode: 'planner_critic',
+      retrievalSetting: 'none',
+      aspectRatio: '16:9',
+      numCandidates: 1,
+      maxCriticRounds: 1,
+    });
+    await refineImageRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      configurationMode: 'advanced',
+      provider: 'openai',
+      apiKeys: { openai: 'openai-key', bailian: 'bailian-key', gemini: 'gemini-key' },
+      modelRoutes,
+      mainModelName: 'gpt-5.6-sol',
+      imageModelName: 'wan2.7-image-pro',
+      referenceVisionModelName: 'gemini-3.7-flash',
+      sourceImageObjectKey: 'jobs/source/result.png',
+      editInstruction: 'Make the labels larger.',
+      aspectRatio: '16:9',
+      imageSize: '2K',
+    });
+
+    for (const call of fetchMock.calls) {
+      const body = JSON.parse(call.options.body);
+      assert.equal(body.configurationMode, 'advanced');
+      assert.equal(body.provider, 'openai');
+      assert.deepEqual(body.modelRoutes, modelRoutes);
+      assert.equal(body.mainModelName, 'gpt-5.6-sol');
+      assert.equal(body.imageModelName, 'wan2.7-image-pro');
+      assert.equal(body.referenceVisionModelName, 'gemini-3.7-flash');
+      assert.notEqual(body.provider, 'mixed');
+    }
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('providerAccountCatalogRequest sends only explicit bounded Ark inference probes', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    provider: 'ark',
+    accountCatalogAvailable: false,
+    catalogAuth: 'access-key-required',
+    verificationMode: 'inference-smoke',
+    providerRegistry: { accessKind: 'aggregator', models: [] },
+    probeResults: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428', state: 'verified' }],
+  } }));
+  try {
+    const result = await providerAccountCatalogRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      provider: 'ark',
+      apiKeys: { ark: 'ark-secret' },
+      probes: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }],
+      confirmPaidImageProbe: false,
+    });
+
+    const body = JSON.parse(fetchMock.calls[0].options.body);
+    assert.deepEqual(body, {
+      action: 'providerAccountCatalog',
+      provider: 'ark',
+      apiKeys: { ark: 'ark-secret' },
+      probes: [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }],
+      confirmPaidImageProbe: false,
+    });
+    assert.equal(result.accountCatalogAvailable, false);
+    assert.equal(result.catalogAuth, 'access-key-required');
+    assert.equal(result.verificationMode, 'inference-smoke');
+    assert.equal(result.probeResults[0].state, 'verified');
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('providerAccountCatalogRequest rejects non-Ark and over-broad probes before transport', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0 } }));
+  try {
+    await assert.rejects(
+      providerAccountCatalogRequest('https://gateway.example', { backendMode: 'gateway' }, {
+        provider: 'bailian', apiKeys: { bailian: 'key' }, probes: [],
+      }),
+      /Ark/,
+    );
+    await assert.rejects(
+      providerAccountCatalogRequest('https://gateway.example', { backendMode: 'gateway' }, {
+        provider: 'ark', apiKeys: { ark: 'key' }, probes: [
+          { role: 'main', modelId: 'one' },
+          { role: 'image', modelId: 'two' },
+          { role: 'vision', modelId: 'three' },
+          { role: 'main', modelId: 'four' },
+        ],
+      }),
+      /3/,
+    );
+    assert.equal(fetchMock.calls.length, 0);
   } finally {
     fetchMock.restore();
   }
@@ -403,8 +577,15 @@ test('modelRegistryRequest reads the server-authoritative model roles and defaul
     body: {
       code: 0,
       registryVersion: '2026-08-19',
+      routeContractVersion: 1,
+      supportsModelRoutes: true,
       providers: {
         gemini: {
+          accessKind: 'byok',
+          releasedAt: '2026-08-01',
+          officialSourceUrl: 'https://ai.google.dev/',
+          routeContractVersion: 1,
+          accountCatalogRequired: true,
           defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
           models: [{ id: 'gemini-3.7-flash', label: 'Gemini 3.7 Flash', roles: ['main', 'vision'], capabilities: { referenceImages: true }, protocol: 'gemini-generate-content', availabilityNotes: 'Stable' }],
         },
@@ -416,6 +597,13 @@ test('modelRegistryRequest reads the server-authoritative model roles and defaul
     assert.equal(JSON.parse(fetchMock.calls[0].options.body).action, 'modelRegistry');
     assert.equal(registry.providers.gemini.defaults.main, 'gemini-3.7-flash');
     assert.deepEqual(registry.providers.gemini.models[0].roles, ['main', 'vision']);
+    assert.equal(registry.routeContractVersion, 1);
+    assert.equal(registry.supportsModelRoutes, true);
+    assert.equal(registry.providers.gemini.accessKind, 'byok');
+    assert.equal(registry.providers.gemini.releasedAt, '2026-08-01');
+    assert.equal(registry.providers.gemini.officialSourceUrl, 'https://ai.google.dev/');
+    assert.equal(registry.providers.gemini.routeContractVersion, 1);
+    assert.equal(registry.providers.gemini.accountCatalogRequired, true);
   } finally {
     fetchMock.restore();
   }

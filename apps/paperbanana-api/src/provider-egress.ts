@@ -18,6 +18,7 @@ const targetHosts = new Set([
   'api.openai.com',
   'generativelanguage.googleapis.com',
   'openrouter.ai',
+  'ark.cn-beijing.volces.com',
 ])
 
 function unavailableError(): Error & { code: string } {

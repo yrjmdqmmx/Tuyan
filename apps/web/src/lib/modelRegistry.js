@@ -17,6 +17,9 @@ export function mergeProviderRegistry(fallback, registry) {
 
   return {
     ...fallback,
+    accessKind: registry.accessKind || fallback.accessKind || 'direct',
+    routeContractVersion: registry.routeContractVersion || 0,
+    accountCatalogRequired: registry.accountCatalogRequired === true,
     mainModel: safeDefault('main', registry.defaults.main, mainModels),
     imageModel: safeDefault('image', registry.defaults.image, imageModels),
     visionModel: safeDefault('vision', registry.defaults.vision, visionModels),
@@ -34,26 +37,59 @@ export function filterRegistryModels(models, { role, query = '', outputFormat = 
   return (models || [])
     .filter((model) => model?.roles?.includes(role)
       || (role === 'image' && (model?.outputModalities?.includes('image') || model?.protocol === 'openrouter-images')))
-    .filter((model) => !recommendedOnly || model.recommended === true)
+    .filter((model) => !recommendedOnly || (model.recommended === true && (model.lifecycle || 'stable') === 'stable'))
     .filter((model) => !needle || [model.id, model.label, model.vendor, model.availabilityNotes, model.disabledReason]
       .some((value) => String(value || '').toLocaleLowerCase('zh-CN').includes(needle)))
-    .map((model) => {
-      const outputFormats = model.capabilities?.outputFormats || []
-      const roleMismatch = !model.roles?.includes(role)
-      const formatMismatch = role === 'image' && outputFormat && outputFormats.length && !outputFormats.includes(outputFormat)
-      return {
-        ...model,
-        selectionDisabled: model.selectable === false || roleMismatch || Boolean(formatMismatch),
-        selectionDisabledReason: model.disabledReason
-          || (roleMismatch ? `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
-          || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
-      }
-    })
-    .sort((left, right) => Number(right.recommended === true) - Number(left.recommended === true)
-      || Number(left.selectionDisabled) - Number(right.selectionDisabled)
+    .map((model) => annotateModelForRole(model, { role, outputFormat }))
+    .sort((left, right) => Number(left.selectionDisabled) - Number(right.selectionDisabled)
       || Number(left.selectable === false) - Number(right.selectable === false)
-      || String(left.vendor || '').localeCompare(String(right.vendor || ''), 'en')
-      || String(left.label || left.id).localeCompare(String(right.label || right.id), 'zh-CN'))
+      || compareRegistryModels(left, right))
+}
+
+export function partitionRegistryModels(models, { role, query = '', outputFormat = '', recommendedOnly = false } = {}) {
+  const needle = query.trim().toLocaleLowerCase('zh-CN')
+  const annotated = (models || [])
+    .filter((model) => !recommendedOnly || (model.recommended === true && (model.lifecycle || 'stable') === 'stable'))
+    .filter((model) => !needle || [model.id, model.label, model.vendor, model.availabilityNotes, model.disabledReason]
+      .some((value) => String(value || '').toLocaleLowerCase('zh-CN').includes(needle)))
+    .map((model) => annotateModelForRole(model, { role, outputFormat }))
+    .sort(compareRegistryModels)
+  return {
+    compatible: annotated.filter((model) => !model.selectionDisabled),
+    incompatible: annotated.filter((model) => model.selectionDisabled),
+  }
+}
+
+function annotateModelForRole(model, { role, outputFormat }) {
+  const outputFormats = model.capabilities?.outputFormats || []
+  const roleMismatch = !model.roles?.includes(role)
+  const formatMismatch = role === 'image' && outputFormat && outputFormats.length && !outputFormats.includes(outputFormat)
+  return {
+    ...model,
+    selectionDisabled: model.selectable === false || roleMismatch || Boolean(formatMismatch),
+    selectionDisabledReason: model.disabledReason
+      || (roleMismatch ? model.roleReasons?.[role] || `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
+      || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
+  }
+}
+
+function compareRegistryModels(left, right) {
+  const vendorOrder = String(left.vendor || '').localeCompare(String(right.vendor || ''), 'en')
+  if (vendorOrder) return vendorOrder
+  return compareReleasedAt(left, right)
+}
+
+function compareReleasedAt(left, right) {
+  const leftReleased = validReleasedAt(left.releasedAt)
+  const rightReleased = validReleasedAt(right.releasedAt)
+  if (leftReleased && rightReleased) return rightReleased.localeCompare(leftReleased)
+  if (leftReleased) return -1
+  if (rightReleased) return 1
+  return 0
+}
+
+function validReleasedAt(value) {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : ''
 }
 
 export function groupRegistryModels(models) {
@@ -70,7 +106,7 @@ export function groupRegistryModels(models) {
       if (leftIndex >= 0 || rightIndex >= 0) return (leftIndex < 0 ? 999 : leftIndex) - (rightIndex < 0 ? 999 : rightIndex)
       return left.localeCompare(right, 'zh-CN')
     })
-    .map(([vendor, vendorModels]) => ({ vendor, models: vendorModels }))
+    .map(([vendor, vendorModels]) => ({ vendor, models: [...vendorModels].sort(compareReleasedAt) }))
 }
 
 export function modelRefinePresentation(model) {

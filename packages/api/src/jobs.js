@@ -47,8 +47,9 @@ export async function createJobRequest(apiBase, health, payload) {
         action: 'createJob',
         clientPlatform: CLIENT_PLATFORM,
         configurationMode: payload.configurationMode,
-        provider: payload.provider,
+        provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
         apiKeys: payload.apiKeys,
+        modelRoutes: payload.modelRoutes,
         taskName: payload.taskName,
         methodContent: payload.methodContent,
         caption: payload.caption,
@@ -159,8 +160,10 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
       body: JSON.stringify({
         action: 'refineImage',
         clientPlatform: CLIENT_PLATFORM,
-        provider: payload.provider,
+        configurationMode: payload.configurationMode,
+        provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
         apiKeys: payload.apiKeys,
+        modelRoutes: payload.modelRoutes,
         mainModelName: payload.mainModelName,
         imageModelName: payload.imageModelName,
         referenceVisionModelName: payload.referenceVisionModelName,
@@ -244,6 +247,24 @@ export async function modelRegistryRequest(apiBase, health, provider = '') {
     });
   }
   throw new Error('当前后端不支持服务端模型目录。');
+}
+
+export async function providerAccountCatalogRequest(apiBase, health, payload = {}) {
+  if (payload.provider !== 'ark') throw new Error('账号模型验证仅支持 Ark。');
+  if (!Array.isArray(payload.probes)) throw new Error('Ark 验证模型列表必须是数组。');
+  if (payload.probes.length > 3) throw new Error('Ark 每次最多验证 3 个模型。');
+  if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('Ark 模型验证需要使用 Laf 或登录网关后端。');
+  return fetchJson(lafEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'providerAccountCatalog',
+      provider: 'ark',
+      apiKeys: { ark: payload.apiKeys?.ark || '' },
+      probes: payload.probes,
+      confirmPaidImageProbe: payload.confirmPaidImageProbe === true,
+    }),
+  });
 }
 
 export async function getJobRequest(apiBase, health, jobId, options = {}) {
@@ -394,16 +415,28 @@ function toLafPipeline(mode) {
 function normalizeJob(job = {}) {
   const rawReferenceImages = job.reference_images || job.referenceImages || [];
   const clientPlatform = normalizeClientPlatform(job.clientPlatform) || normalizeClientPlatform(job.client_platform);
+  const modelRoutes = normalizeModelRoutes(job.modelRoutes ?? job.model_routes);
+  const routingMode = job.routingMode ?? job.routing_mode ?? '';
+  const modelRoutingVersion = job.modelRoutingVersion ?? job.model_routing_version ?? '';
+  const modelRoutingSource = job.modelRoutingSource ?? job.model_routing_source ?? '';
   return {
     id: job.id || job._id,
     status: job.status,
     provider: job.provider,
+    modelRoutes,
+    model_routes: modelRoutes,
+    routingMode,
+    routing_mode: routingMode,
+    modelRoutingVersion,
+    model_routing_version: modelRoutingVersion,
+    modelRoutingSource,
+    model_routing_source: modelRoutingSource,
     clientPlatform,
     client_platform: clientPlatform,
     job_type: job.job_type || job.jobType || 'generate',
     user_id: job.user_id || job.userId || '',
     user_email: job.user_email || job.userEmail || '',
-    configuration_mode: job.configuration_mode || job.configurationMode || 'advanced',
+    configuration_mode: job.configuration_mode || job.configurationMode || 'simple',
     method_content: job.method_content || job.methodContent || '',
     caption: job.caption || '',
     infographic_category: job.infographic_category || job.infographicCategory || '方法框架图',
@@ -454,6 +487,19 @@ function normalizeJob(job = {}) {
     started_at: job.started_at || job.startedAt,
     completed_at: job.completed_at || job.completedAt,
   };
+}
+
+function normalizeModelRoutes(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  const routes = {};
+  for (const role of ['main', 'image', 'vision']) {
+    const route = value[role];
+    if (!route || typeof route !== 'object' || Array.isArray(route)) continue;
+    const accessProvider = typeof route.accessProvider === 'string' ? route.accessProvider.trim() : '';
+    const modelId = typeof route.modelId === 'string' ? route.modelId.trim() : '';
+    if (accessProvider && modelId) routes[role] = { accessProvider, modelId };
+  }
+  return Object.keys(routes).length ? routes : undefined;
 }
 
 function normalizeClientPlatform(value) {

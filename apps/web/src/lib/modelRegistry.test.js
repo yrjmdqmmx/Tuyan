@@ -5,6 +5,7 @@ import {
   groupRegistryModels,
   mergeProviderRegistry,
   modelRefinePresentation,
+  partitionRegistryModels,
   uniqueRegistryModels,
 } from './modelRegistry.js'
 
@@ -16,6 +17,9 @@ const fallback = {
 
 test('server registry replaces stale role lists and defaults while preserving provider UI metadata', () => {
   const merged = mergeProviderRegistry(fallback, {
+    accessKind: 'aggregator',
+    routeContractVersion: 1,
+    accountCatalogRequired: true,
     defaults: { main: 'new-main', image: 'new-image', vision: 'new-vision' },
     models: [
       { id: 'new-main', label: 'New Main', roles: ['main'], availabilityNotes: 'Stable' },
@@ -24,10 +28,58 @@ test('server registry replaces stale role lists and defaults while preserving pr
     ],
   })
   assert.equal(merged.guideUrl, fallback.guideUrl)
+  assert.equal(merged.accessKind, 'aggregator')
+  assert.equal(merged.routeContractVersion, 1)
+  assert.equal(merged.accountCatalogRequired, true)
   assert.equal(merged.mainModel, 'new-main')
   assert.deepEqual(merged.mainModels.map(([id]) => id), ['new-main', 'new-vision'])
   assert.deepEqual(merged.imageModels, [['new-image', 'New Image']])
   assert.deepEqual(merged.visionModels, [['new-vision', 'New Vision']])
+})
+
+test('models within each vendor use real releasedAt descending with unknown dates last and stable', () => {
+  const models = [
+    { id: 'unknown-a', vendor: 'Google', roles: ['main'], releasedAt: null },
+    { id: 'new', vendor: 'Google', roles: ['main'], releasedAt: '2026-08-14' },
+    { id: 'unknown-b', vendor: 'Google', roles: ['main'], releasedAt: null },
+    { id: 'old', vendor: 'Google', roles: ['main'], releasedAt: '2026-06-01' },
+  ]
+  assert.deepEqual(groupRegistryModels(filterRegistryModels(models, { role: 'main' }))[0].models.map((model) => model.id), [
+    'new', 'old', 'unknown-a', 'unknown-b',
+  ])
+})
+
+test('a newer stable model sorts ahead of an older recommended model in the same vendor', () => {
+  const models = [
+    { id: 'old-recommended', vendor: 'OpenAI', roles: ['main'], releasedAt: '2026-01-01', recommended: true },
+    { id: 'new-standard', vendor: 'OpenAI', roles: ['main'], releasedAt: '2026-08-01' },
+  ]
+  assert.deepEqual(groupRegistryModels(filterRegistryModels(models, { role: 'main' }))[0].models.map((model) => model.id), [
+    'new-standard', 'old-recommended',
+  ])
+})
+
+test('recommended catalog excludes preview and invite models even when flagged recommended', () => {
+  const models = [
+    { id: 'stable', vendor: 'OpenAI', roles: ['main'], lifecycle: 'stable', recommended: true },
+    { id: 'preview', vendor: 'OpenAI', roles: ['main'], lifecycle: 'preview', recommended: true },
+    { id: 'invite', vendor: 'OpenAI', roles: ['main'], lifecycle: 'invite-only', recommended: true },
+  ]
+  assert.deepEqual(filterRegistryModels(models, { role: 'main', recommendedOnly: true }).map((model) => model.id), ['stable'])
+})
+
+test('OpenRouter compatible choices and disabled entries are partitioned with server reasons', () => {
+  const models = [
+    { id: 'ok', roles: ['image'], selectable: true, vendor: 'OpenAI', capabilities: { outputFormats: ['png'] } },
+    { id: 'wrong-role', roles: ['main'], selectable: true, vendor: 'OpenAI', roleReasons: { image: '此路由不提供图片输出' } },
+    { id: 'disabled', roles: ['image'], selectable: false, vendor: 'OpenAI', disabledReason: '当前账号目录不可用' },
+  ]
+  const partition = partitionRegistryModels(models, { role: 'image', outputFormat: 'png' })
+  assert.deepEqual(partition.compatible.map((model) => model.id), ['ok'])
+  assert.deepEqual(partition.incompatible.map((model) => [model.id, model.selectionDisabledReason]), [
+    ['wrong-role', '此路由不提供图片输出'],
+    ['disabled', '当前账号目录不可用'],
+  ])
 })
 
 test('missing registry keeps the safe built-in fallback', () => {

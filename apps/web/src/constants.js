@@ -4,6 +4,7 @@ export function mainModelCanReadImages(provider, model) {
   if (provider === 'gemini') return true
   if (provider === 'openai') return /gpt-4|gpt-5|o4|gpt-4o|gpt-4.1/.test(m)
   if (provider === 'openrouter') return true
+  if (provider === 'ark') return true
   return false
 }
 
@@ -12,10 +13,11 @@ export const PROVIDERS = {
     label: 'OpenRouter',
     keyName: 'openrouter',
     keyPlaceholder: 'sk-or-v1-...',
-    mainModel: 'openrouter/openai/gpt-5.5',
-    imageModel: 'openrouter/openai/gpt-5.4-image-2',
-    visionModel: 'openrouter/google/gemini-3.5-flash',
+    mainModel: 'openai/gpt-5.6-sol',
+    imageModel: 'sourceful/riverflow-v2.5-pro',
+    visionModel: 'google/gemini-3.7-flash',
     mainModels: [
+      ['openai/gpt-5.6-sol', 'GPT-5.6 Sol', 'OpenAI'],
       ['openrouter/openai/gpt-5.5', 'GPT-5.5', 'OpenAI'],
       ['openrouter/openai/gpt-5.5-pro', 'GPT-5.5 Pro', 'OpenAI'],
       ['openrouter/openai/gpt-5.4', 'GPT-5.4', 'OpenAI'],
@@ -54,6 +56,7 @@ export const PROVIDERS = {
       ['openrouter/stepfun/step-3.7-flash', 'Step 3.7 Flash', 'StepFun'],
     ],
     imageModels: [
+      ['sourceful/riverflow-v2.5-pro', 'Riverflow 2.5 Pro', 'Sourceful'],
       ['openrouter/openai/gpt-5.4-image-2', 'GPT-5.4 Image 2', 'OpenAI'],
       ['openrouter/openai/gpt-5-image', 'GPT-5 Image', 'OpenAI'],
       ['openrouter/openai/gpt-5-image-mini', 'GPT-5 Image Mini', 'OpenAI'],
@@ -72,6 +75,7 @@ export const PROVIDERS = {
       ['openrouter/sourceful/riverflow-v2-fast', 'Riverflow V2 Fast', 'Sourceful'],
     ],
     visionModels: [
+      ['google/gemini-3.7-flash', 'Gemini 3.7 Flash', 'Google'],
       ['openrouter/google/gemini-3.5-flash', 'Gemini 3.5 Flash', 'Google'],
       ['openrouter/google/gemini-3.1-flash-lite', 'Gemini 3.1 Flash Lite', 'Google'],
       ['openrouter/openai/gpt-chat-latest', 'GPT Chat Latest', 'OpenAI'],
@@ -89,7 +93,7 @@ export const PROVIDERS = {
     ],
   },
   gemini: {
-    label: 'Gemini',
+    label: 'Google Gemini API',
     keyName: 'gemini',
     keyPlaceholder: 'AIza...',
     mainModel: 'gemini-3.7-flash',
@@ -172,7 +176,7 @@ export const PROVIDERS = {
     keyPlaceholder: 'sk-...',
     mainModel: 'qwen3.8-max',
     imageModel: 'wan2.7-image-pro',
-    visionModel: 'qwen3.8-max',
+    visionModel: 'qwen3.7-plus',
     mainModels: [
       ['qwen3.8-max', 'Qwen3.8 Max（可直读图）', '通义千问'],
       ['qwen3.7-plus', 'Qwen3.7 Plus（可直读图）', '通义千问'],
@@ -199,6 +203,31 @@ export const PROVIDERS = {
       '登录阿里云百炼控制台，确认已开通百炼模型服务。',
       '进入 API Key 页面，点击创建 API Key。',
       '建议选择默认业务空间和全部权限，复制 sk- 开头密钥。',
+    ],
+  },
+  ark: {
+    label: '火山方舟',
+    keyName: 'ark',
+    keyPlaceholder: 'Ark Inference API Key',
+    mainModel: 'doubao-seed-2-0-mini-260428',
+    imageModel: 'doubao-seedream-4-0-250828',
+    visionModel: 'doubao-seed-2-0-mini-260428',
+    mainModels: [
+      ['doubao-seed-2-0-mini-260428', 'Doubao Seed 2.0 Mini', 'ByteDance Doubao'],
+      ['doubao-seed-2-0-lite-260428', 'Doubao Seed 2.0 Lite', 'ByteDance Doubao'],
+    ],
+    imageModels: [
+      ['doubao-seedream-4-0-250828', 'Doubao Seedream 4.0', 'ByteDance Seedream'],
+    ],
+    visionModels: [
+      ['doubao-seed-2-0-mini-260428', 'Doubao Seed 2.0 Mini', 'ByteDance Doubao'],
+      ['doubao-seed-2-0-lite-260428', 'Doubao Seed 2.0 Lite', 'ByteDance Doubao'],
+    ],
+    guideUrl: 'https://console.volcengine.com/ark/',
+    guideSteps: [
+      '登录火山方舟控制台，开通所需模型的推理服务。',
+      '创建推理 API Key；该 Key 不能读取需要 AK/SK 的完整激活目录。',
+      '粘贴 Key 后手动点击“验证所选模型”，图片验证会产生一次 1K 调用费用。',
     ],
   },
 };
@@ -236,6 +265,7 @@ export function supportedResolutions(provider, imageModel) {
   if (provider === 'gemini') return ['1K', '2K'];
   if (provider === 'openai') return ['1K', '2K', '4K'];
   if (provider === 'openrouter') return ['1K', '2K', '4K'];
+  if (provider === 'ark') return ['1K', '2K', '4K'];
   return ['1K', '2K'];
 }
 

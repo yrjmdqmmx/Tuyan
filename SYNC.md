@@ -24,6 +24,85 @@
 
 ## 条目（最新在上）
 
+### [2026-08-20] 精修分辨率真实能力与入队前失败关闭 — by Codex
+变更：Core 注册表升级为 `2026-08-20.v5`，每个 image 条目新增必定数组 `capabilities.refineResolutions`，仅可包含 `1K|2K|4K`，并与生成能力 `resolutions` 分离。`refineImage.imageSize` 现在精确接受 `1K|2K|4K`；解析所选权威 image route 后，不支持的尺寸在账号检查、admission、Mongo insert 和计费/推理 provider 调用前以 `400` + `REFINE_RESOLUTION_UNSUPPORTED` 拒绝，不再静默夹到其他尺寸。OpenRouter 权威解析可先发生无鉴权目录查询；入队后若目录漂移，执行仍会再次要求精确尺寸并失败关闭。
+契约（影响其他端 / 共享）：
+- **注册表**：Gemini 按各 image adapter 实际尺寸；百炼 direct-edit 最高 2K（`wan2.7-image-pro` 的生成 4K 不等于精修 4K），analyze-redraw 沿用其生成尺寸；OpenAI Images direct edit 固定为 2K；Ark Seedream 为 1K/2K/4K；OpenRouter 仅映射官方目录 `resolution.values` 中已声明的规范值，未声明时为空数组。
+- **请求语义**：缺省 `imageSize` 仍为历史兼容的 `2K`；显式 `modelRoutes` 与 legacy model 字段路由都保持。客户端必须以 `refineResolutions` 提供可选项，不得从 `resolutions` 或模型名推断。
+各端待办：
+- [x] paperbanana-api / Laf Core（registry v5、精修准入、direct/analyze/1K/4K/OpenRouter 回归）
+- [x] Web / packages-api（消费 `refineResolutions`、仅展示所选 image route 可执行的精修尺寸；旧目录保守回退 2K）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续消费新字段，未改造前不得宣称 4K 精修可用）
+- [ ] 部署 / 运维（本条未部署、未改环境变量）
+
+### [2026-08-20] 显式路由目录校验、plot 可达能力与 Laf 手动回滚边界 — by Codex
+变更：Core 将“显式 `modelRoutes` 的三路注册表合法性”与“本任务真实可达阶段”分开：显式三路均必须存在、role 正确且可选，但只有真实可达路线需要 key/调用成本。`prevalidatedManualReferences` 改为仅服务端手选查询后附加，客户端同名字段永不进入后台 DTO。2K/4K plot 仅当注册表解析为 `direct-edit` 时可达 image；显式 `maxCriticRounds=0` 不再被默认值覆盖。Laf 回滚 workflow 改为只读验证指引，暂停任何自动源码发布。
+契约（影响其他端 / 共享）：
+- **路由准入**：显式三路完整性与注册表合法性必须全部通过；key、Ark 账号 probe 和执行输出协议只对任务可达 role 生效。legacy 请求仍只校验实际可达路线。
+- **createJob 语义**：`prevalidatedManualReferences` 是服务端内部字段，客户端不得传入或依赖；`maxCriticRounds=0` 精确表示无 critic。plot 的 2K/4K 只在 image route 为 `direct-edit` 时产生图像路线调用。
+- **Laf 回滚**：`.github/workflows/deploy-laf-functions.yml` 仅验证仓库先决条件，不含任何 source push。获批回滚仅能在 Laf 控制台手动执行，且须先从控制台权威 custom dependency 元数据确认精确版本 `jpeg-js@0.4.4`；本条未部署、未改环境绑定。
+各端待办：
+- [x] paperbanana-api / Laf Core（服务端手选字段、双层路由校验、plot 能力与 zero-critic 回归）
+- [x] CI / 回滚文档（verification-only，Laf README 标明 rollback-only）
+- [x] Web（保留显式三路 role/selectable 预校验，并仅对实际可达 role 要求凭据与 Ark probe）
+- [ ] 部署 / 运维（仅在获批回滚时按上述控制台流程处理；本条未发布）
+
+### [2026-08-20] 多路由精确准入、Ark 探针截止时间与 Laf 回滚依赖门禁 — by Codex
+变更：Core 在入队/持久化前按实际可达执行阶段校验 `main/image/vision`，精修任务保留归一后的 `configurationMode=simple|advanced`（旧请求默认 `simple`）；后台 DTO 改为字段白名单。Gateway 的 `providerAccountCatalog` 仅转发 `apiKeys.ark` 与探针契约字段。Ark 账号 probe 增加可中止端到端截止时间。Laf 原始源码回滚要求 custom dependency 精确版本 `jpeg-js@0.4.4`；其自动发布边界由上方新条目取代。注册表 v4 仅为有厂商官方精确证据的模型写入 ISO 发布日并按已知日期倒序、未知日期置后。
+契约（影响其他端 / 共享）：
+- **路由与任务 DTO**：`requiredCreateRouteRoles` / `requiredRefineRouteRoles` 的完整实际角色必须在 admission 前通过注册表校验；不会触达 vision 的旧 main-only 请求仍兼容。公开精修任务的 `configurationMode` 不再强制为 `advanced`，`routingMode` 仍完全由服务端路由推导。
+- **密钥与探针**：后台 create/refine DTO 只含执行字段；账号目录网关丢弃 Ark 以外 provider key 和任意凭证别名。`PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS` 可选，默认 `12000`，限制 `100..30000` 毫秒，超时会 abort 并释放全局/owner/IP 槽位。
+- **回滚发布**：此条当时的输入自证设计已被上方新条目取代；当前 workflow 仅做仓库验证，Laf 回滚仅能经控制台权威元数据核对后手动完成。
+- **注册表日期**：`registryVersion=2026-08-20.v4`；`releasedAt` 只采信精确官方发布日期，已知日期倒序、`null` 置后，`officialSourceUrl` 继续保留。
+各端待办：
+- [x] paperbanana-api / Laf Core（精确准入、模式持久化、DTO 白名单、探针 deadline、注册表日期与测试）
+- [x] auth-gateway（Ark key 透明转发收窄、全形态 `apiKeys/api_keys` 日志清洗）
+- [x] CI / 回滚文档（已由上方新条目收紧为 verification-only；未部署）
+- [x] Web（展示继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [ ] 原生端（无需请求改造；展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [ ] 部署 / 运维（获批回滚时仅能在 Laf 控制台核对 custom dependency 后手动发布；本条未改环境绑定、未发布）
+
+### [2026-08-19] Ark CN 数据面出站白名单与香港健康探针 — by Codex
+变更：Core `providerEgress` 与新加坡 Squid 仅新增精确数据面主机 `ark.cn-beijing.volces.com`；`sg-required` 走固定新加坡代理，`disabled` 对该主机及其单个根点等价形式继续失败关闭。香港定时 smoke 增加无鉴权、只读、非计费的 `GET /api/v3/models`，预期 401；未登记任何 Ark 控制面、CDN、通配符或后缀域名。
+契约（影响其他端 / 共享）：
+- **出站策略**：仅香港 WireGuard 源可通过 Squid CONNECT 到上述精确主机的 443；私网/混合 DNS、PTR、字面量、非 443、额外点及 lookalike 继续拒绝。TLS 不解密、不缓存。
+- **发布边界**：本条只提交 Core/SG/HK 运维契约和测试；生产部署仍须由人工工作流完成，客户端不得因本条自动将 Ark 标记为已上线。
+各端待办：
+- [x] provider egress（Core 精确 origin、SG ACL、HK smoke/monitor、负路径与密钥扫描测试）
+- [ ] 部署 / 运维（未发布；须先完成 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
+- [x] Web（仅将当前任务可达 Ark 角色在显式推理 probe 成功后视为可提交；不把静态目录冒充账号已开通）
+- [ ] 原生端（未验证条目不得显示为账号可用）
+
+### [2026-08-19] Core Ark 适配器、账号推理验证与模型注册表 v3 — by Codex
+变更：Core 新增火山方舟（Ark）静态注册表、CN 数据面适配器和不冒充账号全量目录的 `providerAccountCatalog` 推理 smoke；同时更新 Gemini/OpenRouter/百炼当前默认项，并为所有 provider/model 补充访问类型、账号目录要求和官方来源元数据。本条不包含 Web、生产出口策略、原生端或部署。
+契约（影响其他端 / 共享）：
+- **注册表 v3**：provider 新增 `accessKind: direct|aggregator`、`routeContractVersion:1`、`accountCatalogRequired`；model 新增 nullable `releasedAt` 与 `officialSourceUrl`，未知发布时间固定为 `null`，OpenRouter `created` 不作为厂商发布时间。默认值更新为 Gemini `gemini-3.7-flash`、OpenRouter `openai/gpt-5.6-sol` / `sourceful/riverflow-v2.5-pro` / `google/gemini-3.7-flash`、百炼 `qwen3.8-max` / `wan2.7-image-pro` / `qwen3.7-plus`。
+- **Ark 注册表/执行**：仅登记官方 ID `doubao-seed-2-0-lite-260428`、`doubao-seed-2-0-mini-260428`、`doubao-seedream-4-0-250828`；条目均 `verified:false`、需 entitlement。文本/视觉固定走 `https://ark.cn-beijing.volces.com/api/v3/chat/completions`；Seedream 4.0 生成/同模型直编走 `/images/generations`，强制 `response_format=b64_json`，URL-only 结果失败关闭且不下载；返回的 JPEG 经有界解码后转为真实 PNG 再进入既有存储/视觉链。未知 ID、错 role 和隐式替换均禁止。
+- **账号验证 action**：`providerAccountCatalog` 只接受内存中的 `apiKeys.ark` 与最多 3 个去重显式 probe，固定返回 `accountCatalogAvailable:false`、`catalogAuth:access-key-required`、`verificationMode:inference-smoke`；main/vision 做最小推理，image 必须 `confirmPaidImageProbe:true`。绝不把 inference key 发往需 AK/SK 签名的 `ListModelActivations`，不持久化/缓存/回显密钥或原始失败。
+- **发布边界**：当前 Core 已能通过注入 transport 保留标准出口失败信号，但生产 egress 尚未登记 Ark origin；Node 构建会内联 `jpeg-js`，原始 Laf 回滚源码则必须先在 Laf custom dependency 中确认 `jpeg-js@0.4.4`（现有源码推送 workflow 不负责安装）。出口策略与 Laf 依赖门禁完成前客户端不得把 Ark 标成生产可用，亦不得把静态条目当作账号已开通目录。
+各端待办：
+- [x] paperbanana-api / Laf Core（注册表、适配器、账号推理验证、混合路由、TDD 与文档）
+- [x] packages-api / auth-gateway（账号目录 action 的安全转发与共享类型已在前序并行任务完成）
+- [x] Web（消费 v3 元数据、显式触发账号 probe 与付费图片确认；未验证条目不得显示为账号可用）
+- [x] provider egress（登记 Ark CN origin，disabled 与负路径必须失败关闭；不得扩展到控制面/CDN）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需消费新注册表；旧请求继续兼容）
+- [ ] 部署 / 运维（未发布；须先完成出口策略、确认 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
+
+### [2026-08-19] Core 多 Provider 模型路由契约 v1 — by Codex
+变更：`createJob` / `refineImage` 新增完整 `modelRoutes {main,image,vision}`，Core 按阶段路由主模型、图像模型和视觉模型；旧请求仍从 `provider/mainModelName/imageModelName/referenceVisionModelName` 派生单路由。本条仅交付 Laf/Core 契约与执行，未接入 Ark 适配器或任何客户端。
+契约（影响其他端 / 共享）：
+- **请求**：`modelRoutes.main/image/vision` 每项为 `{accessProvider,modelId}` 且必须完整；`configurationMode=simple` 禁止混合 provider，`advanced` 允许。显式 routes 与旧 `provider/*ModelName` 冲突时返回 `400 + businessCode=MODEL_ROUTE_CONFLICT`；顶层 `provider` 永远是 main route 的兼容影子，不会返回 `mixed`。
+- **任务 DTO**：新建任务持久化并公开 `modelRoutes`、`routingMode=single|mixed`、`modelRoutingVersion=1`、`modelRoutingSource=explicit|legacy-derived`，同时保留旧模型字段。历史记录仅在 `provider + mainModelName + imageModelName` 完整时按旧语义补出 routes，不猜测不完整记录。
+- **执行 / BYOK**：planner、stylist、文本 critic、SVG、plot 模型调用走 main；参考图分析和成图视觉 critic 走 vision；PNG 生成、重渲染、升清和 direct edit 走 image；plot-worker 不持有 key。后台 DTO 无密钥，准入闭包仅持有实际可达阶段所需 provider key；`direct-edit` 仅 image，`analyze-redraw` 仅 vision+image。
+- **注册表**：`modelRegistry` 顶层新增 `routeContractVersion:1` 和 `supportsModelRoutes:true`。Core 类型已预留 `ark`，但未提供 Ark registry/adapter/egress，因此 Ark route 当前 fail-closed，不得在客户端标记为可用。
+各端待办：
+- [x] paperbanana-api / Laf Core（解析、校验、持久化/公开 DTO、阶段路由、最小密钥闭包与回归测试）
+- [x] packages-api / auth-gateway（转发/归一 `modelRoutes`，保留旧字段与模型目录路由元数据；网关按写入主体安全转发 provider account catalog）
+- [x] Web（专业模式支持分角色选 provider/model；普通模式仍单 provider）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续按需接入；旧请求保持兼容）
+- [ ] Ark adapter / registry / egress（后续独立任务，本次未实现）
+- [ ] 部署 / 运维（本次未发布，须等后续合并与联调）
+
 ### [2026-08-19] 结果图公开权威 objectKey — by Codex
 变更：生产百炼 smoke 发现结果图已写入 OSS，但公开任务 DTO 只有 `filename/url`，导致独立精修页无法按约定优先使用对象键；现在新任务持久化并返回 `resultImages[].objectKey`，历史 bucket 结果从既有 `filename` 只读补出该字段；已部署并完成百炼生成→`direct-edit` 精修验收。
 契约（影响其他端 / 共享）：

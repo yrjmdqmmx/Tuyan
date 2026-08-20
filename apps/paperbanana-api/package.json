@@ -10,7 +10,7 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "check:model-drift": "tsx scripts/check-openrouter-model-drift.ts",
     "check": "tsc --noEmit",
-    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --alias:@lafjs/cloud=./src/laf-cloud.ts --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb",
+    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --alias:@lafjs/cloud=./src/laf-cloud.ts --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb",
     "start": "node dist/server.cjs"
   },
   "dependencies": {
@@ -18,6 +18,7 @@
     "ali-oss": "^6.23.0",
     "express": "^5.1.0",
     "fflate": "0.8.3",
+    "jpeg-js": "0.4.4",
     "mongodb": "^6.18.0",
     "undici": "7.25.0"
   },

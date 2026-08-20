@@ -397,6 +397,7 @@ case "$last" in
   *api.openai.com*) printf '401:200'; exit ${overrides.openAiExit ?? 0} ;;
   *generativelanguage.googleapis.com*) printf '403:200'; exit ${overrides.geminiExit ?? 0} ;;
   *openrouter.ai*) printf '200:200'; exit ${overrides.openRouterExit ?? 0} ;;
+  *ark.cn-beijing.volces.com/api/v3/models*) printf '401:200'; exit ${overrides.arkExit ?? 0} ;;
   *) printf '000:403'; exit ${overrides.deniedExit ?? 56} ;;
 esac`);
 
@@ -1676,6 +1677,7 @@ case "$last" in
   https://api.openai.com/v1/models) printf '401:200' ;;
   https://generativelanguage.googleapis.com/v1beta/models) printf '403:200' ;;
   https://openrouter.ai/api/v1/models) printf '200:200' ;;
+  https://ark.cn-beijing.volces.com/api/v3/models) printf '401:200' ;;
 esac
 `);
       const failure = run(wrongStatusFixture, 'smoke.sh', ['--hk']);
@@ -1700,6 +1702,7 @@ test('Hong Kong health monitor verifies a recent pbhk0 handshake and probes prov
     assert.match(log, /curl .*api\.openai\.com/);
     assert.match(log, /curl .*generativelanguage\.googleapis\.com/);
     assert.match(log, /curl .*openrouter\.ai/);
+    assert.match(log, /curl .*ark\.cn-beijing\.volces\.com\/api\/v3\/models/);
   } finally {
     fixture.cleanup();
   }
@@ -1932,6 +1935,9 @@ test('generated Squid policy permits only Hong Kong approved CONNECT traffic', (
       ['approved hostname with a private answer', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: ['198.51.100.10', '10.0.0.8'] }, 'deny'],
       ['Gemini from Hong Kong', { source: '10.77.0.1', authority: 'generativelanguage.googleapis.com:443', resolved: '198.51.100.10' }, 'allow'],
       ['OpenRouter from Hong Kong', { source: '10.77.0.1', authority: 'openrouter.ai:443', resolved: '198.51.100.10' }, 'allow'],
+      ['Ark from Hong Kong', { source: '10.77.0.1', authority: 'ark.cn-beijing.volces.com:443', resolved: '198.51.100.10' }, 'allow'],
+      ['Ark lookalike is not approved', { source: '10.77.0.1', authority: 'ark.cn-beijing.volces.com.evil.example:443', resolved: '198.51.100.10' }, 'deny'],
+      ['Ark non-443 port is denied', { source: '10.77.0.1', authority: 'ark.cn-beijing.volces.com:444', resolved: '198.51.100.10' }, 'deny'],
       ['Singapore source', { source: '10.77.0.2', authority: 'api.openai.com:443', resolved: '198.51.100.10' }, 'deny'],
       ['IPv4 authority', { source: '10.77.0.1', authority: '192.0.2.1:443', resolved: '192.0.2.1' }, 'deny'],
       ['IPv6 authority', { source: '10.77.0.1', authority: '[2001:db8::1]:443', resolved: '2001:db8::1' }, 'deny'],

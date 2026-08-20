@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React from 'react'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
 import GenerationSettingsDrawer from '../src/components/GenerationSettingsDrawer.jsx'
@@ -22,7 +22,7 @@ const bailianRegistry = {
         {
           id: 'image-png', label: 'PNG Image Model', vendor: 'Alibaba Wan', roles: ['image'],
           selectable: true, inputModalities: ['text'], outputModalities: ['image'],
-          capabilities: { resolutions: ['1K'], outputFormats: ['png'] },
+          capabilities: { resolutions: ['1K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] },
         },
       ],
     },
@@ -72,7 +72,7 @@ test('rendered SVG submit ignores the image model format because the main model 
 
 test('rendered OpenRouter full catalog shows incompatible image entries disabled with the server reason', async () => {
   const user = userEvent.setup()
-  render(React.createElement(ModelPicker, {
+  const { container } = render(React.createElement(ModelPicker, {
     label: '图像生成模型',
     role: 'image',
     provider: 'openrouter',
@@ -81,16 +81,181 @@ test('rendered OpenRouter full catalog shows incompatible image entries disabled
     onChange() {},
     models: [
       { id: 'compatible', label: 'Compatible Model', vendor: 'OpenAI', roles: ['image'], selectable: true, recommended: true, outputModalities: ['image'], capabilities: { outputFormats: ['png'] } },
-      { id: 'blocked', label: 'Blocked Model', vendor: 'Google', roles: [], selectable: false, protocol: 'openrouter-images', outputModalities: ['image'], disabledReason: '未声明 PNG/SVG 输出' },
+      ...Array.from({ length: 26 }, (_, index) => ({ id: `blocked-${index}`, label: `Blocked Model ${index}`, vendor: 'Google', roles: [], selectable: false, protocol: 'openrouter-images', outputModalities: ['image'], disabledReason: '未声明 PNG/SVG 输出' })),
     ],
   }))
 
   await user.click(screen.getByRole('button', { name: '图像生成模型' }))
   await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
-  const blocked = screen.getByText('Blocked Model').closest('button')
+  assert.equal(screen.getByRole('button', { name: '全部兼容模型' }).getAttribute('aria-pressed'), 'true')
+  assert.equal(container.querySelector('.model-incompatible .model-option'), null)
+  await user.click(screen.getByText(/暂不兼容/))
+  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 24)
+  await user.click(screen.getByRole('button', { name: /显示更多不兼容模型/ }))
+  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 26)
+  const blocked = screen.getByText('Blocked Model 0').closest('button')
   assert.ok(blocked)
   assert.equal(blocked.disabled, true)
   assert.match(blocked.textContent, /未声明 PNG\/SVG 输出/)
+})
+
+test('rendered route picker shows vendor rail only for aggregator access channels', async () => {
+  const user = userEvent.setup()
+  render(React.createElement(ModelPicker, {
+    label: '主模型', role: 'main', outputFormat: 'png',
+    route: { accessProvider: 'openrouter', modelId: 'openai/gpt' },
+    onRouteChange() {},
+    providerConfigs: { openrouter: { label: 'OpenRouter' }, openai: { label: 'OpenAI' } },
+    registry: {
+      providers: {
+        openrouter: { accessKind: 'aggregator', models: [
+          { id: 'openai/gpt', label: 'GPT', vendor: 'OpenAI', roles: ['main'], selectable: true, recommended: true },
+          { id: 'sourceful/other', label: 'Other', vendor: 'Sourceful', roles: ['main'], selectable: true },
+        ] },
+        openai: { accessKind: 'direct', models: [{ id: 'gpt', label: 'Direct GPT', vendor: 'OpenAI', roles: ['main'], selectable: true, entitlement: 'usage-tier', availabilityNotes: '需开通组织用量等级' }] },
+      },
+    },
+  }))
+
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  const providerGroup = screen.getByRole('group', { name: 'API 接入渠道' })
+  assert.equal(providerGroup.querySelector('button[aria-pressed="true"]')?.getAttribute('aria-label'), 'OpenRouter')
+  const vendorGroup = screen.getByRole('group', { name: '模型开发厂商' })
+  assert.equal(vendorGroup.querySelector('button[aria-pressed="true"]')?.getAttribute('aria-label'), '厂商 OpenAI')
+  await user.click(screen.getByRole('button', { name: '厂商 Sourceful' }))
+  assert.equal(screen.getByRole('button', { name: '全部兼容模型' }).getAttribute('aria-pressed'), 'true')
+  assert.ok(screen.getByText('Other'))
+  await user.click(screen.getByRole('button', { name: 'OpenAI' }))
+  assert.equal(screen.queryByRole('group', { name: '模型开发厂商' }), null)
+  assert.ok(screen.getByText('Direct GPT'))
+  assert.ok(screen.getByText(/usage-tier/))
+  assert.ok(screen.getByText(/需开通组织用量等级/))
+})
+
+test('rendered mobile route picker replaces settings content and supports layered back navigation', async () => {
+  const previousMatchMedia = window.matchMedia
+  window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} })
+  try {
+    const user = userEvent.setup()
+    render(React.createElement(ModelPicker, {
+      label: '图像生成模型', role: 'image', outputFormat: 'png',
+      route: { accessProvider: 'openrouter', modelId: 'sourceful/image' },
+      onRouteChange() {},
+      providerConfigs: { openrouter: { label: 'OpenRouter' }, openai: { label: 'OpenAI' } },
+      registry: {
+        providers: {
+          openrouter: { accessKind: 'aggregator', models: [{ id: 'sourceful/image', label: 'Riverflow', vendor: 'Sourceful', roles: ['image'], selectable: true }] },
+          openai: { accessKind: 'direct', models: [{ id: 'gpt-image', label: 'GPT Image', vendor: 'OpenAI', roles: ['image'], selectable: true }] },
+        },
+      },
+    }))
+    const trigger = screen.queryByRole('button', { name: '图像生成模型' })
+    assert.ok(trigger, 'model route trigger should render')
+    await user.click(trigger)
+    assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'mobile opens at provider layer')
+    assert.equal(screen.queryByRole('region', { name: '具体模型列表' }), null)
+    await user.click(screen.getByRole('button', { name: 'OpenRouter' }))
+    assert.ok(screen.queryByRole('heading', { name: '选择模型开发厂商' }), 'aggregator opens vendor layer')
+    const vendorBack = screen.getByRole('button', { name: /返回 API 接入渠道/ })
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === vendorBack, true, 'provider to vendor should focus the new back button')
+    await user.click(screen.getByRole('button', { name: '厂商 Sourceful' }))
+    const aggregatorModelBack = screen.getByRole('button', { name: /返回 模型开发厂商/ })
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === aggregatorModelBack, true, 'vendor to model should focus the new back button')
+    await user.click(aggregatorModelBack)
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: '厂商 Sourceful' }), true, 'model back should restore the selected vendor')
+    await user.click(screen.getByRole('button', { name: /返回 API 接入渠道/ }))
+    assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'vendor back returns to provider layer')
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: 'OpenRouter' }), true, 'vendor back should restore the selected provider')
+    await user.click(screen.getByRole('button', { name: 'OpenAI' }))
+    assert.ok(screen.queryByRole('heading', { name: '选择具体模型' }), 'direct provider skips vendor layer')
+    const directModelBack = screen.getByRole('button', { name: /返回 API 接入渠道/ })
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === directModelBack, true, 'direct provider should focus the model back button')
+    assert.ok(screen.getByText('GPT Image'))
+    await user.click(directModelBack)
+    assert.ok(screen.queryByRole('heading', { name: '选择 API 接入渠道' }), 'model back returns to provider layer for direct access')
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: 'OpenAI' }), true, 'direct model back should restore the selected provider')
+  } finally {
+    window.matchMedia = previousMatchMedia
+  }
+})
+
+test('compact aggregator with compatible drift but no recommendations exposes vendors and all models', async () => {
+  const previousMatchMedia = window.matchMedia
+  window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} })
+  try {
+    const user = userEvent.setup()
+    render(React.createElement(ModelPicker, {
+      label: '主模型', role: 'main', outputFormat: 'png',
+      route: { accessProvider: 'openrouter', modelId: 'drift/model-a' },
+      onRouteChange() {},
+      providerConfigs: { openrouter: { label: 'OpenRouter' } },
+      registry: {
+        providers: {
+          openrouter: { accessKind: 'aggregator', models: [
+            { id: 'drift/model-a', label: 'Drift Model A', vendor: 'Drift Labs', roles: ['main'], selectable: true, lifecycle: 'stable', recommended: false },
+            { id: 'other/model-b', label: 'Other Model B', vendor: 'Other Labs', roles: ['main'], selectable: true, lifecycle: 'stable' },
+          ] },
+        },
+      },
+    }))
+
+    await user.click(screen.getByRole('button', { name: '主模型' }))
+    await user.click(screen.getByRole('button', { name: 'OpenRouter' }))
+    assert.ok(screen.getByRole('button', { name: '厂商 Drift Labs' }))
+    assert.ok(screen.getByRole('button', { name: '厂商 Other Labs' }))
+    await user.click(screen.getByRole('button', { name: '厂商 Drift Labs' }))
+
+    assert.equal(screen.getByRole('button', { name: '全部兼容模型' }).getAttribute('aria-pressed'), 'true')
+    assert.ok(screen.getByRole('button', { name: /Drift Model A/ }))
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.equal(document.activeElement === screen.getByRole('button', { name: /返回 模型开发厂商/ }), true)
+  } finally {
+    window.matchMedia = previousMatchMedia
+  }
+})
+
+test('rendered route picker reacts to the compact media query while open and removes its listener', async () => {
+  const previousMatchMedia = window.matchMedia
+  let changeListener = null
+  let removedListener = null
+  const media = {
+    matches: false,
+    addEventListener(type, listener) { if (type === 'change') changeListener = listener },
+    removeEventListener(type, listener) { if (type === 'change') removedListener = listener },
+  }
+  window.matchMedia = () => media
+  try {
+    const rendered = render(React.createElement(ModelPicker, {
+      label: '主模型', role: 'main', provider: 'openai', value: 'main', outputFormat: 'png', onChange() {},
+      models: [{ id: 'main', label: 'Main', vendor: 'OpenAI', roles: ['main'], selectable: true }],
+    }))
+    await userEvent.setup().click(screen.getByRole('button', { name: '主模型' }))
+    assert.ok(screen.getByRole('region', { name: '具体模型列表' }))
+    assert.equal(typeof changeListener, 'function')
+
+    act(() => {
+      media.matches = true
+      changeListener({ matches: true })
+    })
+    assert.ok(screen.getByRole('heading', { name: '选择 API 接入渠道' }))
+    assert.equal(screen.queryByRole('region', { name: '具体模型列表' }), null)
+
+    act(() => {
+      media.matches = false
+      changeListener({ matches: false })
+    })
+    assert.ok(screen.getByRole('region', { name: '具体模型列表' }))
+    rendered.unmount()
+    assert.equal(removedListener, changeListener)
+  } finally {
+    window.matchMedia = previousMatchMedia
+  }
 })
 
 test('rendered reference upload blocks file selection until advanced retrieval is set to none', () => {
@@ -175,7 +340,7 @@ for (const [retrievalValue, retrievalLabel] of [
   })
 }
 
-test('rendered model search resets both virtual state and a deeply scrolled DOM window', async () => {
+test('rendered model search resets both incremental state and a deeply scrolled DOM window', async () => {
   const models = Array.from({ length: 36 }, (_, index) => ({
     id: `model-${index}`,
     label: `Model ${index}`,
@@ -200,6 +365,40 @@ test('rendered model search resets both virtual state and a deeply scrolled DOM 
 
   assert.equal(modelWindow.scrollTop, 0)
   assert.ok(screen.getByText('Model 35'))
+})
+
+test('rendered model list reveals compatible batches and keeps keyboard focus moving into native incompatible details', async () => {
+  const models = [
+    ...Array.from({ length: 26 }, (_, index) => ({
+      id: `model-${index}`,
+      label: `Model ${index}`,
+      vendor: 'OpenAI',
+      roles: ['main'],
+      selectable: true,
+      recommended: true,
+      lifecycle: 'stable',
+    })),
+    { id: 'blocked', label: 'Blocked', vendor: 'OpenAI', roles: [], selectable: false, disabledReason: '不兼容' },
+  ]
+  const user = userEvent.setup()
+  const { container } = render(React.createElement(ModelPicker, {
+    label: '主模型', role: 'main', provider: 'openrouter', value: 'model-0', outputFormat: 'png', models, onChange() {},
+  }))
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  assert.equal(container.querySelectorAll('.model-picker-window .model-option').length, 24)
+
+  const showMore = screen.getByRole('button', { name: '显示更多模型' })
+  await new Promise((resolve) => setTimeout(resolve, 40))
+  showMore.focus()
+  await user.keyboard('{Enter}')
+  const model24 = screen.getByRole('button', { name: /Model 24/ })
+  await new Promise((resolve) => setTimeout(resolve, 80))
+  assert.equal(document.activeElement, model24)
+  await user.tab()
+  assert.match(document.activeElement?.textContent || '', /Model 25/)
+  await user.tab()
+  const summary = screen.getByText(/暂不兼容/).closest('summary')
+  assert.equal(document.activeElement, summary)
 })
 
 test('rendered generation drawer focuses its target, closes on Escape, restores focus, and preserves mounted state', async () => {
