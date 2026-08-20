@@ -128,7 +128,7 @@ test('rendered aggregator drawers expose disabled-only vendors and their unsuppo
   assert.ok(disabled)
   assert.equal(disabled.disabled, true)
   assert.match(disabled.textContent, /尚未完成 PaperBanana 适配/)
-  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 2)
+  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 1)
 })
 
 test('rendered model cards distinguish catalog compatibility, account visibility, and real-call verification', async () => {
@@ -442,7 +442,7 @@ test('rendered model list reveals compatible batches and keeps keyboard focus mo
       recommended: true,
       lifecycle: 'stable',
     })),
-    { id: 'blocked', label: 'Blocked', vendor: 'OpenAI', roles: [], selectable: false, disabledReason: '不兼容' },
+    { id: 'blocked', label: 'Blocked', vendor: 'OpenAI', roles: [], selectable: false, disabledReason: '不兼容', roleReasons: { main: '不兼容' } },
   ]
   const user = userEvent.setup()
   const { container } = render(React.createElement(ModelPicker, {
