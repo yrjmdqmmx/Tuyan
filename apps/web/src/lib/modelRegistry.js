@@ -51,7 +51,7 @@ export function partitionRegistryModels(models, { role, query = '', outputFormat
   const annotated = (models || [])
     .filter((model) => model?.roles?.includes(role)
       || Boolean(model?.roleReasons?.[role])
-      || (role === 'image' && (model?.outputModalities?.includes('image') || model?.protocol === 'openrouter-images')))
+      || (role === 'image' && model?.protocol === 'openrouter-images'))
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || registryModelSearchValues(model)
       .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
