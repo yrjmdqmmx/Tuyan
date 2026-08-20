@@ -3,8 +3,14 @@ import * as resvgWasm from '@resvg/resvg-wasm'
 import * as crypto from 'crypto'
 import * as fs from 'fs'
 import * as zlib from 'zlib'
+import sharp from 'sharp'
 // @ts-expect-error jpeg-js exposes this pure decoder without a declaration file.
 import decodeJpeg from 'jpeg-js/lib/decoder'
+
+sharp.cache(false)
+sharp.concurrency(1)
+sharp.block({ operation: ['VipsForeignLoad'] })
+sharp.unblock({ operation: ['VipsForeignLoadWebpBuffer'] })
 
 declare const require: any
 
@@ -852,7 +858,7 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-20.v7'
+const modelRegistryVersion = '2026-08-20.v8'
 const referenceCorpusVersion = 'zh-CN.v2'
 const canonicalImageResolutions: ImageResolution[] = ['1K', '2K', '4K']
 
@@ -4351,9 +4357,17 @@ const arkImageMaxDimension = 8192
 
 async function normalizeArkImageToPng(base64: string): Promise<string> {
   const bytes = Buffer.from(base64, 'base64')
-  if (isPngBytes(bytes)) return base64
+  if (isPngBytes(bytes)) {
+    validatePngDimensions(bytes, 'Ark image')
+    return base64
+  }
   if (!isJpegBytes(bytes)) throw new Error('Ark image returned an unsupported image format')
+  return await normalizeJpegImageToPng(base64, 'Ark image')
+}
 
+async function normalizeJpegImageToPng(base64: string, label: string): Promise<string> {
+  const bytes = Buffer.from(base64, 'base64')
+  if (!isJpegBytes(bytes)) throw new Error(`${label} returned an unsupported image format`)
   const dimensions = jpegDimensions(bytes)
   if (
     !dimensions
@@ -4361,7 +4375,7 @@ async function normalizeArkImageToPng(base64: string): Promise<string> {
     || dimensions.height > arkImageMaxDimension
     || dimensions.width * dimensions.height > arkImageMaxPixels
   ) {
-    throw new Error('Ark image returned invalid or oversized JPEG dimensions')
+    throw new Error(`${label} returned invalid or oversized JPEG dimensions`)
   }
 
   try {
@@ -4381,10 +4395,10 @@ async function normalizeArkImageToPng(base64: string): Promise<string> {
     }
     const png = encodeRgbaPng(dimensions.width, dimensions.height, Buffer.from(image.data))
     if (!isPngBytes(png)) throw new Error('encoder returned non-PNG bytes')
-    return validateProviderImageBase64(png.toString('base64'), maxProviderImageBytes, 'Ark normalized PNG')
+    return validateProviderImageBase64(png.toString('base64'), maxProviderImageBytes, `${label} normalized PNG`)
   } catch (error: any) {
     if (String(error?.message || '').includes('exceeds')) throw error
-    throw new Error('Ark image JPEG normalization failed')
+    throw new Error(`${label} JPEG normalization failed`)
   }
 }
 
@@ -4392,8 +4406,186 @@ function isPngBytes(bytes: Buffer) {
   return bytes.length >= 8 && bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
 }
 
+function pngDimensions(bytes: Buffer): { width: number; height: number } | null {
+  if (!isPngBytes(bytes) || bytes.length < 45) return null
+  let offset = 8
+  let dimensions: { width: number; height: number } | null = null
+  let sawImageData = false
+  let sawEnd = false
+  while (offset + 12 <= bytes.length) {
+    const chunkLength = bytes.readUInt32BE(offset)
+    const typeOffset = offset + 4
+    const dataOffset = offset + 8
+    const dataEnd = dataOffset + chunkLength
+    const chunkEnd = dataEnd + 4
+    if (dataEnd < dataOffset || chunkEnd > bytes.length) return null
+    const type = bytes.subarray(typeOffset, dataOffset).toString('ascii')
+    const expectedCrc = bytes.readUInt32BE(dataEnd)
+    const actualCrc = pngCrc32(bytes.subarray(typeOffset, dataEnd))
+    if (expectedCrc !== actualCrc) return null
+    if (!dimensions) {
+      if (type !== 'IHDR' || chunkLength !== 13) return null
+      const width = bytes.readUInt32BE(dataOffset)
+      const height = bytes.readUInt32BE(dataOffset + 4)
+      const bitDepth = bytes[dataOffset + 8]
+      const colorType = bytes[dataOffset + 9]
+      const compression = bytes[dataOffset + 10]
+      const filter = bytes[dataOffset + 11]
+      const interlace = bytes[dataOffset + 12]
+      const validBitDepths = new Map<number, number[]>([
+        [0, [1, 2, 4, 8, 16]],
+        [2, [8, 16]],
+        [3, [1, 2, 4, 8]],
+        [4, [8, 16]],
+        [6, [8, 16]],
+      ])
+      if (
+        !width
+        || !height
+        || !validBitDepths.get(colorType)?.includes(bitDepth)
+        || compression !== 0
+        || filter !== 0
+        || (interlace !== 0 && interlace !== 1)
+      ) return null
+      dimensions = { width, height }
+    } else if (type === 'IHDR') {
+      return null
+    } else if (type === 'IDAT') {
+      sawImageData = true
+    } else if (type === 'IEND') {
+      if (chunkLength !== 0 || !sawImageData || chunkEnd !== bytes.length) return null
+      sawEnd = true
+      break
+    }
+    offset = chunkEnd
+  }
+  return dimensions && sawImageData && sawEnd ? dimensions : null
+}
+
+function validatePngDimensions(bytes: Buffer, label: string) {
+  const dimensions = pngDimensions(bytes)
+  if (
+    !dimensions
+    || dimensions.width > arkImageMaxDimension
+    || dimensions.height > arkImageMaxDimension
+    || dimensions.width * dimensions.height > arkImageMaxPixels
+  ) {
+    throw new Error(`${label} returned invalid or oversized PNG dimensions`)
+  }
+  return dimensions
+}
+
 function isJpegBytes(bytes: Buffer) {
   return bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+}
+
+function isWebpBytes(bytes: Buffer) {
+  return bytes.length >= 12
+    && bytes.subarray(0, 4).toString('ascii') === 'RIFF'
+    && bytes.subarray(8, 12).toString('ascii') === 'WEBP'
+}
+
+function readUInt24LE(bytes: Buffer, offset: number) {
+  return bytes[offset] | (bytes[offset + 1] << 8) | (bytes[offset + 2] << 16)
+}
+
+function webpDimensions(bytes: Buffer): { width: number; height: number; animated: boolean } | null {
+  if (!isWebpBytes(bytes)) return null
+  const riffEnd = bytes.readUInt32LE(4) + 8
+  if (riffEnd !== bytes.length || riffEnd < 20) return null
+  let dimensions: { width: number; height: number } | null = null
+  let animated = false
+  let offset = 12
+  while (offset + 8 <= riffEnd) {
+    const chunkType = bytes.subarray(offset, offset + 4).toString('ascii')
+    const chunkSize = bytes.readUInt32LE(offset + 4)
+    const dataOffset = offset + 8
+    const chunkEnd = dataOffset + chunkSize
+    if (chunkEnd > riffEnd) return null
+    if (chunkType === 'VP8X') {
+      if (chunkSize < 10) return null
+      animated ||= Boolean(bytes[dataOffset] & 0x02)
+      dimensions = {
+        width: readUInt24LE(bytes, dataOffset + 4) + 1,
+        height: readUInt24LE(bytes, dataOffset + 7) + 1,
+      }
+    } else if (chunkType === 'VP8L') {
+      if (chunkSize < 5 || bytes[dataOffset] !== 0x2f) return null
+      const packed = bytes.readUInt32LE(dataOffset + 1)
+      dimensions ||= {
+        width: (packed & 0x3fff) + 1,
+        height: ((packed >>> 14) & 0x3fff) + 1,
+      }
+    } else if (chunkType === 'VP8 ') {
+      if (
+        chunkSize < 10
+        || bytes[dataOffset + 3] !== 0x9d
+        || bytes[dataOffset + 4] !== 0x01
+        || bytes[dataOffset + 5] !== 0x2a
+      ) return null
+      dimensions ||= {
+        width: bytes.readUInt16LE(dataOffset + 6) & 0x3fff,
+        height: bytes.readUInt16LE(dataOffset + 8) & 0x3fff,
+      }
+    } else if (chunkType === 'ANIM' || chunkType === 'ANMF') {
+      animated = true
+    }
+    offset = chunkEnd + (chunkSize % 2)
+  }
+  if (offset !== riffEnd || !dimensions || !dimensions.width || !dimensions.height) return null
+  return { ...dimensions, animated }
+}
+
+async function normalizeWebpImageToPng(base64: string, label: string): Promise<string> {
+  const bytes = Buffer.from(base64, 'base64')
+  const dimensions = webpDimensions(bytes)
+  if (
+    !dimensions
+    || dimensions.animated
+    || dimensions.width > arkImageMaxDimension
+    || dimensions.height > arkImageMaxDimension
+    || dimensions.width * dimensions.height > arkImageMaxPixels
+  ) {
+    throw new Error(`${label} returned invalid, animated, or oversized WebP dimensions`)
+  }
+
+  try {
+    const transformer = sharp(bytes, {
+      animated: false,
+      failOn: 'warning',
+      limitInputPixels: arkImageMaxPixels,
+      limitInputChannels: 4,
+      sequentialRead: true,
+    }).png({ compressionLevel: 6 }).timeout({ seconds: 15 })
+    const chunks: Buffer[] = []
+    let outputBytes = 0
+    let outputInfo: { width?: number; height?: number; format?: string } | undefined
+    const png = await new Promise<Buffer>((resolve, reject) => {
+      transformer.on('info', (info) => { outputInfo = info })
+      transformer.on('data', (chunk: Buffer) => {
+        outputBytes += chunk.length
+        if (outputBytes > maxProviderImageBytes) {
+          transformer.destroy(new Error(`${label} normalized PNG exceeds ${maxProviderImageBytes} byte limit`))
+          return
+        }
+        chunks.push(Buffer.from(chunk))
+      })
+      transformer.once('error', reject)
+      transformer.once('end', () => resolve(Buffer.concat(chunks, outputBytes)))
+    })
+    if (
+      !isPngBytes(png)
+      || outputInfo?.format !== 'png'
+      || outputInfo?.width !== dimensions.width
+      || outputInfo?.height !== dimensions.height
+    ) {
+      throw new Error('decoded dimensions do not match the WebP header')
+    }
+    return validateProviderImageBase64(png.toString('base64'), maxProviderImageBytes, `${label} normalized PNG`)
+  } catch (error: any) {
+    if (String(error?.message || '').includes('exceeds')) throw error
+    throw new Error(`${label} WebP normalization failed`)
+  }
 }
 
 function jpegDimensions(bytes: Buffer): { width: number; height: number } | null {
@@ -4487,7 +4679,11 @@ async function callOpenRouterImage(
   const route = await resolveOpenRouterImageRoute(actualModel)
   const body: any = { model: actualModel, prompt }
   const parameters = route.model.supportedParameters || {}
-  const resolution = supportedOpenRouterValue(parameters.resolution, imageSize, ['2K', '1K', '4K', '512'])
+  const runtimeResolutionValues = openRouterRuntimeResolutions(actualModel, parameters.resolution?.values)
+  const runtimeResolution = runtimeResolutionValues
+    ? { ...parameters.resolution, values: runtimeResolutionValues }
+    : parameters.resolution
+  const resolution = supportedOpenRouterValue(runtimeResolution, imageSize, ['2K', '1K', '4K', '512'])
   if (strictImageSize && resolution !== imageSize) {
     throw new Error(`Model ${actualModel} no longer declares requested refinement resolution ${imageSize}`)
   }
@@ -4510,20 +4706,26 @@ async function callOpenRouterImage(
     body: JSON.stringify(body),
   }, `openrouter dedicated image model ${actualModel}`)
   const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'OpenRouter image response')
-  return await normalizeOpenRouterDedicatedImage(data.data?.[0])
+  return await normalizeOpenRouterDedicatedImage(data.data?.[0], actualModel)
 }
 
-async function normalizeOpenRouterDedicatedImage(image: any): Promise<string> {
+async function normalizeOpenRouterDedicatedImage(image: any, model: string): Promise<string> {
   const base64 = validateProviderImageBase64(image?.b64_json || '', maxProviderImageBytes, 'OpenRouter image')
-  const mediaType = String(image?.media_type || 'image/png').trim().toLowerCase()
-  if (!mediaType || mediaType === 'image/png') return base64
+  const bytes = Buffer.from(base64, 'base64')
+  if (isPngBytes(bytes)) {
+    validatePngDimensions(bytes, 'OpenRouter image')
+    return base64
+  }
+  if (isJpegBytes(bytes)) return await normalizeJpegImageToPng(base64, 'OpenRouter image')
+  if (isWebpBytes(bytes)) return await normalizeWebpImageToPng(base64, 'OpenRouter image')
+  const mediaType = String(image?.media_type || '').trim().toLowerCase()
   if (mediaType === 'image/svg+xml') {
     const png = await rasterizeSvgReferenceToPng(Buffer.from(base64, 'base64').toString('utf8'))
     if (!png.length) throw new Error('OpenRouter SVG rasterization returned an empty PNG')
     if (png.length > maxProviderImageBytes) throw new Error(`OpenRouter rasterized image exceeds ${maxProviderImageBytes} byte limit`)
     return png.toString('base64')
   }
-  throw new Error(`OpenRouter image returned unsupported media type ${mediaType}`)
+  throw new Error(`OpenRouter image model ${model} returned an unsupported image format`)
 }
 
 function supportedOpenRouterValue(descriptor: any, requested: string, fallbacks: string[]) {
@@ -5183,6 +5385,61 @@ function parseOpenRouterCatalog(data: any) {
   return models
 }
 
+type OpenRouterNormalizedImageProfile = {
+  defaultFormat: 'png' | 'jpeg' | 'webp'
+  minimumResolution?: ImageResolution
+}
+
+// These exact Dedicated Image API IDs were exercised once each on 2026-08-20
+// with the model-level output_format omitted. The provider response is still
+// validated by magic bytes and normalized to PNG on every request; unknown IDs
+// remain fail-closed even when the live catalog advertises image output.
+const openRouterNormalizedImageProfiles = new Map<string, OpenRouterNormalizedImageProfile>([
+  ['bytedance-seed/seedream-4.5', { defaultFormat: 'jpeg', minimumResolution: '2K' }],
+  ['bytedance-seed/seedream-5-0-lite', { defaultFormat: 'jpeg' }],
+  ['bytedance-seed/seedream-5-0-pro', { defaultFormat: 'jpeg' }],
+  ['google/gemini-2.5-flash-image', { defaultFormat: 'png' }],
+  ['google/gemini-3-pro-image', { defaultFormat: 'jpeg' }],
+  ['google/gemini-3-pro-image-preview', { defaultFormat: 'jpeg' }],
+  ['google/gemini-3.1-flash-image', { defaultFormat: 'jpeg' }],
+  ['google/gemini-3.1-flash-image-preview', { defaultFormat: 'jpeg' }],
+  ['google/gemini-3.1-flash-lite-image', { defaultFormat: 'jpeg' }],
+  ['krea/krea-2-large', { defaultFormat: 'png' }],
+  ['krea/krea-2-medium', { defaultFormat: 'png' }],
+  ['krea/krea-2-medium-turbo', { defaultFormat: 'png' }],
+  ['microsoft/mai-image-2.5', { defaultFormat: 'png' }],
+  ['microsoft/mai-image-2.5-pro', { defaultFormat: 'png' }],
+  ['openai/gpt-5-image', { defaultFormat: 'png' }],
+  ['openai/gpt-5-image-mini', { defaultFormat: 'png' }],
+  ['openai/gpt-5.4-image-2', { defaultFormat: 'png' }],
+  ['openai/gpt-image-1', { defaultFormat: 'png' }],
+  ['openai/gpt-image-1-mini', { defaultFormat: 'png' }],
+  ['openai/gpt-image-2', { defaultFormat: 'png' }],
+  ['qwen/qwen-image-3', { defaultFormat: 'png' }],
+  ['qwen/qwen-image-3-pro', { defaultFormat: 'png' }],
+  ['recraft/recraft-v3', { defaultFormat: 'webp' }],
+  ['recraft/recraft-v4', { defaultFormat: 'webp' }],
+  ['recraft/recraft-v4-pro', { defaultFormat: 'webp' }],
+  ['recraft/recraft-v4.1', { defaultFormat: 'webp' }],
+  ['recraft/recraft-v4.1-pro', { defaultFormat: 'webp' }],
+  ['recraft/recraft-v4.1-utility', { defaultFormat: 'webp' }],
+  ['recraft/recraft-v4.1-utility-pro', { defaultFormat: 'webp' }],
+  ['sourceful/riverflow-v2-fast', { defaultFormat: 'webp' }],
+  ['sourceful/riverflow-v2-pro', { defaultFormat: 'webp' }],
+  ['sourceful/riverflow-v2.5-fast', { defaultFormat: 'webp' }],
+  ['x-ai/grok-imagine-image-2.0', { defaultFormat: 'jpeg' }],
+  ['x-ai/grok-imagine-image-quality', { defaultFormat: 'jpeg' }],
+])
+
+function openRouterRuntimeResolutions(modelId: string, values: unknown): string[] | undefined {
+  const declared = Array.isArray(values) ? values.map(String) : undefined
+  const minimum = openRouterNormalizedImageProfiles.get(modelId)?.minimumResolution
+  if (!declared || !minimum) return declared
+  const minimumIndex = canonicalImageResolutions.indexOf(minimum)
+  const declaredSet = new Set(declared)
+  return canonicalImageResolutions.filter((value, index) => index >= minimumIndex && declaredSet.has(value))
+}
+
 async function resolveOpenRouterImageRoute(model: string) {
   const { models: dedicatedModels } = await fetchOpenRouterDedicatedImageModels()
   const dedicated = dedicatedModels.get(model)
@@ -5190,10 +5447,17 @@ async function resolveOpenRouterImageRoute(model: string) {
     throw new Error(`Model ${model} is not available in the authoritative OpenRouter image catalog`)
   }
   const outputFormat = safeOpenRouterOutputFormat(dedicated.supportedParameters)
-  if (outputFormat === null) {
+  const normalizedProfile = openRouterNormalizedImageProfiles.get(model)
+  if (outputFormat === null && !normalizedProfile) {
     throw new Error(`Model ${model} does not expose a PNG or SVG output format`)
   }
-  return { protocol: 'openrouter-images' as const, model: dedicated, outputFormat }
+  if (
+    normalizedProfile?.minimumResolution
+    && !openRouterRuntimeResolutions(model, dedicated.supportedParameters?.resolution?.values)?.length
+  ) {
+    throw new Error(`Model ${model} no longer declares a supported resolution at or above ${normalizedProfile.minimumResolution}`)
+  }
+  return { protocol: 'openrouter-images' as const, model: dedicated, outputFormat, normalizedProfile }
 }
 
 function safeOpenRouterOutputFormat(supportedParameters: any): 'png' | 'svg' | null {
@@ -5245,15 +5509,19 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
   for (const model of dedicatedModels.values()) {
     if (!model.outputModalities.includes('image')) continue
     const compatibleOutputFormat = safeOpenRouterOutputFormat(model.supportedParameters)
-    const selectable = compatibleOutputFormat !== null
-    const resolutionValues = Array.isArray(model.supportedParameters?.resolution?.values)
-      ? model.supportedParameters.resolution.values.map(String)
-      : undefined
+    const normalizedProfile = openRouterNormalizedImageProfiles.get(model.id)
+    const resolutionValues = openRouterRuntimeResolutions(model.id, model.supportedParameters?.resolution?.values)
+    const formatSelectable = compatibleOutputFormat !== null || Boolean(normalizedProfile)
+    const minimumResolutionAvailable = !normalizedProfile?.minimumResolution || Boolean(resolutionValues?.length)
+    const selectable = formatSelectable && minimumResolutionAvailable
     const directEdit = selectable && supportsOpenRouterParameter(model.supportedParameters, 'input_references')
-    const outputFormats = openRouterOutputFormats(model.supportedParameters)
+    const declaredOutputFormats = openRouterOutputFormats(model.supportedParameters)
+    const outputFormats = selectable ? ['png'] : declaredOutputFormats
     const disabledReason = selectable
       ? ''
-      : `OpenRouter catalog does not declare explicit PNG or SVG output_format values${outputFormats.length ? ` (declared: ${outputFormats.join(', ')})` : ''}; unavailable for PaperBanana submission`
+      : !formatSelectable
+        ? `OpenRouter catalog does not declare explicit PNG or SVG output_format values${declaredOutputFormats.length ? ` (declared: ${declaredOutputFormats.join(', ')})` : ''}; unavailable for PaperBanana submission`
+        : `OpenRouter catalog no longer declares a canonical ${normalizedProfile?.minimumResolution} or higher resolution; unavailable for PaperBanana submission`
     entries.set(model.id, registryEntry(
       model.id,
       model.name,
@@ -5281,7 +5549,11 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         selectable,
         disabledReason,
         roleReasons: selectable
-          ? { image: 'OpenRouter Dedicated Image API catalog declares image output with explicit PNG or SVG compatibility' }
+          ? {
+            image: normalizedProfile
+              ? `OpenRouter Dedicated Image API route uses a paid-verified ${normalizedProfile.defaultFormat.toUpperCase()} response profile with normalized PNG output`
+              : `OpenRouter Dedicated Image API catalog declares explicit ${compatibleOutputFormat?.toUpperCase()} output; PaperBanana returns normalized PNG`,
+          }
           : {},
       },
     ))

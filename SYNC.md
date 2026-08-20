@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-20] OpenRouter 34 模型付费验证与 PNG 统一输出 — by Codex
+变更：Core 注册表升级为 `2026-08-20.v8`。在用户授权的 9 美元上限内，对此前因输出格式元数据不兼容而禁用的 34 个 OpenRouter 图片模型逐项执行付费生成，34/34 均返回真实图片；实际默认响应为 14 个 PNG、10 个 JPEG、10 个 WebP。运行时按这份精确 ID 白名单开放模型，并在存储前统一为真实 PNG；本次验证总成本约 2.42 美元。
+契约（影响其他端 / 共享）：
+- **最终格式**：所有兼容 OpenRouter 图片路线对客户端统一暴露 `capabilities.outputFormats:['png']`；34 项付费白名单覆盖 14 个原生 PNG、10 个 JPEG、10 个 WebP，既有 SVG 兼容路线继续经有界 Resvg 栅格化。原生 PNG 必须通过完整 chunk/CRC、IHDR/IEND 与 8192 边长/20MP 上限校验；JPEG 沿用有界解码器转 PNG；WebP 仅允许静态、可解析尺寸且不超过同一上限，由精确 `sharp@0.35.3` 转 PNG。未知 ID、动画 WebP、损坏数据和其他格式继续失败关闭。
+- **目录纠错**：`bytedance-seed/seedream-4.5` 的付费 1K 调用被供应商拒绝，运行时与注册表移除 1K，仅允许 2K/4K；不会从名称或错误目录值推断兼容性。
+- **验证语义**：逐项付费结果只建立服务器内维护的精确转换白名单；公开动态项仍保持 `verificationState:'catalog'`、`verified:false`，不把一次测试冒充为所有用户账号权益。漂移检查会监控 34 个精确 ID 及 Seedream 4.5 的 canonical 2K/4K 能力，缺失或能力退化即 warning，永不自动接纳新项。
+- **运行依赖**：香港 Node 镜像保留 `sharp@0.35.3` 为原生外部依赖，并在 Docker 构建中执行真实 WebP→PNG smoke；Core 的新加坡出口依赖同步固定到已修复已知安全公告的 `undici@7.29.0`。暂停的 Laf 回滚只有在控制台确认 `jpeg-js@0.4.4`、`sharp@0.35.3`、兼容 Node/OS/CPU 且真实 WebP smoke 通过后，才可人工发布；verification-only workflow 不安装、不登录、不 push。
+各端待办：
+- [x] paperbanana-api / Laf Core（v8 注册表、PNG/JPEG/WebP 归一、尺寸/结构边界、Seedream 4.5 纠错、漂移监控与 TDD）
+- [x] Web（继续只消费服务端角色与 `outputFormats`；34 项会在 PNG 模式自动可选，无需名称推断）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（若展示动态 OpenRouter 图片目录，消费 v8 权威能力；旧请求格式不变）
+- [ ] 部署 / 运维（PR/CI/香港 Core/Pages 发布及生产 PNG/JPEG/WebP 代表性 smoke 完成后勾选）
+
 ### [2026-08-20] Ark 中国区完整相关目录与 Seed 2.1 / Seedream 5.0 路由 — by Codex
 变更：Core 注册表升级为 `2026-08-20.v7`，依据火山方舟中国区当前模型列表、发布/下线公告、深度思考和图片生成文档，将 Ark 与 PaperBanana 文本、视觉、图像角色相关的现役目录从 3 项扩为 21 项。默认升级为 `doubao-seed-2-1-pro-260628`（main/vision）与 `doubao-seedream-5-0-pro-260628`（image）；不使用 ID 尾部日期猜测 `releasedAt`，所有 Ark 日期仍为 `null`。
 契约（影响其他端 / 共享）：

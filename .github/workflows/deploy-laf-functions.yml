@@ -30,7 +30,9 @@ jobs:
           test -f apps/laf-functions/paperbanana-api.ts
           test -f apps/paperbanana-api/package.json
           grep -Fq "from 'jpeg-js/lib/decoder'" apps/laf-functions/paperbanana-api.ts
+          grep -Fq "from 'sharp'" apps/laf-functions/paperbanana-api.ts
           node -e 'const pkg=require("./apps/paperbanana-api/package.json"); if (pkg.dependencies?.["jpeg-js"] !== "0.4.4") process.exit(1)'
+          node -e 'const pkg=require("./apps/paperbanana-api/package.json"); if (pkg.dependencies?.sharp !== "0.35.3") process.exit(1)'
 
       - name: Record manual-console guidance
         run: |
@@ -38,6 +40,6 @@ jobs:
             echo "## Laf rollback verification-only check"
             echo "This workflow does not publish source or authenticate to Laf."
             echo "Any approved rollback must be completed manually in the Laf console."
-            echo "Before pasting or publishing the reviewed source, inspect the paused Laf application's custom dependency metadata and verify exactly jpeg-js@0.4.4."
+            echo "Before pasting or publishing the reviewed source, inspect the paused Laf application's custom dependency metadata and verify exactly jpeg-js@0.4.4 and sharp@0.35.3, including a compatible Node/OS/CPU native runtime for sharp."
             echo "Until that console metadata has an authenticated machine-readable check, automated Laf publishing remains disabled."
           } >> "$GITHUB_STEP_SUMMARY"
