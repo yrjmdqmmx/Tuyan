@@ -1954,6 +1954,61 @@ test('providerAccountCatalog aborts a hung Ark probe by deadline and immediately
   }
 })
 
+test('admin evaluation routes Ark overrides exactly and rejects unknown providers', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousRows = state.jobRows
+  const previousAdminToken = process.env.ADMIN_TOKEN
+  state.jobRows = [{
+    _id: 'evaluate-ark-job',
+    provider: 'openai',
+    mainModelName: 'gpt-5.6-sol',
+    methodContent: 'A sufficiently detailed method for evaluating a generated academic diagram.',
+    caption: 'Figure 1: Evaluation target.',
+    resultImages: [{ url: 'data:image/png;base64,YQ==' }],
+    referenceImages: [],
+  }]
+  process.env.ADMIN_TOKEN = 'evaluate-admin-token'
+  const calls: Array<{ url: string; authorization: string; model: string }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const body = JSON.parse(String(init?.body || '{}'))
+    calls.push({
+      url: String(input),
+      authorization: new Headers(init?.headers).get('authorization') || '',
+      model: body.model || '',
+    })
+    return Response.json({ choices: [{ message: { content: '{"score":8,"reasoning":"clear"}' } }] })
+  })
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const evaluated = await invoke({
+      action: 'evaluateJob', adminToken: 'evaluate-admin-token', jobId: 'evaluate-ark-job',
+      provider: 'ark', model: 'doubao-seed-2-0-mini-260428', apiKey: 'ark-evaluate-secret',
+    })
+    assert.equal(evaluated.code, 0, JSON.stringify(evaluated))
+    assert.equal(calls.length, 4)
+    assert.equal(calls.every((call) => call.url === 'https://ark.cn-beijing.volces.com/api/v3/chat/completions'), true)
+    assert.equal(calls.every((call) => call.authorization === 'Bearer ark-evaluate-secret'), true)
+    assert.equal(calls.every((call) => call.model === 'doubao-seed-2-0-mini-260428'), true)
+
+    const beforeInvalid = calls.length
+    const invalid = await invoke({
+      action: 'evaluateJob', adminToken: 'evaluate-admin-token', jobId: 'evaluate-ark-job',
+      provider: 'unknown-provider', model: 'do-not-route', apiKey: 'do-not-send',
+    })
+    assert.equal(invalid.code, 400)
+    assert.match(invalid.error, /Invalid judge provider/)
+    assert.equal(calls.length, beforeInvalid)
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.jobRows = previousRows
+    if (previousAdminToken === undefined) delete process.env.ADMIN_TOKEN
+    else process.env.ADMIN_TOKEN = previousAdminToken
+  }
+})
+
 test('legacy client defaults map explicitly to current registered model IDs', async () => {
   const legacy = await loadLegacy()
   assert.equal(legacy.normalizeModelName('gemini', 'gemini-3.1-pro'), 'gemini-3.1-pro-preview')

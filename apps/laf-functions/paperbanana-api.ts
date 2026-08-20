@@ -6692,9 +6692,14 @@ async function evaluateJob(body: EvaluateJobBody) {
 
   // Resolve the judge model. Default to the job's main model + provider, but
   // allow the caller to override provider/model/apiKey for a dedicated judge.
-  const provider = (['openrouter', 'gemini', 'openai', 'bailian'].includes(String(body.provider))
-    ? body.provider
-    : job.provider) as Provider
+  const requestedProvider = body.provider === undefined || body.provider === null
+    ? ''
+    : String(body.provider).trim()
+  if (requestedProvider && !recognizedRouteProviders.has(requestedProvider as Provider)) {
+    return fail('Invalid judge provider', 400)
+  }
+  const provider = (requestedProvider || String(job.provider || '').trim()) as Provider
+  if (!recognizedRouteProviders.has(provider)) return fail('Invalid judge provider', 400)
   const model = normalizeModelName(provider, limitText(body.model, 120) || job.mainModelName || job.referenceVisionModelName)
   const apiKey = limitText(body.apiKey, 400)
   if (!apiKey) return fail('apiKey is required to run the LLM judge', 400)
