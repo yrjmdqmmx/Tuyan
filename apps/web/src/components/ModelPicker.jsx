@@ -19,11 +19,20 @@ function providerDisplayName(provider, providerConfigs) {
 }
 
 function lifecycleLabel(value) {
+  if (value === 'stable') return '稳定版'
   if (value === 'preview') return '预览版'
   if (value === 'invite-only') return '邀测'
   if (value === 'legacy') return '旧版维护'
   if (value === 'deprecated') return '即将下线'
-  return '稳定版'
+  return '状态未知'
+}
+
+function verificationLabel(model) {
+  if (model.verificationState === 'catalog') return '目录兼容（未实测）'
+  if (model.verificationState === 'account-visible') return '账号可见（未实测）'
+  if (model.verificationState === 'inference-verified') return '真实调用已验证'
+  if (model.verificationState === 'registry') return '静态注册信息'
+  return model.verified === true ? '注册表已确认' : '尚未实测'
 }
 
 function capabilityLabel(model) {
@@ -87,7 +96,7 @@ export default function ModelPicker({
     [activeProviderRegistry.models, role, query, outputFormat],
   )
   const recommendedCompatible = useMemo(
-    () => allPartition.compatible.filter((model) => model.recommended === true && (model.lifecycle || 'stable') === 'stable'),
+    () => allPartition.compatible.filter((model) => model.recommended === true && model.lifecycle === 'stable'),
     [allPartition.compatible],
   )
   const allCompatibleGrouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
@@ -288,8 +297,9 @@ export default function ModelPicker({
               >
                 <span className="model-option-main"><strong>{model.label || model.id}</strong><small>{model.id}</small></span>
                 <span className="model-option-badges">
-                  {model.recommended && (model.lifecycle || 'stable') === 'stable' ? <em>推荐</em> : null}
+                  {model.recommended && model.lifecycle === 'stable' ? <em>推荐</em> : null}
                   <em>{lifecycleLabel(model.lifecycle)}</em>
+                  <em>{verificationLabel(model)}</em>
                   {model.requiresEntitlement ? <em>需权益</em> : <em>标准权限</em>}
                   {effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? <Check size={16} /> : null}
                 </span>

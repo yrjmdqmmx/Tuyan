@@ -1274,6 +1274,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.equal(geminiModels.get('gemini-3.6-flash')?.recommended, false)
   assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.roles, ['main', 'vision'])
   assert.equal(geminiModels.get('gemini-3.6-flash')?.verified, true)
+  assert.equal(geminiModels.get('gemini-3.6-flash')?.verificationState, 'registry')
   assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.inputModalities, ['text', 'image'])
   assert.deepEqual(geminiModels.get('gemini-3.6-flash')?.outputModalities, ['text'])
   assert.equal(geminiModels.get('gemini-3.6-flash')?.protocol, 'gemini-generate-content')
@@ -1373,6 +1374,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.deepEqual(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.outputFormats, ['png'])
   for (const model of arkModels.values()) {
     assert.equal(model.verified, false)
+    assert.equal(model.verificationState, 'unverified')
     assert.equal(model.requiresEntitlement, true)
     assert.equal(model.releasedAt, null)
     assert.match(model.officialSourceUrl, /^https:\/\//)
@@ -1415,7 +1417,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-08-20.v5')
+    assert.equal(result.registryVersion, '2026-08-20.v6')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     assert.deepEqual(
       Object.fromEntries(imageModels.map((model: any) => [model.id, model.capabilities.refineResolutions])),
@@ -2464,6 +2466,55 @@ test('OpenRouter recommendations sort first without hiding the complete compatib
     for (const model of registry.providers.openrouter.models) {
       assert.equal(model.releasedAt, null, `${model.id} must not reuse OpenRouter created as a vendor release date`)
       assert.match(model.officialSourceUrl, /^https:\/\//)
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter global catalog reports catalog compatibility without inventing lifecycle or paid verification', async () => {
+  const legacy = await loadLegacy()
+  const textModels = [
+    {
+      id: 'openai/gpt-5.6-sol', name: 'GPT-5.6 Sol',
+      architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] },
+    },
+    {
+      id: 'vendor/production-like', name: 'Production-like Model',
+      architecture: { input_modalities: ['text'], output_modalities: ['text'] },
+    },
+    {
+      id: 'vendor/model-preview', name: 'Model Preview',
+      architecture: { input_modalities: ['text'], output_modalities: ['text'] },
+    },
+  ]
+  const imageModels = [
+    {
+      id: 'vendor/image-preview', name: 'Image Preview',
+      architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+      supported_parameters: { output_format: { values: ['png'] } },
+    },
+  ]
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: textModels })
+    if (url.endsWith('/images/models')) return Response.json({ data: imageModels })
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(registry.registryVersion, '2026-08-20.v6')
+    const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
+    assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
+    for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
+      const model = models.get(id)
+      assert.equal(model.lifecycle, 'unknown', `${id} has no authoritative lifecycle`)
+      assert.equal(model.verified, false, `${id} was not exercised with a paid request`)
+      assert.equal(model.verificationState, 'catalog', `${id} is only present and protocol-compatible in the global catalog`)
+      assert.equal(model.releasedAt, null, `${id} keeps an unknown vendor release date`)
     }
   } finally {
     legacy.configureRuntimeFetch()
