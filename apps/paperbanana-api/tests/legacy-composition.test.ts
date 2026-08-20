@@ -36,7 +36,7 @@ type LegacyPolicyModule = {
   fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts?: number): Promise<Response>
   callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>): Promise<string>
   callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>): Promise<string>
-  callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string): Promise<string>
+  callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string, strictImageSize?: boolean): Promise<string>
   normalizeModelName(provider: string, model: string): string
   resolveManualRetrievedReferences(ids: string[]): Promise<Array<Record<string, any>>>
   resolveRetrievedReferences(body: Record<string, any>, apiKey: string): Promise<Array<Record<string, any>>>
@@ -890,11 +890,194 @@ test('refine dispatch retains image only for direct edit and vision plus image f
       ['https://cdn.invalid/refined.png', '', ''],
     ])
     const source = fs.readFileSync(legacyPath, 'utf8')
-    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K'\)/)
-    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K'\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K', true\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K', true\)/)
   } finally {
     legacy.configureRuntimeFetch()
     state.ossWriteMode = previousWriteMode
+    state.storedObjectBytes = previousStoredObjects
+    state.inserts = previousInserts
+    state.deletedOwnerKeys = []
+  }
+})
+
+test('analyze-redraw refinement preserves an explicitly requested canonical 1K size', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousStoredObjects = state.storedObjectBytes
+  const previousInserts = state.inserts
+  state.ossWriteMode = 'success'
+  state.storedObjectBytes = { 'owned/analyze-1k.png': Buffer.from('analyze-source') }
+  state.inserts = []
+  const calls: Array<{ url: string; body: any }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    const body = typeof init?.body === 'string' ? JSON.parse(init.body) : undefined
+    calls.push({ url, body })
+    if (url.endsWith('/chat/completions')) {
+      return Response.json({ choices: [{ message: { content: 'Preserve the exact composition and improve label clarity.' } }] })
+    }
+    if (url.includes('/multimodal-generation/generation')) {
+      return Response.json({ output: { choices: [{ message: { content: [{ image: 'https://cdn.invalid/analyze-1k.png' }] } }] } })
+    }
+    if (url === 'https://cdn.invalid/analyze-1k.png') {
+      return new Response(Buffer.alloc(120, 5), { headers: { 'Content-Type': 'image/png' } })
+    }
+    throw new Error(`unexpected analyze-redraw dispatch ${url}`)
+  })
+  try {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'refineImage', provider: 'bailian', apiKeys: { bailian: 'analyze-redraw-secret' },
+        mainModelName: 'qwen3.7-plus', imageModelName: 'z-image-turbo',
+        sourceImageObjectKey: 'owned/analyze-1k.png', editInstruction: 'Improve label clarity without changing content.',
+        imageSize: '1K', aspectRatio: '16:9',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(result.code, 0, JSON.stringify(result))
+    await legacy.drainJobAdmission()
+    assert.equal(state.inserts[0].imageSize, '1K')
+    const render = calls.find((call) => call.url.includes('/multimodal-generation/generation'))
+    assert.equal(render?.body.parameters.size, '1360*768')
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.storedObjectBytes = previousStoredObjects
+    state.inserts = previousInserts
+    state.deletedOwnerKeys = []
+  }
+})
+
+test('refinement rejects noncanonical image sizes before persistence or provider dispatch', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousStoredObjects = state.storedObjectBytes
+  const previousInserts = state.inserts
+  state.storedObjectBytes = { 'owned/invalid-size.png': Buffer.from('source') }
+  state.inserts = []
+  let providerCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    providerCalls += 1
+    return Response.json({ output_image: { data: onePixelPngBase64, mime_type: 'image/png' } })
+  })
+  try {
+    for (const imageSize of ['8K', '', null, false, 0]) {
+      const result = await legacy.default({
+        request: { method: 'POST' },
+        body: {
+          action: 'refineImage', provider: 'gemini', apiKeys: { gemini: 'invalid-size-secret' },
+          mainModelName: 'gemini-3.7-flash', imageModelName: 'gemini-3.1-flash-image',
+          sourceImageObjectKey: 'owned/invalid-size.png', editInstruction: 'Improve label clarity.',
+          imageSize,
+        },
+        headers: {}, response: { setHeader() {}, status() {} },
+      })
+      await legacy.drainJobAdmission()
+      assert.deepEqual(result, { code: 400, error: 'Invalid imageSize. Must be 1K, 2K, or 4K.' }, String(imageSize))
+    }
+    assert.equal(state.inserts.length, 0)
+    assert.equal(providerCalls, 0)
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.storedObjectBytes = previousStoredObjects
+    state.inserts = previousInserts
+    state.deletedOwnerKeys = []
+  }
+})
+
+test('direct-edit refinement rejects registered but unsupported 4K before persistence or provider dispatch', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousStoredObjects = state.storedObjectBytes
+  const previousInserts = state.inserts
+  state.storedObjectBytes = {
+    'owned/openai-4k.png': Buffer.from('openai-source'),
+    'owned/bailian-4k.png': Buffer.from('bailian-source'),
+  }
+  state.inserts = []
+  let providerCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    providerCalls += 1
+    return new Response('unexpected provider dispatch', { status: 500 })
+  })
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const openai = await invoke({
+      action: 'refineImage', provider: 'openai', configurationMode: 'advanced', apiKeys: { openai: 'openai-secret' },
+      sourceImageObjectKey: 'owned/openai-4k.png', editInstruction: 'Improve label clarity.', imageSize: '4K',
+      modelRoutes: {
+        main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+        image: { accessProvider: 'openai', modelId: 'gpt-image-2' },
+        vision: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      },
+    })
+    const bailian = await invoke({
+      action: 'refineImage', provider: 'bailian', configurationMode: 'advanced', apiKeys: { bailian: 'bailian-secret' },
+      sourceImageObjectKey: 'owned/bailian-4k.png', editInstruction: 'Improve label clarity.', imageSize: '4K',
+      modelRoutes: {
+        main: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+        image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+        vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+      },
+    })
+    await legacy.drainJobAdmission()
+
+    for (const [result, route, supported] of [
+      [openai, 'openai/gpt-image-2', '2K'],
+      [bailian, 'bailian/wan2.7-image-pro', '1K, 2K'],
+    ] as const) {
+      assert.equal(result.code, 400, JSON.stringify(result))
+      assert.equal(result.businessCode, 'REFINE_RESOLUTION_UNSUPPORTED')
+      assert.equal(result.error, `Refinement resolution 4K is not supported by ${route}. Supported resolutions: ${supported}.`)
+    }
+    assert.equal(state.inserts.length, 0)
+    assert.equal(providerCalls, 0)
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.storedObjectBytes = previousStoredObjects
+    state.inserts = previousInserts
+    state.deletedOwnerKeys = []
+  }
+})
+
+test('analyze-redraw refinement rejects a canonical size absent from generation capabilities', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousStoredObjects = state.storedObjectBytes
+  const previousInserts = state.inserts
+  state.storedObjectBytes = { 'owned/analyze-4k.png': Buffer.from('analyze-source') }
+  state.inserts = []
+  let providerCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    providerCalls += 1
+    return new Response('unexpected provider dispatch', { status: 500 })
+  })
+  try {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'refineImage', provider: 'bailian', apiKeys: { bailian: 'analyze-secret' },
+        mainModelName: 'qwen3.7-plus', imageModelName: 'z-image-turbo',
+        sourceImageObjectKey: 'owned/analyze-4k.png', editInstruction: 'Improve label clarity.', imageSize: '4K',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    await legacy.drainJobAdmission()
+    assert.equal(result.code, 400, JSON.stringify(result))
+    assert.equal(result.businessCode, 'REFINE_RESOLUTION_UNSUPPORTED')
+    assert.equal(
+      result.error,
+      'Refinement resolution 4K is not supported by bailian/z-image-turbo. Supported resolutions: 1K, 2K.',
+    )
+    assert.equal(state.inserts.length, 0)
+    assert.equal(providerCalls, 0)
+  } finally {
+    legacy.configureRuntimeFetch()
     state.storedObjectBytes = previousStoredObjects
     state.inserts = previousInserts
     state.deletedOwnerKeys = []
@@ -1006,11 +1189,13 @@ test('mixed create and direct refine route Ark stages without substituting model
     const refined = await invoke({
       action: 'refineImage', provider: 'openai', configurationMode: 'advanced', apiKeys: { ark: 'ark-stage-secret' },
       sourceImageObjectKey: 'owned/ark-source.png', editInstruction: 'Improve hierarchy without changing content.',
+      imageSize: '4K',
       modelRoutes: routes,
     })
     assert.equal(refined.code, 0, JSON.stringify(refined))
     assert.equal(refined.refineCapability.mode, 'direct-edit')
     await legacy.drainJobAdmission()
+    assert.equal(state.inserts.at(-1).imageSize, '4K')
     assert.deepEqual(calls.map((call) => [call.url, call.model, call.authorization]), [
       [
         'https://ark.cn-beijing.volces.com/api/v3/images/generations',
@@ -1191,6 +1376,59 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     assert.equal(model.requiresEntitlement, true)
     assert.equal(model.releasedAt, null)
     assert.match(model.officialSourceUrl, /^https:\/\//)
+  }
+})
+
+test('modelRegistry exposes adapter-truthful canonical refinement resolutions for every static image entry', async () => {
+  const legacy = await loadLegacy()
+  const context = (provider: string) => ({
+    request: { method: 'POST' },
+    body: { action: 'modelRegistry', provider },
+    headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+  const expected = {
+    gemini: {
+      'gemini-3.1-flash-image': ['1K', '2K', '4K'],
+      'gemini-3.1-flash-lite-image': ['1K'],
+      'gemini-3-pro-image': ['1K', '2K', '4K'],
+      'gemini-2.5-flash-image': ['1K'],
+    },
+    bailian: {
+      'wan2.7-image-pro': ['1K', '2K'],
+      'wan2.7-image': ['1K', '2K'],
+      'qwen-image-3.0-pro': ['1K', '2K'],
+      'qwen-image-2.0-pro': ['1K', '2K'],
+      'qwen-image-2.0': ['1K', '2K'],
+      'z-image-turbo': ['1K', '2K'],
+    },
+    openai: {
+      'gpt-image-2': ['2K'],
+      'gpt-image-1': ['2K'],
+      'gpt-image-1-mini': ['2K'],
+    },
+    ark: {
+      'doubao-seedream-4-0-250828': ['1K', '2K', '4K'],
+    },
+  } as const
+
+  for (const [provider, providerExpected] of Object.entries(expected)) {
+    const result = await legacy.default(context(provider))
+    assert.equal(result.code, 0, JSON.stringify(result))
+    assert.equal(result.registryVersion, '2026-08-20.v5')
+    const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
+    assert.deepEqual(
+      Object.fromEntries(imageModels.map((model: any) => [model.id, model.capabilities.refineResolutions])),
+      providerExpected,
+    )
+    for (const model of imageModels) {
+      assert.ok(Array.isArray(model.capabilities.refineResolutions), `${provider}/${model.id}`)
+      assert.equal(
+        model.capabilities.refineResolutions.every((value: string) => ['1K', '2K', '4K'].includes(value)),
+        true,
+        `${provider}/${model.id}`,
+      )
+    }
   }
 })
 
@@ -2025,7 +2263,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
           ...dedicatedModel,
           supported_parameters: {
             aspect_ratio: { type: 'enum', values: ['1:1', '16:9'] },
-            resolution: { type: 'enum', values: ['1K', '2K'] },
+            resolution: { type: 'enum', values: ['512', '4K', '2K', '1K', 'AUTO'] },
             input_references: { type: 'range', min: 0, max: 1 },
             output_format: { type: 'enum', values: ['png'] },
           },
@@ -2063,6 +2301,8 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     assert.equal(registryModels.get('black-forest-labs/flux.2-pro')?.vendor, 'Black Forest Labs')
     assert.deepEqual(registryModels.get('black-forest-labs/flux.2-pro')?.inputModalities, ['text', 'image'])
     assert.equal(registryModels.get('black-forest-labs/flux.2-pro')?.capabilities.imageEditMode, 'direct-edit')
+    assert.deepEqual(registryModels.get('black-forest-labs/flux.2-pro')?.capabilities.refineResolutions, ['1K', '2K', '4K'])
+    assert.deepEqual(registryModels.get('google/gemini-3.1-flash-image')?.capabilities.refineResolutions, [])
     assert.match(registryModels.get('black-forest-labs/flux.2-pro')?.roleReasons.image, /Dedicated Image API/)
     await assert.rejects(
       legacy.callImageModel('openrouter', 'openrouter/recraft/not-in-catalog', 'key', 'diagram', '16:9'),
@@ -2087,6 +2327,38 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     calls.some((call) => call.url.endsWith('/chat/completions') && call.body?.model === 'black-forest-labs/flux.2-pro'),
     false,
   )
+})
+
+test('OpenRouter refinement execution rejects resolution catalog drift instead of falling back', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'vendor/drifted-image',
+    name: 'Drifted Image',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: {
+      resolution: { values: ['2K'] },
+      output_format: { values: ['png'] },
+    },
+  }
+  let generated = false
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      generated = true
+      return Response.json({ data: [{ b64_json: 'aW1hZ2U=', media_type: 'image/png' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'redraw exactly at 4K', '16:9', '', '4K', true),
+      /vendor\/drifted-image no longer declares requested refinement resolution 4K/,
+    )
+    assert.equal(generated, false)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
 })
 
 test('OpenRouter recommendations sort first without hiding the complete compatible catalog', async () => {

@@ -50,6 +50,7 @@ type RouteSecrets = Partial<Record<Provider, string>>
 type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only'
 type ProviderAccessKind = 'direct' | 'aggregator'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
+type ImageResolution = '1K' | '2K' | '4K'
 type ModelProtocol =
   | 'openai-chat-completions'
   | 'openai-responses'
@@ -99,7 +100,7 @@ type CreateJobBody = {
   retrievalSetting?: RetrievalSetting
   manualReferenceIds?: string[]
   aspectRatio?: '16:9' | '21:9' | '3:2' | '1:1'
-  imageSize?: '1K' | '2K' | '4K'
+  imageSize?: ImageResolution
   numCandidates?: number
   maxCriticRounds?: number
   imageRefineMode?: ImageEditMode
@@ -119,7 +120,7 @@ type RefineImageBody = {
   sourceImageObjectKey?: string
   editInstruction: string
   aspectRatio?: '16:9' | '21:9' | '3:2' | '1:1'
-  imageSize?: '2K' | '4K'
+  imageSize?: ImageResolution
   userId?: string
   userEmail?: string
   clientPlatform?: ClientPlatform
@@ -685,6 +686,7 @@ type ModelRegistryEntry = {
     imageGeneration: boolean
     imageEditing: boolean
     imageEditMode: ImageEditMode
+    refineResolutions: ImageResolution[]
     resolutions?: string[]
     outputFormats?: string[]
   }
@@ -848,8 +850,14 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-20.v4'
+const modelRegistryVersion = '2026-08-20.v5'
 const referenceCorpusVersion = 'zh-CN.v2'
+const canonicalImageResolutions: ImageResolution[] = ['1K', '2K', '4K']
+
+function canonicalRefineResolutions(values: unknown): ImageResolution[] {
+  const declared = new Set(Array.isArray(values) ? values.map(String) : [])
+  return canonicalImageResolutions.filter((value) => declared.has(value))
+}
 
 type RegistryEntryMetadata = Partial<Pick<
   ModelRegistryEntry,
@@ -915,6 +923,7 @@ function registryEntry(
       imageEditing,
       imageEditMode: imageGeneration ? (imageEditing ? 'direct-edit' : 'analyze-redraw') : 'none',
       ...options,
+      refineResolutions: canonicalRefineResolutions(options.refineResolutions),
     },
   }
 }
@@ -936,10 +945,10 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('gemini-2.5-pro', 'Gemini 2.5 Pro', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-2.5-flash', 'Gemini 2.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-interactions', 'Stable image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-interactions', 'Stable low-latency image generation and direct editing; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-interactions', 'Stable professional image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Legacy generateContent image model; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], outputFormats: ['png'] }, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-interactions', 'Stable image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-interactions', 'Stable low-latency image generation and direct editing; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-interactions', 'Stable professional image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Legacy generateContent image model; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], outputFormats: ['png'] }, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
     ],
   },
   bailian: {
@@ -958,12 +967,12 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('kimi/kimi-k3', 'Kimi K3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'Moonshot AI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('MiniMax/MiniMax-M3', 'MiniMax M3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'MiniMax', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('qwen3.5-omni-plus', 'Qwen3.5 Omni Plus', ['vision'], 'bailian-openai-chat', 'Multimodal understanding; Beijing and Singapore', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image', 'audio', 'video'], outputModalities: ['text'] }),
-      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('z-image-turbo', 'Z-Image Turbo', ['image'], 'bailian-multimodal-generation', 'Fast text-to-image model; refine uses analyze and redraw', { resolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Tongyi-MAI', inputModalities: ['text'], outputModalities: ['image'] }),
+      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('z-image-turbo', 'Z-Image Turbo', ['image'], 'bailian-multimodal-generation', 'Fast text-to-image model; refine uses analyze and redraw', { resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Tongyi-MAI', inputModalities: ['text'], outputModalities: ['image'] }),
     ],
   },
   openai: {
@@ -984,9 +993,9 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('gpt-5-mini', 'GPT-5 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-4.1', 'GPT-4.1', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-4.1-mini', 'GPT-4.1 Mini', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
     ],
   },
   ark: {
@@ -1040,7 +1049,7 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
         ['image'],
         'ark-images',
         'Static official generation and direct-edit model scaffold; account availability requires an explicit inference smoke probe',
-        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], outputFormats: ['png'] },
+        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png'] },
         {
           vendor: 'ByteDance Seedream',
           recommended: true,
@@ -1835,9 +1844,6 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   } catch (error: any) {
     return fail(error?.message || 'Invalid refineImage request', 400)
   }
-  if (!(await ensureAccountAcceptingWork(body))) {
-    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
-  }
   let routingInput: RefineImageBody = {
     ...body,
     configurationMode: normalizeConfigurationMode(body.configurationMode),
@@ -1875,7 +1881,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     ...routingInput,
     ...routing,
     aspectRatio: normalizeAspectRatio(body.aspectRatio),
-    imageSize: body.imageSize === '4K' ? '4K' as const : '2K' as const,
+    imageSize: body.imageSize === '4K' ? '4K' as const : body.imageSize === '1K' ? '1K' as const : '2K' as const,
   }
   const imageRoute = routing.modelRoutes.image
   const imageRefineCapability = registryImageRefineCapability(
@@ -1883,6 +1889,18 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     registries.get(imageRoute.accessProvider)!,
     imageRoute.modelId,
   )
+  if (!imageRefineCapability.resolutions.includes(normalizedBodyWithSecrets.imageSize)) {
+    return {
+      ...fail(
+        `Refinement resolution ${normalizedBodyWithSecrets.imageSize} is not supported by ${imageRoute.accessProvider}/${imageRoute.modelId}. Supported resolutions: ${imageRefineCapability.resolutions.join(', ') || 'none'}.`,
+        400,
+      ),
+      businessCode: 'REFINE_RESOLUTION_UNSUPPORTED',
+    }
+  }
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+  }
 
   const normalizedBody = toRefineExecutionBody({
     ...normalizedBodyWithSecrets,
@@ -3225,7 +3243,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
     const editPrompt = refineEditPrompt(body.editInstruction, body.imageSize || '2K')
     description = editPrompt
     const renderStartedAt = new Date()
-    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K')
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K', true)
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -3267,7 +3285,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
 
     await appendLog(jobId, 'Refine: rendering edited image')
     const renderStartedAt = new Date()
-    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K')
+    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K', true)
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -3977,6 +3995,7 @@ export async function callImageModel(
   aspectRatio: string,
   sourceImage = '',
   imageSize = '2K',
+  strictImageSize = false,
 ): Promise<string> {
   // When a source image is supplied, route to a true image-to-image / edit
   // request for providers that support image input. Otherwise fall back to
@@ -4027,7 +4046,7 @@ export async function callImageModel(
     return callArkImage(model, apiKey, prompt, source, imageSize)
   }
 
-  return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize)
+  return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize, strictImageSize)
 }
 
 async function callArkImage(
@@ -4198,12 +4217,16 @@ async function callOpenRouterImage(
   aspectRatio: string,
   source: NormalizedSourceImage | null,
   imageSize: string,
+  strictImageSize = false,
 ): Promise<string> {
   const actualModel = toOpenRouterModel(model)
   const route = await resolveOpenRouterImageRoute(actualModel)
   const body: any = { model: actualModel, prompt }
   const parameters = route.model.supportedParameters || {}
   const resolution = supportedOpenRouterValue(parameters.resolution, imageSize, ['2K', '1K', '4K', '512'])
+  if (strictImageSize && resolution !== imageSize) {
+    throw new Error(`Model ${actualModel} no longer declares requested refinement resolution ${imageSize}`)
+  }
   const ratio = supportedOpenRouterValue(parameters.aspect_ratio, aspectRatio, ['16:9', '3:2', '1:1', '21:9', 'auto'])
   if (resolution) body.resolution = resolution
   if (ratio) body.aspect_ratio = ratio
@@ -4829,13 +4852,14 @@ function registryImageRefineCapability(provider: Provider, registry: ProviderMod
   const resolvedId = provider === 'openrouter' ? toOpenRouterModel(model) : normalizeModelName(provider, model)
   const entry = registry.models.find((candidate) => candidate.id === resolvedId)
   const mode = entry?.capabilities.imageEditMode || 'none'
+  const resolutions = entry?.capabilities.refineResolutions || []
   if (mode === 'direct-edit') {
-    return { mode, reason: `${entry?.label || resolvedId} accepts the source image for direct image-to-image editing` }
+    return { mode, resolutions, reason: `${entry?.label || resolvedId} accepts the source image for direct image-to-image editing` }
   }
   if (mode === 'analyze-redraw') {
-    return { mode, reason: `${entry?.label || resolvedId} cannot accept a source image; refine analyzes the source and redraws it` }
+    return { mode, resolutions, reason: `${entry?.label || resolvedId} cannot accept a source image; refine analyzes the source and redraws it` }
   }
-  return { mode: 'none' as const, reason: `${entry?.label || resolvedId} is not registered for image refinement` }
+  return { mode: 'none' as const, resolutions, reason: `${entry?.label || resolvedId} is not registered for image refinement` }
 }
 
 async function fetchOpenRouterTextModels() {
@@ -4970,6 +4994,7 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         referenceImages: directEdit,
         imageEditing: directEdit,
         resolutions: resolutionValues,
+        refineResolutions: canonicalRefineResolutions(resolutionValues),
         outputFormats,
       },
       {
@@ -6061,6 +6086,9 @@ function validateCreateBody(body: CreateJobBody) {
 function validateRefineBody(body: RefineImageBody) {
   if (!recognizedRouteProviders.has(body.provider)) throw new Error('Invalid provider')
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
+  if (body.imageSize !== undefined && !canonicalImageResolutions.includes(body.imageSize)) {
+    throw new Error('Invalid imageSize. Must be 1K, 2K, or 4K.')
+  }
   if (!body.modelRoutes && !body.imageModelName) throw new Error('imageModelName is required')
   if (!body.sourceImageUrl && !body.sourceImageObjectKey) throw new Error('source image is required')
   const instruction = String(body.editInstruction || '').trim()

@@ -24,6 +24,17 @@
 
 ## 条目（最新在上）
 
+### [2026-08-20] 精修分辨率真实能力与入队前失败关闭 — by Codex
+变更：Core 注册表升级为 `2026-08-20.v5`，每个 image 条目新增必定数组 `capabilities.refineResolutions`，仅可包含 `1K|2K|4K`，并与生成能力 `resolutions` 分离。`refineImage.imageSize` 现在精确接受 `1K|2K|4K`；解析所选权威 image route 后，不支持的尺寸在账号检查、admission、Mongo insert 和计费/推理 provider 调用前以 `400` + `REFINE_RESOLUTION_UNSUPPORTED` 拒绝，不再静默夹到其他尺寸。OpenRouter 权威解析可先发生无鉴权目录查询；入队后若目录漂移，执行仍会再次要求精确尺寸并失败关闭。
+契约（影响其他端 / 共享）：
+- **注册表**：Gemini 按各 image adapter 实际尺寸；百炼 direct-edit 最高 2K（`wan2.7-image-pro` 的生成 4K 不等于精修 4K），analyze-redraw 沿用其生成尺寸；OpenAI Images direct edit 固定为 2K；Ark Seedream 为 1K/2K/4K；OpenRouter 仅映射官方目录 `resolution.values` 中已声明的规范值，未声明时为空数组。
+- **请求语义**：缺省 `imageSize` 仍为历史兼容的 `2K`；显式 `modelRoutes` 与 legacy model 字段路由都保持。客户端必须以 `refineResolutions` 提供可选项，不得从 `resolutions` 或模型名推断。
+各端待办：
+- [x] paperbanana-api / Laf Core（registry v5、精修准入、direct/analyze/1K/4K/OpenRouter 回归）
+- [ ] Web / packages-api（消费 `refineResolutions`、仅展示所选 image route 可执行的精修尺寸；由并行 Web 会话完成）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续消费新字段，未改造前不得宣称 4K 精修可用）
+- [ ] 部署 / 运维（本条未部署、未改环境变量）
+
 ### [2026-08-20] 显式路由目录校验、plot 可达能力与 Laf 手动回滚边界 — by Codex
 变更：Core 将“显式 `modelRoutes` 的三路注册表合法性”与“本任务真实可达阶段”分开：显式三路均必须存在、role 正确且可选，但只有真实可达路线需要 key/调用成本。`prevalidatedManualReferences` 改为仅服务端手选查询后附加，客户端同名字段永不进入后台 DTO。2K/4K plot 仅当注册表解析为 `direct-edit` 时可达 image；显式 `maxCriticRounds=0` 不再被默认值覆盖。Laf 回滚 workflow 改为只读验证指引，暂停任何自动源码发布。
 契约（影响其他端 / 共享）：
