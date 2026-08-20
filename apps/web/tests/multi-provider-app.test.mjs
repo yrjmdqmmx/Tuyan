@@ -86,6 +86,9 @@ async function renderReadyApp(registry = registryV1, options = {}) {
   const user = userEvent.setup()
   render(React.createElement(App))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
+  const defaultImageId = registry.providers.bailian.defaults.image
+  const defaultImageLabel = registry.providers.bailian.models.find((model) => model.id === defaultImageId)?.label
+  await waitFor(() => assert.ok(defaultImageLabel && document.body.textContent.includes(defaultImageLabel)))
   return { requests, user }
 }
 
@@ -104,6 +107,16 @@ afterEach(() => {
   document.body.innerHTML = ''
   restoreFetch?.()
   restoreFetch = null
+})
+
+test('generation settings drawer never steals focus after the user enters a credential field', async () => {
+  const { user } = await renderReadyApp()
+  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  const keyInput = screen.getByLabelText('阿里百炼 接入密钥')
+  keyInput.focus()
+  assert.equal(document.activeElement === keyInput, true)
+  await new Promise((resolve) => setTimeout(resolve, 120))
+  assert.equal(document.activeElement === keyInput, true)
 })
 
 test('simple mode uses one access channel default routes and sends only its reachable key', async () => {

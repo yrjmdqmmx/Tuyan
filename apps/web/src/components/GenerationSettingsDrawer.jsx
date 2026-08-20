@@ -15,7 +15,6 @@ export default function GenerationSettingsDrawer({ open, onClose, focusSetting =
     previousFocusRef.current = document.activeElement
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    let focusTimer = 0
     const frame = window.requestAnimationFrame(() => {
       const requested = focusSetting
         ? panelRef.current?.querySelector(`[data-focus-setting="${focusSetting}"]`)
@@ -24,8 +23,7 @@ export default function GenerationSettingsDrawer({ open, onClose, focusSetting =
         || requested
         || panelRef.current?.querySelector(FOCUSABLE)
         || panelRef.current
-      focusTarget?.focus()
-      focusTimer = window.setTimeout(() => focusTarget?.focus(), 80)
+      if (!panelRef.current?.contains(document.activeElement)) focusTarget?.focus()
     })
     const handleKeyDown = (event) => {
       if (event.key === 'Escape' && document.querySelector('.accessible-dialog-backdrop')) return
@@ -51,7 +49,6 @@ export default function GenerationSettingsDrawer({ open, onClose, focusSetting =
     window.addEventListener('keydown', handleKeyDown)
     return () => {
       window.cancelAnimationFrame(frame)
-      window.clearTimeout(focusTimer)
       window.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = previousOverflow
       previousFocusRef.current?.focus?.()
