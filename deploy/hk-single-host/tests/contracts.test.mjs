@@ -231,12 +231,16 @@ test('legacy Laf rollback remains verification-only until the console dependency
   assert.doesNotMatch(workflow, /(?:npm|pnpm|yarn)\s+(?:install|add)[^\n]*jpeg-js|laf\s+(?:dependency|deps?)\s+/i);
   assert.match(lafReadme, /^# .*rollback only/im);
   assert.match(lafReadme, /jpeg-js@0\.4\.4/);
+  assert.match(lafReadme, /sharp@0\.35\.3/);
   assert.match(lafReadme, /custom dependency/i);
   assert.match(lafReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|仅能[^\n]*Laf 控制台/i);
   assert.match(coreReadme, /verification[- ]only/i);
+  assert.match(coreReadme, /sharp@0\.35\.3/);
   assert.match(coreReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|手动[^\n]*Laf 控制台/i);
   assert.match(sync, /jpeg-js@0\.4\.4/);
+  assert.match(sync, /sharp@0\.35\.3/);
   assert.match(sync, /仅验证[^\n]*不含[^\n]*push|仅能[^\n]*控制台手动/);
+  assert.match(workflow, /sharp/);
 });
 
 test('Core operations documentation includes Ark in the four-origin Singapore egress contract', () => {

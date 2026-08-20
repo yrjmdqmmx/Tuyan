@@ -19,6 +19,7 @@ FROM node:24-bookworm-slim AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build --chown=node:node /opt/paperbanana-api/ ./
+RUN node -e 'const sharp=require("sharp");const input=Buffer.from("UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAdQuFr1q/+BiOh/AAA=","base64");const magic=Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);sharp(input).png().toBuffer().then((output)=>{if(!output.subarray(0,8).equals(magic))process.exit(1)}).catch(()=>process.exit(1))'
 USER node
 EXPOSE 3000
 CMD ["node", "dist/server.cjs"]

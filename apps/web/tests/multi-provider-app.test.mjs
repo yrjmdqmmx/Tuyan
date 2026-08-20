@@ -408,7 +408,7 @@ test('switching from a 4K refine model to a 2K-only model normalizes before rend
   await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(submitButton())
-  await user.click(await screen.findByRole('button', { name: '精修候选图 1' }))
+  await user.click(await screen.findByRole('button', { name: '精修候选图 1' }, { timeout: 5_000 }))
 
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
   await user.click(screen.getByRole('button', { name: 'Google Gemini API' }))

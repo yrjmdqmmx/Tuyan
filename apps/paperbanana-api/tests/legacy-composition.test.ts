@@ -5,8 +5,47 @@ import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 
 import { build } from 'esbuild'
+import sharp from 'sharp'
 
-const onePixelPngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+VP5TAAAAAElFTkSuQmCC'
+const onePixelPngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADUlEQVQImWP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=='
+const onePixelWebpBase64 = 'UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAdQuFr1q/+BiOh/AAA='
+
+const paidVerifiedOpenRouterDefaultImageFormats = new Map<string, 'png' | 'jpeg' | 'webp'>([
+  ['bytedance-seed/seedream-4.5', 'jpeg'],
+  ['bytedance-seed/seedream-5-0-lite', 'jpeg'],
+  ['bytedance-seed/seedream-5-0-pro', 'jpeg'],
+  ['google/gemini-2.5-flash-image', 'png'],
+  ['google/gemini-3-pro-image', 'jpeg'],
+  ['google/gemini-3-pro-image-preview', 'jpeg'],
+  ['google/gemini-3.1-flash-image', 'jpeg'],
+  ['google/gemini-3.1-flash-image-preview', 'jpeg'],
+  ['google/gemini-3.1-flash-lite-image', 'jpeg'],
+  ['krea/krea-2-large', 'png'],
+  ['krea/krea-2-medium', 'png'],
+  ['krea/krea-2-medium-turbo', 'png'],
+  ['microsoft/mai-image-2.5', 'png'],
+  ['microsoft/mai-image-2.5-pro', 'png'],
+  ['openai/gpt-5-image', 'png'],
+  ['openai/gpt-5-image-mini', 'png'],
+  ['openai/gpt-5.4-image-2', 'png'],
+  ['openai/gpt-image-1', 'png'],
+  ['openai/gpt-image-1-mini', 'png'],
+  ['openai/gpt-image-2', 'png'],
+  ['qwen/qwen-image-3', 'png'],
+  ['qwen/qwen-image-3-pro', 'png'],
+  ['recraft/recraft-v3', 'webp'],
+  ['recraft/recraft-v4', 'webp'],
+  ['recraft/recraft-v4-pro', 'webp'],
+  ['recraft/recraft-v4.1', 'webp'],
+  ['recraft/recraft-v4.1-pro', 'webp'],
+  ['recraft/recraft-v4.1-utility', 'webp'],
+  ['recraft/recraft-v4.1-utility-pro', 'webp'],
+  ['sourceful/riverflow-v2-fast', 'webp'],
+  ['sourceful/riverflow-v2-pro', 'webp'],
+  ['sourceful/riverflow-v2.5-fast', 'webp'],
+  ['x-ai/grok-imagine-image-2.0', 'jpeg'],
+  ['x-ai/grok-imagine-image-quality', 'jpeg'],
+])
 
 type LegacyPolicyModule = {
   default(ctx: Record<string, any>): Promise<any>
@@ -99,8 +138,36 @@ test('production build explicitly resolves and bundles the Ark JPEG decoder', as
       '@lafjs/cloud': './src/laf-cloud.ts',
       'jpeg-js': './node_modules/jpeg-js',
     },
-    external: ['@resvg/resvg-wasm', 'ali-oss', 'express', 'mongodb'],
+    external: ['@resvg/resvg-wasm', 'ali-oss', 'express', 'mongodb', 'sharp'],
   })
+})
+
+test('production build ships the exact maintained WebP decoder as an external runtime dependency', async () => {
+  const packageJson = JSON.parse(fs.readFileSync(path.resolve(packageRoot, 'package.json'), 'utf8'))
+  assert.equal(packageJson.dependencies?.sharp, '0.35.3')
+  assert.equal(packageJson.dependencies?.undici, '7.29.0')
+  assert.match(packageJson.scripts.build, /--external:sharp(?:\s|$)/)
+  await build({
+    entryPoints: [path.resolve(packageRoot, 'src/main.ts')],
+    absWorkingDir: packageRoot,
+    bundle: true,
+    platform: 'node',
+    target: 'node24',
+    format: 'cjs',
+    write: false,
+    alias: {
+      '@lafjs/cloud': './src/laf-cloud.ts',
+      'jpeg-js': './node_modules/jpeg-js',
+    },
+    external: ['@resvg/resvg-wasm', 'ali-oss', 'express', 'mongodb', 'sharp'],
+  })
+})
+
+test('Core container build verifies its deployed sharp runtime can convert real WebP to PNG', () => {
+  const dockerfile = fs.readFileSync(path.resolve(packageRoot, 'Dockerfile'), 'utf8')
+  assert.match(dockerfile, /require\(["']sharp["']\)/)
+  assert.match(dockerfile, /UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAdQuFr1q\/\+BiOh\/AAA=/)
+  assert.match(dockerfile, /0x89\s*,\s*0x50\s*,\s*0x4e\s*,\s*0x47/i)
 })
 
 test('legacy bounded retries preserve the stable provider egress error', async () => {
@@ -1449,7 +1516,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-08-20.v7')
+    assert.equal(result.registryVersion, '2026-08-20.v8')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     assert.deepEqual(
       Object.fromEntries(imageModels.map((model: any) => [model.id, model.capabilities.refineResolutions])),
@@ -2410,7 +2477,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
       })
     }
     if (url.endsWith('/api/v1/images')) {
-      return Response.json({ data: [{ b64_json: body.model.includes('gemini') ? 'Z2VtaW5p' : 'ZGVkaWNhdGVk', media_type: 'image/png' }] })
+      return Response.json({ data: [{ b64_json: onePixelPngBase64, media_type: 'image/png' }] })
     }
     if (url.endsWith('/chat/completions')) {
       return Response.json({ choices: [{ message: { images: [{ image_url: { url: 'data:image/png;base64,Y2hhdA==' } }] } }] })
@@ -2420,11 +2487,11 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
   try {
     assert.equal(
       await legacy.callImageModel('openrouter', 'openrouter/black-forest-labs/flux.2-pro', 'key', 'diagram', '16:9', 'data:image/png;base64,YQ==', '2K'),
-      'ZGVkaWNhdGVk',
+      onePixelPngBase64,
     )
     assert.equal(
       await legacy.callImageModel('openrouter', 'openrouter/google/gemini-3.1-flash-image', 'key', 'diagram', '16:9', '', '2K'),
-      'Z2VtaW5p',
+      onePixelPngBase64,
     )
     const registry = await legacy.default({
       request: { method: 'POST' },
@@ -2588,7 +2655,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-08-20.v7')
+    assert.equal(registry.registryVersion, '2026-08-20.v8')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -2951,6 +3018,7 @@ test('OpenRouter vector image responses are rasterized before the PNG pipeline s
   legacy.configureRuntimeFetch(async (input) => {
     const url = String(input)
     if (url.endsWith('/models?output_modalities=image')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
     if (url.endsWith('/images/models')) return Response.json({ data: [model] })
     if (url.endsWith('/api/v1/images')) {
       const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="16"><rect width="32" height="16" fill="#56705f"/></svg>'
@@ -2959,6 +3027,13 @@ test('OpenRouter vector image responses are rasterized before the PNG pipeline s
     throw new Error(`unexpected request: ${url}`)
   })
   try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    const entry = registry.providers.openrouter.models.find((candidate: any) => candidate.id === model.id)
+    assert.deepEqual(entry.capabilities.outputFormats, ['png'])
+    assert.match(entry.roleReasons.image, /normalized PNG/i)
     const png = await legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '16:9')
     assert.deepEqual(Buffer.from(png, 'base64').subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
   } finally {
@@ -2968,22 +3043,249 @@ test('OpenRouter vector image responses are rasterized before the PNG pipeline s
   }
 })
 
-test('OpenRouter keeps incompatible image models visible but non-selectable', async () => {
+test('OpenRouter paid-verified default image profiles expose all 34 routes as normalized PNG output', async () => {
   const legacy = await loadLegacy()
-  const incompatible = [
-    {
-      id: 'sourceful/riverflow-v2.5-fast',
-      name: 'Riverflow JPEG only',
-      architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
-      supported_parameters: { output_format: { type: 'enum', values: ['jpeg'] } },
+  const models = [...paidVerifiedOpenRouterDefaultImageFormats].map(([id, format]) => ({
+    id,
+    name: id,
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: {
+      resolution: { type: 'enum', values: id === 'bytedance-seed/seedream-4.5' ? ['1K', '2K', '4K'] : ['1K'] },
+      ...(id === 'sourceful/riverflow-v2.5-fast'
+        ? { output_format: { type: 'enum', values: ['jpeg'] } }
+        : {}),
     },
-    {
-      id: 'example/webp-only',
-      name: 'WebP only',
-      architecture: { input_modalities: ['text'], output_modalities: ['image'] },
-      supported_parameters: { output_format: { type: 'enum', values: ['webp'] } },
+    expectedDefaultFormat: format,
+  }))
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
+    if (url.endsWith('/images/models')) return Response.json({ data: models })
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' },
+      body: { action: 'modelRegistry', provider: 'openrouter' },
+      headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    const entries = new Map<string, any>(registry.providers.openrouter.models.map((model: any) => [model.id, model]))
+    assert.equal(entries.size, 34)
+    for (const id of paidVerifiedOpenRouterDefaultImageFormats.keys()) {
+      const entry = entries.get(id)
+      assert.ok(entry, id)
+      assert.equal(entry.selectable, true, id)
+      assert.deepEqual(entry.roles, ['image'], id)
+      assert.deepEqual(entry.capabilities.outputFormats, ['png'], id)
+      assert.equal(entry.verificationState, 'catalog', id)
+      assert.match(entry.roleReasons.image, /normalized PNG/i, id)
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter paid-profile JPEG responses are converted to real PNG bytes', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'bytedance-seed/seedream-5-0-pro',
+    name: 'Seedream 5.0 Pro',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: { resolution: { type: 'enum', values: ['1K', '2K'] } },
+  }
+  const jpegBase64 = fs.readFileSync(path.resolve(packageRoot, '../web/public/logo.jpg')).toString('base64')
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      return Response.json({ data: [{ b64_json: jpegBase64, media_type: 'image/jpeg' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const png = await legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '1:1', '', '1K')
+    assert.deepEqual(Buffer.from(png, 'base64').subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter paid-profile WebP responses are converted to real PNG bytes', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'recraft/recraft-v4',
+    name: 'Recraft V4',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: { aspect_ratio: { type: 'enum', values: ['1:1'] } },
+  }
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      return Response.json({ data: [{ b64_json: onePixelWebpBase64, media_type: 'image/webp' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const png = await legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '1:1')
+    assert.deepEqual(Buffer.from(png, 'base64').subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter rejects a WebP with bytes outside its declared RIFF container', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'recraft/recraft-v4',
+    name: 'Recraft V4',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: {},
+  }
+  const trailingGarbage = Buffer.concat([
+    Buffer.from(onePixelWebpBase64, 'base64'),
+    Buffer.from('untrusted-trailing-bytes'),
+  ]).toString('base64')
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      return Response.json({ data: [{ b64_json: trailingGarbage, media_type: 'image/webp' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '1:1'),
+      /invalid, animated, or oversized WebP dimensions/i,
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter rejects a truncated PNG signature from a paid profile before persistence', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'google/gemini-2.5-flash-image',
+    name: 'Gemini 2.5 Flash Image',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: {},
+  }
+  const pngSignatureOnly = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]).toString('base64')
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      return Response.json({ data: [{ b64_json: pngSignatureOnly, media_type: 'image/png' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '1:1'),
+      /invalid or oversized PNG dimensions/i,
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter overrides Seedream 4.5 false 1K catalog metadata with its paid-verified 2K minimum', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'bytedance-seed/seedream-4.5',
+    name: 'Seedream 4.5',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: {
+      resolution: { type: 'enum', values: ['1K', '2K', '4K'] },
+      aspect_ratio: { type: 'enum', values: ['1:1'] },
     },
-  ]
+  }
+  const imageCalls: any[] = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      imageCalls.push(JSON.parse(String(init?.body || '{}')))
+      return Response.json({ data: [{ b64_json: onePixelPngBase64, media_type: 'image/png' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    const entry = registry.providers.openrouter.models.find((candidate: any) => candidate.id === model.id)
+    assert.deepEqual(entry.capabilities.resolutions, ['2K', '4K'])
+    assert.deepEqual(entry.capabilities.refineResolutions, ['2K', '4K'])
+    await legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '1:1', '', '1K')
+    assert.equal(imageCalls.length, 1)
+    assert.equal(imageCalls[0].resolution, '2K')
+    assert.equal(Object.hasOwn(imageCalls[0], 'output_format'), false)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter disables Seedream 4.5 before dispatch when catalog drift offers only sub-2K or unknown resolutions', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'bytedance-seed/seedream-4.5',
+    name: 'Seedream 4.5',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: {
+      resolution: { type: 'enum', values: ['1K', '512', 'HD'] },
+      aspect_ratio: { type: 'enum', values: ['1:1'] },
+    },
+  }
+  let generated = false
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      generated = true
+      return Response.json({ data: [{ b64_json: onePixelPngBase64, media_type: 'image/png' }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    const entry = registry.providers.openrouter.models.find((candidate: any) => candidate.id === model.id)
+    assert.equal(entry.selectable, false)
+    assert.deepEqual(entry.capabilities.resolutions, [])
+    assert.match(entry.disabledReason, /2K or higher/i)
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '1:1', '', '1K'),
+      /no longer declares a supported resolution at or above 2K/i,
+    )
+    assert.equal(generated, false)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('OpenRouter keeps unknown incompatible image models disabled while enabling a paid-verified normalization profile', async () => {
+  const legacy = await loadLegacy()
+  const normalized = {
+    id: 'sourceful/riverflow-v2.5-fast',
+    name: 'Riverflow JPEG only',
+    architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+    supported_parameters: { output_format: { type: 'enum', values: ['jpeg'] } },
+  }
+  const incompatible = {
+    id: 'example/webp-only',
+    name: 'Unknown WebP only',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: { output_format: { type: 'enum', values: ['webp'] } },
+  }
   const safe = {
     id: 'sourceful/riverflow-v2.5-pro',
     name: 'Riverflow PNG capable',
@@ -2993,12 +3295,12 @@ test('OpenRouter keeps incompatible image models visible but non-selectable', as
   const imageCalls: any[] = []
   legacy.configureRuntimeFetch(async (input, init) => {
     const url = String(input)
-    if (url.endsWith('/models?output_modalities=image')) return Response.json({ data: [...incompatible, safe] })
+    if (url.endsWith('/models?output_modalities=image')) return Response.json({ data: [normalized, incompatible, safe] })
     if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
-    if (url.endsWith('/images/models')) return Response.json({ data: [...incompatible, safe] })
+    if (url.endsWith('/images/models')) return Response.json({ data: [normalized, incompatible, safe] })
     if (url.endsWith('/api/v1/images')) {
       imageCalls.push(JSON.parse(String(init?.body || '{}')))
-      return Response.json({ data: [{ b64_json: 'cG5n', media_type: 'image/png' }] })
+      return Response.json({ data: [{ b64_json: onePixelPngBase64, media_type: 'image/png' }] })
     }
     throw new Error(`unexpected request: ${url}`)
   })
@@ -3012,28 +3314,34 @@ test('OpenRouter keeps incompatible image models visible but non-selectable', as
     const ids = registry.providers.openrouter.models.map((model: any) => model.id)
     assert.equal(ids.includes(safe.id), true)
     const registryModels = new Map<string, any>(registry.providers.openrouter.models.map((model: any) => [model.id, model]))
-    for (const model of incompatible) {
-      const entry = registryModels.get(model.id)
-      assert.ok(entry, model.id)
-      assert.equal(entry.selectable, false)
-      assert.equal(entry.roles.includes('image'), false)
-      assert.match(entry.disabledReason, /PNG or SVG/)
-      assert.deepEqual(entry.capabilities.outputFormats, model.supported_parameters.output_format.values)
-    }
+    const normalizedEntry = registryModels.get(normalized.id)
+    assert.equal(normalizedEntry?.selectable, true)
+    assert.equal(normalizedEntry?.roles.includes('image'), true)
+    assert.deepEqual(normalizedEntry?.capabilities.outputFormats, ['png'])
+    assert.match(normalizedEntry?.roleReasons.image, /normalized PNG/i)
+    const incompatibleEntry = registryModels.get(incompatible.id)
+    assert.ok(incompatibleEntry)
+    assert.equal(incompatibleEntry.selectable, false)
+    assert.equal(incompatibleEntry.roles.includes('image'), false)
+    assert.match(incompatibleEntry.disabledReason, /PNG or SVG/)
+    assert.deepEqual(incompatibleEntry.capabilities.outputFormats, ['webp'])
     assert.equal(registryModels.get(safe.id)?.selectable, true)
     assert.equal(registryModels.get(safe.id)?.roles.includes('image'), true)
-    for (const model of incompatible) {
-      await assert.rejects(
-        legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '16:9'),
-        /does not expose a PNG or SVG output format/,
-      )
-    }
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${incompatible.id}`, 'key', 'diagram', '16:9'),
+      /does not expose a PNG or SVG output format/,
+    )
+    assert.equal(
+      await legacy.callImageModel('openrouter', `openrouter/${normalized.id}`, 'key', 'diagram', '16:9'),
+      onePixelPngBase64,
+    )
     assert.equal(
       await legacy.callImageModel('openrouter', `openrouter/${safe.id}`, 'key', 'diagram', '16:9'),
-      'cG5n',
+      onePixelPngBase64,
     )
-    assert.equal(imageCalls.length, 1)
-    assert.equal(imageCalls[0].output_format, 'png')
+    assert.equal(imageCalls.length, 2)
+    assert.equal(Object.hasOwn(imageCalls[0], 'output_format'), false)
+    assert.equal(imageCalls[1].output_format, 'png')
   } finally {
     legacy.configureRuntimeFetch()
   }
@@ -3090,7 +3398,7 @@ test('OpenRouter fails closed when a dedicated image model declares no output_fo
   })
 })
 
-test('OpenRouter image default is always a live explicitly compatible image-role model', async () => {
+test('OpenRouter image default stays recommended while exact paid-verified profiles are also selectable', async () => {
   const legacy = await loadLegacy()
   const textModels = [
     { id: 'openai/gpt-5.5', name: 'GPT-5.5', architecture: { input_modalities: ['text', 'image'], output_modalities: ['text'] } },
@@ -3140,16 +3448,19 @@ test('OpenRouter image default is always a live explicitly compatible image-role
     assert.equal(models.get(imageDefault)?.roles.includes('image'), true)
     assert.equal(models.get(imageDefault)?.selectable, true)
     assert.equal(models.get(imageDefault)?.recommended, true)
-    for (const id of ['openai/gpt-image-2', 'openai/gpt-5.4-image-2', 'google/gemini-3.1-flash-image', 'sourceful/jpeg-only']) {
-      assert.equal(models.get(id)?.selectable, false, id)
-      assert.equal(models.get(id)?.roles.includes('image'), false, id)
+    for (const id of ['openai/gpt-image-2', 'openai/gpt-5.4-image-2', 'google/gemini-3.1-flash-image']) {
+      assert.equal(models.get(id)?.selectable, true, id)
+      assert.equal(models.get(id)?.roles.includes('image'), true, id)
       assert.equal(models.get(id)?.recommended, false, id)
     }
+    assert.equal(models.get('sourceful/jpeg-only')?.selectable, false)
+    assert.equal(models.get('sourceful/jpeg-only')?.roles.includes('image'), false)
+    assert.equal(models.get('sourceful/jpeg-only')?.recommended, false)
 
     const rejected = await legacy.default(context({
       action: 'createJob', provider: 'openrouter', apiKeys: { openrouter: 'key' },
       methodContent: 'A sufficiently detailed method section for rejecting an incompatible image model.',
-      caption: 'A valid caption.', mainModelName: 'openai/gpt-5.5', imageModelName: 'openai/gpt-image-2',
+      caption: 'A valid caption.', mainModelName: 'openai/gpt-5.5', imageModelName: 'sourceful/jpeg-only',
     }))
     assert.equal(rejected.code, 400)
     assert.match(rejected.error, /not registered for image/)
@@ -3347,6 +3658,7 @@ let legacyPromise: Promise<LegacyPolicyModule> | undefined
 async function loadLegacy(): Promise<LegacyPolicyModule> {
   if (!legacyPromise) {
     legacyPromise = (async () => {
+      ;(globalThis as any).__paperbananaLegacySharp = sharp
       const result = await build({
         entryPoints: [legacyBridgePath],
         bundle: true,
@@ -3357,6 +3669,11 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
         plugins: [{
           name: 'fake-laf-cloud',
           setup(builder) {
+            builder.onResolve({ filter: /^sharp$/ }, () => ({ path: 'sharp', namespace: 'sharp-test' }))
+            builder.onLoad({ filter: /.*/, namespace: 'sharp-test' }, () => ({
+              loader: 'js',
+              contents: 'export default globalThis.__paperbananaLegacySharp;',
+            }))
             builder.onResolve({ filter: /^@lafjs\/cloud$/ }, () => ({ path: 'fake-laf-cloud', namespace: 'fake' }))
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
