@@ -75,6 +75,7 @@ test('OpenRouter compatible choices and disabled entries are partitioned with se
     { id: 'ok', roles: ['image'], selectable: true, vendor: 'OpenAI', capabilities: { outputFormats: ['png'] } },
     { id: 'wrong-role', roles: ['main'], selectable: true, vendor: 'OpenAI', roleReasons: { image: '此路由不提供图片输出' } },
     { id: 'disabled', roles: ['image'], selectable: false, vendor: 'OpenAI', disabledReason: '当前账号目录不可用' },
+    { id: 'unrelated-text', roles: ['main'], selectable: true, vendor: 'Anthropic' },
   ]
   const partition = partitionRegistryModels(models, { role: 'image', outputFormat: 'png' })
   assert.deepEqual(partition.compatible.map((model) => model.id), ['ok'])
