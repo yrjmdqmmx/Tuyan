@@ -31,7 +31,7 @@
 - **请求语义**：缺省 `imageSize` 仍为历史兼容的 `2K`；显式 `modelRoutes` 与 legacy model 字段路由都保持。客户端必须以 `refineResolutions` 提供可选项，不得从 `resolutions` 或模型名推断。
 各端待办：
 - [x] paperbanana-api / Laf Core（registry v5、精修准入、direct/analyze/1K/4K/OpenRouter 回归）
-- [ ] Web / packages-api（消费 `refineResolutions`、仅展示所选 image route 可执行的精修尺寸；由并行 Web 会话完成）
+- [x] Web / packages-api（消费 `refineResolutions`、仅展示所选 image route 可执行的精修尺寸；旧目录保守回退 2K）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续消费新字段，未改造前不得宣称 4K 精修可用）
 - [ ] 部署 / 运维（本条未部署、未改环境变量）
 
@@ -44,7 +44,7 @@
 各端待办：
 - [x] paperbanana-api / Laf Core（服务端手选字段、双层路由校验、plot 能力与 zero-critic 回归）
 - [x] CI / 回滚文档（verification-only，Laf README 标明 rollback-only）
-- [ ] Web（保留显式三路 role/selectable 预校验契约回归；本后端会话不修改 Web 文件）
+- [x] Web（保留显式三路 role/selectable 预校验，并仅对实际可达 role 要求凭据与 Ark probe）
 - [ ] 部署 / 运维（仅在获批回滚时按上述控制台流程处理；本条未发布）
 
 ### [2026-08-20] 多路由精确准入、Ark 探针截止时间与 Laf 回滚依赖门禁 — by Codex
@@ -58,7 +58,8 @@
 - [x] paperbanana-api / Laf Core（精确准入、模式持久化、DTO 白名单、探针 deadline、注册表日期与测试）
 - [x] auth-gateway（Ark key 透明转发收窄、全形态 `apiKeys/api_keys` 日志清洗）
 - [x] CI / 回滚文档（已由上方新条目收紧为 verification-only；未部署）
-- [ ] Web / 原生端（无需请求改造；展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [x] Web（展示继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [ ] 原生端（无需请求改造；展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
 - [ ] 部署 / 运维（获批回滚时仅能在 Laf 控制台核对 custom dependency 后手动发布；本条未改环境绑定、未发布）
 
 ### [2026-08-19] Ark CN 数据面出站白名单与香港健康探针 — by Codex
