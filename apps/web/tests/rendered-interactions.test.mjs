@@ -99,6 +99,38 @@ test('rendered OpenRouter full catalog shows incompatible image entries disabled
   assert.match(blocked.textContent, /未声明 PNG\/SVG 输出/)
 })
 
+test('rendered model cards distinguish catalog compatibility, account visibility, and real-call verification', async () => {
+  const user = userEvent.setup()
+  render(React.createElement(ModelPicker, {
+    label: '主模型', role: 'main', provider: 'openrouter', value: 'vendor/catalog-only', onChange() {},
+    models: [
+      {
+        id: 'vendor/catalog-only', label: 'Catalog Only', vendor: 'Vendor', roles: ['main'], selectable: true,
+        lifecycle: 'unknown', verificationState: 'catalog', verified: false,
+      },
+      {
+        id: 'vendor/account-visible', label: 'Account Visible', vendor: 'Vendor', roles: ['main'], selectable: true,
+        lifecycle: 'stable', verificationState: 'account-visible', verified: false,
+      },
+      {
+        id: 'vendor/call-verified', label: 'Call Verified', vendor: 'Vendor', roles: ['main'], selectable: true,
+        lifecycle: 'stable', verificationState: 'inference-verified', verified: true,
+      },
+    ],
+  }))
+
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
+  assert.ok(screen.getByText('目录兼容（未实测）'))
+  assert.ok(screen.getByText('账号可见（未实测）'))
+  assert.ok(screen.getByText('真实调用已验证'))
+  const catalogCard = screen.getAllByText('Catalog Only').at(-1)?.closest('button')
+  assert.ok(catalogCard)
+  assert.match(catalogCard.textContent, /状态未知/)
+  assert.doesNotMatch(catalogCard.textContent, /稳定版/)
+  assert.doesNotMatch(catalogCard.textContent, /真实调用已验证/)
+})
+
 test('rendered route picker shows vendor rail only for aggregator access channels', async () => {
   const user = userEvent.setup()
   render(React.createElement(ModelPicker, {

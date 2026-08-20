@@ -47,7 +47,8 @@ type ModelRoutes = { main: ModelRoute; image: ModelRoute; vision: ModelRoute }
 type ModelRoutingMode = 'single' | 'mixed'
 type ModelRoutingSource = 'explicit' | 'legacy-derived'
 type RouteSecrets = Partial<Record<Provider, string>>
-type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only'
+type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only' | 'unknown'
+type ModelVerificationState = 'registry' | 'catalog' | 'account-visible' | 'inference-verified' | 'unverified'
 type ProviderAccessKind = 'direct' | 'aggregator'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
 type ImageResolution = '1K' | '2K' | '4K'
@@ -675,6 +676,7 @@ type ModelRegistryEntry = {
   inputModalities: string[]
   outputModalities: string[]
   verified: boolean
+  verificationState: ModelVerificationState
   selectable: boolean
   releasedAt: string | null
   officialSourceUrl: string
@@ -850,7 +852,7 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-20.v5'
+const modelRegistryVersion = '2026-08-20.v6'
 const referenceCorpusVersion = 'zh-CN.v2'
 const canonicalImageResolutions: ImageResolution[] = ['1K', '2K', '4K']
 
@@ -862,7 +864,7 @@ function canonicalRefineResolutions(values: unknown): ImageResolution[] {
 type RegistryEntryMetadata = Partial<Pick<
   ModelRegistryEntry,
   'vendor' | 'lifecycle' | 'recommended' | 'requiresEntitlement' | 'entitlement' |
-  'inputModalities' | 'outputModalities' | 'verified' | 'selectable' | 'releasedAt' |
+  'inputModalities' | 'outputModalities' | 'verified' | 'verificationState' | 'selectable' | 'releasedAt' |
   'officialSourceUrl' | 'disabledReason' | 'roleReasons'
 >>
 
@@ -909,6 +911,7 @@ function registryEntry(
     inputModalities: metadata.inputModalities || (referenceImages ? ['text', 'image'] : ['text']),
     outputModalities: metadata.outputModalities || (imageGeneration ? ['image'] : ['text']),
     verified: metadata.verified !== false,
+    verificationState: metadata.verificationState || (metadata.verified === false ? 'unverified' : 'registry'),
     selectable: metadata.selectable !== false,
     releasedAt: metadata.releasedAt ?? null,
     officialSourceUrl: metadata.officialSourceUrl || officialSourceUrlForProtocol(protocol),
@@ -4958,10 +4961,12 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
       {},
       {
         vendor: openRouterVendor(model.id),
+        lifecycle: openRouterRecommendedModelIds.has(model.id) ? 'stable' : 'unknown',
         recommended: openRouterRecommendedModelIds.has(model.id),
         inputModalities: model.inputModalities,
         outputModalities: model.outputModalities,
-        verified: true,
+        verified: false,
+        verificationState: 'catalog',
         roleReasons: {
           main: 'OpenRouter Models API declares text input and text output',
           ...(roles.includes('vision') ? { vision: 'OpenRouter Models API input_modalities includes image' } : {}),
@@ -4999,10 +5004,12 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
       },
       {
         vendor: openRouterVendor(model.id),
+        lifecycle: openRouterRecommendedModelIds.has(model.id) ? 'stable' : 'unknown',
         recommended: selectable && openRouterRecommendedModelIds.has(model.id),
         inputModalities: model.inputModalities,
         outputModalities: model.outputModalities,
-        verified: true,
+        verified: false,
+        verificationState: 'catalog',
         selectable,
         disabledReason,
         roleReasons: selectable

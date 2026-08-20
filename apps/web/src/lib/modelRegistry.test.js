@@ -64,6 +64,8 @@ test('recommended catalog excludes preview and invite models even when flagged r
     { id: 'stable', vendor: 'OpenAI', roles: ['main'], lifecycle: 'stable', recommended: true },
     { id: 'preview', vendor: 'OpenAI', roles: ['main'], lifecycle: 'preview', recommended: true },
     { id: 'invite', vendor: 'OpenAI', roles: ['main'], lifecycle: 'invite-only', recommended: true },
+    { id: 'unknown', vendor: 'OpenAI', roles: ['main'], lifecycle: 'unknown', recommended: true },
+    { id: 'missing', vendor: 'OpenAI', roles: ['main'], recommended: true },
   ]
   assert.deepEqual(filterRegistryModels(models, { role: 'main', recommendedOnly: true }).map((model) => model.id), ['stable'])
 })

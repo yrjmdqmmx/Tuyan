@@ -37,7 +37,7 @@ export function filterRegistryModels(models, { role, query = '', outputFormat = 
   return (models || [])
     .filter((model) => model?.roles?.includes(role)
       || (role === 'image' && (model?.outputModalities?.includes('image') || model?.protocol === 'openrouter-images')))
-    .filter((model) => !recommendedOnly || (model.recommended === true && (model.lifecycle || 'stable') === 'stable'))
+    .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || [model.id, model.label, model.vendor, model.availabilityNotes, model.disabledReason]
       .some((value) => String(value || '').toLocaleLowerCase('zh-CN').includes(needle)))
     .map((model) => annotateModelForRole(model, { role, outputFormat }))
@@ -49,7 +49,7 @@ export function filterRegistryModels(models, { role, query = '', outputFormat = 
 export function partitionRegistryModels(models, { role, query = '', outputFormat = '', recommendedOnly = false } = {}) {
   const needle = query.trim().toLocaleLowerCase('zh-CN')
   const annotated = (models || [])
-    .filter((model) => !recommendedOnly || (model.recommended === true && (model.lifecycle || 'stable') === 'stable'))
+    .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || [model.id, model.label, model.vendor, model.availabilityNotes, model.disabledReason]
       .some((value) => String(value || '').toLocaleLowerCase('zh-CN').includes(needle)))
     .map((model) => annotateModelForRole(model, { role, outputFormat }))

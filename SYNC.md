@@ -24,6 +24,18 @@
 
 ## 条目（最新在上）
 
+### [2026-08-20] OpenRouter 目录生命周期与验证状态如实化 — by Codex
+变更：Core 注册表升级为 `2026-08-20.v6`，不再把 OpenRouter 全局匿名目录中的“存在且协议兼容”冒充为稳定版或真实调用已验证。动态目录项新增 `verificationState`，OpenRouter 全局项固定为 `catalog` 且保留兼容字段 `verified:false`；没有权威生命周期的项使用新增的 `lifecycle:'unknown'`，仅三项服务端静态正式推荐默认保留 `stable`。`releasedAt` 仍只接受厂商权威日期，未知保持 `null` 并排在已知日期之后。
+契约（影响其他端 / 共享）：
+- **模型条目**：新增向后兼容字段 `verificationState:'registry'|'catalog'|'account-visible'|'inference-verified'|'unverified'`；`lifecycle` 新增 `unknown`。旧客户端可继续忽略新字段，但不得把缺失/未知 lifecycle 默认显示为“稳定版”，也不得把 `verified` 或目录存在解释为付费调用成功。
+- **OpenRouter 语义**：全局 `/models` 与 `/images/models` 只证明“目录兼容”，不证明用户账号可见、权益已开通或真实调用成功；逐模型付费 smoke 的结果必须以后续账号级/推理级状态单独记录，不得回写为全局目录事实。
+- **Web 展示**：模型卡区分“目录兼容（未实测）”“账号可见（未实测）”“真实调用已验证”，未知 lifecycle 显示“状态未知”；推荐列表只接纳显式 `stable` 项。
+各端待办：
+- [x] paperbanana-api / Laf Core（v6 契约、OpenRouter 文本/视觉/图像动态项真值与回归测试）
+- [x] Web / packages-api（Web 已消费并如实展示；packages-api 原样透传新增字段，无请求变更）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（后续展示模型目录时识别 `unknown` 与 `verificationState`；旧请求继续兼容）
+- [ ] 部署 / 运维（本条未发布；付费逐模型验证不得使用全局目录状态代替）
+
 ### [2026-08-20] 精修分辨率真实能力与入队前失败关闭 — by Codex
 变更：Core 注册表升级为 `2026-08-20.v5`，每个 image 条目新增必定数组 `capabilities.refineResolutions`，仅可包含 `1K|2K|4K`，并与生成能力 `resolutions` 分离。`refineImage.imageSize` 现在精确接受 `1K|2K|4K`；解析所选权威 image route 后，不支持的尺寸在账号检查、admission、Mongo insert 和计费/推理 provider 调用前以 `400` + `REFINE_RESOLUTION_UNSUPPORTED` 拒绝，不再静默夹到其他尺寸。OpenRouter 权威解析可先发生无鉴权目录查询；入队后若目录漂移，执行仍会再次要求精确尺寸并失败关闭。
 契约（影响其他端 / 共享）：

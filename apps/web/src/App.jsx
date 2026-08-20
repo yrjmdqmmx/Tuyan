@@ -1124,7 +1124,7 @@ export default function App() {
           {selectedModelNotes.length ? (
             <div className="model-availability-notes" aria-label="模型可用性说明">
               {selectedModelNotes.map((model) => (
-                <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{model.availabilityNotes || '服务端目录可用'} · {formatLifecycle(model.lifecycle)}{model.entitlement ? ` · 权益：${model.entitlement}` : model.requiresEntitlement ? ' · 需开通模型权益' : ' · 无额外权益'}{model.roles?.includes('image') ? ` · ${modelRefinePresentation(model).label}` : ''}</span>
+                <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{model.availabilityNotes || '服务端目录可用'} · {formatLifecycle(model.lifecycle)} · {formatVerification(model)}{model.entitlement ? ` · 权益：${model.entitlement}` : model.requiresEntitlement ? ' · 需开通模型权益' : ' · 无额外权益'}{model.roles?.includes('image') ? ` · ${modelRefinePresentation(model).label}` : ''}</span>
               ))}
             </div>
           ) : null}
@@ -1519,11 +1519,20 @@ function findModelLabel(options, value) {
 }
 
 function formatLifecycle(value) {
+  if (value === 'stable') return '稳定版';
   if (value === 'preview') return '预览版';
   if (value === 'legacy') return '旧版维护';
   if (value === 'invite-only') return '邀请制';
   if (value === 'deprecated') return '即将下线';
-  return '稳定版';
+  return '状态未知';
+}
+
+function formatVerification(model) {
+  if (model.verificationState === 'catalog') return '目录兼容（未实测）';
+  if (model.verificationState === 'account-visible') return '账号可见（未实测）';
+  if (model.verificationState === 'inference-verified') return '真实调用已验证';
+  if (model.verificationState === 'registry') return '静态注册信息';
+  return model.verified === true ? '注册表已确认' : '尚未实测';
 }
 
 function firstMissingGenerationSetting({
