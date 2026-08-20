@@ -122,6 +122,24 @@ test('role and output format filters keep incompatible entries visible but disab
   assert.equal(visible[3].selectionDisabledReason, '未声明 PNG/SVG 输出')
 })
 
+test('model search indexes declared roles, capabilities, and protocol instead of labels only', () => {
+  const models = [
+    {
+      id: 'seedream-current', label: 'Seedream Current', vendor: 'ByteDance Seedream',
+      roles: ['image'], selectable: true, protocol: 'ark-images',
+      capabilities: { imageEditMode: 'direct-edit', outputFormats: ['png'] },
+    },
+    {
+      id: 'doubao-vision', label: 'Doubao Vision', vendor: 'ByteDance Doubao',
+      roles: ['main', 'vision'], selectable: true, protocol: 'ark-openai-chat', capabilities: {},
+    },
+  ]
+
+  assert.deepEqual(filterRegistryModels(models, { role: 'image', query: '图像生成' }).map((model) => model.id), ['seedream-current'])
+  assert.deepEqual(filterRegistryModels(models, { role: 'vision', query: '视觉' }).map((model) => model.id), ['doubao-vision'])
+  assert.deepEqual(filterRegistryModels(models, { role: 'image', query: 'ark-images' }).map((model) => model.id), ['seedream-current'])
+})
+
 test('refine presentation never calls a model direct edit without input references', () => {
   assert.deepEqual(modelRefinePresentation({
     inputModalities: ['text', 'image'],

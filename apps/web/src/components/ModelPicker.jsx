@@ -100,12 +100,18 @@ export default function ModelPicker({
     [allPartition.compatible],
   )
   const allCompatibleGrouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
+  const allVendorGrouped = useMemo(
+    () => groupRegistryModels([...allPartition.compatible, ...allPartition.incompatible]
+      .filter((model) => model.roles?.includes(role)
+        || (role === 'image' && (model.outputModalities?.includes('image') || model.protocol === 'openrouter-images')))),
+    [allPartition.compatible, allPartition.incompatible, role],
+  )
   const recommendedGrouped = useMemo(() => groupRegistryModels(recommendedCompatible), [recommendedCompatible])
-  const availableVendors = isAggregator ? allCompatibleGrouped.map((group) => group.vendor) : []
+  const availableVendors = isAggregator ? allVendorGrouped.map((group) => group.vendor) : []
   const activeVendor = isAggregator
     ? (availableVendors.includes(selectedVendor)
         ? selectedVendor
-        : allCompatibleGrouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || '')
+        : allVendorGrouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || '')
     : ''
   const hasRecommendedInScope = isAggregator
     ? recommendedGrouped.some((group) => group.vendor === activeVendor && group.models.length)
@@ -319,7 +325,7 @@ export default function ModelPicker({
         ) : null}
       </div>
       {!rows.length ? <p className="model-picker-empty">没有匹配当前角色与输出格式的可用模型。</p> : null}
-      {isOpenRouter && allPartition.incompatible.length ? (
+      {isAggregator && allPartition.incompatible.length ? (
         <details className="model-incompatible" open={showIncompatible} onToggle={(event) => setShowIncompatible(event.currentTarget.open)}>
           <summary>暂不兼容（{allPartition.incompatible.length}）</summary>
           {showIncompatible ? <div>

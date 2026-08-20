@@ -143,7 +143,7 @@ export default function ModelRoutingSettings({
             {arkImageProbeRequired ? (
               <label className="ark-paid-confirmation">
                 <input type="checkbox" checked={arkProbePaidConfirmed} onChange={(event) => onArkProbePaidConfirmedChange(event.target.checked)} />
-                <span>会产生一次 1K 图片调用费用</span>
+                <span>会按所选图片模型的最低支持分辨率产生一次图片调用费用</span>
               </label>
             ) : null}
             <button

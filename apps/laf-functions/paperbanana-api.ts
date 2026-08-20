@@ -852,7 +852,7 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-20.v6'
+const modelRegistryVersion = '2026-08-20.v7'
 const referenceCorpusVersion = 'zh-CN.v2'
 const canonicalImageResolutions: ImageResolution[] = ['1K', '2K', '4K']
 
@@ -1006,20 +1006,60 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
     routeContractVersion,
     accountCatalogRequired: true,
     defaults: {
-      main: 'doubao-seed-2-0-mini-260428',
-      image: 'doubao-seedream-4-0-250828',
-      vision: 'doubao-seed-2-0-mini-260428',
+      main: 'doubao-seed-2-1-pro-260628',
+      image: 'doubao-seedream-5-0-pro-260628',
+      vision: 'doubao-seed-2-1-pro-260628',
     },
     models: [
+      registryEntry(
+        'doubao-seed-2-1-pro-260628',
+        'Doubao Seed 2.1 Pro',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Current flagship text and vision model; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao', recommended: true, requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1159178?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-2-1-turbo-260628',
+        'Doubao Seed 2.1 Turbo',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Current balanced text and vision model; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1159178?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-evolving',
+        'Doubao Seed Evolving',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Rolling model alias that changes over time; never treated as a pinned stable default',
+        {},
+        {
+          vendor: 'ByteDance Doubao', lifecycle: 'unknown', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/2549861?lang=zh',
+        },
+      ),
       registryEntry(
         'doubao-seed-2-0-lite-260428',
         'Doubao Seed 2.0 Lite',
         ['main', 'vision'],
         'ark-openai-chat',
-        'Static official model scaffold; account availability requires an explicit inference smoke probe',
+        'Previous active text and vision model; account availability requires an explicit inference smoke probe',
         {},
         {
           vendor: 'ByteDance Doubao',
+          lifecycle: 'legacy',
           requiresEntitlement: true,
           entitlement: 'ark-account-access',
           inputModalities: ['text', 'image'],
@@ -1033,11 +1073,11 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
         'Doubao Seed 2.0 Mini',
         ['main', 'vision'],
         'ark-openai-chat',
-        'Static official model scaffold; account availability requires an explicit inference smoke probe',
+        'Previous active text and vision model; account availability requires an explicit inference smoke probe',
         {},
         {
           vendor: 'ByteDance Doubao',
-          recommended: true,
+          lifecycle: 'legacy',
           requiresEntitlement: true,
           entitlement: 'ark-account-access',
           inputModalities: ['text', 'image'],
@@ -1047,15 +1087,208 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
         },
       ),
       registryEntry(
+        'doubao-seed-2-0-pro-260215',
+        'Doubao Seed 2.0 Pro',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Previous active text and vision model; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1330310?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-2-0-lite-260215',
+        'Doubao Seed 2.0 Lite (2026-02)',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Previous active text and vision model; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1330310?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-2-0-mini-260215',
+        'Doubao Seed 2.0 Mini (2026-02)',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Previous active text and vision model; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'ByteDance Doubao', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1330310?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-2-0-code-preview-260215',
+        'Doubao Seed 2.0 Code Preview',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Preview coding model; never selected as a default',
+        {},
+        {
+          vendor: 'ByteDance Doubao', lifecycle: 'preview', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1330310?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-character-260628',
+        'Doubao Seed Character',
+        ['main', 'vision'],
+        'ark-openai-chat',
+        'Specialized role-play model shown for catalog completeness; PaperBanana academic-diagram prompts are not adapted',
+        {},
+        {
+          vendor: 'ByteDance Doubao', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['text'], verified: false, selectable: false,
+          disabledReason: 'Specialized role-play model is not adapted for PaperBanana academic diagrams',
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1330310?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-character-251128',
+        'Doubao Seed Character (2025-11)',
+        ['main'],
+        'ark-openai-chat',
+        'Previous specialized role-play model shown for catalog completeness',
+        {},
+        {
+          vendor: 'ByteDance Doubao', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access',
+          outputModalities: ['text'], verified: false, selectable: false,
+          disabledReason: 'Specialized role-play model is not adapted for PaperBanana academic diagrams',
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1330310?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seed-translation-250915',
+        'Doubao Seed Translation',
+        ['main'],
+        'ark-openai-chat',
+        'Specialized translation model shown for catalog completeness',
+        {},
+        {
+          vendor: 'ByteDance Doubao', requiresEntitlement: true, entitlement: 'ark-account-access',
+          outputModalities: ['text'], verified: false, selectable: false,
+          disabledReason: 'Specialized translation model is not adapted for PaperBanana planning or generation',
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1330310?lang=zh',
+        },
+      ),
+      registryEntry(
+        'glm-5-2-260617',
+        'GLM 5.2',
+        ['main'],
+        'ark-openai-chat',
+        'Zhipu text model supplied through Ark; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'Zhipu', requiresEntitlement: true, entitlement: 'ark-account-access', verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1159178?lang=zh',
+        },
+      ),
+      registryEntry(
+        'deepseek-v4-pro-ga-260813',
+        'DeepSeek V4 Pro GA',
+        ['main'],
+        'ark-openai-chat',
+        'DeepSeek text model supplied through Ark; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'DeepSeek', requiresEntitlement: true, entitlement: 'ark-account-access', verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1159178?lang=zh',
+        },
+      ),
+      registryEntry(
+        'deepseek-v4-flash-ga-260731',
+        'DeepSeek V4 Flash GA',
+        ['main'],
+        'ark-openai-chat',
+        'DeepSeek text model supplied through Ark; account availability requires an explicit inference smoke probe',
+        {},
+        {
+          vendor: 'DeepSeek', requiresEntitlement: true, entitlement: 'ark-account-access', verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1159178?lang=zh',
+        },
+      ),
+      registryEntry(
+        'deepseek-v4-pro-260425',
+        'DeepSeek V4 Pro',
+        ['main'],
+        'ark-openai-chat',
+        'Previous active DeepSeek text model supplied through Ark',
+        {},
+        {
+          vendor: 'DeepSeek', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access', verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1159178?lang=zh',
+        },
+      ),
+      registryEntry(
+        'deepseek-v4-flash-260425',
+        'DeepSeek V4 Flash',
+        ['main'],
+        'ark-openai-chat',
+        'Previous active DeepSeek text model supplied through Ark',
+        {},
+        {
+          vendor: 'DeepSeek', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access', verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1159178?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seedream-5-0-pro-260628',
+        'Doubao Seedream 5.0 Pro',
+        ['image'],
+        'ark-images',
+        'Current flagship image generation and direct-edit model; 1K and 2K',
+        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] },
+        {
+          vendor: 'ByteDance Seedream', recommended: true, requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['image'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1824121?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seedream-5-0-260128',
+        'Doubao Seedream 5.0',
+        ['image'],
+        'ark-images',
+        'Current image generation and direct-edit model; 2K and 4K',
+        { referenceImages: true, imageEditing: true, resolutions: ['2K', '4K'], refineResolutions: ['2K', '4K'], outputFormats: ['png'] },
+        {
+          vendor: 'ByteDance Seedream', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['image'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1824121?lang=zh',
+        },
+      ),
+      registryEntry(
+        'doubao-seedream-4-5-251128',
+        'Doubao Seedream 4.5',
+        ['image'],
+        'ark-images',
+        'Previous active image generation and direct-edit model; 2K and 4K; JPEG output is normalized to PNG',
+        { referenceImages: true, imageEditing: true, resolutions: ['2K', '4K'], refineResolutions: ['2K', '4K'], outputFormats: ['png'] },
+        {
+          vendor: 'ByteDance Seedream', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access',
+          inputModalities: ['text', 'image'], outputModalities: ['image'], verified: false,
+          officialSourceUrl: 'https://docs.volcengine.com/docs/82379/1824121?lang=zh',
+        },
+      ),
+      registryEntry(
         'doubao-seedream-4-0-250828',
         'Doubao Seedream 4.0',
         ['image'],
         'ark-images',
-        'Static official generation and direct-edit model scaffold; account availability requires an explicit inference smoke probe',
+        'Previous active image generation and direct-edit model; JPEG output is normalized to PNG',
         { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png'] },
         {
           vendor: 'ByteDance Seedream',
-          recommended: true,
+          lifecycle: 'legacy',
           requiresEntitlement: true,
           entitlement: 'ark-account-access',
           inputModalities: ['text', 'image'],
@@ -1428,7 +1661,10 @@ function publicProviderModelRegistry(registry: ProviderModelRegistry): ProviderM
   }
 }
 
-const arkInferenceProbeImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+VP5TAAAAAElFTkSuQmCC'
+// Ark rejects vision inputs smaller than 14px on either edge. Keep this tiny
+// 16x16 probe local and deterministic so account verification remains cheap
+// without producing a provider-side false negative.
+const arkInferenceProbeImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGklEQVR4nGP4TwAwMDDglx81YNSAUQOGiwEAgQHMXu6Cv40AAAAASUVORK5CYII='
 const maxArkInferenceProbeResponseBytes = 64 * 1024
 
 async function arkChatInferenceProbe(
@@ -1452,6 +1688,7 @@ async function arkChatInferenceProbe(
     body: JSON.stringify({
       model,
       messages: [{ role: 'user', content }],
+      ...(arkShouldDisableThinking(model) ? { thinking: { type: 'disabled' } } : {}),
       max_tokens: 8,
       temperature: 0,
     }),
@@ -1480,7 +1717,15 @@ async function runArkAccountProbe(
   }
   let timer: ReturnType<typeof setTimeout> | undefined
   const operation = probe.role === 'image'
-    ? callArkImage(probe.modelId, apiKey, 'A single black dot on a white background.', null, '1K', 1, deadline.controller?.signal)
+    ? callArkImage(
+        probe.modelId,
+        apiKey,
+        'A single black dot on a white background.',
+        null,
+        arkImageProbeResolution(probe.modelId),
+        1,
+        deadline.controller?.signal,
+      )
     : arkChatInferenceProbe(probe.modelId, apiKey, probe.role, deadline.controller?.signal)
   try {
     return await Promise.race([
@@ -1495,6 +1740,14 @@ async function runArkAccountProbe(
   } finally {
     if (timer) clearTimeout(timer)
   }
+}
+
+function arkImageProbeResolution(modelId: string): ImageResolution {
+  const entry = staticModelRegistry.ark.models.find((candidate) => candidate.id === modelId && candidate.roles.includes('image'))
+  const supported = entry?.capabilities.resolutions || []
+  const resolution = canonicalImageResolutions.find((value) => supported.includes(value))
+  if (!resolution) throw new Error(`Ark image model ${modelId} has no supported probe resolution`)
+  return resolution
 }
 
 function reserveProviderAccountProbe(body: ProviderAccountCatalogBody, ctx: FunctionContext): (() => void) | null {
@@ -3811,6 +4064,7 @@ export async function callVisionModel(
         { role: 'user', content },
       ],
     }
+    if (provider === 'ark' && arkShouldDisableThinking(visionModelName)) requestBody.thinking = { type: 'disabled' }
     if (!usesGemini3ProviderDefaults(provider, visionModelName)) requestBody.temperature = 0.2
     const response = await fetchWithRetry(`${baseUrl}/chat/completions`, {
       method: 'POST',
@@ -3915,6 +4169,7 @@ export async function callTextModel(
         { role: 'user', content: chatUserContent(user, requestImages) },
       ],
     }
+    if (provider === 'ark' && arkShouldDisableThinking(textModelName)) requestBody.thinking = { type: 'disabled' }
     if (!usesGemini3ProviderDefaults(provider, textModelName)) requestBody.temperature = 1
     const response = await fetchWithRetry(`${baseUrl}/chat/completions`, {
       method: 'POST',
@@ -4046,7 +4301,7 @@ export async function callImageModel(
   }
 
   if (provider === 'ark') {
-    return callArkImage(model, apiKey, prompt, source, imageSize)
+    return callArkImage(normalizeModelName('ark', model), apiKey, prompt, source, imageSize)
   }
 
   return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize, strictImageSize)
@@ -4061,13 +4316,19 @@ async function callArkImage(
   attempts = 2,
   signal?: AbortSignal,
 ): Promise<string> {
-  const size = ['1K', '2K', '4K'].includes(imageSize) ? imageSize : '2K'
+  const entry = staticModelRegistry.ark.models.find((candidate) => candidate.id === model && candidate.roles.includes('image'))
+  if (!entry) throw new Error(`Ark image model ${model} is not registered`)
+  const supportedResolutions = entry.capabilities.resolutions || []
+  if (!supportedResolutions.includes(imageSize)) throw new Error(`Ark image model ${model} does not support ${imageSize}`)
+  const size = imageSize
   const body: Record<string, unknown> = {
     model,
     prompt,
     size,
-    sequential_image_generation: 'disabled',
-    stream: false,
+  }
+  if (model !== 'doubao-seedream-5-0-pro-260628') {
+    body.sequential_image_generation = 'disabled'
+    body.stream = false
   }
   if (source) body.image = [source.dataUrl]
   body.response_format = 'b64_json'
@@ -4376,6 +4637,13 @@ function geminiSamplingConfig(model: string, temperature: number) {
 
 function usesGemini3ProviderDefaults(provider: Provider, model: string) {
   return provider === 'openrouter' && /^google\/gemini-3(?:[.-]|$)/.test(model)
+}
+
+function arkShouldDisableThinking(model: string) {
+  return model === 'doubao-seed-evolving'
+    || /^doubao-seed-2-/.test(model)
+    || /^deepseek-v4-/.test(model)
+    || /^glm-5-2-/.test(model)
 }
 
 async function callGeminiImage(model: string, apiKey: string, prompt: string, aspectRatio: string, source: NormalizedSourceImage | null = null, imageSize = '2K'): Promise<string> {
@@ -6524,6 +6792,12 @@ export function normalizeModelName(provider: string, model: string) {
       'wan2.2-t2i-plus': 'wan2.7-image',
       'wan2.2-t2i-flash': 'wan2.7-image',
       'mimo-v2.5-pro': 'qwen3.7-plus',
+    }
+    return aliases[model] || model
+  }
+  if (provider === 'ark') {
+    const aliases: Record<string, string> = {
+      'doubao-seedream-5-0-lite-260128': 'doubao-seedream-5-0-260128',
     }
     return aliases[model] || model
   }

@@ -169,7 +169,7 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     assert.equal(result.providers.gemini.defaults.main, 'gemini-3.7-flash')
     assert.equal(result.providers.bailian.defaults.main, 'qwen3.8-max')
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
-    assert.equal(result.providers.ark.defaults.main, 'doubao-seed-2-0-mini-260428')
+    assert.equal(result.providers.ark.defaults.main, 'doubao-seed-2-1-pro-260628')
     assert.equal(Object.hasOwn(result.providers, 'openrouter'), false)
     assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。' })
     assert.doesNotMatch(JSON.stringify(result), /OpenRouter model metadata|request failed/)
@@ -1357,17 +1357,46 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.equal(ark.providers.ark.routeContractVersion, 1)
   assert.equal(ark.providers.ark.accountCatalogRequired, true)
   assert.deepEqual(ark.providers.ark.defaults, {
-    main: 'doubao-seed-2-0-mini-260428',
-    image: 'doubao-seedream-4-0-250828',
-    vision: 'doubao-seed-2-0-mini-260428',
+    main: 'doubao-seed-2-1-pro-260628',
+    image: 'doubao-seedream-5-0-pro-260628',
+    vision: 'doubao-seed-2-1-pro-260628',
   })
   const arkModels = new Map<string, any>(ark.providers.ark.models.map((model: any) => [model.id, model]))
   assert.deepEqual([...arkModels.keys()], [
+    'doubao-seed-2-1-pro-260628',
+    'doubao-seed-2-1-turbo-260628',
+    'doubao-seed-evolving',
     'doubao-seed-2-0-lite-260428',
     'doubao-seed-2-0-mini-260428',
+    'doubao-seed-2-0-pro-260215',
+    'doubao-seed-2-0-lite-260215',
+    'doubao-seed-2-0-mini-260215',
+    'doubao-seed-2-0-code-preview-260215',
+    'doubao-seed-character-260628',
+    'doubao-seed-character-251128',
+    'doubao-seed-translation-250915',
+    'glm-5-2-260617',
+    'deepseek-v4-pro-ga-260813',
+    'deepseek-v4-flash-ga-260731',
+    'deepseek-v4-pro-260425',
+    'deepseek-v4-flash-260425',
+    'doubao-seedream-5-0-pro-260628',
+    'doubao-seedream-5-0-260128',
+    'doubao-seedream-4-5-251128',
     'doubao-seedream-4-0-250828',
   ])
-  assert.deepEqual(arkModels.get('doubao-seed-2-0-mini-260428')?.roles, ['main', 'vision'])
+  assert.deepEqual(arkModels.get('doubao-seed-2-1-pro-260628')?.roles, ['main', 'vision'])
+  assert.equal(arkModels.get('doubao-seed-2-1-pro-260628')?.recommended, true)
+  assert.equal(arkModels.get('doubao-seed-evolving')?.lifecycle, 'unknown')
+  assert.equal(arkModels.get('doubao-seed-2-0-code-preview-260215')?.lifecycle, 'preview')
+  assert.equal(arkModels.get('doubao-seed-character-260628')?.selectable, false)
+  assert.equal(arkModels.get('doubao-seed-translation-250915')?.selectable, false)
+  assert.deepEqual(arkModels.get('glm-5-2-260617')?.roles, ['main'])
+  assert.deepEqual(arkModels.get('deepseek-v4-pro-ga-260813')?.roles, ['main'])
+  assert.deepEqual(arkModels.get('doubao-seedream-5-0-pro-260628')?.capabilities.resolutions, ['1K', '2K'])
+  assert.equal(arkModels.get('doubao-seedream-5-0-pro-260628')?.recommended, true)
+  assert.deepEqual(arkModels.get('doubao-seedream-5-0-260128')?.capabilities.resolutions, ['2K', '4K'])
+  assert.deepEqual(arkModels.get('doubao-seedream-4-5-251128')?.capabilities.outputFormats, ['png'])
   assert.deepEqual(arkModels.get('doubao-seedream-4-0-250828')?.roles, ['image'])
   assert.equal(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.imageEditMode, 'direct-edit')
   assert.equal(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.imageEditing, true)
@@ -1410,6 +1439,9 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
       'gpt-image-1-mini': ['2K'],
     },
     ark: {
+      'doubao-seedream-5-0-pro-260628': ['1K', '2K'],
+      'doubao-seedream-5-0-260128': ['2K', '4K'],
+      'doubao-seedream-4-5-251128': ['2K', '4K'],
       'doubao-seedream-4-0-250828': ['1K', '2K', '4K'],
     },
   } as const
@@ -1417,7 +1449,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-08-20.v6')
+    assert.equal(result.registryVersion, '2026-08-20.v7')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     assert.deepEqual(
       Object.fromEntries(imageModels.map((model: any) => [model.id, model.capabilities.refineResolutions])),
@@ -1507,6 +1539,49 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
     stream: false,
     response_format: 'b64_json',
   })
+})
+
+test('Ark current models disable default thinking and use model-specific Seedream request contracts', async () => {
+  const legacy = await loadLegacy()
+  const arkJpegBase64 = fs.readFileSync(path.resolve(packageRoot, '../web/public/logo.jpg')).toString('base64')
+  const calls: Array<{ url: string; body: any }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const call = { url: String(input), body: init?.body ? JSON.parse(String(init.body)) : undefined }
+    calls.push(call)
+    if (call.url.endsWith('/chat/completions')) {
+      return Response.json({ choices: [{ message: { content: 'ok' } }] })
+    }
+    return Response.json({ data: [{ b64_json: arkJpegBase64 }] })
+  })
+  try {
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-5-0-pro-260628', 'key', 'invalid pro size', '16:9', '', '4K'),
+      /does not support 4K/,
+    )
+    assert.equal(calls.length, 0, 'unsupported Ark sizes must fail before dispatch')
+    await legacy.callTextModel('ark', 'doubao-seed-2-1-pro-260628', 'key', 'system', 'user')
+    await legacy.callImageModel('ark', 'doubao-seedream-5-0-pro-260628', 'key', 'pro image', '16:9', '', '1K')
+    await legacy.callImageModel('ark', 'doubao-seedream-5-0-lite-260128', 'key', 'canonical alias', '16:9', '', '4K')
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+
+  assert.deepEqual(calls[0].body.thinking, { type: 'disabled' })
+  assert.deepEqual(calls[1].body, {
+    model: 'doubao-seedream-5-0-pro-260628',
+    prompt: 'pro image',
+    size: '1K',
+    response_format: 'b64_json',
+  })
+  assert.deepEqual(calls[2].body, {
+    model: 'doubao-seedream-5-0-260128',
+    prompt: 'canonical alias',
+    size: '4K',
+    sequential_image_generation: 'disabled',
+    stream: false,
+    response_format: 'b64_json',
+  })
+  assert.equal(legacy.normalizeModelName('ark', 'doubao-seedream-5-0-lite-260128'), 'doubao-seedream-5-0-260128')
 })
 
 test('modelCapability accepts Ark while unknown IDs and wrong route roles remain fail-closed', async () => {
@@ -1692,12 +1767,13 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
     assert.equal(calls.length, 1, 'duplicate and unconfirmed paid probes must not make calls')
     assert.equal(calls[0].url, 'https://ark.cn-beijing.volces.com/api/v3/chat/completions')
     assert.equal(calls[0].body.max_tokens, 8)
+    assert.deepEqual(calls[0].body.thinking, { type: 'disabled' })
 
     const confirmed = await invoke({
       action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: secret }, confirmPaidImageProbe: true,
       probes: [
         { role: 'vision', modelId: 'doubao-seed-2-0-lite-260428' },
-        { role: 'image', modelId: 'doubao-seedream-4-0-250828' },
+        { role: 'image', modelId: 'doubao-seedream-5-0-260128' },
       ],
     })
     assert.deepEqual(confirmed.probeResults.map((result: any) => [result.role, result.state, result.verifiedBy]), [
@@ -1710,9 +1786,15 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
       'https://ark.cn-beijing.volces.com/api/v3/images/generations',
     ])
     assert.match(JSON.stringify(calls[1].body), /data:image\/png;base64/)
+    const visionProbeImageUrl = calls[1].body.messages[0].content
+      .find((part: any) => part.type === 'image_url')?.image_url?.url
+    const visionProbeImage = Buffer.from(String(visionProbeImageUrl).split(',', 2)[1] || '', 'base64')
+    assert.equal(visionProbeImage.subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+    assert.ok(visionProbeImage.readUInt32BE(16) >= 14, 'Ark vision probe must meet the provider minimum width')
+    assert.ok(visionProbeImage.readUInt32BE(20) >= 14, 'Ark vision probe must meet the provider minimum height')
     assert.equal(calls[1].body.max_tokens, 8)
     assert.equal(calls[2].body.response_format, 'b64_json')
-    assert.equal(calls[2].body.size, '1K')
+    assert.equal(calls[2].body.size, '2K')
     assert.equal(calls[2].body.sequential_image_generation, 'disabled')
     assert.equal(calls[2].body.stream, false)
     assert.equal(calls.some((call) => /ListModelActivations|openapi\.volcengine/i.test(call.url)), false)
@@ -2506,7 +2588,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-08-20.v6')
+    assert.equal(registry.registryVersion, '2026-08-20.v7')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {

@@ -49,7 +49,9 @@ test('safe bootstrap uses current official defaults and Google user-facing namin
   assert.equal(PROVIDERS.bailian.visionModel, 'qwen3.7-plus')
   assert.deepEqual([
     PROVIDERS.ark.mainModel, PROVIDERS.ark.imageModel, PROVIDERS.ark.visionModel,
-  ], ['doubao-seed-2-0-mini-260428', 'doubao-seedream-4-0-250828', 'doubao-seed-2-0-mini-260428'])
+  ], ['doubao-seed-2-1-pro-260628', 'doubao-seedream-5-0-pro-260628', 'doubao-seed-2-1-pro-260628'])
+  assert.match(PROVIDERS.ark.guideSteps.join(' '), /最低支持分辨率/)
+  assert.doesNotMatch(PROVIDERS.ark.guideSteps.join(' '), /一次 1K 调用/)
 })
 
 test('advanced submission keeps mixed routes and legacy fields aligned to each role', () => {

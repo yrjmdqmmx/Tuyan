@@ -38,8 +38,8 @@ export function filterRegistryModels(models, { role, query = '', outputFormat = 
     .filter((model) => model?.roles?.includes(role)
       || (role === 'image' && (model?.outputModalities?.includes('image') || model?.protocol === 'openrouter-images')))
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
-    .filter((model) => !needle || [model.id, model.label, model.vendor, model.availabilityNotes, model.disabledReason]
-      .some((value) => String(value || '').toLocaleLowerCase('zh-CN').includes(needle)))
+    .filter((model) => !needle || registryModelSearchValues(model)
+      .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
     .map((model) => annotateModelForRole(model, { role, outputFormat }))
     .sort((left, right) => Number(left.selectionDisabled) - Number(right.selectionDisabled)
       || Number(left.selectable === false) - Number(right.selectable === false)
@@ -50,14 +50,37 @@ export function partitionRegistryModels(models, { role, query = '', outputFormat
   const needle = query.trim().toLocaleLowerCase('zh-CN')
   const annotated = (models || [])
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
-    .filter((model) => !needle || [model.id, model.label, model.vendor, model.availabilityNotes, model.disabledReason]
-      .some((value) => String(value || '').toLocaleLowerCase('zh-CN').includes(needle)))
+    .filter((model) => !needle || registryModelSearchValues(model)
+      .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
     .map((model) => annotateModelForRole(model, { role, outputFormat }))
     .sort(compareRegistryModels)
   return {
     compatible: annotated.filter((model) => !model.selectionDisabled),
     incompatible: annotated.filter((model) => model.selectionDisabled),
   }
+}
+
+function registryModelSearchValues(model) {
+  const roleTerms = (model?.roles || []).flatMap((role) => {
+    if (role === 'main') return ['main', '主模型', '文本生成']
+    if (role === 'image') return ['image', '图像生成', '图片生成']
+    if (role === 'vision') return ['vision', '视觉', '图像理解', '图片理解']
+    return [role]
+  })
+  const capabilityTerms = model?.capabilities?.imageEditMode === 'direct-edit'
+    ? ['direct-edit', '直接编辑', '图生图']
+    : model?.capabilities?.imageEditMode === 'analyze-redraw'
+      ? ['analyze-redraw', '分析后重绘']
+      : []
+  return [
+    model?.id, model?.label, model?.vendor, model?.availabilityNotes, model?.disabledReason, model?.protocol,
+    ...roleTerms,
+    ...capabilityTerms,
+    ...(model?.inputModalities || []),
+    ...(model?.outputModalities || []),
+    ...(model?.capabilities?.outputFormats || []),
+    ...(model?.capabilities?.resolutions || []),
+  ].map((value) => String(value || ''))
 }
 
 function annotateModelForRole(model, { role, outputFormat }) {

@@ -99,6 +99,38 @@ test('rendered OpenRouter full catalog shows incompatible image entries disabled
   assert.match(blocked.textContent, /未声明 PNG\/SVG 输出/)
 })
 
+test('rendered aggregator drawers expose disabled-only vendors and their unsupported models', async () => {
+  const user = userEvent.setup()
+  const { container } = render(React.createElement(ModelPicker, {
+    label: '主模型', role: 'main', outputFormat: 'png',
+    route: { accessProvider: 'ark', modelId: 'doubao-current' },
+    onRouteChange() {},
+    providerConfigs: { ark: { label: '火山方舟' } },
+    registry: {
+      providers: {
+        ark: { accessKind: 'aggregator', models: [
+          { id: 'doubao-current', label: 'Doubao Current', vendor: 'ByteDance Doubao', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable' },
+          { id: 'specialized-only', label: 'Specialized Only', vendor: 'Specialist Labs', roles: ['main'], selectable: false, lifecycle: 'stable', disabledReason: '尚未完成 PaperBanana 适配' },
+          { id: 'image-only', label: 'Image Only', vendor: 'Image Labs', roles: ['image'], selectable: true, lifecycle: 'stable' },
+        ] },
+      },
+    },
+  }))
+
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  assert.ok(screen.getByRole('button', { name: '厂商 ByteDance Doubao' }))
+  assert.ok(screen.getByRole('button', { name: '厂商 Specialist Labs' }))
+  assert.equal(screen.queryAllByRole('button', { name: '厂商 Image Labs' }).length, 0)
+  await user.click(screen.getByRole('button', { name: '厂商 Specialist Labs' }))
+  assert.ok(screen.getByText(/暂不兼容/))
+  await user.click(screen.getByText(/暂不兼容/))
+  const disabled = screen.getByText('Specialized Only').closest('button')
+  assert.ok(disabled)
+  assert.equal(disabled.disabled, true)
+  assert.match(disabled.textContent, /尚未完成 PaperBanana 适配/)
+  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 2)
+})
+
 test('rendered model cards distinguish catalog compatibility, account visibility, and real-call verification', async () => {
   const user = userEvent.setup()
   render(React.createElement(ModelPicker, {

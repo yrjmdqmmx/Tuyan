@@ -182,7 +182,7 @@ test('Ark never probes on key input, requires paid confirmation, gates submit, a
   await user.click(submitButton())
   assert.equal(requests.some((request) => request.body?.action === 'createJob'), false)
 
-  await user.click(screen.getByLabelText('会产生一次 1K 图片调用费用'))
+  await user.click(screen.getByLabelText('会按所选图片模型的最低支持分辨率产生一次图片调用费用'))
   assert.equal(verifyButton.disabled, false)
   await user.click(verifyButton)
   await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'providerAccountCatalog').length, 2))
@@ -249,7 +249,7 @@ test('Ark stale completion releases its own busy state after generation switches
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '精修图片' }))
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
-  await user.click(screen.getByLabelText('会产生一次 1K 图片调用费用'))
+  await user.click(screen.getByLabelText('会按所选图片模型的最低支持分辨率产生一次图片调用费用'))
   const verifyButton = screen.getByRole('button', { name: '验证所选模型' })
   assert.equal(verifyButton.disabled, true)
 
