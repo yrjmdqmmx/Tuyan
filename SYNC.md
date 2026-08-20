@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-20] Ark 中国区完整相关目录与 Seed 2.1 / Seedream 5.0 路由 — by Codex
+变更：Core 注册表升级为 `2026-08-20.v7`，依据火山方舟中国区当前模型列表、发布/下线公告、深度思考和图片生成文档，将 Ark 与 PaperBanana 文本、视觉、图像角色相关的现役目录从 3 项扩为 21 项。默认升级为 `doubao-seed-2-1-pro-260628`（main/vision）与 `doubao-seedream-5-0-pro-260628`（image）；不使用 ID 尾部日期猜测 `releasedAt`，所有 Ark 日期仍为 `null`。
+契约（影响其他端 / 共享）：
+- **目录与生命周期**：新增 Seed 2.1 Pro/Turbo、Seed Evolving、Seed 2.0 现役往期版、GLM 5.2、DeepSeek V4 现役版与 Seedream 5.0 Pro/5.0/4.5；Evolving 是滚动 alias，固定 `lifecycle:'unknown'`且不得设为默认。Code Preview 固定 `preview`；角色/翻译专用模型仅为目录完整性展示，`selectable:false`。已 EOM/EOS 的 Kimi 2.5、GLM 4.7、Seed 1.x、DeepSeek V3.2、Seedream/SeedEdit 3.0 不登记。
+- **执行与能力**：Seed 2.x/Evolving/GLM 5.2/DeepSeek V4 的 Chat 请求显式 `thinking:{type:'disabled'}`，避免最小验证被默认深度思考误判超时。Seedream 5.0 Pro 仅允许 1K/2K 且不发其不支持的 `sequential_image_generation/stream`；5.0 映射 2K/4K，4.5 映射 2K/4K，4.0 映射 1K/2K/4K。`doubao-seedream-5-0-lite-260128` 仅作公开 alias，归一到 `doubao-seedream-5-0-260128`，不重复展示。
+- **验证边界**：公开目录仍不等于用户已开通。`providerAccountCatalog` 继续固定 `accountCatalogAvailable:false`，仅用 inference API Key 对当前选中的最多 3 条路线做临时推理 smoke；绝不将 Bearer Key 发往需 AK/SK 签名的 `ListModelActivations`。未知 ID、错 role、未适配专用模型和不支持的分辨率仍在付费调用前失败关闭。
+- **Web 展示**：OpenRouter、百炼、Ark 等所有 aggregator 均展示“暂不兼容”分区；只有禁用条目的模型厂商也会出现在二层厂商抽屉。搜索同时索引 role、能力和 protocol，不再只匹配名称。
+各端待办：
+- [x] paperbanana-api / Laf Core（v7 目录、默认、能力、alias、模型级请求契约与 TDD）
+- [x] Web（最新 fallback、所有聚合渠道的禁用分区、禁用-only 厂商与能力搜索）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（若展示 Ark 目录，同步 v7 现役项和不可选边界；旧请求继续兼容）
+- [ ] 部署 / 运维（本条尚未发布；发布后用授权 Ark Key 分别验证默认 main、vision 和付费 image，不把公开目录当作账号开通证据）
+
 ### [2026-08-20] OpenRouter 目录生命周期与验证状态如实化 — by Codex
 变更：Core 注册表升级为 `2026-08-20.v6`，不再把 OpenRouter 全局匿名目录中的“存在且协议兼容”冒充为稳定版或真实调用已验证。动态目录项新增 `verificationState`，OpenRouter 全局项固定为 `catalog` 且保留兼容字段 `verified:false`；没有权威生命周期的项使用新增的 `lifecycle:'unknown'`，仅三项服务端静态正式推荐默认保留 `stable`。`releasedAt` 仍只接受厂商权威日期，未知保持 `null` 并排在已知日期之后。
 契约（影响其他端 / 共享）：
