@@ -100,3 +100,18 @@ test('default origins include exact WeChat runtime and developer tool origins', 
     'https://developers.weixin.qq.com',
   ]);
 });
+
+test('explicit legacy Web origins cannot omit required WeChat origins', () => {
+  const config = loadGatewayConfig(
+    validEnv({
+      FRONTEND_ORIGINS: 'https://www.paperbanana.asia,https://paperbanana.asia',
+    }),
+  );
+
+  assert.deepEqual(config.frontendOrigins, [
+    'https://www.paperbanana.asia',
+    'https://paperbanana.asia',
+    'https://servicewechat.com',
+    'https://developers.weixin.qq.com',
+  ]);
+});

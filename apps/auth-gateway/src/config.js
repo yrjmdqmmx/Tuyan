@@ -6,6 +6,10 @@ const DEFAULT_ORIGINS = [
   'https://servicewechat.com',
   'https://developers.weixin.qq.com',
 ];
+const REQUIRED_WECHAT_ORIGINS = [
+  'https://servicewechat.com',
+  'https://developers.weixin.qq.com',
+];
 
 export function parseList(value) {
   return String(value || '')
@@ -45,6 +49,13 @@ export function loadGatewayConfig(env = process.env) {
   if (adminUserIds.some((id) => !/^[A-Za-z0-9._:-]{3,200}$/.test(id))) {
     throw new Error('ADMIN_USER_IDS must contain immutable user IDs');
   }
+  const configuredOrigins = parseList(env.FRONTEND_ORIGINS);
+  const frontendOrigins = [
+    ...new Set([
+      ...(configuredOrigins.length ? configuredOrigins : DEFAULT_ORIGINS),
+      ...REQUIRED_WECHAT_ORIGINS,
+    ]),
+  ];
 
   return {
     production,
@@ -54,9 +65,7 @@ export function loadGatewayConfig(env = process.env) {
     authSecret: required(env, 'BETTER_AUTH_SECRET'),
     mongoUri: required(env, 'MONGODB_URI'),
     mongoDbName: stringValue(env.MONGODB_DB) || 'paperbanana_auth',
-    frontendOrigins: parseList(env.FRONTEND_ORIGINS).length
-      ? parseList(env.FRONTEND_ORIGINS)
-      : DEFAULT_ORIGINS,
+    frontendOrigins,
     cookieDomain: stringValue(env.COOKIE_DOMAIN),
     cookieSameSite: sameSite || (production ? 'lax' : 'lax'),
     backend,

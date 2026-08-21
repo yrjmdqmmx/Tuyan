@@ -42,6 +42,7 @@ function productionConfig(overrides = {}) {
     PAPERBANANA_GATEWAY_TOKEN: 'gateway-token',
     PAPERBANANA_GUEST_COOKIE_SECRET: 'guest-cookie-secret-with-at-least-32-bytes',
     ADMIN_USER_IDS: 'admin-id',
+    FRONTEND_ORIGINS: 'https://www.paperbanana.asia,https://paperbanana.asia',
     ...overrides,
   });
 }
