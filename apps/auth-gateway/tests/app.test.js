@@ -4,6 +4,7 @@ import { request as httpRequest } from 'node:http';
 import test from 'node:test';
 
 import { createApp } from '../src/app.js';
+import { loadGatewayConfig } from '../src/config.js';
 import { createGuestToken, readGuestIdentity } from '../src/guest-identity.js';
 
 function config(overrides = {}) {
@@ -29,6 +30,21 @@ function config(overrides = {}) {
     },
     ...overrides,
   };
+}
+
+function productionConfig(overrides = {}) {
+  return loadGatewayConfig({
+    NODE_ENV: 'production',
+    AUTH_BASE_URL: 'https://api.paperbanana.asia',
+    BETTER_AUTH_SECRET: 'better-auth-secret-with-at-least-32-bytes',
+    MONGODB_URI: 'mongodb://127.0.0.1:27017/paperbanana-test',
+    PAPERBANANA_API_URL: 'http://paperbanana-api:3006/paperbanana-api',
+    PAPERBANANA_GATEWAY_TOKEN: 'gateway-token',
+    PAPERBANANA_GUEST_COOKIE_SECRET: 'guest-cookie-secret-with-at-least-32-bytes',
+    ADMIN_USER_IDS: 'admin-id',
+    FRONTEND_ORIGINS: 'https://www.paperbanana.asia,https://paperbanana.asia',
+    ...overrides,
+  });
 }
 
 function fakeAuth(overrides = {}) {
@@ -129,6 +145,30 @@ async function post(baseUrl, body, headers = {}) {
     body: JSON.stringify(body),
   });
 }
+
+test('allows exact WeChat origins and rejects lookalike domains', async () => {
+  await withApp({ appConfig: productionConfig() }, async ({ baseUrl }) => {
+    for (const origin of [
+      'https://servicewechat.com',
+      'https://developers.weixin.qq.com',
+    ]) {
+      const response = await fetch(`${baseUrl}/api/auth/get-session`, {
+        headers: { Origin: origin },
+      });
+
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('access-control-allow-origin'), origin);
+      assert.equal(response.headers.get('access-control-allow-credentials'), 'true');
+    }
+
+    const rejected = await fetch(`${baseUrl}/api/auth/get-session`, {
+      headers: { Origin: 'https://servicewechat.com.evil.example' },
+    });
+
+    assert.equal(rejected.status, 403);
+    assert.equal(rejected.headers.get('access-control-allow-origin'), null);
+  });
+});
 
 function cookiePair(response) {
   return String(response.headers.get('set-cookie') || '').split(';', 1)[0];
