@@ -4919,6 +4919,67 @@ figcaption {
   border-radius: 7px;
 }
 
+.guide-parameter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.guide-parameter {
+  padding: 14px 15px;
+  background: #fff;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+}
+
+.guide-parameter h4,
+.guide-preset h4,
+.guide-subtitle {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.guide-parameter p,
+.guide-preset p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.guide-parameter strong {
+  color: var(--ink-soft);
+}
+
+.guide-subtitle {
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.guide-presets {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.guide-preset {
+  padding: 14px 15px;
+  background: #edf5ef;
+  border: 1px solid #c8d8cc;
+  border-radius: 12px;
+}
+
+.guide-preset > span {
+  display: inline-block;
+  margin-bottom: 7px;
+  color: var(--sage);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
 .guide-cta-ghost {
   text-decoration: none;
 }
@@ -4968,6 +5029,8 @@ figcaption {
     scrollbar-width: none;
   }
   .guide-directory a { flex: 0 0 auto; white-space: nowrap; }
+  .guide-parameter-grid,
+  .guide-presets { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 390px) {

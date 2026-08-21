@@ -3,7 +3,7 @@ import { ArrowRight, BookOpen, Github, KeyRound, LayoutTemplate, ShieldCheck, Sp
 const DIRECTORY = [
   ['guide-templates', '从模板开始'],
   ['guide-library', '模板与参考图库'],
-  ['guide-settings', '普通 / 专业设置'],
+  ['guide-settings', '生成设置参数详解'],
   ['guide-models', '主 / 图 / 识模型与 BYOK'],
   ['guide-output', '比例、提示词与输出'],
   ['guide-workflow', '生成、记录与精修'],
@@ -12,6 +12,14 @@ const DIRECTORY = [
 
 function GuideSection({ id, title, children }) {
   return <section id={id} className="guide-section" tabIndex={-1}><h3>{title}</h3>{children}</section>
+}
+
+function ParameterGuide({ title, children }) {
+  return <article className="guide-parameter"><h4>{title}</h4><p>{children}</p></article>
+}
+
+function GuidePreset({ title, summary, children }) {
+  return <article className="guide-preset"><span>{summary}</span><h4>{title}</h4><p>{children}</p></article>
 }
 
 export default function GuidePanel({
@@ -53,9 +61,30 @@ export default function GuidePanel({
             <p>本地上传参考图与图库检索是两种风格锚点：使用检索时先不要上传；上传图片后，后端也会以你的图片为唯一视觉来源。</p>
           </GuideSection>
 
-          <GuideSection id="guide-settings" title="普通 / 专业设置">
-            <p><strong>普通模式</strong>使用同一接入渠道的默认主、图、识三路模型，仍可选择画面比例、清晰度和格式。<strong>专业模式</strong>允许三种角色独立选渠道与模型，并开放检索、候选数量和评审轮数。</p>
-            <p>生成页的高对比设置卡会一直显示当前三路模型、比例和输出摘要；“打开完整设置”进入完整抽屉。</p>
+          <GuideSection id="guide-settings" title="生成设置参数详解">
+            <p>生成页的高对比设置卡用于快速核对当前模型、比例与输出；点击“打开完整设置”可以调整下列参数。先用默认值完成首张草稿，再根据结果逐项增加复杂度，通常比一开始全部拉满更省时间和费用。</p>
+
+            <div className="guide-parameter-grid">
+              <ParameterGuide title="使用模式"><strong>普通模式</strong>适合第一次使用：同一渠道自动配好主、图、识三类模型，只需选择格式、清晰度和比例。<strong>专业模式</strong>适合需要独立选模型、检索参考、增加候选图或评审轮数的任务。</ParameterGuide>
+              <ParameterGuide title="API 接入渠道与密钥">先选择 OpenRouter、Gemini、OpenAI、阿里百炼或火山方舟，再填写该渠道的 BYOK 密钥。只需填写当前任务实际会调用的渠道；密钥仅保存在页面内存，不会写入数据库。</ParameterGuide>
+              <ParameterGuide title="主模型">负责理解论文方法、规划图中模块和文字内容，并执行文字层面的评审。复杂方法或长文本优先选择规划能力更强的模型；生成 SVG 时也由主模型直接输出矢量内容。</ParameterGuide>
+              <ParameterGuide title="图像生成模型">负责 PNG 的绘制、重渲染与支持时的直接精修，决定画面风格、比例和可用清晰度。先看模型卡的格式、比例、分辨率和权益状态，不要只按模型名称选择。</ParameterGuide>
+              <ParameterGuide title="参考图识别模型">负责读取上传图片或图库参考，并在启用评审时检查结果图的结构与语义。没有参考图且不需要视觉评审时调用会更少；复杂机制图或强参考风格更依赖其识图能力。</ParameterGuide>
+              <ParameterGuide title="导出格式"><strong>PNG</strong>适合包含真实质感、复杂配色或需要直接投稿的插图，由图像模型生成并统一为 PNG。<strong>SVG</strong>适合流程图和架构图，便于后续矢量编辑，由主模型直接生成且本次不要求图像模型 Key。</ParameterGuide>
+              <ParameterGuide title="输出清晰度"><strong>1K</strong>用于快速草稿和低成本试错；<strong>2K</strong>适合论文正文、汇报与大多数正式图片；<strong>4K</strong>用于最终导出、海报或细节密集图。分辨率越高通常等待越久、文件越大，也可能增加费用；只会开放模型明确支持的档位。</ParameterGuide>
+              <ParameterGuide title="画面比例"><strong>自动</strong>让模型按内容决定；1:1 适合概念总览，4:3 / 3:2 适合论文常规图，16:9 适合横向流程和演示，3:4 / 2:3 / 9:16 适合纵向通路，21:9、1:4、4:1 适合超长链路。禁用项表示当前图像模型不支持。</ParameterGuide>
+              <ParameterGuide title="生成流程"><strong>基础生成</strong>调用最少、速度最快，适合提示词已经很明确的草稿；<strong>规划器 + 评审器</strong>是推荐默认值，会先规划再检查并按需修正；<strong>完整流程</strong>执行更多生成阶段，适合复杂高要求图，但耗时和调用费用最高。</ParameterGuide>
+              <ParameterGuide title="检索设置"><strong>不使用检索</strong>完全按你的输入生成；<strong>自动检索</strong>寻找相关案例；<strong>随机参考</strong>用于探索不同构图；<strong>手动参考</strong>最可控、最容易复现。上传参考图后检索会关闭，以上传图片作为唯一视觉来源。</ParameterGuide>
+              <ParameterGuide title="候选图数量">专业模式可一次生成 <strong>1–3 张</strong>。1 张适合低成本迭代；2 张便于比较构图；3 张适合方向尚未确定时探索。候选图越多，图像生成和后续可能发生的评审费用越高。</ParameterGuide>
+              <ParameterGuide title="评审轮数">专业模式可设置 <strong>0–2 轮</strong>。0 轮最快但不做结果图视觉复核；1 轮是质量与费用的常用平衡；2 轮适合文字、箭头和结构较复杂的正式图。每增加一轮都会增加识图、判断及可能的重渲染时间与费用。</ParameterGuide>
+            </div>
+
+            <h4 className="guide-subtitle">常用配置怎么选</h4>
+            <div className="guide-presets">
+              <GuidePreset title="快速草稿" summary="速度优先">普通模式 · 1K · 自动或 16:9。先确认整体方向和信息层级，满意后再提高清晰度。</GuidePreset>
+              <GuidePreset title="论文正式图" summary="质量与费用平衡">专业模式 · 规划器 + 评审器 · 自动或手动检索 · 2K · 1–2 张候选 · 1 轮评审。</GuidePreset>
+              <GuidePreset title="复杂机制图" summary="完整性优先">专业模式 · 完整流程 · 手动参考 · 2K · 2–3 张候选 · 2 轮评审，并用负向提示词限制箭头冲突和文字拥挤。</GuidePreset>
+            </div>
           </GuideSection>
 
           <GuideSection id="guide-models" title="主 / 图 / 识模型与 BYOK">
