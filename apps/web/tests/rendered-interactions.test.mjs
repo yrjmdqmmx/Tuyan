@@ -53,7 +53,7 @@ test('rendered SVG submit ignores the image model format because the main model 
     render(React.createElement(App))
     await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
 
-    await user.click(screen.getByRole('button', { name: '生成设置' }))
+    await user.click(screen.getByRole('button', { name: '打开完整设置' }))
     fireEvent.change(screen.getByLabelText('导出格式'), { target: { value: 'svg' } })
     assert.ok(screen.getAllByText(/由主模型直接生成/).length >= 1)
     await user.type(screen.getByPlaceholderText('sk-...'), 'test-key')
@@ -374,7 +374,7 @@ for (const [retrievalValue, retrievalLabel] of [
       const user = userEvent.setup()
       const { container } = render(React.createElement(App))
       await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
-      await user.click(screen.getByRole('button', { name: '生成设置' }))
+      await user.click(screen.getByRole('button', { name: '打开完整设置' }))
       await user.click(screen.getByRole('button', { name: /专业模式/ }))
 
       const retrieval = screen.getByLabelText('检索设置')

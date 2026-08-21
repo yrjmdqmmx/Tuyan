@@ -2,12 +2,10 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Apple,
-  BookOpen,
   Eye,
   FileText,
   Github,
   Image as ImageIcon,
-  KeyRound,
   Loader2,
   MessageCircle,
   MessageSquare,
@@ -18,7 +16,6 @@ import {
   Settings2,
   ShieldCheck,
   Smartphone,
-  Sparkles,
   Users,
   X,
 } from 'lucide-react';
@@ -55,7 +52,6 @@ import {
   INFOGRAPHIC_CATEGORIES,
   OUTPUT_FORMATS,
   PROVIDERS,
-  QUICK_START_EXAMPLES,
   REFERENCE_IMAGE_MODES,
   REFERENCE_IMAGE_LIMITS,
   RESOLUTION_OPTIONS,
@@ -63,11 +59,12 @@ import {
   mainModelCanReadImages,
   supportedResolutions,
 } from './constants';
+import AspectRatioPicker from './components/AspectRatioPicker';
 import AdminFeedbackTable from './components/AdminFeedbackTable';
 import AdminUsersTable from './components/AdminUsersTable';
 import AuthPanel from './components/AuthPanel';
 import AuthUnavailablePanel from './components/AuthUnavailablePanel';
-import ExampleTemplates from './components/ExampleTemplates';
+import FeaturedTemplateStudio from './components/FeaturedTemplateStudio';
 import FeedbackDialog from './components/FeedbackDialog';
 import GenerationSettingsDrawer from './components/GenerationSettingsDrawer';
 import GuidePanel from './components/GuidePanel';
@@ -80,6 +77,8 @@ import TaskRecordsPanel from './components/TaskRecordsPanel';
 import { useAuthSession } from './hooks/useAuthSession';
 import { formatErrorMessage, formatOutputFormat, pollRetryDelay, shouldClearAuthForJobError } from './utils';
 import { INPUT_LIMITS, officialApiBase, shouldPollJob, validateApiBase } from './lib/runtimePolicy';
+import { buildAspectRatioOptions, normalizeSelectedAspectRatio } from './lib/aspectRatios';
+import { attachFeaturedTemplateImages, featuredTemplateRequest } from './lib/featuredTemplates';
 import { mergeProviderRegistry, modelRefinePresentation, uniqueRegistryModels } from './lib/modelRegistry';
 import { buildReferencePageRequest } from './lib/referenceGallery';
 import { normalizeRefineSource, refineRequestSource } from './lib/refineSource';
@@ -118,6 +117,8 @@ export default function App() {
   const [apiKeys, setApiKeys] = useState({ openrouter: '', gemini: '', openai: '', bailian: '', ark: '' });
   const [methodContent, setMethodContent] = useState(SAMPLE_METHOD);
   const [caption, setCaption] = useState('图 1：所提出的多智能体学术图示生成框架总览。');
+  const [negativePrompt, setNegativePrompt] = useState('');
+  const [inputIsDirty, setInputIsDirty] = useState(false);
   const [infographicCategory, setInfographicCategory] = useState('method_framework');
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
@@ -132,6 +133,7 @@ export default function App() {
   const [retrievalSetting, setRetrievalSetting] = useState('none');
   const [manualReferenceIds, setManualReferenceIds] = useState([]);
   const [referenceLibrary, setReferenceLibrary] = useState([]);
+  const [featuredTemplates, setFeaturedTemplates] = useState(() => attachFeaturedTemplateImages([]));
   const [referencePageInfo, setReferencePageInfo] = useState({ page: 1, pageSize: 12, totalItems: 0, totalPages: 1, facets: { visualCategories: [], researchDomains: [] }, corpusVersion: '' });
   const referenceRequestRef = useRef({ sequence: 0, controller: null });
   const [referenceLibraryError, setReferenceLibraryError] = useState('');
@@ -212,6 +214,16 @@ export default function App() {
     ? activeImageRegistryEntry.capabilities.resolutions
     : supportedResolutions(activeModelRoutes.image.accessProvider, activeImageGenModelName);
   const resolutionOptions = RESOLUTION_OPTIONS.filter(([value]) => resolutionValues.includes(value));
+  const generationAspectRatioOptions = buildAspectRatioOptions({
+    capabilities: activeImageRegistryEntry?.capabilities,
+    capabilityField: 'aspectRatios',
+    modelLabel: activeImageRegistryEntry?.label || activeImageGenModelName,
+  });
+  const refineAspectRatioOptions = buildAspectRatioOptions({
+    capabilities: activeImageRegistryEntry?.capabilities,
+    capabilityField: 'refineAspectRatios',
+    modelLabel: activeImageRegistryEntry?.label || activeImageGenModelName,
+  });
   const refineResolutionMetadata = activeImageRegistryEntry?.capabilities;
   const refineResolutionValues = refineResolutionMetadata
     && Object.prototype.hasOwnProperty.call(refineResolutionMetadata, 'refineResolutions')
@@ -258,7 +270,6 @@ export default function App() {
   arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
   const missingCredentialProviders = credentialProviders.filter((routeProvider) => !apiKeys[routeProvider]?.trim());
   const missingVerifiedArkRoutes = missingArkVerifications(activeArkProbes, arkVerification);
-  const generationConfigSummary = `主：${providerConfig.label} · ${activeMainRegistryEntry?.label || activeMainModelName} / 图：${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName} / 识：${visionProviderConfig.label} · ${activeVisionRegistryEntry?.label || activeReferenceVisionModelName}`;
   const refineConfigSummary = `图像：${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName} / 视觉：${visionProviderConfig.label} · ${activeVisionRegistryEntry?.label || activeReferenceVisionModelName}`;
 
   useEffect(() => {
@@ -303,6 +314,21 @@ export default function App() {
   }, [apiBaseNormalized, health, modelRegistryRetryNonce]);
 
   useEffect(() => {
+    if (!health) return undefined;
+    let cancelled = false;
+    referenceLibraryRequest(apiBaseNormalized, health, featuredTemplateRequest())
+      .then((result) => {
+        if (!cancelled) setFeaturedTemplates(attachFeaturedTemplateImages(result.references));
+      })
+      .catch(() => {
+        if (!cancelled) setFeaturedTemplates(attachFeaturedTemplateImages([]));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [apiBaseNormalized, health]);
+
+  useEffect(() => {
     if (modelRegistry && !modelRegistry.providers?.[provider]) setProvider('bailian');
   }, [modelRegistry, provider]);
 
@@ -313,6 +339,16 @@ export default function App() {
       : supportedResolutions(activeModelRoutes.image.accessProvider, activeImageGenModelName);
     if (!supported.includes(imageSize)) setImageSize(supported[0]);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, imageSize, activeImageRegistryEntry]);
+
+  useEffect(() => {
+    const normalized = normalizeSelectedAspectRatio(aspectRatio, generationAspectRatioOptions);
+    if (normalized !== aspectRatio) setAspectRatio(normalized);
+  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, aspectRatio]);
+
+  useEffect(() => {
+    const normalized = normalizeSelectedAspectRatio(refineAspectRatio, refineAspectRatioOptions);
+    if (normalized !== refineAspectRatio) setRefineAspectRatio(normalized);
+  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, refineAspectRatio]);
 
   // 精修清晰度是独立执行能力；路由或目录变化时回到新模型声明的第一档。
   useEffect(() => {
@@ -785,6 +821,7 @@ export default function App() {
         apiKeys: scopedApiKeys,
         taskName: effectiveTaskName,
         methodContent,
+        negativePrompt,
         caption,
         infographicCategory: selectedInfographicCategory[1],
         outputFormat,
@@ -795,7 +832,7 @@ export default function App() {
         // 上传参考图时以图为唯一风格来源，前端同步关闭检索（后端亦强制，二者一致）。
         retrievalSetting: effectiveRetrievalSetting,
         manualReferenceIds: isAdvancedMode && retrievalSetting === 'manual' && !uploadedReferenceImages.length ? manualReferenceIds : [],
-        aspectRatio: isAdvancedMode ? aspectRatio : '16:9',
+        aspectRatio,
         numCandidates: isAdvancedMode ? Number(numCandidates) : 1,
         maxCriticRounds: isAdvancedMode ? Number(maxCriticRounds) : 1,
         mock: isAdvancedMode ? mock : false,
@@ -858,10 +895,12 @@ export default function App() {
     }
   }
 
-  function applyQuickStartExample(example) {
-    setInfographicCategory(example.category);
-    setMethodContent(example.methodContent);
-    setCaption(example.caption);
+  function applyFeaturedTemplate(template) {
+    setInfographicCategory(template.category);
+    setMethodContent(template.methodContent);
+    setCaption(template.caption);
+    setNegativePrompt(template.negativePrompt);
+    setInputIsDirty(false);
   }
 
   function clearPrivateWorkspace() {
@@ -878,6 +917,8 @@ export default function App() {
     setArkVerificationError('');
     setMethodContent(SAMPLE_METHOD);
     setCaption('图 1：所提出的多智能体学术图示生成框架总览。');
+    setNegativePrompt('');
+    setInputIsDirty(false);
     setManualReferenceIds([]);
     setReferenceLibrary([]);
     setCurrentJobId('');
@@ -1066,6 +1107,7 @@ export default function App() {
             ? <div className="plot-note svg-output-note">SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。</div>
             : <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
         </div>
+        <AspectRatioPicker label="画面比例" value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
 
         {!isAdvancedMode ? (
         <div className="default-summary" aria-label="默认生成配置">
@@ -1073,7 +1115,7 @@ export default function App() {
           <span>图像：{defaultImageModelLabel}</span>
           <span>识别：{defaultVisionModelLabel}</span>
           <span>规划器 + 评审器</span>
-          <span>16:9</span>
+          <span>{aspectRatio === 'auto' ? '自动比例' : aspectRatio}</span>
           <span>{formatOutputFormat(outputFormat)}</span>
         </div>
         ) : (
@@ -1103,12 +1145,6 @@ export default function App() {
               ['auto', '自动检索'],
               ['random', '随机参考'],
               ['manual', '手动参考'],
-            ]} />
-            <Select label="画面比例" value={aspectRatio} onChange={setAspectRatio} options={[
-              ['16:9', '16:9'],
-              ['21:9', '21:9'],
-              ['3:2', '3:2'],
-              ['1:1', '1:1'],
             ]} />
             <label className="field compact">
               <span>候选图数量</span>
@@ -1323,14 +1359,24 @@ export default function App() {
 
       {activeTab === 'generate' ? (
         <section className="workspace">
+        <FeaturedTemplateStudio templates={featuredTemplates} isDirty={inputIsDirty} onApply={applyFeaturedTemplate} />
         <form className="generation-form" onSubmit={submitJob}>
-          <div className="generation-toolbar">
-            <button type="button" className="generation-settings-trigger" onClick={() => { setGenerationFocusSetting(''); setShowGenerationSettings(true) }}><Settings2 size={18} /><span>生成设置</span></button>
-            <div className="generation-config-summary" aria-label="当前生成配置"><span>当前配置</span><strong>{generationConfigSummary}</strong></div>
+          <section className="generation-settings-summary" role="region" aria-label="当前生成设置">
+            <div className="generation-settings-summary-head">
+              <div><span>当前生成设置</span><strong>路由与输出一眼确认</strong></div>
+              <button type="button" className="generation-settings-trigger" onClick={() => { setGenerationFocusSetting(''); setShowGenerationSettings(true) }}><Settings2 size={18} /><span>打开完整设置</span></button>
+            </div>
+            <div className="generation-settings-facts">
+              <div><span>主模型</span><strong>{activeMainRegistryEntry?.label || activeMainModelName}</strong></div>
+              <div><span>图像模型</span><strong>{activeImageRegistryEntry?.label || activeImageGenModelName}</strong></div>
+              <div><span>识图模型</span><strong>{activeVisionRegistryEntry?.label || activeReferenceVisionModelName}</strong></div>
+              <div><span>画面比例</span><strong>{aspectRatio === 'auto' ? '自动' : aspectRatio}</strong></div>
+              <div><span>输出</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
+            </div>
             <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences}>
               {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isUploadingReferences ? '上传参考图' : '生成候选图'}
             </button>
-          </div>
+          </section>
 
           {error ? (
             <div className="error-line">
@@ -1351,8 +1397,6 @@ export default function App() {
                 <p>选择信息图类别，再粘贴论文方法部分和目标图注。</p>
               </div>
             </div>
-
-            <ExampleTemplates examples={QUICK_START_EXAMPLES} onApply={applyQuickStartExample} />
 
             <div className="input-options">
               <Select
@@ -1382,16 +1426,21 @@ export default function App() {
             <div className="two-col input-copy">
               <label className="field">
                 <span>论文方法内容</span>
-                <textarea value={methodContent} onChange={(event) => setMethodContent(event.target.value)} rows={12} maxLength={INPUT_LIMITS.methodContent} />
+                <textarea value={methodContent} onChange={(event) => { setMethodContent(event.target.value); setInputIsDirty(true) }} rows={12} maxLength={INPUT_LIMITS.methodContent} />
                 <small>{methodContent.length.toLocaleString()} / {INPUT_LIMITS.methodContent.toLocaleString()} 字符</small>
               </label>
 
               <label className="field">
                 <span>目标图注</span>
-                <textarea value={caption} onChange={(event) => setCaption(event.target.value)} rows={12} maxLength={INPUT_LIMITS.caption} />
+                <textarea value={caption} onChange={(event) => { setCaption(event.target.value); setInputIsDirty(true) }} rows={12} maxLength={INPUT_LIMITS.caption} />
                 <small>{caption.length.toLocaleString()} / {INPUT_LIMITS.caption.toLocaleString()} 字符</small>
               </label>
             </div>
+            <label className="field negative-prompt-field">
+              <span>负向提示词（可选）</span>
+              <textarea value={negativePrompt} onChange={(event) => { setNegativePrompt(event.target.value); setInputIsDirty(true) }} rows={4} maxLength={INPUT_LIMITS.negativePrompt} placeholder="例如：避免文字拥挤、模糊箭头、装饰性背景。" />
+              <small>{negativePrompt.length.toLocaleString()} / {INPUT_LIMITS.negativePrompt.toLocaleString()} 字符</small>
+            </label>
           </div>
 
           <div className="results-col">
@@ -1416,6 +1465,7 @@ export default function App() {
             imageSize={refineImageSize}
             resolutionOptions={refineResolutionOptions}
             aspectRatio={refineAspectRatio}
+            aspectRatioOptions={refineAspectRatioOptions}
             settingsSummary={refineConfigSummary}
             canSubmit={authReady && refineResolutionOptions.length > 0 && !missingCredentialProviders.length && !missingVerifiedArkRoutes.length && Boolean(refineSource.objectKey || refineSource.url) && refineInstruction.trim().length >= 3 && !isSubmittingRefine && refineCapability.mode !== 'none'}
             isSubmitting={isSubmittingRefine}
@@ -1473,7 +1523,17 @@ export default function App() {
           </div>
         </section>
       ) : activeTab === 'guide' ? (
-        <GuidePanel onStart={() => setActiveTab('generate')} onContact={() => setShowContactDialog(true)} />
+        <GuidePanel
+          onStart={() => setActiveTab('generate')}
+          onContact={() => setShowContactDialog(true)}
+          registryVersion={modelRegistry?.registryVersion || '等待服务端目录'}
+          providerLabels={Object.keys(modelRegistry?.providers || {}).map((id) => PROVIDERS[id]?.label || id)}
+          routeSummary={{
+            main: activeMainRegistryEntry?.label || activeMainModelName,
+            image: activeImageRegistryEntry?.label || activeImageGenModelName,
+            vision: activeVisionRegistryEntry?.label || activeReferenceVisionModelName,
+          }}
+        />
       ) : (
         <TaskRecordsPanel
           authEnabled={AUTH_ENABLED}
