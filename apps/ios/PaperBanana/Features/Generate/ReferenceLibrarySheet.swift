@@ -27,7 +27,7 @@ struct ReferenceLibrarySheet: View {
         footer
       }
       .navigationTitle("参考图库")
-      .searchable(text: $query, prompt: "搜索主题、图示或论文")
+      .searchable(text: Binding(get: { query }, set: updateQuery), prompt: "搜索主题、图示或论文")
       .accessibilityIdentifier("reference.search")
       .task(id: "\(requestedPage)|\(query)|\(visualCategory)|\(researchDomain)") {
         searchDebouncer.schedule(request, operation: { request in
@@ -73,6 +73,12 @@ struct ReferenceLibrarySheet: View {
     }.padding().background(.bar)
   }
   private var rangeText: String { guard let page, page.total > 0 else { return "0 / 0" }; let start = (page.page - 1) * page.pageSize + 1; return "\(start)-\(min(start + page.references.count - 1, page.total)) / \(page.total)" }
+  private func updateQuery(_ newQuery: String) {
+    var updatedRequest = request
+    updatedRequest.setQuery(newQuery)
+    query = updatedRequest.query
+    requestedPage = updatedRequest.page
+  }
   private func reload() { Task { await model.generation.loadReferenceLibraryPage(request) } }
 }
 

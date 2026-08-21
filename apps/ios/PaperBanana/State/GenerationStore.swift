@@ -32,6 +32,7 @@ final class GenerationStore {
   var referenceLibraryError = ""
   var referenceLibraryLoading = false
   var referenceUploadError = ""
+  @ObservationIgnored private var referenceLibraryRequestSequence = 0
 
   /// 错误弹窗（由 AppModel 注入的跨域门面）。
   /// 默认实现 debug 下断言提醒忘记接线（release 下仍是 no-op），避免错误静默丢失。
@@ -417,17 +418,24 @@ final class GenerationStore {
   }
 
   func loadReferenceLibraryPage(_ request: ReferenceLibraryPageRequest) async {
+    referenceLibraryRequestSequence += 1
+    let requestSequence = referenceLibraryRequestSequence
     referenceLibraryError = ""
     referenceLibraryLoading = true
-    defer { referenceLibraryLoading = false }
+    defer {
+      if requestSequence == referenceLibraryRequestSequence {
+        referenceLibraryLoading = false
+      }
+    }
     do {
       let page = try await apiClient.referenceLibraryPage(apiBase: settings.apiBase, request: request)
+      guard requestSequence == referenceLibraryRequestSequence else { return }
       referenceLibraryPage = page
       referenceLibrary = page.references
     } catch is CancellationError {
       return
     } catch {
-      guard !Task.isCancelled else { return }
+      guard !Task.isCancelled, requestSequence == referenceLibraryRequestSequence else { return }
       referenceLibraryError = formatUserFacingError(error)
     }
   }

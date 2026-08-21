@@ -5,6 +5,7 @@ import XCTest
 final class GenerateV9ParityTests: XCTestCase {
   override func tearDown() {
     GenerateV9URLProtocolStub.requestHandler = nil
+    ControllableReferenceURLProtocol.reset()
     super.tearDown()
   }
 
@@ -119,17 +120,20 @@ final class GenerateV9ParityTests: XCTestCase {
   func testReferenceSearchDebouncerOnlyExecutesLastRapidQuery() async throws {
     var executed: [String] = []
     var observedDelays: [Duration] = []
+    var sleepers: [CheckedContinuation<Void, Never>] = []
     let debouncer = ReferenceLibrarySearchDebouncer<String>(sleep: { duration in
       observedDelays.append(duration)
-      try await Task.sleep(for: .milliseconds(25))
+      await withCheckedContinuation { sleepers.append($0) }
     })
 
     debouncer.schedule("a", operation: { executed.append($0) }) { _ in XCTFail("Cancellation must not be reported") }
-    await Task.yield()
+    await waitForSleepers(&sleepers, count: 1)
     debouncer.schedule("ab", operation: { executed.append($0) }) { _ in XCTFail("Cancellation must not be reported") }
-    await Task.yield()
+    await waitForSleepers(&sleepers, count: 2)
     debouncer.schedule("abc", operation: { executed.append($0) }) { _ in XCTFail("Cancellation must not be reported") }
-    try await Task.sleep(for: .milliseconds(80))
+    await waitForSleepers(&sleepers, count: 3)
+    sleepers.forEach { $0.resume() }
+    await waitForExecution(&executed, count: 1)
 
     XCTAssertEqual(executed, ["abc"])
     XCTAssertTrue(observedDelays.allSatisfy { $0 == ReferenceLibrarySearchDebouncer<String>.delay })
@@ -145,6 +149,61 @@ final class GenerateV9ParityTests: XCTestCase {
 
     XCTAssertFalse(executed)
     XCTAssertTrue(errors.isEmpty)
+  }
+
+  func testChangingReferenceQueryFromPageTwentySendsPageOneRequest() async throws {
+    var request = ReferenceLibraryPageRequest(page: 20, query: "", visualCategory: "framework", researchDomain: "AI")
+    request.setQuery("new query")
+    let client = PaperBananaAPIClient(session: URLSession.generateV9StubbedSession())
+    GenerateV9URLProtocolStub.requestHandler = { urlRequest in
+      let body = try JSONSerialization.jsonObject(with: try urlRequest.bodyData()) as? [String: Any]
+      XCTAssertEqual(body?["page"] as? Int, 1)
+      XCTAssertEqual(body?["query"] as? String, "new query")
+      return GenerateV9URLProtocolStub.response(url: urlRequest.url, body: #"{"code":0,"references":[],"total":0,"page":1,"pageSize":12,"totalPages":0,"facets":{}}"#)
+    }
+
+    _ = try await client.referenceLibraryPage(apiBase: "https://gateway.example", request: request)
+    XCTAssertEqual(request.page, 1)
+    XCTAssertEqual(request.query, "new query")
+    XCTAssertEqual(request.visualCategory, "framework")
+    XCTAssertEqual(request.researchDomain, "AI")
+  }
+
+  func testOlderReferenceSuccessDoesNotReplaceNewerLoadingOrPage() async throws {
+    let model = AppModel(apiClient: PaperBananaAPIClient(session: .controllableReferenceSession()))
+    let old = Task { await model.generation.loadReferenceLibraryPage(.init(page: 20, query: "old")) }
+    try await ControllableReferenceURLProtocol.waitForPending(count: 1)
+    let newest = Task { await model.generation.loadReferenceLibraryPage(.init(page: 1, query: "new")) }
+    try await ControllableReferenceURLProtocol.waitForPending(count: 2)
+
+    ControllableReferenceURLProtocol.respond(query: "old", body: referencePageJSON(id: "old", page: 20))
+    try await Task.sleep(for: .milliseconds(20))
+    XCTAssertTrue(model.generation.referenceLibraryLoading)
+    XCTAssertNil(model.generation.referenceLibraryPage)
+
+    ControllableReferenceURLProtocol.respond(query: "new", body: referencePageJSON(id: "new", page: 1))
+    await old.value
+    await newest.value
+    XCTAssertFalse(model.generation.referenceLibraryLoading)
+    XCTAssertEqual(model.generation.referenceLibraryPage?.references.first?.id, "new")
+  }
+
+  func testOlderReferenceFailureDoesNotReplaceNewerResultOrLoading() async throws {
+    let model = AppModel(apiClient: PaperBananaAPIClient(session: .controllableReferenceSession()))
+    let old = Task { await model.generation.loadReferenceLibraryPage(.init(page: 20, query: "old")) }
+    try await ControllableReferenceURLProtocol.waitForPending(count: 1)
+    let newest = Task { await model.generation.loadReferenceLibraryPage(.init(page: 1, query: "new")) }
+    try await ControllableReferenceURLProtocol.waitForPending(count: 2)
+
+    ControllableReferenceURLProtocol.respond(query: "new", body: referencePageJSON(id: "new", page: 1))
+    await newest.value
+    XCTAssertFalse(model.generation.referenceLibraryLoading)
+    ControllableReferenceURLProtocol.respond(query: "old", body: #"{"ok":false,"error":"stale failure"}"#)
+    await old.value
+
+    XCTAssertFalse(model.generation.referenceLibraryLoading)
+    XCTAssertEqual(model.generation.referenceLibraryPage?.references.first?.id, "new")
+    XCTAssertTrue(model.generation.referenceLibraryError.isEmpty)
   }
 
   func testSavedTemplateV1MigratesRoutesAndNegativePromptIntoV2() throws {
@@ -169,6 +228,28 @@ final class GenerateV9ParityTests: XCTestCase {
 
   private func reference(id: String) -> ReferenceLibraryItem {
     ReferenceLibraryItem(id: id, taskName: .diagram, title: id, summary: "", imageURL: "", imageObjectKey: "", source: "test")
+  }
+
+  private func referencePageJSON(id: String, page: Int) -> String {
+    """
+    {"code":0,"references":[{"id":"\(id)","task_name":"diagram","title":"\(id)","summary":"summary","image_url":"","image_object_key":""}],"total":24,"page":\(page),"page_size":12,"total_pages":2,"facets":{}}
+    """
+  }
+
+  private func waitForSleepers(_ sleepers: inout [CheckedContinuation<Void, Never>], count: Int) async {
+    for _ in 0..<100 {
+      if sleepers.count >= count { return }
+      await Task.yield()
+    }
+    XCTFail("Timed out waiting for \(count) debounced sleeps")
+  }
+
+  private func waitForExecution(_ executed: inout [String], count: Int) async {
+    for _ in 0..<100 {
+      if executed.count >= count { return }
+      await Task.yield()
+    }
+    XCTFail("Timed out waiting for debounced execution")
   }
 }
 
@@ -198,6 +279,75 @@ private extension URLSession {
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [GenerateV9URLProtocolStub.self]
     return URLSession(configuration: configuration)
+  }
+
+  static func controllableReferenceSession() -> URLSession {
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.protocolClasses = [ControllableReferenceURLProtocol.self]
+    return URLSession(configuration: configuration)
+  }
+}
+
+private final class ControllableReferenceURLProtocol: URLProtocol {
+  private struct PendingRequest {
+    let request: URLRequest
+    let protocolInstance: ControllableReferenceURLProtocol
+  }
+
+  private static let lock = NSLock()
+  nonisolated(unsafe) private static var pending: [PendingRequest] = []
+
+  override class func canInit(with request: URLRequest) -> Bool { true }
+  override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+
+  override func startLoading() {
+    Self.lock.lock()
+    Self.pending.append(PendingRequest(request: request, protocolInstance: self))
+    Self.lock.unlock()
+  }
+
+  override func stopLoading() {}
+
+  static func reset() {
+    lock.lock()
+    pending = []
+    lock.unlock()
+  }
+
+  static func waitForPending(count: Int) async throws {
+    for _ in 0..<400 {
+      lock.lock()
+      let hasEnough = pending.count >= count
+      lock.unlock()
+      if hasEnough { return }
+      try await Task.sleep(for: .milliseconds(5))
+    }
+    throw URLError(.timedOut)
+  }
+
+  static func respond(query: String, body: String) {
+    lock.lock()
+    let index = pending.firstIndex { pendingRequest in
+      let body = String(data: (try? pendingRequest.request.bodyData()) ?? Data(), encoding: .utf8) ?? ""
+      return body.contains("\"query\":\"\(query)\"")
+    }
+    guard let index else {
+      lock.unlock()
+      XCTFail("No pending reference request for query \(query)")
+      return
+    }
+    let pendingRequest = pending.remove(at: index)
+    lock.unlock()
+
+    let response = HTTPURLResponse(
+      url: pendingRequest.request.url ?? URL(string: "https://gateway.example/paperbanana-api")!,
+      statusCode: 200,
+      httpVersion: "HTTP/1.1",
+      headerFields: ["Content-Type": "application/json"]
+    )!
+    pendingRequest.protocolInstance.client?.urlProtocol(pendingRequest.protocolInstance, didReceive: response, cacheStoragePolicy: .notAllowed)
+    pendingRequest.protocolInstance.client?.urlProtocol(pendingRequest.protocolInstance, didLoad: Data(body.utf8))
+    pendingRequest.protocolInstance.client?.urlProtocolDidFinishLoading(pendingRequest.protocolInstance)
   }
 }
 

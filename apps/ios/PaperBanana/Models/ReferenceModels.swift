@@ -159,7 +159,17 @@ struct ReferenceLibraryPage: Decodable, Equatable {
   let references: [ReferenceLibraryItem]; let total: Int; let page: Int; let pageSize: Int; let totalPages: Int; let facets: ReferenceLibraryFacets
   init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); references = c.decodeArray("references"); total = c.int("total", default: references.count); page = max(1, c.int("page", default: 1)); pageSize = max(1, c.int("pageSize", "page_size", default: 12)); totalPages = max(1, c.int("totalPages", "total_pages", default: Int(ceil(Double(max(total, 1)) / Double(pageSize))))) ; facets = (try? c.decode(ReferenceLibraryFacets.self, forKey: .key("facets"))) ?? .empty }
 }
-struct ReferenceLibraryPageRequest: Equatable { var page: Int = 1; var query = ""; var visualCategory: String?; var researchDomain: String? }
+struct ReferenceLibraryPageRequest: Equatable {
+  var page: Int = 1
+  var query = ""
+  var visualCategory: String?
+  var researchDomain: String?
+
+  mutating func setQuery(_ newQuery: String) {
+    query = newQuery
+    page = 1
+  }
+}
 enum ReferenceLibrarySelectionError: LocalizedError { case maximumReached; var errorDescription: String? { "最多只能选择 10 张参考图。" } }
 struct ReferenceLibrarySelection: Equatable {
   private(set) var selectedIDs: [String] = []; private var cache: [String: ReferenceLibraryItem] = [:]
