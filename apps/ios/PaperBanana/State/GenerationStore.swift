@@ -457,8 +457,12 @@ final class GenerationStore {
   }
 
   func verifyArkRoutes(confirmPaidImageProbe: Bool, includeImageRoute: Bool = true) async {
+    await verifyArkRoutes(for: requiredRouteRoles, confirmPaidImageProbe: confirmPaidImageProbe, includeImageRoute: includeImageRoute)
+  }
+
+  func verifyArkRoutes(for executionRoles: [ModelRole], confirmPaidImageProbe: Bool, includeImageRoute: Bool = true) async {
     guard let routes = activeRoutes else { return }
-    let arkRoles = requiredRouteRoles.filter { routes[$0]?.accessProvider == .ark && (includeImageRoute || $0 != .image) }
+    let arkRoles = executionRoles.filter { routes[$0]?.accessProvider == .ark && (includeImageRoute || $0 != .image) }
     guard !arkRoles.isEmpty else { arkProbeStatus = includeImageRoute ? "当前没有需要验证的方舟路线。" : "当前没有可进行非付费探测的方舟路线。"; return }
     let containsImage = arkRoles.contains(.image)
     guard !containsImage || confirmPaidImageProbe else {

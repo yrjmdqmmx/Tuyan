@@ -84,9 +84,7 @@ final class AppModel {
   /// Source is accepted only from an existing result belonging to the current
   /// task or the signed-in user's record list. No arbitrary URL entry exists.
   func beginRefine(job: Job, image: ResultImage) {
-    let isCurrent = job.id == jobs.currentJobID
-    let isOwnedRecord = jobs.userJobs.contains { $0.id == job.id }
-    guard isCurrent || isOwnedRecord else {
+    guard jobs.canRefine(jobID: job.id) else {
       presentAlert("只能精修当前生成结果或本账号任务记录中的图片。")
       return
     }

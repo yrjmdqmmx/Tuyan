@@ -165,11 +165,38 @@ final class JobsStoreTests: XCTestCase {
     store.pausePolling()
   }
 
+  func testCachedRecordIsNotAuthorizedForRefineUntilServerConfirmsOwnership() async throws {
+    let store = try makeSignedInStore()
+    defer { store.clearForSignOut(); store.clearLocalJobs() }
+    store.userJobs = [Job(id: "cached-old-account", status: "succeeded")]
+    XCTAssertFalse(store.canRefine(jobID: "cached-old-account"))
+
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"jobs":[{"id":"cached-old-account","status":"succeeded"}]}"#)
+    }
+    await store.loadUserJobs(silent: true)
+    XCTAssertTrue(store.canRefine(jobID: "cached-old-account"))
+  }
+
+  func testCurrentTrackedJobCanRefineButSignOutRevokesOwnership() throws {
+    let store = try makeSignedInStore()
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"job":{"id":"new-local","status":"queued"}}"#)
+    }
+    store.track(jobID: "new-local", status: "queued")
+    XCTAssertTrue(store.canRefine(jobID: "new-local"))
+
+    store.clearForSignOut()
+    XCTAssertFalse(store.canRefine(jobID: "new-local"))
+    store.pausePolling()
+  }
+
   func testMissingServerSourceKeepsRegisteredRefineSourceThroughCurrentRefresh() async throws {
     let store = makeStore()
     let source = RefineSource(jobID: "generate-1", image: resultImage(objectKey: "jobs/generate-1/image.png"))
     store.registerRefineSource(source, for: "refine-1")
     store.currentJobID = "refine-1"
+    store.currentJob = Job(id: "refine-1", status: "queued")
     JobsStoreStub.requestHandler = { request in
       JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"job":{"id":"refine-1","status":"running"}}"#)
     }

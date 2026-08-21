@@ -9,7 +9,11 @@ struct RefineView: View {
       ScrollView {
         VStack(alignment: .leading, spacing: Theme.Spacing.lg) {
           if model.refine.draft.source == nil { emptyState } else { editor }
-          if let job = model.jobs.currentJob, job.jobType == "refine" || model.refine.isSubmitting { JobDetailView(model: model, job: job).accessibilityIdentifier("refine.result") }
+          if model.refine.isSubmitting {
+            ProgressView("正在提交精修任务…").frame(maxWidth: .infinity).accessibilityIdentifier("refine.result")
+          } else if let job = model.jobs.currentJob, !model.refine.submittedJobID.isEmpty, job.id == model.refine.submittedJobID {
+            JobDetailView(model: model, job: job).accessibilityIdentifier("refine.result")
+          }
         }.padding(Theme.Spacing.md)
       }.navigationTitle("精修图片")
         .sheet(item: $settingsSheet) { $0 }
@@ -61,7 +65,7 @@ struct RefineView: View {
 
   private var routeCard: some View {
     GlassPanel { HStack { VStack(alignment: .leading) { Text("模型路线").font(.headline); Text(routeSummary).font(.footnote).foregroundStyle(.secondary) }; Spacer()
-      Button("生成设置") { settingsSheet = GenerationSettingsSheet(model: model, onPresentReferenceLibrary: { model.selectedTab = .generate }) }.accessibilityIdentifier("refine.settings.summary")
+      Button("生成设置") { settingsSheet = GenerationSettingsSheet(model: model, onPresentReferenceLibrary: { model.selectedTab = .generate }, executionRoles: model.refine.capability.requiredRoles) }.accessibilityIdentifier("refine.settings.summary")
     }}.accessibilityIdentifier("refine.route.summary")
   }
 

@@ -83,7 +83,8 @@ final class RefineV9ParityTests: XCTestCase {
   func testOwnedRecordResultNavigatesToRefineAndResetsInstruction() throws {
     let model = AppModel()
     let job = try JSONDecoder().decode(Job.self, from: Data(#"{"id":"owned","status":"succeeded","resultImages":[{"filename":"one.png","url":"https://signed.example/one.png","objectKey":"jobs/owned/one.png","candidateId":2}]}"#.utf8))
-    model.jobs.userJobs = [job]
+    model.jobs.currentJobID = job.id
+    model.jobs.currentJob = job
     model.refine.draft.instruction = "stale instruction"
 
     model.beginRefine(job: job, image: try XCTUnwrap(job.resultImages.first))
@@ -91,6 +92,13 @@ final class RefineV9ParityTests: XCTestCase {
     XCTAssertEqual(model.selectedTab, .refine)
     XCTAssertEqual(model.refine.draft.source?.objectKey, "jobs/owned/one.png")
     XCTAssertTrue(model.refine.draft.instruction.isEmpty)
+  }
+
+  func testRefineSubmissionStateDoesNotReusePreviousGenerateJob() {
+    let model = AppModel()
+    model.jobs.currentJob = Job(id: "generate-old", status: "succeeded")
+    model.refine.submittedJobID = "refine-new"
+    XCTAssertNotEqual(model.jobs.currentJob?.id, model.refine.submittedJobID)
   }
 }
 

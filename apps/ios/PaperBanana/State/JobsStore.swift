@@ -38,6 +38,10 @@ final class JobsStore {
   private let localRecordsCache = RecordsDiskCache(filename: "local-jobs.json")
   private let refineSourceCache = RefineSourceDiskCache()
   private var refineSources: [String: RefineSource] = [:]
+  /// This is deliberately memory-only. Cached records can be shown offline,
+  /// but only this session's successful authenticated response authorizes a
+  /// historical result for refinement.
+  private var serverOwnedJobIDs = Set<String>()
 
   init(apiClient: PaperBananaAPIClient, settings: SettingsStore, auth: AuthStore, poller: JobPoller? = nil) {
     self.apiClient = apiClient
@@ -63,6 +67,10 @@ final class JobsStore {
     guard !jobID.isEmpty else { return }
     refineSources[jobID] = source
     refineSourceCache.save(refineSources)
+  }
+
+  func canRefine(jobID: String) -> Bool {
+    !jobID.isEmpty && ((jobID == currentJobID && currentJob != nil) || serverOwnedJobIDs.contains(jobID))
   }
 
   func pausePolling() {
@@ -107,7 +115,9 @@ final class JobsStore {
     }
     defer { recordsLoading = false }
     do {
-      userJobs = try await apiClient.userJobs(apiBase: settings.apiBase).map(mergeLocalRefineSource)
+      let fetched = try await apiClient.userJobs(apiBase: settings.apiBase)
+      serverOwnedJobIDs.formUnion(fetched.map(\.id).filter { !$0.isEmpty })
+      userJobs = fetched.map(mergeLocalRefineSource)
       if let currentJob {
         mergeTrackedJobIntoUserJobs(currentJob)
       }
@@ -137,10 +147,15 @@ final class JobsStore {
 
   func clearForSignOut() {
     userJobs = []
+    currentJobID = ""
+    currentJob = nil
+    pollingError = ""
+    lastPolledAt = nil
     isShowingCachedData = false
     recordsCache.clear()
     refineSources = [:]
     refineSourceCache.clear()
+    serverOwnedJobIDs = []
   }
 
   func clearLocalJobs() {
@@ -148,6 +163,7 @@ final class JobsStore {
     localRecordsCache.clear()
     refineSources = [:]
     refineSourceCache.clear()
+    serverOwnedJobIDs = []
   }
 
   private func startPolling(jobID: String) {
@@ -188,7 +204,7 @@ final class JobsStore {
   }
 
   private func mergeLocalRefineSource(into job: Job) -> Job {
-    guard job.sourceImageObjectKey.isEmpty, job.sourceImageURL.isEmpty,
+    guard canRefine(jobID: job.id), job.sourceImageObjectKey.isEmpty, job.sourceImageURL.isEmpty,
           let source = refineSources[job.id] else { return job }
     var merged = job
     merged.sourceImageObjectKey = source.objectKey

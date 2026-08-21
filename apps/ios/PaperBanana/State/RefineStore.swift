@@ -7,6 +7,9 @@ final class RefineStore {
   var draft = RefineDraft()
   var submitError = ""
   var isSubmitting = false
+  /// Set only after refineImage returns a server-issued ID. It keeps the
+  /// refinement result region separate from any preceding generation job.
+  var submittedJobID = ""
 
   private let apiClient: PaperBananaAPIClient
   private let settings: SettingsStore
@@ -50,6 +53,7 @@ final class RefineStore {
     draft.source = source
     draft.instruction = ""
     submitError = ""
+    submittedJobID = ""
     normalizeWithLiveRegistry()
   }
 
@@ -62,6 +66,7 @@ final class RefineStore {
     guard canSubmit, let source = draft.source, let routes = activeRoutes, let imageSize = draft.imageSize else { return }
     isSubmitting = true
     submitError = ""
+    submittedJobID = ""
     defer { isSubmitting = false }
     let roles = capability.requiredRoles
     do {
@@ -73,6 +78,7 @@ final class RefineStore {
       )
       let created = try await apiClient.refineImage(apiBase: settings.apiBase, payload: payload)
       guard !created.id.isEmpty else { throw PaperBananaAPIError.server("后端没有返回任务 ID。") }
+      submittedJobID = created.id
       jobs.registerRefineSource(source, for: created.id)
       jobs.track(jobID: created.id, status: created.status, localDraft: Job(id: created.id, status: created.status, payload: payload))
       await jobs.loadUserJobs(silent: true)
