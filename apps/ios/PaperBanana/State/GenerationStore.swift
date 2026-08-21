@@ -240,7 +240,6 @@ final class GenerationStore {
   // MARK: - 草稿操作
 
   func selectProvider(_ provider: ProviderID) {
-    saveSelectedProviderKey()
     draft.applyProviderDefaults(provider, routes: registryStore.registry?.defaultRoutes(for: provider))
     mainModelCapability = nil
     alignReferenceImageModeWithActiveMainModel()
@@ -298,8 +297,7 @@ final class GenerationStore {
   }
 
   func updateSelectedAPIKey(_ value: String) {
-    selectedAPIKey = value
-    saveSelectedProviderKey()
+    updateAPIKey(value, for: draft.provider)
   }
 
   func updateAPIKey(_ value: String, for provider: ProviderID) {
@@ -360,7 +358,6 @@ final class GenerationStore {
   }
 
   func applyTemplate(_ configuration: SavedGenerationTemplateConfiguration) {
-    saveSelectedProviderKey()
     configuration.apply(to: &draft)
     referenceUploadError = ""
     mainModelCapability = nil
@@ -446,7 +443,6 @@ final class GenerationStore {
 
   func submitJob() async {
     guard canSubmit else { return }
-    saveSelectedProviderKey()
     isSubmitting = true
     submitError = ""
     jobs.currentJob = nil

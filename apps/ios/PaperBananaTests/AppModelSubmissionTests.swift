@@ -89,6 +89,9 @@ final class AppModelSubmissionTests: XCTestCase {
     XCTAssertEqual(model.generation.requiredRouteRoles, [.main])
 
     model.generation.draft.pipelineMode = .full
+    XCTAssertEqual(model.generation.requiredRouteRoles, [.main]) // zero-critic plot/full does not invoke vision
+
+    model.generation.draft.maxCriticRounds = 1
     XCTAssertEqual(model.generation.requiredRouteRoles, [.main, .vision])
 
     model.generation.draft.referenceImages = [PendingReferenceImage(id: "ref", filename: "a.png", mimeType: "image/png", data: Data([1]))]

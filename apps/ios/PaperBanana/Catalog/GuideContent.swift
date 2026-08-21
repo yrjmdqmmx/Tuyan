@@ -40,7 +40,7 @@ enum PaperBananaGuide {
     GuideStep(
       id: "provider-key",
       title: "选接口、填 Key",
-      detail: "选择 OpenRouter、Gemini、OpenAI 或阿里百炼之一，填入当前接口的 API Key。每个平台的申请指南在生成页 Key 输入框下方。"
+      detail: "选择 OpenRouter、Gemini、OpenAI、阿里百炼或火山方舟之一。普通模式只需当前单渠道 Key；专业模式可为主模型、图像模型、视觉模型分别选择渠道并填写各自 Key。"
     ),
     GuideStep(
       id: "paper-input",
@@ -63,7 +63,7 @@ enum PaperBananaGuide {
   ]
 
   static let modelTerms: [GuideTerm] = [
-    GuideTerm(id: "provider", name: "模型接口（Provider）", detail: "选择哪家模型服务。切换接口会同步刷新主模型、图像模型、视觉模型和清晰度档位。"),
+    GuideTerm(id: "provider", name: "模型接口（Provider）", detail: "选择哪家模型服务。普通模式使用单渠道三路默认模型；专业模式允许三路独立渠道与独立 Key，模型与能力以服务端实时目录为准。"),
     GuideTerm(id: "main-model", name: "主模型", detail: "负责规划、文本评审和自动检索相关性排序。建议选择推理能力强的模型。"),
     GuideTerm(id: "image-model", name: "图像生成模型", detail: "负责真正出图，决定风格、质量上限和可用清晰度。"),
     GuideTerm(id: "vision-model", name: "参考图识别模型", detail: "当主模型不能直读参考图时，先把参考图读成文字描述，再交给生成链路。")
