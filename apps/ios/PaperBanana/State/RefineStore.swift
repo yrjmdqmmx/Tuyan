@@ -28,7 +28,7 @@ final class RefineStore {
     guard let imageModel else { return [] }
     return imageModel.capabilities.refineResolutions ?? [.twoK]
   }
-  var refineAspectRatios: [String] { imageModel.map { $0.capabilities.refineAspectRatios == nil ? ["16:9", "21:9", "3:2", "1:1"] : ($0.capabilities.refineAspectRatios!.isEmpty ? ["auto"] : $0.capabilities.refineAspectRatios!) } ?? [] }
+  var refineAspectRatios: [String] { imageModel.map { RefineDraft.supportedAspectRatios($0.capabilities.refineAspectRatios) } ?? [] }
   var canSubmit: Bool {
     guard !isSubmitting, draft.source != nil, draft.trimmedInstruction.count >= 3,
           generation.registryStore.hasLiveRegistry, let registry = generation.registryStore.registry, let routes = activeRoutes,
@@ -73,6 +73,7 @@ final class RefineStore {
       )
       let created = try await apiClient.refineImage(apiBase: settings.apiBase, payload: payload)
       guard !created.id.isEmpty else { throw PaperBananaAPIError.server("后端没有返回任务 ID。") }
+      jobs.registerRefineSource(source, for: created.id)
       jobs.track(jobID: created.id, status: created.status, localDraft: Job(id: created.id, status: created.status, payload: payload))
       await jobs.loadUserJobs(silent: true)
     } catch {

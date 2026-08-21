@@ -33,6 +33,33 @@ struct RecordsDiskCache {
   }
 }
 
+/// Local-only refinement provenance. Entries originate exclusively from a
+/// result selected through AppModel and are keyed by the server-issued refine
+/// job ID, so this cache never turns an arbitrary URL into a usable source.
+struct RefineSourceDiskCache {
+  private let fileURL: URL
+
+  init(filename: String = "refine-sources.json") {
+    let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+      ?? FileManager.default.temporaryDirectory
+    fileURL = base.appendingPathComponent("PaperBanana", isDirectory: true).appendingPathComponent(filename)
+  }
+
+  func load() -> [String: RefineSource] {
+    guard let data = try? Data(contentsOf: fileURL) else { return [:] }
+    return (try? JSONDecoder().decode([String: RefineSource].self, from: data)) ?? [:]
+  }
+
+  func save(_ sources: [String: RefineSource]) {
+    do {
+      try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+      try JSONEncoder().encode(sources).write(to: fileURL, options: .atomic)
+    } catch { }
+  }
+
+  func clear() { try? FileManager.default.removeItem(at: fileURL) }
+}
+
 // MARK: - 缓存用 Encodable 实现
 // 编码使用各自解码器的首选 key（snake_case），保证缓存能被同一解码逻辑读回。
 

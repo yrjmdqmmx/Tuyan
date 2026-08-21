@@ -28,9 +28,10 @@ func formatUserFacingError(_ message: String) -> String {
 private func userFacingMessage(for details: ServerErrorDetails) -> String {
   let message = details.message?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
   // Keep a concrete server explanation (for example the exact unsupported
-  // model/ratio) instead of replacing it with a generic code label. Auth
-  // codes remain deliberately mapped before this for safety and consistency.
+  // model/ratio) instead of replacing it with a generic HTTP status. Auth
+  // and stable cross-client business codes deliberately win before raw text.
   if let code = details.code, isAuthenticationCode(code), let mapped = mappedErrorCode(code) { return mapped }
+  if let code = details.code, isStableBusinessCode(code), let mapped = mappedErrorCode(code) { return mapped }
   if !message.isEmpty, let code = details.code, message.uppercased() != code.uppercased() {
     if let mapped = mappedKnownMessage(message) { return mapped }
     return message
@@ -49,6 +50,10 @@ private func userFacingMessage(for details: ServerErrorDetails) -> String {
 
 private func isAuthenticationCode(_ code: String) -> Bool {
   ["INVALID_EMAIL_OR_PASSWORD", "USER_NOT_FOUND", "INVALID_PASSWORD", "EMAIL_MISMATCH", "USER_ALREADY_EXISTS", "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL", "INVALID_EMAIL", "PASSWORD_TOO_SHORT", "SESSION_EXPIRED"].contains(code.uppercased())
+}
+
+private func isStableBusinessCode(_ code: String) -> Bool {
+  ["MODEL_ROUTE_CONFLICT", "INVALID_ASPECT_RATIO", "ASPECT_RATIO_UNSUPPORTED", "REFINE_ASPECT_RATIO_UNSUPPORTED", "REFINE_RESOLUTION_UNSUPPORTED", "REFERENCE_LIBRARY_REQUEST_INVALID", "REFERENCE_LIBRARY_SELECTION_INVALID", "REFERENCE_SELECTION_INVALID", "REFERENCE_SELECTION_LIMIT"].contains(code.uppercased())
 }
 
 /// Better Auth 等后端的已知错误 code。

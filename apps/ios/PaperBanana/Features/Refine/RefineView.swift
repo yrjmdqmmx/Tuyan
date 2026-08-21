@@ -9,7 +9,7 @@ struct RefineView: View {
       ScrollView {
         VStack(alignment: .leading, spacing: Theme.Spacing.lg) {
           if model.refine.draft.source == nil { emptyState } else { editor }
-          if let job = model.jobs.currentJob, job.jobType == "refine" || model.refine.isSubmitting { JobDetailView(model: model, job: job) }
+          if let job = model.jobs.currentJob, job.jobType == "refine" || model.refine.isSubmitting { JobDetailView(model: model, job: job).accessibilityIdentifier("refine.result") }
         }.padding(Theme.Spacing.md)
       }.navigationTitle("精修图片")
         .sheet(item: $settingsSheet) { $0 }
@@ -56,13 +56,13 @@ struct RefineView: View {
     GlassPanel { VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
       Text("精修能力").font(.headline); Text(model.refine.capability.title).font(.subheadline.weight(.semibold))
       Text(model.refine.capability.isSupported ? "所需路线：\(model.refine.capability.requiredRoles.map(\.rawValue).joined(separator: "、"))" : "请在生成设置中选择支持图片精修的图像模型。").font(.footnote).foregroundStyle(.secondary)
-    }}
+    }}.accessibilityIdentifier("refine.capability")
   }
 
   private var routeCard: some View {
     GlassPanel { HStack { VStack(alignment: .leading) { Text("模型路线").font(.headline); Text(routeSummary).font(.footnote).foregroundStyle(.secondary) }; Spacer()
       Button("生成设置") { settingsSheet = GenerationSettingsSheet(model: model, onPresentReferenceLibrary: { model.selectedTab = .generate }) }.accessibilityIdentifier("refine.settings.summary")
-    }}
+    }}.accessibilityIdentifier("refine.route.summary")
   }
 
   private var routeSummary: String {
@@ -79,9 +79,9 @@ struct RefineView: View {
 
   private var outputControls: some View {
     GlassPanel { VStack(alignment: .leading, spacing: Theme.Spacing.md) {
-      Picker("目标比例", selection: $model.refine.draft.aspectRatio) { ForEach(model.refine.refineAspectRatios, id: \.self) { Text($0).tag($0) } }
-      if model.refine.refineResolutions.isEmpty { Text("当前图像模型未声明可执行的精修清晰度。").foregroundStyle(.red) }
-      else { Picker("精修清晰度", selection: Binding(get: { model.refine.draft.imageSize ?? model.refine.refineResolutions.first! }, set: { model.refine.draft.imageSize = $0 })) { ForEach(model.refine.refineResolutions) { Text($0.title).tag($0) } } }
+      Picker("目标比例", selection: $model.refine.draft.aspectRatio) { ForEach(model.refine.refineAspectRatios, id: \.self) { Text($0).tag($0) } }.accessibilityIdentifier("refine.ratio")
+      if model.refine.refineResolutions.isEmpty { Text("当前图像模型未声明可执行的精修清晰度。").foregroundStyle(.red).accessibilityIdentifier("refine.resolution") }
+      else { Picker("精修清晰度", selection: Binding(get: { model.refine.draft.imageSize ?? model.refine.refineResolutions.first! }, set: { model.refine.draft.imageSize = $0 })) { ForEach(model.refine.refineResolutions) { Text($0.title).tag($0) } }.accessibilityIdentifier("refine.resolution") }
     }}
   }
 }

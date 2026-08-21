@@ -41,6 +41,15 @@ final class RefineV9ParityTests: XCTestCase {
     XCTAssertEqual(route.modelId, "image")
   }
 
+  func testAutoIsAlwaysAnAllowedRefineRatio() {
+    XCTAssertEqual(RefineDraft.supportedAspectRatios(nil), ["auto", "16:9", "21:9", "3:2", "1:1"])
+    XCTAssertEqual(RefineDraft.supportedAspectRatios(["1:1", "16:9"]), ["auto", "1:1", "16:9"])
+    XCTAssertEqual(RefineDraft.supportedAspectRatios([]), ["auto"])
+    let routeChanged = RefineDraft(source: nil, instruction: "", aspectRatio: "16:9", imageSize: .twoK)
+      .normalized(refineAspectRatios: ["1:1"], refineResolutions: [.twoK])
+    XCTAssertEqual(routeChanged.aspectRatio, "auto")
+  }
+
   func testFiveTabsPutRefineBetweenGenerateAndRecords() {
     XCTAssertEqual(AppTab.allCases, [.generate, .refine, .records, .guide, .settings])
   }

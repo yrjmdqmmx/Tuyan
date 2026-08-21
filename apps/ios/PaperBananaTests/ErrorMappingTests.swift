@@ -87,9 +87,14 @@ final class ErrorMappingTests: XCTestCase {
     XCTAssertEqual(formatUserFacingError(error), "登录已过期，请重新登录。")
   }
 
-  func testConcreteServerMessageWinsOverBusinessCodeLabel() {
+  func testStableBusinessCodeWinsOverEnglishServerDetail() {
     let error = PaperBananaAPIError.http(ServerErrorDetails(statusCode: 400, code: "REFINE_RESOLUTION_UNSUPPORTED", message: "wan2.7-image-pro 仅支持 2K 精修"))
-    XCTAssertEqual(formatUserFacingError(error), "wan2.7-image-pro 仅支持 2K 精修")
+    XCTAssertEqual(formatUserFacingError(error), "当前模型不支持所选精修清晰度，请更换设置后重试。")
+  }
+
+  func testAuthCodeStillWinsOverServerDetail() {
+    let error = PaperBananaAPIError.http(ServerErrorDetails(statusCode: 401, code: "INVALID_PASSWORD", message: "English detail"))
+    XCTAssertEqual(formatUserFacingError(error), "密码不正确，请重新输入。")
   }
 
   // MARK: - Better Auth 已知英文消息

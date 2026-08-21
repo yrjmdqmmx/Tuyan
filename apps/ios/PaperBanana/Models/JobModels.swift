@@ -153,8 +153,8 @@ struct Job: Decodable, Identifiable, Equatable {
   let imageRefineReason: String
   let refineMode: String
   let refineReason: String
-  let sourceImageObjectKey: String
-  let sourceImageURL: String
+  var sourceImageObjectKey: String
+  var sourceImageURL: String
   let referenceImageMode: ReferenceImageMode?
   let referenceImageModeUsed: String
   let pipelineMode: String

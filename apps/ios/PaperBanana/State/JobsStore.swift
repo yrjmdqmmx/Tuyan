@@ -36,6 +36,8 @@ final class JobsStore {
   private let poller: JobPoller
   private let recordsCache = RecordsDiskCache()
   private let localRecordsCache = RecordsDiskCache(filename: "local-jobs.json")
+  private let refineSourceCache = RefineSourceDiskCache()
+  private var refineSources: [String: RefineSource] = [:]
 
   init(apiClient: PaperBananaAPIClient, settings: SettingsStore, auth: AuthStore, poller: JobPoller? = nil) {
     self.apiClient = apiClient
@@ -47,7 +49,7 @@ final class JobsStore {
   /// 开始跟踪一个新建任务并启动轮询。
   func track(jobID: String, status: String, localDraft: Job? = nil) {
     currentJobID = jobID
-    currentJob = localDraft ?? Job(id: jobID, status: status)
+    currentJob = mergeLocalRefineSource(into: localDraft ?? Job(id: jobID, status: status))
     pollingError = ""
     // 新任务还没拿到过数据：清掉上一个任务的刷新时间，避免"刷新于 X 前"显示旧任务的时刻。
     lastPolledAt = nil
@@ -55,6 +57,12 @@ final class JobsStore {
       storeLocalJob(currentJob)
     }
     startPolling(jobID: jobID)
+  }
+
+  func registerRefineSource(_ source: RefineSource, for jobID: String) {
+    guard !jobID.isEmpty else { return }
+    refineSources[jobID] = source
+    refineSourceCache.save(refineSources)
   }
 
   func pausePolling() {
@@ -82,8 +90,9 @@ final class JobsStore {
       let job = try await apiClient.getJob(apiBase: settings.apiBase, jobID: jobID)
       // await 期间可能已 track 了新任务：旧任务的慢响应不得覆盖新任务的 currentJob。
       guard jobID == currentJobID else { return }
-      currentJob = job
-      storeLocalJob(job)
+      let merged = mergeLocalRefineSource(into: job)
+      currentJob = merged
+      storeLocalJob(merged)
       lastPolledAt = Date()
     } catch {
       // 一次性刷新失败不展示错误：常驻错误通道是 pollingError。
@@ -98,7 +107,7 @@ final class JobsStore {
     }
     defer { recordsLoading = false }
     do {
-      userJobs = try await apiClient.userJobs(apiBase: settings.apiBase)
+      userJobs = try await apiClient.userJobs(apiBase: settings.apiBase).map(mergeLocalRefineSource)
       if let currentJob {
         mergeTrackedJobIntoUserJobs(currentJob)
       }
@@ -116,12 +125,13 @@ final class JobsStore {
 
   /// 启动时先加载本地缓存展示，等网络刷新成功后覆盖。
   func loadCachedRecords() {
+    refineSources = refineSourceCache.load()
     if userJobs.isEmpty, let cached = recordsCache.load(), !cached.isEmpty {
-      userJobs = cached
+      userJobs = cached.map(mergeLocalRefineSource)
       isShowingCachedData = true
     }
     if localJobs.isEmpty, let cached = localRecordsCache.load(), !cached.isEmpty {
-      localJobs = Array(cached.prefix(10))
+      localJobs = Array(cached.map(mergeLocalRefineSource).prefix(10))
     }
   }
 
@@ -129,11 +139,15 @@ final class JobsStore {
     userJobs = []
     isShowingCachedData = false
     recordsCache.clear()
+    refineSources = [:]
+    refineSourceCache.clear()
   }
 
   func clearLocalJobs() {
     localJobs = []
     localRecordsCache.clear()
+    refineSources = [:]
+    refineSourceCache.clear()
   }
 
   private func startPolling(jobID: String) {
@@ -142,9 +156,11 @@ final class JobsStore {
     poller.start(
       fetch: { try await apiClient.getJob(apiBase: settings.apiBase, jobID: jobID) },
       onUpdate: { [weak self] job in
-        self?.currentJob = job
-        self?.storeLocalJob(job)
-        self?.lastPolledAt = Date()
+        guard let self else { return }
+        let merged = self.mergeLocalRefineSource(into: job)
+        self.currentJob = merged
+        self.storeLocalJob(merged)
+        self.lastPolledAt = Date()
       },
       onFinish: { [weak self] termination in
         self?.handlePollingTermination(termination)
@@ -169,6 +185,15 @@ final class JobsStore {
     localJobs = Array(([job] + existing).prefix(10))
     localRecordsCache.save(localJobs)
     mergeTrackedJobIntoUserJobs(job)
+  }
+
+  private func mergeLocalRefineSource(into job: Job) -> Job {
+    guard job.sourceImageObjectKey.isEmpty, job.sourceImageURL.isEmpty,
+          let source = refineSources[job.id] else { return job }
+    var merged = job
+    merged.sourceImageObjectKey = source.objectKey
+    merged.sourceImageURL = source.objectKey.isEmpty ? source.previewURL : ""
+    return merged
   }
 
   private func mergeTrackedJobIntoUserJobs(_ job: Job) {

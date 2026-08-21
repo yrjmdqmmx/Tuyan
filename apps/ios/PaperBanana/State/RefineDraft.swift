@@ -1,7 +1,7 @@
 import Foundation
 
 /// A refinement source is deliberately created only from an already-owned Job result.
-struct RefineSource: Equatable, Identifiable {
+struct RefineSource: Codable, Equatable, Identifiable {
   let jobID: String
   let previewURL: String
   let objectKey: String
@@ -25,6 +25,7 @@ struct RefineSource: Equatable, Identifiable {
 }
 
 struct RefineDraft: Equatable {
+  static let legacySafeAspectRatios = ["16:9", "21:9", "3:2", "1:1"]
   var source: RefineSource?
   var instruction: String
   var aspectRatio: String
@@ -39,9 +40,14 @@ struct RefineDraft: Equatable {
 
   var trimmedInstruction: String { instruction.trimmingCharacters(in: .whitespacesAndNewlines) }
 
+  static func supportedAspectRatios(_ declared: [String]?) -> [String] {
+    let values = declared ?? legacySafeAspectRatios
+    return ["auto"] + values.filter { $0 != "auto" }
+  }
+
   func normalized(refineAspectRatios: [String]?, refineResolutions: [ImageSize]?) -> RefineDraft {
     var value = self
-    let ratios = refineAspectRatios == nil ? ["16:9", "21:9", "3:2", "1:1"] : (refineAspectRatios?.isEmpty == true ? ["auto"] : refineAspectRatios!)
+    let ratios = Self.supportedAspectRatios(refineAspectRatios)
     if !ratios.contains(value.aspectRatio) { value.aspectRatio = "auto" }
     let sizes = refineResolutions ?? [.twoK]
     if !sizes.contains(value.imageSize ?? .twoK) { value.imageSize = sizes.first }

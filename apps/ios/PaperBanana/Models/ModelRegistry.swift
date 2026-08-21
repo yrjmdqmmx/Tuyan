@@ -219,7 +219,7 @@ struct ModelRegistry: Codable, Equatable {
 
   func refineAspectRatios(for route: ModelRoute) -> [String] {
     let values = model(for: route)?.capabilities.refineAspectRatios
-    return values == nil ? Self.fallbackAspectRatios : (values?.isEmpty == true ? ["auto"] : values!)
+    return ["auto"] + (values ?? Self.fallbackAspectRatios).filter { $0 != "auto" }
   }
 }
 
