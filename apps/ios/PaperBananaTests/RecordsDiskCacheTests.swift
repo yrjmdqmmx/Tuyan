@@ -119,4 +119,35 @@ final class RecordsDiskCacheTests: XCTestCase {
     cache.clear()
     XCTAssertNil(cache.load())
   }
+
+  func testDiskCacheRoundTripsEveryV9RefineField() throws {
+    let cache = RecordsDiskCache(filename: "v9-refine-cache-\(UUID().uuidString).json")
+    defer { cache.clear() }
+    let job = try JSONDecoder().decode(Job.self, from: Data("""
+    {
+      "id":"refine-v9-cache", "status":"succeeded", "client_platform":"ios",
+      "model_routes":{"main":{"accessProvider":"bailian","modelId":"main-v9"},"image":{"accessProvider":"openai","modelId":"image-v9"},"vision":{"accessProvider":"ark","modelId":"vision-v9"}},
+      "routing_mode":"mixed", "model_routing_version":7, "model_routing_source":"explicit",
+      "negative_prompt":"avoid watermark", "image_refine_mode":"direct-edit", "image_refine_reason":"image route supports edit",
+      "refine_mode":"direct-edit", "refine_reason":"selected direct edit", "source_image_object_key":"jobs/source-v9.png", "source_image_url":"https://signed.example/source-v9.png"
+    }
+    """.utf8))
+
+    cache.save([job])
+    let loaded = try XCTUnwrap(cache.load()?.first)
+
+    XCTAssertEqual(loaded.clientPlatform, "ios")
+    XCTAssertEqual(loaded.modelRoutes?.main.modelId, "main-v9")
+    XCTAssertEqual(loaded.modelRoutes?.image.accessProvider, .openai)
+    XCTAssertEqual(loaded.routingMode, "mixed")
+    XCTAssertEqual(loaded.modelRoutingVersion, 7)
+    XCTAssertEqual(loaded.modelRoutingSource, "explicit")
+    XCTAssertEqual(loaded.negativePrompt, "avoid watermark")
+    XCTAssertEqual(loaded.imageRefineMode, "direct-edit")
+    XCTAssertEqual(loaded.imageRefineReason, "image route supports edit")
+    XCTAssertEqual(loaded.refineMode, "direct-edit")
+    XCTAssertEqual(loaded.refineReason, "selected direct edit")
+    XCTAssertEqual(loaded.sourceImageObjectKey, "jobs/source-v9.png")
+    XCTAssertEqual(loaded.sourceImageURL, "https://signed.example/source-v9.png")
+  }
 }
