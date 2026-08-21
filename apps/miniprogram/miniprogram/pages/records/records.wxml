@@ -7,7 +7,7 @@
         <view class="section-title">我的任务记录</view>
         <view class="section-note">任务记录与账号绑定，登录后可以查看自己提交过的任务。</view>
       </view>
-      <button class="ghost-button" size="mini" wx:if="{{isLoggedIn}}" bindtap="refreshAccountJobs">刷新</button>
+      <view class="records-head-actions" wx:if="{{isLoggedIn}}"><button class="ghost-button" size="mini" bindtap="openAccountSettings">账户设置</button><button class="ghost-button" size="mini" bindtap="refreshAccountJobs">刷新</button></view>
     </view>
 
     <view class="login-required-card" wx:if="{{isAuthChecking}}">
@@ -44,6 +44,8 @@
           <text>{{item.provider || '模型服务'}}</text>
           <text>{{item.configuration_mode === 'simple' ? '普通模式' : '专业模式'}}</text>
           <text wx:if="{{item.image_size}}">{{item.image_size}}</text>
+          <text wx:if="{{item.aspect_ratio}}">{{item.aspect_ratio}}</text>
+          <text wx:if="{{item.routing_mode}}">{{item.routing_mode === 'explicit' ? '显式路由' : '兼容路由'}}</text>
           <text wx:if="{{item.retrieval_setting && item.retrieval_setting !== 'none'}}">{{item.retrieval_setting_text}}</text>
           <text wx:if="{{item.task_name === 'plot'}}">统计图</text>
         </view>
@@ -70,6 +72,7 @@
           </view>
         </view>
         <view class="job-prompt-preview">{{item.method_preview || '未记录方法内容'}}</view>
+        <view class="job-prompt-preview" wx:if="{{item.negative_prompt}}">避免：{{item.negative_prompt}}</view>
         <view class="job-record-error" wx:if="{{item.error}}">{{item.error}}</view>
         <view class="record-asset-section" wx:if="{{item.reference_images.length}}">
           <view class="record-asset-title">参考图</view>
@@ -137,6 +140,7 @@
           </view>
         </view>
         <button class="secondary-button" data-id="{{item.id}}" bindtap="openJob">查看任务详情</button>
+        <button class="secondary-button" wx:if="{{item.result_images.length}}" bindtap="openRefine">精修结果图</button>
       </view>
     </block>
   </view>
@@ -160,3 +164,4 @@
 
   <view class="footer-space" />
 </scroll-view>
+<account-settings show="{{showAccountSettings}}" current-email="{{currentUserEmail}}" bind:close="closeAccountSettings" bind:signedout="onAccountSignedOut" bind:deleted="onAccountDeleted" />

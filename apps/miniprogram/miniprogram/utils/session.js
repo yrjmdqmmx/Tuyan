@@ -66,7 +66,7 @@ async function signUp(email, password, name) {
     await (0, api_1.authRequest)('/sign-up/email', 'POST', {
         email,
         password,
-        name: name || email.split('@')[0] || 'PaperBanana 用户',
+        name: name || email.split('@')[0] || '图研Tuyan 用户',
     });
     return refreshSession();
 }

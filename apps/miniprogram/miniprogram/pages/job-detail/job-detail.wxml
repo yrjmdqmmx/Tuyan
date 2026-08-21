@@ -60,6 +60,8 @@
         <view class="record-asset-title">方法内容</view>
         <view class="detail-method-text">{{job.method_content}}</view>
       </view>
+      <view class="detail-method" wx:if="{{job.negative_prompt}}"><view class="record-asset-title">负向提示词</view><view class="detail-method-text">{{job.negative_prompt}}</view></view>
+      <view class="detail-method" wx:if="{{job.routing_mode}}"><view class="record-asset-title">模型路由</view><view class="detail-method-text">{{job.routing_mode}} · {{job.model_routes.main.accessProvider}}/{{job.model_routes.main.modelId}} · {{job.model_routes.image.accessProvider}}/{{job.model_routes.image.modelId}} · {{job.model_routes.vision.accessProvider}}/{{job.model_routes.vision.modelId}}</view></view>
 
       <view class="job-record-error" wx:if="{{job.error}}">{{job.error}}</view>
     </view>

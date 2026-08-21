@@ -7,6 +7,8 @@ interface RawImageAsset {
   candidateId?: number
   mime_type?: string
   mimeType?: string
+  object_key?: string
+  objectKey?: string
 }
 
 interface ImageAssetOptions {
@@ -23,6 +25,7 @@ export interface ImageAsset {
   format_text: string
   can_preview: boolean
   action_label: string
+  object_key: string
 }
 
 export function normalizeOutputFormat(format: unknown): OutputFormat {
@@ -52,6 +55,7 @@ export function formatImageAsset(raw: RawImageAsset, options: ImageAssetOptions)
     format_text: format === 'svg' ? 'SVG' : 'PNG',
     can_preview: format !== 'svg',
     action_label: format === 'svg' ? '下载文件' : '保存图片',
+    object_key: String(raw.object_key || raw.objectKey || ''),
   }
 }
 
