@@ -15,6 +15,7 @@ final class AppModel {
   var settings: SettingsStore
   var auth: AuthStore
   var jobs: JobsStore
+  var modelRegistry: ModelRegistryStore
   var generation: GenerationStore
   var exports: ExportCenter
   var templates: SavedTemplateStore
@@ -30,7 +31,9 @@ final class AppModel {
     self.settings = settings
     self.auth = auth
     self.jobs = jobs
-    generation = GenerationStore(apiClient: client, settings: settings, jobs: jobs)
+    let modelRegistry = ModelRegistryStore(apiClient: client)
+    self.modelRegistry = modelRegistry
+    generation = GenerationStore(apiClient: client, settings: settings, jobs: jobs, registryStore: modelRegistry)
     exports = ExportCenter(apiClient: client, settings: settings)
     templates = SavedTemplateStore()
 
@@ -62,6 +65,8 @@ final class AppModel {
   func bootstrap() async {
     jobs.loadCachedRecords()
     await settings.refreshHealth()
+    await modelRegistry.refresh(apiBase: settings.apiBase)
+    generation.normalizeDraftWithLiveRegistry()
     #if DEBUG
     // 截图 / QA 走查注入的假登录态不走 refreshSession（否则无后端会被覆盖为未登录）。
     if UserDefaults.standard.bool(forKey: "pb-preview-signed-in") { return }

@@ -26,14 +26,16 @@ final class GenerationStore {
   private let apiClient: PaperBananaAPIClient
   private let settings: SettingsStore
   private let jobs: JobsStore
+  let registryStore: ModelRegistryStore
   private let keychain = KeychainService()
   private let referenceUploader: ReferenceUploader
   private static let referenceLibraryLimit = 100
 
-  init(apiClient: PaperBananaAPIClient, settings: SettingsStore, jobs: JobsStore) {
+  init(apiClient: PaperBananaAPIClient, settings: SettingsStore, jobs: JobsStore, registryStore: ModelRegistryStore? = nil) {
     self.apiClient = apiClient
     self.settings = settings
     self.jobs = jobs
+    self.registryStore = registryStore ?? ModelRegistryStore(apiClient: apiClient)
     referenceUploader = ReferenceUploader(apiClient: apiClient)
     loadSelectedProviderKey()
   }
@@ -52,28 +54,31 @@ final class GenerationStore {
       && hasRequiredManualReferences
       && hasRequiredReferenceVisionModel
       && !mainModelDirectUnsupported
+      && registryStore.hasLiveRegistry
+      && hasRequiredProviderKeys
   }
 
   var activeMainModelName: String {
-    draft.configurationMode == .advanced ? draft.mainModelName : selectedProviderConfig.mainModel
+    activeRoutes?.main.modelId ?? draft.mainModelName
   }
 
   var activeImageModelName: String {
-    draft.configurationMode == .advanced ? draft.imageModelName : selectedProviderConfig.imageModel
+    activeRoutes?.image.modelId ?? draft.imageModelName
   }
 
   var activeVisionModelName: String {
-    draft.configurationMode == .advanced ? draft.referenceVisionModelName : selectedProviderConfig.visionModel
+    activeRoutes?.vision.modelId ?? draft.referenceVisionModelName
   }
 
   var activeReferenceImageMode: ReferenceImageMode? {
     guard !draft.referenceImages.isEmpty else { return nil }
     if draft.configurationMode == .advanced { return draft.referenceImageMode }
-    return ProviderCatalog.mainModelCanReadImages(provider: draft.provider, model: activeMainModelName) ? .mainModel : .visionModel
+    return mainModelCanReadReferenceImages ? .mainModel : .visionModel
   }
 
   var mainModelCanReadReferenceImages: Bool {
-    ProviderCatalog.mainModelCanReadImages(provider: draft.provider, model: activeMainModelName)
+    guard let route = activeRoutes?.main else { return false }
+    return registryStore.registry?.mainModelCanReadReferenceImages(for: route) == true
   }
 
   var modelCapabilityQueryID: String {
@@ -105,6 +110,29 @@ final class GenerationStore {
       || draft.retrievalSetting != .manual
       || !draft.referenceImages.isEmpty
       || !draft.manualReferenceIds.isEmpty
+  }
+
+  var activeRoutes: ModelRoutes? {
+    guard let registry = registryStore.registry else { return draft.modelRoutes }
+    if draft.configurationMode == .advanced { return draft.modelRoutes }
+    return registry.defaultRoutes(for: draft.provider)
+  }
+
+  private var requiredRouteRoles: [ModelRole] {
+    guard let routes = activeRoutes else { return [] }
+    var roles: [ModelRole] = [.main]
+    if draft.outputFormat == .png, draft.taskName == .diagram { roles.append(.image) }
+    if !draft.referenceImages.isEmpty { roles.append(activeReferenceImageMode == .mainModel ? .main : .vision) }
+    if draft.maxCriticRounds > 0 { roles.append(.vision) }
+    return [ModelRole.main, .image, .vision].filter { roles.contains($0) && routes[$0] != nil }
+  }
+
+  private var hasRequiredProviderKeys: Bool {
+    guard registryStore.hasLiveRegistry else { return false }
+    let providers = Set(requiredRouteRoles.compactMap { activeRoutes?[$0]?.accessProvider })
+    return !providers.isEmpty && providers.allSatisfy { provider in
+      !((try? keychain.string(for: ProviderCatalog.config(for: provider).keyName)) ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
   }
 
   var referenceUploadBlockedByRetrieval: Bool {
@@ -145,7 +173,7 @@ final class GenerationStore {
 
   func selectProvider(_ provider: ProviderID) {
     saveSelectedProviderKey()
-    draft.applyProviderDefaults(provider)
+    draft.applyProviderDefaults(provider, routes: registryStore.registry?.defaultRoutes(for: provider))
     mainModelCapability = nil
     alignReferenceImageModeWithActiveMainModel()
     ensureSupportedImageSize()
@@ -154,12 +182,18 @@ final class GenerationStore {
 
   func selectMainModel(_ modelName: String) {
     draft.mainModelName = modelName
+    if let routes = draft.modelRoutes {
+      draft.modelRoutes = ModelRoutes(main: ModelRoute(accessProvider: routes.main.accessProvider, modelId: modelName), image: routes.image, vision: routes.vision)
+    }
     mainModelCapability = nil
     alignReferenceImageModeWithActiveMainModel()
   }
 
   func selectImageModel(_ modelName: String) {
     draft.imageModelName = modelName
+    if let routes = draft.modelRoutes {
+      draft.modelRoutes = ModelRoutes(main: routes.main, image: ModelRoute(accessProvider: routes.image.accessProvider, modelId: modelName), vision: routes.vision)
+    }
     ensureSupportedImageSize()
   }
 
@@ -284,7 +318,7 @@ final class GenerationStore {
       let payload = JobCreatePayload(
         configurationMode: draft.configurationMode,
         provider: draft.provider,
-        apiKeys: [draft.provider: selectedAPIKey.trimmingCharacters(in: .whitespacesAndNewlines)],
+        apiKeys: scopedAPIKeys(),
         taskName: draft.taskName,
         methodContent: draft.methodContent.trimmingCharacters(in: .whitespacesAndNewlines),
         caption: draft.caption.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -301,7 +335,10 @@ final class GenerationStore {
         manualReferenceIds: draft.configurationMode == .advanced ? draft.manualReferenceIds : [],
         aspectRatio: draft.configurationMode == .advanced ? draft.aspectRatio : "16:9",
         numCandidates: draft.configurationMode == .advanced ? draft.numCandidates : 1,
-        maxCriticRounds: draft.configurationMode == .advanced ? draft.maxCriticRounds : 1
+        maxCriticRounds: draft.configurationMode == .advanced ? draft.maxCriticRounds : 1,
+        negativePrompt: draft.negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines),
+        modelRoutes: activeRoutes,
+        requiredRouteRoles: requiredRouteRoles
       )
       let created = try await apiClient.createJob(apiBase: settings.apiBase, payload: payload)
       guard !created.id.isEmpty else { throw PaperBananaAPIError.server("后端没有返回任务 ID。") }
@@ -334,9 +371,10 @@ final class GenerationStore {
   }
 
   private func ensureSupportedImageSize() {
-    let supported = ProviderCatalog.supportedResolutions(provider: draft.provider, imageModel: activeImageModelName)
-    if !supported.contains(draft.imageSize) {
-      draft.imageSize = supported.first ?? .oneK
+    guard let route = activeRoutes else { return }
+    let supported = registryStore.registry?.generationResolutions(for: route.image) ?? [.twoK]
+    if !supported.contains(draft.imageSize), let first = supported.first {
+      draft.imageSize = first
     }
   }
 
@@ -350,5 +388,19 @@ final class GenerationStore {
     } catch {
       presentAlert(formatUserFacingError(error))
     }
+  }
+
+  func normalizeDraftWithLiveRegistry() {
+    guard let registry = registryStore.registry else { return }
+    draft.normalize(with: registry)
+    alignReferenceImageModeWithActiveMainModel()
+    ensureSupportedImageSize()
+  }
+
+  private func scopedAPIKeys() -> [ProviderID: String] {
+    Dictionary(uniqueKeysWithValues: Set(requiredRouteRoles.compactMap { activeRoutes?[$0]?.accessProvider }).compactMap { provider in
+      guard let key = try? keychain.string(for: ProviderCatalog.config(for: provider).keyName), !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+      return (provider, key)
+    })
   }
 }

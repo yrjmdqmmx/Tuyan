@@ -267,6 +267,38 @@ final class APIClientTests: XCTestCase {
     XCTAssertEqual(capability.source, "server")
     XCTAssertTrue(capability.cached)
   }
+
+  func testModelRegistryAndArkProbeUseNarrowGatewayBodies() async throws {
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+    var requestCount = 0
+    URLProtocolStub.requestHandler = { request in
+      requestCount += 1
+      let body = try XCTUnwrap(JSONSerialization.jsonObject(with: try request.bodyData()) as? [String: Any])
+      if requestCount == 1 {
+        XCTAssertEqual(body["action"] as? String, "modelRegistry")
+        return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"code":0,"registryVersion":"v9","routeContractVersion":1,"supportsModelRoutes":true,"providers":{}}"#)
+      }
+      XCTAssertEqual(body["action"] as? String, "providerAccountCatalog")
+      XCTAssertEqual(body["provider"] as? String, "ark")
+      XCTAssertEqual(body["apiKeys"] as? [String: String], ["ark": "ark-key"])
+      XCTAssertEqual(body["confirmPaidImageProbe"] as? Bool, true)
+      XCTAssertEqual((body["probes"] as? [[String: String]])?.count, 2)
+      return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"code":0,"provider":"ark","accountCatalogAvailable":false,"probeResults":[]}"#)
+    }
+
+    _ = try await client.modelRegistry(apiBase: "https://gateway.example")
+    _ = try await client.providerAccountCatalog(
+      apiBase: "https://gateway.example",
+      arkKey: "ark-key",
+      routes: ModelRoutes(
+        main: ModelRoute(accessProvider: .ark, modelId: "main"),
+        image: ModelRoute(accessProvider: .ark, modelId: "image"),
+        vision: ModelRoute(accessProvider: .openai, modelId: "ignored")
+      ),
+      requiredRoles: [.main, .image, .vision],
+      confirmPaidImageProbe: true
+    )
+  }
 }
 
 private final class URLProtocolStub: URLProtocol {

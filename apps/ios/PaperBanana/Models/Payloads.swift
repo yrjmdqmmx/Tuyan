@@ -21,6 +21,10 @@ struct JobCreatePayload {
   let aspectRatio: String
   let numCandidates: Int
   let maxCriticRounds: Int
+  var negativePrompt: String = ""
+  var modelRoutes: ModelRoutes? = nil
+  /// Only keys for execution-reachable routes may leave the device.
+  var requiredRouteRoles: [ModelRole] = [.main, .image, .vision]
 
   func paperBananaBody() -> [String: Any] {
     let hasUploadedReferences = !referenceImages.isEmpty
@@ -28,7 +32,7 @@ struct JobCreatePayload {
       "action": "createJob",
       "clientPlatform": "ios",
       "configurationMode": configurationMode.rawValue,
-      "provider": provider.rawValue,
+      "provider": activeRoutes?.main.accessProvider.rawValue ?? provider.rawValue,
       "apiKeys": apiKeysBody(),
       "taskName": taskName.rawValue,
       "methodContent": methodContent,
@@ -36,9 +40,9 @@ struct JobCreatePayload {
       "infographicCategory": infographicCategory,
       "outputFormat": outputFormat.rawValue,
       "imageSize": imageSize.rawValue,
-      "mainModelName": mainModelName,
-      "imageModelName": imageModelName,
-      "referenceVisionModelName": referenceVisionModelName,
+      "mainModelName": activeRoutes?.main.modelId ?? mainModelName,
+      "imageModelName": activeRoutes?.image.modelId ?? imageModelName,
+      "referenceVisionModelName": activeRoutes?.vision.modelId ?? referenceVisionModelName,
       "referenceImages": referenceImages.map(\.dictionary),
       "pipelineMode": pipelineMode.lafValue,
       "retrievalSetting": hasUploadedReferences ? RetrievalSetting.none.rawValue : retrievalSetting.rawValue,
@@ -47,6 +51,12 @@ struct JobCreatePayload {
       "numCandidates": numCandidates,
       "maxCriticRounds": maxCriticRounds
     ]
+    if !negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+      body["negativePrompt"] = negativePrompt
+    }
+    if let activeRoutes {
+      body["modelRoutes"] = activeRoutes.body
+    }
     if hasUploadedReferences, let referenceImageMode {
       body["referenceImageMode"] = referenceImageMode.rawValue
     }
@@ -54,8 +64,14 @@ struct JobCreatePayload {
   }
 
   func apiKeysBody() -> [String: String] {
-    Dictionary(uniqueKeysWithValues: ProviderID.allCases.map { ($0.rawValue, apiKeys[$0] ?? "") })
+    let allowedProviders = Set(requiredRouteRoles.compactMap { activeRoutes?[$0]?.accessProvider })
+    let scoped = allowedProviders.isEmpty ? [provider] : allowedProviders
+    return Dictionary(uniqueKeysWithValues: apiKeys
+      .filter { scoped.contains($0.key) && !$0.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+      .map { ($0.key.rawValue, $0.value) })
   }
+
+  private var activeRoutes: ModelRoutes? { modelRoutes }
 }
 
 struct RefineImagePayload {
@@ -69,25 +85,48 @@ struct RefineImagePayload {
   let editInstruction: String
   let aspectRatio: String
   let imageSize: ImageSize
+  var configurationMode: ConfigurationMode = .simple
+  var modelRoutes: ModelRoutes? = nil
+  var requiredRouteRoles: [ModelRole] = [.image]
 
   func paperBananaBody() -> [String: Any] {
     var body: [String: Any] = [
       "action": "refineImage",
       "clientPlatform": "ios",
-      "provider": provider.rawValue,
-      "apiKeys": Dictionary(uniqueKeysWithValues: ProviderID.allCases.map { ($0.rawValue, apiKeys[$0] ?? "") }),
-      "mainModelName": mainModelName,
-      "imageModelName": imageModelName,
-      "referenceVisionModelName": referenceVisionModelName,
+      "configurationMode": configurationMode.rawValue,
+      "provider": modelRoutes?.main.accessProvider.rawValue ?? provider.rawValue,
+      "apiKeys": apiKeysBody(),
+      "mainModelName": modelRoutes?.main.modelId ?? mainModelName,
+      "imageModelName": modelRoutes?.image.modelId ?? imageModelName,
+      "referenceVisionModelName": modelRoutes?.vision.modelId ?? referenceVisionModelName,
       "sourceImageUrl": sourceImageURL,
       "editInstruction": editInstruction,
       "aspectRatio": aspectRatio,
       "imageSize": imageSize.rawValue
     ]
+    if let modelRoutes { body["modelRoutes"] = modelRoutes.body }
     if let sourceImageObjectKey, !sourceImageObjectKey.isEmpty {
       body["sourceImageObjectKey"] = sourceImageObjectKey
     }
     return body
+  }
+
+  private func apiKeysBody() -> [String: String] {
+    let allowedProviders = Set(requiredRouteRoles.compactMap { modelRoutes?[$0]?.accessProvider })
+    let scoped = allowedProviders.isEmpty ? [provider] : allowedProviders
+    return Dictionary(uniqueKeysWithValues: apiKeys
+      .filter { scoped.contains($0.key) && !$0.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+      .map { ($0.key.rawValue, $0.value) })
+  }
+}
+
+private extension ModelRoutes {
+  var body: [String: [String: String]] {
+    [
+      "main": ["accessProvider": main.accessProvider.rawValue, "modelId": main.modelId],
+      "image": ["accessProvider": image.accessProvider.rawValue, "modelId": image.modelId],
+      "vision": ["accessProvider": vision.accessProvider.rawValue, "modelId": vision.modelId]
+    ]
   }
 }
 

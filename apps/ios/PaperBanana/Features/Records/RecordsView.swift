@@ -312,8 +312,8 @@ struct LocalJobHistoryRow: View {
   }
 
   private var providerLabel: String {
-    guard let provider = ProviderID(rawValue: job.provider) else { return job.provider.isEmpty ? "模型服务" : job.provider }
-    return ProviderCatalog.config(for: provider).label
+    guard !job.provider.isEmpty else { return "模型服务" }
+    return ProviderCatalog.config(for: ProviderID(rawValue: job.provider)).label
   }
 
   private var statusIconName: String {
@@ -413,8 +413,8 @@ struct AccountJobRecordCard: View {
   }
 
   private var providerLabel: String {
-    guard let provider = ProviderID(rawValue: job.provider) else { return job.provider.isEmpty ? "模型服务" : job.provider }
-    return ProviderCatalog.config(for: provider).label
+    guard !job.provider.isEmpty else { return "模型服务" }
+    return ProviderCatalog.config(for: ProviderID(rawValue: job.provider)).label
   }
 
   private var referenceImageModeText: String {

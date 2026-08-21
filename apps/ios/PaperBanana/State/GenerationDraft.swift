@@ -8,9 +8,12 @@ struct GenerationDraft: Equatable {
   var infographicCategoryID: String = "method_framework"
   var outputFormat: OutputFormat = .png
   var imageSize: ImageSize = .oneK
-  var mainModelName: String = ProviderCatalog.config(for: .bailian).mainModel
-  var imageModelName: String = ProviderCatalog.config(for: .bailian).imageModel
-  var referenceVisionModelName: String = ProviderCatalog.config(for: .bailian).visionModel
+  // Legacy shadows remain for historic UI/templates; new submission uses routes.
+  var mainModelName: String = ""
+  var imageModelName: String = ""
+  var referenceVisionModelName: String = ""
+  var modelRoutes: ModelRoutes?
+  var negativePrompt: String = ""
   var referenceImageMode: ReferenceImageMode = .visionModel
   var referenceImages: [PendingReferenceImage] = []
   var pipelineMode: PipelineMode = .plannerCritic
@@ -28,15 +31,27 @@ struct GenerationDraft: Equatable {
     infographicCategoryID == "data_stat" ? .plot : .diagram
   }
 
-  mutating func applyProviderDefaults(_ provider: ProviderID) {
+  mutating func applyProviderDefaults(_ provider: ProviderID, routes: ModelRoutes?) {
     self.provider = provider
-    let config = ProviderCatalog.config(for: provider)
-    mainModelName = config.mainModel
-    imageModelName = config.imageModel
-    referenceVisionModelName = config.visionModel
-    let supported = ProviderCatalog.supportedResolutions(provider: provider, imageModel: imageModelName)
-    if !supported.contains(imageSize) {
-      imageSize = supported.first ?? .oneK
+    guard let routes else { return }
+    modelRoutes = routes
+    mainModelName = routes.main.modelId
+    imageModelName = routes.image.modelId
+    referenceVisionModelName = routes.vision.modelId
+    self.provider = routes.main.accessProvider
+  }
+
+  mutating func normalize(with registry: ModelRegistry) {
+    let routes = modelRoutes ?? registry.defaultRoutes(for: provider)
+    guard let routes else { return }
+    modelRoutes = routes
+    provider = routes.main.accessProvider
+    mainModelName = routes.main.modelId
+    imageModelName = routes.image.modelId
+    referenceVisionModelName = routes.vision.modelId
+    let supported = registry.generationResolutions(for: routes.image)
+    if !supported.contains(imageSize), let first = supported.first {
+      imageSize = first
     }
   }
 }

@@ -112,6 +112,44 @@ final class PaperBananaAPIClient {
     )
   }
 
+  func modelRegistry(apiBase: String) async throws -> ModelRegistry {
+    try await requestJSON(
+      try lafEndpoint(apiBase: apiBase),
+      method: "POST",
+      body: ["action": "modelRegistry"]
+    )
+  }
+
+  /// Ark has no browser-safe account catalogue. The server accepts only its
+  /// inference key and a bounded set of explicitly selected routes.
+  func providerAccountCatalog(
+    apiBase: String,
+    arkKey: String,
+    routes: ModelRoutes,
+    requiredRoles: [ModelRole],
+    confirmPaidImageProbe: Bool
+  ) async throws -> ProviderAccountCatalogResult {
+    var seen = Set<String>()
+    let probes = requiredRoles.compactMap { role -> [String: String]? in
+      guard let route = routes[role], route.accessProvider == .ark else { return nil }
+      let fingerprint = "\(role.rawValue):\(route.modelId)"
+      guard seen.insert(fingerprint).inserted else { return nil }
+      return ["role": role.rawValue, "modelId": route.modelId]
+    }
+    guard probes.count <= 3 else { throw PaperBananaAPIError.server("Ark 探测最多支持 3 条路线。") }
+    return try await requestJSON(
+      try lafEndpoint(apiBase: apiBase),
+      method: "POST",
+      body: [
+        "action": "providerAccountCatalog",
+        "provider": "ark",
+        "apiKeys": ["ark": arkKey],
+        "probes": probes,
+        "confirmPaidImageProbe": confirmPaidImageProbe
+      ]
+    )
+  }
+
   func getJob(apiBase: String, jobID: String) async throws -> Job {
     let response: JobEnvelope = try await requestJSON(
       try lafEndpoint(apiBase: apiBase),

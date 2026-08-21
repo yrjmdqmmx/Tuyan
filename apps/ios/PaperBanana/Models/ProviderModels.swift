@@ -1,12 +1,34 @@
 import Foundation
 
-enum ProviderID: String, CaseIterable, Codable, Identifiable, Hashable {
-  case bailian
-  case openrouter
-  case gemini
-  case openai
+/// A server-owned provider identifier.
+///
+/// This deliberately is not an enum: the model registry may introduce a new
+/// access provider before this client is updated. Unknown values must remain
+/// decodable so historical jobs and cached registry data keep working.
+struct ProviderID: RawRepresentable, Codable, Identifiable, Hashable, Sendable {
+  let rawValue: String
+
+  init(rawValue: String) {
+    self.rawValue = rawValue
+  }
+
+  init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    self.init(rawValue: try container.decode(String.self))
+  }
+
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(rawValue)
+  }
 
   var id: String { rawValue }
+
+  static let bailian = ProviderID(rawValue: "bailian")
+  static let ark = ProviderID(rawValue: "ark")
+  static let openrouter = ProviderID(rawValue: "openrouter")
+  static let gemini = ProviderID(rawValue: "gemini")
+  static let openai = ProviderID(rawValue: "openai")
 }
 
 enum ConfigurationMode: String, CaseIterable, Codable, Identifiable {

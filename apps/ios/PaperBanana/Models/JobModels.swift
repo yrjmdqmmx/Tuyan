@@ -368,10 +368,8 @@ struct Job: Decodable, Identifiable, Equatable {
   }
 
   private var displayProvider: String {
-    if let providerID = ProviderID(rawValue: provider) {
-      return ProviderCatalog.config(for: providerID).label
-    }
-    return displayValue(provider)
+    let providerID = ProviderID(rawValue: provider)
+    return ProviderCatalog.config(for: providerID).label
   }
 
   var clientPlatformDisplayName: String {

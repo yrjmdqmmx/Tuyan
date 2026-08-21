@@ -1,7 +1,7 @@
 import Foundation
 
 enum ProviderCatalog {
-  static let order: [ProviderID] = [.bailian, .openrouter, .gemini, .openai]
+  static let order: [ProviderID] = [.openrouter, .gemini, .openai, .bailian, .ark]
 
   static let providers: [ProviderID: ProviderConfig] = [
     .openrouter: ProviderConfig(
@@ -200,6 +200,24 @@ enum ProviderCatalog {
         "进入 API Key 页面，点击创建 API Key。",
         "建议选择默认业务空间和全部权限，复制 sk- 开头密钥。"
       ]
+    ),
+    .ark: ProviderConfig(
+      id: .ark,
+      label: "火山方舟",
+      keyName: "ark",
+      keyPlaceholder: "Ark API Key",
+      mainModel: "",
+      imageModel: "",
+      visionModel: "",
+      mainModels: [],
+      imageModels: [],
+      visionModels: [],
+      guideURL: URL(string: "https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey")!,
+      guideSteps: [
+        "登录火山方舟控制台并进入 API Key 页面。",
+        "创建仅供图研使用的推理 API Key。",
+        "复制密钥并粘贴到上方输入框；实际模型可用性以账号探测为准。"
+      ]
     )
   ]
 
@@ -216,6 +234,8 @@ enum ProviderCatalog {
       return true
     case .openai:
       return m.range(of: #"gpt-4|gpt-5|o4|gpt-4o|gpt-4\.1"#, options: .regularExpression) != nil
+    default:
+      return false
     }
   }
 
@@ -225,6 +245,8 @@ enum ProviderCatalog {
       return [.oneK, .twoK]
     case .openai, .openrouter:
       return [.oneK, .twoK, .fourK]
+    default:
+      return []
     }
   }
 
