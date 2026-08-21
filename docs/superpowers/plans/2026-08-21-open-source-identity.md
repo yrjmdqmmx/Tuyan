@@ -52,7 +52,7 @@ curl --fail --silent --show-error --location \
   | sed -n '1,220p'
 ```
 
-Use `apply_patch` to create root `LICENSE` with exactly that complete 180-line text. Do not add a project-specific condition, heading, copyright claim, or non-commercial clause.
+Use `apply_patch` to create root `LICENSE` with the exact current authoritative upstream text. Do not add a project-specific condition, heading, copyright claim, or non-commercial clause.
 
 - [ ] **Step 3: Add the exact NOTICE copy**
 
