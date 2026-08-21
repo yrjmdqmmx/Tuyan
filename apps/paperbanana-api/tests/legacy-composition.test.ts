@@ -1009,7 +1009,7 @@ test('analyze-redraw refinement preserves an explicitly requested canonical 1K s
     await legacy.drainJobAdmission()
     assert.equal(state.inserts[0].imageSize, '1K')
     const render = calls.find((call) => call.url.includes('/multimodal-generation/generation'))
-    assert.equal(render?.body.parameters.size, '1360*768')
+    assert.equal(render?.body.parameters.size, '1280*720')
   } finally {
     legacy.configureRuntimeFetch()
     state.ossWriteMode = previousWriteMode
@@ -1308,6 +1308,7 @@ test('createJob rejects a registered model used in the wrong role before inserti
       apiKeys: { openai: 'key' },
       methodContent: 'A sufficiently detailed method section for model role validation.',
       caption: 'A valid caption.',
+      aspectRatio: '3:2',
       mainModelName: 'gpt-image-2',
       imageModelName: 'gpt-image-2',
       referenceVisionModelName: 'gpt-5.6-sol',
@@ -1517,7 +1518,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-08-20.v8')
+    assert.equal(result.registryVersion, '2026-08-21.v9')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     assert.deepEqual(
       Object.fromEntries(imageModels.map((model: any) => [model.id, model.capabilities.refineResolutions])),
@@ -1593,7 +1594,7 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
   assert.deepEqual(calls[2].body, {
     model: 'doubao-seedream-4-0-250828',
     prompt: 'diagram',
-    size: '2K',
+    size: '2048x1152',
     sequential_image_generation: 'disabled',
     stream: false,
     response_format: 'b64_json',
@@ -1602,7 +1603,7 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
     model: 'doubao-seedream-4-0-250828',
     prompt: 'edit diagram',
     image: ['data:image/png;base64,YQ=='],
-    size: '2K',
+    size: '2048x1152',
     sequential_image_generation: 'disabled',
     stream: false,
     response_format: 'b64_json',
@@ -1638,13 +1639,13 @@ test('Ark current models disable default thinking and use model-specific Seedrea
   assert.deepEqual(calls[1].body, {
     model: 'doubao-seedream-5-0-pro-260628',
     prompt: 'pro image',
-    size: '1K',
+    size: '1280x720',
     response_format: 'b64_json',
   })
   assert.deepEqual(calls[2].body, {
     model: 'doubao-seedream-5-0-260128',
     prompt: 'canonical alias',
-    size: '4K',
+    size: '4096x2304',
     sequential_image_generation: 'disabled',
     stream: false,
     response_format: 'b64_json',
@@ -2432,7 +2433,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
     id: 'google/gemini-3.1-flash-image',
     name: 'Nano Banana 2',
     architecture: { input_modalities: ['text', 'image'], output_modalities: ['text', 'image'] },
-    supported_parameters: { output_format: { values: ['png'] } },
+    supported_parameters: { aspect_ratio: { values: ['16:9'] }, output_format: { values: ['png'] } },
   }
   const dedicatedModel = {
     id: 'black-forest-labs/flux.2-pro',
@@ -2656,7 +2657,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-08-20.v8')
+    assert.equal(registry.registryVersion, '2026-08-21.v9')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -2677,7 +2678,7 @@ test('OpenRouter refuses a claimed direct edit when input_references is absent',
   const model = {
     id: 'vendor/text-to-image-only', name: 'Text to Image Only',
     architecture: { input_modalities: ['text'], output_modalities: ['image'] },
-    supported_parameters: { output_format: { values: ['png'] } },
+    supported_parameters: { aspect_ratio: { values: ['16:9'] }, output_format: { values: ['png'] } },
   }
   legacy.configureRuntimeFetch(async (input) => {
     const url = String(input)
@@ -3116,6 +3117,7 @@ test('createJob returns a stable 4xx business error before admission for an unus
         taskName: 'diagram',
         methodContent: 'A sufficiently detailed method section for validating manual references.',
         caption: 'A valid figure caption.',
+        aspectRatio: '3:2',
         mainModelName: 'gpt-5.6-sol',
         imageModelName: 'gpt-image-2',
         referenceVisionModelName: 'gpt-5.6-sol',
@@ -3146,7 +3148,7 @@ test('OpenRouter vector image responses are rasterized before the PNG pipeline s
     id: 'recraft/recraft-v4.1-pro-vector',
     name: 'Recraft Vector',
     architecture: { input_modalities: ['text'], output_modalities: ['image'] },
-    supported_parameters: { output_format: { type: 'enum', values: ['svg'] } },
+    supported_parameters: { aspect_ratio: { type: 'enum', values: ['16:9'] }, output_format: { type: 'enum', values: ['svg'] } },
   }
   legacy.configureRuntimeFetch(async (input) => {
     const url = String(input)
@@ -3225,7 +3227,7 @@ test('OpenRouter paid-profile JPEG responses are converted to real PNG bytes', a
     id: 'bytedance-seed/seedream-5-0-pro',
     name: 'Seedream 5.0 Pro',
     architecture: { input_modalities: ['text'], output_modalities: ['image'] },
-    supported_parameters: { resolution: { type: 'enum', values: ['1K', '2K'] } },
+    supported_parameters: { aspect_ratio: { type: 'enum', values: ['1:1'] }, resolution: { type: 'enum', values: ['1K', '2K'] } },
   }
   const jpegBase64 = fs.readFileSync(path.resolve(packageRoot, '../web/public/logo.jpg')).toString('base64')
   legacy.configureRuntimeFetch(async (input) => {
@@ -3274,7 +3276,7 @@ test('OpenRouter rejects a WebP with bytes outside its declared RIFF container',
     id: 'recraft/recraft-v4',
     name: 'Recraft V4',
     architecture: { input_modalities: ['text'], output_modalities: ['image'] },
-    supported_parameters: {},
+    supported_parameters: { aspect_ratio: { type: 'enum', values: ['1:1'] } },
   }
   const trailingGarbage = Buffer.concat([
     Buffer.from(onePixelWebpBase64, 'base64'),
@@ -3304,7 +3306,7 @@ test('OpenRouter rejects a truncated PNG signature from a paid profile before pe
     id: 'google/gemini-2.5-flash-image',
     name: 'Gemini 2.5 Flash Image',
     architecture: { input_modalities: ['text'], output_modalities: ['image'] },
-    supported_parameters: {},
+    supported_parameters: { aspect_ratio: { type: 'enum', values: ['1:1'] } },
   }
   const pngSignatureOnly = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]).toString('base64')
   legacy.configureRuntimeFetch(async (input) => {
@@ -3411,7 +3413,7 @@ test('OpenRouter keeps unknown incompatible image models disabled while enabling
     id: 'sourceful/riverflow-v2.5-fast',
     name: 'Riverflow JPEG only',
     architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
-    supported_parameters: { output_format: { type: 'enum', values: ['jpeg'] } },
+    supported_parameters: { aspect_ratio: { type: 'enum', values: ['16:9'] }, output_format: { type: 'enum', values: ['jpeg'] } },
   }
   const incompatible = {
     id: 'example/webp-only',
@@ -3423,7 +3425,7 @@ test('OpenRouter keeps unknown incompatible image models disabled while enabling
     id: 'sourceful/riverflow-v2.5-pro',
     name: 'Riverflow PNG capable',
     architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
-    supported_parameters: { output_format: { type: 'enum', values: ['png', 'jpeg', 'webp'] } },
+    supported_parameters: { aspect_ratio: { type: 'enum', values: ['16:9'] }, output_format: { type: 'enum', values: ['png', 'jpeg', 'webp'] } },
   }
   const imageCalls: any[] = []
   legacy.configureRuntimeFetch(async (input, init) => {
@@ -3811,7 +3813,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
-                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], jobRows: [], deletedOwnerKeys: [], deletedObjects: [], storedObjectBytes: {}, readFileLimits: [], ossWriteMode: 'fail', ossWrites: [], referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
+                const state = globalThis.__paperbananaLegacyTestState ||= { inserts: [], jobRows: [], deletedOwnerKeys: [], accountDeletionFindQueries: [], deletedObjects: [], storedObjectBytes: {}, readFileLimits: [], ossWriteMode: 'fail', ossWrites: [], referenceRows: [], referenceFindQueries: [], signedReferenceKeys: [], signingFailures: [] };
                 const matches = (row, query = {}) => Object.entries(query).every(([field, expected]) => {
                   const actual = row[field];
                   if (expected && typeof expected === 'object' && '$in' in expected) return expected.$in.includes(actual);
@@ -3853,6 +3855,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                     }
                     if (name === 'paperbanana_account_deletions') {
                       const keys = query?._id?.$in || [];
+                      (state.accountDeletionFindQueries ||= []).push(structuredClone(query));
                       return keys.some((key) => state.deletedOwnerKeys.includes(key)) ? { _id: keys[0] } : null;
                     }
                     return null;
@@ -4793,4 +4796,313 @@ test('new and historical result DTOs expose the authoritative bucket object key'
     if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
     else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
   }
+})
+
+const canonicalFixedAspectRatios = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1']
+const commonImageAspectRatios = canonicalFixedAspectRatios.slice(0, 8)
+
+test('v9 static image registry exposes exact canonical generation and refinement aspect-ratio contracts', async () => {
+  const legacy = await loadLegacy()
+  const expected = {
+    gemini: {
+      'gemini-3.1-flash-image': canonicalFixedAspectRatios,
+      'gemini-3.1-flash-lite-image': commonImageAspectRatios,
+      'gemini-3-pro-image': commonImageAspectRatios,
+      'gemini-2.5-flash-image': commonImageAspectRatios,
+    },
+    openai: {
+      'gpt-image-2': ['1:1', '3:2', '2:3'],
+      'gpt-image-1': ['1:1', '3:2', '2:3'],
+      'gpt-image-1-mini': ['1:1', '3:2', '2:3'],
+    },
+    bailian: {
+      'wan2.7-image-pro': canonicalFixedAspectRatios,
+      'wan2.7-image': canonicalFixedAspectRatios,
+      'qwen-image-3.0-pro': canonicalFixedAspectRatios,
+      'qwen-image-2.0-pro': commonImageAspectRatios,
+      'qwen-image-2.0': commonImageAspectRatios,
+      'z-image-turbo': commonImageAspectRatios,
+    },
+    ark: {
+      'doubao-seedream-5-0-pro-260628': ['16:9'],
+      'doubao-seedream-5-0-260128': ['16:9'],
+      'doubao-seedream-4-5-251128': ['16:9'],
+      'doubao-seedream-4-0-250828': ['16:9'],
+    },
+  } as const
+
+  for (const [provider, providerExpected] of Object.entries(expected)) {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(registry.registryVersion, '2026-08-21.v9')
+    const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
+    for (const [modelId, ratios] of Object.entries(providerExpected)) {
+      const capabilities = models.get(modelId)?.capabilities
+      assert.deepEqual(capabilities?.aspectRatios, ratios, `${provider}/${modelId} generation ratios`)
+      assert.deepEqual(capabilities?.refineAspectRatios, ratios, `${provider}/${modelId} refinement ratios`)
+      assert.equal(capabilities.aspectRatios.includes('auto'), false)
+      assert.equal(capabilities.refineAspectRatios.includes('auto'), false)
+    }
+    for (const model of models.values()) {
+      if (!model.capabilities.imageGeneration) continue
+      assert.ok(Array.isArray(model.capabilities.aspectRatios), `${provider}/${model.id} must expose aspectRatios`)
+      assert.ok(Array.isArray(model.capabilities.refineAspectRatios), `${provider}/${model.id} must expose refineAspectRatios`)
+      assert.equal(model.capabilities.aspectRatios.every((ratio: string) => canonicalFixedAspectRatios.includes(ratio)), true)
+      assert.equal(model.capabilities.refineAspectRatios.every((ratio: string) => canonicalFixedAspectRatios.includes(ratio)), true)
+    }
+  }
+})
+
+test('OpenRouter registry intersects declared ratios with the canonical set and fails closed without a descriptor', async () => {
+  const legacy = await loadLegacy()
+  const models = [
+    {
+      id: 'vendor/declared-ratios', name: 'Declared Ratios',
+      architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+      supported_parameters: {
+        aspect_ratio: { type: 'enum', values: ['4:1', 'bogus', '1:1', 'auto', '4:1', '3:2'] },
+        input_references: { max: 1 }, output_format: { values: ['png'] },
+      },
+    },
+    {
+      id: 'vendor/missing-ratios', name: 'Missing Ratios',
+      architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+      supported_parameters: { output_format: { values: ['png'] } },
+    },
+  ]
+  legacy.configureRuntimeFetch(async (input) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
+    if (url.endsWith('/images/models')) return Response.json({ data: models })
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    const entries = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
+    assert.deepEqual(entries.get('vendor/declared-ratios').capabilities.aspectRatios, ['1:1', '3:2', '4:1'])
+    assert.deepEqual(entries.get('vendor/declared-ratios').capabilities.refineAspectRatios, ['1:1', '3:2', '4:1'])
+    assert.deepEqual(entries.get('vendor/missing-ratios').capabilities.aspectRatios, [])
+    assert.deepEqual(entries.get('vendor/missing-ratios').capabilities.refineAspectRatios, [])
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
+test('invalid and unsupported ratios reject before account checks, credentials, admission, persistence, or inference', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  const previousAccountQueries = state.accountDeletionFindQueries
+  state.inserts = []
+  state.accountDeletionFindQueries = []
+  let providerCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    providerCalls += 1
+    throw new Error('inference must not run')
+  })
+  const context = (body: Record<string, unknown>) => ({
+    request: { method: 'POST' }, body, headers: { 'x-real-ip': '203.0.113.44' },
+    response: { setHeader() {}, status() {} },
+  })
+  const createBase = {
+    action: 'createJob', provider: 'openai', userId: 'ratio-owner', apiKeys: {},
+    methodContent: 'A sufficiently detailed method section for exact ratio validation before any side effects.',
+    caption: 'Exact ratio validation.', outputFormat: 'png', pipelineMode: 'vanilla', retrievalSetting: 'none', maxCriticRounds: 0,
+    mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-5.6-sol',
+  }
+  const refineBase = {
+    action: 'refineImage', provider: 'gemini', userId: 'ratio-owner', apiKeys: {},
+    mainModelName: 'gemini-3.7-flash', imageModelName: 'gemini-3.1-flash-lite-image', referenceVisionModelName: 'gemini-3.7-flash',
+    sourceImageObjectKey: 'owned/source.png', editInstruction: 'Make the labels clearer.', imageSize: '1K',
+  }
+  try {
+    assert.deepEqual(await legacy.default(context({ ...createBase, aspectRatio: '5:7' })), {
+      code: 400, error: 'Invalid aspectRatio', businessCode: 'INVALID_ASPECT_RATIO',
+    })
+    const unsupportedCreate = await legacy.default(context({ ...createBase, aspectRatio: '4:3' }))
+    assert.equal(unsupportedCreate.code, 400)
+    assert.equal(unsupportedCreate.businessCode, 'ASPECT_RATIO_UNSUPPORTED')
+
+    assert.deepEqual(await legacy.default(context({ ...refineBase, aspectRatio: '5:7' })), {
+      code: 400, error: 'Invalid aspectRatio', businessCode: 'INVALID_ASPECT_RATIO',
+    })
+    const unsupportedRefine = await legacy.default(context({ ...refineBase, aspectRatio: '1:4' }))
+    assert.equal(unsupportedRefine.code, 400)
+    assert.equal(unsupportedRefine.businessCode, 'REFINE_ASPECT_RATIO_UNSUPPORTED')
+
+    assert.equal(state.accountDeletionFindQueries.length, 0)
+    assert.equal(state.inserts.length, 0)
+    assert.equal(providerCalls, 0)
+    assert.deepEqual(legacy.getJobAdmissionState(), { accepting: true, active: 0, queued: 0, reserved: 0, tracked: 0 })
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+    state.accountDeletionFindQueries = previousAccountQueries
+  }
+})
+
+test('unsupported create ratio rejects before manual-reference database lookup', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousReferenceRows = state.referenceRows
+  const previousReferenceQueries = state.referenceFindQueries
+  state.referenceRows = []
+  state.referenceFindQueries = []
+  try {
+    const result = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'openai', apiKeys: {}, aspectRatio: '4:3',
+        methodContent: 'A sufficiently detailed method section with a manual reference that must not be queried.',
+        caption: 'Reject before reference lookup.', outputFormat: 'png', pipelineMode: 'vanilla', maxCriticRounds: 0,
+        retrievalSetting: 'manual', manualReferenceIds: ['ref_never_query'],
+        mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-5.6-sol',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(result.businessCode, 'ASPECT_RATIO_UNSUPPORTED')
+    assert.equal(state.referenceFindQueries.length, 0)
+  } finally {
+    state.referenceRows = previousReferenceRows
+    state.referenceFindQueries = previousReferenceQueries
+  }
+})
+
+test('non-image create routes keep canonical fixed ratios and public jobs preserve auto unchanged', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  const previousRows = state.jobRows
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  state.inserts = []
+  state.jobRows = []
+  delete process.env.PAPERBANANA_GATEWAY_TOKEN
+  legacy.configureRuntimeFetch(async () => Response.json({ choices: [{ message: { content: '<svg xmlns="http://www.w3.org/2000/svg"></svg>' } }] }))
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'openai', apiKeys: { openai: 'key' }, aspectRatio: '4:1',
+        methodContent: 'A sufficiently detailed method section rendered directly as an SVG without an image route.',
+        caption: 'SVG ratio preservation.', outputFormat: 'svg', pipelineMode: 'vanilla', retrievalSetting: 'none', maxCriticRounds: 0,
+        mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-5.6-sol',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    assert.equal(state.inserts[0].aspectRatio, '4:1')
+    await legacy.drainJobAdmission()
+
+    state.jobRows = [{ _id: 'auto-ratio', status: 'succeeded', aspectRatio: 'auto', resultImages: [], stages: [] }]
+    process.env.PAPERBANANA_GATEWAY_TOKEN = 'ratio-gateway'
+    const detail = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'getJob', jobId: 'auto-ratio', gatewayToken: 'ratio-gateway' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(detail.job.aspectRatio, 'auto')
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+    state.jobRows = previousRows
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('static adapters encode exact supported ratios and delegate auto without silent landscape fallback', async () => {
+  const legacy = await loadLegacy()
+  const calls: Array<{ url: string; body: any }> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    let body: any = init?.body
+    if (body instanceof FormData) body = { size: body.get('size') }
+    else if (typeof body === 'string') body = JSON.parse(body)
+    calls.push({ url, body })
+    if (url.includes('/multimodal-generation/generation')) {
+      return Response.json({ output: { choices: [{ message: { content: [{ image: 'https://images.invalid/result.png' }] } }] } })
+    }
+    if (url === 'https://images.invalid/result.png') return new Response('image-bytes', { headers: { 'Content-Type': 'image/png' } })
+    if (url.endsWith('/v1beta/interactions')) return Response.json({ output_image: { data: onePixelPngBase64 } })
+    if (url.endsWith('/v1/images/generations') || url.endsWith('/v1/images/edits')) return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
+    if (url.includes('ark.cn-beijing.volces.com')) return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    await legacy.callImageModel('openai', 'gpt-image-2', 'key', 'portrait', '2:3')
+    await legacy.callImageModel('openai', 'gpt-image-2', 'key', 'default', 'auto')
+    await legacy.callImageModel('openai', 'gpt-image-2', 'key', 'edit', '3:2', `data:image/png;base64,${onePixelPngBase64}`)
+    await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'extreme', '1:4')
+    await legacy.callImageModel('gemini', 'gemini-3.1-flash-image', 'key', 'default', 'auto')
+    await legacy.callImageModel('bailian', 'wan2.7-image-pro', 'key', 'extreme', '1:4', '', '2K')
+    await legacy.callImageModel('bailian', 'wan2.7-image-pro', 'key', 'default', 'auto', '', '2K')
+    await legacy.callImageModel('bailian', 'z-image-turbo', 'key', 'documented ultrawide', '21:9', '', '2K')
+    await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'wide', '16:9', '', '2K')
+    await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'default', 'auto', '', '2K')
+    await assert.rejects(
+      legacy.callImageModel('bailian', 'qwen-image-2.0-pro', 'key', 'unsupported', '4:1', '', '2K'),
+      /does not support aspect ratio 4:1/,
+    )
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'unsupported', '4:3', '', '2K'),
+      /does not support aspect ratio 4:3/,
+    )
+    await assert.rejects(
+      legacy.callImageModel('openai', 'gpt-image-2', 'key', 'invalid', '5:7'),
+      /Invalid aspectRatio/,
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+
+  const openAiCalls = calls.filter((call) => call.url.includes('api.openai.com/v1/images'))
+  assert.deepEqual(openAiCalls.map((call) => call.body.size), ['1024x1536', 'auto', '1536x1024'])
+  const geminiCalls = calls.filter((call) => call.url.endsWith('/v1beta/interactions'))
+  assert.equal(geminiCalls[0].body.response_format.aspect_ratio, '1:4')
+  assert.equal(Object.hasOwn(geminiCalls[1].body.response_format, 'aspect_ratio'), false)
+  const bailianCalls = calls.filter((call) => call.url.includes('/multimodal-generation/generation'))
+  assert.equal(bailianCalls[0].body.parameters.size, '1024*4096')
+  assert.equal(Object.hasOwn(bailianCalls[1].body.parameters, 'size'), false)
+  assert.equal(bailianCalls[2].body.parameters.size, '2016*864')
+  const arkCalls = calls.filter((call) => call.url.includes('ark.cn-beijing.volces.com'))
+  assert.deepEqual(arkCalls.map((call) => call.body.size), ['2048x1152', '2K'])
+})
+
+test('OpenRouter sends only an exactly declared fixed ratio and omits auto', async () => {
+  const legacy = await loadLegacy()
+  const imageBodies: any[] = []
+  const model = {
+    id: 'vendor/exact-ratio', name: 'Exact Ratio',
+    architecture: { input_modalities: ['text'], output_modalities: ['image'] },
+    supported_parameters: {
+      aspect_ratio: { type: 'enum', values: ['1:1', '4:3'] },
+      output_format: { values: ['png'] },
+    },
+  }
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: [model] })
+    if (url.endsWith('/api/v1/images')) {
+      imageBodies.push(JSON.parse(String(init?.body || '{}')))
+      return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    await legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'fixed', '4:3')
+    await legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'default', 'auto')
+    await assert.rejects(
+      legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'unsupported', '3:2'),
+      /does not declare requested aspect ratio 3:2/,
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+  assert.equal(imageBodies[0].aspect_ratio, '4:3')
+  assert.equal(Object.hasOwn(imageBodies[1], 'aspect_ratio'), false)
+  assert.equal(imageBodies.length, 2)
 })

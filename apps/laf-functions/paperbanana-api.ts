@@ -58,6 +58,8 @@ type ModelVerificationState = 'registry' | 'catalog' | 'account-visible' | 'infe
 type ProviderAccessKind = 'direct' | 'aggregator'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
 type ImageResolution = '1K' | '2K' | '4K'
+type FixedAspectRatio = '1:1' | '3:2' | '2:3' | '4:3' | '3:4' | '16:9' | '9:16' | '21:9' | '1:4' | '4:1'
+type AspectRatio = FixedAspectRatio | 'auto'
 type ModelProtocol =
   | 'openai-chat-completions'
   | 'openai-responses'
@@ -108,7 +110,7 @@ type CreateJobBody = {
   pipelineMode?: 'planner_critic' | 'full' | 'vanilla'
   retrievalSetting?: RetrievalSetting
   manualReferenceIds?: string[]
-  aspectRatio?: '16:9' | '21:9' | '3:2' | '1:1'
+  aspectRatio?: AspectRatio
   imageSize?: ImageResolution
   numCandidates?: number
   maxCriticRounds?: number
@@ -128,7 +130,7 @@ type RefineImageBody = {
   sourceImageUrl?: string
   sourceImageObjectKey?: string
   editInstruction: string
-  aspectRatio?: '16:9' | '21:9' | '3:2' | '1:1'
+  aspectRatio?: AspectRatio
   imageSize?: ImageResolution
   userId?: string
   userEmail?: string
@@ -698,6 +700,8 @@ type ModelRegistryEntry = {
     imageEditing: boolean
     imageEditMode: ImageEditMode
     refineResolutions: ImageResolution[]
+    aspectRatios: FixedAspectRatio[]
+    refineAspectRatios: FixedAspectRatio[]
     resolutions?: string[]
     outputFormats?: string[]
   }
@@ -862,13 +866,23 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-20.v8'
+const modelRegistryVersion = '2026-08-21.v9'
 const referenceCorpusVersion = 'zh-CN.v2'
 const canonicalImageResolutions: ImageResolution[] = ['1K', '2K', '4K']
+const canonicalFixedAspectRatios: FixedAspectRatio[] = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1']
+const canonicalAspectRatioSet = new Set<string>(canonicalFixedAspectRatios)
+const commonImageAspectRatios = canonicalFixedAspectRatios.slice(0, 8)
+const openAiImageAspectRatios: FixedAspectRatio[] = ['1:1', '3:2', '2:3']
+const arkConservativeAspectRatios: FixedAspectRatio[] = ['16:9']
 
 function canonicalRefineResolutions(values: unknown): ImageResolution[] {
   const declared = new Set(Array.isArray(values) ? values.map(String) : [])
   return canonicalImageResolutions.filter((value) => declared.has(value))
+}
+
+function canonicalAspectRatios(values: unknown): FixedAspectRatio[] {
+  const declared = new Set(Array.isArray(values) ? values.map(String) : [])
+  return canonicalFixedAspectRatios.filter((value) => declared.has(value))
 }
 
 type RegistryEntryMetadata = Partial<Pick<
@@ -937,6 +951,8 @@ function registryEntry(
       imageEditMode: imageGeneration ? (imageEditing ? 'direct-edit' : 'analyze-redraw') : 'none',
       ...options,
       refineResolutions: canonicalRefineResolutions(options.refineResolutions),
+      aspectRatios: canonicalAspectRatios(options.aspectRatios),
+      refineAspectRatios: canonicalAspectRatios(options.refineAspectRatios),
     },
   }
 }
@@ -958,10 +974,10 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('gemini-2.5-pro', 'Gemini 2.5 Pro', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-2.5-flash', 'Gemini 2.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-2.5-flash-lite', 'Gemini 2.5 Flash-Lite', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini generation', {}, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-interactions', 'Stable image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-interactions', 'Stable low-latency image generation and direct editing; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-interactions', 'Stable professional image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Legacy generateContent image model; 1K only', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], outputFormats: ['png'] }, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3.1-flash-image', 'Nano Banana 2', ['image'], 'gemini-interactions', 'Stable image generation and direct editing; includes documented extreme aspect ratios', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3.1-flash-lite-image', 'Nano Banana 2 Lite', ['image'], 'gemini-interactions', 'Stable low-latency image generation and direct editing; 1K only; documented common aspect-ratio set', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-3-pro-image', 'Nano Banana Pro', ['image'], 'gemini-interactions', 'Stable professional image generation and direct editing; conservative common aspect-ratio set', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png', 'jpeg'] }, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gemini-2.5-flash-image', 'Nano Banana', ['image'], 'gemini-generate-content', 'Legacy generateContent image model; 1K only; conservative common aspect-ratio set', { referenceImages: true, imageEditing: true, resolutions: ['1K'], refineResolutions: ['1K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png'] }, { vendor: 'Google', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
     ],
   },
   bailian: {
@@ -980,12 +996,12 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('kimi/kimi-k3', 'Kimi K3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'Moonshot AI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('MiniMax/MiniMax-M3', 'MiniMax M3', ['main', 'vision'], 'bailian-openai-chat', 'Third-party visual model; Beijing availability', {}, { vendor: 'MiniMax', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('qwen3.5-omni-plus', 'Qwen3.5 Omni Plus', ['vision'], 'bailian-openai-chat', 'Multimodal understanding; Beijing and Singapore', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image', 'audio', 'video'], outputModalities: ['text'] }),
-      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('z-image-turbo', 'Z-Image Turbo', ['image'], 'bailian-multimodal-generation', 'Fast text-to-image model; refine uses analyze and redraw', { resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] }, { vendor: 'Tongyi-MAI', inputModalities: ['text'], outputModalities: ['image'] }),
+      registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; exact custom pixel sizes within the documented 1:8–8:1 range; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; exact custom pixel sizes within the documented 1:8–8:1 range; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; documented custom 1:8–8:1 sizes for generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; conservative common exact custom sizes for generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing; conservative common exact custom sizes', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('z-image-turbo', 'Z-Image Turbo', ['image'], 'bailian-multimodal-generation', 'Fast text-to-image model with documented common exact sizes; refine uses analyze and redraw', { resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png'] }, { vendor: 'Tongyi-MAI', inputModalities: ['text'], outputModalities: ['image'] }),
     ],
   },
   openai: {
@@ -1006,9 +1022,9 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('gpt-5-mini', 'GPT-5 Mini', ['main', 'vision'], 'openai-chat-completions', 'Current small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-4.1', 'GPT-4.1', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gpt-4.1-mini', 'GPT-4.1 Mini', ['main', 'vision'], 'openai-chat-completions', 'Vision-capable small model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
-      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
-      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-2', 'GPT Image 2', ['image'], 'openai-images', 'Recommended dedicated Images API model; exact square, landscape, and portrait size enums', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], aspectRatios: openAiImageAspectRatios, refineAspectRatios: openAiImageAspectRatios, outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1', 'GPT Image 1', ['image'], 'openai-images', 'Legacy dedicated Images API model; exact square, landscape, and portrait size enums', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], aspectRatios: openAiImageAspectRatios, refineAspectRatios: openAiImageAspectRatios, outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('gpt-image-1-mini', 'GPT Image 1 Mini', ['image'], 'openai-images', 'Legacy dedicated Images API model; exact square, landscape, and portrait size enums', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['2K'], aspectRatios: openAiImageAspectRatios, refineAspectRatios: openAiImageAspectRatios, outputFormats: ['png', 'jpeg', 'webp'] }, { vendor: 'OpenAI', lifecycle: 'legacy', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
     ],
   },
   ark: {
@@ -1255,8 +1271,8 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
         'Doubao Seedream 5.0 Pro',
         ['image'],
         'ark-images',
-        'Current flagship image generation and direct-edit model; 1K and 2K',
-        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], outputFormats: ['png'] },
+        'Current flagship image generation and direct-edit model; 1K and 2K; conservative exact 16:9 custom-size mapping',
+        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: arkConservativeAspectRatios, refineAspectRatios: arkConservativeAspectRatios, outputFormats: ['png'] },
         {
           vendor: 'ByteDance Seedream', recommended: true, requiresEntitlement: true, entitlement: 'ark-account-access',
           inputModalities: ['text', 'image'], outputModalities: ['image'], verified: false,
@@ -1268,8 +1284,8 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
         'Doubao Seedream 5.0',
         ['image'],
         'ark-images',
-        'Current image generation and direct-edit model; 2K and 4K',
-        { referenceImages: true, imageEditing: true, resolutions: ['2K', '4K'], refineResolutions: ['2K', '4K'], outputFormats: ['png'] },
+        'Current image generation and direct-edit model; 2K and 4K; conservative exact 16:9 custom-size mapping',
+        { referenceImages: true, imageEditing: true, resolutions: ['2K', '4K'], refineResolutions: ['2K', '4K'], aspectRatios: arkConservativeAspectRatios, refineAspectRatios: arkConservativeAspectRatios, outputFormats: ['png'] },
         {
           vendor: 'ByteDance Seedream', requiresEntitlement: true, entitlement: 'ark-account-access',
           inputModalities: ['text', 'image'], outputModalities: ['image'], verified: false,
@@ -1281,8 +1297,8 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
         'Doubao Seedream 4.5',
         ['image'],
         'ark-images',
-        'Previous active image generation and direct-edit model; 2K and 4K; JPEG output is normalized to PNG',
-        { referenceImages: true, imageEditing: true, resolutions: ['2K', '4K'], refineResolutions: ['2K', '4K'], outputFormats: ['png'] },
+        'Previous active image generation and direct-edit model; 2K and 4K; conservative exact 16:9 custom-size mapping; JPEG output is normalized to PNG',
+        { referenceImages: true, imageEditing: true, resolutions: ['2K', '4K'], refineResolutions: ['2K', '4K'], aspectRatios: arkConservativeAspectRatios, refineAspectRatios: arkConservativeAspectRatios, outputFormats: ['png'] },
         {
           vendor: 'ByteDance Seedream', lifecycle: 'legacy', requiresEntitlement: true, entitlement: 'ark-account-access',
           inputModalities: ['text', 'image'], outputModalities: ['image'], verified: false,
@@ -1294,8 +1310,8 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
         'Doubao Seedream 4.0',
         ['image'],
         'ark-images',
-        'Previous active image generation and direct-edit model; JPEG output is normalized to PNG',
-        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], outputFormats: ['png'] },
+        'Previous active image generation and direct-edit model; conservative exact 16:9 custom-size mapping; JPEG output is normalized to PNG',
+        { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], aspectRatios: arkConservativeAspectRatios, refineAspectRatios: arkConservativeAspectRatios, outputFormats: ['png'] },
         {
           vendor: 'ByteDance Seedream',
           lifecycle: 'legacy',
@@ -1731,6 +1747,7 @@ async function runArkAccountProbe(
         probe.modelId,
         apiKey,
         'A single black dot on a white background.',
+        'auto',
         null,
         arkImageProbeResolution(probe.modelId),
         1,
@@ -2010,10 +2027,10 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   try {
     validateCreateBody(body)
   } catch (error: any) {
-    return fail(error?.message || 'Invalid createJob request', 400)
-  }
-  if (!(await ensureAccountAcceptingWork(body))) {
-    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
+    return {
+      ...fail(error?.message || 'Invalid createJob request', 400),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
   }
   const normalizedReferenceImages = normalizeReferenceImages(body.referenceImages || [])
   // 二选一：用户上传了参考图时，以上传图为唯一视觉风格锚点，自动关闭检索
@@ -2037,6 +2054,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     referenceImageMode: normalizeReferenceImageMode(body.referenceImageMode),
     referenceImages: normalizedReferenceImages,
     outputFormat: normalizeOutputFormat(body.outputFormat || body.output_format),
+    aspectRatio: normalizeAspectRatio(body.aspectRatio),
     // 清晰度三档：1K = 仅基础渲染；2K/4K = 基础渲染后再自动精修放大到该分辨率。
     // 默认 1K（最快、最省），未知值同样归一到 1K。
     imageSize: body.imageSize === '4K' ? '4K' as const : body.imageSize === '2K' ? '2K' as const : '1K' as const,
@@ -2044,6 +2062,51 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     manualReferenceIds: hasUploadedReference ? [] : normalizeManualReferenceIds(body.manualReferenceIds || []),
   }
   const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
+  let prevalidatedRegistries = new Map<Provider, ProviderModelRegistry>()
+  const couldReachImageRoute = (
+    (normalizedBody.outputFormat === 'png' && normalizedBody.taskName !== 'plot')
+    || (normalizedBody.taskName === 'plot' && (normalizedBody.imageSize === '2K' || normalizedBody.imageSize === '4K'))
+  )
+  if (couldReachImageRoute) {
+    const imageRoute = routing.modelRoutes.image
+    try {
+      if (normalizedBody.outputFormat === 'png' && normalizedBody.taskName !== 'plot') {
+        prevalidatedRegistries = await validateModelRouting(routing.modelRoutes, ['image'], prevalidatedRegistries)
+      } else {
+        prevalidatedRegistries.set(imageRoute.accessProvider, await providerModelRegistry(imageRoute.accessProvider))
+      }
+    } catch (error: any) {
+      return {
+        ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+        ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+      }
+    }
+    const imageRegistry = prevalidatedRegistries.get(imageRoute.accessProvider)!
+    const refineCapability = registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
+    const reachesImageRoute = normalizedBody.outputFormat === 'png' && normalizedBody.taskName !== 'plot'
+      ? true
+      : refineCapability.mode === 'direct-edit'
+    if (reachesImageRoute && normalizedBody.taskName === 'plot') {
+      try {
+        prevalidatedRegistries = await validateModelRouting(routing.modelRoutes, ['image'], prevalidatedRegistries)
+      } catch (error: any) {
+        return {
+          ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
+          ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+        }
+      }
+    }
+    const supportedRatios = registryImageAspectRatios(imageRoute.accessProvider, imageRegistry, imageRoute.modelId, false)
+    if (reachesImageRoute && normalizedBody.aspectRatio !== 'auto' && !supportedRatios.includes(normalizedBody.aspectRatio)) {
+      return {
+        ...fail(
+          `Aspect ratio ${normalizedBody.aspectRatio} is not supported by ${imageRoute.accessProvider}/${imageRoute.modelId}. Supported ratios: ${supportedRatios.join(', ') || 'none'}.`,
+          400,
+        ),
+        businessCode: 'ASPECT_RATIO_UNSUPPORTED',
+      }
+    }
+  }
   if (normalizedBody.retrievalSetting === 'manual') {
     try {
       normalizedBody.prevalidatedManualReferences = await resolveManualRetrievedReferences(body.manualReferenceIds || [])
@@ -2065,12 +2128,13 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   const safeCriticRounds = clamp(Number(body.maxCriticRounds ?? 1), 0, Number(process.env.PAPERBANANA_MAX_CRITIC_ROUNDS || 2))
   let requiredRoles: ModelRole[]
   let jobBody: CreateExecutionBody
+  let registries = prevalidatedRegistries
   try {
     const capabilityAgnosticRoles = requiredCreateRouteRoles(roleResolvedBody, safeCriticRounds)
     const registryValidationRoles = routing.modelRoutingSource === 'explicit'
       ? (['main', 'image', 'vision'] as ModelRole[])
       : capabilityAgnosticRoles
-    const registries = await validateModelRouting(routing.modelRoutes, registryValidationRoles)
+    registries = await validateModelRouting(routing.modelRoutes, registryValidationRoles)
     const imageRoute = routing.modelRoutes.image
     const imageRegistry = registries.get(imageRoute.accessProvider)
     const imageRefineCapability = imageRegistry
@@ -2088,6 +2152,27 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       ...fail(error?.message || 'Model registry is temporarily unavailable', Number(error?.statusCode || 503)),
       ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
     }
+  }
+  if (requiredRoles.includes('image') && jobBody.aspectRatio !== 'auto') {
+    const imageRoute = jobBody.modelRoutes.image
+    const supportedRatios = registryImageAspectRatios(
+      imageRoute.accessProvider,
+      registries.get(imageRoute.accessProvider)!,
+      imageRoute.modelId,
+      false,
+    )
+    if (!supportedRatios.includes(jobBody.aspectRatio)) {
+      return {
+        ...fail(
+          `Aspect ratio ${jobBody.aspectRatio} is not supported by ${imageRoute.accessProvider}/${imageRoute.modelId}. Supported ratios: ${supportedRatios.join(', ') || 'none'}.`,
+          400,
+        ),
+        businessCode: 'ASPECT_RATIO_UNSUPPORTED',
+      }
+    }
+  }
+  if (!(await ensureAccountAcceptingWork(body))) {
+    return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
   const routeSecrets = selectRequiredRouteSecrets(jobBody.modelRoutes, normalizedBodyWithSecrets.apiKeys, requiredRoles)
   for (const role of requiredRoles) {
@@ -2178,7 +2263,10 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   try {
     validateRefineBody(body)
   } catch (error: any) {
-    return fail(error?.message || 'Invalid refineImage request', 400)
+    return {
+      ...fail(error?.message || 'Invalid refineImage request', 400),
+      ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
+    }
   }
   let routingInput: RefineImageBody = {
     ...body,
@@ -2232,6 +2320,18 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
         400,
       ),
       businessCode: 'REFINE_RESOLUTION_UNSUPPORTED',
+    }
+  }
+  if (
+    normalizedBodyWithSecrets.aspectRatio !== 'auto'
+    && !imageRefineCapability.aspectRatios.includes(normalizedBodyWithSecrets.aspectRatio)
+  ) {
+    return {
+      ...fail(
+        `Refinement aspect ratio ${normalizedBodyWithSecrets.aspectRatio} is not supported by ${imageRoute.accessProvider}/${imageRoute.modelId}. Supported ratios: ${imageRefineCapability.aspectRatios.join(', ') || 'none'}.`,
+        400,
+      ),
+      businessCode: 'REFINE_ASPECT_RATIO_UNSUPPORTED',
     }
   }
   if (!(await ensureAccountAcceptingWork(body))) {
@@ -4335,6 +4435,17 @@ export async function callImageModel(
   imageSize = '2K',
   strictImageSize = false,
 ): Promise<string> {
+  const normalizedAspectRatio = normalizeAspectRatio(aspectRatio)
+  if (provider !== 'openrouter' && normalizedAspectRatio !== 'auto') {
+    const normalizedModel = normalizeModelName(provider, model)
+    const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizedModel && candidate.capabilities.imageGeneration)
+    const ratios = String(sourceImage || '').trim()
+      ? entry?.capabilities.refineAspectRatios || []
+      : entry?.capabilities.aspectRatios || []
+    if (!ratios.includes(normalizedAspectRatio)) {
+      throw new Error(`Model ${normalizedModel} does not support aspect ratio ${normalizedAspectRatio}`)
+    }
+  }
   // When a source image is supplied, route to a true image-to-image / edit
   // request for providers that support image input. Otherwise fall back to
   // plain text-to-image generation.
@@ -4348,7 +4459,7 @@ export async function callImageModel(
 
   if (provider === 'openai') {
     if (source) {
-      return callOpenAiImageEdit(model, apiKey, prompt, source)
+      return callOpenAiImageEdit(model, apiKey, prompt, source, normalizedAspectRatio)
     }
     const response = await fetchWithRetry('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -4359,10 +4470,7 @@ export async function callImageModel(
       body: JSON.stringify({
         model,
         prompt,
-        // OpenAI gpt-image sizes are an enum; '1536x1024' is the largest safe
-        // landscape value. Higher imageSize requests are served by the separate
-        // auto-refine pass, so we keep a known-good size here (never 400).
-        size: '1536x1024',
+        size: openAiImageSize(normalizedAspectRatio),
         quality: 'high',
         background: 'opaque',
         output_format: 'png',
@@ -4373,24 +4481,25 @@ export async function callImageModel(
   }
 
   if (provider === 'gemini') {
-    return callGeminiImage(model, apiKey, prompt, aspectRatio, source, imageSize)
+    return callGeminiImage(model, apiKey, prompt, normalizedAspectRatio, source, imageSize)
   }
 
   if (provider === 'bailian') {
-    return callBailianImage(model, apiKey, prompt, aspectRatio, imageSize, source)
+    return callBailianImage(model, apiKey, prompt, normalizedAspectRatio, imageSize, source)
   }
 
   if (provider === 'ark') {
-    return callArkImage(normalizeModelName('ark', model), apiKey, prompt, source, imageSize)
+    return callArkImage(normalizeModelName('ark', model), apiKey, prompt, normalizedAspectRatio, source, imageSize)
   }
 
-  return callOpenRouterImage(model, apiKey, prompt, aspectRatio, source, imageSize, strictImageSize)
+  return callOpenRouterImage(model, apiKey, prompt, normalizedAspectRatio, source, imageSize, strictImageSize)
 }
 
 async function callArkImage(
   model: string,
   apiKey: string,
   prompt: string,
+  aspectRatio: AspectRatio,
   source: NormalizedSourceImage | null,
   imageSize = '2K',
   attempts = 2,
@@ -4400,7 +4509,7 @@ async function callArkImage(
   if (!entry) throw new Error(`Ark image model ${model} is not registered`)
   const supportedResolutions = entry.capabilities.resolutions || []
   if (!supportedResolutions.includes(imageSize)) throw new Error(`Ark image model ${model} does not support ${imageSize}`)
-  const size = imageSize
+  const size = arkImageSize(aspectRatio, imageSize)
   const body: Record<string, unknown> = {
     model,
     prompt,
@@ -4424,6 +4533,16 @@ async function callArkImage(
   const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Ark image response')
   const base64 = validateProviderImageBase64(data.data?.[0]?.b64_json || '', maxProviderImageBytes, 'Ark image')
   return await normalizeArkImageToPng(base64)
+}
+
+function arkImageSize(aspectRatio: AspectRatio, imageSize: string) {
+  if (aspectRatio === 'auto') return imageSize
+  const exact16By9: Record<string, string> = {
+    '1K': '1280x720',
+    '2K': '2048x1152',
+    '4K': '4096x2304',
+  }
+  return exact16By9[imageSize]
 }
 
 const arkImageMaxPixels = 20 * 1024 * 1024
@@ -4744,7 +4863,7 @@ async function callOpenRouterImage(
   model: string,
   apiKey: string,
   prompt: string,
-  aspectRatio: string,
+  aspectRatio: AspectRatio,
   source: NormalizedSourceImage | null,
   imageSize: string,
   strictImageSize = false,
@@ -4761,9 +4880,12 @@ async function callOpenRouterImage(
   if (strictImageSize && resolution !== imageSize) {
     throw new Error(`Model ${actualModel} no longer declares requested refinement resolution ${imageSize}`)
   }
-  const ratio = supportedOpenRouterValue(parameters.aspect_ratio, aspectRatio, ['16:9', '3:2', '1:1', '21:9', 'auto'])
+  const declaredRatios = canonicalAspectRatios(parameters.aspect_ratio?.values)
+  if (aspectRatio !== 'auto' && !declaredRatios.includes(aspectRatio)) {
+    throw new Error(`Model ${actualModel} does not declare requested aspect ratio ${aspectRatio}`)
+  }
   if (resolution) body.resolution = resolution
-  if (ratio) body.aspect_ratio = ratio
+  if (aspectRatio !== 'auto') body.aspect_ratio = aspectRatio
   if (route.outputFormat) body.output_format = route.outputFormat
   if (source && !supportsOpenRouterParameter(parameters, 'input_references')) {
     throw new Error(`Model ${actualModel} does not support input_references; direct edit is unavailable`)
@@ -4841,11 +4963,34 @@ async function normalizeSourceImage(sourceImage: string): Promise<NormalizedSour
   return { base64: value, mimeType: 'image/png', dataUrl: `data:image/png;base64,${value}` }
 }
 
-async function callOpenAiImageEdit(model: string, apiKey: string, prompt: string, source: NormalizedSourceImage): Promise<string> {
+function openAiImageSize(aspectRatio: AspectRatio) {
+  const sizes: Record<AspectRatio, '1024x1024' | '1536x1024' | '1024x1536' | 'auto'> = {
+    '1:1': '1024x1024',
+    '3:2': '1536x1024',
+    '2:3': '1024x1536',
+    '4:3': '1536x1024',
+    '3:4': '1024x1536',
+    '16:9': '1536x1024',
+    '9:16': '1024x1536',
+    '21:9': '1536x1024',
+    '1:4': '1024x1536',
+    '4:1': '1536x1024',
+    auto: 'auto',
+  }
+  return sizes[aspectRatio]
+}
+
+async function callOpenAiImageEdit(
+  model: string,
+  apiKey: string,
+  prompt: string,
+  source: NormalizedSourceImage,
+  aspectRatio: AspectRatio,
+): Promise<string> {
   const form = new FormData()
   form.append('model', model)
   form.append('prompt', prompt)
-  form.append('size', '1536x1024')
+  form.append('size', openAiImageSize(aspectRatio))
   form.append('quality', 'high')
   const ext = source.mimeType === 'image/jpeg' ? 'jpg' : source.mimeType === 'image/webp' ? 'webp' : 'png'
   const blob = new Blob([Buffer.from(source.base64, 'base64')], { type: source.mimeType })
@@ -4922,23 +5067,24 @@ function arkShouldDisableThinking(model: string) {
     || /^glm-5-2-/.test(model)
 }
 
-async function callGeminiImage(model: string, apiKey: string, prompt: string, aspectRatio: string, source: NormalizedSourceImage | null = null, imageSize = '2K'): Promise<string> {
+async function callGeminiImage(model: string, apiKey: string, prompt: string, aspectRatio: AspectRatio, source: NormalizedSourceImage | null = null, imageSize = '2K'): Promise<string> {
   const actualModel = normalizeModelName('gemini', model)
   if (actualModel !== 'gemini-2.5-flash-image') {
     const input: any[] = [{ type: 'text', text: prompt }]
     if (source) input.push({ type: 'image', mime_type: source.mimeType, data: source.base64 })
+    const responseFormat: Record<string, string> = {
+      type: 'image',
+      mime_type: 'image/png',
+      image_size: geminiImageSize(actualModel, imageSize),
+    }
+    if (aspectRatio !== 'auto') responseFormat.aspect_ratio = aspectRatio
     const response = await fetchWithRetry('https://generativelanguage.googleapis.com/v1beta/interactions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
       body: JSON.stringify({
         model: actualModel,
         input,
-        response_format: {
-          type: 'image',
-          mime_type: 'image/png',
-          aspect_ratio: aspectRatio,
-          image_size: geminiImageSize(actualModel, imageSize),
-        },
+        response_format: responseFormat,
       }),
     }, `gemini interactions image model ${actualModel}`)
     const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, 'Gemini Interactions image response')
@@ -4949,6 +5095,8 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
   if (source) {
     parts.push({ inlineData: { mimeType: source.mimeType, data: source.base64 } })
   }
+  const imageConfig: Record<string, string> = { imageSize: geminiImageSize(actualModel, imageSize) }
+  if (aspectRatio !== 'auto') imageConfig.aspectRatio = aspectRatio
   const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1/models/${actualModel}:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -4957,7 +5105,7 @@ async function callGeminiImage(model: string, apiKey: string, prompt: string, as
       generationConfig: {
         responseModalities: ['IMAGE'],
         // Gemini 2.5 image generation remains on generateContent and is 1K-only.
-        imageConfig: { aspectRatio, imageSize: geminiImageSize(actualModel, imageSize) },
+        imageConfig,
       },
     }),
   }, `gemini image model ${actualModel}`)
@@ -5020,15 +5168,13 @@ async function callBailianImage(
   model: string,
   apiKey: string,
   prompt: string,
-  aspectRatio: string,
+  aspectRatio: AspectRatio,
   imageSize = '2K',
   source: NormalizedSourceImage | null = null,
 ): Promise<string> {
-  const parameters: any = {
-    size: bailianImageSize(model, aspectRatio, imageSize, Boolean(source)),
-    n: 1,
-    watermark: false,
-  }
+  const parameters: any = { n: 1, watermark: false }
+  const size = bailianImageSize(model, aspectRatio, imageSize, Boolean(source))
+  if (size) parameters.size = size
   if (/^wan2\.7-image/.test(model)) parameters.thinking_mode = true
   if (/^qwen-image-(?:2\.0|3\.0)/.test(model)) parameters.prompt_extend = true
   const content: any[] = []
@@ -5068,15 +5214,34 @@ function extractDashScopeImageUrl(data: any) {
   return ''
 }
 
-function bailianImageSize(model: string, aspectRatio: string, imageSize = '1K', editing = false) {
+function bailianImageSize(model: string, aspectRatio: AspectRatio, imageSize = '1K', editing = false) {
+  if (aspectRatio === 'auto') return undefined
   const supports4K = model === 'wan2.7-image-pro' && !editing
   const tier = imageSize === '4K' && supports4K ? '4K' : imageSize === '1K' ? '1K' : '2K'
-  const dimensions: Record<string, Record<string, string>> = {
-    '1K': { '21:9': '1792*768', '3:2': '1152*768', '1:1': '1024*1024', '16:9': '1360*768' },
-    '2K': { '21:9': '2048*878', '3:2': '2048*1365', '1:1': '2048*2048', '16:9': '2048*1152' },
-    '4K': { '21:9': '4096*1755', '3:2': '4096*2731', '1:1': '4096*4096', '16:9': '4096*2304' },
+  const wanDimensions: Record<string, Record<FixedAspectRatio, string>> = {
+    '1K': {
+      '1:1': '1024*1024', '3:2': '1152*768', '2:3': '768*1152', '4:3': '1024*768', '3:4': '768*1024',
+      '16:9': '1280*720', '9:16': '720*1280', '21:9': '1344*576', '1:4': '512*2048', '4:1': '2048*512',
+    },
+    '2K': {
+      '1:1': '2048*2048', '3:2': '2304*1536', '2:3': '1536*2304', '4:3': '2048*1536', '3:4': '1536*2048',
+      '16:9': '2048*1152', '9:16': '1152*2048', '21:9': '2352*1008', '1:4': '1024*4096', '4:1': '4096*1024',
+    },
+    '4K': {
+      '1:1': '4096*4096', '3:2': '4032*2688', '2:3': '2688*4032', '4:3': '4096*3072', '3:4': '3072*4096',
+      '16:9': '4096*2304', '9:16': '2304*4096', '21:9': '4032*1728', '1:4': '1024*4096', '4:1': '4096*1024',
+    },
   }
-  return dimensions[tier][aspectRatio] || dimensions[tier]['16:9']
+  const conservativeDimensions: Record<string, Record<FixedAspectRatio, string>> = {
+    '1K': wanDimensions['1K'],
+    '2K': {
+      '1:1': '1536*1536', '3:2': '1872*1248', '2:3': '1248*1872', '4:3': '1728*1296', '3:4': '1296*1728',
+      '16:9': '2048*1152', '9:16': '1152*2048', '21:9': '2016*864', '1:4': '512*2048', '4:1': '2048*512',
+    },
+    '4K': wanDimensions['4K'],
+  }
+  const dimensions = /^wan2\.7-image/.test(model) ? wanDimensions : conservativeDimensions
+  return dimensions[tier][aspectRatio]
 }
 
 export async function readResponseWithLimit(response: Response, maxBytes: number, label: string): Promise<Buffer> {
@@ -5400,13 +5565,25 @@ function registryImageRefineCapability(provider: Provider, registry: ProviderMod
   const entry = registry.models.find((candidate) => candidate.id === resolvedId)
   const mode = entry?.capabilities.imageEditMode || 'none'
   const resolutions = entry?.capabilities.refineResolutions || []
+  const aspectRatios = entry?.capabilities.refineAspectRatios || []
   if (mode === 'direct-edit') {
-    return { mode, resolutions, reason: `${entry?.label || resolvedId} accepts the source image for direct image-to-image editing` }
+    return { mode, resolutions, aspectRatios, reason: `${entry?.label || resolvedId} accepts the source image for direct image-to-image editing` }
   }
   if (mode === 'analyze-redraw') {
-    return { mode, resolutions, reason: `${entry?.label || resolvedId} cannot accept a source image; refine analyzes the source and redraws it` }
+    return { mode, resolutions, aspectRatios, reason: `${entry?.label || resolvedId} cannot accept a source image; refine analyzes the source and redraws it` }
   }
-  return { mode: 'none' as const, resolutions, reason: `${entry?.label || resolvedId} is not registered for image refinement` }
+  return { mode: 'none' as const, resolutions, aspectRatios, reason: `${entry?.label || resolvedId} is not registered for image refinement` }
+}
+
+function registryImageAspectRatios(
+  provider: Provider,
+  registry: ProviderModelRegistry,
+  model: string,
+  refine: boolean,
+): FixedAspectRatio[] {
+  const resolvedId = provider === 'openrouter' ? toOpenRouterModel(model) : normalizeModelName(provider, model)
+  const entry = registry.models.find((candidate) => candidate.id === resolvedId)
+  return refine ? entry?.capabilities.refineAspectRatios || [] : entry?.capabilities.aspectRatios || []
 }
 
 async function fetchOpenRouterTextModels() {
@@ -5585,6 +5762,7 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
     const compatibleOutputFormat = safeOpenRouterOutputFormat(model.supportedParameters)
     const normalizedProfile = openRouterNormalizedImageProfiles.get(model.id)
     const resolutionValues = openRouterRuntimeResolutions(model.id, model.supportedParameters?.resolution?.values)
+    const aspectRatioValues = canonicalAspectRatios(model.supportedParameters?.aspect_ratio?.values)
     const formatSelectable = compatibleOutputFormat !== null || Boolean(normalizedProfile)
     const minimumResolutionAvailable = !normalizedProfile?.minimumResolution || Boolean(resolutionValues?.length)
     const selectable = formatSelectable && minimumResolutionAvailable
@@ -5610,6 +5788,8 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         imageEditing: directEdit,
         resolutions: resolutionValues,
         refineResolutions: canonicalRefineResolutions(resolutionValues),
+        aspectRatios: aspectRatioValues,
+        refineAspectRatios: aspectRatioValues,
         outputFormats,
       },
       {
@@ -6701,6 +6881,7 @@ function randomId() {
 function validateCreateBody(body: CreateJobBody) {
   if (!recognizedRouteProviders.has(body.provider)) throw new Error('Invalid provider')
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
+  normalizeAspectRatio(body.aspectRatio)
   if (body.taskName && !['diagram', 'plot'].includes(body.taskName)) throw new Error('Invalid taskName. Must be diagram or plot.')
   if (!body.methodContent || body.methodContent.trim().length < 20) throw new Error('methodContent is too short')
   if (body.methodContent.trim().length > 12000) throw new Error('methodContent exceeds 12000 characters')
@@ -6730,6 +6911,7 @@ function normalizeNegativePrompt(body: Pick<CreateJobBody, 'negativePrompt' | 'n
 function validateRefineBody(body: RefineImageBody) {
   if (!recognizedRouteProviders.has(body.provider)) throw new Error('Invalid provider')
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
+  normalizeAspectRatio(body.aspectRatio)
   if (body.imageSize !== undefined && !canonicalImageResolutions.includes(body.imageSize)) {
     throw new Error('Invalid imageSize. Must be 1K, 2K, or 4K.')
   }
@@ -7199,9 +7381,12 @@ function normalizeManualReferenceIds(ids: string[]) {
   return [...new Set(ids.map((id) => limitText(id, 120)).filter(Boolean))].slice(0, 10)
 }
 
-function normalizeAspectRatio(aspectRatio?: string): '16:9' | '21:9' | '3:2' | '1:1' {
-  if (aspectRatio === '21:9' || aspectRatio === '3:2' || aspectRatio === '1:1') return aspectRatio
-  return '16:9'
+function normalizeAspectRatio(aspectRatio?: string): AspectRatio {
+  if (aspectRatio === undefined) return '16:9'
+  if (aspectRatio === 'auto' || canonicalAspectRatioSet.has(aspectRatio)) return aspectRatio as AspectRatio
+  const error: any = new Error('Invalid aspectRatio')
+  error.businessCode = 'INVALID_ASPECT_RATIO'
+  throw error
 }
 
 function normalizeReferenceImageMode(mode?: string): ReferenceImageMode {

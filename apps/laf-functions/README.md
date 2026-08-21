@@ -49,6 +49,6 @@ Laf 回滚仅能在 Laf 控制台手动执行，且必须先获得明确的回�
 ## Notes
 
 - 用户填写的模型 API Key 只在单次任务执行闭包中使用，不写入数据库。
-- `modelRegistry` v8 是多端模型列表和精修能力的权威；图片条目的 `capabilities.refineResolutions` 仅用 `1K|2K|4K` 表示真实精修执行上限，与生成 `resolutions` 分离。客户端不得从 provider、模型名或生成分辨率猜测精修能力。`direct-edit` 必须传入源图，`analyze-redraw` 则是明示的分析后重绘；`refineImage.imageSize` 仅接受 `1K|2K|4K`，不在所选模型 `refineResolutions` 内时会在入队和持久化前返回 `REFINE_RESOLUTION_UNSUPPORTED`。OpenRouter 逐项付费验证的 34 个默认输出为 PNG/JPEG/WebP 的模型统一声明最终 PNG，JPEG/WebP 在持久化前有界转换为 PNG。
+- `modelRegistry` v9 是多端模型列表和精修能力的权威；图片条目的 `capabilities.refineResolutions` 仅用 `1K|2K|4K` 表示真实精修执行上限，与生成 `resolutions` 分离，`capabilities.aspectRatios` / `refineAspectRatios` 则只声明适配器能精确编码的固定比例（动态条目缺少官方描述时必须为 `[]`）。客户端不得从 provider、模型名或生成分辨率猜测精修能力。`direct-edit` 必须传入源图，`analyze-redraw` 则是明示的分析后重绘；不支持的生成/精修比例会在账号检查、入队和持久化前分别返回 `ASPECT_RATIO_UNSUPPORTED` / `REFINE_ASPECT_RATIO_UNSUPPORTED`，`auto` 不进入能力数组且始终表示使用供应商默认比例。`refineImage.imageSize` 仅接受 `1K|2K|4K`，不在所选模型 `refineResolutions` 内时会在入队和持久化前返回 `REFINE_RESOLUTION_UNSUPPORTED`。OpenRouter 逐项付费验证的 34 个默认输出为 PNG/JPEG/WebP 的模型统一声明最终 PNG，JPEG/WebP 在持久化前有界转换为 PNG。
 - 不要把真实 `ADMIN_TOKEN` 或其他密钥提交到仓库。
 - `@lafjs/cloud` 由 Laf 运行时提供；`@resvg/resvg-wasm`、精确版本 `jpeg-js@0.4.4` 与 `sharp@0.35.3` 由 Laf custom dependency 提供，本目录和 verification-only workflow 都不安装或配置这些依赖。
