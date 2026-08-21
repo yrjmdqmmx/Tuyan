@@ -30,23 +30,51 @@ test('terms match the gateway transit-only API key behavior and contain no legal
   assert.match(source, /People's Republic of China/)
 })
 
-test('release legal documents disclose Hong Kong service, possible Singapore egress, Ark, ephemeral BYOK forwarding, and no tracking', async () => {
-  const paths = [
-    '../../../docs/app-store-submission/privacy-policy.md',
-    '../../../docs/app-store-submission/privacy-policy.html',
-    '../../../docs/app-store-submission/terms-of-service.md',
-    '../../../docs/app-store-submission/terms-of-service.html',
-    '../public/privacy-policy.html',
-    '../public/terms-of-service.html',
+test('each release legal document makes the required current data disclosures', async () => {
+  const documents = [
+    ['privacy policy Markdown', '../../../docs/app-store-submission/privacy-policy.md', true],
+    ['privacy policy HTML', '../../../docs/app-store-submission/privacy-policy.html', true],
+    ['terms Markdown', '../../../docs/app-store-submission/terms-of-service.md', false],
+    ['terms HTML', '../../../docs/app-store-submission/terms-of-service.html', false],
+    ['public privacy policy HTML', '../public/privacy-policy.html', true],
+    ['public terms HTML', '../public/terms-of-service.html', false],
   ]
-  const sources = await Promise.all(paths.map(path => readFile(new URL(path, import.meta.url), 'utf8')))
-  const joined = sources.join('\n')
-  assert.match(joined, /香港|Hong Kong/)
-  assert.match(joined, /新加坡|Singapore/)
-  assert.match(joined, /方舟|Ark/)
-  assert.match(joined, /临时|ephemeral/i)
-  assert.match(joined, /不.*追踪|No Tracking|do not track/i)
-  assert.doesNotMatch(joined, /杭州|Hangzhou|never uploaded to our servers|从不上传我方服务器|初稿模板|DRAFT TEMPLATE|\[fill in/i)
+
+  for (const [name, path, requiresNoTracking] of documents) {
+    const source = await readFile(new URL(path, import.meta.url), 'utf8')
+    assert.match(source, /香港|Hong Kong/, `${name} must disclose Hong Kong service`)
+    assert.match(source, /新加坡|Singapore/, `${name} must disclose possible Singapore egress`)
+    assert.match(source, /方舟|Ark/, `${name} must name Ark`)
+    assert.match(source, /短生命周期|临时|ephemeral/i, `${name} must disclose ephemeral BYOK forwarding`)
+    assert.match(source, /不持久化.*(?:记录|日志|回显)|do not persist, log, or echo/is, `${name} must disclose no BYOK persistence, logging, or echoing`)
+    assert.doesNotMatch(source, /杭州|Hangzhou|never uploaded to our servers|从不上传我方服务器|初稿模板|DRAFT TEMPLATE|\[fill in/i)
+    if (requiresNoTracking) {
+      assert.match(source, /不.*追踪|No Tracking|do not track/i, `${name} must disclose no tracking`)
+    }
+  }
+})
+
+test('terms HTML states that BYOK reaches the provider or platform selected by the user', async () => {
+  const source = await readFile(new URL('../../../docs/app-store-submission/terms-of-service.html', import.meta.url), 'utf8')
+  assert.match(source, /Hong Kong gateway\/core service to the provider\/platform you selected/)
+})
+
+test('App Store README reflects the current iOS legal entries, providers, pipeline, and release gate', async () => {
+  const source = await readFile(new URL('../../../docs/app-store-submission/README.md', import.meta.url), 'utf8')
+  assert.match(source, /指南页[\s\S]*隐私政策[\s\S]*服务条款/)
+  assert.match(source, /设置页[\s\S]*隐私政策[\s\S]*服务条款/)
+  assert.match(source, /Keychain/)
+  assert.match(source, /香港.*网关|Hong Kong.*gateway/is)
+  assert.match(source, /短生命周期|ephemeral/i)
+  assert.match(source, /不持久化.*(?:记录|日志|回显)|do not persist, log, or echo/is)
+  assert.match(source, /方舟|Ark/)
+  assert.match(source, /动态.*registry|dynamic registry/is)
+  assert.match(source, /rerender\/finalize/)
+  assert.match(source, /独立.*(?:Refine|精修)/)
+  assert.match(source, /五个 Tab/)
+  assert.match(source, /TestFlight/)
+  assert.match(source, /不提交 App Review/)
+  assert.doesNotMatch(source, /四家.*provider|four.*provider|仅本机存储不上传|never uploaded to our servers|从不上传我方服务器|规划\s*→\s*渲染\s*→\s*评审\s*(?:\[[^\]]+\])?\s*→\s*精修|plan\s*→\s*render\s*→\s*critique\s*→\s*refine/i)
 })
 
 test('App Store listing and review notes keep pipeline finalization distinct from independent Refine', async () => {
