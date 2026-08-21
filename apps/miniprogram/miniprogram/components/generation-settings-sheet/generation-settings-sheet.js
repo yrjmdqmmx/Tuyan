@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const aspect_ratios_1 = require("../../utils/aspect-ratios");
 const api_1 = require("../../utils/api");
 const ark_verification_1 = require("../../utils/ark-verification");
+const constants_1 = require("../../utils/constants");
 const model_registry_1 = require("../../utils/model-registry");
 const model_routing_1 = require("../../utils/model-routing");
+const reference_library_1 = require("../../utils/reference-library");
 const PROVIDER_LABELS = {
     gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
 };
@@ -17,6 +19,8 @@ Component({
         settings: { type: Object, value: {} },
         apiKeys: { type: Object, value: {} },
         executionRoles: { type: Array, value: [] },
+        manualReferenceIds: { type: Array, value: [] },
+        libraryTaskName: { type: String, value: 'diagram' },
     },
     data: {
         draft: null,
@@ -39,6 +43,7 @@ Component({
         criticIndex: 1,
         keyFields: [],
         draftKeys: {},
+        draftManualReferenceIds: [],
         showModelPicker: false,
         editingRole: 'main',
         pickerProvider: '',
@@ -57,7 +62,12 @@ Component({
                 return;
             }
             const draft = cloneDraft(incoming);
-            this.setData({ draft, draftKeys: { ...(this.properties.apiKeys || {}) }, error: '' });
+            this.setData({
+                draft,
+                draftKeys: { ...(this.properties.apiKeys || {}) },
+                draftManualReferenceIds: [...(this.properties.manualReferenceIds || [])],
+                error: '',
+            });
             this.refreshPresentation();
         },
         refreshPresentation() {
@@ -181,6 +191,20 @@ Component({
             draft.retrievalSetting = ((_a = this.data.retrievalOptions[Number(event.detail.value) || 0]) === null || _a === void 0 ? void 0 : _a.value) || 'none';
             this.setData({ draft, retrievalIndex: Number(event.detail.value) || 0 });
         },
+        selectRetrieval(event) {
+            var _a;
+            const draft = this.data.draft;
+            if (!draft)
+                return;
+            const value = String(event.currentTarget.dataset.value || 'none');
+            const retrievalIndex = Math.max(0, this.data.retrievalOptions.findIndex((item) => item.value === value));
+            draft.retrievalSetting = ((_a = this.data.retrievalOptions[retrievalIndex]) === null || _a === void 0 ? void 0 : _a.value) || 'none';
+            this.setData({ draft, retrievalIndex });
+        },
+        onManualReferenceToggle(event) {
+            const result = (0, reference_library_1.toggleReferenceSelection)(this.data.draftManualReferenceIds, String(event.detail.id || ''), constants_1.MANUAL_REFERENCE_LIMIT);
+            this.setData({ draftManualReferenceIds: result.ids, error: result.error });
+        },
         onCandidateChange(event) {
             var _a;
             const draft = this.data.draft;
@@ -253,7 +277,11 @@ Component({
                 this.setData({ error: '当前图像模型未声明可用清晰度，请更换模型。' });
                 return;
             }
-            this.triggerEvent('save', { settings: cloneDraft(draft), apiKeys: { ...this.data.draftKeys } });
+            this.triggerEvent('save', {
+                settings: cloneDraft(draft),
+                apiKeys: { ...this.data.draftKeys },
+                manualReferenceIds: draft.retrievalSetting === 'manual' ? [...this.data.draftManualReferenceIds] : [],
+            });
         },
     },
 });

@@ -1,8 +1,10 @@
 import { buildAspectRatioOptions, buildResolutionOptions, normalizeSelectedAspectRatio } from '../../utils/aspect-ratios'
 import { formatError, requestJson } from '../../utils/api'
 import { clearArkVerification, getArkVerification, setArkProbeResults } from '../../utils/ark-verification'
+import { MANUAL_REFERENCE_LIMIT } from '../../utils/constants'
 import { MODEL_PROVIDER_IDS, findRegistryModel, type ModelProviderId, type ModelRegistry, type ModelRole } from '../../utils/model-registry'
 import { arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, providerDefaultRoutes, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
+import { toggleReferenceSelection } from '../../utils/reference-library'
 
 const PROVIDER_LABELS: Record<string, string> = {
   gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
@@ -29,6 +31,8 @@ Component({
     settings: { type: Object, value: {} },
     apiKeys: { type: Object, value: {} },
     executionRoles: { type: Array, value: [] as string[] },
+    manualReferenceIds: { type: Array, value: [] as string[] },
+    libraryTaskName: { type: String, value: 'diagram' },
   },
   data: {
     draft: null as SettingsDraft | null,
@@ -51,6 +55,7 @@ Component({
     criticIndex: 1,
     keyFields: [] as Array<{ provider: string; label: string; value: string; placeholder: string }>,
     draftKeys: {} as Record<string, string>,
+    draftManualReferenceIds: [] as string[],
     showModelPicker: false,
     editingRole: 'main' as ModelRole,
     pickerProvider: '',
@@ -69,7 +74,12 @@ Component({
         return
       }
       const draft = cloneDraft(incoming)
-      this.setData({ draft, draftKeys: { ...(this.properties.apiKeys as Record<string, string> || {}) }, error: '' })
+      this.setData({
+        draft,
+        draftKeys: { ...(this.properties.apiKeys as Record<string, string> || {}) },
+        draftManualReferenceIds: [...(this.properties.manualReferenceIds as string[] || [])],
+        error: '',
+      })
       this.refreshPresentation()
     },
     refreshPresentation() {
@@ -177,6 +187,18 @@ Component({
       draft.retrievalSetting = this.data.retrievalOptions[Number(event.detail.value) || 0]?.value || 'none'
       this.setData({ draft, retrievalIndex: Number(event.detail.value) || 0 })
     },
+    selectRetrieval(event: WechatMiniprogram.TouchEvent) {
+      const draft = this.data.draft
+      if (!draft) return
+      const value = String(event.currentTarget.dataset.value || 'none')
+      const retrievalIndex = Math.max(0, this.data.retrievalOptions.findIndex((item) => item.value === value))
+      draft.retrievalSetting = this.data.retrievalOptions[retrievalIndex]?.value || 'none'
+      this.setData({ draft, retrievalIndex })
+    },
+    onManualReferenceToggle(event: WechatMiniprogram.CustomEvent<{ id: string }>) {
+      const result = toggleReferenceSelection(this.data.draftManualReferenceIds, String(event.detail.id || ''), MANUAL_REFERENCE_LIMIT)
+      this.setData({ draftManualReferenceIds: result.ids, error: result.error })
+    },
     onCandidateChange(event: WechatMiniprogram.PickerChange) {
       const draft = this.data.draft
       if (!draft) return
@@ -226,7 +248,11 @@ Component({
         this.setData({ error: '当前图像模型未声明可用清晰度，请更换模型。' })
         return
       }
-      this.triggerEvent('save', { settings: cloneDraft(draft), apiKeys: { ...this.data.draftKeys } })
+      this.triggerEvent('save', {
+        settings: cloneDraft(draft),
+        apiKeys: { ...this.data.draftKeys },
+        manualReferenceIds: draft.retrievalSetting === 'manual' ? [...this.data.draftManualReferenceIds] : [],
+      })
     },
   },
 })

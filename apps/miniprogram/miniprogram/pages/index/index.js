@@ -98,6 +98,7 @@ Component({
         registryError: '',
         settings: {},
         settingsSummary: '正在读取服务端默认路线…',
+        settingsSummaryDetails: [],
         showGenerationSettings: false,
         apiKeysForSheet: {},
         settingsExecutionRoles: [],
@@ -237,6 +238,7 @@ Component({
                 registryError: '',
                 settings,
                 settingsSummary: formatSettingsSummary(settings),
+                settingsSummaryDetails: formatSettingsSummaryDetails(settings),
             });
             this.syncLegacySettings(settings);
             this.refreshCanSubmit();
@@ -265,9 +267,17 @@ Component({
         saveGenerationSettings(event) {
             const settings = event.detail.settings;
             (0, api_keys_1.replaceApiKeys)(event.detail.apiKeys);
+            const manualReferenceIds = settings.retrievalSetting === 'manual' ? event.detail.manualReferenceIds || [] : [];
             if (this.data.referenceImages.length && settings.retrievalSetting !== 'none')
                 settings.retrievalSetting = 'none';
-            this.setData({ settings, settingsSummary: formatSettingsSummary(settings), showGenerationSettings: false, apiKeysForSheet: (0, api_keys_1.getApiKeys)() });
+            this.setData({
+                settings,
+                settingsSummary: formatSettingsSummary(settings),
+                settingsSummaryDetails: formatSettingsSummaryDetails(settings),
+                manualReferenceIds: settings.retrievalSetting === 'manual' ? manualReferenceIds : [],
+                showGenerationSettings: false,
+                apiKeysForSheet: (0, api_keys_1.getApiKeys)(),
+            });
             this.syncLegacySettings(settings);
             this.refreshCanSubmit();
         },
@@ -1058,5 +1068,14 @@ function defaultGenerationSettings(registry) {
 }
 function formatSettingsSummary(settings) {
     const routes = settings.modelRoutes;
-    return `${routes.main.modelId} · ${routes.image.modelId} · ${settings.aspectRatio} · ${settings.outputFormat.toUpperCase()}${settings.outputFormat === 'png' ? ` · ${settings.imageSize}` : ''}`;
+    return `主 ${routes.main.modelId} · 图 ${routes.image.modelId} · 识 ${routes.vision.modelId}`;
+}
+function formatSettingsSummaryDetails(settings) {
+    const pipelineLabels = { planner_critic: '规划器 + 评审器', full: '完整流程', vanilla: '基础生成' };
+    const retrievalLabels = { none: '不检索', auto: '自动检索', random: '随机参考', manual: '手动参考' };
+    return [
+        `${settings.aspectRatio === 'auto' ? '自动比例' : settings.aspectRatio} · ${settings.outputFormat.toUpperCase()}${settings.outputFormat === 'png' ? ` · ${settings.imageSize}` : ''}`,
+        `${pipelineLabels[settings.pipelineMode] || settings.pipelineMode} · ${retrievalLabels[settings.retrievalSetting] || settings.retrievalSetting}`,
+        `${settings.numCandidates} 张候选 · ${settings.maxCriticRounds} 轮评审`,
+    ];
 }

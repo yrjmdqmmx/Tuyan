@@ -251,8 +251,19 @@ export function resolveImageUrl(url: string, jobId = 'image', index = 0, mimeTyp
   if (/^https?:\/\//i.test(url)) return stabilizeRemoteUrl(url)
   if (/^data:image\//i.test(url)) return cacheDataImage(url, jobId, index, mimeType, fallbackFormat)
   // 已落盘的本地缓存路径（如本机记录 round-trip）原样返回，不能拼到 API_BASE 上
-  if (/^wxfile:/i.test(url) || (userDataPath() && url.indexOf(userDataPath()) === 0)) return url
+  if (/^wxfile:/i.test(url) || (userDataPath() && url.indexOf(userDataPath()) === 0)) return localImageExists(url) ? url : ''
   return `${API_BASE}${url}`
+}
+
+function localImageExists(filePath: string): boolean {
+  try {
+    const fs = wx.getFileSystemManager()
+    if (!fs || typeof fs.accessSync !== 'function') return true
+    fs.accessSync(filePath)
+    return true
+  } catch {
+    return false
+  }
 }
 
 // 桶签名 URL 每次 getJob 都重新签发（查询串变化）。轮询期间 src 频变会让 <image>
@@ -400,7 +411,6 @@ export function toCurrentJobSummary(job: Job): Job {
 export function toRecordJobSummary(job: Job): Job {
   return {
     ...job,
-    method_content: '',
     logs_tail: '',
     stages: [],
     retrieved_references: [],

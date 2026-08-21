@@ -13,10 +13,7 @@
     <button class="auth-chip" wx:else bindtap="openAuthPanel">登录 / 注册</button>
   </view>
 
-  <view class="registry-banner ready" wx:if="{{registryReady}}">
-    <view class="registry-message"><text class="registry-dot"></text>模型目录 {{registryVersion}}</view><text class="registry-meta">香港生产 API</text>
-  </view>
-  <view class="registry-banner error" wx:else>
+  <view class="registry-banner error" wx:if="{{!registryReady}}">
     <view class="registry-message"><text class="registry-dot"></text>{{registryError || '正在读取服务端模型目录…'}}</view><button class="registry-retry" bindtap="retryRegistry">重试</button>
   </view>
   <view class="health-banner" wx:if="{{healthChecked && !healthOk}}">{{healthText}}</view>
@@ -24,13 +21,12 @@
   <featured-template-studio templates="{{featuredTemplates}}" loading="{{featuredTemplatesLoading}}" bind:apply="onFeaturedTemplateApply" />
 
   <view class="settings-summary-card" bindtap="openGenerationSettings">
-    <view class="summary-icon">研</view>
     <view class="summary-copy">
       <view class="summary-kicker">当前生成设置</view>
       <view class="summary-value">{{settingsSummary}}</view>
-      <view class="summary-note">点击调整 API 渠道、模型、比例、格式与清晰度</view>
+      <view class="summary-details"><text wx:for="{{settingsSummaryDetails}}" wx:key="*this">{{item}}</text></view>
     </view>
-    <view class="summary-arrow">›</view>
+    <view class="summary-action">调整设置 <text>›</text></view>
   </view>
 
   <view class="section input-workspace">
@@ -110,6 +106,6 @@
 
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />
 <feedback-panel show="{{showFeedbackPanel}}" job-id="{{currentJobId}}" bind:close="closeFeedbackPanel" />
-<generation-settings-sheet show="{{showGenerationSettings}}" registry="{{registry}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
+<generation-settings-sheet show="{{showGenerationSettings}}" registry="{{registry}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
 
 <movable-area class="fab-area"><movable-view class="feedback-fab" direction="all" x="{{fabX}}" y="{{fabY}}" inertia bindtap="openFeedbackPanel">反馈</movable-view></movable-area>

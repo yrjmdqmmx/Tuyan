@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict')
 
 global.wx = { env: { USER_DATA_PATH: '/tmp' } }
-const { normalizeJob, toLocalJobSummary } = require('../miniprogram/utils/jobs.js')
+const { normalizeJob, toLocalJobSummary, toRecordJobSummary } = require('../miniprogram/utils/jobs.js')
 
 const job = normalizeJob({
   id: 'job-1', status: 'failed', clientPlatform: 'miniprogram', routingMode: 'explicit',
@@ -29,5 +29,8 @@ assert.equal(localSummary.result_images.length, 1)
 assert.equal(localSummary.result_images[0].object_key, 'jobs/job-1/result.png')
 assert.equal(localSummary.method_content, '')
 assert.equal(localSummary.stages.length, 0)
+
+const recordSummary = toRecordJobSummary(job)
+assert.equal(recordSummary.method_content, '完整方法输入')
 
 console.log('job-normalization.test.cjs passed')

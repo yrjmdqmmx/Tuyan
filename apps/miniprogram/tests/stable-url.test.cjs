@@ -15,4 +15,11 @@ assert.equal(other, 'https://oss.example.com/bucket/job-1/stage-1.png?X-Amz-Sign
 // 无查询串的普通 URL 原样直通（不进缓存）
 assert.equal(resolveImageUrl('https://example.com/static/logo.png'), 'https://example.com/static/logo.png')
 
+// 启动清理后仍残留在任务记录里的本地缓存路径不应交给 <image> 重复报错。
+global.wx = {
+  env: { USER_DATA_PATH: '/tmp/paperbanana-tests' },
+  getFileSystemManager: () => ({ accessSync() { throw new Error('missing') } }),
+}
+assert.equal(resolveImageUrl('/tmp/paperbanana-tests/missing.png'), '')
+
 console.log('stable-url.test.cjs passed')
