@@ -35,7 +35,7 @@
 - [x] paperbanana-api / Laf Core（v8 注册表、PNG/JPEG/WebP 归一、尺寸/结构边界、Seedream 4.5 纠错、漂移监控与 TDD）
 - [x] Web（继续只消费服务端角色与 `outputFormats`；34 项会在 PNG 模式自动可选，无需名称推断）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（若展示动态 OpenRouter 图片目录，消费 v8 权威能力；旧请求格式不变）
-- [ ] 部署 / 运维（PR/CI/香港 Core/Pages 发布及生产 PNG/JPEG/WebP 代表性 smoke 完成后勾选）
+- [x] 部署 / 运维（PR/CI/香港 Core/Pages 已发布；用户于 2026-08-21 手工确认原生 PNG、JPEG→PNG、WebP→PNG 三条生产代表性 smoke 均通过）
 
 ### [2026-08-20] Ark 中国区完整相关目录与 Seed 2.1 / Seedream 5.0 路由 — by Codex
 变更：Core 注册表升级为 `2026-08-20.v7`，依据火山方舟中国区当前模型列表、发布/下线公告、深度思考和图片生成文档，将 Ark 与 PaperBanana 文本、视觉、图像角色相关的现役目录从 3 项扩为 21 项。默认升级为 `doubao-seed-2-1-pro-260628`（main/vision）与 `doubao-seedream-5-0-pro-260628`（image）；不使用 ID 尾部日期猜测 `releasedAt`，所有 Ark 日期仍为 `null`。

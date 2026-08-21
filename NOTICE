@@ -1,0 +1,12 @@
+PaperBanana Clients
+Copyright 2026 PaperBanana Clients contributors
+
+This repository is an independently maintained, multi-platform project built
+on the open-source PaperBanana project:
+https://github.com/dwzhu-pku/PaperBanana
+
+We appreciate the work of the upstream authors and community. Portions derived
+from PaperBanana remain under the Apache License 2.0, and original contributions
+in this repository are released under the same license. This project is not
+affiliated with or officially endorsed by the upstream authors. Third-party
+components and assets remain subject to their respective terms.
