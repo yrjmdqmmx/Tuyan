@@ -13,6 +13,7 @@ final class GenerationStore {
   var submitError = ""
   var arkProbeStatus = ""
   var arkProbeLoading = false
+  private var verifiedArkRouteKeys = Set<String>()
 
   var referenceLibrary: [ReferenceLibraryItem] = []
   var referenceLibraryError = ""
@@ -52,12 +53,13 @@ final class GenerationStore {
     !isSubmitting
       && draft.methodContent.trimmingCharacters(in: .whitespacesAndNewlines).count >= 20
       && draft.caption.trimmingCharacters(in: .whitespacesAndNewlines).count >= 3
-      && !selectedAPIKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
       && hasRequiredManualReferences
       && hasRequiredReferenceVisionModel
       && !mainModelDirectUnsupported
       && registryStore.hasLiveRegistry
+      && hasCompleteValidRoutes
       && hasRequiredProviderKeys
+      && hasRequiredArkVerification
   }
 
   var activeMainModelName: String {
@@ -138,13 +140,23 @@ final class GenerationStore {
     return registryStore.registry?.generationAspectRatios(for: route) ?? []
   }
 
-  private var requiredRouteRoles: [ModelRole] {
+  var requiredRouteRoles: [ModelRole] {
     guard let routes = activeRoutes else { return [] }
-    var roles: [ModelRole] = [.main]
-    if draft.outputFormat == .png, draft.taskName == .diagram { roles.append(.image) }
+    var roles: [ModelRole] = []
+    if draft.outputFormat == .svg || draft.taskName == .plot || draft.pipelineMode != .vanilla || draft.retrievalSetting == .auto { roles.append(.main) }
+    if draft.outputFormat == .png, draft.taskName != .plot { roles.append(.image) }
+    if draft.taskName == .plot, [.twoK, .fourK].contains(draft.imageSize), registryStore.registry?.model(for: routes.image)?.capabilities.imageEditMode == "direct-edit" { roles.append(.image) }
     if !draft.referenceImages.isEmpty { roles.append(activeReferenceImageMode == .mainModel ? .main : .vision) }
-    if draft.maxCriticRounds > 0 { roles.append(.vision) }
+    if draft.maxCriticRounds > 0, draft.taskName == .plot || (draft.outputFormat == .png && draft.pipelineMode != .vanilla) { roles.append(.vision) }
     return [ModelRole.main, .image, .vision].filter { roles.contains($0) && routes[$0] != nil }
+  }
+
+  private var hasCompleteValidRoutes: Bool {
+    guard let registry = registryStore.registry, let routes = activeRoutes else { return false }
+    return [ModelRole.main, .image, .vision].allSatisfy { role in
+      guard let route = routes[role], let model = registry.model(for: route) else { return false }
+      return model.selectable && model.roles.contains(role)
+    }
   }
 
   private var hasRequiredProviderKeys: Bool {
@@ -152,6 +164,14 @@ final class GenerationStore {
     let providers = Set(requiredRouteRoles.compactMap { activeRoutes?[$0]?.accessProvider })
     return !providers.isEmpty && providers.allSatisfy { provider in
       !((try? keychain.string(for: ProviderCatalog.config(for: provider).keyName)) ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+  }
+
+  private var hasRequiredArkVerification: Bool {
+    guard let routes = activeRoutes else { return false }
+    return requiredRouteRoles.allSatisfy { role in
+      guard let route = routes[role], route.accessProvider == .ark else { return true }
+      return verifiedArkRouteKeys.contains("\(role.rawValue):\(route.modelId)")
     }
   }
 
@@ -252,6 +272,15 @@ final class GenerationStore {
   func updateSelectedAPIKey(_ value: String) {
     selectedAPIKey = value
     saveSelectedProviderKey()
+  }
+
+  func updateAPIKey(_ value: String, for provider: ProviderID) {
+    do {
+      try keychain.set(value.trimmingCharacters(in: .whitespacesAndNewlines), for: ProviderCatalog.config(for: provider).keyName)
+      if provider == draft.provider { selectedAPIKey = value }
+    } catch {
+      presentAlert(formatUserFacingError(error))
+    }
   }
 
   func selectRetrievalSetting(_ setting: RetrievalSetting) {
@@ -376,6 +405,9 @@ final class GenerationStore {
     defer { arkProbeLoading = false }
     do {
       let result = try await apiClient.providerAccountCatalog(apiBase: settings.apiBase, arkKey: key, routes: routes, requiredRoles: arkRoles, confirmPaidImageProbe: confirmPaidImageProbe)
+      for probe in result.probeResults where probe.state == "verified" {
+        verifiedArkRouteKeys.insert("\(probe.role.rawValue):\(probe.modelId)")
+      }
       arkProbeStatus = result.probeResults.isEmpty ? "方舟路线已完成探测。" : "方舟路线：\(result.probeResults.map(\.state).joined(separator: "、"))"
     } catch {
       arkProbeStatus = formatUserFacingError(error)
