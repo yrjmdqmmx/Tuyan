@@ -24,7 +24,9 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
   const [visibleCount, setVisibleCount] = useState(3)
   const [paused, setPaused] = useState(false)
   const [documentHidden, setDocumentHidden] = useState(Boolean(globalThis.document?.hidden))
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(
+    () => Boolean(globalThis.window?.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches),
+  )
   const [libraryOpen, setLibraryOpen] = useState(false)
   const [selectedId, setSelectedId] = useState(templates[0]?.id || '')
   const [confirmOpen, setConfirmOpen] = useState(false)
@@ -37,6 +39,7 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
     [selectedId, templates],
   )
   const maxIndex = Math.max(0, templates.length - visibleCount)
+  const carouselPositions = Array.from({ length: maxIndex + 1 }, (_, index) => index)
 
   useEffect(() => {
     const compact = globalThis.window?.matchMedia?.('(max-width: 760px)')
@@ -80,6 +83,7 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
   function requestApply() {
     if (!selectedTemplate) return
     if (isDirty) {
+      setLibraryOpen(false)
       setConfirmOpen(true)
       return
     }
@@ -92,6 +96,11 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
     onApply(selectedTemplate)
     setConfirmOpen(false)
     setLibraryOpen(false)
+  }
+
+  function cancelConfirmation() {
+    setConfirmOpen(false)
+    setLibraryOpen(true)
   }
 
   return (
@@ -130,13 +139,13 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
           <div className="featured-carousel-controls">
             <button type="button" aria-label="上一张模板" onClick={() => setCarouselIndex((current) => current <= 0 ? maxIndex : current - 1)}><ArrowLeft size={17} /></button>
             <div className="featured-carousel-dots" aria-label="模板轮播页">
-              {templates.map((template, index) => (
+              {carouselPositions.map((index) => (
                 <button
                   type="button"
-                  key={template.id}
+                  key={index}
                   aria-label={`查看第 ${index + 1} 张模板`}
-                  aria-current={carouselIndex === Math.min(index, maxIndex) ? 'true' : undefined}
-                  onClick={() => setCarouselIndex(Math.min(index, maxIndex))}
+                  aria-current={carouselIndex === index ? 'true' : undefined}
+                  onClick={() => setCarouselIndex(index)}
                 />
               ))}
             </div>
@@ -170,16 +179,16 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
         {selectedTemplate ? (
           <aside className="featured-template-preview" aria-live="polite">
             <div><span>{selectedTemplate.title}</span><p>{selectedTemplate.summary}</p></div>
-            <button type="button" className="primary-button" onClick={requestApply}>套用到输入区</button>
+            <button type="button" className="primary-button" data-autofocus onClick={requestApply}>套用到输入区</button>
           </aside>
         ) : null}
       </AccessibleDialog>
 
-      <AccessibleDialog open={confirmOpen} onClose={() => setConfirmOpen(false)} labelledBy={confirmTitleId} describedBy={confirmDescriptionId} className="featured-template-confirm">
+      <AccessibleDialog open={confirmOpen} onClose={cancelConfirmation} labelledBy={confirmTitleId} describedBy={confirmDescriptionId} className="featured-template-confirm">
         <h2 id={confirmTitleId}>替换输入内容？</h2>
         <p id={confirmDescriptionId}>你已修改方法内容、目标图注或负向提示词。继续会同时替换这三项内容。</p>
         <div>
-          <button type="button" onClick={() => setConfirmOpen(false)}>取消</button>
+          <button type="button" onClick={cancelConfirmation}>取消</button>
           <button type="button" className="primary-button" onClick={confirmApply}>确认替换</button>
         </div>
       </AccessibleDialog>
