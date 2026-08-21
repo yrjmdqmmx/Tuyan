@@ -73,6 +73,51 @@ test('createJobRequest sends retrieval and task fields to gateway/Laf', async ()
   }
 });
 
+test('createJobRequest sends negative prompt with transport-specific casing', async () => {
+  const fetchMock = mockJsonFetch((_url, _options, index) => ({
+    body: index === 0
+      ? { code: 0, jobId: 'laf-negative', status: 'queued' }
+      : { id: 'fast-negative', status: 'queued' },
+  }));
+  const payload = {
+    provider: 'openai',
+    apiKeys: { openai: 'key' },
+    taskName: 'diagram',
+    methodContent: 'A sufficiently long method section for testing.',
+    negativePrompt: 'Avoid gradients and decorative shadows.',
+    caption: 'Figure 1',
+    mainModelName: 'gpt-5.6-sol',
+    imageGenModelName: 'gpt-image-2',
+  };
+  try {
+    await createJobRequest('https://gateway.example', { backendMode: 'gateway' }, payload);
+    await createJobRequest('https://fast.example', { backendMode: 'fastapi' }, payload);
+
+    const lafBody = JSON.parse(fetchMock.calls[0].options.body);
+    const fastBody = JSON.parse(fetchMock.calls[1].options.body);
+    assert.equal(lafBody.negativePrompt, payload.negativePrompt);
+    assert.equal('negative_prompt' in lafBody, false);
+    assert.equal(fastBody.negative_prompt, payload.negativePrompt);
+    assert.equal('negativePrompt' in fastBody, false);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('getJobRequest normalizes negative prompt to canonical snake case and a camel alias', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    job: { _id: 'job-negative', negativePrompt: 'Avoid gradients.' },
+  } }));
+  try {
+    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'job-negative');
+    assert.equal(job.negative_prompt, 'Avoid gradients.');
+    assert.equal(job.negativePrompt, 'Avoid gradients.');
+  } finally {
+    fetchMock.restore();
+  }
+});
+
 test('getJobRequest normalizes PaperBanana parity fields', async () => {
   const fetchMock = mockJsonFetch(() => ({
     body: {
@@ -445,6 +490,37 @@ test('referenceLibraryRequest defaults new callers to the cross-task bench scope
     assert.equal(queried.totalItems, 306);
     assert.deepEqual(JSON.parse(fetchMock.calls[0].options.body), { action: 'referenceLibrary' });
     assert.deepEqual(JSON.parse(fetchMock.calls[1].options.body), { action: 'referenceLibrary', query: 'cell' });
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('referenceLibraryRequest sends exact reference IDs and keeps the pagination envelope', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    references: [{ id: 'ref_9' }, { id: 'ref_2' }],
+    totalItems: 2,
+    totalPages: 1,
+    page: 1,
+    pageSize: 2,
+    facets: { visualCategories: [], researchDomains: [] },
+    corpusVersion: 'zh-CN.v2',
+  } }));
+  try {
+    const result = await referenceLibraryRequest(
+      'https://gateway.example',
+      { backendMode: 'gateway' },
+      { referenceIds: ['ref_9', 'ref_2'] },
+    );
+    assert.deepEqual(JSON.parse(fetchMock.calls[0].options.body), {
+      action: 'referenceLibrary',
+      referenceIds: ['ref_9', 'ref_2'],
+    });
+    assert.deepEqual(result.references.map((reference) => reference.id), ['ref_9', 'ref_2']);
+    assert.deepEqual(
+      { page: result.page, pageSize: result.pageSize, totalItems: result.totalItems, totalPages: result.totalPages },
+      { page: 1, pageSize: 2, totalItems: 2, totalPages: 1 },
+    );
   } finally {
     fetchMock.restore();
   }

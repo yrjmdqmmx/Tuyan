@@ -52,6 +52,7 @@ export async function createJobRequest(apiBase, health, payload) {
         modelRoutes: payload.modelRoutes,
         taskName: payload.taskName,
         methodContent: payload.methodContent,
+        negativePrompt: payload.negativePrompt,
         caption: payload.caption,
         infographicCategory: payload.infographicCategory,
         outputFormat: payload.outputFormat,
@@ -82,6 +83,7 @@ export async function createJobRequest(apiBase, health, payload) {
       api_keys: payload.apiKeys,
       task_name: payload.taskName,
       method_content: payload.methodContent,
+      negative_prompt: payload.negativePrompt,
       caption: payload.caption,
       infographic_category: payload.infographicCategory,
       output_format: payload.outputFormat,
@@ -103,7 +105,7 @@ export async function createJobRequest(apiBase, health, payload) {
 
 export async function referenceLibraryRequest(apiBase, health, opts = {}) {
   if (shouldUsePaperbananaApi(apiBase, health)) {
-    const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'researchDomain']
+    const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'researchDomain', 'referenceIds']
       .some((field) => opts[field] !== undefined);
     const legacyRequest = !hasV2OnlyField && (opts.taskName !== undefined || opts.limit !== undefined);
     const paginatedRequest = !legacyRequest;
@@ -117,6 +119,7 @@ export async function referenceLibraryRequest(apiBase, health, opts = {}) {
           ...(opts.visualCategory ? { visualCategory: opts.visualCategory } : {}),
           ...(opts.researchDomain ? { researchDomain: opts.researchDomain } : {}),
           ...(opts.taskName ? { taskName: opts.taskName } : {}),
+          ...(opts.referenceIds !== undefined ? { referenceIds: opts.referenceIds } : {}),
         }
       : {
           action: 'referenceLibrary',
@@ -419,6 +422,7 @@ function normalizeJob(job = {}) {
   const routingMode = job.routingMode ?? job.routing_mode ?? '';
   const modelRoutingVersion = job.modelRoutingVersion ?? job.model_routing_version ?? '';
   const modelRoutingSource = job.modelRoutingSource ?? job.model_routing_source ?? '';
+  const negativePrompt = job.negative_prompt ?? job.negativePrompt ?? '';
   return {
     id: job.id || job._id,
     status: job.status,
@@ -438,6 +442,8 @@ function normalizeJob(job = {}) {
     user_email: job.user_email || job.userEmail || '',
     configuration_mode: job.configuration_mode || job.configurationMode || 'simple',
     method_content: job.method_content || job.methodContent || '',
+    negative_prompt: negativePrompt,
+    negativePrompt,
     caption: job.caption || '',
     infographic_category: job.infographic_category || job.infographicCategory || '方法框架图',
     output_format: job.output_format || job.outputFormat || 'png',

@@ -91,6 +91,8 @@ type CreateJobBody = {
   clientPlatform?: ClientPlatform
   taskName?: TaskName
   methodContent: string
+  negativePrompt?: string
+  negative_prompt?: string
   caption: string
   infographicCategory?: string
   userId?: string
@@ -186,6 +188,7 @@ export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody 
     clientPlatform: routed.clientPlatform,
     taskName: routed.taskName,
     methodContent: routed.methodContent,
+    negativePrompt: routed.negativePrompt,
     caption: routed.caption,
     infographicCategory: routed.infographicCategory,
     userId: routed.userId,
@@ -712,6 +715,7 @@ type ProviderModelRegistry = {
 
 type ReferenceLibraryBody = {
   action: 'referenceLibrary'
+  referenceIds?: string[]
   taskName?: TaskName
   scope?: 'bench' | 'fallback'
   page?: number
@@ -1853,6 +1857,9 @@ async function providerAccountCatalog(body: ProviderAccountCatalogBody, ctx: Fun
 }
 
 async function referenceLibrary(body: ReferenceLibraryBody) {
+  if (Object.prototype.hasOwnProperty.call(body, 'referenceIds')) {
+    return await exactReferenceLibrary(body)
+  }
   if (body.scope && body.scope !== 'bench' && body.scope !== 'fallback') return fail('Invalid reference scope', 400)
   if (body.taskName && body.taskName !== 'diagram' && body.taskName !== 'plot') return fail('Invalid taskName', 400)
   const parsedPage = referenceLibraryPositiveInteger(body.page, 1)
@@ -1900,6 +1907,70 @@ async function referenceLibrary(body: ReferenceLibraryBody) {
     facets,
     corpusVersion: scope === 'bench' ? referenceCorpusVersion : 'internal.v1',
   })
+}
+
+async function exactReferenceLibrary(body: ReferenceLibraryBody) {
+  const incompatibleFields = ['page', 'pageSize', 'query', 'visualCategory', 'researchDomain', 'taskName'] as const
+  if (incompatibleFields.some((field) => Object.prototype.hasOwnProperty.call(body, field))) {
+    return referenceLibraryRequestFailure('referenceIds cannot be combined with pagination, search, facets, or taskName')
+  }
+  const normalizedIds = normalizeExactReferenceIds(body.referenceIds)
+  if (!normalizedIds) {
+    return referenceLibraryRequestFailure('referenceIds must contain 1 to 6 unique non-empty strings of at most 120 characters')
+  }
+  const rows = await references.find({
+    id: { $in: normalizedIds },
+    source: 'paperbanana-bench',
+    corpusVersion: referenceCorpusVersion,
+  }).toArray()
+  const byId = new Map(rows.map((row: any) => [String(row.id || ''), row]))
+  const missingOrImageLess = normalizedIds.filter((id) => {
+    const row = byId.get(id)
+    if (!row) return true
+    const normalized = normalizeReferenceMetadata(row)
+    return !normalized.imageObjectKey && !normalized.imageUrl
+  })
+  if (missingOrImageLess.length) {
+    return referenceLibrarySelectionFailure(missingOrImageLess)
+  }
+  const selected = await Promise.all(normalizedIds.map((id) => normalizeStoredReference(byId.get(id))))
+  const unsigned = selected.filter((item) => !item.imageUrl).map((item) => item.id)
+  if (unsigned.length) return referenceLibrarySelectionFailure(unsigned)
+  return ok({
+    references: selected,
+    totalItems: selected.length,
+    totalPages: 1,
+    page: 1,
+    pageSize: selected.length,
+    facets: {
+      visualCategories: countReferenceFacet(selected, 'visualCategory'),
+      researchDomains: countReferenceFacet(selected, 'researchDomain'),
+    },
+    corpusVersion: referenceCorpusVersion,
+  })
+}
+
+function normalizeExactReferenceIds(value: unknown): string[] | null {
+  if (!Array.isArray(value) || value.length < 1 || value.length > 6) return null
+  const ids: string[] = []
+  for (const rawId of value) {
+    if (typeof rawId !== 'string') return null
+    const id = rawId.trim()
+    if (!id || id.length > 120 || /[\u0000-\u001f\u007f]/.test(id)) return null
+    ids.push(id)
+  }
+  return new Set(ids).size === ids.length ? ids : null
+}
+
+function referenceLibraryRequestFailure(message: string) {
+  return { ...fail(message, 400), businessCode: 'REFERENCE_LIBRARY_REQUEST_INVALID' }
+}
+
+function referenceLibrarySelectionFailure(ids: string[]) {
+  return {
+    ...fail(`Requested references are missing or have no usable image: ${ids.join(', ')}`, 422),
+    businessCode: 'REFERENCE_LIBRARY_SELECTION_INVALID',
+  }
 }
 
 function referenceLibraryPositiveInteger(value: unknown, fallback: number, maximum?: number): number | null {
@@ -1960,6 +2031,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     ...body,
     ...routing,
     taskName: normalizeTaskName(body.taskName),
+    negativePrompt: normalizeNegativePrompt(body),
     infographicCategory: limitText(body.infographicCategory, 80),
     referenceImageMode: normalizeReferenceImageMode(body.referenceImageMode),
     referenceImages: normalizedReferenceImages,
@@ -2048,6 +2120,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     userId: normalizedBody.userId || '',
     userEmail: normalizedBody.userEmail || '',
     methodContent: normalizedBody.methodContent,
+    negativePrompt: normalizedBody.negativePrompt,
     caption: normalizedBody.caption,
     infographicCategory: normalizedBody.infographicCategory,
     mainModelName: normalizedBody.mainModelName,
@@ -2070,7 +2143,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     imageSize: normalizedBody.imageSize,
     numCandidates: safeNumCandidates,
     maxCriticRounds: safeCriticRounds,
-    promptCharCount: normalizedBody.methodContent.length + normalizedBody.caption.length,
+    promptCharCount: normalizedBody.methodContent.length + normalizedBody.caption.length + (normalizedBody.negativePrompt?.length || 0),
     resultImages: [],
     logs: [],
     error: '',
@@ -2848,7 +2921,7 @@ async function runCandidate(
     await logStage('plan ready')
     await logStage('rendering SVG')
     const svgRenderStartedAt = new Date()
-    const svg = await callSvgModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, description)
+    const svg = await callSvgModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, withNegativePrompt(description, body.negativePrompt))
     const stageImage = await saveStageImage(jobId, candidateId, 'svg-final', svg, 'image/svg+xml', 'utf8')
     await recordStage(jobId, {
       candidateId,
@@ -2864,7 +2937,7 @@ async function runCandidate(
 
   if ((body.pipelineMode || 'planner_critic') === 'vanilla') {
     const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
-    const prompt = diagramPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext)
+    const prompt = diagramPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, body.negativePrompt)
     await recordStage(jobId, {
       candidateId,
       type: 'planner',
@@ -2890,7 +2963,7 @@ async function runCandidate(
   const imageRoute = modelRouteAccess(body, routeSecrets, 'image')
   let description = await buildVisualDescription(jobId, candidateId, body, routeSecrets, 0, referenceAnalysis, retrievalContext, referenceImages, false)
   await logStage('plan ready')
-  let imagePrompt = diagramPromptFromDescription(description)
+  let imagePrompt = diagramPromptFromDescription(description, body.negativePrompt)
   await logStage('rendering PNG')
   const initialRenderStartedAt = new Date()
   let base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K')
@@ -2930,7 +3003,7 @@ async function runCandidate(
     if (noChanges) break
 
     description = decision.description
-    imagePrompt = diagramPromptFromDescription(description)
+    imagePrompt = diagramPromptFromDescription(description, body.negativePrompt)
     await logStage(`rerender round ${round}`)
     const rerenderStartedAt = new Date()
     try {
@@ -3147,10 +3220,10 @@ async function enhanceCandidateToResolution(
     let upscaled: string
     if (body.imageRefineMode === 'direct-edit') {
       // 图生图升清：把基础图作为源图直接交给图像模型，只让它提升清晰度/分辨率。
-      const editPrompt = refineEditPrompt(
+      const editPrompt = withNegativePrompt(refineEditPrompt(
         'Upscale and sharpen this academic diagram; preserve ALL content, text, layout and colors exactly — only increase resolution and crispness.',
         targetSize,
-      )
+      ), body.negativePrompt)
       upscaled = await callImageModel(
         imageRoute.provider,
         imageRoute.model,
@@ -3166,7 +3239,7 @@ async function enhanceCandidateToResolution(
         imageRoute.provider,
         imageRoute.model,
         imageRoute.apiKey,
-        diagramPromptFromDescription(baseDescription),
+        diagramPromptFromDescription(baseDescription, body.negativePrompt),
         body.aspectRatio || '16:9',
         '',
         targetSize,
@@ -3221,7 +3294,7 @@ async function buildPlotDescription(
     mainRoute.model,
     mainRoute.apiKey,
     plotPlannerSystemPrompt(),
-    plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages),
+    plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt),
     referenceImages,
   )
   await recordStage(jobId, {
@@ -3242,7 +3315,7 @@ async function buildPlotDescription(
       mainRoute.model,
       mainRoute.apiKey,
       plotStylistSystemPrompt(),
-      plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages),
+      plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt),
     )
     await recordStage(jobId, {
       candidateId,
@@ -3265,7 +3338,7 @@ async function generatePlotCode(body: CreateExecutionBody, routeSecrets: RouteSe
     mainRoute.model,
     mainRoute.apiKey,
     plotVisualizerSystemPrompt(),
-    plotVisualizerUserPrompt(description),
+    plotVisualizerUserPrompt(description, body.negativePrompt),
   )
   return extractPythonCode(raw)
 }
@@ -3376,7 +3449,7 @@ async function critiqueRenderedPlot(
       [
         notice,
         '',
-        plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
+        plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt),
       ].join('\n'),
     )
   }
@@ -3386,7 +3459,7 @@ async function critiqueRenderedPlot(
     visionRoute.model,
     visionRoute.apiKey,
     plotCriticSystemPrompt(),
-    plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
+    plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt),
     [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }],
   )
 }
@@ -3418,7 +3491,7 @@ async function buildVisualDescription(
     mainRoute.model,
     mainRoute.apiKey,
     plannerSystemPrompt(),
-    plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages),
+    plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt),
     referenceImages,
   )
   await recordStage(jobId, {
@@ -3439,7 +3512,7 @@ async function buildVisualDescription(
       mainRoute.model,
       mainRoute.apiKey,
       stylistSystemPrompt(),
-      stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages),
+      stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt),
     )
     await recordStage(jobId, {
       candidateId,
@@ -3460,7 +3533,7 @@ async function buildVisualDescription(
       mainRoute.model,
       mainRoute.apiKey,
       criticSystemPrompt(),
-      criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
+      criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt),
     )
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
@@ -3799,7 +3872,7 @@ async function critiqueRenderedDiagram(
       [
         '[SYSTEM NOTICE] The diagram image could not be generated based on the current description. Check the description for errors and revise it.',
         '',
-        imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
+        imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt),
       ].join('\n'),
     )
   }
@@ -3809,7 +3882,7 @@ async function critiqueRenderedDiagram(
     visionRoute.model,
     visionRoute.apiKey,
     imageCriticSystemPrompt(),
-    imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext),
+    imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt),
     [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }],
   )
 }
@@ -5712,11 +5785,11 @@ function plannerSystemPrompt() {
   ].join('\n')
 }
 
-function plannerUserPrompt(method: string, caption: string, referenceAnalysis = '', retrievalContext = '', infographicCategory = '', hasReferenceImages = false) {
-  return withReferenceImageInstruction(withInfographicCategory(withRetrievalContext(withReferenceAnalysis(
+function plannerUserPrompt(method: string, caption: string, referenceAnalysis = '', retrievalContext = '', infographicCategory = '', hasReferenceImages = false, negativePrompt = '') {
+  return withNegativePrompt(withReferenceImageInstruction(withInfographicCategory(withRetrievalContext(withReferenceAnalysis(
     `Methodology Section:\n${method}\n\nFigure Caption:\n${caption}\n\nDetailed description of the target figure:`,
     referenceAnalysis,
-  ), retrievalContext), infographicCategory), hasReferenceImages)
+  ), retrievalContext), infographicCategory), hasReferenceImages), negativePrompt)
 }
 
 function stylistSystemPrompt() {
@@ -5750,11 +5823,11 @@ function stylistSystemPrompt() {
   ].join('\n')
 }
 
-function stylistUserPrompt(method: string, caption: string, description: string, referenceAnalysis = '', retrievalContext = '', infographicCategory = '', hasReferenceImages = false) {
-  return withReferenceImageInstruction(withInfographicCategory(withRetrievalContext(withReferenceAnalysis(
+function stylistUserPrompt(method: string, caption: string, description: string, referenceAnalysis = '', retrievalContext = '', infographicCategory = '', hasReferenceImages = false, negativePrompt = '') {
+  return withNegativePrompt(withReferenceImageInstruction(withInfographicCategory(withRetrievalContext(withReferenceAnalysis(
     `Initial Description:\n${description}\n\nMethodology Section:\n${method}\n\nFigure Caption:\n${caption}\n\nPolished detailed description:`,
     referenceAnalysis,
-  ), retrievalContext), infographicCategory), hasReferenceImages)
+  ), retrievalContext), infographicCategory), hasReferenceImages), negativePrompt)
 }
 
 function criticSystemPrompt() {
@@ -5804,11 +5877,11 @@ function diagramCriticSystemPrompt() {
   ].join('\n')
 }
 
-function criticUserPrompt(method: string, caption: string, description: string, referenceAnalysis = '', retrievalContext = '') {
-  return withRetrievalContext(withReferenceAnalysis(
+function criticUserPrompt(method: string, caption: string, description: string, referenceAnalysis = '', retrievalContext = '', negativePrompt = '') {
+  return withNegativePrompt(withRetrievalContext(withReferenceAnalysis(
     `Current Description:\n${description}\n\nMethodology Section:\n${method}\n\nFigure Caption:\n${caption}\n\nCritique or revised description:`,
     referenceAnalysis,
-  ), retrievalContext)
+  ), retrievalContext), negativePrompt)
 }
 
 function imageCriticSystemPrompt() {
@@ -5817,11 +5890,11 @@ function imageCriticSystemPrompt() {
   return diagramCriticSystemPrompt()
 }
 
-function imageCriticUserPrompt(method: string, caption: string, description: string, referenceAnalysis = '', retrievalContext = '') {
-  return withRetrievalContext(withReferenceAnalysis(
+function imageCriticUserPrompt(method: string, caption: string, description: string, referenceAnalysis = '', retrievalContext = '', negativePrompt = '') {
+  return withNegativePrompt(withRetrievalContext(withReferenceAnalysis(
     `Rendered diagram is attached.\n\nCurrent Description:\n${description}\n\nMethodology Section:\n${method}\n\nFigure Caption:\n${caption}\n\nImage-aware critique or revised description:`,
     referenceAnalysis,
-  ), retrievalContext)
+  ), retrievalContext), negativePrompt)
 }
 
 // ---------------------------------------------------------------------------
@@ -5840,11 +5913,11 @@ function plotPlannerSystemPrompt() {
   ].join('\n')
 }
 
-function plotPlannerUserPrompt(rawData: string, visualIntent: string, referenceAnalysis = '', retrievalContext = '', hasReferenceImages = false) {
-  return withReferenceImageInstruction(withRetrievalContext(withReferenceAnalysis(
+function plotPlannerUserPrompt(rawData: string, visualIntent: string, referenceAnalysis = '', retrievalContext = '', hasReferenceImages = false, negativePrompt = '') {
+  return withNegativePrompt(withReferenceImageInstruction(withRetrievalContext(withReferenceAnalysis(
     `Plot Raw Data:\n${rawData}\n\nVisual Intent of the Desired Plot:\n${visualIntent}\n\nDetailed description of the target figure to be generated:`,
     referenceAnalysis,
-  ), retrievalContext), hasReferenceImages)
+  ), retrievalContext), hasReferenceImages), negativePrompt)
 }
 
 function plotStylistSystemPrompt() {
@@ -5876,11 +5949,11 @@ function plotStylistSystemPrompt() {
   ].join('\n')
 }
 
-function plotStylistUserPrompt(rawData: string, visualIntent: string, description: string, referenceAnalysis = '', retrievalContext = '', hasReferenceImages = false) {
-  return withReferenceImageInstruction(withRetrievalContext(withReferenceAnalysis(
+function plotStylistUserPrompt(rawData: string, visualIntent: string, description: string, referenceAnalysis = '', retrievalContext = '', hasReferenceImages = false, negativePrompt = '') {
+  return withNegativePrompt(withReferenceImageInstruction(withRetrievalContext(withReferenceAnalysis(
     `Detailed Description: ${description}\nRaw Data: ${rawData}\nVisual Intent of the Desired Plot: ${visualIntent}\nYour Output:`,
     referenceAnalysis,
-  ), retrievalContext), hasReferenceImages)
+  ), retrievalContext), hasReferenceImages), negativePrompt)
 }
 
 function plotCriticSystemPrompt() {
@@ -5929,19 +6002,19 @@ function plotCriticSystemPrompt() {
   ].join('\n')
 }
 
-function plotCriticUserPrompt(rawData: string, visualIntent: string, description: string, referenceAnalysis = '', retrievalContext = '') {
-  return withRetrievalContext(withReferenceAnalysis(
+function plotCriticUserPrompt(rawData: string, visualIntent: string, description: string, referenceAnalysis = '', retrievalContext = '', negativePrompt = '') {
+  return withNegativePrompt(withRetrievalContext(withReferenceAnalysis(
     `Target Plot for Critique:\nDetailed Description: ${description}\nRaw Data: ${rawData}\nVisual Intent: ${visualIntent}\nYour Output:`,
     referenceAnalysis,
-  ), retrievalContext)
+  ), retrievalContext), negativePrompt)
 }
 
 function plotVisualizerSystemPrompt() {
   return 'You are an expert statistical plot illustrator. Write code to generate high-quality statistical plots based on user requests.'
 }
 
-function plotVisualizerUserPrompt(description: string) {
-  return [
+function plotVisualizerUserPrompt(description: string, negativePrompt = '') {
+  return withNegativePrompt([
     `Use python matplotlib to generate a statistical plot based on the following detailed description: ${description}`,
     '',
     'Requirements for the code:',
@@ -5953,26 +6026,27 @@ function plotVisualizerUserPrompt(description: string) {
     '- Embed all required data inline; do not rely on external data sources.',
     '',
     'Only provide the code without any explanations. Code:',
-  ].join('\n')
+  ].join('\n'), negativePrompt)
 }
 
-function diagramPrompt(method: string, caption: string, referenceAnalysis = '', retrievalContext = '') {
+function diagramPrompt(method: string, caption: string, referenceAnalysis = '', retrievalContext = '', negativePrompt = '') {
   return diagramPromptFromDescription(
     withRetrievalContext(withReferenceAnalysis(
       `Create an academic method diagram for this methodology:\n${method}\n\nVisual intent:\n${caption}`,
       referenceAnalysis,
     ), retrievalContext),
+    negativePrompt,
   )
 }
 
-function diagramPromptFromDescription(description: string) {
-  return [
+function diagramPromptFromDescription(description: string, negativePrompt = '') {
+  return withNegativePrompt([
     'Render a high-quality scientific diagram based on the following detailed description.',
     'Use a clean white or very light background, crisp vector-like shapes, readable labels, professional academic style.',
     'Do not include a figure title or caption inside the image.',
     '',
     description,
-  ].join('\n')
+  ].join('\n'), negativePrompt)
 }
 
 function svgSystemPrompt() {
@@ -6352,6 +6426,18 @@ function withRetrievalContext(text: string, retrievalContext = '') {
   ].join('\n')
 }
 
+export function withNegativePrompt(text: string, negativePrompt = '') {
+  const avoidance = String(negativePrompt || '').trim()
+  if (!avoidance) return text
+  return [
+    text,
+    '',
+    '<avoidance_constraints>',
+    avoidance,
+    '</avoidance_constraints>',
+  ].join('\n')
+}
+
 function withInfographicCategory(text: string, infographicCategory = '') {
   const category = String(infographicCategory || '').trim()
   if (!category) return text
@@ -6619,6 +6705,7 @@ function validateCreateBody(body: CreateJobBody) {
   if (body.methodContent.trim().length > 12000) throw new Error('methodContent exceeds 12000 characters')
   if (!body.caption || body.caption.trim().length < 3) throw new Error('caption is required')
   if (body.caption.trim().length > 1000) throw new Error('caption exceeds 1000 characters')
+  normalizeNegativePrompt(body)
   const requestedFormat = body.outputFormat || body.output_format
   if (requestedFormat && !['png', 'svg'].includes(requestedFormat)) throw new Error('Invalid outputFormat')
   if (!body.modelRoutes && !body.mainModelName) throw new Error('mainModelName is required')
@@ -6628,6 +6715,15 @@ function validateCreateBody(body: CreateJobBody) {
   if (body.retrievalSetting === 'manual' && !normalizeManualReferenceIds(body.manualReferenceIds || []).length) {
     throw new Error('manualReferenceIds is required when retrievalSetting is manual')
   }
+}
+
+function normalizeNegativePrompt(body: Pick<CreateJobBody, 'negativePrompt' | 'negative_prompt'>): string {
+  const raw = body.negativePrompt !== undefined ? body.negativePrompt : body.negative_prompt
+  if (raw === undefined || raw === null) return ''
+  if (typeof raw !== 'string') throw new Error('negativePrompt must be a string')
+  const negativePrompt = raw.trim()
+  if (negativePrompt.length > 1000) throw new Error('negativePrompt exceeds 1000 characters')
+  return negativePrompt
 }
 
 function validateRefineBody(body: RefineImageBody) {
@@ -6679,6 +6775,7 @@ async function publicJob(job: any) {
     configurationMode: normalizeConfigurationMode(job.configurationMode),
     taskName: job.taskName || 'diagram',
     methodContent: job.methodContent,
+    negativePrompt: job.negativePrompt || job.negative_prompt || '',
     caption: job.caption,
     infographicCategory: job.infographicCategory || '',
     outputFormat: job.outputFormat || 'png',

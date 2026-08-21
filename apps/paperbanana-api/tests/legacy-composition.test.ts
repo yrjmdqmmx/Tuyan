@@ -77,6 +77,7 @@ type LegacyPolicyModule = {
   callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>): Promise<string>
   callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string, strictImageSize?: boolean): Promise<string>
   normalizeModelName(provider: string, model: string): string
+  withNegativePrompt(text: string, negativePrompt?: string): string
   resolveManualRetrievedReferences(ids: string[]): Promise<Array<Record<string, any>>>
   resolveRetrievedReferences(body: Record<string, any>, apiKey: string): Promise<Array<Record<string, any>>>
 }
@@ -2841,6 +2842,108 @@ test('referenceLibrary rejects malformed page and pageSize values with a stable 
   assert.match(fractionalPageSize.error, /pageSize must be a positive integer/i)
 })
 
+test('referenceLibrary exact-ID mode queries only requested bench rows, preserves order, and signs only them', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = [
+    {
+      id: 'ref_2', taskName: 'plot', title: 'Second', summary: '', titleZh: '第二项',
+      shortIntroZh: '第二项简介。', detailZh: '第二项详细说明。', visualCategory: '折线图',
+      researchDomain: '生命科学', keywords: ['second'], imageObjectKey: 'references/bench/plot/ref_2.jpg',
+      source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+    {
+      id: 'ref_9', taskName: 'diagram', title: 'Ninth', summary: '', titleZh: '第九项',
+      shortIntroZh: '第九项简介。', detailZh: '第九项详细说明。', visualCategory: '方法框架图',
+      researchDomain: '人工智能', keywords: ['ninth'], imageObjectKey: 'references/bench/diagram/ref_9.jpg',
+      source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+    {
+      id: 'ref_other', taskName: 'diagram', title: 'Other', summary: '', titleZh: '其他项',
+      shortIntroZh: '其他项简介。', detailZh: '其他项详细说明。', visualCategory: '方法框架图',
+      researchDomain: '人工智能', keywords: ['other'], imageObjectKey: 'references/bench/diagram/ref_other.jpg',
+      source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+    },
+  ]
+  state.referenceFindQueries = []
+  state.signedReferenceKeys = []
+
+  const result = await legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'referenceLibrary', referenceIds: [' ref_9 ', 'ref_2'] },
+    headers: {}, response: { setHeader() {}, status() {} },
+  })
+
+  assert.equal(result.code, 0)
+  assert.deepEqual(result.references.map((reference: any) => reference.id), ['ref_9', 'ref_2'])
+  assert.deepEqual(state.referenceFindQueries.at(-1), {
+    id: { $in: ['ref_9', 'ref_2'] },
+    source: 'paperbanana-bench',
+    corpusVersion: 'zh-CN.v2',
+  })
+  assert.deepEqual(state.signedReferenceKeys, [
+    'references/bench/diagram/ref_9.jpg',
+    'references/bench/plot/ref_2.jpg',
+  ])
+  assert.deepEqual(
+    { page: result.page, pageSize: result.pageSize, totalItems: result.totalItems, totalPages: result.totalPages },
+    { page: 1, pageSize: 2, totalItems: 2, totalPages: 1 },
+  )
+})
+
+test('referenceLibrary exact-ID mode rejects filters and malformed selections with stable 400 errors', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceFindQueries = []
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body: { action: 'referenceLibrary', ...body }, headers: {},
+    response: { setHeader() {}, status() {} },
+  })
+
+  for (const field of ['page', 'pageSize', 'query', 'visualCategory', 'researchDomain', 'taskName']) {
+    const result = await invoke({ referenceIds: ['ref_1'], [field]: field === 'page' || field === 'pageSize' ? 1 : 'value' })
+    assert.equal(result.code, 400, field)
+    assert.equal(result.businessCode, 'REFERENCE_LIBRARY_REQUEST_INVALID', field)
+  }
+  for (const referenceIds of [
+    null,
+    [],
+    'ref_1',
+    ['ref_1', ' ref_1 '],
+    [''],
+    [42],
+    ['x'.repeat(121)],
+    Array.from({ length: 7 }, (_, index) => `ref_${index}`),
+  ]) {
+    const result = await invoke({ referenceIds })
+    assert.equal(result.code, 400, JSON.stringify(referenceIds))
+    assert.equal(result.businessCode, 'REFERENCE_LIBRARY_REQUEST_INVALID', JSON.stringify(referenceIds))
+  }
+  assert.equal(state.referenceFindQueries.length, 0)
+})
+
+test('referenceLibrary exact-ID mode returns a stable 422 when any requested image is unusable', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceRows = [{
+    id: 'ref_no_image', taskName: 'plot', title: 'No image', summary: '', titleZh: '无图',
+    shortIntroZh: '无图简介。', detailZh: '无图详细说明。', visualCategory: '折线图',
+    researchDomain: '综合研究', keywords: [], imageObjectKey: '  ', imageUrl: '\t',
+    source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
+  }]
+  state.signedReferenceKeys = []
+  const result = await legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'referenceLibrary', referenceIds: ['ref_no_image', 'ref_missing'] },
+    headers: {}, response: { setHeader() {}, status() {} },
+  })
+  assert.equal(result.code, 422)
+  assert.equal(result.businessCode, 'REFERENCE_LIBRARY_SELECTION_INVALID')
+  assert.match(result.error, /ref_no_image/)
+  assert.match(result.error, /ref_missing/)
+  assert.deepEqual(state.signedReferenceKeys, [])
+})
+
 test('manual reference selection queries exact IDs directly, preserves order, and reaches beyond the old 200-row boundary', async () => {
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
@@ -3820,6 +3923,40 @@ test('public task detail and admin/user lists expose both normalized platform al
   }
 })
 
+test('public task views expose negativePrompt alongside methodContent and caption', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousRows = state.jobRows
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  const previousAdmin = process.env.ADMIN_TOKEN
+  state.jobRows = [{
+    _id: 'negative-public', status: 'succeeded', userId: 'user-negative',
+    methodContent: 'Stored method.', caption: 'Stored caption.', negativePrompt: 'Avoid gradients.',
+    resultImages: [], stages: [],
+  }]
+  process.env.PAPERBANANA_GATEWAY_TOKEN = 'negative-gateway'
+  process.env.ADMIN_TOKEN = 'negative-admin'
+  const invoke = (body: Record<string, unknown>) => legacy.default({
+    request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
+  })
+  try {
+    const detail = await invoke({ action: 'getJob', jobId: 'negative-public', gatewayToken: 'negative-gateway' })
+    const user = await invoke({ action: 'userJobs', userId: 'user-negative', gatewayToken: 'negative-gateway' })
+    const admin = await invoke({ action: 'adminJobs', adminToken: 'negative-admin' })
+    for (const job of [detail.job, user.jobs[0], admin.jobs[0]]) {
+      assert.equal(job.methodContent, 'Stored method.')
+      assert.equal(job.caption, 'Stored caption.')
+      assert.equal(job.negativePrompt, 'Avoid gradients.')
+    }
+  } finally {
+    state.jobRows = previousRows
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+    if (previousAdmin === undefined) delete process.env.ADMIN_TOKEN
+    else process.env.ADMIN_TOKEN = previousAdmin
+  }
+})
+
 test('Harmony feedback is accepted while unknown feedback platforms remain rejected', async () => {
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
@@ -3876,10 +4013,95 @@ test('create background execution DTO omits the complete apiKeys map', async () 
     adminToken: 'admin-secret',
     apiKey: 'single-secret',
     caption: 'caption',
+    negativePrompt: 'Avoid gradients.',
+    negative_prompt: 'caller alias must not bypass normalization',
   })
 
   assert.equal(Object.hasOwn(result, 'apiKeys'), false)
-  assert.deepEqual(result, { action: 'createJob', provider: 'gemini', caption: 'caption' })
+  assert.deepEqual(result, {
+    action: 'createJob', provider: 'gemini', caption: 'caption', negativePrompt: 'Avoid gradients.',
+  })
+})
+
+test('createJob trims and persists negativePrompt separately and counts it without changing methodContent', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts
+  state.inserts = []
+  legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
+  const methodContent = 'A sufficiently detailed methodology that must remain byte-for-byte unchanged.'
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'openai', apiKeys: { openai: 'key' },
+        methodContent, caption: 'Negative prompt persistence.', negative_prompt: '  Avoid gradients and shadows.  ',
+        outputFormat: 'svg', retrievalSetting: 'none', maxCriticRounds: 0,
+        mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2',
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    assert.equal(state.inserts.length, 1)
+    assert.equal(state.inserts[0].methodContent, methodContent)
+    assert.equal(state.inserts[0].negativePrompt, 'Avoid gradients and shadows.')
+    assert.equal(
+      state.inserts[0].promptCharCount,
+      methodContent.length + 'Negative prompt persistence.'.length + 'Avoid gradients and shadows.'.length,
+    )
+    await legacy.drainJobAdmission()
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.inserts = previousInserts
+  }
+})
+
+test('createJob rejects malformed and oversized negativePrompt before persistence', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const insertCount = state.inserts.length
+  const base = {
+    action: 'createJob', provider: 'openai', apiKeys: { openai: 'key' },
+    methodContent: 'A sufficiently detailed methodology for validating negative prompt limits.',
+    caption: 'Negative prompt validation.', outputFormat: 'svg', retrievalSetting: 'none', maxCriticRounds: 0,
+    mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2',
+  }
+  for (const negativePrompt of [42, 'x'.repeat(1001)]) {
+    const result = await legacy.default({
+      request: { method: 'POST' }, body: { ...base, negativePrompt }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    assert.equal(result.code, 400)
+    assert.match(result.error, /negativePrompt/)
+  }
+  assert.equal(state.inserts.length, insertCount)
+})
+
+test('create generation prompts use a separate avoidance block across PNG, critic, SVG, and plot paths', async () => {
+  const legacy = await loadLegacy()
+  const negativePrompt = '  Avoid gradients and decorative shadows.  '
+  const delimited = legacy.withNegativePrompt('Base prompt.', negativePrompt)
+  assert.equal(delimited, [
+    'Base prompt.',
+    '',
+    '<avoidance_constraints>',
+    'Avoid gradients and decorative shadows.',
+    '</avoidance_constraints>',
+  ].join('\n'))
+  assert.equal(legacy.withNegativePrompt('Base prompt.', '   '), 'Base prompt.')
+
+  const source = fs.readFileSync(legacyPath, 'utf8')
+  assert.match(source, /diagramPrompt\(body\.methodContent, body\.caption, referenceAnalysis, retrievalContext, body\.negativePrompt\)/)
+  assert.ok(
+    (source.match(/diagramPromptFromDescription\(description, body\.negativePrompt\)/g) || []).length >= 2,
+    'initial PNG and critic-driven re-render must both carry negativePrompt',
+  )
+  assert.match(source, /callSvgModel\([^\n]+withNegativePrompt\(description, body\.negativePrompt\)\)/)
+  assert.match(source, /plannerUserPrompt\([^\n]+body\.negativePrompt\)/)
+  assert.match(source, /imageCriticUserPrompt\([^\n]+body\.negativePrompt\)/)
+  assert.match(source, /plotPlannerUserPrompt\([^\n]+body\.negativePrompt\)/)
+  assert.match(source, /plotCriticUserPrompt\([^\n]+body\.negativePrompt\)/)
+  assert.match(source, /plotVisualizerUserPrompt\(description, body\.negativePrompt\)/)
 })
 
 test('refine background execution DTO omits the complete apiKeys map', async () => {
