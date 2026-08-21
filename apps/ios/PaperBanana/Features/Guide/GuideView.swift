@@ -103,7 +103,7 @@ struct GuideView: View {
     GlassPanel {
       VStack(alignment: .leading, spacing: Theme.Spacing.md) {
         SectionHeader(title: "一键生成预设", systemImage: "slider.horizontal.3")
-        Text("预设只从当前 live registry 选择可选模型：稳定且推荐优先。不会写死可能过期的模型 ID，也不凭空承诺成本。")
+        Text("所有预设保持当前 live provider，并使用服务端默认三路；不会保留自定义或过期路由，也不写死模型 ID。省成本只下调流程参数，不凭空承诺成本。")
           .font(.footnote)
           .foregroundStyle(.secondary)
           .fixedSize(horizontal: false, vertical: true)

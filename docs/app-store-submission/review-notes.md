@@ -13,7 +13,7 @@
 ## English (primary)
 
 **What PaperBanana does**
-PaperBanana generates publication-ready academic figures (method-framework diagrams, flowcharts, system architectures, data charts) for research papers. The user describes their method and figure caption; a multi-agent backend pipeline (plan → render → critique → refine) produces the figure. Native iOS 26 design, universal for iPhone and iPad.
+PaperBanana generates publication-ready academic figures (method-framework diagrams, flowcharts, system architectures, data charts) for research papers. The user describes their method and figure caption; a multi-agent backend pipeline (plan → render → critique → rerender/finalize) produces the figure. Independent Refine is a separate tab for refining the user's own result. Native iOS 26 design, universal for iPhone and iPad.
 
 **IMPORTANT — This is a BYOK (Bring Your Own Key) app. A working API key is required to test generation.**
 The app does NOT ship with a built-in model key. To run an actual generation, enter a key from a supported provider (Bailian / OpenRouter / Gemini / OpenAI / Volcano Engine Ark China). The dynamic registry is authoritative for selectable models. The submitter must replace the explicit placeholders below with a review account and Bailian demo key before submission.
@@ -25,7 +25,7 @@ The app does NOT ship with a built-in model key. To run an actual generation, en
 **Demo API key (REQUIRED to test generation)**
 - Provider: Bailian (阿里云百炼) — recommended, lowest-friction
 - API Key: `[demo bailian key — 必须是当前真实有效、有余额/额度的 key，否则生成会失败]`
-- How to use: Open the **Generate** tab → select provider **阿里云百炼 (Bailian)** → paste this key into the **API 密钥** field → fill the method content and caption (or tap a Quick-Start example) → submit. The pipeline visualization (plan/render/critique/refine) appears inline, and result images appear when finished.
+- How to use: Open the **Generate** tab → select provider **阿里云百炼 (Bailian)** → paste this key into the **API 密钥** field → fill the method content and caption (or tap a Quick-Start example) → submit. The pipeline visualization (plan/render/critique/rerender or finalize) appears inline, and result images appear when finished. Use the separate **Refine** tab only to refine your own result.
 
 > If the demo key has expired by review time, generation will return an error through no fault of the app. Please contact us (below) for a fresh key rather than rejecting on that basis.
 
@@ -50,7 +50,7 @@ The app requires our online gateway (`https://api.paperbanana.asia`) for auth an
 ## 中文（附）
 
 **这是什么**
-PaperBanana 为科研论文生成出版级学术配图（方法框架图/流程图/系统架构/数据统计图）。用户描述方法与图注，后端多智能体流水线（规划→渲染→评审→精修）产出配图。原生 iOS 26 设计，iPhone/iPad 通用。
+PaperBanana 为科研论文生成出版级学术配图（方法框架图/流程图/系统架构/数据统计图）。用户描述方法与图注，后端多智能体流水线（规划→渲染→评审→重渲染/定稿）产出配图。独立「精修」是针对本人结果图的单独 Tab。原生 iOS 26 设计，iPhone/iPad 通用。
 
 **重要——BYOK 模式，测试生成需要可用的 API Key**
 App 不内置模型密钥。要跑通真实生成，必须填入受支持平台（百炼/OpenRouter/Gemini/OpenAI/火山方舟中国区）的 API Key；可选模型以动态 registry 为准。请提交者将上方 placeholder 替换为真实审核账号与百炼 demo key。审核员：生成页 → 选「阿里云百炼」→ 在生成设置输入 key → 填方法内容与图注（或套用精选模板）→ 提交，即可看到流水线与结果图。

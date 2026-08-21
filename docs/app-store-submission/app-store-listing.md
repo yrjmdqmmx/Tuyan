@@ -37,7 +37,7 @@
 ```
 PaperBanana 把你的论文方法描述和图题，变成出版级的学术配图。
 
-不再为了画一张方法框架图在绘图软件里耗一下午——输入方法内容、写好图注、选好图类，PaperBanana 的多智能体流水线就会替你完成「规划 → 渲染 → 评审 → 精修」的全过程，产出可直接放进论文的方法框架图、流程图、系统架构图与数据统计图。
+不再为了画一张方法框架图在绘图软件里耗一下午——输入方法内容、写好图注、选好图类，PaperBanana 的多智能体流水线会完成「规划 → 渲染 → 评审 → 重渲染/定稿」过程，产出可直接放进论文的方法框架图、流程图、系统架构图与数据统计图。
 
 【多智能体协作，像审稿一样打磨】
 后端由多个 AI 角色分工协作：规划器先把方法拆成模块与连接关系，图像模型渲染初版，评审模型像审稿人一样检查排版、文字与逻辑并提出修改意见，再迭代重渲染。生成阶段的额外渲染与独立「精修」Tab 不混同：精修可对本人结果图按当前路线能力单独执行。整个流水线在 App 内可视化呈现。
@@ -64,7 +64,7 @@ PaperBanana —— 让做图不再是论文里最慢的那一步。
 ```
 PaperBanana turns your paper's method description and figure caption into publication-ready academic figures.
 
-Stop spending an afternoon in drawing software just to make one method diagram. Describe your method, write the caption, pick a figure type — and PaperBanana's multi-agent pipeline runs the full "plan → render → critique → refine" process for you, producing method-framework diagrams, flowcharts, system architectures, and data charts you can drop straight into your paper.
+Stop spending an afternoon in drawing software just to make one method diagram. Describe your method, write the caption, pick a figure type — and PaperBanana's multi-agent pipeline runs the full "plan → render → critique → rerender/finalize" process for you, producing method-framework diagrams, flowcharts, system architectures, and data charts you can drop straight into your paper.
 
 MULTI-AGENT COLLABORATION, POLISHED LIKE PEER REVIEW
 The backend coordinates several AI roles: a planner breaks your method into modules and connections, an image model renders the first draft, and a critic model inspects layout, text, and logic before re-rendering. Extra generation stages are distinct from the separate Refine tab, where you can refine your own result according to the current route's declared capability.

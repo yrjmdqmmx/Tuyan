@@ -13,14 +13,14 @@ final class GuidePresetTests: XCTestCase {
     XCTAssertEqual(draft, before)
   }
 
-  func testBudgetPresetKeepsCurrentProviderDefaultsAndOnlyReducesWorkflow() throws {
+  func testBudgetPresetUsesCurrentProviderDefaultsInSimpleModeAndOnlyReducesWorkflow() throws {
     var draft = GenerationDraft()
     draft.provider = .bailian
 
     let result = GuidePreset.apply(.budget, to: &draft, registry: try registry(), hasLiveRegistry: true)
 
     XCTAssertEqual(result, .applied)
-    XCTAssertEqual(draft.configurationMode, .advanced)
+    XCTAssertEqual(draft.configurationMode, .simple)
     XCTAssertEqual(draft.modelRoutes?.main.modelId, "main-default")
     XCTAssertEqual(draft.modelRoutes?.image.modelId, "image-default")
     XCTAssertEqual(draft.modelRoutes?.vision.modelId, "vision-default")
@@ -29,6 +29,24 @@ final class GuidePresetTests: XCTestCase {
     XCTAssertEqual(draft.maxCriticRounds, 0)
     XCTAssertEqual(draft.retrievalSetting, .none)
     XCTAssertEqual(draft.imageSize, .oneK)
+  }
+
+  func testEveryPresetUsesCurrentProviderDefaultRoutesEvenWhenRecommendedModelsDiffer() throws {
+    let expected = ["main-default", "image-default", "vision-default"]
+    for preset in GuidePreset.allCases {
+      var draft = GenerationDraft()
+      draft.provider = .bailian
+      draft.configurationMode = .advanced
+      draft.modelRoutes = ModelRoutes(
+        main: ModelRoute(accessProvider: .bailian, modelId: "main-recommended"),
+        image: ModelRoute(accessProvider: .bailian, modelId: "image-stable"),
+        vision: ModelRoute(accessProvider: .bailian, modelId: "vision-stable")
+      )
+
+      XCTAssertEqual(GuidePreset.apply(preset, to: &draft, registry: try registry(), hasLiveRegistry: true), .applied)
+      XCTAssertEqual(draft.configurationMode, .simple)
+      XCTAssertEqual([draft.modelRoutes?.main.modelId, draft.modelRoutes?.image.modelId, draft.modelRoutes?.vision.modelId], expected)
+    }
   }
 
   func testBudgetPresetReplacesRetiredCurrentRoutesWithLiveProviderDefaults() throws {
@@ -43,12 +61,35 @@ final class GuidePresetTests: XCTestCase {
     let result = GuidePreset.apply(.budget, to: &draft, registry: try registry(), hasLiveRegistry: true)
 
     XCTAssertEqual(result, .applied)
+    XCTAssertEqual(draft.configurationMode, .simple)
     XCTAssertEqual(draft.modelRoutes?.main.modelId, "main-default")
     XCTAssertEqual(draft.modelRoutes?.image.modelId, "image-default")
     XCTAssertEqual(draft.modelRoutes?.vision.modelId, "vision-default")
   }
 
-  func testQualityPresetUsesHighestRegistryResolutionWithoutHardCodingModelIDs() throws {
+  func testAdvancedPresetUsesActiveMainRouteProviderDefaults() throws {
+    var registry = try registry()
+    registry.providers[.openrouter] = try XCTUnwrap(registry.providers[.bailian])
+    var draft = GenerationDraft()
+    draft.provider = .bailian
+    draft.configurationMode = .advanced
+    draft.modelRoutes = ModelRoutes(
+      main: ModelRoute(accessProvider: .openrouter, modelId: "main-recommended"),
+      image: ModelRoute(accessProvider: .bailian, modelId: "image-stable"),
+      vision: ModelRoute(accessProvider: .bailian, modelId: "vision-stable")
+    )
+
+    XCTAssertEqual(GuidePreset.apply(.balanced, to: &draft, registry: registry, hasLiveRegistry: true), .applied)
+    XCTAssertEqual(draft.configurationMode, .simple)
+    XCTAssertEqual(draft.provider, .openrouter)
+    XCTAssertEqual(draft.modelRoutes, ModelRoutes(
+      main: ModelRoute(accessProvider: .openrouter, modelId: "main-default"),
+      image: ModelRoute(accessProvider: .openrouter, modelId: "image-default"),
+      vision: ModelRoute(accessProvider: .openrouter, modelId: "vision-default")
+    ))
+  }
+
+  func testQualityPresetUsesHighestResolutionOfTheCurrentProviderDefaultImageRoute() throws {
     var draft = GenerationDraft()
 
     let result = GuidePreset.apply(.quality, to: &draft, registry: try registry(), hasLiveRegistry: true)
@@ -58,7 +99,7 @@ final class GuidePresetTests: XCTestCase {
     XCTAssertEqual(draft.numCandidates, 3)
     XCTAssertEqual(draft.maxCriticRounds, 2)
     XCTAssertEqual(draft.retrievalSetting, .auto)
-    XCTAssertEqual(draft.imageSize, .fourK)
+    XCTAssertEqual(draft.imageSize, .twoK)
   }
 
   func testRuntimeSummaryDoesNotPresentCachedRegistryAsLive() throws {
@@ -71,6 +112,7 @@ final class GuidePresetTests: XCTestCase {
     XCTAssertEqual(live.registryVersion, "test-v9")
     XCTAssertEqual(live.routeContractVersion, 1)
     XCTAssertEqual(live.providers, [.bailian])
+    XCTAssertEqual(live.routeSummary, "普通模式：主 bailian/main-default · 图 bailian/image-default · 识 bailian/vision-default")
   }
 
   private func registry() throws -> ModelRegistry {

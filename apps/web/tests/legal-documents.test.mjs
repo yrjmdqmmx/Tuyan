@@ -48,3 +48,15 @@ test('release legal documents disclose Hong Kong service, possible Singapore egr
   assert.match(joined, /不.*追踪|No Tracking|do not track/i)
   assert.doesNotMatch(joined, /杭州|Hangzhou|never uploaded to our servers|从不上传我方服务器|初稿模板|DRAFT TEMPLATE|\[fill in/i)
 })
+
+test('App Store listing and review notes keep pipeline finalization distinct from independent Refine', async () => {
+  const paths = [
+    '../../../docs/app-store-submission/app-store-listing.md',
+    '../../../docs/app-store-submission/review-notes.md',
+  ]
+  const joined = (await Promise.all(paths.map(path => readFile(new URL(path, import.meta.url), 'utf8')))).join('\n')
+  assert.match(joined, /rerender\/finalize/)
+  assert.match(joined, /重渲染\/定稿/)
+  assert.match(joined, /Independent Refine|独立「精修」/)
+  assert.doesNotMatch(joined, /plan\s*→\s*render\s*→\s*critique\s*→\s*refine|规划\s*→\s*渲染\s*→\s*评审\s*→\s*精修/i)
+})

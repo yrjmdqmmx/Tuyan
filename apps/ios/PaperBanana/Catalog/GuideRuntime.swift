@@ -27,14 +27,15 @@ struct GuideRuntimeSummary: Equatable {
     routeContractVersion = registry.routeContractVersion
     providers = registry.orderedProviders
     let routes = draft.configurationMode == .advanced ? draft.modelRoutes : registry.defaultRoutes(for: draft.provider)
-    if draft.configurationMode == .simple {
-      routeSummary = "普通模式：\(ProviderCatalog.config(for: draft.provider).label) · 服务端三路默认"
-    } else if let routes {
-      routeSummary = "专业模式：主 \(routes.main.modelId) · 图 \(routes.image.modelId) · 识 \(routes.vision.modelId)"
+    let modeTitle = draft.configurationMode == .simple ? "普通模式" : "专业模式"
+    if let routes {
+      routeSummary = "\(modeTitle)：主 \(Self.routeLabel(routes.main)) · 图 \(Self.routeLabel(routes.image)) · 识 \(Self.routeLabel(routes.vision))"
     } else {
-      routeSummary = "专业模式：等待服务端路由"
+      routeSummary = "\(modeTitle)：服务端路线不可用"
     }
   }
+
+  private static func routeLabel(_ route: ModelRoute) -> String { "\(route.accessProvider.rawValue)/\(route.modelId)" }
 }
 
 enum GuidePreset: String, CaseIterable, Identifiable {
@@ -66,27 +67,15 @@ enum GuidePreset: String, CaseIterable, Identifiable {
     }
   }
 
-  /// Never synthesizes a model id: only live, selectable registry entries are
-  /// eligible. If a role cannot be selected, the caller leaves the draft intact.
+  /// Every preset uses the current live provider's authoritative server defaults.
+  /// It never preserves a stale custom route or picks a client-side recommendation.
   static func apply(_ preset: GuidePreset, to draft: inout GenerationDraft, registry: ModelRegistry?, hasLiveRegistry: Bool) -> Result {
     guard hasLiveRegistry, let registry else { return .directoryUnavailable }
-    guard let provider = selectedProvider(for: draft, registry: registry) else { return .noCompatibleRoutes }
-    let routes: ModelRoutes?
-    if preset == .budget {
-      // The registry has no latency or price signal. Keep the user's live
-      // routes when valid; retired routes fall back to current provider defaults
-      // rather than pretending a different model is cheaper.
-      if let current = draft.modelRoutes, routesAreLiveAndSelectable(current, registry: registry) {
-        routes = current
-      } else {
-        routes = registry.defaultRoutes(for: provider)
-      }
-    } else {
-      routes = selectedRoutes(for: provider, registry: registry)
-    }
-    guard let routes else { return .noCompatibleRoutes }
+    guard let provider = currentLiveProvider(for: draft, registry: registry),
+          let routes = registry.defaultRoutes(for: provider),
+          routesAreLiveAndSelectable(routes, registry: registry) else { return .noCompatibleRoutes }
 
-    draft.configurationMode = .advanced
+    draft.configurationMode = .simple
     draft.provider = provider
     draft.modelRoutes = routes
     draft.mainModelName = routes.main.modelId
@@ -119,15 +108,10 @@ enum GuidePreset: String, CaseIterable, Identifiable {
     return .applied
   }
 
-  private static func selectedProvider(for draft: GenerationDraft, registry: ModelRegistry) -> ProviderID? {
-    registry.providers[draft.provider] == nil ? registry.orderedProviders.first : draft.provider
-  }
-
-  private static func selectedRoutes(for provider: ProviderID, registry: ModelRegistry) -> ModelRoutes? {
-    guard let main = preferredRoute(provider: provider, role: .main, registry: registry),
-          let image = preferredRoute(provider: provider, role: .image, registry: registry),
-          let vision = preferredRoute(provider: provider, role: .vision, registry: registry) else { return nil }
-    return ModelRoutes(main: main, image: image, vision: vision)
+  private static func currentLiveProvider(for draft: GenerationDraft, registry: ModelRegistry) -> ProviderID? {
+    let provider = draft.configurationMode == .advanced ? draft.modelRoutes?.main.accessProvider : draft.provider
+    guard let provider, registry.providers[provider] != nil else { return nil }
+    return provider
   }
 
   private static func routesAreLiveAndSelectable(_ routes: ModelRoutes, registry: ModelRegistry) -> Bool {
@@ -135,14 +119,5 @@ enum GuidePreset: String, CaseIterable, Identifiable {
       guard let route = routes[role], let model = registry.model(for: route) else { return false }
       return model.selectable && model.roles.contains(role)
     }
-  }
-
-  private static func preferredRoute(provider: ProviderID, role: ModelRole, registry: ModelRegistry) -> ModelRoute? {
-    let candidates = registry.models(for: provider, role: role)
-    let model = candidates.first { $0.selectable && $0.lifecycle == "stable" && $0.recommended }
-      ?? candidates.first { $0.selectable && $0.lifecycle == "stable" }
-      ?? candidates.first { $0.selectable && $0.recommended }
-      ?? candidates.first
-    return model.map { ModelRoute(accessProvider: provider, modelId: $0.id) }
   }
 }
