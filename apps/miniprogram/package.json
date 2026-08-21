@@ -12,7 +12,7 @@
     "wechat-miniprogram"
   ],
   "author": "PaperBanana",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "dependencies": {},
   "devDependencies": {
     "miniprogram-api-typings": "^2.8.3-1",
