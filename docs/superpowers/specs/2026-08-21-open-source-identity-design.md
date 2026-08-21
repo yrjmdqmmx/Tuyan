@@ -40,7 +40,8 @@ Use a complete but restrained open-source identity package:
 3. Add a bilingual `开源声明 / Open Source Statement` near the top of the root README, before the application inventory.
 4. Add `Upstream` and `License` sections near the bottom of the README so attribution and licensing remain discoverable outside the opening statement.
 5. Add the SPDX identifier `"license": "Apache-2.0"` to the root `package.json`.
-6. Mark the top OpenRouter PNG deployment/operations checkbox in `SYNC.md` complete, noting that the three production format routes were manually verified by the user.
+6. Align the sole explicitly conflicting workspace manifest, `apps/miniprogram/package.json`, by changing its license field from `UNLICENSED` to `Apache-2.0`; manifests that omit an explicit license are not mechanically duplicated.
+7. Mark the top OpenRouter PNG deployment/operations checkbox in `SYNC.md` complete, noting that the three production format routes were manually verified by the user.
 
 ## README Copy
 
@@ -118,17 +119,20 @@ Replace only the unchecked deployment/operations line in the top v8 entry with:
 | `NOTICE` | Add upstream attribution, independent-project clarification, and Apache-2.0 distribution notice. |
 | `README.md` | Add bilingual opening statement plus durable Upstream and License sections. |
 | `package.json` | Add `"license": "Apache-2.0"` without changing package privacy or scripts. |
+| `apps/miniprogram/package.json` | Change the explicit manifest license from `UNLICENSED` to `Apache-2.0`; leave other manifests untouched unless they already declare a conflicting value. |
 | `SYNC.md` | Mark the v8 deployment/operations smoke item complete based on user-confirmed production tests; do not add a new contract entry. |
 
 ## Verification
 
 1. Confirm `LICENSE` matches the upstream Apache-2.0 license text byte-for-byte, allowing only a final-newline normalization if necessary.
 2. Parse `package.json` and confirm its license field is exactly `Apache-2.0`.
-3. Confirm README contains the upstream URL, both language versions, and the statement that project intent does not alter Apache-2.0 rights.
-4. Confirm `NOTICE` contains attribution without an endorsement claim or non-commercial restriction and preserves separate third-party terms.
-5. Confirm only the intended `SYNC.md` checkbox and explanatory wording changed.
-6. Run `git diff --check` and review the complete diff.
-7. Confirm no application, dependency-lock, workflow, or deployment files changed.
+3. Parse all `package.json` files and confirm no explicit `UNLICENSED` manifest remains.
+4. Confirm README contains the upstream URL, both language versions, and the statement that project intent does not alter Apache-2.0 rights.
+5. Confirm `NOTICE` contains attribution without an endorsement claim or non-commercial restriction and preserves separate third-party terms.
+6. Confirm only the intended `SYNC.md` checkbox and explanatory wording changed.
+7. Confirm `pnpm-lock.yaml` is unchanged.
+8. Run `git diff --check` and review the complete diff.
+9. Confirm no application, dependency-lock, workflow, or deployment files changed.
 
 ## Rollback
 

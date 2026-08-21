@@ -16,6 +16,7 @@
 - Create `NOTICE`: upstream attribution, independent-maintenance clarification, and third-party-terms boundary.
 - Modify `README.md`: bilingual opening statement plus durable Upstream and License sections.
 - Modify `package.json`: root SPDX license metadata only.
+- Modify `apps/miniprogram/package.json`: explicit license alignment for the sole conflicting workspace manifest.
 - Modify `SYNC.md`: close the top v8 deployment/operations checkbox using the user's 2026-08-21 smoke confirmation.
 - Do not modify app code, lockfiles, workflows, deployment configuration, or remote GitHub metadata.
 
@@ -102,6 +103,7 @@ Expected: one commit containing only `LICENSE` and `NOTICE`.
 **Files:**
 - Modify: `README.md`
 - Modify: `package.json`
+- Modify: `apps/miniprogram/package.json`
 
 - [ ] **Step 1: Add the opening statement before `## Apps`**
 
@@ -137,7 +139,17 @@ PaperBanana Clients is built on the open-source [dwzhu-pku/PaperBanana](https://
 This project's source code is released under the same [Apache License 2.0](./LICENSE) as upstream. The maintainers' current lack of commercialization plans is a statement of project intent, not an additional license restriction; third-party components and assets remain subject to their respective terms.
 ```
 
-- [ ] **Step 3: Add the root SPDX identifier**
+- [ ] **Step 3: Align the explicit miniprogram license metadata**
+
+Use `apply_patch` to change the only conflicting workspace manifest so its `license` field becomes:
+
+```json
+"license": "Apache-2.0"
+```
+
+Do not add license fields to manifests that currently omit one, and do not change any other field in `apps/miniprogram/package.json`.
+
+- [ ] **Step 4: Add the root SPDX identifier**
 
 Use `apply_patch` to change the opening metadata in `package.json` to:
 
@@ -153,28 +165,30 @@ Use `apply_patch` to change the opening metadata in `package.json` to:
 
 Do not change `private`, scripts, engines, dependencies, or the lockfile.
 
-- [ ] **Step 4: Verify copy, links, and JSON metadata**
+- [ ] **Step 5: Verify copy, links, JSON metadata, and workspace license alignment**
 
 Run:
 
 ```bash
 node -e 'const p=require("./package.json"); if(p.license!=="Apache-2.0") process.exit(1); console.log(p.license)'
+node -e 'const p=require("./apps/miniprogram/package.json"); if(p.license!=="Apache-2.0") process.exit(1); console.log(p.license)'
 rg -n '开源声明 / Open Source Statement|dwzhu-pku/PaperBanana|fully open-source|不改变 Apache License 2.0|not an additional license restriction' README.md
 test -f LICENSE
+rg -n '"license"\s*:\s*"UNLICENSED"' --glob 'package.json' --glob '!node_modules/**' .
 git diff --check -- README.md package.json
-git diff --name-only -- README.md package.json pnpm-lock.yaml
+git diff --name-only -- README.md package.json apps/miniprogram/package.json pnpm-lock.yaml
 ```
 
-Expected: Node prints `Apache-2.0`; all five README concepts are found; `LICENSE` exists; diff checks have no errors; `pnpm-lock.yaml` is not listed as changed.
+Expected: Node prints `Apache-2.0` for both manifests; all five README concepts are found; `LICENSE` exists; no explicit `UNLICENSED` manifest remains; diff checks have no errors; `pnpm-lock.yaml` is not listed as changed.
 
-- [ ] **Step 5: Commit the public repository identity**
+- [ ] **Step 6: Commit the public repository identity**
 
 ```bash
-git add README.md package.json
+git add README.md package.json apps/miniprogram/package.json
 git commit -m "docs: publish bilingual open-source statement"
 ```
 
-Expected: one commit containing only `README.md` and `package.json`.
+Expected: one commit containing only `README.md`, `package.json`, and `apps/miniprogram/package.json`.
 
 ### Task 3: Close The Confirmed Production Smoke Item
 
