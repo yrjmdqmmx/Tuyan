@@ -135,6 +135,23 @@ final class AppModelSubmissionTests: XCTestCase {
     XCTAssertTrue(model.generation.canSubmit)
   }
 
+  func testSimpleModeUsesEffectiveDefaultsForPayloadAndReachableRoles() {
+    let model = AppModel()
+    installLiveRegistry(model)
+    model.generation.draft.configurationMode = .advanced
+    model.generation.draft.pipelineMode = .vanilla
+    model.generation.draft.maxCriticRounds = 0
+    model.generation.draft.retrievalSetting = .auto
+    model.generation.draft.configurationMode = .simple
+
+    XCTAssertEqual(model.generation.requiredRouteRoles, [.main, .image, .vision])
+    let payload = model.generation.makeJobPayload(referenceImages: [])
+    let body = payload.paperBananaBody()
+    XCTAssertEqual(body["pipelineMode"] as? String, "planner_critic")
+    XCTAssertEqual(body["retrievalSetting"] as? String, "none")
+    XCTAssertEqual(body["maxCriticRounds"] as? Int, 1)
+  }
+
   func testFeedbackCategoriesMatchWebContract() {
     XCTAssertEqual(
       FeedbackCategory.allCases.map(\.rawValue),

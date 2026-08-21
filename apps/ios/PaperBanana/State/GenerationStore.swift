@@ -5,6 +5,14 @@ import Observation
 @Observable
 @MainActor
 final class GenerationStore {
+  struct EffectiveSubmissionConfiguration: Equatable {
+    let pipelineMode: PipelineMode
+    let retrievalSetting: RetrievalSetting
+    let manualReferenceIDs: [String]
+    let aspectRatio: String
+    let numCandidates: Int
+    let maxCriticRounds: Int
+  }
   var draft = GenerationDraft()
   var selectedAPIKey = ""
   var mainModelCapability: ModelCapability?
@@ -140,14 +148,22 @@ final class GenerationStore {
     return registryStore.registry?.generationAspectRatios(for: route) ?? []
   }
 
+  var effectiveSubmissionConfiguration: EffectiveSubmissionConfiguration {
+    guard draft.configurationMode == .advanced else {
+      return EffectiveSubmissionConfiguration(pipelineMode: .plannerCritic, retrievalSetting: .none, manualReferenceIDs: [], aspectRatio: "16:9", numCandidates: 1, maxCriticRounds: 1)
+    }
+    return EffectiveSubmissionConfiguration(pipelineMode: draft.pipelineMode, retrievalSetting: draft.retrievalSetting, manualReferenceIDs: draft.manualReferenceIds, aspectRatio: draft.aspectRatio, numCandidates: draft.numCandidates, maxCriticRounds: draft.maxCriticRounds)
+  }
+
   var requiredRouteRoles: [ModelRole] {
     guard let routes = activeRoutes else { return [] }
+    let configuration = effectiveSubmissionConfiguration
     var roles: [ModelRole] = []
-    if draft.outputFormat == .svg || draft.taskName == .plot || draft.pipelineMode != .vanilla || draft.retrievalSetting == .auto { roles.append(.main) }
+    if draft.outputFormat == .svg || draft.taskName == .plot || configuration.pipelineMode != .vanilla || configuration.retrievalSetting == .auto { roles.append(.main) }
     if draft.outputFormat == .png, draft.taskName != .plot { roles.append(.image) }
     if draft.taskName == .plot, [.twoK, .fourK].contains(draft.imageSize), registryStore.registry?.model(for: routes.image)?.capabilities.imageEditMode == "direct-edit" { roles.append(.image) }
     if !draft.referenceImages.isEmpty { roles.append(activeReferenceImageMode == .mainModel ? .main : .vision) }
-    if draft.maxCriticRounds > 0, draft.taskName == .plot || (draft.outputFormat == .png && draft.pipelineMode != .vanilla) { roles.append(.vision) }
+    if configuration.maxCriticRounds > 0, draft.taskName == .plot || (draft.outputFormat == .png && configuration.pipelineMode != .vanilla) { roles.append(.vision) }
     return [ModelRole.main, .image, .vision].filter { roles.contains($0) && routes[$0] != nil }
   }
 
@@ -424,31 +440,7 @@ final class GenerationStore {
 
     do {
       let uploaded = try await referenceUploader.upload(draft.referenceImages, apiBase: settings.apiBase)
-      let payload = JobCreatePayload(
-        configurationMode: draft.configurationMode,
-        provider: draft.provider,
-        apiKeys: scopedAPIKeys(),
-        taskName: draft.taskName,
-        methodContent: draft.methodContent.trimmingCharacters(in: .whitespacesAndNewlines),
-        caption: draft.caption.trimmingCharacters(in: .whitespacesAndNewlines),
-        infographicCategory: draft.selectedCategory.label,
-        outputFormat: draft.outputFormat,
-        imageSize: draft.imageSize,
-        mainModelName: activeMainModelName,
-        imageModelName: activeImageModelName,
-        referenceVisionModelName: activeVisionModelName,
-        referenceImageMode: activeReferenceImageMode,
-        referenceImages: uploaded,
-        pipelineMode: draft.configurationMode == .advanced ? draft.pipelineMode : .plannerCritic,
-        retrievalSetting: draft.configurationMode == .advanced ? draft.retrievalSetting : .none,
-        manualReferenceIds: draft.configurationMode == .advanced ? draft.manualReferenceIds : [],
-        aspectRatio: draft.configurationMode == .advanced ? draft.aspectRatio : "16:9",
-        numCandidates: draft.configurationMode == .advanced ? draft.numCandidates : 1,
-        maxCriticRounds: draft.configurationMode == .advanced ? draft.maxCriticRounds : 1,
-        negativePrompt: draft.negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines),
-        modelRoutes: activeRoutes,
-        requiredRouteRoles: requiredRouteRoles
-      )
+      let payload = makeJobPayload(referenceImages: uploaded)
       let created = try await apiClient.createJob(apiBase: settings.apiBase, payload: payload)
       guard !created.id.isEmpty else { throw PaperBananaAPIError.server("后端没有返回任务 ID。") }
       jobs.track(jobID: created.id, status: created.status, localDraft: Job(id: created.id, status: created.status, payload: payload))
@@ -456,6 +448,35 @@ final class GenerationStore {
     } catch {
       submitError = formatUserFacingError(error)
     }
+  }
+
+  func makeJobPayload(referenceImages: [ReferenceImageAsset]) -> JobCreatePayload {
+    let configuration = effectiveSubmissionConfiguration
+    return JobCreatePayload(
+      configurationMode: draft.configurationMode,
+      provider: draft.provider,
+      apiKeys: scopedAPIKeys(),
+      taskName: draft.taskName,
+      methodContent: draft.methodContent.trimmingCharacters(in: .whitespacesAndNewlines),
+      caption: draft.caption.trimmingCharacters(in: .whitespacesAndNewlines),
+      infographicCategory: draft.selectedCategory.label,
+      outputFormat: draft.outputFormat,
+      imageSize: draft.imageSize,
+      mainModelName: activeMainModelName,
+      imageModelName: activeImageModelName,
+      referenceVisionModelName: activeVisionModelName,
+      referenceImageMode: activeReferenceImageMode,
+      referenceImages: referenceImages,
+      pipelineMode: configuration.pipelineMode,
+      retrievalSetting: configuration.retrievalSetting,
+      manualReferenceIds: configuration.manualReferenceIDs,
+      aspectRatio: configuration.aspectRatio,
+      numCandidates: configuration.numCandidates,
+      maxCriticRounds: configuration.maxCriticRounds,
+      negativePrompt: draft.negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines),
+      modelRoutes: activeRoutes,
+      requiredRouteRoles: requiredRouteRoles
+    )
   }
 
   /// 删除账号时的本机清理：抹掉草稿、当前选中 API key，并清空所有 provider 的 Keychain key。
