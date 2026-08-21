@@ -175,11 +175,11 @@ node -e 'const p=require("./apps/miniprogram/package.json"); if(p.license!=="Apa
 rg -n '开源声明 / Open Source Statement|dwzhu-pku/PaperBanana|fully open-source|不改变 Apache License 2.0|not an additional license restriction' README.md
 test -f LICENSE
 rg -n '"license"\s*:\s*"UNLICENSED"' --glob 'package.json' --glob '!node_modules/**' .
-git diff --check -- README.md package.json
+git diff --check -- README.md package.json apps/miniprogram/package.json
 git diff --name-only -- README.md package.json apps/miniprogram/package.json pnpm-lock.yaml
 ```
 
-Expected: Node prints `Apache-2.0` for both manifests; all five README concepts are found; `LICENSE` exists; no explicit `UNLICENSED` manifest remains; diff checks have no errors; `pnpm-lock.yaml` is not listed as changed.
+Expected: Node prints `Apache-2.0` for both manifests; all five README concepts are found; `LICENSE` exists; no explicit `UNLICENSED` manifest remains; diff checks have no errors; the scoped diff list includes `README.md`, `package.json`, and `apps/miniprogram/package.json` while `pnpm-lock.yaml` is not listed as changed.
 
 - [ ] **Step 6: Commit the public repository identity**
 
