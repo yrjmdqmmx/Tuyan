@@ -17,7 +17,7 @@ We are likewise committed to building a fully open-source academic illustration 
 ## Apps
 
 - `apps/web/`：PaperBanana Web 工作台，基于 React + Vite，已完成迁移。
-- `apps/ios/`：PaperBanana 原生 iOS 客户端，基于 SwiftUI，默认连接 Sealos 后端网关。
+- `apps/ios/`：PaperBanana 原生 iOS 客户端，基于 SwiftUI，默认连接香港生产 API 网关。
 - `apps/macos/`：PaperBanana 原生 macOS 客户端，基于 SwiftUI，默认连接 Sealos 后端网关。
 - `apps/desktop/`：Windows Electron 桌面端，加载线上 PaperBanana Web，并通过 GitHub Releases 发布安装包。
 - `apps/windows/`：Windows 原生客户端，基于 WinUI 3 + Windows App SDK + C#。
@@ -153,6 +153,10 @@ xcodebuild -project apps/ios/paperbanana.xcodeproj -scheme PaperBanana -destinat
 xcodebuild -project apps/ios/paperbanana.xcodeproj -scheme PaperBanana -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5),OS=26.5' build
 ```
 
+API、身份认证、任务数据库和对象存储主服务位于香港。根据用户选择的模型渠道和服务端路由策略，OpenAI、Gemini、OpenRouter 及策略指定的 provider 流量可能经固定新加坡出口；火山方舟（Ark）为中国区服务，模型、比例和分辨率能力由动态 registry 权威声明。
+
+iOS 将用户自带 API Key 持久保存在设备 Keychain。用户发起请求时，Key 会作为短生命周期字段经香港网关/核心转发给所选 provider；服务端不持久化、记录或回显 Key。项目不集成广告或分析 SDK，也不进行跨 App / 跨网站追踪。详情见线上[隐私政策](https://www.paperbanana.asia/privacy-policy.html)和[服务条款](https://www.paperbanana.asia/terms-of-service.html)。
+
 ## macOS Native Client
 
 macOS 原生客户端工程位于：
@@ -248,6 +252,6 @@ This project's source code is released under the same [Apache License 2.0](./LIC
 
 ## Notes
 
-- Web 前端使用 BYOK 模式，用户自行填写模型 API Key。
-- 登录和任务记录通过 Sealos 上的 auth-gateway / Laf 后端提供。
+- Web 前端使用 BYOK 模式，用户自行填写模型 API Key；Key 在用户请求期间短暂经服务转发，不持久化、记录或回显。
+- 登录和任务记录通过香港生产 auth-gateway / Core 服务提供；模型能力以动态 registry 为准。
 - 小程序需要在微信公众平台配置合法域名：request 填 `https://yifbnnzrwmxn.sealoshzh.site` 与 `https://objectstorageapi.hzh.sealos.run`（参考图直传），downloadFile 填 `https://objectstorageapi.hzh.sealos.run`（保存相册 / SVG 下载），DNS 预解析/预连接可填网关域名。

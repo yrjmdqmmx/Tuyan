@@ -1,15 +1,7 @@
-> **⚠️ 初稿模板声明 / DRAFT TEMPLATE NOTICE**
->
-> 本文件为 PaperBanana iOS 应用服务条款的**初稿模板**，仅供产品团队参考与填写占位符之用。**正式发布前，必须经具备资质的法律专业人士审阅并定稿**。本文不构成法律意见。
->
-> This document is a **draft template** of the Terms of Service for the PaperBanana iOS app, provided for the product team's reference and placeholder completion only. **Before public release, it MUST be reviewed and finalized by a qualified legal professional.** This document does not constitute legal advice.
-
----
-
 # 服务条款 / Terms of Service
 
-**生效日期 / Effective Date:** `2026-06-20`
-**最近更新 / Last Updated:** `2026-06-20`
+**生效日期 / Effective Date:** `2026-08-21`
+**最近更新 / Last Updated:** `2026-08-21`
 **运营方 / Operator:** `赵鼎熠 / Zhao Dingyi`
 **联系邮箱 / Contact Email:** `yrjmdqmmx@gmail.com`
 **官方网站 / Website:** https://www.paperbanana.asia/
@@ -30,8 +22,8 @@
 
 本应用采用 **BYOK（自带密钥，Bring Your Own Key）** 模式：
 
-- 您需自行向第三方大模型平台（如阿里云百炼、OpenRouter、Google Gemini、OpenAI）注册并获取 API Key，并自行填入本应用。
-- 您的 API Key 仅存储在您设备本机，发起生成时随请求经我们的网关转发给您所选平台用于模型调用；我们不存储您的 API Key。
+- 您需自行向阿里云百炼、OpenRouter、Google Gemini、OpenAI 或火山方舟（Ark，中国区）等动态 registry 支持的平台获取 API Key，并自行填入本应用。
+- iOS 将 API Key 持久保存在设备 Keychain。发起生成时，Key 会作为短生命周期请求字段经香港网关/核心转发至所选平台；我们不持久化、记录或回显 Key，也不写入任务数据库或应用日志。按所选渠道和路由策略，OpenAI、Gemini、OpenRouter 及策略指定 provider 流量可能经固定新加坡出口。
 - **您对自己 API Key 的安全保管，以及该 Key 在第三方平台产生的全部用量、费用、配额与计费后果负全部责任。** 我们不对第三方平台的可用性、定价、计费、内容政策或服务质量负责。
 - 您与第三方平台之间的关系受该平台各自的服务条款约束，您须自行遵守。
 
@@ -122,8 +114,8 @@ The App is an AI tool for generating academic figures and diagrams for research 
 
 The App uses a **BYOK (Bring Your Own Key)** model:
 
-- You must register with and obtain an API Key from a third-party large-model platform (such as Alibaba Cloud Bailian, OpenRouter, Google Gemini, or OpenAI) and enter it into the App yourself.
-- Your API Key is stored only on your device. When you start a generation job, it is forwarded with the request through our gateway to the platform you select for the model call; we do not store your API Key.
+- You must obtain an API Key from a dynamically registry-supported platform such as Alibaba Cloud Bailian, OpenRouter, Google Gemini, OpenAI, or Volcano Engine Ark (China region), and enter it yourself.
+- On iOS, API Keys are persisted in the device Keychain. When you start a job, the Key is an ephemeral request field forwarded through the Hong Kong gateway/core service to the platform you select; we do not persist, log, or echo it. Depending on provider and routing policy, OpenAI, Gemini, OpenRouter, and policy-designated provider traffic may use a fixed Singapore egress.
 - **You are solely responsible for the safekeeping of your API Key and for all usage, charges, quotas, and billing consequences it incurs on the third-party platform.** We are not responsible for the availability, pricing, billing, content policies, or service quality of third-party platforms.
 - Your relationship with each third-party platform is governed by that platform's own terms, which you must comply with.
 
@@ -185,7 +177,7 @@ We may revise these Terms from time to time. For material changes, we will notif
 
 ### 13. Governing Law and Dispute Resolution
 
-The formation, validity, interpretation, and disputes arising from these Terms are governed by `[fill in governing law, e.g., the laws of the People's Republic of China (excluding conflict-of-law rules)]`. Disputes arising from these Terms shall first be resolved amicably; failing that, they shall be submitted to `[fill in competent court or arbitration body]`.
+The formation, validity, interpretation, and disputes arising from these Terms are governed by the laws of the People's Republic of China (excluding conflict-of-law rules). Disputes arising from these Terms shall first be resolved amicably; failing that, they shall be submitted to a competent court at the Operator's domicile.
 
 ### 14. Miscellaneous
 

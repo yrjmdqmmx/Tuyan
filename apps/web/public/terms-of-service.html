@@ -92,8 +92,8 @@
   <h2>3. BYOK（自带密钥）与第三方平台</h2>
   <p>本应用采用 <strong>BYOK（自带密钥，Bring Your Own Key）</strong> 模式：</p>
   <ul>
-    <li>您需自行向第三方大模型平台（如阿里云百炼、OpenRouter、Google Gemini、OpenAI）注册并获取 API Key，并自行填入本应用。</li>
-    <li>您的 API Key 由客户端保存在本地内存或平台安全存储中。发起生成时，API Key 会经我们的网关和任务服务在<strong>处理过程中暂存于内存</strong>，并转发给您所选平台；我们<strong>不持久化</strong> API Key，也不会将其写入任务数据库或应用日志。</li>
+    <li>您需自行向阿里云百炼、OpenRouter、Google Gemini、OpenAI 或火山方舟（Ark，中国区）等动态 registry 支持的平台获取 API Key，并自行填入本应用。</li>
+    <li>API Key 在客户端安全存储或内存中保存；发起生成时作为<strong>短生命周期</strong>请求字段经香港网关和任务核心转发给所选平台。我们<strong>不持久化、记录或回显</strong> API Key，也不会将其写入任务数据库或应用日志；按渠道和路由策略，相关流量可能经固定新加坡出口。</li>
     <li><strong>您对自己 API Key 的安全保管，以及该 Key 在第三方平台产生的全部用量、费用、配额与计费后果负全部责任。</strong> 我们不对第三方平台的可用性、定价、计费、内容政策或服务质量负责。</li>
     <li>您与第三方平台之间的关系受该平台各自的服务条款约束，您须自行遵守。</li>
   </ul>
@@ -184,8 +184,8 @@
   <h2>3. BYOK (Bring Your Own Key) and Third-Party Platforms</h2>
   <p>The App uses a <strong>BYOK (Bring Your Own Key)</strong> model:</p>
   <ul>
-    <li>You must register with and obtain an API Key from a third-party large-model platform (such as Alibaba Cloud Bailian, OpenRouter, Google Gemini, or OpenAI) and enter it into the App yourself.</li>
-    <li>Your API Key is kept by the client in local memory or platform secure storage. When you start a job, it passes through our gateway and job service <strong>in memory during processing</strong> and is forwarded to the selected platform. We <strong>do not persist</strong> it in the job database or application logs.</li>
+    <li>You must obtain an API Key from a dynamically registry-supported platform such as Alibaba Cloud Bailian, OpenRouter, Google Gemini, OpenAI, or Volcano Engine Ark (China region).</li>
+    <li>Your API Key is kept by the client in local memory or platform secure storage. When you start a job, it is an <strong>ephemeral</strong> request field forwarded through the Hong Kong gateway and job core to the selected platform. We <strong>do not persist, log, or echo</strong> it; relevant traffic may use fixed Singapore egress according to provider and routing policy.</li>
     <li><strong>You are solely responsible for the safekeeping of your API Key and for all usage, charges, quotas, and billing consequences it incurs on the third-party platform.</strong> We are not responsible for the availability, pricing, billing, content policies, or service quality of third-party platforms.</li>
     <li>Your relationship with each third-party platform is governed by that platform's own terms, which you must comply with.</li>
   </ul>

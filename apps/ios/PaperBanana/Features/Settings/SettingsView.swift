@@ -10,6 +10,7 @@ struct SettingsView: View {
         VStack(spacing: Theme.Spacing.lg) {
           accountPanel
           feedbackPanel
+          legalAndDataPanel
           contactPanel
           aboutPanel
         }
@@ -235,6 +236,24 @@ struct SettingsView: View {
 
   // MARK: - ③ 联系作者
 
+  private var legalAndDataPanel: some View {
+    GlassPanel {
+      VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+        SectionHeader(title: "法律与数据", systemImage: "hand.raised")
+        Text("账号、任务记录与对象存储/API 主服务位于香港；按所选模型渠道与策略，OpenAI、Gemini、OpenRouter 等流量可能经固定新加坡出口。方舟为中国区服务。BYOK Key 持久保存在本机 Keychain，仅在你发起请求时作为短生命周期字段经香港网关/核心转发，服务端不会持久化、记录或回显。无广告、分析 SDK 或跨 App 追踪。")
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+        GuideResourceRow(resource: GuideResource(id: "privacy", title: "隐私政策", subtitle: "查看完整数据处理说明", systemImage: "hand.raised", url: PaperBananaLegal.privacyURL), embeddedInPanel: true, accessibilityIdentifier: "settings.privacy")
+        GuideResourceRow(resource: GuideResource(id: "terms", title: "服务条款", subtitle: "查看使用条款", systemImage: "doc.plaintext", url: PaperBananaLegal.termsURL), embeddedInPanel: true, accessibilityIdentifier: "settings.terms")
+        GuideResourceRow(resource: GuideResource(id: "website", title: "官方网站", subtitle: "在 Safari 中打开", systemImage: "safari", url: PaperBananaLegal.websiteURL), embeddedInPanel: true, accessibilityIdentifier: "settings.website")
+        GuideResourceRow(resource: GuideResource(id: "github", title: "GitHub", subtitle: "yrjmdqmmx/paperbanana-clients", systemImage: "chevron.left.forwardslash.chevron.right", url: PaperBananaLegal.githubURL), embeddedInPanel: true, accessibilityIdentifier: "settings.github")
+      }
+    }
+  }
+
+  // MARK: - ④ 联系作者
+
   private var contactPanel: some View {
     GlassPanel {
       VStack(alignment: .leading, spacing: Theme.Spacing.md) {
@@ -250,8 +269,10 @@ struct SettingsView: View {
           .buttonStyle(.plain)
           .accessibilityLabel("保存作者微信二维码")
           .accessibilityHint("打开系统分享面板，可保存图片")
+          .accessibilityIdentifier("settings.contact.qr")
         } else {
           authorQRCodeImage
+            .accessibilityIdentifier("settings.contact.qr")
         }
       }
     }
@@ -277,7 +298,7 @@ struct SettingsView: View {
     Bundle.main.url(forResource: "author-qr", withExtension: "jpg")
   }
 
-  // MARK: - ④ 关于
+  // MARK: - ⑤ 关于
 
   private var aboutPanel: some View {
     GlassPanel {

@@ -114,7 +114,7 @@
   <h3>2.6 关于您的第三方平台 API Key（重要）</h3>
   <ul>
     <li>本服务采用 <strong>BYOK（自带密钥，Bring Your Own Key）</strong> 模式。不同客户端会将 API Key 保存在其本地内存或系统安全存储中，具体能力取决于客户端平台。</li>
-    <li>在您发起生成任务时，该 API Key 会经 PaperBanana 网关和任务处理服务在内存中处理，并转发给您选择的第三方模型平台。我们<strong>不会持久化保存 API Key，也不会把它写入任务数据库或应用日志</strong>。</li>
+    <li>在您发起生成任务时，该 API Key 会作为<strong>短生命周期</strong>请求字段经 PaperBanana 香港网关和核心服务转发给您选择的第三方模型平台。我们<strong>不会持久化、记录或回显 API Key，也不会把它写入任务数据库或应用日志</strong>。</li>
     <li>请妥善保管您的 API Key，并对其安全及在第三方平台产生的用量与费用负责。</li>
   </ul>
 
@@ -135,11 +135,12 @@
     <li><strong>OpenRouter</strong> —— 受其隐私政策约束（OpenRouter 会进一步将请求路由给其聚合的上游模型提供方）。</li>
     <li><strong>Google Gemini</strong> —— Google 提供，受 Google 隐私政策约束。</li>
     <li><strong>OpenAI</strong> —— OpenAI 提供，受其隐私政策约束。</li>
+    <li><strong>火山方舟（Ark，中国区）</strong> —— 可用模型由动态服务端 registry 和账号权益决定。</li>
   </ul>
   <ul>
     <li><strong>您选择哪个平台，您的生成输入就会被传输给哪个平台并由其处理。</strong> 这些第三方对您数据的收集、使用、留存与跨境传输，受其各自的隐私政策与服务条款约束，超出本应用的控制范围。</li>
     <li>我们建议您在使用前阅读所选平台的隐私政策，并避免在生成输入中提交敏感、保密或受合规约束的内容。</li>
-    <li>OpenAI、Gemini 与 OpenRouter 请求会通过位于新加坡的受限模型出口节点建立不解密内容的 TLS CONNECT 通道；阿里云百炼与 OSS 不经过该出口。出口节点不保存 API Key、提示词、图片或完整 URL。</li>
+    <li>按渠道和路由策略，OpenAI、Gemini、OpenRouter 以及策略指定的 provider 流量可能通过位于新加坡的受限模型出口节点建立不解密内容的 TLS CONNECT 通道；阿里云百炼、方舟与 OSS 不因本说明而被宣称走该出口。出口节点不保存 API Key、提示词、图片或完整 URL。</li>
   </ul>
 
   <h2>5. 数据存储位置与留存期限</h2>
@@ -230,7 +231,7 @@
   <h3>2.6 About Your Third-Party Platform API Key (Important)</h3>
   <ul>
     <li>The Service uses a <strong>BYOK (Bring Your Own Key)</strong> model. Each client keeps API Keys in local memory or platform secure storage according to that client's capabilities.</li>
-    <li>When you start a generation job, the key is processed in memory by the PaperBanana gateway and job service and forwarded to the selected model platform. We <strong>do not persist API Keys in the job database or application logs</strong>.</li>
+    <li>When you start a generation job, the key is an <strong>ephemeral</strong> request field processed by the PaperBanana Hong Kong gateway and core service and forwarded to the selected model platform. We <strong>do not persist, log, or echo API Keys</strong>.</li>
     <li>Please keep your API Key secure. You are responsible for its safety and for any usage and charges it incurs on the third-party platform.</li>
   </ul>
 
@@ -251,11 +252,12 @@
     <li><strong>OpenRouter</strong> — governed by its privacy policy (OpenRouter further routes requests to its aggregated upstream model providers).</li>
     <li><strong>Google Gemini</strong> — provided by Google, governed by Google's privacy policy.</li>
     <li><strong>OpenAI</strong> — provided by OpenAI, governed by its privacy policy.</li>
+    <li><strong>Volcano Engine Ark (China region)</strong> — availability follows the dynamic server registry and account entitlement.</li>
   </ul>
   <ul>
     <li><strong>Whichever platform you select is the platform to which your generation inputs are transmitted and by which they are processed.</strong> Those third parties' practices are governed by their own policies and are beyond the App's control.</li>
     <li>We recommend reading the privacy policy of the platform you select and avoiding sensitive, confidential, or regulated content in your inputs.</li>
-    <li>OpenAI, Gemini, and OpenRouter requests establish a TLS CONNECT tunnel through a restricted provider-egress node in Singapore. The node does not decrypt content or retain API Keys, prompts, images, or full URLs. Alibaba Cloud Bailian and OSS traffic does not use this egress node.</li>
+    <li>Depending on the selected provider and routing policy, OpenAI, Gemini, OpenRouter, and policy-designated provider traffic may establish a TLS CONNECT tunnel through a restricted Singapore egress node. The node does not decrypt content or retain API Keys, prompts, images, or full URLs. Alibaba Cloud Bailian, Ark, and OSS are not represented as using that egress by this disclosure.</li>
   </ul>
 
   <h2>5. Where Data Is Stored and Retention</h2>

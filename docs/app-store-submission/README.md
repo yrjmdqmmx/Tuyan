@@ -1,8 +1,12 @@
 # PaperBanana 法律文档（隐私政策 / 服务条款）使用说明
 
-本目录包含 PaperBanana iOS app 上架 App Store 所需的隐私政策与服务条款**初稿**（中英双语），以及可直接发布的 HTML 版本。
+本目录包含 PaperBanana iOS 上架所需的中英双语隐私政策、服务条款、App 隐私申报和审核材料，以及可直接发布的 HTML 版本。
 
-> ⚠️ **重要：这些是初稿模板，不是最终法律文件。** 每份文档顶部都有醒目的免责声明。**正式上架前，必须由具备资质的法律专业人士审阅、补全占位符并定稿。** 本仓库内容不构成法律意见。
+## 内部发布闸门（不代表 App Review 状态）
+
+代码和 TestFlight 构建完成后，产品负责人必须亲自检查真实 UI 与实际使用流程。验收覆盖生成、精选/图库、精修、任务记录、设置、法律链接和账号删除；在该人工验收完成前，不提交 App Review。本文档及 `review-notes.md` 只是提交材料，不代表已提交或已进入审核。
+
+> ⚠️ **重要：发布前仍应由具备资质的法律专业人士审阅。** 本仓库内容不构成法律意见；实际法律、运营和审核要求以适用法律及 App Store Connect 当时页面为准。
 
 ---
 
@@ -40,9 +44,9 @@ HTML 文件自带样式、无外部依赖，托管到任意静态站点（或你
 
 ---
 
-## 三、发布拿到 URL
+## 三、发布 URL
 
-1. 替换完所有占位符，请法务/律师审阅定稿。
+1. 请法务/律师审阅当前政策与条款。
 2. 把 `privacy-policy.html` 和 `terms-of-service.html` 托管到一个公开可访问的地址，任选其一：
    - 现有官网 `paperbanana.asia` 下的子路径，例如 `https://www.paperbanana.asia/privacy` 和 `https://www.paperbanana.asia/terms`；
    - GitHub Pages / Cloudflare Pages / Vercel / Netlify 等静态托管；

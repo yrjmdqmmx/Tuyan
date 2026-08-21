@@ -71,17 +71,11 @@
 <body>
 <div class="wrap">
 
-  <div class="note">
-    <strong>⚠️ 初稿模板声明 / DRAFT TEMPLATE NOTICE</strong><br>
-    本文件为 PaperBanana iOS 应用隐私政策的<strong>初稿模板</strong>。正式发布前，必须经具备资质的法律专业人士审阅并定稿；本文不构成法律意见。<br>
-    This is a <strong>draft template</strong> of the PaperBanana iOS Privacy Policy. It must be reviewed and finalized by a qualified legal professional before release, and does not constitute legal advice.
-  </div>
-
   <h1>隐私政策 / Privacy Policy</h1>
 
   <div class="meta">
-    <p><strong>生效日期 / Effective Date:</strong> <span class="ph">2026-06-20</span></p>
-    <p><strong>最近更新 / Last Updated:</strong> <span class="ph">2026-06-20</span></p>
+    <p><strong>生效日期 / Effective Date:</strong> <span class="ph">2026-08-21</span></p>
+    <p><strong>最近更新 / Last Updated:</strong> <span class="ph">2026-08-21</span></p>
     <p><strong>运营方 / Operator:</strong> <span class="ph">赵鼎熠 / Zhao Dingyi</span></p>
     <p><strong>联系邮箱 / Contact Email:</strong> <span class="ph">yrjmdqmmx@gmail.com</span></p>
     <p><strong>官方网站 / Website:</strong> <a href="https://www.paperbanana.asia/">https://www.paperbanana.asia/</a></p>
@@ -114,8 +108,8 @@
   </ul>
   <h3>2.5 关于您的第三方平台 API Key（重要）</h3>
   <ul>
-    <li>本应用采用 <strong>BYOK（自带密钥，Bring Your Own Key）</strong> 模式。您自行填入的第三方大模型平台 API Key <strong>仅存储在您设备本机的 iOS Keychain 中（仅限本设备、不随 iCloud 同步），不会上传到 PaperBanana 服务器，也不会被运营方存储</strong>。</li>
-    <li>在您发起生成任务时，该 API Key 会随请求经我们的网关<strong>转发</strong>给您所选择的第三方大模型平台，仅用于完成该次模型调用。我们不持久化保存您的 API Key。</li>
+    <li>iOS 客户端将 BYOK API Key 持久保存在设备 Keychain（不随 iCloud 同步）。</li>
+    <li>在您发起生成任务时，API Key 会作为<strong>短生命周期</strong>请求字段经香港网关和核心服务转发给所选平台；我们不持久化、记录或回显 API Key。</li>
     <li>请妥善保管您的 API Key，并对其安全及在第三方平台产生的用量与费用负责。</li>
   </ul>
 
@@ -136,19 +130,20 @@
     <li><strong>OpenRouter</strong> —— 受其隐私政策约束（OpenRouter 会进一步将请求路由给其聚合的上游模型提供方）。</li>
     <li><strong>Google Gemini</strong> —— Google 提供，受 Google 隐私政策约束。</li>
     <li><strong>OpenAI</strong> —— OpenAI 提供，受其隐私政策约束。</li>
+    <li><strong>火山方舟（Ark，中国区）</strong> —— 可用模型以动态服务端 registry 与您的账号权益为准。</li>
   </ul>
   <ul>
     <li><strong>您选择哪个平台，您的生成输入就会被传输给哪个平台并由其处理。</strong> 这些第三方对您数据的收集、使用、留存与跨境传输，受其各自的隐私政策与服务条款约束，超出本应用的控制范围。</li>
     <li>我们建议您在使用前阅读所选平台的隐私政策，并避免在生成输入中提交敏感、保密或受合规约束的内容。</li>
-    <li>我们仅作为传输通道转发请求，不对第三方平台的数据处理行为承担责任。</li>
+    <li>API/Auth/数据库/OSS 主服务位于香港；按渠道和路由策略，OpenAI、Gemini、OpenRouter 以及策略指定的 provider 流量可能经固定新加坡出口。</li>
   </ul>
 
   <h2>5. 数据存储位置与留存期限</h2>
   <ul>
-    <li>您的账号信息与任务记录存储于运营方托管的后端数据库（基于 Sealos 托管的 MongoDB，服务器位于 <span class="ph">中国杭州（Sealos 云）</span>）。</li>
+    <li>您的账号信息、任务记录与结果对象存储于香港主服务的数据库与 OSS。</li>
     <li>我们仅在为实现本政策所述目的所必需的期间内保留您的信息。当您删除账号后，相关数据将按第 7 条所述被永久删除。</li>
     <li>本地缓存随您卸载本应用或在应用内清理而被清除。</li>
-    <li>跨境数据传输：当您选择的第三方大模型平台服务器位于其他国家/地区时，您的生成输入将发生跨境传输。<span class="ph">[如适用，请补充跨境传输的合规依据与说明]</span></li>
+    <li>当您选择的第三方模型平台或路由使用新加坡出口时，生成输入和短生命周期请求字段可能发生相应的跨境或跨地区传输；第三方对其接收数据的处理受其自身政策约束。</li>
   </ul>
 
   <h2>6. 您的权利</h2>
@@ -176,7 +171,7 @@
   <p><strong>此操作不可恢复。</strong> 删除完成后，服务端将清除您的会话并真删账号，本应用将自动退回未登录状态。该入口呼应 Apple App Store 审核指南 5.1.1(v) 对应用内账号删除的要求。</p>
 
   <h2>8. 数据安全</h2>
-  <p>我们采取合理的技术与管理措施保护您的信息，包括：通过 HTTPS 加密传输数据、密码以哈希形式存储、API Key 仅存于设备本机 Keychain 而不上传服务器、会话凭据通过安全 Cookie 管理等。但请注意，没有任何一种传输或存储方式能保证绝对安全，您理解并接受使用本服务存在的固有风险。</p>
+  <p>我们采取合理的技术与管理措施，包括 HTTPS、密码哈希、设备 Keychain 持久化、API Key 的短生命周期转发和服务端不持久化/不记录/不回显，以及安全 Cookie。没有任何传输或存储方式能保证绝对安全。</p>
 
   <h2>9. 儿童隐私</h2>
   <p>本应用面向科研与学术用户，<strong>不面向 13 周岁以下（或您所在司法辖区规定的相应年龄以下）的儿童</strong>。我们不会在知情的情况下收集儿童的个人信息。若我们发现误收了儿童信息，将尽快删除。如您认为我们可能持有儿童信息，请通过第 12 条联系我们。</p>
@@ -224,8 +219,8 @@
   </ul>
   <h3>2.5 About Your Third-Party Platform API Key (Important)</h3>
   <ul>
-    <li>The App uses a <strong>BYOK (Bring Your Own Key)</strong> model. The API Key you enter is <strong>stored ONLY in your device's local iOS Keychain (this device only; not synced via iCloud). It is NOT uploaded to PaperBanana servers and is NOT stored by the Operator.</strong></li>
-    <li>When you start a generation job, your API Key is <strong>forwarded</strong> with the request through our gateway to the third-party platform you selected, solely to complete that model call. We do not persist your API Key.</li>
+    <li>On iOS, BYOK API Keys are persisted in the device Keychain (not synced through iCloud).</li>
+    <li>When you start a generation job, the API Key is an <strong>ephemeral</strong> request field forwarded through the Hong Kong gateway and core service to the selected platform. We do not persist, log, or echo it.</li>
     <li>Please keep your API Key secure. You are responsible for its safety and for any usage and charges it incurs on the third-party platform.</li>
   </ul>
 
@@ -246,19 +241,20 @@
     <li><strong>OpenRouter</strong> — governed by its privacy policy (OpenRouter further routes requests to its aggregated upstream model providers).</li>
     <li><strong>Google Gemini</strong> — provided by Google, governed by Google's privacy policy.</li>
     <li><strong>OpenAI</strong> — provided by OpenAI, governed by its privacy policy.</li>
+    <li><strong>Volcano Engine Ark (China region)</strong> — availability follows the dynamic server registry and account entitlement.</li>
   </ul>
   <ul>
     <li><strong>Whichever platform you select is the platform to which your generation inputs are transmitted and by which they are processed.</strong> Those third parties' practices are governed by their own policies and are beyond the App's control.</li>
     <li>We recommend reading the privacy policy of the platform you select and avoiding sensitive, confidential, or regulated content in your inputs.</li>
-    <li>We act only as a transmission channel and are not responsible for the data-processing practices of third-party platforms.</li>
+    <li>The primary API, authentication, database, and object-storage service is in Hong Kong. OpenAI, Gemini, OpenRouter, and policy-designated provider traffic may use a fixed Singapore egress.</li>
   </ul>
 
   <h2>5. Where Data Is Stored and Retention</h2>
   <ul>
-    <li>Your account information and job records are stored in a backend database hosted by the Operator (MongoDB hosted on Sealos, servers located in <span class="ph">[fill in region, e.g., Mainland China]</span>).</li>
+    <li>Your account information, job records, and output objects are stored by the Hong Kong primary service, database, and object storage.</li>
     <li>We retain your information only as long as necessary for the purposes described here. When you delete your account, data is permanently deleted as described in Section 7.</li>
     <li>Local caches are removed when you uninstall the App or clear them in-app.</li>
-    <li>Cross-border transfers: where the platform you select operates servers in another country/region, your inputs will be transferred across borders. <span class="ph">[If applicable, add the legal basis and details.]</span></li>
+    <li>Where a selected third-party platform or Singapore egress is used, generation inputs and ephemeral request fields may be transferred across the relevant regions; third-party handling is governed by that provider's policies.</li>
   </ul>
 
   <h2>6. Your Rights</h2>
@@ -286,7 +282,7 @@
   <p><strong>This action cannot be undone.</strong> Once complete, the server clears your session and deletes your account, and the App returns to a signed-out state. This corresponds to Apple App Store Review Guideline 5.1.1(v).</p>
 
   <h2>8. Data Security</h2>
-  <p>We use reasonable technical and organizational measures, including HTTPS encryption in transit, hashed password storage, keeping API Keys only in the device's local Keychain (never uploaded), and secure session cookies. However, no method of transmission or storage is completely secure, and you accept the inherent risks of using the service.</p>
+  <p>We use reasonable technical and organizational measures, including HTTPS, hashed passwords, device-Keychain persistence, ephemeral API-Key forwarding without server persistence/logging/echoing, and secure session cookies. No method of transmission or storage is completely secure.</p>
 
   <h2>9. Children's Privacy</h2>
   <p>The App is intended for research and academic users and is <strong>not directed to children under 13</strong> (or the applicable age in your jurisdiction). We do not knowingly collect personal information from children and will delete any such information promptly if discovered. Contact us via Section 12 if you have concerns.</p>
