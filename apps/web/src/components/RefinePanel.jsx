@@ -1,7 +1,9 @@
 import { AlertTriangle, ImagePlus, Loader2, Send, Settings2 } from 'lucide-react';
 import { formatErrorMessage } from '../utils';
 import JobStatus from './JobStatus';
+import AspectRatioPicker from './AspectRatioPicker';
 import Select from './Select';
+import { buildAspectRatioOptions } from '../lib/aspectRatios';
 
 export default function RefinePanel({
   sourceUrl,
@@ -11,6 +13,7 @@ export default function RefinePanel({
   imageSize,
   resolutionOptions = [],
   aspectRatio,
+  aspectRatioOptions,
   settingsSummary,
   canSubmit,
   isSubmitting,
@@ -23,6 +26,7 @@ export default function RefinePanel({
   onOpenSettings,
   onSubmit,
 }) {
+  const ratioOptions = aspectRatioOptions || buildAspectRatioOptions({ capabilities: {}, capabilityField: 'refineAspectRatios', modelLabel: '当前图像模型' });
   return (
     <section className="refine-panel">
       <form className="refine-form" onSubmit={onSubmit}>
@@ -54,13 +58,8 @@ export default function RefinePanel({
           <span>精修指令</span>
           <textarea value={instruction} onChange={(event) => onInstructionChange(event.target.value)} rows={8} placeholder="例如：放大标签、减少装饰、让流程箭头更清晰。" />
         </label>
+        <AspectRatioPicker label="目标比例" value={aspectRatio} onChange={onAspectRatioChange} options={ratioOptions} />
         <div className="settings-grid">
-          <Select label="目标比例" value={aspectRatio} onChange={onAspectRatioChange} options={[
-            ['16:9', '16:9'],
-            ['21:9', '21:9'],
-            ['3:2', '3:2'],
-            ['1:1', '1:1'],
-          ]} />
           {resolutionOptions.length ? (
             <Select label="清晰度" value={imageSize} onChange={onImageSizeChange} options={resolutionOptions} />
           ) : (

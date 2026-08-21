@@ -26,5 +26,6 @@ test('polling stops when a job reaches a terminal state', () => {
 test('input limits are bounded for cost protection', () => {
   assert.equal(INPUT_LIMITS.methodContent, 12000)
   assert.equal(INPUT_LIMITS.caption, 1000)
+  assert.equal(INPUT_LIMITS.negativePrompt, 1000)
   assert.equal(INPUT_LIMITS.maxCriticRounds, 2)
 })

@@ -8,5 +8,7 @@ assert.match(source, /methodContent\.trim\(\)\.length > 12000/)
 assert.match(source, /methodContent exceeds 12000 characters/)
 assert.match(source, /caption\.trim\(\)\.length > 1000/)
 assert.match(source, /caption exceeds 1000 characters/)
+assert.match(source, /negativePrompt[^\n]*length > 1000/)
+assert.match(source, /negativePrompt exceeds 1000 characters/)
 
 console.log('create-job input limits policy ok')

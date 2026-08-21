@@ -111,7 +111,7 @@ afterEach(() => {
 
 test('generation settings drawer never steals focus after the user enters a credential field', async () => {
   const { user } = await renderReadyApp()
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   const keyInput = screen.getByLabelText('阿里百炼 接入密钥')
   keyInput.focus()
   assert.equal(document.activeElement === keyInput, true)
@@ -121,7 +121,7 @@ test('generation settings drawer never steals focus after the user enters a cred
 
 test('simple mode uses one access channel default routes and sends only its reachable key', async () => {
   const { requests, user } = await renderReadyApp()
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   const modeGroup = screen.getByRole('group', { name: '使用模式' })
   assert.equal(modeGroup.querySelector('button[aria-pressed="true"]')?.textContent.includes('普通模式'), true)
   const providerGroup = screen.getByRole('group', { name: 'API 接入渠道' })
@@ -147,7 +147,7 @@ test('simple mode uses one access channel default routes and sends only its reac
 
 test('advanced mode selects mixed provider routes and deduplicates involved credentials', async () => {
   const { requests, user } = await renderReadyApp()
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.click(screen.getByRole('button', { name: /专业模式/ }))
 
   await user.click(screen.getByRole('button', { name: '主模型' }))
@@ -175,7 +175,7 @@ test('advanced mode selects mixed provider routes and deduplicates involved cred
 
 test('Ark never probes on key input, requires paid confirmation, gates submit, and clears verification when key changes', async () => {
   const { requests, user } = await renderReadyApp()
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.click(screen.getByRole('button', { name: '火山方舟' }))
   await user.type(screen.getByLabelText('火山方舟 接入密钥'), 'ark-key')
   assert.equal(requests.some((request) => request.body?.action === 'providerAccountCatalog'), false)
@@ -223,7 +223,7 @@ test('Ark discards an in-flight verification response after the key changes', as
   render(React.createElement(App))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
 
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.click(screen.getByRole('button', { name: '火山方舟' }))
   const keyInput = screen.getByLabelText('火山方舟 接入密钥')
   await user.type(keyInput, 'first-key')
@@ -253,7 +253,7 @@ test('Ark stale completion releases its own busy state after generation switches
   render(React.createElement(App))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
 
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.click(screen.getByRole('button', { name: '火山方舟' }))
   await user.type(screen.getByLabelText('火山方舟 接入密钥'), 'context-key')
   await user.click(screen.getByRole('button', { name: '验证所选模型' }))
@@ -279,7 +279,7 @@ test('Ark stale completion releases its own busy state after generation switches
   assert.equal(screen.queryAllByText('已验证').length, 0)
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '生成候选图' }))
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   assert.equal(screen.queryAllByText('已验证').length, 0, 'stale generation probes must not be restored after returning from refine')
 })
 
@@ -294,7 +294,7 @@ test('an older Ark completion cannot clear the busy state owned by a newer reque
   render(React.createElement(App))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
 
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.click(screen.getByRole('button', { name: '火山方舟' }))
   const keyInput = screen.getByLabelText('火山方舟 接入密钥')
   await user.type(keyInput, 'first-key')
@@ -322,7 +322,7 @@ test('SVG generation rejects a disabled image route even though image execution 
   image.selectable = false
   image.disabledReason = '图像模型已停用'
   const { requests, user } = await renderReadyApp(invalidRegistry)
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
   await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
   await user.click(submitButton())
@@ -334,7 +334,7 @@ test('SVG generation rejects a disabled image route even though image execution 
 test('legacy registry keeps simple fallback without explicit routes', async () => {
   const legacyRegistry = { ...registryV1, routeContractVersion: 0, supportsModelRoutes: false }
   const { requests, user } = await renderReadyApp(legacyRegistry)
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'legacy-key')
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
@@ -360,7 +360,7 @@ test('refine tab independently shows route summary and opens shared settings foc
 
 test('refine resolution choices use refine metadata while generation keeps its separate resolution metadata', async () => {
   const { user } = await renderReadyApp()
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   assert.deepEqual([...screen.getByLabelText('输出清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 
@@ -417,7 +417,7 @@ test('switching from a 4K refine model to a 2K-only model normalizes before rend
       stages: [],
     }),
   })
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(submitButton())
@@ -452,12 +452,12 @@ test('opening refine settings preserves legacy simple routing instead of forcing
 
 test('refine model selection stays PNG-capable after the generation output was changed to SVG', async () => {
   const { user } = await renderReadyApp()
-  await user.click(screen.getByRole('button', { name: '生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '精修图片' }))
   await user.selectOptions(await screen.findByLabelText('清晰度'), '1K')
-  await user.selectOptions(screen.getByLabelText('目标比例'), '1:1')
+  await user.click(screen.getByRole('button', { name: '目标比例 1:1' }))
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
   assert.equal(screen.queryByLabelText('导出格式'), null)
   assert.equal(screen.queryByLabelText('输出清晰度'), null)
@@ -468,5 +468,5 @@ test('refine model selection stays PNG-capable after the generation output was c
   assert.ok([...modelBrowser.querySelectorAll('button')].some((button) => button.textContent.includes('Wan Image')))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   assert.equal(screen.getByLabelText('清晰度').value, '1K')
-  assert.equal(screen.getByLabelText('目标比例').value, '1:1')
+  assert.equal(screen.getByRole('button', { name: '目标比例 1:1' }).getAttribute('aria-pressed'), 'true')
 })

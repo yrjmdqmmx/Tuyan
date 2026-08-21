@@ -19,10 +19,10 @@ test('generation settings drawer stays mounted and supports Escape, backdrop, cl
   assert.doesNotMatch(source, /if \(!open\) return null/u)
 })
 
-test('generation canvas has a settings toolbar and keeps refine as a top-level tab', () => {
+test('generation canvas has a prominent settings summary and keeps refine as a top-level tab', () => {
   const source = readSource('../src/App.jsx')
-  assert.match(source, />生成设置</u)
-  assert.match(source, /generation-config-summary/u)
+  assert.match(source, />打开完整设置</u)
+  assert.match(source, /generation-settings-summary/u)
   assert.match(source, /activeTab === 'refine'/u)
   assert.match(source, />精修图片</u)
 })

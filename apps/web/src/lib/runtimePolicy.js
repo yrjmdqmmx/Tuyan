@@ -1,6 +1,7 @@
 export const INPUT_LIMITS = Object.freeze({
   methodContent: 12000,
   caption: 1000,
+  negativePrompt: 1000,
   maxCriticRounds: 2,
 })
 
