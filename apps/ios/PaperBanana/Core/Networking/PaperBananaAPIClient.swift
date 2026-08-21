@@ -137,6 +137,9 @@ final class PaperBananaAPIClient {
       return ["role": role.rawValue, "modelId": route.modelId]
     }
     guard probes.count <= 3 else { throw PaperBananaAPIError.server("Ark 探测最多支持 3 条路线。") }
+    if probes.contains(where: { $0["role"] == ModelRole.image.rawValue }), !confirmPaidImageProbe {
+      throw PaperBananaAPIError.server("图像路线探测可能产生费用，请先明确确认付费探测。")
+    }
     return try await requestJSON(
       try lafEndpoint(apiBase: apiBase),
       method: "POST",

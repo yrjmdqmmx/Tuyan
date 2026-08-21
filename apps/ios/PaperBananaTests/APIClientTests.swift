@@ -299,6 +299,26 @@ final class APIClientTests: XCTestCase {
       confirmPaidImageProbe: true
     )
   }
+
+  func testArkProbeRejectsImageRouteWithoutExplicitPaidConfirmation() async {
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+    do {
+      _ = try await client.providerAccountCatalog(
+        apiBase: "https://gateway.example",
+        arkKey: "ark-key",
+        routes: ModelRoutes(
+          main: ModelRoute(accessProvider: .ark, modelId: "main"),
+          image: ModelRoute(accessProvider: .ark, modelId: "image"),
+          vision: ModelRoute(accessProvider: .ark, modelId: "vision")
+        ),
+        requiredRoles: [.image],
+        confirmPaidImageProbe: false
+      )
+      XCTFail("Expected local paid-image confirmation rejection")
+    } catch {
+      XCTAssertTrue(formatUserFacingError(error).contains("付费"))
+    }
+  }
 }
 
 private final class URLProtocolStub: URLProtocol {

@@ -11,6 +11,8 @@ final class GenerationStore {
 
   var isSubmitting = false
   var submitError = ""
+  var arkProbeStatus = ""
+  var arkProbeLoading = false
 
   var referenceLibrary: [ReferenceLibraryItem] = []
   var referenceLibraryError = ""
@@ -118,6 +120,24 @@ final class GenerationStore {
     return registry.defaultRoutes(for: draft.provider)
   }
 
+  var liveProviders: [ProviderID] { registryStore.registry?.orderedProviders ?? [] }
+
+  func models(for role: ModelRole, provider: ProviderID) -> [RegistryModel] {
+    registryStore.registry?.models(for: provider, role: role) ?? []
+  }
+
+  func route(for role: ModelRole) -> ModelRoute? { activeRoutes?[role] }
+
+  var generationResolutions: [ImageSize] {
+    guard let route = activeRoutes?.image else { return [] }
+    return registryStore.registry?.generationResolutions(for: route) ?? []
+  }
+
+  var generationAspectRatios: [String] {
+    guard let route = activeRoutes?.image else { return [] }
+    return registryStore.registry?.generationAspectRatios(for: route) ?? []
+  }
+
   private var requiredRouteRoles: [ModelRole] {
     guard let routes = activeRoutes else { return [] }
     var roles: [ModelRole] = [.main]
@@ -178,6 +198,38 @@ final class GenerationStore {
     alignReferenceImageModeWithActiveMainModel()
     ensureSupportedImageSize()
     loadSelectedProviderKey()
+  }
+
+  /// Professional mode changes one route only; its model resets to that
+  /// provider's authoritative default for the same role.
+  func selectProvider(_ provider: ProviderID, for role: ModelRole) {
+    guard let registry = registryStore.registry,
+          let defaults = registry.defaultRoutes(for: provider),
+          let current = draft.modelRoutes ?? registry.defaultRoutes(for: draft.provider),
+          let replacement = defaults[role] else { return }
+    switch role {
+    case .main: draft.modelRoutes = ModelRoutes(main: replacement, image: current.image, vision: current.vision)
+    case .image: draft.modelRoutes = ModelRoutes(main: current.main, image: replacement, vision: current.vision)
+    case .vision: draft.modelRoutes = ModelRoutes(main: current.main, image: current.image, vision: replacement)
+    default: return
+    }
+    draft.normalize(with: registry)
+    ensureSupportedImageSize()
+  }
+
+  func selectModel(_ model: RegistryModel, for role: ModelRole) {
+    guard let current = activeRoutes else { return }
+    let replacement = ModelRoute(accessProvider: current[role]?.accessProvider ?? draft.provider, modelId: model.id)
+    switch role {
+    case .main: draft.modelRoutes = ModelRoutes(main: replacement, image: current.image, vision: current.vision)
+    case .image: draft.modelRoutes = ModelRoutes(main: current.main, image: replacement, vision: current.vision)
+    case .vision: draft.modelRoutes = ModelRoutes(main: current.main, image: current.image, vision: replacement)
+    default: return
+    }
+    guard let registry = registryStore.registry else { return }
+    draft.normalize(with: registry)
+    alignReferenceImageModeWithActiveMainModel()
+    ensureSupportedImageSize()
   }
 
   func selectMainModel(_ modelName: String) {
@@ -302,6 +354,31 @@ final class GenerationStore {
       referenceLibrary = try await apiClient.referenceLibrary(apiBase: settings.apiBase, taskName: draft.taskName, limit: Self.referenceLibraryLimit)
     } catch {
       referenceLibraryError = formatUserFacingError(error)
+    }
+  }
+
+  func verifyArkRoutes(confirmPaidImageProbe: Bool) async {
+    guard let routes = activeRoutes else { return }
+    let arkRoles = requiredRouteRoles.filter { routes[$0]?.accessProvider == .ark }
+    guard !arkRoles.isEmpty else { return }
+    let containsImage = arkRoles.contains(.image)
+    guard !containsImage || confirmPaidImageProbe else {
+      arkProbeStatus = "图像路线探测可能产生费用，请先确认。"
+      return
+    }
+    let key = (try? keychain.string(for: ProviderCatalog.config(for: .ark).keyName)) ?? ""
+    guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+      arkProbeStatus = "请先填写火山方舟 API Key。"
+      return
+    }
+    arkProbeLoading = true
+    arkProbeStatus = ""
+    defer { arkProbeLoading = false }
+    do {
+      let result = try await apiClient.providerAccountCatalog(apiBase: settings.apiBase, arkKey: key, routes: routes, requiredRoles: arkRoles, confirmPaidImageProbe: confirmPaidImageProbe)
+      arkProbeStatus = result.probeResults.isEmpty ? "方舟路线已完成探测。" : "方舟路线：\(result.probeResults.map(\.state).joined(separator: "、"))"
+    } catch {
+      arkProbeStatus = formatUserFacingError(error)
     }
   }
 

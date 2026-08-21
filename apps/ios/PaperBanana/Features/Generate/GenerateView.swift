@@ -6,6 +6,7 @@ struct GenerateView: View {
   @State private var isImporterPresented = false
   @State private var isQuickStartExpanded = false
   @State private var selectedPhotoItems: [PhotosPickerItem] = []
+  @State private var confirmArkImageProbe = false
   @Namespace private var submitNamespace
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -326,7 +327,7 @@ struct GenerateView: View {
         title: isAdvanced ? "模型接口" : "模型平台",
         systemImage: "antenna.radiowaves.left.and.right",
         value: model.generation.selectedProviderConfig.label,
-        options: ProviderCatalog.order,
+        options: model.generation.liveProviders,
         optionTitle: { ProviderCatalog.config(for: $0).label },
         isSelected: { $0 == model.generation.draft.provider },
         action: { model.generation.selectProvider($0) }
@@ -360,20 +361,22 @@ struct GenerateView: View {
 
   private var defaultSummaryItems: [String] {
     var items = [
-      modelDisplayName(model.generation.activeMainModelName, in: model.generation.selectedProviderConfig.mainModels),
+      modelDisplayName(model.generation.activeMainModelName),
       "规划器 + 评审器",
       model.generation.draft.aspectRatio,
       model.generation.draft.outputFormat.title
     ]
     if model.generation.draft.outputFormat != .svg {
-      items.insert(modelDisplayName(model.generation.activeImageModelName, in: model.generation.selectedProviderConfig.imageModels), at: 1)
+      items.insert(modelDisplayName(model.generation.activeImageModelName), at: 1)
       items.append(model.generation.draft.imageSize.title)
     }
     return items
   }
 
-  private func modelDisplayName(_ value: String, in options: [ModelOption]) -> String {
-    options.first { $0.value == value }?.label ?? value
+  private func modelDisplayName(_ value: String) -> String {
+    model.generation.liveProviders
+      .flatMap { model.generation.models(for: .main, provider: $0) + model.generation.models(for: .image, provider: $0) + model.generation.models(for: .vision, provider: $0) }
+      .first { $0.id == value }?.label ?? value
   }
 
   private var apiKeyControls: some View {
@@ -388,6 +391,19 @@ struct GenerateView: View {
       APIKeyGuideView(config: model.generation.selectedProviderConfig)
         .padding(Theme.Spacing.md)
         .background(Theme.Palette.paperAmber.opacity(0.18), in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
+
+      if model.generation.activeRoutes.map({ routes in [routes.main, routes.image, routes.vision].contains { $0.accessProvider == .ark } }) == true {
+        Toggle("我确认图像路线探测可能产生费用", isOn: $confirmArkImageProbe)
+          .font(.footnote)
+        Button(model.generation.arkProbeLoading ? "正在验证方舟路线…" : "验证方舟路线") {
+          Task { await model.generation.verifyArkRoutes(confirmPaidImageProbe: confirmArkImageProbe) }
+        }
+        .buttonStyle(.bordered)
+        .disabled(model.generation.arkProbeLoading)
+        if !model.generation.arkProbeStatus.isEmpty {
+          Text(model.generation.arkProbeStatus).font(.footnote).foregroundStyle(.secondary)
+        }
+      }
     }
   }
 
@@ -459,7 +475,7 @@ struct GenerateView: View {
             title: "输出清晰度",
             systemImage: "sparkle.magnifyingglass",
             value: model.generation.draft.imageSize.title,
-            options: ProviderCatalog.supportedResolutions(provider: model.generation.draft.provider, imageModel: model.generation.activeImageModelName),
+            options: model.generation.generationResolutions,
             optionTitle: { $0.title },
             isSelected: { $0 == model.generation.draft.imageSize },
             action: { model.generation.draft.imageSize = $0 }
@@ -504,7 +520,7 @@ struct GenerateView: View {
         }
         paperPickerTile(title: "画面比例", systemImage: "aspectratio") {
           Picker("画面比例", selection: $model.generation.draft.aspectRatio) {
-            ForEach(["16:9", "21:9", "3:2", "1:1"], id: \.self) { ratio in
+            ForEach(model.generation.generationAspectRatios, id: \.self) { ratio in
               Text(ratio).tag(ratio)
             }
           }
@@ -531,33 +547,12 @@ struct GenerateView: View {
       }
 
       LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) {
-        paperPickerTile(title: "主模型", systemImage: "brain.head.profile") {
-          Picker("主模型", selection: Binding(get: { model.generation.draft.mainModelName }, set: { model.generation.selectMainModel($0) })) {
-            ForEach(model.generation.selectedProviderConfig.mainModels) { option in
-              Text(option.displayName).tag(option.value)
-            }
-          }
-          .labelsHidden()
-        }
+        routePicker(title: "主模型", icon: "brain.head.profile", role: .main)
         if model.generation.draft.outputFormat != .svg {
-          paperPickerTile(title: "图像模型", systemImage: "photo") {
-            Picker("图像生成模型", selection: Binding(get: { model.generation.draft.imageModelName }, set: { model.generation.selectImageModel($0) })) {
-              ForEach(model.generation.selectedProviderConfig.imageModels) { option in
-                Text(option.displayName).tag(option.value)
-              }
-            }
-            .labelsHidden()
-          }
+          routePicker(title: "图像模型", icon: "photo", role: .image)
         }
         if model.generation.activeReferenceImageMode != .mainModel {
-          paperPickerTile(title: "参考图识别模型", systemImage: "eye") {
-            Picker("参考图识别模型", selection: $model.generation.draft.referenceVisionModelName) {
-              ForEach(model.generation.selectedProviderConfig.visionModels) { option in
-                Text(option.displayName).tag(option.value)
-              }
-            }
-            .labelsHidden()
-          }
+          routePicker(title: "参考图识别模型", icon: "eye", role: .vision)
         }
       }
 
@@ -576,6 +571,31 @@ struct GenerateView: View {
       if model.generation.draft.retrievalSetting == .manual && model.generation.draft.referenceImages.isEmpty {
         ManualReferencePanel(model: model)
       }
+    }
+  }
+
+  private func routePicker(title: String, icon: String, role: ModelRole) -> some View {
+    let provider = model.generation.route(for: role)?.accessProvider ?? model.generation.draft.provider
+    let currentModel = model.generation.route(for: role)?.modelId ?? ""
+    return VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+      paperMenuTile(
+        title: "\(title)接口",
+        systemImage: "antenna.radiowaves.left.and.right",
+        value: ProviderCatalog.config(for: provider).label,
+        options: model.generation.liveProviders,
+        optionTitle: { ProviderCatalog.config(for: $0).label },
+        isSelected: { $0 == provider },
+        action: { model.generation.selectProvider($0, for: role) }
+      )
+      paperMenuTile(
+        title: title,
+        systemImage: icon,
+        value: modelDisplayName(currentModel),
+        options: model.generation.models(for: role, provider: provider),
+        optionTitle: { $0.vendor.isEmpty ? $0.label : "\($0.vendor) / \($0.label)" },
+        isSelected: { $0.id == currentModel },
+        action: { model.generation.selectModel($0, for: role) }
+      )
     }
   }
 

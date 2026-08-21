@@ -138,29 +138,11 @@ enum RetrievalSetting: String, CaseIterable, Codable, Identifiable {
   }
 }
 
-struct ModelOption: Identifiable, Equatable, Hashable {
-  let value: String
-  let label: String
-  let group: String
-
-  var id: String { value }
-
-  var displayName: String {
-    group.isEmpty ? label : "\(group) / \(label)"
-  }
-}
-
 struct ProviderConfig: Identifiable, Equatable {
   let id: ProviderID
   let label: String
   let keyName: String
   let keyPlaceholder: String
-  let mainModel: String
-  let imageModel: String
-  let visionModel: String
-  let mainModels: [ModelOption]
-  let imageModels: [ModelOption]
-  let visionModels: [ModelOption]
   let guideURL: URL
   let guideSteps: [String]
 }

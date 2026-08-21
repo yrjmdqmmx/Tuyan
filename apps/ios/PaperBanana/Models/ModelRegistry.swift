@@ -33,7 +33,7 @@ struct ModelRoutes: Codable, Equatable, Hashable, Sendable {
   }
 }
 
-struct ModelCapabilities: Codable, Equatable {
+struct ModelCapabilities: Codable, Equatable, Hashable {
   let referenceImages: Bool
   let imageGeneration: Bool
   let imageEditing: Bool
@@ -65,7 +65,7 @@ struct ModelCapabilities: Codable, Equatable {
   }
 }
 
-struct RegistryModel: Codable, Equatable, Identifiable {
+struct RegistryModel: Codable, Equatable, Hashable, Identifiable {
   let id: String
   let label: String
   let vendor: String
