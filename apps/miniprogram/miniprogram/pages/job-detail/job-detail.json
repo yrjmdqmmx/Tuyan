@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "任务详情",
+  "navigationBarTitleText": "图研Tuyan · 任务详情",
   "usingComponents": {
     "stage-timeline": "/components/stage-timeline/stage-timeline"
   }

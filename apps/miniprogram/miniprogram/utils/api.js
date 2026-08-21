@@ -3,12 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.requestJson = requestJson;
 exports.coerceJsonResponse = coerceJsonResponse;
 exports.authRequest = authRequest;
+exports.gatewayRequest = gatewayRequest;
 exports.postJson = postJson;
 exports.uploadReferenceFile = uploadReferenceFile;
 exports.requestHeader = requestHeader;
 exports.persistCookies = persistCookies;
 exports.formatError = formatError;
 const config_1 = require("./config");
+const business_errors_1 = require("./business-errors");
 function requestJson(body, options = {}) {
     return postJson(config_1.API_ENDPOINT, body, options);
 }
@@ -34,10 +36,13 @@ function coerceJsonResponse(data) {
     }
 }
 function authRequest(path, method, data, options = {}) {
+    return gatewayRequest(`${config_1.AUTH_BASE}${path}`, method, data, options);
+}
+function gatewayRequest(url, method, data, options = {}) {
     return new Promise((resolve, reject) => {
         const header = requestHeader(true);
         wx.request({
-            url: `${config_1.AUTH_BASE}${path}`,
+            url,
             method,
             timeout: options.timeout || 60000,
             header,
@@ -47,7 +52,7 @@ function authRequest(path, method, data, options = {}) {
                 const responseData = coerceJsonResponse(res.data);
                 if (res.statusCode < 200 || res.statusCode >= 300) {
                     const body = responseData || {};
-                    reject(new Error(body.message || body.error || `HTTP ${res.statusCode}`));
+                    reject((0, business_errors_1.toBusinessError)(res.statusCode, body));
                     return;
                 }
                 resolve(responseData);
@@ -70,7 +75,7 @@ function postJson(url, body, options = {}) {
                 persistCookies(res);
                 const data = coerceJsonResponse(res.data) || {};
                 if (res.statusCode < 200 || res.statusCode >= 300 || (data.code && data.code !== 0)) {
-                    reject(new Error(data.error || data.detail || `HTTP ${res.statusCode}`));
+                    reject((0, business_errors_1.toBusinessError)(res.statusCode, data));
                     return;
                 }
                 resolve(data);
@@ -175,6 +180,8 @@ function parseCookieHeader(header) {
     return cookieMap;
 }
 function formatError(error) {
+    if (error instanceof business_errors_1.BusinessError)
+        return (0, business_errors_1.businessErrorGuidance)(error).message;
     const message = error instanceof Error ? error.message : String(error || '');
     if (message.includes('Invalid email or password'))
         return '邮箱或密码不正确。';

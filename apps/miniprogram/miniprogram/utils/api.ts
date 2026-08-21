@@ -1,4 +1,5 @@
 import { API_ENDPOINT, AUTH_BASE, AUTH_COOKIE_KEY } from './config'
+import { BusinessError, businessErrorGuidance, toBusinessError } from './business-errors'
 
 export interface WxRequestResult<T> {
   data: T
@@ -36,10 +37,14 @@ export function coerceJsonResponse<T>(data: unknown): T {
 }
 
 export function authRequest<T>(path: string, method: 'GET' | 'POST', data?: WechatMiniprogram.IAnyObject, options: RequestOptions = {}): Promise<T> {
+  return gatewayRequest<T>(`${AUTH_BASE}${path}`, method, data, options)
+}
+
+export function gatewayRequest<T>(url: string, method: 'GET' | 'POST', data?: WechatMiniprogram.IAnyObject, options: RequestOptions = {}): Promise<T> {
   return new Promise((resolve, reject) => {
     const header = requestHeader(true)
     wx.request({
-      url: `${AUTH_BASE}${path}`,
+      url,
       method,
       timeout: options.timeout || 60000,
       header,
@@ -49,7 +54,7 @@ export function authRequest<T>(path: string, method: 'GET' | 'POST', data?: Wech
         const responseData = coerceJsonResponse<T & { message?: string; code?: string; error?: string }>(res.data)
         if (res.statusCode < 200 || res.statusCode >= 300) {
           const body = responseData || ({} as T & { message?: string; code?: string; error?: string })
-          reject(new Error(body.message || body.error || `HTTP ${res.statusCode}`))
+          reject(toBusinessError(res.statusCode, body))
           return
         }
         resolve(responseData as T)
@@ -73,7 +78,7 @@ export function postJson<T>(url: string, body: WechatMiniprogram.IAnyObject, opt
         persistCookies(res)
         const data = coerceJsonResponse<T & { code?: number; error?: string; detail?: string }>(res.data) || ({} as T & { code?: number; error?: string; detail?: string })
         if (res.statusCode < 200 || res.statusCode >= 300 || (data.code && data.code !== 0)) {
-          reject(new Error(data.error || data.detail || `HTTP ${res.statusCode}`))
+          reject(toBusinessError(res.statusCode, data))
           return
         }
         resolve(data)
@@ -182,6 +187,7 @@ function parseCookieHeader(header: string): Map<string, string> {
 }
 
 export function formatError(error: unknown): string {
+  if (error instanceof BusinessError) return businessErrorGuidance(error).message
   const message = error instanceof Error ? error.message : String(error || '')
   if (message.includes('Invalid email or password')) return '邮箱或密码不正确。'
   if (message.includes('Invalid origin') || message.includes('Origin not allowed')) {

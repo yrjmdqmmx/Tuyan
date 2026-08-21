@@ -1,5 +1,5 @@
 {
-  "description": "项目配置文件",
+  "description": "图研Tuyan 1.0.0 微信小程序",
   "miniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
   "setting": {
@@ -41,7 +41,7 @@
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
-  "libVersion": "trial",
+  "libVersion": "3.16.0",
   "packOptions": {
     "ignore": [],
     "include": []

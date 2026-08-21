@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "图研Tuyan · 精修",
+  "usingComponents": {
+    "generation-settings-sheet": "/components/generation-settings-sheet/generation-settings-sheet",
+    "auth-panel": "/components/auth-panel/auth-panel",
+    "stage-timeline": "/components/stage-timeline/stage-timeline"
+  }
+}

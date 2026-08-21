@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "model-picker": "/components/model-picker/model-picker"
+  }
+}

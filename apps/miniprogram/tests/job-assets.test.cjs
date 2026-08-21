@@ -31,6 +31,7 @@ assert.deepEqual(
     format_text: 'SVG',
     can_preview: false,
     action_label: '下载文件',
+    object_key: '',
   },
 )
 
@@ -53,6 +54,7 @@ assert.deepEqual(
     format_text: 'PNG',
     can_preview: true,
     action_label: '保存图片',
+    object_key: '',
   },
 )
 

@@ -27,6 +27,7 @@ function formatImageAsset(raw, options) {
         format_text: format === 'svg' ? 'SVG' : 'PNG',
         can_preview: format !== 'svg',
         action_label: format === 'svg' ? '下载文件' : '保存图片',
+        object_key: String(raw.object_key || raw.objectKey || ''),
     };
 }
 function inferImageFormat(mimeType, filename, fallbackFormat) {

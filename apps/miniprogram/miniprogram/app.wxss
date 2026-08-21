@@ -1,4 +1,4 @@
-/**app.wxss — PaperBanana 纸感设计系统（全页面与组件共享，组件需 styleIsolation: apply-shared）**/
+/** app.wxss — 图研Tuyan 微信端设计系统；PaperBanana 技术标识保持不变。 **/
 page {
   min-height: 100vh;
   background: #f3f2ee;

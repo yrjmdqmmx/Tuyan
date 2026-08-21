@@ -1,6 +1,7 @@
 {
-  "navigationBarTitleText": "任务记录",
+  "navigationBarTitleText": "图研Tuyan · 记录",
   "usingComponents": {
-    "auth-panel": "/components/auth-panel/auth-panel"
+    "auth-panel": "/components/auth-panel/auth-panel",
+    "account-settings": "/components/account-settings/account-settings"
   }
 }

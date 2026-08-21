@@ -57,11 +57,14 @@ function normalizeJob(input) {
         client_platform_text: formatClientPlatform(job.client_platform || job.clientPlatform),
         user_email: String(job.user_email || job.userEmail || ''),
         configuration_mode: String(job.configuration_mode || job.configurationMode || 'simple'),
+        routing_mode: String(job.routing_mode || job.routingMode || (job.model_routes || job.modelRoutes ? 'explicit' : 'legacy')),
+        model_routes: normalizeJobModelRoutes(job.model_routes || job.modelRoutes),
         output_format: outputFormat,
         output_format_text: (0, job_assets_1.formatOutputFormat)(outputFormat),
         method_content: methodContent,
         method_preview: methodContent.length > 86 ? `${methodContent.slice(0, 86)}...` : methodContent,
         caption: String(job.caption || ''),
+        negative_prompt: String(job.negative_prompt || job.negativePrompt || ''),
         infographic_category: String(job.infographic_category || job.infographicCategory || '方法框架图'),
         task_name: String(job.task_name || job.taskName || 'diagram'),
         image_size: String(job.image_size || job.imageSize || ''),
@@ -71,7 +74,7 @@ function normalizeJob(input) {
         stages: (job.stages || []).map((stage, index) => normalizeJobStage(stage, jobId, index)),
         critic_mode: String(job.critic_mode || job.criticMode || ''),
         main_model_name: String(job.main_model_name || job.mainModelName || ''),
-        image_gen_model_name: String(job.image_gen_model_name || job.imageModelName || ''),
+        image_gen_model_name: String(job.image_gen_model_name || job.imageGenModelName || job.imageModelName || ''),
         reference_vision_model_name: referenceVisionModelName,
         reference_vision_model_text: referenceModeUsed === 'vision_model' ? referenceVisionModelName || '未记录' : '未使用',
         reference_image_mode: String(job.reference_image_mode || job.referenceImageMode || ''),
@@ -85,12 +88,24 @@ function normalizeJob(input) {
         result_images: resultImages,
         logs_tail: String(job.logs_tail || (Array.isArray(job.logs) ? job.logs.slice(-10).join('\n') : '')),
         error: String(job.error || ''),
+        business_code: String(job.business_code || job.businessCode || ''),
         created_at: job.created_at || job.createdAt,
         updated_at: job.updated_at || job.updatedAt,
         completed_at: job.completed_at || job.completedAt,
         created_text: formatDate(job.created_at || job.createdAt),
         status_text: constants_1.STATUS_LABELS[status] || status || '未知',
     };
+}
+function normalizeJobModelRoutes(input) {
+    const source = input && typeof input === 'object' ? input : {};
+    const route = (role) => {
+        const item = source[role] && typeof source[role] === 'object' ? source[role] : {};
+        return { accessProvider: String(item.accessProvider || item.access_provider || ''), modelId: String(item.modelId || item.model_id || '') };
+    };
+    const routes = { main: route('main'), image: route('image'), vision: route('vision') };
+    return routes.main.accessProvider && routes.main.modelId && routes.image.accessProvider && routes.image.modelId && routes.vision.accessProvider && routes.vision.modelId
+        ? routes
+        : {};
 }
 function normalizeClientPlatform(value) {
     const platform = String(value || '').trim().toLowerCase();
@@ -321,7 +336,6 @@ function toLocalJobSummary(job) {
     return {
         ...job,
         method_content: '',
-        result_images: [],
         logs_tail: '',
         stages: [],
         retrieved_references: [],

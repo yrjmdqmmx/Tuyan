@@ -1,0 +1,24 @@
+<view wx:if="{{show}}" class="model-modal" catchtouchmove="close">
+  <view class="model-panel" catchtap="noop">
+    <view class="model-head"><view><view class="model-kicker">选择{{roleLabel}}</view><view class="model-note">API 渠道 → 模型厂商 → 具体模型</view></view><button class="model-close" bindtap="close">关闭</button></view>
+    <input class="model-search" value="{{query}}" placeholder="搜索模型、厂商或协议" bindinput="onSearch" />
+    <scroll-view class="model-scroll" scroll-y type="list">
+      <view class="channel" wx:for="{{channels}}" wx:key="id" wx:for-item="channel">
+        <view class="channel-title">{{channel.label}}</view>
+        <block wx:for="{{channel.compatible}}" wx:key="vendor" wx:for-item="group">
+          <view class="vendor-title">{{group.vendor}}</view>
+          <view class="model-row {{selectedProvider === channel.id && selectedModel === item.id ? 'selected' : ''}}" wx:for="{{group.models}}" wx:key="id" data-provider="{{channel.id}}" data-model="{{item.id}}" bindtap="choose">
+            <view><view class="model-name">{{item.label}}</view><view class="model-id">{{item.id}}</view></view><view class="model-state">{{item.lifecycle === 'stable' ? '稳定' : (item.lifecycle === 'unknown' ? '未知' : item.lifecycle)}} · {{item.verificationState === 'catalog' ? '目录未实测' : (item.verificationState === 'inference-verified' ? '账号已验证' : (item.verified ? '注册表验证' : '未验证'))}}</view>
+          </view>
+        </block>
+        <view class="incompatible-title" wx:if="{{channel.incompatible.length}}">不兼容 / 暂不可用</view>
+        <block wx:for="{{channel.incompatible}}" wx:key="vendor" wx:for-item="group">
+          <view class="model-row disabled" wx:for="{{group.models}}" wx:key="id" data-disabled="true">
+            <view><view class="model-name">{{item.label}}</view><view class="model-id">{{item.selectionDisabledReason}}</view></view>
+          </view>
+        </block>
+      </view>
+      <view class="model-empty" wx:if="{{!channels.length}}">没有匹配的模型。</view>
+    </scroll-view>
+  </view>
+</view>

@@ -41,6 +41,7 @@
           </view>
           <view class="stage-image-actions" wx:if="{{item.image_url}}">
             <button
+              class="stage-image-button"
               size="mini"
               data-url="{{item.image_url}}"
               data-can-preview="{{item.image_can_preview}}"

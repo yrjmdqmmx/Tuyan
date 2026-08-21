@@ -15,6 +15,7 @@ Component({
         accountJobsLoading: false,
         localJobs: [],
         showAuthPanel: false,
+        showAccountSettings: false,
     },
     lifetimes: {
         attached() {
@@ -95,6 +96,7 @@ Component({
                 return;
             wx.navigateTo({ url: `/pages/job-detail/job-detail?jobId=${jobId}` });
         },
+        openRefine() { wx.switchTab({ url: '/pages/refine/refine' }); },
         clearLocal() {
             (0, jobs_1.clearLocalJobs)();
             this.setData({ localJobs: [] });
@@ -135,5 +137,10 @@ Component({
             await (0, session_1.signOut)();
             wx.showToast({ title: '已退出', icon: 'success' });
         },
+        openAccountSettings() { this.setData({ showAccountSettings: true }); },
+        closeAccountSettings() { this.setData({ showAccountSettings: false }); },
+        onAccountSignedOut() { this.setData({ showAccountSettings: false, accountJobs: [] }); },
+        onAccountDeleted() { this.setData({ showAccountSettings: false, accountJobs: [], localJobs: [] }); },
+        onShareAppMessage() { return { title: '图研Tuyan · 任务记录', path: '/pages/records/records' }; },
     },
 });
