@@ -4,6 +4,16 @@ PaperBanana Clients 是 PaperBanana 的多端 monorepo。这个仓库用于统�
 
 当前 Web 端已经从 `PaperBanana-web/web-client` 迁移到 `apps/web`，生产站点 `paperbanana.asia` 由本仓库的 GitHub Actions 发布。
 
+## 开源声明 / Open Source Statement
+
+PaperBanana Clients 是在开源项目 [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) 基础上持续开发的独立多端项目。我们衷心感谢上游作者与社区的工作，并采用与上游相同的 Apache License 2.0 发布本项目。
+
+我们同样致力于将本项目建设为一个完全开源的学术插图工具，为所有研究人员提供更加便捷、可靠且跨平台的学术可视化体验。我们的目标只是回馈并造福社区；项目维护者目前没有将本项目商业化的计划。该声明表达的是项目愿景，不改变 Apache License 2.0 授予使用者的任何权利。
+
+PaperBanana Clients is an independently maintained, multi-platform project built on the open-source [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) project. We sincerely appreciate the work of the upstream authors and community, and we release this project under the same Apache License 2.0.
+
+We are likewise committed to building a fully open-source academic illustration tool that gives researchers everywhere a more accessible, reliable, and cross-platform scientific visualization experience. Our goal is simply to give back to and benefit the community; the project maintainers currently have no plans to commercialize this project. This statement expresses our project vision and does not limit any rights granted under Apache License 2.0.
+
 ## Apps
 
 - `apps/web/`：PaperBanana Web 工作台，基于 React + Vite，已完成迁移。
@@ -223,6 +233,18 @@ pnpm --filter @paperbanana/desktop build:win:portable
 ```bash
 pnpm --filter @paperbanana/web build
 ```
+
+## Upstream
+
+PaperBanana Clients 基于开源项目 [dwzhu-pku/PaperBanana](https://github.com/dwzhu-pku/PaperBanana) 持续开发，是由本仓库维护者独立维护的多端项目，并非上游官方发行版。
+
+PaperBanana Clients is built on the open-source [dwzhu-pku/PaperBanana](https://github.com/dwzhu-pku/PaperBanana) project. It is independently maintained by this repository's maintainers and is not an official upstream distribution.
+
+## License
+
+本项目代码采用与上游相同的 [Apache License 2.0](./LICENSE) 开源协议。项目愿景中的“暂无商业化计划”不构成额外许可限制；第三方组件与资源仍适用其各自的许可条款。
+
+This project's source code is released under the same [Apache License 2.0](./LICENSE) as upstream. The maintainers' current lack of commercialization plans is a statement of project intent, not an additional license restriction; third-party components and assets remain subject to their respective terms.
 
 ## Notes
 
