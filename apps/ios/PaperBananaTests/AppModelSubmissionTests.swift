@@ -152,6 +152,17 @@ final class AppModelSubmissionTests: XCTestCase {
     XCTAssertEqual(body["maxCriticRounds"] as? Int, 1)
   }
 
+  func testAccountDeletionRemovesUnknownProviderKeyTrackedByIndex() {
+    let model = AppModel()
+    let future = ProviderID(rawValue: "future-provider-test")
+    model.generation.updateAPIKey("test-key", for: future)
+    XCTAssertEqual(model.generation.apiKey(for: future), "test-key")
+
+    model.generation.clearAllForAccountDeletion()
+
+    XCTAssertTrue(model.generation.apiKey(for: future).isEmpty)
+  }
+
   func testFeedbackCategoriesMatchWebContract() {
     XCTAssertEqual(
       FeedbackCategory.allCases.map(\.rawValue),

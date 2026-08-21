@@ -381,12 +381,15 @@ struct GenerateView: View {
 
   private var apiKeyControls: some View {
     return VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-      Text("\(model.generation.selectedProviderConfig.label) API 密钥")
-        .font(.subheadline.weight(.semibold))
-      SecureField(model.generation.selectedProviderConfig.keyPlaceholder, text: Binding(get: { model.generation.selectedAPIKey }, set: { model.generation.updateSelectedAPIKey($0) }))
-        .textContentType(.password)
-        .paperFieldWell()
-        .accessibilityLabel("\(model.generation.selectedProviderConfig.label) API Key 输入")
+      ForEach(model.generation.draft.configurationMode == .advanced ? model.generation.routeProviders : [model.generation.draft.provider]) { provider in
+        let config = ProviderCatalog.config(for: provider)
+        Text("\(config.label) API 密钥")
+          .font(.subheadline.weight(.semibold))
+        SecureField(config.keyPlaceholder, text: Binding(get: { model.generation.apiKey(for: provider) }, set: { model.generation.updateAPIKey($0, for: provider) }))
+          .textContentType(.password)
+          .paperFieldWell()
+          .accessibilityLabel("\(config.label) API Key 输入")
+      }
 
       APIKeyGuideView(config: model.generation.selectedProviderConfig)
         .padding(Theme.Spacing.md)
@@ -647,7 +650,7 @@ struct GenerateView: View {
       return "当前参考图处理方式不可用，请改用独立识别模型或更换主模型。"
     }
     if isAdvanced {
-      return "需要填写 API Key、模型名称、至少 20 字内容和目标图注；手动参考需至少选 1 个案例。"
+      return "需要为实际可达的模型接口填写 API Key，并完成三路路由、至少 20 字内容和目标图注；手动参考需至少选 1 个案例。"
     }
     return "需要填写 API Key、至少 20 字内容和目标图注。"
   }

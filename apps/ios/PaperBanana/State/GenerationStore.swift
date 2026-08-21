@@ -5,6 +5,7 @@ import Observation
 @Observable
 @MainActor
 final class GenerationStore {
+  private static let savedProviderIndexKey = "paperbanana.provider-key-index"
   struct EffectiveSubmissionConfiguration: Equatable {
     let pipelineMode: PipelineMode
     let retrievalSetting: RetrievalSetting
@@ -131,6 +132,17 @@ final class GenerationStore {
   }
 
   var liveProviders: [ProviderID] { registryStore.registry?.orderedProviders ?? [] }
+
+  var routeProviders: [ProviderID] {
+    guard let routes = activeRoutes else { return [] }
+    return [routes.main.accessProvider, routes.image.accessProvider, routes.vision.accessProvider].reduce(into: []) { result, provider in
+      if !result.contains(provider) { result.append(provider) }
+    }
+  }
+
+  func apiKey(for provider: ProviderID) -> String {
+    (try? keychain.string(for: ProviderCatalog.config(for: provider).keyName)) ?? ""
+  }
 
   func models(for role: ModelRole, provider: ProviderID) -> [RegistryModel] {
     registryStore.registry?.models(for: provider, role: role) ?? []
@@ -293,6 +305,8 @@ final class GenerationStore {
   func updateAPIKey(_ value: String, for provider: ProviderID) {
     do {
       try keychain.set(value.trimmingCharacters(in: .whitespacesAndNewlines), for: ProviderCatalog.config(for: provider).keyName)
+      rememberKeyProvider(provider)
+      if provider == .ark { verifiedArkRouteKeys.removeAll() }
       if provider == draft.provider { selectedAPIKey = value }
     } catch {
       presentAlert(formatUserFacingError(error))
@@ -482,9 +496,11 @@ final class GenerationStore {
   /// 删除账号时的本机清理：抹掉草稿、当前选中 API key，并清空所有 provider 的 Keychain key。
   /// 退出登录（signOut）不走这里——API key 要保留给重新登录的用户。
   func clearAllForAccountDeletion() {
-    for provider in ProviderCatalog.order {
+    let indexed = Set(UserDefaults.standard.stringArray(forKey: Self.savedProviderIndexKey) ?? []).map(ProviderID.init(rawValue:))
+    for provider in Set(ProviderCatalog.order).union(liveProviders).union(indexed) {
       try? keychain.delete(account: ProviderCatalog.config(for: provider).keyName)
     }
+    UserDefaults.standard.removeObject(forKey: Self.savedProviderIndexKey)
     draft = GenerationDraft()
     selectedAPIKey = ""
     mainModelCapability = nil
@@ -515,9 +531,17 @@ final class GenerationStore {
   private func saveSelectedProviderKey() {
     do {
       try keychain.set(selectedAPIKey.trimmingCharacters(in: .whitespacesAndNewlines), for: selectedProviderConfig.keyName)
+      rememberKeyProvider(draft.provider)
+      if draft.provider == .ark { verifiedArkRouteKeys.removeAll() }
     } catch {
       presentAlert(formatUserFacingError(error))
     }
+  }
+
+  private func rememberKeyProvider(_ provider: ProviderID) {
+    var providers = Set(UserDefaults.standard.stringArray(forKey: Self.savedProviderIndexKey) ?? [])
+    providers.insert(provider.rawValue)
+    UserDefaults.standard.set(Array(providers).sorted(), forKey: Self.savedProviderIndexKey)
   }
 
   func normalizeDraftWithLiveRegistry() {

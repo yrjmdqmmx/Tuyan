@@ -26,7 +26,7 @@ final class ModelRegistryTests: XCTestCase {
     var registry = try JSONDecoder().decode(ModelRegistry.self, from: fixtureData())
     registry.providers[ProviderID(rawValue: "future")] = try XCTUnwrap(registry.providers[.bailian])
 
-    XCTAssertEqual(registry.orderedProviders, [.openrouter, .bailian, ProviderID(rawValue: "future")])
+    XCTAssertEqual(registry.orderedProviders, [.bailian, ProviderID(rawValue: "future")])
     XCTAssertEqual(registry.models(for: .bailian, role: .main).map(\.id), ["main-a"])
     XCTAssertEqual(registry.models(for: .bailian, role: .image).map(\.id), ["image-a"])
   }
