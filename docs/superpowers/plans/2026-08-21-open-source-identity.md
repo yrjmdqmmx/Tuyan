@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Status:** Implemented and verified on 2026-08-21. Checkboxes below preserve the approved pre-execution sequence and are not live progress state.
+
 **Goal:** Publish a complete, bilingual open-source identity for PaperBanana Clients under the same Apache License 2.0 as upstream while preserving upstream credit and recording the completed production PNG smoke tests.
 
 **Architecture:** This is a documentation-and-metadata-only change. Root `LICENSE` and `NOTICE` establish the legal and attribution layer; `README.md` presents the public mission; `package.json` exposes the SPDX identifier; the app-store Terms of Service Markdown and HTML clarify how Apache-2.0 source-code rights relate to trademarks and hosted-service materials; `SYNC.md` closes the already-completed operational evidence without changing a shared contract.
