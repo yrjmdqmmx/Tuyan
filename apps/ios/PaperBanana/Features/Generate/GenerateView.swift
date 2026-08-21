@@ -1,13 +1,16 @@
 import SwiftUI
 import PhotosUI
 
+private enum ReferenceLibraryDestination: Identifiable { case library; var id: String { "reference-library" } }
+
 struct GenerateView: View {
   @Bindable var model: AppModel
   @State private var isImporterPresented = false
   @State private var isQuickStartExpanded = false
   @State private var selectedPhotoItems: [PhotosPickerItem] = []
-  @State private var confirmArkImageProbe = false
   @State private var settingsSheet: GenerationSettingsSheet?
+  @State private var compactReferenceLibrary: ReferenceLibraryDestination?
+  @State private var regularReferenceLibrary: ReferenceLibraryDestination?
   @State private var templateTitle = ""
   @State private var saveTemplateMessage = ""
   @Namespace private var submitNamespace
@@ -89,6 +92,8 @@ struct GenerateView: View {
         }
       }
       .sheet(item: $settingsSheet) { $0 }
+      .fullScreenCover(item: $compactReferenceLibrary) { _ in ReferenceLibrarySheet(model: model) }
+      .sheet(item: $regularReferenceLibrary) { _ in ReferenceLibrarySheet(model: model) }
     }
   }
 
@@ -276,7 +281,7 @@ struct GenerateView: View {
   // MARK: - ① 生成设置
 
   private var generationSettingsSection: some View {
-    Button { settingsSheet = GenerationSettingsSheet(model: model) } label: {
+    Button { settingsSheet = GenerationSettingsSheet(model: model, onPresentReferenceLibrary: presentReferenceLibrary) } label: {
       HStack(alignment: .top, spacing: Theme.Spacing.md) {
         Image(systemName: "slider.horizontal.3").font(.title3).foregroundStyle(Theme.Palette.paperGreenText)
         VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
@@ -295,6 +300,14 @@ struct GenerateView: View {
     .buttonStyle(.plain)
     .accessibilityIdentifier("generate.settings.summary")
     .accessibilityLabel("生成设置摘要，\(generationSettingsSummary)")
+  }
+
+  private func presentReferenceLibrary() {
+    settingsSheet = nil
+    Task { @MainActor in
+      try? await Task.sleep(for: .milliseconds(250))
+      if horizontalSizeClass == .compact { compactReferenceLibrary = .library } else { regularReferenceLibrary = .library }
+    }
   }
 
   private var generationSettingsSummary: String {
@@ -396,37 +409,6 @@ struct GenerateView: View {
       .first { $0.id == value }?.label ?? value
   }
 
-  private var apiKeyControls: some View {
-    return VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-      ForEach(model.generation.draft.configurationMode == .advanced ? model.generation.routeProviders : [model.generation.draft.provider]) { provider in
-        let config = ProviderCatalog.config(for: provider)
-        Text("\(config.label) API 密钥")
-          .font(.subheadline.weight(.semibold))
-        SecureField(config.keyPlaceholder, text: Binding(get: { model.generation.apiKey(for: provider) }, set: { model.generation.updateAPIKey($0, for: provider) }))
-          .textContentType(.password)
-          .paperFieldWell()
-          .accessibilityLabel("\(config.label) API Key 输入")
-      }
-
-      APIKeyGuideView(config: model.generation.selectedProviderConfig)
-        .padding(Theme.Spacing.md)
-        .background(Theme.Palette.paperAmber.opacity(0.18), in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
-
-      if model.generation.activeRoutes.map({ routes in [routes.main, routes.image, routes.vision].contains { $0.accessProvider == .ark } }) == true {
-        Toggle("我确认图像路线探测可能产生费用", isOn: $confirmArkImageProbe)
-          .font(.footnote)
-        Button(model.generation.arkProbeLoading ? "正在验证方舟路线…" : "验证方舟路线") {
-          Task { await model.generation.verifyArkRoutes(confirmPaidImageProbe: confirmArkImageProbe) }
-        }
-        .buttonStyle(.bordered)
-        .disabled(model.generation.arkProbeLoading)
-        if !model.generation.arkProbeStatus.isEmpty {
-          Text(model.generation.arkProbeStatus).font(.footnote).foregroundStyle(.secondary)
-        }
-      }
-    }
-  }
-
   // MARK: - ② 内容输入
 
   private var inputSection: some View {
@@ -434,8 +416,8 @@ struct GenerateView: View {
       Text("粘贴论文方法部分或业务流程，再填写目标图注。")
         .font(.footnote)
         .foregroundStyle(.secondary)
-      LabeledTextEditor(title: "论文方法内容", text: $model.generation.draft.methodContent, minHeight: 180)
-      LabeledTextEditor(title: "目标图注", text: $model.generation.draft.caption, minHeight: 90)
+      LabeledTextEditor(title: "论文方法内容", text: Binding(get: { model.generation.draft.methodContent }, set: { model.generation.draft.setMethodContent($0) }), minHeight: 180)
+      LabeledTextEditor(title: "目标图注", text: Binding(get: { model.generation.draft.caption }, set: { model.generation.draft.setCaption($0) }), minHeight: 90)
       VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
         HStack { Text("负向提示词（可选）").font(.headline); Spacer(); Text("\(model.generation.draft.negativePrompt.count)/1000").font(.caption.monospacedDigit()).foregroundStyle(.secondary) }
         TextEditor(text: Binding(get: { model.generation.draft.negativePrompt }, set: { model.generation.draft.setNegativePrompt($0) }))

@@ -1,6 +1,9 @@
 import Foundation
 
 struct GenerationDraft: Equatable {
+  static let methodContentLimit = 12_000
+  static let captionLimit = 1_000
+  static let negativePromptLimit = 1_000
   var configurationMode: ConfigurationMode = .simple
   var provider: ProviderID = .bailian
   var methodContent: String = PaperBananaSamples.sampleMethod
@@ -23,7 +26,15 @@ struct GenerationDraft: Equatable {
   var numCandidates: Int = 1
   var maxCriticRounds: Int = 1
 
-  mutating func setNegativePrompt(_ value: String) { negativePrompt = String(value.prefix(1_000)) }
+  var hasValidInputLengths: Bool {
+    methodContent.count <= Self.methodContentLimit
+      && caption.count <= Self.captionLimit
+      && negativePrompt.count <= Self.negativePromptLimit
+  }
+
+  mutating func setMethodContent(_ value: String) { methodContent = String(value.prefix(Self.methodContentLimit)) }
+  mutating func setCaption(_ value: String) { caption = String(value.prefix(Self.captionLimit)) }
+  mutating func setNegativePrompt(_ value: String) { negativePrompt = String(value.prefix(Self.negativePromptLimit)) }
 
   var selectedCategory: InfographicCategory {
     PaperBananaSamples.categories.first { $0.id == infographicCategoryID } ?? PaperBananaSamples.categories[0]

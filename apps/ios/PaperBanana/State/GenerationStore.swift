@@ -65,6 +65,7 @@ final class GenerationStore {
     !isSubmitting
       && draft.methodContent.trimmingCharacters(in: .whitespacesAndNewlines).count >= 20
       && draft.caption.trimmingCharacters(in: .whitespacesAndNewlines).count >= 3
+      && draft.hasValidInputLengths
       && hasRequiredManualReferences
       && hasRequiredReferenceVisionModel
       && !mainModelDirectUnsupported
@@ -440,10 +441,10 @@ final class GenerationStore {
     }
   }
 
-  func verifyArkRoutes(confirmPaidImageProbe: Bool) async {
+  func verifyArkRoutes(confirmPaidImageProbe: Bool, includeImageRoute: Bool = true) async {
     guard let routes = activeRoutes else { return }
-    let arkRoles = requiredRouteRoles.filter { routes[$0]?.accessProvider == .ark }
-    guard !arkRoles.isEmpty else { return }
+    let arkRoles = requiredRouteRoles.filter { routes[$0]?.accessProvider == .ark && (includeImageRoute || $0 != .image) }
+    guard !arkRoles.isEmpty else { arkProbeStatus = includeImageRoute ? "当前没有需要验证的方舟路线。" : "当前没有可进行非付费探测的方舟路线。"; return }
     let containsImage = arkRoles.contains(.image)
     guard !containsImage || confirmPaidImageProbe else {
       arkProbeStatus = "图像路线探测可能产生费用，请先确认。"
@@ -494,8 +495,8 @@ final class GenerationStore {
       provider: draft.provider,
       apiKeys: scopedAPIKeys(),
       taskName: draft.taskName,
-      methodContent: draft.methodContent.trimmingCharacters(in: .whitespacesAndNewlines),
-      caption: draft.caption.trimmingCharacters(in: .whitespacesAndNewlines),
+      methodContent: String(draft.methodContent.trimmingCharacters(in: .whitespacesAndNewlines).prefix(GenerationDraft.methodContentLimit)),
+      caption: String(draft.caption.trimmingCharacters(in: .whitespacesAndNewlines).prefix(GenerationDraft.captionLimit)),
       infographicCategory: draft.selectedCategory.label,
       outputFormat: draft.outputFormat,
       imageSize: draft.imageSize,
@@ -510,7 +511,7 @@ final class GenerationStore {
       aspectRatio: configuration.aspectRatio,
       numCandidates: configuration.numCandidates,
       maxCriticRounds: configuration.maxCriticRounds,
-      negativePrompt: String(draft.negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines).prefix(1_000)),
+      negativePrompt: String(draft.negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines).prefix(GenerationDraft.negativePromptLimit)),
       modelRoutes: activeRoutes,
       requiredRouteRoles: requiredRouteRoles
     )

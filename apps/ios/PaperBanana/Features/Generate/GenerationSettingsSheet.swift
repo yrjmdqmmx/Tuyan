@@ -3,9 +3,10 @@ import SwiftUI
 struct GenerationSettingsSheet: View, Identifiable {
   let id = UUID()
   @Bindable var model: AppModel
+  let onPresentReferenceLibrary: () -> Void
   @Environment(\.dismiss) private var dismiss
-  @State private var showGallery = false
   @State private var confirmClearLocal = false
+  @State private var confirmArkImageProbe = false
 
   var body: some View {
     NavigationStack {
@@ -27,10 +28,9 @@ struct GenerationSettingsSheet: View, Identifiable {
       }
       .navigationTitle("生成设置")
       .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() } } }
-      .sheet(isPresented: $showGallery) { ReferenceLibrarySheet(model: model) }
       .alert("清除本地上传？", isPresented: $confirmClearLocal) {
         Button("取消", role: .cancel) {}
-        Button("清除并浏览图库", role: .destructive) { model.generation.draft.referenceImages = []; model.generation.referenceUploadError = ""; showGallery = true }
+        Button("清除并浏览图库", role: .destructive) { model.generation.draft.referenceImages = []; model.generation.referenceUploadError = ""; openReferenceLibrary() }
       } message: { Text("本地上传与图库参考不能同时使用。继续会丢弃当前尚未提交的本地参考图。") }
     }.presentationDetents([.large])
   }
@@ -43,7 +43,7 @@ struct GenerationSettingsSheet: View, Identifiable {
       Stepper("候选数量：\(model.generation.draft.numCandidates)", value: $model.generation.draft.numCandidates, in: 1...3)
       Stepper("评审轮数：\(model.generation.draft.maxCriticRounds)", value: $model.generation.draft.maxCriticRounds, in: 0...3)
       if model.generation.draft.retrievalSetting == .manual {
-        Button("浏览参考图库", systemImage: "photo.stack") { if model.generation.draft.referenceImages.isEmpty { showGallery = true } else { confirmClearLocal = true } }
+        Button("浏览参考图库", systemImage: "photo.stack") { if model.generation.draft.referenceImages.isEmpty { openReferenceLibrary() } else { confirmClearLocal = true } }
       }
     }
     Section("模型路由") {
@@ -52,7 +52,25 @@ struct GenerationSettingsSheet: View, Identifiable {
       routePicker("参考图识别模型", role: .vision)
       if !model.generation.draft.referenceImages.isEmpty { Picker("参考图处理方式", selection: $model.generation.draft.referenceImageMode) { Text(ReferenceImageMode.visionModel.title).tag(ReferenceImageMode.visionModel); Text(ReferenceImageMode.mainModel.title).tag(ReferenceImageMode.mainModel).disabled(!model.generation.mainModelCanReadReferenceImages) }.pickerStyle(.segmented) }
     }
+    if hasArkRoute {
+      Section("方舟路线验证") {
+        Text("非付费探测只验证主/视觉路线；图像路线可能产生费用，必须单独确认。").font(.footnote).foregroundStyle(.secondary)
+        Button("验证非付费方舟路线") { Task { await model.generation.verifyArkRoutes(confirmPaidImageProbe: false, includeImageRoute: false) } }
+          .disabled(model.generation.arkProbeLoading)
+          .accessibilityIdentifier("generate.settings.ark.nonPaidProbe")
+        if hasArkImageRoute {
+          Toggle("我确认图像路线探测可能产生费用", isOn: $confirmArkImageProbe)
+          Button(model.generation.arkProbeLoading ? "正在验证图像路线…" : "验证方舟图像路线") { Task { await model.generation.verifyArkRoutes(confirmPaidImageProbe: confirmArkImageProbe) } }
+            .disabled(model.generation.arkProbeLoading || !confirmArkImageProbe)
+            .accessibilityIdentifier("generate.settings.ark.paidImageProbe")
+        }
+        if !model.generation.arkProbeStatus.isEmpty { Text(model.generation.arkProbeStatus).font(.footnote).foregroundStyle(.secondary) }
+      }
+    }
   }
+  private var hasArkRoute: Bool { model.generation.activeRoutes.map { [$0.main, $0.image, $0.vision].contains { $0.accessProvider == .ark } } == true }
+  private var hasArkImageRoute: Bool { model.generation.requiredRouteRoles.contains(.image) && model.generation.route(for: .image)?.accessProvider == .ark }
+  private func openReferenceLibrary() { dismiss(); onPresentReferenceLibrary() }
   private func routePicker(_ title: String, role: ModelRole) -> some View {
     let provider = model.generation.route(for: role)?.accessProvider ?? model.generation.draft.provider
     let value = model.generation.route(for: role)?.modelId ?? ""

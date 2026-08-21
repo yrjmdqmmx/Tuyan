@@ -37,4 +37,8 @@ enum FeaturedTemplateApplyDecision {
     guard let baseline else { return !draft.methodContent.isEmpty || !draft.caption.isEmpty || !draft.negativePrompt.isEmpty }
     return draft.methodContent != baseline.methodContent || draft.caption != baseline.caption || draft.negativePrompt != baseline.negativePrompt
   }
+
+  static func requiresConfirmation(draft: GenerationDraft, baseline: SavedGenerationTemplateConfiguration) -> Bool {
+    draft.methodContent != baseline.methodContent || draft.caption != baseline.caption || draft.negativePrompt != baseline.negativePrompt
+  }
 }

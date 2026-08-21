@@ -82,6 +82,40 @@ final class GenerateV9ParityTests: XCTestCase {
     XCTAssertEqual(draft.negativePrompt.count, 1_000)
   }
 
+  func testDraftTextLimitsApplyAtEditingAndPayloadBoundaries() {
+    var draft = GenerationDraft()
+    draft.setMethodContent(String(repeating: "m", count: 12_001))
+    draft.setCaption(String(repeating: "c", count: 1_001))
+    XCTAssertEqual(draft.methodContent.count, 12_000)
+    XCTAssertEqual(draft.caption.count, 1_000)
+
+    let payload = JobCreatePayload(
+      configurationMode: .simple, provider: .bailian, apiKeys: [:], taskName: .diagram,
+      methodContent: String(repeating: "m", count: 12_001), caption: String(repeating: "c", count: 1_001),
+      infographicCategory: "框架", outputFormat: .png, imageSize: .oneK, mainModelName: "main", imageModelName: "image", referenceVisionModelName: "vision", referenceImageMode: nil, referenceImages: [], pipelineMode: .plannerCritic, retrievalSetting: .none, manualReferenceIds: [], aspectRatio: "16:9", numCandidates: 1, maxCriticRounds: 1
+    )
+    let body = payload.paperBananaBody()
+    XCTAssertEqual((body["methodContent"] as? String)?.count, 12_000)
+    XCTAssertEqual((body["caption"] as? String)?.count, 1_000)
+  }
+
+  func testDirectlyMutatedOverLimitDraftCannotSubmit() {
+    var draft = GenerationDraft()
+    draft.methodContent = String(repeating: "m", count: 12_001)
+    XCTAssertFalse(draft.hasValidInputLengths)
+    draft.methodContent = String(repeating: "m", count: 12_000)
+    draft.caption = String(repeating: "c", count: 1_001)
+    XCTAssertFalse(draft.hasValidInputLengths)
+  }
+
+  func testSavedTemplateUsesSameDirtyDecisionAsFeaturedTemplate() {
+    var draft = GenerationDraft()
+    let configuration = SavedGenerationTemplateConfiguration(draft: draft)
+    XCTAssertFalse(FeaturedTemplateApplyDecision.requiresConfirmation(draft: draft, baseline: configuration))
+    draft.caption = "已改写"
+    XCTAssertTrue(FeaturedTemplateApplyDecision.requiresConfirmation(draft: draft, baseline: configuration))
+  }
+
   func testSavedTemplateV1MigratesRoutesAndNegativePromptIntoV2() throws {
     let suite = "GenerateV9ParityTests.\(UUID().uuidString)"
     let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))

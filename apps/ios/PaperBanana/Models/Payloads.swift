@@ -35,8 +35,8 @@ struct JobCreatePayload {
       "provider": activeRoutes?.main.accessProvider.rawValue ?? provider.rawValue,
       "apiKeys": apiKeysBody(),
       "taskName": taskName.rawValue,
-      "methodContent": methodContent,
-      "caption": caption,
+      "methodContent": String(methodContent.prefix(GenerationDraft.methodContentLimit)),
+      "caption": String(caption.prefix(GenerationDraft.captionLimit)),
       "infographicCategory": infographicCategory,
       "outputFormat": outputFormat.rawValue,
       "imageSize": imageSize.rawValue,
@@ -52,7 +52,7 @@ struct JobCreatePayload {
       "maxCriticRounds": maxCriticRounds
     ]
     if !negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-      body["negativePrompt"] = negativePrompt
+      body["negativePrompt"] = String(negativePrompt.prefix(GenerationDraft.negativePromptLimit))
     }
     if let activeRoutes {
       body["modelRoutes"] = activeRoutes.body
