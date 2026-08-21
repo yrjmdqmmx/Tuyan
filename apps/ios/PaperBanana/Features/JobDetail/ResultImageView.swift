@@ -5,6 +5,7 @@ struct ResultImageView: View {
   @Bindable var model: AppModel
   let image: ResultImage
   let outputFormat: OutputFormat
+  let job: Job
 
   @State private var isViewerPresented = false
   @Namespace private var zoomNamespace
@@ -93,6 +94,13 @@ struct ResultImageView: View {
       .controlSize(.small)
       .disabled(model.exports.exportingResultImageID == image.id || image.url.isEmpty)
       .accessibilityLabel("保存或分享候选图 \(image.candidateID + 1)")
+      Button { model.beginRefine(job: job, image: image) } label: {
+        Image(systemName: "slider.horizontal.3")
+      }
+      .paperGlassButton()
+      .controlSize(.small)
+      .accessibilityLabel("精修候选图 \(image.candidateID + 1)")
+      .accessibilityIdentifier("result.refine.\(image.candidateID)")
     }
   }
 }

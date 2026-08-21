@@ -149,6 +149,10 @@ final class GenerationStore {
     (try? keychain.string(for: ProviderCatalog.config(for: provider).keyName)) ?? ""
   }
 
+  func isArkRouteVerified(role: ModelRole, route: ModelRoute) -> Bool {
+    route.accessProvider != .ark || verifiedArkRouteKeys.contains("\(role.rawValue):\(route.modelId)")
+  }
+
   func models(for role: ModelRole, provider: ProviderID) -> [RegistryModel] {
     registryStore.registry?.models(for: provider, role: role) ?? []
   }

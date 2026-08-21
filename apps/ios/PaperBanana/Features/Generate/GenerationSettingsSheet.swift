@@ -25,6 +25,7 @@ struct GenerationSettingsSheet: View, Identifiable {
           Picker("信息图类别", selection: $model.generation.draft.infographicCategoryID) { ForEach(PaperBananaSamples.categories) { Text($0.label).tag($0.id) } }
         }
         if model.generation.draft.configurationMode == .advanced { advancedSection }
+        if model.generation.draft.configurationMode == .simple, hasArkRoute { arkVerificationSection }
       }
       .navigationTitle("生成设置")
       .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() } } }
@@ -52,7 +53,9 @@ struct GenerationSettingsSheet: View, Identifiable {
       routePicker("参考图识别模型", role: .vision)
       if !model.generation.draft.referenceImages.isEmpty { Picker("参考图处理方式", selection: $model.generation.draft.referenceImageMode) { Text(ReferenceImageMode.visionModel.title).tag(ReferenceImageMode.visionModel); Text(ReferenceImageMode.mainModel.title).tag(ReferenceImageMode.mainModel).disabled(!model.generation.mainModelCanReadReferenceImages) }.pickerStyle(.segmented) }
     }
-    if hasArkRoute {
+    if hasArkRoute { arkVerificationSection }
+  }
+  private var arkVerificationSection: some View {
       Section("方舟路线验证") {
         Text("非付费探测只验证主/视觉路线；图像路线可能产生费用，必须单独确认。").font(.footnote).foregroundStyle(.secondary)
         Button("验证非付费方舟路线") { Task { await model.generation.verifyArkRoutes(confirmPaidImageProbe: false, includeImageRoute: false) } }
@@ -66,7 +69,6 @@ struct GenerationSettingsSheet: View, Identifiable {
         }
         if !model.generation.arkProbeStatus.isEmpty { Text(model.generation.arkProbeStatus).font(.footnote).foregroundStyle(.secondary) }
       }
-    }
   }
   private var hasArkRoute: Bool { model.generation.activeRoutes.map { [$0.main, $0.image, $0.vision].contains { $0.accessProvider == .ark } } == true }
   private var hasArkImageRoute: Bool { model.generation.requiredRouteRoles.contains(.image) && model.generation.route(for: .image)?.accessProvider == .ark }

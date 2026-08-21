@@ -101,7 +101,7 @@ final class PayloadEncodingTests: XCTestCase {
     XCTAssertEqual(body["mainModelName"] as? String, "gpt-5.5")
     XCTAssertEqual(body["imageModelName"] as? String, "gpt-image-2")
     XCTAssertEqual(body["referenceVisionModelName"] as? String, "gpt-4.1")
-    XCTAssertEqual(body["sourceImageUrl"] as? String, "https://example.com/source.png")
+    XCTAssertNil(body["sourceImageUrl"])
     XCTAssertEqual(body["sourceImageObjectKey"] as? String, "jobs/source.png")
     XCTAssertEqual(body["editInstruction"] as? String, "放大标签并减少装饰。")
     XCTAssertEqual(body["aspectRatio"] as? String, "16:9")

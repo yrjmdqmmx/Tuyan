@@ -17,6 +17,7 @@ final class AppModel {
   var jobs: JobsStore
   var modelRegistry: ModelRegistryStore
   var generation: GenerationStore
+  var refine: RefineStore
   var exports: ExportCenter
   var templates: SavedTemplateStore
 
@@ -33,7 +34,9 @@ final class AppModel {
     self.jobs = jobs
     let modelRegistry = ModelRegistryStore(apiClient: client)
     self.modelRegistry = modelRegistry
-    generation = GenerationStore(apiClient: client, settings: settings, jobs: jobs, registryStore: modelRegistry)
+    let generationStore = GenerationStore(apiClient: client, settings: settings, jobs: jobs, registryStore: modelRegistry)
+    generation = generationStore
+    refine = RefineStore(apiClient: client, settings: settings, jobs: jobs, generation: generationStore)
     exports = ExportCenter(apiClient: client, settings: settings)
     templates = SavedTemplateStore()
 
@@ -67,6 +70,7 @@ final class AppModel {
     await settings.refreshHealth()
     await modelRegistry.refresh(apiBase: settings.apiBase)
     generation.normalizeDraftWithLiveRegistry()
+    refine.normalizeWithLiveRegistry()
     #if DEBUG
     // 截图 / QA 走查注入的假登录态不走 refreshSession（否则无后端会被覆盖为未登录）。
     if UserDefaults.standard.bool(forKey: "pb-preview-signed-in") { return }
@@ -75,6 +79,19 @@ final class AppModel {
     if auth.currentUser != nil {
       await jobs.loadUserJobs(silent: true)
     }
+  }
+
+  /// Source is accepted only from an existing result belonging to the current
+  /// task or the signed-in user's record list. No arbitrary URL entry exists.
+  func beginRefine(job: Job, image: ResultImage) {
+    let isCurrent = job.id == jobs.currentJobID
+    let isOwnedRecord = jobs.userJobs.contains { $0.id == job.id }
+    guard isCurrent || isOwnedRecord else {
+      presentAlert("只能精修当前生成结果或本账号任务记录中的图片。")
+      return
+    }
+    refine.begin(source: RefineSource(jobID: job.id, image: image))
+    selectedTab = .refine
   }
 
   /// 模板套用：同时更新生成草稿与当前 tab。

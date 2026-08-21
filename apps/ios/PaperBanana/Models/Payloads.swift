@@ -88,6 +88,38 @@ struct RefineImagePayload {
   var configurationMode: ConfigurationMode = .simple
   var modelRoutes: ModelRoutes? = nil
   var requiredRouteRoles: [ModelRole] = [.image]
+  /// Sent because the Laf request schema uses it to select direct-edit vs
+  /// analyze-redraw execution. Omit only for legacy callers with no registry.
+  var refineMode: String? = nil
+
+  init(
+    provider: ProviderID, apiKeys: [ProviderID: String], mainModelName: String,
+    imageModelName: String, referenceVisionModelName: String, sourceImageURL: String,
+    sourceImageObjectKey: String?, editInstruction: String, aspectRatio: String,
+    imageSize: ImageSize, configurationMode: ConfigurationMode = .simple,
+    modelRoutes: ModelRoutes? = nil, requiredRouteRoles: [ModelRole] = [.image],
+    refineMode: String? = nil
+  ) {
+    self.provider = provider; self.apiKeys = apiKeys; self.mainModelName = mainModelName
+    self.imageModelName = imageModelName; self.referenceVisionModelName = referenceVisionModelName
+    self.sourceImageURL = sourceImageURL; self.sourceImageObjectKey = sourceImageObjectKey
+    self.editInstruction = editInstruction; self.aspectRatio = aspectRatio; self.imageSize = imageSize
+    self.configurationMode = configurationMode; self.modelRoutes = modelRoutes; self.requiredRouteRoles = requiredRouteRoles; self.refineMode = refineMode
+  }
+
+  init(
+    provider: ProviderID, apiKeys: [ProviderID: String], mainModelName: String,
+    imageModelName: String, referenceVisionModelName: String, source: RefineSource,
+    editInstruction: String, aspectRatio: String, imageSize: ImageSize,
+    configurationMode: ConfigurationMode = .simple, modelRoutes: ModelRoutes? = nil,
+    requiredRouteRoles: [ModelRole] = [.image], refineMode: String? = nil
+  ) {
+    self.init(provider: provider, apiKeys: apiKeys, mainModelName: mainModelName, imageModelName: imageModelName,
+              referenceVisionModelName: referenceVisionModelName, sourceImageURL: source.previewURL,
+              sourceImageObjectKey: source.objectKey, editInstruction: editInstruction, aspectRatio: aspectRatio,
+              imageSize: imageSize, configurationMode: configurationMode, modelRoutes: modelRoutes,
+              requiredRouteRoles: requiredRouteRoles, refineMode: refineMode)
+  }
 
   func paperBananaBody() -> [String: Any] {
     var body: [String: Any] = [
@@ -99,7 +131,6 @@ struct RefineImagePayload {
       "mainModelName": modelRoutes?.main.modelId ?? mainModelName,
       "imageModelName": modelRoutes?.image.modelId ?? imageModelName,
       "referenceVisionModelName": modelRoutes?.vision.modelId ?? referenceVisionModelName,
-      "sourceImageUrl": sourceImageURL,
       "editInstruction": editInstruction,
       "aspectRatio": aspectRatio,
       "imageSize": imageSize.rawValue
@@ -107,7 +138,10 @@ struct RefineImagePayload {
     if let modelRoutes { body["modelRoutes"] = modelRoutes.body }
     if let sourceImageObjectKey, !sourceImageObjectKey.isEmpty {
       body["sourceImageObjectKey"] = sourceImageObjectKey
+    } else if !sourceImageURL.isEmpty {
+      body["sourceImageUrl"] = sourceImageURL
     }
+    if let refineMode, !refineMode.isEmpty { body["refineMode"] = refineMode }
     return body
   }
 

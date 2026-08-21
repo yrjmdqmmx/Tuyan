@@ -39,14 +39,14 @@ struct RootView: View {
       Tab(AppTab.generate.title, systemImage: AppTab.generate.symbol, value: AppTab.generate) {
         GenerateView(model: model)
       }
+      Tab(AppTab.refine.title, systemImage: AppTab.refine.symbol, value: AppTab.refine) {
+        RefineView(model: model)
+      }
       Tab(AppTab.records.title, systemImage: AppTab.records.symbol, value: AppTab.records) {
         RecordsView(model: model)
       }
       Tab(AppTab.guide.title, systemImage: AppTab.guide.symbol, value: AppTab.guide) {
         GuideView(model: model)
-      }
-      Tab(AppTab.templates.title, systemImage: AppTab.templates.symbol, value: AppTab.templates) {
-        TemplatesView(model: model)
       }
       Tab(AppTab.settings.title, systemImage: AppTab.settings.symbol, value: AppTab.settings) {
         SettingsView(model: model)
