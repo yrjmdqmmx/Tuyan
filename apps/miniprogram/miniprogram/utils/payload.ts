@@ -45,7 +45,6 @@ export interface CreateJobInput {
 // createJob 请求体构造，字段与 packages/api/src/jobs.js 的 createJobRequest 白名单逐一对应。
 // 纯函数（不依赖 wx），便于 node 单测覆盖 plot / 锁检索 / 手动参考的组合语义。
 export function buildCreateJobPayload(input: CreateJobInput): Record<string, unknown> {
-  const isAdvancedMode = input.configurationMode === 'advanced'
   const hasUploadedReferences = input.uploadedReferenceImages.length > 0
   const modelRoutes = input.modelRoutes || {
     main: { accessProvider: input.provider, modelId: String(input.mainModelName || '') },
@@ -57,10 +56,10 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
     modelRoutes,
     registry: input.registry || null,
   })
-  const pipelineMode = isAdvancedMode ? input.pipelineMode : 'planner_critic'
-  const retrievalSetting = isAdvancedMode && !hasUploadedReferences ? input.retrievalSetting : 'none'
+  const pipelineMode = input.pipelineMode
+  const retrievalSetting = !hasUploadedReferences ? input.retrievalSetting : 'none'
   const taskName = input.categoryId === PLOT_CATEGORY_ID ? 'plot' : 'diagram'
-  const maxCriticRounds = isAdvancedMode ? input.maxCriticRounds : 1
+  const maxCriticRounds = input.maxCriticRounds
   const routeRoles = requiredCreateRouteRoles({
     outputFormat: input.outputFormat,
     taskName,
@@ -90,9 +89,9 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
     pipelineMode,
     // 上传参考图时以图为唯一风格来源，前端同步关闭检索（后端亦强制，二者一致）。
     retrievalSetting,
-    manualReferenceIds: isAdvancedMode && input.retrievalSetting === 'manual' && !hasUploadedReferences ? input.manualReferenceIds : [],
+    manualReferenceIds: input.retrievalSetting === 'manual' && !hasUploadedReferences ? input.manualReferenceIds : [],
     aspectRatio: input.aspectRatio,
-    numCandidates: isAdvancedMode ? input.numCandidates : 1,
+    numCandidates: input.numCandidates,
     maxCriticRounds,
   }
 }

@@ -47,6 +47,7 @@ export interface Job {
   user_email: string
   configuration_mode: string
   routing_mode: string
+  model_routing_source: string
   model_routes: ModelRoutes | Record<string, never>
   output_format: OutputFormat
   output_format_text: string
@@ -127,7 +128,8 @@ export function normalizeJob(input: unknown): Job {
     client_platform_text: formatClientPlatform(job.client_platform || job.clientPlatform),
     user_email: String(job.user_email || job.userEmail || ''),
     configuration_mode: String(job.configuration_mode || job.configurationMode || 'simple'),
-    routing_mode: String(job.routing_mode || job.routingMode || (job.model_routes || job.modelRoutes ? 'explicit' : 'legacy')),
+    routing_mode: String(job.routing_mode || job.routingMode || ''),
+    model_routing_source: String(job.model_routing_source || job.modelRoutingSource || (job.model_routes || job.modelRoutes ? 'explicit' : 'legacy-derived')),
     model_routes: normalizeJobModelRoutes(job.model_routes || job.modelRoutes),
     output_format: outputFormat,
     output_format_text: formatOutputFormat(outputFormat),
@@ -248,11 +250,25 @@ export function formatRetrievalSetting(setting: string): string {
 
 export function resolveImageUrl(url: string, jobId = 'image', index = 0, mimeType = '', fallbackFormat: unknown = ''): string {
   if (!url) return ''
+  // 开发者工具对 USER_DATA_PATH 文件生成的临时代理地址只在原模拟会话有效。
+  // 旧地址进入 Storage 后会返回 500，必须在普通 http(s) 分支之前丢弃。
+  if (/^https?:\/\/(?:127\.0\.0\.1|localhost):\d+\/__APP__\/paperbanana-/i.test(url)) return ''
   if (/^https?:\/\//i.test(url)) return stabilizeRemoteUrl(url)
   if (/^data:image\//i.test(url)) return cacheDataImage(url, jobId, index, mimeType, fallbackFormat)
   // 已落盘的本地缓存路径（如本机记录 round-trip）原样返回，不能拼到 API_BASE 上
-  if (/^wxfile:/i.test(url) || (userDataPath() && url.indexOf(userDataPath()) === 0)) return url
+  if (/^wxfile:/i.test(url) || (userDataPath() && url.indexOf(userDataPath()) === 0)) return localImageExists(url) ? url : ''
   return `${API_BASE}${url}`
+}
+
+function localImageExists(filePath: string): boolean {
+  try {
+    const fs = wx.getFileSystemManager()
+    if (!fs || typeof fs.accessSync !== 'function') return true
+    fs.accessSync(filePath)
+    return true
+  } catch {
+    return false
+  }
 }
 
 // 桶签名 URL 每次 getJob 都重新签发（查询串变化）。轮询期间 src 频变会让 <image>
@@ -312,16 +328,14 @@ export function cleanupCachedImages() {
   const dir = userDataPath()
   if (!dir) return
   const fs = wx.getFileSystemManager()
-  fs.readdir({
-    dirPath: dir,
-    success(res) {
-      res.files.forEach((name) => {
-        if (String(name).indexOf('paperbanana-') === 0) {
-          fs.unlink({ filePath: `${dir}/${name}` })
-        }
-      })
-    },
-  })
+  try {
+    fs.readdirSync(dir).forEach((name) => {
+      if (String(name).indexOf('paperbanana-') === 0) fs.unlinkSync(`${dir}/${name}`)
+    })
+    writtenCacheFiles.clear()
+  } catch (error) {
+    console.warn('Failed to clean cached images', error)
+  }
 }
 
 function normalizeReferenceImageModeUsed(value: unknown): ReferenceImageModeUsed {
@@ -400,7 +414,6 @@ export function toCurrentJobSummary(job: Job): Job {
 export function toRecordJobSummary(job: Job): Job {
   return {
     ...job,
-    method_content: '',
     logs_tail: '',
     stages: [],
     retrieved_references: [],

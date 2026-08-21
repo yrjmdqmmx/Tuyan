@@ -16,4 +16,4 @@
 .template-body { padding:20rpx; }
 .template-title { font-size:27rpx; font-weight:830; }
 .template-summary { min-height:66rpx; margin-top:8rpx; color:#66706c; font-size:21rpx; line-height:1.55; }
-.template-apply { margin:18rpx 0 0; height:62rpx; border-radius:13rpx; background:#244f43; color:#fff; font-size:22rpx; font-weight:780; line-height:62rpx; }
+.template-apply { display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;margin:18rpx 0 0;padding:0;height:62rpx;border-radius:13rpx;background:#244f43;color:#fff;font-size:22rpx;font-weight:780;line-height:1.2; }

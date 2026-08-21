@@ -1,3 +1,20 @@
 .records-panel {
   margin-top: 24rpx;
+  padding: 22rpx;
 }
+.records-panel .section-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12rpx}.records-head-actions{display:grid;gap:8rpx}.records-head-actions button{margin:0}
+.records-panel .job-record-card{gap:16rpx;padding:18rpx}
+.records-panel .job-record-title{font-size:24rpx;line-height:1.5;white-space:normal;word-break:break-word}
+.job-record-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10rpx}
+.job-record-meta view{display:grid;gap:4rpx;min-width:0;padding:12rpx;border-radius:12rpx;background:#f4f5f1}
+.job-record-meta view text:first-child{color:#858d88;font-size:17rpx;font-weight:760}
+.job-record-meta view text:last-child{overflow:visible;color:#303a36;font-size:20rpx;line-height:1.4;text-overflow:clip;white-space:normal;word-break:break-word}
+.job-models{padding:10rpx 14rpx}
+.job-models view{display:grid;grid-template-columns:145rpx minmax(0,1fr);align-items:start;gap:12rpx;padding:10rpx 0;border-bottom:1rpx solid #dde1dc}
+.job-models view:last-child{border-bottom:0}
+.job-models text:first-child{font-size:18rpx}
+.job-models text:last-child{overflow:visible;font-size:20rpx;line-height:1.45;text-overflow:clip;white-space:normal;word-break:break-all}
+.job-prompt-preview{display:grid;gap:8rpx;max-height:none;overflow:visible;font-size:21rpx;line-height:1.55;white-space:normal;word-break:break-word}
+.prompt-label{color:#285c4c;font-size:18rpx;font-weight:820}
+.record-actions{display:grid;grid-template-columns:1fr 1fr;gap:10rpx}.record-actions button{display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;margin:0;padding:0;line-height:1.2}
+.account-row{min-width:0}.account-row text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

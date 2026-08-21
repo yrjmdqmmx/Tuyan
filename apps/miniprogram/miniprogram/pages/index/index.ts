@@ -164,6 +164,7 @@ Component({
     registryError: '',
     settings: {} as GenerationSettings | Record<string, never>,
     settingsSummary: '正在读取服务端默认路线…',
+    settingsSummaryDetails: [] as string[],
     showGenerationSettings: false,
     apiKeysForSheet: {} as Record<string, string>,
     settingsExecutionRoles: [] as string[],
@@ -295,6 +296,7 @@ Component({
         registryError: '',
         settings,
         settingsSummary: formatSettingsSummary(settings),
+        settingsSummaryDetails: formatSettingsSummaryDetails(settings),
       })
       this.syncLegacySettings(settings)
       this.refreshCanSubmit()
@@ -324,11 +326,19 @@ Component({
 
     closeGenerationSettings() { this.setData({ showGenerationSettings: false }) },
 
-    saveGenerationSettings(event: WechatMiniprogram.CustomEvent<{ settings: GenerationSettings; apiKeys: Record<string, string> }>) {
+    saveGenerationSettings(event: WechatMiniprogram.CustomEvent<{ settings: GenerationSettings; apiKeys: Record<string, string>; manualReferenceIds: string[] }>) {
       const settings = event.detail.settings
       replaceApiKeys(event.detail.apiKeys)
+      const manualReferenceIds = settings.retrievalSetting === 'manual' ? event.detail.manualReferenceIds || [] : []
       if (this.data.referenceImages.length && settings.retrievalSetting !== 'none') settings.retrievalSetting = 'none'
-      this.setData({ settings, settingsSummary: formatSettingsSummary(settings), showGenerationSettings: false, apiKeysForSheet: getApiKeys() })
+      this.setData({
+        settings,
+        settingsSummary: formatSettingsSummary(settings),
+        settingsSummaryDetails: formatSettingsSummaryDetails(settings),
+        manualReferenceIds: settings.retrievalSetting === 'manual' ? manualReferenceIds : [],
+        showGenerationSettings: false,
+        apiKeysForSheet: getApiKeys(),
+      })
       this.syncLegacySettings(settings)
       this.refreshCanSubmit()
     },
@@ -1165,5 +1175,15 @@ function defaultGenerationSettings(registry: ModelRegistry): GenerationSettings 
 
 function formatSettingsSummary(settings: GenerationSettings): string {
   const routes = settings.modelRoutes
-  return `${routes.main.modelId} · ${routes.image.modelId} · ${settings.aspectRatio} · ${settings.outputFormat.toUpperCase()}${settings.outputFormat === 'png' ? ` · ${settings.imageSize}` : ''}`
+  return `主 ${routes.main.modelId} · 图 ${routes.image.modelId} · 识 ${routes.vision.modelId}`
+}
+
+function formatSettingsSummaryDetails(settings: GenerationSettings): string[] {
+  const pipelineLabels: Record<string, string> = { planner_critic: '规划器 + 评审器', full: '完整流程', vanilla: '基础生成' }
+  const retrievalLabels: Record<string, string> = { none: '不检索', auto: '自动检索', random: '随机参考', manual: '手动参考' }
+  return [
+    `${settings.aspectRatio === 'auto' ? '自动比例' : settings.aspectRatio} · ${settings.outputFormat.toUpperCase()}${settings.outputFormat === 'png' ? ` · ${settings.imageSize}` : ''}`,
+    `${pipelineLabels[settings.pipelineMode] || settings.pipelineMode} · ${retrievalLabels[settings.retrievalSetting] || settings.retrievalSetting}`,
+    `${settings.numCandidates} 张候选 · ${settings.maxCriticRounds} 轮评审`,
+  ]
 }

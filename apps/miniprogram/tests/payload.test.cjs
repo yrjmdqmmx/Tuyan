@@ -64,14 +64,14 @@ assert.equal(withRefs.referenceImageMode, 'vision_model')
 const plot = buildCreateJobPayload({ ...baseInput, categoryId: 'data_stat', categoryLabel: '数据统计图' })
 assert.equal(plot.taskName, 'plot')
 
-// 普通模式 ⇒ 固定默认流程参数，检索不生效
+// 普通模式同样允许配置流程、检索、候选与评审，只限制模型路由为单渠道。
 const simple = buildCreateJobPayload({ ...baseInput, configurationMode: 'simple' })
 assert.equal(simple.pipelineMode, 'planner_critic')
-assert.equal(simple.retrievalSetting, 'none')
-assert.deepEqual(simple.manualReferenceIds, [])
+assert.equal(simple.retrievalSetting, 'manual')
+assert.deepEqual(simple.manualReferenceIds, ['ref-1', 'ref-2'])
 assert.equal(simple.aspectRatio, '21:9')
-assert.equal(simple.numCandidates, 1)
-assert.equal(simple.maxCriticRounds, 1)
+assert.equal(simple.numCandidates, 2)
+assert.equal(simple.maxCriticRounds, 2)
 // imageSize 普通模式同样生效（web 端清晰度对两种模式都可见）
 assert.equal(simple.imageSize, '2K')
 
