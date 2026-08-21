@@ -163,7 +163,6 @@ final class JobsStore {
     localRecordsCache.clear()
     refineSources = [:]
     refineSourceCache.clear()
-    serverOwnedJobIDs = []
   }
 
   private func startPolling(jobID: String) {

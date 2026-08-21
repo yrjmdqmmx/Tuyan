@@ -191,6 +191,20 @@ final class JobsStoreTests: XCTestCase {
     store.pausePolling()
   }
 
+  func testClearLocalJobsDoesNotRevokeServerConfirmedRefineOwnership() async throws {
+    let store = try makeSignedInStore()
+    defer { store.clearForSignOut() }
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"jobs":[{"id":"server-owned","status":"succeeded"}]}"#)
+    }
+    await store.loadUserJobs(silent: true)
+    XCTAssertTrue(store.canRefine(jobID: "server-owned"))
+
+    store.clearLocalJobs()
+
+    XCTAssertTrue(store.canRefine(jobID: "server-owned"))
+  }
+
   func testMissingServerSourceKeepsRegisteredRefineSourceThroughCurrentRefresh() async throws {
     let store = makeStore()
     let source = RefineSource(jobID: "generate-1", image: resultImage(objectKey: "jobs/generate-1/image.png"))
