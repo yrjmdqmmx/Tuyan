@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-21] 精选模板、负向提示词与权威比例能力 v9 — by Codex
+变更：Core 注册表升级为 `2026-08-21.v9`，Web 新增 6 套精选参考模板、醒目的生成设置卡、十种固定比例与新版教程；共享 API / Core 新增精确参考 ID 查询和独立负向提示词。新增字段均向后兼容，其他端可暂时忽略，但不得自行推断模型比例能力或把不支持比例降级为 `16:9`。
+契约（影响其他端 / 共享）：
+- **精确参考图库**：`referenceLibrary` 新增可选 `referenceIds`，只接受 1–6 个去重后的 ID，保持请求顺序并只签名所选图片；不得与 `scope/limit/page/pageSize/query/visualCategory/researchDomain/taskName` 混用。请求冲突返回 `400 + REFERENCE_LIBRARY_REQUEST_INVALID`；缺失、无图或无法签名返回 `422 + REFERENCE_LIBRARY_SELECTION_INVALID`。
+- **负向提示词**：`createJob.negativePrompt` 可选、独立于 `methodContent`，trim 后最多 1,000 字符；Laf 使用 camelCase，FastAPI 兼容路径映射为 `negative_prompt`。Core 独立校验、持久化、计入输入字符数，并按方法内容既有可见范围返回；规划、首次渲染、评审后重渲染、SVG 与 Plot 的创建路径均使用独立 `<avoidance_constraints>` 区块，精修 action 语义不变。
+- **比例能力**：固定目录为 `1:1/3:2/2:3/4:3/3:4/16:9/9:16/21:9/1:4/4:1`，另保留 `auto`。image 能力新增必定数组 `aspectRatios` 与 `refineAspectRatios`；OpenRouter 仅取官方目录 `supported_parameters.aspect_ratio` 的规范交集，缺失即空数组；其他 Provider 使用逐模型权威数组及精确比例/尺寸映射，未知或不支持项不得静默回落。
+- **失败关闭**：非法比例返回 `400 + INVALID_ASPECT_RATIO`；生成不支持返回 `400 + ASPECT_RATIO_UNSUPPORTED`；精修不支持返回 `400 + REFINE_ASPECT_RATIO_UNSUPPORTED`。三类校验均须发生在账号检查、admission、任务写入和付费 Provider 调用前。旧客户端省略比例仍按历史 `16:9`；当所选模型不支持时会明确失败，客户端应从注册表选择支持项或 `auto`。
+各端待办：
+- [x] paperbanana-api / Laf Core / packages-api（精确参考、负向提示词、v9 比例目录、准入与 Provider 映射、TDD）
+- [x] Web（6 套模板与轮播/预览/安全套用、设置卡、十比例禁用原因、负向提示词、新教程与桌面/390px 验收）
+- [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需消费 `negativePrompt`、`aspectRatios/refineAspectRatios` 与新失败码；未改造前继续兼容旧请求，但不得宣称未登记比例可用）
+- [ ] 部署 / 运维（合并后先发布香港 Core、再发布 Pages；只做非计费生产验证，真实比例与负向提示词生成仍需单独授权）
+
 ### [2026-08-20] OpenRouter 34 模型付费验证与 PNG 统一输出 — by Codex
 变更：Core 注册表升级为 `2026-08-20.v8`。在用户授权的 9 美元上限内，对此前因输出格式元数据不兼容而禁用的 34 个 OpenRouter 图片模型逐项执行付费生成，34/34 均返回真实图片；实际默认响应为 14 个 PNG、10 个 JPEG、10 个 WebP。运行时按这份精确 ID 白名单开放模型，并在存储前统一为真实 PNG；本次验证总成本约 2.42 美元。
 契约（影响其他端 / 共享）：
