@@ -8,6 +8,7 @@ struct ReferenceLibrarySheet: View {
   @State private var researchDomain = ""
   @State private var requestedPage = 1
   @State private var preview: ReferenceLibraryItem?
+  @State private var searchDebouncer = ReferenceLibrarySearchDebouncer<ReferenceLibraryPageRequest>()
 
   private var page: ReferenceLibraryPage? { model.generation.referenceLibraryPage }
   private var request: ReferenceLibraryPageRequest { .init(page: requestedPage, query: query, visualCategory: visualCategory.isEmpty ? nil : visualCategory, researchDomain: researchDomain.isEmpty ? nil : researchDomain) }
@@ -29,10 +30,11 @@ struct ReferenceLibrarySheet: View {
       .searchable(text: $query, prompt: "搜索主题、图示或论文")
       .accessibilityIdentifier("reference.search")
       .task(id: "\(requestedPage)|\(query)|\(visualCategory)|\(researchDomain)") {
-        try? await Task.sleep(for: .milliseconds(320))
-        guard !Task.isCancelled else { return }
-        await model.generation.loadReferenceLibraryPage(request)
+        searchDebouncer.schedule(request, operation: { request in
+          await model.generation.loadReferenceLibraryPage(request)
+        }, onError: { _ in })
       }
+      .onDisappear { searchDebouncer.cancel() }
       .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() } } }
       .sheet(item: $preview) { ReferenceLibraryPreview(item: $0, imageURL: model.resolvedImageURL($0.imageURL)) }
     }

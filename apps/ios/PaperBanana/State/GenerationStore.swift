@@ -424,7 +424,10 @@ final class GenerationStore {
       let page = try await apiClient.referenceLibraryPage(apiBase: settings.apiBase, request: request)
       referenceLibraryPage = page
       referenceLibrary = page.references
+    } catch is CancellationError {
+      return
     } catch {
+      guard !Task.isCancelled else { return }
       referenceLibraryError = formatUserFacingError(error)
     }
   }

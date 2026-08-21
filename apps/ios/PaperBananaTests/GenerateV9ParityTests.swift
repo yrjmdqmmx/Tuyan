@@ -116,6 +116,37 @@ final class GenerateV9ParityTests: XCTestCase {
     XCTAssertTrue(FeaturedTemplateApplyDecision.requiresConfirmation(draft: draft, baseline: configuration))
   }
 
+  func testReferenceSearchDebouncerOnlyExecutesLastRapidQuery() async throws {
+    var executed: [String] = []
+    var observedDelays: [Duration] = []
+    let debouncer = ReferenceLibrarySearchDebouncer<String>(sleep: { duration in
+      observedDelays.append(duration)
+      try await Task.sleep(for: .milliseconds(25))
+    })
+
+    debouncer.schedule("a", operation: { executed.append($0) }) { _ in XCTFail("Cancellation must not be reported") }
+    await Task.yield()
+    debouncer.schedule("ab", operation: { executed.append($0) }) { _ in XCTFail("Cancellation must not be reported") }
+    await Task.yield()
+    debouncer.schedule("abc", operation: { executed.append($0) }) { _ in XCTFail("Cancellation must not be reported") }
+    try await Task.sleep(for: .milliseconds(80))
+
+    XCTAssertEqual(executed, ["abc"])
+    XCTAssertTrue(observedDelays.allSatisfy { $0 == ReferenceLibrarySearchDebouncer<String>.delay })
+  }
+
+  func testReferenceSearchDebouncerDoesNotReportCancelledTaskFailure() async throws {
+    var executed = false
+    var errors: [String] = []
+    let debouncer = ReferenceLibrarySearchDebouncer<String>(sleep: { _ in throw CancellationError() })
+
+    debouncer.schedule("cancelled", operation: { _ in executed = true }) { error in errors.append(String(describing: error)) }
+    try await Task.sleep(for: .milliseconds(20))
+
+    XCTAssertFalse(executed)
+    XCTAssertTrue(errors.isEmpty)
+  }
+
   func testSavedTemplateV1MigratesRoutesAndNegativePromptIntoV2() throws {
     let suite = "GenerateV9ParityTests.\(UUID().uuidString)"
     let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
