@@ -132,7 +132,7 @@ Replace only the unchecked deployment/operations line in the top v8 entry with:
 6. Confirm only the intended `SYNC.md` checkbox and explanatory wording changed.
 7. Confirm `pnpm-lock.yaml` is unchanged.
 8. Run `git diff --check` and review the complete diff.
-9. Confirm no application, dependency-lock, workflow, or deployment files changed.
+9. Confirm no application source/runtime, dependency-lock, workflow, or deployment files changed beyond the approved `apps/miniprogram/package.json` metadata-only alignment.
 
 ## Rollback
 

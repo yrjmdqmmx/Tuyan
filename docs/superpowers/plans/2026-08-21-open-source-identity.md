@@ -273,6 +273,7 @@ Expected metadata:
 Expected changed-file set includes the already-approved design/plan documents plus only:
 
 ```text
+apps/miniprogram/package.json
 LICENSE
 NOTICE
 README.md
