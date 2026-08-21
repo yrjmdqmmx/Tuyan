@@ -34,7 +34,10 @@ PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员�
 **2.4 设备本地缓存（不额外上传）**
 - 为提升体验，本应用会在您的设备本机缓存**最近的任务记录（JSON）**和**结果图（通过系统 URLCache）**。这些是本地缓存，除生成与展示流程本身已涉及的传输外，不会被额外上传。
 
-**2.5 关于您的第三方平台 API Key（重要）**
+**2.5 运行安全字段与最小化**
+- 为保障服务安全、防范滥用、排查兼容性与故障，我们会在请求和安全日志中处理 **IP 地址**、**User-Agent** 与 **clientPlatform**（例如 ios）。这些字段只用于上述运行与安全目的，并按数据最小化原则限制访问和留存；不用于广告、画像或跨应用/跨网站追踪。
+
+**2.6 关于您的第三方平台 API Key（重要）**
 - 本应用采用 **BYOK（自带密钥，Bring Your Own Key）** 模式。iOS 客户端将 API Key 持久保存在设备 Keychain（不随 iCloud 同步）。
 - 当您发起生成任务时，API Key 会作为短生命周期请求字段经我们的香港网关与核心服务转发给您选择的模型平台，仅用于完成该次调用；我们**不持久化、不记录、不回显** API Key，也不将其写入任务数据库或应用日志。
 - 请妥善保管您的 API Key，并对其安全及在第三方平台产生的用量与费用负责。
@@ -96,7 +99,7 @@ PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员�
 - 您已保存的模板；
 - 本设备本机保存的 API Key 等本地数据。
 
-**此操作不可恢复。** 删除完成后，服务端将清除您的会话并真删账号，本应用将自动退回未登录状态。该入口呼应 Apple App Store 审核指南 5.1.1(v) 对应用内账号删除的要求。
+**此操作不可恢复。** 确认删除后，我们先冻结该账号的新任务与新上传；已签发且仍有效的直传链接及已在运行的任务会被排空。随后服务端清除会话，删除账号及关联数据，并写入删除 tombstone；后台持续重扫和清除在直传链接失效前已经开始、但在失效后才完成上传的迟到对象。删除完成后，本应用自动退回未登录状态。该入口呼应 Apple App Store 审核指南 5.1.1(v) 对应用内账号删除的要求。
 
 ### 8. 数据安全
 
@@ -150,7 +153,10 @@ We collect only the information necessary to provide and improve the App:
 **2.4 On-Device Local Cache (not separately uploaded)**
 - To improve your experience, the App caches your **recent job records (JSON)** and **output images (via the system URLCache)** locally on your device. These are local caches and are not uploaded beyond the transfers already involved in the generation and display flows.
 
-**2.5 About Your Third-Party Platform API Key (Important)**
+**2.5 Runtime Safety Fields and Data Minimization**
+- To maintain service security, prevent abuse, and diagnose compatibility and failures, we process **IP address**, **User-Agent**, and **clientPlatform** (for example, ios) in request and security logs. These fields are used only for those operational and security purposes, with access and retention limited under data minimization; they are not used for advertising, profiling, or cross-app/cross-site tracking.
+
+**2.6 About Your Third-Party Platform API Key (Important)**
 - The App uses a **BYOK (Bring Your Own Key)** model. On iOS, API Keys are persisted in the device Keychain (not synced through iCloud).
 - When you start a job, the API Key is an **ephemeral** request field forwarded through our Hong Kong gateway and core service to the platform you selected, solely to complete that call. We do **not persist, log, or echo** API Keys, and do not place them in the job database or application logs.
 - Please keep your API Key secure. You are responsible for its safety and for any usage and charges it incurs on the third-party platform.
@@ -212,7 +218,7 @@ Deleting your account permanently removes:
 - Templates you saved;
 - Local data on this device, including stored API Keys.
 
-**This action cannot be undone.** Once complete, the server clears your session and deletes your account, and the App returns to a signed-out state. This entry point corresponds to Apple App Store Review Guideline 5.1.1(v) on in-app account deletion.
+**This action cannot be undone.** After deletion is confirmed, we first freeze new jobs and uploads for the account; valid direct-upload links already issued and in-flight jobs are allowed to drain. The server then clears the session, deletes the account and associated data, and writes a deletion tombstone; a background sweep continues to remove late objects whose upload started before a link expired but completed afterwards. The App then returns to a signed-out state. This entry point corresponds to Apple App Store Review Guideline 5.1.1(v) on in-app account deletion.
 
 ### 8. Data Security
 

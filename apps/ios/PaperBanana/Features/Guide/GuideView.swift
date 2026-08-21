@@ -103,7 +103,7 @@ struct GuideView: View {
     GlassPanel {
       VStack(alignment: .leading, spacing: Theme.Spacing.md) {
         SectionHeader(title: "一键生成预设", systemImage: "slider.horizontal.3")
-        Text("所有预设保持当前 live provider，并使用服务端默认三路；不会保留自定义或过期路由，也不写死模型 ID。省成本只下调流程参数，不凭空承诺成本。")
+        Text("所有预设保持当前 live provider，并使用服务端默认三路；不会保留自定义或过期路由，也不写死模型 ID。预设会切换专业模式以应用流程参数；省成本只下调流程参数，不凭空承诺成本。")
           .font(.footnote)
           .foregroundStyle(.secondary)
           .fixedSize(horizontal: false, vertical: true)
@@ -117,7 +117,7 @@ struct GuideView: View {
             case .directoryUnavailable:
               model.presentAlert("目录不可用，新任务已禁用。请先重试获取 live registry。")
             case .noCompatibleRoutes:
-              model.presentAlert("当前 live registry 没有可组成三路的可选模型，未修改设置。")
+              model.presentAlert("当前 live registry 缺少可执行的默认三路或图像清晰度声明，未修改设置。")
             }
           } label: {
             VStack(alignment: .leading, spacing: 2) {

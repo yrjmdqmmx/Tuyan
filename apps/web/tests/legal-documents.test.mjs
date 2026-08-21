@@ -14,7 +14,7 @@ test('privacy policy describes the live multi-platform data flow without placeho
   assert.match(source, /IP 地址|IP address/)
   assert.match(source, /User-Agent/)
   assert.match(source, /不会持久化|not persist/i)
-  assert.match(source, /失效前已经开始[\s\S]*后台持续重扫/,
+  assert.match(source, /失效前已经开始[\s\S]*后台持续重扫|后台持续重扫[\s\S]*失效前已经开始/,
     'privacy policy must disclose delayed cleanup for uploads that finish after URL expiry')
   assert.doesNotMatch(source, /仅存储在您设备本机的 iOS Keychain|stored ONLY in your device's local iOS Keychain/)
   assert.doesNotMatch(source, /Sealos.*杭州|Sealos.*Hangzhou/)
@@ -57,6 +57,26 @@ test('each release legal document makes the required current data disclosures', 
 test('terms HTML states that BYOK reaches the provider or platform selected by the user', async () => {
   const source = await readFile(new URL('../../../docs/app-store-submission/terms-of-service.html', import.meta.url), 'utf8')
   assert.match(source, /Hong Kong gateway\/core service to the provider\/platform you selected/)
+})
+
+test('every canonical privacy policy documents deletion sequencing and minimized runtime safety fields', async () => {
+  const policies = [
+    ['privacy policy Markdown', '../../../docs/app-store-submission/privacy-policy.md'],
+    ['privacy policy HTML', '../../../docs/app-store-submission/privacy-policy.html'],
+    ['public privacy policy HTML', '../public/privacy-policy.html'],
+  ]
+
+  for (const [name, path] of policies) {
+    const source = await readFile(new URL(path, import.meta.url), 'utf8')
+    assert.match(source, /冻结.*(?:任务|上传)|freeze.*(?:jobs|uploads)/is, `${name} must explain that deletion freezes new jobs and uploads`)
+    assert.match(source, /直传链接.*运行.*任务.*排空|direct-upload.*(?:running|in-flight).*jobs.*drain/is, `${name} must explain draining active work and direct-upload links`)
+    assert.match(source, /tombstone|墓碑|后台.*(?:重扫|扫除)|background.*(?:sweep|rescan)/is, `${name} must explain late-object cleanup after deletion`)
+    assert.match(source, /IP 地址|IP address/i, `${name} must disclose IP address`)
+    assert.match(source, /User-Agent/i, `${name} must disclose User-Agent`)
+    assert.match(source, /clientPlatform/i, `${name} must disclose clientPlatform`)
+    assert.match(source, /最小化|data minimization|minimi[sz]ation/i, `${name} must describe data minimization`)
+    assert.match(source, /不.*追踪|No Tracking|do not track/i, `${name} must disclose no tracking`)
+  }
 })
 
 test('App Store README reflects the current iOS legal entries, providers, pipeline, and release gate', async () => {

@@ -73,9 +73,10 @@ enum GuidePreset: String, CaseIterable, Identifiable {
     guard hasLiveRegistry, let registry else { return .directoryUnavailable }
     guard let provider = currentLiveProvider(for: draft, registry: registry),
           let routes = registry.defaultRoutes(for: provider),
-          routesAreLiveAndSelectable(routes, registry: registry) else { return .noCompatibleRoutes }
+          routesAreLiveAndSelectable(routes, registry: registry),
+          let resolutions = declaredGenerationResolutions(for: routes.image, registry: registry) else { return .noCompatibleRoutes }
 
-    draft.configurationMode = .simple
+    draft.configurationMode = .advanced
     draft.provider = provider
     draft.modelRoutes = routes
     draft.mainModelName = routes.main.modelId
@@ -84,7 +85,6 @@ enum GuidePreset: String, CaseIterable, Identifiable {
     draft.aspectRatio = "auto"
     draft.manualReferenceIds = []
 
-    let resolutions = registry.model(for: routes.image)?.capabilities.resolutions ?? []
     switch preset {
     case .budget:
       draft.pipelineMode = .vanilla
@@ -103,7 +103,7 @@ enum GuidePreset: String, CaseIterable, Identifiable {
       draft.numCandidates = 3
       draft.maxCriticRounds = 2
       draft.retrievalSetting = .auto
-      draft.imageSize = resolutions.last ?? draft.imageSize
+      draft.imageSize = highestResolution(in: resolutions)
     }
     return .applied
   }
@@ -119,5 +119,18 @@ enum GuidePreset: String, CaseIterable, Identifiable {
       guard let route = routes[role], let model = registry.model(for: route) else { return false }
       return model.selectable && model.roles.contains(role)
     }
+  }
+
+  private static func declaredGenerationResolutions(for route: ModelRoute, registry: ModelRegistry) -> [ImageSize]? {
+    guard let imageModel = registry.model(for: route),
+          imageModel.selectable,
+          imageModel.roles.contains(.image),
+          let resolutions = imageModel.capabilities.resolutions,
+          !resolutions.isEmpty else { return nil }
+    return resolutions
+  }
+
+  private static func highestResolution(in resolutions: [ImageSize]) -> ImageSize {
+    [.fourK, .twoK, .oneK].first { resolutions.contains($0) } ?? resolutions[0]
   }
 }
