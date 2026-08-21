@@ -87,3 +87,16 @@ test('requires immutable admin user IDs and rejects email-shaped values', () => 
   assert.deepEqual([...config.adminUserIds], ['admin-1', 'admin-2']);
   assert.equal(config.adminEmails, undefined);
 });
+
+test('default origins include exact WeChat runtime and developer tool origins', () => {
+  const config = loadGatewayConfig(validEnv());
+
+  assert.deepEqual(config.frontendOrigins, [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://www.paperbanana.asia',
+    'https://paperbanana.asia',
+    'https://servicewechat.com',
+    'https://developers.weixin.qq.com',
+  ]);
+});

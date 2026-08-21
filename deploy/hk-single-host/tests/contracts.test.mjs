@@ -185,6 +185,16 @@ test('backup and restore drill use compressed archives and an external OSS targe
   assert.match(restore, /--stopOnError/);
 });
 
+test('runtime secrets generator includes exact Web and WeChat origins', () => {
+  const script = read('scripts/generate-runtime-secrets.sh');
+
+  assert.match(
+    script,
+    /FRONTEND_ORIGINS=https:\/\/www\.paperbanana\.asia,https:\/\/paperbanana\.asia,https:\/\/servicewechat\.com,https:\/\/developers\.weixin\.qq\.com/,
+  );
+  assert.doesNotMatch(script, /FRONTEND_ORIGINS=.*\*/);
+});
+
 test('transaction smoke runs in the secret-bearing init service', () => {
   const transactionSmoke = read('scripts/transaction-smoke.sh');
 

@@ -56,7 +56,7 @@ chmod 0400 "$secret_dir/mongo-keyfile"
 cat > "$secret_dir/gateway.env" <<EOF
 NODE_ENV=production
 AUTH_BASE_URL=https://api.paperbanana.asia
-FRONTEND_ORIGINS=https://www.paperbanana.asia,https://paperbanana.asia
+FRONTEND_ORIGINS=https://www.paperbanana.asia,https://paperbanana.asia,https://servicewechat.com,https://developers.weixin.qq.com
 BETTER_AUTH_SECRET=$better_auth_secret
 MONGODB_URI=mongodb://paperbanana_auth:$mongo_auth_password@mongodb:27017/paperbanana_auth?authSource=paperbanana_auth&replicaSet=rs0
 MONGODB_DB=paperbanana_auth

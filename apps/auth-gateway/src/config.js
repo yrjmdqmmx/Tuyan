@@ -3,6 +3,8 @@ const DEFAULT_ORIGINS = [
   'http://127.0.0.1:5173',
   'https://www.paperbanana.asia',
   'https://paperbanana.asia',
+  'https://servicewechat.com',
+  'https://developers.weixin.qq.com',
 ];
 
 export function parseList(value) {
