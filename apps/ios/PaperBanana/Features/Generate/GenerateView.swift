@@ -7,6 +7,9 @@ struct GenerateView: View {
   @State private var isQuickStartExpanded = false
   @State private var selectedPhotoItems: [PhotosPickerItem] = []
   @State private var confirmArkImageProbe = false
+  @State private var settingsSheet: GenerationSettingsSheet?
+  @State private var templateTitle = ""
+  @State private var saveTemplateMessage = ""
   @Namespace private var submitNamespace
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -25,7 +28,9 @@ struct GenerateView: View {
         ScrollView {
           VStack(alignment: .leading, spacing: Theme.Spacing.md) {
             hero
+            FeaturedTemplateStudio(model: model)
             quickStartSection
+            saveTemplateSection
             generationSettingsSection
             inputSection
             submitHints
@@ -83,6 +88,7 @@ struct GenerateView: View {
           selectedPhotoItems = []
         }
       }
+      .sheet(item: $settingsSheet) { $0 }
     }
   }
 
@@ -270,30 +276,41 @@ struct GenerateView: View {
   // MARK: - ① 生成设置
 
   private var generationSettingsSection: some View {
-    sectionCard("生成设置") {
-      Text("普通模式使用平台默认配置；专业模式可调整模型、比例和模型名称。")
-        .font(.footnote)
-        .foregroundStyle(.secondary)
-
-      modeSwitch
-      providerControls
-      if !isAdvanced {
-        defaultSummaryChips
+    Button { settingsSheet = GenerationSettingsSheet(model: model) } label: {
+      HStack(alignment: .top, spacing: Theme.Spacing.md) {
+        Image(systemName: "slider.horizontal.3").font(.title3).foregroundStyle(Theme.Palette.paperGreenText)
+        VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+          Text("生成设置摘要").font(.headline).foregroundStyle(.primary)
+          Text(generationSettingsSummary).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.leading)
+          Text("轻点打开设置，调整模型、密钥、路由、格式与专业流程。")
+            .font(.caption).foregroundStyle(Theme.Palette.paperGreenText)
+        }
+        Spacer(minLength: 0)
+        Image(systemName: "chevron.right").foregroundStyle(.secondary)
       }
-      outputControls
-      apiKeyControls
-
-      if isAdvanced {
-        Text("专业配置")
-          .font(.subheadline.weight(.semibold))
-          .padding(.top, Theme.Spacing.xs)
-        advancedControls
-          .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-      }
-
-      categoryControls
+      .padding(Theme.Spacing.lg).frame(maxWidth: .infinity, alignment: .leading)
+      .background(Theme.Palette.paperGreenWell, in: RoundedRectangle(cornerRadius: Theme.Radius.card))
+      .overlay { RoundedRectangle(cornerRadius: Theme.Radius.card).strokeBorder(Theme.Palette.paperGreen.opacity(0.35), lineWidth: 1) }
     }
-    .animation(Theme.Motion.stateChange, value: isAdvanced)
+    .buttonStyle(.plain)
+    .accessibilityIdentifier("generate.settings.summary")
+    .accessibilityLabel("生成设置摘要，\(generationSettingsSummary)")
+  }
+
+  private var generationSettingsSummary: String {
+    if !isAdvanced { return "普通模式 · \(model.generation.selectedProviderConfig.label) · \(modelDisplayName(model.generation.activeMainModelName))" }
+    return "专业模式 · 主 \(modelDisplayName(model.generation.activeMainModelName)) · 图像 \(modelDisplayName(model.generation.activeImageModelName)) · 视觉 \(modelDisplayName(model.generation.activeVisionModelName))"
+  }
+
+  private var saveTemplateSection: some View {
+    sectionCard("保存当前模板") {
+      TextField("模板名称（可留空）", text: $templateTitle).paperFieldWell()
+      Button("保存到我的模板", systemImage: "square.and.arrow.down") {
+        let saved = model.saveCurrentTemplate(title: templateTitle)
+        templateTitle = ""; saveTemplateMessage = "已保存「\(saved.displayTitle)」"
+      }.buttonStyle(.bordered)
+      if !saveTemplateMessage.isEmpty { Text(saveTemplateMessage).font(.caption).foregroundStyle(Theme.Palette.paperGreenText) }
+    }
   }
 
   private var modeSwitch: some View {
@@ -419,6 +436,12 @@ struct GenerateView: View {
         .foregroundStyle(.secondary)
       LabeledTextEditor(title: "论文方法内容", text: $model.generation.draft.methodContent, minHeight: 180)
       LabeledTextEditor(title: "目标图注", text: $model.generation.draft.caption, minHeight: 90)
+      VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+        HStack { Text("负向提示词（可选）").font(.headline); Spacer(); Text("\(model.generation.draft.negativePrompt.count)/1000").font(.caption.monospacedDigit()).foregroundStyle(.secondary) }
+        TextEditor(text: Binding(get: { model.generation.draft.negativePrompt }, set: { model.generation.draft.setNegativePrompt($0) }))
+          .frame(minHeight: 90).padding(8).scrollContentBackground(.hidden).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14))
+          .accessibilityIdentifier("generate.negativePrompt")
+      }
 
       ReferenceUploadStrip(
         model: model,

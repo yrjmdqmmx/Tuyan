@@ -32,6 +32,8 @@ struct SavedGenerationTemplateConfiguration: Codable, Equatable {
   var aspectRatio: String
   var numCandidates: Int
   var maxCriticRounds: Int
+  var modelRoutes: ModelRoutes?
+  var negativePrompt: String
 
   init(draft: GenerationDraft) {
     configurationMode = draft.configurationMode
@@ -49,6 +51,8 @@ struct SavedGenerationTemplateConfiguration: Codable, Equatable {
     aspectRatio = draft.aspectRatio
     numCandidates = draft.numCandidates
     maxCriticRounds = draft.maxCriticRounds
+    modelRoutes = draft.modelRoutes
+    negativePrompt = draft.negativePrompt
 
     // 模板记录的是可复用配置，不记录本机待上传参考图；若当前草稿带参考图，
     // 套用模板时不能保留依赖图片的检索语义。
@@ -84,6 +88,18 @@ struct SavedGenerationTemplateConfiguration: Codable, Equatable {
     draft.aspectRatio = aspectRatio
     draft.numCandidates = numCandidates
     draft.maxCriticRounds = maxCriticRounds
+    draft.modelRoutes = modelRoutes
+    draft.setNegativePrompt(negativePrompt)
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case configurationMode, provider, methodContent, caption, infographicCategoryID, outputFormat, imageSize, mainModelName, imageModelName, referenceVisionModelName, referenceImageMode, pipelineMode, retrievalSetting, manualReferenceIds, aspectRatio, numCandidates, maxCriticRounds, modelRoutes, negativePrompt
+  }
+
+  init(from decoder: Decoder) throws {
+    let c = try decoder.container(keyedBy: CodingKeys.self)
+    configurationMode = try c.decode(ConfigurationMode.self, forKey: .configurationMode); provider = try c.decode(ProviderID.self, forKey: .provider); methodContent = try c.decode(String.self, forKey: .methodContent); caption = try c.decode(String.self, forKey: .caption); infographicCategoryID = try c.decode(String.self, forKey: .infographicCategoryID); outputFormat = try c.decode(OutputFormat.self, forKey: .outputFormat); imageSize = try c.decode(ImageSize.self, forKey: .imageSize); mainModelName = try c.decode(String.self, forKey: .mainModelName); imageModelName = try c.decode(String.self, forKey: .imageModelName); referenceVisionModelName = try c.decode(String.self, forKey: .referenceVisionModelName); referenceImageMode = try c.decode(ReferenceImageMode.self, forKey: .referenceImageMode); pipelineMode = try c.decode(PipelineMode.self, forKey: .pipelineMode); retrievalSetting = try c.decode(RetrievalSetting.self, forKey: .retrievalSetting); manualReferenceIds = try c.decode([String].self, forKey: .manualReferenceIds); aspectRatio = try c.decode(String.self, forKey: .aspectRatio); numCandidates = try c.decode(Int.self, forKey: .numCandidates); maxCriticRounds = try c.decode(Int.self, forKey: .maxCriticRounds); negativePrompt = try c.decodeIfPresent(String.self, forKey: .negativePrompt) ?? ""
+    modelRoutes = try c.decodeIfPresent(ModelRoutes.self, forKey: .modelRoutes) ?? ModelRoutes(main: ModelRoute(accessProvider: provider, modelId: mainModelName), image: ModelRoute(accessProvider: provider, modelId: imageModelName), vision: ModelRoute(accessProvider: provider, modelId: referenceVisionModelName))
   }
 }
 
@@ -93,7 +109,8 @@ final class SavedTemplateStore {
   var templates: [SavedGenerationTemplate] = []
 
   @ObservationIgnored private let defaults: UserDefaults
-  @ObservationIgnored private let storageKey = "paperbanana.saved-generation-templates.v1"
+  static let v1StorageKey = "paperbanana.saved-generation-templates.v1"
+  static let v2StorageKey = "paperbanana.saved-generation-templates.v2"
   @ObservationIgnored private let maxTemplates = 30
 
   init(defaults: UserDefaults = .standard) {
@@ -127,20 +144,24 @@ final class SavedTemplateStore {
   /// 删除账号时清空所有本机保存的模板（含 UserDefaults 持久化）。
   func clearAll() {
     templates = []
-    defaults.removeObject(forKey: storageKey)
+    defaults.removeObject(forKey: Self.v1StorageKey)
+    defaults.removeObject(forKey: Self.v2StorageKey)
   }
 
   private func load() {
-    guard let data = defaults.data(forKey: storageKey) else {
-      templates = []
+    if let data = defaults.data(forKey: Self.v2StorageKey), let decoded = try? JSONDecoder().decode([SavedGenerationTemplate].self, from: data) {
+      templates = decoded
       return
     }
-    templates = (try? JSONDecoder().decode([SavedGenerationTemplate].self, from: data)) ?? []
+    guard let legacy = defaults.data(forKey: Self.v1StorageKey), let decoded = try? JSONDecoder().decode([SavedGenerationTemplate].self, from: legacy) else { templates = []; return }
+    templates = decoded
+    persist()
+    defaults.removeObject(forKey: Self.v1StorageKey)
   }
 
   private func persist() {
     guard let data = try? JSONEncoder().encode(templates) else { return }
-    defaults.set(data, forKey: storageKey)
+    defaults.set(data, forKey: Self.v2StorageKey)
   }
 
   private func resolvedTitle(title: String, draft: GenerationDraft) -> String {

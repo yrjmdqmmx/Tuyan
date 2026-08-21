@@ -118,6 +118,10 @@ struct ReferenceLibraryItem: Decodable, Identifiable, Equatable {
   let imageURL: String
   let imageObjectKey: String
   let source: String
+  let shortZh: String
+  let shortEn: String
+  let detailZh: String
+  let detailEn: String
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: DynamicCodingKey.self)
@@ -128,5 +132,38 @@ struct ReferenceLibraryItem: Decodable, Identifiable, Equatable {
     imageURL = container.string("image_url", "imageUrl", "url")
     imageObjectKey = container.string("image_object_key", "imageObjectKey", "objectKey")
     source = container.string("source", default: "paperbanana-bench")
+    shortZh = container.string("shortZh", "short_zh", "titleZh", "title_zh", default: title)
+    shortEn = container.string("shortEn", "short_en", "titleEn", "title_en", default: title)
+    detailZh = container.string("detailZh", "detail_zh", "summaryZh", "summary_zh", default: summary)
+    detailEn = container.string("detailEn", "detail_en", "summaryEn", "summary_en", default: summary)
   }
+}
+
+extension ReferenceLibraryItem {
+  static let empty = ReferenceLibraryItem(id: "", taskName: .diagram, title: "", summary: "", imageURL: "", imageObjectKey: "", source: "")
+  init(id: String, taskName: TaskName, title: String, summary: String, imageURL: String, imageObjectKey: String, source: String, shortZh: String? = nil, shortEn: String? = nil, detailZh: String? = nil, detailEn: String? = nil) { self.id = id; self.taskName = taskName; self.title = title; self.summary = summary; self.imageURL = imageURL; self.imageObjectKey = imageObjectKey; self.source = source; self.shortZh = shortZh ?? title; self.shortEn = shortEn ?? title; self.detailZh = detailZh ?? summary; self.detailEn = detailEn ?? summary }
+}
+
+struct ReferenceFacet: Decodable, Equatable, Identifiable {
+  let value: String; let count: Int; let labelZh: String; let labelEn: String
+  var id: String { value }
+  init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); value = c.string("value", "id", "key"); count = c.int("count", "total"); labelZh = c.string("labelZh", "label_zh", "titleZh", "title_zh", default: value); labelEn = c.string("labelEn", "label_en", "titleEn", "title_en", default: value) }
+}
+struct ReferenceLibraryFacets: Decodable, Equatable {
+  let visualCategories: [ReferenceFacet]; let researchDomains: [ReferenceFacet]
+  init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); visualCategories = c.decodeArray("visualCategories", "visual_categories"); researchDomains = c.decodeArray("researchDomains", "research_domains") }
+  static let empty = ReferenceLibraryFacets(visualCategories: [], researchDomains: [])
+  init(visualCategories: [ReferenceFacet], researchDomains: [ReferenceFacet]) { self.visualCategories = visualCategories; self.researchDomains = researchDomains }
+}
+struct ReferenceLibraryPage: Decodable, Equatable {
+  let references: [ReferenceLibraryItem]; let total: Int; let page: Int; let pageSize: Int; let totalPages: Int; let facets: ReferenceLibraryFacets
+  init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); references = c.decodeArray("references"); total = c.int("total", default: references.count); page = max(1, c.int("page", default: 1)); pageSize = max(1, c.int("pageSize", "page_size", default: 12)); totalPages = max(1, c.int("totalPages", "total_pages", default: Int(ceil(Double(max(total, 1)) / Double(pageSize))))) ; facets = (try? c.decode(ReferenceLibraryFacets.self, forKey: .key("facets"))) ?? .empty }
+}
+struct ReferenceLibraryPageRequest: Equatable { var page: Int = 1; var query = ""; var visualCategory: String?; var researchDomain: String? }
+enum ReferenceLibrarySelectionError: LocalizedError { case maximumReached; var errorDescription: String? { "最多只能选择 10 张参考图。" } }
+struct ReferenceLibrarySelection: Equatable {
+  private(set) var selectedIDs: [String] = []; private var cache: [String: ReferenceLibraryItem] = [:]
+  var selectedItems: [ReferenceLibraryItem] { selectedIDs.compactMap { cache[$0] } }
+  mutating func toggle(_ item: ReferenceLibraryItem) throws { if let index = selectedIDs.firstIndex(of: item.id) { selectedIDs.remove(at: index); return }; guard selectedIDs.count < 10 else { throw ReferenceLibrarySelectionError.maximumReached }; selectedIDs.append(item.id); cache[item.id] = item }
+  mutating func clear() { selectedIDs = []; cache = [:] }
 }

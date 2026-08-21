@@ -25,6 +25,10 @@ final class GenerationStore {
   var verifiedArkRouteKeys = Set<String>()
 
   var referenceLibrary: [ReferenceLibraryItem] = []
+  var referenceLibraryPage: ReferenceLibraryPage?
+  var referenceSelection = ReferenceLibrarySelection()
+  var featuredTemplateArtworks: [FeaturedTemplateArtwork] = FeaturedTemplateCatalog.withImages([])
+  var featuredTemplatesLoading = false
   var referenceLibraryError = ""
   var referenceLibraryLoading = false
   var referenceUploadError = ""
@@ -41,7 +45,6 @@ final class GenerationStore {
   let registryStore: ModelRegistryStore
   private let keychain = KeychainService()
   private let referenceUploader: ReferenceUploader
-  private static let referenceLibraryLimit = 100
 
   init(apiClient: PaperBananaAPIClient, settings: SettingsStore, jobs: JobsStore, registryStore: ModelRegistryStore? = nil) {
     self.apiClient = apiClient
@@ -325,6 +328,10 @@ final class GenerationStore {
       referenceUploadError = referenceUploadBlockedMessage
       return
     }
+    guard draft.manualReferenceIds.isEmpty else {
+      referenceUploadError = "已选择图库参考，请先清空图库选择后再上传本地参考图。"
+      return
+    }
     guard draft.referenceImages.count < ReferenceImageLimits.maxCount else {
       referenceUploadError = "最多只能上传 \(ReferenceImageLimits.maxCount) 张参考图。"
       return
@@ -337,7 +344,6 @@ final class GenerationStore {
     draft.referenceImages.append(PendingReferenceImage(id: UUID().uuidString, filename: filename, mimeType: normalized, data: data))
     if !draft.referenceImages.isEmpty {
       draft.retrievalSetting = .none
-      draft.manualReferenceIds = []
     }
     mainModelCapability = nil
   }
@@ -350,12 +356,15 @@ final class GenerationStore {
   }
 
   func toggleManualReference(_ reference: ReferenceLibraryItem) {
-    if draft.manualReferenceIds.contains(reference.id) {
-      draft.manualReferenceIds.removeAll { $0 == reference.id }
-    } else if draft.manualReferenceIds.count < 10 {
-      draft.manualReferenceIds.append(reference.id)
-    }
+    guard draft.referenceImages.isEmpty else { referenceLibraryError = "已上传本地参考图。请先确认清除本地上传，再选择图库参考。"; return }
+    do {
+      try referenceSelection.toggle(reference)
+      draft.manualReferenceIds = referenceSelection.selectedIDs
+      if !draft.manualReferenceIds.isEmpty { draft.retrievalSetting = .manual }
+    } catch { referenceLibraryError = formatUserFacingError(error) }
   }
+
+  func clearManualReferences() { referenceSelection.clear(); draft.manualReferenceIds = []; if draft.retrievalSetting == .manual { draft.retrievalSetting = .none } }
 
   func applyTemplate(_ configuration: SavedGenerationTemplateConfiguration) {
     configuration.apply(to: &draft)
@@ -403,13 +412,31 @@ final class GenerationStore {
   }
 
   func loadReferenceLibrary() async {
+    await loadReferenceLibraryPage(.init())
+  }
+
+  func loadReferenceLibraryPage(_ request: ReferenceLibraryPageRequest) async {
     referenceLibraryError = ""
     referenceLibraryLoading = true
     defer { referenceLibraryLoading = false }
     do {
-      referenceLibrary = try await apiClient.referenceLibrary(apiBase: settings.apiBase, taskName: draft.taskName, limit: Self.referenceLibraryLimit)
+      let page = try await apiClient.referenceLibraryPage(apiBase: settings.apiBase, request: request)
+      referenceLibraryPage = page
+      referenceLibrary = page.references
     } catch {
       referenceLibraryError = formatUserFacingError(error)
+    }
+  }
+
+  func loadFeaturedTemplates() async {
+    guard !featuredTemplatesLoading else { return }
+    featuredTemplatesLoading = true
+    defer { featuredTemplatesLoading = false }
+    do {
+      featuredTemplateArtworks = FeaturedTemplateCatalog.withImages(try await apiClient.featuredReferences(apiBase: settings.apiBase))
+    } catch {
+      // 精选内容始终可浏览；网络失败时每张卡独立使用结构占位，绝不按错误顺序配图。
+      featuredTemplateArtworks = FeaturedTemplateCatalog.withImages([])
     }
   }
 
@@ -483,7 +510,7 @@ final class GenerationStore {
       aspectRatio: configuration.aspectRatio,
       numCandidates: configuration.numCandidates,
       maxCriticRounds: configuration.maxCriticRounds,
-      negativePrompt: draft.negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines),
+      negativePrompt: String(draft.negativePrompt.trimmingCharacters(in: .whitespacesAndNewlines).prefix(1_000)),
       modelRoutes: activeRoutes,
       requiredRouteRoles: requiredRouteRoles
     )
@@ -503,6 +530,9 @@ final class GenerationStore {
     submitError = ""
     referenceUploadError = ""
     referenceLibrary = []
+    referenceLibraryPage = nil
+    referenceSelection.clear()
+    featuredTemplateArtworks = FeaturedTemplateCatalog.withImages([])
     referenceLibraryError = ""
   }
 

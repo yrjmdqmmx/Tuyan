@@ -23,6 +23,8 @@ struct GenerationDraft: Equatable {
   var numCandidates: Int = 1
   var maxCriticRounds: Int = 1
 
+  mutating func setNegativePrompt(_ value: String) { negativePrompt = String(value.prefix(1_000)) }
+
   var selectedCategory: InfographicCategory {
     PaperBananaSamples.categories.first { $0.id == infographicCategoryID } ?? PaperBananaSamples.categories[0]
   }

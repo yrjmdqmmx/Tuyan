@@ -104,6 +104,30 @@ final class PaperBananaAPIClient {
     return response.references
   }
 
+  /// 精选模板只允许精确 ID 请求；不可混入分页、检索或 facet 参数。
+  func featuredReferences(apiBase: String) async throws -> [ReferenceLibraryItem] {
+    let response: ReferenceLibraryEnvelope = try await requestJSON(
+      try lafEndpoint(apiBase: apiBase),
+      method: "POST",
+      body: ["action": "referenceLibrary", "referenceIds": FeaturedTemplateCatalog.referenceIDs]
+    )
+    return response.references
+  }
+
+  func referenceLibraryPage(apiBase: String, request: ReferenceLibraryPageRequest) async throws -> ReferenceLibraryPage {
+    var body: [String: Any] = [
+      "action": "referenceLibrary",
+      "scope": "bench",
+      "page": max(1, request.page),
+      "pageSize": 12
+    ]
+    let query = request.query.trimmingCharacters(in: .whitespacesAndNewlines)
+    if !query.isEmpty { body["query"] = query }
+    if let category = request.visualCategory, !category.isEmpty { body["visualCategory"] = category }
+    if let domain = request.researchDomain, !domain.isEmpty { body["researchDomain"] = domain }
+    return try await requestJSON(try lafEndpoint(apiBase: apiBase), method: "POST", body: body)
+  }
+
   func modelCapability(apiBase: String, provider: ProviderID, model: String) async throws -> ModelCapability {
     try await requestJSON(
       try lafEndpoint(apiBase: apiBase),
