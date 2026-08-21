@@ -45,7 +45,8 @@
           <view><text>任务类型</text><text>{{item.task_name === 'plot' ? '统计图' : '结构图'}}</text></view>
           <view><text>格式 / 清晰度</text><text>{{item.output_format_text}} · {{item.image_size || '自动'}}</text></view>
           <view><text>比例</text><text>{{item.aspect_ratio || '自动'}}</text></view>
-          <view><text>路由</text><text>{{item.routing_mode === 'explicit' ? '显式路由' : '兼容路由'}}</text></view>
+          <view><text>路由范围</text><text>{{item.routing_mode === 'mixed' ? '跨渠道' : (item.routing_mode === 'single' ? '单渠道' : '未记录')}}</text></view>
+          <view><text>路由来源</text><text>{{item.model_routing_source === 'explicit' ? '显式路由' : (item.model_routing_source === 'legacy-derived' ? '兼容旧任务' : '未记录')}}</text></view>
           <view><text>检索</text><text>{{item.retrieval_setting_text || '不使用检索'}}</text></view>
         </view>
         <view class="job-models">

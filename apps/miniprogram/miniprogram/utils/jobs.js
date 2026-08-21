@@ -57,7 +57,8 @@ function normalizeJob(input) {
         client_platform_text: formatClientPlatform(job.client_platform || job.clientPlatform),
         user_email: String(job.user_email || job.userEmail || ''),
         configuration_mode: String(job.configuration_mode || job.configurationMode || 'simple'),
-        routing_mode: String(job.routing_mode || job.routingMode || (job.model_routes || job.modelRoutes ? 'explicit' : 'legacy')),
+        routing_mode: String(job.routing_mode || job.routingMode || ''),
+        model_routing_source: String(job.model_routing_source || job.modelRoutingSource || (job.model_routes || job.modelRoutes ? 'explicit' : 'legacy-derived')),
         model_routes: normalizeJobModelRoutes(job.model_routes || job.modelRoutes),
         output_format: outputFormat,
         output_format_text: (0, job_assets_1.formatOutputFormat)(outputFormat),
@@ -179,6 +180,10 @@ function formatRetrievalSetting(setting) {
 function resolveImageUrl(url, jobId = 'image', index = 0, mimeType = '', fallbackFormat = '') {
     if (!url)
         return '';
+    // 开发者工具对 USER_DATA_PATH 文件生成的临时代理地址只在原模拟会话有效。
+    // 旧地址进入 Storage 后会返回 500，必须在普通 http(s) 分支之前丢弃。
+    if (/^https?:\/\/(?:127\.0\.0\.1|localhost):\d+\/__APP__\/paperbanana-/i.test(url))
+        return '';
     if (/^https?:\/\//i.test(url))
         return stabilizeRemoteUrl(url);
     if (/^data:image\//i.test(url))
@@ -258,16 +263,16 @@ function cleanupCachedImages() {
     if (!dir)
         return;
     const fs = wx.getFileSystemManager();
-    fs.readdir({
-        dirPath: dir,
-        success(res) {
-            res.files.forEach((name) => {
-                if (String(name).indexOf('paperbanana-') === 0) {
-                    fs.unlink({ filePath: `${dir}/${name}` });
-                }
-            });
-        },
-    });
+    try {
+        fs.readdirSync(dir).forEach((name) => {
+            if (String(name).indexOf('paperbanana-') === 0)
+                fs.unlinkSync(`${dir}/${name}`);
+        });
+        writtenCacheFiles.clear();
+    }
+    catch (error) {
+        console.warn('Failed to clean cached images', error);
+    }
 }
 function normalizeReferenceImageModeUsed(value) {
     if (value === 'main_model' || value === 'vision_model' || value === 'none' || value === 'auto')

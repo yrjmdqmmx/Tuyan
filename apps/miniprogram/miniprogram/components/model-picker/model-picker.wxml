@@ -14,7 +14,7 @@
         <view class="step-title">选择 API 接入渠道</view>
         <button class="provider-card" wx:for="{{providerCards}}" wx:key="id" data-provider="{{item.id}}" bindtap="selectProvider">
           <view><view class="card-title">{{item.label}}</view><view class="card-note">{{item.kindText}}</view></view>
-          <view class="card-count">{{item.count}} 个可用模型 <text class="provider-arrow">›</text></view>
+          <view class="card-count">{{item.count}} 可用<text wx:if="{{item.unavailableCount}}"> · {{item.unavailableCount}} 暂不可用</text> <text class="provider-arrow">›</text></view>
         </button>
       </view>
       <view wx:elif="{{step === 'vendors'}}" class="vendor-list">
@@ -22,7 +22,7 @@
         <view class="step-context">{{activeProviderLabel}} · 聚合渠道</view>
         <view class="step-title">选择模型开发厂商</view>
         <button class="vendor-card" wx:for="{{vendorCards}}" wx:key="vendor" data-vendor="{{item.vendor}}" bindtap="selectVendor">
-          <view><view class="card-title">{{item.vendor}}</view><view class="card-note">{{item.compatibleCount}} 个兼容模型</view></view><text class="vendor-arrow">›</text>
+          <view><view class="card-title">{{item.vendor}}</view><view class="card-note">{{item.compatibleCount}} 兼容<text wx:if="{{item.unavailableCount}}"> · {{item.unavailableCount}} 暂不可用</text></view></view><text class="vendor-arrow">›</text>
         </button>
       </view>
       <view wx:else class="model-list">

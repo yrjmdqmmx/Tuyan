@@ -46,8 +46,14 @@ Component({
             const providerCards = model_registry_1.MODEL_PROVIDER_IDS.map((id) => {
                 const provider = registry.providers[id];
                 const partition = (0, model_registry_1.partitionRegistryModels)(provider.models, { role, outputFormat: String(this.properties.outputFormat || '') });
-                return { id, label: PROVIDER_LABELS[id], kindText: provider.accessKind === 'aggregator' ? '聚合渠道' : '官方直连', count: partition.compatible.length };
-            }).filter((item) => item.count > 0);
+                return {
+                    id,
+                    label: PROVIDER_LABELS[id],
+                    kindText: provider.accessKind === 'aggregator' ? '聚合渠道' : '官方直连',
+                    count: partition.compatible.length,
+                    unavailableCount: partition.incompatible.length,
+                };
+            }).filter((item) => item.count + item.unavailableCount > 0);
             this.setData({
                 step: 'providers', roleLabel: roleLabel(role), providerCards, vendorCards: [], compatibleModels: [], visibleCompatibleModels: [], incompatibleModels: [],
                 activeProvider: '', activeProviderLabel: '', activeVendor: '', activeProviderIsAggregator: false, query: '', catalogMode: 'recommended', visibleLimit: MODEL_PAGE_SIZE, showIncompatible: false,
@@ -66,7 +72,8 @@ Component({
                 vendor: group.vendor,
                 count: group.models.length,
                 compatibleCount: group.models.filter((item) => compatibleIds.has(item.id)).length,
-            })).filter((item) => item.compatibleCount > 0);
+                unavailableCount: group.models.filter((item) => !compatibleIds.has(item.id)).length,
+            }));
             const isAggregator = provider.accessKind === 'aggregator';
             this.setData({
                 activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,

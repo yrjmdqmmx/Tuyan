@@ -4,7 +4,7 @@ global.wx = { env: { USER_DATA_PATH: '/tmp' } }
 const { normalizeJob, toLocalJobSummary, toRecordJobSummary } = require('../miniprogram/utils/jobs.js')
 
 const job = normalizeJob({
-  id: 'job-1', status: 'failed', clientPlatform: 'miniprogram', routingMode: 'explicit',
+  id: 'job-1', status: 'failed', clientPlatform: 'miniprogram', routingMode: 'mixed', modelRoutingSource: 'explicit',
   modelRoutes: {
     main: { accessProvider: 'openai', modelId: 'main' },
     image: { accessProvider: 'ark', modelId: 'image' },
@@ -16,7 +16,8 @@ const job = normalizeJob({
 })
 
 assert.equal(job.client_platform, 'miniprogram')
-assert.equal(job.routing_mode, 'explicit')
+assert.equal(job.routing_mode, 'mixed')
+assert.equal(job.model_routing_source, 'explicit')
 assert.equal(job.negative_prompt, '避免小字')
 assert.equal(job.model_routes.image.accessProvider, 'ark')
 assert.equal(job.result_images[0].object_key, 'jobs/job-1/result.png')
