@@ -35,7 +35,7 @@
 - [x] paperbanana-api / Laf Core / packages-api（精确参考、负向提示词、v9 比例目录、准入与 Provider 映射、TDD）
 - [x] Web（6 套模板与轮播/预览/安全套用、设置卡、十比例禁用原因、负向提示词、新教程与桌面/390px 验收）
 - [ ] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（按需消费 `negativePrompt`、`aspectRatios/refineAspectRatios` 与新失败码；未改造前继续兼容旧请求，但不得宣称未登记比例可用）
-- [ ] 部署 / 运维（合并后先发布香港 Core、再发布 Pages；只做非计费生产验证，真实比例与负向提示词生成仍需单独授权）
+- [x] 部署 / 运维（PR #10 已合并为 `6e03969`；香港 Core 镜像与生产部署、Pages 均已成功。生产已验证注册表 v9、六个固定参考 ID 顺序/签名、非法比例 `INVALID_ASPECT_RATIO` 失败关闭、模板套用、十比例设置和教程；未执行付费图片生成，真实比例与负向提示词生成仍需单独授权）
 
 ### [2026-08-20] OpenRouter 34 模型付费验证与 PNG 统一输出 — by Codex
 变更：Core 注册表升级为 `2026-08-20.v8`。在用户授权的 9 美元上限内，对此前因输出格式元数据不兼容而禁用的 34 个 OpenRouter 图片模型逐项执行付费生成，34/34 均返回真实图片；实际默认响应为 14 个 PNG、10 个 JPEG、10 个 WebP。运行时按这份精确 ID 白名单开放模型，并在存储前统一为真实 PNG；本次验证总成本约 2.42 美元。
