@@ -2922,6 +2922,36 @@ test('referenceLibrary exact-ID mode rejects filters and malformed selections wi
   assert.equal(state.referenceFindQueries.length, 0)
 })
 
+test('referenceLibrary exact-ID mode rejects scope with a stable 400 before querying', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceFindQueries = []
+  const result = await legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'referenceLibrary', referenceIds: ['ref_1'], scope: 'bench' },
+    headers: {}, response: { setHeader() {}, status() {} },
+  })
+  assert.equal(result.code, 400)
+  assert.equal(result.businessCode, 'REFERENCE_LIBRARY_REQUEST_INVALID')
+  assert.match(result.error, /referenceIds.*scope/i)
+  assert.equal(state.referenceFindQueries.length, 0)
+})
+
+test('referenceLibrary exact-ID mode rejects legacy limit with a stable 400 before querying', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  state.referenceFindQueries = []
+  const result = await legacy.default({
+    request: { method: 'POST' },
+    body: { action: 'referenceLibrary', referenceIds: ['ref_1'], limit: 1 },
+    headers: {}, response: { setHeader() {}, status() {} },
+  })
+  assert.equal(result.code, 400)
+  assert.equal(result.businessCode, 'REFERENCE_LIBRARY_REQUEST_INVALID')
+  assert.match(result.error, /referenceIds.*limit/i)
+  assert.equal(state.referenceFindQueries.length, 0)
+})
+
 test('referenceLibrary exact-ID mode returns a stable 422 when any requested image is unusable', async () => {
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})

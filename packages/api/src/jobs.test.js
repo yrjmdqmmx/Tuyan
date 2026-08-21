@@ -526,6 +526,40 @@ test('referenceLibraryRequest sends exact reference IDs and keeps the pagination
   }
 });
 
+test('referenceLibraryRequest rejects exact reference IDs combined with scope before transport', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, references: [] } }));
+  try {
+    await assert.rejects(
+      referenceLibraryRequest(
+        'https://gateway.example',
+        { backendMode: 'gateway' },
+        { referenceIds: ['ref_9'], scope: 'bench' },
+      ),
+      /referenceIds.*scope/i,
+    );
+    assert.equal(fetchMock.calls.length, 0);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('referenceLibraryRequest rejects exact reference IDs combined with legacy limit before transport', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, references: [] } }));
+  try {
+    await assert.rejects(
+      referenceLibraryRequest(
+        'https://gateway.example',
+        { backendMode: 'gateway' },
+        { referenceIds: ['ref_9'], limit: 1 },
+      ),
+      /referenceIds.*limit/i,
+    );
+    assert.equal(fetchMock.calls.length, 0);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
 test('referenceLibraryRequest forwards AbortSignal without serializing it', async () => {
   const fetchMock = mockJsonFetch(() => ({ body: { code: 0, references: [] } }));
   const controller = new AbortController();

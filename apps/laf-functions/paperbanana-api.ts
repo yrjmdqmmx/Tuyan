@@ -1910,9 +1910,10 @@ async function referenceLibrary(body: ReferenceLibraryBody) {
 }
 
 async function exactReferenceLibrary(body: ReferenceLibraryBody) {
-  const incompatibleFields = ['page', 'pageSize', 'query', 'visualCategory', 'researchDomain', 'taskName'] as const
-  if (incompatibleFields.some((field) => Object.prototype.hasOwnProperty.call(body, field))) {
-    return referenceLibraryRequestFailure('referenceIds cannot be combined with pagination, search, facets, or taskName')
+  const incompatibleFields = ['scope', 'page', 'pageSize', 'query', 'visualCategory', 'researchDomain', 'taskName', 'limit'] as const
+  const combinedFields = incompatibleFields.filter((field) => Object.prototype.hasOwnProperty.call(body, field))
+  if (combinedFields.length) {
+    return referenceLibraryRequestFailure(`referenceIds cannot be combined with ${combinedFields.join(', ')}`)
   }
   const normalizedIds = normalizeExactReferenceIds(body.referenceIds)
   if (!normalizedIds) {

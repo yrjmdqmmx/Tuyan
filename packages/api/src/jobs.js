@@ -105,6 +105,12 @@ export async function createJobRequest(apiBase, health, payload) {
 
 export async function referenceLibraryRequest(apiBase, health, opts = {}) {
   if (shouldUsePaperbananaApi(apiBase, health)) {
+    if (opts.referenceIds !== undefined) {
+      const incompatibleFields = ['scope', 'limit'].filter((field) => opts[field] !== undefined);
+      if (incompatibleFields.length) {
+        throw new Error(`referenceIds cannot be combined with ${incompatibleFields.join(', ')}`);
+      }
+    }
     const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'researchDomain', 'referenceIds']
       .some((field) => opts[field] !== undefined);
     const legacyRequest = !hasV2OnlyField && (opts.taskName !== undefined || opts.limit !== undefined);
