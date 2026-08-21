@@ -4,7 +4,7 @@
 
 **Goal:** Publish a complete, bilingual open-source identity for PaperBanana Clients under the same Apache License 2.0 as upstream while preserving upstream credit and recording the completed production PNG smoke tests.
 
-**Architecture:** This is a documentation-and-metadata-only change. Root `LICENSE` and `NOTICE` establish the legal and attribution layer; `README.md` presents the public mission; `package.json` exposes the SPDX identifier; `SYNC.md` closes the already-completed operational evidence without changing a shared contract.
+**Architecture:** This is a documentation-and-metadata-only change. Root `LICENSE` and `NOTICE` establish the legal and attribution layer; `README.md` presents the public mission; `package.json` exposes the SPDX identifier; the app-store Terms of Service Markdown and HTML clarify how Apache-2.0 source-code rights relate to trademarks and hosted-service materials; `SYNC.md` closes the already-completed operational evidence without changing a shared contract.
 
 **Tech Stack:** Markdown, JSON, Git, zsh, Node.js 24, Apache License 2.0
 
@@ -17,6 +17,7 @@
 - Modify `README.md`: bilingual opening statement plus durable Upstream and License sections.
 - Modify `package.json`: root SPDX license metadata only.
 - Modify `apps/miniprogram/package.json`: explicit license alignment for the sole conflicting workspace manifest.
+- Modify `docs/app-store-submission/terms-of-service.md` and `docs/app-store-submission/terms-of-service.html`: align the source-code/open-source-rights clarification across Markdown and HTML.
 - Modify `SYNC.md`: close the top v8 deployment/operations checkbox using the user's 2026-08-21 smoke confirmation.
 - Do not modify app code, lockfiles, workflows, deployment configuration, or remote GitHub metadata.
 
@@ -233,7 +234,52 @@ git commit -m "docs: record production PNG smoke completion"
 
 Expected: one commit containing only `SYNC.md`.
 
-### Task 4: Run The Final Repository Gate
+### Task 4: Quality Review Follow-up
+
+**Files:**
+- Verify: `docs/app-store-submission/terms-of-service.md`
+- Verify: `docs/app-store-submission/terms-of-service.html`
+
+- [x] **Step 1: Confirm the rights-clarification copy in both formats**
+
+Run:
+
+```bash
+rg -n '本应用的商标、标识、托管服务以及未按开源许可证发布的内容归我们或相应权利人所有，并受法律保护。本仓库中依据 Apache License 2.0 发布的源代码及其衍生作品，可以依照该许可证使用、复制、修改和分发；本条款不限制该许可证明确授予的任何权利。除适用的开源许可证或其他书面授权明确允许外，您不得复制、修改、分发、出售或以其他方式利用本应用的商标、标识、托管服务或其他非开源受保护材料。|The App'\''s trademarks, logos, hosted service, and materials not released under an open-source license belong to us or their respective rights holders and are protected by law. Source code in this repository and derivative works released under Apache License 2.0 may be used, copied, modified, and distributed in accordance with that license; these Terms do not limit any rights expressly granted by that license. Except as expressly permitted by an applicable open-source license or other written authorization, you may not copy, modify, distribute, sell, or otherwise exploit the App'\''s trademarks, logos, hosted service, or other protected non-open-source materials.' docs/app-store-submission/terms-of-service.md docs/app-store-submission/terms-of-service.html
+```
+
+Expected: the new Chinese and English rights paragraphs each appear once in Markdown and HTML, and the old broad-prohibition wording is absent from both files.
+
+- [x] **Step 2: Verify Markdown/HTML semantic alignment**
+
+Run:
+
+```bash
+python - <<'PY'
+from html import unescape
+from pathlib import Path
+import re
+
+md = Path("docs/app-store-submission/terms-of-service.md").read_text(encoding="utf-8")
+html = Path("docs/app-store-submission/terms-of-service.html").read_text(encoding="utf-8")
+
+md_cn = "本应用的商标、标识、托管服务以及未按开源许可证发布的内容归我们或相应权利人所有，并受法律保护。本仓库中依据 Apache License 2.0 发布的源代码及其衍生作品，可以依照该许可证使用、复制、修改和分发；本条款不限制该许可证明确授予的任何权利。除适用的开源许可证或其他书面授权明确允许外，您不得复制、修改、分发、出售或以其他方式利用本应用的商标、标识、托管服务或其他非开源受保护材料。"
+md_en = "The App's trademarks, logos, hosted service, and materials not released under an open-source license belong to us or their respective rights holders and are protected by law. Source code in this repository and derivative works released under Apache License 2.0 may be used, copied, modified, and distributed in accordance with that license; these Terms do not limit any rights expressly granted by that license. Except as expressly permitted by an applicable open-source license or other written authorization, you may not copy, modify, distribute, sell, or otherwise exploit the App's trademarks, logos, hosted service, or other protected non-open-source materials."
+
+assert md.count(md_cn) == 1
+assert md.count(md_en) == 1
+assert html.count(md_cn) == 1
+assert html.count(md_en) == 1
+assert "本应用本身（包括其软件、界面、商标、标识与文档）的知识产权归我们或相应权利人所有，受法律保护。除为正常使用本应用所必需外，未经授权，您不得复制、修改、分发、出售或以其他方式利用本应用的任何部分。" not in md
+assert "本应用本身（包括其软件、界面、商标、标识与文档）的知识产权归我们或相应权利人所有，受法律保护。除为正常使用本应用所必需外，未经授权，您不得复制、修改、分发、出售或以其他方式利用本应用的任何部分。" not in html
+assert "The intellectual property in the App itself (software, interface, trademarks, logos, documentation) belongs to us or the respective rights holders and is protected by law. Except as necessary for normal use, you may not copy, modify, distribute, sell, or otherwise exploit any part of the App without authorization." not in html
+print("terms aligned")
+PY
+```
+
+Expected: `terms aligned`.
+
+### Task 5: Run The Final Repository Gate
 
 **Files:**
 - Verify: `LICENSE`
@@ -241,6 +287,8 @@ Expected: one commit containing only `SYNC.md`.
 - Verify: `README.md`
 - Verify: `package.json`
 - Verify: `SYNC.md`
+- Verify: `docs/app-store-submission/terms-of-service.md`
+- Verify: `docs/app-store-submission/terms-of-service.html`
 
 - [ ] **Step 1: Re-run the authoritative license comparison**
 
@@ -260,6 +308,7 @@ node -e 'const p=require("./package.json"); console.log(JSON.stringify({name:p.n
 rg -n 'Open Source Statement|no plans to commercialize|not an additional license restriction' README.md
 rg -n 'not affiliated|Third-party components and assets' NOTICE
 rg -n '用户于 2026-08-21 手工确认' SYNC.md
+rg -n 'Apache License 2.0|本条款不限制|these Terms do not limit|non-open-source materials' docs/app-store-submission/terms-of-service.md docs/app-store-submission/terms-of-service.html
 git diff origin/main...HEAD --check
 git diff --name-only origin/main...HEAD | sort
 ```
@@ -274,6 +323,8 @@ Expected changed-file set includes the already-approved design/plan documents pl
 
 ```text
 apps/miniprogram/package.json
+docs/app-store-submission/terms-of-service.html
+docs/app-store-submission/terms-of-service.md
 LICENSE
 NOTICE
 README.md
@@ -290,4 +341,4 @@ git status --short --branch
 git log --oneline --decorate -6
 ```
 
-Expected: no unstaged, staged, or untracked files; local branch contains the design, plan, license/notice, bilingual statement, and smoke-closure commits. Do not push, open a PR, or alter remote repository metadata without a separate user decision.
+Expected: no unstaged, staged, or untracked files; local branch contains the design, plan, license/notice, bilingual statement, ToS rights-clarification, and smoke-closure commits. Do not push, open a PR, or alter remote repository metadata without a separate user decision.

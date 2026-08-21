@@ -1,6 +1,6 @@
 # PaperBanana Clients Open-Source Identity Design
 
-**Status:** Approved for implementation
+**Status:** Implemented and verified on 2026-08-21. Checkboxes below preserve the approved pre-execution sequence and are not live progress state.
 
 **Date:** 2026-08-21
 
@@ -13,6 +13,7 @@
 PaperBanana Clients is a multi-platform monorepo developed from the open-source PaperBanana project. The upstream repository currently publishes its code under Apache License 2.0 and describes a community-first mission for academic illustration. This repository currently has no root-level `LICENSE`, `NOTICE`, or explicit upstream attribution in its README.
 
 The project maintainers want this repository to adopt the same license, clearly acknowledge the upstream project, and state—in Chinese and English—that PaperBanana Clients is committed to remaining fully open source, exists to help researchers create academic illustrations, and currently has no commercialization plans.
+The approved follow-up also updates the app store Terms of Service Markdown and HTML so the rights language clearly separates Apache-2.0 source-code permissions from trademarks, hosted service materials, and other protected non-open-source assets.
 
 ## Goals
 
@@ -41,7 +42,8 @@ Use a complete but restrained open-source identity package:
 4. Add `Upstream` and `License` sections near the bottom of the README so attribution and licensing remain discoverable outside the opening statement.
 5. Add the SPDX identifier `"license": "Apache-2.0"` to the root `package.json`.
 6. Align the sole explicitly conflicting workspace manifest, `apps/miniprogram/package.json`, by changing its license field from `UNLICENSED` to `Apache-2.0`; manifests that omit an explicit license are not mechanically duplicated.
-7. Mark the top OpenRouter PNG deployment/operations checkbox in `SYNC.md` complete, noting that the three production format routes were manually verified by the user.
+7. Update `docs/app-store-submission/terms-of-service.md` and `docs/app-store-submission/terms-of-service.html` with identical Chinese and English rights clarifications that preserve Apache-2.0 source-code permissions while separating trademarks and hosted-service materials from open-source code rights, and verify the Markdown/HTML copies remain aligned.
+8. Mark the top OpenRouter PNG deployment/operations checkbox in `SYNC.md` complete, noting that the three production format routes were manually verified by the user.
 
 ## README Copy
 
@@ -120,6 +122,8 @@ Replace only the unchecked deployment/operations line in the top v8 entry with:
 | `README.md` | Add bilingual opening statement plus durable Upstream and License sections. |
 | `package.json` | Add `"license": "Apache-2.0"` without changing package privacy or scripts. |
 | `apps/miniprogram/package.json` | Change the explicit manifest license from `UNLICENSED` to `Apache-2.0`; leave other manifests untouched unless they already declare a conflicting value. |
+| `docs/app-store-submission/terms-of-service.md` | Replace Section 7 with the Apache-rights clarification that distinguishes source-code permissions from trademarks and hosted-service materials. |
+| `docs/app-store-submission/terms-of-service.html` | Mirror the same rights clarification in the rendered HTML so it matches the Markdown terms exactly. |
 | `SYNC.md` | Mark the v8 deployment/operations smoke item complete based on user-confirmed production tests; do not add a new contract entry. |
 
 ## Verification
@@ -127,12 +131,13 @@ Replace only the unchecked deployment/operations line in the top v8 entry with:
 1. Confirm `LICENSE` matches the upstream Apache-2.0 license text byte-for-byte, allowing only a final-newline normalization if necessary.
 2. Parse `package.json` and confirm its license field is exactly `Apache-2.0`.
 3. Parse all `package.json` files and confirm no explicit `UNLICENSED` manifest remains.
-4. Confirm README contains the upstream URL, both language versions, and the statement that project intent does not alter Apache-2.0 rights.
-5. Confirm `NOTICE` contains attribution without an endorsement claim or non-commercial restriction and preserves separate third-party terms.
-6. Confirm only the intended `SYNC.md` checkbox and explanatory wording changed.
-7. Confirm `pnpm-lock.yaml` is unchanged.
-8. Run `git diff --check` and review the complete diff.
-9. Confirm no application source/runtime, dependency-lock, workflow, or deployment files changed beyond the approved `apps/miniprogram/package.json` metadata-only alignment.
+4. Confirm `docs/app-store-submission/terms-of-service.md` and `docs/app-store-submission/terms-of-service.html` each contain the exact Apache-rights clarification, that the Chinese and English paragraphs occur once per file, that the old broad-prohibition paragraphs are absent, and that the HTML text matches the Markdown text after stripping tags and decoding entities.
+5. Confirm README contains the upstream URL, both language versions, and the statement that project intent does not alter Apache-2.0 rights.
+6. Confirm `NOTICE` contains attribution without an endorsement claim or non-commercial restriction and preserves separate third-party terms.
+7. Confirm only the intended `SYNC.md` checkbox and explanatory wording changed.
+8. Confirm `pnpm-lock.yaml` is unchanged.
+9. Run `git diff --check` and review the complete diff.
+10. Confirm no application source/runtime, dependency-lock, workflow, or deployment files changed beyond the approved `apps/miniprogram/package.json` metadata-only alignment and the approved documentation-only ToS updates.
 
 ## Rollback
 
