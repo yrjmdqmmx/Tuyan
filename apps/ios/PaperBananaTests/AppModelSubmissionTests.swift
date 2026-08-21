@@ -163,6 +163,16 @@ final class AppModelSubmissionTests: XCTestCase {
     XCTAssertTrue(model.generation.apiKey(for: future).isEmpty)
   }
 
+  func testChangingArkKeyInvalidatesEveryArkRouteVerification() {
+    let model = AppModel()
+    model.generation.updateAPIKey("key-a", for: .ark)
+    model.generation.verifiedArkRouteKeys = ["main:ark-main", "image:ark-image", "vision:ark-vision"]
+
+    model.generation.updateAPIKey("key-b", for: .ark)
+
+    XCTAssertTrue(model.generation.verifiedArkRouteKeys.isEmpty)
+  }
+
   func testFeedbackCategoriesMatchWebContract() {
     XCTAssertEqual(
       FeedbackCategory.allCases.map(\.rawValue),

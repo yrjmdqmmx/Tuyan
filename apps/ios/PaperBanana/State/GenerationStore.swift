@@ -22,7 +22,7 @@ final class GenerationStore {
   var submitError = ""
   var arkProbeStatus = ""
   var arkProbeLoading = false
-  private var verifiedArkRouteKeys = Set<String>()
+  var verifiedArkRouteKeys = Set<String>()
 
   var referenceLibrary: [ReferenceLibraryItem] = []
   var referenceLibraryError = ""
