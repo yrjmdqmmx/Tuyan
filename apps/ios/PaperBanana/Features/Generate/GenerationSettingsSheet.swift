@@ -62,7 +62,9 @@ struct GenerationSettingsSheet: View, Identifiable {
   @ViewBuilder private var advancedSection: some View {
     Section("专业流程") {
       Picker("生成流程", selection: $model.generation.draft.pipelineMode) { ForEach(PipelineMode.allCases) { Text($0.title).tag($0) } }
-      Picker("检索设置", selection: Binding(get: { model.generation.draft.retrievalSetting }, set: { model.generation.selectRetrievalSetting($0) })) { ForEach(RetrievalSetting.allCases) { Text($0.title).tag($0) } }.disabled(!model.generation.draft.referenceImages.isEmpty)
+      Picker("检索设置", selection: Binding(get: { model.generation.draft.retrievalSetting }, set: { model.generation.selectRetrievalSetting($0) })) { ForEach(RetrievalSetting.allCases) { Text($0.title).tag($0) } }
+        .disabled(!model.generation.draft.referenceImages.isEmpty)
+        .accessibilityIdentifier("generate.settings.retrieval")
       Picker("画面比例", selection: $model.generation.draft.aspectRatio) { ForEach(model.generation.generationAspectRatios, id: \.self) { Text($0).tag($0) } }
       Stepper("候选数量：\(model.generation.draft.numCandidates)", value: $model.generation.draft.numCandidates, in: 1...3)
       Stepper("评审轮数：\(model.generation.draft.maxCriticRounds)", value: $model.generation.draft.maxCriticRounds, in: 0...3)

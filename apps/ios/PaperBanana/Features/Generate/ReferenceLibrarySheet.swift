@@ -92,7 +92,7 @@ struct ReferenceLibrarySheet: View {
     return VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
       Button { preview = item } label: {
         AspectRatioMedia(ratio: 4.0 / 3.0) {
-          Group { if let url = model.resolvedImageURL(item.imageURL) { DownsampledAsyncImage(url: url, maxDimension: 480) { phase in if case .success(let image) = phase { image.resizable().scaledToFill() } else { placeholder } } } else { placeholder } }
+          Group { if let url = model.resolvedImageURL(item.imageURL) { DownsampledAsyncImage(url: url, maxDimension: 480) { phase in if case .success(let image) = phase { image.resizable().scaledToFill().accessibilityIdentifier("reference.image.loaded.\(item.id)") } else { placeholder } } } else { placeholder } }
         }
           .clipShape(RoundedRectangle(cornerRadius: 12))
       }.buttonStyle(.plain).accessibilityLabel("预览参考图 \(item.shortZh)")
