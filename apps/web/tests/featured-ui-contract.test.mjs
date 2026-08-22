@@ -34,7 +34,7 @@ test('mobile app shell remains horizontally centered when capped at 366px', () =
   const styles = readSource('../src/styles.css')
   const mobileRule = styles.match(/@media\s*\(max-width:\s*520px\)\s*\{[\s\S]*?\.app-shell\s*\{([\s\S]*?)\n\s*\}/u)?.[1] ?? ''
   assert.match(mobileRule, /margin-inline:\s*auto/u)
-  assert.doesNotMatch(mobileRule, /margin-(?:left|right):\s*12px/u)
+  assert.doesNotMatch(mobileRule, /margin-(?:left|right):/u)
 })
 
 test('private workspace cleanup includes the negative prompt and template dirty state', () => {
