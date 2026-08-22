@@ -28,7 +28,6 @@ struct ReferenceLibrarySheet: View {
         footer
       }
       .navigationTitle("参考图库")
-      .searchable(text: Binding(get: { query }, set: updateQuery), prompt: "搜索主题、图示或论文")
       .task(id: "\(requestedPage)|\(query)|\(visualCategory)|\(researchDomain)") {
         #if DEBUG
         if DebugPreviewConfiguration.isUITesting {
@@ -50,15 +49,35 @@ struct ReferenceLibrarySheet: View {
   }
 
   private var filters: some View {
-    ScrollView(.horizontal, showsIndicators: false) {
+    VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
       HStack(spacing: Theme.Spacing.sm) {
-        Menu(visualCategory.isEmpty ? "视觉类别" : visualCategory) { Button("全部") { visualCategory = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.all"); ForEach(page?.facets.visualCategories ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { visualCategory = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.visual")
-        Menu(researchDomain.isEmpty ? "研究领域" : researchDomain) { Button("全部") { researchDomain = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.all"); ForEach(page?.facets.researchDomains ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { researchDomain = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.domain")
-        if !query.isEmpty || !visualCategory.isEmpty || !researchDomain.isEmpty { Button("清空") { query = ""; visualCategory = ""; researchDomain = ""; requestedPage = 1 }.font(.caption).accessibilityIdentifier("reference.filters.clear") }
+        Image(systemName: "magnifyingglass")
+          .foregroundStyle(.secondary)
+        TextField("搜索主题、图示或论文", text: Binding(get: { query }, set: updateQuery))
+          .textInputAutocapitalization(.never)
+          .autocorrectionDisabled()
+          .accessibilityIdentifier("reference.search")
+        if !query.isEmpty {
+          Button { updateQuery("") } label: { Image(systemName: "xmark.circle.fill") }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
+            .accessibilityLabel("清空搜索")
+        }
       }
-      .padding(.horizontal)
-      .padding(.vertical, Theme.Spacing.sm)
+      .padding(.horizontal, Theme.Spacing.md)
+      .frame(minHeight: 44)
+      .background(.thinMaterial, in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
+
+      ScrollView(.horizontal, showsIndicators: false) {
+        HStack(spacing: Theme.Spacing.sm) {
+          Menu(visualCategory.isEmpty ? "视觉类别" : visualCategory) { Button("全部") { visualCategory = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.all"); ForEach(page?.facets.visualCategories ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { visualCategory = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.visual")
+          Menu(researchDomain.isEmpty ? "研究领域" : researchDomain) { Button("全部") { researchDomain = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.all"); ForEach(page?.facets.researchDomains ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { researchDomain = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.domain")
+          if !query.isEmpty || !visualCategory.isEmpty || !researchDomain.isEmpty { Button("清空") { query = ""; visualCategory = ""; researchDomain = ""; requestedPage = 1 }.font(.caption).accessibilityIdentifier("reference.filters.clear") }
+        }
+      }
     }
+    .padding(.horizontal)
+    .padding(.vertical, Theme.Spacing.sm)
     .frame(maxWidth: .infinity, alignment: .leading)
   }
 
@@ -72,10 +91,9 @@ struct ReferenceLibrarySheet: View {
     let isSelected = model.generation.referenceSelection.selectedIDs.contains(item.id)
     return VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
       Button { preview = item } label: {
-        Group { if let url = model.resolvedImageURL(item.imageURL) { DownsampledAsyncImage(url: url, maxDimension: 480) { phase in if case .success(let image) = phase { image.resizable().scaledToFill() } else { placeholder } } } else { placeholder } }
-          .aspectRatio(4.0 / 3.0, contentMode: .fill)
-          .frame(maxWidth: .infinity)
-          .clipped()
+        AspectRatioMedia(ratio: 4.0 / 3.0) {
+          Group { if let url = model.resolvedImageURL(item.imageURL) { DownsampledAsyncImage(url: url, maxDimension: 480) { phase in if case .success(let image) = phase { image.resizable().scaledToFill() } else { placeholder } } } else { placeholder } }
+        }
           .clipShape(RoundedRectangle(cornerRadius: 12))
       }.buttonStyle(.plain).accessibilityLabel("预览参考图 \(item.shortZh)")
       Text(item.shortZh.isEmpty ? "参考图 \(item.id)" : item.shortZh)

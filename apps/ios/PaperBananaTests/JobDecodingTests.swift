@@ -144,7 +144,7 @@ final class JobDecodingTests: XCTestCase {
 
     let metadata = Dictionary(uniqueKeysWithValues: job.metadataItems.map { ($0.label, $0.value) })
 
-    XCTAssertEqual(metadata["时间"], "2026-06-10 13:45")
+    XCTAssertEqual(metadata["时间"], DateDisplay.absolute(fromISO: "2026-06-10T13:45:12.000Z"))
     XCTAssertEqual(metadata["任务来源"], "macOS")
     XCTAssertEqual(metadata["模式"], "专业模式")
     XCTAssertEqual(metadata["类别"], "系统架构图")

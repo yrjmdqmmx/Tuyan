@@ -16,6 +16,7 @@ final class GenerationStore {
   }
   var draft = GenerationDraft()
   var selectedAPIKey = ""
+  private(set) var providerKeyRevision = 0
   var mainModelCapability: ModelCapability?
 
   var isSubmitting = false
@@ -197,6 +198,10 @@ final class GenerationStore {
   }
 
   private var hasRequiredProviderKeys: Bool {
+    // Keychain reads are not observable. Tracking this revision makes SwiftUI
+    // recompute `canSubmit` immediately after a key changes, without requiring
+    // an unrelated text edit to invalidate the view.
+    _ = providerKeyRevision
     guard registryStore.hasLiveRegistry else { return false }
     let providers = Set(requiredRouteRoles.compactMap { activeRoutes?[$0]?.accessProvider })
     return !providers.isEmpty && providers.allSatisfy { provider in
@@ -315,6 +320,7 @@ final class GenerationStore {
       rememberKeyProvider(provider)
       if provider == .ark { verifiedArkRouteKeys.removeAll() }
       if provider == draft.provider { selectedAPIKey = value }
+      providerKeyRevision &+= 1
     } catch {
       presentAlert(formatUserFacingError(error))
     }
@@ -553,6 +559,7 @@ final class GenerationStore {
     UserDefaults.standard.removeObject(forKey: Self.savedProviderIndexKey)
     draft = GenerationDraft()
     selectedAPIKey = ""
+    providerKeyRevision &+= 1
     mainModelCapability = nil
     submitError = ""
     referenceUploadError = ""
@@ -579,6 +586,7 @@ final class GenerationStore {
 
   private func loadSelectedProviderKey() {
     selectedAPIKey = (try? keychain.string(for: selectedProviderConfig.keyName)) ?? ""
+    providerKeyRevision &+= 1
   }
 
   private func saveSelectedProviderKey() {
@@ -586,6 +594,7 @@ final class GenerationStore {
       try keychain.set(selectedAPIKey.trimmingCharacters(in: .whitespacesAndNewlines), for: selectedProviderConfig.keyName)
       rememberKeyProvider(draft.provider)
       if draft.provider == .ark { verifiedArkRouteKeys.removeAll() }
+      providerKeyRevision &+= 1
     } catch {
       presentAlert(formatUserFacingError(error))
     }

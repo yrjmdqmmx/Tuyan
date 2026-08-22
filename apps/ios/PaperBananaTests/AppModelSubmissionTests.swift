@@ -1,4 +1,5 @@
 import XCTest
+import Observation
 @testable import PaperBanana
 
 @MainActor
@@ -153,6 +154,33 @@ final class AppModelSubmissionTests: XCTestCase {
     XCTAssertEqual(body["pipelineMode"] as? String, "planner_critic")
     XCTAssertEqual(body["retrievalSetting"] as? String, "none")
     XCTAssertEqual(body["maxCriticRounds"] as? Int, 1)
+  }
+
+  func testEnteringRequiredAPIKeyInvalidatesObservedSubmitStateWithoutEditingDraft() {
+    let model = AppModel()
+    installLiveRegistry(model)
+    model.generation.updateSelectedAPIKey("")
+
+    let invalidated = expectation(description: "submit state invalidated")
+    withObservationTracking {
+      _ = model.generation.canSubmit
+    } onChange: {
+      invalidated.fulfill()
+    }
+
+    model.generation.updateSelectedAPIKey("sk-entered-after-launch")
+
+    wait(for: [invalidated], timeout: 0.2)
+    XCTAssertTrue(model.generation.canSubmit)
+  }
+
+  func testAbsoluteTaskTimeCanBeRenderedInDeviceTimeZone() {
+    let shanghai = TimeZone(identifier: "Asia/Shanghai")!
+
+    XCTAssertEqual(
+      DateDisplay.absolute(fromISO: "2026-08-22T08:58:00Z", timeZone: shanghai),
+      "2026-08-22 16:58"
+    )
   }
 
   func testAccountDeletionRemovesUnknownProviderKeyTrackedByIndex() {

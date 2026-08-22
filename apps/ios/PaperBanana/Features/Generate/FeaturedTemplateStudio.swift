@@ -218,7 +218,7 @@ private struct TemplateArtworkCard: View {
   }
 
   @ViewBuilder private var artworkImage: some View {
-    let image = Group {
+    let imageContent = Group {
       if let url = URL(string: artwork.imageURL), !artwork.imageURL.isEmpty {
         DownsampledAsyncImage(url: url, maxDimension: 720) { phase in
           if case .success(let image) = phase { image.resizable().scaledToFill() } else { placeholder }
@@ -226,9 +226,13 @@ private struct TemplateArtworkCard: View {
       } else { placeholder }
     }
     if let imageHeight {
-      image.frame(height: imageHeight).frame(maxWidth: .infinity).clipped().clipShape(RoundedRectangle(cornerRadius: 12))
+      Color.clear
+        .frame(height: imageHeight)
+        .overlay { imageContent.frame(maxWidth: .infinity, maxHeight: .infinity).clipped() }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     } else {
-      image.aspectRatio(16.0 / 9.0, contentMode: .fill).frame(maxWidth: .infinity).clipped().clipShape(RoundedRectangle(cornerRadius: 12))
+      AspectRatioMedia(ratio: 16.0 / 9.0) { imageContent }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
   }
   private var placeholder: some View { VStack(spacing: 8) { Image(systemName: "rectangle.3.group").font(.title2); Text("结构预览").font(.caption) }.frame(maxWidth: .infinity, maxHeight: .infinity).foregroundStyle(Theme.Palette.paperGreenText).background(Theme.Palette.paperGreenWell) }

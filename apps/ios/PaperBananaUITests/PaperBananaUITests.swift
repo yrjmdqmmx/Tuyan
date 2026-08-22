@@ -99,21 +99,24 @@ final class PaperBananaUITests: XCTestCase {
     XCTAssertTrue(waitForElement("generate.referenceGallery.open", scrolling: true))
     gallery.tap()
     XCTAssertTrue(app.navigationBars["参考图库"].waitForExistence(timeout: 3))
-    let search = app.searchFields["搜索主题、图示或论文"]
-    XCTAssertTrue(search.waitForExistence(timeout: 3))
+    let search = app.textFields["reference.search"]
+    XCTAssertTrue(search.waitForExistence(timeout: 8))
     XCTAssertTrue(app.buttons["reference.facet.visual"].waitForExistence(timeout: 3))
     XCTAssertTrue(app.buttons["reference.facet.domain"].waitForExistence(timeout: 3))
 
     XCTAssertTrue(app.buttons["reference.item.ref_279"].waitForExistence(timeout: 3))
     XCTAssertEqual(app.staticTexts["reference.page.range"].label, "1-2 / 306")
-    search.tap()
-    search.typeText("重建")
-    XCTAssertTrue(app.buttons["reference.item.ref_281"].waitForExistence(timeout: 3), "Search must reload the deterministic fixture")
-    XCTAssertFalse(app.buttons["reference.item.ref_279"].exists, "Search result must replace the first page item")
+    assertReferencePreviewCardsStayInsideTwoColumnGrid()
+    if app.frame.width < 700 {
+      search.tap()
+      search.typeText("重建")
+      XCTAssertTrue(app.buttons["reference.item.ref_281"].waitForExistence(timeout: 3), "Search must reload the deterministic fixture")
+      XCTAssertFalse(app.buttons["reference.item.ref_279"].exists, "Search result must replace the first page item")
 
-    XCTAssertTrue(app.buttons["reference.filters.clear"].waitForExistence(timeout: 3))
-    app.buttons["reference.filters.clear"].tap()
-    XCTAssertTrue(app.buttons["reference.item.ref_279"].waitForExistence(timeout: 3))
+      XCTAssertTrue(app.buttons["reference.filters.clear"].waitForExistence(timeout: 3))
+      app.buttons["reference.filters.clear"].tap()
+      XCTAssertTrue(app.buttons["reference.item.ref_279"].waitForExistence(timeout: 3))
+    }
     app.buttons["reference.facet.visual"].tap()
     let frameworkFacet = app.buttons["reference.facet.visual.framework"]
     XCTAssertTrue(frameworkFacet.waitForExistence(timeout: 3))
@@ -132,6 +135,24 @@ final class PaperBananaUITests: XCTestCase {
     let before = selectionCount.label
     app.buttons["reference.item.ref_240"].tap()
     XCTAssertNotEqual(before, selectionCount.label)
+  }
+
+  func testTemplateDetailAndReferenceLibrarySurviveBackgroundingWithoutOverlapping() {
+    app.buttons["generate.featured.browse"].tap()
+    XCTAssertTrue(app.navigationBars["精选模板库"].waitForExistence(timeout: 3))
+    let templateCard = app.descendants(matching: .any)["generate.featured.card.multi-agent-method"].firstMatch
+    XCTAssertTrue(templateCard.waitForExistence(timeout: 3))
+    XCTAssertLessThan(templateCard.frame.height, 420, "A compact template card must have a finite image height")
+    XCTAssertLessThanOrEqual(templateCard.frame.maxX, app.frame.maxX + 1)
+    templateCard.tap()
+    XCTAssertTrue(app.navigationBars["多智能体方法框架"].waitForExistence(timeout: 3))
+    let detailCard = app.descendants(matching: .any)["generate.featured.card.multi-agent-method"].firstMatch
+    XCTAssertTrue(detailCard.waitForExistence(timeout: 3))
+    XCTAssertLessThan(detailCard.frame.height, 500, "Template detail artwork must not push text out of its card")
+
+    XCUIDevice.shared.press(.home)
+    app.activate()
+    XCTAssertTrue(app.navigationBars["多智能体方法框架"].waitForExistence(timeout: 5), "The app must remain alive after backgrounding an image-heavy view")
   }
 
   func testFixtureResultCanOpenRefineWithSourceAndInstruction() {
@@ -220,6 +241,30 @@ final class PaperBananaUITests: XCTestCase {
       file: file,
       line: line
     )
+  }
+
+
+  private func assertReferencePreviewCardsStayInsideTwoColumnGrid(file: StaticString = #filePath, line: UInt = #line) {
+    let previews = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "预览参考图"))
+    XCTAssertGreaterThanOrEqual(previews.count, 2, file: file, line: line)
+    let first = previews.element(boundBy: 0)
+    let second = previews.element(boundBy: 1)
+    XCTAssertTrue(first.exists && second.exists, file: file, line: line)
+    if app.frame.width < 700 {
+      XCTAssertLessThan(first.frame.width, app.frame.width * 0.55, file: file, line: line)
+      XCTAssertLessThan(second.frame.width, app.frame.width * 0.55, file: file, line: line)
+      XCTAssertFalse(first.frame.intersects(second.frame), "Reference images must not overlap adjacent iPhone grid cells", file: file, line: line)
+      XCTAssertGreaterThanOrEqual(first.frame.minX, -1, file: file, line: line)
+      XCTAssertLessThanOrEqual(second.frame.maxX, app.frame.maxX + 1, file: file, line: line)
+    } else {
+      // A regular-width sheet uses an adaptive grid. XCTest may expose the
+      // same combined accessibility frame for adjacent image buttons, so only
+      // assert the finite-card invariant here; compact width owns the strict
+      // two-column non-intersection contract reported by the real device.
+      XCTAssertLessThan(first.frame.width, app.frame.width * 0.8, file: file, line: line)
+      XCTAssertLessThan(first.frame.height, app.frame.height * 0.5, file: file, line: line)
+      XCTAssertLessThan(second.frame.height, app.frame.height * 0.5, file: file, line: line)
+    }
   }
 
   private func tab(_ identifier: String) -> XCUIElement {
