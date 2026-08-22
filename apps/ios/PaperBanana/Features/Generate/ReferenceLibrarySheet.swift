@@ -30,7 +30,12 @@ struct ReferenceLibrarySheet: View {
       .searchable(text: Binding(get: { query }, set: updateQuery), prompt: "搜索主题、图示或论文")
       .task(id: "\(requestedPage)|\(query)|\(visualCategory)|\(researchDomain)") {
         #if DEBUG
-        if DebugPreviewConfiguration.isUITesting { return }
+        if DebugPreviewConfiguration.isUITesting {
+          if DebugPreviewConfiguration.usesReferenceLibraryPreview {
+            await model.generation.loadReferenceLibraryPage(request)
+          }
+          return
+        }
         #endif
         searchDebouncer.schedule(request, operation: { request in
           await model.generation.loadReferenceLibraryPage(request)
@@ -45,9 +50,9 @@ struct ReferenceLibrarySheet: View {
 
   private var filters: some View {
     HStack(spacing: Theme.Spacing.sm) {
-      Menu(visualCategory.isEmpty ? "视觉类别" : visualCategory) { Button("全部") { visualCategory = ""; requestedPage = 1 }; ForEach(page?.facets.visualCategories ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { visualCategory = facet.value; requestedPage = 1 } } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.visual")
-      Menu(researchDomain.isEmpty ? "研究领域" : researchDomain) { Button("全部") { researchDomain = ""; requestedPage = 1 }; ForEach(page?.facets.researchDomains ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { researchDomain = facet.value; requestedPage = 1 } } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.domain")
-      if !query.isEmpty || !visualCategory.isEmpty || !researchDomain.isEmpty { Button("清空") { query = ""; visualCategory = ""; researchDomain = ""; requestedPage = 1 }.font(.caption) }
+      Menu(visualCategory.isEmpty ? "视觉类别" : visualCategory) { Button("全部") { visualCategory = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.all"); ForEach(page?.facets.visualCategories ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { visualCategory = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.visual")
+      Menu(researchDomain.isEmpty ? "研究领域" : researchDomain) { Button("全部") { researchDomain = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.all"); ForEach(page?.facets.researchDomains ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { researchDomain = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.domain")
+      if !query.isEmpty || !visualCategory.isEmpty || !researchDomain.isEmpty { Button("清空") { query = ""; visualCategory = ""; researchDomain = ""; requestedPage = 1 }.font(.caption).accessibilityIdentifier("reference.filters.clear") }
     }.padding(.horizontal).padding(.vertical, Theme.Spacing.sm).frame(maxWidth: .infinity, alignment: .leading)
   }
 
@@ -70,7 +75,7 @@ struct ReferenceLibrarySheet: View {
   private var placeholder: some View { Image(systemName: "photo.on.rectangle.angled").frame(maxWidth: .infinity, maxHeight: .infinity).background(Theme.Palette.paperGreenWell).foregroundStyle(Theme.Palette.paperGreenText) }
   private var footer: some View {
     VStack(spacing: Theme.Spacing.sm) {
-      Text("已选 \(model.generation.referenceSelection.selectedIDs.count)/10 · \(rangeText)").font(.footnote).foregroundStyle(.secondary).accessibilityIdentifier("reference.selectionCount")
+      HStack { Text("已选 \(model.generation.referenceSelection.selectedIDs.count)/10").accessibilityIdentifier("reference.selectionCount"); Text(rangeText).accessibilityIdentifier("reference.page.range") }.font(.footnote).foregroundStyle(.secondary)
       HStack { Button("上一页") { requestedPage = max(1, requestedPage - 1) }.disabled((page?.page ?? 1) <= 1); Spacer(); Button("下一页") { requestedPage = min(page?.totalPages ?? 1, requestedPage + 1) }.disabled((page?.page ?? 1) >= (page?.totalPages ?? 1)).accessibilityIdentifier("reference.nextPage") }
     }.padding().background(.bar)
   }

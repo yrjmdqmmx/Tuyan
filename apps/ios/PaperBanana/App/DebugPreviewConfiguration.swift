@@ -15,6 +15,10 @@ enum DebugPreviewConfiguration {
     UserDefaults.standard.bool(forKey: "pb-preview-live-registry")
   }
 
+  static var usesReferenceLibraryPreview: Bool {
+    UserDefaults.standard.bool(forKey: "pb-preview-reference-library")
+  }
+
   /// These are intentionally independent from `pb-ui-testing`: a Debug launch
   /// only disables side effects when the caller opted in with the explicit
   /// flag. This keeps ordinary Debug runs representative of production.
@@ -44,10 +48,11 @@ enum DebugPreviewConfiguration {
     model.generation.draft.setNegativePrompt("避免测试图中的真实邮箱、密钥或不可读文字。")
     model.generation.normalizeDraftWithLiveRegistry()
 
-    if UserDefaults.standard.bool(forKey: "pb-preview-reference-library") {
-      model.generation.referenceLibraryPage = referencePage
-      model.generation.referenceLibrary = referencePage.references
-      model.generation.featuredTemplateArtworks = FeaturedTemplateCatalog.withImages(referencePage.references)
+    if usesReferenceLibraryPreview {
+      let page = previewReferenceLibraryPage(for: .init())!
+      model.generation.referenceLibraryPage = page
+      model.generation.referenceLibrary = page.references
+      model.generation.featuredTemplateArtworks = FeaturedTemplateCatalog.withImages(page.references)
     }
 
     if UserDefaults.standard.bool(forKey: "pb-preview-signed-in") {
@@ -70,7 +75,7 @@ enum DebugPreviewConfiguration {
   static let previewUser = decode(CurrentUser.self, #"{"id":"ui-preview-user","email":"ui-preview@paperbanana.invalid","name":"UI Preview"}"#)
 
   private static let registry: ModelRegistry = decode(ModelRegistry.self, """
-  {"code":0,"registryVersion":"2026-08-21.v9-ui-preview","routeContractVersion":9,"supportsModelRoutes":true,"providers":{
+  {"code":0,"registryVersion":"2026-08-21.v9-ui-preview","routeContractVersion":1,"supportsModelRoutes":true,"providers":{
     "bailian":\(providerJSON("bailian")),
     "openrouter":\(providerJSON("openrouter")),
     "gemini":\(providerJSON("gemini")),
@@ -81,7 +86,7 @@ enum DebugPreviewConfiguration {
 
   private static func providerJSON(_ provider: String) -> String {
     """
-    {"accessKind":"preview","routeContractVersion":9,"accountCatalogRequired":false,"defaults":{"main":"\(provider)-main","image":"\(provider)-image","vision":"\(provider)-vision"},"models":[
+    {"accessKind":"preview","routeContractVersion":1,"accountCatalogRequired":false,"defaults":{"main":"\(provider)-main","image":"\(provider)-image","vision":"\(provider)-vision"},"models":[
       {"id":"\(provider)-main","label":"\(provider) Main","vendor":"\(provider)","lifecycle":"stable","recommended":true,"requiresEntitlement":false,"inputModalities":["text"],"outputModalities":["text"],"verified":false,"verificationState":"registry","selectable":true,"roles":["main"],"roleReasons":{},"capabilities":{"referenceImages":true,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none"},"protocol":"preview","availabilityNotes":"Debug UI fixture"},
       {"id":"\(provider)-image","label":"\(provider) Image","vendor":"\(provider)","lifecycle":"stable","recommended":true,"requiresEntitlement":false,"inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"registry","selectable":true,"roles":["image"],"roleReasons":{},"capabilities":{"referenceImages":false,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","16:9","9:16"],"refineAspectRatios":["1:1","3:2","16:9","9:16"],"outputFormats":["png"]},"protocol":"preview","availabilityNotes":"Debug UI fixture"},
       {"id":"\(provider)-vision","label":"\(provider) Vision","vendor":"\(provider)","lifecycle":"stable","recommended":true,"requiresEntitlement":false,"inputModalities":["image"],"outputModalities":["text"],"verified":false,"verificationState":"registry","selectable":true,"roles":["vision"],"roleReasons":{},"capabilities":{"referenceImages":true,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none"},"protocol":"preview","availabilityNotes":"Debug UI fixture"}
@@ -89,12 +94,57 @@ enum DebugPreviewConfiguration {
     """
   }
 
-  private static let referencePage: ReferenceLibraryPage = decode(ReferenceLibraryPage.self, """
-  {"references":[
-    {"id":"ref_279","task_name":"diagram","title":"多智能体方法框架","summary":"检索、规划、生成与评审。","image_url":"\(JobPreviewFixtures.sampleImageDataURL)","image_object_key":"bench/ref_279.png","source":"paperbanana-bench","titleZh":"多智能体方法框架","titleEn":"Multi-agent method","summaryZh":"研究方法结构示例","summaryEn":"Method structure example"},
-    {"id":"ref_281","task_name":"diagram","title":"实验与重建流程","summary":"采集到评估的闭环。","image_url":"\(JobPreviewFixtures.sampleImageDataURL)","image_object_key":"bench/ref_281.png","source":"paperbanana-bench","titleZh":"实验与重建流程","titleEn":"Experiment workflow","summaryZh":"可筛选的测试参考图","summaryEn":"Filterable test reference"}
-  ],"total":24,"page":1,"page_size":12,"total_pages":2,"facets":{"visual_categories":[{"value":"framework","count":12,"label_zh":"框架图","label_en":"Framework"}],"research_domains":[{"value":"AI","count":8,"label_zh":"人工智能","label_en":"AI"}]}}
-  """)
+  static func previewReferenceLibraryPage(for request: ReferenceLibraryPageRequest) -> ReferenceLibraryPage? {
+    guard isUITesting, usesReferenceLibraryPreview else { return nil }
+    let query = request.query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    let queryMatches = previewReferences.filter { reference in
+      query.isEmpty || [reference.item.title, reference.item.summary, reference.item.shortZh, reference.item.shortEn, reference.item.detailZh, reference.item.detailEn]
+        .joined(separator: " ")
+        .lowercased()
+        .contains(query)
+    }
+    let matching = queryMatches.filter { reference in
+      (request.visualCategory == nil || request.visualCategory == reference.visualCategory) &&
+      (request.researchDomain == nil || request.researchDomain == reference.researchDomain)
+    }
+    let pageSize = 2
+    let totalPages = max(1, Int(ceil(Double(max(matching.count, 1)) / Double(pageSize))))
+    let page = min(max(1, request.page), totalPages)
+    let start = min((page - 1) * pageSize, matching.count)
+    let end = min(start + pageSize, matching.count)
+    let visualFacets = Dictionary(grouping: queryMatches, by: \.visualCategory).map { key, values in
+      ReferenceFacet(value: key, count: values.count, labelZh: key == "framework" ? "框架图" : "流程图", labelEn: key == "framework" ? "Framework" : "Workflow")
+    }.sorted { $0.value < $1.value }
+    let domainFacets = Dictionary(grouping: queryMatches, by: \.researchDomain).map { key, values in
+      ReferenceFacet(value: key, count: values.count, labelZh: key == "AI" ? "人工智能" : "生命科学", labelEn: key)
+    }.sorted { $0.value < $1.value }
+    return ReferenceLibraryPage(
+      references: Array(matching[start..<end]).map(\.item),
+      total: matching.count,
+      page: page,
+      pageSize: pageSize,
+      totalPages: totalPages,
+      facets: ReferenceLibraryFacets(visualCategories: visualFacets, researchDomains: domainFacets)
+    )
+  }
+
+  private struct PreviewReference {
+    let item: ReferenceLibraryItem
+    let visualCategory: String
+    let researchDomain: String
+  }
+
+  private static let previewReferences: [PreviewReference] = [
+    PreviewReference(item: previewReference("ref_279", "多智能体框架图", "Multi-agent framework", "检索、规划、生成与评审。"), visualCategory: "framework", researchDomain: "AI"),
+    PreviewReference(item: previewReference("ref_281", "实验重建流程图", "Experiment reconstruction", "采集到评估的闭环。"), visualCategory: "workflow", researchDomain: "LifeScience"),
+    PreviewReference(item: previewReference("ref_245", "分子机制图", "Molecular mechanism", "可筛选的结构图示。"), visualCategory: "framework", researchDomain: "LifeScience"),
+    PreviewReference(item: previewReference("ref_240", "模型架构图", "Model architecture", "模块化模型结构。"), visualCategory: "framework", researchDomain: "AI"),
+    PreviewReference(item: previewReference("ref_295", "系统记忆图", "System memory", "多阶段系统状态。"), visualCategory: "framework", researchDomain: "AI"),
+  ]
+
+  private static func previewReference(_ id: String, _ title: String, _ titleEn: String, _ summary: String) -> ReferenceLibraryItem {
+    ReferenceLibraryItem(id: id, taskName: .diagram, title: title, summary: summary, imageURL: JobPreviewFixtures.sampleImageDataURL, imageObjectKey: "bench/\(id).png", source: "paperbanana-bench", shortZh: title, shortEn: titleEn, detailZh: summary, detailEn: summary)
+  }
 
   private static func decode<T: Decodable>(_ type: T.Type, _ json: String) -> T {
     guard let data = json.data(using: .utf8), let value = try? JSONDecoder().decode(T.self, from: data) else {

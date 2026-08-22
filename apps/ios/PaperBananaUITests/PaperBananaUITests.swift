@@ -71,14 +71,37 @@ final class PaperBananaUITests: XCTestCase {
     XCTAssertTrue(waitForElement("generate.referenceGallery.open", scrolling: true))
     gallery.tap()
     XCTAssertTrue(app.navigationBars["参考图库"].waitForExistence(timeout: 3))
-    XCTAssertTrue(app.searchFields["搜索主题、图示或论文"].waitForExistence(timeout: 3))
-    XCTAssertTrue(app.buttons["视觉类别"].waitForExistence(timeout: 3))
-    XCTAssertTrue(app.buttons["研究领域"].waitForExistence(timeout: 3))
-    XCTAssertTrue(app.buttons["下一页"].waitForExistence(timeout: 3))
+    let search = app.searchFields["搜索主题、图示或论文"]
+    XCTAssertTrue(search.waitForExistence(timeout: 3))
+    XCTAssertTrue(app.buttons["reference.facet.visual"].waitForExistence(timeout: 3))
+    XCTAssertTrue(app.buttons["reference.facet.domain"].waitForExistence(timeout: 3))
+
+    XCTAssertTrue(app.buttons["reference.item.ref_279"].waitForExistence(timeout: 3))
+    search.tap()
+    search.typeText("重建")
+    XCTAssertTrue(app.buttons["reference.item.ref_281"].waitForExistence(timeout: 3), "Search must reload the deterministic fixture")
+    XCTAssertFalse(app.buttons["reference.item.ref_279"].exists, "Search result must replace the first page item")
+
+    XCTAssertTrue(app.buttons["reference.filters.clear"].waitForExistence(timeout: 3))
+    app.buttons["reference.filters.clear"].tap()
+    XCTAssertTrue(app.buttons["reference.item.ref_279"].waitForExistence(timeout: 3))
+    app.buttons["reference.facet.visual"].tap()
+    let frameworkFacet = app.buttons["reference.facet.visual.framework"]
+    XCTAssertTrue(frameworkFacet.waitForExistence(timeout: 3))
+    frameworkFacet.tap()
+    XCTAssertTrue(app.buttons["reference.item.ref_245"].waitForExistence(timeout: 3), "Facet must replace results")
+    let pageRange = app.staticTexts["reference.page.range"]
+    XCTAssertEqual(pageRange.label, "1-2 / 4")
+
+    let next = app.buttons["reference.nextPage"]
+    XCTAssertTrue(next.waitForExistence(timeout: 3))
+    next.tap()
+    XCTAssertTrue(app.buttons["reference.item.ref_240"].waitForExistence(timeout: 3), "Next page must expose a different fixture item")
+    XCTAssertEqual(pageRange.label, "3-4 / 4")
     let selectionCount = app.staticTexts["reference.selectionCount"]
     XCTAssertTrue(selectionCount.waitForExistence(timeout: 3))
     let before = selectionCount.label
-    app.buttons["reference.item.ref_279"].tap()
+    app.buttons["reference.item.ref_240"].tap()
     XCTAssertNotEqual(before, selectionCount.label)
   }
 

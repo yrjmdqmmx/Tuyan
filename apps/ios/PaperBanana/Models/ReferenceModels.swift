@@ -147,6 +147,7 @@ extension ReferenceLibraryItem {
 struct ReferenceFacet: Decodable, Equatable, Identifiable {
   let value: String; let count: Int; let labelZh: String; let labelEn: String
   var id: String { value }
+  init(value: String, count: Int, labelZh: String, labelEn: String) { self.value = value; self.count = count; self.labelZh = labelZh; self.labelEn = labelEn }
   init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); value = c.string("value", "id", "key"); count = c.int("count", "total"); labelZh = c.string("labelZh", "label_zh", "titleZh", "title_zh", default: value); labelEn = c.string("labelEn", "label_en", "titleEn", "title_en", default: value) }
 }
 struct ReferenceLibraryFacets: Decodable, Equatable {
@@ -157,6 +158,7 @@ struct ReferenceLibraryFacets: Decodable, Equatable {
 }
 struct ReferenceLibraryPage: Decodable, Equatable {
   let references: [ReferenceLibraryItem]; let total: Int; let page: Int; let pageSize: Int; let totalPages: Int; let facets: ReferenceLibraryFacets
+  init(references: [ReferenceLibraryItem], total: Int, page: Int, pageSize: Int, totalPages: Int, facets: ReferenceLibraryFacets) { self.references = references; self.total = total; self.page = page; self.pageSize = pageSize; self.totalPages = totalPages; self.facets = facets }
   init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); references = c.decodeArray("references"); total = c.int("total", default: references.count); page = max(1, c.int("page", default: 1)); pageSize = max(1, c.int("pageSize", "page_size", default: 12)); totalPages = max(1, c.int("totalPages", "total_pages", default: Int(ceil(Double(max(total, 1)) / Double(pageSize))))) ; facets = (try? c.decode(ReferenceLibraryFacets.self, forKey: .key("facets"))) ?? .empty }
 }
 struct ReferenceLibraryPageRequest: Equatable {

@@ -431,6 +431,13 @@ final class GenerationStore {
         referenceLibraryLoading = false
       }
     }
+    #if DEBUG
+    if let previewPage = DebugPreviewConfiguration.previewReferenceLibraryPage(for: request) {
+      referenceLibraryPage = previewPage
+      referenceLibrary = previewPage.references
+      return
+    }
+    #endif
     do {
       let page = try await apiClient.referenceLibraryPage(apiBase: settings.apiBase, request: request)
       guard requestSequence == referenceLibraryRequestSequence else { return }
