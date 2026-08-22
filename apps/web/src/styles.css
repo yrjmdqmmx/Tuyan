@@ -4001,8 +4001,7 @@ figcaption {
   .app-shell {
     width: min(calc(100vw - 24px), 366px);
     max-width: min(calc(100vw - 24px), 366px);
-    margin-left: 12px;
-    margin-right: 12px;
+    margin-inline: auto;
   }
 
 }
