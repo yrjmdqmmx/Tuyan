@@ -16,6 +16,11 @@ struct PaperBananaApp: App {
   var body: some Scene {
     WindowGroup {
       RootView(model: model)
+        .transaction { transaction in
+          #if DEBUG
+          if DebugPreviewConfiguration.isUITesting { transaction.animation = nil }
+          #endif
+        }
         .task {
           await model.bootstrap()
         }

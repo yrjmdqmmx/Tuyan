@@ -26,6 +26,7 @@ struct GenerationSettingsSheet: View, Identifiable {
           ForEach(displayedProviders) { provider in
             SecureField("\(ProviderCatalog.config(for: provider).label) API 密钥", text: Binding(get: { model.generation.apiKey(for: provider) }, set: { model.generation.updateAPIKey($0, for: provider) }))
               .textContentType(.password)
+              .accessibilityIdentifier("generate.settings.key.\(provider.rawValue)")
           }
         }
         Section("输出") {
@@ -37,7 +38,7 @@ struct GenerationSettingsSheet: View, Identifiable {
         if model.generation.draft.configurationMode == .simple, hasArkRoute { arkVerificationSection }
       }
       .navigationTitle("生成设置")
-      .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() } } }
+      .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() }.accessibilityIdentifier("generate.settings.close") } }
       .alert("清除本地上传？", isPresented: $confirmClearLocal) {
         Button("取消", role: .cancel) {}
         Button("清除并浏览图库", role: .destructive) { model.generation.draft.referenceImages = []; model.generation.referenceUploadError = ""; openReferenceLibrary() }
@@ -54,6 +55,7 @@ struct GenerationSettingsSheet: View, Identifiable {
       Stepper("评审轮数：\(model.generation.draft.maxCriticRounds)", value: $model.generation.draft.maxCriticRounds, in: 0...3)
       if model.generation.draft.retrievalSetting == .manual {
         Button("浏览参考图库", systemImage: "photo.stack") { if model.generation.draft.referenceImages.isEmpty { openReferenceLibrary() } else { confirmClearLocal = true } }
+          .accessibilityIdentifier("generate.referenceGallery.open")
       }
     }
     Section("模型路由") {
@@ -93,7 +95,9 @@ struct GenerationSettingsSheet: View, Identifiable {
     let value = model.generation.route(for: role)?.modelId ?? ""
     return VStack(alignment: .leading) {
       Picker("\(title)接口", selection: Binding(get: { provider }, set: { model.generation.selectProvider($0, for: role) })) { ForEach(model.generation.liveProviders) { Text(ProviderCatalog.config(for: $0).label).tag($0) } }
+        .accessibilityIdentifier("generate.settings.route.\(role.rawValue).provider")
       Picker(title, selection: Binding(get: { value }, set: { selected in if let item = model.generation.models(for: role, provider: provider).first(where: { $0.id == selected }) { model.generation.selectModel(item, for: role) } })) { ForEach(model.generation.models(for: role, provider: provider)) { Text($0.label).tag($0.id) } }
+        .accessibilityIdentifier("generate.settings.route.\(role.rawValue).model")
     }
   }
 }

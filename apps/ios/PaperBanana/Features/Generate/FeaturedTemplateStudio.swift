@@ -20,7 +20,12 @@ struct FeaturedTemplateStudio: View {
 
   var body: some View {
     VStack(spacing: Theme.Spacing.md) { featuredPanel; savedTemplatesPanel }
-      .task { await model.generation.loadFeaturedTemplates() }
+      .task {
+        #if DEBUG
+        if DebugPreviewConfiguration.isUITesting { return }
+        #endif
+        await model.generation.loadFeaturedTemplates()
+      }
       .sheet(item: $destination) { destination in
         switch destination {
         case .featuredLibrary(let selected): FeaturedTemplateLibrary(initialTemplate: selected, artworks: model.generation.featuredTemplateArtworks, apply: { requestApply(.featured($0)) })
@@ -28,8 +33,8 @@ struct FeaturedTemplateStudio: View {
         }
       }
       .alert("替换输入内容？", isPresented: Binding(get: { pendingApply != nil }, set: { if !$0 { cancelApply() } })) {
-        Button("取消", role: .cancel) { cancelApply() }
-        Button("确认替换", role: .destructive) { if let pendingApply { apply(pendingApply) } }
+        Button("取消", role: .cancel) { cancelApply() }.accessibilityIdentifier("generate.featured.confirm.cancel")
+        Button("确认替换", role: .destructive) { if let pendingApply { apply(pendingApply) } }.accessibilityIdentifier("generate.featured.confirm.replace")
       } message: { Text("你已修改方法内容、目标图注或负向提示词。继续会同时替换这三项内容。") }
   }
 
@@ -85,7 +90,7 @@ private struct FeaturedTemplateLibrary: View {
   @State private var selected: FeaturedTemplate
   @Environment(\.dismiss) private var dismiss
   init(initialTemplate: FeaturedTemplate, artworks: [FeaturedTemplateArtwork], apply: @escaping (FeaturedTemplate) -> Void) { self.artworks = artworks; self.apply = apply; _selected = State(initialValue: initialTemplate) }
-  var body: some View { NavigationStack { ScrollView { LazyVGrid(columns: [GridItem(.adaptive(minimum: 165), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) { ForEach(artworks) { artwork in TemplateArtworkCard(artwork: artwork, selected: selected.id == artwork.id) { selected = artwork.template } } }.padding(); VStack(alignment: .leading, spacing: Theme.Spacing.sm) { Text(selected.title).font(.headline); Text(selected.summary).font(.footnote).foregroundStyle(.secondary); Text(selected.caption).font(.footnote); Button("套用到输入区", systemImage: "wand.and.stars") { apply(selected) }.buttonStyle(.borderedProminent) }.padding().frame(maxWidth: .infinity, alignment: .leading).background(Theme.Palette.paperWell, in: RoundedRectangle(cornerRadius: Theme.Radius.control)) }.navigationTitle("精选模板库").toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() } } } }.presentationDetents([.large]) }
+  var body: some View { NavigationStack { ScrollView { LazyVGrid(columns: [GridItem(.adaptive(minimum: 165), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) { ForEach(artworks) { artwork in TemplateArtworkCard(artwork: artwork, selected: selected.id == artwork.id) { selected = artwork.template } } }.padding(); VStack(alignment: .leading, spacing: Theme.Spacing.sm) { Text(selected.title).font(.headline); Text(selected.summary).font(.footnote).foregroundStyle(.secondary); Text(selected.caption).font(.footnote); Button("套用到输入区", systemImage: "wand.and.stars") { apply(selected) }.buttonStyle(.borderedProminent).accessibilityIdentifier("generate.featured.apply") }.padding().frame(maxWidth: .infinity, alignment: .leading).background(Theme.Palette.paperWell, in: RoundedRectangle(cornerRadius: Theme.Radius.control)) }.navigationTitle("精选模板库").toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() } } } }.presentationDetents([.large]) }
 }
 private struct SavedTemplateLibrary: View {
   @Bindable var model: AppModel; let apply: (SavedGenerationTemplate) -> Void; @Environment(\.dismiss) private var dismiss

@@ -36,21 +36,36 @@ struct RootView: View {
 
   private var baseTabs: some View {
     TabView(selection: $model.selectedTab) {
-      Tab(AppTab.generate.title, systemImage: AppTab.generate.symbol, value: AppTab.generate) {
+      Tab(value: AppTab.generate) {
         GenerateView(model: model)
+      } label: {
+        Label(AppTab.generate.title, systemImage: AppTab.generate.symbol).frame(minHeight: 44)
       }
-      Tab(AppTab.refine.title, systemImage: AppTab.refine.symbol, value: AppTab.refine) {
+      .accessibilityIdentifier("tab.generate")
+      Tab(value: AppTab.refine) {
         RefineView(model: model)
+      } label: {
+        Label(AppTab.refine.title, systemImage: AppTab.refine.symbol).frame(minHeight: 44)
       }
-      Tab(AppTab.records.title, systemImage: AppTab.records.symbol, value: AppTab.records) {
+      .accessibilityIdentifier("tab.refine")
+      Tab(value: AppTab.records) {
         RecordsView(model: model)
+      } label: {
+        Label(AppTab.records.title, systemImage: AppTab.records.symbol).frame(minHeight: 44)
       }
-      Tab(AppTab.guide.title, systemImage: AppTab.guide.symbol, value: AppTab.guide) {
+      .accessibilityIdentifier("tab.records")
+      Tab(value: AppTab.guide) {
         GuideView(model: model)
+      } label: {
+        Label(AppTab.guide.title, systemImage: AppTab.guide.symbol).frame(minHeight: 44)
       }
-      Tab(AppTab.settings.title, systemImage: AppTab.settings.symbol, value: AppTab.settings) {
+      .accessibilityIdentifier("tab.guide")
+      Tab(value: AppTab.settings) {
         SettingsView(model: model)
+      } label: {
+        Label(AppTab.settings.title, systemImage: AppTab.settings.symbol).frame(minHeight: 44)
       }
+      .accessibilityIdentifier("tab.settings")
     }
     .tabViewStyle(.sidebarAdaptable)
     .tabBarMinimizeBehavior(.onScrollDown)

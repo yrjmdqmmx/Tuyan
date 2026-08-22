@@ -48,6 +48,7 @@ final class AppModel {
     exports.presentAlert = { [weak self] message in self?.presentAlert(message) }
 
     #if DEBUG
+    DebugPreviewConfiguration.configure(self)
     // 截图 / QA 走查用：`simctl launch ... -pb-initial-tab records` 直达指定 tab
     // （launch argument 自动桥接进 UserDefaults）。仅 DEBUG，发布构建不带此入口。
     if let raw = UserDefaults.standard.string(forKey: "pb-initial-tab"),
@@ -57,15 +58,22 @@ final class AppModel {
     // 截图 / QA 走查用：`-pb-preview-signed-in YES` 注入一个假登录态，
     // 让设置页展示已登录内容（含删除账号入口）。仅 DEBUG。
     if UserDefaults.standard.bool(forKey: "pb-preview-signed-in") {
-      auth.currentUser = try? JSONDecoder().decode(
-        CurrentUser.self,
-        from: Data(#"{"id":"u-preview","email":"founder@paperbanana.app","name":"Founder"}"#.utf8)
-      )
+      if DebugPreviewConfiguration.isUITesting {
+        auth.currentUser = DebugPreviewConfiguration.previewUser
+      } else {
+        auth.currentUser = try? JSONDecoder().decode(
+          CurrentUser.self,
+          from: Data(#"{"id":"u-preview","email":"founder@paperbanana.app","name":"Founder"}"#.utf8)
+        )
+      }
     }
     #endif
   }
 
   func bootstrap() async {
+    #if DEBUG
+    if DebugPreviewConfiguration.isUITesting { return }
+    #endif
     jobs.loadCachedRecords()
     await settings.refreshHealth()
     await modelRegistry.refresh(apiBase: settings.apiBase)
