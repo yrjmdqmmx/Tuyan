@@ -100,7 +100,7 @@ struct RootView: View {
       .accessibilityIdentifier("tab.settings")
     }
     .tabViewStyle(.sidebarAdaptable)
-    .tabBarMinimizeBehavior(.onScrollDown)
+    .tabBarMinimizeBehavior(.never)
   }
 
   private var feedbackBottomPadding: CGFloat {

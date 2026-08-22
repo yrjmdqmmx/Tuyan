@@ -3,6 +3,7 @@ import SwiftUI
 struct ReferenceLibrarySheet: View {
   @Bindable var model: AppModel
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   @State private var query = ""
   @State private var visualCategory = ""
   @State private var researchDomain = ""
@@ -20,7 +21,7 @@ struct ReferenceLibrarySheet: View {
         if model.generation.referenceLibraryLoading { ProgressView().padding() }
         if !model.generation.referenceLibraryError.isEmpty { ContentUnavailableView("参考图库暂不可用", systemImage: "exclamationmark.triangle", description: Text(model.generation.referenceLibraryError)).overlay(alignment: .bottom) { Button("重试") { reload() }.padding() } }
         ScrollView {
-          LazyVGrid(columns: [GridItem(.adaptive(minimum: 165), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) {
+          LazyVGrid(columns: galleryColumns, spacing: Theme.Spacing.md) {
             ForEach(page?.references ?? []) { item in galleryCard(item) }
           }.padding()
         }
@@ -49,27 +50,53 @@ struct ReferenceLibrarySheet: View {
   }
 
   private var filters: some View {
-    HStack(spacing: Theme.Spacing.sm) {
-      Menu(visualCategory.isEmpty ? "视觉类别" : visualCategory) { Button("全部") { visualCategory = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.all"); ForEach(page?.facets.visualCategories ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { visualCategory = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.visual")
-      Menu(researchDomain.isEmpty ? "研究领域" : researchDomain) { Button("全部") { researchDomain = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.all"); ForEach(page?.facets.researchDomains ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { researchDomain = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.domain")
-      if !query.isEmpty || !visualCategory.isEmpty || !researchDomain.isEmpty { Button("清空") { query = ""; visualCategory = ""; researchDomain = ""; requestedPage = 1 }.font(.caption).accessibilityIdentifier("reference.filters.clear") }
-    }.padding(.horizontal).padding(.vertical, Theme.Spacing.sm).frame(maxWidth: .infinity, alignment: .leading)
+    ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: Theme.Spacing.sm) {
+        Menu(visualCategory.isEmpty ? "视觉类别" : visualCategory) { Button("全部") { visualCategory = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.all"); ForEach(page?.facets.visualCategories ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { visualCategory = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.visual.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.visual")
+        Menu(researchDomain.isEmpty ? "研究领域" : researchDomain) { Button("全部") { researchDomain = ""; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.all"); ForEach(page?.facets.researchDomains ?? []) { facet in Button("\(facet.labelZh) / \(facet.labelEn) (\(facet.count))") { researchDomain = facet.value; requestedPage = 1 }.accessibilityIdentifier("reference.facet.domain.\(facet.value)") } }.buttonStyle(.bordered).accessibilityIdentifier("reference.facet.domain")
+        if !query.isEmpty || !visualCategory.isEmpty || !researchDomain.isEmpty { Button("清空") { query = ""; visualCategory = ""; researchDomain = ""; requestedPage = 1 }.font(.caption).accessibilityIdentifier("reference.filters.clear") }
+      }
+      .padding(.horizontal)
+      .padding(.vertical, Theme.Spacing.sm)
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+
+  private var galleryColumns: [GridItem] {
+    horizontalSizeClass == .compact
+      ? [GridItem(.flexible(), spacing: Theme.Spacing.sm), GridItem(.flexible(), spacing: Theme.Spacing.sm)]
+      : [GridItem(.adaptive(minimum: 220), spacing: Theme.Spacing.md)]
   }
 
   private func galleryCard(_ item: ReferenceLibraryItem) -> some View {
     let isSelected = model.generation.referenceSelection.selectedIDs.contains(item.id)
-    return VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+    return VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
       Button { preview = item } label: {
         Group { if let url = model.resolvedImageURL(item.imageURL) { DownsampledAsyncImage(url: url, maxDimension: 480) { phase in if case .success(let image) = phase { image.resizable().scaledToFill() } else { placeholder } } } else { placeholder } }
-          .frame(height: 108).frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12))
+          .aspectRatio(4.0 / 3.0, contentMode: .fill)
+          .frame(maxWidth: .infinity)
+          .clipped()
+          .clipShape(RoundedRectangle(cornerRadius: 12))
       }.buttonStyle(.plain).accessibilityLabel("预览参考图 \(item.shortZh)")
-      Button { model.generation.toggleManualReference(item) } label: {
-      VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-        Text(item.shortZh.isEmpty ? "参考图 \(item.id)" : item.shortZh).font(.caption.weight(.semibold)).foregroundStyle(.primary).lineLimit(2)
-        if item.shortEn != item.shortZh { Text(item.shortEn).font(.caption2).foregroundStyle(.secondary).lineLimit(1) }
-        Text(item.detailZh).font(.caption2).foregroundStyle(.secondary).lineLimit(2)
-      }.frame(maxWidth: .infinity, alignment: .leading)
-      }.buttonStyle(.plain).accessibilityLabel("\(isSelected ? "取消选择" : "选择")参考图 \(item.shortZh)").accessibilityIdentifier("reference.item.\(item.id)")
+      Text(item.shortZh.isEmpty ? "参考图 \(item.id)" : item.shortZh)
+        .font(.caption.weight(.semibold))
+        .foregroundStyle(.primary)
+        .lineLimit(2, reservesSpace: true)
+      HStack(spacing: Theme.Spacing.xs) {
+        Button("详情") { preview = item }
+          .font(.caption)
+          .buttonStyle(.borderless)
+        Spacer(minLength: 0)
+        Button { model.generation.toggleManualReference(item) } label: {
+          Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+            .font(.title3)
+            .frame(width: 44, height: 44)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(isSelected ? Theme.Palette.paperGreenText : .secondary)
+        .accessibilityLabel("\(isSelected ? "取消选择" : "选择")参考图 \(item.shortZh)")
+        .accessibilityIdentifier("reference.item.\(item.id)")
+      }
     }.padding(Theme.Spacing.sm).frame(maxWidth: .infinity, alignment: .leading).background(Theme.Palette.paperWell, in: RoundedRectangle(cornerRadius: Theme.Radius.control)).overlay { RoundedRectangle(cornerRadius: Theme.Radius.control).strokeBorder(isSelected ? Theme.Palette.paperGreen : Theme.Palette.paperBorder, lineWidth: isSelected ? 2 : 1) }
   }
   private var placeholder: some View { Image(systemName: "photo.on.rectangle.angled").frame(maxWidth: .infinity, maxHeight: .infinity).background(Theme.Palette.paperGreenWell).foregroundStyle(Theme.Palette.paperGreenText) }

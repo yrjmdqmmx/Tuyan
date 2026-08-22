@@ -159,7 +159,7 @@ struct ReferenceLibraryFacets: Decodable, Equatable {
 struct ReferenceLibraryPage: Decodable, Equatable {
   let references: [ReferenceLibraryItem]; let total: Int; let page: Int; let pageSize: Int; let totalPages: Int; let facets: ReferenceLibraryFacets
   init(references: [ReferenceLibraryItem], total: Int, page: Int, pageSize: Int, totalPages: Int, facets: ReferenceLibraryFacets) { self.references = references; self.total = total; self.page = page; self.pageSize = pageSize; self.totalPages = totalPages; self.facets = facets }
-  init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); references = c.decodeArray("references"); total = c.int("total", default: references.count); page = max(1, c.int("page", default: 1)); pageSize = max(1, c.int("pageSize", "page_size", default: 12)); totalPages = max(1, c.int("totalPages", "total_pages", default: Int(ceil(Double(max(total, 1)) / Double(pageSize))))) ; facets = (try? c.decode(ReferenceLibraryFacets.self, forKey: .key("facets"))) ?? .empty }
+  init(from decoder: Decoder) throws { let c = try decoder.container(keyedBy: DynamicCodingKey.self); references = c.decodeArray("references"); total = c.int("totalItems", "total", default: references.count); page = max(1, c.int("page", default: 1)); pageSize = max(1, c.int("pageSize", "page_size", default: 12)); totalPages = max(1, c.int("totalPages", "total_pages", default: Int(ceil(Double(max(total, 1)) / Double(pageSize))))) ; facets = (try? c.decode(ReferenceLibraryFacets.self, forKey: .key("facets"))) ?? .empty }
 }
 struct ReferenceLibraryPageRequest: Equatable {
   var page: Int = 1

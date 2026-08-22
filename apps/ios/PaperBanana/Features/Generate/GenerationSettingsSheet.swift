@@ -20,9 +20,19 @@ struct GenerationSettingsSheet: View, Identifiable {
   var body: some View {
     NavigationStack {
       Form {
-        Section("模式与平台") {
+        Section("使用模式") {
           Picker("使用模式", selection: $model.generation.draft.configurationMode) { ForEach(ConfigurationMode.allCases) { Text($0.title).tag($0) } }.pickerStyle(.segmented)
-          Picker("模型接口", selection: Binding(get: { model.generation.draft.provider }, set: { model.generation.selectProvider($0) })) { ForEach(model.generation.liveProviders) { Text(ProviderCatalog.config(for: $0).label).tag($0) } }
+        }
+        if model.generation.draft.configurationMode == .simple {
+          Section("统一接入渠道") {
+            Picker("API 接入渠道", selection: Binding(get: { model.generation.draft.provider }, set: { model.generation.selectProvider($0) })) { ForEach(model.generation.liveProviders) { Text(ProviderCatalog.config(for: $0).label).tag($0) } }
+            Text("普通模式会使用该渠道的服务端默认主模型、生图模型和视觉模型。")
+              .font(.footnote)
+              .foregroundStyle(.secondary)
+          }
+          simpleRouteSummary
+        }
+        Section("API 密钥") {
           ForEach(displayedProviders) { provider in
             SecureField("\(ProviderCatalog.config(for: provider).label) API 密钥", text: Binding(get: { model.generation.apiKey(for: provider) }, set: { model.generation.updateAPIKey($0, for: provider) }))
               .textContentType(.password)
@@ -38,6 +48,9 @@ struct GenerationSettingsSheet: View, Identifiable {
         if model.generation.draft.configurationMode == .simple, hasArkRoute { arkVerificationSection }
       }
       .navigationTitle("生成设置")
+      .navigationDestination(for: ModelRole.self) { role in
+        ModelRouteProviderSelectionView(model: model, role: role)
+      }
       .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() }.accessibilityIdentifier("generate.settings.close") } }
       .alert("清除本地上传？", isPresented: $confirmClearLocal) {
         Button("取消", role: .cancel) {}
@@ -59,9 +72,12 @@ struct GenerationSettingsSheet: View, Identifiable {
       }
     }
     Section("模型路由") {
-      routePicker("主模型", role: .main)
-      if model.generation.draft.outputFormat != .svg { routePicker("图像模型", role: .image) }
-      routePicker("参考图识别模型", role: .vision)
+      ForEach(displayedRouteRoles) { role in
+        NavigationLink(value: role) {
+          routeSummaryRow(role)
+        }
+        .accessibilityIdentifier("generate.settings.route.\(role.rawValue)")
+      }
       if !model.generation.draft.referenceImages.isEmpty { Picker("参考图处理方式", selection: $model.generation.draft.referenceImageMode) { Text(ReferenceImageMode.visionModel.title).tag(ReferenceImageMode.visionModel); Text(ReferenceImageMode.mainModel.title).tag(ReferenceImageMode.mainModel).disabled(!model.generation.mainModelCanReadReferenceImages) }.pickerStyle(.segmented) }
     }
     if hasArkRoute { arkVerificationSection }
@@ -89,15 +105,34 @@ struct GenerationSettingsSheet: View, Identifiable {
   }
   private var hasArkRoute: Bool { activeExecutionRoles.contains { model.generation.route(for: $0)?.accessProvider == .ark } }
   private var hasArkImageRoute: Bool { activeExecutionRoles.contains(.image) && model.generation.route(for: .image)?.accessProvider == .ark }
-  private func openReferenceLibrary() { dismiss(); onPresentReferenceLibrary() }
-  private func routePicker(_ title: String, role: ModelRole) -> some View {
-    let provider = model.generation.route(for: role)?.accessProvider ?? model.generation.draft.provider
-    let value = model.generation.route(for: role)?.modelId ?? ""
-    return VStack(alignment: .leading) {
-      Picker("\(title)接口", selection: Binding(get: { provider }, set: { model.generation.selectProvider($0, for: role) })) { ForEach(model.generation.liveProviders) { Text(ProviderCatalog.config(for: $0).label).tag($0) } }
-        .accessibilityIdentifier("generate.settings.route.\(role.rawValue).provider")
-      Picker(title, selection: Binding(get: { value }, set: { selected in if let item = model.generation.models(for: role, provider: provider).first(where: { $0.id == selected }) { model.generation.selectModel(item, for: role) } })) { ForEach(model.generation.models(for: role, provider: provider)) { Text($0.label).tag($0.id) } }
-        .accessibilityIdentifier("generate.settings.route.\(role.rawValue).model")
+  private var displayedRouteRoles: [ModelRole] {
+    model.generation.draft.outputFormat == .svg ? [.main, .vision] : [.main, .image, .vision]
+  }
+
+  private var simpleRouteSummary: some View {
+    Section("当前有效路由") {
+      ForEach(displayedRouteRoles) { role in routeSummaryRow(role) }
     }
   }
+
+  private func routeSummaryRow(_ role: ModelRole) -> some View {
+    let route = model.generation.route(for: role)
+    let registryModel = route.flatMap { model.modelRegistry.registry?.model(for: $0) }
+    return HStack(alignment: .top, spacing: Theme.Spacing.md) {
+      Image(systemName: role.systemImage)
+        .foregroundStyle(Theme.Palette.paperGreenText)
+        .frame(width: 24)
+      VStack(alignment: .leading, spacing: 2) {
+        Text(role.displayTitle).font(.subheadline.weight(.semibold))
+        Text(route.map { ProviderCatalog.config(for: $0.accessProvider).label } ?? "未配置")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+        Text(registryModel?.label ?? route?.modelId ?? "未配置")
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+      }
+    }
+    .padding(.vertical, 4)
+  }
+  private func openReferenceLibrary() { dismiss(); onPresentReferenceLibrary() }
 }

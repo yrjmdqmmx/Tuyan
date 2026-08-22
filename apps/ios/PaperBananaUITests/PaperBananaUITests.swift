@@ -39,14 +39,39 @@ final class PaperBananaUITests: XCTestCase {
   }
 
   func testGenerationSettingsExposesRoutesAndDismisses() {
-    app.buttons["generate.settings.summary"].tap()
-    XCTAssertTrue(app.navigationBars["生成设置"].waitForExistence(timeout: 3))
+    openGenerationSettings()
     XCTAssertTrue(waitForElement("generate.settings.key.bailian"))
-    XCTAssertTrue(waitForElement("generate.settings.route.main.provider"))
-    XCTAssertTrue(waitForElement("generate.settings.route.image.model"))
+    XCTAssertTrue(waitForElement("generate.settings.route.main", scrolling: true))
+    app.descendants(matching: .any)["generate.settings.route.main"].firstMatch.tap()
+    XCTAssertTrue(app.navigationBars["主模型路由"].waitForExistence(timeout: 3))
+    XCTAssertTrue(app.buttons["route.provider.bailian"].waitForExistence(timeout: 3))
+    app.buttons["route.provider.bailian"].tap()
+    XCTAssertTrue(app.navigationBars["选择模型厂商"].waitForExistence(timeout: 3))
+    XCTAssertTrue(app.buttons["route.vendor.bailian.bailian"].waitForExistence(timeout: 3))
+    app.buttons["route.vendor.bailian.bailian"].tap()
+    XCTAssertTrue(app.navigationBars["选择主模型"].waitForExistence(timeout: 3))
+    XCTAssertTrue(app.buttons["route.model.bailian-main"].waitForExistence(timeout: 3))
+    app.navigationBars.buttons.firstMatch.tap()
+    app.navigationBars.buttons.firstMatch.tap()
+    app.navigationBars.buttons.firstMatch.tap()
     XCTAssertTrue(app.buttons["generate.settings.close"].exists)
     app.buttons["generate.settings.close"].tap()
     XCTAssertTrue(app.buttons["generate.settings.summary"].waitForExistence(timeout: 3))
+  }
+
+  func testGenerateHomeRemovesQuickStartAndShowsCompleteEffectiveSummary() {
+    XCTAssertFalse(app.staticTexts["快速上手案例"].exists)
+    for identifier in [
+      "generate.summary.route.main",
+      "generate.summary.route.image",
+      "generate.summary.route.vision",
+      "generate.summary.pipeline",
+      "generate.summary.retrieval",
+      "generate.summary.candidates",
+      "generate.summary.criticRounds",
+    ] {
+      XCTAssertTrue(waitForElement(identifier, scrolling: true), "Missing summary item \(identifier)")
+    }
   }
 
   func testFeaturedTemplateDirtyConfirmationCanCancelThenReplace() {
@@ -55,10 +80,13 @@ final class PaperBananaUITests: XCTestCase {
     field.typeText("自定义排除项")
     app.buttons["generate.featured.browse"].tap()
     XCTAssertTrue(app.navigationBars["精选模板库"].waitForExistence(timeout: 3))
+    app.descendants(matching: .any)["generate.featured.card.multi-agent-method"].firstMatch.tap()
+    XCTAssertTrue(app.navigationBars["多智能体方法框架"].waitForExistence(timeout: 3))
     app.buttons["generate.featured.apply"].tap()
     XCTAssertTrue(app.alerts["替换输入内容？"].waitForExistence(timeout: 3))
     app.alerts.buttons["generate.featured.confirm.cancel"].firstMatch.tap()
     XCTAssertTrue(app.navigationBars["精选模板库"].waitForExistence(timeout: 3))
+    app.descendants(matching: .any)["generate.featured.card.multi-agent-method"].firstMatch.tap()
     app.buttons["generate.featured.apply"].tap()
     XCTAssertTrue(app.alerts["替换输入内容？"].waitForExistence(timeout: 3))
     app.alerts.buttons["generate.featured.confirm.replace"].firstMatch.tap()
@@ -66,7 +94,7 @@ final class PaperBananaUITests: XCTestCase {
   }
 
   func testReferenceGalleryFixtureSupportsSearchFacetsPagingAndSelection() {
-    app.buttons["generate.settings.summary"].tap()
+    openGenerationSettings()
     let gallery = app.buttons["generate.referenceGallery.open"]
     XCTAssertTrue(waitForElement("generate.referenceGallery.open", scrolling: true))
     gallery.tap()
@@ -77,6 +105,7 @@ final class PaperBananaUITests: XCTestCase {
     XCTAssertTrue(app.buttons["reference.facet.domain"].waitForExistence(timeout: 3))
 
     XCTAssertTrue(app.buttons["reference.item.ref_279"].waitForExistence(timeout: 3))
+    XCTAssertEqual(app.staticTexts["reference.page.range"].label, "1-2 / 306")
     search.tap()
     search.typeText("重建")
     XCTAssertTrue(app.buttons["reference.item.ref_281"].waitForExistence(timeout: 3), "Search must reload the deterministic fixture")
@@ -142,15 +171,18 @@ final class PaperBananaUITests: XCTestCase {
     }
 
     tab("generate").tap()
-    app.buttons["generate.settings.summary"].tap()
-    XCTAssertTrue(app.navigationBars["生成设置"].waitForExistence(timeout: 3))
+    openGenerationSettings()
     XCTAssertTrue(waitForElement("generate.settings.key.bailian", scrolling: true))
     app.buttons["generate.settings.close"].tap()
 
-    tab("refine").tap()
+    let refineTab = tab("refine")
+    XCTAssertTrue(refineTab.waitForExistence(timeout: 5), "Tab bar did not return after dismissing settings")
+    refineTab.tap()
     XCTAssertTrue(app.navigationBars["精修图片"].waitForExistence(timeout: 3))
 
-    tab("settings").tap()
+    let settingsTab = tab("settings")
+    XCTAssertTrue(settingsTab.waitForExistence(timeout: 5))
+    settingsTab.tap()
     for identifier in ["settings.privacy", "settings.terms", "settings.website", "settings.github", "settings.contact.qr"] {
       XCTAssertTrue(waitForElement(identifier, scrolling: true), "Dark AX matrix missing \(identifier)")
     }
@@ -172,6 +204,22 @@ final class PaperBananaUITests: XCTestCase {
       app.swipeUp()
     }
     return element.exists
+  }
+
+  private func openGenerationSettings(file: StaticString = #filePath, line: UInt = #line) {
+    let summary = app.buttons["generate.settings.summary"]
+    XCTAssertTrue(summary.waitForExistence(timeout: 5), "Missing generation settings summary", file: file, line: line)
+    for _ in 0..<5 where !summary.isHittable {
+      app.swipeUp()
+    }
+    XCTAssertTrue(summary.isHittable, "Generation settings summary is not tappable", file: file, line: line)
+    summary.tap()
+    XCTAssertTrue(
+      app.navigationBars["生成设置"].waitForExistence(timeout: 5),
+      "Generation settings did not open",
+      file: file,
+      line: line
+    )
   }
 
   private func tab(_ identifier: String) -> XCUIElement {

@@ -6,7 +6,6 @@ private enum ReferenceLibraryDestination: Identifiable { case library; var id: S
 struct GenerateView: View {
   @Bindable var model: AppModel
   @State private var isImporterPresented = false
-  @State private var isQuickStartExpanded = false
   @State private var selectedPhotoItems: [PhotosPickerItem] = []
   @State private var settingsSheet: GenerationSettingsSheet?
   @State private var compactReferenceLibrary: ReferenceLibraryDestination?
@@ -32,7 +31,6 @@ struct GenerateView: View {
           VStack(alignment: .leading, spacing: Theme.Spacing.md) {
             hero
             FeaturedTemplateStudio(model: model)
-            quickStartSection
             saveTemplateSection
             generationSettingsSection
             inputSection
@@ -111,10 +109,6 @@ struct GenerateView: View {
     horizontalSizeClass == .compact ? 44 : 0
   }
 
-  private var quickStartExamples: [QuickStartExample] {
-    Array(PaperBananaSamples.quickStartExamples.prefix(2))
-  }
-
   // MARK: - Hero
 
   private var hero: some View {
@@ -140,14 +134,9 @@ struct GenerateView: View {
   }
 
   private var brandMark: some View {
-    ZStack {
-      RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous)
-        .fill(Theme.Palette.paperGreen.opacity(0.12))
-      Image("AppIconSource")
-        .resizable()
-        .scaledToFit()
-        .padding(5)
-    }
+    Image("AppIconSource")
+      .resizable()
+      .scaledToFit()
     .frame(width: 46, height: 46)
     .accessibilityHidden(true)
   }
@@ -202,82 +191,6 @@ struct GenerateView: View {
     return localPart.isEmpty ? email : localPart
   }
 
-  // MARK: - 快速案例
-
-  private var quickStartSection: some View {
-    sectionCard("快速上手案例", trailing: {
-      Button {
-        toggleQuickStart()
-      } label: {
-        Label(isQuickStartExpanded ? "收起" : "展开", systemImage: isQuickStartExpanded ? "chevron.up" : "chevron.down")
-          .font(.caption.weight(.semibold))
-      }
-      .buttonStyle(.plain)
-      .foregroundStyle(Theme.Palette.paperGreenText)
-      .accessibilityLabel(isQuickStartExpanded ? "收起快速上手案例" : "展开快速上手案例")
-    }) {
-      if isQuickStartExpanded {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 148), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) {
-          ForEach(quickStartExamples) { example in
-            Button {
-              model.applyExample(example)
-            } label: {
-              QuickStartMiniCard(example: example)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("套用案例 \(example.title)")
-          }
-        }
-        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-      } else {
-        quickStartCollapsedSummary
-      }
-    }
-    .animation(Theme.Motion.stateChange, value: isQuickStartExpanded)
-  }
-
-  private func toggleQuickStart() {
-    withAnimation(reduceMotion ? nil : Theme.Motion.stateChange) {
-      isQuickStartExpanded.toggle()
-    }
-  }
-
-  private var quickStartCollapsedSummary: some View {
-    Button {
-      toggleQuickStart()
-    } label: {
-      HStack(spacing: Theme.Spacing.md) {
-        Image(systemName: "sparkles.rectangle.stack")
-          .font(.title3)
-          .foregroundStyle(Theme.Palette.warningText)
-          .frame(width: 34, height: 34)
-          .background(Theme.Palette.paperAmber.opacity(0.22), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-          .accessibilityHidden(true)
-        VStack(alignment: .leading, spacing: 2) {
-          Text(quickStartExamples.map(\.label).joined(separator: " · "))
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(.primary)
-            .lineLimit(1)
-          Text("展开后可一键套用示例内容")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .lineLimit(1)
-        }
-        Spacer(minLength: Theme.Spacing.sm)
-        Image(systemName: "chevron.down")
-          .font(.caption.weight(.bold))
-          .foregroundStyle(.secondary)
-          .accessibilityHidden(true)
-      }
-      .padding(Theme.Spacing.md)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .background(Theme.Palette.paperWell, in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
-      .contentShape(RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
-    }
-    .buttonStyle(.plain)
-    .accessibilityLabel("展开快速上手案例，包含 \(quickStartExamples.map(\.label).joined(separator: "、"))")
-  }
-
   // MARK: - ① 生成设置
 
   private var generationSettingsSection: some View {
@@ -285,8 +198,11 @@ struct GenerateView: View {
       HStack(alignment: .top, spacing: Theme.Spacing.md) {
         Image(systemName: "slider.horizontal.3").font(.title3).foregroundStyle(Theme.Palette.paperGreenText)
         VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-          Text("生成设置摘要").font(.headline).foregroundStyle(.primary)
-          Text(generationSettingsSummary).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.leading)
+          Text("当前生成配置").font(.headline).foregroundStyle(.primary)
+          Text(isAdvanced ? "专业模式" : "普通模式")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(Theme.Palette.paperGreenText)
+          configurationSummaryGrid
           Text("轻点打开设置，调整模型、密钥、路由、格式与专业流程。")
             .font(.caption).foregroundStyle(Theme.Palette.paperGreenText)
         }
@@ -311,8 +227,35 @@ struct GenerateView: View {
   }
 
   private var generationSettingsSummary: String {
-    if !isAdvanced { return "普通模式 · \(model.generation.selectedProviderConfig.label) · \(modelDisplayName(model.generation.activeMainModelName))" }
-    return "专业模式 · 主 \(modelDisplayName(model.generation.activeMainModelName)) · 图像 \(modelDisplayName(model.generation.activeImageModelName)) · 视觉 \(modelDisplayName(model.generation.activeVisionModelName))"
+    let summary = GenerationConfigurationSummary(store: model.generation)
+    let routes = summary.routes.map { "\($0.role.displayTitle) \($0.providerLabel) / \($0.modelLabel)" }
+    return ([isAdvanced ? "专业模式" : "普通模式"] + routes + [summary.pipeline.title, summary.retrieval.title, "候选 \(summary.candidates) 张", "评审 \(summary.criticRounds) 轮"]).joined(separator: "，")
+  }
+
+  private var configurationSummaryGrid: some View {
+    let summary = GenerationConfigurationSummary(store: model.generation)
+    let routeItems = summary.routes.map { item in
+      (item.role.displayTitle, "\(item.providerLabel) · \(item.modelLabel)", "generate.summary.route.\(item.role.rawValue)")
+    }
+    let processItems = [
+      ("生成流程", summary.pipeline.title, "generate.summary.pipeline"),
+      ("检索设置", summary.retrieval.title, "generate.summary.retrieval"),
+      ("候选数量", "\(summary.candidates) 张", "generate.summary.candidates"),
+      ("评审轮数", "\(summary.criticRounds) 轮", "generate.summary.criticRounds"),
+    ]
+    return LazyVGrid(columns: [GridItem(.adaptive(minimum: 132), spacing: Theme.Spacing.xs)], spacing: Theme.Spacing.xs) {
+      ForEach(Array((routeItems + processItems).enumerated()), id: \.offset) { _, item in
+        VStack(alignment: .leading, spacing: 2) {
+          Text(item.0).font(.caption2).foregroundStyle(.secondary)
+          Text(item.1).font(.caption.weight(.semibold)).foregroundStyle(.primary).lineLimit(2)
+        }
+        .padding(Theme.Spacing.sm)
+        .frame(maxWidth: .infinity, minHeight: 54, alignment: .leading)
+        .background(.white.opacity(0.5), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(item.2)
+      }
+    }
   }
 
   private var saveTemplateSection: some View {

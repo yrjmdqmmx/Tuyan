@@ -108,7 +108,9 @@ enum DebugPreviewConfiguration {
       (request.researchDomain == nil || request.researchDomain == reference.researchDomain)
     }
     let pageSize = 2
-    let totalPages = max(1, Int(ceil(Double(max(matching.count, 1)) / Double(pageSize))))
+    let isUnfiltered = query.isEmpty && request.visualCategory == nil && request.researchDomain == nil
+    let reportedTotal = isUnfiltered ? 306 : matching.count
+    let totalPages = max(1, Int(ceil(Double(max(reportedTotal, 1)) / Double(pageSize))))
     let page = min(max(1, request.page), totalPages)
     let start = min((page - 1) * pageSize, matching.count)
     let end = min(start + pageSize, matching.count)
@@ -120,7 +122,7 @@ enum DebugPreviewConfiguration {
     }.sorted { $0.value < $1.value }
     return ReferenceLibraryPage(
       references: Array(matching[start..<end]).map(\.item),
-      total: matching.count,
+      total: reportedTotal,
       page: page,
       pageSize: pageSize,
       totalPages: totalPages,
