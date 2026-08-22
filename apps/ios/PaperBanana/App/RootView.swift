@@ -31,8 +31,40 @@ struct RootView: View {
 
   @ViewBuilder
   private var tabs: some View {
+    #if DEBUG
+    if DebugPreviewConfiguration.usesAccessibilityXXLPreview {
+      previewAdjustedTabs
+        .dynamicTypeSize(.accessibility4)
+    } else {
+      previewAdjustedTabs
+    }
+    #else
     baseTabs
+    #endif
   }
+
+  #if DEBUG
+  @ViewBuilder
+  private var previewAdjustedTabs: some View {
+    if DebugPreviewConfiguration.usesDarkPreview && DebugPreviewConfiguration.usesReduceMotionPreview {
+      baseTabs
+        .preferredColorScheme(.dark)
+        .transaction { transaction in
+          transaction.animation = nil
+          transaction.disablesAnimations = true
+        }
+    } else if DebugPreviewConfiguration.usesDarkPreview {
+      baseTabs.preferredColorScheme(.dark)
+    } else if DebugPreviewConfiguration.usesReduceMotionPreview {
+      baseTabs.transaction { transaction in
+        transaction.animation = nil
+        transaction.disablesAnimations = true
+      }
+    } else {
+      baseTabs
+    }
+  }
+  #endif
 
   private var baseTabs: some View {
     TabView(selection: $model.selectedTab) {

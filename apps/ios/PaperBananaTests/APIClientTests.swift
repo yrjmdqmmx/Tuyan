@@ -4,7 +4,33 @@ import XCTest
 final class APIClientTests: XCTestCase {
   override func tearDown() {
     URLProtocolStub.requestHandler = nil
+    UserDefaults.standard.removeObject(forKey: "pb-ui-disable-network")
     super.tearDown()
+  }
+
+  func testExplicitDebugNetworkDisableFailsBeforeAnyURLSessionRequest() async {
+    UserDefaults.standard.set(true, forKey: "pb-ui-disable-network")
+    var requestCount = 0
+    URLProtocolStub.requestHandler = { request in
+      requestCount += 1
+      return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"code":0,"references":[]}"#)
+    }
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+
+    do {
+      _ = try await client.referenceLibrary(apiBase: "https://gateway.example", taskName: .diagram)
+      XCTFail("Expected explicit debug network disable to fail fast")
+    } catch {
+      XCTAssertEqual(error.localizedDescription, "UI 测试已显式禁用网络请求。")
+    }
+
+    do {
+      try await client.uploadReference(data: Data("fixture".utf8), mimeType: "image/png", uploadURL: "https://uploads.example/object")
+      XCTFail("Expected upload to fail before URLSession")
+    } catch {
+      XCTAssertEqual(error.localizedDescription, "UI 测试已显式禁用网络请求。")
+    }
+    XCTAssertEqual(requestCount, 0, "Network-disabled paths must not reach URLSession")
   }
 
   func testEnvelopeFailureWithOkFalseThrowsServerErrorBeforeDecoding() async throws {

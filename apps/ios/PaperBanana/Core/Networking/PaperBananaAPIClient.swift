@@ -61,6 +61,7 @@ final class PaperBananaAPIClient {
   }
 
   func uploadReference(data: Data, mimeType: String, uploadURL: String) async throws {
+    try assertNetworkEnabled()
     guard let url = URL(string: uploadURL) else { throw PaperBananaAPIError.invalidURL(uploadURL) }
     var request = URLRequest(url: url, timeoutInterval: 90)
     request.httpMethod = "PUT"
@@ -286,6 +287,7 @@ final class PaperBananaAPIClient {
   }
 
   private func requestJSON<T: Decodable>(_ url: URL, method: String = "GET", body: [String: Any]? = nil) async throws -> T {
+    try assertNetworkEnabled()
     var request = URLRequest(url: url, timeoutInterval: 60)
     request.httpMethod = method
     request.httpShouldHandleCookies = true
@@ -335,6 +337,14 @@ final class PaperBananaAPIClient {
           : error.localizedDescription
       )
     }
+  }
+
+  private func assertNetworkEnabled() throws {
+    #if DEBUG
+    if DebugPreviewConfiguration.isNetworkDisabled {
+      throw PaperBananaAPIError.server("UI 测试已显式禁用网络请求。")
+    }
+    #endif
   }
 
   /// 清洗裸控制字节，语义对齐小程序端 coerceJsonResponse

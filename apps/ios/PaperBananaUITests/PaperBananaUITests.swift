@@ -6,15 +6,21 @@ final class PaperBananaUITests: XCTestCase {
   override func setUpWithError() throws {
     continueAfterFailure = false
     app = XCUIApplication()
-    app.launchArguments = [
+    app.launchArguments = baseLaunchArguments
+    app.launch()
+  }
+
+  private var baseLaunchArguments: [String] {
+    [
       "-pb-ui-testing", "YES",
+      "-pb-ui-disable-network", "YES",
+      "-pb-ui-disable-animations", "YES",
       "-pb-preview-live-registry", "YES",
       "-pb-preview-reference-library", "YES",
       "-pb-preview-current-result", "YES",
       "-pb-preview-signed-in", "YES",
       "-pb-initial-tab", "generate",
     ]
-    app.launch()
   }
 
   func testFiveTabNavigationUsesStableLabelsAndTargets() {
@@ -95,6 +101,41 @@ final class PaperBananaUITests: XCTestCase {
     for identifier in ["settings.privacy", "settings.terms", "settings.website", "settings.github", "settings.contact.qr"] {
       XCTAssertTrue(app.descendants(matching: .any)[identifier].waitForExistence(timeout: 3), "Missing \(identifier)")
     }
+  }
+
+  func testDarkAccessibilityXXLReduceMotionMatrixKeepsPrimaryFlowsOperable() {
+    app.terminate()
+    app.launchArguments = baseLaunchArguments + [
+      "-pb-ui-preview-dark", "YES",
+      "-pb-ui-preview-accessibility-size", "AX-XXL",
+      "-pb-ui-preview-reduce-motion", "YES",
+    ]
+    app.launch()
+
+    for identifier in ["generate", "refine", "records", "guide", "settings"] {
+      let item = tab(identifier)
+      XCTAssertTrue(item.waitForExistence(timeout: 5), "Dark AX matrix missing \(identifier)")
+      item.tap()
+    }
+
+    tab("generate").tap()
+    app.buttons["generate.settings.summary"].tap()
+    XCTAssertTrue(app.navigationBars["生成设置"].waitForExistence(timeout: 3))
+    XCTAssertTrue(waitForElement("generate.settings.key.bailian", scrolling: true))
+    app.buttons["generate.settings.close"].tap()
+
+    tab("refine").tap()
+    XCTAssertTrue(app.navigationBars["精修图片"].waitForExistence(timeout: 3))
+
+    tab("settings").tap()
+    for identifier in ["settings.privacy", "settings.terms", "settings.website", "settings.github", "settings.contact.qr"] {
+      XCTAssertTrue(waitForElement(identifier, scrolling: true), "Dark AX matrix missing \(identifier)")
+    }
+
+    let attachment = XCTAttachment(screenshot: app.screenshot())
+    attachment.name = "dark-accessibility-xxl-reduce-motion-settings"
+    attachment.lifetime = .keepAlways
+    add(attachment)
   }
 
   /// SwiftUI controls may surface as a picker, button, or generic accessibility

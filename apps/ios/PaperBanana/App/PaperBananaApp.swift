@@ -18,7 +18,7 @@ struct PaperBananaApp: App {
       RootView(model: model)
         .transaction { transaction in
           #if DEBUG
-          if DebugPreviewConfiguration.isUITesting { transaction.animation = nil }
+          if DebugPreviewConfiguration.isAnimationsDisabled { transaction.animation = nil }
           #endif
         }
         .task {

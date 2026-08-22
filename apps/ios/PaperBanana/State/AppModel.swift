@@ -72,7 +72,7 @@ final class AppModel {
 
   func bootstrap() async {
     #if DEBUG
-    if DebugPreviewConfiguration.isUITesting { return }
+    if DebugPreviewConfiguration.isNetworkDisabled { return }
     #endif
     jobs.loadCachedRecords()
     await settings.refreshHealth()

@@ -15,6 +15,17 @@ enum DebugPreviewConfiguration {
     UserDefaults.standard.bool(forKey: "pb-preview-live-registry")
   }
 
+  /// These are intentionally independent from `pb-ui-testing`: a Debug launch
+  /// only disables side effects when the caller opted in with the explicit
+  /// flag. This keeps ordinary Debug runs representative of production.
+  static var isNetworkDisabled: Bool { launchFlag("pb-ui-disable-network") }
+  static var isAnimationsDisabled: Bool { launchFlag("pb-ui-disable-animations") }
+  static var usesDarkPreview: Bool { launchFlag("pb-ui-preview-dark") }
+  static var usesReduceMotionPreview: Bool { launchFlag("pb-ui-preview-reduce-motion") }
+  static var usesAccessibilityXXLPreview: Bool {
+    UserDefaults.standard.string(forKey: "pb-ui-preview-accessibility-size") == "AX-XXL"
+  }
+
   static func configure(_ model: AppModel) {
     guard isUITesting else { return }
 
@@ -90,6 +101,10 @@ enum DebugPreviewConfiguration {
       preconditionFailure("Debug UI fixture cannot decode \(T.self)")
     }
     return value
+  }
+
+  private static func launchFlag(_ key: String) -> Bool {
+    UserDefaults.standard.bool(forKey: key)
   }
 }
 #endif
