@@ -3087,7 +3087,30 @@ async function runCandidate(
   for (let round = 1; round <= maxCriticRounds; round += 1) {
     await logStage(`critic round ${round}`)
     const criticStartedAt = new Date()
-    const critique = await critiqueRenderedDiagram(body, routeSecrets, description, base64, referenceAnalysis, retrievalContext)
+    const { critique, error: criticFailure } = await runCriticWithImageFetchRetry(
+      () => critiqueRenderedDiagram(body, routeSecrets, description, base64, referenceAnalysis, retrievalContext),
+      routeSecrets,
+      logStage,
+      `critic round ${round}`,
+    )
+    if (criticFailure) {
+      const message = redactSecretText(criticFailure?.message || String(criticFailure), Object.values(routeSecrets))
+      await logStage(`critic round ${round} failed, keeping last render: ${message}`)
+      await recordStage(jobId, {
+        candidateId,
+        type: 'critic',
+        title: `图像评审（第${round}轮，已跳过）`,
+        round,
+        text: '评审服务未能读取图片，已保留上一张成功结果。',
+        image: stageImage,
+        startedAt: criticStartedAt,
+        completedAt: new Date(),
+        error: message,
+      })
+      base64 = lastGoodImage
+      description = lastGoodDescription
+      break
+    }
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
@@ -3152,6 +3175,31 @@ async function runCandidate(
   return { content: base64, encoding: 'base64' as const, mimeType: 'image/png', description }
 }
 
+function isRetryableCriticImageFetchError(error: any) {
+  const message = error?.message || String(error)
+  return /(?:download|fetch).*(?:image|multimodal|file).*(?:timed?\s*out|timeout)/i.test(message)
+}
+
+async function runCriticWithImageFetchRetry(
+  attempt: () => Promise<string>,
+  routeSecrets: RouteSecrets,
+  logStage: (message: string) => Promise<void>,
+  stageLabel: string,
+): Promise<{ critique: string; error: any }> {
+  try {
+    return { critique: await attempt(), error: null }
+  } catch (error: any) {
+    if (!isRetryableCriticImageFetchError(error)) return { critique: '', error }
+    const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
+    await logStage(`${stageLabel} image download timed out, retrying once: ${message}`)
+    try {
+      return { critique: await attempt(), error: null }
+    } catch (retryError: any) {
+      return { critique: '', error: retryError }
+    }
+  }
+}
+
 // Plot candidate: planner(plot) -> optional stylist(plot) -> matplotlib code via
 // the visualizer prompt -> render via the external plot-worker. Then the SAME
 // image-critic loop as the diagram path, but using the PLOT critic, the
@@ -3203,7 +3251,31 @@ async function runPlotCandidate(
   for (let round = 1; round <= maxCriticRounds; round += 1) {
     await logStage(`plot critic round ${round}`)
     const criticStartedAt = new Date()
-    const critique = await critiqueRenderedPlot(body, routeSecrets, description, base64, rendered.error, referenceAnalysis, retrievalContext)
+    const { critique, error: criticFailure } = await runCriticWithImageFetchRetry(
+      () => critiqueRenderedPlot(body, routeSecrets, description, base64, rendered.error, referenceAnalysis, retrievalContext),
+      routeSecrets,
+      logStage,
+      `plot critic round ${round}`,
+    )
+    if (criticFailure) {
+      const message = redactSecretText(criticFailure?.message || String(criticFailure), Object.values(routeSecrets))
+      await logStage(`plot critic round ${round} failed, keeping last render: ${message}`)
+      await recordStage(jobId, {
+        candidateId,
+        type: 'critic',
+        title: `统计图评审（第${round}轮，已跳过）`,
+        round,
+        text: '评审服务未能读取图片，已保留上一张成功结果。',
+        image: stageImage,
+        startedAt: criticStartedAt,
+        completedAt: new Date(),
+        error: message,
+      })
+      base64 = lastGoodImage
+      description = lastGoodDescription
+      code = lastGoodCode
+      break
+    }
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
