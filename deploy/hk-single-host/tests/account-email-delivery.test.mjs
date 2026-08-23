@@ -140,7 +140,7 @@ test('manual production workflow transports credentials without printing them an
   assert.doesNotMatch(source, /set -x|echo .*ACCESS_KEY|cat .*directmail/i);
 });
 
-test('production email diagnostics expose only safe configuration, rate-limit aggregates, and filtered result logs', () => {
+test('production account diagnostics expose safe email state and redacted deletion failures', () => {
   assert.equal(existsSync(diagnosticWorkflow), true, 'read-only account email diagnostic workflow must exist');
   const source = readFileSync(diagnosticWorkflow, 'utf8');
   assert.match(source, /workflow_dispatch:/);
@@ -158,6 +158,10 @@ test('production email diagnostics expose only safe configuration, rate-limit ag
   assert.match(source, /providerCode/);
   assert.match(source, /requestId/);
   assert.match(source, /EMAIL_REDACTED/);
+  assert.match(source, /paperbanana-api/);
+  assert.match(source, /paperbanana-api\\\].*request failed/);
+  assert.match(source, /deleteAccount\\\]/);
+  assert.match(source, /OWNER_REDACTED/);
   assert.ok((source.match(/<\/dev\/null/g) || []).length >= 2, 'container diagnostics must not consume the SSH script stdin');
   assert.doesNotMatch(source, /console\.log\([^\n]*\._id/);
   assert.doesNotMatch(source, /printenv|env\s*\||cat\s+.*gateway\.env|set -x/);

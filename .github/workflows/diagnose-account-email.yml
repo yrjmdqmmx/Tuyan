@@ -33,7 +33,7 @@ jobs:
           printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
 
-      - name: Inspect safe account email state and filtered result logs
+      - name: Inspect safe account email state and filtered deletion failures
         env:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
@@ -52,6 +52,7 @@ jobs:
 
           compose=(docker compose --project-name paperbanana-hk --project-directory /opt/paperbanana/repo/deploy/hk-single-host --env-file /opt/paperbanana/repo/deploy/hk-single-host/.env -f /opt/paperbanana/repo/deploy/hk-single-host/compose.yaml)
           "${compose[@]}" ps --status running auth-gateway | grep -q auth-gateway
+          "${compose[@]}" ps --status running paperbanana-api | grep -q paperbanana-api
           "${compose[@]}" exec -T auth-gateway node -e '
             const state = {
               deliveryEnabled: process.env.AUTH_EMAIL_DELIVERY_ENABLED === "true",
@@ -108,6 +109,21 @@ jobs:
           else
             printf '%s\n' "$filtered_logs" \
               | sed -E 's/[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}/[EMAIL_REDACTED]/g' \
+              | tail -n 50
+          fi
+
+          deletion_logs=$("${compose[@]}" logs --since 2h --no-color paperbanana-api 2>&1 | awk '
+            /\[paperbanana-api\] request failed/ || /\[deleteAccount\]/ { print }
+          ' || true)
+          if [[ -z "$deletion_logs" ]]; then
+            echo 'No account deletion failure logs found in the last two hours.'
+          else
+            printf '%s\n' "$deletion_logs" \
+              | sed -E \
+                -e 's/[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}/[EMAIL_REDACTED]/g' \
+                -e 's#references/[^/[:space:]]+/#references/[OWNER_REDACTED]/#g' \
+                -e 's#(mongodb(\+srv)?://[^:@/[:space:]]+:)[^@/[:space:]]+@#\1[REDACTED]@#g' \
+                -e 's/sk-[[:alnum:]_-]{8,}/[REDACTED]/g' \
               | tail -n 50
           fi
           REMOTE
