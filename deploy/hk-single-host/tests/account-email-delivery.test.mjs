@@ -134,7 +134,11 @@ test('manual production workflow transports credentials without printing them an
   assert.match(source, /secrets\.ALIBABA_DIRECTMAIL_ACCESS_KEY_ID/);
   assert.match(source, /secrets\.ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET/);
   assert.match(source, /set-account-email-config\.sh/);
-  assert.match(source, /--delivery enabled --verification optional --apply/);
+  assert.match(source, /verification:\s*\n\s*description:/);
+  assert.match(source, /type:\s*choice/);
+  assert.match(source, /options:\s*\n\s*- optional\s*\n\s*- required/);
+  assert.match(source, /VERIFICATION_MODE:\s*\$\{\{ inputs\.verification \}\}/);
+  assert.match(source, /--delivery enabled --verification '\$VERIFICATION_MODE' --apply/);
   assert.match(source, /up -d --no-deps --force-recreate auth-gateway/);
   assert.match(source, /https:\/\/api\.paperbanana\.asia\/ready/);
   assert.doesNotMatch(source, /set -x|echo .*ACCESS_KEY|cat .*directmail/i);
