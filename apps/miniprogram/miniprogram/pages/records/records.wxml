@@ -163,4 +163,4 @@
 
   <view class="footer-space" />
 </scroll-view>
-<account-settings show="{{showAccountSettings}}" current-email="{{currentUserEmail}}" bind:close="closeAccountSettings" bind:signedout="onAccountSignedOut" bind:deleted="onAccountDeleted" />
+<account-settings show="{{showAccountSettings}}" current-email="{{currentUserEmail}}" email-verified="{{currentUserEmailVerified}}" bind:close="closeAccountSettings" bind:signedout="onAccountSignedOut" bind:deleted="onAccountDeleted" />

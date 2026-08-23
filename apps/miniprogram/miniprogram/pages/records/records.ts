@@ -16,6 +16,7 @@ Component({
     isLoggedIn: false,
     isAuthChecking: true,
     currentUserEmail: '',
+    currentUserEmailVerified: false,
     accountJobs: [] as Job[],
     accountJobsError: '',
     accountJobsLoading: false,
@@ -31,6 +32,7 @@ Component({
         this.setData({
           isLoggedIn: Boolean(user),
           currentUserEmail: user ? user.email : '',
+          currentUserEmailVerified: user ? user.emailVerified : false,
           isAuthChecking: false,
         })
         if (user && !wasLoggedIn) {
@@ -45,6 +47,7 @@ Component({
       this.setData({
         isLoggedIn: Boolean(user),
         currentUserEmail: user ? user.email : '',
+        currentUserEmailVerified: user ? user.emailVerified : false,
         isAuthChecking: !isSessionChecked(),
       })
     },

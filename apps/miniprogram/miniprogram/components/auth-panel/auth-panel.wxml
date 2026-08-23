@@ -1,36 +1,56 @@
 <view class="panel-mask" wx:if="{{show}}" catchtap="close">
-  <view class="panel-dialog auth-panel" catchtap="noop">
-    <view class="section-head">
-      <view>
+  <view class="panel-dialog auth-panel" catchtap="noop" role="dialog" aria-label="{{authTitle}}">
+    <view class="auth-head">
+      <view class="auth-heading">
+        <view class="auth-kicker">图研 Tuyan 账号</view>
         <view class="section-title">{{authTitle}}</view>
-        <view class="section-note">登录后可以在任务记录里查看自己提交过的结果。</view>
+        <view class="section-note">{{authNote}}</view>
       </view>
-      <button class="ghost-button" size="mini" catchtap="close">关闭</button>
+      <button class="auth-close" aria-label="关闭账号面板" catchtap="close">关闭</button>
     </view>
 
-    <view class="field" wx:if="{{authIsSignUp}}">
-      <view class="field-label">昵称</view>
-      <input
-        class="input auth-name-input"
-        type="nickname"
-        maxlength="24"
-        value="{{authName}}"
-        placeholder="可选"
-        bindinput="onAuthNameInput"
-      />
+    <view class="auth-state-card" wx:if="{{authMode === 'pending-verification'}}">
+      <view class="auth-state-icon">✉</view>
+      <view class="auth-state-title">邮件已发往</view>
+      <view class="auth-state-email">{{authEmail}}</view>
+      <view class="auth-state-copy">完成验证后返回小程序登录。若未收到，请检查垃圾邮件或稍后重发。</view>
+      <button
+        class="primary-button auth-action"
+        loading="{{authSubmitting}}"
+        disabled="{{authResendDisabled || authSubmitting}}"
+        bindtap="resendVerification"
+      >{{authCooldownSeconds > 0 ? authCooldownSeconds + ' 秒后可重发' : '重发验证邮件'}}</button>
+      <button class="text-button auth-back" bindtap="showSignIn">返回登录</button>
     </view>
-    <view class="field">
-      <view class="field-label">邮箱</view>
-      <input class="input" type="text" value="{{authEmail}}" placeholder="you@example.com" bindinput="onAuthEmailInput" />
+
+    <view class="auth-state-card recovery-card" wx:elif="{{authMode === 'recovery-sent'}}">
+      <view class="auth-state-icon">✓</view>
+      <view class="auth-state-title">重置说明已发送</view>
+      <view class="auth-state-copy">为保护账号隐私，无论该邮箱是否注册，我们都显示相同结果。</view>
+      <button class="secondary-button auth-action" bindtap="showSignIn">返回登录</button>
     </view>
-    <view class="field">
-      <view class="field-label">密码</view>
-      <input class="input" password value="{{authPassword}}" placeholder="至少 8 位" bindinput="onAuthPasswordInput" />
+
+    <view class="auth-form" wx:else>
+      <view class="field" wx:if="{{authMode === 'sign-up'}}">
+        <view class="field-label">昵称 <text class="field-optional">选填</text></view>
+        <input class="input auth-input" type="nickname" maxlength="24" value="{{authName}}" placeholder="怎么称呼你" aria-label="昵称，可选" bindinput="onAuthNameInput" />
+      </view>
+      <view class="field">
+        <view class="field-label">邮箱</view>
+        <input class="input auth-input" type="text" value="{{authEmail}}" placeholder="you@example.com" aria-label="邮箱" bindinput="onAuthEmailInput" />
+      </view>
+      <view class="field" wx:if="{{authMode !== 'forgot-password'}}">
+        <view class="field-label">密码 <text class="field-hint">8–128 位</text></view>
+        <input class="input auth-input" password maxlength="128" value="{{authPassword}}" placeholder="输入密码" aria-label="密码，8 到 128 位" bindinput="onAuthPasswordInput" />
+      </view>
+      <button class="primary-button auth-submit" loading="{{authSubmitting}}" disabled="{{!authCanSubmit}}" bindtap="submitAuth">{{authCooldownSeconds > 0 ? authCooldownSeconds + ' 秒后重试' : authSubmitText}}</button>
+      <button class="text-button" wx:if="{{authMode === 'sign-in'}}" bindtap="showForgotPassword">忘记密码</button>
+      <button class="text-button" wx:if="{{authMode === 'sign-in' || authMode === 'sign-up'}}" bindtap="toggleAuthMode">{{authToggleText}}</button>
+      <button class="text-button" wx:if="{{authMode === 'forgot-password'}}" bindtap="showSignIn">返回登录</button>
     </view>
-    <button class="primary-button" loading="{{authSubmitting}}" disabled="{{!authCanSubmit}}" bindtap="submitAuth">
-      {{authSubmitText}}
-    </button>
-    <button class="text-button" bindtap="toggleAuthMode">{{authToggleText}}</button>
-    <view wx:if="{{authError}}" class="error-box">{{authError}}</view>
+
+    <view wx:if="{{authStatus}}" class="auth-message success-message" aria-label="操作成功">{{authStatus}}</view>
+    <view wx:if="{{authError}}" class="auth-message error-box" aria-label="操作失败">{{authError}}</view>
+    <view class="auth-privacy">密码仅用于本次安全请求，不会写入本地存储或任务记录。</view>
   </view>
 </view>

@@ -15,6 +15,8 @@ function loadAuthPanel({ signIn, signUp }) {
 
 async function main() {
   const toastCalls = []
+  global.setInterval = () => 1
+  global.clearInterval = () => undefined
   global.wx = {
     showLoading() {},
     hideLoading() {},
@@ -29,6 +31,7 @@ async function main() {
     ...definition.methods,
     data: {
       ...definition.data,
+      authMode: 'sign-up',
       authIsSignUp: true,
       authCanSubmit: true,
       authEmail: 'user@example.com',
@@ -42,7 +45,8 @@ async function main() {
   await instance.submitAuth()
 
   assert.equal(instance.data.authPassword, '')
-  assert.equal(instance.data.authError, '验证邮件已发送，请完成邮箱验证后再登录。')
+  assert.equal(instance.data.authMode, 'pending-verification')
+  assert.match(instance.data.authStatus, /验证邮件已发送/)
   assert.equal(events.some((event) => event.name === 'authed'), false)
   assert.equal(toastCalls.some((toast) => toast.title === '已登录'), false)
 }
