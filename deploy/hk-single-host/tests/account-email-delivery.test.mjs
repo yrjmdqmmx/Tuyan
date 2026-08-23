@@ -156,6 +156,7 @@ test('production email diagnostics expose only safe configuration, rate-limit ag
   assert.match(source, /maxObservedWindowCount/);
   assert.match(source, /account email \(sent\|failed\)/);
   assert.match(source, /EMAIL_REDACTED/);
+  assert.ok((source.match(/<\/dev\/null/g) || []).length >= 2, 'container diagnostics must not consume the SSH script stdin');
   assert.doesNotMatch(source, /console\.log\([^\n]*\._id/);
   assert.doesNotMatch(source, /printenv|env\s*\||cat\s+.*gateway\.env|set -x/);
 });
