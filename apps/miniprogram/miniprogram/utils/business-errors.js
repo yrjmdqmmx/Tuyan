@@ -11,15 +11,16 @@ class BusinessError extends Error {
         this.code = input.code;
         this.businessCode = input.businessCode;
         this.detail = input.detail;
+        this.retryAfterSeconds = input.retryAfterSeconds;
     }
 }
 exports.BusinessError = BusinessError;
-function toBusinessError(httpStatus, input) {
+function toBusinessError(httpStatus, input, headers) {
     const data = input && typeof input === 'object' ? input : {};
     const businessCode = text(data.businessCode) || (typeof data.code === 'string' ? data.code : '');
     const detail = text(data.detail);
     const message = text(data.error) || text(data.message) || detail || `HTTP ${httpStatus}`;
-    return new BusinessError(message, { httpStatus, code: data.code, businessCode, detail });
+    return new BusinessError(message, { httpStatus, code: data.code, businessCode, detail, retryAfterSeconds: retryAfterFromHeaders(headers) });
 }
 function businessErrorGuidance(error) {
     const mapping = {
@@ -42,4 +43,17 @@ function businessErrorGuidance(error) {
 }
 function text(value) {
     return typeof value === 'string' ? value.trim() : '';
+}
+function retryAfterFromHeaders(headers) {
+    if (!headers || typeof headers !== 'object')
+        return undefined;
+    const entries = Object.entries(headers);
+    for (const preferredName of ['x-retry-after', 'retry-after']) {
+        const match = entries.find(([name]) => name.toLocaleLowerCase() === preferredName);
+        const value = Array.isArray(match === null || match === void 0 ? void 0 : match[1]) ? match === null || match === void 0 ? void 0 : match[1][0] : match === null || match === void 0 ? void 0 : match[1];
+        const seconds = Number(value);
+        if (Number.isFinite(seconds) && seconds > 0)
+            return Math.ceil(seconds);
+    }
+    return undefined;
 }

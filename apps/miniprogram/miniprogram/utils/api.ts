@@ -54,7 +54,7 @@ export function gatewayRequest<T>(url: string, method: 'GET' | 'POST', data?: We
         const responseData = coerceJsonResponse<T & { message?: string; code?: string; error?: string }>(res.data)
         if (res.statusCode < 200 || res.statusCode >= 300) {
           const body = responseData || ({} as T & { message?: string; code?: string; error?: string })
-          reject(toBusinessError(res.statusCode, body))
+          reject(toBusinessError(res.statusCode, body, res.header))
           return
         }
         resolve(responseData as T)
@@ -78,7 +78,7 @@ export function postJson<T>(url: string, body: WechatMiniprogram.IAnyObject, opt
         persistCookies(res)
         const data = coerceJsonResponse<T & { code?: number; error?: string; detail?: string }>(res.data) || ({} as T & { code?: number; error?: string; detail?: string })
         if (res.statusCode < 200 || res.statusCode >= 300 || (data.code && data.code !== 0)) {
-          reject(toBusinessError(res.statusCode, data))
+          reject(toBusinessError(res.statusCode, data, res.header))
           return
         }
         resolve(data)

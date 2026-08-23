@@ -1,10 +1,28 @@
 import { authRequest } from './api'
 import { AUTH_COOKIE_KEY } from './config'
+import {
+  buildChangePasswordPayload,
+  buildPasswordResetRequestPayload,
+  buildSendVerificationPayload,
+  buildSignInPayload,
+  buildSignUpPayload,
+} from './auth-security'
 
 export interface CurrentUser {
   id: string
   email: string
   name: string
+  emailVerified: boolean
+}
+
+export interface AuthenticatedSignInResult {
+  status: 'authenticated'
+  user: CurrentUser
+}
+
+export interface VerificationRequiredSignUpResult {
+  status: 'verification-required'
+  email: string
 }
 
 export type SessionListener = (user: CurrentUser | null) => void
@@ -41,7 +59,7 @@ export async function refreshSession(): Promise<CurrentUser | null> {
   const epoch = ++sessionEpoch
   try {
     // 短超时：启动期的会话探测失败按未登录处理即可，不必等满 60s（也避免控制台超时报错）
-    const session = await authRequest<{ user?: { id?: string; email?: string; name?: string } } | null>('/get-session', 'GET', undefined, { timeout: 15000 })
+    const session = await authRequest<{ user?: { id?: string; email?: string; name?: string; emailVerified?: unknown } } | null>('/get-session', 'GET', undefined, { timeout: 15000 })
     if (epoch !== sessionEpoch) return currentUser
     const user = session && session.user
     if (user && user.id) {
@@ -49,6 +67,7 @@ export async function refreshSession(): Promise<CurrentUser | null> {
         id: String(user.id),
         email: String(user.email || ''),
         name: String(user.name || ''),
+        emailVerified: user.emailVerified === true,
       })
     } else {
       setCurrentUser(null)
@@ -60,18 +79,29 @@ export async function refreshSession(): Promise<CurrentUser | null> {
   return currentUser
 }
 
-export async function signIn(email: string, password: string): Promise<CurrentUser | null> {
-  await authRequest('/sign-in/email', 'POST', { email, password })
-  return refreshSession()
+export async function signIn(email: string, password: string): Promise<AuthenticatedSignInResult> {
+  await authRequest('/sign-in/email', 'POST', buildSignInPayload(email, password))
+  const user = await refreshSession()
+  if (!user) throw new Error('登录状态校验失败，请重试。')
+  return { status: 'authenticated', user }
 }
 
-export async function signUp(email: string, password: string, name: string): Promise<CurrentUser | null> {
-  await authRequest('/sign-up/email', 'POST', {
-    email,
-    password,
-    name: name || email.split('@')[0] || '图研Tuyan 用户',
-  })
-  return refreshSession()
+export async function signUp(email: string, password: string, name: string): Promise<VerificationRequiredSignUpResult> {
+  const payload = buildSignUpPayload(email, password, name)
+  await authRequest<{ status?: boolean; emailVerificationRequired?: boolean }>('/sign-up/email', 'POST', payload)
+  return { status: 'verification-required', email: payload.email }
+}
+
+export async function sendVerificationEmail(email: string): Promise<void> {
+  await authRequest('/send-verification-email', 'POST', buildSendVerificationPayload(email))
+}
+
+export async function requestPasswordReset(email: string): Promise<void> {
+  await authRequest('/request-password-reset', 'POST', buildPasswordResetRequestPayload(email))
+}
+
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
+  await authRequest('/change-password', 'POST', buildChangePasswordPayload(currentPassword, newPassword))
 }
 
 export async function signOut(): Promise<void> {
