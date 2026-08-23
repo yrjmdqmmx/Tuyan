@@ -1,6 +1,8 @@
 import { mapAuthError, validatePassword } from '../../utils/auth-security'
 import { requestPasswordReset, sendVerificationEmail, signIn, signUp } from '../../utils/session'
 
+const VERIFICATION_REQUEST_STATUS = '请求已受理。如账号需要验证，邮件将发送；已有账号请直接登录或找回密码。'
+
 type AuthMode = 'sign-in' | 'sign-up' | 'forgot-password' | 'pending-verification' | 'recovery-sent'
 
 interface AuthModeContent {
@@ -30,8 +32,8 @@ const AUTH_MODE_CONTENT: Record<AuthMode, AuthModeContent> = {
     toggleText: '返回登录',
   },
   'pending-verification': {
-    title: '验证你的邮箱',
-    note: '验证链接 1 小时内有效。完成验证后，请返回登录。',
+    title: '检查邮箱或返回登录',
+    note: '如需验证，邮件中的链接 1 小时内有效；已有账号可直接返回登录。',
     submitText: '',
     toggleText: '返回登录',
   },
@@ -218,7 +220,7 @@ Component({
           : await signIn(email, password)
         if (operationEpoch !== Number((this as any).authOperationEpoch || 0)) return
         if (result.status === 'verification-required') {
-          this.enterPendingVerification('验证邮件已发送，请在 1 小时内完成验证。')
+          this.enterPendingVerification(VERIFICATION_REQUEST_STATUS)
           return
         }
 
@@ -249,7 +251,7 @@ Component({
       try {
         await sendVerificationEmail(this.data.authEmail.trim())
         if (operationEpoch !== Number((this as any).authOperationEpoch || 0)) return
-        this.setData({ authStatus: '验证邮件已发送，请在 1 小时内完成验证。' })
+        this.setData({ authStatus: VERIFICATION_REQUEST_STATUS })
         this.startAuthCooldown(60)
       } catch (error) {
         if (operationEpoch !== Number((this as any).authOperationEpoch || 0)) return

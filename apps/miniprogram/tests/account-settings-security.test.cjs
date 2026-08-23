@@ -115,7 +115,8 @@ test('unverified account can resend and retry-after starts a visible cooldown', 
   await instance.resendVerification()
   assert.equal(attempts, 2)
   assert.equal(instance.data.resendCooldownSeconds, 60)
-  assert.match(instance.data.securityStatus, /验证邮件已发送/)
+  assert.match(instance.data.securityStatus, /如账号仍需验证，邮件将发送/)
+  assert.doesNotMatch(instance.data.securityStatus, /已发送/)
 })
 
 test('change-password validates required, 8/128 boundaries, and confirmation mismatch', async () => {

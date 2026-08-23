@@ -123,7 +123,7 @@ Component({
                 await (0, session_1.sendVerificationEmail)(email);
                 if (operationEpoch !== Number(this.securityOperationEpoch || 0))
                     return;
-                this.setData({ securityStatus: '验证邮件已发送，请在 1 小时内完成验证。' });
+                this.setData({ securityStatus: '请求已受理。如账号仍需验证，邮件将发送，请同时检查垃圾邮件。' });
                 this.startResendCooldown(60);
             }
             catch (error) {

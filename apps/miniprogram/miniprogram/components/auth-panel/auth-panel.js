@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const auth_security_1 = require("../../utils/auth-security");
 const session_1 = require("../../utils/session");
+const VERIFICATION_REQUEST_STATUS = '请求已受理。如账号需要验证，邮件将发送；已有账号请直接登录或找回密码。';
 const AUTH_MODE_CONTENT = {
     'sign-in': {
         title: '登录账号',
@@ -22,8 +23,8 @@ const AUTH_MODE_CONTENT = {
         toggleText: '返回登录',
     },
     'pending-verification': {
-        title: '验证你的邮箱',
-        note: '验证链接 1 小时内有效。完成验证后，请返回登录。',
+        title: '检查邮箱或返回登录',
+        note: '如需验证，邮件中的链接 1 小时内有效；已有账号可直接返回登录。',
         submitText: '',
         toggleText: '返回登录',
     },
@@ -199,7 +200,7 @@ Component({
                 if (operationEpoch !== Number(this.authOperationEpoch || 0))
                     return;
                 if (result.status === 'verification-required') {
-                    this.enterPendingVerification('验证邮件已发送，请在 1 小时内完成验证。');
+                    this.enterPendingVerification(VERIFICATION_REQUEST_STATUS);
                     return;
                 }
                 this.setData({ authPassword: '' });
@@ -234,7 +235,7 @@ Component({
                 await (0, session_1.sendVerificationEmail)(this.data.authEmail.trim());
                 if (operationEpoch !== Number(this.authOperationEpoch || 0))
                     return;
-                this.setData({ authStatus: '验证邮件已发送，请在 1 小时内完成验证。' });
+                this.setData({ authStatus: VERIFICATION_REQUEST_STATUS });
                 this.startAuthCooldown(60);
             }
             catch (error) {

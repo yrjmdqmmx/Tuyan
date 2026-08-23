@@ -1,4 +1,6 @@
 const assert = require('node:assert/strict')
+const fs = require('node:fs')
+const path = require('node:path')
 const { afterEach, test } = require('node:test')
 
 const { toBusinessError } = require('../miniprogram/utils/business-errors.js')
@@ -112,7 +114,7 @@ test('EMAIL_NOT_VERIFIED enters pending verification without retaining a passwor
   assert.equal(instance.data.authMode, 'pending-verification')
   assert.equal(instance.data.authPassword, '')
   assert.equal(instance.data.authCooldownSeconds, 60)
-  assert.equal(instance.data.authTitle, '验证你的邮箱')
+  assert.equal(instance.data.authTitle, '检查邮箱或返回登录')
   assert.equal(events.some((event) => event.name === 'authed'), false)
   assert.equal(timers.activeCount(), 1)
 })
@@ -132,7 +134,21 @@ test('sign-up verification-required enters pending state and never emits authed'
 
   assert.equal(instance.data.authMode, 'pending-verification')
   assert.equal(instance.data.authPassword, '')
+  assert.match(instance.data.authStatus, /如账号需要验证，邮件将发送/)
+  assert.match(instance.data.authStatus, /已有账号请直接登录或找回密码/)
+  assert.doesNotMatch(instance.data.authStatus, /已发送/)
   assert.equal(events.some((event) => event.name === 'authed'), false)
+})
+
+test('pending verification copy does not claim that a generic response delivered email', () => {
+  const wxml = fs.readFileSync(
+    path.join(__dirname, '../miniprogram/components/auth-panel/auth-panel.wxml'),
+    'utf8',
+  )
+
+  assert.match(wxml, /如该账号需要验证，系统会发送邮件/)
+  assert.match(wxml, /已有账号请直接返回登录；忘记密码可在登录页找回/)
+  assert.doesNotMatch(wxml, /邮件已发往/)
 })
 
 test('sign-up remains compatible with an authenticated result', async () => {
@@ -212,6 +228,23 @@ test('verification resend honors retry-after and exposes a disabled countdown', 
   assert.equal(instance.data.authCooldownSeconds, 0)
   assert.equal(instance.data.authResendDisabled, false)
   assert.equal(timers.activeCount(), 0)
+})
+
+test('verification resend success stays neutral and starts cooldown', async () => {
+  installWx()
+  createTimerHarness()
+  const definition = loadAuthPanel()
+  const { instance } = createInstance(definition, {
+    authMode: 'pending-verification', authEmail: 'user@example.com', authCooldownSeconds: 0,
+  })
+
+  await instance.resendVerification()
+
+  assert.match(instance.data.authStatus, /如账号需要验证，邮件将发送/)
+  assert.match(instance.data.authStatus, /已有账号请直接登录或找回密码/)
+  assert.doesNotMatch(instance.data.authStatus, /已发送/)
+  assert.equal(instance.data.authCooldownSeconds, 60)
+  assert.equal(instance.data.authResendDisabled, true)
 })
 
 test('mode changes, close, and detach clear secrets, messages, and timers', () => {

@@ -11,9 +11,9 @@
 
     <view class="auth-state-card" wx:if="{{authMode === 'pending-verification'}}">
       <view class="auth-state-icon">✉</view>
-      <view class="auth-state-title">邮件已发往</view>
+      <view class="auth-state-title">检查账号邮箱</view>
       <view class="auth-state-email">{{authEmail}}</view>
-      <view class="auth-state-copy">完成验证后返回小程序登录。若未收到，请检查垃圾邮件或稍后重发。</view>
+      <view class="auth-state-copy">如该账号需要验证，系统会发送邮件，验证链接 1 小时内有效。已有账号请直接返回登录；忘记密码可在登录页找回。</view>
       <button
         class="primary-button auth-action"
         loading="{{authSubmitting}}"

@@ -46,7 +46,9 @@ async function main() {
 
   assert.equal(instance.data.authPassword, '')
   assert.equal(instance.data.authMode, 'pending-verification')
-  assert.match(instance.data.authStatus, /验证邮件已发送/)
+  assert.match(instance.data.authStatus, /如账号需要验证，邮件将发送/)
+  assert.match(instance.data.authStatus, /已有账号请直接登录或找回密码/)
+  assert.doesNotMatch(instance.data.authStatus, /已发送/)
   assert.equal(events.some((event) => event.name === 'authed'), false)
   assert.equal(toastCalls.some((toast) => toast.title === '已登录'), false)
 }
