@@ -1,7 +1,7 @@
 Build 5 resolves Guideline 2.1 and supports iPhone only.
 
 1. TEST DEVICE / OS
-Physical device: iPhone 17 Pro Max, iOS 27 Developer Beta [FULL BETA NAME + BUILD TO INSERT AFTER RECORDING]. Simulator regression: iPhone 17 Pro, iOS Simulator 26.5; this is simulator evidence only.
+Physical device: iPhone 17 Pro Max, iOS 27.0 Developer Beta (24A5418b). Simulator regression: iPhone 17 Pro, iOS Simulator 26.5; this is simulator evidence only.
 
 2. FUNCTION, AUDIENCE, VALUE
 Tuyan creates publication-ready academic method diagrams, flowcharts, system architectures, and charts for researchers, students, and paper authors. Users describe a method and caption; a visible multi-agent plan/render/critique/finalize pipeline produces the figure. Refine separately edits a result owned by the user.
