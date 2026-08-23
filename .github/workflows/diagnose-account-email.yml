@@ -98,7 +98,11 @@ jobs:
             }
           ' </dev/null
 
-          filtered_logs=$("${compose[@]}" logs --since 2h --no-color auth-gateway 2>&1 | grep -E 'account email (sent|failed)' || true)
+          filtered_logs=$("${compose[@]}" logs --since 2h --no-color auth-gateway 2>&1 | awk '
+            /account email (sent|failed)/ { in_account_email=1; print; next }
+            in_account_email && /(template|requestId|result|providerCode):/ { print; next }
+            in_account_email && /[|][[:space:]]*}/ { in_account_email=0 }
+          ' || true)
           if [[ -z "$filtered_logs" ]]; then
             echo 'No account email result logs found in the last two hours.'
           else
