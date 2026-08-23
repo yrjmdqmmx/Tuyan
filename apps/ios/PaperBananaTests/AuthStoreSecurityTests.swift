@@ -60,6 +60,21 @@ final class AuthStoreSecurityTests: XCTestCase {
     XCTAssertEqual(model.auth.flow, .recoverySent)
     XCTAssertTrue(model.auth.authError.isEmpty)
   }
+
+  func testPasswordValidationShowsMinimumWithoutAdvertisingMaximum() async {
+    let model = makeModel()
+    model.auth.authEmail = "person@example.com"
+    model.auth.authPassword = "short"
+
+    await model.auth.submitPrimary()
+
+    XCTAssertEqual(model.auth.authError, "密码至少 8 位。")
+
+    model.auth.authPassword = String(repeating: "x", count: 129)
+    await model.auth.submitPrimary()
+
+    XCTAssertEqual(model.auth.authError, "密码过长，请使用更短的密码。")
+  }
 }
 
 private final class AuthSecurityStub: URLProtocol {

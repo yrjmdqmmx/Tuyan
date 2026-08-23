@@ -57,8 +57,16 @@ final class AuthStore {
 
   func signInOrSignUp() async {
     let email = authEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !email.isEmpty, (8...128).contains(authPassword.count) else {
-      authError = "请输入邮箱和 8–128 位密码。"
+    guard !email.isEmpty else {
+      authError = "请输入邮箱。"
+      return
+    }
+    guard authPassword.count >= 8 else {
+      authError = "密码至少 8 位。"
+      return
+    }
+    guard authPassword.count <= 128 else {
+      authError = "密码过长，请使用更短的密码。"
       return
     }
     authSubmitting = true
@@ -110,8 +118,11 @@ final class AuthStore {
   }
 
   func changePassword(currentPassword: String, newPassword: String) async throws {
-    guard (8...128).contains(newPassword.count) else {
-      throw PaperBananaAPIError.server("新密码必须为 8–128 位。")
+    guard newPassword.count >= 8 else {
+      throw PaperBananaAPIError.server("新密码至少 8 位。")
+    }
+    guard newPassword.count <= 128 else {
+      throw PaperBananaAPIError.server("新密码过长，请使用更短的密码。")
     }
     try await apiClient.changePassword(
       apiBase: settings.apiBase,
