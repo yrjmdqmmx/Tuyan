@@ -8,11 +8,14 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const catalogs = [
   'apps/web/src/constants.js',
   'apps/android/src/constants.ts',
-  'apps/ios/PaperBanana/Catalog/ProviderCatalog.swift',
   'apps/macos/Sources/PaperBananaMac/Models/Provider.swift',
   'apps/miniprogram/miniprogram/utils/constants.ts',
   'apps/harmony/Stage/src/main/ets/constants/AppConstants.ets',
   'apps/windows/Assets/model-catalog.json',
+]
+
+const liveRegistryMetadataCatalogs = [
+  'apps/ios/PaperBanana/Catalog/ProviderCatalog.swift',
 ]
 
 const retiredDirectIds = [
@@ -60,6 +63,16 @@ test('every shipped client catalog submits only current direct-provider IDs', ()
     }
     for (const retired of retiredOpenRouterIds) {
       assert.equal(hasExactLiteral(source, retired), false, `${relative} still publishes ${retired}`)
+    }
+  }
+})
+
+test('live-registry clients keep local metadata free of model IDs', () => {
+  for (const relative of liveRegistryMetadataCatalogs) {
+    const source = fs.readFileSync(path.join(root, relative), 'utf8')
+    assert.match(source, /capabilities are owned exclusively by the live server registry/)
+    for (const id of [...retiredDirectIds, ...currentDirectIds, ...retiredOpenRouterIds]) {
+      assert.equal(hasExactLiteral(source, id), false, `${relative} hard-codes live registry model ${id}`)
     }
   }
 })
