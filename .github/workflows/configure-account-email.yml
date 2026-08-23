@@ -3,6 +3,14 @@ name: Configure Production Account Email
 on:
   workflow_dispatch:
     inputs:
+      verification:
+        description: Require verified email before sign-in.
+        required: true
+        default: optional
+        type: choice
+        options:
+          - optional
+          - required
       confirm:
         description: Type configure-account-email to continue.
         required: true
@@ -39,10 +47,12 @@ jobs:
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           DIRECTMAIL_ACCESS_KEY_ID: ${{ secrets.ALIBABA_DIRECTMAIL_ACCESS_KEY_ID }}
           DIRECTMAIL_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET }}
+          VERIFICATION_MODE: ${{ inputs.verification }}
         run: |
           set -Eeuo pipefail
           test -n "$DIRECTMAIL_ACCESS_KEY_ID"
           test -n "$DIRECTMAIL_ACCESS_KEY_SECRET"
+          [[ "$VERIFICATION_MODE" == "optional" || "$VERIFICATION_MODE" == "required" ]]
           credentials="$(mktemp)"
           remote_credentials="/tmp/paperbanana-directmail-${GITHUB_RUN_ID}.json"
           cleanup() {
@@ -59,7 +69,7 @@ jobs:
             cd /opt/paperbanana/repo
             git fetch --quiet origin '${GITHUB_SHA}'
             git checkout --detach '${GITHUB_SHA}'
-            deploy/hk-single-host/scripts/set-account-email-config.sh --credentials '$remote_credentials' --delivery enabled --verification optional --apply
+            deploy/hk-single-host/scripts/set-account-email-config.sh --credentials '$remote_credentials' --delivery enabled --verification '$VERIFICATION_MODE' --apply
             docker compose --project-name paperbanana-hk --project-directory deploy/hk-single-host --env-file deploy/hk-single-host/.env -f deploy/hk-single-host/compose.yaml up -d --no-deps --force-recreate auth-gateway
           "
 
