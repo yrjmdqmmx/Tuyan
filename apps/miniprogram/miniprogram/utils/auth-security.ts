@@ -51,13 +51,13 @@ export function validateChangePassword(input: { currentPassword: string; newPass
 
 export function extractAuthErrorCode(error: unknown): StableAuthErrorCode | '' {
   const source = error instanceof BusinessError
-    ? { httpStatus: error.httpStatus, businessCode: error.businessCode, code: error.code }
+    ? { httpStatus: error.httpStatus, businessCode: error.businessCode, code: error.code, message: error.message }
     : error && typeof error === 'object'
-      ? error as { httpStatus?: unknown; status?: unknown; businessCode?: unknown; code?: unknown; error?: unknown }
+      ? error as { httpStatus?: unknown; status?: unknown; businessCode?: unknown; code?: unknown; error?: unknown; message?: unknown }
       : {}
   const httpStatus = Number(source.httpStatus || source.status || 0)
   if (httpStatus === 429) return 'RATE_LIMITED'
-  for (const candidate of [source.businessCode, source.code, source.error]) {
+  for (const candidate of [source.businessCode, source.code, source.error, source.message]) {
     const code = normalizeAuthErrorCode(candidate)
     if (code) return code
   }
@@ -65,17 +65,20 @@ export function extractAuthErrorCode(error: unknown): StableAuthErrorCode | '' {
 }
 
 function normalizeAuthErrorCode(candidate: unknown): StableAuthErrorCode | '' {
-  switch (typeof candidate === 'string' ? candidate.trim() : '') {
+  const normalized = typeof candidate === 'string' ? candidate.trim() : ''
+  switch (normalized) {
     case 'EMAIL_NOT_VERIFIED':
     case 'INVALID_TOKEN':
     case 'TOKEN_EXPIRED':
     case 'TOKEN_USED':
     case 'INVALID_EMAIL_OR_PASSWORD':
     case 'INVALID_PASSWORD':
-      return candidate as StableAuthErrorCode
+      return normalized as StableAuthErrorCode
     case 'INVALID_CREDENTIALS':
+    case 'Invalid email or password':
       return 'INVALID_EMAIL_OR_PASSWORD'
     case 'INVALID_CURRENT_PASSWORD':
+    case 'Invalid password':
       return 'INVALID_PASSWORD'
     default:
       return ''

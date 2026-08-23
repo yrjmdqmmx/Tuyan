@@ -58,14 +58,14 @@ function validateChangePassword(input) {
 }
 function extractAuthErrorCode(error) {
     const source = error instanceof business_errors_1.BusinessError
-        ? { httpStatus: error.httpStatus, businessCode: error.businessCode, code: error.code }
+        ? { httpStatus: error.httpStatus, businessCode: error.businessCode, code: error.code, message: error.message }
         : error && typeof error === 'object'
             ? error
             : {};
     const httpStatus = Number(source.httpStatus || source.status || 0);
     if (httpStatus === 429)
         return 'RATE_LIMITED';
-    for (const candidate of [source.businessCode, source.code, source.error]) {
+    for (const candidate of [source.businessCode, source.code, source.error, source.message]) {
         const code = normalizeAuthErrorCode(candidate);
         if (code)
             return code;
@@ -73,17 +73,20 @@ function extractAuthErrorCode(error) {
     return '';
 }
 function normalizeAuthErrorCode(candidate) {
-    switch (typeof candidate === 'string' ? candidate.trim() : '') {
+    const normalized = typeof candidate === 'string' ? candidate.trim() : '';
+    switch (normalized) {
         case 'EMAIL_NOT_VERIFIED':
         case 'INVALID_TOKEN':
         case 'TOKEN_EXPIRED':
         case 'TOKEN_USED':
         case 'INVALID_EMAIL_OR_PASSWORD':
         case 'INVALID_PASSWORD':
-            return candidate;
+            return normalized;
         case 'INVALID_CREDENTIALS':
+        case 'Invalid email or password':
             return 'INVALID_EMAIL_OR_PASSWORD';
         case 'INVALID_CURRENT_PASSWORD':
+        case 'Invalid password':
             return 'INVALID_PASSWORD';
         default:
             return '';

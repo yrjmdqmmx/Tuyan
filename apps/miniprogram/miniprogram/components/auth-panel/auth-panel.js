@@ -69,11 +69,15 @@ Component({
             try {
                 const email = this.data.authEmail.trim();
                 const password = this.data.authPassword;
-                const user = this.data.authIsSignUp
+                const result = this.data.authIsSignUp
                     ? await (0, session_1.signUp)(email, password, this.data.authName.trim())
                     : await (0, session_1.signIn)(email, password);
-                if (!user)
-                    throw new Error('登录状态校验失败，请重试。');
+                if (result.status === 'verification-required') {
+                    this.setData({ authPassword: '', authError: '验证邮件已发送，请完成邮箱验证后再登录。' });
+                    wx.hideLoading();
+                    return;
+                }
+                const user = result.user;
                 this.setData({ authPassword: '' });
                 wx.hideLoading();
                 wx.showToast({ title: '已登录', icon: 'success' });
