@@ -67,7 +67,7 @@ struct AccountSecurityView: View {
         VStack(spacing: Theme.Spacing.md) {
           Button("修改密码") { showsChangePassword = true }
             .paperGlassButton(prominent: true)
-            .accessibilityHint("修改密码并撤销其他设备会话")
+            .accessibilityHint("修改密码；其他已登录设备会自动退出")
           Button("退出登录") { Task { await model.auth.signOut() } }
             .paperGlassButton(prominent: false)
           Divider()
@@ -109,7 +109,7 @@ struct AccountSecurityView: View {
       }
       if model.auth.flow != .forgotPassword {
         field("密码") {
-          SecureField("8–128 位", text: $model.auth.authPassword)
+          SecureField("至少 8 位", text: $model.auth.authPassword)
             .textContentType(model.auth.flow == .signUp ? .newPassword : .password)
             .paperFieldWell().accessibilityIdentifier("account.password")
         }
@@ -178,11 +178,11 @@ private struct ChangePasswordSheet: View {
       Form {
         Section("密码") {
           SecureField("当前密码", text: $currentPassword).textContentType(.password)
-          SecureField("新密码（8–128 位）", text: $newPassword).textContentType(.newPassword)
+          SecureField("新密码（至少 8 位）", text: $newPassword).textContentType(.newPassword)
           SecureField("再次输入新密码", text: $confirmation).textContentType(.newPassword)
         }
         if !error.isEmpty { Text(error).foregroundStyle(.red).accessibilityIdentifier("account.changePassword.error") }
-        Section { Text("修改成功后，其他设备上的会话会被撤销。") }.font(.footnote).foregroundStyle(.secondary)
+        Section { Text("修改成功后，其他设备会自动退出，需要使用新密码重新登录。") }.font(.footnote).foregroundStyle(.secondary)
       }
       .navigationTitle("修改密码").navigationBarTitleDisplayMode(.inline)
       .toolbar {

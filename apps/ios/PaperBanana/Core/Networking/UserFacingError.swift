@@ -72,7 +72,7 @@ private func mappedErrorCode(_ code: String) -> String? {
   case "PASSWORD_TOO_SHORT":
     "密码太短，至少需要 8 位。"
   case "PASSWORD_TOO_LONG":
-    "密码不能超过 128 位。"
+    "密码过长，请使用更短的密码。"
   case "SESSION_EXPIRED":
     "登录已过期，请重新登录。"
   case "EMAIL_NOT_VERIFIED":

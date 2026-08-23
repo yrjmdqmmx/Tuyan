@@ -92,7 +92,7 @@ final class ErrorMappingTests: XCTestCase {
       ("EMAIL_NOT_VERIFIED", "邮箱尚未验证，请先查看验证邮件。"),
       ("INVALID_TOKEN", "链接无效或已使用，请重新申请。"),
       ("TOKEN_EXPIRED", "链接已过期，请重新申请。"),
-      ("PASSWORD_TOO_LONG", "密码不能超过 128 位。")
+      ("PASSWORD_TOO_LONG", "密码过长，请使用更短的密码。")
     ]
     for (code, expected) in cases {
       let error = PaperBananaAPIError.http(ServerErrorDetails(statusCode: 400, code: code, message: nil))
