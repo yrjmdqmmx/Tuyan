@@ -18,7 +18,7 @@ export class BusinessError extends Error {
 
 export function toBusinessError(httpStatus: number, input: unknown, headers?: unknown): BusinessError {
   const data = input && typeof input === 'object' ? input as Record<string, unknown> : {}
-  const businessCode = text(data.businessCode) || (typeof data.code === 'string' ? data.code : '')
+  const businessCode = text(data.businessCode) || (typeof data.code === 'string' ? data.code : '') || stableErrorIdentifier(data.error)
   const detail = text(data.detail)
   const message = text(data.error) || text(data.message) || detail || `HTTP ${httpStatus}`
   return new BusinessError(message, { httpStatus, code: data.code, businessCode, detail, retryAfterSeconds: retryAfterFromHeaders(headers) })
@@ -44,6 +44,11 @@ export function businessErrorGuidance(error: BusinessError): { setting: string; 
 
 function text(value: unknown): string {
   return typeof value === 'string' ? value.trim() : ''
+}
+
+function stableErrorIdentifier(value: unknown): string {
+  const identifier = text(value)
+  return /^[A-Z][A-Z0-9_]*$/.test(identifier) ? identifier : ''
 }
 
 function retryAfterFromHeaders(headers: unknown): number | undefined {

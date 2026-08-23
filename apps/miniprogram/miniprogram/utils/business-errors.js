@@ -17,7 +17,7 @@ class BusinessError extends Error {
 exports.BusinessError = BusinessError;
 function toBusinessError(httpStatus, input, headers) {
     const data = input && typeof input === 'object' ? input : {};
-    const businessCode = text(data.businessCode) || (typeof data.code === 'string' ? data.code : '');
+    const businessCode = text(data.businessCode) || (typeof data.code === 'string' ? data.code : '') || stableErrorIdentifier(data.error);
     const detail = text(data.detail);
     const message = text(data.error) || text(data.message) || detail || `HTTP ${httpStatus}`;
     return new BusinessError(message, { httpStatus, code: data.code, businessCode, detail, retryAfterSeconds: retryAfterFromHeaders(headers) });
@@ -43,6 +43,10 @@ function businessErrorGuidance(error) {
 }
 function text(value) {
     return typeof value === 'string' ? value.trim() : '';
+}
+function stableErrorIdentifier(value) {
+    const identifier = text(value);
+    return /^[A-Z][A-Z0-9_]*$/.test(identifier) ? identifier : '';
 }
 function retryAfterFromHeaders(headers) {
     if (!headers || typeof headers !== 'object')
