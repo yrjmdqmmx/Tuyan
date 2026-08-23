@@ -30,6 +30,13 @@ test('featured studio, prominent settings, ratios, and guide have desktop and 39
   assert.match(styles, /@media\s*\(max-width:\s*760px\)[\s\S]*?\.guide-directory\s*\{[\s\S]*?overflow-x:\s*auto/u)
 })
 
+test('mobile app shell remains horizontally centered when capped at 366px', () => {
+  const styles = readSource('../src/styles.css')
+  const mobileRule = styles.match(/@media\s*\(max-width:\s*520px\)\s*\{[\s\S]*?\.app-shell\s*\{([\s\S]*?)\n\s*\}/u)?.[1] ?? ''
+  assert.match(mobileRule, /margin-inline:\s*auto/u)
+  assert.doesNotMatch(mobileRule, /margin-(?:left|right):/u)
+})
+
 test('private workspace cleanup includes the negative prompt and template dirty state', () => {
   const source = readSource('../src/App.jsx')
   assert.match(source, /function clearPrivateWorkspace\(\)[\s\S]*?setNegativePrompt\(''\)/u)

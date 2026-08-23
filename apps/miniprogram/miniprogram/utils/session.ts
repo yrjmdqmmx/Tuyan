@@ -69,7 +69,7 @@ export async function signUp(email: string, password: string, name: string): Pro
   await authRequest('/sign-up/email', 'POST', {
     email,
     password,
-    name: name || email.split('@')[0] || 'PaperBanana 用户',
+    name: name || email.split('@')[0] || '图研Tuyan 用户',
   })
   return refreshSession()
 }

@@ -24,6 +24,7 @@ import {
   supportedResolutions,
   type ConfigurationMode,
   type ImageSize,
+  type ProviderId,
   type RetrievalSetting,
 } from '../../utils/constants'
 import type { OutputFormat } from '../../utils/job-assets'
@@ -35,6 +36,12 @@ import {
 } from '../../utils/jobs'
 import { downloadShareFile, saveImageToAlbum } from '../../utils/media'
 import { buildCreateJobPayload, type UploadedReferenceImage } from '../../utils/payload'
+import { getApiKeys, replaceApiKeys } from '../../utils/api-keys'
+import { getArkVerification } from '../../utils/ark-verification'
+import { attachFeaturedTemplateImages, FEATURED_TEMPLATES, featuredTemplateRequest, type FeaturedTemplate } from '../../utils/featured-templates'
+import { findRegistryModel, type ModelRegistry, type ModelProviderId } from '../../utils/model-registry'
+import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
+import { arkProbesForRoles, missingArkVerifications, providerDefaultRoutes, requiredCreateRouteRoles, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import {
   buildReferenceImage,
   filenameFromPath,
@@ -59,6 +66,20 @@ interface ReferenceUpload {
   mimeType: string
   size: number
 }
+
+interface GenerationSettings {
+  configurationMode: 'simple' | 'advanced'
+  simpleProvider: ModelProviderId
+  modelRoutes: ModelRoutes
+  outputFormat: 'png' | 'svg'
+  imageSize: string
+  aspectRatio: string
+  pipelineMode: string
+  retrievalSetting: string
+  numCandidates: number
+  maxCriticRounds: number
+}
+const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft'
 
 Component({
   data: {
@@ -135,6 +156,20 @@ Component({
     methodContent: QUICK_START_EXAMPLES[0].methodContent,
     caption: QUICK_START_EXAMPLES[0].caption,
     quickStartExamples: QUICK_START_EXAMPLES,
+    featuredTemplates: attachFeaturedTemplateImages([]),
+    featuredTemplatesLoading: true,
+    registry: {} as ModelRegistry | Record<string, never>,
+    registryReady: false,
+    registryVersion: '等待服务端目录',
+    registryError: '',
+    settings: {} as GenerationSettings | Record<string, never>,
+    settingsSummary: '正在读取服务端默认路线…',
+    settingsSummaryDetails: [] as string[],
+    showGenerationSettings: false,
+    apiKeysForSheet: {} as Record<string, string>,
+    settingsExecutionRoles: [] as string[],
+    negativePrompt: '',
+    inputDirty: false,
     healthText: '检测中',
     healthOk: false,
     healthChecked: false,
@@ -158,6 +193,7 @@ Component({
   lifetimes: {
     attached() {
       ;(this as any).isPageVisible = true
+      this.restoreDraft()
       // 悬浮反馈按钮放到右下角（movable-view 的 x/y 是相对 movable-area 左上角的 px 值）
       try {
         // getSystemInfoSync 已废弃；优先用 getWindowInfo（基础库 2.20.1+），旧环境回退
@@ -187,11 +223,20 @@ Component({
       })
       this.refreshCanSubmit()
       this.checkHealth()
+      const unsubscribeRegistry = subscribeModelRegistry((state) => this.applyRegistryState(state))
+      ;(this as any).unsubscribeRegistry = unsubscribeRegistry
+      void loadModelRegistry()
+      void this.loadFeaturedTemplates()
     },
     detached() {
       this.stopPolling()
+      const draftTimer = (this as any).draftTimer as number | undefined
+      if (draftTimer) clearTimeout(draftTimer)
+      this.persistDraft()
       const unsubscribe = (this as any).unsubscribeSession as (() => void) | undefined
       if (unsubscribe) unsubscribe()
+      const unsubscribeRegistry = (this as any).unsubscribeRegistry as (() => void) | undefined
+      if (unsubscribeRegistry) unsubscribeRegistry()
     },
   },
 
@@ -212,6 +257,143 @@ Component({
   },
 
   methods: {
+    restoreDraft() {
+      try {
+        const draft = wx.getStorageSync(DRAFT_STORAGE_KEY) as Record<string, unknown>
+        if (!draft || typeof draft !== 'object') return
+        const categoryIndex = Number(draft.categoryIndex)
+        const category = INFOGRAPHIC_CATEGORIES[Number.isInteger(categoryIndex) ? categoryIndex : 0] || INFOGRAPHIC_CATEGORIES[0]
+        this.setData({
+          categoryIndex: INFOGRAPHIC_CATEGORIES.indexOf(category), categoryLabel: category.label, categoryDescription: category.description,
+          isPlotCategory: category.id === PLOT_CATEGORY_ID, libraryTaskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram',
+          methodContent: typeof draft.methodContent === 'string' ? draft.methodContent.slice(0, 12000) : this.data.methodContent,
+          caption: typeof draft.caption === 'string' ? draft.caption.slice(0, 1000) : this.data.caption,
+          negativePrompt: typeof draft.negativePrompt === 'string' ? draft.negativePrompt.slice(0, 1000) : '',
+          inputDirty: draft.inputDirty === true,
+        })
+      } catch { /* 损坏草稿忽略 */ }
+    },
+    schedulePersistDraft() {
+      const previous = (this as any).draftTimer as number | undefined
+      if (previous) clearTimeout(previous)
+      ;(this as any).draftTimer = setTimeout(() => this.persistDraft(), 300)
+    },
+    persistDraft() {
+      wx.setStorageSync(DRAFT_STORAGE_KEY, { categoryIndex: this.data.categoryIndex, methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt, inputDirty: this.data.inputDirty })
+    },
+    applyRegistryState(state: ModelRegistryState) {
+      if (!state.registry) {
+        this.setData({ registry: {}, registryReady: false, registryVersion: '目录不可用', registryError: state.error })
+        this.refreshCanSubmit()
+        return
+      }
+      const current = this.data.settings as GenerationSettings
+      const settings = current.modelRoutes ? current : defaultGenerationSettings(state.registry)
+      this.setData({
+        registry: state.registry,
+        registryReady: true,
+        registryVersion: state.registry.registryVersion,
+        registryError: '',
+        settings,
+        settingsSummary: formatSettingsSummary(settings),
+        settingsSummaryDetails: formatSettingsSummaryDetails(settings),
+      })
+      this.syncLegacySettings(settings)
+      this.refreshCanSubmit()
+      this.schedulePersistDraft()
+    },
+
+    async retryRegistry() { await loadModelRegistry(true) },
+
+    async loadFeaturedTemplates() {
+      this.setData({ featuredTemplatesLoading: true })
+      try {
+        const response = await requestJson<{ references?: unknown[] }>({ action: 'referenceLibrary', ...featuredTemplateRequest() }, { auth: false })
+        this.setData({ featuredTemplates: attachFeaturedTemplateImages(response.references || []), featuredTemplatesLoading: false })
+      } catch {
+        this.setData({ featuredTemplates: attachFeaturedTemplateImages([]), featuredTemplatesLoading: false })
+      }
+    },
+
+    openGenerationSettings() {
+      if (!this.data.registryReady) {
+        wx.showToast({ title: '模型目录不可用', icon: 'none' })
+        return
+      }
+      const settings = this.data.settings as GenerationSettings
+      this.setData({ showGenerationSettings: true, apiKeysForSheet: getApiKeys(), settingsExecutionRoles: this.createExecutionRoles(settings) })
+    },
+
+    closeGenerationSettings() { this.setData({ showGenerationSettings: false }) },
+
+    saveGenerationSettings(event: WechatMiniprogram.CustomEvent<{ settings: GenerationSettings; apiKeys: Record<string, string>; manualReferenceIds: string[] }>) {
+      const settings = event.detail.settings
+      replaceApiKeys(event.detail.apiKeys)
+      const manualReferenceIds = settings.retrievalSetting === 'manual' ? event.detail.manualReferenceIds || [] : []
+      if (this.data.referenceImages.length && settings.retrievalSetting !== 'none') settings.retrievalSetting = 'none'
+      this.setData({
+        settings,
+        settingsSummary: formatSettingsSummary(settings),
+        settingsSummaryDetails: formatSettingsSummaryDetails(settings),
+        manualReferenceIds: settings.retrievalSetting === 'manual' ? manualReferenceIds : [],
+        showGenerationSettings: false,
+        apiKeysForSheet: getApiKeys(),
+      })
+      this.syncLegacySettings(settings)
+      this.refreshCanSubmit()
+    },
+
+    syncLegacySettings(settings: GenerationSettings) {
+      const main = settings.modelRoutes.main
+      const image = settings.modelRoutes.image
+      const vision = settings.modelRoutes.vision
+      this.setData({
+        configurationMode: settings.configurationMode,
+        isAdvancedMode: settings.configurationMode === 'advanced',
+        mainModelName: main.modelId,
+        imageModelName: image.modelId,
+        referenceVisionModelName: vision.modelId,
+        outputFormat: settings.outputFormat,
+        imageSize: settings.imageSize as ImageSize,
+        retrievalSetting: settings.retrievalSetting as RetrievalSetting,
+        showReferenceLibrary: settings.retrievalSetting === 'manual' && this.data.referenceImages.length === 0,
+      })
+      this.refreshReferenceModeState()
+    },
+
+    createExecutionRoles(settings: GenerationSettings) {
+      const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
+      return requiredCreateRouteRoles({ outputFormat: settings.outputFormat, taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds)
+    },
+
+    onFeaturedTemplateApply(event: WechatMiniprogram.CustomEvent<{ id: string }>) {
+      const template = FEATURED_TEMPLATES.find((item) => item.id === event.detail.id)
+      if (!template) return
+      if (!this.data.inputDirty) {
+        this.applyFeaturedTemplate(template)
+        return
+      }
+      wx.showModal({
+        title: '替换当前内容？',
+        content: '你已经修改了类别、方法、图注或负向提示词。套用模板会替换这些内容。',
+        confirmText: '继续套用',
+        success: (result) => { if (result.confirm) this.applyFeaturedTemplate(template) },
+      })
+    },
+
+    applyFeaturedTemplate(template: FeaturedTemplate) {
+      const categoryIndex = Math.max(0, INFOGRAPHIC_CATEGORIES.findIndex((item) => item.id === template.category))
+      const category = INFOGRAPHIC_CATEGORIES[categoryIndex]
+      this.setData({
+        categoryIndex, categoryLabel: category.label, categoryDescription: category.description,
+        isPlotCategory: category.id === PLOT_CATEGORY_ID, libraryTaskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram',
+        methodContent: template.methodContent, caption: template.caption, negativePrompt: template.negativePrompt,
+        inputDirty: false, manualReferenceIds: [],
+      })
+      this.refreshCanSubmit()
+      this.persistDraft()
+      wx.showToast({ title: '模板已套用', icon: 'success' })
+    },
     onProviderChange(event: WechatMiniprogram.PickerChange) {
       const providerIndex = readPickerIndex(event.detail.value, PROVIDERS.length)
       const provider = PROVIDERS[providerIndex] || PROVIDERS[0]
@@ -411,6 +593,7 @@ Component({
         referenceVisionModelName: option.value,
       })
       this.refreshCanSubmit()
+      this.schedulePersistDraft()
     },
 
     onApiKeyInput(event: WechatMiniprogram.Input) {
@@ -431,18 +614,28 @@ Component({
         libraryTaskName,
         // diagram/plot 是两个不同参考库，类别切换后清空已选，避免把错库的 id 发给后端
         manualReferenceIds: libraryTaskName === this.data.libraryTaskName ? this.data.manualReferenceIds : [],
+        inputDirty: true,
       })
       this.refreshCanSubmit()
+      this.schedulePersistDraft()
     },
 
     onMethodInput(event: WechatMiniprogram.TextareaInput) {
-      this.setData({ methodContent: event.detail.value })
+      this.setData({ methodContent: event.detail.value, inputDirty: true })
       this.refreshCanSubmit()
+      this.schedulePersistDraft()
     },
 
     onCaptionInput(event: WechatMiniprogram.Input) {
-      this.setData({ caption: event.detail.value })
+      this.setData({ caption: event.detail.value, inputDirty: true })
       this.refreshCanSubmit()
+      this.schedulePersistDraft()
+    },
+
+    onNegativePromptInput(event: WechatMiniprogram.TextareaInput) {
+      this.setData({ negativePrompt: event.detail.value, inputDirty: true })
+      this.refreshCanSubmit()
+      this.schedulePersistDraft()
     },
 
     applyExample(event: WechatMiniprogram.TouchEvent) {
@@ -466,6 +659,7 @@ Component({
         caption: example.caption,
       })
       this.refreshCanSubmit()
+      this.persistDraft()
       wx.showToast({ title: '已填入案例', icon: 'success' })
     },
 
@@ -622,15 +816,17 @@ Component({
     },
 
     refreshReferenceModeState() {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
-      const activeMainModel = this.data.isAdvancedMode
-        ? this.data.mainModelName.trim() || provider.mainModel
-        : provider.mainModel
+      const settings = this.data.settings as GenerationSettings
+      const mainRoute = settings.modelRoutes?.main
+      const mainEntry = mainRoute && this.data.registryReady
+        ? findRegistryModel(this.data.registry as ModelRegistry, mainRoute.accessProvider, mainRoute.modelId)
+        : null
+      const mainCanRead = Boolean(mainEntry && (mainEntry.inputModalities.includes('image') || mainEntry.capabilities.referenceImages === true))
       const modeState = buildReferenceModeState({
         hasReferenceImages: this.data.referenceImages.length > 0,
         isAdvancedMode: this.data.isAdvancedMode,
         requestedMode: this.data.referenceImageMode,
-        mainModelCanRead: mainModelCanReadImages(provider.id, activeMainModel),
+        mainModelCanRead: mainCanRead,
       })
       this.setData({
         referenceModeCanSubmit: modeState.referenceModeCanSubmit,
@@ -724,22 +920,32 @@ Component({
     async submitJob() {
       if (!this.data.canSubmit || this.data.isSubmitting) return
 
+      // 生产目录是每次付费任务的唯一真相。提交前强制重新读取，失败时在任何上传或任务写入前停止。
+      this.setData({ isSubmitting: true, error: '' })
+      const registryState = await loadModelRegistry(true)
+      const registry = registryState.registry
+      if (!registry) {
+        this.setData({ isSubmitting: false, error: '模型目录不可用，已禁止新建任务。' })
+        this.refreshCanSubmit()
+        return
+      }
+
       // 先停掉上一个任务的轮询，避免旧任务在途响应污染"提交中"状态（见 loadJob 的 jobId 校验）
       this.stopPolling()
 
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const settings = this.data.settings as GenerationSettings
+      if (!settings.modelRoutes) {
+        this.setData({ isSubmitting: false, error: '模型设置不完整，请重新打开设置。' })
+        this.refreshCanSubmit()
+        return
+      }
       const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
-      const isAdvancedMode = this.data.configurationMode === 'advanced'
-      const pipeline = PIPELINE_OPTIONS[this.data.pipelineIndex] || PIPELINE_OPTIONS[0]
-      const aspectRatio = ASPECT_RATIO_OPTIONS[this.data.aspectRatioIndex] || ASPECT_RATIO_OPTIONS[0]
-      const candidateCount = CANDIDATE_OPTIONS[this.data.candidateIndex] || CANDIDATE_OPTIONS[0]
-      const criticRounds = CRITIC_ROUND_OPTIONS[this.data.criticRoundIndex] || CRITIC_ROUND_OPTIONS[1]
-      const mainModelName = isAdvancedMode ? this.data.mainModelName.trim() || provider.mainModel : provider.mainModel
-      const imageModelName = isAdvancedMode ? this.data.imageModelName.trim() || provider.imageModel : provider.imageModel
-      const referenceVisionModelName = isAdvancedMode ? this.data.referenceVisionModelName.trim() || provider.visionModel : provider.visionModel
-      const activeReferenceImageMode: ReferenceImageMode = isAdvancedMode
+      const mainRoute = settings.modelRoutes.main
+      const mainEntry = findRegistryModel(registry, mainRoute.accessProvider, mainRoute.modelId)
+      const mainCanRead = Boolean(mainEntry && (mainEntry.inputModalities.includes('image') || mainEntry.capabilities.referenceImages === true))
+      const activeReferenceImageMode: ReferenceImageMode = settings.configurationMode === 'advanced'
         ? this.data.referenceImageMode
-        : defaultReferenceImageMode(mainModelCanReadImages(provider.id, mainModelName))
+        : defaultReferenceImageMode(mainCanRead)
       this.setData({
         isSubmitting: true,
         error: '',
@@ -752,26 +958,26 @@ Component({
       try {
         const uploadedReferenceImages = await this.uploadReferencesForJob()
         const payload = buildCreateJobPayload({
-          configurationMode: this.data.configurationMode,
-          provider: provider.id,
-          apiKey: this.data.apiKey,
+          configurationMode: settings.configurationMode,
+          provider: mainRoute.accessProvider as ProviderId,
+          registry,
+          modelRoutes: settings.modelRoutes,
+          apiKeys: getApiKeys(),
           categoryId: category.id,
           categoryLabel: category.label,
           methodContent: this.data.methodContent,
           caption: this.data.caption,
-          outputFormat: this.data.outputFormat,
-          imageSize: this.data.imageSize,
-          mainModelName,
-          imageModelName,
-          referenceVisionModelName,
+          negativePrompt: this.data.negativePrompt,
+          outputFormat: settings.outputFormat,
+          imageSize: settings.imageSize as ImageSize,
           referenceImageMode: activeReferenceImageMode,
           uploadedReferenceImages,
-          pipelineMode: pipeline.value,
-          retrievalSetting: this.data.retrievalSetting,
+          pipelineMode: settings.pipelineMode,
+          retrievalSetting: settings.retrievalSetting as RetrievalSetting,
           manualReferenceIds: this.data.manualReferenceIds,
-          aspectRatio: aspectRatio.value,
-          numCandidates: candidateCount.value,
-          maxCriticRounds: criticRounds.value,
+          aspectRatio: settings.aspectRatio,
+          numCandidates: settings.numCandidates,
+          maxCriticRounds: settings.maxCriticRounds,
         })
 
         const data = await requestJson<{ jobId?: string; id?: string; status?: string }>(payload)
@@ -882,22 +1088,36 @@ Component({
     },
 
     refreshCanSubmit() {
-      const hasRequiredModels =
-        !this.data.isAdvancedMode || Boolean(
-          this.data.mainModelName.trim() &&
-            this.data.imageModelName.trim() &&
-            (!this.data.referenceNeedsVisionModel || this.data.referenceVisionModelName.trim()),
-        )
+      const settings = this.data.settings as GenerationSettings
+      if (!this.data.registryReady || !settings.modelRoutes) {
+        this.setData({ canSubmit: false })
+        return
+      }
       const hasManualReferences =
-        !this.data.isAdvancedMode ||
+        settings.configurationMode !== 'advanced' ||
         this.data.referenceImages.length > 0 ||
-        this.data.retrievalSetting !== 'manual' ||
+        settings.retrievalSetting !== 'manual' ||
         this.data.manualReferenceIds.length > 0
+      const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
+      const roles = requiredCreateRouteRoles({
+        outputFormat: settings.outputFormat,
+        taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram',
+        pipelineMode: settings.pipelineMode,
+        retrievalSetting: settings.retrievalSetting,
+        imageSize: settings.imageSize,
+        referenceImages: this.data.referenceImages,
+        referenceImageMode: this.data.referenceImageMode,
+      }, settings.maxCriticRounds)
+      const apiKeys = getApiKeys()
+      const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(apiKeys[provider]?.trim()))
+      const hasArkVerification = missingArkVerifications(arkProbesForRoles(settings.modelRoutes, roles), getArkVerification()).length === 0
       const canSubmit = Boolean(
-        this.data.apiKey.trim() &&
+        hasRequiredKeys &&
+          hasArkVerification &&
           this.data.methodContent.trim().length >= 20 &&
           this.data.caption.trim().length >= 3 &&
-          hasRequiredModels &&
+          this.data.negativePrompt.length <= 1000 &&
+          (settings.outputFormat === 'svg' || Boolean(settings.imageSize)) &&
           hasManualReferences &&
           this.data.referenceModeCanSubmit &&
           !this.data.isUploadingReferences &&
@@ -930,5 +1150,40 @@ Component({
     closeFeedbackPanel() {
       this.setData({ showFeedbackPanel: false })
     },
+
+    onShareAppMessage() {
+      return { title: '图研Tuyan · 开源学术图示工作台', path: '/pages/index/index' }
+    },
   },
 })
+
+function defaultGenerationSettings(registry: ModelRegistry): GenerationSettings {
+  const simpleProvider: ModelProviderId = 'bailian'
+  return {
+    configurationMode: 'simple',
+    simpleProvider,
+    modelRoutes: providerDefaultRoutes(simpleProvider, registry),
+    outputFormat: 'png',
+    imageSize: '1K',
+    aspectRatio: 'auto',
+    pipelineMode: 'planner_critic',
+    retrievalSetting: 'none',
+    numCandidates: 1,
+    maxCriticRounds: 1,
+  }
+}
+
+function formatSettingsSummary(settings: GenerationSettings): string {
+  const routes = settings.modelRoutes
+  return `主 ${routes.main.modelId} · 图 ${routes.image.modelId} · 识 ${routes.vision.modelId}`
+}
+
+function formatSettingsSummaryDetails(settings: GenerationSettings): string[] {
+  const pipelineLabels: Record<string, string> = { planner_critic: '规划器 + 评审器', full: '完整流程', vanilla: '基础生成' }
+  const retrievalLabels: Record<string, string> = { none: '不检索', auto: '自动检索', random: '随机参考', manual: '手动参考' }
+  return [
+    `${settings.aspectRatio === 'auto' ? '自动比例' : settings.aspectRatio} · ${settings.outputFormat.toUpperCase()}${settings.outputFormat === 'png' ? ` · ${settings.imageSize}` : ''}`,
+    `${pipelineLabels[settings.pipelineMode] || settings.pipelineMode} · ${retrievalLabels[settings.retrievalSetting] || settings.retrievalSetting}`,
+    `${settings.numCandidates} 张候选 · ${settings.maxCriticRounds} 轮评审`,
+  ]
+}

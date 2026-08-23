@@ -1,107 +1,73 @@
-# PaperBanana 微信小程序
+# 图研Tuyan 微信小程序
 
-这是 PaperBanana 的微信小程序版，基于微信开发者工具原生 TypeScript 模板改造，并同步网站版的账号、任务记录和纸感 UI 风格。
+图研Tuyan 是 PaperBanana 多端产品的微信原生 TypeScript 客户端。微信端使用“图研Tuyan”品牌；AppID、包名、API、数据库、对象键、Cookie 键和本地任务键继续沿用 PaperBanana 技术标识。
 
-## 当前功能
+## 1.0.0 功能
 
-- 底部 tabBar 三页结构：生成 / 记录 / 教程，另有任务详情独立页
-- 邮箱密码登录 / 注册，复用网站版 Better Auth 网关（登录态全局共享）
-- 模型服务选择：阿里百炼、OpenRouter、Gemini、OpenAI（模型常量与 web 端同步）
-- 用户填写自有 API Key（BYOK，不落盘）
-- 输出清晰度 1K / 2K / 4K（按 provider/图像模型过滤；2K/4K 出图后自动精修放大）
-- 检索设置：不使用 / 自动 / 随机 / 手动参考（手动参考可从 PaperBanana 参考库勾选最多 10 个案例）
-- 上传参考图（PNG/JPG/WebP/SVG，最多 3 张）；上传后检索自动关闭并锁定提示
-- 参考图处理方式按主模型能力固定派生（主模型直读 / 独立识别模型，无"自动选择"）
-- 数据统计图类别走 `taskName: 'plot'`（独立渲染服务）
-- 任务详情页展示多阶段「生成演化」时间线（规划 / 渲染 / 评审 / 精修放大）与检索参考
-- 快速上手案例填充、健康检查、意见反馈
-- 调用 PaperBanana 网关创建生成任务，登录后任务绑定到账号
-- 轮询任务状态并展示候选图（tab 切换 / 页面隐藏时自动暂停轮询）
-- 账号任务记录通过 `myJobs` 拉取，成功任务会补拉详情图
-- 当前设备保存最近 10 条任务记录
-- base64 结果图 / 阶段中间图会先缓存成本地临时文件，避免小程序 `setData` 数据过大
-- 教程页：使用说明、参数解释、FAQ、联系作者二维码（长按识别）、关于与反馈入口
+- 分层工作台：六套精选模板、当前设置摘要、原子设置抽屉和宽幅移动端布局。
+- 服务端 `modelRegistry` 是五个 API 渠道、模型角色、权益、验证状态、比例、清晰度和精修能力的唯一提交依据；目录不可用时禁止新建、精修和 Ark 验证。
+- 普通模式使用单渠道服务端默认三角色；专业模式支持跨渠道 `modelRoutes`，模型选择器按“API 渠道 → 模型厂商 → 具体模型”分组并支持数百项搜索。
+- 方法 12,000 字、图注 1,000 字、独立负向提示词 1,000 字；请求固定发送 `clientPlatform: "miniprogram"`。
+- 自动 + 十种规范比例；生成和精修分别读取 `aspectRatios/resolutions` 与 `refineAspectRatios/refineResolutions`。
+- 参考图库使用 `scope=bench`、每页 12 条，支持关键词、视觉类别、研究领域、diagram/plot、详情与跨页最多 10 项选择。
+- 上传参考图使用 prepare → PUT → finalize，失败时 abort；上传与图库检索互斥。
+- 四个一级入口：生成 / 记录 / 精修 / 教程。任务记录保留来源端、显式路由、负向提示词、比例、阶段、业务错误和 `objectKey`。
+- 独立精修优先使用 `sourceImageObjectKey`；`direct-edit` 只要求 image 路由，`analyze-redraw` 要求 vision + image。
+- 账户设置包含退出、隐私说明和永久删除；删除成功后清理 Cookie、草稿、任务缓存和内存密钥。
+- API Key 只保存在当前页面内存，不写 Storage、日志或任务记录。
 
-## 目录结构
+## 生产接口与微信域名
+
+客户端固定请求：
+
+```text
+https://api.paperbanana.asia/paperbanana-api
+https://api.paperbanana.asia/api/auth/*
+https://api.paperbanana.asia/api/account/delete
+```
+
+微信后台必须配置并保持“校验合法域名”开启：
+
+```text
+request:
+https://api.paperbanana.asia
+https://paperbanana-prod-hk-20260814.oss-cn-hongkong.aliyuncs.com
+
+downloadFile:
+https://paperbanana-prod-hk-20260814.oss-cn-hongkong.aliyuncs.com
+```
+
+通信域名必须使用 HTTPS、精确子域并满足微信备案要求。平台无法保存新域名时停止发布，不回退旧 Sealos 代理。
+
+Auth Gateway 已精确允许 `https://servicewechat.com` 与 `https://developers.weixin.qq.com`，相似域名仍拒绝。AppID 保持 `wxfb85c471df3d9022`。
+
+## 开发与验证
+
+```bash
+pnpm install --frozen-lockfile
+pnpm --filter @paperbanana/miniprogram check
+pnpm --filter @paperbanana/miniprogram build
+node --test apps/miniprogram/tests/*.test.cjs
+```
+
+微信开发者工具使用基础库 3.16.0。预览或上传前，在“设置 → 安全设置”开启服务端口，并确认开发者工具登录态。`project.private.config.json`、本机用户文件和登录状态不进 Git，也不得用目录覆盖同步。
+
+## 1.0.0 上传备注
+
+```text
+图研Tuyan 1.0.0：新增六套学术模板、服务端模型目录与跨渠道模型选择、十种比例、负向提示词、306 条参考图库分页筛选、任务 objectKey 回显、独立精修、账户删除和香港生产 API。
+```
+
+体验版付费冒烟由用户使用自己的 BYOK 完成：选择明确支持的非默认比例、填写负向提示词、生成 1 张 PNG，核对来源端/比例/负向提示词/PNG/objectKey 后，再完成一次支持档位的精修。
+
+## 目录
 
 ```text
 miniprogram/
-├── app.json / app.ts / app.wxss   # tabBar、全局会话恢复、共享纸感样式
-├── components/                    # auth-panel / feedback-panel / reference-library / stage-timeline
-├── pages/
-│   ├── index/                     # 生成页（tab1）
-│   ├── records/                   # 任务记录页（tab2）
-│   ├── guide/                     # 使用教程页（tab3）
-│   └── job-detail/                # 任务详情页（navigateTo）
-└── utils/                         # config / api / session / constants / jobs / payload / media 等纯逻辑层
-tests/                             # node 断言单测（需先 tsc 编译出 .js）
+├── components/  # 模板、设置抽屉、模型选择、图库、账号等
+├── pages/       # index / records / refine / guide / job-detail
+└── utils/       # registry、routing、ratio、payload、errors、refine 等纯逻辑
+tests/           # Node 契约与回归测试
 ```
 
-## 后端接口
-
-当前小程序请求：
-
-```text
-https://yifbnnzrwmxn.sealoshzh.site/paperbanana-api
-https://yifbnnzrwmxn.sealoshzh.site/api/auth/*
-```
-
-正式预览、真机调试和发布前，需要到：
-
-```text
-小程序后台 -> 开发 -> 开发设置 -> 服务器域名
-```
-
-添加 request 合法域名：
-
-```text
-https://yifbnnzrwmxn.sealoshzh.site
-```
-
-保存结果图到相册使用 `wx.downloadFile`，对象存储签名 URL 的域名也需要加入 downloadFile 合法域名（开发期可勾选"不校验合法域名"）。
-
-如果登录接口返回 `403 Invalid origin`，不是邮箱密码问题，而是 `auth-gateway` 的 Better Auth 来源校验拦截了微信环境。需要在网关部署环境变量 `FRONTEND_ORIGINS` 里追加微信小程序来源，并重新部署网关：
-
-```text
-https://www.paperbanana.asia,https://paperbanana.asia,http://localhost:5173,http://127.0.0.1:5173,https://servicewechat.com,https://developers.weixin.qq.com
-```
-
-如果后续 `api.paperbanana.asia` 在 Sealos 上完全绑定成功，可以把 `miniprogram/utils/config.ts` 里的 `API_BASE` 切到：
-
-```text
-https://api.paperbanana.asia
-```
-
-并把同名域名配置到小程序后台。
-
-## 本地检查
-
-```bash
-npm run check   # tsc --noEmit
-npm run build   # tsc 编译出 .js（tests 依赖编译产物）
-node tests/reference-mode.test.cjs
-node tests/job-assets.test.cjs
-node tests/constants.test.cjs
-node tests/payload.test.cjs
-```
-
-如果开发者工具报：
-
-```text
-["pages"][0] could not find the corresponding file: "pages/index/index.js"
-```
-
-说明工具没有把 `.ts` 编译成 `.js`。当前项目已在 `project.config.json` 和 `project.private.config.json` 启用 TypeScript 插件；如果仍然看到旧错误，先点开发者工具的“普通编译”，再使用“清缓存 -> 清除编译缓存”后重新编译。
-
-微信开发者工具 CLI preview 需要先开启：
-
-```text
-微信开发者工具 -> 设置 -> 安全设置 -> 服务端口
-```
-
-## 参考文档
-
-- https://developers.weixin.qq.com/miniprogram/dev/framework/
-- https://developers.weixin.qq.com/miniprogram/dev/framework/ability/network.html
-- https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html
-- https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html
+参考：[微信网络规范](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/network.html) · [开发者工具 CLI](https://developers.weixin.qq.com/miniprogram/dev/devtools/cli.html)

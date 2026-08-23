@@ -1,4 +1,10 @@
 import { PLOT_CATEGORY_ID, type ImageSize, type ProviderId, type RetrievalSetting } from './constants'
+import {
+  buildModelSubmission,
+  requiredCreateRouteRoles,
+  scopedApiKeysForRoles,
+  type ModelRoutes,
+} from './model-routing'
 import type { ReferenceImageMode } from './reference-mode'
 
 export interface UploadedReferenceImage {
@@ -12,16 +18,20 @@ export interface UploadedReferenceImage {
 export interface CreateJobInput {
   configurationMode: 'simple' | 'advanced'
   provider: ProviderId
-  apiKey: string
+  registry?: { routeContractVersion?: number } | null
+  modelRoutes?: ModelRoutes
+  apiKeys?: Record<string, string>
+  apiKey?: string
   categoryId: string
   categoryLabel: string
   methodContent: string
   caption: string
+  negativePrompt?: string
   outputFormat: string
   imageSize: ImageSize
-  mainModelName: string
-  imageModelName: string
-  referenceVisionModelName: string
+  mainModelName?: string
+  imageModelName?: string
+  referenceVisionModelName?: string
   referenceImageMode: ReferenceImageMode
   uploadedReferenceImages: UploadedReferenceImage[]
   pipelineMode: string
@@ -35,39 +45,53 @@ export interface CreateJobInput {
 // createJob 请求体构造，字段与 packages/api/src/jobs.js 的 createJobRequest 白名单逐一对应。
 // 纯函数（不依赖 wx），便于 node 单测覆盖 plot / 锁检索 / 手动参考的组合语义。
 export function buildCreateJobPayload(input: CreateJobInput): Record<string, unknown> {
-  const isAdvancedMode = input.configurationMode === 'advanced'
   const hasUploadedReferences = input.uploadedReferenceImages.length > 0
-  const apiKeys: Record<string, string> = {
-    openrouter: '',
-    gemini: '',
-    openai: '',
-    bailian: '',
+  const modelRoutes = input.modelRoutes || {
+    main: { accessProvider: input.provider, modelId: String(input.mainModelName || '') },
+    image: { accessProvider: input.provider, modelId: String(input.imageModelName || '') },
+    vision: { accessProvider: input.provider, modelId: String(input.referenceVisionModelName || '') },
   }
-  apiKeys[input.provider] = input.apiKey.trim()
+  const modelSubmission = buildModelSubmission({
+    configurationMode: input.configurationMode,
+    modelRoutes,
+    registry: input.registry || null,
+  })
+  const pipelineMode = input.pipelineMode
+  const retrievalSetting = !hasUploadedReferences ? input.retrievalSetting : 'none'
+  const taskName = input.categoryId === PLOT_CATEGORY_ID ? 'plot' : 'diagram'
+  const maxCriticRounds = input.maxCriticRounds
+  const routeRoles = requiredCreateRouteRoles({
+    outputFormat: input.outputFormat,
+    taskName,
+    pipelineMode,
+    retrievalSetting,
+    imageSize: input.imageSize,
+    referenceImages: input.uploadedReferenceImages,
+    referenceImageMode: input.referenceImageMode,
+  }, maxCriticRounds)
+  const providedKeys = Object.fromEntries(Object.entries(input.apiKeys || {}).map(([provider, key]) => [provider, String(key || '').trim()]))
+  if (input.apiKey && !providedKeys[input.provider]) providedKeys[input.provider] = input.apiKey.trim()
 
   return {
     action: 'createJob',
     clientPlatform: 'miniprogram',
-    configurationMode: input.configurationMode,
-    provider: input.provider,
-    apiKeys,
-    taskName: input.categoryId === PLOT_CATEGORY_ID ? 'plot' : 'diagram',
+    ...modelSubmission,
+    apiKeys: scopedApiKeysForRoles(modelRoutes, routeRoles, providedKeys),
+    taskName,
     methodContent: input.methodContent.trim(),
     caption: input.caption.trim(),
+    negativePrompt: String(input.negativePrompt || '').trim(),
     infographicCategory: input.categoryLabel,
     outputFormat: input.outputFormat,
     imageSize: input.imageSize,
-    mainModelName: input.mainModelName,
-    imageModelName: input.imageModelName,
-    referenceVisionModelName: input.referenceVisionModelName,
     referenceImageMode: hasUploadedReferences ? input.referenceImageMode : undefined,
     referenceImages: input.uploadedReferenceImages,
-    pipelineMode: isAdvancedMode ? input.pipelineMode : 'planner_critic',
+    pipelineMode,
     // 上传参考图时以图为唯一风格来源，前端同步关闭检索（后端亦强制，二者一致）。
-    retrievalSetting: isAdvancedMode && !hasUploadedReferences ? input.retrievalSetting : 'none',
-    manualReferenceIds: isAdvancedMode && input.retrievalSetting === 'manual' && !hasUploadedReferences ? input.manualReferenceIds : [],
-    aspectRatio: isAdvancedMode ? input.aspectRatio : '16:9',
-    numCandidates: isAdvancedMode ? input.numCandidates : 1,
-    maxCriticRounds: isAdvancedMode ? input.maxCriticRounds : 1,
+    retrievalSetting,
+    manualReferenceIds: input.retrievalSetting === 'manual' && !hasUploadedReferences ? input.manualReferenceIds : [],
+    aspectRatio: input.aspectRatio,
+    numCandidates: input.numCandidates,
+    maxCriticRounds,
   }
 }

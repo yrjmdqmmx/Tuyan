@@ -1,0 +1,33 @@
+<view wx:if="{{show}}" class="sheet-mask" catchtouchmove="noop">
+  <view class="settings-sheet" catchtap="noop">
+    <view class="sheet-handle"></view>
+    <view class="sheet-head"><view><view class="sheet-title">生成设置</view><view class="sheet-note">所有修改将在点击保存后一次生效</view></view><button class="sheet-cancel" bindtap="cancel">取消</button></view>
+    <scroll-view class="sheet-scroll" scroll-y type="list">
+      <view wx:if="{{draft}}">
+        <view class="setting-label">配置模式</view>
+        <view class="mode-tabs"><button class="mode-tab {{draft.configurationMode === 'simple' ? 'active' : ''}}" data-mode="simple" bindtap="setMode">普通模式</button><button class="mode-tab {{draft.configurationMode === 'advanced' ? 'active' : ''}}" data-mode="advanced" bindtap="setMode">专业模式</button></view>
+        <view class="setting-block" wx:if="{{draft.configurationMode === 'simple'}}"><view class="setting-label">API 渠道</view><picker range="{{providerOptions}}" range-key="label" value="{{providerIndex}}" bindchange="onProviderChange"><view class="setting-picker">{{providerOptions[providerIndex].label}}</view></picker></view>
+        <view class="setting-block"><view class="setting-label">模型路线</view><view class="route-row" wx:for="{{routeRows}}" wx:key="role" data-role="{{item.role}}" bindtap="openModelPicker"><view><view class="route-role">{{item.label}}</view><view class="route-provider">{{item.providerLabel}}</view></view><view class="route-model">{{item.modelLabel}}<text class="route-arrow" wx:if="{{draft.configurationMode === 'advanced'}}">›</text></view></view></view>
+        <view class="setting-grid">
+          <view><view class="setting-label">格式</view><picker range="{{outputOptions}}" range-key="label" value="{{outputIndex}}" bindchange="onOutputChange"><view class="setting-picker">{{outputOptions[outputIndex].label}}</view></picker></view>
+          <view><view class="setting-label">比例</view><picker range="{{ratioOptions}}" range-key="label" value="{{ratioIndex}}" bindchange="onRatioChange"><view class="setting-picker">{{ratioOptions[ratioIndex].label || '自动'}}</view></picker></view>
+          <view wx:if="{{draft.outputFormat === 'png'}}"><view class="setting-label">清晰度</view><picker range="{{resolutionOptions}}" range-key="label" value="{{resolutionIndex}}" bindchange="onResolutionChange"><view class="setting-picker">{{resolutionOptions[resolutionIndex].label || '不可用'}}</view></picker></view>
+          <view><view class="setting-label">流程</view><picker range="{{pipelineOptions}}" range-key="label" value="{{pipelineIndex}}" bindchange="onPipelineChange"><view class="setting-picker">{{pipelineOptions[pipelineIndex].label}}</view></picker></view>
+          <view class="retrieval-setting"><view class="setting-label">检索</view><view class="retrieval-options"><button wx:for="{{retrievalOptions}}" wx:key="value" class="retrieval-option {{draft.retrievalSetting === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="selectRetrieval">{{item.label}}</button></view></view>
+          <view><view class="setting-label">候选</view><picker range="{{candidateOptions}}" range-key="label" value="{{candidateIndex}}" bindchange="onCandidateChange"><view class="setting-picker">{{candidateOptions[candidateIndex].label}}</view></picker></view>
+          <view><view class="setting-label">评审</view><picker range="{{criticOptions}}" range-key="label" value="{{criticIndex}}" bindchange="onCriticChange"><view class="setting-picker">{{criticOptions[criticIndex].label}}</view></picker></view>
+        </view>
+        <view class="manual-library" wx:if="{{draft.retrievalSetting === 'manual'}}">
+          <view class="manual-library-title">选择手动参考案例</view>
+          <view class="manual-library-note">选择会随“保存全部设置”一次生效，取消设置不会改变首页草稿。</view>
+          <reference-library task-name="{{libraryTaskName}}" selected-ids="{{draftManualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
+        </view>
+        <view class="setting-block"><view class="setting-label">渠道密钥</view><view class="key-field" wx:for="{{keyFields}}" wx:key="provider"><view class="key-label">{{item.label}}</view><input class="key-input" password value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" /></view><view class="privacy-note">密钥仅保存在当前页面内存，不写入 Storage、日志或任务记录。</view><button class="ark-verify" wx:if="{{arkStatus}}" loading="{{verifyingArk}}" disabled="{{verifyingArk}}" bindtap="verifyArkRoutes">{{arkStatus}} · 点击验证</button></view>
+      </view>
+      <view class="sheet-error" wx:if="{{error}}">{{error}}</view>
+      <view class="sheet-bottom-space"></view>
+    </scroll-view>
+    <button class="sheet-save" disabled="{{!draft}}" bindtap="save">保存全部设置</button>
+  </view>
+  <model-picker show="{{showModelPicker}}" registry="{{registry}}" role="{{editingRole}}" output-format="{{draft.outputFormat || ''}}" selected-provider="{{pickerProvider}}" selected-model="{{pickerModel}}" bind:select="selectModel" bind:close="closeModelPicker" />
+</view>

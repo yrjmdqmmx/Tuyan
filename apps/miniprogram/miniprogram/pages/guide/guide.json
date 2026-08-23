@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "使用教程",
+  "navigationBarTitleText": "图研Tuyan · 教程",
   "usingComponents": {
     "feedback-panel": "/components/feedback-panel/feedback-panel"
   }

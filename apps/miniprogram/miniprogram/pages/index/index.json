@@ -1,9 +1,11 @@
 {
-  "navigationBarTitleText": "PaperBanana",
+  "navigationBarTitleText": "图研Tuyan",
   "usingComponents": {
     "auth-panel": "/components/auth-panel/auth-panel",
     "feedback-panel": "/components/feedback-panel/feedback-panel",
     "reference-library": "/components/reference-library/reference-library",
-    "stage-timeline": "/components/stage-timeline/stage-timeline"
+    "stage-timeline": "/components/stage-timeline/stage-timeline",
+    "featured-template-studio": "/components/featured-template-studio/featured-template-studio",
+    "generation-settings-sheet": "/components/generation-settings-sheet/generation-settings-sheet"
   }
 }

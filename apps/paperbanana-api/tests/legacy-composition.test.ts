@@ -641,6 +641,174 @@ test('explicit maxCriticRounds zero adds no vision key, call, or critic stage', 
   }
 })
 
+test('a visual critic download timeout retries once, then keeps the last successful render and completes the job', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousWriteMode = state.ossWriteMode
+  const previousOssWrites = state.ossWrites
+  const previousInserts = state.inserts
+  const previousUpdates = state.updates
+  state.ossWriteMode = 'success'
+  state.ossWrites = []
+  state.inserts = []
+  state.updates = []
+  let criticCalls = 0
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url.includes('dashscope.aliyuncs.com/compatible-mode/v1/chat/completions')) {
+      const payload = JSON.parse(String(init?.body || '{}'))
+      const userContent = payload.messages?.[1]?.content
+      if (Array.isArray(userContent)) {
+        criticCalls += 1
+        return Response.json(
+          { code: 'InternalError.Algo.InvalidParameter', message: 'Download multimodal file timed out' },
+          { status: 400 },
+        )
+      }
+      return Response.json({ choices: [{ message: { content: 'A clear academic diagram description.' } }] })
+    }
+    if (url.includes('dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation')) {
+      return Response.json({
+        output: { choices: [{ message: { content: [{ image: 'https://images.invalid/generated.png' }] } }] },
+      })
+    }
+    if (url === 'https://images.invalid/generated.png') {
+      return new Response(Buffer.from(onePixelPngBase64, 'base64'), {
+        headers: { 'Content-Type': 'image/png' },
+      })
+    }
+    throw new Error(`unexpected critic fallback dispatch ${url}`)
+  })
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
+        apiKeys: { bailian: 'route-secret' },
+        methodContent: 'A sufficiently detailed methodology for visual critic fallback verification.',
+        caption: 'Visual critic fallback verification.', outputFormat: 'png', imageSize: '1K',
+        pipelineMode: 'planner_critic', retrievalSetting: 'none', maxCriticRounds: 1,
+        modelRoutes: {
+          main: { accessProvider: 'bailian', modelId: 'qwen3.8-max' },
+          image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+          vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+        },
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    await legacy.drainJobAdmission()
+
+    assert.equal(criticCalls, 2)
+    const terminalUpdates = state.updates.filter((entry: any) =>
+      entry.update?.$set?.status === 'succeeded' || entry.update?.$set?.status === 'failed')
+    assert.deepEqual(terminalUpdates.map((entry: any) => entry.update.$set.status), ['succeeded'])
+    assert.equal(terminalUpdates[0].update.$set.resultImages.length, 1)
+    assert.match(terminalUpdates[0].update.$set.resultImages[0].objectKey, /candidate-0\.png$/)
+
+    const logs = state.updates
+      .map((entry: any) => entry.update?.$push?.logs)
+      .filter(Boolean)
+      .join('\n')
+    assert.match(logs, /critic round 1 failed, keeping last render/i)
+    assert.match(logs, /Download multimodal file timed out/)
+
+    const criticStage = state.updates
+      .map((entry: any) => entry.update?.$push?.stages)
+      .find((stage: any) => stage?.type === 'critic')
+    assert.equal(criticStage.title, '图像评审（第1轮，已跳过）')
+    assert.match(criticStage.error, /Download multimodal file timed out/)
+    assert.match(criticStage.image?.filename || '', /candidate-0-render-0\.png$/)
+  } finally {
+    legacy.configureRuntimeFetch()
+    state.ossWriteMode = previousWriteMode
+    state.ossWrites = previousOssWrites
+    state.inserts = previousInserts
+    state.updates = previousUpdates
+  }
+})
+
+test('a plot critic download timeout retries once, then keeps the last successful plot and completes the job', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousPlotWorkerUrl = process.env.PLOT_WORKER_URL
+  const previousWriteMode = state.ossWriteMode
+  const previousOssWrites = state.ossWrites
+  const previousInserts = state.inserts
+  const previousUpdates = state.updates
+  process.env.PLOT_WORKER_URL = 'https://plot.invalid'
+  state.ossWriteMode = 'success'
+  state.ossWrites = []
+  state.inserts = []
+  state.updates = []
+  let textCalls = 0
+  let criticCalls = 0
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url.includes('dashscope.aliyuncs.com/compatible-mode/v1/chat/completions')) {
+      const payload = JSON.parse(String(init?.body || '{}'))
+      const userContent = payload.messages?.[1]?.content
+      if (Array.isArray(userContent)) {
+        criticCalls += 1
+        return Response.json(
+          { code: 'InternalError.Algo.InvalidParameter', message: 'Download multimodal file timed out' },
+          { status: 400 },
+        )
+      }
+      textCalls += 1
+      const content = textCalls === 1
+        ? 'A clear statistical plot description.'
+        : 'import matplotlib.pyplot as plt\nplt.plot([1, 2], [1, 2])'
+      return Response.json({ choices: [{ message: { content } }] })
+    }
+    if (url === 'https://plot.invalid/render') {
+      return Response.json({ ok: true, image_base64: onePixelPngBase64 })
+    }
+    throw new Error(`unexpected plot critic fallback dispatch ${url}`)
+  })
+  try {
+    const queued = await legacy.default({
+      request: { method: 'POST' },
+      body: {
+        action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
+        apiKeys: { bailian: 'route-secret' },
+        methodContent: 'A sufficiently detailed methodology for plot critic fallback verification.',
+        caption: 'Plot critic fallback verification.', taskName: 'plot', outputFormat: 'png', imageSize: '1K',
+        pipelineMode: 'planner_critic', retrievalSetting: 'none', maxCriticRounds: 1,
+        modelRoutes: {
+          main: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+          image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+          vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
+        },
+      },
+      headers: {}, response: { setHeader() {}, status() {} },
+    })
+    assert.equal(queued.code, 0, JSON.stringify(queued))
+    await legacy.drainJobAdmission()
+
+    assert.equal(criticCalls, 2)
+    const terminalUpdates = state.updates.filter((entry: any) =>
+      entry.update?.$set?.status === 'succeeded' || entry.update?.$set?.status === 'failed')
+    assert.deepEqual(terminalUpdates.map((entry: any) => entry.update.$set.status), ['succeeded'])
+    assert.equal(terminalUpdates[0].update.$set.resultImages.length, 1)
+
+    const criticStage = state.updates
+      .map((entry: any) => entry.update?.$push?.stages)
+      .find((stage: any) => stage?.type === 'critic')
+    assert.equal(criticStage.title, '统计图评审（第1轮，已跳过）')
+    assert.match(criticStage.error, /Download multimodal file timed out/)
+    assert.match(criticStage.image?.filename || '', /candidate-0-plot-render-0\.png$/)
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousPlotWorkerUrl === undefined) delete process.env.PLOT_WORKER_URL
+    else process.env.PLOT_WORKER_URL = previousPlotWorkerUrl
+    state.ossWriteMode = previousWriteMode
+    state.ossWrites = previousOssWrites
+    state.inserts = previousInserts
+    state.updates = previousUpdates
+  }
+})
+
 test('legacy create keeps main-only Bailian models valid when no vision stage was explicitly selected', async () => {
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})

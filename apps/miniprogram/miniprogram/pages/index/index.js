@@ -5,9 +5,16 @@ const constants_1 = require("../../utils/constants");
 const jobs_1 = require("../../utils/jobs");
 const media_1 = require("../../utils/media");
 const payload_1 = require("../../utils/payload");
+const api_keys_1 = require("../../utils/api-keys");
+const ark_verification_1 = require("../../utils/ark-verification");
+const featured_templates_1 = require("../../utils/featured-templates");
+const model_registry_1 = require("../../utils/model-registry");
+const model_registry_store_1 = require("../../utils/model-registry-store");
+const model_routing_1 = require("../../utils/model-routing");
 const reference_files_1 = require("../../utils/reference-files");
 const reference_mode_1 = require("../../utils/reference-mode");
 const session_1 = require("../../utils/session");
+const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft';
 Component({
     data: {
         logoSrc: '/images/logo.png',
@@ -83,6 +90,20 @@ Component({
         methodContent: constants_1.QUICK_START_EXAMPLES[0].methodContent,
         caption: constants_1.QUICK_START_EXAMPLES[0].caption,
         quickStartExamples: constants_1.QUICK_START_EXAMPLES,
+        featuredTemplates: (0, featured_templates_1.attachFeaturedTemplateImages)([]),
+        featuredTemplatesLoading: true,
+        registry: {},
+        registryReady: false,
+        registryVersion: '等待服务端目录',
+        registryError: '',
+        settings: {},
+        settingsSummary: '正在读取服务端默认路线…',
+        settingsSummaryDetails: [],
+        showGenerationSettings: false,
+        apiKeysForSheet: {},
+        settingsExecutionRoles: [],
+        negativePrompt: '',
+        inputDirty: false,
         healthText: '检测中',
         healthOk: false,
         healthChecked: false,
@@ -106,6 +127,7 @@ Component({
         attached() {
             ;
             this.isPageVisible = true;
+            this.restoreDraft();
             // 悬浮反馈按钮放到右下角（movable-view 的 x/y 是相对 movable-area 左上角的 px 值）
             try {
                 // getSystemInfoSync 已废弃；优先用 getWindowInfo（基础库 2.20.1+），旧环境回退
@@ -136,12 +158,23 @@ Component({
             });
             this.refreshCanSubmit();
             this.checkHealth();
+            const unsubscribeRegistry = (0, model_registry_store_1.subscribeModelRegistry)((state) => this.applyRegistryState(state));
+            this.unsubscribeRegistry = unsubscribeRegistry;
+            void (0, model_registry_store_1.loadModelRegistry)();
+            void this.loadFeaturedTemplates();
         },
         detached() {
             this.stopPolling();
+            const draftTimer = this.draftTimer;
+            if (draftTimer)
+                clearTimeout(draftTimer);
+            this.persistDraft();
             const unsubscribe = this.unsubscribeSession;
             if (unsubscribe)
                 unsubscribe();
+            const unsubscribeRegistry = this.unsubscribeRegistry;
+            if (unsubscribeRegistry)
+                unsubscribeRegistry();
         },
     },
     pageLifetimes: {
@@ -163,6 +196,141 @@ Component({
         },
     },
     methods: {
+        restoreDraft() {
+            try {
+                const draft = wx.getStorageSync(DRAFT_STORAGE_KEY);
+                if (!draft || typeof draft !== 'object')
+                    return;
+                const categoryIndex = Number(draft.categoryIndex);
+                const category = constants_1.INFOGRAPHIC_CATEGORIES[Number.isInteger(categoryIndex) ? categoryIndex : 0] || constants_1.INFOGRAPHIC_CATEGORIES[0];
+                this.setData({
+                    categoryIndex: constants_1.INFOGRAPHIC_CATEGORIES.indexOf(category), categoryLabel: category.label, categoryDescription: category.description,
+                    isPlotCategory: category.id === constants_1.PLOT_CATEGORY_ID, libraryTaskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram',
+                    methodContent: typeof draft.methodContent === 'string' ? draft.methodContent.slice(0, 12000) : this.data.methodContent,
+                    caption: typeof draft.caption === 'string' ? draft.caption.slice(0, 1000) : this.data.caption,
+                    negativePrompt: typeof draft.negativePrompt === 'string' ? draft.negativePrompt.slice(0, 1000) : '',
+                    inputDirty: draft.inputDirty === true,
+                });
+            }
+            catch { /* 损坏草稿忽略 */ }
+        },
+        schedulePersistDraft() {
+            const previous = this.draftTimer;
+            if (previous)
+                clearTimeout(previous);
+            this.draftTimer = setTimeout(() => this.persistDraft(), 300);
+        },
+        persistDraft() {
+            wx.setStorageSync(DRAFT_STORAGE_KEY, { categoryIndex: this.data.categoryIndex, methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt, inputDirty: this.data.inputDirty });
+        },
+        applyRegistryState(state) {
+            if (!state.registry) {
+                this.setData({ registry: {}, registryReady: false, registryVersion: '目录不可用', registryError: state.error });
+                this.refreshCanSubmit();
+                return;
+            }
+            const current = this.data.settings;
+            const settings = current.modelRoutes ? current : defaultGenerationSettings(state.registry);
+            this.setData({
+                registry: state.registry,
+                registryReady: true,
+                registryVersion: state.registry.registryVersion,
+                registryError: '',
+                settings,
+                settingsSummary: formatSettingsSummary(settings),
+                settingsSummaryDetails: formatSettingsSummaryDetails(settings),
+            });
+            this.syncLegacySettings(settings);
+            this.refreshCanSubmit();
+            this.schedulePersistDraft();
+        },
+        async retryRegistry() { await (0, model_registry_store_1.loadModelRegistry)(true); },
+        async loadFeaturedTemplates() {
+            this.setData({ featuredTemplatesLoading: true });
+            try {
+                const response = await (0, api_1.requestJson)({ action: 'referenceLibrary', ...(0, featured_templates_1.featuredTemplateRequest)() }, { auth: false });
+                this.setData({ featuredTemplates: (0, featured_templates_1.attachFeaturedTemplateImages)(response.references || []), featuredTemplatesLoading: false });
+            }
+            catch {
+                this.setData({ featuredTemplates: (0, featured_templates_1.attachFeaturedTemplateImages)([]), featuredTemplatesLoading: false });
+            }
+        },
+        openGenerationSettings() {
+            if (!this.data.registryReady) {
+                wx.showToast({ title: '模型目录不可用', icon: 'none' });
+                return;
+            }
+            const settings = this.data.settings;
+            this.setData({ showGenerationSettings: true, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), settingsExecutionRoles: this.createExecutionRoles(settings) });
+        },
+        closeGenerationSettings() { this.setData({ showGenerationSettings: false }); },
+        saveGenerationSettings(event) {
+            const settings = event.detail.settings;
+            (0, api_keys_1.replaceApiKeys)(event.detail.apiKeys);
+            const manualReferenceIds = settings.retrievalSetting === 'manual' ? event.detail.manualReferenceIds || [] : [];
+            if (this.data.referenceImages.length && settings.retrievalSetting !== 'none')
+                settings.retrievalSetting = 'none';
+            this.setData({
+                settings,
+                settingsSummary: formatSettingsSummary(settings),
+                settingsSummaryDetails: formatSettingsSummaryDetails(settings),
+                manualReferenceIds: settings.retrievalSetting === 'manual' ? manualReferenceIds : [],
+                showGenerationSettings: false,
+                apiKeysForSheet: (0, api_keys_1.getApiKeys)(),
+            });
+            this.syncLegacySettings(settings);
+            this.refreshCanSubmit();
+        },
+        syncLegacySettings(settings) {
+            const main = settings.modelRoutes.main;
+            const image = settings.modelRoutes.image;
+            const vision = settings.modelRoutes.vision;
+            this.setData({
+                configurationMode: settings.configurationMode,
+                isAdvancedMode: settings.configurationMode === 'advanced',
+                mainModelName: main.modelId,
+                imageModelName: image.modelId,
+                referenceVisionModelName: vision.modelId,
+                outputFormat: settings.outputFormat,
+                imageSize: settings.imageSize,
+                retrievalSetting: settings.retrievalSetting,
+                showReferenceLibrary: settings.retrievalSetting === 'manual' && this.data.referenceImages.length === 0,
+            });
+            this.refreshReferenceModeState();
+        },
+        createExecutionRoles(settings) {
+            const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
+            return (0, model_routing_1.requiredCreateRouteRoles)({ outputFormat: settings.outputFormat, taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds);
+        },
+        onFeaturedTemplateApply(event) {
+            const template = featured_templates_1.FEATURED_TEMPLATES.find((item) => item.id === event.detail.id);
+            if (!template)
+                return;
+            if (!this.data.inputDirty) {
+                this.applyFeaturedTemplate(template);
+                return;
+            }
+            wx.showModal({
+                title: '替换当前内容？',
+                content: '你已经修改了类别、方法、图注或负向提示词。套用模板会替换这些内容。',
+                confirmText: '继续套用',
+                success: (result) => { if (result.confirm)
+                    this.applyFeaturedTemplate(template); },
+            });
+        },
+        applyFeaturedTemplate(template) {
+            const categoryIndex = Math.max(0, constants_1.INFOGRAPHIC_CATEGORIES.findIndex((item) => item.id === template.category));
+            const category = constants_1.INFOGRAPHIC_CATEGORIES[categoryIndex];
+            this.setData({
+                categoryIndex, categoryLabel: category.label, categoryDescription: category.description,
+                isPlotCategory: category.id === constants_1.PLOT_CATEGORY_ID, libraryTaskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram',
+                methodContent: template.methodContent, caption: template.caption, negativePrompt: template.negativePrompt,
+                inputDirty: false, manualReferenceIds: [],
+            });
+            this.refreshCanSubmit();
+            this.persistDraft();
+            wx.showToast({ title: '模板已套用', icon: 'success' });
+        },
         onProviderChange(event) {
             const providerIndex = (0, constants_1.readPickerIndex)(event.detail.value, constants_1.PROVIDERS.length);
             const provider = constants_1.PROVIDERS[providerIndex] || constants_1.PROVIDERS[0];
@@ -351,6 +519,7 @@ Component({
                 referenceVisionModelName: option.value,
             });
             this.refreshCanSubmit();
+            this.schedulePersistDraft();
         },
         onApiKeyInput(event) {
             this.setData({ apiKey: event.detail.value });
@@ -369,16 +538,25 @@ Component({
                 libraryTaskName,
                 // diagram/plot 是两个不同参考库，类别切换后清空已选，避免把错库的 id 发给后端
                 manualReferenceIds: libraryTaskName === this.data.libraryTaskName ? this.data.manualReferenceIds : [],
+                inputDirty: true,
             });
             this.refreshCanSubmit();
+            this.schedulePersistDraft();
         },
         onMethodInput(event) {
-            this.setData({ methodContent: event.detail.value });
+            this.setData({ methodContent: event.detail.value, inputDirty: true });
             this.refreshCanSubmit();
+            this.schedulePersistDraft();
         },
         onCaptionInput(event) {
-            this.setData({ caption: event.detail.value });
+            this.setData({ caption: event.detail.value, inputDirty: true });
             this.refreshCanSubmit();
+            this.schedulePersistDraft();
+        },
+        onNegativePromptInput(event) {
+            this.setData({ negativePrompt: event.detail.value, inputDirty: true });
+            this.refreshCanSubmit();
+            this.schedulePersistDraft();
         },
         applyExample(event) {
             const exampleId = String(event.currentTarget.dataset.id || '');
@@ -401,6 +579,7 @@ Component({
                 caption: example.caption,
             });
             this.refreshCanSubmit();
+            this.persistDraft();
             wx.showToast({ title: '已填入案例', icon: 'success' });
         },
         chooseReferenceFile() {
@@ -548,15 +727,18 @@ Component({
             this.refreshCanSubmit();
         },
         refreshReferenceModeState() {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
-            const activeMainModel = this.data.isAdvancedMode
-                ? this.data.mainModelName.trim() || provider.mainModel
-                : provider.mainModel;
+            var _a;
+            const settings = this.data.settings;
+            const mainRoute = (_a = settings.modelRoutes) === null || _a === void 0 ? void 0 : _a.main;
+            const mainEntry = mainRoute && this.data.registryReady
+                ? (0, model_registry_1.findRegistryModel)(this.data.registry, mainRoute.accessProvider, mainRoute.modelId)
+                : null;
+            const mainCanRead = Boolean(mainEntry && (mainEntry.inputModalities.includes('image') || mainEntry.capabilities.referenceImages === true));
             const modeState = (0, reference_mode_1.buildReferenceModeState)({
                 hasReferenceImages: this.data.referenceImages.length > 0,
                 isAdvancedMode: this.data.isAdvancedMode,
                 requestedMode: this.data.referenceImageMode,
-                mainModelCanRead: (0, constants_1.mainModelCanReadImages)(provider.id, activeMainModel),
+                mainModelCanRead: mainCanRead,
             });
             this.setData({
                 referenceModeCanSubmit: modeState.referenceModeCanSubmit,
@@ -647,21 +829,30 @@ Component({
         async submitJob() {
             if (!this.data.canSubmit || this.data.isSubmitting)
                 return;
+            // 生产目录是每次付费任务的唯一真相。提交前强制重新读取，失败时在任何上传或任务写入前停止。
+            this.setData({ isSubmitting: true, error: '' });
+            const registryState = await (0, model_registry_store_1.loadModelRegistry)(true);
+            const registry = registryState.registry;
+            if (!registry) {
+                this.setData({ isSubmitting: false, error: '模型目录不可用，已禁止新建任务。' });
+                this.refreshCanSubmit();
+                return;
+            }
             // 先停掉上一个任务的轮询，避免旧任务在途响应污染"提交中"状态（见 loadJob 的 jobId 校验）
             this.stopPolling();
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const settings = this.data.settings;
+            if (!settings.modelRoutes) {
+                this.setData({ isSubmitting: false, error: '模型设置不完整，请重新打开设置。' });
+                this.refreshCanSubmit();
+                return;
+            }
             const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
-            const isAdvancedMode = this.data.configurationMode === 'advanced';
-            const pipeline = constants_1.PIPELINE_OPTIONS[this.data.pipelineIndex] || constants_1.PIPELINE_OPTIONS[0];
-            const aspectRatio = constants_1.ASPECT_RATIO_OPTIONS[this.data.aspectRatioIndex] || constants_1.ASPECT_RATIO_OPTIONS[0];
-            const candidateCount = constants_1.CANDIDATE_OPTIONS[this.data.candidateIndex] || constants_1.CANDIDATE_OPTIONS[0];
-            const criticRounds = constants_1.CRITIC_ROUND_OPTIONS[this.data.criticRoundIndex] || constants_1.CRITIC_ROUND_OPTIONS[1];
-            const mainModelName = isAdvancedMode ? this.data.mainModelName.trim() || provider.mainModel : provider.mainModel;
-            const imageModelName = isAdvancedMode ? this.data.imageModelName.trim() || provider.imageModel : provider.imageModel;
-            const referenceVisionModelName = isAdvancedMode ? this.data.referenceVisionModelName.trim() || provider.visionModel : provider.visionModel;
-            const activeReferenceImageMode = isAdvancedMode
+            const mainRoute = settings.modelRoutes.main;
+            const mainEntry = (0, model_registry_1.findRegistryModel)(registry, mainRoute.accessProvider, mainRoute.modelId);
+            const mainCanRead = Boolean(mainEntry && (mainEntry.inputModalities.includes('image') || mainEntry.capabilities.referenceImages === true));
+            const activeReferenceImageMode = settings.configurationMode === 'advanced'
                 ? this.data.referenceImageMode
-                : (0, reference_mode_1.defaultReferenceImageMode)((0, constants_1.mainModelCanReadImages)(provider.id, mainModelName));
+                : (0, reference_mode_1.defaultReferenceImageMode)(mainCanRead);
             this.setData({
                 isSubmitting: true,
                 error: '',
@@ -673,26 +864,26 @@ Component({
             try {
                 const uploadedReferenceImages = await this.uploadReferencesForJob();
                 const payload = (0, payload_1.buildCreateJobPayload)({
-                    configurationMode: this.data.configurationMode,
-                    provider: provider.id,
-                    apiKey: this.data.apiKey,
+                    configurationMode: settings.configurationMode,
+                    provider: mainRoute.accessProvider,
+                    registry,
+                    modelRoutes: settings.modelRoutes,
+                    apiKeys: (0, api_keys_1.getApiKeys)(),
                     categoryId: category.id,
                     categoryLabel: category.label,
                     methodContent: this.data.methodContent,
                     caption: this.data.caption,
-                    outputFormat: this.data.outputFormat,
-                    imageSize: this.data.imageSize,
-                    mainModelName,
-                    imageModelName,
-                    referenceVisionModelName,
+                    negativePrompt: this.data.negativePrompt,
+                    outputFormat: settings.outputFormat,
+                    imageSize: settings.imageSize,
                     referenceImageMode: activeReferenceImageMode,
                     uploadedReferenceImages,
-                    pipelineMode: pipeline.value,
-                    retrievalSetting: this.data.retrievalSetting,
+                    pipelineMode: settings.pipelineMode,
+                    retrievalSetting: settings.retrievalSetting,
                     manualReferenceIds: this.data.manualReferenceIds,
-                    aspectRatio: aspectRatio.value,
-                    numCandidates: candidateCount.value,
-                    maxCriticRounds: criticRounds.value,
+                    aspectRatio: settings.aspectRatio,
+                    numCandidates: settings.numCandidates,
+                    maxCriticRounds: settings.maxCriticRounds,
                 });
                 const data = await (0, api_1.requestJson)(payload);
                 const jobId = data.jobId || data.id || '';
@@ -802,17 +993,34 @@ Component({
             wx.navigateTo({ url: `/pages/job-detail/job-detail?jobId=${this.data.currentJobId}` });
         },
         refreshCanSubmit() {
-            const hasRequiredModels = !this.data.isAdvancedMode || Boolean(this.data.mainModelName.trim() &&
-                this.data.imageModelName.trim() &&
-                (!this.data.referenceNeedsVisionModel || this.data.referenceVisionModelName.trim()));
-            const hasManualReferences = !this.data.isAdvancedMode ||
+            const settings = this.data.settings;
+            if (!this.data.registryReady || !settings.modelRoutes) {
+                this.setData({ canSubmit: false });
+                return;
+            }
+            const hasManualReferences = settings.configurationMode !== 'advanced' ||
                 this.data.referenceImages.length > 0 ||
-                this.data.retrievalSetting !== 'manual' ||
+                settings.retrievalSetting !== 'manual' ||
                 this.data.manualReferenceIds.length > 0;
-            const canSubmit = Boolean(this.data.apiKey.trim() &&
+            const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
+            const roles = (0, model_routing_1.requiredCreateRouteRoles)({
+                outputFormat: settings.outputFormat,
+                taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram',
+                pipelineMode: settings.pipelineMode,
+                retrievalSetting: settings.retrievalSetting,
+                imageSize: settings.imageSize,
+                referenceImages: this.data.referenceImages,
+                referenceImageMode: this.data.referenceImageMode,
+            }, settings.maxCriticRounds);
+            const apiKeys = (0, api_keys_1.getApiKeys)();
+            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
+            const hasArkVerification = (0, model_routing_1.missingArkVerifications)((0, model_routing_1.arkProbesForRoles)(settings.modelRoutes, roles), (0, ark_verification_1.getArkVerification)()).length === 0;
+            const canSubmit = Boolean(hasRequiredKeys &&
+                hasArkVerification &&
                 this.data.methodContent.trim().length >= 20 &&
                 this.data.caption.trim().length >= 3 &&
-                hasRequiredModels &&
+                this.data.negativePrompt.length <= 1000 &&
+                (settings.outputFormat === 'svg' || Boolean(settings.imageSize)) &&
                 hasManualReferences &&
                 this.data.referenceModeCanSubmit &&
                 !this.data.isUploadingReferences &&
@@ -838,5 +1046,36 @@ Component({
         closeFeedbackPanel() {
             this.setData({ showFeedbackPanel: false });
         },
+        onShareAppMessage() {
+            return { title: '图研Tuyan · 开源学术图示工作台', path: '/pages/index/index' };
+        },
     },
 });
+function defaultGenerationSettings(registry) {
+    const simpleProvider = 'bailian';
+    return {
+        configurationMode: 'simple',
+        simpleProvider,
+        modelRoutes: (0, model_routing_1.providerDefaultRoutes)(simpleProvider, registry),
+        outputFormat: 'png',
+        imageSize: '1K',
+        aspectRatio: 'auto',
+        pipelineMode: 'planner_critic',
+        retrievalSetting: 'none',
+        numCandidates: 1,
+        maxCriticRounds: 1,
+    };
+}
+function formatSettingsSummary(settings) {
+    const routes = settings.modelRoutes;
+    return `主 ${routes.main.modelId} · 图 ${routes.image.modelId} · 识 ${routes.vision.modelId}`;
+}
+function formatSettingsSummaryDetails(settings) {
+    const pipelineLabels = { planner_critic: '规划器 + 评审器', full: '完整流程', vanilla: '基础生成' };
+    const retrievalLabels = { none: '不检索', auto: '自动检索', random: '随机参考', manual: '手动参考' };
+    return [
+        `${settings.aspectRatio === 'auto' ? '自动比例' : settings.aspectRatio} · ${settings.outputFormat.toUpperCase()}${settings.outputFormat === 'png' ? ` · ${settings.imageSize}` : ''}`,
+        `${pipelineLabels[settings.pipelineMode] || settings.pipelineMode} · ${retrievalLabels[settings.retrievalSetting] || settings.retrievalSetting}`,
+        `${settings.numCandidates} 张候选 · ${settings.maxCriticRounds} 轮评审`,
+    ];
+}

@@ -57,11 +57,15 @@ function normalizeJob(input) {
         client_platform_text: formatClientPlatform(job.client_platform || job.clientPlatform),
         user_email: String(job.user_email || job.userEmail || ''),
         configuration_mode: String(job.configuration_mode || job.configurationMode || 'simple'),
+        routing_mode: String(job.routing_mode || job.routingMode || ''),
+        model_routing_source: String(job.model_routing_source || job.modelRoutingSource || (job.model_routes || job.modelRoutes ? 'explicit' : 'legacy-derived')),
+        model_routes: normalizeJobModelRoutes(job.model_routes || job.modelRoutes),
         output_format: outputFormat,
         output_format_text: (0, job_assets_1.formatOutputFormat)(outputFormat),
         method_content: methodContent,
         method_preview: methodContent.length > 86 ? `${methodContent.slice(0, 86)}...` : methodContent,
         caption: String(job.caption || ''),
+        negative_prompt: String(job.negative_prompt || job.negativePrompt || ''),
         infographic_category: String(job.infographic_category || job.infographicCategory || '方法框架图'),
         task_name: String(job.task_name || job.taskName || 'diagram'),
         image_size: String(job.image_size || job.imageSize || ''),
@@ -71,7 +75,7 @@ function normalizeJob(input) {
         stages: (job.stages || []).map((stage, index) => normalizeJobStage(stage, jobId, index)),
         critic_mode: String(job.critic_mode || job.criticMode || ''),
         main_model_name: String(job.main_model_name || job.mainModelName || ''),
-        image_gen_model_name: String(job.image_gen_model_name || job.imageModelName || ''),
+        image_gen_model_name: String(job.image_gen_model_name || job.imageGenModelName || job.imageModelName || ''),
         reference_vision_model_name: referenceVisionModelName,
         reference_vision_model_text: referenceModeUsed === 'vision_model' ? referenceVisionModelName || '未记录' : '未使用',
         reference_image_mode: String(job.reference_image_mode || job.referenceImageMode || ''),
@@ -85,12 +89,24 @@ function normalizeJob(input) {
         result_images: resultImages,
         logs_tail: String(job.logs_tail || (Array.isArray(job.logs) ? job.logs.slice(-10).join('\n') : '')),
         error: String(job.error || ''),
+        business_code: String(job.business_code || job.businessCode || ''),
         created_at: job.created_at || job.createdAt,
         updated_at: job.updated_at || job.updatedAt,
         completed_at: job.completed_at || job.completedAt,
         created_text: formatDate(job.created_at || job.createdAt),
         status_text: constants_1.STATUS_LABELS[status] || status || '未知',
     };
+}
+function normalizeJobModelRoutes(input) {
+    const source = input && typeof input === 'object' ? input : {};
+    const route = (role) => {
+        const item = source[role] && typeof source[role] === 'object' ? source[role] : {};
+        return { accessProvider: String(item.accessProvider || item.access_provider || ''), modelId: String(item.modelId || item.model_id || '') };
+    };
+    const routes = { main: route('main'), image: route('image'), vision: route('vision') };
+    return routes.main.accessProvider && routes.main.modelId && routes.image.accessProvider && routes.image.modelId && routes.vision.accessProvider && routes.vision.modelId
+        ? routes
+        : {};
 }
 function normalizeClientPlatform(value) {
     const platform = String(value || '').trim().toLowerCase();
@@ -164,14 +180,30 @@ function formatRetrievalSetting(setting) {
 function resolveImageUrl(url, jobId = 'image', index = 0, mimeType = '', fallbackFormat = '') {
     if (!url)
         return '';
+    // 开发者工具对 USER_DATA_PATH 文件生成的临时代理地址只在原模拟会话有效。
+    // 旧地址进入 Storage 后会返回 500，必须在普通 http(s) 分支之前丢弃。
+    if (/^https?:\/\/(?:127\.0\.0\.1|localhost):\d+\/__APP__\/paperbanana-/i.test(url))
+        return '';
     if (/^https?:\/\//i.test(url))
         return stabilizeRemoteUrl(url);
     if (/^data:image\//i.test(url))
         return cacheDataImage(url, jobId, index, mimeType, fallbackFormat);
     // 已落盘的本地缓存路径（如本机记录 round-trip）原样返回，不能拼到 API_BASE 上
     if (/^wxfile:/i.test(url) || (userDataPath() && url.indexOf(userDataPath()) === 0))
-        return url;
+        return localImageExists(url) ? url : '';
     return `${config_1.API_BASE}${url}`;
+}
+function localImageExists(filePath) {
+    try {
+        const fs = wx.getFileSystemManager();
+        if (!fs || typeof fs.accessSync !== 'function')
+            return true;
+        fs.accessSync(filePath);
+        return true;
+    }
+    catch {
+        return false;
+    }
 }
 // 桶签名 URL 每次 getJob 都重新签发（查询串变化）。轮询期间 src 频变会让 <image>
 // 反复重载闪烁——按"去查询串的路径"为键，在缓存期内复用首次拿到的签名 URL 保持 src 稳定。
@@ -231,16 +263,16 @@ function cleanupCachedImages() {
     if (!dir)
         return;
     const fs = wx.getFileSystemManager();
-    fs.readdir({
-        dirPath: dir,
-        success(res) {
-            res.files.forEach((name) => {
-                if (String(name).indexOf('paperbanana-') === 0) {
-                    fs.unlink({ filePath: `${dir}/${name}` });
-                }
-            });
-        },
-    });
+    try {
+        fs.readdirSync(dir).forEach((name) => {
+            if (String(name).indexOf('paperbanana-') === 0)
+                fs.unlinkSync(`${dir}/${name}`);
+        });
+        writtenCacheFiles.clear();
+    }
+    catch (error) {
+        console.warn('Failed to clean cached images', error);
+    }
 }
 function normalizeReferenceImageModeUsed(value) {
     if (value === 'main_model' || value === 'vision_model' || value === 'none' || value === 'auto')
@@ -311,7 +343,6 @@ function toCurrentJobSummary(job) {
 function toRecordJobSummary(job) {
     return {
         ...job,
-        method_content: '',
         logs_tail: '',
         stages: [],
         retrieved_references: [],
@@ -321,7 +352,6 @@ function toLocalJobSummary(job) {
     return {
         ...job,
         method_content: '',
-        result_images: [],
         logs_tail: '',
         stages: [],
         retrieved_references: [],

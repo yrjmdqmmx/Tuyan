@@ -1,0 +1,27 @@
+<view class="template-studio">
+  <view class="studio-head">
+    <view>
+      <view class="studio-kicker">FEATURED STUDIO</view>
+      <view class="studio-title">从研究图示开始</view>
+      <view class="studio-note">六套经过整理的学术结构，一键带入内容与负向提示词。</view>
+    </view>
+    <view class="studio-count">6 套</view>
+  </view>
+  <scroll-view class="template-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="template-track">
+      <view class="template-card" wx:for="{{templates}}" wx:key="id">
+        <image wx:if="{{item.hasImage}}" class="template-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load />
+        <view wx:else class="template-fallback">
+          <view class="fallback-node wide"></view>
+          <view class="fallback-row"><view class="fallback-node"></view><view class="fallback-line"></view><view class="fallback-node"></view></view>
+          <view class="fallback-node wide"></view>
+        </view>
+        <view class="template-body">
+          <view class="template-title">{{item.title}}</view>
+          <view class="template-summary">{{item.summary}}</view>
+          <button class="template-apply" data-id="{{item.id}}" bindtap="applyTemplate">套用模板</button>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

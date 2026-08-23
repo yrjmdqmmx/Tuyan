@@ -1,159 +1,24 @@
-<scroll-view class="page" scroll-y type="list" scroll-into-view="{{scrollAnchor}}">
-  <feedback-panel show="{{showFeedbackPanel}}" bind:close="closeFeedbackPanel" />
+<scroll-view class="page guide-page" scroll-y type="list" scroll-into-view="{{scrollAnchor}}">
+  <view class="guide-hero"><view class="guide-kicker">图研Tuyan GUIDE</view><view class="guide-hero-title">从方法文字到投稿图示</view><view class="guide-hero-note">小程序完整对齐线上工作台：服务端模型目录、十种比例、负向提示词、参考图库、任务记录和独立精修。</view><view class="guide-actions"><button class="guide-action" bindtap="goGenerate">开始生成</button><button class="guide-action secondary" bindtap="scrollToContact">联系作者</button></view></view>
+  <view class="registry-card"><view class="registry-row"><text class="registry-label">Registry</text><view class="registry-value">{{registryVersion}}</view></view><view class="registry-row"><text class="registry-label">当前渠道</text><view class="registry-value">{{providerLabels}}</view></view><view class="registry-row"><text class="registry-label">百炼默认路线</text><view class="registry-value">{{defaultRoutes}}</view></view><view class="registry-error" wx:if="{{registryError}}">{{registryError}}</view></view>
 
-  <view class="section guide-head-section">
-    <view class="section-title">使用教程</view>
-    <view class="section-note">PaperBanana 是一个「多智能体」学术配图生成工具：把你论文里的方法描述和想要的图注交给它，多个 AI 角色协作产出框架图 / 流程图 / 统计图。你自带模型 API Key（BYOK），密钥只用于本次调用、不会存到服务器。</view>
-    <view class="guide-cta">
-      <button class="primary-button guide-cta-primary" bindtap="goGenerate">开始生成</button>
-      <button class="ghost-button guide-cta-ghost" bindtap="scrollToContact">联系作者</button>
-    </view>
-  </view>
-
-  <view class="section">
-    <view class="guide-section-title">三步上手</view>
-    <view class="guide-steps">
-      <view class="guide-step-item">
-        <view class="guide-step-num">1</view>
-        <view class="guide-step-body"><text class="strong">选接口、填 Key。</text>「模型平台」选 OpenRouter / Gemini / OpenAI / 阿里百炼之一，填对应的 API 密钥（只填当前选中的那个即可）。</view>
-      </view>
-      <view class="guide-step-item">
-        <view class="guide-step-num">2</view>
-        <view class="guide-step-body"><text class="strong">填内容。</text>选「信息图类别」，粘贴论文的方法部分和目标图注；如果有风格参考，可上传参考图（最多 3 张）。</view>
-      </view>
-      <view class="guide-step-item">
-        <view class="guide-step-num">3</view>
-        <view class="guide-step-body"><text class="strong">点「生成候选图」。</text>几十秒后出图，可放大预览、保存到相册（SVG 可下载后分享到聊天转存）。</view>
+  <view class="chapter-list">
+    <view class="chapter" wx:for="{{chapters}}" wx:key="id">
+      <view class="chapter-head" data-index="{{index}}" bindtap="toggleChapter"><view><view class="chapter-title">{{index + 1}}. {{item.title}}</view><view class="chapter-summary">{{item.summary}}</view></view><view class="chapter-arrow">{{item.open ? '−' : '+'}}</view></view>
+      <view class="chapter-body" wx:if="{{item.open}}">
+        <block wx:if="{{item.id === 'quick'}}"><view class="step"><text class="step-number">1</text><view><view class="step-title">选模板和设置</view><view class="step-copy">从六套精选结构起步，确认渠道、三角色模型、比例、格式与清晰度。</view></view></view><view class="step"><text class="step-number">2</text><view><view class="step-title">写清研究内容</view><view class="step-copy">方法最多 12000 字，图注和负向提示词各最多 1000 字；上传参考图与图库检索二选一。</view></view></view><view class="step"><text class="step-number">3</text><view><view class="step-title">提交并查看演化</view><view class="step-copy">任务来源固定为 miniprogram，记录页会保留输入、模型路线、阶段、错误和 objectKey 资产。</view></view></view></block>
+        <block wx:elif="{{item.id === 'settings'}}"><view class="setting-card" wx:for="{{settingCards}}" wx:key="name"><view class="setting-card-title">{{item.name}}</view><text class="setting-card-copy">{{item.description}}</text></view></block>
+        <block wx:elif="{{item.id === 'models'}}"><view class="guide-copy">生产 registry 是模型、角色、权益、验证状态、比例和清晰度的唯一提交依据。页面先显示 API 渠道，再按模型厂商分组；不兼容模型保留可见并显示禁用原因。目录加载失败时仍可查看记录和教程，但新建、精修和 Ark 验证会关闭。</view><view class="guide-copy">“稳定”描述模型生命周期；“目录可见”不等于当前账号已能调用；Ark 的文本/视觉 probe 免费优先，图像 probe 可能计费，必须单独确认。</view></block>
+        <block wx:elif="{{item.id === 'references'}}"><view class="guide-copy">参考图库使用 scope=bench、每页 12 项，支持关键词、视觉类别、研究领域和 diagram/plot 筛选。选择状态跨页保留，最多 10 项；旧查询响应不会覆盖新查询。</view><view class="guide-copy">上传参考图走 prepare → PUT → finalize，任一步失败都会 abort。上传成功后检索自动关闭，避免多个风格来源冲突。</view></block>
+        <block wx:elif="{{item.id === 'refine'}}"><view class="guide-copy">“精修”是独立一级入口，来源可选本机任务或登录账号任务。新任务优先发送 sourceImageObjectKey；历史任务才使用受控签名 URL 兼容。</view><view class="guide-copy">direct-edit 只需要 image 路由；analyze-redraw 需要 vision + image。精修比例与清晰度分别读取 refineAspectRatios / refineResolutions。</view></block>
+        <block wx:elif="{{item.id === 'records'}}"><view class="guide-copy">成功或失败任务都会显示方法、图注、负向提示词、来源端、显式路线、比例、阶段与可用资产。签名 URL 只负责预览，objectKey 才是长期资产身份。</view><view class="guide-copy">容量 429 请稍后重试；RUNTIME_RESTARTED_RETRY 需要重新提交；能力和比例错误会直接引导回对应设置。</view></block>
+        <block wx:else><view class="guide-copy">BYOK API Key 只保存在当前页面内存，不写 Storage、日志或任务记录。记录页的“账户设置”支持退出、隐私说明与永久删除账号。</view><view class="guide-copy">删除必须显示并重输当前邮箱、重输密码并二次确认。成功后清理 Cookie、草稿、任务缓存和内存密钥。</view></block>
       </view>
     </view>
   </view>
 
-  <view class="section">
-    <view class="guide-section-title">它是怎么生成的（多智能体流程）</view>
-    <view class="guide-note">专业模式下，一张图大致经历这些阶段（结果区的「生成演化」会实时显示）：</view>
-    <view class="guide-flow">
-      <view class="guide-flow-item"><text class="strong">规划</text>：主模型把你的方法+图注拆解成一份「目标图的详细描述」（有哪些模块、怎么连、什么布局）。</view>
-      <view class="guide-flow-item"><text class="strong">初次渲染</text>：图像模型按规划画出第一版。</view>
-      <view class="guide-flow-item"><text class="strong">图像评审</text>：评审模型「看」这版图，指出排版/文字/逻辑问题。</view>
-      <view class="guide-flow-item"><text class="strong">重渲染</text>：按评审意见改进，重复「评审→重渲染」直到用完你设的轮数。</view>
-      <view class="guide-flow-item"><text class="strong">精修放大</text>：若输出清晰度选了 2K/4K，最后自动放大到该分辨率。</view>
-    </view>
-  </view>
-
-  <view class="section">
-    <view class="guide-section-title">模型相关</view>
-    <view class="guide-term">
-      <view class="guide-term-name">模型平台（Provider）</view>
-      <view class="guide-term-desc">选哪家的模型服务。每家模型名、能力、是否能读图都不同；切换平台会同步刷新可选模型与清晰度。密钥只填当前选中的平台。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">主模型</view>
-      <view class="guide-term-desc">负责「动脑」的文本模型：写规划、做文本评审、自动检索时的相关性排序都靠它。建议选推理强的模型。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">图像生成模型</view>
-      <view class="guide-term-desc">真正「画图」的模型。它决定出图风格与上限分辨率（如部分模型最高只到 2K）。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">参考图识别模型</view>
-      <view class="guide-term-desc">当你上传参考图且用「独立识别模型」方式时，由这个具备图像理解能力的模型先把参考图读成文字描述，再交给生成。</view>
-    </view>
-  </view>
-
-  <view class="section">
-    <view class="guide-section-title">生成参数</view>
-    <view class="guide-term">
-      <view class="guide-term-name">使用模式</view>
-      <view class="guide-term-desc">「普通模式」用平台预置配置，最省心；「专业模式」放开全部模型与流程参数，可精细控制。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">生成流程</view>
-      <view class="guide-term-desc">规划器 + 评审器：规划→渲染→评审→重渲染，质量与速度平衡（推荐）；完整流程：加入更多风格/细化环节，最讲究但更慢更耗 token；基础生成：跳过评审，规划完直接出图，最快。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">候选图数量 / 评审轮数</view>
-      <view class="guide-term-desc">候选数量是一次生成几张互相独立的备选图（1–3），多出几张方便挑但耗时与花费成倍增加；评审轮数是「评审→重渲染」的迭代次数，0 = 不评审直接出，轮数越多越精细但越慢。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">画面比例 / 导出格式</view>
-      <view class="guide-term-desc">比例（16:9 / 21:9 / 3:2 / 1:1）按论文或幻灯的版面选；格式 PNG（位图，通用）或 SVG（矢量，可无损缩放、适合排版精修）。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">输出清晰度</view>
-      <view class="guide-term-desc">唯一的分辨率开关：1K = 只做基础渲染（最快）；2K / 4K = 出图后自动再「精修放大」到该清晰度。选项会按所选图像模型自动过滤（模型到不了的档位不出现）。</view>
-    </view>
-  </view>
-
-  <view class="section">
-    <view class="guide-section-title">检索设置 &amp; 参考图</view>
-    <view class="guide-note">两者都用来给生成「视觉参考」，但二选一：一旦你上传了参考图，检索会自动关闭，以你的图为唯一风格来源（避免多张参考互相打架）。</view>
-    <view class="guide-term">
-      <view class="guide-term-name">检索设置</view>
-      <view class="guide-term-desc">不使用检索：完全按你的文字生成；自动检索：从内置 PaperBanana 论文配图库挑出最相关的范例（最多 10 张）；随机参考：从库里随机取若干张做风格灵感；手动参考：你自己从案例库勾选最多 10 张范例。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">上传参考图 · 处理方式</view>
-      <view class="guide-term-desc">主模型直读：参考图直接喂给能读图的主模型；独立识别模型：先用「参考图识别模型」把图读成文字再用（主模型不能读图时自动走这条）。</view>
-    </view>
-    <view class="guide-note">无论检索还是上传，参考图只用来学风格（配色、线条、图标、字体）；图的版式与内容始终由你的方法+图注决定，不会照搬参考的布局。</view>
-  </view>
-
-  <view class="section">
-    <view class="guide-section-title">看懂结果区</view>
-    <view class="guide-term">
-      <view class="guide-term-name">候选图</view>
-      <view class="guide-term-desc">本次生成的成图，可放大预览、保存到相册；SVG 点「下载文件」会下载到本地并弹出微信文件分享（发给自己或文件传输助手即可转存）。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">参考回显</view>
-      <view class="guide-term-desc">把你上传的参考图回显在任务详情里，提示「它只作风格参考、不决定版式」。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">检索参考</view>
-      <view class="guide-term-desc">本次检索实际用到的范例图注列表（来自论文配图库）。</view>
-    </view>
-    <view class="guide-term">
-      <view class="guide-term-name">生成演化</view>
-      <view class="guide-term-desc">从规划到精修的每一步过程与中间图，方便你理解模型「为什么这么画」。</view>
-    </view>
-  </view>
-
-  <view class="section">
-    <view class="guide-section-title">提示与常见问题</view>
-    <view class="guide-faq-item">· 方法描述写得越具体（有哪些模块、先后/并列关系），出图越准。</view>
-    <view class="guide-faq-item">· 密钥只用于本次调用、不入库；建议用完在各平台控制台轮换。</view>
-    <view class="guide-faq-item">· 出图不理想：加大评审轮数、换更强的主/图像模型，或上传一张风格接近的参考图。</view>
-    <view class="guide-faq-item">· 某清晰度选不到：说明当前图像模型不支持，换支持的模型即可。</view>
-    <view class="guide-faq-item">· 「记录」页可回看历史任务与结果（登录后跨设备同步）。</view>
-  </view>
-
-  <view class="section contact-section" id="contact-section">
-    <view class="guide-section-title">联系作者</view>
-    <view class="guide-note">使用中有任何问题、建议或合作意向，欢迎长按识别二维码添加作者微信。</view>
-    <image class="contact-qr" src="{{qrSrc}}" mode="widthFix" show-menu-by-longpress="{{true}}" />
-    <view class="guide-note contact-tip">长按图片可识别二维码 · 也可以通过「意见反馈」直接留言</view>
-    <button class="secondary-button" bindtap="openFeedbackPanel">意见反馈</button>
-  </view>
-
-  <view class="section about-section">
-    <view class="guide-section-title">关于</view>
-    <view class="about-row">
-      <text>客户端版本</text>
-      <text class="about-value">{{clientVersion}}</text>
-    </view>
-    <view class="about-row">
-      <text>网站端</text>
-      <button class="ghost-button" size="mini" data-key="site" bindtap="copyLink">复制链接</button>
-    </view>
-    <view class="about-row">
-      <text>GitHub 仓库</text>
-      <button class="ghost-button" size="mini" data-key="github" bindtap="copyLink">复制链接</button>
-    </view>
-    <view class="about-row">
-      <text>PaperBanana 论文</text>
-      <button class="ghost-button" size="mini" data-key="paper" bindtap="copyLink">复制链接</button>
-    </view>
-  </view>
-
-  <view class="footer-space" />
+  <view class="section contact-section" id="contact-section"><view class="guide-section-title">联系作者</view><view class="guide-copy">长按识别二维码，或直接提交意见反馈。</view><image class="contact-qr" src="{{qrSrc}}" mode="widthFix" show-menu-by-longpress="{{true}}" /><button class="secondary-button" bindtap="openFeedbackPanel">意见反馈</button></view>
+  <view class="section about-section"><view class="guide-section-title">关于图研Tuyan</view><view class="about-row"><text class="about-label">客户端版本</text><text class="about-value">{{clientVersion}}</text></view><view class="about-row"><text class="about-label">网站端</text><button class="about-button" data-key="site" bindtap="copyLink">复制链接</button></view><view class="about-row"><text class="about-label">GitHub 仓库</text><button class="about-button" data-key="github" bindtap="copyLink">复制链接</button></view><view class="about-row"><text class="about-label">PaperBanana 论文</text><button class="about-button" data-key="paper" bindtap="copyLink">复制链接</button></view></view>
+  <view class="footer-space"></view>
 </scroll-view>
+<feedback-panel show="{{showFeedbackPanel}}" bind:close="closeFeedbackPanel" />

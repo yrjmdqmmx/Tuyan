@@ -2,12 +2,13 @@
   "pages": [
     "pages/index/index",
     "pages/records/records",
+    "pages/refine/refine",
     "pages/guide/guide",
     "pages/job-detail/job-detail"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "PaperBanana",
+    "navigationBarTitleText": "图研Tuyan",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f3f2ee"
   },
@@ -24,6 +25,10 @@
       {
         "pagePath": "pages/records/records",
         "text": "记录"
+      },
+      {
+        "pagePath": "pages/refine/refine",
+        "text": "精修"
       },
       {
         "pagePath": "pages/guide/guide",

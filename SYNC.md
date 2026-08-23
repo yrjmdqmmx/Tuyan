@@ -37,6 +37,29 @@
 - [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（消费共享路由、状态字段和错误码；改造前不得开启其强制验证发布）
 - [ ] 部署 / 运维（杭州 DirectMail 域名、SPF/MX/DKIM/DMARC、触发邮件地址和 `dm:SingleSendMail` 专用 RAM 已完成；生产环境密钥已安全暂存。仍需合并/部署 Web 与 Gateway、保持强制验证关闭完成三家真实邮箱 smoke，再开启强制验证）
 
+### [2026-08-22] 评审取图失败保留已生成结果 — by Codex
+变更：结构图或统计图 PNG 任务首次渲染已经成功后，视觉评审模型若因图片下载超时而失败，Core 会重试评审一次；仍失败或出现其他评审异常时，保留最后一张成功图片并完成任务，不再把已经出图的任务整体标记为失败。
+契约（影响任务状态语义，不新增字段）：
+- 已知图片下载超时的重试动作本身只重试评审，不重新规划或重复首次渲染。
+- 评审最终失败时写入带 `error` 的 `critic` stage，标题标明“已跳过”，日志记录回退原因；最终 `status='succeeded'` 且 `resultImages` 正常可用。
+- 规划、首次渲染、结果持久化等发生在可用图片产生前后的关键失败仍保持原有失败关闭语义；本条不会把真正未出图的任务误报为成功。
+各端待办：
+- [x] paperbanana-api / Laf Core（结构图与统计图的超时单次重试、最后成功图片回退与回归测试）
+- [x] Web / 微信小程序 / packages-api（现有 `status/resultImages/stages/error` 契约可直接消费，无需客户端字段变更）
+- [ ] 部署 / 运维（合并后部署香港 Core，并用非计费故障注入或真实偶发场景确认成功结果与评审警告同时可见）
+
+### [2026-08-21] 图研Tuyan 微信小程序 1.0.0 全量升级 — by Codex
+变更：仅微信小程序对外升级为“图研Tuyan 1.0.0”，技术标识继续使用 PaperBanana；客户端默认 API/Auth 已迁移到香港 `https://api.paperbanana.asia`。小程序完整消费当前 v9 registry、显式模型路由、负向提示词、生成/精修比例与清晰度、306 条参考库分页、结果 `objectKey`、独立精修和账户删除契约。
+微信端验收：
+- [x] 注册表驱动的五渠道模型选择与失败关闭；普通模式单渠道默认三角色，专业模式完整 `modelRoutes`，实际可达角色密钥作用域与 Ark 免费优先/图片付费二次确认。
+- [x] 方案 A 分层工作台、六套精确模板、独立 `negativePrompt`、十种规范比例、生成设置原子保存、上传 finalize/abort 与参考来源互斥。
+- [x] `scope=bench` 每页 12 条、搜索/双分面/diagram-plot、latest-wins、跨页最多 10 项与详情回退。
+- [x] 任务来源/路由/负向提示词/比例/阶段/错误/资产归一；独立精修优先 `sourceImageObjectKey` 并分别消费 `refineResolutions/refineAspectRatios`。
+- [x] 退出、隐私说明、密码重验与二次确认删除；成功清理 Cookie、草稿、任务缓存和内存密钥；原生折叠教程显示实时 registry 版本与默认路线。
+- [x] TypeScript check/build 与小程序纯逻辑/契约测试；AppID、本地任务键、Cookie 键和数据库无需迁移。
+- [ ] 微信后台精确 request/downloadFile 域名保存、开发者工具真机 QA、1.0.0 体验版上传、用户 BYOK 付费生成+精修冒烟、审核与正式发布。
+- [ ] Android / iOS / Windows / macOS / HarmonyOS（本条不改造、不改名，继续按各自待办推进）。
+
 ### [2026-08-21] 精选模板、负向提示词与权威比例能力 v9 — by Codex
 变更：Core 注册表升级为 `2026-08-21.v9`，Web 新增 6 套精选参考模板、醒目的生成设置卡、十种固定比例与新版教程；共享 API / Core 新增精确参考 ID 查询和独立负向提示词。新增字段均向后兼容，其他端可暂时忽略，但不得自行推断模型比例能力或把不支持比例降级为 `16:9`。
 契约（影响其他端 / 共享）：
@@ -48,7 +71,8 @@
 - [x] paperbanana-api / Laf Core / packages-api（精确参考、负向提示词、v9 比例目录、准入与 Provider 映射、TDD）
 - [x] Web（6 套模板与轮播/预览/安全套用、设置卡、十比例禁用原因、负向提示词、新教程与桌面/390px 验收）
 - [x] iOS（消费 `negativePrompt`、`aspectRatios/refineAspectRatios` 与新失败码，未登记能力失败关闭）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（按需消费上述字段；未改造前继续兼容旧请求，但不得宣称未登记比例可用）
+- [x] 微信小程序（已消费 `negativePrompt`、`aspectRatios/refineAspectRatios` 与新失败码；缺失能力只开放自动）
+- [ ] Android / Windows / macOS / HarmonyOS（按需消费；未改造前不得宣称未登记比例可用）
 - [x] 部署 / 运维（PR #10 已合并为 `6e03969`；香港 Core 镜像与生产部署、Pages 均已成功。生产已验证注册表 v9、六个固定参考 ID 顺序/签名、非法比例 `INVALID_ASPECT_RATIO` 失败关闭、模板套用、十比例设置和教程；未执行付费图片生成，真实比例与负向提示词生成仍需单独授权）
 
 ### [2026-08-20] OpenRouter 34 模型付费验证与 PNG 统一输出 — by Codex
@@ -62,7 +86,8 @@
 - [x] paperbanana-api / Laf Core（v8 注册表、PNG/JPEG/WebP 归一、尺寸/结构边界、Seedream 4.5 纠错、漂移监控与 TDD）
 - [x] Web（继续只消费服务端角色与 `outputFormats`；34 项会在 PNG 模式自动可选，无需名称推断）
 - [x] iOS（动态 OpenRouter 图片目录仅消费 v8+ 权威能力）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（若展示动态 OpenRouter 图片目录，消费 v8 权威能力；旧请求格式不变）
+- [x] 微信小程序（动态展示 OpenRouter 权威目录与 PNG 能力，不按模型名推断）
+- [ ] Android / Windows / macOS / HarmonyOS（若展示动态 OpenRouter 图片目录，消费 v8 权威能力）
 - [x] 部署 / 运维（PR/CI/香港 Core/Pages 已发布；用户于 2026-08-21 手工确认原生 PNG、JPEG→PNG、WebP→PNG 三条生产代表性 smoke 均通过）
 
 ### [2026-08-20] Ark 中国区完整相关目录与 Seed 2.1 / Seedream 5.0 路由 — by Codex
@@ -76,7 +101,8 @@
 - [x] paperbanana-api / Laf Core（v7 目录、默认、能力、alias、模型级请求契约与 TDD）
 - [x] Web（最新 fallback、所有聚合渠道的禁用分区、禁用-only 厂商与能力搜索）
 - [x] iOS（Ark 目录、现役项、不可选边界与付费图片探测确认由 live registry 驱动）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（若展示 Ark 目录，同步 v7 现役项和不可选边界；旧请求继续兼容）
+- [x] 微信小程序（消费 Ark v7 现役目录、不可选边界和账号 inference probe）
+- [ ] Android / Windows / macOS / HarmonyOS（若展示 Ark 目录，同步 v7 边界）
 - [ ] 部署 / 运维（本条尚未发布；发布后用授权 Ark Key 分别验证默认 main、vision 和付费 image，不把公开目录当作账号开通证据）
 
 ### [2026-08-20] OpenRouter 目录生命周期与验证状态如实化 — by Codex
@@ -89,7 +115,8 @@
 - [x] paperbanana-api / Laf Core（v6 契约、OpenRouter 文本/视觉/图像动态项真值与回归测试）
 - [x] Web / packages-api（Web 已消费并如实展示；packages-api 原样透传新增字段，无请求变更）
 - [x] iOS（识别未知 lifecycle 与 `verificationState`，不把目录兼容冒充调用成功）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（后续展示模型目录时识别 `unknown` 与 `verificationState`；旧请求继续兼容）
+- [x] 微信小程序（区分 `unknown`、`catalog`、`registry` 与 `inference-verified`）
+- [ ] Android / Windows / macOS / HarmonyOS（展示目录时识别生命周期与验证状态）
 - [ ] 部署 / 运维（本条未发布；付费逐模型验证不得使用全局目录状态代替）
 
 ### [2026-08-20] 精修分辨率真实能力与入队前失败关闭 — by Codex
@@ -101,7 +128,8 @@
 - [x] paperbanana-api / Laf Core（registry v5、精修准入、direct/analyze/1K/4K/OpenRouter 回归）
 - [x] Web / packages-api（消费 `refineResolutions`、仅展示所选 image route 可执行的精修尺寸；旧目录保守回退 2K）
 - [x] iOS（消费 `refineResolutions`，缺失保守兼容 2K、明确空集合禁用精修）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（后续消费新字段，未改造前不得宣称 4K 精修可用）
+- [x] 微信小程序（独立消费 `refineResolutions`，空数组时禁止精修提交）
+- [ ] Android / Windows / macOS / HarmonyOS（后续消费新字段，未改造前不得宣称 4K 精修可用）
 - [ ] 部署 / 运维（本条未部署、未改环境变量）
 
 ### [2026-08-20] 显式路由目录校验、plot 可达能力与 Laf 手动回滚边界 — by Codex
@@ -129,7 +157,8 @@
 - [x] CI / 回滚文档（已由上方新条目收紧为 verification-only；未部署）
 - [x] Web（展示继续按 `releasedAt`，并接受精修历史默认 `simple`）
 - [x] iOS（展示按权威 `releasedAt`，接受精修历史默认 `simple`）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（无需请求改造；展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [x] 微信小程序（按 `releasedAt` 展示并接受精修历史默认 `simple`）
+- [ ] Android / Windows / macOS / HarmonyOS（展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
 - [ ] 部署 / 运维（获批回滚时仅能在 Laf 控制台核对 custom dependency 后手动发布；本条未改环境绑定、未发布）
 
 ### [2026-08-19] Ark CN 数据面出站白名单与香港健康探针 — by Codex
@@ -142,7 +171,8 @@
 - [ ] 部署 / 运维（未发布；须先完成 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
 - [x] Web（仅将当前任务可达 Ark 角色在显式推理 probe 成功后视为可提交；不把静态目录冒充账号已开通）
 - [x] iOS（未验证 Ark 条目不显示为账号已可用，按实际路线执行临时探测）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（未验证条目不得显示为账号可用）
+- [x] 微信小程序（未通过当前页面 inference probe 的 Ark 路线不显示为账号已验证且禁止提交）
+- [ ] Android / Windows / macOS / HarmonyOS（未验证条目不得显示为账号可用）
 
 ### [2026-08-19] Core Ark 适配器、账号推理验证与模型注册表 v3 — by Codex
 变更：Core 新增火山方舟（Ark）静态注册表、CN 数据面适配器和不冒充账号全量目录的 `providerAccountCatalog` 推理 smoke；同时更新 Gemini/OpenRouter/百炼当前默认项，并为所有 provider/model 补充访问类型、账号目录要求和官方来源元数据。本条不包含 Web、生产出口策略、原生端或部署。
@@ -157,7 +187,8 @@
 - [x] Web（消费 v3 元数据、显式触发账号 probe 与付费图片确认；未验证条目不得显示为账号可用）
 - [x] provider egress（登记 Ark CN origin，disabled 与负路径必须失败关闭；不得扩展到控制面/CDN）
 - [x] iOS（消费 Ark v3+ 注册表与最多三条路线探测，图片探测需明确付费确认）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（按需消费新注册表；旧请求继续兼容）
+- [x] 微信小程序（消费 v3+ 元数据、Ark probe 与账户验证边界）
+- [ ] Android / Windows / macOS / HarmonyOS（按需消费新注册表）
 - [ ] 部署 / 运维（未发布；须先完成出口策略、确认 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
 
 ### [2026-08-19] Core 多 Provider 模型路由契约 v1 — by Codex
@@ -172,7 +203,8 @@
 - [x] packages-api / auth-gateway（转发/归一 `modelRoutes`，保留旧字段与模型目录路由元数据；网关按写入主体安全转发 provider account catalog）
 - [x] Web（专业模式支持分角色选 provider/model；普通模式仍单 provider）
 - [x] iOS（普通模式单 Provider 三路默认；专业模式完整 `modelRoutes`，仅发送实际可达角色所需密钥）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（后续按需接入；旧请求保持兼容）
+- [x] 微信小程序（专业模式完整 `modelRoutes`，普通模式单渠道默认三角色）
+- [ ] Android / Windows / macOS / HarmonyOS（后续按需接入）
 - [ ] Ark adapter / registry / egress（后续独立任务，本次未实现）
 - [ ] 部署 / 运维（本次未发布，须等后续合并与联调）
 
@@ -185,7 +217,8 @@
 - [x] paperbanana-api / Laf 回滚（新记录持久化、历史 DTO 兼容与测试）
 - [x] packages-api / Web（已优先消费 `objectKey`，保留签名 URL 预览）
 - [x] iOS（独立精修优先使用 `sourceImageObjectKey`，签名 URL 仅作预览与旧记录兼容）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（后续精修入口改用 `sourceImageObjectKey`；旧签名 URL 仍兼容）
+- [x] 微信小程序（独立精修优先 `sourceImageObjectKey`，历史任务保留受控 URL 兼容）
+- [ ] Android / Windows / macOS / HarmonyOS（后续精修入口改用对象键）
 - [x] 部署 / 运维（Core 不可变镜像已发布；真实百炼 1K 生成与 2K `direct-edit` 精修成功，两个结果 DTO 均返回 `objectKey`）
 
 ### [2026-08-19] zh-CN.v2 固定语料补齐历史空白英文 — by Codex
@@ -221,7 +254,8 @@
 - [x] Web（消费服务端分页/分面/详情字段，不再一次拉取 295 条本地过滤）
 - [x] 部署 / 运维（生产返回 totalItems=306、pageSize=12、totalPages=26、corpusVersion=zh-CN.v2；当页图片与中文字段完整）
 - [x] iOS（接入 v2 分页、搜索、facets、跨页选择缓存与 10 张上限）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（按需接入新分页响应；旧 `taskName/limit` 请求仍可用）
+- [x] 微信小程序（`scope=bench`、每页 12 条、搜索/分面/详情/跨页选择）
+- [ ] Android / Windows / macOS / HarmonyOS（按需接入新分页响应）
 
 ### [2026-08-19] 模型注册表 v2 与模型级精修能力 — by Codex
 变更：服务端 `modelRegistry` 成为模型可用性与精修语义的唯一权威，修正 Gemini/OpenAI/百炼直连目录与适配器，OpenRouter 继续以官方动态目录 fail-closed；已部署香港 Core 与 Web。
@@ -234,7 +268,8 @@
 - [x] paperbanana-api / Laf 回滚（注册表 v2、适配器、模型级精修执行）
 - [x] packages-api / Web 共享传输（保留 refine capability 与任务字段）
 - [x] iOS（以 live 注册表展示推荐、生命周期、验证状态、权益与精修方式，不再按名称猜测）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（后续以新注册表字段展示推荐、生命周期、权益与精修方式；不得再由 provider 或模型名猜测）
+- [x] 微信小程序（展示推荐、生命周期、权益、禁用原因与精修方式，不按名称猜测）
+- [ ] Android / Windows / macOS / HarmonyOS（后续消费新注册表字段）
 - [x] CI / 运维代码（只报告漂移，不自动改推荐；未触发生产部署）
 - [x] 生产部署 / 实测（百炼注册表默认值与 15 条目录已验收；`qwen3.7-plus` + `wan2.7-image-pro` 真实生成和直接精修成功）
 
@@ -281,7 +316,8 @@
 - [x] Web（生产构建已使用新域名并发布）
 - [x] iOS（默认地址、冒烟脚本与上架说明已更新；新构建需由 App Store 发布流程上传）
 - [x] 后端/部署（香港单机栈、数据/OSS、DNS/TLS、备份/告警、旧环境停写）
-- [ ] HarmonyOS/微信小程序/Android/Windows/macOS（本次发布范围外，后续逐端迁移）
+- [x] 微信小程序（默认 API/Auth 已迁移香港域名；Auth 微信 Origin 生产验证通过）
+- [ ] HarmonyOS / Android / Windows / macOS（后续逐端迁移）
 
 ### [2026-08-15] Auth Gateway 复审加固：Auth 限流、不可变管理员 ID、事务注销与权威就绪 — by Codex
 变更：修复迁移复审发现的认证请求体绕过、邮箱管理员竞态、非事务注销、健康字段兼容与 readiness 污染问题；公开业务 action/请求/响应字段不变。

@@ -1,7 +1,7 @@
 import type { OutputFormat } from './job-assets'
 import type { ReferenceImageMode } from './reference-mode'
 
-export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai'
+export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai' | 'ark'
 export type ConfigurationMode = 'simple' | 'advanced'
 export type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
 export type ImageSize = '1K' | '2K' | '4K'

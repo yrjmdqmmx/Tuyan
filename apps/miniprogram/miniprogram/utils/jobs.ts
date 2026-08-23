@@ -10,6 +10,7 @@ import {
 } from './job-assets'
 import { formatReferenceImageModeUsed, type ReferenceImageModeUsed } from './reference-mode'
 import { imageExtension } from './media'
+import type { ModelRoutes } from './model-routing'
 
 export type JobStatus = 'queued' | 'running' | 'succeeded' | 'failed' | string
 
@@ -45,11 +46,15 @@ export interface Job {
   client_platform_text: string
   user_email: string
   configuration_mode: string
+  routing_mode: string
+  model_routing_source: string
+  model_routes: ModelRoutes | Record<string, never>
   output_format: OutputFormat
   output_format_text: string
   method_content: string
   method_preview: string
   caption: string
+  negative_prompt: string
   infographic_category: string
   task_name: string
   image_size: string
@@ -73,6 +78,7 @@ export interface Job {
   result_images: ImageAsset[]
   logs_tail: string
   error: string
+  business_code: string
   created_at?: string | number
   updated_at?: string | number
   completed_at?: string | number
@@ -122,11 +128,15 @@ export function normalizeJob(input: unknown): Job {
     client_platform_text: formatClientPlatform(job.client_platform || job.clientPlatform),
     user_email: String(job.user_email || job.userEmail || ''),
     configuration_mode: String(job.configuration_mode || job.configurationMode || 'simple'),
+    routing_mode: String(job.routing_mode || job.routingMode || ''),
+    model_routing_source: String(job.model_routing_source || job.modelRoutingSource || (job.model_routes || job.modelRoutes ? 'explicit' : 'legacy-derived')),
+    model_routes: normalizeJobModelRoutes(job.model_routes || job.modelRoutes),
     output_format: outputFormat,
     output_format_text: formatOutputFormat(outputFormat),
     method_content: methodContent,
     method_preview: methodContent.length > 86 ? `${methodContent.slice(0, 86)}...` : methodContent,
     caption: String(job.caption || ''),
+    negative_prompt: String(job.negative_prompt || job.negativePrompt || ''),
     infographic_category: String(job.infographic_category || job.infographicCategory || '方法框架图'),
     task_name: String(job.task_name || job.taskName || 'diagram'),
     image_size: String(job.image_size || job.imageSize || ''),
@@ -136,7 +146,7 @@ export function normalizeJob(input: unknown): Job {
     stages: (job.stages || []).map((stage: unknown, index: number) => normalizeJobStage(stage, jobId, index)),
     critic_mode: String(job.critic_mode || job.criticMode || ''),
     main_model_name: String(job.main_model_name || job.mainModelName || ''),
-    image_gen_model_name: String(job.image_gen_model_name || job.imageModelName || ''),
+    image_gen_model_name: String(job.image_gen_model_name || job.imageGenModelName || job.imageModelName || ''),
     reference_vision_model_name: referenceVisionModelName,
     reference_vision_model_text: referenceModeUsed === 'vision_model' ? referenceVisionModelName || '未记录' : '未使用',
     reference_image_mode: String(job.reference_image_mode || job.referenceImageMode || ''),
@@ -150,12 +160,25 @@ export function normalizeJob(input: unknown): Job {
     result_images: resultImages,
     logs_tail: String(job.logs_tail || (Array.isArray(job.logs) ? job.logs.slice(-10).join('\n') : '')),
     error: String(job.error || ''),
+    business_code: String(job.business_code || job.businessCode || ''),
     created_at: job.created_at || job.createdAt,
     updated_at: job.updated_at || job.updatedAt,
     completed_at: job.completed_at || job.completedAt,
     created_text: formatDate(job.created_at || job.createdAt),
     status_text: STATUS_LABELS[status] || status || '未知',
   }
+}
+
+function normalizeJobModelRoutes(input: unknown): ModelRoutes | Record<string, never> {
+  const source = input && typeof input === 'object' ? input as Record<string, any> : {}
+  const route = (role: string) => {
+    const item = source[role] && typeof source[role] === 'object' ? source[role] as Record<string, any> : {}
+    return { accessProvider: String(item.accessProvider || item.access_provider || ''), modelId: String(item.modelId || item.model_id || '') }
+  }
+  const routes = { main: route('main'), image: route('image'), vision: route('vision') }
+  return routes.main.accessProvider && routes.main.modelId && routes.image.accessProvider && routes.image.modelId && routes.vision.accessProvider && routes.vision.modelId
+    ? routes
+    : {}
 }
 
 function normalizeClientPlatform(value: unknown): string {
@@ -227,11 +250,25 @@ export function formatRetrievalSetting(setting: string): string {
 
 export function resolveImageUrl(url: string, jobId = 'image', index = 0, mimeType = '', fallbackFormat: unknown = ''): string {
   if (!url) return ''
+  // 开发者工具对 USER_DATA_PATH 文件生成的临时代理地址只在原模拟会话有效。
+  // 旧地址进入 Storage 后会返回 500，必须在普通 http(s) 分支之前丢弃。
+  if (/^https?:\/\/(?:127\.0\.0\.1|localhost):\d+\/__APP__\/paperbanana-/i.test(url)) return ''
   if (/^https?:\/\//i.test(url)) return stabilizeRemoteUrl(url)
   if (/^data:image\//i.test(url)) return cacheDataImage(url, jobId, index, mimeType, fallbackFormat)
   // 已落盘的本地缓存路径（如本机记录 round-trip）原样返回，不能拼到 API_BASE 上
-  if (/^wxfile:/i.test(url) || (userDataPath() && url.indexOf(userDataPath()) === 0)) return url
+  if (/^wxfile:/i.test(url) || (userDataPath() && url.indexOf(userDataPath()) === 0)) return localImageExists(url) ? url : ''
   return `${API_BASE}${url}`
+}
+
+function localImageExists(filePath: string): boolean {
+  try {
+    const fs = wx.getFileSystemManager()
+    if (!fs || typeof fs.accessSync !== 'function') return true
+    fs.accessSync(filePath)
+    return true
+  } catch {
+    return false
+  }
 }
 
 // 桶签名 URL 每次 getJob 都重新签发（查询串变化）。轮询期间 src 频变会让 <image>
@@ -291,16 +328,14 @@ export function cleanupCachedImages() {
   const dir = userDataPath()
   if (!dir) return
   const fs = wx.getFileSystemManager()
-  fs.readdir({
-    dirPath: dir,
-    success(res) {
-      res.files.forEach((name) => {
-        if (String(name).indexOf('paperbanana-') === 0) {
-          fs.unlink({ filePath: `${dir}/${name}` })
-        }
-      })
-    },
-  })
+  try {
+    fs.readdirSync(dir).forEach((name) => {
+      if (String(name).indexOf('paperbanana-') === 0) fs.unlinkSync(`${dir}/${name}`)
+    })
+    writtenCacheFiles.clear()
+  } catch (error) {
+    console.warn('Failed to clean cached images', error)
+  }
 }
 
 function normalizeReferenceImageModeUsed(value: unknown): ReferenceImageModeUsed {
@@ -379,7 +414,6 @@ export function toCurrentJobSummary(job: Job): Job {
 export function toRecordJobSummary(job: Job): Job {
   return {
     ...job,
-    method_content: '',
     logs_tail: '',
     stages: [],
     retrieved_references: [],
@@ -390,7 +424,6 @@ export function toLocalJobSummary(job: Job): Job {
   return {
     ...job,
     method_content: '',
-    result_images: [],
     logs_tail: '',
     stages: [],
     retrieved_references: [],
