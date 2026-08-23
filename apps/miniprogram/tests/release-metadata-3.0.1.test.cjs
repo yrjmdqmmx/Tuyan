@@ -59,7 +59,7 @@ if (isMonorepo && fs.existsSync(syncPath)) {
   const accountSecuritySync = sync.slice(start, sync.indexOf('\n### ', start + heading.length))
   assert.match(accountSecuritySync, /- \[x\] 微信小程序/)
   assert.match(accountSecuritySync, /3\.0\.1 实现与测试完成/)
-  assert.match(accountSecuritySync, /3\.0\.1 开发者工具上传\/体验版\/审核仍待完成/)
+  assert.match(accountSecuritySync, /3\.0\.1 开发者工具上传已完成；体验版\/审核\/发布仍待完成/)
   assert.match(accountSecuritySync, /- \[ \] Android \/ Windows \/ macOS \/ HarmonyOS/)
   assert.match(accountSecuritySync, /- \[ \] 部署 \/ 运维/)
 }
