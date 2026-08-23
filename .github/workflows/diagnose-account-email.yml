@@ -64,7 +64,7 @@ jobs:
             };
             console.log(JSON.stringify(state));
             if (!state.deliveryEnabled || state.verificationRequired || !state.regionIsHangzhou || !state.endpointIsDirectMail || !state.accountNamePresent || !state.accessKeyIdPresent || !state.accessKeySecretPresent) process.exit(1);
-          '
+          ' </dev/null
 
           "${compose[@]}" exec -T auth-gateway node --input-type=module -e '
             import { MongoClient } from "mongodb";
@@ -96,7 +96,7 @@ jobs:
             } finally {
               await client.close();
             }
-          '
+          ' </dev/null
 
           filtered_logs=$("${compose[@]}" logs --since 2h --no-color auth-gateway 2>&1 | grep -E 'account email (sent|failed)' || true)
           if [[ -z "$filtered_logs" ]]; then
