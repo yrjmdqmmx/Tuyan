@@ -81,6 +81,8 @@ test('account security exposes verified state and parent wiring contracts', () =
   assert.match(wxml, /已验证/)
   assert.match(wxml, /待验证/)
   assert.match(wxml, /wx:if="\{\{!emailVerified\}\}"/)
+  assert.match(wxml, /changePasswordCooldownSeconds > 0/)
+  assert.match(wxml, /disabled="\{\{changingPassword \|\| changePasswordCooldownSeconds > 0\}\}"/)
   assert.match(recordsWxml, /email-verified="\{\{currentUserEmailVerified\}\}"/)
 })
 
@@ -176,6 +178,42 @@ test('change-password errors use stable auth mapping', async () => {
   await instance.submitChangePassword()
 
   assert.equal(instance.data.changePasswordError, '当前密码不正确。')
+})
+
+test('change-password 429 starts an independent cooldown and blocks repeat submission', async () => {
+  installWx()
+  const timers = createTimerHarness()
+  let calls = 0
+  const definition = loadAccountSettings({
+    changePassword: async () => {
+      calls++
+      throw toBusinessError(429, {}, { 'retry-after': '4' })
+    },
+  })
+  const { instance } = createInstance(definition, {
+    data: { currentPassword: 'current-secret', newPassword: 'new-secret-123', confirmPassword: 'new-secret-123' },
+  })
+
+  await instance.submitChangePassword()
+
+  assert.equal(calls, 1)
+  assert.equal(instance.data.changePasswordCooldownSeconds, 4)
+  assert.equal(instance.data.changePasswordCooldownDisabled, true)
+  assert.equal(instance.data.resendCooldownSeconds, 0)
+  assert.match(instance.data.changePasswordError, /请求过于频繁/)
+
+  await instance.submitChangePassword()
+  assert.equal(calls, 1)
+  timers.tick()
+  assert.equal(instance.data.changePasswordCooldownSeconds, 3)
+
+  instance.reset()
+  assert.equal(instance.data.changePasswordCooldownSeconds, 0)
+  assert.equal(instance.data.changePasswordCooldownDisabled, false)
+  assert.equal(instance.data.currentPassword, '')
+  assert.equal(instance.data.newPassword, '')
+  assert.equal(instance.data.confirmPassword, '')
+  assert.equal(timers.activeCount(), 0)
 })
 
 test('reset, close, and detach clear both password domains and cooldown timers', () => {

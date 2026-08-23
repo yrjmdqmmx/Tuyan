@@ -19,7 +19,7 @@
         <input class="security-input" password maxlength="128" value="{{newPassword}}" placeholder="新密码（8–128 位）" aria-label="新密码，8 到 128 位" bindinput="onNewPasswordInput" />
         <input class="security-input" password maxlength="128" value="{{confirmPassword}}" placeholder="再次输入新密码" aria-label="再次输入新密码" bindinput="onConfirmPasswordInput" />
         <view class="account-error" wx:if="{{changePasswordError}}" aria-label="修改密码失败">{{changePasswordError}}</view>
-        <button class="change-password-button" loading="{{changingPassword}}" disabled="{{changingPassword}}" bindtap="submitChangePassword">更新密码</button>
+        <button class="change-password-button" loading="{{changingPassword}}" disabled="{{changingPassword || changePasswordCooldownSeconds > 0}}" bindtap="submitChangePassword">{{changePasswordCooldownSeconds > 0 ? changePasswordCooldownSeconds + ' 秒后重试' : '更新密码'}}</button>
       </view>
 
       <view class="security-message success" wx:if="{{securityStatus}}" aria-label="操作成功">{{securityStatus}}</view>

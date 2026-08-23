@@ -1,5 +1,5 @@
 import { buildDeleteAccountPayload, clearAccountClientState, validateDeleteAccountInput } from '../../utils/account'
-import { mapAuthError, validateChangePassword } from '../../utils/auth-security'
+import { mapAuthError, retryAfterSeconds, validateChangePassword } from '../../utils/auth-security'
 import { gatewayRequest, formatError } from '../../utils/api'
 import { clearApiKeys } from '../../utils/api-keys'
 import { API_BASE } from '../../utils/config'
@@ -36,6 +36,8 @@ Component({
     confirmPassword: '',
     changingPassword: false,
     changePasswordError: '',
+    changePasswordCooldownSeconds: 0,
+    changePasswordCooldownDisabled: false,
     securityError: '',
     securityStatus: '',
     resendCooldownSeconds: 0,
@@ -52,13 +54,20 @@ Component({
       if (timer !== undefined) clearInterval(timer)
       ;(this as any).resendCooldownTimer = undefined
     },
+    clearChangePasswordCooldown() {
+      const timer = (this as any).changePasswordCooldownTimer as ReturnType<typeof setInterval> | undefined
+      if (timer !== undefined) clearInterval(timer)
+      ;(this as any).changePasswordCooldownTimer = undefined
+    },
     reset() {
       ;(this as any).securityOperationEpoch = Number((this as any).securityOperationEpoch || 0) + 1
       this.clearResendCooldown()
+      this.clearChangePasswordCooldown()
       this.setData({
         email: '', password: '', confirmed: false, deleting: false, error: '',
         currentPassword: '', newPassword: '', confirmPassword: '', changingPassword: false,
-        changePasswordError: '', securityError: '', securityStatus: '',
+        changePasswordError: '', changePasswordCooldownSeconds: 0, changePasswordCooldownDisabled: false,
+        securityError: '', securityStatus: '',
         resendCooldownSeconds: 0, resendDisabled: false, resendingVerification: false,
       })
     },
@@ -84,6 +93,16 @@ Component({
         if (next === 0) this.clearResendCooldown()
       }, 1000)
     },
+    startChangePasswordCooldown(seconds: number) {
+      this.clearChangePasswordCooldown()
+      const cooldown = Math.max(1, Math.ceil(seconds))
+      this.setData({ changePasswordCooldownSeconds: cooldown, changePasswordCooldownDisabled: true })
+      ;(this as any).changePasswordCooldownTimer = setInterval(() => {
+        const next = Math.max(0, this.data.changePasswordCooldownSeconds - 1)
+        this.setData({ changePasswordCooldownSeconds: next, changePasswordCooldownDisabled: next > 0 })
+        if (next === 0) this.clearChangePasswordCooldown()
+      }, 1000)
+    },
     async resendVerification() {
       if (this.properties.emailVerified || this.data.resendDisabled || this.data.resendingVerification) return
       const email = this.properties.currentEmail.trim()
@@ -105,7 +124,7 @@ Component({
       }
     },
     async submitChangePassword() {
-      if (this.data.changingPassword) return
+      if (this.data.changingPassword || this.data.changePasswordCooldownDisabled) return
       const operationEpoch = Number((this as any).securityOperationEpoch || 0)
       const validation = validateChangePassword({
         currentPassword: this.data.currentPassword,
@@ -124,7 +143,9 @@ Component({
         wx.showToast({ title: '密码已更新', icon: 'success' })
       } catch (error) {
         if (operationEpoch !== Number((this as any).securityOperationEpoch || 0)) return
-        this.setData({ changePasswordError: mapAuthError(error).message })
+        const mapped = mapAuthError(error)
+        this.setData({ changePasswordError: mapped.message })
+        if (mapped.code === 'RATE_LIMITED') this.startChangePasswordCooldown(retryAfterSeconds(error, 60))
       } finally {
         if (operationEpoch === Number((this as any).securityOperationEpoch || 0)) this.setData({ changingPassword: false })
       }

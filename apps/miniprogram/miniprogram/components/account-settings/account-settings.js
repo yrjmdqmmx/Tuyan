@@ -36,6 +36,8 @@ Component({
         confirmPassword: '',
         changingPassword: false,
         changePasswordError: '',
+        changePasswordCooldownSeconds: 0,
+        changePasswordCooldownDisabled: false,
         securityError: '',
         securityStatus: '',
         resendCooldownSeconds: 0,
@@ -53,14 +55,22 @@ Component({
                 clearInterval(timer);
             this.resendCooldownTimer = undefined;
         },
+        clearChangePasswordCooldown() {
+            const timer = this.changePasswordCooldownTimer;
+            if (timer !== undefined)
+                clearInterval(timer);
+            this.changePasswordCooldownTimer = undefined;
+        },
         reset() {
             ;
             this.securityOperationEpoch = Number(this.securityOperationEpoch || 0) + 1;
             this.clearResendCooldown();
+            this.clearChangePasswordCooldown();
             this.setData({
                 email: '', password: '', confirmed: false, deleting: false, error: '',
                 currentPassword: '', newPassword: '', confirmPassword: '', changingPassword: false,
-                changePasswordError: '', securityError: '', securityStatus: '',
+                changePasswordError: '', changePasswordCooldownSeconds: 0, changePasswordCooldownDisabled: false,
+                securityError: '', securityStatus: '',
                 resendCooldownSeconds: 0, resendDisabled: false, resendingVerification: false,
             });
         },
@@ -86,6 +96,17 @@ Component({
                 this.setData({ resendCooldownSeconds: next, resendDisabled: next > 0 });
                 if (next === 0)
                     this.clearResendCooldown();
+            }, 1000);
+        },
+        startChangePasswordCooldown(seconds) {
+            this.clearChangePasswordCooldown();
+            const cooldown = Math.max(1, Math.ceil(seconds));
+            this.setData({ changePasswordCooldownSeconds: cooldown, changePasswordCooldownDisabled: true });
+            this.changePasswordCooldownTimer = setInterval(() => {
+                const next = Math.max(0, this.data.changePasswordCooldownSeconds - 1);
+                this.setData({ changePasswordCooldownSeconds: next, changePasswordCooldownDisabled: next > 0 });
+                if (next === 0)
+                    this.clearChangePasswordCooldown();
             }, 1000);
         },
         async resendVerification() {
@@ -117,7 +138,7 @@ Component({
             }
         },
         async submitChangePassword() {
-            if (this.data.changingPassword)
+            if (this.data.changingPassword || this.data.changePasswordCooldownDisabled)
                 return;
             const operationEpoch = Number(this.securityOperationEpoch || 0);
             const validation = (0, auth_security_1.validateChangePassword)({
@@ -140,7 +161,10 @@ Component({
             catch (error) {
                 if (operationEpoch !== Number(this.securityOperationEpoch || 0))
                     return;
-                this.setData({ changePasswordError: (0, auth_security_1.mapAuthError)(error).message });
+                const mapped = (0, auth_security_1.mapAuthError)(error);
+                this.setData({ changePasswordError: mapped.message });
+                if (mapped.code === 'RATE_LIMITED')
+                    this.startChangePasswordCooldown((0, auth_security_1.retryAfterSeconds)(error, 60));
             }
             finally {
                 if (operationEpoch === Number(this.securityOperationEpoch || 0))
