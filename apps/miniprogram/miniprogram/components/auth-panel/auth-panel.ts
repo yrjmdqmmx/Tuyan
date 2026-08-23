@@ -97,7 +97,23 @@ Component({
       ;(this as any).authCooldownTimer = undefined
     },
 
+    showAuthLoading(title: string): number {
+      const token = Number((this as any).authLoadingTokenCounter || 0) + 1
+      ;(this as any).authLoadingTokenCounter = token
+      ;(this as any).activeAuthLoadingToken = token
+      wx.showLoading({ title })
+      return token
+    },
+
+    hideAuthLoading(token?: number) {
+      const activeToken = (this as any).activeAuthLoadingToken as number | undefined
+      if (activeToken === undefined || (token !== undefined && token !== activeToken)) return
+      ;(this as any).activeAuthLoadingToken = undefined
+      wx.hideLoading()
+    },
+
     resetAuthPanel() {
+      this.hideAuthLoading()
       ;(this as any).authOperationEpoch = Number((this as any).authOperationEpoch || 0) + 1
       this.clearAuthCooldown()
       const content = AUTH_MODE_CONTENT['sign-in']
@@ -121,6 +137,7 @@ Component({
     },
 
     setAuthMode(mode: AuthMode) {
+      this.hideAuthLoading()
       ;(this as any).authOperationEpoch = Number((this as any).authOperationEpoch || 0) + 1
       this.clearAuthCooldown()
       const content = AUTH_MODE_CONTENT[mode]
@@ -201,7 +218,7 @@ Component({
       const mode = this.data.authMode
       this.setData({ authSubmitting: true, authError: '', authStatus: '' })
       this.refreshAuthCanSubmit()
-      wx.showLoading({ title: mode === 'sign-up' ? '注册中' : mode === 'forgot-password' ? '发送中' : '登录中' })
+      const loadingToken = this.showAuthLoading(mode === 'sign-up' ? '注册中' : mode === 'forgot-password' ? '发送中' : '登录中')
       try {
         const email = this.data.authEmail.trim()
         if (mode === 'forgot-password') {
@@ -236,7 +253,7 @@ Component({
         this.setData({ authPassword: '', authError: mapped.message })
         if (mapped.code === 'RATE_LIMITED') this.startAuthCooldown(mapped.retryAfterSeconds || 60)
       } finally {
-        wx.hideLoading()
+        this.hideAuthLoading(loadingToken)
         if (operationEpoch === Number((this as any).authOperationEpoch || 0)) {
           this.setData({ authSubmitting: false })
           this.refreshAuthCanSubmit()

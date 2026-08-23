@@ -172,6 +172,24 @@ test('forgot-password accepts email only and always shows generic recovery guida
   assert.equal(events.some((event) => event.name === 'authed'), false)
 })
 
+test('unknown-email password reset success uses the same generic recovery state', async () => {
+  installWx()
+  const requestedEmails = []
+  const definition = loadAuthPanel({
+    requestPasswordReset: async (email) => { requestedEmails.push(email) },
+  })
+  const { instance, events } = createInstance(definition, {
+    authMode: 'forgot-password', authEmail: 'unknown@example.com', authCanSubmit: true,
+  })
+
+  await instance.submitAuth()
+
+  assert.deepEqual(requestedEmails, ['unknown@example.com'])
+  assert.equal(instance.data.authMode, 'recovery-sent')
+  assert.match(instance.data.authNote, /如该邮箱存在/)
+  assert.equal(events.some((event) => event.name === 'authed'), false)
+})
+
 test('verification resend honors retry-after and exposes a disabled countdown', async () => {
   installWx()
   const timers = createTimerHarness()
@@ -241,4 +259,37 @@ test('closing the panel invalidates an in-flight authentication result', async (
   assert.equal(instance.data.authMode, 'sign-in')
   assert.equal(instance.data.authStatus, '')
   assert.equal(events.some((event) => event.name === 'authed'), false)
+})
+
+test('loading HUD belongs to its operation and stale completion cannot hide a newer request', async () => {
+  const hideSnapshots = {}
+  let hideCalls = 0
+  global.wx = {
+    showLoading() {},
+    hideLoading() { hideCalls++ },
+    showToast() {},
+  }
+  const pending = []
+  const definition = loadAuthPanel({
+    signIn: () => new Promise((resolve) => { pending.push(resolve) }),
+  })
+  const { instance } = createInstance(definition, {
+    authEmail: 'first@example.com', authPassword: 'password-123', authCanSubmit: true,
+  })
+
+  const requestA = instance.submitAuth()
+  instance.close()
+  hideSnapshots.afterClose = hideCalls
+
+  instance.setData({ authEmail: 'second@example.com', authPassword: 'password-456', authCanSubmit: true })
+  const requestB = instance.submitAuth()
+  pending[0]({ status: 'authenticated', user: { id: 'stale-user' } })
+  await requestA
+  hideSnapshots.afterA = hideCalls
+
+  pending[1]({ status: 'authenticated', user: { id: 'current-user' } })
+  await requestB
+  hideSnapshots.afterB = hideCalls
+
+  assert.deepEqual(hideSnapshots, { afterClose: 1, afterA: 1, afterB: 2 })
 })
