@@ -53,6 +53,7 @@ if [[ "${PAPERBANANA_SKIP_PULL:-false}" != true ]]; then
   "${compose[@]}" pull --quiet
 fi
 "$script_dir/install-worker-firewall.sh"
+"$script_dir/install-directmail-egress-timer.sh" --apply
 "${compose[@]}" up -d --remove-orphans --wait --wait-timeout 1800
 "$script_dir/install-worker-firewall.sh"
 "$script_dir/sync-reference-metadata.sh"

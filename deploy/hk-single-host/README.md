@@ -16,8 +16,11 @@ VPC peering.
   read-only root filesystem/tmpfs, and is blocked from initiating connections
   by a persistent `DOCKER-USER` rule.
 - The gateway also joins a dedicated routable edge bridge so Docker can publish
-  its loopback-only port; `DOCKER-USER` blocks gateway-initiated egress while
-  allowing established replies to host Nginx.
+  its loopback-only port; `DOCKER-USER` allows only TLS to the currently
+  resolved public IPv4 addresses for `dm.aliyuncs.com`, blocks all other
+  gateway-initiated egress, and still allows established replies to host Nginx.
+  A five-minute systemd timer refreshes that destination set without changing
+  the fail-closed policy when DNS is unavailable.
 - Existing `openvac-production-*` containers and port `3010` are outside this
   Compose project and are health-checked before and after maintenance.
 

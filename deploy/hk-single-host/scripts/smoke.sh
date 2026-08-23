@@ -35,6 +35,26 @@ done
     .catch((error) => { console.error(error.message); process.exit(1) })
 '
 
+"${compose[@]}" exec -T auth-gateway node --input-type=module -e '
+  import tls from "node:tls";
+  const host = "dm.aliyuncs.com";
+  const socket = tls.connect({ host, port: 443, servername: host, rejectUnauthorized: true });
+  const timeout = setTimeout(() => { socket.destroy(); process.exit(1); }, 5000);
+  socket.once("secureConnect", () => { clearTimeout(timeout); socket.destroy(); process.exit(0); });
+  socket.once("error", () => { clearTimeout(timeout); process.exit(1); });
+'
+
+if "${compose[@]}" exec -T auth-gateway node --input-type=module -e '
+  import net from "node:net";
+  const socket = net.connect({ host: "1.1.1.1", port: 443 });
+  const timeout = setTimeout(() => { socket.destroy(); process.exit(1); }, 3000);
+  socket.once("connect", () => { clearTimeout(timeout); socket.destroy(); process.exit(0); });
+  socket.once("error", () => { clearTimeout(timeout); process.exit(1); });
+'; then
+  echo "auth gateway unexpectedly reached generic public HTTPS" >&2
+  exit 1
+fi
+
 "${compose[@]}" exec -T paperbanana-api node -e '
   fetch("http://plot-worker:8000/health")
     .then(async (response) => {

@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh PaperBanana DirectMail egress destinations
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=5m
+RandomizedDelaySec=30s
+Persistent=true
+Unit=paperbanana-directmail-egress.service
+
+[Install]
+WantedBy=timers.target

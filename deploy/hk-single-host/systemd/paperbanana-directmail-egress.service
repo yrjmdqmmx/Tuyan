@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh PaperBanana DirectMail-only gateway egress rules
+Wants=network-online.target
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/paperbanana/repo/deploy/hk-single-host/scripts/install-worker-firewall.sh --refresh
+UMask=0077
+TimeoutStartSec=1m
