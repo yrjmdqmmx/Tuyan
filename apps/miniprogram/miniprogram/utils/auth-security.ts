@@ -4,7 +4,7 @@ export const EMAIL_VERIFICATION_CALLBACK_URL = 'https://www.paperbanana.asia/acc
 export const PASSWORD_RESET_CALLBACK_URL = 'https://www.paperbanana.asia/account/reset-password.html'
 
 export type PasswordValidationCode = 'PASSWORD_TOO_SHORT' | 'PASSWORD_TOO_LONG'
-export type ChangePasswordValidationCode = PasswordValidationCode | 'CURRENT_PASSWORD_REQUIRED' | 'NEW_PASSWORD_REQUIRED' | 'PASSWORD_CONFIRMATION_REQUIRED' | 'PASSWORD_CONFIRMATION_MISMATCH'
+export type ChangePasswordValidationCode = PasswordValidationCode | 'CURRENT_PASSWORD_REQUIRED' | 'CURRENT_PASSWORD_TOO_SHORT' | 'CURRENT_PASSWORD_TOO_LONG' | 'NEW_PASSWORD_REQUIRED' | 'PASSWORD_CONFIRMATION_REQUIRED' | 'PASSWORD_CONFIRMATION_MISMATCH'
 export type StableAuthErrorCode = 'EMAIL_NOT_VERIFIED' | 'INVALID_TOKEN' | 'TOKEN_EXPIRED' | 'TOKEN_USED' | 'INVALID_EMAIL_OR_PASSWORD' | 'INVALID_PASSWORD' | 'RATE_LIMITED'
 
 export function buildSignInPayload(email: string, password: string): { email: string; password: string; callbackURL: string } {
@@ -41,6 +41,8 @@ export function validatePassword(password: string): PasswordValidationCode | '' 
 
 export function validateChangePassword(input: { currentPassword: string; newPassword: string; confirmation: string }): ChangePasswordValidationCode | '' {
   if (!input.currentPassword) return 'CURRENT_PASSWORD_REQUIRED'
+  if (input.currentPassword.length < 8) return 'CURRENT_PASSWORD_TOO_SHORT'
+  if (input.currentPassword.length > 128) return 'CURRENT_PASSWORD_TOO_LONG'
   if (!input.newPassword) return 'NEW_PASSWORD_REQUIRED'
   const passwordError = validatePassword(input.newPassword)
   if (passwordError) return passwordError

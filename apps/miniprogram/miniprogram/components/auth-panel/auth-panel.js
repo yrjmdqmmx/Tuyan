@@ -83,22 +83,8 @@ Component({
                 clearInterval(timer);
             this.authCooldownTimer = undefined;
         },
-        showAuthLoading(title) {
-            const token = Number(this.authLoadingTokenCounter || 0) + 1;
-            this.authLoadingTokenCounter = token;
-            this.activeAuthLoadingToken = token;
-            wx.showLoading({ title });
-            return token;
-        },
-        hideAuthLoading(token) {
-            const activeToken = this.activeAuthLoadingToken;
-            if (activeToken === undefined || (token !== undefined && token !== activeToken))
-                return;
-            this.activeAuthLoadingToken = undefined;
-            wx.hideLoading();
-        },
         resetAuthPanel() {
-            this.hideAuthLoading();
+            ;
             this.authOperationEpoch = Number(this.authOperationEpoch || 0) + 1;
             this.clearAuthCooldown();
             const content = AUTH_MODE_CONTENT['sign-in'];
@@ -121,7 +107,7 @@ Component({
             });
         },
         setAuthMode(mode) {
-            this.hideAuthLoading();
+            ;
             this.authOperationEpoch = Number(this.authOperationEpoch || 0) + 1;
             this.clearAuthCooldown();
             const content = AUTH_MODE_CONTENT[mode];
@@ -197,7 +183,6 @@ Component({
             const mode = this.data.authMode;
             this.setData({ authSubmitting: true, authError: '', authStatus: '' });
             this.refreshAuthCanSubmit();
-            const loadingToken = this.showAuthLoading(mode === 'sign-up' ? '注册中' : mode === 'forgot-password' ? '发送中' : '登录中');
             try {
                 const email = this.data.authEmail.trim();
                 if (mode === 'forgot-password') {
@@ -234,7 +219,6 @@ Component({
                     this.startAuthCooldown(mapped.retryAfterSeconds || 60);
             }
             finally {
-                this.hideAuthLoading(loadingToken);
                 if (operationEpoch === Number(this.authOperationEpoch || 0)) {
                     this.setData({ authSubmitting: false });
                     this.refreshAuthCanSubmit();

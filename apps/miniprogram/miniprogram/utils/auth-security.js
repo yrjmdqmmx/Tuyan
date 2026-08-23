@@ -45,6 +45,10 @@ function validatePassword(password) {
 function validateChangePassword(input) {
     if (!input.currentPassword)
         return 'CURRENT_PASSWORD_REQUIRED';
+    if (input.currentPassword.length < 8)
+        return 'CURRENT_PASSWORD_TOO_SHORT';
+    if (input.currentPassword.length > 128)
+        return 'CURRENT_PASSWORD_TOO_LONG';
     if (!input.newPassword)
         return 'NEW_PASSWORD_REQUIRED';
     const passwordError = validatePassword(input.newPassword);

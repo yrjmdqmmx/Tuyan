@@ -8,6 +8,8 @@ import { changePassword, sendVerificationEmail, signOut } from '../../utils/sess
 function changePasswordValidationMessage(code: ReturnType<typeof validateChangePassword>): string {
   switch (code) {
     case 'CURRENT_PASSWORD_REQUIRED': return '请输入当前密码。'
+    case 'CURRENT_PASSWORD_TOO_SHORT': return '当前密码至少 8 位。'
+    case 'CURRENT_PASSWORD_TOO_LONG': return '当前密码最多 128 位。'
     case 'NEW_PASSWORD_REQUIRED': return '请输入新密码。'
     case 'PASSWORD_TOO_SHORT': return '新密码至少 8 位。'
     case 'PASSWORD_TOO_LONG': return '新密码最多 128 位。'

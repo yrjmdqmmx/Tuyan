@@ -14,8 +14,8 @@
 
       <view class="security-section">
         <view class="security-title">修改密码</view>
-        <view class="security-copy">新密码为 8–128 位。更新后会撤销其他设备上的会话。</view>
-        <input class="security-input" password value="{{currentPassword}}" placeholder="当前密码" aria-label="当前密码" bindinput="onCurrentPasswordInput" />
+        <view class="security-copy">当前密码与新密码均为 8–128 位。更新后会撤销其他设备上的会话。</view>
+        <input class="security-input" password maxlength="128" value="{{currentPassword}}" placeholder="当前密码（8–128 位）" aria-label="当前密码，8 到 128 位" bindinput="onCurrentPasswordInput" />
         <input class="security-input" password maxlength="128" value="{{newPassword}}" placeholder="新密码（8–128 位）" aria-label="新密码，8 到 128 位" bindinput="onNewPasswordInput" />
         <input class="security-input" password maxlength="128" value="{{confirmPassword}}" placeholder="再次输入新密码" aria-label="再次输入新密码" bindinput="onConfirmPasswordInput" />
         <view class="account-error" wx:if="{{changePasswordError}}" aria-label="修改密码失败">{{changePasswordError}}</view>

@@ -83,6 +83,7 @@ test('account security exposes verified state and parent wiring contracts', () =
   assert.match(wxml, /wx:if="\{\{!emailVerified\}\}"/)
   assert.match(wxml, /changePasswordCooldownSeconds > 0/)
   assert.match(wxml, /disabled="\{\{changingPassword \|\| changePasswordCooldownSeconds > 0\}\}"/)
+  assert.match(wxml, /password maxlength="128" value="\{\{currentPassword\}\}" placeholder="当前密码（8–128 位）"/)
   assert.match(recordsWxml, /email-verified="\{\{currentUserEmailVerified\}\}"/)
 })
 
@@ -141,6 +142,33 @@ test('change-password validates required, 8/128 boundaries, and confirmation mis
   assert.deepEqual(calls, [
     ['current-secret', 'a'.repeat(8)],
     ['current-secret', 'b'.repeat(128)],
+  ])
+})
+
+test('change-password validates current password at 8 and 128 character boundaries', async () => {
+  installWx()
+  const calls = []
+  const definition = loadAccountSettings({ changePassword: async (...args) => { calls.push(args) } })
+  const { instance } = createInstance(definition, {
+    data: { newPassword: 'new-secret-123', confirmPassword: 'new-secret-123' },
+  })
+
+  instance.setData({ currentPassword: 'a'.repeat(7) })
+  await instance.submitChangePassword()
+  assert.equal(instance.data.changePasswordError, '当前密码至少 8 位。')
+
+  instance.setData({ currentPassword: 'a'.repeat(129) })
+  await instance.submitChangePassword()
+  assert.equal(instance.data.changePasswordError, '当前密码最多 128 位。')
+  assert.equal(calls.length, 0)
+
+  instance.setData({ currentPassword: 'a'.repeat(8) })
+  await instance.submitChangePassword()
+  instance.setData({ currentPassword: 'b'.repeat(128), newPassword: 'new-secret-123', confirmPassword: 'new-secret-123' })
+  await instance.submitChangePassword()
+  assert.deepEqual(calls, [
+    ['a'.repeat(8), 'new-secret-123'],
+    ['b'.repeat(128), 'new-secret-123'],
   ])
 })
 

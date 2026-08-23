@@ -261,11 +261,11 @@ test('closing the panel invalidates an in-flight authentication result', async (
   assert.equal(events.some((event) => event.name === 'authed'), false)
 })
 
-test('loading HUD belongs to its operation and stale completion cannot hide a newer request', async () => {
-  const hideSnapshots = {}
+test('auth submit, close, and stale completion never use the global loading HUD', async () => {
+  let showCalls = 0
   let hideCalls = 0
   global.wx = {
-    showLoading() {},
+    showLoading() { showCalls++ },
     hideLoading() { hideCalls++ },
     showToast() {},
   }
@@ -279,17 +279,15 @@ test('loading HUD belongs to its operation and stale completion cannot hide a ne
 
   const requestA = instance.submitAuth()
   instance.close()
-  hideSnapshots.afterClose = hideCalls
 
   instance.setData({ authEmail: 'second@example.com', authPassword: 'password-456', authCanSubmit: true })
   const requestB = instance.submitAuth()
   pending[0]({ status: 'authenticated', user: { id: 'stale-user' } })
   await requestA
-  hideSnapshots.afterA = hideCalls
 
   pending[1]({ status: 'authenticated', user: { id: 'current-user' } })
   await requestB
-  hideSnapshots.afterB = hideCalls
 
-  assert.deepEqual(hideSnapshots, { afterClose: 1, afterA: 1, afterB: 2 })
+  assert.equal(showCalls, 0)
+  assert.equal(hideCalls, 0)
 })
