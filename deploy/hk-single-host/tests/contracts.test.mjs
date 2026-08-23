@@ -16,6 +16,7 @@ test('operator scripts are committed as executables', () => {
     'scripts/install-gvisor.sh',
     'scripts/install-backup-timer.sh',
     'scripts/install-health-monitor.sh',
+    'scripts/install-directmail-egress-timer.sh',
     'scripts/install-worker-firewall.sh',
     'scripts/monitor-health.sh',
     'scripts/report-cms-event.py',
