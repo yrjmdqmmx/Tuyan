@@ -12,7 +12,8 @@ document.getElementById('reset-form').addEventListener('submit', async (event) =
   event.preventDefault();
   const password = document.getElementById('password').value;
   const confirmation = document.getElementById('confirmation').value;
-  if (password.length < 8 || password.length > 128) return showMessage('密码必须为 8–128 位。');
+  if (password.length < 8) return showMessage('密码至少 8 位。');
+  if (password.length > 128) return showMessage('密码过长，请使用更短的密码。');
   if (password !== confirmation) return showMessage('两次输入的密码不一致。');
   const button = event.currentTarget.querySelector('button');
   button.disabled = true;
