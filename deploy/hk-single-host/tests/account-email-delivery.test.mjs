@@ -140,7 +140,7 @@ test('manual production workflow transports credentials without printing them an
   assert.doesNotMatch(source, /set -x|echo .*ACCESS_KEY|cat .*directmail/i);
 });
 
-test('production email diagnostics expose only safe configuration presence and filtered result logs', () => {
+test('production email diagnostics expose only safe configuration, rate-limit aggregates, and filtered result logs', () => {
   assert.equal(existsSync(diagnosticWorkflow), true, 'read-only account email diagnostic workflow must exist');
   const source = readFileSync(diagnosticWorkflow, 'utf8');
   assert.match(source, /workflow_dispatch:/);
@@ -150,7 +150,12 @@ test('production email diagnostics expose only safe configuration presence and f
   assert.match(source, /AUTH_REQUIRE_EMAIL_VERIFICATION/);
   assert.match(source, /accessKeyIdPresent/);
   assert.match(source, /accessKeySecretPresent/);
+  assert.match(source, /MongoClient/);
+  assert.match(source, /activeWindowBuckets/);
+  assert.match(source, /windowBucketsAtOrOverLimit/);
+  assert.match(source, /maxObservedWindowCount/);
   assert.match(source, /account email \(sent\|failed\)/);
   assert.match(source, /EMAIL_REDACTED/);
+  assert.doesNotMatch(source, /console\.log\([^\n]*\._id/);
   assert.doesNotMatch(source, /printenv|env\s*\||cat\s+.*gateway\.env|set -x/);
 });
