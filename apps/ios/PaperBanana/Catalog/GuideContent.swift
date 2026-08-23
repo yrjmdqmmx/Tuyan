@@ -34,13 +34,13 @@ struct GuideFAQItem: Identifiable, Equatable {
 }
 
 enum PaperBananaGuide {
-  static let intro = "图研 Tuyan 是一个多智能体学术配图生成工具：把论文方法描述和目标图注交给它，多个 AI 角色协作产出框架图、流程图、架构图或统计图。模型 API Key 由你自带，只保存在本机 Keychain。"
+  static let intro = "图研 Tuyan 是一个多智能体学术配图生成工具：把论文方法描述和目标图注交给它，多个 AI 角色协作产出框架图、流程图、架构图或统计图。模型 API Key 由你自带，持久保存在本机 Keychain；仅在你发起请求时短暂经服务转发至所选模型渠道。"
 
   static let onboardingSteps: [GuideStep] = [
     GuideStep(
       id: "provider-key",
       title: "选接口、填 Key",
-      detail: "选择 OpenRouter、Gemini、OpenAI 或阿里百炼之一，填入当前接口的 API Key。每个平台的申请指南在生成页 Key 输入框下方。"
+      detail: "选择 OpenRouter、Gemini、OpenAI、阿里百炼或火山方舟（中国区方舟）之一。普通模式只需当前单渠道 Key；专业模式可为主模型、图像模型、视觉模型分别选择渠道并填写各自 Key。"
     ),
     GuideStep(
       id: "paper-input",
@@ -59,11 +59,11 @@ enum PaperBananaGuide {
     GuideStep(id: "render", title: "初次渲染", detail: "图像模型按规划生成第一版候选图。"),
     GuideStep(id: "critic", title: "图像评审", detail: "评审模型检查排版、文字和逻辑问题，并给出修改建议。"),
     GuideStep(id: "rerender", title: "重渲染", detail: "按评审意见继续改进，直到用完设置的评审轮数。"),
-    GuideStep(id: "refine", title: "精修放大", detail: "当输出清晰度选择 2K 或 4K 时，生成流程会自动进入精修放大阶段，无需在结果页再次操作。")
+    GuideStep(id: "refine", title: "生成阶段与独立精修", detail: "生成流程可能按所选路线执行额外渲染或放大，但这不等于“精修”页。独立精修需在精修 Tab 选择本人结果图，并按当前图像路线明确声明的精修比例和分辨率执行。")
   ]
 
   static let modelTerms: [GuideTerm] = [
-    GuideTerm(id: "provider", name: "模型接口（Provider）", detail: "选择哪家模型服务。切换接口会同步刷新主模型、图像模型、视觉模型和清晰度档位。"),
+    GuideTerm(id: "provider", name: "模型接口（Provider）与 BYOK", detail: "先选 API 接入渠道。普通模式保持当前 live 渠道并使用服务端三路默认模型；专业模式可分别选主、图、识路线。Key 持久保存在本机 Keychain；你发起请求时会作为短生命周期字段经香港网关/核心转发给所选渠道，服务端不持久化、记录或回显 Key。方舟为中国区火山方舟，可在设置中运行账号路线探测。"),
     GuideTerm(id: "main-model", name: "主模型", detail: "负责规划、文本评审和自动检索相关性排序。建议选择推理能力强的模型。"),
     GuideTerm(id: "image-model", name: "图像生成模型", detail: "负责真正出图，决定风格、质量上限和可用清晰度。"),
     GuideTerm(id: "vision-model", name: "参考图识别模型", detail: "当主模型不能直读参考图时，先把参考图读成文字描述，再交给生成链路。")
@@ -74,9 +74,9 @@ enum PaperBananaGuide {
     GuideTerm(id: "pipeline", name: "生成流程", detail: "规划器 + 评审器兼顾质量与速度；完整流程更细但更慢；基础生成跳过评审最快。"),
     GuideTerm(id: "candidates", name: "候选图数量", detail: "一次生成 1 到 3 张独立备选图。数量越多，耗时和模型成本越高。"),
     GuideTerm(id: "critic-rounds", name: "评审轮数", detail: "控制评审到重渲染的迭代次数，0 表示不评审。"),
-    GuideTerm(id: "aspect-ratio", name: "画面比例", detail: "支持 16:9、21:9、3:2、1:1，按论文或幻灯版面选择。"),
+    GuideTerm(id: "aspect-ratio", name: "画面比例与分辨率", detail: "固定比例为 1:1、3:2、2:3、4:3、3:4、16:9、9:16、21:9、1:4、4:1，另有自动。1K/2K/4K、比例和精修能力均以服务端 registry 为权威；未知或未声明即如实显示，不从模型名称推断或静默降级。"),
     GuideTerm(id: "output-format", name: "导出格式", detail: "PNG 通用；SVG 可无损缩放，更适合后续排版精修。"),
-    GuideTerm(id: "image-size", name: "输出清晰度", detail: "1K 最快；2K/4K 会按模型能力做更高清的结果。不可用档位会自动过滤。")
+    GuideTerm(id: "image-size", name: "输出清晰度", detail: "1K 适合快速草稿，2K 通常适合论文正文，4K 适合有明确支持的最终导出。可选项仅来自当前 image route 的 registry 能力，未知并不等于支持。")
   ]
 
   static let referenceTerms: [GuideTerm] = [
@@ -84,7 +84,7 @@ enum PaperBananaGuide {
     GuideTerm(id: "retrieval-auto", name: "检索设置 · 自动检索", detail: "从内置 PaperBanana 论文配图库中挑出相关范例作为风格与排版灵感。"),
     GuideTerm(id: "retrieval-random", name: "检索设置 · 随机参考", detail: "从参考库随机取图做风格灵感，不强调语义相关性。"),
     GuideTerm(id: "retrieval-manual", name: "检索设置 · 手动参考", detail: "你从参考库中手动选择最多 10 张范例。"),
-    GuideTerm(id: "uploaded-reference", name: "上传参考图", detail: "上传本地参考图前需先把检索设置改为“不使用检索”，以你的上传图作为唯一视觉风格来源。"),
+    GuideTerm(id: "uploaded-reference", name: "本地上传与精选/图库", detail: "精选模板是可套用的研究场景起点；图库可搜索、分类、预览并手选参考。上传本地参考图前需把检索设为“不使用检索”；上传后它是唯一视觉来源，不能与图库检索并用。"),
     GuideTerm(id: "reference-mode", name: "参考图处理方式", detail: "主模型直读适合能读图的主模型；独立识别模型适合主模型不能读图的情况。")
   ]
 
@@ -143,8 +143,10 @@ enum PaperBananaGuide {
       title: "GitHub",
       subtitle: "图研 Tuyan 多端仓库",
       systemImage: "chevron.left.forwardslash.chevron.right",
-      url: URL(string: "https://github.com/zdywrnm/PaperBanana-clients")!
+      url: URL(string: "https://github.com/yrjmdqmmx/paperbanana-clients")!
     ),
+    GuideResource(id: "privacy", title: "隐私政策", subtitle: "香港主服务、跨境与数据处理", systemImage: "hand.raised", url: PaperBananaLegal.privacyURL),
+    GuideResource(id: "terms", title: "服务条款", subtitle: "使用本应用的条款", systemImage: "doc.plaintext", url: PaperBananaLegal.termsURL),
     GuideResource(
       id: "android",
       title: "Android 版",
@@ -167,4 +169,11 @@ enum PaperBananaGuide {
       url: URL(string: "https://github.com/zdywrnm/PaperBanana-clients/tree/main/apps/miniprogram")!
     )
   ]
+}
+
+enum PaperBananaLegal {
+  static let privacyURL = URL(string: "https://www.paperbanana.asia/privacy-policy.html")!
+  static let termsURL = URL(string: "https://www.paperbanana.asia/terms-of-service.html")!
+  static let websiteURL = URL(string: "https://www.paperbanana.asia/")!
+  static let githubURL = URL(string: "https://github.com/yrjmdqmmx/paperbanana-clients")!
 }

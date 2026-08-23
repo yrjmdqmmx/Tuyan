@@ -31,3 +31,15 @@ test('provider egress and account deletion failures have actionable messages', (
   assert.equal(formatErrorMessage('ACCOUNT_DELETION_WAITING_FOR_UPLOADS'), '账号已冻结新任务；请在参考图上传链接失效后按提示重试注销。')
   assert.equal(formatErrorMessage('ACCOUNT_DELETION_WAITING_FOR_JOBS'), '账号已冻结新任务；正在等待运行中的任务安全结束，请稍后重试注销。')
 })
+
+test('account security errors use stable codes instead of provider English', () => {
+  assert.equal(formatErrorMessage({ code: 'EMAIL_NOT_VERIFIED', message: 'Email not verified' }), '邮箱尚未验证，请先完成验证。')
+  assert.equal(formatErrorMessage({ code: 'ACCOUNT_EMAIL_RATE_LIMITED', status: 429, message: 'Too many requests' }), '请求过于频繁，请稍后重试。')
+  assert.equal(formatErrorMessage({ code: 'ACCOUNT_EMAIL_DELIVERY_FAILED', message: 'Provider unavailable' }), '账号邮件暂时无法发送，请稍后重试。')
+  assert.equal(formatErrorMessage({ code: 'PASSWORD_TOO_SHORT', message: 'Password is too short' }), '密码至少需要 8 位。')
+  assert.equal(formatErrorMessage({ code: 'PASSWORD_TOO_LONG', message: 'Password is too long' }), '密码不能超过 128 位。')
+  assert.equal(formatErrorMessage({ code: 'INVALID_EMAIL_OR_PASSWORD', message: 'Invalid email or password' }), '邮箱或密码不正确。')
+  assert.equal(formatErrorMessage({ code: 'TOKEN_EXPIRED', message: 'Token expired' }), '链接已失效，请重新发起操作。')
+  assert.equal(formatErrorMessage({ code: 'TOKEN_USED', message: 'Token used' }), '链接已使用，请重新发起操作。')
+  assert.equal(formatErrorMessage({ code: 'INVALID_TOKEN', message: 'Invalid token' }), '链接无效，请重新发起操作。')
+})

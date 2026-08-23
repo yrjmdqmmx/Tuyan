@@ -18,15 +18,13 @@ enum DateDisplay {
     return formatter
   }()
 
-  /// 绝对时间固定 "yyyy-MM-dd HH:mm"，UTC 时区：与 Web 记录页一致按后端
-  /// 时间戳原样展示（冻结契约 "2026-06-10T13:45:12.000Z" → "2026-06-10 13:45"）。
-  private static let absoluteFormatter: DateFormatter = {
+  private static func absoluteFormatter(timeZone: TimeZone) -> DateFormatter {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "en_US_POSIX")
-    formatter.timeZone = TimeZone(identifier: "UTC")
+    formatter.timeZone = timeZone
     formatter.dateFormat = "yyyy-MM-dd HH:mm"
     return formatter
-  }()
+  }
 
   static func parseISODate(_ value: String) -> Date? {
     guard !value.isEmpty else { return nil }
@@ -44,11 +42,11 @@ enum DateDisplay {
     return relative(date)
   }
 
-  /// 原始时间串 → 绝对时间（UTC "yyyy-MM-dd HH:mm"，与 web 端记录页一致，冻结断言锁定）；
-  /// 解析失败回退到截断的原始字符串。
-  static func absolute(fromISO raw: String) -> String {
+  /// 原始时间串 → 用户设备本地时间。后端 ISO8601 的 `Z` 表示 UTC 时刻，
+  /// 展示时必须按设备时区换算，而不是把 UTC 数字直接当成本地钟表时间。
+  static func absolute(fromISO raw: String, timeZone: TimeZone = .autoupdatingCurrent) -> String {
     guard let date = parseISODate(raw) else { return truncatedRaw(raw) }
-    return absoluteFormatter.string(from: date)
+    return absoluteFormatter(timeZone: timeZone).string(from: date)
   }
 
   /// 解析失败的兜底：把 "2026-06-11T08:00:00" 截成 "2026-06-11 08:00"。

@@ -6,6 +6,7 @@ struct GuideResourceRow: View {
   let resource: GuideResource
   /// true：已在 GlassPanel 内，使用 fieldWell 井底；false：独立玻璃卡。
   var embeddedInPanel = false
+  var accessibilityIdentifier: String?
 
   var body: some View {
     if embeddedInPanel {
@@ -50,5 +51,6 @@ struct GuideResourceRow: View {
       .contentShape(.rect)
     }
     .buttonStyle(.plain)
+    .accessibilityIdentifier(accessibilityIdentifier ?? "guide.\(resource.id)")
   }
 }

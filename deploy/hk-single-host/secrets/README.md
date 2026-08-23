@@ -11,6 +11,11 @@ Required host files:
 - `gateway.env`, `core.env`, `worker.env`
 - `backup.env` and an OSS utility config limited to the backup bucket prefix
 - `monitor.env` containing only the dedicated `cms:PutCustomEvent` RAM key
+- GitHub environment secrets `ALIBABA_DIRECTMAIL_ACCESS_KEY_ID` and
+  `ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET` for the dedicated
+  `dm:SingleSendMail`-only runtime identity. The manual account-email workflow
+  transports them through a mode-0600 temporary file and atomically updates
+  `gateway.env`; credential values are never committed or printed.
 
 `core.env` is root-owned mode `0600`. It contains the non-secret routing
 contract `PAPERBANANA_PROVIDER_EGRESS_MODE=disabled|sg-required` and the fixed

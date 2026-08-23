@@ -15,7 +15,9 @@ final class AppModel {
   var settings: SettingsStore
   var auth: AuthStore
   var jobs: JobsStore
+  var modelRegistry: ModelRegistryStore
   var generation: GenerationStore
+  var refine: RefineStore
   var exports: ExportCenter
   var templates: SavedTemplateStore
 
@@ -30,7 +32,11 @@ final class AppModel {
     self.settings = settings
     self.auth = auth
     self.jobs = jobs
-    generation = GenerationStore(apiClient: client, settings: settings, jobs: jobs)
+    let modelRegistry = ModelRegistryStore(apiClient: client)
+    self.modelRegistry = modelRegistry
+    let generationStore = GenerationStore(apiClient: client, settings: settings, jobs: jobs, registryStore: modelRegistry)
+    generation = generationStore
+    refine = RefineStore(apiClient: client, settings: settings, jobs: jobs, generation: generationStore)
     exports = ExportCenter(apiClient: client, settings: settings)
     templates = SavedTemplateStore()
 
@@ -42,6 +48,7 @@ final class AppModel {
     exports.presentAlert = { [weak self] message in self?.presentAlert(message) }
 
     #if DEBUG
+    DebugPreviewConfiguration.configure(self)
     // 截图 / QA 走查用：`simctl launch ... -pb-initial-tab records` 直达指定 tab
     // （launch argument 自动桥接进 UserDefaults）。仅 DEBUG，发布构建不带此入口。
     if let raw = UserDefaults.standard.string(forKey: "pb-initial-tab"),
@@ -51,17 +58,27 @@ final class AppModel {
     // 截图 / QA 走查用：`-pb-preview-signed-in YES` 注入一个假登录态，
     // 让设置页展示已登录内容（含删除账号入口）。仅 DEBUG。
     if UserDefaults.standard.bool(forKey: "pb-preview-signed-in") {
-      auth.currentUser = try? JSONDecoder().decode(
-        CurrentUser.self,
-        from: Data(#"{"id":"u-preview","email":"founder@paperbanana.app","name":"Founder"}"#.utf8)
-      )
+      if DebugPreviewConfiguration.isUITesting {
+        auth.currentUser = DebugPreviewConfiguration.previewUser
+      } else {
+        auth.currentUser = try? JSONDecoder().decode(
+          CurrentUser.self,
+          from: Data(#"{"id":"u-preview","email":"founder@paperbanana.app","name":"Founder"}"#.utf8)
+        )
+      }
     }
     #endif
   }
 
   func bootstrap() async {
+    #if DEBUG
+    if DebugPreviewConfiguration.isNetworkDisabled { return }
+    #endif
     jobs.loadCachedRecords()
     await settings.refreshHealth()
+    await modelRegistry.refresh(apiBase: settings.apiBase)
+    generation.normalizeDraftWithLiveRegistry()
+    refine.normalizeWithLiveRegistry()
     #if DEBUG
     // 截图 / QA 走查注入的假登录态不走 refreshSession（否则无后端会被覆盖为未登录）。
     if UserDefaults.standard.bool(forKey: "pb-preview-signed-in") { return }
@@ -70,6 +87,17 @@ final class AppModel {
     if auth.currentUser != nil {
       await jobs.loadUserJobs(silent: true)
     }
+  }
+
+  /// Source is accepted only from an existing result belonging to the current
+  /// task or the signed-in user's record list. No arbitrary URL entry exists.
+  func beginRefine(job: Job, image: ResultImage) {
+    guard jobs.canRefine(jobID: job.id) else {
+      presentAlert("只能精修当前生成结果或本账号任务记录中的图片。")
+      return
+    }
+    refine.begin(source: RefineSource(jobID: job.id, image: image))
+    selectedTab = .refine
   }
 
   /// 模板套用：同时更新生成草稿与当前 tab。

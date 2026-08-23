@@ -61,6 +61,7 @@ final class PaperBananaAPIClient {
   }
 
   func uploadReference(data: Data, mimeType: String, uploadURL: String) async throws {
+    try assertNetworkEnabled()
     guard let url = URL(string: uploadURL) else { throw PaperBananaAPIError.invalidURL(uploadURL) }
     var request = URLRequest(url: url, timeoutInterval: 90)
     request.httpMethod = "PUT"
@@ -104,11 +105,76 @@ final class PaperBananaAPIClient {
     return response.references
   }
 
+  /// 精选模板只允许精确 ID 请求；不可混入分页、检索或 facet 参数。
+  func featuredReferences(apiBase: String) async throws -> [ReferenceLibraryItem] {
+    let response: ReferenceLibraryEnvelope = try await requestJSON(
+      try lafEndpoint(apiBase: apiBase),
+      method: "POST",
+      body: ["action": "referenceLibrary", "referenceIds": FeaturedTemplateCatalog.referenceIDs]
+    )
+    return response.references
+  }
+
+  func referenceLibraryPage(apiBase: String, request: ReferenceLibraryPageRequest) async throws -> ReferenceLibraryPage {
+    var body: [String: Any] = [
+      "action": "referenceLibrary",
+      "scope": "bench",
+      "page": max(1, request.page),
+      "pageSize": 12
+    ]
+    let query = request.query.trimmingCharacters(in: .whitespacesAndNewlines)
+    if !query.isEmpty { body["query"] = query }
+    if let category = request.visualCategory, !category.isEmpty { body["visualCategory"] = category }
+    if let domain = request.researchDomain, !domain.isEmpty { body["researchDomain"] = domain }
+    return try await requestJSON(try lafEndpoint(apiBase: apiBase), method: "POST", body: body)
+  }
+
   func modelCapability(apiBase: String, provider: ProviderID, model: String) async throws -> ModelCapability {
     try await requestJSON(
       try lafEndpoint(apiBase: apiBase),
       method: "POST",
       body: ["action": "modelCapability", "provider": provider.rawValue, "model": model]
+    )
+  }
+
+  func modelRegistry(apiBase: String) async throws -> ModelRegistry {
+    try await requestJSON(
+      try lafEndpoint(apiBase: apiBase),
+      method: "POST",
+      body: ["action": "modelRegistry"]
+    )
+  }
+
+  /// Ark has no browser-safe account catalogue. The server accepts only its
+  /// inference key and a bounded set of explicitly selected routes.
+  func providerAccountCatalog(
+    apiBase: String,
+    arkKey: String,
+    routes: ModelRoutes,
+    requiredRoles: [ModelRole],
+    confirmPaidImageProbe: Bool
+  ) async throws -> ProviderAccountCatalogResult {
+    var seen = Set<String>()
+    let probes = requiredRoles.compactMap { role -> [String: String]? in
+      guard let route = routes[role], route.accessProvider == .ark else { return nil }
+      let fingerprint = "\(role.rawValue):\(route.modelId)"
+      guard seen.insert(fingerprint).inserted else { return nil }
+      return ["role": role.rawValue, "modelId": route.modelId]
+    }
+    guard probes.count <= 3 else { throw PaperBananaAPIError.server("Ark 探测最多支持 3 条路线。") }
+    if probes.contains(where: { $0["role"] == ModelRole.image.rawValue }), !confirmPaidImageProbe {
+      throw PaperBananaAPIError.server("图像路线探测可能产生费用，请先明确确认付费探测。")
+    }
+    return try await requestJSON(
+      try lafEndpoint(apiBase: apiBase),
+      method: "POST",
+      body: [
+        "action": "providerAccountCatalog",
+        "provider": "ark",
+        "apiKeys": ["ark": arkKey],
+        "probes": probes,
+        "confirmPaidImageProbe": confirmPaidImageProbe
+      ]
     )
   }
 
@@ -162,7 +228,7 @@ final class PaperBananaAPIClient {
     let _: EmptyEnvelope = try await requestJSON(
       try endpoint(apiBase: apiBase, path: "api/auth/sign-in/email"),
       method: "POST",
-      body: ["email": email, "password": password]
+      body: ["email": email, "password": password, "callbackURL": AccountSecurityURLs.emailVerified]
     )
   }
 
@@ -170,7 +236,39 @@ final class PaperBananaAPIClient {
     let _: EmptyEnvelope = try await requestJSON(
       try endpoint(apiBase: apiBase, path: "api/auth/sign-up/email"),
       method: "POST",
-      body: ["email": email, "password": password, "name": name]
+      body: ["email": email, "password": password, "name": name, "callbackURL": AccountSecurityURLs.emailVerified]
+    )
+  }
+
+  func sendVerificationEmail(apiBase: String, email: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/send-verification-email"),
+      method: "POST",
+      body: ["email": email, "callbackURL": AccountSecurityURLs.emailVerified]
+    )
+  }
+
+  func requestPasswordReset(apiBase: String, email: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/request-password-reset"),
+      method: "POST",
+      body: ["email": email, "redirectTo": AccountSecurityURLs.resetPassword]
+    )
+  }
+
+  func resetPassword(apiBase: String, token: String, newPassword: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/reset-password"),
+      method: "POST",
+      body: ["token": token, "newPassword": newPassword]
+    )
+  }
+
+  func changePassword(apiBase: String, currentPassword: String, newPassword: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/change-password"),
+      method: "POST",
+      body: ["currentPassword": currentPassword, "newPassword": newPassword, "revokeOtherSessions": true]
     )
   }
 
@@ -221,6 +319,7 @@ final class PaperBananaAPIClient {
   }
 
   private func requestJSON<T: Decodable>(_ url: URL, method: String = "GET", body: [String: Any]? = nil) async throws -> T {
+    try assertNetworkEnabled()
     var request = URLRequest(url: url, timeoutInterval: 60)
     request.httpMethod = method
     request.httpShouldHandleCookies = true
@@ -257,7 +356,8 @@ final class PaperBananaAPIClient {
       throw PaperBananaAPIError.http(ServerErrorDetails(
         statusCode: httpResponse.statusCode,
         code: serverErrorCode(from: object),
-        message: serverErrorMessage(from: object)
+        message: serverErrorMessage(from: object),
+        retryAfterSeconds: Int(httpResponse.value(forHTTPHeaderField: "X-Retry-After") ?? "")
       ))
     }
     do {
@@ -270,6 +370,14 @@ final class PaperBananaAPIClient {
           : error.localizedDescription
       )
     }
+  }
+
+  private func assertNetworkEnabled() throws {
+    #if DEBUG
+    if DebugPreviewConfiguration.isNetworkDisabled {
+      throw PaperBananaAPIError.server("UI 测试已显式禁用网络请求。")
+    }
+    #endif
   }
 
   /// 清洗裸控制字节，语义对齐小程序端 coerceJsonResponse
@@ -362,4 +470,9 @@ final class PaperBananaAPIClient {
     if let error = object["error"] as? [String: Any], let code = error["code"] as? String, !code.isEmpty { return code }
     return nil
   }
+}
+
+private enum AccountSecurityURLs {
+  static let emailVerified = "https://www.paperbanana.asia/account/email-verified.html"
+  static let resetPassword = "https://www.paperbanana.asia/account/reset-password.html"
 }

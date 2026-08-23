@@ -164,6 +164,78 @@ final class JobsStoreTests: XCTestCase {
     XCTAssertNil(store.lastPolledAt)
     store.pausePolling()
   }
+
+  func testCachedRecordIsNotAuthorizedForRefineUntilServerConfirmsOwnership() async throws {
+    let store = try makeSignedInStore()
+    defer { store.clearForSignOut(); store.clearLocalJobs() }
+    store.userJobs = [Job(id: "cached-old-account", status: "succeeded")]
+    XCTAssertFalse(store.canRefine(jobID: "cached-old-account"))
+
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"jobs":[{"id":"cached-old-account","status":"succeeded"}]}"#)
+    }
+    await store.loadUserJobs(silent: true)
+    XCTAssertTrue(store.canRefine(jobID: "cached-old-account"))
+  }
+
+  func testCurrentTrackedJobCanRefineButSignOutRevokesOwnership() throws {
+    let store = try makeSignedInStore()
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"job":{"id":"new-local","status":"queued"}}"#)
+    }
+    store.track(jobID: "new-local", status: "queued")
+    XCTAssertTrue(store.canRefine(jobID: "new-local"))
+
+    store.clearForSignOut()
+    XCTAssertFalse(store.canRefine(jobID: "new-local"))
+    store.pausePolling()
+  }
+
+  func testClearLocalJobsDoesNotRevokeServerConfirmedRefineOwnership() async throws {
+    let store = try makeSignedInStore()
+    defer { store.clearForSignOut() }
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"jobs":[{"id":"server-owned","status":"succeeded"}]}"#)
+    }
+    await store.loadUserJobs(silent: true)
+    XCTAssertTrue(store.canRefine(jobID: "server-owned"))
+
+    store.clearLocalJobs()
+
+    XCTAssertTrue(store.canRefine(jobID: "server-owned"))
+  }
+
+  func testMissingServerSourceKeepsRegisteredRefineSourceThroughCurrentRefresh() async throws {
+    let store = makeStore()
+    let source = RefineSource(jobID: "generate-1", image: resultImage(objectKey: "jobs/generate-1/image.png"))
+    store.registerRefineSource(source, for: "refine-1")
+    store.currentJobID = "refine-1"
+    store.currentJob = Job(id: "refine-1", status: "queued")
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"job":{"id":"refine-1","status":"running"}}"#)
+    }
+
+    await store.refreshCurrentJob()
+
+    XCTAssertEqual(store.currentJob?.sourceImageObjectKey, "jobs/generate-1/image.png")
+  }
+
+  func testServerSourceWinsOverRegisteredRefineSourceAndRecordsRefreshMergesMissingSource() async throws {
+    let store = try makeSignedInStore()
+    defer { store.clearForSignOut(); store.clearLocalJobs() }
+    store.registerRefineSource(RefineSource(jobID: "generate-1", image: resultImage(objectKey: "jobs/local.png")), for: "refine-1")
+    JobsStoreStub.requestHandler = { request in
+      JobsStoreStub.jsonResponse(url: request.url, body: #"{"code":0,"jobs":[{"id":"refine-1","status":"succeeded"},{"id":"refine-2","status":"succeeded","sourceImageObjectKey":"jobs/server.png"}]}"#)
+    }
+
+    await store.loadUserJobs(silent: true)
+    XCTAssertEqual(store.userJobs.first(where: { $0.id == "refine-1" })?.sourceImageObjectKey, "jobs/local.png")
+    XCTAssertEqual(store.userJobs.first(where: { $0.id == "refine-2" })?.sourceImageObjectKey, "jobs/server.png")
+  }
+
+  private func resultImage(objectKey: String) -> ResultImage {
+    try! JSONDecoder().decode(ResultImage.self, from: Data("{\"filename\":\"image.png\",\"url\":\"https://signed.example/image.png\",\"candidateId\":0,\"objectKey\":\"\(objectKey)\"}".utf8))
+  }
 }
 
 private final class JobsStoreStub: URLProtocol {

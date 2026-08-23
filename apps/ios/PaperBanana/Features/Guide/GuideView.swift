@@ -8,6 +8,8 @@ struct GuideView: View {
       ScrollView {
         VStack(alignment: .leading, spacing: Theme.Spacing.md) {
           hero
+          runtimePanel
+          presetPanel
           GuideStepSection(title: "三步上手", steps: PaperBananaGuide.onboardingSteps)
           GuideStepSection(
             title: "它是怎么生成的（多智能体流程）",
@@ -49,6 +51,85 @@ struct GuideView: View {
           }
         }
         .padding(.top, Theme.Spacing.sm)
+      }
+    }
+  }
+
+  private var runtimeSummary: GuideRuntimeSummary {
+    GuideRuntimeSummary(
+      registry: model.modelRegistry.registry,
+      hasLiveRegistry: model.modelRegistry.hasLiveRegistry,
+      draft: model.generation.draft
+    )
+  }
+
+  private var runtimePanel: some View {
+    GlassPanel {
+      VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
+        SectionHeader(title: "当前运行时目录", systemImage: runtimeSummary.isAvailable ? "checkmark.seal" : "exclamationmark.triangle")
+        Text(runtimeSummary.statusText)
+          .font(.footnote.weight(.semibold))
+          .foregroundStyle(runtimeSummary.isAvailable ? Theme.Palette.paperGreenText : Theme.Palette.warningText)
+        if runtimeSummary.isAvailable {
+          Text("registry \(runtimeSummary.registryVersion) · route contract v\(runtimeSummary.routeContractVersion ?? 0)")
+            .font(.footnote.monospacedDigit())
+          Text("当前渠道：\(runtimeSummary.providers.map { ProviderCatalog.config(for: $0).label }.joined(separator: "、"))")
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+          Text(runtimeSummary.routeSummary)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+        } else {
+          Text("缓存目录只供展示，不能冒充 live registry；请重试后再创建任务。")
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+        }
+        Button(model.modelRegistry.isRefreshing ? "正在重试…" : "重试获取目录") {
+          Task {
+            await model.modelRegistry.refresh(apiBase: model.settings.apiBase)
+            model.generation.normalizeDraftWithLiveRegistry()
+            model.refine.normalizeWithLiveRegistry()
+          }
+        }
+        .paperGlassButton()
+        .disabled(model.modelRegistry.isRefreshing)
+        .accessibilityIdentifier("guide.runtime.retry")
+      }
+    }
+  }
+
+  private var presetPanel: some View {
+    GlassPanel {
+      VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+        SectionHeader(title: "一键生成预设", systemImage: "slider.horizontal.3")
+        Text("所有预设保持当前 live provider，并使用服务端默认三路；不会保留自定义或过期路由，也不写死模型 ID。预设会切换专业模式以应用流程参数；省成本只下调流程参数，不凭空承诺成本。")
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+        ForEach(GuidePreset.allCases) { preset in
+          Button {
+            let result = GuidePreset.apply(preset, to: &model.generation.draft, registry: model.modelRegistry.registry, hasLiveRegistry: model.modelRegistry.hasLiveRegistry)
+            switch result {
+            case .applied:
+              model.selectedTab = .generate
+              model.presentAlert("已应用\(preset.title)：\(preset.detail)。请在生成设置中确认当前路线与 Key。")
+            case .directoryUnavailable:
+              model.presentAlert("目录不可用，新任务已禁用。请先重试获取 live registry。")
+            case .noCompatibleRoutes:
+              model.presentAlert("当前 live registry 缺少可执行的默认三路或图像清晰度声明，未修改设置。")
+            }
+          } label: {
+            VStack(alignment: .leading, spacing: 2) {
+              Text(preset.title).font(.callout.weight(.semibold))
+              Text(preset.detail).font(.caption).foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+          }
+          .paperGlassButton()
+          .disabled(!runtimeSummary.isAvailable)
+          .accessibilityIdentifier("guide.preset.\(preset.rawValue)")
+        }
       }
     }
   }

@@ -37,20 +37,20 @@
 ```
 PaperBanana 把你的论文方法描述和图题，变成出版级的学术配图。
 
-不再为了画一张方法框架图在绘图软件里耗一下午——输入方法内容、写好图注、选好图类，PaperBanana 的多智能体流水线就会替你完成「规划 → 渲染 → 评审 → 精修」的全过程，产出可直接放进论文的方法框架图、流程图、系统架构图与数据统计图。
+不再为了画一张方法框架图在绘图软件里耗一下午——输入方法内容、写好图注、选好图类，PaperBanana 的多智能体流水线会完成「规划 → 渲染 → 评审 → 重渲染/定稿」过程，产出可直接放进论文的方法框架图、流程图、系统架构图与数据统计图。
 
 【多智能体协作，像审稿一样打磨】
-后端由多个 AI 角色分工协作：规划器先把方法拆成模块与连接关系，图像模型渲染初版，评审模型像审稿人一样检查排版、文字与逻辑并提出修改意见，再迭代重渲染，最后自动精修放大到 2K / 4K。整个流水线在 App 内可视化呈现，每一步「为什么这样画」都看得见。
+后端由多个 AI 角色分工协作：规划器先把方法拆成模块与连接关系，图像模型渲染初版，评审模型像审稿人一样检查排版、文字与逻辑并提出修改意见，再迭代重渲染。生成阶段的额外渲染与独立「精修」Tab 不混同：精修可对本人结果图按当前路线能力单独执行。整个流水线在 App 内可视化呈现。
 
 【自带 API Key，模型自由选】
-BYOK（Bring Your Own Key）模式：接入百炼（bailian）、OpenRouter、Gemini、OpenAI 等平台，自由搭配主模型、图像模型与视觉模型。你的 API Key 只保存在本机 Keychain，绝不上传到我们的服务器。
+BYOK（Bring Your Own Key）模式：接入百炼、OpenRouter、Gemini、OpenAI、火山方舟（中国区）五个渠道；模型与比例/分辨率能力以动态 registry 为准。iOS 将 Key 保存在本机 Keychain；发起请求时作为短生命周期字段经服务转发，服务端不持久化、记录或回显。
 
 【为科研而生】
 · 内置方法框架图、流程图、系统架构、数据统计等学术图类
 · 支持上传参考图，贴合你的论文风格
-· 普通 / 专业双模式，可调候选数量、评审轮数、长宽比、导出格式
+· 五个 Tab：生成、精修、任务记录、教程、设置；生成工作台内含精选模板与参考图库；普通 / 专业双模式，可调候选数量、评审轮数、长宽比、导出格式
 · 导出 PNG 或可无损缩放的 SVG，方便后续排版精修
-· 原生 iOS 26 液态玻璃设计，iPhone 与 iPad 通用
+· 原生 iOS 26 液态玻璃设计；Build 5 本版本仅支持 iPhone
 
 适合论文作者、研究生、科研人员，以及任何需要把复杂方法讲清楚的人。
 
@@ -64,20 +64,20 @@ PaperBanana —— 让做图不再是论文里最慢的那一步。
 ```
 PaperBanana turns your paper's method description and figure caption into publication-ready academic figures.
 
-Stop spending an afternoon in drawing software just to make one method diagram. Describe your method, write the caption, pick a figure type — and PaperBanana's multi-agent pipeline runs the full "plan → render → critique → refine" process for you, producing method-framework diagrams, flowcharts, system architectures, and data charts you can drop straight into your paper.
+Stop spending an afternoon in drawing software just to make one method diagram. Describe your method, write the caption, pick a figure type — and PaperBanana's multi-agent pipeline runs the full "plan → render → critique → rerender/finalize" process for you, producing method-framework diagrams, flowcharts, system architectures, and data charts you can drop straight into your paper.
 
 MULTI-AGENT COLLABORATION, POLISHED LIKE PEER REVIEW
-The backend coordinates several AI roles: a planner breaks your method into modules and connections, an image model renders the first draft, a critic model inspects layout, text, and logic like a reviewer and suggests fixes, then it re-renders and finally auto-enhances to 2K / 4K. The whole pipeline is visualized inside the app, so you can see why every step looks the way it does.
+The backend coordinates several AI roles: a planner breaks your method into modules and connections, an image model renders the first draft, and a critic model inspects layout, text, and logic before re-rendering. Extra generation stages are distinct from the separate Refine tab, where you can refine your own result according to the current route's declared capability.
 
 BRING YOUR OWN KEY, CHOOSE ANY MODEL
-BYOK mode: connect Bailian, OpenRouter, Gemini, or OpenAI, and freely mix main, image, and vision models. Your API key is stored only in your device's Keychain and never uploaded to our servers.
+BYOK mode: connect Bailian, OpenRouter, Gemini, OpenAI, or Volcano Engine Ark (China region). The dynamic registry is authoritative for model, aspect-ratio, and resolution support. iOS persists the key in Keychain; a request uses it as an ephemeral forwarded field that the service does not persist, log, or echo.
 
 BUILT FOR RESEARCH
 · Built-in academic figure types: method framework, flowchart, system architecture, data charts
 · Upload reference images to match your paper's style
-· Simple and Pro modes — tune candidate count, critic rounds, aspect ratio, export format
+· Five tabs: Generate, Refine, Records, Guide, and Settings; the Generate workspace includes featured templates and the reference library; Simple and Pro modes tune candidate count, critic rounds, aspect ratio, and export format
 · Export PNG, or lossless-scalable SVG for later typesetting
-· Native iOS 26 Liquid Glass design, universal for iPhone and iPad
+· Native iOS 26 Liquid Glass design; Build 5 supports iPhone only
 
 For paper authors, graduate students, researchers, and anyone who needs to explain a complex method clearly.
 

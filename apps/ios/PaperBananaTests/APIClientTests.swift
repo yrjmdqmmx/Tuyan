@@ -4,7 +4,33 @@ import XCTest
 final class APIClientTests: XCTestCase {
   override func tearDown() {
     URLProtocolStub.requestHandler = nil
+    UserDefaults.standard.removeObject(forKey: "pb-ui-disable-network")
     super.tearDown()
+  }
+
+  func testExplicitDebugNetworkDisableFailsBeforeAnyURLSessionRequest() async {
+    UserDefaults.standard.set(true, forKey: "pb-ui-disable-network")
+    var requestCount = 0
+    URLProtocolStub.requestHandler = { request in
+      requestCount += 1
+      return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"code":0,"references":[]}"#)
+    }
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+
+    do {
+      _ = try await client.referenceLibrary(apiBase: "https://gateway.example", taskName: .diagram)
+      XCTFail("Expected explicit debug network disable to fail fast")
+    } catch {
+      XCTAssertEqual(error.localizedDescription, "UI 测试已显式禁用网络请求。")
+    }
+
+    do {
+      try await client.uploadReference(data: Data("fixture".utf8), mimeType: "image/png", uploadURL: "https://uploads.example/object")
+      XCTFail("Expected upload to fail before URLSession")
+    } catch {
+      XCTAssertEqual(error.localizedDescription, "UI 测试已显式禁用网络请求。")
+    }
+    XCTAssertEqual(requestCount, 0, "Network-disabled paths must not reach URLSession")
   }
 
   func testEnvelopeFailureWithOkFalseThrowsServerErrorBeforeDecoding() async throws {
@@ -242,6 +268,41 @@ final class APIClientTests: XCTestCase {
     XCTAssertEqual(user.name, "founder@paperbanana.asia")
   }
 
+  func testCurrentUserDecodesEmailVerificationState() throws {
+    let user = try JSONDecoder().decode(
+      CurrentUser.self,
+      from: Data(#"{"id":"u-verified","email":"verified@example.com","emailVerified":true}"#.utf8)
+    )
+    XCTAssertTrue(user.emailVerified)
+  }
+
+  func testAccountSecurityEndpointsUseBetterAuthPathsAndPayloads() async throws {
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+    var observed: [(String, [String: Any])] = []
+    URLProtocolStub.requestHandler = { request in
+      let body = try XCTUnwrap(JSONSerialization.jsonObject(with: try request.bodyData()) as? [String: Any])
+      observed.append((request.url?.path ?? "", body))
+      return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"ok":true}"#)
+    }
+
+    try await client.sendVerificationEmail(apiBase: "https://gateway.example", email: "a@example.com")
+    try await client.requestPasswordReset(apiBase: "https://gateway.example", email: "a@example.com")
+    try await client.resetPassword(apiBase: "https://gateway.example", token: "reset-token", newPassword: "new-password")
+    try await client.changePassword(apiBase: "https://gateway.example", currentPassword: "old-password", newPassword: "new-password")
+
+    XCTAssertEqual(observed.map(\.0), [
+      "/api/auth/send-verification-email",
+      "/api/auth/request-password-reset",
+      "/api/auth/reset-password",
+      "/api/auth/change-password"
+    ])
+    XCTAssertEqual(observed[0].1["callbackURL"] as? String, "https://www.paperbanana.asia/account/email-verified.html")
+    XCTAssertEqual(observed[1].1["redirectTo"] as? String, "https://www.paperbanana.asia/account/reset-password.html")
+    XCTAssertEqual(observed[2].1["token"] as? String, "reset-token")
+    XCTAssertEqual(observed[2].1["newPassword"] as? String, "new-password")
+    XCTAssertEqual(observed[3].1["revokeOtherSessions"] as? Bool, true)
+  }
+
   func testModelCapabilityRequestUsesGatewayActionAndDecodesSnakeCase() async throws {
     let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
     URLProtocolStub.requestHandler = { request in
@@ -266,6 +327,58 @@ final class APIClientTests: XCTestCase {
     XCTAssertEqual(capability.reason, "ok")
     XCTAssertEqual(capability.source, "server")
     XCTAssertTrue(capability.cached)
+  }
+
+  func testModelRegistryAndArkProbeUseNarrowGatewayBodies() async throws {
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+    var requestCount = 0
+    URLProtocolStub.requestHandler = { request in
+      requestCount += 1
+      let body = try XCTUnwrap(JSONSerialization.jsonObject(with: try request.bodyData()) as? [String: Any])
+      if requestCount == 1 {
+        XCTAssertEqual(body["action"] as? String, "modelRegistry")
+        return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"code":0,"registryVersion":"v9","routeContractVersion":1,"supportsModelRoutes":true,"providers":{}}"#)
+      }
+      XCTAssertEqual(body["action"] as? String, "providerAccountCatalog")
+      XCTAssertEqual(body["provider"] as? String, "ark")
+      XCTAssertEqual(body["apiKeys"] as? [String: String], ["ark": "ark-key"])
+      XCTAssertEqual(body["confirmPaidImageProbe"] as? Bool, true)
+      XCTAssertEqual((body["probes"] as? [[String: String]])?.count, 2)
+      return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"code":0,"provider":"ark","accountCatalogAvailable":false,"probeResults":[]}"#)
+    }
+
+    _ = try await client.modelRegistry(apiBase: "https://gateway.example")
+    _ = try await client.providerAccountCatalog(
+      apiBase: "https://gateway.example",
+      arkKey: "ark-key",
+      routes: ModelRoutes(
+        main: ModelRoute(accessProvider: .ark, modelId: "main"),
+        image: ModelRoute(accessProvider: .ark, modelId: "image"),
+        vision: ModelRoute(accessProvider: .openai, modelId: "ignored")
+      ),
+      requiredRoles: [.main, .image, .vision],
+      confirmPaidImageProbe: true
+    )
+  }
+
+  func testArkProbeRejectsImageRouteWithoutExplicitPaidConfirmation() async {
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+    do {
+      _ = try await client.providerAccountCatalog(
+        apiBase: "https://gateway.example",
+        arkKey: "ark-key",
+        routes: ModelRoutes(
+          main: ModelRoute(accessProvider: .ark, modelId: "main"),
+          image: ModelRoute(accessProvider: .ark, modelId: "image"),
+          vision: ModelRoute(accessProvider: .ark, modelId: "vision")
+        ),
+        requiredRoles: [.image],
+        confirmPaidImageProbe: false
+      )
+      XCTFail("Expected local paid-image confirmation rejection")
+    } catch {
+      XCTAssertTrue(formatUserFacingError(error).contains("付费"))
+    }
   }
 }
 

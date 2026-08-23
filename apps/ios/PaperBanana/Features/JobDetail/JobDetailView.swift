@@ -105,7 +105,7 @@ struct JobDetailView: View {
           .accessibilityAddTraits(.isHeader)
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) {
           ForEach(job.resultImages) { image in
-            ResultImageView(model: model, image: image, outputFormat: job.outputFormat)
+            ResultImageView(model: model, image: image, outputFormat: job.outputFormat, job: job)
           }
         }
       }

@@ -101,10 +101,81 @@ final class PayloadEncodingTests: XCTestCase {
     XCTAssertEqual(body["mainModelName"] as? String, "gpt-5.5")
     XCTAssertEqual(body["imageModelName"] as? String, "gpt-image-2")
     XCTAssertEqual(body["referenceVisionModelName"] as? String, "gpt-4.1")
-    XCTAssertEqual(body["sourceImageUrl"] as? String, "https://example.com/source.png")
+    XCTAssertNil(body["sourceImageUrl"])
     XCTAssertEqual(body["sourceImageObjectKey"] as? String, "jobs/source.png")
     XCTAssertEqual(body["editInstruction"] as? String, "放大标签并减少装饰。")
     XCTAssertEqual(body["aspectRatio"] as? String, "16:9")
     XCTAssertEqual(body["imageSize"] as? String, "2K")
+  }
+
+  func testAdvancedPayloadSendsFullRoutesShadowsNegativePromptAndOnlyRouteProviderKeys() {
+    let routes = ModelRoutes(
+      main: ModelRoute(accessProvider: .openai, modelId: "gpt-main"),
+      image: ModelRoute(accessProvider: .ark, modelId: "seed-image"),
+      vision: ModelRoute(accessProvider: .gemini, modelId: "gemini-vision")
+    )
+    let payload = JobCreatePayload(
+      configurationMode: .advanced,
+      provider: .openai,
+      apiKeys: [.openai: "openai-key", .ark: "ark-key", .gemini: "gemini-key", .bailian: "leak-me-not"],
+      taskName: .diagram,
+      methodContent: "method",
+      caption: "caption",
+      infographicCategory: "方法框架图",
+      outputFormat: .png,
+      imageSize: .twoK,
+      mainModelName: "gpt-main",
+      imageModelName: "seed-image",
+      referenceVisionModelName: "gemini-vision",
+      referenceImageMode: nil,
+      referenceImages: [],
+      pipelineMode: .full,
+      retrievalSetting: .none,
+      manualReferenceIds: [],
+      aspectRatio: "1:1",
+      numCandidates: 1,
+      maxCriticRounds: 1,
+      negativePrompt: "no watermark",
+      modelRoutes: routes,
+      requiredRouteRoles: [.main, .image, .vision]
+    )
+
+    let body = payload.paperBananaBody()
+
+    XCTAssertEqual(body["negativePrompt"] as? String, "no watermark")
+    XCTAssertEqual(body["provider"] as? String, "openai")
+    XCTAssertEqual(body["mainModelName"] as? String, "gpt-main")
+    XCTAssertEqual(body["imageModelName"] as? String, "seed-image")
+    XCTAssertEqual(body["referenceVisionModelName"] as? String, "gemini-vision")
+    XCTAssertEqual((body["modelRoutes"] as? [String: [String: String]])?["image"]?["accessProvider"], "ark")
+    XCTAssertEqual(body["apiKeys"] as? [String: String], ["openai": "openai-key", "ark": "ark-key", "gemini": "gemini-key"])
+  }
+
+  func testRefinePayloadScopesKeysToRequiredImageRoute() {
+    let payload = RefineImagePayload(
+      provider: .ark,
+      apiKeys: [.ark: "ark-key", .openai: "leak-me-not"],
+      mainModelName: "main",
+      imageModelName: "image",
+      referenceVisionModelName: "vision",
+      sourceImageURL: "https://example.com/source.png",
+      sourceImageObjectKey: nil,
+      editInstruction: "clarify labels",
+      aspectRatio: "auto",
+      imageSize: .twoK,
+      configurationMode: .advanced,
+      modelRoutes: ModelRoutes(
+        main: ModelRoute(accessProvider: .openai, modelId: "main"),
+        image: ModelRoute(accessProvider: .ark, modelId: "image"),
+        vision: ModelRoute(accessProvider: .gemini, modelId: "vision")
+      ),
+      requiredRouteRoles: [.image]
+    )
+
+    let body = payload.paperBananaBody()
+
+    XCTAssertEqual(body["configurationMode"] as? String, "advanced")
+    XCTAssertEqual(body["apiKeys"] as? [String: String], ["ark": "ark-key"])
+    XCTAssertEqual((body["modelRoutes"] as? [String: [String: String]])?["image"]?["modelId"], "image")
   }
 }

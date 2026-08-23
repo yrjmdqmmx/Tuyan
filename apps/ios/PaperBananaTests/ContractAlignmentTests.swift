@@ -64,13 +64,6 @@ final class ContractAlignmentTests: XCTestCase {
     }
   }
 
-  // SYNC 2026-06-08：bailian 主模型固定能力（补 ProviderCatalogTests 未覆盖的型号）。
-  func testBailianMainModelCapabilityCoversOmniAndDeepseek() {
-    XCTAssertTrue(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "qwen3.5-omni-plus"))
-    XCTAssertFalse(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "deepseek-v4-pro"))
-    XCTAssertFalse(ProviderCatalog.mainModelCanReadImages(provider: .bailian, model: "deepseek-v4-flash"))
-  }
-
   // referenceLibrary 请求必须携带 taskName（plot/diagram 参考库内容不同）。
   func testReferenceLibraryRequestCarriesTaskName() async throws {
     let client = PaperBananaAPIClient(session: URLSession.contractAlignmentStubbedSession())

@@ -1,11 +1,17 @@
 import SwiftUI
 import PhotosUI
 
+private enum ReferenceLibraryDestination: Identifiable { case library; var id: String { "reference-library" } }
+
 struct GenerateView: View {
   @Bindable var model: AppModel
   @State private var isImporterPresented = false
-  @State private var isQuickStartExpanded = false
   @State private var selectedPhotoItems: [PhotosPickerItem] = []
+  @State private var settingsSheet: GenerationSettingsSheet?
+  @State private var compactReferenceLibrary: ReferenceLibraryDestination?
+  @State private var regularReferenceLibrary: ReferenceLibraryDestination?
+  @State private var templateTitle = ""
+  @State private var saveTemplateMessage = ""
   @Namespace private var submitNamespace
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -24,7 +30,8 @@ struct GenerateView: View {
         ScrollView {
           VStack(alignment: .leading, spacing: Theme.Spacing.md) {
             hero
-            quickStartSection
+            FeaturedTemplateStudio(model: model)
+            saveTemplateSection
             generationSettingsSection
             inputSection
             submitHints
@@ -82,6 +89,9 @@ struct GenerateView: View {
           selectedPhotoItems = []
         }
       }
+      .sheet(item: $settingsSheet) { $0 }
+      .fullScreenCover(item: $compactReferenceLibrary) { _ in ReferenceLibrarySheet(model: model) }
+      .sheet(item: $regularReferenceLibrary) { _ in ReferenceLibrarySheet(model: model) }
     }
   }
 
@@ -97,10 +107,6 @@ struct GenerateView: View {
 
   private var topScrollGuardHeight: CGFloat {
     horizontalSizeClass == .compact ? 44 : 0
-  }
-
-  private var quickStartExamples: [QuickStartExample] {
-    Array(PaperBananaSamples.quickStartExamples.prefix(2))
   }
 
   // MARK: - Hero
@@ -128,14 +134,9 @@ struct GenerateView: View {
   }
 
   private var brandMark: some View {
-    ZStack {
-      RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous)
-        .fill(Theme.Palette.paperGreen.opacity(0.12))
-      Image("AppIconSource")
-        .resizable()
-        .scaledToFit()
-        .padding(5)
-    }
+    Image("AppIconSource")
+      .resizable()
+      .scaledToFit()
     .frame(width: 46, height: 46)
     .accessibilityHidden(true)
   }
@@ -190,109 +191,82 @@ struct GenerateView: View {
     return localPart.isEmpty ? email : localPart
   }
 
-  // MARK: - 快速案例
-
-  private var quickStartSection: some View {
-    sectionCard("快速上手案例", trailing: {
-      Button {
-        toggleQuickStart()
-      } label: {
-        Label(isQuickStartExpanded ? "收起" : "展开", systemImage: isQuickStartExpanded ? "chevron.up" : "chevron.down")
-          .font(.caption.weight(.semibold))
-      }
-      .buttonStyle(.plain)
-      .foregroundStyle(Theme.Palette.paperGreenText)
-      .accessibilityLabel(isQuickStartExpanded ? "收起快速上手案例" : "展开快速上手案例")
-    }) {
-      if isQuickStartExpanded {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 148), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) {
-          ForEach(quickStartExamples) { example in
-            Button {
-              model.applyExample(example)
-            } label: {
-              QuickStartMiniCard(example: example)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("套用案例 \(example.title)")
-          }
-        }
-        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-      } else {
-        quickStartCollapsedSummary
-      }
-    }
-    .animation(Theme.Motion.stateChange, value: isQuickStartExpanded)
-  }
-
-  private func toggleQuickStart() {
-    withAnimation(reduceMotion ? nil : Theme.Motion.stateChange) {
-      isQuickStartExpanded.toggle()
-    }
-  }
-
-  private var quickStartCollapsedSummary: some View {
-    Button {
-      toggleQuickStart()
-    } label: {
-      HStack(spacing: Theme.Spacing.md) {
-        Image(systemName: "sparkles.rectangle.stack")
-          .font(.title3)
-          .foregroundStyle(Theme.Palette.warningText)
-          .frame(width: 34, height: 34)
-          .background(Theme.Palette.paperAmber.opacity(0.22), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-          .accessibilityHidden(true)
-        VStack(alignment: .leading, spacing: 2) {
-          Text(quickStartExamples.map(\.label).joined(separator: " · "))
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(.primary)
-            .lineLimit(1)
-          Text("展开后可一键套用示例内容")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .lineLimit(1)
-        }
-        Spacer(minLength: Theme.Spacing.sm)
-        Image(systemName: "chevron.down")
-          .font(.caption.weight(.bold))
-          .foregroundStyle(.secondary)
-          .accessibilityHidden(true)
-      }
-      .padding(Theme.Spacing.md)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .background(Theme.Palette.paperWell, in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
-      .contentShape(RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
-    }
-    .buttonStyle(.plain)
-    .accessibilityLabel("展开快速上手案例，包含 \(quickStartExamples.map(\.label).joined(separator: "、"))")
-  }
-
   // MARK: - ① 生成设置
 
   private var generationSettingsSection: some View {
-    sectionCard("生成设置") {
-      Text("普通模式使用平台默认配置；专业模式可调整模型、比例和模型名称。")
-        .font(.footnote)
-        .foregroundStyle(.secondary)
-
-      modeSwitch
-      providerControls
-      if !isAdvanced {
-        defaultSummaryChips
+    Button { settingsSheet = GenerationSettingsSheet(model: model, onPresentReferenceLibrary: presentReferenceLibrary) } label: {
+      HStack(alignment: .top, spacing: Theme.Spacing.md) {
+        Image(systemName: "slider.horizontal.3").font(.title3).foregroundStyle(Theme.Palette.paperGreenText)
+        VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+          Text("当前生成配置").font(.headline).foregroundStyle(.primary)
+          Text(isAdvanced ? "专业模式" : "普通模式")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(Theme.Palette.paperGreenText)
+          configurationSummaryGrid
+          Text("轻点打开设置，调整模型、密钥、路由、格式与专业流程。")
+            .font(.caption).foregroundStyle(Theme.Palette.paperGreenText)
+        }
+        Spacer(minLength: 0)
+        Image(systemName: "chevron.right").foregroundStyle(.secondary)
       }
-      outputControls
-      apiKeyControls
-
-      if isAdvanced {
-        Text("专业配置")
-          .font(.subheadline.weight(.semibold))
-          .padding(.top, Theme.Spacing.xs)
-        advancedControls
-          .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
-      }
-
-      categoryControls
+      .padding(Theme.Spacing.lg).frame(maxWidth: .infinity, alignment: .leading)
+      .background(Theme.Palette.paperGreenWell, in: RoundedRectangle(cornerRadius: Theme.Radius.card))
+      .overlay { RoundedRectangle(cornerRadius: Theme.Radius.card).strokeBorder(Theme.Palette.paperGreen.opacity(0.35), lineWidth: 1) }
     }
-    .animation(Theme.Motion.stateChange, value: isAdvanced)
+    .buttonStyle(.plain)
+    .accessibilityIdentifier("generate.settings.summary")
+    .accessibilityLabel("生成设置摘要，\(generationSettingsSummary)")
+  }
+
+  private func presentReferenceLibrary() {
+    settingsSheet = nil
+    Task { @MainActor in
+      try? await Task.sleep(for: .milliseconds(250))
+      if horizontalSizeClass == .compact { compactReferenceLibrary = .library } else { regularReferenceLibrary = .library }
+    }
+  }
+
+  private var generationSettingsSummary: String {
+    let summary = GenerationConfigurationSummary(store: model.generation)
+    let routes = summary.routes.map { "\($0.role.displayTitle) \($0.providerLabel) / \($0.modelLabel)" }
+    return ([isAdvanced ? "专业模式" : "普通模式"] + routes + [summary.pipeline.title, summary.retrieval.title, "候选 \(summary.candidates) 张", "评审 \(summary.criticRounds) 轮"]).joined(separator: "，")
+  }
+
+  private var configurationSummaryGrid: some View {
+    let summary = GenerationConfigurationSummary(store: model.generation)
+    let routeItems = summary.routes.map { item in
+      (item.role.displayTitle, "\(item.providerLabel) · \(item.modelLabel)", "generate.summary.route.\(item.role.rawValue)")
+    }
+    let processItems = [
+      ("生成流程", summary.pipeline.title, "generate.summary.pipeline"),
+      ("检索设置", summary.retrieval.title, "generate.summary.retrieval"),
+      ("候选数量", "\(summary.candidates) 张", "generate.summary.candidates"),
+      ("评审轮数", "\(summary.criticRounds) 轮", "generate.summary.criticRounds"),
+    ]
+    return LazyVGrid(columns: [GridItem(.adaptive(minimum: 132), spacing: Theme.Spacing.xs)], spacing: Theme.Spacing.xs) {
+      ForEach(Array((routeItems + processItems).enumerated()), id: \.offset) { _, item in
+        VStack(alignment: .leading, spacing: 2) {
+          Text(item.0).font(.caption2).foregroundStyle(.secondary)
+          Text(item.1).font(.caption.weight(.semibold)).foregroundStyle(.primary).lineLimit(2)
+        }
+        .padding(Theme.Spacing.sm)
+        .frame(maxWidth: .infinity, minHeight: 54, alignment: .leading)
+        .background(.white.opacity(0.5), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(item.2)
+      }
+    }
+  }
+
+  private var saveTemplateSection: some View {
+    sectionCard("保存当前模板") {
+      TextField("模板名称（可留空）", text: $templateTitle).paperFieldWell()
+      Button("保存到我的模板", systemImage: "square.and.arrow.down") {
+        let saved = model.saveCurrentTemplate(title: templateTitle)
+        templateTitle = ""; saveTemplateMessage = "已保存「\(saved.displayTitle)」"
+      }.buttonStyle(.bordered)
+      if !saveTemplateMessage.isEmpty { Text(saveTemplateMessage).font(.caption).foregroundStyle(Theme.Palette.paperGreenText) }
+    }
   }
 
   private var modeSwitch: some View {
@@ -326,7 +300,7 @@ struct GenerateView: View {
         title: isAdvanced ? "模型接口" : "模型平台",
         systemImage: "antenna.radiowaves.left.and.right",
         value: model.generation.selectedProviderConfig.label,
-        options: ProviderCatalog.order,
+        options: model.generation.liveProviders,
         optionTitle: { ProviderCatalog.config(for: $0).label },
         isSelected: { $0 == model.generation.draft.provider },
         action: { model.generation.selectProvider($0) }
@@ -360,35 +334,22 @@ struct GenerateView: View {
 
   private var defaultSummaryItems: [String] {
     var items = [
-      modelDisplayName(model.generation.activeMainModelName, in: model.generation.selectedProviderConfig.mainModels),
+      modelDisplayName(model.generation.activeMainModelName),
       "规划器 + 评审器",
       model.generation.draft.aspectRatio,
       model.generation.draft.outputFormat.title
     ]
     if model.generation.draft.outputFormat != .svg {
-      items.insert(modelDisplayName(model.generation.activeImageModelName, in: model.generation.selectedProviderConfig.imageModels), at: 1)
+      items.insert(modelDisplayName(model.generation.activeImageModelName), at: 1)
       items.append(model.generation.draft.imageSize.title)
     }
     return items
   }
 
-  private func modelDisplayName(_ value: String, in options: [ModelOption]) -> String {
-    options.first { $0.value == value }?.label ?? value
-  }
-
-  private var apiKeyControls: some View {
-    return VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-      Text("\(model.generation.selectedProviderConfig.label) API 密钥")
-        .font(.subheadline.weight(.semibold))
-      SecureField(model.generation.selectedProviderConfig.keyPlaceholder, text: Binding(get: { model.generation.selectedAPIKey }, set: { model.generation.updateSelectedAPIKey($0) }))
-        .textContentType(.password)
-        .paperFieldWell()
-        .accessibilityLabel("\(model.generation.selectedProviderConfig.label) API Key 输入")
-
-      APIKeyGuideView(config: model.generation.selectedProviderConfig)
-        .padding(Theme.Spacing.md)
-        .background(Theme.Palette.paperAmber.opacity(0.18), in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
-    }
+  private func modelDisplayName(_ value: String) -> String {
+    model.generation.liveProviders
+      .flatMap { model.generation.models(for: .main, provider: $0) + model.generation.models(for: .image, provider: $0) + model.generation.models(for: .vision, provider: $0) }
+      .first { $0.id == value }?.label ?? value
   }
 
   // MARK: - ② 内容输入
@@ -398,8 +359,14 @@ struct GenerateView: View {
       Text("粘贴论文方法部分或业务流程，再填写目标图注。")
         .font(.footnote)
         .foregroundStyle(.secondary)
-      LabeledTextEditor(title: "论文方法内容", text: $model.generation.draft.methodContent, minHeight: 180)
-      LabeledTextEditor(title: "目标图注", text: $model.generation.draft.caption, minHeight: 90)
+      LabeledTextEditor(title: "论文方法内容", text: Binding(get: { model.generation.draft.methodContent }, set: { model.generation.draft.setMethodContent($0) }), minHeight: 180)
+      LabeledTextEditor(title: "目标图注", text: Binding(get: { model.generation.draft.caption }, set: { model.generation.draft.setCaption($0) }), minHeight: 90)
+      VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+        HStack { Text("负向提示词（可选）").font(.headline); Spacer(); Text("\(model.generation.draft.negativePrompt.count)/1000").font(.caption.monospacedDigit()).foregroundStyle(.secondary) }
+        TextEditor(text: Binding(get: { model.generation.draft.negativePrompt }, set: { model.generation.draft.setNegativePrompt($0) }))
+          .frame(minHeight: 90).padding(8).scrollContentBackground(.hidden).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14))
+          .accessibilityIdentifier("generate.negativePrompt")
+      }
 
       ReferenceUploadStrip(
         model: model,
@@ -459,7 +426,7 @@ struct GenerateView: View {
             title: "输出清晰度",
             systemImage: "sparkle.magnifyingglass",
             value: model.generation.draft.imageSize.title,
-            options: ProviderCatalog.supportedResolutions(provider: model.generation.draft.provider, imageModel: model.generation.activeImageModelName),
+            options: model.generation.generationResolutions,
             optionTitle: { $0.title },
             isSelected: { $0 == model.generation.draft.imageSize },
             action: { model.generation.draft.imageSize = $0 }
@@ -504,7 +471,7 @@ struct GenerateView: View {
         }
         paperPickerTile(title: "画面比例", systemImage: "aspectratio") {
           Picker("画面比例", selection: $model.generation.draft.aspectRatio) {
-            ForEach(["16:9", "21:9", "3:2", "1:1"], id: \.self) { ratio in
+            ForEach(model.generation.generationAspectRatios, id: \.self) { ratio in
               Text(ratio).tag(ratio)
             }
           }
@@ -531,33 +498,12 @@ struct GenerateView: View {
       }
 
       LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: Theme.Spacing.md)], spacing: Theme.Spacing.md) {
-        paperPickerTile(title: "主模型", systemImage: "brain.head.profile") {
-          Picker("主模型", selection: Binding(get: { model.generation.draft.mainModelName }, set: { model.generation.selectMainModel($0) })) {
-            ForEach(model.generation.selectedProviderConfig.mainModels) { option in
-              Text(option.displayName).tag(option.value)
-            }
-          }
-          .labelsHidden()
-        }
+        routePicker(title: "主模型", icon: "brain.head.profile", role: .main)
         if model.generation.draft.outputFormat != .svg {
-          paperPickerTile(title: "图像模型", systemImage: "photo") {
-            Picker("图像生成模型", selection: Binding(get: { model.generation.draft.imageModelName }, set: { model.generation.selectImageModel($0) })) {
-              ForEach(model.generation.selectedProviderConfig.imageModels) { option in
-                Text(option.displayName).tag(option.value)
-              }
-            }
-            .labelsHidden()
-          }
+          routePicker(title: "图像模型", icon: "photo", role: .image)
         }
         if model.generation.activeReferenceImageMode != .mainModel {
-          paperPickerTile(title: "参考图识别模型", systemImage: "eye") {
-            Picker("参考图识别模型", selection: $model.generation.draft.referenceVisionModelName) {
-              ForEach(model.generation.selectedProviderConfig.visionModels) { option in
-                Text(option.displayName).tag(option.value)
-              }
-            }
-            .labelsHidden()
-          }
+          routePicker(title: "参考图识别模型", icon: "eye", role: .vision)
         }
       }
 
@@ -576,6 +522,31 @@ struct GenerateView: View {
       if model.generation.draft.retrievalSetting == .manual && model.generation.draft.referenceImages.isEmpty {
         ManualReferencePanel(model: model)
       }
+    }
+  }
+
+  private func routePicker(title: String, icon: String, role: ModelRole) -> some View {
+    let provider = model.generation.route(for: role)?.accessProvider ?? model.generation.draft.provider
+    let currentModel = model.generation.route(for: role)?.modelId ?? ""
+    return VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+      paperMenuTile(
+        title: "\(title)接口",
+        systemImage: "antenna.radiowaves.left.and.right",
+        value: ProviderCatalog.config(for: provider).label,
+        options: model.generation.liveProviders,
+        optionTitle: { ProviderCatalog.config(for: $0).label },
+        isSelected: { $0 == provider },
+        action: { model.generation.selectProvider($0, for: role) }
+      )
+      paperMenuTile(
+        title: title,
+        systemImage: icon,
+        value: modelDisplayName(currentModel),
+        options: model.generation.models(for: role, provider: provider),
+        optionTitle: { $0.vendor.isEmpty ? $0.label : "\($0.vendor) / \($0.label)" },
+        isSelected: { $0.id == currentModel },
+        action: { model.generation.selectModel($0, for: role) }
+      )
     }
   }
 
@@ -627,7 +598,7 @@ struct GenerateView: View {
       return "当前参考图处理方式不可用，请改用独立识别模型或更换主模型。"
     }
     if isAdvanced {
-      return "需要填写 API Key、模型名称、至少 20 字内容和目标图注；手动参考需至少选 1 个案例。"
+      return "需要为实际可达的模型接口填写 API Key，并完成三路路由、至少 20 字内容和目标图注；手动参考需至少选 1 个案例。"
     }
     return "需要填写 API Key、至少 20 字内容和目标图注。"
   }

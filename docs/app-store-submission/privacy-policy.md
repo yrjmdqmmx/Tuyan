@@ -1,15 +1,7 @@
-> **⚠️ 初稿模板声明 / DRAFT TEMPLATE NOTICE**
->
-> 本文件为 PaperBanana iOS 应用隐私政策的**初稿模板**，仅供产品团队参考与填写占位符之用。**正式发布前，必须经具备资质的法律专业人士审阅并定稿**。本文不构成法律意见，亦不代表运营方已履行任何合规义务。
->
-> This document is a **draft template** of the Privacy Policy for the PaperBanana iOS app, provided for the product team's reference and placeholder completion only. **Before public release, it MUST be reviewed and finalized by a qualified legal professional.** This document does not constitute legal advice.
-
----
-
 # 隐私政策 / Privacy Policy
 
-**生效日期 / Effective Date:** `2026-06-20`
-**最近更新 / Last Updated:** `2026-06-20`
+**生效日期 / Effective Date:** `2026-08-21`
+**最近更新 / Last Updated:** `2026-08-21`
 **运营方 / Operator:** `赵鼎熠 / Zhao Dingyi`
 **联系邮箱 / Contact Email:** `yrjmdqmmx@gmail.com`
 **官方网站 / Website:** https://www.paperbanana.asia/
@@ -31,6 +23,7 @@ PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员�
 **2.1 账号信息**
 - 当您注册或登录时，我们收集您的**电子邮箱地址**、**密码**（以加密/哈希形式存储，我们无法读取明文）以及您可选填写的**显示名称**。
 - 我们通过会话 Cookie（session cookie）维持您的登录状态。
+- 为完成邮箱验证、重发验证和密码恢复，我们会将您的邮箱地址发送给阿里云杭州 DirectMail，仅用于投递图研账号安全邮件。此类邮件不含营销内容，不启用打开或点击追踪；发送日志仅保留模板类型、投递结果、Provider request ID 和不可逆邮箱指纹。
 
 **2.2 生成内容与任务记录**
 - 当您发起生成任务时，您输入的**方法描述文本**、**图题**、**任务类型与生成参数**，以及您**可选上传的参考图**，会被发送到我们的服务网关进行处理。
@@ -42,9 +35,12 @@ PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员�
 **2.4 设备本地缓存（不额外上传）**
 - 为提升体验，本应用会在您的设备本机缓存**最近的任务记录（JSON）**和**结果图（通过系统 URLCache）**。这些是本地缓存，除生成与展示流程本身已涉及的传输外，不会被额外上传。
 
-**2.5 关于您的第三方平台 API Key（重要）**
-- 本应用采用 **BYOK（自带密钥，Bring Your Own Key）** 模式。您自行填入的第三方大模型平台 API Key **仅存储在您设备本机的 iOS Keychain 中（仅限本设备、不随 iCloud 同步），不会上传到 PaperBanana 服务器，也不会被运营方存储**。
-- 在您发起生成任务时，该 API Key 会随请求经我们的网关**转发**给您所选择的第三方大模型平台，仅用于完成该次模型调用。我们不持久化保存您的 API Key。
+**2.5 运行安全字段与最小化**
+- 为保障服务安全、防范滥用、排查兼容性与故障，我们会在请求和安全日志中处理 **IP 地址**、**User-Agent** 与 **clientPlatform**（例如 ios）。这些字段只用于上述运行与安全目的，并按数据最小化原则限制访问和留存；不用于广告、画像或跨应用/跨网站追踪。
+
+**2.6 关于您的第三方平台 API Key（重要）**
+- 本应用采用 **BYOK（自带密钥，Bring Your Own Key）** 模式。iOS 客户端将 API Key 持久保存在设备 Keychain（不随 iCloud 同步）。
+- 当您发起生成任务时，API Key 会作为短生命周期请求字段经我们的香港网关与核心服务转发给您选择的模型平台，仅用于完成该次调用；我们**不持久化、不记录、不回显** API Key，也不将其写入任务数据库或应用日志。
 - 请妥善保管您的 API Key，并对其安全及在第三方平台产生的用量与费用负责。
 
 ### 3. 我们如何使用信息
@@ -66,18 +62,19 @@ PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员�
 - **OpenRouter** —— 受其隐私政策约束（OpenRouter 会进一步将请求路由给其聚合的上游模型提供方）。
 - **Google Gemini** —— Google 提供，受 Google 隐私政策约束。
 - **OpenAI** —— OpenAI 提供，受其隐私政策约束。
+- **火山方舟（Ark，中国区）** —— 火山引擎提供，受其隐私政策约束；可用模型以动态服务端 registry 与您的账号权益为准。
 
 请注意：
 - **您选择哪个平台，您的生成输入就会被传输给哪个平台并由其处理。** 这些第三方对您数据的收集、使用、留存与跨境传输，受其各自的隐私政策与服务条款约束，超出本应用的控制范围。
 - 我们建议您在使用前阅读所选平台的隐私政策，并避免在生成输入中提交敏感、保密或受合规约束的内容。
-- 我们仅作为传输通道转发请求，不对第三方平台的数据处理行为承担责任。
+- API/Auth/数据库/OSS 主服务位于香港。按所选渠道和路由策略，OpenAI、Gemini、OpenRouter 以及策略指定的 provider 流量可能经固定新加坡出口；百炼、方舟与 OSS 不因这一说明而被宣称走该出口。
 
 ### 5. 数据存储位置与留存期限
 
-- 您的账号信息与任务记录存储于运营方托管的后端数据库（基于 Sealos 托管的 MongoDB，服务器位于 `中国杭州（Sealos 云）`）。
+- 您的账号信息、任务记录与结果对象存储于香港主服务的数据库与 OSS。
 - 我们仅在为实现本政策所述目的所必需的期间内保留您的信息。当您删除账号后，相关数据将按第 7 条所述被永久删除。
 - 本地缓存随您卸载本应用或在应用内清理而被清除。
-- 跨境数据传输：当您选择的第三方大模型平台服务器位于其他国家/地区时，您的生成输入将发生跨境传输。`[如适用，请补充跨境传输的合规依据与说明]`
+- 当您选择的第三方模型平台或路由使用新加坡出口时，生成输入和短生命周期请求字段可能发生相应的跨境或跨地区传输；第三方对其接收数据的处理受其自身政策约束。
 
 ### 6. 您的权利
 
@@ -103,11 +100,11 @@ PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员�
 - 您已保存的模板；
 - 本设备本机保存的 API Key 等本地数据。
 
-**此操作不可恢复。** 删除完成后，服务端将清除您的会话并真删账号，本应用将自动退回未登录状态。该入口呼应 Apple App Store 审核指南 5.1.1(v) 对应用内账号删除的要求。
+**此操作不可恢复。** 确认删除后，我们先冻结该账号的新任务与新上传；已签发且仍有效的直传链接及已在运行的任务会被排空。随后服务端清除会话，删除账号及关联数据，并写入删除 tombstone；后台持续重扫和清除在直传链接失效前已经开始、但在失效后才完成上传的迟到对象。删除完成后，本应用自动退回未登录状态。该入口呼应 Apple App Store 审核指南 5.1.1(v) 对应用内账号删除的要求。
 
 ### 8. 数据安全
 
-我们采取合理的技术与管理措施保护您的信息，包括：通过 HTTPS 加密传输数据、密码以哈希形式存储、API Key 仅存于设备本机 Keychain 而不上传服务器、会话凭据通过安全 Cookie 管理等。但请注意，没有任何一种传输或存储方式能保证绝对安全，您理解并接受使用本服务存在的固有风险。
+我们采取合理的技术与管理措施保护您的信息，包括 HTTPS 加密传输、密码哈希存储、设备 Keychain 持久化、API Key 的短生命周期转发与服务端不持久化/不记录/不回显，以及安全 Cookie 管理等。但没有任何传输或存储方式能保证绝对安全。
 
 ### 9. 儿童隐私
 
@@ -146,6 +143,7 @@ We collect only the information necessary to provide and improve the App:
 **2.1 Account Information**
 - When you register or sign in, we collect your **email address**, **password** (stored in encrypted/hashed form; we cannot read the plaintext), and an optional **display name**.
 - We maintain your sign-in state using a session cookie.
+- For email verification and password recovery, your email address is sent to Alibaba Cloud DirectMail in Hangzhou solely to deliver Tuyan account-security messages. These messages contain no marketing and use no open or click tracking. Delivery logs retain only the template type, result, provider request ID, and an irreversible email fingerprint.
 
 **2.2 Generation Content and Job Records**
 - When you start a generation job, your **method description text**, **figure caption**, **task type and generation parameters**, and any **reference images you choose to upload** are sent to our service gateway for processing.
@@ -157,9 +155,12 @@ We collect only the information necessary to provide and improve the App:
 **2.4 On-Device Local Cache (not separately uploaded)**
 - To improve your experience, the App caches your **recent job records (JSON)** and **output images (via the system URLCache)** locally on your device. These are local caches and are not uploaded beyond the transfers already involved in the generation and display flows.
 
-**2.5 About Your Third-Party Platform API Key (Important)**
-- The App uses a **BYOK (Bring Your Own Key)** model. The API Key you enter for a third-party large-model platform is **stored ONLY in your device's local iOS Keychain (this device only; not synced via iCloud). It is NOT uploaded to PaperBanana servers and is NOT stored by the Operator.**
-- When you start a generation job, your API Key is **forwarded** with the request through our gateway to the third-party platform you selected, solely to complete that model call. We do not persist your API Key.
+**2.5 Runtime Safety Fields and Data Minimization**
+- To maintain service security, prevent abuse, and diagnose compatibility and failures, we process **IP address**, **User-Agent**, and **clientPlatform** (for example, ios) in request and security logs. These fields are used only for those operational and security purposes, with access and retention limited under data minimization; they are not used for advertising, profiling, or cross-app/cross-site tracking.
+
+**2.6 About Your Third-Party Platform API Key (Important)**
+- The App uses a **BYOK (Bring Your Own Key)** model. On iOS, API Keys are persisted in the device Keychain (not synced through iCloud).
+- When you start a job, the API Key is an **ephemeral** request field forwarded through our Hong Kong gateway and core service to the platform you selected, solely to complete that call. We do **not persist, log, or echo** API Keys, and do not place them in the job database or application logs.
 - Please keep your API Key secure. You are responsible for its safety and for any usage and charges it incurs on the third-party platform.
 
 ### 3. How We Use Information
@@ -181,18 +182,19 @@ To generate figures, your generation inputs (method description, caption, refere
 - **OpenRouter** — governed by its privacy policy (OpenRouter further routes requests to its aggregated upstream model providers).
 - **Google Gemini** — provided by Google, governed by Google's privacy policy.
 - **OpenAI** — provided by OpenAI, governed by its privacy policy.
+- **Volcano Engine Ark (China region)** — availability is governed by the dynamic server registry and your account entitlement.
 
 Please note:
 - **Whichever platform you select is the platform to which your generation inputs are transmitted and by which they are processed.** Those third parties' collection, use, retention, and cross-border transfer of your data are governed by their own privacy policies and terms, which are beyond the App's control.
 - We recommend you read the privacy policy of the platform you select and avoid submitting sensitive, confidential, or regulated content in your generation inputs.
-- We act only as a transmission channel that forwards requests and are not responsible for the data-processing practices of third-party platforms.
+- The primary API, authentication, database, and object-storage service is in Hong Kong. Depending on the selected provider and routing policy, OpenAI, Gemini, OpenRouter, and policy-designated provider traffic may use a fixed Singapore egress.
 
 ### 5. Where Data Is Stored and Retention
 
-- Your account information and job records are stored in a backend database hosted by the Operator (MongoDB hosted on Sealos, with servers located in `[fill in region, e.g., Mainland China]`).
+- Your account information, job records, and output objects are stored by the Hong Kong primary service, database, and object storage.
 - We retain your information only as long as necessary to fulfill the purposes described in this policy. When you delete your account, the relevant data is permanently deleted as described in Section 7.
 - Local caches are removed when you uninstall the App or clear them in-app.
-- Cross-border transfers: where the third-party platform you select operates servers in another country/region, your generation inputs will be transferred across borders. `[If applicable, add the legal basis and details for cross-border transfer.]`
+- Where a selected third-party platform or Singapore egress is used, generation inputs and ephemeral request fields may be transferred across the relevant regions; third-party handling is governed by that provider's policies.
 
 ### 6. Your Rights
 
@@ -218,11 +220,11 @@ Deleting your account permanently removes:
 - Templates you saved;
 - Local data on this device, including stored API Keys.
 
-**This action cannot be undone.** Once complete, the server clears your session and deletes your account, and the App returns to a signed-out state. This entry point corresponds to Apple App Store Review Guideline 5.1.1(v) on in-app account deletion.
+**This action cannot be undone.** After deletion is confirmed, we first freeze new jobs and uploads for the account; valid direct-upload links already issued and in-flight jobs are allowed to drain. The server then clears the session, deletes the account and associated data, and writes a deletion tombstone; a background sweep continues to remove late objects whose upload started before a link expired but completed afterwards. The App then returns to a signed-out state. This entry point corresponds to Apple App Store Review Guideline 5.1.1(v) on in-app account deletion.
 
 ### 8. Data Security
 
-We use reasonable technical and organizational measures to protect your information, including encrypting data in transit over HTTPS, storing passwords in hashed form, keeping API Keys only in the device's local Keychain (never uploaded to servers), and managing session credentials via secure cookies. However, no method of transmission or storage is completely secure, and you understand and accept the inherent risks of using the service.
+We use reasonable technical and organizational measures, including HTTPS, hashed passwords, device-Keychain persistence, ephemeral API-Key forwarding without server persistence/logging/echoing, and secure session cookies. No method of transmission or storage is completely secure.
 
 ### 9. Children's Privacy
 

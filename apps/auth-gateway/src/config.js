@@ -56,6 +56,31 @@ export function loadGatewayConfig(env = process.env) {
       ...REQUIRED_WECHAT_ORIGINS,
     ]),
   ];
+  const emailDeliveryEnabled = parseBoolean(env.AUTH_EMAIL_DELIVERY_ENABLED);
+  const requireEmailVerification = parseBoolean(env.AUTH_REQUIRE_EMAIL_VERIFICATION);
+  if (requireEmailVerification && !emailDeliveryEnabled) {
+    throw new Error('AUTH_EMAIL_DELIVERY_ENABLED must be enabled before requiring email verification');
+  }
+  const verificationCallbackUrl = validAccountHttpsUrl(
+    'AUTH_VERIFICATION_CALLBACK_URL',
+    stringValue(env.AUTH_VERIFICATION_CALLBACK_URL)
+      || 'https://www.paperbanana.asia/account/email-verified.html',
+  );
+  const resetPasswordUrl = validAccountHttpsUrl(
+    'AUTH_PASSWORD_RESET_URL',
+    stringValue(env.AUTH_PASSWORD_RESET_URL)
+      || 'https://www.paperbanana.asia/account/reset-password.html',
+  );
+  const directMail = emailDeliveryEnabled
+    ? {
+        accessKeyId: required(env, 'ALIBABA_DIRECTMAIL_ACCESS_KEY_ID'),
+        accessKeySecret: required(env, 'ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET'),
+        endpoint: stringValue(env.ALIBABA_DIRECTMAIL_ENDPOINT) || 'dm.aliyuncs.com',
+        regionId: stringValue(env.ALIBABA_DIRECTMAIL_REGION_ID) || 'cn-hangzhou',
+        accountName: stringValue(env.ALIBABA_DIRECTMAIL_ACCOUNT_NAME) || 'account@mail.paperbanana.asia',
+        fromAlias: stringValue(env.ALIBABA_DIRECTMAIL_FROM_ALIAS) || '图研 Tuyan',
+      }
+    : null;
 
   return {
     production,
@@ -66,6 +91,16 @@ export function loadGatewayConfig(env = process.env) {
     mongoUri: required(env, 'MONGODB_URI'),
     mongoDbName: stringValue(env.MONGODB_DB) || 'paperbanana_auth',
     frontendOrigins,
+    authEmail: {
+      deliveryEnabled: emailDeliveryEnabled,
+      requireVerification: requireEmailVerification,
+      verificationCallbackUrl,
+      resetPasswordUrl,
+      windowSeconds: boundedInteger(env.AUTH_EMAIL_WINDOW_SECONDS, 900, 60, 86_400),
+      windowMax: boundedInteger(env.AUTH_EMAIL_WINDOW_MAX, 3, 1, 100),
+      dailyMax: boundedInteger(env.AUTH_EMAIL_DAILY_MAX, 10, 1, 1_000),
+      directMail,
+    },
     cookieDomain: stringValue(env.COOKIE_DOMAIN),
     cookieSameSite: sameSite || (production ? 'lax' : 'lax'),
     backend,
@@ -120,6 +155,16 @@ function validHttpUrl(name, value) {
     throw new Error(`${name} must use http or https`);
   }
   return parsed.toString();
+}
+
+function validAccountHttpsUrl(name, value) {
+  const normalized = validHttpUrl(name, value);
+  const parsed = new URL(normalized);
+  if (parsed.protocol !== 'https:') throw new Error(`${name} must use https`);
+  if (parsed.hostname !== 'paperbanana.asia' && !parsed.hostname.endsWith('.paperbanana.asia')) {
+    throw new Error(`${name} must use paperbanana.asia`);
+  }
+  return normalized;
 }
 
 function boundedInteger(value, fallback, min, max) {

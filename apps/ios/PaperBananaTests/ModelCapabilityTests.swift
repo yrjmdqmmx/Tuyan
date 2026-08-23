@@ -37,7 +37,7 @@ final class ModelCapabilityTests: XCTestCase {
     XCTAssertEqual(model.generation.referenceCapabilityNote, "网关确认当前主模型支持图像理解，可用主模型直读参考图。")
   }
 
-  func testRefreshMainModelCapabilityFallsBackToLocalWhenGatewayFails() async throws {
+  func testRefreshMainModelCapabilityFailsClosedWhenGatewayFailsWithoutLiveRegistry() async throws {
     let model = AppModel(apiClient: PaperBananaAPIClient(session: URLSession.modelCapabilityStubbedSession()))
     model.generation.draft.configurationMode = .advanced
     model.generation.draft.provider = .bailian
@@ -56,8 +56,8 @@ final class ModelCapabilityTests: XCTestCase {
     await model.generation.refreshMainModelCapability()
 
     XCTAssertEqual(model.generation.mainModelCapability?.status, "unknown")
-    XCTAssertTrue(model.generation.mainModelCapability?.supportsReferenceImages ?? false)
-    XCTAssertTrue(model.generation.referenceCapabilityNote.contains("当前主模型支持图像理解"))
+    XCTAssertFalse(model.generation.mainModelCapability?.supportsReferenceImages ?? true)
+    XCTAssertTrue(model.generation.referenceCapabilityNote.contains("当前主模型不能直读参考图"))
     XCTAssertTrue(model.generation.referenceCapabilityNote.contains("Capability unavailable"))
   }
 

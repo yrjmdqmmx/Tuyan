@@ -2,7 +2,9 @@
 
 > 适用 App：PaperBanana（com.paperbanana.paperbanana）
 > 本清单与工程内 `PaperBanana/PrivacyInfo.xcprivacy` 的声明严格一致，请逐项照填。
-> 顶层结论先行：**不用于追踪（No Tracking）**，**无第三方广告/分析 SDK**，**API Key 不收集、仅存本机 Keychain**。
+> 顶层结论先行：**不用于追踪（No Tracking）**，**无第三方广告/分析 SDK**；BYOK API Key 在 iOS 持久保存在 Keychain，并在用户发起请求时作为短生命周期字段经香港网关/核心转发，服务端不持久化、记录或回显。
+
+账号邮箱会由阿里云杭州 DirectMail 处理以发送验证与密码恢复安全邮件；用途仍仅为 **App Functionality**，不用于营销、分析或追踪，因此不新增数据类型或 Tracking 声明。
 
 ---
 
@@ -13,7 +15,7 @@
 | Do you or your third-party partners collect data from this app?（是否收集数据） | **是（Yes）** —— 见下方数据类型。 |
 | Is the data used to track users?（是否用于追踪） | **否（No）** —— 与 `NSPrivacyTracking = false`、`NSPrivacyTrackingDomains` 为空一致。无跨 App / 跨网站追踪，无广告标识符（IDFA）。 |
 
-> 说明「收集」：Apple 定义的「收集」= 数据离开设备并传输到你或第三方的服务器。下表中标「是」的类型，都是因为它们会经我们的网关 / 后端处理（账号、任务记录）或转发给用户选定的大模型平台。仅存本机、不离开设备的数据（如 API Key）**不算收集**。
+> 说明「收集」：数据离开设备并传输到开发者或第三方服务时，按 ASC 实际问卷定义如实申报。生成请求中的短生命周期 BYOK Key 不持久化、记录或回显；其功能性请求处理与模型/流程参数一并由第 7 类 Other Data Types 覆盖，不用于追踪。
 
 ---
 
@@ -29,7 +31,7 @@
 | 4 | **用户内容 → 其他用户内容**（Other User Content） | 是 | App 功能（论文方法描述、目标图注、生成参数、任务记录、生成结果图——这些是生成图所必需的输入与产物） | 是（Linked） | 否 | `…OtherUserContent` |
 | 5 | **用户内容 → 照片或视频**（Photos or Videos） | 是 | App 功能（用户可选上传的**参考图**，用于贴合论文风格生成） | 是（Linked） | 否 | `…PhotosorVideos` |
 | 6 | **用户内容 → 客户支持**（Customer Support） | 是 | App 功能 + **客户支持**（应用内反馈：问题/建议正文、可选联系方式） | 是（Linked） | 否 | `…CustomerSupport` |
-| 7 | **其他数据 → 其他数据类型**（Other Data Types） | 是 | App 功能（生成所需的配置/诊断性元数据：所选模型、流程、长宽比、清晰度、阶段时间线等运行参数。**不含设备指纹/广告类**） | 是（Linked） | 否 | `…OtherDataTypes` |
+| 7 | **其他数据 → 其他数据类型**（Other Data Types） | 是 | App 功能（生成所需配置/诊断元数据，以及用户发起调用时短生命周期转发的 BYOK Key；Key 不持久化、记录或回显。**不含设备指纹/广告类**） | 是（Linked） | 否 | `…OtherDataTypes` |
 
 > 所有类型：**Tracking = 否**；**用途仅 App Functionality**（第 6 类额外含 Customer Support）。无任一类型勾选「第三方广告」「开发者广告」「分析」「产品个性化」。
 
@@ -37,7 +39,7 @@
 
 ## 2. 明确不收集 / 不涉及的项（问卷里保持不勾选）
 
-- **API Key**：用户自带的 bailian / OpenRouter / Gemini / OpenAI 密钥**仅保存在本机 Keychain，不上传我们的服务器、不在问卷中申报为"收集"**。它在调用时由用户设备经网关转发到用户选定的大模型平台（见第 4 节），属于「用户主动指示的、面向其自有第三方账户的传输」。
+- **API Key**：iOS 将用户自带的 Bailian / OpenRouter / Gemini / OpenAI / Ark 密钥持久保存在本机 Keychain；发起请求时其作为短生命周期字段经香港网关/核心转发给所选平台。服务端不持久化、记录或回显；该请求处理在上表 Other Data Types 的 App 功能范围内申报。
 - **位置（Location）**：不收集。
 - **联系人（Contacts）**、**健康与健身**、**财务信息**、**浏览/搜索历史**、**敏感信息**：均不收集。
 - **设备标识符 / 广告标识符（IDFA）**：不使用，无广告 SDK。
@@ -62,7 +64,7 @@
 
 这是 BYOK App 的关键点，建议在 ASC 不强制、但**审核备注里务必说明**（见 `review-notes.md`）：
 
-- 用户输入的方法描述、图注、参考图，会**经我们的网关转发**到**用户自己选择并自带密钥**的大模型平台（阿里云百炼 / OpenRouter / Google Gemini / OpenAI）以完成生成。
+- 用户输入的方法描述、图注、参考图及短生命周期 BYOK 字段，会经香港网关/核心转发到用户选择的平台（阿里云百炼 / OpenRouter / Google Gemini / OpenAI / 火山方舟中国区）以完成生成；按渠道与路由策略，部分流量可能经固定新加坡出口。
 - 在隐私问卷层面，这些内容已计入第 4 类「其他用户内容」与第 5 类「照片或视频（参考图）」的"收集 + App 功能"。我们不把它们用于追踪或广告。
 - 各大模型平台对其接收数据的处理，受**该平台自身的隐私政策**约束；这一点在隐私政策正文（同目录 `privacy-policy.md`）里向用户披露。问卷中无需为"第三方平台"单独再建数据类型——它们承接的是同一批"用户内容"。
 

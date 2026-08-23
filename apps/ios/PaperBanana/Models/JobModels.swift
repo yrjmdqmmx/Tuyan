@@ -136,7 +136,12 @@ struct Job: Decodable, Identifiable, Equatable {
   let userID: String
   let userEmail: String
   let configurationMode: String
+  let modelRoutes: ModelRoutes?
+  let routingMode: String
+  let modelRoutingVersion: Int
+  let modelRoutingSource: String
   let methodContent: String
+  let negativePrompt: String
   let caption: String
   let infographicCategory: String
   let outputFormat: OutputFormat
@@ -144,6 +149,12 @@ struct Job: Decodable, Identifiable, Equatable {
   let mainModelName: String
   let imageModelName: String
   let referenceVisionModelName: String
+  let imageRefineMode: String
+  let imageRefineReason: String
+  let refineMode: String
+  let refineReason: String
+  var sourceImageObjectKey: String
+  var sourceImageURL: String
   let referenceImageMode: ReferenceImageMode?
   let referenceImageModeUsed: String
   let pipelineMode: String
@@ -213,6 +224,15 @@ struct Job: Decodable, Identifiable, Equatable {
       JobMetadataItem(label: "主模型", value: displayValue(mainModelName)),
       JobMetadataItem(label: "图像生成模型", value: displayValue(imageModelName)),
       JobMetadataItem(label: "参考图识别模型", value: displayReferenceVisionModel),
+      JobMetadataItem(label: "模型路由", value: displayRoutes),
+      JobMetadataItem(label: "路由模式", value: displayValue(routingMode)),
+      JobMetadataItem(label: "路由版本", value: modelRoutingVersion > 0 ? "v\(modelRoutingVersion)" : "未记录"),
+      JobMetadataItem(label: "路由来源", value: displayValue(modelRoutingSource)),
+      JobMetadataItem(label: "图片精修能力", value: displayValue(imageRefineMode)),
+      JobMetadataItem(label: "精修模式", value: displayValue(refineMode)),
+      JobMetadataItem(label: "精修说明", value: displayValue(refineReason)),
+      JobMetadataItem(label: "源图", value: sourceImageObjectKey.isEmpty ? displayValue(sourceImageURL) : sourceImageObjectKey),
+      JobMetadataItem(label: "负向提示词", value: displayValue(negativePrompt)),
       JobMetadataItem(label: "评审模式", value: displayCriticMode),
       JobMetadataItem(label: "候选图", value: "\(numCandidates > 0 ? numCandidates : max(resultImageCount, resultImages.count)) 张"),
       JobMetadataItem(label: "阶段", value: "\(stages.count) 个")
@@ -243,7 +263,12 @@ struct Job: Decodable, Identifiable, Equatable {
     userID = ""
     userEmail = ""
     configurationMode = ""
+    modelRoutes = nil
+    routingMode = ""
+    modelRoutingVersion = 0
+    modelRoutingSource = ""
     methodContent = ""
+    negativePrompt = ""
     caption = ""
     infographicCategory = ""
     outputFormat = .png
@@ -251,6 +276,12 @@ struct Job: Decodable, Identifiable, Equatable {
     mainModelName = ""
     imageModelName = ""
     referenceVisionModelName = ""
+    imageRefineMode = ""
+    imageRefineReason = ""
+    refineMode = ""
+    refineReason = ""
+    sourceImageObjectKey = ""
+    sourceImageURL = ""
     referenceImageMode = nil
     referenceImageModeUsed = ""
     pipelineMode = ""
@@ -285,7 +316,12 @@ struct Job: Decodable, Identifiable, Equatable {
     userID = ""
     userEmail = ""
     configurationMode = payload.configurationMode.rawValue
+    modelRoutes = payload.modelRoutes
+    routingMode = ""
+    modelRoutingVersion = 0
+    modelRoutingSource = ""
     methodContent = payload.methodContent
+    negativePrompt = payload.negativePrompt
     caption = payload.caption
     infographicCategory = payload.infographicCategory
     outputFormat = payload.outputFormat
@@ -293,6 +329,12 @@ struct Job: Decodable, Identifiable, Equatable {
     mainModelName = payload.mainModelName
     imageModelName = payload.imageModelName
     referenceVisionModelName = payload.referenceVisionModelName
+    imageRefineMode = ""
+    imageRefineReason = ""
+    refineMode = ""
+    refineReason = ""
+    sourceImageObjectKey = ""
+    sourceImageURL = ""
     referenceImageMode = payload.referenceImageMode
     referenceImageModeUsed = payload.referenceImageMode?.rawValue ?? ""
     pipelineMode = payload.pipelineMode.lafValue
@@ -319,6 +361,22 @@ struct Job: Decodable, Identifiable, Equatable {
     completedAt = ""
   }
 
+  init(id: String, status: String, payload: RefineImagePayload, createdAt date: Date = Date()) {
+    self.id = id; self.status = status; provider = payload.modelRoutes?.main.accessProvider.rawValue ?? payload.provider.rawValue
+    clientPlatform = "ios"; jobType = "refine"; userID = ""; userEmail = ""; configurationMode = payload.configurationMode.rawValue
+    modelRoutes = payload.modelRoutes; routingMode = ""; modelRoutingVersion = 0; modelRoutingSource = ""
+    methodContent = payload.editInstruction; negativePrompt = ""; caption = "精修图片"; infographicCategory = ""
+    outputFormat = .png; imageSize = payload.imageSize; mainModelName = payload.modelRoutes?.main.modelId ?? payload.mainModelName
+    imageModelName = payload.modelRoutes?.image.modelId ?? payload.imageModelName; referenceVisionModelName = payload.modelRoutes?.vision.modelId ?? payload.referenceVisionModelName
+    imageRefineMode = payload.refineMode ?? ""; imageRefineReason = ""; refineMode = payload.refineMode ?? ""; refineReason = ""
+    sourceImageObjectKey = payload.sourceImageObjectKey ?? ""; sourceImageURL = sourceImageObjectKey.isEmpty ? payload.sourceImageURL : ""
+    referenceImageMode = nil; referenceImageModeUsed = ""; pipelineMode = ""; taskName = .diagram; retrievalSetting = .none
+    retrievedReferenceIDs = []; retrievedReferences = []; stages = []; criticMode = ""; aspectRatio = payload.aspectRatio
+    numCandidates = 1; maxCriticRounds = 0; promptCharCount = payload.editInstruction.count; resultImageCount = 0; referenceImageCount = 0
+    resultImages = []; referenceImages = []; logsTail = ""; error = ""
+    let timestamp = Self.localTimestampFormatter.string(from: date); createdAt = timestamp; updatedAt = timestamp; startedAt = ""; completedAt = ""
+  }
+
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: DynamicCodingKey.self)
     id = container.string("id", "_id")
@@ -329,7 +387,12 @@ struct Job: Decodable, Identifiable, Equatable {
     userID = container.string("user_id", "userId")
     userEmail = container.string("user_email", "userEmail")
     configurationMode = container.string("configuration_mode", "configurationMode", default: "advanced")
+    modelRoutes = (try? container.decodeIfPresent(ModelRoutes.self, forKey: .key("modelRoutes"))) ?? (try? container.decodeIfPresent(ModelRoutes.self, forKey: .key("model_routes")))
+    routingMode = container.string("routing_mode", "routingMode")
+    modelRoutingVersion = container.int("model_routing_version", "modelRoutingVersion")
+    modelRoutingSource = container.string("model_routing_source", "modelRoutingSource")
     methodContent = container.string("method_content", "methodContent")
+    negativePrompt = container.string("negative_prompt", "negativePrompt")
     caption = container.string("caption")
     infographicCategory = container.string("infographic_category", "infographicCategory", default: "方法框架图")
     outputFormat = OutputFormat(rawValue: container.string("output_format", "outputFormat", default: "png")) ?? .png
@@ -337,6 +400,12 @@ struct Job: Decodable, Identifiable, Equatable {
     mainModelName = container.string("main_model_name", "mainModelName")
     imageModelName = container.string("image_gen_model_name", "imageModelName", "imageGenModelName")
     referenceVisionModelName = container.string("reference_vision_model_name", "referenceVisionModelName")
+    imageRefineMode = container.string("image_refine_mode", "imageRefineMode")
+    imageRefineReason = container.string("image_refine_reason", "imageRefineReason")
+    refineMode = container.string("refine_mode", "refineMode")
+    refineReason = container.string("refine_reason", "refineReason")
+    sourceImageObjectKey = container.string("source_image_object_key", "sourceImageObjectKey")
+    sourceImageURL = container.string("source_image_url", "sourceImageUrl")
     referenceImageMode = ReferenceImageMode(rawValue: container.string("reference_image_mode", "referenceImageMode"))
     referenceImageModeUsed = container.string("reference_image_mode_used", "referenceImageModeUsed")
     pipelineMode = container.string("pipeline_mode", "pipelineMode")
@@ -368,10 +437,15 @@ struct Job: Decodable, Identifiable, Equatable {
   }
 
   private var displayProvider: String {
-    if let providerID = ProviderID(rawValue: provider) {
-      return ProviderCatalog.config(for: providerID).label
-    }
-    return displayValue(provider)
+    let providerID = ProviderID(rawValue: provider)
+    return ProviderCatalog.config(for: providerID).label
+  }
+
+  private var displayRoutes: String {
+    guard let modelRoutes else { return "未记录" }
+    return [modelRoutes.main, modelRoutes.image, modelRoutes.vision]
+      .map { "\(ProviderCatalog.config(for: $0.accessProvider).label) · \($0.modelId)" }
+      .joined(separator: "\n")
   }
 
   var clientPlatformDisplayName: String {

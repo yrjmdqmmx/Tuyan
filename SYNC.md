@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-23] 标准账号安全与邮件恢复契约 — by Codex
+变更：auth-gateway 保持 Better Auth 1.6.11 与现有用户/会话/删除链路，新增邮箱验证、重发验证、忘记/重置密码、登录后修改密码以及 DirectMail 账号安全邮件。新注册和未验证登录需要邮箱验证；存量会话不失效，存量账号下次新登录时完成验证。验证和重置令牌均为 1 小时，密码 8–128 位，重置撤销全部旧会话，修改密码撤销其他会话。
+契约（影响其他端 / 共享）：
+- **Better Auth 路由**：`POST /api/auth/sign-up/email` 与 `sign-in/email` 支持固定 `callbackURL`；注册无论新邮箱还是重复邮箱均返回 `{status:true,emailVerificationRequired:true}` 且不创建/下发会话，避免暴露账号是否存在；新增客户端调用 `send-verification-email {email,callbackURL}`、`request-password-reset {email,redirectTo}`、`reset-password {token,newPassword}`、`change-password {currentPassword,newPassword,revokeOtherSessions:true}`。回调只允许 `paperbanana.asia` HTTPS 页面。
+- **用户与错误**：session user 增加 `emailVerified:boolean`；客户端识别 `EMAIL_NOT_VERIFIED`、`INVALID_TOKEN`、`TOKEN_EXPIRED`、`TOKEN_USED` 和 HTTP 429 `X-Retry-After`，不得用英文文案猜状态。忘记密码响应不得泄漏邮箱是否存在。
+- **邮件/限流 env**：新增 `AUTH_EMAIL_DELIVERY_ENABLED`、`AUTH_REQUIRE_EMAIL_VERIFICATION`、`AUTH_VERIFICATION_CALLBACK_URL`、`AUTH_PASSWORD_RESET_URL`、`AUTH_EMAIL_WINDOW_SECONDS/MAX/DAILY_MAX` 与 `ALIBABA_DIRECTMAIL_*`。DirectMail 固定使用杭州 `cn-hangzhou / dm.aliyuncs.com`；先开邮件、真实收信验证，再开强制验证；必须使用独立最小权限 RAM 凭据。
+各端待办：
+- [x] auth-gateway（Better Auth 配置、DirectMail 双语邮件、邮箱/IP HMAC 限流、数据库路由限流、日志脱敏与 TDD）
+- [x] Web（验证/重置落地页、登录面板忘记密码/待验证/重发冷却）
+- [x] iOS（`emailVerified`、明确状态枚举、安全中心、改密/恢复 API 与错误映射）
+- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（消费共享路由、状态字段和错误码；改造前不得开启其强制验证发布）
+- [ ] 部署 / 运维（杭州 DirectMail 域名、SPF/MX/DKIM/DMARC、触发邮件地址和 `dm:SingleSendMail` 专用 RAM 已完成；生产环境密钥已安全暂存。仍需合并/部署 Web 与 Gateway、保持强制验证关闭完成三家真实邮箱 smoke，再开启强制验证）
+
 ### [2026-08-22] 评审取图失败保留已生成结果 — by Codex
 变更：结构图或统计图 PNG 任务首次渲染已经成功后，视觉评审模型若因图片下载超时而失败，Core 会重试评审一次；仍失败或出现其他评审异常时，保留最后一张成功图片并完成任务，不再把已经出图的任务整体标记为失败。
 契约（影响任务状态语义，不新增字段）：
@@ -57,8 +70,9 @@
 各端待办：
 - [x] paperbanana-api / Laf Core / packages-api（精确参考、负向提示词、v9 比例目录、准入与 Provider 映射、TDD）
 - [x] Web（6 套模板与轮播/预览/安全套用、设置卡、十比例禁用原因、负向提示词、新教程与桌面/390px 验收）
+- [x] iOS（消费 `negativePrompt`、`aspectRatios/refineAspectRatios` 与新失败码，未登记能力失败关闭）
 - [x] 微信小程序（已消费 `negativePrompt`、`aspectRatios/refineAspectRatios` 与新失败码；缺失能力只开放自动）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（按需消费；未改造前不得宣称未登记比例可用）
+- [ ] Android / Windows / macOS / HarmonyOS（按需消费；未改造前不得宣称未登记比例可用）
 - [x] 部署 / 运维（PR #10 已合并为 `6e03969`；香港 Core 镜像与生产部署、Pages 均已成功。生产已验证注册表 v9、六个固定参考 ID 顺序/签名、非法比例 `INVALID_ASPECT_RATIO` 失败关闭、模板套用、十比例设置和教程；未执行付费图片生成，真实比例与负向提示词生成仍需单独授权）
 
 ### [2026-08-20] OpenRouter 34 模型付费验证与 PNG 统一输出 — by Codex
@@ -71,8 +85,9 @@
 各端待办：
 - [x] paperbanana-api / Laf Core（v8 注册表、PNG/JPEG/WebP 归一、尺寸/结构边界、Seedream 4.5 纠错、漂移监控与 TDD）
 - [x] Web（继续只消费服务端角色与 `outputFormats`；34 项会在 PNG 模式自动可选，无需名称推断）
+- [x] iOS（动态 OpenRouter 图片目录仅消费 v8+ 权威能力）
 - [x] 微信小程序（动态展示 OpenRouter 权威目录与 PNG 能力，不按模型名推断）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（若展示动态 OpenRouter 图片目录，消费 v8 权威能力）
+- [ ] Android / Windows / macOS / HarmonyOS（若展示动态 OpenRouter 图片目录，消费 v8 权威能力）
 - [x] 部署 / 运维（PR/CI/香港 Core/Pages 已发布；用户于 2026-08-21 手工确认原生 PNG、JPEG→PNG、WebP→PNG 三条生产代表性 smoke 均通过）
 
 ### [2026-08-20] Ark 中国区完整相关目录与 Seed 2.1 / Seedream 5.0 路由 — by Codex
@@ -85,8 +100,9 @@
 各端待办：
 - [x] paperbanana-api / Laf Core（v7 目录、默认、能力、alias、模型级请求契约与 TDD）
 - [x] Web（最新 fallback、所有聚合渠道的禁用分区、禁用-only 厂商与能力搜索）
+- [x] iOS（Ark 目录、现役项、不可选边界与付费图片探测确认由 live registry 驱动）
 - [x] 微信小程序（消费 Ark v7 现役目录、不可选边界和账号 inference probe）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（若展示 Ark 目录，同步 v7 边界）
+- [ ] Android / Windows / macOS / HarmonyOS（若展示 Ark 目录，同步 v7 边界）
 - [ ] 部署 / 运维（本条尚未发布；发布后用授权 Ark Key 分别验证默认 main、vision 和付费 image，不把公开目录当作账号开通证据）
 
 ### [2026-08-20] OpenRouter 目录生命周期与验证状态如实化 — by Codex
@@ -98,8 +114,9 @@
 各端待办：
 - [x] paperbanana-api / Laf Core（v6 契约、OpenRouter 文本/视觉/图像动态项真值与回归测试）
 - [x] Web / packages-api（Web 已消费并如实展示；packages-api 原样透传新增字段，无请求变更）
+- [x] iOS（识别未知 lifecycle 与 `verificationState`，不把目录兼容冒充调用成功）
 - [x] 微信小程序（区分 `unknown`、`catalog`、`registry` 与 `inference-verified`）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（展示目录时识别生命周期与验证状态）
+- [ ] Android / Windows / macOS / HarmonyOS（展示目录时识别生命周期与验证状态）
 - [ ] 部署 / 运维（本条未发布；付费逐模型验证不得使用全局目录状态代替）
 
 ### [2026-08-20] 精修分辨率真实能力与入队前失败关闭 — by Codex
@@ -110,8 +127,9 @@
 各端待办：
 - [x] paperbanana-api / Laf Core（registry v5、精修准入、direct/analyze/1K/4K/OpenRouter 回归）
 - [x] Web / packages-api（消费 `refineResolutions`、仅展示所选 image route 可执行的精修尺寸；旧目录保守回退 2K）
+- [x] iOS（消费 `refineResolutions`，缺失保守兼容 2K、明确空集合禁用精修）
 - [x] 微信小程序（独立消费 `refineResolutions`，空数组时禁止精修提交）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（后续消费新字段，未改造前不得宣称 4K 精修可用）
+- [ ] Android / Windows / macOS / HarmonyOS（后续消费新字段，未改造前不得宣称 4K 精修可用）
 - [ ] 部署 / 运维（本条未部署、未改环境变量）
 
 ### [2026-08-20] 显式路由目录校验、plot 可达能力与 Laf 手动回滚边界 — by Codex
@@ -138,8 +156,9 @@
 - [x] auth-gateway（Ark key 透明转发收窄、全形态 `apiKeys/api_keys` 日志清洗）
 - [x] CI / 回滚文档（已由上方新条目收紧为 verification-only；未部署）
 - [x] Web（展示继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [x] iOS（展示按权威 `releasedAt`，接受精修历史默认 `simple`）
 - [x] 微信小程序（按 `releasedAt` 展示并接受精修历史默认 `simple`）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
+- [ ] Android / Windows / macOS / HarmonyOS（展示时继续按 `releasedAt`，并接受精修历史默认 `simple`）
 - [ ] 部署 / 运维（获批回滚时仅能在 Laf 控制台核对 custom dependency 后手动发布；本条未改环境绑定、未发布）
 
 ### [2026-08-19] Ark CN 数据面出站白名单与香港健康探针 — by Codex
@@ -151,8 +170,9 @@
 - [x] provider egress（Core 精确 origin、SG ACL、HK smoke/monitor、负路径与密钥扫描测试）
 - [ ] 部署 / 运维（未发布；须先完成 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
 - [x] Web（仅将当前任务可达 Ark 角色在显式推理 probe 成功后视为可提交；不把静态目录冒充账号已开通）
+- [x] iOS（未验证 Ark 条目不显示为账号已可用，按实际路线执行临时探测）
 - [x] 微信小程序（未通过当前页面 inference probe 的 Ark 路线不显示为账号已验证且禁止提交）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（未验证条目不得显示为账号可用）
+- [ ] Android / Windows / macOS / HarmonyOS（未验证条目不得显示为账号可用）
 
 ### [2026-08-19] Core Ark 适配器、账号推理验证与模型注册表 v3 — by Codex
 变更：Core 新增火山方舟（Ark）静态注册表、CN 数据面适配器和不冒充账号全量目录的 `providerAccountCatalog` 推理 smoke；同时更新 Gemini/OpenRouter/百炼当前默认项，并为所有 provider/model 补充访问类型、账号目录要求和官方来源元数据。本条不包含 Web、生产出口策略、原生端或部署。
@@ -166,8 +186,9 @@
 - [x] packages-api / auth-gateway（账号目录 action 的安全转发与共享类型已在前序并行任务完成）
 - [x] Web（消费 v3 元数据、显式触发账号 probe 与付费图片确认；未验证条目不得显示为账号可用）
 - [x] provider egress（登记 Ark CN origin，disabled 与负路径必须失败关闭；不得扩展到控制面/CDN）
+- [x] iOS（消费 Ark v3+ 注册表与最多三条路线探测，图片探测需明确付费确认）
 - [x] 微信小程序（消费 v3+ 元数据、Ark probe 与账户验证边界）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（按需消费新注册表）
+- [ ] Android / Windows / macOS / HarmonyOS（按需消费新注册表）
 - [ ] 部署 / 运维（未发布；须先完成出口策略、确认 Laf `jpeg-js@0.4.4` 回滚依赖、Web 联调和真实账号最小 smoke）
 
 ### [2026-08-19] Core 多 Provider 模型路由契约 v1 — by Codex
@@ -181,8 +202,9 @@
 - [x] paperbanana-api / Laf Core（解析、校验、持久化/公开 DTO、阶段路由、最小密钥闭包与回归测试）
 - [x] packages-api / auth-gateway（转发/归一 `modelRoutes`，保留旧字段与模型目录路由元数据；网关按写入主体安全转发 provider account catalog）
 - [x] Web（专业模式支持分角色选 provider/model；普通模式仍单 provider）
+- [x] iOS（普通模式单 Provider 三路默认；专业模式完整 `modelRoutes`，仅发送实际可达角色所需密钥）
 - [x] 微信小程序（专业模式完整 `modelRoutes`，普通模式单渠道默认三角色）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（后续按需接入）
+- [ ] Android / Windows / macOS / HarmonyOS（后续按需接入）
 - [ ] Ark adapter / registry / egress（后续独立任务，本次未实现）
 - [ ] 部署 / 运维（本次未发布，须等后续合并与联调）
 
@@ -194,8 +216,9 @@
 各端待办：
 - [x] paperbanana-api / Laf 回滚（新记录持久化、历史 DTO 兼容与测试）
 - [x] packages-api / Web（已优先消费 `objectKey`，保留签名 URL 预览）
+- [x] iOS（独立精修优先使用 `sourceImageObjectKey`，签名 URL 仅作预览与旧记录兼容）
 - [x] 微信小程序（独立精修优先 `sourceImageObjectKey`，历史任务保留受控 URL 兼容）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（后续精修入口改用对象键）
+- [ ] Android / Windows / macOS / HarmonyOS（后续精修入口改用对象键）
 - [x] 部署 / 运维（Core 不可变镜像已发布；真实百炼 1K 生成与 2K `direct-edit` 精修成功，两个结果 DTO 均返回 `objectKey`）
 
 ### [2026-08-19] zh-CN.v2 固定语料补齐历史空白英文 — by Codex
@@ -230,8 +253,9 @@
 - [x] 语料与迁移工具（306 条固定快照、质量门禁、幂等同步/元数据回滚）
 - [x] Web（消费服务端分页/分面/详情字段，不再一次拉取 295 条本地过滤）
 - [x] 部署 / 运维（生产返回 totalItems=306、pageSize=12、totalPages=26、corpusVersion=zh-CN.v2；当页图片与中文字段完整）
+- [x] iOS（接入 v2 分页、搜索、facets、跨页选择缓存与 10 张上限）
 - [x] 微信小程序（`scope=bench`、每页 12 条、搜索/分面/详情/跨页选择）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（按需接入新分页响应）
+- [ ] Android / Windows / macOS / HarmonyOS（按需接入新分页响应）
 
 ### [2026-08-19] 模型注册表 v2 与模型级精修能力 — by Codex
 变更：服务端 `modelRegistry` 成为模型可用性与精修语义的唯一权威，修正 Gemini/OpenAI/百炼直连目录与适配器，OpenRouter 继续以官方动态目录 fail-closed；已部署香港 Core 与 Web。
@@ -243,8 +267,9 @@
 各端待办：
 - [x] paperbanana-api / Laf 回滚（注册表 v2、适配器、模型级精修执行）
 - [x] packages-api / Web 共享传输（保留 refine capability 与任务字段）
+- [x] iOS（以 live 注册表展示推荐、生命周期、验证状态、权益与精修方式，不再按名称猜测）
 - [x] 微信小程序（展示推荐、生命周期、权益、禁用原因与精修方式，不按名称猜测）
-- [ ] Android / iOS / Windows / macOS / HarmonyOS（后续消费新注册表字段）
+- [ ] Android / Windows / macOS / HarmonyOS（后续消费新注册表字段）
 - [x] CI / 运维代码（只报告漂移，不自动改推荐；未触发生产部署）
 - [x] 生产部署 / 实测（百炼注册表默认值与 15 条目录已验收；`qwen3.7-plus` + `wan2.7-image-pro` 真实生成和直接精修成功）
 

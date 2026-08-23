@@ -4,8 +4,20 @@ export function resolveImageUrl(apiBase, url) {
   return `${apiBase}${url}`;
 }
 
-export function formatErrorMessage(message, context = '') {
-  if (!message) return '';
+export function formatErrorMessage(error, context = '') {
+  if (!error) return '';
+  const code = typeof error === 'object' ? String(error.code || '') : '';
+  const status = typeof error === 'object' ? Number(error.status || 0) : 0;
+  const message = typeof error === 'string' ? error : String(error.message || error);
+  if (code === 'EMAIL_NOT_VERIFIED') return '邮箱尚未验证，请先完成验证。';
+  if (code === 'ACCOUNT_EMAIL_RATE_LIMITED' || status === 429) return '请求过于频繁，请稍后重试。';
+  if (code === 'ACCOUNT_EMAIL_DELIVERY_FAILED') return '账号邮件暂时无法发送，请稍后重试。';
+  if (code === 'PASSWORD_TOO_SHORT') return '密码至少需要 8 位。';
+  if (code === 'PASSWORD_TOO_LONG') return '密码不能超过 128 位。';
+  if (code === 'INVALID_EMAIL_OR_PASSWORD') return '邮箱或密码不正确。';
+  if (code === 'TOKEN_EXPIRED') return '链接已失效，请重新发起操作。';
+  if (code === 'TOKEN_USED') return '链接已使用，请重新发起操作。';
+  if (code === 'INVALID_TOKEN') return '链接无效，请重新发起操作。';
   if (message.includes('Missing API key')) return '缺少所选模型接口的 API 密钥。';
   if (message.includes('PROVIDER_EGRESS_UNAVAILABLE') || message.includes('海外模型出口暂不可用')) return '海外模型出口暂不可用，请稍后重试。';
   if (message.includes('Failed to fetch')) {

@@ -71,17 +71,11 @@
 <body>
 <div class="wrap">
 
-  <div class="note">
-    <strong>⚠️ 初稿模板声明 / DRAFT TEMPLATE NOTICE</strong><br>
-    本文件为 PaperBanana iOS 应用服务条款的<strong>初稿模板</strong>。正式发布前，必须经具备资质的法律专业人士审阅并定稿；本文不构成法律意见。<br>
-    This is a <strong>draft template</strong> of the PaperBanana iOS Terms of Service. It must be reviewed and finalized by a qualified legal professional before release, and does not constitute legal advice.
-  </div>
-
   <h1>服务条款 / Terms of Service</h1>
 
   <div class="meta">
-    <p><strong>生效日期 / Effective Date:</strong> <span class="ph">2026-06-20</span></p>
-    <p><strong>最近更新 / Last Updated:</strong> <span class="ph">2026-06-20</span></p>
+    <p><strong>生效日期 / Effective Date:</strong> <span class="ph">2026-08-21</span></p>
+    <p><strong>最近更新 / Last Updated:</strong> <span class="ph">2026-08-21</span></p>
     <p><strong>运营方 / Operator:</strong> <span class="ph">赵鼎熠 / Zhao Dingyi</span></p>
     <p><strong>联系邮箱 / Contact Email:</strong> <span class="ph">yrjmdqmmx@gmail.com</span></p>
     <p><strong>官方网站 / Website:</strong> <a href="https://www.paperbanana.asia/">https://www.paperbanana.asia/</a></p>
@@ -98,8 +92,8 @@
   <h2>3. BYOK（自带密钥）与第三方平台</h2>
   <p>本应用采用 <strong>BYOK（自带密钥，Bring Your Own Key）</strong> 模式：</p>
   <ul>
-    <li>您需自行向第三方大模型平台（如阿里云百炼、OpenRouter、Google Gemini、OpenAI）注册并获取 API Key，并自行填入本应用。</li>
-    <li>您的 API Key 仅存储在您设备本机，发起生成时随请求经我们的网关转发给您所选平台用于模型调用；我们不存储您的 API Key。</li>
+    <li>您需自行向阿里云百炼、OpenRouter、Google Gemini、OpenAI 或火山方舟（Ark，中国区）等动态 registry 支持的平台获取 API Key，并自行填入本应用。</li>
+    <li>iOS 将 API Key 持久保存在设备 Keychain。发起生成时，Key 会作为短生命周期请求字段经香港网关/核心转发至所选平台；我们不持久化、记录或回显 Key。按渠道和路由策略，相关流量可能经固定新加坡出口。</li>
     <li><strong>您对自己 API Key 的安全保管，以及该 Key 在第三方平台产生的全部用量、费用、配额与计费后果负全部责任。</strong> 我们不对第三方平台的可用性、定价、计费、内容政策或服务质量负责。</li>
     <li>您与第三方平台之间的关系受该平台各自的服务条款约束，您须自行遵守。</li>
   </ul>
@@ -190,8 +184,8 @@
   <h2>3. BYOK (Bring Your Own Key) and Third-Party Platforms</h2>
   <p>The App uses a <strong>BYOK (Bring Your Own Key)</strong> model:</p>
   <ul>
-    <li>You must register with and obtain an API Key from a third-party large-model platform (such as Alibaba Cloud Bailian, OpenRouter, Google Gemini, or OpenAI) and enter it into the App yourself.</li>
-    <li>Your API Key is stored only on your device. When you start a generation job, it is forwarded with the request through our gateway to the platform you select; we do not store your API Key.</li>
+    <li>You must obtain an API Key from a dynamically registry-supported platform such as Alibaba Cloud Bailian, OpenRouter, Google Gemini, OpenAI, or Volcano Engine Ark (China region).</li>
+    <li>On iOS, API Keys are persisted in the device Keychain. When you start a job, the Key is an ephemeral request field forwarded through the Hong Kong gateway/core service to the provider/platform you selected; we do not persist, log, or echo it. Relevant traffic may use fixed Singapore egress according to provider and routing policy.</li>
     <li><strong>You are solely responsible for the safekeeping of your API Key and for all usage, charges, quotas, and billing consequences it incurs on the third-party platform.</strong> We are not responsible for the availability, pricing, billing, content policies, or service quality of third-party platforms.</li>
     <li>Your relationship with each third-party platform is governed by that platform's own terms, which you must comply with.</li>
   </ul>
@@ -254,7 +248,7 @@
   </ul>
 
   <h2>13. Governing Law and Dispute Resolution</h2>
-  <p>The formation, validity, interpretation, and disputes arising from these Terms are governed by <span class="ph">[fill in governing law, e.g., the laws of the People's Republic of China (excluding conflict-of-law rules)]</span>. Disputes shall first be resolved amicably; failing that, they shall be submitted to <span class="ph">[fill in competent court or arbitration body]</span>.</p>
+  <p>The formation, validity, interpretation, and disputes arising from these Terms are governed by the laws of the People's Republic of China (excluding conflict-of-law rules). Disputes shall first be resolved amicably; failing that, they shall be submitted to a competent court at the Operator's domicile.</p>
 
   <h2>14. Miscellaneous</h2>
   <ul>

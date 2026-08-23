@@ -92,7 +92,18 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   ]);
   assert.equal(betterConfig.database.adapterDb, db);
   assert.equal(betterConfig.advanced.useSecureCookies, true);
-  assert.equal(runtime.webHandler, fakeAuth.handler);
+  assert.equal(betterConfig.emailAndPassword.minPasswordLength, 8);
+  assert.equal(betterConfig.emailAndPassword.maxPasswordLength, 128);
+  assert.equal(betterConfig.emailAndPassword.resetPasswordTokenExpiresIn, 3600);
+  assert.equal(betterConfig.emailAndPassword.revokeSessionsOnPasswordReset, true);
+  assert.equal(betterConfig.emailAndPassword.autoSignIn, false);
+  assert.equal(betterConfig.emailVerification.expiresIn, 3600);
+  assert.equal(betterConfig.emailVerification.sendOnSignUp, true);
+  assert.equal(betterConfig.emailVerification.sendOnSignIn, true);
+  assert.deepEqual(betterConfig.logger, { disabled: true });
+  assert.equal(betterConfig.rateLimit.storage, 'database');
+  assert.deepEqual(betterConfig.rateLimit.customRules['/sign-in/email'], { window: 900, max: 10 });
+  assert.equal(typeof runtime.webHandler, 'function');
   assert.deepEqual(runtime.cachedStatus(), { ok: true, checkedAt: null });
   assert.deepEqual(await runtime.ready(), { ok: true });
   assert.deepEqual(db.commands, [{ ping: 1 }]);
@@ -100,6 +111,70 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   assert.ok(runtime.cachedStatus().checkedAt);
   await runtime.close();
   assert.equal(events.at(-1), 'close');
+});
+
+test('sign-up hides account existence and never forwards a session cookie', async () => {
+  const db = fakeDatabase();
+  class FakeMongoClient {
+    async connect() {}
+    db() { return db; }
+    async close() {}
+  }
+  let responseMode = 'created';
+  const runtime = await createAuthRuntime(
+    {
+      mongoUri: 'mongodb://mongo:27017',
+      mongoDbName: 'paperbanana_auth',
+      authSecret: 'auth-secret',
+      authBaseUrl: 'https://api.paperbanana.asia/',
+      frontendOrigins: [],
+      production: true,
+      cookieDomain: '',
+      cookieSameSite: 'lax',
+    },
+    {
+      MongoClientClass: FakeMongoClient,
+      adapterFactory: () => ({}),
+      betterAuthFactory: () => ({
+        async handler() {
+          if (responseMode === 'invalid') {
+            return Response.json({ code: 'PASSWORD_TOO_SHORT' }, { status: 400 });
+          }
+          if (responseMode === 'duplicate') {
+            return Response.json(
+              { code: 'USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL', message: 'User already exists' },
+              { status: 422 },
+            );
+          }
+          return Response.json(
+            { token: 'must-not-leak', user: { id: 'u1', email: 'owner@example.com' } },
+            { headers: { 'set-cookie': 'paperbanana.session=must-not-forward' } },
+          );
+        },
+        api: {},
+      }),
+    },
+  );
+
+  const request = new Request('https://api.paperbanana.asia/api/auth/sign-up/email', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ email: 'owner@example.com', password: 'valid-password' }),
+  });
+  const created = await runtime.webHandler(request.clone());
+  assert.equal(created.status, 200);
+  assert.deepEqual(await created.json(), { status: true, emailVerificationRequired: true });
+  assert.equal(created.headers.get('set-cookie'), null);
+
+  responseMode = 'duplicate';
+  const duplicate = await runtime.webHandler(request.clone());
+  assert.equal(duplicate.status, 200);
+  assert.deepEqual(await duplicate.json(), { status: true, emailVerificationRequired: true });
+
+  responseMode = 'invalid';
+  const invalid = await runtime.webHandler(request.clone());
+  assert.equal(invalid.status, 400);
+  assert.deepEqual(await invalid.json(), { code: 'PASSWORD_TOO_SHORT' });
 });
 
 test('readiness fails closed when MongoDB does not support auth deletion transactions', async () => {

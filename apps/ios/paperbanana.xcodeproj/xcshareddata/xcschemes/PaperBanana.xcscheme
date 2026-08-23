@@ -41,6 +41,17 @@
                ReferencedContainer = "container:paperbanana.xcodeproj">
             </BuildableReference>
          </TestableReference>
+		 <TestableReference
+			skipped = "NO"
+			parallelizable = "NO">
+			<BuildableReference
+				BuildableIdentifier = "primary"
+				BlueprintIdentifier = "A10000152FD95500007445A8"
+				BuildableName = "PaperBananaUITests.xctest"
+				BlueprintName = "PaperBananaUITests"
+				ReferencedContainer = "container:paperbanana.xcodeproj">
+			</BuildableReference>
+		 </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

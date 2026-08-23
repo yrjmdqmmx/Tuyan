@@ -87,6 +87,29 @@ final class ErrorMappingTests: XCTestCase {
     XCTAssertEqual(formatUserFacingError(error), "登录已过期，请重新登录。")
   }
 
+  func testAccountSecurityCodesMapToActionableChinese() {
+    let cases = [
+      ("EMAIL_NOT_VERIFIED", "邮箱尚未验证，请先查看验证邮件。"),
+      ("INVALID_TOKEN", "链接无效或已使用，请重新申请。"),
+      ("TOKEN_EXPIRED", "链接已过期，请重新申请。"),
+      ("PASSWORD_TOO_LONG", "密码不能超过 128 位。")
+    ]
+    for (code, expected) in cases {
+      let error = PaperBananaAPIError.http(ServerErrorDetails(statusCode: 400, code: code, message: nil))
+      XCTAssertEqual(formatUserFacingError(error), expected)
+    }
+  }
+
+  func testStableBusinessCodeWinsOverEnglishServerDetail() {
+    let error = PaperBananaAPIError.http(ServerErrorDetails(statusCode: 400, code: "REFINE_RESOLUTION_UNSUPPORTED", message: "wan2.7-image-pro 仅支持 2K 精修"))
+    XCTAssertEqual(formatUserFacingError(error), "当前模型不支持所选精修清晰度，请更换设置后重试。")
+  }
+
+  func testAuthCodeStillWinsOverServerDetail() {
+    let error = PaperBananaAPIError.http(ServerErrorDetails(statusCode: 401, code: "INVALID_PASSWORD", message: "English detail"))
+    XCTAssertEqual(formatUserFacingError(error), "密码不正确，请重新输入。")
+  }
+
   // MARK: - Better Auth 已知英文消息
 
   func testKnownEnglishMessageMappingStillApplies() {
