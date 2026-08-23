@@ -41,7 +41,8 @@
 - [x] auth-gateway（Better Auth 配置、DirectMail 双语邮件、邮箱/IP HMAC 限流、数据库路由限流、日志脱敏与 TDD）
 - [x] Web（验证/重置落地页、登录面板忘记密码/待验证/重发冷却）
 - [x] iOS（`emailVerified`、明确状态枚举、安全中心、改密/恢复 API 与错误映射）
-- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（消费共享路由、状态字段和错误码；改造前不得开启其强制验证发布）
+- [x] 微信小程序（已消费共享路由、状态字段和错误码；3.0.1 实现与测试完成；3.0.1 开发者工具上传/体验版/审核仍待完成）
+- [ ] Android / Windows / macOS / HarmonyOS（消费共享路由、状态字段和错误码仍待完成；改造前不得开启其强制验证发布）
 - [ ] 部署 / 运维（杭州 DirectMail 域名、SPF/MX/DKIM/DMARC、触发邮件地址和 `dm:SingleSendMail` 专用 RAM 已完成；生产环境密钥已安全暂存。仍需合并/部署 Web 与 Gateway、保持强制验证关闭完成三家真实邮箱 smoke，再开启强制验证）
 
 ### [2026-08-22] 评审取图失败保留已生成结果 — by Codex
