@@ -66,6 +66,38 @@ jobs:
             if (!state.deliveryEnabled || state.verificationRequired || !state.regionIsHangzhou || !state.endpointIsDirectMail || !state.accountNamePresent || !state.accessKeyIdPresent || !state.accessKeySecretPresent) process.exit(1);
           '
 
+          "${compose[@]}" exec -T auth-gateway node --input-type=module -e '
+            import { MongoClient } from "mongodb";
+            const windowSeconds = Number(process.env.AUTH_EMAIL_WINDOW_SECONDS || 900);
+            const windowMax = Number(process.env.AUTH_EMAIL_WINDOW_MAX || 3);
+            const currentBucket = Math.floor(Date.now() / 1000 / windowSeconds);
+            const client = new MongoClient(process.env.MONGODB_URI);
+            await client.connect();
+            try {
+              const collection = client.db(process.env.MONGODB_DB || "paperbanana_auth").collection("authMailRateLimit");
+              const active = await collection.find({
+                _id: { $regex: ":window:" },
+                expiresAt: { $gt: new Date() },
+              }).project({ _id: 1, count: 1 }).toArray();
+              const current = active.filter((item) => String(item._id).endsWith(`:window:${currentBucket}`));
+              const counts = active.map((item) => Number(item.count || 0));
+              const currentCounts = current.map((item) => Number(item.count || 0));
+              const summary = {
+                activeWindowBuckets: active.length,
+                currentWindowBuckets: current.length,
+                windowBucketsAtOrOverLimit: counts.filter((count) => count >= windowMax).length,
+                windowBucketsOverLimit: counts.filter((count) => count > windowMax).length,
+                currentWindowBucketsOverLimit: currentCounts.filter((count) => count > windowMax).length,
+                maxObservedWindowCount: counts.length ? Math.max(...counts) : 0,
+                currentMaxObservedWindowCount: currentCounts.length ? Math.max(...currentCounts) : 0,
+                configuredWindowMax: windowMax,
+              };
+              console.log(JSON.stringify({ accountEmailRateLimit: summary }));
+            } finally {
+              await client.close();
+            }
+          '
+
           filtered_logs=$("${compose[@]}" logs --since 2h --no-color auth-gateway 2>&1 | grep -E 'account email (sent|failed)' || true)
           if [[ -z "$filtered_logs" ]]; then
             echo 'No account email result logs found in the last two hours.'
