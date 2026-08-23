@@ -17,7 +17,7 @@
 | `app-privacy-declaration.md` | App Store Connect「App 隐私」问卷的逐项来源，与 `PrivacyInfo.xcprivacy` 对齐 |
 | `app-store-listing.md` | 中英商店文案、分类和截图说明 |
 | `review-notes.md` | 审核备注模板；真实 demo 账号和 BYOK Key 只能由提交者在提交时填写 |
-| `screenshots/` | iPhone 与 iPad 截图素材 |
+| `screenshots/` | Build 5 使用 iPhone 6.9-inch 素材；目录内 iPad 图片仅保留为历史 QA 证据，不上传 ASC |
 
 公开链接的规范来源是 `apps/web/public/privacy-policy.html` 和 `apps/web/public/terms-of-service.html`；发布时必须使用稳定、无需登录的 HTTPS URL。当前 App 使用：
 

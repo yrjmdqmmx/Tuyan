@@ -50,7 +50,7 @@ BYOK（Bring Your Own Key）模式：接入百炼、OpenRouter、Gemini、OpenAI
 · 支持上传参考图，贴合你的论文风格
 · 五个 Tab：生成、精修、任务记录、教程、设置；生成工作台内含精选模板与参考图库；普通 / 专业双模式，可调候选数量、评审轮数、长宽比、导出格式
 · 导出 PNG 或可无损缩放的 SVG，方便后续排版精修
-· 原生 iOS 26 液态玻璃设计，iPhone 与 iPad 通用
+· 原生 iOS 26 液态玻璃设计；Build 5 本版本仅支持 iPhone
 
 适合论文作者、研究生、科研人员，以及任何需要把复杂方法讲清楚的人。
 
@@ -77,7 +77,7 @@ BUILT FOR RESEARCH
 · Upload reference images to match your paper's style
 · Five tabs: Generate, Refine, Records, Guide, and Settings; the Generate workspace includes featured templates and the reference library; Simple and Pro modes tune candidate count, critic rounds, aspect ratio, and export format
 · Export PNG, or lossless-scalable SVG for later typesetting
-· Native iOS 26 Liquid Glass design, universal for iPhone and iPad
+· Native iOS 26 Liquid Glass design; Build 5 supports iPhone only
 
 For paper authors, graduate students, researchers, and anyone who needs to explain a complex method clearly.
 

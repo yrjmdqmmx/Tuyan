@@ -3,6 +3,13 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { fromNodeHeaders } from 'better-auth/node';
 import { MongoClient, ObjectId } from 'mongodb';
 
+import {
+  createAccountEmailService,
+  createDatabaseMailLimiter,
+  createDirectMailClient,
+  createDirectMailTransport,
+} from './email.js';
+
 export async function createAuthRuntime(
   config,
   {
@@ -10,6 +17,8 @@ export async function createAuthRuntime(
     adapterFactory = mongodbAdapter,
     betterAuthFactory = betterAuth,
     fromNodeHeadersImpl = fromNodeHeaders,
+    directMailClientFactory = createDirectMailClient,
+    logger = console,
   } = {},
 ) {
   const mongoClient = new MongoClientClass(config.mongoUri);
@@ -31,21 +40,97 @@ export async function createAuthRuntime(
     advanced.defaultCookieAttributes = { sameSite: config.cookieSameSite };
   }
 
+  const emailConfig = {
+    deliveryEnabled: false,
+    requireVerification: false,
+    verificationCallbackUrl: 'https://www.paperbanana.asia/account/email-verified.html',
+    resetPasswordUrl: 'https://www.paperbanana.asia/account/reset-password.html',
+    windowSeconds: 900,
+    windowMax: 3,
+    dailyMax: 10,
+    directMail: null,
+    ...config.authEmail,
+    authBaseUrl: config.authBaseUrl,
+  };
+  const limiter = createDatabaseMailLimiter({
+    collection: db.collection('authMailRateLimit'),
+    secret: config.authSecret,
+    windowSeconds: emailConfig.windowSeconds,
+    windowMax: emailConfig.windowMax,
+    dailyMax: emailConfig.dailyMax,
+  });
+  let transport = { async send() { return { requestId: '' }; } };
+  if (emailConfig.deliveryEnabled) {
+    await limiter.ensureIndexes();
+    transport = createDirectMailTransport(
+      emailConfig.directMail,
+      directMailClientFactory(emailConfig.directMail),
+    );
+  }
+  const accountEmail = createAccountEmailService({
+    config: emailConfig,
+    fingerprintSecret: config.authSecret,
+    limiter,
+    transport,
+    logger,
+  });
+
   const auth = betterAuthFactory({
     appName: 'PaperBanana',
     secret: config.authSecret,
     baseURL: config.authBaseUrl,
     trustedOrigins: config.frontendOrigins,
     database: adapterFactory(db),
+    emailVerification: {
+      sendOnSignUp: true,
+      sendOnSignIn: true,
+      autoSignInAfterVerification: false,
+      expiresIn: 60 * 60,
+      async sendVerificationEmail({ user, url, token }, request) {
+        await accountEmail.sendVerification({ email: user.email, url, token, request });
+      },
+    },
     emailAndPassword: {
       enabled: true,
-      requireEmailVerification: false,
+      requireEmailVerification: emailConfig.requireVerification,
+      minPasswordLength: 8,
+      maxPasswordLength: 128,
+      resetPasswordTokenExpiresIn: 60 * 60,
+      revokeSessionsOnPasswordReset: true,
+      autoSignIn: false,
+      async sendResetPassword({ user, url, token }, request) {
+        await accountEmail.sendPasswordReset({ email: user.email, url, token, request });
+      },
+      async onPasswordReset({ user }) {
+        try {
+          await markAuthEmailVerified(db, user.id);
+        } catch (error) {
+          logger.warn?.('password reset completed but email verification update failed', {
+            result: 'verification-update-failed',
+            error: String(error?.name || 'Error'),
+          });
+        }
+      },
+    },
+    rateLimit: {
+      enabled: true,
+      storage: 'database',
+      window: 60,
+      max: 100,
+      customRules: {
+        '/sign-in/email': { window: 15 * 60, max: 10 },
+        '/sign-up/email': { window: 15 * 60, max: 5 },
+        '/send-verification-email': { window: 15 * 60, max: 3 },
+        '/request-password-reset': { window: 15 * 60, max: 3 },
+        '/reset-password': { window: 15 * 60, max: 5 },
+        '/change-password': { window: 15 * 60, max: 5 },
+      },
     },
     advanced,
   });
 
   return {
-    webHandler: auth.handler,
+    webHandler: createRegistrationPrivacyHandler(auth.handler),
     async optionalSession(request) {
       return auth.api.getSession({
         headers: fromNodeHeadersImpl(request.headers),
@@ -96,6 +181,44 @@ export async function createAuthRuntime(
       await mongoClient.close();
     },
   };
+}
+
+function createRegistrationPrivacyHandler(webHandler) {
+  return async function registrationPrivacyHandler(request) {
+    const response = await webHandler(request);
+    const url = new URL(request.url);
+    if (request.method !== 'POST' || url.pathname !== '/api/auth/sign-up/email') return response;
+
+    let duplicate = false;
+    if (response.status === 422) {
+      const body = await response.clone().json().catch(() => null);
+      duplicate = [
+        'USER_ALREADY_EXISTS',
+        'USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL',
+      ].includes(body?.code);
+    }
+    if (!response.ok && !duplicate) return response;
+
+    const headers = new Headers(response.headers);
+    headers.delete('set-cookie');
+    headers.delete('content-length');
+    headers.set('content-type', 'application/json; charset=utf-8');
+    return new Response(
+      JSON.stringify({ status: true, emailVerificationRequired: true }),
+      { status: 200, headers },
+    );
+  };
+}
+
+async function markAuthEmailVerified(db, userId) {
+  const id = String(userId || '');
+  if (!id) throw new Error('Auth user id is required');
+  const candidates = [{ id }, { _id: id }];
+  if (ObjectId.isValid(id)) candidates.push({ _id: new ObjectId(id) });
+  await db.collection('user').updateOne(
+    { $or: candidates },
+    { $set: { emailVerified: true, updatedAt: new Date() } },
+  );
 }
 
 async function probeTransactionSupport(mongoClient, db) {

@@ -115,3 +115,75 @@ test('explicit legacy Web origins cannot omit required WeChat origins', () => {
     'https://developers.weixin.qq.com',
   ]);
 });
+
+test('email security defaults are fail-safe and use fixed HTTPS account pages', () => {
+  const config = loadGatewayConfig(validEnv());
+
+  assert.deepEqual(config.authEmail, {
+    deliveryEnabled: false,
+    requireVerification: false,
+    verificationCallbackUrl: 'https://www.paperbanana.asia/account/email-verified.html',
+    resetPasswordUrl: 'https://www.paperbanana.asia/account/reset-password.html',
+    windowSeconds: 900,
+    windowMax: 3,
+    dailyMax: 10,
+    directMail: null,
+  });
+});
+
+test('email delivery requires dedicated DirectMail credentials and approved callback origins', () => {
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ AUTH_REQUIRE_EMAIL_VERIFICATION: 'true' })),
+    /AUTH_EMAIL_DELIVERY_ENABLED must be enabled/,
+  );
+  assert.throws(
+    () => loadGatewayConfig(validEnv({ AUTH_EMAIL_DELIVERY_ENABLED: 'true' })),
+    /ALIBABA_DIRECTMAIL_ACCESS_KEY_ID is required/,
+  );
+  assert.throws(
+    () => loadGatewayConfig(validEnv({
+      AUTH_EMAIL_DELIVERY_ENABLED: 'true',
+      ALIBABA_DIRECTMAIL_ACCESS_KEY_ID: 'dedicated-id',
+      ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET: 'dedicated-secret',
+      ALIBABA_DIRECTMAIL_ENDPOINT: 'dm.example.invalid',
+      AUTH_VERIFICATION_CALLBACK_URL: 'http://paperbanana.asia/account/email-verified.html',
+    })),
+    /AUTH_VERIFICATION_CALLBACK_URL must use https/,
+  );
+  assert.throws(
+    () => loadGatewayConfig(validEnv({
+      AUTH_EMAIL_DELIVERY_ENABLED: 'true',
+      ALIBABA_DIRECTMAIL_ACCESS_KEY_ID: 'dedicated-id',
+      ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET: 'dedicated-secret',
+      ALIBABA_DIRECTMAIL_ENDPOINT: 'dm.example.invalid',
+      AUTH_PASSWORD_RESET_URL: 'https://evil.example/reset',
+    })),
+    /AUTH_PASSWORD_RESET_URL must use paperbanana.asia/,
+  );
+});
+
+test('email delivery defaults to the Hangzhou DirectMail API and remains bounded', () => {
+  const config = loadGatewayConfig(validEnv({
+    AUTH_EMAIL_DELIVERY_ENABLED: 'true',
+    AUTH_REQUIRE_EMAIL_VERIFICATION: 'true',
+    ALIBABA_DIRECTMAIL_ACCESS_KEY_ID: 'dedicated-id',
+    ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET: 'dedicated-secret',
+    ALIBABA_DIRECTMAIL_ACCOUNT_NAME: 'account@mail.paperbanana.asia',
+    ALIBABA_DIRECTMAIL_FROM_ALIAS: '图研 Tuyan',
+    AUTH_EMAIL_WINDOW_MAX: '4',
+    AUTH_EMAIL_DAILY_MAX: '12',
+  }));
+
+  assert.equal(config.authEmail.deliveryEnabled, true);
+  assert.equal(config.authEmail.requireVerification, true);
+  assert.equal(config.authEmail.windowMax, 4);
+  assert.equal(config.authEmail.dailyMax, 12);
+  assert.deepEqual(config.authEmail.directMail, {
+    accessKeyId: 'dedicated-id',
+    accessKeySecret: 'dedicated-secret',
+    endpoint: 'dm.aliyuncs.com',
+    regionId: 'cn-hangzhou',
+    accountName: 'account@mail.paperbanana.asia',
+    fromAlias: '图研 Tuyan',
+  });
+});

@@ -20,6 +20,7 @@ test('operator scripts are committed as executables', () => {
     'scripts/monitor-health.sh',
     'scripts/report-cms-event.py',
     'scripts/restore-drill.sh',
+    'scripts/set-account-email-config.sh',
     'scripts/smoke.sh',
     'scripts/transaction-smoke.sh',
   ]) {

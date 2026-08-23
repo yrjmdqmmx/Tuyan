@@ -228,7 +228,7 @@ final class PaperBananaAPIClient {
     let _: EmptyEnvelope = try await requestJSON(
       try endpoint(apiBase: apiBase, path: "api/auth/sign-in/email"),
       method: "POST",
-      body: ["email": email, "password": password]
+      body: ["email": email, "password": password, "callbackURL": AccountSecurityURLs.emailVerified]
     )
   }
 
@@ -236,7 +236,39 @@ final class PaperBananaAPIClient {
     let _: EmptyEnvelope = try await requestJSON(
       try endpoint(apiBase: apiBase, path: "api/auth/sign-up/email"),
       method: "POST",
-      body: ["email": email, "password": password, "name": name]
+      body: ["email": email, "password": password, "name": name, "callbackURL": AccountSecurityURLs.emailVerified]
+    )
+  }
+
+  func sendVerificationEmail(apiBase: String, email: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/send-verification-email"),
+      method: "POST",
+      body: ["email": email, "callbackURL": AccountSecurityURLs.emailVerified]
+    )
+  }
+
+  func requestPasswordReset(apiBase: String, email: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/request-password-reset"),
+      method: "POST",
+      body: ["email": email, "redirectTo": AccountSecurityURLs.resetPassword]
+    )
+  }
+
+  func resetPassword(apiBase: String, token: String, newPassword: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/reset-password"),
+      method: "POST",
+      body: ["token": token, "newPassword": newPassword]
+    )
+  }
+
+  func changePassword(apiBase: String, currentPassword: String, newPassword: String) async throws {
+    let _: EmptyEnvelope = try await requestJSON(
+      try endpoint(apiBase: apiBase, path: "api/auth/change-password"),
+      method: "POST",
+      body: ["currentPassword": currentPassword, "newPassword": newPassword, "revokeOtherSessions": true]
     )
   }
 
@@ -324,7 +356,8 @@ final class PaperBananaAPIClient {
       throw PaperBananaAPIError.http(ServerErrorDetails(
         statusCode: httpResponse.statusCode,
         code: serverErrorCode(from: object),
-        message: serverErrorMessage(from: object)
+        message: serverErrorMessage(from: object),
+        retryAfterSeconds: Int(httpResponse.value(forHTTPHeaderField: "X-Retry-After") ?? "")
       ))
     }
     do {
@@ -437,4 +470,9 @@ final class PaperBananaAPIClient {
     if let error = object["error"] as? [String: Any], let code = error["code"] as? String, !code.isEmpty { return code }
     return nil
   }
+}
+
+private enum AccountSecurityURLs {
+  static let emailVerified = "https://www.paperbanana.asia/account/email-verified.html"
+  static let resetPassword = "https://www.paperbanana.asia/account/reset-password.html"
 }

@@ -4,6 +4,8 @@
 > 本清单与工程内 `PaperBanana/PrivacyInfo.xcprivacy` 的声明严格一致，请逐项照填。
 > 顶层结论先行：**不用于追踪（No Tracking）**，**无第三方广告/分析 SDK**；BYOK API Key 在 iOS 持久保存在 Keychain，并在用户发起请求时作为短生命周期字段经香港网关/核心转发，服务端不持久化、记录或回显。
 
+账号邮箱会由阿里云杭州 DirectMail 处理以发送验证与密码恢复安全邮件；用途仍仅为 **App Functionality**，不用于营销、分析或追踪，因此不新增数据类型或 Tracking 声明。
+
 ---
 
 ## 0. 总览开关

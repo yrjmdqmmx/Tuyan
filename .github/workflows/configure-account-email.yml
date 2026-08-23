@@ -1,0 +1,75 @@
+name: Configure Production Account Email
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type configure-account-email to continue.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-production-account-email
+  cancel-in-progress: false
+
+jobs:
+  configure:
+    if: github.event.inputs.confirm == 'configure-account-email'
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Install account email credentials and restart gateway
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DIRECTMAIL_ACCESS_KEY_ID: ${{ secrets.ALIBABA_DIRECTMAIL_ACCESS_KEY_ID }}
+          DIRECTMAIL_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET }}
+        run: |
+          set -Eeuo pipefail
+          test -n "$DIRECTMAIL_ACCESS_KEY_ID"
+          test -n "$DIRECTMAIL_ACCESS_KEY_SECRET"
+          credentials="$(mktemp)"
+          remote_credentials="/tmp/paperbanana-directmail-${GITHUB_RUN_ID}.json"
+          cleanup() {
+            rm -f -- "$credentials"
+            ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_credentials'" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          jq -n '{AccessKey:{AccessKeyId:env.DIRECTMAIL_ACCESS_KEY_ID,AccessKeySecret:env.DIRECTMAIL_ACCESS_KEY_SECRET}}' > "$credentials"
+          chmod 0600 "$credentials"
+          scp "$credentials" "$DEPLOY_USER@$DEPLOY_HOST:$remote_credentials"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "
+            set -Eeuo pipefail
+            trap 'rm -f -- \"$remote_credentials\"' EXIT
+            cd /opt/paperbanana/repo
+            git fetch --quiet origin '${GITHUB_SHA}'
+            git checkout --detach '${GITHUB_SHA}'
+            deploy/hk-single-host/scripts/set-account-email-config.sh --credentials '$remote_credentials' --delivery enabled --verification optional --apply
+            docker compose --project-name paperbanana-hk --project-directory deploy/hk-single-host --env-file deploy/hk-single-host/.env -f deploy/hk-single-host/compose.yaml up -d --no-deps --force-recreate auth-gateway
+          "
+
+      - name: Verify production readiness
+        run: |
+          set -Eeuo pipefail
+          for attempt in {1..20}; do
+            if curl -fsS https://api.paperbanana.asia/ready | jq -e '.ok == true and .authReady == true' >/dev/null; then
+              exit 0
+            fi
+            sleep 3
+          done
+          exit 1

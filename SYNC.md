@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-23] 标准账号安全与邮件恢复契约 — by Codex
+变更：auth-gateway 保持 Better Auth 1.6.11 与现有用户/会话/删除链路，新增邮箱验证、重发验证、忘记/重置密码、登录后修改密码以及 DirectMail 账号安全邮件。新注册和未验证登录需要邮箱验证；存量会话不失效，存量账号下次新登录时完成验证。验证和重置令牌均为 1 小时，密码 8–128 位，重置撤销全部旧会话，修改密码撤销其他会话。
+契约（影响其他端 / 共享）：
+- **Better Auth 路由**：`POST /api/auth/sign-up/email` 与 `sign-in/email` 支持固定 `callbackURL`；注册无论新邮箱还是重复邮箱均返回 `{status:true,emailVerificationRequired:true}` 且不创建/下发会话，避免暴露账号是否存在；新增客户端调用 `send-verification-email {email,callbackURL}`、`request-password-reset {email,redirectTo}`、`reset-password {token,newPassword}`、`change-password {currentPassword,newPassword,revokeOtherSessions:true}`。回调只允许 `paperbanana.asia` HTTPS 页面。
+- **用户与错误**：session user 增加 `emailVerified:boolean`；客户端识别 `EMAIL_NOT_VERIFIED`、`INVALID_TOKEN`、`TOKEN_EXPIRED`、`TOKEN_USED` 和 HTTP 429 `X-Retry-After`，不得用英文文案猜状态。忘记密码响应不得泄漏邮箱是否存在。
+- **邮件/限流 env**：新增 `AUTH_EMAIL_DELIVERY_ENABLED`、`AUTH_REQUIRE_EMAIL_VERIFICATION`、`AUTH_VERIFICATION_CALLBACK_URL`、`AUTH_PASSWORD_RESET_URL`、`AUTH_EMAIL_WINDOW_SECONDS/MAX/DAILY_MAX` 与 `ALIBABA_DIRECTMAIL_*`。DirectMail 固定使用杭州 `cn-hangzhou / dm.aliyuncs.com`；先开邮件、真实收信验证，再开强制验证；必须使用独立最小权限 RAM 凭据。
+各端待办：
+- [x] auth-gateway（Better Auth 配置、DirectMail 双语邮件、邮箱/IP HMAC 限流、数据库路由限流、日志脱敏与 TDD）
+- [x] Web（验证/重置落地页、登录面板忘记密码/待验证/重发冷却）
+- [x] iOS（`emailVerified`、明确状态枚举、安全中心、改密/恢复 API 与错误映射）
+- [ ] 微信小程序 / Android / Windows / macOS / HarmonyOS（消费共享路由、状态字段和错误码；改造前不得开启其强制验证发布）
+- [ ] 部署 / 运维（杭州 DirectMail 域名、SPF/MX/DKIM/DMARC、触发邮件地址和 `dm:SingleSendMail` 专用 RAM 已完成；生产环境密钥已安全暂存。仍需合并/部署 Web 与 Gateway、保持强制验证关闭完成三家真实邮箱 smoke，再开启强制验证）
+
 ### [2026-08-21] 精选模板、负向提示词与权威比例能力 v9 — by Codex
 变更：Core 注册表升级为 `2026-08-21.v9`，Web 新增 6 套精选参考模板、醒目的生成设置卡、十种固定比例与新版教程；共享 API / Core 新增精确参考 ID 查询和独立负向提示词。新增字段均向后兼容，其他端可暂时忽略，但不得自行推断模型比例能力或把不支持比例降级为 `16:9`。
 契约（影响其他端 / 共享）：

@@ -3,6 +3,7 @@
 > 复制到 App Store Connect →「App 审核信息」→「备注（Notes）」字段。
 > 中英双语，建议英文为主（审核员多为英文），中文附后。
 > ⚠️ 提交前请把所有 `[方括号占位]` 替换为真实可用的值——尤其是 **demo API key**，缺它审核员无法跑通生成，是 BYOK App 最常见被拒原因。
+> Build 5 本次复审以 `build5-review-notes.txt` 为 4000-byte 内的权威粘贴稿；本文件保留较长背景说明。不得把真实密码或 API Key 写入仓库。
 
 ## 内部发布闸门（不代表已提交 App Review）
 
@@ -13,7 +14,7 @@
 ## English (primary)
 
 **What PaperBanana does**
-PaperBanana generates publication-ready academic figures (method-framework diagrams, flowcharts, system architectures, data charts) for research papers. The user describes their method and figure caption; a multi-agent backend pipeline (plan → render → critique → rerender/finalize) produces the figure. Independent Refine is a separate tab for refining the user's own result. Native iOS 26 design, universal for iPhone and iPad.
+PaperBanana generates publication-ready academic figures (method-framework diagrams, flowcharts, system architectures, data charts) for research papers. The user describes their method and figure caption; a multi-agent backend pipeline (plan → render → critique → rerender/finalize) produces the figure. Independent Refine is a separate tab for refining the user's own result. Native iOS 26 design; Build 5 supports iPhone only.
 
 **IMPORTANT — This is a BYOK (Bring Your Own Key) app. A working API key is required to test generation.**
 The app does NOT ship with a built-in model key. To run an actual generation, enter a key from a supported provider (Bailian / OpenRouter / Gemini / OpenAI / Volcano Engine Ark China). The dynamic registry is authoritative for selectable models. The submitter must replace the explicit placeholders below with a review account and Bailian demo key before submission.
@@ -33,7 +34,7 @@ The app does NOT ship with a built-in model key. To run an actual generation, en
 Generation works without an account; signing in only saves task history to the user's account. The demo account is provided so you can also review the signed-in experience (records, account deletion).
 
 **Account deletion (App Store Guideline 5.1.1(v))**
-In-app account deletion is implemented. Path: **Settings tab → Account section (while signed in) → "删除账号" (Delete Account) → re-enter password → "永久删除" (Permanently Delete)**. This permanently removes the account, all task records, saved templates, and locally stored API keys. (See screenshot `iphone69-07-delete-account.png`.)
+In-app account deletion is implemented. Path: **Settings tab → Account & Security → Delete Account → re-enter password → Permanently Delete**. This permanently removes the account, all task records, saved templates, and locally stored API keys. (See screenshot `iphone69-07-delete-account.png`.)
 
 **Privacy / data**
 - The iOS key is persisted in device Keychain. At request time it is an ephemeral field forwarded through our Hong Kong gateway/core service to the selected provider; it is not persisted, logged, or echoed. Selected-provider traffic may use fixed Singapore egress under routing policy.
@@ -50,14 +51,14 @@ The app requires our online gateway (`https://api.paperbanana.asia`) for auth an
 ## 中文（附）
 
 **这是什么**
-PaperBanana 为科研论文生成出版级学术配图（方法框架图/流程图/系统架构/数据统计图）。用户描述方法与图注，后端多智能体流水线（规划→渲染→评审→重渲染/定稿）产出配图。独立「精修」是针对本人结果图的单独 Tab。原生 iOS 26 设计，iPhone/iPad 通用。
+PaperBanana 为科研论文生成出版级学术配图（方法框架图/流程图/系统架构/数据统计图）。用户描述方法与图注，后端多智能体流水线（规划→渲染→评审→重渲染/定稿）产出配图。独立「精修」是针对本人结果图的单独 Tab。原生 iOS 26 设计；Build 5 仅支持 iPhone。
 
 **重要——BYOK 模式，测试生成需要可用的 API Key**
 App 不内置模型密钥。要跑通真实生成，必须填入受支持平台（百炼/OpenRouter/Gemini/OpenAI/火山方舟中国区）的 API Key；可选模型以动态 registry 为准。请提交者将上方 placeholder 替换为真实审核账号与百炼 demo key。审核员：生成页 → 选「阿里云百炼」→ 在生成设置输入 key → 填方法内容与图注（或套用精选模板）→ 提交，即可看到流水线与结果图。
 
 **登录可选**：不登录也能生成；登录仅用于把任务记录存到账号。demo 账号可用于走查登录态（记录页、删除账号）。
 
-**账号删除路径（满足 5.1.1(v)）**：设置页 →（登录态下）账号区 →「删除账号」→ 重新输入密码 →「永久删除」。会永久删除账号、所有任务记录、保存的模板与本机 API Key。
+**账号删除路径（满足 5.1.1(v)）**：设置页 →「账号与安全」→「删除账号」→ 重新输入密码 →「永久删除」。会永久删除账号、所有任务记录、保存的模板与本机 API Key。
 
 **隐私**：API Key 持久保存在本机 Keychain；调用时作为短生命周期字段经香港网关/核心转发至所选平台，服务端不持久化、记录或回显。无第三方广告/分析 SDK，无追踪。
 

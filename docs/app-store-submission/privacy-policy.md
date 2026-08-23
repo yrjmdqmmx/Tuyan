@@ -23,6 +23,7 @@ PaperBanana（以下简称"本应用"或"我们"）是一款面向科研人员�
 **2.1 账号信息**
 - 当您注册或登录时，我们收集您的**电子邮箱地址**、**密码**（以加密/哈希形式存储，我们无法读取明文）以及您可选填写的**显示名称**。
 - 我们通过会话 Cookie（session cookie）维持您的登录状态。
+- 为完成邮箱验证、重发验证和密码恢复，我们会将您的邮箱地址发送给阿里云杭州 DirectMail，仅用于投递图研账号安全邮件。此类邮件不含营销内容，不启用打开或点击追踪；发送日志仅保留模板类型、投递结果、Provider request ID 和不可逆邮箱指纹。
 
 **2.2 生成内容与任务记录**
 - 当您发起生成任务时，您输入的**方法描述文本**、**图题**、**任务类型与生成参数**，以及您**可选上传的参考图**，会被发送到我们的服务网关进行处理。
@@ -142,6 +143,7 @@ We collect only the information necessary to provide and improve the App:
 **2.1 Account Information**
 - When you register or sign in, we collect your **email address**, **password** (stored in encrypted/hashed form; we cannot read the plaintext), and an optional **display name**.
 - We maintain your sign-in state using a session cookie.
+- For email verification and password recovery, your email address is sent to Alibaba Cloud DirectMail in Hangzhou solely to deliver Tuyan account-security messages. These messages contain no marketing and use no open or click tracking. Delivery logs retain only the template type, result, provider request ID, and an irreversible email fingerprint.
 
 **2.2 Generation Content and Job Records**
 - When you start a generation job, your **method description text**, **figure caption**, **task type and generation parameters**, and any **reference images you choose to upload** are sent to our service gateway for processing.

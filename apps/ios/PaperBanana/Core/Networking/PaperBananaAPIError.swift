@@ -8,6 +8,15 @@ struct ServerErrorDetails: Equatable {
   let code: String?
   /// 从响应里提取出的错误消息。
   let message: String?
+  /// Better Auth / gateway 的 X-Retry-After 秒数。
+  let retryAfterSeconds: Int?
+
+  init(statusCode: Int, code: String?, message: String?, retryAfterSeconds: Int? = nil) {
+    self.statusCode = statusCode
+    self.code = code
+    self.message = message
+    self.retryAfterSeconds = retryAfterSeconds
+  }
 }
 
 enum PaperBananaAPIError: LocalizedError {

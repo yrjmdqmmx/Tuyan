@@ -47,8 +47,12 @@ test('each release legal document makes the required current data disclosures', 
     assert.match(source, /方舟|Ark/, `${name} must name Ark`)
     assert.match(source, /短生命周期|临时|ephemeral/i, `${name} must disclose ephemeral BYOK forwarding`)
     assert.match(source, /不持久化.*(?:记录|日志|回显)|do not persist, log, or echo/is, `${name} must disclose no BYOK persistence, logging, or echoing`)
-    assert.doesNotMatch(source, /杭州|Hangzhou|never uploaded to our servers|从不上传我方服务器|初稿模板|DRAFT TEMPLATE|\[fill in/i)
+    assert.doesNotMatch(source, /never uploaded to our servers|从不上传我方服务器|初稿模板|DRAFT TEMPLATE|\[fill in/i)
+    assert.doesNotMatch(source, /Sealos.{0,80}(?:杭州|Hangzhou)|(?:杭州|Hangzhou).{0,80}Sealos/is,
+      `${name} must not move the primary Sealos service from Hong Kong to Hangzhou`)
     if (requiresNoTracking) {
+      assert.match(source, /DirectMail.{0,80}(?:杭州|Hangzhou)|(?:杭州|Hangzhou).{0,80}DirectMail/is,
+        `${name} must disclose that account-security email uses Hangzhou DirectMail`)
       assert.match(source, /不.*追踪|No Tracking|do not track/i, `${name} must disclose no tracking`)
     }
   }

@@ -49,7 +49,7 @@ private func userFacingMessage(for details: ServerErrorDetails) -> String {
 }
 
 private func isAuthenticationCode(_ code: String) -> Bool {
-  ["INVALID_EMAIL_OR_PASSWORD", "USER_NOT_FOUND", "INVALID_PASSWORD", "EMAIL_MISMATCH", "USER_ALREADY_EXISTS", "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL", "INVALID_EMAIL", "PASSWORD_TOO_SHORT", "SESSION_EXPIRED"].contains(code.uppercased())
+  ["INVALID_EMAIL_OR_PASSWORD", "USER_NOT_FOUND", "INVALID_PASSWORD", "EMAIL_MISMATCH", "USER_ALREADY_EXISTS", "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL", "INVALID_EMAIL", "PASSWORD_TOO_SHORT", "PASSWORD_TOO_LONG", "SESSION_EXPIRED", "EMAIL_NOT_VERIFIED", "INVALID_TOKEN", "TOKEN_EXPIRED", "TOKEN_USED"].contains(code.uppercased())
 }
 
 private func isStableBusinessCode(_ code: String) -> Bool {
@@ -71,8 +71,16 @@ private func mappedErrorCode(_ code: String) -> String? {
     "邮箱格式不正确。"
   case "PASSWORD_TOO_SHORT":
     "密码太短，至少需要 8 位。"
+  case "PASSWORD_TOO_LONG":
+    "密码不能超过 128 位。"
   case "SESSION_EXPIRED":
     "登录已过期，请重新登录。"
+  case "EMAIL_NOT_VERIFIED":
+    "邮箱尚未验证，请先查看验证邮件。"
+  case "INVALID_TOKEN", "TOKEN_USED":
+    "链接无效或已使用，请重新申请。"
+  case "TOKEN_EXPIRED":
+    "链接已过期，请重新申请。"
   case "MODEL_ROUTE_CONFLICT":
     "模型路线配置冲突，请重新检查生成设置。"
   case "INVALID_ASPECT_RATIO":

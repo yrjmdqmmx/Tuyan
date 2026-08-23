@@ -268,6 +268,41 @@ final class APIClientTests: XCTestCase {
     XCTAssertEqual(user.name, "founder@paperbanana.asia")
   }
 
+  func testCurrentUserDecodesEmailVerificationState() throws {
+    let user = try JSONDecoder().decode(
+      CurrentUser.self,
+      from: Data(#"{"id":"u-verified","email":"verified@example.com","emailVerified":true}"#.utf8)
+    )
+    XCTAssertTrue(user.emailVerified)
+  }
+
+  func testAccountSecurityEndpointsUseBetterAuthPathsAndPayloads() async throws {
+    let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
+    var observed: [(String, [String: Any])] = []
+    URLProtocolStub.requestHandler = { request in
+      let body = try XCTUnwrap(JSONSerialization.jsonObject(with: try request.bodyData()) as? [String: Any])
+      observed.append((request.url?.path ?? "", body))
+      return HTTPURLResponse.stub(url: request.url, statusCode: 200, body: #"{"ok":true}"#)
+    }
+
+    try await client.sendVerificationEmail(apiBase: "https://gateway.example", email: "a@example.com")
+    try await client.requestPasswordReset(apiBase: "https://gateway.example", email: "a@example.com")
+    try await client.resetPassword(apiBase: "https://gateway.example", token: "reset-token", newPassword: "new-password")
+    try await client.changePassword(apiBase: "https://gateway.example", currentPassword: "old-password", newPassword: "new-password")
+
+    XCTAssertEqual(observed.map(\.0), [
+      "/api/auth/send-verification-email",
+      "/api/auth/request-password-reset",
+      "/api/auth/reset-password",
+      "/api/auth/change-password"
+    ])
+    XCTAssertEqual(observed[0].1["callbackURL"] as? String, "https://www.paperbanana.asia/account/email-verified.html")
+    XCTAssertEqual(observed[1].1["redirectTo"] as? String, "https://www.paperbanana.asia/account/reset-password.html")
+    XCTAssertEqual(observed[2].1["token"] as? String, "reset-token")
+    XCTAssertEqual(observed[2].1["newPassword"] as? String, "new-password")
+    XCTAssertEqual(observed[3].1["revokeOtherSessions"] as? Bool, true)
+  }
+
   func testModelCapabilityRequestUsesGatewayActionAndDecodesSnakeCase() async throws {
     let client = PaperBananaAPIClient(session: URLSession.stubbedSession())
     URLProtocolStub.requestHandler = { request in

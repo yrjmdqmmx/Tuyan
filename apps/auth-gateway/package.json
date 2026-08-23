@@ -13,6 +13,7 @@
     "node": ">=24"
   },
   "dependencies": {
+    "@alicloud/dm20151123": "^1.10.2",
     "@better-auth/mongo-adapter": "^1.6.0",
     "better-auth": "^1.6.0",
     "cors": "^2.8.5",

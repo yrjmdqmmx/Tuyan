@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SettingsView: View {
   @Bindable var model: AppModel
-  @State private var showsDeleteAccount = false
 
   var body: some View {
     NavigationStack {
@@ -19,17 +18,6 @@ struct SettingsView: View {
       .background(AppBackground(isGenerating: model.jobs.isActivelyGenerating))
       .toolbar(.hidden, for: .navigationBar)
     }
-    .sheet(isPresented: $showsDeleteAccount) {
-      DeleteAccountSheet(model: model)
-    }
-    #if DEBUG
-    // 截图 / QA 走查用：`-pb-open-delete-account YES` 启动后自动弹出删除账号 sheet。
-    .onAppear {
-      if UserDefaults.standard.bool(forKey: "pb-open-delete-account") {
-        showsDeleteAccount = true
-      }
-    }
-    #endif
   }
 
   // MARK: - ① 账号
@@ -38,154 +26,42 @@ struct SettingsView: View {
     GlassPanel {
       VStack(alignment: .leading, spacing: Theme.Spacing.md) {
         SectionHeader(title: "账号", systemImage: "person.crop.circle")
-        Text(model.auth.currentUser == nil ? "登录后可以在任务记录里查看自己提交过的结果。" : "当前账号用于同步任务记录与生成结果。")
+        Text(model.auth.currentUser == nil ? "登录、验证邮箱并管理密码。" : "账号安全、密码与删除操作集中管理。")
           .font(.footnote)
           .foregroundStyle(.secondary)
           .fixedSize(horizontal: false, vertical: true)
-        if let user = model.auth.currentUser {
-          signedInContent(user: user)
-        } else {
-          authForm
-        }
-      }
-    }
-  }
-
-  private func signedInContent(user: CurrentUser) -> some View {
-    // 昵称与邮箱不同且非空时，昵称为主行、邮箱降级为辅行。
-    let showsDistinctName = !user.name.isEmpty && user.name != user.email
-    return VStack(alignment: .leading, spacing: Theme.Spacing.md) {
-      HStack(spacing: Theme.Spacing.md) {
-        Circle()
-          .fill(Theme.Palette.paperGreen)
-          .frame(width: 10, height: 10)
-          .accessibilityHidden(true)
-        VStack(alignment: .leading, spacing: 2) {
-          if showsDistinctName {
-            Text(user.name)
-              .font(.callout.weight(.semibold))
+        NavigationLink {
+          AccountSecurityView(model: model)
+        } label: {
+          HStack(spacing: Theme.Spacing.md) {
+            Image(systemName: model.auth.currentUser == nil ? "person.crop.circle.badge.plus" : "checkmark.shield.fill")
+              .foregroundStyle(Theme.Palette.paperGreenText)
+            VStack(alignment: .leading, spacing: 3) {
+              Text(model.auth.currentUser?.email ?? "登录或注册")
+                .font(.callout.weight(.semibold))
+                .foregroundStyle(.primary)
+              Text(accountStatusText)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Image(systemName: "chevron.right")
+              .font(.caption.weight(.bold))
+              .foregroundStyle(.tertiary)
           }
-          Text(user.email)
-            .font(showsDistinctName ? .footnote : .callout.weight(.semibold))
-            .foregroundStyle(showsDistinctName ? .secondary : .primary)
+          .padding(Theme.Spacing.md)
+          .background(Theme.Palette.paperGreenWell, in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
         }
-        Spacer(minLength: Theme.Spacing.md)
-        Button("退出", role: .destructive) {
-          Task { await model.auth.signOut() }
-        }
-        .font(.footnote.weight(.semibold))
         .buttonStyle(.plain)
-        .foregroundStyle(Theme.Palette.warningText)
-      }
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .padding(Theme.Spacing.md)
-      .background(Theme.Palette.paperGreenWell, in: RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous))
-      .overlay {
-        RoundedRectangle(cornerRadius: Theme.Radius.control, style: .continuous)
-          .strokeBorder(Theme.Palette.paperGreen.opacity(0.18), lineWidth: 1)
-      }
-
-      Button("删除账号", role: .destructive) {
-        showsDeleteAccount = true
-      }
-      .font(.footnote.weight(.semibold))
-      .buttonStyle(.plain)
-      .foregroundStyle(Theme.Palette.warningText)
-      .frame(maxWidth: .infinity, alignment: .center)
-      .accessibilityHint("将永久删除账号及所有本机数据，需要重新输入密码确认")
-    }
-  }
-
-  private var authForm: some View {
-    VStack(alignment: .leading, spacing: Theme.Spacing.md) {
-      Text(authIsSignUp ? "注册账号" : "登录账号")
-        .font(.callout.weight(.semibold))
-        .foregroundStyle(.primary)
-
-      if authIsSignUp {
-        authField("昵称") {
-          TextField("可选", text: $model.auth.authName)
-            .textContentType(.name)
-            .paperFieldWell()
-        }
-      }
-
-      authField("邮箱") {
-        TextField("you@example.com", text: $model.auth.authEmail)
-          .textInputAutocapitalization(.never)
-          .autocorrectionDisabled()
-          .keyboardType(.emailAddress)
-          .textContentType(.emailAddress)
-          .paperFieldWell()
-      }
-
-      authField("密码") {
-        SecureField("至少 8 位", text: $model.auth.authPassword)
-          .textContentType(authIsSignUp ? .newPassword : .password)
-          .paperFieldWell()
-      }
-
-      Button {
-        Task { await model.auth.signInOrSignUp() }
-      } label: {
-        Text(authSubmitTitle)
-          .frame(maxWidth: .infinity)
-      }
-      .paperGlassButton(prominent: true)
-      .disabled(model.auth.authSubmitting)
-
-      Button(authToggleTitle) {
-        toggleAuthMode()
-      }
-      .buttonStyle(.plain)
-      .font(.footnote.weight(.semibold))
-      .foregroundStyle(Theme.Palette.paperGreenText)
-      .frame(maxWidth: .infinity, alignment: .center)
-
-      if !model.auth.authError.isEmpty {
-        Text(model.auth.authError)
-          .font(.footnote)
-          .foregroundStyle(.red)
-          .fixedSize(horizontal: false, vertical: true)
+        .accessibilityIdentifier("settings.accountSecurity")
+        .accessibilityLabel("账号与安全")
       }
     }
-    // 登录 ↔ 注册切换时清掉上一模式的错误，避免陈旧文案误导新表单。
-    .onChange(of: model.auth.authMode) { _, _ in
-      model.auth.authError = ""
-    }
-    // 错误出现时主动播报，VoiceOver 用户不用扫到红字才知道失败。
-    .onChange(of: model.auth.authError) { _, newValue in
-      guard !newValue.isEmpty else { return }
-      AccessibilityNotification.Announcement(newValue).post()
-    }
   }
 
-  private var authIsSignUp: Bool {
-    model.auth.authMode == "sign-up"
-  }
-
-  private var authSubmitTitle: String {
-    if model.auth.authSubmitting { return "提交中" }
-    return authIsSignUp ? "注册" : "登录"
-  }
-
-  private var authToggleTitle: String {
-    authIsSignUp ? "已有账号？登录" : "没有账号？注册"
-  }
-
-  @ViewBuilder
-  private func authField<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
-    VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-      Text(title)
-        .font(.footnote.weight(.semibold))
-        .foregroundStyle(.secondary)
-      content()
-    }
-  }
-
-  private func toggleAuthMode() {
-    model.auth.authMode = authIsSignUp ? "sign-in" : "sign-up"
-    model.auth.authError = ""
+  private var accountStatusText: String {
+    guard let user = model.auth.currentUser else { return "未登录" }
+    return user.emailVerified ? "邮箱已验证" : "邮箱待验证"
   }
 
   // MARK: - ② 反馈
