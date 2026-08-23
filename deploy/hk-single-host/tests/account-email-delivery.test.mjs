@@ -19,6 +19,7 @@ import { test } from 'node:test';
 const deployRoot = fileURLToPath(new URL('../', import.meta.url));
 const setter = join(deployRoot, 'scripts', 'set-account-email-config.sh');
 const workflow = fileURLToPath(new URL('../../../.github/workflows/configure-account-email.yml', import.meta.url));
+const diagnosticWorkflow = fileURLToPath(new URL('../../../.github/workflows/diagnose-account-email.yml', import.meta.url));
 
 function makeFixture() {
   const root = realpathSync(mkdtempSync(join(tmpdir(), 'paperbanana-account-email-')));
@@ -137,4 +138,19 @@ test('manual production workflow transports credentials without printing them an
   assert.match(source, /up -d --no-deps --force-recreate auth-gateway/);
   assert.match(source, /https:\/\/api\.paperbanana\.asia\/ready/);
   assert.doesNotMatch(source, /set -x|echo .*ACCESS_KEY|cat .*directmail/i);
+});
+
+test('production email diagnostics expose only safe configuration presence and filtered result logs', () => {
+  assert.equal(existsSync(diagnosticWorkflow), true, 'read-only account email diagnostic workflow must exist');
+  const source = readFileSync(diagnosticWorkflow, 'utf8');
+  assert.match(source, /workflow_dispatch:/);
+  assert.doesNotMatch(source, /\n\s*push:\s*\n/);
+  assert.match(source, /environment:\s*paperbanana-production/);
+  assert.match(source, /AUTH_EMAIL_DELIVERY_ENABLED/);
+  assert.match(source, /AUTH_REQUIRE_EMAIL_VERIFICATION/);
+  assert.match(source, /accessKeyIdPresent/);
+  assert.match(source, /accessKeySecretPresent/);
+  assert.match(source, /account email \(sent\|failed\)/);
+  assert.match(source, /EMAIL_REDACTED/);
+  assert.doesNotMatch(source, /printenv|env\s*\||cat\s+.*gateway\.env|set -x/);
 });

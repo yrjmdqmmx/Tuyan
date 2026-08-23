@@ -1,0 +1,77 @@
+name: Diagnose Production Account Email
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type diagnose-account-email to continue.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-production-account-email-diagnostics
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    if: github.event.inputs.confirm == 'diagnose-account-email'
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Inspect safe account email state and filtered result logs
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" 'bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          gateway_env=/opt/paperbanana/secrets/gateway.env
+          test -f "$gateway_env"
+          grep -qx 'AUTH_EMAIL_DELIVERY_ENABLED=true' "$gateway_env"
+          grep -qx 'AUTH_REQUIRE_EMAIL_VERIFICATION=false' "$gateway_env"
+          grep -qx 'ALIBABA_DIRECTMAIL_REGION_ID=cn-hangzhou' "$gateway_env"
+          grep -qx 'ALIBABA_DIRECTMAIL_ENDPOINT=dm.aliyuncs.com' "$gateway_env"
+          grep -Eq '^ALIBABA_DIRECTMAIL_ACCESS_KEY_ID=.+$' "$gateway_env"
+          grep -Eq '^ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET=.+$' "$gateway_env"
+
+          compose=(docker compose --project-name paperbanana-hk --project-directory /opt/paperbanana/repo/deploy/hk-single-host --env-file /opt/paperbanana/repo/deploy/hk-single-host/.env -f /opt/paperbanana/repo/deploy/hk-single-host/compose.yaml)
+          "${compose[@]}" ps --status running auth-gateway | grep -q auth-gateway
+          "${compose[@]}" exec -T auth-gateway node -e '
+            const state = {
+              deliveryEnabled: process.env.AUTH_EMAIL_DELIVERY_ENABLED === "true",
+              verificationRequired: process.env.AUTH_REQUIRE_EMAIL_VERIFICATION === "true",
+              regionIsHangzhou: process.env.ALIBABA_DIRECTMAIL_REGION_ID === "cn-hangzhou",
+              endpointIsDirectMail: process.env.ALIBABA_DIRECTMAIL_ENDPOINT === "dm.aliyuncs.com",
+              accountNamePresent: Boolean(process.env.ALIBABA_DIRECTMAIL_ACCOUNT_NAME),
+              accessKeyIdPresent: Boolean(process.env.ALIBABA_DIRECTMAIL_ACCESS_KEY_ID),
+              accessKeySecretPresent: Boolean(process.env.ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET),
+            };
+            console.log(JSON.stringify(state));
+            if (!state.deliveryEnabled || state.verificationRequired || !state.regionIsHangzhou || !state.endpointIsDirectMail || !state.accountNamePresent || !state.accessKeyIdPresent || !state.accessKeySecretPresent) process.exit(1);
+          '
+
+          filtered_logs=$("${compose[@]}" logs --since 2h --no-color auth-gateway 2>&1 | grep -E 'account email (sent|failed)' || true)
+          if [[ -z "$filtered_logs" ]]; then
+            echo 'No account email result logs found in the last two hours.'
+          else
+            printf '%s\n' "$filtered_logs" \
+              | sed -E 's/[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}/[EMAIL_REDACTED]/g' \
+              | tail -n 50
+          fi
+          REMOTE
