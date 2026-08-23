@@ -6,12 +6,21 @@ function hasMiniprogramMetadata(directory) {
   return ['package.json', 'project.config.json'].every((file) => fs.existsSync(path.join(directory, file)))
 }
 
-const standaloneMiniprogramRoot = path.resolve(__dirname, '..')
-const repositoryRoot = path.resolve(__dirname, '..', '..', '..')
-const monorepoMiniprogramRoot = path.join(repositoryRoot, 'apps', 'miniprogram')
-const isStandalone = hasMiniprogramMetadata(standaloneMiniprogramRoot)
-assert.ok(isStandalone || hasMiniprogramMetadata(monorepoMiniprogramRoot), 'cannot locate miniprogram metadata')
-const miniprogramRoot = isStandalone ? standaloneMiniprogramRoot : monorepoMiniprogramRoot
+const localMiniprogramRoot = path.resolve(__dirname, '..')
+const candidateRepositoryRoot = path.resolve(__dirname, '..', '..', '..')
+const candidateMonorepoMiniprogramRoot = path.join(candidateRepositoryRoot, 'apps', 'miniprogram')
+const syncPath = path.join(candidateRepositoryRoot, 'SYNC.md')
+const localHasMetadata = hasMiniprogramMetadata(localMiniprogramRoot)
+const candidateHasMetadata = hasMiniprogramMetadata(candidateMonorepoMiniprogramRoot)
+assert.ok(localHasMetadata, 'cannot locate local miniprogram metadata')
+const isMonorepo = fs.existsSync(syncPath)
+  && candidateHasMetadata
+  && fs.realpathSync(candidateMonorepoMiniprogramRoot) === fs.realpathSync(localMiniprogramRoot)
+const miniprogramRoot = isMonorepo ? candidateMonorepoMiniprogramRoot : localMiniprogramRoot
+
+if (fs.existsSync(syncPath) && candidateHasMetadata && fs.realpathSync(candidateMonorepoMiniprogramRoot) === fs.realpathSync(localMiniprogramRoot)) {
+  assert.equal(isMonorepo, true, 'monorepo test run must select monorepo mode')
+}
 const packageJson = JSON.parse(fs.readFileSync(path.join(miniprogramRoot, 'package.json'), 'utf8'))
 const projectConfig = JSON.parse(fs.readFileSync(path.join(miniprogramRoot, 'project.config.json'), 'utf8'))
 const sourceConfig = fs.readFileSync(path.join(miniprogramRoot, 'miniprogram', 'utils', 'config.ts'), 'utf8')
@@ -42,8 +51,7 @@ for (const feature of ['邮箱验证/重发', '忘记密码', '登录后修改�
 assert.match(changelogRelease, /无需用户、数据库或本地存储迁移/)
 assert.match(changelogRelease, /既有会话保持有效/)
 
-const syncPath = path.join(repositoryRoot, 'SYNC.md')
-if (!isStandalone && fs.existsSync(syncPath)) {
+if (isMonorepo && fs.existsSync(syncPath)) {
   const sync = fs.readFileSync(syncPath, 'utf8')
   const heading = '### [2026-08-23] 标准账号安全与邮件恢复契约'
   const start = sync.indexOf(heading)
