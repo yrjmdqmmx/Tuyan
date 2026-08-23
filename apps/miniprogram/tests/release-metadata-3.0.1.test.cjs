@@ -2,14 +2,21 @@ const assert = require('node:assert/strict')
 const fs = require('node:fs')
 const path = require('node:path')
 
+function hasMiniprogramMetadata(directory) {
+  return ['package.json', 'project.config.json'].every((file) => fs.existsSync(path.join(directory, file)))
+}
+
+const standaloneMiniprogramRoot = path.resolve(__dirname, '..')
 const repositoryRoot = path.resolve(__dirname, '..', '..', '..')
-const miniprogramRoot = path.join(repositoryRoot, 'apps', 'miniprogram')
+const monorepoMiniprogramRoot = path.join(repositoryRoot, 'apps', 'miniprogram')
+const isStandalone = hasMiniprogramMetadata(standaloneMiniprogramRoot)
+assert.ok(isStandalone || hasMiniprogramMetadata(monorepoMiniprogramRoot), 'cannot locate miniprogram metadata')
+const miniprogramRoot = isStandalone ? standaloneMiniprogramRoot : monorepoMiniprogramRoot
 const packageJson = JSON.parse(fs.readFileSync(path.join(miniprogramRoot, 'package.json'), 'utf8'))
 const projectConfig = JSON.parse(fs.readFileSync(path.join(miniprogramRoot, 'project.config.json'), 'utf8'))
 const sourceConfig = fs.readFileSync(path.join(miniprogramRoot, 'miniprogram', 'utils', 'config.ts'), 'utf8')
 const readme = fs.readFileSync(path.join(miniprogramRoot, 'README.md'), 'utf8')
 const changelog = fs.readFileSync(path.join(miniprogramRoot, 'CHANGELOG.md'), 'utf8')
-const sync = fs.readFileSync(path.join(repositoryRoot, 'SYNC.md'), 'utf8')
 
 function sectionFrom(markdown, heading) {
   const start = markdown.indexOf(heading)
@@ -35,11 +42,18 @@ for (const feature of ['邮箱验证/重发', '忘记密码', '登录后修改�
 assert.match(changelogRelease, /无需用户、数据库或本地存储迁移/)
 assert.match(changelogRelease, /既有会话保持有效/)
 
-const accountSecuritySync = sync.slice(sync.indexOf('### [2026-08-23] 标准账号安全与邮件恢复契约'), sync.indexOf('\n### ', sync.indexOf('### [2026-08-23] 标准账号安全与邮件恢复契约') + 1))
-assert.match(accountSecuritySync, /- \[x\] 微信小程序/)
-assert.match(accountSecuritySync, /3\.0\.1 实现与测试完成/)
-assert.match(accountSecuritySync, /3\.0\.1 开发者工具上传\/体验版\/审核仍待完成/)
-assert.match(accountSecuritySync, /- \[ \] Android \/ Windows \/ macOS \/ HarmonyOS/)
-assert.match(accountSecuritySync, /- \[ \] 部署 \/ 运维/)
+const syncPath = path.join(repositoryRoot, 'SYNC.md')
+if (!isStandalone && fs.existsSync(syncPath)) {
+  const sync = fs.readFileSync(syncPath, 'utf8')
+  const heading = '### [2026-08-23] 标准账号安全与邮件恢复契约'
+  const start = sync.indexOf(heading)
+  assert.notEqual(start, -1, 'missing standard account-security SYNC entry')
+  const accountSecuritySync = sync.slice(start, sync.indexOf('\n### ', start + heading.length))
+  assert.match(accountSecuritySync, /- \[x\] 微信小程序/)
+  assert.match(accountSecuritySync, /3\.0\.1 实现与测试完成/)
+  assert.match(accountSecuritySync, /3\.0\.1 开发者工具上传\/体验版\/审核仍待完成/)
+  assert.match(accountSecuritySync, /- \[ \] Android \/ Windows \/ macOS \/ HarmonyOS/)
+  assert.match(accountSecuritySync, /- \[ \] 部署 \/ 运维/)
+}
 
 console.log('release-metadata-3.0.1.test.cjs passed')
