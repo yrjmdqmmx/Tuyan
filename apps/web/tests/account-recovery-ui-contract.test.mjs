@@ -15,6 +15,8 @@ test('auth panel exposes explicit verification and password recovery states', ()
   assert.match(authPanel, /忘记密码/)
   assert.match(authPanel, /callbackURL/)
   assert.match(authPanel, /redirectTo/)
+  assert.match(authPanel, /setError\(err \|\|/)
+  assert.doesNotMatch(authPanel, /setError\(err\?\.message/)
 });
 
 test('account landing pages cover safe token states and password boundaries', () => {

@@ -100,6 +100,7 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   assert.equal(betterConfig.emailVerification.expiresIn, 3600);
   assert.equal(betterConfig.emailVerification.sendOnSignUp, true);
   assert.equal(betterConfig.emailVerification.sendOnSignIn, true);
+  assert.deepEqual(betterConfig.logger, { disabled: true });
   assert.equal(betterConfig.rateLimit.storage, 'database');
   assert.deepEqual(betterConfig.rateLimit.customRules['/sign-in/email'], { window: 900, max: 10 });
   assert.equal(typeof runtime.webHandler, 'function');

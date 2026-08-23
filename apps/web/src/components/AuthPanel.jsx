@@ -50,7 +50,7 @@ export default function AuthPanel({ onAuthenticated, onCancel }) {
       if (isSignUp) setMode('pending-verification');
       else await onAuthenticated();
     } catch (err) {
-      setError(err?.message || '操作失败，请稍后重试');
+      setError(err || '操作失败，请稍后重试');
     } finally {
       setIsSubmitting(false);
     }
@@ -66,7 +66,7 @@ export default function AuthPanel({ onAuthenticated, onCancel }) {
       setCooldown(60);
     } catch (err) {
       if (err?.status === 429) setCooldown(retryAfter(err));
-      setError(err?.message || '发送失败，请稍后重试');
+      setError(err || '发送失败，请稍后重试');
     } finally {
       setIsSubmitting(false);
     }

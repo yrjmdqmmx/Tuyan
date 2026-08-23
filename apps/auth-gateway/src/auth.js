@@ -80,6 +80,10 @@ export async function createAuthRuntime(
     secret: config.authSecret,
     baseURL: config.authBaseUrl,
     trustedOrigins: config.frontendOrigins,
+    // Better Auth 1.6.11 includes full email addresses in several negative-path
+    // log records. Application and account-email logs remain available through
+    // the injected redacting logger, so disable the library logger completely.
+    logger: { disabled: true },
     database: adapterFactory(db),
     emailVerification: {
       sendOnSignUp: true,

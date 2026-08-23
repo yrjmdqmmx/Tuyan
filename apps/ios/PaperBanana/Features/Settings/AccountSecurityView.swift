@@ -54,7 +54,7 @@ struct AccountSecurityView: View {
             .foregroundStyle(user.emailVerified ? Theme.Palette.paperGreenText : .orange)
             .accessibilityIdentifier("account.verificationStatus")
           if !user.emailVerified {
-            Button(model.auth.resendCooldownSeconds > 0 ? "(model.auth.resendCooldownSeconds) 秒后可重发" : "重发验证邮件") {
+            Button(model.auth.resendCooldownSeconds > 0 ? "\(model.auth.resendCooldownSeconds) 秒后可重发" : "重发验证邮件") {
               model.auth.authEmail = user.email
               Task { await model.auth.resendVerification() }
             }
@@ -135,7 +135,7 @@ struct AccountSecurityView: View {
       Label(title, systemImage: "envelope.badge.fill").font(.headline)
       Text(detail).font(.footnote).foregroundStyle(.secondary)
       if verification {
-        Button(model.auth.resendCooldownSeconds > 0 ? "(model.auth.resendCooldownSeconds) 秒后可重发" : "重发验证邮件") {
+        Button(model.auth.resendCooldownSeconds > 0 ? "\(model.auth.resendCooldownSeconds) 秒后可重发" : "重发验证邮件") {
           Task { await model.auth.resendVerification() }
         }
         .paperGlassButton(prominent: true)
