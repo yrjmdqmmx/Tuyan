@@ -1,6 +1,6 @@
 # Build 5 真机录屏与复审检查单
 
-- [ ] 在 iPhone 17 Pro Max 的“设置 → 通用 → 关于本机”记录完整 iOS 27 Developer Beta 名称与 build number；审核说明不得只写“iOS 27”。
+- [x] 已从 iPhone 17 Pro Max 系统界面确认：iOS 27.0 Developer Beta（24A5418b）；审核说明不得只写“iOS 27”。
 - [ ] 确认 Build 5、版本 1.0，开场从主屏点击图研图标。
 - [ ] 使用一次性账号演示注册、收信、邮箱验证和登录。
 - [ ] 审核专用百炼 Key 已单独创建、低额度且可撤销；输入与密码在录屏中遮挡。
