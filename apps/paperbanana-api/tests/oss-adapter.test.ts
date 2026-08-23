@@ -40,7 +40,7 @@ test('listFiles follows every OSS marker and normalizes keys while preserving me
   const result = await bucket.listFiles({ Prefix: 'references/a/' })
 
   assert.deepEqual(queries, [
-    { prefix: 'references/a/', marker: undefined },
+    { prefix: 'references/a/' },
     { prefix: 'references/a/', marker: 'page-2' },
   ])
   assert.deepEqual(result, {

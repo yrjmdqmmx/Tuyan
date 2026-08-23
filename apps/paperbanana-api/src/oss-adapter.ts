@@ -180,7 +180,9 @@ export function createOssAdapter(
         const contents: Array<Record<string, unknown>> = []
         let marker = options.Marker
         do {
-          const page = await serverClient.list({ prefix: options.Prefix, marker })
+          const query: Record<string, unknown> = { prefix: options.Prefix }
+          if (marker !== undefined) query.marker = marker
+          const page = await serverClient.list(query)
           contents.push(...(page.objects || []).map(normalizeObject))
           if (!page.isTruncated) break
           const nextMarker = page.nextMarker || page.objects?.at(-1)?.name
