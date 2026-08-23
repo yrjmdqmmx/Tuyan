@@ -26,7 +26,7 @@
 .security-message.error { border:1rpx solid #e8cbc3; background:#fff3f0; color:#9b4032; }
 .privacy-card { margin-top:20rpx; padding:20rpx; border:1rpx solid #d6ddd8; border-radius:17rpx; background:#f5f7f4; color:#5b6862; font-size:20rpx; line-height:1.65; }
 .privacy-title { margin-bottom:8rpx; color:#3d554a; font-size:23rpx; font-weight:800; }
-.logout-button { min-height:88rpx; box-sizing:border-box; margin:20rpx 0 0; border:1rpx solid #ccd3ce; border-radius:16rpx; background:#fff; color:#33423b; font-size:23rpx; }
+.logout-button { display:flex; align-items:center; justify-content:center; width:100%; min-height:88rpx; box-sizing:border-box; margin:20rpx 0 0; padding:0 24rpx; border:1rpx solid #ccd3ce; border-radius:16rpx; background:#fff; color:#33423b; font-size:23rpx; line-height:1.2; }
 .danger-zone { box-sizing:border-box; margin-top:28rpx; padding:22rpx; border:1rpx solid #e6c8bd; border-radius:20rpx; background:#fff8f4; }
 .danger-title { color:#993d30; font-size:26rpx; font-weight:850; }
 .danger-note { margin-top:8rpx; color:#7c6963; font-size:20rpx; line-height:1.6; }
