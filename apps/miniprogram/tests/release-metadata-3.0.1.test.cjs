@@ -5,20 +5,41 @@ const path = require('node:path')
 const repositoryRoot = path.resolve(__dirname, '..', '..', '..')
 const miniprogramRoot = path.join(repositoryRoot, 'apps', 'miniprogram')
 const packageJson = JSON.parse(fs.readFileSync(path.join(miniprogramRoot, 'package.json'), 'utf8'))
+const projectConfig = JSON.parse(fs.readFileSync(path.join(miniprogramRoot, 'project.config.json'), 'utf8'))
+const sourceConfig = fs.readFileSync(path.join(miniprogramRoot, 'miniprogram', 'utils', 'config.ts'), 'utf8')
 const readme = fs.readFileSync(path.join(miniprogramRoot, 'README.md'), 'utf8')
 const changelog = fs.readFileSync(path.join(miniprogramRoot, 'CHANGELOG.md'), 'utf8')
 const sync = fs.readFileSync(path.join(repositoryRoot, 'SYNC.md'), 'utf8')
 
+function sectionFrom(markdown, heading) {
+  const start = markdown.indexOf(heading)
+  assert.notEqual(start, -1, `missing section: ${heading}`)
+  const nextHeading = markdown.indexOf('\n## ', start + heading.length)
+  return markdown.slice(start, nextHeading === -1 ? undefined : nextHeading)
+}
+
 assert.equal(packageJson.version, '3.0.1')
-assert.match(readme, /## 3\.0\.1 上传备注/)
-assert.match(readme, /邮箱验证\/重发、忘记密码、登录后修改密码和稳定的冷却\/错误反馈/)
-assert.match(readme, /保留既有任务、模型设置和账号删除/)
-assert.match(changelog, /^## 图研Tuyan 3\.0\.1（2026-08-23）/m)
-assert.match(changelog, /邮箱验证\/重发、忘记密码与登录后修改密码/)
-assert.match(changelog, /兼容现有任务、模型设置和账号删除/)
-assert.match(changelog, /无需用户、数据库或本地存储迁移，既有会话保持有效/)
-assert.match(sync, /- \[x\] 微信小程序（已消费共享路由、状态字段和错误码；3\.0\.1 实现与测试完成；3\.0\.1 开发者工具上传\/体验版\/审核仍待完成）/)
-assert.match(sync, /- \[ \] Android \/ Windows \/ macOS \/ HarmonyOS（消费共享路由、状态字段和错误码仍待完成；改造前不得开启其强制验证发布）/)
-assert.match(sync, /- \[ \] 部署 \/ 运维（杭州 DirectMail 域名、SPF\/MX\/DKIM\/DMARC、触发邮件地址和 `dm:SingleSendMail` 专用 RAM 已完成；生产环境密钥已安全暂存。仍需合并\/部署 Web 与 Gateway、保持强制验证关闭完成三家真实邮箱 smoke，再开启强制验证）/)
+assert.equal(projectConfig.description, '图研Tuyan 3.0.1 微信小程序')
+assert.match(sourceConfig, /export const CLIENT_VERSION = 'miniprogram-3\.0\.1'/)
+
+const readmeRelease = sectionFrom(readme, '## 3.0.1 上传备注')
+for (const feature of ['邮箱验证/重发', '忘记密码', '登录后修改密码', '冷却/错误反馈', '既有任务、模型设置和账号删除']) {
+  assert.ok(readmeRelease.includes(feature), `README release note omits ${feature}`)
+}
+assert.match(readmeRelease, /不代表.*审核.*发布/)
+
+const changelogRelease = sectionFrom(changelog, '## 图研Tuyan 3.0.1（2026-08-23）')
+for (const feature of ['邮箱验证/重发', '忘记密码', '登录后修改密码', '兼容现有任务、模型设置和账号删除']) {
+  assert.ok(changelogRelease.includes(feature), `CHANGELOG release section omits ${feature}`)
+}
+assert.match(changelogRelease, /无需用户、数据库或本地存储迁移/)
+assert.match(changelogRelease, /既有会话保持有效/)
+
+const accountSecuritySync = sync.slice(sync.indexOf('### [2026-08-23] 标准账号安全与邮件恢复契约'), sync.indexOf('\n### ', sync.indexOf('### [2026-08-23] 标准账号安全与邮件恢复契约') + 1))
+assert.match(accountSecuritySync, /- \[x\] 微信小程序/)
+assert.match(accountSecuritySync, /3\.0\.1 实现与测试完成/)
+assert.match(accountSecuritySync, /3\.0\.1 开发者工具上传\/体验版\/审核仍待完成/)
+assert.match(accountSecuritySync, /- \[ \] Android \/ Windows \/ macOS \/ HarmonyOS/)
+assert.match(accountSecuritySync, /- \[ \] 部署 \/ 运维/)
 
 console.log('release-metadata-3.0.1.test.cjs passed')
