@@ -9,6 +9,10 @@ import {
   formatClientPlatform,
   getJobRequest,
   modelRegistryRequest,
+  benchmarkLeaderboardRequest,
+  benchmarkModelProfileRequest,
+  benchmarkMethodologyRequest,
+  adminBenchmarkRequest,
   providerAccountCatalogRequest,
   referenceLibraryRequest,
   refineImageRequest,
@@ -714,6 +718,24 @@ test('modelRegistryRequest reads the server-authoritative model roles and defaul
     assert.equal(registry.providers.gemini.officialSourceUrl, 'https://ai.google.dev/');
     assert.equal(registry.providers.gemini.routeContractVersion, 1);
     assert.equal(registry.providers.gemini.accountCatalogRequired, true);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('benchmark clients use only the public and admin action contracts', async () => {
+  const fetchMock = mockJsonFetch((_url, options) => ({ body: { code: 0, echoed: JSON.parse(options.body) } }));
+  try {
+    await benchmarkLeaderboardRequest('https://gateway.example', { backendMode: 'gateway' }, { lane: '2K-standard', axis: 'topology' });
+    await benchmarkModelProfileRequest('https://gateway.example', { backendMode: 'gateway' }, 'model-a');
+    await benchmarkMethodologyRequest('https://gateway.example', { backendMode: 'gateway' });
+    await adminBenchmarkRequest('https://gateway.example', { backendMode: 'gateway' }, 'adminBenchmarkControl', { runId: 'run-1', targetState: 'paused' });
+    assert.deepEqual(fetchMock.calls.map((call) => JSON.parse(call.options.body)), [
+      { action: 'benchmarkLeaderboard', lane: '2K-standard', axis: 'topology' },
+      { action: 'benchmarkModelProfile', modelId: 'model-a' },
+      { action: 'benchmarkMethodology' },
+      { action: 'adminBenchmarkControl', runId: 'run-1', targetState: 'paused' },
+    ]);
   } finally {
     fetchMock.restore();
   }

@@ -10,6 +10,11 @@ on:
       confirm:
         description: Type deploy-pages to continue.
         required: true
+      bench_enabled:
+        description: Enable the public /bench route only after an immutable release exists.
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -56,6 +61,7 @@ jobs:
           VITE_AUTH_ENABLED: true
           VITE_AUTH_BASE: https://api.paperbanana.asia
           VITE_BASE_PATH: /
+          VITE_BENCH_ENABLED: ${{ inputs.bench_enabled }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -7,10 +7,12 @@ WORKDIR /workspace
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/paperbanana-api/package.json apps/paperbanana-api/package.json
+COPY packages/benchmark-core/package.json packages/benchmark-core/package.json
 RUN pnpm install --filter @paperbanana/paperbanana-api... --frozen-lockfile
 
 COPY apps/paperbanana-api apps/paperbanana-api
 COPY apps/laf-functions/paperbanana-api.ts apps/laf-functions/paperbanana-api.ts
+COPY packages/benchmark-core packages/benchmark-core
 RUN pnpm --filter @paperbanana/paperbanana-api build
 RUN pnpm --filter @paperbanana/paperbanana-api deploy --prod --legacy /opt/paperbanana-api
 

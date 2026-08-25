@@ -258,6 +258,46 @@ export async function modelRegistryRequest(apiBase, health, provider = '') {
   throw new Error('当前后端不支持服务端模型目录。');
 }
 
+async function benchmarkRequest(apiBase, health, body) {
+  if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('模型横评需要使用正式 Node 或登录网关后端。');
+  return fetchJson(lafEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+}
+
+export function benchmarkLeaderboardRequest(apiBase, health, options = {}) {
+  return benchmarkRequest(apiBase, health, {
+    action: 'benchmarkLeaderboard',
+    ...(options.lane ? { lane: options.lane } : {}),
+    ...(options.axis ? { axis: options.axis } : {}),
+  });
+}
+
+export function benchmarkModelProfileRequest(apiBase, health, identity) {
+  const fields = typeof identity === 'string' ? { modelId: identity } : identity || {};
+  return benchmarkRequest(apiBase, health, { action: 'benchmarkModelProfile', ...fields });
+}
+
+export function benchmarkMethodologyRequest(apiBase, health) {
+  return benchmarkRequest(apiBase, health, { action: 'benchmarkMethodology' });
+}
+
+const BENCHMARK_ADMIN_ACTIONS = new Set([
+  'adminBenchmarkCandidates',
+  'adminBenchmarkApprove',
+  'adminBenchmarkControl',
+  'adminBenchmarkReviewExport',
+  'adminBenchmarkReviewImport',
+  'adminBenchmarkPublish',
+]);
+
+export function adminBenchmarkRequest(apiBase, health, action, payload = {}) {
+  if (!BENCHMARK_ADMIN_ACTIONS.has(action)) throw new Error('未知的模型横评站长动作。');
+  return benchmarkRequest(apiBase, health, { action, ...payload });
+}
+
 export async function providerAccountCatalogRequest(apiBase, health, payload = {}) {
   if (payload.provider !== 'ark') throw new Error('账号模型验证仅支持 Ark。');
   if (!Array.isArray(payload.probes)) throw new Error('Ark 验证模型列表必须是数组。');

@@ -295,6 +295,33 @@ test('modelRegistry is a public read-only backend action', async () => {
   });
 });
 
+test('benchmark public actions are anonymous read-only backend actions', async () => {
+  const backend = fakeBackend(async (body) => ({ status: 200, data: { code: 0, action: body.action } }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    for (const action of ['benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology']) {
+      const response = await post(baseUrl, { action, modelId: 'model-a' });
+      assert.equal(response.status, 200);
+      assert.deepEqual(await response.json(), { code: 0, action });
+    }
+    assert.equal(backend.calls.length, 3);
+  });
+});
+
+test('benchmark admin actions require immutable admin identity before forwarding', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const denied = await post(baseUrl, { action: 'adminBenchmarkCandidates' });
+    assert.equal(denied.status, 401);
+    assert.equal(backend.calls.length, 0);
+
+    const allowed = await post(baseUrl, { action: 'adminBenchmarkCandidates' }, { 'x-test-session': 'admin-id|admin@example.com' });
+    assert.equal(allowed.status, 200);
+    assert.equal(backend.calls[0].body.action, 'adminBenchmarkCandidates');
+    assert.equal(backend.calls[0].options.adminAction, true);
+    assert.equal(backend.calls[0].options.adminUserId, 'admin-id');
+  });
+});
+
 test('anonymous writes receive a stable guest owner while raw forwarding headers are not relayed', async () => {
   await withApp({}, async ({ baseUrl, backend }) => {
     const first = await post(

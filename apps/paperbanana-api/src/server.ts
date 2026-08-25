@@ -27,6 +27,8 @@ export type ServiceLogger = {
 export type AppConfig = {
   gatewayToken: string
   adminToken?: string
+  adminTransportToken?: string
+  benchmarkDiscoveryToken?: string
   serviceName: string
   version: string
 }
@@ -37,6 +39,9 @@ type AppDependencies = {
   healthSnapshot: () => Readiness
   config: AppConfig
   logger: ServiceLogger
+  benchmarkService?: {
+    handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>>
+  }
 }
 
 const corsHeaders = {
@@ -52,6 +57,12 @@ const adminActions = new Set([
   'importReferences',
   'evaluateJob',
   'pingPlotWorker',
+  'adminBenchmarkCandidates',
+  'adminBenchmarkApprove',
+  'adminBenchmarkControl',
+  'adminBenchmarkReviewExport',
+  'adminBenchmarkReviewImport',
+  'adminBenchmarkPublish',
 ])
 
 function tokensMatch(actual: string, expected: string): boolean {
@@ -78,9 +89,6 @@ function transportBody(value: unknown, config: AppConfig): Record<string, unknow
   delete body.gatewayToken
   delete body.adminToken
   body.gatewayToken = config.gatewayToken
-  if (config.adminToken && adminActions.has(String(body.action || ''))) {
-    body.adminToken = config.adminToken
-  }
   return body
 }
 
@@ -102,7 +110,7 @@ function legacyHeaders(request: Request): Request['headers'] {
   return headers
 }
 
-export function createApp({ handler, readinessProbe, healthSnapshot, config, logger }: AppDependencies): Express {
+export function createApp({ handler, readinessProbe, healthSnapshot, config, logger, benchmarkService }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
   app.use(express.json({ limit: '1mb', strict: false }))
@@ -146,14 +154,43 @@ export function createApp({ handler, readinessProbe, healthSnapshot, config, log
 
   async function invokeLegacy(request: Request, response: Response) {
     const token = request.get('x-paperbanana-gateway-token') || ''
-    if (!tokensMatch(token, config.gatewayToken)) {
+    const gatewayTransport = tokensMatch(token, config.gatewayToken)
+    const discoveryTransport = Boolean(config.benchmarkDiscoveryToken && tokensMatch(token, config.benchmarkDiscoveryToken))
+    if (!gatewayTransport && !discoveryTransport) {
       return response.status(401).json({ code: 401, error: 'Unauthorized internal transport' })
     }
 
     const incoming = request.method === 'GET' ? request.query : request.body
+    const body = transportBody(incoming, config)
+    const action = String(body.action || '')
+    if (discoveryTransport && !gatewayTransport && action !== 'modelRegistry') {
+      return response.status(403).json({ code: 403, error: 'Discovery transport is read-only' })
+    }
+    const adminTransport = request.get('x-paperbanana-admin-transport-token') || ''
+    const isAdminTransport = Boolean(
+      config.adminTransportToken
+      && adminTransport
+      && tokensMatch(adminTransport, config.adminTransportToken),
+    )
+    if (isAdminTransport && config.adminToken && adminActions.has(action)) {
+      const adminUserId = safeLegacyHeader(request.get('x-paperbanana-admin-user-id'), 200) || ''
+      if (!/^[A-Za-z0-9._:-]{3,200}$/.test(adminUserId)) return response.status(401).json({ code: 401, error: 'Missing immutable admin identity' })
+      body.adminToken = config.adminToken
+      body.adminUserId = adminUserId
+    }
+    if (benchmarkService && (action.startsWith('benchmark') || action.startsWith('adminBenchmark'))) {
+      try {
+        const isAdmin = Boolean(isAdminTransport && config.adminToken && body.adminToken === config.adminToken && adminActions.has(action))
+        return response.status(200).send(await benchmarkService.handle(body, isAdmin))
+      } catch (error) {
+        const code = String((error as Error)?.message || '').startsWith('BENCHMARK_ADMIN_REQUIRED') ? 401 : 400
+        logger.warn('benchmark request rejected', { action, code })
+        return response.status(200).json({ code, error: 'Benchmark request rejected' })
+      }
+    }
     const ctx: LegacyContext = {
       request: { method: request.method },
-      body: transportBody(incoming, config),
+      body,
       headers: legacyHeaders(request),
       response: {
         setHeader(name, value) { response.setHeader(name, value) },

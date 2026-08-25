@@ -13,6 +13,12 @@ const ADMIN_BACKEND_ACTIONS = new Set([
   'evaluateJob',
   'pingPlotWorker',
   'initDatabase',
+  'adminBenchmarkCandidates',
+  'adminBenchmarkApprove',
+  'adminBenchmarkControl',
+  'adminBenchmarkReviewExport',
+  'adminBenchmarkReviewImport',
+  'adminBenchmarkPublish',
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['importReferences', 'evaluateJob', 'initDatabase']);
 const MAINTENANCE_ACTIONS = new Set([
@@ -220,14 +226,21 @@ export function createApp({
       }
 
       if (ADMIN_BACKEND_ACTIONS.has(action)) {
-        await requireAdmin(config, auth, request);
+        const adminSession = await requireAdmin(config, auth, request);
         return relay(
           response,
-          await backend.call(request.body, context, { adminAction: true }),
+          await backend.call(request.body, context, { adminAction: true, adminUserId: String(adminSession.user.id) }),
         );
       }
 
-      if (action === 'modelRegistry' || action === 'modelCapability' || action === 'referenceLibrary') {
+      if (
+        action === 'modelRegistry'
+        || action === 'modelCapability'
+        || action === 'referenceLibrary'
+        || action === 'benchmarkLeaderboard'
+        || action === 'benchmarkModelProfile'
+        || action === 'benchmarkMethodology'
+      ) {
         return relay(response, await backend.call(request.body, context));
       }
 

@@ -21,6 +21,7 @@ required=(
   /opt/paperbanana/secrets/mongo-root-password
   /opt/paperbanana/secrets/mongo-auth-password
   /opt/paperbanana/secrets/mongo-business-password
+  /opt/paperbanana/secrets/mongo-bench-api-password
   /opt/paperbanana/secrets/mongo-keyfile
 )
 for path in "${required[@]}"; do

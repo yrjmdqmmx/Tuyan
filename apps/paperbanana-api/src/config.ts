@@ -3,6 +3,8 @@ export type ServiceConfig = {
   port: number
   gatewayToken: string
   adminToken?: string
+  adminTransportToken?: string
+  benchmarkDiscoveryToken?: string
   singleReplica: true
   strictObjectStorage: true
   admission: {
@@ -30,6 +32,12 @@ export type ServiceConfig = {
     publicEndpoint: string
     secure: true
     pathStyle: false
+  }
+  benchmark?: {
+    mongodb: { uri: string; database: string }
+    oss: ServiceConfig['oss']
+    codeSha: string
+    reviewSigningSecret: string
   }
 }
 
@@ -103,6 +111,10 @@ function providerEgressConfig(env: Environment): ServiceConfig['providerEgress']
 
 export function loadConfig(env: Environment = process.env): ServiceConfig {
   const gatewayToken = required(env, 'PAPERBANANA_GATEWAY_TOKEN')
+  const adminTransportToken = env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN?.trim() || undefined
+  const benchmarkDiscoveryToken = env.PAPERBANANA_BENCH_DISCOVERY_TOKEN?.trim() || undefined
+  if (adminTransportToken && adminTransportToken === gatewayToken) throw new Error('PAPERBANANA_ADMIN_TRANSPORT_TOKEN must differ from PAPERBANANA_GATEWAY_TOKEN')
+  if (benchmarkDiscoveryToken && [gatewayToken, adminTransportToken].includes(benchmarkDiscoveryToken)) throw new Error('PAPERBANANA_BENCH_DISCOVERY_TOKEN must be distinct')
   if (env.PAPERBANANA_SINGLE_REPLICA?.trim() !== 'true') {
     throw new Error('PAPERBANANA_SINGLE_REPLICA=true is required until job leases support multiple replicas')
   }
@@ -117,12 +129,40 @@ export function loadConfig(env: Environment = process.env): ServiceConfig {
   const internalEndpoint = ossEndpoint(env, 'OSS_INTERNAL_ENDPOINT', `${region}-internal.aliyuncs.com`)
   const publicEndpoint = ossEndpoint(env, 'OSS_PUBLIC_ENDPOINT', `${region}.aliyuncs.com`)
   if (internalEndpoint === publicEndpoint) throw new Error('OSS_INTERNAL_ENDPOINT and OSS_PUBLIC_ENDPOINT must be distinct')
+  const benchmarkFlag = env.PAPERBANANA_BENCH_API_ENABLED?.trim() || 'false'
+  if (benchmarkFlag !== 'true' && benchmarkFlag !== 'false') throw new Error('PAPERBANANA_BENCH_API_ENABLED must be exactly true or false')
+  let benchmark: ServiceConfig['benchmark']
+  if (benchmarkFlag === 'true') {
+    const benchmarkRegion = required(env, 'PAPERBANANA_BENCH_OSS_REGION')
+    const codeSha = required(env, 'PAPERBANANA_CODE_SHA')
+    if (!/^[a-f0-9]{40}$/i.test(codeSha)) throw new Error('PAPERBANANA_CODE_SHA must be an immutable 40-character commit SHA')
+    benchmark = {
+      mongodb: {
+        uri: required(env, 'PAPERBANANA_BENCH_MONGODB_URI'),
+        database: env.PAPERBANANA_BENCH_MONGO_DB?.trim() || 'paperbanana_benchmark',
+      },
+      oss: {
+        region: benchmarkRegion,
+        accessKeyId: required(env, 'PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID'),
+        accessKeySecret: required(env, 'PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET'),
+        bucket: required(env, 'PAPERBANANA_BENCH_OSS_BUCKET'),
+        internalEndpoint: ossEndpoint(env, 'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT', `${benchmarkRegion}-internal.aliyuncs.com`),
+        publicEndpoint: ossEndpoint(env, 'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT', `${benchmarkRegion}.aliyuncs.com`),
+        secure: true,
+        pathStyle: false,
+      },
+      codeSha,
+      reviewSigningSecret: required(env, 'PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET'),
+    }
+  }
 
   return {
     host: env.HOST?.trim() || '0.0.0.0',
     port,
     gatewayToken,
     adminToken: env.ADMIN_TOKEN?.trim() || undefined,
+    adminTransportToken,
+    benchmarkDiscoveryToken,
     singleReplica: true,
     strictObjectStorage: true,
     admission: {
@@ -149,5 +189,6 @@ export function loadConfig(env: Environment = process.env): ServiceConfig {
       secure: true,
       pathStyle: false,
     },
+    benchmark,
   }
 }

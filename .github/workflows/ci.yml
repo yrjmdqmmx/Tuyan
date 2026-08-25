@@ -29,6 +29,11 @@ jobs:
       - run: pnpm --filter @paperbanana/paperbanana-api test
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/paperbanana-api build
+      - run: pnpm --filter @paperbanana/benchmark-core test
+      - run: pnpm --filter @paperbanana/benchmark-core check
+      - run: pnpm --filter @paperbanana/benchmark-worker test
+      - run: pnpm --filter @paperbanana/benchmark-worker check
+      - run: pnpm --filter @paperbanana/benchmark-worker build
       - run: node --test packages/api/src/*.test.js
       - run: pnpm --filter @paperbanana/web test
       - run: pnpm --filter @paperbanana/web build
@@ -58,6 +63,13 @@ jobs:
           context: .
           file: apps/paperbanana-api/Dockerfile
           push: false
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/benchmark-worker/Dockerfile
+          push: false
+          build-args: |
+            PAPERBANANA_CODE_SHA=${{ github.sha }}
       - uses: docker/build-push-action@v6
         with:
           context: apps/plot-worker
