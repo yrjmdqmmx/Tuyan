@@ -8,6 +8,7 @@ import { test } from 'node:test';
 
 const deployRoot = fileURLToPath(new URL('../', import.meta.url));
 const operatorPath = fileURLToPath(new URL('../scripts/run-benchmark-paid-operator.sh', import.meta.url));
+const workerOperatorPath = fileURLToPath(new URL('../../../apps/benchmark-worker/src/operator.ts', import.meta.url));
 const workflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-paid-operator.yml', import.meta.url));
 const diagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-paid-operator.sh', import.meta.url));
 const diagnosticWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-paid-operator.yml', import.meta.url));
@@ -102,6 +103,14 @@ test('paid benchmark operator is executable, lock-scoped and keeps the daemon di
     source.indexOf('flock -x 9') < source.indexOf('for path in "$deploy_env"'),
     'shared production lock must be acquired before reading protected deployment inputs',
   );
+});
+
+test('Judge dispatch diagnostics use stderr and cannot corrupt the stdout JSON report', () => {
+  const hostSource = readFileSync(operatorPath, 'utf8');
+  const workerSource = readFileSync(workerOperatorPath, 'utf8');
+  assert.match(hostSource, /benchmark-operator node dist\/operator\.mjs >"\$report_file"/);
+  assert.match(workerSource, /process\.stderr\.write\(`BENCHMARK_OPERATOR_JUDGE_DISPATCH=\$\{provider\}\\n`\)/);
+  assert.doesNotMatch(workerSource, /process\.stdout\.write\(`BENCHMARK_OPERATOR_JUDGE_DISPATCH=/);
 });
 
 test('operator enforces exact calibration and two-image canary caps before any paid command', () => {
