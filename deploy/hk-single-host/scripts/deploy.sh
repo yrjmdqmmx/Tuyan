@@ -24,6 +24,15 @@ required=(
   /opt/paperbanana/secrets/mongo-bench-api-password
   /opt/paperbanana/secrets/mongo-keyfile
 )
+benchmark_enabled=false
+if grep -Eq '^COMPOSE_PROFILES=[^#\r\n]*\bbenchmark\b' "$deploy_dir/.env"; then
+  benchmark_enabled=true
+  required+=(
+    /opt/paperbanana/secrets/bench.env
+    /opt/paperbanana/secrets/mongo-bench-password
+    /opt/paperbanana/secrets/mongo-bench-api-password
+  )
+fi
 for path in "${required[@]}"; do
   test -r "$path" || { echo "missing required deployment file: $path" >&2; exit 1; }
 done

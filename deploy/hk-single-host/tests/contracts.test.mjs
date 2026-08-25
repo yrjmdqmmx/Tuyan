@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
-import { readFileSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 
 const root = new URL('../', import.meta.url);
@@ -98,6 +102,122 @@ test('benchmark worker is opt-in, portless and disabled by its secret-file defau
   assert.doesNotMatch(compose, /benchmark-worker:[\s\S]*?PAPERBANANA_BENCH_ENABLED:\s*["']?true/);
   assert.match(secrets, /PAPERBANANA_BENCH_ENABLED=false/);
   assert.match(compose, /benchmark-worker:[\s\S]*?networks:\s*\n\s+backend:[\s\S]*?egress:/);
+});
+
+test('Hong Kong deploy bootstraps the benchmark in discovery-only mode with an immutable image', () => {
+  const workflow = read('../../.github/workflows/deploy-hk.yml');
+  const bootstrapUrl = new URL('scripts/bootstrap-benchmark.sh', root);
+  assert.equal(existsSync(bootstrapUrl), true, 'benchmark bootstrap script must exist');
+  const bootstrap = read('scripts/bootstrap-benchmark.sh');
+  const deploy = read('scripts/deploy.sh');
+  const smoke = read('scripts/smoke.sh');
+
+  assert.match(workflow, /benchmark_image:[\s\S]*required:\s*true/);
+  assert.match(workflow, /PAPERBANANA_BENCH_WORKER_IMAGE/);
+  assert.match(workflow, /paperbanana-benchmark-worker\$\{digest\}/);
+  assert.match(workflow, /COMPOSE_PROFILES=benchmark/);
+  assert.match(workflow, /bootstrap-benchmark\.sh --discovery-only/);
+
+  assert.match(bootstrap, /set_env_value "\$bench_env" PAPERBANANA_BENCH_ENABLED false/);
+  assert.match(bootstrap, /mongo-bench-password/);
+  assert.match(bootstrap, /mongo-bench-api-password/);
+  assert.match(bootstrap, /PAPERBANANA_BENCH_DISCOVERY_TOKEN/);
+  assert.match(bootstrap, /PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET/);
+  assert.match(bootstrap, /PAPERBANANA_ADMIN_TRANSPORT_TOKEN/);
+  assert.doesNotMatch(bootstrap, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY/);
+  assert.doesNotMatch(bootstrap, /PAPERBANANA_BENCH_API_ENABLED=true/);
+  assert.doesNotMatch(bootstrap, /source\s+[^\n]*(?:core|gateway|bench)\.env/);
+
+  assert.match(deploy, /grep[^\n]*COMPOSE_PROFILES[^\n]*benchmark[^\n]*"\$deploy_dir\/\.env"/);
+  assert.match(deploy, /benchmark_enabled[\s\S]*bench\.env/);
+  assert.match(deploy, /benchmark_enabled[\s\S]*mongo-bench-password/);
+  assert.match(deploy, /benchmark_enabled[\s\S]*mongo-bench-api-password/);
+  assert.match(smoke, /benchmark_enabled[\s\S]*ps --status running benchmark-worker/);
+  assert.match(smoke, /printenv PAPERBANANA_BENCH_ENABLED/);
+  assert.match(smoke, /test "\$benchmark_mode" = false/);
+  assert.match(smoke, /PAPERBANANA_BENCH_OPENROUTER_API_KEY/);
+  assert.match(smoke, /PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET/);
+  assert.match(smoke, /process\.env\[name\]/);
+});
+
+test('benchmark discovery bootstrap rejects paid credentials before mutating host secrets', () => {
+  const secretDir = mkdtempSync(join(tmpdir(), 'paperbanana-bench-paid-'));
+  const gatewayPath = join(secretDir, 'gateway.env');
+  const corePath = join(secretDir, 'core.env');
+  const benchPath = join(secretDir, 'bench.env');
+  writeFileSync(gatewayPath, 'EXISTING_GATEWAY_VALUE=keep\n', { mode: 0o600 });
+  writeFileSync(corePath, 'EXISTING_CORE_VALUE=keep\n', { mode: 0o600 });
+  writeFileSync(benchPath, 'PAPERBANANA_BENCH_OPENROUTER_API_KEY=must-not-enter-discovery\nPAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET=must-not-enter-discovery\n', { mode: 0o600 });
+  const before = [gatewayPath, corePath, benchPath].map((path) => readFileSync(path, 'utf8'));
+
+  try {
+    assert.throws(() => execFileSync(fileURLToPath(new URL('scripts/bootstrap-benchmark.sh', root)), ['--discovery-only'], {
+      env: { ...process.env, PAPERBANANA_BENCH_BOOTSTRAP_TEST_MODE: 'true', PAPERBANANA_SECRET_DIR: secretDir, PAPERBANANA_CODE_SHA: 'b'.repeat(40) },
+      stdio: 'pipe',
+    }), /Command failed/);
+    assert.deepEqual([gatewayPath, corePath, benchPath].map((path) => readFileSync(path, 'utf8')), before);
+    assert.equal(existsSync(join(secretDir, 'mongo-bench-password')), false);
+  } finally {
+    rmSync(secretDir, { recursive: true, force: true });
+  }
+});
+
+test('benchmark discovery bootstrap rejects mismatched discovery tokens before mutation', () => {
+  const secretDir = mkdtempSync(join(tmpdir(), 'paperbanana-bench-token-'));
+  const gatewayPath = join(secretDir, 'gateway.env');
+  const corePath = join(secretDir, 'core.env');
+  const benchPath = join(secretDir, 'bench.env');
+  writeFileSync(gatewayPath, 'EXISTING_GATEWAY_VALUE=keep\n', { mode: 0o600 });
+  writeFileSync(corePath, 'PAPERBANANA_BENCH_DISCOVERY_TOKEN=core-token\n', { mode: 0o600 });
+  writeFileSync(benchPath, 'PAPERBANANA_BENCH_DISCOVERY_TOKEN=worker-token\n', { mode: 0o600 });
+  const before = [gatewayPath, corePath, benchPath].map((path) => readFileSync(path, 'utf8'));
+
+  try {
+    assert.throws(() => execFileSync(fileURLToPath(new URL('scripts/bootstrap-benchmark.sh', root)), ['--discovery-only'], {
+      env: { ...process.env, PAPERBANANA_BENCH_BOOTSTRAP_TEST_MODE: 'true', PAPERBANANA_SECRET_DIR: secretDir, PAPERBANANA_CODE_SHA: 'c'.repeat(40) },
+      stdio: 'pipe',
+    }), /Command failed/);
+    assert.deepEqual([gatewayPath, corePath, benchPath].map((path) => readFileSync(path, 'utf8')), before);
+    assert.equal(existsSync(join(secretDir, 'mongo-bench-password')), false);
+  } finally {
+    rmSync(secretDir, { recursive: true, force: true });
+  }
+});
+
+test('benchmark discovery bootstrap is idempotent and preserves existing production secrets', () => {
+  const secretDir = mkdtempSync(join(tmpdir(), 'paperbanana-bench-bootstrap-'));
+  const gatewayPath = join(secretDir, 'gateway.env');
+  const corePath = join(secretDir, 'core.env');
+  writeFileSync(gatewayPath, 'EXISTING_GATEWAY_VALUE=keep\n', { mode: 0o600 });
+  writeFileSync(corePath, 'EXISTING_CORE_VALUE=keep\n', { mode: 0o600 });
+  const env = {
+    ...process.env,
+    PAPERBANANA_BENCH_BOOTSTRAP_TEST_MODE: 'true',
+    PAPERBANANA_SECRET_DIR: secretDir,
+    PAPERBANANA_CODE_SHA: 'a'.repeat(40),
+  };
+
+  try {
+    const bootstrapPath = fileURLToPath(new URL('scripts/bootstrap-benchmark.sh', root));
+    execFileSync(bootstrapPath, ['--discovery-only'], { env, stdio: 'pipe' });
+    const firstGateway = readFileSync(gatewayPath, 'utf8');
+    const firstCore = readFileSync(corePath, 'utf8');
+    const firstBench = readFileSync(join(secretDir, 'bench.env'), 'utf8');
+
+    assert.match(firstGateway, /^EXISTING_GATEWAY_VALUE=keep$/m);
+    assert.match(firstCore, /^EXISTING_CORE_VALUE=keep$/m);
+    assert.match(firstCore, /^PAPERBANANA_BENCH_API_ENABLED=false$/m);
+    assert.match(firstBench, /^PAPERBANANA_BENCH_ENABLED=false$/m);
+    assert.doesNotMatch(firstBench, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY/);
+    assert.equal(statSync(join(secretDir, 'bench.env')).mode & 0o077, 0);
+
+    execFileSync(bootstrapPath, ['--discovery-only'], { env, stdio: 'pipe' });
+    assert.equal(readFileSync(gatewayPath, 'utf8'), firstGateway);
+    assert.equal(readFileSync(corePath, 'utf8'), firstCore);
+    assert.equal(readFileSync(join(secretDir, 'bench.env'), 'utf8'), firstBench);
+  } finally {
+    rmSync(secretDir, { recursive: true, force: true });
+  }
 });
 
 test('plot worker has a gVisor, filesystem, process, resource and network boundary', () => {
