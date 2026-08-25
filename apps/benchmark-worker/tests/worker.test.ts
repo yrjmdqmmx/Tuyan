@@ -353,7 +353,8 @@ test('judge provider caps output tokens on every fixed Judge request', async () 
       return new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(valid) } }], usage: { prompt_tokens: 100, completion_tokens: 50, total_tokens: 150, cost: 0.01 } }), { status: 200, headers: { 'content-type': 'application/json' } })
     },
   })
-  assert.equal(requestBody.max_tokens, 1200)
+  assert.equal(requestBody.max_tokens, 4096)
+  assert.deepEqual(requestBody.reasoning, { effort: 'low', exclude: true })
   assert.equal(requestBody.response_format.type, 'json_schema')
   assert.equal(requestBody.response_format.json_schema.strict, true)
   assert.deepEqual(requestBody.response_format.json_schema.schema.required.sort(), ['confidence', 'evidence', 'redLines', 'scores'])
@@ -379,6 +380,22 @@ test('Bailian Judge keeps the compatible JSON object response format', async () 
   })
   assert.deepEqual(requestBody.response_format, { type: 'json_object' })
   assert.equal(requestBody.provider, undefined)
+  assert.equal(requestBody.reasoning, undefined)
+  assert.equal(requestBody.max_tokens, 4096)
+})
+
+test('Judge JSON failures identify only the fixed provider after the single repair', async () => {
+  for (const provider of ['openrouter', 'bailian'] as const) {
+    let dispatches = 0
+    await assert.rejects(() => callBlindJudge({
+      provider, apiKey: 'fake-key', imageBase64: 'cG5n', rubric: {}, caption: 'caption',
+      async fetchImpl() {
+        dispatches += 1
+        return Response.json({ choices: [{ message: { content: '{invalid' } }] })
+      },
+    }), new RegExp(`BENCHMARK_JUDGE_JSON_INVALID_${provider.toUpperCase()}`))
+    assert.equal(dispatches, 2)
+  }
 })
 
 test('OpenRouter 403 responses are reduced to fixed safe failure classes', async () => {
