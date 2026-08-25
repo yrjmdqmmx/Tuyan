@@ -4,6 +4,10 @@ set -Eeuo pipefail
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 deploy_dir="$(cd -- "$script_dir/.." && pwd)"
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
+benchmark_enabled=false
+if grep -Eq '^COMPOSE_PROFILES=[^#\r\n]*\bbenchmark\b' "$deploy_dir/.env"; then
+  benchmark_enabled=true
+fi
 
 gateway_ready="$(curl --fail --silent --show-error http://127.0.0.1:13005/ready)"
 if ! jq -e '
@@ -26,6 +30,34 @@ for service in mongodb paperbanana-api plot-worker; do
     exit 1
   fi
 done
+
+if [[ "$benchmark_enabled" == true ]]; then
+  "${compose[@]}" ps --status running benchmark-worker | grep -q benchmark-worker
+  benchmark_mode="$("${compose[@]}" exec -T benchmark-worker printenv PAPERBANANA_BENCH_ENABLED)"
+  test "$benchmark_mode" = false || {
+    echo "benchmark worker must remain discovery-only during bootstrap" >&2
+    exit 1
+  }
+  "${compose[@]}" exec -T benchmark-worker node -e '
+    const forbidden = [
+      "PAPERBANANA_BENCH_BAILIAN_API_KEY",
+      "PAPERBANANA_BENCH_OPENROUTER_API_KEY",
+      "PAPERBANANA_BENCH_ARK_API_KEY",
+      "PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID",
+      "PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET",
+      "PAPERBANANA_BENCH_OSS_BUCKET",
+      "PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT",
+      "PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT",
+      "PAPERBANANA_BENCH_OSS_REGION",
+    ]
+    for (const name of forbidden) {
+      if (process.env[name] !== undefined) process.exit(1)
+    }
+  ' || {
+    echo "benchmark worker discovery container contains paid credential settings" >&2
+    exit 1
+  }
+fi
 
 "${compose[@]}" exec -T auth-gateway node -e '
   fetch("http://paperbanana-api:3000/paperbanana-api")
@@ -78,4 +110,4 @@ fi
 
 "$script_dir/transaction-smoke.sh"
 
-echo "Local health, isolation, unauthorized-core and OpenVac smoke checks passed."
+echo "Local health, isolation, unauthorized-core, benchmark and OpenVac smoke checks passed."
