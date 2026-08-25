@@ -35,6 +35,7 @@ import {
   diagnoseJudgeProviderAccess,
   classifyOperatorError,
   createOpenRouterJudgeEgress,
+  selectRecoverableCalibrationReport,
 } from '../src/index.js'
 import { callBlindJudge } from '../src/judge-provider.js'
 import { runOpenRouterJudgeProbe } from '../src/openrouter-judge-probe.js'
@@ -175,6 +176,53 @@ test('judge calibration report scores exact red-line sets, pair agreement and im
   assert.equal(report.passed, true)
   assert.match(report.fixtureHash, /^[a-f0-9]{64}$/)
   assert.deepEqual(Object.keys(report).sort(), ['accuracy', 'agreement', 'correctRedLines', 'fixtureHash', 'passed', 'totalRedLines'])
+})
+
+test('calibration recovery selects one exact immutable passed report without making provider calls', () => {
+  const codeSha = 'a'.repeat(40)
+  const binding = {
+    codeSha,
+    notBefore: '2026-08-25T23:13:00.000Z',
+    maxJudgeCalls: 14,
+    maxEstimatedUsd: 1.4,
+    estimatedPerJudgeCallUsd: 0.1,
+    priceSource: 'https://openrouter.ai/google/gemini-3.7-flash',
+    priceCapturedAt: '2026-08-25T22:54:13.000Z',
+  }
+  const priceSnapshot = { currency: 'USD', source: binding.priceSource, capturedAt: binding.priceCapturedAt, estimatedPerGenerationUsd: 0, estimatedPerJudgeCallUsd: 0.1 }
+  const priceHash = canonicalHash(priceSnapshot)
+  const authorizationBase = {
+    mode: 'calibration', codeSha, maxGenerations: 0, maxJudgeCalls: 14, maxEstimatedUsd: 1.4,
+    estimatedPerGenerationUsd: 0, estimatedPerJudgeCallUsd: 0.1, priceSnapshot, priceHash,
+  }
+  const authorizationHash = canonicalHash(authorizationBase)
+  const reportBase = {
+    operatorMode: 'calibration',
+    codeSha,
+    judgeEpoch: 'judge-2026-08-v1',
+    judgeStackHash: 'b'.repeat(64),
+    authorizationHash,
+    authorization: { ...authorizationBase, authorizationHash },
+    priceHash,
+    priceSnapshot,
+    usage: { generations: 0, judgments: 12, estimatedUsd: 1.2 },
+    createdAt: '2026-08-25T23:16:20.000Z',
+    result: { fixtureHash: 'e'.repeat(64), correctRedLines: 11, totalRedLines: 12, accuracy: 11 / 12, agreement: 5 / 6, passed: true },
+  }
+  const operatorReportHash = canonicalHash(reportBase)
+  const report = { ...reportBase, operatorReportHash }
+  assert.deepEqual(
+    selectRecoverableCalibrationReport([
+      { objectKey: `bench/operator-reports/${'f'.repeat(64)}.json`, report: { ...report, codeSha: '0'.repeat(40) } },
+      { objectKey: `bench/operator-reports/${operatorReportHash}.json`, report },
+    ], binding),
+    { ...report, reportObjectKey: `bench/operator-reports/${operatorReportHash}.json` },
+  )
+  assert.throws(() => selectRecoverableCalibrationReport([], binding), /BENCHMARK_CALIBRATION_RECOVERY_NOT_FOUND/)
+  assert.throws(() => selectRecoverableCalibrationReport([
+    { objectKey: `bench/operator-reports/${operatorReportHash}.json`, report },
+    { objectKey: `bench/operator-reports/${operatorReportHash}.json`, report },
+  ], binding), /BENCHMARK_CALIBRATION_RECOVERY_AMBIGUOUS/)
 })
 
 test('two-image canary uses fixed diagnostic cases and never expands into the 24-image quick set', async () => {

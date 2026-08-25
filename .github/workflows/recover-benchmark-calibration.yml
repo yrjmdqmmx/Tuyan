@@ -1,0 +1,84 @@
+name: Recover Benchmark Calibration
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        description: Exact deployed Core and Bench SHA
+        required: true
+      not_before:
+        description: Earliest accepted immutable report timestamp
+        required: true
+      max_judge_calls:
+        description: Exact original calibration dispatch cap
+        required: true
+      max_estimated_usd:
+        description: Exact original calibration USD cap
+        required: true
+      estimated_per_judge_call_usd:
+        description: Exact original Judge estimate
+        required: true
+      price_source:
+        description: Exact original HTTPS price source
+        required: true
+      price_captured_at:
+        description: Exact original price snapshot timestamp
+        required: true
+      confirm:
+        description: Type recover-calibration-disabled-worker
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    if: github.event.inputs.confirm == 'recover-calibration-disabled-worker'
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate zero-call recovery binding
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          NOT_BEFORE: ${{ inputs.not_before }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_ESTIMATED_USD: ${{ inputs.max_estimated_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ && "$MAX_JUDGE_CALLS" =~ ^[0-9]+$ ]]
+          bash -n deploy/hk-single-host/scripts/recover-benchmark-calibration.sh
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Recover and record exact immutable calibration report
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          NOT_BEFORE: ${{ inputs.not_before }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_ESTIMATED_USD: ${{ inputs.max_estimated_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'cd %q && sudo %q --expected-sha %q --not-before %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q --apply' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/recover-benchmark-calibration.sh \
+            "$EXPECTED_SHA" "$NOT_BEFORE" "$MAX_JUDGE_CALLS" "$MAX_ESTIMATED_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" recover-calibration-disabled-worker
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

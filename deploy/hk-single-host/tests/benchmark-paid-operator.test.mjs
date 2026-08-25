@@ -9,6 +9,8 @@ import { test } from 'node:test';
 const deployRoot = fileURLToPath(new URL('../', import.meta.url));
 const operatorPath = fileURLToPath(new URL('../scripts/run-benchmark-paid-operator.sh', import.meta.url));
 const workerOperatorPath = fileURLToPath(new URL('../../../apps/benchmark-worker/src/operator.ts', import.meta.url));
+const calibrationRecoveryPath = fileURLToPath(new URL('../scripts/recover-benchmark-calibration.sh', import.meta.url));
+const calibrationRecoveryWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/recover-benchmark-calibration.yml', import.meta.url));
 const workflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-paid-operator.yml', import.meta.url));
 const diagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-paid-operator.sh', import.meta.url));
 const diagnosticWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-paid-operator.yml', import.meta.url));
@@ -111,6 +113,32 @@ test('Judge dispatch diagnostics use stderr and cannot corrupt the stdout JSON r
   assert.match(hostSource, /benchmark-operator node dist\/operator\.mjs >"\$report_file"/);
   assert.match(workerSource, /process\.stderr\.write\(`BENCHMARK_OPERATOR_JUDGE_DISPATCH=\$\{provider\}\\n`\)/);
   assert.doesNotMatch(workerSource, /process\.stdout\.write\(`BENCHMARK_OPERATOR_JUDGE_DISPATCH=/);
+});
+
+test('calibration recovery is zero-call, exact-report-bound and keeps the resident Worker disabled', () => {
+  assert.equal(existsSync(calibrationRecoveryPath), true);
+  assert.equal(statSync(calibrationRecoveryPath).mode & 0o111, 0o111);
+  const source = readFileSync(calibrationRecoveryPath, 'utf8');
+  assert.match(source, /recover-calibration-disabled-worker/);
+  assert.match(source, /dist\/calibration-recovery\.mjs/);
+  assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
+  assert.match(source, /reportObjectKey[\s\S]*operatorReportHash/);
+  assert.match(source, /recordJudgeCalibration/);
+  assert.match(source, /BENCHMARK_CALIBRATION_RECOVERY_JUDGE_CALLS/);
+  assert.doesNotMatch(source, /dist\/operator\.mjs|callBlindJudge|chat\/completions|generate\(/);
+  assert.doesNotMatch(source, /set -x|printenv|cat\s+[^\n]*(?:core|gateway|bench)\.env/);
+});
+
+test('calibration recovery workflow is manual, protected and exposes no credentials or paid expansion', () => {
+  assert.equal(existsSync(calibrationRecoveryWorkflowPath), true);
+  const source = readFileSync(calibrationRecoveryWorkflowPath, 'utf8');
+  assert.match(source, /workflow_dispatch:/);
+  assert.match(source, /environment:\s*paperbanana-production/);
+  assert.match(source, /expected_deployed_sha:[\s\S]*required:\s*true/);
+  assert.match(source, /not_before:[\s\S]*required:\s*true/);
+  assert.match(source, /recover-benchmark-calibration\.sh/);
+  assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
+  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/);
 });
 
 test('operator enforces exact calibration and two-image canary caps before any paid command', () => {
