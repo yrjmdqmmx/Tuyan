@@ -33,6 +33,16 @@ if grep -Eq '^COMPOSE_PROFILES=[^#\r\n]*\bbenchmark\b' "$deploy_dir/.env"; then
     /opt/paperbanana/secrets/mongo-bench-api-password
   )
 fi
+benchmark_secret_mode_count="$(awk -F= '$1 == "PAPERBANANA_BENCH_SECRET_MODE" { count++ } END { print count + 0 }' "$deploy_dir/.env")"
+test "$benchmark_secret_mode_count" = 1 || {
+  echo "deployment requires exactly one PAPERBANANA_BENCH_SECRET_MODE" >&2
+  exit 1
+}
+benchmark_secret_mode="$(awk -F= '$1 == "PAPERBANANA_BENCH_SECRET_MODE" { print substr($0, index($0, "=") + 1) }' "$deploy_dir/.env")"
+[[ "$benchmark_secret_mode" == discovery-only || "$benchmark_secret_mode" == configured-disabled ]] || {
+  echo "invalid PAPERBANANA_BENCH_SECRET_MODE; expected discovery-only or configured-disabled" >&2
+  exit 1
+}
 for path in "${required[@]}"; do
   test -r "$path" || { echo "missing required deployment file: $path" >&2; exit 1; }
 done

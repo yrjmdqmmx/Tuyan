@@ -8,6 +8,16 @@ benchmark_enabled=false
 if grep -Eq '^COMPOSE_PROFILES=[^#\r\n]*\bbenchmark\b' "$deploy_dir/.env"; then
   benchmark_enabled=true
 fi
+benchmark_secret_mode_count="$(awk -F= '$1 == "PAPERBANANA_BENCH_SECRET_MODE" { count++ } END { print count + 0 }' "$deploy_dir/.env")"
+test "$benchmark_secret_mode_count" = 1 || {
+  echo "smoke requires exactly one PAPERBANANA_BENCH_SECRET_MODE" >&2
+  exit 1
+}
+benchmark_secret_mode="$(awk -F= '$1 == "PAPERBANANA_BENCH_SECRET_MODE" { print substr($0, index($0, "=") + 1) }' "$deploy_dir/.env")"
+[[ "$benchmark_secret_mode" == discovery-only || "$benchmark_secret_mode" == configured-disabled ]] || {
+  echo "invalid PAPERBANANA_BENCH_SECRET_MODE" >&2
+  exit 1
+}
 
 gateway_ready="$(curl --fail --silent --show-error http://127.0.0.1:13005/ready)"
 if ! jq -e '
@@ -33,13 +43,16 @@ done
 
 if [[ "$benchmark_enabled" == true ]]; then
   "${compose[@]}" ps --status running benchmark-worker | grep -q benchmark-worker
-  benchmark_mode="$("${compose[@]}" exec -T benchmark-worker printenv PAPERBANANA_BENCH_ENABLED)"
-  test "$benchmark_mode" = false || {
-    echo "benchmark worker must remain discovery-only during bootstrap" >&2
+  "${compose[@]}" exec -T benchmark-worker node -e '
+    if (process.env.PAPERBANANA_BENCH_ENABLED !== "false") process.exit(1)
+    if (process.env.PAPERBANANA_BENCH_CONCURRENCY !== "1") process.exit(1)
+  ' || {
+    echo "benchmark worker must remain disabled with concurrency one" >&2
     exit 1
   }
   "${compose[@]}" exec -T benchmark-worker node -e '
-    const forbidden = [
+    const benchmark_secret_mode = process.argv[1]
+    const names = [
       "PAPERBANANA_BENCH_BAILIAN_API_KEY",
       "PAPERBANANA_BENCH_OPENROUTER_API_KEY",
       "PAPERBANANA_BENCH_ARK_API_KEY",
@@ -50,11 +63,50 @@ if [[ "$benchmark_enabled" == true ]]; then
       "PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT",
       "PAPERBANANA_BENCH_OSS_REGION",
     ]
-    for (const name of forbidden) {
-      if (process.env[name] !== undefined) process.exit(1)
+    if (benchmark_secret_mode === "discovery-only") {
+      const forbidden = names
+      for (const name of forbidden) {
+        if (process.env[name] !== undefined) process.exit(1)
+      }
+    } else if (benchmark_secret_mode === "configured-disabled") {
+      const required = names
+      for (const name of required) {
+        if (typeof process.env[name] !== "string" || process.env[name].length === 0) process.exit(1)
+      }
+    } else {
+      process.exit(1)
     }
-  ' || {
-    echo "benchmark worker discovery container contains paid credential settings" >&2
+  ' "$benchmark_secret_mode" || {
+    echo "benchmark worker credentials do not match the selected secret mode" >&2
+    exit 1
+  }
+  "${compose[@]}" exec -T paperbanana-api node -e '
+    const benchmark_secret_mode = process.argv[1]
+    const ossNames = [
+      "PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID",
+      "PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET",
+      "PAPERBANANA_BENCH_OSS_BUCKET",
+      "PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT",
+      "PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT",
+      "PAPERBANANA_BENCH_OSS_REGION",
+    ]
+    if (benchmark_secret_mode === "discovery-only") {
+      const forbidden = ossNames
+      if (process.env.PAPERBANANA_BENCH_API_ENABLED !== "false") process.exit(1)
+      for (const name of forbidden) {
+        if (process.env[name] !== undefined) process.exit(1)
+      }
+    } else if (benchmark_secret_mode === "configured-disabled") {
+      const required = ossNames
+      if (process.env.PAPERBANANA_BENCH_API_ENABLED !== "true") process.exit(1)
+      for (const name of required) {
+        if (typeof process.env[name] !== "string" || process.env[name].length === 0) process.exit(1)
+      }
+    } else {
+      process.exit(1)
+    }
+  ' "$benchmark_secret_mode" || {
+    echo "Core Bench API and OSS settings do not match the selected secret mode" >&2
     exit 1
   }
 fi

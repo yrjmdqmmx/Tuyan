@@ -42,6 +42,10 @@ documents. It refuses to overwrite an initialized environment.
 ## Deployment and recovery
 
 1. Build images with immutable commit tags and record those tags in `.env`.
+   Set exactly one `PAPERBANANA_BENCH_SECRET_MODE`: use `discovery-only` for
+   the credential-free default, or `configured-disabled` only after the
+   dedicated Bench credential gate has completed. Missing or unknown modes
+   fail closed.
 2. Run `scripts/deploy.sh` first without arguments, then with `--apply`.
 3. The apply path creates the maintenance marker, recreates only this Compose
    project, waits up to 30 minutes for graceful core drain, runs isolation and
@@ -70,6 +74,26 @@ reference documents, images, jobs, or saved selections.
 Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
 inspect each result with `systemctl status paperbanana-backup.service` plus the
 corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.
+
+## Benchmark credential staging
+
+The default deployment mode is `discovery-only`: Core Bench API access and the
+Worker remain disabled, and no Provider or Bench OSS credential may be present.
+The manual `Configure Benchmark Credentials Disabled` workflow is the only
+repository-supported transition to `configured-disabled`. It requires the
+exact deployed 40-character commit, transports the three dedicated Provider
+keys plus all six dedicated Bench OSS settings through an owner-only temporary
+bundle, and invokes `scripts/configure-benchmark-credentials.sh --apply`.
+
+The operator validates all inputs before mutation, takes an exclusive host
+lock, atomically updates `core.env`, `bench.env`, and `.env`, and recreates only
+`paperbanana-api` and `benchmark-worker`. Core receives the Bench-only OSS
+signer and `PAPERBANANA_BENCH_API_ENABLED=true`; the Worker receives its
+dedicated Provider/OSS credentials but remains
+`PAPERBANANA_BENCH_ENABLED=false` with concurrency one. Failed installation,
+recreate, or smoke restores all three prior files and recreates the prior
+services. This stage does not authorize generation, judging, a canary, or any
+paid request.
 
 ## Singapore provider egress activation
 

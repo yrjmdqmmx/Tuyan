@@ -18,6 +18,14 @@ on:
       benchmark_image:
         description: Benchmark worker image including @sha256 digest.
         required: true
+      benchmark_secret_mode:
+        description: Keep Bench credential handling explicit and fail closed.
+        required: true
+        type: choice
+        default: discovery-only
+        options:
+          - discovery-only
+          - configured-disabled
       confirm:
         description: Type deploy-hk to continue.
         required: true
@@ -44,6 +52,7 @@ jobs:
           WORKER_IMAGE: ${{ inputs.worker_image }}
           MONGODB_IMAGE: ${{ inputs.mongodb_image }}
           BENCHMARK_IMAGE: ${{ inputs.benchmark_image }}
+          BENCHMARK_SECRET_MODE: ${{ inputs.benchmark_secret_mode }}
         run: |
           set -Eeuo pipefail
           digest='@sha256:[0-9a-f]{64}$'
@@ -52,6 +61,7 @@ jobs:
           [[ "$WORKER_IMAGE" =~ ^ghcr\.io/[a-z0-9_.-]+/paperbanana-plot-worker${digest} ]]
           [[ "$MONGODB_IMAGE" =~ ^mongo:8\.0\.[0-9]+-noble${digest} ]]
           [[ "$BENCHMARK_IMAGE" =~ ^ghcr\.io/[a-z0-9_.-]+/paperbanana-benchmark-worker${digest} ]]
+          [[ "$BENCHMARK_SECRET_MODE" == discovery-only || "$BENCHMARK_SECRET_MODE" == configured-disabled ]]
 
       - name: Configure SSH
         env:
@@ -73,6 +83,7 @@ jobs:
           WORKER_IMAGE: ${{ inputs.worker_image }}
           MONGODB_IMAGE: ${{ inputs.mongodb_image }}
           BENCHMARK_IMAGE: ${{ inputs.benchmark_image }}
+          BENCHMARK_SECRET_MODE: ${{ inputs.benchmark_secret_mode }}
         run: |
           set -Eeuo pipefail
           image_lock="$(mktemp)"
@@ -83,9 +94,10 @@ jobs:
             printf 'PAPERBANANA_PLOT_WORKER_IMAGE=%s\n' "$WORKER_IMAGE"
             printf 'PAPERBANANA_MONGODB_IMAGE=%s\n' "$MONGODB_IMAGE"
             printf 'PAPERBANANA_BENCH_WORKER_IMAGE=%s\n' "$BENCHMARK_IMAGE"
+            printf 'PAPERBANANA_BENCH_SECRET_MODE=%s\n' "$BENCHMARK_SECRET_MODE"
             printf 'COMPOSE_PROFILES=benchmark\n'
           } > "$image_lock"
           REMOTE_LOCK="/tmp/paperbanana-image-lock-${GITHUB_RUN_ID}"
           scp "$image_lock" "$DEPLOY_USER@$DEPLOY_HOST:$REMOTE_LOCK"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" \
-            "set -Eeuo pipefail; cd /opt/paperbanana/repo && git fetch --quiet origin '${GITHUB_SHA}' && git checkout --detach '${GITHUB_SHA}' && install -m 0600 '$REMOTE_LOCK' deploy/hk-single-host/.env && rm -f '$REMOTE_LOCK' && PAPERBANANA_CODE_SHA='${GITHUB_SHA}' deploy/hk-single-host/scripts/bootstrap-benchmark.sh --discovery-only && deploy/hk-single-host/scripts/deploy.sh --apply"
+            "set -Eeuo pipefail; cd /opt/paperbanana/repo && git fetch --quiet origin '${GITHUB_SHA}' && git checkout --detach '${GITHUB_SHA}' && install -m 0600 '$REMOTE_LOCK' deploy/hk-single-host/.env && rm -f '$REMOTE_LOCK' && PAPERBANANA_CODE_SHA='${GITHUB_SHA}' deploy/hk-single-host/scripts/bootstrap-benchmark.sh '--$BENCHMARK_SECRET_MODE' && deploy/hk-single-host/scripts/deploy.sh --apply"

@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-08-25] Bench 专用凭据 configured-disabled 激活门 — by Codex
+变更：香港单机部署新增显式 `PAPERBANANA_BENCH_SECRET_MODE=discovery-only|configured-disabled`。默认 `discovery-only` 继续拒绝全部 Provider/Bench OSS 凭据；新的 root-only 原子操作脚本仅通过 0600 临时 bundle 接收三项 Provider 与六项 Bench OSS 配置，要求 Core/Worker 的 `PAPERBANANA_CODE_SHA` 与人工输入的已部署 40 位 commit 完全一致，并在失败时恢复 `core.env`、`bench.env`、部署模式及原服务。`configured-disabled` 只打开 Core Bench API 的独立 OSS 读取/签名配置，Worker 始终保持 `PAPERBANANA_BENCH_ENABLED=false`、并发 1；本条不授权任何生成、Judge、canary 或付费请求。
+各端待办：
+- [x] 部署 / 运维代码（root-only operator、flock、原子回滚、显式 deploy mode、双模式 smoke、手工 GitHub Environment workflow、TDD 与凭据脱敏契约）
+- [ ] 生产 Bench OSS（创建独立最小权限 RAM、私有 bucket/region/internal/public endpoint，并保存六项 `PAPERBANANA_BENCH_OSS_*` Environment secrets）
+- [ ] 生产 configured-disabled（六项 OSS secret 齐备后，以精确已部署 SHA 手工运行 workflow；复核 Core API 可用、Worker disabled/并发 1、费用为零）
+- [ ] Judge calibration / 任何两题 canary、24 图临时集、144 图正式集（仍需用户另行明确模型、Judge 与美元预算授权，当前禁止执行）
+
 ### [2026-08-25] 出图模型 Bench v1 共享契约与独立 Worker — by Codex
 变更：新增公开只读 `/bench` 模型观测台、不可变 `pb-image-diagnostic-v1` 48 题原创诊断集、七维评分/题内聚合/bootstrap 区间、双 Judge + Codex 盲审协议，以及默认关闭的独立 `benchmark-worker`。首版仅文生图，不使用 PaperBananaBench 官方题集，不产生综合总分，不自动扣费。
 契约（影响 Web / Core / Gateway / Worker / 运维）：
