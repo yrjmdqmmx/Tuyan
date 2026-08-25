@@ -15,6 +15,7 @@ const judgeAccessDiagnosticPath = fileURLToPath(new URL('../scripts/diagnose-ben
 const judgeAccessWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-judge-access.yml', import.meta.url));
 const openRouterJudgeProbePath = fileURLToPath(new URL('../scripts/run-openrouter-judge-probe.sh', import.meta.url));
 const openRouterJudgeProbeWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/run-openrouter-judge-probe.yml', import.meta.url));
+const openRouterGitHubProbeWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/run-openrouter-github-egress-probe.yml', import.meta.url));
 const expectedSha = 'a'.repeat(40);
 
 function makeFixture() {
@@ -257,4 +258,21 @@ test('OpenRouter Judge probe workflow is manual, environment-protected, and expl
   assert.match(source, /run-openrouter-judge-probe[.]sh/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/);
+});
+
+test('OpenRouter GitHub-egress probe is one text-only request with fixed secret-free output', () => {
+  assert.equal(existsSync(openRouterGitHubProbeWorkflowPath), true);
+  const source = readFileSync(openRouterGitHubProbeWorkflowPath, 'utf8');
+  assert.match(source, /workflow_dispatch:/);
+  assert.match(source, /environment:\s*paperbanana-production/);
+  assert.match(source, /expected_deployed_sha:[\s\S]*required:\s*true/);
+  assert.match(source, /max_judge_calls:[\s\S]*required:\s*true/);
+  assert.match(source, /max_estimated_usd:[\s\S]*required:\s*true/);
+  assert.match(source, /probe-one-openrouter-text-github-egress/);
+  assert.match(source, /kind:\s*'text_only'/);
+  assert.match(source, /runOpenRouterJudgeProbe/);
+  assert.match(source, /OPENROUTER_GITHUB_EGRESS_PROBE_RESULT/);
+  assert.match(source, /PAPERBANANA_BENCH_OPENROUTER_API_KEY:\s*\$\{\{\s*secrets[.]PAPERBANANA_BENCH_OPENROUTER_API_KEY\s*\}\}/);
+  assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
+  assert.doesNotMatch(source, /image_url|benchmark_fixture|minimal_image|curl|wget|set -x|printenv|console[.](?:log|error)\([^\n]*(?:body|error|key)/i);
 });
