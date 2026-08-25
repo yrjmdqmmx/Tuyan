@@ -32,6 +32,8 @@ import {
   parseBenchmarkPhaseAuthorization,
   assertRunMatchesPhaseAuthorization,
   buildBenchmarkPhaseOperatorReport,
+  diagnoseJudgeProviderAccess,
+  classifyOperatorError,
 } from '../src/index.js'
 import { callBlindJudge } from '../src/judge-provider.js'
 import { createWorkerMongoRepository } from '../src/mongo-repository.js'
@@ -86,6 +88,36 @@ test('judge calibration fixtures are immutable original gold cases covering ever
   const reversedArrow = JUDGE_CALIBRATION_FIXTURES.find((fixture) => fixture.expectedRedLines[0] === 'reversed_arrow')!
   assert.match(reversedArrow.svg, /M595 250 H485/)
   assert.match(reversedArrow.svg, /M503 236 L485 250 L503 264/)
+})
+
+test('Judge provider access diagnostics use authenticated read-only endpoints and fixed stage codes', async () => {
+  const calls: Array<{ url: string; method: string }> = []
+  const stages: string[] = []
+  const result = await diagnoseJudgeProviderAccess({
+    openrouterKey: 'test-openrouter', bailianKey: 'test-bailian',
+    emit(stage) { stages.push(stage) },
+    async fetchImpl(input, init) {
+      const url = String(input)
+      calls.push({ url, method: String(init?.method || 'GET') })
+      if (url.endsWith('/api/v1/key')) return Response.json({ data: { is_management_key: false, limit_remaining: 10 } })
+      if (url === 'https://openrouter.ai/api/v1/models') return Response.json({ data: [{ id: 'google/gemini-3.7-flash' }] })
+      if (url === 'https://dashscope.aliyuncs.com/compatible-mode/v1/models') return Response.json({ data: [{ id: 'qwen3.7-plus' }] })
+      return new Response('{}', { status: 404 })
+    },
+  })
+  assert.deepEqual(result, { openrouterModel: 'google/gemini-3.7-flash', bailianModel: 'qwen3.7-plus' })
+  assert.deepEqual(stages, ['openrouter-auth-ok', 'openrouter-model-ok', 'bailian-auth-ok', 'bailian-model-ok', 'diagnostic-complete'])
+  assert.equal(calls.length, 3)
+  assert.ok(calls.every((call) => call.method === 'GET'))
+})
+
+test('Judge provider diagnostics and operator failures expose only fixed classifications', async () => {
+  await assert.rejects(() => diagnoseJudgeProviderAccess({
+    openrouterKey: 'secret-openrouter-value', bailianKey: 'secret-bailian-value', emit() {},
+    fetchImpl: async () => new Response('{}', { status: 401 }),
+  }), /BENCHMARK_JUDGE_ACCESS_OPENROUTER_AUTH/)
+  assert.equal(classifyOperatorError(new Error('BENCHMARK_JUDGE_HTTP_401')), 'BENCHMARK_JUDGE_HTTP_401')
+  assert.equal(classifyOperatorError(new Error('secret-openrouter-value leaked')), 'BENCHMARK_OPERATOR_FAILURE_REDACTED')
 })
 
 test('judge calibration report scores exact red-line sets, pair agreement and immutable fixture hash', () => {

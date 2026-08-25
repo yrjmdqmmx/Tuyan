@@ -1,0 +1,56 @@
+name: Diagnose Benchmark Judge Access
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        description: Exact deployed 40-character SHA
+        required: true
+      confirm:
+        description: Type diagnose-judge-provider-access-disabled-worker
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    if: github.event.inputs.confirm == 'diagnose-judge-provider-access-disabled-worker'
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate read-only request
+        env:
+          SHA: ${{ inputs.expected_deployed_sha }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$CONFIRM" == diagnose-judge-provider-access-disabled-worker ]]
+          bash -n deploy/hk-single-host/scripts/diagnose-benchmark-judge-access.sh
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" >"$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" >"$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Run authenticated read-only Judge access checks
+        env:
+          HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          USER: ${{ secrets.ALIYUN_HK_USER }}
+          SHA: ${{ inputs.expected_deployed_sha }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v cmd 'cd %q && sudo %q --expected-sha %q --confirm %q --apply' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/diagnose-benchmark-judge-access.sh "$SHA" "$CONFIRM"
+          ssh "$USER@$HOST" "$cmd"
