@@ -1,6 +1,7 @@
 import { BENCHMARK_COLLECTIONS } from '@paperbanana/benchmark-core'
 import { randomUUID } from 'node:crypto'
 import type { Db } from 'mongodb'
+import { UnknownProviderOutcomeError } from './provider-operation.js'
 
 type AnyRecord = { _id: string; [key: string]: any }
 
@@ -17,6 +18,7 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
   const runs = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.runs)
   const samples = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.samples)
   const judgments = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.judgments)
+  const dispatches = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.dispatches)
 
   return {
     async ensureIndexes() {
@@ -30,6 +32,15 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
       ])
     },
     async registrySnapshot() { return models.findOne({ _id: 'benchmark-registry-latest' }) },
+    async phaseReport(runId: string, phase: 'quick' | 'full') {
+      const run = await runs.findOne({ _id: runId })
+      const [sampleCount, judgmentCount, auditCount] = await Promise.all([
+        samples.countDocuments({ runId, phase, status: 'completed' }),
+        judgments.countDocuments({ runId, phase, status: 'completed' }),
+        samples.countDocuments({ runId, phase, status: 'completed', auditRequired: true }),
+      ])
+      return { run, sampleCount, judgmentCount, auditCount }
+    },
     async saveRegistrySnapshot(snapshot: any, registryHash: string) {
       await models.updateOne({ _id: 'benchmark-registry-latest' }, { $set: { snapshot, registryHash, capturedAt: now() } }, { upsert: true })
     },
@@ -52,32 +63,43 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
         { sort: { createdAt: 1 }, returnDocument: 'after' },
       )
     },
+    async acquireRunById(runId: string, expectedState: 'quick_running' | 'full_running', workerId: string, leaseMs: number) {
+      const timestamp = now()
+      const leaseToken = randomUUID()
+      return runs.findOneAndUpdate(
+        { _id: runId, state: expectedState, $or: [{ leaseUntil: { $exists: false } }, { leaseUntil: { $lte: timestamp } }] },
+        { $set: { leaseOwner: workerId, leaseToken, leaseUntil: new Date(timestamp.getTime() + leaseMs), heartbeatAt: timestamp } },
+        { returnDocument: 'after' },
+      )
+    },
     async heartbeat(runId: string, workerId: string, leaseToken: string, expectedState: string, leaseMs: number) {
       const result = await runs.updateOne({ _id: runId, leaseOwner: workerId, leaseToken, state: expectedState }, { $set: { heartbeatAt: now(), leaseUntil: new Date(now().getTime() + leaseMs) } })
       return result.modifiedCount === 1
     },
-    async reserveBudget(runId: string, workerId: string, leaseToken: string, expectedState: string, kind: 'generation' | 'judgment', estimatedUsd: number) {
+    async reserveBudget(runId: string, workerId: string, leaseToken: string, expectedState: string, kind: 'generation' | 'judgment' | 'judgeCall', estimatedUsd: number) {
       const timestamp = now()
       const leaseFilter = { _id: runId, leaseOwner: workerId, leaseToken, state: expectedState, leaseUntil: { $gt: timestamp } }
       const run = await runs.findOne(leaseFilter)
       if (!run) throw new Error('BENCHMARK_RUN_LEASE_LOST')
       const phase = expectedState === 'full_running' ? 'full' : 'quick'
       const usagePath = `usageByPhase.${phase}`
-      const usage = run.usageByPhase?.[phase] || { generations: 0, judgments: 0, estimatedUsd: 0 }
+      const usage = run.usageByPhase?.[phase] || { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 }
       const limits = run.approval || {}
       const generations = Number(usage.generations || 0) + (kind === 'generation' ? 1 : 0)
       const judgmentCount = Number(usage.judgments || 0) + (kind === 'judgment' ? 1 : 0)
+      const judgeCalls = Number(usage.judgeCalls || 0) + (kind === 'judgeCall' ? 1 : 0)
       const cost = Number(usage.estimatedUsd || 0) + estimatedUsd
       const reason = generations > Number(limits.maxGenerations) ? 'GENERATIONS'
-        : judgmentCount > Number(limits.maxJudgeCalls) ? 'JUDGMENTS'
+        : judgmentCount > Number(limits.maxJudgments) ? 'JUDGMENTS'
+          : judgeCalls > Number(limits.maxJudgeCalls) ? 'JUDGE_CALLS'
           : cost > Number(limits.maxEstimatedUsd) ? 'COST' : ''
       if (reason) {
         await runs.updateOne(leaseFilter, { $set: { state: 'paused', pauseReason: `BENCHMARK_BUDGET_PAUSED:${reason}`, updatedAt: now() }, $unset: { leaseOwner: '', leaseToken: '', leaseUntil: '' } })
         throw new Error(`BENCHMARK_BUDGET_PAUSED:${reason}`)
       }
       const result = await runs.updateOne(
-        { ...leaseFilter, [`${usagePath}.generations`]: Number(usage.generations || 0), [`${usagePath}.judgments`]: Number(usage.judgments || 0), [`${usagePath}.estimatedUsd`]: Number(usage.estimatedUsd || 0) },
-        { $set: { [usagePath]: { generations, judgments: judgmentCount, estimatedUsd: cost }, updatedAt: now() } },
+        { ...leaseFilter, [`${usagePath}.generations`]: Number(usage.generations || 0), [`${usagePath}.judgments`]: Number(usage.judgments || 0), [`${usagePath}.judgeCalls`]: Number(usage.judgeCalls || 0), [`${usagePath}.estimatedUsd`]: Number(usage.estimatedUsd || 0) },
+        { $set: { [usagePath]: { generations, judgments: judgmentCount, judgeCalls, estimatedUsd: cost }, updatedAt: now() } },
       )
       if (result.modifiedCount !== 1) throw new Error('BENCHMARK_BUDGET_CONFLICT')
     },
@@ -91,15 +113,17 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
       const lease = await runs.findOne({ _id: run._id, leaseOwner: workerId, leaseToken: run.leaseToken, state: run.state, leaseUntil: { $gt: now() } })
       if (!lease) throw new Error('BENCHMARK_RUN_LEASE_LOST')
       const operationId = `dispatch:${provider}:${sampleId}:${dispatchIndex}`
+      const phase = run.state === 'full_running' ? 'full' : 'quick'
       try {
-        await judgments.insertOne({ _id: operationId, runId: run._id, sampleId, provider: `dispatch:${provider}:${dispatchIndex}`, judgeEpoch: run.judgeEpoch, status: 'dispatched', leaseToken: run.leaseToken, createdAt: now() })
+        await dispatches.insertOne({
+          _id: operationId, runId: run._id, sampleId, phase,
+          logicalProvider: provider, dispatchIndex, judgeEpoch: run.judgeEpoch,
+        })
       } catch (error: any) {
-        if (error?.code === 11000) throw new Error('UNKNOWN_PROVIDER_OUTCOME:JUDGE_DISPATCH_ALREADY_RECORDED')
-        throw error
+        throw new UnknownProviderOutcomeError(error?.code === 11000
+          ? 'Judge dispatch marker already exists before provider call'
+          : 'Judge dispatch marker insert failed before provider call')
       }
-    },
-    async cancelJudgeDispatch(run: AnyRecord, sampleId: string, provider: string, dispatchIndex: number) {
-      await judgments.deleteOne({ _id: `dispatch:${provider}:${sampleId}:${dispatchIndex}`, leaseToken: run.leaseToken, status: 'dispatched' })
     },
     async beginSampleDispatch(run: AnyRecord, workerId: string, sample: { sampleId: string; phase: 'quick' | 'full'; caseId: string; repetition: number }) {
       const lease = await runs.findOne({ _id: run._id, leaseOwner: workerId, leaseToken: run.leaseToken, state: run.state, leaseUntil: { $gt: now() } })
@@ -128,9 +152,11 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
         },
         async markAudits(sampleIds: string[]) { await samples.updateMany({ _id: { $in: sampleIds }, runId: run._id }, { $set: { auditRequired: true } }) },
         async completeRun(nextState: string, summary: Record<string, unknown> = {}) {
+          const phase = run.state === 'full_running' ? 'full' : 'quick'
+          const judgmentCount = Number(summary.judgmentCount)
           const result = await runs.updateOne(
             { _id: run._id, leaseOwner: workerId, leaseToken: run.leaseToken, state: run.state },
-            { $set: { state: nextState, ...summary, updatedAt: now() }, $unset: { leaseOwner: '', leaseToken: '', leaseUntil: '' } },
+            { $set: { state: nextState, ...summary, ...(Number.isInteger(judgmentCount) ? { [`usageByPhase.${phase}.judgments`]: judgmentCount } : {}), updatedAt: now() }, $unset: { leaseOwner: '', leaseToken: '', leaseUntil: '' } },
           )
           if (result.modifiedCount !== 1) throw new Error('BENCHMARK_RUN_LEASE_LOST')
         },

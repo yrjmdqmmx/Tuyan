@@ -119,16 +119,31 @@ test('mongo-init performs the phase index migration before defining a drop-free 
   assert.ok(createPosition >= 0 && legacyDropPosition > createPosition && rolePosition > legacyDropPosition);
   assert.match(initMongo, /phaseIndex[\s\S]*unique !== true[\s\S]*throw/);
   assert.match(initMongo, /if \(legacySampleIndex\)[\s\S]*dropIndex/);
+  const dispatchPrivilege = privilegeLines.find((line) => line.includes('collection: "paperbanana_benchmark_dispatches"')) || '';
+  assert.match(dispatchPrivilege, /actions: \["find", "insert"\]/);
+  assert.doesNotMatch(dispatchPrivilege, /"update"|"remove"|"createIndex"/);
+  const dispatchPrivileges = privilegeLines.filter((line) => line.includes('collection: "paperbanana_benchmark_dispatches"'));
+  assert.equal(dispatchPrivileges.length, 2);
+  assert.match(dispatchPrivileges[1], /actions: \["find"\]/);
+  const judgmentPrivilege = privilegeLines.find((line) => line.includes('collection: "paperbanana_benchmark_judgments"')) || '';
+  assert.doesNotMatch(judgmentPrivilege, /"remove"/);
 });
 
 test('worker runtime creates or verifies phase indexes but never performs index migration', () => {
   const repository = read('../../apps/benchmark-worker/src/mongo-repository.ts');
+  const processRun = read('../../apps/benchmark-worker/src/process-run.ts');
   assert.match(repository, /phase_sample_unique/);
   assert.doesNotMatch(repository, /\.dropIndex\(/);
+  assert.doesNotMatch(repository, /dispatches\.(?:delete|update)/);
+  assert.doesNotMatch(repository, /cancelJudgeDispatch/);
+  const reserve = processRun.indexOf("reserveBudget(run._id, workerId, run.leaseToken, run.state, 'judgeCall'");
+  const marker = processRun.indexOf('beginJudgeDispatch', reserve);
+  assert.ok(reserve >= 0 && marker > reserve, 'dispatch budget must be reserved before the append-only marker insert');
+  assert.doesNotMatch(processRun, /cancelJudgeDispatch/);
 });
 
 test('verified evidence TOCTOU boundary requires immutable content-addressed Worker OSS writes', () => {
-  const worker = read('../../apps/benchmark-worker/src/main.ts');
+  const worker = read('../../apps/benchmark-worker/src/process-run.ts');
   const readme = read('README.md');
   assert.match(worker, /x-oss-forbid-overwrite['"]?:\s*['"]true/);
   assert.match(readme, /Worker OSS RAM policy[^.]*must not grant[^.]*DeleteObject[^.]*overwrite/is);

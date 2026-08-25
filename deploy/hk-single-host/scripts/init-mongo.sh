@@ -66,6 +66,16 @@ done
   const legacyJudgmentIndex = judgmentCollection.getIndexes().find(index => index.name === "runId_1_sampleId_1_provider_1_judgeEpoch_1")
   if (legacyJudgmentIndex) judgmentCollection.dropIndex(legacyJudgmentIndex.name)
 
+  const dispatchCollection = benchmark.getCollection("paperbanana_benchmark_dispatches")
+  dispatchCollection.createIndex(
+    {runId: 1, phase: 1, sampleId: 1, logicalProvider: 1, dispatchIndex: 1, judgeEpoch: 1},
+    {unique: true, name: "phase_dispatch_unique"},
+  )
+  const dispatchIndex = dispatchCollection.getIndexes().find(index => index.name === "phase_dispatch_unique")
+  if (!dispatchIndex || dispatchIndex.unique !== true || JSON.stringify(dispatchIndex.key) !== JSON.stringify({runId: 1, phase: 1, sampleId: 1, logicalProvider: 1, dispatchIndex: 1, judgeEpoch: 1})) {
+    throw new Error("phase_dispatch_unique verification failed")
+  }
+
   const roleDefinitions = [
     {
       role: "paperbanana_benchmark_worker_role",
@@ -73,13 +83,15 @@ done
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_models"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_runs"}, actions: ["find", "update", "createIndex", "listIndexes"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_samples"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
-        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_judgments"}, actions: ["find", "insert", "update", "remove", "createIndex", "listIndexes"]},
+        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_judgments"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
+        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_dispatches"}, actions: ["find", "insert"]},
       ],
     },
     {
       role: "paperbanana_benchmark_api_role",
       privileges: [
         ...apiWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]})),
+        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_dispatches"}, actions: ["find"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_releases"}, actions: ["find", "insert"]},
       ],
     },

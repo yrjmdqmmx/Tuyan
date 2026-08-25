@@ -1,18 +1,17 @@
-import { createHash, randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import { writeFile } from 'node:fs/promises'
 
 import OSS from 'ali-oss'
 import { MongoClient } from 'mongodb'
-import { PB_IMAGE_DIAGNOSTIC_V1, benchmarkJudgeStackHash, canonicalHash, planBenchmarkCases } from '@paperbanana/benchmark-core'
+import { canonicalHash } from '@paperbanana/benchmark-core'
 
 import { loadAuthoritativeImageRuntime } from './authoritative-runtime.js'
 import { loadBuildProvenance } from './build-provenance.js'
 import { loadBenchCredentials, parseWorkerConfig, redactHealthError } from './config.js'
 import { detectImageCandidates } from './detector.js'
-import { callBlindJudge } from './judge-provider.js'
 import { createWorkerMongoRepository } from './mongo-repository.js'
-import { executeBenchmarkRun } from './runner.js'
-import { runProviderOperation, UnknownProviderOutcomeError } from './provider-operation.js'
+import { UnknownProviderOutcomeError } from './provider-operation.js'
+import { processAcquiredBenchmarkRun } from './process-run.js'
 
 const env = process.env
 const config = parseWorkerConfig(env)
@@ -76,13 +75,7 @@ async function main() {
       const run = await repository.acquireRun(workerId, config.leaseMs)
       if (!run) return
       activeRun = run
-      const workerCodeSha = buildProvenance.codeSha
-      if (workerCodeSha !== String(env.PAPERBANANA_CODE_SHA || '').toLowerCase() || workerCodeSha !== run.codeSha) throw new Error('BENCHMARK_WORKER_CODE_SHA_MISMATCH')
-      if (benchmarkJudgeStackHash(workerCodeSha) !== run.judgeStackHash) throw new Error('BENCHMARK_JUDGE_STACK_MISMATCH')
       heartbeat = setInterval(() => { void repository.heartbeat(run._id, workerId, run.leaseToken, run.state, config.leaseMs) }, config.heartbeatMs)
-      const provider = String(run.provider) as 'bailian' | 'openrouter' | 'ark'
-      const apiKey = credentials[provider]
-      if (!apiKey || !credentials.openrouter || !credentials.bailian) throw new Error('BENCHMARK_DEDICATED_CREDENTIALS_MISSING')
       imageRuntime ||= await loadAuthoritativeImageRuntime()
       oss ||= new OSS({
         region: required('PAPERBANANA_BENCH_OSS_REGION'),
@@ -93,57 +86,10 @@ async function main() {
         secure: true,
         authorizationV4: true,
       })
-      const phase = run.state === 'full_running' ? 'full' : 'quick'
-      const phaseCases = phase === 'full'
-        ? [...PB_IMAGE_DIAGNOSTIC_V1.cases]
-        : PB_IMAGE_DIAGNOSTIC_V1.quickCaseIds.map((id) => PB_IMAGE_DIAGNOSTIC_V1.cases.find((item) => item.id === id)!)
-      const capabilityPlan = planBenchmarkCases(phaseCases, run.aspectRatios || [])
-      await executeBenchmarkRun({
-        run: { runId: run._id, phase, provider, modelId: run.modelId, lane: run.lane, repetitions: phase === 'full' ? 3 : 2, runHash: run.runHash, expectedCaseCount: phaseCases.length, capabilityGaps: capabilityPlan.capabilityGaps },
-        cases: capabilityPlan.executableCases as any,
-        async generate(sample) {
-          await repository.reserveBudget(run._id, workerId, run.leaseToken, run.state, 'generation', Number(run.approval?.priceSnapshot?.estimatedPerGeneration || 0))
-          await repository.beginSampleDispatch(run, workerId, sample)
-          const startedAt = Date.now()
-          const imageBase64 = await imageRuntime!.generate({ provider, model: run.modelId, apiKey, prompt: sample.prompt, aspectRatio: sample.aspectRatio, imageSize: sample.lane })
-          const bytes = Buffer.from(imageBase64, 'base64')
-          const imageHash = createHash('sha256').update(bytes).digest('hex')
-          const imageObjectKey = `bench/objects/${imageHash}.png`
-          try {
-            await oss!.put(imageObjectKey, bytes, { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'private, no-store', 'x-oss-forbid-overwrite': 'true' } })
-          } catch (error: any) {
-            if (![409, 'FileAlreadyExists'].includes(error?.status || error?.code)) throw error
-            const existing = await oss!.get(imageObjectKey)
-            if (createHash('sha256').update(Buffer.from(existing.content)).digest('hex') !== imageHash) throw new Error('BENCHMARK_CONTENT_ADDRESS_COLLISION')
-          }
-          return { imageHash, imageObjectKey, latencyMs: Date.now() - startedAt }
-        },
-        async judge(judgeProvider, sample) {
-          const object = await oss!.get(sample.imageObjectKey!)
-          let dispatchIndex = 0
-          return runProviderOperation(
-            () => callBlindJudge({
-              provider: judgeProvider,
-              apiKey: credentials[judgeProvider],
-              imageBase64: Buffer.from(object.content).toString('base64'),
-              rubric: sample.rubric,
-              caption: sample.caption,
-              beforeDispatch: async () => {
-                const currentDispatch = dispatchIndex
-                dispatchIndex += 1
-                await repository.beginJudgeDispatch(run, workerId, sample.sampleId, judgeProvider, currentDispatch)
-                try {
-                  await repository.reserveBudget(run._id, workerId, run.leaseToken, run.state, 'judgment', Number(run.approval?.priceSnapshot?.estimatedPerJudgeCall))
-                } catch (error) {
-                  await repository.cancelJudgeDispatch(run, sample.sampleId, judgeProvider, currentDispatch)
-                  throw error
-                }
-              },
-            }),
-            { maxRetries: 1 },
-          )
-        },
-        repository: repository.forRun(run, workerId),
+      await processAcquiredBenchmarkRun({
+        run, workerId, workerCodeSha: buildProvenance.codeSha,
+        configuredCodeSha: String(env.PAPERBANANA_CODE_SHA || '').toLowerCase(), credentials,
+        imageRuntime, oss, repository,
       })
       await writeHealth('ready', { lastRunId: run._id, lastRunCompletedAt: new Date().toISOString() })
     } catch (error) {

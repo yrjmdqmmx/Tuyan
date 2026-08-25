@@ -17,6 +17,7 @@ import {
   deriveRelativeTraits,
   planBenchmarkCases,
   selectBenchmarkLane,
+  benchmarkImmutableRunBinding,
 } from '../src/index.js'
 
 test('pb-image-diagnostic-v1 is an immutable 48-case, eight-category suite', () => {
@@ -51,7 +52,7 @@ test('pb-image-diagnostic-v1 is an immutable 48-case, eight-category suite', () 
   }))
 })
 
-test('public contract has seven axes, three lanes and six isolated collections', () => {
+test('public contract has seven axes, three lanes and an internal append-only dispatch collection', () => {
   assert.deepEqual(BENCHMARK_AXES, [
     'faithfulness',
     'conciseness',
@@ -68,6 +69,7 @@ test('public contract has seven axes, three lanes and six isolated collections',
     'paperbanana_benchmark_runs',
     'paperbanana_benchmark_samples',
     'paperbanana_benchmark_judgments',
+    'paperbanana_benchmark_dispatches',
     'paperbanana_benchmark_releases',
   ])
 })
@@ -89,6 +91,25 @@ test('capability planning always includes auto cases and records every unsupport
 test('canonical hashes preserve dates and reject unsupported object prototypes', () => {
   assert.notEqual(canonicalHash({ at: new Date('2026-08-25T00:00:00Z') }), canonicalHash({ at: new Date('2026-08-26T00:00:00Z') }))
   assert.throws(() => canonicalHash(new Map([['key', 'value']])), /UNSUPPORTED_CANONICAL_OBJECT/)
+})
+
+test('immutable run binding covers full facts, candidate snapshot, aspect ratios, registry and Core integrity attestation', () => {
+  const runFacts = { runId: 'run-1', aspectRatios: ['16:9', '1:1'], registryHash: 'registry-hash', codeSha: 'a'.repeat(40) }
+  const candidateSnapshot = { candidateId: 'candidate-1', aspectRatios: ['16:9', '1:1'], registryHash: 'registry-hash' }
+  const input = { runHash: canonicalHash(runFacts), runFacts, candidateSnapshot, runIntegrityAttestation: 'b'.repeat(64) }
+  const binding = benchmarkImmutableRunBinding(input)
+  assert.equal(binding.runHash, input.runHash)
+  assert.equal(binding.runFactsHash, canonicalHash(runFacts))
+  assert.equal(binding.candidateSnapshotHash, canonicalHash(candidateSnapshot))
+  assert.equal(binding.aspectRatiosHash, canonicalHash(runFacts.aspectRatios))
+  assert.equal(binding.registryHash, runFacts.registryHash)
+  for (const mutate of [
+    { ...input, runHash: 'c'.repeat(64) },
+    { ...input, runFacts: { ...runFacts, aspectRatios: ['16:9'] } },
+    { ...input, runFacts: { ...runFacts, registryHash: 'other-registry' } },
+    { ...input, candidateSnapshot: { ...candidateSnapshot, candidateId: 'other' } },
+    { ...input, runIntegrityAttestation: 'c'.repeat(64) },
+  ]) assert.notEqual(benchmarkImmutableRunBinding(mutate).immutableFactsHash, binding.immutableFactsHash)
 })
 
 test('lane selection chooses 2K then 1K then 4K and fails closed without a lane', () => {

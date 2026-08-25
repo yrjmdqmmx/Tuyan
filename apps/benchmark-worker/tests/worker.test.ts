@@ -3,7 +3,7 @@ import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
-import { canonicalHash } from '@paperbanana/benchmark-core'
+import { benchmarkImmutableRunBinding, canonicalHash } from '@paperbanana/benchmark-core'
 
 import {
   BenchmarkBudget,
@@ -29,6 +29,9 @@ import {
   redactHealthError,
   listIndexesOrEmpty,
   loadBuildProvenance,
+  parseBenchmarkPhaseAuthorization,
+  assertRunMatchesPhaseAuthorization,
+  buildBenchmarkPhaseOperatorReport,
 } from '../src/index.js'
 import { callBlindJudge } from '../src/judge-provider.js'
 import { createWorkerMongoRepository } from '../src/mongo-repository.js'
@@ -279,6 +282,30 @@ test('judge provider caps output tokens on every fixed Judge request', async () 
   assert.equal(requestBody.max_tokens, 1200)
 })
 
+test('one logical judgment can use explicitly bounded repair plus one 429 retry headroom', async () => {
+  const valid = JSON.stringify({
+    scores: { faithfulness: 8, conciseness: 8, readability: 8, aesthetics: 8, text_accuracy: 8, topology: 8, instruction_adherence: 8 },
+    evidence: ['visible'], redLines: [], confidence: 0.9,
+  })
+  let dispatches = 0
+  const responses = [
+    new Response(JSON.stringify({ choices: [{ message: { content: '{bad' } }] }), { status: 200, headers: { 'content-type': 'application/json' } }),
+    new Response('rate limited', { status: 429, headers: { 'retry-after': '0' } }),
+    new Response(JSON.stringify({ choices: [{ message: { content: '{bad' } }] }), { status: 200, headers: { 'content-type': 'application/json' } }),
+    new Response(JSON.stringify({ choices: [{ message: { content: valid } }] }), { status: 200, headers: { 'content-type': 'application/json' } }),
+  ]
+  const result = await runProviderOperation(() => callBlindJudge({
+    provider: 'openrouter', apiKey: 'fake-key', imageBase64: 'cG5n', rubric: {}, caption: 'caption',
+    beforeDispatch: async () => { dispatches += 1 },
+    async fetchImpl() { return responses.shift()! },
+  }), { maxRetries: 1, wait: async () => undefined })
+  assert.equal(result.scores.topology, 8)
+  assert.equal(dispatches, 4)
+  const budget = new BenchmarkBudget({ maxGenerations: 1, maxJudgeCalls: 4, maxEstimatedUsd: 1 })
+  for (let index = 0; index < 4; index += 1) budget.reserve({ kind: 'judgment', estimatedUsd: 0.1 })
+  assert.throws(() => budget.reserve({ kind: 'judgment', estimatedUsd: 0.1 }), /BENCHMARK_BUDGET_PAUSED:JUDGMENTS/)
+})
+
 test('judge calibration executes six original fixtures against both fixed judges', async () => {
   const calls: string[] = []
   const result = await executeJudgeCalibration({
@@ -328,6 +355,195 @@ test('operator authorization fails closed unless daemon stays disabled and paid 
   assert.throws(() => parseBenchmarkOperatorAuthorization({ ...base, PAPERBANANA_BENCH_MAX_JUDGE_CALLS: '7' }), /BENCHMARK_OPERATOR_AUTHORIZATION_INVALID/)
 })
 
+function phaseAuthorizationEnv(phase: 'quick' | 'full' = 'quick') {
+  const priceSnapshot = {
+    currency: 'USD', source: 'https://example.com/pricing/image-model', capturedAt: '2026-08-25T08:00:00.000Z',
+    estimatedPerGeneration: 0.1, estimatedPerJudgeCall: 0.05,
+  }
+  const codeSha = 'a'.repeat(40)
+  const runFacts = {
+    runId: 'bench-run-0123456789abcdef0123', modelCandidateId: 'ark:model', provider: 'ark', modelId: 'doubao-seedream-test',
+    developer: 'Maker', lane: '2K-standard', aspectRatios: ['16:9', '1:1'], suiteId: 'pb-image-diagnostic-v1', suiteHash: 'b'.repeat(64),
+    judgeEpoch: 'judge-2026-08-v1', reviewerEpoch: 'codex-2026-08-v1', registryHash: 'registry-hash', codeSha,
+    createdAt: new Date('2026-08-25T06:00:00.000Z'),
+  }
+  const candidateSnapshot = { schemaVersion: 1, candidateId: 'ark:model', provider: 'ark', modelId: 'doubao-seedream-test', developer: 'Maker', lane: '2K-standard', aspectRatios: ['16:9', '1:1'], registryHash: 'registry-hash', displayName: 'Model', providerLabel: 'Ark' }
+  const immutable = benchmarkImmutableRunBinding({ runHash: canonicalHash(runFacts), runFacts, candidateSnapshot, runIntegrityAttestation: 'f'.repeat(64) })
+  const approval = {
+    entitlementConfirmed: true, priceSnapshot,
+    maxGenerations: phase === 'quick' ? 24 : 144, maxJudgments: phase === 'quick' ? 48 : 288,
+    maxJudgeCalls: phase === 'quick' ? 192 : 1152,
+    maxEstimatedUsd: phase === 'quick' ? 12 : 72, approvedBy: 'immutable-admin-id', approvedAt: new Date('2026-08-25T07:00:00.000Z'),
+  }
+  return {
+    PAPERBANANA_BENCH_ENABLED: 'false',
+    PAPERBANANA_BENCH_CONCURRENCY: '1',
+    PAPERBANANA_CODE_SHA: codeSha,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_PHASE: phase,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_ID: 'bench-run-0123456789abcdef0123',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_PROVIDER: 'ark',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_MODEL_ID: 'doubao-seedream-test',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_LANE: '2K-standard',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_SUITE_ID: 'pb-image-diagnostic-v1',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_SUITE_HASH: 'b'.repeat(64),
+    PAPERBANANA_BENCH_PHASE_OPERATOR_JUDGE_EPOCH: 'judge-2026-08-v1',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_JUDGE_STACK_HASH: 'c'.repeat(64),
+    PAPERBANANA_BENCH_PHASE_OPERATOR_SIGNED_AUTHORIZATION_HASH: canonicalHash({ phase, approval, codeSha }),
+    PAPERBANANA_BENCH_PHASE_OPERATOR_PRICE_HASH: canonicalHash(priceSnapshot),
+    PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_HASH: immutable.runHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_FACTS_HASH: immutable.runFactsHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_CANDIDATE_SNAPSHOT_HASH: immutable.candidateSnapshotHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_ASPECT_RATIOS_HASH: immutable.aspectRatiosHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_REGISTRY_HASH: immutable.registryHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_INTEGRITY_ATTESTATION: immutable.runIntegrityAttestation,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_IMMUTABLE_FACTS_HASH: immutable.immutableFactsHash,
+    PAPERBANANA_BENCH_MAX_GENERATIONS: phase === 'quick' ? '24' : '144',
+    PAPERBANANA_BENCH_MAX_JUDGMENTS: phase === 'quick' ? '48' : '288',
+    PAPERBANANA_BENCH_MAX_JUDGE_CALLS: phase === 'quick' ? '192' : '1152',
+    PAPERBANANA_BENCH_MAX_ESTIMATED_USD: phase === 'quick' ? '12' : '72',
+    PAPERBANANA_BENCH_ESTIMATED_PER_GENERATION_USD: '0.1',
+    PAPERBANANA_BENCH_ESTIMATED_PER_JUDGE_CALL_USD: '0.05',
+    PAPERBANANA_BENCH_PRICE_CURRENCY: 'USD',
+    PAPERBANANA_BENCH_PRICE_SOURCE: priceSnapshot.source,
+    PAPERBANANA_BENCH_PRICE_CAPTURED_AT: '2026-08-25T08:00:00.000Z',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_CONFIRM: phase === 'quick'
+      ? 'run-exact-approved-quick-phase-disabled-worker'
+      : 'run-exact-approved-full-phase-disabled-worker',
+  }
+}
+
+test('phase operator authorization canonically binds exact run identity, signed approval, price and bounded calls', () => {
+  for (const phase of ['quick', 'full'] as const) {
+    const authorization = parseBenchmarkPhaseAuthorization(phaseAuthorizationEnv(phase))
+    assert.equal(authorization.phase, phase)
+    assert.equal(authorization.expectedState, `${phase}_running`)
+    assert.equal(authorization.runId, 'bench-run-0123456789abcdef0123')
+    assert.match(authorization.signedAuthorizationHash, /^[a-f0-9]{64}$/)
+    assert.equal(authorization.priceHash, canonicalHash(authorization.priceSnapshot))
+    assert.match(authorization.immutableFactsHash, /^[a-f0-9]{64}$/)
+    assert.equal(authorization.maxJudgeCalls, phase === 'quick' ? 192 : 1152)
+    assert.match(authorization.authorizationHash, /^[a-f0-9]{64}$/)
+    assert.equal(canonicalHash(Object.fromEntries(Object.entries(authorization).filter(([key]) => key !== 'authorizationHash'))), authorization.authorizationHash)
+    assert.equal(JSON.stringify(authorization).includes('SECRET'), false)
+  }
+})
+
+test('phase operator authorization rejects every widened, malformed or mismatched boundary', () => {
+  const base = phaseAuthorizationEnv('quick')
+  const invalid: Array<[string, Record<string, string>]> = [
+    ['enabled', { PAPERBANANA_BENCH_ENABLED: 'true' }],
+    ['concurrency', { PAPERBANANA_BENCH_CONCURRENCY: '2' }],
+    ['sha', { PAPERBANANA_CODE_SHA: 'short' }],
+    ['run', { PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_ID: '../other' }],
+    ['phase', { PAPERBANANA_BENCH_PHASE_OPERATOR_PHASE: 'full' }],
+    ['provider', { PAPERBANANA_BENCH_PHASE_OPERATOR_PROVIDER: 'gemini' }],
+    ['model', { PAPERBANANA_BENCH_PHASE_OPERATOR_MODEL_ID: 'x' }],
+    ['lane', { PAPERBANANA_BENCH_PHASE_OPERATOR_LANE: '8K' }],
+    ['suite hash', { PAPERBANANA_BENCH_PHASE_OPERATOR_SUITE_HASH: 'b'.repeat(63) }],
+    ['judge stack', { PAPERBANANA_BENCH_PHASE_OPERATOR_JUDGE_STACK_HASH: 'c'.repeat(63) }],
+    ['signed authorization', { PAPERBANANA_BENCH_PHASE_OPERATOR_SIGNED_AUTHORIZATION_HASH: 'd'.repeat(63) }],
+    ['price hash', { PAPERBANANA_BENCH_PHASE_OPERATOR_PRICE_HASH: 'e'.repeat(63) }],
+    ['immutable facts', { PAPERBANANA_BENCH_PHASE_OPERATOR_IMMUTABLE_FACTS_HASH: 'e'.repeat(63) }],
+    ['generation cap', { PAPERBANANA_BENCH_MAX_GENERATIONS: '25' }],
+    ['logical judgment cap', { PAPERBANANA_BENCH_MAX_JUDGMENTS: '49' }],
+    ['judge dispatch cap', { PAPERBANANA_BENCH_MAX_JUDGE_CALLS: '193' }],
+    ['cost formula', { PAPERBANANA_BENCH_MAX_ESTIMATED_USD: '1' }],
+    ['currency', { PAPERBANANA_BENCH_PRICE_CURRENCY: 'CNY' }],
+    ['price source', { PAPERBANANA_BENCH_PRICE_SOURCE: 'http://example.com/pricing' }],
+    ['captured at', { PAPERBANANA_BENCH_PRICE_CAPTURED_AT: 'yesterday' }],
+    ['confirm', { PAPERBANANA_BENCH_PHASE_OPERATOR_CONFIRM: 'yes' }],
+  ]
+  for (const [name, replacement] of invalid) {
+    assert.throws(() => parseBenchmarkPhaseAuthorization({ ...base, ...replacement }), /BENCHMARK_PHASE_OPERATOR_AUTHORIZATION_INVALID|BENCHMARK_PHASE_OPERATOR_REQUIRES_DISABLED_WORKER/, name)
+  }
+  assert.throws(() => parseBenchmarkPhaseAuthorization({
+    ...phaseAuthorizationEnv('full'), PAPERBANANA_BENCH_MAX_GENERATIONS: '145',
+  }), /BENCHMARK_PHASE_OPERATOR_AUTHORIZATION_INVALID/)
+})
+
+test('worker repository exact-run lease cannot acquire another running run', async () => {
+  let query: any
+  const target = { _id: 'bench-run-target', state: 'quick_running' }
+  const runs = {
+    async findOneAndUpdate(nextQuery: any) { query = nextQuery; return target },
+  }
+  const db = { collection(name: string) { return name === 'paperbanana_benchmark_runs' ? runs : { createIndex: async () => undefined } } }
+  const repository = createWorkerMongoRepository(db as any, () => new Date('2026-08-25T08:00:00.000Z'))
+  assert.equal((await repository.acquireRunById('bench-run-target', 'quick_running', 'phase-worker', 60_000))?._id, 'bench-run-target')
+  assert.equal(query._id, 'bench-run-target')
+  assert.equal(query.state, 'quick_running')
+  assert.deepEqual(query.$or, [{ leaseUntil: { $exists: false } }, { leaseUntil: { $lte: new Date('2026-08-25T08:00:00.000Z') } }])
+})
+
+test('phase operator compares every run identity, signed approval, price and cap before execution', () => {
+  const authorization = parseBenchmarkPhaseAuthorization(phaseAuthorizationEnv('quick'))
+  const approval = {
+    entitlementConfirmed: true,
+    priceSnapshot: authorization.priceSnapshot,
+    maxGenerations: authorization.maxGenerations,
+    maxJudgments: authorization.maxJudgments,
+    maxJudgeCalls: authorization.maxJudgeCalls,
+    maxEstimatedUsd: authorization.maxEstimatedUsd,
+    approvedBy: 'immutable-admin-id',
+    approvedAt: new Date('2026-08-25T07:00:00.000Z'),
+  }
+  const run: any = {
+    _id: authorization.runId, state: authorization.expectedState, codeSha: authorization.codeSha,
+    provider: authorization.provider, modelId: authorization.modelId, lane: authorization.lane,
+    suiteId: authorization.suiteId, suiteHash: authorization.suiteHash,
+    judgeEpoch: authorization.judgeEpoch, judgeStackHash: authorization.judgeStackHash,
+    authorizationHash: authorization.signedAuthorizationHash, priceHash: authorization.priceHash,
+    runHash: authorization.runHash,
+    runFacts: { runId: authorization.runId, modelCandidateId: 'ark:model', provider: authorization.provider, modelId: authorization.modelId, developer: 'Maker', lane: authorization.lane, aspectRatios: ['16:9', '1:1'], suiteId: authorization.suiteId, suiteHash: authorization.suiteHash, judgeEpoch: authorization.judgeEpoch, reviewerEpoch: 'codex-2026-08-v1', registryHash: authorization.registryHash, codeSha: authorization.codeSha, createdAt: new Date('2026-08-25T06:00:00.000Z') },
+    candidateSnapshot: { schemaVersion: 1, candidateId: 'ark:model', provider: authorization.provider, modelId: authorization.modelId, developer: 'Maker', lane: authorization.lane, aspectRatios: ['16:9', '1:1'], registryHash: authorization.registryHash, displayName: 'Model', providerLabel: 'Ark' },
+    aspectRatios: ['16:9', '1:1'], registryHash: authorization.registryHash,
+    runIntegrityAttestation: authorization.runIntegrityAttestation,
+    approval, approvalVersions: [{ schemaVersion: 1, phase: 'quick', authorizationHash: authorization.signedAuthorizationHash, priceHash: authorization.priceHash, approval }],
+  }
+  assert.doesNotThrow(() => assertRunMatchesPhaseAuthorization(run, authorization, authorization.codeSha))
+  const mismatches: Array<[string, string, unknown]> = [
+    ['run', '_id', 'bench-run-ffffffffffffffffffff'], ['phase', 'state', 'full_running'],
+    ['code', 'codeSha', 'f'.repeat(40)], ['provider', 'provider', 'bailian'], ['model', 'modelId', 'other-model'],
+    ['lane', 'lane', '4K-standard'], ['suite', 'suiteId', 'other-suite'], ['suite hash', 'suiteHash', 'f'.repeat(64)],
+    ['judge epoch', 'judgeEpoch', 'other-epoch'], ['judge stack', 'judgeStackHash', 'f'.repeat(64)],
+    ['authorization hash', 'authorizationHash', 'f'.repeat(64)], ['price hash', 'priceHash', 'f'.repeat(64)],
+  ]
+  for (const [name, field, value] of mismatches) {
+    assert.throws(() => assertRunMatchesPhaseAuthorization({ ...run, [field]: value }, authorization, authorization.codeSha), /BENCHMARK_PHASE_OPERATOR_RUN_MISMATCH/, name)
+  }
+  for (const [name, mutate] of [
+    ['run hash', (value: any) => ({ ...value, runHash: 'e'.repeat(64) })],
+    ['run facts aspect ratios', (value: any) => ({ ...value, runFacts: { ...value.runFacts, aspectRatios: ['16:9'] } })],
+    ['top-level aspect ratios', (value: any) => ({ ...value, aspectRatios: ['16:9'] })],
+    ['run facts registry', (value: any) => ({ ...value, runFacts: { ...value.runFacts, registryHash: 'other-registry' } })],
+    ['top-level registry', (value: any) => ({ ...value, registryHash: 'other-registry' })],
+    ['candidate snapshot', (value: any) => ({ ...value, candidateSnapshot: { ...value.candidateSnapshot, displayName: 'Mutated' } })],
+    ['integrity attestation', (value: any) => ({ ...value, runIntegrityAttestation: 'e'.repeat(64) })],
+  ] as const) assert.throws(() => assertRunMatchesPhaseAuthorization(mutate(run), authorization, authorization.codeSha), /BENCHMARK_PHASE_OPERATOR_RUN_MISMATCH/, name)
+  for (const [name, field, value] of [
+    ['generation cap', 'maxGenerations', 23], ['logical judgment cap', 'maxJudgments', 47], ['judge call cap', 'maxJudgeCalls', 191], ['usd cap', 'maxEstimatedUsd', 11.9],
+  ] as const) {
+    const changedApproval = { ...approval, [field]: value }
+    assert.throws(() => assertRunMatchesPhaseAuthorization({
+      ...run, approval: changedApproval,
+      approvalVersions: [{ ...run.approvalVersions[0], approval: changedApproval }],
+    }, authorization, authorization.codeSha), /BENCHMARK_PHASE_OPERATOR_RUN_MISMATCH/, name)
+  }
+  assert.throws(() => assertRunMatchesPhaseAuthorization(run, authorization, 'f'.repeat(40)), /BENCHMARK_PHASE_OPERATOR_RUN_MISMATCH/)
+})
+
+test('phase operator report is an explicit secret-free allowlist', () => {
+  const report = buildBenchmarkPhaseOperatorReport({
+    runId: 'bench-run-0123456789abcdef0123', phase: 'quick', authorizationHash: 'a'.repeat(64),
+    state: 'quick_review', usage: { generations: 24, judgments: 48, estimatedUsd: 4.8 },
+    sampleCount: 24, judgmentCount: 48, auditCount: 3,
+    apiKey: 'sk-never-report-this', mongodbUri: 'mongodb://user:secret@mongo/db', arbitrary: { secret: 'never' },
+  } as any)
+  assert.deepEqual(Object.keys(report).sort(), ['auditCount', 'authorizationHash', 'judgmentCount', 'phase', 'runId', 'sampleCount', 'state', 'usage'].sort())
+  assert.equal(JSON.stringify(report).includes('never-report'), false)
+  assert.equal(JSON.stringify(report).includes('mongodb://'), false)
+})
+
 test('worker only reads dedicated Bench credentials and never returns their values', () => {
   const config = parseWorkerConfig({
     BAILIAN_API_KEY: 'user-key-must-be-ignored',
@@ -369,17 +585,24 @@ test('registry detection creates only new selectable image candidates and perfor
 
 test('approval fails closed until entitlement, price, limits and budget are explicit', () => {
   assert.throws(() => approveCandidate({ candidateId: 'c1' } as never), /BENCHMARK_APPROVAL_INCOMPLETE/)
+  assert.throws(() => approveCandidate({
+    candidateId: 'c1', entitlementConfirmed: true,
+    priceSnapshot: { currency: 'USD', estimatedPerGeneration: 0.04, capturedAt: '2026-08-25T00:00:00Z' },
+    maxGenerations: 24, maxJudgeCalls: 192, maxEstimatedUsd: 12, approvedBy: 'immutable-admin-id',
+  } as never), /BENCHMARK_APPROVAL_INCOMPLETE/)
   const approved = approveCandidate({
     candidateId: 'c1',
     entitlementConfirmed: true,
     priceSnapshot: { currency: 'USD', estimatedPerGeneration: 0.04, capturedAt: '2026-08-25T00:00:00Z' },
     maxGenerations: 24,
-    maxJudgeCalls: 48,
-    maxEstimatedUsd: 2,
+    maxJudgments: 48,
+    maxJudgeCalls: 192,
+    maxEstimatedUsd: 12,
     approvedBy: 'immutable-admin-id',
   })
   assert.equal(approved.state, 'approved')
   assert.equal(approved.maxGenerations, 24)
+  assert.equal(approved.maxJudgments, 48)
 })
 
 test('budget pauses before generation, judgment or estimated cost can exceed a cap', () => {
@@ -399,7 +622,7 @@ test('budget pauses before generation, judgment or estimated cost can exceed a c
 test('full budget accounting is phase-pure and never consumes quick usage', async () => {
   const run: any = {
     _id: 'run-phase-budget', state: 'full_running', leaseOwner: 'worker-1', leaseToken: 'lease-1', leaseUntil: new Date('2026-08-25T09:00:00.000Z'),
-    approval: { maxGenerations: 144, maxJudgeCalls: 288, maxEstimatedUsd: 500 },
+    approval: { maxGenerations: 144, maxJudgments: 288, maxJudgeCalls: 1152, maxEstimatedUsd: 500 },
     usage: { generations: 144, judgments: 288, estimatedUsd: 200 },
     usageByPhase: {
       quick: { generations: 24, judgments: 48, estimatedUsd: 28.8 },
@@ -414,8 +637,62 @@ test('full budget accounting is phase-pure and never consumes quick usage', asyn
   const db = { collection(name: string) { return name === 'paperbanana_benchmark_runs' ? runs : {} } }
   const repository = createWorkerMongoRepository(db as any, () => new Date('2026-08-25T08:00:00.000Z'))
   await repository.reserveBudget(run._id, 'worker-1', 'lease-1', 'full_running', 'generation', 1)
-  assert.deepEqual(update.$set['usageByPhase.full'], { generations: 1, judgments: 0, estimatedUsd: 1 })
+  assert.deepEqual(update.$set['usageByPhase.full'], { generations: 1, judgments: 0, judgeCalls: 0, estimatedUsd: 1 })
   assert.equal(update.$set.state, undefined)
+})
+
+test('repository enforces logical judgments independently from dispatch attempts', async () => {
+  const run: any = {
+    _id: 'run-logical-budget', state: 'quick_running', leaseOwner: 'worker-1', leaseToken: 'lease-1', leaseUntil: new Date('2026-08-25T09:00:00.000Z'),
+    approval: { maxGenerations: 24, maxJudgments: 1, maxJudgeCalls: 4, maxEstimatedUsd: 10 },
+    usageByPhase: { quick: { generations: 0, judgments: 1, judgeCalls: 1, estimatedUsd: 0.1 } },
+  }
+  let update: any
+  const runs = {
+    async findOne() { return run },
+    async updateOne(_query: any, next: any) { update = next; return { modifiedCount: 1 } },
+  }
+  const db = { collection(name: string) { return name === 'paperbanana_benchmark_runs' ? runs : {} } }
+  const repository = createWorkerMongoRepository(db as any, () => new Date('2026-08-25T08:00:00.000Z'))
+  await assert.rejects(repository.reserveBudget(run._id, 'worker-1', 'lease-1', 'quick_running', 'judgment', 0), /BENCHMARK_BUDGET_PAUSED:JUDGMENTS/)
+  assert.equal(update.$set.state, 'paused')
+})
+
+test('durable Judge dispatch markers bind phase, logical provider, index and current epoch', async () => {
+  const inserted: any[] = []
+  let judgmentInsertCalled = false
+  const run: any = { _id: 'run-marker', state: 'full_running', leaseToken: 'lease-1', judgeEpoch: 'judge-current' }
+  const db = { collection(name: string) {
+    if (name === 'paperbanana_benchmark_runs') return { async findOne() { return run } }
+    if (name === 'paperbanana_benchmark_dispatches') return { async insertOne(value: any) { inserted.push(value) } }
+    if (name === 'paperbanana_benchmark_judgments') return { async insertOne() { judgmentInsertCalled = true } }
+    return {}
+  } }
+  const repository = createWorkerMongoRepository(db as any, () => new Date('2026-08-25T08:00:00.000Z'))
+  await repository.beginJudgeDispatch(run, 'worker-1', 'sample-1', 'openrouter', 2)
+  assert.deepEqual(inserted[0], {
+    _id: 'dispatch:openrouter:sample-1:2', runId: 'run-marker', sampleId: 'sample-1', phase: 'full',
+    logicalProvider: 'openrouter', dispatchIndex: 2, judgeEpoch: 'judge-current',
+  })
+  assert.equal(judgmentInsertCalled, false)
+})
+
+test('dispatch marker insert failure is an unknown outcome before any Judge fetch', async () => {
+  let fetchCalls = 0
+  const run: any = { _id: 'run-marker-failure', state: 'full_running', leaseToken: 'lease-1', judgeEpoch: 'judge-current' }
+  const db = { collection(name: string) {
+    if (name === 'paperbanana_benchmark_runs') return { async findOne() { return run } }
+    if (name === 'paperbanana_benchmark_dispatches') return { async insertOne() { throw new Error('mongo unavailable') } }
+    return {}
+  } }
+  const repository = createWorkerMongoRepository(db as any)
+  await assert.rejects(repository.beginJudgeDispatch(run, 'worker-1', 'sample-1', 'openrouter', 0), UnknownProviderOutcomeError)
+  await assert.rejects(callBlindJudge({
+    provider: 'openrouter', apiKey: 'test-only', imageBase64: 'AA==', rubric: {}, caption: 'test',
+    beforeDispatch: async () => repository.beginJudgeDispatch(run, 'worker-1', 'sample-1', 'openrouter', 0),
+    fetchImpl: async () => { fetchCalls += 1; return new Response('{}') },
+  }), UnknownProviderOutcomeError)
+  assert.equal(fetchCalls, 0)
 })
 
 test('repository leases expire, heartbeats extend ownership and idempotency keys are stable', async () => {

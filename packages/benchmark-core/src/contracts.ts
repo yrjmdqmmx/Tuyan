@@ -24,6 +24,7 @@ export const BENCHMARK_COLLECTIONS = Object.freeze({
   runs: 'paperbanana_benchmark_runs',
   samples: 'paperbanana_benchmark_samples',
   judgments: 'paperbanana_benchmark_judgments',
+  dispatches: 'paperbanana_benchmark_dispatches',
   releases: 'paperbanana_benchmark_releases',
 } as const)
 

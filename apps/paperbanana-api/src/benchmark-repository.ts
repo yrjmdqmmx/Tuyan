@@ -11,6 +11,7 @@ import {
   createCodexReviewPacket,
   deriveRelativeTraits,
   importCodexReview,
+  benchmarkImmutableRunBinding,
   benchmarkJudgeStackHash,
   planBenchmarkCases,
   verifyCodexReviewAttestation,
@@ -83,20 +84,26 @@ function signedApprovalVersion(phase: 'quick' | 'full', approvalInput: Record<st
     entitlementConfirmed: approvalInput?.entitlementConfirmed === true,
     priceSnapshot: {
       currency: String(approvalInput?.priceSnapshot?.currency || ''),
+      source: String(approvalInput?.priceSnapshot?.source || ''),
       estimatedPerGeneration: Number(approvalInput?.priceSnapshot?.estimatedPerGeneration),
       estimatedPerJudgeCall: Number(approvalInput?.priceSnapshot?.estimatedPerJudgeCall),
       capturedAt: Number.isFinite(capturedAt.getTime()) ? capturedAt.toISOString() : '',
     },
     maxGenerations: Number(approvalInput?.maxGenerations),
+    maxJudgments: Number(approvalInput?.maxJudgments),
     maxJudgeCalls: Number(approvalInput?.maxJudgeCalls),
     maxEstimatedUsd: Number(approvalInput?.maxEstimatedUsd),
     approvedBy: String(approvalInput?.approvedBy || ''),
     approvedAt,
   }
+  let source: URL | undefined
+  try { source = new URL(approval.priceSnapshot.source) } catch {}
   if (!approval.entitlementConfirmed || approval.priceSnapshot.currency !== 'USD'
+    || source?.protocol !== 'https:' || source.username || source.password || source.toString() !== approval.priceSnapshot.source
     || !Number.isFinite(approval.priceSnapshot.estimatedPerGeneration) || approval.priceSnapshot.estimatedPerGeneration <= 0
     || !Number.isFinite(approval.priceSnapshot.estimatedPerJudgeCall) || approval.priceSnapshot.estimatedPerJudgeCall <= 0
     || !approval.priceSnapshot.capturedAt || !Number.isInteger(approval.maxGenerations) || approval.maxGenerations <= 0
+    || !Number.isInteger(approval.maxJudgments) || approval.maxJudgments <= 0
     || !Number.isInteger(approval.maxJudgeCalls) || approval.maxJudgeCalls <= 0
     || !Number.isFinite(approval.maxEstimatedUsd) || approval.maxEstimatedUsd <= 0 || !approval.approvedBy
     || !Number.isFinite(approvedAt.getTime())) throw new Error('BENCHMARK_RUN_FACTS_INVALID')
@@ -200,12 +207,12 @@ function sameStringSet(left: readonly string[], right: readonly string[]) {
     && [...left].sort().every((value, index) => value === [...right].sort()[index])
 }
 
-function buildFullReviewSourceManifest(run: AnyRecord, runSamples: AnyRecord[], runJudgments: AnyRecord[]) {
-  const fullSamples = runSamples.filter((sample) => sample.phase === 'full').sort((left, right) => String(left.sampleId).localeCompare(String(right.sampleId)))
-  const automaticJudgments = runJudgments.filter((judgment) => judgment.phase === 'full' && judgment.status === 'completed')
+function buildPhaseReviewSourceManifest(run: AnyRecord, runSamples: AnyRecord[], runJudgments: AnyRecord[], runDispatches: AnyRecord[], phase: 'quick' | 'full') {
+  const phaseSamples = runSamples.filter((sample) => sample.phase === phase).sort((left, right) => String(left.sampleId).localeCompare(String(right.sampleId)))
+  const automaticJudgments = runJudgments.filter((judgment) => judgment.phase === phase && judgment.status === 'completed')
     .sort((left, right) => `${left.sampleId}:${left.provider}`.localeCompare(`${right.sampleId}:${right.provider}`))
-  const sampleIds = new Set(fullSamples.map((sample) => sample.sampleId))
-  if (sampleIds.size !== fullSamples.length || automaticJudgments.length !== fullSamples.length * 2) throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_INVALID')
+  const sampleIds = new Set(phaseSamples.map((sample) => sample.sampleId))
+  if (sampleIds.size !== phaseSamples.length || automaticJudgments.length !== phaseSamples.length * 2) throw new Error('BENCHMARK_PHASE_SOURCE_MANIFEST_INVALID')
   const pairs = new Map<string, AnyRecord[]>()
   for (const judgment of automaticJudgments) {
     if (judgment.runId !== run._id || !sampleIds.has(judgment.sampleId) || !['openrouter', 'bailian'].includes(judgment.provider)
@@ -223,7 +230,40 @@ function buildFullReviewSourceManifest(run: AnyRecord, runSamples: AnyRecord[], 
     const pair = pairs.get(sampleId) || []
     return pair.length !== 2 || !pair.some((item) => item.provider === 'openrouter') || !pair.some((item) => item.provider === 'bailian')
   })) throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_INVALID')
-  const expectedAuditIds = buildAuditSelection(fullSamples.map((sample) => {
+  const automaticKeys = new Set(automaticJudgments.map((judgment) => `${judgment.sampleId}:${judgment.provider}`))
+  if (runJudgments.some((judgment) => judgment?.status === 'dispatched' || String(judgment?._id || '').startsWith('dispatch:')
+    || String(judgment?.provider || '').startsWith('dispatch:') || judgment?.logicalProvider !== undefined || judgment?.dispatchIndex !== undefined)) {
+    throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_INVALID')
+  }
+  if (runDispatches.some((marker) => !['quick', 'full'].includes(marker.phase))) {
+    throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_INVALID')
+  }
+  const phaseDispatchMarkers = runDispatches.filter((marker) => marker.phase === phase)
+  const dispatchKeys = new Set<string>()
+  const dispatchesByJudgment = new Map<string, number[]>()
+  for (const marker of phaseDispatchMarkers) {
+    const logicalProvider = String(marker.logicalProvider || '')
+    const dispatchIndex = Number(marker.dispatchIndex)
+    const logicalKey = `${marker.sampleId}:${logicalProvider}`
+    const markerKey = `${logicalKey}:${dispatchIndex}`
+    const exactKeys = ['_id', 'dispatchIndex', 'judgeEpoch', 'logicalProvider', 'phase', 'runId', 'sampleId']
+    if (Object.keys(marker).sort().length !== exactKeys.length || !Object.keys(marker).sort().every((key, index) => key === exactKeys[index])
+      || marker.runId !== run._id || !sampleIds.has(marker.sampleId) || !automaticKeys.has(logicalKey)
+      || !['openrouter', 'bailian'].includes(logicalProvider) || marker.judgeEpoch !== run.judgeEpoch
+      || !Number.isInteger(dispatchIndex) || dispatchIndex < 0 || dispatchIndex > 3
+      || marker._id !== `dispatch:${logicalProvider}:${marker.sampleId}:${dispatchIndex}` || dispatchKeys.has(markerKey)) {
+      throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_INVALID')
+    }
+    dispatchKeys.add(markerKey)
+    const indexes = dispatchesByJudgment.get(logicalKey) || []
+    indexes.push(dispatchIndex)
+    dispatchesByJudgment.set(logicalKey, indexes)
+  }
+  if ([...automaticKeys].some((logicalKey) => {
+    const indexes = (dispatchesByJudgment.get(logicalKey) || []).sort((left, right) => left - right)
+    return indexes.length < 1 || indexes.length > 4 || indexes.some((value, index) => value !== index)
+  }) || dispatchesByJudgment.size !== automaticKeys.size) throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_INVALID')
+  const expectedAuditIds = buildAuditSelection(phaseSamples.map((sample) => {
     const pair = pairs.get(sample.sampleId) || []
     return {
       sampleId: sample.sampleId,
@@ -234,12 +274,12 @@ function buildFullReviewSourceManifest(run: AnyRecord, runSamples: AnyRecord[], 
     }
   }), run.runHash)
   const facts = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     runId: run._id,
     runHash: run.runHash,
-    phase: 'full',
-    usage: { generationCalls: fullSamples.length, automaticJudgeCalls: automaticJudgments.length },
-    samples: fullSamples.map((sample) => ({
+    phase,
+    usage: { generationCalls: phaseSamples.length, logicalJudgments: automaticJudgments.length, judgeDispatchCalls: phaseDispatchMarkers.length },
+    samples: phaseSamples.map((sample) => ({
       sampleId: sample.sampleId, runId: sample.runId, phase: sample.phase, caseId: sample.caseId, repetition: sample.repetition,
       status: sample.status, imageHash: sample.imageHash, imageObjectKey: sample.imageObjectKey, latencyMs: sample.latencyMs,
       rubric: sample.rubric, rubricHash: sample.rubricHash, auditRequired: sample.auditRequired === true, publicEvidence: sample.publicEvidence === true,
@@ -249,6 +289,13 @@ function buildFullReviewSourceManifest(run: AnyRecord, runSamples: AnyRecord[], 
       judgeEpoch: judgment.judgeEpoch, status: judgment.status, scores: judgment.scores, evidence: judgment.evidence,
       redLines: judgment.redLines, confidence: judgment.confidence,
     })),
+    judgeDispatchMarkers: phaseDispatchMarkers
+      .sort((left, right) => `${left.sampleId}:${left.logicalProvider}:${left.dispatchIndex}`.localeCompare(`${right.sampleId}:${right.logicalProvider}:${right.dispatchIndex}`))
+      .map((marker) => ({
+        _id: marker._id, runId: marker.runId, sampleId: marker.sampleId, phase: marker.phase,
+        logicalProvider: marker.logicalProvider, dispatchIndex: marker.dispatchIndex,
+        judgeEpoch: marker.judgeEpoch,
+      })),
   }
   return { facts, hash: canonicalHash(facts), expectedAuditIds }
 }
@@ -260,8 +307,8 @@ function sourceManifestAttestation(run: AnyRecord, sourceManifestHash: string, s
     .digest('hex')
 }
 
-function assertFullSourceManifest(run: AnyRecord, packet: AnyRecord, runSamples: AnyRecord[], runJudgments: AnyRecord[], signingSecret: string) {
-  const manifest = buildFullReviewSourceManifest(run, runSamples, runJudgments)
+function assertPhaseSourceManifest(run: AnyRecord, packet: AnyRecord, runSamples: AnyRecord[], runJudgments: AnyRecord[], runDispatches: AnyRecord[], phase: 'quick' | 'full', signingSecret: string) {
+  const manifest = buildPhaseReviewSourceManifest(run, runSamples, runJudgments, runDispatches, phase)
   const expectedAttestation = sourceManifestAttestation(run, manifest.hash, signingSecret)
   const actualAttestation = String(packet?.sourceManifestAttestation || '')
   if (packet?.sourceManifestHash !== manifest.hash || !benchmarkHashPattern.test(actualAttestation)
@@ -276,9 +323,10 @@ function assertVerifiedReleaseIntegrity(input: {
   suite: AnyRecord | null
   runSamples: AnyRecord[]
   runJudgments: AnyRecord[]
+  runDispatches: AnyRecord[]
   signingSecret: string
 }) {
-  const { run, suite, runSamples, runJudgments } = input
+  const { run, suite, runSamples, runJudgments, runDispatches } = input
   let signedIntegrity: ReturnType<typeof assertRunIntegrity>
   try {
     signedIntegrity = assertRunIntegrity(run, input.signingSecret)
@@ -369,8 +417,8 @@ function assertVerifiedReleaseIntegrity(input: {
     verifiedIntegrityFailure('AUTOMATIC_COVERAGE')
   }
 
-  let sourceManifest: ReturnType<typeof buildFullReviewSourceManifest>
-  try { sourceManifest = buildFullReviewSourceManifest(run, fullSamples, automaticJudgments) }
+  let sourceManifest: ReturnType<typeof buildPhaseReviewSourceManifest>
+  try { sourceManifest = buildPhaseReviewSourceManifest(run, fullSamples, runJudgments, runDispatches, 'full') }
   catch { verifiedIntegrityFailure('SOURCE_MANIFEST') }
   const expectedAuditIds = sourceManifest.expectedAuditIds
   const auditSamples = fullSamples.filter((sample) => sample.auditRequired === true).sort((left, right) => left.sampleId.localeCompare(right.sampleId))
@@ -396,7 +444,7 @@ function assertVerifiedReleaseIntegrity(input: {
   if (expectedPacketHash !== packet.packetHash || !Array.isArray(packet.samples) || packet.samples.length !== auditSamples.length) {
     verifiedIntegrityFailure('CODEX_PACKET_HASH')
   }
-  try { assertFullSourceManifest(run, packet, fullSamples, automaticJudgments, input.signingSecret) }
+  try { assertPhaseSourceManifest(run, packet, fullSamples, runJudgments, runDispatches, 'full', input.signingSecret) }
   catch { verifiedIntegrityFailure('SOURCE_MANIFEST') }
   const auditById = new Map(auditSamples.map((sample) => [sample.sampleId, sample]))
   const packetSampleIds = new Set<string>()
@@ -449,10 +497,13 @@ function assertVerifiedReleaseIntegrity(input: {
   const evidenceObjects = fullSamples.map((sample) => ({ sampleId: sample.sampleId, objectKey: sample.imageObjectKey, imageHash: sample.imageHash }))
     .sort((left, right) => left.sampleId.localeCompare(right.sampleId))
   const generationCalls = fullSamples.length
-  const automaticJudgeCalls = automaticJudgments.length
+  const logicalJudgments = automaticJudgments.length
+  const judgeDispatchCalls = sourceManifest.facts.usage.judgeDispatchCalls
+  const automaticJudgeCalls = logicalJudgments
   const estimatedUsd = Number((generationCalls * fullApprovalVersion!.approval.priceSnapshot.estimatedPerGeneration
-    + automaticJudgeCalls * fullApprovalVersion!.approval.priceSnapshot.estimatedPerJudgeCall).toFixed(12))
-  if (generationCalls > fullApprovalVersion!.approval.maxGenerations || automaticJudgeCalls > fullApprovalVersion!.approval.maxJudgeCalls
+    + judgeDispatchCalls * fullApprovalVersion!.approval.priceSnapshot.estimatedPerJudgeCall).toFixed(12))
+  if (generationCalls > fullApprovalVersion!.approval.maxGenerations || logicalJudgments > fullApprovalVersion!.approval.maxJudgments
+    || judgeDispatchCalls > fullApprovalVersion!.approval.maxJudgeCalls
     || estimatedUsd > fullApprovalVersion!.approval.maxEstimatedUsd) verifiedIntegrityFailure('FULL_APPROVAL_CAPS')
   return {
     sampleCount: fullSamples.length,
@@ -477,7 +528,129 @@ function assertVerifiedReleaseIntegrity(input: {
     priceHash: fullApprovalVersion!.priceHash,
     authorizationHash: fullApprovalVersion!.authorizationHash,
     priceSnapshot: fullApprovalVersion!.approval.priceSnapshot,
-    estimatedCost: { usd: estimatedUsd, generationCalls, automaticJudgeCalls },
+    estimatedCost: { usd: estimatedUsd, generationCalls, automaticJudgeCalls, logicalJudgments, judgeDispatchCalls },
+  }
+}
+
+function assertQuickReleaseIntegrity(input: {
+  run: AnyRecord
+  suite: AnyRecord | null
+  runSamples: AnyRecord[]
+  runJudgments: AnyRecord[]
+  runDispatches: AnyRecord[]
+  signingSecret: string
+}) {
+  const { run, suite, runSamples, runJudgments, runDispatches } = input
+  let signedIntegrity: ReturnType<typeof assertRunIntegrity>
+  try { signedIntegrity = assertRunIntegrity(run, input.signingSecret) }
+  catch { verifiedIntegrityFailure('QUICK_RUN_FACTS') }
+  if (!suite || suite._id !== run.suiteId || suite.id !== run.suiteId || suite.manifestHash !== run.suiteHash) verifiedIntegrityFailure('QUICK_SUITE')
+  const { _id: _suiteId, createdAt: _createdAt, manifestHash: storedSuiteHash, ...suiteBase } = suite!
+  if (canonicalHash(suiteBase) !== storedSuiteHash || storedSuiteHash !== PB_IMAGE_DIAGNOSTIC_V1.manifestHash) verifiedIntegrityFailure('QUICK_SUITE')
+  const suiteCases = Array.isArray(suite!.cases) ? suite!.cases : []
+  const casesById = new Map(suiteCases.map((item: AnyRecord) => [item.id, item]))
+  const quickCases = PB_IMAGE_DIAGNOSTIC_V1.quickCaseIds.map((id) => casesById.get(id)).filter(Boolean) as AnyRecord[]
+  if (quickCases.length !== PB_IMAGE_DIAGNOSTIC_V1.quickCaseIds.length) verifiedIntegrityFailure('QUICK_CASES')
+  const capabilityPlan = planBenchmarkCases(quickCases as any, Array.isArray(run.aspectRatios) ? run.aspectRatios : [])
+  const expectedCases = new Map(capabilityPlan.executableCases.map((item) => [item.id, item]))
+  const expectedSampleCount = expectedCases.size * 2
+  if (canonicalHash(run.capabilityGaps || []) !== canonicalHash(capabilityPlan.capabilityGaps)) verifiedIntegrityFailure('QUICK_CAPABILITY_GAPS')
+  const quickSamples = runSamples.filter((sample) => sample.phase === 'quick')
+  if (quickSamples.length !== expectedSampleCount) verifiedIntegrityFailure('QUICK_SAMPLE_CARDINALITY')
+  const sampleIds = new Set<string>()
+  const repetitionsByCase = new Map<string, Set<number>>()
+  for (const sample of quickSamples) {
+    const diagnosticCase = expectedCases.get(sample.caseId)
+    const rubricCase = casesById.get(sample.caseId)
+    const expectedSampleId = diagnosticCase && Number.isInteger(sample.repetition) ? benchmarkSampleId(run._id, 'quick', sample.caseId, sample.repetition) : ''
+    if (!diagnosticCase || sample.runId !== run._id || sample.phase !== 'quick' || sample.status !== 'completed'
+      || sample._id !== expectedSampleId || sample.sampleId !== expectedSampleId || sampleIds.has(sample.sampleId)
+      || ![0, 1].includes(sample.repetition) || !benchmarkHashPattern.test(String(sample.imageHash || ''))
+      || sample.imageObjectKey !== `bench/objects/${sample.imageHash}.png` || canonicalHash(sample.rubric) !== sample.rubricHash
+      || !rubricCase || sample.rubricHash !== canonicalHash(rubricCase.rubric) || !Number.isInteger(sample.latencyMs) || sample.latencyMs <= 0 || sample.latencyMs > maxVerifiedLatencyMs) {
+      verifiedIntegrityFailure('QUICK_SAMPLE_SHAPE')
+    }
+    sampleIds.add(sample.sampleId)
+    const repetitions = repetitionsByCase.get(sample.caseId) || new Set<number>()
+    repetitions.add(sample.repetition)
+    repetitionsByCase.set(sample.caseId, repetitions)
+  }
+  if ([...expectedCases].some(([caseId]) => {
+    const repetitions = repetitionsByCase.get(caseId)
+    return !repetitions || repetitions.size !== 2 || !repetitions.has(0) || !repetitions.has(1)
+  })) verifiedIntegrityFailure('QUICK_REPETITIONS')
+  const automatic = runJudgments.filter((judgment) => judgment.phase === 'quick' && judgment.status === 'completed')
+  if (automatic.length !== expectedSampleCount * 2) verifiedIntegrityFailure('QUICK_AUTOMATIC_CARDINALITY')
+  const automaticKeys = new Set<string>()
+  const automaticBySample = new Map<string, AnyRecord[]>()
+  for (const judgment of automatic) {
+    const key = `${judgment.sampleId}:${judgment.provider}`
+    if (judgment.runId !== run._id || !sampleIds.has(judgment.sampleId) || !['openrouter', 'bailian'].includes(judgment.provider)
+      || judgment.judgeEpoch !== run.judgeEpoch || automaticKeys.has(key) || !exactAxisScores(judgment.scores)
+      || !validEvidence(judgment.evidence) || normalizedAutomaticRedLines(judgment.redLines) === null
+      || !Number.isFinite(judgment.confidence) || judgment.confidence < 0 || judgment.confidence > 1) verifiedIntegrityFailure('QUICK_AUTOMATIC_SHAPE')
+    automaticKeys.add(key)
+    const pair = automaticBySample.get(judgment.sampleId) || []
+    pair.push(judgment)
+    automaticBySample.set(judgment.sampleId, pair)
+  }
+  if ([...sampleIds].some((sampleId) => !automaticKeys.has(`${sampleId}:openrouter`) || !automaticKeys.has(`${sampleId}:bailian`))) verifiedIntegrityFailure('QUICK_AUTOMATIC_COVERAGE')
+  let sourceManifest: ReturnType<typeof buildPhaseReviewSourceManifest>
+  try { sourceManifest = buildPhaseReviewSourceManifest(run, quickSamples, runJudgments, runDispatches, 'quick') }
+  catch { verifiedIntegrityFailure('QUICK_SOURCE_MANIFEST') }
+  const packet = run.reviewPacket
+  try { assertPhaseSourceManifest(run, packet, quickSamples, runJudgments, runDispatches, 'quick', input.signingSecret) }
+  catch { verifiedIntegrityFailure('QUICK_SOURCE_MANIFEST') }
+  const expectedAuditIds = sourceManifest.expectedAuditIds
+  const auditSamples = quickSamples.filter((sample) => sample.auditRequired === true)
+  if (!packet || packet.phase !== 'quick' || packet.runHash !== run.runHash || packet.reviewerEpoch !== run.reviewerEpoch
+    || run.importedReviewPacketHash !== packet.packetHash || !sameStringSet(expectedAuditIds, auditSamples.map((sample) => sample.sampleId))
+    || !sameStringSet(expectedAuditIds, Array.isArray(packet.samples) ? packet.samples.map((sample: AnyRecord) => sample.sampleId) : [])) {
+    verifiedIntegrityFailure('QUICK_PACKET')
+  }
+  const acceptedCodex = runJudgments.filter((judgment) => judgment.source === 'codex' && judgment.accepted === true
+    && judgment.phase === 'quick' && judgment.reviewerEpoch === run.reviewerEpoch && judgment.packetHash === packet.packetHash
+    && judgment.reviewHash === run.importedReviewHash && judgment.reviewAttestation === run.importedReviewAttestation)
+  if (acceptedCodex.length !== auditSamples.length || !sameStringSet(expectedAuditIds, acceptedCodex.map((item) => item.sampleId))
+    || acceptedCodex.some((item) => !exactAxisScores(item.scores) || !validEvidence(item.evidence)
+      || !Number.isFinite(item.confidence) || item.confidence < 0 || item.confidence > 1 || !validConfirmedRedLines(item.confirmedRedLines))) {
+    verifiedIntegrityFailure('QUICK_CODEX')
+  }
+  try {
+    const attested = verifyCodexReviewAttestation(packet, acceptedCodex as any, run.importedReviewAttestation, input.signingSecret)
+    if (attested.reviewHash !== run.importedReviewHash) verifiedIntegrityFailure('QUICK_CODEX')
+  } catch { verifiedIntegrityFailure('QUICK_CODEX') }
+  const codexBySample = new Map(acceptedCodex.map((item) => [item.sampleId, item]))
+  const observations = quickSamples.map((sample) => {
+    const pair = automaticBySample.get(sample.sampleId) || []
+    const codex = codexBySample.get(sample.sampleId)
+    const scores = codex ? applyCodexAdjudication({ automatic: pair as any, codex: codex as any }).scores
+      : Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, pair.reduce((sum, item) => sum + Number(item.scores[axis]), 0) / pair.length]))
+    return { caseId: sample.caseId, scores }
+  })
+  const dimensions = aggregateAxisScores(observations, { seed: run.runHash })
+  const quickApproval = signedIntegrity!.approvalVersions.find((version) => version.phase === 'quick')
+  if (!quickApproval) verifiedIntegrityFailure('QUICK_APPROVAL')
+  const generationCalls = quickSamples.length
+  const logicalJudgments = automatic.length
+  const judgeDispatchCalls = sourceManifest.facts.usage.judgeDispatchCalls
+  const estimatedUsd = Number((generationCalls * quickApproval!.approval.priceSnapshot.estimatedPerGeneration
+    + judgeDispatchCalls * quickApproval!.approval.priceSnapshot.estimatedPerJudgeCall).toFixed(12))
+  if (generationCalls > quickApproval!.approval.maxGenerations || logicalJudgments > quickApproval!.approval.maxJudgments
+    || judgeDispatchCalls > quickApproval!.approval.maxJudgeCalls || estimatedUsd > quickApproval!.approval.maxEstimatedUsd) {
+    verifiedIntegrityFailure('QUICK_APPROVAL_CAPS')
+  }
+  const candidate = signedIntegrity!.candidateSnapshot
+  return {
+    sampleCount: generationCalls, auditRatio: auditSamples.length / generationCalls,
+    coverage: expectedCases.size ? new Set(quickSamples.map((sample) => sample.caseId)).size / expectedCases.size : 0,
+    capabilityCoverage: expectedCases.size / quickCases.length, successRate: generationCalls / expectedSampleCount,
+    capabilityGaps: capabilityPlan.capabilityGaps, dimensions,
+    displayName: candidate.displayName, providerLabel: candidate.providerLabel, developer: candidate.developer,
+    provider: candidate.provider, modelId: candidate.modelId, lane: candidate.lane, registryHash: candidate.registryHash,
+    codeSha: signedIntegrity!.runFacts.codeSha, priceHash: quickApproval!.priceHash,
+    authorizationHash: quickApproval!.authorizationHash, priceSnapshot: quickApproval!.approval.priceSnapshot,
+    estimatedCost: { usd: estimatedUsd, generationCalls, automaticJudgeCalls: logicalJudgments, logicalJudgments, judgeDispatchCalls },
   }
 }
 
@@ -675,11 +848,49 @@ function adminCandidate(candidate: AnyRecord) {
       entitlementConfirmed: candidate.approval.entitlementConfirmed === true,
       priceSnapshot: candidate.approval.priceSnapshot,
       maxGenerations: candidate.approval.maxGenerations,
+      maxJudgments: candidate.approval.maxJudgments,
       maxJudgeCalls: candidate.approval.maxJudgeCalls,
       maxEstimatedUsd: candidate.approval.maxEstimatedUsd,
       approvedAt: candidate.approval.approvedAt,
     } : undefined,
   }
+}
+
+export function buildPhaseOperatorAttestation(run: AnyRecord, reviewSigningSecret: string) {
+  const phase = run?.state === 'quick_running' ? 'quick' : run?.state === 'full_running' ? 'full' : ''
+  if (!phase) throw new Error('BENCHMARK_PHASE_OPERATOR_ATTESTATION_NOT_RUNNING')
+  let verified: ReturnType<typeof assertPhaseApproval>
+  try { verified = assertPhaseApproval(run, phase, reviewSigningSecret) }
+  catch { throw new Error('BENCHMARK_PHASE_OPERATOR_ATTESTATION_INVALID') }
+  const approvalVersion = verified.approvalVersion
+  const immutable = benchmarkImmutableRunBinding({
+    runHash: verified.integrity.runHash,
+    runFacts: verified.integrity.runFacts,
+    candidateSnapshot: verified.integrity.candidateSnapshot,
+    runIntegrityAttestation: run.runIntegrityAttestation,
+  })
+  return Object.freeze({
+    schemaVersion: 2 as const,
+    runId: String(run._id), phase, state: run.state, codeSha: run.codeSha,
+    provider: run.provider, modelId: run.modelId, lane: run.lane,
+    suiteId: run.suiteId, suiteHash: run.suiteHash,
+    judgeEpoch: run.judgeEpoch, judgeStackHash: run.judgeStackHash,
+    signedAuthorizationHash: approvalVersion.authorizationHash,
+    priceHash: approvalVersion.priceHash,
+    immutableFacts: immutable.immutableFacts,
+    immutableFactsHash: immutable.immutableFactsHash,
+    runHash: immutable.runHash,
+    runFactsHash: immutable.runFactsHash,
+    candidateSnapshotHash: immutable.candidateSnapshotHash,
+    aspectRatiosHash: immutable.aspectRatiosHash,
+    registryHash: immutable.registryHash,
+    runIntegrityAttestation: immutable.runIntegrityAttestation,
+    maxGenerations: approvalVersion.approval.maxGenerations,
+    maxJudgments: approvalVersion.approval.maxJudgments,
+    maxJudgeCalls: approvalVersion.approval.maxJudgeCalls,
+    maxEstimatedUsd: approvalVersion.approval.maxEstimatedUsd,
+    priceSnapshot: Object.freeze({ ...approvalVersion.approval.priceSnapshot }),
+  })
 }
 
 export function createMongoBenchmarkRepository(
@@ -694,6 +905,7 @@ export function createMongoBenchmarkRepository(
   const runs = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.runs)
   const samples = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.samples)
   const judgments = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.judgments)
+  const dispatches = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.dispatches)
   const releases = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.releases)
 
   return {
@@ -723,15 +935,26 @@ export function createMongoBenchmarkRepository(
     async approve(input: AnyRecord) {
       const candidateId = text(input.candidateId)
       const maxGenerations = positiveInteger(input.maxGenerations, 144)
-      const maxJudgeCalls = positiveInteger(input.maxJudgeCalls, 1_000)
+      const maxJudgments = positiveInteger(input.maxJudgments, 288)
+      const maxJudgeCalls = positiveInteger(input.maxJudgeCalls, 1_152)
       const maxEstimatedUsd = Number(input.maxEstimatedUsd)
       const price = Number(input.priceSnapshot?.estimatedPerGeneration)
       const judgePrice = Number(input.priceSnapshot?.estimatedPerJudgeCall)
+      const priceSourceText = text(input.priceSnapshot?.source, 500)
+      const capturedAtText = text(input.priceSnapshot?.capturedAt, 40)
+      let priceSource: URL | undefined
+      let capturedAt = ''
+      try {
+        priceSource = new URL(priceSourceText)
+        capturedAt = new Date(capturedAtText).toISOString()
+      } catch {}
       const codeSha = text(immutableCodeSha)
-      if (!candidateId || input.entitlementConfirmed !== true || !maxGenerations || !maxJudgeCalls
+      if (!candidateId || input.entitlementConfirmed !== true || !maxGenerations || !maxJudgments || !maxJudgeCalls
         || !Number.isFinite(maxEstimatedUsd) || !(maxEstimatedUsd > 0) || maxEstimatedUsd > 100_000
         || !Number.isFinite(price) || !(price > 0) || price > 1_000
         || !Number.isFinite(judgePrice) || !(judgePrice > 0) || judgePrice > 100
+        || priceSource?.protocol !== 'https:' || priceSource.username || priceSource.password || priceSource.toString() !== priceSourceText
+        || capturedAt !== capturedAtText
         || !/^[a-f0-9]{40}$/i.test(codeSha) || !/^[A-Za-z0-9._:-]{3,200}$/.test(text(input.adminUserId))) {
         throw new Error('BENCHMARK_APPROVAL_INCOMPLETE')
       }
@@ -739,11 +962,13 @@ export function createMongoBenchmarkRepository(
         entitlementConfirmed: true,
         priceSnapshot: {
           currency: 'USD',
+          source: priceSourceText,
           estimatedPerGeneration: price,
           estimatedPerJudgeCall: judgePrice,
-          capturedAt: new Date(text(input.priceSnapshot?.capturedAt || now().toISOString())).toISOString(),
+          capturedAt,
         },
         maxGenerations,
+        maxJudgments,
         maxJudgeCalls,
         maxEstimatedUsd,
         approvedBy: text(input.adminUserId),
@@ -768,13 +993,22 @@ export function createMongoBenchmarkRepository(
         if (!candidateMatchesRun(currentCandidate, existingRun)) throw new Error('BENCHMARK_REAPPROVAL_CANDIDATE_MISMATCH')
         if (existingRun.state === 'provisional_published') {
           const usage = existingRun.usageByPhase?.full || {}
-          if (maxGenerations < Number(usage.generations || 0) || maxJudgeCalls < Number(usage.judgments || 0) || maxEstimatedUsd < Number(usage.estimatedUsd || 0)) {
+          if (maxGenerations < Number(usage.generations || 0) || maxJudgments < Number(usage.judgments || 0)
+            || maxJudgeCalls < Number(usage.judgeCalls || 0) || maxEstimatedUsd < Number(usage.estimatedUsd || 0)) {
             throw new Error('BENCHMARK_REAPPROVAL_BELOW_USAGE')
           }
         } else {
           correctionOfReleaseId = text(existingRun.releaseId)
           existingRun = null
         }
+      }
+      const approvalPhase = existingRun ? 'full' : 'quick'
+      const generationLimit = approvalPhase === 'quick' ? 24 : 144
+      const judgmentLimit = approvalPhase === 'quick' ? 48 : 288
+      if (maxGenerations > generationLimit || maxJudgments > judgmentLimit
+        || maxJudgeCalls < maxJudgments || maxJudgeCalls > maxJudgments * 4 || maxJudgeCalls > judgmentLimit * 4
+        || maxGenerations * price + maxJudgeCalls * judgePrice > maxEstimatedUsd + 1e-9) {
+        throw new Error('BENCHMARK_APPROVAL_INCOMPLETE')
       }
       const result = await models.findOneAndUpdate(
         { _id: candidateId, state: currentCandidate.state },
@@ -828,8 +1062,8 @@ export function createMongoBenchmarkRepository(
         judgeEstimatedUsd: judgePrice,
         usage: { generations: 0, judgments: 0, estimatedUsd: 0 },
         usageByPhase: {
-          quick: { generations: 0, judgments: 0, estimatedUsd: 0 },
-          full: { generations: 0, judgments: 0, estimatedUsd: 0 },
+          quick: { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 },
+          full: { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 },
         },
         correctionOfReleaseId: correctionOfReleaseId || undefined,
         createdAt: now(),
@@ -871,6 +1105,9 @@ export function createMongoBenchmarkRepository(
       const targetState = text(input.targetState) as BenchmarkRunState
       const run = await runs.findOne({ _id: runId })
       if (!run) throw new Error('BENCHMARK_RUN_NOT_FOUND')
+      if (input.command === 'phaseOperatorAttestation') {
+        return buildPhaseOperatorAttestation(run, text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500))
+      }
       if (targetState === 'quick_running' || targetState === 'full_running') {
         try { assertPhaseApproval(run, targetState === 'full_running' ? 'full' : 'quick', text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)) }
         catch { throw new Error('BENCHMARK_PHASE_APPROVAL_REQUIRED') }
@@ -902,18 +1139,16 @@ export function createMongoBenchmarkRepository(
         await samples.updateMany({ runId, phase, sampleId: { $in: publicEvidenceSampleIds } }, { $set: { auditRequired: true, publicEvidence: true } })
       }
       const auditSamples = await samples.find({ runId, phase, auditRequired: true }).sort({ sampleId: 1 }).toArray()
-      let sourceBinding: { sourceManifestHash?: string; sourceManifestAttestation?: string } = {}
-      if (phase === 'full') {
-        const allFullSamples = await samples.find({ runId, phase: 'full' }).toArray()
-        const allRunJudgments = await judgments.find({ runId }).toArray()
-        let manifest: ReturnType<typeof buildFullReviewSourceManifest>
-        try { manifest = buildFullReviewSourceManifest(run, allFullSamples, allRunJudgments) }
-        catch { throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_INVALID') }
-        if (!sameStringSet(manifest.expectedAuditIds, auditSamples.map((sample) => sample.sampleId))) throw new Error('BENCHMARK_FULL_AUDIT_SET_MISMATCH')
-        sourceBinding = {
-          sourceManifestHash: manifest.hash,
-          sourceManifestAttestation: sourceManifestAttestation(run, manifest.hash, signingSecret),
-        }
+      const allPhaseSamples = await samples.find({ runId, phase }).toArray()
+      const allRunJudgments = await judgments.find({ runId }).toArray()
+      const allRunDispatches = await dispatches.find({ runId }).toArray()
+      let manifest: ReturnType<typeof buildPhaseReviewSourceManifest>
+      try { manifest = buildPhaseReviewSourceManifest(run, allPhaseSamples, allRunJudgments, allRunDispatches, phase) }
+      catch { throw new Error('BENCHMARK_PHASE_SOURCE_MANIFEST_INVALID') }
+      if (!sameStringSet(manifest.expectedAuditIds, auditSamples.map((sample) => sample.sampleId))) throw new Error('BENCHMARK_PHASE_AUDIT_SET_MISMATCH')
+      const sourceBinding = {
+        sourceManifestHash: manifest.hash,
+        sourceManifestAttestation: sourceManifestAttestation(run, manifest.hash, signingSecret),
       }
       for (const sample of auditSamples) await verifyEvidence(sample.imageObjectKey, sample.imageHash)
       const issuedAt = now()
@@ -950,26 +1185,19 @@ export function createMongoBenchmarkRepository(
       if (!run.reviewPacketExpiresAt || new Date(run.reviewPacketExpiresAt).getTime() <= now().getTime()) throw new Error('BENCHMARK_REVIEW_PACKET_EXPIRED')
       const signingSecret = text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)
       try { assertPhaseApproval(run, run.state === 'quick_review' ? 'quick' : 'full', signingSecret) } catch { throw new Error('BENCHMARK_RUN_FACTS_INVALID') }
-      if (run.state === 'codex_audit') {
-        try {
-          assertFullSourceManifest(
-            run,
-            run.reviewPacket,
-            await samples.find({ runId, phase: 'full' }).toArray(),
-            await judgments.find({ runId }).toArray(),
-            signingSecret,
-          )
-        } catch {
-          throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_MISMATCH')
-        }
-      }
+      const phase = run.state === 'quick_review' ? 'quick' : 'full'
+      try {
+        assertPhaseSourceManifest(
+          run, run.reviewPacket, await samples.find({ runId, phase }).toArray(),
+          await judgments.find({ runId }).toArray(), await dispatches.find({ runId }).toArray(), phase, signingSecret,
+        )
+      } catch { throw new Error('BENCHMARK_PHASE_SOURCE_MANIFEST_MISMATCH') }
       const imported = importCodexReview(run.reviewPacket, input.review, {
         signingSecret,
         expectedPhase: run.state === 'quick_review' ? 'quick' : 'full',
         now: now(),
       })
       const importedReviewHash = imported.reviewHash
-      const phase = run.state === 'quick_review' ? 'quick' : 'full'
       const loadPersistedReview = async () => {
         const allJudgments = await judgments.find({ runId }).toArray()
         const persisted = allJudgments.filter((judgment) => judgment.source === 'codex'
@@ -1044,39 +1272,34 @@ export function createMongoBenchmarkRepository(
             suite: await suites.findOne({ _id: run.suiteId }),
             runSamples: await samples.find({ runId }).toArray(),
             runJudgments: await judgments.find({ runId }).toArray(),
+            runDispatches: await dispatches.find({ runId }).toArray(),
             signingSecret,
           })
-        : null
-      if (verifiedDbIntegrity) await verifyEvidenceObjects(verifiedDbIntegrity.evidenceObjects, verifyEvidence)
-      const verifiedAt = verifiedDbIntegrity ? now().toISOString() : ''
-      const verifiedIntegrity = verifiedDbIntegrity ? (() => {
-        const { evidenceObjects: _evidenceObjects, candidateHash: _candidateHash, ...profileIntegrity } = verifiedDbIntegrity
-        return { ...profileIntegrity, verifiedAt }
-      })() : null
+        : assertQuickReleaseIntegrity({
+            run,
+            suite: await suites.findOne({ _id: run.suiteId }),
+            runSamples: await samples.find({ runId }).toArray(),
+            runJudgments: await judgments.find({ runId }).toArray(),
+            runDispatches: await dispatches.find({ runId }).toArray(),
+            signingSecret,
+          })
+      if (profileStatus === 'verified') await verifyEvidenceObjects((verifiedDbIntegrity as ReturnType<typeof assertVerifiedReleaseIntegrity>).evidenceObjects, verifyEvidence)
+      const verifiedAt = profileStatus === 'verified' ? now().toISOString() : ''
+      const verifiedIntegrity = (() => {
+        const { evidenceObjects: _evidenceObjects, candidateHash: _candidateHash, ...profileIntegrity } = verifiedDbIntegrity as unknown as AnyRecord
+        return profileStatus === 'verified' ? { ...profileIntegrity, verifiedAt } : profileIntegrity
+      })()
       const previousRelease = await releases.find({ suiteId: run.suiteId, lane: run.lane, judgeEpoch: run.judgeEpoch, publishedAt: { $exists: true } }).sort({ publishedAt: -1 }).limit(1).next()
       if (run.correctionOfReleaseId) {
         const correctionTarget = await releases.findOne({ _id: run.correctionOfReleaseId, suiteId: run.suiteId, lane: run.lane, judgeEpoch: run.judgeEpoch, publishedAt: { $exists: true } })
         if (!correctionTarget) throw new Error('BENCHMARK_CORRECTION_PREDECESSOR_MISMATCH')
       }
       const laneHeadId = `benchmark-release-head:${run.suiteId}:${run.lane}:${run.judgeEpoch}`
-      const currentProfiles = verifiedIntegrity
-        ? [{
-            profileId: `${verifiedIntegrity.provider}:${verifiedIntegrity.modelId}:${verifiedIntegrity.lane}`,
-            profileStatus: 'verified',
-            ...verifiedIntegrity,
-          }]
-        : (run.releaseDraft?.models || []).map((model: AnyRecord) => ({
-            ...model,
-            profileId: `${run.provider}:${run.modelId}:${run.lane}`,
-            developer: run.developer || model.developer || '',
-            sampleCount: run.sampleCount || model.sampleCount,
-            auditRatio: run.auditRatio,
-            successRate: model.successRate ?? 1,
-            estimatedCost: { usd: Number(run.usage?.estimatedUsd || 0) },
-            registryHash: run.registryHash,
-            priceHash: run.priceHash,
-            codeSha: run.codeSha,
-          }))
+      const currentProfiles = [{
+        profileId: `${verifiedIntegrity.provider}:${verifiedIntegrity.modelId}:${verifiedIntegrity.lane}`,
+        profileStatus,
+        ...verifiedIntegrity,
+      }]
       const replacedIds = new Set(currentProfiles.map((model: AnyRecord) => model.profileId))
       const mergedProfiles = [...(previousRelease?.models || []).filter((model: AnyRecord) => !replacedIds.has(model.profileId || `${model.provider}:${model.modelId}:${model.lane}`)), ...currentProfiles]
       const laneMedians = Object.fromEntries(BENCHMARK_AXES.map((axis) => {
@@ -1118,24 +1341,29 @@ export function createMongoBenchmarkRepository(
         auditRatio: publishedProfiles.length ? publishedProfiles.reduce((sum: number, model: AnyRecord) => sum + Number(model.auditRatio || 0), 0) / publishedProfiles.length : 0,
         models: publishedProfiles,
         evidence: [...(previousRelease?.evidence || []).filter((item: AnyRecord) => !replacedIds.has(item.profileId || `${item.provider || ''}:${item.modelId}:${run.lane}`)), ...currentEvidence],
-        methodology: profileStatus === 'verified' ? {
+        methodology: {
           suiteId: run.suiteId,
           suiteHash: run.suiteHash,
           aggregation: 'case-first-bootstrap',
           noOverallScore: true,
           auditPolicy: 'disagreement-v1:red-line-conflict,confidence-below-0.35,invalid-evidence,public-evidence,deterministic-10-percent',
-          repetitionsPerCase: 3,
+          repetitionsPerCase: profileStatus === 'verified' ? 3 : 2,
           automaticJudges: ['openrouter', 'bailian'],
-          expectedCaseCount: Math.round(Number(verifiedIntegrity?.capabilityCoverage || 0) * 48),
+          expectedCaseCount: Math.round(Number(verifiedIntegrity.capabilityCoverage || 0)
+            * (profileStatus === 'verified' ? 48 : PB_IMAGE_DIAGNOSTIC_V1.quickCaseIds.length)),
           sampleCount: verifiedIntegrity?.sampleCount,
           automaticJudgmentCount: Number(verifiedIntegrity?.sampleCount || 0) * 2,
+          logicalJudgmentCount: verifiedIntegrity?.estimatedCost.logicalJudgments,
+          judgeDispatchCount: verifiedIntegrity?.estimatedCost.judgeDispatchCalls,
           auditSampleCount: Math.round(Number(verifiedIntegrity?.auditRatio || 0) * Number(verifiedIntegrity?.sampleCount || 0)),
           capabilityGaps: verifiedIntegrity?.capabilityGaps,
           judgeEpoch: run.judgeEpoch,
           reviewerEpoch: run.reviewerEpoch,
-          evidenceManifestHash: verifiedIntegrity?.evidenceManifestHash,
-          evidenceVerifiedAt: verifiedIntegrity?.verifiedAt,
-        } : run.releaseDraft?.methodology || {},
+          ...(profileStatus === 'verified' ? {
+            evidenceManifestHash: verifiedIntegrity.evidenceManifestHash,
+            evidenceVerifiedAt: verifiedIntegrity.verifiedAt,
+          } : {}),
+        },
         publishedAt: now(),
       }
       const releaseHash = canonicalHash(releaseBase)
@@ -1146,25 +1374,23 @@ export function createMongoBenchmarkRepository(
           const publishGuard = {
             _id: runId,
             state: expectedState,
-            ...(verifiedIntegrity ? {
-              'reviewPacket.packetHash': run.reviewPacket.packetHash,
-              importedReviewPacketHash: run.importedReviewPacketHash,
-              importedReviewHash: run.importedReviewHash,
-            } : {}),
+            'reviewPacket.packetHash': run.reviewPacket.packetHash,
+            importedReviewPacketHash: run.importedReviewPacketHash,
+            importedReviewHash: run.importedReviewHash,
           }
           const current = await runs.findOne(publishGuard, { session })
           if (!current) throw new Error('BENCHMARK_PUBLISH_STATE_CONFLICT')
-          if (verifiedIntegrity) {
-            const transactionalIntegrity = assertVerifiedReleaseIntegrity({
-              run: current,
-              suite: await suites.findOne({ _id: current.suiteId }, { session }),
-              runSamples: await samples.find({ runId }, { session }).toArray(),
-              runJudgments: await judgments.find({ runId }, { session }).toArray(),
-              signingSecret,
-            })
-            if (canonicalHash(transactionalIntegrity) !== canonicalHash(verifiedDbIntegrity)) {
-              verifiedIntegrityFailure('SNAPSHOT_CHANGED')
-            }
+          const transactionalInput = {
+            run: current, suite: await suites.findOne({ _id: current.suiteId }, { session }),
+            runSamples: await samples.find({ runId }, { session }).toArray(),
+            runJudgments: await judgments.find({ runId }, { session }).toArray(),
+            runDispatches: await dispatches.find({ runId }, { session }).toArray(), signingSecret,
+          }
+          const transactionalIntegrity = profileStatus === 'verified'
+            ? assertVerifiedReleaseIntegrity(transactionalInput)
+            : assertQuickReleaseIntegrity(transactionalInput)
+          if (canonicalHash(transactionalIntegrity) !== canonicalHash(verifiedDbIntegrity)) {
+            verifiedIntegrityFailure('SNAPSHOT_CHANGED')
           }
           const laneHead = await suites.findOne({ _id: laneHeadId }, { session })
           if (laneHead && laneHead.releaseId !== previousRelease?._id) throw new Error('BENCHMARK_LANE_HEAD_CONFLICT')

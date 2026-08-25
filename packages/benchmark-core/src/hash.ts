@@ -28,3 +28,28 @@ export function canonicalJson(value: unknown) {
 export function canonicalHash(value: unknown) {
   return createHash('sha256').update(canonicalJson(value)).digest('hex')
 }
+
+export function benchmarkImmutableRunBinding(input: {
+  runHash: string
+  runFacts: Record<string, unknown>
+  candidateSnapshot: Record<string, unknown>
+  runIntegrityAttestation: string
+}) {
+  const immutableFacts = {
+    runHash: String(input.runHash || ''),
+    runFacts: input.runFacts,
+    candidateSnapshot: input.candidateSnapshot,
+    runIntegrityAttestation: String(input.runIntegrityAttestation || ''),
+  }
+  const aspectRatios = Array.isArray(input.runFacts?.aspectRatios) ? input.runFacts.aspectRatios : []
+  return Object.freeze({
+    immutableFacts: Object.freeze(immutableFacts),
+    immutableFactsHash: canonicalHash(immutableFacts),
+    runHash: immutableFacts.runHash,
+    runFactsHash: canonicalHash(input.runFacts),
+    candidateSnapshotHash: canonicalHash(input.candidateSnapshot),
+    aspectRatiosHash: canonicalHash(aspectRatios),
+    registryHash: String(input.runFacts?.registryHash || ''),
+    runIntegrityAttestation: immutableFacts.runIntegrityAttestation,
+  })
+}

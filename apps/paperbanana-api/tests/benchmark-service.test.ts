@@ -3,7 +3,7 @@ import { createHmac } from 'node:crypto'
 import test from 'node:test'
 
 import { createBenchmarkService, publicBenchmarkRelease } from '../src/benchmark-service.js'
-import { buildJudgeCalibrationRecord, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects } from '../src/benchmark-repository.js'
+import { buildJudgeCalibrationRecord, buildPhaseOperatorAttestation, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects } from '../src/benchmark-repository.js'
 import {
   BENCHMARK_AXES,
   PB_IMAGE_DIAGNOSTIC_V1,
@@ -87,17 +87,30 @@ test('approval creates canonical run facts and reapproval never resigns a tamper
     paperbanana_benchmark_suites: {}, paperbanana_benchmark_samples: {}, paperbanana_benchmark_judgments: {}, paperbanana_benchmark_releases: {},
   }
   const input = {
-    candidateId: candidate._id, entitlementConfirmed: true, maxGenerations: 24, maxJudgeCalls: 48, maxEstimatedUsd: 100,
-    priceSnapshot: { estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, capturedAt: '2026-08-25T08:00:00.000Z' }, adminUserId: 'admin-123',
+    candidateId: candidate._id, entitlementConfirmed: true, maxGenerations: 24, maxJudgments: 48, maxJudgeCalls: 192, maxEstimatedUsd: 100,
+    priceSnapshot: { estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, source: 'https://example.com/pricing/image-model', capturedAt: '2026-08-25T08:00:00.000Z' }, adminUserId: 'admin-123',
   }
   const now = () => new Date('2026-08-25T08:00:00.000Z')
   const repository = createMongoBenchmarkRepository({ collection(name: string) { return collections[name] } } as any, now, async () => {}, 'a'.repeat(40))
+  await assert.rejects(() => repository.approve({ ...input, priceSnapshot: { ...input.priceSnapshot, source: undefined } } as any), /BENCHMARK_APPROVAL_INCOMPLETE/)
   await repository.approve(input as any)
   assert.equal(insertedRun.runHash, canonicalHash(insertedRun.runFacts))
   assert.equal(insertedRun.candidateSnapshot.displayName, candidate.modelId)
   assert.equal(insertedRun.candidateSnapshot.providerLabel, candidate.provider)
   assert.equal(insertedRun.approvalVersions.length, 1)
   assert.equal(insertedRun.approvalVersions[0].phase, 'quick')
+  const operatorAttestation = buildPhaseOperatorAttestation({ ...insertedRun, state: 'quick_running' }, reviewSigningSecret)
+  assert.equal(operatorAttestation.runId, insertedRun._id)
+  assert.equal(operatorAttestation.phase, 'quick')
+  assert.equal(operatorAttestation.signedAuthorizationHash, insertedRun.authorizationHash)
+  assert.equal(operatorAttestation.priceSnapshot.source, input.priceSnapshot.source)
+  assert.equal(operatorAttestation.runHash, insertedRun.runHash)
+  assert.equal(operatorAttestation.runFactsHash, canonicalHash(insertedRun.runFacts))
+  assert.equal(operatorAttestation.candidateSnapshotHash, canonicalHash(insertedRun.candidateSnapshot))
+  assert.equal(operatorAttestation.aspectRatiosHash, canonicalHash(insertedRun.runFacts.aspectRatios))
+  assert.equal(operatorAttestation.registryHash, insertedRun.registryHash)
+  assert.equal(operatorAttestation.runIntegrityAttestation, insertedRun.runIntegrityAttestation)
+  assert.match(operatorAttestation.immutableFactsHash, /^[a-f0-9]{64}$/)
   assert.equal(insertedRun.runIntegrityAttestation, createHmac('sha256', reviewSigningSecret)
     .update(canonicalHash({ schemaVersion: 2, runHash: insertedRun.runHash, runFacts: insertedRun.runFacts,
       candidateSnapshot: insertedRun.candidateSnapshot, approvalVersions: insertedRun.approvalVersions })).digest('hex'))
@@ -112,7 +125,7 @@ test('approval creates canonical run facts and reapproval never resigns a tamper
     async updateOne(_query: any, update: any) { reapprovalSet = update.$set; return { modifiedCount: 1 } },
   }
   const reapprovalRepository = createMongoBenchmarkRepository({ collection(name: string) { return collections[name] } } as any, now, async () => {}, 'a'.repeat(40))
-  await reapprovalRepository.approve({ ...input, maxGenerations: 144, maxJudgeCalls: 288, maxEstimatedUsd: 500 } as any)
+  await reapprovalRepository.approve({ ...input, maxGenerations: 144, maxJudgments: 288, maxJudgeCalls: 1152, maxEstimatedUsd: 500 } as any)
   assert.deepEqual(reapprovalSet.approvalVersions.map((version: any) => version.phase), ['quick', 'full'])
   assert.equal(reapprovalSet.runIntegrityAttestation, createHmac('sha256', reviewSigningSecret)
     .update(canonicalHash({ schemaVersion: 2, runHash: insertedRun.runHash, runFacts: insertedRun.runFacts,
@@ -209,13 +222,15 @@ test('leaderboard rejects unknown lanes instead of comparing incompatible releas
   assert.deepEqual(await service.handle({ action: 'benchmarkLeaderboard', lane: '8K-standard' }, false), { code: 400, error: 'Invalid benchmark lane' })
 })
 
-function verifiedPublishDb(run: Record<string, any>, input: { suite?: Record<string, any>; candidate?: Record<string, any>; samples?: any[]; transactionalSamples?: any[]; judgments?: any[]; transactionalJudgments?: any[]; insertedReleases?: any[]; transactionState?: { active: boolean }; failRunCasAfterInsert?: boolean } = {}) {
+function verifiedPublishDb(run: Record<string, any>, input: { suite?: Record<string, any>; candidate?: Record<string, any>; samples?: any[]; transactionalSamples?: any[]; judgments?: any[]; transactionalJudgments?: any[]; dispatches?: any[]; transactionalDispatches?: any[]; insertedReleases?: any[]; transactionState?: { active: boolean }; failRunCasAfterInsert?: boolean } = {}) {
   const storedRun = { ...run }
   const suite = input.suite
   const sampleRows = input.samples || []
   const judgmentRows = input.judgments || []
+  const dispatchRows = input.dispatches || []
   let sampleReads = 0
   let judgmentReads = 0
+  let dispatchReads = 0
   let transactionActive = false
   let stagedReleases: any[] = []
   let stagedWrites: Array<() => void> = []
@@ -256,6 +271,13 @@ function verifiedPublishDb(run: Record<string, any>, input: { suite?: Record<str
         return { async toArray() { return rows } }
       },
       async findOne() { return null },
+    },
+    paperbanana_benchmark_dispatches: {
+      find(_query?: any, options?: Record<string, any>) {
+        requireTransactionSession(options)
+        const rows = dispatchReads++ === 0 || !input.transactionalDispatches ? dispatchRows : input.transactionalDispatches
+        return { async toArray() { return rows } }
+      },
     },
     paperbanana_benchmark_releases: {
       find() { return { sort() { return this }, limit() { return this }, async next() { return null } } },
@@ -298,10 +320,10 @@ function verifiedPublishDb(run: Record<string, any>, input: { suite?: Record<str
   }
 }
 
-function testFullSourceManifest(runId: string, runHash: string, samples: any[], automatic: any[]) {
+function testPhaseSourceManifest(runId: string, runHash: string, phase: 'quick' | 'full', samples: any[], automatic: any[], dispatchMarkers: any[]) {
   const facts = {
-    schemaVersion: 1, runId, runHash, phase: 'full',
-    usage: { generationCalls: samples.length, automaticJudgeCalls: automatic.length },
+    schemaVersion: 2, runId, runHash, phase,
+    usage: { generationCalls: samples.length, logicalJudgments: automatic.length, judgeDispatchCalls: dispatchMarkers.length },
     samples: [...samples].sort((left, right) => left.sampleId.localeCompare(right.sampleId)).map((sample) => ({
       sampleId: sample.sampleId, runId: sample.runId, phase: sample.phase, caseId: sample.caseId, repetition: sample.repetition,
       status: sample.status, imageHash: sample.imageHash, imageObjectKey: sample.imageObjectKey, latencyMs: sample.latencyMs,
@@ -312,14 +334,19 @@ function testFullSourceManifest(runId: string, runHash: string, samples: any[], 
       judgeEpoch: judgment.judgeEpoch, status: judgment.status, scores: judgment.scores, evidence: judgment.evidence,
       redLines: judgment.redLines, confidence: judgment.confidence,
     })),
+    judgeDispatchMarkers: [...dispatchMarkers].sort((left, right) => `${left.sampleId}:${left.logicalProvider}:${left.dispatchIndex}`.localeCompare(`${right.sampleId}:${right.logicalProvider}:${right.dispatchIndex}`)).map((marker) => ({
+      _id: marker._id, runId: marker.runId, sampleId: marker.sampleId, phase: marker.phase,
+      logicalProvider: marker.logicalProvider, dispatchIndex: marker.dispatchIndex,
+      judgeEpoch: marker.judgeEpoch,
+    })),
   }
   return { facts, hash: canonicalHash(facts) }
 }
 
-function verifiedFixture(options: { aspectRatios?: string[] } = {}) {
+function verifiedFixture(options: { aspectRatios?: string[]; dispatchAttempts?: number; maxJudgeCalls?: number; maxEstimatedUsd?: number } = {}) {
   const runId = 'run-full'
   const reviewerEpoch = 'reviewer-epoch'
-  const aspectRatios = options.aspectRatios || ['16:9', '4:3', '3:4', '1:1', '21:9']
+  const aspectRatios = options.aspectRatios ?? ['16:9', '4:3', '3:4', '1:1', '21:9']
   const candidate = {
     _id: 'ark:model', candidateId: 'ark:model', provider: 'ark', providerLabel: 'Volcengine Ark', modelId: 'model',
     displayName: 'Current Model', developer: 'Current Maker', lane: '2K-standard', aspectRatios, registryHash: 'registry-hash', state: 'approved',
@@ -337,10 +364,10 @@ function verifiedFixture(options: { aspectRatios?: string[] } = {}) {
     developer: candidate.developer, lane: candidate.lane, aspectRatios: [...aspectRatios].sort(), registryHash: candidate.registryHash,
     displayName: candidate.displayName, providerLabel: candidate.providerLabel,
   }
-  const quickPriceSnapshot = { currency: 'USD', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, capturedAt: '2026-08-25T06:00:00.000Z' }
-  const fullPriceSnapshot = { currency: 'USD', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, capturedAt: '2026-08-25T07:00:00.000Z' }
-  const quickApproval = { entitlementConfirmed: true, priceSnapshot: quickPriceSnapshot, maxGenerations: 24, maxJudgeCalls: 48, maxEstimatedUsd: 100, approvedBy: 'admin-123', approvedAt: new Date('2026-08-25T06:00:00.000Z') }
-  const fullApproval = { entitlementConfirmed: true, priceSnapshot: fullPriceSnapshot, maxGenerations: 144, maxJudgeCalls: 288, maxEstimatedUsd: 500, approvedBy: 'admin-123', approvedAt: new Date('2026-08-25T07:00:00.000Z') }
+  const quickPriceSnapshot = { currency: 'USD', source: 'https://example.com/pricing/image-model', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, capturedAt: '2026-08-25T06:00:00.000Z' }
+  const fullPriceSnapshot = { currency: 'USD', source: 'https://example.com/pricing/image-model', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, capturedAt: '2026-08-25T07:00:00.000Z' }
+  const quickApproval = { entitlementConfirmed: true, priceSnapshot: quickPriceSnapshot, maxGenerations: 24, maxJudgments: 48, maxJudgeCalls: 192, maxEstimatedUsd: 100, approvedBy: 'admin-123', approvedAt: new Date('2026-08-25T06:00:00.000Z') }
+  const fullApproval = { entitlementConfirmed: true, priceSnapshot: fullPriceSnapshot, maxGenerations: 144, maxJudgments: 288, maxJudgeCalls: options.maxJudgeCalls ?? 1152, maxEstimatedUsd: options.maxEstimatedUsd ?? 500, approvedBy: 'admin-123', approvedAt: new Date('2026-08-25T07:00:00.000Z') }
   const approvalVersions = [
     { schemaVersion: 1, phase: 'quick', authorizationHash: canonicalHash({ phase: 'quick', approval: quickApproval, codeSha: runFacts.codeSha }), priceHash: canonicalHash(quickPriceSnapshot), approval: quickApproval },
     { schemaVersion: 1, phase: 'full', authorizationHash: canonicalHash({ phase: 'full', approval: fullApproval, codeSha: runFacts.codeSha }), priceHash: canonicalHash(fullPriceSnapshot), approval: fullApproval },
@@ -367,6 +394,10 @@ function verifiedFixture(options: { aspectRatios?: string[] } = {}) {
     scores: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, 6])),
     evidence: ['ok'], redLines: [], confidence: 1,
   })))
+  const dispatchMarkers = automatic.flatMap((judgment) => Array.from({ length: options.dispatchAttempts ?? 1 }, (_, dispatchIndex) => ({
+    _id: `dispatch:${judgment.provider}:${judgment.sampleId}:${dispatchIndex}`, runId, sampleId: judgment.sampleId, phase: 'full',
+    logicalProvider: judgment.provider, dispatchIndex, judgeEpoch: 'judge-epoch',
+  })))
   const expectedAuditIds = buildAuditSelection(samples.map((sample) => {
     const pair = automatic.filter((judgment) => judgment.sampleId === sample.sampleId)
     return {
@@ -380,7 +411,7 @@ function verifiedFixture(options: { aspectRatios?: string[] } = {}) {
   const expectedAuditSet = new Set(expectedAuditIds)
   samples.forEach((sample) => { sample.auditRequired = expectedAuditSet.has(sample.sampleId) })
   const auditSamples = samples.filter((sample) => sample.auditRequired)
-  const sourceManifest = testFullSourceManifest(runId, runHash, samples, automatic)
+  const sourceManifest = testPhaseSourceManifest(runId, runHash, 'full', samples, automatic, dispatchMarkers)
   const sourceManifestAttestation = createHmac('sha256', reviewSigningSecret)
     .update(canonicalHash({ runHash, runFacts, sourceManifestHash: sourceManifest.hash })).digest('hex')
   const reviewPacket = createCodexReviewPacket({
@@ -418,7 +449,68 @@ function verifiedFixture(options: { aspectRatios?: string[] } = {}) {
     reviewPacket, importedReviewPacketHash: reviewPacket.packetHash, importedReviewHash, importedReviewAttestation: imported.attestation,
     releaseDraft: { models: [{ sampleCount: samples.length, coverage: 1, capabilityCoverage: expectedCases.length / 48, profileStatus: 'verified', dimensions: {}, capabilityGaps }], evidence: [], methodology: {} },
   }
-  return { run, candidate, suite: { ...PB_IMAGE_DIAGNOSTIC_V1, _id: PB_IMAGE_DIAGNOSTIC_V1.id }, expectedCases, unsupportedCases, capabilityGaps, samples, automatic, codex, expectedAuditIds }
+  return { run, candidate, suite: { ...PB_IMAGE_DIAGNOSTIC_V1, _id: PB_IMAGE_DIAGNOSTIC_V1.id }, expectedCases, unsupportedCases, capabilityGaps, samples, automatic, dispatchMarkers, codex, expectedAuditIds }
+}
+
+function quickFixture(options: { aspectRatios?: string[]; dispatchAttempts?: number; maxJudgeCalls?: number; maxEstimatedUsd?: number } = {}) {
+  const base = verifiedFixture({ aspectRatios: options.aspectRatios })
+  const runId = base.run._id
+  const aspectRatios = options.aspectRatios ?? base.run.aspectRatios
+  const quickCases = PB_IMAGE_DIAGNOSTIC_V1.quickCaseIds.map((id) => PB_IMAGE_DIAGNOSTIC_V1.cases.find((item) => item.id === id)!)
+  const executableCases = quickCases.filter((item) => item.aspectRatio === 'auto' || aspectRatios.includes(item.aspectRatio))
+  const capabilityGaps = quickCases.filter((item) => !executableCases.includes(item)).map((item) => `case=${item.id};aspectRatio=${item.aspectRatio}`)
+  const samples = executableCases.flatMap((diagnosticCase) => Array.from({ length: 2 }, (_, repetition) => {
+    const imageHash = canonicalHash(`quick:${diagnosticCase.id}:${repetition}`)
+    const sampleId = benchmarkSampleId(runId, 'quick', diagnosticCase.id, repetition)
+    return { _id: sampleId, sampleId, runId, phase: 'quick', caseId: diagnosticCase.id, repetition, status: 'completed',
+      imageHash, imageObjectKey: `bench/objects/${imageHash}.png`, latencyMs: 500 + repetition,
+      rubric: diagnosticCase.rubric, rubricHash: canonicalHash(diagnosticCase.rubric), auditRequired: false }
+  }))
+  const automatic = samples.flatMap((sample) => ['openrouter', 'bailian'].map((provider) => ({
+    _id: `${provider}:${sample.sampleId}:judge-epoch`, runId, sampleId: sample.sampleId, phase: 'quick', provider,
+    judgeEpoch: 'judge-epoch', status: 'completed', scores: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, 6])),
+    evidence: ['ok'], redLines: [], confidence: 1,
+  })))
+  const dispatchMarkers = automatic.flatMap((judgment) => Array.from({ length: options.dispatchAttempts ?? 1 }, (_, dispatchIndex) => ({
+    _id: `dispatch:${judgment.provider}:${judgment.sampleId}:${dispatchIndex}`, runId, sampleId: judgment.sampleId, phase: 'quick',
+    logicalProvider: judgment.provider, dispatchIndex, judgeEpoch: 'judge-epoch',
+  })))
+  const expectedAuditIds = buildAuditSelection(samples.map((sample) => ({
+    sampleId: sample.sampleId, disagreement: 0, redLineConflict: false, anomalous: false, publicEvidence: false,
+  })), base.run.runHash)
+  const expectedAuditSet = new Set(expectedAuditIds)
+  samples.forEach((sample) => { sample.auditRequired = expectedAuditSet.has(sample.sampleId) })
+  const quickApproval = {
+    ...base.run.approvalVersions[0].approval,
+    maxJudgeCalls: options.maxJudgeCalls ?? 192,
+    maxEstimatedUsd: options.maxEstimatedUsd ?? 100,
+  }
+  const approvalVersion = { schemaVersion: 1, phase: 'quick', authorizationHash: canonicalHash({ phase: 'quick', approval: quickApproval, codeSha: base.run.codeSha }), priceHash: canonicalHash(quickApproval.priceSnapshot), approval: quickApproval }
+  const approvalVersions = [approvalVersion]
+  const runIntegrityAttestation = createHmac('sha256', reviewSigningSecret).update(canonicalHash({ schemaVersion: 2, runHash: base.run.runHash, runFacts: base.run.runFacts, candidateSnapshot: base.run.candidateSnapshot, approvalVersions })).digest('hex')
+  const sourceManifest = testPhaseSourceManifest(runId, base.run.runHash, 'quick', samples, automatic, dispatchMarkers)
+  const sourceManifestAttestation = createHmac('sha256', reviewSigningSecret)
+    .update(canonicalHash({ runHash: base.run.runHash, runFacts: base.run.runFacts, sourceManifestHash: sourceManifest.hash })).digest('hex')
+  const auditSamples = samples.filter((sample) => sample.auditRequired)
+  const reviewPacket = createCodexReviewPacket({
+    reviewerEpoch: base.run.reviewerEpoch, runHash: base.run.runHash, phase: 'quick', issuedAt: '2026-08-25T08:00:00.000Z', expiresAt: '2026-08-26T08:00:00.000Z',
+    signingSecret: reviewSigningSecret, sourceManifestHash: sourceManifest.hash, sourceManifestAttestation,
+    samples: auditSamples.map((sample) => ({ sampleId: sample.sampleId, imageObjectKey: sample.imageObjectKey, imageHash: sample.imageHash, rubric: sample.rubric, rubricHash: sample.rubricHash })),
+  })
+  const review = { packetHash: reviewPacket.packetHash, reviewerEpoch: base.run.reviewerEpoch, judgments: reviewPacket.samples.map((item) => ({
+    blindLabel: item.blindLabel, imageHash: item.imageHash, rubricHash: item.rubricHash,
+    scores: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, 7])), confirmedRedLines: [], evidence: ['reviewed'], confidence: 1,
+  })) }
+  const imported = importCodexReview(reviewPacket, review, { signingSecret: reviewSigningSecret, expectedPhase: 'quick', now: new Date('2026-08-25T10:00:00.000Z') })
+  const codex = imported.map((judgment) => ({ _id: `codex:${judgment.sampleId}`, runId, phase: 'quick', ...judgment, source: 'codex',
+    reviewerEpoch: base.run.reviewerEpoch, packetHash: reviewPacket.packetHash, reviewHash: imported.reviewHash,
+    reviewAttestation: imported.attestation, accepted: true }))
+  const run = { ...base.run, state: 'quick_review', aspectRatios, capabilityGaps, approval: quickApproval, approvalVersions,
+    authorizationHash: approvalVersion.authorizationHash, priceHash: approvalVersion.priceHash, runIntegrityAttestation,
+    reviewPacket, reviewPacketExpiresAt: new Date('2026-08-26T08:00:00.000Z'), importedReviewPacketHash: reviewPacket.packetHash,
+    importedReviewHash: imported.reviewHash, importedReviewAttestation: imported.attestation, quickAuditImportedAt: new Date(),
+    codexAuditImportedAt: undefined, usage: { estimatedUsd: 0 }, usageByPhase: { quick: { estimatedUsd: 0 } } }
+  return { ...base, run, samples, automatic, dispatchMarkers, codex, review, expectedAuditIds, capabilityGaps, executableCases }
 }
 
 test('verified publication fails closed when DB has no phase-pure 48x3 full samples and 288 automatic judgments', async () => {
@@ -437,7 +529,7 @@ test('verified publication fails closed when DB has no phase-pure 48x3 full samp
   )
 })
 
-test('review import persists a Core-only attestation and replay refuses a tampered persisted judgment', async () => {
+test('quick review import fails closed for a legacy packet without a signed phase source manifest', async () => {
   const reviewerEpoch = 'reviewer-epoch'
   const rubric = { aesthetics: 'visible quality' }
   const createdAt = new Date('2026-08-25T07:00:00.000Z')
@@ -466,8 +558,8 @@ test('review import persists a Core-only attestation and replay refuses a tamper
     reviewPacketExpiresAt: new Date('2026-08-26T08:00:00.000Z'), releaseDraft: { models: [{}] },
   }
   const quickApproval = { entitlementConfirmed: true,
-    priceSnapshot: { currency: 'USD', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, capturedAt: '2026-08-25T07:00:00.000Z' },
-    maxGenerations: 24, maxJudgeCalls: 48, maxEstimatedUsd: 100, approvedBy: 'admin-123', approvedAt: createdAt }
+    priceSnapshot: { currency: 'USD', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0.1, source: 'https://example.com/pricing/image-model', capturedAt: '2026-08-25T07:00:00.000Z' },
+    maxGenerations: 24, maxJudgments: 48, maxJudgeCalls: 192, maxEstimatedUsd: 100, approvedBy: 'admin-123', approvedAt: createdAt }
   run.approvalVersions = [{ schemaVersion: 1, phase: 'quick', authorizationHash: canonicalHash({ phase: 'quick', approval: quickApproval, codeSha: run.codeSha }), priceHash: canonicalHash(quickApproval.priceSnapshot), approval: quickApproval }]
   run.runIntegrityAttestation = createHmac('sha256', reviewSigningSecret).update(canonicalHash({ schemaVersion: 2, runHash, runFacts, candidateSnapshot: run.candidateSnapshot, approvalVersions: run.approvalVersions })).digest('hex')
   const rows: any[] = []
@@ -489,12 +581,33 @@ test('review import persists a Core-only attestation and replay refuses a tamper
   }
   const db = { collection(name: string) { return collections[name] } }
   const repository = createMongoBenchmarkRepository(db as any, () => new Date('2026-08-25T10:00:00.000Z'))
-  await repository.importReview({ runId: run._id, review } as any)
-  assert.match(run.importedReviewAttestation, /^[a-f0-9]{64}$/)
-  assert.equal(rows[0].reviewAttestation, run.importedReviewAttestation)
-  assert.equal(rows[0].accepted, true)
-  rows[0].scores = { ...rows[0].scores, aesthetics: 0 }
-  await assert.rejects(() => repository.importReview({ runId: run._id, review } as any), /BENCHMARK_REVIEW_PERSISTENCE_INCOMPLETE/)
+  await assert.rejects(() => repository.importReview({ runId: run._id, review } as any), /BENCHMARK_PHASE_SOURCE_MANIFEST_MISMATCH/)
+  assert.equal(rows.length, 0)
+})
+
+test('quick review import revalidates the signed append-only dispatch set before persisting Codex rows', async () => {
+  const fixture = quickFixture({ dispatchAttempts: 2 })
+  let judgmentWrites = 0
+  const tamperedDispatches = fixture.dispatchMarkers.slice(0, -1)
+  const collections: Record<string, any> = {
+    paperbanana_benchmark_runs: { async findOne() { return fixture.run } },
+    paperbanana_benchmark_samples: { find() { return { async toArray() { return fixture.samples } } } },
+    paperbanana_benchmark_judgments: {
+      find() { return { async toArray() { return fixture.automatic } } },
+      async updateOne() { judgmentWrites += 1; return { modifiedCount: 1 } },
+    },
+    paperbanana_benchmark_dispatches: { find() { return { async toArray() { return tamperedDispatches } } } },
+    paperbanana_benchmark_suites: {}, paperbanana_benchmark_models: {}, paperbanana_benchmark_releases: {},
+  }
+  const repository = createMongoBenchmarkRepository(
+    { collection(name: string) { return collections[name] } } as any,
+    () => new Date('2026-08-25T10:00:00.000Z'),
+  )
+  await assert.rejects(
+    () => repository.importReview({ runId: fixture.run._id, review: fixture.review } as any),
+    /BENCHMARK_PHASE_SOURCE_MANIFEST_MISMATCH/,
+  )
+  assert.equal(judgmentWrites, 0)
 })
 
 test('full review export freezes the complete sample and automatic judgment manifest into the signed packet', async () => {
@@ -513,6 +626,7 @@ test('full review export freezes the complete sample and automatic judgment mani
       },
     },
     paperbanana_benchmark_judgments: { find() { return { async toArray() { return fixture.automatic } } } },
+    paperbanana_benchmark_dispatches: { find() { return { async toArray() { return fixture.dispatchMarkers } } } },
     paperbanana_benchmark_suites: {}, paperbanana_benchmark_models: {}, paperbanana_benchmark_releases: {},
   }
   const repository = createMongoBenchmarkRepository(
@@ -524,8 +638,130 @@ test('full review export freezes the complete sample and automatic judgment mani
   assert.equal(packet.sourceManifestHash, fixture.run.reviewPacket.sourceManifestHash)
   assert.equal(packet.sourceManifestAttestation, fixture.run.reviewPacket.sourceManifestAttestation)
   assert.equal(savedPacket.packetHash, packet.packetHash)
-  assert.deepEqual(testFullSourceManifest(fixture.run._id, fixture.run.runHash, fixture.samples, fixture.automatic).facts.usage,
-    { generationCalls: 144, automaticJudgeCalls: 288 })
+  const expectedManifest = testPhaseSourceManifest(fixture.run._id, fixture.run.runHash, 'full', fixture.samples, fixture.automatic, fixture.dispatchMarkers)
+  assert.equal(expectedManifest.facts.schemaVersion, 2)
+  assert.equal(expectedManifest.facts.judgeDispatchMarkers.length, 288)
+  assert.deepEqual(expectedManifest.facts.usage,
+    { generationCalls: 144, logicalJudgments: 288, judgeDispatchCalls: 288 })
+})
+
+test('quick review export freezes quick samples, automatic judgments, and append-only dispatch usage', async () => {
+  const fixture = quickFixture({ dispatchAttempts: 2 })
+  let savedPacket: any
+  const collections: Record<string, any> = {
+    paperbanana_benchmark_runs: {
+      async findOne() { return fixture.run },
+      async updateOne(_query: any, update: any) { savedPacket = update.$set.reviewPacket; return { modifiedCount: 1 } },
+    },
+    paperbanana_benchmark_samples: {
+      async updateMany() { return { modifiedCount: 0 } },
+      find(query: any) {
+        const rows = query.auditRequired === true ? fixture.samples.filter((sample) => sample.auditRequired) : fixture.samples
+        return { sort() { return this }, async toArray() { return rows } }
+      },
+    },
+    paperbanana_benchmark_judgments: { find() { return { async toArray() { return fixture.automatic } } } },
+    paperbanana_benchmark_dispatches: { find() { return { async toArray() { return fixture.dispatchMarkers } } } },
+    paperbanana_benchmark_suites: {}, paperbanana_benchmark_models: {}, paperbanana_benchmark_releases: {},
+  }
+  const repository = createMongoBenchmarkRepository(
+    { collection(name: string) { return collections[name] } } as any,
+    () => new Date('2026-08-25T10:00:00.000Z'),
+    async () => {},
+  )
+  const packet = await repository.exportReview({ runId: fixture.run._id, publicEvidenceSampleIds: [] } as any)
+  const expectedManifest = testPhaseSourceManifest(fixture.run._id, fixture.run.runHash, 'quick', fixture.samples, fixture.automatic, fixture.dispatchMarkers)
+  assert.equal(packet.sourceManifestHash, expectedManifest.hash)
+  assert.equal(savedPacket.sourceManifestHash, expectedManifest.hash)
+  assert.equal(expectedManifest.facts.phase, 'quick')
+  assert.deepEqual(expectedManifest.facts.usage, {
+    generationCalls: fixture.samples.length,
+    logicalJudgments: fixture.automatic.length,
+    judgeDispatchCalls: fixture.dispatchMarkers.length,
+  })
+})
+
+test('provisional publication independently rebuilds quick usage and cost and never trusts legacy run usage', async () => {
+  const publish = async (fixture: ReturnType<typeof quickFixture>, extraDispatches: any[] = []) => {
+    const insertedReleases: any[] = []
+    const repository = createMongoBenchmarkRepository(
+      verifiedPublishDb(fixture.run, {
+        suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples,
+        judgments: [...fixture.automatic, ...fixture.codex], dispatches: [...fixture.dispatchMarkers, ...extraDispatches], insertedReleases,
+      }) as any,
+    )
+    const result = await repository.publish({ runId: fixture.run._id, profileStatus: 'provisional', evidence: [] } as any)
+    return { result, release: insertedReleases[0] }
+  }
+
+  const normal = await publish(quickFixture())
+  assert.equal(normal.result.profileStatus, 'provisional')
+  assert.equal(normal.release.models[0].profileStatus, 'provisional')
+  assert.deepEqual(normal.release.models[0].estimatedCost, {
+    usd: 28.8, generationCalls: 24, automaticJudgeCalls: 48, logicalJudgments: 48, judgeDispatchCalls: 48,
+  })
+  assert.deepEqual(normal.release.models[0].traits, [])
+
+  const repaired = await publish(quickFixture({ dispatchAttempts: 4 }))
+  assert.deepEqual(repaired.release.models[0].estimatedCost, {
+    usd: 43.2, generationCalls: 24, automaticJudgeCalls: 48, logicalJudgments: 48, judgeDispatchCalls: 192,
+  })
+  await assert.rejects(() => publish(quickFixture({ dispatchAttempts: 4, maxJudgeCalls: 191 })), /BENCHMARK_VERIFIED_INTEGRITY_FAILED:QUICK_APPROVAL_CAPS/)
+  await assert.rejects(() => publish(quickFixture({ dispatchAttempts: 4, maxEstimatedUsd: 43.1 })), /BENCHMARK_VERIFIED_INTEGRITY_FAILED:QUICK_APPROVAL_CAPS/)
+})
+
+test('provisional publication accepts only the signed quick shape and revalidates its transaction snapshot', async () => {
+  const publish = async (fixture: ReturnType<typeof quickFixture>, changes: Record<string, any> = {}) => createMongoBenchmarkRepository(
+    verifiedPublishDb(fixture.run, {
+      suite: fixture.suite, candidate: fixture.candidate,
+      samples: changes.samples || fixture.samples,
+      judgments: changes.judgments || [...fixture.automatic, ...fixture.codex],
+      dispatches: changes.dispatches || fixture.dispatchMarkers,
+      transactionalSamples: changes.transactionalSamples,
+      transactionalJudgments: changes.transactionalJudgments,
+      transactionalDispatches: changes.transactionalDispatches,
+    }) as any,
+  ).publish({ runId: fixture.run._id, profileStatus: 'provisional', evidence: [] } as any)
+
+  const fixture = quickFixture()
+  const firstMarker = fixture.dispatchMarkers[0]
+  const corruptions = [
+    { label: 'missing sample', samples: fixture.samples.slice(1) },
+    { label: 'extra sample', samples: [...fixture.samples, { ...fixture.samples[0], _id: 'extra', sampleId: 'extra' }] },
+    { label: 'missing dispatch tail', dispatches: fixture.dispatchMarkers.slice(0, -1) },
+    { label: 'dispatch gap', dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, _id: `dispatch:${marker.logicalProvider}:${marker.sampleId}:1`, dispatchIndex: 1 }) },
+    { label: 'extra dispatch', dispatches: [...fixture.dispatchMarkers, { ...firstMarker, _id: 'dispatch:openrouter:unknown:0', sampleId: 'unknown' }] },
+    { label: 'wrong dispatch phase', dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, phase: 'full' }) },
+    { label: 'wrong dispatch provider', dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, logicalProvider: 'ark' }) },
+    { label: 'wrong dispatch epoch', dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, judgeEpoch: 'stale' }) },
+    { label: 'legacy judgment marker', judgments: [...fixture.automatic, firstMarker, ...fixture.codex] },
+  ]
+  for (const corruption of corruptions) {
+    await assert.rejects(() => publish(fixture, corruption), /BENCHMARK_VERIFIED_INTEGRITY_FAILED/, corruption.label)
+  }
+
+  await assert.rejects(
+    () => publish(fixture, { transactionalDispatches: fixture.dispatchMarkers.slice(0, -1) }),
+    /BENCHMARK_VERIFIED_INTEGRITY_FAILED/,
+  )
+
+  const failedInserts: any[] = []
+  const casRepository = createMongoBenchmarkRepository(
+    verifiedPublishDb(fixture.run, {
+      suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples,
+      judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers,
+      insertedReleases: failedInserts, failRunCasAfterInsert: true,
+    }) as any,
+  )
+  await assert.rejects(
+    () => casRepository.publish({ runId: fixture.run._id, profileStatus: 'provisional', evidence: [] } as any),
+    /BENCHMARK_PUBLISH_STATE_CONFLICT/,
+  )
+  assert.equal(failedInserts.length, 0)
+
+  const gapFixture = quickFixture({ aspectRatios: ['1:1'] })
+  const gapResult = await publish(gapFixture)
+  assert.equal(gapResult.profileStatus, 'provisional')
 })
 
 test('verified publication independently accepts only the exact full suite, automatic judges and current Codex packet', async () => {
@@ -549,7 +785,7 @@ test('verified publication independently accepts only the exact full suite, auto
   ;(fixture.run as any).approval = { entitlementConfirmed: false, priceSnapshot: { estimatedPerGeneration: 999 } }
   const forgedLiveCandidate = { ...fixture.candidate, displayName: 'Worker forged name', providerLabel: 'Worker forged provider', developer: 'Worker forged developer' }
   const repository = createMongoBenchmarkRepository(
-    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: forgedLiveCandidate, samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], insertedReleases }) as any,
+    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: forgedLiveCandidate, samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, insertedReleases }) as any,
     () => new Date('2026-08-25T10:00:00.000Z'),
     async (objectKey) => { verifiedObjects.push(objectKey) },
   )
@@ -586,7 +822,7 @@ test('verified publication independently accepts only the exact full suite, auto
   assert.equal(publishedProfile.displayName, fixture.candidate.displayName)
   assert.equal(publishedProfile.providerLabel, fixture.candidate.providerLabel)
   assert.equal(publishedProfile.developer, fixture.candidate.developer)
-  assert.deepEqual(publishedProfile.estimatedCost, { usd: 172.8, generationCalls: 144, automaticJudgeCalls: 288 })
+  assert.deepEqual(publishedProfile.estimatedCost, { usd: 172.8, generationCalls: 144, automaticJudgeCalls: 288, logicalJudgments: 288, judgeDispatchCalls: 288 })
   assert.equal(publishedProfile.priceHash, fixture.run.approvalVersions[1].priceHash)
   assert.equal(publishedProfile.authorizationHash, fixture.run.approvalVersions[1].authorizationHash)
   assert.equal(insertedReleases[0].priceHash, fixture.run.approvalVersions[1].priceHash)
@@ -596,25 +832,37 @@ test('verified publication independently accepts only the exact full suite, auto
   assert.equal(insertedReleases[0].methodology.expectedCaseCount, 48)
   assert.equal(insertedReleases[0].methodology.sampleCount, 144)
   assert.equal(insertedReleases[0].methodology.automaticJudgmentCount, 288)
+  assert.equal(insertedReleases[0].methodology.logicalJudgmentCount, 288)
+  assert.equal(insertedReleases[0].methodology.judgeDispatchCount, 288)
   assert.equal(insertedReleases[0].methodology.auditSampleCount, fixture.expectedAuditIds.length)
   assert.deepEqual(insertedReleases[0].methodology.capabilityGaps, [])
   assert.notEqual(insertedReleases[0].methodology.auditPolicy, 'trust-worker')
 
   const corruptions = [
-    { label: 'sample cardinality', samples: fixture.samples.slice(1), judgments: [...fixture.automatic, ...fixture.codex], run: fixture.run },
-    { label: 'sample phase', samples: fixture.samples.map((sample, index) => index ? sample : { ...sample, phase: 'quick' }), judgments: [...fixture.automatic, ...fixture.codex], run: fixture.run },
-    { label: 'image hash', samples: fixture.samples.map((sample, index) => index ? sample : { ...sample, imageHash: 'invalid' }), judgments: [...fixture.automatic, ...fixture.codex], run: fixture.run },
-    { label: 'rubric hash', samples: fixture.samples.map((sample, index) => index ? sample : { ...sample, rubricHash: canonicalHash('wrong') }), judgments: [...fixture.automatic, ...fixture.codex], run: fixture.run },
-    { label: 'automatic cardinality', samples: fixture.samples, judgments: [...fixture.automatic.slice(1), ...fixture.codex], run: fixture.run },
-    { label: 'judge epoch', samples: fixture.samples, judgments: [...fixture.automatic.map((judgment, index) => index ? judgment : { ...judgment, judgeEpoch: 'stale' }), ...fixture.codex], run: fixture.run },
-    { label: 'accepted Codex judgment', samples: fixture.samples, judgments: fixture.automatic, run: fixture.run },
-    { label: 'current packet', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], run: { ...fixture.run, importedReviewPacketHash: canonicalHash('stale') } },
-    { label: 'signed candidate snapshot', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], run: { ...fixture.run, candidateSnapshot: { ...fixture.run.candidateSnapshot, displayName: 'forged signed label' } } },
-    { label: 'signed full approval', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], run: { ...fixture.run, approvalVersions: fixture.run.approvalVersions.map((version: any, index: number) => index ? { ...version, approval: { ...version.approval, maxEstimatedUsd: 99_999 } } : version) } },
+    { label: 'sample cardinality', samples: fixture.samples.slice(1), judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, run: fixture.run },
+    { label: 'sample phase', samples: fixture.samples.map((sample, index) => index ? sample : { ...sample, phase: 'quick' }), judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, run: fixture.run },
+    { label: 'image hash', samples: fixture.samples.map((sample, index) => index ? sample : { ...sample, imageHash: 'invalid' }), judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, run: fixture.run },
+    { label: 'rubric hash', samples: fixture.samples.map((sample, index) => index ? sample : { ...sample, rubricHash: canonicalHash('wrong') }), judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, run: fixture.run },
+    { label: 'automatic cardinality', samples: fixture.samples, judgments: [...fixture.automatic.slice(1), ...fixture.codex], dispatches: fixture.dispatchMarkers, run: fixture.run },
+    { label: 'judge epoch', samples: fixture.samples, judgments: [...fixture.automatic.map((judgment, index) => index ? judgment : { ...judgment, judgeEpoch: 'stale' }), ...fixture.codex], dispatches: fixture.dispatchMarkers, run: fixture.run },
+    { label: 'accepted Codex judgment', samples: fixture.samples, judgments: fixture.automatic, dispatches: fixture.dispatchMarkers, run: fixture.run },
+    { label: 'current packet', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, run: { ...fixture.run, importedReviewPacketHash: canonicalHash('stale') } },
+    { label: 'signed candidate snapshot', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, run: { ...fixture.run, candidateSnapshot: { ...fixture.run.candidateSnapshot, displayName: 'forged signed label' } } },
+    { label: 'signed full approval', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, run: { ...fixture.run, approvalVersions: fixture.run.approvalVersions.map((version: any, index: number) => index ? { ...version, approval: { ...version.approval, maxEstimatedUsd: 99_999 } } : version) } },
+    { label: 'dispatch missing first marker', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, _id: `dispatch:${marker.logicalProvider}:${marker.sampleId}:1`, dispatchIndex: 1 }), run: fixture.run },
+    { label: 'dispatch extra unknown sample', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: [...fixture.dispatchMarkers, { ...fixture.dispatchMarkers[0], _id: 'dispatch:openrouter:unknown-sample:0', sampleId: 'unknown-sample' }], run: fixture.run },
+    { label: 'dispatch phase', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, phase: 'quick' }), run: fixture.run },
+    { label: 'dispatch provider', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, logicalProvider: 'ark' }), run: fixture.run },
+    { label: 'dispatch epoch', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, judgeEpoch: 'stale' }), run: fixture.run },
+    { label: 'dispatch duplicate', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: [...fixture.dispatchMarkers, { ...fixture.dispatchMarkers[0] }], run: fixture.run },
+    { label: 'dispatch deleted tail', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers.slice(0, -1), run: fixture.run },
+    { label: 'dispatch phase-downgraded tail', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers.map((marker, index) => index === fixture.dispatchMarkers.length - 1 ? { ...marker, phase: 'quick' } : marker), run: fixture.run },
+    { label: 'dispatch incomplete old record', samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers.map((marker, index) => index ? marker : { ...marker, status: 'dispatched' }), run: fixture.run },
+    { label: 'legacy judgment marker rejected', samples: fixture.samples, judgments: [...fixture.automatic, fixture.dispatchMarkers[0], ...fixture.codex], dispatches: fixture.dispatchMarkers, run: fixture.run },
   ]
   for (const corruption of corruptions) {
     const corruptRepository = createMongoBenchmarkRepository(
-      verifiedPublishDb(corruption.run, { suite: fixture.suite, samples: corruption.samples, judgments: corruption.judgments }) as any,
+      verifiedPublishDb(corruption.run, { suite: fixture.suite, samples: corruption.samples, judgments: corruption.judgments, dispatches: corruption.dispatches }) as any,
     )
     await assert.rejects(
       () => corruptRepository.publish({ runId: fixture.run._id, profileStatus: 'verified', evidence: [] } as any),
@@ -622,6 +870,33 @@ test('verified publication independently accepts only the exact full suite, auto
       corruption.label,
     )
   }
+})
+
+test('verified publication prices repair and 429 dispatch attempts and independently enforces both signed Judge caps', async () => {
+  const publish = async (fixture: ReturnType<typeof verifiedFixture>, extras: any[] = []) => {
+    const insertedReleases: any[] = []
+    const repository = createMongoBenchmarkRepository(
+      verifiedPublishDb(fixture.run, {
+        suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples,
+        judgments: [...fixture.automatic, ...fixture.codex], dispatches: [...fixture.dispatchMarkers, ...extras], insertedReleases,
+      }) as any,
+    )
+    const result = await repository.publish({ runId: fixture.run._id, profileStatus: 'verified', evidence: [] } as any)
+    return { result, release: insertedReleases[0] }
+  }
+  const repaired = verifiedFixture({ dispatchAttempts: 4 })
+  const published = await publish(repaired)
+  assert.deepEqual(published.release.models[0].estimatedCost, {
+    usd: 259.2, generationCalls: 144, automaticJudgeCalls: 288, logicalJudgments: 288, judgeDispatchCalls: 1152,
+  })
+  const quickHistory = {
+    ...repaired.dispatchMarkers[0], _id: 'dispatch:openrouter:quick-history:0', sampleId: 'quick-history',
+    phase: 'quick', logicalProvider: 'openrouter', dispatchIndex: 0, judgeEpoch: 'old-quick-epoch',
+  }
+  const withQuickHistory = await publish(repaired, [quickHistory])
+  assert.equal(withQuickHistory.release.models[0].estimatedCost.judgeDispatchCalls, 1152)
+  await assert.rejects(() => publish(verifiedFixture({ dispatchAttempts: 4, maxJudgeCalls: 1151 })), /BENCHMARK_VERIFIED_INTEGRITY_FAILED:FULL_APPROVAL_CAPS/)
+  await assert.rejects(() => publish(verifiedFixture({ dispatchAttempts: 4, maxEstimatedUsd: 259.1 })), /BENCHMARK_VERIFIED_INTEGRITY_FAILED:FULL_APPROVAL_CAPS/)
 })
 
 test('verified publication ignores accepted quick and superseded full Codex rows and scores only the exact current full import', async () => {
@@ -635,7 +910,7 @@ test('verified publication ignores accepted quick and superseded full Codex rows
   const repository = createMongoBenchmarkRepository(
     verifiedPublishDb(fixture.run, {
       suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples,
-      judgments: [...fixture.automatic, ...historical, ...fixture.codex], insertedReleases,
+      judgments: [...fixture.automatic, ...historical, ...fixture.codex], dispatches: fixture.dispatchMarkers, insertedReleases,
     }) as any,
   )
   await repository.publish({ runId: fixture.run._id, profileStatus: 'verified', evidence: [] } as any)
@@ -647,7 +922,7 @@ test('verified publication ignores accepted quick and superseded full Codex rows
 test('verified publication authenticates the exact packet and complete accepted Codex judgment set', async () => {
   const fixture = verifiedFixture()
   const publish = async (run: any, judgments: any[]) => createMongoBenchmarkRepository(
-    verifiedPublishDb(run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments }) as any,
+    verifiedPublishDb(run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments, dispatches: fixture.dispatchMarkers }) as any,
   ).publish({ runId: fixture.run._id, profileStatus: 'verified', evidence: [] } as any)
 
   await assert.rejects(() => publish(
@@ -682,7 +957,7 @@ test('verified publication rebuilds the audit set and strictly validates automat
   const fixture = verifiedFixture()
   const unaudited = fixture.samples.find((sample) => !fixture.expectedAuditIds.includes(sample.sampleId))!
   const publish = async (samples: any[], judgments: any[]) => createMongoBenchmarkRepository(
-    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples, judgments }) as any,
+    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples, judgments, dispatches: fixture.dispatchMarkers }) as any,
   ).publish({ runId: fixture.run._id, profileStatus: 'verified', evidence: [] } as any)
   const disagreement = fixture.automatic.map((judgment) => judgment.sampleId === unaudited.sampleId && judgment.provider === 'openrouter'
     ? { ...judgment, scores: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, 0])) }
@@ -725,7 +1000,7 @@ test('verified publication rejects every missing, non-finite, fractional, non-po
   for (const latencyMs of [undefined, Number.NaN, -1, 0, 1.5, 86_400_001]) {
     const samples = fixture.samples.map((sample, index) => index ? sample : { ...sample, latencyMs })
     const repository = createMongoBenchmarkRepository(
-      verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples, judgments: [...fixture.automatic, ...fixture.codex] }) as any,
+      verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers }) as any,
     )
     await assert.rejects(
       () => repository.publish({ runId: fixture.run._id, profileStatus: 'verified', evidence: [] } as any),
@@ -741,7 +1016,7 @@ test('verified publication verifies immutable OSS evidence outside the transacti
   let verificationCalls = 0
   let firstObjectAttempts = 0
   const repository = createMongoBenchmarkRepository(
-    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], insertedReleases, transactionState }) as any,
+    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, insertedReleases, transactionState }) as any,
     () => new Date('2026-08-25T10:00:00.000Z'),
     async (objectKey) => {
       assert.equal(transactionState.active, false)
@@ -756,7 +1031,7 @@ test('verified publication verifies immutable OSS evidence outside the transacti
   const failedInserts: any[] = []
   const failedSignals: AbortSignal[] = []
   const failedRepository = createMongoBenchmarkRepository(
-    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], insertedReleases: failedInserts, transactionState }) as any,
+    verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, insertedReleases: failedInserts, transactionState }) as any,
     () => new Date('2026-08-25T10:00:00.000Z'),
     async (_objectKey, _imageHash, options) => {
       assert.equal(transactionState.active, false)
@@ -800,7 +1075,7 @@ test('verified publication CAS-rejects an evidence manifest drift without downlo
   const repository = createMongoBenchmarkRepository(
     verifiedPublishDb(fixture.run, {
       suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, transactionalSamples,
-      judgments: [...fixture.automatic, ...fixture.codex], insertedReleases,
+      judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, insertedReleases,
     }) as any,
   )
   await assert.rejects(
@@ -816,7 +1091,7 @@ test('verified publication rolls back a staged release when the post-insert run 
   const repository = createMongoBenchmarkRepository(
     verifiedPublishDb(fixture.run, {
       suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples,
-      judgments: [...fixture.automatic, ...fixture.codex], insertedReleases, failRunCasAfterInsert: true,
+      judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers, insertedReleases, failRunCasAfterInsert: true,
     }) as any,
   )
   await assert.rejects(
@@ -834,7 +1109,7 @@ test('verified publication accepts supported full cases and records each unsuppo
     verifiedPublishDb(fixture.run, {
       suite: fixture.suite,
       samples: fixture.samples,
-      judgments: [...fixture.automatic, ...fixture.codex],
+      judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers,
       insertedReleases,
     }) as any,
     () => new Date('2026-08-25T10:00:00.000Z'),
@@ -872,7 +1147,7 @@ test('verified publication accepts supported full cases and records each unsuppo
     verifiedPublishDb(fixture.run, {
       suite: fixture.suite,
       samples: [...fixture.samples, unsupportedSample],
-      judgments: [...fixture.automatic, ...fixture.codex],
+      judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers,
     }) as any,
   )
   await assert.rejects(
@@ -895,7 +1170,7 @@ test('verified publication rejects a valid-shaped score snapshot change before i
     verifiedPublishDb(fixture.run, {
       suite: fixture.suite,
       samples: fixture.samples,
-      judgments: [...fixture.automatic, ...fixture.codex],
+      judgments: [...fixture.automatic, ...fixture.codex], dispatches: fixture.dispatchMarkers,
       transactionalJudgments,
       insertedReleases,
     }) as any,
