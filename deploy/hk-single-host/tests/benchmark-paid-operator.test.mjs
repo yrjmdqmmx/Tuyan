@@ -45,6 +45,16 @@ function makeFixture() {
         '--confirm', 'run-two-image-canary-disabled-worker', ...extraArgs,
       ], { encoding: 'utf8', env: { ...process.env, PAPERBANANA_HK_TEST_ROOT: root } });
     },
+    runCalibration({ maxUsd = '2.40', judgeUsd = '0.10' } = {}) {
+      return spawnSync(operatorPath, [
+        '--mode', 'calibration', '--expected-sha', expectedSha,
+        '--provider', 'bailian', '--model-id', 'calibration-only', '--lane', '2K-standard',
+        '--max-generations', '0', '--max-judge-calls', '24', '--max-estimated-usd', maxUsd,
+        '--estimated-per-generation-usd', '0', '--estimated-per-judge-call-usd', judgeUsd,
+        '--price-currency', 'USD', '--price-source', 'https://openrouter.ai/google/gemini-3.7-flash', '--price-captured-at', '2026-08-25T08:00:00.000Z',
+        '--confirm', 'calibrate-judge-disabled-worker',
+      ], { encoding: 'utf8', env: { ...process.env, PAPERBANANA_HK_TEST_ROOT: root } });
+    },
     cleanup() { rmSync(root, { recursive: true, force: true }); },
   };
 }
@@ -106,6 +116,21 @@ test('dry-run executes real configured-disabled, SHA and budget preflight in a m
     const rejected = fixture.run();
     assert.notEqual(rejected.status, 0);
     assert.match(rejected.stderr, /must remain false/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('budget preflight compares decimal prices exactly at the approved cap', () => {
+  const fixture = makeFixture();
+  try {
+    const exact = fixture.runCalibration();
+    assert.equal(exact.status, 0, exact.stderr);
+    assert.match(exact.stdout, /dry-run/);
+
+    const over = fixture.runCalibration({ maxUsd: '2.39' });
+    assert.notEqual(over.status, 0);
+    assert.doesNotMatch(`${over.stdout}${over.stderr}`, /docker|provider|judge|api.?key/i);
   } finally {
     fixture.cleanup();
   }

@@ -8,6 +8,24 @@ function number(env: Record<string, string | undefined>, name: string, integer =
   return value
 }
 
+function decimalBudgetWithinCap(env: Record<string, string | undefined>, maxGenerations: number, maxJudgeCalls: number) {
+  const parse = (name: string) => {
+    const value = String(env[name] || '')
+    if (!/^\d{1,12}(?:\.\d{1,12})?$/.test(value)) return undefined
+    const [whole, fraction = ''] = value.split('.')
+    return { units: BigInt(`${whole}${fraction}`), scale: fraction.length }
+  }
+  const amounts = [
+    parse('PAPERBANANA_BENCH_MAX_ESTIMATED_USD'),
+    parse('PAPERBANANA_BENCH_ESTIMATED_PER_GENERATION_USD'),
+    parse('PAPERBANANA_BENCH_ESTIMATED_PER_JUDGE_CALL_USD'),
+  ]
+  if (amounts.some((amount) => !amount)) return false
+  const scale = Math.max(...amounts.map((amount) => amount!.scale))
+  const [max, generation, judge] = amounts.map((amount) => amount!.units * (10n ** BigInt(scale - amount!.scale)))
+  return generation * BigInt(maxGenerations) + judge * BigInt(maxJudgeCalls) <= max
+}
+
 export function parseBenchmarkOperatorAuthorization(env: Record<string, string | undefined>) {
   if (env.PAPERBANANA_BENCH_ENABLED !== 'false') throw new Error('BENCHMARK_OPERATOR_REQUIRES_DISABLED_WORKER')
   const mode = String(env.PAPERBANANA_BENCH_OPERATOR_MODE || '') as OperatorMode
@@ -37,7 +55,7 @@ export function parseBenchmarkOperatorAuthorization(env: Record<string, string |
     && priceCurrency === 'USD'
     && parsedPriceSource?.protocol === 'https:' && !parsedPriceSource.username && !parsedPriceSource.password
     && capturedAt === priceCapturedAt
-    && maxGenerations * estimatedPerGenerationUsd + maxJudgeCalls * estimatedPerJudgeCallUsd <= maxEstimatedUsd
+    && decimalBudgetWithinCap(env, maxGenerations, maxJudgeCalls)
   const calibrationValid = mode === 'calibration'
     && confirm === 'calibrate-judge-disabled-worker'
     && maxGenerations === 0
