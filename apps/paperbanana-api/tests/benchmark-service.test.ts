@@ -41,7 +41,7 @@ test('judge calibration record binds the private operator report, authorization,
   }
   const priceHash = canonicalHash(priceSnapshot)
   const authorizationBase = {
-    mode: 'calibration', codeSha, maxGenerations: 0, maxJudgeCalls: 12, maxEstimatedUsd: 3,
+    mode: 'calibration', codeSha, maxGenerations: 0, maxJudgeCalls: 14, maxEstimatedUsd: 1.4,
     estimatedPerGenerationUsd: 0, estimatedPerJudgeCallUsd: 0.1, priceSnapshot, priceHash,
   }
   const authorization = { ...authorizationBase, authorizationHash: canonicalHash(authorizationBase) }
