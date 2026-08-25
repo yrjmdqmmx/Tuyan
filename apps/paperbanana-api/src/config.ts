@@ -109,7 +109,7 @@ function providerEgressConfig(env: Environment): ServiceConfig['providerEgress']
   return { mode, proxyUrl: parsed.origin }
 }
 
-export function loadConfig(env: Environment = process.env): ServiceConfig {
+export function loadConfig(env: Environment = process.env, buildCodeSha?: string): ServiceConfig {
   const gatewayToken = required(env, 'PAPERBANANA_GATEWAY_TOKEN')
   const adminTransportToken = env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN?.trim() || undefined
   const benchmarkDiscoveryToken = env.PAPERBANANA_BENCH_DISCOVERY_TOKEN?.trim() || undefined
@@ -136,6 +136,8 @@ export function loadConfig(env: Environment = process.env): ServiceConfig {
     const benchmarkRegion = required(env, 'PAPERBANANA_BENCH_OSS_REGION')
     const codeSha = required(env, 'PAPERBANANA_CODE_SHA')
     if (!/^[a-f0-9]{40}$/i.test(codeSha)) throw new Error('PAPERBANANA_CODE_SHA must be an immutable 40-character commit SHA')
+    if (!buildCodeSha || !/^[a-f0-9]{40}$/i.test(buildCodeSha)) throw new Error('PAPERBANANA_BUILD_PROVENANCE_REQUIRED')
+    if (codeSha.toLowerCase() !== buildCodeSha.toLowerCase()) throw new Error('PAPERBANANA_BUILD_PROVENANCE_MISMATCH')
     benchmark = {
       mongodb: {
         uri: required(env, 'PAPERBANANA_BENCH_MONGODB_URI'),
@@ -151,7 +153,7 @@ export function loadConfig(env: Environment = process.env): ServiceConfig {
         secure: true,
         pathStyle: false,
       },
-      codeSha,
+      codeSha: buildCodeSha.toLowerCase(),
       reviewSigningSecret: required(env, 'PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET'),
     }
   }

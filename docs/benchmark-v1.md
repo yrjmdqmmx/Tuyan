@@ -18,3 +18,10 @@
 ## Release gate
 
 Worker 初始必须 `PAPERBANANA_BENCH_ENABLED=false`。发现候选费用为零。任何两题 canary、24 图临时集或 144 图正式集都需要新的明确预算授权、专用凭据与通过的 Judge calibration 记录；本仓库构建、测试或部署流程不得自动开启付费运行。
+
+校准与 canary 使用手工 `Run Benchmark Paid Operator` workflow，并在常驻 Worker 仍 disabled 时启动一次性容器：
+
+- Calibration 使用六张原创缺陷金标，固定覆盖漏节点、反向箭头、乱码、遮挡、低对比和比例违约；OpenRouter 与百炼 Judge 各评一次，可解析修复也计入 dispatch 上限。红线准确率低于 85% 或两 Judge 一致率低于 80% 时不得记录该 epoch。
+- Canary 固定 `complex_topology-01` 与 `math_symbols-01`，精确生成两张图，由两位 Judge 各评一次；任何 JSON 修复或 429 有界重发均占最多六次 Judge dispatch 的预算。
+- operator 绑定当前代码 SHA、Judge stack、无密钥授权信封、价格快照、生成/Judge 次数和最高 3 美元估算费用派发上限。实际账单由 Provider 最终计费决定；完整报告只写入私有 `bench/operator-reports/`，Actions 日志不得输出图片、自动评分、凭据或未审证据。Core 在记录校准前从私有 OSS 有界回读原件并重算报告、授权和价格 hash，请求中仅有格式正确的伪造 hash 不能通过。
+- Calibration 与 canary 都不是公开画像；只有随后完成 quick/full、Codex 盲审与不可变发布，`/bench` 才能读取结果。

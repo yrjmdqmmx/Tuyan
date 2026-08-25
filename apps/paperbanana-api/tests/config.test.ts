@@ -67,7 +67,8 @@ test('disabled provider egress does not require or expose a proxy URL', () => {
 
 test('benchmark API is disabled by default and enabled only with isolated Mongo, OSS and immutable code provenance', () => {
   assert.equal(loadConfig(validEnv).benchmark, undefined)
-  const enabled = loadConfig({
+  const buildCodeSha = 'eb31b2b3da4cbc73a436711f7183fef9df119c6b'
+  const benchmarkEnv = {
     ...validEnv,
     PAPERBANANA_BENCH_API_ENABLED: 'true',
     PAPERBANANA_BENCH_MONGODB_URI: 'mongodb://benchmark-api:secret@mongodb:27017/paperbanana_benchmark',
@@ -78,11 +79,14 @@ test('benchmark API is disabled by default and enabled only with isolated Mongo,
     PAPERBANANA_BENCH_OSS_BUCKET: 'paperbanana-bench-private',
     PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT: 'https://oss-cn-hongkong-internal.aliyuncs.com',
     PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT: 'https://oss-cn-hongkong.aliyuncs.com',
-    PAPERBANANA_CODE_SHA: 'eb31b2b3da4cbc73a436711f7183fef9df119c6b',
+    PAPERBANANA_CODE_SHA: buildCodeSha,
     PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET: 'review-signing-secret',
-  })
+  }
+  const enabled = loadConfig(benchmarkEnv, buildCodeSha)
   assert.equal(enabled.benchmark?.mongodb.database, 'paperbanana_benchmark')
   assert.equal(enabled.benchmark?.oss.bucket, 'paperbanana-bench-private')
+  assert.equal(enabled.benchmark?.codeSha, buildCodeSha)
+  assert.throws(() => loadConfig(benchmarkEnv, 'a'.repeat(40)), /PAPERBANANA_BUILD_PROVENANCE_MISMATCH/)
   assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_BENCH_API_ENABLED: 'true' }), /PAPERBANANA_CODE_SHA|PAPERBANANA_BENCH/)
 })
 

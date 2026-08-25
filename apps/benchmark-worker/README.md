@@ -42,3 +42,9 @@ pnpm --filter @paperbanana/benchmark-worker build
 ```
 
 The image publish workflow records an immutable GHCR digest but never deploys it.
+
+`dist/operator.mjs` is the separately invoked production calibration/canary
+entrypoint. It refuses to run unless the daemon configuration remains disabled,
+requires an exact commit-bound authorization envelope, meters every generation
+and Judge dispatch before the call, and persists only a private
+content-addressed operator report. It is not the long-running Worker entrypoint.

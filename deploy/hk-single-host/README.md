@@ -106,6 +106,33 @@ and is removed after success, validation failure, or rollback; the workflow
 cleanup remains defense in depth. This stage does not authorize generation,
 judging, a canary, or any paid request.
 
+## Benchmark paid operator
+
+Judge calibration and the two-image canary use the manual
+`Run Benchmark Paid Operator` workflow after `configured-disabled` has passed.
+The workflow invokes `scripts/run-benchmark-paid-operator.sh`, which holds the
+same production host lock as deployment, revalidates the exact deployed SHA,
+and requires the daemon Worker to remain disabled with concurrency one. It
+starts only a disposable Compose `benchmark-worker` container and never edits
+`bench.env`.
+
+Calibration permits zero generations and 12–24 Judge dispatches. Canary is
+fixed at exactly two generations and at most six Judge dispatches. Both require
+conservative per-call price snapshots with a public HTTPS source, capture time,
+and an estimated dispatch ceiling no greater than USD 3. Provider billing is
+authoritative and may differ from the estimate. Before dispatch, the script
+checks the SHA baked into both immutable Core and Worker images in addition to
+the runtime environment SHA.
+The complete content-addressed report is stored under the private
+`bench/operator-reports/` prefix; workflow output contains only the report hash,
+counts and estimated spend. Passing calibration is recorded through Core's
+existing internal admin transport using an immutable configured administrator
+ID. Core boundedly reloads that private OSS report and recomputes the report,
+authorization, and price hashes before immutably recording its derived result,
+price, and usage facts; caller-supplied hash-shaped values are not trusted.
+The operator still requires a separate explicit user budget authorization and
+does not publish a profile.
+
 ## Singapore provider egress activation
 
 `paperbanana-api` receives `PAPERBANANA_PROVIDER_EGRESS_MODE` and

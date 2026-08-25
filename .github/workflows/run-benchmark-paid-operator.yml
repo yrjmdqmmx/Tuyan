@@ -1,0 +1,148 @@
+name: Run Benchmark Paid Operator
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Paid operator mode
+        required: true
+        type: choice
+        options: [calibration, canary]
+      expected_deployed_sha:
+        description: Exact 40-character commit currently deployed in Core and Bench
+        required: true
+      provider:
+        description: Generation provider; ignored for calibration
+        required: true
+        type: choice
+        options: [bailian, openrouter, ark]
+      model_id:
+        description: Exact generation model ID; use calibration-only for calibration
+        required: true
+      lane:
+        description: Generation lane; ignored for calibration
+        required: true
+        type: choice
+        options: [1K-standard, 2K-standard, 4K-standard]
+      max_generations:
+        description: Exact cap; calibration=0, canary=2
+        required: true
+      max_judge_calls:
+        description: Dispatch cap; calibration 12-24, canary=6
+        required: true
+      max_estimated_usd:
+        description: Estimated USD dispatch cap, no more than 3
+        required: true
+      estimated_per_generation_usd:
+        description: Conservative generation price snapshot; calibration=0
+        required: true
+      estimated_per_judge_call_usd:
+        description: Conservative Judge call price snapshot
+        required: true
+      price_currency:
+        description: Price snapshot currency
+        required: true
+        type: choice
+        options: [USD]
+      price_source:
+        description: Public HTTPS source for the price snapshot
+        required: true
+      price_captured_at:
+        description: Exact ISO timestamp when the price snapshot was captured
+        required: true
+      confirm:
+        description: Type the exact confirmation required by the selected mode
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  run:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate immutable provenance and paid caps
+        env:
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          PROVIDER: ${{ inputs.provider }}
+          MODEL_ID: ${{ inputs.model_id }}
+          LANE: ${{ inputs.lane }}
+          MAX_GENERATIONS: ${{ inputs.max_generations }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_ESTIMATED_USD: ${{ inputs.max_estimated_usd }}
+          GENERATION_USD: ${{ inputs.estimated_per_generation_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_CURRENCY: ${{ inputs.price_currency }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$MODEL_ID" =~ ^[A-Za-z0-9._:/-]{3,200}$ ]]
+          [[ "$MAX_GENERATIONS" =~ ^[0-9]+$ && "$MAX_JUDGE_CALLS" =~ ^[0-9]+$ ]]
+          [[ "$MAX_ESTIMATED_USD" =~ ^[0-9]+([.][0-9]+)?$ ]]
+          [[ "$GENERATION_USD" =~ ^[0-9]+([.][0-9]+)?$ ]]
+          [[ "$JUDGE_USD" =~ ^[0-9]+([.][0-9]+)?$ ]]
+          [[ "$PRICE_CURRENCY" == USD ]]
+          node - "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" <<'NODE'
+          const [source, capturedAt] = process.argv.slice(2)
+          const url = new URL(source)
+          if (url.protocol !== 'https:' || url.username || url.password || url.toString() !== source) process.exit(1)
+          if (new Date(capturedAt).toISOString() !== capturedAt) process.exit(1)
+          NODE
+          if [[ "$MODE" == calibration ]]; then
+            [[ "$CONFIRM" == calibrate-judge-disabled-worker && "$MAX_GENERATIONS" == 0 ]]
+            ((MAX_JUDGE_CALLS >= 12 && MAX_JUDGE_CALLS <= 24))
+          else
+            [[ "$MODE" == canary && "$CONFIRM" == run-two-image-canary-disabled-worker ]]
+            [[ "$MAX_GENERATIONS" == 2 && "$MAX_JUDGE_CALLS" == 6 ]]
+          fi
+          bash -n deploy/hk-single-host/scripts/run-benchmark-paid-operator.sh
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Run disabled-worker paid operator
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          PROVIDER: ${{ inputs.provider }}
+          MODEL_ID: ${{ inputs.model_id }}
+          LANE: ${{ inputs.lane }}
+          MAX_GENERATIONS: ${{ inputs.max_generations }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_ESTIMATED_USD: ${{ inputs.max_estimated_usd }}
+          GENERATION_USD: ${{ inputs.estimated_per_generation_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_CURRENCY: ${{ inputs.price_currency }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'cd %q && sudo %q --mode %q --expected-sha %q --provider %q --model-id %q --lane %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-currency %q --price-source %q --price-captured-at %q --confirm %q --apply' \
+            /opt/paperbanana/repo \
+            deploy/hk-single-host/scripts/run-benchmark-paid-operator.sh \
+            "$MODE" "$EXPECTED_SHA" "$PROVIDER" "$MODEL_ID" "$LANE" \
+            "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_ESTIMATED_USD" \
+            "$GENERATION_USD" "$JUDGE_USD" "$PRICE_CURRENCY" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

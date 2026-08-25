@@ -18,7 +18,7 @@ core_image="paperbanana/core-api:$short_commit"
 worker_image="paperbanana/plot-worker:$short_commit"
 
 docker build --pull -f "$repo_dir/apps/auth-gateway/Dockerfile" -t "$gateway_image" "$repo_dir"
-docker build --pull -f "$repo_dir/apps/paperbanana-api/Dockerfile" -t "$core_image" "$repo_dir"
+docker build --pull --build-arg "PAPERBANANA_CODE_SHA=$commit" -f "$repo_dir/apps/paperbanana-api/Dockerfile" -t "$core_image" "$repo_dir"
 docker build --pull -f "$repo_dir/apps/plot-worker/Dockerfile" -t "$worker_image" "$repo_dir/apps/plot-worker"
 docker pull mongo:8.0.16-noble
 mongo_digest="$(docker image inspect mongo:8.0.16-noble --format '{{range .RepoDigests}}{{println .}}{{end}}' | sed -n '/^mongo@sha256:/p' | head -1)"

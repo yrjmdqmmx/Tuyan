@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict'
+import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import test from 'node:test'
+import { canonicalHash } from '@paperbanana/benchmark-core'
 
 import {
   BenchmarkBudget,
@@ -15,9 +19,18 @@ import {
   createSharedImageRuntime,
   executeBenchmarkRun,
   evaluateJudgeCalibration,
+  JUDGE_CALIBRATION_FIXTURES,
+  buildJudgeCalibrationReport,
+  BENCHMARK_CANARY_CASE_IDS,
+  executeBenchmarkCanary,
+  executeJudgeCalibration,
+  parseBenchmarkOperatorAuthorization,
+  benchmarkJudgePrompt,
   redactHealthError,
   listIndexesOrEmpty,
+  loadBuildProvenance,
 } from '../src/index.js'
+import { callBlindJudge } from '../src/judge-provider.js'
 
 test('worker is disabled, single-concurrency and six-hour detection by default', () => {
   const config = parseWorkerConfig({})
@@ -33,10 +46,85 @@ test('fresh benchmark database treats missing index namespace as empty', async (
   await assert.rejects(() => listIndexesOrEmpty({ async indexes() { throw Object.assign(new Error('denied'), { code: 13 }) } }), /denied/)
 })
 
+test('worker reads immutable build provenance from a regular file and rejects malformed content', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'paperbanana-build-provenance-'))
+  const provenancePath = join(root, 'build-provenance.json')
+  try {
+    writeFileSync(provenancePath, JSON.stringify({ codeSha: 'a'.repeat(40) }), { mode: 0o444 })
+    assert.deepEqual(await loadBuildProvenance(provenancePath), { codeSha: 'a'.repeat(40) })
+    chmodSync(provenancePath, 0o600)
+    writeFileSync(provenancePath, JSON.stringify({ codeSha: 'mutable' }), { mode: 0o444 })
+    await assert.rejects(() => loadBuildProvenance(provenancePath), /BENCHMARK_BUILD_PROVENANCE_INVALID/)
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
 test('judge epoch publication gate requires at least 85% red-line accuracy and stable agreement', () => {
   assert.deepEqual(evaluateJudgeCalibration({ correctRedLines: 11, totalRedLines: 12, agreement: 0.86 }), { accuracy: 11 / 12, agreement: 0.86, passed: true })
   assert.equal(evaluateJudgeCalibration({ correctRedLines: 10, totalRedLines: 12, agreement: 0.9 }).passed, false)
   assert.equal(evaluateJudgeCalibration({ correctRedLines: 12, totalRedLines: 12, agreement: 0.7 }).passed, false)
+})
+
+test('judge calibration fixtures are immutable original gold cases covering every required defect', () => {
+  assert.equal(Object.isFrozen(JUDGE_CALIBRATION_FIXTURES), true)
+  assert.deepEqual(
+    JUDGE_CALIBRATION_FIXTURES.map((fixture) => fixture.expectedRedLines[0]),
+    ['missing_node', 'reversed_arrow', 'garbled_text', 'occlusion', 'low_contrast', 'aspect_ratio_violation'],
+  )
+  for (const fixture of JUDGE_CALIBRATION_FIXTURES) {
+    assert.match(fixture.id, /^judge-calibration-v1-/)
+    assert.equal(fixture.license.spdx, 'CC-BY-4.0')
+    assert.equal(fixture.license.source, 'original')
+    assert.match(fixture.svg, /^<svg[\s\S]*<\/svg>$/)
+    assert.match(fixture.manifestHash, /^[a-f0-9]{64}$/)
+  }
+  const reversedArrow = JUDGE_CALIBRATION_FIXTURES.find((fixture) => fixture.expectedRedLines[0] === 'reversed_arrow')!
+  assert.match(reversedArrow.svg, /M595 250 H485/)
+  assert.match(reversedArrow.svg, /M503 236 L485 250 L503 264/)
+})
+
+test('judge calibration report scores exact red-line sets, pair agreement and immutable fixture hash', () => {
+  const judgments = JUDGE_CALIBRATION_FIXTURES.flatMap((fixture, index) => [
+    { fixtureId: fixture.id, provider: 'openrouter' as const, redLines: fixture.expectedRedLines },
+    { fixtureId: fixture.id, provider: 'bailian' as const, redLines: index === 0 ? [] : fixture.expectedRedLines },
+  ])
+  const report = buildJudgeCalibrationReport({ fixtures: JUDGE_CALIBRATION_FIXTURES, judgments })
+  assert.equal(report.totalRedLines, 12)
+  assert.equal(report.correctRedLines, 11)
+  assert.equal(report.accuracy, 11 / 12)
+  assert.equal(report.agreement, 5 / 6)
+  assert.equal(report.passed, true)
+  assert.match(report.fixtureHash, /^[a-f0-9]{64}$/)
+  assert.deepEqual(Object.keys(report).sort(), ['accuracy', 'agreement', 'correctRedLines', 'fixtureHash', 'passed', 'totalRedLines'])
+})
+
+test('two-image canary uses fixed diagnostic cases and never expands into the 24-image quick set', async () => {
+  const generated: string[] = []
+  const judged: string[] = []
+  const result = await executeBenchmarkCanary({
+    provider: 'ark',
+    modelId: 'doubao-seedream-test',
+    lane: '2K-standard',
+    async generate(sample) {
+      generated.push(sample.caseId)
+      return { imageHash: `hash-${sample.caseId}`, imageObjectKey: `bench/canary/${sample.caseId}.png`, latencyMs: 1000 }
+    },
+    async judge(provider, sample) {
+      judged.push(`${provider}:${sample.caseId}`)
+      return {
+        scores: Object.fromEntries(['faithfulness','conciseness','readability','aesthetics','text_accuracy','topology','instruction_adherence'].map((axis) => [axis, 8])),
+        evidence: ['visible evidence'], redLines: [], confidence: 0.9,
+      }
+    },
+  })
+  assert.deepEqual(generated, [...BENCHMARK_CANARY_CASE_IDS])
+  assert.equal(generated.length, 2)
+  assert.equal(judged.length, 4)
+  assert.equal(result.sampleCount, 2)
+  assert.equal(result.judgmentCount, 4)
+  assert.equal(result.passed, true)
+  assert.match(result.reportHash, /^[a-f0-9]{64}$/)
 })
 
 test('quick run generates all 12x2 samples before either judge phase', async () => {
@@ -90,6 +178,80 @@ test('judge parser is strict and repairs malformed JSON at most once', async () 
   assert.equal(repaired.scores.topology, 8)
   assert.equal(calls, 2)
   await assert.rejects(() => judgeWithSingleRepair(async () => '{still-bad'), /BENCHMARK_JUDGE_JSON_INVALID/)
+})
+
+test('judge prompt fixes the six calibration red-line codes and visible-evidence contract', () => {
+  const prompt = benchmarkJudgePrompt({ rubric: {}, caption: 'expected' })
+  for (const code of ['missing_node', 'reversed_arrow', 'garbled_text', 'occlusion', 'low_contrast', 'aspect_ratio_violation']) {
+    assert.match(prompt, new RegExp(code))
+  }
+  assert.match(prompt, /visible evidence/i)
+  assert.match(prompt, /redLines/i)
+})
+
+test('judge provider caps output tokens on every fixed Judge request', async () => {
+  let requestBody: any
+  const valid = {
+    scores: { faithfulness: 8, conciseness: 8, readability: 8, aesthetics: 8, text_accuracy: 8, topology: 8, instruction_adherence: 8 },
+    evidence: ['visible'], redLines: [], confidence: 0.9,
+  }
+  await callBlindJudge({
+    provider: 'openrouter', apiKey: 'fake-key', imageBase64: 'cG5n', rubric: {}, caption: 'caption',
+    async fetchImpl(_url, init) {
+      requestBody = JSON.parse(String(init?.body || '{}'))
+      return new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(valid) } }], usage: { prompt_tokens: 100, completion_tokens: 50, total_tokens: 150, cost: 0.01 } }), { status: 200, headers: { 'content-type': 'application/json' } })
+    },
+  })
+  assert.equal(requestBody.max_tokens, 1200)
+})
+
+test('judge calibration executes six original fixtures against both fixed judges', async () => {
+  const calls: string[] = []
+  const result = await executeJudgeCalibration({
+    async render(fixture) { return Buffer.from(fixture.svg) },
+    async judge(provider, fixture) {
+      calls.push(`${provider}:${fixture.id}`)
+      return { redLines: fixture.expectedRedLines }
+    },
+  })
+  assert.equal(calls.length, 12)
+  assert.equal(result.correctRedLines, 12)
+  assert.equal(result.totalRedLines, 12)
+  assert.equal(result.agreement, 1)
+  assert.equal(result.passed, true)
+  assert.match(result.fixtureHash, /^[a-f0-9]{64}$/)
+  assert.match(result.reportHash, /^[a-f0-9]{64}$/)
+})
+
+test('operator authorization fails closed unless daemon stays disabled and paid caps are exact', () => {
+  const base = {
+    PAPERBANANA_BENCH_ENABLED: 'false',
+    PAPERBANANA_CODE_SHA: 'a'.repeat(40),
+    PAPERBANANA_BENCH_OPERATOR_CONFIRM: 'run-two-image-canary-disabled-worker',
+    PAPERBANANA_BENCH_OPERATOR_MODE: 'canary',
+    PAPERBANANA_BENCH_OPERATOR_PROVIDER: 'ark',
+    PAPERBANANA_BENCH_OPERATOR_MODEL_ID: 'doubao-seedream-test',
+    PAPERBANANA_BENCH_OPERATOR_LANE: '2K-standard',
+    PAPERBANANA_BENCH_MAX_GENERATIONS: '2',
+    PAPERBANANA_BENCH_MAX_JUDGE_CALLS: '6',
+    PAPERBANANA_BENCH_MAX_ESTIMATED_USD: '3',
+    PAPERBANANA_BENCH_ESTIMATED_PER_GENERATION_USD: '0.05',
+    PAPERBANANA_BENCH_ESTIMATED_PER_JUDGE_CALL_USD: '0.01',
+    PAPERBANANA_BENCH_PRICE_CURRENCY: 'USD',
+    PAPERBANANA_BENCH_PRICE_SOURCE: 'https://openrouter.ai/api/v1/models',
+    PAPERBANANA_BENCH_PRICE_CAPTURED_AT: '2026-08-25T08:00:00.000Z',
+  }
+  const authorization = parseBenchmarkOperatorAuthorization(base)
+  assert.equal(authorization.mode, 'canary')
+  assert.equal(authorization.maxGenerations, 2)
+  assert.equal(authorization.maxJudgeCalls, 6)
+  assert.equal(authorization.priceSnapshot.currency, 'USD')
+  assert.match(authorization.priceHash, /^[a-f0-9]{64}$/)
+  assert.equal(canonicalHash(Object.fromEntries(Object.entries(authorization).filter(([key]) => key !== 'authorizationHash'))), authorization.authorizationHash)
+  assert.equal(JSON.stringify(authorization).includes('API_KEY'), false)
+  assert.throws(() => parseBenchmarkOperatorAuthorization({ ...base, PAPERBANANA_BENCH_ENABLED: 'true' }), /BENCHMARK_OPERATOR_REQUIRES_DISABLED_WORKER/)
+  assert.throws(() => parseBenchmarkOperatorAuthorization({ ...base, PAPERBANANA_BENCH_MAX_GENERATIONS: '3' }), /BENCHMARK_OPERATOR_AUTHORIZATION_INVALID/)
+  assert.throws(() => parseBenchmarkOperatorAuthorization({ ...base, PAPERBANANA_BENCH_MAX_JUDGE_CALLS: '7' }), /BENCHMARK_OPERATOR_AUTHORIZATION_INVALID/)
 })
 
 test('worker only reads dedicated Bench credentials and never returns their values', () => {

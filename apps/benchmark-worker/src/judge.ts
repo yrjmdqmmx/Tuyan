@@ -46,7 +46,9 @@ export const JUDGE_MODELS = Object.freeze({
 export function benchmarkJudgePrompt(input: { rubric: unknown; caption: string }) {
   return [
     'You are a blind evaluator. The tested model identity is intentionally unavailable.',
-    'Score only visible evidence from 0 to 10 on exactly seven axes.',
+    'Score only visible evidence from 0 to 10 on exactly seven axes; never infer hidden intent.',
+    'redLines may contain only these exact codes when visibly proven: missing_node, reversed_arrow, garbled_text, occlusion, low_contrast, aspect_ratio_violation.',
+    'Use an empty redLines array when none of those six defects is visibly proven.',
     'Return strict JSON with exactly scores, evidence, redLines, confidence; no markdown.',
     `Rubric: ${JSON.stringify(input.rubric)}`,
     `Expected caption: ${input.caption}`,

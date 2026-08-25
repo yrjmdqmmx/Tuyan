@@ -6,6 +6,7 @@ import { MongoClient } from 'mongodb'
 import { PB_IMAGE_DIAGNOSTIC_V1, benchmarkJudgeStackHash, canonicalHash } from '@paperbanana/benchmark-core'
 
 import { loadAuthoritativeImageRuntime } from './authoritative-runtime.js'
+import { loadBuildProvenance } from './build-provenance.js'
 import { loadBenchCredentials, parseWorkerConfig, redactHealthError } from './config.js'
 import { detectImageCandidates } from './detector.js'
 import { callBlindJudge } from './judge-provider.js'
@@ -32,6 +33,7 @@ async function writeHealth(status: string, fields: Record<string, unknown> = {})
 let healthState: Record<string, unknown> = { ok: true, status: 'starting' }
 
 async function main() {
+  const buildProvenance = await loadBuildProvenance()
   const client = new MongoClient(required('PAPERBANANA_BENCH_MONGODB_URI'))
   await client.connect()
   const db = client.db(config.mongoDbName)
@@ -74,8 +76,8 @@ async function main() {
       const run = await repository.acquireRun(workerId, config.leaseMs)
       if (!run) return
       activeRun = run
-      const workerCodeSha = String(env.PAPERBANANA_CODE_SHA || '')
-      if (!/^[a-f0-9]{40}$/i.test(workerCodeSha) || workerCodeSha !== run.codeSha) throw new Error('BENCHMARK_WORKER_CODE_SHA_MISMATCH')
+      const workerCodeSha = buildProvenance.codeSha
+      if (workerCodeSha !== String(env.PAPERBANANA_CODE_SHA || '').toLowerCase() || workerCodeSha !== run.codeSha) throw new Error('BENCHMARK_WORKER_CODE_SHA_MISMATCH')
       if (benchmarkJudgeStackHash(workerCodeSha) !== run.judgeStackHash) throw new Error('BENCHMARK_JUDGE_STACK_MISMATCH')
       heartbeat = setInterval(() => { void repository.heartbeat(run._id, workerId, run.leaseToken, run.state, config.leaseMs) }, config.heartbeatMs)
       const provider = String(run.provider) as 'bailian' | 'openrouter' | 'ark'
