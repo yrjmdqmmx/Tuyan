@@ -2,7 +2,20 @@ import { benchmarkJudgePrompt, JUDGE_MODELS, judgeWithSingleRepair } from './jud
 import { UnknownProviderOutcomeError } from './provider-operation.js'
 
 async function parseText(response: Response) {
-  if (!response.ok) throw Object.assign(new Error(`BENCHMARK_JUDGE_HTTP_${response.status}`), { status: response.status, retryAfterMs: Number(response.headers.get('retry-after') || 0) * 1_000 })
+  if (!response.ok) {
+    let classification = `BENCHMARK_JUDGE_HTTP_${response.status}`
+    if (response.status === 403) {
+      const body = (await response.text().catch(() => '')).slice(0, 65_536).toLowerCase()
+      classification = /guardrail|prompt.?injection|content.?filter/.test(body)
+        ? 'BENCHMARK_JUDGE_FORBIDDEN_GUARDRAIL'
+        : /insufficient.{0,20}(?:credit|fund)|(?:credit|budget|spend).{0,30}(?:limit|exhaust|remain|reach|insufficient)/.test(body)
+          ? 'BENCHMARK_JUDGE_FORBIDDEN_BUDGET'
+          : /allow.?list|allowed.{0,20}(?:model|provider)|permission|access.{0,20}(?:denied|policy)|zero.?data.?retention|\bzdr\b/.test(body)
+            ? 'BENCHMARK_JUDGE_FORBIDDEN_ACCESS_POLICY'
+            : classification
+    }
+    throw Object.assign(new Error(classification), { status: response.status, retryAfterMs: Number(response.headers.get('retry-after') || 0) * 1_000 })
+  }
   const data = await response.json() as any
   return String(data.choices?.[0]?.message?.content || '')
 }
@@ -33,7 +46,11 @@ export async function callBlindJudge(input: {
       response = await fetchImpl(endpoint, {
         method: 'POST',
         signal: controller.signal,
-        headers: { Authorization: `Bearer ${input.apiKey}`, 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${input.apiKey}`,
+          'Content-Type': 'application/json',
+          ...(input.provider === 'openrouter' ? { 'X-OpenRouter-Metadata': 'enabled' } : {}),
+        },
         body: JSON.stringify({
           model: JUDGE_MODELS[input.provider],
           messages: [{ role: 'user', content: [

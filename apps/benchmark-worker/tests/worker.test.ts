@@ -314,6 +314,25 @@ test('judge provider caps output tokens on every fixed Judge request', async () 
   assert.equal(requestBody.max_tokens, 1200)
 })
 
+test('OpenRouter 403 responses are reduced to fixed safe failure classes', async () => {
+  const cases = [
+    [{ error: { message: 'Insufficient credits for this request' } }, /BENCHMARK_JUDGE_FORBIDDEN_BUDGET/],
+    [{ error: { message: 'Request blocked', metadata: { patterns: ['prompt injection'] } }, openrouter_metadata: { pipeline: [{ type: 'guardrail', name: 'regex_pi_detection' }] } }, /BENCHMARK_JUDGE_FORBIDDEN_GUARDRAIL/],
+    [{ error: { message: 'Model is not in the allowed model list' } }, /BENCHMARK_JUDGE_FORBIDDEN_ACCESS_POLICY/],
+  ] as const
+  for (const [body, expected] of cases) {
+    let requestHeaders: Headers | undefined
+    await assert.rejects(callBlindJudge({
+      provider: 'openrouter', apiKey: 'fake-key', imageBase64: 'cG5n', rubric: {}, caption: 'caption',
+      async fetchImpl(_url, init) {
+        requestHeaders = new Headers(init?.headers)
+        return new Response(JSON.stringify(body), { status: 403, headers: { 'content-type': 'application/json' } })
+      },
+    }), expected)
+    assert.equal(requestHeaders?.get('x-openrouter-metadata'), 'enabled')
+  }
+})
+
 test('one logical judgment can use explicitly bounded repair plus one 429 retry headroom', async () => {
   const valid = JSON.stringify({
     scores: { faithfulness: 8, conciseness: 8, readability: 8, aesthetics: 8, text_accuracy: 8, topology: 8, instruction_adherence: 8 },
