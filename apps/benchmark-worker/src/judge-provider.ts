@@ -1,6 +1,34 @@
 import { benchmarkJudgePrompt, JUDGE_MODELS, judgeWithSingleRepair } from './judge.js'
 import { UnknownProviderOutcomeError } from './provider-operation.js'
 
+const scoreProperties = Object.fromEntries([
+  'faithfulness', 'conciseness', 'readability', 'aesthetics', 'text_accuracy', 'topology', 'instruction_adherence',
+].map((axis) => [axis, { type: 'number', minimum: 0, maximum: 10 }]))
+
+const openRouterResponseFormat = Object.freeze({
+  type: 'json_schema',
+  json_schema: {
+    name: 'paperbanana_benchmark_judgment',
+    strict: true,
+    schema: {
+      type: 'object',
+      properties: {
+        scores: {
+          type: 'object', properties: scoreProperties, required: Object.keys(scoreProperties), additionalProperties: false,
+        },
+        evidence: { type: 'array', items: { type: 'string' } },
+        redLines: {
+          type: 'array',
+          items: { type: 'string', enum: ['missing_node', 'reversed_arrow', 'garbled_text', 'occlusion', 'low_contrast', 'aspect_ratio_violation'] },
+        },
+        confidence: { type: 'number', minimum: 0, maximum: 1 },
+      },
+      required: ['scores', 'evidence', 'redLines', 'confidence'],
+      additionalProperties: false,
+    },
+  },
+})
+
 async function parseText(response: Response) {
   if (!response.ok) {
     let classification = `BENCHMARK_JUDGE_HTTP_${response.status}`
@@ -57,7 +85,8 @@ export async function callBlindJudge(input: {
             { type: 'text', text: prompt },
             { type: 'image_url', image_url: { url: `data:image/png;base64,${input.imageBase64}` } },
           ] }],
-          response_format: { type: 'json_object' },
+          response_format: input.provider === 'openrouter' ? openRouterResponseFormat : { type: 'json_object' },
+          ...(input.provider === 'openrouter' ? { provider: { require_parameters: true } } : {}),
           temperature: 0,
           max_tokens: 1200,
         }),
