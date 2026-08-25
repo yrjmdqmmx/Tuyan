@@ -815,7 +815,7 @@ export function buildJudgeCalibrationRecord(input: Record<string, any>, codeShaV
     || authorization.estimatedPerJudgeCallUsd !== priceSnapshot?.estimatedPerJudgeCallUsd
     || usage && usage.judgments > authorization.maxJudgeCalls
     || usage && usage.estimatedUsd > authorization.maxEstimatedUsd
-    || authorization.maxJudgeCalls * authorization.estimatedPerJudgeCallUsd > authorization.maxEstimatedUsd
+    || authorization.maxJudgeCalls * authorization.estimatedPerJudgeCallUsd - authorization.maxEstimatedUsd > 1e-9
     || authorization.priceHash !== priceHash || operatorReport.authorizationHash !== authorizationHash
     || createdAt !== operatorReport.createdAt || result.passed !== true || Number(result.accuracy) !== accuracy
     || canonicalHash(requestedFacts) !== canonicalHash(verifiedFacts)
