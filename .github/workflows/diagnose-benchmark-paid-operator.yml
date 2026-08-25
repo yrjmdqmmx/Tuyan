@@ -1,0 +1,61 @@
+name: Diagnose Benchmark Paid Operator
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        description: Exact 40-character commit currently deployed in Core and Bench
+        required: true
+      confirm:
+        description: Type diagnose-paid-operator-disabled-worker to continue
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    if: github.event.inputs.confirm == 'diagnose-paid-operator-disabled-worker'
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate exact diagnostic request
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$CONFIRM" == diagnose-paid-operator-disabled-worker ]]
+          bash -n deploy/hk-single-host/scripts/diagnose-benchmark-paid-operator.sh
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" >"$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" >"$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Run zero-call paid operator diagnostics
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'cd %q && sudo %q --expected-sha %q --confirm %q --apply' \
+            /opt/paperbanana/repo \
+            deploy/hk-single-host/scripts/diagnose-benchmark-paid-operator.sh \
+            "$EXPECTED_SHA" "$CONFIRM"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

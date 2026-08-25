@@ -9,6 +9,8 @@ import { test } from 'node:test';
 const deployRoot = fileURLToPath(new URL('../', import.meta.url));
 const operatorPath = fileURLToPath(new URL('../scripts/run-benchmark-paid-operator.sh', import.meta.url));
 const workflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-paid-operator.yml', import.meta.url));
+const diagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-paid-operator.sh', import.meta.url));
+const diagnosticWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-paid-operator.yml', import.meta.url));
 const expectedSha = 'a'.repeat(40);
 
 function makeFixture() {
@@ -124,4 +126,37 @@ test('manual paid operator workflow requires explicit immutable provenance and b
   assert.match(source, /run-benchmark-paid-operator\.sh/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET/);
+});
+
+test('paid operator diagnostics are fixed-stage, secret-free and make zero Provider or Judge calls', () => {
+  assert.equal(existsSync(diagnosticPath), true);
+  assert.equal(statSync(diagnosticPath).mode & 0o111, 0o111);
+  const source = readFileSync(diagnosticPath, 'utf8');
+  for (const stage of [
+    'host-inputs-ok',
+    'core-provenance-ok',
+    'resident-worker-disabled',
+    'oneoff-worker-provenance-ok',
+    'dedicated-config-present',
+    'local-calibration-render-ok',
+    'diagnostic-complete',
+  ]) assert.match(source, new RegExp(`PAID_DIAG_STAGE=${stage}`), stage);
+  assert.match(source, /configured-disabled/);
+  assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
+  assert.match(source, /PAPERBANANA_CODE_SHA/);
+  assert.match(source, /calibration-snapshot\.mjs/);
+  assert.doesNotMatch(source, /node\s+dist\/operator\.mjs|callBlindJudge|imageRuntime|runtime\.generate|curl|wget|set -x|printenv/);
+  assert.doesNotMatch(source, /source\s+[^\n]*(?:core|gateway|bench)\.env|cat\s+[^\n]*(?:core|gateway|bench)\.env/);
+});
+
+test('manual paid diagnostic workflow binds the deployed SHA and exposes no paid inputs or credentials', () => {
+  assert.equal(existsSync(diagnosticWorkflowPath), true);
+  const source = readFileSync(diagnosticWorkflowPath, 'utf8');
+  assert.match(source, /workflow_dispatch:/);
+  assert.match(source, /environment:\s*paperbanana-production/);
+  assert.match(source, /expected_deployed_sha:[\s\S]*required:\s*true/);
+  assert.match(source, /diagnose-benchmark-paid-operator\.sh/);
+  assert.match(source, /diagnose-paid-operator-disabled-worker/);
+  assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
+  assert.doesNotMatch(source, /max_generations|max_judge_calls|max_estimated_usd|price_source|PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET/);
 });
