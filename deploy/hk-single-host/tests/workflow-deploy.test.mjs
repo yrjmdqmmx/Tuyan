@@ -20,6 +20,7 @@ const deployRoot = fileURLToPath(new URL('../', import.meta.url));
 const workflowPath = fileURLToPath(new URL('../../../.github/workflows/deploy-hk.yml', import.meta.url));
 const credentialWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/configure-benchmark-credentials.yml', import.meta.url));
 const wrapperPath = join(deployRoot, 'scripts', 'apply-staged-deployment.sh');
+const deployScriptPath = join(deployRoot, 'scripts', 'deploy.sh');
 const credentialOperatorPath = join(deployRoot, 'scripts', 'configure-benchmark-credentials.sh');
 const workflow = readFileSync(workflowPath, 'utf8');
 
@@ -47,7 +48,8 @@ test('normal deploy and credential activation share one exact production host lo
   const credentialLock = credentialOperator.match(/shared_lock_path="([^"]+)"/)?.[1];
   assert.equal(wrapperLock, '/run/lock/paperbanana-hk-production.lock');
   assert.equal(credentialLock, wrapperLock);
-  assert.match(wrapper, /exec 9>"\$shared_lock_path"[\s\S]*flock -x 9/);
+  assert.match(wrapper, /exec \{shared_lock_fd\}>"\$shared_lock_path"[\s\S]*flock -x "?\$shared_lock_fd"?/);
+  assert.match(wrapper, /PAPERBANANA_HK_SHARED_LOCK_FD/);
   assert.doesNotMatch(wrapper, /flock -u/);
   assert.ok(wrapper.indexOf('flock -x 9') < wrapper.indexOf('install -m 0600'));
   assert.ok(wrapper.indexOf('install -m 0600') < wrapper.indexOf('bootstrap-benchmark.sh'));
@@ -60,6 +62,15 @@ test('normal deploy and credential activation share one exact production host lo
   assert.equal(deployGroup, 'paperbanana-hk-production');
   assert.match(deployWorkflow, /cancel-in-progress:\s*false/);
   assert.match(credentialWorkflow, /cancel-in-progress:\s*false/);
+});
+
+test('deploy apply guard runs before deployment inputs or Compose and dry-run points to the host wrapper', () => {
+  const deploy = readFileSync(deployScriptPath, 'utf8');
+  assert.match(deploy, /PAPERBANANA_HK_SHARED_LOCK_FD/);
+  assert.match(deploy, /flock -n "?\$shared_lock_fd"?/);
+  assert.ok(deploy.indexOf('PAPERBANANA_HK_SHARED_LOCK_FD') < deploy.indexOf('required=('));
+  assert.match(deploy, /apply-staged-deployment\.sh/);
+  assert.doesNotMatch(deploy, /Run with --apply to enter maintenance mode/);
 });
 
 function makeWrapperFixture() {
@@ -150,6 +161,36 @@ test('host wrapper deletes an accepted staged image lock when content validation
     assert.notEqual(result.status, 0);
     assert.equal(existsSync(fixture.staged), false);
     assert.doesNotMatch(`${result.stdout}${result.stderr}`, /obvious-fake-value/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('direct deploy apply without an inherited shared-lock FD fails before deployment preflight', () => {
+  const result = spawnSync(deployScriptPath, ['--apply'], {
+    encoding: 'utf8',
+    env: { ...process.env, PAPERBANANA_HK_SHARED_LOCK_FD: '' },
+  });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /shared.*lock|wrapper/i);
+  assert.doesNotMatch(result.stderr, /missing required deployment file|compose/i);
+});
+
+test('deploy apply rejects an inherited FD that points at the wrong path', () => {
+  const fixture = makeWrapperFixture();
+  const wrongLock = join(fixture.root, 'wrong-production.lock');
+  try {
+    const command = 'exec 8>"$1"; export PAPERBANANA_HK_SHARED_LOCK_FD=8; exec "$2" --apply';
+    const result = spawnSync('bash', ['-c', command, 'deploy-guard-test', wrongLock, deployScriptPath], {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        PAPERBANANA_HK_DEPLOY_TEST_ROOT: fixture.root,
+        PAPERBANANA_HK_DEPLOY_GUARD_TEST_MODE: 'true',
+      },
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /shared.*lock|descriptor|path/i);
   } finally {
     fixture.cleanup();
   }

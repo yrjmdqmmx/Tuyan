@@ -25,7 +25,7 @@
 ## 条目（最新在上）
 
 ### [2026-08-25] 香港部署与 Bench 凭据激活共享主机锁 — by Codex
-变更：正常香港部署与 Bench `configured-disabled` 凭据激活现在必须共享 `/run/lock/paperbanana-hk-production.lock`。正常部署由 root-only `apply-staged-deployment.sh` 在同一把锁内连续完成随机 0600 `/tmp` image-lock 安装、Bench mode bootstrap、`deploy.sh --apply`、smoke 与临时文件清理；凭据 operator 使用同一锁。两个 production workflow 也共享 non-canceling concurrency group 作为第二层保护。固定 `GITHUB_RUN_ID` staging path 已移除；本条不改变 `discovery-only|configured-disabled`、Worker disabled 或付费授权边界。
+变更：正常香港部署与 Bench `configured-disabled` 凭据激活现在必须共享 `/run/lock/paperbanana-hk-production.lock`。正常部署由 root-only `apply-staged-deployment.sh` 在同一把锁内连续完成随机 0600 `/tmp` image-lock 安装、Bench mode bootstrap、`deploy.sh --apply`、smoke 与临时文件清理；凭据 operator 使用同一锁。Wrapper 通过继承的数字 FD 传递锁，`deploy.sh --apply` 在读取 `.env`、Compose preflight 或 maintenance mutation 前校验 FD 的真实路径与 `flock -n` 锁状态；无 FD、错误路径或伪造 sentinel 均失败关闭，dry-run 不再宣传直接 apply。两个 production workflow 也共享 non-canceling concurrency group 作为第二层保护。固定 `GITHUB_RUN_ID` staging path 已移除；本条不改变 `discovery-only|configured-disabled`、Worker disabled 或付费授权边界。
 各端待办：
 - [x] 部署 / 运维代码（共享主机锁、host wrapper、随机 staging、成功/失败双重清理、workflow concurrency 与回归测试）
 - [x] Web / Core / Gateway / Worker / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（运行时 API/客户端契约不变，无需改造）

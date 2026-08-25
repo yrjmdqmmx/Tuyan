@@ -52,7 +52,9 @@ documents. It refuses to overwrite an initialized environment.
    commit, and `--apply`. `scripts/apply-staged-deployment.sh` owns and deletes
    the staged file, and holds `/run/lock/paperbanana-hk-production.lock`
    continuously across `.env` installation, benchmark bootstrap, deploy,
-   smoke, and cleanup.
+   smoke, and cleanup. Direct `deploy.sh --apply` rejects requests without the
+   wrapper's inherited descriptor for that exact locked path; its dry-run no
+   longer advertises direct apply.
 3. The apply path creates the maintenance marker, recreates only this Compose
    project, waits up to 30 minutes for graceful core drain, runs isolation and
    OpenVac smoke checks, and clears maintenance only after success.

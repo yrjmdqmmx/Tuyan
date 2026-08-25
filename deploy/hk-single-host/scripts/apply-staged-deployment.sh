@@ -71,6 +71,7 @@ fi
 host_path() { printf '%s%s' "$test_root" "$1"; }
 repo_root="$(host_path /opt/paperbanana/repo)"
 deploy_dir="$repo_root/deploy/hk-single-host"
+source_script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 deploy_env="$deploy_dir/.env"
 shared_lock_path="/run/lock/paperbanana-hk-production.lock"
 lock_path="$(host_path "$shared_lock_path")"
@@ -181,18 +182,22 @@ fi
 mkdir -p -- "$(dirname -- "$lock_path")"
 if command -v flock >/dev/null 2>&1; then
   if [[ -n "$test_root" ]]; then
+    shared_lock_fd=9
     exec 9>"$lock_path"
   else
-    exec 9>"$shared_lock_path"
+    exec {shared_lock_fd}>"$shared_lock_path"
   fi
-  flock -x 9
+  flock -x "$shared_lock_fd"
 elif [[ -n "$test_root" ]]; then
+  shared_lock_fd=9
+  exec 9>"$lock_path"
   portable_lock_dir="${lock_path}.d"
   mkdir -- "$portable_lock_dir"
 else
   echo "flock is required for production deployment" >&2
   exit 1
 fi
+export PAPERBANANA_HK_SHARED_LOCK_FD="$shared_lock_fd"
 record_action "lock acquired $shared_lock_path"
 
 if [[ -n "$test_root" ]]; then
@@ -213,6 +218,9 @@ if [[ -n "$test_root" && "${PAPERBANANA_HK_DEPLOY_TEST_FAIL_STEP:-}" == after-bo
 fi
 
 if [[ -n "$test_root" ]]; then
+  PAPERBANANA_HK_DEPLOY_GUARD_TEST_MODE=true \
+    PAPERBANANA_HK_DEPLOY_TEST_ROOT="$test_root" \
+    "$source_script_dir/deploy.sh" --apply
   record_action "deploy apply"
 else
   "$deploy_dir/scripts/deploy.sh" --apply

@@ -33,7 +33,9 @@ loading or printing an env file. Its only mutating flag is
 `--apply-disabled`, and it removes an accepted staged bundle on every success
 or failure path. Credential activation and normal deployment both hold
 `/run/lock/paperbanana-hk-production.lock`; do not bypass the host deployment
-wrapper. Do not reuse Core BYOK traffic or the product OSS access key.
+wrapper. `deploy.sh --apply` validates the inherited numeric descriptor's
+actual path and lock state before reading deployment inputs or running Compose.
+Do not reuse Core BYOK traffic or the product OSS access key.
 Enabling the worker still requires a recorded candidate approval with
 generation, Judge and USD caps.
 
