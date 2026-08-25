@@ -5,6 +5,7 @@ import { renderCalibrationFixture } from './calibration-render.js'
 import { loadBuildProvenance } from './build-provenance.js'
 import { loadBenchCredentials } from './config.js'
 import { runOpenRouterJudgeProbe, type OpenRouterJudgeProbeKind } from './openrouter-judge-probe.js'
+import { createOpenRouterJudgeEgress } from './judge-egress.js'
 
 const env = process.env
 
@@ -34,8 +35,11 @@ async function main() {
   } else if (kind === 'benchmark_fixture') {
     imageBase64 = Buffer.from(await renderCalibrationFixture(JUDGE_CALIBRATION_FIXTURES[0])).toString('base64')
   }
-  const result = await runOpenRouterJudgeProbe({ kind, apiKey: key, imageBase64 })
-  process.stdout.write(`OPENROUTER_JUDGE_PROBE_RESULT=${result}\n`)
+  const egress = createOpenRouterJudgeEgress(env)
+  try {
+    const result = await runOpenRouterJudgeProbe({ kind, apiKey: key, imageBase64, fetchImpl: egress.fetch })
+    process.stdout.write(`OPENROUTER_JUDGE_PROBE_RESULT=${result}\n`)
+  } finally { await egress.close() }
 }
 
 void main().catch(() => {

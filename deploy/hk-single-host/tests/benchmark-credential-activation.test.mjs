@@ -162,6 +162,10 @@ test('valid apply-disabled is atomic, configured-disabled, 0600, secret-safe, an
     assert.match(bench, /^UNRELATED_WORKER_SECRET=preserve-worker-secret$/m);
     assert.match(bench, /^PAPERBANANA_BENCH_ENABLED=false$/m);
     assert.match(bench, /^PAPERBANANA_BENCH_CONCURRENCY=1$/m);
+    assert.equal(bench.match(/^PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE=/gm)?.length, 1);
+    assert.equal(bench.match(/^PAPERBANANA_BENCH_SG_PROXY_URL=/gm)?.length, 1);
+    assert.match(bench, /^PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE=sg-required$/m);
+    assert.match(bench, /^PAPERBANANA_BENCH_SG_PROXY_URL=http:\/\/10\.77\.0\.2:3128$/m);
     for (const name of managedNames) {
       const target = name.includes('_OSS_') ? core : bench;
       assert.match(target, new RegExp(`^${name}=${fakeValues[name]}$`, 'm'));
@@ -284,6 +288,12 @@ test('configured-disabled bootstrap preserves credentials, disables execution, a
   try {
     const applied = fixture.run(['--apply-disabled']);
     assert.equal(applied.status, 0, applied.stderr);
+    const legacyBench = readFileSync(fixture.benchEnv, 'utf8').split('\n').filter((line) =>
+      !line.startsWith('PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE=') &&
+      !line.startsWith('PAPERBANANA_BENCH_SG_PROXY_URL='),
+    ).join('\n');
+    writeFileSync(fixture.benchEnv, legacyBench);
+    chmodSync(fixture.benchEnv, 0o600);
     for (const name of ['mongo-bench-password', 'mongo-bench-api-password']) {
       writeFileSync(join(dirname(fixture.coreEnv), name), `obvious-fake-${name}\n`);
       chmodSync(join(dirname(fixture.coreEnv), name), 0o600);
@@ -303,6 +313,8 @@ test('configured-disabled bootstrap preserves credentials, disables execution, a
     assert.match(core, /^PAPERBANANA_BENCH_API_ENABLED=true$/m);
     assert.match(bench, /^PAPERBANANA_BENCH_ENABLED=false$/m);
     assert.match(bench, /^PAPERBANANA_BENCH_CONCURRENCY=1$/m);
+    assert.match(bench, /^PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE=sg-required$/m);
+    assert.match(bench, /^PAPERBANANA_BENCH_SG_PROXY_URL=http:\/\/10\.77\.0\.2:3128$/m);
     for (const name of managedNames) assert.match(bench, new RegExp(`^${name}=${fakeValues[name]}$`, 'm'));
     assert.doesNotMatch(`${result.stdout}${result.stderr}`, /obvious-fake-bench-value/);
   } finally {

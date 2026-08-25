@@ -65,11 +65,15 @@ if [[ "$benchmark_enabled" == true ]]; then
     ]
     if (benchmark_secret_mode === "discovery-only") {
       const forbidden = names
+      if (process.env.PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE !== "disabled") process.exit(1)
+      if (process.env.PAPERBANANA_BENCH_SG_PROXY_URL !== "http://10.77.0.2:3128") process.exit(1)
       for (const name of forbidden) {
         if (process.env[name] !== undefined) process.exit(1)
       }
     } else if (benchmark_secret_mode === "configured-disabled") {
       const required = names
+      if (process.env.PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE !== "sg-required") process.exit(1)
+      if (process.env.PAPERBANANA_BENCH_SG_PROXY_URL !== "http://10.77.0.2:3128") process.exit(1)
       for (const name of required) {
         if (typeof process.env[name] !== "string" || process.env[name].length === 0) process.exit(1)
       }

@@ -5,6 +5,7 @@ type DiagnosticInput = {
   openrouterKey: string
   bailianKey: string
   fetchImpl?: typeof fetch
+  openrouterFetchImpl?: typeof fetch
   emit(stage: string): void
 }
 
@@ -30,15 +31,16 @@ async function getJson(fetchImpl: typeof fetch, provider: 'OPENROUTER' | 'BAILIA
 
 export async function diagnoseJudgeProviderAccess(input: DiagnosticInput) {
   const fetchImpl = input.fetchImpl || fetch
+  const openrouterFetchImpl = input.openrouterFetchImpl || fetchImpl
   if (!input.openrouterKey || !input.bailianKey) throw new Error('BENCHMARK_JUDGE_ACCESS_CREDENTIALS_MISSING')
 
-  const key = await getJson(fetchImpl, 'OPENROUTER', 'https://openrouter.ai/api/v1/key', input.openrouterKey)
+  const key = await getJson(openrouterFetchImpl, 'OPENROUTER', 'https://openrouter.ai/api/v1/key', input.openrouterKey)
   if (key?.data?.is_management_key === true) throw new Error('BENCHMARK_JUDGE_ACCESS_OPENROUTER_KEY_KIND')
   const remaining = key?.data?.limit_remaining
   if (typeof remaining === 'number' && remaining <= 0) throw new Error('BENCHMARK_JUDGE_ACCESS_OPENROUTER_BUDGET')
   input.emit('openrouter-auth-ok')
 
-  const openrouter = await getJson(fetchImpl, 'OPENROUTER', 'https://openrouter.ai/api/v1/models/user', input.openrouterKey)
+  const openrouter = await getJson(openrouterFetchImpl, 'OPENROUTER', 'https://openrouter.ai/api/v1/models/user', input.openrouterKey)
   if (!Array.isArray(openrouter?.data) || !openrouter.data.some((model: any) => model?.id === OPENROUTER_MODEL)) {
     throw new Error('BENCHMARK_JUDGE_ACCESS_OPENROUTER_MODEL')
   }
