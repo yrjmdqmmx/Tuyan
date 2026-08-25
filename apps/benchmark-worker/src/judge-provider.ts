@@ -42,6 +42,7 @@ export async function callBlindJudge(input: {
           ] }],
           response_format: { type: 'json_object' },
           temperature: 0,
+          max_tokens: 1200,
         }),
       })
       return await parseText(response)

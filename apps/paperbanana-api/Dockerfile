@@ -1,4 +1,6 @@
+ARG PAPERBANANA_CODE_SHA=unreleased
 FROM node:24-bookworm-slim AS build
+ARG PAPERBANANA_CODE_SHA
 
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
@@ -15,6 +17,7 @@ COPY apps/laf-functions/paperbanana-api.ts apps/laf-functions/paperbanana-api.ts
 COPY packages/benchmark-core packages/benchmark-core
 RUN pnpm --filter @paperbanana/paperbanana-api build
 RUN pnpm --filter @paperbanana/paperbanana-api deploy --prod --legacy /opt/paperbanana-api
+RUN printf '%s' "$PAPERBANANA_CODE_SHA" | grep -Eq '^[0-9a-f]{40}$' && printf '{"codeSha":"%s"}\n' "$PAPERBANANA_CODE_SHA" > /opt/paperbanana-api/build-provenance.json && chmod 0444 /opt/paperbanana-api/build-provenance.json
 
 FROM node:24-bookworm-slim AS runtime
 

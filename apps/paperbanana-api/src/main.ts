@@ -2,6 +2,7 @@ import path from 'node:path'
 import { createHash } from 'node:crypto'
 
 import { loadConfig } from './config.js'
+import { loadBuildProvenance } from './build-provenance.js'
 import { createMongoBenchmarkRepository } from './benchmark-repository.js'
 import { createBenchmarkService } from './benchmark-service.js'
 import { configureLafCloud } from './laf-cloud.js'
@@ -19,7 +20,8 @@ const version = '0.1.0'
 const logger = createLogger()
 
 async function main(): Promise<void> {
-  const config = loadConfig()
+  const buildProvenance = await loadBuildProvenance()
+  const config = loadConfig(process.env, buildProvenance.codeSha)
   process.env.RESVG_WASM_PATH ||= path.join(process.cwd(), 'node_modules/@resvg/resvg-wasm/index_bg.wasm')
 
   const mongo = createMongoAdapter(config.mongodb)
@@ -67,7 +69,8 @@ async function main(): Promise<void> {
         const content = await benchmarkBucket.readFile(key, config.providerImageMaxBytes) as Buffer
         if (createHash('sha256').update(content).digest('hex') !== expectedHash) throw new Error('BENCHMARK_EVIDENCE_HASH_MISMATCH')
       }
-      const benchmarkRepository = createMongoBenchmarkRepository(benchmarkMongo.db, () => new Date(), verifyBenchmarkEvidence)
+      const readBenchmarkOperatorReport = async (key: string, maxBytes: number) => benchmarkBucket.readFile(key, maxBytes) as Promise<Uint8Array>
+      const benchmarkRepository = createMongoBenchmarkRepository(benchmarkMongo.db, () => new Date(), verifyBenchmarkEvidence, config.benchmark.codeSha, readBenchmarkOperatorReport)
       await benchmarkRepository.ensureSuite()
       benchmarkService = createBenchmarkService({
         repository: benchmarkRepository,

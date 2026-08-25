@@ -24,20 +24,28 @@
 
 ## 条目（最新在上）
 
+### [2026-08-25] Bench Judge 金标校准与两图付费 canary operator — by Codex
+变更：新增六类原创 CC-BY-4.0 缺陷金标（漏节点、反向箭头、乱码、遮挡、低对比、比例违约）、固定双 Judge 校准报告和独立两图 canary。两者都只通过手工 `Run Benchmark Paid Operator` workflow 在一次性 Worker 容器中运行；常驻 `benchmark-worker` 必须保持 `PAPERBANANA_BENCH_ENABLED=false`、并发 1。operator 与正常部署共享香港生产主机锁，同时校验 Core/Worker 镜像内固化 SHA 与运行时 SHA，绑定 Judge stack、无密钥授权信封、价格来源/快照、调用次数与最高 3 美元估算费用派发上限（实际账单以 Provider 为准）。完整报告以内容 hash 写入私有 `bench/operator-reports/`；Core 有界回读私有 OSS 原件并重算报告/授权/价格 hash 后，才不可变记录派生的结果和用量，浏览器提交伪造 hash 不能放行。日志只显示 hash/计数/估算费用。校准低于 85% 红线准确率或 80% 双 Judge 一致率即失败且不记录；两图 canary 固定复杂拓扑与数学符号两题，精确 2 次生成、最多 6 次 Judge dispatch，不进入公开 release。
+各端待办：
+- [x] Worker / Core / 运维代码（TDD、一次性 operator、私有报告、Core 不可变校准记录、共享锁与手工 workflow）
+- [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开及客户端 API 契约不变，无需改造）
+- [ ] 生产发布（合并后发布新的不可变 Worker 镜像并以 configured-disabled 重新部署；尚未运行校准、生成或 Judge）
+- [ ] 付费执行（仍须用户明确指定模型、Judge 价格快照及美元预算后，依次运行校准与两图 canary；本条不构成费用授权）
+
 ### [2026-08-25] 香港部署与 Bench 凭据激活共享主机锁 — by Codex
 变更：正常香港部署与 Bench `configured-disabled` 凭据激活现在必须共享 `/run/lock/paperbanana-hk-production.lock`。正常部署由 root-only `apply-staged-deployment.sh` 在同一把锁内连续完成随机 0600 `/tmp` image-lock 安装、Bench mode bootstrap、`deploy.sh --apply`、smoke 与临时文件清理；凭据 operator 使用同一锁。Wrapper 通过继承的数字 FD 传递锁，`deploy.sh --apply` 在读取 `.env`、Compose preflight 或 maintenance mutation 前校验 FD 的真实路径与 `flock -n` 锁状态；无 FD、错误路径或伪造 sentinel 均失败关闭，dry-run 不再宣传直接 apply。两个 production workflow 也共享 non-canceling concurrency group 作为第二层保护。固定 `GITHUB_RUN_ID` staging path 已移除；本条不改变 `discovery-only|configured-disabled`、Worker disabled 或付费授权边界。
 各端待办：
 - [x] 部署 / 运维代码（共享主机锁、host wrapper、随机 staging、成功/失败双重清理、workflow concurrency 与回归测试）
 - [x] Web / Core / Gateway / Worker / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（运行时 API/客户端契约不变，无需改造）
-- [ ] 生产执行（仍须走既有人工 workflow 与独立验收；本条未 push、未部署、未读取 secret、未产生付费请求）
+- [x] 生产执行（PR #34 已合并为 `da5ac5f`；香港生产部署与 `configured-disabled` 凭据激活均经共享主机锁完成，独立 smoke 通过；Worker 仍为 disabled，未产生付费请求）
 
 ### [2026-08-25] Bench 专用凭据 configured-disabled 激活门 — by Codex
 变更：香港单机部署新增显式 `PAPERBANANA_BENCH_SECRET_MODE=discovery-only|configured-disabled`。默认 `discovery-only` 继续拒绝全部 Provider/Bench OSS 凭据；新的 root-only 原子操作脚本仅通过 0600 临时 bundle 接收三项 Provider 与六项 Bench OSS 配置，要求 Core/Worker 的 `PAPERBANANA_CODE_SHA` 与人工输入的已部署 40 位 commit 完全一致，并在失败时恢复 `core.env`、`bench.env`、部署模式及原服务。`configured-disabled` 只打开 Core Bench API 的独立 OSS 读取/签名配置，Worker 始终保持 `PAPERBANANA_BENCH_ENABLED=false`、并发 1；本条不授权任何生成、Judge、canary 或付费请求。
 各端待办：
 - [x] 部署 / 运维代码（root-only operator、flock、原子回滚、显式 deploy mode、双模式 smoke、手工 GitHub Environment workflow、TDD 与凭据脱敏契约）
-- [ ] 生产 Bench OSS（创建独立最小权限 RAM、私有 bucket/region/internal/public endpoint，并保存六项 `PAPERBANANA_BENCH_OSS_*` Environment secrets）
-- [ ] 生产 configured-disabled（六项 OSS secret 齐备后，以精确已部署 SHA 手工运行 workflow；复核 Core API 可用、Worker disabled/并发 1、费用为零）
-- [ ] Judge calibration / 任何两题 canary、24 图临时集、144 图正式集（仍需用户另行明确模型、Judge 与美元预算授权，当前禁止执行）
+- [x] 生产 Bench OSS（已创建香港私有 LRS Bucket `paperbanana-bench-hk-d5cd3f4e8f68`、专用 RAM 用户 `paperbanana-benchmark-runtime`、最小权限策略 `PaperBananaBenchmarkOssRuntime` 与唯一 AccessKey；六项 `PAPERBANANA_BENCH_OSS_*` 已保存为 GitHub Environment Secrets，值未进入仓库或日志）
+- [x] 生产 configured-disabled（GitHub Actions run `32821366044` 已按精确部署 SHA `da5ac5fc39f56ea4bb4e76d56167ab6088ce2f92` 完成；Core/Bench OSS/Mongo/隔离 smoke 通过，Worker disabled/并发 1、费用为零）
+- [ ] Judge calibration / 两题 canary（执行器已实现但尚未发布或付费运行）；24 图临时集、144 图正式集仍需用户另行明确模型、Judge 与美元预算授权
 
 ### [2026-08-25] 出图模型 Bench v1 共享契约与独立 Worker — by Codex
 变更：新增公开只读 `/bench` 模型观测台、不可变 `pb-image-diagnostic-v1` 48 题原创诊断集、七维评分/题内聚合/bootstrap 区间、双 Judge + Codex 盲审协议，以及默认关闭的独立 `benchmark-worker`。首版仅文生图，不使用 PaperBananaBench 官方题集，不产生综合总分，不自动扣费。
@@ -54,7 +62,7 @@
 - [x] auth-gateway / packages-api（匿名只读转发、六个站长 action 的不可变管理员鉴权、客户端请求契约）
 - [x] benchmark-worker（发现、审批预算、租约/心跳/幂等、24/144 执行、双盲评、Codex audit、独立镜像与健康文件）
 - [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（首版无需改造，不得自行消费运行队列或未发布结果）
-- [ ] 部署 / 运维（当前禁止部署/付费调用：先发布不可变 Worker 镜像并以 `enabled=false` 验证只发现且费用为零；再配置独立 Mongo/OSS/Bench 凭据和 Judge calibration。任何两题 canary、24 图临时集或 144 图正式集仍需用户新的明确预算授权）
+- [ ] 部署 / 运维（不可变 Worker 镜像、`enabled=false` discovery-only、独立 Mongo/OSS/Bench 凭据及 `configured-disabled` 已完成且费用为零；仍缺 Judge calibration。任何两题 canary、24 图临时集或 144 图正式集仍需用户新的明确模型、Judge 与美元预算授权）
 
 ### [2026-08-23] 账号删除 OSS V4 分页签名修复 — by Codex
 变更：香港 Node Core 的 OSS 适配器不再把值为 `undefined` 的首次分页 `marker` 传给 `ali-oss`。此前该无效查询项会使 ListObjects V4 签名与实际查询串不一致，导致账号删除在清理 `references/<owner>/` 时返回 500；后续真实分页 marker 及严格清理语义保持不变。

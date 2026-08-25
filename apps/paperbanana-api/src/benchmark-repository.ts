@@ -29,6 +29,115 @@ export function judgeCalibrationId(judgeEpoch: string, judgeStackHash: string) {
   return `benchmark-judge-calibration:${judgeEpoch}:${judgeStackHash}`
 }
 
+export function buildJudgeCalibrationRecord(input: Record<string, any>, codeShaValue: string, judgeStackHashValue: string, adminUserIdValue: string, recordedAt: Date, operatorReportValue: unknown) {
+  const fail = () => { throw new Error('BENCHMARK_JUDGE_CALIBRATION_FAILED') }
+  if (!operatorReportValue || typeof operatorReportValue !== 'object' || Array.isArray(operatorReportValue)) fail()
+  const operatorReport = operatorReportValue as Record<string, any>
+  const operatorReportHash = text(operatorReport.operatorReportHash)
+  const reportObjectKey = text(input.reportObjectKey, 300)
+  const codeSha = text(codeShaValue)
+  const judgeStackHash = text(judgeStackHashValue)
+  const recordedBy = text(adminUserIdValue)
+  const reportHashBase = { ...operatorReport }
+  delete reportHashBase.operatorReportHash
+  delete reportHashBase.reportObjectKey
+  const authorization = operatorReport.authorization && typeof operatorReport.authorization === 'object' && !Array.isArray(operatorReport.authorization)
+    ? { ...operatorReport.authorization }
+    : null
+  const authorizationHash = text(authorization?.authorizationHash)
+  const authorizationBase = authorization ? { ...authorization } : null
+  if (authorizationBase) delete authorizationBase.authorizationHash
+  const priceHash = text(operatorReport.priceHash)
+  const judgeEpoch = text(operatorReport.judgeEpoch)
+  const result = operatorReport.result && typeof operatorReport.result === 'object' && !Array.isArray(operatorReport.result)
+    ? operatorReport.result
+    : {}
+  const fixtureHash = text(result.fixtureHash)
+  const correctRedLines = positiveInteger(result.correctRedLines, 10_000)
+  const totalRedLines = positiveInteger(result.totalRedLines, 10_000)
+  const agreement = Number(result.agreement)
+  const accuracy = totalRedLines ? correctRedLines / totalRedLines : 0
+  const hash64 = /^[a-f0-9]{64}$/i
+  const priceSnapshot = operatorReport.priceSnapshot && typeof operatorReport.priceSnapshot === 'object' && !Array.isArray(operatorReport.priceSnapshot)
+    ? {
+        currency: text(operatorReport.priceSnapshot.currency, 8),
+        source: text(operatorReport.priceSnapshot.source, 500),
+        capturedAt: text(operatorReport.priceSnapshot.capturedAt, 40),
+        estimatedPerGenerationUsd: Number(operatorReport.priceSnapshot.estimatedPerGenerationUsd),
+        estimatedPerJudgeCallUsd: Number(operatorReport.priceSnapshot.estimatedPerJudgeCallUsd),
+      }
+    : null
+  const usage = operatorReport.usage && typeof operatorReport.usage === 'object' && !Array.isArray(operatorReport.usage)
+    ? {
+        generations: Number(operatorReport.usage.generations),
+        judgments: Number(operatorReport.usage.judgments),
+        estimatedUsd: Number(operatorReport.usage.estimatedUsd),
+      }
+    : null
+  let source: URL | undefined
+  let capturedAt = ''
+  try {
+    source = new URL(priceSnapshot?.source || '')
+    capturedAt = new Date(priceSnapshot?.capturedAt || '').toISOString()
+  } catch {}
+  const priceValid = priceSnapshot
+    && authorization
+    && priceSnapshot.currency === 'USD'
+    && source?.protocol === 'https:' && !source.username && !source.password
+    && source.toString() === priceSnapshot.source
+    && capturedAt === priceSnapshot.capturedAt
+    && Number.isFinite(priceSnapshot.estimatedPerGenerationUsd) && priceSnapshot.estimatedPerGenerationUsd === 0
+    && Number.isFinite(priceSnapshot.estimatedPerJudgeCallUsd) && priceSnapshot.estimatedPerJudgeCallUsd > 0
+    && priceSnapshot.estimatedPerJudgeCallUsd <= 100
+    && canonicalHash(priceSnapshot) === priceHash
+    && canonicalHash(priceSnapshot) === canonicalHash(authorization?.priceSnapshot)
+  const usageValid = usage
+    && Number.isInteger(usage.generations) && usage.generations === 0
+    && Number.isInteger(usage.judgments) && usage.judgments >= 12 && usage.judgments <= 24
+    && Number.isFinite(usage.estimatedUsd) && usage.estimatedUsd >= 0 && usage.estimatedUsd <= 3
+    && priceSnapshot
+    && Math.abs(usage.estimatedUsd - usage.judgments * priceSnapshot.estimatedPerJudgeCallUsd) <= 1e-9
+  const requestedFacts = {
+    judgeEpoch: text(input.judgeEpoch), fixtureHash: text(input.fixtureHash),
+    correctRedLines: positiveInteger(input.correctRedLines, 10_000), totalRedLines: positiveInteger(input.totalRedLines, 10_000),
+    agreement: Number(input.agreement), operatorReportHash: text(input.operatorReportHash),
+    authorizationHash: text(input.authorizationHash), priceHash: text(input.priceHash),
+    priceSnapshot: input.priceSnapshot, usage: input.usage,
+  }
+  const verifiedFacts = { judgeEpoch, fixtureHash, correctRedLines, totalRedLines, agreement, operatorReportHash, authorizationHash, priceHash, priceSnapshot, usage }
+  let createdAt = ''
+  try { createdAt = new Date(text(operatorReport.createdAt, 40)).toISOString() } catch {}
+  if (!judgeEpoch || operatorReport.operatorMode !== 'calibration'
+    || operatorReport.codeSha !== codeSha || operatorReport.judgeStackHash !== judgeStackHash
+    || canonicalHash(reportHashBase) !== operatorReportHash
+    || !authorization || !authorizationBase || canonicalHash(authorizationBase) !== authorizationHash
+    || authorization.mode !== 'calibration' || authorization.codeSha !== codeSha
+    || authorization.maxGenerations !== 0 || !Number.isInteger(authorization.maxJudgeCalls)
+    || authorization.maxJudgeCalls < 12 || authorization.maxJudgeCalls > 24
+    || !Number.isFinite(authorization.maxEstimatedUsd) || authorization.maxEstimatedUsd <= 0 || authorization.maxEstimatedUsd > 3
+    || authorization.estimatedPerGenerationUsd !== 0
+    || authorization.estimatedPerJudgeCallUsd !== priceSnapshot?.estimatedPerJudgeCallUsd
+    || usage && usage.judgments > authorization.maxJudgeCalls
+    || usage && usage.estimatedUsd > authorization.maxEstimatedUsd
+    || authorization.maxJudgeCalls * authorization.estimatedPerJudgeCallUsd > authorization.maxEstimatedUsd
+    || authorization.priceHash !== priceHash || operatorReport.authorizationHash !== authorizationHash
+    || createdAt !== operatorReport.createdAt || result.passed !== true || Number(result.accuracy) !== accuracy
+    || canonicalHash(requestedFacts) !== canonicalHash(verifiedFacts)
+    || !hash64.test(fixtureHash) || !hash64.test(operatorReportHash)
+    || reportObjectKey !== `bench/operator-reports/${operatorReportHash}.json`
+    || !hash64.test(authorizationHash) || !hash64.test(priceHash)
+    || !/^[a-f0-9]{40}$/i.test(codeSha) || !hash64.test(judgeStackHash)
+    || !correctRedLines || !totalRedLines || correctRedLines > totalRedLines || accuracy < 0.85
+    || !Number.isFinite(agreement) || agreement < 0.8 || agreement > 1
+    || !/^[A-Za-z0-9._:-]{3,200}$/.test(recordedBy)
+    || !priceValid || !usageValid || Number.isNaN(recordedAt.getTime())) fail()
+  return {
+    judgeEpoch, fixtureHash, codeSha, judgeStackHash, correctRedLines, totalRedLines, accuracy, agreement,
+    operatorReportHash, reportObjectKey, authorizationHash, priceHash, priceSnapshot, usage,
+    passed: true, recordedBy, recordedAt,
+  }
+}
+
 function adminCandidate(candidate: AnyRecord) {
   return {
     candidateId: text(candidate._id || candidate.candidateId),
@@ -50,7 +159,13 @@ function adminCandidate(candidate: AnyRecord) {
   }
 }
 
-export function createMongoBenchmarkRepository(db: Db, now = () => new Date(), verifyEvidence: (objectKey: string, imageHash: string) => Promise<void> = async () => {}) {
+export function createMongoBenchmarkRepository(
+  db: Db,
+  now = () => new Date(),
+  verifyEvidence: (objectKey: string, imageHash: string) => Promise<void> = async () => {},
+  immutableCodeSha = String(process.env.PAPERBANANA_CODE_SHA || ''),
+  readOperatorReport: (objectKey: string, maxBytes: number) => Promise<Uint8Array> = async () => { throw new Error('BENCHMARK_OPERATOR_REPORT_READER_UNAVAILABLE') },
+) {
   const suites = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.suites)
   const models = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.models)
   const runs = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.runs)
@@ -89,7 +204,7 @@ export function createMongoBenchmarkRepository(db: Db, now = () => new Date(), v
       const maxEstimatedUsd = Number(input.maxEstimatedUsd)
       const price = Number(input.priceSnapshot?.estimatedPerGeneration)
       const judgePrice = Number(input.priceSnapshot?.estimatedPerJudgeCall)
-      const codeSha = text(process.env.PAPERBANANA_CODE_SHA || '')
+      const codeSha = text(immutableCodeSha)
       if (!candidateId || input.entitlementConfirmed !== true || !maxGenerations || !maxJudgeCalls
         || !Number.isFinite(maxEstimatedUsd) || !(maxEstimatedUsd > 0) || maxEstimatedUsd > 100_000
         || !Number.isFinite(price) || !(price > 0) || price > 1_000
@@ -177,25 +292,25 @@ export function createMongoBenchmarkRepository(db: Db, now = () => new Date(), v
     },
     async control(input: AnyRecord) {
       if (input.command === 'recordJudgeCalibration') {
-        const judgeEpoch = text(input.judgeEpoch)
-        const fixtureHash = text(input.fixtureHash)
-        const correctRedLines = positiveInteger(input.correctRedLines, 10_000)
-        const totalRedLines = positiveInteger(input.totalRedLines, 10_000)
-        const agreement = Number(input.agreement)
-        const accuracy = totalRedLines ? correctRedLines / totalRedLines : 0
-        if (!judgeEpoch || !/^[a-f0-9]{64}$/i.test(fixtureHash) || correctRedLines > totalRedLines || accuracy < 0.85 || !Number.isFinite(agreement) || agreement < 0.8 || agreement > 1) {
+        const codeSha = text(immutableCodeSha)
+        const judgeStackHash = benchmarkJudgeStackHash(codeSha)
+        let operatorReport: unknown
+        try {
+          const reportObjectKey = text(input.reportObjectKey, 300)
+          if (!/^bench\/operator-reports\/[a-f0-9]{64}\.json$/i.test(reportObjectKey)) throw new Error('invalid report key')
+          const bytes = await readOperatorReport(reportObjectKey, 1024 * 1024)
+          operatorReport = JSON.parse(Buffer.from(bytes).toString('utf8'))
+        } catch {
           throw new Error('BENCHMARK_JUDGE_CALIBRATION_FAILED')
         }
-        const codeSha = text(process.env.PAPERBANANA_CODE_SHA || '')
-        if (!/^[a-f0-9]{40}$/i.test(codeSha)) throw new Error('BENCHMARK_JUDGE_CALIBRATION_FAILED')
-        const judgeStackHash = benchmarkJudgeStackHash(codeSha)
-        const calibrationId = judgeCalibrationId(judgeEpoch, judgeStackHash)
-        const record = { judgeEpoch, fixtureHash, codeSha, judgeStackHash, correctRedLines, totalRedLines, accuracy, agreement, passed: true, recordedBy: text(input.adminUserId), recordedAt: now() }
+        const record = buildJudgeCalibrationRecord(input, codeSha, judgeStackHash, text(input.adminUserId), now(), operatorReport)
+        const calibrationId = judgeCalibrationId(record.judgeEpoch, judgeStackHash)
         await suites.updateOne({ _id: calibrationId }, { $setOnInsert: { _id: calibrationId, ...record } }, { upsert: true })
         const persisted = await suites.findOne({ _id: calibrationId })
-        const calibrationFacts = ({ judgeEpoch: epoch, fixtureHash: fixture, codeSha: sha, judgeStackHash: stack, correctRedLines: correct, totalRedLines: total, accuracy: measuredAccuracy, agreement: measuredAgreement, passed }: Record<string, any>) => ({
+        const calibrationFacts = ({ judgeEpoch: epoch, fixtureHash: fixture, codeSha: sha, judgeStackHash: stack, correctRedLines: correct, totalRedLines: total, accuracy: measuredAccuracy, agreement: measuredAgreement, operatorReportHash, reportObjectKey, authorizationHash, priceHash, priceSnapshot, usage, passed }: Record<string, any>) => ({
           judgeEpoch: epoch, fixtureHash: fixture, codeSha: sha, judgeStackHash: stack, correctRedLines: correct,
-          totalRedLines: total, accuracy: measuredAccuracy, agreement: measuredAgreement, passed,
+          totalRedLines: total, accuracy: measuredAccuracy, agreement: measuredAgreement,
+          operatorReportHash, reportObjectKey, authorizationHash, priceHash, priceSnapshot, usage, passed,
         })
         if (!persisted || canonicalHash(calibrationFacts(persisted)) !== canonicalHash(calibrationFacts(record))) {
           throw new Error('BENCHMARK_JUDGE_CALIBRATION_CONFLICT')

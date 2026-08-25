@@ -106,6 +106,32 @@ test('benchmark worker is opt-in, portless and disabled by its secret-file defau
   assert.match(compose, /benchmark-worker:[\s\S]*?networks:\s*\n\s+backend:[\s\S]*?egress:/);
 });
 
+test('benchmark worker image pins CJK glyph support and renders calibration snapshots during build', () => {
+  const dockerfile = read('../../apps/benchmark-worker/Dockerfile');
+  const packageJson = read('../../apps/benchmark-worker/package.json');
+  assert.match(dockerfile, /PAPERBANANA_BENCH_CJK_FONT_VERSION/);
+  assert.match(dockerfile, /fonts-noto-cjk=\$\{PAPERBANANA_BENCH_CJK_FONT_VERSION\}/);
+  assert.match(dockerfile, /fc-match[\s\S]*Noto Sans CJK/);
+  assert.match(dockerfile, /node dist\/calibration-snapshot\.mjs/);
+  assert.match(packageJson, /src\/calibration-snapshot\.ts[\s\S]*dist\/calibration-snapshot\.mjs/);
+});
+
+test('Core and Worker images bake non-overridable commit provenance and publishing passes the checked-out SHA', () => {
+  const coreDockerfile = read('../../apps/paperbanana-api/Dockerfile');
+  const workerDockerfile = read('../../apps/benchmark-worker/Dockerfile');
+  const corePublish = read('../../.github/workflows/publish-core-api.yml');
+  const workerPublish = read('../../.github/workflows/build-benchmark-worker.yml');
+  const ci = read('../../.github/workflows/ci.yml');
+  for (const dockerfile of [coreDockerfile, workerDockerfile]) {
+    assert.match(dockerfile, /ARG PAPERBANANA_CODE_SHA/);
+    assert.match(dockerfile, /build-provenance\.json/);
+  }
+  assert.match(corePublish, /Resolve checked-out source SHA/);
+  assert.match(corePublish, /PAPERBANANA_CODE_SHA=\$\{\{ steps\.source\.outputs\.sha \}\}/);
+  assert.match(workerPublish, /PAPERBANANA_CODE_SHA=\$\{\{ steps\.source\.outputs\.sha \}\}/);
+  assert.equal((ci.match(/PAPERBANANA_CODE_SHA=\$\{\{ github\.sha \}\}/g) || []).length >= 2, true);
+});
+
 test('Hong Kong deploy makes the disabled benchmark credential mode explicit with an immutable image', () => {
   const workflow = read('../../.github/workflows/deploy-hk.yml');
   const bootstrapUrl = new URL('scripts/bootstrap-benchmark.sh', root);

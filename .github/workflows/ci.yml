@@ -63,6 +63,8 @@ jobs:
           context: .
           file: apps/paperbanana-api/Dockerfile
           push: false
+          build-args: |
+            PAPERBANANA_CODE_SHA=${{ github.sha }}
       - uses: docker/build-push-action@v6
         with:
           context: .

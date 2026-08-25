@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import { createBenchmarkService, publicBenchmarkRelease } from '../src/benchmark-service.js'
-import { judgeCalibrationId } from '../src/benchmark-repository.js'
+import { buildJudgeCalibrationRecord, judgeCalibrationId } from '../src/benchmark-repository.js'
 import { canonicalHash } from '@paperbanana/benchmark-core'
 
 function storedRelease(base: Record<string, any>) {
@@ -16,6 +16,44 @@ test('judge calibration identity is immutable per judge stack', () => {
   const stackB = 'b'.repeat(64)
   assert.equal(judgeCalibrationId(epoch, stackA), `benchmark-judge-calibration:${epoch}:${stackA}`)
   assert.notEqual(judgeCalibrationId(epoch, stackA), judgeCalibrationId(epoch, stackB))
+})
+
+test('judge calibration record binds the private operator report, authorization, price and usage', () => {
+  const codeSha = 'd'.repeat(40)
+  const judgeStackHash = 'e'.repeat(64)
+  const priceSnapshot = {
+    currency: 'USD', source: 'https://openrouter.ai/api/v1/models', capturedAt: '2026-08-25T08:00:00.000Z',
+    estimatedPerGenerationUsd: 0, estimatedPerJudgeCallUsd: 0.1,
+  }
+  const priceHash = canonicalHash(priceSnapshot)
+  const authorizationBase = {
+    mode: 'calibration', codeSha, maxGenerations: 0, maxJudgeCalls: 12, maxEstimatedUsd: 3,
+    estimatedPerGenerationUsd: 0, estimatedPerJudgeCallUsd: 0.1, priceSnapshot, priceHash,
+  }
+  const authorization = { ...authorizationBase, authorizationHash: canonicalHash(authorizationBase) }
+  const reportBase = {
+    operatorMode: 'calibration', codeSha, judgeEpoch: 'judge-2026-08-v1', judgeStackHash,
+    authorizationHash: authorization.authorizationHash, authorization, priceHash, priceSnapshot,
+    usage: { generations: 0, judgments: 12, estimatedUsd: 1.2 }, createdAt: '2026-08-25T08:05:00.000Z',
+    result: { fixtureHash: 'b'.repeat(64), correctRedLines: 12, totalRedLines: 12, accuracy: 1, agreement: 1, passed: true },
+  }
+  const operatorReportHash = canonicalHash(reportBase)
+  const report = { ...reportBase, operatorReportHash }
+  const input = {
+    judgeEpoch: 'judge-2026-08-v1', fixtureHash: 'b'.repeat(64), correctRedLines: 12, totalRedLines: 12, agreement: 1,
+    operatorReportHash, reportObjectKey: `bench/operator-reports/${operatorReportHash}.json`, authorizationHash: authorization.authorizationHash,
+    priceHash, priceSnapshot, usage: { generations: 0, judgments: 12, estimatedUsd: 1.2 },
+  }
+  const record = buildJudgeCalibrationRecord(input, codeSha, judgeStackHash, 'immutable-admin-id', new Date('2026-08-25T08:10:00.000Z'), report)
+  assert.equal(record.operatorReportHash, operatorReportHash)
+  assert.equal(record.priceHash, priceHash)
+  assert.deepEqual(record.usage, { generations: 0, judgments: 12, estimatedUsd: 1.2 })
+  assert.throws(() => buildJudgeCalibrationRecord({ ...input, reportObjectKey: 'bench/other.json' }, codeSha, judgeStackHash, 'immutable-admin-id', new Date(), report), /BENCHMARK_JUDGE_CALIBRATION_FAILED/)
+  assert.throws(() => buildJudgeCalibrationRecord({ ...input, priceHash: 'f'.repeat(64) }, codeSha, judgeStackHash, 'immutable-admin-id', new Date(), report), /BENCHMARK_JUDGE_CALIBRATION_FAILED/)
+  assert.throws(() => buildJudgeCalibrationRecord({ ...input, usage: { ...record.usage, estimatedUsd: 1.1 } }, codeSha, judgeStackHash, 'immutable-admin-id', new Date(), report), /BENCHMARK_JUDGE_CALIBRATION_FAILED/)
+  assert.throws(() => buildJudgeCalibrationRecord(input, codeSha, judgeStackHash, 'immutable-admin-id', new Date(), { ...report, operatorReportHash: 'a'.repeat(64) }), /BENCHMARK_JUDGE_CALIBRATION_FAILED/)
+  assert.throws(() => buildJudgeCalibrationRecord(input, codeSha, judgeStackHash, 'immutable-admin-id', new Date(), { ...report, authorization: { ...authorization, maxJudgeCalls: 24 } }), /BENCHMARK_JUDGE_CALIBRATION_FAILED/)
+  assert.throws(() => buildJudgeCalibrationRecord(input, codeSha, judgeStackHash, 'immutable-admin-id', new Date(), undefined), /BENCHMARK_JUDGE_CALIBRATION_FAILED/)
 })
 
 test('public release strips private fields and signs only allowlisted bench evidence', async () => {
