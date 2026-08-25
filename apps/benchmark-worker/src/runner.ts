@@ -20,6 +20,7 @@ type Run = {
   runHash?: string
   expectedCaseCount?: number
   capabilityGaps?: string[]
+  operatorAuthorizationHash?: string
 }
 
 type Sample = {
@@ -156,6 +157,7 @@ export async function executeBenchmarkRun(input: {
   const expectedExecutableSamples = executableCaseCount * input.run.repetitions
   const nextState = input.run.phase === 'quick' ? 'quick_review' : 'codex_audit'
   await input.repository.completeRun(nextState, {
+    ...(input.run.operatorAuthorizationHash ? { operatorAuthorizationHash: input.run.operatorAuthorizationHash } : {}),
     sampleCount: materialized.length,
     judgmentCount: materialized.length * 2,
     auditSampleCount: auditSampleIds.length,

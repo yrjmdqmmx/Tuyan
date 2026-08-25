@@ -22,6 +22,9 @@ test('MongoDB 8 benchmark index migration has an executable hermetic integration
   assert.match(harness, /runId_1_sampleId_1_provider_1_judgeEpoch_1/);
   assert.match(harness, /dropIndex/);
   assert.match(harness, /Unauthorized/);
+  assert.match(harness, /paperbanana_benchmark_dispatches/);
+  assert.match(harness, /Worker dispatch update must be rejected as Unauthorized/);
+  assert.match(harness, /Worker dispatch delete must be rejected as Unauthorized/);
 });
 
 test('pull request and push CI execute the MongoDB 8 benchmark index migration harness', () => {

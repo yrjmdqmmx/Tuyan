@@ -14,5 +14,8 @@ test('admin panel keeps candidate approval, run control, audit exchange and publ
   assert.ok(screen.getByText('临时集'))
   assert.ok(screen.getByText('正式集'))
   assert.ok(screen.getByText(/纳入公开精选/))
+  assert.ok(screen.getByText('公开价格来源 HTTPS'))
+  assert.ok(screen.getByText('最多逻辑 Judgment'))
+  assert.ok(screen.getByText('最多 Judge dispatch'))
   assert.match(container.textContent, /未配置 Bench 凭据的 Provider 显示为未评测/)
 })

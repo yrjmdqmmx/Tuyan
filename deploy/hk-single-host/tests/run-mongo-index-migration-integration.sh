@@ -181,6 +181,12 @@ run_migration
   if (judgment.unique !== true) throw new Error("automatic_judgment_unique is not unique")
   if (JSON.stringify(judgment.partialFilterExpression) !== JSON.stringify({status: "completed"})) throw new Error("automatic_judgment_unique partialFilterExpression differs")
   if (judgmentIndexes.some(index => index.name === "runId_1_sampleId_1_provider_1_judgeEpoch_1")) throw new Error("legacy judgment index remains")
+
+  const dispatchIndexes = benchmark.getCollection("paperbanana_benchmark_dispatches").getIndexes()
+  const dispatch = dispatchIndexes.find(index => index.name === "phase_dispatch_unique")
+  if (!dispatch) throw new Error("phase_dispatch_unique is missing")
+  if (JSON.stringify(dispatch.key) !== JSON.stringify({runId: 1, phase: 1, sampleId: 1, logicalProvider: 1, dispatchIndex: 1, judgeEpoch: 1})) throw new Error("phase_dispatch_unique keys differ")
+  if (dispatch.unique !== true) throw new Error("phase_dispatch_unique is not unique")
 '
 
 docker exec "$mongo_container" mongosh --quiet \
@@ -198,6 +204,19 @@ docker exec "$mongo_container" mongosh --quiet \
     }
     if (!rejected) throw new Error("Worker dropIndex must be rejected as Unauthorized")
     if (!samples.getIndexes().some(index => index.name === "phase_sample_unique")) throw new Error("unauthorized attempt removed the index")
+
+    const dispatches = db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_dispatches")
+    dispatches.insertOne({_id: "dispatch:openrouter:permission-sample:0", runId: "permission-run", phase: "full", sampleId: "permission-sample", logicalProvider: "openrouter", dispatchIndex: 0, judgeEpoch: "permission-epoch"})
+    let updateRejected = false
+    try { dispatches.updateOne({_id: "dispatch:openrouter:permission-sample:0"}, {$set: {phase: "quick"}}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") updateRejected = true; else throw error }
+    if (!updateRejected) throw new Error("Worker dispatch update must be rejected as Unauthorized")
+    let deleteRejected = false
+    try { dispatches.deleteOne({_id: "dispatch:openrouter:permission-sample:0"}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") deleteRejected = true; else throw error }
+    if (!deleteRejected) throw new Error("Worker dispatch delete must be rejected as Unauthorized")
+    const durable = dispatches.findOne({_id: "dispatch:openrouter:permission-sample:0"})
+    if (!durable || durable.phase !== "full") throw new Error("append-only dispatch marker was mutated")
   '
 
 echo "MongoDB 8 benchmark index migration integration test passed."

@@ -1,0 +1,131 @@
+name: Run Bounded Benchmark Phase Operator
+on:
+  workflow_dispatch:
+    inputs:
+      phase: { description: Exact approved phase, required: true, type: choice, options: [quick, full] }
+      run_id: { description: Exact approved run ID, required: true }
+      expected_deployed_sha: { description: Exact deployed 40-character SHA, required: true }
+      provider: { description: Exact provider, required: true, type: choice, options: [bailian, openrouter, ark] }
+      model_id: { description: Exact model ID, required: true }
+      lane: { description: Exact lane, required: true, type: choice, options: [1K-standard, 2K-standard, 4K-standard] }
+      suite_id: { description: Exact suite ID, required: true }
+      suite_hash: { description: Exact suite hash, required: true }
+      judge_epoch: { description: Exact Judge epoch, required: true }
+      judge_stack_hash: { description: Exact Judge stack hash, required: true }
+      signed_authorization_hash: { description: Core-signed phase authorization hash, required: true }
+      price_hash: { description: Exact signed price hash, required: true }
+      run_hash: { description: Exact immutable run hash, required: true }
+      run_facts_hash: { description: Exact canonical run facts hash, required: true }
+      candidate_snapshot_hash: { description: Exact signed candidate snapshot hash, required: true }
+      aspect_ratios_hash: { description: Exact execution aspect-ratios hash, required: true }
+      registry_hash: { description: Exact immutable registry hash, required: true }
+      run_integrity_attestation: { description: Exact Core HMAC run attestation, required: true }
+      immutable_facts_hash: { description: Exact full immutable facts hash, required: true }
+      max_generations: { description: Exact approved generation cap, required: true }
+      max_judgments: { description: Exact logical automatic-judgment cap, required: true }
+      max_judge_calls: { description: Exact paid Judge dispatch-attempt cap, required: true }
+      max_estimated_usd: { description: Exact approved estimated USD cap, required: true }
+      estimated_per_generation_usd: { description: Exact generation estimate, required: true }
+      estimated_per_judge_call_usd: { description: Exact Judge estimate, required: true }
+      price_currency: { description: Price currency, required: true, type: choice, options: [USD] }
+      price_source: { description: Exact public HTTPS price source, required: true }
+      price_captured_at: { description: Exact ISO price capture time, required: true }
+      confirm: { description: Exact phase confirmation phrase, required: true }
+permissions: { contents: read }
+concurrency: { group: paperbanana-hk-production, cancel-in-progress: false }
+jobs:
+  run:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate request without secrets
+        env:
+          PHASE: ${{ inputs.phase }}
+          RUN_ID: ${{ inputs.run_id }}
+          SHA: ${{ inputs.expected_deployed_sha }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          JUDGE_STACK_HASH: ${{ inputs.judge_stack_hash }}
+          SIGNED_AUTHORIZATION_HASH: ${{ inputs.signed_authorization_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          RUN_HASH: ${{ inputs.run_hash }}
+          RUN_FACTS_HASH: ${{ inputs.run_facts_hash }}
+          CANDIDATE_SNAPSHOT_HASH: ${{ inputs.candidate_snapshot_hash }}
+          ASPECT_RATIOS_HASH: ${{ inputs.aspect_ratios_hash }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          RUN_INTEGRITY_ATTESTATION: ${{ inputs.run_integrity_attestation }}
+          IMMUTABLE_FACTS_HASH: ${{ inputs.immutable_facts_hash }}
+          PROVIDER: ${{ inputs.provider }}
+          MODEL_ID: ${{ inputs.model_id }}
+          LANE: ${{ inputs.lane }}
+          SUITE_ID: ${{ inputs.suite_id }}
+          JUDGE_EPOCH: ${{ inputs.judge_epoch }}
+          MAX_GENERATIONS: ${{ inputs.max_generations }}
+          MAX_JUDGMENTS: ${{ inputs.max_judgments }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_USD: ${{ inputs.max_estimated_usd }}
+          GEN_USD: ${{ inputs.estimated_per_generation_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_CURRENCY: ${{ inputs.price_currency }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$PHASE" =~ ^(quick|full)$ && "$RUN_ID" =~ ^bench-run-[a-f0-9]{20}$ && "$SHA" =~ ^[a-f0-9]{40}$ ]]
+          for value in "$SUITE_HASH" "$JUDGE_STACK_HASH" "$SIGNED_AUTHORIZATION_HASH" "$PRICE_HASH" "$RUN_HASH" "$RUN_FACTS_HASH" "$CANDIDATE_SNAPSHOT_HASH" "$ASPECT_RATIOS_HASH" "$RUN_INTEGRITY_ATTESTATION" "$IMMUTABLE_FACTS_HASH"; do [[ "$value" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ "$REGISTRY_HASH" =~ ^[A-Za-z0-9._:/-]{3,200}$ ]]
+          [[ "$PROVIDER" =~ ^(bailian|openrouter|ark)$ && "$MODEL_ID" =~ ^[A-Za-z0-9._:/-]{3,200}$ && "$LANE" =~ ^(1K-standard|2K-standard|4K-standard)$ ]]
+          [[ "$SUITE_ID" =~ ^[A-Za-z0-9._-]{3,100}$ && "$JUDGE_EPOCH" =~ ^[A-Za-z0-9._:-]{3,100}$ ]]
+          [[ "$MAX_GENERATIONS" =~ ^[1-9][0-9]*$ && "$MAX_JUDGMENTS" =~ ^[1-9][0-9]*$ && "$MAX_JUDGE_CALLS" =~ ^[1-9][0-9]*$ && "$PRICE_CURRENCY" == USD ]]
+          if [[ "$PHASE" == quick ]]; then ((MAX_GENERATIONS<=24 && MAX_JUDGMENTS<=48 && MAX_JUDGE_CALLS>=MAX_JUDGMENTS && MAX_JUDGE_CALLS<=MAX_JUDGMENTS*4 && MAX_JUDGE_CALLS<=192)); [[ "$CONFIRM" == run-exact-approved-quick-phase-disabled-worker ]]; else ((MAX_GENERATIONS<=144 && MAX_JUDGMENTS<=288 && MAX_JUDGE_CALLS>=MAX_JUDGMENTS && MAX_JUDGE_CALLS<=MAX_JUDGMENTS*4 && MAX_JUDGE_CALLS<=1152)); [[ "$CONFIRM" == run-exact-approved-full-phase-disabled-worker ]]; fi
+          node - "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$MAX_USD" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$GEN_USD" "$JUDGE_USD" <<'NODE'
+          const [source, capturedAt, maxUsd, maxG, maxJ, genUsd, judgeUsd] = process.argv.slice(2)
+          const u = new URL(source); if(u.protocol!=='https:'||u.username||u.password||u.toString()!==source||new Date(capturedAt).toISOString()!==capturedAt)process.exit(1)
+          const n=[maxUsd,maxG,maxJ,genUsd,judgeUsd].map(Number); if(!n.every(Number.isFinite)||n.some((v)=>v<=0)||n[1]*n[3]+n[2]*n[4]>n[0]+1e-9)process.exit(1)
+          NODE
+          bash -n deploy/hk-single-host/scripts/run-benchmark-phase-operator.sh
+      - name: Configure SSH
+        env: { SSH_PRIVATE_KEY: "${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}", SSH_KNOWN_HOSTS: "${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}" }
+        run: |
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" >"$HOME/.ssh/id_ed25519"; printf '%s\n' "$SSH_KNOWN_HOSTS" >"$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Run exact approved phase
+        env:
+          HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          USER: ${{ secrets.ALIYUN_HK_USER }}
+          PHASE: ${{ inputs.phase }}
+          RUN_ID: ${{ inputs.run_id }}
+          SHA: ${{ inputs.expected_deployed_sha }}
+          PROVIDER: ${{ inputs.provider }}
+          MODEL_ID: ${{ inputs.model_id }}
+          LANE: ${{ inputs.lane }}
+          SUITE_ID: ${{ inputs.suite_id }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          JUDGE_EPOCH: ${{ inputs.judge_epoch }}
+          JUDGE_STACK_HASH: ${{ inputs.judge_stack_hash }}
+          SIGNED_AUTHORIZATION_HASH: ${{ inputs.signed_authorization_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          RUN_HASH: ${{ inputs.run_hash }}
+          RUN_FACTS_HASH: ${{ inputs.run_facts_hash }}
+          CANDIDATE_SNAPSHOT_HASH: ${{ inputs.candidate_snapshot_hash }}
+          ASPECT_RATIOS_HASH: ${{ inputs.aspect_ratios_hash }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          RUN_INTEGRITY_ATTESTATION: ${{ inputs.run_integrity_attestation }}
+          IMMUTABLE_FACTS_HASH: ${{ inputs.immutable_facts_hash }}
+          MAX_GENERATIONS: ${{ inputs.max_generations }}
+          MAX_JUDGMENTS: ${{ inputs.max_judgments }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_USD: ${{ inputs.max_estimated_usd }}
+          GEN_USD: ${{ inputs.estimated_per_generation_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_CURRENCY: ${{ inputs.price_currency }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v cmd 'cd %q && sudo %q --phase %q --run-id %q --expected-sha %q --provider %q --model-id %q --lane %q --suite-id %q --suite-hash %q --judge-epoch %q --judge-stack-hash %q --signed-authorization-hash %q --price-hash %q --run-hash %q --run-facts-hash %q --candidate-snapshot-hash %q --aspect-ratios-hash %q --registry-hash %q --run-integrity-attestation %q --immutable-facts-hash %q --max-generations %q --max-judgments %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-currency %q --price-source %q --price-captured-at %q --confirm %q --apply' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/run-benchmark-phase-operator.sh "$PHASE" "$RUN_ID" "$SHA" "$PROVIDER" "$MODEL_ID" "$LANE" "$SUITE_ID" "$SUITE_HASH" "$JUDGE_EPOCH" "$JUDGE_STACK_HASH" "$SIGNED_AUTHORIZATION_HASH" "$PRICE_HASH" "$RUN_HASH" "$RUN_FACTS_HASH" "$CANDIDATE_SNAPSHOT_HASH" "$ASPECT_RATIOS_HASH" "$REGISTRY_HASH" "$RUN_INTEGRITY_ATTESTATION" "$IMMUTABLE_FACTS_HASH" "$MAX_GENERATIONS" "$MAX_JUDGMENTS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_CURRENCY" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
+          ssh "$USER@$HOST" "$cmd"
