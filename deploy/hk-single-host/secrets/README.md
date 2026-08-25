@@ -6,9 +6,9 @@ mode `0700`.
 
 Required host files:
 
-- `mongo-root-password`, `mongo-auth-password`, `mongo-business-password`
+- `mongo-root-password`, `mongo-auth-password`, `mongo-business-password`, `mongo-bench-password`, `mongo-bench-api-password`
 - `mongo-keyfile` (owned by the MongoDB container uid and mode `0400`)
-- `gateway.env`, `core.env`, `worker.env`
+- `gateway.env`, `core.env`, `worker.env`, `bench.env`
 - `backup.env` and an OSS utility config limited to the backup bucket prefix
 - `monitor.env` containing only the dedicated `cms:PutCustomEvent` RAM key
 - GitHub environment secrets `ALIBABA_DIRECTMAIL_ACCESS_KEY_ID` and
@@ -22,6 +22,27 @@ contract `PAPERBANANA_PROVIDER_EGRESS_MODE=disabled|sg-required` and the fixed
 `PAPERBANANA_SG_PROXY_URL=http://10.77.0.2:3128` alongside existing secrets.
 Change those fields only with `scripts/set-provider-egress-mode.sh`; the script
 does not source or print the file.
+
+`bench.env` starts with `PAPERBANANA_BENCH_ENABLED=false` and a Mongo user that
+can write only `paperbanana_benchmark`. Before any paid canary, append dedicated
+`PAPERBANANA_BENCH_{BAILIAN,OPENROUTER,ARK}_API_KEY` values plus a Bench-only OSS
+RAM identity and bucket settings. Do not reuse Core BYOK traffic or the product
+OSS access key. Enabling the worker still requires a recorded candidate approval
+with generation, Judge and USD caps.
+
+The service is additionally behind the Compose `benchmark` profile. A normal
+deployment does not create it. Only after credentials, judge calibration and a
+recorded budget approval are ready, set an immutable
+`PAPERBANANA_BENCH_WORKER_IMAGE`, opt in with `COMPOSE_PROFILES=benchmark`, and
+then change `PAPERBANANA_BENCH_ENABLED` in the root-owned `bench.env`. Rollback
+starts by pausing active runs, setting the flag back to `false`, and removing
+the profile from the next deployment; Mongo and OSS evidence are retained.
+
+Core uses the distinct `paperbanana_benchmark_api` Mongo identity and a
+Bench-only OSS signer. Keep `PAPERBANANA_BENCH_API_ENABLED=false` until those
+read/admin and signing credentials plus an immutable `PAPERBANANA_CODE_SHA` are
+present in `core.env`; the API must never sign Bench objects with the product
+bucket identity.
 
 The manual GitHub Environment `paperbanana-sg-egress` uses placeholders with
 these exact names (values are never committed):

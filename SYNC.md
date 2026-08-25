@@ -24,6 +24,23 @@
 
 ## 条目（最新在上）
 
+### [2026-08-25] 出图模型 Bench v1 共享契约与独立 Worker — by Codex
+变更：新增公开只读 `/bench` 模型观测台、不可变 `pb-image-diagnostic-v1` 48 题原创诊断集、七维评分/题内聚合/bootstrap 区间、双 Judge + Codex 盲审协议，以及默认关闭的独立 `benchmark-worker`。首版仅文生图，不使用 PaperBananaBench 官方题集，不产生综合总分，不自动扣费。
+契约（影响 Web / Core / Gateway / Worker / 运维）：
+- **公共 actions**：`benchmarkLeaderboard`、`benchmarkModelProfile`、`benchmarkMethodology` 仅返回已发布不可变 release；公开证据必须在 release allowlist 内且对象键位于私有 `bench/` 前缀，响应只签发短期 URL。
+- **站长 actions**：`adminBenchmarkCandidates`、`adminBenchmarkApprove`、`adminBenchmarkControl`、`adminBenchmarkReviewExport`、`adminBenchmarkReviewImport`、`adminBenchmarkPublish`；继续由 Gateway 的不可变 `ADMIN_USER_IDS` 鉴权，Web 不接收 `ADMIN_TOKEN`。
+- **公共类型 / 集合**：七个 `BenchmarkAxis`；`1K-standard|2K-standard|4K-standard`；`provisional|verified|superseded`；新增 `paperbanana_benchmark_{suites,models,runs,samples,judgments,releases}` 六集合。状态机与 suite/judge/reviewer/registry/price/code/release hash 均固定在共享包。
+- **Worker 安全默认**：`PAPERBANANA_BENCH_ENABLED=false`、并发 1、每 6 小时只发现；只读取 `PAPERBANANA_BENCH_*` 专用 Provider/OSS 凭据，使用独立 `paperbanana_benchmark` Mongo 用户，无公网端口，仅 backend+egress 网络。候选必须先确认权益、价格、生成/Judge/USD 上限；未知 Provider 结果暂停且不自动重发。
+- **内部信任与数据隔离**：Worker 只持有 discovery-only `PAPERBANANA_BENCH_DISCOVERY_TOKEN`，Core 仅允许它调用 `modelRegistry`；站长调用另用仅 Gateway/Core 持有的 `PAPERBANANA_ADMIN_TRANSPORT_TOKEN` 并覆盖真实不可变管理员 ID。Core 使用独立 `paperbanana_benchmark_api` Mongo 用户与 Bench-only OSS signer，不得从 `paperbanana_business` 或产品桶读取/签名 Bench 证据。
+- **审核交换**：Codex packet 不含模型身份或自动分数；导入同时校验 packet/image/rubric hash。公开证据强制进入审计。临时画像不生成“维度领先”标签；不同 lane 禁止比较。
+各端待办：
+- [x] Web（feature-flag `/bench`、模型深链、七个单维榜、证据/方法学、390px/430px、独立站长控制面）
+- [x] paperbanana-api / Core（共享 image runtime bundle、六集合 repository、公开 release 隔离、审核/发布 hash、短期证据签名）
+- [x] auth-gateway / packages-api（匿名只读转发、六个站长 action 的不可变管理员鉴权、客户端请求契约）
+- [x] benchmark-worker（发现、审批预算、租约/心跳/幂等、24/144 执行、双盲评、Codex audit、独立镜像与健康文件）
+- [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（首版无需改造，不得自行消费运行队列或未发布结果）
+- [ ] 部署 / 运维（当前禁止部署/付费调用：先发布不可变 Worker 镜像并以 `enabled=false` 验证只发现且费用为零；再配置独立 Mongo/OSS/Bench 凭据和 Judge calibration。任何两题 canary、24 图临时集或 144 图正式集仍需用户新的明确预算授权）
+
 ### [2026-08-23] 账号删除 OSS V4 分页签名修复 — by Codex
 变更：香港 Node Core 的 OSS 适配器不再把值为 `undefined` 的首次分页 `marker` 传给 `ali-oss`。此前该无效查询项会使 ListObjects V4 签名与实际查询串不一致，导致账号删除在清理 `references/<owner>/` 时返回 500；后续真实分页 marker 及严格清理语义保持不变。
 各端待办：

@@ -70,10 +70,14 @@ services:
       MONGO_ROOT_PASSWORD_FILE: /run/secrets/mongo_root_password
       MONGO_AUTH_PASSWORD_FILE: /run/secrets/mongo_auth_password
       MONGO_BUSINESS_PASSWORD_FILE: /run/secrets/mongo_business_password
+      MONGO_BENCH_PASSWORD_FILE: /run/secrets/mongo_bench_password
+      MONGO_BENCH_API_PASSWORD_FILE: /run/secrets/mongo_bench_api_password
     secrets:
       - mongo_root_password
       - mongo_auth_password
       - mongo_business_password
+      - mongo_bench_password
+      - mongo_bench_api_password
     volumes:
       - ./scripts/init-mongo.sh:/usr/local/bin/init-paperbanana-mongo:ro
     command: ["bash", "/usr/local/bin/init-paperbanana-mongo"]
@@ -170,6 +174,49 @@ services:
     mem_reservation: 768m
     pids_limit: 192
 
+  benchmark-worker:
+    <<: *service-hardening
+    profiles:
+      - benchmark
+    image: ${PAPERBANANA_BENCH_WORKER_IMAGE:-paperbanana-benchmark-worker:unconfigured}
+    env_file:
+      - /opt/paperbanana/secrets/bench.env
+    environment:
+      PAPERBANANA_BENCH_CONCURRENCY: "1"
+      PAPERBANANA_BENCH_DETECTION_INTERVAL_MS: "21600000"
+      PAPERBANANA_API_URL: http://paperbanana-api:3000/paperbanana-api
+      PAPERBANANA_BENCH_HEALTH_FILE: /tmp/benchmark-worker-health.json
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+      paperbanana-api:
+        condition: service_healthy
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=1777
+    networks:
+      backend:
+        ipv4_address: 172.28.0.21
+      egress:
+        ipv4_address: 172.30.0.21
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          const fs=require('fs');const p='/tmp/benchmark-worker-health.json';
+          try{const s=JSON.parse(fs.readFileSync(p,'utf8'));process.exit(s.ok&&Date.now()-Date.parse(s.updatedAt)<90000?0:1)}catch{process.exit(1)}
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    stop_grace_period: 10m
+    cpus: 1.0
+    mem_limit: 2048m
+    mem_reservation: 384m
+    pids_limit: 128
+
   auth-gateway:
     <<: *service-hardening
     image: ${PAPERBANANA_GATEWAY_IMAGE:?set PAPERBANANA_GATEWAY_IMAGE}
@@ -251,3 +298,7 @@ secrets:
     file: /opt/paperbanana/secrets/mongo-auth-password
   mongo_business_password:
     file: /opt/paperbanana/secrets/mongo-business-password
+  mongo_bench_password:
+    file: /opt/paperbanana/secrets/mongo-bench-password
+  mongo_bench_api_password:
+    file: /opt/paperbanana/secrets/mongo-bench-api-password

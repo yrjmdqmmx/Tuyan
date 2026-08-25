@@ -106,6 +106,7 @@ export function loadGatewayConfig(env = process.env) {
     backend,
     gatewayToken: required(env, 'PAPERBANANA_GATEWAY_TOKEN'),
     adminToken: stringValue(env.ADMIN_TOKEN),
+    adminTransportToken: stringValue(env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN),
     adminUserIds: new Set(adminUserIds),
     guestCookie: {
       name: production ? '__Host-paperbanana_guest' : 'paperbanana_guest',

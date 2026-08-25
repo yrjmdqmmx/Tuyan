@@ -40,6 +40,18 @@ test('Node transport uses the internal header and strips caller service tokens',
   assert.equal(captured.init.headers['x-real-ip'], undefined);
 });
 
+test('Node admin transport uses a distinct assertion and immutable admin id', async () => {
+  let captured;
+  const client = createBackendClient({
+    mode: 'node', url: 'http://core/paperbanana-api', timeoutMs: 500,
+    gatewayToken: 'gateway', adminTransportToken: 'admin-transport',
+    fetchImpl: async (_url, init) => { captured = init; return jsonResponse({ code: 0 }); },
+  });
+  await client.call({ action: 'adminBenchmarkPublish' }, {}, { adminAction: true, adminUserId: 'immutable-admin-id' });
+  assert.equal(captured.headers['x-paperbanana-admin-transport-token'], 'admin-transport');
+  assert.equal(captured.headers['x-paperbanana-admin-user-id'], 'immutable-admin-id');
+});
+
 test('Laf rollback transport overwrites the gateway token and injects admin only for admin actions', async () => {
   const bodies = [];
   const headers = [];

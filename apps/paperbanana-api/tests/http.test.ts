@@ -54,6 +54,8 @@ test('POST strips caller tokens, injects the service token, and preserves HTTP-2
       headers: {
         'content-type': 'application/json',
         'x-paperbanana-gateway-token': config.gatewayToken,
+        'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
+        'x-paperbanana-admin-user-id': 'immutable-admin-id',
       },
       body: JSON.stringify({ action: 'createJob', gatewayToken: 'caller-value', adminToken: 'caller-admin' }),
     })
@@ -105,6 +107,8 @@ test('POST accepts a JSON string request body before token sanitization', async 
       headers: {
         'content-type': 'application/json',
         'x-paperbanana-gateway-token': config.gatewayToken,
+        'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
+        'x-paperbanana-admin-user-id': 'immutable-admin-id',
       },
       body: JSON.stringify(JSON.stringify({ action: 'modelCapability', adminToken: 'remove-me' })),
     })
@@ -141,6 +145,8 @@ test('admin actions replace caller adminToken with the server-side admin token',
       headers: {
         'content-type': 'application/json',
         'x-paperbanana-gateway-token': config.gatewayToken,
+        'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
+        'x-paperbanana-admin-user-id': 'immutable-admin-id',
       },
       body: JSON.stringify({ action: 'adminJobs', adminToken: 'caller-admin-token' }),
     })
@@ -150,11 +156,72 @@ test('admin actions replace caller adminToken with the server-side admin token',
       action: 'adminJobs',
       gatewayToken: config.gatewayToken,
       adminToken: 'configured-server-admin-token',
+      adminUserId: 'immutable-admin-id',
     })
   }, async () => ({ ready: true }), {
     ...config,
     adminToken: 'configured-server-admin-token',
+    adminTransportToken: 'configured-admin-transport-token',
   })
+})
+
+test('every benchmark admin action receives only the server-side admin token', async () => {
+  const received: any[] = []
+  await withServer(async (ctx) => {
+    received.push(ctx.body)
+    return { code: 0 }
+  }, async (baseUrl) => {
+    for (const action of [
+      'adminBenchmarkCandidates',
+      'adminBenchmarkApprove',
+      'adminBenchmarkControl',
+      'adminBenchmarkReviewExport',
+      'adminBenchmarkReviewImport',
+      'adminBenchmarkPublish',
+    ]) {
+      const response = await fetch(`${baseUrl}/paperbanana-api`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-paperbanana-gateway-token': config.gatewayToken,
+          'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
+          'x-paperbanana-admin-user-id': 'immutable-admin-id',
+        },
+        body: JSON.stringify({ action, adminToken: 'caller-token' }),
+      })
+      assert.equal(response.status, 200)
+    }
+    assert.equal(received.length, 6)
+    assert.ok(received.every((body) => body.adminToken === 'configured-server-admin-token'))
+  }, async () => ({ ready: true }), { ...config, adminToken: 'configured-server-admin-token', adminTransportToken: 'configured-admin-transport-token' })
+})
+
+test('shared gateway token alone cannot authorize benchmark admin actions', async () => {
+  let called = false
+  const benchmarkService = { async handle(_body: any, isAdmin: boolean) { called = isAdmin; if (!isAdmin) throw new Error('BENCHMARK_ADMIN_REQUIRED'); return { code: 0 } } }
+  const server = createServer({
+    handler: async () => ({ code: 0 }), readinessProbe: async () => ({ ready: true }), healthSnapshot: () => ({ ready: true }),
+    config: { ...config, adminToken: 'admin', adminTransportToken: 'transport' }, logger: { info() {}, warn() {}, error() {} }, benchmarkService,
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const { port } = server.address() as AddressInfo
+  try {
+    const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-paperbanana-gateway-token': config.gatewayToken }, body: JSON.stringify({ action: 'adminBenchmarkPublish' }) })
+    assert.equal((await response.json()).code, 401)
+    assert.equal(called, false)
+  } finally { await new Promise<void>((resolve) => server.close(() => resolve())) }
+})
+
+test('benchmark discovery token can read only modelRegistry', async () => {
+  const received: string[] = []
+  await withServer(async (ctx) => { received.push(ctx.body.action); return { code: 0 } }, async (baseUrl) => {
+    const headers = { 'content-type': 'application/json', 'x-paperbanana-gateway-token': 'discovery-only' }
+    const allowed = await fetch(`${baseUrl}/paperbanana-api`, { method: 'POST', headers, body: JSON.stringify({ action: 'modelRegistry' }) })
+    assert.equal(allowed.status, 200)
+    const denied = await fetch(`${baseUrl}/paperbanana-api`, { method: 'POST', headers, body: JSON.stringify({ action: 'adminBenchmarkPublish' }) })
+    assert.equal(denied.status, 403)
+    assert.deepEqual(received, ['modelRegistry'])
+  }, async () => ({ ready: true }), { ...config, benchmarkDiscoveryToken: 'discovery-only' })
 })
 
 test('GET forwards query fields through the protected legacy envelope', async () => {

@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Apple,
+  BarChart3,
   Eye,
   FileText,
   Github,
@@ -43,6 +44,7 @@ import {
   AUTH_ENABLED,
   AUTH_REQUIRED,
   AUTH_UI_ENABLED,
+  BENCH_ENABLED,
   CLIENT_VERSION,
   CUSTOM_API_BASE_ENABLED,
   authClient,
@@ -62,6 +64,7 @@ import {
 import AspectRatioPicker from './components/AspectRatioPicker';
 import AdminFeedbackTable from './components/AdminFeedbackTable';
 import AdminUsersTable from './components/AdminUsersTable';
+import BenchmarkAdminPanel from './components/BenchmarkAdminPanel';
 import AuthPanel from './components/AuthPanel';
 import AuthUnavailablePanel from './components/AuthUnavailablePanel';
 import FeaturedTemplateStudio from './components/FeaturedTemplateStudio';
@@ -1228,6 +1231,7 @@ export default function App() {
           </div>
         </div>
         <div className="header-links">
+          {BENCH_ENABLED ? <a href="/bench"><BarChart3 size={16} /> 模型横评</a> : null}
           <button type="button" className="contact-author-button" onClick={() => setShowContactDialog(true)}>
             <QrCode size={16} /> 联系作者
           </button>
@@ -1520,6 +1524,14 @@ export default function App() {
             </div>
             {adminError ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(adminError)}</div> : null}
             <JobTable jobs={adminJobs} showUser apiBase={apiBaseNormalized} />
+          </div>
+          <div className="admin-section">
+            <div className="admin-section-title">
+              <BarChart3 size={17} />
+              <strong>出图模型 Bench</strong>
+              <span>候选、预算、运行、Codex 审核与不可变发布</span>
+            </div>
+            <BenchmarkAdminPanel apiBase={apiBaseNormalized} health={health} />
           </div>
         </section>
       ) : activeTab === 'guide' ? (

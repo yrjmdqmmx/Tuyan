@@ -66,6 +66,49 @@ importers:
         specifier: ^6.21.0
         version: 6.21.0(socks@2.8.9)
 
+  apps/benchmark-worker:
+    dependencies:
+      '@paperbanana/benchmark-core':
+        specifier: workspace:*
+        version: link:../../packages/benchmark-core
+      '@resvg/resvg-wasm':
+        specifier: 2.6.2
+        version: 2.6.2
+      ali-oss:
+        specifier: ^6.23.0
+        version: 6.23.0
+      fflate:
+        specifier: 0.8.3
+        version: 0.8.3
+      jpeg-js:
+        specifier: 0.4.4
+        version: 0.4.4
+      mongodb:
+        specifier: ^6.18.0
+        version: 6.21.0(socks@2.8.9)
+      sharp:
+        specifier: 0.35.3
+        version: 0.35.3(@types/node@24.12.4)
+      undici:
+        specifier: 7.29.0
+        version: 7.29.0
+    devDependencies:
+      '@types/ali-oss':
+        specifier: ^6.16.11
+        version: 6.23.3
+      '@types/node':
+        specifier: ^24.3.0
+        version: 24.12.4
+      esbuild:
+        specifier: ^0.25.9
+        version: 0.25.12
+      tsx:
+        specifier: 4.20.5
+        version: 4.20.5
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
   apps/desktop:
     devDependencies:
       electron:
@@ -88,6 +131,9 @@ importers:
 
   apps/paperbanana-api:
     dependencies:
+      '@paperbanana/benchmark-core':
+        specifier: workspace:*
+        version: link:../../packages/benchmark-core
       '@resvg/resvg-wasm':
         specifier: 2.6.2
         version: 2.6.2
@@ -173,6 +219,18 @@ importers:
         version: 7.3.3(@types/node@25.8.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.47.1)(tsx@4.23.12)(yaml@2.9.0)
 
   packages/api: {}
+
+  packages/benchmark-core:
+    devDependencies:
+      '@types/node':
+        specifier: ^24.3.0
+        version: 24.12.4
+      tsx:
+        specifier: 4.20.5
+        version: 4.20.5
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
 
   packages/business: {}
 
@@ -3271,6 +3329,9 @@ packages:
     resolution: {integrity: sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==}
     engines: {node: '>=8'}
 
+  get-tsconfig@4.14.3:
+    resolution: {integrity: sha512-++QEw4DIY7WGoukz+/+A/8dGYPT9l9yIadnmSgZ8Rjr3YVSVDipQSO9CdnJo9ePqFqUUqh+wk9uIaoiAwsiPkA==}
+
   getenv@2.0.0:
     resolution: {integrity: sha512-VilgtJj/ALgGY77fiLam5iD336eSWi96Q15JSAG1zi8NRBysm3LXKdGnHb4m5cuyxvOLQQKWpBZAT6ni4FI2iQ==}
     engines: {node: '>=6'}
@@ -4518,6 +4579,9 @@ packages:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
 
+  resolve-pkg-maps@1.0.0:
+    resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+
   resolve-workspace-root@2.0.1:
     resolution: {integrity: sha512-nR23LHAvaI6aHtMg6RWoaHpdR4D881Nydkzi2CixINyg9T00KgaJdJI6Vwty+Ps8WLxZHuxsS0BseWjxSA4C+w==}
 
@@ -4940,6 +5004,11 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
+  tsx@4.20.5:
+    resolution: {integrity: sha512-+wKjMNU9w/EaQayHXb7WA7ZaHY6hN8WgfvHNQ3t1PnU91/7O8TcTnIhCDYTZwnt8JsO9IBqZ30Ln1r7pPF52Aw==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
   tsx@4.23.12:
     resolution: {integrity: sha512-FDf4L4sYzKtzWYhU/Xm0AQFdTjdIxNo9ElTf2mxXM6k8YMHXzYUe4yODVaXP4V9uMFbVg8c0qyBccK2OOxb45Q==}
     engines: {node: '>=18.0.0'}
@@ -4969,6 +5038,11 @@ packages:
     resolution: {integrity: sha512-faYHw0anBbc/kWF3zFTEnxSFOAGUX9GFbOBthvDdLsIlEoWOFOtS0zgCiQYwIskL9iGXZL3kAXD8OoZ4GmMATA==}
     engines: {node: '>= 18'}
 
+  typescript@5.9.2:
+    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
@@ -4986,10 +5060,6 @@ packages:
   undici@6.25.0:
     resolution: {integrity: sha512-ZgpWDC5gmNiuY9CnLVXEH8rl50xhRCuLNA97fAUnKi8RRuV4E6KG31pDTsLVUKnohJE0I3XDrTeEydAXRw47xg==}
     engines: {node: '>=18.17'}
-
-  undici@7.25.0:
-    resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
-    engines: {node: '>=20.18.1'}
 
   undici@7.29.0:
     resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
@@ -6196,7 +6266,7 @@ snapshots:
       semver: 7.8.0
       sumchecker: 3.0.1
     optionalDependencies:
-      undici: 7.25.0
+      undici: 7.29.0
     transitivePeerDependencies:
       - supports-color
 
@@ -8852,6 +8922,10 @@ snapshots:
     dependencies:
       pump: 3.0.4
 
+  get-tsconfig@4.14.3:
+    dependencies:
+      resolve-pkg-maps: 1.0.0
+
   getenv@2.0.0: {}
 
   glob@13.0.6:
@@ -10315,6 +10389,8 @@ snapshots:
 
   resolve-from@5.0.0: {}
 
+  resolve-pkg-maps@1.0.0: {}
+
   resolve-workspace-root@2.0.1: {}
 
   resolve.exports@2.0.3: {}
@@ -10822,6 +10898,13 @@ snapshots:
   tslib@2.8.1:
     optional: true
 
+  tsx@4.20.5:
+    dependencies:
+      esbuild: 0.25.12
+      get-tsconfig: 4.14.3
+    optionalDependencies:
+      fsevents: 2.3.3
+
   tsx@4.23.12:
     dependencies:
       esbuild: 0.28.2
@@ -10848,6 +10931,8 @@ snapshots:
       media-typer: 1.1.1
       mime-types: 3.0.2
 
+  typescript@5.9.2: {}
+
   typescript@5.9.3: {}
 
   undici-types@6.21.0: {}
@@ -10858,9 +10943,6 @@ snapshots:
     optional: true
 
   undici@6.25.0: {}
-
-  undici@7.25.0:
-    optional: true
 
   undici@7.29.0: {}
 

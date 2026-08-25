@@ -90,6 +90,16 @@ test('compose keeps the public edge on loopback and all data services private', 
   assert.match(compose, /PAPERBANANA_STRICT_OBJECT_STORAGE:\s*["']?true["']?/);
 });
 
+test('benchmark worker is opt-in, portless and disabled by its secret-file default', () => {
+  const compose = read('compose.yaml');
+  const secrets = read('scripts/generate-runtime-secrets.sh');
+  assert.match(compose, /benchmark-worker:[\s\S]*?profiles:\s*\n\s+- benchmark/);
+  assert.match(compose, /PAPERBANANA_BENCH_WORKER_IMAGE:-paperbanana-benchmark-worker:unconfigured/);
+  assert.doesNotMatch(compose, /benchmark-worker:[\s\S]*?PAPERBANANA_BENCH_ENABLED:\s*["']?true/);
+  assert.match(secrets, /PAPERBANANA_BENCH_ENABLED=false/);
+  assert.match(compose, /benchmark-worker:[\s\S]*?networks:\s*\n\s+backend:[\s\S]*?egress:/);
+});
+
 test('plot worker has a gVisor, filesystem, process, resource and network boundary', () => {
   const compose = read('compose.yaml');
 
@@ -217,6 +227,7 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
     '../../.github/workflows/deploy-pages.yml',
     '../../.github/workflows/build-auth-gateway.yml',
     '../../.github/workflows/build-plot-worker.yml',
+    '../../.github/workflows/build-benchmark-worker.yml',
     '../../.github/workflows/deploy-laf-functions.yml',
   ].map(read);
 
@@ -225,6 +236,7 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
   }
   assert.doesNotMatch(workflows[1], /kubectl\s+set\s+image/);
   assert.doesNotMatch(workflows[2], /kubectl\s+set\s+image/);
+  assert.doesNotMatch(workflows[3], /kubectl\s+set\s+image/);
   assert.match(workflows[0], /VITE_API_BASE:\s*https:\/\/api\.paperbanana\.asia/);
   assert.match(workflows[0], /VITE_AUTH_BASE:\s*https:\/\/api\.paperbanana\.asia/);
 });

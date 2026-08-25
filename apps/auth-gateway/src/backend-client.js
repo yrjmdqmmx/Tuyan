@@ -14,6 +14,7 @@ export function createBackendClient({
   timeoutMs,
   gatewayToken,
   adminToken = '',
+  adminTransportToken = '',
   fetchImpl = globalThis.fetch,
 }) {
   let readinessStatus = {
@@ -60,6 +61,13 @@ export function createBackendClient({
 
     if (mode === 'node') {
       headers['x-paperbanana-gateway-token'] = gatewayToken;
+      if (options.adminAction) {
+        if (!adminTransportToken) {
+          throw new BackendError(503, 'ADMIN_API_DISABLED', 'Admin API disabled: transport assertion is not configured');
+        }
+        headers['x-paperbanana-admin-transport-token'] = adminTransportToken;
+        headers['x-paperbanana-admin-user-id'] = safeHeader(options.adminUserId, 200);
+      }
     } else if (mode === 'laf') {
       body.gatewayToken = gatewayToken;
       if (options.adminAction) {

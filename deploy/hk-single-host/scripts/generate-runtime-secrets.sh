@@ -23,7 +23,7 @@ done
 for path in "$source_auth_secret" "$prod_key_json" "$backup_key_json"; do
   test -s "$path" || { echo "missing required source secret: $path" >&2; exit 1; }
 done
-for path in gateway.env core.env worker.env mongo-root-password mongo-auth-password mongo-business-password mongo-keyfile; do
+for path in gateway.env core.env worker.env bench.env mongo-root-password mongo-auth-password mongo-business-password mongo-bench-password mongo-bench-api-password mongo-keyfile; do
   test ! -e "$secret_dir/$path" || { echo "refusing to overwrite existing $secret_dir/$path" >&2; exit 1; }
 done
 
@@ -33,9 +33,14 @@ single_line() { tr -d '\r\n' < "$1"; }
 mongo_root_password="$(random_hex 32)"
 mongo_auth_password="$(random_hex 32)"
 mongo_business_password="$(random_hex 32)"
+mongo_bench_password="$(random_hex 32)"
+mongo_bench_api_password="$(random_hex 32)"
 gateway_token="$(random_hex 32)"
+bench_discovery_token="$(random_hex 32)"
 guest_secret="$(random_hex 32)"
 admin_token="$(random_hex 32)"
+admin_transport_token="$(random_hex 32)"
+bench_review_signing_secret="$(random_hex 32)"
 plot_token="$(random_hex 32)"
 reference_token="$(random_hex 32)"
 better_auth_secret="$(single_line "$source_auth_secret")"
@@ -47,6 +52,8 @@ backup_access_key_secret="$(jq -er '.AccessKey.AccessKeySecret' "$backup_key_jso
 printf '%s\n' "$mongo_root_password" > "$secret_dir/mongo-root-password"
 printf '%s\n' "$mongo_auth_password" > "$secret_dir/mongo-auth-password"
 printf '%s\n' "$mongo_business_password" > "$secret_dir/mongo-business-password"
+printf '%s\n' "$mongo_bench_password" > "$secret_dir/mongo-bench-password"
+printf '%s\n' "$mongo_bench_api_password" > "$secret_dir/mongo-bench-api-password"
 openssl rand -base64 756 > "$secret_dir/mongo-keyfile"
 chown 0:999 "$secret_dir/mongo-root-password"
 chmod 0440 "$secret_dir/mongo-root-password"
@@ -68,6 +75,7 @@ PAPERBANANA_GUEST_COOKIE_SECRET=$guest_secret
 PAPERBANANA_GUEST_COOKIE_SECRET_PREVIOUS=
 ADMIN_USER_IDS=$ADMIN_USER_IDS
 ADMIN_TOKEN=$admin_token
+PAPERBANANA_ADMIN_TRANSPORT_TOKEN=$admin_transport_token
 PAPERBANANA_MAINTENANCE_MODE=false
 PAPERBANANA_MAINTENANCE_RETRY_AFTER_SECONDS=300
 PAPERBANANA_BUCKET=paperbanana-prod-hk-20260814
@@ -78,6 +86,7 @@ EOF
 cat > "$secret_dir/core.env" <<EOF
 NODE_ENV=production
 PAPERBANANA_GATEWAY_TOKEN=$gateway_token
+PAPERBANANA_BENCH_DISCOVERY_TOKEN=$bench_discovery_token
 MONGODB_URI=mongodb://paperbanana_business:$mongo_business_password@mongodb:27017/paperbanana_business?authSource=paperbanana_business&replicaSet=rs0
 MONGODB_BUSINESS_DB=paperbanana_business
 PAPERBANANA_BUCKET=paperbanana-prod-hk-20260814
@@ -95,6 +104,7 @@ PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES=20971520
 PAPERBANANA_PROVIDER_EGRESS_MODE=disabled
 PAPERBANANA_SG_PROXY_URL=http://10.77.0.2:3128
 ADMIN_TOKEN=$admin_token
+PAPERBANANA_ADMIN_TRANSPORT_TOKEN=$admin_transport_token
 REFERENCE_UPLOAD_TOKEN_SECRET=$reference_token
 PLOT_WORKER_TOKEN=$plot_token
 PAPERBANANA_MAX_REFERENCE_IMAGES=3
@@ -106,10 +116,24 @@ PAPERBANANA_MAX_CANDIDATES=3
 PAPERBANANA_MAX_CRITIC_ROUNDS=2
 PAPERBANANA_CANDIDATE_CONCURRENCY=1
 BAILIAN_VISION_MODEL=qwen-vl-max
+PAPERBANANA_BENCH_API_ENABLED=false
+PAPERBANANA_BENCH_MONGODB_URI=mongodb://paperbanana_benchmark_api:$mongo_bench_api_password@mongodb:27017/paperbanana_benchmark?authSource=paperbanana_benchmark&replicaSet=rs0
+PAPERBANANA_BENCH_MONGO_DB=paperbanana_benchmark
+PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=$bench_review_signing_secret
 EOF
 
 cat > "$secret_dir/worker.env" <<EOF
 PLOT_WORKER_TOKEN=$plot_token
+EOF
+
+cat > "$secret_dir/bench.env" <<EOF
+NODE_ENV=production
+PAPERBANANA_BENCH_ENABLED=false
+PAPERBANANA_BENCH_MONGODB_URI=mongodb://paperbanana_benchmark:$mongo_bench_password@mongodb:27017/paperbanana_benchmark?authSource=paperbanana_benchmark&replicaSet=rs0
+PAPERBANANA_BENCH_MONGO_DB=paperbanana_benchmark
+PAPERBANANA_BENCH_DISCOVERY_TOKEN=$bench_discovery_token
+PAPERBANANA_BENCH_CONCURRENCY=1
+PAPERBANANA_BENCH_DETECTION_INTERVAL_MS=21600000
 EOF
 
 cat > "$secret_dir/ossutil-backup.conf" <<EOF
@@ -127,8 +151,9 @@ EOF
 
 chmod 0600 \
   "$secret_dir/gateway.env" "$secret_dir/core.env" "$secret_dir/worker.env" \
+  "$secret_dir/bench.env" \
   "$secret_dir/backup.env" "$secret_dir/ossutil-backup.conf" \
-  "$secret_dir/mongo-auth-password" "$secret_dir/mongo-business-password"
+  "$secret_dir/mongo-auth-password" "$secret_dir/mongo-business-password" "$secret_dir/mongo-bench-password" "$secret_dir/mongo-bench-api-password"
 
-unset mongo_root_password mongo_auth_password mongo_business_password gateway_token guest_secret admin_token plot_token reference_token better_auth_secret prod_access_key_id prod_access_key_secret backup_access_key_id backup_access_key_secret
+unset mongo_root_password mongo_auth_password mongo_business_password mongo_bench_password mongo_bench_api_password gateway_token bench_discovery_token guest_secret admin_token admin_transport_token bench_review_signing_secret plot_token reference_token better_auth_secret prod_access_key_id prod_access_key_secret backup_access_key_id backup_access_key_secret
 echo "Runtime secret files created without printing credential values."

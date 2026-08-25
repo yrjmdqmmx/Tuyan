@@ -23,6 +23,7 @@ export async function startGateway({
       ...config.backend,
       gatewayToken: config.gatewayToken,
       adminToken: config.adminToken,
+      adminTransportToken: config.adminTransportToken,
     });
     const isMaintenance = createMaintenanceCheckImpl(config.maintenance);
     const app = createAppImpl({ config, auth, backend, isMaintenance, logger });

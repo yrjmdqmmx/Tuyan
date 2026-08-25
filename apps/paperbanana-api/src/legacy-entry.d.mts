@@ -2,6 +2,16 @@ import type { LegacyHandler } from './server.js'
 
 declare const handler: LegacyHandler
 export function configureRuntimeFetch(fetchImpl?: typeof fetch): void
+export function callImageModel(
+  provider: 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark',
+  model: string,
+  apiKey: string,
+  prompt: string,
+  aspectRatio: string,
+  sourceImage?: string,
+  imageSize?: string,
+  strictImageSize?: boolean,
+): Promise<string>
 export function configureJobAdmission(config: {
   maxActive: number
   maxPending: number
