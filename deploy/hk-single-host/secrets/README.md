@@ -31,7 +31,9 @@ manual `Configure Benchmark Credentials Disabled` workflow stages exactly
 bundle. The root-only operator validates and atomically installs them without
 loading or printing an env file. Its only mutating flag is
 `--apply-disabled`, and it removes an accepted staged bundle on every success
-or failure path. Do not reuse Core BYOK traffic or the product OSS access key.
+or failure path. Credential activation and normal deployment both hold
+`/run/lock/paperbanana-hk-production.lock`; do not bypass the host deployment
+wrapper. Do not reuse Core BYOK traffic or the product OSS access key.
 Enabling the worker still requires a recorded candidate approval with
 generation, Judge and USD caps.
 

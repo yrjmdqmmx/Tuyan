@@ -403,10 +403,12 @@ test('test mode rejects a canonical marked fixture outside approved temporary ro
 test('deploy and smoke require an exact benchmark secret mode and keep configured credentials disabled', () => {
   const deploy = readFileSync(join(deployRoot, 'scripts', 'deploy.sh'), 'utf8');
   const smoke = readFileSync(join(deployRoot, 'scripts', 'smoke.sh'), 'utf8');
+  const deployWrapper = readFileSync(join(deployRoot, 'scripts', 'apply-staged-deployment.sh'), 'utf8');
   const deployWorkflow = readFileSync(fileURLToPath(new URL('../../../.github/workflows/deploy-hk.yml', import.meta.url)), 'utf8');
   assert.match(deployWorkflow, /benchmark_secret_mode:[\s\S]*type:\s*choice[\s\S]*options:[\s\S]*discovery-only[\s\S]*configured-disabled/);
   assert.match(deployWorkflow, /PAPERBANANA_BENCH_SECRET_MODE/);
-  assert.match(deployWorkflow, /bootstrap-benchmark\.sh[^\n]*BENCHMARK_SECRET_MODE/);
+  assert.match(deployWorkflow, /apply-staged-deployment\.sh/);
+  assert.match(deployWrapper, /bootstrap-benchmark\.sh[^\n]*benchmark_secret_mode/);
   assert.match(deploy, /PAPERBANANA_BENCH_SECRET_MODE/);
   assert.match(deploy, /discovery-only/);
   assert.match(deploy, /configured-disabled/);

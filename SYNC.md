@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-08-25] 香港部署与 Bench 凭据激活共享主机锁 — by Codex
+变更：正常香港部署与 Bench `configured-disabled` 凭据激活现在必须共享 `/run/lock/paperbanana-hk-production.lock`。正常部署由 root-only `apply-staged-deployment.sh` 在同一把锁内连续完成随机 0600 `/tmp` image-lock 安装、Bench mode bootstrap、`deploy.sh --apply`、smoke 与临时文件清理；凭据 operator 使用同一锁。两个 production workflow 也共享 non-canceling concurrency group 作为第二层保护。固定 `GITHUB_RUN_ID` staging path 已移除；本条不改变 `discovery-only|configured-disabled`、Worker disabled 或付费授权边界。
+各端待办：
+- [x] 部署 / 运维代码（共享主机锁、host wrapper、随机 staging、成功/失败双重清理、workflow concurrency 与回归测试）
+- [x] Web / Core / Gateway / Worker / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（运行时 API/客户端契约不变，无需改造）
+- [ ] 生产执行（仍须走既有人工 workflow 与独立验收；本条未 push、未部署、未读取 secret、未产生付费请求）
+
 ### [2026-08-25] Bench 专用凭据 configured-disabled 激活门 — by Codex
 变更：香港单机部署新增显式 `PAPERBANANA_BENCH_SECRET_MODE=discovery-only|configured-disabled`。默认 `discovery-only` 继续拒绝全部 Provider/Bench OSS 凭据；新的 root-only 原子操作脚本仅通过 0600 临时 bundle 接收三项 Provider 与六项 Bench OSS 配置，要求 Core/Worker 的 `PAPERBANANA_CODE_SHA` 与人工输入的已部署 40 位 commit 完全一致，并在失败时恢复 `core.env`、`bench.env`、部署模式及原服务。`configured-disabled` 只打开 Core Bench API 的独立 OSS 读取/签名配置，Worker 始终保持 `PAPERBANANA_BENCH_ENABLED=false`、并发 1；本条不授权任何生成、Judge、canary 或付费请求。
 各端待办：

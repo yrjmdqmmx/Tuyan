@@ -12,6 +12,7 @@ const read = (path) => readFileSync(new URL(path, root), 'utf8');
 test('operator scripts are committed as executables', () => {
   for (const path of [
     'scripts/backup-mongo.sh',
+    'scripts/apply-staged-deployment.sh',
     'scripts/bootstrap-host.sh',
     'scripts/build-images.sh',
     'scripts/configure-benchmark-credentials.sh',
@@ -111,6 +112,7 @@ test('Hong Kong deploy makes the disabled benchmark credential mode explicit wit
   assert.equal(existsSync(bootstrapUrl), true, 'benchmark bootstrap script must exist');
   const bootstrap = read('scripts/bootstrap-benchmark.sh');
   const deploy = read('scripts/deploy.sh');
+  const deployWrapper = read('scripts/apply-staged-deployment.sh');
   const smoke = read('scripts/smoke.sh');
 
   assert.match(workflow, /benchmark_image:[\s\S]*required:\s*true/);
@@ -119,7 +121,8 @@ test('Hong Kong deploy makes the disabled benchmark credential mode explicit wit
   assert.match(workflow, /COMPOSE_PROFILES=benchmark/);
   assert.match(workflow, /default:\s*discovery-only/);
   assert.match(workflow, /configured-disabled/);
-  assert.match(workflow, /bootstrap-benchmark\.sh[^\n]*BENCHMARK_SECRET_MODE/);
+  assert.match(workflow, /apply-staged-deployment\.sh/);
+  assert.match(deployWrapper, /bootstrap-benchmark\.sh[^\n]*benchmark_secret_mode/);
 
   assert.match(bootstrap, /set_env_value "\$bench_env" PAPERBANANA_BENCH_ENABLED false/);
   assert.match(bootstrap, /mongo-bench-password/);

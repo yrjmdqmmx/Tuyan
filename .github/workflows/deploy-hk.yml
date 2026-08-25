@@ -74,7 +74,7 @@ jobs:
           printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
 
-      - name: Install image lock and deploy
+      - name: Stage image lock and deploy under the host lock
         env:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
@@ -87,7 +87,14 @@ jobs:
         run: |
           set -Eeuo pipefail
           image_lock="$(mktemp)"
-          trap 'rm -f "$image_lock"' EXIT
+          REMOTE_LOCK=""
+          cleanup() {
+            rm -f "$image_lock"
+            if [[ -n "$REMOTE_LOCK" && "$REMOTE_LOCK" =~ ^/tmp/paperbanana-image-lock\.[A-Za-z0-9]{6,}$ ]]; then
+              ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$REMOTE_LOCK'" >/dev/null 2>&1 || true
+            fi
+          }
+          trap cleanup EXIT
           {
             printf 'PAPERBANANA_GATEWAY_IMAGE=%s\n' "$GATEWAY_IMAGE"
             printf 'PAPERBANANA_CORE_IMAGE=%s\n' "$CORE_IMAGE"
@@ -97,7 +104,8 @@ jobs:
             printf 'PAPERBANANA_BENCH_SECRET_MODE=%s\n' "$BENCHMARK_SECRET_MODE"
             printf 'COMPOSE_PROFILES=benchmark\n'
           } > "$image_lock"
-          REMOTE_LOCK="/tmp/paperbanana-image-lock-${GITHUB_RUN_ID}"
+          REMOTE_LOCK="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp /tmp/paperbanana-image-lock.XXXXXXXXXXXX')"
+          [[ "$REMOTE_LOCK" =~ ^/tmp/paperbanana-image-lock\.[A-Za-z0-9]{6,}$ ]]
           scp "$image_lock" "$DEPLOY_USER@$DEPLOY_HOST:$REMOTE_LOCK"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" \
-            "set -Eeuo pipefail; cd /opt/paperbanana/repo && git fetch --quiet origin '${GITHUB_SHA}' && git checkout --detach '${GITHUB_SHA}' && install -m 0600 '$REMOTE_LOCK' deploy/hk-single-host/.env && rm -f '$REMOTE_LOCK' && PAPERBANANA_CODE_SHA='${GITHUB_SHA}' deploy/hk-single-host/scripts/bootstrap-benchmark.sh '--$BENCHMARK_SECRET_MODE' && deploy/hk-single-host/scripts/deploy.sh --apply"
+            "set -Eeuo pipefail; chmod 0600 '$REMOTE_LOCK'; cd /opt/paperbanana/repo && git fetch --quiet origin '${GITHUB_SHA}' && git checkout --detach '${GITHUB_SHA}' && deploy/hk-single-host/scripts/apply-staged-deployment.sh --staged-image-lock '$REMOTE_LOCK' --code-sha '${GITHUB_SHA}' --apply"

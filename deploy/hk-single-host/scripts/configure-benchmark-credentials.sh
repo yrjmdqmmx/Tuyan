@@ -78,7 +78,8 @@ deploy_dir="$(host_path /opt/paperbanana/repo/deploy/hk-single-host)"
 core_env="$secret_dir/core.env"
 bench_env="$secret_dir/bench.env"
 deploy_env="$deploy_dir/.env"
-lock_path="$(host_path /run/lock/paperbanana-benchmark-credentials.lock)"
+shared_lock_path="/run/lock/paperbanana-hk-production.lock"
+lock_path="$(host_path "$shared_lock_path")"
 
 if [[ -n "$test_root" ]]; then
   [[ "$bundle" == "$test_root"/tmp/paperbanana-bench-credentials-* ]] || {

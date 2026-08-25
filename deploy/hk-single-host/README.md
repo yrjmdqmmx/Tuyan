@@ -41,12 +41,18 @@ documents. It refuses to overwrite an initialized environment.
 
 ## Deployment and recovery
 
-1. Build images with immutable commit tags and record those tags in `.env`.
+1. Build images with immutable commit tags and record those tags in a root-only
+   staged image lock.
    Set exactly one `PAPERBANANA_BENCH_SECRET_MODE`: use `discovery-only` for
    the credential-free default, or `configured-disabled` only after the
    dedicated Bench credential gate has completed. Missing or unknown modes
    fail closed.
-2. Run `scripts/deploy.sh` first without arguments, then with `--apply`.
+2. Validate through the manual deploy workflow or run the host wrapper with a
+   randomized `/tmp/paperbanana-image-lock.*` path, the exact 40-character
+   commit, and `--apply`. `scripts/apply-staged-deployment.sh` owns and deletes
+   the staged file, and holds `/run/lock/paperbanana-hk-production.lock`
+   continuously across `.env` installation, benchmark bootstrap, deploy,
+   smoke, and cleanup.
 3. The apply path creates the maintenance marker, recreates only this Compose
    project, waits up to 30 minutes for graceful core drain, runs isolation and
    OpenVac smoke checks, and clears maintenance only after success.
@@ -86,7 +92,8 @@ keys plus all six dedicated Bench OSS settings through an owner-only temporary
 bundle, and invokes `scripts/configure-benchmark-credentials.sh --apply-disabled`.
 
 The operator validates all inputs before mutation, takes an exclusive host
-lock, atomically updates `core.env`, `bench.env`, and `.env`, and recreates only
+lock shared with normal deployment, atomically updates `core.env`, `bench.env`,
+and `.env`, and recreates only
 `paperbanana-api` and `benchmark-worker`. Core receives the Bench-only OSS
 signer and `PAPERBANANA_BENCH_API_ENABLED=true`; the Worker receives its
 dedicated Provider/OSS credentials but remains
