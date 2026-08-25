@@ -12,8 +12,10 @@ const read = (path) => readFileSync(new URL(path, root), 'utf8');
 test('operator scripts are committed as executables', () => {
   for (const path of [
     'scripts/backup-mongo.sh',
+    'scripts/apply-staged-deployment.sh',
     'scripts/bootstrap-host.sh',
     'scripts/build-images.sh',
+    'scripts/configure-benchmark-credentials.sh',
     'scripts/deploy.sh',
     'scripts/generate-runtime-secrets.sh',
     'scripts/init-mongo.sh',
@@ -104,19 +106,23 @@ test('benchmark worker is opt-in, portless and disabled by its secret-file defau
   assert.match(compose, /benchmark-worker:[\s\S]*?networks:\s*\n\s+backend:[\s\S]*?egress:/);
 });
 
-test('Hong Kong deploy bootstraps the benchmark in discovery-only mode with an immutable image', () => {
+test('Hong Kong deploy makes the disabled benchmark credential mode explicit with an immutable image', () => {
   const workflow = read('../../.github/workflows/deploy-hk.yml');
   const bootstrapUrl = new URL('scripts/bootstrap-benchmark.sh', root);
   assert.equal(existsSync(bootstrapUrl), true, 'benchmark bootstrap script must exist');
   const bootstrap = read('scripts/bootstrap-benchmark.sh');
   const deploy = read('scripts/deploy.sh');
+  const deployWrapper = read('scripts/apply-staged-deployment.sh');
   const smoke = read('scripts/smoke.sh');
 
   assert.match(workflow, /benchmark_image:[\s\S]*required:\s*true/);
   assert.match(workflow, /PAPERBANANA_BENCH_WORKER_IMAGE/);
   assert.match(workflow, /paperbanana-benchmark-worker\$\{digest\}/);
   assert.match(workflow, /COMPOSE_PROFILES=benchmark/);
-  assert.match(workflow, /bootstrap-benchmark\.sh --discovery-only/);
+  assert.match(workflow, /default:\s*discovery-only/);
+  assert.match(workflow, /configured-disabled/);
+  assert.match(workflow, /apply-staged-deployment\.sh/);
+  assert.match(deployWrapper, /bootstrap-benchmark\.sh[^\n]*benchmark_secret_mode/);
 
   assert.match(bootstrap, /set_env_value "\$bench_env" PAPERBANANA_BENCH_ENABLED false/);
   assert.match(bootstrap, /mongo-bench-password/);
@@ -124,8 +130,9 @@ test('Hong Kong deploy bootstraps the benchmark in discovery-only mode with an i
   assert.match(bootstrap, /PAPERBANANA_BENCH_DISCOVERY_TOKEN/);
   assert.match(bootstrap, /PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET/);
   assert.match(bootstrap, /PAPERBANANA_ADMIN_TRANSPORT_TOKEN/);
-  assert.doesNotMatch(bootstrap, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY/);
-  assert.doesNotMatch(bootstrap, /PAPERBANANA_BENCH_API_ENABLED=true/);
+  assert.match(bootstrap, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY/);
+  assert.match(bootstrap, /set_env_value "\$core_env" PAPERBANANA_BENCH_API_ENABLED true/);
+  assert.match(bootstrap, /configured-disabled/);
   assert.doesNotMatch(bootstrap, /source\s+[^\n]*(?:core|gateway|bench)\.env/);
 
   assert.match(deploy, /grep[^\n]*COMPOSE_PROFILES[^\n]*benchmark[^\n]*"\$deploy_dir\/\.env"/);
@@ -133,8 +140,8 @@ test('Hong Kong deploy bootstraps the benchmark in discovery-only mode with an i
   assert.match(deploy, /benchmark_enabled[\s\S]*mongo-bench-password/);
   assert.match(deploy, /benchmark_enabled[\s\S]*mongo-bench-api-password/);
   assert.match(smoke, /benchmark_enabled[\s\S]*ps --status running benchmark-worker/);
-  assert.match(smoke, /printenv PAPERBANANA_BENCH_ENABLED/);
-  assert.match(smoke, /test "\$benchmark_mode" = false/);
+  assert.match(smoke, /process\.env\.PAPERBANANA_BENCH_ENABLED !== "false"/);
+  assert.match(smoke, /process\.env\.PAPERBANANA_BENCH_CONCURRENCY !== "1"/);
   assert.match(smoke, /PAPERBANANA_BENCH_OPENROUTER_API_KEY/);
   assert.match(smoke, /PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET/);
   assert.match(smoke, /process\.env\[name\]/);

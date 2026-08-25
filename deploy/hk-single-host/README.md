@@ -41,8 +41,20 @@ documents. It refuses to overwrite an initialized environment.
 
 ## Deployment and recovery
 
-1. Build images with immutable commit tags and record those tags in `.env`.
-2. Run `scripts/deploy.sh` first without arguments, then with `--apply`.
+1. Build images with immutable commit tags and record those tags in a root-only
+   staged image lock.
+   Set exactly one `PAPERBANANA_BENCH_SECRET_MODE`: use `discovery-only` for
+   the credential-free default, or `configured-disabled` only after the
+   dedicated Bench credential gate has completed. Missing or unknown modes
+   fail closed.
+2. Validate through the manual deploy workflow or run the host wrapper with a
+   randomized `/tmp/paperbanana-image-lock.*` path, the exact 40-character
+   commit, and `--apply`. `scripts/apply-staged-deployment.sh` owns and deletes
+   the staged file, and holds `/run/lock/paperbanana-hk-production.lock`
+   continuously across `.env` installation, benchmark bootstrap, deploy,
+   smoke, and cleanup. Direct `deploy.sh --apply` rejects requests without the
+   wrapper's inherited descriptor for that exact locked path; its dry-run no
+   longer advertises direct apply.
 3. The apply path creates the maintenance marker, recreates only this Compose
    project, waits up to 30 minutes for graceful core drain, runs isolation and
    OpenVac smoke checks, and clears maintenance only after success.
@@ -70,6 +82,29 @@ reference documents, images, jobs, or saved selections.
 Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
 inspect each result with `systemctl status paperbanana-backup.service` plus the
 corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.
+
+## Benchmark credential staging
+
+The default deployment mode is `discovery-only`: Core Bench API access and the
+Worker remain disabled, and no Provider or Bench OSS credential may be present.
+The manual `Configure Benchmark Credentials Disabled` workflow is the only
+repository-supported transition to `configured-disabled`. It requires the
+exact deployed 40-character commit, transports the three dedicated Provider
+keys plus all six dedicated Bench OSS settings through an owner-only temporary
+bundle, and invokes `scripts/configure-benchmark-credentials.sh --apply-disabled`.
+
+The operator validates all inputs before mutation, takes an exclusive host
+lock shared with normal deployment, atomically updates `core.env`, `bench.env`,
+and `.env`, and recreates only
+`paperbanana-api` and `benchmark-worker`. Core receives the Bench-only OSS
+signer and `PAPERBANANA_BENCH_API_ENABLED=true`; the Worker receives its
+dedicated Provider/OSS credentials but remains
+`PAPERBANANA_BENCH_ENABLED=false` with concurrency one. Failed installation,
+recreate, or smoke restores all three prior files and recreates the prior
+services. An accepted staged bundle is operator-owned for `--apply-disabled`
+and is removed after success, validation failure, or rollback; the workflow
+cleanup remains defense in depth. This stage does not authorize generation,
+judging, a canary, or any paid request.
 
 ## Singapore provider egress activation
 

@@ -24,19 +24,30 @@ Change those fields only with `scripts/set-provider-egress-mode.sh`; the script
 does not source or print the file.
 
 `bench.env` starts with `PAPERBANANA_BENCH_ENABLED=false` and a Mongo user that
-can write only `paperbanana_benchmark`. Before any paid canary, append dedicated
-`PAPERBANANA_BENCH_{BAILIAN,OPENROUTER,ARK}_API_KEY` values plus a Bench-only OSS
-RAM identity and bucket settings. Do not reuse Core BYOK traffic or the product
-OSS access key. Enabling the worker still requires a recorded candidate approval
-with generation, Judge and USD caps.
+can write only `paperbanana_benchmark`. Never append credentials by hand. The
+manual `Configure Benchmark Credentials Disabled` workflow stages exactly
+`PAPERBANANA_BENCH_{BAILIAN,OPENROUTER,ARK}_API_KEY` plus the six dedicated
+`PAPERBANANA_BENCH_OSS_*` settings in a root-readable mode-0600 temporary
+bundle. The root-only operator validates and atomically installs them without
+loading or printing an env file. Its only mutating flag is
+`--apply-disabled`, and it removes an accepted staged bundle on every success
+or failure path. Credential activation and normal deployment both hold
+`/run/lock/paperbanana-hk-production.lock`; do not bypass the host deployment
+wrapper. `deploy.sh --apply` validates the inherited numeric descriptor's
+actual path and lock state before reading deployment inputs or running Compose.
+Do not reuse Core BYOK traffic or the product OSS access key.
+Enabling the worker still requires a recorded candidate approval with
+generation, Judge and USD caps.
 
-The service is additionally behind the Compose `benchmark` profile. A normal
-deployment does not create it. Only after credentials, judge calibration and a
-recorded budget approval are ready, set an immutable
-`PAPERBANANA_BENCH_WORKER_IMAGE`, opt in with `COMPOSE_PROFILES=benchmark`, and
-then change `PAPERBANANA_BENCH_ENABLED` in the root-owned `bench.env`. Rollback
-starts by pausing active runs, setting the flag back to `false`, and removing
-the profile from the next deployment; Mongo and OSS evidence are retained.
+The service is additionally behind the Compose `benchmark` profile. Every
+deployment must set exactly one `PAPERBANANA_BENCH_SECRET_MODE` in `.env`.
+`discovery-only` rejects all nine credential names. `configured-disabled`
+requires all of them, preserves them across explicit future deployments, and
+still requires `PAPERBANANA_BENCH_ENABLED=false` with concurrency one. Only
+after credentials, judge calibration and a separately recorded budget approval
+are ready may a future, separately authorized gate enable paid execution.
+Rollback starts by pausing active runs and setting the flag back to `false`;
+Mongo and OSS evidence are retained.
 
 Core uses the distinct `paperbanana_benchmark_api` Mongo identity and a
 Bench-only OSS signer. Keep `PAPERBANANA_BENCH_API_ENABLED=false` until those
