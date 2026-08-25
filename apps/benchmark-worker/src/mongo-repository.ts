@@ -1,5 +1,7 @@
 import { BENCHMARK_COLLECTIONS } from '@paperbanana/benchmark-core'
 import { randomUUID } from 'node:crypto'
+
+import { addBenchmarkUsd, benchmarkUsdExceeds } from './budget.js'
 import type { Db } from 'mongodb'
 import { UnknownProviderOutcomeError } from './provider-operation.js'
 
@@ -88,11 +90,11 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
       const generations = Number(usage.generations || 0) + (kind === 'generation' ? 1 : 0)
       const judgmentCount = Number(usage.judgments || 0) + (kind === 'judgment' ? 1 : 0)
       const judgeCalls = Number(usage.judgeCalls || 0) + (kind === 'judgeCall' ? 1 : 0)
-      const cost = Number(usage.estimatedUsd || 0) + estimatedUsd
+      const cost = addBenchmarkUsd(Number(usage.estimatedUsd || 0), estimatedUsd)
       const reason = generations > Number(limits.maxGenerations) ? 'GENERATIONS'
         : judgmentCount > Number(limits.maxJudgments) ? 'JUDGMENTS'
           : judgeCalls > Number(limits.maxJudgeCalls) ? 'JUDGE_CALLS'
-          : cost > Number(limits.maxEstimatedUsd) ? 'COST' : ''
+          : benchmarkUsdExceeds(cost, Number(limits.maxEstimatedUsd)) ? 'COST' : ''
       if (reason) {
         await runs.updateOne(leaseFilter, { $set: { state: 'paused', pauseReason: `BENCHMARK_BUDGET_PAUSED:${reason}`, updatedAt: now() }, $unset: { leaseOwner: '', leaseToken: '', leaseUntil: '' } })
         throw new Error(`BENCHMARK_BUDGET_PAUSED:${reason}`)

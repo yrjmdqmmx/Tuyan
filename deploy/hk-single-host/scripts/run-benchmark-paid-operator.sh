@@ -93,11 +93,21 @@ else
 fi
 
 node - "$max_estimated_usd" "$max_generations" "$max_judge_calls" "$estimated_per_generation_usd" "$estimated_per_judge_call_usd" <<'NODE'
-const [maxUsd, maxGenerations, maxJudges, generationUsd, judgeUsd] = process.argv.slice(2).map(Number)
-if (![maxUsd, maxGenerations, maxJudges, generationUsd, judgeUsd].every(Number.isFinite)) process.exit(1)
-if (!(maxUsd > 0 && maxUsd <= 3)) process.exit(1)
-if (generationUsd * maxGenerations + judgeUsd * maxJudges > maxUsd) process.exit(1)
+const [maxUsd, maxGenerations, maxJudges, generationUsd, judgeUsd] = process.argv.slice(2)
+const decimal = (value) => {
+  if (!/^\d{1,12}(?:\.\d{1,12})?$/.test(value)) process.exit(1)
+  const [whole, fraction = ''] = value.split('.')
+  return { units: BigInt(`${whole}${fraction}`), scale: fraction.length }
+}
+const scaleTo = (amount, scale) => amount.units * (10n ** BigInt(scale - amount.scale))
+if (![maxGenerations, maxJudges].every((value) => /^\d+$/.test(value))) process.exit(1)
+const amounts = [maxUsd, generationUsd, judgeUsd].map(decimal)
+const scale = Math.max(...amounts.map((amount) => amount.scale))
+const [max, generation, judge] = amounts.map((amount) => scaleTo(amount, scale))
+if (!(max > 0n && max <= 3n * (10n ** BigInt(scale)))) process.exit(1)
+if (generation * BigInt(maxGenerations) + judge * BigInt(maxJudges) > max) process.exit(1)
 NODE
+echo 'BENCHMARK_OPERATOR_STAGE=budget-preflight-ok'
 
 if [[ -n "$test_root" ]]; then
   deploy_dir="$test_root/opt/paperbanana/repo/deploy/hk-single-host"
@@ -131,6 +141,7 @@ done
 [[ "$(read_env_value "$bench_env" PAPERBANANA_BENCH_CONCURRENCY)" == 1 ]] || { echo 'PAPERBANANA_BENCH_CONCURRENCY must remain 1' >&2; exit 1; }
 [[ "$(read_env_value "$core_env" PAPERBANANA_CODE_SHA)" == "$expected_sha" ]] || { echo 'Core PAPERBANANA_CODE_SHA mismatch' >&2; exit 1; }
 [[ "$(read_env_value "$bench_env" PAPERBANANA_CODE_SHA)" == "$expected_sha" ]] || { echo 'Worker PAPERBANANA_CODE_SHA mismatch' >&2; exit 1; }
+echo 'BENCHMARK_OPERATOR_STAGE=host-inputs-ok'
 
 if [[ "$apply" != true ]]; then
   echo "dry-run: would run $mode with disabled Worker and explicit paid caps"
@@ -139,14 +150,18 @@ fi
 
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 "${compose[@]}" exec -T paperbanana-api node -e 'const fs=require("node:fs");const p=JSON.parse(fs.readFileSync("/app/build-provenance.json","utf8"));if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha"
+echo 'BENCHMARK_OPERATOR_STAGE=core-provenance-ok'
 "${compose[@]}" run --rm --no-deps benchmark-operator node -e 'const fs=require("node:fs");const p=JSON.parse(fs.readFileSync("/app/build-provenance.json","utf8"));if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha"
+echo 'BENCHMARK_OPERATOR_STAGE=oneoff-worker-provenance-ok'
 "${compose[@]}" exec -T benchmark-worker node -e 'if(process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' "$expected_sha"
+echo 'BENCHMARK_OPERATOR_STAGE=resident-worker-disabled'
 
 report_file="$(mktemp /tmp/paperbanana-benchmark-operator-report.XXXXXX)"
 chmod 0600 "$report_file"
 cleanup() { rm -f -- "$report_file"; }
 trap cleanup EXIT
 
+echo 'BENCHMARK_OPERATOR_STAGE=paid-dispatch-start'
 "${compose[@]}" run --rm --no-deps \
   -e PAPERBANANA_BENCH_OPERATOR_MODE="$mode" \
   -e PAPERBANANA_BENCH_OPERATOR_CONFIRM="$confirm" \

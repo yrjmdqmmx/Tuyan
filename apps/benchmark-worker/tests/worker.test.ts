@@ -382,6 +382,17 @@ test('operator authorization fails closed unless daemon stays disabled and paid 
   assert.match(authorization.priceHash, /^[a-f0-9]{64}$/)
   assert.equal(canonicalHash(Object.fromEntries(Object.entries(authorization).filter(([key]) => key !== 'authorizationHash'))), authorization.authorizationHash)
   assert.equal(JSON.stringify(authorization).includes('API_KEY'), false)
+  const calibration = parseBenchmarkOperatorAuthorization({
+    ...base,
+    PAPERBANANA_BENCH_OPERATOR_CONFIRM: 'calibrate-judge-disabled-worker',
+    PAPERBANANA_BENCH_OPERATOR_MODE: 'calibration',
+    PAPERBANANA_BENCH_MAX_GENERATIONS: '0',
+    PAPERBANANA_BENCH_MAX_JUDGE_CALLS: '24',
+    PAPERBANANA_BENCH_MAX_ESTIMATED_USD: '2.40',
+    PAPERBANANA_BENCH_ESTIMATED_PER_GENERATION_USD: '0',
+    PAPERBANANA_BENCH_ESTIMATED_PER_JUDGE_CALL_USD: '0.10',
+  })
+  assert.equal(calibration.maxEstimatedUsd, 2.4)
   assert.throws(() => parseBenchmarkOperatorAuthorization({ ...base, PAPERBANANA_BENCH_ENABLED: 'true' }), /BENCHMARK_OPERATOR_REQUIRES_DISABLED_WORKER/)
   assert.throws(() => parseBenchmarkOperatorAuthorization({ ...base, PAPERBANANA_BENCH_MAX_GENERATIONS: '3' }), /BENCHMARK_OPERATOR_AUTHORIZATION_INVALID/)
   assert.throws(() => parseBenchmarkOperatorAuthorization({ ...base, PAPERBANANA_BENCH_MAX_JUDGE_CALLS: '7' }), /BENCHMARK_OPERATOR_AUTHORIZATION_INVALID/)
@@ -651,6 +662,15 @@ test('budget pauses before generation, judgment or estimated cost can exceed a c
   assert.throws(() => cost.reserve({ kind: 'generation', estimatedUsd: 0.31 }), /BENCHMARK_BUDGET_PAUSED:COST/)
 })
 
+test('budget accepts decimal reservations exactly at the approved cap', () => {
+  const budget = new BenchmarkBudget({ maxGenerations: 0, maxJudgeCalls: 24, maxEstimatedUsd: 2.4 })
+  for (let index = 0; index < 24; index += 1) {
+    budget.reserve({ kind: 'judgment', estimatedUsd: 0.1 })
+  }
+  assert.equal(budget.snapshot().judgments, 24)
+  assert.equal(budget.snapshot().estimatedUsd, 2.4)
+})
+
 test('full budget accounting is phase-pure and never consumes quick usage', async () => {
   const run: any = {
     _id: 'run-phase-budget', state: 'full_running', leaseOwner: 'worker-1', leaseToken: 'lease-1', leaseUntil: new Date('2026-08-25T09:00:00.000Z'),
@@ -671,6 +691,28 @@ test('full budget accounting is phase-pure and never consumes quick usage', asyn
   await repository.reserveBudget(run._id, 'worker-1', 'lease-1', 'full_running', 'generation', 1)
   assert.deepEqual(update.$set['usageByPhase.full'], { generations: 1, judgments: 0, judgeCalls: 0, estimatedUsd: 1 })
   assert.equal(update.$set.state, undefined)
+})
+
+test('repository budget accounting accepts repeated decimal costs at the exact phase cap', async () => {
+  const run: any = {
+    _id: 'run-decimal-budget', state: 'quick_running', leaseOwner: 'worker-1', leaseToken: 'lease-1', leaseUntil: new Date('2026-08-25T09:00:00.000Z'),
+    approval: { maxGenerations: 3, maxJudgments: 0, maxJudgeCalls: 0, maxEstimatedUsd: 0.3 },
+    usageByPhase: { quick: { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 } },
+  }
+  const runs = {
+    async findOne() { return run },
+    async updateOne(_query: any, next: any) {
+      if (next.$set?.['usageByPhase.quick']) run.usageByPhase.quick = next.$set['usageByPhase.quick']
+      return { modifiedCount: 1 }
+    },
+  }
+  const db = { collection(name: string) { return name === 'paperbanana_benchmark_runs' ? runs : {} } }
+  const repository = createWorkerMongoRepository(db as any, () => new Date('2026-08-25T08:00:00.000Z'))
+  for (let index = 0; index < 3; index += 1) {
+    await repository.reserveBudget(run._id, 'worker-1', 'lease-1', 'quick_running', 'generation', 0.1)
+  }
+  assert.equal(run.usageByPhase.quick.estimatedUsd, 0.3)
+  assert.equal(run.usageByPhase.quick.generations, 3)
 })
 
 test('repository enforces logical judgments independently from dispatch attempts', async () => {
