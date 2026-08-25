@@ -62,7 +62,8 @@ export async function callBlindJudge(input: {
   const endpoint = input.provider === 'openrouter'
     ? 'https://openrouter.ai/api/v1/chat/completions'
     : 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions'
-  return judgeWithSingleRepair(async (repair, malformed) => {
+  try {
+    return await judgeWithSingleRepair(async (repair, malformed) => {
     await input.beforeDispatch?.(repair)
     const prompt = repair
       ? `Repair this malformed answer into the required strict JSON schema. Return JSON only.\n${String(malformed || '').slice(0, 16_000)}`
@@ -88,7 +89,8 @@ export async function callBlindJudge(input: {
           response_format: input.provider === 'openrouter' ? openRouterResponseFormat : { type: 'json_object' },
           ...(input.provider === 'openrouter' ? { provider: { require_parameters: true } } : {}),
           temperature: 0,
-          max_tokens: 1200,
+          max_tokens: 4096,
+          ...(input.provider === 'openrouter' ? { reasoning: { effort: 'low', exclude: true } } : {}),
         }),
       })
       return await parseText(response)
@@ -96,5 +98,11 @@ export async function callBlindJudge(input: {
       if (response && !controller.signal.aborted) throw error
       throw new UnknownProviderOutcomeError(`Judge request outcome unknown after dispatch: ${String((error as Error)?.name || 'network error')}`)
     } finally { clearTimeout(timeout) }
-  })
+    })
+  } catch (error) {
+    if ((error as Error)?.message === 'BENCHMARK_JUDGE_JSON_INVALID') {
+      throw new Error(`BENCHMARK_JUDGE_JSON_INVALID_${input.provider.toUpperCase()}`)
+    }
+    throw error
+  }
 }

@@ -60,6 +60,7 @@ async function main() {
         fetchImpl: provider === 'openrouter' ? openRouterJudgeEgress.fetch : undefined,
         beforeDispatch: async () => {
           budget.reserve({ kind: 'judgment', estimatedUsd: authorization.estimatedPerJudgeCallUsd })
+          process.stdout.write(`BENCHMARK_OPERATOR_JUDGE_DISPATCH=${provider}\n`)
         },
       }),
       { maxRetries: 1 },
