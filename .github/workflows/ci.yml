@@ -1,6 +1,7 @@
-name: Pull Request CI
+name: CI
 
 on:
+  push:
   pull_request:
   workflow_dispatch:
 
@@ -12,6 +13,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  mongo-index-migration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test MongoDB 8 benchmark index migration
+        run: deploy/hk-single-host/tests/run-mongo-index-migration-integration.sh
+
   node:
     runs-on: ubuntu-latest
     steps:

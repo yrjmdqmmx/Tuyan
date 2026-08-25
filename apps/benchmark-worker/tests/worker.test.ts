@@ -31,6 +31,7 @@ import {
   loadBuildProvenance,
 } from '../src/index.js'
 import { callBlindJudge } from '../src/judge-provider.js'
+import { createWorkerMongoRepository } from '../src/mongo-repository.js'
 
 test('worker is disabled, single-concurrency and six-hour detection by default', () => {
   const config = parseWorkerConfig({})
@@ -150,6 +151,79 @@ test('quick run generates all 12x2 samples before either judge phase', async () 
   assert.equal(result.nextState, 'quick_review')
   const generationIndexes = events.map((event, index) => event.startsWith('generate:') ? index : -1).filter((index) => index >= 0)
   assert.ok(Math.max(...generationIndexes) < events.findIndex((event) => event.startsWith('judge:')))
+})
+
+test('automatic red-line ordering does not create a false audit conflict', async () => {
+  const samples = new Map<string, any>()
+  const judgments: any[] = []
+  const marked: string[][] = []
+  const cases = Array.from({ length: 12 }, (_, index) => ({ id: `ordered-${index}`, renderPrompt: 'prompt', negativePrompt: '', aspectRatio: 'auto', rubric: {}, caption: 'caption', manifestHash: 'hash' }))
+  const result = await executeBenchmarkRun({
+    run: { runId: 'ordered-red-lines', phase: 'quick', provider: 'ark', modelId: 'model', lane: '2K-standard', repetitions: 1, runHash: canonicalHash('ordered-red-lines') },
+    cases,
+    async generate(sample) { return { imageHash: canonicalHash(sample.sampleId), latencyMs: 1_000 } },
+    async judge(provider) {
+      return {
+        scores: Object.fromEntries(['faithfulness','conciseness','readability','aesthetics','text_accuracy','topology','instruction_adherence'].map((axis) => [axis, 8])),
+        evidence: ['ok'], redLines: provider === 'openrouter' ? ['missing_node', 'reversed_arrow'] : ['reversed_arrow', 'missing_node'], confidence: 1,
+      }
+    },
+    repository: {
+      async findSample(id) { return samples.get(id) || null },
+      async saveSample(sample) { samples.set(sample.sampleId, sample) },
+      async findJudgment(sampleId, provider) { return judgments.find((item) => item.sampleId === sampleId && item.provider === provider) || null },
+      async saveJudgment(judgment) { judgments.push(judgment) },
+      async markAudits(ids) { marked.push(ids) },
+      async completeRun() {},
+    },
+  })
+  assert.equal(result.auditSampleIds.length, 2)
+  assert.deepEqual(marked[0], result.auditSampleIds)
+})
+
+test('full phase never reuses quick samples or automatic judgments from the same run', async () => {
+  const generated: string[] = []
+  const judgments: any[] = []
+  const samples = new Map<string, any>()
+  const summaries: any[] = []
+  const cases = [{ id: 'case-1', renderPrompt: 'prompt', negativePrompt: '', aspectRatio: 'auto', rubric: {}, caption: 'caption', manifestHash: 'rubric' }]
+  const repository = {
+    async findSample(id: string) { return samples.get(id) || null },
+    async saveSample(sample: any) { samples.set(sample.sampleId, sample) },
+    async findJudgment(sampleId: string, provider: string) { return judgments.find((item) => item.sampleId === sampleId && item.provider === provider) || null },
+    async saveJudgment(judgment: any) { judgments.push(judgment) },
+    async completeRun(_state: string, summary: any) { summaries.push(summary) },
+  }
+  const generate = async (sample: { sampleId: string }) => {
+    generated.push(sample.sampleId)
+    return { imageHash: canonicalHash(sample.sampleId), imageObjectKey: `bench/objects/${canonicalHash(sample.sampleId)}.png` }
+  }
+  const judge = async () => ({
+    scores: Object.fromEntries(['faithfulness','conciseness','readability','aesthetics','text_accuracy','topology','instruction_adherence'].map((axis) => [axis, 8])),
+    evidence: ['ok'], redLines: [], confidence: 1,
+  })
+
+  await executeBenchmarkRun({
+    run: { runId: 'shared-run', phase: 'quick', provider: 'ark', modelId: 'model', lane: '2K-standard', repetitions: 2 },
+    cases, generate, judge, repository,
+  })
+  const quickSampleIds = new Set(samples.keys())
+  await executeBenchmarkRun({
+    run: { runId: 'shared-run', phase: 'full', provider: 'ark', modelId: 'model', lane: '2K-standard', repetitions: 3, expectedCaseCount: 2, capabilityGaps: ['case=fixed-1;aspectRatio=4:3'] },
+    cases, generate, judge, repository,
+  })
+  const fullSamples = [...samples.values()].filter((sample) => sample.phase === 'full')
+
+  assert.equal(generated.length, 5)
+  assert.equal(samples.size, 5)
+  assert.equal(fullSamples.length, 3)
+  assert.equal(judgments.length, 10)
+  assert.ok(fullSamples.every((sample) => !quickSampleIds.has(sample.sampleId)))
+  assert.deepEqual(summaries[1].capabilityGaps, ['case=fixed-1;aspectRatio=4:3'])
+  assert.deepEqual(summaries[1].releaseDraft.models[0].capabilityGaps, ['case=fixed-1;aspectRatio=4:3'])
+  assert.equal(summaries[1].releaseDraft.models[0].coverage, 1)
+  assert.equal(summaries[1].releaseDraft.models[0].capabilityCoverage, 0.5)
+  assert.equal(summaries[1].releaseDraft.models[0].successRate, 1)
 })
 
 test('shared image runtime preserves the authoritative Core request and returned PNG bytes', async () => {
@@ -320,6 +394,28 @@ test('budget pauses before generation, judgment or estimated cost can exceed a c
 
   const cost = new BenchmarkBudget({ maxGenerations: 10, maxJudgeCalls: 10, maxEstimatedUsd: 0.3 })
   assert.throws(() => cost.reserve({ kind: 'generation', estimatedUsd: 0.31 }), /BENCHMARK_BUDGET_PAUSED:COST/)
+})
+
+test('full budget accounting is phase-pure and never consumes quick usage', async () => {
+  const run: any = {
+    _id: 'run-phase-budget', state: 'full_running', leaseOwner: 'worker-1', leaseToken: 'lease-1', leaseUntil: new Date('2026-08-25T09:00:00.000Z'),
+    approval: { maxGenerations: 144, maxJudgeCalls: 288, maxEstimatedUsd: 500 },
+    usage: { generations: 144, judgments: 288, estimatedUsd: 200 },
+    usageByPhase: {
+      quick: { generations: 24, judgments: 48, estimatedUsd: 28.8 },
+      full: { generations: 0, judgments: 0, estimatedUsd: 0 },
+    },
+  }
+  let update: any
+  const runs = {
+    async findOne() { return run },
+    async updateOne(_query: any, next: any) { update = next; return { modifiedCount: 1 } },
+  }
+  const db = { collection(name: string) { return name === 'paperbanana_benchmark_runs' ? runs : {} } }
+  const repository = createWorkerMongoRepository(db as any, () => new Date('2026-08-25T08:00:00.000Z'))
+  await repository.reserveBudget(run._id, 'worker-1', 'lease-1', 'full_running', 'generation', 1)
+  assert.deepEqual(update.$set['usageByPhase.full'], { generations: 1, judgments: 0, estimatedUsd: 1 })
+  assert.equal(update.$set.state, undefined)
 })
 
 test('repository leases expire, heartbeats extend ownership and idempotency keys are stable', async () => {

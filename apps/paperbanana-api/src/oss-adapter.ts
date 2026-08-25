@@ -138,15 +138,38 @@ export function createOssAdapter(
           etag: firstHeader(headers, 'etag') || '',
         }
       },
-      async readFile(key: string, maxBytes?: number): Promise<unknown> {
+      async readFile(key: string, maxBytes?: number, options: { signal?: AbortSignal; timeoutMs?: number } = {}): Promise<unknown> {
         const byteLimit = Number(maxBytes)
         if (!Number.isSafeInteger(byteLimit) || byteLimit <= 0) throw new Error('OSS read byte limit must be a positive integer')
         if (!serverClient.getStream) throw new Error('OSS client does not support streaming downloads')
+        const signal = options.signal
+        if (options.timeoutMs !== undefined && (!Number.isSafeInteger(options.timeoutMs) || options.timeoutMs <= 0)) {
+          throw new Error('OSS read timeout must be a positive integer')
+        }
+        const abortError = () => new Error(`OSS read aborted for ${key}`)
+        if (signal?.aborted) throw abortError()
 
         // Ask OSS for one byte beyond the accepted limit. The byte-counting
         // guard below remains authoritative if a proxy ignores the range or
         // advertises a misleading Content-Length.
-        const result = await serverClient.getStream(key, { headers: { Range: `bytes=0-${byteLimit}` } })
+        const streamRequest = serverClient.getStream(key, {
+          headers: { Range: `bytes=0-${byteLimit}` },
+          ...(options.timeoutMs === undefined ? {} : { timeout: options.timeoutMs }),
+        })
+        const result = signal ? await new Promise<Awaited<ReturnType<NonNullable<OssClient['getStream']>>>>((resolve, reject) => {
+          const onAbort = () => reject(abortError())
+          signal.addEventListener('abort', onAbort, { once: true })
+          streamRequest.then((value) => {
+            signal.removeEventListener('abort', onAbort)
+            if (signal.aborted) {
+              value.stream.destroy?.()
+              reject(abortError())
+            } else resolve(value)
+          }, (error) => {
+            signal.removeEventListener('abort', onAbort)
+            reject(error)
+          })
+        }) : await streamRequest
         const status = result.res?.status
         if (status !== undefined && status !== 200 && status !== 206) {
           throw new Error(`OSS download returned unexpected status ${status}`)
@@ -159,6 +182,8 @@ export function createOssAdapter(
 
         const chunks: Buffer[] = []
         let total = 0
+        const onAbort = () => result.stream.destroy?.(abortError())
+        signal?.addEventListener('abort', onAbort, { once: true })
         try {
           for await (const value of result.stream) {
             const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value as any)
@@ -173,6 +198,8 @@ export function createOssAdapter(
         } catch (error) {
           result.stream.destroy?.()
           throw error
+        } finally {
+          signal?.removeEventListener('abort', onAbort)
         }
         return Buffer.concat(chunks, total)
       },
