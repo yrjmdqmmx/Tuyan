@@ -83,7 +83,7 @@ The manual `Configure Benchmark Credentials Disabled` workflow is the only
 repository-supported transition to `configured-disabled`. It requires the
 exact deployed 40-character commit, transports the three dedicated Provider
 keys plus all six dedicated Bench OSS settings through an owner-only temporary
-bundle, and invokes `scripts/configure-benchmark-credentials.sh --apply`.
+bundle, and invokes `scripts/configure-benchmark-credentials.sh --apply-disabled`.
 
 The operator validates all inputs before mutation, takes an exclusive host
 lock, atomically updates `core.env`, `bench.env`, and `.env`, and recreates only
@@ -92,8 +92,10 @@ signer and `PAPERBANANA_BENCH_API_ENABLED=true`; the Worker receives its
 dedicated Provider/OSS credentials but remains
 `PAPERBANANA_BENCH_ENABLED=false` with concurrency one. Failed installation,
 recreate, or smoke restores all three prior files and recreates the prior
-services. This stage does not authorize generation, judging, a canary, or any
-paid request.
+services. An accepted staged bundle is operator-owned for `--apply-disabled`
+and is removed after success, validation failure, or rollback; the workflow
+cleanup remains defense in depth. This stage does not authorize generation,
+judging, a canary, or any paid request.
 
 ## Singapore provider egress activation
 

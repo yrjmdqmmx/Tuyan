@@ -29,9 +29,11 @@ manual `Configure Benchmark Credentials Disabled` workflow stages exactly
 `PAPERBANANA_BENCH_{BAILIAN,OPENROUTER,ARK}_API_KEY` plus the six dedicated
 `PAPERBANANA_BENCH_OSS_*` settings in a root-readable mode-0600 temporary
 bundle. The root-only operator validates and atomically installs them without
-loading or printing an env file. Do not reuse Core BYOK traffic or the product
-OSS access key. Enabling the worker still requires a recorded candidate
-approval with generation, Judge and USD caps.
+loading or printing an env file. Its only mutating flag is
+`--apply-disabled`, and it removes an accepted staged bundle on every success
+or failure path. Do not reuse Core BYOK traffic or the product OSS access key.
+Enabling the worker still requires a recorded candidate approval with
+generation, Judge and USD caps.
 
 The service is additionally behind the Compose `benchmark` profile. Every
 deployment must set exactly one `PAPERBANANA_BENCH_SECRET_MODE` in `.env`.

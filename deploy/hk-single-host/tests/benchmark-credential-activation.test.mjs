@@ -42,8 +42,8 @@ function bundleText(overrides = {}) {
   return managedNames.map((name) => `${name}=${overrides[name] ?? fakeValues[name]}`).join('\n') + '\n';
 }
 
-function makeFixture() {
-  const root = realpathSync(mkdtempSync(join(tmpdir(), 'paperbanana-bench-activation-')));
+function makeFixture(parent = tmpdir()) {
+  const root = realpathSync(mkdtempSync(join(parent, 'paperbanana-bench-activation-')));
   const secretDir = join(root, 'opt', 'paperbanana', 'secrets');
   const deployEnv = join(root, 'opt', 'paperbanana', 'repo', 'deploy', 'hk-single-host', '.env');
   const coreEnv = join(secretDir, 'core.env');
@@ -142,10 +142,10 @@ test('benchmark credential operator exists, is executable, and defaults to a non
   }
 });
 
-test('valid apply is atomic, configured-disabled, 0600, secret-safe, and idempotent', () => {
+test('valid apply-disabled is atomic, configured-disabled, 0600, secret-safe, and idempotent', () => {
   const fixture = makeFixture();
   try {
-    const first = fixture.run(['--apply']);
+    const first = fixture.run(['--apply-disabled']);
     assert.equal(first.status, 0, first.stderr);
     assert.equal(existsSync(fixture.bundle), false, 'successful apply removes the staged bundle');
     for (const path of [fixture.deployEnv, fixture.coreEnv, fixture.benchEnv]) {
@@ -180,7 +180,7 @@ test('valid apply is atomic, configured-disabled, 0600, secret-safe, and idempot
     const stable = fixture.snapshot();
     fixture.rewriteBundle(bundleText());
     rmSync(fixture.actionLog, { force: true });
-    const second = fixture.run(['--apply']);
+    const second = fixture.run(['--apply-disabled']);
     assert.equal(second.status, 0, second.stderr);
     assert.deepEqual(fixture.snapshot(), stable);
     assert.equal(existsSync(fixture.bundle), false);
@@ -206,10 +206,10 @@ test('bundle validation rejects missing, duplicate, unknown, malformed, CR, and 
       try {
         fixture.rewriteBundle(contents);
         const before = fixture.snapshot();
-        const result = fixture.run(['--apply']);
+        const result = fixture.run(['--apply-disabled']);
         assert.notEqual(result.status, 0);
         assert.deepEqual(fixture.snapshot(), before);
-        assert.equal(existsSync(fixture.bundle), true);
+        assert.equal(existsSync(fixture.bundle), false, 'failed apply-disabled removes an accepted staged bundle');
         assert.equal(existsSync(fixture.actionLog), false);
         assert.doesNotMatch(`${result.stdout}${result.stderr}`, /obvious-fake-bench-value/);
       } finally {
@@ -225,11 +225,11 @@ test('SHA mismatch is rejected before any mutation or credential installation', 
     writeFileSync(fixture.benchEnv, readFileSync(fixture.benchEnv, 'utf8').replace(expectedSha, nextSha));
     chmodSync(fixture.benchEnv, 0o600);
     const before = fixture.snapshot();
-    const result = fixture.run(['--apply']);
+    const result = fixture.run(['--apply-disabled']);
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /sha|commit/i);
     assert.deepEqual(fixture.snapshot(), before);
-    assert.equal(existsSync(fixture.bundle), true);
+    assert.equal(existsSync(fixture.bundle), false, 'SHA rejection removes an accepted staged bundle');
     assert.equal(existsSync(fixture.actionLog), false);
   } finally {
     fixture.cleanup();
@@ -247,7 +247,7 @@ test('operator refuses symlinked protected inputs and targets', async (t) => {
         chmodSync(real, 0o600);
         rmSync(target);
         symlinkSync(real, target);
-        const result = fixture.run(['--apply']);
+        const result = fixture.run(['--apply-disabled']);
         assert.notEqual(result.status, 0);
         assert.match(result.stderr, /symlink|regular file/i);
         assert.ok(lstatSync(target).isSymbolicLink());
@@ -258,14 +258,14 @@ test('operator refuses symlinked protected inputs and targets', async (t) => {
   }
 });
 
-test('failure after partial install restores all files and recreates prior services', () => {
+test('failure after partial install restores all files, recreates prior services, and removes the staged bundle', () => {
   const fixture = makeFixture();
   try {
     const before = fixture.snapshot();
-    const result = fixture.run(['--apply'], { PAPERBANANA_BENCH_TEST_FAIL_STEP: 'after-core-install' });
+    const result = fixture.run(['--apply-disabled'], { PAPERBANANA_BENCH_TEST_FAIL_STEP: 'after-core-install' });
     assert.notEqual(result.status, 0);
     assert.deepEqual(fixture.snapshot(), before);
-    assert.equal(existsSync(fixture.bundle), true, 'failed apply leaves bundle cleanup to the caller trap');
+    assert.equal(existsSync(fixture.bundle), false, 'operator must remove the staged bundle after rollback');
     assert.equal(readFileSync(fixture.actionLog, 'utf8'), [
       'inject failure after-core-install',
       'rollback restore deployment files',
@@ -282,7 +282,7 @@ test('failure after partial install restores all files and recreates prior servi
 test('configured-disabled bootstrap preserves credentials, disables execution, and updates only explicit code SHA', () => {
   const fixture = makeFixture();
   try {
-    const applied = fixture.run(['--apply']);
+    const applied = fixture.run(['--apply-disabled']);
     assert.equal(applied.status, 0, applied.stderr);
     for (const name of ['mongo-bench-password', 'mongo-bench-api-password']) {
       writeFileSync(join(dirname(fixture.coreEnv), name), `obvious-fake-${name}\n`);
@@ -315,7 +315,7 @@ test('configured-disabled bootstrap rejects a missing credential or enabled work
     await t.test(variant, () => {
       const fixture = makeFixture();
       try {
-        const applied = fixture.run(['--apply']);
+        const applied = fixture.run(['--apply-disabled']);
         assert.equal(applied.status, 0, applied.stderr);
         for (const name of ['mongo-bench-password', 'mongo-bench-api-password']) {
           writeFileSync(join(dirname(fixture.coreEnv), name), `obvious-fake-${name}\n`);
@@ -359,7 +359,8 @@ test('manual workflow securely transports exactly the nine dedicated secrets for
   assert.match(source, /configure-benchmark-credentials-disabled/);
   assert.match(source, /configure-benchmark-credentials\.sh/);
   assert.match(source, /--expected-sha[^\n]*EXPECTED_DEPLOYED_SHA/);
-  assert.match(source, /--apply/);
+  assert.match(source, /--apply-disabled/);
+  assert.doesNotMatch(source, /configure-benchmark-credentials\.sh[^\n]*\s--apply(?:\s|["'])/);
   assert.match(source, /install -m 0600|chmod 0600/);
   assert.match(source, /\/tmp\/paperbanana-bench-credentials-\$\{GITHUB_RUN_ID\}/);
   assert.match(source, /trap[^\n]*(?:rm -f|cleanup)/);
@@ -369,6 +370,34 @@ test('manual workflow securely transports exactly the nine dedicated secrets for
   }
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_ENABLED\s*=\s*true|set -x|printenv|generation|judge/i);
   assert.doesNotMatch(source, /cat\s+[^\n]*(?:bundle|credential)/i);
+});
+
+test('generic apply is rejected without mutating files or consuming the staged bundle', () => {
+  const fixture = makeFixture();
+  try {
+    const before = fixture.snapshot();
+    const result = fixture.run(['--apply']);
+    assert.notEqual(result.status, 0);
+    assert.deepEqual(fixture.snapshot(), before);
+    assert.equal(existsSync(fixture.bundle), true);
+    assert.match(result.stderr, /apply-disabled|usage/i);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('test mode rejects a canonical marked fixture outside approved temporary roots', () => {
+  const fixture = makeFixture(join(deployRoot, 'tests'));
+  try {
+    const before = fixture.snapshot();
+    const result = fixture.run();
+    assert.notEqual(result.status, 0);
+    assert.deepEqual(fixture.snapshot(), before);
+    assert.equal(existsSync(fixture.bundle), true);
+    assert.match(result.stderr, /temporary|test root/i);
+  } finally {
+    fixture.cleanup();
+  }
 });
 
 test('deploy and smoke require an exact benchmark secret mode and keep configured credentials disabled', () => {

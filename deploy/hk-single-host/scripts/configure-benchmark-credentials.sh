@@ -3,7 +3,7 @@ set -Eeuo pipefail
 umask 077
 
 usage() {
-  echo "usage: $0 --bundle PATH --expected-sha 40_HEX_SHA [--dry-run|--apply]" >&2
+  echo "usage: $0 --bundle PATH --expected-sha 40_HEX_SHA [--dry-run|--apply-disabled]" >&2
   exit 2
 }
 
@@ -12,7 +12,7 @@ bundle=""
 expected_sha=""
 while (( $# > 0 )); do
   case "$1" in
-    --apply|--dry-run)
+    --apply-disabled|--dry-run)
       operation="$1"
       shift
       ;;
@@ -39,6 +39,13 @@ validate_test_root() {
     echo "PAPERBANANA_HK_TEST_ROOT is forbidden while running as root" >&2
     exit 2
   fi
+  case "$test_root" in
+    /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*) ;;
+    *)
+      echo "PAPERBANANA_HK_TEST_ROOT must be inside an approved temporary directory" >&2
+      exit 2
+      ;;
+  esac
   if [[ "$test_root" != /* || "$test_root" == "/" || "$test_root" == *"/../"* || "$test_root" == */.. || "$test_root" == *"/./"* || "$test_root" == */. ]]; then
     echo "PAPERBANANA_HK_TEST_ROOT must be a canonical absolute test root" >&2
     exit 2
@@ -239,6 +246,20 @@ validate_all() {
   }
 }
 
+bundle_owned=false
+remove_owned_bundle() {
+  if [[ "$bundle_owned" == true ]]; then
+    rm -f -- "$bundle"
+    bundle_owned=false
+  fi
+}
+
+if [[ "$operation" == "--apply-disabled" ]]; then
+  validate_protected_file "$bundle" staged-credential-bundle
+  bundle_owned=true
+  trap remove_owned_bundle EXIT
+fi
+
 build_core_candidate() {
   local output="$1"
   awk '
@@ -406,6 +427,7 @@ cleanup_temporary() {
   rm -f -- "${core_candidate:-}" "${bench_candidate:-}" "${deploy_candidate:-}" \
     "${core_backup:-}" "${bench_backup:-}" "${deploy_backup:-}"
   if [[ -n "${portable_lock_dir:-}" ]]; then rmdir -- "$portable_lock_dir" 2>/dev/null || true; fi
+  remove_owned_bundle
 }
 
 rollback() {
@@ -467,7 +489,7 @@ validate_env_syntax "$core_candidate" && validate_env_syntax "$bench_candidate" 
 [[ "$(read_env_value "$deploy_candidate" PAPERBANANA_BENCH_SECRET_MODE)" == configured-disabled ]] || exit 1
 
 if cmp -s -- "$core_candidate" "$core_env" && cmp -s -- "$bench_candidate" "$bench_env" && cmp -s -- "$deploy_candidate" "$deploy_env"; then
-  rm -f -- "$bundle"
+  remove_owned_bundle
   completed=true
   echo "Benchmark credentials are already configured with execution disabled; staged bundle removed and services unchanged."
   exit 0
@@ -492,7 +514,7 @@ recreate_service paperbanana-api
 recreate_service benchmark-worker
 run_smoke
 
-rm -f -- "$bundle"
+remove_owned_bundle
 completed=true
 rollback_required=false
 cleanup_temporary
