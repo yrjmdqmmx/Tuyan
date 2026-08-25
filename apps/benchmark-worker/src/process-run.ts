@@ -66,8 +66,9 @@ export async function processAcquiredBenchmarkRun(input: {
   imageRuntime: { generate(input: Record<string, any>): Promise<string> }
   oss: Pick<OSS, 'put' | 'get'>
   repository: Record<string, any>
+  openRouterJudgeFetch: typeof fetch
 }) {
-  const { run, workerId, workerCodeSha, configuredCodeSha, authorization, credentials, imageRuntime, oss, repository } = input
+  const { run, workerId, workerCodeSha, configuredCodeSha, authorization, credentials, imageRuntime, oss, repository, openRouterJudgeFetch } = input
   if (authorization) assertRunMatchesPhaseAuthorization(run, authorization, workerCodeSha)
   if (workerCodeSha !== configuredCodeSha || workerCodeSha !== run.codeSha) throw new Error('BENCHMARK_WORKER_CODE_SHA_MISMATCH')
   if (benchmarkJudgeStackHash(workerCodeSha) !== run.judgeStackHash) throw new Error('BENCHMARK_JUDGE_STACK_MISMATCH')
@@ -111,6 +112,7 @@ export async function processAcquiredBenchmarkRun(input: {
         () => callBlindJudge({
           provider: judgeProvider, apiKey: credentials[judgeProvider], imageBase64: Buffer.from(object.content).toString('base64'),
           rubric: sample.rubric, caption: sample.caption,
+          fetchImpl: judgeProvider === 'openrouter' ? openRouterJudgeFetch : undefined,
           beforeDispatch: async () => {
             const currentDispatch = dispatchIndex++
             await repository.reserveBudget(run._id, workerId, run.leaseToken, run.state, 'judgeCall', Number(run.approval?.priceSnapshot?.estimatedPerJudgeCall || 0))

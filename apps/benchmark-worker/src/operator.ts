@@ -14,6 +14,7 @@ import { callBlindJudge } from './judge-provider.js'
 import { parseBenchmarkOperatorAuthorization } from './operator-authorization.js'
 import { classifyOperatorError } from './operator-error.js'
 import { runProviderOperation } from './provider-operation.js'
+import { createOpenRouterJudgeEgress } from './judge-egress.js'
 
 const env = process.env
 
@@ -44,6 +45,9 @@ async function main() {
     secure: true,
     authorizationV4: true,
   })
+  const openRouterJudgeEgress = createOpenRouterJudgeEgress(env)
+
+  try {
 
   async function judge(provider: 'openrouter' | 'bailian', image: Uint8Array, rubric: unknown, caption: string) {
     return runProviderOperation(
@@ -53,6 +57,7 @@ async function main() {
         imageBase64: Buffer.from(image).toString('base64'),
         rubric,
         caption,
+        fetchImpl: provider === 'openrouter' ? openRouterJudgeEgress.fetch : undefined,
         beforeDispatch: async () => {
           budget.reserve({ kind: 'judgment', estimatedUsd: authorization.estimatedPerJudgeCallUsd })
         },
@@ -136,6 +141,7 @@ async function main() {
     if (!Buffer.from(existing.content).equals(reportBytes)) throw new Error('BENCHMARK_OPERATOR_REPORT_COLLISION')
   }
   process.stdout.write(`${JSON.stringify({ ...finalReport, reportObjectKey })}\n`)
+  } finally { await openRouterJudgeEgress.close() }
 }
 
 void main().catch((error) => {

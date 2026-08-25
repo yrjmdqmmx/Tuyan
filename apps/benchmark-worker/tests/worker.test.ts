@@ -34,6 +34,7 @@ import {
   buildBenchmarkPhaseOperatorReport,
   diagnoseJudgeProviderAccess,
   classifyOperatorError,
+  createOpenRouterJudgeEgress,
 } from '../src/index.js'
 import { callBlindJudge } from '../src/judge-provider.js'
 import { runOpenRouterJudgeProbe } from '../src/openrouter-judge-probe.js'
@@ -92,24 +93,64 @@ test('judge calibration fixtures are immutable original gold cases covering ever
 })
 
 test('Judge provider access diagnostics use authenticated read-only endpoints and fixed stage codes', async () => {
-  const calls: Array<{ url: string; method: string }> = []
+  const openrouterCalls: Array<{ url: string; method: string }> = []
+  const directCalls: Array<{ url: string; method: string }> = []
   const stages: string[] = []
   const result = await diagnoseJudgeProviderAccess({
     openrouterKey: 'test-openrouter', bailianKey: 'test-bailian',
     emit(stage) { stages.push(stage) },
-    async fetchImpl(input, init) {
+    async openrouterFetchImpl(input, init) {
       const url = String(input)
-      calls.push({ url, method: String(init?.method || 'GET') })
+      openrouterCalls.push({ url, method: String(init?.method || 'GET') })
       if (url.endsWith('/api/v1/key')) return Response.json({ data: { is_management_key: false, limit_remaining: 10 } })
       if (url === 'https://openrouter.ai/api/v1/models/user') return Response.json({ data: [{ id: 'google/gemini-3.7-flash' }] })
+      return new Response('{}', { status: 404 })
+    },
+    async fetchImpl(input, init) {
+      const url = String(input)
+      directCalls.push({ url, method: String(init?.method || 'GET') })
       if (url === 'https://dashscope.aliyuncs.com/compatible-mode/v1/models') return Response.json({ data: [{ id: 'qwen3.7-plus' }] })
       return new Response('{}', { status: 404 })
     },
   })
   assert.deepEqual(result, { openrouterModel: 'google/gemini-3.7-flash', bailianModel: 'qwen3.7-plus' })
   assert.deepEqual(stages, ['openrouter-auth-ok', 'openrouter-model-ok', 'bailian-auth-ok', 'bailian-model-ok', 'diagnostic-complete'])
-  assert.equal(calls.length, 3)
-  assert.ok(calls.every((call) => call.method === 'GET'))
+  assert.deepEqual(openrouterCalls.map((call) => call.url), ['https://openrouter.ai/api/v1/key', 'https://openrouter.ai/api/v1/models/user'])
+  assert.deepEqual(directCalls.map((call) => call.url), ['https://dashscope.aliyuncs.com/compatible-mode/v1/models'])
+  assert.ok([...openrouterCalls, ...directCalls].every((call) => call.method === 'GET'))
+})
+
+test('OpenRouter Judge egress is fixed, fail-closed, host-scoped and closes once', async () => {
+  const fixed = 'http://10.77.0.2:3128'
+  for (const env of [
+    {},
+    { PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE: 'disabled', PAPERBANANA_BENCH_SG_PROXY_URL: fixed },
+    { PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE: 'sg-required', PAPERBANANA_BENCH_SG_PROXY_URL: 'http://127.0.0.1:3128' },
+  ]) assert.throws(() => createOpenRouterJudgeEgress(env), /BENCHMARK_OPENROUTER_EGRESS_CONFIG_INVALID/)
+
+  let closeCalls = 0
+  const dispatched: Array<{ input: string; proxy: unknown }> = []
+  const proxy = { async close() { closeCalls += 1 } }
+  const egress = createOpenRouterJudgeEgress({
+    PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE: 'sg-required',
+    PAPERBANANA_BENCH_SG_PROXY_URL: fixed,
+  }, {
+    createProxyAgent(url) { assert.equal(url, fixed); return proxy as any },
+    async fetchWithDispatcher(input, init) {
+      dispatched.push({ input: String(input), proxy: (init as any).dispatcher })
+      return Response.json({ ok: true })
+    },
+  })
+  assert.equal((await egress.fetch('https://openrouter.ai/api/v1/key')).status, 200)
+  assert.deepEqual(dispatched, [{ input: 'https://openrouter.ai/api/v1/key', proxy }])
+  for (const url of [
+    'http://openrouter.ai/api/v1/key',
+    'https://openrouter.ai:444/api/v1/key',
+    'https://user:pass@openrouter.ai/api/v1/key',
+    'https://dashscope.aliyuncs.com/compatible-mode/v1/models',
+  ]) await assert.rejects(() => egress.fetch(url), /BENCHMARK_OPENROUTER_EGRESS_TARGET_INVALID/)
+  await Promise.all([egress.close(), egress.close()])
+  assert.equal(closeCalls, 1)
 })
 
 test('Judge provider diagnostics and operator failures expose only fixed classifications', async () => {

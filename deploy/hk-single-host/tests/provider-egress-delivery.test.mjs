@@ -28,6 +28,12 @@ test('generated Core env starts in explicit fail-closed disabled mode with the f
   assert.doesNotMatch(generator, /(?:echo|printf)[^\n]*PAPERBANANA_(?:PROVIDER_EGRESS_MODE|SG_PROXY_URL).*\$/i);
 });
 
+test('generated Bench env starts with OpenRouter Judge egress disabled and the fixed proxy ready', () => {
+  const generator = readDeploy('scripts/generate-runtime-secrets.sh');
+  assert.match(generator, /^PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE=disabled$/m);
+  assert.match(generator, /^PAPERBANANA_BENCH_SG_PROXY_URL=http:\/\/10\.77\.0\.2:3128$/m);
+});
+
 test('Core receives routing values only through the root-only env file', () => {
   const compose = readDeploy('compose.yaml');
   const coreService = compose.slice(compose.indexOf('  paperbanana-api:'), compose.indexOf('  auth-gateway:'));

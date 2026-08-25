@@ -12,6 +12,7 @@ import { detectImageCandidates } from './detector.js'
 import { createWorkerMongoRepository } from './mongo-repository.js'
 import { UnknownProviderOutcomeError } from './provider-operation.js'
 import { processAcquiredBenchmarkRun } from './process-run.js'
+import { createOpenRouterJudgeEgress } from './judge-egress.js'
 
 const env = process.env
 const config = parseWorkerConfig(env)
@@ -66,6 +67,7 @@ async function main() {
 
   let imageRuntime: Awaited<ReturnType<typeof loadAuthoritativeImageRuntime>> | null = null
   let oss: OSS | null = null
+  let openRouterJudgeEgress: ReturnType<typeof createOpenRouterJudgeEgress> | null = null
   async function processOne() {
     if (!config.enabled || working || stopping) return
     working = true
@@ -86,10 +88,11 @@ async function main() {
         secure: true,
         authorizationV4: true,
       })
+      openRouterJudgeEgress ||= createOpenRouterJudgeEgress(env)
       await processAcquiredBenchmarkRun({
         run, workerId, workerCodeSha: buildProvenance.codeSha,
         configuredCodeSha: String(env.PAPERBANANA_CODE_SHA || '').toLowerCase(), credentials,
-        imageRuntime, oss, repository,
+        imageRuntime, oss, repository, openRouterJudgeFetch: openRouterJudgeEgress.fetch,
       })
       await writeHealth('ready', { lastRunId: run._id, lastRunCompletedAt: new Date().toISOString() })
     } catch (error) {
@@ -115,6 +118,7 @@ async function main() {
     clearInterval(workTimer)
     clearInterval(healthTimer)
     while (working || detecting) await new Promise((resolve) => setTimeout(resolve, 100))
+    await openRouterJudgeEgress?.close().catch(() => {})
     await client.close()
   }
   process.once('SIGTERM', () => { void shutdown() })

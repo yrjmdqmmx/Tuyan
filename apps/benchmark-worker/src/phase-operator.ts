@@ -11,6 +11,7 @@ import { parseBenchmarkPhaseAuthorization } from './phase-operator-authorization
 import { buildBenchmarkPhaseOperatorReport } from './phase-operator-report.js'
 import { processAcquiredBenchmarkRun } from './process-run.js'
 import { UnknownProviderOutcomeError } from './provider-operation.js'
+import { createOpenRouterJudgeEgress } from './judge-egress.js'
 
 const env = process.env
 
@@ -29,6 +30,7 @@ async function main() {
   const client = new MongoClient(required('PAPERBANANA_BENCH_MONGODB_URI'))
   let activeRun: Record<string, any> | null = null
   let heartbeat: ReturnType<typeof setInterval> | undefined
+  const openRouterJudgeEgress = createOpenRouterJudgeEgress(env)
   try {
     await client.connect()
     const repository = createWorkerMongoRepository(client.db(config.mongoDbName))
@@ -45,7 +47,7 @@ async function main() {
     })
     await processAcquiredBenchmarkRun({
       run: activeRun, workerId, workerCodeSha: provenance.codeSha, configuredCodeSha: authorization.codeSha,
-      authorization, credentials, imageRuntime, oss, repository,
+      authorization, credentials, imageRuntime, oss, repository, openRouterJudgeFetch: openRouterJudgeEgress.fetch,
     })
     const snapshot = await repository.phaseReport(authorization.runId, authorization.phase)
     if (!snapshot.run || snapshot.run.state !== (authorization.phase === 'quick' ? 'quick_review' : 'codex_audit')
@@ -70,6 +72,7 @@ async function main() {
     throw error
   } finally {
     if (heartbeat) clearInterval(heartbeat)
+    await openRouterJudgeEgress.close().catch(() => {})
     await client.close().catch(() => {})
   }
 }

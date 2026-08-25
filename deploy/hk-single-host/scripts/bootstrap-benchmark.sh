@@ -68,7 +68,7 @@ require_env_value() {
 }
 
 validate_configured_disabled() {
-  local current_core_sha current_bench_sha core_discovery_token bench_discovery_token key core_value bench_value
+  local current_core_sha current_bench_sha core_discovery_token bench_discovery_token key core_value bench_value egress_mode proxy_url
   validate_env_syntax "$core_env" && validate_env_syntax "$bench_env" || {
     echo "configured-disabled benchmark env files must be regular, unique, and well formed" >&2
     return 1
@@ -113,6 +113,13 @@ validate_configured_disabled() {
     echo "configured-disabled deployment refuses an enabled benchmark worker" >&2
     return 1
   }
+  egress_mode="$(read_env_value "$bench_env" PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE)"
+  proxy_url="$(read_env_value "$bench_env" PAPERBANANA_BENCH_SG_PROXY_URL)"
+  [[ -z "$egress_mode" || "$egress_mode" == sg-required ]] &&
+    [[ -z "$proxy_url" || "$proxy_url" == http://10.77.0.2:3128 ]] || {
+      echo "configured-disabled OpenRouter Judge egress must use the fixed Singapore proxy" >&2
+      return 1
+    }
   core_discovery_token="$(read_env_value "$core_env" PAPERBANANA_BENCH_DISCOVERY_TOKEN)"
   bench_discovery_token="$(read_env_value "$bench_env" PAPERBANANA_BENCH_DISCOVERY_TOKEN)"
   test "$core_discovery_token" = "$bench_discovery_token" || {
@@ -182,9 +189,11 @@ if test "$mode" = "--configured-disabled"; then
   set_env_value "$core_env" PAPERBANANA_CODE_SHA "$PAPERBANANA_CODE_SHA"
   set_env_value "$bench_env" PAPERBANANA_BENCH_ENABLED false
   set_env_value "$bench_env" PAPERBANANA_BENCH_CONCURRENCY 1
+  set_env_value "$bench_env" PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE sg-required
+  set_env_value "$bench_env" PAPERBANANA_BENCH_SG_PROXY_URL http://10.77.0.2:3128
   set_env_value "$bench_env" PAPERBANANA_CODE_SHA "$PAPERBANANA_CODE_SHA"
   chmod 0600 "$core_env" "$bench_env"
-  unset current_core_sha current_bench_sha core_discovery_token bench_discovery_token core_value bench_value
+  unset current_core_sha current_bench_sha core_discovery_token bench_discovery_token core_value bench_value egress_mode proxy_url
   echo "Benchmark configured-disabled secrets were validated without exposing credential values; paid execution remains disabled."
   exit 0
 fi
@@ -235,6 +244,8 @@ set_env_value "$bench_env" PAPERBANANA_BENCH_MONGO_DB paperbanana_benchmark
 set_env_value "$bench_env" PAPERBANANA_BENCH_DISCOVERY_TOKEN "$discovery_token"
 set_env_value "$bench_env" PAPERBANANA_BENCH_CONCURRENCY 1
 set_env_value "$bench_env" PAPERBANANA_BENCH_DETECTION_INTERVAL_MS 21600000
+set_env_value "$bench_env" PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE disabled
+set_env_value "$bench_env" PAPERBANANA_BENCH_SG_PROXY_URL http://10.77.0.2:3128
 set_env_value "$bench_env" PAPERBANANA_CODE_SHA "$PAPERBANANA_CODE_SHA"
 
 chmod 0600 "$gateway_env" "$core_env" "$bench_env"
