@@ -1,0 +1,96 @@
+name: Run OpenRouter GitHub Egress Probe
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        description: Exact deployed 40-character commit; checkout must match
+        required: true
+      max_judge_calls:
+        description: Exact dispatch cap; must be 1
+        required: true
+      max_estimated_usd:
+        description: Exact estimated USD cap; must be 0.10
+        required: true
+      estimated_per_judge_call_usd:
+        description: Conservative Judge call estimate; must be 0.10
+        required: true
+      price_source:
+        description: Public HTTPS source for the price snapshot
+        required: true
+      price_captured_at:
+        description: Exact ISO timestamp when the price snapshot was captured
+        required: true
+      confirm:
+        description: Type probe-one-openrouter-text-github-egress
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate exact checkout and one-request cap
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_ESTIMATED_USD: ${{ inputs.max_estimated_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$(git rev-parse HEAD)" == "$EXPECTED_SHA" ]]
+          [[ "$MAX_JUDGE_CALLS" == 1 ]]
+          [[ "$MAX_ESTIMATED_USD" == 0.10 && "$JUDGE_USD" == 0.10 ]]
+          [[ "$CONFIRM" == probe-one-openrouter-text-github-egress ]]
+          node - "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" <<'NODE'
+          const [source, capturedAt] = process.argv.slice(2)
+          const url = new URL(source)
+          if (url.protocol !== 'https:' || url.username || url.password || url.toString() !== source) process.exit(1)
+          if (new Date(capturedAt).toISOString() !== capturedAt) process.exit(1)
+          NODE
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run one text-only request from GitHub egress
+        env:
+          PAPERBANANA_BENCH_OPENROUTER_API_KEY: ${{ secrets.PAPERBANANA_BENCH_OPENROUTER_API_KEY }}
+          PAPERBANANA_BENCH_ENABLED: 'false'
+        run: |
+          set -Eeuo pipefail
+          node --import tsx --input-type=module - <<'NODE'
+          import { runOpenRouterJudgeProbe } from './apps/benchmark-worker/src/openrouter-judge-probe.ts'
+          let result = 'OPENROUTER_JUDGE_PROBE_UNKNOWN_AFTER_DISPATCH'
+          try {
+            result = await runOpenRouterJudgeProbe({
+              kind: 'text_only',
+              apiKey: process.env.PAPERBANANA_BENCH_OPENROUTER_API_KEY || '',
+            })
+          } catch {
+            result = 'OPENROUTER_JUDGE_PROBE_LOCAL_FAILURE_REDACTED'
+          }
+          if (!/^OPENROUTER_JUDGE_PROBE_(?:OK|FORBIDDEN_(?:EDGE|UPSTREAM|GUARDRAIL|BUDGET|ACCESS_POLICY|OPAQUE)|UNKNOWN_AFTER_DISPATCH|HTTP_[0-9]{3}|LOCAL_FAILURE_REDACTED)$/.test(result)) process.exit(1)
+          process.stdout.write(`OPENROUTER_GITHUB_EGRESS_PROBE_RESULT=${result}\n`)
+          process.stdout.write('OPENROUTER_GITHUB_EGRESS_PROBE_JUDGE_CALLS=1\n')
+          process.stdout.write('OPENROUTER_GITHUB_EGRESS_PROBE_ESTIMATED_USD=0.10\n')
+          process.stdout.write('PAPERBANANA_BENCH_ENABLED=false\n')
+          NODE
