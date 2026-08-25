@@ -13,6 +13,8 @@ const diagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-paid
 const diagnosticWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-paid-operator.yml', import.meta.url));
 const judgeAccessDiagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-judge-access.sh', import.meta.url));
 const judgeAccessWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-judge-access.yml', import.meta.url));
+const openRouterJudgeProbePath = fileURLToPath(new URL('../scripts/run-openrouter-judge-probe.sh', import.meta.url));
+const openRouterJudgeProbeWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/run-openrouter-judge-probe.yml', import.meta.url));
 const expectedSha = 'a'.repeat(40);
 
 function makeFixture() {
@@ -53,6 +55,16 @@ function makeFixture() {
         '--estimated-per-generation-usd', '0', '--estimated-per-judge-call-usd', judgeUsd,
         '--price-currency', 'USD', '--price-source', 'https://openrouter.ai/google/gemini-3.7-flash', '--price-captured-at', '2026-08-25T08:00:00.000Z',
         '--confirm', 'calibrate-judge-disabled-worker',
+      ], { encoding: 'utf8', env: { ...process.env, PAPERBANANA_HK_TEST_ROOT: root } });
+    },
+    runProbe(extraArgs = []) {
+      return spawnSync(openRouterJudgeProbePath, [
+        '--kind', 'text_only', '--expected-sha', expectedSha,
+        '--max-judge-calls', '1', '--max-estimated-usd', '0.10',
+        '--estimated-per-judge-call-usd', '0.10',
+        '--price-source', 'https://openrouter.ai/google/gemini-3.7-flash',
+        '--price-captured-at', '2026-08-25T08:00:00.000Z',
+        '--confirm', 'probe-one-openrouter-judge-disabled-worker', ...extraArgs,
       ], { encoding: 'utf8', env: { ...process.env, PAPERBANANA_HK_TEST_ROOT: root } });
     },
     cleanup() { rmSync(root, { recursive: true, force: true }); },
@@ -209,4 +221,40 @@ test('manual Judge access workflow is environment-protected and has no paid inpu
   assert.match(source, /diagnose-benchmark-judge-access\.sh/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
   assert.doesNotMatch(source, /max_generations|max_judge_calls|max_estimated_usd|PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/);
+});
+
+test('OpenRouter Judge probe is a one-request configured-disabled diagnostic with fixed output', () => {
+  assert.equal(existsSync(openRouterJudgeProbePath), true);
+  assert.equal(statSync(openRouterJudgeProbePath).mode & 0o111, 0o111);
+  const source = readFileSync(openRouterJudgeProbePath, 'utf8');
+  assert.match(source, /probe-one-openrouter-judge-disabled-worker/);
+  assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
+  assert.match(source, /max_judge_calls[\s\S]*== 1/);
+  assert.match(source, /max_estimated_usd[\s\S]*0[.]10/);
+  assert.match(source, /run --rm --no-deps[\s\S]*benchmark-operator[\s\S]*openrouter-judge-probe[.]mjs/);
+  assert.doesNotMatch(source, /run --rm --no-deps benchmark-worker|set -x|printenv|cat\s+[^\n]*(?:core|gateway|bench)[.]env/);
+  const fixture = makeFixture();
+  try {
+    const dryRun = fixture.runProbe();
+    assert.equal(dryRun.status, 0, dryRun.stderr);
+    assert.match(dryRun.stdout, /dry-run/);
+    const widened = fixture.runProbe(['--max-judge-calls', '2']);
+    assert.notEqual(widened.status, 0);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('OpenRouter Judge probe workflow is manual, environment-protected, and explicitly price bounded', () => {
+  assert.equal(existsSync(openRouterJudgeProbeWorkflowPath), true);
+  const source = readFileSync(openRouterJudgeProbeWorkflowPath, 'utf8');
+  assert.match(source, /workflow_dispatch:/);
+  assert.match(source, /environment:\s*paperbanana-production/);
+  assert.match(source, /probe_kind:[\s\S]*text_only[\s\S]*minimal_image[\s\S]*benchmark_fixture/);
+  assert.match(source, /expected_deployed_sha:[\s\S]*required:\s*true/);
+  assert.match(source, /max_judge_calls:[\s\S]*required:\s*true/);
+  assert.match(source, /max_estimated_usd:[\s\S]*required:\s*true/);
+  assert.match(source, /run-openrouter-judge-probe[.]sh/);
+  assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
+  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/);
 });

@@ -1,0 +1,101 @@
+name: Run OpenRouter Judge Probe
+
+on:
+  workflow_dispatch:
+    inputs:
+      probe_kind:
+        description: One isolated OpenRouter Judge request shape
+        required: true
+        type: choice
+        options: [text_only, minimal_image, benchmark_fixture]
+      expected_deployed_sha:
+        description: Exact 40-character commit currently deployed in Core and Bench
+        required: true
+      max_judge_calls:
+        description: Exact dispatch cap; must be 1
+        required: true
+      max_estimated_usd:
+        description: Exact estimated USD cap; must be 0.10
+        required: true
+      estimated_per_judge_call_usd:
+        description: Conservative Judge call estimate; must be 0.10
+        required: true
+      price_source:
+        description: Public HTTPS source for the price snapshot
+        required: true
+      price_captured_at:
+        description: Exact ISO timestamp when the price snapshot was captured
+        required: true
+      confirm:
+        description: Type probe-one-openrouter-judge-disabled-worker
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate immutable provenance and one-request cap
+        env:
+          PROBE_KIND: ${{ inputs.probe_kind }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_ESTIMATED_USD: ${{ inputs.max_estimated_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$PROBE_KIND" =~ ^(text_only|minimal_image|benchmark_fixture)$ ]]
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$MAX_JUDGE_CALLS" == 1 ]]
+          [[ "$MAX_ESTIMATED_USD" == 0.10 && "$JUDGE_USD" == 0.10 ]]
+          [[ "$CONFIRM" == probe-one-openrouter-judge-disabled-worker ]]
+          node - "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" <<'NODE'
+          const [source, capturedAt] = process.argv.slice(2)
+          const url = new URL(source)
+          if (url.protocol !== 'https:' || url.username || url.password || url.toString() !== source) process.exit(1)
+          if (new Date(capturedAt).toISOString() !== capturedAt) process.exit(1)
+          NODE
+          bash -n deploy/hk-single-host/scripts/run-openrouter-judge-probe.sh
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Run one configured-disabled OpenRouter Judge probe
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          PROBE_KIND: ${{ inputs.probe_kind }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_ESTIMATED_USD: ${{ inputs.max_estimated_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'cd %q && sudo %q --kind %q --expected-sha %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q --apply' \
+            /opt/paperbanana/repo \
+            deploy/hk-single-host/scripts/run-openrouter-judge-probe.sh \
+            "$PROBE_KIND" "$EXPECTED_SHA" "$MAX_JUDGE_CALLS" "$MAX_ESTIMATED_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

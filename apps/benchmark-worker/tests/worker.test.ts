@@ -36,6 +36,7 @@ import {
   classifyOperatorError,
 } from '../src/index.js'
 import { callBlindJudge } from '../src/judge-provider.js'
+import { runOpenRouterJudgeProbe } from '../src/openrouter-judge-probe.js'
 import { createWorkerMongoRepository } from '../src/mongo-repository.js'
 
 test('worker is disabled, single-concurrency and six-hour detection by default', () => {
@@ -331,6 +332,53 @@ test('OpenRouter 403 responses are reduced to fixed safe failure classes', async
     }), expected)
     assert.equal(requestHeaders?.get('x-openrouter-metadata'), 'enabled')
   }
+})
+
+test('OpenRouter Judge probe makes exactly one request and returns only fixed safe classifications', async () => {
+  const cases = [
+    [new Response('{}', { status: 200, headers: { 'content-type': 'application/json' } }), 'OPENROUTER_JUDGE_PROBE_OK'],
+    [new Response('<html>cloud edge denied</html>', { status: 403, headers: { 'content-type': 'text/html' } }), 'OPENROUTER_JUDGE_PROBE_FORBIDDEN_EDGE'],
+    [new Response(JSON.stringify({ error: { message: 'Provider returned error', metadata: { raw: '<html>upstream denied</html>', provider_name: 'redacted-provider' } } }), { status: 403, headers: { 'content-type': 'application/json' } }), 'OPENROUTER_JUDGE_PROBE_FORBIDDEN_UPSTREAM'],
+    [new Response(JSON.stringify({ error: { message: 'blocked', metadata: { patterns: ['prompt injection'] } }, openrouter_metadata: { pipeline: [{ type: 'guardrail' }] } }), { status: 403, headers: { 'content-type': 'application/json' } }), 'OPENROUTER_JUDGE_PROBE_FORBIDDEN_GUARDRAIL'],
+    [new Response(JSON.stringify({ error: { message: 'unclassified secret response text' } }), { status: 403, headers: { 'content-type': 'application/json' } }), 'OPENROUTER_JUDGE_PROBE_FORBIDDEN_OPAQUE'],
+  ] as const
+
+  for (const [response, expected] of cases) {
+    let dispatches = 0
+    const result = await runOpenRouterJudgeProbe({
+      kind: 'text_only', apiKey: 'probe-secret-key',
+      async fetchImpl(_url, init) {
+        dispatches += 1
+        const headers = new Headers(init?.headers)
+        assert.equal(headers.get('authorization'), 'Bearer probe-secret-key')
+        assert.equal(headers.get('x-openrouter-metadata'), 'enabled')
+        return response
+      },
+    })
+    assert.equal(result, expected)
+    assert.equal(dispatches, 1)
+    assert.doesNotMatch(result, /secret|response text|redacted-provider/i)
+  }
+})
+
+test('OpenRouter Judge probe kinds isolate text, minimal image, and exact benchmark fixture payloads', async () => {
+  const bodies: Record<string, any> = {}
+  for (const kind of ['text_only', 'minimal_image', 'benchmark_fixture'] as const) {
+    const result = await runOpenRouterJudgeProbe({
+      kind, apiKey: 'fake-key', imageBase64: kind === 'text_only' ? undefined : 'cG5n',
+      async fetchImpl(_url, init) {
+        bodies[kind] = JSON.parse(String(init?.body || '{}'))
+        return new Response('{}', { status: 200, headers: { 'content-type': 'application/json' } })
+      },
+    })
+    assert.equal(result, 'OPENROUTER_JUDGE_PROBE_OK')
+  }
+  assert.equal(typeof bodies.text_only.messages[0].content, 'string')
+  assert.equal(bodies.text_only.messages[0].content.includes('image_url'), false)
+  assert.deepEqual(bodies.minimal_image.messages[0].content.map((item: any) => item.type), ['text', 'image_url'])
+  assert.equal(bodies.minimal_image.messages[0].content[1].image_url.url, 'data:image/png;base64,cG5n')
+  assert.match(bodies.benchmark_fixture.messages[0].content[0].text, /redLines/)
+  assert.equal(bodies.benchmark_fixture.max_tokens, 1200)
 })
 
 test('one logical judgment can use explicitly bounded repair plus one 429 retry headroom', async () => {
