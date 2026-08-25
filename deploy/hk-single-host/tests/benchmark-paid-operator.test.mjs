@@ -11,6 +11,8 @@ const operatorPath = fileURLToPath(new URL('../scripts/run-benchmark-paid-operat
 const workflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-paid-operator.yml', import.meta.url));
 const diagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-paid-operator.sh', import.meta.url));
 const diagnosticWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-paid-operator.yml', import.meta.url));
+const judgeAccessDiagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-judge-access.sh', import.meta.url));
+const judgeAccessWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-judge-access.yml', import.meta.url));
 const expectedSha = 'a'.repeat(40);
 
 function makeFixture() {
@@ -162,4 +164,24 @@ test('manual paid diagnostic workflow binds the deployed SHA and exposes no paid
   assert.match(source, /diagnose-paid-operator-disabled-worker/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
   assert.doesNotMatch(source, /max_generations|max_judge_calls|max_estimated_usd|price_source|PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET/);
+});
+
+test('Judge access diagnostic is read-only, fixed-output and uses the isolated operator service', () => {
+  assert.equal(existsSync(judgeAccessDiagnosticPath), true);
+  assert.equal(statSync(judgeAccessDiagnosticPath).mode & 0o111, 0o111);
+  const source = readFileSync(judgeAccessDiagnosticPath, 'utf8');
+  assert.match(source, /diagnose-judge-provider-access-disabled-worker/);
+  assert.match(source, /run --rm --no-deps benchmark-operator node dist\/judge-provider-diagnostic\.mjs/);
+  assert.doesNotMatch(source, /chat\/completions|operator\.mjs|phase-operator\.mjs|curl|wget|set -x|printenv/);
+});
+
+test('manual Judge access workflow is environment-protected and has no paid inputs or credentials', () => {
+  assert.equal(existsSync(judgeAccessWorkflowPath), true);
+  const source = readFileSync(judgeAccessWorkflowPath, 'utf8');
+  assert.match(source, /workflow_dispatch:/);
+  assert.match(source, /environment:\s*paperbanana-production/);
+  assert.match(source, /expected_deployed_sha:[\s\S]*required:\s*true/);
+  assert.match(source, /diagnose-benchmark-judge-access\.sh/);
+  assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
+  assert.doesNotMatch(source, /max_generations|max_judge_calls|max_estimated_usd|PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/);
 });

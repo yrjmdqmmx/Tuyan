@@ -183,6 +183,7 @@ test('Core and Worker images bake non-overridable commit provenance and publishi
   assert.match(corePublish, /Resolve checked-out source SHA/);
   assert.match(corePublish, /PAPERBANANA_CODE_SHA=\$\{\{ steps\.source\.outputs\.sha \}\}/);
   assert.match(workerPublish, /PAPERBANANA_CODE_SHA=\$\{\{ steps\.source\.outputs\.sha \}\}/);
+  assert.match(read('../../apps/benchmark-worker/package.json'), /judge-provider-diagnostic\.mjs/);
   assert.equal((ci.match(/PAPERBANANA_CODE_SHA=\$\{\{ github\.sha \}\}/g) || []).length >= 2, true);
 });
 

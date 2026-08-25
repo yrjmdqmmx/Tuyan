@@ -12,6 +12,7 @@ import { renderCalibrationFixture } from './calibration-render.js'
 import { loadBenchCredentials } from './config.js'
 import { callBlindJudge } from './judge-provider.js'
 import { parseBenchmarkOperatorAuthorization } from './operator-authorization.js'
+import { classifyOperatorError } from './operator-error.js'
 import { runProviderOperation } from './provider-operation.js'
 
 const env = process.env
@@ -138,6 +139,6 @@ async function main() {
 }
 
 void main().catch((error) => {
-  process.stderr.write(`${String((error as Error).message || error).replace(/[A-Za-z0-9_-]{24,}/g, '[REDACTED]')}\n`)
+  process.stderr.write(`${classifyOperatorError(error)}\n`)
   process.exitCode = 1
 })
