@@ -365,7 +365,7 @@ test('judge provider caps output tokens on every fixed Judge request', async () 
   assert.deepEqual(requestBody.provider, { require_parameters: true })
 })
 
-test('Bailian Judge keeps the compatible JSON object response format', async () => {
+test('Bailian Judge uses the same strict JSON Schema without OpenRouter routing fields', async () => {
   let requestBody: any
   const valid = JSON.stringify({
     scores: { faithfulness: 8, conciseness: 8, readability: 8, aesthetics: 8, text_accuracy: 8, topology: 8, instruction_adherence: 8 },
@@ -378,7 +378,9 @@ test('Bailian Judge keeps the compatible JSON object response format', async () 
       return new Response(JSON.stringify({ choices: [{ message: { content: valid } }] }), { status: 200 })
     },
   })
-  assert.deepEqual(requestBody.response_format, { type: 'json_object' })
+  assert.equal(requestBody.response_format.type, 'json_schema')
+  assert.equal(requestBody.response_format.json_schema.strict, true)
+  assert.deepEqual(requestBody.response_format.json_schema.schema.required.sort(), ['confidence', 'evidence', 'redLines', 'scores'])
   assert.equal(requestBody.provider, undefined)
   assert.equal(requestBody.reasoning, undefined)
   assert.equal(requestBody.max_tokens, 4096)
