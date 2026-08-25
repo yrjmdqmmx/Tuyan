@@ -58,6 +58,8 @@ test('bounded phase host operator is executable, lock-scoped and one-shot', () =
   assert.match(source, /PAPERBANANA_BENCH_CONCURRENCY[\s\S]*1/)
   assert.match(source, /build-provenance\.json/)
   assert.match(source, /run[\s\S]*--rm[\s\S]*--no-deps[\s\S]*phase-operator\.mjs/)
+  assert.match(source, /run --rm --no-deps[\s\S]*benchmark-operator[\s\S]*phase-operator\.mjs/)
+  assert.doesNotMatch(source, /run --rm --no-deps[\s\S]{0,1200}benchmark-worker[\s\S]*phase-operator\.mjs/)
   assert.match(source, /gateway_env=.*gateway\.env/)
   assert.match(source, /for path in "\$deploy_env" "\$core_env" "\$bench_env" "\$gateway_env"/)
   assert.match(source, /phaseOperatorAttestation/)
@@ -168,14 +170,24 @@ test('bounded phase dry-run validates files and performs zero docker/provider ca
   } finally { item.cleanup() }
 })
 
-test('manual bounded phase workflow requires every identity, price and budget input', () => {
+test('manual bounded phase workflow stays within GitHub input limits and fixes v1 invariants', () => {
   assert.equal(existsSync(workflow), true)
   const source = readFileSync(workflow, 'utf8')
   assert.match(source, /workflow_dispatch:/)
   assert.match(source, /environment:\s*paperbanana-production/)
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/)
-  for (const input of ['phase', 'run_id', 'expected_deployed_sha', 'provider', 'model_id', 'lane', 'suite_id', 'suite_hash', 'judge_epoch', 'judge_stack_hash', 'signed_authorization_hash', 'price_hash', 'run_hash', 'run_facts_hash', 'candidate_snapshot_hash', 'aspect_ratios_hash', 'registry_hash', 'run_integrity_attestation', 'immutable_facts_hash', 'max_generations', 'max_judgments', 'max_judge_calls', 'max_estimated_usd', 'estimated_per_generation_usd', 'estimated_per_judge_call_usd', 'price_currency', 'price_source', 'price_captured_at', 'confirm']) {
+  const inputsBlock = source.match(/workflow_dispatch:\s*\n\s+inputs:\s*\n([\s\S]*?)\npermissions:/)?.[1] || ''
+  const inputCount = [...inputsBlock.matchAll(/^ {6}[a-z_]+:/gm)].length
+  assert.ok(inputCount > 0 && inputCount <= 25, `workflow_dispatch input count was ${inputCount}`)
+  for (const input of ['phase', 'run_id', 'expected_deployed_sha', 'provider', 'model_id', 'lane', 'suite_hash', 'judge_stack_hash', 'signed_authorization_hash', 'price_hash', 'run_hash', 'run_facts_hash', 'candidate_snapshot_hash', 'aspect_ratios_hash', 'registry_hash', 'run_integrity_attestation', 'immutable_facts_hash', 'max_generations', 'max_judge_calls', 'max_estimated_usd', 'estimated_per_generation_usd', 'estimated_per_judge_call_usd', 'price_source', 'price_captured_at', 'confirm']) {
     assert.match(source, new RegExp(`${input}:[\\s\\S]*required:\\s*true`), input)
   }
+  for (const removedInput of ['suite_id', 'judge_epoch', 'max_judgments', 'price_currency']) {
+    assert.doesNotMatch(inputsBlock, new RegExp(`^ {6}${removedInput}:`, 'm'), removedInput)
+  }
+  assert.match(source, /SUITE_ID:\s*pb-image-diagnostic-v1/)
+  assert.match(source, /JUDGE_EPOCH:\s*judge-2026-08-v1/)
+  assert.match(source, /PRICE_CURRENCY:\s*USD/)
+  assert.match(source, /MAX_JUDGMENTS=.*MAX_GENERATIONS.*2/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/)
 })

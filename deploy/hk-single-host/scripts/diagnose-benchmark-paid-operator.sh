@@ -87,14 +87,14 @@ echo 'PAID_DIAG_STAGE=core-provenance-ok'
 ' "$expected_sha" >/dev/null
 echo 'PAID_DIAG_STAGE=resident-worker-disabled'
 
-"${compose[@]}" run --rm --no-deps benchmark-worker node -e '
+"${compose[@]}" run --rm --no-deps benchmark-operator node -e '
   const fs=require("node:fs");
   const p=JSON.parse(fs.readFileSync("/app/build-provenance.json","utf8"));
   if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)
 ' "$expected_sha" >/dev/null
 echo 'PAID_DIAG_STAGE=oneoff-worker-provenance-ok'
 
-"${compose[@]}" run --rm --no-deps benchmark-worker node -e '
+"${compose[@]}" run --rm --no-deps benchmark-operator node -e '
   const fs=require("node:fs");
   const required=[
     "PAPERBANANA_BENCH_BAILIAN_API_KEY","PAPERBANANA_BENCH_OPENROUTER_API_KEY",
@@ -108,6 +108,6 @@ echo 'PAID_DIAG_STAGE=oneoff-worker-provenance-ok'
 ' >/dev/null
 echo 'PAID_DIAG_STAGE=dedicated-config-present'
 
-"${compose[@]}" run --rm --no-deps benchmark-worker node dist/calibration-snapshot.mjs >/dev/null
+"${compose[@]}" run --rm --no-deps benchmark-operator node dist/calibration-snapshot.mjs >/dev/null
 echo 'PAID_DIAG_STAGE=local-calibration-render-ok'
 echo 'PAID_DIAG_STAGE=diagnostic-complete'

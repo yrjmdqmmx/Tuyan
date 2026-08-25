@@ -217,6 +217,29 @@ services:
     mem_reservation: 384m
     pids_limit: 128
 
+  benchmark-operator:
+    <<: *service-hardening
+    profiles:
+      - benchmark-operator
+    image: ${PAPERBANANA_BENCH_WORKER_IMAGE:-paperbanana-benchmark-worker:unconfigured}
+    env_file:
+      - /opt/paperbanana/secrets/bench.env
+    environment:
+      PAPERBANANA_BENCH_CONCURRENCY: "1"
+      PAPERBANANA_BENCH_DETECTION_INTERVAL_MS: "21600000"
+      PAPERBANANA_API_URL: http://paperbanana-api:3000/paperbanana-api
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=1777
+    networks:
+      backend: {}
+      egress: {}
+    restart: "no"
+    stop_grace_period: 10m
+    cpus: 1.0
+    mem_limit: 2048m
+    mem_reservation: 384m
+    pids_limit: 128
+
   auth-gateway:
     <<: *service-hardening
     image: ${PAPERBANANA_GATEWAY_IMAGE:?set PAPERBANANA_GATEWAY_IMAGE}
