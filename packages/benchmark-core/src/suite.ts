@@ -35,6 +35,26 @@ export interface BenchmarkDiagnosticCase extends Omit<CaseSeed, 'instruction'> {
   manifestHash: string
 }
 
+export function benchmarkCapabilityGap(diagnosticCase: Pick<BenchmarkDiagnosticCase, 'id' | 'aspectRatio'>) {
+  if (diagnosticCase.aspectRatio === 'auto') throw new Error('AUTO_CASE_HAS_NO_CAPABILITY_GAP')
+  return `case=${diagnosticCase.id};aspectRatio=${diagnosticCase.aspectRatio}`
+}
+
+export function planBenchmarkCases<T extends Pick<BenchmarkDiagnosticCase, 'id' | 'aspectRatio'>>(cases: readonly T[], supportedAspectRatios: readonly string[]) {
+  const supported = new Set(supportedAspectRatios)
+  const executableCases: T[] = []
+  const unsupportedCases: T[] = []
+  for (const diagnosticCase of cases) {
+    if (diagnosticCase.aspectRatio === 'auto' || supported.has(diagnosticCase.aspectRatio)) executableCases.push(diagnosticCase)
+    else unsupportedCases.push(diagnosticCase)
+  }
+  return {
+    executableCases,
+    unsupportedCases,
+    capabilityGaps: unsupportedCases.map(benchmarkCapabilityGap),
+  }
+}
+
 const commonNegative = '不要水印、品牌标识、照片质感、无关装饰、伪造脚注或题目未要求的额外节点。'
 
 const categoryRubrics: Record<BenchmarkCategory, Partial<Record<BenchmarkAxis, string>>> = {

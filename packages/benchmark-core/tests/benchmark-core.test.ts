@@ -15,6 +15,7 @@ import {
   importCodexReview,
   canonicalHash,
   deriveRelativeTraits,
+  planBenchmarkCases,
   selectBenchmarkLane,
 } from '../src/index.js'
 
@@ -69,6 +70,20 @@ test('public contract has seven axes, three lanes and six isolated collections',
     'paperbanana_benchmark_judgments',
     'paperbanana_benchmark_releases',
   ])
+})
+
+test('capability planning always includes auto cases and records every unsupported fixed-ratio case unambiguously', () => {
+  const plan = planBenchmarkCases(PB_IMAGE_DIAGNOSTIC_V1.cases, ['16:9'])
+  assert.equal(plan.executableCases.length, 43)
+  assert.equal(plan.unsupportedCases.length, 5)
+  assert.deepEqual(plan.capabilityGaps, [
+    'case=multi_panel_process-05;aspectRatio=1:1',
+    'case=proportional_layout-02;aspectRatio=3:4',
+    'case=proportional_layout-03;aspectRatio=1:1',
+    'case=proportional_layout-05;aspectRatio=21:9',
+    'case=proportional_layout-06;aspectRatio=4:3',
+  ])
+  assert.equal(plan.executableCases.filter((item) => item.aspectRatio === 'auto').length, 42)
 })
 
 test('canonical hashes preserve dates and reject unsupported object prototypes', () => {
@@ -166,6 +181,8 @@ test('Codex packets are blind and imports bind packet, image and rubric hashes',
     ...packetSecurity,
     reviewerEpoch: 'codex-2026-08-v1',
     runHash: 'run-hash',
+    sourceManifestHash: 'a'.repeat(64),
+    sourceManifestAttestation: 'b'.repeat(64),
     samples: [{
       sampleId: 'sample-1',
       imageObjectKey: 'bench/runs/run-1/sample-1.png',
@@ -180,6 +197,8 @@ test('Codex packets are blind and imports bind packet, image and rubric hashes',
   assert.equal(serialized.includes('must-not-leak'), false)
   assert.equal(serialized.includes('automaticScores'), false)
   assert.equal(packet.samples[0].blindLabel, 'sample-001')
+  assert.equal((packet as any).sourceManifestHash, 'a'.repeat(64))
+  assert.equal((packet as any).sourceManifestAttestation, 'b'.repeat(64))
 
   const imported = importCodexReview(packet, {
     packetHash: packet.packetHash,
@@ -195,6 +214,20 @@ test('Codex packets are blind and imports bind packet, image and rubric hashes',
     }],
   }, { signingSecret: packetSecurity.signingSecret, expectedPhase: 'quick', now: new Date('2026-08-25T12:00:00Z') })
   assert.equal(imported[0].sampleId, 'sample-1')
+  assert.match((imported as any).attestation, /^[a-f0-9]{64}$/)
+  assert.equal((imported as any).reviewHash, canonicalHash({
+    packetHash: packet.packetHash,
+    reviewerEpoch: packet.reviewerEpoch,
+    judgments: [{
+      blindLabel: 'sample-001',
+      imageHash: 'image-hash',
+      rubricHash: canonicalHash({ topology: 'connections are exact' }),
+      scores: fullScores,
+      confirmedRedLines: [],
+      evidence: ['all required arrows visible'],
+      confidence: 0.9,
+    }],
+  }))
   assert.throws(() => importCodexReview(packet, {
     packetHash: packet.packetHash,
     reviewerEpoch: packet.reviewerEpoch,

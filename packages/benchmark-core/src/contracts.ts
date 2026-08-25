@@ -1,3 +1,5 @@
+import { canonicalHash } from './hash.js'
+
 export const BENCHMARK_AXES = [
   'faithfulness',
   'conciseness',
@@ -14,6 +16,7 @@ export const BENCHMARK_LANE_ORDER = ['2K-standard', '1K-standard', '4K-standard'
 export type BenchmarkLane = typeof BENCHMARK_LANE_ORDER[number]
 
 export type BenchmarkProfileStatus = 'provisional' | 'verified' | 'superseded'
+export type BenchmarkPhase = 'quick' | 'full'
 
 export const BENCHMARK_COLLECTIONS = Object.freeze({
   suites: 'paperbanana_benchmark_suites',
@@ -81,4 +84,11 @@ export function selectBenchmarkLane(resolutions: readonly string[]): BenchmarkLa
     if (supported.has(resolution)) return lane
   }
   return null
+}
+
+export function benchmarkSampleId(runId: string, phase: BenchmarkPhase, caseId: string, repetition: number) {
+  if (!runId || !caseId || !['quick', 'full'].includes(phase) || !Number.isInteger(repetition) || repetition < 0) {
+    throw new Error('INVALID_BENCHMARK_SAMPLE_IDENTITY')
+  }
+  return `sample:${canonicalHash([runId, phase, caseId, repetition])}`
 }

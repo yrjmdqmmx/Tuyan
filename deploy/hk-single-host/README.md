@@ -106,6 +106,15 @@ and is removed after success, validation failure, or rollback; the workflow
 cleanup remains defense in depth. This stage does not authorize generation,
 judging, a canary, or any paid request.
 
+Verified publication treats `bench/objects/<sha256>.png` as immutable after a
+successful hash read. The Worker OSS RAM policy must not grant `DeleteObject`
+or any overwrite capability, and every Worker write uses
+`x-oss-forbid-overwrite: true`. Core HMAC-attests canonical run facts plus the
+complete full sample/automatic-judgment review manifest. It verifies every OSS
+object outside Mongo with an ali-oss operation timeout and shared abortable
+batch, then the short snapshot transaction compares only the attested DB facts
+and manifest hash before inserting a release.
+
 ## Benchmark paid operator
 
 Judge calibration and the two-image canary use the manual

@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises'
 
 import OSS from 'ali-oss'
 import { MongoClient } from 'mongodb'
-import { PB_IMAGE_DIAGNOSTIC_V1, benchmarkJudgeStackHash, canonicalHash } from '@paperbanana/benchmark-core'
+import { PB_IMAGE_DIAGNOSTIC_V1, benchmarkJudgeStackHash, canonicalHash, planBenchmarkCases } from '@paperbanana/benchmark-core'
 
 import { loadAuthoritativeImageRuntime } from './authoritative-runtime.js'
 import { loadBuildProvenance } from './build-provenance.js'
@@ -97,11 +97,10 @@ async function main() {
       const phaseCases = phase === 'full'
         ? [...PB_IMAGE_DIAGNOSTIC_V1.cases]
         : PB_IMAGE_DIAGNOSTIC_V1.quickCaseIds.map((id) => PB_IMAGE_DIAGNOSTIC_V1.cases.find((item) => item.id === id)!)
-      const unsupportedFixed = phaseCases.filter((item) => item.aspectRatio !== 'auto' && !(run.aspectRatios || []).includes(item.aspectRatio))
-      const selectedCases = phaseCases.filter((item) => !unsupportedFixed.includes(item))
+      const capabilityPlan = planBenchmarkCases(phaseCases, run.aspectRatios || [])
       await executeBenchmarkRun({
-        run: { runId: run._id, phase, provider, modelId: run.modelId, lane: run.lane, repetitions: phase === 'full' ? 3 : 2, runHash: run.runHash, expectedCaseCount: phaseCases.length, capabilityGaps: unsupportedFixed.map((item) => `aspectRatio:${item.aspectRatio}`) },
-        cases: selectedCases as any,
+        run: { runId: run._id, phase, provider, modelId: run.modelId, lane: run.lane, repetitions: phase === 'full' ? 3 : 2, runHash: run.runHash, expectedCaseCount: phaseCases.length, capabilityGaps: capabilityPlan.capabilityGaps },
+        cases: capabilityPlan.executableCases as any,
         async generate(sample) {
           await repository.reserveBudget(run._id, workerId, run.leaseToken, run.state, 'generation', Number(run.approval?.priceSnapshot?.estimatedPerGeneration || 0))
           await repository.beginSampleDispatch(run, workerId, sample)

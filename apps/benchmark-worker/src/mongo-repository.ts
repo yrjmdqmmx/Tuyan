@@ -20,13 +20,10 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
 
   return {
     async ensureIndexes() {
-      const legacyJudgmentIndex = 'runId_1_sampleId_1_provider_1_judgeEpoch_1'
-      const existingJudgmentIndexes = await listIndexesOrEmpty(judgments)
-      if (existingJudgmentIndexes.some((index) => index.name === legacyJudgmentIndex)) await judgments.dropIndex(legacyJudgmentIndex)
       await Promise.all([
         models.createIndex({ provider: 1, modelId: 1 }, { unique: true }),
         runs.createIndex({ state: 1, leaseUntil: 1 }),
-        samples.createIndex({ runId: 1, caseId: 1, repetition: 1 }, { unique: true }),
+        samples.createIndex({ runId: 1, phase: 1, caseId: 1, repetition: 1 }, { unique: true, name: 'phase_sample_unique' }),
         samples.createIndex({ retentionExpiresAt: 1 }, { expireAfterSeconds: 0 }),
         judgments.createIndex({ runId: 1, sampleId: 1, provider: 1, judgeEpoch: 1 }, { unique: true, name: 'automatic_judgment_unique', partialFilterExpression: { status: 'completed' } }),
         judgments.createIndex({ runId: 1, sampleId: 1, source: 1, packetHash: 1, reviewHash: 1 }, { unique: true, name: 'codex_packet_judgment_unique', partialFilterExpression: { source: 'codex' } }),
@@ -64,7 +61,9 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
       const leaseFilter = { _id: runId, leaseOwner: workerId, leaseToken, state: expectedState, leaseUntil: { $gt: timestamp } }
       const run = await runs.findOne(leaseFilter)
       if (!run) throw new Error('BENCHMARK_RUN_LEASE_LOST')
-      const usage = run.usage || { generations: 0, judgments: 0, estimatedUsd: 0 }
+      const phase = expectedState === 'full_running' ? 'full' : 'quick'
+      const usagePath = `usageByPhase.${phase}`
+      const usage = run.usageByPhase?.[phase] || { generations: 0, judgments: 0, estimatedUsd: 0 }
       const limits = run.approval || {}
       const generations = Number(usage.generations || 0) + (kind === 'generation' ? 1 : 0)
       const judgmentCount = Number(usage.judgments || 0) + (kind === 'judgment' ? 1 : 0)
@@ -77,8 +76,8 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
         throw new Error(`BENCHMARK_BUDGET_PAUSED:${reason}`)
       }
       const result = await runs.updateOne(
-        { ...leaseFilter, 'usage.generations': Number(usage.generations || 0), 'usage.judgments': Number(usage.judgments || 0), 'usage.estimatedUsd': Number(usage.estimatedUsd || 0) },
-        { $set: { usage: { generations, judgments: judgmentCount, estimatedUsd: cost }, updatedAt: now() } },
+        { ...leaseFilter, [`${usagePath}.generations`]: Number(usage.generations || 0), [`${usagePath}.judgments`]: Number(usage.judgments || 0), [`${usagePath}.estimatedUsd`]: Number(usage.estimatedUsd || 0) },
+        { $set: { [usagePath]: { generations, judgments: judgmentCount, estimatedUsd: cost }, updatedAt: now() } },
       )
       if (result.modifiedCount !== 1) throw new Error('BENCHMARK_BUDGET_CONFLICT')
     },
@@ -102,7 +101,7 @@ export function createWorkerMongoRepository(db: Db, now = () => new Date()) {
     async cancelJudgeDispatch(run: AnyRecord, sampleId: string, provider: string, dispatchIndex: number) {
       await judgments.deleteOne({ _id: `dispatch:${provider}:${sampleId}:${dispatchIndex}`, leaseToken: run.leaseToken, status: 'dispatched' })
     },
-    async beginSampleDispatch(run: AnyRecord, workerId: string, sample: { sampleId: string; caseId: string; repetition: number }) {
+    async beginSampleDispatch(run: AnyRecord, workerId: string, sample: { sampleId: string; phase: 'quick' | 'full'; caseId: string; repetition: number }) {
       const lease = await runs.findOne({ _id: run._id, leaseOwner: workerId, leaseToken: run.leaseToken, state: run.state, leaseUntil: { $gt: now() } })
       if (!lease) throw new Error('BENCHMARK_RUN_LEASE_LOST')
       try {

@@ -196,3 +196,32 @@ test('readFile never exposes an unbounded whole-object fallback', async () => {
   await assert.rejects(bucket.readFile('references/a.png'), /byte limit must be a positive integer/)
   assert.equal(wholeObjectReads, 0)
 })
+
+test('readFile abort destroys the underlying OSS stream instead of only abandoning its promise', async () => {
+  let destroyed = false
+  let streamOptions: any
+  const stream = new Readable({ read() {} })
+  const originalDestroy = stream.destroy.bind(stream)
+  stream.destroy = ((error?: Error) => { destroyed = true; return originalDestroy(error) }) as any
+  const bucket = createOssAdapter(config, {
+    serverClient: { async getStream(_key: string, options: any) { streamOptions = options; return { stream, res: { status: 200, headers: {} } } } } as any,
+    publicSigner: {} as any,
+  }).bucket('paperbanana-private')
+  const controller = new AbortController()
+  const pending = bucket.readFile('bench/objects/hash.png', 100, { signal: controller.signal, timeoutMs: 25 })
+  controller.abort()
+  await assert.rejects(pending, /aborted/i)
+  assert.equal(destroyed, true)
+  assert.equal(streamOptions.timeout, 25)
+})
+
+test('readFile aborts promptly even while ali-oss getStream has not resolved', async () => {
+  const bucket = createOssAdapter(config, {
+    serverClient: { async getStream() { return new Promise(() => {}) } } as any,
+    publicSigner: {} as any,
+  }).bucket('paperbanana-private')
+  const controller = new AbortController()
+  const pending = bucket.readFile('bench/objects/hash.png', 100, { signal: controller.signal, timeoutMs: 25 })
+  controller.abort()
+  await assert.rejects(pending, /aborted/i)
+})

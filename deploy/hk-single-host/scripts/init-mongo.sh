@@ -44,6 +44,28 @@ done
 "${mongo_admin[@]}" --eval '
   const benchmark = db.getSiblingDB("paperbanana_benchmark")
   const apiWritableCollections = ["paperbanana_benchmark_suites", "paperbanana_benchmark_models", "paperbanana_benchmark_runs", "paperbanana_benchmark_samples", "paperbanana_benchmark_judgments"]
+  const sampleCollection = benchmark.getCollection("paperbanana_benchmark_samples")
+  sampleCollection.createIndex(
+    {runId: 1, phase: 1, caseId: 1, repetition: 1},
+    {unique: true, name: "phase_sample_unique"},
+  )
+  const phaseIndex = sampleCollection.getIndexes().find(index => index.name === "phase_sample_unique")
+  if (!phaseIndex || phaseIndex.unique !== true || JSON.stringify(phaseIndex.key) !== JSON.stringify({runId: 1, phase: 1, caseId: 1, repetition: 1})) {
+    throw new Error("phase_sample_unique verification failed")
+  }
+  const legacySampleIndex = sampleCollection.getIndexes().find(index => index.name === "runId_1_caseId_1_repetition_1")
+  if (legacySampleIndex) sampleCollection.dropIndex(legacySampleIndex.name)
+
+  const judgmentCollection = benchmark.getCollection("paperbanana_benchmark_judgments")
+  judgmentCollection.createIndex(
+    {runId: 1, sampleId: 1, provider: 1, judgeEpoch: 1},
+    {unique: true, name: "automatic_judgment_unique", partialFilterExpression: {status: "completed"}},
+  )
+  const automaticIndex = judgmentCollection.getIndexes().find(index => index.name === "automatic_judgment_unique")
+  if (!automaticIndex || automaticIndex.unique !== true) throw new Error("automatic_judgment_unique verification failed")
+  const legacyJudgmentIndex = judgmentCollection.getIndexes().find(index => index.name === "runId_1_sampleId_1_provider_1_judgeEpoch_1")
+  if (legacyJudgmentIndex) judgmentCollection.dropIndex(legacyJudgmentIndex.name)
+
   const roleDefinitions = [
     {
       role: "paperbanana_benchmark_worker_role",
@@ -51,7 +73,7 @@ done
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_models"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_runs"}, actions: ["find", "update", "createIndex", "listIndexes"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_samples"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
-        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_judgments"}, actions: ["find", "insert", "update", "remove", "createIndex", "dropIndex", "listIndexes"]},
+        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_judgments"}, actions: ["find", "insert", "update", "remove", "createIndex", "listIndexes"]},
       ],
     },
     {

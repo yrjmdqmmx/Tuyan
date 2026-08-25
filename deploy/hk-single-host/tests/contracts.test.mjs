@@ -106,6 +106,34 @@ test('benchmark worker is opt-in, portless and disabled by its secret-file defau
   assert.match(compose, /benchmark-worker:[\s\S]*?networks:\s*\n\s+backend:[\s\S]*?egress:/);
 });
 
+test('mongo-init performs the phase index migration before defining a drop-free worker role', () => {
+  const initMongo = read('scripts/init-mongo.sh');
+  const privilegeLines = initMongo.split('\n').filter((line) => line.includes('paperbanana_benchmark_worker_role') || line.includes('paperbanana_benchmark_'));
+  for (const collection of ['paperbanana_benchmark_models', 'paperbanana_benchmark_runs', 'paperbanana_benchmark_samples', 'paperbanana_benchmark_judgments']) {
+    const privilege = privilegeLines.find((line) => line.includes(`collection: "${collection}"`)) || '';
+    assert.doesNotMatch(privilege, /"dropIndex"/, `${collection} must not gain dropIndex`);
+  }
+  const createPosition = initMongo.indexOf('phase_sample_unique');
+  const legacyDropPosition = initMongo.indexOf('runId_1_caseId_1_repetition_1');
+  const rolePosition = initMongo.indexOf('paperbanana_benchmark_worker_role');
+  assert.ok(createPosition >= 0 && legacyDropPosition > createPosition && rolePosition > legacyDropPosition);
+  assert.match(initMongo, /phaseIndex[\s\S]*unique !== true[\s\S]*throw/);
+  assert.match(initMongo, /if \(legacySampleIndex\)[\s\S]*dropIndex/);
+});
+
+test('worker runtime creates or verifies phase indexes but never performs index migration', () => {
+  const repository = read('../../apps/benchmark-worker/src/mongo-repository.ts');
+  assert.match(repository, /phase_sample_unique/);
+  assert.doesNotMatch(repository, /\.dropIndex\(/);
+});
+
+test('verified evidence TOCTOU boundary requires immutable content-addressed Worker OSS writes', () => {
+  const worker = read('../../apps/benchmark-worker/src/main.ts');
+  const readme = read('README.md');
+  assert.match(worker, /x-oss-forbid-overwrite['"]?:\s*['"]true/);
+  assert.match(readme, /Worker OSS RAM policy[^.]*must not grant[^.]*DeleteObject[^.]*overwrite/is);
+});
+
 test('benchmark worker image pins CJK glyph support and renders calibration snapshots during build', () => {
   const dockerfile = read('../../apps/benchmark-worker/Dockerfile');
   const packageJson = read('../../apps/benchmark-worker/package.json');
