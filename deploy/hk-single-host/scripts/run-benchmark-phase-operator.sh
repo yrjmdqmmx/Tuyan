@@ -172,7 +172,7 @@ set +e
   -e PAPERBANANA_BENCH_ESTIMATED_PER_GENERATION_USD="$generation_usd" -e PAPERBANANA_BENCH_ESTIMATED_PER_JUDGE_CALL_USD="$judge_usd" \
   -e PAPERBANANA_BENCH_PRICE_CURRENCY="$price_currency" -e PAPERBANANA_BENCH_PRICE_SOURCE="$price_source" \
   -e PAPERBANANA_BENCH_PRICE_CAPTURED_AT="$price_captured_at" -e PAPERBANANA_BENCH_PHASE_OPERATOR_CONFIRM="$confirm" \
-  benchmark-worker node dist/phase-operator.mjs >"$report_file"
+  benchmark-operator node dist/phase-operator.mjs >"$report_file"
 operator_status=$?
 set -e
 

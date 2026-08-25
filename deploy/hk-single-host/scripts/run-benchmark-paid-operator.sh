@@ -139,7 +139,7 @@ fi
 
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 "${compose[@]}" exec -T paperbanana-api node -e 'const fs=require("node:fs");const p=JSON.parse(fs.readFileSync("/app/build-provenance.json","utf8"));if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha"
-"${compose[@]}" run --rm --no-deps benchmark-worker node -e 'const fs=require("node:fs");const p=JSON.parse(fs.readFileSync("/app/build-provenance.json","utf8"));if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha"
+"${compose[@]}" run --rm --no-deps benchmark-operator node -e 'const fs=require("node:fs");const p=JSON.parse(fs.readFileSync("/app/build-provenance.json","utf8"));if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha"
 "${compose[@]}" exec -T benchmark-worker node -e 'if(process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' "$expected_sha"
 
 report_file="$(mktemp /tmp/paperbanana-benchmark-operator-report.XXXXXX)"
@@ -161,7 +161,7 @@ trap cleanup EXIT
   -e PAPERBANANA_BENCH_PRICE_CURRENCY="$price_currency" \
   -e PAPERBANANA_BENCH_PRICE_SOURCE="$price_source" \
   -e PAPERBANANA_BENCH_PRICE_CAPTURED_AT="$price_captured_at" \
-  benchmark-worker node dist/operator.mjs >"$report_file"
+  benchmark-operator node dist/operator.mjs >"$report_file"
 
 jq -e --arg mode "$mode" --arg sha "$expected_sha" '
   .operatorMode == $mode and .codeSha == $sha and

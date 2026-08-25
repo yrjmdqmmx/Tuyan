@@ -106,6 +106,17 @@ test('benchmark worker is opt-in, portless and disabled by its secret-file defau
   assert.match(compose, /benchmark-worker:[\s\S]*?networks:\s*\n\s+backend:[\s\S]*?egress:/);
 });
 
+test('paid benchmark one-offs use a distinct dynamic-address operator service', () => {
+  const compose = read('compose.yaml');
+  const operator = compose.match(/\n  benchmark-operator:\n([\s\S]*?)\n  auth-gateway:/)?.[1] || '';
+  assert.ok(operator, 'benchmark-operator service is missing');
+  assert.match(operator, /profiles:\s*\n\s+- benchmark-operator/);
+  assert.match(operator, /PAPERBANANA_BENCH_WORKER_IMAGE/);
+  assert.match(operator, /env_file:\s*\n\s+- \/opt\/paperbanana\/secrets\/bench\.env/);
+  assert.match(operator, /networks:\s*\n\s+backend:\s*\{\}\s*\n\s+egress:\s*\{\}/);
+  assert.doesNotMatch(operator, /ipv4_address|ports:|restart:\s*unless-stopped|healthcheck:/);
+});
+
 test('mongo-init performs the phase index migration before defining a drop-free worker role', () => {
   const initMongo = read('scripts/init-mongo.sh');
   const privilegeLines = initMongo.split('\n').filter((line) => line.includes('paperbanana_benchmark_worker_role') || line.includes('paperbanana_benchmark_'));

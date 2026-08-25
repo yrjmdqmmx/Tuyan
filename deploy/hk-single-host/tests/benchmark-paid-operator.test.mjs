@@ -59,7 +59,8 @@ test('paid benchmark operator is executable, lock-scoped and keeps the daemon di
   assert.match(source, /PAPERBANANA_CODE_SHA/);
   assert.match(source, /build-provenance\.json/);
   assert.match(source, /operator\.mjs/);
-  assert.match(source, /docker compose[\s\S]*run[\s\S]*--rm[\s\S]*--no-deps[\s\S]*benchmark-worker/);
+  assert.match(source, /docker compose[\s\S]*run[\s\S]*--rm[\s\S]*--no-deps[\s\S]*benchmark-operator/);
+  assert.doesNotMatch(source, /run --rm --no-deps benchmark-worker|\n\s+benchmark-worker node dist\/operator\.mjs/);
   assert.match(source, /mktemp/);
   assert.match(source, /chmod 0600|install -m 0600/);
   assert.match(source, /cleanup\(\)[\s\S]*rm -f/);
@@ -145,6 +146,8 @@ test('paid operator diagnostics are fixed-stage, secret-free and make zero Provi
   assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
   assert.match(source, /PAPERBANANA_CODE_SHA/);
   assert.match(source, /calibration-snapshot\.mjs/);
+  assert.match(source, /run --rm --no-deps benchmark-operator/);
+  assert.doesNotMatch(source, /run --rm --no-deps benchmark-worker/);
   assert.doesNotMatch(source, /node\s+dist\/operator\.mjs|callBlindJudge|imageRuntime|runtime\.generate|curl|wget|set -x|printenv/);
   assert.doesNotMatch(source, /source\s+[^\n]*(?:core|gateway|bench)\.env|cat\s+[^\n]*(?:core|gateway|bench)\.env/);
 });
