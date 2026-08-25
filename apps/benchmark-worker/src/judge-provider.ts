@@ -5,7 +5,7 @@ const scoreProperties = Object.fromEntries([
   'faithfulness', 'conciseness', 'readability', 'aesthetics', 'text_accuracy', 'topology', 'instruction_adherence',
 ].map((axis) => [axis, { type: 'number', minimum: 0, maximum: 10 }]))
 
-const openRouterResponseFormat = Object.freeze({
+const judgeResponseFormat = Object.freeze({
   type: 'json_schema',
   json_schema: {
     name: 'paperbanana_benchmark_judgment',
@@ -86,7 +86,7 @@ export async function callBlindJudge(input: {
             { type: 'text', text: prompt },
             { type: 'image_url', image_url: { url: `data:image/png;base64,${input.imageBase64}` } },
           ] }],
-          response_format: input.provider === 'openrouter' ? openRouterResponseFormat : { type: 'json_object' },
+          response_format: judgeResponseFormat,
           ...(input.provider === 'openrouter' ? { provider: { require_parameters: true } } : {}),
           temperature: 0,
           max_tokens: 4096,
