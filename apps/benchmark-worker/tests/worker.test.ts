@@ -100,7 +100,7 @@ test('Judge provider access diagnostics use authenticated read-only endpoints an
       const url = String(input)
       calls.push({ url, method: String(init?.method || 'GET') })
       if (url.endsWith('/api/v1/key')) return Response.json({ data: { is_management_key: false, limit_remaining: 10 } })
-      if (url === 'https://openrouter.ai/api/v1/models') return Response.json({ data: [{ id: 'google/gemini-3.7-flash' }] })
+      if (url === 'https://openrouter.ai/api/v1/models/user') return Response.json({ data: [{ id: 'google/gemini-3.7-flash' }] })
       if (url === 'https://dashscope.aliyuncs.com/compatible-mode/v1/models') return Response.json({ data: [{ id: 'qwen3.7-plus' }] })
       return new Response('{}', { status: 404 })
     },

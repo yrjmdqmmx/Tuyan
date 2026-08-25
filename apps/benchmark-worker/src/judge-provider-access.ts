@@ -38,7 +38,7 @@ export async function diagnoseJudgeProviderAccess(input: DiagnosticInput) {
   if (typeof remaining === 'number' && remaining <= 0) throw new Error('BENCHMARK_JUDGE_ACCESS_OPENROUTER_BUDGET')
   input.emit('openrouter-auth-ok')
 
-  const openrouter = await getJson(fetchImpl, 'OPENROUTER', 'https://openrouter.ai/api/v1/models', input.openrouterKey)
+  const openrouter = await getJson(fetchImpl, 'OPENROUTER', 'https://openrouter.ai/api/v1/models/user', input.openrouterKey)
   if (!Array.isArray(openrouter?.data) || !openrouter.data.some((model: any) => model?.id === OPENROUTER_MODEL)) {
     throw new Error('BENCHMARK_JUDGE_ACCESS_OPENROUTER_MODEL')
   }
