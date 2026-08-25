@@ -77,8 +77,9 @@ jobs:
           PAPERBANANA_BENCH_ENABLED: 'false'
         run: |
           set -Eeuo pipefail
+          cd apps/benchmark-worker
           node --import tsx --input-type=module - <<'NODE'
-          import { runOpenRouterJudgeProbe } from './apps/benchmark-worker/src/openrouter-judge-probe.ts'
+          import { runOpenRouterJudgeProbe } from './src/openrouter-judge-probe.ts'
           let result = 'OPENROUTER_JUDGE_PROBE_UNKNOWN_AFTER_DISPATCH'
           try {
             result = await runOpenRouterJudgeProbe({

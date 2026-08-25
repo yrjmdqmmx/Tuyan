@@ -271,6 +271,9 @@ test('OpenRouter GitHub-egress probe is one text-only request with fixed secret-
   assert.match(source, /probe-one-openrouter-text-github-egress/);
   assert.match(source, /kind:\s*'text_only'/);
   assert.match(source, /runOpenRouterJudgeProbe/);
+  assert.match(source, /cd apps\/benchmark-worker/);
+  assert.match(source, /node --import tsx --input-type=module/);
+  assert.match(source, /from '\.\/src\/openrouter-judge-probe[.]ts'/);
   assert.match(source, /OPENROUTER_GITHUB_EGRESS_PROBE_RESULT/);
   assert.match(source, /PAPERBANANA_BENCH_OPENROUTER_API_KEY:\s*\$\{\{\s*secrets[.]PAPERBANANA_BENCH_OPENROUTER_API_KEY\s*\}\}/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
