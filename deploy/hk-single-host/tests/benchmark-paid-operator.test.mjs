@@ -11,6 +11,8 @@ const operatorPath = fileURLToPath(new URL('../scripts/run-benchmark-paid-operat
 const workerOperatorPath = fileURLToPath(new URL('../../../apps/benchmark-worker/src/operator.ts', import.meta.url));
 const calibrationRecoveryPath = fileURLToPath(new URL('../scripts/recover-benchmark-calibration.sh', import.meta.url));
 const calibrationRecoveryWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/recover-benchmark-calibration.yml', import.meta.url));
+const adminOperatorPath = fileURLToPath(new URL('../scripts/run-benchmark-admin-operator.sh', import.meta.url));
+const adminOperatorWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-admin-operator.yml', import.meta.url));
 const workflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-paid-operator.yml', import.meta.url));
 const diagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-paid-operator.sh', import.meta.url));
 const diagnosticWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-paid-operator.yml', import.meta.url));
@@ -139,6 +141,30 @@ test('calibration recovery workflow is manual, protected and exposes no credenti
   assert.match(source, /recover-benchmark-calibration\.sh/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/);
+});
+
+test('benchmark admin operator exposes only fixed candidate, approval, control and attestation commands', () => {
+  assert.equal(existsSync(adminOperatorPath), true);
+  assert.equal(statSync(adminOperatorPath).mode & 0o111, 0o111);
+  const source = readFileSync(adminOperatorPath, 'utf8');
+  assert.match(source, /candidates\|approve_quick\|control_quick\|attest/);
+  assert.match(source, /adminBenchmarkCandidates/);
+  assert.match(source, /adminBenchmarkApprove/);
+  assert.match(source, /adminBenchmarkControl/);
+  assert.match(source, /phaseOperatorAttestation/);
+  assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
+  assert.doesNotMatch(source, /adminBenchmarkPublish|adminBenchmarkReviewImport|adminBenchmarkReviewExport|set -x|printenv/);
+});
+
+test('benchmark admin workflow is manually protected and streams the reviewed operator over SSH', () => {
+  assert.equal(existsSync(adminOperatorWorkflowPath), true);
+  const source = readFileSync(adminOperatorWorkflowPath, 'utf8');
+  assert.match(source, /workflow_dispatch:/);
+  assert.match(source, /environment:\s*paperbanana-production/);
+  assert.match(source, /run-benchmark-admin-operator\.sh/);
+  assert.match(source, /ssh[\s\S]*sudo bash -s/);
+  assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
+  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET|ADMIN_TOKEN/);
 });
 
 test('operator enforces exact calibration and two-image canary caps before any paid command', () => {

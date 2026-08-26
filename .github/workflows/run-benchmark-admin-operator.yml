@@ -1,0 +1,64 @@
+name: Run Benchmark Admin Operator
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation: { description: Fixed admin operation, required: true, type: choice, options: [candidates, approve_quick, control_quick, attest] }
+      expected_deployed_sha: { description: Exact deployed Core and Bench SHA, required: true }
+      candidate_id: { description: Candidate ID for approval, required: false, default: none }
+      run_id: { description: Exact run ID for control or attestation, required: false, default: none }
+      max_generations: { description: Quick generation cap, required: false, default: '24' }
+      max_judge_calls: { description: Quick Judge dispatch cap, required: false, default: '96' }
+      max_estimated_usd: { description: Quick USD cap, required: false, default: '12' }
+      estimated_per_generation_usd: { description: Conservative generation estimate, required: false, default: '0.10' }
+      estimated_per_judge_call_usd: { description: Conservative Judge estimate, required: false, default: '0.10' }
+      price_source: { description: Public HTTPS price source, required: false, default: 'https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro' }
+      price_captured_at: { description: Exact ISO price capture timestamp, required: false, default: 'none' }
+      confirm: { description: Exact operation confirmation, required: true }
+
+permissions: { contents: read }
+concurrency: { group: paperbanana-hk-production, cancel-in-progress: false }
+
+jobs:
+  operate:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate fixed operation
+        env: { OPERATION: "${{ inputs.operation }}", SHA: "${{ inputs.expected_deployed_sha }}", CONFIRM: "${{ inputs.confirm }}" }
+        run: |
+          set -Eeuo pipefail
+          [[ "$OPERATION" =~ ^(candidates|approve_quick|control_quick|attest)$ && "$SHA" =~ ^[a-f0-9]{40}$ ]]
+          case "$OPERATION:$CONFIRM" in
+            candidates:list-benchmark-candidates-disabled-worker|approve_quick:approve-benchmark-quick-disabled-worker|control_quick:control-benchmark-quick-disabled-worker|attest:attest-benchmark-run-disabled-worker) ;;
+            *) exit 1 ;;
+          esac
+          bash -n deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh
+      - name: Configure SSH
+        env: { SSH_PRIVATE_KEY: "${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}", SSH_KNOWN_HOSTS: "${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}" }
+        run: |
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" >"$HOME/.ssh/id_ed25519"; printf '%s\n' "$SSH_KNOWN_HOSTS" >"$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Run protected admin operation against deployed Core
+        env:
+          HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          USER: ${{ secrets.ALIYUN_HK_USER }}
+          OPERATION: ${{ inputs.operation }}
+          SHA: ${{ inputs.expected_deployed_sha }}
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+          RUN_ID: ${{ inputs.run_id }}
+          MAX_GENERATIONS: ${{ inputs.max_generations }}
+          MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+          MAX_USD: ${{ inputs.max_estimated_usd }}
+          GEN_USD: ${{ inputs.estimated_per_generation_usd }}
+          JUDGE_USD: ${{ inputs.estimated_per_judge_call_usd }}
+          PRICE_SOURCE: ${{ inputs.price_source }}
+          PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
+            "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
+          ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh
