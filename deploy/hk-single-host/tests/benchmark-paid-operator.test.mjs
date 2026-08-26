@@ -13,6 +13,7 @@ const calibrationRecoveryPath = fileURLToPath(new URL('../scripts/recover-benchm
 const calibrationRecoveryWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/recover-benchmark-calibration.yml', import.meta.url));
 const adminOperatorPath = fileURLToPath(new URL('../scripts/run-benchmark-admin-operator.sh', import.meta.url));
 const adminOperatorWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-admin-operator.yml', import.meta.url));
+const adminOssExchangePath = fileURLToPath(new URL('../scripts/benchmark-admin-oss-exchange.cjs', import.meta.url));
 const workflowPath = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-paid-operator.yml', import.meta.url));
 const diagnosticPath = fileURLToPath(new URL('../scripts/diagnose-benchmark-paid-operator.sh', import.meta.url));
 const diagnosticWorkflowPath = fileURLToPath(new URL('../../../.github/workflows/diagnose-benchmark-paid-operator.yml', import.meta.url));
@@ -143,7 +144,7 @@ test('calibration recovery workflow is manual, protected and exposes no credenti
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET/);
 });
 
-test('benchmark admin operator exposes only fixed candidate, approval, control and attestation commands', () => {
+test('benchmark admin operator exposes only fixed commands and writes one private OSS exchange object', () => {
   assert.equal(existsSync(adminOperatorPath), true);
   assert.equal(statSync(adminOperatorPath).mode & 0o111, 0o111);
   const source = readFileSync(adminOperatorPath, 'utf8');
@@ -153,18 +154,18 @@ test('benchmark admin operator exposes only fixed candidate, approval, control a
   assert.match(source, /adminBenchmarkControl/);
   assert.match(source, /phaseOperatorAttestation/);
   assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
-  assert.match(source, /--result-path/);
-  assert.match(source, /\/opt\/paperbanana\/benchmark-admin-result-/);
-  assert.match(source, /SUDO_USER/);
-  assert.match(source, /noclobber/);
-  assert.match(source, /cleanup_result\(\)[\s\S]*rm -f -- "\$result_path"/);
-  assert.match(source, /chown "\$SUDO_USER:\$result_group" "\$result_path"/);
+  assert.match(source, /--result-object-key/);
+  assert.match(source, /bench\/admin-exchange\//);
+  assert.match(source, /PAPERBANANA_OPERATOR_RESULT_OBJECT_KEY/);
+  assert.match(source, /import\('ali-oss'\)/);
+  assert.match(source, /x-oss-forbid-overwrite/);
+  assert.match(source, /x-oss-object-acl/);
   assert.match(source, /BENCHMARK_ADMIN_(?:CORE|RESULT)_[A-Z_]+/);
   assert.doesNotMatch(source, /console\.error\([^\n]*(?:result|response)/);
   assert.doesNotMatch(source, /adminBenchmarkPublish|adminBenchmarkReviewImport|adminBenchmarkReviewExport|set -x|printenv/);
 });
 
-test('benchmark admin workflow is manually protected and streams the reviewed operator over SSH', () => {
+test('benchmark admin workflow is protected and uses a private, short-lived OSS exchange', () => {
   assert.equal(existsSync(adminOperatorWorkflowPath), true);
   const source = readFileSync(adminOperatorWorkflowPath, 'utf8');
   assert.match(source, /workflow_dispatch:/);
@@ -174,19 +175,23 @@ test('benchmark admin workflow is manually protected and streams the reviewed op
   assert.match(source, /benchmark-admin-result\.json/);
   assert.match(source, /benchmark-admin-result\.raw/);
   assert.match(source, /sanitize-benchmark-admin-result\.mjs/);
+  assert.match(source, /benchmark-admin-oss-exchange\.cjs/);
+  assert.match(source, /ali-oss@6\.23\.0/);
   assert.match(source, /openssl rand -hex 12/);
-  assert.match(source, /remote_result="\/opt\/paperbanana\/benchmark-admin-result-/);
-  assert.match(source, /printf -v read_cmd 'cat -- %q'/);
-  assert.match(source, /ssh "\$USER@\$HOST" "\$read_cmd" >"\$raw_path"/);
-  assert.match(source, /sudo rm -f/);
-  assert.doesNotMatch(source, /\bscp\b|BENCHMARK_ADMIN_REMOTE_RESULT_MISSING/);
+  assert.match(source, /bench\/admin-exchange\//);
+  assert.match(source, /client\.cjs" download/);
+  assert.match(source, /client\.cjs" delete/);
+  for (const secret of ['ACCESS_KEY_ID', 'ACCESS_KEY_SECRET', 'BUCKET', 'REGION', 'INTERNAL_ENDPOINT', 'PUBLIC_ENDPOINT']) {
+    assert.match(source, new RegExp(`PAPERBANANA_BENCH_OSS_${secret}`));
+  }
+  assert.doesNotMatch(source, /\bscp\b|BENCHMARK_ADMIN_REMOTE_RESULT_MISSING|PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|ADMIN_TOKEN/);
   assert.match(source, /BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED/);
   assert.match(source, /BENCHMARK_ADMIN_RESULT_SANITIZE_FAILED/);
   assert.match(source, /actions\/upload-artifact@v4/);
   assert.match(source, /retention-days:\s*1/);
   assert.match(source, /if-no-files-found:\s*error/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
-  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK)_API_KEY|OSS_ACCESS_KEY_SECRET|ADMIN_TOKEN/);
+  assert.equal(existsSync(adminOssExchangePath), true);
 });
 
 test('operator enforces exact calibration and two-image canary caps before any paid command', () => {
