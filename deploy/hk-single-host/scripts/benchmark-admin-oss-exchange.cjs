@@ -40,7 +40,13 @@ async function main() {
   fs.chmodSync(resultPath, 0o600)
 }
 
-main().catch(() => {
-  process.stderr.write('BENCHMARK_ADMIN_OSS_EXCHANGE_FAILED\n')
+main().catch((error) => {
+  const status = Number(error?.status || error?.statusCode || error?.res?.status || 0)
+  const code = String(error?.code || error?.name || '')
+  let reason = 'FAILED'
+  if (status === 403 || /AccessDenied|Forbidden|InvalidAccessKeyId/i.test(code)) reason = 'GET_FORBIDDEN'
+  else if (status === 404 || /NoSuchKey|NotFound/i.test(code)) reason = 'GET_NOT_FOUND'
+  else if (/ENOTFOUND|ECONNRESET|ETIMEDOUT|RequestError|ConnectionTimeout/i.test(code)) reason = 'GET_UNREACHABLE'
+  process.stderr.write(`BENCHMARK_ADMIN_OSS_EXCHANGE_${reason}\n`)
   process.exitCode = 1
 })

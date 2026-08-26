@@ -192,6 +192,10 @@ test('benchmark admin workflow is protected and uses a private, short-lived OSS 
   assert.match(source, /if-no-files-found:\s*error/);
   assert.match(source, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/);
   assert.equal(existsSync(adminOssExchangePath), true);
+  const helperSource = readFileSync(adminOssExchangePath, 'utf8');
+  assert.match(helperSource, /GET_FORBIDDEN[\s\S]*GET_NOT_FOUND[\s\S]*GET_UNREACHABLE/);
+  assert.match(helperSource, /BENCHMARK_ADMIN_OSS_EXCHANGE_\$\{reason\}/);
+  assert.doesNotMatch(helperSource, /console\.(?:log|error)|JSON\.stringify\(error|error\.(?:message|stack)/);
 });
 
 test('operator enforces exact calibration and two-image canary caps before any paid command', () => {
