@@ -19,7 +19,7 @@ while (($#)); do
 done
 
 [[ "$operation" =~ ^(candidates|approve_quick|control_quick|attest)$ && "$expected_sha" =~ ^[a-f0-9]{40}$ ]] || usage
-[[ "$result_path" =~ ^/run/paperbanana-benchmark-admin-result-[0-9]+-[0-9]+-[a-f0-9]{24}\.json$ ]] || usage
+[[ "$result_path" =~ ^/opt/paperbanana/benchmark-admin-result-[0-9]+-[0-9]+-[a-f0-9]{24}\.json$ ]] || usage
 case "$operation" in
   candidates) [[ "$confirm" == list-benchmark-candidates-disabled-worker ]] || usage ;;
   approve_quick)

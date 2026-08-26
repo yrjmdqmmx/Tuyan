@@ -62,7 +62,7 @@ jobs:
           raw_path="$RUNNER_TEMP/benchmark-admin-result.raw"
           result_path="$RUNNER_TEMP/benchmark-admin-result.json"
           remote_nonce="$(openssl rand -hex 12)"
-          remote_result="/run/paperbanana-benchmark-admin-result-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${remote_nonce}.json"
+          remote_result="/opt/paperbanana/benchmark-admin-result-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${remote_nonce}.json"
           printf -v cleanup_cmd 'sudo rm -f -- %q' "$remote_result"
           cleanup() {
             rm -f -- "$raw_path"
