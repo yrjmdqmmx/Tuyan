@@ -167,8 +167,7 @@ test('benchmark admin workflow is manually protected and streams the reviewed op
   assert.match(source, /ssh[\s\S]*sudo bash -s/);
   assert.match(source, /benchmark-admin-result\.json/);
   assert.match(source, /benchmark-admin-result\.raw/);
-  assert.match(source, /matches\.length!==1/);
-  assert.match(source, /writeFileSync\(resultPath/);
+  assert.match(source, /sanitize-benchmark-admin-result\.mjs/);
   assert.match(source, /BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED/);
   assert.match(source, /BENCHMARK_ADMIN_RESULT_SANITIZE_FAILED/);
   assert.match(source, /actions\/upload-artifact@v4/);
