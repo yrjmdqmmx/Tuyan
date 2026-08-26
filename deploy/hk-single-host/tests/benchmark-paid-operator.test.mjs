@@ -198,6 +198,19 @@ test('benchmark admin workflow is protected and uses a private, short-lived OSS 
   assert.doesNotMatch(helperSource, /console\.(?:log|error)|JSON\.stringify\(error|error\.(?:message|stack)/);
 });
 
+test('benchmark admin exchange proves runner and deployed Core use the same OSS configuration', () => {
+  const workflowSource = readFileSync(adminOperatorWorkflowPath, 'utf8');
+  const operatorSource = readFileSync(adminOperatorPath, 'utf8');
+  assert.match(workflowSource, /oss_config_challenge="\$\(openssl rand -hex 32\)"/);
+  assert.match(workflowSource, /oss_config_proof=/);
+  assert.match(workflowSource, /--oss-config-challenge %q --expected-oss-config-proof %q/);
+  assert.match(operatorSource, /--oss-config-challenge/);
+  assert.match(operatorSource, /--expected-oss-config-proof/);
+  assert.match(operatorSource, /BENCHMARK_ADMIN_OSS_CONFIG_MISMATCH/);
+  assert.match(operatorSource, /timingSafeEqual/);
+  assert.doesNotMatch(`${workflowSource}\n${operatorSource}`, /echo [^\n]*(?:oss_config_proof|PAPERBANANA_BENCH_OSS_ACCESS_KEY)/i);
+});
+
 test('operator enforces exact calibration and two-image canary caps before any paid command', () => {
   const source = readFileSync(operatorPath, 'utf8');
   assert.match(source, /calibration/);

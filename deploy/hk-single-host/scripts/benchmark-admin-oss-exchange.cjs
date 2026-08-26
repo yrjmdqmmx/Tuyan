@@ -3,6 +3,7 @@
 
 const fs = require('node:fs')
 const path = require('node:path')
+const { createHmac } = require('node:crypto')
 const OSS = require('ali-oss')
 
 const [operation, objectKey, resultPath = ''] = process.argv.slice(2)
@@ -14,6 +15,20 @@ const required = (name) => {
 }
 
 async function main() {
+  if (operation === 'proof') {
+    if (!/^[a-f0-9]{64}$/.test(objectKey || '')) throw new Error('invalid request')
+    const names = [
+      'PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID',
+      'PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET',
+      'PAPERBANANA_BENCH_OSS_BUCKET',
+      'PAPERBANANA_BENCH_OSS_REGION',
+      'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT',
+      'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT',
+    ]
+    const proof = createHmac('sha256', objectKey).update(JSON.stringify(names.map(required))).digest('hex')
+    process.stdout.write(proof)
+    return
+  }
   if (!['download', 'delete'].includes(operation) || !keyPattern.test(objectKey || '')) throw new Error('invalid request')
   const endpoint = required('PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT')
   const parsed = new URL(endpoint)

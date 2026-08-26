@@ -73,13 +73,16 @@ jobs:
           install -d -m 0700 "$helper_dir"
           cp deploy/hk-single-host/scripts/benchmark-admin-oss-exchange.cjs "$helper_dir/client.cjs"
           npm install --prefix "$helper_dir" --ignore-scripts --no-save --no-audit --no-fund ali-oss@6.23.0 >/dev/null
+          oss_config_challenge="$(openssl rand -hex 32)"
+          oss_config_proof="$(node "$helper_dir/client.cjs" proof "$oss_config_challenge")"
+          [[ "$oss_config_proof" =~ ^[a-f0-9]{64}$ ]]
           cleanup() {
             rm -f -- "$raw_path"
             node "$helper_dir/client.cjs" delete "$object_key" >/dev/null 2>&1 || true
           }
           trap cleanup EXIT
-          printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --result-object-key %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
-            "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$object_key" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
+          printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --result-object-key %q --oss-config-challenge %q --expected-oss-config-proof %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
+            "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$object_key" "$oss_config_challenge" "$oss_config_proof" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
           if ! ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >/dev/null; then
             echo 'BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED' >&2
             exit 1
