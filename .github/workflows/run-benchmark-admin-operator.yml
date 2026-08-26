@@ -57,40 +57,18 @@ jobs:
           PRICE_SOURCE: ${{ inputs.price_source }}
           PRICE_CAPTURED_AT: ${{ inputs.price_captured_at }}
           CONFIRM: ${{ inputs.confirm }}
-          PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID: ${{ secrets.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID }}
-          PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET: ${{ secrets.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET }}
-          PAPERBANANA_BENCH_OSS_BUCKET: ${{ secrets.PAPERBANANA_BENCH_OSS_BUCKET }}
-          PAPERBANANA_BENCH_OSS_REGION: ${{ secrets.PAPERBANANA_BENCH_OSS_REGION }}
-          PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT: ${{ secrets.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT }}
-          PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT: ${{ secrets.PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT }}
         run: |
           set -Eeuo pipefail
           raw_path="$RUNNER_TEMP/benchmark-admin-result.raw"
           result_path="$RUNNER_TEMP/benchmark-admin-result.json"
-          remote_nonce="$(openssl rand -hex 12)"
-          object_key="bench/admin-exchange/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${remote_nonce}.json"
-          helper_dir="$RUNNER_TEMP/benchmark-admin-oss"
-          install -d -m 0700 "$helper_dir"
-          cp deploy/hk-single-host/scripts/benchmark-admin-oss-exchange.cjs "$helper_dir/client.cjs"
-          npm install --prefix "$helper_dir" --ignore-scripts --no-save --no-audit --no-fund ali-oss@6.23.0 >/dev/null
-          oss_config_challenge="$(openssl rand -hex 32)"
-          oss_config_proof="$(node "$helper_dir/client.cjs" proof "$oss_config_challenge")"
-          [[ "$oss_config_proof" =~ ^[a-f0-9]{64}$ ]]
-          cleanup() {
-            rm -f -- "$raw_path"
-            node "$helper_dir/client.cjs" delete "$object_key" >/dev/null 2>&1 || true
-          }
-          trap cleanup EXIT
-          printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --result-object-key %q --oss-config-challenge %q --expected-oss-config-proof %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
-            "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$object_key" "$oss_config_challenge" "$oss_config_proof" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
-          if ! ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >/dev/null; then
+          trap 'rm -f -- "$raw_path"' EXIT
+          printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
+            "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
+          if ! ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >"$raw_path"; then
             echo 'BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED' >&2
             exit 1
           fi
-          if ! node "$helper_dir/client.cjs" download "$object_key" "$raw_path"; then
-            echo 'BENCHMARK_ADMIN_RESULT_TRANSFER_FAILED' >&2
-            exit 1
-          fi
+          chmod 0600 "$raw_path"
           if ! node deploy/hk-single-host/scripts/sanitize-benchmark-admin-result.mjs "$raw_path" "$result_path" "$OPERATION"; then
             echo 'BENCHMARK_ADMIN_RESULT_SANITIZE_FAILED' >&2
             exit 1
