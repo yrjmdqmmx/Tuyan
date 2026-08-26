@@ -38,17 +38,10 @@ NODE
 esac
 
 [[ "$(id -u)" == 0 ]] || { echo 'benchmark admin operator must run as root' >&2; exit 1; }
-if [[ -z "${SUDO_USER:-}" || ! "$SUDO_USER" =~ ^[A-Za-z_][A-Za-z0-9_-]{0,31}$ ]]; then
-  echo 'BENCHMARK_ADMIN_RESULT_OWNER_INVALID' >&2; exit 1
-fi
-if ! result_group="$(id -gn "$SUDO_USER")" || [[ -z "$result_group" ]]; then
-  echo 'BENCHMARK_ADMIN_RESULT_OWNER_INVALID' >&2; exit 1
-fi
 if [[ -e "$result_path" || -L "$result_path" ]]; then
   echo 'BENCHMARK_ADMIN_RESULT_PATH_UNSAFE' >&2; exit 1
 fi
-result_ready=false
-cleanup_result() { if [[ "$result_ready" != true ]]; then rm -f -- "$result_path"; fi; }
+cleanup_result() { rm -f -- "$result_path"; }
 trap cleanup_result EXIT
 deploy_dir='/opt/paperbanana/repo/deploy/hk-single-host'; secret_dir='/opt/paperbanana/secrets'; lock_path='/run/lock/paperbanana-hk-production.lock'
 deploy_env="$deploy_dir/.env" core_env="$secret_dir/core.env" bench_env="$secret_dir/bench.env" gateway_env="$secret_dir/gateway.env"
@@ -128,5 +121,4 @@ NODE
 exec 8>&-
 [[ -f "$result_path" && ! -L "$result_path" && -s "$result_path" ]] || exit 1
 chmod 0600 "$result_path"
-chown "$SUDO_USER:$result_group" "$result_path"
-result_ready=true
+cat -- "$result_path"
