@@ -75,7 +75,12 @@ jobs:
             echo 'BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED' >&2
             exit 1
           fi
-          if ! scp "$USER@$HOST:$remote_result" "$raw_path"; then
+          printf -v exists_cmd 'sudo test -f %q' "$remote_result"
+          if ! ssh "$USER@$HOST" "$exists_cmd"; then
+            echo 'BENCHMARK_ADMIN_REMOTE_RESULT_MISSING' >&2
+            exit 1
+          fi
+          if ! scp -O "$USER@$HOST:$remote_result" "$raw_path"; then
             echo 'BENCHMARK_ADMIN_RESULT_TRANSFER_FAILED' >&2
             exit 1
           fi

@@ -174,7 +174,8 @@ test('benchmark admin workflow is manually protected and streams the reviewed op
   assert.match(source, /benchmark-admin-result\.raw/);
   assert.match(source, /sanitize-benchmark-admin-result\.mjs/);
   assert.match(source, /openssl rand -hex 12/);
-  assert.match(source, /scp /);
+  assert.match(source, /scp -O /);
+  assert.match(source, /BENCHMARK_ADMIN_REMOTE_RESULT_MISSING/);
   assert.match(source, /sudo rm -f/);
   assert.match(source, /BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED/);
   assert.match(source, /BENCHMARK_ADMIN_RESULT_SANITIZE_FAILED/);
