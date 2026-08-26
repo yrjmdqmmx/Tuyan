@@ -69,23 +69,7 @@ jobs:
             exit 1
           fi
           chmod 0600 "$raw_path"
-          if ! node - "$raw_path" "$result_path" "$OPERATION" <<'NODE'
-          const fs=require('node:fs')
-          const [rawPath,resultPath,operation]=process.argv.slice(2)
-          const raw=fs.readFileSync(rawPath)
-          if(raw.length<2||raw.length>1024*1024)process.exit(1)
-          const parsed=[]
-          for(const line of raw.toString('utf8').split(/\r?\n/)){if(!line.trim())continue;try{parsed.push(JSON.parse(line))}catch{}}
-          const matches=parsed.filter(value=>value?.schemaVersion===1&&value?.operation===operation&&value?.workerEnabled===false&&value?.data&&typeof value.data==='object')
-          if(matches.length!==1)process.exit(1)
-          const value=matches[0]
-          if(value?.schemaVersion!==1||value?.operation!==operation||value?.workerEnabled!==false||!value?.data||typeof value.data!=='object')process.exit(1)
-          const forbidden=/secret|token|credential|password|access.?key|private.?key/i
-          const visit=(entry)=>{if(Array.isArray(entry)){for(const item of entry)visit(item);return}if(!entry||typeof entry!=='object')return;for(const [key,item]of Object.entries(entry)){if(forbidden.test(key))process.exit(1);visit(item)}}
-          visit(value)
-          fs.writeFileSync(resultPath,`${JSON.stringify(value)}\n`,{mode:0o600,flag:'wx'})
-          NODE
-          then
+          if ! node deploy/hk-single-host/scripts/sanitize-benchmark-admin-result.mjs "$raw_path" "$result_path" "$OPERATION"; then
             echo 'BENCHMARK_ADMIN_RESULT_SANITIZE_FAILED' >&2
             exit 1
           fi
