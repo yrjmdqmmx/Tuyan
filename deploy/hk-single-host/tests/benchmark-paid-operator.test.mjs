@@ -157,6 +157,7 @@ test('benchmark admin operator exposes only fixed candidate, approval, control a
   assert.match(source, /paperbanana-benchmark-admin-result-/);
   assert.match(source, /SUDO_USER/);
   assert.match(source, /noclobber/);
+  assert.doesNotMatch(source, /SUDO_USER[^\n]*!= root/);
   assert.match(source, /BENCHMARK_ADMIN_(?:CORE|RESULT)_[A-Z_]+/);
   assert.doesNotMatch(source, /console\.error\([^\n]*(?:result|response)/);
   assert.doesNotMatch(source, /adminBenchmarkPublish|adminBenchmarkReviewImport|adminBenchmarkReviewExport|set -x|printenv/);
