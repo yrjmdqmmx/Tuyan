@@ -153,6 +153,8 @@ test('benchmark admin operator exposes only fixed candidate, approval, control a
   assert.match(source, /adminBenchmarkControl/);
   assert.match(source, /phaseOperatorAttestation/);
   assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
+  assert.match(source, /BENCHMARK_ADMIN_(?:CORE|RESULT)_[A-Z_]+/);
+  assert.doesNotMatch(source, /console\.error\([^\n]*(?:result|response)/);
   assert.doesNotMatch(source, /adminBenchmarkPublish|adminBenchmarkReviewImport|adminBenchmarkReviewExport|set -x|printenv/);
 });
 
@@ -167,6 +169,8 @@ test('benchmark admin workflow is manually protected and streams the reviewed op
   assert.match(source, /benchmark-admin-result\.raw/);
   assert.match(source, /matches\.length!==1/);
   assert.match(source, /writeFileSync\(resultPath/);
+  assert.match(source, /BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED/);
+  assert.match(source, /BENCHMARK_ADMIN_RESULT_SANITIZE_FAILED/);
   assert.match(source, /actions\/upload-artifact@v4/);
   assert.match(source, /retention-days:\s*1/);
   assert.match(source, /if-no-files-found:\s*error/);
