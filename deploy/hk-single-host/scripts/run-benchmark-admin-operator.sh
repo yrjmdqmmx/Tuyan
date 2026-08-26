@@ -68,9 +68,13 @@ else if(operation==='approve_quick') body={
 }
 else if(operation==='control_quick') body={action:'adminBenchmarkControl',command:'transition',runId:process.env.PAPERBANANA_OPERATOR_RUN_ID,targetState:'quick_running',reason:'approved bounded quick operator'}
 else body={action:'adminBenchmarkControl',command:'phaseOperatorAttestation',runId:process.env.PAPERBANANA_OPERATOR_RUN_ID}
-const response=await fetch('http://127.0.0.1:3000/paperbanana-api',{method:'POST',headers:{'content-type':'application/json','x-paperbanana-gateway-token':process.env.PAPERBANANA_GATEWAY_TOKEN,'x-paperbanana-admin-transport-token':process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,'x-paperbanana-admin-user-id':process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)})
-const result=await response.json().catch(()=>({}))
-if(!response.ok||result.code!==0)process.exit(1)
+let response
+try { response=await fetch('http://127.0.0.1:3000/paperbanana-api',{method:'POST',headers:{'content-type':'application/json','x-paperbanana-gateway-token':process.env.PAPERBANANA_GATEWAY_TOKEN,'x-paperbanana-admin-transport-token':process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,'x-paperbanana-admin-user-id':process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)}) }
+catch { console.error('BENCHMARK_ADMIN_CORE_UNREACHABLE'); process.exit(70) }
+let result
+try { result=await response.json() }
+catch { console.error('BENCHMARK_ADMIN_CORE_INVALID_JSON'); process.exit(71) }
+if(!response.ok||result.code!==0){console.error('BENCHMARK_ADMIN_CORE_ACTION_REJECTED');process.exit(72)}
 const text=(value,max=500)=>String(value??'').slice(0,max)
 const priceSnapshot=value=>value&&typeof value==='object'?{
   currency:text(value.currency,8),source:text(value.source),
@@ -100,5 +104,6 @@ else {
   run.priceSnapshot=priceSnapshot(result.run?.priceSnapshot)
   data={run}
 }
-process.stdout.write(`${JSON.stringify({schemaVersion:1,operation,workerEnabled:false,data})}\n`)
+try { process.stdout.write(`${JSON.stringify({schemaVersion:1,operation,workerEnabled:false,data})}\n`) }
+catch { console.error('BENCHMARK_ADMIN_RESULT_BUILD_FAILED'); process.exit(73) }
 NODE
