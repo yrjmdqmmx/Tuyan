@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-operation='' expected_sha='' candidate_id='' run_id='' max_generations='' max_judge_calls=''
+operation='' expected_sha='' candidate_id='' run_id='' result_path='' max_generations='' max_judge_calls=''
 max_estimated_usd='' generation_usd='' judge_usd='' price_source='' price_captured_at='' confirm=''
 
-usage() { echo 'Usage: run-benchmark-admin-operator.sh --operation candidates|approve_quick|control_quick|attest --expected-sha SHA [bounded operation fields] --confirm PHRASE' >&2; exit 64; }
+usage() { echo 'Usage: run-benchmark-admin-operator.sh --operation candidates|approve_quick|control_quick|attest --expected-sha SHA --result-path RANDOM_PATH [bounded operation fields] --confirm PHRASE' >&2; exit 64; }
 while (($#)); do
   case "$1" in
     --operation) operation="${2:-}"; shift 2 ;; --expected-sha) expected_sha="${2:-}"; shift 2 ;;
     --candidate-id) candidate_id="${2:-}"; shift 2 ;; --run-id) run_id="${2:-}"; shift 2 ;;
+    --result-path) result_path="${2:-}"; shift 2 ;;
     --max-generations) max_generations="${2:-}"; shift 2 ;; --max-judge-calls) max_judge_calls="${2:-}"; shift 2 ;;
     --max-estimated-usd) max_estimated_usd="${2:-}"; shift 2 ;; --estimated-per-generation-usd) generation_usd="${2:-}"; shift 2 ;;
     --estimated-per-judge-call-usd) judge_usd="${2:-}"; shift 2 ;; --price-source) price_source="${2:-}"; shift 2 ;;
@@ -18,6 +19,7 @@ while (($#)); do
 done
 
 [[ "$operation" =~ ^(candidates|approve_quick|control_quick|attest)$ && "$expected_sha" =~ ^[a-f0-9]{40}$ ]] || usage
+[[ "$result_path" =~ ^/tmp/paperbanana-benchmark-admin-result-[0-9]+-[0-9]+-[a-f0-9]{24}\.json$ ]] || usage
 case "$operation" in
   candidates) [[ "$confirm" == list-benchmark-candidates-disabled-worker ]] || usage ;;
   approve_quick)
@@ -36,6 +38,12 @@ NODE
 esac
 
 [[ "$(id -u)" == 0 ]] || { echo 'benchmark admin operator must run as root' >&2; exit 1; }
+[[ -n "${SUDO_USER:-}" && "$SUDO_USER" != root && "$SUDO_USER" =~ ^[A-Za-z_][A-Za-z0-9_-]{0,31}$ ]] || exit 1
+result_group="$(id -gn "$SUDO_USER")"
+[[ -n "$result_group" && ! -e "$result_path" && ! -L "$result_path" ]] || exit 1
+result_ready=false
+cleanup_result() { if [[ "$result_ready" != true ]]; then rm -f -- "$result_path"; fi; }
+trap cleanup_result EXIT
 deploy_dir='/opt/paperbanana/repo/deploy/hk-single-host'; secret_dir='/opt/paperbanana/secrets'; lock_path='/run/lock/paperbanana-hk-production.lock'
 deploy_env="$deploy_dir/.env" core_env="$secret_dir/core.env" bench_env="$secret_dir/bench.env" gateway_env="$secret_dir/gateway.env"
 read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
@@ -50,13 +58,17 @@ admin_user_id="$(read_env_value "$gateway_env" ADMIN_USER_IDS | awk -F, '{gsub(/
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 "${compose[@]}" exec -T paperbanana-api node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha" >/dev/null
 "${compose[@]}" exec -T benchmark-worker node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' >/dev/null
+umask 077
+set -o noclobber
+exec 8>"$result_path"
+set +o noclobber
 "${compose[@]}" exec -T \
   -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" -e PAPERBANANA_OPERATOR_OPERATION="$operation" \
   -e PAPERBANANA_OPERATOR_CANDIDATE_ID="$candidate_id" -e PAPERBANANA_OPERATOR_RUN_ID="$run_id" \
   -e PAPERBANANA_OPERATOR_MAX_GENERATIONS="$max_generations" -e PAPERBANANA_OPERATOR_MAX_JUDGE_CALLS="$max_judge_calls" \
   -e PAPERBANANA_OPERATOR_MAX_ESTIMATED_USD="$max_estimated_usd" -e PAPERBANANA_OPERATOR_GENERATION_USD="$generation_usd" \
   -e PAPERBANANA_OPERATOR_JUDGE_USD="$judge_usd" -e PAPERBANANA_OPERATOR_PRICE_SOURCE="$price_source" \
-  -e PAPERBANANA_OPERATOR_PRICE_CAPTURED_AT="$price_captured_at" paperbanana-api node - <<'NODE'
+  -e PAPERBANANA_OPERATOR_PRICE_CAPTURED_AT="$price_captured_at" paperbanana-api node - >&8 <<'NODE'
 const operation=process.env.PAPERBANANA_OPERATOR_OPERATION
 let body
 if(operation==='candidates') body={action:'adminBenchmarkCandidates'}
@@ -107,3 +119,8 @@ else {
 try { process.stdout.write(`${JSON.stringify({schemaVersion:1,operation,workerEnabled:false,data})}\n`) }
 catch { console.error('BENCHMARK_ADMIN_RESULT_BUILD_FAILED'); process.exit(73) }
 NODE
+exec 8>&-
+[[ -f "$result_path" && ! -L "$result_path" && -s "$result_path" ]] || exit 1
+chmod 0600 "$result_path"
+chown "$SUDO_USER:$result_group" "$result_path"
+result_ready=true
