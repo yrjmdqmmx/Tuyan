@@ -121,4 +121,4 @@ NODE
 exec 8>&-
 [[ -f "$result_path" && ! -L "$result_path" && -s "$result_path" ]] || exit 1
 chmod 0600 "$result_path"
-cat -- "$result_path"
+cat -- "$result_path" >&2

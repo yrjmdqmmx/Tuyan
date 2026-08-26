@@ -66,7 +66,7 @@ jobs:
           trap 'rm -f -- "$raw_path"' EXIT
           printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --result-path %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
             "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$remote_result" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
-          if ! ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >"$raw_path"; then
+          if ! ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >/dev/null 2>"$raw_path"; then
             echo 'BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED' >&2
             exit 1
           fi
