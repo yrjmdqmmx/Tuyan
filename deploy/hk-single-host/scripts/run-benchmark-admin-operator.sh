@@ -38,9 +38,15 @@ NODE
 esac
 
 [[ "$(id -u)" == 0 ]] || { echo 'benchmark admin operator must run as root' >&2; exit 1; }
-[[ -n "${SUDO_USER:-}" && "$SUDO_USER" != root && "$SUDO_USER" =~ ^[A-Za-z_][A-Za-z0-9_-]{0,31}$ ]] || exit 1
-result_group="$(id -gn "$SUDO_USER")"
-[[ -n "$result_group" && ! -e "$result_path" && ! -L "$result_path" ]] || exit 1
+if [[ -z "${SUDO_USER:-}" || ! "$SUDO_USER" =~ ^[A-Za-z_][A-Za-z0-9_-]{0,31}$ ]]; then
+  echo 'BENCHMARK_ADMIN_RESULT_OWNER_INVALID' >&2; exit 1
+fi
+if ! result_group="$(id -gn "$SUDO_USER")" || [[ -z "$result_group" ]]; then
+  echo 'BENCHMARK_ADMIN_RESULT_OWNER_INVALID' >&2; exit 1
+fi
+if [[ -e "$result_path" || -L "$result_path" ]]; then
+  echo 'BENCHMARK_ADMIN_RESULT_PATH_UNSAFE' >&2; exit 1
+fi
 result_ready=false
 cleanup_result() { if [[ "$result_ready" != true ]]; then rm -f -- "$result_path"; fi; }
 trap cleanup_result EXIT
