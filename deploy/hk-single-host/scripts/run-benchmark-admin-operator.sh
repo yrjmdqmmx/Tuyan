@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-operation='' expected_sha='' candidate_id='' run_id='' result_object_key='' max_generations='' max_judge_calls=''
+operation='' expected_sha='' candidate_id='' run_id='' result_object_key='' oss_config_challenge='' expected_oss_config_proof='' max_generations='' max_judge_calls=''
 max_estimated_usd='' generation_usd='' judge_usd='' price_source='' price_captured_at='' confirm=''
 
 usage() { echo 'Usage: run-benchmark-admin-operator.sh --operation candidates|approve_quick|control_quick|attest --expected-sha SHA --result-object-key RANDOM_KEY [bounded operation fields] --confirm PHRASE' >&2; exit 64; }
@@ -10,6 +10,8 @@ while (($#)); do
     --operation) operation="${2:-}"; shift 2 ;; --expected-sha) expected_sha="${2:-}"; shift 2 ;;
     --candidate-id) candidate_id="${2:-}"; shift 2 ;; --run-id) run_id="${2:-}"; shift 2 ;;
     --result-object-key) result_object_key="${2:-}"; shift 2 ;;
+    --oss-config-challenge) oss_config_challenge="${2:-}"; shift 2 ;;
+    --expected-oss-config-proof) expected_oss_config_proof="${2:-}"; shift 2 ;;
     --max-generations) max_generations="${2:-}"; shift 2 ;; --max-judge-calls) max_judge_calls="${2:-}"; shift 2 ;;
     --max-estimated-usd) max_estimated_usd="${2:-}"; shift 2 ;; --estimated-per-generation-usd) generation_usd="${2:-}"; shift 2 ;;
     --estimated-per-judge-call-usd) judge_usd="${2:-}"; shift 2 ;; --price-source) price_source="${2:-}"; shift 2 ;;
@@ -20,6 +22,7 @@ done
 
 [[ "$operation" =~ ^(candidates|approve_quick|control_quick|attest)$ && "$expected_sha" =~ ^[a-f0-9]{40}$ ]] || usage
 [[ "$result_object_key" =~ ^bench/admin-exchange/[0-9]+-[0-9]+-[a-f0-9]{24}\.json$ ]] || usage
+[[ "$oss_config_challenge" =~ ^[a-f0-9]{64}$ && "$expected_oss_config_proof" =~ ^[a-f0-9]{64}$ ]] || usage
 case "$operation" in
   candidates) [[ "$confirm" == list-benchmark-candidates-disabled-worker ]] || usage ;;
   approve_quick)
@@ -52,6 +55,26 @@ admin_user_id="$(read_env_value "$gateway_env" ADMIN_USER_IDS | awk -F, '{gsub(/
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 "${compose[@]}" exec -T paperbanana-api node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha" >/dev/null
 "${compose[@]}" exec -T benchmark-worker node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' >/dev/null
+"${compose[@]}" exec -T \
+  -e PAPERBANANA_OPERATOR_OSS_CONFIG_CHALLENGE="$oss_config_challenge" \
+  -e PAPERBANANA_OPERATOR_EXPECTED_OSS_CONFIG_PROOF="$expected_oss_config_proof" paperbanana-api node - <<'NODE'
+const { createHmac, timingSafeEqual } = require('node:crypto')
+const names = [
+  'PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID',
+  'PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET',
+  'PAPERBANANA_BENCH_OSS_BUCKET',
+  'PAPERBANANA_BENCH_OSS_REGION',
+  'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT',
+  'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT',
+]
+const required = name => { const value = String(process.env[name] || '').trim(); if (!value) process.exit(1); return value }
+const actual = createHmac('sha256', process.env.PAPERBANANA_OPERATOR_OSS_CONFIG_CHALLENGE).update(JSON.stringify(names.map(required))).digest()
+const expected = Buffer.from(process.env.PAPERBANANA_OPERATOR_EXPECTED_OSS_CONFIG_PROOF, 'hex')
+if (expected.length !== actual.length || !timingSafeEqual(actual, expected)) {
+  console.error('BENCHMARK_ADMIN_OSS_CONFIG_MISMATCH')
+  process.exit(1)
+}
+NODE
 "${compose[@]}" exec -T \
   -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" -e PAPERBANANA_OPERATOR_OPERATION="$operation" \
   -e PAPERBANANA_OPERATOR_CANDIDATE_ID="$candidate_id" -e PAPERBANANA_OPERATOR_RUN_ID="$run_id" \
