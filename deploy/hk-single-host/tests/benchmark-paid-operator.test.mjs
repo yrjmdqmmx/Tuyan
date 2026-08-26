@@ -156,7 +156,7 @@ test('benchmark admin operator exposes only fixed candidate, approval, control a
   assert.match(source, /--result-path/);
   assert.match(source, /paperbanana-benchmark-admin-result-/);
   assert.match(source, /noclobber/);
-  assert.match(source, /cat -- "\$result_path"/);
+  assert.match(source, /cat -- "\$result_path" >&2/);
   assert.match(source, /cleanup_result\(\)[\s\S]*rm -f -- "\$result_path"/);
   assert.doesNotMatch(source, /SUDO_USER|chown\s/);
   assert.match(source, /BENCHMARK_ADMIN_(?:CORE|RESULT)_[A-Z_]+/);
@@ -175,7 +175,7 @@ test('benchmark admin workflow is manually protected and streams the reviewed op
   assert.match(source, /benchmark-admin-result\.raw/);
   assert.match(source, /sanitize-benchmark-admin-result\.mjs/);
   assert.match(source, /openssl rand -hex 12/);
-  assert.match(source, /ssh[\s\S]*>"\$raw_path"/);
+  assert.match(source, /ssh[\s\S]*>\/dev\/null 2>"\$raw_path"/);
   assert.doesNotMatch(source, /\bscp\b|BENCHMARK_ADMIN_REMOTE_RESULT_MISSING/);
   assert.match(source, /BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED/);
   assert.match(source, /BENCHMARK_ADMIN_RESULT_SANITIZE_FAILED/);
