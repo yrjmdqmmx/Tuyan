@@ -59,6 +59,26 @@ jobs:
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
+          result_path="$RUNNER_TEMP/benchmark-admin-result.json"
           printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
             "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
-          ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh
+          ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >"$result_path"
+          chmod 0600 "$result_path"
+          node - "$result_path" "$OPERATION" <<'NODE'
+          const fs=require('node:fs')
+          const [path,operation]=process.argv.slice(2)
+          const raw=fs.readFileSync(path)
+          if(raw.length<2||raw.length>1024*1024)process.exit(1)
+          let value; try{value=JSON.parse(raw.toString('utf8'))}catch{process.exit(1)}
+          if(value?.schemaVersion!==1||value?.operation!==operation||value?.workerEnabled!==false||!value?.data||typeof value.data!=='object')process.exit(1)
+          const forbidden=/secret|token|credential|password|access.?key|private.?key/i
+          const visit=(entry)=>{if(Array.isArray(entry)){for(const item of entry)visit(item);return}if(!entry||typeof entry!=='object')return;for(const [key,item]of Object.entries(entry)){if(forbidden.test(key))process.exit(1);visit(item)}}
+          visit(value)
+          NODE
+      - name: Upload bounded admin result
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-admin-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/benchmark-admin-result.json
+          if-no-files-found: error
+          retention-days: 1

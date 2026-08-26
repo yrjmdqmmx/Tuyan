@@ -71,6 +71,34 @@ else body={action:'adminBenchmarkControl',command:'phaseOperatorAttestation',run
 const response=await fetch('http://127.0.0.1:3000/paperbanana-api',{method:'POST',headers:{'content-type':'application/json','x-paperbanana-gateway-token':process.env.PAPERBANANA_GATEWAY_TOKEN,'x-paperbanana-admin-transport-token':process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,'x-paperbanana-admin-user-id':process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)})
 const result=await response.json().catch(()=>({}))
 if(!response.ok||result.code!==0)process.exit(1)
-process.stdout.write(`${JSON.stringify(result)}\n`)
+const text=(value,max=500)=>String(value??'').slice(0,max)
+const priceSnapshot=value=>value&&typeof value==='object'?{
+  currency:text(value.currency,8),source:text(value.source),
+  estimatedPerGeneration:Number(value.estimatedPerGeneration),estimatedPerJudgeCall:Number(value.estimatedPerJudgeCall),
+  capturedAt:text(value.capturedAt,40),
+}:undefined
+const candidate=value=>({
+  candidateId:text(value?.candidateId,200),provider:text(value?.provider,80),modelId:text(value?.modelId,200),
+  developer:text(value?.developer,160),lane:value?.lane??null,state:text(value?.state,40),
+  registryHash:text(value?.registryHash,64),detectedAt:value?.detectedAt??null,
+  ...(value?.runId?{runId:text(value.runId,80)}:{}),
+  ...(value?.reapproved===true?{reapproved:true}:{}),
+  ...(value?.approval?{approval:{
+    entitlementConfirmed:value.approval.entitlementConfirmed===true,
+    priceSnapshot:priceSnapshot(value.approval.priceSnapshot),maxGenerations:Number(value.approval.maxGenerations),
+    maxJudgments:Number(value.approval.maxJudgments),maxJudgeCalls:Number(value.approval.maxJudgeCalls),
+    maxEstimatedUsd:Number(value.approval.maxEstimatedUsd),approvedAt:value.approval.approvedAt??null,
+  }}:{}),
+})
+const attestationKeys=['schemaVersion','runId','phase','state','codeSha','provider','modelId','lane','suiteId','suiteHash','judgeEpoch','judgeStackHash','signedAuthorizationHash','priceHash','immutableFactsHash','runHash','runFactsHash','candidateSnapshotHash','aspectRatiosHash','registryHash','runIntegrityAttestation','maxGenerations','maxJudgments','maxJudgeCalls','maxEstimatedUsd']
+let data
+if(operation==='candidates')data={candidates:Array.isArray(result.candidates)?result.candidates.map(candidate):[]}
+else if(operation==='approve_quick')data={approval:candidate(result.approval)}
+else if(operation==='control_quick')data={run:{runId:text(result.run?.runId,80),state:text(result.run?.state,40)}}
+else {
+  const run={}; for(const key of attestationKeys)run[key]=result.run?.[key]
+  run.priceSnapshot=priceSnapshot(result.run?.priceSnapshot)
+  data={run}
+}
+process.stdout.write(`${JSON.stringify({schemaVersion:1,operation,workerEnabled:false,data})}\n`)
 NODE
-printf 'PAPERBANANA_BENCH_ENABLED=false\n'
