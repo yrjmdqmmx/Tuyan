@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+'use strict'
+
+const fs = require('node:fs')
+const path = require('node:path')
+const OSS = require('ali-oss')
+
+const [operation, objectKey, resultPath = ''] = process.argv.slice(2)
+const keyPattern = /^bench\/admin-exchange\/[0-9]+-[0-9]+-[a-f0-9]{24}\.json$/
+const required = (name) => {
+  const value = String(process.env[name] || '').trim()
+  if (!value) throw new Error('missing configuration')
+  return value
+}
+
+async function main() {
+  if (!['download', 'delete'].includes(operation) || !keyPattern.test(objectKey || '')) throw new Error('invalid request')
+  const endpoint = required('PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT')
+  const parsed = new URL(endpoint)
+  if (parsed.protocol !== 'https:' || parsed.username || parsed.password) throw new Error('invalid endpoint')
+  const client = new OSS({
+    region: required('PAPERBANANA_BENCH_OSS_REGION'),
+    accessKeyId: required('PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID'),
+    accessKeySecret: required('PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET'),
+    bucket: required('PAPERBANANA_BENCH_OSS_BUCKET'),
+    endpoint,
+    secure: true,
+    authorizationV4: true,
+  })
+  if (operation === 'delete') {
+    await client.delete(objectKey)
+    return
+  }
+  if (!path.isAbsolute(resultPath) || fs.existsSync(resultPath) || !fs.statSync(path.dirname(resultPath)).isDirectory()) throw new Error('unsafe output')
+  const response = await client.get(objectKey)
+  const content = Buffer.isBuffer(response?.content) ? response.content : Buffer.from(response?.content || '')
+  if (content.length < 2 || content.length > 1024 * 1024) throw new Error('invalid content')
+  const fd = fs.openSync(resultPath, 'wx', 0o600)
+  try { fs.writeFileSync(fd, content) } finally { fs.closeSync(fd) }
+  fs.chmodSync(resultPath, 0o600)
+}
+
+main().catch(() => {
+  process.stderr.write('BENCHMARK_ADMIN_OSS_EXCHANGE_FAILED\n')
+  process.exitCode = 1
+})
