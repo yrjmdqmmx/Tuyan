@@ -137,7 +137,7 @@ if(payload.length<2||payload.length>1024*1024){console.error('BENCHMARK_ADMIN_RE
 try {
   const imported=await import('ali-oss'); const OSS=imported.default
   const required=name=>{const value=String(process.env[name]||'').trim();if(!value)throw new Error('missing');return value}
-  const client=new OSS({region:required('PAPERBANANA_BENCH_OSS_REGION'),accessKeyId:required('PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID'),accessKeySecret:required('PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET'),bucket:required('PAPERBANANA_BENCH_OSS_BUCKET'),endpoint:required('PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT'),secure:true,authorizationV4:true})
+  const client=new OSS({region:required('PAPERBANANA_BENCH_OSS_REGION'),accessKeyId:required('PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID'),accessKeySecret:required('PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET'),bucket:required('PAPERBANANA_BENCH_OSS_BUCKET'),endpoint:required('PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT'),secure:true,authorizationV4:true,cname:false,sldEnable:false})
   await client.put(process.env.PAPERBANANA_OPERATOR_RESULT_OBJECT_KEY,payload,{headers:{'content-type':'application/json','x-oss-object-acl':'private','x-oss-forbid-overwrite':'true'}})
 } catch { console.error('BENCHMARK_ADMIN_OSS_EXCHANGE_FAILED'); process.exit(74) }
 NODE

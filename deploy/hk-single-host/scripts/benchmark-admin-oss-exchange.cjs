@@ -41,6 +41,8 @@ async function main() {
     endpoint,
     secure: true,
     authorizationV4: true,
+    cname: false,
+    sldEnable: false,
   })
   if (operation === 'delete') {
     await client.delete(objectKey)

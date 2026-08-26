@@ -211,6 +211,15 @@ test('benchmark admin exchange proves runner and deployed Core use the same OSS 
   assert.doesNotMatch(`${workflowSource}\n${operatorSource}`, /echo [^\n]*(?:oss_config_proof|PAPERBANANA_BENCH_OSS_ACCESS_KEY)/i);
 });
 
+test('benchmark admin OSS clients use the production adapter addressing mode', () => {
+  const helperSource = readFileSync(adminOssExchangePath, 'utf8');
+  const operatorSource = readFileSync(adminOperatorPath, 'utf8');
+  for (const source of [helperSource, operatorSource]) {
+    assert.match(source, /cname:\s*false/);
+    assert.match(source, /sldEnable:\s*false/);
+  }
+});
+
 test('operator enforces exact calibration and two-image canary caps before any paid command', () => {
   const source = readFileSync(operatorPath, 'utf8');
   assert.match(source, /calibration/);
