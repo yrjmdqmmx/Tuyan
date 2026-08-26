@@ -62,12 +62,22 @@ jobs:
           raw_path="$RUNNER_TEMP/benchmark-admin-result.raw"
           result_path="$RUNNER_TEMP/benchmark-admin-result.json"
           remote_nonce="$(openssl rand -hex 12)"
-          remote_result="/tmp/paperbanana-benchmark-admin-result-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${remote_nonce}.json"
-          trap 'rm -f -- "$raw_path"' EXIT
+          remote_result="/run/paperbanana-benchmark-admin-result-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${remote_nonce}.json"
+          printf -v cleanup_cmd 'sudo rm -f -- %q' "$remote_result"
+          cleanup() {
+            rm -f -- "$raw_path"
+            ssh "$USER@$HOST" "$cleanup_cmd" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
           printf -v cmd 'sudo bash -s -- --operation %q --expected-sha %q --candidate-id %q --run-id %q --result-path %q --max-generations %q --max-judge-calls %q --max-estimated-usd %q --estimated-per-generation-usd %q --estimated-per-judge-call-usd %q --price-source %q --price-captured-at %q --confirm %q' \
             "$OPERATION" "$SHA" "$CANDIDATE_ID" "$RUN_ID" "$remote_result" "$MAX_GENERATIONS" "$MAX_JUDGE_CALLS" "$MAX_USD" "$GEN_USD" "$JUDGE_USD" "$PRICE_SOURCE" "$PRICE_CAPTURED_AT" "$CONFIRM"
-          if ! ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >/dev/null 2>"$raw_path"; then
+          if ! ssh "$USER@$HOST" "$cmd" < deploy/hk-single-host/scripts/run-benchmark-admin-operator.sh >/dev/null; then
             echo 'BENCHMARK_ADMIN_REMOTE_OPERATOR_FAILED' >&2
+            exit 1
+          fi
+          printf -v read_cmd 'cat -- %q' "$remote_result"
+          if ! ssh "$USER@$HOST" "$read_cmd" >"$raw_path"; then
+            echo 'BENCHMARK_ADMIN_RESULT_TRANSFER_FAILED' >&2
             exit 1
           fi
           chmod 0600 "$raw_path"
