@@ -8,6 +8,7 @@ import { test } from 'node:test'
 import { createHash } from 'node:crypto'
 
 const script = fileURLToPath(new URL('../scripts/run-benchmark-phase-operator.sh', import.meta.url))
+const batchScript = fileURLToPath(new URL('../scripts/run-benchmark-standard-batch.sh', import.meta.url))
 const verifier = fileURLToPath(new URL('../scripts/verify-benchmark-phase-attestation.mjs', import.meta.url))
 const workflow = fileURLToPath(new URL('../../../.github/workflows/run-benchmark-phase-operator.yml', import.meta.url))
 const sha = 'a'.repeat(40)
@@ -72,6 +73,9 @@ test('bounded phase host operator is executable, lock-scoped and one-shot', () =
   assert.ok(source.indexOf('phaseOperatorAttestation') < source.indexOf('node dist/phase-operator.mjs'))
   assert.ok(source.indexOf('verify-benchmark-phase-attestation.mjs') < source.indexOf('node dist/phase-operator.mjs'))
   assert.match(source, /BENCHMARK_PHASE_OPERATOR_POSTCONDITION/)
+  assert.match(source, /date -u -d "\$price_captured_at"/)
+  assert.match(source, /awk -v maxUsd="\$max_estimated_usd"/)
+  assert.doesNotMatch(source, /node - "\$price_source" "\$price_captured_at"/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_ENABLED\s*=\s*true|set -x|printenv/)
 })
 
@@ -167,6 +171,50 @@ test('bounded phase dry-run validates files and performs zero docker/provider ca
     const apply = item.run(['--apply'])
     assert.notEqual(apply.status, 0)
     assert.match(apply.stderr, /test root never permits paid apply/)
+  } finally { item.cleanup() }
+})
+
+test('Standard dry-run fixes four generations, zero Judge calls and permits provider-default pixels', () => {
+  const item = fixture()
+  try {
+    const result = item.run([
+      '--phase', 'standard', '--lane', 'provider-default', '--suite-id', 'pb-image-light-v1',
+      '--judge-epoch', 'judge-none-codex-single-v1', '--max-generations', '4', '--max-judgments', '0',
+      '--max-judge-calls', '0', '--estimated-per-judge-call-usd', '0',
+      '--confirm', 'run-exact-approved-standard-phase-disabled-worker',
+    ])
+    assert.equal(result.status, 0, result.stderr)
+    assert.match(result.stdout, /dry-run/)
+    assert.doesNotMatch(`${result.stdout}${result.stderr}`, /docker|provider|judge|api.?key/i)
+  } finally { item.cleanup() }
+})
+
+test('Standard batch dry-run freezes canonical models and never exceeds four calls per model', () => {
+  const item = fixture()
+  const manifestPath = join(item.root, 'standard-batch.json')
+  try {
+    const base = {
+      schemaVersion: 1, evaluationMode: 'codex_single', suiteId: 'pb-image-light-v1', codeSha: sha,
+      registryHash: hash, canonicalManifestHash: 'c'.repeat(64), maxModels: 1, maxGenerations: 4, maxEstimatedUsd: 1,
+      entries: [{ canonicalModelId: 'seedream-4.5', args: {
+        runId: 'bench-run-0123456789abcdef0123', provider: 'ark', modelId: 'doubao-seedream-test', lane: 'provider-default',
+        suiteHash: hash, judgeEpoch: 'judge-none-codex-single-v1', judgeStackHash: hash, signedAuthorizationHash: hash,
+        priceHash: hash, runHash: hash, runFactsHash: hash, candidateSnapshotHash: hash, aspectRatiosHash: hash,
+        registryHash: hash, runIntegrityAttestation: hash, immutableFactsHash: hash, maxEstimatedUsd: 1,
+        estimatedPerGenerationUsd: 0.1, priceSource: 'https://example.com/pricing/image-model', priceCapturedAt: '2026-08-25T08:00:00.000Z',
+      } }],
+    }
+    const manifest = { ...base, manifestHash: canonicalHash(base) }
+    const bytes = JSON.stringify(manifest)
+    writeFileSync(manifestPath, bytes, { mode: 0o600 })
+    const fileHash = createHash('sha256').update(bytes).digest('hex')
+    const result = spawnSync(batchScript, [
+      '--manifest', manifestPath, '--manifest-hash', fileHash, '--expected-sha', sha, '--max-models', '1',
+      '--max-generations', '4', '--max-estimated-usd', '1', '--confirm', 'run-exact-approved-standard-batch-disabled-worker',
+    ], { encoding: 'utf8', env: { ...process.env, PAPERBANANA_HK_TEST_ROOT: item.root } })
+    assert.equal(result.status, 0, result.stderr)
+    assert.match(result.stdout, /"total":1,"completed":1,"failed":0,"maxGenerations":4/)
+    assert.doesNotMatch(`${result.stdout}${result.stderr}`, /docker|api.?key/i)
   } finally { item.cleanup() }
 })
 

@@ -2,9 +2,11 @@ import {
   BENCHMARK_AXES,
   BENCHMARK_COLLECTIONS,
   PB_IMAGE_DIAGNOSTIC_V1,
+  PB_IMAGE_LIGHT_V1,
   assertBenchmarkTransition,
   aggregateAxisScores,
   applyCodexAdjudication,
+  applyCodexSingleReview,
   benchmarkSampleId,
   buildAuditSelection,
   canonicalHash,
@@ -20,7 +22,7 @@ import {
 import type { Db } from 'mongodb'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
-type AnyRecord = { _id: string; [key: string]: any }
+type AnyRecord = { _id?: string; [key: string]: any }
 
 const benchmarkHashPattern = /^[a-f0-9]{64}$/i
 const automaticRedLineCodes = new Set(['missing_node', 'reversed_arrow', 'garbled_text', 'occlusion', 'low_contrast', 'aspect_ratio_violation'])
@@ -45,13 +47,22 @@ function immutableRunFacts(run: AnyRecord) {
     suiteHash: String(run.suiteHash || ''),
     judgeEpoch: String(run.judgeEpoch || ''),
     reviewerEpoch: String(run.reviewerEpoch || ''),
+    ...(run.evaluationMode ? {
+      evaluationMode: String(run.evaluationMode),
+      evaluationEpoch: String(run.evaluationEpoch || ''),
+      reviewProtocol: String(run.reviewProtocol || ''),
+      canonicalModelId: String(run.canonicalModelId || run.modelId || ''),
+      primaryAccessProvider: String(run.primaryAccessProvider || run.provider || ''),
+      alternateAccessProviders: Array.isArray(run.alternateAccessProviders) ? run.alternateAccessProviders.map(String).sort() : [],
+    } : {}),
     registryHash: String(run.registryHash || ''),
     codeSha: String(run.codeSha || ''),
     createdAt,
   }
   if (!facts.runId || !facts.modelCandidateId || !facts.provider || !facts.modelId || !facts.lane || !facts.suiteId
     || !benchmarkHashPattern.test(facts.suiteHash) || !facts.judgeEpoch || !facts.reviewerEpoch
-    || !facts.registryHash || !/^[a-f0-9]{40}$/i.test(facts.codeSha) || !Number.isFinite(createdAt.getTime())) {
+    || !facts.registryHash || !/^[a-f0-9]{40}$/i.test(facts.codeSha) || !Number.isFinite(createdAt.getTime())
+    || (run.evaluationMode && (!run.evaluationEpoch || !run.reviewProtocol || !run.canonicalModelId || !run.primaryAccessProvider))) {
     throw new Error('BENCHMARK_RUN_FACTS_INVALID')
   }
   return facts
@@ -77,7 +88,7 @@ function signedCandidateSnapshot(candidate: Record<string, any>, runFacts: Retur
   return snapshot
 }
 
-function signedApprovalVersion(phase: 'quick' | 'full', approvalInput: Record<string, any>, codeSha: string) {
+function signedApprovalVersion(phase: 'quick' | 'full' | 'standard', approvalInput: Record<string, any>, codeSha: string) {
   const capturedAt = new Date(approvalInput?.priceSnapshot?.capturedAt)
   const approvedAt = approvalInput?.approvedAt instanceof Date ? approvalInput.approvedAt : new Date(approvalInput?.approvedAt)
   const approval = {
@@ -98,13 +109,15 @@ function signedApprovalVersion(phase: 'quick' | 'full', approvalInput: Record<st
   }
   let source: URL | undefined
   try { source = new URL(approval.priceSnapshot.source) } catch {}
+  const standard = phase === 'standard'
   if (!approval.entitlementConfirmed || approval.priceSnapshot.currency !== 'USD'
     || source?.protocol !== 'https:' || source.username || source.password || source.toString() !== approval.priceSnapshot.source
     || !Number.isFinite(approval.priceSnapshot.estimatedPerGeneration) || approval.priceSnapshot.estimatedPerGeneration <= 0
-    || !Number.isFinite(approval.priceSnapshot.estimatedPerJudgeCall) || approval.priceSnapshot.estimatedPerJudgeCall <= 0
+    || !Number.isFinite(approval.priceSnapshot.estimatedPerJudgeCall) || (standard ? approval.priceSnapshot.estimatedPerJudgeCall !== 0 : approval.priceSnapshot.estimatedPerJudgeCall <= 0)
     || !approval.priceSnapshot.capturedAt || !Number.isInteger(approval.maxGenerations) || approval.maxGenerations <= 0
-    || !Number.isInteger(approval.maxJudgments) || approval.maxJudgments <= 0
-    || !Number.isInteger(approval.maxJudgeCalls) || approval.maxJudgeCalls <= 0
+    || !Number.isInteger(approval.maxJudgments) || (standard ? approval.maxJudgments !== 0 : approval.maxJudgments <= 0)
+    || !Number.isInteger(approval.maxJudgeCalls) || (standard ? approval.maxJudgeCalls !== 0 : approval.maxJudgeCalls <= 0)
+    || (standard && approval.maxGenerations !== 4)
     || !Number.isFinite(approval.maxEstimatedUsd) || approval.maxEstimatedUsd <= 0 || !approval.approvedBy
     || !Number.isFinite(approvedAt.getTime())) throw new Error('BENCHMARK_RUN_FACTS_INVALID')
   const priceHash = canonicalHash(approval.priceSnapshot)
@@ -122,9 +135,10 @@ function signedRunEnvelope(run: AnyRecord) {
   const runHash = canonicalHash(runFacts)
   const candidateSnapshot = signedCandidateSnapshot(run.candidateSnapshot, runFacts)
   if (!Array.isArray(run.approvalVersions) || ![1, 2].includes(run.approvalVersions.length)) throw new Error('BENCHMARK_RUN_FACTS_INVALID')
-  const expectedPhases = run.approvalVersions.length === 1 ? ['quick'] : ['quick', 'full']
+  const expectedPhases = run.evaluationMode === 'codex_single' ? ['standard'] : run.approvalVersions.length === 1 ? ['quick'] : ['quick', 'full']
+  if (run.evaluationMode === 'codex_single' && run.approvalVersions.length !== 1) throw new Error('BENCHMARK_RUN_FACTS_INVALID')
   const approvalVersions = run.approvalVersions.map((version: AnyRecord, index: number) => {
-    const expected = signedApprovalVersion(expectedPhases[index] as 'quick' | 'full', version?.approval, runFacts.codeSha)
+    const expected = signedApprovalVersion(expectedPhases[index] as 'quick' | 'full' | 'standard', version?.approval, runFacts.codeSha)
     if (canonicalHash(version) !== canonicalHash(expected)) throw new Error('BENCHMARK_RUN_FACTS_INVALID')
     return expected
   })
@@ -153,7 +167,7 @@ function assertRunIntegrity(run: AnyRecord, signingSecret: string) {
   return expected
 }
 
-function assertPhaseApproval(run: AnyRecord, phase: 'quick' | 'full', signingSecret: string) {
+function assertPhaseApproval(run: AnyRecord, phase: 'quick' | 'full' | 'standard', signingSecret: string) {
   const integrity = assertRunIntegrity(run, signingSecret)
   const approvalVersion = integrity.approvalVersions.find((version) => version.phase === phase)
   if (!approvalVersion) throw new Error('BENCHMARK_PHASE_APPROVAL_REQUIRED')
@@ -200,6 +214,61 @@ function validConfirmedRedLines(redLines: unknown) {
     && Object.keys(item).every((key) => ['code', 'axis', 'cap'].includes(key))
     && typeof item.code === 'string' && item.code.trim().length > 0 && item.code.length <= 160
     && BENCHMARK_AXES.includes(item.axis) && Number.isFinite(item.cap) && item.cap >= 0 && item.cap <= 10)
+}
+
+export function buildCodexSingleProfile(input: {
+  run: AnyRecord
+  samples: AnyRecord[]
+  codexJudgments: AnyRecord[]
+  automaticJudgments: AnyRecord[]
+  dispatches: AnyRecord[]
+  priceSnapshot: AnyRecord
+  generationCalls?: number
+}) {
+  if (input.automaticJudgments.length || input.dispatches.length) throw new Error('BENCHMARK_STANDARD_JUDGE_DATA_FORBIDDEN')
+  const bySample = new Map(input.codexJudgments.map((judgment) => [judgment.sampleId, judgment]))
+  if (bySample.size !== input.codexJudgments.length || input.samples.some((sample) => !bySample.has(sample.sampleId))) {
+    throw new Error('BENCHMARK_STANDARD_CODEX_COVERAGE_INVALID')
+  }
+  const observations = input.samples.map((sample) => {
+    const judgment = bySample.get(sample.sampleId)!
+    if (!exactAxisScores(judgment.scores) || !validEvidence(judgment.evidence)
+      || !validConfirmedRedLines(judgment.confirmedRedLines) || !Number.isFinite(judgment.confidence)
+      || judgment.confidence < 0 || judgment.confidence > 1 || judgment.consistencyReviewed !== true) throw new Error('BENCHMARK_STANDARD_CODEX_SHAPE_INVALID')
+    return { caseId: sample.caseId, scores: applyCodexSingleReview(judgment as any).scores }
+  })
+  const dimensions = aggregateAxisScores(observations, { seed: input.run.runHash || input.run.canonicalModelId || input.run.modelId })
+  const latencies = input.samples.map((sample) => Number(sample.latencyMs || 0)).filter((value) => value > 0).sort((left, right) => left - right)
+  const percentile = (probability: number) => latencies.length ? latencies[Math.min(latencies.length - 1, Math.floor((latencies.length - 1) * probability))] / 1_000 : 0
+  const generationCalls = input.generationCalls ?? input.samples.length
+  if (!Number.isInteger(generationCalls) || generationCalls < input.samples.length || generationCalls > 4) {
+    throw new Error('BENCHMARK_STANDARD_GENERATION_COUNT_INVALID')
+  }
+  const estimatedUsd = Number((generationCalls * Number(input.priceSnapshot?.estimatedPerGeneration || 0)).toFixed(12))
+  return {
+    canonicalModelId: input.run.canonicalModelId || input.run.modelId,
+    modelId: input.run.modelId,
+    provider: input.run.provider,
+    developer: input.run.developer,
+    primaryAccessProvider: input.run.primaryAccessProvider || input.run.provider,
+    alternateAccessProviders: input.run.alternateAccessProviders || [],
+    lane: input.run.lane || 'provider-default',
+    profileStatus: 'published',
+    sampleCount: input.samples.length,
+    coverage: input.samples.length / 4,
+    successRate: input.samples.length / 4,
+    auditRatio: input.samples.length ? 1 : 0,
+    ranked: input.samples.length >= 3,
+    unrankedReason: input.samples.length >= 3 ? undefined : 'INSUFFICIENT_SAMPLES',
+    dimensions,
+    latency: { p50Seconds: percentile(0.5), p90Seconds: percentile(0.9) },
+    actualOutputPixels: input.samples.map((sample) => sample.actualOutputPixels),
+    registryHash: input.run.registryHash,
+    codeSha: input.run.codeSha,
+    priceHash: input.run.priceHash,
+    priceSnapshot: input.priceSnapshot,
+    estimatedCost: { usd: estimatedUsd, generationCalls, automaticJudgeCalls: 0, logicalJudgments: 0, judgeDispatchCalls: 0 },
+  }
 }
 
 function sameStringSet(left: readonly string[], right: readonly string[]) {
@@ -300,6 +369,81 @@ function buildPhaseReviewSourceManifest(run: AnyRecord, runSamples: AnyRecord[],
   return { facts, hash: canonicalHash(facts), expectedAuditIds }
 }
 
+export function buildStandardReviewSourceManifest(run: AnyRecord, runSamples: AnyRecord[], runJudgments: AnyRecord[], runDispatches: AnyRecord[]) {
+  if (runJudgments.some((judgment) => (judgment.runId === run._id || judgment.phase === 'standard') && judgment.source !== 'codex')
+    || runDispatches.some((marker) => marker.runId === run._id || marker.phase === 'standard')) {
+    throw new Error('BENCHMARK_STANDARD_SOURCE_MANIFEST_INVALID')
+  }
+  const standardSamples = runSamples.filter((sample) => sample.phase === 'standard' && sample.status === 'completed')
+    .sort((left, right) => String(left.sampleId).localeCompare(String(right.sampleId)))
+  const failedSamples = runSamples.filter((sample) => sample.phase === 'standard' && sample.status === 'failed')
+    .sort((left, right) => String(left.sampleId).localeCompare(String(right.sampleId)))
+  if (runSamples.some((sample) => sample.phase === 'standard' && !['completed', 'failed'].includes(sample.status))) {
+    throw new Error('BENCHMARK_STANDARD_SOURCE_MANIFEST_INVALID')
+  }
+  const ids = new Set<string>()
+  const caseIds = new Set(PB_IMAGE_LIGHT_V1.cases.map((item) => item.id))
+  for (const sample of standardSamples) {
+    const expectedId = Number.isInteger(sample.repetition) ? benchmarkSampleId(String(run._id), 'standard', sample.caseId, sample.repetition) : ''
+    const pixels = sample.actualOutputPixels || {}
+    if (!caseIds.has(sample.caseId) || sample.runId !== run._id || sample.repetition !== 0 || sample.sampleId !== expectedId || sample._id !== expectedId || ids.has(sample.sampleId)
+      || !benchmarkHashPattern.test(String(sample.imageHash || '')) || sample.imageObjectKey !== `bench/objects/${sample.imageHash}.png`
+      || canonicalHash(sample.rubric) !== sample.rubricHash || canonicalHash(sample.caseRequirements) !== sample.requirementsHash
+      || sample.auditRequired !== true || !Number.isInteger(sample.latencyMs) || sample.latencyMs <= 0 || sample.latencyMs > maxVerifiedLatencyMs
+      || !Number.isInteger(pixels.width) || pixels.width <= 0 || !Number.isInteger(pixels.height) || pixels.height <= 0
+      || !Number.isFinite(pixels.megapixels) || pixels.megapixels <= 0 || !Number.isInteger(pixels.fileSizeBytes) || pixels.fileSizeBytes <= 0) {
+      throw new Error('BENCHMARK_STANDARD_SOURCE_MANIFEST_INVALID')
+    }
+    ids.add(sample.sampleId)
+  }
+  for (const sample of failedSamples) {
+    const expectedId = Number.isInteger(sample.repetition) ? benchmarkSampleId(String(run._id), 'standard', sample.caseId, sample.repetition) : ''
+    if (!caseIds.has(sample.caseId) || sample.runId !== run._id || sample.repetition !== 0 || sample.sampleId !== expectedId
+      || sample._id !== expectedId || ids.has(sample.sampleId) || typeof sample.errorCode !== 'string' || !sample.errorCode
+      || sample.errorCode.length > 160 || !Number.isFinite(new Date(sample.failedAt).getTime())) {
+      throw new Error('BENCHMARK_STANDARD_SOURCE_MANIFEST_INVALID')
+    }
+    ids.add(sample.sampleId)
+  }
+  const attemptedSamples = [...standardSamples, ...failedSamples]
+  if (attemptedSamples.length > PB_IMAGE_LIGHT_V1.caseCount
+    || new Set(attemptedSamples.map((sample) => sample.caseId)).size !== attemptedSamples.length) {
+    throw new Error('BENCHMARK_STANDARD_SOURCE_MANIFEST_INVALID')
+  }
+  const facts = {
+    schemaVersion: 3,
+    runId: run._id,
+    runHash: run.runHash,
+    phase: 'standard' as const,
+    usage: { generationCalls: attemptedSamples.length, logicalJudgments: 0, judgeDispatchCalls: 0 },
+    samples: standardSamples.map((sample) => ({
+      sampleId: sample.sampleId, runId: sample.runId, phase: sample.phase, caseId: sample.caseId, repetition: sample.repetition,
+      status: sample.status, imageHash: sample.imageHash, imageObjectKey: sample.imageObjectKey, latencyMs: sample.latencyMs,
+      rubric: sample.rubric, rubricHash: sample.rubricHash, caseRequirements: sample.caseRequirements,
+      requirementsHash: sample.requirementsHash, actualOutputPixels: sample.actualOutputPixels,
+      auditRequired: true, publicEvidence: sample.publicEvidence === true,
+    })),
+    automaticJudgments: [] as never[],
+    judgeDispatchMarkers: [] as never[],
+    generationFailures: failedSamples.map((sample) => ({
+      sampleId: sample.sampleId, runId: sample.runId, phase: sample.phase, caseId: sample.caseId,
+      repetition: sample.repetition, status: sample.status, errorCode: sample.errorCode, failedAt: sample.failedAt,
+    })),
+  }
+  return { facts, hash: canonicalHash(facts), expectedAuditIds: standardSamples.map((sample) => sample.sampleId).sort() }
+}
+
+function assertStandardSourceManifest(run: AnyRecord, packet: AnyRecord, runSamples: AnyRecord[], runJudgments: AnyRecord[], runDispatches: AnyRecord[], signingSecret: string) {
+  const manifest = buildStandardReviewSourceManifest(run, runSamples, runJudgments, runDispatches)
+  const expectedAttestation = sourceManifestAttestation(run, manifest.hash, signingSecret)
+  const actualAttestation = String(packet?.sourceManifestAttestation || '')
+  if (packet?.sourceManifestHash !== manifest.hash || !benchmarkHashPattern.test(actualAttestation)
+    || !timingSafeEqual(Buffer.from(actualAttestation, 'hex'), Buffer.from(expectedAttestation, 'hex'))) {
+    throw new Error('BENCHMARK_STANDARD_SOURCE_MANIFEST_MISMATCH')
+  }
+  return manifest
+}
+
 function sourceManifestAttestation(run: AnyRecord, sourceManifestHash: string, signingSecret: string) {
   const integrity = assertRunIntegrity(run, signingSecret)
   return createHmac('sha256', signingSecret)
@@ -316,6 +460,98 @@ function assertPhaseSourceManifest(run: AnyRecord, packet: AnyRecord, runSamples
     throw new Error('BENCHMARK_FULL_SOURCE_MANIFEST_MISMATCH')
   }
   return manifest
+}
+
+function assertStandardReleaseIntegrity(input: {
+  run: AnyRecord
+  suite: AnyRecord | null
+  runSamples: AnyRecord[]
+  runJudgments: AnyRecord[]
+  runDispatches: AnyRecord[]
+  signingSecret: string
+}) {
+  const { run, suite, runSamples, runJudgments, runDispatches } = input
+  let signedIntegrity: ReturnType<typeof assertRunIntegrity>
+  try { signedIntegrity = assertRunIntegrity(run, input.signingSecret) }
+  catch { verifiedIntegrityFailure('STANDARD_RUN_FACTS') }
+  if (run.evaluationMode !== 'codex_single' || run.reviewProtocol !== 'codex-single-two-pass-v1'
+    || run.evaluationEpoch !== run.reviewerEpoch || run.reviewerKind !== 'codex' || run.reviewerPasses !== 2) {
+    verifiedIntegrityFailure('STANDARD_EVALUATION_IDENTITY')
+  }
+  if (!suite || suite._id !== PB_IMAGE_LIGHT_V1.id || suite.id !== PB_IMAGE_LIGHT_V1.id
+    || suite.manifestHash !== run.suiteHash || run.suiteHash !== PB_IMAGE_LIGHT_V1.manifestHash) {
+    verifiedIntegrityFailure('STANDARD_SUITE_IDENTITY')
+  }
+  const { _id: _suiteId, createdAt: _createdAt, manifestHash: storedSuiteHash, ...suiteBase } = suite
+  if (canonicalHash(suiteBase) !== storedSuiteHash || storedSuiteHash !== PB_IMAGE_LIGHT_V1.manifestHash
+    || suite.caseCount !== 4 || !Array.isArray(suite.cases) || suite.cases.length !== 4) {
+    verifiedIntegrityFailure('STANDARD_SUITE_HASH')
+  }
+  const standardApproval = signedIntegrity!.approvalVersions.find((version) => version.phase === 'standard')
+  if (!standardApproval || standardApproval.approval.maxGenerations !== 4
+    || standardApproval.approval.maxJudgments !== 0 || standardApproval.approval.maxJudgeCalls !== 0
+    || standardApproval.approval.priceSnapshot.estimatedPerJudgeCall !== 0) {
+    verifiedIntegrityFailure('STANDARD_APPROVAL')
+  }
+  const completedSamples = runSamples.filter((sample) => sample.phase === 'standard' && sample.status === 'completed')
+  let sourceManifest: ReturnType<typeof buildStandardReviewSourceManifest>
+  try { sourceManifest = buildStandardReviewSourceManifest(run, runSamples, runJudgments, runDispatches) }
+  catch { verifiedIntegrityFailure('STANDARD_SOURCE_MANIFEST') }
+  const packet = run.reviewPacket
+  if (!packet || packet.phase !== 'standard' || packet.runHash !== run.runHash || packet.reviewerEpoch !== run.reviewerEpoch
+    || packet.reviewProtocol !== run.reviewProtocol || run.importedReviewPacketHash !== packet.packetHash
+    || !benchmarkHashPattern.test(String(packet.packetHash || '')) || !benchmarkHashPattern.test(String(run.importedReviewHash || ''))
+    || !sameStringSet(sourceManifest!.expectedAuditIds, Array.isArray(packet.samples) ? packet.samples.map((sample: AnyRecord) => sample.sampleId) : [])) {
+    verifiedIntegrityFailure('STANDARD_PACKET_IDENTITY')
+  }
+  try { assertStandardSourceManifest(run, packet, runSamples, runJudgments, runDispatches, input.signingSecret) }
+  catch { verifiedIntegrityFailure('STANDARD_SOURCE_MANIFEST') }
+  const sampleById = new Map(completedSamples.map((sample) => [sample.sampleId, sample]))
+  for (const packetSample of packet.samples) {
+    const sample = sampleById.get(packetSample.sampleId)
+    if (!sample || packetSample.imageObjectKey !== sample.imageObjectKey || packetSample.imageHash !== sample.imageHash
+      || packetSample.rubricHash !== sample.rubricHash || canonicalHash(packetSample.rubric) !== sample.rubricHash
+      || packetSample.requirementsHash !== sample.requirementsHash
+      || canonicalHash(packetSample.caseRequirements) !== sample.requirementsHash) {
+      verifiedIntegrityFailure('STANDARD_PACKET_SAMPLE')
+    }
+  }
+  const acceptedCodex = runJudgments.filter((judgment) => judgment.source === 'codex' && judgment.accepted === true
+    && judgment.phase === 'standard' && judgment.reviewerEpoch === run.reviewerEpoch && judgment.packetHash === packet.packetHash
+    && judgment.reviewHash === run.importedReviewHash && judgment.reviewAttestation === run.importedReviewAttestation)
+  if (acceptedCodex.length !== completedSamples.length
+    || !sameStringSet(sourceManifest!.expectedAuditIds, acceptedCodex.map((judgment) => judgment.sampleId))
+    || acceptedCodex.some((judgment) => !exactAxisScores(judgment.scores) || !validEvidence(judgment.evidence)
+      || !validConfirmedRedLines(judgment.confirmedRedLines) || !Number.isFinite(judgment.confidence)
+      || judgment.confidence < 0 || judgment.confidence > 1 || judgment.consistencyReviewed !== true)) {
+    verifiedIntegrityFailure('STANDARD_CODEX_COVERAGE')
+  }
+  try {
+    const attested = verifyCodexReviewAttestation(packet, acceptedCodex as any, run.importedReviewAttestation, input.signingSecret)
+    if (attested.reviewHash !== run.importedReviewHash) verifiedIntegrityFailure('STANDARD_CODEX_REVIEW_HASH')
+  } catch { verifiedIntegrityFailure('STANDARD_CODEX_ATTESTATION') }
+  const profile = buildCodexSingleProfile({
+    run,
+    samples: completedSamples,
+    codexJudgments: acceptedCodex,
+    automaticJudgments: runJudgments.filter((judgment) => judgment.source !== 'codex'),
+    dispatches: runDispatches,
+    priceSnapshot: standardApproval.approval.priceSnapshot,
+    generationCalls: sourceManifest!.facts.usage.generationCalls,
+  })
+  if (profile.estimatedCost.generationCalls > standardApproval.approval.maxGenerations
+    || profile.estimatedCost.usd > standardApproval.approval.maxEstimatedUsd) {
+    verifiedIntegrityFailure('STANDARD_APPROVAL_CAPS')
+  }
+  const candidate = signedIntegrity!.candidateSnapshot
+  return {
+    ...profile,
+    displayName: candidate.displayName,
+    providerLabel: candidate.providerLabel,
+    authorizationHash: standardApproval.authorizationHash,
+    evidenceManifestHash: canonicalHash(completedSamples.map((sample) => ({ sampleId: sample.sampleId, objectKey: sample.imageObjectKey, imageHash: sample.imageHash })).sort((left, right) => left.sampleId.localeCompare(right.sampleId))),
+    evidenceObjects: completedSamples.map((sample) => ({ sampleId: sample.sampleId, objectKey: sample.imageObjectKey, imageHash: sample.imageHash })),
+  }
 }
 
 function assertVerifiedReleaseIntegrity(input: {
@@ -370,7 +606,7 @@ function assertVerifiedReleaseIntegrity(input: {
   for (const sample of fullSamples) {
     const diagnosticCase = executableCasesById.get(sample.caseId)
     const expectedSampleId = diagnosticCase && Number.isInteger(sample.repetition)
-      ? benchmarkSampleId(run._id, 'full', sample.caseId, sample.repetition)
+      ? benchmarkSampleId(String(run._id), 'full', sample.caseId, sample.repetition)
       : ''
     const expectedRubricHash = diagnosticCase ? canonicalHash(diagnosticCase.rubric) : ''
     if (!diagnosticCase || sample.runId !== run._id || sample.phase !== 'full' || sample.status !== 'completed'
@@ -562,7 +798,7 @@ function assertQuickReleaseIntegrity(input: {
   for (const sample of quickSamples) {
     const diagnosticCase = expectedCases.get(sample.caseId)
     const rubricCase = casesById.get(sample.caseId)
-    const expectedSampleId = diagnosticCase && Number.isInteger(sample.repetition) ? benchmarkSampleId(run._id, 'quick', sample.caseId, sample.repetition) : ''
+    const expectedSampleId = diagnosticCase && Number.isInteger(sample.repetition) ? benchmarkSampleId(String(run._id), 'quick', sample.caseId, sample.repetition) : ''
     if (!diagnosticCase || sample.runId !== run._id || sample.phase !== 'quick' || sample.status !== 'completed'
       || sample._id !== expectedSampleId || sample.sampleId !== expectedSampleId || sampleIds.has(sample.sampleId)
       || ![0, 1].includes(sample.repetition) || !benchmarkHashPattern.test(String(sample.imageHash || ''))
@@ -843,6 +1079,9 @@ function adminCandidate(candidate: AnyRecord) {
     lane: candidate.lane || null,
     state: candidate.state,
     registryHash: candidate.registryHash,
+    canonicalModelId: candidate.canonicalModelId || candidate.modelId,
+    primaryAccessProvider: candidate.primaryAccessProvider || candidate.provider,
+    alternateAccessProviders: candidate.alternateAccessProviders || [],
     detectedAt: candidate.detectedAt,
     approval: candidate.approval ? {
       entitlementConfirmed: candidate.approval.entitlementConfirmed === true,
@@ -857,7 +1096,7 @@ function adminCandidate(candidate: AnyRecord) {
 }
 
 export function buildPhaseOperatorAttestation(run: AnyRecord, reviewSigningSecret: string) {
-  const phase = run?.state === 'quick_running' ? 'quick' : run?.state === 'full_running' ? 'full' : ''
+  const phase = run?.state === 'quick_running' ? 'quick' : run?.state === 'full_running' ? 'full' : run?.state === 'standard_running' ? 'standard' : ''
   if (!phase) throw new Error('BENCHMARK_PHASE_OPERATOR_ATTESTATION_NOT_RUNNING')
   let verified: ReturnType<typeof assertPhaseApproval>
   try { verified = assertPhaseApproval(run, phase, reviewSigningSecret) }
@@ -915,10 +1154,15 @@ export function createMongoBenchmarkRepository(
         { $setOnInsert: { ...PB_IMAGE_DIAGNOSTIC_V1, _id: PB_IMAGE_DIAGNOSTIC_V1.id, createdAt: now() } },
         { upsert: true },
       )
+      await suites.updateOne(
+        { _id: PB_IMAGE_LIGHT_V1.id },
+        { $setOnInsert: { ...PB_IMAGE_LIGHT_V1, _id: PB_IMAGE_LIGHT_V1.id, createdAt: now() } },
+        { upsert: true },
+      )
     },
     async latestRelease(lane?: string) {
       return releases.find({
-        profileStatus: { $in: ['provisional', 'verified'] },
+        profileStatus: { $in: ['provisional', 'verified', 'published'] },
         publishedAt: { $exists: true },
         ...(lane ? { lane } : {}),
       })
@@ -926,7 +1170,7 @@ export function createMongoBenchmarkRepository(
     },
     async releaseByModel(modelId: string, provider?: string, lane?: string, profileId?: string) {
       const profileQuery = profileId ? { profileId } : { modelId, ...(provider ? { provider } : {}), ...(lane ? { lane } : {}) }
-      return releases.find({ profileStatus: { $in: ['provisional', 'verified'] }, models: { $elemMatch: profileQuery }, publishedAt: { $exists: true } })
+      return releases.find({ profileStatus: { $in: ['provisional', 'verified', 'published'] }, models: { $elemMatch: profileQuery }, publishedAt: { $exists: true } })
         .sort({ publishedAt: -1 }).limit(1).next()
     },
     async candidates() {
@@ -934,9 +1178,10 @@ export function createMongoBenchmarkRepository(
     },
     async approve(input: AnyRecord) {
       const candidateId = text(input.candidateId)
+      const standardMode = input.evaluationMode === 'codex_single'
       const maxGenerations = positiveInteger(input.maxGenerations, 144)
-      const maxJudgments = positiveInteger(input.maxJudgments, 288)
-      const maxJudgeCalls = positiveInteger(input.maxJudgeCalls, 1_152)
+      const maxJudgments = Number(input.maxJudgments)
+      const maxJudgeCalls = Number(input.maxJudgeCalls)
       const maxEstimatedUsd = Number(input.maxEstimatedUsd)
       const price = Number(input.priceSnapshot?.estimatedPerGeneration)
       const judgePrice = Number(input.priceSnapshot?.estimatedPerJudgeCall)
@@ -949,10 +1194,12 @@ export function createMongoBenchmarkRepository(
         capturedAt = new Date(capturedAtText).toISOString()
       } catch {}
       const codeSha = text(immutableCodeSha)
-      if (!candidateId || input.entitlementConfirmed !== true || !maxGenerations || !maxJudgments || !maxJudgeCalls
+      if (!candidateId || input.entitlementConfirmed !== true || !maxGenerations
+        || !Number.isInteger(maxJudgments) || !Number.isInteger(maxJudgeCalls)
+        || (standardMode ? maxGenerations !== 4 || maxJudgments !== 0 || maxJudgeCalls !== 0 : maxJudgments <= 0 || maxJudgeCalls <= 0)
         || !Number.isFinite(maxEstimatedUsd) || !(maxEstimatedUsd > 0) || maxEstimatedUsd > 100_000
         || !Number.isFinite(price) || !(price > 0) || price > 1_000
-        || !Number.isFinite(judgePrice) || !(judgePrice > 0) || judgePrice > 100
+        || !Number.isFinite(judgePrice) || (standardMode ? judgePrice !== 0 : !(judgePrice > 0) || judgePrice > 100)
         || priceSource?.protocol !== 'https:' || priceSource.username || priceSource.password || priceSource.toString() !== priceSourceText
         || capturedAt !== capturedAtText
         || !/^[a-f0-9]{40}$/i.test(codeSha) || !/^[A-Za-z0-9._:-]{3,200}$/.test(text(input.adminUserId))) {
@@ -975,11 +1222,14 @@ export function createMongoBenchmarkRepository(
         approvedAt: now(),
       }
       const priceHash = canonicalHash(approval.priceSnapshot)
-      const judgeStackHash = benchmarkJudgeStackHash(codeSha)
+      const judgeStackHash = standardMode
+        ? canonicalHash({ evaluationMode: 'codex_single', automaticJudges: [] })
+        : benchmarkJudgeStackHash(codeSha)
       const reviewSigningSecret = text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)
       const currentCandidate = await models.findOne({ _id: candidateId })
       if (!currentCandidate || !['detected', 'approved'].includes(currentCandidate.state)) throw new Error('BENCHMARK_CANDIDATE_NOT_APPROVABLE')
-      if (!['1K-standard', '2K-standard', '4K-standard'].includes(currentCandidate.lane)) throw new Error('BENCHMARK_CANDIDATE_HAS_NO_SUPPORTED_LANE')
+      if (!standardMode && !['1K-standard', '2K-standard', '4K-standard'].includes(currentCandidate.lane)) throw new Error('BENCHMARK_CANDIDATE_HAS_NO_SUPPORTED_LANE')
+      if (standardMode && currentCandidate.state === 'approved') throw new Error('BENCHMARK_REAPPROVAL_NOT_ALLOWED')
       let existingRun: AnyRecord | null = null
       let correctionOfReleaseId = ''
       if (currentCandidate.state === 'approved') {
@@ -1002,12 +1252,14 @@ export function createMongoBenchmarkRepository(
           existingRun = null
         }
       }
-      const approvalPhase = existingRun ? 'full' : 'quick'
+      const approvalPhase = standardMode ? 'standard' : existingRun ? 'full' : 'quick'
+      if (standardMode && (maxGenerations !== 4 || maxJudgments !== 0 || maxJudgeCalls !== 0
+        || maxGenerations * price > maxEstimatedUsd + 1e-9)) throw new Error('BENCHMARK_APPROVAL_INCOMPLETE')
       const generationLimit = approvalPhase === 'quick' ? 24 : 144
       const judgmentLimit = approvalPhase === 'quick' ? 48 : 288
-      if (maxGenerations > generationLimit || maxJudgments > judgmentLimit
+      if (!standardMode && (maxGenerations > generationLimit || maxJudgments > judgmentLimit
         || maxJudgeCalls < maxJudgments || maxJudgeCalls > maxJudgments * 4 || maxJudgeCalls > judgmentLimit * 4
-        || maxGenerations * price + maxJudgeCalls * judgePrice > maxEstimatedUsd + 1e-9) {
+        || maxGenerations * price + maxJudgeCalls * judgePrice > maxEstimatedUsd + 1e-9)) {
         throw new Error('BENCHMARK_APPROVAL_INCOMPLETE')
       }
       const result = await models.findOneAndUpdate(
@@ -1030,12 +1282,16 @@ export function createMongoBenchmarkRepository(
         if (updated.modifiedCount !== 1) throw new Error('BENCHMARK_REAPPROVAL_CONFLICT')
         return { ...adminCandidate(result), runId: existingRun._id, reapproved: true }
       }
-      const quickApprovalVersion = signedApprovalVersion('quick', approval, codeSha)
-      const candidateSnapshot = signedCandidateSnapshot(result, {
+      const initialPhase = standardMode ? 'standard' : 'quick'
+      const quickApprovalVersion = signedApprovalVersion(initialPhase, approval, codeSha)
+      const resolvedLane = currentCandidate.lane || 'provider-default'
+      const candidateSnapshot = signedCandidateSnapshot({ ...result, lane: resolvedLane }, {
         runId: 'pending', modelCandidateId: candidateId, provider: String(result.provider), modelId: String(result.modelId),
-        developer: String(result.developer || ''), lane: String(result.lane), aspectRatios: (result.aspectRatios || []).map(String).sort(),
-        suiteId: PB_IMAGE_DIAGNOSTIC_V1.id, suiteHash: PB_IMAGE_DIAGNOSTIC_V1.manifestHash,
-        judgeEpoch: 'judge-2026-08-v1', reviewerEpoch: 'codex-2026-08-v1', registryHash: String(result.registryHash),
+        developer: String(result.developer || ''), lane: resolvedLane, aspectRatios: (result.aspectRatios || []).map(String).sort(),
+        suiteId: standardMode ? PB_IMAGE_LIGHT_V1.id : PB_IMAGE_DIAGNOSTIC_V1.id,
+        suiteHash: standardMode ? PB_IMAGE_LIGHT_V1.manifestHash : PB_IMAGE_DIAGNOSTIC_V1.manifestHash,
+        judgeEpoch: standardMode ? 'judge-none-codex-single-v1' : 'judge-2026-08-v1',
+        reviewerEpoch: standardMode ? 'codex-single-2026-08-v1' : 'codex-2026-08-v1', registryHash: String(result.registryHash),
         codeSha, createdAt: now(),
       })
       const runBase = {
@@ -1043,17 +1299,25 @@ export function createMongoBenchmarkRepository(
         provider: result.provider,
         modelId: result.modelId,
         developer: result.developer || '',
-        lane: result.lane,
-        aspectRatios: result.aspectRatios || [],
-        suiteId: PB_IMAGE_DIAGNOSTIC_V1.id,
-        suiteHash: PB_IMAGE_DIAGNOSTIC_V1.manifestHash,
-        judgeEpoch: 'judge-2026-08-v1',
+        lane: resolvedLane,
+        aspectRatios: Array.isArray(result.aspectRatios) ? result.aspectRatios.map(String).sort() : [],
+        suiteId: standardMode ? PB_IMAGE_LIGHT_V1.id : PB_IMAGE_DIAGNOSTIC_V1.id,
+        suiteHash: standardMode ? PB_IMAGE_LIGHT_V1.manifestHash : PB_IMAGE_DIAGNOSTIC_V1.manifestHash,
+        judgeEpoch: standardMode ? 'judge-none-codex-single-v1' : 'judge-2026-08-v1',
         judgeStackHash,
-        reviewerEpoch: 'codex-2026-08-v1',
+        reviewerEpoch: standardMode ? 'codex-single-2026-08-v1' : 'codex-2026-08-v1',
+        evaluationMode: standardMode ? 'codex_single' : 'dual_judge_codex_audit',
+        evaluationEpoch: standardMode ? 'codex-single-2026-08-v1' : 'judge-2026-08-v1',
+        reviewProtocol: standardMode ? 'codex-single-two-pass-v1' : 'dual-judge-codex-audit-v1',
+        reviewerKind: standardMode ? 'codex' : undefined,
+        reviewerPasses: standardMode ? 2 : undefined,
+        canonicalModelId: result.canonicalModelId || result.modelId,
+        primaryAccessProvider: result.primaryAccessProvider || result.provider,
+        alternateAccessProviders: result.alternateAccessProviders || [],
         registryHash: result.registryHash,
         priceHash,
         authorizationHash: quickApprovalVersion.authorizationHash,
-        authorizationHistory: [{ authorizationHash: quickApprovalVersion.authorizationHash, priceHash, approvedAt: approval.approvedAt, phase: 'quick' }],
+        authorizationHistory: [{ authorizationHash: quickApprovalVersion.authorizationHash, priceHash, approvedAt: approval.approvedAt, phase: initialPhase }],
         approvalVersions: [quickApprovalVersion],
         candidateSnapshot,
         codeSha,
@@ -1064,6 +1328,7 @@ export function createMongoBenchmarkRepository(
         usageByPhase: {
           quick: { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 },
           full: { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 },
+          standard: { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 },
         },
         correctionOfReleaseId: correctionOfReleaseId || undefined,
         createdAt: now(),
@@ -1108,11 +1373,14 @@ export function createMongoBenchmarkRepository(
       if (input.command === 'phaseOperatorAttestation') {
         return buildPhaseOperatorAttestation(run, text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500))
       }
-      if (targetState === 'quick_running' || targetState === 'full_running') {
-        try { assertPhaseApproval(run, targetState === 'full_running' ? 'full' : 'quick', text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)) }
+      if (targetState === 'quick_running' || targetState === 'full_running' || targetState === 'standard_running') {
+        const phase = targetState === 'full_running' ? 'full' : targetState === 'standard_running' ? 'standard' : 'quick'
+        try { assertPhaseApproval(run, phase, text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)) }
         catch { throw new Error('BENCHMARK_PHASE_APPROVAL_REQUIRED') }
-        const calibration = await suites.findOne({ _id: judgeCalibrationId(run.judgeEpoch, run.judgeStackHash), codeSha: run.codeSha, judgeStackHash: run.judgeStackHash, passed: true })
-        if (!calibration) throw new Error('BENCHMARK_JUDGE_CALIBRATION_REQUIRED')
+        if (phase !== 'standard') {
+          const calibration = await suites.findOne({ _id: judgeCalibrationId(run.judgeEpoch, run.judgeStackHash), codeSha: run.codeSha, judgeStackHash: run.judgeStackHash, passed: true })
+          if (!calibration) throw new Error('BENCHMARK_JUDGE_CALIBRATION_REQUIRED')
+        }
       }
       assertBenchmarkTransition(run.state as BenchmarkRunState, targetState)
       const result = await runs.findOneAndUpdate(
@@ -1128,10 +1396,10 @@ export function createMongoBenchmarkRepository(
     },
     async exportReview(input: AnyRecord) {
       const runId = text(input.runId)
-      const run = await runs.findOne({ _id: runId, state: { $in: ['quick_review', 'codex_audit'] } })
+      const run = await runs.findOne({ _id: runId, state: { $in: ['quick_review', 'codex_audit', 'codex_review'] } })
       if (!run) throw new Error('BENCHMARK_CODEX_AUDIT_NOT_READY')
       const signingSecret = text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)
-      const phase = run.state === 'quick_review' ? 'quick' : 'full'
+      const phase = run.state === 'quick_review' ? 'quick' : run.state === 'codex_review' ? 'standard' : 'full'
       try { assertPhaseApproval(run, phase, signingSecret) } catch { throw new Error('BENCHMARK_RUN_FACTS_INVALID') }
       const publicEvidenceSampleIds = Array.isArray(input.publicEvidenceSampleIds)
         ? input.publicEvidenceSampleIds.map((value: unknown) => text(value)).filter(Boolean).slice(0, 12) : []
@@ -1142,8 +1410,12 @@ export function createMongoBenchmarkRepository(
       const allPhaseSamples = await samples.find({ runId, phase }).toArray()
       const allRunJudgments = await judgments.find({ runId }).toArray()
       const allRunDispatches = await dispatches.find({ runId }).toArray()
-      let manifest: ReturnType<typeof buildPhaseReviewSourceManifest>
-      try { manifest = buildPhaseReviewSourceManifest(run, allPhaseSamples, allRunJudgments, allRunDispatches, phase) }
+      let manifest: ReturnType<typeof buildPhaseReviewSourceManifest> | ReturnType<typeof buildStandardReviewSourceManifest>
+      try {
+        manifest = phase === 'standard'
+          ? buildStandardReviewSourceManifest(run, allPhaseSamples, allRunJudgments, allRunDispatches)
+          : buildPhaseReviewSourceManifest(run, allPhaseSamples, allRunJudgments, allRunDispatches, phase)
+      }
       catch { throw new Error('BENCHMARK_PHASE_SOURCE_MANIFEST_INVALID') }
       if (!sameStringSet(manifest.expectedAuditIds, auditSamples.map((sample) => sample.sampleId))) throw new Error('BENCHMARK_PHASE_AUDIT_SET_MISMATCH')
       const sourceBinding = {
@@ -1157,6 +1429,7 @@ export function createMongoBenchmarkRepository(
         reviewerEpoch: text(run.reviewerEpoch || 'codex-2026-08-v1'),
         runHash: run.runHash,
         phase,
+        ...(phase === 'standard' ? { reviewProtocol: 'codex-single-two-pass-v1' as const } : {}),
         issuedAt: issuedAt.toISOString(),
         expiresAt: expiresAt.toISOString(),
         signingSecret,
@@ -1167,34 +1440,36 @@ export function createMongoBenchmarkRepository(
           imageHash: sample.imageHash,
           rubric: sample.rubric,
           rubricHash: sample.rubricHash,
+          ...(phase === 'standard' ? { caseRequirements: sample.caseRequirements, requirementsHash: sample.requirementsHash } : {}),
         })),
       })
       await runs.updateOne(
         { _id: runId, state: run.state },
         {
           $set: { reviewPacket: packet, reviewPacketExpiresAt: expiresAt, updatedAt: now() },
-          $unset: { quickAuditImportedAt: '', codexAuditImportedAt: '', importedReviewPacketHash: '' },
+          $unset: { quickAuditImportedAt: '', codexAuditImportedAt: '', standardReviewImportedAt: '', importedReviewPacketHash: '' },
         },
       )
       return packet
     },
     async importReview(input: AnyRecord) {
       const runId = text(input.runId)
-      const run = await runs.findOne({ _id: runId, state: { $in: ['quick_review', 'codex_audit'] } })
+      const run = await runs.findOne({ _id: runId, state: { $in: ['quick_review', 'codex_audit', 'codex_review'] } })
       if (!run?.reviewPacket) throw new Error('BENCHMARK_REVIEW_PACKET_NOT_FOUND')
       if (!run.reviewPacketExpiresAt || new Date(run.reviewPacketExpiresAt).getTime() <= now().getTime()) throw new Error('BENCHMARK_REVIEW_PACKET_EXPIRED')
       const signingSecret = text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)
-      try { assertPhaseApproval(run, run.state === 'quick_review' ? 'quick' : 'full', signingSecret) } catch { throw new Error('BENCHMARK_RUN_FACTS_INVALID') }
-      const phase = run.state === 'quick_review' ? 'quick' : 'full'
+      const phase = run.state === 'quick_review' ? 'quick' : run.state === 'codex_review' ? 'standard' : 'full'
+      try { assertPhaseApproval(run, phase, signingSecret) } catch { throw new Error('BENCHMARK_RUN_FACTS_INVALID') }
       try {
-        assertPhaseSourceManifest(
-          run, run.reviewPacket, await samples.find({ runId, phase }).toArray(),
-          await judgments.find({ runId }).toArray(), await dispatches.find({ runId }).toArray(), phase, signingSecret,
-        )
+        const persistedSamples = await samples.find({ runId, phase }).toArray()
+        const persistedJudgments = await judgments.find({ runId }).toArray()
+        const persistedDispatches = await dispatches.find({ runId }).toArray()
+        if (phase === 'standard') assertStandardSourceManifest(run, run.reviewPacket, persistedSamples, persistedJudgments, persistedDispatches, signingSecret)
+        else assertPhaseSourceManifest(run, run.reviewPacket, persistedSamples, persistedJudgments, persistedDispatches, phase, signingSecret)
       } catch { throw new Error('BENCHMARK_PHASE_SOURCE_MANIFEST_MISMATCH') }
       const imported = importCodexReview(run.reviewPacket, input.review, {
         signingSecret,
-        expectedPhase: run.state === 'quick_review' ? 'quick' : 'full',
+        expectedPhase: phase,
         now: now(),
       })
       const importedReviewHash = imported.reviewHash
@@ -1231,20 +1506,37 @@ export function createMongoBenchmarkRepository(
       }
       const runSamples = await samples.find({ runId, phase }).toArray()
       const { allJudgments: runJudgments, persisted } = await loadPersistedReview()
-      const codexBySample = new Map(persisted.map((judgment) => [judgment.sampleId, judgment]))
-      const observations = runSamples.map((sample) => {
-        const automatic = runJudgments.filter((judgment) => judgment.sampleId === sample.sampleId && judgment.status === 'completed' && ['openrouter', 'bailian'].includes(judgment.provider))
-        const codex = codexBySample.get(sample.sampleId)
-        const scores = codex && automatic.length === 2
-          ? applyCodexAdjudication({ automatic: automatic.map((judgment) => ({ scores: judgment.scores, redLines: judgment.redLines || [] })), codex: codex as any }).scores
-          : Object.fromEntries(Object.keys(automatic[0]?.scores || {}).map((axis) => [axis, automatic.reduce((sum, judgment) => sum + Number(judgment.scores[axis] || 0), 0) / Math.max(1, automatic.length)]))
-        return { caseId: sample.caseId, scores }
-      })
-      const dimensions = aggregateAxisScores(observations, { seed: run.runHash })
       const releaseDraft = run.releaseDraft || { models: [{}], evidence: [], methodology: {} }
-      const auditField = run.state === 'quick_review' ? 'quickAuditImportedAt' : 'codexAuditImportedAt'
-      const profileStatus = run.state === 'quick_review' ? 'provisional' : 'verified'
-      releaseDraft.models = [{ ...(releaseDraft.models?.[0] || {}), dimensions, profileStatus }]
+      const auditField = phase === 'quick' ? 'quickAuditImportedAt' : phase === 'standard' ? 'standardReviewImportedAt' : 'codexAuditImportedAt'
+      const profileStatus = phase === 'quick' ? 'provisional' : phase === 'standard' ? 'published' : 'verified'
+      if (phase === 'standard') {
+        const standardProfile = buildCodexSingleProfile({
+          run,
+          samples: runSamples.filter((sample) => sample.status === 'completed'),
+          codexJudgments: persisted,
+          automaticJudgments: runJudgments.filter((judgment) => judgment.source !== 'codex'),
+          dispatches: await dispatches.find({ runId }).toArray(),
+          priceSnapshot: run.approval?.priceSnapshot || {},
+          generationCalls: runSamples.filter((sample) => ['completed', 'failed'].includes(sample.status)).length,
+        })
+        releaseDraft.models = [{ ...(releaseDraft.models?.[0] || {}), ...standardProfile }]
+        releaseDraft.methodology = {
+          suiteId: run.suiteId, evaluationMode: 'codex_single', evaluationEpoch: run.evaluationEpoch,
+          reviewProtocol: run.reviewProtocol, reviewerKind: 'codex', reviewerPasses: 2, automaticJudges: [],
+        }
+      } else {
+        const codexBySample = new Map(persisted.map((judgment) => [judgment.sampleId, judgment]))
+        const observations = runSamples.map((sample) => {
+          const automatic = runJudgments.filter((judgment) => judgment.sampleId === sample.sampleId && judgment.status === 'completed' && ['openrouter', 'bailian'].includes(judgment.provider))
+          const codex = codexBySample.get(sample.sampleId)
+          const scores = codex && automatic.length === 2
+            ? applyCodexAdjudication({ automatic: automatic.map((judgment) => ({ scores: judgment.scores, redLines: judgment.redLines || [] })), codex: codex as any }).scores
+            : Object.fromEntries(Object.keys(automatic[0]?.scores || {}).map((axis) => [axis, automatic.reduce((sum, judgment) => sum + Number(judgment.scores[axis] || 0), 0) / Math.max(1, automatic.length)]))
+          return { caseId: sample.caseId, scores }
+        })
+        const dimensions = aggregateAxisScores(observations, { seed: run.runHash })
+        releaseDraft.models = [{ ...(releaseDraft.models?.[0] || {}), dimensions, profileStatus }]
+      }
       const updated = await runs.updateOne(
         { _id: runId, state: run.state, 'reviewPacket.packetHash': run.reviewPacket.packetHash, importedReviewPacketHash: { $exists: false } },
         { $set: { [auditField]: now(), importedReviewPacketHash: run.reviewPacket.packetHash, importedReviewHash, importedReviewAttestation: imported.attestation, releaseDraft, updatedAt: now() } },
@@ -1258,52 +1550,59 @@ export function createMongoBenchmarkRepository(
     },
     async publish(input: AnyRecord) {
       const runId = text(input.runId)
-      if (input.profileStatus !== 'provisional' && input.profileStatus !== 'verified') throw new Error('BENCHMARK_PROFILE_STATUS_INVALID')
+      if (!['provisional', 'verified', 'published'].includes(input.profileStatus)) throw new Error('BENCHMARK_PROFILE_STATUS_INVALID')
       const run = await runs.findOne({ _id: runId })
-      const expectedState = input.profileStatus === 'provisional' ? 'quick_review' : 'codex_audit'
+      const standardMode = input.profileStatus === 'published'
+      const expectedState = input.profileStatus === 'provisional' ? 'quick_review' : standardMode ? 'codex_review' : 'codex_audit'
       if (!run || run.state !== expectedState) throw new Error('BENCHMARK_RUN_NOT_PUBLISHABLE')
       if (input.profileStatus === 'provisional' && (!run.quickAuditImportedAt || run.importedReviewPacketHash !== run.reviewPacket?.packetHash)) throw new Error('BENCHMARK_QUICK_AUDIT_REQUIRED')
       if (input.profileStatus === 'verified' && !run.codexAuditImportedAt) throw new Error('BENCHMARK_CODEX_AUDIT_REQUIRED')
-      const profileStatus = input.profileStatus === 'provisional' ? 'provisional' : 'verified'
+      if (standardMode && (!run.standardReviewImportedAt || run.importedReviewPacketHash !== run.reviewPacket?.packetHash)) throw new Error('BENCHMARK_STANDARD_REVIEW_REQUIRED')
+      const profileStatus = input.profileStatus as 'provisional' | 'verified' | 'published'
       const signingSecret = text(process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET, 500)
-      const verifiedDbIntegrity = profileStatus === 'verified'
+      const integrityInput = {
+        run,
+        suite: await suites.findOne({ _id: run.suiteId }),
+        runSamples: await samples.find({ runId }).toArray(),
+        runJudgments: await judgments.find({ runId }).toArray(),
+        runDispatches: await dispatches.find({ runId }).toArray(),
+        signingSecret,
+      }
+      const verifiedDbIntegrity = standardMode
+        ? assertStandardReleaseIntegrity(integrityInput)
+        : profileStatus === 'verified'
         ? assertVerifiedReleaseIntegrity({
-            run,
-            suite: await suites.findOne({ _id: run.suiteId }),
-            runSamples: await samples.find({ runId }).toArray(),
-            runJudgments: await judgments.find({ runId }).toArray(),
-            runDispatches: await dispatches.find({ runId }).toArray(),
-            signingSecret,
+            ...integrityInput,
           })
-        : assertQuickReleaseIntegrity({
-            run,
-            suite: await suites.findOne({ _id: run.suiteId }),
-            runSamples: await samples.find({ runId }).toArray(),
-            runJudgments: await judgments.find({ runId }).toArray(),
-            runDispatches: await dispatches.find({ runId }).toArray(),
-            signingSecret,
-          })
-      if (profileStatus === 'verified') await verifyEvidenceObjects((verifiedDbIntegrity as ReturnType<typeof assertVerifiedReleaseIntegrity>).evidenceObjects, verifyEvidence)
+        : assertQuickReleaseIntegrity(integrityInput)
+      if (profileStatus === 'verified' || standardMode) await verifyEvidenceObjects((verifiedDbIntegrity as unknown as AnyRecord).evidenceObjects, verifyEvidence)
       const verifiedAt = profileStatus === 'verified' ? now().toISOString() : ''
       const verifiedIntegrity = (() => {
         const { evidenceObjects: _evidenceObjects, candidateHash: _candidateHash, ...profileIntegrity } = verifiedDbIntegrity as unknown as AnyRecord
         return profileStatus === 'verified' ? { ...profileIntegrity, verifiedAt } : profileIntegrity
       })()
-      const previousRelease = await releases.find({ suiteId: run.suiteId, lane: run.lane, judgeEpoch: run.judgeEpoch, publishedAt: { $exists: true } }).sort({ publishedAt: -1 }).limit(1).next()
+      const releasePartition = standardMode
+        ? { suiteId: run.suiteId, evaluationMode: run.evaluationMode, evaluationEpoch: run.evaluationEpoch }
+        : { suiteId: run.suiteId, lane: run.lane, judgeEpoch: run.judgeEpoch }
+      const previousRelease = await releases.find({ ...releasePartition, publishedAt: { $exists: true } }).sort({ publishedAt: -1 }).limit(1).next()
       if (run.correctionOfReleaseId) {
-        const correctionTarget = await releases.findOne({ _id: run.correctionOfReleaseId, suiteId: run.suiteId, lane: run.lane, judgeEpoch: run.judgeEpoch, publishedAt: { $exists: true } })
+        const correctionTarget = await releases.findOne({ _id: run.correctionOfReleaseId, ...releasePartition, publishedAt: { $exists: true } })
         if (!correctionTarget) throw new Error('BENCHMARK_CORRECTION_PREDECESSOR_MISMATCH')
       }
-      const laneHeadId = `benchmark-release-head:${run.suiteId}:${run.lane}:${run.judgeEpoch}`
+      const laneHeadId = standardMode
+        ? `benchmark-release-head:${run.suiteId}:${run.evaluationMode}:${run.evaluationEpoch}`
+        : `benchmark-release-head:${run.suiteId}:${run.lane}:${run.judgeEpoch}`
       const currentProfiles = [{
-        profileId: `${verifiedIntegrity.provider}:${verifiedIntegrity.modelId}:${verifiedIntegrity.lane}`,
+        profileId: standardMode
+          ? `${verifiedIntegrity.canonicalModelId}:${run.evaluationMode}:${run.evaluationEpoch}`
+          : `${verifiedIntegrity.provider}:${verifiedIntegrity.modelId}:${verifiedIntegrity.lane}`,
         profileStatus,
         ...verifiedIntegrity,
       }]
       const replacedIds = new Set(currentProfiles.map((model: AnyRecord) => model.profileId))
       const mergedProfiles = [...(previousRelease?.models || []).filter((model: AnyRecord) => !replacedIds.has(model.profileId || `${model.provider}:${model.modelId}:${model.lane}`)), ...currentProfiles]
       const laneMedians = Object.fromEntries(BENCHMARK_AXES.map((axis) => {
-        const values = mergedProfiles.filter((model: AnyRecord) => model.profileStatus === 'verified').map((model: AnyRecord) => Number(model.dimensions?.[axis]?.mean)).filter(Number.isFinite).sort((left: number, right: number) => left - right)
+        const values = mergedProfiles.filter((model: AnyRecord) => model.profileStatus === (standardMode ? 'published' : 'verified') && model.ranked !== false).map((model: AnyRecord) => Number(model.dimensions?.[axis]?.mean)).filter(Number.isFinite).sort((left: number, right: number) => left - right)
         const middle = Math.floor(values.length / 2)
         return [axis, values.length ? (values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2) : 0]
       }))
@@ -1314,17 +1613,18 @@ export function createMongoBenchmarkRepository(
           const laneMedian = laneMedians[axis]
           return [[axis, { ...dimension, laneMedian, differenceCi95: { low: Number(dimension.ci95?.low || dimension.mean) - laneMedian, high: Number(dimension.ci95?.high || dimension.mean) - laneMedian } }]]
         }))
-        return { ...model, dimensions, traits: deriveRelativeTraits({ profileStatus: model.profileStatus, coverage: Number(model.coverage || 0), dimensions }) }
+        return { ...model, dimensions, traits: standardMode ? [] : deriveRelativeTraits({ profileStatus: model.profileStatus, coverage: Number(model.coverage || 0), dimensions }) }
       })
       const requestedEvidence = Array.isArray(input.evidence) ? input.evidence.slice(0, 12) : []
       const currentEvidence = []
       for (const item of requestedEvidence) {
-        const sample = await samples.findOne({ runId, ...(profileStatus === 'verified' ? { phase: 'full' } : { phase: 'quick' }), sampleId: text(item.sampleId), publicEvidence: true, auditRequired: true })
+        const evidencePhase = standardMode ? 'standard' : profileStatus === 'verified' ? 'full' : 'quick'
+        const sample = await samples.findOne({ runId, phase: evidencePhase, sampleId: text(item.sampleId), publicEvidence: true, auditRequired: true })
         if (!sample?.imageObjectKey) throw new Error('BENCHMARK_EVIDENCE_NOT_AUDITED')
         await verifyEvidence(sample.imageObjectKey, sample.imageHash)
-        const codexJudgment = await judgments.findOne({ runId, phase: profileStatus === 'verified' ? 'full' : 'quick', sampleId: sample.sampleId, source: 'codex', reviewerEpoch: run.reviewerEpoch, packetHash: run.importedReviewPacketHash, reviewHash: run.importedReviewHash, reviewAttestation: run.importedReviewAttestation, accepted: true })
+        const codexJudgment = await judgments.findOne({ runId, phase: evidencePhase, sampleId: sample.sampleId, source: 'codex', reviewerEpoch: run.reviewerEpoch, packetHash: run.importedReviewPacketHash, reviewHash: run.importedReviewHash, reviewAttestation: run.importedReviewAttestation, accepted: true })
         if (!codexJudgment) throw new Error('BENCHMARK_EVIDENCE_NOT_CODEX_REVIEWED')
-        currentEvidence.push({ sampleId: sample.sampleId, profileId: `${run.provider}:${run.modelId}:${run.lane}`, modelId: run.modelId, caseId: sample.caseId, objectKey: sample.imageObjectKey, imageHash: sample.imageHash, kind: ['median', 'strength', 'failure'].includes(item.kind) ? item.kind : 'median', caption: text(item.caption, 300) })
+        currentEvidence.push({ sampleId: sample.sampleId, profileId: currentProfiles[0].profileId, modelId: run.modelId, caseId: sample.caseId, objectKey: sample.imageObjectKey, imageHash: sample.imageHash, kind: ['median', 'strength', 'failure'].includes(item.kind) ? item.kind : 'median', caption: text(item.caption, 300) })
       }
       const releaseBase = {
         profileStatus,
@@ -1333,6 +1633,11 @@ export function createMongoBenchmarkRepository(
         suiteHash: run.suiteHash,
         judgeEpoch: run.judgeEpoch,
         reviewerEpoch: run.reviewerEpoch,
+        evaluationMode: run.evaluationMode,
+        evaluationEpoch: run.evaluationEpoch,
+        reviewProtocol: run.reviewProtocol,
+        reviewerKind: run.reviewerKind,
+        reviewerPasses: run.reviewerPasses,
         registryHash: verifiedIntegrity?.registryHash || run.registryHash,
         priceHash: verifiedIntegrity?.priceHash || run.priceHash,
         codeSha: verifiedIntegrity?.codeSha || run.codeSha,
@@ -1341,7 +1646,29 @@ export function createMongoBenchmarkRepository(
         auditRatio: publishedProfiles.length ? publishedProfiles.reduce((sum: number, model: AnyRecord) => sum + Number(model.auditRatio || 0), 0) / publishedProfiles.length : 0,
         models: publishedProfiles,
         evidence: [...(previousRelease?.evidence || []).filter((item: AnyRecord) => !replacedIds.has(item.profileId || `${item.provider || ''}:${item.modelId}:${run.lane}`)), ...currentEvidence],
-        methodology: {
+        methodology: standardMode ? {
+          suiteId: run.suiteId,
+          suiteHash: run.suiteHash,
+          evaluationMode: 'codex_single',
+          evaluationEpoch: run.evaluationEpoch,
+          reviewProtocol: 'codex-single-two-pass-v1',
+          reviewerKind: 'codex',
+          reviewerPasses: 2,
+          aggregation: 'case-first-bootstrap',
+          noOverallScore: true,
+          repetitionsPerCase: 1,
+          automaticJudges: [],
+          expectedCaseCount: 4,
+          sampleCount: verifiedIntegrity?.sampleCount,
+          automaticJudgmentCount: 0,
+          logicalJudgmentCount: 0,
+          judgeDispatchCount: 0,
+          auditSampleCount: verifiedIntegrity?.sampleCount,
+          actualOutputPixels: verifiedIntegrity?.actualOutputPixels,
+          reviewerEpoch: run.reviewerEpoch,
+          knownLimitations: ['small-sample-size', 'single-reviewer', 'mixed-native-output-resolution'],
+          evidenceManifestHash: verifiedIntegrity.evidenceManifestHash,
+        } : {
           suiteId: run.suiteId,
           suiteHash: run.suiteHash,
           aggregation: 'case-first-bootstrap',
@@ -1386,7 +1713,9 @@ export function createMongoBenchmarkRepository(
             runJudgments: await judgments.find({ runId }, { session }).toArray(),
             runDispatches: await dispatches.find({ runId }, { session }).toArray(), signingSecret,
           }
-          const transactionalIntegrity = profileStatus === 'verified'
+          const transactionalIntegrity = standardMode
+            ? assertStandardReleaseIntegrity(transactionalInput)
+            : profileStatus === 'verified'
             ? assertVerifiedReleaseIntegrity(transactionalInput)
             : assertQuickReleaseIntegrity(transactionalInput)
           if (canonicalHash(transactionalIntegrity) !== canonicalHash(verifiedDbIntegrity)) {
@@ -1397,7 +1726,7 @@ export function createMongoBenchmarkRepository(
           await releases.insertOne({ _id: releaseId, ...releaseBase, releaseHash }, { session })
           const updated = await runs.updateOne(
             publishGuard,
-            { $set: { state: profileStatus === 'provisional' ? 'provisional_published' : 'verified_published', releaseId, updatedAt: now() } },
+            { $set: { state: standardMode ? 'published' : profileStatus === 'provisional' ? 'provisional_published' : 'verified_published', releaseId, updatedAt: now() } },
             { session },
           )
           if (updated.modifiedCount !== 1) throw new Error('BENCHMARK_PUBLISH_STATE_CONFLICT')

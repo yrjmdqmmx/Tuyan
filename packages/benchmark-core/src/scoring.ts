@@ -105,6 +105,19 @@ export function applyCodexAdjudication(input: { automatic: AutomaticJudgment[]; 
   return { scores, appliedCaps }
 }
 
+export function applyCodexSingleReview(input: CodexJudgment) {
+  const scores: PartialAxisScores = {}
+  for (const axis of BENCHMARK_AXES) {
+    const score = input.scores[axis]
+    if (typeof score === 'number' && Number.isFinite(score) && score >= 0 && score <= 10) scores[axis] = round(score)
+  }
+  const appliedCaps = input.confirmedRedLines.map((redLine) => ({ ...redLine }))
+  for (const cap of appliedCaps) {
+    if (typeof scores[cap.axis] === 'number') scores[cap.axis] = Math.min(scores[cap.axis]!, cap.cap)
+  }
+  return { scores, appliedCaps }
+}
+
 export interface AuditCandidate {
   sampleId: string
   disagreement: number

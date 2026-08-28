@@ -1,6 +1,6 @@
 export function buildBenchmarkPhaseOperatorReport(input: {
   runId: string
-  phase: 'quick' | 'full'
+  phase: 'quick' | 'full' | 'standard'
   authorizationHash: string
   usage: { generations: number; judgments: number; judgeCalls?: number; estimatedUsd: number }
   state: string

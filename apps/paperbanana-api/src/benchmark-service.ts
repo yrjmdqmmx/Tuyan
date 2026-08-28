@@ -2,7 +2,7 @@ import { canonicalHash } from '@paperbanana/benchmark-core'
 
 type AnyRecord = Record<string, any>
 
-const benchmarkLanes = new Set(['1K-standard', '2K-standard', '4K-standard'])
+const benchmarkLanes = new Set(['1K-standard', '2K-standard', '4K-standard', 'provider-default'])
 
 const publicActions = new Set(['benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology'])
 const adminActions = new Set([
@@ -22,14 +22,20 @@ function publicModel(model: AnyRecord) {
   const allowed = [
     'profileId', 'modelId', 'displayName', 'provider', 'providerLabel', 'developer', 'lane', 'profileStatus', 'sampleCount',
     'coverage', 'dimensions', 'traits', 'successRate', 'capabilityCoverage', 'repeatStability', 'latency', 'estimatedCost',
-    'registryHash', 'priceHash', 'codeSha', 'auditRatio', 'capabilityGaps',
+    'registryHash', 'priceHash', 'codeSha', 'auditRatio', 'capabilityGaps', 'canonicalModelId', 'primaryAccessProvider',
+    'alternateAccessProviders', 'actualOutputPixels', 'ranked', 'unrankedReason',
   ]
   return Object.fromEntries(allowed.filter((key) => model[key] !== undefined).map((key) => [key, model[key]]))
 }
 
 function publicMethodology(methodology: AnyRecord | undefined) {
   if (!methodology) return null
-  const allowed = ['suiteId', 'aggregation', 'noOverallScore', 'judgeEpoch', 'reviewerEpoch', 'auditPolicy', 'knownLimitations']
+  const allowed = [
+    'suiteId', 'suiteHash', 'aggregation', 'noOverallScore', 'judgeEpoch', 'reviewerEpoch', 'auditPolicy', 'knownLimitations',
+    'evaluationMode', 'evaluationEpoch', 'reviewProtocol', 'reviewerKind', 'reviewerPasses', 'automaticJudges',
+    'repetitionsPerCase', 'expectedCaseCount', 'sampleCount', 'automaticJudgmentCount', 'logicalJudgmentCount',
+    'judgeDispatchCount', 'auditSampleCount', 'actualOutputPixels',
+  ]
   return Object.fromEntries(allowed.filter((key) => methodology[key] !== undefined).map((key) => [key, methodology[key]]))
 }
 
@@ -62,6 +68,11 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
     suiteHash: release.suiteHash,
     judgeEpoch: release.judgeEpoch,
     reviewerEpoch: release.reviewerEpoch,
+    evaluationMode: release.evaluationMode,
+    evaluationEpoch: release.evaluationEpoch,
+    reviewProtocol: release.reviewProtocol,
+    reviewerKind: release.reviewerKind,
+    reviewerPasses: release.reviewerPasses,
     registryHash: release.registryHash,
     priceHash: release.priceHash,
     codeSha: release.codeSha,
@@ -71,6 +82,7 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
     publishedAt: release.publishedAt,
     models: (Array.isArray(release.models) ? release.models : []).map(publicModel),
     evidence,
+    methodology: publicMethodology(release.methodology),
   }
 }
 

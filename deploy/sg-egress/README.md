@@ -11,6 +11,8 @@ Hong Kong PaperBanana host -- HTTP CONNECT over 10.77.0.2:3128 --> approved prov
 
 Squid listens only on `10.77.0.2:3128`. Its **only** allowed client source is `10.77.0.1` (Hong Kong), with CONNECT on port 443 only and these four exact hosts: `api.openai.com`, `generativelanguage.googleapis.com`, `openrouter.ai`, and `ark.cn-beijing.volces.com`. Singapore itself has no loopback, WireGuard-self, or local health exception. IPv4/IPv6 literals (including bracketed authorities), private, loopback, link-local and all other destinations are denied. An approved dual-stack name may resolve to both A and AAAA records, but any private answer fails closed; the marker-owned Squid systemd drop-in orders Squid after `wg-quick@pbsg0` and limits its socket families to `AF_INET` and `AF_UNIX`, so provider connections use IPv4 without TLS interception. Squid normalizes IPv4-mapped addresses to IPv4, so mapped private/loopback answers are denied by the IPv4 CIDRs and mapped literal authorities are denied syntactically; this avoids the unsafe `::ffff:0:0/96` ACL, which would also block every ordinary IPv4 provider address. Approved name matching disables reverse DNS/PTR lookup. Squid does not decrypt TLS, does not cache, and logs only time, source, status, duration, bytes, and parsed CONNECT target `host:port`.
 
+The managed Squid configuration uses the fixed public resolvers `1.1.1.1` and `223.5.5.5` for provider lookups instead of inheriting the host resolver. This keeps the narrowly scoped provider proxy available when the Alibaba VPC-provided resolver is unreachable; exact destination ACLs, private-address rejection and end-to-end provider TLS remain authoritative.
+
 ## Before deployment
 
 Create cloud firewall/security-group rules before running these scripts:

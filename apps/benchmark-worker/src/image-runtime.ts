@@ -13,7 +13,8 @@ type AuthoritativeImageCall = (
   strictImageSize: boolean,
 ) => Promise<string>
 
-function laneResolution(lane: BenchmarkLane) {
+function laneResolution(lane: BenchmarkLane | 'provider-default') {
+  if (lane === 'provider-default') return ''
   return lane.slice(0, 2)
 }
 
@@ -25,7 +26,7 @@ export function createSharedImageRuntime(callImageModel: AuthoritativeImageCall)
       apiKey: string
       prompt: string
       aspectRatio: string
-      imageSize: BenchmarkLane
+      imageSize: BenchmarkLane | 'provider-default'
     }) {
       return callImageModel(
         input.provider,
@@ -35,7 +36,7 @@ export function createSharedImageRuntime(callImageModel: AuthoritativeImageCall)
         input.aspectRatio,
         '',
         laneResolution(input.imageSize),
-        true,
+        input.imageSize !== 'provider-default',
       )
     },
   })

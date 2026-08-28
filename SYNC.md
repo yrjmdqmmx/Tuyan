@@ -24,6 +24,37 @@
 
 ## 条目（最新在上）
 
+### [2026-08-28] Bench 全量生图模型 Standard / Codex single 公开榜 — by Codex
+变更：新增不可变 `pb-image-light-v1` 四题 Standard 阶段，三家生产 image registry route 先按运行时别名和跨渠道同模型归一为 canonical 实际模型，再由主接入渠道每题生成一次。当前 v9 fixture 锁定 55 route → 48 canonical 模型；单模型固定 4 generation / 0 automatic judgment / 0 Judge dispatch，全批次最多 48 模型 / 192 generation。全部成功图片进入 `codex-single-two-pass-v1` 两遍结构化盲审；至少完成并审核 3/4 才进入七维排名，不足者仍公开显示但不排名。实际宽高/像素/文件大小、主接入渠道、替代渠道和 generation-only 成本进入公共契约。新 release 状态为 `published`，比较身份为 `suiteId + evaluationMode + evaluationEpoch`；历史 Quick/Full、provisional/verified 和双 Judge release 保留只读且不混排。常驻 Worker 继续 disabled/并发 1；Standard batch operator 持有生产共享锁顺序执行，单模型未知 Provider 结果不重试但不阻止后续模型。
+契约（影响 Web / Core / Worker / 运维）：
+- 公共模型新增 `canonicalModelId / primaryAccessProvider / alternateAccessProviders / actualOutputPixels / ranked / unrankedReason`；release/methodology 新增 `evaluationMode=codex_single / evaluationEpoch / reviewProtocol / reviewerKind=codex / reviewerPasses=2 / automaticJudges=[]`。
+- 新状态为 `approved → standard_running → codex_review → published`；站长审批必须显式传 `evaluationMode=codex_single` 与精确 4/0/0 caps，发布使用 `profileStatus=published`。
+- 新模式发现、执行、审核包、导入和发布任一位置出现 automatic judgment 或 Judge dispatch 均失败关闭；公开费用三类 Judge 计数固定为 0。
+各端待办：
+- [x] benchmark-core / benchmark-worker / paperbanana-api（canonical manifest、Standard runner、签名审核与发布完整性门、旧 release 兼容、TDD）
+- [x] Web（单阶段文案、canonical 模型行、实际像素/渠道/成本、样本不足不排名、390/430 响应式基础）
+- [x] 部署 / 运维代码（单模型 Standard operator、批次 manifest 验证、48/192 总上限、共享锁、dry-run 零调用）
+- [x] Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（action 名称不变；非 Web 客户端无需改造）
+- [ ] 生产付费运行（必须先重新读取生产 registry、冻结并签名 canonical manifest、取得全部模型价格/权限并确定精确总美元上限；本条实现与测试没有调用 Provider）
+
+### [2026-08-28] Bench 确认未转发 Judge dispatch 的连续索引恢复 — by Codex
+变更：新增仅用于有独立网络证据证明请求未到达 Provider 的一次性 dispatch 恢复器。它要求 run 精确为 `paused/UNKNOWN_PROVIDER_OUTCOME`、无租约、24 个 quick 样本完整、目标 automatic judgment 不存在、旧 marker 仅有 index 0，且代理证据固定为目标 `openrouter.ai:443`、HTTP CONNECT 503、响应字节 0、日志 SHA-256。恢复永不删除或改写旧 marker，先把证据和 operator SHA-256 追加到 run 的内部 `dispatchReconciliations`，再从连续 index 1 开始占用既有 Judge-call/USD 预算；最多允许现有 manifest 已定义的 index 0–3。成功只补该 logical judgment、清除租约并保留 `quick_running` 给原 phase operator，任何新未知结果重新暂停。公开 action、release、客户端响应不变。
+各端待办：
+- [x] benchmark-worker / 运维代码（TDD、严格 proof/state 门、连续 marker、预算与租约、一次性 bundle）
+- [x] paperbanana-api / Web / Gateway / 原生客户端（内部 run 审计字段；公开与客户端契约不变）
+- [ ] 部署 / 运维（后续发布含正式 entrypoint 的不可变 Worker 镜像；当前生产仅按 bundle SHA `4f67497f…` 对已证明 503/0-byte 的 OpenRouter dispatch 执行一次，常驻 Worker 保持 disabled）
+- [x] 百炼未知结果（用户于 2026-08-28 明确接受可能重复计费并授权只重试该条；一次性 bundle SHA-256 `a063251a…` 在严格账本形状 24 generation / 33 logical judgment / 34 dispatch、无租约、Worker disabled 下，仅将目标 `bailian` marker 从 index 0 连续到 index 1，结果成功落库；随后原 quick operator 完成 24/24 双 Judge，Codex 盲审导入 14/14，并创建 provisional release `d45d7415…`）
+
+### [2026-08-27] Bench run 比例数组规范化与零调用恢复 — by Codex
+变更：新建 Bench run 时，顶层 `aspectRatios` 现在与已签名 `runFacts.aspectRatios` 使用同一字符串化排序顺序，避免候选注册表顺序不同导致一次性 phase operator 在首个预算预留/Provider 调用前失败。生产中唯一受影响且保持 0 generation / 0 judgment / 0 dispatch 的 run 只允许通过精确 CAS 将冗余顶层数组归一到已签名数组，不重签或改写审批、价格、runHash、candidateSnapshot。
+契约（影响后端 / Worker）：
+- Core 新 run 的顶层 `aspectRatios`、`runFacts.aspectRatios` 与 `candidateSnapshot.aspectRatios` 必须规范等价；Worker 继续失败关闭并验证顶层数组哈希，不放宽不可变事实校验。
+- 旧 run 仅当状态为 `failed`、错误发生在 phase operator、所有付费/样本/dispatch 计数为 0、无租约，且顶层数组排序后精确等于已签名数组时，才允许一次性归一化；修复后必须重新通过完整 attestation 才能运行。
+各端待办：
+- [x] paperbanana-api / Benchmark Worker（TDD、规范化写入与严格校验保留）
+- [ ] 部署 / 运维（后续发布新镜像；当前生产只对精确零调用 run 做一次性 CAS 修复，常驻 Worker 保持 disabled）
+- [x] Web / Gateway / 原生客户端（内部 run 字段修复，不改变公开 action 或客户端请求）
+
 ### [2026-08-26] Bench OpenRouter Judge 固定新加坡出口 — by Codex
 变更：Bench 的 OpenRouter 自动评审、只读 access diagnostic 与单请求探针新增独立、失败关闭的出口契约：`PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE=sg-required` 且 `PAPERBANANA_BENCH_SG_PROXY_URL=http://10.77.0.2:3128`。仅 `https://openrouter.ai` 可使用该代理；百炼/方舟与被测模型生成路径保持原有直连。`discovery-only` 明确为 `disabled`，`configured-disabled` 才配置固定代理；常驻 Worker 仍为 `PAPERBANANA_BENCH_ENABLED=false`、并发 1。该变更用于规避香港直连 OpenRouter runtime POST 的 opaque 403，不改变公共 action、公开响应或客户端契约。
 各端待办：

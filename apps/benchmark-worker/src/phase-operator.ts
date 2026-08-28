@@ -30,7 +30,7 @@ async function main() {
   const client = new MongoClient(required('PAPERBANANA_BENCH_MONGODB_URI'))
   let activeRun: Record<string, any> | null = null
   let heartbeat: ReturnType<typeof setInterval> | undefined
-  const openRouterJudgeEgress = createOpenRouterJudgeEgress(env)
+  const openRouterJudgeEgress = authorization.phase === 'standard' ? undefined : createOpenRouterJudgeEgress(env)
   try {
     await client.connect()
     const repository = createWorkerMongoRepository(client.db(config.mongoDbName))
@@ -47,10 +47,11 @@ async function main() {
     })
     await processAcquiredBenchmarkRun({
       run: activeRun, workerId, workerCodeSha: provenance.codeSha, configuredCodeSha: authorization.codeSha,
-      authorization, credentials, imageRuntime, oss, repository, openRouterJudgeFetch: openRouterJudgeEgress.fetch,
+      authorization, credentials, imageRuntime, oss, repository, openRouterJudgeFetch: openRouterJudgeEgress?.fetch || fetch,
     })
     const snapshot = await repository.phaseReport(authorization.runId, authorization.phase)
-    if (!snapshot.run || snapshot.run.state !== (authorization.phase === 'quick' ? 'quick_review' : 'codex_audit')
+    const expectedPostState = authorization.phase === 'quick' ? 'quick_review' : authorization.phase === 'full' ? 'codex_audit' : 'codex_review'
+    if (!snapshot.run || snapshot.run.state !== expectedPostState
       || snapshot.run.leaseOwner || snapshot.run.leaseToken || snapshot.run.leaseUntil) {
       throw new Error('BENCHMARK_PHASE_OPERATOR_POSTCONDITION_FAILED')
     }
@@ -72,7 +73,7 @@ async function main() {
     throw error
   } finally {
     if (heartbeat) clearInterval(heartbeat)
-    await openRouterJudgeEgress.close().catch(() => {})
+    await openRouterJudgeEgress?.close().catch(() => {})
     await client.close().catch(() => {})
   }
 }

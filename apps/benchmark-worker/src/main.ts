@@ -8,7 +8,7 @@ import { canonicalHash } from '@paperbanana/benchmark-core'
 import { loadAuthoritativeImageRuntime } from './authoritative-runtime.js'
 import { loadBuildProvenance } from './build-provenance.js'
 import { loadBenchCredentials, parseWorkerConfig, redactHealthError } from './config.js'
-import { detectImageCandidates } from './detector.js'
+import { detectCanonicalImageCandidates } from './detector.js'
 import { createWorkerMongoRepository } from './mongo-repository.js'
 import { UnknownProviderOutcomeError } from './provider-operation.js'
 import { processAcquiredBenchmarkRun } from './process-run.js'
@@ -58,10 +58,14 @@ async function main() {
       if (!response.ok || registry.code !== 0) throw new Error('BENCHMARK_REGISTRY_FETCH_FAILED')
       const registryHash = canonicalHash(registry)
       const previous = await repository.registrySnapshot()
-      const candidates = detectImageCandidates(previous?.snapshot || {}, registry, registryHash)
+      const detection = detectCanonicalImageCandidates(previous?.snapshot || {}, registry, registryHash)
+      const candidates = detection.candidates
       await repository.saveCandidates(candidates)
-      await repository.saveRegistrySnapshot(registry, registryHash)
-      await writeHealth('ready', { lastDetectionAt: new Date().toISOString(), detectedCandidates: candidates.length })
+      await repository.saveRegistrySnapshot(registry, registryHash, detection.manifest)
+      await writeHealth('ready', {
+        lastDetectionAt: new Date().toISOString(), detectedCandidates: candidates.length,
+        canonicalModelCount: detection.manifest.canonicalModelCount, canonicalManifestHash: detection.manifest.manifestHash,
+      })
     } finally { detecting = false }
   }
 

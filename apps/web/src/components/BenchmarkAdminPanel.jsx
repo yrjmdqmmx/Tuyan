@@ -7,11 +7,11 @@ export default function BenchmarkAdminPanel({ apiBase, health, disabled = false 
   const [candidateId, setCandidateId] = useState('')
   const [runId, setRunId] = useState('')
   const [maxEstimatedUsd, setMaxEstimatedUsd] = useState('5')
-  const [maxGenerations, setMaxGenerations] = useState('24')
-  const [maxJudgments, setMaxJudgments] = useState('48')
-  const [maxJudgeCalls, setMaxJudgeCalls] = useState('192')
+  const [maxGenerations] = useState('4')
+  const [maxJudgments] = useState('0')
+  const [maxJudgeCalls] = useState('0')
   const [price, setPrice] = useState('0.05')
-  const [judgePrice, setJudgePrice] = useState('0.005')
+  const [judgePrice] = useState('0')
   const [priceSource, setPriceSource] = useState('')
   const [publicEvidenceSampleIds, setPublicEvidenceSampleIds] = useState('')
   const [publishEvidence, setPublishEvidence] = useState('[]')
@@ -56,7 +56,7 @@ export default function BenchmarkAdminPanel({ apiBase, health, disabled = false 
   }
 
   async function approve() {
-    const data = await action('adminBenchmarkApprove', { candidateId, entitlementConfirmed: true, priceSnapshot: { estimatedPerGeneration: Number(price), estimatedPerJudgeCall: Number(judgePrice), source: priceSource.trim(), capturedAt: new Date().toISOString() }, maxGenerations: Number(maxGenerations), maxJudgments: Number(maxJudgments), maxJudgeCalls: Number(maxJudgeCalls), maxEstimatedUsd: Number(maxEstimatedUsd) })
+    const data = await action('adminBenchmarkApprove', { candidateId, evaluationMode: 'codex_single', entitlementConfirmed: true, priceSnapshot: { estimatedPerGeneration: Number(price), estimatedPerJudgeCall: Number(judgePrice), source: priceSource.trim(), capturedAt: new Date().toISOString() }, maxGenerations: Number(maxGenerations), maxJudgments: Number(maxJudgments), maxJudgeCalls: Number(maxJudgeCalls), maxEstimatedUsd: Number(maxEstimatedUsd) })
     if (data?.approval?.runId) setRunId(data.approval.runId)
   }
 
@@ -81,14 +81,14 @@ export default function BenchmarkAdminPanel({ apiBase, health, disabled = false 
       <div className="benchmark-admin-grid">
         <fieldset><legend>候选与预算审批</legend>
           <div className="benchmark-admin-row"><select disabled={disabled} value={candidateId} onChange={(event) => setCandidateId(event.target.value)}><option value="">选择 detected 候选</option>{candidates.map((item) => <option key={item.candidateId} value={item.candidateId}>{item.provider} · {item.modelId} · {item.state}</option>)}</select><button type="button" disabled={disabled} onClick={load}><RefreshCcw size={14} />刷新</button></div>
-          <div className="benchmark-admin-row"><label>单图估算 USD<input disabled={disabled} value={price} onChange={(event) => setPrice(event.target.value)} inputMode="decimal" /></label><label>单次 Judge USD<input disabled={disabled} value={judgePrice} onChange={(event) => setJudgePrice(event.target.value)} inputMode="decimal" /></label><label>总预算 USD<input disabled={disabled} value={maxEstimatedUsd} onChange={(event) => setMaxEstimatedUsd(event.target.value)} inputMode="decimal" /></label></div>
+          <div className="benchmark-admin-row"><label>单图估算 USD<input disabled={disabled} value={price} onChange={(event) => setPrice(event.target.value)} inputMode="decimal" /></label><label>自动 Judge USD<input disabled value={judgePrice} /></label><label>总预算 USD<input disabled={disabled} value={maxEstimatedUsd} onChange={(event) => setMaxEstimatedUsd(event.target.value)} inputMode="decimal" /></label></div>
           <label>公开价格来源 HTTPS<input disabled={disabled} value={priceSource} onChange={(event) => setPriceSource(event.target.value)} inputMode="url" placeholder="https://…" /></label>
-          <div className="benchmark-admin-row"><label>最多生成<input disabled={disabled} value={maxGenerations} onChange={(event) => setMaxGenerations(event.target.value)} inputMode="numeric" /></label><label>最多逻辑 Judgment<input disabled={disabled} value={maxJudgments} onChange={(event) => setMaxJudgments(event.target.value)} inputMode="numeric" /></label><label>最多 Judge dispatch<input disabled={disabled} value={maxJudgeCalls} onChange={(event) => setMaxJudgeCalls(event.target.value)} inputMode="numeric" /></label></div>
-          <button type="button" disabled={disabled || !candidateId || !/^https:\/\//.test(priceSource.trim())} onClick={approve}>确认权益与预算并批准 / 增额</button>
+          <p>最多生成：4　最多逻辑 Judgment：0　最多 Judge dispatch：0</p>
+          <button type="button" disabled={disabled || !candidateId || !/^https:\/\//.test(priceSource.trim())} onClick={approve}>确认权益与生图预算并批准</button>
         </fieldset>
-        <fieldset><legend>运行控制</legend><label>Run ID<input disabled={disabled} value={runId} onChange={(event) => setRunId(event.target.value)} placeholder="bench-run-…" /></label><div className="benchmark-admin-row"><button type="button" disabled={disabled || !runId} onClick={() => action('adminBenchmarkControl', { runId, targetState: 'paused', reason: 'manual pause' })}><Pause size={14} />暂停</button><button type="button" disabled={disabled || !runId} onClick={() => action('adminBenchmarkControl', { runId, targetState: 'quick_running', reason: 'start quick phase' })}><Play size={14} />临时集</button><button type="button" disabled={disabled || !runId} onClick={() => action('adminBenchmarkControl', { runId, targetState: 'full_running', reason: 'start full phase' })}><Play size={14} />正式集</button></div></fieldset>
+        <fieldset><legend>运行控制</legend><label>Run ID<input disabled={disabled} value={runId} onChange={(event) => setRunId(event.target.value)} placeholder="bench-run-…" /></label><div className="benchmark-admin-row"><button type="button" disabled={disabled || !runId} onClick={() => action('adminBenchmarkControl', { runId, targetState: 'paused', reason: 'manual pause' })}><Pause size={14} />暂停</button><button type="button" disabled={disabled || !runId} onClick={() => action('adminBenchmarkControl', { runId, targetState: 'standard_running', reason: 'start standard phase' })}><Play size={14} />运行 Standard</button></div></fieldset>
         <fieldset><legend>Codex 审核包</legend><p>导出包不含模型身份或自动分数；导入校验 packet、图片和 rubric hash。</p><label>纳入公开精选的 Sample ID（逗号或换行分隔）<textarea disabled={disabled} value={publicEvidenceSampleIds} onChange={(event) => setPublicEvidenceSampleIds(event.target.value)} /></label><div className="benchmark-admin-row"><button type="button" disabled={disabled || !runId} onClick={exportPacket}><Download size={14} />导出</button><label className="benchmark-file-button"><Upload size={14} />导入<input type="file" accept="application/json" disabled={disabled || !runId} onChange={importPacket} /></label></div></fieldset>
-        <fieldset><legend>发布控制</legend><p>临时与正式画像都会新建不可变 release；修正通过 supersedes 指向历史。</p><label>精选证据 JSON（sampleId / kind / caption）<textarea disabled={disabled} value={publishEvidence} onChange={(event) => setPublishEvidence(event.target.value)} /></label><div className="benchmark-admin-row"><button type="button" disabled={disabled || !runId} onClick={() => publish('provisional')}>发布临时画像</button><button type="button" disabled={disabled || !runId} onClick={() => publish('verified')}>发布正式画像</button></div></fieldset>
+        <fieldset><legend>发布控制</legend><p>审核完成后新建不可变公开 release；修正通过 supersedes 指向历史。</p><label>精选证据 JSON（sampleId / kind / caption）<textarea disabled={disabled} value={publishEvidence} onChange={(event) => setPublishEvidence(event.target.value)} /></label><div className="benchmark-admin-row"><button type="button" disabled={disabled || !runId} onClick={() => publish('published')}>发布公开画像</button></div></fieldset>
       </div>
       <p className="benchmark-admin-note">未配置 Bench 凭据的 Provider 显示为未评测；本面板不接收或展示任何 API Key。{message ? ` ${message}` : ''}</p>
     </section>

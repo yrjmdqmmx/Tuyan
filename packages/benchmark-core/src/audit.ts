@@ -8,6 +8,8 @@ interface ReviewSampleInput {
   imageHash: string
   rubric: Partial<Record<BenchmarkAxis, string>>
   rubricHash: string
+  caseRequirements?: Record<string, unknown>
+  requirementsHash?: string
   modelId?: string
   automaticScores?: unknown
 }
@@ -15,15 +17,17 @@ interface ReviewSampleInput {
 export function createCodexReviewPacket(input: {
   reviewerEpoch: string
   runHash: string
-  phase: 'quick' | 'full'
+  phase: 'quick' | 'full' | 'standard'
   issuedAt: string
   expiresAt: string
   signingSecret: string
   sourceManifestHash?: string
   sourceManifestAttestation?: string
+  reviewProtocol?: 'codex-single-two-pass-v1'
   samples: readonly ReviewSampleInput[]
 }) {
-  if (!input.reviewerEpoch || !input.runHash || !input.samples.length || !input.signingSecret || !Number.isFinite(Date.parse(input.issuedAt)) || Date.parse(input.expiresAt) <= Date.parse(input.issuedAt)) throw new Error('INVALID_CODEX_REVIEW_PACKET')
+  const emptyStandardPacket = input.phase === 'standard' && input.reviewProtocol === 'codex-single-two-pass-v1'
+  if (!input.reviewerEpoch || !input.runHash || (!input.samples.length && !emptyStandardPacket) || !input.signingSecret || !Number.isFinite(Date.parse(input.issuedAt)) || Date.parse(input.expiresAt) <= Date.parse(input.issuedAt)) throw new Error('INVALID_CODEX_REVIEW_PACKET')
   const hasSourceBinding = input.sourceManifestHash !== undefined || input.sourceManifestAttestation !== undefined
   if (hasSourceBinding && (!/^[a-f0-9]{64}$/i.test(input.sourceManifestHash || '') || !/^[a-f0-9]{64}$/i.test(input.sourceManifestAttestation || ''))) {
     throw new Error('INVALID_CODEX_REVIEW_SOURCE_MANIFEST')
@@ -33,6 +37,7 @@ export function createCodexReviewPacket(input: {
     reviewerEpoch: input.reviewerEpoch,
     runHash: input.runHash,
     phase: input.phase,
+    ...(input.reviewProtocol ? { reviewProtocol: input.reviewProtocol } : {}),
     issuedAt: input.issuedAt,
     expiresAt: input.expiresAt,
     ...(hasSourceBinding ? { sourceManifestHash: input.sourceManifestHash!, sourceManifestAttestation: input.sourceManifestAttestation! } : {}),
@@ -41,6 +46,10 @@ export function createCodexReviewPacket(input: {
         throw new Error('INVALID_CODEX_REVIEW_SAMPLE')
       }
       if (canonicalHash(sample.rubric) !== sample.rubricHash) throw new Error('CODEX_REVIEW_RUBRIC_HASH_MISMATCH')
+      const hasRequirements = sample.caseRequirements !== undefined || sample.requirementsHash !== undefined
+      if (hasRequirements && (!sample.caseRequirements || canonicalHash(sample.caseRequirements) !== sample.requirementsHash)) {
+        throw new Error('CODEX_REVIEW_REQUIREMENTS_HASH_MISMATCH')
+      }
       return {
         blindLabel: `sample-${String(index + 1).padStart(3, '0')}`,
         sampleId: sample.sampleId,
@@ -48,6 +57,7 @@ export function createCodexReviewPacket(input: {
         imageHash: sample.imageHash,
         rubric: sample.rubric,
         rubricHash: sample.rubricHash,
+        ...(hasRequirements ? { caseRequirements: sample.caseRequirements!, requirementsHash: sample.requirementsHash! } : {}),
       }
     }),
   }
@@ -66,6 +76,7 @@ interface ReviewImport {
     confirmedRedLines: Array<{ code: string; axis: BenchmarkAxis; cap: number }>
     evidence: string[]
     confidence: number
+    consistencyReviewed?: boolean
   }>
 }
 
@@ -83,6 +94,7 @@ function packetHashBase(packet: ReturnType<typeof createCodexReviewPacket>) {
     reviewerEpoch: packet.reviewerEpoch,
     runHash: packet.runHash,
     phase: packet.phase,
+    ...('reviewProtocol' in packet ? { reviewProtocol: packet.reviewProtocol } : {}),
     issuedAt: packet.issuedAt,
     expiresAt: packet.expiresAt,
     ...('sourceManifestHash' in packet ? { sourceManifestHash: packet.sourceManifestHash, sourceManifestAttestation: packet.sourceManifestAttestation } : {}),
@@ -99,6 +111,7 @@ function normalizedReviewJudgment(judgment: ImportedJudgment) {
     confirmedRedLines: judgment.confirmedRedLines,
     evidence: judgment.evidence,
     confidence: judgment.confidence,
+    ...(judgment.consistencyReviewed !== undefined ? { consistencyReviewed: judgment.consistencyReviewed } : {}),
   }
 }
 
@@ -132,7 +145,7 @@ export function verifyCodexReviewAttestation(
   return { ...facts, attestation: expectedAttestation }
 }
 
-export function importCodexReview(packet: ReturnType<typeof createCodexReviewPacket>, review: ReviewImport, options: { signingSecret: string; expectedPhase: 'quick' | 'full'; now: Date }) {
+export function importCodexReview(packet: ReturnType<typeof createCodexReviewPacket>, review: ReviewImport, options: { signingSecret: string; expectedPhase: 'quick' | 'full' | 'standard'; now: Date }) {
   const expectedPacketHash = canonicalHash(packetHashBase(packet))
   if (packet.packetHash !== expectedPacketHash || review.packetHash !== packet.packetHash) throw new Error('CODEX_REVIEW_PACKET_HASH_MISMATCH')
   const expectedSignature = createHmac('sha256', options.signingSecret).update(packet.packetHash).digest('hex')
@@ -163,6 +176,9 @@ export function importCodexReview(packet: ReturnType<typeof createCodexReviewPac
       || Object.keys(item).some((key) => !['code', 'axis', 'cap'].includes(key))
       || typeof item.code !== 'string' || !item.code.trim() || item.code.length > 160
       || !BENCHMARK_AXES.includes(item.axis) || !Number.isFinite(item.cap) || item.cap < 0 || item.cap > 10)) throw new Error('CODEX_REVIEW_INVALID_RED_LINE')
+    if (packet.reviewProtocol === 'codex-single-two-pass-v1' && judgment.consistencyReviewed !== true) {
+      throw new Error('CODEX_REVIEW_CONSISTENCY_PASS_REQUIRED')
+    }
     return { sampleId: sample.sampleId, ...judgment }
   })
   const facts = codexReviewImportFacts(packet, imported)

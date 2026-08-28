@@ -228,6 +228,7 @@ cat > "$squid_candidate" <<'EOF'
 http_port 10.77.0.2:3128
 visible_hostname paperbanana-sg-egress
 host_verify_strict on
+dns_nameservers 1.1.1.1 223.5.5.5
 
 acl hk src 10.77.0.1/32
 acl CONNECT method CONNECT

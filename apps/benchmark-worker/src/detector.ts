@@ -1,4 +1,4 @@
-import { selectBenchmarkLane } from '@paperbanana/benchmark-core'
+import { buildCanonicalImageModelManifest, selectBenchmarkLane } from '@paperbanana/benchmark-core'
 
 import type { BenchProvider } from './config.js'
 
@@ -45,4 +45,35 @@ export function detectImageCandidates(previous: RegistrySnapshot, current: Regis
         state: 'detected' as const,
       })) : [])
     .sort((left, right) => left.candidateId.localeCompare(right.candidateId))
+}
+
+export function detectCanonicalImageCandidates(previous: RegistrySnapshot, current: RegistrySnapshot, registryHash: string) {
+  const registryVersion = String((current as any).registryVersion || (current as any).version || 'unversioned')
+  const currentManifest = buildCanonicalImageModelManifest({ registryVersion, registryHash, registry: current as any })
+  const previousManifest = buildCanonicalImageModelManifest({
+    registryVersion: String((previous as any).registryVersion || (previous as any).version || 'unversioned'),
+    registryHash: String((previous as any).registryHash || 'previous'),
+    registry: previous as any,
+  })
+  const known = new Set(previousManifest.models.map((model) => model.canonicalModelId))
+  const candidates = currentManifest.models.filter((model) => !known.has(model.canonicalModelId)).map((model) => {
+    const primaryRoute = model.routes[0]
+    return {
+      candidateId: `${primaryRoute.provider}:${primaryRoute.modelId}`,
+      provider: primaryRoute.provider,
+      modelId: primaryRoute.modelId,
+      canonicalModelId: model.canonicalModelId,
+      displayName: model.displayName,
+      developer: model.developer,
+      primaryAccessProvider: model.primaryAccessProvider,
+      alternateAccessProviders: model.alternateAccessProviders,
+      alternateRoutes: model.routes.slice(1),
+      lane: primaryRoute.lane,
+      aspectRatios: primaryRoute.aspectRatios,
+      registryHash,
+      canonicalManifestHash: currentManifest.manifestHash,
+      state: 'detected' as const,
+    }
+  })
+  return { manifest: currentManifest, candidates }
 }

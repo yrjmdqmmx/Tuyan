@@ -13,11 +13,11 @@ function required(name) {
   return value
 }
 
-function expectedNumber(name, integer = false) {
+function expectedNumber(name, integer = false, allowZero = false) {
   const raw = required(name)
   if (!/^(?:0|[1-9][0-9]{0,5})(?:\.[0-9]{1,12})?$/.test(raw)) throw new Error('invalid expected number')
   const value = Number(raw)
-  if (!Number.isFinite(value) || value <= 0 || (integer && !Number.isInteger(value))) throw new Error('invalid expected number')
+  if (!Number.isFinite(value) || (allowZero ? value < 0 : value <= 0) || (integer && !Number.isInteger(value))) throw new Error('invalid expected number')
   return value
 }
 
@@ -28,7 +28,7 @@ async function main() {
   if (!metadata.isFile() || metadata.isSymbolicLink() || metadata.size <= 1 || metadata.size > 32 * 1024) throw new Error('invalid attestation file')
   const actual = JSON.parse(await readFile(path, 'utf8'))
   const phase = required('PAPERBANANA_EXPECTED_PHASE')
-  if (!['quick', 'full'].includes(phase)) throw new Error('invalid phase')
+  if (!['quick', 'full', 'standard'].includes(phase)) throw new Error('invalid phase')
   const immutableFacts = actual?.immutableFacts
   if (!immutableFacts || typeof immutableFacts !== 'object' || Array.isArray(immutableFacts)) throw new Error('missing immutable facts')
   const normalize = (value) => Array.isArray(value) ? value.map(normalize) : value && typeof value === 'object'
@@ -60,14 +60,14 @@ async function main() {
     registryHash: required('PAPERBANANA_EXPECTED_REGISTRY_HASH'),
     runIntegrityAttestation: required('PAPERBANANA_EXPECTED_RUN_INTEGRITY_ATTESTATION'),
     maxGenerations: expectedNumber('PAPERBANANA_EXPECTED_MAX_GENERATIONS', true),
-    maxJudgments: expectedNumber('PAPERBANANA_EXPECTED_MAX_JUDGMENTS', true),
-    maxJudgeCalls: expectedNumber('PAPERBANANA_EXPECTED_MAX_JUDGE_CALLS', true),
+    maxJudgments: expectedNumber('PAPERBANANA_EXPECTED_MAX_JUDGMENTS', true, phase === 'standard'),
+    maxJudgeCalls: expectedNumber('PAPERBANANA_EXPECTED_MAX_JUDGE_CALLS', true, phase === 'standard'),
     maxEstimatedUsd: expectedNumber('PAPERBANANA_EXPECTED_MAX_ESTIMATED_USD'),
     priceSnapshot: {
       currency: required('PAPERBANANA_EXPECTED_PRICE_CURRENCY'),
       source: required('PAPERBANANA_EXPECTED_PRICE_SOURCE'),
       estimatedPerGeneration: expectedNumber('PAPERBANANA_EXPECTED_GENERATION_USD'),
-      estimatedPerJudgeCall: expectedNumber('PAPERBANANA_EXPECTED_JUDGE_USD'),
+      estimatedPerJudgeCall: expectedNumber('PAPERBANANA_EXPECTED_JUDGE_USD', false, phase === 'standard'),
       capturedAt: required('PAPERBANANA_EXPECTED_PRICE_CAPTURED_AT'),
     },
   }

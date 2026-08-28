@@ -40,27 +40,38 @@ else
   [[ "$(id -u)" == 0 ]] || { echo 'operator must run as root' >&2; exit 1; }
 fi
 
-[[ "$phase" =~ ^(quick|full)$ && "$run_id" =~ ^bench-run-[a-f0-9]{20}$ && "$expected_sha" =~ ^[a-f0-9]{40}$ ]] || usage
-[[ "$provider" =~ ^(bailian|openrouter|ark)$ && "$model_id" =~ ^[A-Za-z0-9._:/-]{3,200}$ && "$lane" =~ ^(1K-standard|2K-standard|4K-standard)$ ]] || usage
+[[ "$phase" =~ ^(quick|full|standard)$ && "$run_id" =~ ^bench-run-[a-f0-9]{20}$ && "$expected_sha" =~ ^[a-f0-9]{40}$ ]] || usage
+[[ "$provider" =~ ^(bailian|openrouter|ark)$ && "$model_id" =~ ^[A-Za-z0-9._:/-]{3,200}$ ]] || usage
+[[ "$lane" =~ ^(1K-standard|2K-standard|4K-standard)$ || ( "$phase" == standard && "$lane" == provider-default ) ]] || usage
 [[ "$suite_id" =~ ^[A-Za-z0-9._-]{3,100}$ && "$judge_epoch" =~ ^[A-Za-z0-9._:-]{3,100}$ ]] || usage
 for value in "$suite_hash" "$judge_stack_hash" "$signed_authorization_hash" "$price_hash" "$run_hash" "$run_facts_hash" "$candidate_snapshot_hash" "$aspect_ratios_hash" "$run_integrity_attestation" "$immutable_facts_hash"; do [[ "$value" =~ ^[a-f0-9]{64}$ ]] || usage; done
 [[ "$registry_hash" =~ ^[A-Za-z0-9._:/-]{3,200}$ ]] || usage
-[[ "$max_generations" =~ ^[1-9][0-9]*$ && "$max_judgments" =~ ^[1-9][0-9]*$ && "$max_judge_calls" =~ ^[1-9][0-9]*$ ]] || usage
+[[ "$max_generations" =~ ^[1-9][0-9]*$ && "$max_judgments" =~ ^[0-9]+$ && "$max_judge_calls" =~ ^[0-9]+$ ]] || usage
 for value in "$max_estimated_usd" "$generation_usd" "$judge_usd"; do [[ "$value" =~ ^[0-9]+([.][0-9]+)?$ ]] || usage; done
 [[ "$price_currency" == USD ]] || usage
 if [[ "$phase" == quick ]]; then
   ((max_generations <= 24 && max_judgments <= 48 && max_judge_calls >= max_judgments && max_judge_calls <= max_judgments * 4 && max_judge_calls <= 192)) || usage
   [[ "$confirm" == run-exact-approved-quick-phase-disabled-worker ]] || usage
-else
+elif [[ "$phase" == full ]]; then
   ((max_generations <= 144 && max_judgments <= 288 && max_judge_calls >= max_judgments && max_judge_calls <= max_judgments * 4 && max_judge_calls <= 1152)) || usage
   [[ "$confirm" == run-exact-approved-full-phase-disabled-worker ]] || usage
+else
+  ((max_generations == 4 && max_judgments == 0 && max_judge_calls == 0)) || usage
+  [[ "$judge_usd" == 0 || "$judge_usd" == 0.0 || "$judge_usd" == 0.00 ]] || usage
+  [[ "$confirm" == run-exact-approved-standard-phase-disabled-worker ]] || usage
 fi
-node - "$price_source" "$price_captured_at" "$max_estimated_usd" "$max_generations" "$max_judge_calls" "$generation_usd" "$judge_usd" <<'NODE'
-const [source, capturedAt, maxUsd, maxG, maxJ, genUsd, judgeUsd] = process.argv.slice(2)
-try { const u = new URL(source); if (u.protocol !== 'https:' || u.username || u.password || u.toString() !== source) process.exit(1); if (new Date(capturedAt).toISOString() !== capturedAt) process.exit(1) } catch { process.exit(1) }
-const n = [maxUsd, maxG, maxJ, genUsd, judgeUsd].map(Number)
-if (!n.every(Number.isFinite) || n[1] * n[3] + n[2] * n[4] > n[0] + 1e-9) process.exit(1)
-NODE
+[[ "$price_source" =~ ^https://[A-Za-z0-9.-]+(:[0-9]+)?(/[^[:space:]]*)?$ ]] || usage
+[[ "$price_captured_at" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$ ]] || usage
+if normalized_timestamp="$(date -u -d "$price_captured_at" '+%Y-%m-%dT%H:%M:%S.%3NZ' 2>/dev/null)"; then
+  [[ "$normalized_timestamp" == "$price_captured_at" ]] || usage
+else
+  price_captured_seconds="${price_captured_at%.*}Z"
+  [[ "$(date -j -u -f '%Y-%m-%dT%H:%M:%SZ' "$price_captured_seconds" '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null)" == "$price_captured_seconds" ]] || usage
+fi
+awk -v maxUsd="$max_estimated_usd" -v maxG="$max_generations" -v maxJ="$max_judge_calls" \
+  -v genUsd="$generation_usd" -v judgeUsd="$judge_usd" \
+  'BEGIN { if (maxUsd <= 0 || genUsd <= 0 || judgeUsd < 0 || maxG * genUsd + maxJ * judgeUsd > maxUsd + 1e-9) exit 1 }' || usage
+if [[ "$phase" != standard ]]; then awk -v value="$judge_usd" 'BEGIN { if (value <= 0) exit 1 }' || usage; fi
 
 if [[ -n "$test_root" ]]; then
   deploy_dir="$test_root/opt/paperbanana/repo/deploy/hk-single-host"; secret_dir="$test_root/opt/paperbanana/secrets"; lock_path="$test_root/run/lock/paperbanana-hk-production.lock"
@@ -71,7 +82,11 @@ deploy_env="$deploy_dir/.env"; core_env="$secret_dir/core.env"; bench_env="$secr
 read_env_value() { awk -F= -v key="$2" '$1 == key { value=substr($0,index($0,"=")+1); count++ } END { if(count==1) print value; else exit 1 }' "$1"; }
 file_mode() { stat -c '%a' "$1" 2>/dev/null || stat -f '%Lp' "$1"; }
 
-if [[ "$apply" == true ]]; then exec 9>"$lock_path"; flock -x 9; fi
+if [[ "$apply" == true ]]; then
+  if [[ "${PAPERBANANA_BENCH_BATCH_LOCK_HELD:-}" == 1 ]]; then flock -n 9 || exit 1
+  else exec 9>"$lock_path"; flock -x 9
+  fi
+fi
 for path in "$deploy_env" "$core_env" "$bench_env" "$gateway_env"; do [[ -f "$path" && ! -L "$path" ]] || exit 1; done
 [[ "$(file_mode "$gateway_env")" =~ ^(400|600)$ ]] || { echo 'gateway.env must be a protected regular file' >&2; exit 1; }
 [[ "$(read_env_value "$deploy_env" PAPERBANANA_BENCH_SECRET_MODE)" == configured-disabled ]] || { echo 'Bench is not configured-disabled' >&2; exit 1; }
@@ -184,11 +199,11 @@ const { MongoClient } = require('mongodb')
   try {
     await c.connect()
     const r = await c.db(process.env.PAPERBANANA_BENCH_MONGO_DB || 'paperbanana_benchmark').collection('paperbanana_benchmark_runs').findOne({_id:process.env.BENCHMARK_PHASE_OPERATOR_POSTCONDITION_RUN_ID})
-    const expected=process.env.BENCHMARK_PHASE_OPERATOR_POSTCONDITION_PHASE==='quick'?'quick_review':'codex_audit'
+    const expected=process.env.BENCHMARK_PHASE_OPERATOR_POSTCONDITION_PHASE==='quick'?'quick_review':process.env.BENCHMARK_PHASE_OPERATOR_POSTCONDITION_PHASE==='standard'?'codex_review':'codex_audit'
     if(!r||String(r.state).endsWith('_running')||r.leaseOwner||r.leaseToken||r.leaseUntil||(process.env.BENCHMARK_PHASE_OPERATOR_POSTCONDITION_STATUS==='0'&&r.state!==expected))process.exit(1)
   } finally { await c.close() }
 })().catch(() => process.exit(1))
 NODE
 ((operator_status == 0)) || exit "$operator_status"
-jq -e --arg run "$run_id" --arg phase "$phase" '.runId==$run and .phase==$phase and (.authorizationHash|test("^[a-f0-9]{64}$")) and (.state=="quick_review" or .state=="codex_audit")' "$report_file" >/dev/null
+jq -e --arg run "$run_id" --arg phase "$phase" '.runId==$run and .phase==$phase and (.authorizationHash|test("^[a-f0-9]{64}$")) and (.state=="quick_review" or .state=="codex_audit" or .state=="codex_review")' "$report_file" >/dev/null
 jq -c . "$report_file"

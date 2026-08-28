@@ -1,130 +1,73 @@
-# PaperBanana Bench Codex 单审公开榜设计
+# PaperBanana 全量生图模型轻量公开榜设计
 
 ## 目标
 
-将 Bench v1 从“出图 + OpenRouter/百炼双自动 Judge + Codex 抽审”改为“三家渠道只出图，全部图片由 Codex 盲审”。目标是显著降低费用和 Provider 不确定性，同时保留公开排行榜所需的可追溯证据、版本隔离和限制披露。
+建立唯一的 `Standard` 公开诊断阶段。阿里百炼、OpenRouter、火山方舟只负责调用被测生图模型；自动 Judge 调用为 0，所有成功图片由 Codex 进行全量两遍结构化盲审。
 
-首批出图渠道固定为阿里百炼、OpenRouter、火山方舟。各渠道只调用被测图像模型，不再承担评分。
+榜单用于观察模型差异，不产生综合总分或“绝对领先”标签。历史 Quick/Full 双 Judge release 继续只读保留，但不迁移、不覆盖，也不与新榜混排。
 
-## 选择的方案
+## 冻结范围与模型归一
 
-采用 **Codex 全量两遍盲审**：每张完成图片都进入同一个签名审核包；审核包不包含渠道、模型身份或历史分数。Codex 第一遍独立评分，第二遍只做一致性复核和红线确认，最终导入七维分数、可见证据、置信度与确认红线。
+- 每次批次冻结完整生产 registry version、registry hash、55 个原始 route、canonical 映射和 manifest hash。
+- 运行时别名及跨渠道同一实际模型只测试一次；当前基线预期归一为 48 个 canonical 模型。
+- 主渠道优先百炼/方舟官方直连，无直连时才使用 OpenRouter；替代渠道作为公开元数据保留。
+- 批次冻结后新增的模型不插入当前批次，进入下一次 snapshot。
+- 无权限、目录漂移或生成失败的模型继续出现在公开目录，但标记未进入质量排名。
 
-公开页面明确标注：
+## Standard 题集与预算
+
+不可变 suite 为 `pb-image-light-v1`，固定四题：
+
+- `complex_topology-05`
+- `bilingual_terms-01`
+- `math_symbols-01`
+- `negative_constraints-05`
+
+每个 canonical 模型每题只生成一次，最多 4 次，不自动重试。最多 48 个模型、192 次生成。审批固定为 `maxGenerations=4`、`maxJudgments=0`、`maxJudgeCalls=0`、`estimatedPerJudgeCall=0`；批次总预算在正式运行前由各模型公开价格快照汇总。
+
+分辨率按声明能力选择 `2K → 1K → 4K`。未声明分辨率的 OpenRouter 模型使用 Provider 默认输出。每张成功图片记录实际宽、高、像素数和文件大小；按产品决定，不同原生分辨率仍进入同榜，并在页面明确披露。
+
+## 状态与运行边界
+
+新状态流为：
+
+`detected → approved → standard_running → codex_review → published`
+
+同时保留 `paused / failed / cancelled / superseded`。常驻 Worker 默认 disabled、并发 1。一次性 Standard batch operator 持有生产共享锁，顺序执行已批准 run；最多 48 个 canonical 模型和 192 次生成。单模型未知 Provider 结果立即暂停该模型且不自动重试，批次可继续其他模型。
+
+## Codex 审核与统计
 
 - `evaluationMode = codex_single`
-- 自动 Judge 数量为 0
-- 审阅者是 Codex，不标注为人类专家
-- reviewer epoch 和审核协议版本
-- 单一审阅者可能存在系统性偏差，分数只应与相同 suite、lane、evaluation mode、reviewer epoch 的结果比较
+- `evaluationEpoch = codex-single-2026-08-v1`
+- `reviewProtocol = codex-single-two-pass-v1`
+- `reviewerKind = codex`
+- `reviewerPasses = 2`
+- `automaticJudges = []`
 
-这是公开排行榜，不是综合总榜；仍保留七个单维榜、置信区间、成功率、延迟与生成成本。
+所有成功样本进入同一个签名 packet。packet 只含盲标签、图片、题目要求、rubric 及对应 hash，不含模型、渠道或历史分数。导入必须覆盖 packet 的全部成功样本，并提供七维最终分数、可见证据、置信度、确认红线和一致性复核结果。
 
-## 未采用的方案
+统计直接使用 Codex 最终分数并执行确认红线封顶。至少成功并审核 3/4 张才进入七维排名；不足 3 张仍公开展示，但标记“样本不足、未排名”。成功率、延迟、实际像素和 generation-only 成本独立展示。
 
-1. **保留一个自动 Judge + Codex**：费用和 Provider 超时仍然存在，节省有限。
-2. **只抽审 10%**：剩余样本没有可靠分数，不能支持公开七维榜。
-3. **用户投票**：难以控制身份、样本暴露和刷票，暂不引入。
+## 数据完整性与发布
 
-## 运行与预算
+新 run 的兼容哨兵为：
 
-### Quick
-
-- 12 题 × 2 次，最多 24 张图。
-- 预算只包含 generation calls 与 generation USD。
-- `maxJudgments = 0`、`maxJudgeCalls = 0`、`estimatedPerJudgeCallUsd = 0`。
-- 所有完成样本都设置 `auditRequired = true`。
-- 生成结束后直接进入 `quick_review`。
-- Codex 全量审核导入后才允许发布 provisional release。
-
-### Full
-
-- 48 题 × 3 次，按能力缺口最多 144 张图。
-- 同样只有生成预算，没有 Judge 预算。
-- 所有完成样本进入完整 Codex 审核包。
-- 导入全部审核结果后才允许发布 verified release。
-
-常驻 Worker 继续默认 disabled、并发 1；付费阶段仍使用共享生产锁和一次性 operator。
-
-## 数据与完整性
-
-新增公开字段：
-
-- `evaluationMode: 'codex_single'`
-- `evaluationEpoch`
-- `reviewProtocol: 'codex-single-two-pass-v1'`
-- `automaticJudges: []`
-- `reviewerKind: 'codex'`
-- `reviewerPasses: 2`
-
-为降低迁移风险，内部 run facts 暂时保留既有 `judgeEpoch` 与 `judgeStackHash` 字段，但新 run 固定为无自动 Judge 的兼容哨兵：
-
-- `judgeEpoch = 'judge-none-codex-single-v1'`
+- `judgeEpoch = judge-none-codex-single-v1`
 - `judgeStackHash = canonicalHash({ evaluationMode: 'codex_single', automaticJudges: [] })`
-- `reviewerEpoch = 'codex-single-2026-08-v1'`
 
-新 release 的比较分区使用 `suiteId + lane + evaluationMode + evaluationEpoch`。历史双 Judge release 保持原样，不覆盖、不迁移、不与 Codex 单审榜混排。
+source manifest 必须绑定全部 Standard 成功样本、空 automatic judgment、空 Judge dispatch、actual pixels 和 generation-only usage。出现任何 automatic judgment 或 dispatch 都失败关闭。
 
-新运行的 phase source manifest 必须精确绑定：
+发布时从 suite、signed run facts、approval、samples、accepted Codex judgments 和 packet attestation 独立重建画像，不信任 `run.usage` 或 `releaseDraft`。新 release 的比较身份为 `suiteId + evaluationMode + evaluationEpoch`，状态为 `published`。公开费用中的 `automaticJudgeCalls`、`logicalJudgments`、`judgeDispatchCalls` 固定为 0。
 
-- 全部当前 phase samples
-- 空 automatic judgments 集
-- 空 Judge dispatch 集
-- generation-only usage
-- 完整 Codex packet、review hash 与 review attestation
+## 公共页面
 
-发布时不信任 run 汇总字段，而是从 samples 与 accepted Codex judgments 重建结果。每个可执行样本必须恰好有一个当前 packet、reviewer epoch 的 accepted Codex judgment。
+公开 actions 名称保持不变：`benchmarkLeaderboard`、`benchmarkModelProfile`、`benchmarkMethodology`。
 
-## 评分与统计
-
-七维保持不变：忠实度、简洁度、可读性、美观度、文字/符号、拓扑、指令遵从。
-
-新模式下不再计算三方中位数，直接使用 Codex 分数，并执行 Codex 确认的红线封顶。重复样本先在题目内聚合，再跨题计算均值和 case-level bootstrap 95% 区间。
-
-公开费用字段保持兼容：
-
-- `generationCalls` 为实际出图次数
-- `automaticJudgeCalls = 0`
-- `logicalJudgments = 0`
-- `judgeDispatchCalls = 0`
-- `estimatedCost.usd` 只包含生成估算费用
-
-## API 与页面
-
-公开 actions 名称不变：`benchmarkLeaderboard`、`benchmarkModelProfile`、`benchmarkMethodology`。
-
-站长 actions 名称不变，但 approval、attestation、review export/import 和 publish 必须识别 `evaluationMode`。旧双 Judge run 继续按旧规则校验；新 Codex 单审 run 禁止出现 automatic judgment 或 Judge dispatch。
-
-`/bench` 方法学区域改为：
-
-- 三家渠道只负责出图
-- Codex 全量结构化盲审
-- 两遍审核协议
-- reviewer epoch
-- 单审偏差限制
-
-模型卡继续区分接入渠道与模型开发者。OpenRouter 接入不得展示成模型官方直连。
-
-## 失败与恢复
-
-- 生成结果未知：保持现有 `UNKNOWN_PROVIDER_OUTCOME`，不自动重试。
-- Codex packet 过期：允许从同一不可变样本集重新导出新 packet，旧 packet 不可导入。
-- 审核未覆盖全部样本：禁止发布。
-- 任意新模式 run 出现 automatic judgment 或 Judge dispatch：完整性校验失败并暂停。
-- reviewer epoch 变化：创建新 evaluation epoch，不与旧榜混排。
+`/bench` 一行对应一个 canonical 实际模型，展示开发者、主接入渠道、替代渠道、样本数、七维分数和区间、实际像素、成功率、延迟和生成成本。页面明确披露小样本、单一审阅者和混合原生分辨率限制，不显示 Quick/Full、临时画像、双模型评审或 Judge 费用。
 
 ## 范围外
 
-- 不运行官方 PaperBananaBench 赛道。
-- 不增加用户投票、综合总分或自动模型接纳。
-- 不重新评分或覆盖已经发布的双 Judge 历史 release。
-- 本次不启动任何新的付费 Quick 或 Full。
-
-## 验收标准
-
-- 新 Quick/Full 在零 Judge 调用下完成生成并进入全量 Codex 审核。
-- 审核包不含模型身份、渠道或自动分数。
-- 发布门要求全部完成样本均有 accepted Codex judgment。
-- 新公开 release 明确显示 Codex 单审和 reviewer epoch。
-- 历史双 Judge release 仍可读取，但不会与新模式混排。
-- Worker 默认 disabled、并发 1，预算仅计算生成。
+- 不运行或发布官方 PaperBananaBench 赛道。
+- 不评 main/vision、精修或图生图。
+- 不增加用户投票、综合总分或自动扣费。
+- 实现、测试和构建阶段不发起任何 Provider 或 Judge 付费请求。

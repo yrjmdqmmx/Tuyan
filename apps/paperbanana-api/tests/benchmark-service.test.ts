@@ -3,10 +3,11 @@ import { createHmac } from 'node:crypto'
 import test from 'node:test'
 
 import { createBenchmarkService, publicBenchmarkRelease } from '../src/benchmark-service.js'
-import { buildJudgeCalibrationRecord, buildPhaseOperatorAttestation, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects } from '../src/benchmark-repository.js'
+import { buildCodexSingleProfile, buildJudgeCalibrationRecord, buildPhaseOperatorAttestation, buildStandardReviewSourceManifest, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects } from '../src/benchmark-repository.js'
 import {
   BENCHMARK_AXES,
   PB_IMAGE_DIAGNOSTIC_V1,
+  PB_IMAGE_LIGHT_V1,
   aggregateAxisScores,
   applyCodexAdjudication,
   benchmarkSampleId,
@@ -73,7 +74,7 @@ test('judge calibration record binds the private operator report, authorization,
 test('approval creates canonical run facts and reapproval never resigns a tampered stored run', async () => {
   const candidate = {
     _id: 'ark:model', candidateId: 'ark:model', provider: 'ark', modelId: 'model', developer: 'Maker', lane: '2K-standard',
-    aspectRatios: ['16:9'], registryHash: 'registry-hash', state: 'detected',
+    aspectRatios: ['1:1', '16:9'], registryHash: 'registry-hash', state: 'detected',
   }
   let insertedRun: any
   const collections: Record<string, any> = {
@@ -97,6 +98,8 @@ test('approval creates canonical run facts and reapproval never resigns a tamper
   assert.equal(insertedRun.runHash, canonicalHash(insertedRun.runFacts))
   assert.equal(insertedRun.candidateSnapshot.displayName, candidate.modelId)
   assert.equal(insertedRun.candidateSnapshot.providerLabel, candidate.provider)
+  assert.deepEqual(insertedRun.aspectRatios, [...candidate.aspectRatios].sort())
+  assert.deepEqual(insertedRun.aspectRatios, insertedRun.runFacts.aspectRatios)
   assert.equal(insertedRun.approvalVersions.length, 1)
   assert.equal(insertedRun.approvalVersions[0].phase, 'quick')
   const operatorAttestation = buildPhaseOperatorAttestation({ ...insertedRun, state: 'quick_running' }, reviewSigningSecret)
@@ -146,6 +149,76 @@ test('approval creates canonical run facts and reapproval never resigns a tamper
   assert.equal(reapprovalWrites, 0)
 })
 
+test('Codex-only standard approval signs generation-only caps and accepts provider-default output', async () => {
+  const candidate = {
+    _id: 'openrouter:vendor/model', candidateId: 'openrouter:vendor/model', provider: 'openrouter', modelId: 'vendor/model',
+    canonicalModelId: 'vendor/model', developer: 'Vendor', lane: null, aspectRatios: [], registryHash: 'registry-hash', state: 'detected',
+    primaryAccessProvider: 'openrouter', alternateAccessProviders: [],
+  }
+  let insertedRun: any
+  const collections: Record<string, any> = {
+    paperbanana_benchmark_models: {
+      async findOne() { return candidate },
+      async findOneAndUpdate() { return { ...candidate, state: 'approved' } },
+    },
+    paperbanana_benchmark_runs: { async updateOne(_query: any, update: any) { insertedRun = update.$setOnInsert; return { modifiedCount: 1 } } },
+    paperbanana_benchmark_suites: {}, paperbanana_benchmark_samples: {}, paperbanana_benchmark_judgments: {}, paperbanana_benchmark_dispatches: {}, paperbanana_benchmark_releases: {},
+  }
+  const repository = createMongoBenchmarkRepository({ collection: (name: string) => collections[name] } as any, () => new Date('2026-08-28T08:00:00.000Z'), async () => {}, 'a'.repeat(40))
+  const result = await repository.approve({
+    candidateId: candidate._id, evaluationMode: 'codex_single', entitlementConfirmed: true,
+    maxGenerations: 4, maxJudgments: 0, maxJudgeCalls: 0, maxEstimatedUsd: 4,
+    priceSnapshot: { currency: 'USD', source: 'https://example.com/pricing', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0, capturedAt: '2026-08-28T07:00:00.000Z' },
+    adminUserId: 'immutable-admin-id',
+  })
+  assert.ok(result.runId)
+  assert.equal(insertedRun.evaluationMode, 'codex_single')
+  assert.equal(insertedRun.suiteId, PB_IMAGE_LIGHT_V1.id)
+  assert.equal(insertedRun.lane, 'provider-default')
+  assert.equal(insertedRun.approvalVersions[0].phase, 'standard')
+  assert.deepEqual(insertedRun.usageByPhase.standard, { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 })
+  assert.equal(insertedRun.approval.maxJudgments, 0)
+  assert.equal(insertedRun.approval.maxJudgeCalls, 0)
+})
+
+test('standard review source manifest binds four samples and rejects every automatic judgment or dispatch', () => {
+  const run = { _id: 'standard-run', runHash: 'a'.repeat(64), reviewerEpoch: 'codex-single-2026-08-v1' }
+  const samples = PB_IMAGE_LIGHT_V1.cases.map((diagnosticCase, index) => ({
+    _id: benchmarkSampleId(run._id, 'standard', diagnosticCase.id, 0), sampleId: benchmarkSampleId(run._id, 'standard', diagnosticCase.id, 0),
+    runId: run._id, phase: 'standard', caseId: diagnosticCase.id, repetition: 0, status: 'completed',
+    imageHash: String(index + 1).repeat(64).slice(0, 64), imageObjectKey: `bench/objects/${String(index + 1).repeat(64).slice(0, 64)}.png`, latencyMs: 1000,
+    rubric: diagnosticCase.rubric, rubricHash: canonicalHash(diagnosticCase.rubric), auditRequired: true,
+    caseRequirements: { caption: diagnosticCase.caption }, requirementsHash: canonicalHash({ caption: diagnosticCase.caption }),
+    actualOutputPixels: { width: 1024, height: 1024, megapixels: 1.0486, fileSizeBytes: 1000 },
+  }))
+  const manifest = buildStandardReviewSourceManifest(run, samples, [], [])
+  assert.equal(manifest.facts.phase, 'standard')
+  assert.deepEqual(manifest.facts.usage, { generationCalls: 4, logicalJudgments: 0, judgeDispatchCalls: 0 })
+  assert.equal(manifest.expectedAuditIds.length, 4)
+  const failed = { _id: samples[3]._id, sampleId: samples[3].sampleId, runId: run._id, phase: 'standard', caseId: samples[3].caseId, repetition: 0, status: 'failed', errorCode: 'BENCHMARK_GENERATION_FAILED', failedAt: new Date('2026-08-28T00:00:00.000Z') }
+  const failureManifest = buildStandardReviewSourceManifest(run, [...samples.slice(0, 3), failed], [], [])
+  assert.deepEqual(failureManifest.facts.usage, { generationCalls: 4, logicalJudgments: 0, judgeDispatchCalls: 0 })
+  assert.equal(failureManifest.expectedAuditIds.length, 3)
+  assert.equal(failureManifest.facts.generationFailures.length, 1)
+  assert.throws(() => buildStandardReviewSourceManifest(run, samples, [{ phase: 'standard', status: 'completed' }], []), /BENCHMARK_STANDARD_SOURCE_MANIFEST_INVALID/)
+  assert.throws(() => buildStandardReviewSourceManifest(run, samples, [], [{ phase: 'standard' }]), /BENCHMARK_STANDARD_SOURCE_MANIFEST_INVALID/)
+})
+
+test('Codex-only profile ranks three reviewed samples and prices generation only', () => {
+  const samples = PB_IMAGE_LIGHT_V1.cases.slice(0, 3).map((diagnosticCase, index) => ({ sampleId: `sample-${index}`, caseId: diagnosticCase.id, latencyMs: 1000 + index, actualOutputPixels: { width: 1024, height: 1024, megapixels: 1.0486, fileSizeBytes: 1000 } }))
+  const codex = samples.map((sample) => ({ sampleId: sample.sampleId, scores: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, 8])), confirmedRedLines: sample.sampleId === 'sample-0' ? [{ code: 'garbled_text', axis: 'text_accuracy', cap: 4 }] : [], evidence: ['visible'], confidence: 0.9, consistencyReviewed: true }))
+  const profile = buildCodexSingleProfile({
+    run: { runHash: 'a'.repeat(64), canonicalModelId: 'model', modelId: 'route-model', provider: 'openrouter', primaryAccessProvider: 'openrouter', alternateAccessProviders: [], lane: 'provider-default', developer: 'Vendor', priceHash: 'b'.repeat(64), registryHash: 'registry', codeSha: 'c'.repeat(40) },
+    samples, codexJudgments: codex, automaticJudgments: [], dispatches: [], priceSnapshot: { estimatedPerGeneration: 0.25 }, generationCalls: 4,
+  })
+  assert.equal(profile.ranked, true)
+  assert.equal(profile.sampleCount, 3)
+  assert.equal(profile.dimensions.text_accuracy.mean < profile.dimensions.aesthetics.mean, true)
+  assert.deepEqual(profile.estimatedCost, { usd: 1, generationCalls: 4, automaticJudgeCalls: 0, logicalJudgments: 0, judgeDispatchCalls: 0 })
+  assert.throws(() => buildCodexSingleProfile({ run: {}, samples, codexJudgments: codex.map((item) => ({ ...item, consistencyReviewed: false })), automaticJudgments: [], dispatches: [], priceSnapshot: { estimatedPerGeneration: 0.25 } }), /BENCHMARK_STANDARD_CODEX_SHAPE_INVALID/)
+  assert.throws(() => buildCodexSingleProfile({ run: {}, samples, codexJudgments: codex, automaticJudgments: [{}], dispatches: [], priceSnapshot: { estimatedPerGeneration: 0.25 } }), /BENCHMARK_STANDARD_JUDGE_DATA_FORBIDDEN/)
+})
+
 test('public release strips private fields and signs only allowlisted bench evidence', async () => {
   const signed: string[] = []
   const release = await publicBenchmarkRelease(storedRelease({
@@ -153,11 +226,15 @@ test('public release strips private fields and signs only allowlisted bench evid
     profileStatus: 'verified',
     suiteId: 'pb-image-diagnostic-v1',
     lane: '2K-standard',
+    evaluationMode: 'codex_single', evaluationEpoch: 'codex-single-2026-08-v1', reviewProtocol: 'codex-single-two-pass-v1', reviewerKind: 'codex', reviewerPasses: 2,
     models: [{
       modelId: 'model-a', displayName: 'A', provider: 'openrouter', developer: 'Maker', dimensions: {},
       registryHash: 'registry-a', priceHash: 'price-a', codeSha: 'sha-a', auditRatio: 0.1,
+      canonicalModelId: 'maker/model-a', primaryAccessProvider: 'openrouter', alternateAccessProviders: ['bailian'],
+      actualOutputPixels: [{ width: 1024, height: 1024, megapixels: 1.048576, fileSizeBytes: 2048 }], ranked: true,
       capabilityGaps: ['aspectRatio:16:9'], secretRef: 'must-not-leak',
     }],
+    methodology: { suiteId: 'pb-image-light-v1', evaluationMode: 'codex_single', reviewProtocol: 'codex-single-two-pass-v1', reviewerKind: 'codex', reviewerPasses: 2, automaticJudges: [], internalQueue: 'hidden' },
     evidence: [
       { sampleId: 'allowed', objectKey: 'bench/releases/release-1/allowed.png', kind: 'median' },
       { sampleId: 'outside', objectKey: 'jobs/private.png', kind: 'failure' },
@@ -177,6 +254,12 @@ test('public release strips private fields and signs only allowlisted bench evid
   assert.equal(release.models[0].codeSha, 'sha-a')
   assert.equal(release.models[0].auditRatio, 0.1)
   assert.deepEqual(release.models[0].capabilityGaps, ['aspectRatio:16:9'])
+  assert.equal(release.evaluationMode, 'codex_single')
+  assert.equal(release.models[0].canonicalModelId, 'maker/model-a')
+  assert.deepEqual(release.models[0].alternateAccessProviders, ['bailian'])
+  assert.equal(release.models[0].actualOutputPixels[0].width, 1024)
+  assert.deepEqual(release.methodology?.automaticJudges, [])
+  assert.equal(release.methodology?.internalQueue, undefined)
   assert.equal('secretRef' in release.models[0], false)
   assert.equal(release.evidence.length, 1)
   assert.equal(release.evidence[0].imageUrl, 'https://signed.example/bench/releases/release-1/allowed.png')
@@ -512,6 +595,71 @@ function quickFixture(options: { aspectRatios?: string[]; dispatchAttempts?: num
     codexAuditImportedAt: undefined, usage: { estimatedUsd: 0 }, usageByPhase: { quick: { estimatedUsd: 0 } } }
   return { ...base, run, samples, automatic, dispatchMarkers, codex, review, expectedAuditIds, capabilityGaps, executableCases }
 }
+
+function standardFixture() {
+  const runId = 'bench-run-1234567890abcdef1234'
+  const createdAt = new Date('2026-08-28T00:00:00.000Z')
+  const reviewerEpoch = 'codex-single-2026-08-v1'
+  const candidate = { _id: 'ark:standard-model', provider: 'ark', modelId: 'standard-model', developer: 'Maker', lane: '2K-standard', aspectRatios: ['1:1'], registryHash: 'registry-hash', displayName: 'Standard Model', providerLabel: '火山方舟' }
+  const runFacts = {
+    runId, modelCandidateId: candidate._id, provider: candidate.provider, modelId: candidate.modelId, developer: candidate.developer,
+    lane: candidate.lane, aspectRatios: [...candidate.aspectRatios], suiteId: PB_IMAGE_LIGHT_V1.id, suiteHash: PB_IMAGE_LIGHT_V1.manifestHash,
+    judgeEpoch: 'judge-none-codex-single-v1', reviewerEpoch, evaluationMode: 'codex_single', evaluationEpoch: reviewerEpoch,
+    reviewProtocol: 'codex-single-two-pass-v1', canonicalModelId: 'maker/standard-model', primaryAccessProvider: 'ark',
+    alternateAccessProviders: ['openrouter'], registryHash: candidate.registryHash, codeSha: 'a'.repeat(40), createdAt,
+  }
+  const runHash = canonicalHash(runFacts)
+  const candidateSnapshot = { schemaVersion: 1, candidateId: candidate._id, provider: candidate.provider, modelId: candidate.modelId,
+    developer: candidate.developer, lane: candidate.lane, aspectRatios: candidate.aspectRatios, registryHash: candidate.registryHash,
+    displayName: candidate.displayName, providerLabel: candidate.providerLabel }
+  const priceSnapshot = { currency: 'USD', source: 'https://example.com/pricing/standard-model', estimatedPerGeneration: 0.25, estimatedPerJudgeCall: 0, capturedAt: '2026-08-28T00:00:00.000Z' }
+  const approval = { entitlementConfirmed: true, priceSnapshot, maxGenerations: 4, maxJudgments: 0, maxJudgeCalls: 0, maxEstimatedUsd: 1, approvedBy: 'admin-123', approvedAt: createdAt }
+  const approvalVersion = { schemaVersion: 1, phase: 'standard', authorizationHash: canonicalHash({ phase: 'standard', approval, codeSha: runFacts.codeSha }), priceHash: canonicalHash(priceSnapshot), approval }
+  const approvalVersions = [approvalVersion]
+  const runIntegrityAttestation = createHmac('sha256', reviewSigningSecret).update(canonicalHash({ schemaVersion: 2, runHash, runFacts, candidateSnapshot, approvalVersions })).digest('hex')
+  const samples = PB_IMAGE_LIGHT_V1.cases.map((diagnosticCase, index) => {
+    const sampleId = benchmarkSampleId(runId, 'standard', diagnosticCase.id, 0)
+    const imageHash = canonicalHash(`standard-image:${diagnosticCase.id}`)
+    const caseRequirements = { caption: diagnosticCase.caption, requiredEntities: diagnosticCase.requiredEntities || [], requiredRelations: diagnosticCase.requiredRelations || [], requiredText: diagnosticCase.requiredText || [], forbidden: diagnosticCase.forbidden || [], aspectRatio: diagnosticCase.aspectRatio, caseManifestHash: diagnosticCase.manifestHash }
+    return { _id: sampleId, sampleId, runId, phase: 'standard', caseId: diagnosticCase.id, repetition: 0, status: 'completed', imageHash,
+      imageObjectKey: `bench/objects/${imageHash}.png`, latencyMs: 1_000 + index, rubric: diagnosticCase.rubric,
+      rubricHash: canonicalHash(diagnosticCase.rubric), caseRequirements, requirementsHash: canonicalHash(caseRequirements),
+      actualOutputPixels: { width: 2048, height: 2048, megapixels: 4.1943, fileSizeBytes: 4_096 }, auditRequired: true }
+  })
+  const sourceManifest = buildStandardReviewSourceManifest({ _id: runId, runHash }, samples, [], [])
+  const sourceManifestAttestation = createHmac('sha256', reviewSigningSecret).update(canonicalHash({ runHash, runFacts, sourceManifestHash: sourceManifest.hash })).digest('hex')
+  const reviewPacket = createCodexReviewPacket({ reviewerEpoch, runHash, phase: 'standard', reviewProtocol: 'codex-single-two-pass-v1',
+    issuedAt: '2026-08-28T01:00:00.000Z', expiresAt: '2026-08-29T01:00:00.000Z', signingSecret: reviewSigningSecret,
+    sourceManifestHash: sourceManifest.hash, sourceManifestAttestation,
+    samples: samples.map((sample) => ({ sampleId: sample.sampleId, imageObjectKey: sample.imageObjectKey, imageHash: sample.imageHash,
+      rubric: sample.rubric, rubricHash: sample.rubricHash, caseRequirements: sample.caseRequirements, requirementsHash: sample.requirementsHash })) })
+  const review = { packetHash: reviewPacket.packetHash, reviewerEpoch, judgments: reviewPacket.samples.map((sample) => ({ blindLabel: sample.blindLabel,
+    imageHash: sample.imageHash, rubricHash: sample.rubricHash, scores: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, 8])),
+    confirmedRedLines: [], evidence: ['visible'], confidence: 1, consistencyReviewed: true })) }
+  const imported = importCodexReview(reviewPacket, review, { signingSecret: reviewSigningSecret, expectedPhase: 'standard', now: new Date('2026-08-28T02:00:00.000Z') })
+  const codex = imported.map((judgment) => ({ _id: `codex:${judgment.sampleId}`, runId, phase: 'standard', ...judgment, source: 'codex', reviewerEpoch,
+    packetHash: reviewPacket.packetHash, reviewHash: imported.reviewHash, reviewAttestation: imported.attestation, accepted: true }))
+  const run = { _id: runId, state: 'codex_review', ...runFacts, modelCandidateId: candidate._id, reviewerKind: 'codex', reviewerPasses: 2,
+    judgeStackHash: canonicalHash({ evaluationMode: 'codex_single', automaticJudges: [] }), priceHash: approvalVersion.priceHash,
+    authorizationHash: approvalVersion.authorizationHash, approval, approvalVersions, candidateSnapshot, runFacts, runHash, runIntegrityAttestation,
+    standardReviewImportedAt: new Date('2026-08-28T02:00:00.000Z'), reviewPacket, importedReviewPacketHash: reviewPacket.packetHash,
+    importedReviewHash: imported.reviewHash, importedReviewAttestation: imported.attestation }
+  return { run, candidate, suite: { ...PB_IMAGE_LIGHT_V1, _id: PB_IMAGE_LIGHT_V1.id }, samples, codex }
+}
+
+test('Standard publication rebuilds a zero-Judge published profile and isolates its evaluation partition', async () => {
+  const fixture = standardFixture()
+  const inserted: any[] = []
+  const repository = createMongoBenchmarkRepository(verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments: fixture.codex, dispatches: [], insertedReleases: inserted }) as any, () => new Date('2026-08-28T03:00:00.000Z'), async () => {})
+  const result = await repository.publish({ runId: fixture.run._id, profileStatus: 'published', evidence: [] } as any)
+  assert.equal(result.profileStatus, 'published')
+  assert.equal(inserted.length, 1)
+  assert.equal(inserted[0].evaluationMode, 'codex_single')
+  assert.equal(inserted[0].methodology.reviewProtocol, 'codex-single-two-pass-v1')
+  assert.deepEqual(inserted[0].methodology.automaticJudges, [])
+  assert.deepEqual(inserted[0].models[0].estimatedCost, { usd: 1, generationCalls: 4, automaticJudgeCalls: 0, logicalJudgments: 0, judgeDispatchCalls: 0 })
+  assert.equal(inserted[0].models[0].ranked, true)
+})
 
 test('verified publication fails closed when DB has no phase-pure 48x3 full samples and 288 automatic judgments', async () => {
   const run = {
