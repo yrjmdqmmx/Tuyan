@@ -179,6 +179,29 @@ test('Codex-only standard approval signs generation-only caps and accepts provid
   assert.deepEqual(insertedRun.usageByPhase.standard, { generations: 0, judgments: 0, judgeCalls: 0, estimatedUsd: 0 })
   assert.equal(insertedRun.approval.maxJudgments, 0)
   assert.equal(insertedRun.approval.maxJudgeCalls, 0)
+
+  let legacyLookup = false
+  const approvedCollections = {
+    ...collections,
+    paperbanana_benchmark_models: {
+      async findOne() { return { ...candidate, state: 'approved' } },
+      async findOneAndUpdate() { return { ...candidate, state: 'approved' } },
+    },
+    paperbanana_benchmark_runs: {
+      find() { legacyLookup = true; throw new Error('standard approval must not reuse a legacy run') },
+      async updateOne(_query: any, update: any) { insertedRun = update.$setOnInsert; return { modifiedCount: 1 } },
+    },
+  }
+  const approvedRepository = createMongoBenchmarkRepository({ collection: (name: string) => (approvedCollections as any)[name] } as any, () => new Date('2026-08-28T08:00:00.000Z'), async () => {}, 'a'.repeat(40))
+  const approvedResult = await approvedRepository.approve({
+    candidateId: candidate._id, evaluationMode: 'codex_single', entitlementConfirmed: true,
+    maxGenerations: 4, maxJudgments: 0, maxJudgeCalls: 0, maxEstimatedUsd: 4,
+    priceSnapshot: { currency: 'USD', source: 'https://example.com/pricing', estimatedPerGeneration: 1, estimatedPerJudgeCall: 0, capturedAt: '2026-08-28T07:00:00.000Z' },
+    adminUserId: 'immutable-admin-id',
+  })
+  assert.ok(approvedResult.runId)
+  assert.equal(legacyLookup, false)
+  assert.equal(insertedRun.evaluationMode, 'codex_single')
 })
 
 test('standard review source manifest binds four samples and rejects every automatic judgment or dispatch', () => {

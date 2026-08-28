@@ -1229,10 +1229,9 @@ export function createMongoBenchmarkRepository(
       const currentCandidate = await models.findOne({ _id: candidateId })
       if (!currentCandidate || !['detected', 'approved'].includes(currentCandidate.state)) throw new Error('BENCHMARK_CANDIDATE_NOT_APPROVABLE')
       if (!standardMode && !['1K-standard', '2K-standard', '4K-standard'].includes(currentCandidate.lane)) throw new Error('BENCHMARK_CANDIDATE_HAS_NO_SUPPORTED_LANE')
-      if (standardMode && currentCandidate.state === 'approved') throw new Error('BENCHMARK_REAPPROVAL_NOT_ALLOWED')
       let existingRun: AnyRecord | null = null
       let correctionOfReleaseId = ''
-      if (currentCandidate.state === 'approved') {
+      if (!standardMode && currentCandidate.state === 'approved') {
         existingRun = await runs.find({ modelCandidateId: candidateId }).sort({ createdAt: -1 }).limit(1).next()
         if (!existingRun || !['provisional_published', 'verified_published'].includes(existingRun.state)) throw new Error('BENCHMARK_REAPPROVAL_NOT_ALLOWED')
         try {
