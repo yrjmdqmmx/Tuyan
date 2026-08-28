@@ -17,7 +17,7 @@ done
 [[ "$confirm" == run-exact-approved-standard-batch-disabled-worker ]] || usage
 
 test_root=''
-script_dir="$(cd "$(dirname "$0")" && pwd -P)"
+script_dir="${PAPERBANANA_BENCH_BATCH_SCRIPT_DIR:-$(cd "$(dirname "$0")" && pwd -P)}"
 if [[ -n "${PAPERBANANA_HK_TEST_ROOT:-}" ]]; then
   test_root="$(realpath "$PAPERBANANA_HK_TEST_ROOT")"
   case "$test_root/" in /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*) ;; *) exit 1 ;; esac
@@ -63,7 +63,7 @@ if [[ "$apply" == true ]]; then mkdir -p "$(dirname "$lock_path")"; exec 9>"$loc
 total=0 completed=0 failed=0
 while IFS= read -r row; do
   total=$((total + 1))
-  if run_entry "$row"; then completed=$((completed + 1)); else failed=$((failed + 1)); fi
+  if run_entry "$row" </dev/null; then completed=$((completed + 1)); else failed=$((failed + 1)); fi
 done < <(jq -c '.entries[]' "$manifest")
 printf '{"total":%d,"completed":%d,"failed":%d,"maxGenerations":%d}\n' "$total" "$completed" "$failed" "$max_generations"
 ((failed == 0))

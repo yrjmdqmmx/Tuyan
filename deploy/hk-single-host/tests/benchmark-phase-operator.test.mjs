@@ -195,9 +195,15 @@ test('Standard batch dry-run freezes canonical models and never exceeds four cal
   try {
     const base = {
       schemaVersion: 1, evaluationMode: 'codex_single', suiteId: 'pb-image-light-v1', codeSha: sha,
-      registryHash: hash, canonicalManifestHash: 'c'.repeat(64), maxModels: 1, maxGenerations: 4, maxEstimatedUsd: 1,
+      registryHash: hash, canonicalManifestHash: 'c'.repeat(64), maxModels: 2, maxGenerations: 8, maxEstimatedUsd: 2,
       entries: [{ canonicalModelId: 'seedream-4.5', args: {
         runId: 'bench-run-0123456789abcdef0123', provider: 'ark', modelId: 'doubao-seedream-test', lane: 'provider-default',
+        suiteHash: hash, judgeEpoch: 'judge-none-codex-single-v1', judgeStackHash: hash, signedAuthorizationHash: hash,
+        priceHash: hash, runHash: hash, runFactsHash: hash, candidateSnapshotHash: hash, aspectRatiosHash: hash,
+        registryHash: hash, runIntegrityAttestation: hash, immutableFactsHash: hash, maxEstimatedUsd: 1,
+        estimatedPerGenerationUsd: 0.1, priceSource: 'https://example.com/pricing/image-model', priceCapturedAt: '2026-08-25T08:00:00.000Z',
+      } }, { canonicalModelId: 'qwen-image-3.0-pro', args: {
+        runId: 'bench-run-fedcba0987654321fedc', provider: 'bailian', modelId: 'qwen-image-3.0-pro', lane: '2K-standard',
         suiteHash: hash, judgeEpoch: 'judge-none-codex-single-v1', judgeStackHash: hash, signedAuthorizationHash: hash,
         priceHash: hash, runHash: hash, runFactsHash: hash, candidateSnapshotHash: hash, aspectRatiosHash: hash,
         registryHash: hash, runIntegrityAttestation: hash, immutableFactsHash: hash, maxEstimatedUsd: 1,
@@ -209,11 +215,11 @@ test('Standard batch dry-run freezes canonical models and never exceeds four cal
     writeFileSync(manifestPath, bytes, { mode: 0o600 })
     const fileHash = createHash('sha256').update(bytes).digest('hex')
     const result = spawnSync(batchScript, [
-      '--manifest', manifestPath, '--manifest-hash', fileHash, '--expected-sha', sha, '--max-models', '1',
-      '--max-generations', '4', '--max-estimated-usd', '1', '--confirm', 'run-exact-approved-standard-batch-disabled-worker',
+      '--manifest', manifestPath, '--manifest-hash', fileHash, '--expected-sha', sha, '--max-models', '2',
+      '--max-generations', '8', '--max-estimated-usd', '2', '--confirm', 'run-exact-approved-standard-batch-disabled-worker',
     ], { encoding: 'utf8', env: { ...process.env, PAPERBANANA_HK_TEST_ROOT: item.root } })
     assert.equal(result.status, 0, result.stderr)
-    assert.match(result.stdout, /"total":1,"completed":1,"failed":0,"maxGenerations":4/)
+    assert.match(result.stdout, /"total":2,"completed":2,"failed":0,"maxGenerations":8/)
     assert.doesNotMatch(`${result.stdout}${result.stderr}`, /docker|api.?key/i)
   } finally { item.cleanup() }
 })
