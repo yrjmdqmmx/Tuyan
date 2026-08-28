@@ -29,7 +29,7 @@
 各端待办：
 - [x] paperbanana-api / Bench Core（严格配置、仅 Bench server I/O 切换、签名与主业务 OSS 隔离、TDD）
 - [x] 香港部署代码（仅三个 Bench 相关运行时的可配置 DNS 与 Compose 契约测试）
-- [ ] 部署 / 运维（本条未部署、未改生产 env；发布同一不可变 SHA 后，按需将 Core 的 endpoint mode 显式设为 `public`，仅重建上述三个服务并复验 `/ready`、容器 DNS、Bench 私有 OSS 读写及发布证据哈希）
+- [x] 部署 / 运维（生产已部署不可变 Core/Worker `e46b2d75b0abdd18ae7f31626e92eb0399e4a778`；Core endpoint mode 显式为 `public`，三容器 DNS、`/ready`、私有 OSS 读回 SHA-256、Worker disabled/concurrency 1、完整 smoke 与 superseding release 均已验证）
 
 ### [2026-08-28] Bench 全量生图模型 Standard / Codex single 公开榜 — by Codex
 变更：新增不可变 `pb-image-light-v1` 四题 Standard 阶段，三家生产 image registry route 先按运行时别名和跨渠道同模型归一为 canonical 实际模型，再由主接入渠道每题生成一次。当前 v9 fixture 锁定 55 route → 48 canonical 模型；单模型固定 4 generation / 0 automatic judgment / 0 Judge dispatch，全批次最多 48 模型 / 192 generation。全部成功图片进入 `codex-single-two-pass-v1` 两遍结构化盲审；至少完成并审核 3/4 才进入七维排名，不足者仍公开显示但不排名。实际宽高/像素/文件大小、主接入渠道、替代渠道和 generation-only 成本进入公共契约。新 release 状态为 `published`，比较身份为 `suiteId + evaluationMode + evaluationEpoch`；历史 Quick/Full、provisional/verified 和双 Judge release 保留只读且不混排。常驻 Worker 继续 disabled/并发 1；Standard batch operator 持有生产共享锁顺序执行，单模型未知 Provider 结果不重试但不阻止后续模型。
