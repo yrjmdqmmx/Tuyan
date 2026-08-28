@@ -673,7 +673,10 @@ function standardFixture() {
 test('Standard publication rebuilds a zero-Judge published profile and isolates its evaluation partition', async () => {
   const fixture = standardFixture()
   const inserted: any[] = []
-  const repository = createMongoBenchmarkRepository(verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments: fixture.codex, dispatches: [], insertedReleases: inserted }) as any, () => new Date('2026-08-28T03:00:00.000Z'), async () => {})
+  const verificationTimeouts: number[] = []
+  const repository = createMongoBenchmarkRepository(verifiedPublishDb(fixture.run, { suite: fixture.suite, candidate: fixture.candidate, samples: fixture.samples, judgments: fixture.codex, dispatches: [], insertedReleases: inserted }) as any, () => new Date('2026-08-28T03:00:00.000Z'), async (_objectKey, _imageHash, options) => {
+    verificationTimeouts.push(options?.timeoutMs || 0)
+  })
   const result = await repository.publish({ runId: fixture.run._id, profileStatus: 'published', evidence: [] } as any)
   assert.equal(result.profileStatus, 'published')
   assert.equal(inserted.length, 1)
@@ -682,6 +685,8 @@ test('Standard publication rebuilds a zero-Judge published profile and isolates 
   assert.deepEqual(inserted[0].methodology.automaticJudges, [])
   assert.deepEqual(inserted[0].models[0].estimatedCost, { usd: 1, generationCalls: 4, automaticJudgeCalls: 0, logicalJudgments: 0, judgeDispatchCalls: 0 })
   assert.equal(inserted[0].models[0].ranked, true)
+  assert.equal(verificationTimeouts.length, 4)
+  assert.ok(verificationTimeouts.every((timeoutMs) => timeoutMs > 100_000), 'Standard evidence verification must allow bounded public-OSS reads longer than 30 seconds')
 })
 
 test('verified publication fails closed when DB has no phase-pure 48x3 full samples and 288 automatic judgments', async () => {

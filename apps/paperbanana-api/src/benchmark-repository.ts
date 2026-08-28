@@ -1574,7 +1574,11 @@ export function createMongoBenchmarkRepository(
             ...integrityInput,
           })
         : assertQuickReleaseIntegrity(integrityInput)
-      if (profileStatus === 'verified' || standardMode) await verifyEvidenceObjects((verifiedDbIntegrity as unknown as AnyRecord).evidenceObjects, verifyEvidence)
+      if (profileStatus === 'verified' || standardMode) await verifyEvidenceObjects(
+        (verifiedDbIntegrity as unknown as AnyRecord).evidenceObjects,
+        verifyEvidence,
+        { concurrency: 8, deadlineMs: 120_000, retries: 1 },
+      )
       const verifiedAt = profileStatus === 'verified' ? now().toISOString() : ''
       const verifiedIntegrity = (() => {
         const { evidenceObjects: _evidenceObjects, candidateHash: _candidateHash, ...profileIntegrity } = verifiedDbIntegrity as unknown as AnyRecord
