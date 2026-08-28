@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-08-28] Bench OSS 服务端公共端点模式与三容器显式 DNS — by Codex
+变更：香港生产宿主机已可解析并访问公共 OSS，但 Docker embedded DNS 仍沿用不可达的旧解析器，且 Bench Core 的 OSS 服务端读写固定使用 internal endpoint，导致发布证据复验失败。Core 新增严格枚举 `PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE=internal|public`，未设置时保持 `internal`；仅显式为 `public` 时，Bench OSS `serverClient` 才使用经过严格主机校验的公共 endpoint。签名客户端继续固定公共 endpoint，主业务 OSS 配置与行为不变，空串、大小写变体、前后空格和其他值均启动失败。香港 Compose 仅为 `paperbanana-api`、`benchmark-worker`、`benchmark-operator` 设置显式 DNS，`PAPERBANANA_BENCH_DNS_PRIMARY` / `PAPERBANANA_BENCH_DNS_SECONDARY` 默认分别为 `223.5.5.5` / `1.1.1.1`；其他服务保留原 Docker DNS。
+各端待办：
+- [x] paperbanana-api / Bench Core（严格配置、仅 Bench server I/O 切换、签名与主业务 OSS 隔离、TDD）
+- [x] 香港部署代码（仅三个 Bench 相关运行时的可配置 DNS 与 Compose 契约测试）
+- [ ] 部署 / 运维（本条未部署、未改生产 env；发布同一不可变 SHA 后，按需将 Core 的 endpoint mode 显式设为 `public`，仅重建上述三个服务并复验 `/ready`、容器 DNS、Bench 私有 OSS 读写及发布证据哈希）
+
 ### [2026-08-28] Bench 全量生图模型 Standard / Codex single 公开榜 — by Codex
 变更：新增不可变 `pb-image-light-v1` 四题 Standard 阶段，三家生产 image registry route 先按运行时别名和跨渠道同模型归一为 canonical 实际模型，再由主接入渠道每题生成一次。当前 v9 fixture 锁定 55 route → 48 canonical 模型；单模型固定 4 generation / 0 automatic judgment / 0 Judge dispatch，全批次最多 48 模型 / 192 generation。全部成功图片进入 `codex-single-two-pass-v1` 两遍结构化盲审；至少完成并审核 3/4 才进入七维排名，不足者仍公开显示但不排名。实际宽高/像素/文件大小、主接入渠道、替代渠道和 generation-only 成本进入公共契约。新 release 状态为 `published`，比较身份为 `suiteId + evaluationMode + evaluationEpoch`；历史 Quick/Full、provisional/verified 和双 Judge release 保留只读且不混排。常驻 Worker 继续 disabled/并发 1；Standard batch operator 持有生产共享锁顺序执行，单模型未知 Provider 结果不重试但不阻止后续模型。
 契约（影响 Web / Core / Worker / 运维）：

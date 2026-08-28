@@ -85,7 +85,27 @@ test('benchmark API is disabled by default and enabled only with isolated Mongo,
   const enabled = loadConfig(benchmarkEnv, buildCodeSha)
   assert.equal(enabled.benchmark?.mongodb.database, 'paperbanana_benchmark')
   assert.equal(enabled.benchmark?.oss.bucket, 'paperbanana-bench-private')
+  assert.equal(enabled.benchmark?.oss.serverEndpointMode, 'internal')
   assert.equal(enabled.benchmark?.codeSha, buildCodeSha)
+  const publicEndpointMode = loadConfig({
+    ...benchmarkEnv,
+    PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE: 'public',
+  }, buildCodeSha)
+  assert.equal(publicEndpointMode.benchmark?.oss.serverEndpointMode, 'public')
+  assert.deepEqual(publicEndpointMode.oss, enabled.oss, 'Bench endpoint mode must not change the main business OSS config')
+  for (const value of ['', 'PUBLIC', ' public ', 'direct', 'internal,public']) {
+    assert.throws(
+      () => loadConfig({
+        ...benchmarkEnv,
+        PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE: value,
+      }, buildCodeSha),
+      /PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE must be exactly internal or public/,
+    )
+  }
+  assert.throws(
+    () => loadConfig({ ...validEnv, PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE: 'direct' }),
+    /PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE must be exactly internal or public/,
+  )
   assert.throws(() => loadConfig(benchmarkEnv, 'a'.repeat(40)), /PAPERBANANA_BUILD_PROVENANCE_MISMATCH/)
   assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_BENCH_API_ENABLED: 'true' }), /PAPERBANANA_CODE_SHA|PAPERBANANA_BENCH/)
 })

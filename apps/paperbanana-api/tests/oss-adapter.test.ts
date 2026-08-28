@@ -121,6 +121,22 @@ test('real ali-oss clients keep server traffic internal and signed URLs public',
   assert.equal(signed.searchParams.get('x-oss-additional-headers'), 'content-length')
 })
 
+test('public server endpoint mode changes only server traffic while signed URLs remain public', async () => {
+  const clients = ossAdapter.createOssClients({
+    ...config,
+    serverEndpointMode: 'public',
+    accessKeyId: 'test-access-id',
+    accessKeySecret: 'test-access-secret',
+  })
+
+  const server = new URL(await clients.serverClient.signatureUrlV4('GET', 60, undefined, 'bench/evidence.json'))
+  const signed = new URL(await clients.publicSigner.signatureUrlV4('GET', 60, undefined, 'bench/evidence.json'))
+
+  assert.equal(server.hostname, 'paperbanana-private.oss-cn-hongkong.aliyuncs.com')
+  assert.equal(signed.hostname, 'paperbanana-private.oss-cn-hongkong.aliyuncs.com')
+  assert.equal(signed.pathname, '/bench/evidence.json')
+})
+
 test('object-store write failures propagate without a Mongo data-URL fallback', async () => {
   const client = {
     async put() { throw new Error('OSS unavailable') },
