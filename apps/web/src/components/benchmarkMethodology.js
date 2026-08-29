@@ -15,6 +15,8 @@ const CONSTRAINT_FIELDS = Object.freeze([
   'forbidden',
 ])
 
+const WEIGHT_SUM_TOLERANCE = 1e-9
+
 function isPlainObject(value) {
   if (value === null || typeof value !== 'object') return false
   const prototype = Object.getPrototypeOf(value)
@@ -101,7 +103,27 @@ function normalizeScoring(value) {
   return { scoreMin, scoreMax, minimumReviewedSamples, maximumSamplesPerModel, overallFormula, tieMethod, redLinePolicy }
 }
 
-function normalizeMethodology(value) {
+function normalizeRankingMethod(value, scoring) {
+  if (!isPlainObject(value)) return null
+  const id = asText(value.id)
+  const tieMethod = asText(value.tieMethod)
+  if (!id || !tieMethod || id !== scoring.overallFormula || tieMethod !== scoring.tieMethod) return null
+  if (!Array.isArray(value.axes) || value.axes.length !== RUBRIC_AXES.length
+    || value.axes.some((axis, index) => axis !== RUBRIC_AXES[index])) return null
+  if (!Array.isArray(value.weights) || value.weights.length !== RUBRIC_AXES.length) return null
+  const weights = []
+  let weightSum = 0
+  for (const weightValue of value.weights) {
+    const weight = asFiniteNumber(weightValue)
+    if (weight === null || weight <= 0) return null
+    weights.push(weight)
+    weightSum += weight
+  }
+  if (Math.abs(weightSum - 1) > WEIGHT_SUM_TOLERANCE) return null
+  return { id, axes: [...value.axes], weights, tieMethod }
+}
+
+function normalizeMethodology(value, scoring) {
   if (!isPlainObject(value) || !isPlainObject(value.rankingMethod)) return null
   const suiteId = asText(value.suiteId)
   const suiteHash = asText(value.suiteHash)
@@ -111,9 +133,9 @@ function normalizeMethodology(value) {
   const reviewerKind = asText(value.reviewerKind)
   const reviewerPasses = asFiniteNumber(value.reviewerPasses)
   const automaticJudges = asStringArray(value.automaticJudges)
-  const rankingMethodId = asText(value.rankingMethod.id)
+  const rankingMethod = normalizeRankingMethod(value.rankingMethod, scoring)
   if (!suiteId || !suiteHash || !evaluationMode || !evaluationEpoch || !reviewProtocol || !reviewerKind
-    || reviewerPasses === null || automaticJudges === null || typeof value.noOverallScore !== 'boolean' || !rankingMethodId) return null
+    || reviewerPasses === null || automaticJudges === null || typeof value.noOverallScore !== 'boolean' || !rankingMethod) return null
   return {
     suiteId,
     suiteHash,
@@ -124,7 +146,7 @@ function normalizeMethodology(value) {
     reviewerPasses,
     automaticJudges,
     noOverallScore: value.noOverallScore,
-    rankingMethod: { id: rankingMethodId },
+    rankingMethod,
   }
 }
 
@@ -133,7 +155,7 @@ export function normalizeMethodologyResponse(response) {
   const releaseHash = asText(response.releaseHash)
   const suite = normalizeSuite(response.suite)
   const scoring = normalizeScoring(response.scoring)
-  const methodology = normalizeMethodology(response.methodology)
+  const methodology = scoring ? normalizeMethodology(response.methodology, scoring) : null
   if (!releaseHash || !suite || !scoring || !methodology) return null
   return { releaseHash, suite, scoring, methodology }
 }

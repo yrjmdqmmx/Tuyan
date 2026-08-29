@@ -47,7 +47,13 @@ function validResponse() {
       reviewerPasses: 2,
       automaticJudges: [],
       noOverallScore: false,
-      rankingMethod: { id: 'equal_weight_mean_v1', ignored: { secret: true } },
+      rankingMethod: {
+        id: 'equal_weight_mean_v1',
+        axes: [...AXES],
+        weights: AXES.map(() => 1 / 7),
+        tieMethod: 'competition',
+        ignored: { secret: true },
+      },
       ignoredInternalField: { secret: true },
     },
     suite: {
@@ -97,6 +103,17 @@ const malformedVariants = [
   ['automatic judges contains object', (value) => { value.methodology.automaticJudges = ['judge', { id: 'bad' }] }],
   ['review passes string', (value) => { value.methodology.reviewerPasses = '2' }],
   ['ranking method nonplain', (value) => { value.methodology.rankingMethod = [] }],
+  ['ranking axes missing', (value) => { value.methodology.rankingMethod.axes.pop() }],
+  ['ranking axes reordered', (value) => { [value.methodology.rankingMethod.axes[0], value.methodology.rankingMethod.axes[1]] = [value.methodology.rankingMethod.axes[1], value.methodology.rankingMethod.axes[0]] }],
+  ['ranking axes contains object', (value) => { value.methodology.rankingMethod.axes[0] = { axis: 'faithfulness' } }],
+  ['ranking weights object', (value) => { value.methodology.rankingMethod.weights = Object.fromEntries(AXES.map((axis) => [axis, 1 / 7])) }],
+  ['ranking weights length six', (value) => { value.methodology.rankingMethod.weights.pop() }],
+  ['ranking weights length eight', (value) => { value.methodology.rankingMethod.weights.push(1 / 7) }],
+  ['ranking weight is NaN', (value) => { value.methodology.rankingMethod.weights[0] = Number.NaN }],
+  ['ranking weight is negative', (value) => { value.methodology.rankingMethod.weights[0] = -1 / 7 }],
+  ['ranking weights do not sum to one', (value) => { value.methodology.rankingMethod.weights[0] = 0.25 }],
+  ['ranking tie differs from scoring', (value) => { value.methodology.rankingMethod.tieMethod = 'ordinal' }],
+  ['ranking id differs from formula', (value) => { value.methodology.rankingMethod.id = 'different_formula' }],
   ['suite nonplain object', (value) => { value.suite = Object.assign(Object.create({ inherited: true }), value.suite) }],
 ]
 
@@ -112,6 +129,14 @@ test('normalizer preserves valid public text and array order without mutating it
   assert.deepEqual(normalized.suite.cases.map((item) => item.id), ['case-1', 'case-2', 'case-3', 'case-4'])
   assert.deepEqual(normalized.suite.cases[0].requiredEntities, ['entity-1'])
   assert.equal(normalized.suite.cases[0].renderPrompt, 'Prompt 1')
+  assert.deepEqual(normalized.methodology.rankingMethod, {
+    id: 'equal_weight_mean_v1',
+    axes: AXES,
+    weights: AXES.map(() => 1 / 7),
+    tieMethod: 'competition',
+  })
+  assert.notEqual(normalized.methodology.rankingMethod.axes, response.methodology.rankingMethod.axes)
+  assert.notEqual(normalized.methodology.rankingMethod.weights, response.methodology.rankingMethod.weights)
   assert.equal('ignoredInternalField' in normalized.suite.cases[0], false)
   assert.equal('ignoredInternalField' in normalized.methodology, false)
 })

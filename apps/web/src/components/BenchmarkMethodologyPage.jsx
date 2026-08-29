@@ -204,6 +204,17 @@ function PublicSuite({ suite }) {
   )
 }
 
+function RankingContract({ rankingMethod }) {
+  const axisOrder = rankingMethod.axes.join(' → ')
+  const weightSummary = rankingMethod.axes.map((axis, index) => `${axis} = ${rankingMethod.weights[index]}`).join(' · ')
+  return (
+    <div aria-label="完整 rankingMethod 合约">
+      <dt>Ranking contract</dt>
+      <dd><code>rankingMethod = {rankingMethod.id}</code><small>axes = {axisOrder}<br />weights = {weightSummary}<br />tieMethod = {rankingMethod.tieMethod}</small></dd>
+    </div>
+  )
+}
+
 function ScoringContract({ methodology, scoring }) {
   return (
     <section className="bench-method-section" id="scoring-contract" aria-labelledby="scoring-contract-title">
@@ -215,6 +226,7 @@ function ScoringContract({ methodology, scoring }) {
         <div><dt>Overall</dt><dd>七维等权<br /><code>(d1 + d2 + d3 + d4 + d5 + d6 + d7) / 7</code><small>{scoring.overallFormula}<br />noOverallScore = {String(methodology.noOverallScore)}<br />rankingMethod = {methodology.rankingMethod?.id}</small></dd></div>
         <div><dt>红线策略</dt><dd><code>{scoring.redLinePolicy}</code><small>confirmed axis cap</small></dd></div>
         <div><dt>并列规则</dt><dd><code>{scoring.tieMethod}</code><small>competition ranking 1, 1, 3</small></dd></div>
+        <RankingContract rankingMethod={methodology.rankingMethod} />
       </dl>
     </section>
   )

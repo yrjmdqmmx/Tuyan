@@ -124,6 +124,17 @@ const malformedResponseVariants = [
   ['suite hash malformed', (value) => { value.suite.manifestHash = { hash: 'bad' } }],
   ['scoring malformed', (value) => { value.scoring.maximumSamplesPerModel = { value: 4 } }],
   ['automatic judges malformed', (value) => { value.methodology.automaticJudges = [{ id: 'bad' }] }],
+  ['ranking axes missing', (value) => { value.methodology.rankingMethod.axes.pop() }],
+  ['ranking axes reordered', (value) => { value.methodology.rankingMethod.axes.reverse() }],
+  ['ranking axes contains object', (value) => { value.methodology.rankingMethod.axes[0] = { axis: 'faithfulness' } }],
+  ['ranking weights object', (value) => { value.methodology.rankingMethod.weights = Object.fromEntries(axisEntries.map(([axis]) => [axis, 1 / 7])) }],
+  ['ranking weights length six', (value) => { value.methodology.rankingMethod.weights.pop() }],
+  ['ranking weights length eight', (value) => { value.methodology.rankingMethod.weights.push(1 / 7) }],
+  ['ranking weight is NaN', (value) => { value.methodology.rankingMethod.weights[0] = Number.NaN }],
+  ['ranking weight is negative', (value) => { value.methodology.rankingMethod.weights[0] = -1 / 7 }],
+  ['ranking weights do not sum to one', (value) => { value.methodology.rankingMethod.weights[0] = 0.25 }],
+  ['ranking tie differs from scoring', (value) => { value.methodology.rankingMethod.tieMethod = 'ordinal' }],
+  ['ranking id differs from formula', (value) => { value.methodology.rankingMethod.id = 'other_formula' }],
 ]
 
 afterEach(() => {
@@ -172,6 +183,11 @@ test('methodology page requests only methodology and renders the complete public
     assert.doesNotMatch(container.textContent, /INTERNAL-BLIND|INTERNAL-REVIEW-LOG|INTERNAL-MODEL-MAPPING/u)
     assert.equal(container.querySelectorAll('.bench-method-prompt').length, 8)
     assert.equal(container.querySelectorAll('.bench-method-hash').length >= 5, true)
+    const rankingContract = screen.getByLabelText('完整 rankingMethod 合约')
+    assert.match(rankingContract.textContent, /equal_weight_mean_v1/u)
+    assert.match(rankingContract.textContent, /faithfulness → conciseness → readability → aesthetics → text_accuracy → topology → instruction_adherence/u)
+    axisEntries.forEach(([axis]) => assert.match(rankingContract.textContent, new RegExp(`${axis} = ${1 / 7}`, 'u')))
+    assert.match(rankingContract.textContent, /tieMethod = competition/u)
   } finally {
     fetchMock.restore()
   }
