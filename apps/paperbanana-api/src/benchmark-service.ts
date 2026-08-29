@@ -49,6 +49,18 @@ function isArenaLeaderboardRelease(release: AnyRecord): boolean {
   return release.evaluationMode === 'codex_single' && release.profileStatus === 'published'
 }
 
+function hasPublicReproducibleMethodologySuite(release: AnyRecord): boolean {
+  const methodology = release.methodology
+  return isArenaLeaderboardRelease(release)
+    && release.suiteId === PB_IMAGE_LIGHT_V1.id
+    && release.suiteHash === PB_IMAGE_LIGHT_V1.manifestHash
+    && typeof methodology === 'object'
+    && methodology !== null
+    && !Array.isArray(methodology)
+    && methodology.suiteId === PB_IMAGE_LIGHT_V1.id
+    && methodology.suiteHash === PB_IMAGE_LIGHT_V1.manifestHash
+}
+
 function publicModel(model: AnyRecord, includeRanking = false): AnyRecord {
   const allowed = [
     'profileId', 'modelId', 'displayName', 'provider', 'providerLabel', 'developer', 'lane', 'profileStatus', 'sampleCount',
@@ -215,11 +227,12 @@ export function createBenchmarkService({
           if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
         }
         const arenaMethodology = release && isArenaLeaderboardRelease(release)
+        const reproducibleMethodology = release && hasPublicReproducibleMethodologySuite(release)
         return {
           code: 0,
           methodology: release ? publicMethodology(release.methodology, arenaMethodology ? arenaRankingMethod() : undefined) : null,
           releaseHash: release?.releaseHash || '',
-          ...(arenaMethodology ? { suite: publicArenaMethodologySuite(), scoring: structuredClone(arenaMethodologyScoring) } : {}),
+          ...(reproducibleMethodology ? { suite: publicArenaMethodologySuite(), scoring: structuredClone(arenaMethodologyScoring) } : {}),
         }
       }
       if (action === 'adminBenchmarkCandidates') return { code: 0, candidates: await repository.candidates() }

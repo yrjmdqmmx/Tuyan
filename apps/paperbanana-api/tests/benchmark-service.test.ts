@@ -397,7 +397,8 @@ test('benchmark methodology is null when no release exists', async () => {
 
 test('Arena methodology publishes a detached reproducible PB_IMAGE_LIGHT_V1 suite and fixed scoring contract', async () => {
   const stored = storedRelease({
-    _id: 'arena-methodology-release', profileStatus: 'published', evaluationMode: 'codex_single', evidence: [], models: [],
+    _id: 'arena-methodology-release', profileStatus: 'published', evaluationMode: 'codex_single',
+    suiteId: PB_IMAGE_LIGHT_V1.id, suiteHash: PB_IMAGE_LIGHT_V1.manifestHash, evidence: [], models: [],
     methodology: {
       suiteId: PB_IMAGE_LIGHT_V1.id, suiteHash: PB_IMAGE_LIGHT_V1.manifestHash, noOverallScore: true,
       evaluationMode: 'codex_single', evaluationEpoch: 'codex-single-2026-08-v1', reviewProtocol: 'codex-single-two-pass-v1',
@@ -469,6 +470,44 @@ test('Arena methodology publishes a detached reproducible PB_IMAGE_LIGHT_V1 suit
   assert.equal(PB_IMAGE_LIGHT_V1.cases[0].requiredEntities.includes('mutated'), false)
   assert.notEqual(PB_IMAGE_LIGHT_V1.cases[0].license.author, 'mutated')
   assert.deepEqual((await service.handle({ action: 'benchmarkMethodology' }, false)).suite, expectedSuite)
+})
+
+test('Arena methodology omits reproducible attachments when any stored suite identity differs from PB_IMAGE_LIGHT_V1', async () => {
+  const matching = {
+    suiteId: PB_IMAGE_LIGHT_V1.id,
+    suiteHash: PB_IMAGE_LIGHT_V1.manifestHash,
+    methodology: { suiteId: PB_IMAGE_LIGHT_V1.id, suiteHash: PB_IMAGE_LIGHT_V1.manifestHash, noOverallScore: true },
+  }
+  const mismatches = [
+    { name: 'top-level suiteId', patch: { suiteId: 'other-suite' } },
+    { name: 'top-level suiteHash', patch: { suiteHash: 'a'.repeat(64) } },
+    { name: 'methodology suiteId', patch: { methodology: { ...matching.methodology, suiteId: 'other-suite' } } },
+    { name: 'methodology suiteHash', patch: { methodology: { ...matching.methodology, suiteHash: 'b'.repeat(64) } } },
+  ]
+
+  for (const mismatch of mismatches) {
+    const stored = storedRelease({
+      _id: `arena-methodology-${mismatch.name}`, profileStatus: 'published', evaluationMode: 'codex_single', evidence: [], models: [],
+      ...matching, ...mismatch.patch,
+    })
+    const storedSnapshot = structuredClone(stored)
+    const service = createBenchmarkService({
+      repository: {
+        async latestRelease() { return stored }, async releaseByModel() { return null }, async candidates() { return [] }, async approve() {}, async control() {},
+        async exportReview() {}, async importReview() {}, async publish() {},
+      },
+      signEvidence: async () => 'signed',
+    })
+
+    const response = await service.handle({ action: 'benchmarkMethodology' }, false)
+
+    assert.equal(response.code, 0, mismatch.name)
+    assert.equal(response.releaseHash, stored.releaseHash, mismatch.name)
+    assert.equal(response.methodology.noOverallScore, false, mismatch.name)
+    assert.equal('suite' in response, false, mismatch.name)
+    assert.equal('scoring' in response, false, mismatch.name)
+    assert.deepEqual(stored, storedSnapshot, mismatch.name)
+  }
 })
 
 test('benchmark methodology keeps historical releases shape-compatible and validates the hash before Arena suite derivation', async () => {
