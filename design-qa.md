@@ -14,7 +14,7 @@
 ## Full-view comparison evidence
 
 - The desktop implementation keeps the Arena reference's dense, low-decoration information hierarchy while using PaperBanana's warm paper background, dark navigation, banana-yellow accents, and existing brand mark.
-- The required page sequence is visible: hero, compact methodology disclosure, seven Top10 cards, then the full Overall matrix.
+- The current leaderboard sequence is visible: hero, seven Top10 cards, then the full Overall matrix. The former inline methodology disclosure is absent and the navigation points to the standalone method page.
 - All seven cards use consistent row height, rank badges, model identity, score bars, two-decimal scores, and a complete-ranking link. The seventh singleton card remains the same width and is centered.
 - The implementation does not reproduce Arena branding or confidence intervals. It adds the requested numeric score beside every rank.
 
@@ -36,10 +36,24 @@
 ## Required fidelity surfaces
 
 - Fonts and typography: passed. Existing system Chinese/Latin stacks produce crisp dense-table text, with clear display, heading, body, label, and monospace score hierarchy.
-- Spacing and layout rhythm: passed. Hero, methodology, card grid, centered seventh card, matrix controls, and table rows align consistently at desktop and mobile sizes.
+- Spacing and layout rhythm: passed. Hero, card grid, centered seventh card, matrix controls, and table rows align consistently at desktop and mobile sizes; the standalone method document uses a separate reading rhythm.
 - Colors and visual tokens: passed. Warm neutrals, dark ink, muted blue score bars, and restrained podium fills match the approved PaperBanana adaptation of the Arena structure.
 - Image quality and asset fidelity: passed. The existing PaperBanana logo is reused; no placeholder, generated decoration, fake brand asset, or rasterized UI text was introduced.
-- Copy and content: passed. The page states the four-task lightweight method, Codex two-pass review, equal weighting, cross-resolution caveat, and sample limitation without old no-overall or confidence-interval claims.
+- Copy and content: passed. The leaderboard stays ranking-focused, while the standalone page states the four-task lightweight method, exact prompts, Codex two-pass review, equal weighting, cross-resolution caveat, and sample limitation without old no-overall or confidence-interval claims.
+
+## Standalone methodology page evidence
+
+- Route: `http://localhost:5173/leaderboard/methodology`; title: `PaperBanana 排行榜方法说明`.
+- Desktop overview screenshot: `/tmp/paperbanana-methodology-top.png` (PNG, `1440 × 1000`).
+- Desktop case detail screenshot: `/tmp/paperbanana-methodology-case.png` (PNG, `1440 × 1000`).
+- Mobile screenshots: `/tmp/paperbanana-methodology-430.png` (PNG, `430 × 932`) and `/tmp/paperbanana-methodology-390.png` (PNG, `390 × 844`).
+- Browser-rendered evidence showed 4 case cards, 4 positive prompts, 4 negative prompts, 4 rubric tables, 28 rubric rows, 8 copy buttons, the authoritative suite hash, and no console errors or warnings.
+- Copying the first positive prompt produced the accessible status `已复制正向提示词`; returning through `返回综合总榜` restored the leaderboard and the old inline methodology count remained zero.
+- At `430px`, document `scrollWidth=430`, prompt `clientWidth=378`, prompt `scrollWidth=378`, and page overflow false.
+- At `390px`, document `scrollWidth=390`, prompt `clientWidth=338`, prompt `scrollWidth=338`, and page overflow false. The page directory scrolls internally (`456 > 374`) without widening the document.
+- Typography: long hashes, English identifiers, Chinese prompts, formulas, and rubric copy remain readable and wrap within their cards.
+- Layout: the desktop method page uses a compact document directory, four-step process, full prompt cards, constraint groups, and semantic rubric tables; mobile collapses to one column.
+- Data integrity: visible prompt and rubric content came from the local `benchmarkMethodology` response built from `PB_IMAGE_LIGHT_V1`; no Web prompt fallback was used.
 
 ## Findings
 
@@ -51,12 +65,14 @@
 - Initial implementation review found direct-route static hosting gaps, trailing-slash handling, methodology order, sort semantics, keyboard focus visibility, and non-root base-path issues.
 - Fixes added explicit static entries plus a scoped 404 fallback, trailing-slash normalization, correct section order, `aria-sort`, visible focus outlines, base-aware internal paths, canonical fallback cleanup, and focusable horizontal-scroll regions.
 - Post-fix screenshots and DOM measurements confirm the issues are closed at desktop, `430px`, and `390px`.
+- The methodology extension removed the inline disclosure, added a dedicated static route, normalized malformed responses before render, and protected clipboard status from stale async completions. Post-fix browser checks confirm the complete public suite and responsive document are visible without overflow.
 
 ## Implementation checklist
 
 - [x] Arena-style seven-dimension overview cards.
 - [x] Overall plus seven-dimension matrix with rank and score.
 - [x] Full dimension routes, search, sorting, and canonical fallback behavior.
+- [x] Standalone reproducible methodology route with all four prompts, constraints, rubrics, scoring, review disclosure, and copy feedback.
 - [x] Desktop and mobile overflow containment.
 - [x] Console, title, DOM, accessibility state, and interaction checks.
 
