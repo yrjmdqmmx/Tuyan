@@ -20,7 +20,7 @@ import {
 const reviewSigningSecret = 'test-review-secret'
 process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET = reviewSigningSecret
 
-function storedRelease(base: Record<string, any>) {
+function storedRelease(base: Record<string, any>): Record<string, any> {
   const { _id, ...hashBase } = base
   return { _id, ...hashBase, releaseHash: canonicalHash(hashBase) }
 }
@@ -251,7 +251,8 @@ test('public release strips private fields and signs only allowlisted bench evid
     lane: '2K-standard',
     evaluationMode: 'codex_single', evaluationEpoch: 'codex-single-2026-08-v1', reviewProtocol: 'codex-single-two-pass-v1', reviewerKind: 'codex', reviewerPasses: 2,
     models: [{
-      modelId: 'model-a', displayName: 'A', provider: 'openrouter', developer: 'Maker', dimensions: {},
+      modelId: 'model-a', displayName: 'A', provider: 'openrouter', developer: 'Maker', sampleCount: 3,
+      dimensions: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, { mean: 8 }])),
       registryHash: 'registry-a', priceHash: 'price-a', codeSha: 'sha-a', auditRatio: 0.1,
       canonicalModelId: 'maker/model-a', primaryAccessProvider: 'openrouter', alternateAccessProviders: ['bailian'],
       actualOutputPixels: [{ width: 1024, height: 1024, megapixels: 1.048576, fileSizeBytes: 2048 }], ranked: true,
@@ -289,11 +290,116 @@ test('public release strips private fields and signs only allowlisted bench evid
   assert.deepEqual(signed, ['bench/releases/release-1/allowed.png'])
 })
 
+test('public release derives immutable Arena rankings only for complete ranked profiles', async () => {
+  const topMeans = [6.01, 6.02, 6.03, 6.04, 6.05, 6.06, 6.07]
+  const dimensions = (means: number[]) => Object.fromEntries(BENCHMARK_AXES.map((axis, index) => [axis, { mean: means[index] }]))
+  const source = storedRelease({
+    _id: 'release-arena', profileStatus: 'published', evaluationMode: 'codex_single', suiteId: 'suite', lane: '2K-standard', evidence: [],
+    models: [
+      { modelId: 'top-one', displayName: 'Top one', ranked: true, sampleCount: 3, dimensions: dimensions(topMeans), privateFlag: 'hidden' },
+      { modelId: 'top-two', displayName: 'Top two', ranked: true, sampleCount: 3, dimensions: dimensions(topMeans) },
+      { modelId: 'third', displayName: 'Third', ranked: true, sampleCount: 3, dimensions: dimensions(BENCHMARK_AXES.map(() => 0)) },
+      { modelId: 'failed', ranked: false, sampleCount: 4, dimensions: dimensions(topMeans) },
+      { modelId: 'too-few', ranked: true, sampleCount: 2, dimensions: dimensions(topMeans) },
+      { modelId: 'missing-axis', ranked: true, sampleCount: 3, dimensions: Object.fromEntries(BENCHMARK_AXES.slice(1).map((axis) => [axis, { mean: 8 }])) },
+      { modelId: 'not-a-number', ranked: true, sampleCount: 3, dimensions: { ...dimensions(topMeans), faithfulness: { mean: 'NaN' } } },
+    ],
+    methodology: { suiteId: 'suite', noOverallScore: true },
+  })
+  const sourceModels = structuredClone(source.models)
+
+  const release = await publicBenchmarkRelease(source, async () => 'signed')
+
+  assert.deepEqual(release.models.map((model: any) => model.modelId), ['top-one', 'top-two', 'third'])
+  assert.equal(release.models[0].overallScore, topMeans.reduce((sum, value) => sum + value, 0) / BENCHMARK_AXES.length)
+  assert.deepEqual(release.models.map((model: any) => model.overallRank), [1, 1, 3])
+  for (const axis of BENCHMARK_AXES) assert.deepEqual(release.models.map((model: any) => model.dimensionRanks[axis]), [1, 1, 3])
+  assert.equal(release.sourceReleaseHash, source.releaseHash)
+  assert.equal(release.presentationVersion, 'arena-leaderboard-v1')
+  assert.equal(release.eligibleModelCount, 3)
+  assert.deepEqual(release.rankingMethod, {
+    id: 'equal_weight_mean_v1', axes: BENCHMARK_AXES, weights: BENCHMARK_AXES.map(() => 1 / BENCHMARK_AXES.length), tieMethod: 'competition',
+  })
+  assert.equal(release.methodology?.noOverallScore, false)
+  assert.deepEqual(release.methodology?.rankingMethod, release.rankingMethod)
+  assert.deepEqual(source.models, sourceModels)
+})
+
+test('public release validates the stored hash before deriving leaderboard fields', async () => {
+  const release = storedRelease({ _id: 'tampered-release', models: [], evidence: [] })
+  release.models.push({ modelId: 'tampered', ranked: true, sampleCount: 3, dimensions: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, { mean: 8 }])) })
+  await assert.rejects(
+    () => publicBenchmarkRelease(release, async () => { throw new Error('must not derive or sign') }),
+    /BENCHMARK_RELEASE_HASH_MISMATCH/,
+  )
+  const nonFinite = storedRelease({ _id: 'non-finite-release', models: [], evidence: [] })
+  nonFinite.models.push({ modelId: 'nan', ranked: true, sampleCount: 3, dimensions: { faithfulness: { mean: Number.NaN } } })
+  await assert.rejects(() => publicBenchmarkRelease(nonFinite, async () => 'signed'), /NON_FINITE_CANONICAL_VALUE/)
+})
+
+test('benchmark profiles do not expose models filtered from the public leaderboard', async () => {
+  const dimensions = Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, { mean: 8 }]))
+  const release = storedRelease({
+    _id: 'filtered-profile-release', profileStatus: 'published', evaluationMode: 'codex_single', evidence: [], models: [
+      { modelId: 'eligible', ranked: true, sampleCount: 3, dimensions },
+      { modelId: 'insufficient', ranked: true, sampleCount: 2, dimensions },
+    ],
+  })
+  const service = createBenchmarkService({
+    repository: {
+      async latestRelease() { return release }, async releaseByModel() { return release }, async candidates() { return [] }, async approve() {}, async control() {},
+      async exportReview() {}, async importReview() {}, async publish() {},
+    },
+    signEvidence: async () => 'signed',
+  })
+  assert.equal((await service.handle({ action: 'benchmarkModelProfile', modelId: 'eligible' }, false)).code, 0)
+  assert.deepEqual(await service.handle({ action: 'benchmarkModelProfile', modelId: 'insufficient' }, false), { code: 404, error: 'Benchmark profile not found' })
+})
+
+test('historical verified and quick releases keep unranked public models and detached nested values', async () => {
+  for (const profileStatus of ['verified', 'provisional']) {
+    const source = storedRelease({
+      _id: `historical-${profileStatus}`, profileStatus, lane: '2K-standard', evidence: [],
+      models: [{
+        modelId: 'legacy-model', sampleCount: 2, ranked: false,
+        dimensions: { faithfulness: { mean: 7 } },
+        alternateAccessProviders: ['legacy-provider'],
+      }],
+      methodology: { suiteId: 'legacy-suite', noOverallScore: true },
+    })
+
+    const release = await publicBenchmarkRelease(source, async () => 'signed')
+    release.models[0].dimensions.faithfulness.mean = 1
+    release.models[0].alternateAccessProviders.push('mutated')
+
+    assert.equal(release.models.length, 1)
+    assert.equal(release.models[0].overallScore, undefined)
+    assert.equal(release.models[0].overallRank, undefined)
+    assert.equal(release.models[0].dimensionRanks, undefined)
+    assert.equal(release.sourceReleaseHash, undefined)
+    assert.equal(release.rankingMethod, undefined)
+    assert.deepEqual(release.methodology, { suiteId: 'legacy-suite', noOverallScore: true })
+    assert.equal(source.models[0].dimensions.faithfulness.mean, 7)
+    assert.deepEqual(source.models[0].alternateAccessProviders, ['legacy-provider'])
+  }
+})
+
+test('benchmark methodology is null when no release exists', async () => {
+  const service = createBenchmarkService({
+    repository: {
+      async latestRelease() { return null }, async releaseByModel() { return null }, async candidates() { return [] }, async approve() {}, async control() {},
+      async exportReview() {}, async importReview() {}, async publish() {},
+    },
+    signEvidence: async () => 'signed',
+  })
+  assert.deepEqual(await service.handle({ action: 'benchmarkMethodology' }, false), { code: 0, methodology: null, releaseHash: '' })
+})
+
 test('public actions read immutable releases while admin actions require authorization', async () => {
   const releases = [storedRelease({
     _id: 'release-1', profileStatus: 'verified', suiteId: 'suite', judgeEpoch: 'judge', lane: '2K-standard',
-    publishedAt: new Date('2026-08-25T00:00:00Z'), models: [{ modelId: 'model-a', displayName: 'Model A', dimensions: { aesthetics: { mean: 8 } } }], evidence: [],
-    methodology: { suiteId: 'suite', aggregation: 'case-first-bootstrap', internalQueue: 'hidden' },
+    publishedAt: new Date('2026-08-25T00:00:00Z'), models: [{ modelId: 'model-a', displayName: 'Model A', ranked: true, sampleCount: 3, dimensions: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, { mean: 8 }])) }], evidence: [],
+    methodology: { suiteId: 'suite', aggregation: 'case-first-bootstrap', noOverallScore: true, internalQueue: 'hidden' },
   })]
   const repository = {
     async latestRelease(lane?: string) { if (lane !== undefined) assert.equal(lane, '2K-standard'); return releases[0] },
@@ -308,7 +414,10 @@ test('public actions read immutable releases while admin actions require authori
   const service = createBenchmarkService({ repository, signEvidence: async () => 'signed' })
   assert.equal((await service.handle({ action: 'benchmarkLeaderboard', lane: '2K-standard' }, false)).release.releaseHash, releases[0].releaseHash)
   assert.equal((await service.handle({ action: 'benchmarkModelProfile', modelId: 'model-a' }, false)).profile.modelId, 'model-a')
-  assert.deepEqual((await service.handle({ action: 'benchmarkMethodology' }, false)).methodology, { suiteId: 'suite', aggregation: 'case-first-bootstrap' })
+  const historicalLeaderboard = await service.handle({ action: 'benchmarkLeaderboard', lane: '2K-standard' }, false)
+  assert.equal(historicalLeaderboard.release.models.length, 1)
+  assert.equal(historicalLeaderboard.release.models[0].overallScore, undefined)
+  assert.deepEqual((await service.handle({ action: 'benchmarkMethodology' }, false)).methodology, { suiteId: 'suite', aggregation: 'case-first-bootstrap', noOverallScore: true })
   await assert.rejects(() => service.handle({ action: 'adminBenchmarkCandidates' }, false), /BENCHMARK_ADMIN_REQUIRED/)
   assert.deepEqual((await service.handle({ action: 'adminBenchmarkCandidates' }, true)).candidates, [{ candidateId: 'c1', state: 'detected' }])
   const exported = await service.handle({ action: 'adminBenchmarkReviewExport' }, true)
