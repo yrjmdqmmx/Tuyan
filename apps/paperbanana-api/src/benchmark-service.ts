@@ -1,4 +1,4 @@
-import { BENCHMARK_AXES, canonicalHash } from '@paperbanana/benchmark-core'
+import { BENCHMARK_AXES, canonicalHash, PB_IMAGE_LIGHT_V1 } from '@paperbanana/benchmark-core'
 
 type AnyRecord = Record<string, any>
 
@@ -9,6 +9,27 @@ const arenaRankingMethod = () => ({
   weights: BENCHMARK_AXES.map(() => 1 / BENCHMARK_AXES.length),
   tieMethod: 'competition',
 })
+const arenaMethodologyScoring = Object.freeze({
+  scoreMin: 0,
+  scoreMax: 10,
+  minimumReviewedSamples: 3,
+  maximumSamplesPerModel: 4,
+  overallFormula: 'equal_weight_mean_v1',
+  tieMethod: 'competition',
+  redLinePolicy: 'confirmed_axis_cap',
+})
+
+function publicArenaMethodologySuite(): AnyRecord {
+  const suiteFields = ['id', 'title', 'version', 'language', 'license', 'manifestHash']
+  const caseFields = [
+    'id', 'category', 'title', 'caption', 'aspectRatio', 'renderPrompt', 'negativePrompt', 'requiredEntities',
+    'requiredRelations', 'requiredText', 'forbidden', 'rubric', 'license', 'manifestHash',
+  ]
+  return {
+    ...Object.fromEntries(suiteFields.map((key) => [key, structuredClone((PB_IMAGE_LIGHT_V1 as AnyRecord)[key])])),
+    cases: PB_IMAGE_LIGHT_V1.cases.map((benchmarkCase) => Object.fromEntries(caseFields.map((key) => [key, structuredClone((benchmarkCase as AnyRecord)[key])]))),
+  }
+}
 
 const publicActions = new Set(['benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology'])
 const adminActions = new Set([
@@ -193,7 +214,13 @@ export function createBenchmarkService({
           const { _id: _storedId, releaseHash: storedHash, ...releaseBase } = release
           if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
         }
-        return { code: 0, methodology: release ? publicMethodology(release.methodology, isArenaLeaderboardRelease(release) ? arenaRankingMethod() : undefined) : null, releaseHash: release?.releaseHash || '' }
+        const arenaMethodology = release && isArenaLeaderboardRelease(release)
+        return {
+          code: 0,
+          methodology: release ? publicMethodology(release.methodology, arenaMethodology ? arenaRankingMethod() : undefined) : null,
+          releaseHash: release?.releaseHash || '',
+          ...(arenaMethodology ? { suite: publicArenaMethodologySuite(), scoring: structuredClone(arenaMethodologyScoring) } : {}),
+        }
       }
       if (action === 'adminBenchmarkCandidates') return { code: 0, candidates: await repository.candidates() }
       if (action === 'adminBenchmarkApprove') return { code: 0, approval: await repository.approve(body) }

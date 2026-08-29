@@ -395,6 +395,114 @@ test('benchmark methodology is null when no release exists', async () => {
   assert.deepEqual(await service.handle({ action: 'benchmarkMethodology' }, false), { code: 0, methodology: null, releaseHash: '' })
 })
 
+test('Arena methodology publishes a detached reproducible PB_IMAGE_LIGHT_V1 suite and fixed scoring contract', async () => {
+  const stored = storedRelease({
+    _id: 'arena-methodology-release', profileStatus: 'published', evaluationMode: 'codex_single', evidence: [], models: [],
+    methodology: {
+      suiteId: PB_IMAGE_LIGHT_V1.id, suiteHash: PB_IMAGE_LIGHT_V1.manifestHash, noOverallScore: true,
+      evaluationMode: 'codex_single', evaluationEpoch: 'codex-single-2026-08-v1', reviewProtocol: 'codex-single-two-pass-v1',
+      reviewerKind: 'codex', reviewerPasses: 2, automaticJudges: [], internalReviewLog: 'must not leak',
+    },
+  })
+  const storedSnapshot = structuredClone(stored)
+  const service = createBenchmarkService({
+    repository: {
+      async latestRelease() { return stored }, async releaseByModel() { return null }, async candidates() { return [] }, async approve() {}, async control() {},
+      async exportReview() {}, async importReview() {}, async publish() {},
+    },
+    signEvidence: async () => 'signed',
+  })
+  const expectedSuite = {
+    id: PB_IMAGE_LIGHT_V1.id,
+    title: PB_IMAGE_LIGHT_V1.title,
+    version: PB_IMAGE_LIGHT_V1.version,
+    language: PB_IMAGE_LIGHT_V1.language,
+    license: PB_IMAGE_LIGHT_V1.license,
+    manifestHash: PB_IMAGE_LIGHT_V1.manifestHash,
+    cases: PB_IMAGE_LIGHT_V1.cases.map((item) => ({
+      id: item.id, category: item.category, title: item.title, caption: item.caption, aspectRatio: item.aspectRatio,
+      renderPrompt: item.renderPrompt, negativePrompt: item.negativePrompt, requiredEntities: item.requiredEntities,
+      requiredRelations: item.requiredRelations, requiredText: item.requiredText, forbidden: item.forbidden,
+      rubric: item.rubric, license: item.license, manifestHash: item.manifestHash,
+    })),
+  }
+
+  const response = await service.handle({ action: 'benchmarkMethodology' }, false)
+
+  assert.equal(response.releaseHash, stored.releaseHash)
+  assert.deepEqual(response.suite, expectedSuite)
+  assert.equal(response.suite.cases.length, 4)
+  assert.equal(response.suite.cases[0].renderPrompt, PB_IMAGE_LIGHT_V1.cases[0].renderPrompt)
+  assert.equal(response.suite.cases[0].negativePrompt, PB_IMAGE_LIGHT_V1.cases[0].negativePrompt)
+  assert.deepEqual(response.suite.cases[0].rubric, PB_IMAGE_LIGHT_V1.cases[0].rubric)
+  assert.deepEqual(response.suite.cases[0].license, PB_IMAGE_LIGHT_V1.cases[0].license)
+  assert.deepEqual(response.scoring, {
+    scoreMin: 0,
+    scoreMax: 10,
+    minimumReviewedSamples: 3,
+    maximumSamplesPerModel: 4,
+    overallFormula: 'equal_weight_mean_v1',
+    tieMethod: 'competition',
+    redLinePolicy: 'confirmed_axis_cap',
+  })
+  assert.deepEqual(response.methodology, {
+    suiteId: PB_IMAGE_LIGHT_V1.id,
+    suiteHash: PB_IMAGE_LIGHT_V1.manifestHash,
+    noOverallScore: false,
+    evaluationMode: 'codex_single',
+    evaluationEpoch: 'codex-single-2026-08-v1',
+    reviewProtocol: 'codex-single-two-pass-v1',
+    reviewerKind: 'codex',
+    reviewerPasses: 2,
+    automaticJudges: [],
+    rankingMethod: {
+      id: 'equal_weight_mean_v1', axes: BENCHMARK_AXES, weights: BENCHMARK_AXES.map(() => 1 / BENCHMARK_AXES.length), tieMethod: 'competition',
+    },
+  })
+  assert.deepEqual(stored, storedSnapshot)
+
+  const mutableSuite = response.suite as any
+  mutableSuite.cases[0].rubric.faithfulness = 'mutated-score'
+  mutableSuite.cases[0].requiredEntities.push('mutated')
+  mutableSuite.cases[0].license.author = 'mutated'
+  assert.notEqual(PB_IMAGE_LIGHT_V1.cases[0].rubric.faithfulness, 'mutated-score')
+  assert.equal(PB_IMAGE_LIGHT_V1.cases[0].requiredEntities.includes('mutated'), false)
+  assert.notEqual(PB_IMAGE_LIGHT_V1.cases[0].license.author, 'mutated')
+  assert.deepEqual((await service.handle({ action: 'benchmarkMethodology' }, false)).suite, expectedSuite)
+})
+
+test('benchmark methodology keeps historical releases shape-compatible and validates the hash before Arena suite derivation', async () => {
+  const historical = storedRelease({
+    _id: 'historical-methodology-release', profileStatus: 'verified', evaluationMode: 'quick', evidence: [], models: [],
+    methodology: { suiteId: 'legacy-suite', noOverallScore: true },
+  })
+  const historicalService = createBenchmarkService({
+    repository: {
+      async latestRelease() { return historical }, async releaseByModel() { return null }, async candidates() { return [] }, async approve() {}, async control() {},
+      async exportReview() {}, async importReview() {}, async publish() {},
+    },
+    signEvidence: async () => 'signed',
+  })
+  const historicalResponse = await historicalService.handle({ action: 'benchmarkMethodology' }, false)
+  assert.deepEqual(historicalResponse, { code: 0, methodology: { suiteId: 'legacy-suite', noOverallScore: true }, releaseHash: historical.releaseHash })
+  assert.equal('suite' in historicalResponse, false)
+  assert.equal('scoring' in historicalResponse, false)
+
+  const tampered = storedRelease({
+    _id: 'tampered-methodology-release', profileStatus: 'published', evaluationMode: 'codex_single', evidence: [], models: [],
+    methodology: { suiteId: PB_IMAGE_LIGHT_V1.id, noOverallScore: true },
+  })
+  tampered.methodology.suiteId = 'tampered-suite'
+  const tamperedService = createBenchmarkService({
+    repository: {
+      async latestRelease() { return tampered }, async releaseByModel() { return null }, async candidates() { return [] }, async approve() {}, async control() {},
+      async exportReview() {}, async importReview() {}, async publish() {},
+    },
+    signEvidence: async () => 'signed',
+  })
+  await assert.rejects(() => tamperedService.handle({ action: 'benchmarkMethodology' }, false), /BENCHMARK_RELEASE_HASH_MISMATCH/)
+})
+
 test('public actions read immutable releases while admin actions require authorization', async () => {
   const releases = [storedRelease({
     _id: 'release-1', profileStatus: 'verified', suiteId: 'suite', judgeEpoch: 'judge', lane: '2K-standard',
