@@ -16,6 +16,7 @@ export default function ReferenceLibraryPanel({ references, selectedIds, pageInf
   const [selectedItems, setSelectedItems] = useState([])
   const [failedImages, setFailedImages] = useState(() => new Set())
   const requestRef = useRef(onRequest)
+  const galleryWasOpenRef = useRef(false)
   requestRef.current = onRequest
   const galleryTitleId = useId()
   const galleryDescriptionId = useId()
@@ -31,7 +32,9 @@ export default function ReferenceLibraryPanel({ references, selectedIds, pageInf
   }, [localizedReferences, selectedIds])
 
   useEffect(() => {
-    if (!showGallery) return undefined
+    const openedNow = showGallery && !galleryWasOpenRef.current
+    galleryWasOpenRef.current = showGallery
+    if (!showGallery || openedNow) return undefined
     const timer = window.setTimeout(() => requestRef.current?.({ page: 1, query, visualCategory, researchDomain }), 320)
     return () => window.clearTimeout(timer)
   }, [query, visualCategory, researchDomain, showGallery])
