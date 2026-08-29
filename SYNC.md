@@ -30,7 +30,7 @@
 - [x] paperbanana-api（`benchmarkMethodology` 新增 `suite` / `scoring` 顶层字段，Arena release 仅在 `releaseHash` 校验后公开；历史形状保持不变）
 - [x] Web（`/leaderboard/methodology`、静态 root / non-root / 尾斜杠入口、正式方法路由、严格 normalize / fail closed、移除内嵌方法提示）
 - [x] packages-api / auth-gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 名称不变；新增字段向后兼容；无需改造）
-- [ ] 部署 / 运维（后续按不可变 SHA 部署 Core + Pages，并做只读 smoke；Worker 保持 disabled / 并发 1，不触发付费调用）
+- [x] 部署 / 运维（PR #71 合并为 `58c0f3f8cac89ffc9c47798f0e474c331cc56c66`；香港 Core/Benchmark 以不可变镜像部署，Gateway/Plot/Mongo 复用现网摘要，Worker 保持 configured-disabled / 并发 1；Pages 以 `bench_enabled=true` 发布。生产只读 smoke：`/health`、`/ready` 正常，方法接口返回 4 题 / 0 automatic Judge，方法页与总榜均为 200；未触发生成或 Judge 调用）
 
 ### [2026-08-29] Bench Arena 式公开排行榜投影与 Web 路由 — by Codex
 变更：仅对 `evaluationMode=codex_single` 且 `profileStatus=published` 的新 Standard release，在源 `releaseHash` 校验后派生公开 presentation；历史 Quick/Full、`provisional` / `verified` 不迁移、不覆盖。公开资格只认 `ranked===true`、`sampleCount>=3`、七轴 `mean` 全 finite；公开 leaderboard/profile 隐藏失败、暂停、样本不足条目，但原不可变 release / 账本不物理删除。`overall` 为七维 raw mean 等权平均；`overall` / 七维都用 raw 降序 competition ranking `1,1,3`。新增公开字段 `overallScore`、`overallRank`、`dimensionRanks`、`sourceReleaseHash`、`presentationVersion`、`eligibleModelCount`、`rankingMethod`；方法学对新榜 `noOverallScore=false`。Web 正式路由改为 `/leaderboard` + 七个子路由并替换旧 `/bench`；GitHub Pages 生成静态入口和仅限 `leaderboard` / `bench` 的 404 fallback；顶栏改“排行榜”并移除 Windows / Mac，其他客户端 UI 不改。不展示置信区间；小榜仅 Top10、总矩阵显示 `rank + score`；不新增任何生成 / Judge 调用。
@@ -38,7 +38,7 @@
 - [x] paperbanana-api（Standard release 公共 presentation 投影、公开字段/排序/方法学字段与后端兼容）
 - [x] Web（`/leaderboard` + 七子路由、`/bench` 替换、GitHub Pages 静态入口与 404 fallback、顶栏文案调整）
 - [x] auth-gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 名称不变，新增字段向后兼容，无需改造）
-- [ ] 部署 / 运维（后续按不可变 SHA 部署 Core + Pages，并做生产只读 smoke；Worker 保持 disabled / 并发 1，不触发付费调用）
+- [x] 部署 / 运维（随 PR #71 的不可变 SHA `58c0f3f8cac89ffc9c47798f0e474c331cc56c66` 完成 Core + Pages 发布；生产排行榜接口返回 `presentationVersion=arena-leaderboard-v1`、31 个合格模型，`/leaderboard/` 与 `/leaderboard/methodology/` 均为 200；未触发生成或 Judge 调用）
 
 ### [2026-08-28] Bench OSS 服务端公共端点模式与三容器显式 DNS — by Codex
 变更：香港生产宿主机已可解析并访问公共 OSS，但 Docker embedded DNS 仍沿用不可达的旧解析器，且 Bench Core 的 OSS 服务端读写固定使用 internal endpoint，导致发布证据复验失败。Core 新增严格枚举 `PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE=internal|public`，未设置时保持 `internal`；仅显式为 `public` 时，Bench OSS `serverClient` 才使用经过严格主机校验的公共 endpoint。签名客户端继续固定公共 endpoint，主业务 OSS 配置与行为不变，空串、大小写变体、前后空格和其他值均启动失败。香港 Compose 仅为 `paperbanana-api`、`benchmark-worker`、`benchmark-operator` 设置显式 DNS，`PAPERBANANA_BENCH_DNS_PRIMARY` / `PAPERBANANA_BENCH_DNS_SECONDARY` 默认分别为 `223.5.5.5` / `1.1.1.1`；其他服务保留原 Docker DNS。正式发布的不可变证据批次复验仍保持并发 8、单对象一次有界重试和失败关闭，但总 deadline 从 30 秒提高到 120 秒，以覆盖公共 OSS 大 PNG 的受限带宽。
