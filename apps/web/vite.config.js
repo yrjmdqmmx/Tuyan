@@ -12,6 +12,7 @@ export default defineConfig({
         'not-found': resolve(import.meta.dirname, '404.html'),
         bench: resolve(import.meta.dirname, 'bench/index.html'),
         leaderboard: resolve(import.meta.dirname, 'leaderboard/index.html'),
+        'leaderboard-methodology': resolve(import.meta.dirname, 'leaderboard/methodology/index.html'),
         'leaderboard-faithfulness': resolve(import.meta.dirname, 'leaderboard/faithfulness/index.html'),
         'leaderboard-conciseness': resolve(import.meta.dirname, 'leaderboard/conciseness/index.html'),
         'leaderboard-readability': resolve(import.meta.dirname, 'leaderboard/readability/index.html'),

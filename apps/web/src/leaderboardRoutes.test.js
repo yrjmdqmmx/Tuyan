@@ -1,21 +1,24 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-test('leaderboard route resolver recognizes overview, all seven dimensions, and invalid slugs', async () => {
+test('leaderboard route resolver recognizes overview, methodology, all seven dimensions, and invalid slugs', async () => {
   let routes
   try {
     routes = await import('./leaderboardRoutes.js')
   } catch {}
   assert.equal(typeof routes?.resolveLeaderboardRoute, 'function')
-  assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard'), { isLeaderboard: true, dimension: null, invalidSlug: false })
+  assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard'), { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false })
+  assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/methodology'), { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false })
+  assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/methodology/'), { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false })
   for (const slug of ['faithfulness', 'conciseness', 'readability', 'aesthetics', 'text-accuracy', 'topology', 'instruction-adherence']) {
     const result = routes.resolveLeaderboardRoute(`/leaderboard/${slug}`)
     assert.equal(result.isLeaderboard, true)
+    assert.equal(result.methodology, false)
     assert.equal(result.invalidSlug, false)
     assert.ok(result.dimension)
   }
-  assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/nope'), { isLeaderboard: true, dimension: null, invalidSlug: true })
-  assert.equal(routes.resolveLeaderboardRoute('/workspace').isLeaderboard, false)
+  assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/nope'), { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: true })
+  assert.deepEqual(routes.resolveLeaderboardRoute('/workspace'), { isLeaderboard: false, methodology: false, dimension: null, invalidSlug: false })
 })
 
 test('all seven static dimension directory URLs resolve with a trailing slash', async () => {
@@ -23,6 +26,7 @@ test('all seven static dimension directory URLs resolve with a trailing slash', 
   for (const slug of ['faithfulness', 'conciseness', 'readability', 'aesthetics', 'text-accuracy', 'topology', 'instruction-adherence']) {
     const result = resolveLeaderboardRoute(`/leaderboard/${slug}/`)
     assert.equal(result.isLeaderboard, true)
+    assert.equal(result.methodology, false)
     assert.equal(result.invalidSlug, false, `${slug}/ should remain a valid dimension route`)
     assert.equal(result.dimension?.slug, slug)
   }

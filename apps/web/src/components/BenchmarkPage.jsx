@@ -10,6 +10,7 @@ export const BENCHMARK_AXIS_LABELS = Object.freeze(Object.fromEntries(LEADERBOAR
 const OVERALL_METRIC = Object.freeze({ id: 'overall', label: 'Overall' })
 const WORKSPACE_HREF = appPath('/')
 const LEADERBOARD_HREF = appPath('/leaderboard')
+const METHODOLOGY_HREF = appPath('/leaderboard/methodology')
 const LOGO_HREF = appPath('/logo.svg')
 
 function finiteNumber(value) {
@@ -66,13 +67,13 @@ function MetricValue({ model, metricId }) {
   return <span>#{rank} · {formatScore(value)}</span>
 }
 
-function LeaderboardNav({ methodologyHref = '#methodology' }) {
+function LeaderboardNav() {
   return (
     <nav className="bench-nav" aria-label="排行榜导航">
       <a className="bench-brand" href={WORKSPACE_HREF}><img src={LOGO_HREF} alt="" />PaperBanana</a>
       <a href={WORKSPACE_HREF}>工作台</a>
       <span aria-current="page">排行榜</span>
-      <a href={methodologyHref}>方法说明</a>
+      <a href={METHODOLOGY_HREF}>方法说明</a>
       <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
     </nav>
   )
@@ -91,24 +92,6 @@ function LeaderboardHero({ release }) {
         <span>七维等权</span>
       </div>
     </header>
-  )
-}
-
-function Methodology() {
-  return (
-    <section className="bench-methodology bench-section" id="methodology" aria-labelledby="bench-methodology-title">
-      <div>
-        <div className="bench-eyebrow">METHODOLOGY</div>
-        <h2 id="bench-methodology-title">读榜前需要知道</h2>
-      </div>
-      <ul>
-        <li><strong>固定 4 题 / 每模型 4 张：</strong>所有模型使用同一组原创诊断任务。</li>
-        <li><strong>Codex 全量两遍结构化盲审：</strong>审核时隐藏模型身份与渠道信息。</li>
-        <li><strong>不同原生分辨率同榜：</strong>比较最终可用结果，不将分辨率折算为加分。</li>
-        <li><strong>七维等权：</strong>Overall 是七项原始均分的等权平均。</li>
-        <li><strong>轻量样本限制：</strong>榜单适合方向性比较，不替代具体业务场景实测。</li>
-      </ul>
-    </section>
   )
 }
 
@@ -215,7 +198,7 @@ function DimensionLeaderboard({ axis, release, models }) {
   )
   return (
     <main className="bench-shell">
-      <LeaderboardNav methodologyHref={`${LEADERBOARD_HREF}#methodology`} />
+      <LeaderboardNav />
       <section className="bench-subpage-hero">
         <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a>
         <div className="bench-eyebrow">FULL DIMENSION RANKING</div>
@@ -245,7 +228,7 @@ function DimensionLeaderboard({ axis, release, models }) {
 function InvalidDimension() {
   return (
     <main className="bench-shell">
-      <LeaderboardNav methodologyHref={`${LEADERBOARD_HREF}#methodology`} />
+      <LeaderboardNav />
       <section className="bench-not-found">
         <BarChart3 size={30} aria-hidden="true" />
         <h1>没有这个排行榜维度</h1>
@@ -302,7 +285,6 @@ export function BenchmarkObservatory({ release, pathname = '/leaderboard' }) {
     <main className="bench-shell">
       <LeaderboardNav />
       <LeaderboardHero release={release} />
-      <Methodology />
       <DimensionGrid models={models} />
       <LeaderboardMatrix release={release} models={models} />
     </main>

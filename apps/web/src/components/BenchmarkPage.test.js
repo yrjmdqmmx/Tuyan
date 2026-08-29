@@ -138,7 +138,7 @@ test('dimension route renders all eligible models, backend tie ranks, search, an
   assert.equal(container.querySelectorAll('.bench-dimension-table tbody tr').length, 12)
   assert.equal(within(container.querySelector('.bench-dimension-table tbody tr')).getByText('#1').textContent, '#1')
   assert.ok(screen.getByRole('link', { name: '返回综合总榜' }).getAttribute('href') === '/leaderboard')
-  assert.equal(screen.getByRole('link', { name: '方法说明' }).getAttribute('href'), '/leaderboard#methodology')
+  assert.equal(screen.getByRole('link', { name: '方法说明' }).getAttribute('href'), '/leaderboard/methodology')
   const scrollRegion = container.querySelector('.bench-dimension-full .bench-matrix-scroll')
   assert.equal(scrollRegion.getAttribute('tabindex'), '0')
   assert.equal(scrollRegion.getAttribute('aria-label'), '可横向滚动的美观度完整排名')
@@ -170,24 +170,31 @@ test('real page restores a fallback invalid slug before API loading or request e
   }
 })
 
-test('methodology states the fixed lightweight equal-weight evaluation without legacy claims', () => {
-  const { container } = renderPage()
-  assert.match(container.textContent, /固定 4 题/u)
-  assert.match(container.textContent, /每模型 4 张/u)
-  assert.match(container.textContent, /Codex 全量两遍结构化盲审/u)
-  assert.match(container.textContent, /不同原生分辨率同榜/u)
-  assert.match(container.textContent, /轻量样本/u)
-  assert.match(container.textContent, /七维等权/u)
-  assert.doesNotMatch(container.textContent, /模型特点速览|单维 tab|证据图片/u)
+test('overview requests only the leaderboard action and never methodology', async () => {
+  const previousFetch = globalThis.fetch
+  const bodies = []
+  globalThis.fetch = async (_input, options = {}) => {
+    bodies.push(JSON.parse(options.body))
+    return { ok: true, status: 200, async text() { return JSON.stringify({ code: 0, release }) } }
+  }
+  try {
+    render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard' }))
+    await screen.findByRole('heading', { name: '生图模型排行榜' })
+    assert.deepEqual(bodies, [{ action: 'benchmarkLeaderboard' }])
+    assert.equal(bodies.some((body) => body.action === 'benchmarkMethodology'), false)
+  } finally {
+    globalThis.fetch = previousFetch
+  }
 })
 
-test('overview places methodology before dimension cards and the overall matrix', () => {
+test('overview removes the old methodology section and flows from hero to dimensions to matrix', () => {
   const { container } = renderPage()
   const hero = container.querySelector('.bench-hero')
-  const methodology = container.querySelector('.bench-methodology')
   const dimensions = container.querySelector('[aria-labelledby="bench-dimensions-title"]')
   const matrix = container.querySelector('.bench-matrix-section')
-  assert.ok(hero.compareDocumentPosition(methodology) & Node.DOCUMENT_POSITION_FOLLOWING)
-  assert.ok(methodology.compareDocumentPosition(dimensions) & Node.DOCUMENT_POSITION_FOLLOWING)
+  assert.equal(container.querySelector('.bench-methodology'), null)
+  assert.doesNotMatch(container.textContent, /读榜前需要知道/u)
+  assert.equal(screen.getByRole('link', { name: '方法说明' }).getAttribute('href'), '/leaderboard/methodology')
+  assert.ok(hero.compareDocumentPosition(dimensions) & Node.DOCUMENT_POSITION_FOLLOWING)
   assert.ok(dimensions.compareDocumentPosition(matrix) & Node.DOCUMENT_POSITION_FOLLOWING)
 })

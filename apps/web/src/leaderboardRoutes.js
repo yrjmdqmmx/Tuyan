@@ -14,15 +14,18 @@ const DIMENSION_BY_SLUG = new Map(LEADERBOARD_AXES.map((axis) => [axis.slug, axi
 
 export function resolveLeaderboardRoute(pathname = '') {
   if (pathname === '/leaderboard' || pathname === '/leaderboard/') {
-    return { isLeaderboard: true, dimension: null, invalidSlug: false }
+    return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false }
   }
   if (!pathname.startsWith('/leaderboard/')) {
-    return { isLeaderboard: false, dimension: null, invalidSlug: false }
+    return { isLeaderboard: false, methodology: false, dimension: null, invalidSlug: false }
   }
   const rawSlug = pathname.slice('/leaderboard/'.length)
   const slug = rawSlug.endsWith('/') ? rawSlug.slice(0, -1) : rawSlug
+  if (slug === 'methodology') {
+    return { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false }
+  }
   const dimension = DIMENSION_BY_SLUG.get(slug) || null
-  return { isLeaderboard: true, dimension, invalidSlug: !dimension }
+  return { isLeaderboard: true, methodology: false, dimension, invalidSlug: !dimension }
 }
 
 export function canonicalizeLeaderboardLocation(location = {}, history = {}, base = APP_BASE_URL) {

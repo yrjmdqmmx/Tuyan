@@ -27,6 +27,7 @@ test('non-root Vite build keeps every leaderboard entry and runtime fallback und
       '404.html',
       'bench/index.html',
       'leaderboard/index.html',
+      'leaderboard/methodology/index.html',
       'leaderboard/faithfulness/index.html',
       'leaderboard/conciseness/index.html',
       'leaderboard/readability/index.html',
@@ -37,6 +38,7 @@ test('non-root Vite build keeps every leaderboard entry and runtime fallback und
     ]) builtScript(outputDir, relativeHtml)
 
     assert.match(builtScript(outputDir, 'leaderboard/index.html'), /(?:\/paperbanana\/|appPaths-)/u)
+    assert.match(builtScript(outputDir, 'leaderboard/methodology/index.html'), /(?:\/paperbanana\/|appPaths-)/u)
     assert.match(builtScript(outputDir, '404.html'), /(?:\/paperbanana\/|appPaths-)/u)
     const runtime = readdirSync(join(outputDir, 'assets'))
       .filter((name) => name.endsWith('.js'))
