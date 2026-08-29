@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-08-29] Bench 完整公开方法题集与独立方法页 — by Codex
+变更：公开 `benchmarkMethodology` 在 `evaluationMode=codex_single` 且 `profileStatus=published` 的 Arena release 上，先做 `releaseHash` 校验，再新增顶层 `suite` / `scoring`；历史 Quick/Full、`provisional` / `verified` 与无 release 结果继续保持旧形状，不回填、不改名。`suite` 的权威来源是 `PB_IMAGE_LIGHT_V1` allowlist 的深拷贝：完整公开四题正/负向提示词、约束、七维 rubric、许可、case / suite hash；不公开盲标签、模型映射、审核记录、签名/密钥/operator 材料。`scoring` 公共化 0-10 评分，要求至少 3/4、最多 4，七维等权，competition 采用 `1,1,3`，并明确 confirmed axis cap。Web 总榜移除内嵌“读榜前需要知道”，新增 `/leaderboard/methodology` 以及静态 root / non-root / 尾斜杠入口；所有方法链接改为正式路由。方法页只请求 `benchmarkMethodology`，严格 normalize，复制状态防竞态，旧或畸形响应 fail closed，且不带内置 prompt 副本。公开 action 名称不变，新字段向后兼容，不触发任何生成 / Judge / 付费。
+各端待办：
+- [x] paperbanana-api（`benchmarkMethodology` 新增 `suite` / `scoring` 顶层字段，Arena release 仅在 `releaseHash` 校验后公开；历史形状保持不变）
+- [x] Web（`/leaderboard/methodology`、静态 root / non-root / 尾斜杠入口、正式方法路由、严格 normalize / fail closed、移除内嵌方法提示）
+- [x] packages-api / auth-gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 名称不变；新增字段向后兼容；无需改造）
+- [ ] 部署 / 运维（后续按不可变 SHA 部署 Core + Pages，并做只读 smoke；Worker 保持 disabled / 并发 1，不触发付费调用）
+
 ### [2026-08-29] Bench Arena 式公开排行榜投影与 Web 路由 — by Codex
 变更：仅对 `evaluationMode=codex_single` 且 `profileStatus=published` 的新 Standard release，在源 `releaseHash` 校验后派生公开 presentation；历史 Quick/Full、`provisional` / `verified` 不迁移、不覆盖。公开资格只认 `ranked===true`、`sampleCount>=3`、七轴 `mean` 全 finite；公开 leaderboard/profile 隐藏失败、暂停、样本不足条目，但原不可变 release / 账本不物理删除。`overall` 为七维 raw mean 等权平均；`overall` / 七维都用 raw 降序 competition ranking `1,1,3`。新增公开字段 `overallScore`、`overallRank`、`dimensionRanks`、`sourceReleaseHash`、`presentationVersion`、`eligibleModelCount`、`rankingMethod`；方法学对新榜 `noOverallScore=false`。Web 正式路由改为 `/leaderboard` + 七个子路由并替换旧 `/bench`；GitHub Pages 生成静态入口和仅限 `leaderboard` / `bench` 的 404 fallback；顶栏改“排行榜”并移除 Windows / Mac，其他客户端 UI 不改。不展示置信区间；小榜仅 Top10、总矩阵显示 `rank + score`；不新增任何生成 / Judge 调用。
 各端待办：
