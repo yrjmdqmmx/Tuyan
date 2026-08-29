@@ -46,6 +46,7 @@
 - Route: `http://localhost:5173/leaderboard/methodology`; title: `PaperBanana 排行榜方法说明`.
 - Desktop overview screenshot: `/tmp/paperbanana-methodology-top.png` (PNG, `1440 × 1000`).
 - Desktop case detail screenshot: `/tmp/paperbanana-methodology-case.png` (PNG, `1440 × 1000`).
+- Desktop scoring and ranking-contract screenshot: `/tmp/paperbanana-methodology-scoring.png` (PNG, `1440 × 1000`).
 - Mobile screenshots: `/tmp/paperbanana-methodology-430.png` (PNG, `430 × 932`) and `/tmp/paperbanana-methodology-390.png` (PNG, `390 × 844`).
 - Browser-rendered evidence showed 4 case cards, 4 positive prompts, 4 negative prompts, 4 rubric tables, 28 rubric rows, 8 copy buttons, the authoritative suite hash, and no console errors or warnings.
 - Copying the first positive prompt produced the accessible status `已复制正向提示词`; returning through `返回综合总榜` restored the leaderboard and the old inline methodology count remained zero.
@@ -53,7 +54,7 @@
 - At `390px`, document `scrollWidth=390`, prompt `clientWidth=338`, prompt `scrollWidth=338`, and page overflow false. The page directory scrolls internally (`456 > 374`) without widening the document.
 - Typography: long hashes, English identifiers, Chinese prompts, formulas, and rubric copy remain readable and wrap within their cards.
 - Layout: the desktop method page uses a compact document directory, four-step process, full prompt cards, constraint groups, and semantic rubric tables; mobile collapses to one column.
-- Data integrity: visible prompt and rubric content came from the local `benchmarkMethodology` response built from `PB_IMAGE_LIGHT_V1`; no Web prompt fallback was used.
+- Data integrity: visible prompt and rubric content came from the local `benchmarkMethodology` response built from `PB_IMAGE_LIGHT_V1`; no Web prompt fallback was used. A second pass used the production-shaped `rankingMethod.weights: number[7]` contract and rendered all seven axes, all seven `1/7` weights, and `tieMethod=competition` without entering the empty state.
 
 ## Findings
 
