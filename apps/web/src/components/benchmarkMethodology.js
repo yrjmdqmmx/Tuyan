@@ -16,6 +16,16 @@ const CONSTRAINT_FIELDS = Object.freeze([
 ])
 
 const WEIGHT_SUM_TOLERANCE = 1e-9
+const EXPECTED_SUITE_ID = 'pb-image-light-v1'
+const EXPECTED_EVALUATION_MODE = 'codex_single'
+const EXPECTED_EVALUATION_EPOCH = 'codex-single-2026-08-v1'
+const EXPECTED_REVIEW_PROTOCOL = 'codex-single-two-pass-v1'
+const EXPECTED_REVIEWER_KIND = 'codex'
+const EXPECTED_REVIEWER_PASSES = 2
+const EXPECTED_OVERALL_FORMULA = 'equal_weight_mean_v1'
+const EXPECTED_TIE_METHOD = 'competition'
+const EXPECTED_RED_LINE_POLICY = 'confirmed_axis_cap'
+const EXPECTED_AXIS_WEIGHT = 1 / RUBRIC_AXES.length
 
 function isPlainObject(value) {
   if (value === null || typeof value !== 'object') return false
@@ -98,8 +108,9 @@ function normalizeScoring(value) {
   const overallFormula = asText(value.overallFormula)
   const tieMethod = asText(value.tieMethod)
   const redLinePolicy = asText(value.redLinePolicy)
-  if ([scoreMin, scoreMax, minimumReviewedSamples, maximumSamplesPerModel].some((item) => item === null)
-    || !overallFormula || !tieMethod || !redLinePolicy) return null
+  if (scoreMin !== 0 || scoreMax !== 10 || minimumReviewedSamples !== 3 || maximumSamplesPerModel !== 4
+    || overallFormula !== EXPECTED_OVERALL_FORMULA || tieMethod !== EXPECTED_TIE_METHOD
+    || redLinePolicy !== EXPECTED_RED_LINE_POLICY) return null
   return { scoreMin, scoreMax, minimumReviewedSamples, maximumSamplesPerModel, overallFormula, tieMethod, redLinePolicy }
 }
 
@@ -115,7 +126,7 @@ function normalizeRankingMethod(value, scoring) {
   let weightSum = 0
   for (const weightValue of value.weights) {
     const weight = asFiniteNumber(weightValue)
-    if (weight === null || weight <= 0) return null
+    if (weight === null || Math.abs(weight - EXPECTED_AXIS_WEIGHT) > WEIGHT_SUM_TOLERANCE) return null
     weights.push(weight)
     weightSum += weight
   }
@@ -123,7 +134,7 @@ function normalizeRankingMethod(value, scoring) {
   return { id, axes: [...value.axes], weights, tieMethod }
 }
 
-function normalizeMethodology(value, scoring) {
+function normalizeMethodology(value, scoring, suite) {
   if (!isPlainObject(value) || !isPlainObject(value.rankingMethod)) return null
   const suiteId = asText(value.suiteId)
   const suiteHash = asText(value.suiteHash)
@@ -134,8 +145,11 @@ function normalizeMethodology(value, scoring) {
   const reviewerPasses = asFiniteNumber(value.reviewerPasses)
   const automaticJudges = asStringArray(value.automaticJudges)
   const rankingMethod = normalizeRankingMethod(value.rankingMethod, scoring)
-  if (!suiteId || !suiteHash || !evaluationMode || !evaluationEpoch || !reviewProtocol || !reviewerKind
-    || reviewerPasses === null || automaticJudges === null || typeof value.noOverallScore !== 'boolean' || !rankingMethod) return null
+  if (suite.id !== EXPECTED_SUITE_ID || suiteId !== suite.id || suiteHash !== suite.manifestHash
+    || evaluationMode !== EXPECTED_EVALUATION_MODE || evaluationEpoch !== EXPECTED_EVALUATION_EPOCH
+    || reviewProtocol !== EXPECTED_REVIEW_PROTOCOL || reviewerKind !== EXPECTED_REVIEWER_KIND
+    || reviewerPasses !== EXPECTED_REVIEWER_PASSES || automaticJudges?.length !== 0
+    || value.noOverallScore !== false || !rankingMethod) return null
   return {
     suiteId,
     suiteHash,
@@ -155,7 +169,7 @@ export function normalizeMethodologyResponse(response) {
   const releaseHash = asText(response.releaseHash)
   const suite = normalizeSuite(response.suite)
   const scoring = normalizeScoring(response.scoring)
-  const methodology = scoring ? normalizeMethodology(response.methodology, scoring) : null
+  const methodology = scoring && suite ? normalizeMethodology(response.methodology, scoring, suite) : null
   if (!releaseHash || !suite || !scoring || !methodology) return null
   return { releaseHash, suite, scoring, methodology }
 }

@@ -503,7 +503,8 @@ test('Arena methodology omits reproducible attachments when any stored suite ide
 
     assert.equal(response.code, 0, mismatch.name)
     assert.equal(response.releaseHash, stored.releaseHash, mismatch.name)
-    assert.equal(response.methodology.noOverallScore, false, mismatch.name)
+    assert.equal(response.methodology.noOverallScore, true, mismatch.name)
+    assert.equal('rankingMethod' in response.methodology, false, mismatch.name)
     assert.equal('suite' in response, false, mismatch.name)
     assert.equal('scoring' in response, false, mismatch.name)
     assert.deepEqual(stored, storedSnapshot, mismatch.name)

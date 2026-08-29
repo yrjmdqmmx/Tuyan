@@ -226,11 +226,10 @@ export function createBenchmarkService({
           const { _id: _storedId, releaseHash: storedHash, ...releaseBase } = release
           if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
         }
-        const arenaMethodology = release && isArenaLeaderboardRelease(release)
         const reproducibleMethodology = release && hasPublicReproducibleMethodologySuite(release)
         return {
           code: 0,
-          methodology: release ? publicMethodology(release.methodology, arenaMethodology ? arenaRankingMethod() : undefined) : null,
+          methodology: release ? publicMethodology(release.methodology, reproducibleMethodology ? arenaRankingMethod() : undefined) : null,
           releaseHash: release?.releaseHash || '',
           ...(reproducibleMethodology ? { suite: publicArenaMethodologySuite(), scoring: structuredClone(arenaMethodologyScoring) } : {}),
         }
