@@ -3,7 +3,7 @@ import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
-import { benchmarkImmutableRunBinding, canonicalHash } from '@paperbanana/benchmark-core'
+import { PB_IMAGE_LIGHT_V1, benchmarkImmutableRunBinding, canonicalHash } from '@paperbanana/benchmark-core'
 
 import {
   BenchmarkBudget,
@@ -12,6 +12,7 @@ import {
   approveCandidate,
   benchmarkIdempotencyKey,
   detectImageCandidates,
+  detectCanonicalImageCandidates,
   parseWorkerConfig,
   runProviderOperation,
   parseJudgeResponse,
@@ -36,6 +37,9 @@ import {
   classifyOperatorError,
   createOpenRouterJudgeEgress,
   selectRecoverableCalibrationReport,
+  reconcileConfirmedNotForwardedJudgeDispatch,
+  retryUserAuthorizedAmbiguousJudgeDispatch,
+  executeStandardBenchmarkRun,
 } from '../src/index.js'
 import { callBlindJudge } from '../src/judge-provider.js'
 import { runOpenRouterJudgeProbe } from '../src/openrouter-judge-probe.js'
@@ -276,6 +280,60 @@ test('quick run generates all 12x2 samples before either judge phase', async () 
   assert.equal(result.nextState, 'quick_review')
   const generationIndexes = events.map((event, index) => event.startsWith('generate:') ? index : -1).filter((index) => index >= 0)
   assert.ok(Math.max(...generationIndexes) < events.findIndex((event) => event.startsWith('judge:')))
+})
+
+test('standard run generates four samples once, records native pixels and sends every success to Codex review', async () => {
+  const samples = new Map<string, any>()
+  const audits: string[][] = []
+  let completed: any
+  let generateCalls = 0
+  const result = await executeStandardBenchmarkRun({
+    run: { runId: 'standard-run', phase: 'standard', provider: 'openrouter', modelId: 'vendor/model', lane: null, repetitions: 1, runHash: canonicalHash('standard-run') },
+    cases: [...PB_IMAGE_LIGHT_V1.cases],
+    async generate(input) {
+      generateCalls += 1
+      assert.equal(input.resolutionRequest, 'provider-default')
+      return { imageHash: canonicalHash(input.sampleId), imageObjectKey: `bench/objects/${canonicalHash(input.sampleId)}.png`, latencyMs: 1000, actualOutputPixels: { width: 1536, height: 1024, megapixels: 1.5729, fileSizeBytes: 12345 } }
+    },
+    repository: {
+      async findSample(id) { return samples.get(id) || null },
+      async saveSample(sample) { samples.set(sample.sampleId, sample) },
+      async recordGenerationFailure() { throw new Error('unexpected failure') },
+      async markAudits(ids) { audits.push(ids) },
+      async completeRun(nextState, summary) { completed = { nextState, summary } },
+    },
+  })
+  assert.equal(generateCalls, 4)
+  assert.equal(result.nextState, 'codex_review')
+  assert.equal(result.sampleCount, 4)
+  assert.equal(result.judgmentCount, 0)
+  assert.equal(audits[0].length, 4)
+  assert.equal([...samples.values()].every((sample) => sample.actualOutputPixels.width === 1536), true)
+  assert.equal(completed.summary.releaseDraft.models[0].profileStatus, 'published')
+  assert.equal(completed.summary.releaseDraft.methodology.automaticJudges.length, 0)
+})
+
+test('standard run records a known generation failure once and never retries it', async () => {
+  let attempts = 0
+  const failures: any[] = []
+  const result = await executeStandardBenchmarkRun({
+    run: { runId: 'partial-standard-run', phase: 'standard', provider: 'bailian', modelId: 'model', lane: '2K-standard', repetitions: 1 },
+    cases: [...PB_IMAGE_LIGHT_V1.cases],
+    async generate(input) {
+      attempts += 1
+      if (input.caseId === PB_IMAGE_LIGHT_V1.cases[0].id) throw new Error('BENCHMARK_GENERATION_HTTP_403')
+      return { imageHash: canonicalHash(input.sampleId), imageObjectKey: `bench/objects/${canonicalHash(input.sampleId)}.png`, actualOutputPixels: { width: 2048, height: 2048, megapixels: 4.1943, fileSizeBytes: 100 } }
+    },
+    repository: {
+      async findSample() { return null }, async saveSample() {},
+      async recordGenerationFailure(failure) { failures.push(failure) },
+      async markAudits() {}, async completeRun() {},
+    },
+  })
+  assert.equal(attempts, 4)
+  assert.equal(failures.length, 1)
+  assert.equal(result.sampleCount, 3)
+  assert.equal(result.ranked, true)
 })
 
 test('automatic red-line ordering does not create a false audit conflict', async () => {
@@ -671,6 +729,38 @@ test('phase operator authorization canonically binds exact run identity, signed 
   }
 })
 
+test('standard phase authorization binds four generation calls and zero Judge calls', () => {
+  const codeSha = 'a'.repeat(40)
+  const priceSnapshot = { currency: 'USD', source: 'https://example.com/pricing/image-model', capturedAt: '2026-08-28T08:00:00.000Z', estimatedPerGeneration: 0.25, estimatedPerJudgeCall: 0 }
+  const approval = { entitlementConfirmed: true, priceSnapshot, maxGenerations: 4, maxJudgments: 0, maxJudgeCalls: 0, maxEstimatedUsd: 1, approvedBy: 'immutable-admin-id', approvedAt: new Date('2026-08-28T08:00:00.000Z') }
+  const runFacts = { runId: 'bench-run-0123456789abcdef0123', modelCandidateId: 'openrouter:model', provider: 'openrouter', modelId: 'vendor/model', developer: 'Vendor', lane: 'provider-default', aspectRatios: [], suiteId: 'pb-image-light-v1', suiteHash: 'b'.repeat(64), judgeEpoch: 'judge-none-codex-single-v1', reviewerEpoch: 'codex-single-2026-08-v1', registryHash: 'registry-hash', codeSha, createdAt: new Date('2026-08-28T08:00:00.000Z') }
+  const candidateSnapshot = { schemaVersion: 1, candidateId: 'openrouter:model', provider: 'openrouter', modelId: 'vendor/model', developer: 'Vendor', lane: 'provider-default', aspectRatios: [], registryHash: 'registry-hash', displayName: 'Model', providerLabel: 'OpenRouter' }
+  const immutable = benchmarkImmutableRunBinding({ runHash: canonicalHash(runFacts), runFacts, candidateSnapshot, runIntegrityAttestation: 'f'.repeat(64) })
+  const env = {
+    PAPERBANANA_BENCH_ENABLED:'false', PAPERBANANA_BENCH_CONCURRENCY:'1', PAPERBANANA_CODE_SHA:codeSha,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_PHASE:'standard', PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_ID:runFacts.runId,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_PROVIDER:'openrouter', PAPERBANANA_BENCH_PHASE_OPERATOR_MODEL_ID:'vendor/model', PAPERBANANA_BENCH_PHASE_OPERATOR_LANE:'provider-default',
+    PAPERBANANA_BENCH_PHASE_OPERATOR_SUITE_ID:runFacts.suiteId, PAPERBANANA_BENCH_PHASE_OPERATOR_SUITE_HASH:runFacts.suiteHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_JUDGE_EPOCH:runFacts.judgeEpoch, PAPERBANANA_BENCH_PHASE_OPERATOR_JUDGE_STACK_HASH:'c'.repeat(64),
+    PAPERBANANA_BENCH_PHASE_OPERATOR_SIGNED_AUTHORIZATION_HASH:canonicalHash({phase:'standard',approval,codeSha}), PAPERBANANA_BENCH_PHASE_OPERATOR_PRICE_HASH:canonicalHash(priceSnapshot),
+    PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_HASH:immutable.runHash, PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_FACTS_HASH:immutable.runFactsHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_CANDIDATE_SNAPSHOT_HASH:immutable.candidateSnapshotHash, PAPERBANANA_BENCH_PHASE_OPERATOR_ASPECT_RATIOS_HASH:immutable.aspectRatiosHash,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_REGISTRY_HASH:immutable.registryHash, PAPERBANANA_BENCH_PHASE_OPERATOR_RUN_INTEGRITY_ATTESTATION:immutable.runIntegrityAttestation,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_IMMUTABLE_FACTS_HASH:immutable.immutableFactsHash,
+    PAPERBANANA_BENCH_MAX_GENERATIONS:'4', PAPERBANANA_BENCH_MAX_JUDGMENTS:'0', PAPERBANANA_BENCH_MAX_JUDGE_CALLS:'0', PAPERBANANA_BENCH_MAX_ESTIMATED_USD:'1',
+    PAPERBANANA_BENCH_ESTIMATED_PER_GENERATION_USD:'0.25', PAPERBANANA_BENCH_ESTIMATED_PER_JUDGE_CALL_USD:'0', PAPERBANANA_BENCH_PRICE_CURRENCY:'USD',
+    PAPERBANANA_BENCH_PRICE_SOURCE:priceSnapshot.source, PAPERBANANA_BENCH_PRICE_CAPTURED_AT:priceSnapshot.capturedAt,
+    PAPERBANANA_BENCH_PHASE_OPERATOR_CONFIRM:'run-exact-approved-standard-phase-disabled-worker',
+  }
+  const authorization = parseBenchmarkPhaseAuthorization(env)
+  assert.equal(authorization.phase, 'standard')
+  assert.equal(authorization.expectedState, 'standard_running')
+  assert.equal(authorization.lane, 'provider-default')
+  assert.equal(authorization.maxGenerations, 4)
+  assert.equal(authorization.maxJudgments, 0)
+  assert.equal(authorization.maxJudgeCalls, 0)
+})
+
 test('phase operator authorization rejects every widened, malformed or mismatched boundary', () => {
   const base = phaseAuthorizationEnv('quick')
   const invalid: Array<[string, Record<string, string>]> = [
@@ -824,6 +914,27 @@ test('registry detection creates only new selectable image candidates and perfor
   assert.equal(candidates[0].state, 'detected')
   assert.equal(candidates[0].registryHash, 'registry-hash')
   assert.equal(candidates[0].developer, 'Alibaba Qwen')
+})
+
+test('canonical registry detection collapses aliases and prefers official direct access', () => {
+  const image = (id: string, vendor: string) => ({ id, selectable: true, roles: ['image'], vendor, capabilities: { imageGeneration: true, resolutions: ['2K'], aspectRatios: ['1:1'] } })
+  const current = { registryVersion: '2026-08-21.v9', providers: {
+    bailian: { models: [image('qwen-image-3.0-pro', 'Alibaba')] },
+    ark: { models: [image('doubao-seedream-4-5-251128', 'ByteDance')] },
+    openrouter: { models: [
+      image('qwen/qwen-image-3-pro', 'Alibaba'),
+      image('bytedance-seed/seedream-4.5', 'ByteDance'),
+      image('openai/gpt-image-2', 'OpenAI'),
+      image('openai/gpt-5-image', 'OpenAI'),
+    ] },
+  } }
+  const detection = detectCanonicalImageCandidates({}, current, 'registry-hash')
+  assert.equal(detection.manifest.rawRouteCount, 6)
+  assert.equal(detection.manifest.canonicalModelCount, 3)
+  assert.deepEqual(detection.candidates.map((candidate) => candidate.canonicalModelId), ['openai/gpt-image-2', 'qwen-image-3.0-pro', 'seedream-4.5'])
+  assert.equal(detection.candidates.find((candidate) => candidate.canonicalModelId === 'qwen-image-3.0-pro')?.primaryAccessProvider, 'bailian')
+  assert.equal(detection.candidates.find((candidate) => candidate.canonicalModelId === 'seedream-4.5')?.primaryAccessProvider, 'ark')
+  assert.match(detection.manifest.manifestHash, /^[a-f0-9]{64}$/)
 })
 
 test('approval fails closed until entitlement, price, limits and budget are explicit', () => {
@@ -1000,4 +1111,67 @@ test('429 retries only with bounded Retry-After, while unknown provider outcomes
     throw new UnknownProviderOutcomeError('request timed out after dispatch')
   }, { wait: async () => undefined, maxRetries: 5 }), UnknownProviderOutcomeError)
   assert.equal(attempts, 1)
+})
+
+test('confirmed proxy failure preserves dispatch zero and retries exactly once at the next index', async () => {
+  const events: string[] = []
+  const judgment = {
+    scores: Object.fromEntries(['faithfulness', 'conciseness', 'readability', 'aesthetics', 'text_accuracy', 'topology', 'instruction_adherence'].map((axis) => [axis, 8])),
+    evidence: ['visible evidence'], redLines: [], confidence: 0.9,
+  }
+  const result = await reconcileConfirmedNotForwardedJudgeDispatch({
+    runId: 'bench-run-62823ceaa039a0c1e07e', sampleId: `sample:${'a'.repeat(64)}`, phase: 'quick',
+    provider: 'openrouter', failedDispatchIndex: 0, retryDispatchIndex: 1,
+    proof: { target: 'openrouter.ai:443', proxyStatus: 503, durationMs: 35005, responseBytes: 0, logSha256: '8'.repeat(64) },
+  }, {
+    async inspect() { return { runState: 'paused', errorCode: 'UNKNOWN_PROVIDER_OUTCOME', hasLease: false, sampleCompleted: true, judgmentExists: false, dispatchIndexes: [0], usage: { generations: 24, judgments: 1, judgeCalls: 1 } } },
+    async claim() { events.push('claim') },
+    async reserveAndMark(index) { events.push(`mark:${index}`) },
+    async judge(beforeDispatch) { await beforeDispatch(); events.push('judge'); return judgment as any },
+    async save(value) { events.push(`save:${value.provider}`) },
+    async release() { events.push('release') },
+    async pause() { events.push('pause') },
+  })
+  assert.deepEqual(events, ['claim', 'mark:1', 'judge', 'save:openrouter', 'release'])
+  assert.deepEqual(result, { runId: 'bench-run-62823ceaa039a0c1e07e', sampleId: `sample:${'a'.repeat(64)}`, provider: 'openrouter', dispatchIndex: 1, judgmentSaved: true })
+})
+
+test('dispatch reconciliation rejects ambiguous evidence and pauses after a claimed unknown outcome', async () => {
+  const base = {
+    runId: 'bench-run-62823ceaa039a0c1e07e', sampleId: `sample:${'b'.repeat(64)}`, phase: 'quick' as const,
+    provider: 'openrouter' as const, failedDispatchIndex: 0 as const, retryDispatchIndex: 1 as const,
+    proof: { target: 'openrouter.ai:443' as const, proxyStatus: 503 as const, durationMs: 35005, responseBytes: 0 as const, logSha256: '9'.repeat(64) },
+  }
+  const state = { runState: 'paused', errorCode: 'UNKNOWN_PROVIDER_OUTCOME', hasLease: false, sampleCompleted: true, judgmentExists: false, dispatchIndexes: [0], usage: { generations: 24, judgments: 1, judgeCalls: 1 } }
+  await assert.rejects(() => reconcileConfirmedNotForwardedJudgeDispatch({ ...base, proof: { ...base.proof, responseBytes: 1 } } as any, {} as any), /BENCHMARK_DISPATCH_RECONCILIATION_PROOF_INVALID/)
+  const events: string[] = []
+  await assert.rejects(() => reconcileConfirmedNotForwardedJudgeDispatch(base, {
+    async inspect() { return state }, async claim() { events.push('claim') }, async reserveAndMark() { events.push('mark') },
+    async judge(beforeDispatch) { await beforeDispatch(); throw new UnknownProviderOutcomeError('timeout after dispatch') }, async save() {}, async release() {},
+    async pause(reason) { events.push(`pause:${reason}`) },
+  }), UnknownProviderOutcomeError)
+  assert.deepEqual(events, ['claim', 'mark', 'pause:UNKNOWN_PROVIDER_OUTCOME'])
+})
+
+test('explicit user authorization retries only the ambiguous Bailian judgment at the next dispatch index', async () => {
+  const events: string[] = []
+  const judgment = {
+    scores: Object.fromEntries(['faithfulness', 'conciseness', 'readability', 'aesthetics', 'text_accuracy', 'topology', 'instruction_adherence'].map((axis) => [axis, 8])),
+    evidence: ['visible evidence'], redLines: [], confidence: 0.9,
+  }
+  const result = await retryUserAuthorizedAmbiguousJudgeDispatch({
+    runId: 'bench-run-62823ceaa039a0c1e07e', sampleId: `sample:${'c'.repeat(64)}`, phase: 'quick',
+    provider: 'bailian', failedDispatchIndex: 0, retryDispatchIndex: 1,
+    authorization: 'retry-one-ambiguous-bailian-judgment-disabled-worker',
+  }, {
+    async inspect() { return { runState: 'paused', errorCode: 'UNKNOWN_PROVIDER_OUTCOME', hasLease: false, sampleCompleted: true, judgmentExists: false, dispatchIndexes: [0], usage: { generations: 24, judgments: 33, judgeCalls: 34 } } },
+    async claim() { events.push('claim') },
+    async reserveAndMark(index) { events.push(`mark:${index}`) },
+    async judge(beforeDispatch) { await beforeDispatch(); events.push('judge'); return judgment as any },
+    async save(value) { events.push(`save:${value.provider}`) },
+    async release() { events.push('release') },
+    async pause() { events.push('pause') },
+  })
+  assert.deepEqual(events, ['claim', 'mark:1', 'judge', 'save:bailian', 'release'])
+  assert.deepEqual(result, { runId: 'bench-run-62823ceaa039a0c1e07e', sampleId: `sample:${'c'.repeat(64)}`, provider: 'bailian', dispatchIndex: 1, judgmentSaved: true })
 })

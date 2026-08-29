@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
-  Apple,
   BarChart3,
   Eye,
   FileText,
@@ -10,7 +9,6 @@ import {
   Loader2,
   MessageCircle,
   MessageSquare,
-  MonitorDown,
   QrCode,
   RefreshCcw,
   Send,
@@ -99,6 +97,7 @@ import {
   scopedApiKeysForRoles,
   uniqueProvidersForRoles,
 } from './lib/modelRouting';
+import { appPath } from './appPaths';
 
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
@@ -1231,7 +1230,7 @@ export default function App() {
           </div>
         </div>
         <div className="header-links">
-          {BENCH_ENABLED ? <a href="/bench"><BarChart3 size={16} /> 模型横评</a> : null}
+          {BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
           <button type="button" className="contact-author-button" onClick={() => setShowContactDialog(true)}>
             <QrCode size={16} /> 联系作者
           </button>
@@ -1244,14 +1243,8 @@ export default function App() {
           <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">
             <Github size={16} /> GitHub
           </a>
-          <a href="https://github.com/zdywrnm/PaperBanana-clients/releases/tag/windows-native-v0.1.2" target="_blank" rel="noreferrer">
-            <MonitorDown size={16} /> Windows 版
-          </a>
           <a href="https://github.com/zdywrnm/PaperBanana-clients/releases/tag/android-preview-0.1.3" target="_blank" rel="noreferrer">
             <Smartphone size={16} /> Android 版
-          </a>
-          <a href="https://github.com/zdywrnm/PaperBanana-clients/releases/tag/macos-v0.1.0" target="_blank" rel="noreferrer">
-            <Apple size={16} /> Mac 版
           </a>
           <a href="https://github.com/zdywrnm/PaperBanana-clients/tree/main/apps/miniprogram" target="_blank" rel="noreferrer">
             <MessageCircle size={16} /> 微信小程序

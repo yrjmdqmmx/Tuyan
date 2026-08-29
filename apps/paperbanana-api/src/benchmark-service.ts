@@ -1,8 +1,35 @@
-import { canonicalHash } from '@paperbanana/benchmark-core'
+import { BENCHMARK_AXES, canonicalHash, PB_IMAGE_LIGHT_V1 } from '@paperbanana/benchmark-core'
 
 type AnyRecord = Record<string, any>
 
-const benchmarkLanes = new Set(['1K-standard', '2K-standard', '4K-standard'])
+const benchmarkLanes = new Set(['1K-standard', '2K-standard', '4K-standard', 'provider-default'])
+const arenaRankingMethod = () => ({
+  id: 'equal_weight_mean_v1',
+  axes: [...BENCHMARK_AXES],
+  weights: BENCHMARK_AXES.map(() => 1 / BENCHMARK_AXES.length),
+  tieMethod: 'competition',
+})
+const arenaMethodologyScoring = Object.freeze({
+  scoreMin: 0,
+  scoreMax: 10,
+  minimumReviewedSamples: 3,
+  maximumSamplesPerModel: 4,
+  overallFormula: 'equal_weight_mean_v1',
+  tieMethod: 'competition',
+  redLinePolicy: 'confirmed_axis_cap',
+})
+
+function publicArenaMethodologySuite(): AnyRecord {
+  const suiteFields = ['id', 'title', 'version', 'language', 'license', 'manifestHash']
+  const caseFields = [
+    'id', 'category', 'title', 'caption', 'aspectRatio', 'renderPrompt', 'negativePrompt', 'requiredEntities',
+    'requiredRelations', 'requiredText', 'forbidden', 'rubric', 'license', 'manifestHash',
+  ]
+  return {
+    ...Object.fromEntries(suiteFields.map((key) => [key, structuredClone((PB_IMAGE_LIGHT_V1 as AnyRecord)[key])])),
+    cases: PB_IMAGE_LIGHT_V1.cases.map((benchmarkCase) => Object.fromEntries(caseFields.map((key) => [key, structuredClone((benchmarkCase as AnyRecord)[key])]))),
+  }
+}
 
 const publicActions = new Set(['benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology'])
 const adminActions = new Set([
@@ -18,22 +45,64 @@ export function isBenchmarkAction(action: string) {
   return publicActions.has(action) || adminActions.has(action)
 }
 
-function publicModel(model: AnyRecord) {
+function isArenaLeaderboardRelease(release: AnyRecord): boolean {
+  return release.evaluationMode === 'codex_single' && release.profileStatus === 'published'
+}
+
+function hasPublicReproducibleMethodologySuite(release: AnyRecord): boolean {
+  const methodology = release.methodology
+  return isArenaLeaderboardRelease(release)
+    && release.suiteId === PB_IMAGE_LIGHT_V1.id
+    && release.suiteHash === PB_IMAGE_LIGHT_V1.manifestHash
+    && typeof methodology === 'object'
+    && methodology !== null
+    && !Array.isArray(methodology)
+    && methodology.suiteId === PB_IMAGE_LIGHT_V1.id
+    && methodology.suiteHash === PB_IMAGE_LIGHT_V1.manifestHash
+}
+
+function publicModel(model: AnyRecord, includeRanking = false): AnyRecord {
   const allowed = [
     'profileId', 'modelId', 'displayName', 'provider', 'providerLabel', 'developer', 'lane', 'profileStatus', 'sampleCount',
     'coverage', 'dimensions', 'traits', 'successRate', 'capabilityCoverage', 'repeatStability', 'latency', 'estimatedCost',
-    'registryHash', 'priceHash', 'codeSha', 'auditRatio', 'capabilityGaps',
+    'registryHash', 'priceHash', 'codeSha', 'auditRatio', 'capabilityGaps', 'canonicalModelId', 'primaryAccessProvider',
+    'alternateAccessProviders', 'actualOutputPixels', 'ranked', 'unrankedReason',
+    ...(includeRanking ? ['overallScore', 'overallRank', 'dimensionRanks'] : []),
   ]
-  return Object.fromEntries(allowed.filter((key) => model[key] !== undefined).map((key) => [key, model[key]]))
+  return Object.fromEntries(allowed.filter((key) => model[key] !== undefined).map((key) => [key, structuredClone(model[key])]))
 }
 
-function publicMethodology(methodology: AnyRecord | undefined) {
-  if (!methodology) return null
-  const allowed = ['suiteId', 'aggregation', 'noOverallScore', 'judgeEpoch', 'reviewerEpoch', 'auditPolicy', 'knownLimitations']
-  return Object.fromEntries(allowed.filter((key) => methodology[key] !== undefined).map((key) => [key, methodology[key]]))
+function publicMethodology(methodology: AnyRecord | undefined, rankingMethod?: AnyRecord): AnyRecord | null {
+  if (!methodology && !rankingMethod) return null
+  const allowed = [
+    'suiteId', 'suiteHash', 'aggregation', 'noOverallScore', 'judgeEpoch', 'reviewerEpoch', 'auditPolicy', 'knownLimitations',
+    'evaluationMode', 'evaluationEpoch', 'reviewProtocol', 'reviewerKind', 'reviewerPasses', 'automaticJudges',
+    'repetitionsPerCase', 'expectedCaseCount', 'sampleCount', 'automaticJudgmentCount', 'logicalJudgmentCount',
+    'judgeDispatchCount', 'auditSampleCount', 'actualOutputPixels',
+  ]
+  const publicValue = Object.fromEntries(allowed.filter((key) => methodology?.[key] !== undefined).map((key) => [key, structuredClone(methodology![key])]))
+  return rankingMethod ? { ...publicValue, noOverallScore: false, rankingMethod } : publicValue
 }
 
-export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (key: string) => Promise<string>, verifyEvidence: (key: string, imageHash: string) => Promise<void> = async () => {}) {
+function isEligibleForPublicLeaderboard(model: AnyRecord): boolean {
+  return model.ranked === true
+    && Number.isFinite(model.sampleCount)
+    && model.sampleCount >= 3
+    && BENCHMARK_AXES.every((axis) => Number.isFinite(model.dimensions?.[axis]?.mean))
+}
+
+function competitionRanks(values: number[]): number[] {
+  const ranks = Array<number>(values.length)
+  const ordered = values.map((value, index) => ({ value, index })).sort((left, right) => right.value - left.value)
+  let rank = 0
+  for (let index = 0; index < ordered.length; index++) {
+    if (index === 0 || ordered[index].value !== ordered[index - 1].value) rank = index + 1
+    ranks[ordered[index].index] = rank
+  }
+  return ranks
+}
+
+export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (key: string) => Promise<string>, verifyEvidence: (key: string, imageHash: string) => Promise<void> = async () => {}): Promise<AnyRecord> {
   const { _id: _storedId, releaseHash: storedHash, ...releaseBase } = release
   if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
   const releaseId = String(release._id || release.releaseId || '')
@@ -53,15 +122,45 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
       imageHash: String(item.imageHash || ''),
     })
   }
+  const arenaLeaderboard = isArenaLeaderboardRelease(release)
+  const models = Array.isArray(release.models) ? release.models : []
+  const rankingMethod = arenaLeaderboard ? arenaRankingMethod() : undefined
+  const publicModels: AnyRecord[] = arenaLeaderboard
+    ? models.filter(isEligibleForPublicLeaderboard).map((model: AnyRecord) => ({
+      ...publicModel(model, true),
+      overallScore: BENCHMARK_AXES.reduce((sum, axis) => sum + model.dimensions[axis].mean, 0) / BENCHMARK_AXES.length,
+    }))
+    : models.map((model: AnyRecord) => publicModel(model))
+  let rankedModels: AnyRecord[] = publicModels
+  if (arenaLeaderboard) {
+    const overallRanks = competitionRanks(publicModels.map((model) => model.overallScore))
+    const dimensionRanks = Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, competitionRanks(publicModels.map((model) => model.dimensions[axis].mean))]))
+    rankedModels = publicModels.map((model, index) => ({
+      ...model,
+      overallRank: overallRanks[index],
+      dimensionRanks: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, dimensionRanks[axis][index]])),
+    }))
+  }
   return {
     releaseId,
     profileStatus: release.profileStatus,
     releaseHash: release.releaseHash,
+    ...(arenaLeaderboard ? {
+      sourceReleaseHash: release.releaseHash,
+      presentationVersion: 'arena-leaderboard-v1',
+      eligibleModelCount: rankedModels.length,
+      rankingMethod,
+    } : {}),
     supersedesReleaseId: release.supersedesReleaseId || undefined,
     suiteId: release.suiteId,
     suiteHash: release.suiteHash,
     judgeEpoch: release.judgeEpoch,
     reviewerEpoch: release.reviewerEpoch,
+    evaluationMode: release.evaluationMode,
+    evaluationEpoch: release.evaluationEpoch,
+    reviewProtocol: release.reviewProtocol,
+    reviewerKind: release.reviewerKind,
+    reviewerPasses: release.reviewerPasses,
     registryHash: release.registryHash,
     priceHash: release.priceHash,
     codeSha: release.codeSha,
@@ -69,8 +168,9 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
     sampleCount: release.sampleCount,
     auditRatio: release.auditRatio,
     publishedAt: release.publishedAt,
-    models: (Array.isArray(release.models) ? release.models : []).map(publicModel),
+    models: rankedModels,
     evidence,
+    methodology: publicMethodology(release.methodology, rankingMethod),
   }
 }
 
@@ -126,7 +226,13 @@ export function createBenchmarkService({
           const { _id: _storedId, releaseHash: storedHash, ...releaseBase } = release
           if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
         }
-        return { code: 0, methodology: publicMethodology(release?.methodology), releaseHash: release?.releaseHash || '' }
+        const reproducibleMethodology = release && hasPublicReproducibleMethodologySuite(release)
+        return {
+          code: 0,
+          methodology: release ? publicMethodology(release.methodology, reproducibleMethodology ? arenaRankingMethod() : undefined) : null,
+          releaseHash: release?.releaseHash || '',
+          ...(reproducibleMethodology ? { suite: publicArenaMethodologySuite(), scoring: structuredClone(arenaMethodologyScoring) } : {}),
+        }
       }
       if (action === 'adminBenchmarkCandidates') return { code: 0, candidates: await repository.candidates() }
       if (action === 'adminBenchmarkApprove') return { code: 0, approval: await repository.approve(body) }

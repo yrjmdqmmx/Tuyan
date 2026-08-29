@@ -542,3 +542,30 @@ test('rendered reference gallery paginates, previews full images, and preserves 
   const selectedAgain = await screen.findByRole('button', { name: /已选用，点击取消/ })
   assert.equal(selectedAgain.getAttribute('aria-pressed'), 'true')
 })
+
+test('opening the reference gallery does not queue a delayed reset after pagination', async () => {
+  const pageOne = [{ id: 'race-one', titleZh: '竞态第一页', shortIntroZh: '第一页', title: 'Race one', summary: 'One', visualCategory: '流程图', researchDomain: '通用', keywords: [] }]
+  const pageTwo = [{ id: 'race-two', titleZh: '竞态第二页', shortIntroZh: '第二页', title: 'Race two', summary: 'Two', visualCategory: '流程图', researchDomain: '通用', keywords: [] }]
+  const requests = []
+  function GalleryRaceHarness() {
+    const [page, setPage] = React.useState(1)
+    return React.createElement(ReferenceLibraryPanel, {
+      references: page === 1 ? pageOne : pageTwo,
+      selectedIds: [],
+      pageInfo: { page, pageSize: 12, totalItems: 24, totalPages: 2, corpusVersion: 'zh-CN.v2', facets: { visualCategories: [], researchDomains: [] } },
+      isLoading: false,
+      error: '',
+      onToggle() {},
+      onClear() {},
+      onRequest: ({ page: requestedPage }) => { requests.push(requestedPage); setPage(requestedPage) },
+    })
+  }
+
+  render(React.createElement(GalleryRaceHarness))
+  fireEvent.click(screen.getByRole('button', { name: /打开参考图库/ }))
+  fireEvent.click(screen.getByRole('button', { name: '下一页' }))
+  assert.ok(screen.getByText('竞态第二页'))
+  await act(async () => { await new Promise((resolve) => setTimeout(resolve, 350)) })
+  assert.ok(screen.getByText('竞态第二页'))
+  assert.deepEqual(requests, [2])
+})

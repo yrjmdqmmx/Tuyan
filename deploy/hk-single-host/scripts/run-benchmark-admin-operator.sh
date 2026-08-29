@@ -24,12 +24,12 @@ case "$operation" in
     [[ "$confirm" == approve-benchmark-quick-disabled-worker && "$candidate_id" =~ ^[A-Za-z0-9._:/-]{3,200}$ ]] || usage
     [[ "$max_generations" =~ ^[1-9][0-9]*$ && "$max_judge_calls" =~ ^[1-9][0-9]*$ ]] || usage
     for amount in "$max_estimated_usd" "$generation_usd" "$judge_usd"; do [[ "$amount" =~ ^[0-9]+([.][0-9]+)?$ ]] || usage; done
-    node - "$max_generations" "$max_judge_calls" "$max_estimated_usd" "$generation_usd" "$judge_usd" "$price_source" "$price_captured_at" <<'NODE'
-const [maxG,maxJ,maxUsd,genUsd,judgeUsd,source,capturedAt]=process.argv.slice(2)
-try { const u=new URL(source); if(u.protocol!=='https:'||u.username||u.password||u.toString()!==source||new Date(capturedAt).toISOString()!==capturedAt)process.exit(1) } catch { process.exit(1) }
-const n=[maxG,maxJ,maxUsd,genUsd,judgeUsd].map(Number)
-if(!n.every(Number.isFinite)||!Number.isInteger(n[0])||!Number.isInteger(n[1])||n[0]!==24||n[1]<48||n[1]>192||n[2]<=0||n[2]>12||n[3]<=0||n[4]<=0||n[0]*n[3]+n[1]*n[4]>n[2]+1e-9)process.exit(1)
-NODE
+    [[ "$price_source" =~ ^https://[A-Za-z0-9.-]+(:[0-9]+)?(/[^[:space:]]*)?$ ]] || usage
+    [[ "$price_captured_at" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$ ]] || usage
+    [[ "$(date -u -d "$price_captured_at" '+%Y-%m-%dT%H:%M:%S.%3NZ')" == "$price_captured_at" ]] || usage
+    awk -v maxG="$max_generations" -v maxJ="$max_judge_calls" -v maxUsd="$max_estimated_usd" \
+      -v genUsd="$generation_usd" -v judgeUsd="$judge_usd" \
+      'BEGIN { if (maxG != 24 || maxJ < 48 || maxJ > 192 || maxUsd <= 0 || maxUsd > 12 || genUsd <= 0 || judgeUsd <= 0 || maxG * genUsd + maxJ * judgeUsd > maxUsd + 1e-9) exit 1 }' || usage
     ;;
   control_quick) [[ "$confirm" == control-benchmark-quick-disabled-worker && "$run_id" =~ ^bench-run-[a-f0-9]{20}$ ]] || usage ;;
   attest) [[ "$confirm" == attest-benchmark-run-disabled-worker && "$run_id" =~ ^bench-run-[a-f0-9]{20}$ ]] || usage ;;
@@ -50,14 +50,7 @@ admin_user_id="$(read_env_value "$gateway_env" ADMIN_USER_IDS | awk -F, '{gsub(/
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 "${compose[@]}" exec -T paperbanana-api node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)' "$expected_sha" >/dev/null
 "${compose[@]}" exec -T benchmark-worker node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' >/dev/null
-"${compose[@]}" exec -T \
-  -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" -e PAPERBANANA_OPERATOR_OPERATION="$operation" \
-  -e PAPERBANANA_OPERATOR_CANDIDATE_ID="$candidate_id" -e PAPERBANANA_OPERATOR_RUN_ID="$run_id" \
-  -e PAPERBANANA_OPERATOR_MAX_GENERATIONS="$max_generations" -e PAPERBANANA_OPERATOR_MAX_JUDGE_CALLS="$max_judge_calls" \
-  -e PAPERBANANA_OPERATOR_MAX_ESTIMATED_USD="$max_estimated_usd" -e PAPERBANANA_OPERATOR_GENERATION_USD="$generation_usd" \
-  -e PAPERBANANA_OPERATOR_JUDGE_USD="$judge_usd" -e PAPERBANANA_OPERATOR_PRICE_SOURCE="$price_source" \
-  -e PAPERBANANA_OPERATOR_PRICE_CAPTURED_AT="$price_captured_at" \
-  -e PAPERBANANA_OPERATOR_RESULT_OBJECT_KEY="$result_object_key" paperbanana-api node - <<'NODE'
+node_script="$(cat <<'NODE'
 const operation=process.env.PAPERBANANA_OPERATOR_OPERATION
 let body
 if(operation==='candidates') body={action:'adminBenchmarkCandidates'}
@@ -111,3 +104,13 @@ catch { console.error('BENCHMARK_ADMIN_RESULT_BUILD_FAILED'); process.exit(73) }
 if(payload.length<2||payload.length>1024*1024){console.error('BENCHMARK_ADMIN_RESULT_BUILD_FAILED');process.exit(73)}
 process.stdout.write(payload)
 NODE
+)"
+
+"${compose[@]}" exec -T \
+  -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" -e PAPERBANANA_OPERATOR_OPERATION="$operation" \
+  -e PAPERBANANA_OPERATOR_CANDIDATE_ID="$candidate_id" -e PAPERBANANA_OPERATOR_RUN_ID="$run_id" \
+  -e PAPERBANANA_OPERATOR_MAX_GENERATIONS="$max_generations" -e PAPERBANANA_OPERATOR_MAX_JUDGE_CALLS="$max_judge_calls" \
+  -e PAPERBANANA_OPERATOR_MAX_ESTIMATED_USD="$max_estimated_usd" -e PAPERBANANA_OPERATOR_GENERATION_USD="$generation_usd" \
+  -e PAPERBANANA_OPERATOR_JUDGE_USD="$judge_usd" -e PAPERBANANA_OPERATOR_PRICE_SOURCE="$price_source" \
+  -e PAPERBANANA_OPERATOR_PRICE_CAPTURED_AT="$price_captured_at" \
+  paperbanana-api node --input-type=module -e "$node_script"

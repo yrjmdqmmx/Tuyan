@@ -117,6 +117,31 @@ test('paid benchmark one-offs use a distinct dynamic-address operator service', 
   assert.doesNotMatch(operator, /ipv4_address|ports:|restart:\s*unless-stopped|healthcheck:/);
 });
 
+test('only Core and benchmark runtimes use the explicit configurable public DNS pair', () => {
+  const compose = read('compose.yaml');
+  const serviceBlock = (name) => {
+    const start = compose.indexOf(`\n  ${name}:\n`);
+    assert.ok(start >= 0, `${name} service is missing`);
+    const tail = compose.slice(start + 1);
+    const next = tail.slice(1).search(/\n  [a-z][a-z0-9-]*:\n/);
+    return next < 0 ? tail : tail.slice(0, next + 1);
+  };
+  const dnsContract = [
+    'dns:',
+    '- ${PAPERBANANA_BENCH_DNS_PRIMARY:-223.5.5.5}',
+    '- ${PAPERBANANA_BENCH_DNS_SECONDARY:-1.1.1.1}',
+  ];
+  for (const name of ['paperbanana-api', 'benchmark-worker', 'benchmark-operator']) {
+    const block = serviceBlock(name);
+    for (const line of dnsContract) assert.ok(block.includes(line), `${name} must include ${line}`);
+  }
+  for (const name of ['mongodb', 'mongo-init', 'plot-worker', 'auth-gateway']) {
+    assert.doesNotMatch(serviceBlock(name), /\n\s+dns:/, `${name} must keep Docker's existing DNS configuration`);
+  }
+  assert.equal(compose.match(/PAPERBANANA_BENCH_DNS_PRIMARY/g)?.length, 3);
+  assert.equal(compose.match(/PAPERBANANA_BENCH_DNS_SECONDARY/g)?.length, 3);
+});
+
 test('mongo-init performs the phase index migration before defining a drop-free worker role', () => {
   const initMongo = read('scripts/init-mongo.sh');
   const privilegeLines = initMongo.split('\n').filter((line) => line.includes('paperbanana_benchmark_worker_role') || line.includes('paperbanana_benchmark_'));

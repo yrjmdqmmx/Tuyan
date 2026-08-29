@@ -24,6 +24,60 @@
 
 ## 条目（最新在上）
 
+### [2026-08-29] Bench 完整公开方法题集与独立方法页 — by Codex
+变更：公开 `benchmarkMethodology` 在 `evaluationMode=codex_single` 且 `profileStatus=published` 的 Arena release 上，先做 `releaseHash` 校验，再新增顶层 `suite` / `scoring`；历史 Quick/Full、`provisional` / `verified` 与无 release 结果继续保持旧形状，不回填、不改名。`suite` 的权威来源是 `PB_IMAGE_LIGHT_V1` allowlist 的深拷贝：完整公开四题正/负向提示词、约束、七维 rubric、许可、case / suite hash；不公开盲标签、模型映射、审核记录、签名/密钥/operator 材料。`scoring` 公共化 0-10 评分，要求至少 3/4、最多 4，七维等权，competition 采用 `1,1,3`，并明确 confirmed axis cap。Web 总榜移除内嵌“读榜前需要知道”，新增 `/leaderboard/methodology` 以及静态 root / non-root / 尾斜杠入口；所有方法链接改为正式路由。方法页只请求 `benchmarkMethodology`，严格 normalize，复制状态防竞态，旧或畸形响应 fail closed，且不带内置 prompt 副本。公开 action 名称不变，新字段向后兼容，不触发任何生成 / Judge / 付费。
+各端待办：
+- [x] paperbanana-api（`benchmarkMethodology` 新增 `suite` / `scoring` 顶层字段，Arena release 仅在 `releaseHash` 校验后公开；历史形状保持不变）
+- [x] Web（`/leaderboard/methodology`、静态 root / non-root / 尾斜杠入口、正式方法路由、严格 normalize / fail closed、移除内嵌方法提示）
+- [x] packages-api / auth-gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 名称不变；新增字段向后兼容；无需改造）
+- [ ] 部署 / 运维（后续按不可变 SHA 部署 Core + Pages，并做只读 smoke；Worker 保持 disabled / 并发 1，不触发付费调用）
+
+### [2026-08-29] Bench Arena 式公开排行榜投影与 Web 路由 — by Codex
+变更：仅对 `evaluationMode=codex_single` 且 `profileStatus=published` 的新 Standard release，在源 `releaseHash` 校验后派生公开 presentation；历史 Quick/Full、`provisional` / `verified` 不迁移、不覆盖。公开资格只认 `ranked===true`、`sampleCount>=3`、七轴 `mean` 全 finite；公开 leaderboard/profile 隐藏失败、暂停、样本不足条目，但原不可变 release / 账本不物理删除。`overall` 为七维 raw mean 等权平均；`overall` / 七维都用 raw 降序 competition ranking `1,1,3`。新增公开字段 `overallScore`、`overallRank`、`dimensionRanks`、`sourceReleaseHash`、`presentationVersion`、`eligibleModelCount`、`rankingMethod`；方法学对新榜 `noOverallScore=false`。Web 正式路由改为 `/leaderboard` + 七个子路由并替换旧 `/bench`；GitHub Pages 生成静态入口和仅限 `leaderboard` / `bench` 的 404 fallback；顶栏改“排行榜”并移除 Windows / Mac，其他客户端 UI 不改。不展示置信区间；小榜仅 Top10、总矩阵显示 `rank + score`；不新增任何生成 / Judge 调用。
+各端待办：
+- [x] paperbanana-api（Standard release 公共 presentation 投影、公开字段/排序/方法学字段与后端兼容）
+- [x] Web（`/leaderboard` + 七子路由、`/bench` 替换、GitHub Pages 静态入口与 404 fallback、顶栏文案调整）
+- [x] auth-gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 名称不变，新增字段向后兼容，无需改造）
+- [ ] 部署 / 运维（后续按不可变 SHA 部署 Core + Pages，并做生产只读 smoke；Worker 保持 disabled / 并发 1，不触发付费调用）
+
+### [2026-08-28] Bench OSS 服务端公共端点模式与三容器显式 DNS — by Codex
+变更：香港生产宿主机已可解析并访问公共 OSS，但 Docker embedded DNS 仍沿用不可达的旧解析器，且 Bench Core 的 OSS 服务端读写固定使用 internal endpoint，导致发布证据复验失败。Core 新增严格枚举 `PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE=internal|public`，未设置时保持 `internal`；仅显式为 `public` 时，Bench OSS `serverClient` 才使用经过严格主机校验的公共 endpoint。签名客户端继续固定公共 endpoint，主业务 OSS 配置与行为不变，空串、大小写变体、前后空格和其他值均启动失败。香港 Compose 仅为 `paperbanana-api`、`benchmark-worker`、`benchmark-operator` 设置显式 DNS，`PAPERBANANA_BENCH_DNS_PRIMARY` / `PAPERBANANA_BENCH_DNS_SECONDARY` 默认分别为 `223.5.5.5` / `1.1.1.1`；其他服务保留原 Docker DNS。正式发布的不可变证据批次复验仍保持并发 8、单对象一次有界重试和失败关闭，但总 deadline 从 30 秒提高到 120 秒，以覆盖公共 OSS 大 PNG 的受限带宽。
+各端待办：
+- [x] paperbanana-api / Bench Core（严格配置、仅 Bench server I/O 切换、签名与主业务 OSS 隔离、TDD）
+- [x] 香港部署代码（仅三个 Bench 相关运行时的可配置 DNS 与 Compose 契约测试）
+- [x] 部署 / 运维（生产已部署不可变 Core/Worker `e46b2d75b0abdd18ae7f31626e92eb0399e4a778`；Core endpoint mode 显式为 `public`，三容器 DNS、`/ready`、私有 OSS 读回 SHA-256、Worker disabled/concurrency 1、完整 smoke 与 superseding release 均已验证）
+
+### [2026-08-28] Bench 全量生图模型 Standard / Codex single 公开榜 — by Codex
+变更：新增不可变 `pb-image-light-v1` 四题 Standard 阶段，三家生产 image registry route 先按运行时别名和跨渠道同模型归一为 canonical 实际模型，再由主接入渠道每题生成一次。当前 v9 fixture 锁定 55 route → 48 canonical 模型；单模型固定 4 generation / 0 automatic judgment / 0 Judge dispatch，全批次最多 48 模型 / 192 generation。全部成功图片进入 `codex-single-two-pass-v1` 两遍结构化盲审；至少完成并审核 3/4 才进入七维排名，不足者仍公开显示但不排名。实际宽高/像素/文件大小、主接入渠道、替代渠道和 generation-only 成本进入公共契约。新 release 状态为 `published`，比较身份为 `suiteId + evaluationMode + evaluationEpoch`；历史 Quick/Full、provisional/verified 和双 Judge release 保留只读且不混排。常驻 Worker 继续 disabled/并发 1；Standard batch operator 持有生产共享锁顺序执行，单模型未知 Provider 结果不重试但不阻止后续模型。
+契约（影响 Web / Core / Worker / 运维）：
+- 公共模型新增 `canonicalModelId / primaryAccessProvider / alternateAccessProviders / actualOutputPixels / ranked / unrankedReason`；release/methodology 新增 `evaluationMode=codex_single / evaluationEpoch / reviewProtocol / reviewerKind=codex / reviewerPasses=2 / automaticJudges=[]`。
+- 新状态为 `approved → standard_running → codex_review → published`；站长审批必须显式传 `evaluationMode=codex_single` 与精确 4/0/0 caps，发布使用 `profileStatus=published`。
+- 新模式发现、执行、审核包、导入和发布任一位置出现 automatic judgment 或 Judge dispatch 均失败关闭；公开费用三类 Judge 计数固定为 0。
+各端待办：
+- [x] benchmark-core / benchmark-worker / paperbanana-api（canonical manifest、Standard runner、签名审核与发布完整性门、旧 release 兼容、TDD）
+- [x] Web（单阶段文案、canonical 模型行、实际像素/渠道/成本、样本不足不排名、390/430 响应式基础）
+- [x] 部署 / 运维代码（单模型 Standard operator、批次 manifest 验证、48/192 总上限、共享锁、dry-run 零调用）
+- [x] Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（action 名称不变；非 Web 客户端无需改造）
+- [ ] 生产付费运行（必须先重新读取生产 registry、冻结并签名 canonical manifest、取得全部模型价格/权限并确定精确总美元上限；本条实现与测试没有调用 Provider）
+
+### [2026-08-28] Bench 确认未转发 Judge dispatch 的连续索引恢复 — by Codex
+变更：新增仅用于有独立网络证据证明请求未到达 Provider 的一次性 dispatch 恢复器。它要求 run 精确为 `paused/UNKNOWN_PROVIDER_OUTCOME`、无租约、24 个 quick 样本完整、目标 automatic judgment 不存在、旧 marker 仅有 index 0，且代理证据固定为目标 `openrouter.ai:443`、HTTP CONNECT 503、响应字节 0、日志 SHA-256。恢复永不删除或改写旧 marker，先把证据和 operator SHA-256 追加到 run 的内部 `dispatchReconciliations`，再从连续 index 1 开始占用既有 Judge-call/USD 预算；最多允许现有 manifest 已定义的 index 0–3。成功只补该 logical judgment、清除租约并保留 `quick_running` 给原 phase operator，任何新未知结果重新暂停。公开 action、release、客户端响应不变。
+各端待办：
+- [x] benchmark-worker / 运维代码（TDD、严格 proof/state 门、连续 marker、预算与租约、一次性 bundle）
+- [x] paperbanana-api / Web / Gateway / 原生客户端（内部 run 审计字段；公开与客户端契约不变）
+- [ ] 部署 / 运维（后续发布含正式 entrypoint 的不可变 Worker 镜像；当前生产仅按 bundle SHA `4f67497f…` 对已证明 503/0-byte 的 OpenRouter dispatch 执行一次，常驻 Worker 保持 disabled）
+- [x] 百炼未知结果（用户于 2026-08-28 明确接受可能重复计费并授权只重试该条；一次性 bundle SHA-256 `a063251a…` 在严格账本形状 24 generation / 33 logical judgment / 34 dispatch、无租约、Worker disabled 下，仅将目标 `bailian` marker 从 index 0 连续到 index 1，结果成功落库；随后原 quick operator 完成 24/24 双 Judge，Codex 盲审导入 14/14，并创建 provisional release `d45d7415…`）
+
+### [2026-08-27] Bench run 比例数组规范化与零调用恢复 — by Codex
+变更：新建 Bench run 时，顶层 `aspectRatios` 现在与已签名 `runFacts.aspectRatios` 使用同一字符串化排序顺序，避免候选注册表顺序不同导致一次性 phase operator 在首个预算预留/Provider 调用前失败。生产中唯一受影响且保持 0 generation / 0 judgment / 0 dispatch 的 run 只允许通过精确 CAS 将冗余顶层数组归一到已签名数组，不重签或改写审批、价格、runHash、candidateSnapshot。
+契约（影响后端 / Worker）：
+- Core 新 run 的顶层 `aspectRatios`、`runFacts.aspectRatios` 与 `candidateSnapshot.aspectRatios` 必须规范等价；Worker 继续失败关闭并验证顶层数组哈希，不放宽不可变事实校验。
+- 旧 run 仅当状态为 `failed`、错误发生在 phase operator、所有付费/样本/dispatch 计数为 0、无租约，且顶层数组排序后精确等于已签名数组时，才允许一次性归一化；修复后必须重新通过完整 attestation 才能运行。
+各端待办：
+- [x] paperbanana-api / Benchmark Worker（TDD、规范化写入与严格校验保留）
+- [ ] 部署 / 运维（后续发布新镜像；当前生产只对精确零调用 run 做一次性 CAS 修复，常驻 Worker 保持 disabled）
+- [x] Web / Gateway / 原生客户端（内部 run 字段修复，不改变公开 action 或客户端请求）
+
 ### [2026-08-26] Bench OpenRouter Judge 固定新加坡出口 — by Codex
 变更：Bench 的 OpenRouter 自动评审、只读 access diagnostic 与单请求探针新增独立、失败关闭的出口契约：`PAPERBANANA_BENCH_OPENROUTER_EGRESS_MODE=sg-required` 且 `PAPERBANANA_BENCH_SG_PROXY_URL=http://10.77.0.2:3128`。仅 `https://openrouter.ai` 可使用该代理；百炼/方舟与被测模型生成路径保持原有直连。`discovery-only` 明确为 `disabled`，`configured-disabled` 才配置固定代理；常驻 Worker 仍为 `PAPERBANANA_BENCH_ENABLED=false`、并发 1。该变更用于规避香港直连 OpenRouter runtime POST 的 opaque 403，不改变公共 action、公开响应或客户端契约。
 各端待办：

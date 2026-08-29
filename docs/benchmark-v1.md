@@ -2,7 +2,21 @@
 
 `/bench` 只观察文生图模型特点，不评 main/vision、精修或图生图，也不产生综合总分。
 
-## Versioned method
+## 当前公开榜：Standard / Codex single
+
+- Suite: `pb-image-light-v1`，固定 `complex_topology-05`、`bilingual_terms-01`、`math_symbols-01`、`negative_constraints-05` 四题。
+- Scope: 冻结三家渠道的完整生产 image registry；运行时别名与跨渠道同模型归一为 canonical 实际模型，当前 55 个 route 预期归一为 48 个模型。
+- Generation: 每个实际模型每题一次，最多 4 次；全批次最多 48 个模型、192 次生成，不自动重试。
+- Review: 自动 Judge 为 0；全部成功图片使用 `codex-single-two-pass-v1` 全量两遍结构化盲审。
+- Ranking: 至少成功并审核 3/4 张才进入七维排名；不足者保留公开目录并标记样本不足。实际像素、成功率、延迟和 generation-only 成本独立披露。
+- Identity: 新 release 以 `suiteId + evaluationMode + evaluationEpoch` 分区，状态为 `published`；历史双 Judge release 不迁移、不覆盖、不混排。
+- Runtime: 常驻 Worker 保持 disabled、并发 1。Standard batch operator 在同一生产锁内顺序处理已批准模型，每个模型的审批固定为 4 generation / 0 judgment / 0 Judge dispatch。未知 Provider 结果暂停该模型且不自动重试，其他模型可继续。
+
+正式付费运行前必须冻结 canonical manifest 和每个模型的公开价格快照，再生成不超过 192 次调用的总美元上限。实现、测试、构建或普通部署不会自动发起 Provider 调用。
+
+## 历史双 Judge 兼容方法
+
+以下 Quick/Full 规则仅用于读取、校验和修正历史 release，不是新公开榜的运行方式。
 
 - Suite: `pb-image-diagnostic-v1`，48 个原创 CC-BY-4.0 题目，八类各六题。
 - Quick: 固定分层 12 题 × 2 次；Full: 48 题 × 3 次。

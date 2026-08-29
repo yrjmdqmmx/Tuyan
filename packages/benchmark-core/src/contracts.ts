@@ -15,8 +15,8 @@ export type BenchmarkAxis = typeof BENCHMARK_AXES[number]
 export const BENCHMARK_LANE_ORDER = ['2K-standard', '1K-standard', '4K-standard'] as const
 export type BenchmarkLane = typeof BENCHMARK_LANE_ORDER[number]
 
-export type BenchmarkProfileStatus = 'provisional' | 'verified' | 'superseded'
-export type BenchmarkPhase = 'quick' | 'full'
+export type BenchmarkProfileStatus = 'provisional' | 'verified' | 'published' | 'superseded'
+export type BenchmarkPhase = 'quick' | 'full' | 'standard'
 
 export const BENCHMARK_COLLECTIONS = Object.freeze({
   suites: 'paperbanana_benchmark_suites',
@@ -37,6 +37,9 @@ export const BENCHMARK_RUN_STATES = [
   'full_running',
   'codex_audit',
   'verified_published',
+  'standard_running',
+  'codex_review',
+  'published',
   'paused',
   'failed',
   'cancelled',
@@ -47,20 +50,23 @@ export type BenchmarkRunState = typeof BENCHMARK_RUN_STATES[number]
 
 const terminalStates: BenchmarkRunState[] = ['cancelled', 'superseded']
 const interruptibleStates: BenchmarkRunState[] = [
-  'approved', 'quick_running', 'quick_review', 'provisional_published', 'full_running', 'codex_audit', 'paused', 'failed',
+  'approved', 'quick_running', 'quick_review', 'provisional_published', 'full_running', 'codex_audit', 'standard_running', 'codex_review', 'paused', 'failed',
 ]
 
 export const BENCHMARK_RUN_TRANSITIONS: Readonly<Record<BenchmarkRunState, readonly BenchmarkRunState[]>> = {
   detected: Object.freeze(['approved', 'cancelled', 'superseded']),
-  approved: Object.freeze(['quick_running', 'paused', 'cancelled', 'superseded']),
+  approved: Object.freeze(['quick_running', 'standard_running', 'paused', 'cancelled', 'superseded']),
   quick_running: Object.freeze(['quick_review', 'paused', 'failed', 'cancelled', 'superseded']),
   quick_review: Object.freeze(['provisional_published', 'paused', 'failed', 'cancelled', 'superseded']),
   provisional_published: Object.freeze(['full_running', 'paused', 'cancelled', 'superseded']),
   full_running: Object.freeze(['codex_audit', 'paused', 'failed', 'cancelled', 'superseded']),
   codex_audit: Object.freeze(['verified_published', 'paused', 'failed', 'cancelled', 'superseded']),
   verified_published: Object.freeze(['superseded']),
-  paused: Object.freeze(['approved', 'quick_running', 'quick_review', 'provisional_published', 'full_running', 'codex_audit', 'cancelled', 'superseded']),
-  failed: Object.freeze(['approved', 'quick_running', 'full_running', 'codex_audit', 'cancelled', 'superseded']),
+  standard_running: Object.freeze(['codex_review', 'paused', 'failed', 'cancelled', 'superseded']),
+  codex_review: Object.freeze(['published', 'paused', 'failed', 'cancelled', 'superseded']),
+  published: Object.freeze(['superseded']),
+  paused: Object.freeze(['approved', 'quick_running', 'quick_review', 'provisional_published', 'full_running', 'codex_audit', 'standard_running', 'codex_review', 'cancelled', 'superseded']),
+  failed: Object.freeze(['approved', 'quick_running', 'full_running', 'codex_audit', 'standard_running', 'codex_review', 'cancelled', 'superseded']),
   cancelled: Object.freeze([]),
   superseded: Object.freeze([]),
 }
@@ -88,7 +94,7 @@ export function selectBenchmarkLane(resolutions: readonly string[]): BenchmarkLa
 }
 
 export function benchmarkSampleId(runId: string, phase: BenchmarkPhase, caseId: string, repetition: number) {
-  if (!runId || !caseId || !['quick', 'full'].includes(phase) || !Number.isInteger(repetition) || repetition < 0) {
+  if (!runId || !caseId || !['quick', 'full', 'standard'].includes(phase) || !Number.isInteger(repetition) || repetition < 0) {
     throw new Error('INVALID_BENCHMARK_SAMPLE_IDENTITY')
   }
   return `sample:${canonicalHash([runId, phase, caseId, repetition])}`

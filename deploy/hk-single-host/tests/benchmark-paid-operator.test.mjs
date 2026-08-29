@@ -154,8 +154,13 @@ test('benchmark admin operator exposes only fixed commands and emits one bounded
   assert.match(source, /phaseOperatorAttestation/);
   assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/);
   assert.match(source, /process\.stdout\.write\(payload\)/);
+  assert.match(source, /paperbanana-api node --input-type=module -e "\$node_script"/);
+  assert.doesNotMatch(source, /paperbanana-api node - <<'NODE'/);
+  assert.match(source, /awk -v maxG="\$max_generations"/);
+  assert.doesNotMatch(source, /node - "\$max_generations"/);
   assert.match(source, /BENCHMARK_ADMIN_(?:CORE|RESULT)_[A-Z_]+/);
   assert.doesNotMatch(source, /console\.error\([^\n]*(?:result|response)/);
+  assert.doesNotMatch(source, /PAPERBANANA_OPERATOR_RESULT_OBJECT_KEY|result_object_key/);
   assert.doesNotMatch(source, /adminBenchmarkPublish|adminBenchmarkReviewImport|adminBenchmarkReviewExport|set -x|printenv|ali-oss|result-object-key/);
 });
 

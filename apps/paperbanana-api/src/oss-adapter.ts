@@ -7,6 +7,7 @@ type OssConfig = {
   bucket: string
   internalEndpoint: string
   publicEndpoint: string
+  serverEndpointMode?: 'internal' | 'public'
   secure: true
   pathStyle: false
 }
@@ -49,7 +50,10 @@ export function createOssClients(config: OssConfig) {
     sldEnable: false,
   }
   return {
-    serverClient: new OSS({ ...common, endpoint: config.internalEndpoint }),
+    serverClient: new OSS({
+      ...common,
+      endpoint: config.serverEndpointMode === 'public' ? config.publicEndpoint : config.internalEndpoint,
+    }),
     publicSigner: new OSS({ ...common, endpoint: config.publicEndpoint }),
   }
 }

@@ -11,11 +11,11 @@ test('admin panel keeps candidate approval, run control, audit exchange and publ
   for (const text of ['候选与预算审批', '运行控制', 'Codex 审核包', '发布控制']) {
     assert.ok(screen.getByText(text))
   }
-  assert.ok(screen.getByText('临时集'))
-  assert.ok(screen.getByText('正式集'))
+  assert.ok(screen.getByText('运行 Standard'))
   assert.ok(screen.getByText(/纳入公开精选/))
   assert.ok(screen.getByText('公开价格来源 HTTPS'))
-  assert.ok(screen.getByText('最多逻辑 Judgment'))
-  assert.ok(screen.getByText('最多 Judge dispatch'))
+  assert.match(container.textContent, /最多逻辑 Judgment：0/)
+  assert.match(container.textContent, /最多 Judge dispatch：0/)
+  assert.ok(screen.getByText('发布公开画像'))
   assert.match(container.textContent, /未配置 Bench 凭据的 Provider 显示为未评测/)
 })

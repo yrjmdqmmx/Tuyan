@@ -136,6 +136,9 @@ services:
     image: ${PAPERBANANA_CORE_IMAGE:?set PAPERBANANA_CORE_IMAGE}
     env_file:
       - /opt/paperbanana/secrets/core.env
+    dns:
+      - ${PAPERBANANA_BENCH_DNS_PRIMARY:-223.5.5.5}
+      - ${PAPERBANANA_BENCH_DNS_SECONDARY:-1.1.1.1}
     environment:
       HOST: 0.0.0.0
       PORT: "3000"
@@ -181,6 +184,9 @@ services:
     image: ${PAPERBANANA_BENCH_WORKER_IMAGE:-paperbanana-benchmark-worker:unconfigured}
     env_file:
       - /opt/paperbanana/secrets/bench.env
+    dns:
+      - ${PAPERBANANA_BENCH_DNS_PRIMARY:-223.5.5.5}
+      - ${PAPERBANANA_BENCH_DNS_SECONDARY:-1.1.1.1}
     environment:
       PAPERBANANA_BENCH_CONCURRENCY: "1"
       PAPERBANANA_BENCH_DETECTION_INTERVAL_MS: "21600000"
@@ -224,6 +230,9 @@ services:
     image: ${PAPERBANANA_BENCH_WORKER_IMAGE:-paperbanana-benchmark-worker:unconfigured}
     env_file:
       - /opt/paperbanana/secrets/bench.env
+    dns:
+      - ${PAPERBANANA_BENCH_DNS_PRIMARY:-223.5.5.5}
+      - ${PAPERBANANA_BENCH_DNS_SECONDARY:-1.1.1.1}
     environment:
       PAPERBANANA_BENCH_CONCURRENCY: "1"
       PAPERBANANA_BENCH_DETECTION_INTERVAL_MS: "21600000"

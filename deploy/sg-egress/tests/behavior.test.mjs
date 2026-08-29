@@ -1353,6 +1353,18 @@ test('install adds a marked Squid IPv4-only systemd drop-in before enabling Squi
   }
 });
 
+test('install pins dedicated public DNS resolvers for Squid provider lookups', () => {
+  const fixture = makeFixture();
+  try {
+    const result = run(fixture, 'install-egress.sh', ['--apply']);
+    assert.equal(result.status, 0, result.stderr);
+    const config = readFileSync(join(fixture.root, 'etc', 'squid', 'squid.conf'), 'utf8');
+    assert.match(config, /^dns_nameservers 1\.1\.1\.1 223\.5\.5\.5$/m);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
 test('install restores a prior marked Squid systemd drop-in after candidate activation failure', () => {
   const fixture = makeFixture({ squidActive: true, squidLoaded: true, squidProcess: true, projectProxyListener: true, failSquidRestart: true });
   try {

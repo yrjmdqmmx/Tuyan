@@ -1,10 +1,11 @@
 import { createHash } from 'node:crypto'
 
 import type OSS from 'ali-oss'
-import { PB_IMAGE_DIAGNOSTIC_V1, benchmarkImmutableRunBinding, benchmarkJudgeStackHash, canonicalHash, planBenchmarkCases } from '@paperbanana/benchmark-core'
+import { PB_IMAGE_DIAGNOSTIC_V1, PB_IMAGE_LIGHT_V1, benchmarkImmutableRunBinding, benchmarkJudgeStackHash, canonicalHash, planBenchmarkCases } from '@paperbanana/benchmark-core'
 
 import type { BenchmarkPhaseAuthorization } from './phase-operator-authorization.js'
 import { executeBenchmarkRun } from './runner.js'
+import { executeStandardBenchmarkRun } from './standard-runner.js'
 import { callBlindJudge } from './judge-provider.js'
 import { runProviderOperation } from './provider-operation.js'
 
@@ -71,10 +72,51 @@ export async function processAcquiredBenchmarkRun(input: {
   const { run, workerId, workerCodeSha, configuredCodeSha, authorization, credentials, imageRuntime, oss, repository, openRouterJudgeFetch } = input
   if (authorization) assertRunMatchesPhaseAuthorization(run, authorization, workerCodeSha)
   if (workerCodeSha !== configuredCodeSha || workerCodeSha !== run.codeSha) throw new Error('BENCHMARK_WORKER_CODE_SHA_MISMATCH')
-  if (benchmarkJudgeStackHash(workerCodeSha) !== run.judgeStackHash) throw new Error('BENCHMARK_JUDGE_STACK_MISMATCH')
+  const standard = run.state === 'standard_running'
+  const expectedJudgeStackHash = standard
+    ? canonicalHash({ evaluationMode: 'codex_single', automaticJudges: [] })
+    : benchmarkJudgeStackHash(workerCodeSha)
+  if (expectedJudgeStackHash !== run.judgeStackHash) throw new Error('BENCHMARK_JUDGE_STACK_MISMATCH')
   const provider = String(run.provider) as 'bailian' | 'openrouter' | 'ark'
   const apiKey = credentials[provider]
-  if (!apiKey || !credentials.openrouter || !credentials.bailian) throw new Error('BENCHMARK_DEDICATED_CREDENTIALS_MISSING')
+  if (!apiKey || (!standard && (!credentials.openrouter || !credentials.bailian))) throw new Error('BENCHMARK_DEDICATED_CREDENTIALS_MISSING')
+  const persistGeneratedImage = async (sample: Record<string, any>, imageSize: string) => {
+    await repository.reserveBudget(run._id, workerId, run.leaseToken, run.state, 'generation', Number(run.approval?.priceSnapshot?.estimatedPerGeneration || 0))
+    await repository.beginSampleDispatch(run, workerId, sample)
+    const startedAt = Date.now()
+    const imageBase64 = await imageRuntime.generate({ provider, model: run.modelId, apiKey, prompt: sample.prompt, aspectRatio: sample.aspectRatio, imageSize })
+    const bytes = Buffer.from(imageBase64, 'base64')
+    const imageHash = createHash('sha256').update(bytes).digest('hex')
+    const imageObjectKey = `bench/objects/${imageHash}.png`
+    try {
+      await oss.put(imageObjectKey, bytes, { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'private, no-store', 'x-oss-forbid-overwrite': 'true' } } as any)
+    } catch (error: any) {
+      if (![409, 'FileAlreadyExists'].includes(error?.status || error?.code)) throw error
+      const existing = await oss.get(imageObjectKey)
+      if (createHash('sha256').update(Buffer.from(existing.content)).digest('hex') !== imageHash) throw new Error('BENCHMARK_CONTENT_ADDRESS_COLLISION')
+    }
+    if (bytes.length < 24 || bytes.toString('ascii', 1, 4) !== 'PNG') throw new Error('BENCHMARK_IMAGE_FORMAT_INVALID')
+    const width = bytes.readUInt32BE(16)
+    const height = bytes.readUInt32BE(20)
+    return { imageHash, imageObjectKey, latencyMs: Date.now() - startedAt, actualOutputPixels: { width, height, megapixels: Number(((width * height) / 1_000_000).toFixed(4)), fileSizeBytes: bytes.length } }
+  }
+  if (standard) {
+    const result = await executeStandardBenchmarkRun({
+      run: {
+        runId: run._id, phase: 'standard', provider, modelId: run.modelId,
+        canonicalModelId: run.canonicalModelId, primaryAccessProvider: run.primaryAccessProvider,
+        alternateAccessProviders: run.alternateAccessProviders || [], lane: run.lane === 'provider-default' ? null : run.lane,
+        repetitions: 1, runHash: run.runHash, operatorAuthorizationHash: authorization?.authorizationHash,
+      },
+      cases: [...PB_IMAGE_LIGHT_V1.cases],
+      async generate(sample) {
+        const imageSize = sample.resolutionRequest === 'provider-default' ? 'provider-default' : `${sample.resolutionRequest}-standard`
+        return persistGeneratedImage(sample, imageSize)
+      },
+      repository: repository.forRun(run, workerId),
+    })
+    return { ...result, phase: 'standard' as const, authorizationHash: authorization?.authorizationHash || null }
+  }
   const phase = run.state === 'full_running' ? 'full' : 'quick'
   const phaseCases = phase === 'full'
     ? [...PB_IMAGE_DIAGNOSTIC_V1.cases]
@@ -88,21 +130,8 @@ export async function processAcquiredBenchmarkRun(input: {
     },
     cases: capabilityPlan.executableCases as any,
     async generate(sample) {
-      await repository.reserveBudget(run._id, workerId, run.leaseToken, run.state, 'generation', Number(run.approval?.priceSnapshot?.estimatedPerGeneration || 0))
-      await repository.beginSampleDispatch(run, workerId, sample)
-      const startedAt = Date.now()
-      const imageBase64 = await imageRuntime.generate({ provider, model: run.modelId, apiKey, prompt: sample.prompt, aspectRatio: sample.aspectRatio, imageSize: sample.lane })
-      const bytes = Buffer.from(imageBase64, 'base64')
-      const imageHash = createHash('sha256').update(bytes).digest('hex')
-      const imageObjectKey = `bench/objects/${imageHash}.png`
-      try {
-        await oss.put(imageObjectKey, bytes, { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'private, no-store', 'x-oss-forbid-overwrite': 'true' } } as any)
-      } catch (error: any) {
-        if (![409, 'FileAlreadyExists'].includes(error?.status || error?.code)) throw error
-        const existing = await oss.get(imageObjectKey)
-        if (createHash('sha256').update(Buffer.from(existing.content)).digest('hex') !== imageHash) throw new Error('BENCHMARK_CONTENT_ADDRESS_COLLISION')
-      }
-      return { imageHash, imageObjectKey, latencyMs: Date.now() - startedAt }
+      const generated = await persistGeneratedImage(sample, sample.lane)
+      return { imageHash: generated.imageHash, imageObjectKey: generated.imageObjectKey, latencyMs: generated.latencyMs }
     },
     async judge(judgeProvider, sample) {
       const object = await oss.get(sample.imageObjectKey!)

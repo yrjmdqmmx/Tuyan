@@ -9,7 +9,17 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
+        'not-found': resolve(import.meta.dirname, '404.html'),
         bench: resolve(import.meta.dirname, 'bench/index.html'),
+        leaderboard: resolve(import.meta.dirname, 'leaderboard/index.html'),
+        'leaderboard-methodology': resolve(import.meta.dirname, 'leaderboard/methodology/index.html'),
+        'leaderboard-faithfulness': resolve(import.meta.dirname, 'leaderboard/faithfulness/index.html'),
+        'leaderboard-conciseness': resolve(import.meta.dirname, 'leaderboard/conciseness/index.html'),
+        'leaderboard-readability': resolve(import.meta.dirname, 'leaderboard/readability/index.html'),
+        'leaderboard-aesthetics': resolve(import.meta.dirname, 'leaderboard/aesthetics/index.html'),
+        'leaderboard-text-accuracy': resolve(import.meta.dirname, 'leaderboard/text-accuracy/index.html'),
+        'leaderboard-topology': resolve(import.meta.dirname, 'leaderboard/topology/index.html'),
+        'leaderboard-instruction-adherence': resolve(import.meta.dirname, 'leaderboard/instruction-adherence/index.html'),
       },
     },
   },

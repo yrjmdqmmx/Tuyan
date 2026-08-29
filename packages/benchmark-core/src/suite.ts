@@ -210,3 +210,32 @@ export const PB_IMAGE_DIAGNOSTIC_V1 = deepFreeze({
   ...suiteBase,
   manifestHash: canonicalHash(suiteBase),
 })
+
+const lightCaseIds = [
+  'complex_topology-05',
+  'bilingual_terms-01',
+  'math_symbols-01',
+  'negative_constraints-05',
+] as const
+const lightCases = lightCaseIds.map((id) => {
+  const diagnosticCase = cases.find((candidate) => candidate.id === id)
+  if (!diagnosticCase) throw new Error(`MISSING_LIGHT_BENCHMARK_CASE:${id}`)
+  return diagnosticCase
+})
+const lightSuiteBase = {
+  id: 'pb-image-light-v1',
+  title: 'PaperBanana Lightweight Image Diagnostic v1',
+  version: 1,
+  language: 'zh-CN',
+  license,
+  evaluationMode: 'codex_single' as const,
+  repetitionsPerCase: 1,
+  caseCount: lightCases.length,
+  categories: lightCases.map((item) => item.category),
+  cases: lightCases,
+}
+
+export const PB_IMAGE_LIGHT_V1 = deepFreeze({
+  ...lightSuiteBase,
+  manifestHash: canonicalHash(lightSuiteBase),
+})
