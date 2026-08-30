@@ -172,6 +172,7 @@ test('methodology page requests only methodology and renders the complete public
         assert.match(card.textContent, new RegExp(escapePattern(text), 'u'))
       }
       assert.equal(within(card).getAllByRole('button').length, 2)
+      assert.equal(within(card).getByRole('link', { name: '查看全部模型结果' }).getAttribute('href'), `/leaderboard/cases/${item.id}`)
       for (const heading of ['必需实体', '必需关系', '必需文字', '禁止项']) assert.ok(within(card).getByRole('heading', { name: heading }))
       if (index === 2) assert.match(within(card).getByLabelText('必需实体').textContent, /无/u)
       if (index === 3) assert.match(within(card).getByLabelText('必需文字').textContent, /无/u)
@@ -188,6 +189,7 @@ test('methodology page requests only methodology and renders the complete public
     assert.match(rankingContract.textContent, /faithfulness → conciseness → readability → aesthetics → text_accuracy → topology → instruction_adherence/u)
     axisEntries.forEach(([axis]) => assert.match(rankingContract.textContent, new RegExp(`${axis} = ${1 / 7}`, 'u')))
     assert.match(rankingContract.textContent, /tieMethod = competition/u)
+    assert.equal(screen.getByRole('link', { name: '提交评估题' }).getAttribute('href'), '/leaderboard/submit-prompt')
   } finally {
     fetchMock.restore()
   }

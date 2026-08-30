@@ -7,6 +7,7 @@ import { normalizeMethodologyResponse } from './benchmarkMethodology.js'
 
 const WORKSPACE_HREF = appPath('/')
 const LEADERBOARD_HREF = appPath('/leaderboard')
+const SUBMIT_HREF = appPath('/leaderboard/submit-prompt')
 const LOGO_HREF = appPath('/logo.svg')
 
 const RUBRIC_AXES = Object.freeze([
@@ -38,6 +39,7 @@ function MethodologyNav() {
       <a href={WORKSPACE_HREF}>工作台</a>
       <a href={LEADERBOARD_HREF}>排行榜</a>
       <span aria-current="page">方法说明</span>
+      <a href={SUBMIT_HREF}>提交评估题</a>
       <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
     </nav>
   )
@@ -191,6 +193,9 @@ function MethodologyCase({ benchmarkCase, index }) {
         {CONSTRAINT_GROUPS.map((group) => <ConstraintGroup label={group.label} values={benchmarkCase[group.key]} key={group.key} />)}
       </div>
       <RubricTable benchmarkCase={benchmarkCase} />
+      <footer className="bench-method-case-footer">
+        <a href={appPath(`/leaderboard/cases/${encodeURIComponent(benchmarkCase.id)}`)}>查看全部模型结果 <span aria-hidden="true">→</span></a>
+      </footer>
     </article>
   )
 }

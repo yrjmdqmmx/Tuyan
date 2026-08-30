@@ -11,6 +11,7 @@ export const LEADERBOARD_AXES = Object.freeze([
 ])
 
 const DIMENSION_BY_SLUG = new Map(LEADERBOARD_AXES.map((axis) => [axis.slug, axis]))
+const CASE_IDS = new Set(['complex_topology-05', 'bilingual_terms-01', 'math_symbols-01', 'negative_constraints-05'])
 
 export function resolveLeaderboardRoute(pathname = '') {
   if (pathname === '/leaderboard' || pathname === '/leaderboard/') {
@@ -23,6 +24,26 @@ export function resolveLeaderboardRoute(pathname = '') {
   const slug = rawSlug.endsWith('/') ? rawSlug.slice(0, -1) : rawSlug
   if (slug === 'methodology') {
     return { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false }
+  }
+  if (slug === 'submit-prompt') {
+    return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false, promptSubmission: true }
+  }
+  if (slug === 'admin/prompt-submissions') {
+    return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false, promptAdmin: true }
+  }
+  if (slug.startsWith('models/')) {
+    try {
+      const modelProfileId = decodeURIComponent(slug.slice('models/'.length))
+      if (modelProfileId && modelProfileId.length <= 300 && !/[/?#]/.test(modelProfileId)) {
+        return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false, modelProfileId }
+      }
+    } catch {}
+    return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: true }
+  }
+  if (slug.startsWith('cases/')) {
+    const caseId = slug.slice('cases/'.length)
+    if (CASE_IDS.has(caseId)) return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false, caseId }
+    return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: true }
   }
   const dimension = DIMENSION_BY_SLUG.get(slug) || null
   return { isLeaderboard: true, methodology: false, dimension, invalidSlug: !dimension }

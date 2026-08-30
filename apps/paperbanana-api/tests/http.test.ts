@@ -212,6 +212,31 @@ test('shared gateway token alone cannot authorize benchmark admin actions', asyn
   } finally { await new Promise<void>((resolve) => server.close(() => resolve())) }
 })
 
+test('benchmark prompt submission errors preserve login, rate-limit, and validation response codes', async () => {
+  const messages = [
+    ['BENCHMARK_PROMPT_LOGIN_REQUIRED', 401],
+    ['BENCHMARK_PROMPT_RATE_LIMIT_ACCOUNT', 429],
+    ['BENCHMARK_PROMPT_INVALID', 400],
+  ] as const
+  for (const [message, expectedCode] of messages) {
+    const benchmarkService = { async handle() { throw new Error(message) } }
+    const server = createServer({
+      handler: async () => ({ code: 0 }), readinessProbe: async () => ({ ready: true }), healthSnapshot: () => ({ ready: true }),
+      config, logger: { info() {}, warn() {}, error() {} }, benchmarkService,
+    })
+    await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+    const { port } = server.address() as AddressInfo
+    try {
+      const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-paperbanana-gateway-token': config.gatewayToken },
+        body: JSON.stringify({ action: 'benchmarkPromptSubmission' }),
+      })
+      assert.equal(response.status, 200)
+      assert.equal((await response.json()).code, expectedCode)
+    } finally { await new Promise<void>((resolve) => server.close(() => resolve())) }
+  }
+})
+
 test('benchmark discovery token can read only modelRegistry', async () => {
   const received: string[] = []
   await withServer(async (ctx) => { received.push(ctx.body.action); return { code: 0 } }, async (baseUrl) => {

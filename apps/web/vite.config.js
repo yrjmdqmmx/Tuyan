@@ -20,6 +20,8 @@ export default defineConfig({
         'leaderboard-text-accuracy': resolve(import.meta.dirname, 'leaderboard/text-accuracy/index.html'),
         'leaderboard-topology': resolve(import.meta.dirname, 'leaderboard/topology/index.html'),
         'leaderboard-instruction-adherence': resolve(import.meta.dirname, 'leaderboard/instruction-adherence/index.html'),
+        'leaderboard-submit-prompt': resolve(import.meta.dirname, 'leaderboard/submit-prompt/index.html'),
+        'leaderboard-prompt-admin': resolve(import.meta.dirname, 'leaderboard/admin/prompt-submissions/index.html'),
       },
     },
   },

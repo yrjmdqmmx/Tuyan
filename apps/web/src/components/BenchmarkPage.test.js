@@ -4,7 +4,7 @@ import test, { afterEach } from 'node:test'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import React from 'react'
 
-import BenchmarkPage, { BenchmarkObservatory } from './BenchmarkPage.jsx'
+import BenchmarkPage, { BenchmarkEvidenceImage, BenchmarkObservatory, BenchmarkPromptSubmissionForm } from './BenchmarkPage.jsx'
 import { canonicalizeLeaderboardLocation } from '../leaderboardRoutes.js'
 
 afterEach(cleanup)
@@ -34,6 +34,7 @@ function makeModel(index) {
     instruction_adherence: 9.2 - index * 0.13,
   }
   return {
+    profileId: `profile-${rank}`,
     modelId: `model-${rank}`,
     displayName: index === 0 ? 'Banana Prime' : index === 1 ? 'Banana Pro' : `模型 ${rank}`,
     overallScore: 9.91 - index * 0.37,
@@ -85,6 +86,63 @@ test('overview matrix shows Overall and seven dimensions with rank and two-decim
   assert.equal(container.querySelectorAll('.rank-top-3').length > 0, true)
   assert.doesNotMatch(container.textContent, /95%|置信区间|区间|不产生综合总分|失败模型仍公开/u)
   assert.doesNotMatch(container.textContent, /1\.11|9\.99/u)
+  assert.equal(firstRow.querySelector('a').getAttribute('href'), '/leaderboard/models/profile-1')
+})
+
+test('evidence images lazy-load responsive WebP and request the full rendition only after expansion', () => {
+  const variants = [
+    { kind: 'thumbnail', url: 'https://img.example/thumb.webp', width: 640, height: 320, mimeType: 'image/webp' },
+    { kind: 'detail', url: 'https://img.example/detail.webp', width: 1600, height: 800, mimeType: 'image/webp' },
+    { kind: 'full', url: 'https://img.example/full.webp', width: 2400, height: 1200, mimeType: 'image/webp' },
+  ]
+  const { container } = render(React.createElement(BenchmarkEvidenceImage, { variants, alt: '模型样本' }))
+  const image = screen.getByRole('img', { name: '模型样本' })
+  assert.equal(image.getAttribute('loading'), 'lazy')
+  assert.equal(image.getAttribute('decoding'), 'async')
+  assert.match(image.getAttribute('srcset'), /thumb\.webp 640w.*detail\.webp 1600w/u)
+  assert.doesNotMatch(image.getAttribute('srcset'), /full\.webp/u)
+  assert.equal(container.querySelectorAll('img[src="https://img.example/full.webp"]').length, 0)
+  fireEvent.click(screen.getByRole('button', { name: '查看模型样本高清图' }))
+  assert.equal(container.querySelectorAll('img[src="https://img.example/full.webp"]').length, 1)
+})
+
+test('prompt submission form sends the five text-only community fields', async () => {
+  let submitted
+  render(React.createElement(BenchmarkPromptSubmissionForm, {
+    authenticated: true,
+    onSubmit: async (payload) => { submitted = payload; return { submissionId: 'prompt-1', status: 'pending' } },
+  }))
+  fireEvent.change(screen.getByLabelText('评估提示词'), { target: { value: '绘制一个中英双语拓扑图' } })
+  fireEvent.change(screen.getByLabelText('想测试的模型能力'), { target: { value: '双语文字与拓扑关系' } })
+  fireEvent.change(screen.getByLabelText('必须出现的内容或关系'), { target: { value: '中文和英文标签' } })
+  fireEvent.change(screen.getByLabelText('不允许出现的结果'), { target: { value: '乱码' } })
+  fireEvent.change(screen.getByLabelText('补充说明'), { target: { value: '社区建议' } })
+  fireEvent.click(screen.getByRole('button', { name: '提交候选提示词' }))
+  await screen.findByText('投稿已进入候选池')
+  assert.deepEqual(submitted, {
+    prompt: '绘制一个中英双语拓扑图', capability: '双语文字与拓扑关系', requiredElements: '中文和英文标签', forbiddenResults: '乱码', notes: '社区建议',
+  })
+})
+
+test('model evidence route requests only the selected public profile and renders scores plus review notes', async () => {
+  const previousFetch = globalThis.fetch
+  const bodies = []
+  globalThis.fetch = async (_input, options = {}) => {
+    bodies.push(JSON.parse(options.body))
+    return { ok: true, status: 200, async text() { return JSON.stringify({ code: 0, profile: {
+      ...release.models[0],
+      cases: [{ id: 'complex_topology-05', title: '拓扑关系题', renderPrompt: '完整提示词', negativePrompt: '禁止乱码', requiredEntities: [], requiredRelations: ['A→B'], requiredText: [], forbidden: ['乱码'] }],
+      evidence: [{ sampleId: 'sample-1', caseId: 'complex_topology-05', imageHash: 'a'.repeat(64), actualOutputPixels: { width: 1200, height: 600, megapixels: 0.72, fileSizeBytes: 1000 }, scores: Object.fromEntries(axes.map((axis) => [axis, 8])), reviewNotes: ['拓扑完整，次要标签略拥挤。'], variants: [{ kind: 'thumbnail', url: 'https://img.example/thumb.webp', width: 640, height: 320, mimeType: 'image/webp' }] }],
+      release: { releaseHash: 'release-hash' },
+    } }) } }
+  }
+  try {
+    render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard/models/profile-1' }))
+    await screen.findByRole('heading', { name: 'Banana Prime' })
+    assert.deepEqual(bodies, [{ action: 'benchmarkModelProfile', profileId: 'profile-1' }])
+    assert.ok(screen.getByText('拓扑完整，次要标签略拥挤。'))
+    assert.equal(screen.getAllByText('8.00').length, 7)
+  } finally { globalThis.fetch = previousFetch }
 })
 
 test('missing and null ranking fields render as em dashes instead of zero scores', () => {

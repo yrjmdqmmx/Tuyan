@@ -19,6 +19,9 @@ const ADMIN_BACKEND_ACTIONS = new Set([
   'adminBenchmarkReviewExport',
   'adminBenchmarkReviewImport',
   'adminBenchmarkPublish',
+  'adminBenchmarkPromptQueue',
+  'adminBenchmarkPromptDigest',
+  'adminBenchmarkPromptDecision',
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['importReferences', 'evaluateJob', 'initDatabase']);
 const MAINTENANCE_ACTIONS = new Set([
@@ -29,6 +32,7 @@ const MAINTENANCE_ACTIONS = new Set([
   'abortReferenceUpload',
   'providerAccountCatalog',
   'submitFeedback',
+  'benchmarkPromptSubmission',
   ...ADMIN_MUTATING_ACTIONS,
 ]);
 
@@ -240,8 +244,25 @@ export function createApp({
         || action === 'benchmarkLeaderboard'
         || action === 'benchmarkModelProfile'
         || action === 'benchmarkMethodology'
+        || action === 'benchmarkCaseEvidence'
       ) {
         return relay(response, await backend.call(request.body, context));
+      }
+
+      if (action === 'benchmarkPromptSubmission') {
+        const session = await requireSession(auth, request);
+        return relay(
+          response,
+          await backend.call(
+            {
+              ...request.body,
+              userId: String(session.user.id || ''),
+              userEmail: String(session.user.email || ''),
+              clientIp: context.clientIp,
+            },
+            context,
+          ),
+        );
       }
 
       if (action === 'submitFeedback') {

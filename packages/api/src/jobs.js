@@ -280,8 +280,21 @@ export function benchmarkModelProfileRequest(apiBase, health, identity) {
   return benchmarkRequest(apiBase, health, { action: 'benchmarkModelProfile', ...fields });
 }
 
+export function benchmarkCaseEvidenceRequest(apiBase, health, caseId, options = {}) {
+  return benchmarkRequest(apiBase, health, {
+    action: 'benchmarkCaseEvidence',
+    caseId,
+    ...(options.cursor ? { cursor: options.cursor } : {}),
+    ...(options.limit ? { limit: options.limit } : {}),
+  });
+}
+
 export function benchmarkMethodologyRequest(apiBase, health) {
   return benchmarkRequest(apiBase, health, { action: 'benchmarkMethodology' });
+}
+
+export function benchmarkPromptSubmissionRequest(apiBase, health, payload = {}) {
+  return benchmarkRequest(apiBase, health, { action: 'benchmarkPromptSubmission', ...payload });
 }
 
 const BENCHMARK_ADMIN_ACTIONS = new Set([
@@ -291,6 +304,9 @@ const BENCHMARK_ADMIN_ACTIONS = new Set([
   'adminBenchmarkReviewExport',
   'adminBenchmarkReviewImport',
   'adminBenchmarkPublish',
+  'adminBenchmarkPromptQueue',
+  'adminBenchmarkPromptDigest',
+  'adminBenchmarkPromptDecision',
 ]);
 
 export function adminBenchmarkRequest(apiBase, health, action, payload = {}) {

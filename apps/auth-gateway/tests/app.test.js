@@ -298,12 +298,30 @@ test('modelRegistry is a public read-only backend action', async () => {
 test('benchmark public actions are anonymous read-only backend actions', async () => {
   const backend = fakeBackend(async (body) => ({ status: 200, data: { code: 0, action: body.action } }));
   await withApp({ backend }, async ({ baseUrl }) => {
-    for (const action of ['benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology']) {
+    for (const action of ['benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology', 'benchmarkCaseEvidence']) {
       const response = await post(baseUrl, { action, modelId: 'model-a' });
       assert.equal(response.status, 200);
       assert.deepEqual(await response.json(), { code: 0, action });
     }
-    assert.equal(backend.calls.length, 3);
+    assert.equal(backend.calls.length, 4);
+  });
+});
+
+test('benchmark prompt submissions require an account and replace forged identity', async () => {
+  const backend = fakeBackend(async (body) => ({ status: 200, data: { code: 0, submissionId: body.userId } }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const denied = await post(baseUrl, { action: 'benchmarkPromptSubmission', prompt: 'candidate' });
+    assert.equal(denied.status, 401);
+    assert.equal(backend.calls.length, 0);
+
+    const allowed = await post(
+      baseUrl,
+      { action: 'benchmarkPromptSubmission', prompt: 'candidate', userId: 'forged', userEmail: 'forged@example.com' },
+      { 'x-test-session': 'account-1|Owner@Example.com' },
+    );
+    assert.equal(allowed.status, 200);
+    assert.equal(backend.calls[0].body.userId, 'account-1');
+    assert.equal(backend.calls[0].body.userEmail, 'Owner@Example.com');
   });
 });
 
@@ -319,6 +337,22 @@ test('benchmark admin actions require immutable admin identity before forwarding
     assert.equal(backend.calls[0].body.action, 'adminBenchmarkCandidates');
     assert.equal(backend.calls[0].options.adminAction, true);
     assert.equal(backend.calls[0].options.adminUserId, 'admin-id');
+  });
+});
+
+test('benchmark prompt moderation actions use the existing immutable admin transport', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    for (const action of ['adminBenchmarkPromptQueue', 'adminBenchmarkPromptDigest', 'adminBenchmarkPromptDecision']) {
+      const denied = await post(baseUrl, { action });
+      assert.equal(denied.status, 401);
+      const allowed = await post(baseUrl, { action }, { 'x-test-session': 'admin-id|admin@example.com' });
+      assert.equal(allowed.status, 200);
+      const call = backend.calls.at(-1);
+      assert.equal(call.body.action, action);
+      assert.equal(call.options.adminAction, true);
+      assert.equal(call.options.adminUserId, 'admin-id');
+    }
   });
 });
 

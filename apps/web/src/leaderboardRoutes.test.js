@@ -10,6 +10,10 @@ test('leaderboard route resolver recognizes overview, methodology, all seven dim
   assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard'), { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false })
   assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/methodology'), { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false })
   assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/methodology/'), { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false })
+  assert.equal(routes.resolveLeaderboardRoute('/leaderboard/models/profile%3Aone').modelProfileId, 'profile:one')
+  assert.equal(routes.resolveLeaderboardRoute('/leaderboard/cases/math_symbols-01').caseId, 'math_symbols-01')
+  assert.equal(routes.resolveLeaderboardRoute('/leaderboard/submit-prompt').promptSubmission, true)
+  assert.equal(routes.resolveLeaderboardRoute('/leaderboard/admin/prompt-submissions').promptAdmin, true)
   for (const slug of ['faithfulness', 'conciseness', 'readability', 'aesthetics', 'text-accuracy', 'topology', 'instruction-adherence']) {
     const result = routes.resolveLeaderboardRoute(`/leaderboard/${slug}`)
     assert.equal(result.isLeaderboard, true)
@@ -18,6 +22,8 @@ test('leaderboard route resolver recognizes overview, methodology, all seven dim
     assert.ok(result.dimension)
   }
   assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/nope'), { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: true })
+  assert.equal(routes.resolveLeaderboardRoute('/leaderboard/models/').invalidSlug, true)
+  assert.equal(routes.resolveLeaderboardRoute('/leaderboard/cases/unknown').invalidSlug, true)
   assert.deepEqual(routes.resolveLeaderboardRoute('/workspace'), { isLeaderboard: false, methodology: false, dimension: null, invalidSlug: false })
 })
 

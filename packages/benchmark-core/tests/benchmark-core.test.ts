@@ -75,6 +75,9 @@ test('public contract has seven axes, three lanes and an internal append-only di
     'paperbanana_benchmark_judgments',
     'paperbanana_benchmark_dispatches',
     'paperbanana_benchmark_releases',
+    'paperbanana_benchmark_public_evidence',
+    'paperbanana_benchmark_prompt_submissions',
+    'paperbanana_benchmark_prompt_digests',
   ])
 })
 

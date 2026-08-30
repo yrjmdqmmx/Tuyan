@@ -24,6 +24,25 @@
 
 ## 条目（最新在上）
 
+### [2026-08-30] Bench 生成证据与社区候选题参与 — by Codex
+变更：在已校验 `releaseHash` 的正式 `codex_single` / `published` 排行榜投影上新增公开生成证据，不迁移、不覆盖历史 Quick/Full、失败模型、盲审包或私有 PNG。`benchmarkModelProfile` 仅对公开合格 profile 懒加载 `evidence` / `cases`；新增匿名只读 `benchmarkCaseEvidence`，按题目每批最多 12 个模型返回。公开 evidence allowlist 固定为 `sampleId / caseId / profileId / modelId / imageHash / actualOutputPixels / variants / scores / reviewNotes`，WebP variant 只允许内容寻址的 `bench/public/evidence/<sourceHash>/*.webp`，每次签名之前复验对象 hash；盲标签、对象原路径、packet/review 签名、内部记录、投稿身份和管理员身份均不公开。Benchmark Worker 的 Standard 成功样本会生成不放大的 640 / 1600 / full 三档真实 WebP，原 PNG 不覆盖；新增受 disabled-worker、并发 1、固定 release hash、共享锁和显式确认保护的一次性幂等回填 entry，不产生生图或 Judge 调用。
+
+契约（影响 Web / Core / Gateway / Worker / 运维）：
+- 新增 `benchmarkPromptSubmission`：必须由 Gateway 注入已登录 `userId` 与可信 `clientIp`；只收五个文字字段，拒绝 HTML、URL、附件语义；账号每天 5 条、IP 每天 20 条，重复内容幂等。
+- 新增管理员 action：`adminBenchmarkPromptQueue / adminBenchmarkPromptDigest / adminBenchmarkPromptDecision`。状态为 `pending → grouped → candidate → approved_for_next_suite / merged / rejected`；digest 使用共享租约锁、稳定 digest ID 与来源投稿 ID；批准只表示下期候选，不能修改正式 suite、启动生成或改变榜单。
+- 新增 Mongo collection：`paperbanana_benchmark_public_evidence / paperbanana_benchmark_prompt_submissions / paperbanana_benchmark_prompt_digests` 及查询/限频索引。原始投稿身份只在管理员队列可见。
+- 新增手工 `Backfill Public Benchmark Evidence` workflow：`inspect` 只读核对，`apply` 才写 WebP/evidence；两者均绑定 exact deployed SHA、source release hash、`configured-disabled`、Worker disabled/并发 1 与香港生产共享锁，输出固定证明 `generatedOrJudgeCalls=0`。
+- Web 新增 `/leaderboard/models/:profileId`、`/leaderboard/cases/:caseId`、`/leaderboard/submit-prompt`、`/leaderboard/admin/prompt-submissions`；排行榜首屏不请求样本图，证据图使用 `srcset + loading=lazy + decoding=async`，详情图只在主动放大时请求。
+
+各端待办：
+- [x] paperbanana-api / Core（公开 evidence 投影、投稿存储/限频、digest 锁、管理员审核、hash fail-closed 与 TDD）
+- [x] auth-gateway / packages-api（匿名 evidence 读取、登录身份/IP 注入、三项管理员 action 转发）
+- [x] Benchmark Worker（新样本三档 WebP、内容 hash、不可覆盖写、幂等回填 entry；未执行生产回填）
+- [x] Web（模型证据、同题对比、投稿与管理员页，静态入口/404 深链、懒加载与移动端布局）
+- [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（新 action 与页面只由 Web 使用；现有契约不变，无需改造）
+- [x] Codex 定时任务（已创建 ACTIVE 项目级任务 `paperbanana`，每周一 10:00 按本机 Asia/Shanghai 时区；只整理 pending 并提交 digest，不得修改 suite 或运行测评；失败时通知）
+- [ ] 部署 / 运维（锁定合并 SHA 后仅重建发布 Web/Pages、Gateway、Core、Benchmark Worker；Plot Worker 不改；先 inspect 后在 disabled Worker 上执行 WebP 回填并核对数量/hash/MIME/缓存；不得触发生图或 Judge）
+
 ### [2026-08-29] Bench 完整公开方法题集与独立方法页 — by Codex
 变更：公开 `benchmarkMethodology` 在 `evaluationMode=codex_single` 且 `profileStatus=published` 的 Arena release 上，先做 `releaseHash` 校验，再新增顶层 `suite` / `scoring`；历史 Quick/Full、`provisional` / `verified` 与无 release 结果继续保持旧形状，不回填、不改名。`suite` 的权威来源是 `PB_IMAGE_LIGHT_V1` allowlist 的深拷贝：完整公开四题正/负向提示词、约束、七维 rubric、许可、case / suite hash；不公开盲标签、模型映射、审核记录、签名/密钥/operator 材料。`scoring` 公共化 0-10 评分，要求至少 3/4、最多 4，七维等权，competition 采用 `1,1,3`，并明确 confirmed axis cap。Web 总榜移除内嵌“读榜前需要知道”，新增 `/leaderboard/methodology` 以及静态 root / non-root / 尾斜杠入口；所有方法链接改为正式路由。方法页只请求 `benchmarkMethodology`，严格 normalize，复制状态防竞态，旧或畸形响应 fail closed，且不带内置 prompt 副本。公开 action 名称不变，新字段向后兼容，不触发任何生成 / Judge / 付费。
 各端待办：
