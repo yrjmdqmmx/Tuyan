@@ -225,6 +225,9 @@ importers:
       '@types/node':
         specifier: ^24.3.0
         version: 24.12.4
+      sharp:
+        specifier: 0.35.3
+        version: 0.35.3(@types/node@24.12.4)
       tsx:
         specifier: 4.20.5
         version: 4.20.5

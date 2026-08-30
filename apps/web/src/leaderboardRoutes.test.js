@@ -42,6 +42,16 @@ test('all seven static dimension directory URLs resolve with a trailing slash', 
   }
 })
 
+test('route resolver accepts all nine scientific v2 evidence cases', async () => {
+  const { resolveLeaderboardRoute } = await import('./leaderboardRoutes.js')
+  const caseIds = [
+    'scientific-gen-01-method-flow', 'scientific-gen-02-biological-pathway', 'scientific-gen-03-model-architecture',
+    'scientific-gen-04-quantitative-panels', 'scientific-gen-05-math-bilingual', 'scientific-gen-06-controls-negative-constraints',
+    'scientific-edit-01-text-label', 'scientific-edit-02-node-arrow', 'scientific-edit-03-color-legend-callout',
+  ]
+  caseIds.forEach((caseId) => assert.equal(resolveLeaderboardRoute(`/leaderboard/cases/${caseId}`).caseId, caseId))
+})
+
 test('legacy bench paths replace to one canonical leaderboard entry while preserving query and hash', async () => {
   let routes
   try {

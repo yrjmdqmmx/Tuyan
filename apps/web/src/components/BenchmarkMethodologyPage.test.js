@@ -5,6 +5,7 @@ import { act, cleanup, fireEvent, render, screen, within } from '@testing-librar
 import React from 'react'
 
 import BenchmarkMethodologyPage from './BenchmarkMethodologyPage.jsx'
+import { SCIENTIFIC_WEB_CONTRACT } from './scientificBenchmarkContract.js'
 
 const axisEntries = [
   ['faithfulness', '忠实度'],
@@ -78,6 +79,41 @@ const methodologyResponse = {
     tieMethod: 'competition',
     redLinePolicy: 'confirmed_axis_cap',
   },
+}
+
+const scientificAxisEntries = [
+  ['scientific_faithfulness', '科研忠实度'], ['structural_topology', '结构拓扑'], ['text_symbol_accuracy', '文字符号'],
+  ['quantitative_accuracy', '数值图表'], ['instruction_adherence', '指令遵从'], ['readability_visual_hierarchy', '信息层级 / 可读性'],
+  ['information_density', '信息密度'], ['publication_aesthetics', '发表级美观'], ['edit_target_accuracy', '编辑目标命中'], ['non_target_preservation', '非目标保持'],
+]
+
+function scientificMethodologyResponse() {
+  const axes = [...SCIENTIFIC_WEB_CONTRACT.axes]
+  const cases = SCIENTIFIC_WEB_CONTRACT.cases.map((contractCase, index) => {
+    const applicableAxes = [...contractCase.applicableAxes]
+    return {
+      id: contractCase.id, kind: contractCase.kind,
+      title: `科研题 ${index + 1}`, instruction: `固定科研指令 ${index + 1}`, applicableAxes,
+      rubric: Object.fromEntries(applicableAxes.map((axis) => [axis, `${axis} 评分准则`])), manifestHash: contractCase.manifestHash,
+      ...(contractCase.kind === 'generation'
+        ? { negativePrompt: '不得添加题外内容', aspectRatio: '16:9' }
+        : { sourceHash: contractCase.sourceHash, region: contractCase.region }),
+    }
+  })
+  return {
+    code: 0, releaseHash: 'scientific-release-hash',
+    suite: { id: SCIENTIFIC_WEB_CONTRACT.suiteId, version: 2, language: 'zh-CN', caseCount: 9, manifestHash: SCIENTIFIC_WEB_CONTRACT.suiteHash, cases },
+    scoring: { scoreMin: 0, scoreMax: 10, axes, overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0, unsupportedScore: 0 },
+    methodology: {
+      suiteId: SCIENTIFIC_WEB_CONTRACT.suiteId, suiteHash: SCIENTIFIC_WEB_CONTRACT.suiteHash, evaluationMode: 'codex_scientific_v2', evaluationEpoch: 'codex-scientific-2026-09-v1',
+      reviewProtocol: 'codex-independent-double-review-v2', presentationVersion: 'scientific-leaderboard-v2', expectedCaseCount: 9, dimensions: axes,
+      overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0,
+      retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' }, routePriority: ['bailian', 'ark', 'openrouter'],
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 }, blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
+      knownLimitations: ['fixed-nine-case-suite', 'single-production-run-per-model', 'human-codex-double-review'], automaticJudges: [], automaticJudgmentCount: 0,
+      rankingMethod: { id: 'ten_dimension_raw_equal_weight_mean', axes, weights: axes.map(() => 0.1), tieMethod: 'competition' },
+    },
+  }
 }
 
 function escapePattern(text) {
@@ -193,6 +229,20 @@ test('methodology page requests only methodology and renders the complete public
   } finally {
     fetchMock.restore()
   }
+})
+
+test('scientific v2 methodology shows nine cases, ten axes, zero failures, retries, channels, budgets, and double-blind limits', async () => {
+  const fetchMock = installFetch(() => jsonResponse(scientificMethodologyResponse()))
+  try {
+    const { container } = render(React.createElement(BenchmarkMethodologyPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', showNavigation: false }))
+    await screen.findByRole('heading', { name: '评测方法与完整题集' })
+    assert.equal(container.querySelectorAll('.bench-method-case').length, 9)
+    scientificAxisEntries.forEach(([, label]) => assert.match(container.textContent, new RegExp(escapePattern(label), 'u')))
+    for (const text of ['失败记 0', '确认失败最多 4 次', 'UNKNOWN_PROVIDER_OUTCOME', '不自动重试', 'bailian → ark → openrouter', '¥180', '双盲', '争议仲裁', '固定九题', '单次生产运行']) {
+      assert.match(container.textContent, new RegExp(escapePattern(text), 'u'))
+    }
+    assert.equal(screen.queryByRole('navigation', { name: '排行榜导航' }), null)
+  } finally { fetchMock.restore() }
 })
 
 test('positive and negative copy buttons write exact prompts and announce success', async () => {

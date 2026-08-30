@@ -22,6 +22,8 @@ import {
 import type { Db } from 'mongodb'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
+import { createScientificV2MongoRepository } from './scientific-v2-repository.js'
+
 type AnyRecord = { _id?: string; [key: string]: any }
 
 const benchmarkHashPattern = /^[a-f0-9]{64}$/i
@@ -972,6 +974,27 @@ export async function verifyEvidenceObjects(
   }
 }
 
+export function verifyScientificV2EvidenceMetadata(
+  objectKey: string,
+  expectedHash: string,
+  facts: { mimeType: string; cacheControl: string; sha256: string; acl: string },
+) {
+  const privateMatch = objectKey.match(/^bench\/scientific-v2\/private\/objects\/([a-f0-9]{64})\.(png|jpeg|webp)$/)
+  const publicMatch = objectKey.match(/^bench\/scientific-v2\/public\/([a-f0-9]{64})\/(thumbnail|detail|full)\.webp$/)
+  if (!privateMatch && !publicMatch) throw new Error('SCIENTIFIC_V2_OBJECT_KEY_INVALID')
+  if (facts.sha256 !== expectedHash) throw new Error('SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH')
+  if (privateMatch) {
+    const expectedMime = privateMatch[2] === 'jpeg' ? 'image/jpeg' : `image/${privateMatch[2]}`
+    if (privateMatch[1] !== expectedHash || facts.mimeType !== expectedMime
+      || facts.cacheControl !== 'private, no-store' || facts.acl !== 'private') {
+      throw new Error('SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH')
+    }
+    return
+  }
+  if (facts.mimeType !== 'image/webp' || facts.cacheControl !== 'public, max-age=31536000, immutable'
+    || facts.acl !== 'public-read') throw new Error('SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH')
+}
+
 function text(value: unknown, max = 160) {
   return String(value || '').trim().slice(0, max)
 }
@@ -1162,6 +1185,7 @@ export function createMongoBenchmarkRepository(
   verifyEvidence: (objectKey: string, imageHash: string, options?: { signal?: AbortSignal; timeoutMs?: number }) => Promise<void> = async () => {},
   immutableCodeSha = String(process.env.PAPERBANANA_CODE_SHA || ''),
   readOperatorReport: (objectKey: string, maxBytes: number) => Promise<Uint8Array> = async () => { throw new Error('BENCHMARK_OPERATOR_REPORT_READER_UNAVAILABLE') },
+  scientificV2Options: { operatorReportSecret?: string; createClaimToken?: () => string } = {},
 ) {
   const suites = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.suites)
   const models = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.models)
@@ -1173,6 +1197,11 @@ export function createMongoBenchmarkRepository(
   const publicEvidence = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.publicEvidence)
   const promptSubmissions = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.promptSubmissions)
   const promptDigests = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.promptDigests)
+  const scientificV2 = createScientificV2MongoRepository(db, now, scientificV2Options.createClaimToken, {
+    operatorReportSecret: scientificV2Options.operatorReportSecret,
+    immutableCodeSha,
+    verifyObject: async (objectKey, imageHash) => verifyEvidence(objectKey, imageHash),
+  })
 
   return {
     async ensureSuite() {
@@ -1197,6 +1226,7 @@ export function createMongoBenchmarkRepository(
       await Promise.all(indexes.map(async ([collection, keys, options]) => {
         if (typeof (collection as any).createIndex === 'function') await (collection as any).createIndex(keys, options)
       }))
+      await scientificV2.ensureIndexes()
     },
     async latestRelease(lane?: string) {
       return releases.find({
@@ -1212,6 +1242,10 @@ export function createMongoBenchmarkRepository(
         .sort({ publishedAt: -1 }).limit(1).next()
     },
     async publicEvidenceForRelease(releaseHash: string, query: { profileId?: string; caseId?: string; cursor?: string; limit: number }) {
+      const release = await releases.findOne({ releaseHash })
+      if (release?.evaluationMode === 'codex_scientific_v2') {
+        return scientificV2.publicEvidenceForRelease(releaseHash, query)
+      }
       const offset = /^\d+$/.test(String(query.cursor || '')) ? Number(query.cursor) : 0
       const limit = Math.max(1, Math.min(12, Number(query.limit) || 12))
       const rows = await publicEvidence.find({
@@ -1493,6 +1527,16 @@ export function createMongoBenchmarkRepository(
       return { ...adminCandidate(result), runId }
     },
     async control(input: AnyRecord) {
+      if (input.evaluationMode === 'codex_scientific_v2') {
+        if (input.command === 'freezeBatch') return scientificV2.freezeBatch(input)
+        if (input.command === 'operatorAttestation') return scientificV2.operatorAttestation({ batchId: input.batchId, manifestHash: input.manifestHash })
+        if (input.command === 'importWorkerState' || input.command === 'importCodexState') {
+          const expectedKind = input.command === 'importWorkerState' ? 'worker' : 'codex'
+          if (input.report?.kind !== expectedKind) throw new Error('SCIENTIFIC_V2_OPERATOR_REPORT_KIND_MISMATCH')
+          return scientificV2.importStateReport({ report: input.report, reportHash: input.reportHash, attestationHash: input.attestationHash })
+        }
+        throw new Error('SCIENTIFIC_V2_CONTROL_COMMAND_INVALID')
+      }
       if (input.command === 'recordJudgeCalibration') {
         const codeSha = text(immutableCodeSha)
         const judgeStackHash = benchmarkJudgeStackHash(codeSha)
@@ -1547,7 +1591,10 @@ export function createMongoBenchmarkRepository(
       if (!result) throw new Error('BENCHMARK_RUN_STATE_CONFLICT')
       return { runId, state: result.state }
     },
-    async exportReview(input: AnyRecord) {
+    async exportReview(input: AnyRecord): Promise<AnyRecord> {
+      if (input.evaluationMode === 'codex_scientific_v2') {
+        return scientificV2.exportReviewAssignment({ batchId: text(input.batchId), assignment: input.assignment, objectBindings: input.objectBindings })
+      }
       const runId = text(input.runId)
       const run = await runs.findOne({ _id: runId, state: { $in: ['quick_review', 'codex_audit', 'codex_review'] } })
       if (!run) throw new Error('BENCHMARK_CODEX_AUDIT_NOT_READY')
@@ -1606,6 +1653,13 @@ export function createMongoBenchmarkRepository(
       return packet
     },
     async importReview(input: AnyRecord) {
+      if (input.evaluationMode === 'codex_scientific_v2') {
+        if (input.arbitration) return scientificV2.importArbitration({
+          batchId: text(input.batchId), arbitration: input.arbitration,
+          arbitrationHash: text(input.arbitrationHash), attestationHash: text(input.attestationHash),
+        })
+        return scientificV2.importReviewResult({ batchId: text(input.batchId), result: input.result })
+      }
       const runId = text(input.runId)
       const run = await runs.findOne({ _id: runId, state: { $in: ['quick_review', 'codex_audit', 'codex_review'] } })
       if (!run?.reviewPacket) throw new Error('BENCHMARK_REVIEW_PACKET_NOT_FOUND')
@@ -1709,6 +1763,13 @@ export function createMongoBenchmarkRepository(
       return { imported: imported.length, packetHash: run.reviewPacket.packetHash }
     },
     async publish(input: AnyRecord) {
+      if (input.evaluationMode === 'codex_scientific_v2') {
+        return scientificV2.publishScientificV2({
+          batchId: text(input.batchId),
+          objectBindings: input.objectBindings,
+          evidence: input.evidence,
+        })
+      }
       const runId = text(input.runId)
       if (!['provisional', 'verified', 'published'].includes(input.profileStatus)) throw new Error('BENCHMARK_PROFILE_STATUS_INVALID')
       const run = await runs.findOne({ _id: runId })

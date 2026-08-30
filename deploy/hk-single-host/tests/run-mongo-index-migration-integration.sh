@@ -21,6 +21,7 @@ secret_dir="$(mktemp -d "${TMPDIR:-/tmp}/paperbanana-mongo-index.XXXXXX")"
 root_username="paperbanana_root"
 root_password="RootIndexMigrationTestOnly_8"
 worker_password="WorkerIndexMigrationTestOnly_8"
+api_password="ApiIndexMigrationTestOnly_8"
 
 cleanup() {
   docker rm -f "$mongo_container" >/dev/null 2>&1 || true
@@ -39,7 +40,7 @@ printf '%s\n' "$root_password" > "$secret_dir/mongo_root_password"
 printf '%s\n' "AuthIndexMigrationTestOnly_8" > "$secret_dir/mongo_auth_password"
 printf '%s\n' "BusinessIndexMigrationTestOnly_8" > "$secret_dir/mongo_business_password"
 printf '%s\n' "$worker_password" > "$secret_dir/mongo_bench_password"
-printf '%s\n' "ApiIndexMigrationTestOnly_8" > "$secret_dir/mongo_bench_api_password"
+printf '%s\n' "$api_password" > "$secret_dir/mongo_bench_api_password"
 chmod 0600 "$secret_dir"/*
 
 docker network create "$network_name" >/dev/null
@@ -187,7 +188,65 @@ run_migration
   if (!dispatch) throw new Error("phase_dispatch_unique is missing")
   if (JSON.stringify(dispatch.key) !== JSON.stringify({runId: 1, phase: 1, sampleId: 1, logicalProvider: 1, dispatchIndex: 1, judgeEpoch: 1})) throw new Error("phase_dispatch_unique keys differ")
   if (dispatch.unique !== true) throw new Error("phase_dispatch_unique is not unique")
+
+  const scientificIndexes = [
+    ["paperbanana_benchmark_scientific_v2_batches", "scientific_v2_batch_id", {batchId: 1}, undefined],
+    ["paperbanana_benchmark_scientific_v2_batches", "scientific_v2_manifest_hash", {manifestHash: 1}, undefined],
+    ["paperbanana_benchmark_scientific_v2_dispatches", "scientific_v2_dispatch_identity", {manifestHash: 1, slotId: 1, attemptIndex: 1}, undefined],
+    ["paperbanana_benchmark_scientific_v2_review_artifacts", "scientific_v2_review_identity", {batchManifestHash: 1, sourceSetHash: 1, role: 1}, undefined],
+    ["paperbanana_benchmark_releases", "scientific_v2_release_identity", {suiteId: 1, evaluationMode: 1, evaluationEpoch: 1}, {evaluationMode: "codex_scientific_v2", profileStatus: "published"}],
+    ["paperbanana_benchmark_scientific_v2_public_evidence", "scientific_v2_public_evidence_identity", {sourceReleaseHash: 1, profileId: 1, caseId: 1}, undefined],
+  ]
+  for (const [collection, name, keys, partial] of scientificIndexes) {
+    const actual = benchmark.getCollection(collection).getIndexes().find(index => index.name === name)
+    if (!actual || actual.unique !== true || JSON.stringify(actual.key) !== JSON.stringify(keys)
+      || JSON.stringify(actual.partialFilterExpression) !== JSON.stringify(partial)) throw new Error(`${name} differs`)
+  }
 '
+
+docker exec "$mongo_container" mongosh --quiet \
+  --username paperbanana_benchmark_api \
+  --password "$api_password" \
+  --authenticationDatabase paperbanana_benchmark \
+  --eval '
+    const benchmark = db.getSiblingDB("paperbanana_benchmark")
+    const batches = benchmark.getCollection("paperbanana_benchmark_scientific_v2_batches")
+    const dispatches = benchmark.getCollection("paperbanana_benchmark_scientific_v2_dispatches")
+    const reviews = benchmark.getCollection("paperbanana_benchmark_scientific_v2_review_artifacts")
+    const publicEvidence = benchmark.getCollection("paperbanana_benchmark_scientific_v2_public_evidence")
+    const releases = benchmark.getCollection("paperbanana_benchmark_releases")
+    if (batches.createIndex({batchId: 1}, {unique: true, name: "scientific_v2_batch_id"}) !== "scientific_v2_batch_id"
+      || !batches.getIndexes().some(index => index.name === "scientific_v2_manifest_hash")) {
+      throw new Error("Scientific V2 API createIndex/listIndexes must succeed")
+    }
+    batches.insertOne({_id: "scientific-v2-api-batch", batchId: "api-batch", manifestHash: "a".repeat(64)})
+    batches.updateOne({_id: "scientific-v2-api-batch"}, {$set: {status: "frozen"}})
+    if (batches.findOne({_id: "scientific-v2-api-batch"})?.status !== "frozen") throw new Error("Scientific V2 API batch CRUD failed")
+    dispatches.insertOne({_id: "scientific-v2-api-dispatch", manifestHash: "a".repeat(64), slotId: "slot-api", attemptIndex: 1})
+    dispatches.updateOne({_id: "scientific-v2-api-dispatch"}, {$set: {status: "started"}})
+    reviews.insertOne({_id: "scientific-v2-api-review", batchManifestHash: "a".repeat(64), sourceSetHash: "b".repeat(64), role: "A"})
+    reviews.updateOne({_id: "scientific-v2-api-review"}, {$set: {status: "ready"}})
+    publicEvidence.insertOne({_id: "scientific-v2-api-evidence", sourceReleaseHash: "c".repeat(64), profileId: "profile-api", caseId: "case-api"})
+    publicEvidence.updateOne({_id: "scientific-v2-api-evidence"}, {$set: {published: true}})
+    releases.insertOne({_id: "scientific-v2-api-release", releaseHash: "d".repeat(64)})
+    if (!releases.findOne({_id: "scientific-v2-api-release"})) throw new Error("Scientific V2 API release access failed")
+    let releaseUpdateRejected = false
+    try { releases.updateOne({_id: "scientific-v2-api-release"}, {$set: {profileStatus: "draft"}}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") releaseUpdateRejected = true; else throw error }
+    if (!releaseUpdateRejected) throw new Error("Scientific V2 API release update must be rejected as Unauthorized")
+    let releaseCreateIndexRejected = false
+    try { releases.createIndex({profileStatus: 1}, {name: "api_must_not_create_release_index"}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") releaseCreateIndexRejected = true; else throw error }
+    if (!releaseCreateIndexRejected) throw new Error("Scientific V2 API release createIndex must be rejected as Unauthorized")
+    let releaseListIndexesRejected = false
+    try { releases.getIndexes() }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") releaseListIndexesRejected = true; else throw error }
+    if (!releaseListIndexesRejected) throw new Error("Scientific V2 API release listIndexes must be rejected as Unauthorized")
+    let deleteRejected = false
+    try { batches.deleteOne({_id: "scientific-v2-api-batch"}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") deleteRejected = true; else throw error }
+    if (!deleteRejected) throw new Error("Scientific V2 API delete must be rejected as Unauthorized")
+  '
 
 docker exec "$mongo_container" mongosh --quiet \
   --username paperbanana_benchmark \
@@ -217,6 +276,32 @@ docker exec "$mongo_container" mongosh --quiet \
     if (!deleteRejected) throw new Error("Worker dispatch delete must be rejected as Unauthorized")
     const durable = dispatches.findOne({_id: "dispatch:openrouter:permission-sample:0"})
     if (!durable || durable.phase !== "full") throw new Error("append-only dispatch marker was mutated")
+
+    const scientificBatches = db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_scientific_v2_batches")
+    const scientificDispatches = db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_scientific_v2_dispatches")
+    scientificBatches.insertOne({_id: "scientific-v2-worker-batch", batchId: "worker-batch", manifestHash: "e".repeat(64)})
+    scientificBatches.updateOne({_id: "scientific-v2-worker-batch"}, {$set: {status: "running"}})
+    if (scientificBatches.findOne({_id: "scientific-v2-worker-batch"})?.status !== "running") throw new Error("Scientific V2 Worker batch access failed")
+    scientificDispatches.insertOne({_id: "scientific-v2-worker-dispatch", manifestHash: "e".repeat(64), slotId: "slot-worker", attemptIndex: 1})
+    scientificDispatches.updateOne({_id: "scientific-v2-worker-dispatch"}, {$set: {status: "started"}})
+    if (scientificDispatches.findOne({_id: "scientific-v2-worker-dispatch"})?.status !== "started") throw new Error("Scientific V2 Worker dispatch access failed")
+    const rejectWrite = (collection, label) => {
+      let denied = false
+      try { collection.insertOne({_id: `forbidden-${label}`}) }
+      catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") denied = true; else throw error }
+      if (!denied) throw new Error(`Scientific V2 Worker ${label} write must be rejected as Unauthorized`)
+    }
+    rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_scientific_v2_review_artifacts"), "review")
+    rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_scientific_v2_public_evidence"), "public evidence")
+    rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_releases"), "release")
+    let scientificDeleteRejected = false
+    try { scientificBatches.deleteOne({_id: "scientific-v2-worker-batch"}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") scientificDeleteRejected = true; else throw error }
+    if (!scientificDeleteRejected) throw new Error("Scientific V2 Worker delete must be rejected as Unauthorized")
+    let scientificIndexRejected = false
+    try { scientificBatches.createIndex({status: 1}, {name: "worker_must_not_create_index"}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") scientificIndexRejected = true; else throw error }
+    if (!scientificIndexRejected) throw new Error("Scientific V2 Worker createIndex must be rejected as Unauthorized")
   '
 
 echo "MongoDB 8 benchmark index migration integration test passed."

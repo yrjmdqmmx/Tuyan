@@ -168,9 +168,13 @@ test('headFile normalizes authoritative object size and content type from the in
       assert.equal(key, 'references/a.png')
       return {
         status: 200,
-        res: { headers: { 'content-length': '123', 'content-type': 'image/png', etag: 'etag-1' } },
+        res: { headers: {
+          'content-length': '123', 'content-type': 'image/png', etag: 'etag-1',
+          'cache-control': 'private, no-store', 'x-oss-meta-sha256': 'a'.repeat(64),
+        } },
       }
     },
+    async getACL(key: string) { assert.equal(key, 'references/a.png'); return { acl: 'private' } },
   }
   const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
     .bucket('paperbanana-private')
@@ -179,6 +183,9 @@ test('headFile normalizes authoritative object size and content type from the in
     size: 123,
     mimeType: 'image/png',
     etag: 'etag-1',
+    cacheControl: 'private, no-store',
+    sha256: 'a'.repeat(64),
+    acl: 'private',
   })
 })
 

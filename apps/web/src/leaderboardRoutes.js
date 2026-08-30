@@ -10,8 +10,26 @@ export const LEADERBOARD_AXES = Object.freeze([
   Object.freeze({ id: 'instruction_adherence', slug: 'instruction-adherence', label: '指令遵从' }),
 ])
 
-const DIMENSION_BY_SLUG = new Map(LEADERBOARD_AXES.map((axis) => [axis.slug, axis]))
-const CASE_IDS = new Set(['complex_topology-05', 'bilingual_terms-01', 'math_symbols-01', 'negative_constraints-05'])
+export const SCIENTIFIC_LEADERBOARD_AXES = Object.freeze([
+  Object.freeze({ id: 'scientific_faithfulness', slug: 'scientific-faithfulness', label: '科研忠实度' }),
+  Object.freeze({ id: 'structural_topology', slug: 'structural-topology', label: '结构拓扑' }),
+  Object.freeze({ id: 'text_symbol_accuracy', slug: 'text-symbol-accuracy', label: '文字符号' }),
+  Object.freeze({ id: 'quantitative_accuracy', slug: 'quantitative-accuracy', label: '数值图表' }),
+  Object.freeze({ id: 'instruction_adherence', slug: 'instruction-adherence', label: '指令遵从' }),
+  Object.freeze({ id: 'readability_visual_hierarchy', slug: 'readability-visual-hierarchy', label: '信息层级 / 可读性' }),
+  Object.freeze({ id: 'information_density', slug: 'information-density', label: '信息密度' }),
+  Object.freeze({ id: 'publication_aesthetics', slug: 'publication-aesthetics', label: '发表级美观' }),
+  Object.freeze({ id: 'edit_target_accuracy', slug: 'edit-target-accuracy', label: '编辑目标命中' }),
+  Object.freeze({ id: 'non_target_preservation', slug: 'non-target-preservation', label: '非目标保持' }),
+])
+
+const DIMENSION_BY_SLUG = new Map([...LEADERBOARD_AXES, ...SCIENTIFIC_LEADERBOARD_AXES].map((axis) => [axis.slug, axis]))
+const CASE_IDS = new Set([
+  'complex_topology-05', 'bilingual_terms-01', 'math_symbols-01', 'negative_constraints-05',
+  'scientific-gen-01-method-flow', 'scientific-gen-02-biological-pathway', 'scientific-gen-03-model-architecture',
+  'scientific-gen-04-quantitative-panels', 'scientific-gen-05-math-bilingual', 'scientific-gen-06-controls-negative-constraints',
+  'scientific-edit-01-text-label', 'scientific-edit-02-node-arrow', 'scientific-edit-03-color-legend-callout',
+])
 
 export function resolveLeaderboardRoute(pathname = '') {
   if (pathname === '/leaderboard' || pathname === '/leaderboard/') {

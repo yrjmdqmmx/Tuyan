@@ -9,8 +9,9 @@ import {
 } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
-import { useAuthSession } from '../hooks/useAuthSession.js'
-import { LEADERBOARD_AXES } from '../leaderboardRoutes.js'
+import { LEADERBOARD_AXES, SCIENTIFIC_LEADERBOARD_AXES } from '../leaderboardRoutes.js'
+import { hasScientificHint, normalizeScientificCaseResponse, normalizeScientificProfile } from './benchmarkRelease.js'
+import { useLeaderboardSession } from './LeaderboardRoot.jsx'
 
 const WORKSPACE_HREF = appPath('/')
 const LEADERBOARD_HREF = appPath('/leaderboard')
@@ -74,15 +75,23 @@ export function BenchmarkEvidenceImage({ variants, alt }) {
   )
 }
 
-function EvidenceScores({ scores }) {
+function EvidenceScores({ scores, axes = LEADERBOARD_AXES }) {
   return (
     <dl className="bench-evidence-scores">
-      {LEADERBOARD_AXES.map((axis) => <div key={axis.id}><dt>{axis.label}</dt><dd>{scoreText(scores?.[axis.id])}</dd></div>)}
+      {axes.map((axis) => <div key={axis.id}><dt>{axis.label}</dt><dd>{scoreText(scores?.[axis.id])}</dd></div>)}
     </dl>
   )
 }
 
 function PromptDetails({ benchmarkCase }) {
+  if (benchmarkCase?.id?.startsWith('scientific-')) {
+    return (
+      <details className="bench-evidence-prompt" open>
+        <summary>完整题目与要求</summary><pre>{benchmarkCase.instruction}</pre>
+        {benchmarkCase.negativePrompt ? <><h4>负向约束</h4><pre>{benchmarkCase.negativePrompt}</pre></> : null}
+      </details>
+    )
+  }
   return (
     <details className="bench-evidence-prompt" open>
       <summary>完整提示词与要求</summary>
@@ -114,18 +123,41 @@ function EvidenceCard({ item, benchmarkCase, modelName }) {
   )
 }
 
+function ScientificEvidenceCard({ item, benchmarkCase, modelName }) {
+  const successful = item.status === 'succeeded'
+  return (
+    <article className="bench-evidence-card bench-scientific-evidence-card">
+      <header><div><span>{benchmarkCase?.id || item.caseId}</span><h2>{benchmarkCase?.title || item.caseId}</h2></div><small>{benchmarkCase?.kind === 'edit' ? '局部编辑' : '生成'} · {item.attemptSummary?.count ?? 0} 次尝试</small></header>
+      {!successful ? <section className="bench-evidence-failure"><strong>{item.status}</strong><code>{item.failureReason || '未提供失败原因'}</code><p>该固定题位按 0 分计入总体。</p></section> : benchmarkCase?.kind === 'edit' ? (
+        <div className="bench-edit-comparison"><figure><figcaption>编辑前</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={`${modelName} · ${benchmarkCase.title} · 编辑前`} /></figure><figure><figcaption>编辑后</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={`${modelName} · ${benchmarkCase.title} · 编辑后`} /></figure></div>
+      ) : <BenchmarkEvidenceImage variants={item.variants} alt={`${modelName} · ${benchmarkCase?.title || item.caseId}`} />}
+      {successful ? <EvidenceScores scores={item.scores} axes={SCIENTIFIC_LEADERBOARD_AXES.filter((axis) => benchmarkCase?.applicableAxes?.includes(axis.id))} /> : null}
+      {successful ? <section className="bench-evidence-notes"><h3>审核依据与扣分说明</h3><ul>{(item.reviewNotes || []).map((note, index) => <li key={`${item.caseId}-${index}`}>{note}</li>)}</ul></section> : null}
+      <details className="bench-evidence-prompt" open><summary>完整题目与要求</summary><pre>{benchmarkCase?.instruction || '—'}</pre>{benchmarkCase?.negativePrompt ? <><h4>负向约束</h4><pre>{benchmarkCase.negativePrompt}</pre></> : null}</details>
+      <footer><code>{item.imageHash ? `SHA-256 ${item.imageHash}` : '未生成图像'}</code><a href={appPath(`/leaderboard/cases/${encodeURIComponent(item.caseId)}`)}>查看本题全部模型 →</a></footer>
+    </article>
+  )
+}
+
 function EvidenceState({ children, error = false }) {
   return <main className={`bench-state${error ? ' bench-state-error' : ''}`}>{children}</main>
 }
 
-export function BenchmarkModelEvidencePage({ apiBase, backendMode, enabled, profileId }) {
+export function BenchmarkModelEvidencePage({ apiBase, backendMode, enabled, profileId, showNavigation = true }) {
   const [profile, setProfile] = useState(null)
   const [error, setError] = useState('')
   useEffect(() => {
     if (!enabled) return undefined
     let cancelled = false
     benchmarkModelProfileRequest(apiBase, { backendMode }, { profileId })
-      .then((response) => { if (!cancelled) setProfile(response.profile || null) })
+      .then((response) => {
+        if (cancelled) return
+        const rawProfile = response.profile || null
+        const scientific = hasScientificHint(rawProfile) || hasScientificHint(rawProfile?.release)
+        const normalized = scientific ? normalizeScientificProfile(rawProfile) : rawProfile
+        if (rawProfile && !normalized) setError('模型证据数据格式不受支持')
+        setProfile(normalized)
+      })
       .catch((reason) => { if (!cancelled) setError(reason?.message || String(reason)) })
     return () => { cancelled = true }
   }, [apiBase, backendMode, enabled, profileId])
@@ -134,24 +166,27 @@ export function BenchmarkModelEvidencePage({ apiBase, backendMode, enabled, prof
   if (!profile) return <EvidenceState><Loader2 className="spin" />正在读取模型生成证据…</EvidenceState>
   const cases = new Map((profile.cases || []).map((benchmarkCase) => [benchmarkCase.id, benchmarkCase]))
   const modelName = profile.displayName || profile.modelId
+  const scientific = profile.release?.presentationVersion === 'scientific-leaderboard-v2' || profile.presentationVersion === 'scientific-leaderboard-v2'
   return (
     <main className="bench-shell bench-evidence-page">
-      <EvidenceNav current="leaderboard" />
+      {showNavigation ? <EvidenceNav current="leaderboard" /> : null}
       <header className="bench-subpage-hero bench-evidence-hero">
         <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a>
         <div className="bench-eyebrow">MODEL EVIDENCE</div>
         <h1>{modelName}</h1>
-        <p>公开同一固定题集下的真实生成图片、逐图七维分数与原审核依据。</p>
-        <div className="bench-meta"><span className="accent">Overall #{profile.overallRank ?? '—'} · {scoreText(profile.overallScore)}</span><span>{profile.evidence?.length || 0} 张已审核样本</span><span>{profile.modelId}</span></div>
+        <p>{scientific ? '公开九个固定科研题位的状态、尝试摘要、十维分数，以及局部编辑 before / after。' : '公开同一固定题集下的真实生成图片、逐图七维分数与原审核依据。'}</p>
+        <div className="bench-meta"><span className="accent">Overall #{profile.overallRank ?? '—'} · {scoreText(profile.overallScore)}</span><span>{profile.evidence?.length || 0} 个固定题位</span>{scientific ? <><span>生成成功率 {scoreText(profile.generationSuccessRate * 100)}%</span><span>编辑成功率 {scoreText(profile.editSuccessRate * 100)}%</span></> : null}<span>{profile.modelId}</span></div>
       </header>
       <section className="bench-evidence-list">
-        {(profile.evidence || []).map((item) => <EvidenceCard item={item} benchmarkCase={cases.get(item.caseId)} modelName={modelName} key={item.sampleId} />)}
+        {(profile.evidence || []).map((item) => scientific
+          ? <ScientificEvidenceCard item={item} benchmarkCase={cases.get(item.caseId)} modelName={modelName} key={item.caseId} />
+          : <EvidenceCard item={item} benchmarkCase={cases.get(item.caseId)} modelName={modelName} key={item.sampleId} />)}
       </section>
     </main>
   )
 }
 
-export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseId }) {
+export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseId, showNavigation = true }) {
   const [benchmarkCase, setBenchmarkCase] = useState(null)
   const [items, setItems] = useState([])
   const [cursor, setCursor] = useState(undefined)
@@ -167,9 +202,11 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
     setError('')
     try {
       const response = await benchmarkCaseEvidenceRequest(apiBase, { backendMode }, caseId, { cursor: nextCursor, limit: 12 })
-      setBenchmarkCase(response.case)
-      setItems((current) => nextCursor ? [...current, ...(response.items || [])] : (response.items || []))
-      setCursor(response.nextCursor ?? null)
+      const normalized = caseId.startsWith('scientific-') ? normalizeScientificCaseResponse(response, caseId) : response
+      if (!normalized) throw new Error('题目证据数据格式不受支持')
+      setBenchmarkCase(normalized.case)
+      setItems((current) => nextCursor ? [...current, ...(normalized.items || [])] : (normalized.items || []))
+      setCursor(normalized.nextCursor ?? null)
     } catch (reason) { setError(reason?.message || String(reason)) }
     finally { setLoading(false) }
   }
@@ -186,12 +223,13 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
     const needle = deferredQuery.trim().toLocaleLowerCase('zh-CN')
     return items.filter((item) => !needle || `${item.model?.displayName || ''} ${item.modelId}`.toLocaleLowerCase('zh-CN').includes(needle))
   }, [deferredQuery, items])
+  const scientific = benchmarkCase?.id?.startsWith('scientific-')
   if (!enabled) return <EvidenceState>排行榜尚未开放。</EvidenceState>
   if (!benchmarkCase && loading) return <EvidenceState><Loader2 className="spin" />正在读取题目生成证据…</EvidenceState>
   if (!benchmarkCase && error) return <EvidenceState error>题目证据暂不可用：{error}</EvidenceState>
   return (
     <main className="bench-shell bench-evidence-page">
-      <EvidenceNav current="leaderboard" />
+      {showNavigation ? <EvidenceNav current="leaderboard" /> : null}
       <header className="bench-subpage-hero bench-evidence-hero">
         <a href={METHODOLOGY_HREF}><ArrowLeft size={15} />返回完整方法说明</a>
         <div className="bench-eyebrow">CASE EVIDENCE</div><h1>{benchmarkCase?.title || caseId}</h1><p>{benchmarkCase?.caption}</p>
@@ -201,10 +239,10 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
       <section className="bench-case-evidence-grid">
         {visible.map((item) => {
           const name = item.model?.displayName || item.modelId
-          return <article className="bench-case-evidence-item" key={item.sampleId}>
+          return <article className="bench-case-evidence-item" key={item.sampleId || item.profileId}>
             <header><a href={appPath(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{item.modelId}</small></a><span>Overall #{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}</span></header>
-            <BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase?.title || caseId}`} />
-            <EvidenceScores scores={item.scores} />
+            {scientific && item.status !== 'succeeded' ? <section className="bench-evidence-failure"><strong>{item.status}</strong><code>{item.failureReason || '未提供失败原因'}</code><p>该固定题位按 0 分计入总体。</p></section> : scientific && benchmarkCase?.kind === 'edit' ? <div className="bench-edit-comparison"><figure><figcaption>编辑前</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={`${name} · ${benchmarkCase.title} · 编辑前`} /></figure><figure><figcaption>编辑后</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase.title} · 编辑后`} /></figure></div> : <BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase?.title || caseId}`} />}
+            {item.status === 'succeeded' || !scientific ? <EvidenceScores scores={item.scores} axes={scientific ? SCIENTIFIC_LEADERBOARD_AXES.filter((axis) => benchmarkCase?.applicableAxes?.includes(axis.id)) : LEADERBOARD_AXES} /> : null}
             <ul className="bench-evidence-note-list">{(item.reviewNotes || []).map((note, index) => <li key={`${item.sampleId}-note-${index}`}>{note}</li>)}</ul>
           </article>
         })}
@@ -251,41 +289,58 @@ export function BenchmarkPromptSubmissionForm({ authenticated, onSubmit }) {
   )
 }
 
-export function BenchmarkPromptSubmissionPage({ apiBase, backendMode }) {
-  const auth = useAuthSession()
+export function BenchmarkPromptSubmissionPage({ apiBase, backendMode, showNavigation = true }) {
+  const auth = useLeaderboardSession()
   return (
     <main className="bench-shell bench-prompt-page">
-      <EvidenceNav current="submit" />
+      {showNavigation ? <EvidenceNav current="submit" /> : null}
       <header className="bench-subpage-hero"><a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a><div className="bench-eyebrow">COMMUNITY EVALUATION</div><h1>提交评估提示词</h1><p>告诉我们哪些真实难题值得加入下一期统一测评。Codex 每周整理，管理员最终确认。</p></header>
       {auth.isPending ? <EvidenceState><Loader2 className="spin" />正在确认登录状态…</EvidenceState> : <BenchmarkPromptSubmissionForm authenticated={Boolean(auth.session?.user)} onSubmit={async (payload) => (await benchmarkPromptSubmissionRequest(apiBase, { backendMode }, payload)).submission} />}
     </main>
   )
 }
 
-export function BenchmarkPromptAdminPage({ apiBase, backendMode }) {
-  const auth = useAuthSession()
+export function BenchmarkPromptAdminPage({ apiBase, backendMode, showNavigation = true }) {
+  const auth = useLeaderboardSession()
   const [admin, setAdmin] = useState(false)
   const [rows, setRows] = useState([])
   const [error, setError] = useState('')
-  const reload = async () => {
+  const reload = async (requestGeneration = auth.generation) => {
     const results = await Promise.all(['pending', 'grouped', 'candidate'].map((status) => adminBenchmarkRequest(apiBase, { backendMode }, 'adminBenchmarkPromptQueue', { status, limit: 200 })))
-    setRows(results.flatMap((result) => result.submissions || []))
+    if (auth.isCurrentGeneration(requestGeneration)) setRows(results.flatMap((result) => result.submissions || []))
   }
   useEffect(() => {
-    if (auth.isPending || !auth.session?.user) return
+    if (auth.isPending) return undefined
+    if (!auth.session?.user) {
+      setAdmin(false)
+      setRows([])
+      setError('')
+      return undefined
+    }
+    let cancelled = false
+    const requestGeneration = auth.generation
+    setAdmin(false)
+    setRows([])
+    setError('')
     adminStatusRequest(apiBase, { backendMode }).then((result) => {
+      if (cancelled || !auth.isCurrentGeneration(requestGeneration)) return undefined
       setAdmin(result.isAdmin)
-      if (result.isAdmin) return reload()
-    }).catch((reason) => setError(reason?.message || String(reason)))
-  }, [apiBase, backendMode, auth.isPending, auth.session?.user?.id])
+      if (result.isAdmin) return reload(requestGeneration)
+      return undefined
+    }).catch((reason) => {
+      if (!cancelled && auth.isCurrentGeneration(requestGeneration)) setError(reason?.message || String(reason))
+    })
+    return () => { cancelled = true }
+  }, [apiBase, backendMode, auth.generation, auth.isPending, auth.session?.user?.id])
   const updateRow = (submissionId, key, value) => setRows((current) => current.map((row) => row.submissionId === submissionId ? { ...row, [key]: value } : row))
   const decide = async (row, decision) => {
-    try { await adminBenchmarkRequest(apiBase, { backendMode }, 'adminBenchmarkPromptDecision', { submissionId: row.submissionId, decision, editedPrompt: row.prompt, editedCapability: row.capability }); await reload() }
-    catch (reason) { setError(reason?.message || String(reason)) }
+    const requestGeneration = auth.generation
+    try { await adminBenchmarkRequest(apiBase, { backendMode }, 'adminBenchmarkPromptDecision', { submissionId: row.submissionId, decision, editedPrompt: row.prompt, editedCapability: row.capability }); if (auth.isCurrentGeneration(requestGeneration)) await reload(requestGeneration) }
+    catch (reason) { if (auth.isCurrentGeneration(requestGeneration)) setError(reason?.message || String(reason)) }
   }
   return (
     <main className="bench-shell bench-prompt-page">
-      <EvidenceNav current="submit" />
+      {showNavigation ? <EvidenceNav current="submit" /> : null}
       <header className="bench-subpage-hero"><a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a><div className="bench-eyebrow">ADMIN REVIEW</div><h1>社区评估题审核</h1><p>这里只处理候选池，不修改当前正式题集或榜单。</p></header>
       {auth.isPending ? <EvidenceState><Loader2 className="spin" />正在确认管理员身份…</EvidenceState> : !admin ? <EvidenceState error>{error || '需要站长账号才能访问。'}</EvidenceState> : (
         <section className="bench-prompt-admin-list">{rows.map((row) => <article key={row.submissionId}><header><strong>{row.status}</strong><code>{row.submissionId}</code></header><label>能力分类<input value={row.capability || ''} onChange={(event) => updateRow(row.submissionId, 'capability', event.target.value)} /></label><label>规范提示词<textarea value={row.prompt || ''} onChange={(event) => updateRow(row.submissionId, 'prompt', event.target.value)} /></label><dl><div><dt>必须项</dt><dd>{row.requiredElements || '无'}</dd></div><div><dt>禁止项</dt><dd>{row.forbiddenResults || '无'}</dd></div></dl><footer><button onClick={() => decide(row, 'approved_for_next_suite')}>批准为下期候选</button><button onClick={() => decide(row, 'merged')}>标记已合并</button><button onClick={() => decide(row, 'rejected')}>拒绝</button></footer></article>)}</section>

@@ -69,3 +69,9 @@ test('leaderboard CSS keeps the page bounded and matrix scrollable with a sticky
   assert.match(styles, /@media\s*\(max-width:\s*390px\)[\s\S]*?\.bench-method-rubric-wrap\s*\{[\s\S]*?overflow-x:\s*auto/u)
   assert.doesNotMatch(styles, /gradient\(/u)
 })
+
+test('scientific evidence scores explicitly collapse at 760 and 390 pixels', () => {
+  const styles = readSource('../src/components/benchmark.css')
+  assert.match(styles, /@media\s*\(max-width:\s*760px\)\{(?:(?!@media)[\s\S])*?\.bench-scientific-evidence-card \.bench-evidence-scores\s*\{\s*grid-template-columns:\s*repeat\(4,minmax\(0,1fr\)\)/u)
+  assert.match(styles, /@media\s*\(max-width:\s*390px\)\{(?:(?!@media)[\s\S])*?\.bench-scientific-evidence-card \.bench-evidence-scores\s*\{\s*grid-template-columns:\s*repeat\(2,minmax\(0,1fr\)\)/u)
+})

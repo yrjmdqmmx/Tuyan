@@ -228,6 +228,7 @@ services:
     profiles:
       - benchmark-operator
     image: ${PAPERBANANA_BENCH_WORKER_IMAGE:-paperbanana-benchmark-worker:unconfigured}
+    user: "1000:1000"
     env_file:
       - /opt/paperbanana/secrets/bench.env
     dns:

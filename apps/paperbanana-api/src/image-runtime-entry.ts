@@ -1,4 +1,5 @@
 import { configureLafCloud } from './laf-cloud.js'
+import { normalizeAuthoritativeImageRuntimeError } from './image-runtime-error.js'
 
 function forbiddenCollection() {
   return new Proxy({}, {
@@ -27,4 +28,10 @@ legacy.configureRuntimeFetch(async (input: string | URL | Request, init?: Reques
   }
 })
 
-export const callImageModel = legacy.callImageModel
+export const callImageModel: typeof legacy.callImageModel = async (...args: Parameters<typeof legacy.callImageModel>) => {
+  try {
+    return await legacy.callImageModel(...args)
+  } catch (error) {
+    throw normalizeAuthoritativeImageRuntimeError(error)
+  }
+}

@@ -39,5 +39,25 @@ export function createSharedImageRuntime(callImageModel: AuthoritativeImageCall)
         input.imageSize !== 'provider-default',
       )
     },
+    async edit(input: {
+      provider: BenchProvider
+      model: string
+      apiKey: string
+      prompt: string
+      aspectRatio: '16:9'
+      sourceImage: string
+      imageSize: '2K'
+    }) {
+      return callImageModel(
+        input.provider,
+        input.model,
+        input.apiKey,
+        input.prompt,
+        input.aspectRatio,
+        input.sourceImage,
+        input.imageSize,
+        true,
+      )
+    },
   })
 }

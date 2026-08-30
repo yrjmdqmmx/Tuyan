@@ -1,0 +1,127 @@
+name: Run Scientific Benchmark V2 Operator
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Inspect is zero-call and default; run executes one exact bound bundle.
+        required: true
+        type: choice
+        default: inspect
+        options:
+          - inspect
+          - run
+          - reconcile_artifact
+          - import_codex
+          - render_public_evidence
+          - review_pack
+          - review_finalize
+      expected_deployed_sha:
+        description: Exact deployed Core and Benchmark Worker 40-character SHA.
+        required: true
+      bundle_sha256:
+        description: SHA-256 of the pre-staged protected V2 bundle; also its exact host filename.
+        required: true
+      registry_hash:
+        description: Exact frozen production registry hash.
+        required: true
+      suite_hash:
+        description: Exact pb-scientific-figure-v2 suite hash.
+        required: true
+      price_hash:
+        description: Exact verified CNY price snapshot hash.
+        required: true
+      manifest_hash:
+        description: Exact expected V2 batch manifest hash.
+        required: true
+      model_count:
+        description: Exact canonical model count, including codex:gpt-image-2.
+        required: true
+      confirm:
+        description: Exact mode-specific disabled-worker confirmation phrase.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  scientific-v2:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate exact immutable V2 envelope
+        env:
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          BUNDLE_SHA256: ${{ inputs.bundle_sha256 }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          MODEL_COUNT: ${{ inputs.model_count }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$GITHUB_SHA" == "$EXPECTED_SHA" ]]
+          for hash in "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$MODEL_COUNT" =~ ^[1-9][0-9]*$ && "$MODEL_COUNT" -le 257 ]]
+          case "$MODE" in
+            inspect) [[ "$CONFIRM" == inspect-scientific-v2-disabled-worker ]] ;;
+            run) [[ "$CONFIRM" == run-exact-scientific-v2-bundle-disabled-worker ]] ;;
+            reconcile_artifact) [[ "$CONFIRM" == reconcile-artifact-scientific-v2-disabled-worker ]] ;;
+            import_codex) [[ "$CONFIRM" == import-codex-scientific-v2-disabled-worker ]] ;;
+            render_public_evidence) [[ "$CONFIRM" == render-public-evidence-scientific-v2-disabled-worker ]] ;;
+            review_pack) [[ "$CONFIRM" == review-pack-scientific-v2-disabled-worker ]] ;;
+            review_finalize) [[ "$CONFIRM" == review-finalize-scientific-v2-disabled-worker ]] ;;
+            *) exit 1 ;;
+          esac
+          bash -n deploy/hk-single-host/scripts/run-scientific-v2-operator.sh
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Run exact protected V2 bundle
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          BUNDLE_SHA256: ${{ inputs.bundle_sha256 }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          MODEL_COUNT: ${{ inputs.model_count }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          apply_args=()
+          [[ "$MODE" == inspect ]] || apply_args+=(--apply)
+          printf -v remote_preflight 'cd %q && test "$(git rev-parse --verify HEAD)" = %q && git diff --quiet %q -- %q %q %q' \
+            /opt/paperbanana/repo "$EXPECTED_SHA" "$EXPECTED_SHA" \
+            .github/workflows/run-scientific-v2-operator.yml \
+            deploy/hk-single-host/compose.yaml \
+            deploy/hk-single-host/scripts/run-scientific-v2-operator.sh
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_preflight"
+          printf -v remote_command 'cd %q && sudo %q --mode %q --expected-sha %q --bundle-sha256 %q --registry-hash %q --suite-hash %q --price-hash %q --manifest-hash %q --model-count %q --confirm %q' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-operator.sh \
+            "$MODE" "$EXPECTED_SHA" "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$CONFIRM"
+          if (( ${#apply_args[@]} )); then remote_command+=' --apply'; fi
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

@@ -44,6 +44,8 @@ done
 "${mongo_admin[@]}" --eval '
   const benchmark = db.getSiblingDB("paperbanana_benchmark")
   const apiWritableCollections = ["paperbanana_benchmark_suites", "paperbanana_benchmark_models", "paperbanana_benchmark_runs", "paperbanana_benchmark_samples", "paperbanana_benchmark_judgments", "paperbanana_benchmark_public_evidence", "paperbanana_benchmark_prompt_submissions", "paperbanana_benchmark_prompt_digests"]
+  const scientificV2ApiWritableCollections = ["paperbanana_benchmark_scientific_v2_batches", "paperbanana_benchmark_scientific_v2_dispatches", "paperbanana_benchmark_scientific_v2_review_artifacts", "paperbanana_benchmark_scientific_v2_public_evidence"]
+  const scientificV2WorkerWritableCollections = ["paperbanana_benchmark_scientific_v2_batches", "paperbanana_benchmark_scientific_v2_dispatches"]
   const sampleCollection = benchmark.getCollection("paperbanana_benchmark_samples")
   sampleCollection.createIndex(
     {runId: 1, phase: 1, caseId: 1, repetition: 1},
@@ -76,6 +78,25 @@ done
     throw new Error("phase_dispatch_unique verification failed")
   }
 
+  const scientificV2IndexContracts = [
+    {name: "scientific_v2_batch_id", collection: "paperbanana_benchmark_scientific_v2_batches", keys: {batchId: 1}, options: {unique: true}},
+    {name: "scientific_v2_manifest_hash", collection: "paperbanana_benchmark_scientific_v2_batches", keys: {manifestHash: 1}, options: {unique: true}},
+    {name: "scientific_v2_dispatch_identity", collection: "paperbanana_benchmark_scientific_v2_dispatches", keys: {manifestHash: 1, slotId: 1, attemptIndex: 1}, options: {unique: true}},
+    {name: "scientific_v2_review_identity", collection: "paperbanana_benchmark_scientific_v2_review_artifacts", keys: {batchManifestHash: 1, sourceSetHash: 1, role: 1}, options: {unique: true}},
+    {name: "scientific_v2_release_identity", collection: "paperbanana_benchmark_releases", keys: {suiteId: 1, evaluationMode: 1, evaluationEpoch: 1}, options: {unique: true, partialFilterExpression: {evaluationMode: "codex_scientific_v2", profileStatus: "published"}}},
+    {name: "scientific_v2_public_evidence_identity", collection: "paperbanana_benchmark_scientific_v2_public_evidence", keys: {sourceReleaseHash: 1, profileId: 1, caseId: 1}, options: {unique: true}},
+  ]
+  for (const contract of scientificV2IndexContracts) {
+    const collection = benchmark.getCollection(contract.collection)
+    collection.createIndex(contract.keys, {...contract.options, name: contract.name})
+    const actual = collection.getIndexes().find(index => index.name === contract.name)
+    if (!actual || JSON.stringify(actual.key) !== JSON.stringify(contract.keys)
+      || actual.unique !== true
+      || JSON.stringify(actual.partialFilterExpression) !== JSON.stringify(contract.options.partialFilterExpression)) {
+      throw new Error(`${contract.name} verification failed`)
+    }
+  }
+
   const roleDefinitions = [
     {
       role: "paperbanana_benchmark_worker_role",
@@ -87,12 +108,14 @@ done
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_dispatches"}, actions: ["find", "insert"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_public_evidence"}, actions: ["find", "insert", "update"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_releases"}, actions: ["find"]},
+        ...scientificV2WorkerWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update"]})),
       ],
     },
     {
       role: "paperbanana_benchmark_api_role",
       privileges: [
         ...apiWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]})),
+        ...scientificV2ApiWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]})),
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_dispatches"}, actions: ["find"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_releases"}, actions: ["find", "insert"]},
       ],
