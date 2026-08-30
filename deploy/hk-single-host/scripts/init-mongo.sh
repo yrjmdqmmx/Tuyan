@@ -43,7 +43,7 @@ done
 
 "${mongo_admin[@]}" --eval '
   const benchmark = db.getSiblingDB("paperbanana_benchmark")
-  const apiWritableCollections = ["paperbanana_benchmark_suites", "paperbanana_benchmark_models", "paperbanana_benchmark_runs", "paperbanana_benchmark_samples", "paperbanana_benchmark_judgments"]
+  const apiWritableCollections = ["paperbanana_benchmark_suites", "paperbanana_benchmark_models", "paperbanana_benchmark_runs", "paperbanana_benchmark_samples", "paperbanana_benchmark_judgments", "paperbanana_benchmark_public_evidence", "paperbanana_benchmark_prompt_submissions", "paperbanana_benchmark_prompt_digests"]
   const sampleCollection = benchmark.getCollection("paperbanana_benchmark_samples")
   sampleCollection.createIndex(
     {runId: 1, phase: 1, caseId: 1, repetition: 1},
@@ -85,6 +85,7 @@ done
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_samples"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_judgments"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_dispatches"}, actions: ["find", "insert"]},
+        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_public_evidence"}, actions: ["find", "insert", "update"]},
       ],
     },
     {
