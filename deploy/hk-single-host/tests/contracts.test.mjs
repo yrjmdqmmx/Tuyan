@@ -195,6 +195,13 @@ test('benchmark worker image pins CJK glyph support and renders calibration snap
   assert.match(packageJson, /src\/calibration-snapshot\.ts[\s\S]*dist\/calibration-snapshot\.mjs/);
 });
 
+test('the ESM resident Worker keeps sharp native loading external to the bundle', () => {
+  const packageJson = JSON.parse(read('../../apps/benchmark-worker/package.json'));
+  const residentBuild = String(packageJson.scripts.build).split('&&')[0];
+  assert.match(residentBuild, /src\/main\.ts/);
+  assert.match(residentBuild, /--external:sharp/);
+});
+
 test('Core and Worker images bake non-overridable commit provenance and publishing passes the checked-out SHA', () => {
   const coreDockerfile = read('../../apps/paperbanana-api/Dockerfile');
   const workerDockerfile = read('../../apps/benchmark-worker/Dockerfile');
