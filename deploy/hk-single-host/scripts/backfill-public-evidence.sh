@@ -104,22 +104,22 @@ entry_confirm='inspect-public-evidence-disabled-worker'
   -e "PAPERBANANA_PUBLIC_EVIDENCE_BACKFILL_CONFIRM=$entry_confirm" \
   benchmark-worker node dist/public-evidence-backfill.mjs >"$result_path"
 
-node - "$result_path" "$mode" "$release_hash" <<'NODE'
-const fs = require('node:fs')
-const [path, expectedMode, expectedReleaseHash] = process.argv.slice(2)
+"${compose[@]}" exec -T paperbanana-api node -e '
+const fs = require("node:fs")
+const [expectedMode, expectedReleaseHash] = process.argv.slice(1)
 let value
-try { value = JSON.parse(fs.readFileSync(path, 'utf8')) } catch { process.exit(1) }
+try { value = JSON.parse(fs.readFileSync(0, "utf8")) } catch { process.exit(1) }
 if (value?.schemaVersion !== 1 || value.mode !== expectedMode || value.releaseHash !== expectedReleaseHash
   || value.generatedOrJudgeCalls !== 0 || !Number.isInteger(value.eligibleModelCount)
   || !Number.isInteger(value.sourceCount) || !Number.isInteger(value.publishedCount)
   || value.eligibleModelCount < 1 || value.sourceCount < value.eligibleModelCount * 3
-  || (expectedMode === 'inspect' && value.publishedCount !== 0)
-  || (expectedMode === 'apply' && value.publishedCount !== value.sourceCount)) process.exit(1)
+  || (expectedMode === "inspect" && value.publishedCount !== 0)
+  || (expectedMode === "apply" && value.publishedCount !== value.sourceCount)) process.exit(1)
 process.stdout.write(`${JSON.stringify({
   schemaVersion: 1, mode: value.mode, releaseHash: value.releaseHash,
   eligibleModelCount: value.eligibleModelCount, sourceCount: value.sourceCount,
   publishedCount: value.publishedCount, generatedOrJudgeCalls: 0,
 })}\n`)
-NODE
+' "$mode" "$release_hash" <"$result_path"
 
 "${compose[@]}" exec -T benchmark-worker node -e "$worker_guard" "$expected_sha" >/dev/null
