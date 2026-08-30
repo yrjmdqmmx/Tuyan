@@ -50,6 +50,8 @@ test('public evidence backfill operator is executable, fixed-SHA and zero-genera
   assert.match(source, /PAPERBANANA_BENCH_CONCURRENCY[\s\S]*1/)
   assert.match(source, /build-provenance\.json/)
   assert.match(source, /benchmark-worker[\s\S]*public-evidence-backfill\.mjs/)
+  assert.match(source, /"\$\{compose\[@\]\}" exec -T paperbanana-api node -e[\s\S]*<"\$result_path"/)
+  assert.doesNotMatch(source, /^node - /m)
   assert.match(source, /PAPERBANANA_PUBLIC_EVIDENCE_RELEASE_HASH/)
   assert.match(source, /generatedOrJudgeCalls[\s\S]*0/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_ENABLED\s*=\s*true|set -x|printenv|phase-operator\.mjs/)
