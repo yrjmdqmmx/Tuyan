@@ -253,6 +253,21 @@ test('Hong Kong deploy makes the disabled benchmark credential mode explicit wit
   assert.match(smoke, /process\.env\[name\]/);
 });
 
+test('Mongo least-privilege roles cover public evidence and prompt storage before Core startup', () => {
+  const initMongo = read('scripts/init-mongo.sh');
+  const apiCollectionsSource = initMongo.match(/const apiWritableCollections = (\[[^\n]+\])/);
+  assert.ok(apiCollectionsSource, 'API writable collection allowlist must be explicit');
+  const apiCollections = JSON.parse(apiCollectionsSource[1]);
+  for (const collection of [
+    'paperbanana_benchmark_public_evidence',
+    'paperbanana_benchmark_prompt_submissions',
+    'paperbanana_benchmark_prompt_digests',
+  ]) assert.ok(apiCollections.includes(collection), `${collection} must be writable by the Core API role`);
+
+  const workerRole = initMongo.match(/role: "paperbanana_benchmark_worker_role",[\s\S]*?\n\s*},\n\s*{\n\s*role: "paperbanana_benchmark_api_role"/)?.[0] || '';
+  assert.match(workerRole, /collection: "paperbanana_benchmark_public_evidence"[\s\S]*actions: \["find", "insert", "update"\]/);
+});
+
 test('benchmark discovery bootstrap rejects paid credentials before mutating host secrets', () => {
   const secretDir = mkdtempSync(join(tmpdir(), 'paperbanana-bench-paid-'));
   const gatewayPath = join(secretDir, 'gateway.env');
