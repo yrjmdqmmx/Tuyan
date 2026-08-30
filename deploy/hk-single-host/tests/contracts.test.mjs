@@ -273,6 +273,7 @@ test('Mongo least-privilege roles cover public evidence and prompt storage befor
 
   const workerRole = initMongo.match(/role: "paperbanana_benchmark_worker_role",[\s\S]*?\n\s*},\n\s*{\n\s*role: "paperbanana_benchmark_api_role"/)?.[0] || '';
   assert.match(workerRole, /collection: "paperbanana_benchmark_public_evidence"[\s\S]*actions: \["find", "insert", "update"\]/);
+  assert.match(workerRole, /collection: "paperbanana_benchmark_releases"[\s\S]*actions: \["find"\]/);
 });
 
 test('benchmark discovery bootstrap rejects paid credentials before mutating host secrets', () => {

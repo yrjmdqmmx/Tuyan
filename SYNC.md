@@ -32,7 +32,7 @@
 - 新增管理员 action：`adminBenchmarkPromptQueue / adminBenchmarkPromptDigest / adminBenchmarkPromptDecision`。状态为 `pending → grouped → candidate → approved_for_next_suite / merged / rejected`；digest 使用共享租约锁、稳定 digest ID 与来源投稿 ID；批准只表示下期候选，不能修改正式 suite、启动生成或改变榜单。
 - 新增 Mongo collection：`paperbanana_benchmark_public_evidence / paperbanana_benchmark_prompt_submissions / paperbanana_benchmark_prompt_digests` 及查询/限频索引。原始投稿身份只在管理员队列可见。
 - 新增手工 `Backfill Public Benchmark Evidence` workflow：`inspect` 只读核对，`apply` 才写 WebP/evidence；两者均绑定 exact deployed SHA、source release hash、`configured-disabled`、Worker disabled/并发 1 与香港生产共享锁，输出固定证明 `generatedOrJudgeCalls=0`。
-- 香港 Mongo 最小权限角色同步覆盖新集合：Core API 对三项新集合具备 `find/insert/update/createIndex/listIndexes`；disabled Benchmark Worker 仅对 public evidence 增加回填所需 `find/insert/update`，不扩大 Provider 或正式测评权限。
+- 香港 Mongo 最小权限角色同步覆盖新集合：Core API 对三项新集合具备 `find/insert/update/createIndex/listIndexes`；disabled Benchmark Worker 对 public evidence 仅增加回填所需 `find/insert/update`，并对不可变 releases 增加回填校验所需的单一 `find` 权限，不扩大 release 写入、Provider 或正式测评权限。
 - Web 新增 `/leaderboard/models/:profileId`、`/leaderboard/cases/:caseId`、`/leaderboard/submit-prompt`、`/leaderboard/admin/prompt-submissions`；排行榜首屏不请求样本图，证据图使用 `srcset + loading=lazy + decoding=async`，详情图只在主动放大时请求。
 
 各端待办：
