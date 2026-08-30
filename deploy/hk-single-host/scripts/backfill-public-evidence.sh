@@ -107,9 +107,13 @@ timeout --signal=TERM --kill-after=10s "${entry_timeout}s" "${compose[@]}" exec 
   -e "PAPERBANANA_PUBLIC_EVIDENCE_BACKFILL_CONFIRM=$entry_confirm" \
   benchmark-worker node dist/public-evidence-backfill.mjs >"$result_path"
 
-"${compose[@]}" exec -T paperbanana-api node -e '
+"${compose[@]}" exec -T \
+  -e "PAPERBANANA_PUBLIC_EVIDENCE_RESULT_MODE=$mode" \
+  -e "PAPERBANANA_PUBLIC_EVIDENCE_RESULT_RELEASE_HASH=$release_hash" \
+  paperbanana-api node -e '
 const fs = require("node:fs")
-const [expectedMode, expectedReleaseHash] = process.argv.slice(1)
+const expectedMode = process.env.PAPERBANANA_PUBLIC_EVIDENCE_RESULT_MODE
+const expectedReleaseHash = process.env.PAPERBANANA_PUBLIC_EVIDENCE_RESULT_RELEASE_HASH
 let value
 try { value = JSON.parse(fs.readFileSync(0, "utf8")) } catch { process.exit(1) }
 if (value?.schemaVersion !== 1 || value.mode !== expectedMode || value.releaseHash !== expectedReleaseHash
@@ -123,6 +127,6 @@ process.stdout.write(`${JSON.stringify({
   eligibleModelCount: value.eligibleModelCount, sourceCount: value.sourceCount,
   publishedCount: value.publishedCount, generatedOrJudgeCalls: 0,
 })}\n`)
-' "$mode" "$release_hash" <"$result_path"
+' <"$result_path"
 
 "${compose[@]}" exec -T benchmark-worker node -e "$worker_guard" "$expected_sha" >/dev/null
