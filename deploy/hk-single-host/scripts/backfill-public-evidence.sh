@@ -98,7 +98,10 @@ cleanup() { rm -f -- "$result_path"; cleanup_lock; }
 trap cleanup EXIT
 entry_confirm='inspect-public-evidence-disabled-worker'
 [[ "$mode" == apply ]] && entry_confirm='backfill-public-evidence-disabled-worker'
-"${compose[@]}" exec -T \
+command -v timeout >/dev/null 2>&1 || { echo 'timeout is required for evidence backfill' >&2; exit 1; }
+entry_timeout=300
+[[ "$mode" == apply ]] && entry_timeout=3600
+timeout --signal=TERM --kill-after=10s "${entry_timeout}s" "${compose[@]}" exec -T \
   -e "PAPERBANANA_PUBLIC_EVIDENCE_BACKFILL_MODE=$mode" \
   -e "PAPERBANANA_PUBLIC_EVIDENCE_RELEASE_HASH=$release_hash" \
   -e "PAPERBANANA_PUBLIC_EVIDENCE_BACKFILL_CONFIRM=$entry_confirm" \

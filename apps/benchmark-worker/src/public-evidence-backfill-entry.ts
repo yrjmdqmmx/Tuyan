@@ -48,6 +48,10 @@ function eligibleModels(release: AnyRecord) {
     && BENCHMARK_AXES.every((axis) => Number.isFinite(Number(model.dimensions?.[axis]?.mean))))
 }
 
+function progress(stage: string, completedModels: number, totalModels: number) {
+  process.stderr.write(`${JSON.stringify({ event: 'public_evidence_backfill_progress', stage, completedModels, totalModels })}\n`)
+}
+
 async function main() {
   const mode = required('PAPERBANANA_PUBLIC_EVIDENCE_BACKFILL_MODE')
   if (!['inspect', 'apply'].includes(mode)) throw new Error('BENCHMARK_PUBLIC_EVIDENCE_BACKFILL_INPUT_INVALID')
@@ -60,7 +64,12 @@ async function main() {
   const expectedReleaseHash = required('PAPERBANANA_PUBLIC_EVIDENCE_RELEASE_HASH').toLowerCase()
   if (!/^[a-f0-9]{64}$/.test(expectedReleaseHash)) throw new Error('BENCHMARK_PUBLIC_EVIDENCE_BACKFILL_INPUT_INVALID')
 
-  const client = new MongoClient(required('PAPERBANANA_BENCH_MONGODB_URI'))
+  const client = new MongoClient(required('PAPERBANANA_BENCH_MONGODB_URI'), {
+    serverSelectionTimeoutMS: 10_000,
+    connectTimeoutMS: 10_000,
+    socketTimeoutMS: 15_000,
+    waitQueueTimeoutMS: 10_000,
+  })
   const owner = `public-evidence-backfill:${randomUUID()}`
   let lockClaimed = false
   try {
@@ -71,9 +80,10 @@ async function main() {
     const samples = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.samples)
     const judgments = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.judgments)
     const publicEvidence = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.publicEvidence)
-    const release = verifiedRelease(await releases.findOne({ releaseHash: expectedReleaseHash }), expectedReleaseHash)
+    const release = verifiedRelease(await releases.findOne({ releaseHash: expectedReleaseHash }, { maxTimeMS: 10_000 }), expectedReleaseHash)
     const models = eligibleModels(release)
     if (!models.length) throw new Error('BENCHMARK_PUBLIC_EVIDENCE_BACKFILL_RELEASE_EMPTY')
+    progress('release_verified', 0, models.length)
 
     const lockId = `benchmark-public-evidence-backfill-lock:${expectedReleaseHash}`
     if (mode === 'apply') {
@@ -100,15 +110,15 @@ async function main() {
     }) : null
     const rows: AnyRecord[] = []
     let sourceCount = 0
-    for (const model of models) {
+    for (const [modelIndex, model] of models.entries()) {
       const run = await runs.find({
         evaluationMode: 'codex_single', evaluationEpoch: release.methodology?.evaluationEpoch,
         modelId: model.modelId, provider: model.primaryAccessProvider || model.provider, state: 'published',
-      }).sort({ updatedAt: -1 }).limit(1).next()
+      }).maxTimeMS(10_000).sort({ updatedAt: -1 }).limit(1).next()
       const runProfileId = run ? `${run.releaseDraft?.models?.[0]?.canonicalModelId || ''}:${run.evaluationMode}:${run.evaluationEpoch}` : ''
       if (!run || runProfileId !== model.profileId) throw new Error(`BENCHMARK_PUBLIC_EVIDENCE_BACKFILL_RUN_MISSING:${model.profileId}`)
-      const runSamples = await samples.find({ runId: run._id, phase: 'standard', status: 'completed' }).sort({ sampleId: 1 }).toArray()
-      const accepted = await judgments.find({ runId: run._id, phase: 'standard', source: 'codex', accepted: true }).toArray()
+      const runSamples = await samples.find({ runId: run._id, phase: 'standard', status: 'completed' }).maxTimeMS(10_000).sort({ sampleId: 1 }).toArray()
+      const accepted = await judgments.find({ runId: run._id, phase: 'standard', source: 'codex', accepted: true }).maxTimeMS(10_000).toArray()
       const bySample = new Map(accepted.map((judgment) => [judgment.sampleId, judgment]))
       if (runSamples.length < 3 || bySample.size !== runSamples.length) throw new Error(`BENCHMARK_PUBLIC_EVIDENCE_BACKFILL_REVIEW_INCOMPLETE:${model.profileId}`)
       for (const sample of runSamples) {
@@ -138,7 +148,9 @@ async function main() {
           overallScore: model.overallScore, createdAt: new Date(), updatedAt: new Date(),
         })
       }
+      progress('model_verified', modelIndex + 1, models.length)
     }
+    progress('source_verified', models.length, models.length)
     if (mode === 'apply') {
       if (rows.length !== sourceCount) throw new Error('BENCHMARK_PUBLIC_EVIDENCE_BACKFILL_ROW_COUNT_MISMATCH')
       await publicEvidence.bulkWrite(rows.map((document) => ({
@@ -158,7 +170,7 @@ async function main() {
         { $unset: { owner: '', leaseUntil: '' }, $set: { failedAt: new Date() } },
       ).catch(() => {})
     }
-    await client.close()
+    await client.close(true).catch(() => {})
   }
 }
 
