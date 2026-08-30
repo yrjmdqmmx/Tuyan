@@ -38,11 +38,11 @@
 各端待办：
 - [x] paperbanana-api / Core（公开 evidence 投影、投稿存储/限频、digest 锁、管理员审核、hash fail-closed 与 TDD）
 - [x] auth-gateway / packages-api（匿名 evidence 读取、登录身份/IP 注入、三项管理员 action 转发）
-- [x] Benchmark Worker（新样本三档 WebP、内容 hash、不可覆盖写、幂等回填 entry；未执行生产回填）
+- [x] Benchmark Worker（新样本三档 WebP、内容 hash、不可覆盖写、幂等回填 entry；生产 124 张已审核样本已完成回填）
 - [x] Web（模型证据、同题对比、投稿与管理员页，静态入口/404 深链、懒加载与移动端布局）
 - [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（新 action 与页面只由 Web 使用；现有契约不变，无需改造）
 - [x] Codex 定时任务（已创建 ACTIVE 项目级任务 `paperbanana`，每周一 10:00 按本机 Asia/Shanghai 时区；只整理 pending 并提交 digest，不得修改 suite 或运行测评；失败时通知）
-- [ ] 部署 / 运维（锁定合并 SHA 后仅重建发布 Web/Pages、Gateway、Core、Benchmark Worker；Plot Worker 不改；先 inspect 后在 disabled Worker 上执行 WebP 回填并核对数量/hash/MIME/缓存；不得触发生图或 Judge）
+- [x] 部署 / 运维（功能 PR #74 与生产修复 PR #76–#83 已合并。香港 Core / Benchmark Worker 固定代码 SHA `2151ce8390104cafa9ad7f239e8f02da1b0382cf`，最终镜像分别为 `paperbanana-core-api@sha256:10247c40…` / `paperbanana-benchmark-worker@sha256:c855935b…`；Gateway `sha256:2af6894e…`、Plot Worker `sha256:23894f48…`、Mongo `sha256:5dda65a8…` 均复用且 Plot Worker 未重建。生产部署 run `33307212688` 成功，Worker 保持 configured-disabled / disabled / 并发 1。只读 inspect run `33307277050` 验证 release `2688db53…`、31 模型、124 源样本、0 已发布；幂等 apply run `33307319063` 发布 124/124 evidence，固定证明 `generatedOrJudgeCalls=0`。Web/Pages SHA `b383262693aa5fecc9c77c18d360c537865901a4`、run `33308241316` 已发布；生产 API 验证模型证据 4 张、题目页 12→24→31 分页、三档 WebP、MIME `image/webp`、immutable 一年缓存与内容 hash 一致，匿名投稿返回 401；真实浏览器深链刷新、非法路由、390/430 无页面级横向溢出和懒加载契约通过。全过程未触发生图或 Judge）
 
 ### [2026-08-29] Bench 完整公开方法题集与独立方法页 — by Codex
 变更：公开 `benchmarkMethodology` 在 `evaluationMode=codex_single` 且 `profileStatus=published` 的 Arena release 上，先做 `releaseHash` 校验，再新增顶层 `suite` / `scoring`；历史 Quick/Full、`provisional` / `verified` 与无 release 结果继续保持旧形状，不回填、不改名。`suite` 的权威来源是 `PB_IMAGE_LIGHT_V1` allowlist 的深拷贝：完整公开四题正/负向提示词、约束、七维 rubric、许可、case / suite hash；不公开盲标签、模型映射、审核记录、签名/密钥/operator 材料。`scoring` 公共化 0-10 评分，要求至少 3/4、最多 4，七维等权，competition 采用 `1,1,3`，并明确 confirmed axis cap。Web 总榜移除内嵌“读榜前需要知道”，新增 `/leaderboard/methodology` 以及静态 root / non-root / 尾斜杠入口；所有方法链接改为正式路由。方法页只请求 `benchmarkMethodology`，严格 normalize，复制状态防竞态，旧或畸形响应 fail closed，且不带内置 prompt 副本。公开 action 名称不变，新字段向后兼容，不触发任何生成 / Judge / 付费。
