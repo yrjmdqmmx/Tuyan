@@ -11,6 +11,10 @@ test('leaderboard route resolver recognizes overview, methodology, all seven dim
   assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/methodology'), { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false })
   assert.deepEqual(routes.resolveLeaderboardRoute('/leaderboard/methodology/'), { isLeaderboard: true, methodology: true, dimension: null, invalidSlug: false })
   assert.equal(routes.resolveLeaderboardRoute('/leaderboard/models/profile%3Aone').modelProfileId, 'profile:one')
+  assert.equal(
+    routes.resolveLeaderboardRoute('/leaderboard/models/krea%2Fkrea-2-medium%3Acodex_single%3Acodex-single-2026-08-v1/').modelProfileId,
+    'krea/krea-2-medium:codex_single:codex-single-2026-08-v1',
+  )
   assert.equal(routes.resolveLeaderboardRoute('/leaderboard/cases/math_symbols-01').caseId, 'math_symbols-01')
   assert.equal(routes.resolveLeaderboardRoute('/leaderboard/submit-prompt').promptSubmission, true)
   assert.equal(routes.resolveLeaderboardRoute('/leaderboard/admin/prompt-submissions').promptAdmin, true)
@@ -78,4 +82,21 @@ test('canonicalization restores a valid fallback route under a non-root app base
   assert.equal(restored.pathname, '/leaderboard/aesthetics')
   assert.equal(restored.search, '?source=404')
   assert.deepEqual(calls, [[{}, '', '/paperbanana/leaderboard/aesthetics?source=404#rank']])
+})
+
+test('GitHub Pages trailing-slash fallback restores a real encoded model profile route', async () => {
+  const routes = await import('./leaderboardRoutes.js')
+  const calls = []
+  const restored = routes.canonicalizeLeaderboardLocation(
+    {
+      pathname: '/leaderboard/',
+      search: '?__route=%2Fleaderboard%2Fmodels%2Fkrea%252Fkrea-2-medium%253Acodex_single%253Acodex-single-2026-08-v1%2F',
+      hash: '',
+    },
+    { replaceState: (...args) => calls.push(args) },
+  )
+  assert.equal(restored.pathname, '/leaderboard/models/krea%2Fkrea-2-medium%3Acodex_single%3Acodex-single-2026-08-v1/')
+  assert.equal(restored.search, '')
+  assert.deepEqual(calls, [[{}, '', '/leaderboard/models/krea%2Fkrea-2-medium%3Acodex_single%3Acodex-single-2026-08-v1/']])
+  assert.equal(routes.resolveLeaderboardRoute(restored.pathname).invalidSlug, false)
 })

@@ -34,7 +34,9 @@ export function resolveLeaderboardRoute(pathname = '') {
   if (slug.startsWith('models/')) {
     try {
       const modelProfileId = decodeURIComponent(slug.slice('models/'.length))
-      if (modelProfileId && modelProfileId.length <= 300 && !/[/?#]/.test(modelProfileId)) {
+      const profileSegments = modelProfileId.split('/')
+      if (modelProfileId && modelProfileId.length <= 300 && !/[?#]/.test(modelProfileId)
+        && profileSegments.every((segment) => segment && segment !== '.' && segment !== '..')) {
         return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false, modelProfileId }
       }
     } catch {}
@@ -52,7 +54,7 @@ export function resolveLeaderboardRoute(pathname = '') {
 export function canonicalizeLeaderboardLocation(location = {}, history = {}, base = APP_BASE_URL) {
   const pathname = String(location.pathname || '')
   const query = new URLSearchParams(location.search || '')
-  const fallbackPath = pathname === '/leaderboard' ? query.get('__route') : ''
+  const fallbackPath = (pathname === '/leaderboard' || pathname === '/leaderboard/') ? query.get('__route') : ''
   if (fallbackPath && (fallbackPath === '/bench' || fallbackPath.startsWith('/bench/'))) {
     query.delete('__route')
     const search = query.toString() ? `?${query.toString()}` : ''
