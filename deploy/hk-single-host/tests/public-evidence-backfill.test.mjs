@@ -8,6 +8,7 @@ import { test } from 'node:test'
 
 const script = fileURLToPath(new URL('../scripts/backfill-public-evidence.sh', import.meta.url))
 const workflow = fileURLToPath(new URL('../../../.github/workflows/backfill-public-evidence.yml', import.meta.url))
+const entry = fileURLToPath(new URL('../../../apps/benchmark-worker/src/public-evidence-backfill-entry.ts', import.meta.url))
 const sha = 'a'.repeat(40)
 const releaseHash = 'b'.repeat(64)
 
@@ -50,11 +51,21 @@ test('public evidence backfill operator is executable, fixed-SHA and zero-genera
   assert.match(source, /PAPERBANANA_BENCH_CONCURRENCY[\s\S]*1/)
   assert.match(source, /build-provenance\.json/)
   assert.match(source, /benchmark-worker[\s\S]*public-evidence-backfill\.mjs/)
+  assert.match(source, /timeout --signal=TERM --kill-after=10s "\$\{entry_timeout\}s"/)
   assert.match(source, /"\$\{compose\[@\]\}" exec -T paperbanana-api node -e[\s\S]*<"\$result_path"/)
   assert.doesNotMatch(source, /^node - /m)
   assert.match(source, /PAPERBANANA_PUBLIC_EVIDENCE_RELEASE_HASH/)
   assert.match(source, /generatedOrJudgeCalls[\s\S]*0/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_ENABLED\s*=\s*true|set -x|printenv|phase-operator\.mjs/)
+})
+
+test('backfill inspection has bounded Mongo operations, progress markers, and a forced close', () => {
+  const source = readFileSync(entry, 'utf8')
+  assert.match(source, /serverSelectionTimeoutMS:\s*10_000/)
+  assert.match(source, /socketTimeoutMS:\s*15_000/)
+  assert.ok((source.match(/\.maxTimeMS\(10_000\)/g) || []).length >= 3)
+  assert.match(source, /public_evidence_backfill_progress/)
+  assert.match(source, /client\.close\(true\)/)
 })
 
 test('inspect validates the protected host state without starting Docker in test roots', () => {
