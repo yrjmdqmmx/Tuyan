@@ -1,0 +1,61 @@
+name: Cleanup Stale Public Evidence Inspect
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        description: Exact SHA used by the stale read-only inspect.
+        required: true
+      source_release_hash:
+        description: Exact source release hash used by the stale inspect.
+        required: true
+      confirm:
+        description: Type cleanup-stale-public-evidence-inspect to continue.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-stale-inspect-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    if: github.event.inputs.confirm == 'cleanup-stale-public-evidence-inspect'
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate exact cleanup binding
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          RELEASE_HASH: ${{ inputs.source_release_hash }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$RELEASE_HASH" =~ ^[a-f0-9]{64}$ ]]
+          bash -n deploy/hk-single-host/scripts/cleanup-stale-public-evidence-inspect.sh
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Terminate only the exact stale inspect process tree
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          RELEASE_HASH: ${{ inputs.source_release_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'cd %q && git fetch --quiet origin %q && git checkout --detach %q && sudo %q --expected-sha %q --release-hash %q --confirm %q' \
+            /opt/paperbanana/repo "$GITHUB_SHA" "$GITHUB_SHA" \
+            deploy/hk-single-host/scripts/cleanup-stale-public-evidence-inspect.sh \
+            "$EXPECTED_SHA" "$RELEASE_HASH" cleanup-stale-public-evidence-inspect
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=4 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"
