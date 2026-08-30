@@ -3,7 +3,7 @@ import { createHmac } from 'node:crypto'
 import test from 'node:test'
 
 import { createBenchmarkService, publicBenchmarkRelease } from '../src/benchmark-service.js'
-import { buildCodexSingleProfile, buildJudgeCalibrationRecord, buildPhaseOperatorAttestation, buildPublicEvidenceDraft, buildStandardReviewSourceManifest, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects } from '../src/benchmark-repository.js'
+import { buildCodexSingleProfile, buildJudgeCalibrationRecord, buildPhaseOperatorAttestation, buildPublicEvidenceDraft, buildStandardReviewSourceManifest, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects, verifyScientificV2EvidenceMetadata } from '../src/benchmark-repository.js'
 import {
   BENCHMARK_AXES,
   PB_IMAGE_DIAGNOSTIC_V1,
@@ -1760,4 +1760,23 @@ test('verified publication rejects a valid-shaped score snapshot change before i
     /BENCHMARK_VERIFIED_INTEGRITY_FAILED:SOURCE_MANIFEST/,
   )
   assert.equal(insertedReleases.length, 0)
+})
+test('scientific v2 production object policy requires exact private/public metadata and ACL', () => {
+  const rawHash = 'a'.repeat(64)
+  const publicHash = 'b'.repeat(64)
+  const privateKey = `bench/scientific-v2/private/objects/${rawHash}.png`
+  const publicKey = `bench/scientific-v2/public/${rawHash}/thumbnail.webp`
+  verifyScientificV2EvidenceMetadata(privateKey, rawHash, {
+    mimeType: 'image/png', cacheControl: 'private, no-store', sha256: rawHash, acl: 'private',
+  })
+  verifyScientificV2EvidenceMetadata(publicKey, publicHash, {
+    mimeType: 'image/webp', cacheControl: 'public, max-age=31536000, immutable', sha256: publicHash, acl: 'public-read',
+  })
+  for (const drift of [
+    { mimeType: 'image/png' }, { cacheControl: 'private, no-store' }, { sha256: rawHash }, { acl: 'private' },
+  ]) {
+    assert.throws(() => verifyScientificV2EvidenceMetadata(publicKey, publicHash, {
+      mimeType: 'image/webp', cacheControl: 'public, max-age=31536000, immutable', sha256: publicHash, acl: 'public-read', ...drift,
+    }), /SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH/)
+  }
 })

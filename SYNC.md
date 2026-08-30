@@ -24,6 +24,41 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] 科研评测 v2 七阶段受保护生产 operator 与持久 artifact spool — by Codex
+变更：科研 v2 一次性 operator 从 `inspect/run` 扩展为 `inspect / run / reconcile_artifact / import_codex / render_public_evidence / review_pack / review_finalize` 七个固定阶段。每阶段均绑定精确部署 SHA、受保护 bundle SHA-256、registry/suite/price/manifest hash、模型数、常驻 Worker disabled、并发 1、香港生产共享锁和逐阶段确认短语；除 `run` 外均输出 `providerCalls=0` 证明。除 `inspect` 外六阶段缺少 `--apply` 会在任何主机/容器/DB/OSS/private handoff 前拒绝。`inspect` 与 review 两阶段使用不可变 Worker 镜像、只读根文件系统、`network none` 且不加载 Bench env；有网络但零 Provider 的导入/对账/渲染阶段会显式清空三家 Provider key。`render_public_evidence` 只产出 API publish input，禁止 operator 直写 release，最终发布仍由 Core API 事务原子完成。
+
+契约（影响 Worker / 运维）：
+- 新增运行时 env `PAPERBANANA_SCIENTIFIC_V2_ARTIFACT_SPOOL_DIR`，仅 `run/reconcile_artifact` 由 host wrapper 固定为容器内 `/var/lib/paperbanana/scientific-v2-artifact-spool`，精确映射宿主机 `/opt/paperbanana/data/scientific-v2-artifact-spool`。目录固定服务 UID/GID `1000:1000`、`0700`，bootstrap 与每次执行均要求至少 1 GiB 可用；其他五阶段不挂载该目录。
+- bundle snapshot 使用 root-owned `0550` 输入目录和 `root:service 0440` 文件，容器只收到该文件的只读 bind；Worker 必须通过 `PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256` 对同一打开文件的字节再次验 hash。review 私有输出另用 service-owned `0700` RW 目录及 `PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR`，禁止与输入 bundle 共用可写目录。
+- review private mappings 只写 `/opt/paperbanana/operator-private/scientific-v2/<bundleHash>.review-private.json`，目录 `0700`、文件 `0600`，同 bundle 仅允许字节完全相同的幂等重放；stdout 只含公共审核包和安全 hash，不含映射、reviewer identity、attestation secret 或 provider 凭据。
+
+各端待办：
+- [x] 部署 / 运维代码（workflow、host wrapper、bootstrap/compose、七阶段/跨 manifest-state 负例、spool 权限/容量与脱敏测试）
+- [x] Benchmark Worker / Core API（沿用现有七 operation 与 signed state import、review、publish input/atomic publish 契约；无新增直写发布路径）
+- [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与客户端字段不变，无需改造）
+- [ ] 生产执行（本条未部署、未调用 Provider、未导入真实审核、未发布 release；仍需合并后按固定 SHA 分阶段人工执行与浏览器验收）
+
+### [2026-08-30] 科研插图评测 v2、批次原子发布与统一排行榜会话 — by Codex
+变更：新增与历史 `pb-image-light-v1 / codex_single` 完全隔离的九题十维科研插图评测。正式身份固定为 `suiteId=pb-scientific-figure-v2`、`evaluationMode=codex_scientific_v2`、`evaluationEpoch=codex-scientific-2026-09-v1`、`reviewProtocol=codex-independent-double-review-v2`、`presentationVersion=scientific-leaderboard-v2`。六道生成题与三道确定性局部编辑题覆盖科研忠实度、结构拓扑、文字符号、数值图表、指令遵从、信息层级/可读性、信息密度、发表级美观、编辑目标命中和非目标保持；十维等权 raw mean，competition ranking 使用 `1,1,3`。v2 整批生成、编辑、A/B 独立盲审、争议仲裁、对象/hash 与费用对账全部完成后才原子发布；此前 v1 继续作为正式榜。
+
+契约（影响 Web / Core / Worker / Gateway / 运维）：
+- 生产 registry 中 selectable image route 按规范 identity 做 canonical 去重，访问优先级固定 `bailian → ark → openrouter`；OpenRouter 的 OpenAI/Google route 按规范化 provider/vendor/model identity 排除，另加入 `codex:gpt-image-2`。生成使用最高优先级 route；编辑只允许同 canonical 模型的最高优先级 `direct-edit`，不得使用 `analyze-redraw` 或失败后静默换渠道。
+- 新 batch manifest/state 绑定代码 SHA、registry/suite/price hash、完整模型与九题清单、生成/编辑 route、三家各 ¥180 硬上限、Codex 最多 36 次工具调用、并发 1、生产共享锁、attempt/payload/响应分类/费用/原始文件 hash/像素/格式与执行次序。确认失败最多总计 4 次；`UNKNOWN_PROVIDER_OUTCOME` 零自动重试并暂停对账；预算/价格/unknown 未解决时禁止半批发布，也不得把未执行模型记 0。
+- 审核包绑定题目、适用维度、图片、rubric 和 attempt；编辑项额外绑定 source/edited hash、编号区域和指令。A/B 使用不同盲标签排列；分差大于 2、红线冲突或低置信度才仲裁；automatic Judge 固定 0。公开接口在 v2 返回十维、生成/编辑成功率、尝试摘要、失败原因、九题 evidence 与编辑 before/after WebP，但继续隐藏 blind map、签名、内部对象键和 reviewer 身份。
+- Web 新增统一 `LeaderboardRoot / LeaderboardSessionProvider / BenchmarkSiteHeader`。原五个导航文字、href、外链和 active 行为不变；新增意见反馈及登录/注册、邮箱、账号、退出。排行榜根只获取一次 session；投稿、管理员页和 header 共享状态；退出或删号立即清空管理员数据并阻止迟到响应回填。首页及其按钮保持不变。
+- v2 最终生产验收后才可精确归档并退役 v1 evidence；只删除引用计数确认后的 v1 独占对象，保留 release hash tombstone，并经 D+7 健康/hash/清单复核后永久删除命名的临时归档与本地审计目录。
+
+各端待办：
+- [x] benchmark-core（独立 v2 contracts/suite/十维评分、canonical route、确定性编辑源图与审核绑定）
+- [x] Benchmark Worker（batch 冻结、预算/锁/attempt、生成/编辑执行、Codex artifact 导入与双审分包）
+- [x] paperbanana-api（batch/审核/仲裁存储、完整性重算、单 release 原子发布与 v2 公共投影）
+- [x] Web（十维总榜/方法/九题 evidence/before-after、统一 header/session、登录反馈与管理员竞态保护）
+- [x] packages-api / auth-gateway（沿用既有 action 与管理员身份边界；v2 新字段向后兼容，无新客户端 secret，无需改造）
+- [x] Codex 周任务运行基座（detached clean worktree 固定 `3e63a5f59f206e4a37418a1a3d4dc529073fcae4`，三个投稿管理员 action 已核对；现有 `paperbanana` 自动化保留 ID/ACTIVE/周一 10:00/模型/通知策略并新增绝对路径、HEAD、clean、action 与只读 dry-run 零写入门）
+- [ ] 部署 / 运维（固定 SHA/registry-suite-price hashes/模型数/三家预算/Codex 36 次/Worker disabled/并发 1/共享锁；只重建变更服务并复用其他 digest）
+- [ ] GPT Image 2 生成审计（独立 Codex 任务、首题 artifact canary、九题原始文件与 provenance；未通过执行门前不得调用）
+- [ ] 生产评测、双盲审核、原子发布、浏览器验收、v1 精确退役与 D+7 删除 heartbeat
+
 ### [2026-08-30] Bench 生成证据与社区候选题参与 — by Codex
 变更：在已校验 `releaseHash` 的正式 `codex_single` / `published` 排行榜投影上新增公开生成证据，不迁移、不覆盖历史 Quick/Full、失败模型、盲审包或私有 PNG。`benchmarkModelProfile` 仅对公开合格 profile 懒加载 `evidence` / `cases`；新增匿名只读 `benchmarkCaseEvidence`，按题目每批最多 12 个模型返回。公开 evidence allowlist 固定为 `sampleId / caseId / profileId / modelId / imageHash / actualOutputPixels / variants / scores / reviewNotes`，WebP variant 只允许内容寻址的 `bench/public/evidence/<sourceHash>/*.webp`，每次签名之前复验对象 hash；盲标签、对象原路径、packet/review 签名、内部记录、投稿身份和管理员身份均不公开。Benchmark Worker 的 Standard 成功样本会生成不放大的 640 / 1600 / full 三档真实 WebP，原 PNG 不覆盖；新增受 disabled-worker、并发 1、固定 release hash、共享锁和显式确认保护的一次性幂等回填 entry，不产生生图或 Judge 调用。
 

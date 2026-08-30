@@ -1,3 +1,5 @@
+import { SCIENTIFIC_WEB_CONTRACT } from './scientificBenchmarkContract.js'
+
 const RUBRIC_AXES = Object.freeze([
   'faithfulness',
   'conciseness',
@@ -26,6 +28,9 @@ const EXPECTED_OVERALL_FORMULA = 'equal_weight_mean_v1'
 const EXPECTED_TIE_METHOD = 'competition'
 const EXPECTED_RED_LINE_POLICY = 'confirmed_axis_cap'
 const EXPECTED_AXIS_WEIGHT = 1 / RUBRIC_AXES.length
+
+const SCIENTIFIC_AXES = SCIENTIFIC_WEB_CONTRACT.axes
+const SCIENTIFIC_IDENTITY = SCIENTIFIC_WEB_CONTRACT.identity
 
 function isPlainObject(value) {
   if (value === null || typeof value !== 'object') return false
@@ -164,8 +169,91 @@ function normalizeMethodology(value, scoring, suite) {
   }
 }
 
+function equalArray(value, expected) {
+  return Array.isArray(value) && value.length === expected.length && value.every((item, index) => item === expected[index])
+}
+
+function normalizeScientificCase(value, expected) {
+  if (!isPlainObject(value)) return null
+  const id = asText(value.id)
+  const kind = asText(value.kind)
+  const title = asText(value.title)
+  const instruction = asText(value.instruction)
+  const manifestHash = asText(value.manifestHash)
+  const applicableAxes = asStringArray(value.applicableAxes)
+  if (!expected || id !== expected.id || kind !== expected.kind || manifestHash !== expected.manifestHash
+    || !title || !instruction || !equalArray(applicableAxes, expected.applicableAxes)) return null
+  if (!isPlainObject(value.rubric) || Object.keys(value.rubric).length !== applicableAxes.length) return null
+  const rubric = {}
+  for (const axis of applicableAxes) {
+    const text = asText(value.rubric[axis])
+    if (!text) return null
+    rubric[axis] = text
+  }
+  if (kind === 'generation') {
+    const aspectRatio = asText(value.aspectRatio)
+    const negativePrompt = asText(value.negativePrompt)
+    if (aspectRatio !== '16:9' || !negativePrompt) return null
+    return { id, kind, title, instruction, applicableAxes, rubric, manifestHash, aspectRatio, negativePrompt }
+  }
+  const sourceHash = asText(value.sourceHash)
+  const region = asText(value.region)
+  if (sourceHash !== expected.sourceHash || region !== expected.region) return null
+  return { id, kind, title, instruction, applicableAxes, rubric, manifestHash, sourceHash, region }
+}
+
+function normalizeScientificResponse(response) {
+  const releaseHash = asText(response.releaseHash)
+  const suite = response.suite
+  const scoring = response.scoring
+  const methodology = response.methodology
+  if (!releaseHash || !isPlainObject(suite) || !isPlainObject(scoring) || !isPlainObject(methodology)
+    || suite.id !== SCIENTIFIC_WEB_CONTRACT.suiteId || suite.version !== 2 || suite.language !== 'zh-CN'
+    || suite.caseCount !== 9 || suite.manifestHash !== SCIENTIFIC_WEB_CONTRACT.suiteHash
+    || !Array.isArray(suite.cases) || suite.cases.length !== SCIENTIFIC_WEB_CONTRACT.cases.length) return null
+  const cases = suite.cases.map((item, index) => normalizeScientificCase(item, SCIENTIFIC_WEB_CONTRACT.cases[index]))
+  if (cases.some((item) => item === null)) return null
+  if (scoring.scoreMin !== 0 || scoring.scoreMax !== 10 || scoring.failureScore !== 0
+    || (scoring.unsupportedScore !== undefined && scoring.unsupportedScore !== 0)
+    || !equalArray(scoring.axes, SCIENTIFIC_AXES) || scoring.overallFormula !== 'ten_dimension_raw_equal_weight_mean'
+    || scoring.tieMethod !== 'competition') return null
+  const rankingMethod = methodology.rankingMethod
+  if (methodology.suiteId !== SCIENTIFIC_IDENTITY.suiteId || methodology.suiteHash !== suite.manifestHash
+    || methodology.evaluationMode !== SCIENTIFIC_IDENTITY.evaluationMode || methodology.evaluationEpoch !== SCIENTIFIC_IDENTITY.evaluationEpoch
+    || methodology.reviewProtocol !== SCIENTIFIC_IDENTITY.reviewProtocol || methodology.presentationVersion !== SCIENTIFIC_IDENTITY.presentationVersion
+    || methodology.expectedCaseCount !== 9 || !equalArray(methodology.dimensions, SCIENTIFIC_AXES)
+    || methodology.overallFormula !== scoring.overallFormula || methodology.tieMethod !== scoring.tieMethod || methodology.failureScore !== 0
+    || methodology.retryPolicy?.confirmedFailureMaxAttempts !== 4 || methodology.retryPolicy?.unknownProviderOutcome !== 'pause_no_retry'
+    || !equalArray(methodology.routePriority, ['bailian', 'ark', 'openrouter'])
+    || methodology.providerBudgetsCny?.bailian !== 180 || methodology.providerBudgetsCny?.ark !== 180 || methodology.providerBudgetsCny?.openrouter !== 180
+    || methodology.blindReview?.reviewers !== 2 || methodology.blindReview?.arbitration !== 'xhigh_on_dispute'
+    || !equalArray(methodology.blindReview?.automaticJudges, []) || !equalArray(methodology.automaticJudges, [])
+    || methodology.automaticJudgmentCount !== 0 || !Array.isArray(methodology.knownLimitations) || !methodology.knownLimitations.length
+    || !isPlainObject(rankingMethod) || rankingMethod.id !== scoring.overallFormula || rankingMethod.tieMethod !== 'competition'
+    || !equalArray(rankingMethod.axes, SCIENTIFIC_AXES) || !Array.isArray(rankingMethod.weights) || rankingMethod.weights.length !== 10
+    || rankingMethod.weights.some((weight) => typeof weight !== 'number' || Math.abs(weight - 0.1) > WEIGHT_SUM_TOLERANCE)) return null
+  return {
+    releaseHash,
+    suite: { id: suite.id, version: suite.version, language: suite.language, caseCount: 9, manifestHash: suite.manifestHash, cases },
+    scoring: { scoreMin: 0, scoreMax: 10, axes: [...SCIENTIFIC_AXES], overallFormula: scoring.overallFormula, tieMethod: 'competition', failureScore: 0, unsupportedScore: scoring.unsupportedScore ?? 0 },
+    methodology: {
+      suiteId: methodology.suiteId, suiteHash: methodology.suiteHash, evaluationMode: methodology.evaluationMode,
+      evaluationEpoch: methodology.evaluationEpoch, reviewProtocol: methodology.reviewProtocol, presentationVersion: methodology.presentationVersion,
+      expectedCaseCount: 9, dimensions: [...SCIENTIFIC_AXES], overallFormula: methodology.overallFormula, tieMethod: 'competition', failureScore: 0,
+      retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' }, routePriority: [...methodology.routePriority],
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+      blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
+      knownLimitations: [...methodology.knownLimitations], automaticJudges: [], automaticJudgmentCount: 0,
+      rankingMethod: { id: rankingMethod.id, axes: [...SCIENTIFIC_AXES], weights: [...rankingMethod.weights], tieMethod: 'competition' },
+    },
+  }
+}
+
 export function normalizeMethodologyResponse(response) {
   if (!isPlainObject(response)) return null
+  if (response.suite?.id === SCIENTIFIC_IDENTITY.suiteId || response.methodology?.evaluationMode === SCIENTIFIC_IDENTITY.evaluationMode) {
+    return normalizeScientificResponse(response)
+  }
   const releaseHash = asText(response.releaseHash)
   const suite = normalizeSuite(response.suite)
   const scoring = normalizeScoring(response.scoring)

@@ -124,6 +124,35 @@ test('legacy Laf defaults to global fetch and supports a Node-injected runtime f
   assert.doesNotMatch(fs.readFileSync(legacyPath, 'utf8'), /from\s+['"]undici['"]|require\(['"]undici['"]\)/)
 })
 
+test('legacy bounded model response preserves non-2xx status on a real Response without enumerating provider response facts', async () => {
+  const legacy = await loadLegacy()
+  for (const status of [401, 429, 500]) {
+    const secretBody = `provider-secret-body-${status}`
+    await assert.rejects(
+      legacy.parseBoundedModelResponse(Response.json({ error: { message: secretBody } }, { status }), 1024, 'provider response'),
+      (error: any) => {
+        assert.equal(error.status, status)
+        assert.equal(error.message, secretBody)
+        assert.equal(JSON.stringify(error).includes(String(status)), false)
+        return true
+      },
+    )
+  }
+})
+
+test('built Ark callImageModel preserves a real 401 JSON response status for the authoritative runtime boundary', async () => {
+  const legacy = await loadLegacy()
+  legacy.configureRuntimeFetch(async () => Response.json({ error: { message: 'ark request rejected' } }, { status: 401 }))
+  try {
+    await assert.rejects(
+      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'diagram', '16:9', '', '2K'),
+      (error: any) => error.status === 401 && error.message === 'ark request rejected',
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
 test('production build explicitly resolves and bundles the Ark JPEG decoder', async () => {
   const packageJson = JSON.parse(fs.readFileSync(path.resolve(packageRoot, 'package.json'), 'utf8'))
   assert.match(packageJson.scripts.build, /--alias:jpeg-js=\.\/node_modules\/jpeg-js(?:\s|$)/)

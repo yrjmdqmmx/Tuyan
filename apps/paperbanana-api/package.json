@@ -10,7 +10,7 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "check:model-drift": "tsx scripts/check-openrouter-model-drift.ts",
     "check": "tsc --noEmit",
-    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --alias:@lafjs/cloud=./src/laf-cloud.ts --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb --external:sharp && esbuild src/image-runtime-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/image-runtime.mjs --alias:@lafjs/cloud=./src/laf-cloud.ts --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:sharp",
+    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --define:import.meta.url='\"file:///app/node_modules/@paperbanana/benchmark-core/src/scientific-edit-source.js\"' --alias:@lafjs/cloud=./src/laf-cloud.ts --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb --external:sharp && esbuild src/image-runtime-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/image-runtime.mjs --alias:@lafjs/cloud=./src/laf-cloud.ts --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:sharp",
     "start": "node dist/server.cjs"
   },
   "dependencies": {

@@ -197,7 +197,11 @@ test('benchmark worker image pins CJK glyph support and renders calibration snap
 
 test('the ESM resident Worker keeps sharp native loading external to the bundle', () => {
   const packageJson = JSON.parse(read('../../apps/benchmark-worker/package.json'));
-  const residentBuild = String(packageJson.scripts.build).split('&&')[0];
+  const residentBuild = String(packageJson.scripts.build)
+    .split('&&')
+    .map((command) => command.trim())
+    .find((command) => /src\/main\.ts/.test(command));
+  assert.equal(typeof residentBuild, 'string');
   assert.match(residentBuild, /src\/main\.ts/);
   assert.match(residentBuild, /--external:sharp/);
 });

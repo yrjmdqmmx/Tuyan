@@ -7,10 +7,13 @@
   "types": "./src/index.ts",
   "scripts": {
     "test": "node --import tsx --test tests/*.test.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "build:scientific-svg": "node --import tsx scripts/build-scientific-edit-svg.ts",
+    "render:scientific-source": "node --import tsx scripts/render-scientific-edit-source.ts"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
+    "sharp": "0.35.3",
     "tsx": "4.20.5",
     "typescript": "5.9.2"
   }

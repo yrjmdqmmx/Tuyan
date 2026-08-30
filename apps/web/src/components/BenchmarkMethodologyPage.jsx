@@ -20,6 +20,19 @@ const RUBRIC_AXES = Object.freeze([
   Object.freeze({ id: 'instruction_adherence', label: '指令遵从' }),
 ])
 
+const SCIENTIFIC_RUBRIC_AXES = Object.freeze([
+  Object.freeze({ id: 'scientific_faithfulness', label: '科研忠实度' }),
+  Object.freeze({ id: 'structural_topology', label: '结构拓扑' }),
+  Object.freeze({ id: 'text_symbol_accuracy', label: '文字符号' }),
+  Object.freeze({ id: 'quantitative_accuracy', label: '数值图表' }),
+  Object.freeze({ id: 'instruction_adherence', label: '指令遵从' }),
+  Object.freeze({ id: 'readability_visual_hierarchy', label: '信息层级 / 可读性' }),
+  Object.freeze({ id: 'information_density', label: '信息密度' }),
+  Object.freeze({ id: 'publication_aesthetics', label: '发表级美观' }),
+  Object.freeze({ id: 'edit_target_accuracy', label: '编辑目标命中' }),
+  Object.freeze({ id: 'non_target_preservation', label: '非目标保持' }),
+])
+
 const CONSTRAINT_GROUPS = Object.freeze([
   Object.freeze({ key: 'requiredEntities', label: '必需实体' }),
   Object.freeze({ key: 'requiredRelations', label: '必需关系' }),
@@ -256,10 +269,10 @@ function ReviewLimits({ methodology }) {
   )
 }
 
-function MethodologyDocument({ data }) {
+function MethodologyDocument({ data, showNavigation = true }) {
   return (
     <main className="bench-shell bench-method-page">
-      <MethodologyNav />
+      {showNavigation ? <MethodologyNav /> : null}
       <MethodologyHero data={data} />
       <PageDirectory />
       <EvaluationProcess data={data} />
@@ -270,11 +283,54 @@ function MethodologyDocument({ data }) {
   )
 }
 
+function ScientificMethodologyCase({ benchmarkCase, index }) {
+  const axes = SCIENTIFIC_RUBRIC_AXES.filter((axis) => benchmarkCase.applicableAxes.includes(axis.id))
+  return (
+    <article className="bench-method-case bench-scientific-case" aria-labelledby={`scientific-case-${index}`}>
+      <header className="bench-method-case-head">
+        <div><span>{benchmarkCase.kind === 'edit' ? 'EDIT' : 'GEN'} {String(index).padStart(2, '0')}</span><h3 id={`scientific-case-${index}`}>{benchmarkCase.title}</h3><p>{benchmarkCase.instruction}</p></div>
+        <dl><div><dt>ID</dt><dd>{benchmarkCase.id}</dd></div><div><dt>题型</dt><dd>{benchmarkCase.kind === 'edit' ? '确定性局部编辑' : '科研插图生成'}</dd></div><div><dt>Case hash</dt><dd className="bench-method-hash">{benchmarkCase.manifestHash}</dd></div></dl>
+      </header>
+      <section className="bench-method-prompt-block"><header><h4>{benchmarkCase.kind === 'edit' ? '局部编辑指令' : '完整生成指令'}</h4></header><pre className="bench-method-prompt">{benchmarkCase.instruction}</pre></section>
+      {benchmarkCase.kind === 'generation'
+        ? <section className="bench-method-prompt-block"><header><h4>负向约束</h4></header><pre className="bench-method-prompt">{benchmarkCase.negativePrompt}</pre></section>
+        : <dl className="bench-method-edit-source"><div><dt>固定源图 SHA-256</dt><dd className="bench-method-hash">{benchmarkCase.sourceHash}</dd></div><div><dt>编号区域</dt><dd>{benchmarkCase.region}</dd></div></dl>}
+      <div className="bench-method-rubric-wrap"><table className="bench-method-rubric" aria-label={`${benchmarkCase.title}适用维度评分原文`}><thead><tr><th scope="col">维度</th><th scope="col">评分原文</th></tr></thead><tbody>{axes.map((axis) => <tr key={axis.id}><th scope="row">{axis.label}</th><td>{benchmarkCase.rubric[axis.id]}</td></tr>)}</tbody></table></div>
+      <footer className="bench-method-case-footer"><a href={appPath(`/leaderboard/cases/${encodeURIComponent(benchmarkCase.id)}`)}>查看全部模型结果 <span aria-hidden="true">→</span></a></footer>
+    </article>
+  )
+}
+
+function ScientificMethodologyDocument({ data, showNavigation = true }) {
+  const { methodology, scoring, suite } = data
+  return (
+    <main className="bench-shell bench-method-page bench-scientific-method-page">
+      {showNavigation ? <MethodologyNav /> : null}
+      <header className="bench-method-hero">
+        <a className="bench-method-back" href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a>
+        <div className="bench-eyebrow">SCIENTIFIC FIGURE BENCHMARK V2</div><h1>评测方法与完整题集</h1>
+        <p>固定九题、十维等权、失败记 0；公开生成与局部编辑的完整指令、适用维度、渠道和审核边界。</p>
+        <dl className="bench-method-identities"><div><dt>Suite ID</dt><dd>{suite.id}</dd></div><div><dt>Suite manifest</dt><dd className="bench-method-hash">{suite.manifestHash}</dd></div><div><dt>Release hash</dt><dd className="bench-method-hash">{data.releaseHash}</dd></div><div><dt>Evaluation mode</dt><dd>{methodology.evaluationMode}</dd></div><div><dt>Evaluation epoch</dt><dd>{methodology.evaluationEpoch}</dd></div><div><dt>Review protocol</dt><dd>{methodology.reviewProtocol}</dd></div></dl>
+      </header>
+      <PageDirectory />
+      <section className="bench-method-section" id="evaluation-process"><div className="bench-method-section-head"><span>01</span><div><div className="bench-eyebrow">PROCESS</div><h2>评测流程</h2></div></div><ol className="bench-method-steps">
+        <li><b>01</b><div><strong>固定九题</strong><p>六道生成题与三道确定性局部编辑题；每个模型固定九个题位。</p></div></li>
+        <li><b>02</b><div><strong>确认失败最多 4 次</strong><p>仅确认的技术或渠道失败允许有界重试；UNKNOWN_PROVIDER_OUTCOME 不自动重试，立即暂停对账。</p></div></li>
+        <li><b>03</b><div><strong>固定渠道优先级</strong><p>{methodology.routePriority.join(' → ')}；不得失败后静默换渠道。</p></div></li>
+        <li><b>04</b><div><strong>独立双盲审核</strong><p>两位审阅者独立评分，分差或红线冲突进入 xhigh 争议仲裁；automatic Judge 固定 0。</p></div></li>
+      </ol></section>
+      <section className="bench-method-section" id="public-suite"><div className="bench-method-section-head"><span>02</span><div><div className="bench-eyebrow">PUBLIC SUITE</div><h2>九个固定题位</h2><p>6 generation + 3 deterministic edit · {suite.language}</p></div></div><div className="bench-method-case-list">{suite.cases.map((benchmarkCase, index) => <ScientificMethodologyCase benchmarkCase={benchmarkCase} index={index + 1} key={benchmarkCase.id} />)}</div></section>
+      <section className="bench-method-section" id="scoring-contract"><div className="bench-method-section-head"><span>03</span><div><div className="bench-eyebrow">SCORING</div><h2>十维评分与排名</h2></div></div><dl className="bench-method-score-grid"><div><dt>单轴分数</dt><dd>{scoring.scoreMin}–{scoring.scoreMax}</dd></div><div><dt>失败 / 不支持</dt><dd>失败记 0 · unsupported = {scoring.unsupportedScore}</dd></div><div><dt>Overall</dt><dd>十维 raw mean 等权<small>{scoring.overallFormula}</small></dd></div><div><dt>并列规则</dt><dd>competition 1, 1, 3</dd></div>{SCIENTIFIC_RUBRIC_AXES.map((axis) => <div key={axis.id}><dt>{axis.label}</dt><dd><code>{axis.id}</code><small>weight = 0.1</small></dd></div>)}</dl></section>
+      <section className="bench-method-section bench-method-limits" id="review-limits"><div className="bench-method-section-head"><span>04</span><div><div className="bench-eyebrow">BUDGET & LIMITS</div><h2>渠道、预算与双盲局限</h2></div></div><dl className="bench-method-review-grid"><div><dt>渠道</dt><dd>{methodology.routePriority.join(' → ')}</dd></div>{Object.entries(methodology.providerBudgetsCny).map(([provider, budget]) => <div key={provider}><dt>{provider}</dt><dd>¥{budget} 硬上限</dd></div>)}<div><dt>双盲</dt><dd>{methodology.blindReview.reviewers} 位独立审阅者</dd></div><div><dt>争议仲裁</dt><dd>{methodology.blindReview.arbitration}</dd></div></dl><div className="bench-method-limit-copy"><p><strong>固定九题：</strong>覆盖面有限，不能代表所有科研领域。</p><p><strong>单次生产运行：</strong>不估计同模型跨时间方差；渠道、价格和模型版本仍可能变化。</p><p><strong>双盲局限：</strong>审阅仍包含判断误差，只有预设分差、红线冲突或低置信度才触发仲裁。</p></div></section>
+    </main>
+  )
+}
+
 function MethodologyState({ children, error = false }) {
   return <main className={`bench-state bench-method-state${error ? ' bench-state-error' : ''}`}>{children}</main>
 }
 
-export default function BenchmarkMethodologyPage({ apiBase, backendMode = 'gateway', enabled = true }) {
+export default function BenchmarkMethodologyPage({ apiBase, backendMode = 'gateway', enabled = true, showNavigation = true }) {
   const [data, setData] = useState(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(enabled)
@@ -301,8 +357,10 @@ export default function BenchmarkMethodologyPage({ apiBase, backendMode = 'gatew
       <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a>
     </MethodologyState>
   )
-  if (!data?.methodology || !data?.scoring || !Array.isArray(data?.suite?.cases) || data.suite.cases.length !== 4) {
+  if (!data?.methodology || !data?.scoring || !Array.isArray(data?.suite?.cases) || ![4, 9].includes(data.suite.cases.length)) {
     return <MethodologyState><strong>当前 release 未公开可复现题集</strong><a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a></MethodologyState>
   }
-  return <MethodologyDocument data={data} />
+  return data.suite.id === 'pb-scientific-figure-v2'
+    ? <ScientificMethodologyDocument data={data} showNavigation={showNavigation} />
+    : <MethodologyDocument data={data} showNavigation={showNavigation} />
 }

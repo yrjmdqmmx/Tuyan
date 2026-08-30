@@ -115,6 +115,26 @@ object outside Mongo with an ali-oss operation timeout and shared abortable
 batch, then the short snapshot transaction compares only the attested DB facts
 and manifest hash before inserting a release.
 
+## Scientific benchmark v2 protected phases
+
+Scientific benchmark v2 one-off phases use the exact host artifact spool
+`/opt/paperbanana/data/scientific-v2-artifact-spool` (service-owned, mode
+`0700`). Bootstrap and every `run`/`reconcile_artifact` apply require at least
+1 GiB free; the container receives it only at
+`/var/lib/paperbanana/scientific-v2-artifact-spool` with read-write access.
+`inspect`, `import_codex`, `render_public_evidence`, `review_pack`, and
+`review_finalize` never mount that spool. Blind-review mappings are retained
+only as mode-`0600` files below
+`/opt/paperbanana/operator-private/scientific-v2`; public stdout never includes
+the mapping or attestation secret. `render_public_evidence` produces an API
+publish input only; publication remains the Core API's atomic operation. Every
+mode except `inspect` fails before host or container preflight unless `--apply`
+is present. The wrapper snapshots the bundle into a root-owned, service-read-only
+input directory, bind-mounts only that file read-only, and passes
+`PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256`; the Worker hashes the bytes
+read from the same open handle. Review output uses a separate service-owned
+`0700` directory and never shares a writable mount with the bundle.
+
 ## Benchmark paid operator
 
 Judge calibration and the two-image canary use the manual

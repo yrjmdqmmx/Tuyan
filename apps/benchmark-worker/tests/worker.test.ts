@@ -448,8 +448,13 @@ test('shared image runtime preserves the authoritative Core request and returned
     return 'png-base64'
   })
   const result = await runtime.generate({ provider: 'ark', model: 'seedream', apiKey: 'runtime-secret', prompt: 'prompt', aspectRatio: 'auto', imageSize: '2K-standard' })
+  const edited = await runtime.edit({ provider: 'bailian', model: 'wan-edit', apiKey: 'edit-secret', prompt: 'edit prompt', aspectRatio: '16:9', sourceImage: 'data:image/png;base64,c291cmNl', imageSize: '2K' })
   assert.equal(result, 'png-base64')
-  assert.deepEqual(calls, [['ark', 'seedream', 'runtime-secret', 'prompt', 'auto', '', '2K', true]])
+  assert.equal(edited, 'png-base64')
+  assert.deepEqual(calls, [
+    ['ark', 'seedream', 'runtime-secret', 'prompt', 'auto', '', '2K', true],
+    ['bailian', 'wan-edit', 'edit-secret', 'edit prompt', '16:9', 'data:image/png;base64,c291cmNl', '2K', true],
+  ])
 })
 
 test('judge parser is strict and repairs malformed JSON at most once', async () => {

@@ -29,6 +29,7 @@ type OssClient = {
     status?: number
     res?: { status?: number; headers?: Record<string, string | string[] | undefined> }
   }>
+  getACL?(key: string): Promise<{ acl?: string }>
   getStream?(key: string, options?: Record<string, unknown>): Promise<{
     stream: AsyncIterable<unknown> & { destroy?(error?: Error): void }
     res?: { status?: number; headers?: Record<string, string | string[] | undefined> }
@@ -129,10 +130,11 @@ export function createOssAdapter(
       async writeFile(key: string, content: unknown, metadata: Record<string, unknown> = {}): Promise<unknown> {
         return serverClient.put(key, content, { headers: normalizeHeaders(metadata) })
       },
-      async headFile(key: string): Promise<{ size: number; mimeType: string; etag: string }> {
-        if (!serverClient.head) throw new Error('OSS client does not support object HEAD metadata')
+      async headFile(key: string): Promise<{ size: number; mimeType: string; etag: string; cacheControl: string; sha256: string; acl: string }> {
+        if (!serverClient.head || !serverClient.getACL) throw new Error('OSS client does not support authoritative object metadata')
         const result = await serverClient.head(key)
         const headers = result.res?.headers
+        const acl = String((await serverClient.getACL(key)).acl || '')
         const size = Number(firstHeader(headers, 'content-length'))
         if (!Number.isFinite(size) || size < 0) throw new Error(`OSS object ${key} has invalid content length`)
         const mimeType = (firstHeader(headers, 'content-type') || '').split(';', 1)[0]!.trim().toLowerCase()
@@ -140,6 +142,9 @@ export function createOssAdapter(
           size,
           mimeType,
           etag: firstHeader(headers, 'etag') || '',
+          cacheControl: firstHeader(headers, 'cache-control') || '',
+          sha256: firstHeader(headers, 'x-oss-meta-sha256') || '',
+          acl,
         }
       },
       async readFile(key: string, maxBytes?: number, options: { signal?: AbortSignal; timeoutMs?: number } = {}): Promise<unknown> {

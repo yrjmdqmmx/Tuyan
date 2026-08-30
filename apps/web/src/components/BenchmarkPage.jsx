@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowUpDown, BarChart3, ExternalLink, Loader2, Search } from
 import { benchmarkLeaderboardRequest } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
-import { LEADERBOARD_AXES, resolveLeaderboardRoute } from '../leaderboardRoutes.js'
+import { LEADERBOARD_AXES, SCIENTIFIC_LEADERBOARD_AXES, resolveLeaderboardRoute } from '../leaderboardRoutes.js'
 import {
   BenchmarkCaseEvidencePage,
   BenchmarkEvidenceImage,
@@ -12,6 +12,7 @@ import {
   BenchmarkPromptSubmissionForm,
   BenchmarkPromptSubmissionPage,
 } from './BenchmarkEvidencePages.jsx'
+import { normalizeLeaderboardRelease } from './benchmarkRelease.js'
 
 export { BenchmarkEvidenceImage, BenchmarkPromptSubmissionForm }
 
@@ -50,6 +51,10 @@ function metricValue(model, metricId) {
 function metricRank(model, metricId) {
   const rank = metricId === 'overall' ? finiteNumber(model.overallRank) : finiteNumber(model.dimensionRanks?.[metricId])
   return rank === null ? null : rank
+}
+
+function axesForRelease(release) {
+  return release?.presentationVersion === 'scientific-leaderboard-v2' ? SCIENTIFIC_LEADERBOARD_AXES : LEADERBOARD_AXES
 }
 
 function rankClass(rank) {
@@ -92,16 +97,17 @@ function LeaderboardNav() {
 }
 
 function LeaderboardHero({ release }) {
+  const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
   return (
     <header className="bench-hero">
       <div className="bench-eyebrow">PAPERBANANA IMAGE MODEL LEADERBOARD</div>
       <h1>生图模型排行榜</h1>
-      <p>用同一套轻量诊断题观察模型在七个关键维度上的真实差异，并以七维等权均值形成可比较的 Overall 排名。</p>
+      <p>{scientific ? '用九个固定科研题位观察模型在十个关键维度上的真实差异，并以失败记 0 的十维等权均值形成 Overall 排名。' : '用同一套轻量诊断题观察模型在七个关键维度上的真实差异，并以七维等权均值形成可比较的 Overall 排名。'}</p>
       <div className="bench-meta" aria-label="排行榜方法摘要">
         <span className="accent">{release.eligibleModelCount ?? release.models?.length ?? 0} 个合格模型</span>
-        <span>固定 4 题 · 每模型 4 张</span>
-        <span>Codex 双遍盲审</span>
-        <span>七维等权</span>
+        <span>{scientific ? '固定 9 题 · 6 生成 + 3 编辑' : '固定 4 题 · 每模型 4 张'}</span>
+        <span>{scientific ? '独立双盲 + 争议仲裁' : 'Codex 双遍盲审'}</span>
+        <span>{scientific ? '十维等权 · 失败记 0' : '七维等权'}</span>
       </div>
     </header>
   )
@@ -134,14 +140,14 @@ function DimensionCard({ axis, models }) {
   )
 }
 
-function DimensionGrid({ models }) {
+function DimensionGrid({ axes, models }) {
   return (
     <section className="bench-section" aria-labelledby="bench-dimensions-title">
       <div className="bench-section-head">
-        <div><div className="bench-eyebrow">DIMENSION LEADERS</div><h2 id="bench-dimensions-title">七维 Top10</h2><p>先看各维度强项，再进入下方综合矩阵横向比较。</p></div>
+        <div><div className="bench-eyebrow">DIMENSION LEADERS</div><h2 id="bench-dimensions-title">{axes.length} 维 Top10</h2><p>先看各维度强项，再进入下方综合矩阵横向比较。</p></div>
       </div>
       <div className="bench-dimension-grid">
-        {LEADERBOARD_AXES.map((axis) => <DimensionCard axis={axis} models={models} key={axis.id} />)}
+        {axes.map((axis) => <DimensionCard axis={axis} models={models} key={axis.id} />)}
       </div>
     </section>
   )
@@ -158,7 +164,7 @@ function MatrixHeader({ metric, activeMetric, onSort }) {
   )
 }
 
-function LeaderboardMatrix({ release, models }) {
+function LeaderboardMatrix({ axes, release, models }) {
   const [query, setQuery] = useState('')
   const [sortMetric, setSortMetric] = useState('overall')
   const deferredQuery = useDeferredValue(query)
@@ -183,14 +189,14 @@ function LeaderboardMatrix({ release, models }) {
           <thead><tr>
             <th className="bench-model-column" scope="col">模型</th>
             <MatrixHeader metric={OVERALL_METRIC} activeMetric={sortMetric} onSort={setSortMetric} />
-            {LEADERBOARD_AXES.map((axis) => <MatrixHeader metric={axis} activeMetric={sortMetric} onSort={setSortMetric} key={axis.id} />)}
+            {axes.map((axis) => <MatrixHeader metric={axis} activeMetric={sortMetric} onSort={setSortMetric} key={axis.id} />)}
           </tr></thead>
           <tbody>
             {visibleModels.map((model) => (
               <tr key={modelIdentity(model)}>
                 <th className="bench-model-column" scope="row"><a href={appPath(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th>
                 <td className={rankClass(metricRank(model, 'overall'))}><MetricValue model={model} metricId="overall" /></td>
-                {LEADERBOARD_AXES.map((axis) => <td className={rankClass(metricRank(model, axis.id))} key={axis.id}><MetricValue model={model} metricId={axis.id} /></td>)}
+                {axes.map((axis) => <td className={rankClass(metricRank(model, axis.id))} key={axis.id}><MetricValue model={model} metricId={axis.id} /></td>)}
               </tr>
             ))}
           </tbody>
@@ -201,7 +207,7 @@ function LeaderboardMatrix({ release, models }) {
   )
 }
 
-function DimensionLeaderboard({ axis, release, models }) {
+function DimensionLeaderboard({ axis, release, models, showNavigation = true }) {
   const [query, setQuery] = useState('')
   const deferredQuery = useDeferredValue(query)
   const ranked = useMemo(
@@ -210,7 +216,7 @@ function DimensionLeaderboard({ axis, release, models }) {
   )
   return (
     <main className="bench-shell">
-      <LeaderboardNav />
+      {showNavigation ? <LeaderboardNav /> : null}
       <section className="bench-subpage-hero">
         <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a>
         <div className="bench-eyebrow">FULL DIMENSION RANKING</div>
@@ -237,10 +243,10 @@ function DimensionLeaderboard({ axis, release, models }) {
   )
 }
 
-function InvalidDimension() {
+function InvalidDimension({ showNavigation = true }) {
   return (
     <main className="bench-shell">
-      <LeaderboardNav />
+      {showNavigation ? <LeaderboardNav /> : null}
       <section className="bench-not-found">
         <BarChart3 size={30} aria-hidden="true" />
         <h1>没有这个排行榜维度</h1>
@@ -262,18 +268,18 @@ function BenchmarkUnavailable() {
   )
 }
 
-export default function BenchmarkPage({ apiBase, backendMode = 'gateway', enabled = true, pathname = globalThis.location?.pathname || '/leaderboard' }) {
+export default function BenchmarkPage({ apiBase, backendMode = 'gateway', enabled = true, pathname = globalThis.location?.pathname || '/leaderboard', showNavigation = true }) {
   const route = resolveLeaderboardRoute(pathname)
 
-  if (route.invalidSlug) return <InvalidDimension />
-  if (route.modelProfileId) return <BenchmarkModelEvidencePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} profileId={route.modelProfileId} />
-  if (route.caseId) return <BenchmarkCaseEvidencePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} caseId={route.caseId} />
-  if (route.promptSubmission) return <BenchmarkPromptSubmissionPage apiBase={apiBase} backendMode={backendMode} />
-  if (route.promptAdmin) return <BenchmarkPromptAdminPage apiBase={apiBase} backendMode={backendMode} />
-  return <BenchmarkReleasePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} pathname={pathname} />
+  if (route.invalidSlug) return <InvalidDimension showNavigation={showNavigation} />
+  if (route.modelProfileId) return <BenchmarkModelEvidencePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} profileId={route.modelProfileId} showNavigation={showNavigation} />
+  if (route.caseId) return <BenchmarkCaseEvidencePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} caseId={route.caseId} showNavigation={showNavigation} />
+  if (route.promptSubmission) return <BenchmarkPromptSubmissionPage apiBase={apiBase} backendMode={backendMode} showNavigation={showNavigation} />
+  if (route.promptAdmin) return <BenchmarkPromptAdminPage apiBase={apiBase} backendMode={backendMode} showNavigation={showNavigation} />
+  return <BenchmarkReleasePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} pathname={pathname} showNavigation={showNavigation} />
 }
 
-function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname }) {
+function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname, showNavigation }) {
   const route = resolveLeaderboardRoute(pathname)
   const [release, setRelease] = useState(null)
   const [error, setError] = useState('')
@@ -285,7 +291,12 @@ function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname }) {
     setLoading(true)
     setError('')
     benchmarkLeaderboardRequest(apiBase, { backendMode })
-      .then((data) => { if (!cancelled) setRelease(data.release || null) })
+      .then((data) => {
+        if (cancelled) return
+        const normalized = data.release ? normalizeLeaderboardRelease(data.release) : null
+        if (data.release && !normalized) setError('排行榜数据格式不受支持')
+        setRelease(normalized)
+      })
       .catch((reason) => { if (!cancelled) setError(reason?.message || String(reason)) })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
@@ -295,20 +306,22 @@ function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname }) {
   if (loading) return <div className="bench-state"><Loader2 className="spin" />正在读取排行榜…</div>
   if (error) return <div className="bench-state bench-state-error">排行榜暂不可用：{error}</div>
   if (!release) return <div className="bench-state">排行榜尚无已发布数据。</div>
-  return <BenchmarkObservatory release={release} pathname={pathname} />
+  return <BenchmarkObservatory release={release} pathname={pathname} showNavigation={showNavigation} />
 }
 
-export function BenchmarkObservatory({ release, pathname = '/leaderboard' }) {
+export function BenchmarkObservatory({ release, pathname = '/leaderboard', showNavigation = true }) {
   const models = Array.isArray(release.models) ? release.models : []
+  const axes = axesForRelease(release)
   const route = resolveLeaderboardRoute(pathname)
-  if (route.invalidSlug) return <InvalidDimension />
-  if (route.dimension) return <DimensionLeaderboard axis={route.dimension} release={release} models={models} />
+  if (route.invalidSlug) return <InvalidDimension showNavigation={showNavigation} />
+  if (route.dimension) return <DimensionLeaderboard axis={route.dimension} release={release} models={models} showNavigation={showNavigation} />
   return (
     <main className="bench-shell">
-      <LeaderboardNav />
+      {showNavigation ? <LeaderboardNav /> : null}
       <LeaderboardHero release={release} />
-      <DimensionGrid models={models} />
-      <LeaderboardMatrix release={release} models={models} />
+      {release.presentationVersion === 'scientific-leaderboard-v2' ? <section className="bench-success-strip" aria-label="任务成功率"><span>生成成功率</span><strong>{formatScore((models.reduce((sum, model) => sum + (finiteNumber(model.generationSuccessRate) ?? 0), 0) / Math.max(models.length, 1)) * 100)}%</strong><span>编辑成功率</span><strong>{formatScore((models.reduce((sum, model) => sum + (finiteNumber(model.editSuccessRate) ?? 0), 0) / Math.max(models.length, 1)) * 100)}%</strong></section> : null}
+      <DimensionGrid axes={axes} models={models} />
+      <LeaderboardMatrix axes={axes} release={release} models={models} />
     </main>
   )
 }

@@ -6007,7 +6007,9 @@ function parseModelResponseText(response: Response, text: string) {
     data = { raw: text }
   }
   if (!response.ok) {
-    throw new Error(data?.error?.message || data?.message || text || `HTTP ${response.status}`)
+    const error = new Error(data?.error?.message || data?.message || text || `HTTP ${response.status}`) as Error & { status: number }
+    Object.defineProperty(error, 'status', { value: response.status, enumerable: false, configurable: false, writable: false })
+    throw error
   }
   return data
 }

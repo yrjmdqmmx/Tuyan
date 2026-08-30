@@ -5,6 +5,7 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import React from 'react'
 
 import BenchmarkPage, { BenchmarkEvidenceImage, BenchmarkObservatory, BenchmarkPromptSubmissionForm } from './BenchmarkPage.jsx'
+import { SCIENTIFIC_WEB_CONTRACT } from './scientificBenchmarkContract.js'
 import { canonicalizeLeaderboardLocation } from '../leaderboardRoutes.js'
 
 afterEach(cleanup)
@@ -20,6 +21,44 @@ const axes = [
 ]
 
 const labels = ['忠实度', '简洁度', '可读性', '美观度', '文字 / 符号', '拓扑关系', '指令遵从']
+
+const uiVariant = (character, url) => ({ kind: 'detail', imageHash: character.repeat(64), url, width: 1600, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' })
+
+function scientificPublicCases() {
+  return SCIENTIFIC_WEB_CONTRACT.cases.map((item, index) => ({
+    ...structuredClone(item), title: index === 6 ? '单一文字局部编辑' : `科研题 ${index + 1}`, instruction: `固定指令 ${index + 1}`,
+    rubric: Object.fromEntries(item.applicableAxes.map((axis) => [axis, `${axis} rubric`])),
+    ...(item.kind === 'generation' ? { negativePrompt: '不得添加题外内容', aspectRatio: '16:9' } : {}),
+  }))
+}
+
+function scientificUiProfile() {
+  const cases = scientificPublicCases()
+  const evidence = cases.map((item, index) => {
+    if (index === 0) return {
+      caseId: item.id, kind: item.kind, status: 'failed', failureReason: 'confirmed_attempts_exhausted',
+      attemptSummary: { count: 4, responseClasses: Array(4).fill('confirmed_provider_failure') },
+    }
+    const imageHash = String((index % 9) + 1).repeat(64)
+    return {
+      caseId: item.id, kind: item.kind, status: 'succeeded', imageHash,
+      attemptSummary: { count: 1, responseClasses: ['succeeded'] },
+      scores: Object.fromEntries(item.applicableAxes.map((axis) => [axis, 8])), reviewNotes: ['加分：双盲审核未确认红线问题'],
+      variants: [uiVariant('a', `https://img.example/after-${index}.webp`)],
+      ...(item.kind === 'edit' ? { sourceHash: item.sourceHash, editedHash: imageHash, region: item.region, beforeVariants: [uiVariant('b', `https://img.example/before-${index}.webp`)] } : {}),
+    }
+  })
+  return {
+    profileId: 'scientific-profile', modelId: 'scientific-model', canonicalModelId: 'scientific-model', displayName: 'Scientific Model', overallRank: 1, overallScore: 8,
+    scores: Object.fromEntries(SCIENTIFIC_WEB_CONTRACT.axes.map((axis) => [axis, 8])),
+    dimensions: Object.fromEntries(SCIENTIFIC_WEB_CONTRACT.axes.map((axis) => [axis, { mean: 8 }])),
+    dimensionRanks: Object.fromEntries(SCIENTIFIC_WEB_CONTRACT.axes.map((axis) => [axis, 1])),
+    generationSuccessRate: 5 / 6, editSuccessRate: 1, successRate: 8 / 9,
+    attemptSummary: { total: 12, succeeded: 8, failed: 1, unsupported: 0 },
+    failureReasons: [{ caseId: cases[0].id, reason: 'confirmed_attempts_exhausted' }], cases, evidence,
+    release: { suiteId: SCIENTIFIC_WEB_CONTRACT.suiteId, suiteHash: SCIENTIFIC_WEB_CONTRACT.suiteHash, ...SCIENTIFIC_WEB_CONTRACT.identity, releaseHash: 'release-hash' },
+  }
+}
 
 function makeModel(index) {
   const rank = index + 1
@@ -71,6 +110,37 @@ test('overview renders seven Top10 cards with full-ranking links', () => {
     const link = within(card).getByRole('link', { name: '查看完整排名' })
     assert.ok(link.getAttribute('href')?.startsWith('/leaderboard/'))
   })
+})
+
+test('scientific v2 overview renders ten Top10 cards and a ten-dimension matrix', () => {
+  const scientificAxes = [
+    'scientific_faithfulness', 'structural_topology', 'text_symbol_accuracy', 'quantitative_accuracy',
+    'instruction_adherence', 'readability_visual_hierarchy', 'information_density', 'publication_aesthetics',
+    'edit_target_accuracy', 'non_target_preservation',
+  ]
+  const scientificRelease = {
+    profileStatus: 'published', suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2',
+    evaluationEpoch: 'codex-scientific-2026-09-v1', reviewProtocol: 'codex-independent-double-review-v2',
+    presentationVersion: 'scientific-leaderboard-v2', eligibleModelCount: 10,
+    models: Array.from({ length: 10 }, (_, index) => ({
+      profileId: `scientific-profile-${index + 1}`, modelId: `scientific-model-${index + 1}`, displayName: `科研模型 ${index + 1}`,
+      overallScore: 9 - index / 10, overallRank: index + 1,
+      scores: Object.fromEntries(scientificAxes.map((axis) => [axis, 9 - index / 10])),
+      dimensions: Object.fromEntries(scientificAxes.map((axis) => [axis, { mean: 9 - index / 10 }])),
+      dimensionRanks: Object.fromEntries(scientificAxes.map((axis) => [axis, index + 1])),
+      generationSuccessRate: 1, editSuccessRate: 1,
+      attemptSummary: { total: 9, succeeded: 9, failed: 0, unsupported: 0 },
+    })),
+  }
+
+  const { container } = render(React.createElement(BenchmarkObservatory, { release: scientificRelease, pathname: '/leaderboard' }))
+  assert.equal(container.querySelectorAll('.bench-dimension-card').length, 10)
+  assert.equal(screen.getAllByText('科研忠实度').length > 0, true)
+  assert.equal(screen.getAllByText('非目标保持').length > 0, true)
+  assert.equal(within(screen.getByRole('table', { name: '生图模型综合排行榜' })).getAllByRole('columnheader').length, 12)
+  assert.match(container.textContent, /固定 9 题/u)
+  assert.match(container.textContent, /生成成功率/u)
+  assert.match(container.textContent, /编辑成功率/u)
 })
 
 test('overview matrix shows Overall and seven dimensions with rank and two-decimal scores', () => {
@@ -145,6 +215,98 @@ test('model evidence route requests only the selected public profile and renders
   } finally { globalThis.fetch = previousFetch }
 })
 
+test('any top-level or nested scientific identity hint routes a profile through fail-closed normalization while v1 remains compatible', async (t) => {
+  const previousFetch = globalThis.fetch
+  const legacyProfile = () => ({
+    ...release.models[0],
+    cases: [{ id: 'complex_topology-05', title: '拓扑关系题', renderPrompt: '完整提示词', negativePrompt: '禁止乱码', requiredEntities: [], requiredRelations: ['A→B'], requiredText: [], forbidden: ['乱码'] }],
+    evidence: [{ sampleId: 'sample-1', caseId: 'complex_topology-05', imageHash: 'a'.repeat(64), scores: Object.fromEntries(axes.map((axis) => [axis, 8])), reviewNotes: ['V1 合法证据'], variants: [{ kind: 'thumbnail', url: 'https://img.example/thumb.webp', width: 640, height: 320, mimeType: 'image/webp' }] }],
+    release: { releaseHash: 'legacy-release-hash' },
+  })
+  let responseProfile = legacyProfile()
+  globalThis.fetch = async () => ({ ok: true, status: 200, async text() { return JSON.stringify({ code: 0, profile: responseProfile }) } })
+  try {
+    const variants = [
+      ['top-level presentationVersion', (profile) => { profile.presentationVersion = SCIENTIFIC_WEB_CONTRACT.identity.presentationVersion }],
+      ['top-level suiteId only', (profile) => { profile.suiteId = SCIENTIFIC_WEB_CONTRACT.suiteId }],
+      ['top-level evaluationMode only', (profile) => { profile.evaluationMode = SCIENTIFIC_WEB_CONTRACT.identity.evaluationMode }],
+      ['nested suiteId only', (profile) => { profile.release.suiteId = SCIENTIFIC_WEB_CONTRACT.suiteId }],
+      ['nested evaluationMode only', (profile) => { profile.release.evaluationMode = SCIENTIFIC_WEB_CONTRACT.identity.evaluationMode }],
+      ['nested mixed identity', (profile) => { profile.release.suiteId = SCIENTIFIC_WEB_CONTRACT.suiteId; profile.release.presentationVersion = 'arena-leaderboard-v1' }],
+    ]
+    for (const [name, mutate] of variants) await t.test(name, async () => {
+      responseProfile = legacyProfile()
+      mutate(responseProfile)
+      const view = render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard/models/profile-1' }))
+      try {
+        await screen.findByText(/模型证据暂不可用：模型证据数据格式不受支持/u)
+        assert.equal(Boolean(screen.queryByRole('heading', { name: 'Banana Prime' })), false)
+      } finally { view.unmount() }
+    })
+
+    responseProfile = legacyProfile()
+    render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard/models/profile-1' }))
+    await screen.findByRole('heading', { name: 'Banana Prime' })
+    assert.ok(screen.getByText('V1 合法证据'))
+  } finally { globalThis.fetch = previousFetch }
+})
+
+test('scientific v2 model evidence renders all nine fixed slots and edit before/after', async () => {
+  const previousFetch = globalThis.fetch
+  globalThis.fetch = async () => ({ ok: true, status: 200, async text() { return JSON.stringify({ code: 0, profile: scientificUiProfile() }) } })
+  try {
+    const { container } = render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard/models/scientific-profile' }))
+    await screen.findByRole('heading', { name: 'Scientific Model' })
+    assert.equal(container.querySelectorAll('.bench-evidence-card').length, 9)
+    assert.ok(screen.getByText('confirmed_attempts_exhausted'))
+    assert.equal(screen.getAllByText('编辑前').length, 3)
+    assert.equal(screen.getAllByText('编辑后').length, 3)
+    assert.match(container.textContent, /生成成功率/u)
+    assert.match(container.textContent, /编辑成功率/u)
+  } finally { globalThis.fetch = previousFetch }
+})
+
+test('scientific v2 case comparison renders edit before/after for every loaded model', async () => {
+  const previousFetch = globalThis.fetch
+  const profile = scientificUiProfile()
+  const item = profile.evidence[6]
+  globalThis.fetch = async () => ({ ok: true, status: 200, async text() { return JSON.stringify({
+    code: 0,
+    case: profile.cases[6],
+    items: [{ ...item, profileId: profile.profileId, canonicalModelId: profile.canonicalModelId, overallRank: 1, model: { displayName: profile.displayName, modelId: profile.modelId, overallRank: 1, overallScore: 8.5 } }],
+    nextCursor: null,
+  }) } })
+  try {
+    render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard/cases/scientific-edit-01-text-label' }))
+    await screen.findByRole('heading', { name: '单一文字局部编辑' })
+    assert.equal(screen.getAllByText('编辑前').length, 1)
+    assert.equal(screen.getAllByText('编辑后').length, 1)
+    assert.ok(screen.getByText('固定指令 7'))
+  } finally { globalThis.fetch = previousFetch }
+})
+
+test('scientific profile and case routes fail closed before rendering malformed v2 evidence', async () => {
+  const previousFetch = globalThis.fetch
+  let responseBody = { code: 0, profile: {
+    profileId: 'scientific-profile', modelId: 'scientific-model', displayName: 'Tampered Model', overallRank: 1, overallScore: 8,
+    generationSuccessRate: 1, editSuccessRate: 1, successRate: 1, attemptSummary: { total: 0, succeeded: 9, failed: 0, unsupported: 0 }, failureReasons: [],
+    scores: {}, dimensions: {}, dimensionRanks: {}, cases: [], evidence: [],
+    release: { suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2', presentationVersion: 'scientific-leaderboard-v2' },
+  } }
+  globalThis.fetch = async () => ({ ok: true, status: 200, async text() { return JSON.stringify(responseBody) } })
+  try {
+    const profileView = render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard/models/scientific-profile' }))
+    await screen.findByText(/模型证据暂不可用：模型证据数据格式不受支持/u)
+    assert.equal(screen.queryByRole('heading', { name: 'Tampered Model' }), null)
+    profileView.unmount()
+
+    responseBody = { code: 0, case: { id: 'scientific-edit-01-text-label', kind: 'edit', title: 'Tampered Case' }, items: [{ profileId: 'p', caseId: 'scientific-edit-01-text-label', kind: 'edit', status: 'succeeded', attemptSummary: { count: 0, responseClasses: [] } }], nextCursor: null }
+    render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard/cases/scientific-edit-01-text-label' }))
+    await screen.findByText(/题目证据暂不可用：题目证据数据格式不受支持/u)
+    assert.equal(screen.queryByRole('heading', { name: 'Tampered Case' }), null)
+  } finally { globalThis.fetch = previousFetch }
+})
+
 test('missing and null ranking fields render as em dashes instead of zero scores', () => {
   const incomplete = {
     ...release,
@@ -211,6 +373,19 @@ test('invalid leaderboard slug stays in the leaderboard shell with a friendly re
   assert.ok(screen.getByRole('heading', { name: '没有这个排行榜维度' }))
   assert.ok(screen.getByRole('link', { name: '返回综合总榜' }).getAttribute('href') === '/leaderboard')
   assert.equal(screen.queryByRole('table'), null)
+})
+
+test('dimension and invalid routes honor showNavigation=false inside the unified root', () => {
+  const dimensionView = render(React.createElement(BenchmarkObservatory, { release, pathname: '/leaderboard/aesthetics', showNavigation: false }))
+  assert.equal(Boolean(screen.queryByRole('navigation', { name: '排行榜导航' })), false)
+  dimensionView.unmount()
+
+  const invalidObservatory = render(React.createElement(BenchmarkObservatory, { release, pathname: '/leaderboard/not-a-dimension', showNavigation: false }))
+  assert.equal(Boolean(screen.queryByRole('navigation', { name: '排行榜导航' })), false)
+  invalidObservatory.unmount()
+
+  render(React.createElement(BenchmarkPage, { apiBase: '', enabled: true, pathname: '/leaderboard/not-a-dimension', showNavigation: false }))
+  assert.equal(Boolean(screen.queryByRole('navigation', { name: '排行榜导航' })), false)
 })
 
 test('real page restores a fallback invalid slug before API loading or request errors', () => {

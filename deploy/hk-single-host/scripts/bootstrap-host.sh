@@ -36,7 +36,14 @@ command -v ossutil >/dev/null
 install -d -m 0755 /opt/paperbanana
 install -d -m 0700 /opt/paperbanana/secrets /opt/paperbanana/backups
 install -d -m 0750 /opt/paperbanana/control
+install -d -o 0 -g 0 -m 0700 /opt/paperbanana/operator-private /opt/paperbanana/operator-private/scientific-v2
 install -d -m 0750 -o 999 -g 999 /opt/paperbanana/data/mongodb
+install -d -o 1000 -g 1000 -m 0700 /opt/paperbanana/data/scientific-v2-artifact-spool
+scientific_v2_spool_available="$(df -P -B1 /opt/paperbanana/data/scientific-v2-artifact-spool | awk 'NR==2 {print $4}')"
+[[ "$scientific_v2_spool_available" =~ ^[0-9]+$ && "$scientific_v2_spool_available" -ge 1073741824 ]] || {
+  echo "scientific v2 artifact spool requires at least 1073741824 available bytes" >&2
+  exit 1
+}
 install -d -m 0755 /var/www/letsencrypt
 
 if [[ ! -d /opt/paperbanana/repo/.git ]]; then

@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 
 import { loadConfig } from './config.js'
 import { loadBuildProvenance } from './build-provenance.js'
-import { createMongoBenchmarkRepository } from './benchmark-repository.js'
+import { createMongoBenchmarkRepository, verifyScientificV2EvidenceMetadata } from './benchmark-repository.js'
 import { createBenchmarkService } from './benchmark-service.js'
 import { configureLafCloud } from './laf-cloud.js'
 import { listenWithCleanup } from './listen.js'
@@ -68,9 +68,19 @@ async function main(): Promise<void> {
       const verifyBenchmarkEvidence = async (key: string, expectedHash: string, options: { signal?: AbortSignal; timeoutMs?: number } = {}) => {
         const content = await benchmarkBucket.readFile(key, config.providerImageMaxBytes, options) as Buffer
         if (createHash('sha256').update(content).digest('hex') !== expectedHash) throw new Error('BENCHMARK_EVIDENCE_HASH_MISMATCH')
+        if (key.startsWith('bench/scientific-v2/')) {
+          verifyScientificV2EvidenceMetadata(key, expectedHash, await benchmarkBucket.headFile(key))
+        }
       }
       const readBenchmarkOperatorReport = async (key: string, maxBytes: number) => benchmarkBucket.readFile(key, maxBytes) as Promise<Uint8Array>
-      const benchmarkRepository = createMongoBenchmarkRepository(benchmarkMongo.db, () => new Date(), verifyBenchmarkEvidence, config.benchmark.codeSha, readBenchmarkOperatorReport)
+      const benchmarkRepository = createMongoBenchmarkRepository(
+        benchmarkMongo.db,
+        () => new Date(),
+        verifyBenchmarkEvidence,
+        config.benchmark.codeSha,
+        readBenchmarkOperatorReport,
+        { operatorReportSecret: config.benchmark.reviewSigningSecret },
+      )
       await benchmarkRepository.ensureSuite()
       benchmarkService = createBenchmarkService({
         repository: benchmarkRepository,

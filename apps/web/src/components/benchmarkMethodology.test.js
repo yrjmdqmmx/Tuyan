@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
+import { SCIENTIFIC_WEB_CONTRACT } from './scientificBenchmarkContract.js'
+
 const AXES = [
   'faithfulness',
   'conciseness',
@@ -10,6 +12,30 @@ const AXES = [
   'topology',
   'instruction_adherence',
 ]
+
+const SCIENTIFIC_AXES = [...SCIENTIFIC_WEB_CONTRACT.axes]
+
+function scientificResponse() {
+  const cases = SCIENTIFIC_WEB_CONTRACT.cases.map((item, index) => ({
+    ...structuredClone(item), title: `科研题 ${index + 1}`, instruction: `固定指令 ${index + 1}`,
+    rubric: Object.fromEntries(item.applicableAxes.map((axis) => [axis, `${axis} 评分准则`])),
+    ...(item.kind === 'generation' ? { aspectRatio: '16:9', negativePrompt: '不得增加未要求内容' } : {}),
+  }))
+  return {
+    releaseHash: 'b'.repeat(64),
+    suite: { id: SCIENTIFIC_WEB_CONTRACT.suiteId, version: 2, language: 'zh-CN', manifestHash: SCIENTIFIC_WEB_CONTRACT.suiteHash, caseCount: 9, cases },
+    scoring: { scoreMin: 0, scoreMax: 10, axes: [...SCIENTIFIC_AXES], weights: SCIENTIFIC_AXES.map(() => 0.1), overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0 },
+    methodology: {
+      suiteId: SCIENTIFIC_WEB_CONTRACT.suiteId, suiteHash: SCIENTIFIC_WEB_CONTRACT.suiteHash, evaluationMode: 'codex_scientific_v2', evaluationEpoch: 'codex-scientific-2026-09-v1',
+      reviewProtocol: 'codex-independent-double-review-v2', presentationVersion: 'scientific-leaderboard-v2', expectedCaseCount: 9, dimensions: [...SCIENTIFIC_AXES],
+      overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0,
+      retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' }, routePriority: ['bailian', 'ark', 'openrouter'],
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 }, blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
+      knownLimitations: ['fixed-nine-case-suite', 'single-production-run-per-model'], automaticJudges: [], automaticJudgmentCount: 0,
+      rankingMethod: { id: 'ten_dimension_raw_equal_weight_mean', axes: [...SCIENTIFIC_AXES], weights: SCIENTIFIC_AXES.map(() => 0.1), tieMethod: 'competition' },
+    },
+  }
+}
 
 const license = { spdx: 'CC-BY-4.0', author: 'PaperBanana contributors', source: 'original' }
 
@@ -178,4 +204,40 @@ test('normalizer rejects non-object, wrong case count, and non-finite numeric fi
   const nonFinite = validResponse()
   nonFinite.scoring.scoreMin = Number.NaN
   assert.equal(normalizeMethodologyResponse(nonFinite), null)
+})
+
+test('normalizer accepts only the exact scientific v2 nine-case ten-dimension methodology', async () => {
+  const normalizeMethodologyResponse = await normalizer()
+  const normalized = normalizeMethodologyResponse(scientificResponse())
+  assert.equal(normalized?.suite.cases.length, 9)
+  assert.deepEqual(normalized?.scoring.axes, SCIENTIFIC_AXES)
+  assert.equal(normalized?.methodology.failureScore, 0)
+  assert.equal(normalized?.methodology.retryPolicy.unknownProviderOutcome, 'pause_no_retry')
+
+  const wrongIdentity = scientificResponse()
+  wrongIdentity.methodology.presentationVersion = 'arena-leaderboard-v1'
+  assert.equal(normalizeMethodologyResponse(wrongIdentity), null)
+  const missingAxis = scientificResponse()
+  missingAxis.scoring.axes.pop()
+  assert.equal(normalizeMethodologyResponse(missingAxis), null)
+
+  const substitute = scientificResponse()
+  substitute.suite.cases[0].id = 'scientific-gen-01-substitute'
+  assert.equal(normalizeMethodologyResponse(substitute), null)
+  const reordered = scientificResponse()
+  reordered.suite.cases.reverse()
+  assert.equal(normalizeMethodologyResponse(reordered), null)
+  const suiteHashTamper = scientificResponse()
+  suiteHashTamper.suite.manifestHash = 'c'.repeat(64)
+  suiteHashTamper.methodology.suiteHash = 'c'.repeat(64)
+  assert.equal(normalizeMethodologyResponse(suiteHashTamper), null)
+  const caseHashTamper = scientificResponse()
+  caseHashTamper.suite.cases[4].manifestHash = 'd'.repeat(64)
+  assert.equal(normalizeMethodologyResponse(caseHashTamper), null)
+  const kindTamper = scientificResponse()
+  kindTamper.suite.cases[6].kind = 'generation'
+  assert.equal(normalizeMethodologyResponse(kindTamper), null)
+  const axesTamper = scientificResponse()
+  axesTamper.suite.cases[6].applicableAxes = [...axesTamper.suite.cases[6].applicableAxes].reverse()
+  assert.equal(normalizeMethodologyResponse(axesTamper), null)
 })

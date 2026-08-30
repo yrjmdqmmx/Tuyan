@@ -1,4 +1,11 @@
-import { BENCHMARK_AXES, canonicalHash, PB_IMAGE_LIGHT_V1 } from '@paperbanana/benchmark-core'
+import {
+  BENCHMARK_AXES,
+  PB_IMAGE_LIGHT_V1,
+  PB_SCIENTIFIC_FIGURE_V2,
+  SCIENTIFIC_BENCHMARK_AXES,
+  SCIENTIFIC_BENCHMARK_IDENTITY,
+  canonicalHash,
+} from '@paperbanana/benchmark-core'
 
 type AnyRecord = Record<string, any>
 
@@ -18,6 +25,21 @@ const arenaMethodologyScoring = Object.freeze({
   tieMethod: 'competition',
   redLinePolicy: 'confirmed_axis_cap',
 })
+const scientificRankingMethod = () => ({
+  id: 'ten_dimension_raw_equal_weight_mean',
+  axes: [...SCIENTIFIC_BENCHMARK_AXES],
+  weights: SCIENTIFIC_BENCHMARK_AXES.map(() => 1 / SCIENTIFIC_BENCHMARK_AXES.length),
+  tieMethod: 'competition',
+})
+const scientificMethodologyScoring = Object.freeze({
+  scoreMin: 0,
+  scoreMax: 10,
+  axes: [...SCIENTIFIC_BENCHMARK_AXES],
+  overallFormula: 'ten_dimension_raw_equal_weight_mean',
+  tieMethod: 'competition',
+  failureScore: 0,
+  unsupportedScore: 0,
+})
 
 function publicArenaMethodologySuite(): AnyRecord {
   const suiteFields = ['id', 'title', 'version', 'language', 'license', 'manifestHash']
@@ -28,6 +50,28 @@ function publicArenaMethodologySuite(): AnyRecord {
   return {
     ...Object.fromEntries(suiteFields.map((key) => [key, structuredClone((PB_IMAGE_LIGHT_V1 as AnyRecord)[key])])),
     cases: PB_IMAGE_LIGHT_V1.cases.map((benchmarkCase) => Object.fromEntries(caseFields.map((key) => [key, structuredClone((benchmarkCase as AnyRecord)[key])]))),
+  }
+}
+
+function publicScientificMethodologySuite(): AnyRecord {
+  return {
+    id: PB_SCIENTIFIC_FIGURE_V2.id,
+    version: PB_SCIENTIFIC_FIGURE_V2.version,
+    language: PB_SCIENTIFIC_FIGURE_V2.language,
+    caseCount: PB_SCIENTIFIC_FIGURE_V2.caseCount,
+    manifestHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
+    cases: PB_SCIENTIFIC_FIGURE_V2.cases.map((scientificCase) => ({
+      id: scientificCase.id,
+      kind: scientificCase.kind,
+      title: scientificCase.title,
+      instruction: scientificCase.instruction,
+      applicableAxes: [...scientificCase.applicableAxes],
+      rubric: structuredClone(scientificCase.rubric),
+      manifestHash: scientificCase.manifestHash,
+      ...(scientificCase.kind === 'generation'
+        ? { negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio }
+        : { sourceHash: scientificCase.sourceHash, region: scientificCase.region }),
+    })),
   }
 }
 
@@ -52,6 +96,14 @@ function isArenaLeaderboardRelease(release: AnyRecord): boolean {
   return release.evaluationMode === 'codex_single' && release.profileStatus === 'published'
 }
 
+function isScientificLeaderboardRelease(release: AnyRecord): boolean {
+  return release.evaluationMode === SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode
+    && release.profileStatus === 'published'
+    && release.suiteId === SCIENTIFIC_BENCHMARK_IDENTITY.suiteId
+    && release.suiteHash === PB_SCIENTIFIC_FIGURE_V2.manifestHash
+    && release.presentationVersion === SCIENTIFIC_BENCHMARK_IDENTITY.presentationVersion
+}
+
 function hasPublicReproducibleMethodologySuite(release: AnyRecord): boolean {
   const methodology = release.methodology
   return isArenaLeaderboardRelease(release)
@@ -70,6 +122,7 @@ function publicModel(model: AnyRecord, includeRanking = false): AnyRecord {
     'coverage', 'dimensions', 'traits', 'successRate', 'capabilityCoverage', 'repeatStability', 'latency', 'estimatedCost',
     'registryHash', 'priceHash', 'codeSha', 'auditRatio', 'capabilityGaps', 'canonicalModelId', 'primaryAccessProvider',
     'alternateAccessProviders', 'actualOutputPixels', 'ranked', 'unrankedReason',
+    'scores', 'generationSuccessRate', 'editSuccessRate', 'attemptSummary', 'failureReasons', 'evidence',
     ...(includeRanking ? ['overallScore', 'overallRank', 'dimensionRanks'] : []),
   ]
   return Object.fromEntries(allowed.filter((key) => model[key] !== undefined).map((key) => [key, structuredClone(model[key])]))
@@ -82,6 +135,8 @@ function publicMethodology(methodology: AnyRecord | undefined, rankingMethod?: A
     'evaluationMode', 'evaluationEpoch', 'reviewProtocol', 'reviewerKind', 'reviewerPasses', 'automaticJudges',
     'repetitionsPerCase', 'expectedCaseCount', 'sampleCount', 'automaticJudgmentCount', 'logicalJudgmentCount',
     'judgeDispatchCount', 'auditSampleCount', 'actualOutputPixels',
+    'presentationVersion', 'expectedCaseCount', 'dimensions', 'overallFormula', 'tieMethod', 'failureScore',
+    'retryPolicy', 'routePriority', 'providerBudgetsCny', 'blindReview', 'automaticJudgmentCount',
   ]
   const publicValue = Object.fromEntries(allowed.filter((key) => methodology?.[key] !== undefined).map((key) => [key, structuredClone(methodology![key])]))
   return rankingMethod ? { ...publicValue, noOverallScore: false, rankingMethod } : publicValue
@@ -107,6 +162,22 @@ function competitionRanks(values: number[]): number[] {
 
 const evidenceHashPattern = /^[a-f0-9]{64}$/i
 const evidenceKinds = new Set(['thumbnail', 'detail', 'full'])
+const scientificPublicReviewNotes = new Set([
+  '加分：双盲审核未确认红线问题',
+  '加分：局部编辑准确',
+  '扣分：缺少题目要求的关键内容',
+  '扣分：存在科学事实偏差',
+  '扣分：结构或拓扑关系错误',
+  '扣分：文字或符号表达错误',
+  '扣分：定量表达不准确',
+  '扣分：未完整遵循生成或编辑指令',
+  '扣分：信息层级或可读性不足',
+  '扣分：未达到出版级视觉质量',
+  '扣分：未准确完成目标区域编辑',
+  '扣分：非目标区域发生不当变化',
+])
+const scientificSuccessClasses = new Set(['succeeded', 'succeeded_low_quality'])
+const scientificConfirmedFailureClasses = new Set(['confirmed_technical_failure', 'confirmed_provider_failure'])
 
 function exactPublicScores(value: unknown): value is Record<string, number> {
   return Boolean(value && typeof value === 'object' && !Array.isArray(value)
@@ -169,6 +240,101 @@ async function publicEvidenceItems(input: {
   return output
 }
 
+async function publicScientificEvidenceItems(input: {
+  rawItems: AnyRecord[]
+  releaseHash: string
+  eligibleProfiles: Set<string>
+  signEvidence: (key: string) => Promise<string>
+  verifyEvidence: (key: string, hash: string) => Promise<void>
+}) {
+  const output: AnyRecord[] = []
+  for (const item of input.rawItems) {
+    const profileId = String(item.profileId || '')
+    const scientificCase = PB_SCIENTIFIC_FIGURE_V2.cases.find((candidate) => candidate.id === item.caseId)
+    const attemptSummary = publicScientificAttemptSummary(item.attemptSummary, item.status)
+    if (!scientificCase || item.sourceReleaseHash !== input.releaseHash || !input.eligibleProfiles.has(profileId)
+      || !['succeeded', 'failed', 'unsupported'].includes(item.status)
+      || !attemptSummary) continue
+    const base: AnyRecord = {
+      profileId,
+      canonicalModelId: String(item.canonicalModelId || ''),
+      overallRank: item.overallRank,
+      caseId: scientificCase.id,
+      kind: scientificCase.kind,
+      status: item.status,
+      attemptSummary,
+    }
+    if (item.status !== 'succeeded') {
+      if ((item.status === 'failed' && item.failureReason !== 'confirmed_attempts_exhausted')
+        || (item.status === 'unsupported' && (scientificCase.kind !== 'edit' || item.failureReason !== 'direct_edit_route_unavailable'))) continue
+      output.push({ ...base, failureReason: String(item.failureReason || '') })
+      continue
+    }
+    if (!evidenceHashPattern.test(String(item.imageHash || '')) || !Array.isArray(item.variants) || !item.variants.length
+      || !exactScientificPublicScores(item.scores, scientificCase.applicableAxes)) continue
+    const signVariants = async (rawVariants: AnyRecord[], sourceHash: string) => {
+      const variants: AnyRecord[] = []
+      for (const variant of rawVariants) {
+        const objectKey = String(variant.objectKey || '')
+        if (!evidenceKinds.has(String(variant.kind || '')) || variant.mimeType !== 'image/webp'
+          || !objectKey.startsWith(`bench/scientific-v2/public/${sourceHash}/`) || objectKey.includes('..') || !objectKey.endsWith('.webp')
+          || !evidenceHashPattern.test(String(variant.imageHash || ''))
+          || ![variant.width, variant.height, variant.fileSizeBytes].every(Number.isFinite)) return []
+        await input.verifyEvidence(objectKey, variant.imageHash)
+        variants.push({
+          kind: variant.kind, imageHash: variant.imageHash, width: variant.width, height: variant.height,
+          fileSizeBytes: variant.fileSizeBytes, mimeType: 'image/webp', url: await input.signEvidence(objectKey),
+        })
+      }
+      return variants
+    }
+    const variants = await signVariants(item.variants, item.imageHash)
+    if (!variants.length) continue
+    let beforeVariants: AnyRecord[] | undefined
+    if (scientificCase.kind === 'edit') {
+      if (item.sourceHash !== scientificCase.sourceHash || item.editedHash !== item.imageHash || !Array.isArray(item.beforeVariants)) continue
+      beforeVariants = await signVariants(item.beforeVariants, scientificCase.sourceHash)
+      if (!beforeVariants.length) continue
+    }
+    output.push({
+      ...base,
+      imageHash: item.imageHash,
+      scores: structuredClone(item.scores),
+      reviewNotes: Array.isArray(item.reviewNotes)
+        ? item.reviewNotes.map(String).filter((note: string) => scientificPublicReviewNotes.has(note)).slice(0, 10)
+        : [],
+      variants,
+      ...(scientificCase.kind === 'edit' ? {
+        sourceHash: scientificCase.sourceHash,
+        editedHash: item.imageHash,
+        region: scientificCase.region,
+        beforeVariants,
+      } : {}),
+    })
+  }
+  return output
+}
+
+function publicScientificAttemptSummary(value: unknown, status: unknown): { count: number; responseClasses: string[] } | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+  const summary = value as AnyRecord
+  if (!Number.isInteger(summary.count) || summary.count < 0 || summary.count > 4
+    || !Array.isArray(summary.responseClasses) || summary.responseClasses.length !== summary.count
+    || summary.responseClasses.some((responseClass) => typeof responseClass !== 'string')) return null
+  const responseClasses = summary.responseClasses.map(String)
+  if (status === 'succeeded' && (summary.count < 1 || !scientificSuccessClasses.has(responseClasses.at(-1) || '')
+    || responseClasses.slice(0, -1).some((responseClass) => !scientificConfirmedFailureClasses.has(responseClass)))) return null
+  if (status === 'failed' && (summary.count !== 4 || responseClasses.some((responseClass) => !scientificConfirmedFailureClasses.has(responseClass)))) return null
+  if (status === 'unsupported' && (summary.count !== 0 || responseClasses.length !== 0)) return null
+  return { count: summary.count, responseClasses }
+}
+
+function exactScientificPublicScores(value: unknown, axes: readonly string[]): value is Record<string, number> {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value)
+    && Object.keys(value as AnyRecord).length === axes.length
+    && axes.every((axis) => Number.isFinite((value as AnyRecord)[axis]) && (value as AnyRecord)[axis] >= 0 && (value as AnyRecord)[axis] <= 10))
+}
+
 function promptText(value: unknown, maxLength: number, required = false) {
   const normalized = String(value || '').trim().replace(/\r\n?/g, '\n')
   if ((required && normalized.length < 3) || normalized.length > maxLength
@@ -211,9 +377,12 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
     })
   }
   const arenaLeaderboard = isArenaLeaderboardRelease(release)
+  const scientificLeaderboard = isScientificLeaderboardRelease(release)
   const models = Array.isArray(release.models) ? release.models : []
-  const rankingMethod = arenaLeaderboard ? arenaRankingMethod() : undefined
-  const publicModels: AnyRecord[] = arenaLeaderboard
+  const rankingMethod = scientificLeaderboard ? scientificRankingMethod() : arenaLeaderboard ? arenaRankingMethod() : undefined
+  const publicModels: AnyRecord[] = scientificLeaderboard
+    ? models.map((model: AnyRecord) => publicModel(model, true))
+    : arenaLeaderboard
     ? models.filter(isEligibleForPublicLeaderboard).map((model: AnyRecord) => ({
       ...publicModel(model, true),
       overallScore: BENCHMARK_AXES.reduce((sum, axis) => sum + model.dimensions[axis].mean, 0) / BENCHMARK_AXES.length,
@@ -233,9 +402,9 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
     releaseId,
     profileStatus: release.profileStatus,
     releaseHash: release.releaseHash,
-    ...(arenaLeaderboard ? {
+    ...((arenaLeaderboard || scientificLeaderboard) ? {
       sourceReleaseHash: release.releaseHash,
-      presentationVersion: 'arena-leaderboard-v1',
+      presentationVersion: scientificLeaderboard ? SCIENTIFIC_BENCHMARK_IDENTITY.presentationVersion : 'arena-leaderboard-v1',
       eligibleModelCount: rankedModels.length,
       rankingMethod,
     } : {}),
@@ -308,39 +477,44 @@ export function createBenchmarkService({
         const release = await repository.releaseByModel(modelId, provider || undefined, lane || undefined, profileId || undefined)
         if (!release) return { code: 404, error: 'Benchmark profile not found' }
         const published = await publicBenchmarkRelease(release, signEvidence, verifyEvidence)
+        const scientific = isScientificLeaderboardRelease(release)
         const profile = published.models.find((model: AnyRecord) => profileId ? model.profileId === profileId : model.modelId === modelId && (!provider || model.provider === provider) && (!lane || model.lane === lane))
         const result = profile && repository.publicEvidenceForRelease
-          ? await repository.publicEvidenceForRelease(String(published.releaseHash || ''), { profileId: profile.profileId, limit: 4 })
+          ? await repository.publicEvidenceForRelease(String(published.releaseHash || ''), { profileId: profile.profileId, limit: scientific ? 12 : 4 })
           : null
-        const evidence = result ? await publicEvidenceItems({
+        const evidence = result ? await (scientific ? publicScientificEvidenceItems : publicEvidenceItems)({
           rawItems: result.items, releaseHash: String(published.releaseHash || ''), eligibleProfiles: new Set(published.models.map((model: AnyRecord) => String(model.profileId || ''))),
           signEvidence, verifyEvidence,
         }) : []
-        const publicCases = publicArenaMethodologySuite().cases.filter((benchmarkCase: AnyRecord) => evidence.some((item: AnyRecord) => item.caseId === benchmarkCase.id))
+        const publicCases = (scientific ? publicScientificMethodologySuite() : publicArenaMethodologySuite()).cases
+          .filter((benchmarkCase: AnyRecord) => evidence.some((item: AnyRecord) => item.caseId === benchmarkCase.id))
         return profile
           ? { code: 0, profile: { ...profile, release: { ...published, models: undefined }, cases: publicCases, evidence } }
           : { code: 404, error: 'Benchmark profile not found' }
       }
       if (action === 'benchmarkCaseEvidence') {
         const caseId = String(body.caseId || '').trim()
-        const benchmarkCase = PB_IMAGE_LIGHT_V1.cases.find((item) => item.id === caseId)
-        if (!benchmarkCase) return { code: 404, error: 'Benchmark case not found' }
         const limit = Math.max(1, Math.min(12, Number.isInteger(Number(body.limit)) ? Number(body.limit) : 12))
         const release = await repository.latestRelease()
         if (!release) return { code: 404, error: 'Benchmark release not found' }
+        const scientific = isScientificLeaderboardRelease(release)
+        const benchmarkCase = scientific
+          ? PB_SCIENTIFIC_FIGURE_V2.cases.find((item) => item.id === caseId)
+          : PB_IMAGE_LIGHT_V1.cases.find((item) => item.id === caseId)
+        if (!benchmarkCase) return { code: 404, error: 'Benchmark case not found' }
         const published = await publicBenchmarkRelease(release, signEvidence, verifyEvidence)
-        if (!isArenaLeaderboardRelease(release)) return { code: 404, error: 'Benchmark case evidence not found' }
+        if (!scientific && !isArenaLeaderboardRelease(release)) return { code: 404, error: 'Benchmark case evidence not found' }
         const result = repository.publicEvidenceForRelease
           ? await repository.publicEvidenceForRelease(String(published.releaseHash || ''), { caseId, cursor: String(body.cursor || ''), limit })
           : { items: [], nextCursor: null }
-        const items = await publicEvidenceItems({
+        const items = await (scientific ? publicScientificEvidenceItems : publicEvidenceItems)({
           rawItems: result.items, releaseHash: String(published.releaseHash || ''), eligibleProfiles: new Set(published.models.map((model: AnyRecord) => String(model.profileId || ''))),
           signEvidence, verifyEvidence,
         })
         const profiles = new Map(published.models.map((model: AnyRecord) => [String(model.profileId || ''), model]))
         return {
           code: 0,
-          case: structuredClone(publicArenaMethodologySuite().cases.find((item: AnyRecord) => item.id === caseId)),
+          case: structuredClone((scientific ? publicScientificMethodologySuite() : publicArenaMethodologySuite()).cases.find((item: AnyRecord) => item.id === caseId)),
           items: items.map((item) => {
             const model = profiles.get(item.profileId) as AnyRecord | undefined
             return {
@@ -365,11 +539,14 @@ export function createBenchmarkService({
           if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
         }
         const reproducibleMethodology = release && hasPublicReproducibleMethodologySuite(release)
+        const scientificMethodology = release && isScientificLeaderboardRelease(release)
         return {
           code: 0,
-          methodology: release ? publicMethodology(release.methodology, reproducibleMethodology ? arenaRankingMethod() : undefined) : null,
+          methodology: release ? publicMethodology(release.methodology, scientificMethodology ? scientificRankingMethod() : reproducibleMethodology ? arenaRankingMethod() : undefined) : null,
           releaseHash: release?.releaseHash || '',
-          ...(reproducibleMethodology ? { suite: publicArenaMethodologySuite(), scoring: structuredClone(arenaMethodologyScoring) } : {}),
+          ...(scientificMethodology
+            ? { suite: publicScientificMethodologySuite(), scoring: structuredClone(scientificMethodologyScoring) }
+            : reproducibleMethodology ? { suite: publicArenaMethodologySuite(), scoring: structuredClone(arenaMethodologyScoring) } : {}),
         }
       }
       if (action === 'adminBenchmarkCandidates') return { code: 0, candidates: await repository.candidates() }
@@ -377,6 +554,25 @@ export function createBenchmarkService({
       if (action === 'adminBenchmarkControl') return { code: 0, run: await repository.control(body) }
       if (action === 'adminBenchmarkReviewExport') {
         const packet = await repository.exportReview(body) as AnyRecord
+        if (body.evaluationMode === SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode) {
+          const bindings = new Map((Array.isArray(packet._objectBindings) ? packet._objectBindings : [])
+            .map((binding: AnyRecord) => [String(binding.imageHash || ''), String(binding.objectKey || '')]))
+          const { _objectBindings: _privateBindings, ...publicPacket } = packet
+          return {
+            code: 0,
+            packet: {
+              ...publicPacket,
+              packages: await Promise.all((Array.isArray(packet.packages) ? packet.packages : []).map(async (reviewPackage: AnyRecord) => ({
+                ...reviewPackage,
+                items: await Promise.all((Array.isArray(reviewPackage.items) ? reviewPackage.items : []).map(async (item: AnyRecord) => {
+                  const objectKey = bindings.get(String(item.imageHash || ''))
+                  if (!objectKey) throw new Error('SCIENTIFIC_V2_REVIEW_OBJECT_BINDING_INVALID')
+                  return { ...item, imageUrl: await signEvidence(objectKey) }
+                })),
+              }))),
+            },
+          }
+        }
         return {
           code: 0,
           packet: {
