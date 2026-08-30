@@ -86,6 +86,7 @@ done
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_judgments"}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_dispatches"}, actions: ["find", "insert"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_public_evidence"}, actions: ["find", "insert", "update"]},
+        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_releases"}, actions: ["find"]},
       ],
     },
     {
