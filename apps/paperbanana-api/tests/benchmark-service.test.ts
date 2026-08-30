@@ -3,7 +3,7 @@ import { createHmac } from 'node:crypto'
 import test from 'node:test'
 
 import { createBenchmarkService, publicBenchmarkRelease } from '../src/benchmark-service.js'
-import { buildCodexSingleProfile, buildJudgeCalibrationRecord, buildPhaseOperatorAttestation, buildStandardReviewSourceManifest, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects } from '../src/benchmark-repository.js'
+import { buildCodexSingleProfile, buildJudgeCalibrationRecord, buildPhaseOperatorAttestation, buildPublicEvidenceDraft, buildStandardReviewSourceManifest, createMongoBenchmarkRepository, judgeCalibrationId, verifyEvidenceObjects } from '../src/benchmark-repository.js'
 import {
   BENCHMARK_AXES,
   PB_IMAGE_DIAGNOSTIC_V1,
@@ -354,6 +354,153 @@ test('benchmark profiles do not expose models filtered from the public leaderboa
   })
   assert.equal((await service.handle({ action: 'benchmarkModelProfile', modelId: 'eligible' }, false)).code, 0)
   assert.deepEqual(await service.handle({ action: 'benchmarkModelProfile', modelId: 'insufficient' }, false), { code: 404, error: 'Benchmark profile not found' })
+})
+
+test('public model and case evidence sign only allowlisted WebP variants and never leak audit fields', async () => {
+  const dimensions = Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, { mean: 8 }]))
+  const release = storedRelease({
+    _id: 'evidence-release', profileStatus: 'published', evaluationMode: 'codex_single',
+    suiteId: PB_IMAGE_LIGHT_V1.id, suiteHash: PB_IMAGE_LIGHT_V1.manifestHash,
+    evidence: [], models: [{ profileId: 'model-a:codex_single:epoch', modelId: 'model-a', canonicalModelId: 'model-a', ranked: true, sampleCount: 4, dimensions }],
+  })
+  const rawEvidence = [{
+    sourceReleaseHash: release.releaseHash,
+    sampleId: 'sample-1', profileId: 'model-a:codex_single:epoch', modelId: 'model-a', caseId: PB_IMAGE_LIGHT_V1.cases[0].id,
+    imageHash: 'a'.repeat(64), actualOutputPixels: { width: 2048, height: 1024, megapixels: 2.0972, fileSizeBytes: 1234 },
+    scores: Object.fromEntries(BENCHMARK_AXES.map((axis, index) => [axis, 9 - index / 10])),
+    reviewNotes: ['文字清晰，但次要标签略拥挤。'],
+    variants: [
+      { kind: 'thumbnail', objectKey: `bench/public/evidence/${'a'.repeat(64)}/w640.webp`, imageHash: 'b'.repeat(64), width: 640, height: 320, fileSizeBytes: 222, mimeType: 'image/webp' },
+      { kind: 'detail', objectKey: `bench/public/evidence/${'a'.repeat(64)}/w1600.webp`, imageHash: 'c'.repeat(64), width: 1600, height: 800, fileSizeBytes: 888, mimeType: 'image/webp' },
+    ],
+    blindLabel: 'must-not-leak', imageObjectKey: 'bench/objects/private.png', packetHash: 'must-not-leak', reviewAttestation: 'must-not-leak', userId: 'must-not-leak',
+  }]
+  const signed: string[] = []
+  const verified: string[] = []
+  const repository = {
+    async latestRelease() { return release }, async releaseByModel() { return release },
+    async publicEvidenceForRelease(_releaseHash: string, query: any) {
+      if (query.profileId) return { items: rawEvidence, nextCursor: null }
+      assert.equal(query.caseId, PB_IMAGE_LIGHT_V1.cases[0].id)
+      return { items: rawEvidence, nextCursor: null }
+    },
+    async submitPrompt() {}, async promptQueue() { return [] }, async savePromptDigest() {}, async decidePrompt() {},
+    async candidates() { return [] }, async approve() {}, async control() {}, async exportReview() {}, async importReview() {}, async publish() {},
+  }
+  const service = createBenchmarkService({
+    repository,
+    signEvidence: async (key) => { signed.push(key); return `https://signed.example/${key}` },
+    verifyEvidence: async (key, hash) => { verified.push(`${key}:${hash}`) },
+  })
+
+  const modelResponse = await service.handle({ action: 'benchmarkModelProfile', profileId: 'model-a:codex_single:epoch' }, false)
+  assert.equal(modelResponse.code, 0)
+  assert.equal(modelResponse.profile.evidence.length, 1)
+  assert.deepEqual(Object.keys(modelResponse.profile.evidence[0]).sort(), [
+    'actualOutputPixels', 'caseId', 'imageHash', 'modelId', 'profileId', 'reviewNotes', 'sampleId', 'scores', 'variants',
+  ])
+  assert.equal(modelResponse.profile.evidence[0].variants[0].url, `https://signed.example/${rawEvidence[0].variants[0].objectKey}`)
+  assert.equal('objectKey' in modelResponse.profile.evidence[0].variants[0], false)
+
+  const caseResponse = await service.handle({ action: 'benchmarkCaseEvidence', caseId: PB_IMAGE_LIGHT_V1.cases[0].id, limit: 12 }, false)
+  assert.equal(caseResponse.code, 0)
+  assert.equal(caseResponse.case.id, PB_IMAGE_LIGHT_V1.cases[0].id)
+  assert.equal(caseResponse.items.length, 1)
+  assert.equal(caseResponse.nextCursor, null)
+  assert.equal(signed.length, 4)
+  assert.equal(verified.length, 4)
+})
+
+test('prompt submissions validate text-only fields, require identity, and keep admin decisions separate from the suite', async () => {
+  const calls: any[] = []
+  const repository = {
+    async latestRelease() { return null }, async releaseByModel() { return null }, async publicEvidenceForRelease() { return { items: [], nextCursor: null } },
+    async submitPrompt(input: any) { calls.push(['submit', input]); return { submissionId: 'prompt-submission-1', status: 'pending' } },
+    async promptQueue(input: any) { calls.push(['queue', input]); return [{ submissionId: 'prompt-submission-1', status: 'pending' }] },
+    async savePromptDigest(input: any) { calls.push(['digest', input]); return { digestId: 'digest-1', status: 'candidate' } },
+    async decidePrompt(input: any) { calls.push(['decision', input]); return { submissionId: 'prompt-submission-1', status: 'approved_for_next_suite' } },
+    async candidates() { return [] }, async approve() {}, async control() {}, async exportReview() {}, async importReview() {}, async publish() {},
+  }
+  const service = createBenchmarkService({ repository, signEvidence: async () => 'signed' })
+  const payload = {
+    action: 'benchmarkPromptSubmission', userId: 'account-1', userEmail: 'Owner@Example.com', clientIp: '203.0.113.8',
+    prompt: '  Draw a bilingual topology diagram.  ', capability: 'Bilingual topology', requiredElements: 'Chinese and English labels',
+    forbiddenResults: 'garbled text', notes: 'Community proposal',
+  }
+  const response = await service.handle(payload, false)
+  assert.deepEqual(response, { code: 0, submission: { submissionId: 'prompt-submission-1', status: 'pending' } })
+  assert.equal(calls[0][1].prompt, 'Draw a bilingual topology diagram.')
+  assert.equal(calls[0][1].userId, 'account-1')
+  assert.equal('userEmail' in calls[0][1], false)
+  await assert.rejects(() => service.handle({ ...payload, userId: '' }, false), /BENCHMARK_PROMPT_LOGIN_REQUIRED/)
+  await assert.rejects(() => service.handle({ ...payload, prompt: 'https:\/\/example.com prompt' }, false), /BENCHMARK_PROMPT_INVALID/)
+  await assert.rejects(() => service.handle({ ...payload, prompt: '<b>html</b>' }, false), /BENCHMARK_PROMPT_INVALID/)
+
+  await assert.rejects(() => service.handle({ action: 'adminBenchmarkPromptQueue' }, false), /BENCHMARK_ADMIN_REQUIRED/)
+  assert.equal((await service.handle({ action: 'adminBenchmarkPromptQueue', status: 'pending' }, true)).submissions.length, 1)
+  assert.equal((await service.handle({ action: 'adminBenchmarkPromptDigest', digestId: 'digest-1', candidates: [] }, true)).digest.status, 'candidate')
+  assert.equal((await service.handle({ action: 'adminBenchmarkPromptDecision', submissionId: 'prompt-submission-1', decision: 'approved_for_next_suite' }, true)).decision.status, 'approved_for_next_suite')
+})
+
+test('Mongo prompt submissions enforce daily account and IP limits and keep raw identity private', async () => {
+  const inserted: any[] = []
+  let accountCount = 0
+  let ipCount = 0
+  const promptCollection = {
+    async countDocuments(query: any) { return query.userId ? accountCount : ipCount },
+    async insertOne(document: any) { inserted.push(document); return { insertedId: document._id } },
+    async findOne() { return null },
+  }
+  const emptyCollection = { async updateOne() { return { modifiedCount: 1 } }, async createIndex() {} }
+  const collections: Record<string, any> = {
+    paperbanana_benchmark_prompt_submissions: promptCollection,
+    paperbanana_benchmark_prompt_digests: emptyCollection,
+    paperbanana_benchmark_public_evidence: emptyCollection,
+    paperbanana_benchmark_suites: emptyCollection,
+    paperbanana_benchmark_models: emptyCollection,
+    paperbanana_benchmark_runs: emptyCollection,
+    paperbanana_benchmark_samples: emptyCollection,
+    paperbanana_benchmark_judgments: emptyCollection,
+    paperbanana_benchmark_dispatches: emptyCollection,
+    paperbanana_benchmark_releases: emptyCollection,
+  }
+  const repository = createMongoBenchmarkRepository({ collection: (name: string) => collections[name] } as any, () => new Date('2026-08-30T09:00:00.000Z'))
+  const input = {
+    userId: 'account-1', clientIp: '203.0.113.8', prompt: 'Draw a bilingual topology diagram.', capability: 'Bilingual topology',
+    requiredElements: 'Chinese and English labels', forbiddenResults: 'garbled text', notes: 'Community proposal',
+  }
+  const created = await repository.submitPrompt(input)
+  assert.equal(created.status, 'pending')
+  assert.match(created.submissionId, /^prompt-submission:/)
+  assert.equal(inserted[0].userId, 'account-1')
+  assert.equal(inserted[0].clientIp, '203.0.113.8')
+  assert.equal(inserted[0].status, 'pending')
+  assert.match(inserted[0].normalizedHash, /^[a-f0-9]{64}$/)
+  assert.equal('userEmail' in inserted[0], false)
+
+  accountCount = 5
+  await assert.rejects(() => repository.submitPrompt(input), /BENCHMARK_PROMPT_RATE_LIMIT_ACCOUNT/)
+  accountCount = 0
+  ipCount = 20
+  await assert.rejects(() => repository.submitPrompt(input), /BENCHMARK_PROMPT_RATE_LIMIT_IP/)
+})
+
+test('public evidence drafts bind completed renditions to accepted capped review scores without audit identity', () => {
+  const sample = {
+    sampleId: 'sample-1', caseId: PB_IMAGE_LIGHT_V1.cases[0].id, status: 'completed', imageHash: 'a'.repeat(64),
+    actualOutputPixels: { width: 1200, height: 600, megapixels: 0.72, fileSizeBytes: 1000 },
+    publicRenditions: [{ kind: 'thumbnail', objectKey: `bench/public/evidence/${'a'.repeat(64)}/w640.webp`, imageHash: 'b'.repeat(64), width: 640, height: 320, fileSizeBytes: 100, mimeType: 'image/webp' }],
+  }
+  const judgment = {
+    sampleId: 'sample-1', accepted: true, scores: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, 8])),
+    confirmedRedLines: [{ code: 'garbled', axis: 'text_accuracy', cap: 4 }], evidence: ['Text is visibly garbled.'],
+  }
+  const draft = buildPublicEvidenceDraft('profile-1', 'model-1', [sample], [judgment])
+  assert.equal(draft.length, 1)
+  assert.equal(draft[0].scores.text_accuracy, 4)
+  assert.equal(draft[0].scores.aesthetics, 8)
+  assert.deepEqual(draft[0].reviewNotes, ['Text is visibly garbled.'])
+  assert.deepEqual(Object.keys(draft[0]).sort(), ['actualOutputPixels', 'caseId', 'imageHash', 'modelId', 'profileId', 'reviewNotes', 'sampleId', 'scores', 'variants'])
 })
 
 test('historical verified and quick releases keep unranked public models and detached nested values', async () => {

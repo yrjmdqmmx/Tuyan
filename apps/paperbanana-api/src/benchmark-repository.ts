@@ -271,6 +271,30 @@ export function buildCodexSingleProfile(input: {
   }
 }
 
+export function buildPublicEvidenceDraft(profileId: string, modelId: string, samples: AnyRecord[], codexJudgments: AnyRecord[]) {
+  const judgmentsBySample = new Map(codexJudgments.filter((judgment) => judgment.accepted === true).map((judgment) => [judgment.sampleId, judgment]))
+  return samples.flatMap((sample) => {
+    const judgment = judgmentsBySample.get(sample.sampleId)
+    const variants = Array.isArray(sample.publicRenditions) ? sample.publicRenditions : []
+    if (sample.status !== 'completed' || !judgment || !benchmarkHashPattern.test(String(sample.imageHash || ''))
+      || !exactAxisScores(judgment.scores) || !validEvidence(judgment.evidence) || !validConfirmedRedLines(judgment.confirmedRedLines)
+      || !variants.length || variants.some((variant: AnyRecord) => !['thumbnail', 'detail', 'full'].includes(variant.kind)
+        || variant.mimeType !== 'image/webp' || !benchmarkHashPattern.test(String(variant.imageHash || ''))
+        || !String(variant.objectKey || '').startsWith(`bench/public/evidence/${sample.imageHash}/`) || !String(variant.objectKey || '').endsWith('.webp'))) return []
+    return [{
+      sampleId: sample.sampleId,
+      profileId,
+      modelId,
+      caseId: sample.caseId,
+      imageHash: sample.imageHash,
+      actualOutputPixels: structuredClone(sample.actualOutputPixels),
+      variants: structuredClone(variants),
+      scores: applyCodexSingleReview(judgment as any).scores,
+      reviewNotes: judgment.evidence.map((note: string) => note.trim()),
+    }]
+  })
+}
+
 function sameStringSet(left: readonly string[], right: readonly string[]) {
   return left.length === right.length && new Set(left).size === left.length && new Set(right).size === right.length
     && [...left].sort().every((value, index) => value === [...right].sort()[index])
@@ -1146,6 +1170,9 @@ export function createMongoBenchmarkRepository(
   const judgments = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.judgments)
   const dispatches = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.dispatches)
   const releases = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.releases)
+  const publicEvidence = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.publicEvidence)
+  const promptSubmissions = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.promptSubmissions)
+  const promptDigests = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.promptDigests)
 
   return {
     async ensureSuite() {
@@ -1159,6 +1186,17 @@ export function createMongoBenchmarkRepository(
         { $setOnInsert: { ...PB_IMAGE_LIGHT_V1, _id: PB_IMAGE_LIGHT_V1.id, createdAt: now() } },
         { upsert: true },
       )
+      const indexes = [
+        [publicEvidence, { sourceReleaseHash: 1, profileId: 1, sampleId: 1 }, { unique: true, name: 'public_evidence_release_profile_sample' }],
+        [publicEvidence, { sourceReleaseHash: 1, caseId: 1, overallRank: 1 }, { name: 'public_evidence_case_rank' }],
+        [promptSubmissions, { userId: 1, createdAt: 1 }, { name: 'prompt_submission_account_day' }],
+        [promptSubmissions, { clientIp: 1, createdAt: 1 }, { name: 'prompt_submission_ip_day' }],
+        [promptSubmissions, { status: 1, createdAt: 1 }, { name: 'prompt_submission_queue' }],
+        [promptDigests, { digestId: 1 }, { unique: true, name: 'prompt_digest_id' }],
+      ] as const
+      await Promise.all(indexes.map(async ([collection, keys, options]) => {
+        if (typeof (collection as any).createIndex === 'function') await (collection as any).createIndex(keys, options)
+      }))
     },
     async latestRelease(lane?: string) {
       return releases.find({
@@ -1172,6 +1210,122 @@ export function createMongoBenchmarkRepository(
       const profileQuery = profileId ? { profileId } : { modelId, ...(provider ? { provider } : {}), ...(lane ? { lane } : {}) }
       return releases.find({ profileStatus: { $in: ['provisional', 'verified', 'published'] }, models: { $elemMatch: profileQuery }, publishedAt: { $exists: true } })
         .sort({ publishedAt: -1 }).limit(1).next()
+    },
+    async publicEvidenceForRelease(releaseHash: string, query: { profileId?: string; caseId?: string; cursor?: string; limit: number }) {
+      const offset = /^\d+$/.test(String(query.cursor || '')) ? Number(query.cursor) : 0
+      const limit = Math.max(1, Math.min(12, Number(query.limit) || 12))
+      const rows = await publicEvidence.find({
+        sourceReleaseHash: releaseHash,
+        ...(query.profileId ? { profileId: query.profileId } : {}),
+        ...(query.caseId ? { caseId: query.caseId } : {}),
+      }).sort({ overallRank: 1, profileId: 1, sampleId: 1 }).skip(offset).limit(limit + 1).toArray()
+      return { items: rows.slice(0, limit), nextCursor: rows.length > limit ? String(offset + limit) : null }
+    },
+    async submitPrompt(input: AnyRecord) {
+      const timestamp = now()
+      const dayStart = new Date(timestamp)
+      dayStart.setUTCHours(0, 0, 0, 0)
+      const [accountCount, ipCount] = await Promise.all([
+        promptSubmissions.countDocuments({ userId: input.userId, createdAt: { $gte: dayStart } }),
+        promptSubmissions.countDocuments({ clientIp: input.clientIp, createdAt: { $gte: dayStart } }),
+      ])
+      if (accountCount >= 5) throw new Error('BENCHMARK_PROMPT_RATE_LIMIT_ACCOUNT')
+      if (ipCount >= 20) throw new Error('BENCHMARK_PROMPT_RATE_LIMIT_IP')
+      const normalizedBase = {
+        prompt: text(input.prompt, 4_000), capability: text(input.capability, 1_000), requiredElements: text(input.requiredElements, 1_000),
+        forbiddenResults: text(input.forbiddenResults, 1_000), notes: text(input.notes, 1_000),
+      }
+      const normalizedHash = canonicalHash(normalizedBase)
+      const submissionId = `prompt-submission:${canonicalHash([input.userId, normalizedHash])}`
+      const document = {
+        _id: submissionId, submissionId, ...normalizedBase, normalizedHash,
+        userId: text(input.userId, 200), clientIp: text(input.clientIp, 80), status: 'pending', createdAt: timestamp, updatedAt: timestamp,
+      }
+      try {
+        await promptSubmissions.insertOne(document)
+      } catch (error: any) {
+        if (error?.code !== 11000) throw error
+        const existing = await promptSubmissions.findOne({ _id: submissionId })
+        if (!existing) throw error
+        return { submissionId, status: existing.status, duplicate: true }
+      }
+      return { submissionId, status: 'pending' }
+    },
+    async promptQueue(input: AnyRecord) {
+      const statuses = new Set(['pending', 'grouped', 'candidate', 'approved_for_next_suite', 'merged', 'rejected'])
+      const status = statuses.has(String(input.status || '')) ? String(input.status) : 'pending'
+      const limit = Math.max(1, Math.min(200, Number(input.limit) || 200))
+      const rows = await promptSubmissions.find({ status }).sort({ createdAt: 1 }).limit(limit).toArray()
+      return rows.map((row: AnyRecord) => ({
+        submissionId: row.submissionId, status: row.status, prompt: row.prompt, capability: row.capability,
+        requiredElements: row.requiredElements, forbiddenResults: row.forbiddenResults, notes: row.notes,
+        normalizedHash: row.normalizedHash, userId: row.userId, createdAt: row.createdAt,
+      }))
+    },
+    async savePromptDigest(input: AnyRecord) {
+      const candidates = (Array.isArray(input.candidates) ? input.candidates.slice(0, 200) : []).map((candidate: AnyRecord, index: number) => ({
+        candidateId: text(candidate.candidateId, 200) || `candidate-${index + 1}`,
+        sourceSubmissionIds: [...new Set((Array.isArray(candidate.sourceSubmissionIds) ? candidate.sourceSubmissionIds : []).map((value: unknown) => text(value, 200)).filter(Boolean))].sort(),
+        mergeReason: text(candidate.mergeReason, 1_000), normalizedPrompt: text(candidate.normalizedPrompt, 4_000),
+        capability: text(candidate.capability, 1_000), requiredElements: text(candidate.requiredElements, 1_000),
+        forbiddenResults: text(candidate.forbiddenResults, 1_000), scoringFocus: text(candidate.scoringFocus, 1_000), status: 'candidate',
+      })).filter((candidate: AnyRecord) => candidate.sourceSubmissionIds.length && candidate.normalizedPrompt && candidate.capability)
+      const sourceSubmissionIds = [...new Set(candidates.flatMap((candidate: AnyRecord) => Array.isArray(candidate.sourceSubmissionIds) ? candidate.sourceSubmissionIds : []).map((value: unknown) => text(value, 200)).filter(Boolean))].sort()
+      const digestId = text(input.digestId, 200) || `prompt-digest:${canonicalHash({ sourceSubmissionIds, candidates })}`
+      if (!/^[-A-Za-z0-9:._]{3,200}$/.test(digestId)) throw new Error('BENCHMARK_PROMPT_DIGEST_INVALID')
+      const timestamp = now()
+      const lockId = 'benchmark-prompt-digest-lock'
+      const leaseUntil = new Date(timestamp.getTime() + 10 * 60_000)
+      let locked = false
+      try {
+        if (typeof (promptDigests as any).findOneAndUpdate === 'function') {
+          try {
+            const lock = await (promptDigests as any).findOneAndUpdate(
+              { _id: lockId, $or: [{ leaseUntil: { $lte: timestamp } }, { leaseUntil: { $exists: false } }, { owner: digestId }] },
+              { $set: { owner: digestId, leaseUntil, updatedAt: timestamp }, $setOnInsert: { _id: lockId, kind: 'digest-lock', createdAt: timestamp } },
+              { upsert: true, returnDocument: 'after' },
+            )
+            if (lock?.owner !== digestId) throw new Error('BENCHMARK_PROMPT_DIGEST_LOCKED')
+            locked = true
+          } catch (error: any) {
+            if (error?.code === 11000) throw new Error('BENCHMARK_PROMPT_DIGEST_LOCKED')
+            throw error
+          }
+        }
+        if (sourceSubmissionIds.length && typeof (promptSubmissions as any).find === 'function') {
+          const sourceRows = await promptSubmissions.find({ submissionId: { $in: sourceSubmissionIds } }).toArray()
+          if (sourceRows.length !== sourceSubmissionIds.length || sourceRows.some((row: AnyRecord) => row.status !== 'pending' && !(row.status === 'grouped' && row.digestId === digestId))) {
+            throw new Error('BENCHMARK_PROMPT_DIGEST_SOURCE_INVALID')
+          }
+        }
+        await promptDigests.updateOne(
+          { _id: digestId },
+          { $setOnInsert: { _id: digestId, digestId, candidates: structuredClone(candidates), sourceSubmissionIds, status: 'candidate', createdAt: timestamp }, $set: { updatedAt: timestamp } },
+          { upsert: true },
+        )
+        if (sourceSubmissionIds.length) await promptSubmissions.updateMany?.(
+          { submissionId: { $in: sourceSubmissionIds }, status: 'pending' },
+          { $set: { status: 'grouped', digestId, updatedAt: timestamp } },
+        )
+        return { digestId, status: 'candidate', candidateCount: candidates.length, sourceSubmissionCount: sourceSubmissionIds.length }
+      } finally {
+        if (locked) await promptDigests.updateOne({ _id: lockId, owner: digestId }, { $unset: { owner: '', leaseUntil: '' }, $set: { updatedAt: now() } }).catch(() => {})
+      }
+    },
+    async decidePrompt(input: AnyRecord) {
+      const submissionId = text(input.submissionId, 200)
+      const decision = String(input.decision || '')
+      if (!submissionId || !['approved_for_next_suite', 'merged', 'rejected'].includes(decision)) throw new Error('BENCHMARK_PROMPT_DECISION_INVALID')
+      const result = await promptSubmissions.updateOne(
+        { submissionId, status: { $in: ['pending', 'grouped', 'candidate'] } },
+        { $set: {
+          status: decision, decisionNotes: text(input.decisionNotes, 1_000), decidedBy: text(input.adminUserId, 200),
+          adminEditedPrompt: text(input.editedPrompt, 4_000), adminEditedCapability: text(input.editedCapability, 1_000),
+          decidedAt: now(), updatedAt: now(),
+        } },
+      )
+      if (result.modifiedCount !== 1) throw new Error('BENCHMARK_PROMPT_DECISION_CONFLICT')
+      return { submissionId, status: decision }
     },
     async candidates() {
       return (await models.find({}).sort({ detectedAt: -1 }).limit(200).toArray()).map(adminCandidate)
@@ -1518,7 +1672,14 @@ export function createMongoBenchmarkRepository(
           priceSnapshot: run.approval?.priceSnapshot || {},
           generationCalls: runSamples.filter((sample) => ['completed', 'failed'].includes(sample.status)).length,
         })
+        const standardProfileId = `${standardProfile.canonicalModelId}:${run.evaluationMode}:${run.evaluationEpoch}`
         releaseDraft.models = [{ ...(releaseDraft.models?.[0] || {}), ...standardProfile }]
+        releaseDraft.publicEvidence = buildPublicEvidenceDraft(
+          standardProfileId,
+          standardProfile.modelId,
+          runSamples,
+          persisted.map((judgment: AnyRecord) => ({ ...judgment, accepted: true })),
+        )
         releaseDraft.methodology = {
           suiteId: run.suiteId, evaluationMode: 'codex_single', evaluationEpoch: run.evaluationEpoch,
           reviewProtocol: run.reviewProtocol, reviewerKind: 'codex', reviewerPasses: 2, automaticJudges: [],
@@ -1698,6 +1859,27 @@ export function createMongoBenchmarkRepository(
       }
       const releaseHash = canonicalHash(releaseBase)
       const releaseId = `bench-release-${releaseHash.slice(0, 20)}`
+      const currentEvidenceDraft = standardMode && Array.isArray(run.releaseDraft?.publicEvidence)
+        ? run.releaseDraft.publicEvidence.filter((item: AnyRecord) => replacedIds.has(item.profileId))
+        : []
+      if (currentEvidenceDraft.length) {
+        await verifyEvidenceObjects(
+          currentEvidenceDraft.flatMap((item: AnyRecord) => item.variants.map((variant: AnyRecord) => ({ objectKey: variant.objectKey, imageHash: variant.imageHash }))),
+          verifyEvidence,
+          { concurrency: 8, deadlineMs: 120_000, retries: 1 },
+        )
+      }
+      const previousEvidenceRows = standardMode && previousRelease?.releaseHash && (publicEvidence as any)?.find
+        ? await publicEvidence.find({ sourceReleaseHash: previousRelease.releaseHash }).toArray()
+        : []
+      const evidenceRows = [
+        ...previousEvidenceRows.filter((item: AnyRecord) => !replacedIds.has(item.profileId)),
+        ...currentEvidenceDraft,
+      ].map((item: AnyRecord) => {
+        const { _id: _previousId, sourceReleaseHash: _previousHash, createdAt: _previousCreatedAt, updatedAt: _previousUpdatedAt, ...publicItem } = item
+        const evidenceId = `benchmark-public-evidence:${canonicalHash([releaseHash, publicItem.profileId, publicItem.sampleId])}`
+        return { _id: evidenceId, ...publicItem, sourceReleaseHash: releaseHash, createdAt: now(), updatedAt: now() }
+      })
       const session = db.client.startSession()
       try {
         await session.withTransaction(async () => {
@@ -1726,6 +1908,12 @@ export function createMongoBenchmarkRepository(
           }
           const laneHead = await suites.findOne({ _id: laneHeadId }, { session })
           if (laneHead && laneHead.releaseId !== previousRelease?._id) throw new Error('BENCHMARK_LANE_HEAD_CONFLICT')
+          if (evidenceRows.length && (publicEvidence as any)?.bulkWrite) {
+            await publicEvidence.bulkWrite(
+              evidenceRows.map((document: AnyRecord) => ({ updateOne: { filter: { _id: document._id }, update: { $setOnInsert: document }, upsert: true } })),
+              { session },
+            )
+          }
           await releases.insertOne({ _id: releaseId, ...releaseBase, releaseHash }, { session })
           const updated = await runs.updateOne(
             publishGuard,

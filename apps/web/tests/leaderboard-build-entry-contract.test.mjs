@@ -12,6 +12,8 @@ const routeEntries = [
   ['leaderboard-text-accuracy', 'leaderboard/text-accuracy/index.html'],
   ['leaderboard-topology', 'leaderboard/topology/index.html'],
   ['leaderboard-instruction-adherence', 'leaderboard/instruction-adherence/index.html'],
+  ['leaderboard-submit-prompt', 'leaderboard/submit-prompt/index.html'],
+  ['leaderboard-prompt-admin', 'leaderboard/admin/prompt-submissions/index.html'],
 ]
 
 test('Vite multi-page inputs include leaderboard overview, methodology, and all seven dimension deep links', async () => {
@@ -42,6 +44,10 @@ test('every leaderboard deep-link entry boots the shared React route resolver', 
     const html = readFileSync(url, 'utf8')
     if (relativePath === 'leaderboard/methodology/index.html') {
       assert.match(html, /<title>PaperBanana 排行榜方法说明<\/title>/u)
+    } else if (relativePath === 'leaderboard/submit-prompt/index.html') {
+      assert.match(html, /<title>提交评估题 · PaperBanana<\/title>/u)
+    } else if (relativePath === 'leaderboard/admin/prompt-submissions/index.html') {
+      assert.match(html, /<title>社区评估题审核 · PaperBanana<\/title>/u)
     } else {
       assert.match(html, /<title>PaperBanana 生图模型排行榜<\/title>/u)
     }

@@ -1,0 +1,77 @@
+name: Backfill Public Benchmark Evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Inspect is read-only; apply writes WebP variants and public evidence.
+        required: true
+        type: choice
+        default: inspect
+        options:
+          - inspect
+          - apply
+      expected_deployed_sha:
+        description: Exact deployed Core and Benchmark Worker SHA.
+        required: true
+      source_release_hash:
+        description: Exact verified source release hash.
+        required: true
+      confirm:
+        description: Type the mode-specific disabled-worker confirmation phrase.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate immutable zero-dispatch binding
+        env:
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          RELEASE_HASH: ${{ inputs.source_release_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ && "$RELEASE_HASH" =~ ^[a-f0-9]{64}$ ]]
+          if [[ "$MODE" == inspect ]]; then
+            [[ "$CONFIRM" == inspect-public-evidence-disabled-worker ]]
+          elif [[ "$MODE" == apply ]]; then
+            [[ "$CONFIRM" == backfill-public-evidence-disabled-worker ]]
+          else
+            exit 1
+          fi
+          bash -n deploy/hk-single-host/scripts/backfill-public-evidence.sh
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Run protected evidence operation
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          RELEASE_HASH: ${{ inputs.source_release_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'cd %q && sudo %q --mode %q --expected-sha %q --release-hash %q --confirm %q' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/backfill-public-evidence.sh \
+            "$MODE" "$EXPECTED_SHA" "$RELEASE_HASH" "$CONFIRM"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

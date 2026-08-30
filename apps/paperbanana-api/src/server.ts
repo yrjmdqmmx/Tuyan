@@ -63,6 +63,9 @@ const adminActions = new Set([
   'adminBenchmarkReviewExport',
   'adminBenchmarkReviewImport',
   'adminBenchmarkPublish',
+  'adminBenchmarkPromptQueue',
+  'adminBenchmarkPromptDigest',
+  'adminBenchmarkPromptDecision',
 ])
 
 function tokensMatch(actual: string, expected: string): boolean {
@@ -183,7 +186,10 @@ export function createApp({ handler, readinessProbe, healthSnapshot, config, log
         const isAdmin = Boolean(isAdminTransport && config.adminToken && body.adminToken === config.adminToken && adminActions.has(action))
         return response.status(200).send(await benchmarkService.handle(body, isAdmin))
       } catch (error) {
-        const code = String((error as Error)?.message || '').startsWith('BENCHMARK_ADMIN_REQUIRED') ? 401 : 400
+        const message = String((error as Error)?.message || '')
+        const code = message.startsWith('BENCHMARK_ADMIN_REQUIRED') || message.startsWith('BENCHMARK_PROMPT_LOGIN_REQUIRED')
+          ? 401
+          : message.startsWith('BENCHMARK_PROMPT_RATE_LIMIT_') ? 429 : 400
         logger.warn('benchmark request rejected', { action, code })
         return response.status(200).json({ code, error: 'Benchmark request rejected' })
       }

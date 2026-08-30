@@ -8,6 +8,7 @@ import { executeBenchmarkRun } from './runner.js'
 import { executeStandardBenchmarkRun } from './standard-runner.js'
 import { callBlindJudge } from './judge-provider.js'
 import { runProviderOperation } from './provider-operation.js'
+import { createPublicWebpRenditions } from './public-evidence-renditions.js'
 
 function mismatch(): never {
   throw new Error('BENCHMARK_PHASE_OPERATOR_RUN_MISMATCH')
@@ -80,7 +81,7 @@ export async function processAcquiredBenchmarkRun(input: {
   const provider = String(run.provider) as 'bailian' | 'openrouter' | 'ark'
   const apiKey = credentials[provider]
   if (!apiKey || (!standard && (!credentials.openrouter || !credentials.bailian))) throw new Error('BENCHMARK_DEDICATED_CREDENTIALS_MISSING')
-  const persistGeneratedImage = async (sample: Record<string, any>, imageSize: string) => {
+  const persistGeneratedImage = async (sample: Record<string, any>, imageSize: string, createPublicRenditions = false) => {
     await repository.reserveBudget(run._id, workerId, run.leaseToken, run.state, 'generation', Number(run.approval?.priceSnapshot?.estimatedPerGeneration || 0))
     await repository.beginSampleDispatch(run, workerId, sample)
     const startedAt = Date.now()
@@ -98,7 +99,12 @@ export async function processAcquiredBenchmarkRun(input: {
     if (bytes.length < 24 || bytes.toString('ascii', 1, 4) !== 'PNG') throw new Error('BENCHMARK_IMAGE_FORMAT_INVALID')
     const width = bytes.readUInt32BE(16)
     const height = bytes.readUInt32BE(20)
-    return { imageHash, imageObjectKey, latencyMs: Date.now() - startedAt, actualOutputPixels: { width, height, megapixels: Number(((width * height) / 1_000_000).toFixed(4)), fileSizeBytes: bytes.length } }
+    const publicRenditions = createPublicRenditions ? await createPublicWebpRenditions({ png: bytes, sourceHash: imageHash, store: oss }) : undefined
+    return {
+      imageHash, imageObjectKey, latencyMs: Date.now() - startedAt,
+      actualOutputPixels: { width, height, megapixels: Number(((width * height) / 1_000_000).toFixed(4)), fileSizeBytes: bytes.length },
+      ...(publicRenditions ? { publicRenditions } : {}),
+    }
   }
   if (standard) {
     const result = await executeStandardBenchmarkRun({
@@ -111,7 +117,7 @@ export async function processAcquiredBenchmarkRun(input: {
       cases: [...PB_IMAGE_LIGHT_V1.cases],
       async generate(sample) {
         const imageSize = sample.resolutionRequest === 'provider-default' ? 'provider-default' : `${sample.resolutionRequest}-standard`
-        return persistGeneratedImage(sample, imageSize)
+        return persistGeneratedImage(sample, imageSize, true)
       },
       repository: repository.forRun(run, workerId),
     })

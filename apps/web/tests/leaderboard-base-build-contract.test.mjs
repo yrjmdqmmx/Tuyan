@@ -35,6 +35,8 @@ test('non-root Vite build keeps every leaderboard entry and runtime fallback und
       'leaderboard/text-accuracy/index.html',
       'leaderboard/topology/index.html',
       'leaderboard/instruction-adherence/index.html',
+      'leaderboard/submit-prompt/index.html',
+      'leaderboard/admin/prompt-submissions/index.html',
     ]) builtScript(outputDir, relativeHtml)
 
     assert.match(builtScript(outputDir, 'leaderboard/index.html'), /(?:\/paperbanana\/|appPaths-)/u)

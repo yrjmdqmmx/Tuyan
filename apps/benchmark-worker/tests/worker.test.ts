@@ -3,6 +3,7 @@ import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
+import sharp from 'sharp'
 import { PB_IMAGE_LIGHT_V1, benchmarkImmutableRunBinding, canonicalHash } from '@paperbanana/benchmark-core'
 
 import {
@@ -44,6 +45,7 @@ import {
 import { callBlindJudge } from '../src/judge-provider.js'
 import { runOpenRouterJudgeProbe } from '../src/openrouter-judge-probe.js'
 import { createWorkerMongoRepository } from '../src/mongo-repository.js'
+import { createPublicWebpRenditions } from '../src/public-evidence-renditions.js'
 
 test('worker is disabled, single-concurrency and six-hour detection by default', () => {
   const config = parseWorkerConfig({})
@@ -334,6 +336,36 @@ test('standard run records a known generation failure once and never retries it'
   assert.equal(failures.length, 1)
   assert.equal(result.sampleCount, 3)
   assert.equal(result.ranked, true)
+})
+
+test('public evidence renditions are real WebP, never upscale, and replay idempotently', async () => {
+  const png = await sharp({ create: { width: 1200, height: 600, channels: 4, background: { r: 240, g: 245, b: 250, alpha: 1 } } }).png().toBuffer()
+  const objects = new Map<string, Buffer>()
+  const putCalls: string[] = []
+  const store = {
+    async put(key: string, bytes: Buffer, options: any) {
+      putCalls.push(key)
+      assert.equal(options.headers['Content-Type'], 'image/webp')
+      assert.equal(options.headers['Cache-Control'], 'public, max-age=31536000, immutable')
+      assert.equal(options.headers['x-oss-forbid-overwrite'], 'true')
+      if (objects.has(key)) throw Object.assign(new Error('exists'), { code: 409, status: 409 })
+      objects.set(key, Buffer.from(bytes))
+    },
+    async get(key: string) { return { content: objects.get(key) } },
+  }
+  const sourceHash = 'a'.repeat(64)
+  const first = await createPublicWebpRenditions({ png, sourceHash, store })
+  const second = await createPublicWebpRenditions({ png, sourceHash, store })
+
+  assert.deepEqual(first, second)
+  assert.deepEqual(first.map((item) => item.kind), ['thumbnail', 'detail', 'full'])
+  assert.equal(first.every((item) => item.width <= 1200 && item.height <= 600), true)
+  assert.equal(objects.size, 3)
+  for (const bytes of objects.values()) {
+    assert.equal(bytes.subarray(0, 4).toString('ascii'), 'RIFF')
+    assert.equal(bytes.subarray(8, 12).toString('ascii'), 'WEBP')
+  }
+  assert.equal(putCalls.length, 6)
 })
 
 test('automatic red-line ordering does not create a false audit conflict', async () => {

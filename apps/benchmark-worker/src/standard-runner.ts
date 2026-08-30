@@ -47,6 +47,7 @@ type StandardSample = {
   caption: string
   caseRequirements: Record<string, unknown>
   requirementsHash: string
+  publicRenditions?: Array<Record<string, unknown>>
 }
 
 type StandardRepository = {
@@ -74,7 +75,7 @@ export async function executeStandardBenchmarkRun(input: {
     resolutionRequest: string
     provider: string
     modelId: string
-  }): Promise<{ imageBase64?: string; imageObjectKey?: string; imageHash: string; latencyMs?: number; actualOutputPixels: PixelFacts }>
+  }): Promise<{ imageBase64?: string; imageObjectKey?: string; imageHash: string; latencyMs?: number; actualOutputPixels: PixelFacts; publicRenditions?: Array<Record<string, unknown>> }>
   repository: StandardRepository
 }) {
   if (input.run.repetitions !== 1 || input.cases.length !== 4) throw new Error('BENCHMARK_STANDARD_SHAPE_INVALID')

@@ -10,8 +10,10 @@ import {
   getJobRequest,
   modelRegistryRequest,
   benchmarkLeaderboardRequest,
+  benchmarkCaseEvidenceRequest,
   benchmarkModelProfileRequest,
   benchmarkMethodologyRequest,
+  benchmarkPromptSubmissionRequest,
   adminBenchmarkRequest,
   providerAccountCatalogRequest,
   referenceLibraryRequest,
@@ -728,13 +730,32 @@ test('benchmark clients use only the public and admin action contracts', async (
   try {
     await benchmarkLeaderboardRequest('https://gateway.example', { backendMode: 'gateway' }, { lane: '2K-standard', axis: 'topology' });
     await benchmarkModelProfileRequest('https://gateway.example', { backendMode: 'gateway' }, 'model-a');
+    await benchmarkCaseEvidenceRequest('https://gateway.example', { backendMode: 'gateway' }, 'case-a', { cursor: '12', limit: 12 });
     await benchmarkMethodologyRequest('https://gateway.example', { backendMode: 'gateway' });
+    await benchmarkPromptSubmissionRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      prompt: 'Draw a bilingual topology diagram.',
+      capability: 'bilingual topology',
+      requiredElements: 'Chinese and English labels',
+      forbiddenResults: 'garbled text',
+      notes: 'Community proposal',
+    });
     await adminBenchmarkRequest('https://gateway.example', { backendMode: 'gateway' }, 'adminBenchmarkControl', { runId: 'run-1', targetState: 'paused' });
+    await adminBenchmarkRequest('https://gateway.example', { backendMode: 'gateway' }, 'adminBenchmarkPromptQueue', { status: 'pending' });
     assert.deepEqual(fetchMock.calls.map((call) => JSON.parse(call.options.body)), [
       { action: 'benchmarkLeaderboard', lane: '2K-standard', axis: 'topology' },
       { action: 'benchmarkModelProfile', modelId: 'model-a' },
+      { action: 'benchmarkCaseEvidence', caseId: 'case-a', cursor: '12', limit: 12 },
       { action: 'benchmarkMethodology' },
+      {
+        action: 'benchmarkPromptSubmission',
+        prompt: 'Draw a bilingual topology diagram.',
+        capability: 'bilingual topology',
+        requiredElements: 'Chinese and English labels',
+        forbiddenResults: 'garbled text',
+        notes: 'Community proposal',
+      },
       { action: 'adminBenchmarkControl', runId: 'run-1', targetState: 'paused' },
+      { action: 'adminBenchmarkPromptQueue', status: 'pending' },
     ]);
   } finally {
     fetchMock.restore();

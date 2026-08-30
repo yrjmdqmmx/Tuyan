@@ -4,6 +4,16 @@ import { benchmarkLeaderboardRequest } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
 import { LEADERBOARD_AXES, resolveLeaderboardRoute } from '../leaderboardRoutes.js'
+import {
+  BenchmarkCaseEvidencePage,
+  BenchmarkEvidenceImage,
+  BenchmarkModelEvidencePage,
+  BenchmarkPromptAdminPage,
+  BenchmarkPromptSubmissionForm,
+  BenchmarkPromptSubmissionPage,
+} from './BenchmarkEvidencePages.jsx'
+
+export { BenchmarkEvidenceImage, BenchmarkPromptSubmissionForm }
 
 export const BENCHMARK_AXIS_LABELS = Object.freeze(Object.fromEntries(LEADERBOARD_AXES.map((axis) => [axis.id, axis.label])))
 
@@ -11,6 +21,7 @@ const OVERALL_METRIC = Object.freeze({ id: 'overall', label: 'Overall' })
 const WORKSPACE_HREF = appPath('/')
 const LEADERBOARD_HREF = appPath('/leaderboard')
 const METHODOLOGY_HREF = appPath('/leaderboard/methodology')
+const SUBMIT_HREF = appPath('/leaderboard/submit-prompt')
 const LOGO_HREF = appPath('/logo.svg')
 
 function finiteNumber(value) {
@@ -74,6 +85,7 @@ function LeaderboardNav() {
       <a href={WORKSPACE_HREF}>工作台</a>
       <span aria-current="page">排行榜</span>
       <a href={METHODOLOGY_HREF}>方法说明</a>
+      <a href={SUBMIT_HREF}>提交评估题</a>
       <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
     </nav>
   )
@@ -176,7 +188,7 @@ function LeaderboardMatrix({ release, models }) {
           <tbody>
             {visibleModels.map((model) => (
               <tr key={modelIdentity(model)}>
-                <th className="bench-model-column" scope="row"><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></th>
+                <th className="bench-model-column" scope="row"><a href={appPath(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th>
                 <td className={rankClass(metricRank(model, 'overall'))}><MetricValue model={model} metricId="overall" /></td>
                 {LEADERBOARD_AXES.map((axis) => <td className={rankClass(metricRank(model, axis.id))} key={axis.id}><MetricValue model={model} metricId={axis.id} /></td>)}
               </tr>
@@ -216,7 +228,7 @@ function DimensionLeaderboard({ axis, release, models }) {
             <thead><tr><th scope="col">名次</th><th scope="col">模型</th><th scope="col">分数</th></tr></thead>
             <tbody>{ranked.map((model) => {
               const rank = metricRank(model, axis.id)
-              return <tr key={modelIdentity(model)}><td className={rankClass(rank)}>#{rank ?? '—'}</td><th scope="row"><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></th><td>{formatScore(metricValue(model, axis.id))}</td></tr>
+              return <tr key={modelIdentity(model)}><td className={rankClass(rank)}>#{rank ?? '—'}</td><th scope="row"><a href={appPath(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th><td>{formatScore(metricValue(model, axis.id))}</td></tr>
             })}</tbody>
           </table>
         </div>
@@ -252,6 +264,17 @@ function BenchmarkUnavailable() {
 
 export default function BenchmarkPage({ apiBase, backendMode = 'gateway', enabled = true, pathname = globalThis.location?.pathname || '/leaderboard' }) {
   const route = resolveLeaderboardRoute(pathname)
+
+  if (route.invalidSlug) return <InvalidDimension />
+  if (route.modelProfileId) return <BenchmarkModelEvidencePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} profileId={route.modelProfileId} />
+  if (route.caseId) return <BenchmarkCaseEvidencePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} caseId={route.caseId} />
+  if (route.promptSubmission) return <BenchmarkPromptSubmissionPage apiBase={apiBase} backendMode={backendMode} />
+  if (route.promptAdmin) return <BenchmarkPromptAdminPage apiBase={apiBase} backendMode={backendMode} />
+  return <BenchmarkReleasePage apiBase={apiBase} backendMode={backendMode} enabled={enabled} pathname={pathname} />
+}
+
+function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname }) {
+  const route = resolveLeaderboardRoute(pathname)
   const [release, setRelease] = useState(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(enabled)
@@ -268,7 +291,6 @@ export default function BenchmarkPage({ apiBase, backendMode = 'gateway', enable
     return () => { cancelled = true }
   }, [apiBase, backendMode, enabled, route.invalidSlug])
 
-  if (route.invalidSlug) return <InvalidDimension />
   if (!enabled) return <BenchmarkUnavailable />
   if (loading) return <div className="bench-state"><Loader2 className="spin" />正在读取排行榜…</div>
   if (error) return <div className="bench-state bench-state-error">排行榜暂不可用：{error}</div>
