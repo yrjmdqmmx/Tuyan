@@ -1,0 +1,133 @@
+name: Stage Scientific V2 Admin Input
+
+on:
+  workflow_dispatch:
+    inputs:
+      purpose:
+        required: true
+        type: choice
+        options: [import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      release_id: { required: true }
+      asset_id: { required: true }
+      asset_name: { required: true }
+      asset_sha256: { required: true }
+      asset_size: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate immutable admin transfer envelope
+        env:
+          PURPOSE: ${{ inputs.purpose }}
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$PURPOSE" =~ ^(import-worker|import-codex|export-review|import-review|import-arbitration|publish)$ ]]
+          [[ "$RELEASE_ID" =~ ^[1-9][0-9]*$ && "$ASSET_ID" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" =~ ^[1-9][0-9]*$ ]]
+          [[ "$ASSET_SHA" =~ ^[a-f0-9]{64}$ && "$ASSET_SIZE" -le 67108864 ]]
+          [[ "$ASSET_NAME" == "scientific-v2-$PURPOSE-$ASSET_SHA.json" ]]
+          [[ "$CONFIRM" == stage-exact-scientific-v2-admin-input ]]
+
+      - name: Download exact private draft JSON
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PURPOSE: ${{ inputs.purpose }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+        run: |
+          set -Eeuo pipefail
+          release="$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID")"
+          jq -e --arg deployed "$DEPLOYED_SHA" --argjson assetId "$ASSET_ID" --arg name "$ASSET_NAME" --argjson size "$ASSET_SIZE" '
+            .draft == true and .prerelease == false and .target_commitish == $deployed and
+            ([.assets[] | select(.id == $assetId and .name == $name and .size == $size and .state == "uploaded")] | length) == 1
+          ' <<<"$release" >/dev/null
+          input="$RUNNER_TEMP/$ASSET_NAME"
+          gh api -H 'Accept: application/octet-stream' "repos/$GITHUB_REPOSITORY/releases/assets/$ASSET_ID" >"$input"
+          chmod 0600 "$input"
+          [[ "$(stat -c %s "$input")" == "$ASSET_SIZE" && "$(sha256sum "$input" | awk '{print $1}')" == "$ASSET_SHA" ]]
+          jq -e --arg purpose "$PURPOSE" '
+            (type == "object") and
+            (if ($purpose == "import-worker" or $purpose == "import-codex") then (keys | sort) == ["attestationHash","report","reportHash"]
+             elif $purpose == "export-review" then (keys | sort) == ["assignment","batchId","objectBindings"]
+             elif $purpose == "import-review" then (keys | sort) == ["batchId","result"]
+             elif $purpose == "import-arbitration" then (keys | sort) == ["arbitration","arbitrationHash","attestationHash","batchId"]
+             elif $purpose == "publish" then (keys | sort) == ["batchId","evidence","objectBindings"]
+             else false end) and
+            ([.. | objects | keys[]] | index("attestationSecret") == null) and
+            ([.. | objects | keys[]] | map(test("(?:API_KEY|ACCESS_KEY|SECRET_KEY|PRIVATE_KEY)$")) | any | not)
+          ' "$input" >/dev/null
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage root protected admin input
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+          PURPOSE: ${{ inputs.purpose }}
+        run: |
+          set -Eeuo pipefail
+          input="$RUNNER_TEMP/$ASSET_NAME"
+          remote_input="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp /tmp/paperbanana-scientific-v2-admin-input.XXXXXXXXXXXX.json')"
+          [[ "$remote_input" =~ ^/tmp/paperbanana-scientific-v2-admin-input[.][A-Za-z0-9]{8,}[.]json$ ]]
+          cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_input'" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          scp "$input" "$DEPLOY_USER@$DEPLOY_HOST:$remote_input"
+          printf -v remote_command 'sudo env TRANSFER_INPUT=%q ASSET_SHA=%q ASSET_SIZE=%q DEPLOYED_SHA=%q PURPOSE=%q bash -s' \
+            "$remote_input" "$ASSET_SHA" "$ASSET_SIZE" "$DEPLOYED_SHA" "$PURPOSE"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          [[ "$(git -C /opt/paperbanana/repo rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          [[ -f "$TRANSFER_INPUT" && ! -L "$TRANSFER_INPUT" && "$(stat -c %s "$TRANSFER_INPUT")" == "$ASSET_SIZE" ]]
+          [[ "$(sha256sum "$TRANSFER_INPUT" | awk '{print $1}')" == "$ASSET_SHA" ]]
+          destination_root=/opt/paperbanana/operator-private/scientific-v2/admin-inputs
+          destination="$destination_root/$ASSET_SHA.json"
+          [[ -d "$destination_root" && ! -L "$destination_root" && "$(stat -c '%u:%g:%a' "$destination_root")" =~ ^0:0:0?700$ ]]
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
+            cmp -s "$TRANSFER_INPUT" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$TRANSFER_INPUT" "$destination"
+          fi
+          printf '{"operation":"stage-scientific-v2-admin-input","purpose":"%s","providerCalls":0,"inputSha256":"%s"}\n' "$PURPOSE" "$ASSET_SHA"
+          REMOTE

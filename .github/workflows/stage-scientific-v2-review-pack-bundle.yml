@@ -1,0 +1,232 @@
+name: Stage Scientific V2 Review Pack Bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_worker_digest: { required: true }
+      manifest_sha256: { required: true }
+      state_sha256: { required: true }
+      attestation_result_sha256: { required: true }
+      manifest_hash: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact completed-state envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$CONFIRM" == stage-exact-scientific-v2-review-pack-bundle ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Derive review pack bundle in immutable deployed Worker
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q bash -s' \
+            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          repo=/opt/paperbanana/repo
+          deploy_env=$repo/deploy/hk-single-host/.env
+          core_env=/opt/paperbanana/secrets/core.env
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          admin_results=/opt/paperbanana/operator-private/scientific-v2/admin-results
+          manifest_path=$bundle_root/$MANIFEST_FILE_SHA.manifest.json
+          state_path=$bundle_root/$STATE_FILE_SHA.state.json
+          attestation_path=$admin_results/$ATTESTATION_FILE_SHA.attest.json
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          worker_image="$(awk -F= '$1=="PAPERBANANA_BENCH_WORKER_IMAGE" {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$deploy_env")"
+          [[ "$worker_image" =~ ^ghcr[.]io/[a-z0-9_.-]+/paperbanana-benchmark-worker@sha256:$WORKER_DIGEST$ ]]
+          input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-review-pack-input.XXXXXXXXXXXX)"
+          output_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-review-pack-output.XXXXXXXXXXXX)"
+          cidfile="$input_dir/container.cid"
+          cleanup() {
+            if [[ -f "$cidfile" && ! -L "$cidfile" ]]; then
+              container_id="$(<"$cidfile")"
+              [[ "$container_id" =~ ^[a-f0-9]{64}$ ]] && docker rm -f "$container_id" >/dev/null 2>&1 || true
+            fi
+            rm -f -- "$input_dir/input.json" "$cidfile" "$output_dir/bundle.json"
+            rmdir -- "$input_dir" "$output_dir" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          python3 - "$manifest_path" "$MANIFEST_FILE_SHA" "$state_path" "$STATE_FILE_SHA" \
+            "$attestation_path" "$ATTESTATION_FILE_SHA" "$core_env" "$MANIFEST_HASH" "$DEPLOYED_SHA" "$input_dir/input.json" <<'PY'
+          import hashlib
+          import hmac
+          import json
+          import os
+          import stat
+          import sys
+
+          manifest_path, manifest_sha, state_path, state_sha, attestation_path, attestation_sha, core_env_path, manifest_hash, deployed_sha, output_path = sys.argv[1:]
+
+          def protected(path, expected_sha, modes):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) not in modes or before.st_size < 2 or before.st_size > 64 * 1024 * 1024:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= 64 * 1024 * 1024:
+                      chunk = os.read(fd, min(1024 * 1024, 64 * 1024 * 1024 + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if (len(data) != before.st_size or (expected_sha is not None and hashlib.sha256(data).hexdigest() != expected_sha)
+                          or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns)
+                          or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino)):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          def canonical(value):
+              if isinstance(value, list):
+                  return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+          manifest = json.loads(protected(manifest_path, manifest_sha, {0o600}))
+          state = json.loads(protected(state_path, state_sha, {0o600}))
+          attestation = json.loads(protected(attestation_path, attestation_sha, {0o600}))
+          core_env = protected(core_env_path, None, {0o600}).decode('utf-8')
+          secrets = [line.split('=', 1)[1] for line in core_env.splitlines() if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
+          code_shas = [line.split('=', 1)[1] for line in core_env.splitlines() if line.startswith('PAPERBANANA_CODE_SHA=')]
+          if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096 or code_shas != [deployed_sha]:
+              raise RuntimeError('secret')
+          if manifest.get('manifestHash') != manifest_hash or manifest.get('codeSha') != deployed_sha or state.get('manifestHash') != manifest_hash or state.get('status') != 'completed' or state.get('stateHash') != attestation.get('stateHash'):
+              raise RuntimeError('binding')
+          report_base = {key: value for key, value in attestation.items() if key not in {'reportHash', 'attestationHash'}}
+          report_hash = hashlib.sha256(canonical(report_base).encode('utf-8')).hexdigest()
+          key = hmac.new(secrets[0].encode('utf-8'), b'paperbanana/scientific-v2/operator-attestation/v1', hashlib.sha256).digest()
+          expected = hmac.new(key, report_hash.encode('ascii'), hashlib.sha256).hexdigest()
+          if attestation.get('batchManifestHash') != manifest_hash or attestation.get('reportHash') != report_hash or not hmac.compare_digest(str(attestation.get('attestationHash', '')), expected):
+              raise RuntimeError('attestation')
+          if (attestation.get('manifestCodeSha') != deployed_sha or attestation.get('executionCodeSha') != deployed_sha
+                  or attestation.get('legacyRecoveryStateHash') is not None or attestation.get('modelCount') != len(manifest.get('models', []))
+                  or attestation.get('slotCount') != len(state.get('slots', []))):
+              raise RuntimeError('attestation-binding')
+          payload = {'manifest': manifest, 'state': state, 'attestationSecret': secrets[0], 'issuedAt': attestation['issuedAt']}
+          encoded = (json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o440)
+          try:
+              os.fchown(fd, 0, 1000)
+              os.fchmod(fd, 0o440)
+              view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
+          chown 0:1000 "$input_dir"
+          chmod 0550 "$input_dir"
+          chown 1000:1000 "$output_dir"
+          chmod 0700 "$output_dir"
+          node_script='import fs from "node:fs";
+          import { canonicalHash, createScientificReviewPacket } from "@paperbanana/benchmark-core";
+          import { createScientificReviewSourceBindings } from "/app/dist/scientific-v2-review.js";
+          const input=JSON.parse(fs.readFileSync("/run/paperbanana-review-input/input.json","utf8"));
+          const {manifest,state,attestationSecret,issuedAt}=input;
+          if(state.status!=="completed"||state.manifestHash!==manifest.manifestHash)throw new Error("SCIENTIFIC_V2_REVIEW_BATCH_NOT_TERMINAL");
+          const cases=new Map(manifest.cases.map(item=>[item.id,item]));
+          const sources=manifest.models.map(model=>{
+            const modelKey=model.canonicalModelId;
+            const slots=state.slots.filter(slot=>slot.canonicalModelId===modelKey&&slot.status==="succeeded");
+            if(slots.length===0)return {modelKey,packet:null,signingSecret:null};
+            const runHash=canonicalHash({batchManifestHash:manifest.manifestHash,stateHash:state.stateHash,modelKey,attemptHashes:slots.map(slot=>slot.attempts.at(-1).attemptHash)});
+            const items=slots.map(slot=>{
+              const scientificCase=cases.get(slot.caseId),attempt=slot.attempts.at(-1);
+              if(!scientificCase||!attempt)throw new Error("SCIENTIFIC_V2_REVIEW_SOURCE_INVALID");
+              const common={caseId:scientificCase.id,caseManifestHash:scientificCase.manifestHash,applicableAxes:scientificCase.applicableAxes,imageHash:attempt.rawImageHash,rubric:scientificCase.rubric,attemptResult:{status:"succeeded",routeId:`${slot.provider}:${slot.modelId}:${slot.operation}`,attemptHash:attempt.attemptHash},instruction:scientificCase.instruction};
+              return scientificCase.kind==="generation"?{...common,negativePrompt:scientificCase.negativePrompt,aspectRatio:scientificCase.aspectRatio}:{...common,sourceHash:scientificCase.sourceHash,editedHash:attempt.editedHash,region:scientificCase.region};
+            });
+            const packet=createScientificReviewPacket({suiteManifestHash:manifest.suiteHash,packetId:`scientific-v2:${manifest.manifestHash}:${modelKey}`,runHash,issuedAt,signingSecret:attestationSecret,items});
+            return {modelKey,packet,signingSecret:attestationSecret};
+          });
+          const bound=createScientificReviewSourceBindings({batchManifestHash:manifest.manifestHash,manifest,state,sources},attestationSecret);
+          const bindingByModel=new Map(bound.bindings.map(binding=>[binding.modelKey,binding]));
+          const bundle={operation:"review_pack",gate:{enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"},input:{batchManifestHash:manifest.manifestHash,manifest,state,sourceSetHash:bound.sourceSetHash,seed:canonicalHash({batchManifestHash:manifest.manifestHash,stateHash:state.stateHash,reviewProtocol:manifest.reviewProtocol}),sources:sources.map(source=>({...source,binding:bindingByModel.get(source.modelKey)})),attestationSecret}};
+          fs.writeFileSync("/run/paperbanana-review-output/bundle.json",JSON.stringify(bundle)+"\n",{encoding:"utf8",mode:0o600,flag:"wx"});'
+          timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --pids-limit 64 --memory 1g --memory-swap 1g --user 1000:1000 \
+            -v "$input_dir:/run/paperbanana-review-input:ro" -v "$output_dir:/run/paperbanana-review-output" \
+            --cidfile "$cidfile" \
+            --entrypoint node "$worker_image" --input-type=module -e "$node_script"
+          bundle="$output_dir/bundle.json"
+          [[ -f "$bundle" && ! -L "$bundle" && "$(stat -c '%u:%g:%a' "$bundle")" =~ ^1000:1000:0?600$ ]]
+          jq -e --arg manifest "$MANIFEST_HASH" '
+            .operation == "review_pack" and .gate == {enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"} and
+            .input.batchManifestHash == $manifest and .input.manifest.manifestHash == $manifest and .input.state.manifestHash == $manifest and
+            .input.state.status == "completed" and (.input.sources | length) == (.input.manifest.models | length)
+          ' "$bundle" >/dev/null
+          bundle_sha="$(sha256sum "$bundle" | awk '{print $1}')"
+          destination="$bundle_root/$bundle_sha.json"
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
+            cmp -s "$bundle" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$bundle" "$destination"
+          fi
+          source_set_hash="$(jq -r .input.sourceSetHash "$destination")"
+          printf '{"operation":"stage-scientific-v2-review-pack-bundle","providerCalls":0,"automaticJudgeCalls":0,"manifestHash":"%s","sourceSetHash":"%s","bundleHash":"%s"}\n' \
+            "$MANIFEST_HASH" "$source_set_hash" "$bundle_sha"
+          REMOTE

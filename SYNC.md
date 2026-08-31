@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 结果导入与盲审 pack 增加受保护 staging — by Codex
+变更：新增两个零 Provider 控制面入口。其一只从精确 GitHub draft asset 接受 `import-worker/import-codex/export-review/import-review/import-arbitration/publish` 六类封闭 JSON schema，绑定 deployed/control SHA、asset ID/名称/大小/SHA 后落入 root `0600` 管理员输入；拒绝 attestation secret 与 Provider/访问密钥字段。其二只在最终 `state=completed`、operator attestation HMAC 与 manifest/state/code lineage 全部通过时，通过已部署的 immutable Worker、`--network none` 和现有 `createScientificReviewPacket/createScientificReviewSourceBindings` 派生 `review_pack` bundle；A/B seed 固定、automatic Judge 调用固定 0。两者均使用生产共享锁，不改题集、路由、预算、分辨率、失败/unknown 或评分规则。
+
+各端待办：
+- [x] 部署 / 运维（私有管理员 JSON staging、离线 review pack staging 与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有导入/审核/公开契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 Codex 九图导入绑定补齐只读 metadata — by Codex
 变更：GPT Image 2 私有交接目录除 9 个内容寻址 PNG 外，固定保存已验签 `metadata.json`（root:service-group `0440`），用于绑定每题 task/thread provenance、调用时序、实际像素、格式、字节和 SHA。新增零 Provider 的导入 bundle staging workflow：只在生产共享锁内读取精确 manifest/state/operator-attestation/metadata 文件 hash，验证 batch 已进入 `awaiting_artifacts`、Worker disabled/并发 1、代码和镜像 digest、operator attestation HMAC 与 9 个 Codex 槽位顺序，再生成 root `0600` 的 `import_codex` bundle。不得读取或传入三家 Provider 密钥；不修改九题、十维、分辨率、预算、重试或 unknown 规则。
 
