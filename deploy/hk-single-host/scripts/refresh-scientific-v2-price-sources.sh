@@ -56,7 +56,9 @@ git -C "$repo_root" diff --quiet "$expected_sha" -- "${tracked_price_refresh_pat
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 core_container_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=paperbanana-api --format '{{.ID}}')"
 [[ "$core_container_id" =~ ^[a-f0-9]+$ && "$(docker inspect --format '{{.Config.Image}}' "$core_container_id")" == "$core_image" ]] || exit 1
-docker inspect --format '{{json .RepoDigests}}' "$core_container_id" | jq -e --arg digest "sha256:$expected_core_digest" \
+core_image_id="$(docker inspect --format '{{.Image}}' "$core_container_id")"
+[[ "$core_image_id" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 1
+docker image inspect --format '{{json .RepoDigests}}' "$core_image_id" | jq -e --arg digest "sha256:$expected_core_digest" \
   'any(.[]; endswith("@" + $digest))' >/dev/null || exit 1
 core_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)'
 docker exec "$core_container_id" node -e "$core_guard" "$expected_sha" >/dev/null

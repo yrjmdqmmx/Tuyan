@@ -339,6 +339,14 @@ test('scientific operator binds expected Core and Worker digests through workflo
   assert.match(source, /\$state_bundle_hash[.]state[.]json/)
 })
 
+test('running service digest gates inspect the immutable image object rather than the container object', () => {
+  for (const path of [prepare, admin, operator, priceSigner, priceRefresh]) {
+    const source = readFileSync(path, 'utf8')
+    assert.doesNotMatch(source, /docker inspect --format '\{\{json \.RepoDigests\}\}' "\$[A-Za-z0-9_]*container_id"/)
+    assert.match(source, /docker image inspect --format '\{\{json \.RepoDigests\}\}' "\$[A-Za-z0-9_]*image_id"/)
+  }
+})
+
 test('protected review validate and arbitrate phases and hash-reference Codex import are explicit', () => {
   const source = readFileSync(operator, 'utf8')
   for (const mode of ['review_validate', 'review_arbitrate', 'review_finalize']) assert.match(source, new RegExp(mode))
