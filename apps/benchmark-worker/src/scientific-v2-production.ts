@@ -301,17 +301,38 @@ export function createScientificV2OssArtifactStore(client: {
     const found = Object.entries(headers).find(([key]) => key.toLowerCase() === name)
     return found ? String(found[1]) : ''
   }
+  const privateHeaders = (input: ScientificV2ProductionArtifact, forbidOverwrite: boolean) => ({
+    'Content-Type': input.contentType,
+    'Cache-Control': 'private, no-store',
+    'x-oss-object-acl': 'private',
+    ...(forbidOverwrite ? { 'x-oss-forbid-overwrite': 'true' } : {}),
+    'x-oss-meta-sha256': input.imageHash,
+  })
+  const aclReadDenied = (error: unknown) => {
+    const facts = error as { status?: unknown; code?: unknown }
+    return facts.status === 403 && facts.code === 'AccessDenied'
+  }
   const reconcile = async (input: ScientificV2ProductionArtifact) => {
     try {
       const result = await client.get(input.objectKey)
       const existing = Buffer.from(result.content)
       const headers = result.headers || result.res?.headers || {}
-      const acl = client.getACL ? String((await client.getACL(input.objectKey)).acl || '') : header(headers, 'x-oss-object-acl')
       if (existing.length > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES || !existing.equals(input.bytes)
         || header(headers, 'x-oss-meta-sha256') !== input.imageHash
         || header(headers, 'content-type').split(';', 1)[0] !== input.contentType
-        || header(headers, 'cache-control') !== 'private, no-store'
-        || acl !== 'private') scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+        || header(headers, 'cache-control') !== 'private, no-store') scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+      if (client.getACL) {
+        try {
+          if (String((await client.getACL(input.objectKey)).acl || '') !== 'private') {
+            scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+          }
+        } catch (error) {
+          if (aclReadDenied(error)) return 'private_reassertion_required' as const
+          throw error
+        }
+      } else if (header(headers, 'x-oss-object-acl') !== 'private') {
+        scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+      }
       return 'exists' as const
     } catch (error) {
       if ((error as { status?: unknown; code?: unknown })?.status === 404
@@ -328,26 +349,32 @@ export function createScientificV2OssArtifactStore(client: {
         || input.imageHash !== computedHash || input.objectKey !== expectedKey) {
         scientificV2Error('SCIENTIFIC_V2_ARTIFACT_BINDING_INVALID')
       }
-      const put = () => client.put(input.objectKey, input.bytes, { headers: {
-        'Content-Type': input.contentType,
-        'Cache-Control': 'private, no-store',
-        'x-oss-object-acl': 'private',
-        'x-oss-forbid-overwrite': 'true',
-        'x-oss-meta-sha256': input.imageHash,
-      } })
+      const put = () => client.put(input.objectKey, input.bytes, { headers: privateHeaders(input, true) })
+      const resolveExisting = async () => {
+        const resolution = await reconcile(input)
+        if (resolution === 'exists') return true
+        if (resolution === 'private_reassertion_required') {
+          try {
+            await client.put(input.objectKey, input.bytes, { headers: privateHeaders(input, false) })
+          } catch {
+            throw new ScientificV2ArtifactReconciliationRequiredError()
+          }
+          return true
+        }
+        return false
+      }
       try {
         await put()
       } catch (error) {
         const facts = error as { status?: unknown; code?: unknown }
         const knownDuplicate = [409, 'FileAlreadyExists'].includes(facts.status as string | number)
           || [409, 'FileAlreadyExists'].includes(facts.code as string | number)
-        const resolution = await reconcile(input)
-        if (resolution === 'exists') return
+        if (await resolveExisting()) return
         if (knownDuplicate) scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
         try {
           await put()
         } catch {
-          if (await reconcile(input) === 'exists') return
+          if (await resolveExisting()) return
           throw new ScientificV2ArtifactReconciliationRequiredError()
         }
       }
@@ -394,13 +421,22 @@ export function createScientificV2OssEvidenceStore(client: {
       if (input.objectKey !== scientificV2PrivateArtifactObjectKey(input.imageHash, input.format)) {
         scientificV2Error('SCIENTIFIC_V2_ARTIFACT_BINDING_INVALID')
       }
-      const [metadata, aclResult] = await Promise.all([client.head(input.objectKey), client.getACL(input.objectKey)])
+      const metadata = await client.head(input.objectKey)
       const headers = metadata.headers || metadata.res?.headers || {}
       const expectedContentType = input.format === 'jpeg' ? 'image/jpeg' : `image/${input.format}`
       if (header(headers, 'content-type').split(';', 1)[0].trim().toLowerCase() !== expectedContentType
         || header(headers, 'cache-control') !== 'private, no-store'
-        || header(headers, 'x-oss-meta-sha256') !== input.imageHash
-        || String(aclResult.acl || '') !== 'private') scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+        || header(headers, 'x-oss-meta-sha256') !== input.imageHash) scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+      let reassertPrivate = false
+      try {
+        if (String((await client.getACL(input.objectKey)).acl || '') !== 'private') {
+          scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+        }
+      } catch (error) {
+        const facts = error as { status?: unknown; code?: unknown }
+        if (facts.status === 403 && facts.code === 'AccessDenied') reassertPrivate = true
+        else throw error
+      }
       const streamResult = await client.getStream(input.objectKey, { headers: { Range: `bytes=0-${SCIENTIFIC_V2_MAX_ARTIFACT_BYTES}` } })
       const advertised = Number(header(streamResult.res?.headers || {}, 'content-length'))
       if (Number.isFinite(advertised) && advertised > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
@@ -421,6 +457,18 @@ export function createScientificV2OssEvidenceStore(client: {
       const bytes = Buffer.concat(chunks, total)
       if (!bytes.length || createHash('sha256').update(bytes).digest('hex') !== input.imageHash) {
         scientificV2Error('SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION')
+      }
+      if (reassertPrivate) {
+        try {
+          await client.put(input.objectKey, bytes, { headers: {
+            'Content-Type': expectedContentType,
+            'Cache-Control': 'private, no-store',
+            'x-oss-object-acl': 'private',
+            'x-oss-meta-sha256': input.imageHash,
+          } })
+        } catch {
+          throw new ScientificV2ArtifactReconciliationRequiredError()
+        }
       }
       return bytes
     },

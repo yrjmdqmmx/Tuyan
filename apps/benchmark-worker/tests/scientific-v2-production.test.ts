@@ -762,6 +762,32 @@ test('production OSS artifact store writes immutable private content-addressed b
   await assert.rejects(() => store.persist(artifact), /SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION/)
 })
 
+test('private artifact duplicate reasserts the exact bytes and private ACL when GetObjectACL is denied', async () => {
+  const bytes = Buffer.from('scientific-private-acl-reassertion')
+  const imageHash = createHash('sha256').update(bytes).digest('hex')
+  const objectKey = `bench/scientific-v2/private/objects/${imageHash}.png`
+  const puts: Array<{ key: string; bytes: Buffer; options: Record<string, unknown> }> = []
+  const store = createScientificV2OssArtifactStore({
+    async put(key, value, options) {
+      puts.push({ key, bytes: Buffer.from(value), options })
+      if (puts.length === 1) throw Object.assign(new Error('exists'), { status: 409, code: 'FileAlreadyExists' })
+      return {}
+    },
+    async get() { return { content: bytes, headers: {
+      'x-oss-meta-sha256': imageHash, 'content-type': 'image/png', 'cache-control': 'private, no-store',
+    } } },
+    async getACL() { throw Object.assign(new Error('forbidden'), { status: 403, code: 'AccessDenied' }) },
+  })
+  await store.persist({ objectKey, imageHash, format: 'png', contentType: 'image/png', bytes })
+  assert.equal(puts.length, 2)
+  assert.equal(puts[1].key, objectKey)
+  assert.equal(puts[1].bytes.equals(bytes), true)
+  const repairHeaders = puts[1].options.headers as Record<string, string>
+  assert.equal(repairHeaders['x-oss-object-acl'], 'private')
+  assert.equal(repairHeaders['x-oss-meta-sha256'], imageHash)
+  assert.equal('x-oss-forbid-overwrite' in repairHeaders, false)
+})
+
 test('production OSS artifact store signs only bounded private scientific-v2 GET URLs', async () => {
   const calls: unknown[][] = []
   let signedUrl = 'https://private-test-bucket.oss-cn-hongkong.aliyuncs.com/bench/source.png?x-oss-signature=test'
@@ -1114,6 +1140,30 @@ test('production evidence store bounded-reads private bytes only with exact hash
     mutate()
     await assert.rejects(() => store().readPrivate({ objectKey, imageHash, format: 'png' }), /SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION/)
   }
+})
+
+test('private evidence read reasserts private ACL after exact bounded hash verification when GetObjectACL is denied', async () => {
+  const bytes = await sharp({ create: { width: 800, height: 400, channels: 3, background: '#abc' } }).png().toBuffer()
+  const imageHash = createHash('sha256').update(bytes).digest('hex')
+  const objectKey = `bench/scientific-v2/private/objects/${imageHash}.png`
+  const puts: Array<{ key: string; bytes: Buffer; options: Record<string, unknown> }> = []
+  const store = createScientificV2OssEvidenceStore({
+    async put(key, value, options) { puts.push({ key, bytes: Buffer.from(value), options }); return {} },
+    async get() { throw new Error('unused') },
+    async head() { return { headers: {
+      'content-type': 'image/png', 'cache-control': 'private, no-store', 'x-oss-meta-sha256': imageHash,
+    } } },
+    async getACL() { throw Object.assign(new Error('forbidden'), { status: 403, code: 'AccessDenied' }) },
+    async getStream() { return { stream: Readable.from([bytes]), res: { status: 206, headers: { 'content-length': String(bytes.length) } } } },
+  })
+  assert.equal((await store.readPrivate({ objectKey, imageHash, format: 'png' })).equals(bytes), true)
+  assert.equal(puts.length, 1)
+  assert.equal(puts[0].key, objectKey)
+  assert.equal(puts[0].bytes.equals(bytes), true)
+  const repairHeaders = puts[0].options.headers as Record<string, string>
+  assert.equal(repairHeaders['x-oss-object-acl'], 'private')
+  assert.equal(repairHeaders['x-oss-meta-sha256'], imageHash)
+  assert.equal('x-oss-forbid-overwrite' in repairHeaders, false)
 })
 
 test('production executor rejects oversized URL output before buffering its response body', async () => {

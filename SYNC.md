@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 私有证据在无 GetObjectACL 权限时做同字节 ACL 重申 — by Codex
+变更：生产 Benchmark OSS RAM 用户可正常 Get/Put 私有内容寻址对象，但缺少独立 `oss:GetObjectAcl`，导致固定编辑源图已存在时被误判为本地产物对账失败；已生成的方舟编辑 PNG 因此只进入受保护 spool，没有丢失或重复调用 Provider。Worker 现在仅在 GetObject/GetStream 得到的字节、SHA-256、MIME、`private, no-store` 和内容寻址键全部精确匹配，且 GetObjectACL 明确返回 403 `AccessDenied` 时，使用同一字节、同一元数据幂等覆盖并重申 `private` ACL。任何内容/元数据差异、未知 ACL 错误或重申写入失败仍 fail closed；不降低私有证据规则，不改变九题、十维、路由、分辨率、重试、预算或公开 API。
+
+各端待办：
+- [x] Benchmark Worker（生成持久化与盲审读取两条路径 RED/GREEN；165 tests、check、build）
+- [ ] 部署 / 运维（部署新 immutable Worker/Core provenance 后冻结新批次；旧暂停批次仅保留审计，不跨 SHA 续跑）
+- [x] paperbanana-api / Web / Gateway / 原生端（公开契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 百炼 direct-edit 固定源图改用私有 OSS 公网签名 URL — by Codex
 变更：生成题已恢复并取得百炼/方舟 2048×1152 与 OpenRouter 默认 1824×1024 的原始 PNG；首个百炼编辑题仍在 authoritative runtime 的 source-image 交接阶段失败。Worker 现在把 hash 固定的 2K PNG 编辑源图写入原有私有内容寻址对象，仅在百炼 direct-edit 调用前通过独立 `PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT` 生成最长 900 秒的 V4 GET 签名 URL；legacy source normalizer 会先下载并校验该 URL 的像素字节，但为百炼保留原始 HTTPS，不再转回 data URL 后二次调用被禁用的 Laf storage。签名 URL 不落状态、不写审计、不进入公开证据。方舟/OpenRouter 编辑输入、题集、十维评分、路由优先级、失败/unknown 策略和分辨率规则均不变。签名或源图落盘在 provider 调用前失败时记为零费用 confirmed technical failure，确保不会把本地交接错误误报成 provider unknown。
 
