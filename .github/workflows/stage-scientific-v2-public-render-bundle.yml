@@ -1,0 +1,184 @@
+name: Stage Scientific V2 Public Render Bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_worker_digest: { required: true }
+      manifest_sha256: { required: true }
+      state_sha256: { required: true }
+      attestation_result_sha256: { required: true }
+      manifest_hash: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact completed-state render envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$CONFIRM" == stage-exact-scientific-v2-public-render-bundle ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage exact protected public render bundle
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q bash -s' \
+            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          repo=/opt/paperbanana/repo
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          admin_results=/opt/paperbanana/operator-private/scientific-v2/admin-results
+          manifest_path=$bundle_root/$MANIFEST_FILE_SHA.manifest.json
+          state_path=$bundle_root/$STATE_FILE_SHA.state.json
+          attestation_path=$admin_results/$ATTESTATION_FILE_SHA.attest.json
+          core_env=/opt/paperbanana/secrets/core.env
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          output="$(mktemp /tmp/paperbanana-scientific-v2-public-render.XXXXXXXXXXXX.json)"
+          cleanup() { rm -f -- "$output"; }
+          trap cleanup EXIT
+          python3 - "$manifest_path" "$MANIFEST_FILE_SHA" "$state_path" "$STATE_FILE_SHA" \
+            "$attestation_path" "$ATTESTATION_FILE_SHA" "$core_env" "$MANIFEST_HASH" "$DEPLOYED_SHA" "$output" <<'PY'
+          import hashlib
+          import hmac
+          import json
+          import os
+          import stat
+          import sys
+
+          manifest_path, manifest_sha, state_path, state_sha, attestation_path, attestation_sha, core_env_path, manifest_hash, deployed_sha, output_path = sys.argv[1:]
+
+          def protected(path, expected_sha):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) != 0o600 or before.st_size < 2 or before.st_size > 64 * 1024 * 1024:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= 64 * 1024 * 1024:
+                      chunk = os.read(fd, min(1024 * 1024, 64 * 1024 * 1024 + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if (len(data) != before.st_size or (expected_sha is not None and hashlib.sha256(data).hexdigest() != expected_sha)
+                          or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns)
+                          or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino)):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          def canonical(value):
+              if isinstance(value, list):
+                  return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+          manifest = json.loads(protected(manifest_path, manifest_sha))
+          state = json.loads(protected(state_path, state_sha))
+          attestation = json.loads(protected(attestation_path, attestation_sha))
+          core_env = protected(core_env_path, None).decode('utf-8')
+          secrets = [line.split('=', 1)[1] for line in core_env.splitlines() if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
+          code_shas = [line.split('=', 1)[1] for line in core_env.splitlines() if line.startswith('PAPERBANANA_CODE_SHA=')]
+          if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096 or code_shas != [deployed_sha]:
+              raise RuntimeError('secret')
+          if manifest.get('manifestHash') != manifest_hash or manifest.get('codeSha') != deployed_sha or state.get('manifestHash') != manifest_hash or state.get('status') != 'completed' or state.get('stateHash') != attestation.get('stateHash'):
+              raise RuntimeError('binding')
+          report_base = {key: value for key, value in attestation.items() if key not in {'reportHash', 'attestationHash'}}
+          report_hash = hashlib.sha256(canonical(report_base).encode('utf-8')).hexdigest()
+          key = hmac.new(secrets[0].encode('utf-8'), b'paperbanana/scientific-v2/operator-attestation/v1', hashlib.sha256).digest()
+          expected = hmac.new(key, report_hash.encode('ascii'), hashlib.sha256).hexdigest()
+          if (attestation.get('batchManifestHash') != manifest_hash or attestation.get('reportHash') != report_hash
+                  or not hmac.compare_digest(str(attestation.get('attestationHash', '')), expected)
+                  or attestation.get('manifestCodeSha') != deployed_sha or attestation.get('executionCodeSha') != deployed_sha
+                  or attestation.get('legacyRecoveryStateHash') is not None):
+              raise RuntimeError('attestation')
+          bundle = {
+              'operation': 'render_public_evidence',
+              'gate': {'enabled': False, 'concurrency': 1, 'lockName': '/run/lock/paperbanana-hk-production.lock'},
+              'manifest': manifest,
+              'state': state,
+              'input': {'batchId': attestation['batchId']},
+          }
+          encoded = (json.dumps(bundle, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
+          try:
+              os.fchmod(fd, 0o600)
+              view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
+          chmod 0600 "$output"
+          bundle_sha="$(sha256sum "$output" | awk '{print $1}')"
+          destination="$bundle_root/$bundle_sha.json"
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
+            cmp -s "$output" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$output" "$destination"
+          fi
+          state_hash="$(jq -r .state.stateHash "$destination")"
+          printf '{"operation":"stage-scientific-v2-public-render-bundle","providerCalls":0,"manifestHash":"%s","stateHash":"%s","bundleHash":"%s"}\n' \
+            "$MANIFEST_HASH" "$state_hash" "$bundle_sha"
+          REMOTE

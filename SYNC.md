@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 盲审前公开证据渲染增加受保护 staging — by Codex
+变更：新增零 Provider 的 `render_public_evidence` bundle staging。仅在最终 `state=completed`、operator attestation HMAC、manifest/state/code lineage 与 immutable Worker digest 全部精确绑定时，生成 root `0600` 的离线渲染 bundle；后续只把已验 hash 的私有原图派生为内容寻址 WebP variants，供 A/B 盲审读取。该入口不能发布 release、不能写入评分、不能调用 Provider，也不暴露模型映射、Reviewer 身份或内部对象键；九题、十维、分辨率、路由、预算、失败/unknown 与双独立盲审规则均不变。
+
+各端待办：
+- [x] 部署 / 运维（公开 WebP rendition bundle staging 与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有证据与排行榜契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 结果导入与盲审 pack 增加受保护 staging — by Codex
 变更：新增两个零 Provider 控制面入口。其一只从精确 GitHub draft asset 接受 `import-worker/import-codex/export-review/import-review/import-arbitration/publish` 六类封闭 JSON schema，绑定 deployed/control SHA、asset ID/名称/大小/SHA 后落入 root `0600` 管理员输入；拒绝 attestation secret 与 Provider/访问密钥字段。其二只在最终 `state=completed`、operator attestation HMAC 与 manifest/state/code lineage 全部通过时，通过已部署的 immutable Worker、`--network none` 和现有 `createScientificReviewPacket/createScientificReviewSourceBindings` 派生 `review_pack` bundle；A/B seed 固定、automatic Judge 调用固定 0。两者均使用生产共享锁，不改题集、路由、预算、分辨率、失败/unknown 或评分规则。
 

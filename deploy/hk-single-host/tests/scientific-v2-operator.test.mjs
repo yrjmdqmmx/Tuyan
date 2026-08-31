@@ -25,6 +25,7 @@ const codexArtifactStagingWorkflow = fileURLToPath(new URL('../../../.github/wor
 const codexImportStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-codex-import-bundle.yml', import.meta.url))
 const adminInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-admin-input.yml', import.meta.url))
 const reviewPackStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-review-pack-bundle.yml', import.meta.url))
+const publicRenderStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-public-render-bundle.yml', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
 const registryHash = 'b'.repeat(64)
 const suiteHash = 'c'.repeat(64)
@@ -653,6 +654,17 @@ test('review pack bundle is derived offline from one exact completed state with 
   assert.match(source, /providerCalls\":0/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+})
+
+test('public rendition bundle binds the same completed state and cannot publish or call a provider', () => {
+  const source = readFileSync(publicRenderStagingWorkflow, 'utf8')
+  assert.match(source, /paperbanana-hk-production[.]lock/)
+  assert.match(source, /state[.]get\(['"]status['"]\)\s*!=\s*['"]completed['"]/)
+  assert.match(source, /paperbanana\/scientific-v2\/operator-attestation\/v1/)
+  assert.match(source, /['"]operation['"]:\s*['"]render_public_evidence['"]/)
+  assert.match(source, /providerCalls\":0/)
+  assert.match(source, /install -o 0 -g 0 -m 0600/)
+  assert.doesNotMatch(source, /adminBenchmarkPublish|operation['"]:\s*['"]publish['"]|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 
 test('manual workflow exposes the complete protected scientific v2 phase set with exact per-phase confirmation', () => {
