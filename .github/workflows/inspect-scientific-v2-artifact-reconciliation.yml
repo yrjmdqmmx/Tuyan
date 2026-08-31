@@ -102,8 +102,10 @@ jobs:
             const identity=await identityResponse.json();
             if(!identityResponse.ok||typeof identity?.AccountId!=="string"||typeof identity?.Arn!=="string")throw new Error("SCIENTIFIC_V2_PRINCIPAL_LOOKUP_FAILED");
             const accountLookupDigest=createHmac("sha256",lookupSalt).update(identity.AccountId).digest("hex");
+            const bucketLookupDigest=createHmac("sha256",lookupSalt).update(process.env.PAPERBANANA_BENCH_OSS_BUCKET).digest("hex");
+            const principalArnLookupDigest=createHmac("sha256",lookupSalt).update(identity.Arn).digest("hex");
             const principalKind=identity.Arn.includes(":user/")?"ram_user":identity.Arn.includes(":role/")?"ram_role":identity.Arn.endsWith(":root")?"root":"unknown";
-            process.stdout.write(JSON.stringify({manifestHash,stateHash:batch.stateHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,attempt:{rawImageHash:attempt.rawImageHash,format:attempt.format,byteSize:attempt.byteSize,payloadHash:attempt.payloadHash},artifactRecovery:dispatch.artifactRecovery,sourceObject,outputObject,principalLookupDigest,accountLookupDigest,principalKind}));
+            process.stdout.write(JSON.stringify({manifestHash,stateHash:batch.stateHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,attempt:{rawImageHash:attempt.rawImageHash,format:attempt.format,byteSize:attempt.byteSize,payloadHash:attempt.payloadHash},artifactRecovery:dispatch.artifactRecovery,sourceObject,outputObject,principalLookupDigest,accountLookupDigest,bucketLookupDigest,principalArnLookupDigest,principalKind}));
           } finally {await mongo.close();}
           ')"
           spool_id="$(jq -r '.artifactRecovery.spoolId' <<<"$diagnostic")"
