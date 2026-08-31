@@ -279,15 +279,17 @@ function assertArkPriceEvidence(bytes: Buffer) {
   }
   const sections = markers.map((marker, index) => text.slice(positions[index], positions[index + 1] ?? text.length))
   const pro = sections[0]
-  if (!/首张(?:输入)?图片免费/.test(pro) || !/第\s*2\s*张起\s*0\.02\s*元/.test(pro)
-    || !/不超过\s*261\s*万像素\s*0\.30\s*元\s*\/\s*张/.test(pro)
-    || !/(?:超过|大于)\s*261\s*万像素\s*0\.60\s*元\s*\/\s*张/.test(pro)) {
+  if (!/首张(?:输入图片|图片)?免费/.test(pro) || !/第\s*2\s*张起\s*[：:]?\s*0\.02(?:\s*元)?/.test(pro)
+    || !/(?:不超过|≤)\s*261\s*万像素[^；;，,。]{0,80}0\.30(?:\s*元\s*\/\s*张)?/.test(pro)
+    || !/(?:超过|大于|>)\s*261\s*万像素[^；;，,。]{0,80}0\.60(?:\s*元\s*\/\s*张)?/.test(pro)) {
     scientificV2Error('SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID')
   }
   const expected = ['0.22', '0.25', '0.20']
   for (let index = 1; index < sections.length; index += 1) {
-    const prices = [...sections[index].matchAll(/(?:^|[^\d])(0\.\d+)(?=\s*元\s*\/\s*张)/g)].map((match) => match[1])
-    if (prices.length !== 1 || prices[0] !== expected[index - 1]) scientificV2Error('SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID')
+    const expectedPrice = expected[index - 1]
+    if (!new RegExp(`(?:^|[^\\d])${escaped(expectedPrice)}(?:\\s*元\\s*\\/\\s*张)?(?=$|[^\\d])`).test(sections[index])) {
+      scientificV2Error('SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID')
+    }
   }
 }
 

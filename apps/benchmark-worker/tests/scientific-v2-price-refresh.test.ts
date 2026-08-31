@@ -197,6 +197,18 @@ test('rejects Ark bytes that swap model prices or remove the first-input-free ru
   await assert.rejects(extractScientificV2OfficialPriceObservations(chargedFirst), /SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID/)
 })
 
+test('accepts the current Ark table wording and punctuation without weakening bound prices', async () => {
+  const input = await fixedArkKreaEvidence({
+    arkHtml: `doubao-seedream-5-0-pro 按生图场景区分定价 首张免费 第 2 张起：0.02
+      单图生成场景：≤ 261 万像素（分辨率 1.5K 及以下）：0.30；> 261 万像素（分辨率 1.5K 以上）：0.60。
+      doubao-seedream-5-0-lite 免费 0.22 doubao-seedream-4-5 免费 0.25 doubao-seedream-4-0 免费 0.20`,
+    kreaSentence: `krea/krea-2-large costs $0.06/image for Image Output, $0.065/image for Image Output (style references) and $0.07/image for Image Output (moodboards). Up to 1 reference image. renders at 1K.`,
+  })
+  const extracted = await extractScientificV2OfficialPriceObservations(input)
+  assert.equal(extracted.observations.filter((item) => item.provider === 'ark').length, 2)
+  assert.equal(extracted.unresolved.length, 0)
+})
+
 test('rejects Krea bytes that exchange generation and style-reference prices', async () => {
   const input = await fixedArkKreaEvidence({
     arkHtml: `doubao-seedream-5-0-pro 首张输入图片免费，第2张起 0.02元；输出不超过261万像素 0.30元/张，超过261万像素 0.60元/张。
