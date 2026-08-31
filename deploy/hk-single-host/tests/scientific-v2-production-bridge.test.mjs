@@ -376,6 +376,30 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   })
   assert.notEqual(emptySuccess.status, 0)
   assert.match(emptySuccess.stderr, /SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID/)
+  const fullAttestation = {
+    schemaVersion: 2, suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2',
+    evaluationEpoch: 'codex-scientific-2026-09-v1', reviewProtocol: 'codex-independent-double-review-v2',
+    presentationVersion: 'scientific-leaderboard-v2', batchId: 'scientific-v2-test',
+    batchManifestHash: 'a'.repeat(64), stateHash: 'b'.repeat(64),
+    daemon: { enabled: false, status: 'configured-disabled' }, concurrency: 1,
+    lockName: '/run/lock/paperbanana-hk-production.lock',
+    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 }, codexToolCallLimit: 36,
+    modelCount: 40, slotCount: 360, revision: 0, issuedAt: '2026-08-31T00:00:00.000Z',
+    reportHash: 'c'.repeat(64), attestationHash: 'd'.repeat(64),
+  }
+  const attestationSuccess = spawnSync(process.execPath, ['--input-type=module', '-e',
+    `const testResponse=JSON.parse(process.env.SCIENTIFIC_V2_TEST_RESPONSE);globalThis.fetch=async()=>({ok:true,json:async()=>testResponse});\n${embedded[1]}`,
+  ], {
+    encoding: 'utf8', input: JSON.stringify({ batchId: 'scientific-v2-test', manifestHash: 'a'.repeat(64) }),
+    env: { ...process.env, PAPERBANANA_SCIENTIFIC_V2_ADMIN_OPERATION: 'attest', SCIENTIFIC_V2_TEST_RESPONSE: JSON.stringify({ code: 0, run: fullAttestation }) },
+  })
+  assert.equal(attestationSuccess.status, 0, attestationSuccess.stderr)
+  const attestationEnvelope = JSON.parse(attestationSuccess.stdout)
+  assert.deepEqual(attestationEnvelope.privateData, fullAttestation)
+  assert.deepEqual(Object.keys(attestationEnvelope.data).sort(), [
+    'attestationHash', 'batchId', 'batchManifestHash', 'issuedAt', 'modelCount', 'reportHash', 'revision', 'slotCount', 'stateHash',
+  ])
+  assert.match(source, /jq -c '[.]privateData' "\$result"/)
   for (const marker of ['Config.Image', 'RepoDigests', 'build-provenance.json', 'PAPERBANANA_BENCH_ENABLED', 'PAPERBANANA_BENCH_CONCURRENCY']) assert.match(source, new RegExp(marker.replace('.', '[.]')))
   assert.doesNotMatch(source, /mongosh|mongo\s|releases[.](?:insert|update)|insertOne|updateOne/)
 

@@ -24,6 +24,17 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] 科研评测 v2 staging 使用完整私有 attestation — by Codex
+变更：Scientific v2 admin operator 的 `attest` stdout 继续只暴露固定安全摘要，但 root `0600` admin-result 现在保存 Core 返回的完整 HMAC attestation（identity、daemon、并发、共享锁、provider budgets、Codex limit、revision/hash）；此前误把 allowlist 摘要保存为私有文件，导致 run-bundle stager 在任何 Provider 调用前因 attestation schema 缺字段失败。import-review/import-arbitration 的私有保存行为不变。
+
+契约（影响科研 v2 运维）：
+- stdout/public log 形状不变；仅受保护的 attest 私有 artifact 内容修正。stager 继续独立重算 HMAC 和全部 manifest/state/hash 门。
+
+各端待办：
+- [x] 香港 Scientific v2 admin operator / staging 合同测试
+- [x] Core / Worker / Web / Gateway / 原生客户端（公开 API 与运行时字段不变，无需改造）
+- [ ] 生产执行（部署同一不可变 SHA 后重新 attest/stage；失败 staging 未产生 Provider 调用）
+
 ### [2026-08-31] 科研评测 v2 受保护冻结请求体通道 — by Codex
 变更：40 模型 Scientific v2 冻结信封约 1.70 MiB，超过 Core 普通 JSON 的 1 MiB 上限。Core 现仅对同时持有内部 gateway token、admin transport token 且声明 `x-paperbanana-scientific-v2-admin-operation: freeze` 的 localhost 冻结请求开放 8 MiB 上限；解析后再次要求 action/evaluationMode/command 精确为 `adminBenchmarkControl/codex_scientific_v2/freezeBatch`。其他请求继续使用 1 MiB，声明头不得复用于其他管理命令。补齐受生产 Environment、同一共享锁和精确 SHA/hash/phase 约束的 `stage-scientific-v2-run-bundle.yml` 手工入口，调用既有 root-only stager 将 frozen manifest/state 与 Core HMAC attestation 组装为内容寻址 canary/full bundle，阶段本身 Provider 调用为 0。
 

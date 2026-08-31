@@ -143,7 +143,7 @@ const safe={};for(const key of allowedKeys)if(Object.hasOwn(data,key))safe[key]=
 if(operation==="import-review"){safe.disputeCount=Array.isArray(data.disputes)?data.disputes.length:0;safe.resultCount=Array.isArray(data.results)?data.results.length:0;if(Object.hasOwn(data,"finalHash")&&(typeof data.finalHash!=="string"||!/^[a-f0-9]{64}$/.test(data.finalHash)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID")}
 if(operation==="import-arbitration")safe.resultCount=Array.isArray(data.results)?data.results.length:0;
 const requiredKeys=operation==="import-review"?["disputeCount","resultCount"]:operation==="import-arbitration"?["resultCount","finalHash"]:responseRequiredKeys;
-const privateData=operation==="import-review"||operation==="import-arbitration"?data:undefined;
+const privateData=operation==="attest"||operation==="import-review"||operation==="import-arbitration"?data:undefined;
 process.stdout.write(JSON.stringify({schemaVersion:1,operation,data:safe,allowedKeys,requiredKeys,...(privateData?{privateData}:{})}));
 '
 "${compose[@]}" exec -T \
@@ -160,7 +160,7 @@ jq -e --arg operation "$operation" '.schemaVersion == 1 and .operation == $opera
   ([.data | .. | objects | keys[]] | index("reviewerIdentity")) == null' "$result" >/dev/null || exit 1
 if [[ "$operation" == attest || "$operation" == import-review || "$operation" == import-arbitration ]]; then
   private_result="$(mktemp /tmp/paperbanana-scientific-v2-admin-private.XXXXXXXXXXXX)"
-  if [[ "$operation" == attest ]]; then jq -c '.data' "$result" >"$private_result"; else jq -c '.privateData' "$result" >"$private_result"; fi
+  jq -c '.privateData' "$result" >"$private_result"
   chmod 0600 "$private_result"
   private_response_sha256="$(sha256_file "$private_result")"
   [[ "$private_response_sha256" =~ ^[a-f0-9]{64}$ ]] || exit 1
