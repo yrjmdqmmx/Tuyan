@@ -237,7 +237,21 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     const registrySnapshot = { ...registrySnapshotBase, snapshotHash: canonicalHash(registrySnapshotBase) }
     const canonicalManifestBase = { registryVersion: 'registry-v1', registryHash, models: [{ canonicalModelId: 'model' }] }
     const canonicalManifest = { ...canonicalManifestBase, manifestHash: canonicalHash(canonicalManifestBase) }
-    const priceBase = { schemaVersion: 2, entries: [] }
+    // Scientific V2 prices are fixed to 1e-8 CNY atoms. JSON.stringify emits
+    // this boundary as `1e-8`, while Python's default JSON encoder emits
+    // `1e-08`; the protected host verifier must follow the Node contract.
+    const priceBase = { schemaVersion: 2, entries: [
+      { unitCny: 0, unitCnyAtoms: '0' },
+      { unitCny: 1e-8, unitCnyAtoms: '1' },
+      { unitCny: 9e-8, unitCnyAtoms: '9' },
+      { unitCny: 1e-7, unitCnyAtoms: '10' },
+      { unitCny: 9.9e-7, unitCnyAtoms: '99' },
+      { unitCny: 0.000001, unitCnyAtoms: '100' },
+      { unitCny: 0.00009999, unitCnyAtoms: '9999' },
+      { unitCny: 0.0001, unitCnyAtoms: '10000' },
+      { unitCny: 0.12, unitCnyAtoms: '12000000' },
+      { unitCny: 3.05246208, unitCnyAtoms: '305246208' },
+    ] }
     const priceSnapshot = { ...priceBase, snapshotHash: canonicalHash(priceBase) }
     const suiteHash = 'b'.repeat(64)
     const manifestBase = {
@@ -256,9 +270,17 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     const stateBase = {
       schemaVersion: 2, manifestHash: manifest.manifestHash, status: 'ready', pauseReason: null, blockReason: null,
       createdAt: '2026-08-31T00:00:00.000Z', updatedAt: '2026-08-31T00:00:00.000Z',
-      providerSpentCny: { bailian: 0, ark: 0, openrouter: 0 }, providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 }, slots: [],
+      providerSpentCny: { bailian: 0, ark: 0, openrouter: 0 },
+      providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 }, slots: [],
     }
     const state = { ...stateBase, stateHash: canonicalHash(stateBase) }
+    const fullStateBase = {
+      ...stateBase, status: 'canary_complete',
+      providerSpentCny: { bailian: 0.00009999, ark: 0.12, openrouter: 3.05246208 },
+      providerUnreconciledCny: { bailian: 1e-8, ark: 9.9e-7, openrouter: 0 },
+      slots: [{ costCny: 0.00009999, attempts: [{ estimatedCny: 0.12, actualCny: 3.05246208 }] }],
+    }
+    const fullState = { ...fullStateBase, stateHash: canonicalHash(fullStateBase) }
     const secret = 'scientific-v2-stage-test-secret-32-bytes-minimum'
     const reportBase = {
       schemaVersion: 2, suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2',
@@ -279,15 +301,28 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     writeFileSync(paths.manifest, JSON.stringify(manifest)); writeFileSync(paths.state, JSON.stringify(state))
     writeFileSync(paths.env, `PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=${secret}\n`)
     for (const path of [paths.manifest, paths.state, paths.env]) chmodSync(path, 0o600)
-    const execute = (attestation) => {
+    const execute = (attestation, { phase = 'canary-only', manifestValue = manifest, stateValue = state } = {}) => {
+      writeFileSync(paths.manifest, JSON.stringify(manifestValue)); chmodSync(paths.manifest, 0o600)
+      writeFileSync(paths.state, JSON.stringify(stateValue)); chmodSync(paths.state, 0o600)
       writeFileSync(paths.attestation, JSON.stringify(attestation)); chmodSync(paths.attestation, 0o600)
       writeFileSync(paths.output, '{}'); chmodSync(paths.output, 0o600)
       return spawnSync('python3', ['-c', embedded[1],
         paths.manifest, fileHash(paths.manifest), paths.state, fileHash(paths.state), paths.attestation, fileHash(paths.attestation),
-        paths.env, 'canary-only', codeSha, manifest.manifestHash, registryHash, suiteHash, priceSnapshot.snapshotHash, paths.output, String(process.getuid()),
+        paths.env, phase, codeSha, manifest.manifestHash, registryHash, suiteHash, priceSnapshot.snapshotHash, paths.output, String(process.getuid()),
       ], { encoding: 'utf8' })
     }
     assert.equal(execute(sign(reportBase)).status, 0)
+    assert.equal(execute(sign({ ...reportBase, stateHash: fullState.stateHash }), { phase: 'full', stateValue: fullState }).status, 0)
+    const mismatchedAtoms = structuredClone(manifest)
+    mismatchedAtoms.priceSnapshot.entries[1].unitCny = 9e-8
+    const mismatchedAtomsResult = execute(sign(reportBase), { manifestValue: mismatchedAtoms })
+    assert.notEqual(mismatchedAtomsResult.status, 0)
+    assert.match(mismatchedAtomsResult.stderr, /assembly failed \[schema\]/)
+    const overBudgetAtoms = structuredClone(manifest)
+    overBudgetAtoms.priceSnapshot.entries[1] = { unitCny: 361, unitCnyAtoms: '36100000000' }
+    const overBudgetAtomsResult = execute(sign(reportBase), { manifestValue: overBudgetAtoms })
+    assert.notEqual(overBudgetAtomsResult.status, 0)
+    assert.match(overBudgetAtomsResult.stderr, /assembly failed \[schema\]/)
     const directMaster = Buffer.from(secret)
     const extraField = execute({ ...sign(reportBase), extra: true })
     assert.notEqual(extraField.status, 0)
