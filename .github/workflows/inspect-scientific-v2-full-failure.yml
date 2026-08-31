@@ -124,7 +124,7 @@ jobs:
           JS
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
-          docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" "$worker_id" node --input-type=module -e '
+          artifact_diagnostic="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" "$worker_id" node --input-type=module -e '
           import OSS from "ali-oss";
           import { MongoClient } from "mongodb";
           const manifestHash=process.env.SCIENTIFIC_V2_MANIFEST_HASH;
@@ -156,7 +156,8 @@ jobs:
             });
             process.stdout.write(JSON.stringify({slotId:slot.slotId,attemptIndex:attempt.attemptIndex,dispatchMarkerPresent:Boolean(marker),startedAt:attempt.startedAt,completedAt:attempt.completedAt,candidateCount:candidates.length,candidates})+"\n");
           }finally{await mongo.close();}
-          '
+          ')"
+          printf '%s\n' "$artifact_diagnostic"
           docker exec "$worker_id" node --input-type=module -e '
           const checks = [
             ["bailian", "PAPERBANANA_BENCH_BAILIAN_API_KEY", "https://dashscope.aliyuncs.com/api/v1/models/permissions?authorization_scope=AUTHORIZED&action=INFERENCE&model=qwen-image-2.0&page_no=1&page_size=1"],
@@ -175,8 +176,8 @@ jobs:
           }
           process.stdout.write(JSON.stringify({credentialEgressChecks: result}) + "\n");
           '
-          marker_started_at="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const batch=db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash:process.env.SCIENTIFIC_V2_MANIFEST_HASH});const unknown=batch?.state?.slots?.filter(slot=>slot.status==="unknown")||[];const attempt=unknown.length===1?unknown[0].attempts.at(-1):null;if(!attempt||attempt.responseClass!=="unknown_provider_outcome")throw new Error("SCIENTIFIC_V2_UNKNOWN_ATTEMPT_INVALID");print(attempt.startedAt)'\''' | tail -1)"
-          marker_completed_at="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const batch=db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash:process.env.SCIENTIFIC_V2_MANIFEST_HASH});const unknown=batch?.state?.slots?.filter(slot=>slot.status==="unknown")||[];const attempt=unknown.length===1?unknown[0].attempts.at(-1):null;if(!attempt||attempt.responseClass!=="unknown_provider_outcome")throw new Error("SCIENTIFIC_V2_UNKNOWN_ATTEMPT_INVALID");print(attempt.completedAt)'\''' | tail -1)"
+          marker_started_at="$(jq -er '.startedAt | select(type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T"))' <<<"$artifact_diagnostic")"
+          marker_completed_at="$(jq -er '.completedAt | select(type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T"))' <<<"$artifact_diagnostic")"
           marker_epoch="$(date -d "$marker_started_at" +%s)"
           marker_completed_epoch="$(date -d "$marker_completed_at" +%s)"
           spool_count=0

@@ -582,7 +582,10 @@ test('unknown-outcome inspection uses the persisted attempt window after the sta
   assert.match(source, /new Date\(attempt[.]startedAt\)[.]getTime\(\)/)
   assert.match(source, /dispatchMarkerPresent/)
   assert.doesNotMatch(source, /if\(!batch\|\|!marker\)throw new Error\("SCIENTIFIC_V2_UNRESOLVED_MARKER_NOT_FOUND"\)/)
-  assert.match(source, /marker_started_at=.*unknown.*print\(attempt[.]startedAt\)/s)
+  assert.match(source, /artifact_diagnostic="\$\(docker exec/)
+  assert.match(source, /marker_started_at="\$\(jq -er '[^']*[.]startedAt/)
+  assert.match(source, /marker_completed_at="\$\(jq -er '[^']*[.]completedAt/)
+  assert.doesNotMatch(source, /marker_started_at=.*mongosh/)
 })
 
 test('manual workflow exposes the complete protected scientific v2 phase set with exact per-phase confirmation', () => {
