@@ -27,6 +27,7 @@ const adminInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workfl
 const reviewPackStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-review-pack-bundle.yml', import.meta.url))
 const publicRenderStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-public-render-bundle.yml', import.meta.url))
 const reviewAssignmentExportWorkflow = fileURLToPath(new URL('../../../.github/workflows/export-scientific-v2-review-assignments.yml', import.meta.url))
+const reviewValidationStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-review-validation-bundle.yml', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
 const registryHash = 'b'.repeat(64)
 const suiteHash = 'c'.repeat(64)
@@ -678,6 +679,18 @@ test('blind assignment export keeps mappings on-host and uploads only short-live
   assert.match(source, /retention-days:\s*1/)
   assert.match(source, /providerCalls['"]?:\s*0/)
   assert.match(source, /--mode review_pack/)
+  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+})
+
+test('review validation bundle accepts one exact blind submission and restores private mapping only on-host', () => {
+  const source = readFileSync(reviewValidationStagingWorkflow, 'utf8')
+  assert.match(source, /paperbanana-hk-production[.]lock/)
+  assert.match(source, /review-private[.]json/)
+  assert.match(source, /review_validate/)
+  assert.match(source, /privateAssignment/)
+  assert.match(source, /publicAssignment/)
+  assert.match(source, /install -o 0 -g 0 -m 0600/)
+  assert.match(source, /providerCalls['"]?:\s*0/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 

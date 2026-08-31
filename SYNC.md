@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 Reviewer A/B 回传增加私有映射复合验签 — by Codex
+变更：新增零 Provider 的 `review_validate` bundle staging。每个 Reviewer 只回传一份封闭 schema 的去身份化公共 assignment 与逐包评分；受保护 workflow 绑定精确 draft asset、deployed SHA、manifest、原 `review_pack` bundle 和 `privateBundleHash`，仅在生产机内恢复对应 A/B 的 `privateMappings/privateEnvelope`，复验 assignment HMAC、包集合与 object mapping 后生成 root `0600` 验证 bundle。Reviewer 永远看不到模型映射或签名密钥；automatic Judge 固定为 0，九题、十维、分辨率、路由、预算、失败/unknown 与争议阈值不变。
+
+各端待办：
+- [x] 部署 / 运维（A/B 回传闭合 schema、生产机复合验签与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有审核导入与公开接口契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 A/B 盲包导出保持私有映射留在生产机 — by Codex
 变更：新增零 Provider 的 A/B assignment 导出控制面。它使用已完成批次的精确 `review_pack` bundle 在 immutable Worker 中离线重放并核对 `privateBundleHash`，把带 `privateMappings/privateEnvelope` 的两份完整 assignment 与原图 object binding 分别写入生产机 root `0600` 管理员输入；CI 仅上传不含模型映射的 A/B 公共盲包，保留期 1 天。该步骤固定 automatic Judge 为 0，不调用 Provider，不发布 release，也不改变九题、十维、评分、分辨率、路由、预算、失败或 unknown 规则。
 

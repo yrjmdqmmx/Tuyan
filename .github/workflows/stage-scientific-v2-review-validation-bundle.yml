@@ -1,0 +1,276 @@
+name: Stage Scientific V2 Review Validation Bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      role:
+        required: true
+        type: choice
+        options: [A, B]
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_worker_digest: { required: true }
+      review_pack_bundle_sha256: { required: true }
+      private_bundle_hash: { required: true }
+      manifest_hash: { required: true }
+      release_id: { required: true }
+      asset_id: { required: true }
+      asset_name: { required: true }
+      asset_sha256: { required: true }
+      asset_size: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact blind review submission envelope
+        env:
+          ROLE: ${{ inputs.role }}
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          REVIEW_PACK_BUNDLE_SHA: ${{ inputs.review_pack_bundle_sha256 }}
+          PRIVATE_BUNDLE_HASH: ${{ inputs.private_bundle_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$ROLE" == A || "$ROLE" == B ]]
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$REVIEW_PACK_BUNDLE_SHA" "$PRIVATE_BUNDLE_HASH" "$MANIFEST_HASH" "$ASSET_SHA"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$RELEASE_ID" =~ ^[1-9][0-9]*$ && "$ASSET_ID" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" -le 67108864 ]]
+          [[ "$ASSET_NAME" == "scientific-v2-review-submission-$ROLE-$ASSET_SHA.json" ]]
+          [[ "$CONFIRM" == stage-exact-scientific-v2-review-validation-bundle ]]
+
+      - name: Download exact private draft submission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROLE: ${{ inputs.role }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+        run: |
+          set -Eeuo pipefail
+          release="$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID")"
+          jq -e --arg deployed "$DEPLOYED_SHA" --argjson assetId "$ASSET_ID" --arg name "$ASSET_NAME" --argjson size "$ASSET_SIZE" '
+            .draft == true and .prerelease == false and .target_commitish == $deployed and
+            ([.assets[] | select(.id == $assetId and .name == $name and .size == $size and .state == "uploaded")] | length) == 1
+          ' <<<"$release" >/dev/null
+          input="$RUNNER_TEMP/$ASSET_NAME"
+          gh api -H 'Accept: application/octet-stream' "repos/$GITHUB_REPOSITORY/releases/assets/$ASSET_ID" >"$input"
+          chmod 0600 "$input"
+          [[ "$(stat -c %s "$input")" == "$ASSET_SIZE" && "$(sha256sum "$input" | awk '{print $1}')" == "$ASSET_SHA" ]]
+          jq -e --arg role "$ROLE" --arg manifest "$MANIFEST_HASH" '
+            (keys | sort) == ["batchManifestHash","publicAssignment","role","schemaVersion","submissions"] and
+            .schemaVersion == 2 and .role == $role and .batchManifestHash == $manifest and
+            (.publicAssignment | type) == "object" and .publicAssignment.role == $role and
+            (.submissions | type) == "array" and (.submissions | length) > 0 and (.submissions | length) <= 4096 and
+            all(.submissions[];
+              (keys | sort) == ["packetHash","results"] and (.packetHash | test("^[a-f0-9]{64}$")) and
+              (.results | type) == "array" and (.results | length) > 0 and (.results | length) <= 24 and
+              all(.results[];
+                (keys | sort) == ["blindLabel","itemHash","lowConfidence","redLines","scores"] and
+                (.blindLabel | type) == "string" and (.blindLabel | length) >= 1 and (.blindLabel | length) <= 128 and
+                (.itemHash | test("^[a-f0-9]{64}$")) and (.lowConfidence | type) == "boolean" and
+                (.redLines | type) == "array" and (.redLines | length) <= 16 and all(.redLines[]; type == "string") and
+                (.scores | type) == "object" and all(.scores[]; type == "number" and . >= 0 and . <= 10)
+              )
+            ) and
+            ([.. | objects | keys[]] | index("privateMappings") == null) and
+            ([.. | objects | keys[]] | index("privateEnvelope") == null) and
+            ([.. | objects | keys[]] | index("attestationSecret") == null) and
+            ([.. | objects | keys[]] | map(test("(?:API_KEY|ACCESS_KEY|SECRET_KEY|PRIVATE_KEY)$")) | any | not)
+          ' "$input" >/dev/null
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage exact protected validation bundle
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          ROLE: ${{ inputs.role }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          REVIEW_PACK_BUNDLE_SHA: ${{ inputs.review_pack_bundle_sha256 }}
+          PRIVATE_BUNDLE_HASH: ${{ inputs.private_bundle_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+        run: |
+          set -Eeuo pipefail
+          input="$RUNNER_TEMP/$ASSET_NAME"
+          remote_input="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp /tmp/paperbanana-scientific-v2-review-submission.XXXXXXXXXXXX.json')"
+          [[ "$remote_input" =~ ^/tmp/paperbanana-scientific-v2-review-submission[.][A-Za-z0-9]{8,}[.]json$ ]]
+          cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_input'" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          scp "$input" "$DEPLOY_USER@$DEPLOY_HOST:$remote_input"
+          printf -v remote_command 'sudo env TRANSFER_INPUT=%q ASSET_SHA=%q ASSET_SIZE=%q ROLE=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q REVIEW_PACK_BUNDLE_SHA=%q PRIVATE_BUNDLE_HASH=%q MANIFEST_HASH=%q bash -s' \
+            "$remote_input" "$ASSET_SHA" "$ASSET_SIZE" "$ROLE" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$REVIEW_PACK_BUNDLE_SHA" "$PRIVATE_BUNDLE_HASH" "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          repo=/opt/paperbanana/repo
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          source_bundle="$bundle_root/$REVIEW_PACK_BUNDLE_SHA.json"
+          private_bundle="$review_private_root/$REVIEW_PACK_BUNDLE_SHA.review-private.json"
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          [[ -f "$TRANSFER_INPUT" && ! -L "$TRANSFER_INPUT" && "$(stat -c %s "$TRANSFER_INPUT")" == "$ASSET_SIZE" && "$(sha256sum "$TRANSFER_INPUT" | awk '{print $1}')" == "$ASSET_SHA" ]]
+          for path in "$source_bundle" "$private_bundle"; do
+            [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
+          done
+          output="$(mktemp /tmp/paperbanana-scientific-v2-review-validation.XXXXXXXXXXXX.json)"
+          cleanup_output() { rm -f -- "$output"; }
+          trap cleanup_output EXIT
+          python3 - "$source_bundle" "$private_bundle" "$TRANSFER_INPUT" "$ASSET_SHA" "$ASSET_SIZE" "$ROLE" "$PRIVATE_BUNDLE_HASH" "$MANIFEST_HASH" "$output" <<'PY'
+          import hashlib
+          import hmac
+          import json
+          import os
+          import stat
+          import sys
+
+          source_path, private_path, submission_path, submission_sha, submission_size_text, role, private_hash, manifest_hash, output_path = sys.argv[1:]
+          submission_size = int(submission_size_text)
+
+          def protected(path, owner, mode, expected_sha=None, expected_size=None, limit=64 * 1024 * 1024):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1 or before.st_uid != owner or stat.S_IMODE(before.st_mode) != mode or before.st_size < 2 or before.st_size > limit:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= limit:
+                      chunk = os.read(fd, min(1024 * 1024, limit + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if (len(data) != before.st_size or (expected_size is not None and len(data) != expected_size)
+                          or (expected_sha is not None and hashlib.sha256(data).hexdigest() != expected_sha)
+                          or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns)
+                          or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino)):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          def canonical(value):
+              if isinstance(value, list):
+                  return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+          def digest(value):
+              return hashlib.sha256(canonical(value).encode('utf-8')).hexdigest()
+
+          def exact(value, keys):
+              if not isinstance(value, dict) or set(value) != set(keys):
+                  raise RuntimeError('schema')
+
+          source = json.loads(protected(source_path, 0, 0o600))
+          private = json.loads(protected(private_path, 0, 0o600))
+          submission_owner = os.stat(submission_path, follow_symlinks=False).st_uid
+          submission = json.loads(protected(submission_path, submission_owner, 0o600, submission_sha, submission_size))
+          if source.get('operation') != 'review_pack' or source.get('input', {}).get('batchManifestHash') != manifest_hash or source.get('input', {}).get('state', {}).get('status') != 'completed':
+              raise RuntimeError('source')
+          secret = source['input'].get('attestationSecret')
+          if not isinstance(secret, str) or len(secret.encode('utf-8')) < 32 or len(secret.encode('utf-8')) > 4096:
+              raise RuntimeError('secret')
+          exact(private, ['batchManifestHash', 'sourceSetHash', 'reviewerA', 'reviewerB'])
+          if private['batchManifestHash'] != manifest_hash or digest(private) != private_hash:
+              raise RuntimeError('private')
+          exact(submission, ['schemaVersion', 'batchManifestHash', 'role', 'publicAssignment', 'submissions'])
+          public_assignment = submission['publicAssignment']
+          private_assignment = private['reviewer' + role]
+          exact(public_assignment, ['role', 'packages', 'mappingHash', 'assignmentSet', 'assignmentAttestationHash'])
+          exact(private_assignment, ['privateMappings', 'privateEnvelope'])
+          if submission['schemaVersion'] != 2 or submission['batchManifestHash'] != manifest_hash or submission['role'] != role or public_assignment['role'] != role:
+              raise RuntimeError('submission')
+          envelope = private_assignment['privateEnvelope']
+          if (envelope.get('role') != role or envelope.get('batchManifestHash') != manifest_hash
+                  or public_assignment['mappingHash'] != digest(envelope) or digest(private_assignment['privateMappings']) != digest(envelope['mappings'])
+                  or digest(public_assignment['packages']) != envelope['packagesHash']):
+              raise RuntimeError('assignment')
+          assignment_set = public_assignment['assignmentSet']
+          own_key = 'reviewerAEnvelopeHash' if role == 'A' else 'reviewerBEnvelopeHash'
+          expected_attestation = hmac.new(secret.encode('utf-8'), digest(assignment_set).encode('ascii'), hashlib.sha256).hexdigest()
+          if assignment_set.get('batchManifestHash') != manifest_hash or assignment_set.get(own_key) != digest(envelope) or not hmac.compare_digest(str(public_assignment['assignmentAttestationHash']), expected_attestation):
+              raise RuntimeError('attestation')
+          bundle = {
+              'operation': 'review_validate',
+              'gate': {'enabled': False, 'concurrency': 1, 'lockName': '/run/lock/paperbanana-hk-production.lock'},
+              'input': {
+                  'role': role,
+                  'publicAssignment': public_assignment,
+                  'privateAssignment': private_assignment,
+                  'submissions': submission['submissions'],
+                  'attestationSecret': secret,
+              },
+          }
+          encoded = (json.dumps(bundle, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
+          try:
+              os.fchmod(fd, 0o600)
+              view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
+          chmod 0600 "$output"
+          bundle_sha="$(sha256sum "$output" | awk '{print $1}')"
+          destination="$bundle_root/$bundle_sha.json"
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
+            cmp -s "$output" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$output" "$destination"
+          fi
+          printf '{"operation":"stage-scientific-v2-review-validation-bundle","providerCalls":0,"role":"%s","manifestHash":"%s","submissionSha256":"%s","bundleHash":"%s"}\n' \
+            "$ROLE" "$MANIFEST_HASH" "$ASSET_SHA" "$bundle_sha"
+          REMOTE
