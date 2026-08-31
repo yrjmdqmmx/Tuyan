@@ -1,0 +1,92 @@
+name: Recover Scientific V2 Stale Claim
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate one-time request
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$CONFIRM" == release-exact-scientific-v2-stale-claim ]]
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Release exact expired blocked claim
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" 'sudo bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          [[ "$(git -C /opt/paperbanana/repo rev-parse --verify HEAD)" == f2f6010a946928966470e31d330635b309cd60bc ]]
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          awk -F= '$1=="PAPERBANANA_BENCH_ENABLED"{ok=($2=="false")} END{exit ok?0:1}' /opt/paperbanana/secrets/bench.env
+          awk -F= '$1=="PAPERBANANA_BENCH_CONCURRENCY"{ok=($2=="1")} END{exit ok?0:1}' /opt/paperbanana/secrets/bench.env
+          docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark' <<'JS'
+          const manifestHash = "fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227";
+          const stateHash = "5a2280bc3f08692f983585fa59a01d476aaf02acbe9ece56151db549ed8736d9";
+          const executionCodeSha = "f2f6010a946928966470e31d330635b309cd60bc";
+          const batches = db.getCollection("paperbanana_benchmark_scientific_v2_batches");
+          const dispatches = db.getCollection("paperbanana_benchmark_scientific_v2_dispatches");
+          const session = db.getMongo().startSession();
+          let modifiedCount = 0;
+          try {
+            session.withTransaction(() => {
+              const sdb = session.getDatabase("paperbanana_benchmark");
+              const sbatches = sdb.getCollection("paperbanana_benchmark_scientific_v2_batches");
+              const sdispatches = sdb.getCollection("paperbanana_benchmark_scientific_v2_dispatches");
+              const row = sbatches.findOne({
+                manifestHash,
+                stateHash,
+                status: "blocked",
+                "state.status": "blocked",
+                "state.blockReason": "provider_canary_failed",
+                executionCodeSha,
+                revision: 0,
+                latestStateReportHash: null,
+                claimToken: {$exists: true},
+                claimLeaseExpiresAt: {$lte: new Date()},
+                activeDispatchId: {$exists: false},
+              });
+              if (!row) throw new Error("SCIENTIFIC_V2_EXACT_STALE_CLAIM_NOT_FOUND");
+              if (sdispatches.countDocuments({manifestHash, status: "started"}) !== 0) {
+                throw new Error("SCIENTIFIC_V2_STARTED_DISPATCH_RECONCILIATION_REQUIRED");
+              }
+              const result = sbatches.updateOne(
+                {_id: row._id, manifestHash, stateHash, status: "blocked", claimToken: row.claimToken, claimLeaseExpiresAt: row.claimLeaseExpiresAt},
+                {$unset: {claimToken: "", claimLeaseExpiresAt: "", claimHeartbeatAt: "", claimedAt: "", workerId: ""}},
+              );
+              if (result.modifiedCount !== 1) throw new Error("SCIENTIFIC_V2_STALE_CLAIM_CAS_FAILED");
+              modifiedCount = result.modifiedCount;
+            }, {readConcern: {level: "snapshot"}, writeConcern: {w: "majority"}});
+          } finally {
+            session.endSession();
+          }
+          print(JSON.stringify({manifestHash, stateHash, modifiedCount}));
+          JS
+          REMOTE
