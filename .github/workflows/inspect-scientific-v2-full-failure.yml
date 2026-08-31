@@ -88,4 +88,31 @@ jobs:
             } : null,
           }));
           JS
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          docker exec "$worker_id" node --input-type=module -e '
+          import OSS from "ali-oss";
+          import { MongoClient } from "mongodb";
+          const manifestHash="fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227";
+          const mongo=new MongoClient(process.env.PAPERBANANA_BENCH_MONGODB_URI);
+          await mongo.connect();
+          try {
+            const db=mongo.db(process.env.PAPERBANANA_BENCH_MONGO_DB||"paperbanana_benchmark");
+            const batch=await db.collection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash});
+            const marker=await db.collection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash,status:"started"});
+            if(!batch||!marker)throw new Error("SCIENTIFIC_V2_UNRESOLVED_MARKER_NOT_FOUND");
+            const known=new Set(batch.state.slots.flatMap(slot=>slot.attempts.map(attempt=>attempt.rawImageHash).filter(Boolean)));
+            for(const scientificCase of batch.manifest.cases)if(scientificCase.sourceHash)known.add(scientificCase.sourceHash);
+            const oss=new OSS({region:process.env.PAPERBANANA_BENCH_OSS_REGION,accessKeyId:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID,accessKeySecret:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET,bucket:process.env.PAPERBANANA_BENCH_OSS_BUCKET,endpoint:process.env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT,secure:true,authorizationV4:true});
+            const objects=[];let nextMarker;
+            do{const page=await oss.list({prefix:"bench/scientific-v2/private/objects/","max-keys":1000,...(nextMarker?{marker:nextMarker}:{})},{});objects.push(...(page.objects||[]));nextMarker=page.isTruncated?page.nextMarker:undefined;}while(nextMarker);
+            const startedAt=new Date(marker.startedAt).getTime();
+            const candidates=objects.flatMap(object=>{
+              const match=/\/([a-f0-9]{64})\.(png|jpeg|webp)$/.exec(object.name||"");
+              const modifiedAt=new Date(object.lastModified).getTime();
+              return match&&!known.has(match[1])&&modifiedAt>=startedAt-5000&&modifiedAt<=startedAt+600000?[{imageHash:match[1],format:match[2],byteSize:Number(object.size),lastModified:new Date(modifiedAt).toISOString()}]:[];
+            });
+            process.stdout.write(JSON.stringify({slotId:marker.slotId,attemptIndex:marker.attemptIndex,candidateCount:candidates.length,candidates})+"\n");
+          }finally{await mongo.close();}
+          '
           REMOTE
