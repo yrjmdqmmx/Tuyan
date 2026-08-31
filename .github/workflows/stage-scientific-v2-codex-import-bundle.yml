@@ -1,0 +1,262 @@
+name: Stage Scientific V2 Codex Import Bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_core_digest: { required: true }
+      expected_worker_digest: { required: true }
+      manifest_sha256: { required: true }
+      state_sha256: { required: true }
+      attestation_result_sha256: { required: true }
+      manifest_hash: { required: true }
+      metadata_sha256: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact zero-provider import envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          METADATA_SHA: ${{ inputs.metadata_sha256 }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH" "$METADATA_SHA"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$CONFIRM" == stage-exact-scientific-v2-codex-import-bundle ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Build exact protected Codex import bundle
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          METADATA_SHA: ${{ inputs.metadata_sha256 }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q METADATA_SHA=%q bash -s' \
+            "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" \
+            "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH" "$METADATA_SHA"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          repo=/opt/paperbanana/repo
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          admin_results=/opt/paperbanana/operator-private/scientific-v2/admin-results
+          artifact_root=/opt/paperbanana/operator-private/scientific-v2/codex-artifacts/$MANIFEST_HASH
+          manifest_path=$bundle_root/$MANIFEST_FILE_SHA.manifest.json
+          state_path=$bundle_root/$STATE_FILE_SHA.state.json
+          attestation_path=$admin_results/$ATTESTATION_FILE_SHA.attest.json
+          metadata_path=$artifact_root/metadata.json
+          core_env=/opt/paperbanana/secrets/core.env
+          deploy_env=$repo/deploy/hk-single-host/.env
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          for pair in "paperbanana-api:$CORE_DIGEST" "benchmark-worker:$WORKER_DIGEST"; do
+            service=${pair%%:*}
+            digest=${pair#*:}
+            container_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service="$service" --format '{{.ID}}')"
+            [[ "$container_id" =~ ^[a-f0-9]+$ ]]
+            image_id="$(docker inspect --format '{{.Image}}' "$container_id")"
+            docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$digest" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          done
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          [[ -f "$deploy_env" && ! -L "$deploy_env" && -f "$core_env" && ! -L "$core_env" ]]
+          [[ "$(stat -c '%u:%g:%a' "$manifest_path")" =~ ^0:0:0?600$ && "$(stat -c '%u:%g:%a' "$state_path")" =~ ^0:0:0?600$ ]]
+          [[ "$(stat -c '%u:%g:%a' "$attestation_path")" =~ ^0:0:0?600$ && "$(stat -c '%u:%g:%a' "$metadata_path")" =~ ^0:1000:0?440$ ]]
+          output="$(mktemp /tmp/paperbanana-scientific-v2-codex-import.XXXXXXXXXXXX.json)"
+          cleanup() { rm -f -- "$output"; }
+          trap cleanup EXIT
+          python3 - "$manifest_path" "$MANIFEST_FILE_SHA" "$state_path" "$STATE_FILE_SHA" \
+            "$attestation_path" "$ATTESTATION_FILE_SHA" "$metadata_path" "$METADATA_SHA" \
+            "$core_env" "$MANIFEST_HASH" "$DEPLOYED_SHA" "$output" <<'PY'
+          import datetime
+          import hashlib
+          import hmac
+          import json
+          import os
+          import re
+          import stat
+          import sys
+
+          manifest_path, manifest_file_sha, state_path, state_file_sha, attestation_path, attestation_file_sha, metadata_path, metadata_file_sha, core_env_path, manifest_hash, deployed_sha, output_path = sys.argv[1:]
+          hash_re = re.compile(r'^[a-f0-9]{64}$')
+
+          def protected(path, expected_sha, owner, modes):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if (not stat.S_ISREG(before.st_mode) or before.st_nlink != 1 or before.st_uid != owner
+                          or stat.S_IMODE(before.st_mode) not in modes or before.st_size < 2 or before.st_size > 64 * 1024 * 1024):
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= 64 * 1024 * 1024:
+                      chunk = os.read(fd, min(1024 * 1024, 64 * 1024 * 1024 + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if (len(data) != before.st_size or (expected_sha is not None and hashlib.sha256(data).hexdigest() != expected_sha)
+                          or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns)
+                          or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino)):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          def canonical(value):
+              if isinstance(value, list):
+                  return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+          def canonical_hash(value):
+              return hashlib.sha256(canonical(value).encode('utf-8')).hexdigest()
+
+          manifest = json.loads(protected(manifest_path, manifest_file_sha, 0, {0o600}))
+          state = json.loads(protected(state_path, state_file_sha, 0, {0o600}))
+          attestation = json.loads(protected(attestation_path, attestation_file_sha, 0, {0o600}))
+          metadata = json.loads(protected(metadata_path, metadata_file_sha, 0, {0o440}))
+          core_env = protected(core_env_path, None, 0, {0o600}).decode('utf-8')
+          secrets = [line.split('=', 1)[1] for line in core_env.splitlines() if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
+          code_shas = [line.split('=', 1)[1] for line in core_env.splitlines() if line.startswith('PAPERBANANA_CODE_SHA=')]
+          if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096:
+              raise RuntimeError('secret')
+          if code_shas != [deployed_sha]:
+              raise RuntimeError('code-sha')
+          secret = secrets[0]
+          if manifest.get('manifestHash') != manifest_hash or state.get('manifestHash') != manifest_hash or state.get('stateHash') != attestation.get('stateHash'):
+              raise RuntimeError('binding')
+          if state.get('status') != 'awaiting_artifacts' or state.get('pauseReason') is not None or state.get('blockReason') is not None:
+              raise RuntimeError('state')
+          report_base = {key: value for key, value in attestation.items() if key not in {'reportHash', 'attestationHash'}}
+          report_hash = canonical_hash(report_base)
+          key = hmac.new(secret.encode('utf-8'), b'paperbanana/scientific-v2/operator-attestation/v1', hashlib.sha256).digest()
+          expected_attestation = hmac.new(key, report_hash.encode('ascii'), hashlib.sha256).hexdigest()
+          if attestation.get('reportHash') != report_hash or not hmac.compare_digest(str(attestation.get('attestationHash', '')), expected_attestation):
+              raise RuntimeError('attestation')
+          if attestation.get('batchManifestHash') != manifest_hash or attestation.get('modelCount') != len(manifest.get('models', [])) or attestation.get('slotCount') != len(state.get('slots', [])):
+              raise RuntimeError('attestation-binding')
+          if (manifest.get('codeSha') != deployed_sha or attestation.get('manifestCodeSha') != deployed_sha
+                  or attestation.get('executionCodeSha') != deployed_sha or attestation.get('legacyRecoveryStateHash') is not None):
+              raise RuntimeError('code-lineage')
+          if metadata.get('schemaVersion') != 1 or metadata.get('metadataKind') != 'paperbanana-scientific-v2-codex-import-preflight' or metadata.get('suiteId') != 'pb-scientific-figure-v2':
+              raise RuntimeError('metadata')
+          provenance = metadata.get('provenance')
+          calls = metadata.get('toolCalls')
+          cases = manifest.get('cases')
+          if not isinstance(provenance, dict) or provenance.get('modelAlias') != 'gpt-image-2' or provenance.get('totalToolCalls') != 9 or not isinstance(calls, list) or len(calls) != 9 or not isinstance(cases, list) or len(cases) != 9:
+              raise RuntimeError('metadata')
+          codex_slots = [slot for slot in state.get('slots', []) if slot.get('provider') == 'codex']
+          if len(codex_slots) != 9 or any(slot.get('status') != 'awaiting_artifact' or slot.get('attempts') != [] or slot.get('costCny') is not None for slot in codex_slots):
+              raise RuntimeError('codex-state')
+          tool_calls = []
+          for index, (source, case, slot) in enumerate(zip(calls, cases, codex_slots)):
+              slot_id = 'codex:gpt-image-2:' + case['id']
+              if source.get('slotId') != slot_id or source.get('caseId') != case.get('id') or slot.get('slotId') != slot_id or source.get('attemptIndex') != 1 or source.get('responseClass') != 'succeeded':
+                  raise RuntimeError('order')
+              artifact = source.get('artifactRef')
+              if (not isinstance(artifact, dict) or artifact.get('schemaVersion') != 1 or artifact.get('sha256') != source.get('sha256')
+                      or artifact.get('fileName') != source.get('sha256') + '.png' or artifact.get('format') != 'png'
+                      or not isinstance(artifact.get('byteSize'), int) or artifact.get('byteSize') < 1):
+                  raise RuntimeError('artifact')
+              payload_hash = canonical_hash({'manifestHash': manifest_hash, 'slotId': slot_id, 'caseManifestHash': case['manifestHash']})
+              call = {
+                  'slotId': slot_id, 'caseId': case['id'], 'attemptIndex': 1, 'responseClass': 'succeeded',
+                  'payloadHash': payload_hash, 'artifactRef': artifact, 'sha256': source['sha256'], 'format': 'png',
+                  'width': source['width'], 'height': source['height'], 'startedAt': source['startedAt'], 'completedAt': source['completedAt'],
+              }
+              if case.get('kind') == 'edit':
+                  if source.get('sourceHash') != case.get('sourceHash') or source.get('editedHash') != source.get('sha256'):
+                      raise RuntimeError('edit-binding')
+                  call['sourceHash'] = source['sourceHash']
+                  call['editedHash'] = source['editedHash']
+              elif case.get('kind') != 'generation':
+                  raise RuntimeError('case-kind')
+              tool_calls.append(call)
+          now = datetime.datetime.now(datetime.timezone.utc)
+          created_at = now.strftime('%Y-%m-%dT%H:%M:%S.') + f'{now.microsecond // 1000:03d}Z'
+          bundle = {
+              'operation': 'import_codex',
+              'gate': {'enabled': False, 'concurrency': 1, 'lockName': '/run/lock/paperbanana-hk-production.lock'},
+              'input': {
+                  'manifestHash': manifest_hash, 'stateHash': state['stateHash'], 'manifest': manifest, 'state': state,
+                  'provenance': provenance, 'toolCalls': tool_calls, 'batchId': attestation['batchId'],
+                  'revision': attestation['revision'] + 1, 'previousStateHash': state['stateHash'], 'createdAt': created_at,
+                  'attestationSecret': secret,
+                  'execution': {
+                      'manifestCodeSha': attestation['manifestCodeSha'], 'executionCodeSha': attestation['executionCodeSha'],
+                      'legacyRecoveryStateHash': attestation['legacyRecoveryStateHash'],
+                  },
+              },
+          }
+          encoded = (json.dumps(bundle, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
+          try:
+              os.fchmod(fd, 0o600)
+              view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
+          chmod 0600 "$output"
+          bundle_sha="$(sha256sum "$output" | awk '{print $1}')"
+          [[ "$bundle_sha" =~ ^[a-f0-9]{64}$ ]]
+          destination="$bundle_root/$bundle_sha.json"
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%a' "$destination")" =~ ^0:0?600$ ]]
+            cmp -s "$output" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$output" "$destination"
+          fi
+          state_hash="$(jq -r '.input.stateHash' "$destination")"
+          printf '{"operation":"stage-scientific-v2-codex-import-bundle","providerCalls":0,"manifestHash":"%s","stateHash":"%s","bundleHash":"%s"}\n' \
+            "$MANIFEST_HASH" "$state_hash" "$bundle_sha"
+          REMOTE

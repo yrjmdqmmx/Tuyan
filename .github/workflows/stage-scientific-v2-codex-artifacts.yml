@@ -141,6 +141,7 @@ jobs:
               .artifactRef.sha256 == .sha256 and .artifactRef.byteSize > 0 and .artifactRef.format == "png")
           ' "$metadata" >/dev/null
           install -d -o 0 -g 1000 -m 0550 "$incoming/final"
+          install -o 0 -g 1000 -m 0440 "$metadata" "$incoming/final/metadata.json"
           while IFS=$'\t' read -r file_name expected_sha expected_size; do
             source_file="$unpacked/import-artifacts/$file_name"
             [[ -f "$source_file" && ! -L "$source_file" && "$(stat -c %s "$source_file")" == "$expected_size" ]]
@@ -148,6 +149,7 @@ jobs:
             install -o 0 -g 1000 -m 0440 "$source_file" "$incoming/final/$file_name"
           done < <(jq -r '.toolCalls[] | [.artifactRef.fileName,.artifactRef.sha256,(.artifactRef.byteSize|tostring)] | @tsv' "$metadata")
           [[ "$(find "$incoming/final" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')" == 9 ]]
+          [[ "$(sha256sum "$incoming/final/metadata.json" | awk '{print $1}')" == "$METADATA_SHA" ]]
           mv "$incoming/final" "$destination"
           printf '{"operation":"stage-scientific-v2-codex-artifacts","providerCalls":0,"manifestHash":"%s","artifactCount":9,"archiveSha256":"%s","metadataSha256":"%s"}\n' \
             "$MANIFEST_HASH" "$ASSET_SHA" "$METADATA_SHA"

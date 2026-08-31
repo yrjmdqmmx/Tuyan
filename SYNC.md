@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 Codex 九图导入绑定补齐只读 metadata — by Codex
+变更：GPT Image 2 私有交接目录除 9 个内容寻址 PNG 外，固定保存已验签 `metadata.json`（root:service-group `0440`），用于绑定每题 task/thread provenance、调用时序、实际像素、格式、字节和 SHA。新增零 Provider 的导入 bundle staging workflow：只在生产共享锁内读取精确 manifest/state/operator-attestation/metadata 文件 hash，验证 batch 已进入 `awaiting_artifacts`、Worker disabled/并发 1、代码和镜像 digest、operator attestation HMAC 与 9 个 Codex 槽位顺序，再生成 root `0600` 的 `import_codex` bundle。不得读取或传入三家 Provider 密钥；不修改九题、十维、分辨率、预算、重试或 unknown 规则。
+
+各端待办：
+- [x] 部署 / 运维（metadata 私有持久化、Codex import bundle staging 与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（导入与公开契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 GPT Image 2 原图使用私有草稿资产交接 — by Codex
 变更：Codex 内置 `gpt-image-2` 的 9 张已审计原始 PNG 不进入 Git、不进入公开 release，也不经公网匿名 URL。新增受保护 workflow 只接受一个精确 GitHub draft release asset ID，绑定 deployed/control SHA、manifest、Worker digest、资产名称/大小/SHA 与 metadata SHA；下载后在生产共享锁内再次验证 Worker disabled/并发 1、归档固定 11 个成员、9 个内容寻址 PNG 的逐文件 SHA/字节和只读 metadata，再原子放入该 manifest 专属的 root:service-group `0550` 目录，文件为 `0440`。交接全程零 Provider 调用，批次未进入 `awaiting_artifacts` 前不会导入或改写 state；草稿资产在成功导入后删除。
 
