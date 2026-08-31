@@ -591,9 +591,11 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
         : null
   if (interruptionStatus) {
     const interruptionIndexes = state.slots.flatMap((slot, index) => slot.status === interruptionStatus ? [index] : [])
+    const isCanaryCarryover = (slot: ScientificV2SlotState) => (slot.isProviderCanary && slot.status === 'succeeded')
+      || (slot.status === 'failed' && failedCanaryRoutes.has(`${slot.provider}:${slot.canonicalModelId}`))
     if (interruptionIndexes.length !== 1
       || state.slots.slice(0, interruptionIndexes[0]).some((slot) => !['succeeded', 'unsupported', 'failed'].includes(slot.status))
-      || state.slots.slice(interruptionIndexes[0] + 1).some((slot) => slot.status !== 'not_executed')) {
+      || state.slots.slice(interruptionIndexes[0] + 1).some((slot) => slot.status !== 'not_executed' && !isCanaryCarryover(slot))) {
       scientificV2Error('SCIENTIFIC_V2_STATE_STATUS_INVALID')
     }
   }

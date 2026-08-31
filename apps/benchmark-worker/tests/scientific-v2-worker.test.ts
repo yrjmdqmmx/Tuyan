@@ -49,7 +49,10 @@ import {
   createScientificV2SignedStateOperationReport,
   verifyScientificV2SignedStateOperationReport,
 } from '../src/scientific-v2-state-report.js'
-import { normalizeScientificV2SignedStateOperationReport as normalizeApiScientificV2SignedStateOperationReport } from '../../paperbanana-api/src/scientific-v2-repository.js'
+import {
+  normalizeScientificV2SignedStateOperationReport as normalizeApiScientificV2SignedStateOperationReport,
+  verifyScientificV2ImportedState as verifyApiScientificV2ImportedState,
+} from '../../paperbanana-api/src/scientific-v2-repository.js'
 
 const H64 = (letter: string) => letter.repeat(64)
 const CODE_SHA = 'a'.repeat(40)
@@ -732,6 +735,44 @@ test('canary-only phase executes one formal slot per provider and full resume ne
   assert.ok(calls.length > 3)
   assert.ok(calls.every((call) => !canarySlotIds.has(call.slice(call.indexOf(':') + 1))))
   assert.equal(full.state.status, 'awaiting_artifacts')
+})
+
+test('full resume may pause before later already-succeeded provider canaries without invalidating state', async () => {
+  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'], directEdit: false }))
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#457' } }).png().toBuffer()
+  const common = {
+    repository: { async save() {} },
+    recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'canary-carryover-pause-lock' }, async heartbeat() {}, async release() {} },
+  }
+  const canary = await runScientificV2Batch({
+    manifest: built.manifest,
+    state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'canary-only' },
+    ...common,
+    executor: { async execute(request: any) {
+      return { responseClass: 'succeeded' as const, actualCny: request.estimatedCny, bytes: png }
+    } },
+  })
+
+  let fullCalls = 0
+  const paused = await runScientificV2Batch({
+    manifest: built.manifest,
+    state: canary.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'full' },
+    ...common,
+    executor: { async execute() {
+      fullCalls += 1
+      throw new UnknownProviderOutcomeError('UNKNOWN_PROVIDER_OUTCOME')
+    } },
+  })
+
+  assert.equal(fullCalls, 1)
+  assert.equal(paused.state.status, 'paused')
+  assert.equal(paused.state.pauseReason, 'reconciliation_required')
+  assert.equal(paused.state.slots.filter((slot) => slot.isProviderCanary).every((slot) => slot.status === 'succeeded'), true)
+  assert.doesNotThrow(() => verifyScientificV2BatchState(paused.state, paused.manifest))
+  assert.doesNotThrow(() => verifyApiScientificV2ImportedState(paused.state, paused.manifest))
 })
 
 test('four confirmed technical canary failures zero only that canonical model and permit later models to finish', async () => {

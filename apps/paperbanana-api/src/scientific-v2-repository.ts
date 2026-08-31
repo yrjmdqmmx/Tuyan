@@ -369,8 +369,10 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     : -1
   const interruptedIndex = canaryFailureIndex >= 0 ? canaryFailureIndex
     : slotStatuses.findIndex((status: string) => ['unknown', 'price_reconciliation', 'artifact_reconciliation', 'budget_blocked'].includes(status))
-  if (interruptedIndex >= 0 && (slotStatuses.slice(0, interruptedIndex).some((status: string) => !terminal(status))
-    || slotStatuses.slice(interruptedIndex + 1).some((status: string) => status !== 'not_executed'))) {
+  const isCanaryCarryover = (slot: AnyRecord) => (slot.isProviderCanary && slot.status === 'succeeded')
+    || (slot.status === 'failed' && failedCanaryRoutes.has(canaryRouteIdentity(slot)))
+  if (interruptedIndex >= 0 && (state.slots.slice(0, interruptedIndex).some((slot: AnyRecord) => !terminal(slot.status))
+    || state.slots.slice(interruptedIndex + 1).some((slot: AnyRecord) => slot.status !== 'not_executed' && !isCanaryCarryover(slot)))) {
     scientificError('SCIENTIFIC_V2_STATE_INTERRUPTION_ORDER_INVALID')
   }
   if ((state.status === 'paused') !== (state.pauseReason !== null)

@@ -24,12 +24,21 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 full 暂停态保留已完成 canary 终态 — by Codex
+变更：canary-only 会先在执行序列后部留下其他 Provider 的成功 canary；full 从前部普通题位恢复后若遇到 unknown、价格/产物对账或预算门，状态机必须把后续未执行槽位置为 `not_executed`，但保留此前已经成功的 provider canary（以及由已确认失败 canary 派生的精确 route 失败终态）。此前 Worker/Core 镜像 verifier 错误要求中断槽位后的所有槽位一律为 `not_executed`，导致合法暂停态被拒绝并留下 started dispatch。现在两端只为经过既有 canary 证明的终态开放该例外；其他乱序终态仍 fail closed，unknown 零重试和九题/十维规则不变。
+
+各端待办：
+- [x] Benchmark Worker（canary → full → unknown RED/GREEN；本地 state verifier）
+- [x] paperbanana-api / Laf Core（镜像 imported-state verifier 同步并由同一测试覆盖）
+- [ ] 部署 / 运维（先对账当前 started dispatch；部署同 SHA Core/Worker 后冻结新批次重跑）
+- [x] Web / Gateway / 原生端（公开契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 authoritative image runtime 恢复受限 PNG/JPEG 解码 — by Codex
 变更：Benchmark Worker 动态加载由 `paperbanana-api` 构建的 authoritative image runtime 时，legacy Laf 模块会在进程级阻断 `VipsForeignLoad`，此前只重新放行 WebP，导致三家 Provider 已返回的 PNG/JPEG 在 Worker 原始字节检查阶段统一被误判为技术失败并触发重试。专用 image-runtime 入口现在只重新放行受 Worker 25 MiB / 4000 万像素 / 完整容器校验保护的 PNG、JPEG、WebP buffer loader；SVG 等其他 Sharp foreign loader 继续保持阻断。题集、路由、预算、失败/unknown 策略、API 与公开字段均不改变。
 
 各端待办：
 - [x] paperbanana-api image runtime / Benchmark Worker（隔离 RED 测试、PNG/JPEG/WebP 通过且 SVG 仍阻断；API/Worker test/check/build）
-- [ ] 部署 / 运维（构建并部署含新 `dist/image-runtime.mjs` 的 immutable Worker；旧 `0 succeeded / 33 failed` 批次保留失败审计且不得重派 unknown，重新冻结新批次后执行三家 canary）
+- [x] 部署 / 运维（已部署含新 `dist/image-runtime.mjs` 的 immutable Worker；旧 `0 succeeded / 33 failed` 批次保留失败审计；新批次三家正式 canary 均通过 full 门禁）
 - [x] Web / Gateway / 原生端（公开契约不变；无需改造）
 
 ### [2026-08-31] Scientific V2 legacy recovery 允许一次 pre-execution SHA 迁移 — by Codex
