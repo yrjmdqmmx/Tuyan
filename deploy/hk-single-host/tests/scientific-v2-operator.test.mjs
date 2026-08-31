@@ -183,7 +183,7 @@ test('scientific v2 host operator is executable and binds every immutable execut
   assert.match(source, /PAPERBANANA_CORE_IMAGE[\s\S]*@sha256:/)
   assert.match(source, /PAPERBANANA_BENCH_WORKER_IMAGE[\s\S]*@sha256:/)
   assert.match(source, /build-provenance[.]json/)
-  assert.match(source, /providerBudgetsCny[\s\S]*bailian[\s\S]*180[\s\S]*ark[\s\S]*180[\s\S]*openrouter[\s\S]*180/)
+  assert.match(source, /providerBudgetsCny[\s\S]*bailian[\s\S]*180[\s\S]*ark[\s\S]*180[\s\S]*openrouter[\s\S]*360/)
   assert.match(source, /maxToolCalls[\s\S]*36/)
   assert.match(source, /cases[\s\S]*length[\s\S]*9/)
   assert.match(source, /models[\s\S]*length/)
@@ -260,7 +260,7 @@ test('inspect is the default zero-call mode and does not read bench.env or crede
       manifestHash,
       modelCount,
       caseCount: 9,
-      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
       codexMaxToolCalls: 36,
       concurrency: 1,
       lockName,
@@ -369,7 +369,7 @@ test('run accepts the exact Worker bundle without env, rejects env and never pri
     manifestHash,
     models: Array.from({ length: modelCount }, (_, index) => ({ id: `model-${index + 1}` })),
     cases: Array.from({ length: 9 }, (_, index) => ({ id: `case-${index + 1}` })),
-    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
     codexLimits: { modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 },
     concurrency: 1,
     lockName,
@@ -414,7 +414,7 @@ test('run rejects malformed report metadata before any run and emits no partial 
     codeSha: item.sha, registryHash, suiteHash, priceHash, manifestHash,
     models: Array.from({ length: modelCount }, (_, index) => ({ id: `model-${index + 1}` })),
     cases: Array.from({ length: 9 }, (_, index) => ({ id: `case-${index + 1}` })),
-    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
     codexLimits: { modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 },
     concurrency: 1, lockName,
   }
@@ -474,7 +474,7 @@ test('validated run stdout is the complete signed report accepted by the API nor
     codeSha: item.sha, registryHash, suiteHash, priceHash, manifestHash,
     models: Array.from({ length: modelCount }, (_, index) => ({ id: `model-${index + 1}` })),
     cases: Array.from({ length: 9 }, (_, index) => ({ id: `case-${index + 1}` })),
-    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
     codexLimits: { modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 },
     concurrency: 1, lockName,
   }

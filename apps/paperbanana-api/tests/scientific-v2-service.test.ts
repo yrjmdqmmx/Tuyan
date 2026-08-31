@@ -51,7 +51,7 @@ function scientificRelease() {
       ...SCIENTIFIC_BENCHMARK_IDENTITY, suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
       expectedCaseCount: 9, dimensions: [...SCIENTIFIC_BENCHMARK_AXES], overallFormula: 'ten_dimension_raw_equal_weight_mean',
       tieMethod: 'competition', failureScore: 0, retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' },
-      routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+      routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
       automaticJudges: [], blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
       knownLimitations: ['fixed-nine-case-suite'], automaticJudgmentCount: 0,
     },

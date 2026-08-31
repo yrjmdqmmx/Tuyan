@@ -18,6 +18,9 @@ const priceSignerEntry = fileURLToPath(new URL('../../../apps/benchmark-worker/s
 const priceRefresh = fileURLToPath(new URL('../scripts/refresh-scientific-v2-price-sources.sh', import.meta.url))
 const priceRefreshEntry = fileURLToPath(new URL('../../../apps/benchmark-worker/src/scientific-v2-price-refresh-entry.ts', import.meta.url))
 const priceRefreshWorkflow = fileURLToPath(new URL('../../../.github/workflows/refresh-scientific-v2-price-sources.yml', import.meta.url))
+const priceAuthorization = fileURLToPath(new URL('../scripts/authorize-scientific-v2-price-snapshot.sh', import.meta.url))
+const priceAuthorizationEntry = fileURLToPath(new URL('../../../apps/benchmark-worker/src/scientific-v2-price-authorization-entry.ts', import.meta.url))
+const priceAuthorizationWorkflow = fileURLToPath(new URL('../../../.github/workflows/authorize-scientific-v2-price-snapshot.yml', import.meta.url))
 const runBundleStager = fileURLToPath(new URL('../scripts/stage-scientific-v2-run-bundle.sh', import.meta.url))
 const workerPackage = fileURLToPath(new URL('../../../apps/benchmark-worker/package.json', import.meta.url))
 
@@ -72,12 +75,15 @@ test('root price signer uses fixed protected inputs and a built image entry with
   assert.match(wrapper, /RepoDigests/)
   assert.match(wrapper, /build-provenance[.]json/)
   assert.match(wrapper, /PAPERBANANA_CODE_SHA/)
+  assert.match(wrapper, /PAPERBANANA_BENCH_ENABLED[^\n]*false/)
+  assert.match(wrapper, /PAPERBANANA_BENCH_CONCURRENCY[^\n]*1/)
   assert.match(wrapper, /tracked_price_signer_paths/)
   assert.match(wrapper, /git -C "\$repo_root" ls-files --error-unmatch/)
   assert.match(wrapper, /git -C "\$repo_root" diff --quiet "\$expected_sha" --/)
   assert.match(wrapper, /paperbanana-hk-production[.]lock/)
   assert.match(wrapper, /registry-authorities/)
   assert.match(wrapper, /operator-price-authorizations/)
+  assert.match(wrapper, /git -C "\$repo_root" status --porcelain --untracked-files=all/)
   assert.match(wrapper, /official-price-captures/)
   assert.match(wrapper, /signed-price-snapshots/)
   assert.match(wrapper, /--user\s+0:0/)
@@ -136,6 +142,42 @@ test('root refresh workflow obtains server authority and bounded official bytes 
   assert.doesNotMatch(workflow, /ATTESTATION_SECRET|REVIEW_SIGNING_SECRET/)
 })
 
+test('root authorization workflow derives the fixed unresolved set and signs it under one protected host lock', () => {
+  for (const path of [priceAuthorization, priceAuthorizationEntry, priceAuthorizationWorkflow]) assert.equal(existsSync(path), true, path)
+  assert.equal(statSync(priceAuthorization).mode & 0o111, 0o111)
+  const wrapper = readFileSync(priceAuthorization, 'utf8')
+  assert.match(wrapper, /id -u[\s\S]*root/)
+  assert.match(wrapper, /--expected-core-digest/)
+  assert.match(wrapper, /--expected-worker-digest/)
+  assert.match(wrapper, /--registry-authority-sha256/)
+  assert.match(wrapper, /--refresh-report-sha256/)
+  assert.match(wrapper, /authorize-scientific-v2-conservative-upper-bound/)
+  assert.match(wrapper, /paperbanana-hk-production[.]lock/)
+  assert.match(wrapper, /PAPERBANANA_HK_SHARED_LOCK_FD/)
+  assert.match(wrapper, /dist\/scientific-v2-price-authorization[.]mjs/)
+  assert.match(wrapper, /create-scientific-v2-price-snapshot[.]sh/)
+  assert.match(wrapper, /operator-price-authorizations/)
+  assert.match(wrapper, /git -C "\$repo_root" status --porcelain --untracked-files=all/)
+  assert.match(wrapper, /providerTotals/)
+  assert.match(wrapper, /authorizationSha256/)
+  assert.match(wrapper, /signedSnapshotSha256/)
+  assert.doesNotMatch(wrapper, /-e PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=|set -x|printenv|cat\s+[^\n]*core[.]env/)
+  const entry = readFileSync(priceAuthorizationEntry, 'utf8')
+  assert.match(entry, /process[.]argv[.]length\s*!==\s*2/)
+  assert.match(entry, /process[.]getuid[?]?[.]?\(\)\s*!==\s*0/)
+  assert.match(entry, /O_NOFOLLOW/)
+  assert.match(entry, /verifyScientificV2RegistryAuthority/)
+  assert.match(entry, /persistScientificV2OperatorPriceAuthorization/)
+  assert.doesNotMatch(entry, /console[.]log|process[.]stdout[.]write\([^)]*secret/i)
+  const workflow = readFileSync(priceAuthorizationWorkflow, 'utf8')
+  assert.match(workflow, /environment:\s*paperbanana-production/)
+  assert.match(workflow, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/)
+  for (const input of ['expected_deployed_sha', 'expected_core_digest', 'expected_worker_digest', 'registry_authority_sha256', 'refresh_report_sha256']) {
+    assert.match(workflow, new RegExp(`${input}:[\\s\\S]*required:\\s*true`))
+  }
+  assert.doesNotMatch(workflow, /ATTESTATION_SECRET|REVIEW_SIGNING_SECRET/)
+})
+
 test('root run-bundle stager protects attestation secret and binds canary or full phase to prepared state', () => {
   assert.equal(existsSync(runBundleStager), true, runBundleStager)
   assert.equal(statSync(runBundleStager).mode & 0o111, 0o111)
@@ -186,7 +228,7 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       registrySnapshotHash: registrySnapshot.snapshotHash, registrySnapshot, canonicalManifestHash: canonicalManifest.manifestHash,
       suiteHash, priceHash: priceSnapshot.snapshotHash, priceOperatorAuthorizationHash: null, canonicalManifest,
       models: [{ canonicalModelId: 'model' }], cases: [{}], executionOrder: [{}], providerOrder: ['bailian', 'ark', 'openrouter'],
-      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
       codexLimits: { modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 },
       concurrency: 1, lockName: '/run/lock/paperbanana-hk-production.lock', priceSnapshot,
       createdAt: '2026-08-31T00:00:00.000Z',
@@ -204,7 +246,7 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       evaluationEpoch: 'codex-scientific-2026-09-v1', reviewProtocol: 'codex-independent-double-review-v2',
       presentationVersion: 'scientific-leaderboard-v2', batchId: 'batch-test', batchManifestHash: manifest.manifestHash,
       stateHash: state.stateHash, daemon: { enabled: false, status: 'configured-disabled' }, concurrency: 1,
-      lockName: '/run/lock/paperbanana-hk-production.lock', providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+      lockName: '/run/lock/paperbanana-hk-production.lock', providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
       codexToolCallLimit: 36, modelCount: 1, slotCount: 1, revision: 0, issuedAt: '2026-08-31T00:00:00.000Z',
     }
     const sign = (base, key = createHmac('sha256', secret).update('paperbanana/scientific-v2/operator-attestation/v1').digest()) => {
@@ -232,7 +274,7 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       { ...sign(reportBase), extra: true },
       sign({ ...reportBase, daemon: { enabled: true, status: 'configured-disabled' } }),
       sign({ ...reportBase, concurrency: 2 }),
-      sign({ ...reportBase, providerBudgetsCny: { bailian: 179, ark: 180, openrouter: 180 } }),
+      sign({ ...reportBase, providerBudgetsCny: { bailian: 179, ark: 180, openrouter: 360 } }),
       sign(reportBase, directMaster),
       { ...sign(reportBase), reportHash: '0'.repeat(64) },
     ]) assert.notEqual(execute(tampered).status, 0)
@@ -248,6 +290,7 @@ test('exact tracked source gates reject dirty and untracked replacements of ever
   const sources = [
     [readFileSync(priceSigner, 'utf8'), 'tracked_price_signer_paths'],
     [readFileSync(priceRefresh, 'utf8'), 'tracked_price_refresh_paths'],
+    [readFileSync(priceAuthorization, 'utf8'), 'tracked_price_authorization_paths'],
     [readFileSync(runBundleStager, 'utf8'), 'tracked_run_bundle_paths'],
   ]
   for (const [source, variable] of sources) {
@@ -370,6 +413,7 @@ test('phase permission tuple includes uid gid mode and all production workflows 
   assert.ok(source.includes('^${expected_owner}:${service_gid}:0?550$'))
   const prepareSource = readFileSync(prepareWorkflow, 'utf8')
   assert.match(prepareSource, /actions\/checkout@[a-f0-9]{40}/)
+  assert.match(readFileSync(priceAuthorizationWorkflow, 'utf8'), /actions\/checkout@[a-f0-9]{40}/)
   const root = mkdtempSync(join(tmpdir(), 'scientific-v2-mode-'))
   try {
     chmodSync(root, 0o550)

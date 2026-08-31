@@ -218,4 +218,13 @@ test('operator-authorized conservative upper bounds close unresolved requirement
   })
   assert.equal(batch.manifest.priceOperatorAuthorizationHash, operatorAuthorization.authorizationHash)
   assert.equal(Object.isFrozen(batch.manifest), true)
+
+  const lowerBase = {
+    ...authorizationBase,
+    entries: authorizationBase.entries.map((entry) => ({ ...entry, unitCny: '0.19' })),
+  }
+  await assert.rejects(createScientificV2OfficialSignedPriceSnapshot({
+    ...common,
+    operatorAuthorization: { ...lowerBase, authorizationHash: canonicalHash(lowerBase) },
+  }), /SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID/)
 })

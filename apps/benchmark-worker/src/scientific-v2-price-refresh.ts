@@ -59,6 +59,81 @@ export interface ScientificV2OfficialPriceRefreshReport {
   refreshHash: string
 }
 
+function exactRefreshKeys(value: unknown, expected: readonly string[]) {
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.getPrototypeOf(value) !== Object.prototype) {
+    scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
+  }
+  const actual = Reflect.ownKeys(value).map(String).sort()
+  const wanted = [...expected].sort()
+  if (actual.length !== wanted.length || actual.some((key, index) => key !== wanted[index])) {
+    scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
+  }
+}
+
+function initialUnresolved(requirements: ScientificV2PriceRequirement[]) {
+  return requirements.map((requirement) => ({
+    requirementHash: requirement.requirementHash,
+    provider: requirement.provider,
+    modelId: requirement.modelId,
+    operation: requirement.operation,
+    reason: requirement.provider === 'openrouter'
+      ? 'endpoint_price_resolution_requires_conservative_attested_extraction'
+      : 'official_pricing_page_requires_exact_model_region_operation_extraction',
+  }))
+}
+
+function expectedCaptureIdentities(requirements: ScientificV2PriceRequirement[]) {
+  const providers = new Set(requirements.map((requirement) => requirement.provider))
+  const expected: Array<Pick<ScientificV2OfficialPriceCapture, 'provider' | 'kind' | 'url'>> = []
+  if (providers.has('bailian')) expected.push({ provider: 'bailian', kind: 'pricing-page', url: OFFICIAL_URLS.bailian })
+  if (providers.has('ark')) expected.push({ provider: 'ark', kind: 'pricing-page', url: OFFICIAL_URLS.ark })
+  if (providers.has('openrouter')) {
+    expected.push({ provider: 'openrouter', kind: 'models-api', url: OFFICIAL_URLS.openrouterModels })
+    for (const modelId of [...new Set(requirements.filter((item) => item.provider === 'openrouter').map((item) => item.modelId))].sort()) {
+      expected.push({ provider: 'openrouter', kind: 'endpoints-api', url: `https://openrouter.ai/api/v1/images/models/${modelId}/endpoints` })
+      if (Object.hasOwn(KREA_PRICES, modelId)) expected.push({ provider: 'openrouter', kind: 'pricing-page', url: `https://openrouter.ai/${modelId}` })
+    }
+    expected.push({ provider: 'fx', kind: 'fx-reference', url: OFFICIAL_URLS.ecbFx })
+  }
+  return expected.sort((left, right) => Buffer.compare(Buffer.from(`${left.provider}\0${left.kind}\0${left.url}`), Buffer.from(`${right.provider}\0${right.kind}\0${right.url}`)))
+}
+
+export function assertScientificV2OfficialPriceRefreshReport(
+  value: ScientificV2OfficialPriceRefreshReport,
+  canonicalManifest: Parameters<typeof deriveScientificV2PriceRequirements>[0],
+) {
+  exactRefreshKeys(value, [
+    'schemaVersion', 'mode', 'capturedAt', 'requirements', 'requirementsHash', 'captures', 'capturesHash',
+    'unresolved', 'resolved', 'refreshHash',
+  ])
+  const requirements = deriveScientificV2PriceRequirements(canonicalManifest)
+  const { refreshHash, ...base } = value
+  if (value.schemaVersion !== 1 || value.mode !== 'readonly-official-refresh' || value.resolved !== false
+    || canonicalHash(base) !== refreshHash || canonicalHash(value.requirements) !== canonicalHash(requirements)
+    || value.requirementsHash !== canonicalHash(requirements) || value.capturesHash !== canonicalHash(value.captures)
+    || canonicalHash(value.unresolved) !== canonicalHash(initialUnresolved(requirements))) {
+    scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
+  }
+  assertScientificV2Iso(value.capturedAt, 'SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
+  for (const capture of value.captures) {
+    exactRefreshKeys(capture, ['provider', 'kind', 'url', 'mediaType', 'capturedAt', 'byteSize', 'bytesSha256'])
+    if (!['bailian', 'ark', 'openrouter', 'fx'].includes(capture.provider)
+      || !['pricing-page', 'models-api', 'endpoints-api', 'fx-reference'].includes(capture.kind)
+      || capture.capturedAt !== value.capturedAt || typeof capture.mediaType !== 'string' || !capture.mediaType
+      || !Number.isSafeInteger(capture.byteSize) || capture.byteSize < 1 || capture.byteSize > MAX_CAPTURE_BYTES
+      || !/^[a-f0-9]{64}$/.test(capture.bytesSha256)) scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
+    try {
+      const url = new URL(capture.url)
+      if (url.protocol !== 'https:' || url.username || url.password || url.toString() !== capture.url) throw new Error()
+    } catch { scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID') }
+  }
+  const actualCaptureIdentities = value.captures.map(({ provider, kind, url }) => ({ provider, kind, url }))
+  if (canonicalHash(actualCaptureIdentities) !== canonicalHash(expectedCaptureIdentities(requirements))) {
+    scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
+  }
+  return value
+}
+
 async function captureOfficialSource(input: {
   provider: ScientificV2OfficialPriceCapture['provider']
   kind: ScientificV2OfficialPriceCapture['kind']
@@ -144,15 +219,7 @@ export async function refreshScientificV2OfficialPriceSources(input: {
     })
   }
   captures.sort((left, right) => Buffer.compare(Buffer.from(`${left.provider}\0${left.kind}\0${left.url}`), Buffer.from(`${right.provider}\0${right.kind}\0${right.url}`)))
-  const unresolved = requirements.map((requirement: ScientificV2PriceRequirement) => ({
-    requirementHash: requirement.requirementHash,
-    provider: requirement.provider,
-    modelId: requirement.modelId,
-    operation: requirement.operation,
-    reason: requirement.provider === 'openrouter'
-      ? 'endpoint_price_resolution_requires_conservative_attested_extraction'
-      : 'official_pricing_page_requires_exact_model_region_operation_extraction',
-  }))
+  const unresolved = initialUnresolved(requirements)
   const base = {
     schemaVersion: 1 as const,
     mode: 'readonly-official-refresh' as const,
@@ -239,12 +306,7 @@ export async function extractScientificV2OfficialPriceObservations(input: {
   loadCaptureBytes(capture: ScientificV2OfficialPriceCapture): Promise<Uint8Array>
 }) {
   const requirements = deriveScientificV2PriceRequirements(input.canonicalManifest)
-  if (!input.refreshReport || input.refreshReport.schemaVersion !== 1
-    || input.refreshReport.mode !== 'readonly-official-refresh'
-    || input.refreshReport.requirementsHash !== canonicalHash(requirements)
-    || input.refreshReport.capturesHash !== canonicalHash(input.refreshReport.captures)) {
-    scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
-  }
+  assertScientificV2OfficialPriceRefreshReport(input.refreshReport, input.canonicalManifest)
   const captures = new Map(input.refreshReport.captures.map((item) => [item.url, item]))
   if (captures.size !== input.refreshReport.captures.length) scientificV2Error('SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
   const loaded = new Map<string, Buffer>()

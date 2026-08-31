@@ -44,6 +44,7 @@ tracked_price_signer_paths=(
   apps/benchmark-worker/package.json
   apps/benchmark-worker/src/scientific-v2-price-signer-entry.ts
   apps/benchmark-worker/src/scientific-v2-price-attestation.ts
+  apps/benchmark-worker/src/scientific-v2-price-policy.ts
   apps/benchmark-worker/src/scientific-v2-price-refresh.ts
   packages/benchmark-core/src/scientific-v2-price.ts
 )
@@ -51,12 +52,20 @@ for tracked_path in "${tracked_price_signer_paths[@]}"; do
   git -C "$repo_root" ls-files --error-unmatch "$tracked_path" >/dev/null 2>&1 || exit 1
 done
 git -C "$repo_root" diff --quiet "$expected_sha" -- "${tracked_price_signer_paths[@]}" || exit 1
+[[ -z "$(git -C "$repo_root" status --porcelain --untracked-files=all)" ]] || exit 1
 [[ -f "$deploy_env" && ! -L "$deploy_env" && -f "$core_env" && ! -L "$core_env" && -f "$authority_path" && ! -L "$authority_path"
   && -f "$report_path" && ! -L "$report_path" && -f "$authorization_path" && ! -L "$authorization_path"
   && -d "$capture_dir" && ! -L "$capture_dir" ]] || exit 1
 install -d -o root -g root -m 0700 "$output_dir" "$(dirname "$lock_path")"
-exec 9>"$lock_path"
-flock -x 9
+shared_lock_fd="${PAPERBANANA_HK_SHARED_LOCK_FD:-}"
+if [[ -n "$shared_lock_fd" ]]; then
+  [[ "$shared_lock_fd" =~ ^[0-9]+$ && -e "/proc/$$/fd/$shared_lock_fd"
+    && "$(readlink "/proc/$$/fd/$shared_lock_fd")" == "$lock_path" ]] || exit 1
+  flock -n "$shared_lock_fd" || exit 1
+else
+  exec 9>"$lock_path"
+  flock -x 9
+fi
 
 sha256_file() { sha256sum "$1" 2>/dev/null | awk '{print $1}' || shasum -a 256 "$1" | awk '{print $1}'; }
 read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
@@ -68,7 +77,7 @@ worker_image_id="$(docker inspect --format '{{.Image}}' "$worker_container_id")"
 [[ "$worker_image_id" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 1
 docker image inspect --format '{{json .RepoDigests}}' "$worker_image_id" | jq -e --arg digest "sha256:$expected_worker_digest" \
   'any(.[]; endswith("@" + $digest))' >/dev/null || exit 1
-worker_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)'
+worker_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
 docker exec "$worker_container_id" node -e "$worker_guard" "$expected_sha" >/dev/null
 [[ "$(sha256_file "$authority_path")" == "$authority_sha256" && "$(sha256_file "$report_path")" == "$refresh_sha256"
   && "$(sha256_file "$authorization_path")" == "$authorization_sha256" ]] || exit 1

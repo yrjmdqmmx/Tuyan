@@ -1,5 +1,6 @@
 import {
   PB_SCIENTIFIC_FIGURE_V2,
+  SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY,
   SCIENTIFIC_BENCHMARK_AXES,
   SCIENTIFIC_BENCHMARK_IDENTITY,
   SCIENTIFIC_REVIEW_MAX_RED_LINES,
@@ -564,7 +565,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
     || !codeShaPattern.test(String(manifest.codeSha || ''))
     || manifest.concurrency !== 1 || manifest.lockName !== productionLockName
     || canonicalHash(manifest.providerOrder) !== canonicalHash(providers)
-    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash({ bailian: 180, ark: 180, openrouter: 180 })
+    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY)
     || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 })
     || canonicalHash(manifest.models) !== canonicalHash(canonicalManifest.models)
     || !Array.isArray(manifest.executionOrder) || manifest.executionOrder.length !== canonicalManifest.models.length * 9
@@ -612,7 +613,8 @@ function assertRegistryAndManifest(input: AnyRecord) {
       estimates[slot.provider as keyof typeof estimates] += unit
     }
   }
-  if (modelIds.size !== canonicalManifest.models.length || providers.some((provider) => estimates[provider] > 180)) {
+  if (modelIds.size !== canonicalManifest.models.length
+    || providers.some((provider) => estimates[provider] > SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[provider])) {
     scientificError('SCIENTIFIC_V2_PREFLIGHT_BUDGET_INVALID')
   }
 }
@@ -1413,7 +1415,7 @@ export function createScientificV2MongoRepository(
           suiteHash: batch.manifest.suiteHash, expectedCaseCount: 9, dimensions: [...SCIENTIFIC_BENCHMARK_AXES],
           overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0,
           retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' },
-          routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+          routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { ...SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY },
           automaticJudges: [] as unknown[],
           blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
           knownLimitations: ['fixed-nine-case-suite', 'single-production-run-per-model', 'human-codex-double-review'],

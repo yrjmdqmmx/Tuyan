@@ -104,7 +104,7 @@ function scientificBatchFixture(options: { directEdit?: boolean } = {}) {
     cases,
     executionOrder,
     providerOrder: ['bailian', 'ark', 'openrouter'],
-    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
     codexLimits: { modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 },
     concurrency: 1,
     lockName: '/run/lock/paperbanana-hk-production.lock',
@@ -1070,7 +1070,7 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
   assert.deepEqual(attestation.daemon, { enabled: false, status: 'configured-disabled' })
   assert.equal(attestation.concurrency, 1)
   assert.equal(attestation.lockName, '/run/lock/paperbanana-hk-production.lock')
-  assert.deepEqual(attestation.providerBudgetsCny, { bailian: 180, ark: 180, openrouter: 180 })
+  assert.deepEqual(attestation.providerBudgetsCny, { bailian: 180, ark: 180, openrouter: 360 })
   assert.equal(attestation.modelCount, fixture.manifest.models.length)
   assert.equal(attestation.slotCount, fixture.manifest.models.length * 9)
   assert.equal(attestation.codexToolCallLimit, 36)

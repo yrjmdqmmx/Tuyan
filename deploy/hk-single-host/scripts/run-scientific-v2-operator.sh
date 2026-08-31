@@ -516,7 +516,7 @@ elif [[ "$mode" == run ]]; then
      .manifest.suiteHash == $suite and .manifest.priceHash == $price and
      .manifest.manifestHash == $manifest and .state.manifestHash == $manifest and
      (.manifest.models | length) == $models and (.manifest.cases | length) == 9 and
-     .manifest.providerBudgetsCny == {bailian:180,ark:180,openrouter:180} and
+     .manifest.providerBudgetsCny == {bailian:180,ark:180,openrouter:360} and
      .manifest.codexLimits == {modelId:"codex:gpt-image-2",successfulSlots:9,maxAttemptsPerSlot:4,maxToolCalls:36} and
      .manifest.concurrency == 1 and
      .manifest.lockName == "/run/lock/paperbanana-hk-production.lock"' "$snapshot_path" >/dev/null || {
@@ -628,7 +628,7 @@ emit_dry_run() {
     --arg manifestHash "$manifest_hash" --argjson modelCount "$model_count" \
     '{schemaVersion:2,operation:$operation,dryRun:true,providerCalls:0,codeSha:$codeSha,bundleHash:$bundleHash,
       registryHash:$registryHash,suiteHash:$suiteHash,priceHash:$priceHash,manifestHash:$manifestHash,
-      modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:180},
+      modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:360},
       codexMaxToolCalls:36,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
 }
 test_signed_result=false
@@ -943,7 +943,7 @@ if [[ "$mode" == inspect ]]; then
     --arg manifestHash "$manifest_hash" --arg stateHash "$state_hash" --argjson modelCount "$model_count" \
     '{schemaVersion:2,operation:$operation,dryRun:false,providerCalls:0,codeSha:$codeSha,bundleHash:$bundleHash,
       registryHash:$registryHash,suiteHash:$suiteHash,priceHash:$priceHash,manifestHash:$manifestHash,stateHash:$stateHash,
-      modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:180},
+      modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:360},
       codexMaxToolCalls:36,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
 elif [[ "$mode" == run ]]; then
   state_hash="$(jq -r .report.stateHash "$result_path")"
