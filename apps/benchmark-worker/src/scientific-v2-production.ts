@@ -673,9 +673,14 @@ export function createScientificV2MongoRepository(
     },
     async claimReady(input) {
       const claimNow = now()
+      const claimableState = [
+        { 'state.status': 'ready' },
+        { 'state.status': 'canary_complete' },
+        { 'state.status': 'blocked', 'state.blockReason': 'provider_canary_failed' },
+      ]
       let current = await batches.findOne({
         manifestHash: input.manifestHash, stateHash: input.expectedReadyStateHash,
-        $or: [{ 'state.status': 'ready' }, { 'state.status': 'canary_complete' }], claimToken: { $exists: false },
+        $or: claimableState, claimToken: { $exists: false },
       })
       let reclaim = false
       if (!current) {
@@ -689,8 +694,22 @@ export function createScientificV2MongoRepository(
       }
       const claimToken = createClaimToken()
       if (typeof claimToken !== 'string' || claimToken.length < 8) scientificV2Error('SCIENTIFIC_V2_CLAIM_TOKEN_INVALID')
-      const state = structuredClone(current.state) as ScientificV2BatchState
+      const state = structuredClone(frozenState(current.state, batchManifest(current))) as ScientificV2BatchState
       if (!reclaim) {
+        if (state.status === 'blocked' && state.blockReason === 'provider_canary_failed') {
+          const failedCanary = state.slots.find((slot) => slot.isProviderCanary && slot.status === 'failed')
+          if (!failedCanary?.provider) scientificV2Error('SCIENTIFIC_V2_REPOSITORY_BATCH_INVALID')
+          for (const slot of state.slots) if (slot.status === 'not_executed') {
+            if (slot.provider === failedCanary.provider && slot.supported) {
+              slot.status = 'failed'
+              slot.attempts = []
+              slot.costCny = 0
+            } else {
+              slot.status = 'pending'
+            }
+          }
+          state.blockReason = null
+        }
         state.status = 'running'
         state.updatedAt = claimNow.toISOString()
         const { stateHash: _oldStateHash, ...stateBase } = state
@@ -702,7 +721,7 @@ export function createScientificV2MongoRepository(
         reclaim
           ? { _id: current._id, stateHash: current.stateHash, status: 'running', claimToken: current.claimToken, claimLeaseExpiresAt: { $lte: claimNow } }
           : { _id: current._id, stateHash: input.expectedReadyStateHash,
-            $or: [{ 'state.status': 'ready' }, { 'state.status': 'canary_complete' }], claimToken: { $exists: false } },
+            $or: claimableState, claimToken: { $exists: false } },
         { $set: {
           state, stateHash: state.stateHash,
           ...(reclaim ? {} : { stateTransitionFromHash: input.expectedReadyStateHash }),

@@ -127,13 +127,11 @@ export function createScientificV2SignedStateOperationReport(input: ScientificV2
   if (input.state.manifestHash !== input.manifest.manifestHash) scientificV2Error('SCIENTIFIC_V2_OPERATOR_REPORT_INPUT_INVALID')
 
   const providerCanarySlots = input.manifest.executionOrder.filter((slot) => slot.isProviderCanary)
-  for (const canary of providerCanarySlots) {
+  const providerCanariesPassed = providerCanarySlots.every((canary) => {
     const stateSlot = input.state.slots.find((slot) => slot.slotId === canary.slotId)
-    if (stateSlot?.status !== 'succeeded'
-      || !['succeeded', 'succeeded_low_quality'].includes(stateSlot.attempts.at(-1)?.responseClass || '')) {
-      scientificV2Error('SCIENTIFIC_V2_PROVIDER_CANARY_FAILED')
-    }
-  }
+    return stateSlot?.status === 'succeeded'
+      && ['succeeded', 'succeeded_low_quality'].includes(stateSlot.attempts.at(-1)?.responseClass || '')
+  })
   const providerCanaries = providerCanarySlots
     .map((slot) => slot.provider)
     .filter((provider): provider is NonNullable<typeof provider> => provider !== null)
@@ -178,7 +176,7 @@ export function createScientificV2SignedStateOperationReport(input: ScientificV2
     state: input.state,
     providerCanaryAttestation: {
       providers,
-      passed: true,
+      passed: providerCanariesPassed,
       attemptSetHash: canonicalHash(providerAttemptHashes),
     },
     executionOrderAttestation: { slotIds: input.state.slots.map((slot) => slot.slotId), passed: true },

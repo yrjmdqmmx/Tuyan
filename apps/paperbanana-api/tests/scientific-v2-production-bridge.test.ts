@@ -98,5 +98,6 @@ test('registry authority rejects stale replay, code drift, registry-byte drift a
 test('public V2 failure reasons keep generation capability gaps distinct from exhausted attempts', () => {
   assert.equal(scientificV2FailureReason({ status: 'unsupported', operation: 'generation', routeStatus: 'capability_unsupported' }), 'capability_unsupported')
   assert.equal(scientificV2FailureReason({ status: 'unsupported', operation: 'edit', routeStatus: 'unsupported' }), 'direct_edit_route_unavailable')
-  assert.equal(scientificV2FailureReason({ status: 'failed', operation: 'generation', routeStatus: 'supported' }), 'confirmed_attempts_exhausted')
+  assert.equal(scientificV2FailureReason({ status: 'failed', operation: 'generation', routeStatus: 'supported', attempts: Array(4).fill({}) }), 'confirmed_attempts_exhausted')
+  assert.equal(scientificV2FailureReason({ status: 'failed', operation: 'generation', routeStatus: 'supported', provider: 'bailian', supported: true, isProviderCanary: false, attempts: [], costCny: 0 }), 'provider_canary_confirmed_failed')
 })

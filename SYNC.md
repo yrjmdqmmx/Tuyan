@@ -24,6 +24,19 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] Scientific V2 provider canary 失败的分 provider 归零执行语义 — by Codex
+变更：Benchmark Worker 不再因某 provider canary 的四次已确认失败而阻断整个批次。失败 canary 保留四次完整 attempts；同一 provider 的其余 supported slot 写入 `failed`、零 attempts、`costCny=0`，作为固定九槽的可审核零分结论，并不再调用该 provider。Ark/OpenRouter 可继续执行；unknown provider outcome 继续保持整批 `paused/reconciliation_required` 与零重试。旧的 `blocked/provider_canary_failed` 状态仍通过 verifier，以支持生产恢复。
+
+契约（影响 Worker / Core API / 运维）：
+- **state/report**：`providerCanaryAttestation.passed` 现在可为 `false`，但仍由完整 canonical state/report HMAC 绑定；新状态中 failed canary 必须恰为四次 confirmed failure，派生的同 provider 零 attempt failed 仅在非旧 blocked 状态合法。`canary_complete` 可包含一个此类失败 canary，后续 full 不得重派该 provider。
+- **兼容边界**：Core API 的导入、review-ready、发布与公开 failure reason 必须同步接受并如实展示该可审核零分状态；在同步前不得把 Worker partial state 导入生产。
+
+各端待办：
+- [x] Benchmark Worker（runner、state verifier、state report、原子仓储 TDD）
+- [x] paperbanana-api / Laf Core（镜像 verifier、state report/import/publish 与公开 failure reason）
+- [ ] 部署 / 运维（仅在同一 immutable SHA 的 Worker+Core 都发布后恢复；旧 blocked state 仍可诊断/attest/stage）
+- [x] Web / 原生端（公开客户端字段暂不变）
+
 ### [2026-08-31] Scientific V2 生产 canary 只读诊断契约 — by Codex
 变更：内部 `adminBenchmarkControl` 新增 `operatorDiagnostic`（部署算子操作名 `diagnose`）。它严格只接受 `{batchId,manifestHash}`，以两者精确读取单一已冻结批次；零 provider 调用、零持久化写入。响应仅含批次/manifest/state hash、state 状态与 pause/block 原因、三家 provider 已花费/未核销金额、revision，以及每家 provider canary 的公开路由标识、case/slot、状态、次数、response class 与安全金额汇总。整个摘要以 canonical `diagnosticHash` 和独立域 HMAC `attestationHash` 绑定；不返回 payload hash、对象键、凭证、时间、评审身份或产物。
 

@@ -722,6 +722,135 @@ test('canary-only phase executes one formal slot per provider and full resume ne
   assert.equal(full.state.status, 'awaiting_artifacts')
 })
 
+test('four confirmed technical canary failures zero only that provider and permit later providers to finish', async () => {
+  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'] }))
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#456789' } }).png().toBuffer()
+  const calls: string[] = []
+  const result = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'provider-canary-failure' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request) {
+      calls.push(request.provider)
+      if (request.provider === 'bailian') {
+        throw new ScientificConfirmedFailureError('CONFIRMED_TECHNICAL_FAILURE', { responseClass: 'confirmed_technical_failure', actualCny: 1 })
+      }
+      return { responseClass: 'succeeded', actualCny: 1, bytes: png }
+    } },
+  })
+
+  const bailian = result.state.slots.filter((slot) => slot.provider === 'bailian')
+  const bailianCanary = bailian.find((slot) => slot.isProviderCanary)!
+  assert.equal(result.state.status, 'awaiting_artifacts')
+  assert.equal(result.state.blockReason, null)
+  assert.equal(calls.filter((provider) => provider === 'bailian').length, 4)
+  assert.equal(calls.filter((provider) => provider === 'ark').length, 9)
+  assert.equal(calls.filter((provider) => provider === 'openrouter').length, 9)
+  assert.equal(bailianCanary.status, 'failed')
+  assert.equal(bailianCanary.attempts.length, 4)
+  assert.ok(bailianCanary.attempts.every((attempt) => attempt.responseClass === 'confirmed_technical_failure'))
+  assert.ok(bailian.filter((slot) => slot !== bailianCanary).every((slot) => slot.status === 'failed' && slot.attempts.length === 0 && slot.costCny === 0))
+  assert.ok(result.state.slots.filter((slot) => ['ark', 'openrouter'].includes(String(slot.provider))).every((slot) => slot.status === 'succeeded'))
+  assert.doesNotThrow(() => verifyScientificV2BatchState(result.state, result.manifest))
+
+  const signed = createScientificV2SignedStateOperationReport({
+    kind: 'worker', batchId: 'worker-provider-canary-failure', manifest: result.manifest, state: result.state,
+    revision: 1, previousStateHash: built.state.stateHash, createdAt: '2026-08-31T06:00:00.000Z', attestationSecret: STATE_OPERATION_REPORT_SECRET,
+  })
+  assert.equal(signed.report.providerCanaryAttestation.passed, false)
+  assert.equal(verifyScientificV2SignedStateOperationReport(signed, STATE_OPERATION_REPORT_SECRET), true)
+})
+
+test('canary-only continues later providers after a failed provider canary and full never redispatches it', async () => {
+  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'] }))
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#654321' } }).png().toBuffer()
+  const calls: string[] = []
+  const dependencies = {
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'partial-canary' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request: any) {
+      calls.push(request.provider)
+      if (request.provider === 'bailian') throw new ScientificConfirmedFailureError('CONFIRMED_TECHNICAL_FAILURE', { responseClass: 'confirmed_technical_failure', actualCny: 1 })
+      return { responseClass: 'succeeded' as const, actualCny: 1, bytes: png }
+    } },
+  }
+  const canary = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'canary-only' }, ...dependencies,
+  })
+
+  assert.equal(canary.state.status, 'canary_complete')
+  assert.deepEqual(calls, ['bailian', 'bailian', 'bailian', 'bailian', 'ark', 'openrouter'])
+  assert.doesNotThrow(() => verifyScientificV2BatchState(canary.state, canary.manifest))
+  const forgedDerivedFailure = structuredClone(canary.state)
+  const failedCanary = forgedDerivedFailure.slots.find((slot) => slot.provider === 'bailian' && slot.isProviderCanary)!
+  const derivedFailure = forgedDerivedFailure.slots.find((slot) => slot.provider === 'bailian' && !slot.isProviderCanary)!
+  derivedFailure.attempts = structuredClone(failedCanary.attempts)
+  derivedFailure.costCny = failedCanary.costCny
+  assert.throws(
+    () => verifyScientificV2BatchState(rehashStateSnapshot(forgedDerivedFailure), canary.manifest),
+    /SCIENTIFIC_V2_ATTEMPT_HASH_MISMATCH|SCIENTIFIC_V2_STATE_STATUS_INVALID|SCIENTIFIC_V2_STATE_BUDGET_INVALID/,
+  )
+
+  calls.length = 0
+  const full = await runScientificV2Batch({
+    manifest: built.manifest, state: canary.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'full' }, ...dependencies,
+  })
+  assert.equal(full.state.status, 'awaiting_artifacts')
+  assert.equal(calls.includes('bailian'), false)
+  assert.ok(calls.includes('ark'))
+  assert.ok(calls.includes('openrouter'))
+})
+
+test('unknown provider outcome still pauses before any later provider call', async () => {
+  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'] }))
+  const calls: string[] = []
+  const result = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'provider-canary-unknown' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request) { calls.push(request.provider); throw new UnknownProviderOutcomeError('UNKNOWN_PROVIDER_OUTCOME') } },
+  })
+
+  assert.deepEqual(calls, ['bailian'])
+  assert.equal(result.state.status, 'paused')
+  assert.equal(result.state.pauseReason, 'reconciliation_required')
+  assert.equal(result.state.slots.find((slot) => slot.provider === 'bailian' && slot.isProviderCanary)?.status, 'unknown')
+  assert.ok(result.state.slots.filter((slot) => ['ark', 'openrouter'].includes(String(slot.provider))).every((slot) => slot.status === 'not_executed'))
+})
+
+test('legacy blocked provider-canary state remains verifier-valid for recovery', async () => {
+  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'] }))
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#123456' } }).png().toBuffer()
+  const partial = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'legacy-blocked-state' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request) {
+      if (request.provider === 'bailian') throw new ScientificConfirmedFailureError('CONFIRMED_PROVIDER_FAILURE', { responseClass: 'confirmed_provider_failure', actualCny: 1 })
+      return { responseClass: 'succeeded', actualCny: 1, bytes: png }
+    } },
+  })
+  const legacy = structuredClone(partial.state)
+  const canary = legacy.slots.find((slot) => slot.provider === 'bailian' && slot.isProviderCanary)!
+  for (const slot of legacy.slots) if (slot !== canary) {
+    slot.status = 'not_executed'
+    slot.attempts = []
+    slot.costCny = null
+  }
+  legacy.status = 'blocked'
+  legacy.pauseReason = null
+  legacy.blockReason = 'provider_canary_failed'
+  legacy.providerSpentCny.ark = 0
+  legacy.providerSpentCny.openrouter = 0
+
+  assert.doesNotThrow(() => verifyScientificV2BatchState(rehashStateSnapshot(legacy), built.manifest))
+})
+
 test('four confirmed failures on a non-canary slot audit it as failed and continue the remaining batch', async () => {
   const built = batchFor(canonicalManifest())
   const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#456789' } }).png().toBuffer()
@@ -1407,6 +1536,12 @@ test('review roster retains a zero-success model while packaging only exact succ
   const state = structuredClone(authority.state)
   const zeroModelKey = 'secret-model-alpha'
   for (const slot of state.slots.filter((candidate) => candidate.canonicalModelId === zeroModelKey)) {
+    if (!slot.isProviderCanary) {
+      slot.attempts = []
+      slot.status = 'failed'
+      slot.costCny = 0
+      continue
+    }
     const original = slot.attempts[0]
     slot.attempts = Array.from({ length: 4 }, (_, index) => {
       const base = {
@@ -1422,7 +1557,7 @@ test('review roster retains a zero-success model while packaging only exact succ
     slot.status = 'failed'
     slot.costCny = 4
   }
-  state.providerSpentCny.bailian = 36
+  state.providerSpentCny.bailian = 4
   const terminal = rehashStateSnapshot(state)
   verifyScientificV2BatchState(terminal, authority.manifest)
   const sources = authority.manifest.models.map((model) => model.canonicalModelId === zeroModelKey

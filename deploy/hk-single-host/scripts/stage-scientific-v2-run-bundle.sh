@@ -265,8 +265,26 @@ try:
     expected_attestation_hash = hmac.new(domain_key, expected_report_hash.encode('ascii'), hashlib.sha256).hexdigest()
     if not hmac.compare_digest(str(attestation.get('attestationHash')), expected_attestation_hash):
         raise RuntimeError('attestation-hmac')
-    if phase == 'canary-only' and state.get('status') != 'ready':
-        raise RuntimeError('phase')
+    if phase == 'canary-only':
+        canary_resume = state.get('status') == 'blocked' and state.get('blockReason') == 'provider_canary_failed' and state.get('pauseReason') is None
+        if canary_resume:
+            slots = state.get('slots')
+            if not isinstance(slots, list):
+                raise RuntimeError('phase')
+            failed = [(index, slot) for index, slot in enumerate(slots)
+                      if isinstance(slot, dict) and slot.get('isProviderCanary') is True and slot.get('status') == 'failed']
+            if len(failed) != 1:
+                raise RuntimeError('phase')
+            failed_index, failed_slot = failed[0]
+            attempts = failed_slot.get('attempts')
+            confirmed = {'confirmed_technical_failure', 'confirmed_provider_failure'}
+            if (not isinstance(attempts, list) or len(attempts) != 4
+                    or any(not isinstance(attempt, dict) or attempt.get('responseClass') not in confirmed for attempt in attempts)
+                    or any(not isinstance(slot, dict) or slot.get('status') not in {'succeeded', 'unsupported', 'failed'} for slot in slots[:failed_index])
+                    or any(not isinstance(slot, dict) or slot.get('status') != 'not_executed' for slot in slots[failed_index + 1:])):
+                raise RuntimeError('phase')
+        if state.get('status') != 'ready' and not canary_resume:
+            raise RuntimeError('phase')
     if phase == 'full' and state.get('status') != 'canary_complete':
         raise RuntimeError('phase')
     revision = attestation.get('revision')

@@ -353,6 +353,15 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 }, slots: [],
     }
     const state = { ...stateBase, stateHash: canonicalHash(stateBase) }
+    const blockedStateBase = {
+      ...stateBase, status: 'blocked', blockReason: 'provider_canary_failed',
+      providerSpentCny: { bailian: 0.8, ark: 0, openrouter: 0 },
+      slots: [{
+        isProviderCanary: true, provider: 'bailian', status: 'failed', costCny: 0.8,
+        attempts: Array.from({ length: 4 }, () => ({ responseClass: 'confirmed_technical_failure' })),
+      }],
+    }
+    const blockedState = { ...blockedStateBase, stateHash: canonicalHash(blockedStateBase) }
     const fullStateBase = {
       ...stateBase, status: 'canary_complete',
       providerSpentCny: { bailian: 0.00009999, ark: 0.12, openrouter: 3.05246208 },
@@ -401,6 +410,14 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     }
     const canarySuccess = execute(sign(reportBase))
     assert.equal(canarySuccess.status, 0, canarySuccess.stderr)
+    const blockedCanaryResume = execute(sign({ ...reportBase, stateHash: blockedState.stateHash }), { stateValue: blockedState })
+    assert.equal(blockedCanaryResume.status, 0, blockedCanaryResume.stderr)
+    const malformedBlockedBase = structuredClone(blockedStateBase)
+    malformedBlockedBase.slots[0].attempts.pop()
+    const malformedBlocked = { ...malformedBlockedBase, stateHash: canonicalHash(malformedBlockedBase) }
+    const malformedBlockedResult = execute(sign({ ...reportBase, stateHash: malformedBlocked.stateHash }), { stateValue: malformedBlocked })
+    assert.notEqual(malformedBlockedResult.status, 0)
+    assert.match(malformedBlockedResult.stderr, /assembly failed \[phase\]/)
     const fullSuccess = execute(sign({ ...reportBase, stateHash: fullState.stateHash }), { phase: 'full', stateValue: fullState })
     assert.equal(fullSuccess.status, 0, fullSuccess.stderr)
     const mismatchedAtoms = structuredClone(manifest)

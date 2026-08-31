@@ -251,7 +251,7 @@ async function publicScientificEvidenceItems(input: {
   for (const item of input.rawItems) {
     const profileId = String(item.profileId || '')
     const scientificCase = PB_SCIENTIFIC_FIGURE_V2.cases.find((candidate) => candidate.id === item.caseId)
-    const attemptSummary = publicScientificAttemptSummary(item.attemptSummary, item.status)
+    const attemptSummary = publicScientificAttemptSummary(item.attemptSummary, item.status, item.failureReason)
     if (!scientificCase || item.sourceReleaseHash !== input.releaseHash || !input.eligibleProfiles.has(profileId)
       || !['succeeded', 'failed', 'unsupported'].includes(item.status)
       || !attemptSummary) continue
@@ -266,7 +266,7 @@ async function publicScientificEvidenceItems(input: {
       attemptSummary,
     }
     if (item.status !== 'succeeded') {
-      if ((item.status === 'failed' && item.failureReason !== 'confirmed_attempts_exhausted')
+      if ((item.status === 'failed' && !['confirmed_attempts_exhausted', 'provider_canary_confirmed_failed'].includes(item.failureReason))
         || (item.status === 'failed' && !['1K', '2K', 'provider-default'].includes(String(item.requestedResolution || '')))
         || (item.status === 'unsupported' && item.requestedResolution !== null)
         || (item.status === 'unsupported' && scientificCase.kind === 'generation' && item.failureReason !== 'capability_unsupported')
@@ -322,7 +322,7 @@ async function publicScientificEvidenceItems(input: {
   return output
 }
 
-function publicScientificAttemptSummary(value: unknown, status: unknown): { count: number; responseClasses: string[] } | null {
+function publicScientificAttemptSummary(value: unknown, status: unknown, failureReason: unknown): { count: number; responseClasses: string[] } | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   const summary = value as AnyRecord
   if (!Number.isInteger(summary.count) || summary.count < 0 || summary.count > 4
@@ -331,7 +331,10 @@ function publicScientificAttemptSummary(value: unknown, status: unknown): { coun
   const responseClasses = summary.responseClasses.map(String)
   if (status === 'succeeded' && (summary.count < 1 || !scientificSuccessClasses.has(responseClasses.at(-1) || '')
     || responseClasses.slice(0, -1).some((responseClass) => !scientificConfirmedFailureClasses.has(responseClass)))) return null
-  if (status === 'failed' && (summary.count !== 4 || responseClasses.some((responseClass) => !scientificConfirmedFailureClasses.has(responseClass)))) return null
+  if (status === 'failed' && (failureReason === 'provider_canary_confirmed_failed'
+    ? summary.count !== 0 || responseClasses.length !== 0
+    : failureReason !== 'confirmed_attempts_exhausted' || summary.count !== 4
+      || responseClasses.some((responseClass) => !scientificConfirmedFailureClasses.has(responseClass)))) return null
   if (status === 'unsupported' && (summary.count !== 0 || responseClasses.length !== 0)) return null
   return { count: summary.count, responseClasses }
 }
