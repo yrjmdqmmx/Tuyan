@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 已验签 A/B 结果在生产机内转管理员导入 — by Codex
+变更：新增零 Provider 的 Reviewer 结果导入 staging。它只读取精确 `review_validate` bundle 对应的 root `0600` `review-validated.json`，绑定 deployed SHA、Worker digest、manifest、role、result hash 和 result attestation hash，并使用生产 review signing secret 重新验签；随后在生产机内生成 `{batchId,result}` 管理员输入，全程不经 CI artifact、SCP 或外部草稿资产。automatic Judge 固定为 0，双审、争议阈值、九题、十维、分辨率、路由、预算、失败/unknown 与发布规则不变。
+
+各端待办：
+- [x] 部署 / 运维（A/B 验签结果 root-only 管理员导入与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有审核导入与公开接口契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 Reviewer A/B 回传增加私有映射复合验签 — by Codex
 变更：新增零 Provider 的 `review_validate` bundle staging。每个 Reviewer 只回传一份封闭 schema 的去身份化公共 assignment 与逐包评分；受保护 workflow 绑定精确 draft asset、deployed SHA、manifest、原 `review_pack` bundle 和 `privateBundleHash`，仅在生产机内恢复对应 A/B 的 `privateMappings/privateEnvelope`，复验 assignment HMAC、包集合与 object mapping 后生成 root `0600` 验证 bundle。Reviewer 永远看不到模型映射或签名密钥；automatic Judge 固定为 0，九题、十维、分辨率、路由、预算、失败/unknown 与争议阈值不变。
 
