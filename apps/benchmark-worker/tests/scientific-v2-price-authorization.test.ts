@@ -6,12 +6,25 @@ import { buildScientificV2CanonicalManifest, canonicalHash } from '@paperbanana/
 import {
   buildScientificV2OperatorPriceAuthorization,
   scientificV2ConservativeUnitCny,
+  scientificV2PriceAuthorizationFailureCode,
 } from '../src/scientific-v2-price-authorization.js'
 import { refreshScientificV2OfficialPriceSources } from '../src/scientific-v2-price-refresh.js'
 
 const CODE_SHA = 'a'.repeat(40)
 const SECRET = 'scientific-v2-price-authorization-test-secret'
 const CAPTURED_AT = '2026-08-31T07:00:00.000Z'
+
+test('authorization entry exposes only stable scientific error codes', () => {
+  assert.equal(
+    scientificV2PriceAuthorizationFailureCode(new Error('SCIENTIFIC_V2_PROVIDER_BASELINE_BUDGET_EXCEEDED')),
+    'SCIENTIFIC_V2_PROVIDER_BASELINE_BUDGET_EXCEEDED',
+  )
+  assert.equal(
+    scientificV2PriceAuthorizationFailureCode(new Error('secret=/run/private/value')),
+    'SCIENTIFIC_V2_PRICE_AUTHORIZATION_FAILED',
+  )
+  assert.equal(scientificV2PriceAuthorizationFailureCode('unexpected'), 'SCIENTIFIC_V2_PRICE_AUTHORIZATION_FAILED')
+})
 
 test('fixed conservative map covers every authorized exact model-operation price without undercutting the approved CNY bounds', () => {
   const expected = new Map<string, string>([

@@ -23,6 +23,13 @@ import {
 
 export { scientificV2ConservativeUnitCny } from './scientific-v2-price-policy.js'
 
+export function scientificV2PriceAuthorizationFailureCode(error: unknown) {
+  const message = error instanceof Error ? error.message : ''
+  return /^SCIENTIFIC_V2_[A-Z0-9_]+$/.test(message)
+    ? message
+    : 'SCIENTIFIC_V2_PRICE_AUTHORIZATION_FAILED'
+}
+
 function upperBoundObservation(requirement: ScientificV2PriceRequirement, unitCny: string, capturedAt: string, authorizationHash: string): ScientificV2PriceObservation {
   const output = requirement.imageSize === '1K'
     ? { outputWidth: 1280, outputHeight: 720 }

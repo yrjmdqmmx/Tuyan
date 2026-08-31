@@ -7,7 +7,10 @@ import {
   assertScientificV2RootSnapshotFileFacts,
   verifyScientificV2RegistryAuthority,
 } from './scientific-v2-price-attestation.js'
-import { persistScientificV2OperatorPriceAuthorization } from './scientific-v2-price-authorization.js'
+import {
+  persistScientificV2OperatorPriceAuthorization,
+  scientificV2PriceAuthorizationFailureCode,
+} from './scientific-v2-price-authorization.js'
 import type { ScientificV2OfficialPriceCapture, ScientificV2OfficialPriceRefreshReport } from './scientific-v2-price-refresh.js'
 
 const MAX_JSON_BYTES = 32 * 1024 * 1024
@@ -69,7 +72,7 @@ export async function runScientificV2PriceAuthorizationEntry(env: Record<string,
 
 void runScientificV2PriceAuthorizationEntry().then((result) => {
   process.stdout.write(JSON.stringify(result))
-}).catch(() => {
-  process.stderr.write('SCIENTIFIC_V2_PRICE_AUTHORIZATION_FAILED\n')
+}).catch((error) => {
+  process.stderr.write(`${scientificV2PriceAuthorizationFailureCode(error)}\n`)
   process.exitCode = 1
 })
