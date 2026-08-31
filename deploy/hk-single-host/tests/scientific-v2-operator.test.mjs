@@ -26,6 +26,7 @@ const codexImportStagingWorkflow = fileURLToPath(new URL('../../../.github/workf
 const adminInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-admin-input.yml', import.meta.url))
 const reviewPackStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-review-pack-bundle.yml', import.meta.url))
 const publicRenderStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-public-render-bundle.yml', import.meta.url))
+const reviewAssignmentExportWorkflow = fileURLToPath(new URL('../../../.github/workflows/export-scientific-v2-review-assignments.yml', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
 const registryHash = 'b'.repeat(64)
 const suiteHash = 'c'.repeat(64)
@@ -665,6 +666,19 @@ test('public rendition bundle binds the same completed state and cannot publish 
   assert.match(source, /providerCalls\":0/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.doesNotMatch(source, /adminBenchmarkPublish|operation['"]:\s*['"]publish['"]|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+})
+
+test('blind assignment export keeps mappings on-host and uploads only short-lived public A/B packages', () => {
+  const source = readFileSync(reviewAssignmentExportWorkflow, 'utf8')
+  assert.match(source, /paperbanana-hk-production[.]lock/)
+  assert.match(source, /review-private[.]json/)
+  assert.match(source, /privateBundleHash/)
+  assert.match(source, /admin-inputs/)
+  assert.match(source, /public-reviewer-[AB][.]json/)
+  assert.match(source, /retention-days:\s*1/)
+  assert.match(source, /providerCalls['"]?:\s*0/)
+  assert.match(source, /--mode review_pack/)
+  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 
 test('manual workflow exposes the complete protected scientific v2 phase set with exact per-phase confirmation', () => {

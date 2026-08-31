@@ -1,0 +1,260 @@
+name: Export Scientific V2 Review Assignments
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_core_digest: { required: true }
+      expected_worker_digest: { required: true }
+      review_pack_bundle_sha256: { required: true }
+      private_bundle_hash: { required: true }
+      registry_hash: { required: true }
+      suite_hash: { required: true }
+      price_hash: { required: true }
+      manifest_hash: { required: true }
+      model_count: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  export:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact blind assignment envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          BUNDLE_SHA: ${{ inputs.review_pack_bundle_sha256 }}
+          PRIVATE_HASH: ${{ inputs.private_bundle_hash }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          MODEL_COUNT: ${{ inputs.model_count }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$PRIVATE_HASH" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$MODEL_COUNT" =~ ^[1-9][0-9]*$ && "$MODEL_COUNT" -le 257 ]]
+          [[ "$CONFIRM" == export-exact-scientific-v2-blind-assignments ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Reproduce blind packages and stage private admin inputs
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          BUNDLE_SHA: ${{ inputs.review_pack_bundle_sha256 }}
+          PRIVATE_HASH: ${{ inputs.private_bundle_hash }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          MODEL_COUNT: ${{ inputs.model_count }}
+        run: |
+          set -Eeuo pipefail
+          artifact_dir="$RUNNER_TEMP/scientific-v2-public-review"
+          install -d -m 0700 "$artifact_dir"
+          remote_return="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp -d /tmp/paperbanana-scientific-v2-public-review.XXXXXXXXXXXX')"
+          [[ "$remote_return" =~ ^/tmp/paperbanana-scientific-v2-public-review[.][A-Za-z0-9]{8,}$ ]]
+          cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_return/operator-output.json' '$remote_return/public-reviewer-A.json' '$remote_return/public-reviewer-B.json'; rmdir '$remote_return'" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          printf -v operator_command 'cd %q && sudo %q --mode review_pack --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --bundle-sha256 %q --registry-hash %q --suite-hash %q --price-hash %q --manifest-hash %q --model-count %q --confirm %q --apply' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-operator.sh \
+            "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" \
+            review-pack-scientific-v2-disabled-worker
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$operator_command" >"$artifact_dir/operator-output.json"
+          chmod 0600 "$artifact_dir/operator-output.json"
+          jq -e --arg manifest "$MANIFEST_HASH" --arg privateHash "$PRIVATE_HASH" '
+            .operation == "review_pack" and .providerCalls == 0 and .batchManifestHash == $manifest and
+            .privateBundleHash == $privateHash and .privateOutputWritten == true and .automaticJudges == [] and
+            ([.. | objects | keys[]] | index("privateMappings") == null) and
+            ([.. | objects | keys[]] | index("privateEnvelope") == null) and
+            ([.. | objects | keys[]] | index("attestationSecret") == null)
+          ' "$artifact_dir/operator-output.json" >/dev/null
+          scp "$artifact_dir/operator-output.json" "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/operator-output.json"
+          public_output_sha="$(sha256sum "$artifact_dir/operator-output.json" | awk '{print $1}')"
+          printf -v postprocess_command 'sudo env RETURN_DIR=%q PUBLIC_OUTPUT_SHA=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q BUNDLE_SHA=%q PRIVATE_HASH=%q MANIFEST_HASH=%q bash -s' \
+            "$remote_return" "$public_output_sha" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$BUNDLE_SHA" "$PRIVATE_HASH" "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$postprocess_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          repo=/opt/paperbanana/repo
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          admin_input_root=/opt/paperbanana/operator-private/scientific-v2/admin-inputs
+          bundle="$bundle_root/$BUNDLE_SHA.json"
+          private="$review_private_root/$BUNDLE_SHA.review-private.json"
+          public="$RETURN_DIR/operator-output.json"
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          for path in "$bundle" "$private"; do
+            [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
+          done
+          [[ -d "$admin_input_root" && ! -L "$admin_input_root" && "$(stat -c '%u:%g:%a' "$admin_input_root")" =~ ^0:0:0?700$ ]]
+          [[ -f "$public" && ! -L "$public" && "$(sha256sum "$public" | awk '{print $1}')" == "$PUBLIC_OUTPUT_SHA" ]]
+          [[ -d "$RETURN_DIR" && ! -L "$RETURN_DIR" ]]
+          return_uid="$(stat -c %u "$RETURN_DIR")"
+          return_gid="$(stat -c %g "$RETURN_DIR")"
+          [[ "$return_uid" =~ ^[1-9][0-9]*$ && "$return_gid" =~ ^[0-9]+$ && "$(stat -c %a "$RETURN_DIR")" =~ ^0?700$ ]]
+          python3 - "$bundle" "$private" "$public" "$PRIVATE_HASH" "$MANIFEST_HASH" "$admin_input_root" "$RETURN_DIR" "$return_uid" "$return_gid" <<'PY'
+          import hashlib
+          import json
+          import os
+          import stat
+          import sys
+
+          bundle_path, private_path, public_path, private_hash, manifest_hash, admin_root, return_root, return_uid_text, return_gid_text = sys.argv[1:]
+          return_uid, return_gid = int(return_uid_text), int(return_gid_text)
+
+          def protected(path, owner, mode, limit=64 * 1024 * 1024):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1 or before.st_uid != owner or stat.S_IMODE(before.st_mode) != mode or before.st_size < 2 or before.st_size > limit:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= limit:
+                      chunk = os.read(fd, min(1024 * 1024, limit + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if len(data) != before.st_size or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns) or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          def canonical(value):
+              if isinstance(value, list):
+                  return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+          def exact(value, keys):
+              if not isinstance(value, dict) or set(value) != set(keys):
+                  raise RuntimeError('schema')
+
+          def write_all(fd, data):
+              view = memoryview(data)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+
+          bundle = json.loads(protected(bundle_path, 0, 0o600))
+          private = json.loads(protected(private_path, 0, 0o600))
+          public_owner = os.stat(public_path, follow_symlinks=False).st_uid
+          public = json.loads(protected(public_path, public_owner, 0o600))
+          if bundle.get('operation') != 'review_pack' or bundle.get('input', {}).get('batchManifestHash') != manifest_hash or bundle.get('input', {}).get('state', {}).get('status') != 'completed':
+              raise RuntimeError('bundle')
+          exact(private, ['batchManifestHash', 'sourceSetHash', 'reviewerA', 'reviewerB'])
+          if private['batchManifestHash'] != manifest_hash or hashlib.sha256(canonical(private).encode('utf-8')).hexdigest() != private_hash or public.get('privateBundleHash') != private_hash:
+              raise RuntimeError('private')
+          batch_id = 'scientific-v2-' + manifest_hash[:20]
+          state = bundle['input']['state']
+          attempts = {}
+          for slot in state['slots']:
+              if slot.get('status') == 'succeeded' and slot.get('attempts'):
+                  attempt = slot['attempts'][-1]
+                  attempts[attempt['rawImageHash']] = attempt
+          summaries = []
+          for role in ('A', 'B'):
+              public_assignment = public['publicReviewer' + role]
+              private_assignment = private['reviewer' + role]
+              exact(public_assignment, ['role', 'packages', 'mappingHash', 'assignmentSet', 'assignmentAttestationHash'])
+              exact(private_assignment, ['privateMappings', 'privateEnvelope'])
+              if public_assignment['role'] != role or private_assignment['privateEnvelope']['role'] != role:
+                  raise RuntimeError('role')
+              assignment = {**public_assignment, **private_assignment}
+              image_hashes = sorted({item['imageHash'] for packet in public_assignment['packages'] for item in packet['items']})
+              if any(image_hash not in attempts for image_hash in image_hashes):
+                  raise RuntimeError('object-binding')
+              object_bindings = [{'imageHash': image_hash, 'objectKey': f"bench/scientific-v2/private/objects/{image_hash}.{attempts[image_hash]['format']}"} for image_hash in image_hashes]
+              admin_payload = {'batchId': batch_id, 'assignment': assignment, 'objectBindings': object_bindings}
+              admin_bytes = (json.dumps(admin_payload, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+              admin_sha = hashlib.sha256(admin_bytes).hexdigest()
+              destination = os.path.join(admin_root, admin_sha + '.json')
+              try:
+                  fd = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+                  try:
+                      os.fchmod(fd, 0o600)
+                      write_all(fd, admin_bytes)
+                      os.fsync(fd)
+                  finally:
+                      os.close(fd)
+              except FileExistsError:
+                  if protected(destination, 0, 0o600) != admin_bytes:
+                      raise RuntimeError('collision')
+              public_payload = {'schemaVersion': 2, 'batchId': batch_id, 'batchManifestHash': manifest_hash, 'role': role, 'publicAssignment': public_assignment}
+              public_bytes = (json.dumps(public_payload, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+              public_name = f'public-reviewer-{role}.json'
+              public_destination = os.path.join(return_root, public_name)
+              fd = os.open(public_destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+              try:
+                  os.fchown(fd, return_uid, return_gid)
+                  os.fchmod(fd, 0o600)
+                  write_all(fd, public_bytes)
+                  os.fsync(fd)
+              finally:
+                  os.close(fd)
+              summaries.append({'role': role, 'adminInputSha256': admin_sha, 'publicSha256': hashlib.sha256(public_bytes).hexdigest(), 'packetCount': len(public_assignment['packages']), 'itemCount': sum(len(packet['items']) for packet in public_assignment['packages'])})
+          print(json.dumps({'operation': 'export-scientific-v2-review-assignments', 'providerCalls': 0, 'manifestHash': manifest_hash, 'privateBundleHash': private_hash, 'reviewers': summaries}, separators=(',', ':')))
+          PY
+          REMOTE
+          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/public-reviewer-A.json" "$artifact_dir/public-reviewer-A.json"
+          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/public-reviewer-B.json" "$artifact_dir/public-reviewer-B.json"
+          chmod 0600 "$artifact_dir/public-reviewer-A.json" "$artifact_dir/public-reviewer-B.json"
+          for role in A B; do
+            jq -e --arg role "$role" --arg manifest "$MANIFEST_HASH" '
+              (keys | sort) == ["batchId","batchManifestHash","publicAssignment","role","schemaVersion"] and
+              .schemaVersion == 2 and .role == $role and .batchManifestHash == $manifest and
+              .publicAssignment.role == $role and
+              ([.. | objects | keys[]] | index("privateMappings") == null) and
+              ([.. | objects | keys[]] | index("privateEnvelope") == null)
+            ' "$artifact_dir/public-reviewer-$role.json" >/dev/null
+          done
+
+      - name: Upload short-lived blind reviewer packages
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scientific-v2-public-review-${{ inputs.manifest_hash }}
+          path: ${{ runner.temp }}/scientific-v2-public-review/public-reviewer-*.json
+          if-no-files-found: error
+          retention-days: 1

@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 A/B 盲包导出保持私有映射留在生产机 — by Codex
+变更：新增零 Provider 的 A/B assignment 导出控制面。它使用已完成批次的精确 `review_pack` bundle 在 immutable Worker 中离线重放并核对 `privateBundleHash`，把带 `privateMappings/privateEnvelope` 的两份完整 assignment 与原图 object binding 分别写入生产机 root `0600` 管理员输入；CI 仅上传不含模型映射的 A/B 公共盲包，保留期 1 天。该步骤固定 automatic Judge 为 0，不调用 Provider，不发布 release，也不改变九题、十维、评分、分辨率、路由、预算、失败或 unknown 规则。
+
+各端待办：
+- [x] 部署 / 运维（生产机私有 assignment、短期公共盲包 artifact 与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有审核与公开接口契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 盲审前公开证据渲染增加受保护 staging — by Codex
 变更：新增零 Provider 的 `render_public_evidence` bundle staging。仅在最终 `state=completed`、operator attestation HMAC、manifest/state/code lineage 与 immutable Worker digest 全部精确绑定时，生成 root `0600` 的离线渲染 bundle；后续只把已验 hash 的私有原图派生为内容寻址 WebP variants，供 A/B 盲审读取。该入口不能发布 release、不能写入评分、不能调用 Provider，也不暴露模型映射、Reviewer 身份或内部对象键；九题、十维、分辨率、路由、预算、失败/unknown 与双独立盲审规则均不变。
 
