@@ -657,7 +657,11 @@ worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk 
 }
 for pair in "$core_id:$expected_core_digest" "$worker_id:$expected_worker_digest"; do
   container_id="${pair%%:*}"; digest="${pair#*:}"
-  docker inspect --format '{{json .RepoDigests}}' "$container_id" | jq -e --arg digest "sha256:$digest" \
+  image_id="$(docker inspect --format '{{.Image}}' "$container_id")"
+  [[ "$image_id" =~ ^sha256:[a-f0-9]{64}$ ]] || {
+    echo 'running container image identity is unavailable' >&2; exit 1;
+  }
+  docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$digest" \
     'any(.[]; endswith("@" + $digest))' >/dev/null || {
       echo 'running container RepoDigests does not match the expected digest' >&2; exit 1;
     }

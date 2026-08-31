@@ -64,10 +64,10 @@ worker_image="$(read_env_value "$deploy_env" PAPERBANANA_BENCH_WORKER_IMAGE)"
 [[ "${worker_image##*@sha256:}" == "$expected_worker_digest" ]] || exit 1
 worker_container_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
 [[ "$worker_container_id" =~ ^[a-f0-9]+$ && "$(docker inspect --format '{{.Config.Image}}' "$worker_container_id")" == "$worker_image" ]] || exit 1
-docker inspect --format '{{json .RepoDigests}}' "$worker_container_id" | jq -e --arg digest "sha256:$expected_worker_digest" \
-  'any(.[]; endswith("@" + $digest))' >/dev/null || exit 1
 worker_image_id="$(docker inspect --format '{{.Image}}' "$worker_container_id")"
 [[ "$worker_image_id" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 1
+docker image inspect --format '{{json .RepoDigests}}' "$worker_image_id" | jq -e --arg digest "sha256:$expected_worker_digest" \
+  'any(.[]; endswith("@" + $digest))' >/dev/null || exit 1
 worker_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)'
 docker exec "$worker_container_id" node -e "$worker_guard" "$expected_sha" >/dev/null
 [[ "$(sha256_file "$authority_path")" == "$authority_sha256" && "$(sha256_file "$report_path")" == "$refresh_sha256"

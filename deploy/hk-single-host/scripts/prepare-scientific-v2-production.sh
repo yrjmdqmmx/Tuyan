@@ -74,11 +74,13 @@ admin_user_id="$(read_env_value "$gateway_env" ADMIN_USER_IDS | awk -F, '{gsub(/
 [[ "$admin_user_id" =~ ^[A-Za-z0-9._:-]{3,200}$ ]] || exit 1
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 verify_running_service() {
-  local service="$1" expected_image="$2" expected_digest="$3" guard="$4" container_id
+  local service="$1" expected_image="$2" expected_digest="$3" guard="$4" container_id image_id
   container_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service="$service" --format '{{.ID}}')"
   [[ "$container_id" =~ ^[a-f0-9]+$ ]] || { echo 'scientific v2 running service identity is unavailable' >&2; exit 1; }
   [[ "$(docker inspect --format '{{.Config.Image}}' "$container_id")" == "$expected_image" ]] || exit 1
-  docker inspect --format '{{json .RepoDigests}}' "$container_id" | jq -e --arg digest "sha256:$expected_digest" \
+  image_id="$(docker inspect --format '{{.Image}}' "$container_id")"
+  [[ "$image_id" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 1
+  docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$expected_digest" \
     'any(.[]; endswith("@" + $digest))' >/dev/null || exit 1
   docker exec "$container_id" node -e "$guard" "$expected_sha" >/dev/null
 }
