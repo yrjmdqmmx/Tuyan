@@ -36,8 +36,9 @@ function scientificRelease() {
   const releaseBase: any = {
     profileStatus: 'published', ...SCIENTIFIC_BENCHMARK_IDENTITY,
     suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
-    registryHash: 'd'.repeat(64), priceHash: 'e'.repeat(64), codeSha: 'f'.repeat(40),
-    batchId: 'scientific-v2-public-batch', batchManifestHash: '1'.repeat(64), stateHash: '2'.repeat(64), reviewFinalHash: '3'.repeat(64),
+    registryHash: 'd'.repeat(64), priceHash: 'e'.repeat(64),
+    manifestCodeSha: 'f'.repeat(40), executionCodeSha: 'f'.repeat(40), legacyRecovery: false,
+    batchId: 'scientific-v2-public-batch', batchManifestHash: '1'.repeat(64), reviewFinalHash: '3'.repeat(64),
     sampleCount: 1, automaticJudges: [], automaticJudgeCalls: 0,
     models: [{
       profileId, modelId: 'scientific-model', canonicalModelId: 'scientific-model', displayName: 'Scientific Model', developer: 'Maker',
@@ -52,6 +53,7 @@ function scientificRelease() {
       expectedCaseCount: 9, dimensions: [...SCIENTIFIC_BENCHMARK_AXES], overallFormula: 'ten_dimension_raw_equal_weight_mean',
       tieMethod: 'competition', failureScore: 0, retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' },
       routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
+      manifestCodeSha: 'f'.repeat(40), executionCodeSha: 'f'.repeat(40), legacyRecovery: false,
       automaticJudges: [], blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
       knownLimitations: ['fixed-nine-case-suite'], automaticJudgmentCount: 0,
     },
@@ -97,6 +99,11 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
 
   const leaderboard = await service.handle({ action: 'benchmarkLeaderboard' }, false)
   assert.equal(leaderboard.release.presentationVersion, 'scientific-leaderboard-v2')
+  assert.equal(leaderboard.release.manifestCodeSha, 'f'.repeat(40))
+  assert.equal(leaderboard.release.executionCodeSha, 'f'.repeat(40))
+  assert.equal(leaderboard.release.legacyRecovery, false)
+  assert.equal(Object.hasOwn(leaderboard.release, 'codeSha'), false)
+  assert.equal(Object.hasOwn(leaderboard.release, 'stateHash'), false)
   assert.equal(Object.keys(leaderboard.release.models[0].scores).length, 10)
   assert.equal(leaderboard.release.models[0].evidence.length, 9)
 
@@ -104,6 +111,11 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(methodology.suite.cases.length, 9)
   assert.deepEqual(methodology.scoring.axes, [...SCIENTIFIC_BENCHMARK_AXES])
   assert.equal(methodology.methodology.automaticJudgmentCount, 0)
+  assert.equal(methodology.methodology.manifestCodeSha, 'f'.repeat(40))
+  assert.equal(methodology.methodology.executionCodeSha, 'f'.repeat(40))
+  assert.equal(methodology.methodology.legacyRecovery, false)
+  assert.equal(Object.hasOwn(methodology.methodology, 'codeSha'), false)
+  assert.equal(Object.hasOwn(methodology.methodology, 'stateHash'), false)
 
   const profile = await service.handle({ action: 'benchmarkModelProfile', profileId: release.profileId }, false)
   const publicEdit = profile.profile.evidence[0]
@@ -161,6 +173,32 @@ test('scientific public evidence allowlists attempt summary fields and rejects i
   delete evidenceRow.scores[Object.keys(evidenceRow.scores)[0]]
   const malformed = await service.handle({ action: 'benchmarkModelProfile', profileId: release.profileId }, false)
   assert.deepEqual(malformed.profile.evidence, [])
+})
+
+test('scientific public release rejects rehashed ambiguous codeSha or internal stateHash fields', async () => {
+  for (const [field, value] of [['codeSha', 'a'.repeat(40)], ['stateHash', 'b'.repeat(64)]] as const) {
+    const release: any = scientificRelease()
+    release[field] = value
+    const { _id: _id, releaseHash: _releaseHash, ...releaseBase } = release
+    release.releaseHash = canonicalHash(releaseBase)
+    const repository: any = {
+      async latestRelease() { return release },
+      async releaseByModel() { return release },
+      async publicEvidenceForRelease() { return { items: [], nextCursor: null } },
+      async candidates() { return [] }, async approve() {}, async control() {}, async exportReview() {}, async importReview() {}, async publish() {},
+    }
+    const service = createBenchmarkService({ repository, signEvidence: async () => '', verifyEvidence: async () => {} })
+    await assert.rejects(
+      () => service.handle({ action: 'benchmarkLeaderboard' }, false),
+      /SCIENTIFIC_RELEASE_LINEAGE_INVALID/,
+      field,
+    )
+    await assert.rejects(
+      () => service.handle({ action: 'benchmarkMethodology' }, false),
+      /SCIENTIFIC_RELEASE_LINEAGE_INVALID/,
+      `${field} methodology`,
+    )
+  }
 })
 
 test('scientific public evidence exposes only exact zero-attempt provider-canary propagated failures', async () => {

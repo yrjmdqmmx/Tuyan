@@ -59,21 +59,33 @@ const REVIEW_PACKET_SIGNING_SECRET = 'p'.repeat(32)
 const REVIEW_ATTESTATION_SECRET = 'r'.repeat(32)
 const STATE_OPERATION_REPORT_SECRET = 's'.repeat(32)
 
-function canonicalManifest(options: { providers?: Array<'bailian' | 'ark' | 'openrouter'>; directEdit?: boolean; modelId?: string } = {}) {
+function canonicalManifest(options: {
+  providers?: Array<'bailian' | 'ark' | 'openrouter'>
+  directEdit?: boolean
+  directEditProviders?: Array<'bailian' | 'ark' | 'openrouter'>
+  modelId?: string
+  canonicalModelId?: string
+  modelsPerProvider?: number
+} = {}) {
   const providers = options.providers || ['bailian']
   const registryProviders = Object.fromEntries(providers.map((provider, index) => [provider, {
-    models: [{
-      id: options.modelId || `${provider}-scientific-${index + 1}`,
-      label: `${provider} model`,
+    models: Array.from({ length: options.modelsPerProvider || 1 }, (_, modelIndex) => ({
+      id: options.modelId || (options.modelsPerProvider && options.modelsPerProvider > 1
+        ? `${provider}-scientific-${index + 1}-${modelIndex + 1}`
+        : `${provider}-scientific-${index + 1}`),
+      ...(options.canonicalModelId ? { canonicalModelId: options.canonicalModelId } : {}),
+      label: `${provider} model ${modelIndex + 1}`,
       vendor: `${provider} vendor`,
       selectable: true,
       roles: ['image'],
       capabilities: {
         imageGeneration: true,
-        imageEditMode: options.directEdit === false ? 'none' : 'direct-edit',
+        imageEditMode: options.directEditProviders
+          ? (options.directEditProviders.includes(provider) ? 'direct-edit' : 'none')
+          : options.directEdit === false ? 'none' : 'direct-edit',
         resolutions: ['2K'],
       },
-    }],
+    })),
   }]))
   return buildScientificV2CanonicalManifest({
     registryVersion: '2026-08-30.test',
@@ -722,7 +734,7 @@ test('canary-only phase executes one formal slot per provider and full resume ne
   assert.equal(full.state.status, 'awaiting_artifacts')
 })
 
-test('four confirmed technical canary failures zero only that provider and permit later providers to finish', async () => {
+test('four confirmed technical canary failures zero only that canonical model and permit later models to finish', async () => {
   const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'] }))
   const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#456789' } }).png().toBuffer()
   const calls: string[] = []
@@ -762,16 +774,17 @@ test('four confirmed technical canary failures zero only that provider and permi
   assert.equal(verifyScientificV2SignedStateOperationReport(signed, STATE_OPERATION_REPORT_SECRET), true)
 })
 
-test('canary-only continues later providers after a failed provider canary and full never redispatches it', async () => {
-  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'] }))
+test('canary-only failure retires only that canonical model and full continues another model from the same provider', async () => {
+  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'], modelsPerProvider: 2 }))
   const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#654321' } }).png().toBuffer()
-  const calls: string[] = []
+  const calls: Array<{ provider: string; canonicalModelId: string }> = []
+  const failedCanary = built.state.slots.find((slot) => slot.provider === 'bailian' && slot.isProviderCanary)!
   const dependencies = {
     repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
     lock: { async acquire() { return 'partial-canary' }, async heartbeat() {}, async release() {} },
     executor: { async execute(request: any) {
-      calls.push(request.provider)
-      if (request.provider === 'bailian') throw new ScientificConfirmedFailureError('CONFIRMED_TECHNICAL_FAILURE', { responseClass: 'confirmed_technical_failure', actualCny: 1 })
+      calls.push({ provider: request.provider, canonicalModelId: request.canonicalModelId })
+      if (request.canonicalModelId === failedCanary.canonicalModelId) throw new ScientificConfirmedFailureError('CONFIRMED_TECHNICAL_FAILURE', { responseClass: 'confirmed_technical_failure', actualCny: 1 })
       return { responseClass: 'succeeded' as const, actualCny: 1, bytes: png }
     } },
   }
@@ -781,13 +794,13 @@ test('canary-only continues later providers after a failed provider canary and f
   })
 
   assert.equal(canary.state.status, 'canary_complete')
-  assert.deepEqual(calls, ['bailian', 'bailian', 'bailian', 'bailian', 'ark', 'openrouter'])
+  assert.deepEqual(calls.map((call) => call.provider), ['bailian', 'bailian', 'bailian', 'bailian', 'ark', 'openrouter'])
   assert.doesNotThrow(() => verifyScientificV2BatchState(canary.state, canary.manifest))
   const forgedDerivedFailure = structuredClone(canary.state)
-  const failedCanary = forgedDerivedFailure.slots.find((slot) => slot.provider === 'bailian' && slot.isProviderCanary)!
-  const derivedFailure = forgedDerivedFailure.slots.find((slot) => slot.provider === 'bailian' && !slot.isProviderCanary)!
-  derivedFailure.attempts = structuredClone(failedCanary.attempts)
-  derivedFailure.costCny = failedCanary.costCny
+  const forgedFailedCanary = forgedDerivedFailure.slots.find((slot) => slot.slotId === failedCanary.slotId)!
+  const derivedFailure = forgedDerivedFailure.slots.find((slot) => slot.canonicalModelId === failedCanary.canonicalModelId && !slot.isProviderCanary)!
+  derivedFailure.attempts = structuredClone(forgedFailedCanary.attempts)
+  derivedFailure.costCny = forgedFailedCanary.costCny
   assert.throws(
     () => verifyScientificV2BatchState(rehashStateSnapshot(forgedDerivedFailure), canary.manifest),
     /SCIENTIFIC_V2_ATTEMPT_HASH_MISMATCH|SCIENTIFIC_V2_STATE_STATUS_INVALID|SCIENTIFIC_V2_STATE_BUDGET_INVALID/,
@@ -799,9 +812,45 @@ test('canary-only continues later providers after a failed provider canary and f
     attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'full' }, ...dependencies,
   })
   assert.equal(full.state.status, 'awaiting_artifacts')
-  assert.equal(calls.includes('bailian'), false)
-  assert.ok(calls.includes('ark'))
-  assert.ok(calls.includes('openrouter'))
+  assert.equal(calls.some((call) => call.canonicalModelId === failedCanary.canonicalModelId), false)
+  assert.ok(calls.some((call) => call.provider === 'bailian' && call.canonicalModelId !== failedCanary.canonicalModelId))
+  assert.ok(calls.some((call) => call.provider === 'ark'))
+  assert.ok(calls.some((call) => call.provider === 'openrouter'))
+})
+
+test('canary failure does not suppress a frozen direct-edit route for the same canonical model on another provider', async () => {
+  const built = batchFor(canonicalManifest({
+    providers: ['bailian', 'ark'], canonicalModelId: 'shared:scientific-model', directEditProviders: ['ark'],
+  }))
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#345678' } }).png().toBuffer()
+  const failedCanary = built.state.slots.find((slot) => slot.provider === 'bailian' && slot.isProviderCanary)!
+  const calls: Array<{ provider: string; operation: string }> = []
+  const dependencies = {
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'cross-provider-model' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request: any) {
+      calls.push({ provider: request.provider, operation: request.operation })
+      if (request.slotId === failedCanary.slotId) {
+        throw new ScientificConfirmedFailureError('CONFIRMED_TECHNICAL_FAILURE', {
+          responseClass: 'confirmed_technical_failure', actualCny: 1,
+        })
+      }
+      return { responseClass: 'succeeded' as const, actualCny: 1, bytes: png }
+    } },
+  }
+  const canary = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'canary-only' }, ...dependencies,
+  })
+  calls.length = 0
+  const full = await runScientificV2Batch({
+    manifest: built.manifest, state: canary.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'full' }, ...dependencies,
+  })
+  assert.equal(calls.some((call) => call.provider === 'bailian'), false)
+  assert.ok(calls.some((call) => call.provider === 'ark' && call.operation === 'edit'))
+  assert.ok(full.state.slots.filter((slot) => slot.provider === 'ark' && slot.operation === 'edit')
+    .every((slot) => slot.status === 'succeeded'))
 })
 
 test('unknown provider outcome still pauses before any later provider call', async () => {
@@ -1723,6 +1772,8 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
   const executable = join(process.cwd(), 'dist/scientific-v2-operator.mjs')
   const distLoader = join(process.cwd(), 'tests/fixtures/scientific-v2-dist-loader.mjs')
   const distRuntime = join(process.cwd(), 'tests/fixtures/scientific-v2-dist-runtime.mjs')
+  const buildProvenancePath = join(root, 'build-provenance.json')
+  writeFileSync(buildProvenancePath, JSON.stringify({ codeSha: CODE_SHA }), { mode: 0o600 })
   let distRunImageBase64 = ''
   const runBundle = (name: string, bundle: unknown) => {
     const path = join(root, `${name}.json`)
@@ -1759,6 +1810,8 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
           PAPERBANANA_BENCH_OPENROUTER_API_KEY: 'dist-openrouter-secret',
           PAPERBANANA_BENCH_IMAGE_RUNTIME_PATH: distRuntime,
           PAPERBANANA_SCIENTIFIC_V2_ARTIFACT_SPOOL_DIR: artifactSpool,
+          PAPERBANANA_CODE_SHA: CODE_SHA,
+          PAPERBANANA_SCIENTIFIC_V2_CANONICAL_PROVENANCE_PATH: buildProvenancePath,
           SCIENTIFIC_V2_DIST_TEST_IMAGE_BASE64: distRunImageBase64,
         } : {}),
       },
@@ -1802,6 +1855,11 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
         batchId: 'scientific-v2-dist-import', revision: 2,
         previousStateHash: codex.state.stateHash, createdAt: '2026-08-31T03:00:00.000Z',
         attestationSecret: STATE_OPERATION_REPORT_SECRET,
+        execution: {
+          manifestCodeSha: codex.manifest.codeSha,
+          executionCodeSha: codex.manifest.codeSha,
+          legacyRecoveryStateHash: null,
+        },
       },
     })
     assert.deepEqual(Object.keys(importOutput), ['report', 'reportHash', 'attestationHash'])
@@ -1821,6 +1879,9 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
     distRunImageBase64 = codex.toolCalls[0].bytes.toString('base64')
     const runOutput = runBundle('run', {
       operation: 'run', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+      manifestCodeSha: production.manifest.codeSha,
+      executionCodeSha: production.manifest.codeSha,
+      legacyRecoveryStateHash: null,
       manifest: production.manifest, state: production.state,
       report: {
         batchId: 'scientific-v2-dist-run', revision: 1,

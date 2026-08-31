@@ -106,6 +106,7 @@ interface ScientificV2RunnerAttestation {
   batchId?: string
   revision?: number
   phase?: 'canary-only' | 'full'
+  execution?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null }
 }
 
 export interface ScientificV2DispatchMarker {
@@ -116,7 +117,7 @@ export interface ScientificV2DispatchMarker {
 }
 
 export interface ScientificV2RunnerRepository {
-  claimReady(input: { manifestHash: string; expectedReadyStateHash: string }): Promise<{
+  claimReady(input: { manifestHash: string; expectedReadyStateHash: string; execution?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null } }): Promise<{
     claimToken: string; state: ScientificV2BatchState; batchId?: string; revision?: number
   } | null>
   saveClaimed(input: { claimToken: string; expectedStateHash: string; nextState: ScientificV2BatchState }): Promise<ScientificV2BatchState>
@@ -194,9 +195,14 @@ function markFollowingNotExecuted(state: ScientificV2BatchState, sequence: numbe
   }
 }
 
-function markProviderCanaryFailure(state: ScientificV2BatchState, provider: 'bailian' | 'ark' | 'openrouter') {
+function markCanaryModelFailure(
+  state: ScientificV2BatchState,
+  provider: 'bailian' | 'ark' | 'openrouter',
+  canonicalModelId: string,
+) {
   for (const slot of state.slots) {
-    if (slot.provider === provider && slot.supported && !slot.isProviderCanary && ['pending', 'retrying'].includes(slot.status)) {
+    if (slot.provider === provider && slot.canonicalModelId === canonicalModelId
+      && slot.supported && !slot.isProviderCanary && ['pending', 'retrying'].includes(slot.status)) {
       slot.status = 'failed'
       slot.costCny = 0
       slot.attempts = []
@@ -358,7 +364,15 @@ async function runScientificV2BatchInternal(input: {
   let claimToken: string | null = null
   const adapted = repositoryAdapter(input.repository, input.state)
   try {
-    const claim = await adapted.repository.claimReady({ manifestHash: input.manifest.manifestHash, expectedReadyStateHash: input.state.stateHash })
+    const execution = input.attestation.execution || {
+      manifestCodeSha: input.manifest.codeSha, executionCodeSha: input.manifest.codeSha, legacyRecoveryStateHash: null,
+    }
+    if (execution.manifestCodeSha !== input.manifest.codeSha
+      || !/^[a-f0-9]{40}$/.test(execution.executionCodeSha)
+      || (execution.manifestCodeSha === execution.executionCodeSha ? execution.legacyRecoveryStateHash !== null : !/^[a-f0-9]{64}$/.test(String(execution.legacyRecoveryStateHash || '')))) {
+      scientificV2Error('SCIENTIFIC_V2_EXECUTION_LINEAGE_INVALID')
+    }
+    const claim = await adapted.repository.claimReady({ manifestHash: input.manifest.manifestHash, expectedReadyStateHash: input.state.stateHash, execution })
     if (!claim) scientificV2Error('SCIENTIFIC_V2_STATE_ALREADY_CLAIMED')
     claimToken = claim.claimToken
     if (typeof claimToken !== 'string' || !claimToken || !Object.isFrozen(claim.state)) scientificV2Error('SCIENTIFIC_V2_REPOSITORY_SNAPSHOT_INVALID')
@@ -630,7 +644,9 @@ async function runScientificV2BatchInternal(input: {
           dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, chargedCny)
           chargeAttempt(state, provider, chargedCny)
           dispatchSlot.status = attemptIndex === 4 ? 'failed' : 'retrying'
-          if (attemptIndex === 4 && dispatchSlot.isProviderCanary) markProviderCanaryFailure(state, provider)
+          if (attemptIndex === 4 && dispatchSlot.isProviderCanary) {
+            markCanaryModelFailure(state, provider, dispatchSlot.canonicalModelId)
+          }
           await commitAttempt(marker, attempt)
           attemptCommitted = true
           if (attemptIndex === 4) break

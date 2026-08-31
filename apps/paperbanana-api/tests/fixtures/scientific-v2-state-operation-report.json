@@ -17,6 +17,9 @@
     "stateHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
     "status": "awaiting_artifacts"
   },
+  "manifestCodeSha": "1111111111111111111111111111111111111111",
+  "executionCodeSha": "1111111111111111111111111111111111111111",
+  "legacyRecoveryStateHash": null,
   "providerCanaryAttestation": {
     "providers": [
       "bailian",
@@ -36,5 +39,5 @@
   "codexProvenance": null,
   "disclosure": null,
   "createdAt": "2026-08-31T00:00:00.000Z",
-  "reportHash": "7f91c6b960fb6afc4d99973abdf63032c63257dae9165cd8d5f58362c781b43a"
+  "reportHash": "31d64a61b35e43c5b12f0ccc221cd3068c35fe92ff0435c1e87d281983af20ce"
 }

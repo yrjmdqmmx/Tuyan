@@ -503,8 +503,9 @@ elif [[ "$mode" == run ]]; then
   jq -e \
     --arg sha "$expected_sha" --arg registry "$registry_hash" --arg suite "$suite_hash" \
     --arg price "$price_hash" --arg manifest "$manifest_hash" --argjson models "$model_count" \
-    '.operation == "run" and (((keys | sort) == ["gate","manifest","operation","report","state"] and (.executionPhase == null)) or
-      ((keys | sort) == ["executionPhase","gate","manifest","operation","report","state"] and (.executionPhase == "canary-only" or .executionPhase == "full"))) and
+    '.operation == "run" and
+     ((keys | sort) == ["executionCodeSha","executionPhase","gate","legacyRecoveryStateHash","manifest","manifestCodeSha","operation","report","state"]) and
+     (.executionPhase == "canary-only" or .executionPhase == "full") and
      '"$common_jq"' and
      ((.report | keys | sort) == ["attestationSecret","batchId","createdAt","revision"]) and
      (.report.batchId | type) == "string" and (.report.batchId | length) > 0 and
@@ -512,7 +513,18 @@ elif [[ "$mode" == run ]]; then
      (.report.createdAt | type) == "string" and
      (.report.createdAt | test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$")) and
      (.report.attestationSecret | type) == "string" and (.report.attestationSecret | length) > 0 and
-     .manifest.codeSha == $sha and .manifest.registryHash == $registry and
+     (.manifestCodeSha | type) == "string" and (.manifestCodeSha | test("^[a-f0-9]{40}$")) and
+     (.executionCodeSha | type) == "string" and (.executionCodeSha | test("^[a-f0-9]{40}$")) and
+     (.legacyRecoveryStateHash == null or ((.legacyRecoveryStateHash | type) == "string" and (.legacyRecoveryStateHash | test("^[a-f0-9]{64}$")))) and
+     .manifestCodeSha == .manifest.codeSha and .executionCodeSha == $sha and
+     ( (.manifestCodeSha == $sha and .legacyRecoveryStateHash == null) or
+       (.manifestCodeSha != $sha and
+        ( (.executionPhase == "canary-only" and .state.status == "blocked" and .state.blockReason == "provider_canary_failed" and .state.pauseReason == null and .legacyRecoveryStateHash == .state.stateHash) or
+          (.executionPhase == "full" and .state.status == "canary_complete" and (.legacyRecoveryStateHash | type) == "string" and (.legacyRecoveryStateHash | test("^[a-f0-9]{64}$")) )
+       )
+     )
+     ) and
+     .manifest.registryHash == $registry and
      .manifest.suiteHash == $suite and .manifest.priceHash == $price and
      .manifest.manifestHash == $manifest and .state.manifestHash == $manifest and
      (.manifest.models | length) == $models and (.manifest.cases | length) == 9 and
@@ -774,10 +786,13 @@ elif [[ "$mode" == run ]]; then
      (providerSlots | map(.attempts | length) | add // 0) as $providerCalls |
      (providerSlots | length) as $providerSlotCount |
      ((keys | sort) == ["attestationHash","report","reportHash"]) and
-     ((.report | keys | sort) == ["batchId","batchManifestHash","codexProvenance","createdAt","disclosure","executionOrderAttestation","identity","kind","previousStateHash","providerCanaryAttestation","reportHash","revision","schemaVersion","state","stateHash"]) and
+     ((.report | keys | sort) == ["batchId","batchManifestHash","codexProvenance","createdAt","disclosure","executionCodeSha","executionOrderAttestation","identity","kind","legacyRecoveryStateHash","manifestCodeSha","previousStateHash","providerCanaryAttestation","reportHash","revision","schemaVersion","state","stateHash"]) and
      .report.schemaVersion == 2 and
      .report.identity == {suiteId:"pb-scientific-figure-v2",evaluationMode:"codex_scientific_v2",evaluationEpoch:"codex-scientific-2026-09-v1",reviewProtocol:"codex-independent-double-review-v2",presentationVersion:"scientific-leaderboard-v2"} and
      .report.kind == "worker" and .report.batchId == $batchId and .report.batchManifestHash == $manifest and
+     .report.manifestCodeSha == $input[0].manifestCodeSha and
+     .report.executionCodeSha == $input[0].executionCodeSha and
+     .report.legacyRecoveryStateHash == $input[0].legacyRecoveryStateHash and
      .report.revision == $revision and .report.createdAt == $createdAt and
      (.report.previousStateHash | hash) and (.report.stateHash | hash) and
      (.report.reportHash | hash) and (.reportHash | hash) and (.attestationHash | hash) and

@@ -36,3 +36,20 @@ test('Worker canonical state report rejects identity, inner hash and extra-field
     assert.throws(() => normalizeScientificV2StateOperationReport(changed), /SCIENTIFIC_V2_OPERATION_REPORT_/)
   }
 })
+
+test('Worker canonical state report binds manifest and execution SHA recovery lineage', () => {
+  const fixturePath = new URL('../../paperbanana-api/tests/fixtures/scientific-v2-state-operation-report.json', import.meta.url)
+  const fixture = JSON.parse(readFileSync(fixturePath, 'utf8'))
+  const { reportHash: _oldReportHash, ...base } = fixture
+  const recovery = {
+    ...base,
+    manifestCodeSha: 'a'.repeat(40),
+    executionCodeSha: 'b'.repeat(40),
+    legacyRecoveryStateHash: 'c'.repeat(64),
+  }
+  const report = { ...recovery, reportHash: canonicalHash(recovery) }
+
+  assert.deepEqual(normalizeScientificV2StateOperationReport(report), report)
+  const { reportHash: _reportHash, ...tampered } = { ...report, executionCodeSha: 'd'.repeat(40) }
+  assert.notEqual(scientificV2StateOperationReportHmacPayload(tampered), report.reportHash)
+})

@@ -31,6 +31,10 @@ import { createScientificV2SignedStateOperationReport, verifyScientificV2SignedS
 const LOCK_NAME = '/run/lock/paperbanana-hk-production.lock'
 const ARTIFACT_SPOOL_DIR = mkdtempSync(join(tmpdir(), 'scientific-v2-production-spool-'))
 chmodSync(ARTIFACT_SPOOL_DIR, 0o700)
+const BUILD_PROVENANCE_DIR = mkdtempSync(join(tmpdir(), 'scientific-v2-production-provenance-'))
+chmodSync(BUILD_PROVENANCE_DIR, 0o700)
+const BUILD_PROVENANCE_PATH = join(BUILD_PROVENANCE_DIR, 'build-provenance.json')
+writeFileSync(BUILD_PROVENANCE_PATH, JSON.stringify({ codeSha: 'a'.repeat(40) }), { mode: 0o600 })
 const validEnv = {
   PAPERBANANA_BENCH_ENABLED: 'false',
   PAPERBANANA_BENCH_CONCURRENCY: '1',
@@ -48,6 +52,12 @@ const validEnv = {
   PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT: 'https://oss-cn-hongkong-internal.aliyuncs.com',
   PAPERBANANA_SCIENTIFIC_V2_EDIT_SOURCE_PNG_PATH: SCIENTIFIC_EDIT_SOURCE.pngPath,
   PAPERBANANA_SCIENTIFIC_V2_ARTIFACT_SPOOL_DIR: ARTIFACT_SPOOL_DIR,
+  PAPERBANANA_CODE_SHA: 'a'.repeat(40),
+  PAPERBANANA_SCIENTIFIC_V2_CANONICAL_PROVENANCE_PATH: BUILD_PROVENANCE_PATH,
+}
+
+function normalExecution(manifest: { codeSha: string }) {
+  return { manifestCodeSha: manifest.codeSha, executionCodeSha: manifest.codeSha, legacyRecoveryStateHash: null }
 }
 
 test('production dependency factory loads nothing before the exact disabled gate and validates secrets before runtime load', async () => {
@@ -350,7 +360,12 @@ test('production Mongo atomically recovers only an exact legacy provider-canary 
   const storage = productionAtomicDb({ ...fixture, state: legacy })
   const repository = createScientificV2MongoRepository(storage.db, () => new Date('2026-08-31T06:15:00.000Z'), () => 'legacy-canary-recovery-claim')
   assert.equal(await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: '0'.repeat(64) }), null)
-  const claim = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: legacy.stateHash })
+  const execution = {
+    manifestCodeSha: fixture.manifest.codeSha,
+    executionCodeSha: 'b'.repeat(40),
+    legacyRecoveryStateHash: legacy.stateHash,
+  }
+  const claim = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: legacy.stateHash, execution })
 
   assert.ok(claim)
   assert.equal(claim.state.status, 'running')
@@ -358,8 +373,11 @@ test('production Mongo atomically recovers only an exact legacy provider-canary 
   const claimedCanary = claim.state.slots.find((slot) => slot.slotId === canary.slotId)!
   assert.equal(claimedCanary.status, 'failed')
   assert.equal(claimedCanary.attempts.length, 4)
-  assert.ok(claim.state.slots.filter((slot) => slot.provider === 'bailian' && slot.supported && !slot.isProviderCanary)
+  assert.ok(claim.state.slots.filter((slot) => slot.canonicalModelId === canary.canonicalModelId && slot.supported && !slot.isProviderCanary)
     .every((slot) => slot.status === 'failed' && slot.attempts.length === 0 && slot.costCny === 0))
+  assert.ok(claim.state.slots.filter((slot) => slot.provider === 'bailian'
+    && slot.canonicalModelId !== canary.canonicalModelId && slot.supported)
+    .every((slot) => slot.status === 'pending' && slot.attempts.length === 0 && slot.costCny === null))
   assert.ok(claim.state.slots.filter((slot) => slot.provider !== 'bailian' && slot.status === 'pending').length > 0)
   assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.length, 0)
   const recoveryUpdate = storage.findOneAndUpdateCalls.find((call) => call.collection === 'paperbanana_benchmark_scientific_v2_batches'
@@ -369,6 +387,7 @@ test('production Mongo atomically recovers only an exact legacy provider-canary 
     { 'state.status': 'canary_complete' },
     { 'state.status': 'blocked', 'state.blockReason': 'provider_canary_failed' },
   ])
+  assert.deepEqual(recoveryUpdate.update.$set.executionLineage, execution)
   assert.equal(await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: legacy.stateHash }), null)
   assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.length, 0)
 })
@@ -604,7 +623,7 @@ test('production Mongo markUnknown rolls back state and marker together when its
   assert.equal(storage.transactionCallsWithoutSession(), 0)
 })
 
-test('four confirmed provider-canary failures audit-zero that provider and permit a signed worker report', async () => {
+test('four confirmed provider-canary failures audit-zero that canonical model and permit a signed worker report', async () => {
   const fixture = productionBatchFixture()
   const storage = productionAtomicDb(fixture)
   let calls = 0
@@ -1083,6 +1102,7 @@ test('production run operator uses real adapters with fakes and returns an API-i
   const secret = 'production-worker-report-secret'.padEnd(32, '-')
   const output = await executeScientificV2OperatorBundle({
     operation: 'run', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    ...normalExecution(fixture.manifest),
     manifest: fixture.manifest, state: fixture.state,
     report: {
       batchId: 'scientific-v2-production-batch', revision: 1,
@@ -1125,6 +1145,7 @@ test('production run verifies manifest and state before loading any runtime or c
   let dependencyCalls = 0
   await assert.rejects(() => executeScientificV2OperatorBundle({
     operation: 'run', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    ...normalExecution(fixture.manifest),
     manifest: tamperedManifest, state: fixture.state,
     report: {
       batchId: 'scientific-v2-production-batch', revision: 1,
@@ -1152,6 +1173,7 @@ test('production run validates signed-report metadata before dependencies and DB
     let dependencyCalls = 0
     await assert.rejects(() => executeScientificV2OperatorBundle({
       operation: 'run', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+      ...normalExecution(fixture.manifest),
       manifest: fixture.manifest, state: fixture.state, report,
     }, {
       env: validEnv,
@@ -1169,6 +1191,7 @@ test('production run validates signed-report metadata before dependencies and DB
   let providerCalls = 0
   await assert.rejects(() => executeScientificV2OperatorBundle({
     operation: 'run', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    ...normalExecution(fixture.manifest),
     manifest: fixture.manifest, state: fixture.state,
     report: { batchId: 'caller-batch', revision: 1, createdAt: '2026-08-31T06:00:00.000Z', attestationSecret: 'x'.repeat(32) },
   }, {
@@ -1192,7 +1215,8 @@ test('production run preserves its signed report when dependency cleanup fails',
   const originalWrite = process.stderr.write.bind(process.stderr)
   process.stderr.write = ((chunk: string | Uint8Array) => { stderr += String(chunk); return true }) as typeof process.stderr.write
   const output = await executeScientificV2OperatorBundle({
-    operation: 'run', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME }, manifest: fixture.manifest, state: fixture.state,
+    operation: 'run', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    ...normalExecution(fixture.manifest), manifest: fixture.manifest, state: fixture.state,
     report: { batchId: 'scientific-v2-production-batch', revision: 1, createdAt: '2026-08-31T06:00:00.000Z', attestationSecret: 'x'.repeat(32) },
   }, {
     env: validEnv,

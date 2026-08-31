@@ -203,6 +203,7 @@ test('root run-bundle stager protects attestation secret and binds canary or ful
   assert.match(source, /0?600/)
   assert.match(source, /attestationSecret/)
   assert.match(source, /executionPhase/)
+  for (const field of ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash']) assert.match(source, new RegExp(field))
   assert.match(source, /runBundleHash/)
   assert.match(source, /node_hash_script/)
   assert.match(source, /build-provenance[.]json/)
@@ -362,6 +363,11 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       }],
     }
     const blockedState = { ...blockedStateBase, stateHash: canonicalHash(blockedStateBase) }
+    const legacyCodeSha = 'f'.repeat(40)
+    const legacyManifestBase = { ...manifestBase, codeSha: legacyCodeSha }
+    const legacyManifest = { ...legacyManifestBase, manifestHash: canonicalHash(legacyManifestBase) }
+    const legacyBlockedStateBase = { ...blockedStateBase, manifestHash: legacyManifest.manifestHash }
+    const legacyBlockedState = { ...legacyBlockedStateBase, stateHash: canonicalHash(legacyBlockedStateBase) }
     const fullStateBase = {
       ...stateBase, status: 'canary_complete',
       providerSpentCny: { bailian: 0.00009999, ark: 0.12, openrouter: 3.05246208 },
@@ -369,6 +375,8 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       slots: [{ costCny: 0.00009999, attempts: [{ estimatedCny: 0.12, actualCny: 3.05246208 }] }],
     }
     const fullState = { ...fullStateBase, stateHash: canonicalHash(fullStateBase) }
+    const legacyFullStateBase = { ...fullStateBase, manifestHash: legacyManifest.manifestHash }
+    const legacyFullState = { ...legacyFullStateBase, stateHash: canonicalHash(legacyFullStateBase) }
     const secret = 'scientific-v2-stage-test-secret-32-bytes-minimum'
     const reportBase = {
       schemaVersion: 2, suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2',
@@ -376,6 +384,7 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       presentationVersion: 'scientific-leaderboard-v2', batchId: 'batch-test', batchManifestHash: manifest.manifestHash,
       stateHash: state.stateHash, daemon: { enabled: false, status: 'configured-disabled' }, concurrency: 1,
       lockName: '/run/lock/paperbanana-hk-production.lock', providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
+      manifestCodeSha: codeSha, executionCodeSha: codeSha, legacyRecoveryStateHash: null,
       codexToolCallLimit: 36, modelCount: 1, slotCount: 1, revision: 0, issuedAt: '2026-08-31T00:00:00.000Z',
     }
     const sign = (base, key = createHmac('sha256', secret).update('paperbanana/scientific-v2/operator-attestation/v1').digest()) => {
@@ -389,7 +398,7 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     writeFileSync(paths.manifest, JSON.stringify(manifest)); writeFileSync(paths.state, JSON.stringify(state))
     writeFileSync(paths.env, `PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=${secret}\n`)
     for (const path of [paths.manifest, paths.state, paths.env]) chmodSync(path, 0o600)
-    const execute = (attestation, { phase = 'canary-only', manifestValue = manifest, stateValue = state } = {}) => {
+    const execute = (attestation, { phase = 'canary-only', manifestValue = manifest, stateValue = state, expectedManifestHash = manifest.manifestHash } = {}) => {
       writeFileSync(paths.manifest, JSON.stringify(manifestValue)); chmodSync(paths.manifest, 0o600)
       writeFileSync(paths.state, JSON.stringify(stateValue)); chmodSync(paths.state, 0o600)
       const without = (value, key) => Object.fromEntries(Object.entries(value).filter(([name]) => name !== key))
@@ -405,21 +414,30 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       writeFileSync(paths.output, '{}'); chmodSync(paths.output, 0o600)
       return spawnSync('python3', ['-c', embedded[1],
         paths.manifest, fileHash(paths.manifest), paths.state, fileHash(paths.state), paths.attestation, fileHash(paths.attestation),
-        paths.env, paths.nodeHashes, phase, codeSha, manifest.manifestHash, registryHash, suiteHash, priceSnapshot.snapshotHash, paths.output, String(process.getuid()),
+        paths.env, paths.nodeHashes, phase, codeSha, expectedManifestHash, registryHash, suiteHash, priceSnapshot.snapshotHash, paths.output, String(process.getuid()),
       ], { encoding: 'utf8' })
     }
     const canarySuccess = execute(sign(reportBase))
     assert.equal(canarySuccess.status, 0, canarySuccess.stderr)
-    const blockedCanaryResume = execute(sign({ ...reportBase, stateHash: blockedState.stateHash }), { stateValue: blockedState })
+    const legacyBlockedReport = {
+      ...reportBase, batchManifestHash: legacyManifest.manifestHash, stateHash: legacyBlockedState.stateHash,
+      manifestCodeSha: legacyCodeSha, executionCodeSha: codeSha, legacyRecoveryStateHash: legacyBlockedState.stateHash,
+    }
+    const blockedCanaryResume = execute(sign(legacyBlockedReport), { manifestValue: legacyManifest, stateValue: legacyBlockedState, expectedManifestHash: legacyManifest.manifestHash })
     assert.equal(blockedCanaryResume.status, 0, blockedCanaryResume.stderr)
-    const malformedBlockedBase = structuredClone(blockedStateBase)
+    assert.deepEqual(JSON.parse(readFileSync(paths.output, 'utf8')).legacyRecoveryStateHash, legacyBlockedState.stateHash)
+    const malformedBlockedBase = structuredClone(legacyBlockedStateBase)
     malformedBlockedBase.slots[0].attempts.pop()
     const malformedBlocked = { ...malformedBlockedBase, stateHash: canonicalHash(malformedBlockedBase) }
-    const malformedBlockedResult = execute(sign({ ...reportBase, stateHash: malformedBlocked.stateHash }), { stateValue: malformedBlocked })
+    const malformedBlockedResult = execute(sign({ ...legacyBlockedReport, stateHash: malformedBlocked.stateHash, legacyRecoveryStateHash: malformedBlocked.stateHash }), { manifestValue: legacyManifest, stateValue: malformedBlocked, expectedManifestHash: legacyManifest.manifestHash })
     assert.notEqual(malformedBlockedResult.status, 0)
     assert.match(malformedBlockedResult.stderr, /assembly failed \[phase\]/)
     const fullSuccess = execute(sign({ ...reportBase, stateHash: fullState.stateHash }), { phase: 'full', stateValue: fullState })
     assert.equal(fullSuccess.status, 0, fullSuccess.stderr)
+    const legacyFull = execute(sign({ ...legacyBlockedReport, stateHash: legacyFullState.stateHash }), { phase: 'full', manifestValue: legacyManifest, stateValue: legacyFullState, expectedManifestHash: legacyManifest.manifestHash })
+    assert.equal(legacyFull.status, 0, legacyFull.stderr)
+    const executionMismatch = execute(sign({ ...reportBase, executionCodeSha: legacyCodeSha }))
+    assert.notEqual(executionMismatch.status, 0)
     const mismatchedAtoms = structuredClone(manifest)
     mismatchedAtoms.priceSnapshot.entries[1].unitCny = 9e-8
     const mismatchedAtomsResult = execute(sign(reportBase), { manifestValue: mismatchedAtoms })
@@ -508,6 +526,7 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   assert.match(source, /private_response_sha256="\$\(sha256_file "\$private_result"\)"/)
   assert.match(source, /\$private_response_sha256[.]attest[.]json/)
   assert.match(source, /privateResponseSha256/)
+  for (const field of ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash']) assert.match(source, new RegExp(field))
   assert.match(source, /\$input_sha256\.\$operation\.\$private_response_sha256\.json/)
   assert.doesNotMatch(source, /\$input_sha256\.\$operation\.json/)
   const embedded = source.match(/node_script='\n([\s\S]*?)\n'\n"\$\{compose\[@\]\}" exec/)
@@ -526,6 +545,7 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
     evaluationEpoch: 'codex-scientific-2026-09-v1', reviewProtocol: 'codex-independent-double-review-v2',
     presentationVersion: 'scientific-leaderboard-v2', batchId: 'scientific-v2-test',
     batchManifestHash: 'a'.repeat(64), stateHash: 'b'.repeat(64),
+    manifestCodeSha: 'e'.repeat(40), executionCodeSha: 'e'.repeat(40), legacyRecoveryStateHash: null,
     daemon: { enabled: false, status: 'configured-disabled' }, concurrency: 1,
     lockName: '/run/lock/paperbanana-hk-production.lock',
     providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 }, codexToolCallLimit: 36,
@@ -542,7 +562,7 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   const attestationEnvelope = JSON.parse(attestationSuccess.stdout)
   assert.deepEqual(attestationEnvelope.privateData, fullAttestation)
   assert.deepEqual(Object.keys(attestationEnvelope.data).sort(), [
-    'attestationHash', 'batchId', 'batchManifestHash', 'issuedAt', 'modelCount', 'reportHash', 'revision', 'slotCount', 'stateHash',
+    'attestationHash', 'batchId', 'batchManifestHash', 'executionCodeSha', 'issuedAt', 'legacyRecoveryStateHash', 'manifestCodeSha', 'modelCount', 'reportHash', 'revision', 'slotCount', 'stateHash',
   ])
   const fullDiagnostic = {
     batchId: 'scientific-v2-test', manifestHash: 'a'.repeat(64), stateHash: 'b'.repeat(64),
