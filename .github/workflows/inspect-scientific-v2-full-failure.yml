@@ -66,6 +66,13 @@ jobs:
             };
           });
           const firstOpen = batch.state.slots.find(slot => !["succeeded","unsupported","failed"].includes(slot.status));
+          const statusCounts = batch.state.slots.reduce((counts, slot) => {
+            counts[slot.status] = (counts[slot.status] || 0) + 1;
+            return counts;
+          }, {});
+          const nonTerminal = batch.state.slots
+            .filter(slot => !["succeeded","unsupported","failed"].includes(slot.status))
+            .map(slot => ({sequence: slot.sequence, slotId: slot.slotId, provider: slot.provider, status: slot.status, attemptCount: slot.attempts.length}));
           print(JSON.stringify({
             manifestHash,
             stateHash: batch.stateHash,
@@ -76,6 +83,8 @@ jobs:
             claimPresent: Object.hasOwn(batch, "claimToken"),
             claimLeaseExpired: batch.claimLeaseExpiresAt instanceof Date ? batch.claimLeaseExpiresAt <= new Date() : null,
             providerSpentCny: batch.state.providerSpentCny,
+            statusCounts,
+            nonTerminal,
             unresolved,
             firstOpen: firstOpen ? {
               slotId: firstOpen.slotId,
@@ -115,4 +124,16 @@ jobs:
             process.stdout.write(JSON.stringify({slotId:marker.slotId,attemptIndex:marker.attemptIndex,candidateCount:candidates.length,candidates})+"\n");
           }finally{await mongo.close();}
           '
+          marker_started_at="$(docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const row=db.getCollection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash:"fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227",status:"started"});print(row.startedAt.toISOString())'\''' | tail -1)"
+          marker_epoch="$(date -d "$marker_started_at" +%s)"
+          spool_count=0
+          spool_bytes=0
+          while IFS= read -r -d '' file; do
+            modified="$(stat -c %Y "$file")"
+            if (( modified >= marker_epoch - 5 && modified <= marker_epoch + 600 )); then
+              spool_count=$((spool_count + 1))
+              spool_bytes=$((spool_bytes + $(stat -c %s "$file")))
+            fi
+          done < <(find /opt/paperbanana/data/scientific-v2-artifact-spool -maxdepth 1 -type f -print0)
+          printf '{"spoolCandidateCount":%d,"spoolCandidateBytes":%d}\n' "$spool_count" "$spool_bytes"
           REMOTE
