@@ -221,6 +221,7 @@ test('scientific v2 host operator is executable and binds every immutable execut
   assert.match(paidRunner, /-e PAPERBANANA_SCIENTIFIC_V2_HOST_LOCK_PROOF=\/run\/lock\/paperbanana-hk-production[.]lock/)
   assert.match(paidRunner, /-e PAPERBANANA_BENCH_LEASE_MS=120000/)
   assert.match(paidRunner, /-e PAPERBANANA_BENCH_HEARTBEAT_MS=30000/)
+  assert.match(paidRunner, /-e PAPERBANANA_BENCH_PROVIDER_TIMEOUT_MS=300000/)
   assert.match(paidRunner, /-v "\$snapshot_path:\$bundle_container:ro"/)
   assert.match(paidRunner, /PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256="\$bundle_sha256"/)
   assert.doesNotMatch(paidRunner, /\$input_dir:\/run\/paperbanana-scientific-v2(?::|[^-])/)

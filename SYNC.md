@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 正式 Provider 等待窗冻结为 300 秒 — by Codex
+变更：生产 full 批次在 `qwen-image-3.0-pro` 编辑题精确运行到旧默认 120 秒后进入 `UNKNOWN_PROVIDER_OUTCOME`；只读人工对账已证明该 attempt 时间窗内私有 OSS 与受保护 spool 均无候选原图，三家凭据/出口均为 200。正式评测现在把每次 Provider 请求等待窗显式冻结为 300 秒，并限制可配置范围为 120–600 秒；运维 operator 固定传入 300000ms。30 秒 claim 心跳、并发 1、最高 2K/默认尺寸实测、九题十维、确认失败最多四次、unknown 零自动重试、预算与 canonical 路由全部不变。旧暂停批次仅保留审计；新代码 SHA 重新冻结整批执行。
+
+各端待办：
+- [x] paperbanana-api authoritative image runtime（300 秒默认值与 120–600 秒 fail-closed 边界 TDD）
+- [x] Benchmark Worker / 部署运维（正式 operator 显式注入 300000ms；30 秒心跳不变）
+- [x] Web / Gateway / 原生端（公开接口与 UI 无变化；无需改造）
+
 ### [2026-09-01] Scientific V2 unknown 对账改用已持久化 attempt 时间窗 — by Codex
 变更：`UNKNOWN_PROVIDER_OUTCOME` 按规则原子写入 batch state 后，其 `started` dispatch marker 会随事务正常清理；旧只读失败检查却仍强制要求 marker 存在，因此无法检查已经暂停的 unknown 是否在私有 OSS 或受保护 spool 留下可恢复原始图片。检查 workflow 现在要求恰好一个 `status=unknown` 槽位和 `responseClass=unknown_provider_outcome` attempt，使用该 attempt 已签名状态中的 `startedAt/completedAt` 作为有界候选时间窗；若旧 marker 偶然仍存在则必须与 slot/attemptIndex 精确一致。整个操作只读、零 Provider 调用，不改变 unknown 零重试、题集、预算、路由或记分规则。
 
