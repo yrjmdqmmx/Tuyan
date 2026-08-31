@@ -439,11 +439,11 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
   assertScientificV2Iso(state.updatedAt, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   const providerTotals = { bailian: 0, ark: 0, openrouter: 0 }
   const providerUnreconciled = { bailian: 0, ark: 0, openrouter: 0 }
-  const failedCanaryProviders = new Set(state.slots
+  const failedCanaryRoutes = new Set(state.slots
     .filter((slot) => slot.isProviderCanary && slot.status === 'failed' && slot.attempts.length === 4
+      && slot.provider !== null && slot.provider !== 'codex'
       && ['confirmed_technical_failure', 'confirmed_provider_failure'].includes(slot.attempts.at(-1)?.responseClass || ''))
-    .map((slot) => slot.provider)
-    .filter((provider): provider is ScientificV2Provider => provider !== null && provider !== 'codex'))
+    .map((slot) => `${slot.provider}:${slot.canonicalModelId}`))
   assertExactScientificV2Keys(state.providerSpentCny, ['bailian', 'ark', 'openrouter'], 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   assertExactScientificV2Keys(state.providerUnreconciledCny, ['bailian', 'ark', 'openrouter'], 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   for (let index = 0; index < state.slots.length; index += 1) {
@@ -471,10 +471,10 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
       if (slot.attempts.length === 0 || !Number.isFinite(slot.costCny) || (slot.costCny as number) < 0) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
       if (!['succeeded', 'succeeded_low_quality'].includes(slot.attempts.at(-1)!.responseClass)) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'retrying' || slot.status === 'unknown' || slot.status === 'failed') {
-      const providerCanaryZero = slot.status === 'failed' && !slot.isProviderCanary && slot.supported
-        && slot.provider !== null && slot.provider !== 'codex' && failedCanaryProviders.has(slot.provider)
+      const canaryModelZero = slot.status === 'failed' && !slot.isProviderCanary && slot.supported
+        && failedCanaryRoutes.has(`${slot.provider}:${slot.canonicalModelId}`)
         && slot.attempts.length === 0 && slot.costCny === 0
-      if (providerCanaryZero) continue
+      if (canaryModelZero) continue
       if (slot.attempts.length === 0 || !Number.isFinite(slot.costCny) || (slot.costCny as number) < 0) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
       const lastClass = slot.attempts.at(-1)!.responseClass
       if ((slot.status === 'unknown' && lastClass !== 'unknown_provider_outcome')
@@ -572,8 +572,8 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
     if (scientificV2CnyToUnits(providerUnreconciled[provider]) !== scientificV2CnyToUnits(state.providerUnreconciledCny[provider])) scientificV2Error('SCIENTIFIC_V2_STATE_BUDGET_INVALID')
   }
   if (!(state.status === 'blocked' && state.blockReason === 'provider_canary_failed')) {
-    for (const provider of failedCanaryProviders) {
-      if (state.slots.some((slot) => slot.provider === provider && slot.supported && (slot.isProviderCanary
+    for (const failedRoute of failedCanaryRoutes) {
+      if (state.slots.some((slot) => `${slot.provider}:${slot.canonicalModelId}` === failedRoute && slot.supported && (slot.isProviderCanary
         ? slot.status !== 'failed' || slot.attempts.length !== 4
         : slot.status !== 'failed' || slot.attempts.length !== 0 || slot.costCny !== 0))) {
         scientificV2Error('SCIENTIFIC_V2_STATE_STATUS_INVALID')
@@ -610,8 +610,8 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
     || (state.status === 'blocked' && state.blockReason === 'provider_canary_failed' && !state.slots.some((slot) => slot.isProviderCanary && slot.status === 'failed'))
     || (state.status === 'ready' && state.slots.some((slot) => slot.status !== 'pending'))
     || (state.status === 'canary_complete' && (state.slots.some((slot) => slot.isProviderCanary
-      ? slot.status !== 'succeeded' && !(slot.status === 'failed' && slot.provider !== null && slot.provider !== 'codex' && failedCanaryProviders.has(slot.provider))
-      : slot.provider !== null && slot.provider !== 'codex' && slot.supported && failedCanaryProviders.has(slot.provider)
+      ? slot.status !== 'succeeded' && !(slot.status === 'failed' && failedCanaryRoutes.has(`${slot.provider}:${slot.canonicalModelId}`))
+      : slot.supported && failedCanaryRoutes.has(`${slot.provider}:${slot.canonicalModelId}`)
         ? slot.status !== 'failed'
         : slot.status !== 'pending')
       || state.slots.filter((slot) => slot.isProviderCanary).length !== new Set(manifest.executionOrder

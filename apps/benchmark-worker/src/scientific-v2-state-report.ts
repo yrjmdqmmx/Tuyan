@@ -14,10 +14,14 @@ import { verifyScientificCodexImportAttestation, type importScientificCodexArtif
 import type { ScientificV2BatchManifest, ScientificV2BatchState } from './scientific-v2-manifest.js'
 import { verifyScientificV2BatchManifest, verifyScientificV2BatchState } from './scientific-v2-manifest.js'
 
-const REPORT_PAYLOAD_KEYS = [
+const LEGACY_REPORT_PAYLOAD_KEYS = [
   'schemaVersion', 'identity', 'kind', 'batchId', 'batchManifestHash', 'revision', 'previousStateHash',
   'stateHash', 'state', 'providerCanaryAttestation', 'executionOrderAttestation', 'codexProvenance',
   'disclosure', 'createdAt',
+] as const
+const REPORT_PAYLOAD_KEYS = [
+  ...LEGACY_REPORT_PAYLOAD_KEYS,
+  'manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash',
 ] as const
 
 type ScientificV2StateReportPayload = {
@@ -35,6 +39,9 @@ type ScientificV2StateReportPayload = {
   codexProvenance: Record<string, unknown> | null
   disclosure: Record<string, unknown> | null
   createdAt: string
+  manifestCodeSha?: string
+  executionCodeSha?: string
+  legacyRecoveryStateHash?: string | null
 }
 
 export type ScientificV2StateOperationReport = ScientificV2StateReportPayload & { reportHash: string }
@@ -79,7 +86,9 @@ export function normalizeScientificV2StateOperationReport(value: unknown): Scien
   }, 'SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
   reportRecord(value, 'SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
   const hasReportHash = Object.hasOwn(value, 'reportHash')
-  assertExactScientificV2Keys(value, hasReportHash ? [...REPORT_PAYLOAD_KEYS, 'reportHash'] : REPORT_PAYLOAD_KEYS, 'SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
+  const hasExecutionLineage = Object.hasOwn(value, 'manifestCodeSha') || Object.hasOwn(value, 'executionCodeSha') || Object.hasOwn(value, 'legacyRecoveryStateHash')
+  const payloadKeys = hasExecutionLineage ? REPORT_PAYLOAD_KEYS : LEGACY_REPORT_PAYLOAD_KEYS
+  assertExactScientificV2Keys(value, hasReportHash ? [...payloadKeys, 'reportHash'] : payloadKeys, 'SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
   const state = value.state
   reportRecord(state, 'SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
   if (value.schemaVersion !== 2 || !['worker', 'codex'].includes(String(value.kind))
@@ -91,8 +100,14 @@ export function normalizeScientificV2StateOperationReport(value: unknown): Scien
     || !isScientificV2Hash(value.stateHash) || value.stateHash !== state.stateHash) {
     scientificV2Error('SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
   }
+  if (hasExecutionLineage && (!/^[a-f0-9]{40}$/.test(String(value.manifestCodeSha || ''))
+    || !/^[a-f0-9]{40}$/.test(String(value.executionCodeSha || ''))
+    || (value.manifestCodeSha === value.executionCodeSha ? value.legacyRecoveryStateHash !== null
+      : !isScientificV2Hash(value.legacyRecoveryStateHash)))) {
+    scientificV2Error('SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
+  }
   assertScientificV2Iso(value.createdAt, 'SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
-  const payload = Object.fromEntries(REPORT_PAYLOAD_KEYS.map((key) => [key, structuredClone(value[key])])) as ScientificV2StateReportPayload
+  const payload = Object.fromEntries(payloadKeys.map((key) => [key, structuredClone(value[key])])) as ScientificV2StateReportPayload
   const reportHash = canonicalHash(payload)
   if (hasReportHash && value.reportHash !== reportHash) scientificV2Error('SCIENTIFIC_V2_OPERATION_REPORT_HASH_INVALID')
   return deepFreezeScientificV2({ ...payload, reportHash })
@@ -113,18 +128,31 @@ type ScientificV2StateOperationReportInput = {
   previousStateHash: string
   createdAt: string
   attestationSecret: string
+  execution?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null }
   codexImport?: ScientificV2CodexImportResult
 }
 
 export function createScientificV2SignedStateOperationReport(input: ScientificV2StateOperationReportInput): ScientificV2SignedStateOperationReport {
   assertExactScientificV2Keys(input, [
     'kind', 'batchId', 'manifest', 'state', 'revision', 'previousStateHash', 'createdAt', 'attestationSecret',
+    ...(input.execution ? ['execution'] : []),
     ...(input.kind === 'codex' ? ['codexImport'] : []),
   ], 'SCIENTIFIC_V2_OPERATOR_REPORT_INPUT_INVALID')
   assertAttestationSecret(input.attestationSecret)
   verifyScientificV2BatchManifest(input.manifest)
   verifyScientificV2BatchState(input.state, input.manifest)
   if (input.state.manifestHash !== input.manifest.manifestHash) scientificV2Error('SCIENTIFIC_V2_OPERATOR_REPORT_INPUT_INVALID')
+  const execution = input.execution
+  if (execution) {
+    assertExactScientificV2Keys(execution, ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash'], 'SCIENTIFIC_V2_OPERATOR_REPORT_INPUT_INVALID')
+    if (execution.manifestCodeSha !== input.manifest.codeSha
+      || !/^[a-f0-9]{40}$/.test(execution.executionCodeSha)
+      || (execution.manifestCodeSha === execution.executionCodeSha
+        ? execution.legacyRecoveryStateHash !== null
+        : !isScientificV2Hash(execution.legacyRecoveryStateHash))) {
+      scientificV2Error('SCIENTIFIC_V2_OPERATOR_REPORT_INPUT_INVALID')
+    }
+  }
 
   const providerCanarySlots = input.manifest.executionOrder.filter((slot) => slot.isProviderCanary)
   const providerCanariesPassed = providerCanarySlots.every((canary) => {
@@ -183,6 +211,11 @@ export function createScientificV2SignedStateOperationReport(input: ScientificV2
     codexProvenance,
     disclosure,
     createdAt: input.createdAt,
+    ...(execution ? {
+      manifestCodeSha: execution.manifestCodeSha,
+      executionCodeSha: execution.executionCodeSha,
+      legacyRecoveryStateHash: execution.legacyRecoveryStateHash,
+    } : {}),
   })
   const reportHash = report.reportHash
   const attestationHash = createHmac('sha256', input.attestationSecret).update(reportHash).digest('hex')

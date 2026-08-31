@@ -28,16 +28,27 @@ import {
 
 const FIXED_NOW = new Date('2026-08-31T00:00:00.000Z')
 
-function scientificBatchFixture(options: { directEdit?: boolean } = {}) {
+function scientificBatchFixture(options: { directEdit?: boolean; secondBailianModel?: boolean; splitCanonicalAcrossProviders?: boolean } = {}) {
   const directEdit = options.directEdit !== false
+  const sharedCanonicalModelId = 'alibaba:shared-route-model'
+  const primaryLabel = options.splitCanonicalAcrossProviders ? 'Shared Route Model' : 'Qwen Image 3 Pro'
   const registry = {
       providers: {
         bailian: {
           models: [{
-            id: 'qwen-image-3.0-pro', label: 'Qwen Image 3 Pro', vendor: 'Alibaba', selectable: true,
+            id: 'qwen-image-3.0-pro', label: primaryLabel, vendor: 'Alibaba', selectable: true,
+            ...(options.splitCanonicalAcrossProviders ? { canonicalModelId: sharedCanonicalModelId } : {}),
+            roles: ['image'], capabilities: { imageGeneration: true, imageEditMode: options.splitCanonicalAcrossProviders ? 'none' as const : directEdit ? 'direct-edit' as const : 'none' as const, resolutions: ['2K'] },
+          }, ...(options.secondBailianModel ? [{
+            id: 'wanx-image-1.0-pro', label: 'Wanx Image 1 Pro', vendor: 'Alibaba', selectable: true,
             roles: ['image'], capabilities: { imageGeneration: true, imageEditMode: directEdit ? 'direct-edit' as const : 'none' as const, resolutions: ['2K'] },
-          }],
+          }] : [])],
         },
+        ...(options.splitCanonicalAcrossProviders ? { openrouter: { models: [{
+          id: 'alibaba/shared-route-model', canonicalModelId: sharedCanonicalModelId,
+          label: primaryLabel, vendor: 'Alibaba', selectable: true, roles: ['image'],
+          capabilities: { imageGeneration: true, imageEditMode: 'direct-edit' as const, resolutions: ['2K'] },
+        }] } } : {}),
       },
     }
   const registrySnapshotBase = {
@@ -49,13 +60,35 @@ function scientificBatchFixture(options: { directEdit?: boolean } = {}) {
   const canonicalManifest = buildScientificV2CanonicalManifest(registrySnapshotBase)
   const priceSnapshot = buildScientificV2PriceSnapshot({
     canonicalManifest, capturedAt: FIXED_NOW.toISOString(),
-    observations: deriveScientificV2PriceRequirements(canonicalManifest).map((requirement) => ({
-      provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation, imageSize: requirement.imageSize,
-      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
-      charges: [{ billable: 'output_image', unit: 'image', rateDecimal: '1', quantityDecimal: '1', resolutionTier: requirement.imageSize }],
-      source: { url: `https://example.com/${requirement.operation}`, mediaType: 'text/html', capturedAt: FIXED_NOW.toISOString(), bytesSha256: 'a'.repeat(64) },
-      openRouterEvidence: null, fxEvidence: null,
-    })),
+    observations: deriveScientificV2PriceRequirements(canonicalManifest).map((requirement, index) => {
+      const source = { url: `https://example.com/${requirement.provider}/${requirement.operation}`, mediaType: 'application/json', capturedAt: FIXED_NOW.toISOString(), bytesSha256: 'a'.repeat(64) }
+      const common = {
+        provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation, imageSize: requirement.imageSize,
+        billingRegion: requirement.provider === 'openrouter' ? 'openrouter-global' : 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      }
+      if (requirement.provider !== 'openrouter') return {
+        ...common,
+        charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: '1', quantityDecimal: '1', resolutionTier: requirement.imageSize }],
+        source, openRouterEvidence: null, fxEvidence: null,
+      }
+      const pricing = [
+        { billable: 'output_image' as const, unit: 'image' as const, costUsd: '1', variant: requirement.imageSize },
+        ...(requirement.operation === 'edit' ? [{ billable: 'input_reference' as const, unit: 'image' as const, costUsd: '0', variant: null }] : []),
+      ]
+      return {
+        ...common,
+        charges: pricing.map((line) => ({ billable: line.billable, unit: line.unit, rateDecimal: line.costUsd, quantityDecimal: '1', resolutionTier: line.variant })),
+        source,
+        openRouterEvidence: {
+          modelApi: { ...source, url: 'https://openrouter.ai/api/v1/images/models', bytesSha256: 'b'.repeat(64) },
+          endpointApi: source, pricingPage: null, modelId: requirement.modelId, providerSlug: `fixture-${index}`, rawPricing: pricing, tokenBounds: null,
+        },
+        fxEvidence: {
+          source: { ...source, url: 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml', mediaType: 'application/xml', bytesSha256: 'c'.repeat(64) },
+          rateDate: '2026-08-31', baseCurrency: 'EUR' as const, usdPerBaseDecimal: '1', cnyPerBaseDecimal: '1',
+        },
+      }
+    }),
   })
   const models = structuredClone(canonicalManifest.models)
   const cases = structuredClone([...PB_SCIENTIFIC_FIGURE_V2.cases])
@@ -329,12 +362,14 @@ function propagatedProviderCanaryFailureState(fixture: ReturnType<typeof scienti
   const state = failProviderCanary(completedScientificState(fixture))
   const canary = state.slots.find((slot: any) => slot.isProviderCanary && slot.status === 'failed')!
   for (const slot of state.slots) {
-    if (slot.provider !== canary.provider || slot.slotId === canary.slotId) continue
+    if (slot.provider !== canary.provider || slot.canonicalModelId !== canary.canonicalModelId || slot.slotId === canary.slotId) continue
     slot.status = 'failed'
     slot.costCny = 0
     slot.attempts = []
   }
-  state.providerSpentCny[canary.provider] = canary.costCny
+  state.providerSpentCny[canary.provider] = state.slots
+    .filter((slot: any) => slot.provider === canary.provider)
+    .reduce((total: number, slot: any) => total + Number(slot.costCny || 0), 0)
   return refreshState(state, '2026-08-31T00:00:10.000Z')
 }
 
@@ -581,7 +616,15 @@ function recoveredArtifactState(fixture: ReturnType<typeof scientificBatchFixtur
   return refreshState(state, '2026-08-31T00:00:04.000Z')
 }
 
-function signedStateReport(secret: string, fixture: ReturnType<typeof scientificBatchFixture>, state: any, kind: 'worker' | 'codex' = 'codex', options: { batchId?: string; previousStateHash?: string; revision?: number; providerCanaryPassed?: boolean } = {}) {
+function signedStateReport(secret: string, fixture: ReturnType<typeof scientificBatchFixture>, state: any, kind: 'worker' | 'codex' = 'codex', options: {
+  batchId?: string
+  previousStateHash?: string
+  revision?: number
+  providerCanaryPassed?: boolean
+  manifestCodeSha?: string
+  executionCodeSha?: string
+  legacyRecoveryStateHash?: string | null
+} = {}) {
   const codexSlots = state.slots.filter((slot: any) => slot.provider === 'codex')
   const reportPayload = {
     schemaVersion: 2 as const,
@@ -593,6 +636,9 @@ function signedStateReport(secret: string, fixture: ReturnType<typeof scientific
     previousStateHash: options.previousStateHash || fixture.initialState.stateHash,
     stateHash: state.stateHash,
     state,
+    manifestCodeSha: options.manifestCodeSha ?? fixture.manifest.codeSha,
+    executionCodeSha: options.executionCodeSha ?? fixture.manifest.codeSha,
+    legacyRecoveryStateHash: options.legacyRecoveryStateHash ?? null,
     providerCanaryAttestation: {
       providers: [...new Set(fixture.manifest.executionOrder.filter((slot: any) => slot.isProviderCanary).map((slot: any) => slot.provider))],
       passed: options.providerCanaryPassed ?? state.slots.filter((slot: any) => slot.isProviderCanary)
@@ -1074,13 +1120,18 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
   const fixture = scientificBatchFixture()
   const storage = atomicScientificDb()
   const secret = 'scientific-v2-operator-secret-32-bytes-minimum'
-  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'claim-token-5', { operatorReportSecret: secret })
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'claim-token-5', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha,
+  })
   await repository.freezeBatch({ batchId: 'scientific-v2-batch-attestation', ...fixture })
 
   const attestation = await repository.operatorAttestation({ batchId: 'scientific-v2-batch-attestation' })
 
   assert.equal(attestation.batchManifestHash, fixture.manifest.manifestHash)
   assert.equal(attestation.stateHash, fixture.initialState.stateHash)
+  assert.equal(attestation.manifestCodeSha, fixture.manifest.codeSha)
+  assert.equal(attestation.executionCodeSha, fixture.manifest.codeSha)
+  assert.equal(attestation.legacyRecoveryStateHash, null)
   assert.deepEqual(attestation.daemon, { enabled: false, status: 'configured-disabled' })
   assert.equal(attestation.concurrency, 1)
   assert.equal(attestation.lockName, '/run/lock/paperbanana-hk-production.lock')
@@ -1095,6 +1146,78 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
     .update('paperbanana/scientific-v2/operator-attestation/v1').digest()
   assert.equal(attestation.attestationHash, createHmac('sha256', operatorAttestationKey).update(attestation.reportHash).digest('hex'))
   assert.notEqual(attestation.attestationHash, createHmac('sha256', secret).update(attestation.reportHash).digest('hex'))
+})
+
+test('operatorAttestation allows SHA drift only for the first exact legacy blocked recovery and fixes its lineage', async () => {
+  const fixture = scientificBatchFixture()
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-dual-sha-lineage-secret-at-least-32-bytes'
+  const batchId = 'scientific-v2-dual-sha-lineage'
+  const original = createScientificV2MongoRepository(storage.db, () => FIXED_NOW)
+  await original.freezeBatch({ batchId, ...fixture })
+  const executionCodeSha = 'b'.repeat(40)
+  const recovery = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'dual-sha-recovery', {
+    operatorReportSecret: secret, immutableCodeSha: executionCodeSha,
+  })
+
+  await assert.rejects(() => recovery.operatorAttestation({ batchId }), /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/)
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  const legacyBlocked = blockedProviderCanaryState(fixture)
+  batch.state = structuredClone(legacyBlocked)
+  batch.stateHash = legacyBlocked.stateHash
+  batch.status = 'blocked'
+
+  const attestation = await recovery.operatorAttestation({ batchId })
+  assert.equal(attestation.manifestCodeSha, fixture.manifest.codeSha)
+  assert.equal(attestation.executionCodeSha, executionCodeSha)
+  assert.equal(attestation.legacyRecoveryStateHash, legacyBlocked.stateHash)
+  const { reportHash, attestationHash, ...payload } = attestation
+  assert.equal(reportHash, canonicalHash(payload))
+  const key = createHmac('sha256', secret).update('paperbanana/scientific-v2/operator-attestation/v1').digest()
+  assert.equal(attestationHash, createHmac('sha256', key).update(reportHash).digest('hex'))
+
+  const recovered = completedScientificState(fixture)
+  batch.state = structuredClone(recovered)
+  batch.stateHash = recovered.stateHash
+  batch.status = 'completed'
+  const replay = await recovery.operatorAttestation({ batchId })
+  assert.deepEqual(
+    [replay.manifestCodeSha, replay.executionCodeSha, replay.legacyRecoveryStateHash],
+    [fixture.manifest.codeSha, executionCodeSha, legacyBlocked.stateHash],
+  )
+  const differentRuntime = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'dual-sha-drift', {
+    operatorReportSecret: secret, immutableCodeSha: 'c'.repeat(40),
+  })
+  await assert.rejects(() => differentRuntime.operatorAttestation({ batchId }), /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/)
+
+  const ordinaryStorage = atomicScientificDb()
+  const ordinary = createScientificV2MongoRepository(ordinaryStorage.db, () => FIXED_NOW)
+  await ordinary.freezeBatch({ batchId: 'scientific-v2-budget-blocked-sha-drift', ...fixture })
+  const ordinaryBatch = ordinaryStorage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  const budgetBlocked = interruptedState(fixture, 'blocked')
+  ordinaryBatch.state = structuredClone(budgetBlocked)
+  ordinaryBatch.stateHash = budgetBlocked.stateHash
+  ordinaryBatch.status = 'blocked'
+  const mismatched = createScientificV2MongoRepository(ordinaryStorage.db, () => FIXED_NOW, () => 'ordinary-sha-drift', {
+    operatorReportSecret: secret, immutableCodeSha: executionCodeSha,
+  })
+  await assert.rejects(
+    () => mismatched.operatorAttestation({ batchId: 'scientific-v2-budget-blocked-sha-drift' }),
+    /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/,
+  )
+
+  const sameShaStorage = atomicScientificDb()
+  const sameShaOriginal = createScientificV2MongoRepository(sameShaStorage.db, () => FIXED_NOW)
+  const sameShaBatchId = 'scientific-v2-same-sha-blocked'
+  await sameShaOriginal.freezeBatch({ batchId: sameShaBatchId, ...fixture })
+  const sameShaBatch = sameShaStorage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  sameShaBatch.state = structuredClone(legacyBlocked)
+  sameShaBatch.stateHash = legacyBlocked.stateHash
+  sameShaBatch.status = 'blocked'
+  const sameSha = createScientificV2MongoRepository(sameShaStorage.db, () => FIXED_NOW, () => 'same-sha-blocked', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha,
+  })
+  assert.equal((await sameSha.operatorAttestation({ batchId: sameShaBatchId })).legacyRecoveryStateHash, null)
 })
 
 test('operatorDiagnostic returns a bounded attested read-only provider-canary summary', async () => {
@@ -1167,7 +1290,8 @@ test('canonical state operation report contract fixes identity, JSON hash and ex
 
   assert.deepEqual(Object.keys(normalized), [
     'schemaVersion', 'identity', 'kind', 'batchId', 'batchManifestHash', 'revision', 'previousStateHash',
-    'stateHash', 'state', 'providerCanaryAttestation', 'executionOrderAttestation', 'codexProvenance',
+    'stateHash', 'state', 'manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash',
+    'providerCanaryAttestation', 'executionOrderAttestation', 'codexProvenance',
     'disclosure', 'createdAt', 'reportHash',
   ])
   assert.deepEqual(normalized.identity, SCIENTIFIC_BENCHMARK_IDENTITY)
@@ -1175,6 +1299,16 @@ test('canonical state operation report contract fixes identity, JSON hash and ex
   assert.equal(scientificV2StateOperationReportHmacPayload(normalized), reportHash)
   assert.equal(JSON.stringify(normalized).includes('secret'), false)
   assert.notEqual(normalized.state, state)
+  for (const invalidLineage of [
+    { manifestCodeSha: fixture.manifest.codeSha, executionCodeSha: fixture.manifest.codeSha, legacyRecoveryStateHash: 'e'.repeat(64) },
+    { manifestCodeSha: fixture.manifest.codeSha, executionCodeSha: 'b'.repeat(40), legacyRecoveryStateHash: null },
+  ]) {
+    const { reportHash: _reportHash, ...payload } = legacy
+    assert.throws(
+      () => normalizeScientificV2StateOperationReport({ ...payload, ...invalidLineage }),
+      /SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID/,
+    )
+  }
 })
 
 test('canonical state operation report ships one stable JSON and hash fixture for the Worker adapter', () => {
@@ -1201,6 +1335,8 @@ test('canonical signed state operation import shape accepts the fixture and reje
     (value: any) => { value.report.identity.suiteId = 'wrong-suite' },
     (value: any) => { value.report.reportHash = '0'.repeat(64) },
     (value: any) => { value.reportHash = '1'.repeat(64) },
+    (value: any) => { value.report.executionCodeSha = 'b'.repeat(40) },
+    (value: any) => { value.report.legacyRecoveryStateHash = 'e'.repeat(64) },
     (value: any) => { value.report.extra = true },
   ]) {
     const changed = structuredClone(signed)
@@ -1225,6 +1361,61 @@ test('importStateReport verifies the HMAC and every terminal attempt before mark
   const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
   assert.equal(batch.status, 'review_ready')
   assert.equal(batch.stateHash, state.stateHash)
+})
+
+test('state report import binds ordinary and legacy recovery dual-SHA lineage across revisions', async () => {
+  const fixture = scientificBatchFixture()
+  const secret = 'scientific-v2-state-report-lineage-secret-at-least-32-bytes'
+  const ordinaryStorage = atomicScientificDb()
+  const ordinary = createScientificV2MongoRepository(ordinaryStorage.db, () => FIXED_NOW, () => 'ordinary-lineage', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha,
+  })
+  const ordinaryBatchId = 'scientific-v2-ordinary-lineage'
+  await ordinary.freezeBatch({ batchId: ordinaryBatchId, ...fixture })
+  const ordinaryState = completedScientificState(fixture)
+  await ordinary.importStateReport(signedStateReport(secret, fixture, ordinaryState, 'codex', { batchId: ordinaryBatchId }))
+
+  const laterState = refreshState(ordinaryState, '2026-08-31T00:00:10.000Z')
+  for (const changed of [
+    signedStateReport(secret, fixture, laterState, 'codex', {
+      batchId: ordinaryBatchId, previousStateHash: ordinaryState.stateHash, revision: 2, executionCodeSha: 'b'.repeat(40),
+    }),
+    signedStateReport(secret, fixture, laterState, 'codex', {
+      batchId: ordinaryBatchId, previousStateHash: ordinaryState.stateHash, revision: 2, legacyRecoveryStateHash: 'e'.repeat(64),
+    }),
+  ]) {
+    await assert.rejects(() => ordinary.importStateReport(changed), /SCIENTIFIC_V2_(?:CODE_LINEAGE|OPERATION_REPORT_SCHEMA)_INVALID/)
+  }
+
+  const legacyStorage = atomicScientificDb()
+  const original = createScientificV2MongoRepository(legacyStorage.db, () => FIXED_NOW)
+  const legacyBatchId = 'scientific-v2-legacy-report-lineage'
+  await original.freezeBatch({ batchId: legacyBatchId, ...fixture })
+  const legacyBatch = legacyStorage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  const blocked = blockedProviderCanaryState(fixture)
+  legacyBatch.state = structuredClone(blocked)
+  legacyBatch.stateHash = blocked.stateHash
+  legacyBatch.status = 'blocked'
+  const executionCodeSha = 'b'.repeat(40)
+  const recovery = createScientificV2MongoRepository(legacyStorage.db, () => FIXED_NOW, () => 'legacy-report-lineage', {
+    operatorReportSecret: secret, immutableCodeSha: executionCodeSha,
+  })
+  const attestation = await recovery.operatorAttestation({ batchId: legacyBatchId })
+  const recoveredState = completedScientificState(fixture)
+  const recoveredReport = signedStateReport(secret, fixture, recoveredState, 'codex', {
+    batchId: legacyBatchId, previousStateHash: blocked.stateHash,
+    manifestCodeSha: attestation.manifestCodeSha, executionCodeSha: attestation.executionCodeSha,
+    legacyRecoveryStateHash: attestation.legacyRecoveryStateHash,
+  })
+  assert.equal((await recovery.importStateReport(recoveredReport)).reviewReady, true)
+
+  const nextState = refreshState(recoveredState, '2026-08-31T00:00:11.000Z')
+  const driftedRecovery = signedStateReport(secret, fixture, nextState, 'codex', {
+    batchId: legacyBatchId, previousStateHash: recoveredState.stateHash, revision: 2,
+    manifestCodeSha: fixture.manifest.codeSha, executionCodeSha,
+    legacyRecoveryStateHash: 'f'.repeat(64),
+  })
+  await assert.rejects(() => recovery.importStateReport(driftedRecovery), /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/)
 })
 
 test('Core imports a signed worker canary_complete report and full import preserves the original canary attempt', async () => {
@@ -1454,10 +1645,15 @@ test('API and Worker accept only the ordered four-attempt provider canary blocke
   })
 })
 
-test('API accepts only exact zero-attempt failures propagated from a four-attempt provider canary', async (t) => {
-  const fixture = scientificBatchFixture()
+test('API propagates a four-attempt canary failure only across the exact provider and canonical model route', async (t) => {
+  const fixture = scientificBatchFixture({ secondBailianModel: true, splitCanonicalAcrossProviders: true })
   const accepted = propagatedProviderCanaryFailureState(fixture)
   assert.doesNotThrow(() => verifyScientificV2ImportedState(accepted, fixture.manifest))
+  const failedCanary = accepted.slots.find((slot: any) => slot.isProviderCanary && slot.status === 'failed')!
+  assert.ok(accepted.slots.some((slot: any) => slot.provider === failedCanary.provider
+    && slot.canonicalModelId !== failedCanary.canonicalModelId && slot.status === 'succeeded'))
+  assert.ok(accepted.slots.some((slot: any) => slot.provider !== failedCanary.provider
+    && slot.canonicalModelId === failedCanary.canonicalModelId && slot.status === 'succeeded'))
 
   const mutations: Array<[string, (state: any) => void]> = [
     ['propagated failure has a nonzero cost', (state) => {
@@ -1473,13 +1669,31 @@ test('API accepts only exact zero-attempt failures propagated from a four-attemp
       canary.costCny -= 1
       state.providerSpentCny[canary.provider] -= 1
     }],
-    ['one same-provider slot is not propagated', (state) => {
+    ['one same-model slot is not propagated', (state) => {
       const propagated = state.slots.find((slot: any) => slot.status === 'failed' && !slot.isProviderCanary)!
       const completed = completedScientificState(fixture).slots.find((slot: any) => slot.slotId === propagated.slotId)!
       propagated.status = 'succeeded'
       propagated.costCny = completed.costCny
       propagated.attempts = structuredClone(completed.attempts)
       state.providerSpentCny[propagated.provider] += completed.costCny
+    }],
+    ['a different canonical model on the same provider is propagated', (state) => {
+      const canary = state.slots.find((slot: any) => slot.isProviderCanary && slot.status === 'failed')!
+      const otherModelSlot = state.slots.find((slot: any) => slot.provider === canary.provider
+        && slot.canonicalModelId !== canary.canonicalModelId && slot.status === 'succeeded')!
+      state.providerSpentCny[otherModelSlot.provider] -= otherModelSlot.costCny
+      otherModelSlot.status = 'failed'
+      otherModelSlot.costCny = 0
+      otherModelSlot.attempts = []
+    }],
+    ['the same canonical model on a different provider is propagated', (state) => {
+      const canary = state.slots.find((slot: any) => slot.isProviderCanary && slot.status === 'failed')!
+      const otherRouteSlot = state.slots.find((slot: any) => slot.provider !== canary.provider
+        && slot.canonicalModelId === canary.canonicalModelId && slot.status === 'succeeded')!
+      state.providerSpentCny[otherRouteSlot.provider] -= otherRouteSlot.costCny
+      otherRouteSlot.status = 'failed'
+      otherRouteSlot.costCny = 0
+      otherRouteSlot.attempts = []
     }],
   ]
   for (const [name, mutate] of mutations) await t.test(name, () => {
@@ -1504,7 +1718,7 @@ test('provider canary blocked state persists but cannot enter report, review, or
   assert.equal(batch.status, 'blocked')
   assert.equal(batch.state.blockReason, 'provider_canary_failed')
   const signed = signedStateReport(secret, fixture, state, 'worker', { batchId, previousStateHash: claim.state.stateHash, revision: 1 })
-  await assert.rejects(() => repository.importStateReport(signed), /SCIENTIFIC_V2_(?:OPERATION_ATTESTATION|IMPORT_WORKER_STATE|IMPORT_REVISION)/)
+  await assert.rejects(() => repository.importStateReport(signed), /SCIENTIFIC_V2_(?:CODE_LINEAGE|OPERATION_ATTESTATION|IMPORT_WORKER_STATE|IMPORT_REVISION)/)
   await assert.rejects(() => repository.exportReviewAssignment({ batchId, assignment: {}, objectBindings: [] }), /SCIENTIFIC_V2_REVIEW_BATCH_NOT_READY/)
   await assert.rejects(() => repository.publishScientificV2({ batchId, objectBindings: [], evidence: [] }), /SCIENTIFIC_V2_BATCH_NOT_PUBLISHABLE/)
   assert.equal((storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts') || []).length, 0)
@@ -1760,7 +1974,10 @@ function slotModelKey(assignment: any) {
   return assignment.privateMappings[0].modelKey
 }
 
-async function preparePublishFacts(repository: ReturnType<typeof createScientificV2MongoRepository>, fixture: ReturnType<typeof scientificBatchFixture>, state: any, secret: string, batchId: string, options: { dispute?: boolean } = {}) {
+async function preparePublishFacts(repository: ReturnType<typeof createScientificV2MongoRepository>, fixture: ReturnType<typeof scientificBatchFixture>, state: any, secret: string, batchId: string, options: {
+  dispute?: boolean
+  lineage?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null }
+} = {}) {
   const claimed = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
   assert.ok(claimed)
   let current = claimed.state as any
@@ -1795,9 +2012,13 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
   awaiting.updatedAt = '2026-08-31T00:00:04.000Z'
   delete awaiting.stateHash
   awaiting.stateHash = canonicalHash(awaiting)
-  const workerImport = signedStateReport(secret, fixture, awaiting, 'worker', { batchId, previousStateHash: current.stateHash, revision: 1 })
+  const workerImport = signedStateReport(secret, fixture, awaiting, 'worker', {
+    batchId, previousStateHash: current.stateHash, revision: 1, ...options.lineage,
+  })
   await repository.importStateReport(workerImport)
-  const codexImport = signedStateReport(secret, fixture, state, 'codex', { batchId, previousStateHash: awaiting.stateHash, revision: 2 })
+  const codexImport = signedStateReport(secret, fixture, state, 'codex', {
+    batchId, previousStateHash: awaiting.stateHash, revision: 2, ...options.lineage,
+  })
   await repository.importStateReport(codexImport)
   const assignments = fullReviewAssignments(secret, fixture, state)
   const bindingsFor = (assignment: any) => assignment.packages.flatMap((packet: any) => packet.items.map((item: any) => ({ imageHash: item.imageHash, objectKey: `bench/scientific-v2/private/objects/${item.imageHash}.png` })))
@@ -1910,6 +2131,7 @@ test('publishScientificV2 recomputes all frozen models and atomically writes one
   const secret = 'scientific-v2-publish-secret-at-least-32-bytes'
   const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'publish-claim-token', {
     operatorReportSecret: secret,
+    immutableCodeSha: fixture.manifest.codeSha,
     verifyObject: async (objectKey, imageHash) => { verified.push([objectKey, imageHash]) },
   })
   await repository.freezeBatch({ batchId: 'scientific-v2-publish-batch', ...fixture })
@@ -1924,6 +2146,14 @@ test('publishScientificV2 recomputes all frozen models and atomically writes one
   assert.ok(release.models.every((model: any) => model.evidence.length === 9))
   assert.deepEqual(release.methodology.automaticJudges, [])
   assert.equal(release.methodology.automaticJudgmentCount, 0)
+  assert.equal(release.manifestCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.executionCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.legacyRecovery, false)
+  assert.equal(release.methodology.manifestCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.methodology.executionCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.methodology.legacyRecovery, false)
+  assert.equal('codeSha' in release, false)
+  assert.equal('stateHash' in release, false)
   assert.ok(verified.length >= state.slots.length)
 
   const stateReport = (storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts') || []).find((row) => row.artifactType === 'state_report')
@@ -1934,6 +2164,69 @@ test('publishScientificV2 recomputes all frozen models and atomically writes one
     () => repository.importReviewResult({ batchId: 'scientific-v2-publish-batch', result: signedFullReviewerResult(secret, assignmentA.assignment, 7) }),
     /SCIENTIFIC_V2_REVIEW_RESULT_CONFLICT/,
   )
+})
+
+test('publish independently rejects dual-SHA lineage tampering after review finalization', async () => {
+  const fixture = scientificBatchFixture()
+  const state = completedScientificState(fixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-publish-lineage-secret-at-least-32-bytes'
+  const batchId = 'scientific-v2-publish-lineage-tamper'
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'publish-lineage-tamper', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await repository.freezeBatch({ batchId, ...fixture })
+  const input = await preparePublishFacts(repository, fixture, state, secret, batchId)
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  batch.executionCodeSha = 'b'.repeat(40)
+
+  await assert.rejects(
+    () => repository.publishScientificV2({ batchId, ...input }),
+    /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/,
+  )
+  assert.equal(storage.rows.get('paperbanana_benchmark_releases')?.length || 0, 0)
+})
+
+test('publish exposes fixed legacy recovery lineage without exposing an internal state hash', async () => {
+  const fixture = scientificBatchFixture()
+  const state = completedScientificState(fixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-legacy-release-secret-at-least-32-bytes'
+  const batchId = 'scientific-v2-legacy-recovery-release'
+  const original = createScientificV2MongoRepository(storage.db, () => FIXED_NOW)
+  await original.freezeBatch({ batchId, ...fixture })
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  const blocked = blockedProviderCanaryState(fixture)
+  batch.state = structuredClone(blocked)
+  batch.stateHash = blocked.stateHash
+  batch.status = 'blocked'
+  const executionCodeSha = 'b'.repeat(40)
+  const recovery = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'legacy-release-recovery', {
+    operatorReportSecret: secret, immutableCodeSha: executionCodeSha, verifyObject: async () => {},
+  })
+  const attestation = await recovery.operatorAttestation({ batchId })
+  batch.state = structuredClone(fixture.initialState)
+  batch.stateHash = fixture.initialState.stateHash
+  batch.stateTransitionFromHash = null
+  batch.status = 'frozen'
+  batch.revision = 0
+
+  const input = await preparePublishFacts(recovery, fixture, state, secret, batchId, {
+    lineage: {
+      manifestCodeSha: attestation.manifestCodeSha,
+      executionCodeSha: attestation.executionCodeSha,
+      legacyRecoveryStateHash: attestation.legacyRecoveryStateHash,
+    },
+  })
+  await recovery.publishScientificV2({ batchId, ...input })
+
+  const release = storage.rows.get('paperbanana_benchmark_releases')![0]
+  assert.equal(release.manifestCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.executionCodeSha, executionCodeSha)
+  assert.equal(release.legacyRecovery, true)
+  assert.equal(release.methodology.legacyRecovery, true)
+  assert.equal('codeSha' in release, false)
+  assert.equal('stateHash' in release, false)
 })
 
 test('Codex terminal import and publish allow later failed slots while deriving actual successes and all tool calls', async () => {
@@ -2062,8 +2355,8 @@ test('Codex provenance binds the first canary slot final successful attempt hash
   assert.equal(signed.report.codexProvenance?.artifactCanaryHash, state.slots.find((slot: any) => slot.provider === 'codex').attempts.at(-1).rawImageHash)
 })
 
-test('publish audits a failed provider as zero while preserving its four real attempts and zero-attempt propagation', async () => {
-  const fixture = scientificBatchFixture()
+test('publish audits only the failed canary route as zero and preserves both adjacent route identities', async () => {
+  const fixture = scientificBatchFixture({ secondBailianModel: true, splitCanonicalAcrossProviders: true })
   const state = propagatedProviderCanaryFailureState(fixture)
   const storage = atomicScientificDb()
   const secret = 'scientific-v2-publish-canary-secret-at-least-32-bytes'
@@ -2078,15 +2371,30 @@ test('publish audits a failed provider as zero while preserving its four real at
   const release = storage.rows.get('paperbanana_benchmark_releases')![0]
   const canary = state.slots.find((slot: any) => slot.isProviderCanary && slot.status === 'failed')!
   const model = release.models.find((candidate: any) => candidate.canonicalModelId === canary.canonicalModelId)!
-  assert.ok(Object.values(model.scores).every((score) => score === 0))
-  assert.deepEqual(model.attemptSummary, { total: 4, succeeded: 0, failed: 9, unsupported: 0 })
+  assert.ok(Object.values(model.scores).some((score) => Number(score) > 0))
+  assert.deepEqual(model.attemptSummary, { total: 7, succeeded: 3, failed: 6, unsupported: 0 })
   assert.equal(model.evidence.find((item: any) => item.caseId === canary.caseId).failureReason, 'confirmed_attempts_exhausted')
-  assert.ok(model.evidence.filter((item: any) => item.caseId !== canary.caseId)
+  const propagatedCaseIds = new Set(state.slots.filter((slot: any) => slot.provider === canary.provider
+    && slot.canonicalModelId === canary.canonicalModelId && slot.slotId !== canary.slotId).map((slot: any) => slot.caseId))
+  assert.ok(model.evidence.filter((item: any) => propagatedCaseIds.has(item.caseId))
     .every((item: any) => item.failureReason === 'provider_canary_confirmed_failed'
       && item.attemptSummary.count === 0 && item.attemptSummary.responseClasses.length === 0))
+  const otherProviderSlots = state.slots.filter((slot: any) => slot.provider !== canary.provider
+    && slot.canonicalModelId === canary.canonicalModelId)
+  assert.equal(otherProviderSlots.length, 3)
+  assert.ok(otherProviderSlots.every((slot: any) => slot.status === 'succeeded' && slot.attempts.length === 1))
+  assert.ok(model.evidence.filter((item: any) => otherProviderSlots.some((slot: any) => slot.caseId === item.caseId))
+    .every((item: any) => item.failureReason === undefined && item.attemptSummary.count === 1))
+  const sameProviderModel = release.models.find((candidate: any) => candidate.canonicalModelId !== canary.canonicalModelId
+    && state.slots.some((slot: any) => slot.canonicalModelId === candidate.canonicalModelId && slot.provider === canary.provider))!
+  assert.ok(Object.values(sameProviderModel.scores).some((score) => Number(score) > 0))
+  assert.deepEqual(sameProviderModel.attemptSummary, { total: 9, succeeded: 9, failed: 0, unsupported: 0 })
   const markers = storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches') || []
-  assert.equal(markers.length, 4)
-  assert.ok(markers.every((marker) => marker.slotId === canary.slotId && marker.status === 'committed'))
+  assert.equal(markers.filter((marker) => marker.slotId === canary.slotId && marker.status === 'committed').length, 4)
+  assert.equal(markers.filter((marker) => otherProviderSlots.some((slot: any) => slot.slotId === marker.slotId)
+    && marker.status === 'committed').length, 3)
+  assert.equal(markers.filter((marker) => state.slots.some((slot: any) => slot.canonicalModelId === sameProviderModel.canonicalModelId
+    && slot.slotId === marker.slotId) && marker.status === 'committed').length, 9)
 })
 
 test('publish requires exact private raw/source keys and exact public rendition key by kind', async (t) => {

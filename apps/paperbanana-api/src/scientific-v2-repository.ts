@@ -48,7 +48,8 @@ const reviewRedLineCodes = new Set<string>(SCIENTIFIC_REVIEW_RED_LINE_CODES)
 const scientificCaseOrder = new Map(PB_SCIENTIFIC_FIGURE_V2.cases.map((scientificCase, index) => [scientificCase.id, index]))
 const stateOperationReportPayloadKeys = [
   'schemaVersion', 'identity', 'kind', 'batchId', 'batchManifestHash', 'revision', 'previousStateHash',
-  'stateHash', 'state', 'providerCanaryAttestation', 'executionOrderAttestation', 'codexProvenance',
+  'stateHash', 'state', 'manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash',
+  'providerCanaryAttestation', 'executionOrderAttestation', 'codexProvenance',
   'disclosure', 'createdAt',
 ] as const
 const confirmedFailureResponseClasses = new Set(['confirmed_technical_failure', 'confirmed_provider_failure'])
@@ -58,17 +59,21 @@ function isExactConfirmedCanaryFailure(slot: AnyRecord) {
     && slot.attempts.every((attempt: AnyRecord) => confirmedFailureResponseClasses.has(attempt.responseClass))
 }
 
-function isProviderCanaryPropagatedFailure(slot: AnyRecord) {
+function isCanaryRoutePropagatedFailure(slot: AnyRecord) {
   return slot.isProviderCanary === false && slot.supported === true && slot.status === 'failed'
     && typeof slot.provider === 'string' && slot.provider !== 'codex'
     && slot.attempts.length === 0 && slot.costCny === 0
+}
+
+function canaryRouteIdentity(slot: AnyRecord) {
+  return `${slot.provider}\u0000${slot.canonicalModelId}`
 }
 
 export function scientificV2FailureReason(slot: AnyRecord) {
   if (slot.status === 'unsupported') {
     return slot.operation === 'edit' ? 'direct_edit_route_unavailable' : 'capability_unsupported'
   }
-  if (isProviderCanaryPropagatedFailure(slot)) {
+  if (isCanaryRoutePropagatedFailure(slot)) {
     return 'provider_canary_confirmed_failed'
   }
   return 'confirmed_attempts_exhausted'
@@ -84,6 +89,9 @@ export type ScientificV2StateOperationReport = {
   previousStateHash: string
   stateHash: string
   state: AnyRecord
+  manifestCodeSha: string
+  executionCodeSha: string
+  legacyRecoveryStateHash: string | null
   providerCanaryAttestation: AnyRecord
   executionOrderAttestation: AnyRecord
   codexProvenance: AnyRecord | null
@@ -101,7 +109,12 @@ export function normalizeScientificV2StateOperationReport(value: AnyRecord): Sci
     || !hashPattern.test(String(value.batchManifestHash || ''))
     || !Number.isInteger(value.revision) || value.revision < 1
     || !hashPattern.test(String(value.previousStateHash || ''))
-    || !hashPattern.test(String(value.stateHash || '')) || value.stateHash !== value.state?.stateHash) {
+    || !hashPattern.test(String(value.stateHash || '')) || value.stateHash !== value.state?.stateHash
+    || !codeShaPattern.test(String(value.manifestCodeSha || ''))
+    || !codeShaPattern.test(String(value.executionCodeSha || ''))
+    || (value.manifestCodeSha === value.executionCodeSha
+      ? value.legacyRecoveryStateHash !== null
+      : !hashPattern.test(String(value.legacyRecoveryStateHash || '')))) {
     scientificError('SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
   }
   assertIsoInstant(value.createdAt, 'SCIENTIFIC_V2_OPERATION_REPORT_SCHEMA_INVALID')
@@ -309,7 +322,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
       if (!slot.attempts.length || !['succeeded', 'succeeded_low_quality'].includes(slot.attempts.at(-1).responseClass)) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'failed') {
       const exhausted = slot.attempts.length === 4 && confirmedFailureResponseClasses.has(slot.attempts.at(-1)?.responseClass)
-      const propagated = isProviderCanaryPropagatedFailure(slot)
+      const propagated = isCanaryRoutePropagatedFailure(slot)
       if (!exhausted && !propagated) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'unknown' && slot.attempts.at(-1)?.responseClass !== 'unknown_provider_outcome') scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     else if (slot.status === 'retrying' && (!slot.attempts.length || slot.attempts.length >= 4
@@ -332,13 +345,13 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     }
   }
   const legacyBlockedCanaryFailure = state.status === 'blocked' && state.blockReason === 'provider_canary_failed'
-  const failedCanaryProviders = new Set(state.slots.filter(isExactConfirmedCanaryFailure).map((slot: AnyRecord) => slot.provider))
-  const propagatedFailures = state.slots.filter(isProviderCanaryPropagatedFailure)
-  if (propagatedFailures.some((slot: AnyRecord) => !failedCanaryProviders.has(slot.provider))) {
+  const failedCanaryRoutes = new Set(state.slots.filter(isExactConfirmedCanaryFailure).map(canaryRouteIdentity))
+  const propagatedFailures = state.slots.filter(isCanaryRoutePropagatedFailure)
+  if (propagatedFailures.some((slot: AnyRecord) => !failedCanaryRoutes.has(canaryRouteIdentity(slot)))) {
     scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
   }
-  if (!legacyBlockedCanaryFailure && [...failedCanaryProviders].some((provider) => state.slots.some((slot: AnyRecord) => slot.provider === provider
-    && !slot.isProviderCanary && !isProviderCanaryPropagatedFailure(slot)))) {
+  if (!legacyBlockedCanaryFailure && [...failedCanaryRoutes].some((routeIdentity) => state.slots.some((slot: AnyRecord) => canaryRouteIdentity(slot) === routeIdentity
+    && !slot.isProviderCanary && !isCanaryRoutePropagatedFailure(slot)))) {
     scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
   }
   const priceReconciliationSlot = state.slots.find((slot: AnyRecord) => slot.status === 'price_reconciliation')
@@ -365,7 +378,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     || (state.status === 'ready' && slotStatuses.some((status: string) => status !== 'pending'))
     || (state.status === 'canary_complete' && (state.slots.some((slot: AnyRecord) => slot.isProviderCanary
       ? !(slot.status === 'succeeded' || isExactConfirmedCanaryFailure(slot))
-      : failedCanaryProviders.has(slot.provider) ? !isProviderCanaryPropagatedFailure(slot) : slot.status !== 'pending')
+      : failedCanaryRoutes.has(canaryRouteIdentity(slot)) ? !isCanaryRoutePropagatedFailure(slot) : slot.status !== 'pending')
       || state.slots.filter((slot: AnyRecord) => slot.isProviderCanary).length !== new Set(manifest.executionOrder
         .filter((slot: AnyRecord) => slot.isProviderCanary).map((slot: AnyRecord) => slot.provider)).size))
     || (state.status === 'running' && slotStatuses.some((status: string) => ['unknown', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(status)))
@@ -708,6 +721,65 @@ export function createScientificV2MongoRepository(
     return secret
   }
 
+  const validateStoredCodeLineage = (batch: AnyRecord, executionCodeSha: string) => {
+    const fields = ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash'] as const
+    const present = fields.map((field) => Object.hasOwn(batch, field))
+    if (present.some(Boolean) && !present.every(Boolean)) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+    if (!present.every(Boolean)) return null
+    const lineage = {
+      manifestCodeSha: batch.manifestCodeSha,
+      executionCodeSha: batch.executionCodeSha,
+      legacyRecoveryStateHash: batch.legacyRecoveryStateHash,
+    }
+    if (!codeShaPattern.test(String(lineage.manifestCodeSha || ''))
+      || !codeShaPattern.test(String(lineage.executionCodeSha || ''))
+      || lineage.manifestCodeSha !== batch.manifest?.codeSha
+      || lineage.executionCodeSha !== executionCodeSha
+      || (lineage.legacyRecoveryStateHash !== null && !hashPattern.test(String(lineage.legacyRecoveryStateHash || '')))
+      || (lineage.legacyRecoveryStateHash === null && lineage.manifestCodeSha !== lineage.executionCodeSha)) {
+      scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+    }
+    return lineage
+  }
+
+  const ensureBatchCodeLineage = async (batch: AnyRecord) => {
+    if (batch.manifestHash !== batch.manifest?.manifestHash || batch.stateHash !== batch.state?.stateHash) {
+      scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+    }
+    const manifestCodeSha = String(batch.manifest?.codeSha || '')
+    const executionCodeSha = String(options.immutableCodeSha || manifestCodeSha)
+    if (!codeShaPattern.test(manifestCodeSha) || !codeShaPattern.test(executionCodeSha)) {
+      scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+    }
+    const stored = validateStoredCodeLineage(batch, executionCodeSha)
+    if (stored) return stored
+    const exactLegacyBlocked = batch.status === 'blocked' && batch.stateHash === batch.state?.stateHash
+      && batch.state?.status === 'blocked' && batch.state?.blockReason === 'provider_canary_failed'
+    if (exactLegacyBlocked) verifyScientificV2ImportedState(batch.state, batch.manifest)
+    if (manifestCodeSha !== executionCodeSha && !exactLegacyBlocked) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+    const lineage = {
+      manifestCodeSha,
+      executionCodeSha,
+      legacyRecoveryStateHash: manifestCodeSha !== executionCodeSha && exactLegacyBlocked ? batch.stateHash : null,
+    }
+    const updated = await batches.updateOne(
+      {
+        _id: batch._id,
+        manifestCodeSha: { $exists: false }, executionCodeSha: { $exists: false }, legacyRecoveryStateHash: { $exists: false },
+      },
+      { $set: structuredClone(lineage) },
+    )
+    if (updated.modifiedCount !== 1) {
+      const raced = await batches.findOne({ _id: batch._id })
+      if (!raced) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      const racedLineage = validateStoredCodeLineage(raced, executionCodeSha)
+      if (!racedLineage) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      return racedLineage
+    }
+    Object.assign(batch, lineage)
+    return lineage
+  }
+
   return {
     async ensureIndexes() {
       const indexes = [
@@ -795,12 +867,15 @@ export function createScientificV2MongoRepository(
     async operatorAttestation(input: { batchId?: string; manifestHash?: string }) {
       const batch = await batches.findOne(input.batchId ? { batchId: input.batchId } : { manifestHash: input.manifestHash })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_FOUND')
+      const secret = operatorSecret()
+      const codeLineage = await ensureBatchCodeLineage(batch)
       const report = {
         schemaVersion: 2 as const,
         ...SCIENTIFIC_BENCHMARK_IDENTITY,
         batchId: batch.batchId,
         batchManifestHash: batch.manifestHash,
         stateHash: batch.stateHash,
+        ...codeLineage,
         daemon: { enabled: false as const, status: 'configured-disabled' as const },
         concurrency: 1 as const,
         lockName: batch.manifest.lockName,
@@ -812,7 +887,7 @@ export function createScientificV2MongoRepository(
         issuedAt: now().toISOString(),
       }
       const reportHash = canonicalHash(report)
-      const attestationKey = createHmac('sha256', operatorSecret()).update(OPERATOR_ATTESTATION_DOMAIN).digest()
+      const attestationKey = createHmac('sha256', secret).update(OPERATOR_ATTESTATION_DOMAIN).digest()
       return deepFreeze({ ...report, reportHash, attestationHash: createHmac('sha256', attestationKey).update(reportHash).digest('hex') })
     },
     async operatorDiagnostic(input: { batchId?: string; manifestHash?: string }) {
@@ -866,6 +941,12 @@ export function createScientificV2MongoRepository(
         || input.report.stateHash !== input.report.state?.stateHash) scientificError('SCIENTIFIC_V2_OPERATOR_REPORT_SCHEMA_INVALID')
       const batch = await batches.findOne({ batchId: input.report.batchId, manifestHash: input.report.batchManifestHash })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_FOUND')
+      const codeLineage = await ensureBatchCodeLineage(batch)
+      if (input.report.manifestCodeSha !== codeLineage.manifestCodeSha
+        || input.report.executionCodeSha !== codeLineage.executionCodeSha
+        || input.report.legacyRecoveryStateHash !== codeLineage.legacyRecoveryStateHash) {
+        scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      }
       const existing = await reviews.findOne({ _id: `scientific-v2-state-report:${input.reportHash}` })
       if (existing) return { stateHash: input.report.stateHash, reviewReady: existing.reviewReady === true, replayed: true }
       if (batch.status === 'published') scientificError('SCIENTIFIC_V2_LATE_IMPORT_REJECTED')
@@ -1208,21 +1289,34 @@ export function createScientificV2MongoRepository(
       const alreadyPublished = await batches.findOne({ batchId: input.batchId, status: 'published' })
       if (alreadyPublished?.releaseId) {
         const existing = await releases.findOne({ _id: alreadyPublished.releaseId })
-        if (!existing || existing.releaseHash !== alreadyPublished.releaseHash) scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
+        if (!existing) scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
+        operatorSecret()
+        const codeLineage = await ensureBatchCodeLineage(alreadyPublished)
+        const { _id: _releaseId, releaseHash: storedReleaseHash, ...releaseBase } = existing
+        if (storedReleaseHash !== alreadyPublished.releaseHash || canonicalHash(releaseBase) !== storedReleaseHash
+          || existing.manifestCodeSha !== codeLineage.manifestCodeSha
+          || existing.executionCodeSha !== codeLineage.executionCodeSha
+          || existing.legacyRecovery !== (codeLineage.legacyRecoveryStateHash !== null)) {
+          scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
+        }
         return { releaseId: existing._id, releaseHash: existing.releaseHash, profileStatus: 'published', replayed: true }
       }
       const batch = await batches.findOne({ batchId: input.batchId, status: { $in: ['review_finalized', 'review_ready'] }, reviewFinalHash: { $exists: true } })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_PUBLISHABLE')
+      const secret = operatorSecret()
+      const codeLineage = await ensureBatchCodeLineage(batch)
       verifyScientificV2ImportedState(batch.state, batch.manifest)
       if (batch.state.status !== 'completed' || batch.state.slots.some((slot: AnyRecord) => !['succeeded', 'failed', 'unsupported'].includes(slot.status))) {
         scientificError('SCIENTIFIC_V2_BATCH_NOT_TERMINAL')
       }
-      const secret = operatorSecret()
       const stateReportRow = await reviews.findOne({ _id: `scientific-v2-state-report:${batch.latestStateReportHash}` })
       if (!stateReportRow || stateReportRow.reportHash !== batch.latestStateReportHash
         || normalizeScientificV2StateOperationReport(stateReportRow.report).reportHash !== stateReportRow.reportHash
         || !safeHmacEqual(stateReportRow.attestationHash, createHmac('sha256', secret).update(stateReportRow.reportHash).digest('hex'))
         || stateReportRow.report.stateHash !== batch.stateHash
+        || stateReportRow.report.manifestCodeSha !== codeLineage.manifestCodeSha
+        || stateReportRow.report.executionCodeSha !== codeLineage.executionCodeSha
+        || stateReportRow.report.legacyRecoveryStateHash !== codeLineage.legacyRecoveryStateHash
         || canonicalHash(stateReportRow.report.state) !== canonicalHash(batch.state)) {
         scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       }
@@ -1484,10 +1578,11 @@ export function createScientificV2MongoRepository(
         suiteHash: batch.manifest.suiteHash,
         registryHash: batch.manifest.registryHash,
         priceHash: batch.manifest.priceHash,
-        codeSha: batch.manifest.codeSha,
+        manifestCodeSha: codeLineage.manifestCodeSha,
+        executionCodeSha: codeLineage.executionCodeSha,
+        legacyRecovery: codeLineage.legacyRecoveryStateHash !== null,
         batchId: batch.batchId,
         batchManifestHash: batch.manifestHash,
-        stateHash: batch.stateHash,
         reviewFinalHash: batch.reviewFinalHash,
         sampleCount: batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded').length,
         automaticJudges: [] as unknown[], automaticJudgeCalls: 0,
@@ -1498,6 +1593,9 @@ export function createScientificV2MongoRepository(
           overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0,
           retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' },
           routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { ...SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY },
+          manifestCodeSha: codeLineage.manifestCodeSha,
+          executionCodeSha: codeLineage.executionCodeSha,
+          legacyRecovery: codeLineage.legacyRecoveryStateHash !== null,
           automaticJudges: [] as unknown[],
           blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
           knownLimitations: ['fixed-nine-case-suite', 'single-production-run-per-model', 'human-codex-double-review'],

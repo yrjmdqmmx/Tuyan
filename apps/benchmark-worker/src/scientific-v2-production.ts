@@ -695,12 +695,32 @@ export function createScientificV2MongoRepository(
       const claimToken = createClaimToken()
       if (typeof claimToken !== 'string' || claimToken.length < 8) scientificV2Error('SCIENTIFIC_V2_CLAIM_TOKEN_INVALID')
       const state = structuredClone(frozenState(current.state, batchManifest(current))) as ScientificV2BatchState
+      const execution = input.execution || {
+        manifestCodeSha: batchManifest(current).codeSha,
+        executionCodeSha: batchManifest(current).codeSha,
+        legacyRecoveryStateHash: null,
+      }
+      const existingLineage = current.executionLineage
+      const exactLineage = (value: unknown) => value && typeof value === 'object'
+        && !Array.isArray(value) && canonicalHash(value) === canonicalHash(execution)
+      if (execution.manifestCodeSha !== batchManifest(current).codeSha
+        || !/^[a-f0-9]{40}$/.test(execution.executionCodeSha)
+        || (execution.manifestCodeSha === execution.executionCodeSha
+          ? execution.legacyRecoveryStateHash !== null
+          : !/^[a-f0-9]{64}$/.test(String(execution.legacyRecoveryStateHash || '')))) {
+        scientificV2Error('SCIENTIFIC_V2_EXECUTION_LINEAGE_INVALID')
+      }
+      const legacyRecovery = state.status === 'blocked' && state.blockReason === 'provider_canary_failed'
+      if (execution.manifestCodeSha !== execution.executionCodeSha
+        && !(legacyRecovery && execution.legacyRecoveryStateHash === state.stateHash && !existingLineage)
+        && !exactLineage(existingLineage)) scientificV2Error('SCIENTIFIC_V2_EXECUTION_LINEAGE_INVALID')
       if (!reclaim) {
         if (state.status === 'blocked' && state.blockReason === 'provider_canary_failed') {
           const failedCanary = state.slots.find((slot) => slot.isProviderCanary && slot.status === 'failed')
           if (!failedCanary?.provider) scientificV2Error('SCIENTIFIC_V2_REPOSITORY_BATCH_INVALID')
           for (const slot of state.slots) if (slot.status === 'not_executed') {
-            if (slot.provider === failedCanary.provider && slot.supported) {
+            if (slot.provider === failedCanary.provider
+              && slot.canonicalModelId === failedCanary.canonicalModelId && slot.supported) {
               slot.status = 'failed'
               slot.attempts = []
               slot.costCny = 0
@@ -725,6 +745,7 @@ export function createScientificV2MongoRepository(
         { $set: {
           state, stateHash: state.stateHash,
           ...(reclaim ? {} : { stateTransitionFromHash: input.expectedReadyStateHash }),
+          ...(execution.manifestCodeSha === execution.executionCodeSha ? {} : { executionLineage: structuredClone(execution) }),
           status: 'running', claimToken, claimedAt: claimNow, claimHeartbeatAt: claimNow, claimLeaseExpiresAt,
         } },
         { returnDocument: 'after' },

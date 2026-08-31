@@ -7,6 +7,8 @@ import {
 import { createHash } from 'node:crypto'
 import { randomUUID } from 'node:crypto'
 
+import { loadBuildProvenance } from './build-provenance.js'
+
 import { assertExactScientificV2Keys, isScientificV2Hash, scientificV2Error } from './scientific-v2-common.js'
 import { loadAuthoritativeImageRuntime } from './authoritative-runtime.js'
 import { importScientificCodexArtifacts } from './scientific-v2-codex.js'
@@ -57,12 +59,14 @@ interface ScientificV2OperatorCodexInput {
   previousStateHash: string
   createdAt: string
   attestationSecret: string
+  execution?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null }
 }
 interface ScientificV2OperatorReportInput {
   batchId: string
   revision: number
   createdAt: string
   attestationSecret: string
+  execution?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null }
 }
 interface ScientificV2ProductionFactoryDependencies {
   connectMongo?(env: Record<string, string | undefined>): Promise<{ db: unknown; close(): Promise<void> }>
@@ -132,6 +136,9 @@ export type ScientificV2OperatorBundle = ScientificV2OperatorInspectBundle | {
 } | {
   operation: 'run'; gate: OperatorGate
   executionPhase?: 'canary-only' | 'full'
+  manifestCodeSha: string
+  executionCodeSha: string
+  legacyRecoveryStateHash: string | null
   manifest: Parameters<typeof runScientificV2Batch>[0]['manifest']
   state: Parameters<typeof runScientificV2Batch>[0]['state']
   report: ScientificV2OperatorReportInput
@@ -159,6 +166,22 @@ function assertScientificV2ProductionControlGate(env: Record<string, string | un
     || env.PAPERBANANA_SCIENTIFIC_V2_RUN_ENABLED !== 'true'
     || env.PAPERBANANA_SCIENTIFIC_V2_HOST_LOCK_PROOF !== SCIENTIFIC_V2_PRODUCTION_LOCK_NAME) {
     scientificV2Error('SCIENTIFIC_V2_PRODUCTION_RUN_GATE_INVALID')
+  }
+}
+
+async function assertExecutionLineage(env: Record<string, string | undefined>, manifest: ScientificV2BatchManifest, execution: ScientificV2OperatorReportInput['execution']) {
+  if (!execution) return
+  assertExactScientificV2Keys(execution, ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+  const provenance = await loadBuildProvenance(
+    env.PAPERBANANA_SCIENTIFIC_V2_CANONICAL_PROVENANCE_PATH || '/app/build-provenance.json',
+  )
+  if (execution.manifestCodeSha !== manifest.codeSha || !/^[a-f0-9]{40}$/.test(execution.executionCodeSha)
+    || provenance.codeSha !== execution.executionCodeSha
+    || env.PAPERBANANA_CODE_SHA !== execution.executionCodeSha
+    || (execution.manifestCodeSha === execution.executionCodeSha
+      ? execution.legacyRecoveryStateHash !== null
+      : !isScientificV2Hash(execution.legacyRecoveryStateHash))) {
+    scientificV2Error('SCIENTIFIC_V2_EXECUTION_LINEAGE_INVALID')
   }
 }
 
@@ -476,9 +499,11 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     assertExactScientificV2Keys(bundle.input, [
       'manifestHash', 'stateHash', 'manifest', 'state', 'provenance', 'toolCalls',
       'batchId', 'revision', 'previousStateHash', 'createdAt', 'attestationSecret',
+      ...(bundle.input.execution ? ['execution'] : []),
     ], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     const {
       batchId, revision, previousStateHash, createdAt, attestationSecret,
+      execution,
       ...codexInput
     } = bundle.input
     assertScientificV2StateOperationReportMetadata({ batchId, revision, createdAt, attestationSecret })
@@ -495,7 +520,9 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     )
     return createScientificV2SignedStateOperationReport({
       kind: 'codex', batchId, manifest: codexInput.manifest, state: imported.state,
-      revision, previousStateHash, createdAt, attestationSecret, codexImport: imported,
+      revision, previousStateHash, createdAt, attestationSecret,
+      ...(execution ? { execution } : {}),
+      codexImport: imported,
     }) as unknown as Record<string, unknown>
   }
   if (bundle.operation === 'review_pack') {
@@ -602,12 +629,23 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
   }
   if (bundle.operation === 'run') {
     assertExactScientificV2Keys(bundle, Object.hasOwn(bundle, 'executionPhase')
-      ? ['operation', 'gate', 'executionPhase', 'manifest', 'state', 'report']
-      : ['operation', 'gate', 'manifest', 'state', 'report'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+      ? ['operation', 'gate', 'executionPhase', 'manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash', 'manifest', 'state', 'report']
+      : ['operation', 'gate', 'manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash', 'manifest', 'state', 'report'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     if (![undefined, 'canary-only', 'full'].includes(bundle.executionPhase)) scientificV2Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
-    assertScientificV2StateOperationReportMetadata(bundle.report)
+    const execution = {
+      manifestCodeSha: bundle.manifestCodeSha,
+      executionCodeSha: bundle.executionCodeSha,
+      legacyRecoveryStateHash: bundle.legacyRecoveryStateHash,
+    }
+    assertScientificV2StateOperationReportMetadata({
+      batchId: bundle.report.batchId,
+      revision: bundle.report.revision,
+      createdAt: bundle.report.createdAt,
+      attestationSecret: bundle.report.attestationSecret,
+    })
     verifyScientificV2BatchManifest(bundle.manifest)
     verifyScientificV2BatchState(bundle.state, bundle.manifest)
+    await assertExecutionLineage(context?.env || process.env, bundle.manifest, execution)
     const dependencies = await createScientificV2ProductionRunDependencies(context?.env || process.env, context?.productionDependencies)
     let operationResult: Record<string, unknown> | null = null
     let operationError: unknown = null
@@ -618,6 +656,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
           enabled: false, concurrency: 1, lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME, repositoryMode: 'atomic-v2',
           batchId: bundle.report.batchId, revision: bundle.report.revision,
           phase: bundle.executionPhase || 'full',
+          execution,
         },
         ...dependencies,
       })
@@ -626,6 +665,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
         batchId: bundle.report.batchId, revision: bundle.report.revision,
         previousStateHash: result.previousStateHash, createdAt: bundle.report.createdAt,
         attestationSecret: bundle.report.attestationSecret,
+        execution,
       }) as unknown as Record<string, unknown>
     } catch (error) {
       operationError = error

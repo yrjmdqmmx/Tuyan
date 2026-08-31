@@ -24,11 +24,33 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] Scientific V2 canary 失败仅按精确 route identity 审计归零 — by Codex
+纠正：单个 provider canary 槽位四次 confirmed failure 只证明精确 `{provider, canonicalModelId}` route identity 本次不可用。仅同时匹配该 provider 与 canonical model 的其他 supported 槽位可派生为 `failed + attempts=[] + costCny=0`；同 provider 的其他 canonical models，以及不同 provider 上的同一 canonical model，都必须继续真实执行，不能被归零或跳过。`providerCanaryAttestation.passed=false` 仍如实绑定 canary 事实，不代表 provider 内所有模型或该 canonical model 的其他路由失败。
+
+兼容边界：旧 `blocked/provider_canary_failed` 状态继续仅用于恢复；unknown provider outcome 仍整批暂停且零重试；双 SHA 与 legacy recovery lineage 不变。公开失败原因仍为 `provider_canary_confirmed_failed`，但其归属严格由已验证 state 中相同 `{provider, canonicalModelId}` 的失败 canary 决定，预算/unknown/reconciliation 绝不折算为零。
+
+各端待办：
+- [x] paperbanana-api / Laf Core（镜像 verifier、report import、review/publish 与跨 provider/canonical TDD）
+- [x] Benchmark Worker（runner/state verifier 以精确 `{provider, canonicalModelId}` 传播，并覆盖跨 provider 同 canonical 路由继续执行）
+- [ ] 部署 / 运维（仅在 Worker/Core 同一 immutable SHA 且全量验证后恢复）
+- [x] Web / 原生端（公开字段不变；无需请求改造）
+
+### [2026-08-31] Scientific V2 manifest / execution 双 SHA 与一次性 legacy recovery lineage — by Codex
+变更：Scientific V2 不再使用含义模糊的单一公开 `codeSha`。内部 operator attestation、state operation report、Core import/publish 绑定 `manifestCodeSha`、`executionCodeSha`、`legacyRecoveryStateHash`：普通执行必须两 SHA 相等且 recovery hash 为 null；仅 verifier 精确确认的旧 `blocked/provider_canary_failed` 状态可在首次恢复时绑定当时 state hash，并在同一 batch 后续阶段保持不可变 lineage。
+
+公开契约：Scientific release 与 methodology 仅公开 `manifestCodeSha`、`executionCodeSha`、`legacyRecovery` 布尔值；不公开内部 state hash，也不再输出模糊单 `codeSha`。重新签 hash 但夹带 `codeSha/stateHash` 的 Scientific release 仍 fail closed。
+
+各端待办：
+- [x] paperbanana-api / Laf Core（lineage 原子固定、report/import/publish 精确校验、公开投影与 TDD）
+- [x] Benchmark Worker（run bundle、state report 三字段与恢复续跑一致性）
+- [x] 部署 / 运维（attest/stager/operator exact schema 与 immutable execution SHA）
+- [x] Web / 原生端（字段为公开只读元数据；现有榜单无需请求参数变更）
+
 ### [2026-08-31] Scientific V2 provider canary 失败的分 provider 归零执行语义 — by Codex
-变更：Benchmark Worker 不再因某 provider canary 的四次已确认失败而阻断整个批次。失败 canary 保留四次完整 attempts；同一 provider 的其余 supported slot 写入 `failed`、零 attempts、`costCny=0`，作为固定九槽的可审核零分结论，并不再调用该 provider。Ark/OpenRouter 可继续执行；unknown provider outcome 继续保持整批 `paused/reconciliation_required` 与零重试。旧的 `blocked/provider_canary_failed` 状态仍通过 verifier，以支持生产恢复。
+变更：Benchmark Worker 不再因某 provider canary 的四次已确认失败而阻断整个批次。失败 canary 保留四次完整 attempts；同一 provider 的其余 supported slot 写入 `failed`、零 attempts、`costCny=0`，作为固定九槽的可审核零分结论，并不再调用该 provider。Ark/OpenRouter 可继续执行；unknown provider outcome 继续保持整批 `paused/reconciliation_required` 与零重试。旧的 `blocked/provider_canary_failed` 状态仍通过 verifier，以支持生产恢复。该语义已被上方“精确 route identity 审计归零”条目纠正。
 
 契约（影响 Worker / Core API / 运维）：
-- **state/report**：`providerCanaryAttestation.passed` 现在可为 `false`，但仍由完整 canonical state/report HMAC 绑定；新状态中 failed canary 必须恰为四次 confirmed failure，派生的同 provider 零 attempt failed 仅在非旧 blocked 状态合法。`canary_complete` 可包含一个此类失败 canary，后续 full 不得重派该 provider。
+- **state/report**：`providerCanaryAttestation.passed` 现在可为 `false`，但仍由完整 canonical state/report HMAC 绑定；新状态中 failed canary 必须恰为四次 confirmed failure，派生的同 provider 零 attempt failed 仅在非旧 blocked 状态合法。`canary_complete` 可包含一个此类失败 canary，后续 full 不得重派该 provider。该传播范围已被上方纠正条目收窄为精确 `{provider, canonicalModelId}`。
 - **兼容边界**：Core API 的导入、review-ready、发布与公开 failure reason 必须同步接受并如实展示该可审核零分状态；在同步前不得把 Worker partial state 导入生产。
 
 各端待办：

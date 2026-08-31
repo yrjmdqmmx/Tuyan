@@ -188,6 +188,7 @@ test('scientific v2 host operator is executable and binds every immutable execut
   assert.match(source, /cases[\s\S]*length[\s\S]*9/)
   assert.match(source, /models[\s\S]*length/)
   assert.match(source, /registryHash/)
+  for (const field of ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash']) assert.match(source, new RegExp(field))
   assert.match(source, /suiteHash/)
   assert.match(source, /priceHash/)
   assert.match(source, /manifestHash/)
@@ -377,8 +378,9 @@ test('run accepts the exact Worker bundle without env, rejects env and never pri
   const runBundle = {
     operation: 'run',
     gate: { enabled: false, concurrency: 1, lockName },
+    executionPhase: 'full', manifestCodeSha: item.sha, executionCodeSha: item.sha, legacyRecoveryStateHash: null,
     manifest,
-    state: { manifestHash },
+    state: { manifestHash, status: 'canary_complete' },
     report: { batchId: 'scientific-v2-production-run', revision: 1, createdAt: '2026-08-31T06:00:00.000Z', attestationSecret },
   }
   try {
@@ -387,6 +389,23 @@ test('run accepts the exact Worker bundle without env, rejects env and never pri
     assert.equal(valid.status, 0, valid.stderr)
     assert.equal(JSON.parse(valid.stdout).dryRun, true)
     assert.doesNotMatch(`${valid.stdout}${valid.stderr}`, new RegExp(attestationSecret))
+
+    const legacyCodeSha = 'f'.repeat(40)
+    const legacyStateHash = 'a'.repeat(64)
+    const recoveryHash = item.writeBundle({
+      ...runBundle,
+      executionPhase: 'canary-only', manifestCodeSha: legacyCodeSha, executionCodeSha: item.sha,
+      legacyRecoveryStateHash: legacyStateHash, manifest: { ...manifest, codeSha: legacyCodeSha },
+      state: { manifestHash, status: 'blocked', blockReason: 'provider_canary_failed', pauseReason: null, stateHash: legacyStateHash },
+    })
+    const recovery = item.run('run', ['--bundle-sha256', recoveryHash])
+    assert.equal(recovery.status, 0, recovery.stderr)
+
+    const invalidRecoveryHash = item.writeBundle({
+      ...runBundle, manifestCodeSha: legacyCodeSha, manifest: { ...manifest, codeSha: legacyCodeSha },
+    })
+    const invalidRecovery = item.run('run', ['--bundle-sha256', invalidRecoveryHash])
+    assert.notEqual(invalidRecovery.status, 0)
 
     const withEnvHash = item.writeBundle({
       ...runBundle,
@@ -420,7 +439,8 @@ test('run rejects malformed report metadata before any run and emits no partial 
   }
   const base = {
     operation: 'run', gate: { enabled: false, concurrency: 1, lockName }, manifest,
-    state: { manifestHash },
+    executionPhase: 'full', manifestCodeSha: item.sha, executionCodeSha: item.sha, legacyRecoveryStateHash: null,
+    state: { manifestHash, status: 'canary_complete' },
     report: { batchId: 'scientific-v2-production-run', revision: 1, createdAt: '2026-08-31T06:00:00.000Z', attestationSecret: 'x'.repeat(32) },
   }
   try {
@@ -461,6 +481,7 @@ test('validated run stdout is the complete signed report accepted by the API nor
     },
     kind: 'worker', batchId: 'scientific-v2-production-run', batchManifestHash: manifestHash, revision: 1,
     previousStateHash: 'f'.repeat(64), stateHash: state.stateHash, state,
+    manifestCodeSha: item.sha, executionCodeSha: item.sha, legacyRecoveryStateHash: null,
     providerCanaryAttestation: { providers: ['bailian'], passed: true, attemptSetHash: 'a'.repeat(64) },
     executionOrderAttestation: { slotIds: slots.map((slot) => slot.slotId), passed: true },
     codexProvenance: null, disclosure: null, createdAt: '2026-08-31T06:00:00.000Z',
@@ -481,7 +502,8 @@ test('validated run stdout is the complete signed report accepted by the API nor
   try {
     const bundleHash = item.writeBundle({
       operation: 'run', gate: { enabled: false, concurrency: 1, lockName }, manifest,
-      state: { manifestHash }, report: { batchId: report.batchId, revision: report.revision, createdAt: report.createdAt, attestationSecret: secret },
+      executionPhase: 'full', manifestCodeSha: item.sha, executionCodeSha: item.sha, legacyRecoveryStateHash: null,
+      state: { manifestHash, status: 'canary_complete' }, report: { batchId: report.batchId, revision: report.revision, createdAt: report.createdAt, attestationSecret: secret },
     })
     const resultPath = join(item.root, 'tmp/signed-result.json')
     writeFileSync(resultPath, `${JSON.stringify(signed)}\n`, { mode: 0o600 })
@@ -510,7 +532,7 @@ test('validated run stdout is the complete signed report accepted by the API nor
 test('run output validation accepts only the signed Worker report and derives a bounded safe summary', () => {
   const source = readFileSync(operator, 'utf8')
   assert.match(source, /\["attestationHash","report","reportHash"\]/)
-  assert.match(source, /\["batchId","batchManifestHash","codexProvenance","createdAt","disclosure","executionOrderAttestation","identity","kind","previousStateHash","providerCanaryAttestation","reportHash","revision","schemaVersion","state","stateHash"\]/)
+  assert.match(source, /\["batchId","batchManifestHash","codexProvenance","createdAt","disclosure","executionCodeSha","executionOrderAttestation","identity","kind","legacyRecoveryStateHash","manifestCodeSha","previousStateHash","providerCanaryAttestation","reportHash","revision","schemaVersion","state","stateHash"\]/)
   assert.match(source, /\.report[.]kind == "worker"/)
   assert.match(source, /\.report[.]codexProvenance == null and \.report[.]disclosure == null/)
   assert.match(source, /\.reportHash == \.report[.]reportHash/)

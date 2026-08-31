@@ -97,11 +97,26 @@ function isArenaLeaderboardRelease(release: AnyRecord): boolean {
 }
 
 function isScientificLeaderboardRelease(release: AnyRecord): boolean {
+  const methodology = release.methodology
   return release.evaluationMode === SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode
     && release.profileStatus === 'published'
     && release.suiteId === SCIENTIFIC_BENCHMARK_IDENTITY.suiteId
     && release.suiteHash === PB_SCIENTIFIC_FIGURE_V2.manifestHash
     && release.presentationVersion === SCIENTIFIC_BENCHMARK_IDENTITY.presentationVersion
+    && /^[a-f0-9]{40}$/.test(String(release.manifestCodeSha || ''))
+    && /^[a-f0-9]{40}$/.test(String(release.executionCodeSha || ''))
+    && typeof release.legacyRecovery === 'boolean'
+    && !Object.hasOwn(release, 'codeSha') && !Object.hasOwn(release, 'stateHash')
+    && methodology?.manifestCodeSha === release.manifestCodeSha
+    && methodology?.executionCodeSha === release.executionCodeSha
+    && methodology?.legacyRecovery === release.legacyRecovery
+    && !Object.hasOwn(methodology, 'codeSha') && !Object.hasOwn(methodology, 'stateHash')
+}
+
+function assertScientificReleaseLineage(release: AnyRecord): void {
+  if (release.evaluationMode === SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode && !isScientificLeaderboardRelease(release)) {
+    throw new Error('SCIENTIFIC_RELEASE_LINEAGE_INVALID')
+  }
 }
 
 function hasPublicReproducibleMethodologySuite(release: AnyRecord): boolean {
@@ -137,6 +152,7 @@ function publicMethodology(methodology: AnyRecord | undefined, rankingMethod?: A
     'judgeDispatchCount', 'auditSampleCount', 'actualOutputPixels',
     'presentationVersion', 'expectedCaseCount', 'dimensions', 'overallFormula', 'tieMethod', 'failureScore',
     'retryPolicy', 'routePriority', 'providerBudgetsCny', 'blindReview', 'automaticJudgmentCount',
+    'manifestCodeSha', 'executionCodeSha', 'legacyRecovery',
   ]
   const publicValue = Object.fromEntries(allowed.filter((key) => methodology?.[key] !== undefined).map((key) => [key, structuredClone(methodology![key])]))
   return rankingMethod ? { ...publicValue, noOverallScore: false, rankingMethod } : publicValue
@@ -369,6 +385,7 @@ function normalizedPromptSubmission(body: AnyRecord) {
 export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (key: string) => Promise<string>, verifyEvidence: (key: string, imageHash: string) => Promise<void> = async () => {}): Promise<AnyRecord> {
   const { _id: _storedId, releaseHash: storedHash, ...releaseBase } = release
   if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
+  assertScientificReleaseLineage(release)
   const releaseId = String(release._id || release.releaseId || '')
   const evidence = []
   for (const item of Array.isArray(release.evidence) ? release.evidence : []) {
@@ -430,7 +447,11 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
     reviewerPasses: release.reviewerPasses,
     registryHash: release.registryHash,
     priceHash: release.priceHash,
-    codeSha: release.codeSha,
+    ...(scientificLeaderboard ? {
+      manifestCodeSha: release.manifestCodeSha,
+      executionCodeSha: release.executionCodeSha,
+      legacyRecovery: release.legacyRecovery === true,
+    } : { codeSha: release.codeSha }),
     lane: release.lane,
     sampleCount: release.sampleCount,
     auditRatio: release.auditRatio,
@@ -547,6 +568,7 @@ export function createBenchmarkService({
         if (release) {
           const { _id: _storedId, releaseHash: storedHash, ...releaseBase } = release
           if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
+          assertScientificReleaseLineage(release)
         }
         const reproducibleMethodology = release && hasPublicReproducibleMethodologySuite(release)
         const scientificMethodology = release && isScientificLeaderboardRelease(release)

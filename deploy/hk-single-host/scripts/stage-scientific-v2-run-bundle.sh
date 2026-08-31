@@ -171,6 +171,7 @@ STATE_KEYS = {
 ATTESTATION_KEYS = {
     'schemaVersion','suiteId','evaluationMode','evaluationEpoch','reviewProtocol','presentationVersion','batchId',
     'batchManifestHash','stateHash','daemon','concurrency','lockName','providerBudgetsCny','codexToolCallLimit',
+    'manifestCodeSha','executionCodeSha','legacyRecoveryStateHash',
     'modelCount','slotCount','revision','issuedAt','reportHash','attestationHash',
 }
 
@@ -247,7 +248,14 @@ try:
         raise RuntimeError('registry-snapshot')
     if node_hashes.get('priceSnapshotHash') != price_snapshot.get('snapshotHash'):
         raise RuntimeError('price-snapshot')
-    if manifest.get('codeSha') != code_sha or manifest.get('registryHash') != expected_registry_hash or manifest.get('suiteHash') != expected_suite_hash or manifest.get('priceHash') != expected_price_hash or price_snapshot.get('snapshotHash') != expected_price_hash:
+    manifest_code_sha = attestation.get('manifestCodeSha')
+    execution_code_sha = attestation.get('executionCodeSha')
+    legacy_recovery_state_hash = attestation.get('legacyRecoveryStateHash')
+    if (not isinstance(manifest_code_sha, str) or re.fullmatch(r'[a-f0-9]{40}', manifest_code_sha) is None
+            or not isinstance(execution_code_sha, str) or re.fullmatch(r'[a-f0-9]{40}', execution_code_sha) is None
+            or not (legacy_recovery_state_hash is None or (isinstance(legacy_recovery_state_hash, str) and re.fullmatch(r'[a-f0-9]{64}', legacy_recovery_state_hash) is not None))):
+        raise RuntimeError('schema')
+    if manifest.get('codeSha') != manifest_code_sha or execution_code_sha != code_sha or manifest.get('registryHash') != expected_registry_hash or manifest.get('suiteHash') != expected_suite_hash or manifest.get('priceHash') != expected_price_hash or price_snapshot.get('snapshotHash') != expected_price_hash:
         raise RuntimeError('expected-hashes')
     if manifest.get('manifestHash') != state.get('manifestHash') or manifest.get('manifestHash') != attestation.get('batchManifestHash') or state.get('stateHash') != attestation.get('stateHash'):
         raise RuntimeError('binding')
@@ -266,7 +274,11 @@ try:
     if not hmac.compare_digest(str(attestation.get('attestationHash')), expected_attestation_hash):
         raise RuntimeError('attestation-hmac')
     if phase == 'canary-only':
-        canary_resume = state.get('status') == 'blocked' and state.get('blockReason') == 'provider_canary_failed' and state.get('pauseReason') is None
+        canary_resume = (manifest_code_sha != execution_code_sha
+                         and state.get('status') == 'blocked'
+                         and state.get('blockReason') == 'provider_canary_failed'
+                         and state.get('pauseReason') is None
+                         and legacy_recovery_state_hash == state.get('stateHash'))
         if canary_resume:
             slots = state.get('slots')
             if not isinstance(slots, list):
@@ -283,16 +295,16 @@ try:
                     or any(not isinstance(slot, dict) or slot.get('status') not in {'succeeded', 'unsupported', 'failed'} for slot in slots[:failed_index])
                     or any(not isinstance(slot, dict) or slot.get('status') != 'not_executed' for slot in slots[failed_index + 1:])):
                 raise RuntimeError('phase')
-        if state.get('status') != 'ready' and not canary_resume:
+        if (manifest_code_sha == execution_code_sha and (state.get('status') != 'ready' or legacy_recovery_state_hash is not None)) or (manifest_code_sha != execution_code_sha and not canary_resume):
             raise RuntimeError('phase')
-    if phase == 'full' and state.get('status') != 'canary_complete':
+    if phase == 'full' and (state.get('status') != 'canary_complete' or (manifest_code_sha == execution_code_sha and legacy_recovery_state_hash is not None) or (manifest_code_sha != execution_code_sha and legacy_recovery_state_hash is None)):
         raise RuntimeError('phase')
     revision = attestation.get('revision')
     issued_at = attestation.get('issuedAt')
     batch_id = attestation.get('batchId')
     if isinstance(revision, bool) or not isinstance(revision, int) or revision < 0 or not isinstance(batch_id, str) or re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{2,199}', batch_id) is None or not isinstance(issued_at, str) or re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z', issued_at) is None:
         raise RuntimeError('report')
-    bundle = {'operation':'run','gate':{'enabled':False,'concurrency':1,'lockName':'/run/lock/paperbanana-hk-production.lock'},'executionPhase':phase,'manifest':manifest,'state':state,'report':{'batchId':batch_id,'revision':revision + 1,'createdAt':issued_at,'attestationSecret':secrets[0]}}
+    bundle = {'operation':'run','gate':{'enabled':False,'concurrency':1,'lockName':'/run/lock/paperbanana-hk-production.lock'},'executionPhase':phase,'manifestCodeSha':manifest_code_sha,'executionCodeSha':execution_code_sha,'legacyRecoveryStateHash':legacy_recovery_state_hash,'manifest':manifest,'state':state,'report':{'batchId':batch_id,'revision':revision + 1,'createdAt':issued_at,'attestationSecret':secrets[0]}}
     encoded = json.dumps(bundle, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
     fd = os.open(output, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
     try:
