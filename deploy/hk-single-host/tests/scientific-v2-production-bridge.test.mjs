@@ -551,6 +551,12 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
     providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 }, codexToolCallLimit: 36,
     modelCount: 40, slotCount: 360, revision: 0, issuedAt: '2026-08-31T00:00:00.000Z',
     reportHash: 'c'.repeat(64), attestationHash: 'd'.repeat(64),
+    stateSnapshot: {
+      schemaVersion: 2, manifestHash: 'a'.repeat(64), status: 'blocked', pauseReason: null,
+      blockReason: 'provider_canary_failed', createdAt: '2026-08-31T00:00:00.000Z', updatedAt: '2026-08-31T01:00:00.000Z',
+      providerSpentCny: { bailian: 0.8, ark: 0, openrouter: 0 },
+      providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 }, slots: [], stateHash: 'b'.repeat(64),
+    },
   }
   const attestationSuccess = spawnSync(process.execPath, ['--input-type=module', '-e',
     `const testResponse=JSON.parse(process.env.SCIENTIFIC_V2_TEST_RESPONSE);globalThis.fetch=async()=>({ok:true,json:async()=>testResponse});\n${embedded[1]}`,
@@ -560,7 +566,8 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   })
   assert.equal(attestationSuccess.status, 0, attestationSuccess.stderr)
   const attestationEnvelope = JSON.parse(attestationSuccess.stdout)
-  assert.deepEqual(attestationEnvelope.privateData, fullAttestation)
+  assert.deepEqual(attestationEnvelope.privateData, Object.fromEntries(Object.entries(fullAttestation).filter(([key]) => key !== 'stateSnapshot')))
+  assert.deepEqual(attestationEnvelope.privateState, fullAttestation.stateSnapshot)
   assert.deepEqual(Object.keys(attestationEnvelope.data).sort(), [
     'attestationHash', 'batchId', 'batchManifestHash', 'executionCodeSha', 'issuedAt', 'legacyRecoveryStateHash', 'manifestCodeSha', 'modelCount', 'reportHash', 'revision', 'slotCount', 'stateHash',
   ])

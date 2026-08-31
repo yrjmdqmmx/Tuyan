@@ -1129,6 +1129,12 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
 
   assert.equal(attestation.batchManifestHash, fixture.manifest.manifestHash)
   assert.equal(attestation.stateHash, fixture.initialState.stateHash)
+  assert.deepEqual(attestation.stateSnapshot, fixture.initialState)
+  assert.notStrictEqual(attestation.stateSnapshot, storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0].state)
+  assert.equal(attestation.stateSnapshot.stateHash, attestation.stateHash)
+  assert.equal(Object.isFrozen(attestation.stateSnapshot), true)
+  assert.equal(Object.isFrozen(storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0].state), false)
+  assert.doesNotThrow(() => verifyScientificV2ImportedState(attestation.stateSnapshot, fixture.manifest))
   assert.equal(attestation.manifestCodeSha, fixture.manifest.codeSha)
   assert.equal(attestation.executionCodeSha, fixture.manifest.codeSha)
   assert.equal(attestation.legacyRecoveryStateHash, null)
@@ -1146,6 +1152,28 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
     .update('paperbanana/scientific-v2/operator-attestation/v1').digest()
   assert.equal(attestation.attestationHash, createHmac('sha256', operatorAttestationKey).update(attestation.reportHash).digest('hex'))
   assert.notEqual(attestation.attestationHash, createHmac('sha256', secret).update(attestation.reportHash).digest('hex'))
+  const tampered = structuredClone(attestation)
+  tampered.stateSnapshot.status = 'running'
+  const { stateHash: _stateHash, ...tamperedStatePayload } = tampered.stateSnapshot
+  assert.notEqual(canonicalHash(tamperedStatePayload), attestation.stateHash)
+  const { stateSnapshot: _stateSnapshot, reportHash: _reportHash, attestationHash: _attestationHash, ...signedPayload } = attestation
+  assert.equal(canonicalHash(signedPayload), attestation.reportHash)
+})
+
+test('operatorAttestation rejects a stored state whose canonical content no longer binds its state hash', async () => {
+  const fixture = scientificBatchFixture()
+  const storage = atomicScientificDb()
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'attestation-state-binding', {
+    operatorReportSecret: 'scientific-v2-state-binding-secret-at-least-32-bytes', immutableCodeSha: fixture.manifest.codeSha,
+  })
+  await repository.freezeBatch({ batchId: 'scientific-v2-attestation-state-binding', ...fixture })
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  batch.state.slots[0].status = 'failed'
+
+  await assert.rejects(
+    () => repository.operatorAttestation({ batchId: 'scientific-v2-attestation-state-binding' }),
+    /SCIENTIFIC_V2_/,
+  )
 })
 
 test('operatorAttestation allows SHA drift only for the first exact legacy blocked recovery and fixes its lineage', async () => {
@@ -1171,7 +1199,7 @@ test('operatorAttestation allows SHA drift only for the first exact legacy block
   assert.equal(attestation.manifestCodeSha, fixture.manifest.codeSha)
   assert.equal(attestation.executionCodeSha, executionCodeSha)
   assert.equal(attestation.legacyRecoveryStateHash, legacyBlocked.stateHash)
-  const { reportHash, attestationHash, ...payload } = attestation
+  const { stateSnapshot: _stateSnapshot, reportHash, attestationHash, ...payload } = attestation
   assert.equal(reportHash, canonicalHash(payload))
   const key = createHmac('sha256', secret).update('paperbanana/scientific-v2/operator-attestation/v1').digest()
   assert.equal(attestationHash, createHmac('sha256', key).update(reportHash).digest('hex'))
@@ -1192,17 +1220,17 @@ test('operatorAttestation allows SHA drift only for the first exact legacy block
 
   const ordinaryStorage = atomicScientificDb()
   const ordinary = createScientificV2MongoRepository(ordinaryStorage.db, () => FIXED_NOW)
-  await ordinary.freezeBatch({ batchId: 'scientific-v2-budget-blocked-sha-drift', ...fixture })
+  await ordinary.freezeBatch({ batchId: 'scientific-v2-ordinary-sha-drift', ...fixture })
   const ordinaryBatch = ordinaryStorage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
-  const budgetBlocked = interruptedState(fixture, 'blocked')
-  ordinaryBatch.state = structuredClone(budgetBlocked)
-  ordinaryBatch.stateHash = budgetBlocked.stateHash
-  ordinaryBatch.status = 'blocked'
+  const ordinaryCompleted = completedScientificState(fixture)
+  ordinaryBatch.state = structuredClone(ordinaryCompleted)
+  ordinaryBatch.stateHash = ordinaryCompleted.stateHash
+  ordinaryBatch.status = 'completed'
   const mismatched = createScientificV2MongoRepository(ordinaryStorage.db, () => FIXED_NOW, () => 'ordinary-sha-drift', {
     operatorReportSecret: secret, immutableCodeSha: executionCodeSha,
   })
   await assert.rejects(
-    () => mismatched.operatorAttestation({ batchId: 'scientific-v2-budget-blocked-sha-drift' }),
+    () => mismatched.operatorAttestation({ batchId: 'scientific-v2-ordinary-sha-drift' }),
     /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/,
   )
 
