@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 unknown 对账改用已持久化 attempt 时间窗 — by Codex
+变更：`UNKNOWN_PROVIDER_OUTCOME` 按规则原子写入 batch state 后，其 `started` dispatch marker 会随事务正常清理；旧只读失败检查却仍强制要求 marker 存在，因此无法检查已经暂停的 unknown 是否在私有 OSS 或受保护 spool 留下可恢复原始图片。检查 workflow 现在要求恰好一个 `status=unknown` 槽位和 `responseClass=unknown_provider_outcome` attempt，使用该 attempt 已签名状态中的 `startedAt/completedAt` 作为有界候选时间窗；若旧 marker 偶然仍存在则必须与 slot/attemptIndex 精确一致。整个操作只读、零 Provider 调用，不改变 unknown 零重试、题集、预算、路由或记分规则。
+
+各端待办：
+- [x] 部署 / 运维（只读 workflow 与 TDD；用于当前暂停批次人工对账）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（数据与公开契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 百炼应用层失败保留可确认状态 — by Codex
 变更：生产 full 批次已成功持久化 20 张原始图片，但 `qwen-image-3.0-pro` 首题遇到百炼 HTTP 200 包内的 `status_code/code` 错误时，legacy authoritative image runtime 只抛出无状态的普通 Error，Worker 因此按安全规则记录为 `unknown_provider_outcome` 并暂停。现在百炼明确声明的非 200 `status_code` 保留其 4xx/5xx 状态，只有 `code` 的应用层拒绝映射为 422；Worker 既有可信 own-property status 门禁会将其作为 confirmed failure，仍按最多 4 次总尝试处理。网络断开、超时、无响应等真正不确定结果仍不携带 status，继续零重试并暂停。同期 GPT Image 2 内置审计 9/9 一次成功，但内置渠道不提供尺寸参数；Codex importer 因而移除旧的 2048×1024 最低门槛，只对该固定默认尺寸渠道完整解码并记录真实像素、格式、字节和 SHA。三家可配置 provider 仍按冻结 route 请求最高 2K，并同样记录实际像素。九题、十维、canonical 路由、预算和评分规则均不变；旧 unknown 批次保留审计，不改写状态，修复后使用新代码 SHA 冻结新批次。
 

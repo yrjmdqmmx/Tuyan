@@ -575,6 +575,16 @@ test('long-running scientific v2 SSH sessions send keepalives so results survive
   }
 })
 
+test('unknown-outcome inspection uses the persisted attempt window after the started dispatch marker is finalized', () => {
+  const source = readFileSync(failureInspectionWorkflow, 'utf8')
+  assert.match(source, /slot[.]status==="unknown"/)
+  assert.match(source, /attempt[.]responseClass!=="unknown_provider_outcome"/)
+  assert.match(source, /new Date\(attempt[.]startedAt\)[.]getTime\(\)/)
+  assert.match(source, /dispatchMarkerPresent/)
+  assert.doesNotMatch(source, /if\(!batch\|\|!marker\)throw new Error\("SCIENTIFIC_V2_UNRESOLVED_MARKER_NOT_FOUND"\)/)
+  assert.match(source, /marker_started_at=.*unknown.*print\(attempt[.]startedAt\)/s)
+})
+
 test('manual workflow exposes the complete protected scientific v2 phase set with exact per-phase confirmation', () => {
   const source = readFileSync(workflow, 'utf8')
   const confirmations = {

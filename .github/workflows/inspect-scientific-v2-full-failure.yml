@@ -134,19 +134,27 @@ jobs:
             const db=mongo.db(process.env.PAPERBANANA_BENCH_MONGO_DB||"paperbanana_benchmark");
             const batch=await db.collection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash});
             const marker=await db.collection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash,status:"started"});
-            if(!batch||!marker)throw new Error("SCIENTIFIC_V2_UNRESOLVED_MARKER_NOT_FOUND");
+            if(!batch)throw new Error("SCIENTIFIC_V2_BATCH_NOT_FOUND");
+            const unknownSlots=batch.state.slots.filter(slot=>slot.status==="unknown");
+            if(unknownSlots.length!==1)throw new Error("SCIENTIFIC_V2_UNKNOWN_SLOT_INVALID");
+            const slot=unknownSlots[0];
+            const attempt=slot.attempts.at(-1);
+            if(!attempt||attempt.responseClass!=="unknown_provider_outcome")throw new Error("SCIENTIFIC_V2_UNKNOWN_ATTEMPT_INVALID");
+            if(marker&&(marker.slotId!==slot.slotId||marker.attemptIndex!==attempt.attemptIndex))throw new Error("SCIENTIFIC_V2_UNRESOLVED_MARKER_MISMATCH");
             const known=new Set(batch.state.slots.flatMap(slot=>slot.attempts.map(attempt=>attempt.rawImageHash).filter(Boolean)));
             for(const scientificCase of batch.manifest.cases)if(scientificCase.sourceHash)known.add(scientificCase.sourceHash);
             const oss=new OSS({region:process.env.PAPERBANANA_BENCH_OSS_REGION,accessKeyId:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID,accessKeySecret:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET,bucket:process.env.PAPERBANANA_BENCH_OSS_BUCKET,endpoint:process.env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT,secure:true,authorizationV4:true});
             const objects=[];let nextMarker;
             do{const page=await oss.list({prefix:"bench/scientific-v2/private/objects/","max-keys":1000,...(nextMarker?{marker:nextMarker}:{})},{});objects.push(...(page.objects||[]));nextMarker=page.isTruncated?page.nextMarker:undefined;}while(nextMarker);
-            const startedAt=new Date(marker.startedAt).getTime();
+            const startedAt=new Date(attempt.startedAt).getTime();
+            const completedAt=new Date(attempt.completedAt).getTime();
+            if(!Number.isFinite(startedAt)||!Number.isFinite(completedAt)||completedAt<startedAt)throw new Error("SCIENTIFIC_V2_UNKNOWN_ATTEMPT_TIME_INVALID");
             const candidates=objects.flatMap(object=>{
               const match=/\/([a-f0-9]{64})\.(png|jpeg|webp)$/.exec(object.name||"");
               const modifiedAt=new Date(object.lastModified).getTime();
-              return match&&!known.has(match[1])&&modifiedAt>=startedAt-5000&&modifiedAt<=startedAt+600000?[{imageHash:match[1],format:match[2],byteSize:Number(object.size),lastModified:new Date(modifiedAt).toISOString()}]:[];
+              return match&&!known.has(match[1])&&modifiedAt>=startedAt-5000&&modifiedAt<=completedAt+5000?[{imageHash:match[1],format:match[2],byteSize:Number(object.size),lastModified:new Date(modifiedAt).toISOString()}]:[];
             });
-            process.stdout.write(JSON.stringify({slotId:marker.slotId,attemptIndex:marker.attemptIndex,candidateCount:candidates.length,candidates})+"\n");
+            process.stdout.write(JSON.stringify({slotId:slot.slotId,attemptIndex:attempt.attemptIndex,dispatchMarkerPresent:Boolean(marker),startedAt:attempt.startedAt,completedAt:attempt.completedAt,candidateCount:candidates.length,candidates})+"\n");
           }finally{await mongo.close();}
           '
           docker exec "$worker_id" node --input-type=module -e '
@@ -167,13 +175,15 @@ jobs:
           }
           process.stdout.write(JSON.stringify({credentialEgressChecks: result}) + "\n");
           '
-          marker_started_at="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const row=db.getCollection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash:process.env.SCIENTIFIC_V2_MANIFEST_HASH,status:"started"});print(row.startedAt.toISOString())'\''' | tail -1)"
+          marker_started_at="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const batch=db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash:process.env.SCIENTIFIC_V2_MANIFEST_HASH});const unknown=batch?.state?.slots?.filter(slot=>slot.status==="unknown")||[];const attempt=unknown.length===1?unknown[0].attempts.at(-1):null;if(!attempt||attempt.responseClass!=="unknown_provider_outcome")throw new Error("SCIENTIFIC_V2_UNKNOWN_ATTEMPT_INVALID");print(attempt.startedAt)'\''' | tail -1)"
+          marker_completed_at="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const batch=db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash:process.env.SCIENTIFIC_V2_MANIFEST_HASH});const unknown=batch?.state?.slots?.filter(slot=>slot.status==="unknown")||[];const attempt=unknown.length===1?unknown[0].attempts.at(-1):null;if(!attempt||attempt.responseClass!=="unknown_provider_outcome")throw new Error("SCIENTIFIC_V2_UNKNOWN_ATTEMPT_INVALID");print(attempt.completedAt)'\''' | tail -1)"
           marker_epoch="$(date -d "$marker_started_at" +%s)"
+          marker_completed_epoch="$(date -d "$marker_completed_at" +%s)"
           spool_count=0
           spool_bytes=0
           while IFS= read -r -d '' file; do
             modified="$(stat -c %Y "$file")"
-            if (( modified >= marker_epoch - 5 && modified <= marker_epoch + 600 )); then
+            if (( modified >= marker_epoch - 5 && modified <= marker_completed_epoch + 5 )); then
               spool_count=$((spool_count + 1))
               spool_bytes=$((spool_bytes + $(stat -c %s "$file")))
             fi
