@@ -1,0 +1,111 @@
+name: Inspect Scientific V2 Progress
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest_hash:
+        description: Exact Scientific V2 manifest hash to inspect without taking the production lock.
+        required: true
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-scientific-v2-progress
+  cancel-in-progress: true
+
+jobs:
+  inspect:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate request
+        env:
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
+          [[ "$CONFIRM" == inspect-exact-scientific-v2-progress-read-only ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Read persisted batch progress without the production lock
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q bash -s' "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          operator_count="$(docker ps --filter name=paperbanana-hk-benchmark-operator-run --format '{{.ID}}' | wc -l | tr -d ' ')"
+          [[ "$operator_count" =~ ^[0-9]+$ ]]
+          docker exec \
+            -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" \
+            -e SCIENTIFIC_V2_OPERATOR_CONTAINER_COUNT="$operator_count" \
+            -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
+          const manifestHash = process.env.SCIENTIFIC_V2_MANIFEST_HASH;
+          const batch = db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash});
+          if (!batch) throw new Error("SCIENTIFIC_V2_BATCH_NOT_FOUND");
+          const terminal = new Set(["succeeded", "unsupported", "failed"]);
+          const statusCounts = batch.state.slots.reduce((counts, slot) => {
+            counts[slot.status] = (counts[slot.status] || 0) + 1;
+            return counts;
+          }, {});
+          const successful = batch.state.slots.filter(slot => slot.status === "succeeded" && slot.attempts.length > 0);
+          const recentSuccessfulArtifacts = successful.slice(-12).map(slot => {
+            const attempt = slot.attempts.at(-1);
+            return {
+              sequence: slot.sequence,
+              slotId: slot.slotId,
+              canonicalModelId: slot.canonicalModelId,
+              caseId: slot.caseId,
+              rawImageHash: attempt.rawImageHash,
+              byteSize: attempt.byteSize,
+              width: attempt.width,
+              height: attempt.height,
+              format: attempt.format,
+            };
+          });
+          const firstOpenSlot = batch.state.slots.find(slot => !terminal.has(slot.status));
+          const activeDispatchCount = db.getCollection("paperbanana_benchmark_scientific_v2_dispatches")
+            .countDocuments({manifestHash, status: "started"});
+          print(JSON.stringify({
+            manifestHash,
+            stateHash: batch.stateHash,
+            batchStatus: batch.status,
+            stateStatus: batch.state.status,
+            pauseReason: batch.state.pauseReason,
+            blockReason: batch.state.blockReason,
+            operatorContainerCount: Number(process.env.SCIENTIFIC_V2_OPERATOR_CONTAINER_COUNT),
+            claimPresent: Object.hasOwn(batch, "claimToken"),
+            claimLeaseExpired: batch.claimLeaseExpiresAt instanceof Date ? batch.claimLeaseExpiresAt <= new Date() : null,
+            activeDispatchCount,
+            providerSpentCny: batch.state.providerSpentCny,
+            statusCounts,
+            successfulArtifactCount: successful.length,
+            recentSuccessfulArtifacts,
+            firstOpen: firstOpenSlot ? {
+              sequence: firstOpenSlot.sequence,
+              slotId: firstOpenSlot.slotId,
+              canonicalModelId: firstOpenSlot.canonicalModelId,
+              caseId: firstOpenSlot.caseId,
+              status: firstOpenSlot.status,
+              attemptCount: firstOpenSlot.attempts.length,
+            } : null,
+          }));
+          JS
+          REMOTE

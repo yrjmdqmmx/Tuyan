@@ -12,6 +12,7 @@ const admin = fileURLToPath(new URL('../scripts/run-scientific-v2-admin-operator
 const prepareWorkflow = fileURLToPath(new URL('../../../.github/workflows/prepare-scientific-v2-production.yml', import.meta.url))
 const adminWorkflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-admin-operator.yml', import.meta.url))
 const operatorWorkflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-operator.yml', import.meta.url))
+const progressWorkflow = fileURLToPath(new URL('../../../.github/workflows/inspect-scientific-v2-progress.yml', import.meta.url))
 const operator = fileURLToPath(new URL('../scripts/run-scientific-v2-operator.sh', import.meta.url))
 const priceSigner = fileURLToPath(new URL('../scripts/create-scientific-v2-price-snapshot.sh', import.meta.url))
 const priceSignerEntry = fileURLToPath(new URL('../../../apps/benchmark-worker/src/scientific-v2-price-signer-entry.ts', import.meta.url))
@@ -619,6 +620,20 @@ test('scientific operator binds expected Core and Worker digests through workflo
   assert.match(source, /RepoDigests/)
   assert.match(source, /stateBundleHash/)
   assert.match(source, /\$state_bundle_hash[.]state[.]json/)
+})
+
+test('scientific v2 progress inspection is read-only, non-blocking and reports persisted artifact dimensions', () => {
+  assert.equal(existsSync(progressWorkflow), true)
+  const workflow = readFileSync(progressWorkflow, 'utf8')
+  assert.match(workflow, /workflow_dispatch:/)
+  assert.match(workflow, /environment:\s*paperbanana-production/)
+  assert.match(workflow, /paperbanana-scientific-v2-progress/)
+  assert.match(workflow, /cancel-in-progress:\s*true/)
+  assert.match(workflow, /ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 /)
+  for (const field of ['manifestHash', 'stateHash', 'statusCounts', 'successfulArtifactCount', 'recentSuccessfulArtifacts', 'width', 'height', 'format', 'rawImageHash', 'firstOpen']) {
+    assert.match(workflow, new RegExp(field))
+  }
+  assert.doesNotMatch(workflow, /flock|insertOne|updateOne|findOneAndUpdate|deleteOne|API_KEY|ACCESS_KEY|provider dispatch/i)
 })
 
 test('running service digest gates inspect the immutable image object rather than the container object', () => {
