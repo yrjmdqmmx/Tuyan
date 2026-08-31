@@ -62,10 +62,12 @@ python3 - "$manifest_path" "$manifest_sha256" "$state_path" "$state_sha256" \
 import hashlib
 import hmac
 import json
+import math
 import os
 import re
 import stat
 import sys
+from decimal import Decimal
 
 manifest_path, manifest_file_hash, state_path, state_file_hash, attestation_path, attestation_file_hash, env_path, phase, code_sha, expected_manifest_hash, expected_registry_hash, expected_suite_hash, expected_price_hash, output, expected_owner_text = sys.argv[1:]
 expected_owner = int(expected_owner_text)
@@ -95,11 +97,41 @@ ATTESTATION_KEYS = {
     'modelCount','slotCount','revision','issuedAt','reportHash','attestationHash',
 }
 
+def ecmascript_number(value):
+    if not math.isfinite(value):
+        raise RuntimeError('schema')
+    if value == 0:
+        return '0'
+    text = repr(value).lower()
+    absolute = abs(value)
+    if 'e' in text:
+        mantissa, exponent_text = text.split('e', 1)
+        exponent = int(exponent_text)
+        if 1e-6 <= absolute < 1e21:
+            return format(Decimal(text), 'f')
+        mantissa = mantissa.rstrip('0').rstrip('.')
+        return f'{mantissa}e{"+" if exponent >= 0 else ""}{exponent}'
+    return text[:-2] if text.endswith('.0') else text
+
+def cny_number_from_atoms(atoms_text, value):
+    if not isinstance(atoms_text, str) or re.fullmatch(r'(?:0|[1-9][0-9]*)', atoms_text) is None:
+        raise RuntimeError('schema')
+    atoms = int(atoms_text)
+    if atoms > 36_000_000_000 or isinstance(value, bool) or not isinstance(value, (int, float)) or value != atoms / 100_000_000:
+        raise RuntimeError('schema')
+    return ecmascript_number(float(value))
+
 def canonical(value):
     if isinstance(value, list):
         return '[' + ','.join(canonical(item) for item in value) + ']'
     if isinstance(value, dict):
-        return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+        parts = []
+        for key in sorted(value):
+            child = cny_number_from_atoms(value.get('unitCnyAtoms'), value[key]) if key == 'unitCny' and 'unitCnyAtoms' in value else canonical(value[key])
+            parts.append(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + child)
+        return '{' + ','.join(parts) + '}'
+    if isinstance(value, float):
+        return ecmascript_number(value)
     return json.dumps(value, ensure_ascii=False, separators=(',', ':'))
 
 def canonical_hash(value):
