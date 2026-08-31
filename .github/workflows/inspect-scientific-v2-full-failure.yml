@@ -124,6 +124,24 @@ jobs:
             process.stdout.write(JSON.stringify({slotId:marker.slotId,attemptIndex:marker.attemptIndex,candidateCount:candidates.length,candidates})+"\n");
           }finally{await mongo.close();}
           '
+          docker exec "$worker_id" node --input-type=module -e '
+          const checks = [
+            ["bailian", "PAPERBANANA_BENCH_BAILIAN_API_KEY", "https://dashscope.aliyuncs.com/api/v1/models/permissions?authorization_scope=AUTHORIZED&action=INFERENCE&model=qwen-image-2.0&page_no=1&page_size=1"],
+            ["ark", "PAPERBANANA_BENCH_ARK_API_KEY", "https://ark.cn-beijing.volces.com/ping"],
+            ["openrouter", "PAPERBANANA_BENCH_OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/key"],
+          ];
+          const result = {};
+          for (const [provider, keyName, url] of checks) {
+            try {
+              const response = await fetch(url, {headers: {Authorization: `Bearer ${process.env[keyName]}`}, signal: AbortSignal.timeout(15000)});
+              result[provider] = {status: response.status, ok: response.ok};
+              await response.body?.cancel();
+            } catch (error) {
+              result[provider] = {status: null, ok: false, errorClass: String(error?.name || "Error")};
+            }
+          }
+          process.stdout.write(JSON.stringify({credentialEgressChecks: result}) + "\n");
+          '
           marker_started_at="$(docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const row=db.getCollection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash:"fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227",status:"started"});print(row.startedAt.toISOString())'\''' | tail -1)"
           marker_epoch="$(date -d "$marker_started_at" +%s)"
           spool_count=0
