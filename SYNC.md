@@ -24,6 +24,20 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 公开渲染修正 batchId 层级并为冻结批次提供专用 runner — by Codex
+变更：发现旧 host operator 在 `render_public_evidence` 已完成 WebP 写入后错误读取不存在的顶层 `batchId`；Worker 的真实封闭 schema 为 `{operation,providerCalls,publishInput,publishInputHash}`，batch ID 位于 `publishInput.batchId`。未来 operator 已按该 schema 修正。为不改变当前冻结 manifest 的 `codeSha=5d9f42e…` 与 immutable Core/Worker digest，新增独立控制面 runner：绑定 current control SHA 与 frozen deployed SHA/镜像/manifest/bundle，使用生产共享锁、Provider key 强制置空、单次 1800 秒窗口运行同一冻结 Worker，重新计算 `publishInputHash` 后把完整结果持久化为 root `0600`。不重跑生成、不改 state、评分或证据字节。
+
+各端待办：
+- [x] 部署 / 运维（未来 operator 层级修复、当前冻结批次专用零 Provider render runner 与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（Worker/API 数据契约未变；无需改造）
+
+### [2026-09-01] Scientific V2 公开证据 publish input 在生产机内封闭交接 — by Codex
+变更：新增零 Provider 的 publish input staging。它只读取精确 `render_public_evidence` bundle 对应的 root `0600` `publish-input.json`，绑定 deployed SHA、immutable Worker digest、manifest 与 `publishInputHash`，重新计算 canonical hash 后仅把 `{batchId,objectBindings,evidence}` 写入生产机 root `0600` 管理员输入。公开 WebP 的对象/hash 清单在最终 `publish` 管理员 action 中与 DB、双审/仲裁重新计算并原子插入 release；CI、日志和外部草稿资产都不承载该完整输入。
+
+各端待办：
+- [x] 部署 / 运维（公开证据 publish input root-only handoff 与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有原子发布与公开接口契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 Worker 仲裁证明在生产机内重签为 API 导入证明 — by Codex
 变更：新增零 Provider 的仲裁结果导入 staging。它绑定精确 `review_arbitrate` bundle、对应 root `0600` `review-arbitrated.json`、Worker arbitration/attestation hash、manifest 与 immutable Worker digest，先以 review signing secret 复验 Worker 的完整性证明；随后把已验证的 xhigh 结果加上 batch/sourceSet 上下文，按 API 既有 schema 重新计算 `arbitrationHash` 和专用 HMAC，并只写入生产机 root `0600` 管理员输入。两种 hash 域不混用，密钥和争议详情不进入日志。
 

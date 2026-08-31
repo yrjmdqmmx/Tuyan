@@ -32,6 +32,8 @@ const reviewResultImportStagingWorkflow = fileURLToPath(new URL('../../../.githu
 const reviewDisputeExportWorkflow = fileURLToPath(new URL('../../../.github/workflows/export-scientific-v2-review-disputes.yml', import.meta.url))
 const arbitrationStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-arbitration-bundle.yml', import.meta.url))
 const arbitrationImportStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-arbitration-result-import.yml', import.meta.url))
+const publishInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-publish-input.yml', import.meta.url))
+const publicRenderRunWorkflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-public-render.yml', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
 const registryHash = 'b'.repeat(64)
 const suiteHash = 'c'.repeat(64)
@@ -745,6 +747,29 @@ test('validated arbitration is re-attested for the API only inside the root admi
   assert.doesNotMatch(source, /scp|gh api|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 
+test('rendered public evidence publish input stays root-only until atomic API publish', () => {
+  const source = readFileSync(publishInputStagingWorkflow, 'utf8')
+  assert.match(source, /paperbanana-hk-production[.]lock/)
+  assert.match(source, /publish-input[.]json/)
+  assert.match(source, /publishInputHash/)
+  assert.match(source, /admin-inputs/)
+  assert.match(source, /install -o 0 -g 0 -m 0600/)
+  assert.match(source, /providerCalls['"]?:\s*0/)
+  assert.doesNotMatch(source, /scp|gh api|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+})
+
+test('current frozen batch has a dedicated zero-provider public render runner with the correct runtime schema', () => {
+  const source = readFileSync(publicRenderRunWorkflow, 'utf8')
+  assert.match(source, /paperbanana-hk-production[.]lock/)
+  assert.match(source, /render_public_evidence/)
+  assert.match(source, /publishInput[.]batchId/)
+  assert.match(source, /publishInputHash/)
+  assert.match(source, /publish-input[.]json/)
+  assert.match(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY=/)
+  assert.match(source, /providerCalls['"]?:\s*0/)
+  assert.doesNotMatch(source, /set -x|printenv|rm -rf/)
+})
+
 test('manual workflow exposes the complete protected scientific v2 phase set with exact per-phase confirmation', () => {
   const source = readFileSync(workflow, 'utf8')
   const confirmations = {
@@ -802,8 +827,10 @@ test('render keeps API publish input off stdout and persists it only in the prot
   const source = readFileSync(operator, 'utf8')
   assert.match(source, /publish-input[.]json/)
   assert.match(source, /render_public_evidence[\s\S]*publishInputHash[\s\S]*privateOutputWritten/)
+  assert.doesNotMatch(source, /[.]publishInput[.]batchId\s*==\s*[.]batchId/)
   const finalRender = source.slice(source.lastIndexOf('elif [[ "$mode" == render_public_evidence ]]')).match(/then([\s\S]*?)^else/m)?.[1] || ''
   assert.match(finalRender, /providerCalls:0/)
+  assert.match(finalRender, /batch_id=.*[.]publishInput[.]batchId/)
   assert.doesNotMatch(finalRender, /jq -c [.] "\$result_path"|publishInput:/)
 })
 

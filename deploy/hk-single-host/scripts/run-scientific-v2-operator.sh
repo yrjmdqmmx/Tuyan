@@ -937,7 +937,8 @@ elif [[ "$mode" == review_finalize ]]; then
 elif [[ "$mode" == render_public_evidence ]]; then
   jq -e --arg manifest "$manifest_hash" \
     '.operation == "render_public_evidence" and .providerCalls == 0 and
-     (.publishInputHash | test("^[a-f0-9]{64}$")) and .publishInput.batchId == .batchId and
+     (.publishInputHash | test("^[a-f0-9]{64}$")) and
+     (.publishInput.batchId | type) == "string" and (.publishInput.batchId | length) > 0 and
      (.publishInput.objectBindings | type) == "array" and (.publishInput.evidence | type) == "array"' \
     "$result_path" >/dev/null || { echo 'scientific v2 render publish input contract mismatch' >&2; exit 1; }
   [[ -d "$review_private_dir" && ! -L "$review_private_dir"
@@ -993,7 +994,7 @@ elif [[ "$mode" == import_codex ]]; then
     '{providerCalls:0,stateHash:$stateHash,reportHash:$reportHash}' >&2
   jq -c . "$result_path"
 elif [[ "$mode" == render_public_evidence ]]; then
-  batch_id="$(jq -r .batchId "$result_path")"
+  batch_id="$(jq -r .publishInput.batchId "$result_path")"
   publish_input_hash="$(jq -r .publishInputHash "$result_path")"
   printf '%s' 'scientific-v2-audit-summary=' >&2
   jq -cn --arg batchId "$batch_id" --arg manifestHash "$manifest_hash" --arg publishInputHash "$publish_input_hash" \

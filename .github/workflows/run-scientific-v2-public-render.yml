@@ -1,0 +1,249 @@
+name: Run Scientific V2 Public Render
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_core_digest: { required: true }
+      expected_worker_digest: { required: true }
+      bundle_sha256: { required: true }
+      registry_hash: { required: true }
+      suite_hash: { required: true }
+      price_hash: { required: true }
+      manifest_hash: { required: true }
+      model_count: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  render:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact immutable render envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          BUNDLE_SHA: ${{ inputs.bundle_sha256 }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          MODEL_COUNT: ${{ inputs.model_count }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$MODEL_COUNT" =~ ^[1-9][0-9]*$ && "$MODEL_COUNT" -le 257 ]]
+          [[ "$CONFIRM" == render-exact-scientific-v2-public-evidence-disabled-worker ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Render exact completed batch with frozen Worker
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          BUNDLE_SHA: ${{ inputs.bundle_sha256 }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          MODEL_COUNT: ${{ inputs.model_count }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q BUNDLE_SHA=%q REGISTRY_HASH=%q SUITE_HASH=%q PRICE_HASH=%q MANIFEST_HASH=%q MODEL_COUNT=%q bash -s' \
+            "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          repo=/opt/paperbanana/repo
+          deploy_dir=$repo/deploy/hk-single-host
+          deploy_env=$deploy_dir/.env
+          core_env=/opt/paperbanana/secrets/core.env
+          bench_env=/opt/paperbanana/secrets/bench.env
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          private_root=/opt/paperbanana/operator-private/scientific-v2
+          bundle="$bundle_root/$BUNDLE_SHA.json"
+          destination="$private_root/$BUNDLE_SHA.publish-input.json"
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          git -C "$repo" diff --quiet "$DEPLOYED_SHA" -- deploy/hk-single-host/compose.yaml
+          for path in "$deploy_env" "$core_env" "$bench_env" "$bundle"; do
+            [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
+          done
+          [[ -d "$bundle_root" && ! -L "$bundle_root" && "$(stat -c '%u:%g:%a' "$bundle_root")" =~ ^0:0:0?700$ ]]
+          [[ -d "$private_root" && ! -L "$private_root" && "$(stat -c '%u:%g:%a' "$private_root")" =~ ^0:0:0?700$ ]]
+          read_env_value() {
+            awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"
+          }
+          [[ "$(read_env_value "$deploy_env" PAPERBANANA_BENCH_SECRET_MODE)" == configured-disabled ]]
+          core_image="$(read_env_value "$deploy_env" PAPERBANANA_CORE_IMAGE)"
+          worker_image="$(read_env_value "$deploy_env" PAPERBANANA_BENCH_WORKER_IMAGE)"
+          [[ "$core_image" =~ ^ghcr[.]io/[a-z0-9_.-]+/paperbanana-core-api@sha256:$CORE_DIGEST$
+            && "$worker_image" =~ ^ghcr[.]io/[a-z0-9_.-]+/paperbanana-benchmark-worker@sha256:$WORKER_DIGEST$ ]]
+          [[ "$(read_env_value "$core_env" PAPERBANANA_CODE_SHA)" == "$DEPLOYED_SHA"
+            && "$(read_env_value "$bench_env" PAPERBANANA_CODE_SHA)" == "$DEPLOYED_SHA" ]]
+          core_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=paperbanana-api --format '{{.ID}}')"
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$core_id" =~ ^[a-f0-9]+$ && "$worker_id" =~ ^[a-f0-9]+$ ]]
+          for pair in "$core_id:$CORE_DIGEST" "$worker_id:$WORKER_DIGEST"; do
+            container_id="${pair%%:*}"
+            digest="${pair#*:}"
+            image_id="$(docker inspect --format '{{.Image}}' "$container_id")"
+            [[ "$image_id" =~ ^sha256:[a-f0-9]{64}$ ]]
+            docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$digest" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          done
+          provenance_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)'
+          docker exec "$core_id" node -e "$provenance_guard" "$DEPLOYED_SHA" >/dev/null
+          docker exec "$worker_id" node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' "$DEPLOYED_SHA" >/dev/null
+          jq -e --arg manifest "$MANIFEST_HASH" --arg registry "$REGISTRY_HASH" --arg suite "$SUITE_HASH" --arg price "$PRICE_HASH" --argjson models "$MODEL_COUNT" '
+            .operation == "render_public_evidence" and .gate == {enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"} and
+            .manifest.manifestHash == $manifest and .manifest.registryHash == $registry and .manifest.suiteHash == $suite and .manifest.priceHash == $price and
+            (.manifest.models | length) == $models and .state.manifestHash == $manifest and .state.status == "completed" and
+            .input.batchId == ("scientific-v2-" + ($manifest[0:20]))
+          ' "$bundle" >/dev/null
+          [[ "$(sha256sum "$bundle" | awk '{print $1}')" == "$BUNDLE_SHA" ]]
+          input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-render-input.XXXXXXXXXXXX)"
+          result="$(mktemp /tmp/paperbanana-scientific-v2-render-result.XXXXXXXXXXXX.json)"
+          cleanup() {
+            rm -f -- "$input_dir/bundle.json" "$result"
+            rmdir "$input_dir" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          python3 - "$bundle" "$input_dir/bundle.json" "$BUNDLE_SHA" <<'PY'
+          import hashlib
+          import os
+          import stat
+          import sys
+
+          source, destination, expected_sha = sys.argv[1:]
+          source_fd = destination_fd = None
+          try:
+              source_fd = os.open(source, os.O_RDONLY | os.O_NOFOLLOW)
+              before = os.fstat(source_fd)
+              if not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) != 0o600 or before.st_size < 2 or before.st_size > 64 * 1024 * 1024:
+                  raise RuntimeError('source')
+              destination_fd = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o440)
+              os.fchown(destination_fd, 0, 1000)
+              os.fchmod(destination_fd, 0o440)
+              digest = hashlib.sha256()
+              total = 0
+              while True:
+                  chunk = os.read(source_fd, 1024 * 1024)
+                  if not chunk:
+                      break
+                  total += len(chunk)
+                  if total > 64 * 1024 * 1024:
+                      raise RuntimeError('size')
+                  digest.update(chunk)
+                  view = memoryview(chunk)
+                  while view:
+                      written = os.write(destination_fd, view)
+                      if written < 1:
+                          raise RuntimeError('write')
+                      view = view[written:]
+              after = os.fstat(source_fd)
+              path_stat = os.stat(source, follow_symlinks=False)
+              if digest.hexdigest() != expected_sha or total != before.st_size or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns) or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino):
+                  raise RuntimeError('drift')
+              os.fsync(destination_fd)
+          finally:
+              if destination_fd is not None:
+                  os.close(destination_fd)
+              if source_fd is not None:
+                  os.close(source_fd)
+          PY
+          chown 0:1000 "$input_dir"
+          chmod 0550 "$input_dir"
+          compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
+          timeout --signal=TERM --kill-after=30s 1800s \
+            "${compose[@]}" run --rm --no-deps --user 1000:1000 \
+            -v "$input_dir/bundle.json:/run/paperbanana-scientific-v2/bundle.json:ro" \
+            -e PAPERBANANA_BENCH_ENABLED=false \
+            -e PAPERBANANA_BENCH_CONCURRENCY=1 \
+            -e PAPERBANANA_SCIENTIFIC_V2_RUN_ENABLED=true \
+            -e PAPERBANANA_SCIENTIFIC_V2_HOST_LOCK_PROOF=/run/lock/paperbanana-hk-production.lock \
+            -e PAPERBANANA_SCIENTIFIC_V2_BUNDLE_PATH=/run/paperbanana-scientific-v2/bundle.json \
+            -e PAPERBANANA_SCIENTIFIC_V2_SPOOL_DIR=/run/paperbanana-scientific-v2 \
+            -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256="$BUNDLE_SHA" \
+            -e PAPERBANANA_BENCH_BAILIAN_API_KEY= \
+            -e PAPERBANANA_BENCH_ARK_API_KEY= \
+            -e PAPERBANANA_BENCH_OPENROUTER_API_KEY= \
+            benchmark-operator node dist/scientific-v2-operator.mjs >"$result"
+          chmod 0600 "$result"
+          jq -e --arg manifest "$MANIFEST_HASH" '
+            (keys | sort) == ["operation","providerCalls","publishInput","publishInputHash"] and
+            .operation == "render_public_evidence" and .providerCalls == 0 and
+            (.publishInputHash | test("^[a-f0-9]{64}$")) and .publishInput.batchId == ("scientific-v2-" + ($manifest[0:20])) and
+            (.publishInput.objectBindings | type) == "array" and (.publishInput.objectBindings | length) > 0 and
+            (.publishInput.evidence | type) == "array" and (.publishInput.evidence | length) > 0
+          ' "$result" >/dev/null
+          python3 - "$result" <<'PY'
+          import hashlib
+          import json
+          import os
+          import stat
+          import sys
+
+          path = sys.argv[1]
+          fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+          try:
+              info = os.fstat(fd)
+              if not stat.S_ISREG(info.st_mode) or info.st_uid != 0 or info.st_nlink != 1 or stat.S_IMODE(info.st_mode) != 0o600 or info.st_size < 2 or info.st_size > 64 * 1024 * 1024:
+                  raise RuntimeError('protected')
+              data = b''
+              while len(data) <= 64 * 1024 * 1024:
+                  chunk = os.read(fd, min(1024 * 1024, 64 * 1024 * 1024 + 1 - len(data)))
+                  if not chunk:
+                      break
+                  data += chunk
+          finally:
+              os.close(fd)
+          value = json.loads(data)
+          def canonical(item):
+              if isinstance(item, list):
+                  return '[' + ','.join(canonical(entry) for entry in item) + ']'
+              if isinstance(item, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(item[key]) for key in sorted(item)) + '}'
+              return json.dumps(item, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+          if hashlib.sha256(canonical(value['publishInput']).encode('utf-8')).hexdigest() != value['publishInputHash']:
+              raise RuntimeError('hash')
+          PY
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
+            cmp -s "$result" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$result" "$destination"
+          fi
+          publish_input_hash="$(jq -r .publishInputHash "$destination")"
+          evidence_count="$(jq -r '.publishInput.evidence | length' "$destination")"
+          docker exec "$worker_id" node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' "$DEPLOYED_SHA" >/dev/null
+          printf '{"operation":"render_public_evidence","providerCalls":0,"manifestHash":"%s","publishInputHash":"%s","evidenceCount":%s,"privateOutputWritten":true}\n' \
+            "$MANIFEST_HASH" "$publish_input_hash" "$evidence_count"
+          REMOTE

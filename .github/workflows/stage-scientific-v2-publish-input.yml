@@ -1,0 +1,158 @@
+name: Stage Scientific V2 Publish Input
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_worker_digest: { required: true }
+      render_bundle_sha256: { required: true }
+      manifest_hash: { required: true }
+      publish_input_hash: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact rendered evidence envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          RENDER_BUNDLE_SHA: ${{ inputs.render_bundle_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          PUBLISH_INPUT_HASH: ${{ inputs.publish_input_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$CONFIRM" == stage-exact-scientific-v2-publish-input ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage root-only atomic publish input
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          RENDER_BUNDLE_SHA: ${{ inputs.render_bundle_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          PUBLISH_INPUT_HASH: ${{ inputs.publish_input_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q RENDER_BUNDLE_SHA=%q MANIFEST_HASH=%q PUBLISH_INPUT_HASH=%q bash -s' \
+            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          repo=/opt/paperbanana/repo
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          admin_input_root=/opt/paperbanana/operator-private/scientific-v2/admin-inputs
+          rendered="$review_private_root/$RENDER_BUNDLE_SHA.publish-input.json"
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          [[ -f "$rendered" && ! -L "$rendered" && "$(stat -c '%u:%g:%a' "$rendered")" =~ ^0:0:0?600$ ]]
+          [[ -d "$admin_input_root" && ! -L "$admin_input_root" && "$(stat -c '%u:%g:%a' "$admin_input_root")" =~ ^0:0:0?700$ ]]
+          output="$(mktemp /tmp/paperbanana-scientific-v2-publish-input.XXXXXXXXXXXX.json)"
+          cleanup() { rm -f -- "$output"; }
+          trap cleanup EXIT
+          python3 - "$rendered" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH" "$output" <<'PY'
+          import hashlib
+          import json
+          import os
+          import stat
+          import sys
+
+          rendered_path, manifest_hash, publish_input_hash, output_path = sys.argv[1:]
+
+          def protected(path, limit=64 * 1024 * 1024):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) != 0o600 or before.st_size < 2 or before.st_size > limit:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= limit:
+                      chunk = os.read(fd, min(1024 * 1024, limit + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if len(data) != before.st_size or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns) or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          def canonical(value):
+              if isinstance(value, list):
+                  return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+          rendered = json.loads(protected(rendered_path))
+          expected_keys = {'operation', 'providerCalls', 'publishInput', 'publishInputHash'}
+          if (not isinstance(rendered, dict) or set(rendered) != expected_keys or rendered.get('operation') != 'render_public_evidence'
+                  or rendered.get('providerCalls') != 0 or rendered.get('publishInputHash') != publish_input_hash
+                  or rendered.get('publishInput', {}).get('batchId') != 'scientific-v2-' + manifest_hash[:20]):
+              raise RuntimeError('binding')
+          publish_input = rendered['publishInput']
+          if not isinstance(publish_input, dict) or set(publish_input) != {'batchId', 'objectBindings', 'evidence'} or hashlib.sha256(canonical(publish_input).encode('utf-8')).hexdigest() != publish_input_hash:
+              raise RuntimeError('publish-input')
+          encoded = (json.dumps(publish_input, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
+          try:
+              os.fchmod(fd, 0o600)
+              view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
+          chmod 0600 "$output"
+          input_sha="$(sha256sum "$output" | awk '{print $1}')"
+          destination="$admin_input_root/$input_sha.json"
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
+            cmp -s "$output" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$output" "$destination"
+          fi
+          printf '{"operation":"stage-scientific-v2-publish-input","providerCalls":0,"manifestHash":"%s","publishInputHash":"%s","adminInputSha256":"%s"}\n' \
+            "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH" "$input_sha"
+          REMOTE
