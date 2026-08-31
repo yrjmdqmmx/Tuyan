@@ -130,7 +130,7 @@ else if(operation==="export-review"){exact(input,["batchId","assignment","object
 else if(operation==="import-review"){exact(input,["batchId","result"]);body={action:"adminBenchmarkReviewImport",evaluationMode:"codex_scientific_v2",...input}}
 else if(operation==="import-arbitration"){exact(input,["batchId","arbitration","arbitrationHash","attestationHash"]);body={action:"adminBenchmarkReviewImport",evaluationMode:"codex_scientific_v2",...input}}
 else{exact(input,["batchId","objectBindings","evidence"]);body={action:"adminBenchmarkPublish",evaluationMode:"codex_scientific_v2",...input}}
-const response=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)});
+const response=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID,...(operation==="freeze"?{"x-paperbanana-scientific-v2-admin-operation":"freeze"}:{})},body:JSON.stringify(body)});
 const result=await response.json();
 if(!response.ok||result.code!==0)throw new Error("SCIENTIFIC_V2_ADMIN_CORE_REJECTED");
 const data=result.run??result.packet??result.result??result.release??result;

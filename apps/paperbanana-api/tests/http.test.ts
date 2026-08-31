@@ -134,6 +134,99 @@ test('POST rejects JSON bodies larger than 1 MiB', async () => {
   })
 })
 
+test('protected scientific v2 freeze transport accepts its bounded production-sized JSON body', async () => {
+  let receivedBody: Record<string, unknown> | undefined
+  const server = createServer({
+    handler: async () => ({ code: 0 }),
+    readinessProbe: async () => ({ ready: true }),
+    healthSnapshot: () => ({ ready: true }),
+    config: {
+      ...config,
+      adminToken: 'configured-server-admin-token',
+      adminTransportToken: 'configured-admin-transport-token',
+    },
+    logger: { info() {}, warn() {}, error() {} },
+    benchmarkService: {
+      async handle(body, isAdmin) {
+        assert.equal(isAdmin, true)
+        receivedBody = body
+        return { code: 0, run: { batchId: 'scientific-v2-production-test' } }
+      },
+    },
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const { port } = server.address() as AddressInfo
+  try {
+    const padding = 'x'.repeat(1_700_000)
+    const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-paperbanana-gateway-token': config.gatewayToken,
+        'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
+        'x-paperbanana-admin-user-id': 'immutable-admin-id',
+        'x-paperbanana-scientific-v2-admin-operation': 'freeze',
+      },
+      body: JSON.stringify({
+        action: 'adminBenchmarkControl',
+        evaluationMode: 'codex_scientific_v2',
+        command: 'freezeBatch',
+        padding,
+      }),
+    })
+
+    assert.equal(response.status, 200)
+    assert.equal((await response.json()).code, 0)
+    assert.equal(receivedBody?.action, 'adminBenchmarkControl')
+    assert.equal(receivedBody?.command, 'freezeBatch')
+    assert.equal(receivedBody?.padding, padding)
+  } finally {
+    await new Promise<void>((resolve) => server.close(() => resolve()))
+  }
+})
+
+test('scientific v2 freeze body allowance cannot be reused by a different admin command', async () => {
+  let called = false
+  const server = createServer({
+    handler: async () => ({ code: 0 }),
+    readinessProbe: async () => ({ ready: true }),
+    healthSnapshot: () => ({ ready: true }),
+    config: {
+      ...config,
+      adminToken: 'configured-server-admin-token',
+      adminTransportToken: 'configured-admin-transport-token',
+    },
+    logger: { info() {}, warn() {}, error() {} },
+    benchmarkService: { async handle() { called = true; return { code: 0 } } },
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const { port } = server.address() as AddressInfo
+  try {
+    const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-paperbanana-gateway-token': config.gatewayToken,
+        'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
+        'x-paperbanana-admin-user-id': 'immutable-admin-id',
+        'x-paperbanana-scientific-v2-admin-operation': 'freeze',
+      },
+      body: JSON.stringify({
+        action: 'adminBenchmarkControl',
+        evaluationMode: 'codex_scientific_v2',
+        command: 'operatorAttestation',
+        padding: 'x'.repeat(1_700_000),
+      }),
+    })
+
+    assert.equal(response.status, 400)
+    assert.deepEqual(await response.json(), { code: 400, error: 'Scientific V2 admin transport rejected' })
+    assert.equal(called, false)
+  } finally {
+    await new Promise<void>((resolve) => server.close(() => resolve()))
+  }
+})
+
 test('admin actions replace caller adminToken with the server-side admin token', async () => {
   let receivedBody: unknown
   await withServer(async (ctx) => {
