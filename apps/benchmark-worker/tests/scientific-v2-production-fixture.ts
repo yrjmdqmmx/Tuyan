@@ -1,7 +1,9 @@
 import {
   PB_SCIENTIFIC_FIGURE_V2,
+  buildScientificV2PriceSnapshot,
   buildScientificV2CanonicalManifest,
   canonicalHash,
+  deriveScientificV2PriceRequirements,
 } from '@paperbanana/benchmark-core'
 
 import { buildScientificV2Batch, type ScientificV2PriceSnapshot } from '../src/scientific-v2-manifest.js'
@@ -19,18 +21,16 @@ export function productionBatchFixture(unitCny = 1) {
   const canonicalManifest = buildScientificV2CanonicalManifest({ registryVersion: 'production-test-v1', registryHash, registry })
   const registryBase = { registryVersion: canonicalManifest.registryVersion, registryHash, registry }
   const registrySnapshot = { ...registryBase, snapshotHash: canonicalHash(registryBase) }
-  const model = canonicalManifest.models.find((candidate) => candidate.canonicalModelId === 'test:scientific-model')!
-  const entries = (['generation', 'edit'] as const).map((operation) => {
-    const route = operation === 'generation' ? model.generationRoute : model.editRoute!
-    if (route.provider !== 'bailian') throw new Error('production fixture route mismatch')
-    const base = {
-      provider: route.provider, modelId: route.modelId, operation, currency: 'CNY' as const, unitCny,
-      source: `https://prices.example/${operation}`, sourceVerified: true,
-    }
-    return { ...base, entryHash: canonicalHash(base) }
+  const priceSnapshot: ScientificV2PriceSnapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest, capturedAt: CREATED_AT,
+    observations: deriveScientificV2PriceRequirements(canonicalManifest).map((requirement) => ({
+      provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation, imageSize: requirement.imageSize,
+      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image', unit: 'image', rateDecimal: String(unitCny), quantityDecimal: '1', resolutionTier: requirement.imageSize }],
+      source: { url: `https://prices.example/${requirement.operation}`, mediaType: 'text/html', capturedAt: CREATED_AT, bytesSha256: 'b'.repeat(64) },
+      openRouterEvidence: null, fxEvidence: null,
+    })),
   })
-  const priceBase = { currency: 'CNY' as const, capturedAt: CREATED_AT, entries }
-  const priceSnapshot: ScientificV2PriceSnapshot = { ...priceBase, snapshotHash: canonicalHash(priceBase) }
   return buildScientificV2Batch({
     canonicalManifest, registrySnapshot, suite: PB_SCIENTIFIC_FIGURE_V2,
     codeSha: 'a'.repeat(40), priceSnapshot, createdAt: CREATED_AT, lockName: LOCK_NAME,

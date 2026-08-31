@@ -7,7 +7,9 @@ import {
   PB_SCIENTIFIC_FIGURE_V2,
   SCIENTIFIC_BENCHMARK_IDENTITY,
   buildScientificV2CanonicalManifest,
+  buildScientificV2PriceSnapshot,
   canonicalHash,
+  deriveScientificV2PriceRequirements,
 } from '@paperbanana/benchmark-core'
 
 import { createMongoBenchmarkRepository } from '../src/benchmark-repository.js'
@@ -45,12 +47,16 @@ function scientificBatchFixture(options: { directEdit?: boolean } = {}) {
   }
   const registrySnapshot = { ...registrySnapshotBase, snapshotHash: canonicalHash(registrySnapshotBase) }
   const canonicalManifest = buildScientificV2CanonicalManifest(registrySnapshotBase)
-  const priceEntries = [
-    { provider: 'bailian' as const, modelId: 'qwen-image-3.0-pro', operation: 'generation' as const, currency: 'CNY' as const, unitCny: 1, source: 'https://example.com/generation', sourceVerified: true },
-    ...(directEdit ? [{ provider: 'bailian' as const, modelId: 'qwen-image-3.0-pro', operation: 'edit' as const, currency: 'CNY' as const, unitCny: 1, source: 'https://example.com/edit', sourceVerified: true }] : []),
-  ].map((entry) => ({ ...entry, entryHash: canonicalHash(entry) }))
-  const priceSnapshotBase = { currency: 'CNY' as const, capturedAt: FIXED_NOW.toISOString(), entries: priceEntries }
-  const priceSnapshot = { ...priceSnapshotBase, snapshotHash: canonicalHash(priceSnapshotBase) }
+  const priceSnapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest, capturedAt: FIXED_NOW.toISOString(),
+    observations: deriveScientificV2PriceRequirements(canonicalManifest).map((requirement) => ({
+      provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation, imageSize: requirement.imageSize,
+      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image', unit: 'image', rateDecimal: '1', quantityDecimal: '1', resolutionTier: requirement.imageSize }],
+      source: { url: `https://example.com/${requirement.operation}`, mediaType: 'text/html', capturedAt: FIXED_NOW.toISOString(), bytesSha256: 'a'.repeat(64) },
+      openRouterEvidence: null, fxEvidence: null,
+    })),
+  })
   const models = structuredClone(canonicalManifest.models)
   const cases = structuredClone([...PB_SCIENTIFIC_FIGURE_V2.cases])
   const priority: Record<string, number> = { bailian: 0, ark: 1, openrouter: 2, codex: 3 }
@@ -65,6 +71,7 @@ function scientificBatchFixture(options: { directEdit?: boolean } = {}) {
       provider: route?.provider ?? null,
       modelId: route?.modelId ?? null,
       operation: scientificCase.kind,
+      imageSize: supported ? '2K' : null,
       supported,
       isProviderCanary: false,
       routeStatus: supported ? 'frozen_route' : 'no_direct_edit_route',
@@ -369,7 +376,7 @@ function expectedSlotPayload(fixture: ReturnType<typeof scientificBatchFixture>,
   return slot.provider === 'codex'
     ? canonicalHash({ manifestHash: fixture.manifest.manifestHash, slotId: slot.slotId, caseManifestHash: scientificCase.manifestHash })
     : canonicalHash({
-        route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation,
+        route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation, imageSize: slot.imageSize,
         caseId: scientificCase.id, instruction: scientificCase.instruction,
         ...(scientificCase.kind === 'generation'
           ? { negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio }
@@ -411,7 +418,7 @@ function completedScientificState(fixture: ReturnType<typeof scientificBatchFixt
     const payloadHash = slot.provider === 'codex'
       ? canonicalHash({ manifestHash: fixture.manifest.manifestHash, slotId: slot.slotId, caseManifestHash: scientificCase.manifestHash })
       : canonicalHash({
-          route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation,
+          route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation, imageSize: slot.imageSize,
           caseId: scientificCase.id, instruction: scientificCase.instruction,
           ...(scientificCase.kind === 'generation'
             ? { negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio }
@@ -1635,6 +1642,12 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
     const renditionHash = canonicalHash(`webp:${attempt.rawImageHash}`)
     evidence.push({
       caseId: slot.caseId, canonicalModelId: slot.canonicalModelId, imageHash: attempt.rawImageHash,
+      requestedResolution: slot.imageSize,
+      actualOutputPixels: {
+        width: attempt.width, height: attempt.height,
+        megapixels: Number(((attempt.width * attempt.height) / 1_000_000).toFixed(4)),
+        fileSizeBytes: attempt.byteSize,
+      },
       variants: [{ kind: 'detail', objectKey: `bench/scientific-v2/public/${attempt.rawImageHash}/detail.webp`, imageHash: renditionHash, width: 1600, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' }],
       ...(scientificCase.kind === 'edit' ? {
         sourceHash: scientificCase.sourceHash,
@@ -2026,6 +2039,10 @@ test('published V2 evidence is immediately consumable by model profile and pagin
   const release = storage.rows.get('paperbanana_benchmark_releases')!.find((row) => row.releaseHash === published.releaseHash)!
   const profile = await service.handle({ action: 'benchmarkModelProfile', profileId: release.models[0].profileId }, false) as any
   assert.equal(profile.profile.evidence.length, 9)
+  assert.equal(profile.profile.evidence[0].requestedResolution, '2K')
+  assert.deepEqual(profile.profile.evidence[0].actualOutputPixels, {
+    width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 4096,
+  })
   const edit = profile.profile.evidence.find((item: any) => item.kind === 'edit')
   assert.match(edit.beforeVariants[0].url, /^https:\/\/signed\.example\//)
   assert.match(edit.variants[0].url, /^https:\/\/signed\.example\//)

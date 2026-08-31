@@ -262,15 +262,21 @@ async function publicScientificEvidenceItems(input: {
       caseId: scientificCase.id,
       kind: scientificCase.kind,
       status: item.status,
+      requestedResolution: item.requestedResolution,
       attemptSummary,
     }
     if (item.status !== 'succeeded') {
       if ((item.status === 'failed' && item.failureReason !== 'confirmed_attempts_exhausted')
-        || (item.status === 'unsupported' && (scientificCase.kind !== 'edit' || item.failureReason !== 'direct_edit_route_unavailable'))) continue
+        || (item.status === 'failed' && !['1K', '2K', 'provider-default'].includes(String(item.requestedResolution || '')))
+        || (item.status === 'unsupported' && item.requestedResolution !== null)
+        || (item.status === 'unsupported' && scientificCase.kind === 'generation' && item.failureReason !== 'capability_unsupported')
+        || (item.status === 'unsupported' && scientificCase.kind === 'edit' && item.failureReason !== 'direct_edit_route_unavailable')) continue
       output.push({ ...base, failureReason: String(item.failureReason || '') })
       continue
     }
-    if (!evidenceHashPattern.test(String(item.imageHash || '')) || !Array.isArray(item.variants) || !item.variants.length
+    const actualOutputPixels = publicPixelFacts(item.actualOutputPixels)
+    if (!['1K', '2K', 'provider-default'].includes(String(item.requestedResolution || ''))
+      || !actualOutputPixels || !evidenceHashPattern.test(String(item.imageHash || '')) || !Array.isArray(item.variants) || !item.variants.length
       || !exactScientificPublicScores(item.scores, scientificCase.applicableAxes)) continue
     const signVariants = async (rawVariants: AnyRecord[], sourceHash: string) => {
       const variants: AnyRecord[] = []
@@ -299,6 +305,7 @@ async function publicScientificEvidenceItems(input: {
     output.push({
       ...base,
       imageHash: item.imageHash,
+      actualOutputPixels,
       scores: structuredClone(item.scores),
       reviewNotes: Array.isArray(item.reviewNotes)
         ? item.reviewNotes.map(String).filter((note: string) => scientificPublicReviewNotes.has(note)).slice(0, 10)

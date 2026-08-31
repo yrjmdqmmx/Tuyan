@@ -13,6 +13,7 @@ import { createOssAdapter } from './oss-adapter.js'
 import { createProviderEgress } from './provider-egress.js'
 import { prepareRuntime } from './runtime.js'
 import { createServer, type LegacyHandler } from './server.js'
+import { createScientificV2RegistryAuthority } from './scientific-v2-production-bridge.js'
 import { createGracefulShutdown } from './shutdown.js'
 
 const serviceName = 'paperbanana-api'
@@ -79,7 +80,7 @@ async function main(): Promise<void> {
         verifyBenchmarkEvidence,
         config.benchmark.codeSha,
         readBenchmarkOperatorReport,
-        { operatorReportSecret: config.benchmark.reviewSigningSecret },
+        { operatorReportSecret: config.benchmark.reviewSigningSecret, requireRegistryAuthority: true },
       )
       await benchmarkRepository.ensureSuite()
       benchmarkService = createBenchmarkService({
@@ -119,6 +120,22 @@ async function main(): Promise<void> {
     config: { gatewayToken: config.gatewayToken, adminToken: config.adminToken, adminTransportToken: config.adminTransportToken, benchmarkDiscoveryToken: config.benchmarkDiscoveryToken, serviceName, version },
     logger,
     benchmarkService,
+    ...(config.benchmark ? {
+      async prepareScientificV2RegistryAuthority() {
+        return createScientificV2RegistryAuthority({
+          codeSha: config.benchmark!.codeSha,
+          secret: config.benchmark!.reviewSigningSecret,
+          async loadCurrentRegistry() {
+            return runtime.handler({
+              request: { method: 'POST' },
+              body: { action: 'modelRegistry', gatewayToken: config.gatewayToken },
+              headers: {},
+              response: { setHeader() {}, status() {} },
+            })
+          },
+        }) as unknown as Record<string, unknown>
+      },
+    } : {}),
   })
 
   const shutdown = createGracefulShutdown({

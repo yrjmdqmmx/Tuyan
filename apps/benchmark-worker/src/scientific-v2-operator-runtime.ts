@@ -1,11 +1,25 @@
-import { PB_SCIENTIFIC_FIGURE_V2, SCIENTIFIC_EDIT_SOURCE, canonicalHash } from '@paperbanana/benchmark-core'
+import {
+  PB_SCIENTIFIC_FIGURE_V2,
+  SCIENTIFIC_EDIT_SOURCE,
+  buildScientificV2CanonicalManifest,
+  canonicalHash,
+} from '@paperbanana/benchmark-core'
+import { createHash } from 'node:crypto'
 import { randomUUID } from 'node:crypto'
 
 import { assertExactScientificV2Keys, isScientificV2Hash, scientificV2Error } from './scientific-v2-common.js'
 import { loadAuthoritativeImageRuntime } from './authoritative-runtime.js'
 import { importScientificCodexArtifacts } from './scientific-v2-codex.js'
 import { buildScientificV2Batch, SCIENTIFIC_V2_PRODUCTION_LOCK_NAME, verifyScientificV2BatchManifest, verifyScientificV2BatchState, type ScientificV2BatchManifest, type ScientificV2BatchState, type ScientificV2PriceSnapshot } from './scientific-v2-manifest.js'
-import { createScientificBlindReviewPackages, finalizeScientificDoubleReview, type ValidatedScientificReviewerResults } from './scientific-v2-review.js'
+import {
+  assembleScientificBlindReviewerAssignment,
+  createScientificBlindReviewPackages,
+  finalizeScientificDoubleReview,
+  validateScientificReviewerResults,
+  type ScientificBlindReviewerPrivateAssignment,
+  type ScientificBlindReviewerPublicAssignment,
+  type ValidatedScientificReviewerResults,
+} from './scientific-v2-review.js'
 import { runScientificV2Batch, type ScientificV2AtomicRunnerDependencies } from './scientific-v2-runner.js'
 import { assertScientificV2StateOperationReportMetadata, createScientificV2SignedStateOperationReport } from './scientific-v2-state-report.js'
 import {
@@ -27,6 +41,7 @@ import {
   type ScientificV2EvidenceObjectStore,
 } from './scientific-v2-production.js'
 import type { ScientificV2RunnerDependencies, ScientificV2RunnerRepository } from './scientific-v2-runner.js'
+import { verifyScientificV2SignedPriceSnapshot } from './scientific-v2-price-attestation.js'
 
 interface OperatorGate { enabled: boolean; concurrency: number; lockName: string }
 type CanonicalManifest = Parameters<typeof buildScientificV2Batch>[0]['canonicalManifest']
@@ -63,6 +78,7 @@ interface ScientificV2OperatorExecutionContext {
   env: Record<string, string | undefined>
   productionDependencies?: ScientificV2ProductionFactoryDependencies
   onCleanupFailure?(error: unknown): void
+  now?: () => Date
 }
 
 export interface ScientificV2OperatorInspectBundle {
@@ -79,6 +95,13 @@ export interface ScientificV2OperatorInspectBundle {
 }
 
 export type ScientificV2OperatorBundle = ScientificV2OperatorInspectBundle | {
+  operation: 'prepare'; gate: OperatorGate; input: {
+    registryAuthority: Record<string, unknown>
+    signedPriceSnapshot: unknown
+    codeSha: string
+    createdAt: string
+  }
+} | {
   operation: 'import_codex'; gate: OperatorGate; input: ScientificV2OperatorCodexInput
 } | {
   operation: 'review_pack'; gate: OperatorGate; input: Parameters<typeof createScientificBlindReviewPackages>[0] & { attestationSecret: string }
@@ -88,6 +111,22 @@ export type ScientificV2OperatorBundle = ScientificV2OperatorInspectBundle | {
     reviewerB: ValidatedScientificReviewerResults
     automaticJudges: readonly unknown[]
     arbitration?: unknown
+    attestationSecret: string
+  }
+} | {
+  operation: 'review_validate'; gate: OperatorGate; input: {
+    role: 'A' | 'B'
+    publicAssignment: ScientificBlindReviewerPublicAssignment
+    privateAssignment: ScientificBlindReviewerPrivateAssignment
+    submissions: unknown[]
+    attestationSecret: string
+  }
+} | {
+  operation: 'review_arbitrate'; gate: OperatorGate; input: {
+    reviewerA: ValidatedScientificReviewerResults
+    reviewerB: ValidatedScientificReviewerResults
+    automaticJudges: readonly unknown[]
+    arbitration: unknown
     attestationSecret: string
   }
 } | {
@@ -352,6 +391,69 @@ export function executeScientificV2OperatorBundle(bundle: ScientificV2OperatorBu
 export async function executeScientificV2OperatorBundle(bundle: ScientificV2OperatorBundle, context?: ScientificV2OperatorExecutionContext): Promise<Record<string, unknown>> {
   if (!bundle || typeof bundle !== 'object') scientificV2Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
   assertGate(bundle.gate)
+  if (bundle.operation === 'prepare') {
+    assertExactScientificV2Keys(bundle, ['operation', 'gate', 'input'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    assertExactScientificV2Keys(bundle.input, [
+      'registryAuthority', 'signedPriceSnapshot', 'codeSha', 'createdAt',
+    ], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    assertExactScientificV2Keys(bundle.input.registryAuthority, [
+      'schemaVersion', 'codeSha', 'capturedAt', 'registryVersion', 'registryBytesHash',
+      'registry', 'snapshotHash', 'attestationHash',
+    ], 'SCIENTIFIC_V2_REGISTRY_AUTHORITY_INVALID')
+    const authority = bundle.input.registryAuthority
+    const registry = authority.registry as Record<string, unknown>
+    const registryBytesHash = createHash('sha256').update(JSON.stringify(registry)).digest('hex')
+    if (authority.schemaVersion !== 1 || authority.codeSha !== bundle.input.codeSha
+      || authority.registryVersion !== registry.registryVersion || authority.registryBytesHash !== registryBytesHash
+      || canonicalHash(Object.fromEntries(Object.entries(authority).filter(([key]) => !['snapshotHash', 'attestationHash'].includes(key)))) !== authority.snapshotHash) {
+      scientificV2Error('SCIENTIFIC_V2_REGISTRY_AUTHORITY_INVALID')
+    }
+    const registryHash = canonicalHash(registry)
+    const canonicalManifest = buildScientificV2CanonicalManifest({
+      registryVersion: authority.registryVersion as string, registryHash, registry,
+    })
+    const signedPriceCapturedAt = (bundle.input.signedPriceSnapshot as Record<string, unknown>)?.capturedAt
+    if (signedPriceCapturedAt !== bundle.input.createdAt) scientificV2Error('SCIENTIFIC_V2_PRICE_ATTESTATION_BINDING_MISMATCH')
+    const priceSnapshot = verifyScientificV2SignedPriceSnapshot(bundle.input.signedPriceSnapshot, {
+      secret: String((context?.env || process.env).PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET || ''),
+      canonicalManifest,
+      expectedCodeSha: bundle.input.codeSha,
+      now: context?.now || (() => new Date()),
+      maxAgeMs: 24 * 60 * 60 * 1_000,
+    })
+    const registryBase = {
+      registryVersion: authority.registryVersion as string, registryHash, registry,
+    }
+    const registrySnapshot = { ...registryBase, snapshotHash: canonicalHash(registryBase) }
+    const built = buildScientificV2Batch({
+      canonicalManifest, registrySnapshot, suite: PB_SCIENTIFIC_FIGURE_V2,
+      codeSha: bundle.input.codeSha, priceSnapshot, createdAt: bundle.input.createdAt,
+      lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME,
+    })
+    const freezeInput = {
+      batchId: `scientific-v2-${built.manifest.manifestHash.slice(0, 20)}`,
+      registryAuthority: structuredClone(authority), registrySnapshot, canonicalManifest,
+      manifest: built.manifest, initialState: built.state,
+    }
+    const inspectBundle = {
+      operation: 'inspect', gate: bundle.gate,
+      batchInput: {
+        canonicalManifest, registrySnapshot, suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
+        codeSha: bundle.input.codeSha, priceSnapshot, createdAt: bundle.input.createdAt,
+      },
+    }
+    return {
+      operation: 'prepare', providerCalls: 0, registryAuthority: authority, registrySnapshot,
+      canonicalManifest, manifest: built.manifest, initialState: built.state,
+      inspectBundle, freezeInput,
+      attestInput: {
+        batchId: freezeInput.batchId, manifestHash: built.manifest.manifestHash,
+      },
+      registryHash, suiteHash: built.manifest.suiteHash, priceHash: built.manifest.priceHash,
+      manifestHash: built.manifest.manifestHash, stateHash: built.state.stateHash,
+      modelCount: built.manifest.models.length,
+    }
+  }
   if (bundle.operation === 'inspect') {
     assertExactScientificV2Keys(bundle, ['operation', 'gate', 'batchInput'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     assertExactScientificV2Keys(bundle.batchInput, ['canonicalManifest', 'registrySnapshot', 'suiteHash', 'codeSha', 'priceSnapshot', 'createdAt'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
@@ -419,6 +521,29 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     const { attestationSecret, ...reviewInput } = bundle.input
     const final = finalizeScientificDoubleReview(reviewInput, attestationSecret)
     return { operation: 'review_finalize', providerCalls: 0, ...final }
+  }
+  if (bundle.operation === 'review_validate') {
+    assertExactScientificV2Keys(bundle, ['operation', 'gate', 'input'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    assertExactScientificV2Keys(bundle.input, [
+      'role', 'publicAssignment', 'privateAssignment', 'submissions', 'attestationSecret',
+    ], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    const assignment = assembleScientificBlindReviewerAssignment({
+      publicAssignment: bundle.input.publicAssignment,
+      privateAssignment: bundle.input.privateAssignment,
+    })
+    const result = validateScientificReviewerResults({
+      role: bundle.input.role, assignment, submissions: bundle.input.submissions,
+    }, bundle.input.attestationSecret)
+    return { operation: 'review_validate', providerCalls: 0, result }
+  }
+  if (bundle.operation === 'review_arbitrate') {
+    assertExactScientificV2Keys(bundle, ['operation', 'gate', 'input'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    const { attestationSecret, ...reviewInput } = bundle.input
+    const final = finalizeScientificDoubleReview(reviewInput, attestationSecret)
+    if (!final.canFinalize || final.attestation.arbitrationHash === null) {
+      scientificV2Error('SCIENTIFIC_V2_ARBITRATION_REQUIRED')
+    }
+    return { operation: 'review_arbitrate', providerCalls: 0, ...final }
   }
   if (bundle.operation === 'reconcile_artifact') {
     assertExactScientificV2Keys(bundle, ['operation', 'gate', 'manifest', 'state', 'input'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')

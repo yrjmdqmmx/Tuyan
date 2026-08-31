@@ -6,7 +6,9 @@ import sharp from 'sharp'
 import {
   PB_SCIENTIFIC_FIGURE_V2,
   buildScientificV2CanonicalManifest,
+  buildScientificV2PriceSnapshot,
   canonicalHash,
+  deriveScientificV2PriceRequirements,
 } from '@paperbanana/benchmark-core'
 
 import * as Worker from '../src/index.js'
@@ -32,20 +34,17 @@ function canonicalManifest() {
 }
 
 function priceSnapshot(): ScientificV2PriceSnapshot {
-  const entries = (['generation', 'edit'] as const).map((operation) => {
-    const base = {
-      provider: 'bailian' as const,
-      modelId: 'quality-image-model',
-      operation,
-      currency: 'CNY' as const,
-      unitCny: 1,
-      source: `https://prices.example/quality-image-model/${operation}`,
-      sourceVerified: true,
-    }
-    return { ...base, entryHash: canonicalHash(base) }
+  const canonical = canonicalManifest()
+  return buildScientificV2PriceSnapshot({
+    canonicalManifest: canonical, capturedAt: CREATED_AT,
+    observations: deriveScientificV2PriceRequirements(canonical).map((requirement) => ({
+      provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation, imageSize: requirement.imageSize,
+      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image', unit: 'image', rateDecimal: '1', quantityDecimal: '1', resolutionTier: requirement.imageSize }],
+      source: { url: `https://prices.example/quality-image-model/${requirement.operation}`, mediaType: 'text/html', capturedAt: CREATED_AT, bytesSha256: H64('a') },
+      openRouterEvidence: null, fxEvidence: null,
+    })),
   })
-  const base = { currency: 'CNY' as const, capturedAt: CREATED_AT, entries }
-  return { ...base, snapshotHash: canonicalHash(base) }
 }
 
 async function awaitingBatch(providerBytes: Buffer) {

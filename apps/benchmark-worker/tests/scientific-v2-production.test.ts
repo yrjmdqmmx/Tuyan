@@ -135,13 +135,13 @@ test('production executor uses frozen generation and direct-edit routes, bounded
     slotId: 'generation-slot', canonicalModelId: 'canonical:model', caseId: 'generation-case',
     provider: 'bailian', modelId: 'frozen-generation-model', operation: 'generation', attemptIndex: 1,
     payloadHash: '1'.repeat(64), instruction: 'draw exact content', negativePrompt: 'no extra text',
-    aspectRatio: '16:9', estimatedCny: 1.25,
+    aspectRatio: '16:9', imageSize: '2K', estimatedCny: 1.25,
   })
   const edited = await executor.execute({
     slotId: 'edit-slot', canonicalModelId: 'canonical:model', caseId: 'edit-case',
     provider: 'ark', modelId: 'frozen-direct-edit-model', operation: 'edit', attemptIndex: 1,
     payloadHash: '2'.repeat(64), instruction: 'edit only region 1', sourceHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
-    region: '01-text-label', estimatedCny: 2.5,
+    region: '01-text-label', imageSize: '2K', estimatedCny: 2.5,
   })
 
   assert.equal(generated.actualCny, 1.25)
@@ -172,7 +172,7 @@ test('production executor never retries unknown failures and only confirms an er
   const request = {
     slotId: 'slot', canonicalModelId: 'canonical:model', caseId: 'case', provider: 'openrouter' as const,
     modelId: 'frozen-model', operation: 'generation' as const, attemptIndex: 1, payloadHash: '3'.repeat(64),
-    instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', estimatedCny: 3,
+    instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', imageSize: '2K' as const, estimatedCny: 3,
   }
   const unknownExecutor = createScientificV2ProviderExecutor({
     runtime: { async generate() { calls += 1; throw new Error('socket timed out') }, async edit() { throw new Error('unused') } },
@@ -224,6 +224,7 @@ test('production Mongo atomic repository resolves commit acknowledgement loss an
   if (scientificCase.kind !== 'generation') throw new Error('production fixture generation case mismatch')
   const payloadHash = canonicalHash({
     route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation,
+    imageSize: slot.imageSize,
     caseId: scientificCase.id, instruction: scientificCase.instruction,
     negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio,
   })
@@ -315,6 +316,7 @@ test('production Mongo claim lease safely reclaims only without an unresolved di
   if (scientificCase.kind !== 'generation') throw new Error('fixture canary must be generation')
   const payloadHash = canonicalHash({
     route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation,
+    imageSize: slot.imageSize,
     caseId: scientificCase.id, instruction: scientificCase.instruction,
     negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio,
   })
@@ -340,6 +342,7 @@ test('stale claim resumes after a committed first slot without redispatching the
   if (scientificCase.kind !== 'generation' || slot.provider !== 'bailian' || !slot.modelId) throw new Error('fixture canary mismatch')
   const payloadHash = canonicalHash({
     route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation,
+    imageSize: slot.imageSize,
     caseId: scientificCase.id, instruction: scientificCase.instruction,
     negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio,
   })
@@ -886,7 +889,7 @@ test('production executor rejects oversized URL output before buffering its resp
   await assert.rejects(() => executor.execute({
     slotId: 'slot', canonicalModelId: 'canonical:model', caseId: 'case', provider: 'bailian',
     modelId: 'frozen-model', operation: 'generation', attemptIndex: 1, payloadHash: '4'.repeat(64),
-    instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', estimatedCny: 1,
+    instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', imageSize: '2K', estimatedCny: 1,
   }), (error: unknown) => error instanceof ScientificConfirmedFailureError
     && error.responseClass === 'confirmed_technical_failure' && error.actualCny === 1)
   assert.ok(bodyReads <= 1)
@@ -910,7 +913,7 @@ test('production executor rejects every runtime URL before fetch, including cred
     await assert.rejects(() => executor.execute({
       slotId: 'slot', canonicalModelId: 'canonical:model', caseId: 'case', provider: 'bailian',
       modelId: 'frozen-model', operation: 'generation', attemptIndex: 1, payloadHash: '8'.repeat(64),
-      instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', estimatedCny: 1,
+      instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', imageSize: '2K', estimatedCny: 1,
     }), (error: unknown) => error instanceof ScientificConfirmedFailureError
       && error.responseClass === 'confirmed_technical_failure' && error.actualCny === 1)
     assert.equal(fetchCalls, 0)
@@ -922,7 +925,7 @@ test('production executor charges invalid provider output but fail-stops local O
   const request = {
     slotId: 'slot', canonicalModelId: 'canonical:model', caseId: 'case', provider: 'bailian' as const,
     modelId: 'frozen-model', operation: 'generation' as const, attemptIndex: 1, payloadHash: '5'.repeat(64),
-    instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', estimatedCny: 4,
+    instruction: 'draw', negativePrompt: '', aspectRatio: '16:9', imageSize: '2K' as const, estimatedCny: 4,
   }
   const invalidOutput = createScientificV2ProviderExecutor({
     runtime: { async generate() { return 'not-image-output' }, async edit() { throw new Error('unused') } },

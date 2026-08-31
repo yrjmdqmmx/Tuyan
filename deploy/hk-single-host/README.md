@@ -122,8 +122,9 @@ Scientific benchmark v2 one-off phases use the exact host artifact spool
 `0700`). Bootstrap and every `run`/`reconcile_artifact` apply require at least
 1 GiB free; the container receives it only at
 `/var/lib/paperbanana/scientific-v2-artifact-spool` with read-write access.
-`inspect`, `import_codex`, `render_public_evidence`, `review_pack`, and
-`review_finalize` never mount that spool. Blind-review mappings are retained
+`inspect`, `import_codex`, `render_public_evidence`, `review_pack`,
+`review_validate`, `review_arbitrate`, and `review_finalize` never mount that
+spool. Blind-review mappings and validated/arbitrated results are retained
 only as mode-`0600` files below
 `/opt/paperbanana/operator-private/scientific-v2`; public stdout never includes
 the mapping or attestation secret. `render_public_evidence` produces an API
@@ -134,6 +135,37 @@ input directory, bind-mounts only that file read-only, and passes
 `PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256`; the Worker hashes the bytes
 read from the same open handle. Review output uses a separate service-owned
 `0700` directory and never shares a writable mount with the bundle.
+
+Production preparation is a separate root-only, zero-provider workflow. It
+calls the current localhost `modelRegistry`, then an admin-transport command
+that loads that registry again inside Core and HMAC-attests the exact normalized
+scientific subset JSON bytes (`registryVersion`, `routeContractVersion`, and
+the `bailian`/`ark`/`openrouter` provider records), deployed code SHA, and current
+capture time with a registry-specific domain key derived from the existing Bench review-signing secret. The protected
+signed price snapshot is verified with a different domain key. Actions receive
+only hashes; neither master secret is an input or artifact. The wrapper writes
+the canonical manifest, initial state, and inspect input as root-owned `0600`
+content-addressed files under `/opt/paperbanana/operator-bundles/scientific-v2`;
+freeze and attestation inputs are written directly under the protected admin
+input directory using their content hash as the filename.
+
+All V2 admin mutations use `run-scientific-v2-admin-operator.sh`, the same
+localhost gateway/admin transport and the same production host lock as the
+existing Benchmark admin operator. Inputs must be pre-staged root-owned `0600`
+files below `operator-private/scientific-v2/admin-inputs`; stdout is an
+operation-specific allowlist. `publish` calls the Core API transaction and has
+no direct Mongo/release path. Both scientific workflows bind the exact Core and
+Worker image digests, and the phase wrapper compares workflow inputs against
+`.env`, the running container image, and Docker `RepoDigests`.
+
+Codex image imports no longer embed base64 in the JSON bundle. Each successful
+tool call references a direct child `<sha256>.<png|jpeg|webp>` in the protected
+per-manifest artifact directory (root-owned, service-group-readable `0550`). The Worker validates and later rechecks that directory itself, opens the file with `O_NOFOLLOW`, requires
+single-link owner/mode invariants, rechecks inode/timestamps after the read,
+enforces 25 MiB per image and a 192 MiB aggregate cap, and verifies the exact
+byte hash before importing. The first Codex slot remains the mandatory canary;
+task/thread/model/tool-call provenance remains bound by the existing import
+attestation.
 
 ## Benchmark paid operator
 

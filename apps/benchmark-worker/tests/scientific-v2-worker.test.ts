@@ -11,9 +11,11 @@ import {
   PB_SCIENTIFIC_FIGURE_V2,
   SCIENTIFIC_EDIT_SOURCE,
   SCIENTIFIC_BENCHMARK_IDENTITY,
+  buildScientificV2PriceSnapshot,
   buildScientificV2CanonicalManifest,
   canonicalHash,
   createScientificReviewPacket,
+  deriveScientificV2PriceRequirements,
 } from '@paperbanana/benchmark-core'
 
 import {
@@ -80,29 +82,55 @@ function canonicalManifest(options: { providers?: Array<'bailian' | 'ark' | 'ope
 }
 
 function priceSnapshot(manifest: ReturnType<typeof canonicalManifest>, unitCny = 1, verified = true): ScientificV2PriceSnapshot {
-  const entries = manifest.models.flatMap((model) => {
-    if (model.generationRoute.provider === 'codex') return []
-    const generationProvider = model.generationRoute.provider
-    const routes: Array<{ provider: 'bailian' | 'ark' | 'openrouter'; modelId: string; operation: 'generation' | 'edit' }> = [
-      { provider: generationProvider, modelId: model.generationRoute.modelId, operation: 'generation' },
-    ]
-    if (model.editRoute) {
-      if (model.editRoute.provider === 'codex') throw new Error('test manifest unexpectedly mixes Codex edit route')
-      routes.push({ provider: model.editRoute.provider, modelId: model.editRoute.modelId, operation: 'edit' })
-    }
-    return routes.map((route) => {
-      const base = {
-        ...route,
-        currency: 'CNY' as const,
-        unitCny,
-        source: `https://prices.example/${route.provider}/${route.modelId}/${route.operation}`,
-        sourceVerified: verified,
-      }
-      return { ...base, entryHash: canonicalHash(base) }
-    })
+  const rateDecimal = unitCny.toFixed(12).replace(/0+$/, '').replace(/\.$/, '')
+  const evidence = (url: string, character: string, mediaType = 'application/json') => ({
+    url, mediaType, capturedAt: CREATED_AT, bytesSha256: H64(character),
   })
-  const base = { currency: 'CNY' as const, capturedAt: CREATED_AT, entries }
-  return { ...base, snapshotHash: canonicalHash(base) }
+  const snapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest: manifest,
+    capturedAt: CREATED_AT,
+    observations: deriveScientificV2PriceRequirements(manifest).map((requirement, index) => {
+      const source = evidence(`https://prices.example/${requirement.provider}/${requirement.modelId}/${requirement.operation}`, 'a')
+      const common = {
+        provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation,
+        imageSize: requirement.imageSize, billingRegion: requirement.provider === 'openrouter' ? 'openrouter-global' : 'test-region',
+        outputWidth: requirement.imageSize === '1K' ? 1280 : 2048,
+        outputHeight: requirement.imageSize === '1K' ? 720 : 1152,
+      }
+      if (requirement.provider !== 'openrouter') return {
+        ...common,
+        charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal, quantityDecimal: '1', resolutionTier: requirement.imageSize }],
+        source, openRouterEvidence: null, fxEvidence: null,
+      }
+      const pricing = [{
+        billable: 'output_image' as const,
+        unit: 'image' as const,
+        costUsd: rateDecimal,
+        variant: requirement.imageSize === 'provider-default' ? null : requirement.imageSize,
+      }]
+      return {
+        ...common,
+        charges: pricing.map((line) => ({ billable: line.billable, unit: line.unit, rateDecimal: line.costUsd, quantityDecimal: '1', resolutionTier: line.variant })),
+        source,
+        openRouterEvidence: {
+          modelApi: evidence('https://openrouter.ai/api/v1/images/models', 'b'), endpointApi: source,
+          modelId: requirement.modelId, providerSlug: `fixture-${index}`, rawPricing: pricing, tokenBounds: null,
+        },
+        fxEvidence: {
+          source: evidence('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml', 'c', 'application/xml'),
+          rateDate: '2026-08-30', baseCurrency: 'EUR' as const, usdPerBaseDecimal: '1', cnyPerBaseDecimal: '1',
+        },
+      }
+    }),
+  })
+  if (!verified) {
+    snapshot.entries[0].source.bytesSha256 = 'invalid'
+    const { entryHash: _entryHash, ...entryBase } = snapshot.entries[0]
+    snapshot.entries[0].entryHash = canonicalHash(entryBase)
+    const { snapshotHash: _snapshotHash, ...snapshotBase } = snapshot
+    snapshot.snapshotHash = canonicalHash(snapshotBase)
+  }
+  return snapshot
 }
 
 function registrySnapshot(manifest: ReturnType<typeof canonicalManifest>) {
@@ -343,6 +371,7 @@ test('runner never redispatches an incomplete marker and renews long provider ca
   const scientificCase = built.manifest.cases.find((item) => item.id === firstSlot.caseId)!
   const payloadHash = canonicalHash({
     route: { provider: firstSlot.provider, modelId: firstSlot.modelId }, operation: firstSlot.operation,
+    imageSize: firstSlot.imageSize,
     caseId: scientificCase.id, instruction: scientificCase.instruction,
     ...(scientificCase.kind === 'generation'
       ? { negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio }
@@ -414,15 +443,18 @@ test('v2 preflight fails closed for missing, unverified, tampered or over-budget
   const manifest = canonicalManifest()
   const missing = priceSnapshot(manifest)
   missing.entries.pop()
-  missing.snapshotHash = canonicalHash({ currency: missing.currency, capturedAt: missing.capturedAt, entries: missing.entries })
-  assert.throws(() => buildScientificV2Batch({ canonicalManifest: manifest, registrySnapshot: registrySnapshot(manifest), suite: PB_SCIENTIFIC_FIGURE_V2, codeSha: CODE_SHA, priceSnapshot: missing, createdAt: CREATED_AT, lockName: LOCK_NAME }), /SCIENTIFIC_V2_PRICE_MISSING/)
-  assert.throws(() => batchFor(manifest, 1, false), /SCIENTIFIC_V2_PRICE_SOURCE_UNVERIFIED/)
+  const { snapshotHash: _missingHash, ...missingBase } = missing
+  missing.snapshotHash = canonicalHash(missingBase)
+  assert.throws(() => buildScientificV2Batch({ canonicalManifest: manifest, registrySnapshot: registrySnapshot(manifest), suite: PB_SCIENTIFIC_FIGURE_V2, codeSha: CODE_SHA, priceSnapshot: missing, createdAt: CREATED_AT, lockName: LOCK_NAME }), /SCIENTIFIC_V2_PRICE_UNRESOLVED/)
+  assert.throws(() => batchFor(manifest, 1, false), /SCIENTIFIC_V2_PRICE_SOURCE_EVIDENCE_INVALID/)
   const tampered = priceSnapshot(manifest)
   tampered.entries[0].unitCny = 2
   assert.throws(() => buildScientificV2Batch({ canonicalManifest: manifest, registrySnapshot: registrySnapshot(manifest), suite: PB_SCIENTIFIC_FIGURE_V2, codeSha: CODE_SHA, priceSnapshot: tampered, createdAt: CREATED_AT, lockName: LOCK_NAME }), /SCIENTIFIC_V2_PRICE_HASH_MISMATCH/)
-  assert.throws(() => batchFor(manifest, 31), /SCIENTIFIC_V2_PROVIDER_PREFLIGHT_BUDGET_EXCEEDED/)
-  assert.throws(() => batchFor(manifest, 6), /SCIENTIFIC_V2_PROVIDER_PREFLIGHT_BUDGET_EXCEEDED/)
-  assert.throws(() => batchFor(manifest, 0.000000004), /SCIENTIFIC_V2_CNY_PRECISION_INVALID/)
+  assert.throws(() => batchFor(manifest, 21), /SCIENTIFIC_V2_PROVIDER_BASELINE_BUDGET_EXCEEDED/)
+  const worstCaseOnly = batchFor(manifest, 6)
+  assert.equal(worstCaseOnly.manifest.priceSnapshot.preflight.providerTotals[0].baselineWithinBudget, true)
+  assert.equal(worstCaseOnly.manifest.priceSnapshot.preflight.providerTotals[0].worstCaseWithinBudget, false)
+  assert.equal(batchFor(manifest, 0.000000004).manifest.priceSnapshot.entries[0].unitCny, 0.00000001)
   assert.throws(() => buildScientificV2Batch({
     canonicalManifest: manifest,
     registrySnapshot: registrySnapshot(manifest),
@@ -503,6 +535,19 @@ test('execution order uses each supported slot route rank, byte identifiers and 
   assert.deepEqual(built.manifest.executionOrder.filter((slot) => slot.isProviderCanary).map((slot) => slot.provider), ['bailian', 'ark', 'openrouter'])
   const arkCases = built.manifest.executionOrder.filter((slot) => slot.provider === 'ark').map((slot) => slot.caseId)
   assert.deepEqual(arkCases, PB_SCIENTIFIC_FIGURE_V2.cases.map((item) => item.id))
+})
+
+test('execution slots freeze the per-route output request lane for provider dispatch', () => {
+  const registry = { providers: { openrouter: { models: [
+    { id: 'vendor/one-k', canonicalModelId: 'vendor:one-k', selectable: true, roles: ['image'], capabilities: { imageGeneration: true, imageEditMode: 'none' as const, resolutions: ['1K'] } },
+    { id: 'vendor/default', canonicalModelId: 'vendor:default', selectable: true, roles: ['image'], capabilities: { imageGeneration: true, imageEditMode: 'none' as const, resolutions: [] } },
+  ] } } }
+  const registryHash = canonicalHash(registry)
+  const frozen = buildScientificV2CanonicalManifest({ registryVersion: 'dispatch-lanes-v1', registryHash, registry })
+  const built = batchFor(frozen)
+  const generationSlots = built.manifest.executionOrder.filter((slot) => slot.operation === 'generation' && slot.provider === 'openrouter')
+  assert.deepEqual([...new Set(generationSlots.filter((slot) => slot.modelId === 'vendor/one-k').map((slot) => slot.imageSize))], ['1K'])
+  assert.deepEqual([...new Set(generationSlots.filter((slot) => slot.modelId === 'vendor/default').map((slot) => slot.imageSize))], ['provider-default'])
 })
 
 test('v2 runner is locked, disabled-gated, strictly serial, route-frozen and records unsupported edits without calls', async () => {
@@ -701,7 +746,7 @@ test('canonical manifest routes and model order are derived from routes rather t
   changedProvider.models[0].generationRoute.provider = changedProvider.models[0].generationRoute.provider === 'ark' ? 'bailian' : 'ark'
   const { manifestHash: _oldProviderHash, ...changedProviderBase } = changedProvider
   changedProvider.manifestHash = canonicalHash(changedProviderBase)
-  assert.throws(() => batchFor(changedProvider), /SCIENTIFIC_V2_CANONICAL_(ROUTE|MANIFEST)_DERIVATION_INVALID/)
+  assert.throws(() => batchFor(changedProvider), /SCIENTIFIC_V2_(CANONICAL_(ROUTE|MANIFEST)_DERIVATION_INVALID|PRICE_REQUIREMENT_INVALID)/)
 
   const changedOrder = structuredClone(original)
   changedOrder.models.reverse()
@@ -786,7 +831,7 @@ test('unknown provider outcome pauses reconciliation immediately and budget bloc
   assert.ok(paused.state.slots.filter((slot) => slot.attempts.length === 0).every((slot) => slot.costCny === null))
   assert.doesNotThrow(() => verifyScientificV2BatchState(paused.state, paused.manifest))
 
-  assert.throws(() => batchFor(canonicalManifest(), 20), /SCIENTIFIC_V2_PROVIDER_PREFLIGHT_BUDGET_EXCEEDED/)
+  assert.throws(() => batchFor(canonicalManifest(), 20.00000001), /SCIENTIFIC_V2_PROVIDER_BASELINE_BUDGET_EXCEEDED/)
 })
 
 async function codexArtifacts(overrides: Record<string, unknown> = {}) {
@@ -1029,6 +1074,7 @@ function reviewAuthority(registryHash: string, modelKeys: string[]) {
       ? canonicalHash({ manifestHash: built.manifest.manifestHash, slotId: slot.slotId, caseManifestHash: scientificCase.manifestHash })
       : canonicalHash({
         route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation,
+        imageSize: slot.imageSize,
         caseId: scientificCase.id, instruction: scientificCase.instruction,
         ...(scientificCase.kind === 'generation'
           ? { negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio }
@@ -1111,6 +1157,9 @@ test('render_public_evidence reads exact private objects and emits an API-ready 
   const publishInput = output.publishInput as any
   assert.equal(publishInput.batchId, 'render-public-batch')
   assert.equal(publishInput.evidence.length, completed.slots.length)
+  assert.ok(publishInput.evidence.every((item: any) => item.requestedResolution === '2K'))
+  assert.ok(publishInput.evidence.every((item: any) => item.actualOutputPixels.width === 800
+    && item.actualOutputPixels.height === 400 && item.actualOutputPixels.fileSizeBytes === raw.length))
   assert.deepEqual(publishInput.objectBindings.map((item: any) => item.imageHash).sort(), [rawHash, SCIENTIFIC_EDIT_SOURCE.sourceHash].sort())
   assert.equal(puts.length, completed.slots.length * 3 + completed.slots.filter((slot) => slot.operation === 'edit').length * 3)
   assert.match(String(output.publishInputHash), /^[a-f0-9]{64}$/)
@@ -1405,7 +1454,9 @@ test('source and assignment HMACs prevent model rebinding and cross-batch A/B fi
 test('built scientific v2 operator executes inspect, production run, Codex import and review finalize', async () => {
   const root = mkdtempSync(join(tmpdir(), 'scientific-v2-operator-'))
   const artifactSpool = join(root, 'artifact-spool')
+  const codexArtifactRoot = join(root, 'codex-artifacts')
   mkdirSync(artifactSpool, { mode: 0o700 })
+  mkdirSync(codexArtifactRoot, { mode: 0o700 })
   const executable = join(process.cwd(), 'dist/scientific-v2-operator.mjs')
   const distLoader = join(process.cwd(), 'tests/fixtures/scientific-v2-dist-loader.mjs')
   const distRuntime = join(process.cwd(), 'tests/fixtures/scientific-v2-dist-runtime.mjs')
@@ -1423,7 +1474,8 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
         PAPERBANANA_SCIENTIFIC_V2_BUNDLE_PATH: path,
         PAPERBANANA_SCIENTIFIC_V2_SPOOL_DIR: root,
         PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256: expectedBundleSha256,
-        ...(name === 'review-pack' ? {
+        ...(name === 'import' ? { PAPERBANANA_SCIENTIFIC_V2_CODEX_ARTIFACT_DIR: codexArtifactRoot } : {}),
+        ...(['review-pack', 'review-validate-a', 'review-validate-b', 'review-arbitrate', 'review'].includes(name) ? {
           PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH: privateOutputPath,
           PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR: root,
         } : {}),
@@ -1474,7 +1526,10 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
       ...codex,
       toolCalls: codex.toolCalls.map((call) => {
         const { bytes, ...rest } = call
-        return { ...rest, bytesBase64: bytes.toString('base64') }
+        const fileName = `${call.sha256}.${call.format}`
+        const path = join(codexArtifactRoot, fileName)
+        writeFileSync(path, bytes, { mode: 0o600 })
+        return { ...rest, artifactRef: { schemaVersion: 1, fileName, sha256: call.sha256, byteSize: bytes.length, format: call.format } }
       }),
     }
     const importOutput = runBundle('import', {
@@ -1530,12 +1585,48 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
     assert.equal(reviewPackOutput.operation, 'review_pack')
     assert.equal(JSON.stringify(reviewPackOutput).includes(REVIEW_ATTESTATION_SECRET), false)
     const mixed = createScientificBlindReviewPackages({ batchManifestHash: operatorAttested.batchManifestHash, manifest: operatorAttested.manifest, state: operatorAttested.state, sourceSetHash: operatorAttested.sourceSetHash, seed: 'operator-review', sources: operatorAttested.sources }, REVIEW_ATTESTATION_SECRET)
-    const reviewerA = validateScientificReviewerResults({ role: 'A', assignment: mixed.reviewerA, submissions: reviewerSubmission(mixed.reviewerA, 8) }, REVIEW_ATTESTATION_SECRET)
-    const reviewerB = validateScientificReviewerResults({ role: 'B', assignment: mixed.reviewerB, submissions: reviewerSubmission(mixed.reviewerB, 8) }, REVIEW_ATTESTATION_SECRET)
+    const splitAssignment = (assignment: typeof mixed.reviewerA | typeof mixed.reviewerB) => {
+      const { privateMappings, privateEnvelope, ...publicAssignment } = assignment
+      return { publicAssignment, privateAssignment: { privateMappings, privateEnvelope } }
+    }
+    const splitA = splitAssignment(mixed.reviewerA)
+    const splitB = splitAssignment(mixed.reviewerB)
+    const validatedAOutput = runBundle('review-validate-a', {
+      operation: 'review_validate', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+      input: { role: 'A', ...splitA, submissions: reviewerSubmission(mixed.reviewerA, 8), attestationSecret: REVIEW_ATTESTATION_SECRET },
+    })
+    const validatedBOutput = runBundle('review-validate-b', {
+      operation: 'review_validate', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+      input: { role: 'B', ...splitB, submissions: reviewerSubmission(mixed.reviewerB, 4, { lowConfidence: true }), attestationSecret: REVIEW_ATTESTATION_SECRET },
+    })
+    assert.equal(JSON.stringify(validatedAOutput).includes('privateMappings'), false)
+    const reviewerA = JSON.parse(readFileSync(join(root, 'review-validate-a.private.json'), 'utf8')).result
+    const reviewerB = JSON.parse(readFileSync(join(root, 'review-validate-b.private.json'), 'utf8')).result
+    const pending = finalizeScientificDoubleReview({ reviewerA, reviewerB, automaticJudges: [] }, REVIEW_ATTESTATION_SECRET)
+    assert.equal(pending.canFinalize, false)
+    const arbitration = {
+      reasoningEffort: 'xhigh' as const,
+      results: pending.disputes.map((dispute) => ({
+        itemHash: dispute.itemHash,
+        scores: Object.fromEntries(dispute.applicableAxes.map((axis) => [axis, 7])),
+        redLines: [],
+      })),
+    }
+    const arbitrationOutput = runBundle('review-arbitrate', {
+      operation: 'review_arbitrate', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+      input: { reviewerA, reviewerB, automaticJudges: [], arbitration, attestationSecret: REVIEW_ATTESTATION_SECRET },
+    })
+    assert.equal(arbitrationOutput.canFinalize, true)
+    assert.equal(JSON.stringify(arbitrationOutput).includes(REVIEW_ATTESTATION_SECRET), false)
     const reviewOutput = runBundle('review', {
-      operation: 'review_finalize', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME }, input: { reviewerA, reviewerB, automaticJudges: [], attestationSecret: REVIEW_ATTESTATION_SECRET },
+      operation: 'review_finalize', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME }, input: { reviewerA, reviewerB, automaticJudges: [], arbitration, attestationSecret: REVIEW_ATTESTATION_SECRET },
     })
     assert.equal(reviewOutput.operation, 'review_finalize')
+    assert.equal(Object.hasOwn(reviewOutput, 'results'), false)
+    assert.equal(Object.hasOwn(reviewOutput, 'disputes'), false)
+    assert.match(reviewOutput.resultsHash, /^[a-f0-9]{64}$/)
+    const privateFinal = JSON.parse(readFileSync(join(root, 'review.private.json'), 'utf8'))
+    assert.equal(Array.isArray(privateFinal.results), true)
     assert.equal(JSON.stringify(reviewOutput).includes(REVIEW_ATTESTATION_SECRET), false)
 
     const missing = spawnSync(process.execPath, [executable], { encoding: 'utf8', env: { ...process.env, PAPERBANANA_SCIENTIFIC_V2_BUNDLE_PATH: '' } })

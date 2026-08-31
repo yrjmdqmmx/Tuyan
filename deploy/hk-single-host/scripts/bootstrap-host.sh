@@ -37,6 +37,13 @@ install -d -m 0755 /opt/paperbanana
 install -d -m 0700 /opt/paperbanana/secrets /opt/paperbanana/backups
 install -d -m 0750 /opt/paperbanana/control
 install -d -o 0 -g 0 -m 0700 /opt/paperbanana/operator-private /opt/paperbanana/operator-private/scientific-v2
+install -d -o 0 -g 0 -m 0700 \
+  /opt/paperbanana/operator-bundles/scientific-v2 \
+  /opt/paperbanana/operator-private/scientific-v2/admin-inputs \
+  /opt/paperbanana/operator-private/scientific-v2/admin-results \
+  /opt/paperbanana/operator-private/scientific-v2/signed-price-snapshots \
+  /opt/paperbanana/operator-private/scientific-v2/prepare-source \
+  /opt/paperbanana/operator-private/scientific-v2/codex-artifacts
 install -d -m 0750 -o 999 -g 999 /opt/paperbanana/data/mongodb
 install -d -o 1000 -g 1000 -m 0700 /opt/paperbanana/data/scientific-v2-artifact-spool
 scientific_v2_spool_available="$(df -P -B1 /opt/paperbanana/data/scientific-v2-artifact-spool | awk 'NR==2 {print $4}')"

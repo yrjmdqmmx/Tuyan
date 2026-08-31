@@ -1,0 +1,72 @@
+name: Prepare Scientific Benchmark V2 Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        description: Exact deployed Core and Worker SHA.
+        required: true
+      expected_core_digest:
+        description: Exact Core image digest without sha256 prefix.
+        required: true
+      expected_worker_digest:
+        description: Exact Worker image digest without sha256 prefix.
+        required: true
+      signed_price_snapshot_sha256:
+        description: SHA-256 of the pre-staged root-only signed price snapshot.
+        required: true
+      confirm:
+        description: Type prepare-scientific-v2-production-disabled-worker.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate immutable request
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          PRICE_HASH: ${{ inputs.signed_price_snapshot_sha256 }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$EXPECTED_SHA" && "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$PRICE_HASH"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ "$CONFIRM" == prepare-scientific-v2-production-disabled-worker ]]
+          bash -n deploy/hk-single-host/scripts/prepare-scientific-v2-production.sh
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Prepare on production host
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          PRICE_HASH: ${{ inputs.signed_price_snapshot_sha256 }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --signed-price-snapshot-sha256 %q --confirm %q' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/prepare-scientific-v2-production.sh \
+            "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$PRICE_HASH" "$CONFIRM"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$command"

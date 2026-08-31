@@ -42,6 +42,7 @@ type AppDependencies = {
   benchmarkService?: {
     handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>>
   }
+  prepareScientificV2RegistryAuthority?: () => Promise<Record<string, unknown>>
 }
 
 const corsHeaders = {
@@ -113,7 +114,10 @@ function legacyHeaders(request: Request): Request['headers'] {
   return headers
 }
 
-export function createApp({ handler, readinessProbe, healthSnapshot, config, logger, benchmarkService }: AppDependencies): Express {
+export function createApp({
+  handler, readinessProbe, healthSnapshot, config, logger, benchmarkService,
+  prepareScientificV2RegistryAuthority,
+}: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
   app.use(express.json({ limit: '1mb', strict: false }))
@@ -184,6 +188,11 @@ export function createApp({ handler, readinessProbe, healthSnapshot, config, log
     if (benchmarkService && (action.startsWith('benchmark') || action.startsWith('adminBenchmark'))) {
       try {
         const isAdmin = Boolean(isAdminTransport && config.adminToken && body.adminToken === config.adminToken && adminActions.has(action))
+        if (action === 'adminBenchmarkControl' && body.command === 'prepareScientificV2Registry') {
+          if (!isAdmin) return response.status(200).send({ code: 401, error: 'Benchmark admin required' })
+          if (!prepareScientificV2RegistryAuthority) return response.status(200).send({ code: 400, error: 'Benchmark request rejected' })
+          return response.status(200).send({ code: 0, registryAuthority: await prepareScientificV2RegistryAuthority() })
+        }
         return response.status(200).send(await benchmarkService.handle(body, isAdmin))
       } catch (error) {
         const message = String((error as Error)?.message || '')

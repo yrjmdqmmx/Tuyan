@@ -61,6 +61,7 @@ export interface ScientificV2ExecutorRequest {
   provider: 'bailian' | 'ark' | 'openrouter'
   modelId: string
   operation: 'generation' | 'edit'
+  imageSize: '1K' | '2K' | 'provider-default'
   attemptIndex: number
   payloadHash: string
   instruction: string
@@ -178,6 +179,7 @@ function buildPayload(manifest: ScientificV2BatchManifest, slot: ScientificV2Bat
   const publicPayload = {
     route: { provider: slot.provider, modelId: slot.modelId },
     operation: slot.operation,
+    imageSize: slot.imageSize,
     caseId: scientificCase.id,
     instruction: scientificCase.instruction,
     ...(scientificCase.kind === 'generation'
@@ -489,6 +491,7 @@ async function runScientificV2BatchInternal(input: {
             provider,
             modelId,
             operation: dispatchSlot.operation,
+            imageSize: dispatchSlot.imageSize!,
             attemptIndex,
             payloadHash,
             estimatedCny,
