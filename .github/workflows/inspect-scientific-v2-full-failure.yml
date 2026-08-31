@@ -3,6 +3,9 @@ name: Inspect Scientific V2 Full Failure
 on:
   workflow_dispatch:
     inputs:
+      manifest_hash:
+        description: Exact Scientific V2 manifest hash to inspect.
+        required: true
       confirm:
         required: true
 
@@ -20,9 +23,11 @@ jobs:
     steps:
       - name: Validate request
         env:
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
+          [[ "$MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
           [[ "$CONFIRM" == inspect-exact-scientific-v2-full-failure ]]
       - name: Configure SSH
         env:
@@ -38,14 +43,16 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
         run: |
           set -Eeuo pipefail
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" 'sudo bash -s' <<'REMOTE'
+          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q bash -s' "$MANIFEST_HASH"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
-          docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
-          const manifestHash = "fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227";
+          docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
+          const manifestHash = process.env.SCIENTIFIC_V2_MANIFEST_HASH;
           const batch = db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash});
           if (!batch) throw new Error("SCIENTIFIC_V2_BATCH_NOT_FOUND");
           const started = db.getCollection("paperbanana_benchmark_scientific_v2_dispatches")
@@ -73,6 +80,23 @@ jobs:
           const nonTerminal = batch.state.slots
             .filter(slot => !["succeeded","unsupported","failed"].includes(slot.status))
             .map(slot => ({sequence: slot.sequence, slotId: slot.slotId, provider: slot.provider, status: slot.status, attemptCount: slot.attempts.length}));
+          const successfulArtifacts = batch.state.slots
+            .filter(slot => slot.status === "succeeded" && slot.attempts.length > 0)
+            .map(slot => {
+              const attempt = slot.attempts.at(-1);
+              return {
+                sequence: slot.sequence,
+                slotId: slot.slotId,
+                provider: slot.provider,
+                canonicalModelId: slot.canonicalModelId,
+                caseId: slot.caseId,
+                rawImageHash: attempt.rawImageHash,
+                byteSize: attempt.byteSize,
+                width: attempt.width,
+                height: attempt.height,
+                format: attempt.format,
+              };
+            });
           print(JSON.stringify({
             manifestHash,
             stateHash: batch.stateHash,
@@ -84,6 +108,7 @@ jobs:
             claimLeaseExpired: batch.claimLeaseExpiresAt instanceof Date ? batch.claimLeaseExpiresAt <= new Date() : null,
             providerSpentCny: batch.state.providerSpentCny,
             statusCounts,
+            successfulArtifacts,
             nonTerminal,
             unresolved,
             firstOpen: firstOpen ? {
@@ -99,10 +124,10 @@ jobs:
           JS
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
-          docker exec "$worker_id" node --input-type=module -e '
+          docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" "$worker_id" node --input-type=module -e '
           import OSS from "ali-oss";
           import { MongoClient } from "mongodb";
-          const manifestHash="fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227";
+          const manifestHash=process.env.SCIENTIFIC_V2_MANIFEST_HASH;
           const mongo=new MongoClient(process.env.PAPERBANANA_BENCH_MONGODB_URI);
           await mongo.connect();
           try {
@@ -142,7 +167,7 @@ jobs:
           }
           process.stdout.write(JSON.stringify({credentialEgressChecks: result}) + "\n");
           '
-          marker_started_at="$(docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const row=db.getCollection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash:"fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227",status:"started"});print(row.startedAt.toISOString())'\''' | tail -1)"
+          marker_started_at="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --eval '\''const row=db.getCollection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash:process.env.SCIENTIFIC_V2_MANIFEST_HASH,status:"started"});print(row.startedAt.toISOString())'\''' | tail -1)"
           marker_epoch="$(date -d "$marker_started_at" +%s)"
           spool_count=0
           spool_bytes=0
