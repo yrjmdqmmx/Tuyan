@@ -75,6 +75,8 @@ source_script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 deploy_env="$deploy_dir/.env"
 shared_lock_path="/run/lock/paperbanana-hk-production.lock"
 lock_path="$(host_path "$shared_lock_path")"
+artifact_spool_parent="$(host_path /opt/paperbanana/data)"
+artifact_spool="$(host_path /opt/paperbanana/data/scientific-v2-artifact-spool)"
 
 if [[ -n "$test_root" ]]; then
   [[ "$staged_image_lock" =~ ^${test_root}/tmp/paperbanana-image-lock\.[A-Za-z0-9]{6,}$ ]] || {
@@ -199,6 +201,38 @@ else
 fi
 export PAPERBANANA_HK_SHARED_LOCK_FD="$shared_lock_fd"
 record_action "lock acquired $shared_lock_path"
+
+artifact_spool_parent_canonical="$(cd -P -- "$artifact_spool_parent" 2>/dev/null && pwd -P)" || {
+  echo "scientific v2 artifact spool parent must be a non-symlink directory" >&2
+  exit 1
+}
+[[ -d "$artifact_spool_parent" && ! -L "$artifact_spool_parent" && "$artifact_spool_parent_canonical" == "$artifact_spool_parent" ]] || {
+  echo "scientific v2 artifact spool parent must be a non-symlink directory" >&2
+  exit 1
+}
+
+if [[ -L "$artifact_spool" || ( -e "$artifact_spool" && ! -d "$artifact_spool" ) ]]; then
+  echo "scientific v2 artifact spool must be a non-symlink directory" >&2
+  exit 1
+fi
+if [[ ! -d "$artifact_spool" ]]; then
+  if [[ -n "$test_root" ]]; then
+    install -d -m 0700 "$artifact_spool"
+  else
+    install -d -o 1000 -g 1000 -m 0700 "$artifact_spool"
+  fi
+fi
+[[ -d "$artifact_spool" && ! -L "$artifact_spool" ]] || {
+  echo "scientific v2 artifact spool must be a non-symlink directory" >&2
+  exit 1
+}
+if [[ -n "$test_root" ]]; then
+  chmod 0700 "$artifact_spool"
+else
+  chown 1000:1000 "$artifact_spool"
+  chmod 0700 "$artifact_spool"
+fi
+record_action "provision scientific v2 artifact spool"
 
 if [[ -n "$test_root" ]]; then
   install -m 0600 "$staged_image_lock" "$deploy_env"
