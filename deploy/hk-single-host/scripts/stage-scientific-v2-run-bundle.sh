@@ -198,8 +198,15 @@ try:
         os.fsync(fd)
     finally:
         os.close(fd)
-except Exception:
-    sys.stderr.write('scientific v2 protected run-bundle assembly failed\n')
+except Exception as error:
+    allowed_diagnostics = {
+        'facts', 'drift', 'hash', 'secret', 'schema', 'identity', 'manifest-hash', 'state-hash',
+        'nested', 'canonical-manifest', 'registry-snapshot', 'price-snapshot', 'expected-hashes',
+        'binding', 'manifest-gate', 'attestation-gate', 'attestation-counts', 'report-hash',
+        'attestation-hmac', 'phase', 'report',
+    }
+    diagnostic = str(error) if isinstance(error, RuntimeError) and str(error) in allowed_diagnostics else 'unknown'
+    sys.stderr.write(f'scientific v2 protected run-bundle assembly failed [{diagnostic}]\n')
     raise SystemExit(1)
 PY
 

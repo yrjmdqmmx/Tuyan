@@ -289,8 +289,11 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     }
     assert.equal(execute(sign(reportBase)).status, 0)
     const directMaster = Buffer.from(secret)
+    const extraField = execute({ ...sign(reportBase), extra: true })
+    assert.notEqual(extraField.status, 0)
+    assert.match(extraField.stderr, /scientific v2 protected run-bundle assembly failed \[schema\]/)
+    assert.doesNotMatch(extraField.stderr, new RegExp(secret))
     for (const tampered of [
-      { ...sign(reportBase), extra: true },
       sign({ ...reportBase, daemon: { enabled: true, status: 'configured-disabled' } }),
       sign({ ...reportBase, concurrency: 2 }),
       sign({ ...reportBase, providerBudgetsCny: { bailian: 179, ark: 180, openrouter: 360 } }),
