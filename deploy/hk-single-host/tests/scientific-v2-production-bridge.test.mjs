@@ -339,6 +339,7 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   }
   assert.match(source, /127[.]0[.]0[.]1:3000\/paperbanana-api/)
   assert.match(source, /x-paperbanana-admin-transport-token/)
+  assert.match(source, /x-paperbanana-scientific-v2-admin-operation/)
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /0?600/)
   assert.match(source, /O_NOFOLLOW/)

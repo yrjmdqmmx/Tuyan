@@ -24,6 +24,17 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] 科研评测 v2 受保护冻结请求体通道 — by Codex
+变更：40 模型 Scientific v2 冻结信封约 1.70 MiB，超过 Core 普通 JSON 的 1 MiB 上限。Core 现仅对同时持有内部 gateway token、admin transport token 且声明 `x-paperbanana-scientific-v2-admin-operation: freeze` 的 localhost 冻结请求开放 8 MiB 上限；解析后再次要求 action/evaluationMode/command 精确为 `adminBenchmarkControl/codex_scientific_v2/freezeBatch`。其他请求继续使用 1 MiB，声明头不得复用于其他管理命令。
+
+契约（影响 Core API / 科研 v2 运维）：
+- `run-scientific-v2-admin-operator.sh` 的 freeze 调用新增内部声明头；非 freeze 阶段不发送。公开 API action、客户端字段和 CORS 不变。
+
+各端待办：
+- [x] paperbanana-api / 香港科研 v2 admin operator（受保护大请求解析、命令绑定与 TDD）
+- [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
+- [ ] 生产执行（合并并部署同一不可变 SHA 后，重新 prepare/freeze；当前三家 Provider 调用仍为 0）
+
 ### [2026-08-31] 科研评测 v2 固定保守价格授权入口与 OpenRouter ¥360 硬上限 — by Codex
 变更：新增 root-only `authorize-scientific-v2-price-snapshot` 生产入口。Worker 内置 77 条 exact `(provider, modelId, operation)` 保守 CNY 上界，根据已验签 registry authority、完整 official refresh report 与逐字节复验 captures 自动构造 extractor 实际仍 unresolved 的精确 requirement 集；拒绝未知 route/operation、缺失或额外 requirement、refresh/capturedAt/hash 漂移以及低于固定 map 的重签授权。授权与 signed snapshot 都以内容寻址 `0600` 落盘；宿主 wrapper 在同一生产共享锁内验证 HEAD、Core/Worker digest、running image/RepoDigest/build provenance、Worker disabled/concurrency 1 后先运行 authorization CLI，再调用既有 signer。GitHub workflow 只接收 SHA/digest/hash/固定确认词，signing secret 仅通过宿主受保护 env file 注入容器且不进入 argv/stdout；输出只含 authorization/snapshot hash、unresolved 数、三家 baseline/worst-case/cap 安全摘要。
 

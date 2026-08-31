@@ -69,6 +69,8 @@ const adminActions = new Set([
   'adminBenchmarkPromptDecision',
 ])
 
+const scientificV2AdminOperationHeader = 'x-paperbanana-scientific-v2-admin-operation'
+
 function tokensMatch(actual: string, expected: string): boolean {
   const actualDigest = createHash('sha256').update(actual).digest()
   const expectedDigest = createHash('sha256').update(expected).digest()
@@ -120,7 +122,17 @@ export function createApp({
 }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
-  app.use(express.json({ limit: '1mb', strict: false }))
+  const standardJsonParser = express.json({ limit: '1mb', strict: false })
+  const scientificV2FreezeJsonParser = express.json({ limit: '8mb', strict: false })
+  app.use((request, response, next) => {
+    const protectedFreezeTransport = request.method === 'POST'
+      && request.path === '/paperbanana-api'
+      && request.get(scientificV2AdminOperationHeader) === 'freeze'
+      && Boolean(config.adminTransportToken)
+      && tokensMatch(request.get('x-paperbanana-gateway-token') || '', config.gatewayToken)
+      && tokensMatch(request.get('x-paperbanana-admin-transport-token') || '', config.adminTransportToken || '')
+    return (protectedFreezeTransport ? scientificV2FreezeJsonParser : standardJsonParser)(request, response, next)
+  })
   app.use((request, response, next) => {
     applyCors(response)
     response.on('finish', () => {
@@ -179,6 +191,14 @@ export function createApp({
       && adminTransport
       && tokensMatch(adminTransport, config.adminTransportToken),
     )
+    const declaredScientificV2AdminOperation = request.get(scientificV2AdminOperationHeader) || ''
+    const isScientificV2Freeze = action === 'adminBenchmarkControl'
+      && body.evaluationMode === 'codex_scientific_v2'
+      && body.command === 'freezeBatch'
+    if ((declaredScientificV2AdminOperation || (isAdminTransport && isScientificV2Freeze))
+      && !(declaredScientificV2AdminOperation === 'freeze' && gatewayTransport && isAdminTransport && isScientificV2Freeze)) {
+      return response.status(400).json({ code: 400, error: 'Scientific V2 admin transport rejected' })
+    }
     if (isAdminTransport && config.adminToken && adminActions.has(action)) {
       const adminUserId = safeLegacyHeader(request.get('x-paperbanana-admin-user-id'), 200) || ''
       if (!/^[A-Za-z0-9._:-]{3,200}$/.test(adminUserId)) return response.status(401).json({ code: 401, error: 'Missing immutable admin identity' })
