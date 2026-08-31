@@ -44,7 +44,7 @@ jobs:
           set -Eeuo pipefail
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
-          docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark' <<'JS'
+          docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
           const manifestHash = "fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227";
           const batch = db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash});
           if (!batch) throw new Error("SCIENTIFIC_V2_BATCH_NOT_FOUND");
