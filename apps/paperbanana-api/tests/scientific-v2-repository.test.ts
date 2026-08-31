@@ -325,6 +325,19 @@ function failProviderCanary(state: any) {
   return refreshState(next, '2026-08-31T00:00:09.000Z')
 }
 
+function propagatedProviderCanaryFailureState(fixture: ReturnType<typeof scientificBatchFixture>) {
+  const state = failProviderCanary(completedScientificState(fixture))
+  const canary = state.slots.find((slot: any) => slot.isProviderCanary && slot.status === 'failed')!
+  for (const slot of state.slots) {
+    if (slot.provider !== canary.provider || slot.slotId === canary.slotId) continue
+    slot.status = 'failed'
+    slot.costCny = 0
+    slot.attempts = []
+  }
+  state.providerSpentCny[canary.provider] = canary.costCny
+  return refreshState(state, '2026-08-31T00:00:10.000Z')
+}
+
 function blockedProviderCanaryState(fixture: ReturnType<typeof scientificBatchFixture>) {
   const state = structuredClone(fixture.initialState) as any
   const slot = state.slots.find((candidate: any) => candidate.isProviderCanary)!
@@ -568,7 +581,7 @@ function recoveredArtifactState(fixture: ReturnType<typeof scientificBatchFixtur
   return refreshState(state, '2026-08-31T00:00:04.000Z')
 }
 
-function signedStateReport(secret: string, fixture: ReturnType<typeof scientificBatchFixture>, state: any, kind: 'worker' | 'codex' = 'codex', options: { batchId?: string; previousStateHash?: string; revision?: number } = {}) {
+function signedStateReport(secret: string, fixture: ReturnType<typeof scientificBatchFixture>, state: any, kind: 'worker' | 'codex' = 'codex', options: { batchId?: string; previousStateHash?: string; revision?: number; providerCanaryPassed?: boolean } = {}) {
   const codexSlots = state.slots.filter((slot: any) => slot.provider === 'codex')
   const reportPayload = {
     schemaVersion: 2 as const,
@@ -582,7 +595,8 @@ function signedStateReport(secret: string, fixture: ReturnType<typeof scientific
     state,
     providerCanaryAttestation: {
       providers: [...new Set(fixture.manifest.executionOrder.filter((slot: any) => slot.isProviderCanary).map((slot: any) => slot.provider))],
-      passed: true,
+      passed: options.providerCanaryPassed ?? state.slots.filter((slot: any) => slot.isProviderCanary)
+        .every((slot: any) => slot.status === 'succeeded' && ['succeeded', 'succeeded_low_quality'].includes(slot.attempts.at(-1)?.responseClass)),
       attemptSetHash: canonicalHash(state.slots.filter((slot: any) => slot.provider !== 'codex').flatMap((slot: any) => slot.attempts.map((attempt: any) => attempt.attemptHash))),
     },
     executionOrderAttestation: { slotIds: state.slots.map((slot: any) => slot.slotId), passed: true },
@@ -1322,7 +1336,7 @@ test('importStateReport rejects HMAC, attempt, unknown and budget tampering', as
 test('independent state validation accepts four confirmed failures with nullable actual cost and charges the estimate', () => {
   const fixture = scientificBatchFixture()
   const state = completedScientificState(fixture) as any
-  const slot = state.slots.find((candidate: any) => candidate.provider !== 'codex')!
+  const slot = state.slots.find((candidate: any) => candidate.provider !== 'codex' && !candidate.isProviderCanary)!
   const successful = slot.attempts[0]
   slot.attempts = Array.from({ length: 4 }, (_, index) => {
     const base = {
@@ -1437,6 +1451,41 @@ test('API and Worker accept only the ordered four-attempt provider canary blocke
     const state = build()
     assert.throws(() => verifyWorkerScientificV2BatchState(state, fixture.manifest as any), /SCIENTIFIC_V2_/)
     assert.throws(() => verifyScientificV2ImportedState(state, fixture.manifest), /SCIENTIFIC_V2_/)
+  })
+})
+
+test('API accepts only exact zero-attempt failures propagated from a four-attempt provider canary', async (t) => {
+  const fixture = scientificBatchFixture()
+  const accepted = propagatedProviderCanaryFailureState(fixture)
+  assert.doesNotThrow(() => verifyScientificV2ImportedState(accepted, fixture.manifest))
+
+  const mutations: Array<[string, (state: any) => void]> = [
+    ['propagated failure has a nonzero cost', (state) => {
+      state.slots.find((slot: any) => slot.status === 'failed' && !slot.isProviderCanary)!.costCny = 1
+    }],
+    ['propagated failure contains an attempt', (state) => {
+      const propagated = state.slots.find((slot: any) => slot.status === 'failed' && !slot.isProviderCanary)!
+      propagated.attempts = [structuredClone(state.slots.find((slot: any) => slot.isProviderCanary)!.attempts[0])]
+    }],
+    ['provider canary has fewer than four confirmed failures', (state) => {
+      const canary = state.slots.find((slot: any) => slot.isProviderCanary)!
+      canary.attempts.pop()
+      canary.costCny -= 1
+      state.providerSpentCny[canary.provider] -= 1
+    }],
+    ['one same-provider slot is not propagated', (state) => {
+      const propagated = state.slots.find((slot: any) => slot.status === 'failed' && !slot.isProviderCanary)!
+      const completed = completedScientificState(fixture).slots.find((slot: any) => slot.slotId === propagated.slotId)!
+      propagated.status = 'succeeded'
+      propagated.costCny = completed.costCny
+      propagated.attempts = structuredClone(completed.attempts)
+      state.providerSpentCny[propagated.provider] += completed.costCny
+    }],
+  ]
+  for (const [name, mutate] of mutations) await t.test(name, () => {
+    const state = structuredClone(accepted)
+    mutate(state)
+    assert.throws(() => verifyScientificV2ImportedState(refreshState(state), fixture.manifest), /SCIENTIFIC_V2_/)
   })
 })
 
@@ -1715,20 +1764,30 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
   const claimed = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
   assert.ok(claimed)
   let current = claimed.state as any
-  for (const finalSlot of state.slots.filter((slot: any) => slot.provider && slot.provider !== 'codex')) {
-    const next = structuredClone(current)
-    const nextSlot = next.slots.find((slot: any) => slot.slotId === finalSlot.slotId)!
-    nextSlot.status = finalSlot.status
-    nextSlot.costCny = finalSlot.costCny
-    nextSlot.attempts = structuredClone(finalSlot.attempts)
-    next.providerSpentCny[finalSlot.provider] += finalSlot.costCny
-    next.updatedAt = '2026-08-31T00:00:03.000Z'
-    delete next.stateHash
-    next.stateHash = canonicalHash(next)
-    const attempt = finalSlot.attempts[0]
-    const marker = { manifestHash: fixture.manifest.manifestHash, slotId: finalSlot.slotId, attemptIndex: 1, payloadHash: attempt.payloadHash }
-    await repository.beginDispatch({ claimToken: claimed.claimToken, expectedStateHash: current.stateHash, marker })
-    current = await repository.commitAttempt({ claimToken: claimed.claimToken, expectedStateHash: current.stateHash, marker, attempt, nextState: next })
+  for (const finalSlot of state.slots.filter((slot: any) => slot.provider && slot.provider !== 'codex' && slot.attempts.length)) {
+    for (const attempt of finalSlot.attempts) {
+      const next = structuredClone(current)
+      const nextSlot = next.slots.find((slot: any) => slot.slotId === finalSlot.slotId)!
+      nextSlot.attempts = structuredClone(finalSlot.attempts.slice(0, attempt.attemptIndex))
+      nextSlot.costCny = nextSlot.attempts.reduce((sum: number, item: any) => sum + (item.actualCny ?? item.estimatedCny), 0)
+      nextSlot.status = attempt.attemptIndex === finalSlot.attempts.length ? finalSlot.status : 'retrying'
+      next.providerSpentCny[finalSlot.provider] += attempt.actualCny ?? attempt.estimatedCny
+      if (nextSlot.isProviderCanary && nextSlot.status === 'failed') {
+        for (const propagated of state.slots.filter((slot: any) => slot.provider === finalSlot.provider
+          && !slot.isProviderCanary && slot.status === 'failed' && slot.attempts.length === 0)) {
+          const target = next.slots.find((slot: any) => slot.slotId === propagated.slotId)!
+          target.status = 'failed'
+          target.costCny = 0
+          target.attempts = []
+        }
+      }
+      next.updatedAt = '2026-08-31T00:00:03.000Z'
+      delete next.stateHash
+      next.stateHash = canonicalHash(next)
+      const marker = { manifestHash: fixture.manifest.manifestHash, slotId: finalSlot.slotId, attemptIndex: attempt.attemptIndex, payloadHash: attempt.payloadHash }
+      await repository.beginDispatch({ claimToken: claimed.claimToken, expectedStateHash: current.stateHash, marker })
+      current = await repository.commitAttempt({ claimToken: claimed.claimToken, expectedStateHash: current.stateHash, marker, attempt, nextState: next })
+    }
   }
   const awaiting = structuredClone(current)
   awaiting.status = 'awaiting_artifacts'
@@ -1969,16 +2028,25 @@ test('freezeBatch matches Worker exact-schema rejection for every frozen documen
   })
 })
 
-test('import rejects a failed provider canary even when the signed attempt set hash is exact', async () => {
+test('import accepts an exact failed provider canary attested as passed false and rejects a dishonest boolean', async () => {
   const fixture = scientificBatchFixture()
-  const state = failProviderCanary(completedScientificState(fixture))
+  const state = propagatedProviderCanaryFailureState(fixture)
   assert.doesNotThrow(() => verifyScientificV2ImportedState(state, fixture.manifest))
   const storage = atomicScientificDb()
   const secret = 'scientific-v2-failed-canary-secret-32-bytes'
   const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'failed-canary-api', { operatorReportSecret: secret })
   await repository.freezeBatch({ batchId: 'scientific-v2-failed-canary', ...fixture })
   const signed = signedStateReport(secret, fixture, state, 'codex', { batchId: 'scientific-v2-failed-canary' })
-  await assert.rejects(() => repository.importStateReport(signed), /SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID/)
+  assert.equal(signed.report.providerCanaryAttestation.passed, false)
+  assert.equal((await repository.importStateReport(signed)).reviewReady, true)
+
+  const dishonestStorage = atomicScientificDb()
+  const dishonestRepository = createScientificV2MongoRepository(dishonestStorage.db, () => FIXED_NOW, () => 'dishonest-canary-api', { operatorReportSecret: secret })
+  await dishonestRepository.freezeBatch({ batchId: 'scientific-v2-dishonest-canary', ...fixture })
+  const dishonest = signedStateReport(secret, fixture, state, 'codex', {
+    batchId: 'scientific-v2-dishonest-canary', providerCanaryPassed: true,
+  })
+  await assert.rejects(() => dishonestRepository.importStateReport(dishonest), /SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID/)
 })
 
 test('Codex provenance binds the first canary slot final successful attempt hash', async () => {
@@ -1994,9 +2062,9 @@ test('Codex provenance binds the first canary slot final successful attempt hash
   assert.equal(signed.report.codexProvenance?.artifactCanaryHash, state.slots.find((slot: any) => slot.provider === 'codex').attempts.at(-1).rawImageHash)
 })
 
-test('publish independently rejects an attested terminal snapshot whose provider canary failed', async () => {
+test('publish audits a failed provider as zero while preserving its four real attempts and zero-attempt propagation', async () => {
   const fixture = scientificBatchFixture()
-  const validState = completedScientificState(fixture)
+  const state = propagatedProviderCanaryFailureState(fixture)
   const storage = atomicScientificDb()
   const secret = 'scientific-v2-publish-canary-secret-at-least-32-bytes'
   const batchId = 'scientific-v2-publish-failed-canary'
@@ -2004,23 +2072,21 @@ test('publish independently rejects an attested terminal snapshot whose provider
     operatorReportSecret: secret, verifyObject: async () => {},
   })
   await repository.freezeBatch({ batchId, ...fixture })
-  const input = await preparePublishFacts(repository, fixture, validState, secret, batchId)
-  const failedState = failProviderCanary(validState)
-  const signed = signedStateReport(secret, fixture, failedState, 'codex', { batchId, revision: 2 })
-  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
-  const report = (storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts') || []).find((row) => row.artifactType === 'state_report')!
-  report._id = `scientific-v2-state-report:${signed.reportHash}`
-  report.report = structuredClone(signed.report)
-  report.reportHash = signed.reportHash
-  report.attestationHash = signed.attestationHash
-  batch.state = structuredClone(failedState)
-  batch.stateHash = failedState.stateHash
-  batch.latestStateReportHash = signed.reportHash
-  batch.providerCanaryAttestation = structuredClone(signed.report.providerCanaryAttestation)
-  await assert.rejects(
-    () => repository.publishScientificV2({ batchId, ...input }),
-    /SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID/,
-  )
+  const input = await preparePublishFacts(repository, fixture, state, secret, batchId)
+  await repository.publishScientificV2({ batchId, ...input })
+
+  const release = storage.rows.get('paperbanana_benchmark_releases')![0]
+  const canary = state.slots.find((slot: any) => slot.isProviderCanary && slot.status === 'failed')!
+  const model = release.models.find((candidate: any) => candidate.canonicalModelId === canary.canonicalModelId)!
+  assert.ok(Object.values(model.scores).every((score) => score === 0))
+  assert.deepEqual(model.attemptSummary, { total: 4, succeeded: 0, failed: 9, unsupported: 0 })
+  assert.equal(model.evidence.find((item: any) => item.caseId === canary.caseId).failureReason, 'confirmed_attempts_exhausted')
+  assert.ok(model.evidence.filter((item: any) => item.caseId !== canary.caseId)
+    .every((item: any) => item.failureReason === 'provider_canary_confirmed_failed'
+      && item.attemptSummary.count === 0 && item.attemptSummary.responseClasses.length === 0))
+  const markers = storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches') || []
+  assert.equal(markers.length, 4)
+  assert.ok(markers.every((marker) => marker.slotId === canary.slotId && marker.status === 'committed'))
 })
 
 test('publish requires exact private raw/source keys and exact public rendition key by kind', async (t) => {

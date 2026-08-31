@@ -51,10 +51,25 @@ const stateOperationReportPayloadKeys = [
   'stateHash', 'state', 'providerCanaryAttestation', 'executionOrderAttestation', 'codexProvenance',
   'disclosure', 'createdAt',
 ] as const
+const confirmedFailureResponseClasses = new Set(['confirmed_technical_failure', 'confirmed_provider_failure'])
+
+function isExactConfirmedCanaryFailure(slot: AnyRecord) {
+  return slot.isProviderCanary === true && slot.status === 'failed' && slot.attempts.length === 4
+    && slot.attempts.every((attempt: AnyRecord) => confirmedFailureResponseClasses.has(attempt.responseClass))
+}
+
+function isProviderCanaryPropagatedFailure(slot: AnyRecord) {
+  return slot.isProviderCanary === false && slot.supported === true && slot.status === 'failed'
+    && typeof slot.provider === 'string' && slot.provider !== 'codex'
+    && slot.attempts.length === 0 && slot.costCny === 0
+}
 
 export function scientificV2FailureReason(slot: AnyRecord) {
   if (slot.status === 'unsupported') {
     return slot.operation === 'edit' ? 'direct_edit_route_unavailable' : 'capability_unsupported'
+  }
+  if (isProviderCanaryPropagatedFailure(slot)) {
+    return 'provider_canary_confirmed_failed'
   }
   return 'confirmed_attempts_exhausted'
 }
@@ -293,7 +308,9 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     } else if (slot.status === 'succeeded') {
       if (!slot.attempts.length || !['succeeded', 'succeeded_low_quality'].includes(slot.attempts.at(-1).responseClass)) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'failed') {
-      if (slot.attempts.length !== 4 || !['confirmed_technical_failure', 'confirmed_provider_failure'].includes(slot.attempts.at(-1).responseClass)) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
+      const exhausted = slot.attempts.length === 4 && confirmedFailureResponseClasses.has(slot.attempts.at(-1)?.responseClass)
+      const propagated = isProviderCanaryPropagatedFailure(slot)
+      if (!exhausted && !propagated) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'unknown' && slot.attempts.at(-1)?.responseClass !== 'unknown_provider_outcome') scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     else if (slot.status === 'retrying' && (!slot.attempts.length || slot.attempts.length >= 4
       || !['confirmed_technical_failure', 'confirmed_provider_failure'].includes(slot.attempts.at(-1)?.responseClass))) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
@@ -313,6 +330,16 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
       || cnyUnits(state.providerUnreconciledCny[provider]) !== unreconciled[provider]) {
       scientificError('SCIENTIFIC_V2_STATE_BUDGET_INVALID')
     }
+  }
+  const legacyBlockedCanaryFailure = state.status === 'blocked' && state.blockReason === 'provider_canary_failed'
+  const failedCanaryProviders = new Set(state.slots.filter(isExactConfirmedCanaryFailure).map((slot: AnyRecord) => slot.provider))
+  const propagatedFailures = state.slots.filter(isProviderCanaryPropagatedFailure)
+  if (propagatedFailures.some((slot: AnyRecord) => !failedCanaryProviders.has(slot.provider))) {
+    scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
+  }
+  if (!legacyBlockedCanaryFailure && [...failedCanaryProviders].some((provider) => state.slots.some((slot: AnyRecord) => slot.provider === provider
+    && !slot.isProviderCanary && !isProviderCanaryPropagatedFailure(slot)))) {
+    scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
   }
   const priceReconciliationSlot = state.slots.find((slot: AnyRecord) => slot.status === 'price_reconciliation')
   if (priceReconciliationSlot) {
@@ -337,7 +364,8 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     || (state.status === 'blocked') !== (state.blockReason !== null)
     || (state.status === 'ready' && slotStatuses.some((status: string) => status !== 'pending'))
     || (state.status === 'canary_complete' && (state.slots.some((slot: AnyRecord) => slot.isProviderCanary
-      ? slot.status !== 'succeeded' : slot.status !== 'pending')
+      ? !(slot.status === 'succeeded' || isExactConfirmedCanaryFailure(slot))
+      : failedCanaryProviders.has(slot.provider) ? !isProviderCanaryPropagatedFailure(slot) : slot.status !== 'pending')
       || state.slots.filter((slot: AnyRecord) => slot.isProviderCanary).length !== new Set(manifest.executionOrder
         .filter((slot: AnyRecord) => slot.isProviderCanary).map((slot: AnyRecord) => slot.provider)).size))
     || (state.status === 'running' && slotStatuses.some((status: string) => ['unknown', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(status)))
@@ -479,11 +507,12 @@ function providerCanaryFacts(state: AnyRecord, manifest: AnyRecord) {
   const providers = [...new Set(manifest.executionOrder.filter((slot: AnyRecord) => slot.isProviderCanary).map((slot: AnyRecord) => slot.provider))]
   const attemptSetHash = canonicalHash(state.slots.filter((slot: AnyRecord) => slot.provider !== 'codex')
     .flatMap((slot: AnyRecord) => slot.attempts.map((attempt: AnyRecord) => attempt.attemptHash)))
-  if (canaries.length !== canarySlotIds.size || canaries.some((slot: AnyRecord) => slot.status !== 'succeeded'
-    || !['succeeded', 'succeeded_low_quality'].includes(slot.attempts.at(-1)?.responseClass))) {
+  const succeeded = (slot: AnyRecord) => slot.status === 'succeeded'
+    && ['succeeded', 'succeeded_low_quality'].includes(slot.attempts.at(-1)?.responseClass)
+  if (canaries.length !== canarySlotIds.size || canaries.some((slot: AnyRecord) => !succeeded(slot) && !isExactConfirmedCanaryFailure(slot))) {
     scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
   }
-  return { providers, attemptSetHash }
+  return { providers, passed: canaries.every(succeeded), attemptSetHash }
 }
 
 function diagnosticCnyTotal(attempts: AnyRecord[], key: 'estimatedCny' | 'actualCny') {
@@ -852,7 +881,7 @@ export function createScientificV2MongoRepository(
       assertExactKeys(input.report.providerCanaryAttestation, ['providers', 'passed', 'attemptSetHash'], 'SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       assertExactKeys(input.report.executionOrderAttestation, ['slotIds', 'passed'], 'SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       const providerCanaries = providerCanaryFacts(input.report.state, batch.manifest)
-      if (input.report.providerCanaryAttestation.passed !== true
+      if (input.report.providerCanaryAttestation.passed !== providerCanaries.passed
         || canonicalHash(input.report.providerCanaryAttestation.providers) !== canonicalHash(providerCanaries.providers)
         || input.report.providerCanaryAttestation.attemptSetHash !== providerCanaries.attemptSetHash
         || input.report.executionOrderAttestation.passed !== true
@@ -1212,7 +1241,7 @@ export function createScientificV2MongoRepository(
         || codexSlots.some((slot: AnyRecord) => !['succeeded', 'failed'].includes(slot.status))
         || codexProvenance.firstCaseId !== codexSlots[0]?.caseId
         || codexProvenance.artifactCanaryHash !== codexSlots[0]?.attempts.at(-1)?.rawImageHash
-        || providerCanary.passed !== true || canonicalHash(providerCanary.providers) !== canonicalHash(expectedCanaries.providers)
+        || providerCanary.passed !== expectedCanaries.passed || canonicalHash(providerCanary.providers) !== canonicalHash(expectedCanaries.providers)
         || providerCanary.attemptSetHash !== expectedCanaries.attemptSetHash
         || orderAttestation.passed !== true || canonicalHash(orderAttestation.slotIds) !== canonicalHash(batch.state.slots.map((slot: AnyRecord) => slot.slotId))) {
         scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')

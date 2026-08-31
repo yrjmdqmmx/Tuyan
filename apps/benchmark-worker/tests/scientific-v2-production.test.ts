@@ -317,6 +317,85 @@ test('production Mongo canary completion atomically releases its claim and full 
   assert.equal(full.state.slots.filter((slot) => slot.isProviderCanary).every((slot) => slot.attempts.length === 1), true)
 })
 
+test('production Mongo atomically recovers only an exact legacy provider-canary blocked batch without dispatching it', async () => {
+  const fixture = productionBatchFixture()
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#789' } }).png().toBuffer()
+  const partial = await runScientificV2Batch({
+    manifest: fixture.manifest, state: fixture.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'legacy-blocked-canary-lock' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request: any) {
+      if (request.provider === 'bailian') {
+        throw new ScientificConfirmedFailureError('confirmed', { responseClass: 'confirmed_provider_failure', actualCny: 1 })
+      }
+      return { responseClass: 'succeeded' as const, actualCny: 1, bytes: png }
+    } },
+  })
+  const legacy = structuredClone(partial.state)
+  const canary = legacy.slots.find((slot) => slot.provider === 'bailian' && slot.isProviderCanary)!
+  for (const slot of legacy.slots) if (slot !== canary) {
+    slot.status = 'not_executed'
+    slot.attempts = []
+    slot.costCny = null
+  }
+  legacy.status = 'blocked'
+  legacy.pauseReason = null
+  legacy.blockReason = 'provider_canary_failed'
+  legacy.providerSpentCny.ark = 0
+  legacy.providerSpentCny.openrouter = 0
+  const { stateHash: _oldStateHash, ...legacyBase } = legacy
+  legacy.stateHash = canonicalHash(legacyBase)
+
+  const storage = productionAtomicDb({ ...fixture, state: legacy })
+  const repository = createScientificV2MongoRepository(storage.db, () => new Date('2026-08-31T06:15:00.000Z'), () => 'legacy-canary-recovery-claim')
+  assert.equal(await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: '0'.repeat(64) }), null)
+  const claim = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: legacy.stateHash })
+
+  assert.ok(claim)
+  assert.equal(claim.state.status, 'running')
+  assert.equal(claim.state.blockReason, null)
+  const claimedCanary = claim.state.slots.find((slot) => slot.slotId === canary.slotId)!
+  assert.equal(claimedCanary.status, 'failed')
+  assert.equal(claimedCanary.attempts.length, 4)
+  assert.ok(claim.state.slots.filter((slot) => slot.provider === 'bailian' && slot.supported && !slot.isProviderCanary)
+    .every((slot) => slot.status === 'failed' && slot.attempts.length === 0 && slot.costCny === 0))
+  assert.ok(claim.state.slots.filter((slot) => slot.provider !== 'bailian' && slot.status === 'pending').length > 0)
+  assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.length, 0)
+  const recoveryUpdate = storage.findOneAndUpdateCalls.find((call) => call.collection === 'paperbanana_benchmark_scientific_v2_batches'
+    && call.update.$set?.claimToken === 'legacy-canary-recovery-claim')!
+  assert.deepEqual(recoveryUpdate.query.$or, [
+    { 'state.status': 'ready' },
+    { 'state.status': 'canary_complete' },
+    { 'state.status': 'blocked', 'state.blockReason': 'provider_canary_failed' },
+  ])
+  assert.equal(await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: legacy.stateHash }), null)
+  assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.length, 0)
+})
+
+test('production Mongo never recovers budget or reconciliation blocked and paused batches', async () => {
+  const fixture = productionBatchFixture()
+  const deniedStates = [
+    { status: 'blocked' as const, pauseReason: null, blockReason: 'provider_budget_exceeded_before_attempt' as const },
+    { status: 'paused' as const, pauseReason: 'reconciliation_required' as const, blockReason: null },
+    { status: 'paused' as const, pauseReason: 'price_reconciliation_required' as const, blockReason: null },
+    { status: 'paused' as const, pauseReason: 'artifact_reconciliation_required' as const, blockReason: null },
+  ]
+  for (const denied of deniedStates) {
+    const state = structuredClone(fixture.state)
+    state.status = denied.status
+    state.pauseReason = denied.pauseReason
+    state.blockReason = denied.blockReason
+    const { stateHash: _oldStateHash, ...stateBase } = state
+    state.stateHash = canonicalHash(stateBase)
+    const storage = productionAtomicDb({ ...fixture, state })
+    const repository = createScientificV2MongoRepository(storage.db, () => new Date('2026-08-31T06:16:00.000Z'), () => 'denied-recovery-claim')
+
+    assert.equal(await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: state.stateHash }), null)
+    assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.length, 0)
+  }
+})
+
 test('production Mongo lease lock provides exclusive renewable ownership and explicit release', async () => {
   const storage = productionAtomicDb()
   let timestamp = new Date('2026-08-31T05:00:00.000Z')
@@ -525,7 +604,7 @@ test('production Mongo markUnknown rolls back state and marker together when its
   assert.equal(storage.transactionCallsWithoutSession(), 0)
 })
 
-test('four confirmed provider-canary failures stop that provider immediately and forbid a signed worker report', async () => {
+test('four confirmed provider-canary failures audit-zero that provider and permit a signed worker report', async () => {
   const fixture = productionBatchFixture()
   const storage = productionAtomicDb(fixture)
   let calls = 0
@@ -541,14 +620,20 @@ test('four confirmed provider-canary failures stop that provider immediately and
     } },
   })
   assert.equal(calls, 4)
-  assert.equal(result.state.status, 'blocked')
-  assert.equal(result.state.blockReason, 'provider_canary_failed')
-  assert.ok(result.state.slots.slice(1).every((slot) => slot.status === 'not_executed'))
-  assert.throws(() => createScientificV2SignedStateOperationReport({
+  assert.equal(result.state.status, 'awaiting_artifacts')
+  assert.equal(result.state.blockReason, null)
+  const canary = result.state.slots.find((slot) => slot.isProviderCanary)!
+  assert.equal(canary.status, 'failed')
+  assert.equal(canary.attempts.length, 4)
+  assert.ok(result.state.slots.filter((slot) => slot.provider === 'bailian' && !slot.isProviderCanary)
+    .every((slot) => slot.status === 'failed' && slot.attempts.length === 0 && slot.costCny === 0))
+  const signed = createScientificV2SignedStateOperationReport({
     kind: 'worker', batchId: 'failed-canary-batch', manifest: fixture.manifest, state: result.state,
     revision: 1, previousStateHash: result.previousStateHash, createdAt: '2026-08-31T06:00:00.000Z',
     attestationSecret: 'failed-provider-canary-report-secret'.padEnd(32, '-'),
-  }), /SCIENTIFIC_V2_PROVIDER_CANARY_FAILED/)
+  })
+  assert.equal(signed.report.providerCanaryAttestation.passed, false)
+  assert.equal(verifyScientificV2SignedStateOperationReport(signed, 'failed-provider-canary-report-secret'.padEnd(32, '-')), true)
 })
 
 test('production OSS artifact store writes immutable private content-addressed bytes and verifies duplicate content', async () => {

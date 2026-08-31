@@ -163,6 +163,44 @@ test('scientific public evidence allowlists attempt summary fields and rejects i
   assert.deepEqual(malformed.profile.evidence, [])
 })
 
+test('scientific public evidence exposes only exact zero-attempt provider-canary propagated failures', async () => {
+  const release = scientificRelease()
+  const failed = structuredClone(release.models[0].evidence.find((item: any) => item.status === 'failed'))
+  const evidenceRow = {
+    sourceReleaseHash: release.releaseHash,
+    profileId: release.profileId,
+    canonicalModelId: 'scientific-model',
+    overallRank: 1,
+    ...failed,
+    attemptSummary: { count: 0, responseClasses: [] },
+    failureReason: 'provider_canary_confirmed_failed',
+  }
+  const repository: any = {
+    async latestRelease() { return release },
+    async releaseByModel() { return release },
+    async publicEvidenceForRelease() { return { items: [evidenceRow], nextCursor: null } },
+    async candidates() { return [] }, async approve() {}, async control() {}, async exportReview() {}, async importReview() {}, async publish() {},
+  }
+  const service = createBenchmarkService({ repository, signEvidence: async () => '', verifyEvidence: async () => {} })
+
+  const projected = await service.handle({ action: 'benchmarkModelProfile', profileId: release.profileId }, false)
+  assert.deepEqual(projected.profile.evidence, [{
+    profileId: release.profileId,
+    canonicalModelId: 'scientific-model',
+    overallRank: 1,
+    caseId: failed.caseId,
+    kind: failed.kind,
+    status: 'failed',
+    requestedResolution: '2K',
+    attemptSummary: { count: 0, responseClasses: [] },
+    failureReason: 'provider_canary_confirmed_failed',
+  }])
+
+  evidenceRow.failureReason = 'confirmed_attempts_exhausted'
+  const mismatched = await service.handle({ action: 'benchmarkModelProfile', profileId: release.profileId }, false)
+  assert.deepEqual(mismatched.profile.evidence, [])
+})
+
 test('production CJS bundle loads scientific v2 without an import.meta URL crash', () => {
   const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   const build = spawnSync('pnpm', ['build'], { cwd: packageRoot, encoding: 'utf8' })

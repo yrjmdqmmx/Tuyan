@@ -92,6 +92,7 @@ test('fixed-slot aggregation scores failed and unsupported applicable slots as z
   assert.throws(() => aggregateScientificFixedSlots(attempts.slice(1)), /SCIENTIFIC_FIXED_SLOT_SET_MISMATCH/)
   assert.throws(() => aggregateScientificFixedSlots(attempts.map((attempt, index) => index === 2 ? { caseId: attempt.caseId, status: 'not_executed' as const } : attempt)), /SCIENTIFIC_SLOT_NOT_EXECUTED/)
   assert.throws(() => aggregateScientificFixedSlots(attempts.map((attempt, index) => index === 2 ? { caseId: attempt.caseId, status: 'budget_blocked' as const } : attempt)), /SCIENTIFIC_SLOT_BUDGET_BLOCKED/)
+  assert.throws(() => aggregateScientificFixedSlots(attempts.map((attempt, index) => index === 2 ? { caseId: attempt.caseId, status: 'unknown' as never } : attempt)), /INVALID_SCIENTIFIC_SLOT_STATUS/)
 })
 
 test('overall uses the raw ten-axis mean and raw-precision competition ranking', () => {

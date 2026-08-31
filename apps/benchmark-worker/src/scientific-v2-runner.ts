@@ -194,6 +194,16 @@ function markFollowingNotExecuted(state: ScientificV2BatchState, sequence: numbe
   }
 }
 
+function markProviderCanaryFailure(state: ScientificV2BatchState, provider: 'bailian' | 'ark' | 'openrouter') {
+  for (const slot of state.slots) {
+    if (slot.provider === provider && slot.supported && !slot.isProviderCanary && ['pending', 'retrying'].includes(slot.status)) {
+      slot.status = 'failed'
+      slot.costCny = 0
+      slot.attempts = []
+    }
+  }
+}
+
 function buildPayload(manifest: ScientificV2BatchManifest, slot: ScientificV2BatchState['slots'][number]) {
   const scientificCase = manifest.cases.find((candidate) => candidate.id === slot.caseId)
   if (!scientificCase) scientificV2Error('SCIENTIFIC_V2_SLOT_CASE_INVALID')
@@ -620,15 +630,9 @@ async function runScientificV2BatchInternal(input: {
           dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, chargedCny)
           chargeAttempt(state, provider, chargedCny)
           dispatchSlot.status = attemptIndex === 4 ? 'failed' : 'retrying'
+          if (attemptIndex === 4 && dispatchSlot.isProviderCanary) markProviderCanaryFailure(state, provider)
           await commitAttempt(marker, attempt)
           attemptCommitted = true
-          if (attemptIndex === 4 && dispatchSlot.isProviderCanary) {
-            state.status = 'blocked'
-            state.blockReason = 'provider_canary_failed'
-            markFollowingNotExecuted(state, dispatchSlot.sequence)
-            const persisted = await saveClaimed()
-            return runResult(persisted)
-          }
           if (attemptIndex === 4) break
           slot = state.slots.find((candidate) => candidate.slotId === frozenSlot.slotId)
           if (!slot) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
