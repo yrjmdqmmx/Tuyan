@@ -5008,10 +5008,10 @@ function supportsOpenRouterParameter(parameters: any, name: string) {
   return Boolean(parameters && Object.prototype.hasOwnProperty.call(parameters, name))
 }
 
-type NormalizedSourceImage = { base64: string; mimeType: string; dataUrl: string }
+type NormalizedSourceImage = { base64: string; mimeType: string; dataUrl: string; remoteUrl?: string }
 
 // Accepts a data URL, a bare base64 string, or a remote/bucket URL and returns
-// a normalized base64 + data URL pair for conditioning image-edit requests.
+// normalized bytes plus the validated original remote URL when one is available.
 async function normalizeSourceImage(sourceImage: string): Promise<NormalizedSourceImage | null> {
   const value = String(sourceImage || '').trim()
   if (!value) return null
@@ -5028,7 +5028,7 @@ async function normalizeSourceImage(sourceImage: string): Promise<NormalizedSour
     const mimeType = inferMimeTypeFromUrl(value)
     const base64 = await fetchImageAsBase64(value, 'Refine source image download', maxReferenceBytes)
     if (!base64) return null
-    return { base64, mimeType, dataUrl: `data:${mimeType};base64,${base64}` }
+    return { base64, mimeType, dataUrl: `data:${mimeType};base64,${base64}`, remoteUrl: value }
   }
 
   // Treat as a bare base64 payload.
@@ -5250,7 +5250,7 @@ async function callBailianImage(
   if (/^wan2\.7-image/.test(model)) parameters.thinking_mode = true
   if (/^qwen-image-(?:2\.0|3\.0)/.test(model)) parameters.prompt_extend = true
   const content: any[] = []
-  if (source) content.push({ image: await toBailianImageUrl(source.dataUrl) })
+  if (source) content.push({ image: await toBailianImageUrl(source.remoteUrl || source.dataUrl) })
   content.push({ text: prompt })
   const response = await fetchWithRetry('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', {
     method: 'POST',

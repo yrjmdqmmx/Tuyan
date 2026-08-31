@@ -3866,7 +3866,7 @@ test('Bailian direct-edit models forward source pixels as an image input', async
     testState.deletedOwnerKeys = []
   }
   assert.deepEqual(generationPayload.input.messages[0].content, [
-    { image: 'https://signed.invalid/object' },
+    { image: 'https://images.invalid/source.png' },
     { text: 'Make labels clearer' },
   ])
   assert.equal(generationPayload.parameters.size, '2048*1152')
