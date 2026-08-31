@@ -1,0 +1,79 @@
+name: Continue Existing Scientific V2 Full
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  full:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Validate exact request
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$CONFIRM" == continue-exact-scientific-v2-full-disabled-worker ]]
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Attest, stage and run full batch
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" 'sudo bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          repo=/opt/paperbanana/repo
+          cd "$repo"
+          expected_sha=f2f6010a946928966470e31d330635b309cd60bc
+          core_digest=9ee8abf650d50bb7e707588bf8d2cc9f019af7eafec636fae2bb22a8f4b07c05
+          worker_digest=c2faf7da36491a1bda56e2fa53b1a2d5032b603059a7eff86aab41378cc1f1e2
+          manifest_file_hash=b9c89072c9feec307ced2d7ef79721f4be16732cf87c8009651c185c3ca2ba21
+          attest_input_hash=b4c5820843d446a3339067aeb943aa7736885b21f904ef3db2909ee3d8a57b4c
+          manifest_hash=fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227
+          registry_hash=f4b55b71eef46cdcbfff01cc73b321a4d03e2aa828f2f93cb004dc1a03887ef1
+          suite_hash=127b032a63fc0ffa0a0c540c65064842d5f17cc482ae0de3ef030af2dff3660a
+          price_hash=f1c4bc91161eb272a5fedb46c5cc45b71eb59da9b4cd264d076decb0d61db9a6
+          [[ "$(git rev-parse --verify HEAD)" == "$expected_sha" ]]
+          attest_output="$(deploy/hk-single-host/scripts/run-scientific-v2-admin-operator.sh \
+            --operation attest --expected-sha "$expected_sha" --expected-core-digest "$core_digest" \
+            --expected-worker-digest "$worker_digest" --input-sha256 "$attest_input_hash" \
+            --confirm attest-scientific-v2-admin-disabled-worker)"
+          state_file_hash="$(jq -er '.stateBundleSha256 | select(test("^[a-f0-9]{64}$"))' <<<"$attest_output")"
+          attestation_file_hash="$(jq -er '.privateResponseSha256 | select(test("^[a-f0-9]{64}$"))' <<<"$attest_output")"
+          printf '%s\n' "$attest_output"
+          stage_output="$(deploy/hk-single-host/scripts/stage-scientific-v2-run-bundle.sh \
+            --expected-sha "$expected_sha" --expected-worker-digest "$worker_digest" \
+            --manifest-sha256 "$manifest_file_hash" --state-sha256 "$state_file_hash" \
+            --attestation-result-sha256 "$attestation_file_hash" --manifest-hash "$manifest_hash" \
+            --registry-hash "$registry_hash" --suite-hash "$suite_hash" --price-hash "$price_hash" \
+            --execution-phase full --confirm stage-scientific-v2-run-bundle)"
+          run_bundle_hash="$(jq -er '.runBundleHash | select(test("^[a-f0-9]{64}$"))' <<<"$stage_output")"
+          printf '%s\n' "$stage_output"
+          deploy/hk-single-host/scripts/run-scientific-v2-operator.sh \
+            --mode run --expected-sha "$expected_sha" --expected-core-digest "$core_digest" \
+            --expected-worker-digest "$worker_digest" --bundle-sha256 "$run_bundle_hash" \
+            --registry-hash "$registry_hash" --suite-hash "$suite_hash" --price-hash "$price_hash" \
+            --manifest-hash "$manifest_hash" --model-count 40 \
+            --confirm run-exact-scientific-v2-bundle-disabled-worker --apply
+          REMOTE
