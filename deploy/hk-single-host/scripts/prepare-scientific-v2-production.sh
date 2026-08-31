@@ -31,6 +31,7 @@ core_env="$secret_dir/core.env"
 gateway_env="$secret_dir/gateway.env"
 price_dir='/opt/paperbanana/operator-private/scientific-v2/signed-price-snapshots'
 price_path="$price_dir/$signed_price_snapshot_sha256.json"
+authority_dir='/opt/paperbanana/operator-private/scientific-v2/registry-authorities'
 bundle_dir='/opt/paperbanana/operator-bundles/scientific-v2'
 admin_input_dir='/opt/paperbanana/operator-private/scientific-v2/admin-inputs'
 source_dir='/opt/paperbanana/operator-private/scientific-v2/prepare-source'
@@ -61,6 +62,21 @@ worker_image="$(read_env_value "$deploy_env" PAPERBANANA_BENCH_WORKER_IMAGE)"
 [[ "${core_image##*@sha256:}" == "$expected_core_digest" && "${worker_image##*@sha256:}" == "$expected_worker_digest" ]] || exit 1
 actual_price_hash="$(sha256sum "$price_path" | awk '{print $1}')"
 [[ "$actual_price_hash" == "$signed_price_snapshot_sha256" ]] || exit 1
+[[ -d "$authority_dir" && ! -L "$authority_dir" && "$(stat_mode "$authority_dir")" =~ ^0:0?700$ ]] || exit 1
+expected_authority_snapshot_hash="$(jq -er '.registryAuthorityHash | select(type == "string" and test("^[a-f0-9]{64}$"))' "$price_path")"
+authority_path=''
+authority_matches=0
+shopt -s nullglob
+for candidate in "$authority_dir"/*.json; do
+  [[ -f "$candidate" && ! -L "$candidate" && "$(stat_mode "$candidate")" =~ ^0:0?600$
+    && "${candidate##*/}" =~ ^[a-f0-9]{64}[.]json$ ]] || continue
+  if [[ "$(jq -er '.snapshotHash | select(type == "string" and test("^[a-f0-9]{64}$"))' "$candidate" 2>/dev/null || true)" == "$expected_authority_snapshot_hash" ]]; then
+    authority_path="$candidate"
+    authority_matches=$((authority_matches + 1))
+  fi
+done
+shopt -u nullglob
+[[ "$authority_matches" == 1 ]] || { echo 'signed price registry authority is unavailable' >&2; exit 1; }
 
 actual_head="$(git -C "$repo_root" rev-parse --verify HEAD)"
 [[ "$actual_head" == "$expected_sha" ]] || exit 1
@@ -88,28 +104,32 @@ core_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process
 worker_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
 verify_running_service paperbanana-api "$core_image" "$expected_core_digest" "$core_guard"
 verify_running_service benchmark-worker "$worker_image" "$expected_worker_digest" "$worker_guard"
-authority_result="$(mktemp /tmp/paperbanana-scientific-v2-authority.XXXXXXXXXXXX)"
+live_registry_result="$(mktemp /tmp/paperbanana-scientific-v2-live-registry.XXXXXXXXXXXX)"
 prepare_input="$(mktemp /tmp/paperbanana-scientific-v2-prepare.XXXXXXXXXXXX)"
 prepare_snapshot_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-prepare-snapshot.XXXXXXXXXXXX)"
 prepare_result="$(mktemp /tmp/paperbanana-scientific-v2-prepare-result.XXXXXXXXXXXX)"
 verifier_env="$(mktemp /tmp/paperbanana-scientific-v2-verifier-env.XXXXXXXXXXXX)"
 cleanup() {
-  rm -f -- "$authority_result" "$prepare_input" "$prepare_result" "$verifier_env" "$prepare_snapshot_dir/bundle.json"
+  rm -f -- "$live_registry_result" "$prepare_input" "$prepare_result" "$verifier_env" "$prepare_snapshot_dir/bundle.json"
   rmdir -- "$prepare_snapshot_dir" 2>/dev/null || true
 }
 trap cleanup EXIT
-chmod 0600 "$authority_result" "$prepare_input" "$prepare_result" "$verifier_env"
+chmod 0600 "$live_registry_result" "$prepare_input" "$prepare_result" "$verifier_env"
 awk '$0 ~ /^PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=/ {print; count++}
   END {exit count==1 ? 0 : 1}' "$core_env" >"$verifier_env"
 
-node_script='const canonical=v=>Array.isArray(v)?`[${v.map(canonical).join(",")}]`:v&&typeof v==="object"?`{${Object.keys(v).sort().map(k=>`${JSON.stringify(k)}:${canonical(v[k])}`).join(",")}}`:JSON.stringify(v); const subset=v=>({registryVersion:v.registryVersion,routeContractVersion:v.routeContractVersion,providers:{bailian:v.providers?.bailian,ark:v.providers?.ark,openrouter:v.providers?.openrouter}}); const invoke=async body=>{const r=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)});const j=await r.json();if(!r.ok||j.code!==0)throw new Error("SCIENTIFIC_V2_PREPARE_CORE_REJECTED");return j}; const registry=await invoke({action:"modelRegistry"}); const prepared=await invoke({action:"adminBenchmarkControl",command:"prepareScientificV2Registry",evaluationMode:"codex_scientific_v2"}); if(canonical(subset(registry))!==canonical(prepared.registryAuthority.registry))throw new Error("SCIENTIFIC_V2_REGISTRY_CHANGED_DURING_CAPTURE"); process.stdout.write(JSON.stringify(prepared.registryAuthority));'
+node_script='const invoke=async body=>{const r=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)});const j=await r.json();if(!r.ok||j.code!==0)throw new Error("SCIENTIFIC_V2_PREPARE_CORE_REJECTED");return j};process.stdout.write(JSON.stringify(await invoke({action:"modelRegistry"})));'
 "${compose[@]}" exec -T -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" \
-  paperbanana-api node --input-type=module -e "$node_script" >"$authority_result"
+  paperbanana-api node --input-type=module -e "$node_script" >"$live_registry_result"
 jq -e '.schemaVersion == 1 and (.registryBytesHash | test("^[a-f0-9]{64}$")) and
-  (.snapshotHash | test("^[a-f0-9]{64}$")) and (.attestationHash | test("^[a-f0-9]{64}$"))' "$authority_result" >/dev/null
+  (.snapshotHash | test("^[a-f0-9]{64}$")) and (.attestationHash | test("^[a-f0-9]{64}$"))' "$authority_path" >/dev/null
+cmp -s \
+  <(jq -S '{registryVersion,routeContractVersion,providers:{bailian:.providers.bailian,ark:.providers.ark,openrouter:.providers.openrouter}}' "$live_registry_result") \
+  <(jq -S '.registry | {registryVersion,routeContractVersion,providers:{bailian:.providers.bailian,ark:.providers.ark,openrouter:.providers.openrouter}}' "$authority_path") \
+  || { echo 'scientific v2 registry changed after price authorization' >&2; exit 1; }
 
 created_at="$(jq -er '.capturedAt | select(type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[.]([0-9]{3})Z$"))' "$price_path")"
-jq -cn --slurpfile authority "$authority_result" --slurpfile signedPrice "$price_path" \
+jq -cn --slurpfile authority "$authority_path" --slurpfile signedPrice "$price_path" \
   --arg sha "$expected_sha" --arg createdAt "$created_at" \
   '{operation:"prepare",gate:{enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"},
     input:{registryAuthority:$authority[0],signedPriceSnapshot:$signedPrice[0],codeSha:$sha,createdAt:$createdAt}}' >"$prepare_input"
