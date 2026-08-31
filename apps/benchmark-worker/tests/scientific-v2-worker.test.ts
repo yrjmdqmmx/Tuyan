@@ -20,6 +20,7 @@ import {
 
 import {
   ScientificConfirmedFailureError,
+  ScientificV2ArtifactReconciliationRequiredError,
   UnknownProviderOutcomeError,
   assembleScientificBlindReviewerAssignment,
   buildScientificV2Batch,
@@ -58,11 +59,11 @@ const REVIEW_PACKET_SIGNING_SECRET = 'p'.repeat(32)
 const REVIEW_ATTESTATION_SECRET = 'r'.repeat(32)
 const STATE_OPERATION_REPORT_SECRET = 's'.repeat(32)
 
-function canonicalManifest(options: { providers?: Array<'bailian' | 'ark' | 'openrouter'>; directEdit?: boolean } = {}) {
+function canonicalManifest(options: { providers?: Array<'bailian' | 'ark' | 'openrouter'>; directEdit?: boolean; modelId?: string } = {}) {
   const providers = options.providers || ['bailian']
   const registryProviders = Object.fromEntries(providers.map((provider, index) => [provider, {
     models: [{
-      id: `${provider}-scientific-${index + 1}`,
+      id: options.modelId || `${provider}-scientific-${index + 1}`,
       label: `${provider} model`,
       vendor: `${provider} vendor`,
       selectable: true,
@@ -113,7 +114,7 @@ function priceSnapshot(manifest: ReturnType<typeof canonicalManifest>, unitCny =
         charges: pricing.map((line) => ({ billable: line.billable, unit: line.unit, rateDecimal: line.costUsd, quantityDecimal: '1', resolutionTier: line.variant })),
         source,
         openRouterEvidence: {
-          modelApi: evidence('https://openrouter.ai/api/v1/images/models', 'b'), endpointApi: source,
+          modelApi: evidence('https://openrouter.ai/api/v1/images/models', 'b'), endpointApi: source, pricingPage: null,
           modelId: requirement.modelId, providerSlug: `fixture-${index}`, rawPricing: pricing, tokenBounds: null,
         },
         fxEvidence: {
@@ -550,6 +551,62 @@ test('execution slots freeze the per-route output request lane for provider disp
   assert.deepEqual([...new Set(generationSlots.filter((slot) => slot.modelId === 'vendor/default').map((slot) => slot.imageSize))], ['provider-default'])
 })
 
+test('runner reconciles provider-default megapixel spend from successful and artifact-recovery image facts', async () => {
+  const registry = { providers: { bailian: { models: [{
+    id: 'bailian-provider-default', canonicalModelId: 'bailian-provider-default', selectable: true, roles: ['image'],
+    capabilities: { imageGeneration: true, imageEditMode: 'none' as const, resolutions: [] },
+  }] } } }
+  const frozen = buildScientificV2CanonicalManifest({
+    registryVersion: 'actual-pixels-v1', registryHash: canonicalHash(registry), registry,
+  })
+  const snapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest: frozen, capturedAt: CREATED_AT,
+    observations: deriveScientificV2PriceRequirements(frozen).map((requirement) => ({
+      provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation,
+      imageSize: requirement.imageSize, billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image' as const, unit: 'megapixel' as const, rateDecimal: '0.1', quantityDecimal: '2.359296', resolutionTier: 'provider-default-2k-estimate' }],
+      source: { url: 'https://help.aliyun.com/en/model-studio/model-pricing', mediaType: 'text/html', capturedAt: CREATED_AT, bytesSha256: H64('a') },
+      openRouterEvidence: null, fxEvidence: null,
+    })),
+  })
+  const built = buildScientificV2Batch({
+    canonicalManifest: frozen, registrySnapshot: registrySnapshot(frozen), suite: PB_SCIENTIFIC_FIGURE_V2,
+    codeSha: CODE_SHA, priceSnapshot: snapshot, createdAt: CREATED_AT, lockName: LOCK_NAME,
+  })
+  const png = await sharp({ create: { width: 1024, height: 1024, channels: 3, background: '#789' } }).png().toBuffer()
+  const imageHash = createHash('sha256').update(png).digest('hex')
+  const result = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'actual-pixel-lock' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request) {
+      assert.equal(request.estimatedCny, 0.2359296)
+      return { responseClass: 'succeeded' as const, actualCny: request.estimatedCny, bytes: png }
+    } },
+  })
+  const attempts = result.state.slots.filter((slot) => slot.provider === 'bailian').flatMap((slot) => slot.attempts)
+  assert.equal(attempts.length, 6)
+  assert.ok(attempts.every((attempt) => attempt.rawImageHash === imageHash && attempt.width === 1024 && attempt.height === 1024))
+  assert.ok(attempts.every((attempt) => attempt.estimatedCny === 0.2359296 && attempt.actualCny === 0.1048576))
+  assert.equal(result.state.providerSpentCny.bailian, 0.6291456)
+
+  const artifactResult = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'actual-pixel-artifact-lock' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request) {
+      throw new ScientificV2ArtifactReconciliationRequiredError(png, request.estimatedCny)
+    } },
+  })
+  const artifactSlot = artifactResult.state.slots.find((slot) => slot.status === 'artifact_reconciliation')!
+  assert.equal(artifactSlot.attempts[0].rawImageHash, imageHash)
+  assert.equal(artifactSlot.attempts[0].actualCny, 0.1048576)
+  assert.equal(artifactSlot.costCny, 0.1048576)
+  assert.equal(artifactResult.state.providerSpentCny.bailian, 0.1048576)
+})
+
 test('v2 runner is locked, disabled-gated, strictly serial, route-frozen and records unsupported edits without calls', async () => {
   const built = batchFor(canonicalManifest({ directEdit: false }))
   const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#fff' } }).png().toBuffer()
@@ -630,6 +687,41 @@ test('v2 runner retries only confirmed failures up to four and stops at first va
   assert.deepEqual({ width: first.attempts[3].width, height: first.attempts[3].height, format: first.attempts[3].format }, { width: 2048, height: 1152, format: 'png' })
 })
 
+test('canary-only phase executes one formal slot per provider and full resume never redispatches those attempts', async () => {
+  const built = batchFor(canonicalManifest({ providers: ['bailian', 'ark', 'openrouter'], directEdit: false }))
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#456' } }).png().toBuffer()
+  const repository = { async save() {} }
+  const calls: string[] = []
+  const dependencies = {
+    repository, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'canary-only-lock' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request: any) {
+      calls.push(`${request.provider}:${request.slotId}`)
+      return { responseClass: 'succeeded' as const, actualCny: request.estimatedCny, bytes: png }
+    } },
+  }
+  const canary = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'canary-only' },
+    ...dependencies,
+  })
+  assert.equal(canary.state.status, 'canary_complete')
+  assert.deepEqual(calls.map((call) => call.split(':')[0]), ['bailian', 'ark', 'openrouter'])
+  assert.deepEqual(canary.state.slots.filter((slot) => slot.status === 'succeeded').map((slot) => slot.provider), ['bailian', 'ark', 'openrouter'])
+  assert.ok(canary.state.slots.filter((slot) => slot.provider !== 'codex' && !slot.isProviderCanary).every((slot) => slot.status === 'pending'))
+  const canarySlotIds = new Set(canary.state.slots.filter((slot) => slot.isProviderCanary).map((slot) => slot.slotId))
+
+  calls.length = 0
+  const full = await runScientificV2Batch({
+    manifest: built.manifest, state: canary.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'full' },
+    ...dependencies,
+  })
+  assert.ok(calls.length > 3)
+  assert.ok(calls.every((call) => !canarySlotIds.has(call.slice(call.indexOf(':') + 1))))
+  assert.equal(full.state.status, 'awaiting_artifacts')
+})
+
 test('four confirmed failures on a non-canary slot audit it as failed and continue the remaining batch', async () => {
   const built = batchFor(canonicalManifest())
   const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#456789' } }).png().toBuffer()
@@ -669,6 +761,42 @@ test('price drift pauses a verifier-valid state without adding over-budget confi
   assert.equal(result.state.providerSpentCny.bailian, 0)
   assert.equal(result.state.providerUnreconciledCny.bailian, 2)
   assert.doesNotThrow(() => verifyScientificV2BatchState(result.state, result.manifest))
+})
+
+test('Seedream 5 Pro high-pixel edit with a free source tier reconciles to CNY 0.60 and pauses price reconciliation', async () => {
+  const manifest = canonicalManifest({ providers: ['ark'], modelId: 'doubao-seedream-5-0-pro-260628' })
+  const source = { url: 'https://docs.volcengine.com/docs/82379/1544106?lang=zh', mediaType: 'text/html', capturedAt: CREATED_AT, bytesSha256: H64('a') }
+  const snapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest: manifest, capturedAt: CREATED_AT,
+    observations: deriveScientificV2PriceRequirements(manifest).map((requirement) => ({
+      provider: 'ark' as const, modelId: requirement.modelId, operation: requirement.operation, imageSize: requirement.imageSize,
+      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: '0.30', quantityDecimal: '1',
+        resolutionTier: requirement.operation === 'edit' ? 'source1-free;pixels<=2610000' : 'pixels<=2610000' }],
+      source, openRouterEvidence: null, fxEvidence: null,
+    })),
+  })
+  const built = buildScientificV2Batch({
+    canonicalManifest: manifest, registrySnapshot: registrySnapshot(manifest), suite: PB_SCIENTIFIC_FIGURE_V2,
+    codeSha: CODE_SHA, priceSnapshot: snapshot, createdAt: CREATED_AT, lockName: LOCK_NAME,
+  })
+  const regular = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#aaa' } }).png().toBuffer()
+  const highPixel = await sharp({ create: { width: 2048, height: 1536, channels: 3, background: '#bbb' } }).png().toBuffer()
+  const result = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'seedream-edit-tier' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request) {
+      return { responseClass: 'succeeded', actualCny: 0.30, bytes: request.operation === 'edit' ? highPixel : regular }
+    } },
+  })
+  assert.equal(result.state.status, 'paused')
+  assert.equal(result.state.pauseReason, 'price_reconciliation_required')
+  const edit = result.state.slots.find((slot) => slot.operation === 'edit' && slot.status === 'price_reconciliation')!
+  assert.equal(edit.attempts.at(-1)?.actualCny, 0.60)
+  assert.equal(edit.attempts.at(-1)?.responseClass, 'price_reconciliation_required')
+  assert.equal(result.state.providerUnreconciledCny.ark, 0.60)
 })
 
 test('batch and persisted/returned state snapshots are recursively frozen', async () => {

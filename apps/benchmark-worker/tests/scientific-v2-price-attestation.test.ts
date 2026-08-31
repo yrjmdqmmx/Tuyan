@@ -16,6 +16,9 @@ function signedFixture() {
   const base = {
     schemaVersion: 2 as const, kind: 'scientific-v2-authoritative-price-v2' as const,
     codeSha: fixture.manifest.codeSha, canonicalManifestHash: fixture.manifest.canonicalManifest.manifestHash,
+    registryAuthorityHash: 'e'.repeat(64), capturesHash: fixture.manifest.priceSnapshot.capturesHash,
+    requirementsHash: fixture.manifest.priceSnapshot.requirementsHash,
+    operatorAuthorizationHash: null,
     priceSnapshotHash: fixture.manifest.priceSnapshot.snapshotHash, capturedAt: fixture.manifest.createdAt,
     priceSnapshot: structuredClone(fixture.manifest.priceSnapshot),
   }

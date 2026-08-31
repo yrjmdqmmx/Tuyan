@@ -34,6 +34,7 @@ export interface ScientificV2PriceCharge {
 export interface ScientificV2OpenRouterPriceEvidence {
   modelApi: ScientificV2PriceSourceEvidence
   endpointApi: ScientificV2PriceSourceEvidence
+  pricingPage: ScientificV2PriceSourceEvidence | null
   modelId: string
   providerSlug: string
   rawPricing: Array<{ billable: Billable; unit: PricingUnit; costUsd: string; variant: string | null }>
@@ -95,6 +96,9 @@ export interface ScientificV2PriceSnapshotV2 {
   currency: 'CNY'
   imageSize: 'per-route'
   capturedAt: string
+  canonicalManifestHash: string
+  capturesHash: string
+  operatorAuthorizationHash: string | null
   requirements: ScientificV2PriceRequirement[]
   requirementsHash: string
   entries: ScientificV2AttestedPriceEntry[]
@@ -303,7 +307,8 @@ function validateObservation(observation: ScientificV2PriceObservation, requirem
     || !Array.isArray(observation.charges) || observation.charges.length < 1) fail('SCIENTIFIC_V2_PRICE_OBSERVATION_INVALID')
   const fixedDimensions = requirement.imageSize === '2K' ? [2048, 1152]
     : requirement.imageSize === '1K' ? [1280, 720]
-      : null
+      : requirement.imageSize === 'provider-default' ? [2048, 1152]
+        : null
   if (fixedDimensions && (observation.outputWidth !== fixedDimensions[0] || observation.outputHeight !== fixedDimensions[1])) {
     fail('SCIENTIFIC_V2_PRICE_OUTPUT_DIMENSIONS_INVALID')
   }
@@ -314,12 +319,22 @@ function validateObservation(observation: ScientificV2PriceObservation, requirem
     if (!['output_image', 'input_text', 'input_image', 'input_reference'].includes(charge.billable)
       || !['image', 'megapixel', 'token', 'request'].includes(charge.unit)
       || (observation.operation === 'generation' && !['output_image', 'input_text'].includes(charge.billable))
-      || (observation.imageSize === 'provider-default' && charge.unit === 'megapixel')
       || charge.quantityDecimal !== expectedQuantity(charge.unit, charge.billable, observation)
       || !(charge.resolutionTier === null || typeof charge.resolutionTier === 'string')) fail('SCIENTIFIC_V2_PRICE_CHARGE_INVALID')
     total = add(total, multiply(decimal(charge.rateDecimal), decimal(charge.quantityDecimal)))
   }
   if (!observation.charges.some((charge) => charge.billable === 'output_image')) fail('SCIENTIFIC_V2_PRICE_CHARGE_INVALID')
+
+  const operatorUpperBound = observation.charges.length === 1
+    && observation.charges[0].billable === 'output_image'
+    && observation.charges[0].unit === 'request'
+    && observation.charges[0].resolutionTier === 'operator_authorized_conservative_upper_bound'
+    && observation.billingRegion === 'operator-authorized-upper-bound'
+    && observation.source.url === 'https://paperbanana.asia/benchmark/scientific-v2/operator-authorized-conservative-upper-bound'
+  if (operatorUpperBound) {
+    if (observation.openRouterEvidence !== null || observation.fxEvidence !== null) fail('SCIENTIFIC_V2_PRICE_OBSERVATION_INVALID')
+    return { originalCurrency: 'CNY' as const, cnyAtoms: ceilDivide(total.numerator * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY, total.denominator) }
+  }
 
   if (observation.provider !== 'openrouter') {
     if (observation.openRouterEvidence !== null || observation.fxEvidence !== null
@@ -330,11 +345,13 @@ function validateObservation(observation: ScientificV2PriceObservation, requirem
   const openRouter = observation.openRouterEvidence
   const fx = observation.fxEvidence
   if (!openRouter || !fx) fail('SCIENTIFIC_V2_OPENROUTER_PRICE_EVIDENCE_INVALID')
-  exactKeys(openRouter, ['modelApi', 'endpointApi', 'modelId', 'providerSlug', 'rawPricing', 'tokenBounds'], 'SCIENTIFIC_V2_OPENROUTER_PRICE_EVIDENCE_INVALID')
+  exactKeys(openRouter, ['modelApi', 'endpointApi', 'pricingPage', 'modelId', 'providerSlug', 'rawPricing', 'tokenBounds'], 'SCIENTIFIC_V2_OPENROUTER_PRICE_EVIDENCE_INVALID')
   sourceEvidence(openRouter.modelApi, capturedAt)
   sourceEvidence(openRouter.endpointApi, capturedAt)
+  if (openRouter.pricingPage !== null) sourceEvidence(openRouter.pricingPage, capturedAt)
   if (openRouter.modelId !== observation.modelId || typeof openRouter.providerSlug !== 'string' || !openRouter.providerSlug
-    || canonicalHash(openRouter.endpointApi) !== canonicalHash(observation.source) || !Array.isArray(openRouter.rawPricing)) {
+    || canonicalHash(openRouter.pricingPage || openRouter.endpointApi) !== canonicalHash(observation.source)
+    || !Array.isArray(openRouter.rawPricing)) {
     fail('SCIENTIFIC_V2_OPENROUTER_PRICE_EVIDENCE_INVALID')
   }
   for (const raw of openRouter.rawPricing) {
@@ -343,7 +360,8 @@ function validateObservation(observation: ScientificV2PriceObservation, requirem
       || !['image', 'megapixel', 'token', 'request'].includes(raw.unit)
       || (raw.variant !== null && (typeof raw.variant !== 'string'
         || !/^[A-Za-z0-9_-]{1,80}$/.test(raw.variant)
-        || !/(?:^|[_-])(1k|2k|4k)(?:$|[_-])/i.test(raw.variant)))) {
+        || (!/(?:^|[_-])(1k|2k|4k)(?:$|[_-])/i.test(raw.variant)
+          && !['style_reference', 'moodboard'].includes(raw.variant))))) {
       fail('SCIENTIFIC_V2_OPENROUTER_PRICE_EVIDENCE_INVALID')
     }
     decimal(raw.costUsd, 'SCIENTIFIC_V2_OPENROUTER_PRICE_EVIDENCE_INVALID')
@@ -432,9 +450,11 @@ function buildPreflight(requirements: ScientificV2PriceRequirement[], entries: S
 }
 
 export function buildScientificV2PriceSnapshot(input: {
-  canonicalManifest: Parameters<typeof deriveScientificV2PriceRequirements>[0]
+  canonicalManifest: Parameters<typeof deriveScientificV2PriceRequirements>[0] & { manifestHash: string }
   capturedAt: string
   observations: ScientificV2PriceObservation[]
+  capturesHash?: string
+  operatorAuthorizationHash?: string | null
 }): ScientificV2PriceSnapshotV2 {
   assertSafePriceData(input.observations)
   if (!isIso(input.capturedAt) || !Array.isArray(input.observations)) fail('SCIENTIFIC_V2_PRICE_CAPTURE_INVALID')
@@ -461,18 +481,40 @@ export function buildScientificV2PriceSnapshot(input: {
     return { ...base, entryHash: canonicalHash(base) }
   })
   const requirementsHash = canonicalHash(requirements)
+  const evidence = input.observations.flatMap((observation) => [
+    observation.source,
+    ...(observation.openRouterEvidence ? [
+      observation.openRouterEvidence.modelApi,
+      observation.openRouterEvidence.endpointApi,
+      ...(observation.openRouterEvidence.pricingPage ? [observation.openRouterEvidence.pricingPage] : []),
+    ] : []),
+    ...(observation.fxEvidence ? [observation.fxEvidence.source] : []),
+  ])
+  const uniqueEvidence = [...new Map(evidence.map((item) => [canonicalHash(item), item])).values()]
+    .sort((left, right) => Buffer.compare(Buffer.from(`${left.url}\0${left.bytesSha256}`), Buffer.from(`${right.url}\0${right.bytesSha256}`)))
+  const capturesHash = input.capturesHash || canonicalHash(uniqueEvidence)
+  const operatorAuthorizationHash = input.operatorAuthorizationHash ?? null
+  const upperBounds = entries.filter((entry) => entry.charges[0]?.resolutionTier === 'operator_authorized_conservative_upper_bound')
+  if (!hash64.test(input.canonicalManifest.manifestHash) || !hash64.test(capturesHash)
+    || (operatorAuthorizationHash !== null && !hash64.test(operatorAuthorizationHash))
+    || (upperBounds.length > 0 && (operatorAuthorizationHash === null
+      || upperBounds.some((entry) => entry.source.bytesSha256 !== operatorAuthorizationHash)))
+    || (upperBounds.length === 0 && operatorAuthorizationHash !== null)) fail('SCIENTIFIC_V2_PRICE_CAPTURE_INVALID')
   const preflight = buildPreflight(requirements, entries)
   const base = {
     schemaVersion: 2 as const, currency: 'CNY' as const, imageSize: 'per-route' as const,
-    capturedAt: input.capturedAt, requirements, requirementsHash, entries, preflight,
+    capturedAt: input.capturedAt, canonicalManifestHash: input.canonicalManifest.manifestHash, capturesHash, operatorAuthorizationHash,
+    requirements, requirementsHash, entries, preflight,
   }
   return { ...base, snapshotHash: canonicalHash(base) }
 }
 
-export function verifyScientificV2PriceSnapshot(value: ScientificV2PriceSnapshotV2, canonicalManifest: Parameters<typeof deriveScientificV2PriceRequirements>[0]) {
+export function verifyScientificV2PriceSnapshot(value: ScientificV2PriceSnapshotV2, canonicalManifest: Parameters<typeof deriveScientificV2PriceRequirements>[0] & { manifestHash: string }) {
   assertSafePriceData(value)
-  exactKeys(value, ['schemaVersion', 'currency', 'imageSize', 'capturedAt', 'requirements', 'requirementsHash', 'entries', 'preflight', 'snapshotHash'], 'SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
+  exactKeys(value, ['schemaVersion', 'currency', 'imageSize', 'capturedAt', 'canonicalManifestHash', 'capturesHash', 'operatorAuthorizationHash', 'requirements', 'requirementsHash', 'entries', 'preflight', 'snapshotHash'], 'SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
   if (value.schemaVersion !== 2 || value.currency !== 'CNY' || value.imageSize !== 'per-route' || !isIso(value.capturedAt)
+    || value.canonicalManifestHash !== canonicalManifest.manifestHash || !hash64.test(value.capturesHash)
+    || (value.operatorAuthorizationHash !== null && !hash64.test(value.operatorAuthorizationHash))
     || !hash64.test(String(value.snapshotHash || ''))) fail('SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
   const { snapshotHash, ...base } = value
   if (canonicalHash(base) !== snapshotHash) fail('SCIENTIFIC_V2_PRICE_HASH_MISMATCH')
@@ -490,7 +532,65 @@ export function verifyScientificV2PriceSnapshot(value: ScientificV2PriceSnapshot
     if (converted.originalCurrency !== originalCurrency || converted.cnyAtoms.toString() !== unitCnyAtoms
       || Number(converted.cnyAtoms) / Number(SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY) !== unitCny) fail('SCIENTIFIC_V2_PRICE_CONVERSION_MISMATCH')
   }
+  const upperBounds = value.entries.filter((entry) => entry.charges[0]?.resolutionTier === 'operator_authorized_conservative_upper_bound')
+  if ((upperBounds.length > 0 && (value.operatorAuthorizationHash === null
+    || upperBounds.some((entry) => entry.source.bytesSha256 !== value.operatorAuthorizationHash)))
+    || (upperBounds.length === 0 && value.operatorAuthorizationHash !== null)) fail('SCIENTIFIC_V2_PRICE_CAPTURE_INVALID')
   const expectedPreflight = buildPreflight(expectedRequirements, value.entries)
   if (canonicalHash(expectedPreflight) !== canonicalHash(value.preflight)) fail('SCIENTIFIC_V2_PRICE_PREFLIGHT_MISMATCH')
   return value
+}
+
+export function reconcileScientificV2ActualPrice(entry: ScientificV2AttestedPriceEntry, actual: {
+  width: number
+  height: number
+  imageHash: string
+}) {
+  assertSafePriceData(entry)
+  assertSafePriceData(actual)
+  if (!Number.isInteger(actual.width) || actual.width < 1 || !Number.isInteger(actual.height) || actual.height < 1
+    || !hash64.test(actual.imageHash)) fail('SCIENTIFIC_V2_ACTUAL_PRICE_FACTS_INVALID')
+  const { entryHash, ...entryBase } = entry
+  if (entryHash !== canonicalHash(entryBase)) fail('SCIENTIFIC_V2_PRICE_HASH_MISMATCH')
+  let total: Fraction = { numerator: 0n, denominator: 1n }
+  for (const charge of entry.charges) {
+    const rateDecimal = entry.provider === 'ark' && entry.modelId === 'doubao-seedream-5-0-pro-260628'
+      && entry.source.url === 'https://docs.volcengine.com/docs/82379/1544106?lang=zh'
+      && charge.billable === 'output_image' && charge.unit === 'image'
+      && charge.rateDecimal === '0.30' && charge.resolutionTier?.split(';').at(-1) === 'pixels<=2610000'
+      && BigInt(actual.width) * BigInt(actual.height) > 2_610_000n
+      ? '0.60'
+      : charge.rateDecimal
+    const quantity = charge.unit === 'megapixel' && charge.billable === 'output_image'
+      ? expectedQuantity(charge.unit, charge.billable, { ...entry, outputWidth: actual.width, outputHeight: actual.height })
+      : charge.quantityDecimal
+    total = add(total, multiply(decimal(rateDecimal), decimal(quantity)))
+  }
+  let actualCnyAtoms: bigint
+  if (entry.originalCurrency === 'CNY') {
+    actualCnyAtoms = ceilDivide(total.numerator * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY, total.denominator)
+  } else {
+    if (!entry.fxEvidence) fail('SCIENTIFIC_V2_FX_EVIDENCE_INVALID')
+    const usdPerBase = decimal(entry.fxEvidence.usdPerBaseDecimal, 'SCIENTIFIC_V2_FX_EVIDENCE_INVALID')
+    const cnyPerBase = decimal(entry.fxEvidence.cnyPerBaseDecimal, 'SCIENTIFIC_V2_FX_EVIDENCE_INVALID')
+    actualCnyAtoms = ceilDivide(
+      total.numerator * cnyPerBase.numerator * usdPerBase.denominator * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY,
+      total.denominator * cnyPerBase.denominator * usdPerBase.numerator,
+    )
+  }
+  if (!Number.isSafeInteger(Number(actualCnyAtoms))) fail('SCIENTIFIC_V2_PRICE_VALUE_OUT_OF_RANGE')
+  const base = {
+    schemaVersion: 1 as const,
+    entryHash,
+    imageHash: actual.imageHash,
+    width: actual.width,
+    height: actual.height,
+    estimateWidth: entry.outputWidth,
+    estimateHeight: entry.outputHeight,
+    estimatedCnyAtoms: entry.unitCnyAtoms,
+    actualCnyAtoms: actualCnyAtoms.toString(),
+    actualCny: Number(actualCnyAtoms) / Number(SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY),
+    rounding: 'ceil-to-1e-8-cny' as const,
+  }
+  return { ...base, reconciliationHash: canonicalHash(base) }
 }

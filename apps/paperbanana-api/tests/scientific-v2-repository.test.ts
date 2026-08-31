@@ -98,6 +98,7 @@ function scientificBatchFixture(options: { directEdit?: boolean } = {}) {
     canonicalManifestHash: canonicalManifest.manifestHash,
     suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
     priceHash: priceSnapshot.snapshotHash,
+    priceOperatorAuthorizationHash: priceSnapshot.operatorAuthorizationHash,
     canonicalManifest,
     models,
     cases,
@@ -441,6 +442,15 @@ function completedScientificState(fixture: ReturnType<typeof scientificBatchFixt
   state.status = 'completed'
   state.providerSpentCny = spent
   state.providerUnreconciledCny = { bailian: 0, ark: 0, openrouter: 0 }
+  return refreshState(state, '2026-08-31T00:00:03.000Z')
+}
+
+function canaryCompleteScientificState(fixture: ReturnType<typeof scientificBatchFixture>) {
+  let state = structuredClone(fixture.initialState) as any
+  for (const slot of fixture.manifest.executionOrder.filter((candidate: any) => candidate.isProviderCanary)) {
+    state = successfulTransition(fixture, state, slot).nextState
+  }
+  state.status = 'canary_complete'
   return refreshState(state, '2026-08-31T00:00:03.000Z')
 }
 
@@ -1064,8 +1074,13 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
   assert.equal(attestation.modelCount, fixture.manifest.models.length)
   assert.equal(attestation.slotCount, fixture.manifest.models.length * 9)
   assert.equal(attestation.codexToolCallLimit, 36)
+  assert.equal(attestation.revision, 0)
+  assert.equal(attestation.issuedAt, FIXED_NOW.toISOString())
   assert.equal(JSON.stringify(attestation).includes(secret), false)
-  assert.equal(attestation.attestationHash, createHmac('sha256', secret).update(attestation.reportHash).digest('hex'))
+  const operatorAttestationKey = createHmac('sha256', secret)
+    .update('paperbanana/scientific-v2/operator-attestation/v1').digest()
+  assert.equal(attestation.attestationHash, createHmac('sha256', operatorAttestationKey).update(attestation.reportHash).digest('hex'))
+  assert.notEqual(attestation.attestationHash, createHmac('sha256', secret).update(attestation.reportHash).digest('hex'))
 })
 
 test('canonical state operation report contract fixes identity, JSON hash and exact secret-free HMAC payload', () => {
@@ -1138,6 +1153,47 @@ test('importStateReport verifies the HMAC and every terminal attempt before mark
   const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
   assert.equal(batch.status, 'review_ready')
   assert.equal(batch.stateHash, state.stateHash)
+})
+
+test('Core imports a signed worker canary_complete report and full import preserves the original canary attempt', async () => {
+  const fixture = scientificBatchFixture()
+  const secret = 'scientific-v2-canary-import-secret-32-bytes'
+  const storage = atomicScientificDb()
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'canary-import-claim', { operatorReportSecret: secret })
+  const batchId = 'scientific-v2-canary-import'
+  await repository.freezeBatch({ batchId, ...fixture })
+  const canaryState = canaryCompleteScientificState(fixture)
+  const claim = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
+  assert.ok(claim)
+  const persistedCanary = await repository.saveClaimed({
+    claimToken: claim.claimToken, expectedStateHash: claim.state.stateHash, nextState: canaryState,
+  })
+  const canaryAttempt = persistedCanary.slots.find((slot: any) => slot.isProviderCanary).attempts[0]
+  const canaryReport = signedStateReport(secret, fixture, persistedCanary, 'worker', {
+    batchId, previousStateHash: claim.state.stateHash, revision: 1,
+  })
+  assert.deepEqual(await repository.importStateReport(canaryReport), {
+    stateHash: persistedCanary.stateHash, reviewReady: false, replayed: false,
+  })
+  const canaryBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  assert.equal(canaryBatch.status, 'canary_complete')
+  assert.equal(canaryBatch.state.slots.find((slot: any) => slot.isProviderCanary).attempts.length, 1)
+
+  const fullState = completedScientificState(fixture)
+  const fullCanary = fullState.slots.find((slot: any) => slot.isProviderCanary)
+  fullState.providerSpentCny[fullCanary.provider] -= fullCanary.costCny
+  fullCanary.attempts = [structuredClone(canaryAttempt)]
+  fullCanary.costCny = canaryAttempt.actualCny
+  fullState.providerSpentCny[fullCanary.provider] += fullCanary.costCny
+  const resumedFullState = refreshState(fullState, '2026-08-31T00:00:05.000Z')
+  const fullReport = signedStateReport(secret, fixture, resumedFullState, 'worker', {
+    batchId, previousStateHash: persistedCanary.stateHash, revision: 2,
+  })
+  const importedFull = await repository.importStateReport(fullReport)
+  assert.equal(importedFull.stateHash, resumedFullState.stateHash)
+  const finalCanary = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0].state.slots.find((slot: any) => slot.isProviderCanary)
+  assert.equal(finalCanary.attempts.length, 1)
+  assert.equal(finalCanary.attempts[0].attemptHash, canaryAttempt.attemptHash)
 })
 
 test('importStateReport attaches an already-persisted worker state exactly once and rejects stale, self-loop, codex, or failed-CAS attachments', async () => {

@@ -83,6 +83,7 @@ export function productionAtomicDb(fixture = productionBatchFixture()) {
   let transactionDepth = 0
   let transactionCallsWithoutSession = 0
   let failDispatchUpdate = false
+  const findOneAndUpdateCalls: Array<{ collection: string; query: Row; update: Row }> = []
   const collection = (name: string) => {
     const documents = rows.get(name) || []
     rows.set(name, documents)
@@ -93,6 +94,7 @@ export function productionAtomicDb(fixture = productionBatchFixture()) {
         return found ? structuredClone(found) : null
       },
       async findOneAndUpdate(query: Row, update: Row, options: Row = {}) {
+        findOneAndUpdateCalls.push({ collection: name, query: structuredClone(query), update: structuredClone(update) })
         let found = documents.find((row) => matches(row, query))
         if (!found && options.upsert) {
           const id = query._id
@@ -165,5 +167,6 @@ export function productionAtomicDb(fixture = productionBatchFixture()) {
     loseNextCommitAck() { loseCommitAck = true },
     failNextDispatchUpdate() { failDispatchUpdate = true },
     transactionCallsWithoutSession() { return transactionCallsWithoutSession },
+    findOneAndUpdateCalls,
   }
 }

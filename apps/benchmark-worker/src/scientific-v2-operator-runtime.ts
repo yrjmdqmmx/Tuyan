@@ -131,6 +131,7 @@ export type ScientificV2OperatorBundle = ScientificV2OperatorInspectBundle | {
   }
 } | {
   operation: 'run'; gate: OperatorGate
+  executionPhase?: 'canary-only' | 'full'
   manifest: Parameters<typeof runScientificV2Batch>[0]['manifest']
   state: Parameters<typeof runScientificV2Batch>[0]['state']
   report: ScientificV2OperatorReportInput
@@ -421,6 +422,9 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
       now: context?.now || (() => new Date()),
       maxAgeMs: 24 * 60 * 60 * 1_000,
     })
+    if ((bundle.input.signedPriceSnapshot as Record<string, unknown>).registryAuthorityHash !== authority.snapshotHash) {
+      scientificV2Error('SCIENTIFIC_V2_PRICE_ATTESTATION_BINDING_MISMATCH')
+    }
     const registryBase = {
       registryVersion: authority.registryVersion as string, registryHash, registry,
     }
@@ -597,7 +601,10 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     }
   }
   if (bundle.operation === 'run') {
-    assertExactScientificV2Keys(bundle, ['operation', 'gate', 'manifest', 'state', 'report'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    assertExactScientificV2Keys(bundle, Object.hasOwn(bundle, 'executionPhase')
+      ? ['operation', 'gate', 'executionPhase', 'manifest', 'state', 'report']
+      : ['operation', 'gate', 'manifest', 'state', 'report'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    if (![undefined, 'canary-only', 'full'].includes(bundle.executionPhase)) scientificV2Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     assertScientificV2StateOperationReportMetadata(bundle.report)
     verifyScientificV2BatchManifest(bundle.manifest)
     verifyScientificV2BatchState(bundle.state, bundle.manifest)
@@ -610,6 +617,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
         attestation: {
           enabled: false, concurrency: 1, lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME, repositoryMode: 'atomic-v2',
           batchId: bundle.report.batchId, revision: bundle.report.revision,
+          phase: bundle.executionPhase || 'full',
         },
         ...dependencies,
       })

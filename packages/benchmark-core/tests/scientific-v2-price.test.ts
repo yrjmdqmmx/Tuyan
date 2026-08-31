@@ -7,6 +7,7 @@ import {
   buildScientificV2PriceSnapshot,
   canonicalHash,
   deriveScientificV2PriceRequirements,
+  reconcileScientificV2ActualPrice,
   type ScientificV2PriceObservation,
   verifyScientificV2PriceSnapshot,
 } from '../src/index.js'
@@ -61,7 +62,7 @@ function observations() {
         billable: line.billable, unit: line.unit, rateDecimal: line.costUsd, quantityDecimal: '1', resolutionTier: line.variant,
       })),
       source: endpointApi,
-      openRouterEvidence: { modelApi, endpointApi, modelId: 'vendor/or-price-test', providerSlug: 'fixture-provider', rawPricing: pricing, tokenBounds: null },
+      openRouterEvidence: { modelApi, endpointApi, pricingPage: null, modelId: 'vendor/or-price-test', providerSlug: 'fixture-provider', rawPricing: pricing, tokenBounds: null },
       fxEvidence,
     }
   }
@@ -104,6 +105,63 @@ test('freezes each physical route to 2K, 1K, or provider-default from canonical 
   ])
 })
 
+test('uses conservative 2K pixels for provider-default megapixel preflight and reconciles the signed entry to actual image facts', () => {
+  const registry = { providers: { bailian: { models: [{
+    id: 'wan-provider-default', canonicalModelId: 'wan-provider-default', selectable: true, roles: ['image'],
+    capabilities: { imageGeneration: true, imageEditMode: 'none', resolutions: [] },
+  }] } } } as const
+  const canonicalManifest = buildScientificV2CanonicalManifest({
+    registryVersion: 'provider-default-price-v1', registryHash: canonicalHash(registry), registry,
+  })
+  const snapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest, capturedAt: CAPTURED_AT,
+    observations: [{
+      provider: 'bailian', modelId: 'wan-provider-default', operation: 'generation', imageSize: 'provider-default',
+      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{
+        billable: 'output_image', unit: 'megapixel', rateDecimal: '0.1',
+        quantityDecimal: '2.359296', resolutionTier: 'provider-default-2k-estimate',
+      }],
+      source: source('https://help.aliyun.com/en/model-studio/model-pricing', 'a'),
+      openRouterEvidence: null, fxEvidence: null,
+    }],
+  })
+  const entry = snapshot.entries[0]
+  assert.equal(entry.unitCnyAtoms, '23592960')
+  const reconciled = reconcileScientificV2ActualPrice(entry, {
+    width: 1024, height: 1024, imageHash: H64('f'),
+  })
+  assert.equal(reconciled.actualCnyAtoms, '10485760')
+  assert.equal(reconciled.actualCny, 0.1048576)
+  assert.equal(reconciled.estimateWidth, 2048)
+  assert.equal(reconciled.estimateHeight, 1152)
+  assert.equal(reconciled.reconciliationHash, canonicalHash(Object.fromEntries(
+    Object.entries(reconciled).filter(([key]) => key !== 'reconciliationHash'),
+  )))
+})
+
+test('reconciles the fixed Seedream 5 pro output tier when actual pixels exceed 2.61 million', () => {
+  const registry = { providers: { ark: { models: [{
+    id: 'doubao-seedream-5-0-pro-260628', selectable: true, roles: ['image'],
+    capabilities: { imageGeneration: true, imageEditMode: 'direct-edit', resolutions: ['2K'] },
+  }] } } } as const
+  const canonicalManifest = buildScientificV2CanonicalManifest({
+    registryVersion: 'seedream-pro-tier-v1', registryHash: canonicalHash(registry), registry,
+  })
+  const snapshot = buildScientificV2PriceSnapshot({ canonicalManifest, capturedAt: CAPTURED_AT,
+    observations: (['generation', 'edit'] as const).map((operation) => ({
+      provider: 'ark' as const, modelId: 'doubao-seedream-5-0-pro-260628', operation, imageSize: '2K' as const,
+      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: '0.30', quantityDecimal: '1',
+        resolutionTier: operation === 'edit' ? 'source1-free;pixels<=2610000' : 'pixels<=2610000' }],
+      source: source('https://docs.volcengine.com/docs/82379/1544106?lang=zh', 'a'), openRouterEvidence: null, fxEvidence: null,
+    })),
+  })
+  for (const entry of snapshot.entries) assert.equal(reconcileScientificV2ActualPrice(entry, {
+    width: 2048, height: 1536, imageHash: H64('e'),
+  }).actualCny, 0.6, entry.operation)
+})
+
 test('builds a content-addressed attested snapshot and rounds USD conversion upward at 1e-8 CNY', () => {
   const canonicalManifest = manifest()
   const snapshot = buildScientificV2PriceSnapshot({ canonicalManifest, capturedAt: CAPTURED_AT, observations: observations() })
@@ -111,6 +169,8 @@ test('builds a content-addressed attested snapshot and rounds USD conversion upw
   const edit = snapshot.entries.find((entry) => entry.provider === 'openrouter' && entry.operation === 'edit')!
   assert.equal(generation.unitCnyAtoms, '30000000')
   assert.equal(edit.unitCnyAtoms, '36000000')
+  assert.equal(snapshot.canonicalManifestHash, canonicalManifest.manifestHash)
+  assert.match(snapshot.capturesHash, /^[a-f0-9]{64}$/)
   assert.equal(snapshot.requirementsHash, canonicalHash(snapshot.requirements))
   assert.equal(snapshot.snapshotHash, canonicalHash(Object.fromEntries(Object.entries(snapshot).filter(([key]) => key !== 'snapshotHash'))))
   assert.equal(verifyScientificV2PriceSnapshot(snapshot, canonicalManifest).snapshotHash, snapshot.snapshotHash)

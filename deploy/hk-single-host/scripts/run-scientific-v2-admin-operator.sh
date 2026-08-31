@@ -132,8 +132,8 @@ const response=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST
 const result=await response.json();
 if(!response.ok||result.code!==0)throw new Error("SCIENTIFIC_V2_ADMIN_CORE_REJECTED");
 const data=result.run??result.packet??result.result??result.release??result;
-const allowedKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","reportHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["disputeCount","resultCount","finalHash"],"import-arbitration":["resultCount","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
-const responseRequiredKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","reportHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["status"],"import-arbitration":["status","results","automaticJudgeCalls","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
+const allowedKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["disputeCount","resultCount","finalHash"],"import-arbitration":["resultCount","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
+const responseRequiredKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["status"],"import-arbitration":["status","results","automaticJudgeCalls","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
 if(!data||typeof data!=="object"||Array.isArray(data)||!responseRequiredKeys.every(key=>Object.hasOwn(data,key)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
 if(operation==="import-review"&&(!["awaiting_peer","published","dispute","finalized"].includes(data.status)||(["awaiting_peer","published"].includes(data.status)&&!["A","B"].includes(data.role))||(["dispute","finalized"].includes(data.status)&&(!Array.isArray(data.disputes)||!Array.isArray(data.results)||data.automaticJudgeCalls!==0||typeof data.finalHash!=="string"||!/^[a-f0-9]{64}$/.test(data.finalHash)))))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
 if(operation==="import-arbitration"&&(data.status!=="finalized"||!Array.isArray(data.results)||data.automaticJudgeCalls!==0||typeof data.finalHash!=="string"||!/^[a-f0-9]{64}$/.test(data.finalHash)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
@@ -156,13 +156,14 @@ jq -e --arg operation "$operation" '.schemaVersion == 1 and .operation == $opera
   ([.data | .. | objects | keys[]] | index("privateMappings")) == null and
   ([.data | .. | objects | keys[]] | index("privateEnvelope")) == null and
   ([.data | .. | objects | keys[]] | index("reviewerIdentity")) == null' "$result" >/dev/null || exit 1
-if [[ "$operation" == import-review || "$operation" == import-arbitration ]]; then
+if [[ "$operation" == attest || "$operation" == import-review || "$operation" == import-arbitration ]]; then
   private_result="$(mktemp /tmp/paperbanana-scientific-v2-admin-private.XXXXXXXXXXXX)"
-  jq -c '.privateData' "$result" >"$private_result"
+  if [[ "$operation" == attest ]]; then jq -c '.data' "$result" >"$private_result"; else jq -c '.privateData' "$result" >"$private_result"; fi
   chmod 0600 "$private_result"
   private_response_sha256="$(sha256_file "$private_result")"
   [[ "$private_response_sha256" =~ ^[a-f0-9]{64}$ ]] || exit 1
-  private_destination="$admin_result_dir/$input_sha256.$operation.$private_response_sha256.json"
+  if [[ "$operation" == attest ]]; then private_destination="$admin_result_dir/$private_response_sha256.attest.json"
+  else private_destination="$admin_result_dir/$input_sha256.$operation.$private_response_sha256.json"; fi
   if [[ -e "$private_destination" ]]; then
     [[ -f "$private_destination" && ! -L "$private_destination" && "$(stat_mode "$private_destination")" =~ ^0:0?600$ ]] || exit 1
     cmp -s "$private_result" "$private_destination" || exit 1
@@ -172,4 +173,5 @@ if [[ "$operation" == import-review || "$operation" == import-arbitration ]]; th
   rm -f "$private_result"
   private_result=''
 fi
-jq -c '{schemaVersion,operation,data}' "$result"
+if [[ "$operation" == attest ]]; then jq -c --arg privateResponseSha256 "$private_response_sha256" '{schemaVersion,operation,data,privateResponseSha256:$privateResponseSha256}' "$result"
+else jq -c '{schemaVersion,operation,data}' "$result"; fi

@@ -1,4 +1,4 @@
-import { canonicalHash } from '@paperbanana/benchmark-core'
+import { canonicalHash, reconcileScientificV2ActualPrice } from '@paperbanana/benchmark-core'
 
 import { UnknownProviderOutcomeError } from './provider-operation.js'
 import {
@@ -105,6 +105,7 @@ interface ScientificV2RunnerAttestation {
   repositoryMode?: 'atomic-v2'
   batchId?: string
   revision?: number
+  phase?: 'canary-only' | 'full'
 }
 
 export interface ScientificV2DispatchMarker {
@@ -144,12 +145,32 @@ export interface ScientificV2RunnerRepository {
   recordReleaseFailure(input: { manifestHash: string; claimToken: string | null; failureClass: 'lock_release_failed' }): Promise<void>
 }
 
-function priceFor(manifest: ScientificV2BatchManifest, slot: ScientificV2BatchState['slots'][number]) {
+function priceEntryFor(manifest: ScientificV2BatchManifest, slot: ScientificV2BatchState['slots'][number]) {
   if (!slot.provider || slot.provider === 'codex' || !slot.modelId) scientificV2Error('SCIENTIFIC_V2_PRICE_MISSING')
   const found = manifest.priceSnapshot.entries.find((entry: ScientificV2PriceEntry) => entry.provider === slot.provider
     && entry.modelId === slot.modelId && entry.operation === slot.operation)
   if (!found) scientificV2Error('SCIENTIFIC_V2_PRICE_MISSING')
-  return found.unitCny
+  return found
+}
+
+function priceFor(manifest: ScientificV2BatchManifest, slot: ScientificV2BatchState['slots'][number]) {
+  return priceEntryFor(manifest, slot).unitCny
+}
+
+function actualPriceForSuccessfulImage(
+  manifest: ScientificV2BatchManifest,
+  slot: ScientificV2BatchState['slots'][number],
+  executorActualCny: number,
+  image: { width: number; height: number; rawImageHash: string },
+) {
+  const entry = priceEntryFor(manifest, slot)
+  const pixelSensitive = entry.charges.some((charge) => charge.billable === 'output_image'
+    && (charge.unit === 'megapixel' || charge.resolutionTier?.split(';').at(-1) === 'pixels<=2610000'))
+  return pixelSensitive
+    ? reconcileScientificV2ActualPrice(entry, {
+      width: image.width, height: image.height, imageHash: image.rawImageHash,
+    }).actualCny
+    : executorActualCny
 }
 
 function attemptRecord(input: Omit<ScientificV2Attempt, 'attemptHash'>): ScientificV2Attempt {
@@ -238,7 +259,7 @@ function repositoryAdapter(repository: ScientificV2RunnerDependencies['repositor
   const adapter: ScientificV2RunnerRepository = {
     async claimReady(input) {
       if (legacy.authoritative.manifestHash !== input.manifestHash || legacy.authoritative.stateHash !== input.expectedReadyStateHash
-        || legacy.authoritative.status !== 'ready') return null
+        || !['ready', 'canary_complete'].includes(legacy.authoritative.status)) return null
       const running = structuredClone(legacy.authoritative)
       running.status = 'running'
       const snapshot = createStateSnapshot(running)
@@ -425,6 +446,7 @@ async function runScientificV2BatchInternal(input: {
       let slot = state.slots.find((candidate) => candidate.slotId === frozenSlot.slotId)
       if (!slot || slot.sequence !== frozenSlot.sequence) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
       if (['succeeded', 'unsupported', 'failed'].includes(slot.status)) continue
+      if (input.attestation.phase === 'canary-only' && !slot.isProviderCanary) continue
       if (slot.status === 'awaiting_artifact' && slot.provider === 'codex') continue
       if (!['pending', 'retrying'].includes(slot.status)) scientificV2Error('SCIENTIFIC_V2_RESUME_STATE_INVALID')
       if (slot.provider === 'codex') {
@@ -505,8 +527,9 @@ async function runScientificV2BatchInternal(input: {
           scientificV2CnyToUnits(output.actualCny, 'SCIENTIFIC_V2_EXECUTOR_RESULT_INVALID')
           const image = await inspectScientificV2Image(output.bytes)
           const { decodedByteSize: _decodedByteSize, ...imageFacts } = image
-          const priceDrift = scientificV2CnyToUnits(output.actualCny) > scientificV2CnyToUnits(estimatedCny)
-            || scientificV2CnyToUnits(state.providerSpentCny[provider]) + scientificV2CnyToUnits(output.actualCny)
+          const actualCny = actualPriceForSuccessfulImage(input.manifest, dispatchSlot, output.actualCny, imageFacts)
+          const priceDrift = scientificV2CnyToUnits(actualCny) > scientificV2CnyToUnits(estimatedCny)
+            || scientificV2CnyToUnits(state.providerSpentCny[provider]) + scientificV2CnyToUnits(actualCny)
               > scientificV2CnyToUnits(input.manifest.providerBudgetsCny[provider])
           const attempt = attemptRecord({
             attemptIndex,
@@ -516,7 +539,7 @@ async function runScientificV2BatchInternal(input: {
             payloadHash,
             responseClass: priceDrift ? 'price_reconciliation_required' : output.responseClass,
             estimatedCny,
-            actualCny: output.actualCny,
+            actualCny,
             startedAt,
             completedAt: nowIso(),
             ...imageFacts,
@@ -525,7 +548,7 @@ async function runScientificV2BatchInternal(input: {
           })
           dispatchSlot.attempts.push(attempt)
           if (priceDrift) {
-            state.providerUnreconciledCny[provider] = addCny(state.providerUnreconciledCny[provider], output.actualCny)
+            state.providerUnreconciledCny[provider] = addCny(state.providerUnreconciledCny[provider], actualCny)
             dispatchSlot.status = 'price_reconciliation'
             markFollowingNotExecuted(state, dispatchSlot.sequence)
             state.status = 'paused'
@@ -533,8 +556,8 @@ async function runScientificV2BatchInternal(input: {
             const persisted = await commitAttempt(marker, attempt)
             return runResult(persisted)
           }
-          dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, output.actualCny)
-          chargeAttempt(state, provider, output.actualCny)
+          dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, actualCny)
+          chargeAttempt(state, provider, actualCny)
           dispatchSlot.status = 'succeeded'
           await commitAttempt(marker, attempt)
           break
@@ -551,16 +574,17 @@ async function runScientificV2BatchInternal(input: {
           if (!artifactFailure.bytes || artifactFailure.actualCny === null) scientificV2Error('SCIENTIFIC_V2_ARTIFACT_RECONCILIATION_INVALID')
           const image = await inspectScientificV2Image(artifactFailure.bytes)
           const { decodedByteSize: _decodedByteSize, ...imageFacts } = image
+          const actualCny = actualPriceForSuccessfulImage(input.manifest, dispatchSlot, artifactFailure.actualCny, imageFacts)
           const attempt = attemptRecord({
             attemptIndex, provider, model: modelId, operation: dispatchSlot.operation, payloadHash,
-            responseClass: 'artifact_reconciliation_required', estimatedCny, actualCny: artifactFailure.actualCny,
+            responseClass: 'artifact_reconciliation_required', estimatedCny, actualCny,
             startedAt, completedAt: nowIso(), ...imageFacts,
             sourceHash: scientificCase.kind === 'edit' ? scientificCase.sourceHash : null,
             editedHash: scientificCase.kind === 'edit' ? imageFacts.rawImageHash : null,
           })
           dispatchSlot.attempts.push(attempt)
-          dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, artifactFailure.actualCny)
-          chargeAttempt(state, provider, artifactFailure.actualCny)
+          dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, actualCny)
+          chargeAttempt(state, provider, actualCny)
           dispatchSlot.status = 'artifact_reconciliation'
           markFollowingNotExecuted(state, dispatchSlot.sequence)
           state.status = 'paused'
@@ -617,7 +641,9 @@ async function runScientificV2BatchInternal(input: {
         }
       }
     }
-    state.status = state.slots.some((slot) => slot.status === 'awaiting_artifact') ? 'awaiting_artifacts' : 'completed'
+    state.status = input.attestation.phase === 'canary-only'
+      ? 'canary_complete'
+      : state.slots.some((slot) => slot.status === 'awaiting_artifact') ? 'awaiting_artifacts' : 'completed'
     const persisted = await saveClaimed()
     return runResult(persisted)
   } finally {
@@ -639,7 +665,8 @@ export function runScientificV2Batch(input: {
   attestation: ScientificV2RunnerAttestation
 } & ScientificV2RunnerDependencies) {
   if (!input.attestation || input.attestation.enabled !== false || input.attestation.concurrency !== 1
-    || input.attestation.lockName !== input.manifest.lockName) scientificV2Error('SCIENTIFIC_V2_DISABLED_GATE_INVALID')
+    || input.attestation.lockName !== input.manifest.lockName
+    || ![undefined, 'canary-only', 'full'].includes(input.attestation.phase)) scientificV2Error('SCIENTIFIC_V2_DISABLED_GATE_INVALID')
   if (input.attestation.repositoryMode === 'atomic-v2' && !isAtomicRepository(input.repository)) {
     scientificV2Error('SCIENTIFIC_V2_ATOMIC_REPOSITORY_REQUIRED')
   }

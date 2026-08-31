@@ -74,7 +74,7 @@ export interface ScientificV2SlotState extends ScientificV2ExecutionSlot {
 export interface ScientificV2BatchState {
   schemaVersion: 2
   manifestHash: string
-  status: 'ready' | 'running' | 'awaiting_artifacts' | 'completed' | 'paused' | 'blocked'
+  status: 'ready' | 'running' | 'canary_complete' | 'awaiting_artifacts' | 'completed' | 'paused' | 'blocked'
   pauseReason: 'reconciliation_required' | 'price_reconciliation_required' | 'artifact_reconciliation_required' | null
   blockReason: 'provider_budget_exceeded_before_attempt' | 'provider_canary_failed' | null
   createdAt: string
@@ -103,6 +103,7 @@ export interface ScientificV2BatchManifest {
   canonicalManifestHash: string
   suiteHash: string
   priceHash: string
+  priceOperatorAuthorizationHash: string | null
   canonicalManifest: CanonicalManifest
   models: CanonicalManifest['models']
   cases: typeof PB_SCIENTIFIC_FIGURE_V2.cases[number][]
@@ -300,6 +301,7 @@ export function buildScientificV2Batch(input: {
     canonicalManifestHash: input.canonicalManifest.manifestHash,
     suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
     priceHash: input.priceSnapshot.snapshotHash,
+    priceOperatorAuthorizationHash: input.priceSnapshot.operatorAuthorizationHash,
     canonicalManifest: structuredClone(input.canonicalManifest),
     models,
     cases,
@@ -331,7 +333,7 @@ export function buildScientificV2Batch(input: {
 export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManifest) {
   assertExactScientificV2Keys(manifest, [
     'schemaVersion', 'suiteId', 'evaluationMode', 'evaluationEpoch', 'reviewProtocol', 'presentationVersion',
-    'codeSha', 'registryVersion', 'registryHash', 'registrySnapshotHash', 'registrySnapshot', 'canonicalManifestHash', 'suiteHash', 'priceHash',
+    'codeSha', 'registryVersion', 'registryHash', 'registrySnapshotHash', 'registrySnapshot', 'canonicalManifestHash', 'suiteHash', 'priceHash', 'priceOperatorAuthorizationHash',
     'canonicalManifest', 'models', 'cases', 'executionOrder', 'providerOrder', 'providerBudgetsCny',
     'codexLimits', 'concurrency', 'lockName', 'priceSnapshot', 'createdAt', 'manifestHash',
   ], 'SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
@@ -343,6 +345,8 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
   for (const hash of [manifest.registryHash, manifest.canonicalManifestHash, manifest.suiteHash, manifest.priceHash]) {
     if (!isScientificV2Hash(hash)) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   }
+  if (!(manifest.priceOperatorAuthorizationHash === null || isScientificV2Hash(manifest.priceOperatorAuthorizationHash))
+    || manifest.priceOperatorAuthorizationHash !== manifest.priceSnapshot.operatorAuthorizationHash) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   assertCoreCanonicalManifest(manifest.canonicalManifest)
   verifyRegistryAuthority(manifest.registrySnapshot, manifest.canonicalManifest)
   if (manifest.canonicalManifest.manifestHash !== manifest.canonicalManifestHash) scientificV2Error('SCIENTIFIC_V2_CANONICAL_MANIFEST_HASH_MISMATCH')
@@ -424,7 +428,7 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
   if (!state || typeof state !== 'object' || !isScientificV2Hash(state.stateHash)) scientificV2Error('SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   const { stateHash: actualStateHash, ...base } = state
   if (canonicalHash(base) !== actualStateHash) scientificV2Error('SCIENTIFIC_V2_STATE_HASH_MISMATCH')
-  const batchStatuses = ['ready', 'running', 'awaiting_artifacts', 'completed', 'paused', 'blocked']
+  const batchStatuses = ['ready', 'running', 'canary_complete', 'awaiting_artifacts', 'completed', 'paused', 'blocked']
   const slotStatuses = ['pending', 'retrying', 'succeeded', 'unsupported', 'awaiting_artifact', 'unknown', 'failed', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation']
   if (!batchStatuses.includes(state.status) || ![null, 'reconciliation_required', 'price_reconciliation_required', 'artifact_reconciliation_required'].includes(state.pauseReason)
     || ![null, 'provider_budget_exceeded_before_attempt', 'provider_canary_failed'].includes(state.blockReason)) scientificV2Error('SCIENTIFIC_V2_STATE_STATUS_INVALID')
@@ -586,6 +590,10 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
     || (state.status === 'blocked' && state.blockReason === 'provider_budget_exceeded_before_attempt' && !state.slots.some((slot) => slot.status === 'budget_blocked'))
     || (state.status === 'blocked' && state.blockReason === 'provider_canary_failed' && !state.slots.some((slot) => slot.isProviderCanary && slot.status === 'failed'))
     || (state.status === 'ready' && state.slots.some((slot) => slot.status !== 'pending'))
+    || (state.status === 'canary_complete' && (state.slots.some((slot) => slot.isProviderCanary
+      ? slot.status !== 'succeeded' : slot.status !== 'pending')
+      || state.slots.filter((slot) => slot.isProviderCanary).length !== new Set(manifest.executionOrder
+        .filter((slot) => slot.isProviderCanary).map((slot) => slot.provider)).size))
     || (state.status === 'running' && state.slots.some((slot) => ['unknown', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(slot.status)))
     || (state.status === 'awaiting_artifacts' && (!state.slots.some((slot) => slot.status === 'awaiting_artifact')
       || state.slots.some((slot) => ['pending', 'retrying', 'unknown', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(slot.status))))

@@ -1,96 +1,51 @@
 # Scientific V2 authoritative price snapshot
 
-Scientific V2 production accepts only price snapshot schema v2. The old
-`sourceVerified: true` shape remains part of older benchmark flows, but is not
-valid for `codex_scientific_v2` freeze or prepare.
+Scientific V2 production accepts only signed price snapshot schema v2. A caller-provided URL, price, `sourceVerified` flag, or fabricated resolved flag cannot enter freeze/prepare.
 
-## Trust and hashing boundary
+## Evidence and signing boundary
 
-- `deriveScientificV2PriceRequirements()` consumes the frozen canonical
-  manifest and emits each unique physical `(provider, modelId, operation)`.
-  Generation and direct edit are separate requirements.
-- Each route freezes its requested output lane: prefer declared `2K`, use `1K`
-  when it is the only declared lane, and use `provider-default` only when the
-  endpoint exposes no resolution parameter. Generation is 16:9. Edit also
-  binds the fixed 2048x1152 source PNG and source SHA-256.
-- Each entry records the provider's original currency and charge lines,
-  billing region, official HTTPS source URL, captured byte SHA-256 and capture
-  time. OpenRouter entries additionally bind the image models response, full
-  endpoint pricing fields and ECB exchange-rate response.
-- CNY conversion uses integer 1e-8 CNY atoms and always rounds upward. Entry,
-  requirement, preflight and snapshot hashes bind every evidence field.
-- The signed outer envelope binds exact code SHA, canonical manifest hash,
-  price snapshot hash and capture time. It uses the existing review-signing
-  master only after deriving the domain key
-  `paperbanana/scientific-v2/price-attestation/v2`; review/report/registry
-  signatures cannot be replayed as price attestations.
+- Requirements are derived from the server-attested canonical registry as unique `(provider, modelId, operation)` routes. Generation and direct edit are distinct requirements.
+- The root-only refresh workflow obtains a fresh registry authority from Core, fetches only repository-fixed official URLs with a 4 MiB streaming cap, and stores raw bytes and its report as root-owned, content-addressed protected files. Captures bind URL, media type, time, byte size and SHA-256.
+- The root-only signer reopens authority/report/authorization/captures with `O_NOFOLLOW`, verifies root ownership, mode `0600`, `nlink=1`, file identity, hashes, registry HMAC, requirements and a shared 24-hour authority/report freshness window, then writes a content-addressed `0600` envelope. Authority and report must carry the exact same `capturedAt`; exactly 24 hours is accepted and anything later is rejected by both signer and Core freeze. The signing master is read from a protected env file and never enters argv or stdout.
+- The snapshot binds `canonicalManifestHash`, `requirementsHash`, `capturesHash`, server `registryAuthorityHash` and, when used, `operatorAuthorizationHash`. CNY uses integer 1e-8 atoms and rounds upward.
 
-The host prepare process must obtain the master from its protected runtime
-environment. The secret is never a snapshot field, stdout field, Actions
-artifact or command-line argument.
+The supported host sequence is:
 
-## Conservative pricing rules
+1. `refresh-scientific-v2-price-sources.sh` creates the registry authority, official raw captures and refresh report.
+2. An operator stages a root-owned `ScientificV2OperatorPriceAuthorization` for only the unresolved requirement hashes and conservative unit-CNY upper bounds, with the fixed confirmation string. This authorization is immutable batch input, not a caller-selected runtime price.
+3. `create-scientific-v2-price-snapshot.sh` signs the exact observations plus authorized upper bounds.
+4. prepare/freeze creates protected manifest/state/admin bundles. Admin attest stores its secret-free response by hash and signs it with the dedicated `paperbanana/scientific-v2/operator-attestation/v1` domain key. `stage-scientific-v2-run-bundle.sh` recomputes its canonical report hash, verifies the domain HMAC and all frozen hashes/gates, then combines those protected inputs with the locally protected signing master and prints only `runBundleHash` and safe bindings.
 
-- Alibaba Model Studio and Volcengine Ark observations must cite the exact
-  model, billing region, operation and public official pricing bytes. A model
-  name near another price is not sufficient evidence.
-- OpenRouter variant selection is derived from the frozen lane. If multiple
-  applicable variants remain, the maximum applicable cost is used. A caller
-  cannot select a lower variant.
-- Edit includes every applicable `input_text`, `input_image`,
-  `input_reference` and `output_image` charge. `request` quantity is one. A
-  megapixel quantity uses Core-owned 16:9 pixels for fixed 1K/2K lanes; a
-  provider-default megapixel route without an official pixel upper bound is
-  unresolved.
-- Token prices require the captured model API `top_provider` context and
-  maximum-completion bounds. Missing bounds are unresolved. Actual output
-  pixels remain part of the execution ledger even when pricing is flat or
-  token based.
-- Every fixed slot is included in baseline. The snapshot also discloses the
-  four-attempt worst case. Prepare blocks when baseline exceeds a provider's
-  CNY 180 cap. Retries are not prepaid, but each attempt is checked against the
-  same runtime cap before dispatch.
+## Exact observations and conservative authorization
 
-Any missing model, operation, input charge, variant, exchange rate, pixel/token
-upper bound or drifted captured response makes the whole snapshot unresolved.
-There is no partial production batch.
+The deterministic extractor currently closes these official raw-byte cases:
 
-## Public primary sources
+- Ark `doubao-seedream-5-0-pro-260628`: first input image free, second and later CNY 0.02; output CNY 0.30 up to 2.61 MP and CNY 0.60 above it.
+- Ark `doubao-seedream-5-0-260128`, `doubao-seedream-4-5-251128`, and `doubao-seedream-4-0-250828`: CNY 0.22, 0.25, and 0.20 per output.
+- OpenRouter Krea 2 Large/Medium/Medium Turbo: generation USD 0.06/0.03/0.015 and one-reference style edit USD 0.065/0.035/0.0175. Moodboard pricing is parsed but is not applicable.
 
-The read-only refresh path allows only public GET requests and captures exact
-response bytes from:
+The parser binds model section, operation, charge/tier and the exact captured bytes. Tests reject swapped prices and removal of Ark's first-input-free rule.
 
-- Alibaba Model Studio pricing: <https://help.aliyun.com/en/model-studio/model-pricing>
-- Volcengine Ark pricing: <https://www.volcengine.com/product/ark>
-- OpenRouter image models: <https://openrouter.ai/api/v1/images/models>
-- OpenRouter endpoint pricing:
-  `https://openrouter.ai/api/v1/images/models/{modelId}/endpoints`
-- ECB daily reference rates:
-  <https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml>
+For a requirement not yet closed by an exact extractor, the signer accepts only an `operator_authorized_conservative_upper_bound` entry bound to the canonical manifest, requirements hash, code SHA, capture time, exact unresolved requirement set and authorization hash. It may never be lower than the operator-authorized unit price. This is an explicit temporary canary policy; it is not described as exact official extraction.
 
-`refreshScientificV2OfficialPriceSources()` is deliberately secret-free. It
-returns a content-addressed capture report and an explicit unresolved list; it
-never turns an unparsed page into a trusted price. Offline fixtures use
-`buildScientificV2PriceSnapshot()` and the same validator as production.
+## Pixel reconciliation and safety gates
 
-There is currently no exported production signing function. Until exact
-Alibaba, Ark, OpenRouter and ECB extractors deterministically rebuild every
-observation from persisted captured bytes and verify `capturesHash`, the
-refresh report remains frozen with `resolved:false`; a caller-provided URL,
-charge list, or fabricated resolved flag cannot create a production envelope.
+- `provider-default` estimates use conservative 2048x1152 (2,359,296 pixels).
+- After a confirmed provider success, the original output bytes supply actual width, height and SHA-256. Actual CNY is recalculated from those facts even when artifact spool, OSS or later persistence fails. Seedream 5 Pro crosses from CNY 0.30 to CNY 0.60 above 2.61 MP.
+- Only billables actually sent are applicable. The fixed edit path sends one source reference and no font, so `input_font` is not charged.
+- Provider budgets remain hard-capped at CNY 180 each. Concurrency is one under the shared production lock. Every dispatch is budget checked. An `UNKNOWN_PROVIDER_OUTCOME` is never retried and pauses reconciliation.
 
-## Current read-only audit (2026-08-31)
+Execution begins with an immutable `executionPhase: "canary-only"` bundle. Only the first formal supported slot for Bailian, Ark, then OpenRouter is executed; success stops that provider immediately. The resulting protected state is `canary_complete`. A separately attested `executionPhase: "full"` bundle must resume that exact state, so the three successful canaries count as their final samples and are not repeated. Unknown or exhausted confirmed failure stops the bounded run under the existing fail-closed state rules.
 
-The five primary source families above returned HTTP 200 without credentials.
-The current ECB payload is dated 2026-08-28 and exposes USD/EUR and CNY/EUR
-reference rates. OpenRouter currently reports Krea 2 Large, Medium and Medium
-Turbo as 1K-capable, with optional `input_references` (`min=0`), but their
-endpoint `pricing` arrays are empty. The two Microsoft MAI Image 2.5 endpoints
-publish token charge lines and the models API publishes 4096 context / 1024
-maximum-completion bounds; these facts must be recaptured with the final
-server-attested manifest.
+## Fixed public sources
 
-This audit is not a production snapshot. Current production refresh still has
-unresolved exact Ark model pricing and OpenRouter routes, including the empty
-Krea prices. Therefore no complete price hash or authoritative CNY 180 budget
-decision exists yet, and paid execution must remain blocked.
+- Alibaba Model Studio: <https://help.aliyun.com/zh/model-studio/model-pricing>
+- Volcengine Ark: <https://docs.volcengine.com/docs/82379/1544106?lang=zh>
+- OpenRouter models: <https://openrouter.ai/api/v1/images/models>
+- OpenRouter endpoints: `https://openrouter.ai/api/v1/images/models/{author}/{slug}/endpoints`
+- Krea model pages: `https://openrouter.ai/krea/krea-2-{large|medium|medium-turbo}`
+- ECB FX: <https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml>
+
+## Remaining precision work
+
+Exact deterministic extraction is still incomplete for the full 77-route registry, notably the complete Alibaba table and non-Krea OpenRouter endpoint and MAI token-bound variants. Those routes must remain visibly marked as operator-authorized conservative upper bounds; they must not be reported as exact official prices. This implementation has not deployed, enabled the resident worker, read production secrets, or made any provider/paid call.

@@ -27,6 +27,7 @@ export const SCIENTIFIC_V2_COLLECTIONS = Object.freeze({
 
 const hashPattern = /^[a-f0-9]{64}$/
 const codeShaPattern = /^[a-f0-9]{40}$/
+const OPERATOR_ATTESTATION_DOMAIN = 'paperbanana/scientific-v2/operator-attestation/v1'
 const productionLockName = '/run/lock/paperbanana-hk-production.lock'
 const providers = ['bailian', 'ark', 'openrouter'] as const
 const reviewRedLineNotes = Object.freeze({
@@ -204,7 +205,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
   ], 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   if (state.schemaVersion !== 2 || state.manifestHash !== manifest.manifestHash
     || !hashPattern.test(String(state.stateHash || '')) || canonicalWithoutHash(state, 'stateHash') !== state.stateHash
-    || !['ready', 'running', 'awaiting_artifacts', 'completed', 'paused', 'blocked'].includes(state.status)
+    || !['ready', 'running', 'canary_complete', 'awaiting_artifacts', 'completed', 'paused', 'blocked'].includes(state.status)
     || !Array.isArray(state.slots) || state.slots.length !== manifest.executionOrder.length) {
     scientificError('SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   }
@@ -333,6 +334,10 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
   if ((state.status === 'paused') !== (state.pauseReason !== null)
     || (state.status === 'blocked') !== (state.blockReason !== null)
     || (state.status === 'ready' && slotStatuses.some((status: string) => status !== 'pending'))
+    || (state.status === 'canary_complete' && (state.slots.some((slot: AnyRecord) => slot.isProviderCanary
+      ? slot.status !== 'succeeded' : slot.status !== 'pending')
+      || state.slots.filter((slot: AnyRecord) => slot.isProviderCanary).length !== new Set(manifest.executionOrder
+        .filter((slot: AnyRecord) => slot.isProviderCanary).map((slot: AnyRecord) => slot.provider)).size))
     || (state.status === 'running' && slotStatuses.some((status: string) => ['unknown', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(status)))
     || (state.status === 'awaiting_artifacts' && (!slotStatuses.includes('awaiting_artifact')
       || slotStatuses.some((status: string) => ['pending', 'retrying', 'unknown', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(status))))
@@ -542,7 +547,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
   const manifest = input.manifest
   assertExactKeys(manifest, [
     'schemaVersion', 'suiteId', 'evaluationMode', 'evaluationEpoch', 'reviewProtocol', 'presentationVersion',
-    'codeSha', 'registryVersion', 'registryHash', 'registrySnapshotHash', 'registrySnapshot', 'canonicalManifestHash', 'suiteHash', 'priceHash',
+    'codeSha', 'registryVersion', 'registryHash', 'registrySnapshotHash', 'registrySnapshot', 'canonicalManifestHash', 'suiteHash', 'priceHash', 'priceOperatorAuthorizationHash',
     'canonicalManifest', 'models', 'cases', 'executionOrder', 'providerOrder', 'providerBudgetsCny',
     'codexLimits', 'concurrency', 'lockName', 'priceSnapshot', 'createdAt', 'manifestHash',
   ], 'SCIENTIFIC_V2_BATCH_MANIFEST_INVALID')
@@ -569,7 +574,8 @@ function assertRegistryAndManifest(input: AnyRecord) {
   const price = manifest.priceSnapshot
   const typedCanonicalManifest = canonicalManifest as unknown as Parameters<typeof verifyScientificV2PriceSnapshot>[1]
   verifyScientificV2PriceSnapshot(price, typedCanonicalManifest)
-  if (manifest.priceHash !== price.snapshotHash || price.capturedAt !== manifest.createdAt) scientificError('SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
+  if (manifest.priceHash !== price.snapshotHash || price.capturedAt !== manifest.createdAt
+    || manifest.priceOperatorAuthorizationHash !== price.operatorAuthorizationHash) scientificError('SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
   const priceByRoute = new Map<string, number>(price.entries.map((entry: AnyRecord) => [`${entry.provider}\0${entry.modelId}\0${entry.operation}`, Number(entry.unitCny)]))
   const estimates = { bailian: 0, ark: 0, openrouter: 0 }
   const modelIds = new Set<string>()
@@ -763,10 +769,12 @@ export function createScientificV2MongoRepository(
         codexToolCallLimit: batch.manifest.codexLimits.maxToolCalls,
         modelCount: batch.manifest.models.length,
         slotCount: batch.manifest.executionOrder.length,
+        revision: Number(batch.revision || 0),
         issuedAt: now().toISOString(),
       }
       const reportHash = canonicalHash(report)
-      return deepFreeze({ ...report, reportHash, attestationHash: createHmac('sha256', operatorSecret()).update(reportHash).digest('hex') })
+      const attestationKey = createHmac('sha256', operatorSecret()).update(OPERATOR_ATTESTATION_DOMAIN).digest()
+      return deepFreeze({ ...report, reportHash, attestationHash: createHmac('sha256', attestationKey).update(reportHash).digest('hex') })
     },
     async importStateReport(input: AnyRecord) {
       input = normalizeScientificV2SignedStateOperationReport(input, operatorSecret())
@@ -782,7 +790,7 @@ export function createScientificV2MongoRepository(
         || input.report.previousStateHash === input.report.stateHash
         || (attachesPersistedWorkerState
           ? input.report.previousStateHash !== batch.stateTransitionFromHash
-            || !['awaiting_artifacts', 'completed'].includes(batch.state?.status)
+            || !['canary_complete', 'awaiting_artifacts', 'completed'].includes(batch.state?.status)
           : input.report.previousStateHash !== batch.stateHash)) scientificError('SCIENTIFIC_V2_IMPORT_REVISION_CONFLICT')
       verifyScientificV2ImportedState(input.report.state, batch.manifest)
       assertIsoInstant(input.report.createdAt, 'SCIENTIFIC_V2_OPERATOR_REPORT_SCHEMA_INVALID')
@@ -796,7 +804,7 @@ export function createScientificV2MongoRepository(
         || canonicalHash(input.report.executionOrderAttestation.slotIds) !== canonicalHash(input.report.state.slots.map((slot: AnyRecord) => slot.slotId))) {
         scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       }
-      if (input.report.kind === 'worker' && !['awaiting_artifacts', 'completed'].includes(input.report.state.status)) {
+      if (input.report.kind === 'worker' && !['canary_complete', 'awaiting_artifacts', 'completed'].includes(input.report.state.status)) {
         scientificError('SCIENTIFIC_V2_IMPORT_WORKER_STATE_INVALID')
       }
       if (input.report.kind === 'codex' && input.report.state.status !== 'completed') {

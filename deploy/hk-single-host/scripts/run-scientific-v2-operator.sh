@@ -503,7 +503,8 @@ elif [[ "$mode" == run ]]; then
   jq -e \
     --arg sha "$expected_sha" --arg registry "$registry_hash" --arg suite "$suite_hash" \
     --arg price "$price_hash" --arg manifest "$manifest_hash" --argjson models "$model_count" \
-    '.operation == "run" and ((keys | sort) == ["gate","manifest","operation","report","state"]) and
+    '.operation == "run" and (((keys | sort) == ["gate","manifest","operation","report","state"] and (.executionPhase == null)) or
+      ((keys | sort) == ["executionPhase","gate","manifest","operation","report","state"] and (.executionPhase == "canary-only" or .executionPhase == "full"))) and
      '"$common_jq"' and
      ((.report | keys | sort) == ["attestationSecret","batchId","createdAt","revision"]) and
      (.report.batchId | type) == "string" and (.report.batchId | length) > 0 and
@@ -943,11 +944,23 @@ if [[ "$mode" == inspect ]]; then
 elif [[ "$mode" == run ]]; then
   state_hash="$(jq -r .report.stateHash "$result_path")"
   report_hash="$(jq -r .reportHash "$result_path")"
+  state_snapshot="$(mktemp /tmp/paperbanana-scientific-v2-state.XXXXXXXXXXXX)"
+  jq -c .report.state "$result_path" >"$state_snapshot"
+  chmod 0600 "$state_snapshot"
+  state_bundle_hash="$(sha256sum "$state_snapshot" 2>/dev/null | awk '{print $1}' || shasum -a 256 "$state_snapshot" | awk '{print $1}')"
+  state_destination="$bundle_dir/$state_bundle_hash.state.json"
+  if [[ -e "$state_destination" ]]; then
+    [[ -f "$state_destination" && ! -L "$state_destination" && "$(stat_triplet "$state_destination")" =~ ^${expected_owner}:${expected_group}:0?600$ ]] || exit 1
+    cmp -s "$state_snapshot" "$state_destination" || exit 1
+  else
+    install -o "$expected_owner" -g "$expected_group" -m 0600 "$state_snapshot" "$state_destination"
+  fi
+  rm -f -- "$state_snapshot"
   provider_calls="$(jq -r '[.report.state.slots[] | select(.provider != null and .provider != "codex") | .attempts[]] | length' "$result_path")"
   printf '%s' 'scientific-v2-audit-summary=' >&2
   jq -cn \
-    --argjson providerCalls "$provider_calls" --arg stateHash "$state_hash" --arg reportHash "$report_hash" \
-    '{providerCalls:$providerCalls,stateHash:$stateHash,reportHash:$reportHash}' >&2
+    --argjson providerCalls "$provider_calls" --arg stateHash "$state_hash" --arg reportHash "$report_hash" --arg stateBundleHash "$state_bundle_hash" \
+    '{providerCalls:$providerCalls,stateHash:$stateHash,reportHash:$reportHash,stateBundleHash:$stateBundleHash}' >&2
   jq -c . "$result_path"
 elif [[ "$mode" == import_codex ]]; then
   state_hash="$(jq -r .report.stateHash "$result_path")"

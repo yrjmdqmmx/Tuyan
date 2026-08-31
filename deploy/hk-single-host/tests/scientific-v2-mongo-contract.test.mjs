@@ -86,7 +86,8 @@ test('resident Worker cannot migrate scientific v2 and run gates remain one-off 
   assert.doesNotMatch(worker, /PAPERBANANA_SCIENTIFIC_V2_RUN_ENABLED|PAPERBANANA_SCIENTIFIC_V2_HOST_LOCK_PROOF|createIndex|listIndexes/)
   assert.match(worker, /depends_on:[\s\S]*mongo-init:[\s\S]*condition:\s*service_completed_successfully/)
   assert.doesNotMatch(oneOff, /PAPERBANANA_SCIENTIFIC_V2_RUN_ENABLED|PAPERBANANA_SCIENTIFIC_V2_HOST_LOCK_PROOF/)
-  assert.match(operator, /\(\(keys \| sort\) == \["gate","manifest","operation","report","state"\]\)/)
+  assert.match(operator, /\(\(keys \| sort\) == \["gate","manifest","operation","report","state"\] and \(\.executionPhase == null\)\)/)
+  assert.match(operator, /\(\(keys \| sort\) == \["executionPhase","gate","manifest","operation","report","state"\] and \(\.executionPhase == "canary-only" or \.executionPhase == "full"\)\)/)
   assert.doesNotMatch(operator, /\.env == \{/)
   const paidRunner = operator.match(/run_paid\(\) \{([\s\S]*?)^\}/m)?.[1] || ''
   assert.match(paidRunner, /-e PAPERBANANA_BENCH_ENABLED=false[\s\S]*-e PAPERBANANA_BENCH_CONCURRENCY=1/)

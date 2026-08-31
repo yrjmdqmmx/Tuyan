@@ -675,7 +675,7 @@ export function createScientificV2MongoRepository(
       const claimNow = now()
       let current = await batches.findOne({
         manifestHash: input.manifestHash, stateHash: input.expectedReadyStateHash,
-        'state.status': 'ready', claimToken: { $exists: false },
+        $or: [{ 'state.status': 'ready' }, { 'state.status': 'canary_complete' }], claimToken: { $exists: false },
       })
       let reclaim = false
       if (!current) {
@@ -701,7 +701,8 @@ export function createScientificV2MongoRepository(
       const claimed = await batches.findOneAndUpdate(
         reclaim
           ? { _id: current._id, stateHash: current.stateHash, status: 'running', claimToken: current.claimToken, claimLeaseExpiresAt: { $lte: claimNow } }
-          : { _id: current._id, stateHash: input.expectedReadyStateHash, 'state.status': 'ready', claimToken: { $exists: false } },
+          : { _id: current._id, stateHash: input.expectedReadyStateHash,
+            $or: [{ 'state.status': 'ready' }, { 'state.status': 'canary_complete' }], claimToken: { $exists: false } },
         { $set: {
           state, stateHash: state.stateHash,
           ...(reclaim ? {} : { stateTransitionFromHash: input.expectedReadyStateHash }),
@@ -719,12 +720,16 @@ export function createScientificV2MongoRepository(
       const current = await batches.findOne({ manifestHash: input.nextState.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash })
       if (!current) scientificV2Error('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
       verifyScientificV2BatchState(input.nextState, batchManifest(current))
+      const releaseForFullResume = input.nextState.status === 'canary_complete'
       const updated = await batches.findOneAndUpdate(
         { manifestHash: input.nextState.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash },
         { $set: {
           state: structuredClone(input.nextState), stateHash: input.nextState.stateHash, stateTransitionFromHash: input.expectedStateHash,
-          status: input.nextState.status, updatedAt: now(), claimHeartbeatAt: now(), claimLeaseExpiresAt: new Date(now().getTime() + claimLeaseMs),
-        } },
+          status: input.nextState.status, updatedAt: now(),
+          ...(releaseForFullResume ? {} : { claimHeartbeatAt: now(), claimLeaseExpiresAt: new Date(now().getTime() + claimLeaseMs) }),
+        }, ...(releaseForFullResume ? { $unset: {
+          claimToken: '', claimLeaseExpiresAt: '', claimHeartbeatAt: '', claimedAt: '', workerId: '',
+        } } : {}) },
         { returnDocument: 'after' },
       )
       if (!updated) scientificV2Error('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')

@@ -46,7 +46,7 @@ test('registry authority captures server-loaded bytes and binds deployed SHA, cu
   assert.deepEqual(verifyScientificV2RegistryAuthority(authority, {
     expectedCodeSha: codeSha,
     secret,
-    now: () => new Date('2026-08-31T08:04:59.999Z'),
+    now: () => new Date('2026-09-01T08:00:00.000Z'),
   }), authority)
   const crossDomain = { ...authority, attestationHash: createHmac('sha256', secret).update(authority.snapshotHash).digest('hex') }
   assert.throws(() => verifyScientificV2RegistryAuthority(crossDomain, {
@@ -85,7 +85,7 @@ test('registry authority rejects stale replay, code drift, registry-byte drift a
     async loadCurrentRegistry() { return registry },
   })
   const cases: Array<[string, unknown, Record<string, unknown>]> = [
-    ['stale', authority, { expectedCodeSha: codeSha, secret, now: () => new Date('2026-08-31T08:05:00.001Z') }],
+    ['stale', authority, { expectedCodeSha: codeSha, secret, now: () => new Date('2026-09-01T08:00:00.001Z') }],
     ['code', authority, { expectedCodeSha: 'b'.repeat(40), secret, now: () => new Date(capturedAt) }],
     ['bytes', { ...authority, registry: { ...registry, registryVersion: 'old' } }, { expectedCodeSha: codeSha, secret, now: () => new Date(capturedAt) }],
     ['hmac', { ...authority, attestationHash: 'f'.repeat(64) }, { expectedCodeSha: codeSha, secret, now: () => new Date(capturedAt) }],
