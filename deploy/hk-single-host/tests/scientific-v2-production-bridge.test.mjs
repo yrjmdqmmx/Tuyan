@@ -52,7 +52,9 @@ test('root-only prepare bridge creates server-attested content-addressed private
   assert.doesNotMatch(source, /created_at=.*date -u/)
   for (const marker of ['Config.Image', 'RepoDigests', 'build-provenance.json', 'PAPERBANANA_BENCH_ENABLED', 'PAPERBANANA_BENCH_CONCURRENCY']) assert.match(source, new RegExp(marker.replace('.', '[.]')))
   assert.doesNotMatch(source, /set -x|printenv|cat\s+[^\n]*(?:secret|core[.]env|bench[.]env)/)
-  assert.match(source, /--env-from-file "\$verifier_env"/)
+  assert.match(source, /--env-file "\$verifier_env"/)
+  assert.match(source, /docker run[\s\S]*--network none[\s\S]*--env-file "\$verifier_env"/)
+  assert.doesNotMatch(source, /compose\[@\][^\n]*run[^\n]*--network/)
   assert.doesNotMatch(source, /-e PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=/)
   assert.doesNotMatch(source, /price_attestation_secret=/)
 

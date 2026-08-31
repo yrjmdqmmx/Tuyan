@@ -116,13 +116,13 @@ jq -cn --slurpfile authority "$authority_result" --slurpfile signedPrice "$price
 prepare_hash="$(sha256sum "$prepare_input" | awk '{print $1}')"
 install -o root -g 1000 -m 0440 "$prepare_input" "$prepare_snapshot_dir/bundle.json"
 chmod 0550 "$prepare_snapshot_dir"
-timeout --signal=TERM --kill-after=10s 300s "${compose[@]}" run --rm --no-deps --network none \
-  --env-from-file "$verifier_env" \
+timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none \
+  --read-only --cap-drop ALL --security-opt no-new-privileges --env-file "$verifier_env" \
   --user 1000:1000 -v "$prepare_snapshot_dir/bundle.json:/run/paperbanana-scientific-v2/bundle.json:ro" \
   -e PAPERBANANA_SCIENTIFIC_V2_BUNDLE_PATH=/run/paperbanana-scientific-v2/bundle.json \
   -e PAPERBANANA_SCIENTIFIC_V2_SPOOL_DIR=/run/paperbanana-scientific-v2 \
   -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256="$prepare_hash" \
-  benchmark-operator node dist/scientific-v2-operator.mjs >"$prepare_result"
+  "$worker_image" node dist/scientific-v2-operator.mjs >"$prepare_result"
 
 jq -e --arg sha "$expected_sha" '.operation == "prepare" and .providerCalls == 0 and
   .manifest.codeSha == $sha and .manifest.manifestHash == .manifestHash and
