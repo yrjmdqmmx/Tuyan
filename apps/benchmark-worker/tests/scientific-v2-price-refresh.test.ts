@@ -4,6 +4,7 @@ import test from 'node:test'
 import { buildScientificV2CanonicalManifest, canonicalHash } from '@paperbanana/benchmark-core'
 import {
   extractScientificV2OfficialPriceObservations,
+  extractScientificV2OfficialPriceObservationsForOperatorUpperBound,
   refreshScientificV2OfficialPriceSources,
 } from '../src/scientific-v2-price-refresh.js'
 
@@ -189,6 +190,10 @@ test('rejects Ark bytes that swap model prices or remove the first-input-free ru
     kreaSentence: krea,
   })
   await assert.rejects(extractScientificV2OfficialPriceObservations(swapped), /SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID/)
+  const conservative = await extractScientificV2OfficialPriceObservationsForOperatorUpperBound(swapped)
+  assert.equal(conservative.observations.length, 0)
+  assert.equal(conservative.unresolved.length, 4)
+  assert.equal(conservative.resolved, false)
 
   const chargedFirst = await fixedArkKreaEvidence({
     arkHtml: `doubao-seedream-5-0-pro 第1张输入图片起 0.02元；输出不超过261万像素 0.30元/张，超过261万像素 0.60元/张。${validTail}`,
