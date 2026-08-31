@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 GPT Image 2 原图使用私有草稿资产交接 — by Codex
+变更：Codex 内置 `gpt-image-2` 的 9 张已审计原始 PNG 不进入 Git、不进入公开 release，也不经公网匿名 URL。新增受保护 workflow 只接受一个精确 GitHub draft release asset ID，绑定 deployed/control SHA、manifest、Worker digest、资产名称/大小/SHA 与 metadata SHA；下载后在生产共享锁内再次验证 Worker disabled/并发 1、归档固定 11 个成员、9 个内容寻址 PNG 的逐文件 SHA/字节和只读 metadata，再原子放入该 manifest 专属的 root:service-group `0550` 目录，文件为 `0440`。交接全程零 Provider 调用，批次未进入 `awaiting_artifacts` 前不会导入或改写 state；草稿资产在成功导入后删除。
+
+各端待办：
+- [x] 部署 / 运维（draft-only 私有交接 workflow 与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（执行与公开契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 正式 Provider 等待窗冻结为 300 秒 — by Codex
 变更：生产 full 批次在 `qwen-image-3.0-pro` 编辑题精确运行到旧默认 120 秒后进入 `UNKNOWN_PROVIDER_OUTCOME`；只读人工对账已证明该 attempt 时间窗内私有 OSS 与受保护 spool 均无候选原图，三家凭据/出口均为 200。正式评测现在把每次 Provider 请求等待窗显式冻结为 300 秒，并限制可配置范围为 120–600 秒；运维 operator 固定传入 300000ms。30 秒 claim 心跳、并发 1、最高 2K/默认尺寸实测、九题十维、确认失败最多四次、unknown 零自动重试、预算与 canonical 路由全部不变。旧暂停批次仅保留审计；新代码 SHA 重新冻结整批执行。
 

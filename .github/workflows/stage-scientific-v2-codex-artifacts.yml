@@ -1,0 +1,154 @@
+name: Stage Scientific V2 Codex Artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_worker_digest: { required: true }
+      manifest_hash: { required: true }
+      release_id: { required: true }
+      asset_id: { required: true }
+      asset_name: { required: true }
+      asset_sha256: { required: true }
+      asset_size: { required: true }
+      metadata_sha256: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact private transfer envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+          METADATA_SHA: ${{ inputs.metadata_sha256 }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$MANIFEST_HASH" "$ASSET_SHA" "$METADATA_SHA"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ "$RELEASE_ID" =~ ^[1-9][0-9]*$ && "$ASSET_ID" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" =~ ^[1-9][0-9]*$ ]]
+          [[ "$ASSET_SIZE" -le 26214400 && "$ASSET_NAME" == "codex-artifacts-$MANIFEST_HASH.tar.gz" ]]
+          [[ "$CONFIRM" == stage-private-scientific-v2-codex-artifacts ]]
+      - name: Download exact draft asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+        run: |
+          set -Eeuo pipefail
+          release="$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID")"
+          jq -e --arg deployed "$DEPLOYED_SHA" --argjson assetId "$ASSET_ID" --arg name "$ASSET_NAME" --argjson size "$ASSET_SIZE" '
+            .draft == true and .prerelease == false and .target_commitish == $deployed and
+            ([.assets[] | select(.id == $assetId and .name == $name and .size == $size and .state == "uploaded")] | length) == 1
+          ' <<<"$release" >/dev/null
+          archive="$RUNNER_TEMP/$ASSET_NAME"
+          gh api -H 'Accept: application/octet-stream' "repos/$GITHUB_REPOSITORY/releases/assets/$ASSET_ID" >"$archive"
+          chmod 0600 "$archive"
+          [[ "$(stat -c %s "$archive")" == "$ASSET_SIZE" && "$(sha256sum "$archive" | awk '{print $1}')" == "$ASSET_SHA" ]]
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Stage root protected artifacts
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+          METADATA_SHA: ${{ inputs.metadata_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+        run: |
+          set -Eeuo pipefail
+          archive="$RUNNER_TEMP/$ASSET_NAME"
+          remote_archive="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp /tmp/paperbanana-codex-artifacts.XXXXXXXXXXXX.tar.gz')"
+          [[ "$remote_archive" =~ ^/tmp/paperbanana-codex-artifacts[.][A-Za-z0-9]{8,}[.]tar[.]gz$ ]]
+          cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_archive'" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          scp "$archive" "$DEPLOY_USER@$DEPLOY_HOST:$remote_archive"
+          printf -v remote_command 'sudo env TRANSFER_ARCHIVE=%q ASSET_SHA=%q ASSET_SIZE=%q METADATA_SHA=%q MANIFEST_HASH=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q bash -s' \
+            "$remote_archive" "$ASSET_SHA" "$ASSET_SIZE" "$METADATA_SHA" "$MANIFEST_HASH" "$DEPLOYED_SHA" "$WORKER_DIGEST"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          [[ "$(git -C /opt/paperbanana/repo rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          [[ -f "$TRANSFER_ARCHIVE" && ! -L "$TRANSFER_ARCHIVE" && "$(stat -c %s "$TRANSFER_ARCHIVE")" == "$ASSET_SIZE" ]]
+          [[ "$(sha256sum "$TRANSFER_ARCHIVE" | awk '{print $1}')" == "$ASSET_SHA" ]]
+          mapfile -t members < <(tar -tzf "$TRANSFER_ARCHIVE")
+          [[ "${#members[@]}" == 11 && "${members[0]}" == import-ready-metadata.json && "${members[1]}" == import-artifacts/ ]]
+          declare -A seen=()
+          for member in "${members[@]:2}"; do
+            [[ "$member" =~ ^import-artifacts/([a-f0-9]{64}[.]png)$ ]]
+            file_name="${BASH_REMATCH[1]}"
+            [[ -z "${seen[$file_name]:-}" ]]
+            seen[$file_name]=1
+          done
+          [[ "${#seen[@]}" == 9 ]]
+          destination_root=/opt/paperbanana/operator-private/scientific-v2/codex-artifacts
+          destination="$destination_root/$MANIFEST_HASH"
+          [[ -d "$destination_root" && ! -L "$destination_root" && ! -e "$destination" ]]
+          incoming="$(mktemp -d "$destination_root/.incoming-$MANIFEST_HASH.XXXXXXXX")"
+          unpacked="$incoming/unpacked"
+          install -d -o 0 -g 0 -m 0700 "$unpacked"
+          tar --no-same-owner --no-same-permissions -xzf "$TRANSFER_ARCHIVE" -C "$unpacked"
+          metadata="$unpacked/import-ready-metadata.json"
+          [[ -f "$metadata" && ! -L "$metadata" && "$(sha256sum "$metadata" | awk '{print $1}')" == "$METADATA_SHA" ]]
+          jq -e '
+            .schemaVersion == 1 and .metadataKind == "paperbanana-scientific-v2-codex-import-preflight" and
+            .suiteId == "pb-scientific-figure-v2" and .provenance.modelAlias == "gpt-image-2" and
+            .provenance.totalToolCalls == 9 and (.toolCalls | length) == 9 and
+            .readiness.qualityReviewPerformed == false and .readiness.providerOrImagegenCallsDuringMetadataPass == 0 and
+            all(.toolCalls[]; .attemptIndex == 1 and .responseClass == "succeeded" and
+              .artifactRef.schemaVersion == 1 and .artifactRef.fileName == (.sha256 + ".png") and
+              .artifactRef.sha256 == .sha256 and .artifactRef.byteSize > 0 and .artifactRef.format == "png")
+          ' "$metadata" >/dev/null
+          install -d -o 0 -g 1000 -m 0550 "$incoming/final"
+          while IFS=$'\t' read -r file_name expected_sha expected_size; do
+            source_file="$unpacked/import-artifacts/$file_name"
+            [[ -f "$source_file" && ! -L "$source_file" && "$(stat -c %s "$source_file")" == "$expected_size" ]]
+            [[ "$(sha256sum "$source_file" | awk '{print $1}')" == "$expected_sha" ]]
+            install -o 0 -g 1000 -m 0440 "$source_file" "$incoming/final/$file_name"
+          done < <(jq -r '.toolCalls[] | [.artifactRef.fileName,.artifactRef.sha256,(.artifactRef.byteSize|tostring)] | @tsv' "$metadata")
+          [[ "$(find "$incoming/final" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')" == 9 ]]
+          mv "$incoming/final" "$destination"
+          printf '{"operation":"stage-scientific-v2-codex-artifacts","providerCalls":0,"manifestHash":"%s","artifactCount":9,"archiveSha256":"%s","metadataSha256":"%s"}\n' \
+            "$MANIFEST_HASH" "$ASSET_SHA" "$METADATA_SHA"
+          REMOTE
