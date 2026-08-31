@@ -1,0 +1,175 @@
+name: Stage Scientific V2 Artifact Reconciliation
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha:
+        required: true
+      expected_deployed_sha:
+        required: true
+      manifest_sha256:
+        required: true
+      state_sha256:
+        required: true
+      manifest_hash:
+        required: true
+      batch_id:
+        required: true
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate exact control and data-plane bindings
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          MANIFEST_FILE_HASH: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_HASH: ${{ inputs.state_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          BATCH_ID: ${{ inputs.batch_id }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$GITHUB_SHA" == "$CONTROL_SHA" ]]
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$MANIFEST_FILE_HASH" "$STATE_FILE_HASH" "$MANIFEST_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,159}$ ]]
+          [[ "$CONFIRM" == stage-exact-scientific-v2-artifact-reconciliation ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage the unique paused artifact recovery bundle
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          MANIFEST_FILE_HASH: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_HASH: ${{ inputs.state_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          BATCH_ID: ${{ inputs.batch_id }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env SCIENTIFIC_V2_EXPECTED_SHA=%q SCIENTIFIC_V2_MANIFEST_FILE_HASH=%q SCIENTIFIC_V2_STATE_FILE_HASH=%q SCIENTIFIC_V2_MANIFEST_HASH=%q SCIENTIFIC_V2_BATCH_ID=%q bash -s' \
+            "$EXPECTED_SHA" "$MANIFEST_FILE_HASH" "$STATE_FILE_HASH" "$MANIFEST_HASH" "$BATCH_ID"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          bundle_dir=/opt/paperbanana/operator-bundles/scientific-v2
+          manifest_path="$bundle_dir/$SCIENTIFIC_V2_MANIFEST_FILE_HASH.manifest.json"
+          state_path="$bundle_dir/$SCIENTIFIC_V2_STATE_FILE_HASH.state.json"
+          lock_path=/run/lock/paperbanana-hk-production.lock
+          exec 9>"$lock_path"
+          flock -x 9
+          [[ "$(git -C /opt/paperbanana/repo rev-parse --verify HEAD)" == "$SCIENTIFIC_V2_EXPECTED_SHA" ]]
+          [[ -d "$bundle_dir" && ! -L "$bundle_dir" ]]
+          python3 - "$manifest_path" "$state_path" "$bundle_dir" \
+            "$SCIENTIFIC_V2_MANIFEST_FILE_HASH" "$SCIENTIFIC_V2_STATE_FILE_HASH" \
+            "$SCIENTIFIC_V2_MANIFEST_HASH" "$SCIENTIFIC_V2_EXPECTED_SHA" "$SCIENTIFIC_V2_BATCH_ID" <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import stat
+          import sys
+
+          manifest_path, state_path, bundle_dir, manifest_file_hash, state_file_hash, manifest_hash, expected_sha, batch_id = sys.argv[1:]
+
+          def protected_json(path, expected_hash):
+              handle = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(handle)
+                  if (not stat.S_ISREG(before.st_mode) or before.st_nlink != 1 or before.st_uid != 0
+                          or stat.S_IMODE(before.st_mode) != 0o600 or before.st_size < 2
+                          or before.st_size > 64 * 1024 * 1024):
+                      raise RuntimeError("protected input")
+                  data = b""
+                  while len(data) <= 64 * 1024 * 1024:
+                      chunk = os.read(handle, min(1024 * 1024, 64 * 1024 * 1024 + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(handle)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if (len(data) != before.st_size or hashlib.sha256(data).hexdigest() != expected_hash
+                          or (before.st_dev, before.st_ino, before.st_mtime_ns)
+                          != (after.st_dev, after.st_ino, after.st_mtime_ns)
+                          or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino)):
+                      raise RuntimeError("protected input drift")
+                  return json.loads(data.decode("utf-8", errors="strict"))
+              finally:
+                  os.close(handle)
+
+          manifest = protected_json(manifest_path, manifest_file_hash)
+          state = protected_json(state_path, state_file_hash)
+          if (manifest.get("manifestHash") != manifest_hash or manifest.get("codeSha") != expected_sha
+                  or state.get("manifestHash") != manifest_hash or state.get("status") != "paused"
+                  or state.get("pauseReason") != "artifact_reconciliation_required"):
+              raise RuntimeError("artifact reconciliation binding")
+          slots = [slot for slot in state.get("slots", []) if slot.get("status") == "artifact_reconciliation"]
+          if len(slots) != 1:
+              raise RuntimeError("artifact reconciliation cardinality")
+          slot = slots[0]
+          attempts = slot.get("attempts")
+          if not isinstance(attempts, list) or not 1 <= len(attempts) <= 4:
+              raise RuntimeError("artifact reconciliation attempt")
+          attempt = attempts[-1]
+          image_hash = attempt.get("rawImageHash")
+          if (attempt.get("responseClass") != "artifact_reconciliation_required"
+                  or not isinstance(image_hash, str) or re.fullmatch(r"[a-f0-9]{64}", image_hash) is None):
+              raise RuntimeError("artifact reconciliation image")
+          bundle = {
+              "operation": "reconcile_artifact",
+              "gate": {"enabled": False, "concurrency": 1, "lockName": "/run/lock/paperbanana-hk-production.lock"},
+              "manifest": manifest,
+              "state": state,
+              "input": {"batchId": batch_id, "slotId": slot["slotId"], "attemptIndex": len(attempts), "imageHash": image_hash},
+          }
+          encoded = (json.dumps(bundle, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+          bundle_hash = hashlib.sha256(encoded).hexdigest()
+          destination = os.path.join(bundle_dir, bundle_hash + ".json")
+          try:
+              output = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+          except FileExistsError:
+              existing = os.open(destination, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  if os.read(existing, 64 * 1024 * 1024 + 1) != encoded:
+                      raise RuntimeError("content addressed collision")
+              finally:
+                  os.close(existing)
+          else:
+              try:
+                  os.write(output, encoded)
+                  os.fsync(output)
+              finally:
+                  os.close(output)
+          print(json.dumps({
+              "operation": "reconcile_artifact", "providerCalls": 0, "bundleHash": bundle_hash,
+              "manifestHash": manifest_hash, "stateHash": state["stateHash"], "slotId": slot["slotId"],
+              "attemptIndex": len(attempts), "imageHash": image_hash,
+          }, separators=(",", ":")))
+          PY
+          REMOTE

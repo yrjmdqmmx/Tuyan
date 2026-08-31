@@ -24,6 +24,7 @@ const priceAuthorizationEntry = fileURLToPath(new URL('../../../apps/benchmark-w
 const priceAuthorizationWorkflow = fileURLToPath(new URL('../../../.github/workflows/authorize-scientific-v2-price-snapshot.yml', import.meta.url))
 const runBundleStager = fileURLToPath(new URL('../scripts/stage-scientific-v2-run-bundle.sh', import.meta.url))
 const runBundleStagerWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-run-bundle.yml', import.meta.url))
+const artifactReconciliationStagerWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-artifact-reconciliation.yml', import.meta.url))
 const workerPackage = fileURLToPath(new URL('../../../apps/benchmark-worker/package.json', import.meta.url))
 
 const canonicalJson = (value) => Array.isArray(value)
@@ -252,6 +253,23 @@ test('root run-bundle stager protects attestation secret and binds canary or ful
   assert.match(workflow, /--expected-sha %q --expected-worker-digest %q[\s\S]*\"\$EXPECTED_SHA\" \"\$WORKER_DIGEST\"/)
   assert.match(workflow, /stage-scientific-v2-run-bundle[.]sh/)
   assert.doesNotMatch(workflow, /REVIEW_SIGNING_SECRET|ATTESTATION_SECRET|PROVIDER.*KEY/)
+})
+
+test('artifact reconciliation stager derives the only paused slot from protected manifest and state without provider access', () => {
+  assert.equal(existsSync(artifactReconciliationStagerWorkflow), true)
+  const workflow = readFileSync(artifactReconciliationStagerWorkflow, 'utf8')
+  assert.match(workflow, /environment:\s*paperbanana-production/)
+  assert.match(workflow, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/)
+  for (const input of ['expected_control_sha', 'expected_deployed_sha', 'manifest_sha256', 'state_sha256', 'manifest_hash', 'batch_id']) {
+    assert.match(workflow, new RegExp(`${input}:[\\s\\S]*required:\\s*true`))
+  }
+  assert.match(workflow, /flock -x/)
+  assert.match(workflow, /artifact_reconciliation_required/)
+  assert.match(workflow, /slot[.]get\("status"\) == "artifact_reconciliation"/)
+  assert.match(workflow, /rawImageHash/)
+  assert.match(workflow, /"operation":\s*"reconcile_artifact"/)
+  assert.match(workflow, /ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 /)
+  assert.doesNotMatch(workflow, /API_KEY|ACCESS_KEY|provider dispatch|fetch\(|curl\s|wget\s/i)
 })
 
 test('isolated Node canonical preflight exactly matches benchmark canonical hashes', () => {
