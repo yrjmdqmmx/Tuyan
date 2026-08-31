@@ -193,6 +193,7 @@ test('root run-bundle stager protects attestation secret and binds canary or ful
   const source = readFileSync(runBundleStager, 'utf8')
   assert.match(source, /id -u[\s\S]*root/)
   assert.match(source, /--execution-phase/)
+  assert.match(source, /--expected-worker-digest/)
   assert.match(source, /canary-only\|full/)
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /operator-bundles\/scientific-v2/)
@@ -203,6 +204,30 @@ test('root run-bundle stager protects attestation secret and binds canary or ful
   assert.match(source, /attestationSecret/)
   assert.match(source, /executionPhase/)
   assert.match(source, /runBundleHash/)
+  assert.match(source, /node_hash_script/)
+  assert.match(source, /build-provenance[.]json/)
+  const workerDigestGate = source.match(/^\[\[ "\$\{worker_image##\*@sha256:\}" == "\$expected_worker_digest" \]\] \|\| exit 1$/m)
+  assert.ok(workerDigestGate, 'worker image digest must gate staging before the Node container starts')
+  const runWorkerDigestGate = (workerImage, expectedDigest) => spawnSync('bash', ['-ceu',
+    `worker_image="$1"; expected_worker_digest="$2"; ${workerDigestGate[0]}`,
+    'worker-digest-gate', workerImage, expectedDigest,
+  ], { encoding: 'utf8' })
+  const workerDigest = 'a'.repeat(64)
+  assert.equal(runWorkerDigestGate(`ghcr.io/paperbanana/paperbanana-benchmark-worker@sha256:${workerDigest}`, workerDigest).status, 0)
+  assert.notEqual(runWorkerDigestGate(`ghcr.io/paperbanana/paperbanana-benchmark-worker@sha256:${workerDigest}`, 'b'.repeat(64)).status, 0)
+  assert.match(source, /--network none/)
+  assert.match(source, /--read-only/)
+  assert.match(source, /timeout --signal=TERM --kill-after=10s 300s\s+docker run/)
+  for (const flag of ['--pids-limit 64', '--memory 1g', '--memory-swap 1g']) assert.match(source, new RegExp(flag.replace(/ /g, '\\s+')))
+  assert.match(source, /node_cidfile="\$node_input_dir\/node-container[.]cid"/)
+  assert.match(source, /docker run[\s\S]*--cidfile "\$node_cidfile"/)
+  const cleanup = source.match(/cleanup\(\) \{\n([\s\S]*?)\n\}/)
+  assert.ok(cleanup, 'stager cleanup must remain statically reviewable')
+  assert.match(cleanup[1], /-f "\$node_cidfile"[\s\S]*! -L "\$node_cidfile"/)
+  assert.match(cleanup[1], /stat[\s\S]*0:0[?]600[$]/)
+  assert.match(cleanup[1], /read -r node_container_id < "\$node_cidfile"/)
+  assert.match(cleanup[1], /\[\[ "\$node_container_id" =~ \^\[a-f0-9\]\{64\}\$ \]\] && docker rm -f "\$node_container_id" >\/dev\/null 2>&1 \|\| true/)
+  assert.ok(cleanup[1].indexOf('docker rm -f "$node_container_id"') < cleanup[1].indexOf('rm -f -- "$temporary"'), 'container removal must happen before temp-file deletion')
   for (const flag of ['--manifest-hash', '--registry-hash', '--suite-hash', '--price-hash']) assert.match(source, new RegExp(flag))
   assert.match(source, /operator-attestation\/v1/)
   assert.match(source, /reportHash/)
@@ -217,16 +242,70 @@ test('root run-bundle stager protects attestation secret and binds canary or ful
   assert.match(workflow, /environment:\s*paperbanana-production/)
   assert.match(workflow, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/)
   assert.match(workflow, /actions\/checkout@[a-f0-9]{40}/)
-  for (const input of ['expected_deployed_sha', 'manifest_sha256', 'state_sha256', 'attestation_result_sha256', 'manifest_hash', 'registry_hash', 'suite_hash', 'price_hash', 'execution_phase']) {
+  for (const input of ['expected_deployed_sha', 'expected_worker_digest', 'manifest_sha256', 'state_sha256', 'attestation_result_sha256', 'manifest_hash', 'registry_hash', 'suite_hash', 'price_hash', 'execution_phase']) {
     assert.match(workflow, new RegExp(`${input}:[\\s\\S]*required:\\s*true`))
   }
+  assert.equal([...workflow.matchAll(/WORKER_DIGEST:\s*\$\{\{ inputs[.]expected_worker_digest \}\}/g)].length, 2)
+  assert.match(workflow, /for hash in[\s\S]*\"\$WORKER_DIGEST\"[\s\S]*\[\[ \"\$hash\" =~ \^\[a-f0-9\]\{64\}/)
+  assert.match(workflow, /--expected-sha %q --expected-worker-digest %q[\s\S]*\"\$EXPECTED_SHA\" \"\$WORKER_DIGEST\"/)
   assert.match(workflow, /stage-scientific-v2-run-bundle[.]sh/)
   assert.doesNotMatch(workflow, /REVIEW_SIGNING_SECRET|ATTESTATION_SECRET|PROVIDER.*KEY/)
 })
 
+test('isolated Node canonical preflight exactly matches benchmark canonical hashes', () => {
+  const source = readFileSync(runBundleStager, 'utf8')
+  const embedded = source.match(/node_hash_script='\n([\s\S]*?)\n'\n(?:timeout[^\n]*\s+)?docker run/)
+  assert.ok(embedded, 'Node canonical preflight must remain hermetically testable')
+  const root = mkdtempSync(join(tmpdir(), 'scientific-v2-node-canonical-'))
+  try {
+    const codeSha = 'a'.repeat(40)
+    const manifest = {
+      manifestHash: 'ignored', canonicalManifest: { manifestHash: 'ignored', z: 1e-8, a: 0.00009999 },
+      registrySnapshot: { snapshotHash: 'ignored', registry: { routePriority: ['bailian', 'ark'], provider_2: 3.05246208 } },
+      priceSnapshot: { snapshotHash: 'ignored', entries: [{ unitCnyAtoms: '9999', unitCny: 0.00009999 }] },
+    }
+    const state = { stateHash: 'ignored', status: 'canary_complete', providerSpentCny: { bailian: 0.00009999 } }
+    const inputPath = join(root, 'input.json')
+    const provenancePath = join(root, 'provenance.json')
+    writeFileSync(inputPath, JSON.stringify({
+      schemaVersion: 1, expectedSha: codeSha,
+      manifestBase64: Buffer.from(JSON.stringify(manifest)).toString('base64'),
+      stateBase64: Buffer.from(JSON.stringify(state)).toString('base64'),
+    }))
+    writeFileSync(provenancePath, JSON.stringify({ codeSha }))
+    const result = spawnSync(process.execPath, ['--input-type=module', '-e', embedded[1]], {
+      encoding: 'utf8', env: {
+        ...process.env,
+        PAPERBANANA_SCIENTIFIC_V2_CANONICAL_INPUT_PATH: inputPath,
+        PAPERBANANA_SCIENTIFIC_V2_CANONICAL_PROVENANCE_PATH: provenancePath,
+      },
+    })
+    assert.equal(result.status, 0, result.stderr)
+    writeFileSync(provenancePath, JSON.stringify({ codeSha: 'b'.repeat(40) }))
+    const wrongProvenance = spawnSync(process.execPath, ['--input-type=module', '-e', embedded[1]], {
+      encoding: 'utf8', env: {
+        ...process.env,
+        PAPERBANANA_SCIENTIFIC_V2_CANONICAL_INPUT_PATH: inputPath,
+        PAPERBANANA_SCIENTIFIC_V2_CANONICAL_PROVENANCE_PATH: provenancePath,
+      },
+    })
+    assert.notEqual(wrongProvenance.status, 0)
+    assert.match(wrongProvenance.stderr, /SCIENTIFIC_V2_CANONICAL_INPUT_INVALID/)
+    assert.deepEqual(JSON.parse(result.stdout), {
+      manifestHash: canonicalHash(Object.fromEntries(Object.entries(manifest).filter(([key]) => key !== 'manifestHash'))),
+      stateHash: canonicalHash(Object.fromEntries(Object.entries(state).filter(([key]) => key !== 'stateHash'))),
+      canonicalManifestHash: canonicalHash({ z: 1e-8, a: 0.00009999 }),
+      registrySnapshotHash: canonicalHash({ registry: manifest.registrySnapshot.registry }),
+      registryHash: canonicalHash(manifest.registrySnapshot.registry),
+      priceSnapshotHash: canonicalHash({ entries: manifest.priceSnapshot.entries }),
+    })
+  } finally { rmSync(root, { recursive: true, force: true }) }
+})
+
 test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tampering before secret assembly', () => {
   const source = readFileSync(runBundleStager, 'utf8')
-  const embedded = source.match(/python3 - "\$manifest_path"[\s\S]*?<<'PY'\n([\s\S]*?)\nPY/)
+  const embedded = [...source.matchAll(/python3 - "\$manifest_path"[\s\S]*?<<'PY'\n([\s\S]*?)\nPY/g)]
+    .find((candidate) => candidate[1].includes('ATTESTATION_KEYS'))
   assert.ok(embedded, 'protected stager validator must remain hermetically testable')
   const root = mkdtempSync(join(tmpdir(), 'scientific-v2-stager-'))
   try {
@@ -296,7 +375,7 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     }
     const paths = {
       manifest: join(root, 'manifest.json'), state: join(root, 'state.json'), attestation: join(root, 'attestation.json'),
-      env: join(root, 'core.env'), output: join(root, 'output.json'),
+      env: join(root, 'core.env'), nodeHashes: join(root, 'node-hashes.json'), output: join(root, 'output.json'),
     }
     writeFileSync(paths.manifest, JSON.stringify(manifest)); writeFileSync(paths.state, JSON.stringify(state))
     writeFileSync(paths.env, `PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=${secret}\n`)
@@ -304,25 +383,36 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     const execute = (attestation, { phase = 'canary-only', manifestValue = manifest, stateValue = state } = {}) => {
       writeFileSync(paths.manifest, JSON.stringify(manifestValue)); chmodSync(paths.manifest, 0o600)
       writeFileSync(paths.state, JSON.stringify(stateValue)); chmodSync(paths.state, 0o600)
+      const without = (value, key) => Object.fromEntries(Object.entries(value).filter(([name]) => name !== key))
+      writeFileSync(paths.nodeHashes, JSON.stringify({
+        manifestHash: canonicalHash(without(manifestValue, 'manifestHash')),
+        stateHash: canonicalHash(without(stateValue, 'stateHash')),
+        canonicalManifestHash: canonicalHash(without(manifestValue.canonicalManifest, 'manifestHash')),
+        registrySnapshotHash: canonicalHash(without(manifestValue.registrySnapshot, 'snapshotHash')),
+        registryHash: canonicalHash(manifestValue.registrySnapshot.registry),
+        priceSnapshotHash: canonicalHash(without(manifestValue.priceSnapshot, 'snapshotHash')),
+      })); chmodSync(paths.nodeHashes, 0o600)
       writeFileSync(paths.attestation, JSON.stringify(attestation)); chmodSync(paths.attestation, 0o600)
       writeFileSync(paths.output, '{}'); chmodSync(paths.output, 0o600)
       return spawnSync('python3', ['-c', embedded[1],
         paths.manifest, fileHash(paths.manifest), paths.state, fileHash(paths.state), paths.attestation, fileHash(paths.attestation),
-        paths.env, phase, codeSha, manifest.manifestHash, registryHash, suiteHash, priceSnapshot.snapshotHash, paths.output, String(process.getuid()),
+        paths.env, paths.nodeHashes, phase, codeSha, manifest.manifestHash, registryHash, suiteHash, priceSnapshot.snapshotHash, paths.output, String(process.getuid()),
       ], { encoding: 'utf8' })
     }
-    assert.equal(execute(sign(reportBase)).status, 0)
-    assert.equal(execute(sign({ ...reportBase, stateHash: fullState.stateHash }), { phase: 'full', stateValue: fullState }).status, 0)
+    const canarySuccess = execute(sign(reportBase))
+    assert.equal(canarySuccess.status, 0, canarySuccess.stderr)
+    const fullSuccess = execute(sign({ ...reportBase, stateHash: fullState.stateHash }), { phase: 'full', stateValue: fullState })
+    assert.equal(fullSuccess.status, 0, fullSuccess.stderr)
     const mismatchedAtoms = structuredClone(manifest)
     mismatchedAtoms.priceSnapshot.entries[1].unitCny = 9e-8
     const mismatchedAtomsResult = execute(sign(reportBase), { manifestValue: mismatchedAtoms })
     assert.notEqual(mismatchedAtomsResult.status, 0)
-    assert.match(mismatchedAtomsResult.stderr, /assembly failed \[schema\]/)
+    assert.match(mismatchedAtomsResult.stderr, /assembly failed \[manifest-hash\]/)
     const overBudgetAtoms = structuredClone(manifest)
     overBudgetAtoms.priceSnapshot.entries[1] = { unitCny: 361, unitCnyAtoms: '36100000000' }
     const overBudgetAtomsResult = execute(sign(reportBase), { manifestValue: overBudgetAtoms })
     assert.notEqual(overBudgetAtomsResult.status, 0)
-    assert.match(overBudgetAtomsResult.stderr, /assembly failed \[schema\]/)
+    assert.match(overBudgetAtomsResult.stderr, /assembly failed \[manifest-hash\]/)
     const directMaster = Buffer.from(secret)
     const extraField = execute({ ...sign(reportBase), extra: true })
     assert.notEqual(extraField.status, 0)
@@ -337,7 +427,7 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     ]) assert.notEqual(execute(tampered).status, 0)
     const wrongExpectedPrice = spawnSync('python3', ['-c', embedded[1],
       paths.manifest, fileHash(paths.manifest), paths.state, fileHash(paths.state), paths.attestation, fileHash(paths.attestation),
-      paths.env, 'canary-only', codeSha, manifest.manifestHash, registryHash, suiteHash, 'f'.repeat(64), paths.output, String(process.getuid()),
+      paths.env, paths.nodeHashes, 'canary-only', codeSha, manifest.manifestHash, registryHash, suiteHash, 'f'.repeat(64), paths.output, String(process.getuid()),
     ], { encoding: 'utf8' })
     assert.notEqual(wrongExpectedPrice.status, 0)
   } finally { rmSync(root, { recursive: true, force: true }) }
