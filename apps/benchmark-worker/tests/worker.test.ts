@@ -449,11 +449,14 @@ test('shared image runtime preserves the authoritative Core request and returned
   })
   const result = await runtime.generate({ provider: 'ark', model: 'seedream', apiKey: 'runtime-secret', prompt: 'prompt', aspectRatio: 'auto', imageSize: '2K-standard' })
   const edited = await runtime.edit({ provider: 'bailian', model: 'wan-edit', apiKey: 'edit-secret', prompt: 'edit prompt', aspectRatio: '16:9', sourceImage: 'data:image/png;base64,c291cmNl', imageSize: '2K' })
+  const editedDefault = await runtime.edit({ provider: 'openrouter', model: 'default-edit', apiKey: 'default-secret', prompt: 'edit default', aspectRatio: '16:9', sourceImage: 'data:image/png;base64,c291cmNl', imageSize: 'provider-default' })
   assert.equal(result, 'png-base64')
   assert.equal(edited, 'png-base64')
+  assert.equal(editedDefault, 'png-base64')
   assert.deepEqual(calls, [
     ['ark', 'seedream', 'runtime-secret', 'prompt', 'auto', '', '2K', true],
     ['bailian', 'wan-edit', 'edit-secret', 'edit prompt', '16:9', 'data:image/png;base64,c291cmNl', '2K', true],
+    ['openrouter', 'default-edit', 'default-secret', 'edit default', '16:9', 'data:image/png;base64,c291cmNl', '', false],
   ])
 })
 

@@ -7,10 +7,14 @@ import {
   aggregateScientificFixedSlots,
   buildScientificV2CanonicalManifest,
   canonicalHash,
+  deriveScientificV2PriceRequirements,
   rankScientificModels,
+  verifyScientificV2PriceSnapshot,
 } from '@paperbanana/benchmark-core'
-import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto'
+import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto'
 import type { Db } from 'mongodb'
+
+import { verifyScientificV2RegistryAuthority } from './scientific-v2-production-bridge.js'
 
 type AnyRecord = { _id?: string; [key: string]: any }
 
@@ -44,6 +48,13 @@ const stateOperationReportPayloadKeys = [
   'stateHash', 'state', 'providerCanaryAttestation', 'executionOrderAttestation', 'codexProvenance',
   'disclosure', 'createdAt',
 ] as const
+
+export function scientificV2FailureReason(slot: AnyRecord) {
+  if (slot.status === 'unsupported') {
+    return slot.operation === 'edit' ? 'direct_edit_route_unavailable' : 'capability_unsupported'
+  }
+  return 'confirmed_attempts_exhausted'
+}
 
 export type ScientificV2StateOperationReport = {
   schemaVersion: 2
@@ -164,6 +175,7 @@ function expectedPayloadHash(manifest: AnyRecord, slot: AnyRecord, scientificCas
   return canonicalHash({
     route: { provider: slot.provider, modelId: slot.modelId },
     operation: slot.operation,
+    imageSize: slot.imageSize,
     caseId: scientificCase.id,
     instruction: scientificCase.instruction,
     ...(scientificCase.kind === 'generation'
@@ -210,7 +222,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     const scientificCase = manifest.cases.find((candidate: AnyRecord) => candidate.id === slot.caseId)
     assertExactKeys(slot, [
       'sequence', 'slotId', 'canonicalModelId', 'caseId', 'provider', 'modelId', 'operation', 'supported',
-      'isProviderCanary', 'routeStatus', 'status', 'costCny', 'attempts',
+      'imageSize', 'isProviderCanary', 'routeStatus', 'status', 'costCny', 'attempts',
     ], 'SCIENTIFIC_V2_STATE_SLOT_INVALID')
     if (!scientificCase || Object.entries(frozen).some(([key, value]) => canonicalHash(slot[key]) !== canonicalHash(value))
       || !Array.isArray(slot.attempts) || slot.attempts.length > 4
@@ -555,29 +567,20 @@ function assertRegistryAndManifest(input: AnyRecord) {
     scientificError('SCIENTIFIC_V2_BATCH_MANIFEST_INVALID')
   }
   const price = manifest.priceSnapshot
-  assertExactKeys(price, ['currency', 'capturedAt', 'entries', 'snapshotHash'], 'SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
-  assertIsoInstant(price.capturedAt, 'SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
-  for (const entry of price.entries || []) assertExactKeys(entry, [
-    'provider', 'modelId', 'operation', 'currency', 'unitCny', 'source', 'sourceVerified', 'entryHash',
-  ], 'SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
-  if (!price || price.currency !== 'CNY' || !hashPattern.test(String(price.snapshotHash || ''))
-    || canonicalWithoutHash(price, 'snapshotHash') !== price.snapshotHash || manifest.priceHash !== price.snapshotHash
-    || !Array.isArray(price.entries) || price.entries.some((entry: AnyRecord) => entry.sourceVerified !== true
-      || !providers.includes(entry.provider) || !['generation', 'edit'].includes(entry.operation)
-      || entry.currency !== 'CNY' || !Number.isFinite(entry.unitCny) || entry.unitCny < 0
-      || typeof entry.source !== 'string' || !entry.source.startsWith('https://')
-      || canonicalWithoutHash(entry, 'entryHash') !== entry.entryHash)) {
-    scientificError('SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
-  }
+  const typedCanonicalManifest = canonicalManifest as unknown as Parameters<typeof verifyScientificV2PriceSnapshot>[1]
+  verifyScientificV2PriceSnapshot(price, typedCanonicalManifest)
+  if (manifest.priceHash !== price.snapshotHash || price.capturedAt !== manifest.createdAt) scientificError('SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
   const priceByRoute = new Map<string, number>(price.entries.map((entry: AnyRecord) => [`${entry.provider}\0${entry.modelId}\0${entry.operation}`, Number(entry.unitCny)]))
   const estimates = { bailian: 0, ark: 0, openrouter: 0 }
   const modelIds = new Set<string>()
   const slotIds = new Set<string>()
   const seenCanaries = new Set<string>()
+  const priceRequirements = new Map(deriveScientificV2PriceRequirements(typedCanonicalManifest)
+    .map((requirement) => [`${requirement.provider}\0${requirement.modelId}\0${requirement.operation}`, requirement]))
   for (const [index, slot] of manifest.executionOrder.entries()) {
     assertExactKeys(slot, [
       'sequence', 'slotId', 'canonicalModelId', 'caseId', 'provider', 'modelId', 'operation', 'supported',
-      'isProviderCanary', 'routeStatus',
+      'imageSize', 'isProviderCanary', 'routeStatus',
     ], 'SCIENTIFIC_V2_EXECUTION_SLOT_INVALID')
     const model = canonicalManifest.models.find((candidate: AnyRecord) => candidate.canonicalModelId === slot.canonicalModelId)
     const scientificCase = PB_SCIENTIFIC_FIGURE_V2.cases.find((candidate) => candidate.id === slot.caseId)
@@ -587,6 +590,9 @@ function assertRegistryAndManifest(input: AnyRecord) {
       || (scientificCase.kind === 'edit' && model.editRoute && (slot.provider !== model.editRoute.provider || slot.modelId !== model.editRoute.modelId))
       || (scientificCase.kind === 'edit' && !model.editRoute && (slot.provider !== null || slot.modelId !== null || slot.routeStatus !== 'no_direct_edit_route'))
       || (slot.provider === 'codex' && slot.canonicalModelId !== 'codex:gpt-image-2')
+      || (slot.supported && slot.imageSize !== (slot.provider === 'codex' ? '2K'
+        : priceRequirements.get(`${slot.provider}\0${slot.modelId}\0${slot.operation}`)?.imageSize))
+      || (!slot.supported && slot.imageSize !== null)
       || ((slot.provider === 'codex' || slot.provider === null) && slot.isProviderCanary)
       || (slot.provider && slot.provider !== 'codex' && slot.isProviderCanary !== !seenCanaries.has(slot.provider))) {
       scientificError('SCIENTIFIC_V2_EXECUTION_SLOT_INVALID')
@@ -597,7 +603,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
     if (slot.provider && slot.provider !== 'codex') {
       const unit = priceByRoute.get(`${slot.provider}\0${slot.modelId}\0${slot.operation}`)
       if (unit === undefined) scientificError('SCIENTIFIC_V2_PRICE_MISSING')
-      estimates[slot.provider as keyof typeof estimates] += unit * 4
+      estimates[slot.provider as keyof typeof estimates] += unit
     }
   }
   if (modelIds.size !== canonicalManifest.models.length || providers.some((provider) => estimates[provider] > 180)) {
@@ -637,6 +643,7 @@ export function createScientificV2MongoRepository(
     immutableCodeSha?: string
     verifyObject?: (objectKey: string, imageHash: string) => Promise<void>
     claimLeaseMs?: number
+    requireRegistryAuthority?: boolean
   } = {},
 ) {
   const batches = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.batches)
@@ -687,12 +694,23 @@ export function createScientificV2MongoRepository(
     async freezeBatch(input: AnyRecord) {
       const batchId = String(input?.batchId || '')
       if (!/^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$/.test(batchId)) scientificError('SCIENTIFIC_V2_BATCH_ID_INVALID')
+      if (options.requireRegistryAuthority) {
+        const authority = verifyScientificV2RegistryAuthority(input.registryAuthority, {
+          expectedCodeSha: String(options.immutableCodeSha || ''), secret: operatorSecret(), now,
+        })
+        if (authority.registryVersion !== input.registrySnapshot?.registryVersion
+          || authority.registryBytesHash !== createHash('sha256').update(JSON.stringify(input.registrySnapshot?.registry)).digest('hex')
+          || authority.registry.registryVersion !== input.canonicalManifest?.registryVersion) {
+          scientificError('SCIENTIFIC_V2_REGISTRY_AUTHORITY_BINDING_INVALID')
+        }
+      }
       const immutableInput = {
         batchId,
         registrySnapshot: input.registrySnapshot,
         canonicalManifest: input.canonicalManifest,
         manifest: input.manifest,
         initialState: input.initialState,
+        ...(options.requireRegistryAuthority ? { registryAuthority: input.registryAuthority } : {}),
       }
       const frozenInputHash = canonicalHash(immutableInput)
       const existingById = await batches.findOne({ batchId })
@@ -1236,7 +1254,20 @@ export function createScientificV2MongoRepository(
         if (evidenceBySlot.has(key)) scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
         const slot = batch.state.slots.find((candidate: AnyRecord) => candidate.canonicalModelId === item.canonicalModelId && candidate.caseId === item.caseId)
         const scientificCase = batch.manifest.cases.find((candidate: AnyRecord) => candidate.id === item.caseId)
+        assertExactKeys(item, [
+          'caseId', 'canonicalModelId', 'imageHash', 'variants', 'requestedResolution', 'actualOutputPixels',
+          ...(scientificCase?.kind === 'edit' ? ['sourceHash', 'beforeVariants'] : []),
+        ], 'SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
+        const attempt = slot?.attempts.at(-1)
+        const actualOutputPixels = item.actualOutputPixels
         if (!slot || !scientificCase || slot.status !== 'succeeded' || item.imageHash !== slot.attempts.at(-1).rawImageHash
+          || item.requestedResolution !== slot.imageSize
+          || !actualOutputPixels || typeof actualOutputPixels !== 'object' || Array.isArray(actualOutputPixels)
+          || canonicalHash(actualOutputPixels) !== canonicalHash({
+            width: attempt.width, height: attempt.height,
+            megapixels: Number(((attempt.width * attempt.height) / 1_000_000).toFixed(4)),
+            fileSizeBytes: attempt.byteSize,
+          })
           || !Array.isArray(item.variants) || !item.variants.length || item.variants.length > 3) scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
         const variants = []
         const variantKinds = new Set<string>()
@@ -1298,7 +1329,8 @@ export function createScientificV2MongoRepository(
           }
           if (slot.status !== 'succeeded') return {
             caseId: slot.caseId, kind: scientificCase.kind, status: slot.status, attemptSummary,
-            failureReason: slot.status === 'unsupported' ? 'direct_edit_route_unavailable' : 'confirmed_attempts_exhausted',
+            requestedResolution: slot.imageSize,
+            failureReason: scientificV2FailureReason(slot),
           }
           if (!review || !stored) scientificError('SCIENTIFIC_V2_REVIEW_COVERAGE_INVALID')
           const publicStored = {
@@ -1307,6 +1339,8 @@ export function createScientificV2MongoRepository(
           }
           return {
             caseId: slot.caseId, kind: scientificCase.kind, status: 'succeeded', imageHash: stored.imageHash,
+            requestedResolution: stored.requestedResolution,
+            actualOutputPixels: structuredClone(stored.actualOutputPixels),
             ...(scientificCase.kind === 'edit' ? { sourceHash: scientificCase.sourceHash, editedHash: stored.imageHash, region: scientificCase.region } : {}),
             scores: structuredClone(review.result.scores),
             reviewNotes: review.result.redLines.length

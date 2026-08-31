@@ -15,9 +15,17 @@ on:
           - import_codex
           - render_public_evidence
           - review_pack
+          - review_validate
+          - review_arbitrate
           - review_finalize
       expected_deployed_sha:
         description: Exact deployed Core and Benchmark Worker 40-character SHA.
+        required: true
+      expected_core_digest:
+        description: Exact running Core image digest, 64 lowercase hex without sha256 prefix.
+        required: true
+      expected_worker_digest:
+        description: Exact running Benchmark Worker image digest, 64 lowercase hex without sha256 prefix.
         required: true
       bundle_sha256:
         description: SHA-256 of the pre-staged protected V2 bundle; also its exact host filename.
@@ -53,12 +61,14 @@ jobs:
     environment: paperbanana-production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Validate exact immutable V2 envelope
         env:
           MODE: ${{ inputs.mode }}
           EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          EXPECTED_CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          EXPECTED_WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           BUNDLE_SHA256: ${{ inputs.bundle_sha256 }}
           REGISTRY_HASH: ${{ inputs.registry_hash }}
           SUITE_HASH: ${{ inputs.suite_hash }}
@@ -70,6 +80,8 @@ jobs:
           set -Eeuo pipefail
           [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
           [[ "$GITHUB_SHA" == "$EXPECTED_SHA" ]]
+          [[ "$EXPECTED_CORE_DIGEST" =~ ^[a-f0-9]{64}$ ]]
+          [[ "$EXPECTED_WORKER_DIGEST" =~ ^[a-f0-9]{64}$ ]]
           for hash in "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
@@ -81,6 +93,8 @@ jobs:
             import_codex) [[ "$CONFIRM" == import-codex-scientific-v2-disabled-worker ]] ;;
             render_public_evidence) [[ "$CONFIRM" == render-public-evidence-scientific-v2-disabled-worker ]] ;;
             review_pack) [[ "$CONFIRM" == review-pack-scientific-v2-disabled-worker ]] ;;
+            review_validate) [[ "$CONFIRM" == review-validate-scientific-v2-disabled-worker ]] ;;
+            review_arbitrate) [[ "$CONFIRM" == review-arbitrate-scientific-v2-disabled-worker ]] ;;
             review_finalize) [[ "$CONFIRM" == review-finalize-scientific-v2-disabled-worker ]] ;;
             *) exit 1 ;;
           esac
@@ -103,6 +117,8 @@ jobs:
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           MODE: ${{ inputs.mode }}
           EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          EXPECTED_CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          EXPECTED_WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           BUNDLE_SHA256: ${{ inputs.bundle_sha256 }}
           REGISTRY_HASH: ${{ inputs.registry_hash }}
           SUITE_HASH: ${{ inputs.suite_hash }}
@@ -120,8 +136,8 @@ jobs:
             deploy/hk-single-host/compose.yaml \
             deploy/hk-single-host/scripts/run-scientific-v2-operator.sh
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_preflight"
-          printf -v remote_command 'cd %q && sudo %q --mode %q --expected-sha %q --bundle-sha256 %q --registry-hash %q --suite-hash %q --price-hash %q --manifest-hash %q --model-count %q --confirm %q' \
+          printf -v remote_command 'cd %q && sudo %q --mode %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --bundle-sha256 %q --registry-hash %q --suite-hash %q --price-hash %q --manifest-hash %q --model-count %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-operator.sh \
-            "$MODE" "$EXPECTED_SHA" "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$CONFIRM"
+            "$MODE" "$EXPECTED_SHA" "$EXPECTED_CORE_DIGEST" "$EXPECTED_WORKER_DIGEST" "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$CONFIRM"
           if (( ${#apply_args[@]} )); then remote_command+=' --apply'; fi
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

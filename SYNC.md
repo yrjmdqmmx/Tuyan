@@ -24,6 +24,37 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] 科研评测 v2 server-attested 生产桥、hash artifact 导入与受保护审核阶段 — by Codex
+变更：科研 v2 新增 root-only prepare/admin host bridge。prepare 通过 localhost gateway/admin transport 读取当前 `modelRegistry`，只规范化 `registryVersion / routeContractVersion / providers.{bailian,ark,openrouter}` scientific subset，并由 Core 以现有 Bench review-signing master 的 registry 专用派生 key 绑定部署 SHA、当前 capturedAt 和 subset JSON bytes hash；缺任一三家或任一三家在 array/object `unavailableProviders` 中均拒绝。签名价格快照使用独立 domain key 验证，Actions 不接触 master secret。prepare 产出 root-owned `0600` 内容寻址 manifest/state/inspect/freeze/attest；inspect 可直接交 phase wrapper，freeze/attest 可直接交 admin wrapper。
+
+契约（影响 Benchmark Worker / Core API / 运维）：
+- 生产 Core 的 V2 `freezeBatch` 必须验证新鲜 registry authority、immutable code SHA 和 exact normalized registry bytes；caller 自证或重放旧 registry 不再可用。旧 V2 测试/非生产 repository 默认保持兼容，只有生产构造显式强制。
+- 新增受保护内部 admin command `prepareScientificV2Registry`，继续复用既有 `adminBenchmarkControl` action 和 localhost admin transport，不新增公网 action。V2 admin wrapper 固定支持 `freeze / attest / import-worker / import-codex / export-review / import-review / import-arbitration / publish`，共享生产锁、root `0600` 输入、operation-specific stdout allowlist；发布只能走 Core API 原子事务。
+- Codex 九图 JSON 不再搬运 base64；`import_codex` 只接受受保护 per-manifest 目录下的 `<sha256>.<png|jpeg|webp>` 引用。目录 root:service `0550`，文件 root:service `0440` 或 service `0600`；Worker 验 root/path inode 与时间戳、`O_NOFOLLOW`、单 hardlink、owner/mode、每图 25 MiB、总计 192 MiB、byte size/hash，并保留首题 canary/provenance。
+- phase operator 新增 `review_validate / review_arbitrate`，内部组装 public/private assignment、验证 reviewer result HMAC 和 xhigh arbitration HMAC；private mapping、reviewer identity 与完整 validated/arbitrated/finalized body 只写受保护 `0600` 文件，stdout 仅 hash/count。admin import-review/import-arbitration 同样只持久化 root `0600` 完整结果，且逐 command 校验 Core 成功响应的必需字段，空 `data:{}` 不可成功。scientific workflow 新增必填 `expected_core_digest / expected_worker_digest` 64hex；prepare/admin/phase wrapper 同时核对 `.env`、running `.Config.Image`、RepoDigest、镜像内 build provenance，且实测 resident Worker disabled、concurrency 1。
+
+各端待办：
+- [x] Benchmark Worker / paperbanana-api（authority、prepare、artifactRef、review validate/arbitrate、atomic publish边界与TDD）
+- [x] 香港部署代码（protected workflows、root wrappers、bootstrap/compose、共享锁、digest/secret/stdout/文件权限门）
+- [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与客户端字段不变，无需改造）
+- [ ] 生产执行（本条未提交、未部署、未调用 Provider、未读取真实 secret；须等权威价格 snapshot 全部 resolved 后，以合并后的 immutable SHA/digests 分阶段人工执行和浏览器验收）
+
+### [2026-08-31] 科研评测 v2 权威价格证据、逐 route 输出档位与签名快照 — by Codex
+变更：科研 v2 不再接受 caller 以 `sourceVerified:true` 自证的 CNY 单价。价格快照 v2 从 server-attested canonical manifest 唯一推导实际 `(provider, modelId, operation)`，为每条 physical route 固定输出请求档位（声明 2K 则 2K、仅 1K 则 1K、无 resolution 参数则 provider-default），生成和 direct-edit 必须分别有证据；编辑固定绑定 2048×1152 source hash。每条价格绑定原币、计价项/unit/variant、地区、官方 HTTPS URL、响应 bytes SHA-256/capturedAt；OpenRouter 额外绑定 models/endpoint 原始 pricing 与 ECB EUR 交叉 USD/CNY 汇率证据。CNY 以 1e-8 定点向上保守舍入，requirement/entry/preflight/snapshot 全部内容寻址。OpenRouter 多 variant 取请求档位下适用最高价，edit 累计适用 input image/reference/request；固定 1K/2K 像素不可由 caller 改小，provider-default 的 MP 或缺 token 上界均 unresolved 并整批停止。
+
+契约（影响 Benchmark Worker / Core API / 运维）：
+- `ScientificV2PriceSnapshot` 升级为 schema v2：顶层含 `imageSize=per-route / requirements / requirementsHash / entries / preflight / snapshotHash`；entry 含 `imageSize / billingRegion / outputWidth/Height / charges / source / openRouterEvidence / fxEvidence / originalCurrency / scenario / unitCnyAtoms / unitCny / rounding / entryHash`。
+- execution slot 新增 `imageSize: 1K|2K|provider-default|null`，并进入 provider payload hash；Worker 与 Core API 必须 exact parity。旧 v1 benchmark 价格/授权契约保持不变。
+- provider 预算仍为三家各 ¥180：prepare 只在全部固定 slots 的 baseline 超限时阻塞；同时披露每槽最多 4 次的 worst-case，实际 retry 每次仍在运行前计入同一硬上限。价格/汇率/像素/token 上界无法精确解析或 capture 漂移时 fail-close。
+- price envelope 固定为 `scientific-v2-authoritative-price-v2`，绑定 code SHA、canonical manifest hash、snapshot hash/capturedAt；复用现有 review signing master，但先以 `paperbanana/scientific-v2/price-attestation/v2` 派生独立 domain key，禁止与 review/report/registry 签名互换。prepare 的 `createdAt` 必须直接使用该签名 snapshot 的 `capturedAt` 并再次精确校验，禁止依赖两个时钟的毫秒偶合。受保护 prepare 输入可含签名，公开/日志输出只能含 secret-free content-addressed snapshot/hash。
+- OpenRouter `rawPricing` 的未知 billable/unit/variant 一律 fail-close，不再 filter 后忽略；官方 refresh 在读取前校验 `Content-Length`，并以 4 MiB streaming hard cap 读取和主动 abort。当前模块仅导出签名 verifier，不导出 caller observation 的生产 signer；refresh report 递归入口冻结且固定 `resolved:false`。未来 root signer 必须重读持久化 raw bytes、确定性解析全部官方来源并验证 `capturesHash` 后才能开放。
+
+各端待办：
+- [x] benchmark-core / Benchmark Worker（权威 schema、保守换算、baseline/worst-case preflight、逐 route lane、签名/过期验证、TDD）
+- [x] paperbanana-api（freeze/import 对同一 snapshot、slot lane、payload hash exact parity）
+- [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与客户端字段不变，无需改造）
+- [ ] 生产价格 refresh / signer（必须以执行前 server-attested manifest 重抓并持久化 Alibaba Model Studio、Volcengine Ark、OpenRouter models/endpoints 与 ECB 原始 bytes，再由尚未实现的 deterministic extractor/root signer 重读、解析并绑定 capturesHash；当前 Ark exact endpoint/model 价、Krea 空 pricing、MAI token/部分 provider-default 上界等仍 unresolved，不得生成或签名完整 snapshot、不得调用 Provider）
+
 ### [2026-08-31] 科研评测 v2 七阶段受保护生产 operator 与持久 artifact spool — by Codex
 变更：科研 v2 一次性 operator 从 `inspect/run` 扩展为 `inspect / run / reconcile_artifact / import_codex / render_public_evidence / review_pack / review_finalize` 七个固定阶段。每阶段均绑定精确部署 SHA、受保护 bundle SHA-256、registry/suite/price/manifest hash、模型数、常驻 Worker disabled、并发 1、香港生产共享锁和逐阶段确认短语；除 `run` 外均输出 `providerCalls=0` 证明。除 `inspect` 外六阶段缺少 `--apply` 会在任何主机/容器/DB/OSS/private handoff 前拒绝。`inspect` 与 review 两阶段使用不可变 Worker 镜像、只读根文件系统、`network none` 且不加载 Bench env；有网络但零 Provider 的导入/对账/渲染阶段会显式清空三家 Provider key。`render_public_evidence` 只产出 API publish input，禁止 operator 直写 release，最终发布仍由 Core API 事务原子完成。
 

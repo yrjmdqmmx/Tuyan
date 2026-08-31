@@ -23,9 +23,11 @@ function scientificRelease() {
     caseId: scientificCase.id,
     kind: scientificCase.kind,
     status: scientificCase === editCase ? 'succeeded' : 'failed',
+    requestedResolution: '2K',
     attemptSummary: { count: scientificCase === editCase ? 1 : 4, responseClasses: scientificCase === editCase ? ['succeeded'] : Array(4).fill('confirmed_provider_failure') },
     ...(scientificCase === editCase ? {
       imageHash: 'a'.repeat(64), sourceHash: editCase.sourceHash, editedHash: 'a'.repeat(64), region: editCase.region,
+      actualOutputPixels: { width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 4096 },
       scores: Object.fromEntries(editCase.applicableAxes.map((axis) => [axis, 8])), reviewNotes: ['加分：局部编辑准确'],
       variants: [{ kind: 'detail', imageHash: 'b'.repeat(64), width: 1600, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' }],
       beforeVariants: [{ kind: 'detail', imageHash: 'c'.repeat(64), width: 1600, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' }],
@@ -111,6 +113,8 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(JSON.stringify(profile).includes('reviewerIdentity'), false)
   assert.equal(JSON.stringify(profile).includes('attestationHash'), false)
   assert.deepEqual(publicEdit.reviewNotes, ['加分：局部编辑准确'])
+  assert.equal(publicEdit.requestedResolution, '2K')
+  assert.deepEqual(publicEdit.actualOutputPixels, { width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 4096 })
 
   const caseResponse = await service.handle({ action: 'benchmarkCaseEvidence', caseId: release.editCase.id }, false)
   assert.equal(caseResponse.code, 0)

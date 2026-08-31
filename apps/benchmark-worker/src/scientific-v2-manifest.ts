@@ -4,6 +4,10 @@ import {
   buildScientificV2CanonicalManifest,
   canonicalHash,
   compareScientificIdentifiers,
+  deriveScientificV2PriceRequirements,
+  verifyScientificV2PriceSnapshot,
+  type ScientificV2AttestedPriceEntry,
+  type ScientificV2PriceSnapshotV2,
 } from '@paperbanana/benchmark-core'
 
 import {
@@ -20,25 +24,11 @@ import {
   type ScientificV2Provider,
 } from './scientific-v2-common.js'
 
-export interface ScientificV2PriceEntry {
-  provider: Exclude<ScientificV2Provider, 'codex'>
-  modelId: string
-  operation: ScientificV2Operation
-  currency: 'CNY'
-  unitCny: number
-  source: string
-  sourceVerified: boolean
-  entryHash: string
-}
+export type ScientificV2PriceEntry = ScientificV2AttestedPriceEntry
 
 export const SCIENTIFIC_V2_PRODUCTION_LOCK_NAME = '/run/lock/paperbanana-hk-production.lock'
 
-export interface ScientificV2PriceSnapshot {
-  currency: 'CNY'
-  capturedAt: string
-  entries: ScientificV2PriceEntry[]
-  snapshotHash: string
-}
+export type ScientificV2PriceSnapshot = ScientificV2PriceSnapshotV2
 
 export interface ScientificV2ExecutionSlot {
   sequence: number
@@ -48,6 +38,7 @@ export interface ScientificV2ExecutionSlot {
   provider: ScientificV2Provider | null
   modelId: string | null
   operation: ScientificV2Operation
+  imageSize: '1K' | '2K' | 'provider-default' | null
   supported: boolean
   isProviderCanary: boolean
   routeStatus: 'frozen_route' | 'no_direct_edit_route'
@@ -124,10 +115,6 @@ export interface ScientificV2BatchManifest {
   priceSnapshot: ScientificV2PriceSnapshot
   createdAt: string
   manifestHash: string
-}
-
-function routeKey(route: { provider: string; modelId: string; operation: string }) {
-  return `${route.provider}\u0000${route.modelId}\u0000${route.operation}`
 }
 
 function isScientificV2Provider(value: string): value is ScientificV2Provider {
@@ -221,39 +208,6 @@ function verifyRegistryAuthority(snapshot: ScientificV2RegistrySnapshot, canonic
   }
 }
 
-function verifyPriceSnapshot(snapshot: ScientificV2PriceSnapshot, expected: Map<string, number>) {
-  assertExactScientificV2Keys(snapshot, ['currency', 'capturedAt', 'entries', 'snapshotHash'], 'SCIENTIFIC_V2_PRICE_ENTRY_INVALID')
-  assertBoundedScientificV2PlainData(snapshot, { maxDepth: 6, maxNodes: 20_000, maxArrayLength: 2_048, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_PRICE_ENTRY_INVALID')
-  assertScientificV2Iso(snapshot.capturedAt, 'SCIENTIFIC_V2_PRICE_CAPTURE_INVALID')
-  if (snapshot.currency !== 'CNY' || !Array.isArray(snapshot.entries)
-    || snapshot.snapshotHash !== canonicalHash({ currency: snapshot.currency, capturedAt: snapshot.capturedAt, entries: snapshot.entries })) {
-    scientificV2Error('SCIENTIFIC_V2_PRICE_HASH_MISMATCH')
-  }
-  const seen = new Set<string>()
-  const estimated = { bailian: 0n, ark: 0n, openrouter: 0n }
-  for (const entry of snapshot.entries) {
-    assertExactScientificV2Keys(entry, ['provider', 'modelId', 'operation', 'currency', 'unitCny', 'source', 'sourceVerified', 'entryHash'], 'SCIENTIFIC_V2_PRICE_ENTRY_INVALID')
-    const base = {
-      provider: entry.provider, modelId: entry.modelId, operation: entry.operation, currency: entry.currency,
-      unitCny: entry.unitCny, source: entry.source, sourceVerified: entry.sourceVerified,
-    }
-    if (!SCIENTIFIC_V2_PROVIDERS.includes(entry.provider) || !['generation', 'edit'].includes(entry.operation)
-      || entry.currency !== 'CNY'
-      || typeof entry.source !== 'string' || !entry.source.startsWith('https://')) scientificV2Error('SCIENTIFIC_V2_PRICE_ENTRY_INVALID')
-    scientificV2CnyToUnits(entry.unitCny)
-    if (entry.entryHash !== canonicalHash(base)) scientificV2Error('SCIENTIFIC_V2_PRICE_HASH_MISMATCH')
-    if (!entry.sourceVerified) scientificV2Error('SCIENTIFIC_V2_PRICE_SOURCE_UNVERIFIED')
-    const key = routeKey(entry)
-    if (seen.has(key) || !expected.has(key)) scientificV2Error('SCIENTIFIC_V2_PRICE_ENTRY_INVALID')
-    seen.add(key)
-    estimated[entry.provider] += scientificV2CnyToUnits(entry.unitCny) * BigInt(expected.get(key)!) * 4n
-  }
-  if ([...expected.keys()].some((key) => !seen.has(key))) scientificV2Error('SCIENTIFIC_V2_PRICE_MISSING')
-  for (const provider of SCIENTIFIC_V2_PROVIDERS) {
-    if (estimated[provider] > scientificV2CnyToUnits(180)) scientificV2Error('SCIENTIFIC_V2_PROVIDER_PREFLIGHT_BUDGET_EXCEEDED')
-  }
-}
-
 function stateHash(state: Omit<ScientificV2BatchState, 'stateHash'>) {
   return canonicalHash(state)
 }
@@ -283,7 +237,8 @@ export function buildScientificV2Batch(input: {
   const models = structuredClone(input.canonicalManifest.models)
   const cases: ScientificV2BatchManifest['cases'] = structuredClone([...PB_SCIENTIFIC_FIGURE_V2.cases])
   const providerRank: Record<ScientificV2Provider, number> = { bailian: 0, ark: 1, openrouter: 2, codex: 3 }
-  const expectedPrices = new Map<string, number>()
+  const priceRequirements = new Map(deriveScientificV2PriceRequirements(input.canonicalManifest)
+    .map((requirement) => [`${requirement.provider}\0${requirement.modelId}\0${requirement.operation}`, requirement]))
   const executionOrder: ScientificV2ExecutionSlot[] = []
   const providerCanaries = new Set<string>()
   for (const model of models) {
@@ -297,6 +252,11 @@ export function buildScientificV2Batch(input: {
       const supported = operation === 'generation' || Boolean(route)
       const provider = route?.provider ?? null
       const modelId = route?.modelId ?? null
+      const priceRequirement = provider && provider !== 'codex' && modelId
+        ? priceRequirements.get(`${provider}\0${modelId}\0${operation}`)
+        : null
+      const imageSize = !supported ? null : provider === 'codex' ? '2K' : priceRequirement?.imageSize
+      if (supported && !imageSize) scientificV2Error('SCIENTIFIC_V2_PRICE_REQUIREMENT_INVALID')
       executionOrder.push({
         sequence: 0,
         slotId: `${model.canonicalModelId}:${scientificCase.id}`,
@@ -305,6 +265,7 @@ export function buildScientificV2Batch(input: {
         provider,
         modelId,
         operation,
+        imageSize: imageSize || null,
         supported,
         isProviderCanary: false,
         routeStatus: supported ? 'frozen_route' : 'no_direct_edit_route',
@@ -325,12 +286,9 @@ export function buildScientificV2Batch(input: {
       slot.isProviderCanary = true
       providerCanaries.add(slot.provider)
     }
-    if (slot.supported && slot.provider && slot.provider !== 'codex') {
-      const key = routeKey({ provider: slot.provider, modelId: slot.modelId!, operation: slot.operation })
-      expectedPrices.set(key, (expectedPrices.get(key) || 0) + 1)
-    }
   })
-  verifyPriceSnapshot(input.priceSnapshot, expectedPrices)
+  verifyScientificV2PriceSnapshot(input.priceSnapshot, input.canonicalManifest)
+  if (input.priceSnapshot.capturedAt !== input.createdAt) scientificV2Error('SCIENTIFIC_V2_PRICE_CAPTURE_DRIFT')
   const base = {
     schemaVersion: 2 as const,
     ...SCIENTIFIC_BENCHMARK_IDENTITY,
@@ -402,7 +360,6 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
   for (const [key, value] of Object.entries(SCIENTIFIC_BENCHMARK_IDENTITY)) {
     if ((manifest as unknown as Record<string, unknown>)[key] !== value) scientificV2Error('SCIENTIFIC_V2_IDENTITY_MISMATCH')
   }
-  const expectedPrices = new Map<string, number>()
   const seenCanaries = new Set<string>()
   for (const slot of manifest.executionOrder) {
     if ((slot.provider === 'codex' || slot.provider === null) && slot.isProviderCanary) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
@@ -411,13 +368,10 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
       if (slot.isProviderCanary !== shouldBeCanary) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
       if (slot.isProviderCanary) seenCanaries.add(slot.provider)
     }
-    if (slot.supported && slot.provider !== 'codex' && slot.provider !== null) {
-      if (!slot.modelId) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
-      const key = routeKey({ provider: slot.provider, modelId: slot.modelId, operation: slot.operation })
-      expectedPrices.set(key, (expectedPrices.get(key) || 0) + 1)
-    }
+    if (slot.supported && slot.provider !== 'codex' && slot.provider !== null && !slot.modelId) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   }
-  verifyPriceSnapshot(manifest.priceSnapshot, expectedPrices)
+  verifyScientificV2PriceSnapshot(manifest.priceSnapshot, manifest.canonicalManifest)
+  if (manifest.priceSnapshot.capturedAt !== manifest.createdAt) scientificV2Error('SCIENTIFIC_V2_PRICE_CAPTURE_DRIFT')
   const rebuilt = buildScientificV2Batch({
     canonicalManifest: manifest.canonicalManifest,
     registrySnapshot: manifest.registrySnapshot,
@@ -448,6 +402,7 @@ function expectedAttemptPayloadHash(
   return canonicalHash({
     route: { provider: slot.provider, modelId: slot.modelId },
     operation: slot.operation,
+    imageSize: slot.imageSize,
     caseId: scientificCase.id,
     instruction: scientificCase.instruction,
     ...(scientificCase.kind === 'generation'
@@ -487,7 +442,7 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
     const scientificCase = manifest.cases.find((candidate) => candidate.id === slot.caseId)
     assertExactScientificV2Keys(slot, [
       'sequence', 'slotId', 'canonicalModelId', 'caseId', 'provider', 'modelId', 'operation', 'supported',
-      'isProviderCanary', 'routeStatus', 'status', 'costCny', 'attempts',
+      'imageSize', 'isProviderCanary', 'routeStatus', 'status', 'costCny', 'attempts',
     ], 'SCIENTIFIC_V2_STATE_SLOT_INVALID')
     if (slot.sequence !== frozen.sequence || slot.slotId !== frozen.slotId || slot.canonicalModelId !== frozen.canonicalModelId
       || slot.caseId !== frozen.caseId || slot.provider !== frozen.provider || slot.modelId !== frozen.modelId

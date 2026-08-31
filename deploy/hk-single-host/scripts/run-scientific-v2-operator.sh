@@ -4,6 +4,8 @@ umask 077
 
 mode='inspect'
 expected_sha=''
+expected_core_digest=''
+expected_worker_digest=''
 bundle_sha256=''
 registry_hash=''
 suite_hash=''
@@ -12,11 +14,11 @@ manifest_hash=''
 model_count=''
 confirm=''
 apply=false
-zero_provider_modes='inspect reconcile_artifact import_codex render_public_evidence review_pack review_finalize'
+zero_provider_modes='inspect reconcile_artifact import_codex render_public_evidence review_pack review_validate review_arbitrate review_finalize'
 spool_rw_modes='run reconcile_artifact'
 
 usage() {
-  echo 'usage: run-scientific-v2-operator.sh [--mode inspect|run|reconcile_artifact|import_codex|render_public_evidence|review_pack|review_finalize] --expected-sha 40_HEX --bundle-sha256 64_HEX --registry-hash 64_HEX --suite-hash 64_HEX --price-hash 64_HEX --manifest-hash 64_HEX --model-count N --confirm PHRASE [--apply]' >&2
+  echo 'usage: run-scientific-v2-operator.sh [--mode inspect|run|reconcile_artifact|import_codex|render_public_evidence|review_pack|review_validate|review_arbitrate|review_finalize] --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --bundle-sha256 64_HEX --registry-hash 64_HEX --suite-hash 64_HEX --price-hash 64_HEX --manifest-hash 64_HEX --model-count N --confirm PHRASE [--apply]' >&2
   exit 64
 }
 
@@ -24,6 +26,8 @@ while (( $# > 0 )); do
   case "$1" in
     --mode) mode="${2:-}"; shift 2 ;;
     --expected-sha) expected_sha="${2:-}"; shift 2 ;;
+    --expected-core-digest) expected_core_digest="${2:-}"; shift 2 ;;
+    --expected-worker-digest) expected_worker_digest="${2:-}"; shift 2 ;;
     --bundle-sha256) bundle_sha256="${2:-}"; shift 2 ;;
     --registry-hash) registry_hash="${2:-}"; shift 2 ;;
     --suite-hash) suite_hash="${2:-}"; shift 2 ;;
@@ -37,7 +41,9 @@ while (( $# > 0 )); do
 done
 
 hash_pattern='^[a-f0-9]{64}$'
-[[ "$mode" =~ ^(inspect|run|reconcile_artifact|import_codex|render_public_evidence|review_pack|review_finalize)$ && "$expected_sha" =~ ^[a-f0-9]{40}$
+[[ "$mode" =~ ^(inspect|run|reconcile_artifact|import_codex|render_public_evidence|review_pack|review_validate|review_arbitrate|review_finalize)$ && "$expected_sha" =~ ^[a-f0-9]{40}$
+  && ( -z "$expected_core_digest" || "$expected_core_digest" =~ $hash_pattern )
+  && ( -z "$expected_worker_digest" || "$expected_worker_digest" =~ $hash_pattern )
   && "$bundle_sha256" =~ $hash_pattern && "$registry_hash" =~ $hash_pattern
   && "$suite_hash" =~ $hash_pattern && "$price_hash" =~ $hash_pattern
   && "$manifest_hash" =~ $hash_pattern && "$model_count" =~ ^[1-9][0-9]*$
@@ -54,6 +60,8 @@ case "$mode" in
   import_codex) [[ "$confirm" == import-codex-scientific-v2-disabled-worker ]] || usage ;;
   render_public_evidence) [[ "$confirm" == render-public-evidence-scientific-v2-disabled-worker ]] || usage ;;
   review_pack) [[ "$confirm" == review-pack-scientific-v2-disabled-worker ]] || usage ;;
+  review_validate) [[ "$confirm" == review-validate-scientific-v2-disabled-worker ]] || usage ;;
+  review_arbitrate) [[ "$confirm" == review-arbitrate-scientific-v2-disabled-worker ]] || usage ;;
   review_finalize) [[ "$confirm" == review-finalize-scientific-v2-disabled-worker ]] || usage ;;
 esac
 if [[ "$mode" != inspect && "$apply" != true ]]; then
@@ -72,6 +80,7 @@ if [[ -n "${PAPERBANANA_HK_TEST_ROOT:-}" ]]; then
   }
 else
   [[ "$(id -u)" == 0 ]] || { echo 'scientific v2 operator must run as root' >&2; exit 1; }
+  [[ "$expected_core_digest" =~ $hash_pattern && "$expected_worker_digest" =~ $hash_pattern ]] || usage
 fi
 
 host_path() { printf '%s%s' "$test_root" "$1"; }
@@ -92,6 +101,11 @@ output_container_dir='/run/paperbanana-scientific-v2-output'
 review_private_dir="$(host_path /opt/paperbanana/operator-private/scientific-v2)"
 review_private_path="$review_private_dir/$bundle_sha256.review-private.json"
 render_private_path="$review_private_dir/$bundle_sha256.publish-input.json"
+review_validate_private_path="$review_private_dir/$bundle_sha256.review-validated.json"
+review_arbitrate_private_path="$review_private_dir/$bundle_sha256.review-arbitrated.json"
+review_finalize_private_path="$review_private_dir/$bundle_sha256.review-finalized.json"
+codex_artifact_dir="$(host_path /opt/paperbanana/operator-private/scientific-v2/codex-artifacts/$manifest_hash)"
+codex_artifact_container='/run/paperbanana-scientific-v2-codex-artifacts'
 
 mkdir -p -- "$(dirname -- "$lock_path")"
 exec 9>"$lock_path"
@@ -125,17 +139,19 @@ cleanup() {
 trap cleanup EXIT
 
 stat_triplet() {
-  stat -c '%u:%a' -- "$1" 2>/dev/null || stat -f '%u:%Lp' -- "$1"
+  stat -c '%u:%g:%a' -- "$1" 2>/dev/null || stat -f '%u:%g:%Lp' -- "$1"
 }
 persist_private_result() {
   local source="$1"
   local destination="$2"
-  python3 - "$source" "$destination" "$expected_owner" "$expected_group" <<'PY'
+  local source_owner="${3:-$expected_owner}"
+  python3 - "$source" "$destination" "$source_owner" "$expected_owner" "$expected_group" <<'PY'
 import os
 import stat
 import sys
 
-source, destination, owner_text, group_text = sys.argv[1:]
+source, destination, source_owner_text, owner_text, group_text = sys.argv[1:]
+source_owner = int(source_owner_text)
 owner = int(owner_text)
 group = int(group_text)
 source_fd = destination_fd = None
@@ -144,7 +160,7 @@ try:
     source_fd = os.open(source, os.O_RDONLY | os.O_NOFOLLOW)
     source_stat = os.fstat(source_fd)
     if (not stat.S_ISREG(source_stat.st_mode) or source_stat.st_nlink != 1
-            or source_stat.st_uid != owner or stat.S_IMODE(source_stat.st_mode) != 0o600
+            or source_stat.st_uid != source_owner or stat.S_IMODE(source_stat.st_mode) != 0o600
             or source_stat.st_size < 2 or source_stat.st_size > 64 * 1024 * 1024):
         raise RuntimeError('source')
     data = b''
@@ -230,12 +246,12 @@ git -C "$repo_root" diff --quiet "$expected_sha" -- "${tracked_operator_paths[@]
 }
 
 for path in "$deploy_env"; do
-  [[ -f "$path" && ! -L "$path" && "$(stat_triplet "$path")" =~ ^${expected_owner}:0?600$ ]] || {
+  [[ -f "$path" && ! -L "$path" && "$(stat_triplet "$path")" =~ ^${expected_owner}:${expected_group}:0?600$ ]] || {
     echo 'protected scientific v2 input is unavailable' >&2
     exit 1
   }
 done
-[[ -d "$bundle_dir" && ! -L "$bundle_dir" && "$(stat_triplet "$bundle_dir")" =~ ^${expected_owner}:0?700$ ]] || {
+[[ -d "$bundle_dir" && ! -L "$bundle_dir" && "$(stat_triplet "$bundle_dir")" =~ ^${expected_owner}:${expected_group}:0?700$ ]] || {
   echo 'protected scientific v2 bundle directory is unavailable' >&2
   exit 1
 }
@@ -402,10 +418,19 @@ worker_image="$(read_env_value "$deploy_env" PAPERBANANA_BENCH_WORKER_IMAGE)"
   && "$worker_image" =~ ^ghcr\.io/[a-z0-9_.-]+/paperbanana-benchmark-worker@sha256:[a-f0-9]{64}$ ]] || {
   echo 'Core and Worker images must use immutable digests' >&2; exit 1;
 }
+core_digest="${core_image##*@sha256:}"
+worker_digest="${worker_image##*@sha256:}"
+if [[ -n "$test_root" ]]; then
+  expected_core_digest="${expected_core_digest:-$core_digest}"
+  expected_worker_digest="${expected_worker_digest:-$worker_digest}"
+fi
+[[ "$core_digest" == "$expected_core_digest" && "$worker_digest" == "$expected_worker_digest" ]] || {
+  echo 'Core or Worker deployment digest differs from the expected digest' >&2; exit 1;
+}
 
 if [[ "$mode" != inspect ]]; then
   for path in "$core_env" "$bench_env"; do
-    [[ -f "$path" && ! -L "$path" && "$(stat_triplet "$path")" =~ ^${expected_owner}:0?600$ ]] || {
+    [[ -f "$path" && ! -L "$path" && "$(stat_triplet "$path")" =~ ^${expected_owner}:${expected_group}:0?600$ ]] || {
       echo 'protected paid runtime configuration is unavailable' >&2; exit 1;
     }
   done
@@ -439,7 +464,7 @@ fi
 
 if [[ "$apply" == true && " $spool_rw_modes " == *" $mode "* ]]; then
   [[ -d "$artifact_spool_host" && ! -L "$artifact_spool_host"
-    && "$(stat_triplet "$artifact_spool_host")" =~ ^${service_uid}:0?700$ ]] || {
+    && "$(stat_triplet "$artifact_spool_host")" =~ ^${service_uid}:${service_gid}:0?700$ ]] || {
     echo 'scientific v2 artifact spool ownership or mode is invalid' >&2; exit 1;
   }
   artifact_spool_available_kib="$(df -Pk "$artifact_spool_host" | awk 'NR==2 {print $4}')"
@@ -561,6 +586,19 @@ else
          .input.reviewerA.sourceSetHash == .input.reviewerB.sourceSetHash and
          .input.reviewerA.assignmentSet == .input.reviewerB.assignmentSet' "$snapshot_path" >/dev/null || exit 1
       ;;
+    review_validate)
+      jq -e --arg manifest "$manifest_hash" \
+        '.input.role == .input.publicAssignment.role and
+         .input.publicAssignment.assignmentSet.batchManifestHash == $manifest and
+         .input.privateAssignment.privateEnvelope.batchManifestHash == $manifest' "$snapshot_path" >/dev/null || exit 1
+      ;;
+    review_arbitrate)
+      jq -e --arg manifest "$manifest_hash" \
+        '.input.automaticJudges == [] and .input.reviewerA.role == "A" and .input.reviewerB.role == "B" and
+         .input.reviewerA.batchManifestHash == $manifest and .input.reviewerB.batchManifestHash == $manifest and
+         .input.reviewerA.sourceSetHash == .input.reviewerB.sourceSetHash and
+         .input.arbitration.reasoningEffort == "xhigh"' "$snapshot_path" >/dev/null || exit 1
+      ;;
   esac
 fi
 
@@ -616,6 +654,13 @@ worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk 
   && "$(docker inspect --format '{{.Config.Image}}' "$worker_id")" == "$worker_image" ]] || {
   echo 'running Core or Worker image differs from the immutable deployment lock' >&2; exit 1;
 }
+for pair in "$core_id:$expected_core_digest" "$worker_id:$expected_worker_digest"; do
+  container_id="${pair%%:*}"; digest="${pair#*:}"
+  docker inspect --format '{{json .RepoDigests}}' "$container_id" | jq -e --arg digest "sha256:$digest" \
+    'any(.[]; endswith("@" + $digest))' >/dev/null || {
+      echo 'running container RepoDigests does not match the expected digest' >&2; exit 1;
+    }
+done
 provenance_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)'
 worker_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
 docker exec "$core_id" node -e "$provenance_guard" "$expected_sha" >/dev/null
@@ -643,7 +688,7 @@ run_offline_review() {
     -e PAPERBANANA_SCIENTIFIC_V2_SPOOL_DIR="$input_container_dir"
     -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256="$bundle_sha256"
   )
-  if [[ "$mode" == review_pack ]]; then
+  if [[ "$mode" =~ ^review_(pack|validate|arbitrate|finalize)$ ]]; then
     offline_args+=(
       --mount "type=bind,src=$output_dir,dst=$output_container_dir"
       -e PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH="$output_container_dir/review-private.json"
@@ -675,6 +720,16 @@ run_paid() {
       -e PAPERBANANA_SCIENTIFIC_V2_ARTIFACT_SPOOL_DIR="$artifact_spool_container"
     )
   fi
+  if [[ "$mode" == import_codex ]]; then
+    [[ -d "$codex_artifact_dir" && ! -L "$codex_artifact_dir"
+      && "$(stat_triplet "$codex_artifact_dir")" =~ ^${expected_owner}:${service_gid}:0?550$ ]] || {
+      echo 'protected Codex artifact directory is unavailable' >&2; exit 1;
+    }
+    phase_args+=(
+      -v "$codex_artifact_dir:$codex_artifact_container:ro"
+      -e PAPERBANANA_SCIENTIFIC_V2_CODEX_ARTIFACT_DIR="$codex_artifact_container"
+    )
+  fi
   if [[ " $zero_provider_modes " == *" $mode "* ]]; then
     phase_args+=(
       -e PAPERBANANA_BENCH_BAILIAN_API_KEY=
@@ -690,7 +745,7 @@ run_paid() {
 }
 if [[ "$mode" == inspect ]]; then
   run_inspect
-elif [[ "$mode" =~ ^review_(pack|finalize)$ ]]; then
+elif [[ "$mode" =~ ^review_(pack|validate|arbitrate|finalize)$ ]]; then
   run_offline_review
 else
   run_paid
@@ -747,11 +802,11 @@ elif [[ "$mode" == review_pack ]]; then
     echo 'scientific v2 review pack output contract mismatch' >&2; exit 1;
   }
   [[ -f "$output_dir/review-private.json" && ! -L "$output_dir/review-private.json"
-    && "$(stat_triplet "$output_dir/review-private.json")" =~ ^${service_uid}:0?600$ ]] || {
+    && "$(stat_triplet "$output_dir/review-private.json")" =~ ^${service_uid}:${service_gid}:0?600$ ]] || {
     echo 'scientific v2 review private output is unavailable' >&2; exit 1;
   }
   [[ -d "$review_private_dir" && ! -L "$review_private_dir"
-    && "$(stat_triplet "$review_private_dir")" =~ ^${expected_owner}:0?700$ ]] || {
+    && "$(stat_triplet "$review_private_dir")" =~ ^${expected_owner}:${expected_group}:0?700$ ]] || {
     echo 'scientific v2 private review directory is unavailable' >&2; exit 1;
   }
   python3 - "$output_dir/review-private.json" "$review_private_path" "$service_uid" "$expected_owner" "$expected_group" <<'PY'
@@ -817,6 +872,44 @@ finally:
     if source_fd is not None:
         os.close(source_fd)
 PY
+elif [[ "$mode" == review_validate ]]; then
+  jq -e --arg manifest "$manifest_hash" \
+    '.operation == "review_validate" and .providerCalls == 0 and
+     .batchManifestHash == $manifest and .privateOutputWritten == true and
+     (.sourceSetHash | test("^[a-f0-9]{64}$")) and (.resultHash | test("^[a-f0-9]{64}$")) and
+     (.resultAttestationHash | test("^[a-f0-9]{64}$")) and
+     ([.. | objects | keys[]] | index("privateMappings")) == null and
+     ([.. | objects | keys[]] | index("reviewerIdentity")) == null' "$result_path" >/dev/null || {
+    echo 'scientific v2 review validation output contract mismatch' >&2; exit 1;
+  }
+  [[ -f "$output_dir/review-private.json" && ! -L "$output_dir/review-private.json"
+    && "$(stat_triplet "$output_dir/review-private.json")" =~ ^${service_uid}:${service_gid}:0?600$ ]] || exit 1
+  persist_private_result "$output_dir/review-private.json" "$review_validate_private_path" "$service_uid"
+elif [[ "$mode" == review_arbitrate ]]; then
+  jq -e \
+    '.operation == "review_arbitrate" and .providerCalls == 0 and .canFinalize == true and
+     .privateOutputWritten == true and (.disputeCount | type) == "number" and .disputeCount > 0 and
+     (.arbitrationHash | test("^[a-f0-9]{64}$")) and (.attestationHash | test("^[a-f0-9]{64}$")) and
+     ([.. | objects | keys[]] | index("reviewerIdentity")) == null' "$result_path" >/dev/null || {
+    echo 'scientific v2 arbitration output contract mismatch' >&2; exit 1;
+  }
+  [[ -f "$output_dir/review-private.json" && ! -L "$output_dir/review-private.json"
+    && "$(stat_triplet "$output_dir/review-private.json")" =~ ^${service_uid}:${service_gid}:0?600$ ]] || exit 1
+  persist_private_result "$output_dir/review-private.json" "$review_arbitrate_private_path" "$service_uid"
+elif [[ "$mode" == review_finalize ]]; then
+  jq -e --arg manifest "$manifest_hash" \
+    '.operation == "review_finalize" and .providerCalls == 0 and .canFinalize == true and
+     .privateOutputWritten == true and (.disputeCount | type) == "number" and
+     (.resultCount | type) == "number" and .resultCount > 0 and
+     (.resultsHash | test("^[a-f0-9]{64}$")) and
+     (.attestationHash | test("^[a-f0-9]{64}$")) and
+     ([.. | objects | keys[]] | index("results")) == null and
+     ([.. | objects | keys[]] | index("disputes")) == null' "$result_path" >/dev/null || {
+    echo 'scientific v2 review finalize output contract mismatch' >&2; exit 1;
+  }
+  [[ -f "$output_dir/review-private.json" && ! -L "$output_dir/review-private.json"
+    && "$(stat_triplet "$output_dir/review-private.json")" =~ ^${service_uid}:${service_gid}:0?600$ ]] || exit 1
+  persist_private_result "$output_dir/review-private.json" "$review_finalize_private_path" "$service_uid"
 elif [[ "$mode" == render_public_evidence ]]; then
   jq -e --arg manifest "$manifest_hash" \
     '.operation == "render_public_evidence" and .providerCalls == 0 and
@@ -824,7 +917,7 @@ elif [[ "$mode" == render_public_evidence ]]; then
      (.publishInput.objectBindings | type) == "array" and (.publishInput.evidence | type) == "array"' \
     "$result_path" >/dev/null || { echo 'scientific v2 render publish input contract mismatch' >&2; exit 1; }
   [[ -d "$review_private_dir" && ! -L "$review_private_dir"
-    && "$(stat_triplet "$review_private_dir")" =~ ^${expected_owner}:0?700$ ]] || {
+    && "$(stat_triplet "$review_private_dir")" =~ ^${expected_owner}:${expected_group}:0?700$ ]] || {
     echo 'scientific v2 private handoff directory is unavailable' >&2; exit 1;
   }
   persist_private_result "$result_path" "$render_private_path"

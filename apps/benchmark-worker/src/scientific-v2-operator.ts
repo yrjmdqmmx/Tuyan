@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url'
 import { assertBoundedScientificV2PlainData } from './scientific-v2-common.js'
 import { SCIENTIFIC_V2_PRODUCTION_LOCK_NAME } from './scientific-v2-manifest.js'
 import { executeScientificV2OperatorBundle, type ScientificV2OperatorBundle } from './scientific-v2-operator-runtime.js'
+import { readScientificV2ProtectedArtifactReference } from './scientific-v2-production-bridge.js'
 
 const MIB = 1024 * 1024
 const MAX_BUNDLE_BYTES = 64 * MIB
 const MAX_ARTIFACT_BYTES = 25 * MIB
-const MAX_ARTIFACT_AGGREGATE_BYTES = 40 * MIB
+const MAX_ARTIFACT_AGGREGATE_BYTES = 192 * MIB
 const MAX_PRIVATE_OUTPUT_BYTES = 64 * MIB
 const READ_CHUNK_BYTES = MIB
 
@@ -65,24 +66,7 @@ async function readBounded(handle: FileHandle, expectedSize: number) {
   return Buffer.concat(chunks, total)
 }
 
-function decodedBase64Length(value: string) {
-  const maximumEncodedLength = Math.ceil(MAX_ARTIFACT_BYTES / 3) * 4
-  if (value.length > maximumEncodedLength) throw new Error('SCIENTIFIC_V2_OPERATOR_ARTIFACT_TOO_LARGE')
-  if (value.length === 0 || value.length % 4 !== 0) throw new Error('SCIENTIFIC_V2_OPERATOR_BASE64_INVALID')
-  const padding = value.endsWith('==') ? 2 : value.endsWith('=') ? 1 : 0
-  const dataLength = value.length - padding
-  if ((padding === 1 && dataLength % 4 !== 3) || (padding === 2 && dataLength % 4 !== 2)) {
-    throw new Error('SCIENTIFIC_V2_OPERATOR_BASE64_INVALID')
-  }
-  for (let index = 0; index < dataLength; index += 1) {
-    const code = value.charCodeAt(index)
-    if (!((code >= 65 && code <= 90) || (code >= 97 && code <= 122) || (code >= 48 && code <= 57)
-      || code === 43 || code === 47)) throw new Error('SCIENTIFIC_V2_OPERATOR_BASE64_INVALID')
-  }
-  return (value.length / 4) * 3 - padding
-}
-
-function decodeImportBytes(bundle: Record<string, unknown>) {
+async function resolveImportArtifactReferences(bundle: Record<string, unknown>, artifactRoot: string) {
   if (bundle.operation !== 'import_codex' || !bundle.input || typeof bundle.input !== 'object') return bundle
   const input = bundle.input as Record<string, unknown>
   if (!Array.isArray(input.toolCalls)) return bundle
@@ -90,30 +74,30 @@ function decodeImportBytes(bundle: Record<string, unknown>) {
   for (const value of input.toolCalls) {
     if (!value || typeof value !== 'object' || Array.isArray(value)) continue
     const call = value as Record<string, unknown>
-    if (!Object.hasOwn(call, 'bytesBase64') || call.bytesBase64 === null) continue
-    const { bytesBase64 } = call
-    if (typeof bytesBase64 !== 'string') throw new Error('SCIENTIFIC_V2_OPERATOR_BASE64_INVALID')
-    const decodedLength = decodedBase64Length(bytesBase64)
-    if (decodedLength > MAX_ARTIFACT_BYTES) throw new Error('SCIENTIFIC_V2_OPERATOR_ARTIFACT_TOO_LARGE')
-    aggregateBytes += decodedLength
+    if (Object.hasOwn(call, 'bytesBase64')) throw new Error('SCIENTIFIC_V2_OPERATOR_BASE64_FORBIDDEN')
+    if (!Object.hasOwn(call, 'artifactRef') || call.artifactRef === null) continue
+    const reference = call.artifactRef as Parameters<typeof readScientificV2ProtectedArtifactReference>[0]['reference']
+    if (!reference || reference.byteSize > MAX_ARTIFACT_BYTES) throw new Error('SCIENTIFIC_V2_OPERATOR_ARTIFACT_TOO_LARGE')
+    aggregateBytes += reference.byteSize
     if (aggregateBytes > MAX_ARTIFACT_AGGREGATE_BYTES) throw new Error('SCIENTIFIC_V2_OPERATOR_ARTIFACT_AGGREGATE_TOO_LARGE')
   }
-  input.toolCalls = input.toolCalls.map((value) => {
+  input.toolCalls = await Promise.all(input.toolCalls.map(async (value) => {
     if (!value || typeof value !== 'object' || Array.isArray(value)) return value
     const call = value as Record<string, unknown>
-    if (!Object.hasOwn(call, 'bytesBase64')) return value
-    const { bytesBase64, ...rest } = call
-    if (bytesBase64 === null) return { ...rest, bytes: null }
-    if (typeof bytesBase64 !== 'string') throw new Error('SCIENTIFIC_V2_OPERATOR_BASE64_INVALID')
-    const decodedLength = decodedBase64Length(bytesBase64)
-    const bytes = Buffer.from(bytesBase64, 'base64')
-    if (bytes.length !== decodedLength || bytes.toString('base64') !== bytesBase64) throw new Error('SCIENTIFIC_V2_OPERATOR_BASE64_INVALID')
+    if (!Object.hasOwn(call, 'artifactRef')) return value
+    const { artifactRef, ...rest } = call
+    if (artifactRef === null) return { ...rest, bytes: null }
+    if (!artifactRoot) throw new Error('SCIENTIFIC_V2_CODEX_ARTIFACT_ROOT_REQUIRED')
+    const bytes = await readScientificV2ProtectedArtifactReference({
+      root: artifactRoot,
+      reference: artifactRef as Parameters<typeof readScientificV2ProtectedArtifactReference>[0]['reference'],
+    })
     return { ...rest, bytes }
-  })
+  }))
   return bundle
 }
 
-export async function readScientificV2OperatorBundle(path: string, spoolDir: string, expectedSha256: string) {
+export async function readScientificV2OperatorBundle(path: string, spoolDir: string, expectedSha256: string, artifactRoot = '') {
   if (!/^[a-f0-9]{64}$/.test(expectedSha256)) throw new Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_HASH_INVALID')
   await assertControlledSpool(spoolDir)
   assertDirectSpoolPath(path, spoolDir, 'SCIENTIFIC_V2_OPERATOR_BUNDLE_PATH_INVALID')
@@ -143,7 +127,7 @@ export async function readScientificV2OperatorBundle(path: string, spoolDir: str
       throw new Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     }
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
-    return decodeImportBytes(parsed as Record<string, unknown>) as unknown as ScientificV2OperatorBundle
+    return await resolveImportArtifactReferences(parsed as Record<string, unknown>, artifactRoot) as unknown as ScientificV2OperatorBundle
   } finally {
     await handle.close()
   }
@@ -187,7 +171,8 @@ async function main() {
   if (!path) throw new Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_PATH_REQUIRED')
   const spoolDir = String(process.env.PAPERBANANA_SCIENTIFIC_V2_SPOOL_DIR || '').trim()
   const expectedSha256 = String(process.env.PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256 || '').trim()
-  const bundle = await readScientificV2OperatorBundle(path, spoolDir, expectedSha256)
+  const artifactRoot = String(process.env.PAPERBANANA_SCIENTIFIC_V2_CODEX_ARTIFACT_DIR || '').trim()
+  const bundle = await readScientificV2OperatorBundle(path, spoolDir, expectedSha256, artifactRoot)
   const result = await executeScientificV2OperatorBundle(bundle)
   if (bundle.operation === 'review_pack') {
     const privateOutputPath = String(process.env.PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH || '').trim()
@@ -198,6 +183,39 @@ async function main() {
     await writeScientificV2PrivateOutput(privateOutputPath, privateOutputDir, result.privateBundle)
     const { privateBundle: _privateBundle, ...publicResult } = result
     process.stdout.write(`${JSON.stringify({ ...publicResult, privateOutputWritten: true, lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME })}\n`)
+    return
+  }
+  if (bundle.operation === 'review_validate' || bundle.operation === 'review_arbitrate' || bundle.operation === 'review_finalize') {
+    const privateOutputPath = String(process.env.PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH || '').trim()
+    const privateOutputDir = String(process.env.PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR || '').trim()
+    if (!privateOutputPath || !privateOutputDir) throw new Error('SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_PATH_REQUIRED')
+    await writeScientificV2PrivateOutput(privateOutputPath, privateOutputDir, result)
+    if (bundle.operation === 'review_validate') {
+      const validated = result.result as Record<string, unknown>
+      process.stdout.write(`${JSON.stringify({
+        operation: 'review_validate', providerCalls: 0, batchManifestHash: validated.batchManifestHash,
+        sourceSetHash: validated.sourceSetHash, resultHash: validated.resultHash,
+        resultAttestationHash: validated.resultAttestationHash, privateOutputWritten: true,
+        lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME,
+      })}\n`)
+    } else if (bundle.operation === 'review_arbitrate') {
+      const attestation = result.attestation as Record<string, unknown>
+      process.stdout.write(`${JSON.stringify({
+        operation: 'review_arbitrate', providerCalls: 0, canFinalize: result.canFinalize,
+        disputeCount: attestation.disputeCount, arbitrationHash: attestation.arbitrationHash,
+        attestationHash: attestation.attestationHash, privateOutputWritten: true,
+        lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME,
+      })}\n`)
+    } else {
+      const attestation = result.attestation as Record<string, unknown>
+      process.stdout.write(`${JSON.stringify({
+        operation: 'review_finalize', providerCalls: 0, canFinalize: result.canFinalize,
+        disputeCount: attestation.disputeCount, resultCount: Array.isArray(result.results) ? result.results.length : 0,
+        resultsHash: attestation.resultsHash, arbitrationHash: attestation.arbitrationHash,
+        attestationHash: attestation.attestationHash, privateOutputWritten: true,
+        lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME,
+      })}\n`)
+    }
     return
   }
   if (bundle.operation === 'import_codex' || bundle.operation === 'run') {

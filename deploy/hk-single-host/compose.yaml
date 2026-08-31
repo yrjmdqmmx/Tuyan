@@ -189,6 +189,8 @@ services:
       - ${PAPERBANANA_BENCH_DNS_SECONDARY:-1.1.1.1}
     environment:
       PAPERBANANA_BENCH_CONCURRENCY: "1"
+      # Resident and generic Compose runs cannot prepare/freeze V2; root wrappers inject the exact one-off gate.
+      PAPERBANANA_SCIENTIFIC_V2_PRODUCTION_BRIDGE: "disabled-resident"
       PAPERBANANA_BENCH_DETECTION_INTERVAL_MS: "21600000"
       PAPERBANANA_API_URL: http://paperbanana-api:3000/paperbanana-api
       PAPERBANANA_BENCH_HEALTH_FILE: /tmp/benchmark-worker-health.json

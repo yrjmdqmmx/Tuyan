@@ -417,7 +417,7 @@ export interface ScientificV2AuthoritativeImageRuntime {
     apiKey: string
     prompt: string
     aspectRatio: string
-    imageSize: '2K'
+    imageSize: '1K' | '2K' | 'provider-default'
   }): Promise<string>
   edit(input: {
     provider: BenchProvider
@@ -426,7 +426,7 @@ export interface ScientificV2AuthoritativeImageRuntime {
     prompt: string
     aspectRatio: '16:9'
     sourceImage: string
-    imageSize: '2K'
+    imageSize: '1K' | '2K' | 'provider-default'
   }): Promise<string>
 }
 
@@ -522,11 +522,11 @@ export function createScientificV2ProviderExecutor(input: {
         runtimeOutput = request.operation === 'generation'
           ? await input.runtime.generate({
             provider: request.provider, model: request.modelId, apiKey,
-            prompt: promptFor(request), aspectRatio: request.aspectRatio || '16:9', imageSize: '2K',
+            prompt: promptFor(request), aspectRatio: request.aspectRatio || '16:9', imageSize: request.imageSize,
           })
           : await input.runtime.edit({
             provider: request.provider, model: request.modelId, apiKey,
-            prompt: request.instruction, aspectRatio: '16:9', imageSize: '2K',
+            prompt: request.instruction, aspectRatio: '16:9', imageSize: request.imageSize,
             sourceImage: `data:image/png;base64,${editSourcePng.toString('base64')}`,
           })
       } catch (error) {
@@ -626,6 +626,7 @@ function expectedPayloadHash(manifest: ScientificV2BatchManifest, slot: Scientif
   if (!scientificCase) scientificV2Error('SCIENTIFIC_V2_DISPATCH_MARKER_INVALID')
   return canonicalHash({
     route: { provider: slot.provider, modelId: slot.modelId }, operation: slot.operation,
+    imageSize: slot.imageSize,
     caseId: scientificCase.id, instruction: scientificCase.instruction,
     ...(scientificCase.kind === 'generation'
       ? { negativePrompt: scientificCase.negativePrompt, aspectRatio: scientificCase.aspectRatio }
@@ -1024,6 +1025,14 @@ export async function renderScientificV2PublicEvidence(input: {
     if (!attempt?.rawImageHash || !attempt.format || !['succeeded', 'succeeded_low_quality'].includes(attempt.responseClass)) {
       scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_STATE_INVALID')
     }
+    if (!Number.isInteger(attempt.width) || Number(attempt.width) < 1
+      || !Number.isInteger(attempt.height) || Number(attempt.height) < 1
+      || !Number.isInteger(attempt.byteSize) || Number(attempt.byteSize) < 1) {
+      scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_STATE_INVALID')
+    }
+    const actualWidth = attempt.width as number
+    const actualHeight = attempt.height as number
+    const actualByteSize = attempt.byteSize as number
     const rawObjectKey = scientificV2PrivateArtifactObjectKey(attempt.rawImageHash, attempt.format)
     const rawBytes = await input.store.readPrivate({ objectKey: rawObjectKey, imageHash: attempt.rawImageHash, format: attempt.format })
     let sourceInput: typeof editSource
@@ -1040,7 +1049,16 @@ export async function renderScientificV2PublicEvidence(input: {
       ...(sourceInput ? { editSource: sourceInput } : {}), store: input.store,
     })
     for (const binding of rendered.objectBindings) objectBindings.set(binding.imageHash, binding)
-    evidence.push(...rendered.evidence)
+    evidence.push(...rendered.evidence.map((item) => ({
+      ...item,
+      requestedResolution: slot.imageSize,
+      actualOutputPixels: {
+        width: actualWidth,
+        height: actualHeight,
+        megapixels: Number(((actualWidth * actualHeight) / 1_000_000).toFixed(4)),
+        fileSizeBytes: actualByteSize,
+      },
+    })))
   }
   const publishInput = deepFreezeScientificV2({ batchId: input.batchId, objectBindings: [...objectBindings.values()], evidence })
   return { publishInput, publishInputHash: canonicalHash(publishInput) }
