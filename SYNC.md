@@ -24,6 +24,16 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] Scientific V2 attestation 导出内容寻址 state snapshot — by Codex
+变更：内部 `operatorAttestation` 在完整验证 DB 中 frozen manifest/state 与 `stateHash` 后，额外返回深拷贝冻结的 `stateSnapshot`。香港 admin operator 的 `attest` 仅在 root 私有通道接收该快照，独立写入 `0600` 内容寻址 `*.state.json`，stdout 只新增 `stateBundleSha256`，不输出 state 内容。run-bundle stager 继续以 state 文件 SHA、canonical state hash 与 attestation 中已签名的 `stateHash` 三重校验后组装执行包。
+
+兼容边界：公开 leaderboard/methodology/model profile 不投影 `stateSnapshot`；普通用户请求与现有 attestation HMAC payload 不变。此能力只补齐旧失败运行已写 DB、但 host 未留下 state 文件时的零 Provider 调用恢复路径。
+
+各端待办：
+- [x] paperbanana-api / Laf Core（state 完整 verifier、冻结快照、公开投影隔离与 TDD）
+- [x] 部署 / 运维（root `0600` 内容寻址落盘、安全摘要与合同测试）
+- [x] Benchmark Worker / Web / 原生端（执行与公开请求契约不变）
+
 ### [2026-08-31] Scientific V2 canary 失败仅按精确 route identity 审计归零 — by Codex
 纠正：单个 provider canary 槽位四次 confirmed failure 只证明精确 `{provider, canonicalModelId}` route identity 本次不可用。仅同时匹配该 provider 与 canonical model 的其他 supported 槽位可派生为 `failed + attempts=[] + costCny=0`；同 provider 的其他 canonical models，以及不同 provider 上的同一 canonical model，都必须继续真实执行，不能被归零或跳过。`providerCanaryAttestation.passed=false` 仍如实绑定 canary 事实，不代表 provider 内所有模型或该 canonical model 的其他路由失败。
 

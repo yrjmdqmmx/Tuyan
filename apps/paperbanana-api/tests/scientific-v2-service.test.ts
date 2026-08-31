@@ -67,6 +67,9 @@ function scientificRelease() {
 
 test('scientific v2 public actions expose ten-axis rankings, full methodology and signed edit before/after without secrets', async () => {
   const release = scientificRelease()
+  release.stateSnapshot = { stateHash: '9'.repeat(64), slots: [{ objectKey: 'bench/scientific-v2/private/state.json' }] }
+  const { _id: _releaseId, releaseHash: _releaseHash, ...releaseBase } = release
+  release.releaseHash = canonicalHash(releaseBase)
   const evidenceRow = {
     sourceReleaseHash: release.releaseHash,
     profileId: release.profileId,
@@ -104,6 +107,7 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(leaderboard.release.legacyRecovery, false)
   assert.equal(Object.hasOwn(leaderboard.release, 'codeSha'), false)
   assert.equal(Object.hasOwn(leaderboard.release, 'stateHash'), false)
+  assert.equal(Object.hasOwn(leaderboard.release, 'stateSnapshot'), false)
   assert.equal(Object.keys(leaderboard.release.models[0].scores).length, 10)
   assert.equal(leaderboard.release.models[0].evidence.length, 9)
 
@@ -116,6 +120,7 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(methodology.methodology.legacyRecovery, false)
   assert.equal(Object.hasOwn(methodology.methodology, 'codeSha'), false)
   assert.equal(Object.hasOwn(methodology.methodology, 'stateHash'), false)
+  assert.equal(JSON.stringify(methodology).includes('stateSnapshot'), false)
 
   const profile = await service.handle({ action: 'benchmarkModelProfile', profileId: release.profileId }, false)
   const publicEdit = profile.profile.evidence[0]
@@ -124,6 +129,7 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(JSON.stringify(profile).includes('objectKey'), false)
   assert.equal(JSON.stringify(profile).includes('reviewerIdentity'), false)
   assert.equal(JSON.stringify(profile).includes('attestationHash'), false)
+  assert.equal(JSON.stringify(profile).includes('stateSnapshot'), false)
   assert.deepEqual(publicEdit.reviewNotes, ['加分：局部编辑准确'])
   assert.equal(publicEdit.requestedResolution, '2K')
   assert.deepEqual(publicEdit.actualOutputPixels, { width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 4096 })
