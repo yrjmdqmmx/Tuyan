@@ -4,7 +4,7 @@ umask 077
 
 operation='' expected_sha='' expected_core_digest='' expected_worker_digest='' input_sha256='' confirm=''
 usage() {
-  echo 'usage: run-scientific-v2-admin-operator.sh --operation freeze|attest|import-worker|import-codex|export-review|import-review|import-arbitration|publish --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --input-sha256 64_HEX --confirm PHRASE' >&2
+  echo 'usage: run-scientific-v2-admin-operator.sh --operation freeze|attest|diagnose|import-worker|import-codex|export-review|import-review|import-arbitration|publish --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --input-sha256 64_HEX --confirm PHRASE' >&2
   exit 64
 }
 while (($#)); do
@@ -18,7 +18,7 @@ while (($#)); do
     *) usage ;;
   esac
 done
-[[ "$operation" =~ ^(freeze|attest|import-worker|import-codex|export-review|import-review|import-arbitration|publish)$
+[[ "$operation" =~ ^(freeze|attest|diagnose|import-worker|import-codex|export-review|import-review|import-arbitration|publish)$
   && "$expected_sha" =~ ^[a-f0-9]{40}$ && "$expected_core_digest" =~ ^[a-f0-9]{64}$
   && "$expected_worker_digest" =~ ^[a-f0-9]{64}$ && "$input_sha256" =~ ^[a-f0-9]{64}$
   && "$confirm" == "$operation-scientific-v2-admin-disabled-worker" ]] || usage
@@ -125,6 +125,7 @@ const exact=(value,keys)=>{if(!value||typeof value!=="object"||Array.isArray(val
 let body;
 if(operation==="freeze"){exact(input,["batchId","registryAuthority","registrySnapshot","canonicalManifest","manifest","initialState"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeBatch",...input}}
 else if(operation==="attest"){exact(input,["batchId","manifestHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"operatorAttestation",...input}}
+else if(operation==="diagnose"){exact(input,["batchId","manifestHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"operatorDiagnostic",...input}}
 else if(operation==="import-worker"||operation==="import-codex"){exact(input,["report","reportHash","attestationHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:operation==="import-worker"?"importWorkerState":"importCodexState",...input}}
 else if(operation==="export-review"){exact(input,["batchId","assignment","objectBindings"]);body={action:"adminBenchmarkReviewExport",evaluationMode:"codex_scientific_v2",...input}}
 else if(operation==="import-review"){exact(input,["batchId","result"]);body={action:"adminBenchmarkReviewImport",evaluationMode:"codex_scientific_v2",...input}}
@@ -134,9 +135,15 @@ const response=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST
 const result=await response.json();
 if(!response.ok||result.code!==0)throw new Error("SCIENTIFIC_V2_ADMIN_CORE_REJECTED");
 const data=result.run??result.packet??result.result??result.release??result;
-const allowedKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["disputeCount","resultCount","finalHash"],"import-arbitration":["resultCount","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
-const responseRequiredKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["status"],"import-arbitration":["status","results","automaticJudgeCalls","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
+const allowedKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],diagnose:["batchId","manifestHash","stateHash","status","pauseReason","blockReason","providerSpentCny","providerUnreconciledCny","revision","providerCanaries","diagnosticHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["disputeCount","resultCount","finalHash"],"import-arbitration":["resultCount","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
+const responseRequiredKeys={freeze:["batchId","manifestHash","stateHash","replayed"],attest:["batchId","batchManifestHash","stateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],diagnose:["batchId","manifestHash","stateHash","status","pauseReason","blockReason","providerSpentCny","providerUnreconciledCny","revision","providerCanaries","diagnosticHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["status"],"import-arbitration":["status","results","automaticJudgeCalls","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
 if(!data||typeof data!=="object"||Array.isArray(data)||!responseRequiredKeys.every(key=>Object.hasOwn(data,key)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
+if(operation==="diagnose"){
+  exact(data,responseRequiredKeys);
+  const hash=value=>typeof value==="string"&&/^[a-f0-9]{64}$/.test(value),cny=value=>Number.isFinite(value)&&value>=0,ledger=value=>value&&typeof value==="object"&&!Array.isArray(value)&&["ark","bailian","openrouter"].every(key=>Object.hasOwn(value,key))&&Object.keys(value).length===3&&Object.values(value).every(cny);
+  const canary=value=>value&&typeof value==="object"&&!Array.isArray(value)&&Object.keys(value).sort().join("\\0")===["provider","canonicalModelId","caseId","slotId","status","attemptCount","responseClasses","estimatedCny","actualCny"].sort().join("\\0")&&["bailian","ark","openrouter"].includes(value.provider)&&[value.canonicalModelId,value.caseId,value.slotId,value.status].every(field=>typeof field==="string"&&field.length>0&&field.length<=200)&&Number.isInteger(value.attemptCount)&&value.attemptCount>=0&&value.attemptCount<=4&&Array.isArray(value.responseClasses)&&value.responseClasses.length===value.attemptCount&&value.responseClasses.every(field=>typeof field==="string"&&field.length>0&&field.length<=128)&&[value.estimatedCny,value.actualCny].every(field=>field===null||cny(field));
+  if(typeof data.batchId!=="string"||!data.batchId||!hash(data.manifestHash)||!hash(data.stateHash)||typeof data.status!=="string"||data.status.length>64||![data.pauseReason,data.blockReason].every(value=>value===null||(typeof value==="string"&&value.length<=128))||!ledger(data.providerSpentCny)||!ledger(data.providerUnreconciledCny)||!Number.isInteger(data.revision)||data.revision<0||!Array.isArray(data.providerCanaries)||data.providerCanaries.length>3||!data.providerCanaries.every(canary)||!hash(data.diagnosticHash)||!hash(data.attestationHash))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
+}
 if(operation==="import-review"&&(!["awaiting_peer","published","dispute","finalized"].includes(data.status)||(["awaiting_peer","published"].includes(data.status)&&!["A","B"].includes(data.role))||(["dispute","finalized"].includes(data.status)&&(!Array.isArray(data.disputes)||!Array.isArray(data.results)||data.automaticJudgeCalls!==0||typeof data.finalHash!=="string"||!/^[a-f0-9]{64}$/.test(data.finalHash)))))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
 if(operation==="import-arbitration"&&(data.status!=="finalized"||!Array.isArray(data.results)||data.automaticJudgeCalls!==0||typeof data.finalHash!=="string"||!/^[a-f0-9]{64}$/.test(data.finalHash)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
 const safe={};for(const key of allowedKeys)if(Object.hasOwn(data,key))safe[key]=data[key];

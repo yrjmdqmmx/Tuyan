@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import type { AddressInfo } from 'node:net'
 import test from 'node:test'
 
+import { createBenchmarkService } from '../src/benchmark-service.js'
 import { createServer, type AppConfig } from '../src/server.js'
 
 const config = {
@@ -222,6 +223,56 @@ test('scientific v2 freeze body allowance cannot be reused by a different admin 
     assert.equal(response.status, 400)
     assert.deepEqual(await response.json(), { code: 400, error: 'Scientific V2 admin transport rejected' })
     assert.equal(called, false)
+  } finally {
+    await new Promise<void>((resolve) => server.close(() => resolve()))
+  }
+})
+
+test('scientific v2 operator diagnostic reaches control with only trusted transport fields', async () => {
+  let received: Record<string, unknown> | undefined
+  const allowedKeys = new Set(['action', 'evaluationMode', 'command', 'batchId', 'manifestHash', 'gatewayToken', 'adminToken', 'adminUserId'])
+  const benchmarkService = createBenchmarkService({
+    repository: {
+      async control(input: Record<string, unknown>) {
+        if (Reflect.ownKeys(input).some((key) => typeof key !== 'string' || !allowedKeys.has(key))) {
+          throw new Error('SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_SCHEMA_INVALID')
+        }
+        received = input
+        return { diagnosticHash: 'a'.repeat(64) }
+      },
+    } as any,
+    signEvidence: async () => 'https://signed.example/evidence.webp',
+  })
+  const server = createServer({
+    handler: async () => ({ code: 0 }), readinessProbe: async () => ({ ready: true }), healthSnapshot: () => ({ ready: true }),
+    config: { ...config, adminToken: 'configured-server-admin-token', adminTransportToken: 'configured-admin-transport-token' },
+    logger: { info() {}, warn() {}, error() {} }, benchmarkService,
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const { port } = server.address() as AddressInfo
+  const request = (extra: Record<string, unknown> = {}) => fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json', 'x-paperbanana-gateway-token': config.gatewayToken,
+      'x-paperbanana-admin-transport-token': 'configured-admin-transport-token', 'x-paperbanana-admin-user-id': 'immutable-admin-id',
+    },
+    body: JSON.stringify({
+      action: 'adminBenchmarkControl', evaluationMode: 'codex_scientific_v2', command: 'operatorDiagnostic',
+      batchId: 'scientific-v2-server-control', manifestHash: 'a'.repeat(64), ...extra,
+    }),
+  })
+  try {
+    const success = await request()
+    assert.equal(success.status, 200)
+    assert.deepEqual(await success.json(), { code: 0, run: { diagnosticHash: 'a'.repeat(64) } })
+    assert.deepEqual(received, {
+      action: 'adminBenchmarkControl', evaluationMode: 'codex_scientific_v2', command: 'operatorDiagnostic',
+      batchId: 'scientific-v2-server-control', manifestHash: 'a'.repeat(64), gatewayToken: config.gatewayToken,
+      adminToken: 'configured-server-admin-token', adminUserId: 'immutable-admin-id',
+    })
+    const rejected = await request({ arbitraryUserField: true })
+    assert.equal(rejected.status, 200)
+    assert.deepEqual(await rejected.json(), { code: 400, error: 'Benchmark request rejected' })
   } finally {
     await new Promise<void>((resolve) => server.close(() => resolve()))
   }

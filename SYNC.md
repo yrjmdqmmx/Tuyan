@@ -24,6 +24,18 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] Scientific V2 生产 canary 只读诊断契约 — by Codex
+变更：内部 `adminBenchmarkControl` 新增 `operatorDiagnostic`（部署算子操作名 `diagnose`）。它严格只接受 `{batchId,manifestHash}`，以两者精确读取单一已冻结批次；零 provider 调用、零持久化写入。响应仅含批次/manifest/state hash、state 状态与 pause/block 原因、三家 provider 已花费/未核销金额、revision，以及每家 provider canary 的公开路由标识、case/slot、状态、次数、response class 与安全金额汇总。整个摘要以 canonical `diagnosticHash` 和独立域 HMAC `attestationHash` 绑定；不返回 payload hash、对象键、凭证、时间、评审身份或产物。
+
+契约（影响其他端 / 共享）：
+- **内部运维调用**：香港 `run-scientific-v2-admin-operator.sh --operation diagnose` 与受保护 workflow 使用既有 disabled-worker、单并发、同一生产锁及 root `0600` 输入边界；输入固定为上述两个字段，标准输出仅透传校验后的安全摘要，不创建私有结果文件。
+- **兼容边界**：既有 `operatorAttestation` 与 stager 的请求/响应 schema 均未改变；此为内部管理命令，公开客户端与普通 benchmark action 无需接入。
+
+各端待办：
+- [x] paperbanana-api / Laf Core（精确读取、受限摘要、域隔离 HMAC、TDD）
+- [x] 部署 / 运维（`diagnose` 选择项、两字段输入与安全响应校验、TDD）
+- [x] Web / 原生端（不适用；无公开契约变更）
+
 ### [2026-08-31] 科研评测 v2 staging 使用完整私有 attestation — by Codex
 变更：Scientific v2 admin operator 的 `attest` stdout 继续只暴露固定安全摘要，但 root `0600` admin-result 现在保存 Core 返回的完整 HMAC attestation（identity、daemon、并发、共享锁、provider budgets、Codex limit、revision/hash）；此前误把 allowlist 摘要保存为私有文件，导致 run-bundle stager 在任何 Provider 调用前因 attestation schema 缺字段失败。import-review/import-arbitration 的私有保存行为不变。
 

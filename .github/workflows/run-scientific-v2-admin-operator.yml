@@ -6,7 +6,7 @@ on:
       operation:
         required: true
         type: choice
-        options: [freeze, attest, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+        options: [freeze, attest, diagnose, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
       expected_deployed_sha:
         required: true
       expected_core_digest:
