@@ -50,6 +50,7 @@ const validEnv = {
   PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET: 'oss-test-secret',
   PAPERBANANA_BENCH_OSS_BUCKET: 'private-test-bucket',
   PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT: 'https://oss-cn-hongkong-internal.aliyuncs.com',
+  PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT: 'https://oss-cn-hongkong.aliyuncs.com',
   PAPERBANANA_SCIENTIFIC_V2_EDIT_SOURCE_PNG_PATH: SCIENTIFIC_EDIT_SOURCE.pngPath,
   PAPERBANANA_SCIENTIFIC_V2_ARTIFACT_SPOOL_DIR: ARTIFACT_SPOOL_DIR,
   PAPERBANANA_CODE_SHA: 'a'.repeat(40),
@@ -77,6 +78,16 @@ test('production dependency factory loads nothing before the exact disabled gate
   delete (missingSecret as Partial<typeof validEnv>).PAPERBANANA_BENCH_ARK_API_KEY
   await assert.rejects(
     () => createScientificV2ProductionRunDependencies(missingSecret, dependencies),
+    /SCIENTIFIC_V2_PRODUCTION_ENV_INVALID/,
+  )
+  await assert.rejects(
+    () => createScientificV2ProductionRunDependencies({ ...validEnv, PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT: '' }, dependencies),
+    /SCIENTIFIC_V2_PRODUCTION_ENV_INVALID/,
+  )
+  await assert.rejects(
+    () => createScientificV2ProductionRunDependencies({
+      ...validEnv, PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT: validEnv.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT,
+    }, dependencies),
     /SCIENTIFIC_V2_PRODUCTION_ENV_INVALID/,
   )
   assert.equal(connectorCalls, 0)
@@ -174,6 +185,72 @@ test('production executor uses frozen generation and direct-edit routes, bounded
   ])
   assert.equal(JSON.stringify({ runtimeCalls, persisted }).includes('b-secret'), true)
   assert.equal(JSON.stringify(persisted).includes('secret'), false)
+})
+
+test('production Bailian direct edit uses a short-lived public OSS URL for the fixed source image', async () => {
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#abd' } }).png().toBuffer()
+  const runtimeCalls: Array<Record<string, unknown>> = []
+  const persisted: ScientificV2ProductionArtifact[] = []
+  const signedSourceUrl = 'https://private-test-bucket.oss-cn-hongkong.aliyuncs.com/bench/source.png?x-oss-signature=test'
+  const artifactStore = {
+    async persist(value: ScientificV2ProductionArtifact) { persisted.push(value) },
+    async createSignedReadUrl(input: { objectKey: string; expiresSeconds: number }) {
+      assert.equal(input.objectKey, `bench/scientific-v2/private/objects/${SCIENTIFIC_EDIT_SOURCE.sourceHash}.png`)
+      assert.equal(input.expiresSeconds, 900)
+      return signedSourceUrl
+    },
+  } as ScientificV2ProductionArtifactStore & {
+    createSignedReadUrl(input: { objectKey: string; expiresSeconds: number }): Promise<string>
+  }
+  const executor = createScientificV2ProviderExecutor({
+    runtime: {
+      async generate() { throw new Error('unused') },
+      async edit(input) {
+        runtimeCalls.push({ operation: 'edit', ...input })
+        return `data:image/png;base64,${png.toString('base64')}`
+      },
+    },
+    credentials: { bailian: 'b-secret', ark: 'a-secret', openrouter: 'o-secret' },
+    artifactStore,
+    fetchImpl: async () => { throw new Error('unused') },
+  })
+
+  await executor.execute({
+    slotId: 'bailian-edit-slot', canonicalModelId: 'qwen-image-2.0', caseId: 'edit-case',
+    provider: 'bailian', modelId: 'qwen-image-2.0', operation: 'edit', attemptIndex: 1,
+    payloadHash: '9'.repeat(64), instruction: 'edit only region 1', sourceHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
+    region: '01-text-label', imageSize: '2K', estimatedCny: 0.2,
+  })
+
+  assert.equal(runtimeCalls.length, 1)
+  assert.equal(runtimeCalls[0].sourceImage, signedSourceUrl)
+  assert.equal(persisted[0].imageHash, SCIENTIFIC_EDIT_SOURCE.sourceHash)
+  assert.equal(JSON.stringify(persisted).includes('x-oss-signature'), false)
+})
+
+test('production Bailian source handoff failure is confirmed locally before any provider call and charges zero', async () => {
+  let runtimeCalls = 0
+  const executor = createScientificV2ProviderExecutor({
+    runtime: {
+      async generate() { throw new Error('unused') },
+      async edit() { runtimeCalls += 1; throw new Error('must not call provider') },
+    },
+    credentials: { bailian: 'b-secret', ark: 'a-secret', openrouter: 'o-secret' },
+    artifactStore: {
+      async persist() {},
+      async createSignedReadUrl() { throw new Error('local signer unavailable') },
+    },
+    fetchImpl: async () => { throw new Error('unused') },
+  })
+
+  await assert.rejects(() => executor.execute({
+    slotId: 'bailian-edit-slot', canonicalModelId: 'qwen-image-2.0', caseId: 'edit-case',
+    provider: 'bailian', modelId: 'qwen-image-2.0', operation: 'edit', attemptIndex: 1,
+    payloadHash: '8'.repeat(64), instruction: 'edit only region 1', sourceHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
+    region: '01-text-label', imageSize: '2K', estimatedCny: 0.2,
+  }), (error: unknown) => error instanceof ScientificConfirmedFailureError
+    && error.responseClass === 'confirmed_technical_failure' && error.actualCny === 0)
+  assert.equal(runtimeCalls, 0)
 })
 
 test('production executor never retries unknown failures and only confirms an error carrying a provider response status', async () => {
@@ -685,6 +762,24 @@ test('production OSS artifact store writes immutable private content-addressed b
   await assert.rejects(() => store.persist(artifact), /SCIENTIFIC_V2_ARTIFACT_CONTENT_COLLISION/)
 })
 
+test('production OSS artifact store signs only bounded private scientific-v2 GET URLs', async () => {
+  const calls: unknown[][] = []
+  let signedUrl = 'https://private-test-bucket.oss-cn-hongkong.aliyuncs.com/bench/source.png?x-oss-signature=test'
+  const store = createScientificV2OssArtifactStore({
+    async put() { return {} },
+    async get() { throw new Error('unused') },
+  }, {
+    async signatureUrlV4(...args) { calls.push(args); return signedUrl },
+  })
+  const objectKey = `bench/scientific-v2/private/objects/${'a'.repeat(64)}.png`
+  assert.equal(await store.createSignedReadUrl!({ objectKey, expiresSeconds: 900 }), signedUrl)
+  assert.deepEqual(calls, [['GET', 900, undefined, objectKey]])
+  await assert.rejects(() => store.createSignedReadUrl!({ objectKey: '../source.png', expiresSeconds: 900 }), /SCIENTIFIC_V2_ARTIFACT_SIGNED_URL_INVALID/)
+  await assert.rejects(() => store.createSignedReadUrl!({ objectKey, expiresSeconds: 901 }), /SCIENTIFIC_V2_ARTIFACT_SIGNED_URL_INVALID/)
+  signedUrl = 'http://private-test-bucket.oss-cn-hongkong.aliyuncs.com/source.png?x-oss-signature=test'
+  await assert.rejects(() => store.createSignedReadUrl!({ objectKey, expiresSeconds: 900 }), /SCIENTIFIC_V2_ARTIFACT_SIGNED_URL_INVALID/)
+})
+
 test('private OSS put acknowledgement loss verifies the exact byte hash MIME cache ACL tuple or retransmits only the same bytes', async () => {
   const bytes = Buffer.from('ack-loss-scientific-artifact')
   const imageHash = createHash('sha256').update(bytes).digest('hex')
@@ -1112,7 +1207,14 @@ test('production run operator uses real adapters with fakes and returns an API-i
     env: validEnv,
     productionDependencies: {
       async connectMongo() { return { db: storage.db, async close() { closes += 1 } } },
-      async createArtifactStore() { return { async persist() {} } },
+      async createArtifactStore() {
+        return {
+          async persist() {},
+          async createSignedReadUrl({ objectKey }: { objectKey: string }) {
+            return `https://private-test-bucket.oss-cn-hongkong.aliyuncs.com/${objectKey}?x-oss-signature=test`
+          },
+        }
+      },
       async loadAuthoritativeRuntime() {
         return {
           async generate() { providerCalls += 1; return png.toString('base64') },

@@ -51,6 +51,7 @@ export function readScientificV2ProductionEditSourcePng(path = process.env.PAPER
 
 export interface ScientificV2ProductionArtifactStore {
   persist(input: ScientificV2ProductionArtifact): Promise<void>
+  createSignedReadUrl?(input: { objectKey: string; expiresSeconds: number }): Promise<string>
 }
 
 export interface ScientificV2ArtifactSpool {
@@ -293,6 +294,8 @@ export function createScientificV2OssArtifactStore(client: {
   put(key: string, bytes: Buffer, options: Record<string, unknown>): Promise<unknown>
   get(key: string): Promise<{ content: Uint8Array; headers?: Record<string, unknown>; res?: { headers?: Record<string, unknown> } }>
   getACL?(key: string): Promise<{ acl?: string }>
+}, publicSigner?: {
+  signatureUrlV4(method: 'GET', expires: number, request: undefined, objectName: string): Promise<string>
 }): ScientificV2ProductionArtifactStore {
   const header = (headers: Record<string, unknown>, name: string) => {
     const found = Object.entries(headers).find(([key]) => key.toLowerCase() === name)
@@ -317,7 +320,7 @@ export function createScientificV2OssArtifactStore(client: {
       throw new ScientificV2ArtifactReconciliationRequiredError()
     }
   }
-  return Object.freeze({
+  const store: ScientificV2ProductionArtifactStore = {
     async persist(input: ScientificV2ProductionArtifact) {
       const computedHash = createHash('sha256').update(input.bytes).digest('hex')
       const expectedKey = scientificV2PrivateArtifactObjectKey(computedHash, input.format)
@@ -349,7 +352,21 @@ export function createScientificV2OssArtifactStore(client: {
         }
       }
     },
-  })
+    ...(publicSigner ? { async createSignedReadUrl(input: { objectKey: string; expiresSeconds: number }) {
+      if (!/^bench\/scientific-v2\/private\/objects\/[a-f0-9]{64}\.(png|jpeg|webp)$/.test(input.objectKey)
+        || !Number.isInteger(input.expiresSeconds) || input.expiresSeconds < 60 || input.expiresSeconds > 900) {
+        scientificV2Error('SCIENTIFIC_V2_ARTIFACT_SIGNED_URL_INVALID')
+      }
+      const raw = await publicSigner.signatureUrlV4('GET', input.expiresSeconds, undefined, input.objectKey)
+      let url: URL
+      try { url = new URL(raw) } catch { scientificV2Error('SCIENTIFIC_V2_ARTIFACT_SIGNED_URL_INVALID') }
+      if (url.protocol !== 'https:' || url.username || url.password || raw.length > 8_192) {
+        scientificV2Error('SCIENTIFIC_V2_ARTIFACT_SIGNED_URL_INVALID')
+      }
+      return raw
+    } } : {}),
+  }
+  return Object.freeze(store)
 }
 
 export function createScientificV2OssEvidenceStore(client: {
@@ -517,6 +534,26 @@ export function createScientificV2ProviderExecutor(input: {
       if (request.operation === 'edit' && request.sourceHash !== SCIENTIFIC_EDIT_SOURCE.sourceHash) {
         scientificV2Error('SCIENTIFIC_V2_EDIT_SOURCE_HASH_MISMATCH')
       }
+      let sourceImage = `data:image/png;base64,${editSourcePng.toString('base64')}`
+      let sourcePersisted = false
+      if (request.operation === 'edit' && request.provider === 'bailian') {
+        try {
+          if (typeof input.artifactStore.createSignedReadUrl !== 'function') {
+            scientificV2Error('SCIENTIFIC_V2_ARTIFACT_SIGNED_URL_UNAVAILABLE')
+          }
+          const sourceObjectKey = scientificV2PrivateArtifactObjectKey(SCIENTIFIC_EDIT_SOURCE.sourceHash, 'png')
+          await input.artifactStore.persist({
+            objectKey: sourceObjectKey, imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
+            format: 'png', contentType: 'image/png', bytes: editSourcePng,
+          })
+          sourcePersisted = true
+          sourceImage = await input.artifactStore.createSignedReadUrl({ objectKey: sourceObjectKey, expiresSeconds: 900 })
+        } catch {
+          throw new ScientificConfirmedFailureError('SCIENTIFIC_V2_EDIT_SOURCE_HANDOFF_FAILED', {
+            responseClass: 'confirmed_technical_failure', actualCny: 0,
+          })
+        }
+      }
       let runtimeOutput!: string
       try {
         runtimeOutput = request.operation === 'generation'
@@ -527,7 +564,7 @@ export function createScientificV2ProviderExecutor(input: {
           : await input.runtime.edit({
             provider: request.provider, model: request.modelId, apiKey,
             prompt: request.instruction, aspectRatio: '16:9', imageSize: request.imageSize,
-            sourceImage: `data:image/png;base64,${editSourcePng.toString('base64')}`,
+            sourceImage,
           })
       } catch (error) {
         confirmedFailure(error, request.estimatedCny)
@@ -545,7 +582,7 @@ export function createScientificV2ProviderExecutor(input: {
       }
       let spoolBinding: ScientificV2ArtifactSpoolBinding | null = null
       try {
-        if (request.operation === 'edit') {
+        if (request.operation === 'edit' && !sourcePersisted) {
           await input.artifactStore.persist({
             objectKey: scientificV2PrivateArtifactObjectKey(SCIENTIFIC_EDIT_SOURCE.sourceHash, 'png'),
             imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,

@@ -1480,6 +1480,7 @@ test('render_public_evidence reads exact private objects and emits an API-ready 
       PAPERBANANA_BENCH_OSS_REGION: 'oss-cn-hongkong', PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID: 'render-id',
       PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET: 'render-secret', PAPERBANANA_BENCH_OSS_BUCKET: 'render-bucket',
       PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT: 'https://oss-cn-hongkong-internal.aliyuncs.com',
+      PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT: 'https://oss-cn-hongkong.aliyuncs.com',
       PAPERBANANA_SCIENTIFIC_V2_EDIT_SOURCE_PNG_PATH: SCIENTIFIC_EDIT_SOURCE.pngPath,
     },
     productionDependencies: {
@@ -1839,6 +1840,7 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
           PAPERBANANA_BENCH_OSS_REGION: 'oss-cn-hongkong', PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID: 'dist-oss-id',
           PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET: 'dist-oss-secret', PAPERBANANA_BENCH_OSS_BUCKET: 'dist-private-bucket',
           PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT: 'https://oss-cn-hongkong-internal.aliyuncs.com',
+          PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT: 'https://oss-cn-hongkong.aliyuncs.com',
           PAPERBANANA_SCIENTIFIC_V2_EDIT_SOURCE_PNG_PATH: SCIENTIFIC_EDIT_SOURCE.pngPath,
           SCIENTIFIC_V2_DIST_OSS_AUDIT_PATH: ossAuditPath,
         } : {}),

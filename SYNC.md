@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 百炼 direct-edit 固定源图改用私有 OSS 公网签名 URL — by Codex
+变更：生成题已恢复并取得百炼/方舟 2048×1152 与 OpenRouter 默认 1824×1024 的原始 PNG；首个百炼编辑题仍在 authoritative runtime 的 source-image 交接阶段失败。Worker 现在把 hash 固定的 2K PNG 编辑源图写入原有私有内容寻址对象，仅在百炼 direct-edit 调用前通过独立 `PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT` 生成最长 900 秒的 V4 GET 签名 URL；签名 URL 不落状态、不写审计、不进入公开证据。方舟/OpenRouter 编辑输入、题集、十维评分、路由优先级、失败/unknown 策略和分辨率规则均不变。签名或源图落盘在 provider 调用前失败时记为零费用 confirmed technical failure，确保不会把本地交接错误误报成 provider unknown。
+
+各端待办：
+- [x] Benchmark Worker（私有源图持久化、独立公网 signer、900 秒边界、零调用本地失败 TDD）
+- [ ] 部署 / 运维（Worker `run` secret 必须提供和 internal endpoint 不同的 HTTPS `PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT`；部署同 SHA 后冻结新批次）
+- [x] paperbanana-api / Web / Gateway / 原生端（公开 API 与 UI 契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 full 暂停态保留已完成 canary 终态 — by Codex
 变更：canary-only 会先在执行序列后部留下其他 Provider 的成功 canary；full 从前部普通题位恢复后若遇到 unknown、价格/产物对账或预算门，状态机必须把后续未执行槽位置为 `not_executed`，但保留此前已经成功的 provider canary（以及由已确认失败 canary 派生的精确 route 失败终态）。此前 Worker/Core 镜像 verifier 错误要求中断槽位后的所有槽位一律为 `not_executed`，导致合法暂停态被拒绝并留下 started dispatch。现在两端只为经过既有 canary 证明的终态开放该例外；其他乱序终态仍 fail closed，unknown 零重试和九题/十维规则不变。
 

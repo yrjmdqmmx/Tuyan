@@ -199,14 +199,18 @@ export async function createScientificV2ProductionRunDependencies(
     'PAPERBANANA_BENCH_MONGODB_URI', 'PAPERBANANA_BENCH_BAILIAN_API_KEY', 'PAPERBANANA_BENCH_ARK_API_KEY',
     'PAPERBANANA_BENCH_OPENROUTER_API_KEY', 'PAPERBANANA_BENCH_OSS_REGION', 'PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID',
     'PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET', 'PAPERBANANA_BENCH_OSS_BUCKET', 'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT',
+    'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT',
     'PAPERBANANA_SCIENTIFIC_V2_ARTIFACT_SPOOL_DIR',
   ] as const
   if (required.some((key) => typeof env[key] !== 'string' || !env[key]!.trim() || env[key]!.trim() !== env[key])) {
     scientificV2Error('SCIENTIFIC_V2_PRODUCTION_ENV_INVALID')
   }
   try {
-    const endpoint = new URL(env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT!)
-    if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password) scientificV2Error('SCIENTIFIC_V2_PRODUCTION_ENV_INVALID')
+    const internalEndpoint = new URL(env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT!)
+    const publicEndpoint = new URL(env.PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT!)
+    if (internalEndpoint.protocol !== 'https:' || internalEndpoint.username || internalEndpoint.password
+      || publicEndpoint.protocol !== 'https:' || publicEndpoint.username || publicEndpoint.password
+      || internalEndpoint.href === publicEndpoint.href) scientificV2Error('SCIENTIFIC_V2_PRODUCTION_ENV_INVALID')
   } catch {
     scientificV2Error('SCIENTIFIC_V2_PRODUCTION_ENV_INVALID')
   }
@@ -306,16 +310,22 @@ function createDefaultScientificV2ProductionDependencies(
     },
     async createArtifactStore() {
       const { default: OSS } = await import('ali-oss')
-      const client = new OSS({
+      const common = {
         region: env.PAPERBANANA_BENCH_OSS_REGION!,
         accessKeyId: env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID!,
         accessKeySecret: env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET!,
         bucket: env.PAPERBANANA_BENCH_OSS_BUCKET!,
-        endpoint: env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT!,
         secure: true,
         authorizationV4: true,
-      })
-      return createScientificV2OssArtifactStore(client as unknown as Parameters<typeof createScientificV2OssArtifactStore>[0])
+      }
+      const client = new OSS({ ...common, endpoint: env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT! })
+      const publicSigner = env.PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT
+        ? new OSS({ ...common, endpoint: env.PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT })
+        : undefined
+      return createScientificV2OssArtifactStore(
+        client as unknown as Parameters<typeof createScientificV2OssArtifactStore>[0],
+        publicSigner as unknown as Parameters<typeof createScientificV2OssArtifactStore>[1],
+      )
     },
     async createArtifactSpool() {
       return createScientificV2ArtifactSpool(env.PAPERBANANA_SCIENTIFIC_V2_ARTIFACT_SPOOL_DIR!)

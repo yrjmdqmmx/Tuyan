@@ -452,6 +452,9 @@ if [[ "$mode" != inspect ]]; then
     required_runtime_keys+=(PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET
       PAPERBANANA_BENCH_OSS_BUCKET PAPERBANANA_BENCH_OSS_REGION PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT)
   fi
+  if [[ "$mode" == run ]]; then
+    required_runtime_keys+=(PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT)
+  fi
   if [[ "$mode" =~ ^(run|reconcile_artifact|render_public_evidence)$ ]]; then
     required_runtime_keys+=(PAPERBANANA_BENCH_MONGODB_URI)
   fi
