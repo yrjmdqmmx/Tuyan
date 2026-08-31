@@ -24,6 +24,27 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 Worker 仲裁证明在生产机内重签为 API 导入证明 — by Codex
+变更：新增零 Provider 的仲裁结果导入 staging。它绑定精确 `review_arbitrate` bundle、对应 root `0600` `review-arbitrated.json`、Worker arbitration/attestation hash、manifest 与 immutable Worker digest，先以 review signing secret 复验 Worker 的完整性证明；随后把已验证的 xhigh 结果加上 batch/sourceSet 上下文，按 API 既有 schema 重新计算 `arbitrationHash` 和专用 HMAC，并只写入生产机 root `0600` 管理员输入。两种 hash 域不混用，密钥和争议详情不进入日志。
+
+各端待办：
+- [x] 部署 / 运维（Worker 仲裁证明到 API 导入证明的域分离验签与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有仲裁导入、评分与公开接口契约不变；无需改造）
+
+### [2026-09-01] Scientific V2 xhigh 仲裁回传绑定双份已验签结果 — by Codex
+变更：新增零 Provider 的 `review_arbitrate` bundle staging。仅接受精确 draft asset 中封闭 schema 的 `reasoningEffort=xhigh` 仲裁结果，绑定 deployed SHA、manifest、两份独立 `review-validated` 文件、A/B result hash 与 sourceSetHash，并在生产机内加入 review signing secret 形成 root `0600` bundle。immutable Worker 后续会重新计算既定争议集合并拒绝缺失、额外或重复 item；automatic Judges 固定为空，Reviewer 身份、模型映射与签名密钥不进入 artifact 或日志。
+
+各端待办：
+- [x] 部署 / 运维（xhigh 仲裁回传闭合 schema、双审绑定与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有仲裁、评分与公开接口契约不变；无需改造）
+
+### [2026-09-01] Scientific V2 争议包由 immutable Worker 离线派生并保持盲化 — by Codex
+变更：新增零 Provider 的 A/B 争议导出控制面。它绑定精确 `review_pack`、两份 `review-validated` 结果、manifest、Worker digest 与各自 result hash，在 `--network none` immutable Worker 内重新验签双审、固定 automatic Judge 为 0，并按既定 `>2 分 / 红线冲突 / 低置信度` 规则派生争议。CI 仅获得保留 1 天的去模型身份 `public-arbitration.json`；`modelKey/runHash/privateMappings/privateEnvelope/attestationSecret` 均禁止出现在 artifact。无争议时明确返回 `canFinalize=true`，有争议时只供 `gpt-5.6-sol xhigh` 仲裁，不改变评分或发布公式。
+
+各端待办：
+- [x] 部署 / 运维（盲化争议 artifact、immutable Worker 双审验签与静态安全测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（现有争议阈值、仲裁与公开接口契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 已验签 A/B 结果在生产机内转管理员导入 — by Codex
 变更：新增零 Provider 的 Reviewer 结果导入 staging。它只读取精确 `review_validate` bundle 对应的 root `0600` `review-validated.json`，绑定 deployed SHA、Worker digest、manifest、role、result hash 和 result attestation hash，并使用生产 review signing secret 重新验签；随后在生产机内生成 `{batchId,result}` 管理员输入，全程不经 CI artifact、SCP 或外部草稿资产。automatic Judge 固定为 0，双审、争议阈值、九题、十维、分辨率、路由、预算、失败/unknown 与发布规则不变。
 

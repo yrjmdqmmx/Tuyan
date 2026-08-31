@@ -1,0 +1,236 @@
+name: Export Scientific V2 Review Disputes
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_worker_digest: { required: true }
+      review_pack_bundle_sha256: { required: true }
+      private_bundle_hash: { required: true }
+      reviewer_a_validation_bundle_sha256: { required: true }
+      reviewer_b_validation_bundle_sha256: { required: true }
+      reviewer_a_result_hash: { required: true }
+      reviewer_b_result_hash: { required: true }
+      manifest_hash: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  export:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact double-review envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          REVIEW_PACK_BUNDLE_SHA: ${{ inputs.review_pack_bundle_sha256 }}
+          PRIVATE_BUNDLE_HASH: ${{ inputs.private_bundle_hash }}
+          REVIEWER_A_BUNDLE_SHA: ${{ inputs.reviewer_a_validation_bundle_sha256 }}
+          REVIEWER_B_BUNDLE_SHA: ${{ inputs.reviewer_b_validation_bundle_sha256 }}
+          REVIEWER_A_RESULT_HASH: ${{ inputs.reviewer_a_result_hash }}
+          REVIEWER_B_RESULT_HASH: ${{ inputs.reviewer_b_result_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$REVIEW_PACK_BUNDLE_SHA" "$PRIVATE_BUNDLE_HASH" "$REVIEWER_A_BUNDLE_SHA" "$REVIEWER_B_BUNDLE_SHA" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$REVIEWER_A_BUNDLE_SHA" != "$REVIEWER_B_BUNDLE_SHA" && "$REVIEWER_A_RESULT_HASH" != "$REVIEWER_B_RESULT_HASH" ]]
+          [[ "$CONFIRM" == export-exact-scientific-v2-review-disputes ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Derive blind disputes with immutable Worker
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          REVIEW_PACK_BUNDLE_SHA: ${{ inputs.review_pack_bundle_sha256 }}
+          PRIVATE_BUNDLE_HASH: ${{ inputs.private_bundle_hash }}
+          REVIEWER_A_BUNDLE_SHA: ${{ inputs.reviewer_a_validation_bundle_sha256 }}
+          REVIEWER_B_BUNDLE_SHA: ${{ inputs.reviewer_b_validation_bundle_sha256 }}
+          REVIEWER_A_RESULT_HASH: ${{ inputs.reviewer_a_result_hash }}
+          REVIEWER_B_RESULT_HASH: ${{ inputs.reviewer_b_result_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+        run: |
+          set -Eeuo pipefail
+          artifact_dir="$RUNNER_TEMP/scientific-v2-public-arbitration"
+          install -d -m 0700 "$artifact_dir"
+          remote_return="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp -d /tmp/paperbanana-scientific-v2-public-arbitration.XXXXXXXXXXXX')"
+          [[ "$remote_return" =~ ^/tmp/paperbanana-scientific-v2-public-arbitration[.][A-Za-z0-9]{8,}$ ]]
+          cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_return/public-arbitration.json'; rmdir '$remote_return'" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          printf -v remote_command 'sudo env RETURN_DIR=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q REVIEW_PACK_BUNDLE_SHA=%q PRIVATE_BUNDLE_HASH=%q REVIEWER_A_BUNDLE_SHA=%q REVIEWER_B_BUNDLE_SHA=%q REVIEWER_A_RESULT_HASH=%q REVIEWER_B_RESULT_HASH=%q MANIFEST_HASH=%q bash -s' \
+            "$remote_return" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$REVIEW_PACK_BUNDLE_SHA" "$PRIVATE_BUNDLE_HASH" \
+            "$REVIEWER_A_BUNDLE_SHA" "$REVIEWER_B_BUNDLE_SHA" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          repo=/opt/paperbanana/repo
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          source_bundle="$bundle_root/$REVIEW_PACK_BUNDLE_SHA.json"
+          private_bundle="$review_private_root/$REVIEW_PACK_BUNDLE_SHA.review-private.json"
+          reviewer_a="$review_private_root/$REVIEWER_A_BUNDLE_SHA.review-validated.json"
+          reviewer_b="$review_private_root/$REVIEWER_B_BUNDLE_SHA.review-validated.json"
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          worker_image="$image_id"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          for path in "$source_bundle" "$private_bundle" "$reviewer_a" "$reviewer_b"; do
+            [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
+          done
+          [[ -d "$RETURN_DIR" && ! -L "$RETURN_DIR" && "$(stat -c %a "$RETURN_DIR")" =~ ^0?700$ ]]
+          return_uid="$(stat -c %u "$RETURN_DIR")"
+          return_gid="$(stat -c %g "$RETURN_DIR")"
+          [[ "$return_uid" =~ ^[1-9][0-9]*$ && "$return_gid" =~ ^[0-9]+$ ]]
+          input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-dispute-input.XXXXXXXXXXXX)"
+          output_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-dispute-output.XXXXXXXXXXXX)"
+          cleanup_dirs() {
+            rm -f -- "$input_dir/input.json" "$output_dir/public-arbitration.json"
+            rmdir "$input_dir" "$output_dir" 2>/dev/null || true
+          }
+          trap cleanup_dirs EXIT
+          python3 - "$source_bundle" "$private_bundle" "$reviewer_a" "$reviewer_b" "$PRIVATE_BUNDLE_HASH" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH" "$input_dir/input.json" <<'PY'
+          import hashlib
+          import json
+          import os
+          import stat
+          import sys
+
+          source_path, private_path, reviewer_a_path, reviewer_b_path, private_hash, reviewer_a_hash, reviewer_b_hash, manifest_hash, output_path = sys.argv[1:]
+
+          def protected(path, limit=64 * 1024 * 1024):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) != 0o600 or before.st_size < 2 or before.st_size > limit:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= limit:
+                      chunk = os.read(fd, min(1024 * 1024, limit + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if len(data) != before.st_size or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns) or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          def canonical(value):
+              if isinstance(value, list):
+                  return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict):
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+          def digest(value):
+              return hashlib.sha256(canonical(value).encode('utf-8')).hexdigest()
+
+          source = json.loads(protected(source_path))
+          private = json.loads(protected(private_path))
+          reviewer_a = json.loads(protected(reviewer_a_path))
+          reviewer_b = json.loads(protected(reviewer_b_path))
+          if source.get('operation') != 'review_pack' or source.get('input', {}).get('batchManifestHash') != manifest_hash or source.get('input', {}).get('state', {}).get('status') != 'completed':
+              raise RuntimeError('source')
+          if digest(private) != private_hash or private.get('batchManifestHash') != manifest_hash:
+              raise RuntimeError('private')
+          if reviewer_a.get('operation') != 'review_validate' or reviewer_a.get('providerCalls') != 0 or reviewer_a.get('result', {}).get('role') != 'A' or reviewer_a.get('result', {}).get('resultHash') != reviewer_a_hash:
+              raise RuntimeError('reviewer-a')
+          if reviewer_b.get('operation') != 'review_validate' or reviewer_b.get('providerCalls') != 0 or reviewer_b.get('result', {}).get('role') != 'B' or reviewer_b.get('result', {}).get('resultHash') != reviewer_b_hash:
+              raise RuntimeError('reviewer-b')
+          payload = {'sourceInput': source['input'], 'reviewerA': reviewer_a['result'], 'reviewerB': reviewer_b['result']}
+          encoded = (json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o440)
+          try:
+              os.fchown(fd, 0, 1000)
+              os.fchmod(fd, 0o440)
+              view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
+          chown 0:1000 "$input_dir"
+          chmod 0550 "$input_dir"
+          chown 1000:1000 "$output_dir"
+          chmod 0700 "$output_dir"
+          node_script='import fs from "node:fs";
+          import {createScientificBlindReviewPackages,finalizeScientificDoubleReview} from "/app/dist/scientific-v2-review.js";
+          const input=JSON.parse(fs.readFileSync("/run/paperbanana-dispute-input/input.json","utf8"));
+          const {attestationSecret,...packageInput}=input.sourceInput;
+          const packed=createScientificBlindReviewPackages(packageInput,attestationSecret);
+          const final=finalizeScientificDoubleReview({reviewerA:input.reviewerA,reviewerB:input.reviewerB,automaticJudges:[]},attestationSecret);
+          const publicItems=new Map(packed.reviewerA.packages.flatMap(packet=>packet.items.map(item=>[item.itemHash,{packetHash:packet.packetHash,item}])));
+          const byA=new Map(input.reviewerA.items.map(item=>[item.itemHash,item]));
+          const byB=new Map(input.reviewerB.items.map(item=>[item.itemHash,item]));
+          const disputes=final.disputes.map(dispute=>{const found=publicItems.get(dispute.itemHash),a=byA.get(dispute.itemHash),b=byB.get(dispute.itemHash);if(!found||!a||!b)throw new Error("SCIENTIFIC_V2_DISPUTE_PUBLIC_BINDING_INVALID");return{packetHash:found.packetHash,item:found.item,reasons:dispute.reasons,firstReview:{scores:a.scores,redLines:a.redLines,lowConfidence:a.lowConfidence},secondReview:{scores:b.scores,redLines:b.redLines,lowConfidence:b.lowConfidence}}});
+          const output={schemaVersion:2,batchManifestHash:packed.batchManifestHash,sourceSetHash:packed.sourceSetHash,reasoningEffort:"xhigh",automaticJudgeCalls:0,canFinalize:final.canFinalize,disputeCount:disputes.length,disputes};
+          fs.writeFileSync("/run/paperbanana-dispute-output/public-arbitration.json",JSON.stringify(output)+"\n",{encoding:"utf8",mode:0o600,flag:"wx"});'
+          timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --pids-limit 64 --memory 1g --memory-swap 1g --user 1000:1000 \
+            -v "$input_dir:/run/paperbanana-dispute-input:ro" -v "$output_dir:/run/paperbanana-dispute-output" \
+            --entrypoint node "$worker_image" --input-type=module -e "$node_script"
+          public="$output_dir/public-arbitration.json"
+          [[ -f "$public" && ! -L "$public" && "$(stat -c '%u:%g:%a' "$public")" =~ ^1000:1000:0?600$ ]]
+          jq -e --arg manifest "$MANIFEST_HASH" '
+            (keys | sort) == ["automaticJudgeCalls","batchManifestHash","canFinalize","disputeCount","disputes","reasoningEffort","schemaVersion","sourceSetHash"] and
+            .schemaVersion == 2 and .batchManifestHash == $manifest and .reasoningEffort == "xhigh" and .automaticJudgeCalls == 0 and
+            (.disputes | type) == "array" and .disputeCount == (.disputes | length) and .canFinalize == (.disputeCount == 0) and
+            ([.. | objects | keys[]] | index("privateMappings") == null) and
+            ([.. | objects | keys[]] | index("privateEnvelope") == null) and
+            ([.. | objects | keys[]] | index("attestationSecret") == null) and
+            ([.. | objects | keys[]] | index("modelKey") == null) and
+            ([.. | objects | keys[]] | index("runHash") == null)
+          ' "$public" >/dev/null
+          destination="$RETURN_DIR/public-arbitration.json"
+          install -o "$return_uid" -g "$return_gid" -m 0600 "$public" "$destination"
+          public_sha="$(sha256sum "$public" | awk '{print $1}')"
+          dispute_count="$(jq -r .disputeCount "$public")"
+          printf '{"operation":"export-scientific-v2-review-disputes","providerCalls":0,"manifestHash":"%s","publicSha256":"%s","disputeCount":%s}\n' "$MANIFEST_HASH" "$public_sha" "$dispute_count"
+          REMOTE
+          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/public-arbitration.json" "$artifact_dir/public-arbitration.json"
+          chmod 0600 "$artifact_dir/public-arbitration.json"
+          jq -e --arg manifest "$MANIFEST_HASH" '.batchManifestHash == $manifest and .automaticJudgeCalls == 0 and ([.. | objects | keys[]] | index("modelKey") == null)' "$artifact_dir/public-arbitration.json" >/dev/null
+
+      - name: Upload short-lived blind arbitration package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scientific-v2-public-arbitration-${{ inputs.manifest_hash }}
+          path: ${{ runner.temp }}/scientific-v2-public-arbitration/public-arbitration.json
+          if-no-files-found: error
+          retention-days: 1

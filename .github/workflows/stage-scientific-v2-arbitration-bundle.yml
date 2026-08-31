@@ -1,0 +1,239 @@
+name: Stage Scientific V2 Arbitration Bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_worker_digest: { required: true }
+      reviewer_a_validation_bundle_sha256: { required: true }
+      reviewer_b_validation_bundle_sha256: { required: true }
+      reviewer_a_result_hash: { required: true }
+      reviewer_b_result_hash: { required: true }
+      manifest_hash: { required: true }
+      release_id: { required: true }
+      asset_id: { required: true }
+      asset_name: { required: true }
+      asset_sha256: { required: true }
+      asset_size: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact xhigh arbitration envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          REVIEWER_A_BUNDLE_SHA: ${{ inputs.reviewer_a_validation_bundle_sha256 }}
+          REVIEWER_B_BUNDLE_SHA: ${{ inputs.reviewer_b_validation_bundle_sha256 }}
+          REVIEWER_A_RESULT_HASH: ${{ inputs.reviewer_a_result_hash }}
+          REVIEWER_B_RESULT_HASH: ${{ inputs.reviewer_b_result_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$REVIEWER_A_BUNDLE_SHA" "$REVIEWER_B_BUNDLE_SHA" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH" "$ASSET_SHA"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$REVIEWER_A_BUNDLE_SHA" != "$REVIEWER_B_BUNDLE_SHA" && "$REVIEWER_A_RESULT_HASH" != "$REVIEWER_B_RESULT_HASH" ]]
+          [[ "$RELEASE_ID" =~ ^[1-9][0-9]*$ && "$ASSET_ID" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" -le 67108864 ]]
+          [[ "$ASSET_NAME" == "scientific-v2-arbitration-$ASSET_SHA.json" ]]
+          [[ "$CONFIRM" == stage-exact-scientific-v2-xhigh-arbitration-bundle ]]
+
+      - name: Download exact private draft arbitration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          RELEASE_ID: ${{ inputs.release_id }}
+          ASSET_ID: ${{ inputs.asset_id }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+        run: |
+          set -Eeuo pipefail
+          release="$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID")"
+          jq -e --arg deployed "$DEPLOYED_SHA" --argjson assetId "$ASSET_ID" --arg name "$ASSET_NAME" --argjson size "$ASSET_SIZE" '
+            .draft == true and .prerelease == false and .target_commitish == $deployed and
+            ([.assets[] | select(.id == $assetId and .name == $name and .size == $size and .state == "uploaded")] | length) == 1
+          ' <<<"$release" >/dev/null
+          input="$RUNNER_TEMP/$ASSET_NAME"
+          gh api -H 'Accept: application/octet-stream' "repos/$GITHUB_REPOSITORY/releases/assets/$ASSET_ID" >"$input"
+          chmod 0600 "$input"
+          [[ "$(stat -c %s "$input")" == "$ASSET_SIZE" && "$(sha256sum "$input" | awk '{print $1}')" == "$ASSET_SHA" ]]
+          jq -e --arg manifest "$MANIFEST_HASH" '
+            (keys | sort) == ["batchManifestHash","reasoningEffort","results","schemaVersion","sourceSetHash"] and
+            .schemaVersion == 2 and .batchManifestHash == $manifest and .reasoningEffort == "xhigh" and
+            (.sourceSetHash | test("^[a-f0-9]{64}$")) and (.results | type) == "array" and (.results | length) > 0 and (.results | length) <= 4096 and
+            all(.results[];
+              (keys | sort) == ["itemHash","redLines","scores"] and (.itemHash | test("^[a-f0-9]{64}$")) and
+              (.redLines | type) == "array" and (.redLines | length) <= 16 and all(.redLines[]; type == "string") and
+              (.scores | type) == "object" and all(.scores[]; type == "number" and . >= 0 and . <= 10)
+            ) and ([.results[].itemHash] | unique | length) == (.results | length) and
+            ([.. | objects | keys[]] | index("privateMappings") == null) and
+            ([.. | objects | keys[]] | index("privateEnvelope") == null) and
+            ([.. | objects | keys[]] | index("attestationSecret") == null) and
+            ([.. | objects | keys[]] | map(test("(?:API_KEY|ACCESS_KEY|SECRET_KEY|PRIVATE_KEY)$")) | any | not)
+          ' "$input" >/dev/null
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage exact protected arbitration bundle
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          REVIEWER_A_BUNDLE_SHA: ${{ inputs.reviewer_a_validation_bundle_sha256 }}
+          REVIEWER_B_BUNDLE_SHA: ${{ inputs.reviewer_b_validation_bundle_sha256 }}
+          REVIEWER_A_RESULT_HASH: ${{ inputs.reviewer_a_result_hash }}
+          REVIEWER_B_RESULT_HASH: ${{ inputs.reviewer_b_result_hash }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          ASSET_NAME: ${{ inputs.asset_name }}
+          ASSET_SHA: ${{ inputs.asset_sha256 }}
+          ASSET_SIZE: ${{ inputs.asset_size }}
+        run: |
+          set -Eeuo pipefail
+          input="$RUNNER_TEMP/$ASSET_NAME"
+          remote_input="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp /tmp/paperbanana-scientific-v2-arbitration.XXXXXXXXXXXX.json')"
+          [[ "$remote_input" =~ ^/tmp/paperbanana-scientific-v2-arbitration[.][A-Za-z0-9]{8,}[.]json$ ]]
+          cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_input'" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          scp "$input" "$DEPLOY_USER@$DEPLOY_HOST:$remote_input"
+          printf -v remote_command 'sudo env TRANSFER_INPUT=%q ASSET_SHA=%q ASSET_SIZE=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q REVIEWER_A_BUNDLE_SHA=%q REVIEWER_B_BUNDLE_SHA=%q REVIEWER_A_RESULT_HASH=%q REVIEWER_B_RESULT_HASH=%q MANIFEST_HASH=%q bash -s' \
+            "$remote_input" "$ASSET_SHA" "$ASSET_SIZE" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$REVIEWER_A_BUNDLE_SHA" "$REVIEWER_B_BUNDLE_SHA" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          repo=/opt/paperbanana/repo
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          core_env=/opt/paperbanana/secrets/core.env
+          reviewer_a="$review_private_root/$REVIEWER_A_BUNDLE_SHA.review-validated.json"
+          reviewer_b="$review_private_root/$REVIEWER_B_BUNDLE_SHA.review-validated.json"
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          [[ -f "$TRANSFER_INPUT" && ! -L "$TRANSFER_INPUT" && "$(stat -c %s "$TRANSFER_INPUT")" == "$ASSET_SIZE" && "$(sha256sum "$TRANSFER_INPUT" | awk '{print $1}')" == "$ASSET_SHA" ]]
+          for path in "$reviewer_a" "$reviewer_b" "$core_env"; do
+            [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
+          done
+          output="$(mktemp /tmp/paperbanana-scientific-v2-arbitration-bundle.XXXXXXXXXXXX.json)"
+          cleanup_output() { rm -f -- "$output"; }
+          trap cleanup_output EXIT
+          python3 - "$reviewer_a" "$reviewer_b" "$core_env" "$TRANSFER_INPUT" "$ASSET_SHA" "$ASSET_SIZE" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH" "$output" <<'PY'
+          import hashlib
+          import json
+          import os
+          import stat
+          import sys
+
+          reviewer_a_path, reviewer_b_path, core_env_path, arbitration_path, arbitration_sha, arbitration_size_text, reviewer_a_hash, reviewer_b_hash, manifest_hash, output_path = sys.argv[1:]
+          arbitration_size = int(arbitration_size_text)
+
+          def protected(path, owner, mode, expected_sha=None, expected_size=None, limit=64 * 1024 * 1024):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1 or before.st_uid != owner or stat.S_IMODE(before.st_mode) != mode or before.st_size < 2 or before.st_size > limit:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= limit:
+                      chunk = os.read(fd, min(1024 * 1024, limit + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if (len(data) != before.st_size or (expected_size is not None and len(data) != expected_size)
+                          or (expected_sha is not None and hashlib.sha256(data).hexdigest() != expected_sha)
+                          or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns)
+                          or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino)):
+                      raise RuntimeError('drift')
+                  return data
+              finally:
+                  os.close(fd)
+
+          reviewer_a = json.loads(protected(reviewer_a_path, 0, 0o600))
+          reviewer_b = json.loads(protected(reviewer_b_path, 0, 0o600))
+          arbitration_owner = os.stat(arbitration_path, follow_symlinks=False).st_uid
+          arbitration = json.loads(protected(arbitration_path, arbitration_owner, 0o600, arbitration_sha, arbitration_size))
+          if reviewer_a.get('operation') != 'review_validate' or reviewer_a.get('providerCalls') != 0 or reviewer_a.get('result', {}).get('role') != 'A' or reviewer_a.get('result', {}).get('batchManifestHash') != manifest_hash or reviewer_a.get('result', {}).get('resultHash') != reviewer_a_hash:
+              raise RuntimeError('reviewer-a')
+          if reviewer_b.get('operation') != 'review_validate' or reviewer_b.get('providerCalls') != 0 or reviewer_b.get('result', {}).get('role') != 'B' or reviewer_b.get('result', {}).get('batchManifestHash') != manifest_hash or reviewer_b.get('result', {}).get('resultHash') != reviewer_b_hash:
+              raise RuntimeError('reviewer-b')
+          if arbitration.get('schemaVersion') != 2 or arbitration.get('batchManifestHash') != manifest_hash or arbitration.get('reasoningEffort') != 'xhigh' or arbitration.get('sourceSetHash') != reviewer_a['result'].get('sourceSetHash') or arbitration.get('sourceSetHash') != reviewer_b['result'].get('sourceSetHash'):
+              raise RuntimeError('arbitration')
+          env_text = protected(core_env_path, 0, 0o600, limit=1024 * 1024).decode('utf-8')
+          secrets = [line.split('=', 1)[1] for line in env_text.splitlines() if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
+          if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096:
+              raise RuntimeError('secret')
+          bundle = {
+              'operation': 'review_arbitrate',
+              'gate': {'enabled': False, 'concurrency': 1, 'lockName': '/run/lock/paperbanana-hk-production.lock'},
+              'input': {
+                  'reviewerA': reviewer_a['result'],
+                  'reviewerB': reviewer_b['result'],
+                  'automaticJudges': [],
+                  'arbitration': {'reasoningEffort': 'xhigh', 'results': arbitration['results']},
+                  'attestationSecret': secrets[0],
+              },
+          }
+          encoded = (json.dumps(bundle, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
+          try:
+              os.fchmod(fd, 0o600)
+              view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1:
+                      raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
+          chmod 0600 "$output"
+          bundle_sha="$(sha256sum "$output" | awk '{print $1}')"
+          destination="$bundle_root/$bundle_sha.json"
+          if [[ -e "$destination" ]]; then
+            [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
+            cmp -s "$output" "$destination"
+          else
+            install -o 0 -g 0 -m 0600 "$output" "$destination"
+          fi
+          printf '{"operation":"stage-scientific-v2-arbitration-bundle","providerCalls":0,"manifestHash":"%s","arbitrationSubmissionSha256":"%s","bundleHash":"%s"}\n' \
+            "$MANIFEST_HASH" "$ASSET_SHA" "$bundle_sha"
+          REMOTE
