@@ -25,6 +25,7 @@ const priceAuthorizationWorkflow = fileURLToPath(new URL('../../../.github/workf
 const runBundleStager = fileURLToPath(new URL('../scripts/stage-scientific-v2-run-bundle.sh', import.meta.url))
 const runBundleStagerWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-run-bundle.yml', import.meta.url))
 const artifactReconciliationStagerWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-artifact-reconciliation.yml', import.meta.url))
+const artifactReconciliationInspectionWorkflow = fileURLToPath(new URL('../../../.github/workflows/inspect-scientific-v2-artifact-reconciliation.yml', import.meta.url))
 const workerPackage = fileURLToPath(new URL('../../../apps/benchmark-worker/package.json', import.meta.url))
 
 const canonicalJson = (value) => Array.isArray(value)
@@ -270,6 +271,19 @@ test('artifact reconciliation stager derives the only paused slot from protected
   assert.match(workflow, /"operation":\s*"reconcile_artifact"/)
   assert.match(workflow, /ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 /)
   assert.doesNotMatch(workflow, /API_KEY|ACCESS_KEY|provider dispatch|fetch\(|curl\s|wget\s/i)
+})
+
+test('artifact reconciliation inspection compares DB, spool and OSS without writes or provider calls', () => {
+  assert.equal(existsSync(artifactReconciliationInspectionWorkflow), true)
+  const workflow = readFileSync(artifactReconciliationInspectionWorkflow, 'utf8')
+  assert.match(workflow, /environment:\s*paperbanana-production/)
+  assert.match(workflow, /artifactRecovery/)
+  assert.match(workflow, /spoolHashMatches/)
+  assert.match(workflow, /sourceObject/)
+  assert.match(workflow, /outputObject/)
+  assert.match(workflow, /metadataMatches/)
+  assert.match(workflow, /ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 /)
+  assert.doesNotMatch(workflow, /[.]put\(|insertOne|updateOne|findOneAndUpdate|deleteOne|provider dispatch/i)
 })
 
 test('isolated Node canonical preflight exactly matches benchmark canonical hashes', () => {

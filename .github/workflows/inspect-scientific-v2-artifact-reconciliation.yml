@@ -1,0 +1,107 @@
+name: Inspect Scientific V2 Artifact Reconciliation
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest_hash:
+        required: true
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-scientific-v2-artifact-inspection
+  cancel-in-progress: true
+
+jobs:
+  inspect:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate request
+        env:
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
+          [[ "$CONFIRM" == inspect-exact-scientific-v2-artifact-reconciliation-read-only ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Compare DB binding, protected spool and OSS objects
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q bash -s' "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          diagnostic="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" "$worker_id" node --input-type=module -e '
+          import { createHash } from "node:crypto";
+          import OSS from "ali-oss";
+          import { MongoClient } from "mongodb";
+          const manifestHash=process.env.SCIENTIFIC_V2_MANIFEST_HASH;
+          const mongo=new MongoClient(process.env.PAPERBANANA_BENCH_MONGODB_URI);
+          await mongo.connect();
+          try {
+            const db=mongo.db(process.env.PAPERBANANA_BENCH_MONGO_DB||"paperbanana_benchmark");
+            const batch=await db.collection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash});
+            if(!batch||batch.state?.status!=="paused"||batch.state?.pauseReason!=="artifact_reconciliation_required")throw new Error("SCIENTIFIC_V2_ARTIFACT_STATE_INVALID");
+            const slots=batch.state.slots.filter(slot=>slot.status==="artifact_reconciliation");
+            if(slots.length!==1)throw new Error("SCIENTIFIC_V2_ARTIFACT_SLOT_INVALID");
+            const slot=slots[0];
+            const attempt=slot.attempts.at(-1);
+            const dispatch=await db.collection("paperbanana_benchmark_scientific_v2_dispatches").findOne({manifestHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,status:"committed"});
+            if(!attempt||attempt.responseClass!=="artifact_reconciliation_required"||!dispatch?.artifactRecovery)throw new Error("SCIENTIFIC_V2_ARTIFACT_BINDING_INVALID");
+            const sourceHash=batch.manifest.cases.find(item=>item.kind==="edit")?.sourceHash;
+            if(typeof sourceHash!=="string")throw new Error("SCIENTIFIC_V2_ARTIFACT_SOURCE_INVALID");
+            const client=new OSS({region:process.env.PAPERBANANA_BENCH_OSS_REGION,accessKeyId:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID,accessKeySecret:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET,bucket:process.env.PAPERBANANA_BENCH_OSS_BUCKET,endpoint:process.env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT,secure:true,authorizationV4:true});
+            const header=(headers,name)=>{const item=Object.entries(headers||{}).find(([key])=>key.toLowerCase()===name);return item?String(item[1]):""};
+            const inspectObject=async(key,expectedHash,expectedBytes)=>{
+              try{
+                const [object,acl]=await Promise.all([client.get(key),client.getACL(key)]);
+                const bytes=Buffer.from(object.content);const headers=object.headers||object.res?.headers||{};
+                return {exists:true,byteSize:bytes.length,contentHashMatches:createHash("sha256").update(bytes).digest("hex")===expectedHash,byteSizeMatches:expectedBytes===null||bytes.length===expectedBytes,metadataMatches:header(headers,"x-oss-meta-sha256")===expectedHash&&header(headers,"cache-control")==="private, no-store"&&String(acl?.acl||"")==="private",contentType:header(headers,"content-type").split(";",1)[0]};
+              }catch(error){
+                const facts={status:Number.isInteger(error?.status)?error.status:null,code:typeof error?.code==="string"?error.code:null,errorClass:String(error?.name||"Error")};
+                return {exists:false,...facts};
+              }
+            };
+            const sourceObject=await inspectObject(`bench/scientific-v2/private/objects/${sourceHash}.png`,sourceHash,null);
+            const outputObject=await inspectObject(`bench/scientific-v2/private/objects/${attempt.rawImageHash}.${attempt.format}`,attempt.rawImageHash,attempt.byteSize);
+            process.stdout.write(JSON.stringify({manifestHash,stateHash:batch.stateHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,attempt:{rawImageHash:attempt.rawImageHash,format:attempt.format,byteSize:attempt.byteSize,payloadHash:attempt.payloadHash},artifactRecovery:dispatch.artifactRecovery,sourceObject,outputObject}));
+          } finally {await mongo.close();}
+          ')"
+          spool_id="$(jq -r '.artifactRecovery.spoolId' <<<"$diagnostic")"
+          expected_hash="$(jq -r '.attempt.rawImageHash' <<<"$diagnostic")"
+          expected_bytes="$(jq -r '.attempt.byteSize' <<<"$diagnostic")"
+          [[ "$spool_id" =~ ^[a-f0-9]{64}[.](png|jpeg|webp)$ && "$expected_hash" =~ ^[a-f0-9]{64}$ && "$expected_bytes" =~ ^[1-9][0-9]*$ ]]
+          spool_path="/opt/paperbanana/data/scientific-v2-artifact-spool/$spool_id"
+          spool_exists=false spool_hash='' spool_bytes=0 spool_mode=''
+          if [[ -f "$spool_path" && ! -L "$spool_path" ]]; then
+            spool_exists=true
+            spool_hash="$(sha256sum "$spool_path" | awk '{print $1}')"
+            spool_bytes="$(stat -c %s "$spool_path")"
+            spool_mode="$(stat -c '%u:%g:%a:%h' "$spool_path")"
+          fi
+          jq -cn --argjson diagnostic "$diagnostic" --argjson spoolExists "$spool_exists" \
+            --arg spoolHash "$spool_hash" --argjson spoolBytes "$spool_bytes" --arg spoolMode "$spool_mode" \
+            --arg expectedHash "$expected_hash" --argjson expectedBytes "$expected_bytes" \
+            '$diagnostic + {spoolExists:$spoolExists,spoolHashMatches:($spoolHash==$expectedHash),spoolByteSizeMatches:($spoolBytes==$expectedBytes),spoolMode:$spoolMode}'
+          REMOTE
