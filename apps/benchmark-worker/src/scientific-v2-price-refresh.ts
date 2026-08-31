@@ -273,21 +273,33 @@ function normalizedOfficialText(bytes: Buffer) {
 function assertArkPriceEvidence(bytes: Buffer) {
   const text = normalizedOfficialText(bytes)
   const markers = ['doubao-seedream-5-0-pro', 'doubao-seedream-5-0-lite', 'doubao-seedream-4-5', 'doubao-seedream-4-0']
-  const positions = markers.map((marker) => text.indexOf(marker))
-  if (positions.some((position) => position < 0) || positions.some((position, index) => index > 0 && position <= positions[index - 1])) {
-    scientificV2Error('SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID')
+  const windowsFor = (marker: string) => {
+    const windows: string[] = []
+    let offset = 0
+    while (offset < text.length) {
+      const position = text.indexOf(marker, offset)
+      if (position < 0) break
+      windows.push(text.slice(position, position + 4000))
+      offset = position + marker.length
+    }
+    return windows
   }
-  const sections = markers.map((marker, index) => text.slice(positions[index], positions[index + 1] ?? text.length))
-  const pro = sections[0]
-  if (!/首张(?:输入图片|图片)?免费/.test(pro) || !/第\s*2\s*张起\s*[：:]?\s*0\.02(?:\s*元)?/.test(pro)
-    || !/(?:不超过|≤)\s*261\s*万像素[^；;，,。]{0,80}0\.30(?:\s*元\s*\/\s*张)?/.test(pro)
-    || !/(?:超过|大于|>)\s*261\s*万像素[^；;，,。]{0,80}0\.60(?:\s*元\s*\/\s*张)?/.test(pro)) {
+  const proMatches = windowsFor(markers[0]).some((window) => {
+    const free = /首张(?:输入图片|图片)?免费/.test(window)
+    const input = /第\s*2\s*张起\s*[：:]?\s*0\.02(?:\s*元)?/.exec(window)?.index ?? -1
+    const low = /(?:不超过|≤)\s*261\s*万像素[^；;，,。]{0,120}0\.30(?:\s*元\s*\/\s*张)?/.exec(window)?.index ?? -1
+    const high = /(?:超过|大于|>)\s*261\s*万像素[^；;，,。]{0,120}0\.60(?:\s*元\s*\/\s*张)?/.exec(window)?.index ?? -1
+    return free && input >= 0 && low > input && high > low
+  })
+  if (!proMatches) {
     scientificV2Error('SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID')
   }
   const expected = ['0.22', '0.25', '0.20']
-  for (let index = 1; index < sections.length; index += 1) {
+  for (let index = 1; index < markers.length; index += 1) {
     const expectedPrice = expected[index - 1]
-    if (!new RegExp(`(?:^|[^\\d])${escaped(expectedPrice)}(?:\\s*元\\s*\\/\\s*张)?(?=$|[^\\d])`).test(sections[index])) {
+    if (!windowsFor(markers[index]).some((window) => new RegExp(
+      `(?:^|[^\\d])${escaped(expectedPrice)}(?:\\s*元\\s*\\/\\s*张)?(?=$|[^\\d])`,
+    ).test(window))) {
       scientificV2Error('SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID')
     }
   }
