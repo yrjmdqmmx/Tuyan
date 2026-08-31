@@ -135,9 +135,9 @@ jobs:
             .github/workflows/run-scientific-v2-operator.yml \
             deploy/hk-single-host/compose.yaml \
             deploy/hk-single-host/scripts/run-scientific-v2-operator.sh
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_preflight"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_preflight"
           printf -v remote_command 'cd %q && sudo %q --mode %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --bundle-sha256 %q --registry-hash %q --suite-hash %q --price-hash %q --manifest-hash %q --model-count %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-operator.sh \
             "$MODE" "$EXPECTED_SHA" "$EXPECTED_CORE_DIGEST" "$EXPECTED_WORKER_DIGEST" "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$CONFIRM"
           if (( ${#apply_args[@]} )); then remote_command+=' --apply'; fi
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"

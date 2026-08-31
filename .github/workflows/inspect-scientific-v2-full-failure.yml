@@ -47,7 +47,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q bash -s' "$MANIFEST_HASH"
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9

@@ -20,6 +20,7 @@ import { test } from 'node:test'
 
 const operator = fileURLToPath(new URL('../scripts/run-scientific-v2-operator.sh', import.meta.url))
 const workflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-operator.yml', import.meta.url))
+const failureInspectionWorkflow = fileURLToPath(new URL('../../../.github/workflows/inspect-scientific-v2-full-failure.yml', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
 const registryHash = 'b'.repeat(64)
 const suiteHash = 'c'.repeat(64)
@@ -565,6 +566,13 @@ test('manual workflow defaults to inspect and cannot widen deployment or leak cr
   assert.match(source, /run-exact-scientific-v2-bundle-disabled-worker/)
   assert.match(source, /inspect-scientific-v2-disabled-worker/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|OSS_ACCESS_KEY_SECRET|docker\s+(?:build|pull)|compose[^\n]*(?:up|pull)|build-images/)
+})
+
+test('long-running scientific v2 SSH sessions send keepalives so results survive idle network timeouts', () => {
+  for (const workflowPath of [workflow, failureInspectionWorkflow]) {
+    const source = readFileSync(workflowPath, 'utf8')
+    assert.match(source, /ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 /)
+  }
 })
 
 test('manual workflow exposes the complete protected scientific v2 phase set with exact per-phase confirmation', () => {
