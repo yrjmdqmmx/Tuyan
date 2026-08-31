@@ -2623,6 +2623,27 @@ test('Bailian image-content fallback uses the current registered vision model', 
   assert.deepEqual(models, ['glm-5.2', 'qwen3.7-plus'])
 })
 
+test('Bailian application-level image errors retain a concrete provider response status', async () => {
+  const legacy = await loadLegacy()
+  const responses = [
+    Response.json({ status_code: 403, code: 'AccessDenied', message: 'model entitlement missing' }),
+    Response.json({ code: 'InvalidParameter', message: 'request rejected before generation' }),
+  ]
+  legacy.configureRuntimeFetch(async () => responses.shift()!)
+  try {
+    await assert.rejects(
+      legacy.callImageModel('bailian', 'qwen-image-3.0-pro', 'key', 'diagram', '16:9', '', '2K'),
+      (error: unknown) => error instanceof Error && (error as Error & { status?: number }).status === 403,
+    )
+    await assert.rejects(
+      legacy.callImageModel('bailian', 'qwen-image-3.0-pro', 'key', 'diagram', '16:9', '', '2K'),
+      (error: unknown) => error instanceof Error && (error as Error & { status?: number }).status === 422,
+    )
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
 test('OpenRouter routes every dedicated image catalog model to POST /images', async () => {
   const legacy = await loadLegacy()
   const calls: Array<{ url: string; body: any }> = []

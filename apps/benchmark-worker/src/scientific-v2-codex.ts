@@ -41,7 +41,6 @@ async function normalizeToolCall(call: unknown, scientificCase: typeof PB_SCIENT
     image = await inspectScientificV2Image(call.bytes)
     if (image.rawImageHash !== call.sha256) scientificV2Error('SCIENTIFIC_V2_CODEX_ARTIFACT_HASH_MISMATCH')
     if (image.format !== call.format || image.width !== call.width || image.height !== call.height) scientificV2Error('SCIENTIFIC_V2_CODEX_ARTIFACT_METADATA_MISMATCH')
-    if (Math.max(image.width, image.height) < 2048 || Math.min(image.width, image.height) < 1024) scientificV2Error('SCIENTIFIC_V2_CODEX_ARTIFACT_RESOLUTION_INVALID')
   } else if (call.bytes !== null || call.sha256 !== null || call.format !== null || call.width !== null || call.height !== null) {
     scientificV2Error('SCIENTIFIC_V2_CODEX_FAILED_CALL_ARTIFACT_FORBIDDEN')
   }

@@ -24,6 +24,15 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 百炼应用层失败保留可确认状态 — by Codex
+变更：生产 full 批次已成功持久化 20 张原始图片，但 `qwen-image-3.0-pro` 首题遇到百炼 HTTP 200 包内的 `status_code/code` 错误时，legacy authoritative image runtime 只抛出无状态的普通 Error，Worker 因此按安全规则记录为 `unknown_provider_outcome` 并暂停。现在百炼明确声明的非 200 `status_code` 保留其 4xx/5xx 状态，只有 `code` 的应用层拒绝映射为 422；Worker 既有可信 own-property status 门禁会将其作为 confirmed failure，仍按最多 4 次总尝试处理。网络断开、超时、无响应等真正不确定结果仍不携带 status，继续零重试并暂停。同期 GPT Image 2 内置审计 9/9 一次成功，但内置渠道不提供尺寸参数；Codex importer 因而移除旧的 2048×1024 最低门槛，只对该固定默认尺寸渠道完整解码并记录真实像素、格式、字节和 SHA。三家可配置 provider 仍按冻结 route 请求最高 2K，并同样记录实际像素。九题、十维、canonical 路由、预算和评分规则均不变；旧 unknown 批次保留审计，不改写状态，修复后使用新代码 SHA 冻结新批次。
+
+各端待办：
+- [x] paperbanana-api / Laf authoritative image runtime（HTTP 200 应用层错误 403/422 RED/GREEN；API 357 tests）
+- [x] Benchmark Worker（own-property status 与 unknown 防伪门禁不变；Codex 默认尺寸实测像素导入 RED/GREEN）
+- [ ] 部署 / 运维（Core/Worker 以同一新 immutable SHA 部署后重新刷新价格、冻结并执行 V2）
+- [x] Web / Gateway / 原生端（公开 API 与 UI 契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 私有证据在无 GetObjectACL 权限时做同字节 ACL 重申 — by Codex
 变更：生产 Benchmark OSS RAM 用户可正常 Get/Put 私有内容寻址对象，但缺少独立 `oss:GetObjectAcl`，导致固定编辑源图已存在时被误判为本地产物对账失败；已生成的方舟编辑 PNG 因此只进入受保护 spool，没有丢失或重复调用 Provider。Worker 现在仅在 GetObject/GetStream 得到的字节、SHA-256、MIME、`private, no-store` 和内容寻址键全部精确匹配，且 GetObjectACL 明确返回 403 `AccessDenied` 时，使用同一字节、同一元数据幂等覆盖并重申 `private` ACL。任何内容/元数据差异、未知 ACL 错误或重申写入失败仍 fail closed；不降低私有证据规则，不改变九题、十维、路由、分辨率、重试、预算或公开 API。
 

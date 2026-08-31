@@ -6019,10 +6019,25 @@ async function parseDashScopeResponse(response: Response, maxBytes?: number, lab
     ? await parseBoundedModelResponse(response, maxBytes, label)
     : await parseModelResponse(response)
   if (data?.status_code && data.status_code !== 200) {
-    throw new Error(data?.message || data?.code || `DashScope HTTP ${data.status_code}`)
+    const declaredStatus = Number(data.status_code)
+    const error = new Error(data?.message || data?.code || `DashScope HTTP ${data.status_code}`) as Error & { status: number }
+    Object.defineProperty(error, 'status', {
+      value: Number.isInteger(declaredStatus) && declaredStatus >= 400 && declaredStatus <= 599 ? declaredStatus : 422,
+      enumerable: false,
+      configurable: false,
+      writable: false,
+    })
+    throw error
   }
   if (data?.code) {
-    throw new Error(data?.message || data.code)
+    const error = new Error(data?.message || data.code) as Error & { status: number }
+    Object.defineProperty(error, 'status', {
+      value: 422,
+      enumerable: false,
+      configurable: false,
+      writable: false,
+    })
+    throw error
   }
   return data
 }

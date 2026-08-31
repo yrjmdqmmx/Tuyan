@@ -1218,7 +1218,7 @@ async function codexArtifacts(overrides: Record<string, unknown> = {}) {
   }
 }
 
-test('Codex artifact import validates the first formal canary and all nine original 2K artifacts without request-id disclosure', async () => {
+test('Codex artifact import validates the first formal canary and records default-only output pixels without request-id disclosure', async () => {
   const result = await importScientificCodexArtifacts(await codexArtifacts())
   assert.equal(result.publicIdentity, 'OpenAI GPT Image 2 · Codex 内置渠道')
   assert.equal(result.modelId, 'codex:gpt-image-2')
@@ -1246,15 +1246,19 @@ test('Codex artifact import validates the first formal canary and all nine origi
   const wrongFormat = await codexArtifacts()
   wrongFormat.toolCalls[0].format = 'jpeg'
   await assert.rejects(() => importScientificCodexArtifacts(wrongFormat), /SCIENTIFIC_V2_CODEX_ARTIFACT_METADATA_MISMATCH/)
-  const smallPng = await sharp({ create: { width: 1024, height: 576, channels: 3, background: '#fff' } }).png().toBuffer()
-  const small = await codexArtifacts()
-  Object.assign(small.toolCalls[0], {
-    bytes: smallPng,
-    sha256: createHash('sha256').update(smallPng).digest('hex'),
-    width: 1024,
-    height: 576,
+  const defaultPng = await sharp({ create: { width: 1774, height: 887, channels: 3, background: '#fff' } }).png().toBuffer()
+  const defaultSized = await codexArtifacts()
+  Object.assign(defaultSized.toolCalls[0], {
+    bytes: defaultPng,
+    sha256: createHash('sha256').update(defaultPng).digest('hex'),
+    width: 1774,
+    height: 887,
   })
-  await assert.rejects(() => importScientificCodexArtifacts(small), /SCIENTIFIC_V2_CODEX_ARTIFACT_RESOLUTION_INVALID/)
+  const defaultResult = await importScientificCodexArtifacts(defaultSized)
+  assert.deepEqual(
+    { width: defaultResult.attempts[0].width, height: defaultResult.attempts[0].height },
+    { width: 1774, height: 887 },
+  )
   const wrongEditSource = await codexArtifacts()
   Object.assign(wrongEditSource.toolCalls[6], { sourceHash: H64('f') })
   await assert.rejects(() => importScientificCodexArtifacts(wrongEditSource), /SCIENTIFIC_V2_CODEX_EDIT_BINDING_INVALID/)
