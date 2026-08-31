@@ -2,14 +2,15 @@
 set -Eeuo pipefail
 umask 077
 
-expected_sha='' manifest_sha256='' state_sha256='' attestation_sha256='' manifest_hash='' registry_hash='' suite_hash='' price_hash='' execution_phase='' confirm=''
+expected_sha='' expected_worker_digest='' manifest_sha256='' state_sha256='' attestation_sha256='' manifest_hash='' registry_hash='' suite_hash='' price_hash='' execution_phase='' confirm=''
 usage() {
-  echo 'usage: stage-scientific-v2-run-bundle.sh --expected-sha 40_HEX --manifest-sha256 64_HEX --state-sha256 64_HEX --attestation-result-sha256 64_HEX --manifest-hash 64_HEX --registry-hash 64_HEX --suite-hash 64_HEX --price-hash 64_HEX --execution-phase canary-only|full --confirm stage-scientific-v2-run-bundle' >&2
+  echo 'usage: stage-scientific-v2-run-bundle.sh --expected-sha 40_HEX --expected-worker-digest 64_HEX --manifest-sha256 64_HEX --state-sha256 64_HEX --attestation-result-sha256 64_HEX --manifest-hash 64_HEX --registry-hash 64_HEX --suite-hash 64_HEX --price-hash 64_HEX --execution-phase canary-only|full --confirm stage-scientific-v2-run-bundle' >&2
   exit 64
 }
 while (($#)); do
   case "$1" in
     --expected-sha) expected_sha="${2:-}"; shift 2 ;;
+    --expected-worker-digest) expected_worker_digest="${2:-}"; shift 2 ;;
     --manifest-sha256) manifest_sha256="${2:-}"; shift 2 ;;
     --state-sha256) state_sha256="${2:-}"; shift 2 ;;
     --attestation-result-sha256) attestation_sha256="${2:-}"; shift 2 ;;
@@ -22,7 +23,7 @@ while (($#)); do
     *) usage ;;
   esac
 done
-[[ "$expected_sha" =~ ^[a-f0-9]{40}$ && "$manifest_sha256" =~ ^[a-f0-9]{64}$
+[[ "$expected_sha" =~ ^[a-f0-9]{40}$ && "$expected_worker_digest" =~ ^[a-f0-9]{64}$ && "$manifest_sha256" =~ ^[a-f0-9]{64}$
   && "$state_sha256" =~ ^[a-f0-9]{64}$ && "$attestation_sha256" =~ ^[a-f0-9]{64}$
   && "$manifest_hash" =~ ^[a-f0-9]{64}$ && "$registry_hash" =~ ^[a-f0-9]{64}$
   && "$suite_hash" =~ ^[a-f0-9]{64}$ && "$price_hash" =~ ^[a-f0-9]{64}$
@@ -33,6 +34,7 @@ repo_root='/opt/paperbanana/repo'
 bundle_dir='/opt/paperbanana/operator-bundles/scientific-v2'
 admin_result_dir='/opt/paperbanana/operator-private/scientific-v2/admin-results'
 core_env='/opt/paperbanana/secrets/core.env'
+deploy_env="$repo_root/deploy/hk-single-host/.env"
 manifest_path="$bundle_dir/$manifest_sha256.manifest.json"
 state_path="$bundle_dir/$state_sha256.state.json"
 attestation_path="$admin_result_dir/$attestation_sha256.attest.json"
@@ -53,23 +55,98 @@ exec 9>"$lock_path"
 flock -x 9
 
 temporary="$(mktemp /tmp/paperbanana-scientific-v2-run-bundle.XXXXXXXXXXXX)"
-cleanup() { rm -f -- "$temporary"; }
+node_input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-canonical-input.XXXXXXXXXXXX)"
+node_hashes="$(mktemp /tmp/paperbanana-scientific-v2-canonical-hashes.XXXXXXXXXXXX)"
+node_cidfile="$node_input_dir/node-container.cid"
+cleanup() {
+  local node_container_id=''
+  if [[ -f "$node_cidfile" && ! -L "$node_cidfile" && "$(stat -c '%u:%a' "$node_cidfile" 2>/dev/null || stat -f '%u:%Lp' "$node_cidfile")" =~ ^0:0?600$ ]]; then
+    read -r node_container_id < "$node_cidfile" || true
+    [[ "$node_container_id" =~ ^[a-f0-9]{64}$ ]] && docker rm -f "$node_container_id" >/dev/null 2>&1 || true
+  fi
+  rm -f -- "$temporary" "$node_hashes" "$node_cidfile" "$node_input_dir/input.json"
+  rmdir -- "$node_input_dir" 2>/dev/null || true
+}
 trap cleanup EXIT
-chmod 0600 "$temporary"
+chmod 0600 "$temporary" "$node_hashes"
 python3 - "$manifest_path" "$manifest_sha256" "$state_path" "$state_sha256" \
-  "$attestation_path" "$attestation_sha256" "$core_env" "$execution_phase" "$expected_sha" \
+  "$node_input_dir/input.json" "$expected_sha" 0 <<'PY'
+import base64, hashlib, json, os, stat, sys
+manifest_path, manifest_hash, state_path, state_hash, output, expected_sha, owner_text = sys.argv[1:]
+owner = int(owner_text)
+MAX = 64 * 1024 * 1024
+def protected(path, expected_hash):
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    try:
+        before = os.fstat(fd)
+        if not stat.S_ISREG(before.st_mode) or before.st_uid != owner or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) != 0o600 or before.st_size < 2 or before.st_size > MAX:
+            raise RuntimeError()
+        data = b''
+        while len(data) <= MAX:
+            chunk = os.read(fd, min(1024 * 1024, MAX + 1 - len(data)))
+            if not chunk: break
+            data += chunk
+        after = os.fstat(fd)
+        path_stat = os.stat(path, follow_symlinks=False)
+        if len(data) != before.st_size or hashlib.sha256(data).hexdigest() != expected_hash or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns) or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino):
+            raise RuntimeError()
+        return data
+    finally:
+        os.close(fd)
+payload = {
+    'schemaVersion': 1, 'expectedSha': expected_sha,
+    'manifestBase64': base64.b64encode(protected(manifest_path, manifest_hash)).decode('ascii'),
+    'stateBase64': base64.b64encode(protected(state_path, state_hash)).decode('ascii'),
+}
+fd = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+try:
+    os.write(fd, json.dumps(payload, separators=(',', ':')).encode('utf-8'))
+    os.fsync(fd)
+finally:
+    os.close(fd)
+PY
+chown root:1000 "$node_input_dir" "$node_input_dir/input.json"
+chmod 0550 "$node_input_dir"
+chmod 0440 "$node_input_dir/input.json"
+[[ -f "$deploy_env" && ! -L "$deploy_env" && "$(stat -c '%u:%a' "$deploy_env" 2>/dev/null || stat -f '%u:%Lp' "$deploy_env")" =~ ^0:0?600$ ]] || exit 1
+worker_image="$(awk -F= '$1=="PAPERBANANA_BENCH_WORKER_IMAGE" {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$deploy_env")"
+[[ "$worker_image" =~ ^ghcr[.]io/[a-z0-9_.-]+/paperbanana-benchmark-worker@sha256:[a-f0-9]{64}$ ]] || exit 1
+[[ "${worker_image##*@sha256:}" == "$expected_worker_digest" ]] || exit 1
+node_hash_script='
+import { createHash } from "node:crypto";
+import fs from "node:fs";
+const inputPath=process.env.PAPERBANANA_SCIENTIFIC_V2_CANONICAL_INPUT_PATH||"/run/paperbanana-scientific-v2-canonical/input.json";
+const provenancePath=process.env.PAPERBANANA_SCIENTIFIC_V2_CANONICAL_PROVENANCE_PATH||"/app/build-provenance.json";
+const input=JSON.parse(fs.readFileSync(inputPath,"utf8"));
+const provenance=JSON.parse(fs.readFileSync(provenancePath,"utf8"));
+if(!input||Object.keys(input).sort().join("\0")!==["expectedSha","manifestBase64","schemaVersion","stateBase64"].sort().join("\0")||input.schemaVersion!==1||provenance.codeSha!==input.expectedSha)throw new Error("SCIENTIFIC_V2_CANONICAL_INPUT_INVALID");
+const parse=value=>JSON.parse(Buffer.from(value,"base64").toString("utf8"));
+const manifest=parse(input.manifestBase64),state=parse(input.stateBase64);
+const normalize=value=>{if(value===undefined)return null;if(Array.isArray(value))return value.map(normalize);if(value&&typeof value==="object"){const prototype=Object.getPrototypeOf(value);if(prototype!==Object.prototype&&prototype!==null)throw new Error("SCIENTIFIC_V2_CANONICAL_OBJECT_INVALID");return Object.fromEntries(Object.entries(value).filter(([,child])=>child!==undefined).sort(([left],[right])=>left.localeCompare(right)).map(([key,child])=>[key,normalize(child)]))}if(typeof value==="number"&&!Number.isFinite(value))throw new Error("SCIENTIFIC_V2_CANONICAL_NUMBER_INVALID");return value};
+const hash=value=>createHash("sha256").update(JSON.stringify(normalize(value))).digest("hex");
+const without=(value,key)=>Object.fromEntries(Object.entries(value).filter(([name])=>name!==key));
+if(!manifest||typeof manifest!=="object"||Array.isArray(manifest)||!state||typeof state!=="object"||Array.isArray(state))throw new Error("SCIENTIFIC_V2_CANONICAL_INPUT_INVALID");
+const canonicalManifest=manifest.canonicalManifest,registrySnapshot=manifest.registrySnapshot,priceSnapshot=manifest.priceSnapshot;
+if(!canonicalManifest||!registrySnapshot||!priceSnapshot)throw new Error("SCIENTIFIC_V2_CANONICAL_INPUT_INVALID");
+process.stdout.write(JSON.stringify({manifestHash:hash(without(manifest,"manifestHash")),stateHash:hash(without(state,"stateHash")),canonicalManifestHash:hash(without(canonicalManifest,"manifestHash")),registrySnapshotHash:hash(without(registrySnapshot,"snapshotHash")),registryHash:hash(registrySnapshot.registry),priceSnapshotHash:hash(without(priceSnapshot,"snapshotHash"))}));
+'
+timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+  --pids-limit 64 --memory 1g --memory-swap 1g \
+  --user 1000:1000 -v "$node_input_dir/input.json:/run/paperbanana-scientific-v2-canonical/input.json:ro" \
+  --cidfile "$node_cidfile" --entrypoint node "$worker_image" --input-type=module -e "$node_hash_script" >"$node_hashes"
+chmod 0600 "$node_hashes"
+python3 - "$manifest_path" "$manifest_sha256" "$state_path" "$state_sha256" \
+  "$attestation_path" "$attestation_sha256" "$core_env" "$node_hashes" "$execution_phase" "$expected_sha" \
   "$manifest_hash" "$registry_hash" "$suite_hash" "$price_hash" "$temporary" 0 <<'PY'
 import hashlib
 import hmac
 import json
-import math
 import os
 import re
 import stat
 import sys
-from decimal import Decimal
 
-manifest_path, manifest_file_hash, state_path, state_file_hash, attestation_path, attestation_file_hash, env_path, phase, code_sha, expected_manifest_hash, expected_registry_hash, expected_suite_hash, expected_price_hash, output, expected_owner_text = sys.argv[1:]
+manifest_path, manifest_file_hash, state_path, state_file_hash, attestation_path, attestation_file_hash, env_path, node_hashes_path, phase, code_sha, expected_manifest_hash, expected_registry_hash, expected_suite_hash, expected_price_hash, output, expected_owner_text = sys.argv[1:]
 expected_owner = int(expected_owner_text)
 MAX = 64 * 1024 * 1024
 DOMAIN = b'paperbanana/scientific-v2/operator-attestation/v1'
@@ -97,41 +174,15 @@ ATTESTATION_KEYS = {
     'modelCount','slotCount','revision','issuedAt','reportHash','attestationHash',
 }
 
-def ecmascript_number(value):
-    if not math.isfinite(value):
-        raise RuntimeError('schema')
-    if value == 0:
-        return '0'
-    text = repr(value).lower()
-    absolute = abs(value)
-    if 'e' in text:
-        mantissa, exponent_text = text.split('e', 1)
-        exponent = int(exponent_text)
-        if 1e-6 <= absolute < 1e21:
-            return format(Decimal(text), 'f')
-        mantissa = mantissa.rstrip('0').rstrip('.')
-        return f'{mantissa}e{"+" if exponent >= 0 else ""}{exponent}'
-    return text[:-2] if text.endswith('.0') else text
-
-def cny_number_from_atoms(atoms_text, value):
-    if not isinstance(atoms_text, str) or re.fullmatch(r'(?:0|[1-9][0-9]*)', atoms_text) is None:
-        raise RuntimeError('schema')
-    atoms = int(atoms_text)
-    if atoms > 36_000_000_000 or isinstance(value, bool) or not isinstance(value, (int, float)) or value != atoms / 100_000_000:
-        raise RuntimeError('schema')
-    return ecmascript_number(float(value))
-
 def canonical(value):
     if isinstance(value, list):
         return '[' + ','.join(canonical(item) for item in value) + ']'
     if isinstance(value, dict):
         parts = []
         for key in sorted(value):
-            child = cny_number_from_atoms(value.get('unitCnyAtoms'), value[key]) if key == 'unitCny' and 'unitCnyAtoms' in value else canonical(value[key])
+            child = canonical(value[key])
             parts.append(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + child)
         return '{' + ','.join(parts) + '}'
-    if isinstance(value, float):
-        return ecmascript_number(value)
     return json.dumps(value, ensure_ascii=False, separators=(',', ':'))
 
 def canonical_hash(value):
@@ -166,33 +217,35 @@ try:
     state_bytes = protected(state_path, state_file_hash)
     attestation_bytes = protected(attestation_path, attestation_file_hash)
     env_bytes = protected(env_path)
+    node_hash_bytes = protected(node_hashes_path)
     manifest = json.loads(manifest_bytes)
     state = json.loads(state_bytes)
     attestation = json.loads(attestation_bytes)
+    node_hashes = json.loads(node_hash_bytes)
     env_lines = env_bytes.decode('utf-8', 'strict').splitlines()
     secrets = [line.split('=', 1)[1] for line in env_lines if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
     if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096:
         raise RuntimeError('secret')
-    if not isinstance(manifest, dict) or set(manifest) != MANIFEST_KEYS or not isinstance(state, dict) or set(state) != STATE_KEYS or not isinstance(attestation, dict) or set(attestation) != ATTESTATION_KEYS:
+    if not isinstance(manifest, dict) or set(manifest) != MANIFEST_KEYS or not isinstance(state, dict) or set(state) != STATE_KEYS or not isinstance(attestation, dict) or set(attestation) != ATTESTATION_KEYS or not isinstance(node_hashes, dict) or set(node_hashes) != {'manifestHash','stateHash','canonicalManifestHash','registrySnapshotHash','registryHash','priceSnapshotHash'} or any(not isinstance(value, str) or re.fullmatch(r'[a-f0-9]{64}', value) is None for value in node_hashes.values()):
         raise RuntimeError('schema')
     if manifest.get('schemaVersion') != 2 or state.get('schemaVersion') != 2 or attestation.get('schemaVersion') != 2:
         raise RuntimeError('schema')
     if any(manifest.get(key) != value or attestation.get(key) != value for key, value in IDENTITY.items()):
         raise RuntimeError('identity')
-    if canonical_hash(without(manifest, 'manifestHash')) != manifest.get('manifestHash') or manifest.get('manifestHash') != expected_manifest_hash:
+    if node_hashes.get('manifestHash') != manifest.get('manifestHash') or manifest.get('manifestHash') != expected_manifest_hash:
         raise RuntimeError('manifest-hash')
-    if canonical_hash(without(state, 'stateHash')) != state.get('stateHash'):
+    if node_hashes.get('stateHash') != state.get('stateHash'):
         raise RuntimeError('state-hash')
     canonical_manifest = manifest.get('canonicalManifest')
     registry_snapshot = manifest.get('registrySnapshot')
     price_snapshot = manifest.get('priceSnapshot')
     if not isinstance(canonical_manifest, dict) or not isinstance(registry_snapshot, dict) or not isinstance(price_snapshot, dict):
         raise RuntimeError('nested')
-    if canonical_hash(without(canonical_manifest, 'manifestHash')) != canonical_manifest.get('manifestHash') or canonical_manifest.get('manifestHash') != manifest.get('canonicalManifestHash'):
+    if node_hashes.get('canonicalManifestHash') != canonical_manifest.get('manifestHash') or canonical_manifest.get('manifestHash') != manifest.get('canonicalManifestHash'):
         raise RuntimeError('canonical-manifest')
-    if canonical_hash(without(registry_snapshot, 'snapshotHash')) != registry_snapshot.get('snapshotHash') or registry_snapshot.get('snapshotHash') != manifest.get('registrySnapshotHash') or canonical_hash(registry_snapshot.get('registry')) != registry_snapshot.get('registryHash'):
+    if node_hashes.get('registrySnapshotHash') != registry_snapshot.get('snapshotHash') or registry_snapshot.get('snapshotHash') != manifest.get('registrySnapshotHash') or node_hashes.get('registryHash') != registry_snapshot.get('registryHash'):
         raise RuntimeError('registry-snapshot')
-    if canonical_hash(without(price_snapshot, 'snapshotHash')) != price_snapshot.get('snapshotHash'):
+    if node_hashes.get('priceSnapshotHash') != price_snapshot.get('snapshotHash'):
         raise RuntimeError('price-snapshot')
     if manifest.get('codeSha') != code_sha or manifest.get('registryHash') != expected_registry_hash or manifest.get('suiteHash') != expected_suite_hash or manifest.get('priceHash') != expected_price_hash or price_snapshot.get('snapshotHash') != expected_price_hash:
         raise RuntimeError('expected-hashes')

@@ -5,6 +5,8 @@ on:
     inputs:
       expected_deployed_sha:
         required: true
+      expected_worker_digest:
+        required: true
       manifest_sha256:
         required: true
       state_sha256:
@@ -43,6 +45,7 @@ jobs:
       - name: Validate immutable staging request
         env:
           EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           MANIFEST_FILE_HASH: ${{ inputs.manifest_sha256 }}
           STATE_FILE_HASH: ${{ inputs.state_sha256 }}
           ATTESTATION_FILE_HASH: ${{ inputs.attestation_result_sha256 }}
@@ -55,7 +58,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$EXPECTED_SHA" == "$GITHUB_SHA" && "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
-          for hash in "$MANIFEST_FILE_HASH" "$STATE_FILE_HASH" "$ATTESTATION_FILE_HASH" "$MANIFEST_HASH" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH"; do
+          for hash in "$WORKER_DIGEST" "$MANIFEST_FILE_HASH" "$STATE_FILE_HASH" "$ATTESTATION_FILE_HASH" "$MANIFEST_HASH" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
           [[ "$EXECUTION_PHASE" == canary-only || "$EXECUTION_PHASE" == full ]]
@@ -76,6 +79,7 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           MANIFEST_FILE_HASH: ${{ inputs.manifest_sha256 }}
           STATE_FILE_HASH: ${{ inputs.state_sha256 }}
           ATTESTATION_FILE_HASH: ${{ inputs.attestation_result_sha256 }}
@@ -87,8 +91,8 @@ jobs:
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
-          printf -v command 'cd %q && sudo %q --expected-sha %q --manifest-sha256 %q --state-sha256 %q --attestation-result-sha256 %q --manifest-hash %q --registry-hash %q --suite-hash %q --price-hash %q --execution-phase %q --confirm %q' \
+          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-worker-digest %q --manifest-sha256 %q --state-sha256 %q --attestation-result-sha256 %q --manifest-hash %q --registry-hash %q --suite-hash %q --price-hash %q --execution-phase %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/stage-scientific-v2-run-bundle.sh \
-            "$EXPECTED_SHA" "$MANIFEST_FILE_HASH" "$STATE_FILE_HASH" "$ATTESTATION_FILE_HASH" \
+            "$EXPECTED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_HASH" "$STATE_FILE_HASH" "$ATTESTATION_FILE_HASH" \
             "$MANIFEST_HASH" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$EXECUTION_PHASE" "$CONFIRM"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "$command"
