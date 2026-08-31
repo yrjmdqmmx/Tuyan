@@ -14,7 +14,7 @@ import {
 
 import { assertExactScientificV2Keys, isScientificV2Hash, scientificV2Error } from './scientific-v2-common.js'
 import {
-  extractScientificV2OfficialPriceObservations,
+  extractScientificV2OfficialPriceObservationsForOperatorUpperBound,
   type ScientificV2OfficialPriceCapture,
   type ScientificV2OfficialPriceRefreshReport,
 } from './scientific-v2-price-refresh.js'
@@ -186,7 +186,7 @@ export async function createScientificV2OfficialSignedPriceSnapshot(input: {
     || now.getTime() - capturedAt.getTime() > 24 * 60 * 60 * 1000) {
     scientificV2Error('SCIENTIFIC_V2_PRICE_ATTESTATION_BINDING_MISMATCH')
   }
-  const extracted = await extractScientificV2OfficialPriceObservations({
+  const extracted = await extractScientificV2OfficialPriceObservationsForOperatorUpperBound({
     canonicalManifest, refreshReport: input.refreshReport, loadCaptureBytes: input.loadCaptureBytes,
   })
   const requirements = deriveScientificV2PriceRequirements(canonicalManifest)

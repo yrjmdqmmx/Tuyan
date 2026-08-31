@@ -16,7 +16,7 @@ import { assertScientificV2RootSnapshotFileFacts, type ScientificV2OperatorPrice
 import { scientificV2Error } from './scientific-v2-common.js'
 import { scientificV2ConservativeUnitCny } from './scientific-v2-price-policy.js'
 import {
-  extractScientificV2OfficialPriceObservations,
+  extractScientificV2OfficialPriceObservationsForOperatorUpperBound,
   type ScientificV2OfficialPriceCapture,
   type ScientificV2OfficialPriceRefreshReport,
 } from './scientific-v2-price-refresh.js'
@@ -61,7 +61,7 @@ export async function buildScientificV2OperatorPriceAuthorization(input: {
     scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
   }
   const requirements = deriveScientificV2PriceRequirements(input.canonicalManifest)
-  const extracted = await extractScientificV2OfficialPriceObservations({
+  const extracted = await extractScientificV2OfficialPriceObservationsForOperatorUpperBound({
     canonicalManifest: input.canonicalManifest,
     refreshReport: input.refreshReport,
     loadCaptureBytes: input.loadCaptureBytes,

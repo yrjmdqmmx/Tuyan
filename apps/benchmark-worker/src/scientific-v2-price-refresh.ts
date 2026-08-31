@@ -422,3 +422,29 @@ export async function extractScientificV2OfficialPriceObservations(input: {
     observationsHash: canonicalHash(observations),
   })
 }
+
+export async function extractScientificV2OfficialPriceObservationsForOperatorUpperBound(
+  input: Parameters<typeof extractScientificV2OfficialPriceObservations>[0],
+) {
+  try {
+    return await extractScientificV2OfficialPriceObservations(input)
+  } catch (error) {
+    const code = error instanceof Error ? error.message : ''
+    if (![
+      'SCIENTIFIC_V2_ARK_PRICE_EVIDENCE_INVALID',
+      'SCIENTIFIC_V2_OPENROUTER_PRICE_EVIDENCE_INVALID',
+      'SCIENTIFIC_V2_FX_EVIDENCE_INVALID',
+    ].includes(code)) throw error
+    const requirements = deriveScientificV2PriceRequirements(input.canonicalManifest)
+    const unresolved = input.refreshReport.unresolved
+    if (unresolved.length !== requirements.length
+      || canonicalHash([...unresolved].map((item) => item.requirementHash).sort())
+        !== canonicalHash(requirements.map((item) => item.requirementHash).sort())) throw error
+    return Object.freeze({
+      observations: [] as ScientificV2PriceObservation[],
+      unresolved,
+      resolved: false,
+      observationsHash: canonicalHash([]),
+    })
+  }
+}
