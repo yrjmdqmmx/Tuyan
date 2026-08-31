@@ -24,6 +24,16 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] Scientific V2 legacy recovery 允许一次 pre-execution SHA 迁移 — by Codex
+变更：旧 `blocked/provider_canary_failed` 批次可能已被一次只读 attestation 过早写入 recovery `executionCodeSha`，但尚无任何导入的 Worker state report。Core 现在仅在原 blocked state/hash 完全未变、`revision=0`、`latestStateReportHash=null`、不存在 `started` dispatch、原 `legacyRecoveryStateHash` 精确匹配、目标 SHA 不回退到 manifest SHA 且从未迁移过时，允许以 CAS 将 `executionCodeSha` 迁移一次，并写入内部 `lineageRecoveryRotationUsed=true`。`beginDispatch` 在事务内以同一 batch CAS 设置内部 `activeDispatchId`，并绑定当时的 `executionCodeSha`；commit/unknown 在同一事务清除 reservation，rotation 则要求 reservation 不存在。因此 dispatch 与 SHA 迁移只能有一个先成功，stale claim 或跨集合检查竞态不能继续调用 Provider。后续 SHA 再漂移、任何 state/dispatch 进展或普通批次仍 fail closed。
+
+兼容边界：operator attestation、Worker report、公开 release/API 字段均不变；内部布尔位不进入 state、HMAC payload 或公开投影。迁移本身零 Provider 调用，只修复 attestation 与实际执行之间的不可变代码绑定时点。
+
+各端待办：
+- [x] paperbanana-api / Laf Core（受约束 CAS 迁移、竞态处理、TDD）
+- [ ] 部署 / 运维（部署同一 immutable Core/Worker 后重新 attest；成功导入 revision 1 后不可再迁移）
+- [x] Benchmark Worker / Web / 原生端（契约不变；无需改造）
+
 ### [2026-08-31] Scientific V2 attestation 导出内容寻址 state snapshot — by Codex
 变更：内部 `operatorAttestation` 在完整验证 DB 中 frozen manifest/state 与 `stateHash` 后，额外返回深拷贝冻结的 `stateSnapshot`。香港 admin operator 的 `attest` 仅在 root 私有通道接收该快照，独立写入 `0600` 内容寻址 `*.state.json`，stdout 只新增 `stateBundleSha256`，不输出 state 内容。run-bundle stager 继续以 state 文件 SHA、canonical state hash 与 attestation 中已签名的 `stateHash` 三重校验后组装执行包。
 

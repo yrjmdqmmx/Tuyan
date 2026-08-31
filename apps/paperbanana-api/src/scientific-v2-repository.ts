@@ -721,7 +721,7 @@ export function createScientificV2MongoRepository(
     return secret
   }
 
-  const validateStoredCodeLineage = (batch: AnyRecord, executionCodeSha: string) => {
+  const validateStoredCodeLineage = (batch: AnyRecord) => {
     const fields = ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash'] as const
     const present = fields.map((field) => Object.hasOwn(batch, field))
     if (present.some(Boolean) && !present.every(Boolean)) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
@@ -734,12 +734,12 @@ export function createScientificV2MongoRepository(
     if (!codeShaPattern.test(String(lineage.manifestCodeSha || ''))
       || !codeShaPattern.test(String(lineage.executionCodeSha || ''))
       || lineage.manifestCodeSha !== batch.manifest?.codeSha
-      || lineage.executionCodeSha !== executionCodeSha
       || (lineage.legacyRecoveryStateHash !== null && !hashPattern.test(String(lineage.legacyRecoveryStateHash || '')))
-      || (lineage.legacyRecoveryStateHash === null && lineage.manifestCodeSha !== lineage.executionCodeSha)) {
+      || (lineage.legacyRecoveryStateHash === null && lineage.manifestCodeSha !== lineage.executionCodeSha)
+      || (Object.hasOwn(batch, 'lineageRecoveryRotationUsed') && typeof batch.lineageRecoveryRotationUsed !== 'boolean')) {
       scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
     }
-    return lineage
+    return { lineage, rotationUsed: batch.lineageRecoveryRotationUsed === true }
   }
 
   const ensureBatchCodeLineage = async (batch: AnyRecord) => {
@@ -751,11 +751,52 @@ export function createScientificV2MongoRepository(
     if (!codeShaPattern.test(manifestCodeSha) || !codeShaPattern.test(executionCodeSha)) {
       scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
     }
-    const stored = validateStoredCodeLineage(batch, executionCodeSha)
-    if (stored) return stored
     const exactLegacyBlocked = batch.status === 'blocked' && batch.stateHash === batch.state?.stateHash
       && batch.state?.status === 'blocked' && batch.state?.blockReason === 'provider_canary_failed'
     if (exactLegacyBlocked) verifyScientificV2ImportedState(batch.state, batch.manifest)
+    const stored = validateStoredCodeLineage(batch)
+    if (stored) {
+      if (stored.lineage.executionCodeSha === executionCodeSha) return stored.lineage
+      const rotationAllowed = exactLegacyBlocked
+        && executionCodeSha !== manifestCodeSha
+        && stored.lineage.legacyRecoveryStateHash === batch.stateHash
+        && Number(batch.revision || 0) === 0
+        && batch.latestStateReportHash === null
+        && stored.rotationUsed === false
+      if (!rotationAllowed) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      const unresolvedDispatch = await dispatches.findOne({ manifestHash: batch.manifestHash, status: 'started' })
+      if (unresolvedDispatch) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      const rotationQuery = {
+        _id: batch._id,
+        manifestCodeSha: stored.lineage.manifestCodeSha,
+        executionCodeSha: stored.lineage.executionCodeSha,
+        legacyRecoveryStateHash: stored.lineage.legacyRecoveryStateHash,
+        stateHash: batch.stateHash,
+        status: 'blocked',
+        revision: 0,
+        latestStateReportHash: null,
+        activeDispatchId: { $exists: false },
+      }
+      let rotated = await batches.updateOne(
+        { ...rotationQuery, lineageRecoveryRotationUsed: false },
+        { $set: { executionCodeSha, lineageRecoveryRotationUsed: true } },
+      )
+      if (rotated.modifiedCount !== 1) {
+        rotated = await batches.updateOne(
+          { ...rotationQuery, lineageRecoveryRotationUsed: { $exists: false } },
+          { $set: { executionCodeSha, lineageRecoveryRotationUsed: true } },
+        )
+      }
+      if (rotated.modifiedCount === 1) {
+        batch.executionCodeSha = executionCodeSha
+        batch.lineageRecoveryRotationUsed = true
+        return { ...stored.lineage, executionCodeSha }
+      }
+      const raced = await batches.findOne({ _id: batch._id })
+      const racedStored = raced ? validateStoredCodeLineage(raced) : null
+      if (!racedStored || racedStored.lineage.executionCodeSha !== executionCodeSha) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      return racedStored.lineage
+    }
     if (manifestCodeSha !== executionCodeSha && !exactLegacyBlocked) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
     const lineage = {
       manifestCodeSha,
@@ -767,16 +808,16 @@ export function createScientificV2MongoRepository(
         _id: batch._id,
         manifestCodeSha: { $exists: false }, executionCodeSha: { $exists: false }, legacyRecoveryStateHash: { $exists: false },
       },
-      { $set: structuredClone(lineage) },
+      { $set: { ...structuredClone(lineage), lineageRecoveryRotationUsed: false } },
     )
     if (updated.modifiedCount !== 1) {
       const raced = await batches.findOne({ _id: batch._id })
       if (!raced) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
-      const racedLineage = validateStoredCodeLineage(raced, executionCodeSha)
-      if (!racedLineage) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
-      return racedLineage
+      const racedStored = validateStoredCodeLineage(raced)
+      if (!racedStored || racedStored.lineage.executionCodeSha !== executionCodeSha) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      return racedStored.lineage
     }
-    Object.assign(batch, lineage)
+    Object.assign(batch, lineage, { lineageRecoveryRotationUsed: false })
     return lineage
   }
 
@@ -1724,31 +1765,64 @@ export function createScientificV2MongoRepository(
     },
     async beginDispatch(input: { claimToken: string; expectedStateHash: string; marker: AnyRecord }) {
       assertMarker(input.marker)
-      const batch = await batches.findOne({ manifestHash: input.marker.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash })
-      if (!batch) scientificError('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
-      const slot = batch.state.slots.find((candidate: AnyRecord) => candidate.slotId === input.marker.slotId)
-      const scientificCase = batch.manifest.cases.find((candidate: AnyRecord) => candidate.id === slot?.caseId)
-      if (!slot || !scientificCase || input.marker.attemptIndex !== slot.attempts.length + 1
-        || input.marker.payloadHash !== expectedPayloadHash(batch.manifest, slot, scientificCase)) scientificError('SCIENTIFIC_V2_DISPATCH_MARKER_INVALID')
       const id = markerId(input.marker)
+      let outcome: { status: 'started' | 'existing_uncommitted' } | null = null
+      const session = db.client.startSession()
       try {
-        await dispatches.insertOne({
-          _id: id,
-          ...structuredClone(input.marker),
-          claimToken: input.claimToken,
-          expectedStateHash: input.expectedStateHash,
-          status: 'started',
-          startedAt: now(),
-        })
-        return { status: 'started' as const }
-      } catch (error) {
-        if ((error as { code?: number })?.code !== 11000) throw error
-        const existing = await dispatches.findOne({ _id: id })
-        if (!existing || existing.payloadHash !== input.marker.payloadHash || existing.claimToken !== input.claimToken) {
-          scientificError('SCIENTIFIC_V2_DISPATCH_MARKER_CONFLICT')
-        }
-        return { status: 'existing_uncommitted' as const }
+        await session.withTransaction(async () => {
+          const batch = await batches.findOne({
+            manifestHash: input.marker.manifestHash,
+            claimToken: input.claimToken,
+            stateHash: input.expectedStateHash,
+            status: 'running',
+            'state.status': 'running',
+          }, { session } as any)
+          if (!batch) scientificError('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
+          const existing = await dispatches.findOne({ _id: id }, { session } as any)
+          if (existing) {
+            if (existing.payloadHash !== input.marker.payloadHash || existing.claimToken !== input.claimToken
+              || (batch.activeDispatchId !== undefined && batch.activeDispatchId !== id)) {
+              scientificError('SCIENTIFIC_V2_DISPATCH_MARKER_CONFLICT')
+            }
+            outcome = { status: 'existing_uncommitted' }
+            return
+          }
+          if (batch.activeDispatchId !== undefined) scientificError('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
+          const slot = batch.state.slots.find((candidate: AnyRecord) => candidate.slotId === input.marker.slotId)
+          const scientificCase = batch.manifest.cases.find((candidate: AnyRecord) => candidate.id === slot?.caseId)
+          if (!slot || !scientificCase || input.marker.attemptIndex !== slot.attempts.length + 1
+            || input.marker.payloadHash !== expectedPayloadHash(batch.manifest, slot, scientificCase)) scientificError('SCIENTIFIC_V2_DISPATCH_MARKER_INVALID')
+          const reserved = await batches.updateOne(
+            {
+              _id: batch._id,
+              claimToken: input.claimToken,
+              stateHash: input.expectedStateHash,
+              status: 'running',
+              'state.status': 'running',
+              activeDispatchId: { $exists: false },
+              ...(Object.hasOwn(batch, 'executionCodeSha')
+                ? { executionCodeSha: batch.executionCodeSha }
+                : { executionCodeSha: { $exists: false } }),
+            },
+            { $set: { activeDispatchId: id } },
+            { session },
+          )
+          if (reserved.modifiedCount !== 1) scientificError('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
+          await dispatches.insertOne({
+            _id: id,
+            ...structuredClone(input.marker),
+            claimToken: input.claimToken,
+            expectedStateHash: input.expectedStateHash,
+            status: 'started',
+            startedAt: now(),
+          }, { session } as any)
+          outcome = { status: 'started' }
+        }, { readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } })
+      } finally {
+        await session.endSession()
       }
+      if (!outcome) scientificError('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
+      return outcome
     },
     async heartbeatClaim(input: { manifestHash: string; claimToken: string }) {
       const heartbeatAt = now()
@@ -1791,14 +1865,22 @@ export function createScientificV2MongoRepository(
         await session.withTransaction(async () => {
           const marker = await dispatches.findOne({ _id: id, claimToken: input.claimToken, payloadHash: input.marker.payloadHash, status: 'started' }, { session } as any)
           if (!marker) scientificError('SCIENTIFIC_V2_DISPATCH_MARKER_INVALID')
-          const updatedBatch = await batches.updateOne(
-            { manifestHash: input.marker.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash },
-            { $set: {
+          const batchUpdate = { $set: {
               state: structuredClone(input.nextState), stateHash: input.nextState.stateHash, stateTransitionFromHash: input.expectedStateHash,
               status: input.nextState.status, updatedAt: now(), claimHeartbeatAt: now(), claimLeaseExpiresAt: new Date(now().getTime() + claimLeaseMs),
-            } },
+            }, $unset: { activeDispatchId: '' } }
+          let updatedBatch = await batches.updateOne(
+            { manifestHash: input.marker.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash, activeDispatchId: id },
+            batchUpdate,
             { session },
           )
+          if (updatedBatch.modifiedCount !== 1) {
+            updatedBatch = await batches.updateOne(
+              { manifestHash: input.marker.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash, activeDispatchId: { $exists: false } },
+              batchUpdate,
+              { session },
+            )
+          }
           if (updatedBatch.modifiedCount !== 1) scientificError('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
           const updatedMarker = await dispatches.updateOne(
             { _id: id, claimToken: input.claimToken, payloadHash: input.marker.payloadHash, status: 'started', expectedStateHash: input.expectedStateHash },
@@ -1845,14 +1927,22 @@ export function createScientificV2MongoRepository(
         await session.withTransaction(async () => {
           const marker = await dispatches.findOne({ _id: id, claimToken: input.claimToken, payloadHash: input.marker.payloadHash, status: 'started', expectedStateHash: input.expectedStateHash }, { session } as any)
           if (!marker) scientificError('SCIENTIFIC_V2_DISPATCH_MARKER_INVALID')
-          const updatedBatch = await batches.updateOne(
-            { manifestHash: input.marker.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash },
-            { $set: {
+          const batchUpdate = { $set: {
               state: structuredClone(input.nextState), stateHash: input.nextState.stateHash, stateTransitionFromHash: input.expectedStateHash,
               status: input.nextState.status, updatedAt: now(), claimHeartbeatAt: now(), claimLeaseExpiresAt: new Date(now().getTime() + claimLeaseMs),
-            } },
+            }, $unset: { activeDispatchId: '' } }
+          let updatedBatch = await batches.updateOne(
+            { manifestHash: input.marker.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash, activeDispatchId: id },
+            batchUpdate,
             { session },
           )
+          if (updatedBatch.modifiedCount !== 1) {
+            updatedBatch = await batches.updateOne(
+              { manifestHash: input.marker.manifestHash, claimToken: input.claimToken, stateHash: input.expectedStateHash, activeDispatchId: { $exists: false } },
+              batchUpdate,
+              { session },
+            )
+          }
           if (updatedBatch.modifiedCount !== 1) scientificError('SCIENTIFIC_V2_REPOSITORY_CAS_FAILED')
           const updatedMarker = await dispatches.updateOne(
             { _id: id, claimToken: input.claimToken, payloadHash: input.marker.payloadHash, status: 'started', expectedStateHash: input.expectedStateHash },
