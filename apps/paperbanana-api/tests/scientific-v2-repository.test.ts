@@ -213,6 +213,7 @@ function atomicScientificDb() {
   let failArbitrationBatchCas = false
   let failStateAttachmentBatchCas = false
   let failReviewFinalBatchCas = false
+  let beforeDispatchReservation: null | (() => void | Promise<void>) = null
   const collection = (name: string) => {
     if (!rows.has(name)) rows.set(name, [])
     const documents = rows.get(name)!
@@ -257,9 +258,15 @@ function atomicScientificDb() {
         if (name === 'paperbanana_benchmark_scientific_v2_batches' && failStateAttachmentBatchCas && query.stateTransitionFromHash !== undefined) return { matchedCount: 0, modifiedCount: 0 }
         if (name === 'paperbanana_benchmark_scientific_v2_batches' && failReviewFinalBatchCas
           && ['review_finalized', 'review_dispute'].includes(update.$set?.status)) return { matchedCount: 0, modifiedCount: 0 }
+        if (name === 'paperbanana_benchmark_scientific_v2_batches' && update.$set?.activeDispatchId && beforeDispatchReservation) {
+          const hook = beforeDispatchReservation
+          beforeDispatchReservation = null
+          await hook()
+        }
         const found = documents.find((row) => matches(row, query))
         if (!found) return { matchedCount: 0, modifiedCount: 0 }
         for (const [path, value] of Object.entries(update.$set || {})) setPath(found, path, value)
+        for (const path of Object.keys(update.$unset || {})) setPath(found, path, undefined)
         return { matchedCount: 1, modifiedCount: 1 }
       },
       async insertOne(document: any) {
@@ -307,6 +314,7 @@ function atomicScientificDb() {
     clearArbitrationBatchFailure() { failArbitrationBatchCas = false },
     failNextReviewFinalBatchCas() { failReviewFinalBatchCas = true },
     clearReviewFinalBatchFailure() { failReviewFinalBatchCas = false },
+    beforeNextDispatchReservation(hook: () => void | Promise<void>) { beforeDispatchReservation = hook },
   }
 }
 
@@ -1064,6 +1072,8 @@ test('commitAttempt is transaction-idempotent and resolveDispatch recovers a los
   const marker = { manifestHash: fixture.manifest.manifestHash, slotId: slot.slotId, attemptIndex: 1, payloadHash: expectedSlotPayload(fixture, slot) }
   const { attempt, nextState } = successfulTransition(fixture, claim.state, slot)
   await repository.beginDispatch({ claimToken: claim.claimToken, expectedStateHash: claim.state.stateHash, marker })
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  assert.equal(typeof batch.activeDispatchId, 'string')
   storage.loseNextCommitAck()
 
   await assert.rejects(
@@ -1073,8 +1083,65 @@ test('commitAttempt is transaction-idempotent and resolveDispatch recovers a los
   const resolution = await repository.resolveDispatch({ claimToken: claim.claimToken, marker })
   assert.equal(resolution.status, 'committed')
   assert.equal(resolution.status === 'committed' && resolution.state.stateHash, nextState.stateHash)
+  assert.equal(batch.activeDispatchId, undefined)
   const replay = await repository.commitAttempt({ claimToken: claim.claimToken, expectedStateHash: claim.state.stateHash, marker, attempt, nextState })
   assert.equal(replay.stateHash, nextState.stateHash)
+})
+
+test('beginDispatch refuses a stale claim once the batch is no longer running', async () => {
+  const fixture = scientificBatchFixture()
+  const storage = atomicScientificDb()
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'stale-blocked-claim-token')
+  await repository.freezeBatch({ batchId: 'scientific-v2-stale-blocked-claim', ...fixture })
+  const claim = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
+  assert.ok(claim)
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  batch.status = 'blocked'
+  const slot = claim.state.slots[0]
+  const marker = {
+    manifestHash: fixture.manifest.manifestHash,
+    slotId: slot.slotId,
+    attemptIndex: 1,
+    payloadHash: expectedSlotPayload(fixture, slot),
+  }
+
+  await assert.rejects(
+    () => repository.beginDispatch({ claimToken: claim.claimToken, expectedStateHash: claim.state.stateHash, marker }),
+    /SCIENTIFIC_V2_REPOSITORY_CAS_FAILED/,
+  )
+  assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.length, 0)
+})
+
+test('beginDispatch CAS-fences a lineage rotation between validation and dispatch reservation', async () => {
+  const fixture = scientificBatchFixture()
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-dispatch-reservation-race-secret-at-least-32-bytes'
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'dispatch-reservation-race-token', {
+    operatorReportSecret: secret,
+    immutableCodeSha: fixture.manifest.codeSha,
+  })
+  await repository.freezeBatch({ batchId: 'scientific-v2-dispatch-reservation-race', ...fixture })
+  await repository.operatorAttestation({ batchId: 'scientific-v2-dispatch-reservation-race' })
+  const claim = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
+  assert.ok(claim)
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  const slot = claim.state.slots[0]
+  const marker = {
+    manifestHash: fixture.manifest.manifestHash,
+    slotId: slot.slotId,
+    attemptIndex: 1,
+    payloadHash: expectedSlotPayload(fixture, slot),
+  }
+  storage.beforeNextDispatchReservation(() => {
+    batch.executionCodeSha = 'c'.repeat(40)
+  })
+
+  await assert.rejects(
+    () => repository.beginDispatch({ claimToken: claim.claimToken, expectedStateHash: claim.state.stateHash, marker }),
+    /SCIENTIFIC_V2_REPOSITORY_CAS_FAILED/,
+  )
+  assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.length, 0)
+  assert.equal(batch.activeDispatchId, undefined)
 })
 
 test('commitAttempt rolls back the batch state when the dispatch marker update fails', async () => {
@@ -1246,6 +1313,60 @@ test('operatorAttestation allows SHA drift only for the first exact legacy block
     operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha,
   })
   assert.equal((await sameSha.operatorAttestation({ batchId: sameShaBatchId })).legacyRecoveryStateHash, null)
+})
+
+test('operatorAttestation permits one pre-execution SHA rotation for an unchanged legacy blocked recovery', async () => {
+  const fixture = scientificBatchFixture()
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-pre-execution-rotation-secret-at-least-32-bytes'
+  const batchId = 'scientific-v2-pre-execution-rotation'
+  const original = createScientificV2MongoRepository(storage.db, () => FIXED_NOW)
+  await original.freezeBatch({ batchId, ...fixture })
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  const legacyBlocked = blockedProviderCanaryState(fixture)
+  batch.state = structuredClone(legacyBlocked)
+  batch.stateHash = legacyBlocked.stateHash
+  batch.status = 'blocked'
+
+  const firstExecutionSha = 'b'.repeat(40)
+  const firstRecovery = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'first-recovery', {
+    operatorReportSecret: secret, immutableCodeSha: firstExecutionSha,
+  })
+  const first = await firstRecovery.operatorAttestation({ batchId })
+  assert.equal(first.executionCodeSha, firstExecutionSha)
+
+  const rollbackRecovery = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'rollback-recovery', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha,
+  })
+  await assert.rejects(() => rollbackRecovery.operatorAttestation({ batchId }), /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/)
+
+  storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.push({
+    _id: 'scientific-v2-unresolved-pre-execution-marker',
+    manifestHash: fixture.manifest.manifestHash,
+    status: 'started',
+  })
+  const inFlightRecovery = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'in-flight-recovery', {
+    operatorReportSecret: secret, immutableCodeSha: 'c'.repeat(40),
+  })
+  await assert.rejects(() => inFlightRecovery.operatorAttestation({ batchId }), /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/)
+  storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.splice(0)
+
+  delete batch.lineageRecoveryRotationUsed
+
+  const rotatedExecutionSha = 'c'.repeat(40)
+  const rotatedRecovery = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'rotated-recovery', {
+    operatorReportSecret: secret, immutableCodeSha: rotatedExecutionSha,
+  })
+  const rotated = await rotatedRecovery.operatorAttestation({ batchId })
+  assert.equal(rotated.executionCodeSha, rotatedExecutionSha)
+  assert.equal(rotated.legacyRecoveryStateHash, legacyBlocked.stateHash)
+  assert.equal(batch.executionCodeSha, rotatedExecutionSha)
+  assert.equal(batch.lineageRecoveryRotationUsed, true)
+
+  const secondRotation = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'second-rotation', {
+    operatorReportSecret: secret, immutableCodeSha: 'd'.repeat(40),
+  })
+  await assert.rejects(() => secondRotation.operatorAttestation({ batchId }), /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/)
 })
 
 test('operatorDiagnostic returns a bounded attested read-only provider-canary summary', async () => {
