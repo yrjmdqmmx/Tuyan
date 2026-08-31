@@ -1,0 +1,91 @@
+name: Inspect Scientific V2 Full Failure
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate request
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$CONFIRM" == inspect-exact-scientific-v2-full-failure ]]
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Read bounded dispatch state
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" 'sudo bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          docker exec -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark' <<'JS'
+          const manifestHash = "fe109168be8ed0041bbaab5ac02f80aeb3faee803f97a79521b4b181c289e227";
+          const batch = db.getCollection("paperbanana_benchmark_scientific_v2_batches").findOne({manifestHash});
+          if (!batch) throw new Error("SCIENTIFIC_V2_BATCH_NOT_FOUND");
+          const started = db.getCollection("paperbanana_benchmark_scientific_v2_dispatches")
+            .find({manifestHash, status: "started"}, {_id: 0, slotId: 1, attemptIndex: 1, startedAt: 1})
+            .sort({startedAt: 1}).toArray();
+          const slots = new Map(batch.state.slots.map(slot => [slot.slotId, slot]));
+          const unresolved = started.map(marker => {
+            const slot = slots.get(marker.slotId);
+            return {
+              slotId: marker.slotId,
+              attemptIndex: marker.attemptIndex,
+              provider: slot?.provider ?? null,
+              canonicalModelId: slot?.canonicalModelId ?? null,
+              modelId: slot?.modelId ?? null,
+              caseId: slot?.caseId ?? null,
+              slotStatus: slot?.status ?? null,
+              persistedAttemptCount: slot?.attempts?.length ?? null,
+            };
+          });
+          const firstOpen = batch.state.slots.find(slot => !["succeeded","unsupported","failed"].includes(slot.status));
+          print(JSON.stringify({
+            manifestHash,
+            stateHash: batch.stateHash,
+            batchStatus: batch.status,
+            stateStatus: batch.state.status,
+            pauseReason: batch.state.pauseReason,
+            blockReason: batch.state.blockReason,
+            claimPresent: Object.hasOwn(batch, "claimToken"),
+            claimLeaseExpired: batch.claimLeaseExpiresAt instanceof Date ? batch.claimLeaseExpiresAt <= new Date() : null,
+            providerSpentCny: batch.state.providerSpentCny,
+            unresolved,
+            firstOpen: firstOpen ? {
+              slotId: firstOpen.slotId,
+              provider: firstOpen.provider,
+              canonicalModelId: firstOpen.canonicalModelId,
+              modelId: firstOpen.modelId,
+              caseId: firstOpen.caseId,
+              status: firstOpen.status,
+              attemptCount: firstOpen.attempts.length,
+            } : null,
+          }));
+          JS
+          REMOTE
