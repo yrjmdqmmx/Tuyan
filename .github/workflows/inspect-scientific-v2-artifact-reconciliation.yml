@@ -59,7 +59,7 @@ jobs:
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
           diagnostic="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -e SCIENTIFIC_V2_LOOKUP_SALT="$SCIENTIFIC_V2_LOOKUP_SALT" "$worker_id" node --input-type=module -e '
-          import { createHash, createHmac } from "node:crypto";
+          import { createHash, createHmac, randomUUID } from "node:crypto";
           import OSS from "ali-oss";
           import { MongoClient } from "mongodb";
           const manifestHash=process.env.SCIENTIFIC_V2_MANIFEST_HASH;
@@ -94,7 +94,16 @@ jobs:
             const sourceObject=await inspectObject(`bench/scientific-v2/private/objects/${sourceHash}.png`,sourceHash,null);
             const outputObject=await inspectObject(`bench/scientific-v2/private/objects/${attempt.rawImageHash}.${attempt.format}`,attempt.rawImageHash,attempt.byteSize);
             const principalLookupDigest=createHmac("sha256",lookupSalt).update(process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID).digest("hex");
-            process.stdout.write(JSON.stringify({manifestHash,stateHash:batch.stateHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,attempt:{rawImageHash:attempt.rawImageHash,format:attempt.format,byteSize:attempt.byteSize,payloadHash:attempt.payloadHash},artifactRecovery:dispatch.artifactRecovery,sourceObject,outputObject,principalLookupDigest}));
+            const percentEncode=value=>encodeURIComponent(String(value)).replace(/[!*()]/g,char=>`%${char.charCodeAt(0).toString(16).toUpperCase()}`);
+            const stsParams={AccessKeyId:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID,Action:"GetCallerIdentity",Format:"JSON",SignatureMethod:"HMAC-SHA1",SignatureNonce:randomUUID(),SignatureVersion:"1.0",Timestamp:new Date().toISOString().replace(/[.][0-9]{3}Z$/,"Z"),Version:"2015-04-01"};
+            const canonicalQuery=Object.entries(stsParams).sort(([left],[right])=>left.localeCompare(right)).map(([key,value])=>`${percentEncode(key)}=${percentEncode(value)}`).join("&");
+            const signature=createHmac("sha1",`${process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET}&`).update(`GET&%2F&${percentEncode(canonicalQuery)}`).digest("base64");
+            const identityResponse=await fetch(`https://sts.aliyuncs.com/?${canonicalQuery}&Signature=${percentEncode(signature)}`,{redirect:"error",signal:AbortSignal.timeout(10000)});
+            const identity=await identityResponse.json();
+            if(!identityResponse.ok||typeof identity?.AccountId!=="string"||typeof identity?.Arn!=="string")throw new Error("SCIENTIFIC_V2_PRINCIPAL_LOOKUP_FAILED");
+            const accountLookupDigest=createHmac("sha256",lookupSalt).update(identity.AccountId).digest("hex");
+            const principalKind=identity.Arn.includes(":user/")?"ram_user":identity.Arn.includes(":role/")?"ram_role":identity.Arn.endsWith(":root")?"root":"unknown";
+            process.stdout.write(JSON.stringify({manifestHash,stateHash:batch.stateHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,attempt:{rawImageHash:attempt.rawImageHash,format:attempt.format,byteSize:attempt.byteSize,payloadHash:attempt.payloadHash},artifactRecovery:dispatch.artifactRecovery,sourceObject,outputObject,principalLookupDigest,accountLookupDigest,principalKind}));
           } finally {await mongo.close();}
           ')"
           spool_id="$(jq -r '.artifactRecovery.spoolId' <<<"$diagnostic")"
