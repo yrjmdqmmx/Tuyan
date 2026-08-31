@@ -5,6 +5,9 @@ on:
     inputs:
       manifest_hash:
         required: true
+      lookup_salt:
+        description: One-time 64-hex salt used only to match the RAM principal without exposing its AccessKey ID.
+        required: true
       confirm:
         required: true
 
@@ -23,10 +26,12 @@ jobs:
       - name: Validate request
         env:
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          LOOKUP_SALT: ${{ inputs.lookup_salt }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
           [[ "$MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
+          [[ "$LOOKUP_SALT" =~ ^[a-f0-9]{64}$ ]]
           [[ "$CONFIRM" == inspect-exact-scientific-v2-artifact-reconciliation-read-only ]]
 
       - name: Configure SSH
@@ -45,18 +50,21 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          LOOKUP_SALT: ${{ inputs.lookup_salt }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q bash -s' "$MANIFEST_HASH"
+          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q SCIENTIFIC_V2_LOOKUP_SALT=%q bash -s' "$MANIFEST_HASH" "$LOOKUP_SALT"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
-          diagnostic="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" "$worker_id" node --input-type=module -e '
-          import { createHash } from "node:crypto";
+          diagnostic="$(docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -e SCIENTIFIC_V2_LOOKUP_SALT="$SCIENTIFIC_V2_LOOKUP_SALT" "$worker_id" node --input-type=module -e '
+          import { createHash, createHmac } from "node:crypto";
           import OSS from "ali-oss";
           import { MongoClient } from "mongodb";
           const manifestHash=process.env.SCIENTIFIC_V2_MANIFEST_HASH;
+          const lookupSalt=process.env.SCIENTIFIC_V2_LOOKUP_SALT;
+          if(!/^[a-f0-9]{64}$/.test(lookupSalt||""))throw new Error("SCIENTIFIC_V2_LOOKUP_SALT_INVALID");
           const mongo=new MongoClient(process.env.PAPERBANANA_BENCH_MONGODB_URI);
           await mongo.connect();
           try {
@@ -85,7 +93,8 @@ jobs:
             };
             const sourceObject=await inspectObject(`bench/scientific-v2/private/objects/${sourceHash}.png`,sourceHash,null);
             const outputObject=await inspectObject(`bench/scientific-v2/private/objects/${attempt.rawImageHash}.${attempt.format}`,attempt.rawImageHash,attempt.byteSize);
-            process.stdout.write(JSON.stringify({manifestHash,stateHash:batch.stateHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,attempt:{rawImageHash:attempt.rawImageHash,format:attempt.format,byteSize:attempt.byteSize,payloadHash:attempt.payloadHash},artifactRecovery:dispatch.artifactRecovery,sourceObject,outputObject}));
+            const principalLookupDigest=createHmac("sha256",lookupSalt).update(process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID).digest("hex");
+            process.stdout.write(JSON.stringify({manifestHash,stateHash:batch.stateHash,slotId:slot.slotId,attemptIndex:slot.attempts.length,attempt:{rawImageHash:attempt.rawImageHash,format:attempt.format,byteSize:attempt.byteSize,payloadHash:attempt.payloadHash},artifactRecovery:dispatch.artifactRecovery,sourceObject,outputObject,principalLookupDigest}));
           } finally {await mongo.close();}
           ')"
           spool_id="$(jq -r '.artifactRecovery.spoolId' <<<"$diagnostic")"

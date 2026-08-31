@@ -282,7 +282,10 @@ test('artifact reconciliation inspection compares DB, spool and OSS without writ
   assert.match(workflow, /sourceObject/)
   assert.match(workflow, /outputObject/)
   assert.match(workflow, /metadataMatches/)
+  assert.match(workflow, /principalLookupDigest/)
+  assert.match(workflow, /createHmac\("sha256"/)
   assert.match(workflow, /ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 /)
+  assert.doesNotMatch(workflow, /process[.]stdout[.]write\([^\n]*ACCESS_KEY_ID/)
   assert.doesNotMatch(workflow, /[.]put\(|insertOne|updateOne|findOneAndUpdate|deleteOne|provider dispatch/i)
 })
 
