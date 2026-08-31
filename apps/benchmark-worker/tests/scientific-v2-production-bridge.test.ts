@@ -57,6 +57,9 @@ test('fake prepare produces executable inspect and admin freeze/attest inputs fr
   const signedPriceBase = {
     schemaVersion: 2 as const, kind: 'scientific-v2-authoritative-price-v2' as const,
     codeSha, canonicalManifestHash: canonicalManifest.manifestHash, priceSnapshotHash: priceSnapshot.snapshotHash,
+    registryAuthorityHash: registryAuthority.snapshotHash, capturesHash: priceSnapshot.capturesHash,
+    requirementsHash: priceSnapshot.requirementsHash,
+    operatorAuthorizationHash: null,
     capturedAt: createdAt, priceSnapshot,
   }
   const envelopeHash = canonicalHash(signedPriceBase)
@@ -82,6 +85,22 @@ test('fake prepare produces executable inspect and admin freeze/attest inputs fr
   assert.deepEqual(Object.keys(prepared.attestInput as object).sort(), ['batchId', 'manifestHash'])
   const inspected = await executeScientificV2OperatorBundle(prepared.inspectBundle as any)
   assert.equal(inspected.manifestHash, (prepared.manifest as any).manifestHash)
+  const mismatchedAuthorityBase = {
+    ...Object.fromEntries(Object.entries(signedPriceSnapshot).filter(([key]) => !['envelopeHash', 'attestationHash'].includes(key))),
+    registryAuthorityHash: 'e'.repeat(64),
+  }
+  const mismatchedAuthorityEnvelopeHash = canonicalHash(mismatchedAuthorityBase)
+  await assert.rejects(executeScientificV2OperatorBundle({
+    operation: 'prepare', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    input: {
+      registryAuthority,
+      signedPriceSnapshot: {
+        ...mismatchedAuthorityBase, envelopeHash: mismatchedAuthorityEnvelopeHash,
+        attestationHash: createHmac('sha256', priceKey).update(mismatchedAuthorityEnvelopeHash).digest('hex'),
+      },
+      codeSha, createdAt,
+    },
+  }, freshContext), /SCIENTIFIC_V2_PRICE_ATTESTATION_BINDING_MISMATCH/)
   await assert.rejects(executeScientificV2OperatorBundle({
     operation: 'prepare', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
     input: { registryAuthority, signedPriceSnapshot: { ...signedPriceSnapshot, attestationHash: 'f'.repeat(64) }, codeSha, createdAt },

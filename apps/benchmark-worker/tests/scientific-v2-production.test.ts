@@ -273,6 +273,50 @@ test('production Mongo atomic repository resolves commit acknowledgement loss an
   })).stateHash, frozenNext.stateHash)
 })
 
+test('production Mongo canary completion atomically releases its claim and full resume never redispatches the canary', async () => {
+  const fixture = productionBatchFixture()
+  const storage = productionAtomicDb(fixture)
+  const png = await sharp({ create: { width: 2048, height: 1152, channels: 3, background: '#abc' } }).png().toBuffer()
+  const calls: string[] = []
+  const dependencies = {
+    recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    executor: { async execute(request: any) {
+      calls.push(request.slotId)
+      return { responseClass: 'succeeded' as const, actualCny: request.estimatedCny, bytes: png }
+    } },
+  }
+  const canaryRepository = createScientificV2MongoRepository(storage.db, () => new Date('2026-08-31T04:10:00.000Z'), () => 'mongo-canary-claim')
+  const canary = await runScientificV2Batch({
+    manifest: fixture.manifest, state: fixture.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, repositoryMode: 'atomic-v2', phase: 'canary-only' },
+    repository: canaryRepository,
+    lock: createScientificV2MongoLeaseLock(storage.db, { ownerToken: 'mongo-canary-lock' }),
+    ...dependencies,
+  })
+  assert.equal(canary.state.status, 'canary_complete')
+  const canarySlotIds = new Set(canary.state.slots.filter((slot) => slot.isProviderCanary).map((slot) => slot.slotId))
+  const row = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  assert.equal(Object.hasOwn(row, 'claimToken'), false)
+  assert.equal(Object.hasOwn(row, 'claimLeaseExpiresAt'), false)
+  const releaseUpdate = [...storage.findOneAndUpdateCalls].reverse().find((call) => call.collection === 'paperbanana_benchmark_scientific_v2_batches'
+    && call.update.$set?.status === 'canary_complete')
+  assert.ok(releaseUpdate)
+  assert.deepEqual(releaseUpdate.update.$unset, { claimToken: '', claimLeaseExpiresAt: '', claimHeartbeatAt: '', claimedAt: '', workerId: '' })
+
+  calls.length = 0
+  const fullRepository = createScientificV2MongoRepository(storage.db, () => new Date('2026-08-31T04:11:00.000Z'), () => 'mongo-full-claim')
+  const full = await runScientificV2Batch({
+    manifest: fixture.manifest, state: canary.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, repositoryMode: 'atomic-v2', phase: 'full' },
+    repository: fullRepository,
+    lock: createScientificV2MongoLeaseLock(storage.db, { ownerToken: 'mongo-full-lock' }),
+    ...dependencies,
+  })
+  assert.ok(calls.length > 0)
+  assert.ok(calls.every((slotId) => !canarySlotIds.has(slotId)))
+  assert.equal(full.state.slots.filter((slot) => slot.isProviderCanary).every((slot) => slot.attempts.length === 1), true)
+})
+
 test('production Mongo lease lock provides exclusive renewable ownership and explicit release', async () => {
   const storage = productionAtomicDb()
   let timestamp = new Date('2026-08-31T05:00:00.000Z')

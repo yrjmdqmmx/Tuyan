@@ -24,6 +24,34 @@
 
 ## 条目（最新在上）
 
+### [2026-08-31] 科研评测 v2 授权保守价格、三家 canary-only 与受保护宿主组装 — by Codex
+变更：价格快照在 Ark/Krea 精确 raw-byte extractor 之外，允许 root-only signer 为仍未闭合的 requirement 使用显式 `operator_authorized_conservative_upper_bound`；授权文件绑定部署 SHA、canonical manifest、requirements、capture time、完整 unresolved requirementHash→unitCny 集合和固定确认词，并以 `operatorAuthorizationHash` 进入 price envelope 与 batch manifest，禁止 runtime/caller 临时选价。provider-default 固定以 2048×1152 预估，provider 成功后即使 artifact/spool/OSS 失败也按原始图片 width/height/hash 重算 actual CNY。新增固定官方源 refresh entry/workflow、root signer 镜像入口和 root run-bundle stager；secret 只从宿主受保护 env 读取，不进 argv/stdout。
+
+契约（影响 Benchmark Core / Worker / Core API / 运维）：
+- `ScientificV2BatchManifest` 新增必填 `priceOperatorAuthorizationHash`；价格 snapshot/envelope 新增 `operatorAuthorizationHash`。未使用上界时固定为 null，使用时必须与授权文件及所有 fallback observations 精确一致。
+- `run` bundle 可带 `executionPhase=canary-only|full`。canary-only 仅按 Bailian→Ark→OpenRouter 执行每家首个 formal supported slot，成功即停该 provider 并形成 `canary_complete`；full 必须从该状态恢复且不重复 canary。每 provider ¥180、并发 1、共享锁及 UNKNOWN_PROVIDER_OUTCOME 零重试不变。
+- admin attestation 安全响应新增 `revision/issuedAt`，以 `paperbanana/scientific-v2/operator-attestation/v1` 专用派生 key 签名并内容寻址落盘；`stage-scientific-v2-run-bundle.sh` 重算 canonical report/manifest/state/registry/price hash、验证 domain HMAC 与 disabled/concurrency/lock/budget 门后，才从 root-owned manifest/state/attestation 与本机 signing master 组装 run bundle，仅输出 `runBundleHash` 等安全摘要。
+- registry authority 与 official refresh report 必须共享同一 `capturedAt`，Signer 与 Core freeze 的 freshness 门统一为 24 小时（恰好 24h 可接受，超过即拒绝），避免 refresh/人工 upper-bound staging 后出现 signer 可签但 freeze 因旧 5 分钟门失败。
+
+各端待办：
+- [x] benchmark-core / Benchmark Worker / paperbanana-api（授权上界、actual pixel reconciliation、canary state/resume、attestation 元数据与 TDD）
+- [x] 香港部署代码（固定 URL 有界 refresh、root signer/stager、内容寻址 0600、workflow/合同测试）
+- [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与客户端字段不变，无需改造）
+- [ ] 生产执行（本条未提交/部署/读真实 secret/调用 Provider；合并后须先人工核验授权上界不低估，再以 immutable SHA/digests 执行 canary-only）
+- [ ] 精确价格完善（完整百炼与非 Krea OpenRouter/MAI 仍须补 deterministic extractor；在完成前必须保留授权上界标记，不得宣称 exact）
+
+### [2026-08-31] 科研评测 v2 固定官方价格 extractor、root signer 与实际像素费用对账 — by Codex
+变更：Scientific V2 price snapshot 继续使用 schema v2，但新增 `canonicalManifestHash / capturesHash`，OpenRouter evidence 新增可空 `pricingPage`；签名 envelope 额外绑定 server-attested registry authority hash、captures hash 与 requirements hash。官方 refresh 固定使用火山方舟价格文档精确 URL，并为 Krea 2 Large / Medium / Medium Turbo 抓取精确详情页；raw bytes 经调用方保护 sink 持久化后，extractor 会重读并复验 byte size/hash，Ark exact production ID 与 Krea generation/style-reference 价格才可生成 observation。新增 official-only signer/落盘入口：复验 registry authority HMAC、code/manifest/capture/requirements、24h freshness，root-only 写入内容寻址 `0600` JSON，secret 不进入 argv/stdout。provider-default 预估固定 2048×1152；成功图片对 MP 计价或 Seedream 5 Pro 261 万像素阈值按原始 width/height/hash 重算 actual CNY，原有每 provider ¥180、UNKNOWN_PROVIDER_OUTCOME 零重试与 price-reconciliation 门不变。
+
+契约（影响 Benchmark Core / Worker / 运维）：
+- `ScientificV2PriceSnapshotV2` 顶层新增必填 `canonicalManifestHash / capturesHash`；`ScientificV2OpenRouterPriceEvidence` 新增必填但可为 null 的 `pricingPage`。所有消费者必须 exact schema 校验并重算 snapshot/envelope hash。
+- 当前确定性 extractor 只闭合用户已授权的 Ark 四个 exact IDs 与 Krea 三个 exact IDs；百炼价格表、其他 OpenRouter endpoints、MAI token 上界及其余 provider-default MP 规则仍返回 `deterministic_official_price_extractor_unavailable`，official signer 对任一 unresolved 整体拒绝，因此尚未生成 production resolved snapshot。
+
+各端待办：
+- [x] benchmark-core / Benchmark Worker（固定来源 extractor、captures/manifest 绑定、root signer、实际像素对账与 TDD）
+- [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与客户端字段不变，无需改造）
+- [ ] 生产价格闭合 / 运维（补齐百炼、通用 OpenRouter/MAI 的 deterministic raw extractor 后重抓全部 77 requirements；在此之前不得签名完整 snapshot、prepare 或调用 Provider）
+
 ### [2026-08-31] 科研评测 v2 server-attested 生产桥、hash artifact 导入与受保护审核阶段 — by Codex
 变更：科研 v2 新增 root-only prepare/admin host bridge。prepare 通过 localhost gateway/admin transport 读取当前 `modelRegistry`，只规范化 `registryVersion / routeContractVersion / providers.{bailian,ark,openrouter}` scientific subset，并由 Core 以现有 Bench review-signing master 的 registry 专用派生 key 绑定部署 SHA、当前 capturedAt 和 subset JSON bytes hash；缺任一三家或任一三家在 array/object `unavailableProviders` 中均拒绝。签名价格快照使用独立 domain key 验证，Actions 不接触 master secret。prepare 产出 root-owned `0600` 内容寻址 manifest/state/inspect/freeze/attest；inspect 可直接交 phase wrapper，freeze/attest 可直接交 admin wrapper。
 

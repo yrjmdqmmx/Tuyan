@@ -4,7 +4,7 @@ import { canonicalHash } from '@paperbanana/benchmark-core'
 
 const hashPattern = /^[a-f0-9]{64}$/
 const codeShaPattern = /^[a-f0-9]{40}$/
-const MAX_AUTHORITY_AGE_MS = 5 * 60 * 1_000
+const MAX_AUTHORITY_AGE_MS = 24 * 60 * 60 * 1_000
 const REGISTRY_AUTHORITY_DOMAIN = 'paperbanana/scientific-v2/registry-authority/v1'
 
 type AnyRecord = Record<string, unknown>
@@ -134,7 +134,7 @@ export function verifyScientificV2RegistryAuthority(value: unknown, options: {
   if (authority.schemaVersion !== 1 || authority.codeSha !== options.expectedCodeSha
     || parsedAt.toISOString() !== authority.capturedAt
     || current.getTime() < parsedAt.getTime()
-    || current.getTime() - parsedAt.getTime() >= MAX_AUTHORITY_AGE_MS
+    || current.getTime() - parsedAt.getTime() > MAX_AUTHORITY_AGE_MS
     || typeof authority.registryVersion !== 'string' || !authority.registryVersion
     || authority.registry.registryVersion !== authority.registryVersion) fail('STALE_OR_MISMATCHED')
   const registryBytesHash = createHash('sha256').update(canonicalRegistryBytes(verifiedSubset)).digest('hex')
