@@ -1,5 +1,6 @@
 import { configureLafCloud } from './laf-cloud.js'
 import { normalizeAuthoritativeImageRuntimeError } from './image-runtime-error.js'
+import { enableScientificBenchmarkRasterDecoders } from './image-runtime-sharp-policy.js'
 
 function forbiddenCollection() {
   return new Proxy({}, {
@@ -15,6 +16,7 @@ configureLafCloud({
 })
 
 const legacy = await import('./legacy-entry.mjs')
+enableScientificBenchmarkRasterDecoders()
 const failedRequests = new WeakSet<object>()
 legacy.configureRuntimeFetch(async (input: string | URL | Request, init?: RequestInit) => {
   if (init && failedRequests.has(init)) throw new Error('UNKNOWN_PROVIDER_OUTCOME_NO_REDISPATCH')

@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 authoritative image runtime 恢复受限 PNG/JPEG 解码 — by Codex
+变更：Benchmark Worker 动态加载由 `paperbanana-api` 构建的 authoritative image runtime 时，legacy Laf 模块会在进程级阻断 `VipsForeignLoad`，此前只重新放行 WebP，导致三家 Provider 已返回的 PNG/JPEG 在 Worker 原始字节检查阶段统一被误判为技术失败并触发重试。专用 image-runtime 入口现在只重新放行受 Worker 25 MiB / 4000 万像素 / 完整容器校验保护的 PNG、JPEG、WebP buffer loader；SVG 等其他 Sharp foreign loader 继续保持阻断。题集、路由、预算、失败/unknown 策略、API 与公开字段均不改变。
+
+各端待办：
+- [x] paperbanana-api image runtime / Benchmark Worker（隔离 RED 测试、PNG/JPEG/WebP 通过且 SVG 仍阻断；API/Worker test/check/build）
+- [ ] 部署 / 运维（构建并部署含新 `dist/image-runtime.mjs` 的 immutable Worker；旧 `0 succeeded / 33 failed` 批次保留失败审计且不得重派 unknown，重新冻结新批次后执行三家 canary）
+- [x] Web / Gateway / 原生端（公开契约不变；无需改造）
+
 ### [2026-08-31] Scientific V2 legacy recovery 允许一次 pre-execution SHA 迁移 — by Codex
 变更：旧 `blocked/provider_canary_failed` 批次可能已被一次只读 attestation 过早写入 recovery `executionCodeSha`，但尚无任何导入的 Worker state report。Core 现在仅在原 blocked state/hash 完全未变、`revision=0`、`latestStateReportHash=null`、不存在 `started` dispatch、原 `legacyRecoveryStateHash` 精确匹配、目标 SHA 不回退到 manifest SHA 且从未迁移过时，允许以 CAS 将 `executionCodeSha` 迁移一次，并写入内部 `lineageRecoveryRotationUsed=true`。`beginDispatch` 在事务内以同一 batch CAS 设置内部 `activeDispatchId`，并绑定当时的 `executionCodeSha`；commit/unknown 在同一事务清除 reservation，rotation 则要求 reservation 不存在。因此 dispatch 与 SHA 迁移只能有一个先成功，stale claim 或跨集合检查竞态不能继续调用 Provider。后续 SHA 再漂移、任何 state/dispatch 进展或普通批次仍 fail closed。
 
