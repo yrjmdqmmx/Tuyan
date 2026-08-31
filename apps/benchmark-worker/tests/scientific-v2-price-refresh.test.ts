@@ -199,7 +199,8 @@ test('rejects Ark bytes that swap model prices or remove the first-input-free ru
 
 test('accepts the current Ark table wording and punctuation without weakening bound prices', async () => {
   const input = await fixedArkKreaEvidence({
-    arkHtml: `doubao-seedream-5-0-pro 按生图场景区分定价 首张免费 第 2 张起：0.02
+    arkHtml: `目录 doubao-seedream-5-0-pro doubao-seedream-5-0-lite doubao-seedream-4-5 doubao-seedream-4-0
+      doubao-seedream-5-0-pro 按生图场景区分定价 首张免费 第 2 张起：0.02
       单图生成场景：≤ 261 万像素（分辨率 1.5K 及以下）：0.30；> 261 万像素（分辨率 1.5K 以上）：0.60。
       doubao-seedream-5-0-lite 免费 0.22 doubao-seedream-4-5 免费 0.25 doubao-seedream-4-0 免费 0.20`,
     kreaSentence: `krea/krea-2-large costs $0.06/image for Image Output, $0.065/image for Image Output (style references) and $0.07/image for Image Output (moodboards). Up to 1 reference image. renders at 1K.`,
