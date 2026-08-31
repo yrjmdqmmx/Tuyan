@@ -1083,6 +1083,64 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
   assert.notEqual(attestation.attestationHash, createHmac('sha256', secret).update(attestation.reportHash).digest('hex'))
 })
 
+test('operatorDiagnostic returns a bounded attested read-only provider-canary summary', async () => {
+  const fixture = scientificBatchFixture()
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-diagnostic-secret-at-least-32-bytes'
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'diagnostic-claim-token', { operatorReportSecret: secret })
+  const batchId = 'scientific-v2-diagnostic-batch'
+  await repository.freezeBatch({ batchId, ...fixture })
+  const state = blockedProviderCanaryState(fixture)
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  batch.state = structuredClone(state)
+  batch.stateHash = state.stateHash
+  batch.revision = 1
+
+  const diagnostic = await repository.operatorDiagnostic({ batchId, manifestHash: fixture.manifest.manifestHash })
+
+  assert.deepEqual(Object.keys(diagnostic).sort(), [
+    'attestationHash', 'batchId', 'blockReason', 'diagnosticHash', 'manifestHash', 'pauseReason',
+    'providerCanaries', 'providerSpentCny', 'providerUnreconciledCny', 'revision', 'stateHash', 'status',
+  ])
+  assert.equal(diagnostic.batchId, batchId)
+  assert.equal(diagnostic.manifestHash, fixture.manifest.manifestHash)
+  assert.equal(diagnostic.stateHash, state.stateHash)
+  assert.equal(diagnostic.status, 'blocked')
+  assert.equal(diagnostic.pauseReason, null)
+  assert.equal(diagnostic.blockReason, 'provider_canary_failed')
+  assert.deepEqual(diagnostic.providerSpentCny, { bailian: 4, ark: 0, openrouter: 0 })
+  assert.deepEqual(diagnostic.providerUnreconciledCny, { bailian: 0, ark: 0, openrouter: 0 })
+  assert.equal(diagnostic.revision, 1)
+  assert.deepEqual(diagnostic.providerCanaries, [{
+    provider: 'bailian', canonicalModelId: fixture.manifest.executionOrder[0].canonicalModelId,
+    caseId: fixture.manifest.executionOrder[0].caseId, slotId: fixture.manifest.executionOrder[0].slotId,
+    status: 'failed', attemptCount: 4,
+    responseClasses: ['confirmed_provider_failure', 'confirmed_provider_failure', 'confirmed_provider_failure', 'confirmed_provider_failure'],
+    estimatedCny: 4, actualCny: null,
+  }])
+  const { diagnosticHash, attestationHash, ...diagnosticPayload } = diagnostic
+  assert.equal(diagnosticHash, canonicalHash(diagnosticPayload))
+  const diagnosticKey = createHmac('sha256', secret)
+    .update('paperbanana/scientific-v2/operator-diagnostic/v1').digest()
+  assert.equal(attestationHash, createHmac('sha256', diagnosticKey).update(diagnosticHash).digest('hex'))
+  assert.doesNotMatch(JSON.stringify(diagnostic), /payloadHash|objectKey|startedAt|completedAt|rawImageHash|reviewer|artifact|secret/i)
+  await assert.rejects(
+    () => repository.operatorDiagnostic({ batchId, manifestHash: 'f'.repeat(64) }),
+    /SCIENTIFIC_V2_BATCH_NOT_FOUND/,
+  )
+  batch.manifestHash = 'e'.repeat(64)
+  await assert.rejects(
+    () => repository.operatorDiagnostic({ batchId, manifestHash: batch.manifestHash }),
+    /SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_BINDING_INVALID/,
+  )
+  batch.manifestHash = fixture.manifest.manifestHash
+  batch.stateHash = 'e'.repeat(64)
+  await assert.rejects(
+    () => repository.operatorDiagnostic({ batchId, manifestHash: fixture.manifest.manifestHash }),
+    /SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_BINDING_INVALID/,
+  )
+})
+
 test('canonical state operation report contract fixes identity, JSON hash and exact secret-free HMAC payload', () => {
   const fixture = scientificBatchFixture()
   const state = completedScientificState(fixture)
@@ -1583,7 +1641,7 @@ test('saveClaimed and commitAttempt reject semantically invalid state and mismat
   )
 })
 
-test('existing adminBenchmarkControl repository method delegates the four scientific v2 commands without a new action', async () => {
+test('existing adminBenchmarkControl repository method delegates the scientific v2 diagnostic without a new action', async () => {
   const fixture = scientificBatchFixture()
   const storage = atomicScientificDb()
   const secret = 'scientific-v2-control-secret-at-least-32-bytes'
@@ -1598,9 +1656,26 @@ test('existing adminBenchmarkControl repository method delegates the four scient
 
   const frozen = await repository.control({ evaluationMode: 'codex_scientific_v2', command: 'freezeBatch', batchId: 'scientific-v2-control-batch', ...fixture }) as any
   const attestation = await repository.control({ evaluationMode: 'codex_scientific_v2', command: 'operatorAttestation', batchId: 'scientific-v2-control-batch' }) as any
+  const diagnostic = await repository.control({
+    evaluationMode: 'codex_scientific_v2', command: 'operatorDiagnostic',
+    batchId: 'scientific-v2-control-batch', manifestHash: fixture.manifest.manifestHash,
+  }) as any
 
   assert.equal(frozen.manifestHash, fixture.manifest.manifestHash)
   assert.equal(attestation.batchManifestHash, fixture.manifest.manifestHash)
+  assert.equal(diagnostic.diagnosticHash, canonicalHash(Object.fromEntries(Object.entries(diagnostic).filter(([key]) => !['diagnosticHash', 'attestationHash'].includes(key)))))
+  const transportDiagnostic = await repository.control({
+    evaluationMode: 'codex_scientific_v2', command: 'operatorDiagnostic',
+    batchId: 'scientific-v2-control-batch', manifestHash: fixture.manifest.manifestHash, gatewayToken: 'trusted-transport-only',
+  }) as any
+  assert.equal(transportDiagnostic.diagnosticHash, diagnostic.diagnosticHash)
+  await assert.rejects(
+    () => repository.control({
+      evaluationMode: 'codex_scientific_v2', command: 'operatorDiagnostic',
+      batchId: 'scientific-v2-control-batch', manifestHash: fixture.manifest.manifestHash, ignored: true,
+    }),
+    /SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_SCHEMA_INVALID/,
+  )
 })
 
 test('review export stores private mappings but returns only the public blind assignment', async () => {

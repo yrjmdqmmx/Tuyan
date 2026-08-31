@@ -29,6 +29,7 @@ export const SCIENTIFIC_V2_COLLECTIONS = Object.freeze({
 const hashPattern = /^[a-f0-9]{64}$/
 const codeShaPattern = /^[a-f0-9]{40}$/
 const OPERATOR_ATTESTATION_DOMAIN = 'paperbanana/scientific-v2/operator-attestation/v1'
+const OPERATOR_DIAGNOSTIC_DOMAIN = 'paperbanana/scientific-v2/operator-diagnostic/v1'
 const productionLockName = '/run/lock/paperbanana-hk-production.lock'
 const providers = ['bailian', 'ark', 'openrouter'] as const
 const reviewRedLineNotes = Object.freeze({
@@ -485,6 +486,13 @@ function providerCanaryFacts(state: AnyRecord, manifest: AnyRecord) {
   return { providers, attemptSetHash }
 }
 
+function diagnosticCnyTotal(attempts: AnyRecord[], key: 'estimatedCny' | 'actualCny') {
+  const values = attempts.map((attempt) => attempt[key])
+  return values.every((value) => Number.isFinite(value) && value >= 0)
+    ? values.reduce((total, value) => total + value, 0)
+    : null
+}
+
 function publicVariant(value: AnyRecord, sourceHash: string) {
   assertExactKeys(value, ['kind', 'objectKey', 'imageHash', 'width', 'height', 'fileSizeBytes', 'mimeType'], 'SCIENTIFIC_V2_PUBLIC_VARIANT_INVALID')
   if (!['thumbnail', 'detail', 'full'].includes(value.kind) || value.mimeType !== 'image/webp'
@@ -777,6 +785,51 @@ export function createScientificV2MongoRepository(
       const reportHash = canonicalHash(report)
       const attestationKey = createHmac('sha256', operatorSecret()).update(OPERATOR_ATTESTATION_DOMAIN).digest()
       return deepFreeze({ ...report, reportHash, attestationHash: createHmac('sha256', attestationKey).update(reportHash).digest('hex') })
+    },
+    async operatorDiagnostic(input: { batchId?: string; manifestHash?: string }) {
+      assertExactKeys(input, ['batchId', 'manifestHash'], 'SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_SCHEMA_INVALID')
+      if (!/^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$/.test(String(input.batchId || '')) || !hashPattern.test(String(input.manifestHash || ''))) {
+        scientificError('SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_SCHEMA_INVALID')
+      }
+      const batch = await batches.findOne({ batchId: input.batchId, manifestHash: input.manifestHash })
+      if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_FOUND')
+      if (batch.manifestHash !== batch.manifest?.manifestHash || batch.stateHash !== batch.state?.stateHash) {
+        scientificError('SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_BINDING_INVALID')
+      }
+      verifyScientificV2ImportedState(batch.state, batch.manifest)
+      const stateSlots = new Map<string, AnyRecord>(batch.state.slots.map((slot: AnyRecord): [string, AnyRecord] => [slot.slotId, slot]))
+      const providerCanaries = batch.manifest.executionOrder
+        .filter((slot: AnyRecord) => slot.isProviderCanary)
+        .map((frozenSlot: AnyRecord) => {
+          const slot = stateSlots.get(frozenSlot.slotId)
+          if (!slot) scientificError('SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_STATE_INVALID')
+          return {
+            provider: frozenSlot.provider,
+            canonicalModelId: frozenSlot.canonicalModelId,
+            caseId: frozenSlot.caseId,
+            slotId: frozenSlot.slotId,
+            status: slot.status,
+            attemptCount: slot.attempts.length,
+            responseClasses: slot.attempts.map((attempt: AnyRecord) => attempt.responseClass),
+            estimatedCny: diagnosticCnyTotal(slot.attempts, 'estimatedCny'),
+            actualCny: diagnosticCnyTotal(slot.attempts, 'actualCny'),
+          }
+        })
+      const diagnostic = {
+        batchId: batch.batchId,
+        manifestHash: batch.manifestHash,
+        stateHash: batch.stateHash,
+        status: batch.state.status,
+        pauseReason: batch.state.pauseReason,
+        blockReason: batch.state.blockReason,
+        providerSpentCny: Object.fromEntries(providers.map((provider) => [provider, batch.state.providerSpentCny[provider]])),
+        providerUnreconciledCny: Object.fromEntries(providers.map((provider) => [provider, batch.state.providerUnreconciledCny[provider]])),
+        revision: Number(batch.revision || 0),
+        providerCanaries,
+      }
+      const diagnosticHash = canonicalHash(diagnostic)
+      const diagnosticKey = createHmac('sha256', operatorSecret()).update(OPERATOR_DIAGNOSTIC_DOMAIN).digest()
+      return deepFreeze({ ...diagnostic, diagnosticHash, attestationHash: createHmac('sha256', diagnosticKey).update(diagnosticHash).digest('hex') })
     },
     async importStateReport(input: AnyRecord) {
       input = normalizeScientificV2SignedStateOperationReport(input, operatorSecret())

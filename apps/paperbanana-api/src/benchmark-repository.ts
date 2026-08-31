@@ -1531,6 +1531,13 @@ export function createMongoBenchmarkRepository(
       if (input.evaluationMode === 'codex_scientific_v2') {
         if (input.command === 'freezeBatch') return scientificV2.freezeBatch(input)
         if (input.command === 'operatorAttestation') return scientificV2.operatorAttestation({ batchId: input.batchId, manifestHash: input.manifestHash })
+        if (input.command === 'operatorDiagnostic') {
+          const allowedKeys = new Set(['action', 'evaluationMode', 'command', 'batchId', 'manifestHash', 'gatewayToken', 'adminToken', 'adminUserId'])
+          if (Reflect.ownKeys(input).some((key) => typeof key !== 'string' || !allowedKeys.has(key))) {
+            throw new Error('SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_SCHEMA_INVALID')
+          }
+          return scientificV2.operatorDiagnostic({ batchId: input.batchId, manifestHash: input.manifestHash })
+        }
         if (input.command === 'importWorkerState' || input.command === 'importCodexState') {
           const expectedKind = input.command === 'importWorkerState' ? 'worker' : 'codex'
           if (input.report?.kind !== expectedKind) throw new Error('SCIENTIFIC_V2_OPERATOR_REPORT_KIND_MISMATCH')

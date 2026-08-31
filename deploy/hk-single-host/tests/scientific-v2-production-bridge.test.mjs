@@ -471,7 +471,7 @@ test('exact tracked source gates reject dirty and untracked replacements of ever
 test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lock and private inputs', () => {
   for (const path of [admin, adminWorkflow]) assert.equal(existsSync(path), true, path)
   const source = readFileSync(admin, 'utf8')
-  for (const operation of ['freeze', 'attest', 'import-worker', 'import-codex', 'export-review', 'import-review', 'import-arbitration', 'publish']) {
+  for (const operation of ['freeze', 'attest', 'diagnose', 'import-worker', 'import-codex', 'export-review', 'import-review', 'import-arbitration', 'publish']) {
     assert.match(source, new RegExp(operation.replace('-', '[-_]')))
   }
   for (const action of ['adminBenchmarkControl', 'adminBenchmarkReviewExport', 'adminBenchmarkReviewImport', 'adminBenchmarkPublish']) {
@@ -527,6 +527,29 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   assert.deepEqual(Object.keys(attestationEnvelope.data).sort(), [
     'attestationHash', 'batchId', 'batchManifestHash', 'issuedAt', 'modelCount', 'reportHash', 'revision', 'slotCount', 'stateHash',
   ])
+  const fullDiagnostic = {
+    batchId: 'scientific-v2-test', manifestHash: 'a'.repeat(64), stateHash: 'b'.repeat(64),
+    status: 'blocked', pauseReason: null, blockReason: 'provider_canary_failed',
+    providerSpentCny: { bailian: 4, ark: 0, openrouter: 0 },
+    providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 }, revision: 1,
+    providerCanaries: [{
+      provider: 'bailian', canonicalModelId: 'bailian:qwen-image-3.0-pro', caseId: 'sci-figure-01', slotId: 'bailian:qwen-image-3.0-pro:sci-figure-01',
+      status: 'failed', attemptCount: 4,
+      responseClasses: ['confirmed_provider_failure', 'confirmed_provider_failure', 'confirmed_provider_failure', 'confirmed_provider_failure'],
+      estimatedCny: 4, actualCny: null,
+    }],
+    diagnosticHash: 'c'.repeat(64), attestationHash: 'd'.repeat(64),
+  }
+  const diagnosticSuccess = spawnSync(process.execPath, ['--input-type=module', '-e',
+    `const testResponse=JSON.parse(process.env.SCIENTIFIC_V2_TEST_RESPONSE);globalThis.fetch=async()=>({ok:true,json:async()=>testResponse});\n${embedded[1]}`,
+  ], {
+    encoding: 'utf8', input: JSON.stringify({ batchId: 'scientific-v2-test', manifestHash: 'a'.repeat(64) }),
+    env: { ...process.env, PAPERBANANA_SCIENTIFIC_V2_ADMIN_OPERATION: 'diagnose', SCIENTIFIC_V2_TEST_RESPONSE: JSON.stringify({ code: 0, run: fullDiagnostic }) },
+  })
+  assert.equal(diagnosticSuccess.status, 0, diagnosticSuccess.stderr)
+  const diagnosticEnvelope = JSON.parse(diagnosticSuccess.stdout)
+  assert.deepEqual(diagnosticEnvelope.data, fullDiagnostic)
+  assert.equal(Object.hasOwn(diagnosticEnvelope, 'privateData'), false)
   assert.match(source, /jq -c '[.]privateData' "\$result"/)
   for (const marker of ['Config.Image', 'RepoDigests', 'build-provenance.json', 'PAPERBANANA_BENCH_ENABLED', 'PAPERBANANA_BENCH_CONCURRENCY']) assert.match(source, new RegExp(marker.replace('.', '[.]')))
   assert.doesNotMatch(source, /mongosh|mongo\s|releases[.](?:insert|update)|insertOne|updateOne/)
