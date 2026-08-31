@@ -42,6 +42,7 @@ flock -x 9
 
 read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
 stat_mode() { stat -c '%u:%a' -- "$1" 2>/dev/null || stat -f '%u:%Lp' -- "$1"; }
+stat_nlink() { stat -c '%h' -- "$1" 2>/dev/null || stat -f '%l' -- "$1"; }
 for path in "$deploy_env" "$bench_env" "$core_env" "$gateway_env" "$price_path"; do
   [[ -f "$path" && ! -L "$path" && "$(stat_mode "$path")" =~ ^0:0?600$ ]] || {
     echo 'protected scientific v2 prepare input is unavailable' >&2; exit 1;
@@ -69,7 +70,10 @@ authority_matches=0
 shopt -s nullglob
 for candidate in "$authority_dir"/*.json; do
   [[ -f "$candidate" && ! -L "$candidate" && "$(stat_mode "$candidate")" =~ ^0:0?600$
-    && "${candidate##*/}" =~ ^[a-f0-9]{64}[.]json$ ]] || continue
+    && "$(stat_nlink "$candidate")" == 1 && "${candidate##*/}" =~ ^[a-f0-9]{64}[.]json$ ]] || continue
+  candidate_file_sha="${candidate##*/}"
+  candidate_file_sha="${candidate_file_sha%.json}"
+  [[ "$(sha256sum "$candidate" | awk '{print $1}')" == "$candidate_file_sha" ]] || continue
   if [[ "$(jq -er '.snapshotHash | select(type == "string" and test("^[a-f0-9]{64}$"))' "$candidate" 2>/dev/null || true)" == "$expected_authority_snapshot_hash" ]]; then
     authority_path="$candidate"
     authority_matches=$((authority_matches + 1))
@@ -118,7 +122,7 @@ chmod 0600 "$live_registry_result" "$prepare_input" "$prepare_result" "$verifier
 awk '$0 ~ /^PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=/ {print; count++}
   END {exit count==1 ? 0 : 1}' "$core_env" >"$verifier_env"
 
-node_script='const invoke=async body=>{const r=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)});const j=await r.json();if(!r.ok||j.code!==0)throw new Error("SCIENTIFIC_V2_PREPARE_CORE_REJECTED");return j};process.stdout.write(JSON.stringify(await invoke({action:"modelRegistry"})));'
+node_script='const scientific=["bailian","ark","openrouter"];const invoke=async body=>{const r=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID},body:JSON.stringify(body)});const j=await r.json();if(!r.ok||j.code!==0)throw new Error("SCIENTIFIC_V2_PREPARE_CORE_REJECTED");return j};const registry=await invoke({action:"modelRegistry"});const unavailable=registry.unavailableProviders;const scientificUnavailable=Array.isArray(unavailable)?unavailable.some(v=>typeof v==="string"&&scientific.includes(v)):unavailable&&typeof unavailable==="object"?scientific.some(v=>Object.hasOwn(unavailable,v)):false;const unavailableInvalid=unavailable!==undefined&&unavailable!==null&&!Array.isArray(unavailable)&&typeof unavailable!=="object"||Array.isArray(unavailable)&&unavailable.some(v=>typeof v!=="string");if(scientificUnavailable||unavailableInvalid||registry.routeContractVersion!==1||!registry.providers||typeof registry.providers!=="object"||Array.isArray(registry.providers)||scientific.some(v=>!registry.providers[v]||typeof registry.providers[v]!=="object"||Array.isArray(registry.providers[v])||!Array.isArray(registry.providers[v].models)))throw new Error("SCIENTIFIC_V2_REGISTRY_CHANGED_DURING_CAPTURE");process.stdout.write(JSON.stringify(registry));'
 "${compose[@]}" exec -T -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" \
   paperbanana-api node --input-type=module -e "$node_script" >"$live_registry_result"
 jq -e '.schemaVersion == 1 and (.registryBytesHash | test("^[a-f0-9]{64}$")) and
