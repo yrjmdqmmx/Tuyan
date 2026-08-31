@@ -25,13 +25,13 @@
 ## 条目（最新在上）
 
 ### [2026-08-31] 科研评测 v2 受保护冻结请求体通道 — by Codex
-变更：40 模型 Scientific v2 冻结信封约 1.70 MiB，超过 Core 普通 JSON 的 1 MiB 上限。Core 现仅对同时持有内部 gateway token、admin transport token 且声明 `x-paperbanana-scientific-v2-admin-operation: freeze` 的 localhost 冻结请求开放 8 MiB 上限；解析后再次要求 action/evaluationMode/command 精确为 `adminBenchmarkControl/codex_scientific_v2/freezeBatch`。其他请求继续使用 1 MiB，声明头不得复用于其他管理命令。
+变更：40 模型 Scientific v2 冻结信封约 1.70 MiB，超过 Core 普通 JSON 的 1 MiB 上限。Core 现仅对同时持有内部 gateway token、admin transport token 且声明 `x-paperbanana-scientific-v2-admin-operation: freeze` 的 localhost 冻结请求开放 8 MiB 上限；解析后再次要求 action/evaluationMode/command 精确为 `adminBenchmarkControl/codex_scientific_v2/freezeBatch`。其他请求继续使用 1 MiB，声明头不得复用于其他管理命令。补齐受生产 Environment、同一共享锁和精确 SHA/hash/phase 约束的 `stage-scientific-v2-run-bundle.yml` 手工入口，调用既有 root-only stager 将 frozen manifest/state 与 Core HMAC attestation 组装为内容寻址 canary/full bundle，阶段本身 Provider 调用为 0。
 
 契约（影响 Core API / 科研 v2 运维）：
 - `run-scientific-v2-admin-operator.sh` 的 freeze 调用新增内部声明头；非 freeze 阶段不发送。公开 API action、客户端字段和 CORS 不变。
 
 各端待办：
-- [x] paperbanana-api / 香港科研 v2 admin operator（受保护大请求解析、命令绑定与 TDD）
+- [x] paperbanana-api / 香港科研 v2 admin operator（受保护大请求解析、命令绑定、run-bundle staging workflow 与 TDD）
 - [x] Web / Gateway / 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
 - [ ] 生产执行（合并并部署同一不可变 SHA 后，重新 prepare/freeze；当前三家 Provider 调用仍为 0）
 

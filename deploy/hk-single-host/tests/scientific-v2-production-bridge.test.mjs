@@ -22,6 +22,7 @@ const priceAuthorization = fileURLToPath(new URL('../scripts/authorize-scientifi
 const priceAuthorizationEntry = fileURLToPath(new URL('../../../apps/benchmark-worker/src/scientific-v2-price-authorization-entry.ts', import.meta.url))
 const priceAuthorizationWorkflow = fileURLToPath(new URL('../../../.github/workflows/authorize-scientific-v2-price-snapshot.yml', import.meta.url))
 const runBundleStager = fileURLToPath(new URL('../scripts/stage-scientific-v2-run-bundle.sh', import.meta.url))
+const runBundleStagerWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-run-bundle.yml', import.meta.url))
 const workerPackage = fileURLToPath(new URL('../../../apps/benchmark-worker/package.json', import.meta.url))
 
 const canonicalJson = (value) => Array.isArray(value)
@@ -187,6 +188,7 @@ test('root authorization workflow derives the fixed unresolved set and signs it 
 
 test('root run-bundle stager protects attestation secret and binds canary or full phase to prepared state', () => {
   assert.equal(existsSync(runBundleStager), true, runBundleStager)
+  assert.equal(existsSync(runBundleStagerWorkflow), true, runBundleStagerWorkflow)
   assert.equal(statSync(runBundleStager).mode & 0o111, 0o111)
   const source = readFileSync(runBundleStager, 'utf8')
   assert.match(source, /id -u[\s\S]*root/)
@@ -210,6 +212,16 @@ test('root run-bundle stager protects attestation secret and binds canary or ful
   assert.match(source, /git -C "\$repo_root" diff --quiet "\$expected_sha" --/)
   assert.doesNotMatch(source, /set -x|printenv|cat\s+[^\n]*(?:secret|core[.]env|bench[.]env)/)
   assert.doesNotMatch(source, /jq\s+-c?\s*['"]?[.]['"]?\s+[^\n]*bundle/)
+
+  const workflow = readFileSync(runBundleStagerWorkflow, 'utf8')
+  assert.match(workflow, /environment:\s*paperbanana-production/)
+  assert.match(workflow, /concurrency:[\s\S]*paperbanana-hk-production[\s\S]*cancel-in-progress:\s*false/)
+  assert.match(workflow, /actions\/checkout@[a-f0-9]{40}/)
+  for (const input of ['expected_deployed_sha', 'manifest_sha256', 'state_sha256', 'attestation_result_sha256', 'manifest_hash', 'registry_hash', 'suite_hash', 'price_hash', 'execution_phase']) {
+    assert.match(workflow, new RegExp(`${input}:[\\s\\S]*required:\\s*true`))
+  }
+  assert.match(workflow, /stage-scientific-v2-run-bundle[.]sh/)
+  assert.doesNotMatch(workflow, /REVIEW_SIGNING_SECRET|ATTESTATION_SECRET|PROVIDER.*KEY/)
 })
 
 test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tampering before secret assembly', () => {
