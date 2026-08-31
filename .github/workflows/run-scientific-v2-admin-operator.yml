@@ -7,6 +7,9 @@ on:
         required: true
         type: choice
         options: [freeze, attest, diagnose, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+      expected_control_sha:
+        description: Exact GitHub workflow checkout SHA; may differ from the frozen deployed data-plane SHA.
+        required: true
       expected_deployed_sha:
         required: true
       expected_core_digest:
@@ -35,6 +38,7 @@ jobs:
       - name: Validate immutable request
         env:
           OPERATION: ${{ inputs.operation }}
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
           EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
@@ -42,7 +46,8 @@ jobs:
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
-          [[ "$EXPECTED_SHA" == "$GITHUB_SHA" && "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$GITHUB_SHA" == "$CONTROL_SHA" ]]
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$INPUT_HASH"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
           [[ "$CONFIRM" == "$OPERATION-scientific-v2-admin-disabled-worker" ]]
           bash -n deploy/hk-single-host/scripts/run-scientific-v2-admin-operator.sh
@@ -71,4 +76,4 @@ jobs:
           printf -v command 'cd %q && sudo %q --operation %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --input-sha256 %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-admin-operator.sh \
             "$OPERATION" "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$INPUT_HASH" "$CONFIRM"
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$command"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command"

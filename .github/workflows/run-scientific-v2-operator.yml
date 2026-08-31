@@ -18,6 +18,9 @@ on:
           - review_validate
           - review_arbitrate
           - review_finalize
+      expected_control_sha:
+        description: Exact GitHub workflow checkout SHA; may differ from the frozen deployed data-plane SHA.
+        required: true
       expected_deployed_sha:
         description: Exact deployed Core and Benchmark Worker 40-character SHA.
         required: true
@@ -66,6 +69,7 @@ jobs:
       - name: Validate exact immutable V2 envelope
         env:
           MODE: ${{ inputs.mode }}
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
           EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
           EXPECTED_CORE_DIGEST: ${{ inputs.expected_core_digest }}
           EXPECTED_WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
@@ -78,8 +82,9 @@ jobs:
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
+          [[ "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" ]]
           [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
-          [[ "$GITHUB_SHA" == "$EXPECTED_SHA" ]]
           [[ "$EXPECTED_CORE_DIGEST" =~ ^[a-f0-9]{64}$ ]]
           [[ "$EXPECTED_WORKER_DIGEST" =~ ^[a-f0-9]{64}$ ]]
           for hash in "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH"; do

@@ -608,9 +608,11 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
 test('scientific operator binds expected Core and Worker digests through workflow, env and running containers', () => {
   const workflow = readFileSync(operatorWorkflow, 'utf8')
   assert.match(workflow, /actions\/checkout@[a-f0-9]{40}/)
-  for (const input of ['expected_core_digest', 'expected_worker_digest']) {
+  for (const input of ['expected_control_sha', 'expected_deployed_sha', 'expected_core_digest', 'expected_worker_digest']) {
     assert.match(workflow, new RegExp(`${input}:[\\s\\S]*required:\\s*true`))
   }
+  assert.match(workflow, /GITHUB_SHA[" ]+==[" ]+\$CONTROL_SHA|\$GITHUB_SHA[" ]+==[" ]+"\$CONTROL_SHA"/)
+  assert.doesNotMatch(workflow, /GITHUB_SHA[" ]+==[" ]+\$EXPECTED_SHA|\$GITHUB_SHA[" ]+==[" ]+"\$EXPECTED_SHA"/)
   const source = readFileSync(operator, 'utf8')
   assert.match(source, /--expected-core-digest/)
   assert.match(source, /--expected-worker-digest/)
@@ -620,6 +622,16 @@ test('scientific operator binds expected Core and Worker digests through workflo
   assert.match(source, /RepoDigests/)
   assert.match(source, /stateBundleHash/)
   assert.match(source, /\$state_bundle_hash[.]state[.]json/)
+})
+
+test('scientific v2 admin control plane binds its own checkout separately from the frozen deployed SHA', () => {
+  const workflow = readFileSync(adminWorkflow, 'utf8')
+  for (const input of ['expected_control_sha', 'expected_deployed_sha']) {
+    assert.match(workflow, new RegExp(`${input}:[\\s\\S]*required:\\s*true`))
+  }
+  assert.match(workflow, /GITHUB_SHA[" ]+==[" ]+\$CONTROL_SHA|\$GITHUB_SHA[" ]+==[" ]+"\$CONTROL_SHA"/)
+  assert.doesNotMatch(workflow, /GITHUB_SHA[" ]+==[" ]+\$EXPECTED_SHA|\$GITHUB_SHA[" ]+==[" ]+"\$EXPECTED_SHA"/)
+  assert.match(workflow, /ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 /)
 })
 
 test('scientific v2 progress inspection is read-only, non-blocking and reports persisted artifact dimensions', () => {
