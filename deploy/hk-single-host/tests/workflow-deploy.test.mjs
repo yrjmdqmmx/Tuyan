@@ -9,6 +9,7 @@ import {
   realpathSync,
   rmSync,
   statSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -82,9 +83,11 @@ test('deploy apply guard runs before deployment inputs or Compose and dry-run po
 function makeWrapperFixture() {
   const root = realpathSync(mkdtempSync(join(tmpdir(), 'paperbanana-staged-deploy-')));
   const deployEnv = join(root, 'opt', 'paperbanana', 'repo', 'deploy', 'hk-single-host', '.env');
+  const artifactSpoolParent = join(root, 'opt', 'paperbanana', 'data');
   const staged = join(root, 'tmp', 'paperbanana-image-lock.abcdef');
   const actionLog = join(root, 'actions.log');
   mkdirSync(dirname(deployEnv), { recursive: true });
+  mkdirSync(artifactSpoolParent, { recursive: true, mode: 0o700 });
   mkdirSync(dirname(staged), { recursive: true });
   writeFileSync(join(root, '.paperbanana-hk-test-root'), 'paperbanana-hk-test-root-v1\n');
   writeFileSync(deployEnv, 'PREVIOUS_DEPLOY_FIELD=preserve-before-install\n');
@@ -98,7 +101,7 @@ function makeWrapperFixture() {
     'COMPOSE_PROFILES=benchmark',
     '',
   ].join('\n'));
-  for (const path of [root, dirname(staged), dirname(deployEnv)]) chmodSync(path, 0o700);
+  for (const path of [root, dirname(staged), dirname(deployEnv), artifactSpoolParent]) chmodSync(path, 0o700);
   for (const path of [join(root, '.paperbanana-hk-test-root'), deployEnv, staged]) chmodSync(path, 0o600);
   return {
     root,
@@ -135,12 +138,134 @@ test('host wrapper owns the staged lock and holds one lock across install, boots
     assert.equal(existsSync(fixture.staged), false);
     assert.equal(readFileSync(fixture.actionLog, 'utf8'), [
       'lock acquired /run/lock/paperbanana-hk-production.lock',
+      'provision scientific v2 artifact spool',
       'install staged image lock',
       'bootstrap benchmark discovery-only',
       'deploy apply',
       'cleanup staged image lock',
       '',
     ].join('\n'));
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('host wrapper provisions the exact scientific v2 artifact spool before Compose deployment', () => {
+  const fixture = makeWrapperFixture();
+  const artifactSpool = join(fixture.root, 'opt', 'paperbanana', 'data', 'scientific-v2-artifact-spool');
+  try {
+    assert.equal(existsSync(artifactSpool), false, 'fixture models an upgraded host without the new spool');
+
+    const result = fixture.run();
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(statSync(artifactSpool).isDirectory(), true);
+    assert.equal(statSync(artifactSpool).mode & 0o777, 0o700);
+    const actions = readFileSync(fixture.actionLog, 'utf8');
+    assert.ok(actions.indexOf('provision scientific v2 artifact spool') < actions.indexOf('deploy apply'));
+    const wrapper = readFileSync(wrapperPath, 'utf8');
+    assert.match(wrapper, /install -d -o 1000 -g 1000 -m 0700 "\$artifact_spool"/);
+    assert.match(wrapper, /chown 1000:1000 "\$artifact_spool"/);
+    assert.ok(wrapper.indexOf('chown 1000:1000 "$artifact_spool"') < wrapper.search(/deploy\.sh" --apply/));
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('host wrapper refuses a scientific v2 artifact spool symlink before Compose deployment', () => {
+  const fixture = makeWrapperFixture();
+  const artifactSpool = join(fixture.root, 'opt', 'paperbanana', 'data', 'scientific-v2-artifact-spool');
+  const symlinkTarget = join(fixture.root, 'untrusted-artifact-spool-target');
+  try {
+    mkdirSync(dirname(artifactSpool), { recursive: true, mode: 0o700 });
+    mkdirSync(symlinkTarget, { mode: 0o700 });
+    symlinkSync(symlinkTarget, artifactSpool);
+
+    const result = fixture.run();
+
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /artifact spool.*non-symlink directory/i);
+    assert.equal(existsSync(fixture.staged), false);
+    assert.doesNotMatch(readFileSync(fixture.actionLog, 'utf8'), /deploy apply/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('host wrapper refuses a symlinked scientific v2 artifact spool parent before any spool mutation', () => {
+  const fixture = makeWrapperFixture();
+  const artifactSpool = join(fixture.root, 'opt', 'paperbanana', 'data', 'scientific-v2-artifact-spool');
+  const artifactSpoolParent = dirname(artifactSpool);
+  const symlinkTarget = join(fixture.root, 'untrusted-artifact-spool-parent-target');
+  try {
+    rmSync(artifactSpoolParent, { recursive: true, force: true });
+    mkdirSync(symlinkTarget, { mode: 0o700 });
+    symlinkSync(symlinkTarget, artifactSpoolParent);
+
+    const result = fixture.run();
+
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /artifact spool parent.*non-symlink directory/i);
+    assert.equal(existsSync(join(symlinkTarget, 'scientific-v2-artifact-spool')), false);
+    assert.doesNotMatch(readFileSync(fixture.actionLog, 'utf8'), /provision scientific v2 artifact spool|deploy apply/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('host wrapper rejects a physical-path-mismatched artifact spool parent through a symlinked ancestor', () => {
+  const fixture = makeWrapperFixture();
+  const artifactSpool = join(fixture.root, 'opt', 'paperbanana', 'data', 'scientific-v2-artifact-spool');
+  const paperbananaParent = dirname(dirname(artifactSpool));
+  const symlinkTarget = join(fixture.root, 'untrusted-paperbanana-parent-target');
+  try {
+    rmSync(paperbananaParent, { recursive: true, force: true });
+    mkdirSync(join(symlinkTarget, 'data'), { recursive: true, mode: 0o700 });
+    symlinkSync(symlinkTarget, paperbananaParent);
+
+    const result = fixture.run();
+
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /artifact spool parent.*non-symlink directory/i);
+    assert.equal(existsSync(join(symlinkTarget, 'data', 'scientific-v2-artifact-spool')), false);
+    assert.doesNotMatch(readFileSync(fixture.actionLog, 'utf8'), /provision scientific v2 artifact spool|deploy apply/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('host wrapper refuses a non-directory scientific v2 artifact spool without removing it', () => {
+  const fixture = makeWrapperFixture();
+  const artifactSpool = join(fixture.root, 'opt', 'paperbanana', 'data', 'scientific-v2-artifact-spool');
+  try {
+    mkdirSync(dirname(artifactSpool), { recursive: true, mode: 0o700 });
+    writeFileSync(artifactSpool, 'preserve this invalid target\n', { mode: 0o600 });
+
+    const result = fixture.run();
+
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /artifact spool.*non-symlink directory/i);
+    assert.equal(readFileSync(artifactSpool, 'utf8'), 'preserve this invalid target\n');
+    assert.doesNotMatch(readFileSync(fixture.actionLog, 'utf8'), /deploy apply/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test('host wrapper preserves existing scientific v2 artifact spool contents while tightening its mode', () => {
+  const fixture = makeWrapperFixture();
+  const artifactSpool = join(fixture.root, 'opt', 'paperbanana', 'data', 'scientific-v2-artifact-spool');
+  const existingArtifact = join(artifactSpool, 'existing-artifact.json');
+  try {
+    mkdirSync(artifactSpool, { recursive: true, mode: 0o700 });
+    writeFileSync(existingArtifact, '{"preserve":true}\n', { mode: 0o600 });
+    chmodSync(artifactSpool, 0o755);
+
+    const result = fixture.run();
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(readFileSync(existingArtifact, 'utf8'), '{"preserve":true}\n');
+    assert.equal(statSync(artifactSpool).mode & 0o777, 0o700);
   } finally {
     fixture.cleanup();
   }
