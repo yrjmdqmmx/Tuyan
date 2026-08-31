@@ -18,6 +18,7 @@ import {
   type ScientificV2OfficialPriceCapture,
   type ScientificV2OfficialPriceRefreshReport,
 } from './scientific-v2-price-refresh.js'
+import { scientificV2ConservativeUnitCny } from './scientific-v2-price-policy.js'
 
 type CanonicalManifest = Parameters<typeof verifyScientificV2PriceSnapshot>[1] & { manifestHash: string }
 const PRICE_ATTESTATION_DOMAIN = 'paperbanana/scientific-v2/price-attestation/v2'
@@ -135,7 +136,7 @@ export function assertScientificV2RootSnapshotFileFacts(facts: {
   }
 }
 
-function verifyRegistryAuthority(value: unknown, input: { codeSha: string; secret: string; now: Date }) {
+export function verifyScientificV2RegistryAuthority(value: unknown, input: { codeSha: string; secret: string; now: Date }) {
   assertExactScientificV2Keys(value, [
     'schemaVersion', 'codeSha', 'capturedAt', 'registryVersion', 'registryBytesHash',
     'registry', 'snapshotHash', 'attestationHash',
@@ -173,7 +174,7 @@ export async function createScientificV2OfficialSignedPriceSnapshot(input: {
   const key = secretBytes(input.secret)
   const now = (input.now || (() => new Date()))()
   if (!Number.isFinite(now.getTime())) scientificV2Error('SCIENTIFIC_V2_PRICE_ATTESTATION_EXPIRED')
-  const authority = verifyRegistryAuthority(input.registryAuthority, { codeSha: input.codeSha, secret: input.secret, now })
+  const authority = verifyScientificV2RegistryAuthority(input.registryAuthority, { codeSha: input.codeSha, secret: input.secret, now })
   const registryHash = canonicalHash(authority.registry)
   const canonicalManifest = buildScientificV2CanonicalManifest({
     registryVersion: authority.registryVersion, registryHash, registry: authority.registry,
@@ -217,7 +218,9 @@ export async function createScientificV2OfficialSignedPriceSnapshot(input: {
     for (const unresolved of extracted.unresolved) {
       const requirement = requirements.find((item) => item.requirementHash === unresolved.requirementHash)
       const unitCny = bounds.get(unresolved.requirementHash)
-      if (!requirement || !unitCny) scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
+      if (!requirement || !unitCny || Number(unitCny) < Number(scientificV2ConservativeUnitCny(requirement))) {
+        scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
+      }
       const output = requirement.imageSize === '1K' ? { outputWidth: 1280, outputHeight: 720 } : { outputWidth: 2048, outputHeight: 1152 }
       observations.push({
         provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation,

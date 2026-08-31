@@ -293,6 +293,30 @@ test('preflight blocks only baseline fixed-slot spend while disclosing four-atte
   assert.throws(() => buildScientificV2PriceSnapshot({ canonicalManifest: manifest(), capturedAt: CAPTURED_AT, observations: overBaseline }), /SCIENTIFIC_V2_PROVIDER_BASELINE_BUDGET_EXCEEDED/)
 })
 
+test('scientific v2 preflight uses the immutable provider-specific OpenRouter CNY 360 cap', () => {
+  const costlyOpenRouter = observations().map((entry) => {
+    if (entry.provider !== 'openrouter') return entry
+    const costUsd = '5'
+    return {
+      ...entry,
+      charges: entry.charges.map((charge) => ({ ...charge, rateDecimal: costUsd })),
+      openRouterEvidence: {
+        ...entry.openRouterEvidence!,
+        rawPricing: entry.openRouterEvidence!.rawPricing.map((line) => ({ ...line, costUsd })),
+      },
+    }
+  })
+  const snapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest: manifest(), capturedAt: CAPTURED_AT, observations: costlyOpenRouter,
+  })
+  const openrouter = snapshot.preflight.providerTotals.find((item) => item.provider === 'openrouter')!
+  assert.equal(openrouter.providerBudgetCnyAtoms, '36000000000')
+  assert.equal(openrouter.baselineCnyAtoms, '36000000000')
+  assert.equal(openrouter.worstCaseCnyAtoms, '144000000000')
+  assert.equal(openrouter.baselineWithinBudget, true)
+  assert.equal(openrouter.worstCaseWithinBudget, false)
+})
+
 test('price verification rejects symbol-key smuggling', () => {
   const frozen = manifest()
   const snapshot = buildScientificV2PriceSnapshot({ canonicalManifest: frozen, capturedAt: CAPTURED_AT, observations: observations() })

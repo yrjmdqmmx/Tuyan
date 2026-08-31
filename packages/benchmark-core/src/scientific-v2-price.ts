@@ -8,6 +8,11 @@ export const SCIENTIFIC_V2_PRICE_IMAGE_SIZES = ['1K', '2K', 'provider-default'] 
 export const SCIENTIFIC_V2_PRICE_ASPECT_RATIO = '16:9' as const
 export const SCIENTIFIC_V2_PRICE_MAX_ATTEMPTS_PER_SLOT = 4 as const
 export const SCIENTIFIC_V2_PRICE_PROVIDER_BUDGET_CNY = 180 as const
+export const SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY = Object.freeze({
+  bailian: 180,
+  ark: 180,
+  openrouter: 360,
+} as const)
 
 const hash64 = /^[a-f0-9]{64}$/
 const providers = ['bailian', 'ark', 'openrouter'] as const
@@ -104,7 +109,7 @@ export interface ScientificV2PriceSnapshotV2 {
   entries: ScientificV2AttestedPriceEntry[]
   preflight: {
     maxAttemptsPerSlot: 4
-    providerBudgetCnyAtoms: string
+    providerBudgetsCnyAtoms: Record<Provider, string>
     routes: Array<{
       provider: Provider
       modelId: string
@@ -118,6 +123,7 @@ export interface ScientificV2PriceSnapshotV2 {
     }>
     providerTotals: Array<{
       provider: Provider
+      providerBudgetCnyAtoms: string
       baselineCnyAtoms: string
       worstCaseCnyAtoms: string
       baselineWithinBudget: boolean
@@ -431,20 +437,24 @@ function buildPreflight(requirements: ScientificV2PriceRequirement[], entries: S
     }
     return { ...base, routeHash: canonicalHash(base) }
   })
-  const budget = BigInt(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGET_CNY) * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY
   const providerTotals = providers.map((provider) => {
+    const budget = BigInt(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[provider]) * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY
     const relevant = routes.filter((route) => route.provider === provider)
     const baseline = relevant.reduce((sum, route) => sum + BigInt(route.baselineCnyAtoms), 0n)
     const worstCase = relevant.reduce((sum, route) => sum + BigInt(route.worstCaseCnyAtoms), 0n)
     return {
-      provider, baselineCnyAtoms: baseline.toString(), worstCaseCnyAtoms: worstCase.toString(),
+      provider, providerBudgetCnyAtoms: budget.toString(), baselineCnyAtoms: baseline.toString(), worstCaseCnyAtoms: worstCase.toString(),
       baselineWithinBudget: baseline <= budget, worstCaseWithinBudget: worstCase <= budget,
     }
   })
   if (providerTotals.some((item) => !item.baselineWithinBudget)) fail('SCIENTIFIC_V2_PROVIDER_BASELINE_BUDGET_EXCEEDED')
   const base = {
     maxAttemptsPerSlot: SCIENTIFIC_V2_PRICE_MAX_ATTEMPTS_PER_SLOT,
-    providerBudgetCnyAtoms: budget.toString(), routes, providerTotals,
+    providerBudgetsCnyAtoms: Object.fromEntries(providers.map((provider) => [
+      provider,
+      (BigInt(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[provider]) * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY).toString(),
+    ])) as Record<Provider, string>,
+    routes, providerTotals,
   }
   return { ...base, preflightHash: canonicalHash(base) }
 }

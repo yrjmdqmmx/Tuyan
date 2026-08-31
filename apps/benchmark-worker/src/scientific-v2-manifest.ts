@@ -1,5 +1,6 @@
 import {
   PB_SCIENTIFIC_FIGURE_V2,
+  SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY,
   SCIENTIFIC_BENCHMARK_IDENTITY,
   buildScientificV2CanonicalManifest,
   canonicalHash,
@@ -307,7 +308,7 @@ export function buildScientificV2Batch(input: {
     cases,
     executionOrder,
     providerOrder: [...SCIENTIFIC_V2_PROVIDERS],
-    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+    providerBudgetsCny: { ...SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY },
     codexLimits: { modelId: 'codex:gpt-image-2' as const, successfulSlots: 9 as const, maxAttemptsPerSlot: 4 as const, maxToolCalls: 36 as const },
     concurrency: 1 as const,
     lockName: input.lockName,
@@ -356,7 +357,7 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
     || manifest.cases.length !== 9
     || canonicalHash(manifest.cases) !== canonicalHash(PB_SCIENTIFIC_FIGURE_V2.cases)
     || canonicalHash(manifest.providerOrder) !== canonicalHash(SCIENTIFIC_V2_PROVIDERS)
-    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash({ bailian: 180, ark: 180, openrouter: 180 })
+    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY)
     || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 })
     || manifest.lockName !== SCIENTIFIC_V2_PRODUCTION_LOCK_NAME
     || manifest.executionOrder.length !== manifest.models.length * 9

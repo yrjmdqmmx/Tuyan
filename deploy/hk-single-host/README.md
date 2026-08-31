@@ -158,6 +158,20 @@ no direct Mongo/release path. Both scientific workflows bind the exact Core and
 Worker image digests, and the phase wrapper compares workflow inputs against
 `.env`, the running container image, and Docker `RepoDigests`.
 
+Scientific v2 price authorization uses the separate manual `Authorize Scientific
+V2 Price Snapshot` workflow after an official refresh. Its root host wrapper
+holds the same production lock, verifies the exact authority/report content
+hashes plus Core/Worker image provenance, keeps the resident Worker disabled at
+concurrency one, and runs the built Worker authorization CLI with networking
+disabled. The CLI derives only the extractor's exact unresolved set from the
+protected captures and the repository-fixed conservative map, writes a root-only
+content-addressed authorization, and then the wrapper invokes the existing
+signer under the inherited lock. Workflow stdout is restricted to authorization
+and snapshot hashes plus provider baseline/worst-case/cap totals; the signing
+master remains in a temporary protected env file. V2 caps are Bailian CNY 180,
+Ark CNY 180, and OpenRouter CNY 360; worst-case disclosure never raises those
+runtime hard stops.
+
 Codex image imports no longer embed base64 in the JSON bundle. Each successful
 tool call references a direct child `<sha256>.<png|jpeg|webp>` in the protected
 per-manifest artifact directory (root-owned, service-group-readable `0550`). The Worker validates and later rechecks that directory itself, opens the file with `O_NOFOLLOW`, requires

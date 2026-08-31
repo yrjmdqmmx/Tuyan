@@ -166,9 +166,9 @@ try:
         raise RuntimeError('expected-hashes')
     if manifest.get('manifestHash') != state.get('manifestHash') or manifest.get('manifestHash') != attestation.get('batchManifestHash') or state.get('stateHash') != attestation.get('stateHash'):
         raise RuntimeError('binding')
-    if manifest.get('providerBudgetsCny') != {'bailian':180,'ark':180,'openrouter':180} or manifest.get('concurrency') != 1 or manifest.get('lockName') != LOCK or manifest.get('providerOrder') != ['bailian','ark','openrouter']:
+    if manifest.get('providerBudgetsCny') != {'bailian':180,'ark':180,'openrouter':360} or manifest.get('concurrency') != 1 or manifest.get('lockName') != LOCK or manifest.get('providerOrder') != ['bailian','ark','openrouter']:
         raise RuntimeError('manifest-gate')
-    if attestation.get('daemon') != {'enabled':False,'status':'configured-disabled'} or attestation.get('concurrency') != 1 or attestation.get('lockName') != LOCK or attestation.get('providerBudgetsCny') != {'bailian':180,'ark':180,'openrouter':180}:
+    if attestation.get('daemon') != {'enabled':False,'status':'configured-disabled'} or attestation.get('concurrency') != 1 or attestation.get('lockName') != LOCK or attestation.get('providerBudgetsCny') != {'bailian':180,'ark':180,'openrouter':360}:
         raise RuntimeError('attestation-gate')
     if attestation.get('modelCount') != len(manifest.get('models', [])) or attestation.get('slotCount') != len(manifest.get('executionOrder', [])) or attestation.get('codexToolCallLimit') != manifest.get('codexLimits', {}).get('maxToolCalls'):
         raise RuntimeError('attestation-counts')

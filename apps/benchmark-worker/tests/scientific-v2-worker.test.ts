@@ -417,7 +417,7 @@ test('v2 batch freezes complete identities, routes, slots, limits, prices and pe
   assert.equal(built.manifest.suiteHash, PB_SCIENTIFIC_FIGURE_V2.manifestHash)
   assert.equal(built.manifest.priceHash, built.manifest.priceSnapshot.snapshotHash)
   assert.deepEqual(built.manifest.providerOrder, ['bailian', 'ark', 'openrouter'])
-  assert.deepEqual(built.manifest.providerBudgetsCny, { bailian: 180, ark: 180, openrouter: 180 })
+  assert.deepEqual(built.manifest.providerBudgetsCny, { bailian: 180, ark: 180, openrouter: 360 })
   assert.deepEqual(built.manifest.codexLimits, { modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 })
   assert.equal(built.manifest.concurrency, 1)
   assert.equal(built.manifest.lockName, LOCK_NAME)
