@@ -1198,8 +1198,11 @@ export function createScientificV2MongoRepository(
       const batch = await batches.findOne(input.batchId ? { batchId: input.batchId } : { manifestHash: input.manifestHash })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_FOUND')
       const secret = operatorSecret()
+      if (batch.manifestHash !== batch.manifest?.manifestHash
+        || canonicalWithoutHash(batch.manifest, 'manifestHash') !== batch.manifestHash) scientificError('SCIENTIFIC_V2_MANIFEST_HASH_INVALID')
       if (batch.stateHash !== batch.state?.stateHash) scientificError('SCIENTIFIC_V2_STATE_HASH_INVALID')
       verifyScientificV2ImportedState(batch.state, batch.manifest)
+      const manifestSnapshot = structuredClone(batch.manifest)
       const stateSnapshot = structuredClone(batch.state)
       const codeLineage = await ensureBatchCodeLineage(batch)
       const report = {
@@ -1221,7 +1224,7 @@ export function createScientificV2MongoRepository(
       }
       const reportHash = canonicalHash(report)
       const attestationKey = createHmac('sha256', secret).update(OPERATOR_ATTESTATION_DOMAIN).digest()
-      return deepFreeze({ ...report, stateSnapshot, reportHash, attestationHash: createHmac('sha256', attestationKey).update(reportHash).digest('hex') })
+      return deepFreeze({ ...report, manifestSnapshot, stateSnapshot, reportHash, attestationHash: createHmac('sha256', attestationKey).update(reportHash).digest('hex') })
     },
     async operatorDiagnostic(input: { batchId?: string; manifestHash?: string }) {
       assertExactKeys(input, ['batchId', 'manifestHash'], 'SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_SCHEMA_INVALID')

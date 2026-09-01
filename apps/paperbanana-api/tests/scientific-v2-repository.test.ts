@@ -1292,6 +1292,10 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
 
   assert.equal(attestation.batchManifestHash, fixture.manifest.manifestHash)
   assert.equal(attestation.stateHash, fixture.initialState.stateHash)
+  assert.deepEqual(attestation.manifestSnapshot, fixture.manifest)
+  assert.notStrictEqual(attestation.manifestSnapshot, storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0].manifest)
+  assert.equal(attestation.manifestSnapshot.manifestHash, attestation.batchManifestHash)
+  assert.equal(Object.isFrozen(attestation.manifestSnapshot), true)
   assert.deepEqual(attestation.stateSnapshot, fixture.initialState)
   assert.notStrictEqual(attestation.stateSnapshot, storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0].state)
   assert.equal(attestation.stateSnapshot.stateHash, attestation.stateHash)
@@ -1319,7 +1323,7 @@ test('operatorAttestation exposes the exact disabled single-concurrency batch ga
   tampered.stateSnapshot.status = 'running'
   const { stateHash: _stateHash, ...tamperedStatePayload } = tampered.stateSnapshot
   assert.notEqual(canonicalHash(tamperedStatePayload), attestation.stateHash)
-  const { stateSnapshot: _stateSnapshot, reportHash: _reportHash, attestationHash: _attestationHash, ...signedPayload } = attestation
+  const { manifestSnapshot: _manifestSnapshot, stateSnapshot: _stateSnapshot, reportHash: _reportHash, attestationHash: _attestationHash, ...signedPayload } = attestation
   assert.equal(canonicalHash(signedPayload), attestation.reportHash)
 })
 
@@ -1336,6 +1340,22 @@ test('operatorAttestation rejects a stored state whose canonical content no long
   await assert.rejects(
     () => repository.operatorAttestation({ batchId: 'scientific-v2-attestation-state-binding' }),
     /SCIENTIFIC_V2_/,
+  )
+})
+
+test('operatorAttestation rejects a stored manifest whose canonical content no longer binds its manifest hash', async () => {
+  const fixture = scientificBatchFixture()
+  const storage = atomicScientificDb()
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'attestation-manifest-binding', {
+    operatorReportSecret: 'scientific-v2-manifest-binding-secret-at-least-32-bytes', immutableCodeSha: fixture.manifest.codeSha,
+  })
+  await repository.freezeBatch({ batchId: 'scientific-v2-attestation-manifest-binding', ...fixture })
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  batch.manifest.models[0].displayName = 'tampered display name'
+
+  await assert.rejects(
+    () => repository.operatorAttestation({ batchId: 'scientific-v2-attestation-manifest-binding' }),
+    /SCIENTIFIC_V2_MANIFEST_HASH_INVALID/,
   )
 })
 
@@ -1362,7 +1382,7 @@ test('operatorAttestation allows SHA drift only for the first exact legacy block
   assert.equal(attestation.manifestCodeSha, fixture.manifest.codeSha)
   assert.equal(attestation.executionCodeSha, executionCodeSha)
   assert.equal(attestation.legacyRecoveryStateHash, legacyBlocked.stateHash)
-  const { stateSnapshot: _stateSnapshot, reportHash, attestationHash, ...payload } = attestation
+  const { manifestSnapshot: _manifestSnapshot, stateSnapshot: _stateSnapshot, reportHash, attestationHash, ...payload } = attestation
   assert.equal(reportHash, canonicalHash(payload))
   const key = createHmac('sha256', secret).update('paperbanana/scientific-v2/operator-attestation/v1').digest()
   assert.equal(attestationHash, createHmac('sha256', key).update(reportHash).digest('hex'))

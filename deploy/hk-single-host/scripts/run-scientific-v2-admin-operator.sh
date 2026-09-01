@@ -63,8 +63,8 @@ git -C "$repo_root" diff --quiet "$expected_sha" -- \
 
 snapshot="$(mktemp /tmp/paperbanana-scientific-v2-admin-input.XXXXXXXXXXXX)"
 result="$(mktemp /tmp/paperbanana-scientific-v2-admin-result.XXXXXXXXXXXX)"
-private_result='' private_state=''
-cleanup() { rm -f -- "$snapshot" "$result" ${private_result:+"$private_result"} ${private_state:+"$private_state"}; }
+private_result='' private_manifest='' private_state=''
+cleanup() { rm -f -- "$snapshot" "$result" ${private_result:+"$private_result"} ${private_manifest:+"$private_manifest"} ${private_state:+"$private_state"}; }
 trap cleanup EXIT
 python3 - "$input_path" "$snapshot" "$input_sha256" <<'PY'
 import hashlib
@@ -138,9 +138,10 @@ const result=await response.json();
 if(!response.ok||result.code!==0)throw new Error("SCIENTIFIC_V2_ADMIN_CORE_REJECTED");
 const data=result.run??result.packet??result.result??result.release??result;
 const allowedKeys={freeze:["batchId","manifestHash","stateHash","replayed"],"remediate-freeze":["batchId","manifestHash","stateHash","targetSlotCount","replayed"],attest:["batchId","batchManifestHash","stateHash","manifestCodeSha","executionCodeSha","legacyRecoveryStateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],diagnose:["batchId","manifestHash","stateHash","status","pauseReason","blockReason","providerSpentCny","providerUnreconciledCny","revision","providerCanaries","diagnosticHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["disputeCount","resultCount","finalHash"],"import-arbitration":["resultCount","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
-const responseRequiredKeys={freeze:["batchId","manifestHash","stateHash","replayed"],"remediate-freeze":["batchId","manifestHash","stateHash","targetSlotCount","replayed"],attest:["batchId","batchManifestHash","stateHash","manifestCodeSha","executionCodeSha","legacyRecoveryStateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],diagnose:["batchId","manifestHash","stateHash","status","pauseReason","blockReason","providerSpentCny","providerUnreconciledCny","revision","providerCanaries","diagnosticHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["status"],"import-arbitration":["status","results","automaticJudgeCalls","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
+const responseRequiredKeys={freeze:["batchId","manifestHash","stateHash","replayed"],"remediate-freeze":["batchId","manifestHash","stateHash","targetSlotCount","replayed"],attest:["batchId","batchManifestHash","stateHash","manifestCodeSha","executionCodeSha","legacyRecoveryStateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash","manifestSnapshot","stateSnapshot"],diagnose:["batchId","manifestHash","stateHash","status","pauseReason","blockReason","providerSpentCny","providerUnreconciledCny","revision","providerCanaries","diagnosticHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["status"],"import-arbitration":["status","results","automaticJudgeCalls","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
 if(!data||typeof data!=="object"||Array.isArray(data)||!responseRequiredKeys.every(key=>Object.hasOwn(data,key)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
 if(operation==="attest"){
+  if(!data.manifestSnapshot||typeof data.manifestSnapshot!=="object"||Array.isArray(data.manifestSnapshot)||data.manifestSnapshot.manifestHash!==data.batchManifestHash)throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
   exact(data.stateSnapshot,["schemaVersion","manifestHash","status","pauseReason","blockReason","createdAt","updatedAt","providerSpentCny","providerUnreconciledCny","slots","stateHash"]);
   if(data.stateSnapshot.stateHash!==data.stateHash||typeof data.stateHash!=="string"||!/^[a-f0-9]{64}$/.test(data.stateHash))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
 }
@@ -156,10 +157,11 @@ if(operation==="import-arbitration"&&(data.status!=="finalized"||!Array.isArray(
 const safe={};for(const key of allowedKeys)if(Object.hasOwn(data,key))safe[key]=data[key];
 if(operation==="import-review"){safe.disputeCount=Array.isArray(data.disputes)?data.disputes.length:0;safe.resultCount=Array.isArray(data.results)?data.results.length:0;if(Object.hasOwn(data,"finalHash")&&(typeof data.finalHash!=="string"||!/^[a-f0-9]{64}$/.test(data.finalHash)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID")}
 if(operation==="import-arbitration")safe.resultCount=Array.isArray(data.results)?data.results.length:0;
-const requiredKeys=operation==="import-review"?["disputeCount","resultCount"]:operation==="import-arbitration"?["resultCount","finalHash"]:responseRequiredKeys;
-const privateData=operation==="attest"?Object.fromEntries(Object.entries(data).filter(([key])=>key!=="stateSnapshot")):operation==="import-review"||operation==="import-arbitration"?data:undefined;
+const requiredKeys=operation==="attest"?allowedKeys:operation==="import-review"?["disputeCount","resultCount"]:operation==="import-arbitration"?["resultCount","finalHash"]:responseRequiredKeys;
+const privateData=operation==="attest"?Object.fromEntries(Object.entries(data).filter(([key])=>!["manifestSnapshot","stateSnapshot"].includes(key))):operation==="import-review"||operation==="import-arbitration"?data:undefined;
+const privateManifest=operation==="attest"?data.manifestSnapshot:undefined;
 const privateState=operation==="attest"?data.stateSnapshot:undefined;
-process.stdout.write(JSON.stringify({schemaVersion:1,operation,data:safe,allowedKeys,requiredKeys,...(privateData?{privateData}:{}),...(privateState?{privateState}:{})}));
+process.stdout.write(JSON.stringify({schemaVersion:1,operation,data:safe,allowedKeys,requiredKeys,...(privateData?{privateData}:{}),...(privateManifest?{privateManifest}:{}),...(privateState?{privateState}:{})}));
 '
 "${compose[@]}" exec -T \
   -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" \
@@ -191,6 +193,21 @@ if [[ "$operation" == attest || "$operation" == import-review || "$operation" ==
   private_result=''
 fi
 if [[ "$operation" == attest ]]; then
+  private_manifest="$(mktemp /tmp/paperbanana-scientific-v2-attested-manifest.XXXXXXXXXXXX)"
+  jq -c '.privateManifest' "$result" >"$private_manifest"
+  chmod 0600 "$private_manifest"
+  jq -e --arg manifestHash "$(jq -r '.data.batchManifestHash' "$result")" '.manifestHash == $manifestHash' "$private_manifest" >/dev/null || exit 1
+  manifest_bundle_sha256="$(sha256_file "$private_manifest")"
+  [[ "$manifest_bundle_sha256" =~ ^[a-f0-9]{64}$ ]] || exit 1
+  manifest_destination="$bundle_dir/$manifest_bundle_sha256.manifest.json"
+  if [[ -e "$manifest_destination" ]]; then
+    [[ -f "$manifest_destination" && ! -L "$manifest_destination" && "$(stat_mode "$manifest_destination")" =~ ^0:0?600$ ]] || exit 1
+    cmp -s "$private_manifest" "$manifest_destination" || exit 1
+  else
+    install -o root -g root -m 0600 "$private_manifest" "$manifest_destination"
+  fi
+  rm -f "$private_manifest"
+  private_manifest=''
   private_state="$(mktemp /tmp/paperbanana-scientific-v2-attested-state.XXXXXXXXXXXX)"
   jq -c '.privateState' "$result" >"$private_state"
   chmod 0600 "$private_state"
@@ -206,6 +223,6 @@ if [[ "$operation" == attest ]]; then
   fi
   rm -f "$private_state"
   private_state=''
-  jq -c --arg privateResponseSha256 "$private_response_sha256" --arg stateBundleSha256 "$state_bundle_sha256" \
-    '{schemaVersion,operation,data,privateResponseSha256:$privateResponseSha256,stateBundleSha256:$stateBundleSha256}' "$result"
+  jq -c --arg privateResponseSha256 "$private_response_sha256" --arg manifestBundleSha256 "$manifest_bundle_sha256" --arg stateBundleSha256 "$state_bundle_sha256" \
+    '{schemaVersion,operation,data,privateResponseSha256:$privateResponseSha256,manifestBundleSha256:$manifestBundleSha256,stateBundleSha256:$stateBundleSha256}' "$result"
 else jq -c '{schemaVersion,operation,data}' "$result"; fi
