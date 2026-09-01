@@ -793,12 +793,15 @@ test('review dispute export derives only blind xhigh work and never exports mapp
   const source = readFileSync(reviewDisputeExportWorkflow, 'utf8')
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /review-validated[.]json/)
-  assert.match(source, /finalizeScientificDoubleReview/)
+  assert.match(source, /operation['"]?:\s*['"]review_finalize['"]/)
+  assert.match(source, /node dist\/scientific-v2-operator[.]mjs/)
+  assert.doesNotMatch(source, /dist\/scientific-v2-review[.]js/)
   assert.match(source, /public-arbitration[.]json/)
   assert.match(source, /automaticJudgeCalls/)
   assert.match(source, /retention-days:\s*1/)
   assert.match(source, /--network none/)
-  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+  assert.equal([...source.matchAll(/-e PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY=/g)].length, 3)
+  assert.doesNotMatch(source, /set -x|printenv|rm -rf/)
 })
 
 test('xhigh arbitration bundle binds exact disputes and both signed reviewer results with zero providers', () => {
