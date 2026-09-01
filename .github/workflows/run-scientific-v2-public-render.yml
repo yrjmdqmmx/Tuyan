@@ -165,6 +165,10 @@ jobs:
             | select((.rawImageHash | type) == "string" and (.format == "png" or .format == "jpeg" or .format == "webp"))
             | "bench/scientific-v2/private/objects/\(.rawImageHash).\(.format)"][0]' "$bundle")"
           [[ "$first_object_key" =~ ^bench/scientific-v2/private/objects/[a-f0-9]{64}[.](png|jpeg|webp)$ ]]
+          first_public_key="$(jq -er '[.state.slots[] | select(.status == "succeeded") | .attempts[-1]
+            | select(.rawImageHash | type == "string")
+            | "bench/scientific-v2/public/\(.rawImageHash)/thumbnail.webp"][0]' "$bundle")"
+          [[ "$first_public_key" =~ ^bench/scientific-v2/public/[a-f0-9]{64}/thumbnail[.]webp$ ]]
           same_principal=false same_bucket=false same_region=false same_endpoint=false
           [[ "$(read_env_value "$bench_env" PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID)" == "$(read_env_value "$core_env" OSS_ACCESS_KEY_ID)" ]] && same_principal=true
           [[ "$(read_env_value "$bench_env" PAPERBANANA_BENCH_OSS_BUCKET)" == "$(read_env_value "$core_env" PAPERBANANA_BUCKET)" ]] && same_bucket=true
@@ -179,6 +183,14 @@ jobs:
           const result={head:await probe(()=>client.head(key)),range:await probe(()=>client.getStream(key,{headers:{Range:"bytes=0-0"}})),acl:await probe(()=>client.getACL(key)),list:await probe(()=>client.list({prefix:key,"max-keys":1},{}))};
           process.stdout.write(JSON.stringify(result));
           ')"
+          public_access="$(docker exec -e SCIENTIFIC_V2_OBJECT_KEY="$first_public_key" "$worker_id" node --input-type=module -e '
+          import OSS from "ali-oss";
+          const key=process.env.SCIENTIFIC_V2_OBJECT_KEY;
+          const client=new OSS({region:process.env.PAPERBANANA_BENCH_OSS_REGION,accessKeyId:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID,accessKeySecret:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET,bucket:process.env.PAPERBANANA_BENCH_OSS_BUCKET,endpoint:process.env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT,secure:true,authorizationV4:true});
+          const facts=error=>({ok:false,status:Number.isInteger(error?.status)?error.status:null,code:typeof error?.code==="string"&&/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(error.code)?error.code:null,errorClass:typeof error?.name==="string"&&/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(error.name)?error.name:"Error"});
+          const probe=async action=>{try{const value=await action();value?.stream?.destroy?.();return {ok:true,status:Number.isInteger(value?.res?.status)?value.res.status:null};}catch(error){return facts(error)}};
+          process.stdout.write(JSON.stringify({head:await probe(()=>client.head(key)),range:await probe(()=>client.getStream(key,{headers:{Range:"bytes=0-0"}})),acl:await probe(()=>client.getACL(key)),list:await probe(()=>client.list({prefix:key,"max-keys":1},{}))}));
+          ')"
           core_access='null'
           if [[ "$same_bucket" == true && "$same_region" == true ]]; then
             if candidate="$(docker exec -e SCIENTIFIC_V2_OBJECT_KEY="$first_object_key" "$core_id" node --input-type=module -e '
@@ -190,10 +202,10 @@ jobs:
             process.stdout.write(JSON.stringify({head:await probe(()=>client.head(key)),range:await probe(()=>client.getStream(key,{headers:{Range:"bytes=0-0"}})),acl:await probe(()=>client.getACL(key))}));
             ')"; then core_access="$candidate"; fi
           fi
-          jq -cn --argjson bench "$bench_access" --argjson core "$core_access" \
+          jq -cn --argjson bench "$bench_access" --argjson public "$public_access" --argjson core "$core_access" \
             --argjson samePrincipal "$same_principal" --argjson sameBucket "$same_bucket" \
             --argjson sameRegion "$same_region" --argjson sameEndpoint "$same_endpoint" \
-            '{operation:"render_public_evidence_access",providerCalls:0,samePrincipal:$samePrincipal,sameBucket:$sameBucket,sameRegion:$sameRegion,sameEndpoint:$sameEndpoint,bench:$bench,core:$core}'
+            '{operation:"render_public_evidence_access",providerCalls:0,samePrincipal:$samePrincipal,sameBucket:$sameBucket,sameRegion:$sameRegion,sameEndpoint:$sameEndpoint,bench:$bench,public:$public,core:$core}'
           input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-render-input.XXXXXXXXXXXX)"
           result="$(mktemp /tmp/paperbanana-scientific-v2-render-result.XXXXXXXXXXXX.json)"
           cleanup() {
