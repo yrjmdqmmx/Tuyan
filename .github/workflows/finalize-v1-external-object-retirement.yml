@@ -1,0 +1,159 @@
+name: Finalize V1 External Object Retirement
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        required: true
+      active_v2_release_hash:
+        required: true
+      archive_manifest_hash:
+        required: true
+      inventory_hash:
+        required: true
+      confirm:
+        required: true
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate immutable request
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          ACTIVE_V2_RELEASE_HASH: ${{ inputs.active_v2_release_hash }}
+          ARCHIVE_MANIFEST_HASH: ${{ inputs.archive_manifest_hash }}
+          INVENTORY_HASH: ${{ inputs.inventory_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$ACTIVE_V2_RELEASE_HASH" "$ARCHIVE_MANIFEST_HASH" "$INVENTORY_HASH"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ "$CONFIRM" == finalize-v1-external-delete-2688db534f05256b6ce2-disabled-worker ]]
+      - name: Recover exact protected inventory
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INVENTORY_HASH: ${{ inputs.inventory_hash }}
+          ACTIVE_V2_RELEASE_HASH: ${{ inputs.active_v2_release_hash }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$RUNNER_TEMP/v1-inventory"
+          gh run download 33515513815 --repo "$GITHUB_REPOSITORY" --name v1-retirement-inspect-33515513815 --dir "$RUNNER_TEMP/v1-inventory"
+          report="$RUNNER_TEMP/v1-inventory/v1-retirement-inspect.json"
+          [[ -f "$report" && ! -L "$report" ]]
+          chmod 0600 "$report"
+          jq -e --arg inventoryHash "$INVENTORY_HASH" --arg activeV2 "$ACTIVE_V2_RELEASE_HASH" '
+            .schemaVersion == 1 and .mode == "inspect" and .generatedOrJudgeCalls == 0 and
+            .releaseHash == "2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2" and
+            .activeV2ReleaseHash == $activeV2 and .inventory.inventoryHash == $inventoryHash and
+            .inventory.exclusiveObjects.length == 253 and .inventory.sharedObjects.length == 0 and
+            .inventory.exclusiveBytes == 343873414
+          ' "$report" >/dev/null
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Verify every object absent then retire DB rows
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          ACTIVE_V2_RELEASE_HASH: ${{ inputs.active_v2_release_hash }}
+          ARCHIVE_MANIFEST_HASH: ${{ inputs.archive_manifest_hash }}
+          INVENTORY_HASH: ${{ inputs.inventory_hash }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -Eeuo pipefail
+          local_report="$RUNNER_TEMP/v1-inventory/v1-retirement-inspect.json"
+          remote_report="/tmp/paperbanana-v1-external-inventory-${RUN_ID}.json"
+          remote_output="/tmp/paperbanana-v1-external-finalize-${RUN_ID}.json"
+          cleanup() {
+            ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_report' '$remote_output'" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          scp "$local_report" "$DEPLOY_USER@$DEPLOY_HOST:$remote_report"
+          printf -v remote_command 'sudo env REPORT_PATH=%q OUTPUT_PATH=%q EXPECTED_SHA=%q ACTIVE_V2_RELEASE_HASH=%q ARCHIVE_MANIFEST_HASH=%q INVENTORY_HASH=%q bash -s' \
+            "$remote_report" "$remote_output" "$EXPECTED_SHA" "$ACTIVE_V2_RELEASE_HASH" "$ARCHIVE_MANIFEST_HASH" "$INVENTORY_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          [[ "$REPORT_PATH" =~ ^/tmp/paperbanana-v1-external-inventory-[0-9]+\.json$ && "$OUTPUT_PATH" =~ ^/tmp/paperbanana-v1-external-finalize-[0-9]+\.json$ ]]
+          [[ -f "$REPORT_PATH" && ! -L "$REPORT_PATH" && ! -e "$OUTPUT_PATH" ]]
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          repo=/opt/paperbanana/repo
+          deploy_dir="$repo/deploy/hk-single-host"
+          secret_dir=/opt/paperbanana/secrets
+          read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
+          [[ "$(git -C "$repo" rev-parse HEAD)" == "$EXPECTED_SHA" ]]
+          [[ "$(read_env_value "$secret_dir/core.env" PAPERBANANA_CODE_SHA)" == "$EXPECTED_SHA" ]]
+          [[ "$(read_env_value "$secret_dir/bench.env" PAPERBANANA_CODE_SHA)" == "$EXPECTED_SHA" ]]
+          [[ "$(read_env_value "$secret_dir/bench.env" PAPERBANANA_BENCH_ENABLED)" == false ]]
+          [[ "$(read_env_value "$secret_dir/bench.env" PAPERBANANA_BENCH_CONCURRENCY)" == 1 ]]
+          compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
+          worker_result="$(mktemp /tmp/paperbanana-v1-external-worker.XXXXXXXXXXXX)"
+          db_result="$(mktemp /tmp/paperbanana-v1-external-db.XXXXXXXXXXXX)"
+          cleanup_remote() { rm -f -- "$worker_result" "$db_result"; }
+          trap cleanup_remote EXIT
+          "${compose[@]}" exec -T \
+            -e "ACTIVE_V2_RELEASE_HASH=$ACTIVE_V2_RELEASE_HASH" \
+            -e "INVENTORY_HASH=$INVENTORY_HASH" \
+            benchmark-worker node --input-type=module -e '
+          import fs from "node:fs";
+          import OSS from "ali-oss";
+          const report=JSON.parse(fs.readFileSync(0,"utf8"));
+          if(report?.schemaVersion!==1||report.mode!=="inspect"||report.generatedOrJudgeCalls!==0
+            ||report.releaseHash!=="2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2"
+            ||report.activeV2ReleaseHash!==process.env.ACTIVE_V2_RELEASE_HASH
+            ||report.inventory?.inventoryHash!==process.env.INVENTORY_HASH
+            ||report.inventory.exclusiveObjects.length!==253||report.inventory.sharedObjects.length!==0
+            ||report.inventory.exclusiveBytes!==343873414)throw new Error("V1_EXTERNAL_INVENTORY_INVALID");
+          const oss=new OSS({region:process.env.PAPERBANANA_BENCH_OSS_REGION,accessKeyId:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID,accessKeySecret:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET,bucket:process.env.PAPERBANANA_BENCH_OSS_BUCKET,endpoint:process.env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT,secure:true,authorizationV4:true});
+          let missing=0;
+          for(const item of report.inventory.exclusiveObjects){
+            try{await oss.head(item.objectKey);throw new Error("V1_EXTERNAL_OBJECT_STILL_PRESENT");}
+            catch(error){if(error?.message==="V1_EXTERNAL_OBJECT_STILL_PRESENT")throw error;if(error?.status!==404&&error?.code!=="NoSuchKey")throw error;missing+=1;}
+          }
+          if(missing!==report.inventory.exclusiveObjects.length)throw new Error("V1_EXTERNAL_ABSENCE_COUNT_INVALID");
+          process.stdout.write(JSON.stringify({schemaVersion:1,mode:"delete-objects",releaseHash:report.releaseHash,activeV2ReleaseHash:report.activeV2ReleaseHash,inventory:report.inventory,objectDeletion:{releaseHash:report.releaseHash,inventoryHash:report.inventory.inventoryHash,deletedObjectCount:missing,deletedBytes:report.inventory.exclusiveBytes},generatedOrJudgeCalls:0})+"\n");
+          ' <"$REPORT_PATH" >"$worker_result"
+          "${compose[@]}" cp "$deploy_dir/scripts/retire-v1-benchmark.mongo.js" mongo:/tmp/retire-v1-benchmark.mongo.js
+          "${compose[@]}" exec -T -e PAPERBANANA_V1_REPORT_PATH=/tmp/paperbanana-v1-retirement-report.json \
+            -e "PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH=$ARCHIVE_MANIFEST_HASH" mongo sh -c '
+              umask 077
+              cat > /tmp/paperbanana-v1-retirement-report.json
+              mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark /tmp/retire-v1-benchmark.mongo.js
+            ' <"$worker_result" >"$db_result"
+          "${compose[@]}" exec -T --user root mongo rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js
+          { cat "$worker_result"; cat "$db_result"; } | "${compose[@]}" exec -T paperbanana-api node -e '
+          const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);if(lines.length!==2)process.exit(1);
+          const worker=JSON.parse(lines[0]);const db=JSON.parse(lines[1]);if(db.status!=="retired"||db.inventoryHash!==worker.inventory.inventoryHash||db.generatedOrJudgeCalls!==0)process.exit(1);
+          process.stdout.write(JSON.stringify({schemaVersion:1,mode:"finalize-external-delete",worker,db})+"\n");
+          ' >"$OUTPUT_PATH"
+          install -m 0600 -o "${SUDO_USER:?missing sudo user}" "$OUTPUT_PATH" "${OUTPUT_PATH}.owned"
+          mv -f -- "${OUTPUT_PATH}.owned" "$OUTPUT_PATH"
+          REMOTE
+          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_output" v1-retirement-finalized.json
+          jq -e '.schemaVersion == 1 and .mode == "finalize-external-delete" and .worker.generatedOrJudgeCalls == 0 and .db.status == "retired" and .db.generatedOrJudgeCalls == 0' v1-retirement-finalized.json >/dev/null
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: v1-retirement-finalized-${{ github.run_id }}
+          path: v1-retirement-finalized.json
+          if-no-files-found: error
+          retention-days: 14
