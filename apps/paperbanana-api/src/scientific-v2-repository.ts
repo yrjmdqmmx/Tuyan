@@ -3,6 +3,7 @@ import {
   SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY,
   SCIENTIFIC_BENCHMARK_AXES,
   SCIENTIFIC_BENCHMARK_IDENTITY,
+  SCIENTIFIC_EDIT_SOURCE,
   SCIENTIFIC_REVIEW_MAX_RED_LINES,
   SCIENTIFIC_REVIEW_RED_LINE_CODES,
   aggregateScientificFixedSlots,
@@ -62,7 +63,7 @@ const stateOperationReportPayloadKeys = [
   'disclosure', 'createdAt',
 ] as const
 const confirmedFailureResponseClasses = new Set(['confirmed_technical_failure', 'confirmed_provider_failure'])
-const reviewObjectVerificationConcurrency = 8
+const reviewObjectVerificationConcurrency = 16
 
 async function verifyReviewObjects(
   bindings: Array<{ imageHash: string; objectKey: string }>,
@@ -1442,7 +1443,14 @@ export function createScientificV2MongoRepository(
         return { imageHash: binding.imageHash, objectKey: binding.objectKey }
       })
       if (new Set(objectBindings.map((binding) => binding.imageHash)).size !== objectBindings.length) scientificError('SCIENTIFIC_V2_REVIEW_OBJECT_BINDING_INVALID')
-      await verifyReviewObjects(objectBindings, verifyObject)
+      const requiresEditSource = input.assignment.packages.some((packet: AnyRecord) => packet.items.some((item: AnyRecord) => item.kind === 'edit'))
+      const verifiedBindings = requiresEditSource && !objectBindings.some((binding) => binding.imageHash === SCIENTIFIC_EDIT_SOURCE.sourceHash)
+        ? [...objectBindings, {
+            imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
+            objectKey: `bench/scientific-v2/private/objects/${SCIENTIFIC_EDIT_SOURCE.sourceHash}.png`,
+          }]
+        : objectBindings
+      await verifyReviewObjects(verifiedBindings, verifyObject)
       const sourceSetHash = input.assignment.privateEnvelope.sourceSetHash
       const existing = await reviews.findOne({
         artifactType: 'review_assignment_private',
@@ -1460,7 +1468,7 @@ export function createScientificV2MongoRepository(
               _id: `scientific-v2-review-assignment:${batch.manifestHash}:${sourceSetHash}:${input.assignment.role}`,
               artifactType: 'review_assignment_private', batchManifestHash: batch.manifestHash, sourceSetHash,
               role: input.assignment.role, assignment: structuredClone(input.assignment),
-              objectBindings: structuredClone(objectBindings), createdAt: now(),
+              objectBindings: structuredClone(verifiedBindings), createdAt: now(),
             }, { session } as any)
             const updated = await batches.updateOne(
               { _id: batch._id, status: 'review_ready', stateHash: batch.stateHash, revision: batch.revision, latestStateReportHash: batch.latestStateReportHash },
@@ -1478,7 +1486,7 @@ export function createScientificV2MongoRepository(
         mappingHash: input.assignment.mappingHash,
         assignmentSet: structuredClone(input.assignment.assignmentSet),
         assignmentAttestationHash: input.assignment.assignmentAttestationHash,
-        _objectBindings: structuredClone(objectBindings),
+        _objectBindings: structuredClone(verifiedBindings),
       })
     },
     async importReviewResult(input: { batchId: string; result: AnyRecord }) {

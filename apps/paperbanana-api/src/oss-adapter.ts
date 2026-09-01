@@ -39,7 +39,7 @@ type OssClient = {
   list(query: Record<string, unknown>): Promise<any>
 }
 
-const EXACT_RANGE_CHUNK_BYTES = 512 * 1024
+const EXACT_RANGE_CHUNK_BYTES = 4 * 1024 * 1024
 const EXACT_RANGE_ATTEMPTS = 3
 
 export function createOssClients(config: OssConfig) {

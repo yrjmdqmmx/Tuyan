@@ -254,7 +254,7 @@ test('readFile never exposes an unbounded whole-object fallback', async () => {
 })
 
 test('readFileExactRanges retries incomplete bounded chunks and reconstructs the authoritative object size', async () => {
-  const bytes = Buffer.alloc(512 * 1024 + 4, 7)
+  const bytes = Buffer.alloc(4 * 1024 * 1024 + 4, 7)
   const ranges: string[] = []
   let firstRangeAttempts = 0
   const serverClient = {
@@ -281,9 +281,9 @@ test('readFileExactRanges retries incomplete bounded chunks and reconstructs the
 
   assert.deepEqual(result, bytes)
   assert.deepEqual(ranges, [
-    'bytes=0-524287',
-    'bytes=0-524287',
-    'bytes=524288-524291',
+    'bytes=0-4194303',
+    'bytes=0-4194303',
+    'bytes=4194304-4194307',
   ])
 })
 
