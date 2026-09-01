@@ -30,6 +30,8 @@ test('externally deleted V1 objects are reverified before exact DB retirement', 
   assert.match(workflow, /"mongodb:\$CONTAINER_RECEIPT_PATH"/u)
   assert.doesNotMatch(workflow, /exec -T --user root mongodb rm -f \/tmp\/paperbanana-v1-retirement-receipt\.json/u)
   assert.match(workflow, /V1_EXTERNAL_STAGE:db_receipt_copied/u)
+  assert.match(workflow, /V1_EXTERNAL_STAGE:db_receipt_exported/u)
+  assert.match(workflow, /--user 0:0 mongodb rm -f[\s\S]+\/dev\/null 2>&1 \|\| true/u)
   assert.match(workflow, /local_mongo_script="\$GITHUB_WORKSPACE\/deploy\/hk-single-host\/scripts\/retire-v1-benchmark\.mongo\.js"/u)
   assert.match(workflow, /MONGO_SCRIPT_SHA/u)
   assert.match(workflow, /sha256sum "\$MONGO_SCRIPT_PATH"/u)

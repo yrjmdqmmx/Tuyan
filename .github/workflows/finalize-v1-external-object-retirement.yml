@@ -163,9 +163,10 @@ jobs:
           echo 'V1_EXTERNAL_STAGE:db_script_completed' >&2
           "${compose[@]}" cp "mongodb:$CONTAINER_RECEIPT_PATH" "$db_result"
           echo 'V1_EXTERNAL_STAGE:db_receipt_copied' >&2
-          "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js "$CONTAINER_RECEIPT_PATH"
           install -m 0600 -o "${SUDO_USER:?missing sudo user}" "$db_result" "$OUTPUT_PATH"
           echo 'V1_EXTERNAL_STAGE:db_receipt_exported' >&2
+          "${compose[@]}" exec -T --user 0:0 mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js "$CONTAINER_RECEIPT_PATH" >/dev/null 2>&1 || true
+          echo 'V1_EXTERNAL_STAGE:container_cleanup_attempted' >&2
           REMOTE
           scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_output" v1-retirement-db-receipt.json
           jq -e --arg releaseHash 2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2 \
