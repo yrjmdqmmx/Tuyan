@@ -248,6 +248,11 @@ jobs:
           try:
               info = os.fstat(fd)
               if not stat.S_ISREG(info.st_mode) or info.st_uid != 0 or info.st_nlink != 1 or stat.S_IMODE(info.st_mode) != 0o600 or info.st_size < 2 or info.st_size > 64 * 1024 * 1024:
+                  sys.stderr.write(json.dumps({
+                      'operation': 'render_public_evidence_result_facts', 'providerCalls': 0,
+                      'uid': info.st_uid, 'gid': info.st_gid, 'mode': format(stat.S_IMODE(info.st_mode), 'o'),
+                      'links': info.st_nlink, 'bytes': info.st_size,
+                  }, separators=(',', ':')) + '\n')
                   raise RuntimeError('protected')
               data = b''
               while len(data) <= 64 * 1024 * 1024:
