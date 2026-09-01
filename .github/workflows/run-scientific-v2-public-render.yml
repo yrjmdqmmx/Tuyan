@@ -207,10 +207,13 @@ jobs:
             --argjson sameRegion "$same_region" --argjson sameEndpoint "$same_endpoint" \
             '{operation:"render_public_evidence_access",providerCalls:0,samePrincipal:$samePrincipal,sameBucket:$sameBucket,sameRegion:$sameRegion,sameEndpoint:$sameEndpoint,bench:$bench,public:$public,core:$core}'
           input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-render-input.XXXXXXXXXXXX)"
-          result="$(mktemp /tmp/paperbanana-scientific-v2-render-result.XXXXXXXXXXXX.json)"
+          output_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-render-output.XXXXXXXXXXXX)"
+          result="$output_dir/public-summary.json"
+          private_result="$output_dir/publish-input.json"
           cleanup() {
-            rm -f -- "$source_script" "$root_script" "$input_dir/bundle.json" "$input_dir/renderer.mjs" "$result"
+            rm -f -- "$source_script" "$root_script" "$input_dir/bundle.json" "$input_dir/renderer.mjs" "$result" "$private_result"
             rmdir "$input_dir" 2>/dev/null || true
+            rmdir "$output_dir" 2>/dev/null || true
           }
           trap cleanup EXIT
           python3 - "$bundle" "$input_dir/bundle.json" "$BUNDLE_SHA" <<'PY'
@@ -260,11 +263,14 @@ jobs:
           [[ "$(sha256sum "$input_dir/renderer.mjs" | awk '{print $1}')" == "$SCRIPT_SHA" ]]
           chown 0:1000 "$input_dir"
           chmod 0550 "$input_dir"
+          chown 1000:1000 "$output_dir"
+          chmod 0700 "$output_dir"
           compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
-          render_output="$(timeout --signal=TERM --kill-after=30s 1800s \
+          timeout --signal=TERM --kill-after=30s 1800s \
             "${compose[@]}" run -T --rm --no-deps --user 1000:1000 \
             -v "$input_dir/bundle.json:/run/paperbanana-scientific-v2/bundle.json:ro" \
             -v "$input_dir/renderer.mjs:/app/scientific-v2-public-renderer.mjs:ro" \
+            -v "$output_dir:/run/paperbanana-scientific-v2-output" \
             -e PAPERBANANA_BENCH_ENABLED=false \
             -e PAPERBANANA_BENCH_CONCURRENCY=1 \
             -e PAPERBANANA_SCIENTIFIC_V2_RUN_ENABLED=true \
@@ -275,19 +281,25 @@ jobs:
             -e PAPERBANANA_BENCH_BAILIAN_API_KEY= \
             -e PAPERBANANA_BENCH_ARK_API_KEY= \
             -e PAPERBANANA_BENCH_OPENROUTER_API_KEY= \
-            benchmark-operator node /app/scientific-v2-public-renderer.mjs)"
-          [[ -n "$render_output" && "${#render_output}" -le 67108864 ]]
-          printf '%s\n' "$render_output" >"$result"
-          unset render_output
+            -e PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH=/run/paperbanana-scientific-v2-output/publish-input.json \
+            -e PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR=/run/paperbanana-scientific-v2-output \
+            benchmark-operator node /app/scientific-v2-public-renderer.mjs >"$result"
           chmod 0600 "$result"
+          [[ -f "$private_result" && ! -L "$private_result" && "$(stat -c '%u:%g:%a' "$private_result")" =~ ^1000:1000:0?600$ ]]
+          jq -e '
+            (keys | sort) == ["evidenceCount","lockName","objectBindingCount","operation","privateOutputWritten","providerCalls","publishInputHash"] and
+            .operation == "render_public_evidence" and .providerCalls == 0 and .privateOutputWritten == true and
+            .lockName == "/run/lock/paperbanana-hk-production.lock" and
+            (.publishInputHash | test("^[a-f0-9]{64}$")) and .evidenceCount > 0 and .objectBindingCount > 0
+          ' "$result" >/dev/null
           jq -e --arg manifest "$MANIFEST_HASH" '
             (keys | sort) == ["operation","providerCalls","publishInput","publishInputHash"] and
             .operation == "render_public_evidence" and .providerCalls == 0 and
             (.publishInputHash | test("^[a-f0-9]{64}$")) and .publishInput.batchId == ("scientific-v2-" + ($manifest[0:20])) and
             (.publishInput.objectBindings | type) == "array" and (.publishInput.objectBindings | length) > 0 and
             (.publishInput.evidence | type) == "array" and (.publishInput.evidence | length) > 0
-          ' "$result" >/dev/null
-          python3 - "$result" <<'PY'
+          ' "$private_result" >/dev/null
+          python3 - "$private_result" <<'PY'
           import hashlib
           import json
           import os
@@ -298,7 +310,7 @@ jobs:
           fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
           try:
               info = os.fstat(fd)
-              if not stat.S_ISREG(info.st_mode) or info.st_uid != 0 or info.st_nlink != 1 or stat.S_IMODE(info.st_mode) != 0o600 or info.st_size < 2 or info.st_size > 64 * 1024 * 1024:
+              if not stat.S_ISREG(info.st_mode) or info.st_uid != 1000 or info.st_nlink != 1 or stat.S_IMODE(info.st_mode) != 0o600 or info.st_size < 2 or info.st_size > 64 * 1024 * 1024:
                   sys.stderr.write(json.dumps({
                       'operation': 'render_public_evidence_result_facts', 'providerCalls': 0,
                       'uid': info.st_uid, 'gid': info.st_gid, 'mode': format(stat.S_IMODE(info.st_mode), 'o'),
@@ -325,9 +337,9 @@ jobs:
           PY
           if [[ -e "$destination" ]]; then
             [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]
-            cmp -s "$result" "$destination"
+            cmp -s "$private_result" "$destination"
           else
-            install -o 0 -g 0 -m 0600 "$result" "$destination"
+            install -o 0 -g 0 -m 0600 "$private_result" "$destination"
           fi
           publish_input_hash="$(jq -r .publishInputHash "$destination")"
           evidence_count="$(jq -r '.publishInput.evidence | length' "$destination")"

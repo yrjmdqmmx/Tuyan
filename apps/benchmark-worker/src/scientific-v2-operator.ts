@@ -182,6 +182,41 @@ export async function writeScientificV2PrivateOutput(path: string, spoolDir: str
   }
 }
 
+export async function writeScientificV2PublicRenderOutput(
+  value: unknown,
+  env: Record<string, string | undefined>,
+  writeSummary: (line: string) => void = (line) => { process.stdout.write(line) },
+) {
+  assertBoundedScientificV2PlainData(value, { maxDepth: 14, maxNodes: 120_000, maxArrayLength: 4_096, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_INVALID')
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_INVALID')
+  const result = value as Record<string, unknown>
+  if (Object.keys(result).sort().join(',') !== 'operation,providerCalls,publishInput,publishInputHash'
+    || result.operation !== 'render_public_evidence' || result.providerCalls !== 0
+    || typeof result.publishInputHash !== 'string' || !/^[a-f0-9]{64}$/.test(result.publishInputHash)
+    || !result.publishInput || typeof result.publishInput !== 'object' || Array.isArray(result.publishInput)) {
+    throw new Error('SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_INVALID')
+  }
+  const publishInput = result.publishInput as Record<string, unknown>
+  if (Object.keys(publishInput).sort().join(',') !== 'batchId,evidence,objectBindings'
+    || typeof publishInput.batchId !== 'string' || !publishInput.batchId
+    || !Array.isArray(publishInput.objectBindings) || publishInput.objectBindings.length < 1
+    || !Array.isArray(publishInput.evidence) || publishInput.evidence.length < 1) {
+    throw new Error('SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_INVALID')
+  }
+  const privateOutputPath = String(env.PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH || '').trim()
+  const privateOutputDir = String(env.PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR || '').trim()
+  if (!privateOutputPath || !privateOutputDir) throw new Error('SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_PATH_REQUIRED')
+  await writeScientificV2PrivateOutput(privateOutputPath, privateOutputDir, result)
+  writeSummary(`${JSON.stringify({
+    operation: 'render_public_evidence', providerCalls: 0,
+    publishInputHash: result.publishInputHash,
+    evidenceCount: publishInput.evidence.length,
+    objectBindingCount: publishInput.objectBindings.length,
+    privateOutputWritten: true,
+    lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME,
+  })}\n`)
+}
+
 async function main() {
   const path = String(process.env.PAPERBANANA_SCIENTIFIC_V2_BUNDLE_PATH || '').trim()
   if (!path) throw new Error('SCIENTIFIC_V2_OPERATOR_BUNDLE_PATH_REQUIRED')
@@ -190,6 +225,10 @@ async function main() {
   const artifactRoot = String(process.env.PAPERBANANA_SCIENTIFIC_V2_CODEX_ARTIFACT_DIR || '').trim()
   const bundle = await readScientificV2OperatorBundle(path, spoolDir, expectedSha256, artifactRoot)
   const result = await executeScientificV2OperatorBundle(bundle)
+  if (bundle.operation === 'render_public_evidence') {
+    await writeScientificV2PublicRenderOutput(result, process.env)
+    return
+  }
   if (bundle.operation === 'review_pack') {
     const privateOutputPath = String(process.env.PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH || '').trim()
     if (!privateOutputPath) throw new Error('SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_PATH_REQUIRED')

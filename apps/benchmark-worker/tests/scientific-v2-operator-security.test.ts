@@ -8,6 +8,7 @@ import test from 'node:test'
 import {
   classifyScientificV2OperatorError,
   readScientificV2OperatorBundle,
+  writeScientificV2PublicRenderOutput,
   writeScientificV2PrivateOutput,
 } from '../src/scientific-v2-operator.js'
 
@@ -153,6 +154,38 @@ test('private output validation rejects accessors before JSON serialization can 
       /SCIENTIFIC_V2_OPERATOR_PRIVATE_OUTPUT_INVALID/,
     )
     assert.equal(getterCalls, 0)
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test('public render output is persisted as a protected full payload and emits only bounded facts', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'scientific-v2-render-output-'))
+  try {
+    const output = join(root, 'publish-input.json')
+    const result = {
+      operation: 'render_public_evidence', providerCalls: 0,
+      publishInput: {
+        batchId: 'scientific-v2-test',
+        objectBindings: [{ imageHash: 'a'.repeat(64) }],
+        evidence: [{ caseId: 'scientific-generation-01' }],
+      },
+      publishInputHash: 'b'.repeat(64),
+    }
+    const lines: string[] = []
+    await writeScientificV2PublicRenderOutput(result, {
+      PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH: output,
+      PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR: root,
+    }, (line) => { lines.push(line) })
+    assert.equal(lstatSync(output).mode & 0o777, 0o600)
+    assert.deepEqual(JSON.parse(readFileSync(output, 'utf8')), result)
+    const summary = JSON.parse(lines.join(''))
+    assert.deepEqual(summary, {
+      operation: 'render_public_evidence', providerCalls: 0,
+      publishInputHash: 'b'.repeat(64), evidenceCount: 1, objectBindingCount: 1,
+      privateOutputWritten: true, lockName: LOCK_NAME,
+    })
+    assert.equal(JSON.stringify(summary).includes('caseId'), false)
   } finally {
     rmSync(root, { recursive: true, force: true })
   }

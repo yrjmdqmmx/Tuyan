@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 公开证据结果改为容器直接保护落盘 — by Codex
+变更：公开 WebP 全量重算与逐对象 SHA 已成功，但旧 workflow 依赖把完整 `{publishInput}` JSON 先装入远端 shell command-substitution、再复制到 root-only 文件；长任务结束后该 shell 交接可能丢失，表现为图片已全部复验而发布输入文件不存在。`scientific-v2-operator` 现与既有 review 输出采用同一保护写入协议：容器以服务 UID 在独占 `0700` bind mount 内 `O_EXCL` 创建完整 `0600` publish input，stdout 只返回 hash 和计数；主机再验证所有字段、canonical hash、owner/mode/link 与字节稳定性后安装为 root `0600` 文件。Provider key 仍置空，Provider 调用固定为 0；不改图片、九题、十维、分辨率、评分、失败/unknown、盲审或原子发布规则。
+
+各端待办：
+- [x] Benchmark Worker / 部署运维（保护输出 sink、workflow 交接、174 项 Worker 与 37 项控制面测试）
+- [x] paperbanana-api / Web / Gateway / 原生端（公开字段和访问方式不变；无需改造）
+
 ### [2026-09-01] Scientific V2 公开 WebP 幂等复验兼容 OSS 泛化重复响应 — by Codex
 变更：生产只读复验发现阿里 OSS 对已经存在的确定性公开 WebP 有时仅返回无 status/code 的 `ResponseError`，旧 Worker 只把 `409/FileAlreadyExists` 识别为重复对象，因而在图片已存在且未丢失时误报 runtime failure；同一 SDK 的 buffered `get()`、开放式 Range 或无 Range `getStream()` 还可能在 HEAD/单字节 Range 均成功时中断或不结束完整对象流。公开 rendition 写入失败后现按刚生成的确定字节数使用 512 KiB 精确闭区间 Range 分块读取同一内容寻址对象，每块校验响应长度、最多尝试 3 次并丢弃不完整字节（仅重试零费用的 OSS 只读传输；不会重试 Provider），总字节仍硬限制 25 MiB（测试 store 无流接口时才回退 `get()`）；随后逐字节、SHA-256、`image/webp`、immutable cache-control、metadata hash 与 private ACL 复验。只有完全一致（或最小权限凭据精确返回 `403 AccessDenied`）才作为幂等成功，缺失、漂移或公开 ACL 仍失败。不重新生成模型图片、不改对象字节、题目、分辨率、评分、失败/unknown、盲审或发布规则。
 
