@@ -1,0 +1,85 @@
+name: Inspect Scientific V2 Remediation Progress
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch_id: { required: true }
+      manifest_hash: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact read-only request
+        env:
+          BATCH_ID: ${{ inputs.batch_id }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
+          [[ "$MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
+          [[ "$CONFIRM" == inspect-scientific-v2-remediation-zero-provider-calls ]]
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Read exact remediation state and private stable failure codes
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          BATCH_ID: ${{ inputs.batch_id }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env REMEDIATION_BATCH_ID=%q REMEDIATION_MANIFEST_HASH=%q bash -s' "$BATCH_ID" "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -s 9
+          docker exec -e REMEDIATION_BATCH_ID="$REMEDIATION_BATCH_ID" -e REMEDIATION_MANIFEST_HASH="$REMEDIATION_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
+          const batch = db.getCollection('paperbanana_benchmark_scientific_v2_batches').findOne({
+            batchId: process.env.REMEDIATION_BATCH_ID,
+            manifestHash: process.env.REMEDIATION_MANIFEST_HASH,
+            remediationOf: {$exists: true},
+          });
+          if (!batch || batch.stateHash !== batch.state?.stateHash) throw new Error('SCIENTIFIC_V2_REMEDIATION_BATCH_INVALID');
+          const targets = new Set(batch.remediationOf.targetSlotIds);
+          const slots = batch.state.slots.filter(slot => targets.has(slot.slotId)).map(slot => ({
+            slotId: slot.slotId, canonicalModelId: slot.canonicalModelId, caseId: slot.caseId,
+            provider: slot.provider, modelId: slot.modelId, operation: slot.operation,
+            requestedResolution: slot.imageSize, status: slot.status, attemptCount: slot.attempts.length,
+            attempts: slot.attempts.map(attempt => {
+              const marker = db.getCollection('paperbanana_benchmark_scientific_v2_dispatches').findOne({
+                manifestHash: batch.manifestHash, slotId: slot.slotId, attemptIndex: attempt.attemptIndex,
+              });
+              return {
+                attemptIndex: attempt.attemptIndex, responseClass: attempt.responseClass,
+                failureCode: marker?.failureCode || null, imageHash: attempt.rawImageHash,
+                width: attempt.width, height: attempt.height, format: attempt.format,
+              };
+            }),
+          }));
+          print(JSON.stringify({
+            providerCalls: 0, batchId: batch.batchId, manifestHash: batch.manifestHash,
+            stateHash: batch.stateHash, status: batch.state.status, controlStatus: batch.status,
+            targetSlotCount: slots.length, targetSlots: slots,
+          }));
+          JS
+          REMOTE

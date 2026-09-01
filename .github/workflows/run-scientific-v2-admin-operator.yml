@@ -6,7 +6,7 @@ on:
       operation:
         required: true
         type: choice
-        options: [freeze, attest, diagnose, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+        options: [freeze, remediate-freeze, attest, diagnose, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
       expected_control_sha:
         description: Exact GitHub workflow checkout SHA; may differ from the frozen deployed data-plane SHA.
         required: true
