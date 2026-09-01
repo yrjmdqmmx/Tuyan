@@ -1134,7 +1134,7 @@ test('public rendition duplicate reconciliation rejects exact bytes with drifted
   }
 })
 
-test('signed public rendition duplicate reasserts private ACL when the least-privilege principal cannot read ACL', async () => {
+test('signed public rendition replay verifies exact existing bytes even when OSS masks duplicate and ACL errors', async () => {
   const raw = await sharp({ create: { width: 800, height: 400, channels: 3, background: '#cde' } }).png().toBuffer()
   const rawHash = createHash('sha256').update(raw).digest('hex')
   const existing = new Map<string, { bytes: Buffer; imageHash: string }>()
@@ -1149,7 +1149,7 @@ test('signed public rendition duplicate reasserts private ACL when the least-pri
         assert.equal(headers['x-oss-object-acl'], 'private')
         if (headers['x-oss-forbid-overwrite'] === 'true') {
           existing.set(key, value)
-          throw Object.assign(new Error('exists'), { status: 409 })
+          throw Object.assign(new Error('details omitted'), { name: 'ResponseError' })
         }
         assert.equal(headers['x-oss-forbid-overwrite'], undefined)
         assert.equal(headers['x-oss-meta-sha256'], value.imageHash)
@@ -1165,7 +1165,7 @@ test('signed public rendition duplicate reasserts private ACL when the least-pri
     },
   })
   assert.equal((result.evidence[0] as any).variants.length, 3)
-  assert.equal(privateReassertions, 3)
+  assert.equal(privateReassertions, 0)
 })
 
 test('production evidence store bounded-reads private bytes only with exact hash metadata MIME cache and ACL', async () => {

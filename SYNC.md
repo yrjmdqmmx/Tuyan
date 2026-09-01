@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 公开 WebP 幂等复验兼容 OSS 泛化重复响应 — by Codex
+变更：生产只读复验发现阿里 OSS 对已经存在的确定性公开 WebP 有时仅返回无 status/code 的 `ResponseError`，旧 Worker 只把 `409/FileAlreadyExists` 识别为重复对象，因而在图片已存在且未丢失时误报 runtime failure。公开 rendition 写入失败后现统一尝试读取同一内容寻址对象，并逐字节、SHA-256、`image/webp`、immutable cache-control、metadata hash 与 private ACL 复验；只有完全一致（或最小权限凭据精确返回 `403 AccessDenied`）才作为幂等成功，缺失、漂移或公开 ACL 仍失败。不重新生成模型图片、不改对象字节、题目、分辨率、评分、失败/unknown、盲审或发布规则。
+
+各端待办：
+- [x] Benchmark Worker / 部署运维（泛化重复响应复验、回归测试与零 Provider 重放）
+- [x] paperbanana-api / Web / Gateway / 原生端（公开字段和访问方式不变；无需改造）
+
 ### [2026-09-01] Scientific V2 首次成功的 publish input 可零调用复验 — by Codex
 变更：当前冻结批次的首次公开证据渲染已经把完整 `{batchId,objectBindings,evidence}` 结果持久化为生产机 root `0600` 文件；后续为了取回 hash 而重复运行图像转换，在已存在私有 WebP 的路径上返回了泛化 runtime error。新增只读复验入口，精确绑定 control/deployed SHA、immutable Worker digest、render bundle 与 manifest，在生产共享锁内使用 `O_NOFOLLOW` 读取原文件，重新计算 canonical `publishInputHash` 并仅输出 hash、evidence 数与 object binding 数；不打印对象键或证据内容，不改写 OSS/DB，不调用任何 Provider。最终 publish 仍由既有 staging 与管理员 action 对完整输入重新验签并原子发布。
 
