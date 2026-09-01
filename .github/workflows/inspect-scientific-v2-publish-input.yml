@@ -3,6 +3,7 @@ name: Inspect Scientific V2 Publish Input
 on:
   workflow_dispatch:
     inputs:
+      batch_id: { required: true }
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       expected_core_digest: { required: true }
@@ -27,6 +28,7 @@ jobs:
       - name: Validate exact zero-provider inspection envelope
         env:
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          BATCH_ID: ${{ inputs.batch_id }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
@@ -36,6 +38,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
@@ -57,6 +60,7 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          BATCH_ID: ${{ inputs.batch_id }}
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           RENDER_BUNDLE_SHA: ${{ inputs.render_bundle_sha256 }}
@@ -70,8 +74,8 @@ jobs:
           cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_diagnostic'" >/dev/null 2>&1 || true; }
           trap cleanup EXIT
           scp "$diagnostic" "$DEPLOY_USER@$DEPLOY_HOST:$remote_diagnostic"
-          printf -v remote_command 'sudo env DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q RENDER_BUNDLE_SHA=%q MANIFEST_HASH=%q DIAGNOSTIC_PATH=%q DIAGNOSTIC_SHA=%q bash -s' \
-            "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$remote_diagnostic" "$diagnostic_sha"
+          printf -v remote_command 'sudo env BATCH_ID=%q DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q RENDER_BUNDLE_SHA=%q MANIFEST_HASH=%q DIAGNOSTIC_PATH=%q DIAGNOSTIC_SHA=%q bash -s' \
+            "$BATCH_ID" "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$remote_diagnostic" "$diagnostic_sha"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           trap 'status=$?; line=$LINENO; trap - ERR; printf "{\"operation\":\"inspect-scientific-v2-publish-input-failure\",\"providerCalls\":0,\"line\":%s,\"exitCode\":%s}\\n" "$line" "$status" >&2; exit "$status"' ERR
@@ -103,7 +107,7 @@ jobs:
           docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
           docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
           [[ -d "$private_root" && ! -L "$private_root" && "$(stat -c '%u:%g:%a' "$private_root")" =~ ^0:0:0?700$ ]]
-          python3 - "$rendered" "$private_root" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" <<'PY'
+          python3 - "$rendered" "$private_root" "$RENDER_BUNDLE_SHA" "$BATCH_ID" "$MANIFEST_HASH" <<'PY'
           import hashlib
           import json
           import os
@@ -111,7 +115,7 @@ jobs:
           import stat
           import sys
 
-          path, private_root, render_bundle_sha, manifest_hash = sys.argv[1:]
+          path, private_root, render_bundle_sha, batch_id, manifest_hash = sys.argv[1:]
           limit = 64 * 1024 * 1024
           try:
               fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -165,7 +169,7 @@ jobs:
               raise RuntimeError('envelope')
           publish_input = rendered['publishInput']
           if (not isinstance(publish_input, dict) or set(publish_input) != {'batchId', 'objectBindings', 'evidence'}
-                  or publish_input.get('batchId') != 'scientific-v2-' + manifest_hash[:20]
+                  or publish_input.get('batchId') != batch_id
                   or not isinstance(publish_input.get('objectBindings'), list) or not publish_input['objectBindings']
                   or not isinstance(publish_input.get('evidence'), list) or not publish_input['evidence']
                   or hashlib.sha256(canonical(publish_input).encode('utf-8')).hexdigest() != rendered['publishInputHash']):

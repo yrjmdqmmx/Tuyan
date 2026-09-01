@@ -3,6 +3,7 @@ name: Stage Scientific V2 Publish Input
 on:
   workflow_dispatch:
     inputs:
+      batch_id: { required: true }
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       expected_worker_digest: { required: true }
@@ -27,6 +28,7 @@ jobs:
       - name: Validate exact rendered evidence envelope
         env:
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          BATCH_ID: ${{ inputs.batch_id }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           RENDER_BUNDLE_SHA: ${{ inputs.render_bundle_sha256 }}
@@ -36,6 +38,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           for hash in "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
@@ -57,14 +60,15 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          BATCH_ID: ${{ inputs.batch_id }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           RENDER_BUNDLE_SHA: ${{ inputs.render_bundle_sha256 }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
           PUBLISH_INPUT_HASH: ${{ inputs.publish_input_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q RENDER_BUNDLE_SHA=%q MANIFEST_HASH=%q PUBLISH_INPUT_HASH=%q bash -s' \
-            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH"
+          printf -v remote_command 'sudo env BATCH_ID=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q RENDER_BUNDLE_SHA=%q MANIFEST_HASH=%q PUBLISH_INPUT_HASH=%q bash -s' \
+            "$BATCH_ID" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
@@ -85,14 +89,14 @@ jobs:
           output="$(mktemp /tmp/paperbanana-scientific-v2-publish-input.XXXXXXXXXXXX.json)"
           cleanup() { rm -f -- "$output"; }
           trap cleanup EXIT
-          python3 - "$rendered" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH" "$output" <<'PY'
+          python3 - "$rendered" "$BATCH_ID" "$MANIFEST_HASH" "$PUBLISH_INPUT_HASH" "$output" <<'PY'
           import hashlib
           import json
           import os
           import stat
           import sys
 
-          rendered_path, manifest_hash, publish_input_hash, output_path = sys.argv[1:]
+          rendered_path, batch_id, manifest_hash, publish_input_hash, output_path = sys.argv[1:]
 
           def protected(path, limit=64 * 1024 * 1024):
               fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -125,7 +129,7 @@ jobs:
           expected_keys = {'operation', 'providerCalls', 'publishInput', 'publishInputHash'}
           if (not isinstance(rendered, dict) or set(rendered) != expected_keys or rendered.get('operation') != 'render_public_evidence'
                   or rendered.get('providerCalls') != 0 or rendered.get('publishInputHash') != publish_input_hash
-                  or rendered.get('publishInput', {}).get('batchId') != 'scientific-v2-' + manifest_hash[:20]):
+                  or rendered.get('publishInput', {}).get('batchId') != batch_id):
               raise RuntimeError('binding')
           publish_input = rendered['publishInput']
           if not isinstance(publish_input, dict) or set(publish_input) != {'batchId', 'objectBindings', 'evidence'} or hashlib.sha256(canonical(publish_input).encode('utf-8')).hexdigest() != publish_input_hash:

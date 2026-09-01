@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 审核与发布运维绑定真实 batchId — by Codex
+变更：审核结果导入、仲裁结果导入、公开证据发布输入暂存及发布输入只读检查不再从 `manifestHash` 推导普通批次名，统一新增必填 `batch_id` 并校验后原样绑定到受保护 payload。这样 remediation 批次可以复用同一套签名审核、仲裁和原子发布链，普通批次行为不变；公开 API action、请求/响应字段、排行榜字段及客户端均不变。
+- [x] Benchmark Worker / 运维（四条受保护工作流、真实 batchId 绑定与契约测试）
+- [ ] 部署 / 运维（部署后继续当前 Seedream remediation 的 A/B 导入、仲裁与原子 supersede）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
+
 ### [2026-09-02] Scientific V2 已持久化 Worker 状态可零 Provider 重建签名导入 — by Codex
 变更：当 360 题位的完整 Worker 状态报告超过 GitHub 单行日志上限时，新增受保护恢复入口。它只读取生产机上精确 SHA 绑定的 manifest、最终 completed state 与 post-run operator attestation，在共享锁内以不可变 Worker 镜像、`--network none` 和 root `0600` 输入重建同一状态的签名 Worker report，再通过 localhost admin transport 导入为 `review_ready`。流程固定校验 deployed SHA、镜像 digest、previous/final state hash、HMAC、代码 lineage 和常驻 Worker disabled/concurrency 1；不调用 Provider、不改变图片、题目、路由、评分或失败/unknown 规则。
 - [x] Benchmark Worker / 控制面（离线签名 stager、root-only admin handoff 与契约测试）
