@@ -10,6 +10,7 @@ const hostScript = fileURLToPath(new URL('../scripts/retire-v1-benchmark.sh', im
 const entry = fileURLToPath(new URL('../../../apps/benchmark-worker/src/v1-retirement-entry.ts', import.meta.url))
 const mongoScript = fileURLToPath(new URL('../scripts/retire-v1-benchmark.mongo.js', import.meta.url))
 const workflow = fileURLToPath(new URL('../../../.github/workflows/retire-v1-benchmark.yml', import.meta.url))
+const archiveWorkflow = fileURLToPath(new URL('../../../.github/workflows/export-v1-missing-archive.yml', import.meta.url))
 const packageJson = fileURLToPath(new URL('../../../apps/benchmark-worker/package.json', import.meta.url))
 const sha = 'a'.repeat(40)
 const v1 = 'b'.repeat(64)
@@ -102,4 +103,26 @@ test('manual workflow keeps inspection and deletion in the protected production 
   assert.match(source, /actions\/upload-artifact@v4/u)
   assert.match(source, /retire-v1-benchmark\.sh/u)
   assert.doesNotMatch(source, /generation|judge|PAPERBANANA_BENCH_ENABLED\s*=\s*true/iu)
+})
+
+test('missing V1 raw archive export is exact-hash, read-only, disabled-worker and private', () => {
+  assert.equal(existsSync(archiveWorkflow), true, archiveWorkflow)
+  const source = readFileSync(archiveWorkflow, 'utf8')
+  assert.match(source, /paperbanana-production/u)
+  assert.match(source, /paperbanana-hk-production/u)
+  assert.match(source, /configured-disabled/u)
+  assert.match(source, /PAPERBANANA_BENCH_ENABLED[\s\S]*false/u)
+  assert.match(source, /PAPERBANANA_BENCH_CONCURRENCY[\s\S]*1/u)
+  assert.match(source, /d7278c285b9afb74ee03287ccbfc4b392462bbf5bb018d264d13704b5071ecf8/u)
+  for (const hash of [
+    '5276a255261f6c8988ebc8cb3d5351a831586e837f4ed070d72f30eb7061c19c',
+    '80e73ca772b766023ccf02e460d4f7439281d22a3b4e15c1271ee79a35679085',
+    'a014708444649c3e3c684aab8e360aae86982cabcc257d9f0ced1d626b459265',
+    'a166b8b128743c4c92c79d0da58919cdea326eee05ce4e0f3c1054d9414bb286',
+    'ac9ce6e2b846a4d5abc4c2dc71638c36520b297b631933d239d9e5a7d2300aee',
+  ]) assert.match(source, new RegExp(hash, 'u'))
+  assert.match(source, /actions\/upload-artifact@v4/u)
+  assert.match(source, /sha256sum -c/u)
+  assert.match(source, /bench\/objects\/\$\{hash\}\.png/u)
+  assert.doesNotMatch(source, /delete|PAPERBANANA_BENCH_ENABLED\s*=\s*true|providerCalls\s*:[^0]/iu)
 })
