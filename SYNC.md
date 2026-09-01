@@ -24,6 +24,15 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] V1 Benchmark 精确退役与 release tombstone — by Codex
+变更：按站长明确删除要求，只针对已发布 V1 release `2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2` 新增一次性退役链。退役前必须存在本机完整审计归档及逐文件 SHA-256 清单，并由只读 inspect 从 Mongo 与 OSS 重新枚举目标 run / sample / judgment / dispatch / public evidence、逐对象读回验 SHA、跨 release/记录计算引用数；apply 必须绑定 exact deployed SHA、当前 V2 release hash、归档 manifest hash 和 inspect inventory hash，只删除 V1 独占 `bench/objects/<hash>.png` 与 `bench/public/evidence/<sourceHash>/{thumbnail,detail,full}.webp`，共享对象保留。Mongo 删除仅使用 inspect 返回的精确 run IDs 与 release hash，保留 models/suite 和当前 V2，并在新集合 `paperbanana_benchmark_release_tombstones` 留下不含对象键的 hash/count/bytes tombstone。全程 Worker `configured-disabled`、`enabled=false`、并发 1、生产共享锁、Provider/Judge 调用 0。
+
+各端待办：
+- [x] Benchmark Worker / 运维代码（只读清单、共享引用保护、对象删除、Mongo tombstone、归档绑定及 TDD）
+- [x] Web（移除总榜批次成功率条；动态详情链接经 200 静态入口恢复漂亮 URL；Top10 模型名可进入详情；动态深链回退不再显示假 404）
+- [ ] 部署 / 生产退役（先发布 exact SHA 并运行 inspect；核对本地归档 `b91dcd6966c25f6b46ff0e759ed5f0de75d9caf3a5564171b8a1bdf910ba4e4c`、对象清单/字节/共享引用后再 apply；复验 V2、tombstone、旧 release/对象确已消失）
+- [x] Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 不变，无需改造）
+
 ### [2026-09-01] Scientific V2 原子发布验证接纳已审计的 unknown 对账链 — by Codex
 变更：生产最终发布前检查发现 10 个曾暂停的 `UNKNOWN_PROVIDER_OUTCOME` 均已按既定规则完成零 Provider 调用、无候选产物的人工对账，并在签名最终 state 中转换为 `confirmed_technical_failure`，但不可变 dispatch marker 正确保留原始 `unknown_provider_outcome`，旧发布校验却要求 marker 与最终 attempt hash 完全相同，因而误拒绝合法批次。发布端现只在存在唯一、逐字段绑定 manifest/slot/attempt 的 `unknown_no_artifact_reconciliation` 审计时接受该差异，并复验原始 unknown、确认后失败、零候选/零 spool、凭据状态、时间、audit hash 与最终签名 state；缺失、额外或篡改审计仍拒绝。为准确区分冻结生成/评审数据面的 `executionCodeSha` 与修复后执行原子发布的代码，V2 release/methodology 新增 `publicationCodeSha`；manifest/execution SHA 保持原值。不修改题目、分辨率、四次上限、unknown 零自动重试、预算、评分或盲审。
 

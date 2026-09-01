@@ -9,7 +9,7 @@ import {
 } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
-import { LEADERBOARD_AXES, SCIENTIFIC_LEADERBOARD_AXES } from '../leaderboardRoutes.js'
+import { LEADERBOARD_AXES, SCIENTIFIC_LEADERBOARD_AXES, leaderboardDetailHref } from '../leaderboardRoutes.js'
 import { hasScientificHint, normalizeScientificCaseResponse, normalizeScientificProfile } from './benchmarkRelease.js'
 import { useLeaderboardSession } from './LeaderboardRoot.jsx'
 
@@ -243,7 +243,7 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
         {visible.map((item) => {
           const name = item.model?.displayName || item.modelId
           return <article className="bench-case-evidence-item" key={item.sampleId || item.profileId}>
-            <header><a href={appPath(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{item.modelId}</small></a><span>Overall #{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}{item.status === 'succeeded' && item.actualOutputPixels ? ` · ${item.actualOutputPixels.width} × ${item.actualOutputPixels.height} · ${scoreText(item.actualOutputPixels.megapixels)} MP` : ''}</span></header>
+            <header><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{item.modelId}</small></a><span>Overall #{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}{item.status === 'succeeded' && item.actualOutputPixels ? ` · ${item.actualOutputPixels.width} × ${item.actualOutputPixels.height} · ${scoreText(item.actualOutputPixels.megapixels)} MP` : ''}</span></header>
             {scientific && item.status !== 'succeeded' ? <section className="bench-evidence-failure"><strong>{item.status}</strong><code>{item.failureReason || '未提供失败原因'}</code><p>该固定题位按 0 分计入总体。</p></section> : scientific && benchmarkCase?.kind === 'edit' ? <div className="bench-edit-comparison"><figure><figcaption>编辑前</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={`${name} · ${benchmarkCase.title} · 编辑前`} /></figure><figure><figcaption>编辑后</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase.title} · 编辑后`} /></figure></div> : <BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase?.title || caseId}`} />}
             {item.status === 'succeeded' || !scientific ? <EvidenceScores scores={item.scores} axes={scientific ? SCIENTIFIC_LEADERBOARD_AXES.filter((axis) => benchmarkCase?.applicableAxes?.includes(axis.id)) : LEADERBOARD_AXES} /> : null}
             <ul className="bench-evidence-note-list">{(item.reviewNotes || []).map((note, index) => <li key={`${item.sampleId}-note-${index}`}>{note}</li>)}</ul>

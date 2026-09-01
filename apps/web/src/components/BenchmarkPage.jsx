@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowUpDown, BarChart3, ExternalLink, Loader2, Search } from
 import { benchmarkLeaderboardRequest } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
-import { LEADERBOARD_AXES, SCIENTIFIC_LEADERBOARD_AXES, resolveLeaderboardRoute } from '../leaderboardRoutes.js'
+import { LEADERBOARD_AXES, SCIENTIFIC_LEADERBOARD_AXES, leaderboardDetailHref, resolveLeaderboardRoute } from '../leaderboardRoutes.js'
 import {
   BenchmarkCaseEvidencePage,
   BenchmarkEvidenceImage,
@@ -128,7 +128,7 @@ function DimensionCard({ axis, models }) {
           return (
             <li className="bench-mini-row" key={modelIdentity(model)}>
               <b className={rankClass(rank)}>#{rank ?? '—'}</b>
-              <span><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></span>
+              <a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a>
               <i aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, (score || 0) * 10))}%` }} /></i>
               <em>{formatScore(score)}</em>
             </li>
@@ -194,7 +194,7 @@ function LeaderboardMatrix({ axes, release, models }) {
           <tbody>
             {visibleModels.map((model) => (
               <tr key={modelIdentity(model)}>
-                <th className="bench-model-column" scope="row"><a href={appPath(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th>
+                <th className="bench-model-column" scope="row"><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th>
                 <td className={rankClass(metricRank(model, 'overall'))}><MetricValue model={model} metricId="overall" /></td>
                 {axes.map((axis) => <td className={rankClass(metricRank(model, axis.id))} key={axis.id}><MetricValue model={model} metricId={axis.id} /></td>)}
               </tr>
@@ -234,7 +234,7 @@ function DimensionLeaderboard({ axis, release, models, showNavigation = true }) 
             <thead><tr><th scope="col">名次</th><th scope="col">模型</th><th scope="col">分数</th></tr></thead>
             <tbody>{ranked.map((model) => {
               const rank = metricRank(model, axis.id)
-              return <tr key={modelIdentity(model)}><td className={rankClass(rank)}>#{rank ?? '—'}</td><th scope="row"><a href={appPath(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th><td>{formatScore(metricValue(model, axis.id))}</td></tr>
+              return <tr key={modelIdentity(model)}><td className={rankClass(rank)}>#{rank ?? '—'}</td><th scope="row"><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th><td>{formatScore(metricValue(model, axis.id))}</td></tr>
             })}</tbody>
           </table>
         </div>
@@ -319,7 +319,6 @@ export function BenchmarkObservatory({ release, pathname = '/leaderboard', showN
     <main className="bench-shell">
       {showNavigation ? <LeaderboardNav /> : null}
       <LeaderboardHero release={release} />
-      {release.presentationVersion === 'scientific-leaderboard-v2' ? <section className="bench-success-strip" aria-label="任务成功率"><span>生成成功率</span><strong>{formatScore((models.reduce((sum, model) => sum + (finiteNumber(model.generationSuccessRate) ?? 0), 0) / Math.max(models.length, 1)) * 100)}%</strong><span>编辑成功率</span><strong>{formatScore((models.reduce((sum, model) => sum + (finiteNumber(model.editSuccessRate) ?? 0), 0) / Math.max(models.length, 1)) * 100)}%</strong></section> : null}
       <DimensionGrid axes={axes} models={models} />
       <LeaderboardMatrix axes={axes} release={release} models={models} />
     </main>
