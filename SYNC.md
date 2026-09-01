@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 五模型失败题位修正批次 — by Codex
+变更：为已发布 V2 的五个指定模型增加受保护的 `adminBenchmarkControl/freezeRemediationBatch` 运维命令。命令只接受精确绑定的源 batch/manifest/release、排序后的模型与失败题位集合及集合 hash；服务端从已发布 completed 批次重建新 manifest，保留题目、路由、价格、分辨率、成功/unsupported 题位和原始图片，只把指定且已四次确认失败的题位重置为待执行，并把非目标 dispatch 审计账本原子继承到新批次。Worker 仍为 configured-disabled、并发 1、共享生产锁；新失败 marker 额外保存只含稳定 `SCIENTIFIC_V2_*` 代码的私有诊断，不进入公开 API。旧发布不原位改写，修正完成后必须重新双盲、仲裁并原子发布替代版本。
+
+各端待办：
+- [x] paperbanana-api / Benchmark Worker / 运维（修正冻结、精确继承、单并发补跑、私有失败代码及 TDD）
+- [ ] 生产执行 / 审核 / 原子替代发布（仅 32 个指定失败题位；其余 328 个题位不得重跑）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与字段暂不变，无需改造）
+
 ### [2026-09-01] V1 Benchmark 精确退役与 release tombstone — by Codex
 变更：按站长明确删除要求，只针对已发布 V1 release `2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2` 新增一次性退役链。退役前必须存在本机完整审计归档及逐文件 SHA-256 清单，并由只读 inspect 从 Mongo 与 OSS 重新枚举目标 run / sample / judgment / dispatch / public evidence、逐对象读回验 SHA、跨 release/记录计算引用数；apply 必须绑定 exact deployed SHA、当前 V2 release hash、归档 manifest hash 和 inspect inventory hash，只删除 V1 独占 `bench/objects/<hash>.png` 与 `bench/public/evidence/<sourceHash>/{thumbnail,detail,full}.webp`，共享对象保留。Mongo 删除仅使用 inspect 返回的精确 run IDs 与 release hash，保留 models/suite 和当前 V2，并在新集合 `paperbanana_benchmark_release_tombstones` 留下不含对象键的 hash/count/bytes tombstone。全程 Worker `configured-disabled`、`enabled=false`、并发 1、生产共享锁、Provider/Judge 调用 0。
 

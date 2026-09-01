@@ -1531,6 +1531,15 @@ export function createMongoBenchmarkRepository(
     async control(input: AnyRecord) {
       if (input.evaluationMode === 'codex_scientific_v2') {
         if (input.command === 'freezeBatch') return scientificV2.freezeBatch(input)
+        if (input.command === 'freezeRemediationBatch') return scientificV2.freezeRemediationBatch({
+          batchId: input.batchId,
+          sourceBatchId: input.sourceBatchId,
+          sourceManifestHash: input.sourceManifestHash,
+          sourceReleaseHash: input.sourceReleaseHash,
+          targetModelIds: input.targetModelIds,
+          targetSlotIds: input.targetSlotIds,
+          targetSlotSetHash: input.targetSlotSetHash,
+        })
         if (input.command === 'operatorAttestation') return scientificV2.operatorAttestation({ batchId: input.batchId, manifestHash: input.manifestHash })
         if (input.command === 'operatorDiagnostic') {
           const allowedKeys = new Set(['action', 'evaluationMode', 'command', 'batchId', 'manifestHash', 'gatewayToken', 'adminToken', 'adminUserId'])

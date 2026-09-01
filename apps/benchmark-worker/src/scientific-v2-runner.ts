@@ -129,6 +129,7 @@ export interface ScientificV2RunnerRepository {
     attempt: ScientificV2Attempt
     nextState: ScientificV2BatchState
     artifactRecovery?: ScientificV2ArtifactSpoolBinding
+    failureCode?: string
   }): Promise<ScientificV2BatchState>
   resolveDispatch(input: {
     claimToken: string
@@ -401,13 +402,13 @@ async function runScientificV2BatchInternal(input: {
       lastTransitionFromHash = expectedStateHash
       return persisted
     }
-    const commitAttempt = async (marker: ScientificV2DispatchMarker, attempt: ScientificV2Attempt, artifactRecovery?: ScientificV2ArtifactSpoolBinding) => {
+    const commitAttempt = async (marker: ScientificV2DispatchMarker, attempt: ScientificV2Attempt, artifactRecovery?: ScientificV2ArtifactSpoolBinding, failureCode?: string) => {
       if (!adapted.atomic) await input.recorder.recordAttempt(attempt)
       const expectedStateHash = authoritative.stateHash
       const nextState = createStateSnapshot(state)
       try {
         const persisted = acceptPersisted(await adapted.repository.commitAttempt({
-          claimToken: claimToken!, expectedStateHash, marker, attempt, nextState, artifactRecovery,
+          claimToken: claimToken!, expectedStateHash, marker, attempt, nextState, artifactRecovery, failureCode,
         }))
         lastTransitionFromHash = expectedStateHash
         return persisted
@@ -617,6 +618,8 @@ async function runScientificV2BatchInternal(input: {
           return runResult(persisted)
         }
         if (confirmedFailure) {
+          const failureCode = /^SCIENTIFIC_V2_[A-Z0-9_]{1,120}$/.test(confirmedFailure.message)
+            ? confirmedFailure.message : 'SCIENTIFIC_V2_CONFIRMED_FAILURE'
           let attemptCommitted = false
           try {
           const actualCny = confirmedFailure.actualCny
@@ -638,7 +641,7 @@ async function runScientificV2BatchInternal(input: {
             markFollowingNotExecuted(state, dispatchSlot.sequence)
             state.status = 'paused'
             state.pauseReason = 'price_reconciliation_required'
-            const persisted = await commitAttempt(marker, attempt)
+            const persisted = await commitAttempt(marker, attempt, undefined, failureCode)
             return runResult(persisted)
           }
           dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, chargedCny)
@@ -647,7 +650,7 @@ async function runScientificV2BatchInternal(input: {
           if (attemptIndex === 4 && dispatchSlot.isProviderCanary) {
             markCanaryModelFailure(state, provider, dispatchSlot.canonicalModelId)
           }
-          await commitAttempt(marker, attempt)
+          await commitAttempt(marker, attempt, undefined, failureCode)
           attemptCommitted = true
           if (attemptIndex === 4) break
           slot = state.slots.find((candidate) => candidate.slotId === frozenSlot.slotId)

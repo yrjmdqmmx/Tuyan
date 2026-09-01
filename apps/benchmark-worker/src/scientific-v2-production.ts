@@ -835,6 +835,7 @@ export function createScientificV2MongoRepository(
         { 'state.status': 'ready' },
         { 'state.status': 'canary_complete' },
         { 'state.status': 'blocked', 'state.blockReason': 'provider_canary_failed' },
+        { 'state.status': 'running', status: 'frozen', remediationOf: { $exists: true } },
       ]
       let current = await batches.findOne({
         manifestHash: input.manifestHash, stateHash: input.expectedReadyStateHash,
@@ -966,6 +967,9 @@ export function createScientificV2MongoRepository(
       if (updated.modifiedCount !== 1) scientificV2Error('SCIENTIFIC_V2_CLAIM_LEASE_LOST')
     },
     async commitAttempt(input) {
+      if (input.failureCode !== undefined && !/^SCIENTIFIC_V2_[A-Z0-9_]{1,120}$/.test(input.failureCode)) {
+        scientificV2Error('SCIENTIFIC_V2_FAILURE_CODE_INVALID')
+      }
       assertDispatchMarker(input.marker)
       const id = markerId(input.marker)
       const replay = await dispatches.findOne({ _id: id, claimToken: input.claimToken, payloadHash: input.marker.payloadHash, status: 'committed' })
@@ -1009,6 +1013,7 @@ export function createScientificV2MongoRepository(
             { $set: {
               status: 'committed', attempt: structuredClone(input.attempt), state: structuredClone(input.nextState), committedAt: now(),
               ...(input.artifactRecovery ? { artifactRecovery: structuredClone(input.artifactRecovery) } : {}),
+              ...(input.failureCode ? { failureCode: input.failureCode } : {}),
             } }, sessionOptions,
           )
           if (updatedMarker.modifiedCount !== 1) scientificV2Error('SCIENTIFIC_V2_DISPATCH_MARKER_INVALID')

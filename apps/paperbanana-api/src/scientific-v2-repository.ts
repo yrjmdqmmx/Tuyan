@@ -737,6 +737,85 @@ function assertInitialState(input: AnyRecord) {
   }
 }
 
+function exactSortedStrings(value: unknown, code: string, limit = 512) {
+  if (!Array.isArray(value) || value.length < 1 || value.length > limit
+    || value.some((item) => typeof item !== 'string' || item.length < 1 || item.length > 300)) scientificError(code)
+  const sorted = [...value].sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+  if (new Set(sorted).size !== sorted.length || canonicalHash(sorted) !== canonicalHash(value)) scientificError(code)
+  return sorted
+}
+
+function rebindRemediationAttempt(manifest: AnyRecord, slot: AnyRecord, attempt: AnyRecord) {
+  const scientificCase = manifest.cases.find((candidate: AnyRecord) => candidate.id === slot.caseId)
+  if (!scientificCase) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+  const attemptBase: AnyRecord = {
+    ...structuredClone(attempt),
+    payloadHash: expectedPayloadHash(manifest, slot, scientificCase),
+  }
+  delete attemptBase.attemptHash
+  return { ...attemptBase, attemptHash: canonicalHash(attemptBase) }
+}
+
+export function buildScientificV2RemediationFreeze(input: {
+  sourceManifest: AnyRecord
+  sourceState: AnyRecord
+  codeSha: string
+  targetSlotIds: string[]
+  now: Date
+}) {
+  if (!codeShaPattern.test(input.codeSha) || !(input.now instanceof Date) || !Number.isFinite(input.now.getTime())) {
+    scientificError('SCIENTIFIC_V2_REMEDIATION_INPUT_INVALID')
+  }
+  const targetSlotIds = exactSortedStrings(input.targetSlotIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+  verifyScientificV2ImportedState(input.sourceState, input.sourceManifest)
+  if (input.sourceState.status !== 'completed'
+    || input.sourceState.slots.some((slot: AnyRecord) => !['succeeded', 'failed', 'unsupported'].includes(slot.status))) {
+    scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+  }
+  const sourceSlots = new Map(input.sourceState.slots.map((slot: AnyRecord) => [slot.slotId, slot]))
+  if (targetSlotIds.some((slotId) => {
+    const slot = sourceSlots.get(slotId) as AnyRecord | undefined
+    return !slot || slot.status !== 'failed' || slot.attempts.length !== 4
+      || slot.attempts.some((attempt: AnyRecord) => !confirmedFailureResponseClasses.has(attempt.responseClass))
+  })) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+
+  const manifestBase = structuredClone(input.sourceManifest)
+  delete manifestBase.manifestHash
+  manifestBase.codeSha = input.codeSha
+  const manifest: AnyRecord = { ...manifestBase, manifestHash: canonicalHash(manifestBase) }
+  const targets = new Set(targetSlotIds)
+  const slots = input.sourceState.slots.map((sourceSlot: AnyRecord) => {
+    const slot = structuredClone(sourceSlot)
+    if (targets.has(slot.slotId)) return { ...slot, status: 'pending', costCny: null, attempts: [] }
+    slot.attempts = slot.attempts.map((attempt: AnyRecord) => rebindRemediationAttempt(manifest, slot, attempt))
+    return slot
+  })
+  const providerSpentCny = { bailian: 0, ark: 0, openrouter: 0 }
+  for (const slot of slots) if (slot.provider && slot.provider !== 'codex') {
+    providerSpentCny[slot.provider as keyof typeof providerSpentCny] = Number((
+      providerSpentCny[slot.provider as keyof typeof providerSpentCny]
+      + slot.attempts.reduce((sum: number, attempt: AnyRecord) => sum + Number(attempt.actualCny ?? attempt.estimatedCny), 0)
+    ).toFixed(8))
+  }
+  const stateBase = {
+    schemaVersion: 2,
+    manifestHash: manifest.manifestHash,
+    // A remediation state deliberately mixes carried terminal slots with pending targets.
+    // `running` is the only canonical state shape that permits that mix before a lease is claimed.
+    status: 'running',
+    pauseReason: null,
+    blockReason: null,
+    createdAt: input.sourceState.createdAt,
+    updatedAt: input.now.toISOString(),
+    providerSpentCny,
+    providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 },
+    slots,
+  }
+  const initialState = { ...stateBase, stateHash: canonicalHash(stateBase) }
+  verifyScientificV2ImportedState(initialState, manifest)
+  return deepFreeze({ manifest, initialState, targetSlotIds, targetSlotSetHash: canonicalHash(targetSlotIds) })
+}
+
 export function createScientificV2MongoRepository(
   db: Db,
   now = () => new Date(),
@@ -969,6 +1048,139 @@ export function createScientificV2MongoRepository(
         return { batchId, manifestHash: raced.manifestHash, stateHash: raced.stateHash, replayed: true }
       }
       return { batchId, manifestHash: document.manifestHash, stateHash: document.stateHash, replayed: false }
+    },
+    async freezeRemediationBatch(input: AnyRecord) {
+      assertExactKeys(input, [
+        'batchId', 'sourceBatchId', 'sourceManifestHash', 'sourceReleaseHash',
+        'targetModelIds', 'targetSlotIds', 'targetSlotSetHash',
+      ], 'SCIENTIFIC_V2_REMEDIATION_INPUT_INVALID')
+      const batchId = String(input.batchId || '')
+      const sourceBatchId = String(input.sourceBatchId || '')
+      if (![batchId, sourceBatchId].every((value) => /^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$/.test(value))
+        || !hashPattern.test(String(input.sourceManifestHash || ''))
+        || !hashPattern.test(String(input.sourceReleaseHash || ''))) scientificError('SCIENTIFIC_V2_REMEDIATION_INPUT_INVALID')
+      const targetModelIds = exactSortedStrings(input.targetModelIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID', 64)
+      const targetSlotIds = exactSortedStrings(input.targetSlotIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+      if (canonicalHash(targetSlotIds) !== input.targetSlotSetHash) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+      const source = await batches.findOne({
+        batchId: sourceBatchId, manifestHash: input.sourceManifestHash,
+        releaseHash: input.sourceReleaseHash, status: 'published',
+      })
+      if (!source || source.state?.status !== 'completed' || source.releaseId === undefined) {
+        scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+      }
+      const sourceRelease = await releases.findOne({
+        _id: source.releaseId, releaseHash: input.sourceReleaseHash,
+        batchId: sourceBatchId, batchManifestHash: input.sourceManifestHash,
+        profileStatus: 'published',
+      })
+      if (!sourceRelease) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+      verifyScientificV2ImportedState(source.state, source.manifest)
+      const modelSet = new Set(targetModelIds)
+      if (targetModelIds.some((modelId) => !source.manifest.models.some((model: AnyRecord) => model.canonicalModelId === modelId))) {
+        scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+      }
+      const exactFailedSlots = source.state.slots
+        .filter((slot: AnyRecord) => modelSet.has(slot.canonicalModelId) && slot.status === 'failed')
+        .map((slot: AnyRecord) => slot.slotId)
+        .sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+      if (canonicalHash(exactFailedSlots) !== canonicalHash(targetSlotIds)) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+      const immutableCodeSha = String(options.immutableCodeSha || '')
+      const remediation = buildScientificV2RemediationFreeze({
+        sourceManifest: source.manifest, sourceState: source.state, codeSha: immutableCodeSha,
+        targetSlotIds, now: now(),
+      })
+      const derivedInput = {
+        batchId,
+        registrySnapshot: source.registrySnapshot,
+        canonicalManifest: source.canonicalManifest,
+        manifest: remediation.manifest,
+        initialState: remediation.initialState,
+      }
+      assertRegistryAndManifest(derivedInput)
+      const remediationOf = {
+        batchId: sourceBatchId,
+        manifestHash: input.sourceManifestHash,
+        releaseId: source.releaseId,
+        releaseHash: input.sourceReleaseHash,
+        targetModelIds,
+        targetSlotIds,
+        targetSlotSetHash: remediation.targetSlotSetHash,
+      }
+      const frozenInputHash = canonicalHash({ ...remediationOf, batchId, manifestHash: remediation.manifest.manifestHash, stateHash: remediation.initialState.stateHash })
+      const existing = await batches.findOne({ batchId })
+        || await batches.findOne({ manifestHash: remediation.manifest.manifestHash })
+      if (existing) {
+        if (existing.frozenInputHash !== frozenInputHash) scientificError('SCIENTIFIC_V2_BATCH_CONFLICT')
+        return {
+          batchId, manifestHash: existing.manifestHash, stateHash: existing.stateHash,
+          targetSlotCount: targetSlotIds.length, replayed: true,
+        }
+      }
+      const carriedDispatches: AnyRecord[] = []
+      const targets = new Set(targetSlotIds)
+      for (const slot of remediation.initialState.slots) {
+        if (targets.has(slot.slotId) || !slot.provider || slot.provider === 'codex') continue
+        for (const attempt of slot.attempts) {
+          const sourceMarker = await dispatches.findOne({
+            manifestHash: input.sourceManifestHash, slotId: slot.slotId,
+            attemptIndex: attempt.attemptIndex, status: 'committed',
+          })
+          if (!sourceMarker || sourceMarker.payloadHash !== attempt.payloadHash
+            || sourceMarker.attempt?.attemptHash !== attempt.attemptHash) {
+            scientificError('SCIENTIFIC_V2_REMEDIATION_DISPATCH_LEDGER_INVALID')
+          }
+          const marker = {
+            manifestHash: remediation.manifest.manifestHash,
+            slotId: slot.slotId,
+            attemptIndex: attempt.attemptIndex,
+            payloadHash: attempt.payloadHash,
+          }
+          carriedDispatches.push({
+            _id: markerId(marker), ...marker, status: 'committed', attempt: structuredClone(attempt),
+            carriedFromDispatchId: sourceMarker._id,
+            carriedFromManifestHash: input.sourceManifestHash,
+            committedAt: now(),
+          })
+        }
+      }
+      const document = {
+        _id: `scientific-v2-batch:${batchId}`,
+        ...structuredClone(derivedInput),
+        manifestHash: remediation.manifest.manifestHash,
+        stateHash: remediation.initialState.stateHash,
+        state: structuredClone(remediation.initialState),
+        stateTransitionFromHash: null,
+        status: 'frozen',
+        revision: 0,
+        latestStateReportHash: null,
+        frozenInputHash,
+        remediationOf: structuredClone(remediationOf),
+        carriedDispatchCount: carriedDispatches.length,
+        createdAt: now(),
+      }
+      const session = db.client.startSession()
+      try {
+        await session.withTransaction(async () => {
+          await batches.insertOne(document, { session } as any)
+          for (const marker of carriedDispatches) await dispatches.insertOne(marker, { session } as any)
+        }, { readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } })
+      } catch (error) {
+        if ((error as { code?: number })?.code !== 11000) throw error
+        const raced = await batches.findOne({ batchId })
+          || await batches.findOne({ manifestHash: remediation.manifest.manifestHash })
+        if (!raced || raced.frozenInputHash !== frozenInputHash) scientificError('SCIENTIFIC_V2_BATCH_CONFLICT')
+        return {
+          batchId, manifestHash: raced.manifestHash, stateHash: raced.stateHash,
+          targetSlotCount: targetSlotIds.length, replayed: true,
+        }
+      } finally {
+        await session.endSession()
+      }
+      return {
+        batchId, manifestHash: document.manifestHash, stateHash: document.stateHash,
+        targetSlotCount: targetSlotIds.length, replayed: false,
+      }
     },
     async operatorAttestation(input: { batchId?: string; manifestHash?: string }) {
       const batch = await batches.findOne(input.batchId ? { batchId: input.batchId } : { manifestHash: input.manifestHash })
@@ -1784,6 +1996,14 @@ export function createScientificV2MongoRepository(
         'state.status': 'ready',
         claimToken: { $exists: false },
       })
+      if (!current) current = await batches.findOne({
+        manifestHash: input.manifestHash,
+        stateHash: input.expectedReadyStateHash,
+        'state.status': 'running',
+        status: 'frozen',
+        remediationOf: { $exists: true },
+        claimToken: { $exists: false },
+      })
       let reclaim = false
       if (!current) {
         current = await batches.findOne({
@@ -1810,7 +2030,9 @@ export function createScientificV2MongoRepository(
       const claimed = await (batches as any).findOneAndUpdate(
         reclaim
           ? { _id: current._id, stateHash: current.stateHash, status: 'running', claimToken: current.claimToken, claimLeaseExpiresAt: { $lte: claimNow } }
-          : { _id: current._id, stateHash: input.expectedReadyStateHash, 'state.status': 'ready', claimToken: { $exists: false } },
+          : current.remediationOf
+            ? { _id: current._id, stateHash: input.expectedReadyStateHash, 'state.status': 'running', status: 'frozen', remediationOf: { $exists: true }, claimToken: { $exists: false } }
+            : { _id: current._id, stateHash: input.expectedReadyStateHash, 'state.status': 'ready', claimToken: { $exists: false } },
         { $set: {
           state,
           stateHash: state.stateHash,
@@ -1923,6 +2145,7 @@ export function createScientificV2MongoRepository(
       attempt: AnyRecord
       nextState: AnyRecord
       artifactRecovery?: AnyRecord
+      failureCode?: string
     }) {
       assertMarker(input.marker)
       assertNextState(input.nextState, input.marker.manifestHash)
@@ -1943,6 +2166,9 @@ export function createScientificV2MongoRepository(
       if (input.artifactRecovery) {
         if (input.attempt.responseClass !== 'artifact_reconciliation_required') scientificError('SCIENTIFIC_V2_ARTIFACT_RECOVERY_INVALID')
         assertArtifactRecovery(input.artifactRecovery, input.attempt)
+      }
+      if (input.failureCode !== undefined && !/^SCIENTIFIC_V2_[A-Z0-9_]{1,120}$/.test(input.failureCode)) {
+        scientificError('SCIENTIFIC_V2_FAILURE_CODE_INVALID')
       }
       const session = db.client.startSession()
       try {
@@ -1971,6 +2197,7 @@ export function createScientificV2MongoRepository(
             { $set: {
               status: 'committed', attempt: structuredClone(input.attempt), state: structuredClone(input.nextState), committedAt: now(),
               ...(input.artifactRecovery ? { artifactRecovery: structuredClone(input.artifactRecovery) } : {}),
+              ...(input.failureCode ? { failureCode: input.failureCode } : {}),
             } },
             { session },
           )

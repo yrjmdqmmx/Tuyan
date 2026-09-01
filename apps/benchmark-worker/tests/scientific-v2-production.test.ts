@@ -484,6 +484,7 @@ test('production Mongo atomically recovers only an exact legacy provider-canary 
     { 'state.status': 'ready' },
     { 'state.status': 'canary_complete' },
     { 'state.status': 'blocked', 'state.blockReason': 'provider_canary_failed' },
+    { 'state.status': 'running', status: 'frozen', remediationOf: { $exists: true } },
   ])
   assert.deepEqual(recoveryUpdate.update.$set.executionLineage, execution)
   assert.equal(await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: legacy.stateHash }), null)

@@ -15,6 +15,7 @@ import {
 import { createMongoBenchmarkRepository } from '../src/benchmark-repository.js'
 import { createBenchmarkService } from '../src/benchmark-service.js'
 import {
+  buildScientificV2RemediationFreeze,
   createScientificV2MongoRepository,
   normalizeScientificV2SignedStateOperationReport,
   normalizeScientificV2StateOperationReport,
@@ -914,6 +915,49 @@ test('freezeBatch independently rebuilds the Core canonical manifest and is immu
   assert.equal(frozen.stateHash, fixture.initialState.stateHash)
   assert.equal(replay.replayed, true)
   assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_batches')?.length, 1)
+})
+
+test('remediation freeze resets only exact exhausted failures and rebinds carried Codex attempts', () => {
+  const fixture = scientificBatchFixture({ secondBailianModel: true })
+  const sourceState = completedScientificState(fixture)
+  const targets = sourceState.slots.filter((slot: any) => slot.provider !== 'codex' && !slot.isProviderCanary).slice(0, 2)
+  for (const slot of targets) {
+    const previous = slot.attempts[0]
+    slot.attempts = Array.from({ length: 4 }, (_, index) => {
+      const base = {
+        ...previous, attemptIndex: index + 1, responseClass: 'confirmed_technical_failure', actualCny: null,
+        startedAt: `2026-08-31T00:00:0${index + 1}.000Z`, completedAt: `2026-08-31T00:00:0${index + 2}.000Z`,
+        rawImageHash: null, byteSize: null, width: null, height: null, format: null,
+        editedHash: null,
+      }
+      delete base.attemptHash
+      return { ...base, attemptHash: canonicalHash(base) }
+    })
+    sourceState.providerSpentCny[slot.provider] += 3
+    slot.status = 'failed'
+    slot.costCny = 4
+  }
+  const source = refreshState(sourceState, '2026-08-31T00:00:09.000Z')
+  const codexBefore = source.slots.find((slot: any) => slot.provider === 'codex').attempts[0]
+  const remediation = buildScientificV2RemediationFreeze({
+    sourceManifest: fixture.manifest,
+    sourceState: source,
+    codeSha: 'b'.repeat(40),
+    targetSlotIds: targets.map((slot: any) => slot.slotId).sort(),
+    now: new Date('2026-08-31T00:00:10.000Z'),
+  })
+
+  assert.equal(remediation.initialState.status, 'running')
+  assert.equal(remediation.manifest.codeSha, 'b'.repeat(40))
+  assert.notEqual(remediation.manifest.manifestHash, fixture.manifest.manifestHash)
+  assert.ok(remediation.initialState.slots.filter((slot: any) => targets.some((target: any) => target.slotId === slot.slotId))
+    .every((slot: any) => slot.status === 'pending' && slot.attempts.length === 0 && slot.costCny === null))
+  const codexAfter = remediation.initialState.slots.find((slot: any) => slot.provider === 'codex').attempts[0]
+  assert.notEqual(codexAfter.payloadHash, codexBefore.payloadHash)
+  assert.notEqual(codexAfter.attemptHash, codexBefore.attemptHash)
+  assert.doesNotThrow(() => verifyScientificV2ImportedState(remediation.initialState, remediation.manifest))
+  assert.doesNotThrow(() => verifyWorkerScientificV2BatchManifest(remediation.manifest as never))
+  assert.doesNotThrow(() => verifyWorkerScientificV2BatchState(remediation.initialState as never, remediation.manifest as never))
 })
 
 test('freezeBatch accepts Worker-shaped generation-only manifests with unsupported edit routes still pending initially', async () => {

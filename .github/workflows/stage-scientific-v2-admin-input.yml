@@ -6,7 +6,7 @@ on:
       purpose:
         required: true
         type: choice
-        options: [import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+        options: [remediate-freeze, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       release_id: { required: true }
@@ -44,7 +44,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
-          [[ "$PURPOSE" =~ ^(import-worker|import-codex|export-review|import-review|import-arbitration|publish)$ ]]
+          [[ "$PURPOSE" =~ ^(remediate-freeze|import-worker|import-codex|export-review|import-review|import-arbitration|publish)$ ]]
           [[ "$RELEASE_ID" =~ ^[1-9][0-9]*$ && "$ASSET_ID" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" =~ ^[1-9][0-9]*$ ]]
           [[ "$ASSET_SHA" =~ ^[a-f0-9]{64}$ && "$ASSET_SIZE" -le 67108864 ]]
           [[ "$ASSET_NAME" == "scientific-v2-$PURPOSE-$ASSET_SHA.json" ]]
@@ -73,7 +73,8 @@ jobs:
           [[ "$(stat -c %s "$input")" == "$ASSET_SIZE" && "$(sha256sum "$input" | awk '{print $1}')" == "$ASSET_SHA" ]]
           jq -e --arg purpose "$PURPOSE" '
             (type == "object") and
-            (if ($purpose == "import-worker" or $purpose == "import-codex") then (keys | sort) == ["attestationHash","report","reportHash"]
+            (if $purpose == "remediate-freeze" then (keys | sort) == ["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash","targetModelIds","targetSlotIds","targetSlotSetHash"]
+             elif ($purpose == "import-worker" or $purpose == "import-codex") then (keys | sort) == ["attestationHash","report","reportHash"]
              elif $purpose == "export-review" then (keys | sort) == ["assignment","batchId","objectBindings"]
              elif $purpose == "import-review" then (keys | sort) == ["batchId","result"]
              elif $purpose == "import-arbitration" then (keys | sort) == ["arbitration","arbitrationHash","attestationHash","batchId"]
