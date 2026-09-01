@@ -13,6 +13,7 @@ on:
       suite_hash: { required: true }
       price_hash: { required: true }
       manifest_hash: { required: true }
+      batch_id: { required: true }
       model_count: { required: true }
       confirm: { required: true }
 
@@ -41,6 +42,7 @@ jobs:
           SUITE_HASH: ${{ inputs.suite_hash }}
           PRICE_HASH: ${{ inputs.price_hash }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          BATCH_ID: ${{ inputs.batch_id }}
           MODEL_COUNT: ${{ inputs.model_count }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
@@ -49,6 +51,7 @@ jobs:
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$PRIVATE_HASH" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           [[ "$MODEL_COUNT" =~ ^[1-9][0-9]*$ && "$MODEL_COUNT" -le 257 ]]
           [[ "$CONFIRM" == export-exact-scientific-v2-blind-assignments ]]
 
@@ -76,6 +79,7 @@ jobs:
           SUITE_HASH: ${{ inputs.suite_hash }}
           PRICE_HASH: ${{ inputs.price_hash }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          BATCH_ID: ${{ inputs.batch_id }}
           MODEL_COUNT: ${{ inputs.model_count }}
         run: |
           set -Eeuo pipefail
@@ -107,8 +111,8 @@ jobs:
           failure_stage=upload-public-operator-output
           scp "$artifact_dir/operator-output.json" "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/operator-output.json"
           public_output_sha="$(sha256sum "$artifact_dir/operator-output.json" | awk '{print $1}')"
-          printf -v postprocess_command 'sudo env RETURN_DIR=%q PUBLIC_OUTPUT_SHA=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q BUNDLE_SHA=%q PRIVATE_HASH=%q MANIFEST_HASH=%q bash -s' \
-            "$remote_return" "$public_output_sha" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$BUNDLE_SHA" "$PRIVATE_HASH" "$MANIFEST_HASH"
+          printf -v postprocess_command 'sudo env RETURN_DIR=%q PUBLIC_OUTPUT_SHA=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q BUNDLE_SHA=%q PRIVATE_HASH=%q MANIFEST_HASH=%q BATCH_ID=%q bash -s' \
+            "$remote_return" "$public_output_sha" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$BUNDLE_SHA" "$PRIVATE_HASH" "$MANIFEST_HASH" "$BATCH_ID"
           failure_stage=remote-postprocess
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$postprocess_command" <<'REMOTE'
           set -Eeuo pipefail
@@ -156,14 +160,14 @@ jobs:
           return_gid="$(stat -c %g "$RETURN_DIR")"
           [[ "$return_uid" =~ ^[0-9]+$ && "$return_gid" =~ ^[0-9]+$ && "$(stat -c %a "$RETURN_DIR")" =~ ^0?700$ ]]
           failure_stage=assemble-review-assignments
-          python3 - "$bundle" "$private" "$public" "$PRIVATE_HASH" "$private_file_sha" "$MANIFEST_HASH" "$admin_input_root" "$RETURN_DIR" "$return_uid" "$return_gid" <<'PY'
+          python3 - "$bundle" "$private" "$public" "$PRIVATE_HASH" "$private_file_sha" "$MANIFEST_HASH" "$BATCH_ID" "$admin_input_root" "$RETURN_DIR" "$return_uid" "$return_gid" <<'PY'
           import hashlib
           import json
           import os
           import stat
           import sys
 
-          bundle_path, private_path, public_path, private_hash, private_file_hash, manifest_hash, admin_root, return_root, return_uid_text, return_gid_text = sys.argv[1:]
+          bundle_path, private_path, public_path, private_hash, private_file_hash, manifest_hash, batch_id, admin_root, return_root, return_uid_text, return_gid_text = sys.argv[1:]
           return_uid, return_gid = int(return_uid_text), int(return_gid_text)
 
           def protected(path, owner, mode, limit=64 * 1024 * 1024):
@@ -210,7 +214,8 @@ jobs:
           exact(private, ['batchManifestHash', 'sourceSetHash', 'reviewerA', 'reviewerB'])
           if private['batchManifestHash'] != manifest_hash or public.get('privateBundleHash') != private_hash:
               raise RuntimeError('private')
-          batch_id = 'scientific-v2-' + manifest_hash[:20]
+          if not isinstance(batch_id, str) or not 3 <= len(batch_id) <= 200:
+              raise RuntimeError('batch-id')
           state = bundle['input']['state']
           attempts = {}
           for slot in state['slots']:
