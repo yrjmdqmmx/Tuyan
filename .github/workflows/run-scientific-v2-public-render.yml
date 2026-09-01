@@ -219,7 +219,7 @@ jobs:
           render_output="$(timeout --signal=TERM --kill-after=30s 1800s \
             "${compose[@]}" run -T --rm --no-deps --user 1000:1000 \
             -v "$input_dir/bundle.json:/run/paperbanana-scientific-v2/bundle.json:ro" \
-            -v "$input_dir/renderer.mjs:/run/paperbanana-scientific-v2/renderer.mjs:ro" \
+            -v "$input_dir/renderer.mjs:/app/scientific-v2-public-renderer.mjs:ro" \
             -e PAPERBANANA_BENCH_ENABLED=false \
             -e PAPERBANANA_BENCH_CONCURRENCY=1 \
             -e PAPERBANANA_SCIENTIFIC_V2_RUN_ENABLED=true \
@@ -230,7 +230,7 @@ jobs:
             -e PAPERBANANA_BENCH_BAILIAN_API_KEY= \
             -e PAPERBANANA_BENCH_ARK_API_KEY= \
             -e PAPERBANANA_BENCH_OPENROUTER_API_KEY= \
-            benchmark-operator node /run/paperbanana-scientific-v2/renderer.mjs)"
+            benchmark-operator node /app/scientific-v2-public-renderer.mjs)"
           [[ -n "$render_output" && "${#render_output}" -le 67108864 ]]
           printf '%s\n' "$render_output" >"$result"
           unset render_output
