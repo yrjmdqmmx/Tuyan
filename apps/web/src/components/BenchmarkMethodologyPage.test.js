@@ -109,7 +109,7 @@ function scientificMethodologyResponse() {
       reviewProtocol: 'codex-independent-double-review-v2', presentationVersion: 'scientific-leaderboard-v2', expectedCaseCount: 9, dimensions: axes,
       overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0,
       retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' }, routePriority: ['bailian', 'ark', 'openrouter'],
-      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 }, blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 }, blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
       knownLimitations: ['fixed-nine-case-suite', 'single-production-run-per-model', 'human-codex-double-review'], automaticJudges: [], automaticJudgmentCount: 0,
       rankingMethod: { id: 'ten_dimension_raw_equal_weight_mean', axes, weights: axes.map(() => 0.1), tieMethod: 'competition' },
     },
@@ -238,7 +238,7 @@ test('scientific v2 methodology shows nine cases, ten axes, zero failures, retri
     await screen.findByRole('heading', { name: '评测方法与完整题集' })
     assert.equal(container.querySelectorAll('.bench-method-case').length, 9)
     scientificAxisEntries.forEach(([, label]) => assert.match(container.textContent, new RegExp(escapePattern(label), 'u')))
-    for (const text of ['失败记 0', '确认失败最多 4 次', 'UNKNOWN_PROVIDER_OUTCOME', '不自动重试', 'bailian → ark → openrouter', '¥180', '双盲', '争议仲裁', '固定九题', '单次生产运行']) {
+    for (const text of ['失败记 0', '确认失败最多 4 次', 'UNKNOWN_PROVIDER_OUTCOME', '不自动重试', 'bailian → ark → openrouter', '¥180', '¥360', '双盲', '争议仲裁', '固定九题', '单次生产运行']) {
       assert.match(container.textContent, new RegExp(escapePattern(text), 'u'))
     }
     assert.equal(screen.queryByRole('navigation', { name: '排行榜导航' }), null)

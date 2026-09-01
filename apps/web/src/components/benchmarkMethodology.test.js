@@ -30,7 +30,7 @@ function scientificResponse() {
       reviewProtocol: 'codex-independent-double-review-v2', presentationVersion: 'scientific-leaderboard-v2', expectedCaseCount: 9, dimensions: [...SCIENTIFIC_AXES],
       overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0,
       retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' }, routePriority: ['bailian', 'ark', 'openrouter'],
-      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 }, blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 }, blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
       knownLimitations: ['fixed-nine-case-suite', 'single-production-run-per-model'], automaticJudges: [], automaticJudgmentCount: 0,
       rankingMethod: { id: 'ten_dimension_raw_equal_weight_mean', axes: [...SCIENTIFIC_AXES], weights: SCIENTIFIC_AXES.map(() => 0.1), tieMethod: 'competition' },
     },
@@ -240,4 +240,7 @@ test('normalizer accepts only the exact scientific v2 nine-case ten-dimension me
   const axesTamper = scientificResponse()
   axesTamper.suite.cases[6].applicableAxes = [...axesTamper.suite.cases[6].applicableAxes].reverse()
   assert.equal(normalizeMethodologyResponse(axesTamper), null)
+  const budgetTamper = scientificResponse()
+  budgetTamper.methodology.providerBudgetsCny.openrouter = 359
+  assert.equal(normalizeMethodologyResponse(budgetTamper), null)
 })

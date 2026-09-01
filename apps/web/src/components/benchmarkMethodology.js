@@ -225,7 +225,7 @@ function normalizeScientificResponse(response) {
     || methodology.overallFormula !== scoring.overallFormula || methodology.tieMethod !== scoring.tieMethod || methodology.failureScore !== 0
     || methodology.retryPolicy?.confirmedFailureMaxAttempts !== 4 || methodology.retryPolicy?.unknownProviderOutcome !== 'pause_no_retry'
     || !equalArray(methodology.routePriority, ['bailian', 'ark', 'openrouter'])
-    || methodology.providerBudgetsCny?.bailian !== 180 || methodology.providerBudgetsCny?.ark !== 180 || methodology.providerBudgetsCny?.openrouter !== 180
+    || methodology.providerBudgetsCny?.bailian !== 180 || methodology.providerBudgetsCny?.ark !== 180 || methodology.providerBudgetsCny?.openrouter !== 360
     || methodology.blindReview?.reviewers !== 2 || methodology.blindReview?.arbitration !== 'xhigh_on_dispute'
     || !equalArray(methodology.blindReview?.automaticJudges, []) || !equalArray(methodology.automaticJudges, [])
     || methodology.automaticJudgmentCount !== 0 || !Array.isArray(methodology.knownLimitations) || !methodology.knownLimitations.length
@@ -241,7 +241,7 @@ function normalizeScientificResponse(response) {
       evaluationEpoch: methodology.evaluationEpoch, reviewProtocol: methodology.reviewProtocol, presentationVersion: methodology.presentationVersion,
       expectedCaseCount: 9, dimensions: [...SCIENTIFIC_AXES], overallFormula: methodology.overallFormula, tieMethod: 'competition', failureScore: 0,
       retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' }, routePriority: [...methodology.routePriority],
-      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 180 },
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
       blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
       knownLimitations: [...methodology.knownLimitations], automaticJudges: [], automaticJudgmentCount: 0,
       rankingMethod: { id: rankingMethod.id, axes: [...SCIENTIFIC_AXES], weights: [...rankingMethod.weights], tieMethod: 'competition' },
