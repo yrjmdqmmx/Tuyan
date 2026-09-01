@@ -79,8 +79,12 @@ jobs:
           MODEL_COUNT: ${{ inputs.model_count }}
         run: |
           set -Eeuo pipefail
+          failure_stage=initial
+          trap 'status=$?; printf "scientific-v2-review-export-failure=%s\n" "$failure_stage" >&2; exit "$status"' ERR
           artifact_dir="$RUNNER_TEMP/scientific-v2-public-review"
+          failure_stage=local-artifact-directory
           install -d -m 0700 "$artifact_dir"
+          failure_stage=remote-return-directory
           remote_return="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp -d /tmp/paperbanana-scientific-v2-public-review.XXXXXXXXXXXX')"
           [[ "$remote_return" =~ ^/tmp/paperbanana-scientific-v2-public-review[.][A-Za-z0-9]{8,}$ ]]
           cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_return/operator-output.json' '$remote_return/public-reviewer-A.json' '$remote_return/public-reviewer-B.json'; rmdir '$remote_return'" >/dev/null 2>&1 || true; }
@@ -89,8 +93,10 @@ jobs:
             /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-operator.sh \
             "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" \
             review-pack-scientific-v2-disabled-worker
+          failure_stage=reproduce-review-pack
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$operator_command" >"$artifact_dir/operator-output.json"
           chmod 0600 "$artifact_dir/operator-output.json"
+          failure_stage=validate-public-operator-output
           jq -e --arg manifest "$MANIFEST_HASH" --arg privateHash "$PRIVATE_HASH" '
             .operation == "review_pack" and .providerCalls == 0 and .batchManifestHash == $manifest and
             .privateBundleHash == $privateHash and .privateOutputWritten == true and .automaticJudges == [] and
@@ -98,13 +104,17 @@ jobs:
             ([.. | objects | keys[]] | index("privateEnvelope") == null) and
             ([.. | objects | keys[]] | index("attestationSecret") == null)
           ' "$artifact_dir/operator-output.json" >/dev/null
+          failure_stage=upload-public-operator-output
           scp "$artifact_dir/operator-output.json" "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/operator-output.json"
           public_output_sha="$(sha256sum "$artifact_dir/operator-output.json" | awk '{print $1}')"
           printf -v postprocess_command 'sudo env RETURN_DIR=%q PUBLIC_OUTPUT_SHA=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q BUNDLE_SHA=%q PRIVATE_HASH=%q MANIFEST_HASH=%q bash -s' \
             "$remote_return" "$public_output_sha" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$BUNDLE_SHA" "$PRIVATE_HASH" "$MANIFEST_HASH"
+          failure_stage=remote-postprocess
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$postprocess_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
+          failure_stage=lock
+          trap 'status=$?; printf "scientific-v2-review-export-remote-failure=%s\n" "$failure_stage" >&2; exit "$status"' ERR
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           repo=/opt/paperbanana/repo
@@ -114,21 +124,26 @@ jobs:
           bundle="$bundle_root/$BUNDLE_SHA.json"
           private="$review_private_root/$BUNDLE_SHA.review-private.json"
           public="$RETURN_DIR/operator-output.json"
+          failure_stage=deployed-source
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          failure_stage=worker-identity
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
           image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
           docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
           docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          failure_stage=protected-inputs
           for path in "$bundle" "$private"; do
             [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
           done
           [[ -d "$admin_input_root" && ! -L "$admin_input_root" && "$(stat -c '%u:%g:%a' "$admin_input_root")" =~ ^0:0:0?700$ ]]
+          failure_stage=public-handoff
           [[ -f "$public" && ! -L "$public" && "$(sha256sum "$public" | awk '{print $1}')" == "$PUBLIC_OUTPUT_SHA" ]]
           [[ -d "$RETURN_DIR" && ! -L "$RETURN_DIR" ]]
           return_uid="$(stat -c %u "$RETURN_DIR")"
           return_gid="$(stat -c %g "$RETURN_DIR")"
           [[ "$return_uid" =~ ^[1-9][0-9]*$ && "$return_gid" =~ ^[0-9]+$ && "$(stat -c %a "$RETURN_DIR")" =~ ^0?700$ ]]
+          failure_stage=assemble-review-assignments
           python3 - "$bundle" "$private" "$public" "$PRIVATE_HASH" "$MANIFEST_HASH" "$admin_input_root" "$RETURN_DIR" "$return_uid" "$return_gid" <<'PY'
           import hashlib
           import json
@@ -238,9 +253,12 @@ jobs:
           print(json.dumps({'operation': 'export-scientific-v2-review-assignments', 'providerCalls': 0, 'manifestHash': manifest_hash, 'privateBundleHash': private_hash, 'reviewers': summaries}, separators=(',', ':')))
           PY
           REMOTE
+          failure_stage=download-public-reviewer-a
           scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/public-reviewer-A.json" "$artifact_dir/public-reviewer-A.json"
+          failure_stage=download-public-reviewer-b
           scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_return/public-reviewer-B.json" "$artifact_dir/public-reviewer-B.json"
           chmod 0600 "$artifact_dir/public-reviewer-A.json" "$artifact_dir/public-reviewer-B.json"
+          failure_stage=validate-public-reviewer-packages
           for role in A B; do
             jq -e --arg role "$role" --arg manifest "$MANIFEST_HASH" '
               (keys | sort) == ["batchId","batchManifestHash","publicAssignment","role","schemaVersion"] and
@@ -250,6 +268,7 @@ jobs:
               ([.. | objects | keys[]] | index("privateEnvelope") == null)
             ' "$artifact_dir/public-reviewer-$role.json" >/dev/null
           done
+          failure_stage=complete
 
       - name: Upload short-lived blind reviewer packages
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
