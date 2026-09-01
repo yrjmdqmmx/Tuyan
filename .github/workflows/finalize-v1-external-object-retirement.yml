@@ -56,7 +56,7 @@ jobs:
             .schemaVersion == 1 and .mode == "inspect" and .generatedOrJudgeCalls == 0 and
             .releaseHash == "2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2" and
             .activeV2ReleaseHash == $activeV2 and .inventory.inventoryHash == $inventoryHash and
-            .inventory.exclusiveObjects.length == 253 and .inventory.sharedObjects.length == 0 and
+            (.inventory.exclusiveObjects | length) == 253 and (.inventory.sharedObjects | length) == 0 and
             .inventory.exclusiveBytes == 343873414
           ' "$report" >/dev/null
       - name: Configure SSH

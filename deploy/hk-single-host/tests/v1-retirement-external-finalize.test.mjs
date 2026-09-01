@@ -7,6 +7,8 @@ const workflow = readFileSync(new URL('../../../.github/workflows/finalize-v1-ex
 test('externally deleted V1 objects are reverified before exact DB retirement', () => {
   assert.match(workflow, /33515513815/u)
   assert.match(workflow, /v1-retirement-inspect-33515513815/u)
+  assert.match(workflow, /\(\.inventory\.exclusiveObjects \| length\) == 253/u)
+  assert.match(workflow, /\(\.inventory\.sharedObjects \| length\) == 0/u)
   assert.match(workflow, /exclusiveObjects\.length\s*!==\s*253/u)
   assert.match(workflow, /sharedObjects\.length\s*!==\s*0/u)
   assert.match(workflow, /-e "ACTIVE_V2_RELEASE_HASH=\$ACTIVE_V2_RELEASE_HASH"/u)
