@@ -3,6 +3,7 @@ name: Run Scientific V2 Public Render
 on:
   workflow_dispatch:
     inputs:
+      batch_id: { required: true }
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       expected_core_digest: { required: true }
@@ -30,6 +31,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Validate exact immutable render envelope
         env:
+          BATCH_ID: ${{ inputs.batch_id }}
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
@@ -44,6 +46,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
@@ -77,6 +80,7 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          BATCH_ID: ${{ inputs.batch_id }}
         run: |
           set -Eeuo pipefail
           scp /tmp/scientific-v2-public-renderer.mjs \
@@ -98,8 +102,8 @@ jobs:
         run: |
           set -Eeuo pipefail
           script_sha="$(cut -d' ' -f1 /tmp/scientific-v2-public-renderer.sha256)"
-          printf -v remote_command 'sudo env CONTROL_SHA=%q DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q BUNDLE_SHA=%q REGISTRY_HASH=%q SUITE_HASH=%q PRICE_HASH=%q MANIFEST_HASH=%q MODEL_COUNT=%q SCRIPT_SHA=%q GITHUB_RUN_ID=%q bash -s' \
-            "$GITHUB_SHA" "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$script_sha" "$GITHUB_RUN_ID"
+          printf -v remote_command 'sudo env CONTROL_SHA=%q BATCH_ID=%q DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q BUNDLE_SHA=%q REGISTRY_HASH=%q SUITE_HASH=%q PRICE_HASH=%q MANIFEST_HASH=%q MODEL_COUNT=%q SCRIPT_SHA=%q GITHUB_RUN_ID=%q bash -s' \
+            "$GITHUB_SHA" "$BATCH_ID" "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$script_sha" "$GITHUB_RUN_ID"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           trap 'status=$?; line=$LINENO; trap - ERR; printf "{\"operation\":\"render_public_evidence_failure\",\"providerCalls\":0,\"line\":%s,\"exitCode\":%s}\\n" "$line" "$status" >&2; exit "$status"' ERR
@@ -154,11 +158,11 @@ jobs:
           provenance_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1])process.exit(1)'
           docker exec "$core_id" node -e "$provenance_guard" "$DEPLOYED_SHA" >/dev/null
           docker exec "$worker_id" node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' "$DEPLOYED_SHA" >/dev/null
-          jq -e --arg manifest "$MANIFEST_HASH" --arg registry "$REGISTRY_HASH" --arg suite "$SUITE_HASH" --arg price "$PRICE_HASH" --argjson models "$MODEL_COUNT" '
+          jq -e --arg batch "$BATCH_ID" --arg manifest "$MANIFEST_HASH" --arg registry "$REGISTRY_HASH" --arg suite "$SUITE_HASH" --arg price "$PRICE_HASH" --argjson models "$MODEL_COUNT" '
             .operation == "render_public_evidence" and .gate == {enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"} and
             .manifest.manifestHash == $manifest and .manifest.registryHash == $registry and .manifest.suiteHash == $suite and .manifest.priceHash == $price and
             (.manifest.models | length) == $models and .state.manifestHash == $manifest and .state.status == "completed" and
-            .input.batchId == ("scientific-v2-" + ($manifest[0:20]))
+            .input.batchId == $batch
           ' "$bundle" >/dev/null
           [[ "$(sha256sum "$bundle" | awk '{print $1}')" == "$BUNDLE_SHA" ]]
           first_object_key="$(jq -er '[.state.slots[] | select(.status == "succeeded") | .attempts[-1]
@@ -292,10 +296,10 @@ jobs:
             .lockName == "/run/lock/paperbanana-hk-production.lock" and
             (.publishInputHash | test("^[a-f0-9]{64}$")) and .evidenceCount > 0 and .objectBindingCount > 0
           ' "$result" >/dev/null
-          jq -e --arg manifest "$MANIFEST_HASH" '
+          jq -e --arg batch "$BATCH_ID" '
             (keys | sort) == ["operation","providerCalls","publishInput","publishInputHash"] and
             .operation == "render_public_evidence" and .providerCalls == 0 and
-            (.publishInputHash | test("^[a-f0-9]{64}$")) and .publishInput.batchId == ("scientific-v2-" + ($manifest[0:20])) and
+            (.publishInputHash | test("^[a-f0-9]{64}$")) and .publishInput.batchId == $batch and
             (.publishInput.objectBindings | type) == "array" and (.publishInput.objectBindings | length) > 0 and
             (.publishInput.evidence | type) == "array" and (.publishInput.evidence | length) > 0
           ' "$private_result" >/dev/null

@@ -3,6 +3,7 @@ name: Stage Scientific V2 Public Render Bundle
 on:
   workflow_dispatch:
     inputs:
+      batch_id: { required: true }
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       expected_worker_digest: { required: true }
@@ -27,6 +28,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Validate exact completed-state render envelope
         env:
+          BATCH_ID: ${{ inputs.batch_id }}
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
@@ -38,6 +40,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           for hash in "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
@@ -58,6 +61,7 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          BATCH_ID: ${{ inputs.batch_id }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
@@ -66,8 +70,8 @@ jobs:
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q bash -s' \
-            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"
+          printf -v remote_command 'sudo env BATCH_ID=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q bash -s' \
+            "$BATCH_ID" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
@@ -90,7 +94,7 @@ jobs:
           cleanup() { rm -f -- "$output"; }
           trap cleanup EXIT
           python3 - "$manifest_path" "$MANIFEST_FILE_SHA" "$state_path" "$STATE_FILE_SHA" \
-            "$attestation_path" "$ATTESTATION_FILE_SHA" "$core_env" "$MANIFEST_HASH" "$DEPLOYED_SHA" "$output" <<'PY'
+            "$attestation_path" "$ATTESTATION_FILE_SHA" "$core_env" "$BATCH_ID" "$MANIFEST_HASH" "$DEPLOYED_SHA" "$output" <<'PY'
           import hashlib
           import hmac
           import json
@@ -98,7 +102,7 @@ jobs:
           import stat
           import sys
 
-          manifest_path, manifest_sha, state_path, state_sha, attestation_path, attestation_sha, core_env_path, manifest_hash, deployed_sha, output_path = sys.argv[1:]
+          manifest_path, manifest_sha, state_path, state_sha, attestation_path, attestation_sha, core_env_path, batch_id, manifest_hash, deployed_sha, output_path = sys.argv[1:]
 
           def protected(path, expected_sha):
               fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -137,7 +141,10 @@ jobs:
           code_shas = [line.split('=', 1)[1] for line in core_env.splitlines() if line.startswith('PAPERBANANA_CODE_SHA=')]
           if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096 or code_shas != [deployed_sha]:
               raise RuntimeError('secret')
-          if manifest.get('manifestHash') != manifest_hash or manifest.get('codeSha') != deployed_sha or state.get('manifestHash') != manifest_hash or state.get('status') != 'completed' or state.get('stateHash') != attestation.get('stateHash'):
+          if (attestation.get('batchId') != batch_id
+                  or manifest.get('manifestHash') != manifest_hash or manifest.get('codeSha') != deployed_sha
+                  or state.get('manifestHash') != manifest_hash or state.get('status') != 'completed'
+                  or state.get('stateHash') != attestation.get('stateHash')):
               raise RuntimeError('binding')
           report_base = {key: value for key, value in attestation.items() if key not in {'reportHash', 'attestationHash'}}
           report_hash = hashlib.sha256(canonical(report_base).encode('utf-8')).hexdigest()
