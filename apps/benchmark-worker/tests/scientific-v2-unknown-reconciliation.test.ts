@@ -63,7 +63,32 @@ test('reconciliation rejects non-zero candidates, invalid credential evidence an
     reconciledAt: '2026-09-01T00:15:00.000Z' }
   assert.throws(() => reconcileScientificV2UnknownNoArtifact(fixture.state, fixture.manifest, { ...base, candidateCount: 1 as never }))
   assert.throws(() => reconcileScientificV2UnknownNoArtifact(fixture.state, fixture.manifest, { ...base, credentialStatus: 500 as never }))
-  const exhausted = structuredClone(fixture.state)
-  exhausted.slots[0].attempts[0].attemptIndex = 4
-  assert.throws(() => reconcileScientificV2UnknownNoArtifact(exhausted, fixture.manifest, base))
+})
+
+test('the fourth manually reconciled unknown becomes a final failed slot and never dispatches a fifth attempt', () => {
+  const fixture = pausedUnknownFixture()
+  const manifest = structuredClone(fixture.manifest)
+  const slot = fixture.state.slots[0]
+  slot.isProviderCanary = false
+  manifest.executionOrder[0].isProviderCanary = false
+  const original = structuredClone(slot.attempts[0])
+  slot.attempts = Array.from({ length: 4 }, (_, index) => {
+    const { attemptHash: _hash, ...base } = structuredClone(original)
+    base.attemptIndex = index + 1
+    base.responseClass = index === 3 ? 'unknown_provider_outcome' : 'confirmed_technical_failure'
+    return { ...base, attemptHash: canonicalHash(base) }
+  })
+  slot.costCny = 4
+  fixture.state.providerSpentCny.bailian = 4
+  refreshScientificV2StateHash(fixture.state)
+  verifyScientificV2BatchState(fixture.state, manifest)
+  const result = reconcileScientificV2UnknownNoArtifact(fixture.state, manifest, {
+    workflowRunId: 4, candidateCount: 0, spoolCandidateCount: 0, credentialStatus: 200,
+    reconciledAt: '2026-09-01T00:20:00.000Z',
+  })
+  assert.equal(result.state.slots[0].status, 'failed')
+  assert.equal(result.state.slots[0].attempts.length, 4)
+  assert.equal(result.state.slots[0].attempts[3].responseClass, 'confirmed_technical_failure')
+  assert.ok(result.state.slots.slice(1).every((candidate) => candidate.status === 'pending'))
+  verifyScientificV2BatchState(result.state, manifest)
 })

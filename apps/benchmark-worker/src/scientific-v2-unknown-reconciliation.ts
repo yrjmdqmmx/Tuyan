@@ -35,13 +35,13 @@ export function reconcileScientificV2UnknownNoArtifact(
   const attempt = slot.attempts.at(-1)
   if (!attempt || attempt.responseClass !== 'unknown_provider_outcome' || attempt.actualCny !== null
     || attempt.rawImageHash !== null || attempt.byteSize !== null || attempt.width !== null
-    || attempt.height !== null || attempt.format !== null || attempt.attemptIndex >= 4) fail()
+    || attempt.height !== null || attempt.format !== null || attempt.attemptIndex > 4) fail()
 
   const originalAttempt = structuredClone(attempt)
   const { attemptHash: _oldAttemptHash, ...attemptBase } = attempt
   attemptBase.responseClass = 'confirmed_technical_failure'
   Object.assign(attempt, attemptBase, { attemptHash: canonicalHash(attemptBase) })
-  slot.status = 'retrying'
+  slot.status = attempt.attemptIndex === 4 ? 'failed' : 'retrying'
   for (const later of state.slots.slice(unknownIndex + 1)) {
     if (later.status !== 'not_executed') fail()
     later.status = 'pending'
