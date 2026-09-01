@@ -62,6 +62,25 @@ const stateOperationReportPayloadKeys = [
   'disclosure', 'createdAt',
 ] as const
 const confirmedFailureResponseClasses = new Set(['confirmed_technical_failure', 'confirmed_provider_failure'])
+const reviewObjectVerificationConcurrency = 8
+
+async function verifyReviewObjects(
+  bindings: Array<{ imageHash: string; objectKey: string }>,
+  verifyObject: (objectKey: string, imageHash: string) => Promise<void>,
+) {
+  let nextIndex = 0
+  const worker = async () => {
+    while (nextIndex < bindings.length) {
+      const binding = bindings[nextIndex]
+      nextIndex += 1
+      await verifyObject(binding.objectKey, binding.imageHash)
+    }
+  }
+  await Promise.all(Array.from(
+    { length: Math.min(reviewObjectVerificationConcurrency, bindings.length) },
+    () => worker(),
+  ))
+}
 
 function isExactConfirmedCanaryFailure(slot: AnyRecord) {
   return slot.isProviderCanary === true && slot.status === 'failed' && slot.attempts.length === 4
@@ -1423,7 +1442,7 @@ export function createScientificV2MongoRepository(
         return { imageHash: binding.imageHash, objectKey: binding.objectKey }
       })
       if (new Set(objectBindings.map((binding) => binding.imageHash)).size !== objectBindings.length) scientificError('SCIENTIFIC_V2_REVIEW_OBJECT_BINDING_INVALID')
-      for (const binding of objectBindings) await verifyObject(binding.objectKey, binding.imageHash)
+      await verifyReviewObjects(objectBindings, verifyObject)
       const sourceSetHash = input.assignment.privateEnvelope.sourceSetHash
       const existing = await reviews.findOne({
         artifactType: 'review_assignment_private',

@@ -821,10 +821,18 @@ function fullReviewAssignments(secret: string, fixture: ReturnType<typeof scient
         ...(scientificCase.kind === 'edit' ? { sourceHash: scientificCase.sourceHash, editedHash: attempt.editedHash, region: scientificCase.region } : {}),
       }
     })
-    const packetBase = { schemaVersion: 2, batchManifestHash: fixture.manifest.manifestHash, packetId: `full-packet-${role}`, items }
-    const packet = { ...packetBase, packetHash: canonicalHash(packetBase) }
+    const packages = Array.from({ length: Math.ceil(items.length / 24) }, (_, packetIndex) => {
+      const packetBase = {
+        schemaVersion: 2,
+        batchManifestHash: fixture.manifest.manifestHash,
+        packetId: `full-packet-${role}-${packetIndex + 1}`,
+        items: items.slice(packetIndex * 24, (packetIndex + 1) * 24),
+      }
+      return { ...packetBase, packetHash: canonicalHash(packetBase) }
+    })
     const mappings = items.map((item: any) => {
       const slot = succeeded.find((candidate: any) => canonicalHash(`review-item:${candidate.slotId}`) === item.itemHash)!
+      const packet = packages.find((candidate) => candidate.items.some((candidateItem: any) => candidateItem.itemHash === item.itemHash))!
       return { packetHash: packet.packetHash, blindLabel: item.blindLabel, itemHash: item.itemHash, sourcePacketHash: item.sourcePacketHash, modelKey: slot.canonicalModelId, runHash: canonicalHash(`run:${slot.canonicalModelId}`) }
     })
     const privateEnvelope = {
@@ -833,9 +841,9 @@ function fullReviewAssignments(secret: string, fixture: ReturnType<typeof scient
         const modelMappings = mappings.filter((mapping: any) => mapping.modelKey === modelKey)
         return { modelKey, runHash: canonicalHash(`run:${modelKey}`), sourcePacketHash: canonicalHash(modelMappings.map((mapping: any) => mapping.sourcePacketHash)), successItemSetHash: canonicalHash(modelMappings.map((mapping: any) => mapping.itemHash).sort()) }
       }),
-      mappings, packagesHash: canonicalHash([packet]),
+      mappings, packagesHash: canonicalHash(packages),
     }
-    return { role, packages: [packet], privateMappings: mappings, privateEnvelope, mappingHash: canonicalHash(privateEnvelope) }
+    return { role, packages, privateMappings: mappings, privateEnvelope, mappingHash: canonicalHash(privateEnvelope) }
   }
   const A = assignment('A')
   const B = assignment('B')
@@ -2233,6 +2241,44 @@ test('review export stores private mappings but returns only the public blind as
   assert.deepEqual(exported._objectBindings, [{ imageHash: reviewImageHash, objectKey: `bench/scientific-v2/private/objects/${reviewImageHash}.png` }])
   const stored = storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts') || []
   assert.equal(stored.some((row) => row.artifactType === 'review_assignment_private'), true)
+})
+
+test('review export verifies large blind assignments with bounded concurrency', async () => {
+  const fixture = scientificBatchFixture({ secondBailianModel: true })
+  const state = completedScientificState(fixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-review-concurrency-secret-at-least-32-bytes'
+  let active = 0
+  let maximumActive = 0
+  const verified = new Set<string>()
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'review-concurrency-token', {
+    operatorReportSecret: secret,
+    verifyObject: async (objectKey, imageHash) => {
+      active += 1
+      maximumActive = Math.max(maximumActive, active)
+      await new Promise((resolve) => setImmediate(resolve))
+      verified.add(`${objectKey}\u0000${imageHash}`)
+      active -= 1
+    },
+  })
+  const batchId = 'scientific-v2-review-concurrency'
+  await repository.freezeBatch({ batchId, ...fixture })
+  const imported = signedStateReport(secret, fixture, state)
+  imported.report.batchId = batchId
+  resignStateReport(imported, secret)
+  await repository.importStateReport(imported)
+  const assignment = fullReviewAssignments(secret, fixture, state).A
+  const objectBindings = assignment.packages.flatMap((packet: any) => packet.items.map((item: any) => ({
+    imageHash: item.imageHash,
+    objectKey: `bench/scientific-v2/private/objects/${item.imageHash}.png`,
+  })))
+  assert.ok(assignment.packages.every((packet: any) => packet.items.length <= 24))
+
+  await repository.exportReviewAssignment({ batchId, assignment, objectBindings })
+
+  assert.equal(verified.size, objectBindings.length)
+  assert.ok(maximumActive > 1)
+  assert.ok(maximumActive <= 8)
 })
 
 function slotModelKey(assignment: any) {
