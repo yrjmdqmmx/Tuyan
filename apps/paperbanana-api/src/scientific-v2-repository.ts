@@ -1124,11 +1124,22 @@ export function createScientificV2MongoRepository(
         for (const attempt of slot.attempts) {
           const sourceMarker = await dispatches.findOne({
             manifestHash: input.sourceManifestHash, slotId: slot.slotId,
-            attemptIndex: attempt.attemptIndex, status: 'committed',
+            attemptIndex: attempt.attemptIndex,
           })
-          if (!sourceMarker || sourceMarker.payloadHash !== attempt.payloadHash
-            || sourceMarker.attempt?.attemptHash !== attempt.attemptHash) {
+          if (!sourceMarker || sourceMarker.payloadHash !== attempt.payloadHash) {
             scientificError('SCIENTIFIC_V2_REMEDIATION_DISPATCH_LEDGER_INVALID')
+          }
+          let carriedFromUnknownAuditId: string | undefined
+          if (sourceMarker.status !== 'committed' || sourceMarker.attempt?.attemptHash !== attempt.attemptHash) {
+            const audits = await reviews.find({
+              artifactType: 'unknown_reconciliation', batchManifestHash: input.sourceManifestHash,
+              slotId: slot.slotId, sequence: slot.sequence,
+            }).toArray()
+            const matching = audits.filter((audit: AnyRecord) => canonicalHash(audit.reconciledAttempt) === canonicalHash(attempt)
+              && canonicalHash(audit.originalAttempt) === canonicalHash(sourceMarker.attempt))
+            if (matching.length !== 1) scientificError('SCIENTIFIC_V2_REMEDIATION_DISPATCH_LEDGER_INVALID')
+            assertUnknownReconciliationAudit(matching[0], { batch: source, marker: sourceMarker, slot, attempt })
+            carriedFromUnknownAuditId = String(matching[0]._id)
           }
           const marker = {
             manifestHash: remediation.manifest.manifestHash,
@@ -1140,6 +1151,7 @@ export function createScientificV2MongoRepository(
             _id: markerId(marker), ...marker, status: 'committed', attempt: structuredClone(attempt),
             carriedFromDispatchId: sourceMarker._id,
             carriedFromManifestHash: input.sourceManifestHash,
+            ...(carriedFromUnknownAuditId ? { carriedFromUnknownAuditId } : {}),
             committedAt: now(),
           })
         }
