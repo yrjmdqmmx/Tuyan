@@ -49,6 +49,13 @@ test('benchmark header preserves the five nav labels, hrefs, external target, an
   assert.equal(github.getAttribute('target'), '_blank')
 })
 
+test('benchmark header exposes a dedicated feedback action for narrow responsive layouts', () => {
+  render(React.createElement(LeaderboardSessionProvider, { authEnabled: false },
+    React.createElement(BenchmarkSiteHeader, { route: {}, onFeedback() {}, onLogin() {}, onAccount() {}, onSignOut() {} }),
+  ))
+  assert.equal(screen.getByRole('button', { name: '意见反馈' }).classList.contains('benchmark-feedback-action'), true)
+})
+
 test('submission page consumes the provider session instead of fetching a second session', () => {
   render(React.createElement(LeaderboardSessionProvider, { authEnabled: true, initialSession: { user: { id: 'user-1', email: 'reader@example.com' } } },
     React.createElement(BenchmarkPromptSubmissionPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', showNavigation: false }),

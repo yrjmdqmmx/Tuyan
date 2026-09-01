@@ -118,7 +118,7 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
           : <a key={item.id} href={item.href} {...(item.external ? { target: '_blank', rel: 'noreferrer' } : {})}>{item.label}{item.external ? <ExternalLink size={12} /> : null}</a>)}
       </nav>
       <div className="benchmark-site-actions">
-        <button type="button" onClick={onFeedback}><MessageSquare size={15} />意见反馈</button>
+        <button className="benchmark-feedback-action" type="button" onClick={onFeedback}><MessageSquare size={15} />意见反馈</button>
         {AUTH_UI_ENABLED ? user ? (
           <div className="benchmark-auth-user"><ShieldCheck size={15} /><span title={user.email}>{user.email}</span><button type="button" onClick={onAccount}>账号</button><button type="button" onClick={onSignOut}>退出</button></div>
         ) : <button type="button" onClick={onLogin}><ShieldCheck size={15} />登录 / 注册</button> : null}
