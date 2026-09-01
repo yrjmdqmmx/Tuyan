@@ -169,6 +169,10 @@ export interface ScientificV2ProductionArtifact {
 export interface ScientificV2PublicEvidenceStore {
   put(key: string, bytes: Buffer, options: Record<string, unknown>): Promise<unknown>
   get(key: string): Promise<{ content: Uint8Array }>
+  getStream?(key: string, options?: Record<string, unknown>): Promise<{
+    stream: AsyncIterable<unknown> & { destroy?(error?: Error): void }
+    res?: { status?: number; headers?: Record<string, unknown> }
+  }>
   head(key: string): Promise<{ headers?: Record<string, unknown>; res?: { headers?: Record<string, unknown> } }>
   getACL(key: string): Promise<{ acl?: string }>
 }
@@ -199,10 +203,35 @@ async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceSto
   try {
     await store.put(variant.objectKey, bytes, { headers: variantHeaders(true) })
   } catch (error) {
-    let existingResult: Awaited<ReturnType<ScientificV2PublicEvidenceStore['get']>>
+    let existing: Buffer
     let metadata: Awaited<ReturnType<ScientificV2PublicEvidenceStore['head']>>
     try {
-      [existingResult, metadata] = await Promise.all([store.get(variant.objectKey), store.head(variant.objectKey)])
+      const readExisting = async () => {
+        if (!store.getStream) return Buffer.from((await store.get(variant.objectKey)).content)
+        const result = await store.getStream(variant.objectKey, {
+          headers: { Range: `bytes=0-${SCIENTIFIC_V2_MAX_ARTIFACT_BYTES}` },
+        })
+        const advertisedHeader = Object.entries(result.res?.headers || {})
+          .find(([key]) => key.toLowerCase() === 'content-length')?.[1]
+        const advertised = Number(advertisedHeader)
+        if (Number.isFinite(advertised) && advertised > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
+          result.stream.destroy?.()
+          scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
+        }
+        const chunks: Buffer[] = []
+        let total = 0
+        for await (const value of result.stream) {
+          const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value as Uint8Array)
+          total += chunk.length
+          if (total > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
+            result.stream.destroy?.()
+            scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
+          }
+          chunks.push(chunk)
+        }
+        return Buffer.concat(chunks, total)
+      }
+      [existing, metadata] = await Promise.all([readExisting(), store.head(variant.objectKey)])
     } catch {
       throw error
     }
@@ -215,7 +244,6 @@ async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceSto
       if (aclFacts.status === 403 && aclFacts.code === 'AccessDenied') aclUnavailable = true
       else throw aclError
     }
-    const existing = Buffer.from(existingResult.content)
     const metadataHeaders = metadata.headers || metadata.res?.headers || {}
     const header = (name: string) => {
       const found = Object.entries(metadataHeaders).find(([key]) => key.toLowerCase() === name)

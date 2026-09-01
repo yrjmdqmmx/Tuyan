@@ -1156,7 +1156,11 @@ test('signed public rendition replay verifies exact existing bytes even when OSS
         privateReassertions += 1
         return {}
       },
-      async get(key) { return { content: existing.get(key)!.bytes } },
+      async get() { throw Object.assign(new Error('details omitted'), { name: 'ResponseError' }) },
+      async getStream(key) { return {
+        stream: Readable.from([existing.get(key)!.bytes]),
+        res: { status: 206, headers: { 'content-length': String(existing.get(key)!.bytes.length) } },
+      } },
       async head(key) { return { headers: {
         'content-type': 'image/webp', 'cache-control': 'public, max-age=31536000, immutable',
         'x-oss-meta-sha256': existing.get(key)!.imageHash,
