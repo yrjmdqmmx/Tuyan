@@ -1828,6 +1828,7 @@ test('Ark current models disable default thinking and use model-specific Seedrea
     await legacy.callTextModel('ark', 'doubao-seed-2-1-pro-260628', 'key', 'system', 'user')
     await legacy.callImageModel('ark', 'doubao-seedream-5-0-pro-260628', 'key', 'pro image', '16:9', '', '1K')
     await legacy.callImageModel('ark', 'doubao-seedream-5-0-lite-260128', 'key', 'canonical alias', '16:9', '', '4K')
+    await legacy.callImageModel('ark', 'doubao-seedream-4-5-251128', 'key', '4.5 image', '16:9', '', '2K')
   } finally {
     legacy.configureRuntimeFetch()
   }
@@ -1842,7 +1843,15 @@ test('Ark current models disable default thinking and use model-specific Seedrea
   assert.deepEqual(calls[2].body, {
     model: 'doubao-seedream-5-0-260128',
     prompt: 'canonical alias',
-    size: '4096x2304',
+    size: '4K',
+    sequential_image_generation: 'disabled',
+    stream: false,
+    response_format: 'b64_json',
+  })
+  assert.deepEqual(calls[3].body, {
+    model: 'doubao-seedream-4-5-251128',
+    prompt: '4.5 image',
+    size: '2K',
     sequential_image_generation: 'disabled',
     stream: false,
     response_format: 'b64_json',
