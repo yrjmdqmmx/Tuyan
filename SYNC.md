@@ -1,7 +1,7 @@
 # 平台同步日志 (Platform Sync Log)
 
 ### [2026-09-02] Scientific V2 公开证据渲染绑定真实 batchId — by Codex
-变更：公开证据 render bundle 暂存与执行工作流新增必填 `batch_id`，并分别与签名 operator attestation、受保护 render bundle 和最终 publish input 做精确相等校验；不再从 `manifestHash` 推导普通批次名，因此 remediation 批次可进入相同的零 Provider 证据渲染与原子发布链。普通批次只需传入原有真实 batchId，公开 API、排行榜字段、图片、评分和审核结果均不变。
+变更：公开证据 render bundle 暂存与执行工作流新增必填 `batch_id`，并分别与签名 operator attestation、受保护 render bundle 和最终 publish input 做精确相等校验；不再从 `manifestHash` 推导普通批次名，因此 remediation 批次可进入相同的零 Provider 证据渲染与原子发布链。暂存另以必填 `manifest_code_sha` 绑定原始冻结/生成 lineage，和当前 control/deployed SHA 分开校验，避免为执行后续安全修复而伪造原批次代码 provenance。普通批次传入自己的真实 batchId 与 manifest code SHA 即可，公开 API、排行榜字段、图片、评分和审核结果均不变。
 - [x] Benchmark Worker / 运维（两条受保护渲染工作流、真实 batchId 绑定与失败关闭）
 - [ ] 部署 / 运维（部署后渲染当前 Seedream remediation 公开证据并原子发布）
 - [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）

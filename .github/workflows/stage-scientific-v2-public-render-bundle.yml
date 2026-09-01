@@ -6,6 +6,7 @@ on:
       batch_id: { required: true }
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
+      manifest_code_sha: { required: true }
       expected_worker_digest: { required: true }
       manifest_sha256: { required: true }
       state_sha256: { required: true }
@@ -31,6 +32,7 @@ jobs:
           BATCH_ID: ${{ inputs.batch_id }}
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          MANIFEST_CODE_SHA: ${{ inputs.manifest_code_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
           STATE_FILE_SHA: ${{ inputs.state_sha256 }}
@@ -39,7 +41,7 @@ jobs:
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
-          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ && "$MANIFEST_CODE_SHA" =~ ^[a-f0-9]{40}$ ]]
           [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           for hash in "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
@@ -63,6 +65,7 @@ jobs:
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           BATCH_ID: ${{ inputs.batch_id }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          MANIFEST_CODE_SHA: ${{ inputs.manifest_code_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
           STATE_FILE_SHA: ${{ inputs.state_sha256 }}
@@ -70,8 +73,8 @@ jobs:
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env BATCH_ID=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q bash -s' \
-            "$BATCH_ID" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"
+          printf -v remote_command 'sudo env BATCH_ID=%q DEPLOYED_SHA=%q MANIFEST_CODE_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q bash -s' \
+            "$BATCH_ID" "$DEPLOYED_SHA" "$MANIFEST_CODE_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
@@ -94,7 +97,7 @@ jobs:
           cleanup() { rm -f -- "$output"; }
           trap cleanup EXIT
           python3 - "$manifest_path" "$MANIFEST_FILE_SHA" "$state_path" "$STATE_FILE_SHA" \
-            "$attestation_path" "$ATTESTATION_FILE_SHA" "$core_env" "$BATCH_ID" "$MANIFEST_HASH" "$DEPLOYED_SHA" "$output" <<'PY'
+            "$attestation_path" "$ATTESTATION_FILE_SHA" "$core_env" "$BATCH_ID" "$MANIFEST_HASH" "$MANIFEST_CODE_SHA" "$DEPLOYED_SHA" "$output" <<'PY'
           import hashlib
           import hmac
           import json
@@ -102,7 +105,7 @@ jobs:
           import stat
           import sys
 
-          manifest_path, manifest_sha, state_path, state_sha, attestation_path, attestation_sha, core_env_path, batch_id, manifest_hash, deployed_sha, output_path = sys.argv[1:]
+          manifest_path, manifest_sha, state_path, state_sha, attestation_path, attestation_sha, core_env_path, batch_id, manifest_hash, manifest_code_sha, deployed_sha, output_path = sys.argv[1:]
 
           def protected(path, expected_sha):
               fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -142,7 +145,7 @@ jobs:
           if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096 or code_shas != [deployed_sha]:
               raise RuntimeError('secret')
           if (attestation.get('batchId') != batch_id
-                  or manifest.get('manifestHash') != manifest_hash or manifest.get('codeSha') != deployed_sha
+                  or manifest.get('manifestHash') != manifest_hash or manifest.get('codeSha') != manifest_code_sha
                   or state.get('manifestHash') != manifest_hash or state.get('status') != 'completed'
                   or state.get('stateHash') != attestation.get('stateHash')):
               raise RuntimeError('binding')
@@ -152,7 +155,7 @@ jobs:
           expected = hmac.new(key, report_hash.encode('ascii'), hashlib.sha256).hexdigest()
           if (attestation.get('batchManifestHash') != manifest_hash or attestation.get('reportHash') != report_hash
                   or not hmac.compare_digest(str(attestation.get('attestationHash', '')), expected)
-                  or attestation.get('manifestCodeSha') != deployed_sha or attestation.get('executionCodeSha') != deployed_sha
+                  or attestation.get('manifestCodeSha') != manifest_code_sha or attestation.get('executionCodeSha') != manifest_code_sha
                   or attestation.get('legacyRecoveryStateHash') is not None):
               raise RuntimeError('attestation')
           bundle = {
