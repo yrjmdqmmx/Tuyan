@@ -71,7 +71,7 @@ jobs:
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           repo=/opt/paperbanana/repo
-          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2
           admin_input_root=/opt/paperbanana/operator-private/scientific-v2/admin-inputs
           rendered="$review_private_root/$RENDER_BUNDLE_SHA.publish-input.json"
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]

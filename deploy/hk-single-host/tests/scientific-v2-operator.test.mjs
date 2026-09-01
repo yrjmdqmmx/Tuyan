@@ -707,6 +707,25 @@ test('blind assignment export keeps mappings on-host and uploads only short-live
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 
+test('every review handoff reads the same protected private root written by the host operator', () => {
+  const workflows = [
+    reviewAssignmentExportWorkflow,
+    reviewValidationStagingWorkflow,
+    reviewResultImportStagingWorkflow,
+    reviewDisputeExportWorkflow,
+    arbitrationStagingWorkflow,
+    arbitrationImportStagingWorkflow,
+    publishInputStagingWorkflow,
+  ]
+  for (const workflowPath of workflows) {
+    const source = readFileSync(workflowPath, 'utf8')
+    assert.match(source, /review_private_root=\/opt\/paperbanana\/operator-private\/scientific-v2(?:\n|$)/, workflowPath)
+    assert.doesNotMatch(source, /operator-private\/scientific-v2\/reviews/, workflowPath)
+  }
+  const host = readFileSync(operator, 'utf8')
+  assert.match(host, /review_private_dir="\$\(host_path \/opt\/paperbanana\/operator-private\/scientific-v2\)"/)
+})
+
 test('review validation bundle accepts one exact blind submission and restores private mapping only on-host', () => {
   const source = readFileSync(reviewValidationStagingWorkflow, 'utf8')
   assert.match(source, /permissions:\s*\n\s+#[^\n]*\n\s+contents: write/)

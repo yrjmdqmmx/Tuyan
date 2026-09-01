@@ -81,7 +81,7 @@ jobs:
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           repo=/opt/paperbanana/repo
-          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2
           admin_input_root=/opt/paperbanana/operator-private/scientific-v2/admin-inputs
           core_env=/opt/paperbanana/secrets/core.env
           validated="$review_private_root/$VALIDATION_BUNDLE_SHA.review-validated.json"

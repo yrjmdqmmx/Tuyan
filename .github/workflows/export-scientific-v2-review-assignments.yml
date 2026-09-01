@@ -119,7 +119,7 @@ jobs:
           flock -x 9
           repo=/opt/paperbanana/repo
           bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
-          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2
           admin_input_root=/opt/paperbanana/operator-private/scientific-v2/admin-inputs
           bundle="$bundle_root/$BUNDLE_SHA.json"
           private="$review_private_root/$BUNDLE_SHA.review-private.json"

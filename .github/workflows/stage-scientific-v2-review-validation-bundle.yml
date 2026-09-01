@@ -145,7 +145,7 @@ jobs:
           flock -x 9
           repo=/opt/paperbanana/repo
           bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
-          review_private_root=/opt/paperbanana/operator-private/scientific-v2/reviews
+          review_private_root=/opt/paperbanana/operator-private/scientific-v2
           source_bundle="$bundle_root/$REVIEW_PACK_BUNDLE_SHA.json"
           private_bundle="$review_private_root/$REVIEW_PACK_BUNDLE_SHA.review-private.json"
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
