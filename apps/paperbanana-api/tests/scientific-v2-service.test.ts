@@ -37,7 +37,7 @@ function scientificRelease() {
     profileStatus: 'published', ...SCIENTIFIC_BENCHMARK_IDENTITY,
     suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
     registryHash: 'd'.repeat(64), priceHash: 'e'.repeat(64),
-    manifestCodeSha: 'f'.repeat(40), executionCodeSha: 'f'.repeat(40), legacyRecovery: false,
+    manifestCodeSha: 'f'.repeat(40), executionCodeSha: 'f'.repeat(40), publicationCodeSha: 'f'.repeat(40), legacyRecovery: false,
     batchId: 'scientific-v2-public-batch', batchManifestHash: '1'.repeat(64), reviewFinalHash: '3'.repeat(64),
     sampleCount: 1, automaticJudges: [], automaticJudgeCalls: 0,
     models: [{
@@ -53,7 +53,7 @@ function scientificRelease() {
       expectedCaseCount: 9, dimensions: [...SCIENTIFIC_BENCHMARK_AXES], overallFormula: 'ten_dimension_raw_equal_weight_mean',
       tieMethod: 'competition', failureScore: 0, retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' },
       routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
-      manifestCodeSha: 'f'.repeat(40), executionCodeSha: 'f'.repeat(40), legacyRecovery: false,
+      manifestCodeSha: 'f'.repeat(40), executionCodeSha: 'f'.repeat(40), publicationCodeSha: 'f'.repeat(40), legacyRecovery: false,
       automaticJudges: [], blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
       knownLimitations: ['fixed-nine-case-suite'], automaticJudgmentCount: 0,
     },
@@ -104,6 +104,7 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(leaderboard.release.presentationVersion, 'scientific-leaderboard-v2')
   assert.equal(leaderboard.release.manifestCodeSha, 'f'.repeat(40))
   assert.equal(leaderboard.release.executionCodeSha, 'f'.repeat(40))
+  assert.equal(leaderboard.release.publicationCodeSha, 'f'.repeat(40))
   assert.equal(leaderboard.release.legacyRecovery, false)
   assert.equal(Object.hasOwn(leaderboard.release, 'codeSha'), false)
   assert.equal(Object.hasOwn(leaderboard.release, 'stateHash'), false)
@@ -117,6 +118,7 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(methodology.methodology.automaticJudgmentCount, 0)
   assert.equal(methodology.methodology.manifestCodeSha, 'f'.repeat(40))
   assert.equal(methodology.methodology.executionCodeSha, 'f'.repeat(40))
+  assert.equal(methodology.methodology.publicationCodeSha, 'f'.repeat(40))
   assert.equal(methodology.methodology.legacyRecovery, false)
   assert.equal(Object.hasOwn(methodology.methodology, 'codeSha'), false)
   assert.equal(Object.hasOwn(methodology.methodology, 'stateHash'), false)

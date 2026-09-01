@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 原子发布验证接纳已审计的 unknown 对账链 — by Codex
+变更：生产最终发布前检查发现 10 个曾暂停的 `UNKNOWN_PROVIDER_OUTCOME` 均已按既定规则完成零 Provider 调用、无候选产物的人工对账，并在签名最终 state 中转换为 `confirmed_technical_failure`，但不可变 dispatch marker 正确保留原始 `unknown_provider_outcome`，旧发布校验却要求 marker 与最终 attempt hash 完全相同，因而误拒绝合法批次。发布端现只在存在唯一、逐字段绑定 manifest/slot/attempt 的 `unknown_no_artifact_reconciliation` 审计时接受该差异，并复验原始 unknown、确认后失败、零候选/零 spool、凭据状态、时间、audit hash 与最终签名 state；缺失、额外或篡改审计仍拒绝。为准确区分冻结生成/评审数据面的 `executionCodeSha` 与修复后执行原子发布的代码，V2 release/methodology 新增 `publicationCodeSha`；manifest/execution SHA 保持原值。不修改题目、分辨率、四次上限、unknown 零自动重试、预算、评分或盲审。
+
+各端待办：
+- [x] paperbanana-api / Benchmark Worker（原子发布 ledger 对账、篡改回归测试）
+- [x] Web / Gateway / 原生端（新增只读 provenance 字段 `publicationCodeSha`；现有 UI 无需改造）
+
 ### [2026-09-01] Scientific V2 公开证据结果改为容器直接保护落盘 — by Codex
 变更：公开 WebP 全量重算与逐对象 SHA 已成功，但旧 workflow 依赖把完整 `{publishInput}` JSON 先装入远端 shell command-substitution、再复制到 root-only 文件；同时 `docker compose run -T` 仍继承 SSH heredoc 的 stdin，会把容器命令之后的落盘/验 hash/安装命令消费掉并以 0 退出，表现为图片已全部复验、GitHub 显示成功而发布输入不存在。容器命令现固定 `</dev/null`，并与既有 review 输出采用同一保护写入协议：容器以服务 UID 在独占 `0700` bind mount 内 `O_EXCL` 创建完整 `0600` publish input，stdout 只返回 hash 和计数；主机再验证所有字段、canonical hash、owner/mode/link 与字节稳定性后安装为 root `0600` 文件。Provider key 仍置空，Provider 调用固定为 0；不改图片、九题、十维、分辨率、评分、失败/unknown、盲审或原子发布规则。
 

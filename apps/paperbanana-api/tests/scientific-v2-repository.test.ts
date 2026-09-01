@@ -501,6 +501,58 @@ function completedScientificState(fixture: ReturnType<typeof scientificBatchFixt
   return refreshState(state, '2026-08-31T00:00:03.000Z')
 }
 
+function completedStateWithAuditedUnknownFailures(fixture: ReturnType<typeof scientificBatchFixture>) {
+  const state = completedScientificState(fixture)
+  const slot = state.slots.find((candidate: any) => candidate.provider !== 'codex' && !candidate.isProviderCanary && candidate.supported)!
+  const previousCost = slot.costCny
+  const originalAttempt = slot.attempts[0]
+  slot.attempts = Array.from({ length: 4 }, (_, index) => {
+    const attemptBase = {
+      ...originalAttempt, attemptIndex: index + 1, responseClass: 'confirmed_technical_failure', actualCny: null,
+      startedAt: `2026-08-31T00:00:0${index + 1}.000Z`, completedAt: `2026-08-31T00:00:0${index + 2}.000Z`,
+      rawImageHash: null, byteSize: null, width: null, height: null, format: null,
+      sourceHash: slot.operation === 'edit' ? originalAttempt.sourceHash : null, editedHash: null,
+    }
+    delete (attemptBase as any).attemptHash
+    return { ...attemptBase, attemptHash: canonicalHash(attemptBase) }
+  })
+  slot.status = 'failed'
+  slot.costCny = 4
+  state.providerSpentCny[slot.provider] += 4 - previousCost
+  return { state: refreshState(state, '2026-08-31T00:00:05.000Z'), slotId: slot.slotId }
+}
+
+function replaceDispatchesWithAuditedUnknowns(storage: ReturnType<typeof atomicScientificDb>, fixture: ReturnType<typeof scientificBatchFixture>, state: any, slotId: string) {
+  const markers = storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches') || []
+  const reviews = storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts') || []
+  const slot = state.slots.find((candidate: any) => candidate.slotId === slotId)!
+  for (const reconciledAttempt of slot.attempts) {
+    const marker = markers.find((candidate: any) => candidate.slotId === slotId && candidate.attemptIndex === reconciledAttempt.attemptIndex)!
+    const { attemptHash: _attemptHash, ...originalBase } = structuredClone(reconciledAttempt)
+    originalBase.responseClass = 'unknown_provider_outcome'
+    const originalAttempt = { ...originalBase, attemptHash: canonicalHash(originalBase) }
+    marker.status = 'unknown'
+    marker.attempt = structuredClone(originalAttempt)
+    delete marker.committedAt
+    marker.resolvedAt = FIXED_NOW
+    const previousStateHash = canonicalHash(`unknown-previous:${slotId}:${reconciledAttempt.attemptIndex}`)
+    const auditBase = {
+      schemaVersion: 1, kind: 'unknown_no_artifact_reconciliation', manifestHash: fixture.manifest.manifestHash,
+      previousStateHash, stateHash: canonicalHash(`unknown-next:${slotId}:${reconciledAttempt.attemptIndex}`),
+      slotId, sequence: slot.sequence, originalAttempt, reconciledAttempt: structuredClone(reconciledAttempt),
+      evidence: {
+        workflowRunId: 33000000000 + reconciledAttempt.attemptIndex, candidateCount: 0, spoolCandidateCount: 0,
+        credentialStatus: 200, reconciledAt: `2026-08-31T00:00:1${reconciledAttempt.attemptIndex}.000Z`,
+      },
+    }
+    reviews.push({
+      _id: `scientific-v2-unknown-reconciliation:${fixture.manifest.manifestHash}:${previousStateHash}`,
+      artifactType: 'unknown_reconciliation', batchManifestHash: fixture.manifest.manifestHash,
+      sourceSetHash: previousStateHash, ...structuredClone(auditBase), auditHash: canonicalHash(auditBase), createdAt: FIXED_NOW,
+    })
+  }
+}
+
 function canaryCompleteScientificState(fixture: ReturnType<typeof scientificBatchFixture>) {
   let state = structuredClone(fixture.initialState) as any
   for (const slot of fixture.manifest.executionOrder.filter((candidate: any) => candidate.isProviderCanary)) {
@@ -2297,9 +2349,11 @@ test('publishScientificV2 recomputes all frozen models and atomically writes one
   assert.equal(release.methodology.automaticJudgmentCount, 0)
   assert.equal(release.manifestCodeSha, fixture.manifest.codeSha)
   assert.equal(release.executionCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.publicationCodeSha, fixture.manifest.codeSha)
   assert.equal(release.legacyRecovery, false)
   assert.equal(release.methodology.manifestCodeSha, fixture.manifest.codeSha)
   assert.equal(release.methodology.executionCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.methodology.publicationCodeSha, fixture.manifest.codeSha)
   assert.equal(release.methodology.legacyRecovery, false)
   assert.equal('codeSha' in release, false)
   assert.equal('stateHash' in release, false)
@@ -2312,6 +2366,42 @@ test('publishScientificV2 recomputes all frozen models and atomically writes one
   await assert.rejects(
     () => repository.importReviewResult({ batchId: 'scientific-v2-publish-batch', result: signedFullReviewerResult(secret, assignmentA.assignment, 7) }),
     /SCIENTIFIC_V2_REVIEW_RESULT_CONFLICT/,
+  )
+})
+
+test('publish accepts only an exact zero-provider unknown reconciliation audit chain', async () => {
+  const fixture = scientificBatchFixture()
+  const { state, slotId } = completedStateWithAuditedUnknownFailures(fixture)
+  const secret = 'scientific-v2-publish-unknown-audit-secret-32-bytes'
+
+  const acceptedStorage = atomicScientificDb()
+  const accepted = createScientificV2MongoRepository(acceptedStorage.db, () => FIXED_NOW, () => 'publish-unknown-audit', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await accepted.freezeBatch({ batchId: 'scientific-v2-publish-unknown-audit', ...fixture })
+  const acceptedInput = await preparePublishFacts(accepted, fixture, state, secret, 'scientific-v2-publish-unknown-audit')
+  replaceDispatchesWithAuditedUnknowns(acceptedStorage, fixture, state, slotId)
+  const published = await accepted.publishScientificV2({ batchId: 'scientific-v2-publish-unknown-audit', ...acceptedInput })
+  assert.equal(published.profileStatus, 'published')
+
+  const rejectedStorage = atomicScientificDb()
+  const rejected = createScientificV2MongoRepository(rejectedStorage.db, () => FIXED_NOW, () => 'publish-unknown-audit-tamper', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await rejected.freezeBatch({ batchId: 'scientific-v2-publish-unknown-audit-tamper', ...fixture })
+  const rejectedInput = await preparePublishFacts(rejected, fixture, state, secret, 'scientific-v2-publish-unknown-audit-tamper')
+  replaceDispatchesWithAuditedUnknowns(rejectedStorage, fixture, state, slotId)
+  const audit = (rejectedStorage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts') || [])
+    .find((row: any) => row.artifactType === 'unknown_reconciliation')!
+  audit.evidence.candidateCount = 1
+  const auditBase = Object.fromEntries([
+    'schemaVersion', 'kind', 'manifestHash', 'previousStateHash', 'stateHash', 'slotId', 'sequence',
+    'originalAttempt', 'reconciledAttempt', 'evidence',
+  ].map((key) => [key, structuredClone(audit[key])]))
+  audit.auditHash = canonicalHash(auditBase)
+  await assert.rejects(
+    () => rejected.publishScientificV2({ batchId: 'scientific-v2-publish-unknown-audit-tamper', ...rejectedInput }),
+    /SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH/,
   )
 })
 
@@ -2334,6 +2424,31 @@ test('publish independently rejects dual-SHA lineage tampering after review fina
     /SCIENTIFIC_V2_CODE_LINEAGE_INVALID/,
   )
   assert.equal(storage.rows.get('paperbanana_benchmark_releases')?.length || 0, 0)
+})
+
+test('reviewed batch publication preserves frozen execution SHA and records the newer publisher SHA', async () => {
+  const fixture = scientificBatchFixture()
+  const state = completedScientificState(fixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-publisher-lineage-secret-at-least-32-bytes'
+  const batchId = 'scientific-v2-publisher-lineage'
+  const frozen = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'publisher-lineage-frozen', {
+    operatorReportSecret: secret, immutableCodeSha: fixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await frozen.freezeBatch({ batchId, ...fixture })
+  const input = await preparePublishFacts(frozen, fixture, state, secret, batchId)
+  const publicationCodeSha = 'b'.repeat(40)
+  const publisher = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'publisher-lineage-current', {
+    operatorReportSecret: secret, immutableCodeSha: publicationCodeSha, verifyObject: async () => {},
+  })
+
+  await publisher.publishScientificV2({ batchId, ...input })
+
+  const release = storage.rows.get('paperbanana_benchmark_releases')![0]
+  assert.equal(release.manifestCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.executionCodeSha, fixture.manifest.codeSha)
+  assert.equal(release.publicationCodeSha, publicationCodeSha)
+  assert.equal(release.methodology.publicationCodeSha, publicationCodeSha)
 })
 
 test('publish exposes fixed legacy recovery lineage without exposing an internal state hash', async () => {
@@ -2372,6 +2487,7 @@ test('publish exposes fixed legacy recovery lineage without exposing an internal
   const release = storage.rows.get('paperbanana_benchmark_releases')![0]
   assert.equal(release.manifestCodeSha, fixture.manifest.codeSha)
   assert.equal(release.executionCodeSha, executionCodeSha)
+  assert.equal(release.publicationCodeSha, executionCodeSha)
   assert.equal(release.legacyRecovery, true)
   assert.equal(release.methodology.legacyRecovery, true)
   assert.equal('codeSha' in release, false)

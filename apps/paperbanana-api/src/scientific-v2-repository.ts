@@ -410,6 +410,49 @@ function hmacCanonical(secret: string, value: unknown) {
   return createHmac('sha256', secret).update(canonicalHash(value)).digest('hex')
 }
 
+function assertUnknownReconciliationAudit(
+  audit: AnyRecord,
+  input: { batch: AnyRecord; marker: AnyRecord; slot: AnyRecord; attempt: AnyRecord },
+) {
+  const { batch, marker, slot, attempt } = input
+  const evidence = audit?.evidence
+  const originalAttempt = audit?.originalAttempt
+  const reconciledAttempt = audit?.reconciledAttempt
+  const originalBase = originalAttempt && Object.fromEntries(Object.entries(originalAttempt).filter(([key]) => key !== 'attemptHash'))
+  const expectedReconciledBase = originalBase && { ...originalBase, responseClass: 'confirmed_technical_failure' }
+  const expectedReconciled = expectedReconciledBase && { ...expectedReconciledBase, attemptHash: canonicalHash(expectedReconciledBase) }
+  const auditBase = audit && Object.fromEntries([
+    'schemaVersion', 'kind', 'manifestHash', 'previousStateHash', 'stateHash', 'slotId', 'sequence',
+    'originalAttempt', 'reconciledAttempt', 'evidence',
+  ].map((key) => [key, structuredClone(audit[key])]))
+  if (!audit || audit.artifactType !== 'unknown_reconciliation'
+    || audit._id !== `scientific-v2-unknown-reconciliation:${batch.manifestHash}:${audit.previousStateHash}`
+    || audit.batchManifestHash !== batch.manifestHash || audit.sourceSetHash !== audit.previousStateHash
+    || audit.schemaVersion !== 1 || audit.kind !== 'unknown_no_artifact_reconciliation'
+    || audit.manifestHash !== batch.manifestHash || !hashPattern.test(String(audit.previousStateHash || ''))
+    || !hashPattern.test(String(audit.stateHash || '')) || audit.previousStateHash === audit.stateHash
+    || audit.slotId !== slot.slotId || audit.sequence !== slot.sequence
+    || marker.status !== 'unknown' || marker.payloadHash !== attempt.payloadHash
+    || originalAttempt?.responseClass !== 'unknown_provider_outcome' || originalAttempt?.actualCny !== null
+    || canonicalHash(originalAttempt) !== canonicalHash(marker.attempt)
+    || canonicalHash(reconciledAttempt) !== canonicalHash(attempt)
+    || canonicalHash(expectedReconciled) !== canonicalHash(reconciledAttempt)
+    || !exactUnknownReconciliationEvidence(evidence)
+    || audit.auditHash !== canonicalHash(auditBase)) {
+    scientificError('SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH')
+  }
+}
+
+function exactUnknownReconciliationEvidence(value: AnyRecord) {
+  if (!value) return false
+  try {
+    assertExactKeys(value, ['workflowRunId', 'candidateCount', 'spoolCandidateCount', 'credentialStatus', 'reconciledAt'], 'SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH')
+    assertIsoInstant(value.reconciledAt, 'SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH')
+  } catch { return false }
+  return Number.isSafeInteger(value.workflowRunId) && value.workflowRunId > 0
+    && value.candidateCount === 0 && value.spoolCandidateCount === 0 && value.credentialStatus === 200
+}
+
 function assertReviewAssignment(assignment: AnyRecord, batch: AnyRecord, secret: string) {
   assertExactKeys(assignment, ['role', 'packages', 'privateMappings', 'privateEnvelope', 'mappingHash', 'assignmentSet', 'assignmentAttestationHash'], 'SCIENTIFIC_V2_REVIEW_ASSIGNMENT_TAMPERED')
   if (!['A', 'B'].includes(assignment.role) || !Array.isArray(assignment.packages) || !assignment.packages.length
@@ -821,6 +864,26 @@ export function createScientificV2MongoRepository(
     }
     Object.assign(batch, lineage, { lineageRecoveryRotationUsed: false })
     return lineage
+  }
+
+  const publicationBatchCodeLineage = async (batch: AnyRecord) => {
+    const stored = validateStoredCodeLineage(batch)
+    if (!stored) {
+      const lineage = await ensureBatchCodeLineage(batch)
+      return { ...lineage, publicationCodeSha: lineage.executionCodeSha }
+    }
+    const publicationCodeSha = String(options.immutableCodeSha || stored.lineage.executionCodeSha)
+    if (!codeShaPattern.test(publicationCodeSha)) scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+    if (publicationCodeSha !== stored.lineage.executionCodeSha) {
+      if (!['review_ready', 'review_finalized', 'published'].includes(String(batch.status || ''))
+        || batch.state?.status !== 'completed'
+        || batch.stateHash !== batch.state?.stateHash
+        || !hashPattern.test(String(batch.reviewFinalHash || ''))
+        || await dispatches.findOne({ manifestHash: batch.manifestHash, status: 'started' })) {
+        scientificError('SCIENTIFIC_V2_CODE_LINEAGE_INVALID')
+      }
+    }
+    return { ...stored.lineage, publicationCodeSha }
   }
 
   return {
@@ -1337,11 +1400,12 @@ export function createScientificV2MongoRepository(
         const existing = await releases.findOne({ _id: alreadyPublished.releaseId })
         if (!existing) scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
         operatorSecret()
-        const codeLineage = await ensureBatchCodeLineage(alreadyPublished)
+        const codeLineage = await publicationBatchCodeLineage(alreadyPublished)
         const { _id: _releaseId, releaseHash: storedReleaseHash, ...releaseBase } = existing
         if (storedReleaseHash !== alreadyPublished.releaseHash || canonicalHash(releaseBase) !== storedReleaseHash
           || existing.manifestCodeSha !== codeLineage.manifestCodeSha
           || existing.executionCodeSha !== codeLineage.executionCodeSha
+          || existing.publicationCodeSha !== codeLineage.publicationCodeSha
           || existing.legacyRecovery !== (codeLineage.legacyRecoveryStateHash !== null)) {
           scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
         }
@@ -1350,7 +1414,7 @@ export function createScientificV2MongoRepository(
       const batch = await batches.findOne({ batchId: input.batchId, status: { $in: ['review_finalized', 'review_ready'] }, reviewFinalHash: { $exists: true } })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_PUBLISHABLE')
       const secret = operatorSecret()
-      const codeLineage = await ensureBatchCodeLineage(batch)
+      const codeLineage = await publicationBatchCodeLineage(batch)
       verifyScientificV2ImportedState(batch.state, batch.manifest)
       if (batch.state.status !== 'completed' || batch.state.slots.some((slot: AnyRecord) => !['succeeded', 'failed', 'unsupported'].includes(slot.status))) {
         scientificError('SCIENTIFIC_V2_BATCH_NOT_TERMINAL')
@@ -1388,18 +1452,34 @@ export function createScientificV2MongoRepository(
       }
 
       const markers = await dispatches.find({ manifestHash: batch.manifestHash }).toArray()
+      const unknownReconciliations = await reviews.find({
+        artifactType: 'unknown_reconciliation', batchManifestHash: batch.manifestHash,
+      }).toArray()
+      const usedUnknownReconciliations = new Set<string>()
       const expectedMarkerKeys = new Set<string>()
       for (const slot of batch.state.slots) {
         if (slot.provider === 'codex' || !slot.provider) continue
         for (const attempt of slot.attempts) {
           const key = `${slot.slotId}\0${attempt.attemptIndex}`
           const exact = markers.filter((marker) => marker.slotId === slot.slotId && marker.attemptIndex === attempt.attemptIndex)
-          if (exact.length !== 1 || exact[0].status !== 'committed' || exact[0].payloadHash !== attempt.payloadHash
-            || exact[0].attempt?.attemptHash !== attempt.attemptHash) scientificError('SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH')
+          if (exact.length !== 1) scientificError('SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH')
+          const marker = exact[0]
+          const exactCommitted = marker.status === 'committed' && marker.payloadHash === attempt.payloadHash
+            && marker.attempt?.attemptHash === attempt.attemptHash
+          if (!exactCommitted) {
+            const matchingAudits = unknownReconciliations.filter((audit) => audit.slotId === slot.slotId
+              && audit.sequence === slot.sequence
+              && canonicalHash(audit.originalAttempt) === canonicalHash(marker.attempt)
+              && canonicalHash(audit.reconciledAttempt) === canonicalHash(attempt))
+            if (matchingAudits.length !== 1) scientificError('SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH')
+            assertUnknownReconciliationAudit(matchingAudits[0], { batch, marker, slot, attempt })
+            usedUnknownReconciliations.add(String(matchingAudits[0]._id))
+          }
           expectedMarkerKeys.add(key)
         }
       }
-      if (markers.some((marker) => !expectedMarkerKeys.has(`${marker.slotId}\0${marker.attemptIndex}`))) {
+      if (markers.some((marker) => !expectedMarkerKeys.has(`${marker.slotId}\0${marker.attemptIndex}`))
+        || unknownReconciliations.length !== usedUnknownReconciliations.size) {
         scientificError('SCIENTIFIC_V2_DISPATCH_LEDGER_MISMATCH')
       }
       const finalReview = await reviews.findOne({
@@ -1626,6 +1706,7 @@ export function createScientificV2MongoRepository(
         priceHash: batch.manifest.priceHash,
         manifestCodeSha: codeLineage.manifestCodeSha,
         executionCodeSha: codeLineage.executionCodeSha,
+        publicationCodeSha: codeLineage.publicationCodeSha,
         legacyRecovery: codeLineage.legacyRecoveryStateHash !== null,
         batchId: batch.batchId,
         batchManifestHash: batch.manifestHash,
@@ -1641,6 +1722,7 @@ export function createScientificV2MongoRepository(
           routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { ...SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY },
           manifestCodeSha: codeLineage.manifestCodeSha,
           executionCodeSha: codeLineage.executionCodeSha,
+          publicationCodeSha: codeLineage.publicationCodeSha,
           legacyRecovery: codeLineage.legacyRecoveryStateHash !== null,
           automaticJudges: [] as unknown[],
           blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },

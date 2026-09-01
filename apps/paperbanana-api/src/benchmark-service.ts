@@ -105,10 +105,12 @@ function isScientificLeaderboardRelease(release: AnyRecord): boolean {
     && release.presentationVersion === SCIENTIFIC_BENCHMARK_IDENTITY.presentationVersion
     && /^[a-f0-9]{40}$/.test(String(release.manifestCodeSha || ''))
     && /^[a-f0-9]{40}$/.test(String(release.executionCodeSha || ''))
+    && /^[a-f0-9]{40}$/.test(String(release.publicationCodeSha || ''))
     && typeof release.legacyRecovery === 'boolean'
     && !Object.hasOwn(release, 'codeSha') && !Object.hasOwn(release, 'stateHash')
     && methodology?.manifestCodeSha === release.manifestCodeSha
     && methodology?.executionCodeSha === release.executionCodeSha
+    && methodology?.publicationCodeSha === release.publicationCodeSha
     && methodology?.legacyRecovery === release.legacyRecovery
     && !Object.hasOwn(methodology, 'codeSha') && !Object.hasOwn(methodology, 'stateHash')
 }
@@ -152,7 +154,7 @@ function publicMethodology(methodology: AnyRecord | undefined, rankingMethod?: A
     'judgeDispatchCount', 'auditSampleCount', 'actualOutputPixels',
     'presentationVersion', 'expectedCaseCount', 'dimensions', 'overallFormula', 'tieMethod', 'failureScore',
     'retryPolicy', 'routePriority', 'providerBudgetsCny', 'blindReview', 'automaticJudgmentCount',
-    'manifestCodeSha', 'executionCodeSha', 'legacyRecovery',
+    'manifestCodeSha', 'executionCodeSha', 'publicationCodeSha', 'legacyRecovery',
   ]
   const publicValue = Object.fromEntries(allowed.filter((key) => methodology?.[key] !== undefined).map((key) => [key, structuredClone(methodology![key])]))
   return rankingMethod ? { ...publicValue, noOverallScore: false, rankingMethod } : publicValue
@@ -450,6 +452,7 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
     ...(scientificLeaderboard ? {
       manifestCodeSha: release.manifestCodeSha,
       executionCodeSha: release.executionCodeSha,
+      publicationCodeSha: release.publicationCodeSha,
       legacyRecovery: release.legacyRecovery === true,
     } : { codeSha: release.codeSha }),
     lane: release.lane,
