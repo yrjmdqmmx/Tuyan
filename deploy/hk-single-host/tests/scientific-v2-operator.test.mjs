@@ -704,6 +704,8 @@ test('blind assignment export keeps mappings on-host and uploads only short-live
   assert.match(source, /scientific-v2-review-export-failure=%s/)
   assert.match(source, /scientific-v2-review-export-remote-failure=%s/)
   assert.match(source, /failure_stage=assemble-review-assignments/)
+  assert.match(source, /"\$return_uid" =~ \^\[0-9\]\+\$/)
+  assert.doesNotMatch(source, /"\$return_uid" =~ \^\[1-9\]/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 
