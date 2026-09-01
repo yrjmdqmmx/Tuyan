@@ -122,10 +122,9 @@ jobs:
           worker_result="$(mktemp /tmp/paperbanana-v1-external-worker.XXXXXXXXXXXX)"
           db_stdout="$(mktemp /tmp/paperbanana-v1-external-db-stdout.XXXXXXXXXXXX)"
           db_result="$(mktemp /tmp/paperbanana-v1-external-db.XXXXXXXXXXXX)"
-          db_result_normalized="$(mktemp /tmp/paperbanana-v1-external-db-normalized.XXXXXXXXXXXX)"
           rm -f -- "$db_result"
           cleanup_remote() {
-            rm -f -- "$worker_result" "$db_stdout" "$db_result" "$db_result_normalized"
+            rm -f -- "$worker_result" "$db_stdout" "$db_result"
             "${compose[@]}" exec -T --user root mongodb rm -f -- "$CONTAINER_RECEIPT_PATH" >/dev/null 2>&1 || true
           }
           trap cleanup_remote EXIT
@@ -165,25 +164,33 @@ jobs:
           "${compose[@]}" cp "mongodb:$CONTAINER_RECEIPT_PATH" "$db_result"
           echo 'V1_EXTERNAL_STAGE:db_receipt_copied' >&2
           "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js "$CONTAINER_RECEIPT_PATH"
-          "${compose[@]}" exec -T paperbanana-api node -e '
-          const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);const dbReceipts=[];
-          for(const line of lines){try{const value=JSON.parse(line);if(value?.schemaVersion===1&&value.status==="retired"&&value.generatedOrJudgeCalls===0)dbReceipts.push(value);}catch{}}
-          if(dbReceipts.length!==1)process.exit(1);process.stdout.write(JSON.stringify(dbReceipts[0])+"\n");
-          ' <"$db_result" >"$db_result_normalized"
-          echo 'V1_EXTERNAL_STAGE:db_receipt_normalized' >&2
-          { cat "$worker_result"; cat "$db_result_normalized"; } | "${compose[@]}" exec -T paperbanana-api node -e '
-          const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);if(lines.length!==2)process.exit(1);
-          const worker=JSON.parse(lines[0]);const db=JSON.parse(lines[1]);if(db.status!=="retired"||db.inventoryHash!==worker.inventory.inventoryHash||db.generatedOrJudgeCalls!==0)process.exit(1);
-          process.stdout.write(JSON.stringify({schemaVersion:1,mode:"finalize-external-delete",worker,db})+"\n");
-          ' >"$OUTPUT_PATH"
-          install -m 0600 -o "${SUDO_USER:?missing sudo user}" "$OUTPUT_PATH" "${OUTPUT_PATH}.owned"
-          mv -f -- "${OUTPUT_PATH}.owned" "$OUTPUT_PATH"
+          install -m 0600 -o "${SUDO_USER:?missing sudo user}" "$db_result" "$OUTPUT_PATH"
+          echo 'V1_EXTERNAL_STAGE:db_receipt_exported' >&2
           REMOTE
-          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_output" v1-retirement-finalized.json
+          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_output" v1-retirement-db-receipt.json
+          jq -e --arg releaseHash 2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2 \
+            --arg activeV2 "$ACTIVE_V2_RELEASE_HASH" --arg inventoryHash "$INVENTORY_HASH" --arg archiveHash "$ARCHIVE_MANIFEST_HASH" '
+            .schemaVersion == 1 and .releaseHash == $releaseHash and .activeV2ReleaseHash == $activeV2 and
+            .inventoryHash == $inventoryHash and .archiveManifestHash == $archiveHash and
+            .tombstoneId == ("v1-retirement:" + $releaseHash) and .status == "retired" and .generatedOrJudgeCalls == 0 and
+            .deleted == { releases: 1, runs: 67, samples: 250, judgments: 124, dispatches: 0, publicEvidence: 124 }
+          ' v1-retirement-db-receipt.json >/dev/null
+          jq -n --slurpfile report "$local_report" --slurpfile db v1-retirement-db-receipt.json '
+            $report[0] as $source | $db[0] as $receipt |
+            { schemaVersion: 1, mode: "finalize-external-delete",
+              worker: { schemaVersion: 1, mode: "delete-objects", releaseHash: $source.releaseHash,
+                activeV2ReleaseHash: $source.activeV2ReleaseHash, inventory: $source.inventory,
+                objectDeletion: { releaseHash: $source.releaseHash, inventoryHash: $source.inventory.inventoryHash,
+                  deletedObjectCount: ($source.inventory.exclusiveObjects | length), deletedBytes: $source.inventory.exclusiveBytes },
+                generatedOrJudgeCalls: 0 },
+              db: $receipt }
+          ' > v1-retirement-finalized.json
           jq -e '.schemaVersion == 1 and .mode == "finalize-external-delete" and .worker.generatedOrJudgeCalls == 0 and .db.status == "retired" and .db.generatedOrJudgeCalls == 0' v1-retirement-finalized.json >/dev/null
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: v1-retirement-finalized-${{ github.run_id }}
-          path: v1-retirement-finalized.json
+          path: |
+            v1-retirement-finalized.json
+            v1-retirement-db-receipt.json
           if-no-files-found: error
           retention-days: 14
