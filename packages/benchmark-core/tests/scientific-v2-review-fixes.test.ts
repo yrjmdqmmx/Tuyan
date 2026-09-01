@@ -245,4 +245,7 @@ test('scientific dispute export accepts the exact SSH return-directory owner inc
   assert.match(workflow, /return_uid.*\^\[0-9\]\+\$/)
   assert.doesNotMatch(workflow, /return_uid.*\^\[1-9\]\[0-9\]\*\$/)
   assert.match(workflow, /stat -c %a.*\^0\?700\$/)
+  assert.match(workflow, /node dist\/scientific-v2-operator\.mjs/)
+  assert.match(workflow, /PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH=.*review-finalized\.json/)
+  assert.doesNotMatch(workflow, /dist\/scientific-v2-review\.js/)
 })

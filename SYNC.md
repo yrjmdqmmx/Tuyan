@@ -24,11 +24,11 @@
 
 ## 条目（最新在上）
 
-### [2026-09-01] Scientific V2 争议导出兼容生产 SSH 的 root UID — by Codex
-变更：双审结果已形成 179 个既定争议项，但公开仲裁包在创建隔离容器前被控制面旧检查拦截：生产 SSH 账号拥有临时回传目录时 UID 为 `0`，争议导出仍错误要求 UID 必须非零。该检查现与已验证的盲审分配导出一致，接受任意纯数字的实际 owner UID/GID，同时继续强制目录非符号链接、模式 `0700`、文件逐字节 SHA、root-only 私有输入、无网络 immutable Worker 和零 Provider 调用。争议集合、阈值、题目、分辨率、评分、签名与发布规则均不变。
+### [2026-09-01] Scientific V2 争议导出复用 immutable Worker 正式入口并兼容 root UID — by Codex
+变更：双审结果已形成 179 个既定争议项，但公开仲裁包被两个控制面假设拦截：生产 SSH 账号拥有临时回传目录时 UID 为 `0`，旧检查错误要求 UID 必须非零；同时 Worker 镜像只发布 esbuild 封装的 `dist/scientific-v2-operator.mjs`，并不存在旧脚本尝试直接 import 的 `dist/scientific-v2-review.js`。争议导出现与已验证的盲审分配导出一致接受任意纯数字的实际 owner UID/GID，并通过正式 `review_finalize` operator bundle 让 immutable Worker 在无网络、Provider key 置空的容器内验签 A/B 与重新计算争议，再将结果同已验签公开 assignment 做盲化绑定。目录非符号链接、模式 `0700`、文件逐字节 SHA 和 root-only 私有输入约束继续保留；争议集合、阈值、题目、分辨率、评分、签名与发布规则均不变。
 
 各端待办：
-- [x] 部署 / 运维（争议导出回传目录 owner 兼容与回归测试）
+- [x] 部署 / 运维（争议导出正式 Worker 入口、回传目录 owner 兼容与回归测试）
 - [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（公开与共享契约不变；无需改造）
 
 ### [2026-09-01] Scientific V2 控制面 canonical JSON 与 Core 哈希排序一致 — by Codex

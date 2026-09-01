@@ -97,6 +97,8 @@ jobs:
           private_bundle="$review_private_root/$REVIEW_PACK_BUNDLE_SHA.review-private.json"
           reviewer_a="$review_private_root/$REVIEWER_A_BUNDLE_SHA.review-validated.json"
           reviewer_b="$review_private_root/$REVIEWER_B_BUNDLE_SHA.review-validated.json"
+          reviewer_a_bundle="$bundle_root/$REVIEWER_A_BUNDLE_SHA.json"
+          reviewer_b_bundle="$bundle_root/$REVIEWER_B_BUNDLE_SHA.json"
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
@@ -104,7 +106,7 @@ jobs:
           worker_image="$image_id"
           docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
           docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
-          for path in "$source_bundle" "$private_bundle" "$reviewer_a" "$reviewer_b"; do
+          for path in "$source_bundle" "$private_bundle" "$reviewer_a" "$reviewer_b" "$reviewer_a_bundle" "$reviewer_b_bundle"; do
             [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
           done
           [[ -d "$RETURN_DIR" && ! -L "$RETURN_DIR" && "$(stat -c %a "$RETURN_DIR")" =~ ^0?700$ ]]
@@ -114,18 +116,22 @@ jobs:
           input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-dispute-input.XXXXXXXXXXXX)"
           output_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-dispute-output.XXXXXXXXXXXX)"
           cleanup_dirs() {
-            rm -f -- "$input_dir/input.json" "$output_dir/public-arbitration.json"
+            rm -f -- "$input_dir/input.json" "$input_dir/public-bindings.json" \
+              "$output_dir/review-finalized.json" "$output_dir/public-summary.json" "$output_dir/public-arbitration.json"
             rmdir "$input_dir" "$output_dir" 2>/dev/null || true
           }
           trap cleanup_dirs EXIT
-          python3 - "$source_bundle" "$private_bundle" "$reviewer_a" "$reviewer_b" "$PRIVATE_BUNDLE_HASH" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH" "$input_dir/input.json" <<'PY'
+          python3 - "$source_bundle" "$private_bundle" "$reviewer_a" "$reviewer_b" "$reviewer_a_bundle" "$reviewer_b_bundle" \
+            "$PRIVATE_BUNDLE_HASH" "$REVIEWER_A_RESULT_HASH" "$REVIEWER_B_RESULT_HASH" "$MANIFEST_HASH" \
+            "$input_dir/input.json" "$input_dir/public-bindings.json" <<'PY'
           import hashlib
           import json
           import os
           import stat
           import sys
 
-          source_path, private_path, reviewer_a_path, reviewer_b_path, private_hash, reviewer_a_hash, reviewer_b_hash, manifest_hash, output_path = sys.argv[1:]
+          (source_path, private_path, reviewer_a_path, reviewer_b_path, reviewer_a_bundle_path, reviewer_b_bundle_path,
+              private_hash, reviewer_a_hash, reviewer_b_hash, manifest_hash, operator_output_path, public_output_path) = sys.argv[1:]
 
           def protected(path, limit=64 * 1024 * 1024):
               fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -161,6 +167,8 @@ jobs:
           private = json.loads(protected(private_path))
           reviewer_a = json.loads(protected(reviewer_a_path))
           reviewer_b = json.loads(protected(reviewer_b_path))
+          reviewer_a_bundle = json.loads(protected(reviewer_a_bundle_path))
+          reviewer_b_bundle = json.loads(protected(reviewer_b_bundle_path))
           if source.get('operation') != 'review_pack' or source.get('input', {}).get('batchManifestHash') != manifest_hash or source.get('input', {}).get('state', {}).get('status') != 'completed':
               raise RuntimeError('source')
           if digest(private) != private_hash or private.get('batchManifestHash') != manifest_hash:
@@ -169,12 +177,139 @@ jobs:
               raise RuntimeError('reviewer-a')
           if reviewer_b.get('operation') != 'review_validate' or reviewer_b.get('providerCalls') != 0 or reviewer_b.get('result', {}).get('role') != 'B' or reviewer_b.get('result', {}).get('resultHash') != reviewer_b_hash:
               raise RuntimeError('reviewer-b')
-          payload = {'sourceInput': source['input'], 'reviewerA': reviewer_a['result'], 'reviewerB': reviewer_b['result']}
-          encoded = (json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
-          fd = os.open(output_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o440)
+          for role, bundle in [('A', reviewer_a_bundle), ('B', reviewer_b_bundle)]:
+              if bundle.get('operation') != 'review_validate' or bundle.get('input', {}).get('role') != role or bundle.get('input', {}).get('publicAssignment', {}).get('role') != role:
+                  raise RuntimeError('reviewer-bundle')
+          secret = source['input'].get('attestationSecret')
+          if not isinstance(secret, str) or len(secret.encode('utf-8')) < 32 or len(secret.encode('utf-8')) > 4096:
+              raise RuntimeError('secret')
+          operator_payload = {
+              'operation': 'review_finalize',
+              'gate': {'enabled': False, 'concurrency': 1, 'lockName': '/run/lock/paperbanana-hk-production.lock'},
+              'input': {
+                  'reviewerA': reviewer_a['result'],
+                  'reviewerB': reviewer_b['result'],
+                  'automaticJudges': [],
+                  'attestationSecret': secret,
+              },
+          }
+          public_payload = {
+              'reviewerAPublicAssignment': reviewer_a_bundle['input']['publicAssignment'],
+              'reviewerA': reviewer_a['result'],
+              'reviewerB': reviewer_b['result'],
+          }
+          def write_protected(path, value):
+              encoded = (json.dumps(value, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+              fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o440)
+              try:
+                  os.fchown(fd, 0, 1000)
+                  os.fchmod(fd, 0o440)
+                  view = memoryview(encoded)
+                  while view:
+                      written = os.write(fd, view)
+                      if written < 1:
+                          raise RuntimeError('write')
+                      view = view[written:]
+                  os.fsync(fd)
+              finally:
+                  os.close(fd)
+          write_protected(operator_output_path, operator_payload)
+          write_protected(public_output_path, public_payload)
+          PY
+          chown 0:1000 "$input_dir"
+          chmod 0550 "$input_dir"
+          chown 1000:1000 "$output_dir"
+          chmod 0700 "$output_dir"
+          operator_bundle_sha="$(sha256sum "$input_dir/input.json" | awk '{print $1}')"
+          timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --pids-limit 64 --memory 1g --memory-swap 1g --user 1000:1000 \
+            -v "$input_dir:/run/paperbanana-dispute-input:ro" -v "$output_dir:/run/paperbanana-dispute-output" \
+            -e PAPERBANANA_BENCH_BAILIAN_API_KEY= -e PAPERBANANA_BENCH_ARK_API_KEY= -e PAPERBANANA_BENCH_OPENROUTER_API_KEY= \
+            -e PAPERBANANA_SCIENTIFIC_V2_BUNDLE_PATH=/run/paperbanana-dispute-input/input.json \
+            -e PAPERBANANA_SCIENTIFIC_V2_SPOOL_DIR=/run/paperbanana-dispute-input \
+            -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_BUNDLE_SHA256="$operator_bundle_sha" \
+            -e PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH=/run/paperbanana-dispute-output/review-finalized.json \
+            -e PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR=/run/paperbanana-dispute-output \
+            "$worker_image" node dist/scientific-v2-operator.mjs >"$output_dir/public-summary.json"
+          final="$output_dir/review-finalized.json"
+          summary="$output_dir/public-summary.json"
+          [[ -f "$final" && ! -L "$final" && "$(stat -c '%u:%g:%a' "$final")" =~ ^1000:1000:0?600$ ]]
+          jq -e --arg manifest "$MANIFEST_HASH" '
+            .operation == "review_finalize" and .providerCalls == 0 and .canFinalize == false and
+            .disputeCount > 0 and .batchManifestHash == null
+          ' "$summary" >/dev/null
+          python3 - "$input_dir/public-bindings.json" "$final" "$MANIFEST_HASH" "$output_dir/public-arbitration.json" <<'PY'
+          import json
+          import os
+          import stat
+          import sys
+
+          bindings_path, final_path, manifest_hash, output_path = sys.argv[1:]
+
+          def protected(path, owner, mode, limit=64 * 1024 * 1024):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_uid != owner or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) != mode or before.st_size < 2 or before.st_size > limit:
+                      raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= limit:
+                      chunk = os.read(fd, min(1024 * 1024, limit + 1 - len(data)))
+                      if not chunk:
+                          break
+                      data += chunk
+                  after = os.fstat(fd)
+                  path_stat = os.stat(path, follow_symlinks=False)
+                  if len(data) != before.st_size or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns) or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino):
+                      raise RuntimeError('drift')
+                  return json.loads(data)
+              finally:
+                  os.close(fd)
+
+          bindings = protected(bindings_path, 0, 0o440)
+          final = protected(final_path, 1000, 0o600)
+          reviewer_a = bindings['reviewerA']
+          reviewer_b = bindings['reviewerB']
+          assignment = bindings['reviewerAPublicAssignment']
+          if final.get('operation') != 'review_finalize' or final.get('providerCalls') != 0 or final.get('canFinalize') is not False:
+              raise RuntimeError('final')
+          disputes = final.get('disputes')
+          attestation = final.get('attestation')
+          if not isinstance(disputes, list) or not disputes or len({item.get('itemHash') for item in disputes}) != len(disputes):
+              raise RuntimeError('disputes')
+          if not isinstance(attestation, dict) or attestation.get('automaticJudgeCalls') != 0 or attestation.get('disputeCount') != len(disputes):
+              raise RuntimeError('attestation')
+          if reviewer_a.get('batchManifestHash') != manifest_hash or reviewer_b.get('batchManifestHash') != manifest_hash or reviewer_a.get('sourceSetHash') != reviewer_b.get('sourceSetHash'):
+              raise RuntimeError('binding')
+          public_items = {}
+          for packet in assignment.get('packages', []):
+              for item in packet.get('items', []):
+                  if item.get('itemHash') in public_items:
+                      raise RuntimeError('duplicate-public-item')
+                  public_items[item.get('itemHash')] = {'packetHash': packet.get('packetHash'), 'item': item}
+          by_a = {item.get('itemHash'): item for item in reviewer_a.get('items', [])}
+          by_b = {item.get('itemHash'): item for item in reviewer_b.get('items', [])}
+          public_disputes = []
+          for dispute in disputes:
+              item_hash = dispute.get('itemHash')
+              found, first, second = public_items.get(item_hash), by_a.get(item_hash), by_b.get(item_hash)
+              if not found or not first or not second:
+                  raise RuntimeError('public-binding')
+              public_disputes.append({
+                  'packetHash': found['packetHash'], 'item': found['item'], 'reasons': dispute.get('reasons'),
+                  'firstReview': {'scores': first.get('scores'), 'redLines': first.get('redLines'), 'lowConfidence': first.get('lowConfidence')},
+                  'secondReview': {'scores': second.get('scores'), 'redLines': second.get('redLines'), 'lowConfidence': second.get('lowConfidence')},
+              })
+          output = {
+              'schemaVersion': 2, 'batchManifestHash': manifest_hash, 'sourceSetHash': reviewer_a['sourceSetHash'],
+              'reasoningEffort': 'xhigh', 'automaticJudgeCalls': 0, 'canFinalize': False,
+              'disputeCount': len(public_disputes), 'disputes': public_disputes,
+          }
+          encoded = (json.dumps(output, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+          fd = os.open(output_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
           try:
-              os.fchown(fd, 0, 1000)
-              os.fchmod(fd, 0o440)
+              os.fchown(fd, 1000, 1000)
+              os.fchmod(fd, 0o600)
               view = memoryview(encoded)
               while view:
                   written = os.write(fd, view)
@@ -185,26 +320,6 @@ jobs:
           finally:
               os.close(fd)
           PY
-          chown 0:1000 "$input_dir"
-          chmod 0550 "$input_dir"
-          chown 1000:1000 "$output_dir"
-          chmod 0700 "$output_dir"
-          node_script='import fs from "node:fs";
-          import {createScientificBlindReviewPackages,finalizeScientificDoubleReview} from "/app/dist/scientific-v2-review.js";
-          const input=JSON.parse(fs.readFileSync("/run/paperbanana-dispute-input/input.json","utf8"));
-          const {attestationSecret,...packageInput}=input.sourceInput;
-          const packed=createScientificBlindReviewPackages(packageInput,attestationSecret);
-          const final=finalizeScientificDoubleReview({reviewerA:input.reviewerA,reviewerB:input.reviewerB,automaticJudges:[]},attestationSecret);
-          const publicItems=new Map(packed.reviewerA.packages.flatMap(packet=>packet.items.map(item=>[item.itemHash,{packetHash:packet.packetHash,item}])));
-          const byA=new Map(input.reviewerA.items.map(item=>[item.itemHash,item]));
-          const byB=new Map(input.reviewerB.items.map(item=>[item.itemHash,item]));
-          const disputes=final.disputes.map(dispute=>{const found=publicItems.get(dispute.itemHash),a=byA.get(dispute.itemHash),b=byB.get(dispute.itemHash);if(!found||!a||!b)throw new Error("SCIENTIFIC_V2_DISPUTE_PUBLIC_BINDING_INVALID");return{packetHash:found.packetHash,item:found.item,reasons:dispute.reasons,firstReview:{scores:a.scores,redLines:a.redLines,lowConfidence:a.lowConfidence},secondReview:{scores:b.scores,redLines:b.redLines,lowConfidence:b.lowConfidence}}});
-          const output={schemaVersion:2,batchManifestHash:packed.batchManifestHash,sourceSetHash:packed.sourceSetHash,reasoningEffort:"xhigh",automaticJudgeCalls:0,canFinalize:final.canFinalize,disputeCount:disputes.length,disputes};
-          fs.writeFileSync("/run/paperbanana-dispute-output/public-arbitration.json",JSON.stringify(output)+"\n",{encoding:"utf8",mode:0o600,flag:"wx"});'
-          timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
-            --pids-limit 64 --memory 1g --memory-swap 1g --user 1000:1000 \
-            -v "$input_dir:/run/paperbanana-dispute-input:ro" -v "$output_dir:/run/paperbanana-dispute-output" \
-            --entrypoint node "$worker_image" --input-type=module -e "$node_script"
           public="$output_dir/public-arbitration.json"
           [[ -f "$public" && ! -L "$public" && "$(stat -c '%u:%g:%a' "$public")" =~ ^1000:1000:0?600$ ]]
           jq -e --arg manifest "$MANIFEST_HASH" '
