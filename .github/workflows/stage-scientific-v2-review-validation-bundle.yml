@@ -21,7 +21,8 @@ on:
       confirm: { required: true }
 
 permissions:
-  contents: read
+  # Required only to GET the exact private draft asset; this workflow has no release mutation command.
+  contents: write
 
 concurrency:
   group: paperbanana-hk-production

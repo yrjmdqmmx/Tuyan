@@ -16,7 +16,9 @@ on:
       confirm: { required: true }
 
 permissions:
-  contents: read
+  # GitHub requires release-write scope for installation tokens to download a draft release asset.
+  # The workflow still performs only exact-ID GET requests and never mutates the release.
+  contents: write
 
 concurrency:
   group: paperbanana-hk-production

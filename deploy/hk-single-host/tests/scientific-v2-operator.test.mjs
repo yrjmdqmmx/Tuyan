@@ -604,6 +604,7 @@ test('unknown-outcome inspection uses the persisted attempt window after the sta
 
 test('Codex artifacts stage only from an exact private draft asset into a root protected manifest directory', () => {
   const source = readFileSync(codexArtifactStagingWorkflow, 'utf8')
+  assert.match(source, /permissions:\s*\n\s+#[^\n]*\n\s+#[^\n]*\n\s+contents: write/)
   assert.match(source, /[.]draft == true/)
   assert.match(source, /releases\/assets\/\$ASSET_ID/)
   assert.match(source, /sha256sum "\$archive"/)
@@ -614,7 +615,7 @@ test('Codex artifacts stage only from an exact private draft asset into a root p
   assert.match(source, /METADATA_SHA/)
   assert.match(source, /! -e "\$destination"/)
   assert.match(source, /providerCalls\":0/)
-  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+  assert.doesNotMatch(source, /gh release|gh api --method (?:POST|PATCH|DELETE)|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 
 test('Codex import bundle is derived under the production lock from exact attested state and staged metadata without provider credentials', () => {
@@ -635,6 +636,7 @@ test('Codex import bundle is derived under the production lock from exact attest
 
 test('scientific v2 admin input accepts only an exact draft JSON asset and a closed mutation schema set', () => {
   const source = readFileSync(adminInputStagingWorkflow, 'utf8')
+  assert.match(source, /permissions:\s*\n\s+#[^\n]*\n\s+contents: write/)
   assert.match(source, /[.]draft == true/)
   assert.match(source, /releases\/assets\/\$ASSET_ID/)
   assert.match(source, /import-worker\|import-codex\|export-review\|import-review\|import-arbitration\|publish/)
@@ -647,7 +649,7 @@ test('scientific v2 admin input accepts only an exact draft JSON asset and a clo
   assert.match(source, /destination="\$destination_root\/\$ASSET_SHA[.]json"/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.match(source, /providerCalls\":0/)
-  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+  assert.doesNotMatch(source, /gh release|gh api --method (?:POST|PATCH|DELETE)|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 
 test('review pack bundle is derived offline from one exact completed state with automatic judges fixed to zero', () => {
@@ -690,6 +692,7 @@ test('blind assignment export keeps mappings on-host and uploads only short-live
 
 test('review validation bundle accepts one exact blind submission and restores private mapping only on-host', () => {
   const source = readFileSync(reviewValidationStagingWorkflow, 'utf8')
+  assert.match(source, /permissions:\s*\n\s+#[^\n]*\n\s+contents: write/)
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /review-private[.]json/)
   assert.match(source, /review_validate/)
@@ -725,6 +728,7 @@ test('review dispute export derives only blind xhigh work and never exports mapp
 
 test('xhigh arbitration bundle binds exact disputes and both signed reviewer results with zero providers', () => {
   const source = readFileSync(arbitrationStagingWorkflow, 'utf8')
+  assert.match(source, /permissions:\s*\n\s+#[^\n]*\n\s+contents: write/)
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /review-validated[.]json/)
   assert.match(source, /reasoningEffort.*xhigh/)

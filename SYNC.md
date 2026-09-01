@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 私有 draft asset 下载适配 GitHub installation token — by Codex
+变更：正式 provider full 成功后，GPT Image 2 私有转运在 GitHub draft release binary 下载处收到 `403 Resource not accessible by integration`；release/asset ID、目标 SHA、大小与 SHA-256 均由本地授权态复核无漂移，未进入 SSH 或状态写入。GitHub 对 draft binary 的 installation token 要求 release-write scope，因此只有四个实际 GET 私有 draft asset 的封闭 workflow 将 `contents` 从 read 调整为 write；命令仍只允许精确 release/asset GET，静态测试禁止 release mutation 与 POST/PATCH/DELETE。其他 workflow 权限不变，不重生成图片、不调用 Provider。
+
+各端待办：
+- [x] 部署 / 运维（Codex/admin/reviewer/arbitration 私有 draft 下载权限与只读命令门禁）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（数据与公开契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 公开渲染修正 batchId 层级并为冻结批次提供专用 runner — by Codex
 变更：发现旧 host operator 在 `render_public_evidence` 已完成 WebP 写入后错误读取不存在的顶层 `batchId`；Worker 的真实封闭 schema 为 `{operation,providerCalls,publishInput,publishInputHash}`，batch ID 位于 `publishInput.batchId`。未来 operator 已按该 schema 修正。为不改变当前冻结 manifest 的 `codeSha=5d9f42e…` 与 immutable Core/Worker digest，新增独立控制面 runner：绑定 current control SHA 与 frozen deployed SHA/镜像/manifest/bundle，使用生产共享锁、Provider key 强制置空、单次 1800 秒窗口运行同一冻结 Worker，重新计算 `publishInputHash` 后把完整结果持久化为 root `0600`。不重跑生成、不改 state、评分或证据字节。
 

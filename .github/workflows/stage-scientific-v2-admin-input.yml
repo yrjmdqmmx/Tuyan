@@ -17,7 +17,8 @@ on:
       confirm: { required: true }
 
 permissions:
-  contents: read
+  # Draft release binary downloads return 403 to installation tokens with read-only contents scope.
+  contents: write
 
 concurrency:
   group: paperbanana-hk-production
