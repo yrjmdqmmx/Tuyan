@@ -706,6 +706,10 @@ test('blind assignment export keeps mappings on-host and uploads only short-live
   assert.match(source, /failure_stage=assemble-review-assignments/)
   assert.match(source, /"\$return_uid" =~ \^\[0-9\]\+\$/)
   assert.doesNotMatch(source, /"\$return_uid" =~ \^\[1-9\]/)
+  assert.match(source, /failure_stage=verify-private-canonical-hash/)
+  assert.match(source, /docker run --rm --pull=never --network none --read-only --cap-drop ALL/)
+  assert.match(source, /left[.]localeCompare\(right\)/)
+  assert.match(source, /private_file_sha[\s\S]*private-drift/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
 })
 

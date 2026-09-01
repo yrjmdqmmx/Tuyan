@@ -137,6 +137,18 @@ jobs:
             [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
           done
           [[ -d "$admin_input_root" && ! -L "$admin_input_root" && "$(stat -c '%u:%g:%a' "$admin_input_root")" =~ ^0:0:0?700$ ]]
+          failure_stage=verify-private-canonical-hash
+          private_file_sha="$(sha256sum "$private" | awk '{print $1}')"
+          private_canonical_hash="$(docker run --rm --pull=never --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --user 0:0 \
+            --mount "type=bind,src=$private,dst=/run/review-private.json,readonly" \
+            "$image_id" node -e '
+              const fs=require("node:fs"),crypto=require("node:crypto");
+              const normalize=(value)=>{if(Array.isArray(value))return value.map(normalize);if(value&&typeof value==="object")return Object.fromEntries(Object.entries(value).sort(([left],[right])=>left.localeCompare(right)).map(([key,child])=>[key,normalize(child)]));if(typeof value==="number"&&!Number.isFinite(value))process.exit(2);return value};
+              const value=JSON.parse(fs.readFileSync("/run/review-private.json","utf8"));
+              process.stdout.write(crypto.createHash("sha256").update(JSON.stringify(normalize(value))).digest("hex"));
+            ')"
+          [[ "$private_file_sha" =~ ^[a-f0-9]{64}$ && "$private_canonical_hash" == "$PRIVATE_HASH" ]]
           failure_stage=public-handoff
           [[ -f "$public" && ! -L "$public" && "$(sha256sum "$public" | awk '{print $1}')" == "$PUBLIC_OUTPUT_SHA" ]]
           [[ -d "$RETURN_DIR" && ! -L "$RETURN_DIR" ]]
@@ -144,14 +156,14 @@ jobs:
           return_gid="$(stat -c %g "$RETURN_DIR")"
           [[ "$return_uid" =~ ^[0-9]+$ && "$return_gid" =~ ^[0-9]+$ && "$(stat -c %a "$RETURN_DIR")" =~ ^0?700$ ]]
           failure_stage=assemble-review-assignments
-          python3 - "$bundle" "$private" "$public" "$PRIVATE_HASH" "$MANIFEST_HASH" "$admin_input_root" "$RETURN_DIR" "$return_uid" "$return_gid" <<'PY'
+          python3 - "$bundle" "$private" "$public" "$PRIVATE_HASH" "$private_file_sha" "$MANIFEST_HASH" "$admin_input_root" "$RETURN_DIR" "$return_uid" "$return_gid" <<'PY'
           import hashlib
           import json
           import os
           import stat
           import sys
 
-          bundle_path, private_path, public_path, private_hash, manifest_hash, admin_root, return_root, return_uid_text, return_gid_text = sys.argv[1:]
+          bundle_path, private_path, public_path, private_hash, private_file_hash, manifest_hash, admin_root, return_root, return_uid_text, return_gid_text = sys.argv[1:]
           return_uid, return_gid = int(return_uid_text), int(return_gid_text)
 
           def protected(path, owner, mode, limit=64 * 1024 * 1024):
@@ -174,13 +186,6 @@ jobs:
               finally:
                   os.close(fd)
 
-          def canonical(value):
-              if isinstance(value, list):
-                  return '[' + ','.join(canonical(item) for item in value) + ']'
-              if isinstance(value, dict):
-                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
-              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
-
           def exact(value, keys):
               if not isinstance(value, dict) or set(value) != set(keys):
                   raise RuntimeError('schema')
@@ -194,13 +199,16 @@ jobs:
                   view = view[written:]
 
           bundle = json.loads(protected(bundle_path, 0, 0o600))
-          private = json.loads(protected(private_path, 0, 0o600))
+          private_bytes = protected(private_path, 0, 0o600)
+          if hashlib.sha256(private_bytes).hexdigest() != private_file_hash:
+              raise RuntimeError('private-drift')
+          private = json.loads(private_bytes)
           public_owner = os.stat(public_path, follow_symlinks=False).st_uid
           public = json.loads(protected(public_path, public_owner, 0o600))
           if bundle.get('operation') != 'review_pack' or bundle.get('input', {}).get('batchManifestHash') != manifest_hash or bundle.get('input', {}).get('state', {}).get('status') != 'completed':
               raise RuntimeError('bundle')
           exact(private, ['batchManifestHash', 'sourceSetHash', 'reviewerA', 'reviewerB'])
-          if private['batchManifestHash'] != manifest_hash or hashlib.sha256(canonical(private).encode('utf-8')).hexdigest() != private_hash or public.get('privateBundleHash') != private_hash:
+          if private['batchManifestHash'] != manifest_hash or public.get('privateBundleHash') != private_hash:
               raise RuntimeError('private')
           batch_id = 'scientific-v2-' + manifest_hash[:20]
           state = bundle['input']['state']
