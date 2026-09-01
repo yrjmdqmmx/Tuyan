@@ -814,6 +814,10 @@ test('review validation bundle accepts one exact blind submission and restores p
 
 test('validated review result becomes a root-only admin import without leaving the host', () => {
   const source = readFileSync(reviewResultImportStagingWorkflow, 'utf8')
+  assert.match(source, /batch_id:[\s\S]*required:\s*true/)
+  assert.match(source, /BATCH_ID:\s*\$\{\{ inputs[.]batch_id \}\}/)
+  assert.match(source, /'batchId': batch_id/)
+  assert.doesNotMatch(source, /'scientific-v2-'\s*\+\s*manifest_hash\[:20\]/)
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /review-validated[.]json/)
   assert.match(source, /admin-inputs/)
@@ -853,6 +857,10 @@ test('xhigh arbitration bundle binds exact disputes and both signed reviewer res
 
 test('validated arbitration is re-attested for the API only inside the root admin handoff', () => {
   const source = readFileSync(arbitrationImportStagingWorkflow, 'utf8')
+  assert.match(source, /batch_id:[\s\S]*required:\s*true/)
+  assert.match(source, /BATCH_ID:\s*\$\{\{ inputs[.]batch_id \}\}/)
+  assert.match(source, /'batchId': batch_id/)
+  assert.doesNotMatch(source, /'scientific-v2-'\s*\+\s*manifest_hash\[:20\]/)
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /review-arbitrated[.]json/)
   assert.match(source, /arbitrationHash/)
@@ -865,6 +873,10 @@ test('validated arbitration is re-attested for the API only inside the root admi
 
 test('rendered public evidence publish input stays root-only until atomic API publish', () => {
   const source = readFileSync(publishInputStagingWorkflow, 'utf8')
+  assert.match(source, /batch_id:[\s\S]*required:\s*true/)
+  assert.match(source, /BATCH_ID:\s*\$\{\{ inputs[.]batch_id \}\}/)
+  assert.match(source, /get\('batchId'\) != batch_id/)
+  assert.doesNotMatch(source, /'scientific-v2-'\s*\+\s*manifest_hash\[:20\]/)
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /publish-input[.]json/)
   assert.match(source, /publishInputHash/)
@@ -971,6 +983,10 @@ test('render keeps API publish input off stdout and persists it only in the prot
 
 test('publish-input inspection verifies the protected rendered payload and exposes only its hash and counts', () => {
   const source = readFileSync(publishInputInspectionWorkflow, 'utf8')
+  assert.match(source, /batch_id:[\s\S]*required:\s*true/)
+  assert.match(source, /BATCH_ID:\s*\$\{\{ inputs[.]batch_id \}\}/)
+  assert.match(source, /get\('batchId'\) != batch_id/)
+  assert.doesNotMatch(source, /'scientific-v2-'\s*\+\s*manifest_hash\[:20\]/)
   const diagnostic = readFileSync(publishInputDiagnostic, 'utf8')
   assert.match(source, /providerCalls[^\n]*0/)
   assert.match(source, /expected_core_digest:[\s\S]*required:\s*true/)

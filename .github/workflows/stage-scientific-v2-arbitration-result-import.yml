@@ -3,6 +3,7 @@ name: Stage Scientific V2 Arbitration Result Import
 on:
   workflow_dispatch:
     inputs:
+      batch_id: { required: true }
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       expected_worker_digest: { required: true }
@@ -28,6 +29,7 @@ jobs:
       - name: Validate exact Worker arbitration envelope
         env:
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          BATCH_ID: ${{ inputs.batch_id }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           ARBITRATION_BUNDLE_SHA: ${{ inputs.arbitration_bundle_sha256 }}
@@ -38,6 +40,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           for hash in "$WORKER_DIGEST" "$ARBITRATION_BUNDLE_SHA" "$MANIFEST_HASH" "$WORKER_ARBITRATION_HASH" "$WORKER_ATTESTATION_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
@@ -59,6 +62,7 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          BATCH_ID: ${{ inputs.batch_id }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           ARBITRATION_BUNDLE_SHA: ${{ inputs.arbitration_bundle_sha256 }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
@@ -66,8 +70,8 @@ jobs:
           WORKER_ATTESTATION_HASH: ${{ inputs.worker_attestation_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q ARBITRATION_BUNDLE_SHA=%q MANIFEST_HASH=%q WORKER_ARBITRATION_HASH=%q WORKER_ATTESTATION_HASH=%q bash -s' \
-            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$ARBITRATION_BUNDLE_SHA" "$MANIFEST_HASH" "$WORKER_ARBITRATION_HASH" "$WORKER_ATTESTATION_HASH"
+          printf -v remote_command 'sudo env BATCH_ID=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q ARBITRATION_BUNDLE_SHA=%q MANIFEST_HASH=%q WORKER_ARBITRATION_HASH=%q WORKER_ATTESTATION_HASH=%q bash -s' \
+            "$BATCH_ID" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$ARBITRATION_BUNDLE_SHA" "$MANIFEST_HASH" "$WORKER_ARBITRATION_HASH" "$WORKER_ATTESTATION_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
@@ -92,7 +96,7 @@ jobs:
           output="$(mktemp /tmp/paperbanana-scientific-v2-arbitration-import.XXXXXXXXXXXX.json)"
           cleanup() { rm -f -- "$output"; }
           trap cleanup EXIT
-          python3 - "$bundle" "$arbitrated" "$MANIFEST_HASH" "$WORKER_ARBITRATION_HASH" "$WORKER_ATTESTATION_HASH" "$output" <<'PY'
+          python3 - "$bundle" "$arbitrated" "$BATCH_ID" "$MANIFEST_HASH" "$WORKER_ARBITRATION_HASH" "$WORKER_ATTESTATION_HASH" "$output" <<'PY'
           import hashlib
           import hmac
           import json
@@ -100,7 +104,7 @@ jobs:
           import stat
           import sys
 
-          bundle_path, arbitrated_path, manifest_hash, worker_arbitration_hash, worker_attestation_hash, output_path = sys.argv[1:]
+          bundle_path, arbitrated_path, batch_id, manifest_hash, worker_arbitration_hash, worker_attestation_hash, output_path = sys.argv[1:]
 
           def protected(path, limit=64 * 1024 * 1024):
               fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -156,7 +160,7 @@ jobs:
           api_arbitration_hash = digest(api_arbitration)
           api_attestation_hash = hmac.new(secret.encode('utf-8'), api_arbitration_hash.encode('ascii'), hashlib.sha256).hexdigest()
           payload = {
-              'batchId': 'scientific-v2-' + manifest_hash[:20],
+              'batchId': batch_id,
               'arbitration': api_arbitration,
               'arbitrationHash': api_arbitration_hash,
               'attestationHash': api_attestation_hash,

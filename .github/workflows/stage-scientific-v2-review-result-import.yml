@@ -7,6 +7,7 @@ on:
         required: true
         type: choice
         options: [A, B]
+      batch_id: { required: true }
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       expected_worker_digest: { required: true }
@@ -32,6 +33,7 @@ jobs:
       - name: Validate exact signed result envelope
         env:
           ROLE: ${{ inputs.role }}
+          BATCH_ID: ${{ inputs.batch_id }}
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
@@ -43,6 +45,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$ROLE" == A || "$ROLE" == B ]]
+          [[ "$BATCH_ID" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$ ]]
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
           for hash in "$WORKER_DIGEST" "$VALIDATION_BUNDLE_SHA" "$MANIFEST_HASH" "$RESULT_HASH" "$RESULT_ATTESTATION_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
@@ -65,6 +68,7 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           ROLE: ${{ inputs.role }}
+          BATCH_ID: ${{ inputs.batch_id }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           VALIDATION_BUNDLE_SHA: ${{ inputs.validation_bundle_sha256 }}
@@ -73,8 +77,8 @@ jobs:
           RESULT_ATTESTATION_HASH: ${{ inputs.result_attestation_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env ROLE=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q VALIDATION_BUNDLE_SHA=%q MANIFEST_HASH=%q RESULT_HASH=%q RESULT_ATTESTATION_HASH=%q bash -s' \
-            "$ROLE" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$VALIDATION_BUNDLE_SHA" "$MANIFEST_HASH" "$RESULT_HASH" "$RESULT_ATTESTATION_HASH"
+          printf -v remote_command 'sudo env ROLE=%q BATCH_ID=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q VALIDATION_BUNDLE_SHA=%q MANIFEST_HASH=%q RESULT_HASH=%q RESULT_ATTESTATION_HASH=%q bash -s' \
+            "$ROLE" "$BATCH_ID" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$VALIDATION_BUNDLE_SHA" "$MANIFEST_HASH" "$RESULT_HASH" "$RESULT_ATTESTATION_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
@@ -98,7 +102,7 @@ jobs:
           output="$(mktemp /tmp/paperbanana-scientific-v2-review-result-import.XXXXXXXXXXXX.json)"
           cleanup() { rm -f -- "$output"; }
           trap cleanup EXIT
-          python3 - "$validated" "$core_env" "$ROLE" "$MANIFEST_HASH" "$RESULT_HASH" "$RESULT_ATTESTATION_HASH" "$output" <<'PY'
+          python3 - "$validated" "$core_env" "$ROLE" "$BATCH_ID" "$MANIFEST_HASH" "$RESULT_HASH" "$RESULT_ATTESTATION_HASH" "$output" <<'PY'
           import hashlib
           import hmac
           import json
@@ -106,7 +110,7 @@ jobs:
           import stat
           import sys
 
-          validated_path, core_env_path, role, manifest_hash, result_hash, result_attestation_hash, output_path = sys.argv[1:]
+          validated_path, core_env_path, role, batch_id, manifest_hash, result_hash, result_attestation_hash, output_path = sys.argv[1:]
 
           def protected(path, limit=64 * 1024 * 1024):
               fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -155,7 +159,7 @@ jobs:
           expected_attestation = hmac.new(secrets[0].encode('utf-8'), digest({**base, 'resultHash': result_hash}).encode('ascii'), hashlib.sha256).hexdigest()
           if not hmac.compare_digest(result_attestation_hash, expected_attestation):
               raise RuntimeError('attestation')
-          payload = {'batchId': 'scientific-v2-' + manifest_hash[:20], 'result': result}
+          payload = {'batchId': batch_id, 'result': result}
           encoded = (json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
           fd = os.open(output_path, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
           try:
