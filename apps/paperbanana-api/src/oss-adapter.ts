@@ -39,6 +39,9 @@ type OssClient = {
   list(query: Record<string, unknown>): Promise<any>
 }
 
+const EXACT_RANGE_CHUNK_BYTES = 512 * 1024
+const EXACT_RANGE_ATTEMPTS = 3
+
 export function createOssClients(config: OssConfig) {
   const common = {
     region: config.region,
@@ -219,6 +222,71 @@ export function createOssAdapter(
           signal?.removeEventListener('abort', onAbort)
         }
         return Buffer.concat(chunks, total)
+      },
+      async readFileExactRanges(key: string, maxBytes?: number, options: { signal?: AbortSignal; timeoutMs?: number } = {}): Promise<Buffer> {
+        const byteLimit = Number(maxBytes)
+        if (!Number.isSafeInteger(byteLimit) || byteLimit <= 0) throw new Error('OSS read byte limit must be a positive integer')
+        if (!serverClient.head || !serverClient.getStream) throw new Error('OSS client does not support exact range downloads')
+        if (options.timeoutMs !== undefined && (!Number.isSafeInteger(options.timeoutMs) || options.timeoutMs <= 0)) {
+          throw new Error('OSS read timeout must be a positive integer')
+        }
+        const signal = options.signal
+        const abortError = () => new Error(`OSS read aborted for ${key}`)
+        if (signal?.aborted) throw abortError()
+        const metadata = await serverClient.head(key)
+        const size = Number(firstHeader(metadata.res?.headers, 'content-length'))
+        if (!Number.isSafeInteger(size) || size < 0) throw new Error(`OSS object ${key} has invalid content length`)
+        if (size > byteLimit) throw new Error(`OSS object ${key} exceeds ${byteLimit} byte limit`)
+        if (size === 0) return Buffer.alloc(0)
+
+        const readRange = async (start: number, end: number) => {
+          const expectedLength = end - start + 1
+          let lastError: unknown
+          for (let attempt = 1; attempt <= EXACT_RANGE_ATTEMPTS; attempt += 1) {
+            let result: Awaited<ReturnType<NonNullable<OssClient['getStream']>>> | undefined
+            try {
+              if (signal?.aborted) throw abortError()
+              result = await serverClient.getStream!(key, {
+                headers: { Range: `bytes=${start}-${end}` },
+                ...(options.timeoutMs === undefined ? {} : { timeout: options.timeoutMs }),
+              })
+              if (result.res?.status !== undefined && result.res.status !== 206) {
+                throw new Error(`OSS range download returned unexpected status ${result.res.status}`)
+              }
+              const advertised = Number(firstHeader(result.res?.headers, 'content-length'))
+              if (Number.isFinite(advertised) && advertised !== expectedLength) {
+                throw new Error(`OSS range response length mismatch for ${key}`)
+              }
+              const chunks: Buffer[] = []
+              let total = 0
+              const onAbort = () => result?.stream.destroy?.(abortError())
+              signal?.addEventListener('abort', onAbort, { once: true })
+              try {
+                for await (const value of result.stream) {
+                  const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value as any)
+                  total += chunk.byteLength
+                  if (total > expectedLength) throw new Error(`OSS range response length mismatch for ${key}`)
+                  chunks.push(chunk)
+                }
+              } finally {
+                signal?.removeEventListener('abort', onAbort)
+              }
+              if (total !== expectedLength) throw new Error(`OSS range response length mismatch for ${key}`)
+              return Buffer.concat(chunks, total)
+            } catch (error) {
+              result?.stream.destroy?.()
+              if (signal?.aborted) throw abortError()
+              lastError = error
+            }
+          }
+          throw lastError
+        }
+
+        const chunks: Buffer[] = []
+        for (let start = 0; start < size; start += EXACT_RANGE_CHUNK_BYTES) {
+          chunks.push(await readRange(start, Math.min(size - 1, start + EXACT_RANGE_CHUNK_BYTES - 1)))
+        }
+        return Buffer.concat(chunks, size)
       },
       async listFiles(options: { Prefix?: string; Marker?: string } = {}) {
         const contents: Array<Record<string, unknown>> = []

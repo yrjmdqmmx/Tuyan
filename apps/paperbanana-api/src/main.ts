@@ -67,7 +67,9 @@ async function main(): Promise<void> {
       await Promise.all([benchmarkMongo.probe(), benchmarkOss.probe()])
       const benchmarkBucket = benchmarkOss.bucket(config.benchmark.oss.bucket)
       const verifyBenchmarkEvidence = async (key: string, expectedHash: string, options: { signal?: AbortSignal; timeoutMs?: number } = {}) => {
-        const content = await benchmarkBucket.readFile(key, config.providerImageMaxBytes, options) as Buffer
+        const content = key.startsWith('bench/scientific-v2/')
+          ? await benchmarkBucket.readFileExactRanges(key, config.providerImageMaxBytes, options)
+          : await benchmarkBucket.readFile(key, config.providerImageMaxBytes, options) as Buffer
         if (createHash('sha256').update(content).digest('hex') !== expectedHash) throw new Error('BENCHMARK_EVIDENCE_HASH_MISMATCH')
         if (key.startsWith('bench/scientific-v2/')) {
           verifyScientificV2EvidenceMetadata(key, expectedHash, await benchmarkBucket.headFile(key))
