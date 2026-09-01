@@ -32,8 +32,9 @@ import {
 
 const MAX_BASE64_LENGTH = Math.ceil(SCIENTIFIC_V2_MAX_ARTIFACT_BYTES / 3) * 4
 const OUTPUT_DOWNLOAD_TIMEOUT_MS = 30_000
-const PUBLIC_RENDITION_READ_TIMEOUT_MS = 300_000
+const PUBLIC_RENDITION_READ_TIMEOUT_MS = 60_000
 const PUBLIC_RENDITION_READ_ATTEMPTS = 3
+const PUBLIC_RENDITION_READ_CHUNK_BYTES = 512 * 1024
 
 export function scientificV2PrivateArtifactObjectKey(imageHash: string, format: 'png' | 'jpeg' | 'webp') {
   if (!/^[a-f0-9]{64}$/.test(imageHash)) scientificV2Error('SCIENTIFIC_V2_ARTIFACT_BINDING_INVALID')
@@ -207,45 +208,51 @@ async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceSto
   } catch (error) {
     let existing: Buffer
     let metadata: Awaited<ReturnType<ScientificV2PublicEvidenceStore['head']>>
-    const readExistingOnce = async () => {
-      if (!store.getStream) return Buffer.from((await store.get(variant.objectKey)).content)
-      const result = await store.getStream(variant.objectKey, { timeout: PUBLIC_RENDITION_READ_TIMEOUT_MS })
-      try {
-        const advertisedHeader = Object.entries(result.res?.headers || {})
-          .find(([key]) => key.toLowerCase() === 'content-length')?.[1]
-        const advertised = Number(advertisedHeader)
-        if (Number.isFinite(advertised) && advertised > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
-          result.stream.destroy?.()
-          scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
-        }
-        const chunks: Buffer[] = []
-        let total = 0
-        for await (const value of result.stream) {
-          const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value as Uint8Array)
-          total += chunk.length
-          if (total > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
-            result.stream.destroy?.()
-            scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
-          }
-          chunks.push(chunk)
-        }
-        return Buffer.concat(chunks, total)
-      } catch (streamError) {
-        result.stream.destroy?.()
-        throw streamError
-      }
-    }
-    const readExisting = async () => {
+    const readExactRange = async (start: number, end: number) => {
+      const expectedLength = end - start + 1
       let lastError: unknown
       for (let attempt = 1; attempt <= PUBLIC_RENDITION_READ_ATTEMPTS; attempt += 1) {
+        let result: Awaited<ReturnType<NonNullable<ScientificV2PublicEvidenceStore['getStream']>>> | undefined
         try {
-          return await readExistingOnce()
+          result = await store.getStream!(variant.objectKey, {
+            timeout: PUBLIC_RENDITION_READ_TIMEOUT_MS,
+            headers: { Range: `bytes=${start}-${end}` },
+          })
+          const advertisedHeader = Object.entries(result.res?.headers || {})
+            .find(([key]) => key.toLowerCase() === 'content-length')?.[1]
+          const advertised = Number(advertisedHeader)
+          if (Number.isFinite(advertised) && advertised !== expectedLength) {
+            scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_RANGE_RESPONSE_INVALID')
+          }
+          const chunks: Buffer[] = []
+          let total = 0
+          for await (const value of result.stream) {
+            const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value as Uint8Array)
+            total += chunk.length
+            if (total > expectedLength) scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_RANGE_RESPONSE_INVALID')
+            chunks.push(chunk)
+          }
+          if (total !== expectedLength) scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_RANGE_RESPONSE_INVALID')
+          return Buffer.concat(chunks, total)
         } catch (readError) {
+          result?.stream.destroy?.()
           if (/^SCIENTIFIC_V2_[A-Z0-9_]+$/.test(String((readError as Error)?.message || ''))) throw readError
           lastError = readError
         }
       }
       throw lastError
+    }
+    const readExisting = async () => {
+      if (!store.getStream) return Buffer.from((await store.get(variant.objectKey)).content)
+      if (!Number.isSafeInteger(variant.fileSizeBytes) || variant.fileSizeBytes < 1
+        || variant.fileSizeBytes > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
+        scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
+      }
+      const chunks: Buffer[] = []
+      for (let start = 0; start < variant.fileSizeBytes; start += PUBLIC_RENDITION_READ_CHUNK_BYTES) {
+        chunks.push(await readExactRange(start, Math.min(variant.fileSizeBytes - 1, start + PUBLIC_RENDITION_READ_CHUNK_BYTES - 1)))
+      }
+      return Buffer.concat(chunks, variant.fileSizeBytes)
     }
     try {
       existing = await readExisting()

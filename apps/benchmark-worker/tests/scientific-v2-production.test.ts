@@ -1135,7 +1135,15 @@ test('public rendition duplicate reconciliation rejects exact bytes with drifted
 })
 
 test('signed public rendition replay verifies exact existing bytes even when OSS masks duplicate and ACL errors', async () => {
-  const raw = await sharp({ create: { width: 800, height: 400, channels: 3, background: '#cde' } }).png().toBuffer()
+  const pixels = Buffer.alloc(1200 * 800 * 3)
+  let noiseState = 0x12345678
+  for (let index = 0; index < pixels.length; index += 1) {
+    noiseState ^= noiseState << 13
+    noiseState ^= noiseState >>> 17
+    noiseState ^= noiseState << 5
+    pixels[index] = noiseState & 0xff
+  }
+  const raw = await sharp(pixels, { raw: { width: 1200, height: 800, channels: 3 } }).png().toBuffer()
   const rawHash = createHash('sha256').update(raw).digest('hex')
   const existing = new Map<string, { bytes: Buffer; imageHash: string }>()
   const streamAttempts = new Map<string, number>()
@@ -1159,22 +1167,30 @@ test('signed public rendition replay verifies exact existing bytes even when OSS
       },
       async get() { throw Object.assign(new Error('details omitted'), { name: 'ResponseError' }) },
       async getStream(key, options) {
-        assert.deepEqual(options, { timeout: 300_000 })
-        const attempt = (streamAttempts.get(key) || 0) + 1
-        streamAttempts.set(key, attempt)
+        const bytes = existing.get(key)!.bytes
+        assert.equal((options as any)?.timeout, 60_000)
+        const range = String((options as any)?.headers?.Range || '')
+        const match = /^bytes=(\d+)-(\d+)$/.exec(range)
+        assert.ok(match)
+        const start = Number(match[1])
+        const end = Number(match[2])
+        assert.ok(start >= 0 && end >= start && end < bytes.length && end - start + 1 <= 512 * 1024)
+        const attemptKey = `${key}:${range}`
+        const attempt = (streamAttempts.get(attemptKey) || 0) + 1
+        streamAttempts.set(attemptKey, attempt)
+        const rangeBytes = bytes.subarray(start, end + 1)
         if (attempt === 1) {
-          const bytes = existing.get(key)!.bytes
           return {
             stream: Readable.from((async function* () {
-              yield bytes.subarray(0, Math.max(1, Math.floor(bytes.length / 2)))
+              yield rangeBytes.subarray(0, Math.max(1, Math.floor(rangeBytes.length / 2)))
               throw Object.assign(new Error('socket reset'), { code: 'ECONNRESET' })
             })()),
-            res: { status: 200, headers: { 'content-length': String(bytes.length) } },
+            res: { status: 206, headers: { 'content-length': String(rangeBytes.length) } },
           }
         }
         return {
-        stream: Readable.from([existing.get(key)!.bytes]),
-        res: { status: 200, headers: { 'content-length': String(existing.get(key)!.bytes.length) } },
+        stream: Readable.from([rangeBytes]),
+        res: { status: 206, headers: { 'content-length': String(rangeBytes.length) } },
         }
       },
       async head(key) { return { headers: {
@@ -1185,7 +1201,8 @@ test('signed public rendition replay verifies exact existing bytes even when OSS
     },
   })
   assert.equal((result.evidence[0] as any).variants.length, 3)
-  assert.deepEqual([...streamAttempts.values()], [2, 2, 2])
+  assert.ok([...streamAttempts.keys()].some((key) => key.includes('bytes=524288-')))
+  assert.equal([...streamAttempts.values()].every((attempts) => attempts === 2), true)
   assert.equal(privateReassertions, 0)
 })
 
