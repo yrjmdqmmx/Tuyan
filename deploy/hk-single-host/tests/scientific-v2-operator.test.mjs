@@ -34,6 +34,7 @@ const arbitrationStagingWorkflow = fileURLToPath(new URL('../../../.github/workf
 const arbitrationImportStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-arbitration-result-import.yml', import.meta.url))
 const publishInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-publish-input.yml', import.meta.url))
 const publishInputInspectionWorkflow = fileURLToPath(new URL('../../../.github/workflows/inspect-scientific-v2-publish-input.yml', import.meta.url))
+const publishInputDiagnostic = fileURLToPath(new URL('../scripts/diagnose-scientific-v2-publish-input.cjs', import.meta.url))
 const publicRenderRunWorkflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-public-render.yml', import.meta.url))
 const runBundleStager = fileURLToPath(new URL('../scripts/stage-scientific-v2-run-bundle.sh', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
@@ -938,7 +939,9 @@ test('render keeps API publish input off stdout and persists it only in the prot
 
 test('publish-input inspection verifies the protected rendered payload and exposes only its hash and counts', () => {
   const source = readFileSync(publishInputInspectionWorkflow, 'utf8')
+  const diagnostic = readFileSync(publishInputDiagnostic, 'utf8')
   assert.match(source, /providerCalls[^\n]*0/)
+  assert.match(source, /expected_core_digest:[\s\S]*required:\s*true/)
   assert.match(source, /publish-input[.]json/)
   assert.match(source, /O_NOFOLLOW/)
   assert.match(source, /st_mode[^\n]*0o600/)
@@ -946,6 +949,14 @@ test('publish-input inspection verifies the protected rendered payload and expos
   assert.match(source, /evidenceCount/)
   assert.match(source, /objectBindingCount/)
   assert.match(source, /hashlib[.]sha256\(canonical\(publish_input\)/)
+  assert.match(source, /diagnose-scientific-v2-publish-input[.]cjs/)
+  assert.match(source, /--read-only[\s\S]*<\/dev\/null/)
+  assert.match(source, /install -o 0 -g 0 -m 0600/)
+  assert.match(diagnostic, /paperbanana_benchmark_scientific_v2_batches/)
+  assert.match(diagnostic, /failedStages/)
+  assert.match(diagnostic, /providerCalls:\s*0/)
+  assert.doesNotMatch(diagnostic, /insertOne|updateOne|deleteOne|findOneAndUpdate|fetch\(|axios|provider dispatch/i)
+  assert.doesNotMatch(diagnostic, /process[.]stdout[.]write\([^\n]*(?:secret|uri|objectKey)/i)
   assert.doesNotMatch(source, /cat\s+|set -x|printenv|objectKey[^\n]*printf|evidence[^\n]*printf/)
 })
 

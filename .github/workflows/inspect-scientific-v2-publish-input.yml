@@ -5,6 +5,7 @@ on:
     inputs:
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
+      expected_core_digest: { required: true }
       expected_worker_digest: { required: true }
       render_bundle_sha256: { required: true }
       manifest_hash: { required: true }
@@ -27,6 +28,7 @@ jobs:
         env:
           CONTROL_SHA: ${{ inputs.expected_control_sha }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           RENDER_BUNDLE_SHA: ${{ inputs.render_bundle_sha256 }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
@@ -34,7 +36,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
-          for hash in "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH"; do
+          for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH"; do
             [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
           done
           [[ "$CONFIRM" == inspect-exact-scientific-v2-publish-input ]]
@@ -55,13 +57,21 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           RENDER_BUNDLE_SHA: ${{ inputs.render_bundle_sha256 }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q RENDER_BUNDLE_SHA=%q MANIFEST_HASH=%q bash -s' \
-            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH"
+          diagnostic="deploy/hk-single-host/scripts/diagnose-scientific-v2-publish-input.cjs"
+          diagnostic_sha="$(sha256sum "$diagnostic" | awk '{print $1}')"
+          remote_diagnostic="$(ssh "$DEPLOY_USER@$DEPLOY_HOST" 'umask 077; mktemp /tmp/paperbanana-scientific-v2-publish-diagnostic.XXXXXXXXXXXX.cjs')"
+          [[ "$remote_diagnostic" =~ ^/tmp/paperbanana-scientific-v2-publish-diagnostic[.][A-Za-z0-9]{8,}[.]cjs$ ]]
+          cleanup() { ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_diagnostic'" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          scp "$diagnostic" "$DEPLOY_USER@$DEPLOY_HOST:$remote_diagnostic"
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q RENDER_BUNDLE_SHA=%q MANIFEST_HASH=%q DIAGNOSTIC_PATH=%q DIAGNOSTIC_SHA=%q bash -s' \
+            "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" "$remote_diagnostic" "$diagnostic_sha"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           trap 'status=$?; line=$LINENO; trap - ERR; printf "{\"operation\":\"inspect-scientific-v2-publish-input-failure\",\"providerCalls\":0,\"line\":%s,\"exitCode\":%s}\\n" "$line" "$status" >&2; exit "$status"' ERR
@@ -69,9 +79,24 @@ jobs:
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           repo=/opt/paperbanana/repo
+          deploy_dir="$repo/deploy/hk-single-host"
+          deploy_env="$deploy_dir/.env"
           private_root=/opt/paperbanana/operator-private/scientific-v2
           rendered="$private_root/$RENDER_BUNDLE_SHA.publish-input.json"
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          [[ -f "$DIAGNOSTIC_PATH" && ! -L "$DIAGNOSTIC_PATH" && "$(sha256sum "$DIAGNOSTIC_PATH" | awk '{print $1}')" == "$DIAGNOSTIC_SHA" ]]
+          diagnostic_target="$private_root/$DIAGNOSTIC_SHA.publish-diagnostic.cjs"
+          if [[ -e "$diagnostic_target" ]]; then
+            [[ -f "$diagnostic_target" && ! -L "$diagnostic_target" && "$(stat -c '%u:%g:%a:%h' "$diagnostic_target")" =~ ^0:0:0?600:1$ ]]
+            cmp -s "$DIAGNOSTIC_PATH" "$diagnostic_target"
+          else
+            install -o 0 -g 0 -m 0600 "$DIAGNOSTIC_PATH" "$diagnostic_target"
+          fi
+          [[ "$(sha256sum "$diagnostic_target" | awk '{print $1}')" == "$DIAGNOSTIC_SHA" ]]
+          core_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=paperbanana-api --format '{{.ID}}')"
+          [[ "$core_id" =~ ^[a-f0-9]+$ ]]
+          core_image_id="$(docker inspect --format '{{.Image}}' "$core_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$core_image_id" | jq -e --arg digest "sha256:$CORE_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
           image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
@@ -154,4 +179,8 @@ jobs:
               'objectBindingCount': len(publish_input['objectBindings']),
           }, separators=(',', ':')))
           PY
+          compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
+          "${compose[@]}" run --rm --no-deps -T --user 0:0 --read-only \
+            -v "$rendered:/input.json:ro" -v "$diagnostic_target:/diagnostic.cjs:ro" \
+            paperbanana-api node /diagnostic.cjs /input.json </dev/null
           REMOTE
