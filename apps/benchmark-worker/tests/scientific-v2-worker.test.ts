@@ -49,6 +49,7 @@ import {
   createScientificV2SignedStateOperationReport,
   verifyScientificV2SignedStateOperationReport,
 } from '../src/scientific-v2-state-report.js'
+import { createScientificV2ReviewPackStagingBundle } from '../src/scientific-v2-review-pack-stager.js'
 import {
   normalizeScientificV2SignedStateOperationReport as normalizeApiScientificV2SignedStateOperationReport,
   verifyScientificV2ImportedState as verifyApiScientificV2ImportedState,
@@ -1624,6 +1625,22 @@ function reviewerSubmission(assignment: ReturnType<typeof createScientificBlindR
     })),
   }))
 }
+
+test('review pack stager bundles Core and Worker review logic without runtime TypeScript imports', () => {
+  const authority = reviewAuthority(H64('6'), ['stage-review'])
+  const staged = createScientificV2ReviewPackStagingBundle({
+    manifest: authority.manifest,
+    state: authority.state,
+    attestationSecret: REVIEW_ATTESTATION_SECRET,
+    issuedAt: CREATED_AT,
+  }) as any
+  assert.equal(staged.operation, 'review_pack')
+  assert.equal(staged.input.batchManifestHash, authority.manifest.manifestHash)
+  assert.equal(staged.input.state.stateHash, authority.state.stateHash)
+  assert.equal(staged.input.sources.length, authority.manifest.models.length)
+  assert.match(staged.input.sourceSetHash, /^[a-f0-9]{64}$/)
+  assert.match(staged.input.seed, /^[a-f0-9]{64}$/)
+})
 
 test('review roster retains a zero-success model while packaging only exact successful state items', () => {
   const packetSecret = REVIEW_PACKET_SIGNING_SECRET

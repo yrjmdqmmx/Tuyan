@@ -43,6 +43,17 @@ jobs:
           done
           [[ "$CONFIRM" == stage-exact-scientific-v2-review-pack-bundle ]]
 
+      - name: Build exact offline review pack stager
+        run: |
+          set -Eeuo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm --filter @paperbanana/benchmark-worker exec esbuild \
+            src/scientific-v2-review-pack-stager.ts \
+            --bundle --platform=node --target=node24 --format=esm \
+            --outfile=/tmp/scientific-v2-review-pack-stager.mjs
+          sha256sum /tmp/scientific-v2-review-pack-stager.mjs > /tmp/scientific-v2-review-pack-stager.sha256
+
       - name: Configure SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
@@ -53,6 +64,15 @@ jobs:
           printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
           printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage exact offline review pack stager
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          scp /tmp/scientific-v2-review-pack-stager.mjs \
+            "$DEPLOY_USER@$DEPLOY_HOST:/tmp/scientific-v2-review-pack-stager-$GITHUB_RUN_ID.mjs"
 
       - name: Derive review pack bundle in immutable deployed Worker
         env:
@@ -66,11 +86,14 @@ jobs:
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q bash -s' \
-            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH"
+          stager_sha="$(cut -d' ' -f1 /tmp/scientific-v2-review-pack-stager.sha256)"
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q STAGER_SHA=%q GITHUB_RUN_ID=%q bash -s' \
+            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH" "$stager_sha" "$GITHUB_RUN_ID"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
+          source_stager="/tmp/scientific-v2-review-pack-stager-$GITHUB_RUN_ID.mjs"
+          root_stager="/tmp/scientific-v2-review-pack-stager-root-$GITHUB_RUN_ID.mjs"
           repo=/opt/paperbanana/repo
           deploy_env=$repo/deploy/hk-single-host/.env
           core_env=/opt/paperbanana/secrets/core.env
@@ -79,6 +102,9 @@ jobs:
           manifest_path=$bundle_root/$MANIFEST_FILE_SHA.manifest.json
           state_path=$bundle_root/$STATE_FILE_SHA.state.json
           attestation_path=$admin_results/$ATTESTATION_FILE_SHA.attest.json
+          [[ "$STAGER_SHA" =~ ^[a-f0-9]{64}$ && -f "$source_stager" && ! -L "$source_stager" ]]
+          [[ "$(sha256sum "$source_stager" | awk '{print $1}')" == "$STAGER_SHA" ]]
+          install -o 0 -g 0 -m 0600 "$source_stager" "$root_stager"
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
@@ -97,7 +123,7 @@ jobs:
               container_id="$(<"$cidfile")"
               [[ "$container_id" =~ ^[a-f0-9]{64}$ ]] && docker rm -f "$container_id" >/dev/null 2>&1 || true
             fi
-            rm -f -- "$input_dir/input.json" "$cidfile" "$output_dir/bundle.json"
+            rm -f -- "$source_stager" "$root_stager" "$input_dir/input.json" "$input_dir/stager.mjs" "$cidfile" "$output_dir/bundle.json"
             rmdir -- "$input_dir" "$output_dir" 2>/dev/null || true
           }
           trap cleanup EXIT
@@ -177,40 +203,18 @@ jobs:
           finally:
               os.close(fd)
           PY
+          install -o 0 -g 1000 -m 0440 "$root_stager" "$input_dir/stager.mjs"
+          [[ "$(sha256sum "$input_dir/stager.mjs" | awk '{print $1}')" == "$STAGER_SHA" ]]
           chown 0:1000 "$input_dir"
           chmod 0550 "$input_dir"
           chown 1000:1000 "$output_dir"
           chmod 0700 "$output_dir"
-          node_script='import fs from "node:fs";
-          import { canonicalHash, createScientificReviewPacket } from "@paperbanana/benchmark-core";
-          import { createScientificReviewSourceBindings } from "/app/dist/scientific-v2-review.js";
-          const input=JSON.parse(fs.readFileSync("/run/paperbanana-review-input/input.json","utf8"));
-          const {manifest,state,attestationSecret,issuedAt}=input;
-          if(state.status!=="completed"||state.manifestHash!==manifest.manifestHash)throw new Error("SCIENTIFIC_V2_REVIEW_BATCH_NOT_TERMINAL");
-          const cases=new Map(manifest.cases.map(item=>[item.id,item]));
-          const sources=manifest.models.map(model=>{
-            const modelKey=model.canonicalModelId;
-            const slots=state.slots.filter(slot=>slot.canonicalModelId===modelKey&&slot.status==="succeeded");
-            if(slots.length===0)return {modelKey,packet:null,signingSecret:null};
-            const runHash=canonicalHash({batchManifestHash:manifest.manifestHash,stateHash:state.stateHash,modelKey,attemptHashes:slots.map(slot=>slot.attempts.at(-1).attemptHash)});
-            const items=slots.map(slot=>{
-              const scientificCase=cases.get(slot.caseId),attempt=slot.attempts.at(-1);
-              if(!scientificCase||!attempt)throw new Error("SCIENTIFIC_V2_REVIEW_SOURCE_INVALID");
-              const common={caseId:scientificCase.id,caseManifestHash:scientificCase.manifestHash,applicableAxes:scientificCase.applicableAxes,imageHash:attempt.rawImageHash,rubric:scientificCase.rubric,attemptResult:{status:"succeeded",routeId:`${slot.provider}:${slot.modelId}:${slot.operation}`,attemptHash:attempt.attemptHash},instruction:scientificCase.instruction};
-              return scientificCase.kind==="generation"?{...common,negativePrompt:scientificCase.negativePrompt,aspectRatio:scientificCase.aspectRatio}:{...common,sourceHash:scientificCase.sourceHash,editedHash:attempt.editedHash,region:scientificCase.region};
-            });
-            const packet=createScientificReviewPacket({suiteManifestHash:manifest.suiteHash,packetId:`scientific-v2:${manifest.manifestHash}:${modelKey}`,runHash,issuedAt,signingSecret:attestationSecret,items});
-            return {modelKey,packet,signingSecret:attestationSecret};
-          });
-          const bound=createScientificReviewSourceBindings({batchManifestHash:manifest.manifestHash,manifest,state,sources},attestationSecret);
-          const bindingByModel=new Map(bound.bindings.map(binding=>[binding.modelKey,binding]));
-          const bundle={operation:"review_pack",gate:{enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"},input:{batchManifestHash:manifest.manifestHash,manifest,state,sourceSetHash:bound.sourceSetHash,seed:canonicalHash({batchManifestHash:manifest.manifestHash,stateHash:state.stateHash,reviewProtocol:manifest.reviewProtocol}),sources:sources.map(source=>({...source,binding:bindingByModel.get(source.modelKey)})),attestationSecret}};
-          fs.writeFileSync("/run/paperbanana-review-output/bundle.json",JSON.stringify(bundle)+"\n",{encoding:"utf8",mode:0o600,flag:"wx"});'
           timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
             --pids-limit 64 --memory 1g --memory-swap 1g --user 1000:1000 \
             -v "$input_dir:/run/paperbanana-review-input:ro" -v "$output_dir:/run/paperbanana-review-output" \
+            -v "$input_dir/stager.mjs:/app/scientific-v2-review-pack-stager.mjs:ro" \
             --cidfile "$cidfile" \
-            --entrypoint node "$worker_image" --input-type=module -e "$node_script"
+            --entrypoint node "$worker_image" /app/scientific-v2-review-pack-stager.mjs
           bundle="$output_dir/bundle.json"
           [[ -f "$bundle" && ! -L "$bundle" && "$(stat -c '%u:%g:%a' "$bundle")" =~ ^1000:1000:0?600$ ]]
           jq -e --arg manifest "$MANIFEST_HASH" '
