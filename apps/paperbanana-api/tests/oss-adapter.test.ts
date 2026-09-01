@@ -253,6 +253,53 @@ test('readFile never exposes an unbounded whole-object fallback', async () => {
   assert.equal(wholeObjectReads, 0)
 })
 
+test('readFileExactRanges retries incomplete bounded chunks and reconstructs the authoritative object size', async () => {
+  const bytes = Buffer.alloc(512 * 1024 + 4, 7)
+  const ranges: string[] = []
+  let firstRangeAttempts = 0
+  const serverClient = {
+    async head() {
+      return { status: 200, res: { headers: { 'content-length': String(bytes.length) } } }
+    },
+    async getStream(_key: string, options: any) {
+      const range = String(options.headers.Range)
+      ranges.push(range)
+      const match = /^bytes=(\d+)-(\d+)$/.exec(range)!
+      const start = Number(match[1])
+      const end = Number(match[2])
+      const expected = bytes.subarray(start, end + 1)
+      if (start === 0 && firstRangeAttempts++ === 0) {
+        return { stream: Readable.from([expected.subarray(0, expected.length - 1)]), res: { status: 206, headers: {} } }
+      }
+      return { stream: Readable.from([expected]), res: { status: 206, headers: { 'content-length': String(expected.length) } } }
+    },
+  }
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
+    .bucket('paperbanana-private')
+
+  const result = await bucket.readFileExactRanges('bench/scientific-v2/private/objects/hash.png', bytes.length)
+
+  assert.deepEqual(result, bytes)
+  assert.deepEqual(ranges, [
+    'bytes=0-524287',
+    'bytes=0-524287',
+    'bytes=524288-524291',
+  ])
+})
+
+test('readFileExactRanges rejects an oversized object before requesting any bytes', async () => {
+  let rangeCalls = 0
+  const serverClient = {
+    async head() { return { status: 200, res: { headers: { 'content-length': '6' } } } },
+    async getStream() { rangeCalls += 1; throw new Error('must not read') },
+  }
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
+    .bucket('paperbanana-private')
+
+  await assert.rejects(bucket.readFileExactRanges('bench/scientific-v2/private/objects/hash.png', 5), /exceeds 5 byte limit/)
+  assert.equal(rangeCalls, 0)
+})
+
 test('readFile abort destroys the underlying OSS stream instead of only abandoning its promise', async () => {
   let destroyed = false
   let streamOptions: any
