@@ -297,8 +297,25 @@ try:
                 raise RuntimeError('phase')
         if (manifest_code_sha == execution_code_sha and (state.get('status') != 'ready' or legacy_recovery_state_hash is not None)) or (manifest_code_sha != execution_code_sha and not canary_resume):
             raise RuntimeError('phase')
-    if phase == 'full' and (state.get('status') != 'canary_complete' or (manifest_code_sha == execution_code_sha and legacy_recovery_state_hash is not None) or (manifest_code_sha != execution_code_sha and legacy_recovery_state_hash is None)):
-        raise RuntimeError('phase')
+    if phase == 'full':
+        slots = state.get('slots')
+        terminal = {'succeeded', 'unsupported', 'failed'}
+        resumable = {'pending', 'retrying'}
+        signed_running_resume = (
+            manifest_code_sha == execution_code_sha
+            and legacy_recovery_state_hash is None
+            and state.get('status') == 'running'
+            and isinstance(slots, list)
+            and any(isinstance(slot, dict) and slot.get('isProviderCanary') is not True
+                    and slot.get('status') in terminal for slot in slots)
+            and any(isinstance(slot, dict) and slot.get('status') in resumable for slot in slots)
+            and all(isinstance(slot, dict) and slot.get('status') in terminal | resumable for slot in slots)
+        )
+        ordinary_full = state.get('status') == 'canary_complete'
+        if (not ordinary_full and not signed_running_resume
+                or manifest_code_sha == execution_code_sha and legacy_recovery_state_hash is not None
+                or manifest_code_sha != execution_code_sha and legacy_recovery_state_hash is None):
+            raise RuntimeError('phase')
     revision = attestation.get('revision')
     issued_at = attestation.get('issuedAt')
     batch_id = attestation.get('batchId')
