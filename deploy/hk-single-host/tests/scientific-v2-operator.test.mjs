@@ -856,7 +856,7 @@ test('current frozen batch has a dedicated zero-provider public render runner wi
   assert.match(source, /-v "\$output_dir:\/run\/paperbanana-scientific-v2-output"/)
   assert.match(source, /PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH=\/run\/paperbanana-scientific-v2-output\/publish-input[.]json/)
   assert.match(source, /PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR=\/run\/paperbanana-scientific-v2-output/)
-  assert.match(source, /benchmark-operator node \/app\/scientific-v2-public-renderer[.]mjs >"\$result"/)
+  assert.match(source, /benchmark-operator node \/app\/scientific-v2-public-renderer[.]mjs <\/dev\/null >"\$result"/)
   assert.doesNotMatch(source, /node --input-type=module < "\$root_script"/)
   assert.doesNotMatch(source, /render_output="\$\(/)
   assert.match(source, /private_result="\$output_dir\/publish-input[.]json"/)

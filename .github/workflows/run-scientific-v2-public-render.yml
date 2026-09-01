@@ -283,7 +283,7 @@ jobs:
             -e PAPERBANANA_BENCH_OPENROUTER_API_KEY= \
             -e PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_PATH=/run/paperbanana-scientific-v2-output/publish-input.json \
             -e PAPERBANANA_SCIENTIFIC_V2_PRIVATE_OUTPUT_DIR=/run/paperbanana-scientific-v2-output \
-            benchmark-operator node /app/scientific-v2-public-renderer.mjs >"$result"
+            benchmark-operator node /app/scientific-v2-public-renderer.mjs </dev/null >"$result"
           chmod 0600 "$result"
           [[ -f "$private_result" && ! -L "$private_result" && "$(stat -c '%u:%g:%a' "$private_result")" =~ ^1000:1000:0?600$ ]]
           jq -e '

@@ -25,7 +25,7 @@
 ## 条目（最新在上）
 
 ### [2026-09-01] Scientific V2 公开证据结果改为容器直接保护落盘 — by Codex
-变更：公开 WebP 全量重算与逐对象 SHA 已成功，但旧 workflow 依赖把完整 `{publishInput}` JSON 先装入远端 shell command-substitution、再复制到 root-only 文件；长任务结束后该 shell 交接可能丢失，表现为图片已全部复验而发布输入文件不存在。`scientific-v2-operator` 现与既有 review 输出采用同一保护写入协议：容器以服务 UID 在独占 `0700` bind mount 内 `O_EXCL` 创建完整 `0600` publish input，stdout 只返回 hash 和计数；主机再验证所有字段、canonical hash、owner/mode/link 与字节稳定性后安装为 root `0600` 文件。Provider key 仍置空，Provider 调用固定为 0；不改图片、九题、十维、分辨率、评分、失败/unknown、盲审或原子发布规则。
+变更：公开 WebP 全量重算与逐对象 SHA 已成功，但旧 workflow 依赖把完整 `{publishInput}` JSON 先装入远端 shell command-substitution、再复制到 root-only 文件；同时 `docker compose run -T` 仍继承 SSH heredoc 的 stdin，会把容器命令之后的落盘/验 hash/安装命令消费掉并以 0 退出，表现为图片已全部复验、GitHub 显示成功而发布输入不存在。容器命令现固定 `</dev/null`，并与既有 review 输出采用同一保护写入协议：容器以服务 UID 在独占 `0700` bind mount 内 `O_EXCL` 创建完整 `0600` publish input，stdout 只返回 hash 和计数；主机再验证所有字段、canonical hash、owner/mode/link 与字节稳定性后安装为 root `0600` 文件。Provider key 仍置空，Provider 调用固定为 0；不改图片、九题、十维、分辨率、评分、失败/unknown、盲审或原子发布规则。
 
 各端待办：
 - [x] Benchmark Worker / 部署运维（保护输出 sink、workflow 交接、174 项 Worker 与 37 项控制面测试）
