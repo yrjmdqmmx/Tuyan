@@ -99,6 +99,8 @@ jobs:
             [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a' "$path")" =~ ^0:0:0?600$ ]]
           done
           [[ -d "$bundle_root" && ! -L "$bundle_root" && "$(stat -c '%u:%g:%a' "$bundle_root")" =~ ^0:0:0?700$ ]]
+          [[ -d "$private_root" && ! -L "$private_root" ]]
+          install -d -o 0 -g 0 -m 0700 "$private_root"
           [[ -d "$private_root" && ! -L "$private_root" && "$(stat -c '%u:%g:%a' "$private_root")" =~ ^0:0:0?700$ ]]
           read_env_value() {
             awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"

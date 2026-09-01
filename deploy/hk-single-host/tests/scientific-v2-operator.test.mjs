@@ -771,6 +771,7 @@ test('current frozen batch has a dedicated zero-provider public render runner wi
   assert.match(source, /publishInput[.]batchId/)
   assert.match(source, /publishInputHash/)
   assert.match(source, /publish-input[.]json/)
+  assert.match(source, /install -d -o 0 -g 0 -m 0700 "\$private_root"/)
   assert.match(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY=/)
   assert.match(source, /providerCalls['"]?:\s*0/)
   assert.doesNotMatch(source, /set -x|printenv|rm -rf/)
