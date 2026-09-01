@@ -125,9 +125,12 @@ function EvidenceCard({ item, benchmarkCase, modelName }) {
 
 function ScientificEvidenceCard({ item, benchmarkCase, modelName }) {
   const successful = item.status === 'succeeded'
+  const pixels = successful && item.actualOutputPixels
+    ? ` · ${item.actualOutputPixels.width} × ${item.actualOutputPixels.height} · ${scoreText(item.actualOutputPixels.megapixels)} MP`
+    : ''
   return (
     <article className="bench-evidence-card bench-scientific-evidence-card">
-      <header><div><span>{benchmarkCase?.id || item.caseId}</span><h2>{benchmarkCase?.title || item.caseId}</h2></div><small>{benchmarkCase?.kind === 'edit' ? '局部编辑' : '生成'} · {item.attemptSummary?.count ?? 0} 次尝试</small></header>
+      <header><div><span>{benchmarkCase?.id || item.caseId}</span><h2>{benchmarkCase?.title || item.caseId}</h2></div><small>{benchmarkCase?.kind === 'edit' ? '局部编辑' : '生成'} · {item.attemptSummary?.count ?? 0} 次尝试{pixels}</small></header>
       {!successful ? <section className="bench-evidence-failure"><strong>{item.status}</strong><code>{item.failureReason || '未提供失败原因'}</code><p>该固定题位按 0 分计入总体。</p></section> : benchmarkCase?.kind === 'edit' ? (
         <div className="bench-edit-comparison"><figure><figcaption>编辑前</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={`${modelName} · ${benchmarkCase.title} · 编辑前`} /></figure><figure><figcaption>编辑后</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={`${modelName} · ${benchmarkCase.title} · 编辑后`} /></figure></div>
       ) : <BenchmarkEvidenceImage variants={item.variants} alt={`${modelName} · ${benchmarkCase?.title || item.caseId}`} />}
@@ -240,7 +243,7 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
         {visible.map((item) => {
           const name = item.model?.displayName || item.modelId
           return <article className="bench-case-evidence-item" key={item.sampleId || item.profileId}>
-            <header><a href={appPath(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{item.modelId}</small></a><span>Overall #{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}</span></header>
+            <header><a href={appPath(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{item.modelId}</small></a><span>Overall #{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}{item.status === 'succeeded' && item.actualOutputPixels ? ` · ${item.actualOutputPixels.width} × ${item.actualOutputPixels.height} · ${scoreText(item.actualOutputPixels.megapixels)} MP` : ''}</span></header>
             {scientific && item.status !== 'succeeded' ? <section className="bench-evidence-failure"><strong>{item.status}</strong><code>{item.failureReason || '未提供失败原因'}</code><p>该固定题位按 0 分计入总体。</p></section> : scientific && benchmarkCase?.kind === 'edit' ? <div className="bench-edit-comparison"><figure><figcaption>编辑前</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={`${name} · ${benchmarkCase.title} · 编辑前`} /></figure><figure><figcaption>编辑后</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase.title} · 编辑后`} /></figure></div> : <BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase?.title || caseId}`} />}
             {item.status === 'succeeded' || !scientific ? <EvidenceScores scores={item.scores} axes={scientific ? SCIENTIFIC_LEADERBOARD_AXES.filter((axis) => benchmarkCase?.applicableAxes?.includes(axis.id)) : LEADERBOARD_AXES} /> : null}
             <ul className="bench-evidence-note-list">{(item.reviewNotes || []).map((note, index) => <li key={`${item.sampleId}-note-${index}`}>{note}</li>)}</ul>

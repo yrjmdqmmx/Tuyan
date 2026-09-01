@@ -43,6 +43,7 @@ function scientificUiProfile() {
     return {
       caseId: item.id, kind: item.kind, status: 'succeeded', imageHash,
       attemptSummary: { count: 1, responseClasses: ['succeeded'] },
+      actualOutputPixels: { width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 123456 },
       scores: Object.fromEntries(item.applicableAxes.map((axis) => [axis, 8])), reviewNotes: ['加分：双盲审核未确认红线问题'],
       variants: [uiVariant('a', `https://img.example/after-${index}.webp`)],
       ...(item.kind === 'edit' ? { sourceHash: item.sourceHash, editedHash: imageHash, region: item.region, beforeVariants: [uiVariant('b', `https://img.example/before-${index}.webp`)] } : {}),
@@ -261,6 +262,7 @@ test('scientific v2 model evidence renders all nine fixed slots and edit before/
     assert.ok(screen.getByText('confirmed_attempts_exhausted'))
     assert.equal(screen.getAllByText('编辑前').length, 3)
     assert.equal(screen.getAllByText('编辑后').length, 3)
+    assert.equal(screen.getAllByText(/2048 × 1152/u).length, 8)
     assert.match(container.textContent, /生成成功率/u)
     assert.match(container.textContent, /编辑成功率/u)
   } finally { globalThis.fetch = previousFetch }
@@ -281,6 +283,7 @@ test('scientific v2 case comparison renders edit before/after for every loaded m
     await screen.findByRole('heading', { name: '单一文字局部编辑' })
     assert.equal(screen.getAllByText('编辑前').length, 1)
     assert.equal(screen.getAllByText('编辑后').length, 1)
+    assert.ok(screen.getByText(/2048 × 1152/u))
     assert.ok(screen.getByText('固定指令 7'))
   } finally { globalThis.fetch = previousFetch }
 })
