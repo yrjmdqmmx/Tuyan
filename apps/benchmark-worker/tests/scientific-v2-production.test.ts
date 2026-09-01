@@ -1158,7 +1158,7 @@ test('signed public rendition replay verifies exact existing bytes even when OSS
       },
       async get() { throw Object.assign(new Error('details omitted'), { name: 'ResponseError' }) },
       async getStream(key, options) {
-        assert.deepEqual(options, { headers: { Range: 'bytes=0-' } })
+        assert.equal(options, undefined)
         return {
         stream: Readable.from([existing.get(key)!.bytes]),
         res: { status: 206, headers: { 'content-length': String(existing.get(key)!.bytes.length) } },

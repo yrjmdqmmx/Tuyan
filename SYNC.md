@@ -25,7 +25,7 @@
 ## 条目（最新在上）
 
 ### [2026-09-01] Scientific V2 公开 WebP 幂等复验兼容 OSS 泛化重复响应 — by Codex
-变更：生产只读复验发现阿里 OSS 对已经存在的确定性公开 WebP 有时仅返回无 status/code 的 `ResponseError`，旧 Worker 只把 `409/FileAlreadyExists` 识别为重复对象，因而在图片已存在且未丢失时误报 runtime failure；同一 SDK 的 buffered `get()` 还可能隐藏已存在对象。公开 rendition 写入失败后现统一使用 open-ended Range 流读取同一内容寻址对象，并在 header 与逐块读取处都硬限制 25 MiB（测试 store 无流接口时才回退 `get()`），避免 OSS 对超出实际文件末尾的固定 Range 端点返回错误；随后逐字节、SHA-256、`image/webp`、immutable cache-control、metadata hash 与 private ACL 复验。只有完全一致（或最小权限凭据精确返回 `403 AccessDenied`）才作为幂等成功，缺失、漂移或公开 ACL 仍失败。不重新生成模型图片、不改对象字节、题目、分辨率、评分、失败/unknown、盲审或发布规则。
+变更：生产只读复验发现阿里 OSS 对已经存在的确定性公开 WebP 有时仅返回无 status/code 的 `ResponseError`，旧 Worker 只把 `409/FileAlreadyExists` 识别为重复对象，因而在图片已存在且未丢失时误报 runtime failure；同一 SDK 的 buffered `get()` 与 Range `getStream()` 还可能在 HEAD/单字节 Range 均成功时错误重试。公开 rendition 写入失败后现统一使用无 Range 的流读取同一内容寻址对象，并在 header 与逐块读取处都硬限制 25 MiB（测试 store 无流接口时才回退 `get()`）；随后逐字节、SHA-256、`image/webp`、immutable cache-control、metadata hash 与 private ACL 复验。只有完全一致（或最小权限凭据精确返回 `403 AccessDenied`）才作为幂等成功，缺失、漂移或公开 ACL 仍失败。不重新生成模型图片、不改对象字节、题目、分辨率、评分、失败/unknown、盲审或发布规则。
 
 各端待办：
 - [x] Benchmark Worker / 部署运维（泛化重复响应复验、回归测试与零 Provider 重放）

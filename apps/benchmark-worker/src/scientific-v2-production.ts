@@ -207,9 +207,7 @@ async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceSto
     let metadata: Awaited<ReturnType<ScientificV2PublicEvidenceStore['head']>>
     const readExisting = async () => {
       if (!store.getStream) return Buffer.from((await store.get(variant.objectKey)).content)
-      const result = await store.getStream(variant.objectKey, {
-        headers: { Range: 'bytes=0-' },
-      })
+      const result = await store.getStream(variant.objectKey)
       const advertisedHeader = Object.entries(result.res?.headers || {})
         .find(([key]) => key.toLowerCase() === 'content-length')?.[1]
       const advertised = Number(advertisedHeader)
