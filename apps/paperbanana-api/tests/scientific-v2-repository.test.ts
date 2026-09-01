@@ -5,6 +5,7 @@ import test from 'node:test'
 
 import {
   PB_SCIENTIFIC_FIGURE_V2,
+  SCIENTIFIC_EDIT_SOURCE,
   SCIENTIFIC_BENCHMARK_IDENTITY,
   buildScientificV2CanonicalManifest,
   buildScientificV2PriceSnapshot,
@@ -2276,9 +2277,12 @@ test('review export verifies large blind assignments with bounded concurrency', 
 
   await repository.exportReviewAssignment({ batchId, assignment, objectBindings })
 
-  assert.equal(verified.size, objectBindings.length)
-  assert.ok(maximumActive > 1)
-  assert.ok(maximumActive <= 8)
+  assert.equal(verified.size, objectBindings.length + 1)
+  assert.ok(verified.has([
+    `bench/scientific-v2/private/objects/${SCIENTIFIC_EDIT_SOURCE.sourceHash}.png`,
+    SCIENTIFIC_EDIT_SOURCE.sourceHash,
+  ].join('\u0000')))
+  assert.equal(maximumActive, 16)
 })
 
 function slotModelKey(assignment: any) {

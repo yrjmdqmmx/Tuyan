@@ -720,6 +720,34 @@ test('public actions read immutable releases while admin actions require authori
   assert.equal(exported.packet.packetHash, 'packet-1')
 })
 
+test('scientific blind review export signs both edited output and immutable before image without leaking object keys', async () => {
+  const imageHash = 'a'.repeat(64)
+  const sourceHash = 'b'.repeat(64)
+  const service = createBenchmarkService({
+    repository: {
+      async latestRelease() { return null }, async releaseByModel() { return null }, async candidates() { return [] }, async approve() {}, async control() {},
+      async exportReview() {
+        return {
+          role: 'A', mappingHash: 'mapping', assignmentSet: {}, assignmentAttestationHash: 'attestation',
+          packages: [{ items: [{ kind: 'edit', imageHash, sourceHash }] }],
+          _objectBindings: [
+            { imageHash, objectKey: `bench/scientific-v2/private/objects/${imageHash}.png` },
+            { imageHash: sourceHash, objectKey: `bench/scientific-v2/private/objects/${sourceHash}.png` },
+          ],
+        }
+      },
+      async importReview() {}, async publish() {},
+    },
+    signEvidence: async (key) => `https://signed.example/${key}`,
+  })
+
+  const exported = await service.handle({ action: 'adminBenchmarkReviewExport', evaluationMode: 'codex_scientific_v2' }, true)
+  const item = exported.packet.packages[0].items[0]
+  assert.equal(item.imageUrl, `https://signed.example/bench/scientific-v2/private/objects/${imageHash}.png`)
+  assert.equal(item.sourceImageUrl, `https://signed.example/bench/scientific-v2/private/objects/${sourceHash}.png`)
+  assert.equal('_objectBindings' in exported.packet, false)
+})
+
 test('leaderboard rejects unknown lanes instead of comparing incompatible releases', async () => {
   const service = createBenchmarkService({
     repository: {

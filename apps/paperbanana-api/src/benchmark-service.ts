@@ -602,7 +602,13 @@ export function createBenchmarkService({
                 items: await Promise.all((Array.isArray(reviewPackage.items) ? reviewPackage.items : []).map(async (item: AnyRecord) => {
                   const objectKey = bindings.get(String(item.imageHash || ''))
                   if (!objectKey) throw new Error('SCIENTIFIC_V2_REVIEW_OBJECT_BINDING_INVALID')
-                  return { ...item, imageUrl: await signEvidence(objectKey) }
+                  const sourceObjectKey = item.kind === 'edit' ? bindings.get(String(item.sourceHash || '')) : undefined
+                  if (item.kind === 'edit' && !sourceObjectKey) throw new Error('SCIENTIFIC_V2_REVIEW_OBJECT_BINDING_INVALID')
+                  return {
+                    ...item,
+                    imageUrl: await signEvidence(objectKey),
+                    ...(sourceObjectKey ? { sourceImageUrl: await signEvidence(sourceObjectKey) } : {}),
+                  }
                 })),
               }))),
             },
