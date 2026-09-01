@@ -189,25 +189,33 @@ type ScientificV2PublicVariant = {
 }
 
 async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceStore, variant: ScientificV2PublicVariant, bytes: Buffer) {
+  const variantHeaders = (forbidOverwrite: boolean) => ({
+    'Content-Type': 'image/webp',
+    'Cache-Control': 'public, max-age=31536000, immutable',
+    'x-oss-object-acl': 'private',
+    ...(forbidOverwrite ? { 'x-oss-forbid-overwrite': 'true' } : {}),
+    'x-oss-meta-sha256': variant.imageHash,
+  })
   try {
-    await store.put(variant.objectKey, bytes, { headers: {
-      'Content-Type': 'image/webp',
-      'Cache-Control': 'public, max-age=31536000, immutable',
-      'x-oss-object-acl': 'public-read',
-      'x-oss-forbid-overwrite': 'true',
-      'x-oss-meta-sha256': variant.imageHash,
-    } })
+    await store.put(variant.objectKey, bytes, { headers: variantHeaders(true) })
   } catch (error) {
     const facts = error as { status?: unknown; code?: unknown }
     if (![409, 'FileAlreadyExists'].includes(facts.status as string | number)
       && ![409, 'FileAlreadyExists'].includes(facts.code as string | number)) throw error
-    const [existingResult, metadata, aclResult] = await Promise.all([
-      store.get(variant.objectKey), store.head(variant.objectKey), store.getACL(variant.objectKey),
-    ])
+    const [existingResult, metadata] = await Promise.all([store.get(variant.objectKey), store.head(variant.objectKey)])
+    let aclVerified = false
+    let aclReassertionRequired = false
+    try {
+      aclVerified = String((await store.getACL(variant.objectKey)).acl || '') === 'private'
+    } catch (aclError) {
+      const aclFacts = aclError as { status?: unknown; code?: unknown }
+      if (aclFacts.status === 403 && aclFacts.code === 'AccessDenied') aclReassertionRequired = true
+      else throw aclError
+    }
     const existing = Buffer.from(existingResult.content)
-    const headers = metadata.headers || metadata.res?.headers || {}
+    const metadataHeaders = metadata.headers || metadata.res?.headers || {}
     const header = (name: string) => {
-      const found = Object.entries(headers).find(([key]) => key.toLowerCase() === name)
+      const found = Object.entries(metadataHeaders).find(([key]) => key.toLowerCase() === name)
       return found ? String(found[1]) : ''
     }
     if (!existing.equals(bytes)
@@ -215,8 +223,15 @@ async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceSto
       || header('content-type').split(';', 1)[0].trim().toLowerCase() !== 'image/webp'
       || header('cache-control') !== 'public, max-age=31536000, immutable'
       || header('x-oss-meta-sha256') !== variant.imageHash
-      || String(aclResult.acl || '') !== 'public-read') {
+      || (!aclVerified && !aclReassertionRequired)) {
       scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_COLLISION')
+    }
+    if (aclReassertionRequired) {
+      try {
+        await store.put(variant.objectKey, bytes, { headers: variantHeaders(false) })
+      } catch {
+        scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_RECONCILIATION_REQUIRED')
+      }
     }
   }
 }

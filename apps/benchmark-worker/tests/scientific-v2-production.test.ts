@@ -1087,7 +1087,7 @@ test('scientific v2 public evidence builds exact three immutable non-upscaled We
     { imageHash: rawHash, objectKey: `bench/scientific-v2/private/objects/${rawHash}.png` },
     { imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash, objectKey: `bench/scientific-v2/private/objects/${SCIENTIFIC_EDIT_SOURCE.sourceHash}.png` },
   ])
-  assert.ok(puts.every((item) => (item.options.headers as Record<string, string>)['x-oss-object-acl'] === 'public-read'
+  assert.ok(puts.every((item) => (item.options.headers as Record<string, string>)['x-oss-object-acl'] === 'private'
     && (item.options.headers as Record<string, string>)['x-oss-forbid-overwrite'] === 'true'))
 })
 
@@ -1098,13 +1098,13 @@ test('public rendition duplicate reconciliation rejects exact bytes with drifted
     contentType: 'image/webp',
     cacheControl: 'public, max-age=31536000, immutable',
     sha256: '',
-    acl: 'public-read',
+    acl: 'private',
   }
   for (const mutate of [
     (facts: typeof baseline) => { facts.contentType = 'application/octet-stream' },
     (facts: typeof baseline) => { facts.cacheControl = 'private, no-store' },
     (facts: typeof baseline) => { facts.sha256 = '0'.repeat(64) },
-    (facts: typeof baseline) => { facts.acl = 'private' },
+    (facts: typeof baseline) => { facts.acl = 'public-read' },
   ]) {
     let attempted = Buffer.alloc(0)
     let attemptedHash = ''
@@ -1132,6 +1132,40 @@ test('public rendition duplicate reconciliation rejects exact bytes with drifted
     }), /SCIENTIFIC_V2_PUBLIC_RENDITION_COLLISION/)
     assert.match(attemptedHash, /^[a-f0-9]{64}$/)
   }
+})
+
+test('signed public rendition duplicate reasserts private ACL when the least-privilege principal cannot read ACL', async () => {
+  const raw = await sharp({ create: { width: 800, height: 400, channels: 3, background: '#cde' } }).png().toBuffer()
+  const rawHash = createHash('sha256').update(raw).digest('hex')
+  const existing = new Map<string, { bytes: Buffer; imageHash: string }>()
+  let privateReassertions = 0
+  const result = await createScientificV2PublicEvidenceInput({
+    canonicalModelId: 'test:scientific-model', caseId: 'scientific-generation-01',
+    raw: { bytes: raw, imageHash: rawHash, format: 'png' },
+    store: {
+      async put(key, bytes, options) {
+        const headers = options.headers as Record<string, string>
+        const value = { bytes: Buffer.from(bytes), imageHash: createHash('sha256').update(bytes).digest('hex') }
+        assert.equal(headers['x-oss-object-acl'], 'private')
+        if (headers['x-oss-forbid-overwrite'] === 'true') {
+          existing.set(key, value)
+          throw Object.assign(new Error('exists'), { status: 409 })
+        }
+        assert.equal(headers['x-oss-forbid-overwrite'], undefined)
+        assert.equal(headers['x-oss-meta-sha256'], value.imageHash)
+        privateReassertions += 1
+        return {}
+      },
+      async get(key) { return { content: existing.get(key)!.bytes } },
+      async head(key) { return { headers: {
+        'content-type': 'image/webp', 'cache-control': 'public, max-age=31536000, immutable',
+        'x-oss-meta-sha256': existing.get(key)!.imageHash,
+      } } },
+      async getACL() { throw Object.assign(new Error('forbidden'), { status: 403, code: 'AccessDenied' }) },
+    },
+  })
+  assert.equal((result.evidence[0] as any).variants.length, 3)
+  assert.equal(privateReassertions, 3)
 })
 
 test('production evidence store bounded-reads private bytes only with exact hash metadata MIME cache and ACL', async () => {
