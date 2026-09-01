@@ -78,8 +78,7 @@ jobs:
           docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
           docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
           [[ -d "$private_root" && ! -L "$private_root" && "$(stat -c '%u:%g:%a' "$private_root")" =~ ^0:0:0?700$ ]]
-          [[ -f "$rendered" && ! -L "$rendered" && "$(stat -c '%u:%g:%a' "$rendered")" =~ ^0:0:0?600$ ]]
-          python3 - "$rendered" "$MANIFEST_HASH" <<'PY'
+          python3 - "$rendered" "$private_root" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH" <<'PY'
           import hashlib
           import json
           import os
@@ -87,9 +86,25 @@ jobs:
           import stat
           import sys
 
-          path, manifest_hash = sys.argv[1:]
+          path, private_root, render_bundle_sha, manifest_hash = sys.argv[1:]
           limit = 64 * 1024 * 1024
-          fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+          try:
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+          except OSError:
+              candidates = sorted(
+                  match.group(1)
+                  for name in os.listdir(private_root)
+                  if (match := re.fullmatch(r'([a-f0-9]{64})[.]publish-input[.]json', name))
+              )
+              print(json.dumps({
+                  'operation': 'inspect-scientific-v2-publish-input-path-facts',
+                  'providerCalls': 0,
+                  'expectedBundleHash': render_bundle_sha,
+                  'expectedExists': False,
+                  'candidateBundleHashes': candidates[:64],
+                  'candidateCount': len(candidates),
+              }, separators=(',', ':')), file=sys.stderr)
+              raise
           try:
               before = os.fstat(fd)
               if (not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_nlink != 1
