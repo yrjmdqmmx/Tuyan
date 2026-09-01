@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-02] Scientific V2 remediation 原子替代发布与独立 lifecycle head — by Codex
+变更：Scientific V2 immutable release 文档继续保持原字节和原 `releaseHash`，发布生命周期移到独立 `paperbanana_benchmark_release_heads` / `paperbanana_benchmark_release_lifecycle` 文档。首次发布原子建立 active head；后续若同一评测身份已有 active release，普通 batch 仍以 `SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT` 拒绝，只有 `remediationOf` 精确绑定当前 active release 的 id/hash、源 batch/manifest 和非空目标集合且集合 hash 一致时，才在同一 Mongo 事务中插入新 release/证据、把旧 lifecycle 标为 superseded、移动 head 并 CAS 标记新 batch published。任一步失败全部回滚；公开 leaderboard/model 查询在 head 存在时只返回 active release，历史 release 仍可按内容 hash 校验和审计。公开 action 与 response 字段不变。
+
+各端待办：
+- [x] paperbanana-api（原子 head/lifecycle、精确 remediation 绑定、公开查询过滤及 TDD）
+- [ ] 生产发布（审核完成后部署 Core 并以 remediation batch 原子替代当前 V2）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与字段不变，无需改造）
+
 ### [2026-09-02] Scientific V2 修正批次可从签名 running 状态进入 full — by Codex
 变更：Scientific V2 run-bundle stager 的 `full` 阶段除既有 `canary_complete` 外，新增严格的签名 running-resume 结构：同一 manifest/execution SHA、无 legacy rotation、至少一个非 canary 题位已经是成功/不支持/失败终态、至少一个题位仍为 pending/retrying，且所有题位只能处于这五种状态。这样 remediation 的 328 个携带终态 + 32 个待补跑题位可直接进入 full；仅完成 provider canary 的 running 状态仍被拒绝，避免跳过 canary 边界。最终是否可 claim 仍由 Mongo 的 `status=frozen + remediationOf + 无 claimToken` CAS 约束；unknown、预算阻塞、not_executed、artifact 等状态仍失败关闭。
 

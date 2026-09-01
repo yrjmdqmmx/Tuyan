@@ -24,7 +24,16 @@ export const SCIENTIFIC_V2_COLLECTIONS = Object.freeze({
   dispatches: 'paperbanana_benchmark_scientific_v2_dispatches',
   reviews: 'paperbanana_benchmark_scientific_v2_review_artifacts',
   publicEvidence: 'paperbanana_benchmark_scientific_v2_public_evidence',
+  releaseHeads: 'paperbanana_benchmark_release_heads',
+  releaseLifecycle: 'paperbanana_benchmark_release_lifecycle',
 } as const)
+
+export const SCIENTIFIC_V2_RELEASE_HEAD_ID = [
+  'benchmark-release-head',
+  SCIENTIFIC_BENCHMARK_IDENTITY.suiteId,
+  SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode,
+  SCIENTIFIC_BENCHMARK_IDENTITY.evaluationEpoch,
+].join(':')
 
 const hashPattern = /^[a-f0-9]{64}$/
 const codeShaPattern = /^[a-f0-9]{40}$/
@@ -833,6 +842,8 @@ export function createScientificV2MongoRepository(
   const reviews = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.reviews)
   const publicEvidence = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.publicEvidence)
   const releases = db.collection<AnyRecord>('paperbanana_benchmark_releases')
+  const releaseHeads = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.releaseHeads)
+  const releaseLifecycle = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.releaseLifecycle)
   const verifyObject = options.verifyObject || (async () => {})
   const claimLeaseMs = options.claimLeaseMs ?? 120_000
   if (!Number.isInteger(claimLeaseMs) || claimLeaseMs < 1) scientificError('SCIENTIFIC_V2_CLAIM_LEASE_INVALID')
@@ -1982,15 +1993,91 @@ export function createScientificV2MongoRepository(
           if (!current || canonicalHash({ stateHash: current.stateHash, reviewFinalHash: current.reviewFinalHash, status: current.status, revision: current.revision, latestStateReportHash: current.latestStateReportHash }) !== snapshotHash) {
             scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
           }
-          const competing = await releases.findOne({
+          const identityQuery = {
             suiteId: SCIENTIFIC_BENCHMARK_IDENTITY.suiteId,
             evaluationMode: SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode,
             evaluationEpoch: SCIENTIFIC_BENCHMARK_IDENTITY.evaluationEpoch,
             profileStatus: 'published',
-          }, { session } as any)
-          if (competing) scientificError('SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT')
+          }
+          const currentHead = await releaseHeads.findOne({ _id: SCIENTIFIC_V2_RELEASE_HEAD_ID }, { session } as any)
+          let competing: AnyRecord | null = null
+          if (currentHead) {
+            competing = await releases.findOne({
+              _id: currentHead.releaseId, releaseHash: currentHead.releaseHash, ...identityQuery,
+            }, { session } as any)
+            const lifecycle = await releaseLifecycle.findOne({
+              releaseId: currentHead.releaseId, releaseHash: currentHead.releaseHash, status: 'active',
+            }, { session } as any)
+            if (!competing || !lifecycle) scientificError('SCIENTIFIC_V2_RELEASE_HEAD_CONFLICT')
+          } else {
+            const legacyCandidates = await releases.find(identityQuery, { session } as any)
+              .sort({ publishedAt: -1 }).limit(2).toArray()
+            if (legacyCandidates.length > 1) scientificError('SCIENTIFIC_V2_RELEASE_HEAD_CONFLICT')
+            competing = legacyCandidates[0] || null
+          }
+          const remediationOf = batch.remediationOf
+          if (competing) {
+            const targetSlotIds = remediationOf?.targetSlotIds
+            if (!remediationOf
+              || remediationOf.releaseId !== competing._id
+              || remediationOf.releaseHash !== competing.releaseHash
+              || remediationOf.batchId !== competing.batchId
+              || remediationOf.manifestHash !== competing.batchManifestHash
+              || !Array.isArray(remediationOf.targetModelIds) || !remediationOf.targetModelIds.length
+              || !Array.isArray(targetSlotIds) || !targetSlotIds.length
+              || remediationOf.targetSlotSetHash !== canonicalHash(targetSlotIds)) {
+              scientificError('SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT')
+            }
+          } else if (remediationOf) {
+            scientificError('SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT')
+          }
           await releases.insertOne({ _id: releaseId, ...releaseBase, releaseHash }, { session } as any)
           for (const row of publicRows) await publicEvidence.insertOne(row, { session } as any)
+          if (competing) {
+            const oldLifecycle = await releaseLifecycle.findOne({ releaseId: competing._id }, { session } as any)
+            const supersededLifecycle = {
+              status: 'superseded', releaseId: competing._id, releaseHash: competing.releaseHash,
+              supersededByReleaseId: releaseId, supersededByReleaseHash: releaseHash,
+              supersededAt: now(), updatedAt: now(),
+            }
+            if (oldLifecycle) {
+              const retired = await releaseLifecycle.updateOne(
+                { _id: oldLifecycle._id, releaseId: competing._id, releaseHash: competing.releaseHash, status: 'active' },
+                { $set: supersededLifecycle }, { session },
+              )
+              if (retired.modifiedCount !== 1) scientificError('SCIENTIFIC_V2_RELEASE_HEAD_CONFLICT')
+            } else {
+              await releaseLifecycle.insertOne({
+                _id: `benchmark-release-lifecycle:${competing._id}`, ...supersededLifecycle,
+                activatedAt: competing.publishedAt,
+              }, { session } as any)
+            }
+          }
+          await releaseLifecycle.insertOne({
+            _id: `benchmark-release-lifecycle:${releaseId}`,
+            status: 'active', releaseId, releaseHash,
+            ...(competing ? { supersedesReleaseId: competing._id, supersedesReleaseHash: competing.releaseHash } : {}),
+            activatedAt: now(), updatedAt: now(),
+          }, { session } as any)
+          if (currentHead) {
+            const movedHead = await releaseHeads.updateOne(
+              { _id: SCIENTIFIC_V2_RELEASE_HEAD_ID, releaseId: currentHead.releaseId, releaseHash: currentHead.releaseHash },
+              { $set: {
+                releaseId, releaseHash,
+                previousReleaseId: competing?._id, previousReleaseHash: competing?.releaseHash,
+                updatedAt: now(),
+              } },
+              { session },
+            )
+            if (movedHead.modifiedCount !== 1) scientificError('SCIENTIFIC_V2_RELEASE_HEAD_CONFLICT')
+          } else {
+            await releaseHeads.insertOne({
+              _id: SCIENTIFIC_V2_RELEASE_HEAD_ID,
+              releaseId, releaseHash,
+              ...(competing ? { previousReleaseId: competing._id, previousReleaseHash: competing.releaseHash } : {}),
+              updatedAt: now(),
+            }, { session } as any)
+          }
           const updated = await batches.updateOne(
             { _id: batch._id, status: batch.status, stateHash: batch.stateHash, reviewFinalHash: batch.reviewFinalHash, revision: batch.revision, latestStateReportHash: batch.latestStateReportHash },
             { $set: { status: 'published', releaseId, releaseHash, revision: batch.revision + 1, publishedAt: now(), updatedAt: now() } },
