@@ -453,6 +453,7 @@ export function createScientificV2OssEvidenceStore(client: {
   return Object.freeze({
     put: client.put.bind(client),
     get: client.get.bind(client),
+    getStream: client.getStream.bind(client),
     head: client.head.bind(client),
     getACL: client.getACL.bind(client),
     persistPrivate: privateStore.persist,

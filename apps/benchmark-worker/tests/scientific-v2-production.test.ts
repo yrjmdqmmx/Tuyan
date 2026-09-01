@@ -1188,6 +1188,7 @@ test('production evidence store bounded-reads private bytes only with exact hash
       return { stream: Readable.from([bytes]), res: { status: 206, headers: { 'content-length': String(bytes.length) } } }
     },
   })
+  assert.equal(typeof store().getStream, 'function')
   assert.equal((await store().readPrivate({ objectKey, imageHash, format: 'png' })).equals(bytes), true)
   for (const mutate of [
     () => { facts.contentType = 'application/octet-stream' },
