@@ -1,0 +1,93 @@
+name: Inspect Scientific V2 Remediation Routes
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest_hash:
+        description: Exact published Scientific V2 manifest hash.
+        required: true
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate immutable request
+        env:
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
+          [[ "$CONFIRM" == inspect-scientific-v2-remediation-routes-zero-provider-calls ]]
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Inspect frozen slots and provider route metadata
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q bash -s' "$MANIFEST_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
+          const targets = new Set([
+            'seedream-4.5', 'seedream-5.0', 'recraft/recraft-v4-styles-vector',
+            'recraft/recraft-v4-styles-pro-vector', 'recraft/recraft-v4-pro-vector',
+          ]);
+          const batch = db.getCollection('paperbanana_benchmark_scientific_v2_batches').findOne({manifestHash: process.env.SCIENTIFIC_V2_MANIFEST_HASH});
+          if (!batch) throw new Error('SCIENTIFIC_V2_BATCH_NOT_FOUND');
+          const slots = batch.state.slots.filter(slot => targets.has(slot.canonicalModelId)).map(slot => ({
+            slotId: slot.slotId, canonicalModelId: slot.canonicalModelId, caseId: slot.caseId,
+            provider: slot.provider, modelId: slot.modelId, operation: slot.operation, imageSize: slot.imageSize,
+            status: slot.status, attemptCount: slot.attempts.length,
+            responseClasses: slot.attempts.map(attempt => attempt.responseClass),
+          }));
+          print(JSON.stringify({providerCalls: 0, manifestHash: batch.manifestHash, slots}));
+          JS
+          docker exec "$worker_id" node --input-type=module -e '
+          const arkIds = new Set(["doubao-seedream-4-5-251128", "doubao-seedream-5-0-260128", "doubao-seedream-5-0-lite-260128"]);
+          const response = await fetch("https://ark.cn-beijing.volces.com/api/v3/models", {headers:{Authorization:`Bearer ${process.env.PAPERBANANA_BENCH_ARK_API_KEY}`}, signal:AbortSignal.timeout(15000)});
+          let visible = [];
+          if (response.ok) {
+            const data = await response.json();
+            visible = (Array.isArray(data?.data) ? data.data : []).map(item => String(item?.id || "")).filter(id => arkIds.has(id)).sort();
+          } else await response.body?.cancel();
+          process.stdout.write(JSON.stringify({providerCalls:0, ark:{status:response.status, visibleModelIds:visible}})+"\n");
+          '
+          docker exec "$worker_id" node --input-type=module -e '
+          const ids=["recraft/recraft-v4-styles-vector","recraft/recraft-v4-styles-pro-vector","recraft/recraft-v4-pro-vector","bytedance-seed/seedream-4.5","bytedance-seed/seedream-5-0-lite"];
+          const rows=[];
+          for(const id of ids){
+            const response=await fetch(`https://openrouter.ai/api/v1/models/${id}/endpoints`,{signal:AbortSignal.timeout(15000)});
+            const data=response.ok?await response.json():null;
+            const route=data?.data;
+            rows.push({id,status:response.status,inputModalities:route?.architecture?.input_modalities||[],outputModalities:route?.architecture?.output_modalities||[],endpointStatuses:(route?.endpoints||[]).map(item=>item.status)});
+          }
+          process.stdout.write(JSON.stringify({providerCalls:0,openrouter:rows})+"\n");
+          '
+          REMOTE
