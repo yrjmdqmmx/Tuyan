@@ -80,7 +80,6 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
-          BATCH_ID: ${{ inputs.batch_id }}
         run: |
           set -Eeuo pipefail
           scp /tmp/scientific-v2-public-renderer.mjs \
@@ -90,6 +89,7 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          BATCH_ID: ${{ inputs.batch_id }}
           DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
