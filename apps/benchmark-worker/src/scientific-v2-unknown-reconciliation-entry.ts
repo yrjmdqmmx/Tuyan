@@ -12,6 +12,12 @@ function fail(stage: string): never {
   if (!stageCodes.has(stage)) throw new Error('SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED_POST')
   throw new Error(`SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED_${stage}`)
 }
+function failLoad(error: unknown): never {
+  const name = String((error as { name?: unknown })?.name || 'Error').replace(/[^A-Za-z0-9]/g, '').slice(0, 48) || 'Error'
+  const code = String((error as { code?: unknown })?.code || (error as { codeName?: unknown })?.codeName || 'none')
+    .replace(/[^A-Za-z0-9]/g, '').slice(0, 48) || 'none'
+  throw new Error(`SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED_LOAD_${name}_${code}`)
+}
 
 export async function runScientificV2UnknownReconciliationEntry(env: Record<string, string | undefined> = process.env) {
   const manifestHash = env.PAPERBANANA_SCIENTIFIC_V2_MANIFEST_HASH
@@ -27,7 +33,7 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
   try {
     client = new MongoClient(mongoUri)
     await client.connect()
-  } catch { fail('LOAD') }
+  } catch (error) { failLoad(error) }
   try {
     const db = client.db(mongoDb)
     const batches = db.collection<MongoRow>(BATCHES)
@@ -39,7 +45,7 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
       row = await batches.findOne({ manifestHash })
       const auditId = `scientific-v2-unknown-reconciliation:${manifestHash}:${expectedStateHash}`
       existingAudit = await reconciliations.findOne({ _id: auditId })
-    } catch { fail('LOAD') }
+    } catch (error) { failLoad(error) }
     if (!row) fail('LOAD')
     if (row.manifest?.codeSha !== expectedCodeSha || row.manifestHash !== manifestHash) fail('BINDING')
     const auditId = `scientific-v2-unknown-reconciliation:${manifestHash}:${expectedStateHash}`
@@ -99,6 +105,6 @@ void runScientificV2UnknownReconciliationEntry().then((continuation) => {
   process.stdout.write(JSON.stringify(continuation))
 }).catch((error) => {
   const message = String((error as { message?: unknown })?.message || '')
-  process.stderr.write(`${/^SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED_[A-Z]+$/.test(message) ? message : 'SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED_POST'}\n`)
+  process.stderr.write(`${/^SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED_[A-Za-z0-9_]+$/.test(message) ? message : 'SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED_POST'}\n`)
   process.exitCode = 1
 })
