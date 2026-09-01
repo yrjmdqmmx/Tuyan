@@ -2614,6 +2614,103 @@ test('publishScientificV2 rolls back release and public evidence when batch CAS 
   assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')?.length || 0, 0)
 })
 
+test('only an exact remediation batch atomically supersedes the active Scientific V2 release outside its content hash', async () => {
+  const firstFixture = scientificBatchFixture()
+  const secondFixture = structuredClone(firstFixture)
+  secondFixture.manifest.codeSha = 'b'.repeat(40)
+  const rehashedSecondFixture = rehashFreezeFixture(secondFixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-remediation-supersede-secret-32-bytes'
+  const firstBatchId = 'scientific-v2-supersede-first'
+  const secondBatchId = 'scientific-v2-supersede-second'
+  const first = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'supersede-first', {
+    operatorReportSecret: secret, immutableCodeSha: firstFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await first.freezeBatch({ batchId: firstBatchId, ...firstFixture })
+  const firstInput = await preparePublishFacts(first, firstFixture, completedScientificState(firstFixture), secret, firstBatchId)
+  const publishedFirst = await first.publishScientificV2({ batchId: firstBatchId, ...firstInput })
+  const firstReleaseBefore = structuredClone(storage.rows.get('paperbanana_benchmark_releases')![0])
+
+  const second = createScientificV2MongoRepository(storage.db, () => new Date('2026-09-01T00:00:00.000Z'), () => 'supersede-second', {
+    operatorReportSecret: secret, immutableCodeSha: rehashedSecondFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await second.freezeBatch({ batchId: secondBatchId, ...rehashedSecondFixture })
+  const secondInput = await preparePublishFacts(second, rehashedSecondFixture, completedScientificState(rehashedSecondFixture), secret, secondBatchId)
+  await assert.rejects(
+    () => second.publishScientificV2({ batchId: secondBatchId, ...secondInput }),
+    /SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT/,
+  )
+  const secondBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!
+    .find((row) => row.batchId === secondBatchId)!
+  secondBatch.remediationOf = {
+    batchId: firstBatchId,
+    manifestHash: firstReleaseBefore.batchManifestHash,
+    releaseId: firstReleaseBefore._id,
+    releaseHash: publishedFirst.releaseHash,
+    targetModelIds: [firstReleaseBefore.models[0].canonicalModelId],
+    targetSlotIds: [`${firstReleaseBefore.models[0].canonicalModelId}:scientific-gen-01-method-flow`],
+    targetSlotSetHash: canonicalHash([`${firstReleaseBefore.models[0].canonicalModelId}:scientific-gen-01-method-flow`]),
+  }
+
+  const publishedSecond = await second.publishScientificV2({ batchId: secondBatchId, ...secondInput })
+  assert.notEqual(publishedSecond.releaseHash, publishedFirst.releaseHash)
+  assert.equal(storage.rows.get('paperbanana_benchmark_releases')?.length, 2)
+  assert.deepEqual(storage.rows.get('paperbanana_benchmark_releases')![0], firstReleaseBefore)
+  const { _id: _firstId, releaseHash: firstHash, ...firstReleaseBase } = firstReleaseBefore
+  assert.equal(canonicalHash(firstReleaseBase), firstHash)
+  const lifecycle = storage.rows.get('paperbanana_benchmark_release_lifecycle') || []
+  assert.equal(lifecycle.find((row) => row.releaseId === firstReleaseBefore._id)?.status, 'superseded')
+  assert.equal(lifecycle.find((row) => row.releaseHash === publishedSecond.releaseHash)?.status, 'active')
+  const publicRepository = createMongoBenchmarkRepository(storage.db, () => new Date('2026-09-01T00:00:00.000Z'), async () => {})
+  assert.equal((await publicRepository.latestRelease())?.releaseHash, publishedSecond.releaseHash)
+  assert.equal((await publicRepository.releaseByModel('', '', '', firstReleaseBefore.models[0].profileId))?.releaseHash, publishedSecond.releaseHash)
+})
+
+test('Scientific V2 remediation supersede rolls back release, evidence, head and lifecycle on final batch CAS failure', async () => {
+  const firstFixture = scientificBatchFixture()
+  const secondFixture = structuredClone(firstFixture)
+  secondFixture.manifest.codeSha = 'b'.repeat(40)
+  const rehashedSecondFixture = rehashFreezeFixture(secondFixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-remediation-rollback-secret-32-bytes'
+  const first = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'remediation-rollback-first', {
+    operatorReportSecret: secret, immutableCodeSha: firstFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await first.freezeBatch({ batchId: 'scientific-v2-remediation-rollback-first', ...firstFixture })
+  const firstInput = await preparePublishFacts(first, firstFixture, completedScientificState(firstFixture), secret, 'scientific-v2-remediation-rollback-first')
+  const publishedFirst = await first.publishScientificV2({ batchId: 'scientific-v2-remediation-rollback-first', ...firstInput })
+  const firstRelease = storage.rows.get('paperbanana_benchmark_releases')![0]
+
+  const second = createScientificV2MongoRepository(storage.db, () => new Date('2026-09-01T00:00:00.000Z'), () => 'remediation-rollback-second', {
+    operatorReportSecret: secret, immutableCodeSha: rehashedSecondFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await second.freezeBatch({ batchId: 'scientific-v2-remediation-rollback-second', ...rehashedSecondFixture })
+  const secondInput = await preparePublishFacts(second, rehashedSecondFixture, completedScientificState(rehashedSecondFixture), secret, 'scientific-v2-remediation-rollback-second')
+  const secondBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!
+    .find((row) => row.batchId === 'scientific-v2-remediation-rollback-second')!
+  const targetSlotIds = [`${firstRelease.models[0].canonicalModelId}:scientific-gen-01-method-flow`]
+  secondBatch.remediationOf = {
+    batchId: 'scientific-v2-remediation-rollback-first', manifestHash: firstRelease.batchManifestHash,
+    releaseId: firstRelease._id, releaseHash: publishedFirst.releaseHash,
+    targetModelIds: [firstRelease.models[0].canonicalModelId], targetSlotIds,
+    targetSlotSetHash: canonicalHash(targetSlotIds),
+  }
+  storage.failNextPublishBatchCas()
+
+  await assert.rejects(
+    () => second.publishScientificV2({ batchId: secondBatch.batchId, ...secondInput }),
+    /SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT/,
+  )
+  assert.equal(storage.rows.get('paperbanana_benchmark_releases')?.length, 1)
+  const head = storage.rows.get('paperbanana_benchmark_release_heads')![0]
+  assert.equal(head.releaseId, firstRelease._id)
+  assert.equal(head.releaseHash, publishedFirst.releaseHash)
+  const lifecycle = storage.rows.get('paperbanana_benchmark_release_lifecycle') || []
+  assert.equal(lifecycle.length, 1)
+  assert.equal(lifecycle[0].releaseId, firstRelease._id)
+  assert.equal(lifecycle[0].status, 'active')
+})
+
 test('freezeBatch matches Worker exact-schema rejection for every frozen document layer', async (t) => {
   const cases: Array<[string, (fixture: any) => void, 'manifest' | 'state']> = [
     ['manifest extra key', (fixture) => { fixture.manifest.extra = true }, 'manifest'],

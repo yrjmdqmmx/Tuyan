@@ -3,6 +3,7 @@ import {
   BENCHMARK_COLLECTIONS,
   PB_IMAGE_DIAGNOSTIC_V1,
   PB_IMAGE_LIGHT_V1,
+  SCIENTIFIC_BENCHMARK_IDENTITY,
   assertBenchmarkTransition,
   aggregateAxisScores,
   applyCodexAdjudication,
@@ -22,7 +23,11 @@ import {
 import type { Db } from 'mongodb'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
-import { createScientificV2MongoRepository } from './scientific-v2-repository.js'
+import {
+  SCIENTIFIC_V2_COLLECTIONS,
+  SCIENTIFIC_V2_RELEASE_HEAD_ID,
+  createScientificV2MongoRepository,
+} from './scientific-v2-repository.js'
 
 type AnyRecord = { _id?: string; [key: string]: any }
 
@@ -1195,6 +1200,8 @@ export function createMongoBenchmarkRepository(
   const judgments = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.judgments)
   const dispatches = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.dispatches)
   const releases = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.releases)
+  const releaseHeads = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.releaseHeads)
+  const releaseLifecycle = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.releaseLifecycle)
   const publicEvidence = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.publicEvidence)
   const promptSubmissions = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.promptSubmissions)
   const promptDigests = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.promptDigests)
@@ -1204,6 +1211,21 @@ export function createMongoBenchmarkRepository(
     verifyObject: async (objectKey, imageHash) => verifyEvidence(objectKey, imageHash),
     requireRegistryAuthority: scientificV2Options.requireRegistryAuthority,
   })
+
+  const activeScientificRelease = async () => {
+    const head = await releaseHeads.findOne({ _id: SCIENTIFIC_V2_RELEASE_HEAD_ID })
+    if (!head) return { hasHead: false, release: null as AnyRecord | null }
+    const [release, lifecycle] = await Promise.all([
+      releases.findOne({ _id: head.releaseId, releaseHash: head.releaseHash }),
+      releaseLifecycle.findOne({ releaseId: head.releaseId, releaseHash: head.releaseHash, status: 'active' }),
+    ])
+    if (!release || !lifecycle
+      || release.suiteId !== SCIENTIFIC_BENCHMARK_IDENTITY.suiteId
+      || release.evaluationMode !== SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode
+      || release.evaluationEpoch !== SCIENTIFIC_BENCHMARK_IDENTITY.evaluationEpoch
+      || release.profileStatus !== 'published') return { hasHead: true, release: null as AnyRecord | null }
+    return { hasHead: true, release }
+  }
 
   return {
     async ensureSuite() {
@@ -1231,6 +1253,10 @@ export function createMongoBenchmarkRepository(
       await scientificV2.ensureIndexes()
     },
     async latestRelease(lane?: string) {
+      if (!lane) {
+        const active = await activeScientificRelease()
+        if (active.hasHead) return active.release
+      }
       return releases.find({
         profileStatus: { $in: ['provisional', 'verified', 'published'] },
         publishedAt: { $exists: true },
@@ -1240,8 +1266,17 @@ export function createMongoBenchmarkRepository(
     },
     async releaseByModel(modelId: string, provider?: string, lane?: string, profileId?: string) {
       const profileQuery = profileId ? { profileId } : { modelId, ...(provider ? { provider } : {}), ...(lane ? { lane } : {}) }
-      return releases.find({ profileStatus: { $in: ['provisional', 'verified', 'published'] }, models: { $elemMatch: profileQuery }, publishedAt: { $exists: true } })
-        .sort({ publishedAt: -1 }).limit(1).next()
+      const active = await activeScientificRelease()
+      if (active.release && active.release.models?.some((model: AnyRecord) => Object.entries(profileQuery).every(([key, value]) => model[key] === value))) {
+        return active.release
+      }
+      const candidates = await releases.find({
+        profileStatus: { $in: ['provisional', 'verified', 'published'] },
+        models: { $elemMatch: profileQuery }, publishedAt: { $exists: true },
+      }).sort({ publishedAt: -1 }).limit(20).toArray()
+      return candidates.find((release: AnyRecord) => !active.hasHead
+        || release.evaluationMode !== SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode
+        || release.evaluationEpoch !== SCIENTIFIC_BENCHMARK_IDENTITY.evaluationEpoch) || null
     },
     async publicEvidenceForRelease(releaseHash: string, query: { profileId?: string; caseId?: string; cursor?: string; limit: number }) {
       const release = await releases.findOne({ releaseHash })
