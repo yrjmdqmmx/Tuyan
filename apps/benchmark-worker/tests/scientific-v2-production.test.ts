@@ -1138,6 +1138,7 @@ test('signed public rendition replay verifies exact existing bytes even when OSS
   const raw = await sharp({ create: { width: 800, height: 400, channels: 3, background: '#cde' } }).png().toBuffer()
   const rawHash = createHash('sha256').update(raw).digest('hex')
   const existing = new Map<string, { bytes: Buffer; imageHash: string }>()
+  const streamAttempts = new Map<string, number>()
   let privateReassertions = 0
   const result = await createScientificV2PublicEvidenceInput({
     canonicalModelId: 'test:scientific-model', caseId: 'scientific-generation-01',
@@ -1158,10 +1159,22 @@ test('signed public rendition replay verifies exact existing bytes even when OSS
       },
       async get() { throw Object.assign(new Error('details omitted'), { name: 'ResponseError' }) },
       async getStream(key, options) {
-        assert.equal(options, undefined)
+        assert.deepEqual(options, { timeout: 300_000 })
+        const attempt = (streamAttempts.get(key) || 0) + 1
+        streamAttempts.set(key, attempt)
+        if (attempt === 1) {
+          const bytes = existing.get(key)!.bytes
+          return {
+            stream: Readable.from((async function* () {
+              yield bytes.subarray(0, Math.max(1, Math.floor(bytes.length / 2)))
+              throw Object.assign(new Error('socket reset'), { code: 'ECONNRESET' })
+            })()),
+            res: { status: 200, headers: { 'content-length': String(bytes.length) } },
+          }
+        }
         return {
         stream: Readable.from([existing.get(key)!.bytes]),
-        res: { status: 206, headers: { 'content-length': String(existing.get(key)!.bytes.length) } },
+        res: { status: 200, headers: { 'content-length': String(existing.get(key)!.bytes.length) } },
         }
       },
       async head(key) { return { headers: {
@@ -1172,6 +1185,7 @@ test('signed public rendition replay verifies exact existing bytes even when OSS
     },
   })
   assert.equal((result.evidence[0] as any).variants.length, 3)
+  assert.deepEqual([...streamAttempts.values()], [2, 2, 2])
   assert.equal(privateReassertions, 0)
 })
 
