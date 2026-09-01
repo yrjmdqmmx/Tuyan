@@ -208,7 +208,7 @@ async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceSto
     const readExisting = async () => {
       if (!store.getStream) return Buffer.from((await store.get(variant.objectKey)).content)
       const result = await store.getStream(variant.objectKey, {
-        headers: { Range: `bytes=0-${SCIENTIFIC_V2_MAX_ARTIFACT_BYTES}` },
+        headers: { Range: 'bytes=0-' },
       })
       const advertisedHeader = Object.entries(result.res?.headers || {})
         .find(([key]) => key.toLowerCase() === 'content-length')?.[1]
