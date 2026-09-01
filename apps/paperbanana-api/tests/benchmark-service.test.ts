@@ -1761,7 +1761,7 @@ test('verified publication rejects a valid-shaped score snapshot change before i
   )
   assert.equal(insertedReleases.length, 0)
 })
-test('scientific v2 production object policy requires exact private/public metadata and ACL', () => {
+test('scientific v2 production object policy keeps originals and signed renditions private even when object ACL inspection is unavailable', () => {
   const rawHash = 'a'.repeat(64)
   const publicHash = 'b'.repeat(64)
   const privateKey = `bench/scientific-v2/private/objects/${rawHash}.png`
@@ -1769,14 +1769,20 @@ test('scientific v2 production object policy requires exact private/public metad
   verifyScientificV2EvidenceMetadata(privateKey, rawHash, {
     mimeType: 'image/png', cacheControl: 'private, no-store', sha256: rawHash, acl: 'private',
   })
+  verifyScientificV2EvidenceMetadata(privateKey, rawHash, {
+    mimeType: 'image/png', cacheControl: 'private, no-store', sha256: rawHash, acl: 'unavailable',
+  })
   verifyScientificV2EvidenceMetadata(publicKey, publicHash, {
-    mimeType: 'image/webp', cacheControl: 'public, max-age=31536000, immutable', sha256: publicHash, acl: 'public-read',
+    mimeType: 'image/webp', cacheControl: 'public, max-age=31536000, immutable', sha256: publicHash, acl: 'private',
+  })
+  verifyScientificV2EvidenceMetadata(publicKey, publicHash, {
+    mimeType: 'image/webp', cacheControl: 'public, max-age=31536000, immutable', sha256: publicHash, acl: 'unavailable',
   })
   for (const drift of [
-    { mimeType: 'image/png' }, { cacheControl: 'private, no-store' }, { sha256: rawHash }, { acl: 'private' },
+    { mimeType: 'image/png' }, { cacheControl: 'private, no-store' }, { sha256: rawHash }, { acl: 'public-read' },
   ]) {
     assert.throws(() => verifyScientificV2EvidenceMetadata(publicKey, publicHash, {
-      mimeType: 'image/webp', cacheControl: 'public, max-age=31536000, immutable', sha256: publicHash, acl: 'public-read', ...drift,
+      mimeType: 'image/webp', cacheControl: 'public, max-age=31536000, immutable', sha256: publicHash, acl: 'private', ...drift,
     }), /SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH/)
   }
 })

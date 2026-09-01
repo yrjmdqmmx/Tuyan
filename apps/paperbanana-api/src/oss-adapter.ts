@@ -134,7 +134,15 @@ export function createOssAdapter(
         if (!serverClient.head || !serverClient.getACL) throw new Error('OSS client does not support authoritative object metadata')
         const result = await serverClient.head(key)
         const headers = result.res?.headers
-        const acl = String((await serverClient.getACL(key)).acl || '')
+        let acl = ''
+        try {
+          acl = String((await serverClient.getACL(key)).acl || '')
+        } catch (error) {
+          const denied = error as { code?: unknown; status?: unknown; statusCode?: unknown }
+          const status = Number(denied.status ?? denied.statusCode)
+          if (denied.code !== 'AccessDenied' || status !== 403) throw error
+          acl = 'unavailable'
+        }
         const size = Number(firstHeader(headers, 'content-length'))
         if (!Number.isFinite(size) || size < 0) throw new Error(`OSS object ${key} has invalid content length`)
         const mimeType = (firstHeader(headers, 'content-type') || '').split(';', 1)[0]!.trim().toLowerCase()

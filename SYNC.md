@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 证据统一保持私有并由 API 签名读取 — by Codex
+变更：生产验证确认 benchmark OSS 桶级 ACL 已由 readiness 强制为 private，Worker 写入的原图和公开 WebP rendition 也都显式保持 private，但最小权限凭据无 `GetObjectACL`；旧 API 因逐对象 ACL 查询 `403 AccessDenied` 会在盲审分配导出阶段拒绝已经完成字节/hash/HEAD 元数据校验的对象，同时仍错误要求公开 rendition 为 `public-read`。`paperbanana-api` 现仅在精确 `AccessDenied + HTTP 403` 时把对象 ACL 标记为 `unavailable`，其他 ACL 错误继续失败；Scientific V2 原图与 rendition 都只接受 `private|unavailable`，明确拒绝 `public-read`，并继续逐对象验证字节 SHA、对象键、mime 与 cache-control。所有公开访问仍只通过 15 分钟签名 URL；九题、十维、盲审、失败记 0、预算与原子发布规则不变。
+
+各端待办：
+- [x] paperbanana-api / Benchmark Worker / 部署运维（私有证据策略、最小权限 ACL fallback、测试与生产部署）
+- [x] Web / Gateway / 原生端（公开 URL 与 API 字段不变；无需改造）
+
 ### [2026-09-01] Benchmark Worker 的 SVG→PNG 路径显式绑定镜像内 Resvg WASM — by Codex
 变更：生产冻结批次证明 OpenRouter `recraft/recraft-v4-pro-vector` 正常声明并返回 SVG 路线，但 Benchmark Worker 复用 API image runtime 时没有经过 API `main` 的启动初始化，`loadResvgWasm()` 因而错误回退到 Laf 专属 `/tmp/custom_dependency/.../index_bg.wasm`，导致已返回 SVG 在 PNG 导出前丢失并被记为 unknown。Worker authoritative runtime 与两类 Compose 服务现统一显式使用镜像内 `/app/node_modules/@resvg/resvg-wasm/index_bg.wasm`；一次性生产配置 workflow 先以 immutable Worker digest、`--network none` 验证该 WASM 文件，再在共享锁下原子更新 root `0600` `bench.env`，Provider 调用固定为 0。九题、十维、分辨率、路由、预算、重试/unknown、盲审和发布规则不变。
 

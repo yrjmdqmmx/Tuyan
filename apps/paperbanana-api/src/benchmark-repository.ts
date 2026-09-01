@@ -983,16 +983,17 @@ export function verifyScientificV2EvidenceMetadata(
   const publicMatch = objectKey.match(/^bench\/scientific-v2\/public\/([a-f0-9]{64})\/(thumbnail|detail|full)\.webp$/)
   if (!privateMatch && !publicMatch) throw new Error('SCIENTIFIC_V2_OBJECT_KEY_INVALID')
   if (facts.sha256 !== expectedHash) throw new Error('SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH')
+  const privateOrUninspectableAcl = facts.acl === 'private' || facts.acl === 'unavailable'
   if (privateMatch) {
     const expectedMime = privateMatch[2] === 'jpeg' ? 'image/jpeg' : `image/${privateMatch[2]}`
     if (privateMatch[1] !== expectedHash || facts.mimeType !== expectedMime
-      || facts.cacheControl !== 'private, no-store' || facts.acl !== 'private') {
+      || facts.cacheControl !== 'private, no-store' || !privateOrUninspectableAcl) {
       throw new Error('SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH')
     }
     return
   }
   if (facts.mimeType !== 'image/webp' || facts.cacheControl !== 'public, max-age=31536000, immutable'
-    || facts.acl !== 'public-read') throw new Error('SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH')
+    || !privateOrUninspectableAcl) throw new Error('SCIENTIFIC_V2_OBJECT_METADATA_MISMATCH')
 }
 
 function text(value: unknown, max = 160) {

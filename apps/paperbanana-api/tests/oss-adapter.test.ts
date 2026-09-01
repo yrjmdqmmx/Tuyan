@@ -189,6 +189,39 @@ test('headFile normalizes authoritative object size and content type from the in
   })
 })
 
+test('headFile preserves verified HEAD metadata when object ACL inspection is explicitly denied', async () => {
+  const serverClient = {
+    async head() {
+      return { status: 200, res: { headers: {
+        'content-length': '321', 'content-type': 'image/webp', etag: 'etag-2',
+        'cache-control': 'public, max-age=31536000, immutable', 'x-oss-meta-sha256': 'b'.repeat(64),
+      } } }
+    },
+    async getACL() { throw Object.assign(new Error('denied'), { code: 'AccessDenied', status: 403 }) },
+  }
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
+    .bucket('paperbanana-private')
+
+  assert.deepEqual(await bucket.headFile('bench/scientific-v2/public/hash/full.webp'), {
+    size: 321,
+    mimeType: 'image/webp',
+    etag: 'etag-2',
+    cacheControl: 'public, max-age=31536000, immutable',
+    sha256: 'b'.repeat(64),
+    acl: 'unavailable',
+  })
+})
+
+test('headFile does not hide non-permission ACL failures', async () => {
+  const serverClient = {
+    async head() { return { status: 200, res: { headers: { 'content-length': '1', 'content-type': 'image/png' } } } },
+    async getACL() { throw new Error('network failed') },
+  }
+  const bucket = createOssAdapter(config, { serverClient: serverClient as any, publicSigner: {} as any })
+    .bucket('paperbanana-private')
+  await assert.rejects(() => bucket.headFile('bench/scientific-v2/private/objects/hash.png'), /network failed/)
+})
+
 test('readFile enforces a hard stream cap even when metadata is missing or misleading', async () => {
   const streams = [
     { headers: {}, chunks: [Buffer.from('123'), Buffer.from('456')] },
