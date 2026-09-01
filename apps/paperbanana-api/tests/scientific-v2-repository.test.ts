@@ -2414,6 +2414,23 @@ test('A/B import treats score gap, red-line conflict or low confidence as disput
 
   assert.equal(disputed.status, 'dispute')
   assert.deepEqual((disputed as any).disputes[0].reasons, ['score_gap_gt_2'])
+  const replayedAssignment = await repository.exportReviewAssignment({
+    batchId: 'scientific-v2-review-dispute',
+    assignment: assignments.A,
+    objectBindings: bindingsFor(assignments.A),
+  })
+  assert.equal(replayedAssignment.role, 'A')
+  assert.equal(replayedAssignment.mappingHash, assignments.A.mappingHash)
+
+  const reviewRows = storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts') || []
+  const reviewRowsSnapshot = structuredClone(reviewRows)
+  reviewRows.splice(0, reviewRows.length, ...reviewRows.filter((row) => row.role !== 'A'))
+  await assert.rejects(
+    () => repository.exportReviewAssignment({ batchId: 'scientific-v2-review-dispute', assignment: assignments.A, objectBindings: bindingsFor(assignments.A) }),
+    /SCIENTIFIC_V2_REVIEW_BATCH_NOT_READY/,
+  )
+  reviewRows.splice(0, reviewRows.length, ...reviewRowsSnapshot)
+
   const arbitrationBase = {
     reasoningEffort: 'xhigh',
     batchManifestHash: fixture.manifest.manifestHash,
