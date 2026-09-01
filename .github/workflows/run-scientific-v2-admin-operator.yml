@@ -76,4 +76,34 @@ jobs:
           printf -v command 'cd %q && sudo %q --operation %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --input-sha256 %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-admin-operator.sh \
             "$OPERATION" "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$INPUT_HASH" "$CONFIRM"
-          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command"
+          if [[ "$OPERATION" == export-review ]]; then
+            review_output="$RUNNER_TEMP/scientific-v2-review-export.json"
+            ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command" >"$review_output"
+            chmod 0600 "$review_output"
+            jq -e '
+              .schemaVersion == 1 and .operation == "export-review" and
+              (.data.role == "A" or .data.role == "B") and
+              (.data.packages | type) == "array" and (.data.packages | length) > 0 and
+              ([.data.packages[].items[]] | length) > 0 and
+              ([.data.packages[].items[]] | all(
+                (.imageUrl | type) == "string" and (.imageUrl | startswith("https://")) and
+                (.imageHash | type) == "string" and (.imageHash | test("^[a-f0-9]{64}$"))
+              )) and
+              ([.. | objects | keys[]] | index("privateMappings") == null) and
+              ([.. | objects | keys[]] | index("privateEnvelope") == null) and
+              ([.. | objects | keys[]] | index("reviewerIdentity") == null) and
+              ([.. | objects | keys[]] | index("objectKey") == null)
+            ' "$review_output" >/dev/null
+            jq -c '{operation,role:.data.role,packetCount:(.data.packages|length),itemCount:([.data.packages[].items[]]|length)}' "$review_output"
+          else
+            ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command"
+          fi
+
+      - name: Upload short-lived signed blind review package
+        if: ${{ inputs.operation == 'export-review' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scientific-v2-review-export-${{ inputs.input_sha256 }}
+          path: ${{ runner.temp }}/scientific-v2-review-export.json
+          if-no-files-found: error
+          retention-days: 1

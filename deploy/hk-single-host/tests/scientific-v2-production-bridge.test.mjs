@@ -646,6 +646,17 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   assert.match(workflow, /actions\/checkout@[a-f0-9]{40}/)
 })
 
+test('review export admin workflow preserves signed blind packages in a short-lived artifact without logging URLs', () => {
+  const source = readFileSync(adminWorkflow, 'utf8')
+  assert.match(source, /if \[\[ "\$OPERATION" == export-review \]\]; then/)
+  assert.match(source, /scientific-v2-review-export[.]json/)
+  assert.match(source, /[.]imageUrl[\s\S]*startsWith|[.]imageUrl[\s\S]*startswith/)
+  assert.match(source, /jq -c '\{operation,role:[.]data[.]role,packetCount:/)
+  assert.match(source, /actions\/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02/)
+  assert.match(source, /retention-days:\s*1/)
+  assert.doesNotMatch(source, /cat\s+"?\$review_output|jq -c [.] "\$review_output"/)
+})
+
 test('scientific operator binds expected Core and Worker digests through workflow, env and running containers', () => {
   const workflow = readFileSync(operatorWorkflow, 'utf8')
   assert.match(workflow, /actions\/checkout@[a-f0-9]{40}/)
