@@ -80,6 +80,7 @@ jobs:
             "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
+          trap 'status=$?; line=$LINENO; trap - ERR; printf "{\"operation\":\"render_public_evidence_failure\",\"providerCalls\":0,\"line\":%s,\"exitCode\":%s}\\n" "$line" "$status" >&2; exit "$status"' ERR
           umask 077
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
