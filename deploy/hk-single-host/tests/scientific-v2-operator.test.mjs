@@ -33,6 +33,7 @@ const reviewDisputeExportWorkflow = fileURLToPath(new URL('../../../.github/work
 const arbitrationStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-arbitration-bundle.yml', import.meta.url))
 const arbitrationImportStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-arbitration-result-import.yml', import.meta.url))
 const publishInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-publish-input.yml', import.meta.url))
+const publishInputInspectionWorkflow = fileURLToPath(new URL('../../../.github/workflows/inspect-scientific-v2-publish-input.yml', import.meta.url))
 const publicRenderRunWorkflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-public-render.yml', import.meta.url))
 const runBundleStager = fileURLToPath(new URL('../scripts/stage-scientific-v2-run-bundle.sh', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
@@ -929,6 +930,19 @@ test('render keeps API publish input off stdout and persists it only in the prot
   assert.match(finalRender, /providerCalls:0/)
   assert.match(finalRender, /batch_id=.*[.]publishInput[.]batchId/)
   assert.doesNotMatch(finalRender, /jq -c [.] "\$result_path"|publishInput:/)
+})
+
+test('publish-input inspection verifies the protected rendered payload and exposes only its hash and counts', () => {
+  const source = readFileSync(publishInputInspectionWorkflow, 'utf8')
+  assert.match(source, /providerCalls[^\n]*0/)
+  assert.match(source, /publish-input[.]json/)
+  assert.match(source, /O_NOFOLLOW/)
+  assert.match(source, /st_mode[^\n]*0o600/)
+  assert.match(source, /publishInputHash/)
+  assert.match(source, /evidenceCount/)
+  assert.match(source, /objectBindingCount/)
+  assert.match(source, /hashlib[.]sha256\(canonical\(publish_input\)/)
+  assert.doesNotMatch(source, /cat\s+|set -x|printenv|objectKey[^\n]*printf|evidence[^\n]*printf/)
 })
 
 test('every protected zero-provider phase binds the same manifest and rejects cross-manifest replay before execution', () => {
