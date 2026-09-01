@@ -122,4 +122,4 @@ const fs=require("node:fs");const value=JSON.parse(fs.readFileSync(0,"utf8"));co
 const db=value.db||null;process.stdout.write(`${JSON.stringify({schemaVersion:1,mode:process.argv[1],releaseHash:inventory.releaseHash,
 inventoryHash:inventory.inventoryHash,exclusiveObjectCount:inventory.exclusiveObjects.length,sharedObjectCount:inventory.sharedObjects.length,
 exclusiveBytes:inventory.exclusiveBytes,sharedBytes:inventory.sharedBytes,dbCounts:inventory.dbCounts,status:db?.status||"inspected",generatedOrJudgeCalls:0})}\n`)
-' "$mode" <"$output"
+' -- "$mode" <"$output"
