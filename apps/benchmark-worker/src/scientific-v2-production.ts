@@ -757,7 +757,8 @@ export function createScientificV2MongoRepository(
     async loadCompletedBatch(input) {
       const current = await batches.findOne({
         batchId: input.batchId, manifestHash: input.manifestHash, stateHash: input.stateHash,
-        status: { $in: ['completed', 'review_ready'] }, 'state.status': 'completed',
+        status: { $in: ['completed', 'review_ready', 'review_dispute', 'review_finalized', 'published'] },
+        'state.status': 'completed',
       })
       if (!current) scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_BATCH_BINDING_INVALID')
       const manifest = batchManifest(current)

@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 公开证据复验兼容审核后的批次状态 — by Codex
+变更：生产复验发现同一冻结批次首次公开证据渲染已成功写入 325 个题位证据，但 A/B 双审把 API 控制状态推进到 `review_dispute` 后，Worker 的只读 completed-batch 查询仍只接受 `completed/review_ready`，导致幂等复验误报 `SCIENTIFIC_V2_PUBLIC_RENDER_BATCH_BINDING_INVALID`。查询现接受 `review_dispute/review_finalized/published` 等所有生成完成后的控制状态，同时继续精确绑定 batchId、manifestHash、stateHash，并强制内层签名 state.status 仍为 `completed`。不重新生成、不调用 Provider、不改图片、题目、十维评分、分辨率、失败/unknown、盲审或原子发布规则。
+
+各端待办：
+- [x] Benchmark Worker / 部署运维（后审核阶段只读证据复验与回归测试）
+- [x] paperbanana-api / Web / Gateway / 原生端（公开字段和行为不变；无需改造）
+
 ### [2026-09-01] Scientific V2 争议导出复用 immutable Worker 正式入口并兼容 root UID — by Codex
 变更：双审结果已形成 179 个既定争议项，但公开仲裁包被两个控制面假设拦截：生产 SSH 账号拥有临时回传目录时 UID 为 `0`，旧检查错误要求 UID 必须非零；同时 Worker 镜像只发布 esbuild 封装的 `dist/scientific-v2-operator.mjs`，并不存在旧脚本尝试直接 import 的 `dist/scientific-v2-review.js`。争议导出现与已验证的盲审分配导出一致接受任意纯数字的实际 owner UID/GID，并通过正式 `review_finalize` operator bundle 让 immutable Worker 在无网络、Provider key 置空的容器内验签 A/B 与重新计算争议，再将结果同已验签公开 assignment 做盲化绑定。目录非符号链接、模式 `0700`、文件逐字节 SHA 和 root-only 私有输入约束继续保留；争议集合、阈值、题目、分辨率、评分、签名与发布规则均不变。
 

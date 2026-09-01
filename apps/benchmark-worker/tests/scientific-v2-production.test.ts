@@ -360,7 +360,7 @@ test('production Mongo atomic repository resolves commit acknowledgement loss an
   })).stateHash, frozenNext.stateHash)
 })
 
-test('completed batch loader accepts the API review-ready control status without weakening signed state binding', async () => {
+test('completed batch loader accepts every post-generation API control status without weakening signed state binding', async () => {
   let observedFilter: Record<string, unknown> | undefined
   const db = {
     collection() {
@@ -377,7 +377,7 @@ test('completed batch loader accepts the API review-ready control status without
     () => repository.loadCompletedBatch({ batchId: 'batch', manifestHash: 'a'.repeat(64), stateHash: 'b'.repeat(64) }),
     /SCIENTIFIC_V2_PUBLIC_RENDER_BATCH_BINDING_INVALID/,
   )
-  assert.deepEqual(observedFilter?.status, { $in: ['completed', 'review_ready'] })
+  assert.deepEqual(observedFilter?.status, { $in: ['completed', 'review_ready', 'review_dispute', 'review_finalized', 'published'] })
   assert.equal(observedFilter?.['state.status'], 'completed')
 })
 
