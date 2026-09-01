@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 UNKNOWN 经零产物人工对账后可从下一次尝试续跑 — by Codex
+变更：当前冻结批次在 OpenRouter Recraft V4 Pro Vector 的首题返回 `UNKNOWN_PROVIDER_OUTCOME` 后按既定规则停机。只读对账 workflow `33453726938` 证明该请求时间窗内私有 OSS 新对象为 0、主机 artifact spool 文件为 0、未遗留 started dispatch，且三家凭据出口均为 HTTP 200。新增一次性、精确绑定 control/deployed SHA、Worker/Core digest、manifest/state/hash 与该对账 run ID 的人工恢复入口：它在生产共享锁下把原 unknown attempt 完整写入独立 immutable reconciliation audit，再将同一 attempt 归类为已人工确认的 technical failure，保留保守费用并从 attempt 2 续跑；绝不自动重试 unknown、绝不从 attempt 1 重发、Provider 并发仍为 1。九题、十维、分辨率、路由、预算、失败四次记 0、双盲审和原子发布规则不变。
+
+各端待办：
+- [x] 部署 / 运维（零产物人工对账、不可变审计、精确 CAS 与冻结批次续跑）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（公开与共享契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 私有 draft asset 下载适配 GitHub installation token — by Codex
 变更：正式 provider full 成功后，GPT Image 2 私有转运在 GitHub draft release binary 下载处收到 `403 Resource not accessible by integration`；release/asset ID、目标 SHA、大小与 SHA-256 均由本地授权态复核无漂移，未进入 SSH 或状态写入。GitHub 对 draft binary 的 installation token 要求 release-write scope，因此只有四个实际 GET 私有 draft asset 的封闭 workflow 将 `contents` 从 read 调整为 write；命令仍只允许精确 release/asset GET，静态测试禁止 release mutation 与 POST/PATCH/DELETE。旧部署还未预建首次使用的 `codex-artifacts` 子目录，staging 现只对该精确路径做 root `0700` 安全创建，并允许 9 PNG + metadata 全字节/hash/权限一致时幂等重放；任何部分或漂移内容仍拒绝。其他 workflow 权限不变，不重生成图片、不调用 Provider。
 

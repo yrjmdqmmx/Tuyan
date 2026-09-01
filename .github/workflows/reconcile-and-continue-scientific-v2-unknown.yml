@@ -1,0 +1,158 @@
+name: Reconcile and Continue Scientific V2 Unknown
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha:
+        required: true
+      expected_deployed_sha:
+        required: true
+      expected_worker_digest:
+        required: true
+      expected_core_digest:
+        required: true
+      manifest_hash:
+        required: true
+      expected_state_hash:
+        required: true
+      registry_hash:
+        required: true
+      suite_hash:
+        required: true
+      price_hash:
+        required: true
+      reconciliation_run_id:
+        required: true
+      confirm:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  reconcile-and-continue:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_control_sha }}
+      - name: Validate exact request
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          STATE_HASH: ${{ inputs.expected_state_hash }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          RECONCILIATION_RUN_ID: ${{ inputs.reconciliation_run_id }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" ]]
+          [[ "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$WORKER_DIGEST" "$CORE_DIGEST" "$MANIFEST_HASH" "$STATE_HASH" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+          done
+          [[ "$RECONCILIATION_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          [[ "$CONFIRM" == reconcile-one-unknown-and-continue-scientific-v2 ]]
+      - name: Build exact reconciliation entry
+        run: |
+          set -Eeuo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm --filter @paperbanana/benchmark-worker exec esbuild \
+            src/scientific-v2-unknown-reconciliation-entry.ts \
+            --bundle --platform=node --target=node24 --format=esm \
+            --outfile=/tmp/scientific-v2-unknown-reconciliation.mjs --external:mongodb
+          sha256sum /tmp/scientific-v2-unknown-reconciliation.mjs | tee /tmp/scientific-v2-unknown-reconciliation.sha256
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Stage exact reconciler
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          scp /tmp/scientific-v2-unknown-reconciliation.mjs "$DEPLOY_USER@$DEPLOY_HOST:/tmp/scientific-v2-unknown-reconciliation-$GITHUB_RUN_ID.mjs"
+      - name: Reconcile zero-artifact outcome and continue frozen batch
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          STATE_HASH: ${{ inputs.expected_state_hash }}
+          REGISTRY_HASH: ${{ inputs.registry_hash }}
+          SUITE_HASH: ${{ inputs.suite_hash }}
+          PRICE_HASH: ${{ inputs.price_hash }}
+          RECONCILIATION_RUN_ID: ${{ inputs.reconciliation_run_id }}
+        run: |
+          set -Eeuo pipefail
+          script_sha="$(cut -d' ' -f1 /tmp/scientific-v2-unknown-reconciliation.sha256)"
+          printf -v remote_command 'sudo env CONTROL_SHA=%q DEPLOYED_SHA=%q WORKER_DIGEST=%q CORE_DIGEST=%q MANIFEST_HASH=%q STATE_HASH=%q REGISTRY_HASH=%q SUITE_HASH=%q PRICE_HASH=%q RECONCILIATION_RUN_ID=%q SCRIPT_SHA=%q GITHUB_RUN_ID=%q bash -s' \
+            "$CONTROL_SHA" "$DEPLOYED_SHA" "$WORKER_DIGEST" "$CORE_DIGEST" "$MANIFEST_HASH" "$STATE_HASH" \
+            "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$RECONCILIATION_RUN_ID" "$script_sha" "$GITHUB_RUN_ID"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          repo=/opt/paperbanana/repo
+          source_script="/tmp/scientific-v2-unknown-reconciliation-$GITHUB_RUN_ID.mjs"
+          root_script="/tmp/scientific-v2-unknown-reconciliation-root-$GITHUB_RUN_ID.mjs"
+          temporary_bundle="/tmp/scientific-v2-continue-$GITHUB_RUN_ID.json"
+          cleanup() { rm -f -- "$source_script" "$root_script" "$temporary_bundle"; }
+          trap cleanup EXIT
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          [[ "$(sha256sum "$source_script" | cut -d' ' -f1)" == "$SCRIPT_SHA" ]]
+          install -o root -g root -m 0600 "$source_script" "$root_script"
+          awk -F= '$1=="PAPERBANANA_BENCH_ENABLED"{ok=($2=="false")} END{exit ok?0:1}' /opt/paperbanana/secrets/bench.env
+          awk -F= '$1=="PAPERBANANA_BENCH_CONCURRENCY"{ok=($2=="1")} END{exit ok?0:1}' /opt/paperbanana/secrets/bench.env
+          worker_image="$(awk -F= '$1=="PAPERBANANA_BENCH_WORKER_IMAGE"{print substr($0,index($0,"=")+1)}' "$repo/deploy/hk-single-host/.env")"
+          [[ "${worker_image##*@sha256:}" == "$WORKER_DIGEST" ]]
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          docker exec -i \
+            -e PAPERBANANA_SCIENTIFIC_V2_MANIFEST_HASH="$MANIFEST_HASH" \
+            -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_STATE_HASH="$STATE_HASH" \
+            -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_CODE_SHA="$DEPLOYED_SHA" \
+            -e PAPERBANANA_SCIENTIFIC_V2_RECONCILIATION_RUN_ID="$RECONCILIATION_RUN_ID" \
+            "$worker_id" node --input-type=module < "$root_script" > "$temporary_bundle"
+          jq -e --arg manifest "$MANIFEST_HASH" --arg sha "$DEPLOYED_SHA" \
+            '.operation=="run" and .executionPhase=="full" and .manifest.manifestHash==$manifest and
+             .state.manifestHash==$manifest and .state.status=="running" and .state.pauseReason==null and
+             .manifestCodeSha==$sha and .executionCodeSha==$sha and .legacyRecoveryStateHash==null and
+             .gate=={enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}' \
+            "$temporary_bundle" >/dev/null
+          bundle_sha="$(sha256sum "$temporary_bundle" | cut -d' ' -f1)"
+          bundle_dir=/opt/paperbanana/operator-bundles/scientific-v2
+          install -d -o root -g root -m 0700 "$bundle_dir"
+          bundle_path="$bundle_dir/$bundle_sha.json"
+          if [[ -e "$bundle_path" ]]; then cmp -s "$temporary_bundle" "$bundle_path"; else install -o root -g root -m 0600 "$temporary_bundle" "$bundle_path"; fi
+          flock -u 9
+          "$repo/deploy/hk-single-host/scripts/run-scientific-v2-operator.sh" \
+            --mode run --expected-sha "$DEPLOYED_SHA" --expected-core-digest "$CORE_DIGEST" \
+            --expected-worker-digest "$WORKER_DIGEST" --bundle-sha256 "$bundle_sha" \
+            --registry-hash "$REGISTRY_HASH" --suite-hash "$SUITE_HASH" --price-hash "$PRICE_HASH" \
+            --manifest-hash "$MANIFEST_HASH" --model-count 40 \
+            --confirm run-exact-scientific-v2-bundle-disabled-worker --apply
+          REMOTE
