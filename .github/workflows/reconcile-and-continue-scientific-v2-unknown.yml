@@ -118,8 +118,9 @@ jobs:
           repo=/opt/paperbanana/repo
           source_script="/tmp/scientific-v2-unknown-reconciliation-$GITHUB_RUN_ID.mjs"
           root_script="/tmp/scientific-v2-unknown-reconciliation-root-$GITHUB_RUN_ID.mjs"
+          continuation="/tmp/scientific-v2-continuation-$GITHUB_RUN_ID.json"
           temporary_bundle="/tmp/scientific-v2-continue-$GITHUB_RUN_ID.json"
-          cleanup() { rm -f -- "$source_script" "$root_script" "$temporary_bundle"; }
+          cleanup() { rm -f -- "$source_script" "$root_script" "$continuation" "$temporary_bundle"; }
           trap cleanup EXIT
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
           [[ "$(sha256sum "$source_script" | cut -d' ' -f1)" == "$SCRIPT_SHA" ]]
@@ -137,7 +138,42 @@ jobs:
             -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_STATE_HASH="$STATE_HASH" \
             -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_CODE_SHA="$DEPLOYED_SHA" \
             -e PAPERBANANA_SCIENTIFIC_V2_RECONCILIATION_RUN_ID="$RECONCILIATION_RUN_ID" \
-            "$worker_id" node --input-type=module < "$root_script" > "$temporary_bundle"
+            "$worker_id" node --input-type=module < "$root_script" > "$continuation"
+          chmod 0600 "$continuation"
+          python3 - "$continuation" /opt/paperbanana/secrets/core.env "$temporary_bundle" <<'PY'
+          import json, os, stat, sys
+          continuation_path, env_path, output_path = sys.argv[1:]
+          def protected(path):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  facts = os.fstat(fd)
+                  if not stat.S_ISREG(facts.st_mode) or facts.st_uid != 0 or facts.st_nlink != 1 or stat.S_IMODE(facts.st_mode) != 0o600:
+                      raise RuntimeError()
+                  return os.read(fd, max(2, facts.st_size + 1))
+              finally:
+                  os.close(fd)
+          continuation = json.loads(protected(continuation_path))
+          lines = protected(env_path).decode('utf-8', 'strict').splitlines()
+          secrets = [line.split('=', 1)[1] for line in lines if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
+          if len(secrets) != 1 or not 32 <= len(secrets[0].encode('utf-8')) <= 4096:
+              raise RuntimeError()
+          expected = {'manifestCodeSha','executionCodeSha','legacyRecoveryStateHash','manifest','state','report'}
+          if set(continuation) != expected or set(continuation['report']) != {'batchId','revision','createdAt'}:
+              raise RuntimeError()
+          bundle = {
+              'operation':'run',
+              'gate':{'enabled':False,'concurrency':1,'lockName':'/run/lock/paperbanana-hk-production.lock'},
+              'executionPhase':'full',
+              **continuation,
+              'report':{**continuation['report'],'attestationSecret':secrets[0]},
+          }
+          fd = os.open(output_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+          try:
+              os.write(fd, json.dumps(bundle, separators=(',', ':'), ensure_ascii=False).encode('utf-8'))
+              os.fsync(fd)
+          finally:
+              os.close(fd)
+          PY
           jq -e --arg manifest "$MANIFEST_HASH" --arg sha "$DEPLOYED_SHA" \
             '.operation=="run" and .executionPhase=="full" and .manifest.manifestHash==$manifest and
              .state.manifestHash==$manifest and .state.status=="running" and .state.pauseReason==null and

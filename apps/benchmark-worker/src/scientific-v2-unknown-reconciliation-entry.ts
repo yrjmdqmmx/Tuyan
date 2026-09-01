@@ -16,10 +16,9 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
   const workflowRunId = Number(env.PAPERBANANA_SCIENTIFIC_V2_RECONCILIATION_RUN_ID)
   const mongoUri = env.PAPERBANANA_BENCH_MONGODB_URI
   const mongoDb = env.PAPERBANANA_BENCH_MONGO_DB || 'paperbanana_benchmark'
-  const signingSecret = env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET
   if (!manifestHash?.match(/^[a-f0-9]{64}$/) || !expectedStateHash?.match(/^[a-f0-9]{64}$/)
     || !expectedCodeSha?.match(/^[a-f0-9]{40}$/) || !Number.isSafeInteger(workflowRunId) || workflowRunId <= 0
-    || !mongoUri || !signingSecret || Buffer.byteLength(signingSecret) < 32 || Buffer.byteLength(signingSecret) > 4096) fail()
+    || !mongoUri) fail()
   const client = new MongoClient(mongoUri)
   await client.connect()
   try {
@@ -65,23 +64,19 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
       || row.executionLineage !== undefined || !(row.claimLeaseExpiresAt instanceof Date) || row.claimLeaseExpiresAt > new Date()
       || await dispatches.countDocuments({ manifestHash, status: 'started' }) !== 0) fail()
     const createdAt = new Date().toISOString()
-    const bundle = {
-      operation: 'run',
-      gate: { enabled: false, concurrency: 1, lockName: '/run/lock/paperbanana-hk-production.lock' },
-      executionPhase: 'full',
+    return {
       manifestCodeSha: expectedCodeSha,
       executionCodeSha: expectedCodeSha,
       legacyRecoveryStateHash: null,
       manifest: row.manifest,
       state: row.state,
-      report: { batchId: row.batchId, revision: Number(row.revision || 0) + 1, createdAt, attestationSecret: signingSecret },
+      report: { batchId: row.batchId, revision: Number(row.revision || 0) + 1, createdAt },
     }
-    return bundle
   } finally { await client.close() }
 }
 
-void runScientificV2UnknownReconciliationEntry().then((bundle) => {
-  process.stdout.write(JSON.stringify(bundle))
+void runScientificV2UnknownReconciliationEntry().then((continuation) => {
+  process.stdout.write(JSON.stringify(continuation))
 }).catch(() => {
   process.stderr.write('SCIENTIFIC_V2_UNKNOWN_RECONCILIATION_FAILED\n')
   process.exitCode = 1

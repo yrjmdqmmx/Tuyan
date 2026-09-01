@@ -30,4 +30,7 @@ test('unknown reconciliation preserves the original attempt and refuses automati
   assert.match(entry, /withTransaction/)
   assert.match(entry, /stateTransitionFromHash: expectedStateHash/)
   assert.match(entry, /scientific-v2-unknown-reconciliation:/)
+  assert.doesNotMatch(entry, /PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET/)
+  assert.match(workflow, /PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=/)
+  assert.match(workflow, /attestationSecret/)
 })
