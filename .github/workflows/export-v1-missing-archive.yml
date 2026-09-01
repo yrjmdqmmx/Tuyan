@@ -1,0 +1,158 @@
+name: Export Exact Missing V1 Archive Bytes
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_deployed_sha:
+        description: Exact deployed Core and Benchmark Worker SHA.
+        required: true
+      v1_release_hash:
+        description: Exact published V1 release hash.
+        required: true
+      active_v2_release_hash:
+        description: Exact active V2 release that must remain published.
+        required: true
+      inventory_hash:
+        description: Exact verified V1 inventory hash containing the five missing raw objects.
+        required: true
+      confirm:
+        description: Type export-exact-v1-missing-archive-disabled-worker.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  export:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate immutable archive request
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          V1_RELEASE_HASH: ${{ inputs.v1_release_hash }}
+          ACTIVE_V2_RELEASE_HASH: ${{ inputs.active_v2_release_hash }}
+          INVENTORY_HASH: ${{ inputs.inventory_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$V1_RELEASE_HASH" == 2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2 ]]
+          [[ "$ACTIVE_V2_RELEASE_HASH" == f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a ]]
+          [[ "$INVENTORY_HASH" == d7278c285b9afb74ee03287ccbfc4b392462bbf5bb018d264d13704b5071ecf8 ]]
+          [[ "$CONFIRM" == export-exact-v1-missing-archive-disabled-worker ]]
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Read exact archived bytes under the production lock
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          V1_RELEASE_HASH: ${{ inputs.v1_release_hash }}
+          ACTIVE_V2_RELEASE_HASH: ${{ inputs.active_v2_release_hash }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -Eeuo pipefail
+          remote_tar="/tmp/paperbanana-v1-missing-archive-${RUN_ID}.tar"
+          local_tar="$RUNNER_TEMP/paperbanana-v1-missing-archive.tar"
+          artifact_dir="$RUNNER_TEMP/paperbanana-v1-missing-archive"
+          cleanup() {
+            if [[ "$remote_tar" =~ ^/tmp/paperbanana-v1-missing-archive-[0-9]+\.tar$ ]]; then
+              ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_tar'" >/dev/null 2>&1 || true
+            fi
+          }
+          trap cleanup EXIT
+          printf -v remote_command 'sudo env PAPERBANANA_EXPECTED_SHA=%q PAPERBANANA_V1_RELEASE_HASH=%q PAPERBANANA_ACTIVE_V2_RELEASE_HASH=%q PAPERBANANA_REMOTE_TAR=%q bash -s' \
+            "$EXPECTED_SHA" "$V1_RELEASE_HASH" "$ACTIVE_V2_RELEASE_HASH" "$remote_tar"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          deploy_dir=/opt/paperbanana/repo/deploy/hk-single-host
+          secret_dir=/opt/paperbanana/secrets
+          deploy_env="$deploy_dir/.env"
+          bench_env="$secret_dir/bench.env"
+          [[ "$(git -C /opt/paperbanana/repo rev-parse HEAD)" == "$PAPERBANANA_EXPECTED_SHA" ]]
+          read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
+          [[ "$(read_env_value "$deploy_env" PAPERBANANA_BENCH_SECRET_MODE)" == configured-disabled ]]
+          [[ "$(read_env_value "$bench_env" PAPERBANANA_BENCH_ENABLED)" == false ]]
+          [[ "$(read_env_value "$bench_env" PAPERBANANA_BENCH_CONCURRENCY)" == 1 ]]
+          [[ "$(read_env_value "$bench_env" PAPERBANANA_CODE_SHA)" == "$PAPERBANANA_EXPECTED_SHA" ]]
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          docker exec "$worker_id" node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' "$PAPERBANANA_EXPECTED_SHA"
+          mongo_check="$(docker exec -e PAPERBANANA_V1_RELEASE_HASH -e PAPERBANANA_ACTIVE_V2_RELEASE_HASH -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
+          const releases=db.getCollection("paperbanana_benchmark_releases");
+          const v1=releases.countDocuments({releaseHash:process.env.PAPERBANANA_V1_RELEASE_HASH,profileStatus:"published",suiteId:"pb-image-light-v1",evaluationMode:"codex_single",evaluationEpoch:"codex-single-2026-08-v1"});
+          const v2=releases.countDocuments({releaseHash:process.env.PAPERBANANA_ACTIVE_V2_RELEASE_HASH,profileStatus:"published",suiteId:"pb-scientific-figure-v2",evaluationMode:"codex_scientific_v2"});
+          if(v1!==1||v2!==1)throw new Error("V1_ARCHIVE_RELEASE_BINDING_INVALID");print("release-binding-ok");
+          JS
+          )"
+          [[ "$mongo_check" == release-binding-ok ]]
+          hashes=(
+            5276a255261f6c8988ebc8cb3d5351a831586e837f4ed070d72f30eb7061c19c
+            80e73ca772b766023ccf02e460d4f7439281d22a3b4e15c1271ee79a35679085
+            a014708444649c3e3c684aab8e360aae86982cabcc257d9f0ced1d626b459265
+            a166b8b128743c4c92c79d0da58919cdea326eee05ce4e0f3c1054d9414bb286
+            ac9ce6e2b846a4d5abc4c2dc71638c36520b297b631933d239d9e5a7d2300aee
+          )
+          archive_dir="$(mktemp -d /tmp/paperbanana-v1-missing-archive.XXXXXXXXXXXX)"
+          cleanup_remote() { rm -rf -- "$archive_dir"; }
+          trap cleanup_remote EXIT
+          for hash in "${hashes[@]}"; do
+            [[ "$hash" =~ ^[a-f0-9]{64}$ ]]
+            destination="$archive_dir/$hash.png"
+            docker exec -e "PAPERBANANA_V1_ARCHIVE_HASH=$hash" "$worker_id" node --input-type=module -e '
+              import {createHash} from "node:crypto";import OSS from "ali-oss";
+              const hash=process.env.PAPERBANANA_V1_ARCHIVE_HASH;
+              if(!/^[a-f0-9]{64}$/.test(hash||""))process.exit(1);
+              const oss=new OSS({region:process.env.PAPERBANANA_BENCH_OSS_REGION,accessKeyId:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID,accessKeySecret:process.env.PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET,bucket:process.env.PAPERBANANA_BENCH_OSS_BUCKET,endpoint:process.env.PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT,secure:true,authorizationV4:true});
+              const key=`bench/objects/${hash}.png`;const response=await oss.get(key);const bytes=Buffer.from(response.content);
+              if(!bytes.length||bytes.length>25*1024*1024||bytes.subarray(0,8).toString("hex")!=="89504e470d0a1a0a"||createHash("sha256").update(bytes).digest("hex")!==hash)process.exit(1);
+              process.stdout.write(bytes);
+            ' >"$destination"
+            [[ "$(sha256sum "$destination" | awk '{print $1}')" == "$hash" ]]
+            printf '%s  %s.png\n' "$hash" "$hash" >>"$archive_dir/SHA256SUMS"
+          done
+          tar -C "$archive_dir" -cf "$PAPERBANANA_REMOTE_TAR" SHA256SUMS "${hashes[@]/%/.png}"
+          chmod 0600 "$PAPERBANANA_REMOTE_TAR"
+          chown "${SUDO_USER:?missing sudo user}" "$PAPERBANANA_REMOTE_TAR"
+          REMOTE
+          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_tar" "$local_tar"
+          install -d -m 0700 "$artifact_dir"
+          expected_members="$(printf '%s\n' SHA256SUMS \
+            5276a255261f6c8988ebc8cb3d5351a831586e837f4ed070d72f30eb7061c19c.png \
+            80e73ca772b766023ccf02e460d4f7439281d22a3b4e15c1271ee79a35679085.png \
+            a014708444649c3e3c684aab8e360aae86982cabcc257d9f0ced1d626b459265.png \
+            a166b8b128743c4c92c79d0da58919cdea326eee05ce4e0f3c1054d9414bb286.png \
+            ac9ce6e2b846a4d5abc4c2dc71638c36520b297b631933d239d9e5a7d2300aee.png | sort)"
+          [[ "$(tar -tf "$local_tar" | sort)" == "$expected_members" ]]
+          tar -xf "$local_tar" -C "$artifact_dir"
+          chmod 0600 "$artifact_dir"/*
+          (cd "$artifact_dir" && sha256sum -c SHA256SUMS >/dev/null)
+          file_count="$(find "$artifact_dir" -type f | wc -l | tr -d ' ')"
+          [[ "$file_count" == 6 ]]
+          bytes="$(find "$artifact_dir" -type f -name '*.png' -printf '%s\n' | awk '{sum+=$1} END{print sum+0}')"
+          printf '{"operation":"export-v1-missing-archive","inventoryHash":"%s","rawObjectCount":5,"rawBytes":%s,"providerCalls":0,"judgeCalls":0}\n' '${{ inputs.inventory_hash }}' "$bytes"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v1-missing-raw-archive-${{ github.run_id }}
+          path: ${{ runner.temp }}/paperbanana-v1-missing-archive
+          if-no-files-found: error
+          retention-days: 14
