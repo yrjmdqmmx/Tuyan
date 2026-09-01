@@ -117,9 +117,9 @@ else
   install -m 0600 -o "${SUDO_USER:?missing sudo user}" "$result_path" "$output"
 fi
 "${compose[@]}" exec -T benchmark-worker node -e "$worker_guard" "$expected_sha" >/dev/null
-"${compose[@]}" exec -T paperbanana-api node -e '
+"${compose[@]}" exec -T -e "PAPERBANANA_V1_SUMMARY_MODE=$mode" paperbanana-api node -e '
 const fs=require("node:fs");const value=JSON.parse(fs.readFileSync(0,"utf8"));const inventory=value.inventory||value.worker?.inventory;
-const db=value.db||null;process.stdout.write(`${JSON.stringify({schemaVersion:1,mode:process.argv[1],releaseHash:inventory.releaseHash,
+const db=value.db||null;process.stdout.write(`${JSON.stringify({schemaVersion:1,mode:process.env.PAPERBANANA_V1_SUMMARY_MODE,releaseHash:inventory.releaseHash,
 inventoryHash:inventory.inventoryHash,exclusiveObjectCount:inventory.exclusiveObjects.length,sharedObjectCount:inventory.sharedObjects.length,
 exclusiveBytes:inventory.exclusiveBytes,sharedBytes:inventory.sharedBytes,dbCounts:inventory.dbCounts,status:db?.status||"inspected",generatedOrJudgeCalls:0})}\n`)
-' -- "$mode" <"$output"
+' <"$output"
