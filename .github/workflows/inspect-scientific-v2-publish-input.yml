@@ -180,7 +180,7 @@ jobs:
           }, separators=(',', ':')))
           PY
           compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
-          "${compose[@]}" run --rm --no-deps -T --user 0:0 --read-only \
+          "${compose[@]}" run --rm --no-deps -T --user 0:0 \
             -v "$rendered:/input.json:ro" -v "$diagnostic_target:/diagnostic.cjs:ro" \
             paperbanana-api node /diagnostic.cjs /input.json </dev/null
           REMOTE
