@@ -47,6 +47,7 @@ test('V1 retirement production operator is exact-release, archive-bound, disable
   assert.match(host, /read_env_value "\$core_env" PAPERBANANA_BENCH_MONGODB_URI/u)
   assert.match(host, /PAPERBANANA_BENCH_MONGODB_URI="\$retirement_mongodb_uri"/u)
   assert.match(host, /-e PAPERBANANA_BENCH_MONGODB_URI/u)
+  assert.match(host, /node -e '[\s\S]+?' -- "\$mode" <"\$output"/u)
   assert.doesNotMatch(host, /PAPERBANANA_BENCH_ENABLED\s*=\s*true|phase-operator|scientific-v2-operator|set -x/u)
 
   const worker = readFileSync(entry, 'utf8')
