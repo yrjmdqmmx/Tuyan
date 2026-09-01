@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 争议导出兼容生产 SSH 的 root UID — by Codex
+变更：双审结果已形成 179 个既定争议项，但公开仲裁包在创建隔离容器前被控制面旧检查拦截：生产 SSH 账号拥有临时回传目录时 UID 为 `0`，争议导出仍错误要求 UID 必须非零。该检查现与已验证的盲审分配导出一致，接受任意纯数字的实际 owner UID/GID，同时继续强制目录非符号链接、模式 `0700`、文件逐字节 SHA、root-only 私有输入、无网络 immutable Worker 和零 Provider 调用。争议集合、阈值、题目、分辨率、评分、签名与发布规则均不变。
+
+各端待办：
+- [x] 部署 / 运维（争议导出回传目录 owner 兼容与回归测试）
+- [x] Benchmark Worker / paperbanana-api / Web / Gateway / 原生端（公开与共享契约不变；无需改造）
+
 ### [2026-09-01] Scientific V2 控制面 canonical JSON 与 Core 哈希排序一致 — by Codex
 变更：盲审导出复核发现部分生产机 Python 交接脚本使用 Unicode code-point 键排序，而共享 `benchmark-core` 的冻结 hash 契约使用 JavaScript `localeCompare`；含 camelCase 邻接键（如 `sources/sourceSetHash`）时会把同一 JSON 误判为 hash 漂移。所有 Scientific V2 生成续跑、Codex 导入、公开渲染、review pack、A/B validation、review import、争议导出、仲裁导入和 publish input 的 Python canonical bridge 现对受限 ASCII schema 使用 case-fold 键序，并以跨 Node/Python fixture 证明输出与 Core 一致。既有 manifest/state/review hash、题目、分数和签名域不变，不重新生成或重签任何已冻结输入。
 

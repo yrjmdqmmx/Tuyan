@@ -239,3 +239,10 @@ test('visible vector glyph paths preserve lowercase instead of hiding uppercase 
   const committedLabel = svg.match(/<path data-label="Ligand A \/ 配体 A"[^>]+\/>/)?.[0]
   assert.equal(committedLabel, expectedMixedCase)
 })
+
+test('scientific dispute export accepts the exact SSH return-directory owner including root', () => {
+  const workflow = readFileSync(new URL('../../../.github/workflows/export-scientific-v2-review-disputes.yml', import.meta.url), 'utf8')
+  assert.match(workflow, /return_uid.*\^\[0-9\]\+\$/)
+  assert.doesNotMatch(workflow, /return_uid.*\^\[1-9\]\[0-9\]\*\$/)
+  assert.match(workflow, /stat -c %a.*\^0\?700\$/)
+})

@@ -110,7 +110,7 @@ jobs:
           [[ -d "$RETURN_DIR" && ! -L "$RETURN_DIR" && "$(stat -c %a "$RETURN_DIR")" =~ ^0?700$ ]]
           return_uid="$(stat -c %u "$RETURN_DIR")"
           return_gid="$(stat -c %g "$RETURN_DIR")"
-          [[ "$return_uid" =~ ^[1-9][0-9]*$ && "$return_gid" =~ ^[0-9]+$ ]]
+          [[ "$return_uid" =~ ^[0-9]+$ && "$return_gid" =~ ^[0-9]+$ ]]
           input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-dispute-input.XXXXXXXXXXXX)"
           output_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-dispute-output.XXXXXXXXXXXX)"
           cleanup_dirs() {
