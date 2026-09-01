@@ -95,4 +95,12 @@ if (existing?.status === 'retired') {
     inventoryHash: report.inventory.inventoryHash, archiveManifestHash, deleted, tombstoneId, status: 'retired',
     replayed: false, resumed: Boolean(existing), generatedOrJudgeCalls: 0 }
 }
-print(JSON.stringify(receipt))
+const serializedReceipt = JSON.stringify(receipt)
+const receiptPath = String(process.env.PAPERBANANA_V1_RECEIPT_PATH || '')
+if (receiptPath) {
+  if (!/^\/tmp\/paperbanana-v1-retirement-receipt(?:-[a-zA-Z0-9-]+)?\.json$/.test(receiptPath)) {
+    throw new Error('V1_RETIREMENT_MONGO_RECEIPT_PATH_INVALID')
+  }
+  fs.writeFileSync(receiptPath, `${serializedReceipt}\n`, { encoding: 'utf8', mode: 0o600, flag: 'wx' })
+}
+print(serializedReceipt)

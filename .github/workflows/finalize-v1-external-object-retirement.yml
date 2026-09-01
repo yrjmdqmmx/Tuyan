@@ -118,9 +118,11 @@ jobs:
           [[ "$(read_env_value "$secret_dir/bench.env" PAPERBANANA_BENCH_CONCURRENCY)" == 1 ]]
           compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
           worker_result="$(mktemp /tmp/paperbanana-v1-external-worker.XXXXXXXXXXXX)"
+          db_stdout="$(mktemp /tmp/paperbanana-v1-external-db-stdout.XXXXXXXXXXXX)"
           db_result="$(mktemp /tmp/paperbanana-v1-external-db.XXXXXXXXXXXX)"
           db_result_normalized="$(mktemp /tmp/paperbanana-v1-external-db-normalized.XXXXXXXXXXXX)"
-          cleanup_remote() { rm -f -- "$worker_result" "$db_result" "$db_result_normalized"; }
+          rm -f -- "$db_result"
+          cleanup_remote() { rm -f -- "$worker_result" "$db_stdout" "$db_result" "$db_result_normalized"; }
           trap cleanup_remote EXIT
           "${compose[@]}" exec -T \
             -e "ACTIVE_V2_RELEASE_HASH=$ACTIVE_V2_RELEASE_HASH" \
@@ -145,16 +147,20 @@ jobs:
           process.stdout.write(JSON.stringify({schemaVersion:1,mode:"delete-objects",releaseHash:report.releaseHash,activeV2ReleaseHash:report.activeV2ReleaseHash,inventory:report.inventory,objectDeletion:{releaseHash:report.releaseHash,inventoryHash:report.inventory.inventoryHash,deletedObjectCount:missing,deletedBytes:report.inventory.exclusiveBytes},generatedOrJudgeCalls:0})+"\n");
           ' <"$REPORT_PATH" >"$worker_result"
           echo 'V1_EXTERNAL_STAGE:objects_absent_verified' >&2
+          "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-receipt.json
           "${compose[@]}" cp "$MONGO_SCRIPT_PATH" mongodb:/tmp/retire-v1-benchmark.mongo.js
           echo 'V1_EXTERNAL_STAGE:mongo_script_staged' >&2
           "${compose[@]}" exec -T -e PAPERBANANA_V1_REPORT_PATH=/tmp/paperbanana-v1-retirement-report.json \
+            -e PAPERBANANA_V1_RECEIPT_PATH=/tmp/paperbanana-v1-retirement-receipt.json \
             -e "PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH=$ARCHIVE_MANIFEST_HASH" mongodb sh -c '
               umask 077
               cat > /tmp/paperbanana-v1-retirement-report.json
               mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark /tmp/retire-v1-benchmark.mongo.js
-            ' <"$worker_result" >"$db_result"
+            ' <"$worker_result" >"$db_stdout"
           echo 'V1_EXTERNAL_STAGE:db_script_completed' >&2
-          "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js
+          "${compose[@]}" cp mongodb:/tmp/paperbanana-v1-retirement-receipt.json "$db_result"
+          echo 'V1_EXTERNAL_STAGE:db_receipt_copied' >&2
+          "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js /tmp/paperbanana-v1-retirement-receipt.json
           "${compose[@]}" exec -T paperbanana-api node -e '
           const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);const dbReceipts=[];
           for(const line of lines){try{const value=JSON.parse(line);if(value?.schemaVersion===1&&value.status==="retired"&&value.generatedOrJudgeCalls===0)dbReceipts.push(value);}catch{}}

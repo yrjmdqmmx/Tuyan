@@ -73,13 +73,14 @@ function collectionFor(name, state) {
 function execute(state) {
   const directory = mkdtempSync(join(tmpdir(), 'paperbanana-v1-mongo-'))
   const reportPath = join(directory, 'report.json')
+  const receiptPath = join('/tmp', `paperbanana-v1-retirement-receipt-${process.pid}-${directory.slice(-6)}.json`)
   writeFileSync(reportPath, JSON.stringify(report()), { mode: 0o600 })
   const receipts = []
   const quitSignal = Symbol('quit')
   try {
     const context = {
       require,
-      process: { env: { PAPERBANANA_V1_REPORT_PATH: reportPath, PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH: archiveManifestHash } },
+      process: { env: { PAPERBANANA_V1_REPORT_PATH: reportPath, PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH: archiveManifestHash, PAPERBANANA_V1_RECEIPT_PATH: receiptPath } },
       db: { getSiblingDB: () => ({ getCollection: (name) => collectionFor(name, state) }) },
       ObjectId: (value) => value,
       print: (value) => receipts.push(JSON.parse(value)),
@@ -91,8 +92,10 @@ function execute(state) {
     } catch (error) {
       if (error !== quitSignal) throw error
     }
+    assert.deepEqual(JSON.parse(readFileSync(receiptPath, 'utf8')), receipts[0])
   } finally {
     rmSync(directory, { recursive: true, force: true })
+    rmSync(receiptPath, { force: true })
   }
   assert.equal(receipts.length, 1)
   return receipts[0]
