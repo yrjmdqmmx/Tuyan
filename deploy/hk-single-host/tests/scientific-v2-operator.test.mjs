@@ -660,6 +660,7 @@ test('review pack bundle is derived offline from one exact completed state with 
   assert.match(source, /--network none/)
   assert.match(source, /scientific-v2-review-pack-stager[.]ts/)
   assert.match(source, /--bundle --platform=node --target=node24 --format=esm/)
+  assert.match(source, /--external:sharp/)
   assert.match(source, /STAGER_SHA/)
   assert.match(source, /scientific-v2-review-pack-stager[.]mjs:ro/)
   assert.match(source, /[.]operation\s*==\s*["']review_pack["']/)

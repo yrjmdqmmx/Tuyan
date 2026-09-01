@@ -51,6 +51,7 @@ jobs:
           pnpm --filter @paperbanana/benchmark-worker exec esbuild \
             src/scientific-v2-review-pack-stager.ts \
             --bundle --platform=node --target=node24 --format=esm \
+            --external:sharp \
             --outfile=/tmp/scientific-v2-review-pack-stager.mjs
           sha256sum /tmp/scientific-v2-review-pack-stager.mjs > /tmp/scientific-v2-review-pack-stager.sha256
 
