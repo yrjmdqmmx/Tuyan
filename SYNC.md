@@ -1,5 +1,10 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 已持久化 Worker 状态可零 Provider 重建签名导入 — by Codex
+变更：当 360 题位的完整 Worker 状态报告超过 GitHub 单行日志上限时，新增受保护恢复入口。它只读取生产机上精确 SHA 绑定的 manifest、最终 completed state 与 post-run operator attestation，在共享锁内以不可变 Worker 镜像、`--network none` 和 root `0600` 输入重建同一状态的签名 Worker report，再通过 localhost admin transport 导入为 `review_ready`。流程固定校验 deployed SHA、镜像 digest、previous/final state hash、HMAC、代码 lineage 和常驻 Worker disabled/concurrency 1；不调用 Provider、不改变图片、题目、路由、评分或失败/unknown 规则。
+- [x] Benchmark Worker / 控制面（离线签名 stager、root-only admin handoff 与契约测试）
+- [ ] 部署 / 运维（完成当前 Seedream remediation 的签名导入、双盲复审与原子 supersede）
+
 本仓库是多端 monorepo，由多个独立的 AI 会话 / 开发者分别开发各端
 （`web` / `miniprogram` / `android` / `windows` / `macos` / `laf-functions` 后端 / `auth-gateway`）。
 各会话互不可见——**本文件是唯一的跨端协调真相。**
