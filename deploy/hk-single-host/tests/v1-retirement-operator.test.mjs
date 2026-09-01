@@ -66,6 +66,9 @@ test('V1 retirement production operator is exact-release, archive-bound, disable
   assert.doesNotMatch(worker, /generate\(|judge\(|PAPERBANANA_BENCH_ENABLED\s*=\s*['"]true/u)
 
   const mongo = readFileSync(mongoScript, 'utf8')
+  assert.match(host, /mongodb:\/tmp\/retire-v1-benchmark\.mongo\.js/u)
+  assert.match(host, /mongodb sh -c/u)
+  assert.doesNotMatch(host, /\bmongo:\/tmp|\bmongo sh -c/u)
   for (const collection of ['paperbanana_benchmark_releases', 'paperbanana_benchmark_runs', 'paperbanana_benchmark_samples', 'paperbanana_benchmark_judgments', 'paperbanana_benchmark_dispatches', 'paperbanana_benchmark_public_evidence', 'paperbanana_benchmark_release_tombstones']) {
     assert.match(mongo, new RegExp(collection, 'u'))
   }
