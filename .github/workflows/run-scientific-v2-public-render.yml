@@ -50,6 +50,18 @@ jobs:
           [[ "$MODEL_COUNT" =~ ^[1-9][0-9]*$ && "$MODEL_COUNT" -le 257 ]]
           [[ "$CONFIRM" == render-exact-scientific-v2-public-evidence-disabled-worker ]]
 
+      - name: Build exact zero-provider public renderer
+        run: |
+          set -Eeuo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm --filter @paperbanana/benchmark-worker exec esbuild \
+            src/scientific-v2-operator.ts \
+            --bundle --platform=node --target=node24 --format=esm \
+            --outfile=/tmp/scientific-v2-public-renderer.mjs \
+            --external:mongodb --external:sharp --external:ali-oss
+          sha256sum /tmp/scientific-v2-public-renderer.mjs > /tmp/scientific-v2-public-renderer.sha256
+
       - name: Configure SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
@@ -60,6 +72,15 @@ jobs:
           printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
           printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage exact zero-provider public renderer
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          scp /tmp/scientific-v2-public-renderer.mjs \
+            "$DEPLOY_USER@$DEPLOY_HOST:/tmp/scientific-v2-public-renderer-$GITHUB_RUN_ID.mjs"
 
       - name: Render exact completed batch with frozen Worker
         env:
@@ -76,12 +97,17 @@ jobs:
           MODEL_COUNT: ${{ inputs.model_count }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q BUNDLE_SHA=%q REGISTRY_HASH=%q SUITE_HASH=%q PRICE_HASH=%q MANIFEST_HASH=%q MODEL_COUNT=%q bash -s' \
-            "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT"
+          script_sha="$(cut -d' ' -f1 /tmp/scientific-v2-public-renderer.sha256)"
+          printf -v remote_command 'sudo env CONTROL_SHA=%q DEPLOYED_SHA=%q CORE_DIGEST=%q WORKER_DIGEST=%q BUNDLE_SHA=%q REGISTRY_HASH=%q SUITE_HASH=%q PRICE_HASH=%q MANIFEST_HASH=%q MODEL_COUNT=%q SCRIPT_SHA=%q GITHUB_RUN_ID=%q bash -s' \
+            "$GITHUB_SHA" "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$BUNDLE_SHA" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$script_sha" "$GITHUB_RUN_ID"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           trap 'status=$?; line=$LINENO; trap - ERR; printf "{\"operation\":\"render_public_evidence_failure\",\"providerCalls\":0,\"line\":%s,\"exitCode\":%s}\\n" "$line" "$status" >&2; exit "$status"' ERR
           umask 077
+          source_script="/tmp/scientific-v2-public-renderer-$GITHUB_RUN_ID.mjs"
+          root_script="/tmp/scientific-v2-public-renderer-root-$GITHUB_RUN_ID.mjs"
+          cleanup_renderer() { rm -f -- "$source_script" "$root_script"; }
+          trap cleanup_renderer EXIT
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           repo=/opt/paperbanana/repo
@@ -93,6 +119,9 @@ jobs:
           private_root=/opt/paperbanana/operator-private/scientific-v2
           bundle="$bundle_root/$BUNDLE_SHA.json"
           destination="$private_root/$BUNDLE_SHA.publish-input.json"
+          [[ "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$SCRIPT_SHA" =~ ^[a-f0-9]{64}$ ]]
+          [[ -f "$source_script" && ! -L "$source_script" && "$(sha256sum "$source_script" | awk '{print $1}')" == "$SCRIPT_SHA" ]]
+          install -o 0 -g 0 -m 0600 "$source_script" "$root_script"
           [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
           git -C "$repo" diff --quiet "$DEPLOYED_SHA" -- deploy/hk-single-host/compose.yaml
           for path in "$deploy_env" "$core_env" "$bench_env" "$bundle"; do
@@ -135,7 +164,7 @@ jobs:
           input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-render-input.XXXXXXXXXXXX)"
           result="$(mktemp /tmp/paperbanana-scientific-v2-render-result.XXXXXXXXXXXX.json)"
           cleanup() {
-            rm -f -- "$input_dir/bundle.json" "$result"
+            rm -f -- "$source_script" "$root_script" "$input_dir/bundle.json" "$result"
             rmdir "$input_dir" 2>/dev/null || true
           }
           trap cleanup EXIT
@@ -186,7 +215,7 @@ jobs:
           chmod 0550 "$input_dir"
           compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
           timeout --signal=TERM --kill-after=30s 1800s \
-            "${compose[@]}" run --rm --no-deps --user 1000:1000 \
+            "${compose[@]}" run -T --rm --no-deps --user 1000:1000 \
             -v "$input_dir/bundle.json:/run/paperbanana-scientific-v2/bundle.json:ro" \
             -e PAPERBANANA_BENCH_ENABLED=false \
             -e PAPERBANANA_BENCH_CONCURRENCY=1 \
@@ -198,7 +227,7 @@ jobs:
             -e PAPERBANANA_BENCH_BAILIAN_API_KEY= \
             -e PAPERBANANA_BENCH_ARK_API_KEY= \
             -e PAPERBANANA_BENCH_OPENROUTER_API_KEY= \
-            benchmark-operator node dist/scientific-v2-operator.mjs >"$result"
+            benchmark-operator node --input-type=module < "$root_script" >"$result"
           chmod 0600 "$result"
           jq -e --arg manifest "$MANIFEST_HASH" '
             (keys | sort) == ["operation","providerCalls","publishInput","publishInputHash"] and
@@ -247,6 +276,6 @@ jobs:
           publish_input_hash="$(jq -r .publishInputHash "$destination")"
           evidence_count="$(jq -r '.publishInput.evidence | length' "$destination")"
           docker exec "$worker_id" node -e 'const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)' "$DEPLOYED_SHA" >/dev/null
-          printf '{"operation":"render_public_evidence","providerCalls":0,"manifestHash":"%s","publishInputHash":"%s","evidenceCount":%s,"privateOutputWritten":true}\n' \
-            "$MANIFEST_HASH" "$publish_input_hash" "$evidence_count"
+          printf '{"operation":"render_public_evidence","providerCalls":0,"manifestHash":"%s","publishInputHash":"%s","evidenceCount":%s,"privateOutputWritten":true,"rendererControlSha":"%s","rendererBundleSha256":"%s"}\n' \
+            "$MANIFEST_HASH" "$publish_input_hash" "$evidence_count" "$CONTROL_SHA" "$SCRIPT_SHA"
           REMOTE

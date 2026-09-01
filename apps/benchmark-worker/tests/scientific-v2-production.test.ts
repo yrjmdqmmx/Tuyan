@@ -360,6 +360,27 @@ test('production Mongo atomic repository resolves commit acknowledgement loss an
   })).stateHash, frozenNext.stateHash)
 })
 
+test('completed batch loader accepts the API review-ready control status without weakening signed state binding', async () => {
+  let observedFilter: Record<string, unknown> | undefined
+  const db = {
+    collection() {
+      return {
+        async findOne(filter: Record<string, unknown>) {
+          observedFilter = filter
+          return null
+        },
+      }
+    },
+  }
+  const repository = createScientificV2MongoRepository(db as any)
+  await assert.rejects(
+    () => repository.loadCompletedBatch({ batchId: 'batch', manifestHash: 'a'.repeat(64), stateHash: 'b'.repeat(64) }),
+    /SCIENTIFIC_V2_PUBLIC_RENDER_BATCH_BINDING_INVALID/,
+  )
+  assert.deepEqual(observedFilter?.status, { $in: ['completed', 'review_ready'] })
+  assert.equal(observedFilter?.['state.status'], 'completed')
+})
+
 test('production Mongo canary completion atomically releases its claim and full resume never redispatches the canary', async () => {
   const fixture = productionBatchFixture()
   const storage = productionAtomicDb(fixture)
