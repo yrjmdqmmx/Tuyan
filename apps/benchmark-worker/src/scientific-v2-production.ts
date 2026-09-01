@@ -205,35 +205,42 @@ async function putScientificV2PublicVariant(store: ScientificV2PublicEvidenceSto
   } catch (error) {
     let existing: Buffer
     let metadata: Awaited<ReturnType<ScientificV2PublicEvidenceStore['head']>>
-    try {
-      const readExisting = async () => {
-        if (!store.getStream) return Buffer.from((await store.get(variant.objectKey)).content)
-        const result = await store.getStream(variant.objectKey, {
-          headers: { Range: `bytes=0-${SCIENTIFIC_V2_MAX_ARTIFACT_BYTES}` },
-        })
-        const advertisedHeader = Object.entries(result.res?.headers || {})
-          .find(([key]) => key.toLowerCase() === 'content-length')?.[1]
-        const advertised = Number(advertisedHeader)
-        if (Number.isFinite(advertised) && advertised > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
+    const readExisting = async () => {
+      if (!store.getStream) return Buffer.from((await store.get(variant.objectKey)).content)
+      const result = await store.getStream(variant.objectKey, {
+        headers: { Range: `bytes=0-${SCIENTIFIC_V2_MAX_ARTIFACT_BYTES}` },
+      })
+      const advertisedHeader = Object.entries(result.res?.headers || {})
+        .find(([key]) => key.toLowerCase() === 'content-length')?.[1]
+      const advertised = Number(advertisedHeader)
+      if (Number.isFinite(advertised) && advertised > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
+        result.stream.destroy?.()
+        scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
+      }
+      const chunks: Buffer[] = []
+      let total = 0
+      for await (const value of result.stream) {
+        const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value as Uint8Array)
+        total += chunk.length
+        if (total > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
           result.stream.destroy?.()
           scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
         }
-        const chunks: Buffer[] = []
-        let total = 0
-        for await (const value of result.stream) {
-          const chunk = Buffer.isBuffer(value) ? value : Buffer.from(value as Uint8Array)
-          total += chunk.length
-          if (total > SCIENTIFIC_V2_MAX_ARTIFACT_BYTES) {
-            result.stream.destroy?.()
-            scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_BYTES_LIMIT_EXCEEDED')
-          }
-          chunks.push(chunk)
-        }
-        return Buffer.concat(chunks, total)
+        chunks.push(chunk)
       }
-      [existing, metadata] = await Promise.all([readExisting(), store.head(variant.objectKey)])
-    } catch {
-      throw error
+      return Buffer.concat(chunks, total)
+    }
+    try {
+      existing = await readExisting()
+    } catch (readError) {
+      if (/^SCIENTIFIC_V2_[A-Z0-9_]+$/.test(String((readError as Error)?.message || ''))) throw readError
+      scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_EXISTING_BYTES_READ_FAILED')
+    }
+    try {
+      metadata = await store.head(variant.objectKey)
+    } catch (headError) {
+      if (/^SCIENTIFIC_V2_[A-Z0-9_]+$/.test(String((headError as Error)?.message || ''))) throw headError
+      scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDITION_EXISTING_HEAD_FAILED')
     }
     let aclVerified = false
     let aclUnavailable = false
