@@ -117,14 +117,14 @@ if(value?.schemaVersion!==1||value.generatedOrJudgeCalls!==0||!value.inventory||
 ' "$v1_release_hash" "$active_v2_release_hash" <"$result_path"
 
 if [[ "$mode" == apply ]]; then
-  "${compose[@]}" cp "$deploy_dir/scripts/retire-v1-benchmark.mongo.js" mongo:/tmp/retire-v1-benchmark.mongo.js
+  "${compose[@]}" cp "$deploy_dir/scripts/retire-v1-benchmark.mongo.js" mongodb:/tmp/retire-v1-benchmark.mongo.js
   "${compose[@]}" exec -T -e PAPERBANANA_V1_REPORT_PATH=/tmp/paperbanana-v1-retirement-report.json \
-    -e "PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH=$archive_manifest_hash" mongo sh -c '
+    -e "PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH=$archive_manifest_hash" mongodb sh -c '
       umask 077
       cat > /tmp/paperbanana-v1-retirement-report.json
       mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark /tmp/retire-v1-benchmark.mongo.js
     ' <"$result_path" >"$db_result_path"
-  "${compose[@]}" exec -T --user root mongo rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js
+  "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js
   { cat "$result_path"; cat "$db_result_path"; } | "${compose[@]}" exec -T paperbanana-api node -e '
     const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);
     if(lines.length!==2)process.exit(1);const worker=JSON.parse(lines[0]);const db=JSON.parse(lines[1]);
