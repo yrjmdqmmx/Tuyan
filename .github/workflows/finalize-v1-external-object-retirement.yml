@@ -85,6 +85,7 @@ jobs:
           remote_report="/tmp/paperbanana-v1-external-inventory-${RUN_ID}.json"
           remote_mongo_script="/tmp/paperbanana-v1-external-mongo-${RUN_ID}.js"
           remote_output="/tmp/paperbanana-v1-external-finalize-${RUN_ID}.json"
+          container_receipt_path="/tmp/paperbanana-v1-retirement-receipt-${RUN_ID}.json"
           [[ -f "$local_mongo_script" && ! -L "$local_mongo_script" ]]
           mongo_script_sha="$(sha256sum "$local_mongo_script" | awk '{print $1}')"
           [[ "$mongo_script_sha" =~ ^[a-f0-9]{64}$ ]]
@@ -94,14 +95,15 @@ jobs:
           trap cleanup EXIT
           scp "$local_report" "$DEPLOY_USER@$DEPLOY_HOST:$remote_report"
           scp "$local_mongo_script" "$DEPLOY_USER@$DEPLOY_HOST:$remote_mongo_script"
-          printf -v remote_command 'sudo env REPORT_PATH=%q MONGO_SCRIPT_PATH=%q MONGO_SCRIPT_SHA=%q OUTPUT_PATH=%q EXPECTED_SHA=%q ACTIVE_V2_RELEASE_HASH=%q ARCHIVE_MANIFEST_HASH=%q INVENTORY_HASH=%q bash -s' \
-            "$remote_report" "$remote_mongo_script" "$mongo_script_sha" "$remote_output" "$EXPECTED_SHA" "$ACTIVE_V2_RELEASE_HASH" "$ARCHIVE_MANIFEST_HASH" "$INVENTORY_HASH"
+          printf -v remote_command 'sudo env REPORT_PATH=%q MONGO_SCRIPT_PATH=%q MONGO_SCRIPT_SHA=%q OUTPUT_PATH=%q CONTAINER_RECEIPT_PATH=%q EXPECTED_SHA=%q ACTIVE_V2_RELEASE_HASH=%q ARCHIVE_MANIFEST_HASH=%q INVENTORY_HASH=%q bash -s' \
+            "$remote_report" "$remote_mongo_script" "$mongo_script_sha" "$remote_output" "$container_receipt_path" "$EXPECTED_SHA" "$ACTIVE_V2_RELEASE_HASH" "$ARCHIVE_MANIFEST_HASH" "$INVENTORY_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
           [[ "$REPORT_PATH" =~ ^/tmp/paperbanana-v1-external-inventory-[0-9]+\.json$ \
             && "$MONGO_SCRIPT_PATH" =~ ^/tmp/paperbanana-v1-external-mongo-[0-9]+\.js$ \
             && "$MONGO_SCRIPT_SHA" =~ ^[a-f0-9]{64}$ \
+            && "$CONTAINER_RECEIPT_PATH" =~ ^/tmp/paperbanana-v1-retirement-receipt-[0-9]+\.json$ \
             && "$OUTPUT_PATH" =~ ^/tmp/paperbanana-v1-external-finalize-[0-9]+\.json$ ]]
           [[ -f "$REPORT_PATH" && ! -L "$REPORT_PATH" && -f "$MONGO_SCRIPT_PATH" && ! -L "$MONGO_SCRIPT_PATH" && ! -e "$OUTPUT_PATH" ]]
           [[ "$(sha256sum "$MONGO_SCRIPT_PATH" | awk '{print $1}')" == "$MONGO_SCRIPT_SHA" ]]
@@ -122,7 +124,10 @@ jobs:
           db_result="$(mktemp /tmp/paperbanana-v1-external-db.XXXXXXXXXXXX)"
           db_result_normalized="$(mktemp /tmp/paperbanana-v1-external-db-normalized.XXXXXXXXXXXX)"
           rm -f -- "$db_result"
-          cleanup_remote() { rm -f -- "$worker_result" "$db_stdout" "$db_result" "$db_result_normalized"; }
+          cleanup_remote() {
+            rm -f -- "$worker_result" "$db_stdout" "$db_result" "$db_result_normalized"
+            "${compose[@]}" exec -T --user root mongodb rm -f -- "$CONTAINER_RECEIPT_PATH" >/dev/null 2>&1 || true
+          }
           trap cleanup_remote EXIT
           "${compose[@]}" exec -T \
             -e "ACTIVE_V2_RELEASE_HASH=$ACTIVE_V2_RELEASE_HASH" \
@@ -147,20 +152,19 @@ jobs:
           process.stdout.write(JSON.stringify({schemaVersion:1,mode:"delete-objects",releaseHash:report.releaseHash,activeV2ReleaseHash:report.activeV2ReleaseHash,inventory:report.inventory,objectDeletion:{releaseHash:report.releaseHash,inventoryHash:report.inventory.inventoryHash,deletedObjectCount:missing,deletedBytes:report.inventory.exclusiveBytes},generatedOrJudgeCalls:0})+"\n");
           ' <"$REPORT_PATH" >"$worker_result"
           echo 'V1_EXTERNAL_STAGE:objects_absent_verified' >&2
-          "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-receipt.json
           "${compose[@]}" cp "$MONGO_SCRIPT_PATH" mongodb:/tmp/retire-v1-benchmark.mongo.js
           echo 'V1_EXTERNAL_STAGE:mongo_script_staged' >&2
           "${compose[@]}" exec -T -e PAPERBANANA_V1_REPORT_PATH=/tmp/paperbanana-v1-retirement-report.json \
-            -e PAPERBANANA_V1_RECEIPT_PATH=/tmp/paperbanana-v1-retirement-receipt.json \
+            -e "PAPERBANANA_V1_RECEIPT_PATH=$CONTAINER_RECEIPT_PATH" \
             -e "PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH=$ARCHIVE_MANIFEST_HASH" mongodb sh -c '
               umask 077
               cat > /tmp/paperbanana-v1-retirement-report.json
               mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark /tmp/retire-v1-benchmark.mongo.js
             ' <"$worker_result" >"$db_stdout"
           echo 'V1_EXTERNAL_STAGE:db_script_completed' >&2
-          "${compose[@]}" cp mongodb:/tmp/paperbanana-v1-retirement-receipt.json "$db_result"
+          "${compose[@]}" cp "mongodb:$CONTAINER_RECEIPT_PATH" "$db_result"
           echo 'V1_EXTERNAL_STAGE:db_receipt_copied' >&2
-          "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js /tmp/paperbanana-v1-retirement-receipt.json
+          "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js "$CONTAINER_RECEIPT_PATH"
           "${compose[@]}" exec -T paperbanana-api node -e '
           const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);const dbReceipts=[];
           for(const line of lines){try{const value=JSON.parse(line);if(value?.schemaVersion===1&&value.status==="retired"&&value.generatedOrJudgeCalls===0)dbReceipts.push(value);}catch{}}
