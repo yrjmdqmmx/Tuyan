@@ -194,6 +194,7 @@ services:
       PAPERBANANA_BENCH_DETECTION_INTERVAL_MS: "21600000"
       PAPERBANANA_API_URL: http://paperbanana-api:3000/paperbanana-api
       PAPERBANANA_BENCH_HEALTH_FILE: /tmp/benchmark-worker-health.json
+      RESVG_WASM_PATH: /app/node_modules/@resvg/resvg-wasm/index_bg.wasm
     depends_on:
       mongo-init:
         condition: service_completed_successfully
@@ -239,6 +240,7 @@ services:
     environment:
       PAPERBANANA_BENCH_CONCURRENCY: "1"
       PAPERBANANA_BENCH_DETECTION_INTERVAL_MS: "21600000"
+      RESVG_WASM_PATH: /app/node_modules/@resvg/resvg-wasm/index_bg.wasm
       PAPERBANANA_API_URL: http://paperbanana-api:3000/paperbanana-api
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=1777

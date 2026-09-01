@@ -26,7 +26,7 @@ test('unknown reconciliation preserves the original attempt and refuses automati
   assert.match(reconciler, /spoolCandidateCount !== 0/)
   assert.match(reconciler, /credentialStatus !== 200/)
   assert.match(reconciler, /attemptBase\.responseClass = 'confirmed_technical_failure'/)
-  assert.match(reconciler, /slot\.status = 'retrying'/)
+  assert.match(reconciler, /slot\.status = attempt\.attemptIndex === 4 \? 'failed' : 'retrying'/)
   assert.match(entry, /status: 'started'/)
   assert.match(entry, /claimLeaseExpiresAt > new Date\(\)/)
   assert.match(entry, /withTransaction/)

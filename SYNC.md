@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Benchmark Worker 的 SVG→PNG 路径显式绑定镜像内 Resvg WASM — by Codex
+变更：生产冻结批次证明 OpenRouter `recraft/recraft-v4-pro-vector` 正常声明并返回 SVG 路线，但 Benchmark Worker 复用 API image runtime 时没有经过 API `main` 的启动初始化，`loadResvgWasm()` 因而错误回退到 Laf 专属 `/tmp/custom_dependency/.../index_bg.wasm`，导致已返回 SVG 在 PNG 导出前丢失并被记为 unknown。Worker authoritative runtime 与两类 Compose 服务现统一显式使用镜像内 `/app/node_modules/@resvg/resvg-wasm/index_bg.wasm`；一次性生产配置 workflow 先以 immutable Worker digest、`--network none` 验证该 WASM 文件，再在共享锁下原子更新 root `0600` `bench.env`，Provider 调用固定为 0。九题、十维、分辨率、路由、预算、重试/unknown、盲审和发布规则不变。
+
+各端待办：
+- [x] Benchmark Worker / 部署运维（Worker 默认路径、Compose 环境、生产现批次配置）
+- [x] paperbanana-api / Web / Gateway / 原生端（API 已有自身 Resvg 初始化；公开契约不变）
+
 ### [2026-09-01] Scientific V2 UNKNOWN 经零产物人工对账后可从下一次尝试续跑 — by Codex
 变更：当前冻结批次在 OpenRouter Recraft V4 Pro Vector 的首题返回 `UNKNOWN_PROVIDER_OUTCOME` 后按既定规则停机。只读对账 workflow `33453726938` 证明该请求时间窗内私有 OSS 新对象为 0、主机 artifact spool 文件为 0、未遗留 started dispatch，且三家凭据出口均为 HTTP 200。新增一次性、精确绑定 control/deployed SHA、Worker/Core digest、manifest/state/hash 与该对账 run ID 的人工恢复入口：它在生产共享锁下把原 unknown attempt 完整写入独立 immutable reconciliation audit，再将同一 attempt 归类为已人工确认的 technical failure，保留保守费用并从 attempt 2 续跑；绝不自动重试 unknown、绝不从 attempt 1 重发、Provider 并发仍为 1。九题、十维、分辨率、路由、预算、失败四次记 0、双盲审和原子发布规则不变。
 
