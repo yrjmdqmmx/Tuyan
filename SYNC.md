@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 已存盲审分配可安全刷新短时链接 — by Codex
+变更：`adminBenchmarkReviewExport` 在批次进入 `review_dispute`、`review_finalized` 或 `published` 后，可重放与数据库中已存记录完全相同的 A/B 盲审分配，用于刷新过期的私有 OSS 签名链接；后续状态仍禁止新建分配、换包或改变 mapping/assignment attestation，所有对象仍按 hash、私有 key、metadata 和 ACL 复验。公开 action、字段、评分与盲审结果不变。
+- [x] paperbanana-api（同一已存分配重放、后续状态新分配拒绝及 TDD）
+- [ ] 部署 / 运维（部署后复验过期链接可刷新，继续当前 xhigh 仲裁与原子发布）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
+
 ### [2026-09-02] Scientific V2 审核与发布运维绑定真实 batchId — by Codex
 变更：审核结果导入、仲裁结果导入、公开证据发布输入暂存及发布输入只读检查不再从 `manifestHash` 推导普通批次名，统一新增必填 `batch_id` 并校验后原样绑定到受保护 payload。这样 remediation 批次可以复用同一套签名审核、仲裁和原子发布链，普通批次行为不变；公开 API action、请求/响应字段、排行榜字段及客户端均不变。
 - [x] Benchmark Worker / 运维（四条受保护工作流、真实 batchId 绑定与契约测试）

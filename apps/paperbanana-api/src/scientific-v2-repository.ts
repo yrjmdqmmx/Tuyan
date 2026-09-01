@@ -1411,7 +1411,10 @@ export function createScientificV2MongoRepository(
       return { stateHash: input.report.stateHash, reviewReady, replayed: false }
     },
     async exportReviewAssignment(input: { batchId: string; assignment: AnyRecord; objectBindings: AnyRecord[] }) {
-      const batch = await batches.findOne({ batchId: input.batchId, status: 'review_ready' })
+      const batch = await batches.findOne({
+        batchId: input.batchId,
+        status: { $in: ['review_ready', 'review_dispute', 'review_finalized', 'published'] },
+      })
       if (!batch) scientificError('SCIENTIFIC_V2_REVIEW_BATCH_NOT_READY')
       assertReviewAssignment(input.assignment, batch, operatorSecret())
       const peerRole = input.assignment.role === 'A' ? 'B' : 'A'
@@ -1463,6 +1466,7 @@ export function createScientificV2MongoRepository(
       if (existing) {
         if (canonicalHash(existing.assignment) !== canonicalHash(input.assignment)) scientificError('SCIENTIFIC_V2_REVIEW_ASSIGNMENT_CONFLICT')
       } else {
+        if (batch.status !== 'review_ready') scientificError('SCIENTIFIC_V2_REVIEW_BATCH_NOT_READY')
         const session = db.client.startSession()
         try {
           await session.withTransaction(async () => {
