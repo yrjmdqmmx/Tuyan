@@ -126,7 +126,30 @@ jobs:
           [[ "${#seen[@]}" == 9 ]]
           destination_root=/opt/paperbanana/operator-private/scientific-v2/codex-artifacts
           destination="$destination_root/$MANIFEST_HASH"
-          [[ -d "$destination_root" && ! -L "$destination_root" && ! -e "$destination" ]]
+          if [[ -e "$destination_root" ]]; then
+            [[ -d "$destination_root" && ! -L "$destination_root" && "$(stat -c '%u:%g:%a' "$destination_root")" =~ ^0:0:0?700$ ]]
+          else
+            install -d -o 0 -g 0 -m 0700 "$destination_root"
+          fi
+          validate_destination() {
+            [[ -d "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:1000:0?550$ ]]
+            [[ -f "$destination/metadata.json" && ! -L "$destination/metadata.json"
+              && "$(stat -c '%u:%g:%a' "$destination/metadata.json")" =~ ^0:1000:0?440$
+              && "$(sha256sum "$destination/metadata.json" | awk '{print $1}')" == "$METADATA_SHA" ]]
+            [[ "$(find "$destination" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')" == 9 ]]
+            while IFS=$'\t' read -r file_name expected_sha expected_size; do
+              existing="$destination/$file_name"
+              [[ -f "$existing" && ! -L "$existing" && "$(stat -c '%u:%g:%a' "$existing")" =~ ^0:1000:0?440$
+                && "$(stat -c %s "$existing")" == "$expected_size"
+                && "$(sha256sum "$existing" | awk '{print $1}')" == "$expected_sha" ]]
+            done < <(tar -xOzf "$TRANSFER_ARCHIVE" import-ready-metadata.json | jq -r '.toolCalls[] | [.artifactRef.fileName,.artifactRef.sha256,(.artifactRef.byteSize|tostring)] | @tsv')
+          }
+          if [[ -e "$destination" ]]; then
+            validate_destination
+            printf '{"operation":"stage-scientific-v2-codex-artifacts","providerCalls":0,"manifestHash":"%s","artifactCount":9,"archiveSha256":"%s","metadataSha256":"%s","replayed":true}\n' \
+              "$MANIFEST_HASH" "$ASSET_SHA" "$METADATA_SHA"
+            exit 0
+          fi
           incoming="$(mktemp -d "$destination_root/.incoming-$MANIFEST_HASH.XXXXXXXX")"
           unpacked="$incoming/unpacked"
           install -d -o 0 -g 0 -m 0700 "$unpacked"
@@ -153,6 +176,7 @@ jobs:
           [[ "$(find "$incoming/final" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')" == 9 ]]
           [[ "$(sha256sum "$incoming/final/metadata.json" | awk '{print $1}')" == "$METADATA_SHA" ]]
           mv "$incoming/final" "$destination"
+          validate_destination
           printf '{"operation":"stage-scientific-v2-codex-artifacts","providerCalls":0,"manifestHash":"%s","artifactCount":9,"archiveSha256":"%s","metadataSha256":"%s"}\n' \
             "$MANIFEST_HASH" "$ASSET_SHA" "$METADATA_SHA"
           REMOTE

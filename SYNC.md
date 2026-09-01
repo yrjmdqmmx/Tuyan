@@ -25,7 +25,7 @@
 ## 条目（最新在上）
 
 ### [2026-09-01] Scientific V2 私有 draft asset 下载适配 GitHub installation token — by Codex
-变更：正式 provider full 成功后，GPT Image 2 私有转运在 GitHub draft release binary 下载处收到 `403 Resource not accessible by integration`；release/asset ID、目标 SHA、大小与 SHA-256 均由本地授权态复核无漂移，未进入 SSH 或状态写入。GitHub 对 draft binary 的 installation token 要求 release-write scope，因此只有四个实际 GET 私有 draft asset 的封闭 workflow 将 `contents` 从 read 调整为 write；命令仍只允许精确 release/asset GET，静态测试禁止 release mutation 与 POST/PATCH/DELETE。其他 workflow 权限不变，不重生成图片、不调用 Provider。
+变更：正式 provider full 成功后，GPT Image 2 私有转运在 GitHub draft release binary 下载处收到 `403 Resource not accessible by integration`；release/asset ID、目标 SHA、大小与 SHA-256 均由本地授权态复核无漂移，未进入 SSH 或状态写入。GitHub 对 draft binary 的 installation token 要求 release-write scope，因此只有四个实际 GET 私有 draft asset 的封闭 workflow 将 `contents` 从 read 调整为 write；命令仍只允许精确 release/asset GET，静态测试禁止 release mutation 与 POST/PATCH/DELETE。旧部署还未预建首次使用的 `codex-artifacts` 子目录，staging 现只对该精确路径做 root `0700` 安全创建，并允许 9 PNG + metadata 全字节/hash/权限一致时幂等重放；任何部分或漂移内容仍拒绝。其他 workflow 权限不变，不重生成图片、不调用 Provider。
 
 各端待办：
 - [x] 部署 / 运维（Codex/admin/reviewer/arbitration 私有 draft 下载权限与只读命令门禁）
