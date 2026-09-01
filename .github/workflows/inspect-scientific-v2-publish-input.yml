@@ -64,6 +64,7 @@ jobs:
             "$DEPLOYED_SHA" "$WORKER_DIGEST" "$RENDER_BUNDLE_SHA" "$MANIFEST_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
+          trap 'status=$?; line=$LINENO; trap - ERR; printf "{\"operation\":\"inspect-scientific-v2-publish-input-failure\",\"providerCalls\":0,\"line\":%s,\"exitCode\":%s}\\n" "$line" "$status" >&2; exit "$status"' ERR
           umask 077
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
