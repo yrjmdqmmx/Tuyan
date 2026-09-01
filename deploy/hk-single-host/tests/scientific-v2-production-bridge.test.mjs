@@ -568,6 +568,9 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   assert.match(source, /private_response_sha256="\$\(sha256_file "\$private_result"\)"/)
   assert.match(source, /\$private_response_sha256[.]attest[.]json/)
   assert.match(source, /privateResponseSha256/)
+  assert.match(source, /manifestBundleSha256/)
+  assert.match(source, /\$manifest_bundle_sha256[.]manifest[.]json/)
+  assert.match(source, /[.]privateManifest/)
   for (const field of ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash']) assert.match(source, new RegExp(field))
   assert.match(source, /\$input_sha256\.\$operation\.\$private_response_sha256\.json/)
   assert.doesNotMatch(source, /\$input_sha256\.\$operation\.json/)
@@ -593,6 +596,7 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
     providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 }, codexToolCallLimit: 36,
     modelCount: 40, slotCount: 360, revision: 0, issuedAt: '2026-08-31T00:00:00.000Z',
     reportHash: 'c'.repeat(64), attestationHash: 'd'.repeat(64),
+    manifestSnapshot: { manifestHash: 'a'.repeat(64), models: [], executionOrder: [] },
     stateSnapshot: {
       schemaVersion: 2, manifestHash: 'a'.repeat(64), status: 'blocked', pauseReason: null,
       blockReason: 'provider_canary_failed', createdAt: '2026-08-31T00:00:00.000Z', updatedAt: '2026-08-31T01:00:00.000Z',
@@ -608,7 +612,8 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
   })
   assert.equal(attestationSuccess.status, 0, attestationSuccess.stderr)
   const attestationEnvelope = JSON.parse(attestationSuccess.stdout)
-  assert.deepEqual(attestationEnvelope.privateData, Object.fromEntries(Object.entries(fullAttestation).filter(([key]) => key !== 'stateSnapshot')))
+  assert.deepEqual(attestationEnvelope.privateData, Object.fromEntries(Object.entries(fullAttestation).filter(([key]) => !['manifestSnapshot', 'stateSnapshot'].includes(key))))
+  assert.deepEqual(attestationEnvelope.privateManifest, fullAttestation.manifestSnapshot)
   assert.deepEqual(attestationEnvelope.privateState, fullAttestation.stateSnapshot)
   assert.deepEqual(Object.keys(attestationEnvelope.data).sort(), [
     'attestationHash', 'batchId', 'batchManifestHash', 'executionCodeSha', 'issuedAt', 'legacyRecoveryStateHash', 'manifestCodeSha', 'modelCount', 'reportHash', 'revision', 'slotCount', 'stateHash',

@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-02] Scientific V2 修正批次 manifest/state 同源签名导出 — by Codex
+变更：`adminBenchmarkControl/operatorAttestation` 在既有签名报告之外新增仅限受保护管理员传输的 `manifestSnapshot`，与 `stateSnapshot` 一起由 Core 从实际冻结批次读取、复验并深冻结；root 运维桥分别以内容 SHA 写入 `0600` manifest/state 文件，公开 stdout 只返回 hash。通用 Scientific V2 管理输入 staging 新增精确 `attest` schema（仅 `batchId`、`manifestHash`），使 remediation 批次可从 Core 实际冻结数据构造 Worker run bundle，禁止在客户端重建 manifest 或绕过 hash/签名。公开 API、排行榜字段、题集、分辨率、评分、重试、预算及 provider 路由均不变。
+
+各端待办：
+- [x] paperbanana-api / Benchmark Worker / 运维（Core 同源 manifest/state 导出、内容寻址落盘、attest staging 与 TDD）
+- [ ] 生产执行（为五模型 32 个精确失败题位生成 attestation/run bundle 后单并发补跑）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与字段不变，无需改造）
+
 ### [2026-09-01] Scientific V2 五模型失败题位修正批次 — by Codex
 变更：为已发布 V2 的五个指定模型增加受保护的 `adminBenchmarkControl/freezeRemediationBatch` 运维命令。命令只接受精确绑定的源 batch/manifest/release、排序后的模型与失败题位集合及集合 hash；服务端从已发布 completed 批次重建新 manifest，保留题目、路由、价格、分辨率、成功/unsupported 题位和原始图片，只把指定且已四次确认失败的题位重置为待执行，并把非目标 dispatch 审计账本原子继承到新批次。Worker 仍为 configured-disabled、并发 1、共享生产锁；新失败 marker 额外保存只含稳定 `SCIENTIFIC_V2_*` 代码的私有诊断，不进入公开 API。旧发布不原位改写，修正完成后必须重新双盲、仲裁并原子发布替代版本。
 
