@@ -1,0 +1,209 @@
+name: Import Scientific V2 Persisted Worker State
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { required: true }
+      expected_deployed_sha: { required: true }
+      expected_core_digest: { required: true }
+      expected_worker_digest: { required: true }
+      manifest_sha256: { required: true }
+      state_sha256: { required: true }
+      attestation_result_sha256: { required: true }
+      manifest_hash: { required: true }
+      previous_state_hash: { required: true }
+      expected_state_hash: { required: true }
+      confirm: { required: true }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  import:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate exact persisted-state envelope
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          PREVIOUS_STATE_HASH: ${{ inputs.previous_state_hash }}
+          EXPECTED_STATE_HASH: ${{ inputs.expected_state_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH" "$PREVIOUS_STATE_HASH" "$EXPECTED_STATE_HASH"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ "$PREVIOUS_STATE_HASH" != "$EXPECTED_STATE_HASH" ]]
+          [[ "$CONFIRM" == import-exact-scientific-v2-persisted-worker-state ]]
+
+      - name: Build exact offline persisted-state signer
+        run: |
+          set -Eeuo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm --filter @paperbanana/benchmark-worker exec esbuild \
+            src/scientific-v2-persisted-worker-import-stager.ts \
+            --bundle --platform=node --target=node24 --format=esm \
+            --outfile=/tmp/scientific-v2-persisted-worker-import-stager.mjs
+          sha256sum /tmp/scientific-v2-persisted-worker-import-stager.mjs > /tmp/scientific-v2-persisted-worker-import-stager.sha256
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Stage exact offline persisted-state signer
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+        run: |
+          set -Eeuo pipefail
+          scp /tmp/scientific-v2-persisted-worker-import-stager.mjs "$DEPLOY_USER@$DEPLOY_HOST:/tmp/scientific-v2-persisted-worker-import-stager-$GITHUB_RUN_ID.mjs"
+
+      - name: Rebuild and stage exact signed Worker report
+        id: stage
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          MANIFEST_FILE_SHA: ${{ inputs.manifest_sha256 }}
+          STATE_FILE_SHA: ${{ inputs.state_sha256 }}
+          ATTESTATION_FILE_SHA: ${{ inputs.attestation_result_sha256 }}
+          MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          PREVIOUS_STATE_HASH: ${{ inputs.previous_state_hash }}
+          EXPECTED_STATE_HASH: ${{ inputs.expected_state_hash }}
+        run: |
+          set -Eeuo pipefail
+          stager_sha="$(cut -d' ' -f1 /tmp/scientific-v2-persisted-worker-import-stager.sha256)"
+          printf -v remote_command 'sudo env DEPLOYED_SHA=%q WORKER_DIGEST=%q MANIFEST_FILE_SHA=%q STATE_FILE_SHA=%q ATTESTATION_FILE_SHA=%q MANIFEST_HASH=%q PREVIOUS_STATE_HASH=%q EXPECTED_STATE_HASH=%q STAGER_SHA=%q GITHUB_RUN_ID=%q bash -s' \
+            "$DEPLOYED_SHA" "$WORKER_DIGEST" "$MANIFEST_FILE_SHA" "$STATE_FILE_SHA" "$ATTESTATION_FILE_SHA" "$MANIFEST_HASH" "$PREVIOUS_STATE_HASH" "$EXPECTED_STATE_HASH" "$stager_sha" "$GITHUB_RUN_ID"
+          summary="$(ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 077
+          source_stager="/tmp/scientific-v2-persisted-worker-import-stager-$GITHUB_RUN_ID.mjs"
+          root_stager="/tmp/scientific-v2-persisted-worker-import-stager-root-$GITHUB_RUN_ID.mjs"
+          repo=/opt/paperbanana/repo
+          deploy_env=$repo/deploy/hk-single-host/.env
+          core_env=/opt/paperbanana/secrets/core.env
+          bundle_root=/opt/paperbanana/operator-bundles/scientific-v2
+          admin_results=/opt/paperbanana/operator-private/scientific-v2/admin-results
+          admin_inputs=/opt/paperbanana/operator-private/scientific-v2/admin-inputs
+          manifest_path=$bundle_root/$MANIFEST_FILE_SHA.manifest.json
+          state_path=$bundle_root/$STATE_FILE_SHA.state.json
+          attestation_path=$admin_results/$ATTESTATION_FILE_SHA.attest.json
+          [[ "$STAGER_SHA" =~ ^[a-f0-9]{64}$ && -f "$source_stager" && ! -L "$source_stager" ]]
+          [[ "$(sha256sum "$source_stager" | awk '{print $1}')" == "$STAGER_SHA" ]]
+          install -o 0 -g 0 -m 0600 "$source_stager" "$root_stager"
+          exec 9>/run/lock/paperbanana-hk-production.lock
+          flock -x 9
+          [[ "$(git -C "$repo" rev-parse --verify HEAD)" == "$DEPLOYED_SHA" ]]
+          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
+          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          image_id="$(docker inspect --format '{{.Image}}' "$worker_id")"
+          docker image inspect --format '{{json .RepoDigests}}' "$image_id" | jq -e --arg digest "sha256:$WORKER_DIGEST" 'any(.[]; endswith("@" + $digest))' >/dev/null
+          docker exec "$worker_id" node -e 'if(process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
+          worker_image="$(awk -F= '$1=="PAPERBANANA_BENCH_WORKER_IMAGE" {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$deploy_env")"
+          [[ "$worker_image" =~ ^ghcr[.]io/[a-z0-9_.-]+/paperbanana-benchmark-worker@sha256:$WORKER_DIGEST$ ]]
+          input_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-persisted-import-input.XXXXXXXXXXXX)"
+          output_dir="$(mktemp -d /tmp/paperbanana-scientific-v2-persisted-import-output.XXXXXXXXXXXX)"
+          cidfile="$input_dir/container.cid"
+          cleanup() {
+            if [[ -f "$cidfile" && ! -L "$cidfile" ]]; then container_id="$(<"$cidfile")"; [[ "$container_id" =~ ^[a-f0-9]{64}$ ]] && docker rm -f "$container_id" >/dev/null 2>&1 || true; fi
+            rm -f -- "$source_stager" "$root_stager" "$input_dir/input.json" "$input_dir/stager.mjs" "$cidfile" "$output_dir/result.json"
+            rmdir -- "$input_dir" "$output_dir" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          python3 - "$manifest_path" "$MANIFEST_FILE_SHA" "$state_path" "$STATE_FILE_SHA" "$attestation_path" "$ATTESTATION_FILE_SHA" "$core_env" "$MANIFEST_HASH" "$PREVIOUS_STATE_HASH" "$EXPECTED_STATE_HASH" "$DEPLOYED_SHA" "$input_dir/input.json" <<'PY'
+          import datetime, hashlib, hmac, json, os, stat, sys
+          manifest_path, manifest_sha, state_path, state_sha, attestation_path, attestation_sha, core_env_path, manifest_hash, previous_state_hash, expected_state_hash, deployed_sha, output_path = sys.argv[1:]
+          domain = b'paperbanana/scientific-v2/operator-attestation/v1'
+          def canonical(value):
+              if isinstance(value, list): return '[' + ','.join(canonical(item) for item in value) + ']'
+              if isinstance(value, dict): return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value, key=str.casefold)) + '}'
+              return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+          def protected(path, expected_sha=None, limit=64 * 1024 * 1024):
+              fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+              try:
+                  before = os.fstat(fd)
+                  if not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_nlink != 1 or stat.S_IMODE(before.st_mode) != 0o600 or before.st_size < 2 or before.st_size > limit: raise RuntimeError('protected')
+                  data = b''
+                  while len(data) <= limit:
+                      chunk = os.read(fd, min(1024 * 1024, limit + 1 - len(data)))
+                      if not chunk: break
+                      data += chunk
+                  after = os.fstat(fd); path_stat = os.stat(path, follow_symlinks=False)
+                  if len(data) != before.st_size or (expected_sha and hashlib.sha256(data).hexdigest() != expected_sha) or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_ctime_ns) != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_ctime_ns) or (before.st_dev, before.st_ino) != (path_stat.st_dev, path_stat.st_ino): raise RuntimeError('drift')
+                  return data
+              finally: os.close(fd)
+          manifest = json.loads(protected(manifest_path, manifest_sha)); state = json.loads(protected(state_path, state_sha)); attestation = json.loads(protected(attestation_path, attestation_sha))
+          env_text = protected(core_env_path, limit=1024 * 1024).decode('utf-8')
+          secrets = [line.split('=', 1)[1] for line in env_text.splitlines() if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
+          if len(secrets) != 1 or not 32 <= len(secrets[0].encode('utf-8')) <= 4096: raise RuntimeError('secret')
+          if manifest.get('manifestHash') != manifest_hash or manifest.get('codeSha') != deployed_sha or state.get('manifestHash') != manifest_hash or state.get('stateHash') != expected_state_hash or state.get('status') != 'completed': raise RuntimeError('binding')
+          if attestation.get('batchManifestHash') != manifest_hash or attestation.get('stateHash') != expected_state_hash or attestation.get('manifestCodeSha') != deployed_sha or attestation.get('executionCodeSha') != deployed_sha or attestation.get('legacyRecoveryStateHash') is not None: raise RuntimeError('attestation-binding')
+          report = {key: value for key, value in attestation.items() if key not in {'reportHash', 'attestationHash'}}; report_hash = hashlib.sha256(canonical(report).encode('utf-8')).hexdigest()
+          expected_attestation = hmac.new(hmac.new(secrets[0].encode('utf-8'), domain, hashlib.sha256).digest(), report_hash.encode('ascii'), hashlib.sha256).hexdigest()
+          if attestation.get('reportHash') != report_hash or not hmac.compare_digest(str(attestation.get('attestationHash', '')), expected_attestation): raise RuntimeError('attestation')
+          payload = {'kind':'worker','batchId':attestation['batchId'],'manifest':manifest,'state':state,'revision':int(attestation['revision'])+1,'previousStateHash':previous_state_hash,'createdAt':datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='milliseconds').replace('+00:00','Z'),'attestationSecret':secrets[0],'execution':{'manifestCodeSha':deployed_sha,'executionCodeSha':deployed_sha,'legacyRecoveryStateHash':None}}
+          encoded = (json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8'); fd = os.open(output_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o440)
+          try:
+              os.fchown(fd, 0, 1000); os.fchmod(fd, 0o440); view = memoryview(encoded)
+              while view:
+                  written = os.write(fd, view)
+                  if written < 1: raise RuntimeError('write')
+                  view = view[written:]
+              os.fsync(fd)
+          finally: os.close(fd)
+          PY
+          install -o 0 -g 1000 -m 0440 "$root_stager" "$input_dir/stager.mjs"; chown 0:1000 "$input_dir"; chmod 0550 "$input_dir"; chown 1000:1000 "$output_dir"; chmod 0700 "$output_dir"
+          timeout --signal=TERM --kill-after=10s 300s docker run --rm --pull=never --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 64 --memory 1g --memory-swap 1g --user 1000:1000 \
+            -e PAPERBANANA_SCIENTIFIC_V2_PERSISTED_REPORT_INPUT=/run/paperbanana-persisted-input/input.json -e PAPERBANANA_SCIENTIFIC_V2_PERSISTED_REPORT_OUTPUT=/run/paperbanana-persisted-output/result.json \
+            -v "$input_dir:/run/paperbanana-persisted-input:ro" -v "$output_dir:/run/paperbanana-persisted-output" -v "$input_dir/stager.mjs:/app/scientific-v2-persisted-worker-import-stager.mjs:ro" --cidfile "$cidfile" \
+            --entrypoint node "$worker_image" /app/scientific-v2-persisted-worker-import-stager.mjs
+          result="$output_dir/result.json"
+          [[ -f "$result" && ! -L "$result" && "$(stat -c '%u:%g:%a' "$result")" =~ ^1000:1000:0?600$ ]]
+          jq -e --arg manifest "$MANIFEST_HASH" --arg state "$EXPECTED_STATE_HASH" --arg previous "$PREVIOUS_STATE_HASH" '(keys|sort)==["attestationHash","report","reportHash"] and .report.kind=="worker" and .report.batchManifestHash==$manifest and .report.stateHash==$state and .report.state.stateHash==$state and .report.previousStateHash==$previous and .report.codexProvenance==null and .report.disclosure==null and .reportHash==.report.reportHash and (.attestationHash|test("^[a-f0-9]{64}$"))' "$result" >/dev/null
+          input_sha="$(sha256sum "$result" | awk '{print $1}')"; destination="$admin_inputs/$input_sha.json"
+          if [[ -e "$destination" ]]; then [[ -f "$destination" && ! -L "$destination" && "$(stat -c '%u:%g:%a' "$destination")" =~ ^0:0:0?600$ ]]; cmp -s "$result" "$destination"; else install -o 0 -g 0 -m 0600 "$result" "$destination"; fi
+          report_hash="$(jq -r .reportHash "$destination")"
+          printf '{"operation":"stage-scientific-v2-persisted-worker-state","providerCalls":0,"stateHash":"%s","reportHash":"%s","adminInputSha256":"%s"}\n' "$EXPECTED_STATE_HASH" "$report_hash" "$input_sha"
+          REMOTE
+          )"
+          jq -e --arg state "$EXPECTED_STATE_HASH" '.operation=="stage-scientific-v2-persisted-worker-state" and .providerCalls==0 and .stateHash==$state and (.reportHash|test("^[a-f0-9]{64}$")) and (.adminInputSha256|test("^[a-f0-9]{64}$"))' <<<"$summary" >/dev/null
+          printf '%s\n' "$summary"
+          printf 'input_sha=%s\n' "$(jq -r .adminInputSha256 <<<"$summary")" >> "$GITHUB_OUTPUT"
+
+      - name: Import exact signed Worker report through localhost admin transport
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          DEPLOYED_SHA: ${{ inputs.expected_deployed_sha }}
+          CORE_DIGEST: ${{ inputs.expected_core_digest }}
+          WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          INPUT_HASH: ${{ steps.stage.outputs.input_sha }}
+          EXPECTED_STATE_HASH: ${{ inputs.expected_state_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v command 'cd %q && sudo %q --operation import-worker --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --input-sha256 %q --confirm import-worker-scientific-v2-admin-disabled-worker' /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-admin-operator.sh "$DEPLOYED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$INPUT_HASH"
+          response="$(ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command")"
+          jq -e --arg state "$EXPECTED_STATE_HASH" '.schemaVersion==1 and .operation=="import-worker" and .data.stateHash==$state and .data.reviewReady==true' <<<"$response" >/dev/null
+          jq -c '{schemaVersion,operation,data:{stateHash:.data.stateHash,reviewReady:.data.reviewReady,replayed:.data.replayed}}' <<<"$response"
