@@ -214,7 +214,7 @@ jobs:
           chown 0:1000 "$input_dir"
           chmod 0550 "$input_dir"
           compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
-          timeout --signal=TERM --kill-after=30s 1800s \
+          render_output="$(timeout --signal=TERM --kill-after=30s 1800s \
             "${compose[@]}" run -T --rm --no-deps --user 1000:1000 \
             -v "$input_dir/bundle.json:/run/paperbanana-scientific-v2/bundle.json:ro" \
             -e PAPERBANANA_BENCH_ENABLED=false \
@@ -227,7 +227,10 @@ jobs:
             -e PAPERBANANA_BENCH_BAILIAN_API_KEY= \
             -e PAPERBANANA_BENCH_ARK_API_KEY= \
             -e PAPERBANANA_BENCH_OPENROUTER_API_KEY= \
-            benchmark-operator node --input-type=module < "$root_script" >"$result"
+            benchmark-operator node --input-type=module < "$root_script")"
+          [[ -n "$render_output" && "${#render_output}" -le 67108864 ]]
+          printf '%s\n' "$render_output" >"$result"
+          unset render_output
           chmod 0600 "$result"
           jq -e --arg manifest "$MANIFEST_HASH" '
             (keys | sort) == ["operation","providerCalls","publishInput","publishInputHash"] and
