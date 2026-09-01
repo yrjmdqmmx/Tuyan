@@ -21,6 +21,7 @@ import { test } from 'node:test'
 const operator = fileURLToPath(new URL('../scripts/run-scientific-v2-operator.sh', import.meta.url))
 const workflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-operator.yml', import.meta.url))
 const failureInspectionWorkflow = fileURLToPath(new URL('../../../.github/workflows/inspect-scientific-v2-full-failure.yml', import.meta.url))
+const remediationProgressWorkflow = fileURLToPath(new URL('../../../.github/workflows/inspect-scientific-v2-remediation-progress.yml', import.meta.url))
 const codexArtifactStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-codex-artifacts.yml', import.meta.url))
 const codexImportStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-codex-import-bundle.yml', import.meta.url))
 const adminInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-admin-input.yml', import.meta.url))
@@ -613,6 +614,14 @@ test('unknown-outcome inspection uses the persisted attempt window after the sta
   assert.match(source, /marker_started_at="\$\(jq -er '[^']*[.]startedAt/)
   assert.match(source, /marker_completed_at="\$\(jq -er '[^']*[.]completedAt/)
   assert.doesNotMatch(source, /marker_started_at=.*mongosh/)
+})
+
+test('remediation progress inspection exposes the exact persisted transition hash without provider calls', () => {
+  const source = readFileSync(remediationProgressWorkflow, 'utf8')
+  assert.match(source, /stateTransitionFromHash/)
+  assert.match(source, /providerCalls:\s*0/)
+  assert.match(source, /inspect-scientific-v2-remediation-zero-provider-calls/)
+  assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY/)
 })
 
 test('Codex artifacts stage only from an exact private draft asset into a root protected manifest directory', () => {
