@@ -131,14 +131,14 @@ jobs:
           [[ "${worker_image##*@sha256:}" == "$WORKER_DIGEST" ]]
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
-          worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
-          [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
+          api_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=paperbanana-api --format '{{.ID}}')"
+          [[ "$api_id" =~ ^[a-f0-9]+$ ]]
           docker exec -i \
             -e PAPERBANANA_SCIENTIFIC_V2_MANIFEST_HASH="$MANIFEST_HASH" \
             -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_STATE_HASH="$STATE_HASH" \
             -e PAPERBANANA_SCIENTIFIC_V2_EXPECTED_CODE_SHA="$DEPLOYED_SHA" \
             -e PAPERBANANA_SCIENTIFIC_V2_RECONCILIATION_RUN_ID="$RECONCILIATION_RUN_ID" \
-            "$worker_id" node --input-type=module < "$root_script" > "$continuation"
+            "$api_id" node --input-type=module < "$root_script" > "$continuation"
           chmod 0600 "$continuation"
           python3 - "$continuation" /opt/paperbanana/secrets/core.env "$temporary_bundle" <<'PY'
           import json, os, stat, sys

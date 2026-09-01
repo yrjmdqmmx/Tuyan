@@ -12,6 +12,8 @@ test('unknown continuation is exact, serial, disabled-gated and tied to the zero
   assert.match(workflow, /PAPERBANANA_BENCH_CONCURRENCY.*1/)
   assert.match(workflow, /reconcile-one-unknown-and-continue-scientific-v2/)
   assert.match(workflow, /PAPERBANANA_SCIENTIFIC_V2_RECONCILIATION_RUN_ID/)
+  assert.match(workflow, /com\.docker\.compose\.service=paperbanana-api/)
+  assert.doesNotMatch(workflow, /com\.docker\.compose\.service=benchmark-worker --format/)
   assert.match(workflow, /--mode run/)
   assert.match(workflow, /--model-count 40/)
   assert.match(workflow, /--external:mongodb --external:sharp --external:ali-oss/)
