@@ -6,11 +6,19 @@ import { join } from 'node:path'
 import test from 'node:test'
 
 import {
+  classifyScientificV2OperatorError,
   readScientificV2OperatorBundle,
   writeScientificV2PrivateOutput,
 } from '../src/scientific-v2-operator.js'
 
 const LOCK_NAME = '/run/lock/paperbanana-hk-production.lock'
+
+test('operator exposes only bounded machine error classes for zero-provider production diagnosis', () => {
+  assert.equal(classifyScientificV2OperatorError(new Error('SCIENTIFIC_V2_PUBLIC_RENDER_STATE_INVALID')), 'SCIENTIFIC_V2_PUBLIC_RENDER_STATE_INVALID')
+  assert.equal(classifyScientificV2OperatorError(Object.assign(new Error('private object path omitted'), { code: 'NoSuchKey' })), 'SCIENTIFIC_V2_OPERATOR_RUNTIME_NO_SUCH_KEY')
+  assert.equal(classifyScientificV2OperatorError(Object.assign(new Error('details omitted'), { name: 'MongoServerSelectionError' })), 'SCIENTIFIC_V2_OPERATOR_RUNTIME_MONGO_SERVER_SELECTION_ERROR')
+  assert.equal(classifyScientificV2OperatorError(Object.assign(new Error('details omitted'), { code: 'unsafe key with spaces and punctuation!' })), 'SCIENTIFIC_V2_OPERATOR_FAILED')
+})
 
 function importBundle(toolCalls: unknown[] = []) {
   return {

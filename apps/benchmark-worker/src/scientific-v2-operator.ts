@@ -15,9 +15,25 @@ const MAX_ARTIFACT_AGGREGATE_BYTES = 192 * MIB
 const MAX_PRIVATE_OUTPUT_BYTES = 64 * MIB
 const READ_CHUNK_BYTES = MIB
 
-function safeError(error: unknown) {
+function boundedRuntimeErrorClass(value: unknown) {
+  if (typeof value !== 'string' || !/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(value)) return null
+  const normalized = value
+    .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+    .replace(/-+/g, '_')
+    .toUpperCase()
+  return /^[A-Z][A-Z0-9_]{0,95}$/.test(normalized) ? normalized : null
+}
+
+export function classifyScientificV2OperatorError(error: unknown) {
   const message = String((error as Error)?.message || error)
-  return /^SCIENTIFIC_V2_[A-Z0-9_]+$/.test(message) ? message : 'SCIENTIFIC_V2_OPERATOR_FAILED'
+  if (/^SCIENTIFIC_V2_[A-Z0-9_]+$/.test(message)) return message
+  const facts = error as { code?: unknown; name?: unknown }
+  if (facts?.code !== undefined) {
+    const errorClass = boundedRuntimeErrorClass(facts.code)
+    return errorClass ? `SCIENTIFIC_V2_OPERATOR_RUNTIME_${errorClass}` : 'SCIENTIFIC_V2_OPERATOR_FAILED'
+  }
+  const nameClass = facts?.name === 'Error' ? null : boundedRuntimeErrorClass(facts?.name)
+  return nameClass ? `SCIENTIFIC_V2_OPERATOR_RUNTIME_${nameClass}` : 'SCIENTIFIC_V2_OPERATOR_FAILED'
 }
 
 function currentUid() {
@@ -227,7 +243,7 @@ async function main() {
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   void main().catch((error) => {
-    process.stderr.write(`${safeError(error)}\n`)
+    process.stderr.write(`${classifyScientificV2OperatorError(error)}\n`)
     process.exitCode = 1
   })
 }
