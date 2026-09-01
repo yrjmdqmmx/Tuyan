@@ -78,7 +78,8 @@ jobs:
           }));
           print(JSON.stringify({
             providerCalls: 0, batchId: batch.batchId, manifestHash: batch.manifestHash,
-            stateHash: batch.stateHash, status: batch.state.status, controlStatus: batch.status,
+            stateHash: batch.stateHash, stateTransitionFromHash: batch.stateTransitionFromHash,
+            status: batch.state.status, controlStatus: batch.status,
             targetSlotCount: slots.length, targetSlots: slots,
           }));
           JS
