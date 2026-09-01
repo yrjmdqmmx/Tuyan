@@ -5,7 +5,7 @@ import type { ScientificV2BatchManifest, ScientificV2BatchState } from './scient
 
 const BATCHES = 'paperbanana_benchmark_scientific_v2_batches'
 const DISPATCHES = 'paperbanana_benchmark_scientific_v2_dispatches'
-const RECONCILIATIONS = 'paperbanana_benchmark_scientific_v2_reconciliations'
+const RECONCILIATIONS = 'paperbanana_benchmark_scientific_v2_review_artifacts'
 type MongoRow = { _id: string; [key: string]: any }
 const stageCodes = new Set(['ENV', 'LOAD', 'BINDING', 'LEASE', 'TRANSFORM', 'TRANSACTION', 'POST'])
 function fail(stage: string): never {
@@ -50,18 +50,22 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
       } catch { fail('TRANSFORM') }
       const session = client.startSession()
       try {
-        await session.withTransaction(async () => {
-          const inserted = await reconciliations.insertOne({ _id: auditId, ...structuredClone(transformed.audit), createdAt: new Date() }, { session })
-          if (!inserted.acknowledged) fail('TRANSACTION')
-          const updated = await batches.updateOne(
-            { _id: row!._id, manifestHash, stateHash: expectedStateHash, status: 'paused', claimToken: row!.claimToken,
-              claimLeaseExpiresAt: row!.claimLeaseExpiresAt, 'state.status': 'paused', 'state.pauseReason': 'reconciliation_required' },
-            { $set: { state: structuredClone(transformed.state), stateHash: transformed.state.stateHash,
-              stateTransitionFromHash: expectedStateHash, status: 'running', updatedAt: new Date() } },
-            { session },
-          )
-          if (updated.modifiedCount !== 1) fail('TRANSACTION')
-        }, { readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } })
+        try {
+          await session.withTransaction(async () => {
+            const inserted = await reconciliations.insertOne({ _id: auditId, artifactType: 'unknown_reconciliation',
+              batchManifestHash: manifestHash, sourceSetHash: expectedStateHash,
+              ...structuredClone(transformed.audit), createdAt: new Date() }, { session })
+            if (!inserted.acknowledged) fail('TRANSACTION')
+            const updated = await batches.updateOne(
+              { _id: row!._id, manifestHash, stateHash: expectedStateHash, status: 'paused', claimToken: row!.claimToken,
+                claimLeaseExpiresAt: row!.claimLeaseExpiresAt, 'state.status': 'paused', 'state.pauseReason': 'reconciliation_required' },
+              { $set: { state: structuredClone(transformed.state), stateHash: transformed.state.stateHash,
+                stateTransitionFromHash: expectedStateHash, status: 'running', updatedAt: new Date() } },
+              { session },
+            )
+            if (updated.modifiedCount !== 1) fail('TRANSACTION')
+          }, { readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } })
+        } catch { fail('TRANSACTION') }
       } finally { await session.endSession() }
       row = await batches.findOne({ manifestHash, stateHash: transformed.state.stateHash, status: 'running' })
     } else {
