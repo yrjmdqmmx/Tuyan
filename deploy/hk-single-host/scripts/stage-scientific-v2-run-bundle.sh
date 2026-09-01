@@ -180,7 +180,7 @@ def canonical(value):
         return '[' + ','.join(canonical(item) for item in value) + ']'
     if isinstance(value, dict):
         parts = []
-        for key in sorted(value):
+        for key in sorted(value, key=str.casefold):
             child = canonical(value[key])
             parts.append(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + child)
         return '{' + ','.join(parts) + '}'

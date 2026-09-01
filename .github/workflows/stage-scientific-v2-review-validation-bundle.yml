@@ -199,7 +199,7 @@ jobs:
               if isinstance(value, list):
                   return '[' + ','.join(canonical(item) for item in value) + ']'
               if isinstance(value, dict):
-                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value)) + '}'
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(value[key]) for key in sorted(value, key=str.casefold)) + '}'
               return json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
 
           def digest(value):

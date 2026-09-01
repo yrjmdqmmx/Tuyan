@@ -34,6 +34,7 @@ const arbitrationStagingWorkflow = fileURLToPath(new URL('../../../.github/workf
 const arbitrationImportStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-arbitration-result-import.yml', import.meta.url))
 const publishInputStagingWorkflow = fileURLToPath(new URL('../../../.github/workflows/stage-scientific-v2-publish-input.yml', import.meta.url))
 const publicRenderRunWorkflow = fileURLToPath(new URL('../../../.github/workflows/run-scientific-v2-public-render.yml', import.meta.url))
+const runBundleStager = fileURLToPath(new URL('../scripts/stage-scientific-v2-run-bundle.sh', import.meta.url))
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url))
 const registryHash = 'b'.repeat(64)
 const suiteHash = 'c'.repeat(64)
@@ -730,6 +731,38 @@ test('every review handoff reads the same protected private root written by the 
   }
   const host = readFileSync(operator, 'utf8')
   assert.match(host, /review_private_dir="\$\(host_path \/opt\/paperbanana\/operator-private\/scientific-v2\)"/)
+})
+
+test('Python scientific hash bridges use Core-compatible case-fold ordering for camelCase keys', () => {
+  const bridges = [
+    reviewPackStagingWorkflow,
+    publicRenderStagingWorkflow,
+    codexImportStagingWorkflow,
+    reviewValidationStagingWorkflow,
+    reviewResultImportStagingWorkflow,
+    reviewDisputeExportWorkflow,
+    arbitrationImportStagingWorkflow,
+    publishInputStagingWorkflow,
+    publicRenderRunWorkflow,
+    runBundleStager,
+  ]
+  for (const path of bridges) {
+    const source = readFileSync(path, 'utf8')
+    assert.match(source, /sorted\((?:value|item), key=str[.]casefold\)/, path)
+    assert.doesNotMatch(source, /for key in sorted\((?:value|item)\)(?:\s|:)/, path)
+  }
+  const fixture = { sources: 1, sourceSetHash: 2, privateEnvelope: { mappings: 3, mappingHash: 4 } }
+  const python = spawnSync('python3', ['-c', String.raw`
+import hashlib,json,sys
+value=json.loads(sys.argv[1])
+def canonical(value):
+    if isinstance(value,list): return '['+','.join(canonical(item) for item in value)+']'
+    if isinstance(value,dict): return '{'+','.join(json.dumps(key,separators=(',',':'))+':'+canonical(value[key]) for key in sorted(value,key=str.casefold))+'}'
+    return json.dumps(value,separators=(',',':'),allow_nan=False)
+print(hashlib.sha256(canonical(value).encode()).hexdigest())
+`, JSON.stringify(fixture)], { encoding: 'utf8' })
+  assert.equal(python.status, 0, python.stderr)
+  assert.equal(python.stdout.trim(), canonicalHash(fixture))
 })
 
 test('review validation bundle accepts one exact blind submission and restores private mapping only on-host', () => {

@@ -306,7 +306,7 @@ jobs:
               if isinstance(item, list):
                   return '[' + ','.join(canonical(entry) for entry in item) + ']'
               if isinstance(item, dict):
-                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(item[key]) for key in sorted(item)) + '}'
+                  return '{' + ','.join(json.dumps(key, ensure_ascii=False, separators=(',', ':')) + ':' + canonical(item[key]) for key in sorted(item, key=str.casefold)) + '}'
               return json.dumps(item, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
           if hashlib.sha256(canonical(value['publishInput']).encode('utf-8')).hexdigest() != value['publishInputHash']:
               raise RuntimeError('hash')

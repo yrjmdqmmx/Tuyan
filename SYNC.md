@@ -24,6 +24,13 @@
 
 ## 条目（最新在上）
 
+### [2026-09-01] Scientific V2 控制面 canonical JSON 与 Core 哈希排序一致 — by Codex
+变更：盲审导出复核发现部分生产机 Python 交接脚本使用 Unicode code-point 键排序，而共享 `benchmark-core` 的冻结 hash 契约使用 JavaScript `localeCompare`；含 camelCase 邻接键（如 `sources/sourceSetHash`）时会把同一 JSON 误判为 hash 漂移。所有 Scientific V2 生成续跑、Codex 导入、公开渲染、review pack、A/B validation、review import、争议导出、仲裁导入和 publish input 的 Python canonical bridge 现对受限 ASCII schema 使用 case-fold 键序，并以跨 Node/Python fixture 证明输出与 Core 一致。既有 manifest/state/review hash、题目、分数和签名域不变，不重新生成或重签任何已冻结输入。
+
+各端待办：
+- [x] Benchmark Worker / paperbanana-api / 部署运维（全链路 canonical bridge 与跨运行时回归测试）
+- [x] Web / Gateway / 原生端（公开数据和请求字段不变；无需改造）
+
 ### [2026-09-01] Scientific V2 证据统一保持私有并由 API 签名读取 — by Codex
 变更：生产验证确认 benchmark OSS 桶级 ACL 已由 readiness 强制为 private，Worker 写入的原图和公开 WebP rendition 也都显式保持 private，但最小权限凭据无 `GetObjectACL`；旧 API 因逐对象 ACL 查询 `403 AccessDenied` 会在盲审分配导出阶段拒绝已经完成字节/hash/HEAD 元数据校验的对象，同时仍错误要求公开 rendition 为 `public-read`。`paperbanana-api` 现仅在精确 `AccessDenied + HTTP 403` 时把对象 ACL 标记为 `unavailable`，其他 ACL 错误继续失败；Scientific V2 原图与 rendition 都只接受 `private|unavailable`，明确拒绝 `public-read`，并继续逐对象验证字节 SHA、对象键、mime 与 cache-control。所有公开访问仍只通过 15 分钟签名 URL；九题、十维、盲审、失败记 0、预算与原子发布规则不变。
 
