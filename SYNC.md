@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 公开证据渲染绑定真实 batchId — by Codex
+变更：公开证据 render bundle 暂存与执行工作流新增必填 `batch_id`，并分别与签名 operator attestation、受保护 render bundle 和最终 publish input 做精确相等校验；不再从 `manifestHash` 推导普通批次名，因此 remediation 批次可进入相同的零 Provider 证据渲染与原子发布链。普通批次只需传入原有真实 batchId，公开 API、排行榜字段、图片、评分和审核结果均不变。
+- [x] Benchmark Worker / 运维（两条受保护渲染工作流、真实 batchId 绑定与失败关闭）
+- [ ] 部署 / 运维（部署后渲染当前 Seedream remediation 公开证据并原子发布）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
+
 ### [2026-09-02] Scientific V2 已存盲审分配可安全刷新短时链接 — by Codex
 变更：`adminBenchmarkReviewExport` 在批次进入 `review_dispute`、`review_finalized` 或 `published` 后，可重放与数据库中已存记录完全相同的 A/B 盲审分配，用于刷新过期的私有 OSS 签名链接；后续状态仍禁止新建分配、换包或改变 mapping/assignment attestation，所有对象仍按 hash、私有 key、metadata 和 ACL 复验。公开 action、字段、评分与盲审结果不变。
 - [x] paperbanana-api（同一已存分配重放、后续状态新分配拒绝及 TDD）
