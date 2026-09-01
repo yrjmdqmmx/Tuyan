@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-02] 方舟 Seedream 5.0 / 4.5 分辨率档位契约修正 — by Codex
+变更：`callArkImage` 对 `doubao-seedream-5-0-260128` 与 `doubao-seedream-4-5-251128` 不再把用户选择的 `2K/4K` 档位强制改写为固定 `2048x1152/4096x2304`，而是按火山方舟当前图片生成契约直接发送分辨率档位，由模型在既定档位与提示词比例约束下确定真实像素；生成后仍从原始图片读取实际宽高并保存 SHA-256，返回格式、重试、预算、并发、共享锁及 Scientific V2 评分规则不变。其他方舟模型沿用原请求格式。
+
+各端待办：
+- [x] paperbanana-api（模型特定档位映射与回归测试）
+- [ ] Scientific V2 生产补跑（仅重新冻结并补跑 Seedream 4.5 / 5.0 的 18 个失败题位）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与字段不变，无需改造）
+
 ### [2026-09-02] Scientific V2 remediation 原子替代发布与独立 lifecycle head — by Codex
 变更：Scientific V2 immutable release 文档继续保持原字节和原 `releaseHash`，发布生命周期移到独立 `paperbanana_benchmark_release_heads` / `paperbanana_benchmark_release_lifecycle` 文档。首次发布原子建立 active head；后续若同一评测身份已有 active release，普通 batch 仍以 `SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT` 拒绝，只有 `remediationOf` 精确绑定当前 active release 的 id/hash、源 batch/manifest 和非空目标集合且集合 hash 一致时，才在同一 Mongo 事务中插入新 release/证据、把旧 lifecycle 标为 superseded、移动 head 并 CAS 标记新 batch published。任一步失败全部回滚；公开 leaderboard/model 查询在 head 存在时只返回 active release，历史 release 仍可按内容 hash 校验和审计。公开 action 与 response 字段不变。
 

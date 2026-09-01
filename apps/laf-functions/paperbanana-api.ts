@@ -4581,7 +4581,7 @@ async function callArkImage(
   if (!entry) throw new Error(`Ark image model ${model} is not registered`)
   const supportedResolutions = entry.capabilities.resolutions || []
   if (!supportedResolutions.includes(imageSize)) throw new Error(`Ark image model ${model} does not support ${imageSize}`)
-  const size = arkImageSize(aspectRatio, imageSize)
+  const size = arkImageSize(model, aspectRatio, imageSize)
   const body: Record<string, unknown> = {
     model,
     prompt,
@@ -4607,7 +4607,14 @@ async function callArkImage(
   return await normalizeArkImageToPng(base64)
 }
 
-function arkImageSize(aspectRatio: AspectRatio, imageSize: string) {
+function arkImageSize(model: string, aspectRatio: AspectRatio, imageSize: string) {
+  // Seedream 5.0 and 4.5 negotiate the actual pixel dimensions from the
+  // documented resolution tier. Sending an exact 16:9 custom size is rejected
+  // by their current Ark contracts; the returned bytes remain authoritative
+  // for the measured width and height recorded by the benchmark.
+  if (model === 'doubao-seedream-5-0-260128' || model === 'doubao-seedream-4-5-251128') {
+    return imageSize
+  }
   if (aspectRatio === 'auto') return imageSize
   const exact16By9: Record<string, string> = {
     '1K': '1280x720',
