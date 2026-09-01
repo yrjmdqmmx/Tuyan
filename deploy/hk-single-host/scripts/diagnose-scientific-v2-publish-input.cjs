@@ -121,15 +121,37 @@ async function main() {
         attemptHash: attempt.attemptHash,
       })
     }
+    const markerMismatchFacts = []
     const markerMismatches = expectedMarkers.filter((expected) => {
       const exact = markers.filter((marker) => marker.slotId === expected.slotId && marker.attemptIndex === expected.attemptIndex)
-      return exact.length !== 1 || exact[0].status !== 'committed' || exact[0].payloadHash !== expected.payloadHash
-        || exact[0].attempt?.attemptHash !== expected.attemptHash
+      const marker = exact[0]
+      const mismatch = exact.length !== 1 || marker?.status !== 'committed' || marker?.payloadHash !== expected.payloadHash
+        || marker?.attempt?.attemptHash !== expected.attemptHash
+      if (mismatch && markerMismatchFacts.length < 20) {
+        const stateSlot = batch.state.slots.find((slot) => slot.slotId === expected.slotId)
+        const stateAttempt = stateSlot?.attempts?.[expected.attemptIndex - 1]
+        const markerAttempt = marker?.attempt
+        const markerAttemptBase = markerAttempt && Object.fromEntries(Object.entries(markerAttempt).filter(([key]) => key !== 'attemptHash'))
+        const stateAttemptBase = stateAttempt && Object.fromEntries(Object.entries(stateAttempt).filter(([key]) => key !== 'attemptHash'))
+        markerMismatchFacts.push({
+          slotId: expected.slotId, attemptIndex: expected.attemptIndex,
+          markerCount: exact.length, markerStatus: marker?.status || null,
+          payloadMatches: marker?.payloadHash === expected.payloadHash,
+          attemptHashMatches: markerAttempt?.attemptHash === expected.attemptHash,
+          markerAttemptSelfValid: Boolean(markerAttempt && canonicalHash(markerAttemptBase) === markerAttempt.attemptHash),
+          stateAttemptSelfValid: Boolean(stateAttempt && canonicalHash(stateAttemptBase) === stateAttempt.attemptHash),
+          markerResponseClass: markerAttempt?.responseClass || null,
+          stateResponseClass: stateAttempt?.responseClass || null,
+          artifactReconciled: Boolean(marker?.artifactReconciledAt),
+        })
+      }
+      return mismatch
     }).length
     const markerKeys = new Set(expectedMarkers.map((item) => `${item.slotId}\0${item.attemptIndex}`))
     const extraMarkers = markers.filter((marker) => !markerKeys.has(`${marker.slotId}\0${marker.attemptIndex}`)).length
     addCheck(checks, 'dispatch_ledger', markerMismatches === 0 && extraMarkers === 0, {
       expectedCount: expectedMarkers.length, actualCount: markers.length, mismatchCount: markerMismatches, extraCount: extraMarkers,
+      mismatchFacts: markerMismatchFacts,
     })
 
     const finalReview = await reviews.findOne({

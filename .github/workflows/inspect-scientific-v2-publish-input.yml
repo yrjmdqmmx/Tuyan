@@ -183,6 +183,7 @@ jobs:
           [[ "$core_image" == *@sha256:"$CORE_DIGEST" ]]
           docker run --rm --pull=never --network paperbanana-hk_backend --read-only --cap-drop ALL \
             --security-opt no-new-privileges:true --user 0:0 --env-file /opt/paperbanana/secrets/core.env \
+            -e PAPERBANANA_CODE_SHA="$DEPLOYED_SHA" \
             -v "$rendered:/input.json:ro" -v "$diagnostic_target:/diagnostic.cjs:ro" \
             "$core_image" node /diagnostic.cjs /input.json </dev/null
           REMOTE
