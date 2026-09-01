@@ -6,6 +6,9 @@ on:
       manifest_hash:
         description: Exact published Scientific V2 manifest hash.
         required: true
+      active_release_hash:
+        description: Exact active published Scientific V2 release hash.
+        required: true
       confirm:
         required: true
 
@@ -25,10 +28,12 @@ jobs:
       - name: Validate immutable request
         env:
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          ACTIVE_RELEASE_HASH: ${{ inputs.active_release_hash }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
           [[ "$MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
+          [[ "$ACTIVE_RELEASE_HASH" =~ ^[a-f0-9]{64}$ ]]
           [[ "$CONFIRM" == inspect-scientific-v2-remediation-routes-zero-provider-calls ]]
       - name: Configure SSH
         env:
@@ -45,21 +50,24 @@ jobs:
           DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
           DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
           MANIFEST_HASH: ${{ inputs.manifest_hash }}
+          ACTIVE_RELEASE_HASH: ${{ inputs.active_release_hash }}
         run: |
           set -Eeuo pipefail
-          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q bash -s' "$MANIFEST_HASH"
+          printf -v remote_command 'sudo env SCIENTIFIC_V2_MANIFEST_HASH=%q SCIENTIFIC_V2_ACTIVE_RELEASE_HASH=%q bash -s' "$MANIFEST_HASH" "$ACTIVE_RELEASE_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           worker_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=benchmark-worker --format '{{.ID}}')"
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
-          docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
+          docker exec -e SCIENTIFIC_V2_MANIFEST_HASH="$SCIENTIFIC_V2_MANIFEST_HASH" -e SCIENTIFIC_V2_ACTIVE_RELEASE_HASH="$SCIENTIFIC_V2_ACTIVE_RELEASE_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
           const targets = new Set([
             'seedream-4.5', 'seedream-5.0', 'recraft/recraft-v4-styles-vector',
             'recraft/recraft-v4-styles-pro-vector', 'recraft/recraft-v4-pro-vector',
           ]);
-          const batch = db.getCollection('paperbanana_benchmark_scientific_v2_batches').findOne({manifestHash: process.env.SCIENTIFIC_V2_MANIFEST_HASH});
+          const release = db.getCollection('paperbanana_benchmark_releases').findOne({releaseHash: process.env.SCIENTIFIC_V2_ACTIVE_RELEASE_HASH, profileStatus: 'published'});
+          if (!release || release.batchManifestHash !== process.env.SCIENTIFIC_V2_MANIFEST_HASH) throw new Error('SCIENTIFIC_V2_RELEASE_BINDING_INVALID');
+          const batch = db.getCollection('paperbanana_benchmark_scientific_v2_batches').findOne({batchId: release.batchId, manifestHash: release.batchManifestHash, status: 'published'});
           if (!batch) throw new Error('SCIENTIFIC_V2_BATCH_NOT_FOUND');
           const slots = batch.state.slots.filter(slot => targets.has(slot.canonicalModelId)).map(slot => ({
             slotId: slot.slotId, canonicalModelId: slot.canonicalModelId, caseId: slot.caseId,
@@ -67,7 +75,7 @@ jobs:
             status: slot.status, attemptCount: slot.attempts.length,
             responseClasses: slot.attempts.map(attempt => attempt.responseClass),
           }));
-          print(JSON.stringify({providerCalls: 0, manifestHash: batch.manifestHash, slots}));
+          print(JSON.stringify({providerCalls: 0, releaseHash: release.releaseHash, batchId: batch.batchId, manifestHash: batch.manifestHash, slots}));
           JS
           docker exec "$worker_id" node --input-type=module -e '
           const arkIds = new Set(["doubao-seedream-4-5-251128", "doubao-seedream-5-0-260128", "doubao-seedream-5-0-lite-260128"]);

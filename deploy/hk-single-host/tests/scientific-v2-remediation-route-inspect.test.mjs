@@ -15,5 +15,8 @@ test('remediation route inspection is read-only and bounded to the five requeste
   ]) assert.match(workflow, new RegExp(model.replace(/[.]/g, '\\.'), 'u'))
   assert.match(workflow, /https:\/\/ark\.cn-beijing\.volces\.com\/api\/v3\/models/u)
   assert.match(workflow, /paperbanana_benchmark_scientific_v2_batches/u)
+  assert.match(workflow, /paperbanana_benchmark_releases/u)
+  assert.match(workflow, /ACTIVE_RELEASE_HASH/u)
+  assert.match(workflow, /status:\s*'published'/u)
   assert.doesNotMatch(workflow, /images\/generations|callImageModel|generate\(/u)
 })
