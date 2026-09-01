@@ -476,6 +476,46 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     assert.match(malformedBlockedResult.stderr, /assembly failed \[phase\]/)
     const fullSuccess = execute(sign({ ...reportBase, stateHash: fullState.stateHash }), { phase: 'full', stateValue: fullState })
     assert.equal(fullSuccess.status, 0, fullSuccess.stderr)
+    const remediationManifestBase = {
+      ...manifestBase,
+      executionOrder: [{ slotId: 'carried-slot' }, { slotId: 'target-slot' }],
+    }
+    const remediationManifest = { ...remediationManifestBase, manifestHash: canonicalHash(remediationManifestBase) }
+    const remediationStateBase = {
+      ...stateBase,
+      manifestHash: remediationManifest.manifestHash,
+      status: 'running',
+      slots: [
+        { slotId: 'carried-slot', isProviderCanary: false, status: 'succeeded' },
+        { slotId: 'target-slot', isProviderCanary: false, status: 'pending' },
+      ],
+    }
+    const remediationState = { ...remediationStateBase, stateHash: canonicalHash(remediationStateBase) }
+    const remediationReport = {
+      ...reportBase,
+      batchManifestHash: remediationManifest.manifestHash,
+      stateHash: remediationState.stateHash,
+      slotCount: 2,
+    }
+    const remediationFull = execute(sign(remediationReport), {
+      phase: 'full', manifestValue: remediationManifest, stateValue: remediationState,
+      expectedManifestHash: remediationManifest.manifestHash,
+    })
+    assert.equal(remediationFull.status, 0, remediationFull.stderr)
+    const canaryOnlyRunningStateBase = {
+      ...remediationStateBase,
+      slots: [
+        { slotId: 'carried-slot', isProviderCanary: true, status: 'succeeded' },
+        { slotId: 'target-slot', isProviderCanary: false, status: 'pending' },
+      ],
+    }
+    const canaryOnlyRunningState = { ...canaryOnlyRunningStateBase, stateHash: canonicalHash(canaryOnlyRunningStateBase) }
+    const canaryEscalation = execute(sign({ ...remediationReport, stateHash: canaryOnlyRunningState.stateHash }), {
+      phase: 'full', manifestValue: remediationManifest, stateValue: canaryOnlyRunningState,
+      expectedManifestHash: remediationManifest.manifestHash,
+    })
+    assert.notEqual(canaryEscalation.status, 0)
+    assert.match(canaryEscalation.stderr, /assembly failed \[phase\]/)
     const legacyFull = execute(sign({ ...legacyBlockedReport, stateHash: legacyFullState.stateHash }), { phase: 'full', manifestValue: legacyManifest, stateValue: legacyFullState, expectedManifestHash: legacyManifest.manifestHash })
     assert.equal(legacyFull.status, 0, legacyFull.stderr)
     const executionMismatch = execute(sign({ ...reportBase, executionCodeSha: legacyCodeSha }))

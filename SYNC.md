@@ -24,6 +24,14 @@
 
 ## 条目（最新在上）
 
+### [2026-09-02] Scientific V2 修正批次可从签名 running 状态进入 full — by Codex
+变更：Scientific V2 run-bundle stager 的 `full` 阶段除既有 `canary_complete` 外，新增严格的签名 running-resume 结构：同一 manifest/execution SHA、无 legacy rotation、至少一个非 canary 题位已经是成功/不支持/失败终态、至少一个题位仍为 pending/retrying，且所有题位只能处于这五种状态。这样 remediation 的 328 个携带终态 + 32 个待补跑题位可直接进入 full；仅完成 provider canary 的 running 状态仍被拒绝，避免跳过 canary 边界。最终是否可 claim 仍由 Mongo 的 `status=frozen + remediationOf + 无 claimToken` CAS 约束；unknown、预算阻塞、not_executed、artifact 等状态仍失败关闭。
+
+各端待办：
+- [x] Benchmark Worker / 运维（签名 running-resume 结构校验、防 canary 越级及 TDD）
+- [ ] 生产执行（在最终代码 SHA 重新冻结同一 32 题集合并单并发补跑）
+- [x] paperbanana-api / Web / Gateway / 原生端（公开 action 与字段不变，无需改造）
+
 ### [2026-09-02] Scientific V2 修正批次 manifest/state 同源签名导出 — by Codex
 变更：`adminBenchmarkControl/operatorAttestation` 在既有签名报告之外新增仅限受保护管理员传输的 `manifestSnapshot`，与 `stateSnapshot` 一起由 Core 从实际冻结批次读取、复验并深冻结；root 运维桥分别以内容 SHA 写入 `0600` manifest/state 文件，公开 stdout 只返回 hash。通用 Scientific V2 管理输入 staging 新增精确 `attest` schema（仅 `batchId`、`manifestHash`），使 remediation 批次可从 Core 实际冻结数据构造 Worker run bundle，禁止在客户端重建 manifest 或绕过 hash/签名。公开 API、排行榜字段、题集、分辨率、评分、重试、预算及 provider 路由均不变。
 
