@@ -2251,10 +2251,12 @@ test('review export verifies large blind assignments with bounded concurrency', 
   const secret = 'scientific-v2-review-concurrency-secret-at-least-32-bytes'
   let active = 0
   let maximumActive = 0
+  let fullByteVerifications = 0
   const verified = new Set<string>()
   const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'review-concurrency-token', {
     operatorReportSecret: secret,
-    verifyObject: async (objectKey, imageHash) => {
+    verifyObject: async () => { fullByteVerifications += 1 },
+    verifyReviewObject: async (objectKey, imageHash) => {
       active += 1
       maximumActive = Math.max(maximumActive, active)
       await new Promise((resolve) => setImmediate(resolve))
@@ -2282,6 +2284,7 @@ test('review export verifies large blind assignments with bounded concurrency', 
     `bench/scientific-v2/private/objects/${SCIENTIFIC_EDIT_SOURCE.sourceHash}.png`,
     SCIENTIFIC_EDIT_SOURCE.sourceHash,
   ].join('\u0000')))
+  assert.equal(fullByteVerifications, 0)
   assert.equal(maximumActive, 16)
 })
 

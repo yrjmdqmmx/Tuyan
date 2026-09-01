@@ -1191,7 +1191,12 @@ export function createMongoBenchmarkRepository(
   verifyEvidence: (objectKey: string, imageHash: string, options?: { signal?: AbortSignal; timeoutMs?: number }) => Promise<void> = async () => {},
   immutableCodeSha = String(process.env.PAPERBANANA_CODE_SHA || ''),
   readOperatorReport: (objectKey: string, maxBytes: number) => Promise<Uint8Array> = async () => { throw new Error('BENCHMARK_OPERATOR_REPORT_READER_UNAVAILABLE') },
-  scientificV2Options: { operatorReportSecret?: string; createClaimToken?: () => string; requireRegistryAuthority?: boolean } = {},
+  scientificV2Options: {
+    operatorReportSecret?: string
+    createClaimToken?: () => string
+    requireRegistryAuthority?: boolean
+    verifyReviewEvidence?: (objectKey: string, imageHash: string) => Promise<void>
+  } = {},
 ) {
   const suites = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.suites)
   const models = db.collection<AnyRecord>(BENCHMARK_COLLECTIONS.models)
@@ -1209,6 +1214,7 @@ export function createMongoBenchmarkRepository(
     operatorReportSecret: scientificV2Options.operatorReportSecret,
     immutableCodeSha,
     verifyObject: async (objectKey, imageHash) => verifyEvidence(objectKey, imageHash),
+    verifyReviewObject: scientificV2Options.verifyReviewEvidence,
     requireRegistryAuthority: scientificV2Options.requireRegistryAuthority,
   })
 

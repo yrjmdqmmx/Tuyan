@@ -75,6 +75,9 @@ async function main(): Promise<void> {
           verifyScientificV2EvidenceMetadata(key, expectedHash, await benchmarkBucket.headFile(key))
         }
       }
+      const verifyScientificReviewEvidence = async (key: string, expectedHash: string) => {
+        verifyScientificV2EvidenceMetadata(key, expectedHash, await benchmarkBucket.headFile(key))
+      }
       const readBenchmarkOperatorReport = async (key: string, maxBytes: number) => benchmarkBucket.readFile(key, maxBytes) as Promise<Uint8Array>
       const benchmarkRepository = createMongoBenchmarkRepository(
         benchmarkMongo.db,
@@ -82,7 +85,11 @@ async function main(): Promise<void> {
         verifyBenchmarkEvidence,
         config.benchmark.codeSha,
         readBenchmarkOperatorReport,
-        { operatorReportSecret: config.benchmark.reviewSigningSecret, requireRegistryAuthority: true },
+        {
+          operatorReportSecret: config.benchmark.reviewSigningSecret,
+          requireRegistryAuthority: true,
+          verifyReviewEvidence: verifyScientificReviewEvidence,
+        },
       )
       await benchmarkRepository.ensureSuite()
       benchmarkService = createBenchmarkService({

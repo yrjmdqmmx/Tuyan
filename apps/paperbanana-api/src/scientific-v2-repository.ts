@@ -853,6 +853,7 @@ export function createScientificV2MongoRepository(
     operatorReportSecret?: string
     immutableCodeSha?: string
     verifyObject?: (objectKey: string, imageHash: string) => Promise<void>
+    verifyReviewObject?: (objectKey: string, imageHash: string) => Promise<void>
     claimLeaseMs?: number
     requireRegistryAuthority?: boolean
   } = {},
@@ -865,6 +866,7 @@ export function createScientificV2MongoRepository(
   const releaseHeads = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.releaseHeads)
   const releaseLifecycle = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.releaseLifecycle)
   const verifyObject = options.verifyObject || (async () => {})
+  const verifyReviewObject = options.verifyReviewObject || verifyObject
   const claimLeaseMs = options.claimLeaseMs ?? 120_000
   if (!Number.isInteger(claimLeaseMs) || claimLeaseMs < 1) scientificError('SCIENTIFIC_V2_CLAIM_LEASE_INVALID')
 
@@ -1450,7 +1452,7 @@ export function createScientificV2MongoRepository(
             objectKey: `bench/scientific-v2/private/objects/${SCIENTIFIC_EDIT_SOURCE.sourceHash}.png`,
           }]
         : objectBindings
-      await verifyReviewObjects(verifiedBindings, verifyObject)
+      await verifyReviewObjects(verifiedBindings, verifyReviewObject)
       const sourceSetHash = input.assignment.privateEnvelope.sourceSetHash
       const existing = await reviews.findOne({
         artifactType: 'review_assignment_private',
