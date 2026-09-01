@@ -589,6 +589,15 @@ test('long-running scientific v2 SSH sessions send keepalives so results survive
   }
 })
 
+test('review pack workflow emits only a bounded verified hash summary instead of one oversized assignment line', () => {
+  const source = readFileSync(workflow, 'utf8')
+  const block = source.match(/if \[\[ "\$MODE" == review_pack \]\]; then([\s\S]*?)^\s*else$/m)?.[1] || ''
+  assert.match(block, /operator_output="\$RUNNER_TEMP\/scientific-v2-review-pack-public[.]json"/)
+  assert.match(block, /privateBundleHash \| test\("\^\[a-f0-9\]\{64\}\$"\)/)
+  assert.match(block, /jq -c '\{operation,providerCalls,batchManifestHash,privateBundleHash,privateOutputWritten\}'/)
+  assert.doesNotMatch(block, /jq -c [.] "\$operator_output"|cat\s+"?\$operator_output/)
+})
+
 test('unknown-outcome inspection uses the persisted attempt window after the started dispatch marker is finalized', () => {
   const source = readFileSync(failureInspectionWorkflow, 'utf8')
   assert.match(source, /slot[.]status==="unknown"/)

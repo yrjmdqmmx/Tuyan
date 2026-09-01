@@ -145,4 +145,19 @@ jobs:
             /opt/paperbanana/repo deploy/hk-single-host/scripts/run-scientific-v2-operator.sh \
             "$MODE" "$EXPECTED_SHA" "$EXPECTED_CORE_DIGEST" "$EXPECTED_WORKER_DIGEST" "$BUNDLE_SHA256" "$REGISTRY_HASH" "$SUITE_HASH" "$PRICE_HASH" "$MANIFEST_HASH" "$MODEL_COUNT" "$CONFIRM"
           if (( ${#apply_args[@]} )); then remote_command+=' --apply'; fi
-          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"
+          if [[ "$MODE" == review_pack ]]; then
+            operator_output="$RUNNER_TEMP/scientific-v2-review-pack-public.json"
+            ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" >"$operator_output"
+            chmod 0600 "$operator_output"
+            jq -e --arg manifest "$MANIFEST_HASH" '
+              .operation == "review_pack" and .providerCalls == 0 and .batchManifestHash == $manifest and
+              .privateOutputWritten == true and (.privateBundleHash | test("^[a-f0-9]{64}$")) and
+              .automaticJudges == [] and
+              ([.. | objects | keys[]] | index("privateMappings") == null) and
+              ([.. | objects | keys[]] | index("privateEnvelope") == null) and
+              ([.. | objects | keys[]] | index("attestationSecret") == null)
+            ' "$operator_output" >/dev/null
+            jq -c '{operation,providerCalls,batchManifestHash,privateBundleHash,privateOutputWritten}' "$operator_output"
+          else
+            ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"
+          fi
