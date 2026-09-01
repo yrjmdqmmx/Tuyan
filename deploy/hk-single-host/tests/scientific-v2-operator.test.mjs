@@ -950,7 +950,7 @@ test('publish-input inspection verifies the protected rendered payload and expos
   assert.match(source, /objectBindingCount/)
   assert.match(source, /hashlib[.]sha256\(canonical\(publish_input\)/)
   assert.match(source, /diagnose-scientific-v2-publish-input[.]cjs/)
-  assert.match(source, /run --rm --no-deps -T --user 0:0[\s\S]*<\/dev\/null/)
+  assert.match(source, /docker run --rm --pull=never --network paperbanana-hk_backend --read-only --cap-drop ALL[\s\S]*<\/dev\/null/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.match(diagnostic, /paperbanana_benchmark_scientific_v2_batches/)
   assert.match(diagnostic, /failedStages/)
