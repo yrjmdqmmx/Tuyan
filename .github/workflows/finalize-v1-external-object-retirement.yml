@@ -81,20 +81,30 @@ jobs:
         run: |
           set -Eeuo pipefail
           local_report="$RUNNER_TEMP/v1-inventory/v1-retirement-inspect.json"
+          local_mongo_script="$GITHUB_WORKSPACE/deploy/hk-single-host/scripts/retire-v1-benchmark.mongo.js"
           remote_report="/tmp/paperbanana-v1-external-inventory-${RUN_ID}.json"
+          remote_mongo_script="/tmp/paperbanana-v1-external-mongo-${RUN_ID}.js"
           remote_output="/tmp/paperbanana-v1-external-finalize-${RUN_ID}.json"
+          [[ -f "$local_mongo_script" && ! -L "$local_mongo_script" ]]
+          mongo_script_sha="$(sha256sum "$local_mongo_script" | awk '{print $1}')"
+          [[ "$mongo_script_sha" =~ ^[a-f0-9]{64}$ ]]
           cleanup() {
-            ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_report' '$remote_output'" >/dev/null 2>&1 || true
+            ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f -- '$remote_report' '$remote_mongo_script' '$remote_output'" >/dev/null 2>&1 || true
           }
           trap cleanup EXIT
           scp "$local_report" "$DEPLOY_USER@$DEPLOY_HOST:$remote_report"
-          printf -v remote_command 'sudo env REPORT_PATH=%q OUTPUT_PATH=%q EXPECTED_SHA=%q ACTIVE_V2_RELEASE_HASH=%q ARCHIVE_MANIFEST_HASH=%q INVENTORY_HASH=%q bash -s' \
-            "$remote_report" "$remote_output" "$EXPECTED_SHA" "$ACTIVE_V2_RELEASE_HASH" "$ARCHIVE_MANIFEST_HASH" "$INVENTORY_HASH"
+          scp "$local_mongo_script" "$DEPLOY_USER@$DEPLOY_HOST:$remote_mongo_script"
+          printf -v remote_command 'sudo env REPORT_PATH=%q MONGO_SCRIPT_PATH=%q MONGO_SCRIPT_SHA=%q OUTPUT_PATH=%q EXPECTED_SHA=%q ACTIVE_V2_RELEASE_HASH=%q ARCHIVE_MANIFEST_HASH=%q INVENTORY_HASH=%q bash -s' \
+            "$remote_report" "$remote_mongo_script" "$mongo_script_sha" "$remote_output" "$EXPECTED_SHA" "$ACTIVE_V2_RELEASE_HASH" "$ARCHIVE_MANIFEST_HASH" "$INVENTORY_HASH"
           ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command" <<'REMOTE'
           set -Eeuo pipefail
           umask 077
-          [[ "$REPORT_PATH" =~ ^/tmp/paperbanana-v1-external-inventory-[0-9]+\.json$ && "$OUTPUT_PATH" =~ ^/tmp/paperbanana-v1-external-finalize-[0-9]+\.json$ ]]
-          [[ -f "$REPORT_PATH" && ! -L "$REPORT_PATH" && ! -e "$OUTPUT_PATH" ]]
+          [[ "$REPORT_PATH" =~ ^/tmp/paperbanana-v1-external-inventory-[0-9]+\.json$ \
+            && "$MONGO_SCRIPT_PATH" =~ ^/tmp/paperbanana-v1-external-mongo-[0-9]+\.js$ \
+            && "$MONGO_SCRIPT_SHA" =~ ^[a-f0-9]{64}$ \
+            && "$OUTPUT_PATH" =~ ^/tmp/paperbanana-v1-external-finalize-[0-9]+\.json$ ]]
+          [[ -f "$REPORT_PATH" && ! -L "$REPORT_PATH" && -f "$MONGO_SCRIPT_PATH" && ! -L "$MONGO_SCRIPT_PATH" && ! -e "$OUTPUT_PATH" ]]
+          [[ "$(sha256sum "$MONGO_SCRIPT_PATH" | awk '{print $1}')" == "$MONGO_SCRIPT_SHA" ]]
           exec 9>/run/lock/paperbanana-hk-production.lock
           flock -x 9
           repo=/opt/paperbanana/repo
@@ -109,7 +119,8 @@ jobs:
           compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_dir/.env" -f "$deploy_dir/compose.yaml")
           worker_result="$(mktemp /tmp/paperbanana-v1-external-worker.XXXXXXXXXXXX)"
           db_result="$(mktemp /tmp/paperbanana-v1-external-db.XXXXXXXXXXXX)"
-          cleanup_remote() { rm -f -- "$worker_result" "$db_result"; }
+          db_result_normalized="$(mktemp /tmp/paperbanana-v1-external-db-normalized.XXXXXXXXXXXX)"
+          cleanup_remote() { rm -f -- "$worker_result" "$db_result" "$db_result_normalized"; }
           trap cleanup_remote EXIT
           "${compose[@]}" exec -T \
             -e "ACTIVE_V2_RELEASE_HASH=$ACTIVE_V2_RELEASE_HASH" \
@@ -133,15 +144,24 @@ jobs:
           if(missing!==report.inventory.exclusiveObjects.length)throw new Error("V1_EXTERNAL_ABSENCE_COUNT_INVALID");
           process.stdout.write(JSON.stringify({schemaVersion:1,mode:"delete-objects",releaseHash:report.releaseHash,activeV2ReleaseHash:report.activeV2ReleaseHash,inventory:report.inventory,objectDeletion:{releaseHash:report.releaseHash,inventoryHash:report.inventory.inventoryHash,deletedObjectCount:missing,deletedBytes:report.inventory.exclusiveBytes},generatedOrJudgeCalls:0})+"\n");
           ' <"$REPORT_PATH" >"$worker_result"
-          "${compose[@]}" cp "$deploy_dir/scripts/retire-v1-benchmark.mongo.js" mongodb:/tmp/retire-v1-benchmark.mongo.js
+          echo 'V1_EXTERNAL_STAGE:objects_absent_verified' >&2
+          "${compose[@]}" cp "$MONGO_SCRIPT_PATH" mongodb:/tmp/retire-v1-benchmark.mongo.js
+          echo 'V1_EXTERNAL_STAGE:mongo_script_staged' >&2
           "${compose[@]}" exec -T -e PAPERBANANA_V1_REPORT_PATH=/tmp/paperbanana-v1-retirement-report.json \
             -e "PAPERBANANA_V1_ARCHIVE_MANIFEST_HASH=$ARCHIVE_MANIFEST_HASH" mongodb sh -c '
               umask 077
               cat > /tmp/paperbanana-v1-retirement-report.json
               mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark /tmp/retire-v1-benchmark.mongo.js
             ' <"$worker_result" >"$db_result"
+          echo 'V1_EXTERNAL_STAGE:db_script_completed' >&2
           "${compose[@]}" exec -T --user root mongodb rm -f /tmp/paperbanana-v1-retirement-report.json /tmp/retire-v1-benchmark.mongo.js
-          { cat "$worker_result"; cat "$db_result"; } | "${compose[@]}" exec -T paperbanana-api node -e '
+          "${compose[@]}" exec -T paperbanana-api node -e '
+          const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);const dbReceipts=[];
+          for(const line of lines){try{const value=JSON.parse(line);if(value?.schemaVersion===1&&value.status==="retired"&&value.generatedOrJudgeCalls===0)dbReceipts.push(value);}catch{}}
+          if(dbReceipts.length!==1)process.exit(1);process.stdout.write(JSON.stringify(dbReceipts[0])+"\n");
+          ' <"$db_result" >"$db_result_normalized"
+          echo 'V1_EXTERNAL_STAGE:db_receipt_normalized' >&2
+          { cat "$worker_result"; cat "$db_result_normalized"; } | "${compose[@]}" exec -T paperbanana-api node -e '
           const fs=require("node:fs");const lines=fs.readFileSync(0,"utf8").trim().split(/\n+/u);if(lines.length!==2)process.exit(1);
           const worker=JSON.parse(lines[0]);const db=JSON.parse(lines[1]);if(db.status!=="retired"||db.inventoryHash!==worker.inventory.inventoryHash||db.generatedOrJudgeCalls!==0)process.exit(1);
           process.stdout.write(JSON.stringify({schemaVersion:1,mode:"finalize-external-delete",worker,db})+"\n");

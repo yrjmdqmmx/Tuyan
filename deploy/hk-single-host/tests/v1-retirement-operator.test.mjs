@@ -73,6 +73,10 @@ test('V1 retirement production operator is exact-release, archive-bound, disable
     assert.match(mongo, new RegExp(collection, 'u'))
   }
   assert.match(mongo, /deleteMany/u)
+  assert.match(mongo, /existing\?\.status === 'retired'/u)
+  assert.match(mongo, /replayed: true/u)
+  assert.match(mongo, /expected\[key\] - actual\[key\]/u)
+  assert.match(mongo, /status: \{ \$in: \['retiring', 'retired'\] \}/u)
   assert.doesNotMatch(mongo, /dropDatabase|drop\(|deleteMany\(\{\}\)|bench\/\*|deleteMulti/u)
 
   const pkg = JSON.parse(readFileSync(packageJson, 'utf8'))
