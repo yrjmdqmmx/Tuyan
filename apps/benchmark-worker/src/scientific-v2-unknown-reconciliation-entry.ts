@@ -23,18 +23,26 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
   if (!manifestHash?.match(/^[a-f0-9]{64}$/) || !expectedStateHash?.match(/^[a-f0-9]{64}$/)
     || !expectedCodeSha?.match(/^[a-f0-9]{40}$/) || !Number.isSafeInteger(workflowRunId) || workflowRunId <= 0
     || !mongoUri) fail('ENV')
-  const client = new MongoClient(mongoUri)
-  await client.connect()
+  let client: MongoClient
+  try {
+    client = new MongoClient(mongoUri)
+    await client.connect()
+  } catch { fail('LOAD') }
   try {
     const db = client.db(mongoDb)
     const batches = db.collection<MongoRow>(BATCHES)
     const dispatches = db.collection<MongoRow>(DISPATCHES)
     const reconciliations = db.collection<MongoRow>(RECONCILIATIONS)
-    let row = await batches.findOne({ manifestHash })
+    let row
+    let existingAudit
+    try {
+      row = await batches.findOne({ manifestHash })
+      const auditId = `scientific-v2-unknown-reconciliation:${manifestHash}:${expectedStateHash}`
+      existingAudit = await reconciliations.findOne({ _id: auditId })
+    } catch { fail('LOAD') }
     if (!row) fail('LOAD')
     if (row.manifest?.codeSha !== expectedCodeSha || row.manifestHash !== manifestHash) fail('BINDING')
     const auditId = `scientific-v2-unknown-reconciliation:${manifestHash}:${expectedStateHash}`
-    const existingAudit = await reconciliations.findOne({ _id: auditId })
     if (!existingAudit) {
       if (row.stateHash !== expectedStateHash || row.status !== 'paused' || row.state?.status !== 'paused'
         || row.claimLeaseExpiresAt instanceof Date === false || row.claimLeaseExpiresAt > new Date()
@@ -84,7 +92,7 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
       state: row.state,
       report: { batchId: row.batchId, revision: Number(row.revision || 0) + 1, createdAt },
     }
-  } finally { await client.close() }
+  } finally { await client.close().catch(() => undefined) }
 }
 
 void runScientificV2UnknownReconciliationEntry().then((continuation) => {
