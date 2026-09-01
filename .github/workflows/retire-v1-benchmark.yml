@@ -1,0 +1,101 @@
+name: Retire V1 Benchmark Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Inspect inventory or apply the exact archived retirement.
+        required: true
+        type: choice
+        default: inspect
+        options: [inspect, apply]
+      expected_deployed_sha:
+        description: Exact deployed Core and Benchmark Worker SHA.
+        required: true
+      v1_release_hash:
+        description: Exact V1 release hash.
+        required: true
+      active_v2_release_hash:
+        description: Exact active V2 release hash that must remain published.
+        required: true
+      archive_manifest_hash:
+        description: SHA-256 of the locally verified V1 archive manifest.
+        required: true
+      inventory_hash:
+        description: Exact hash returned by inspect; required only for apply.
+        required: false
+      confirm:
+        description: Exact mode-specific confirmation phrase.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  retire:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate immutable retirement binding
+        env:
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          V1_RELEASE_HASH: ${{ inputs.v1_release_hash }}
+          ACTIVE_V2_RELEASE_HASH: ${{ inputs.active_v2_release_hash }}
+          ARCHIVE_MANIFEST_HASH: ${{ inputs.archive_manifest_hash }}
+          INVENTORY_HASH: ${{ inputs.inventory_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ && "$V1_RELEASE_HASH" == 2688db534f05256b6ce25bbd29dc7d445052d347e576898962022e172900cdb2 ]]
+          [[ "$ACTIVE_V2_RELEASE_HASH" =~ ^[a-f0-9]{64}$ && "$ARCHIVE_MANIFEST_HASH" =~ ^[a-f0-9]{64}$ ]]
+          if [[ "$MODE" == inspect ]]; then
+            [[ -z "$INVENTORY_HASH" && "$CONFIRM" == inspect-v1-retirement-disabled-worker ]]
+          elif [[ "$MODE" == apply ]]; then
+            [[ "$INVENTORY_HASH" =~ ^[a-f0-9]{64}$ && "$CONFIRM" == delete-v1-release-2688db534f05256b6ce2-disabled-worker ]]
+          else
+            exit 1
+          fi
+          bash -n deploy/hk-single-host/scripts/retire-v1-benchmark.sh
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Run protected V1 retirement operation
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          MODE: ${{ inputs.mode }}
+          EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
+          V1_RELEASE_HASH: ${{ inputs.v1_release_hash }}
+          ACTIVE_V2_RELEASE_HASH: ${{ inputs.active_v2_release_hash }}
+          ARCHIVE_MANIFEST_HASH: ${{ inputs.archive_manifest_hash }}
+          INVENTORY_HASH: ${{ inputs.inventory_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -Eeuo pipefail
+          remote_output="/tmp/paperbanana-v1-retirement-${RUN_ID}.json"
+          printf -v remote_command 'cd %q && sudo %q --mode %q --expected-sha %q --v1-release-hash %q --active-v2-release-hash %q --archive-manifest-hash %q --inventory-hash %q --confirm %q --output %q' \
+            /opt/paperbanana/repo deploy/hk-single-host/scripts/retire-v1-benchmark.sh "$MODE" "$EXPECTED_SHA" "$V1_RELEASE_HASH" \
+            "$ACTIVE_V2_RELEASE_HASH" "$ARCHIVE_MANIFEST_HASH" "$INVENTORY_HASH" "$CONFIRM" "$remote_output"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "$remote_command"
+          scp "$DEPLOY_USER@$DEPLOY_HOST:$remote_output" "v1-retirement-${MODE}.json"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -f '$remote_output'"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v1-retirement-${{ inputs.mode }}-${{ github.run_id }}
+          path: v1-retirement-${{ inputs.mode }}.json
+          if-no-files-found: error
+          retention-days: 14

@@ -108,6 +108,9 @@ test('overview renders seven Top10 cards with full-ranking links', () => {
     assert.match(card.textContent, new RegExp(labels[index].replace(' / ', ' \\/ ')))
     assert.match(card.textContent, /Top10/u)
     assert.equal(card.querySelectorAll('.bench-mini-row').length, 10)
+    const modelLinks = [...card.querySelectorAll('.bench-mini-row a')]
+    assert.equal(modelLinks.length, 10)
+    assert.match(modelLinks[0].getAttribute('href'), /^\/leaderboard\?__route=/u)
     const link = within(card).getByRole('link', { name: '查看完整排名' })
     assert.ok(link.getAttribute('href')?.startsWith('/leaderboard/'))
   })
@@ -140,8 +143,9 @@ test('scientific v2 overview renders ten Top10 cards and a ten-dimension matrix'
   assert.equal(screen.getAllByText('非目标保持').length > 0, true)
   assert.equal(within(screen.getByRole('table', { name: '生图模型综合排行榜' })).getAllByRole('columnheader').length, 12)
   assert.match(container.textContent, /固定 9 题/u)
-  assert.match(container.textContent, /生成成功率/u)
-  assert.match(container.textContent, /编辑成功率/u)
+  assert.doesNotMatch(container.textContent, /生成成功率/u)
+  assert.doesNotMatch(container.textContent, /编辑成功率/u)
+  assert.equal(container.querySelector('.bench-success-strip'), null)
 })
 
 test('overview matrix shows Overall and seven dimensions with rank and two-decimal scores', () => {
@@ -157,7 +161,7 @@ test('overview matrix shows Overall and seven dimensions with rank and two-decim
   assert.equal(container.querySelectorAll('.rank-top-3').length > 0, true)
   assert.doesNotMatch(container.textContent, /95%|置信区间|区间|不产生综合总分|失败模型仍公开/u)
   assert.doesNotMatch(container.textContent, /1\.11|9\.99/u)
-  assert.equal(firstRow.querySelector('a').getAttribute('href'), '/leaderboard/models/profile-1')
+  assert.equal(firstRow.querySelector('a').getAttribute('href'), '/leaderboard?__route=%2Fleaderboard%2Fmodels%2Fprofile-1')
 })
 
 test('evidence images lazy-load responsive WebP and request the full rendition only after expansion', () => {

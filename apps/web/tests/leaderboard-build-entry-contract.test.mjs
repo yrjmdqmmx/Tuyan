@@ -38,9 +38,14 @@ test('Vite multi-page inputs include leaderboard overview, methodology, and all 
   }
 })
 
-test('404 entry boots only the restricted leaderboard fallback module', () => {
+test('404 entry shows a neutral leaderboard loading state instead of a false not-found page while fallback boots', () => {
   const html = readFileSync(new URL('../404.html', import.meta.url), 'utf8')
   assert.match(html, /页面未找到/u)
+  assert.match(html, /正在打开排行榜/u)
+  assert.match(html, /data-leaderboard-loading/u)
+  assert.match(html, /data-generic-not-found/u)
+  assert.match(html, /leaderboard-fallback-route/u)
+  assert.ok(html.indexOf('leaderboard-fallback-route') < html.indexOf('<body>'))
   assert.match(html, /data-app-home/u)
   assert.match(html, /<script type="module" src="\/src\/leaderboardFallback\.js"><\/script>/u)
   assert.doesNotMatch(html, /src="\/src\/main\.jsx"/u)

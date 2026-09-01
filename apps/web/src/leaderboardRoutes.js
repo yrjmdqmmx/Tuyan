@@ -31,6 +31,13 @@ const CASE_IDS = new Set([
   'scientific-edit-01-text-label', 'scientific-edit-02-node-arrow', 'scientific-edit-03-color-legend-callout',
 ])
 
+export function leaderboardDetailHref(pathname, base = APP_BASE_URL) {
+  const route = String(pathname || '')
+  const query = new URLSearchParams()
+  query.set('__route', route)
+  return `${appPath('/leaderboard', base)}?${query.toString()}`
+}
+
 export function resolveLeaderboardRoute(pathname = '') {
   if (pathname === '/leaderboard' || pathname === '/leaderboard/') {
     return { isLeaderboard: true, methodology: false, dimension: null, invalidSlug: false }

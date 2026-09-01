@@ -110,3 +110,16 @@ test('GitHub Pages trailing-slash fallback restores a real encoded model profile
   assert.deepEqual(calls, [[{}, '', '/leaderboard/models/krea%2Fkrea-2-medium%3Acodex_single%3Acodex-single-2026-08-v1/']])
   assert.equal(routes.resolveLeaderboardRoute(restored.pathname).invalidSlug, false)
 })
+
+test('dynamic leaderboard detail links enter through the static 200 route and canonicalize after boot', async () => {
+  const routes = await import('./leaderboardRoutes.js')
+  assert.equal(typeof routes.leaderboardDetailHref, 'function')
+  assert.equal(
+    routes.leaderboardDetailHref('/leaderboard/models/qwen-image-3.0-pro%3Acodex_scientific_v2%3Acodex-scientific-2026-09-v1'),
+    '/leaderboard?__route=%2Fleaderboard%2Fmodels%2Fqwen-image-3.0-pro%253Acodex_scientific_v2%253Acodex-scientific-2026-09-v1',
+  )
+  assert.equal(
+    routes.leaderboardDetailHref('/leaderboard/models/krea%2Fkrea-2-medium%3Acodex_scientific_v2%3Acodex-scientific-2026-09-v1', '/paperbanana/'),
+    '/paperbanana/leaderboard?__route=%2Fleaderboard%2Fmodels%2Fkrea%252Fkrea-2-medium%253Acodex_scientific_v2%253Acodex-scientific-2026-09-v1',
+  )
+})
