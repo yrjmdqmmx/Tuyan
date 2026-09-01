@@ -77,7 +77,7 @@ test('V1 retirement production operator is exact-release, archive-bound, disable
   assert.match(mongo, /replayed: true/u)
   assert.match(mongo, /expected\[key\] - actual\[key\]/u)
   assert.match(mongo, /status: \{ \$in: \['retiring', 'retired'\] \}/u)
-  assert.match(mongo, /print\(JSON\.stringify\(receipt\)\)/u)
+  assert.match(mongo, /print\(serializedReceipt\)/u)
   assert.doesNotMatch(mongo, /\bquit\(/u)
   assert.doesNotMatch(mongo, /dropDatabase|drop\(|deleteMany\(\{\}\)|bench\/\*|deleteMulti/u)
 
