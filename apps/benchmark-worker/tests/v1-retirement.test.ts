@@ -107,3 +107,17 @@ test('V1 object deletion requires the exact inventory hash and never deletes sha
   assert.equal(receipt.deletedObjectCount, 2)
   assert.equal(receipt.deletedBytes, inventory.exclusiveBytes)
 })
+
+test('V1 object deletion completes the capability preflight before touching any real object', async () => {
+  const item = fixture()
+  const inventory = await buildV1RetirementInventory({
+    expectedReleaseHash: item.releaseHash, releases: [item.release, item.v2], runs: [item.run, { _id: 'run-other' }], samples: item.samples,
+    judgments: [], dispatches: [], publicEvidence: item.publicEvidence, otherEvidence: [], readObject: async (objectKey) => item.bytes.get(objectKey)!,
+  })
+  const deleted: string[] = []
+  await assert.rejects(() => deleteExclusiveV1Objects(inventory, inventory.inventoryHash, {
+    preflight: async () => { throw new Error('DELETE_CAPABILITY_DENIED') },
+    deleteObject: async (objectKey) => { deleted.push(objectKey) },
+  }), /DELETE_CAPABILITY_DENIED/u)
+  assert.deepEqual(deleted, [])
+})

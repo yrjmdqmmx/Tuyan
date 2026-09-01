@@ -68,6 +68,18 @@ fi
 retirement_mongodb_uri="$(read_env_value "$core_env" PAPERBANANA_BENCH_MONGODB_URI)"
 [[ "$retirement_mongodb_uri" == mongodb://paperbanana_benchmark_api:*@mongodb:27017/paperbanana_benchmark\?* ]] || exit 1
 export PAPERBANANA_BENCH_MONGODB_URI="$retirement_mongodb_uri"
+retirement_delete_env=()
+retirement_delete_oss_access_key_id=''
+retirement_delete_oss_access_key_secret=''
+if [[ "$mode" == apply ]]; then
+  retirement_delete_oss_access_key_id="$(read_env_value "$core_env" OSS_ACCESS_KEY_ID)"
+  retirement_delete_oss_access_key_secret="$(read_env_value "$core_env" OSS_ACCESS_KEY_SECRET)"
+  [[ -n "$retirement_delete_oss_access_key_id" && -n "$retirement_delete_oss_access_key_secret" ]]
+  [[ "$retirement_delete_oss_access_key_id" != "$(read_env_value "$bench_env" PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID)" ]] || exit 1
+  export PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_ID="$retirement_delete_oss_access_key_id"
+  export PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_SECRET="$retirement_delete_oss_access_key_secret"
+  retirement_delete_env=(-e PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_ID -e PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_SECRET)
+fi
 compose=(docker compose --project-name paperbanana-hk --project-directory "$deploy_dir" --env-file "$deploy_env" -f "$deploy_dir/compose.yaml")
 "${compose[@]}" ps --status running benchmark-worker | grep -q benchmark-worker
 worker_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==process.argv[1]||process.env.PAPERBANANA_CODE_SHA!==process.argv[1]||process.env.PAPERBANANA_BENCH_ENABLED!=="false"||process.env.PAPERBANANA_BENCH_CONCURRENCY!=="1")process.exit(1)'
@@ -76,12 +88,19 @@ worker_guard='const p=require("/app/build-provenance.json");if(p.codeSha!==proce
 result_path="$(mktemp /tmp/paperbanana-v1-retirement-result.XXXXXXXXXXXX)"
 db_result_path="$(mktemp /tmp/paperbanana-v1-retirement-db.XXXXXXXXXXXX)"
 combined_path="$(mktemp /tmp/paperbanana-v1-retirement-combined.XXXXXXXXXXXX)"
-cleanup() { unset PAPERBANANA_BENCH_MONGODB_URI retirement_mongodb_uri; rm -f -- "$result_path" "$db_result_path" "$combined_path"; cleanup_lock; }
+cleanup() {
+  unset PAPERBANANA_BENCH_MONGODB_URI retirement_mongodb_uri
+  unset PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_ID PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_SECRET
+  unset retirement_delete_oss_access_key_id retirement_delete_oss_access_key_secret
+  rm -f -- "$result_path" "$db_result_path" "$combined_path"
+  cleanup_lock
+}
 trap cleanup EXIT
 entry_mode=inspect
 [[ "$mode" == apply ]] && entry_mode=delete-objects
 timeout --signal=TERM --kill-after=10s 3600s "${compose[@]}" exec -T \
   -e PAPERBANANA_BENCH_MONGODB_URI \
+  "${retirement_delete_env[@]}" \
   -e "PAPERBANANA_V1_RETIREMENT_MODE=$entry_mode" \
   -e "PAPERBANANA_V1_RETIREMENT_RELEASE_HASH=$v1_release_hash" \
   -e "PAPERBANANA_V1_RETIREMENT_ACTIVE_V2_RELEASE_HASH=$active_v2_release_hash" \

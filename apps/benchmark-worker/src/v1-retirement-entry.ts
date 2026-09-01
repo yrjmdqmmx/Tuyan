@@ -42,6 +42,15 @@ async function main() {
     secure: true,
     authorizationV4: true,
   })
+  const deleteOss = mode === 'delete-objects' ? new OSS({
+    region: required('PAPERBANANA_BENCH_OSS_REGION'),
+    accessKeyId: required('PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_ID'),
+    accessKeySecret: required('PAPERBANANA_V1_RETIREMENT_DELETE_OSS_ACCESS_KEY_SECRET'),
+    bucket: required('PAPERBANANA_BENCH_OSS_BUCKET'),
+    endpoint: required('PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT'),
+    secure: true,
+    authorizationV4: true,
+  }) : null
   try {
     await client.connect()
     const db = client.db(env.PAPERBANANA_BENCH_MONGO_DB || 'paperbanana_benchmark')
@@ -67,15 +76,24 @@ async function main() {
     let objectDeletion = null
     if (mode === 'delete-objects') {
       const expectedInventoryHash = required('PAPERBANANA_V1_RETIREMENT_INVENTORY_HASH').toLowerCase()
+      const probeKey = `bench/retirement-probes/${expectedInventoryHash}.capability`
+      const confirmMissing = async (objectKey: string, code: string) => {
+        try {
+          await oss.head(objectKey)
+          throw new Error(code)
+        } catch (error: any) {
+          if (!missingObject(error)) throw error
+        }
+      }
       objectDeletion = await deleteExclusiveV1Objects(inventory, expectedInventoryHash, {
+        preflight: async () => {
+          await confirmMissing(probeKey, 'V1_RETIREMENT_DELETE_PROBE_COLLISION')
+          await deleteOss!.delete(probeKey)
+          await confirmMissing(probeKey, 'V1_RETIREMENT_DELETE_PROBE_UNCONFIRMED')
+        },
         deleteObject: async (objectKey) => {
-          await oss.delete(objectKey)
-          try {
-            await oss.head(objectKey)
-            throw new Error('V1_RETIREMENT_OBJECT_DELETE_UNCONFIRMED')
-          } catch (error: any) {
-            if (!missingObject(error)) throw error
-          }
+          await deleteOss!.delete(objectKey)
+          await confirmMissing(objectKey, 'V1_RETIREMENT_OBJECT_DELETE_UNCONFIRMED')
         },
       })
     }

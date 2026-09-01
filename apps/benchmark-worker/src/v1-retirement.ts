@@ -191,9 +191,10 @@ export async function buildV1RetirementInventory(input: InventoryInput): Promise
 export async function deleteExclusiveV1Objects(
   inventory: V1RetirementInventory,
   expectedInventoryHash: string,
-  store: { deleteObject: (objectKey: string) => Promise<void> },
+  store: { preflight?: () => Promise<void>; deleteObject: (objectKey: string) => Promise<void> },
 ) {
   if (inventory.inventoryHash !== expectedInventoryHash) throw new Error('V1_RETIREMENT_INVENTORY_HASH_MISMATCH')
+  await store.preflight?.()
   for (const object of inventory.exclusiveObjects) await store.deleteObject(object.objectKey)
   return {
     releaseHash: inventory.releaseHash,
