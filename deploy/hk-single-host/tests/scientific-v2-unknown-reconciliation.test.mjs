@@ -14,6 +14,7 @@ test('unknown continuation is exact, serial, disabled-gated and tied to the zero
   assert.match(workflow, /PAPERBANANA_SCIENTIFIC_V2_RECONCILIATION_RUN_ID/)
   assert.match(workflow, /--mode run/)
   assert.match(workflow, /--model-count 40/)
+  assert.match(workflow, /--external:mongodb --external:sharp --external:ali-oss/)
   assert.doesNotMatch(workflow, /PAPERBANANA_BENCH_(BAILIAN|ARK|OPENROUTER)_API_KEY=/)
 })
 

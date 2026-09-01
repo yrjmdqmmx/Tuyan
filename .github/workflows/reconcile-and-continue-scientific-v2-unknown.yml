@@ -72,7 +72,8 @@ jobs:
           pnpm --filter @paperbanana/benchmark-worker exec esbuild \
             src/scientific-v2-unknown-reconciliation-entry.ts \
             --bundle --platform=node --target=node24 --format=esm \
-            --outfile=/tmp/scientific-v2-unknown-reconciliation.mjs --external:mongodb
+            --outfile=/tmp/scientific-v2-unknown-reconciliation.mjs \
+            --external:mongodb --external:sharp --external:ali-oss
           sha256sum /tmp/scientific-v2-unknown-reconciliation.mjs | tee /tmp/scientific-v2-unknown-reconciliation.sha256
       - name: Configure SSH
         env:
