@@ -56,6 +56,7 @@ jobs:
           pnpm --filter @paperbanana/benchmark-worker exec esbuild \
             src/scientific-v2-persisted-worker-import-stager.ts \
             --bundle --platform=node --target=node24 --format=esm \
+            --external:sharp \
             --outfile=/tmp/scientific-v2-persisted-worker-import-stager.mjs
           sha256sum /tmp/scientific-v2-persisted-worker-import-stager.mjs > /tmp/scientific-v2-persisted-worker-import-stager.sha256
 

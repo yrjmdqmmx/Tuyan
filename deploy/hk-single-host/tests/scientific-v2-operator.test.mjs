@@ -690,6 +690,7 @@ test('persisted Worker state import is rebuilt offline from exact protected snap
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /--network none/)
   assert.match(source, /scientific-v2-persisted-worker-import-stager[.]ts/)
+  assert.match(source, /--external:sharp/)
   assert.match(source, /manifest_sha256/)
   assert.match(source, /state_sha256/)
   assert.match(source, /attestation_result_sha256/)
