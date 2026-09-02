@@ -194,6 +194,23 @@ const scientificPublicReviewNotes = new Set([
   '扣分：未准确完成目标区域编辑',
   '扣分：非目标区域发生不当变化',
 ])
+
+function isPublicScientificReviewNote(value: unknown): value is string {
+  if (typeof value === 'string' && scientificPublicReviewNotes.has(value)) return true
+  const normalized = typeof value === 'string' ? value.normalize('NFKC') : ''
+  if (typeof value !== 'string' || value.trim() !== value || value.length < 8 || value.length > 500
+    || /[\u0000-\u001f\u007f]|\p{Cf}/u.test(value)
+    || /(?:reviewer\s*[ab]?|blind-[a-z0-9-]+|object\s*key|mapping\s*hash|attestation|hmac|\/tmp\/|bench\/scientific-v2\/private\/)/iu.test(normalized)
+    || /(?:https?:\/\/|www\.|mailto:|\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b|\b(?:api[-_ ]?key|access[-_ ]?token|secret|password|credential|authorization|bearer)\b|\b(?:localhost|127\.0\.0\.1|0\.0\.0\.0)\b|(?:\/Users\/|\/home\/|[a-z]:\\)|\b(?:sk-|gh[pousr]_)[a-z0-9_-]{8,})/iu.test(normalized)
+    || /(?:apikey|accesskey|secretkey|privatekey|accesstoken|refreshtoken|authorization|bearer|password|credential)/u.test(normalized.toLocaleLowerCase('en-US').replace(/[\s_-]+/gu, ''))
+    || /(?:sk|gh[pousr])[-_][a-z0-9_-]{8,}/iu.test(normalized)
+    || /\b[a-f0-9]{40}(?:[a-f0-9]{24})?\b/iu.test(normalized)) return false
+  const compact = normalized.toLocaleLowerCase('en-US').replace(/[\s，。！？、；：,.!?;:'"“”‘’（）()_-]/gu, '')
+  return ![
+    '双盲审核未确认红线问题', '整体表现良好', '整体符合要求', '基本符合要求', '未发现明显问题', '没有明显问题', '无明显问题',
+    '图像质量良好', '内容基本准确', '结果符合题意', '整体效果不错', '整体效果良好', '符合要求', 'looksgood', 'meetsrequirements', 'noobviousissues', 'overallgood',
+  ].some((prefix) => compact.startsWith(prefix))
+}
 const scientificSuccessClasses = new Set(['succeeded', 'succeeded_low_quality'])
 const scientificConfirmedFailureClasses = new Set(['confirmed_technical_failure', 'confirmed_provider_failure'])
 
@@ -326,7 +343,7 @@ async function publicScientificEvidenceItems(input: {
       actualOutputPixels,
       scores: structuredClone(item.scores),
       reviewNotes: Array.isArray(item.reviewNotes)
-        ? item.reviewNotes.map(String).filter((note: string) => scientificPublicReviewNotes.has(note)).slice(0, 10)
+        ? item.reviewNotes.filter(isPublicScientificReviewNote).slice(0, 10)
         : [],
       variants,
       ...(scientificCase.kind === 'edit' ? {

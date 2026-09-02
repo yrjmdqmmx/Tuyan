@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 五模型修正发布恢复正确基线与真实审核理由 — by Codex
+变更：针对误将全量 343 张图片重审并重算 40 模型的已发布 V2，修正批次现同时签名绑定正确数据基线 release 与当前错误 active predecessor。发布端只重新审核、渲染并重算精确的 5 个目标模型；其他 35 个模型的分数、维度、图片、证据与审核内容从基线原样移植，只允许 `overallRank` / `dimensionRanks` 和证据行的 release/rank/时间派生字段变化。目标模型每个 9 题位必须全部成功才能生成修正审核包和公开证据，因此三个 Recraft 未补跑完成时不可伪装成已更新。A/B 与 xhigh 仲裁每个题位必填真实具体审核理由，禁止通用占位文案；最终按 competition ranking 重算受影响排名后在单一 Mongo 事务内原子 supersede。公开 API 字段不变。
+- [x] paperbanana-api / Benchmark Worker / 控制面（基线移植、目标范围审核与渲染、真实 rationale、竞争排名与原子发布回归）
+- [ ] 生产执行（部署固定 SHA；三个 Recraft 单并发补跑；仅五模型 A/B + 仲裁；原子发布并验证 35 模型非排名字段与基线一致）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与字段不变，无需改造）
+
 ### [2026-09-02] Scientific V2 remediation Worker 报告继承 Codex provenance — by Codex
 变更：当补跑批次只执行普通 Provider、最终签名状态报告为 `worker` 时，发布端不再要求该报告伪装成 `codex`，也不信任 Worker 自报 Codex provenance。发布端会沿 `remediationOf` 精确读取已发布源 batch/release、复验源 release 内容 hash、源 Codex 状态报告的 schema/HMAC/disclosure/9 题/36 次上限/artifact canary，再把源 Codex 题位按新 manifest 确定性重绑并与当前 9 个 Codex 题位逐字节 canonical 对比；Codex 被列为补跑目标、源链不完整或任一继承字段漂移均拒绝发布。题目、图片、评分、审核和 Provider 调用规则不变。
 - [x] paperbanana-api（源发布 lineage、Codex provenance 与重绑定题位校验及正反回归）

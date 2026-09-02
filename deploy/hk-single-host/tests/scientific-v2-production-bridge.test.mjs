@@ -643,6 +643,13 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
     lockName: '/run/lock/paperbanana-hk-production.lock',
     providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 }, codexToolCallLimit: 36,
     modelCount: 40, slotCount: 360, revision: 0, issuedAt: '2026-08-31T00:00:00.000Z',
+    correction: {
+      baseline: { releaseId: 'baseline-release', releaseHash: '1'.repeat(64), batchId: 'baseline-batch', manifestHash: '2'.repeat(64) },
+      activePredecessor: { releaseId: 'bad-release', releaseHash: '3'.repeat(64), batchId: 'bad-batch', manifestHash: '4'.repeat(64) },
+      targetModelIds: ['recraft/recraft-v4-pro-vector'],
+      targetSlotIds: ['recraft/recraft-v4-pro-vector:scientific-gen-01-method-flow'],
+      targetSlotSetHash: '5'.repeat(64),
+    },
     reportHash: 'c'.repeat(64), attestationHash: 'd'.repeat(64),
     manifestSnapshot: { manifestHash: 'a'.repeat(64), models: [], executionOrder: [] },
     stateSnapshot: {

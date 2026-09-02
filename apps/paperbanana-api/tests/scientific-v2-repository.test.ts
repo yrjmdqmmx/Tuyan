@@ -778,7 +778,7 @@ function reviewAssignments(secret: string, fixture: ReturnType<typeof scientific
   }
 }
 
-function signedReviewerResult(secret: string, assignment: any, score: number, redLines: string[] = [], lowConfidence = false) {
+function signedReviewerResult(secret: string, assignment: any, score: number, redLines: string[] = [], lowConfidence = false, rationale = '图中主体结构完整，关键关系和文字均可直接核验。') {
   const publicItem = assignment.packages[0].items[0]
   const base = {
     role: assignment.role,
@@ -794,6 +794,7 @@ function signedReviewerResult(secret: string, assignment: any, score: number, re
       scores: Object.fromEntries(publicItem.applicableAxes.map((axis: string) => [axis, score])),
       redLines,
       lowConfidence,
+      rationale,
     }],
   }
   const resultHash = canonicalHash(base)
@@ -801,8 +802,9 @@ function signedReviewerResult(secret: string, assignment: any, score: number, re
   return { ...signedBase, resultAttestationHash: createHmac('sha256', secret).update(canonicalHash(signedBase)).digest('hex') }
 }
 
-function fullReviewAssignments(secret: string, fixture: ReturnType<typeof scientificBatchFixture>, state: any) {
-  const succeeded = state.slots.filter((slot: any) => slot.status === 'succeeded')
+function fullReviewAssignments(secret: string, fixture: ReturnType<typeof scientificBatchFixture>, state: any, targetModelIds?: string[]) {
+  const targetSet = targetModelIds ? new Set(targetModelIds) : null
+  const succeeded = state.slots.filter((slot: any) => slot.status === 'succeeded' && (!targetSet || targetSet.has(slot.canonicalModelId)))
   const sourceSetHash = canonicalHash({ manifestHash: fixture.manifest.manifestHash, stateHash: state.stateHash })
   const assignment = (role: 'A' | 'B') => {
     const ordered = role === 'A' ? succeeded : [...succeeded].reverse()
@@ -853,20 +855,101 @@ function fullReviewAssignments(secret: string, fixture: ReturnType<typeof scient
   return { A: { ...A, assignmentSet, assignmentAttestationHash }, B: { ...B, assignmentSet, assignmentAttestationHash } }
 }
 
-function signedFullReviewerResult(secret: string, assignment: any, score = 8) {
+function signedFullReviewerResult(
+  secret: string,
+  assignment: any,
+  score = 8,
+  rationale: string | ((item: any, index: number) => string) = (_item, index) => `第${index + 1}幅图中主体结构完整，关键关系和文字均可直接核验。`,
+) {
+  let itemIndex = 0
   const base = {
     role: assignment.role, batchManifestHash: assignment.privateEnvelope.batchManifestHash,
     sourceSetHash: assignment.privateEnvelope.sourceSetHash, assignmentAttestationHash: assignment.assignmentAttestationHash,
     assignmentSet: assignment.assignmentSet, mappingHash: assignment.mappingHash,
-    items: assignment.packages.flatMap((packet: any) => packet.items.map((item: any) => ({
-      packetHash: packet.packetHash, itemHash: item.itemHash, applicableAxes: item.applicableAxes,
-      scores: Object.fromEntries(item.applicableAxes.map((axis: string) => [axis, score])), redLines: [], lowConfidence: false,
-    }))),
+    items: assignment.packages.flatMap((packet: any) => packet.items.map((item: any) => {
+      const index = itemIndex++
+      return {
+        packetHash: packet.packetHash, itemHash: item.itemHash, applicableAxes: item.applicableAxes,
+        scores: Object.fromEntries(item.applicableAxes.map((axis: string) => [axis, score])), redLines: [], lowConfidence: false,
+        rationale: typeof rationale === 'function' ? rationale(item, index) : rationale,
+      }
+    })),
   }
   const resultHash = canonicalHash(base)
   const signed = { ...base, resultHash }
   return { ...signed, resultAttestationHash: createHmac('sha256', secret).update(canonicalHash(signed)).digest('hex') }
 }
+
+test('API review import preserves concrete signed A/B rationale in the finalized result', async () => {
+  const fixture = scientificBatchFixture()
+  const state = completedScientificState(fixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-api-rationale-secret-at-least-32-bytes'
+  const batchId = 'scientific-v2-api-rationale'
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'api-rationale', {
+    operatorReportSecret: secret,
+  })
+  await repository.freezeBatch({ batchId, ...fixture })
+  await repository.importStateReport(signedStateReport(secret, fixture, state, 'codex', { batchId }))
+  const assignments = fullReviewAssignments(secret, fixture, state)
+  const bindingsFor = (assignment: any) => assignment.packages.flatMap((packet: any) => packet.items.map((item: any) => ({
+    imageHash: item.imageHash,
+    objectKey: `bench/scientific-v2/private/objects/${item.imageHash}.png`,
+  })))
+  await repository.exportReviewAssignment({ batchId, assignment: assignments.A, objectBindings: bindingsFor(assignments.A) })
+  await repository.exportReviewAssignment({ batchId, assignment: assignments.B, objectBindings: bindingsFor(assignments.B) })
+  const rationaleA = '流程结构完整，箭头和主要标注均与题目要求一致。'
+  const rationaleB = '关键关系表达准确，但部分次要文字略显拥挤。'
+  const firstFinalItemHash = assignments.A.packages[0].items[0].itemHash
+  await assert.rejects(
+    () => repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, 8, '主体结构完整，关键关系与文字可直接核验。') }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await assert.rejects(
+    () => repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, 8, '整体符合要求。') }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await assert.rejects(
+    () => repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, 8, '整体表现良好。题位01') }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await assert.rejects(
+    () => repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, 8, '题位的关键箭头正确，详见 reviewer@example.com 备注。') }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await assert.rejects(
+    () => repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, 8, '题位结构正确，api_key_live_abcdefgh 仅供内部复核。') }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await assert.rejects(
+    () => repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, 8, '详见 ｈｔｔｐｓ：／／internal.example／review，主体结构正确。') }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await assert.rejects(
+    () => repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, 8, '主\u200b体结构完整，关键关系与文字可直接核验。') }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await assert.rejects(
+    () => repository.importReviewResult({
+      batchId,
+      result: signedFullReviewerResult(secret, assignments.A, 8, (_item, index) => index === 0
+        ? '关键箭头由左向右连续，标题与数值标注清晰。'
+        : index === 1 ? '关键箭头由左向右连续，标题与数值标注清晰！' : `第${index + 1}幅图的层级连线清晰，主要文字均未被遮挡。`),
+    }),
+    /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/,
+  )
+  await repository.importReviewResult({
+    batchId,
+    result: signedFullReviewerResult(secret, assignments.A, 8, (item, index) => item.itemHash === firstFinalItemHash ? rationaleA : `${rationaleA} 第${index + 1}幅图的箭头和标注已单独核对。`),
+  })
+  const finalized = await repository.importReviewResult({
+    batchId,
+    result: signedFullReviewerResult(secret, assignments.B, 7, (item, index) => item.itemHash === firstFinalItemHash ? rationaleB : `${rationaleB} 第${index + 1}幅图的关系层级已单独核对。`),
+  })
+
+  assert.equal(finalized.status, 'finalized')
+  assert.deepEqual(finalized.results[0].rationales, [rationaleA, rationaleB])
+})
 
 test('ensureSuite creates only the API-owned scientific v2 indexes and leaves the release index to root migration', async () => {
   const indexes: Array<{ collection: string; keys: Record<string, number>; options: Record<string, unknown> }> = []
@@ -2288,12 +2371,45 @@ test('review export verifies large blind assignments with bounded concurrency', 
   assert.equal(maximumActive, 16)
 })
 
+test('correction review export rejects an assignment that includes any non-target model', async () => {
+  const fixture = scientificBatchFixture({ secondBailianModel: true })
+  const state = completedScientificState(fixture)
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-correction-review-scope-secret-32-bytes'
+  const batchId = 'scientific-v2-correction-review-scope'
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'correction-review-scope', {
+    operatorReportSecret: secret,
+  })
+  await repository.freezeBatch({ batchId, ...fixture })
+  await repository.importStateReport(signedStateReport(secret, fixture, state, 'codex', { batchId }))
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  const targetModelId = fixture.manifest.models.find((model: any) => model.canonicalModelId !== 'codex:gpt-image-2')!.canonicalModelId
+  batch.remediationOf = { targetModelIds: [targetModelId] }
+  batch.correctionBaseline = {
+    releaseId: 'baseline-release', releaseHash: '1'.repeat(64),
+    batchId: 'baseline-batch', manifestHash: '2'.repeat(64),
+  }
+  const fullAssignment = fullReviewAssignments(secret, fixture, state).A
+  const objectBindings = fullAssignment.packages.flatMap((packet: any) => packet.items.map((item: any) => ({
+    imageHash: item.imageHash,
+    objectKey: `bench/scientific-v2/private/objects/${item.imageHash}.png`,
+  })))
+
+  await assert.rejects(
+    () => repository.exportReviewAssignment({ batchId, assignment: fullAssignment, objectBindings }),
+    /SCIENTIFIC_V2_CORRECTION_REVIEW_SCOPE_INVALID/,
+  )
+})
+
 function slotModelKey(assignment: any) {
   return assignment.privateMappings[0].modelKey
 }
 
 async function preparePublishFacts(repository: ReturnType<typeof createScientificV2MongoRepository>, fixture: ReturnType<typeof scientificBatchFixture>, state: any, secret: string, batchId: string, options: {
   dispute?: boolean
+  reviewerAScore?: number
+  reviewerBScore?: number
+  reviewTargetModelIds?: string[]
   lineage?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null }
 } = {}) {
   const claimed = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
@@ -2338,20 +2454,21 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
     batchId, previousStateHash: awaiting.stateHash, revision: 2, ...options.lineage,
   })
   await repository.importStateReport(codexImport)
-  const assignments = fullReviewAssignments(secret, fixture, state)
+  const assignments = fullReviewAssignments(secret, fixture, state, options.reviewTargetModelIds)
   const bindingsFor = (assignment: any) => assignment.packages.flatMap((packet: any) => packet.items.map((item: any) => ({ imageHash: item.imageHash, objectKey: `bench/scientific-v2/private/objects/${item.imageHash}.png` })))
   await repository.exportReviewAssignment({ batchId, assignment: assignments.A, objectBindings: bindingsFor(assignments.A) })
   await repository.exportReviewAssignment({ batchId, assignment: assignments.B, objectBindings: bindingsFor(assignments.B) })
-  await repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, options.dispute ? 5 : 8) })
-  const reviewFinal = await repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.B, 8) }) as any
+  await repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.A, options.reviewerAScore ?? (options.dispute ? 5 : 8)) })
+  const reviewFinal = await repository.importReviewResult({ batchId, result: signedFullReviewerResult(secret, assignments.B, options.reviewerBScore ?? 8) }) as any
   if (options.dispute) {
     const arbitration = {
       reasoningEffort: 'xhigh', batchManifestHash: fixture.manifest.manifestHash,
       sourceSetHash: assignments.A.privateEnvelope.sourceSetHash,
-      results: reviewFinal.disputes.map((item: any) => ({
+      results: reviewFinal.disputes.map((item: any, index: number) => ({
         itemHash: item.itemHash,
         scores: Object.fromEntries(item.applicableAxes.map((axis: string) => [axis, 7])),
         redLines: [],
+        rationale: `第${index + 1}个争议题位的主体结构基本正确，但细节表达仍需扣分。`,
       })),
     }
     const arbitrationHash = canonicalHash(arbitration)
@@ -2435,7 +2552,12 @@ test('A/B import treats score gap, red-line conflict or low confidence as disput
     reasoningEffort: 'xhigh',
     batchManifestHash: fixture.manifest.manifestHash,
     sourceSetHash: assignments.A.privateEnvelope.sourceSetHash,
-    results: [{ itemHash: assignments.A.packages[0].items[0].itemHash, scores: Object.fromEntries(assignments.A.packages[0].items[0].applicableAxes.map((axis: string) => [axis, 7])), redLines: ['scientific_inaccuracy'] }],
+    results: [{
+      itemHash: assignments.A.packages[0].items[0].itemHash,
+      scores: Object.fromEntries(assignments.A.packages[0].items[0].applicableAxes.map((axis: string) => [axis, 7])),
+      redLines: ['scientific_inaccuracy'],
+      rationale: '仲裁复核确认存在科学事实偏差，因此按对应维度降分。',
+    }],
   }
   const arbitrationHash = canonicalHash(arbitrationBase)
   const arbitrationInput = {
@@ -2684,10 +2806,13 @@ test('publishScientificV2 rolls back release and public evidence when batch CAS 
   assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')?.length || 0, 0)
 })
 
-test('only an exact remediation batch atomically supersedes the active Scientific V2 release outside its content hash', async () => {
-  const firstFixture = scientificBatchFixture()
+test('correction publication grafts target models onto the exact baseline and changes only derived competition ranks for non-targets', async () => {
+  const firstFixture = scientificBatchFixture({ secondBailianModel: true })
+  const wrongFixtureInput = structuredClone(firstFixture)
+  wrongFixtureInput.manifest.codeSha = 'b'.repeat(40)
+  const wrongFixture = rehashFreezeFixture(wrongFixtureInput)
   const secondFixture = structuredClone(firstFixture)
-  secondFixture.manifest.codeSha = 'b'.repeat(40)
+  secondFixture.manifest.codeSha = 'c'.repeat(40)
   const rehashedSecondFixture = rehashFreezeFixture(secondFixture)
   const storage = atomicScientificDb()
   const secret = 'scientific-v2-remediation-supersede-secret-32-bytes'
@@ -2700,17 +2825,48 @@ test('only an exact remediation batch atomically supersedes the active Scientifi
   const firstInput = await preparePublishFacts(first, firstFixture, completedScientificState(firstFixture), secret, firstBatchId)
   const publishedFirst = await first.publishScientificV2({ batchId: firstBatchId, ...firstInput })
   const firstReleaseBefore = structuredClone(storage.rows.get('paperbanana_benchmark_releases')![0])
+  const firstPublicRowsBefore = structuredClone(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence') || [])
+  const remediationTarget = firstReleaseBefore.models.find((model: any) => model.canonicalModelId !== 'codex:gpt-image-2')!
+
+  const wrongBatchId = 'scientific-v2-supersede-wrong-active'
+  const wrong = createScientificV2MongoRepository(storage.db, () => new Date('2026-08-31T12:00:00.000Z'), () => 'supersede-wrong', {
+    operatorReportSecret: secret, immutableCodeSha: wrongFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await wrong.freezeBatch({ batchId: wrongBatchId, ...wrongFixture })
+  const wrongInput = await preparePublishFacts(wrong, wrongFixture, completedScientificState(wrongFixture), secret, wrongBatchId, {
+    reviewerAScore: 4, reviewerBScore: 4,
+  })
+  const wrongBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!
+    .find((row) => row.batchId === wrongBatchId)!
+  const wrongTargetSlotId = `${remediationTarget.canonicalModelId}:scientific-gen-01-method-flow`
+  wrongBatch.remediationOf = {
+    batchId: firstBatchId, manifestHash: firstReleaseBefore.batchManifestHash,
+    releaseId: firstReleaseBefore._id, releaseHash: publishedFirst.releaseHash,
+    targetModelIds: [remediationTarget.canonicalModelId], targetSlotIds: [wrongTargetSlotId],
+    targetSlotSetHash: canonicalHash([wrongTargetSlotId]),
+  }
+  const publishedWrong = await wrong.publishScientificV2({ batchId: wrongBatchId, ...wrongInput })
+  const wrongRelease = storage.rows.get('paperbanana_benchmark_releases')![1]
 
   const second = createScientificV2MongoRepository(storage.db, () => new Date('2026-09-01T00:00:00.000Z'), () => 'supersede-second', {
     operatorReportSecret: secret, immutableCodeSha: rehashedSecondFixture.manifest.codeSha, verifyObject: async () => {},
+    correctionPlanForTest: {
+      baselineReleaseHash: publishedFirst.releaseHash,
+      activePredecessorReleaseHash: publishedWrong.releaseHash,
+      targetModelIds: [remediationTarget.canonicalModelId],
+    },
   })
   await second.freezeBatch({ batchId: secondBatchId, ...rehashedSecondFixture })
   const secondState = completedScientificState(rehashedSecondFixture)
-  const secondInput = await preparePublishFacts(second, rehashedSecondFixture, secondState, secret, secondBatchId)
-  await assert.rejects(
-    () => second.publishScientificV2({ batchId: secondBatchId, ...secondInput }),
-    /SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT/,
-  )
+  const secondInput = await preparePublishFacts(second, rehashedSecondFixture, secondState, secret, secondBatchId, {
+    reviewerAScore: 6,
+    reviewerBScore: 6,
+    reviewTargetModelIds: [remediationTarget.canonicalModelId],
+  })
+  secondInput.evidence = secondInput.evidence.filter((item: any) => item.canonicalModelId === remediationTarget.canonicalModelId)
+  const targetRawHashes = new Set(secondInput.evidence.map((item: any) => item.imageHash))
+  targetRawHashes.add(SCIENTIFIC_EDIT_SOURCE.sourceHash)
+  secondInput.objectBindings = secondInput.objectBindings.filter((binding: any) => targetRawHashes.has(binding.imageHash))
   const secondBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!
     .find((row) => row.batchId === secondBatchId)!
   const inheritedWorkerReport = signedStateReport(secret, rehashedSecondFixture, secondState, 'worker', {
@@ -2728,17 +2884,64 @@ test('only an exact remediation batch atomically supersedes the active Scientifi
   secondBatch.latestStateReportHash = inheritedWorkerReport.reportHash
   secondBatch.codexProvenance = null
   secondBatch.disclosure = null
-  const remediationTarget = firstReleaseBefore.models.find((model: any) => model.canonicalModelId !== 'codex:gpt-image-2')!
   const remediationTargetSlotId = `${remediationTarget.canonicalModelId}:scientific-gen-01-method-flow`
   secondBatch.remediationOf = {
-    batchId: firstBatchId,
-    manifestHash: firstReleaseBefore.batchManifestHash,
-    releaseId: firstReleaseBefore._id,
-    releaseHash: publishedFirst.releaseHash,
+    batchId: wrongBatchId,
+    manifestHash: wrongRelease.batchManifestHash,
+    releaseId: wrongRelease._id,
+    releaseHash: publishedWrong.releaseHash,
     targetModelIds: [remediationTarget.canonicalModelId],
     targetSlotIds: [remediationTargetSlotId],
     targetSlotSetHash: canonicalHash([remediationTargetSlotId]),
   }
+  secondBatch.correctionBaseline = {
+    releaseId: firstReleaseBefore._id,
+    releaseHash: firstReleaseBefore.releaseHash,
+    batchId: firstReleaseBefore.batchId,
+    manifestHash: firstReleaseBefore.batchManifestHash,
+  }
+
+  const correctionBaselineBeforeLegacyCheck = secondBatch.correctionBaseline
+  delete secondBatch.correctionBaseline
+  await assert.rejects(
+    () => second.operatorAttestation({ batchId: secondBatchId }),
+    /SCIENTIFIC_V2_CORRECTION_PLAN_INVALID/,
+  )
+  await assert.rejects(
+    () => second.publishScientificV2({ batchId: secondBatchId, ...secondInput }),
+    /SCIENTIFIC_V2_CORRECTION_PLAN_INVALID/,
+  )
+  secondBatch.correctionBaseline = correctionBaselineBeforeLegacyCheck
+
+  const targetSlotIdsBeforeIncompleteCheck = secondBatch.remediationOf.targetSlotIds
+  const targetSlotSetHashBeforeIncompleteCheck = secondBatch.remediationOf.targetSlotSetHash
+  secondBatch.remediationOf.targetSlotIds = [`${remediationTarget.canonicalModelId}:missing-case`]
+  secondBatch.remediationOf.targetSlotSetHash = canonicalHash(secondBatch.remediationOf.targetSlotIds)
+  await assert.rejects(
+    () => second.publishScientificV2({ batchId: secondBatchId, ...secondInput }),
+    /SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE/,
+  )
+  secondBatch.remediationOf.targetSlotIds = targetSlotIdsBeforeIncompleteCheck
+  secondBatch.remediationOf.targetSlotSetHash = targetSlotSetHashBeforeIncompleteCheck
+
+  const completeStateBeforeAllNineCheck = secondBatch.state
+  const completeStateHashBeforeAllNineCheck = secondBatch.stateHash
+  const { state: oneFailedTargetState, slotId: failedTargetSlotId } = completedStateWithAuditedUnknownFailures(rehashedSecondFixture)
+  assert.equal(oneFailedTargetState.slots.find((slot: any) => slot.slotId === failedTargetSlotId)?.canonicalModelId, remediationTarget.canonicalModelId)
+  const succeededTargetSlotId = oneFailedTargetState.slots.find((slot: any) => slot.canonicalModelId === remediationTarget.canonicalModelId
+    && slot.status === 'succeeded')!.slotId
+  secondBatch.state = oneFailedTargetState
+  secondBatch.stateHash = oneFailedTargetState.stateHash
+  secondBatch.remediationOf.targetSlotIds = [succeededTargetSlotId]
+  secondBatch.remediationOf.targetSlotSetHash = canonicalHash([succeededTargetSlotId])
+  await assert.rejects(
+    () => second.publishScientificV2({ batchId: secondBatchId, ...secondInput }),
+    /SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE/,
+  )
+  secondBatch.state = completeStateBeforeAllNineCheck
+  secondBatch.stateHash = completeStateHashBeforeAllNineCheck
+  secondBatch.remediationOf.targetSlotIds = targetSlotIdsBeforeIncompleteCheck
+  secondBatch.remediationOf.targetSlotSetHash = targetSlotSetHashBeforeIncompleteCheck
 
   const inheritedState = secondBatch.state
   const inheritedStateHash = secondBatch.stateHash
@@ -2773,16 +2976,159 @@ test('only an exact remediation batch atomically supersedes the active Scientifi
 
   const publishedSecond = await second.publishScientificV2({ batchId: secondBatchId, ...secondInput })
   assert.notEqual(publishedSecond.releaseHash, publishedFirst.releaseHash)
-  assert.equal(storage.rows.get('paperbanana_benchmark_releases')?.length, 2)
+  assert.equal(storage.rows.get('paperbanana_benchmark_releases')?.length, 3)
   assert.deepEqual(storage.rows.get('paperbanana_benchmark_releases')![0], firstReleaseBefore)
   const { _id: _firstId, releaseHash: firstHash, ...firstReleaseBase } = firstReleaseBefore
   assert.equal(canonicalHash(firstReleaseBase), firstHash)
+  const correctedRelease = storage.rows.get('paperbanana_benchmark_releases')![2]
+  const correctedTarget = correctedRelease.models.find((model: any) => model.canonicalModelId === remediationTarget.canonicalModelId)!
+  const baselineNonTargets = firstReleaseBefore.models.filter((model: any) => model.canonicalModelId !== remediationTarget.canonicalModelId)
+  const correctedNonTargets = baselineNonTargets.map((baseline: any) => correctedRelease.models
+    .find((model: any) => model.canonicalModelId === baseline.canonicalModelId)!)
+  const withoutDerivedRanks = (model: any) => {
+    const copy = structuredClone(model)
+    delete copy.overallRank
+    delete copy.dimensionRanks
+    return copy
+  }
+  assert.deepEqual(correctedNonTargets.map(withoutDerivedRanks), baselineNonTargets.map(withoutDerivedRanks))
+  const baselineTarget = firstReleaseBefore.models.find((model: any) => model.canonicalModelId === remediationTarget.canonicalModelId)!
+  const withoutTargetEvaluation = (model: any) => {
+    const copy = structuredClone(model)
+    for (const key of [
+      'scores', 'dimensions', 'generationSuccessRate', 'editSuccessRate', 'successRate', 'attemptSummary',
+      'failureReasons', 'evidence', 'overallScore', 'overallRank', 'dimensionRanks',
+    ]) delete copy[key]
+    return copy
+  }
+  assert.deepEqual(withoutTargetEvaluation(correctedTarget), withoutTargetEvaluation(baselineTarget))
+  assert.ok(Object.values(correctedTarget.scores).every((score) => score === 6))
+  assert.equal(correctedNonTargets[0].overallRank, 1)
+  assert.equal(correctedTarget.overallRank, 3)
+  const stripReleaseRowFields = (row: any) => {
+    const copy = structuredClone(row)
+    delete copy._id
+    delete copy.sourceReleaseHash
+    delete copy.createdAt
+    delete copy.overallRank
+    return copy
+  }
+  const baselineNonTargetRows = firstPublicRowsBefore
+    .filter((row: any) => baselineNonTargets.some((model: any) => model.canonicalModelId === row.canonicalModelId))
+    .sort((left: any, right: any) => `${left.canonicalModelId}\0${left.caseId}`.localeCompare(`${right.canonicalModelId}\0${right.caseId}`))
+  const correctedNonTargetRows = storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!
+    .filter((row: any) => row.sourceReleaseHash === publishedSecond.releaseHash
+      && baselineNonTargets.some((model: any) => model.canonicalModelId === row.canonicalModelId))
+    .sort((left: any, right: any) => `${left.canonicalModelId}\0${left.caseId}`.localeCompare(`${right.canonicalModelId}\0${right.caseId}`))
+  assert.deepEqual(correctedNonTargetRows.map(stripReleaseRowFields), baselineNonTargetRows.map(stripReleaseRowFields))
   const lifecycle = storage.rows.get('paperbanana_benchmark_release_lifecycle') || []
   assert.equal(lifecycle.find((row) => row.releaseId === firstReleaseBefore._id)?.status, 'superseded')
+  assert.equal(lifecycle.find((row) => row.releaseId === wrongRelease._id)?.status, 'superseded')
   assert.equal(lifecycle.find((row) => row.releaseHash === publishedSecond.releaseHash)?.status, 'active')
   const publicRepository = createMongoBenchmarkRepository(storage.db, () => new Date('2026-09-01T00:00:00.000Z'), async () => {})
   assert.equal((await publicRepository.latestRelease())?.releaseHash, publishedSecond.releaseHash)
   assert.equal((await publicRepository.releaseByModel('', '', '', firstReleaseBefore.models[0].profileId))?.releaseHash, publishedSecond.releaseHash)
+})
+
+test('correction freeze separately binds the superseded data baseline and the current active predecessor', async () => {
+  const baselineFixture = scientificBatchFixture({ secondBailianModel: true })
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-three-release-freeze-secret-32-bytes'
+  const baselineBatchId = 'scientific-v2-three-release-baseline'
+  const baselineRepository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'three-release-baseline', {
+    operatorReportSecret: secret, immutableCodeSha: baselineFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await baselineRepository.freezeBatch({ batchId: baselineBatchId, ...baselineFixture })
+  const baselineInput = await preparePublishFacts(
+    baselineRepository, baselineFixture, completedScientificState(baselineFixture), secret, baselineBatchId,
+  )
+  const baselinePublished = await baselineRepository.publishScientificV2({ batchId: baselineBatchId, ...baselineInput })
+  const baselineRelease = storage.rows.get('paperbanana_benchmark_releases')![0]
+
+  const wrongFixtureInput = structuredClone(baselineFixture)
+  wrongFixtureInput.manifest.codeSha = 'b'.repeat(40)
+  const wrongFixture = rehashFreezeFixture(wrongFixtureInput)
+  const wrongBatchId = 'scientific-v2-three-release-wrong-active'
+  const wrongRepository = createScientificV2MongoRepository(storage.db, () => new Date('2026-09-01T00:00:00.000Z'), () => 'three-release-wrong', {
+    operatorReportSecret: secret, immutableCodeSha: wrongFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await wrongRepository.freezeBatch({ batchId: wrongBatchId, ...wrongFixture })
+  const { state: wrongState, slotId: failedSlotId } = completedStateWithAuditedUnknownFailures(wrongFixture)
+  const failedModelId = wrongState.slots.find((slot: any) => slot.slotId === failedSlotId)!.canonicalModelId
+  const failedSlotIds = [failedSlotId]
+  const wrongInput = await preparePublishFacts(wrongRepository, wrongFixture, wrongState, secret, wrongBatchId, {
+    reviewerAScore: 6, reviewerBScore: 6,
+  })
+  const wrongBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!.find((row) => row.batchId === wrongBatchId)!
+  wrongBatch.remediationOf = {
+    batchId: baselineBatchId, manifestHash: baselineRelease.batchManifestHash,
+    releaseId: baselineRelease._id, releaseHash: baselinePublished.releaseHash,
+    targetModelIds: [failedModelId], targetSlotIds: failedSlotIds,
+    targetSlotSetHash: canonicalHash(failedSlotIds),
+  }
+  const wrongPublished = await wrongRepository.publishScientificV2({ batchId: wrongBatchId, ...wrongInput })
+  const wrongRelease = storage.rows.get('paperbanana_benchmark_releases')![1]
+
+  const correctionRepository = createScientificV2MongoRepository(storage.db, () => new Date('2026-09-02T00:00:00.000Z'), () => 'three-release-correction', {
+    operatorReportSecret: secret, immutableCodeSha: 'c'.repeat(40), verifyObject: async () => {},
+    correctionPlanForTest: {
+      baselineReleaseHash: baselinePublished.releaseHash,
+      activePredecessorReleaseHash: wrongPublished.releaseHash,
+      targetModelIds: [failedModelId],
+    },
+  })
+  const correctionInput = {
+    batchId: 'scientific-v2-three-release-correction',
+    sourceBatchId: wrongBatchId,
+    sourceManifestHash: wrongRelease.batchManifestHash,
+    sourceReleaseHash: wrongPublished.releaseHash,
+    baselineBatchId,
+    baselineManifestHash: baselineRelease.batchManifestHash,
+    baselineReleaseId: baselineRelease._id,
+    baselineReleaseHash: baselinePublished.releaseHash,
+    targetModelIds: [failedModelId],
+    targetSlotIds: failedSlotIds,
+    targetSlotSetHash: canonicalHash(failedSlotIds),
+  }
+  const bareRemediationInput: any = structuredClone(correctionInput)
+  for (const key of ['baselineBatchId', 'baselineManifestHash', 'baselineReleaseId', 'baselineReleaseHash']) delete bareRemediationInput[key]
+  await assert.rejects(
+    () => correctionRepository.freezeRemediationBatch(bareRemediationInput),
+    /SCIENTIFIC_V2_CORRECTION_PLAN_INVALID/,
+  )
+  await assert.rejects(
+    () => correctionRepository.freezeRemediationBatch({
+      ...correctionInput,
+      targetModelIds: [wrongFixture.manifest.models.find((model: any) => model.canonicalModelId !== failedModelId)!.canonicalModelId],
+    }),
+    /SCIENTIFIC_V2_CORRECTION_PLAN_INVALID/,
+  )
+  const correction = await correctionRepository.freezeRemediationBatch(correctionInput)
+
+  const correctionBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!
+    .find((row) => row.batchId === correction.batchId)!
+  assert.deepEqual(correctionBatch.correctionBaseline, {
+    releaseId: baselineRelease._id,
+    releaseHash: baselinePublished.releaseHash,
+    batchId: baselineBatchId,
+    manifestHash: baselineRelease.batchManifestHash,
+  })
+  assert.equal(correctionBatch.remediationOf.releaseId, wrongRelease._id)
+  assert.equal(correctionBatch.remediationOf.releaseHash, wrongPublished.releaseHash)
+  assert.ok(failedSlotIds.every((slotId) => correctionBatch.state.slots.find((slot: any) => slot.slotId === slotId)?.status === 'pending'))
+  const correctionAttestation = await correctionRepository.operatorAttestation({ batchId: correction.batchId })
+  assert.deepEqual(correctionAttestation.correction, {
+    baseline: correctionBatch.correctionBaseline,
+    activePredecessor: {
+      releaseId: wrongRelease._id,
+      releaseHash: wrongPublished.releaseHash,
+      batchId: wrongBatchId,
+      manifestHash: wrongRelease.batchManifestHash,
+    },
+    targetModelIds: [failedModelId],
+    targetSlotIds: failedSlotIds,
+    targetSlotSetHash: canonicalHash(failedSlotIds),
+  })
 })
 
 test('Scientific V2 remediation supersede rolls back release, evidence, head and lifecycle on final batch CAS failure', async () => {

@@ -151,7 +151,7 @@ export type ScientificV2OperatorBundle = ScientificV2OperatorInspectBundle | {
   operation: 'render_public_evidence'; gate: OperatorGate
   manifest: ScientificV2BatchManifest
   state: ScientificV2BatchState
-  input: { batchId: string }
+  input: { batchId: string; targetModelIds?: string[] }
 }
 
 function assertGate(gate: unknown): asserts gate is OperatorGate {
@@ -615,7 +615,8 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
   }
   if (bundle.operation === 'render_public_evidence') {
     assertExactScientificV2Keys(bundle, ['operation', 'gate', 'manifest', 'state', 'input'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
-    assertExactScientificV2Keys(bundle.input, ['batchId'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    assertExactScientificV2Keys(bundle.input, Object.hasOwn(bundle.input, 'targetModelIds')
+      ? ['batchId', 'targetModelIds'] : ['batchId'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     if (typeof bundle.input.batchId !== 'string' || !bundle.input.batchId || bundle.input.batchId.length > 160) {
       scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_BATCH_BINDING_INVALID')
     }
@@ -626,6 +627,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     try {
       const result = await renderScientificV2PublicEvidence({
         batchId: bundle.input.batchId, manifest: bundle.manifest, state: bundle.state,
+        ...(bundle.input.targetModelIds ? { targetModelIds: bundle.input.targetModelIds } : {}),
         repository: dependencies.repository, store: dependencies.store,
         editSourcePng: readScientificV2ProductionEditSourcePng((context?.env || process.env).PAPERBANANA_SCIENTIFIC_V2_EDIT_SOURCE_PNG_PATH),
       })

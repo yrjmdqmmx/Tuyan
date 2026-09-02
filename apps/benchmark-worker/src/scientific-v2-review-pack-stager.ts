@@ -5,22 +5,28 @@ import { fileURLToPath } from 'node:url'
 import { canonicalHash, createScientificReviewPacket } from '@paperbanana/benchmark-core'
 
 import type { ScientificV2BatchManifest, ScientificV2BatchState } from './scientific-v2-manifest.js'
-import { createScientificReviewSourceBindings } from './scientific-v2-review.js'
+import {
+  createScientificReviewSourceBindings,
+  normalizeScientificReviewTargetModelIds,
+} from './scientific-v2-review.js'
 
 type ReviewPackStagingInput = {
   manifest: ScientificV2BatchManifest
   state: ScientificV2BatchState
   attestationSecret: string
   issuedAt: string
+  targetModelIds?: string[]
 }
 
 export function createScientificV2ReviewPackStagingBundle(input: ReviewPackStagingInput) {
   const { manifest, state, attestationSecret, issuedAt } = input
+  const targetModelIds = normalizeScientificReviewTargetModelIds(input.targetModelIds, manifest)
+  const targetSet = targetModelIds ? new Set(targetModelIds) : null
   if (state.status !== 'completed' || state.manifestHash !== manifest.manifestHash) {
     throw new Error('SCIENTIFIC_V2_REVIEW_BATCH_NOT_TERMINAL')
   }
   const cases = new Map(manifest.cases.map((item) => [item.id, item]))
-  const sources = manifest.models.map((model) => {
+  const sources = manifest.models.filter((model) => !targetSet || targetSet.has(model.canonicalModelId)).map((model) => {
     const modelKey = model.canonicalModelId
     const slots = state.slots.filter((slot) => slot.canonicalModelId === modelKey && slot.status === 'succeeded')
     if (slots.length === 0) return { modelKey, packet: null, signingSecret: null }
@@ -71,6 +77,7 @@ export function createScientificV2ReviewPackStagingBundle(input: ReviewPackStagi
     manifest,
     state,
     sources,
+    ...(targetModelIds ? { targetModelIds } : {}),
   }, attestationSecret)
   const bindingByModel = new Map(bound.bindings.map((binding) => [binding.modelKey, binding]))
   const boundSources = sources.map((source) => {
@@ -88,6 +95,7 @@ export function createScientificV2ReviewPackStagingBundle(input: ReviewPackStagi
       sourceSetHash: bound.sourceSetHash,
       seed: canonicalHash({ batchManifestHash: manifest.manifestHash, stateHash: state.stateHash, reviewProtocol: manifest.reviewProtocol }),
       sources: boundSources,
+      ...(targetModelIds ? { targetModelIds } : {}),
       attestationSecret,
     },
   }

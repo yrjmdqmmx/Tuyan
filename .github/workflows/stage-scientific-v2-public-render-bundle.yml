@@ -158,12 +158,45 @@ jobs:
                   or attestation.get('manifestCodeSha') != manifest_code_sha or attestation.get('executionCodeSha') != manifest_code_sha
                   or attestation.get('legacyRecoveryStateHash') is not None):
               raise RuntimeError('attestation')
+          target_model_ids = None
+          if 'correction' in attestation:
+              correction = attestation['correction']
+              expected_target_model_ids = [
+                  'recraft/recraft-v4-pro-vector',
+                  'recraft/recraft-v4-styles-pro-vector',
+                  'recraft/recraft-v4-styles-vector',
+                  'seedream-4.5',
+                  'seedream-5.0',
+              ]
+              if not isinstance(correction, dict) or set(correction) != {'baseline', 'activePredecessor', 'targetModelIds', 'targetSlotIds', 'targetSlotSetHash'}:
+                  raise RuntimeError('correction')
+              target_model_ids = correction['targetModelIds']
+              if (not isinstance(correction.get('baseline'), dict)
+                      or set(correction['baseline']) != {'releaseId', 'releaseHash', 'batchId', 'manifestHash'}
+                      or not isinstance(correction.get('activePredecessor'), dict)
+                      or set(correction['activePredecessor']) != {'releaseId', 'releaseHash', 'batchId', 'manifestHash'}
+                      or correction['baseline'].get('releaseHash') != 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a'
+                      or correction['activePredecessor'].get('releaseHash') != '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe'
+                      or target_model_ids != expected_target_model_ids):
+                  raise RuntimeError('correction-targets')
+              target_slots = [slot for slot in state.get('slots', []) if slot.get('canonicalModelId') in set(target_model_ids)]
+              if (len(target_slots) != len(target_model_ids) * 9
+                      or any(slot.get('status') != 'succeeded'
+                             or not isinstance(slot.get('attempts'), list) or not slot['attempts']
+                             or not isinstance(slot['attempts'][-1].get('rawImageHash'), str)
+                             or len(slot['attempts'][-1]['rawImageHash']) != 64
+                             or slot['attempts'][-1].get('responseClass') not in {'succeeded', 'succeeded_low_quality'}
+                             for slot in target_slots)):
+                  raise RuntimeError('correction-incomplete')
           bundle = {
               'operation': 'render_public_evidence',
               'gate': {'enabled': False, 'concurrency': 1, 'lockName': '/run/lock/paperbanana-hk-production.lock'},
               'manifest': manifest,
               'state': state,
-              'input': {'batchId': attestation['batchId']},
+              'input': {
+                  'batchId': attestation['batchId'],
+                  **({'targetModelIds': target_model_ids} if target_model_ids is not None else {}),
+              },
           }
           encoded = (json.dumps(bundle, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
           fd = os.open(output_path, os.O_WRONLY | os.O_TRUNC | os.O_NOFOLLOW)
