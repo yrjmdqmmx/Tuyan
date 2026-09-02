@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 管理员发布失败的安全诊断码 — by Codex
+变更：受保护的管理员内网传输在 Scientific V2 操作被拒绝时，可额外返回一个严格白名单 `diagnosticCode`：业务错误仅允许 `SCIENTIFIC_V2_*`，Mongo 错误仅允许数值 code 与规范化 codeName；公开/未授权请求继续只返回统一错误，不暴露数据库消息、键值、对象路径、凭据或响应正文。root-only 管理桥只把该白名单码附在失败标识后，便于定位原子发布回滚原因。成功响应、公开 API、排行榜字段、图片、评分、审核和 Provider 调用规则不变。
+- [x] paperbanana-api / 运维桥（白名单诊断码、非管理员不泄漏及回归测试）
+- [ ] 部署 / 运维（部署后重放同一原子发布并按诊断码完成修复）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
+
 ### [2026-09-02] Scientific V2 release head / lifecycle 最小 Mongo 权限 — by Codex
 变更：生产原子替代发布需要 paperbanana-api 在独立 `paperbanana_benchmark_release_heads` 与 `paperbanana_benchmark_release_lifecycle` 集合上读取当前 active head、插入新 lifecycle 并以 CAS 更新旧 lifecycle/head。Mongo root migration 会在角色和服务启动前显式、幂等创建这两个集合，避免 MongoDB 多文档事务因禁止隐式建集合而在提交前整体回滚；同时只给 API 账号增加这两个集合的 `find/insert/update`，不授予 delete、drop、索引管理或宽泛数据库权限，常驻 Benchmark Worker 仍无这两个集合的读写权限。旧的 `scientific_v2_release_identity` 唯一索引与“release 文档不可变、允许 remediation 插入新 release、由 head 保证唯一 active”的契约冲突，迁移会先建立包含 `profileStatus/publishedAt` 的非唯一查询索引，再精确删除该旧索引，不修改任何 release 文档或证据。公开 API、排行榜字段、题集、图片、评分、审核和 Provider 调用规则不变。
 - [x] paperbanana-api / Mongo 迁移（release 状态集合预创建、最小权限、旧唯一索引替换与 Mongo 8 集成回归）

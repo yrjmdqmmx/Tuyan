@@ -71,6 +71,18 @@ const adminActions = new Set([
 
 const scientificV2AdminOperationHeader = 'x-paperbanana-scientific-v2-admin-operation'
 
+function scientificV2AdminDiagnosticCode(error: unknown) {
+  const message = String((error as Error)?.message || '')
+  if (/^SCIENTIFIC_V2_[A-Z0-9_]{1,96}$/.test(message)) return message
+  const mongoCode = Number((error as { code?: unknown })?.code)
+  if (!Number.isInteger(mongoCode) || mongoCode < 0 || mongoCode > 99999) return 'SCIENTIFIC_V2_INTERNAL_REJECTED'
+  const rawCodeName = String((error as { codeName?: unknown })?.codeName || '')
+  const codeName = /^[A-Za-z][A-Za-z0-9]{0,63}$/.test(rawCodeName)
+    ? rawCodeName.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toUpperCase()
+    : ''
+  return `MONGO_${mongoCode}${codeName ? `_${codeName}` : ''}`
+}
+
 function tokensMatch(actual: string, expected: string): boolean {
   const actualDigest = createHash('sha256').update(actual).digest()
   const expectedDigest = createHash('sha256').update(expected).digest()
@@ -227,7 +239,16 @@ export function createApp({
           ? 401
           : message.startsWith('BENCHMARK_PROMPT_RATE_LIMIT_') ? 429 : 400
         logger.warn('benchmark request rejected', { action, code })
-        return response.status(200).json({ code, error: 'Benchmark request rejected' })
+        const scientificV2AdminDiagnostic = isAdminTransport
+          && body.evaluationMode === 'codex_scientific_v2'
+          && adminActions.has(action)
+          ? scientificV2AdminDiagnosticCode(error)
+          : ''
+        return response.status(200).json({
+          code,
+          error: 'Benchmark request rejected',
+          ...(scientificV2AdminDiagnostic ? { diagnosticCode: scientificV2AdminDiagnostic } : {}),
+        })
       }
     }
     const ctx: LegacyContext = {
