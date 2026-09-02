@@ -78,7 +78,17 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
     variants: [{ kind: 'detail', objectKey: `bench/scientific-v2/public/${'a'.repeat(64)}/detail.webp`, imageHash: 'b'.repeat(64), width: 1600, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' }],
     beforeVariants: [{ kind: 'detail', objectKey: `bench/scientific-v2/public/${release.editCase.sourceHash}/detail.webp`, imageHash: 'c'.repeat(64), width: 1600, height: 900, fileSizeBytes: 2048, mimeType: 'image/webp' }],
   }
-  evidenceRow.reviewNotes = ['加分：局部编辑准确', 'reviewer secret /tmp/blind-A']
+  evidenceRow.reviewNotes = [
+    '加分：局部编辑准确',
+    '目标区域颜色已准确替换，边界完整且非目标区域保持不变。',
+    '整体表现良好。',
+    '整体表现良好。题位01',
+    '具体审核结果见 https://internal.example/review/1',
+    '详见 ｈｔｔｐｓ：／／internal.example／review，主体结构正确。',
+    '题位结构正确，api_key_live_abcdefgh 仅供内部复核。',
+    '主\u200b体结构完整，关键关系与文字可直接核验。',
+    'reviewer secret /tmp/blind-A',
+  ]
   const signed: string[] = []
   const verified: string[] = []
   const repository: any = {
@@ -132,7 +142,10 @@ test('scientific v2 public actions expose ten-axis rankings, full methodology an
   assert.equal(JSON.stringify(profile).includes('reviewerIdentity'), false)
   assert.equal(JSON.stringify(profile).includes('attestationHash'), false)
   assert.equal(JSON.stringify(profile).includes('stateSnapshot'), false)
-  assert.deepEqual(publicEdit.reviewNotes, ['加分：局部编辑准确'])
+  assert.deepEqual(publicEdit.reviewNotes, [
+    '加分：局部编辑准确',
+    '目标区域颜色已准确替换，边界完整且非目标区域保持不变。',
+  ])
   assert.equal(publicEdit.requestedResolution, '2K')
   assert.deepEqual(publicEdit.actualOutputPixels, { width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 4096 })
 

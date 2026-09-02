@@ -162,14 +162,19 @@ jobs:
             .operation == "render_public_evidence" and .gate == {enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"} and
             .manifest.manifestHash == $manifest and .manifest.registryHash == $registry and .manifest.suiteHash == $suite and .manifest.priceHash == $price and
             (.manifest.models | length) == $models and .state.manifestHash == $manifest and .state.status == "completed" and
-            .input.batchId == $batch
+            .input.batchId == $batch and
+            (if .input.targetModelIds then
+               (.input | keys | sort) == ["batchId","targetModelIds"] and
+               (.input.targetModelIds | type) == "array" and (.input.targetModelIds | length) > 0 and
+               (.input.targetModelIds as $targets | [.state.slots[] | .canonicalModelId as $model | select($targets | index($model))] | length) == (.input.targetModelIds | length) * 9
+             else (.input | keys) == ["batchId"] end)
           ' "$bundle" >/dev/null
           [[ "$(sha256sum "$bundle" | awk '{print $1}')" == "$BUNDLE_SHA" ]]
-          first_object_key="$(jq -er '[.state.slots[] | select(.status == "succeeded") | .attempts[-1]
+          first_object_key="$(jq -er '.input.targetModelIds as $targets | [.state.slots[] | . as $slot | select(.status == "succeeded" and ($targets == null or ($targets | index($slot.canonicalModelId)))) | .attempts[-1]
             | select((.rawImageHash | type) == "string" and (.format == "png" or .format == "jpeg" or .format == "webp"))
             | "bench/scientific-v2/private/objects/\(.rawImageHash).\(.format)"][0]' "$bundle")"
           [[ "$first_object_key" =~ ^bench/scientific-v2/private/objects/[a-f0-9]{64}[.](png|jpeg|webp)$ ]]
-          first_public_key="$(jq -er '[.state.slots[] | select(.status == "succeeded") | .attempts[-1]
+          first_public_key="$(jq -er '.input.targetModelIds as $targets | [.state.slots[] | . as $slot | select(.status == "succeeded" and ($targets == null or ($targets | index($slot.canonicalModelId)))) | .attempts[-1]
             | select(.rawImageHash | type == "string")
             | "bench/scientific-v2/public/\(.rawImageHash)/thumbnail.webp"][0]' "$bundle")"
           [[ "$first_public_key" =~ ^bench/scientific-v2/public/[a-f0-9]{64}/thumbnail[.]webp$ ]]

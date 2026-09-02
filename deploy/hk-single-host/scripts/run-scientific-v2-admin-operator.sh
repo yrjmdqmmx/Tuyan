@@ -123,9 +123,10 @@ import fs from "node:fs";
 const input=JSON.parse(fs.readFileSync(0,"utf8"));
 const operation=process.env.PAPERBANANA_SCIENTIFIC_V2_ADMIN_OPERATION;
 const exact=(value,keys)=>{if(!value||typeof value!=="object"||Array.isArray(value)||Object.keys(value).sort().join("\0")!==[...keys].sort().join("\0"))throw new Error("SCIENTIFIC_V2_ADMIN_INPUT_SCHEMA_INVALID")};
+const exactOneOf=(value,schemas)=>{if(!schemas.some(keys=>{try{exact(value,keys);return true}catch{return false}}))throw new Error("SCIENTIFIC_V2_ADMIN_INPUT_SCHEMA_INVALID")};
 let body;
 if(operation==="freeze"){exact(input,["batchId","registryAuthority","registrySnapshot","canonicalManifest","manifest","initialState"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeBatch",...input}}
-else if(operation==="remediate-freeze"){exact(input,["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash","targetModelIds","targetSlotIds","targetSlotSetHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeRemediationBatch",...input}}
+else if(operation==="remediate-freeze"){const correctionKeys=["baselineBatchId","baselineManifestHash","baselineReleaseId","baselineReleaseHash"];exactOneOf(input,[["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash","targetModelIds","targetSlotIds","targetSlotSetHash"],["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash",...correctionKeys,"targetModelIds","targetSlotIds","targetSlotSetHash"]]);if(input.sourceReleaseHash==="25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe"&&!correctionKeys.every(key=>Object.hasOwn(input,key)))throw new Error("SCIENTIFIC_V2_CORRECTION_PLAN_INVALID");body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeRemediationBatch",...input}}
 else if(operation==="attest"){exact(input,["batchId","manifestHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"operatorAttestation",...input}}
 else if(operation==="diagnose"){exact(input,["batchId","manifestHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"operatorDiagnostic",...input}}
 else if(operation==="import-worker"||operation==="import-codex"){exact(input,["report","reportHash","attestationHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:operation==="import-worker"?"importWorkerState":"importCodexState",...input}}
@@ -147,6 +148,12 @@ if(operation==="attest"){
   if(!data.manifestSnapshot||typeof data.manifestSnapshot!=="object"||Array.isArray(data.manifestSnapshot)||data.manifestSnapshot.manifestHash!==data.batchManifestHash)throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
   exact(data.stateSnapshot,["schemaVersion","manifestHash","status","pauseReason","blockReason","createdAt","updatedAt","providerSpentCny","providerUnreconciledCny","slots","stateHash"]);
   if(data.stateSnapshot.stateHash!==data.stateHash||typeof data.stateHash!=="string"||!/^[a-f0-9]{64}$/.test(data.stateHash))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
+  if(Object.hasOwn(data,"correction")){
+    exact(data.correction,["baseline","activePredecessor","targetModelIds","targetSlotIds","targetSlotSetHash"]);
+    exact(data.correction.baseline,["releaseId","releaseHash","batchId","manifestHash"]);
+    exact(data.correction.activePredecessor,["releaseId","releaseHash","batchId","manifestHash"]);
+    if(!Array.isArray(data.correction.targetModelIds)||data.correction.targetModelIds.length<1||!Array.isArray(data.correction.targetSlotIds)||data.correction.targetSlotIds.length<1||!/^[a-f0-9]{64}$/.test(String(data.correction.targetSlotSetHash||"")))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
+  }
 }
 if(operation==="diagnose"){
   exact(data,responseRequiredKeys);

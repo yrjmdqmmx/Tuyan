@@ -1202,6 +1202,7 @@ export async function renderScientificV2PublicEvidence(input: {
   batchId: string
   manifest: ScientificV2BatchManifest
   state: ScientificV2BatchState
+  targetModelIds?: string[]
   repository: ScientificV2ProductionRepository
   store: ScientificV2EvidenceObjectStore
   editSourcePng?: Buffer
@@ -1217,17 +1218,40 @@ export async function renderScientificV2PublicEvidence(input: {
   if (authoritative.manifest.manifestHash !== input.manifest.manifestHash || authoritative.state.stateHash !== input.state.stateHash) {
     scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_BATCH_BINDING_INVALID')
   }
+  let targetModelIds: string[] | undefined
+  if (input.targetModelIds !== undefined) {
+    if (!Array.isArray(input.targetModelIds) || input.targetModelIds.length < 1 || input.targetModelIds.length > 64
+      || input.targetModelIds.some((modelId) => typeof modelId !== 'string' || !modelId || modelId.length > 200)
+      || new Set(input.targetModelIds).size !== input.targetModelIds.length
+      || input.targetModelIds.some((modelId) => !authoritative.manifest.models.some((model) => model.canonicalModelId === modelId))) {
+      scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_TARGET_SET_INVALID')
+    }
+    const sorted = [...input.targetModelIds].sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+    if (canonicalHash(sorted) !== canonicalHash(input.targetModelIds)) scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_TARGET_SET_INVALID')
+    targetModelIds = sorted
+  }
+  const targetSet = targetModelIds ? new Set(targetModelIds) : null
+  const selectedSlots = authoritative.state.slots.filter((slot) => !targetSet || targetSet.has(slot.canonicalModelId))
+  if (targetSet && (selectedSlots.length !== targetSet.size * 9
+    || targetSet.size !== new Set(selectedSlots.map((slot) => slot.canonicalModelId)).size
+    || selectedSlots.some((slot) => slot.status !== 'succeeded'
+      || !/^[a-f0-9]{64}$/.test(String(slot.attempts.at(-1)?.rawImageHash || ''))
+      || !['succeeded', 'succeeded_low_quality'].includes(String(slot.attempts.at(-1)?.responseClass))))) {
+    scientificV2Error('SCIENTIFIC_V2_PUBLIC_RENDER_TARGET_SET_INVALID')
+  }
   const objectBindings = new Map<string, { imageHash: string; objectKey: string }>()
   const evidence: unknown[] = []
   const sourceObjectKey = scientificV2PrivateArtifactObjectKey(SCIENTIFIC_EDIT_SOURCE.sourceHash, 'png')
   const fixedSourceBytes = input.editSourcePng || readScientificV2ProductionEditSourcePng()
-  await input.store.persistPrivate({
-    objectKey: sourceObjectKey, imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
-    format: 'png', contentType: 'image/png', bytes: fixedSourceBytes,
-  })
-  objectBindings.set(SCIENTIFIC_EDIT_SOURCE.sourceHash, { imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash, objectKey: sourceObjectKey })
+  if (!targetSet || selectedSlots.some((slot) => slot.operation === 'edit' && slot.status === 'succeeded')) {
+    await input.store.persistPrivate({
+      objectKey: sourceObjectKey, imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
+      format: 'png', contentType: 'image/png', bytes: fixedSourceBytes,
+    })
+    objectBindings.set(SCIENTIFIC_EDIT_SOURCE.sourceHash, { imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash, objectKey: sourceObjectKey })
+  }
   let editSource: { bytes: Buffer; imageHash: string; format: 'png' } | undefined
-  for (const slot of authoritative.state.slots) {
+  for (const slot of selectedSlots) {
     if (slot.status !== 'succeeded') continue
     const attempt = slot.attempts.at(-1)
     if (!attempt?.rawImageHash || !attempt.format || !['succeeded', 'succeeded_low_quality'].includes(attempt.responseClass)) {

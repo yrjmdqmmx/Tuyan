@@ -6,6 +6,17 @@ const { createRequire } = require('node:module')
 
 const requireFromApp = createRequire('/app/package.json')
 const { MongoClient } = requireFromApp('mongodb')
+const correctiveReleasePlan = Object.freeze({
+  baselineReleaseHash: 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a',
+  activePredecessorReleaseHash: '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe',
+  targetModelIds: Object.freeze([
+    'recraft/recraft-v4-pro-vector',
+    'recraft/recraft-v4-styles-pro-vector',
+    'recraft/recraft-v4-styles-vector',
+    'seedream-4.5',
+    'seedream-5.0',
+  ]),
+})
 
 function canonicalNormalize(value) {
   if (value === undefined) return null
@@ -70,12 +81,35 @@ async function main() {
     const releases = db.collection('paperbanana_benchmark_releases')
     const releaseHeads = db.collection('paperbanana_benchmark_release_heads')
     const releaseLifecycle = db.collection('paperbanana_benchmark_release_lifecycle')
+    const publicEvidence = db.collection('paperbanana_benchmark_scientific_v2_public_evidence')
     const batch = await batches.findOne({ batchId: input.batchId })
     addCheck(checks, 'batch_publishable', Boolean(batch && ['review_finalized', 'review_ready'].includes(batch.status) && batch.reviewFinalHash), {
       batchStatus: batch?.status || null,
       revision: Number(batch?.revision || 0),
     })
     if (!batch) throw new Error('DIAGNOSTIC_BATCH_NOT_FOUND')
+    const correctionTargetModelIds = batch.correctionBaseline && Array.isArray(batch.remediationOf?.targetModelIds)
+      ? new Set(batch.remediationOf.targetModelIds) : null
+    const correctionTargetSlots = correctionTargetModelIds
+      ? batch.state.slots.filter((slot) => correctionTargetModelIds.has(slot.canonicalModelId)) : []
+    addCheck(checks, 'correction_target_scope', !batch.correctionBaseline || Boolean(
+      exactKeys(batch.correctionBaseline, ['releaseId', 'releaseHash', 'batchId', 'manifestHash'])
+      && batch.correctionBaseline.releaseHash === correctiveReleasePlan.baselineReleaseHash
+      && batch.remediationOf?.releaseHash === correctiveReleasePlan.activePredecessorReleaseHash
+      && canonicalHash(batch.remediationOf?.targetModelIds) === canonicalHash(correctiveReleasePlan.targetModelIds)
+      && correctionTargetModelIds?.size
+      && correctionTargetSlots.length === correctionTargetModelIds.size * 9
+      && correctionTargetSlots.every((slot) => slot.status === 'succeeded'
+        && /^[a-f0-9]{64}$/.test(String(slot.attempts?.at(-1)?.rawImageHash || ''))
+        && ['succeeded', 'succeeded_low_quality'].includes(String(slot.attempts?.at(-1)?.responseClass || '')))
+      && batch.remediationOf.targetModelIds.length === correctionTargetModelIds.size
+      && JSON.stringify([...correctionTargetModelIds]) === JSON.stringify([...correctionTargetModelIds].sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right))))
+    ), {
+      correction: Boolean(batch.correctionBaseline),
+      targetModelCount: correctionTargetModelIds?.size || 0,
+      targetSlotCount: correctionTargetSlots.length,
+      successfulTargetSlotCount: correctionTargetSlots.filter((slot) => slot.status === 'succeeded').length,
+    })
 
     addCheck(checks, 'terminal_state', batch.state?.status === 'completed'
       && Array.isArray(batch.state?.slots)
@@ -195,6 +229,35 @@ async function main() {
       assignmentACount: Array.isArray(assignmentA?.result?.items) ? assignmentA.result.items.length : -1,
       assignmentBCount: Array.isArray(assignmentB?.result?.items) ? assignmentB.result.items.length : -1,
     })
+    const genericRationalePrefixes = [
+      '加分双盲审核未确认红线问题', '双盲审核未确认红线问题', '整体表现良好', '整体符合要求', '基本符合要求', '未发现明显问题',
+      '没有明显问题', '无明显问题', '图像质量良好', '内容基本准确', '结果符合题意', '整体效果不错', '整体效果良好', '符合要求',
+      'looksgood', 'meetsrequirements', 'noobviousissues', 'overallgood',
+    ]
+    const rationaleValid = (value) => typeof value === 'string' && value.trim() === value && value.length >= 8 && value.length <= 500
+      && !/[\u0000-\u001f\u007f]|\p{Cf}/u.test(value)
+      && !/(?:reviewer\s*[ab]?|blind-[a-z0-9-]+|object\s*key|mapping\s*hash|attestation|hmac|\/tmp\/|bench\/scientific-v2\/private\/)/iu.test(value.normalize('NFKC'))
+      && !/(?:https?:\/\/|www\.|mailto:|\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b|\b(?:api[-_ ]?key|access[-_ ]?token|secret|password|credential|authorization|bearer)\b|\b(?:localhost|127\.0\.0\.1|0\.0\.0\.0)\b|(?:\/Users\/|\/home\/|[a-z]:\\)|\b(?:sk-|gh[pousr]_)[a-z0-9_-]{8,})/iu.test(value.normalize('NFKC'))
+      && !/(?:apikey|accesskey|secretkey|privatekey|accesstoken|refreshtoken|authorization|bearer|password|credential)/u.test(value.normalize('NFKC').toLocaleLowerCase('en-US').replace(/[\s_-]+/gu, ''))
+      && !/(?:sk|gh[pousr])[-_][a-z0-9_-]{8,}/iu.test(value.normalize('NFKC'))
+      && !/(?:^|[^a-f0-9])(?:[a-f0-9]{40}|[a-f0-9]{64})(?:[^a-f0-9]|$)/iu.test(value.normalize('NFKC'))
+      && !genericRationalePrefixes.some((prefix) => value.normalize('NFKC').toLocaleLowerCase('en-US').replace(/[\s，。！？、；：,.!?;:'"“”‘’（）()_-]/gu, '').startsWith(prefix))
+    const rationaleKey = (value) => value.normalize('NFKC').toLocaleLowerCase('en-US').replace(/[\p{P}\p{Z}\p{Cf}]/gu, '')
+    const reviewerRationalesValid = [assignmentA, assignmentB].every((assignment) => Array.isArray(assignment?.result?.items)
+      && assignment.result.items.every((item) => rationaleValid(item.rationale))
+      && new Set(assignment.result.items.map((item) => rationaleKey(item.rationale))).size === assignment.result.items.length)
+    const finalRationalesValid = Array.isArray(finalReview.results) && finalReview.results.every((item) => Array.isArray(item.rationales)
+      && item.rationales.length > 0 && item.rationales.every(rationaleValid))
+    const finalRationaleOwners = new Map()
+    let finalRationaleDuplicates = 0
+    for (const result of finalReview.results || []) for (const rationale of result.rationales || []) {
+      const key = rationaleKey(rationale)
+      if (finalRationaleOwners.has(key) && finalRationaleOwners.get(key) !== result.itemHash) finalRationaleDuplicates += 1
+      else finalRationaleOwners.set(key, result.itemHash)
+    }
+    addCheck(checks, 'review_rationales', reviewerRationalesValid && finalRationalesValid && finalRationaleDuplicates === 0, {
+      reviewerRationalesValid, finalRationalesValid, finalRationaleDuplicates,
+    })
     addCheck(checks, 'arbitration_attestation', finalReview.disputes.length === 0 ? finalReview.arbitrationHash === undefined : Boolean(arbitration
       && canonicalHash(arbitration.arbitration) === arbitration.arbitrationHash
       && safeHashEqual(arbitration.attestationHash, hmacHash(secret, arbitration.arbitrationHash))
@@ -212,11 +275,14 @@ async function main() {
       } else bindingByHash.set(binding.imageHash, binding)
     }
     const requiredBindings = new Map()
-    for (const slot of batch.state.slots) if (slot.status === 'succeeded') {
+    for (const slot of batch.state.slots) if (slot.status === 'succeeded'
+      && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId))) {
       const attempt = slot.attempts.at(-1)
       requiredBindings.set(attempt.rawImageHash, `bench/scientific-v2/private/objects/${attempt.rawImageHash}.${attempt.format}`)
     }
-    for (const scientificCase of batch.manifest.cases) if (scientificCase.kind === 'edit') {
+    for (const scientificCase of batch.manifest.cases) if (scientificCase.kind === 'edit'
+      && batch.state.slots.some((slot) => slot.caseId === scientificCase.id && slot.status === 'succeeded'
+        && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId)))) {
       requiredBindings.set(scientificCase.sourceHash, `bench/scientific-v2/private/objects/${scientificCase.sourceHash}.png`)
     }
     const bindingMismatches = [...requiredBindings].filter(([hash, key]) => bindingByHash.get(hash)?.objectKey !== key).length
@@ -244,7 +310,8 @@ async function main() {
         && /^[a-f0-9]{64}$/.test(String(variant.imageHash || ''))
         && Number.isInteger(variant.width) && variant.width > 0 && Number.isInteger(variant.height) && variant.height > 0
         && Number.isInteger(variant.fileSizeBytes) && variant.fileSizeBytes > 0
-      const ok = !evidenceKeys.has(key) && exactKeys(item, expectedKeys) && slot?.status === 'succeeded'
+      const ok = (!correctionTargetModelIds || correctionTargetModelIds.has(item.canonicalModelId))
+        && !evidenceKeys.has(key) && exactKeys(item, expectedKeys) && slot?.status === 'succeeded'
         && item.imageHash === attempt?.rawImageHash && item.requestedResolution === slot.imageSize
         && canonicalHash(item.actualOutputPixels) === canonicalHash(expectedPixels)
         && Array.isArray(item.variants) && item.variants.length > 0 && item.variants.length <= 3
@@ -256,7 +323,8 @@ async function main() {
       if (!ok) evidenceFailures += 1
       evidenceKeys.add(key)
     }
-    const succeededCount = batch.state.slots.filter((slot) => slot.status === 'succeeded').length
+    const succeededCount = batch.state.slots.filter((slot) => slot.status === 'succeeded'
+      && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId))).length
     addCheck(checks, 'public_evidence_contract', evidenceFailures === 0 && evidenceKeys.size === succeededCount, {
       expectedCount: succeededCount, actualCount: evidenceKeys.size, failureCount: evidenceFailures,
     })
@@ -308,6 +376,41 @@ async function main() {
       competingCount: currentHead ? Number(Boolean(competing)) : legacyCandidates.length,
       remediationMatches,
     })
+    if (batch.correctionBaseline && competing) {
+      const baselineRelease = await releases.findOne({
+        _id: batch.correctionBaseline.releaseId,
+        releaseHash: batch.correctionBaseline.releaseHash,
+        batchId: batch.correctionBaseline.batchId,
+        batchManifestHash: batch.correctionBaseline.manifestHash,
+        ...identityQuery,
+      })
+      const baselineLifecycle = await releaseLifecycle.findOne({
+        releaseId: batch.correctionBaseline.releaseId,
+        releaseHash: batch.correctionBaseline.releaseHash,
+        status: 'superseded',
+        supersededByReleaseId: competing._id,
+        supersededByReleaseHash: competing.releaseHash,
+      })
+      const baselineRows = await publicEvidence.find({ sourceReleaseHash: batch.correctionBaseline.releaseHash }).toArray()
+      const expectedRows = Array.isArray(baselineRelease?.models)
+        ? baselineRelease.models.reduce((count, model) => count + (Array.isArray(model.evidence) ? model.evidence.length : 0), 0) : -1
+      const baselineBase = baselineRelease && Object.fromEntries(Object.entries(baselineRelease).filter(([key]) => !['_id', 'releaseHash'].includes(key)))
+      const baselineModelIds = Array.isArray(baselineRelease?.models)
+        ? baselineRelease.models.map((model) => model.canonicalModelId).sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right))) : []
+      const manifestModelIds = batch.manifest.models.map((model) => model.canonicalModelId)
+        .sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+      const baselineNonTargets = Array.isArray(baselineRelease?.models)
+        ? baselineRelease.models.filter((model) => !correctionTargetModelIds.has(model.canonicalModelId)) : []
+      addCheck(checks, 'correction_baseline', Boolean(baselineRelease && baselineLifecycle
+        && canonicalHash(baselineBase) === baselineRelease.releaseHash
+        && canonicalHash(baselineModelIds) === canonicalHash(manifestModelIds)
+        && expectedRows > 0 && baselineRows.length === expectedRows), {
+        baselineReleasePresent: Boolean(baselineRelease), baselineLifecyclePresent: Boolean(baselineLifecycle),
+        expectedEvidenceCount: expectedRows, actualEvidenceCount: baselineRows.length,
+        baselineNonTargetModelCount: baselineNonTargets.length,
+        baselineNonTargetProjectionHash: canonicalHash(baselineNonTargets),
+      })
+    }
 
     const failed = checks.filter((check) => !check.passed).map((check) => check.stage)
     process.stdout.write(`${JSON.stringify({

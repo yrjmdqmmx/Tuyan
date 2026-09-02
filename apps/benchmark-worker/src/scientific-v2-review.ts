@@ -134,22 +134,53 @@ interface ScientificReviewSourceInput {
   signingSecret: string | null
 }
 
-function expectedSuccessfulSlots(manifest: ScientificV2BatchManifest, state: ScientificV2BatchState) {
+export function normalizeScientificReviewTargetModelIds(value: unknown, manifest: ScientificV2BatchManifest) {
+  if (value === undefined) return undefined
+  if (!Array.isArray(value) || value.length < 1 || value.length > 64
+    || value.some((modelId) => typeof modelId !== 'string' || modelId.length < 1 || modelId.length > 300)) {
+    scientificV2Error('SCIENTIFIC_V2_REVIEW_TARGET_SET_INVALID')
+  }
+  const sorted = [...value].sort(compareScientificIdentifiers)
+  const manifestModelIds = new Set(manifest.models.map((model) => model.canonicalModelId))
+  if (new Set(sorted).size !== sorted.length || canonicalHash(sorted) !== canonicalHash(value)
+    || sorted.some((modelId) => !manifestModelIds.has(modelId))) {
+    scientificV2Error('SCIENTIFIC_V2_REVIEW_TARGET_SET_INVALID')
+  }
+  return sorted as string[]
+}
+
+function expectedSuccessfulSlots(
+  manifest: ScientificV2BatchManifest,
+  state: ScientificV2BatchState,
+  targetModelIds?: string[],
+) {
   verifyScientificV2BatchManifest(manifest)
   verifyScientificV2BatchState(state, manifest)
   if (state.status !== 'completed' || state.manifestHash !== manifest.manifestHash) scientificV2Error('SCIENTIFIC_V2_REVIEW_BATCH_NOT_TERMINAL')
-  return new Map(manifest.models.map((model) => [model.canonicalModelId, state.slots.filter((slot) => slot.canonicalModelId === model.canonicalModelId && slot.status === 'succeeded')]))
+  const targetSet = targetModelIds ? new Set(targetModelIds) : null
+  return new Map(manifest.models
+    .filter((model) => !targetSet || targetSet.has(model.canonicalModelId))
+    .map((model) => {
+      const modelSlots = state.slots.filter((slot) => slot.canonicalModelId === model.canonicalModelId)
+      if (targetSet && (modelSlots.length !== 9 || modelSlots.some((slot) => slot.status !== 'succeeded'
+        || !isScientificV2Hash(slot.attempts.at(-1)?.rawImageHash)
+        || !['succeeded', 'succeeded_low_quality'].includes(String(slot.attempts.at(-1)?.responseClass))))) {
+        scientificV2Error('SCIENTIFIC_V2_REVIEW_TARGET_INCOMPLETE')
+      }
+      return [model.canonicalModelId, modelSlots.filter((slot) => slot.status === 'succeeded')]
+    }))
 }
 
 function verifyReviewSourceFacts(
   manifest: ScientificV2BatchManifest,
   state: ScientificV2BatchState,
   sources: ScientificReviewSourceInput[],
+  targetModelIds?: string[],
 ) {
-  const expected = expectedSuccessfulSlots(manifest, state)
-  assertDenseScientificV2Array(sources, manifest.models.length, 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
+  const expected = expectedSuccessfulSlots(manifest, state, targetModelIds)
+  assertDenseScientificV2Array(sources, expected.size, 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
   assertBoundedScientificV2PlainData(sources, { maxDepth: 12, maxNodes: 100_000, maxArrayLength: 4_096, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
-  if (sources.length !== manifest.models.length || new Set(sources.map((source) => source.modelKey)).size !== sources.length
+  if (sources.length !== expected.size || new Set(sources.map((source) => source.modelKey)).size !== sources.length
     || sources.some((source) => !expected.has(source.modelKey))) scientificV2Error('SCIENTIFIC_V2_REVIEW_MODEL_ROSTER_MISMATCH')
   return sources.map((source) => {
     assertExactScientificV2Keys(source, ['modelKey', 'packet', 'signingSecret'], 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
@@ -186,14 +217,23 @@ export function createScientificReviewSourceBindings(input: {
   manifest: ScientificV2BatchManifest
   state: ScientificV2BatchState
   sources: ScientificReviewSourceInput[]
+  targetModelIds?: string[]
 }, attestationSecret: string) {
   assertAttestationSecret(attestationSecret)
-  assertExactScientificV2Keys(input, ['batchManifestHash', 'manifest', 'state', 'sources'], 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
+  const targetModelIds = normalizeScientificReviewTargetModelIds(input.targetModelIds, input.manifest)
+  assertExactScientificV2Keys(input, targetModelIds
+    ? ['batchManifestHash', 'manifest', 'state', 'sources', 'targetModelIds']
+    : ['batchManifestHash', 'manifest', 'state', 'sources'], 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
   if (!isScientificV2Hash(input.batchManifestHash) || input.batchManifestHash !== input.manifest.manifestHash
     || input.state.stateHash === '' || !Array.isArray(input.sources)) scientificV2Error('SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
-  const facts = verifyReviewSourceFacts(input.manifest, input.state, input.sources)
+  const facts = verifyReviewSourceFacts(input.manifest, input.state, input.sources, targetModelIds)
   const orderedFacts = [...facts].sort((left, right) => compareScientificIdentifiers(left.modelKey, right.modelKey))
-  const sourceSetHash = canonicalHash({ batchManifestHash: input.batchManifestHash, stateHash: input.state.stateHash, sources: orderedFacts })
+  const sourceSetHash = canonicalHash({
+    batchManifestHash: input.batchManifestHash,
+    stateHash: input.state.stateHash,
+    sources: orderedFacts,
+    ...(targetModelIds ? { targetModelIds } : {}),
+  })
   const bindings = facts.map((fact) => {
     const base = { schemaVersion: 2 as const, batchManifestHash: input.batchManifestHash, stateHash: input.state.stateHash, ...fact, sourceSetHash }
     return { ...base, bindingAttestation: hmac(attestationSecret, base) }
@@ -252,15 +292,24 @@ export function createScientificBlindReviewPackages(input: {
   sourceSetHash: string
   seed: string
   sources: Array<ScientificReviewSourceInput & { binding: ScientificReviewSourceBinding }>
+  targetModelIds?: string[]
 }, attestationSecret: string) {
   assertAttestationSecret(attestationSecret)
-  assertExactScientificV2Keys(input, ['batchManifestHash', 'manifest', 'state', 'sourceSetHash', 'seed', 'sources'], 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
+  const targetModelIds = normalizeScientificReviewTargetModelIds(input.targetModelIds, input.manifest)
+  assertExactScientificV2Keys(input, targetModelIds
+    ? ['batchManifestHash', 'manifest', 'state', 'sourceSetHash', 'seed', 'sources', 'targetModelIds']
+    : ['batchManifestHash', 'manifest', 'state', 'sourceSetHash', 'seed', 'sources'], 'SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
   if (!input || !isScientificV2Hash(input.batchManifestHash) || !isScientificV2Hash(input.sourceSetHash)
     || typeof input.seed !== 'string' || !input.seed || input.seed.length > 256 || !Array.isArray(input.sources) || input.sources.length === 0) {
     scientificV2Error('SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
   }
   if (input.batchManifestHash !== input.manifest.manifestHash || input.state.manifestHash !== input.manifest.manifestHash) scientificV2Error('SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
-  const verifiedFacts = verifyReviewSourceFacts(input.manifest, input.state, input.sources.map(({ binding: _binding, ...source }) => source))
+  const verifiedFacts = verifyReviewSourceFacts(
+    input.manifest,
+    input.state,
+    input.sources.map(({ binding: _binding, ...source }) => source),
+    targetModelIds,
+  )
   const factsByModel = new Map(verifiedFacts.map((fact) => [fact.modelKey, fact]))
   const items: Array<UnlabeledBlindPublicItem & { modelKey: string; runHash: string }> = []
   const sourceBindings: ScientificReviewPrivateEnvelope['sources'] = []
@@ -328,7 +377,12 @@ export function createScientificBlindReviewPackages(input: {
     scientificV2Error('SCIENTIFIC_V2_REVIEW_SOURCE_INVALID')
   }
   const orderedBindings = [...sourceBindings].sort((left, right) => compareScientificIdentifiers(left.modelKey, right.modelKey))
-  if (canonicalHash({ batchManifestHash: input.batchManifestHash, stateHash: input.state.stateHash, sources: orderedBindings }) !== input.sourceSetHash) scientificV2Error('SCIENTIFIC_V2_REVIEW_SOURCE_BINDING_ATTESTATION_INVALID')
+  if (canonicalHash({
+    batchManifestHash: input.batchManifestHash,
+    stateHash: input.state.stateHash,
+    sources: orderedBindings,
+    ...(targetModelIds ? { targetModelIds } : {}),
+  }) !== input.sourceSetHash) scientificV2Error('SCIENTIFIC_V2_REVIEW_SOURCE_BINDING_ATTESTATION_INVALID')
   const reviewerA = assignmentFor(items, sourceBindings, input.sourceSetHash, input.batchManifestHash, input.seed, 'A')
   const reviewerB = assignmentFor(items, sourceBindings, input.sourceSetHash, input.batchManifestHash, input.seed, 'B')
   const assignmentSet = {
@@ -363,9 +417,38 @@ export interface ValidatedScientificReviewerResults {
     scores: ScoreMap
     redLines: string[]
     lowConfidence: boolean
+    rationale: string
   }>
   resultHash: string
   resultAttestationHash: string
+}
+
+function normalizeReviewRationale(value: unknown) {
+  if (typeof value !== 'string') scientificV2Error('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
+  const rationale = value.trim()
+  const normalized = rationale.normalize('NFKC')
+  const compact = normalized.toLocaleLowerCase('en-US').replace(/[\s，。！？、；：,.!?;:'"“”‘’（）()_-]/gu, '')
+  const securityCompact = normalized.toLocaleLowerCase('en-US').replace(/[\s_-]+/gu, '')
+  const genericPrefixes = [
+    '加分双盲审核未确认红线问题', '双盲审核未确认红线问题', '整体表现良好', '整体符合要求', '基本符合要求',
+    '未发现明显问题', '没有明显问题', '无明显问题', '图像质量良好', '内容基本准确', '结果符合题意', '整体效果不错', '整体效果良好', '符合要求',
+    'looksgood', 'meetsrequirements', 'noobviousissues', 'overallgood',
+  ]
+  if (genericPrefixes.some((prefix) => compact.startsWith(prefix))
+    || rationale !== value || rationale.length < 8 || rationale.length > 500
+    || /[\u0000-\u001f\u007f]|\p{Cf}/u.test(rationale)
+    || /(?:reviewer\s*[ab]?|blind-[a-z0-9-]+|object\s*key|mapping\s*hash|attestation|hmac|\/tmp\/|bench\/scientific-v2\/private\/)/iu.test(normalized)
+    || /(?:https?:\/\/|www\.|mailto:|\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b|\b(?:api[-_ ]?key|access[-_ ]?token|secret|password|credential|authorization|bearer)\b|\b(?:localhost|127\.0\.0\.1|0\.0\.0\.0)\b|(?:\/Users\/|\/home\/|[a-z]:\\)|\b(?:sk-|gh[pousr]_)[a-z0-9_-]{8,})/iu.test(normalized)
+    || /(?:apikey|accesskey|secretkey|privatekey|accesstoken|refreshtoken|authorization|bearer|password|credential)/u.test(securityCompact)
+    || /(?:sk|gh[pousr])[-_][a-z0-9_-]{8,}/iu.test(normalized)
+    || /\b[a-f0-9]{40}(?:[a-f0-9]{24})?\b/iu.test(normalized)) {
+    scientificV2Error('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
+  }
+  return rationale
+}
+
+function reviewRationaleUniquenessKey(rationale: string) {
+  return rationale.normalize('NFKC').toLocaleLowerCase('en-US').replace(/[\p{P}\p{Z}\p{Cf}]/gu, '')
 }
 
 function normalizeScores(value: unknown, axes: ScientificBenchmarkAxis[]) {
@@ -428,6 +511,7 @@ export function validateScientificReviewerResults(input: {
   const normalized: ValidatedScientificReviewerResults['items'] = []
   const seenPackets = new Set<string>()
   const seenItems = new Set<string>()
+  const seenRationales = new Set<string>()
   for (const submission of input.submissions) {
     assertExactScientificV2Keys(submission, ['packetHash', 'results'], 'SCIENTIFIC_V2_REVIEW_RESULT_SCHEMA_INVALID')
     if (typeof submission.packetHash !== 'string' || seenPackets.has(submission.packetHash) || !Array.isArray(submission.results)) {
@@ -437,12 +521,16 @@ export function validateScientificReviewerResults(input: {
     const packet = expectedPackets.get(submission.packetHash)
     if (!packet || submission.results.length !== packet.items.length) scientificV2Error('SCIENTIFIC_V2_REVIEW_RESULT_SET_INVALID')
     for (const result of submission.results) {
-      assertExactScientificV2Keys(result, ['itemHash', 'blindLabel', 'scores', 'redLines', 'lowConfidence'], 'SCIENTIFIC_V2_REVIEW_RESULT_SCHEMA_INVALID')
+      const rationale = normalizeReviewRationale(result?.rationale)
+      assertExactScientificV2Keys(result, ['itemHash', 'blindLabel', 'scores', 'redLines', 'lowConfidence', 'rationale'], 'SCIENTIFIC_V2_REVIEW_RESULT_SCHEMA_INVALID')
       const publicItem = packet.items.find((item) => item.itemHash === result.itemHash && item.blindLabel === result.blindLabel)
       if (!publicItem || seenItems.has(publicItem.itemHash) || typeof result.lowConfidence !== 'boolean') {
         scientificV2Error('SCIENTIFIC_V2_REVIEW_RESULT_SET_INVALID')
       }
+      const rationaleKey = reviewRationaleUniquenessKey(rationale)
+      if (seenRationales.has(rationaleKey)) scientificV2Error('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
       seenItems.add(publicItem.itemHash)
+      seenRationales.add(rationaleKey)
       normalized.push({
         packetHash: submission.packetHash,
         itemHash: publicItem.itemHash,
@@ -450,6 +538,7 @@ export function validateScientificReviewerResults(input: {
         scores: normalizeScores(result.scores, publicItem.applicableAxes),
         redLines: normalizeRedLines(result.redLines),
         lowConfidence: result.lowConfidence,
+        rationale,
       })
     }
   }
@@ -533,6 +622,7 @@ export function finalizeScientificDoubleReview(input: {
     applicableAxes: ScientificBenchmarkAxis[]
     scores: ScoreMap
     redLines: string[]
+    rationales: string[]
     resolution: 'pending_arbitration' | 'ab_mean' | 'xhigh_arbitration'
   }> = input.reviewerA.items.map((left) => {
     const right = byB.get(left.itemHash)
@@ -547,6 +637,7 @@ export function finalizeScientificDoubleReview(input: {
       applicableAxes: [...left.applicableAxes],
       scores: Object.fromEntries(left.applicableAxes.map((axis) => [axis, (left.scores[axis]! + right.scores[axis]!) / 2])) as ScoreMap,
       redLines: [...new Set([...left.redLines, ...right.redLines])].sort(compareScientificIdentifiers),
+      rationales: [...new Set([left.rationale, right.rationale])],
       resolution: reasons.length ? 'pending_arbitration' as const : 'ab_mean' as const,
     }
   })
@@ -559,14 +650,20 @@ export function finalizeScientificDoubleReview(input: {
       || input.arbitration.results.length !== disputes.length || disputes.length === 0) scientificV2Error('SCIENTIFIC_V2_ARBITRATION_SET_INVALID')
     const disputed = new Map(disputes.map((item) => [item.itemHash, item]))
     const seen = new Set<string>()
+    const seenRationales = new Set<string>()
     for (const result of input.arbitration.results) {
-      assertExactScientificV2Keys(result, ['itemHash', 'scores', 'redLines'], 'SCIENTIFIC_V2_ARBITRATION_SCHEMA_INVALID')
+      assertExactScientificV2Keys(result, ['itemHash', 'scores', 'redLines', 'rationale'], 'SCIENTIFIC_V2_ARBITRATION_SCHEMA_INVALID')
       const dispute = disputed.get(result.itemHash as string)
       if (!dispute || seen.has(dispute.itemHash)) scientificV2Error('SCIENTIFIC_V2_ARBITRATION_SET_INVALID')
       seen.add(dispute.itemHash)
       const final = provisional.find((item) => item.itemHash === dispute.itemHash)!
       final.scores = normalizeScores(result.scores, dispute.applicableAxes)
       final.redLines = normalizeRedLines(result.redLines)
+      const rationale = normalizeReviewRationale(result.rationale)
+      const rationaleKey = reviewRationaleUniquenessKey(rationale)
+      if (seenRationales.has(rationaleKey)) scientificV2Error('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
+      seenRationales.add(rationaleKey)
+      final.rationales = [rationale]
       final.resolution = 'xhigh_arbitration'
     }
     arbitrationHash = canonicalHash(input.arbitration)
