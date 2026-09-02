@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 remediation Worker 报告继承 Codex provenance — by Codex
+变更：当补跑批次只执行普通 Provider、最终签名状态报告为 `worker` 时，发布端不再要求该报告伪装成 `codex`，也不信任 Worker 自报 Codex provenance。发布端会沿 `remediationOf` 精确读取已发布源 batch/release、复验源 release 内容 hash、源 Codex 状态报告的 schema/HMAC/disclosure/9 题/36 次上限/artifact canary，再把源 Codex 题位按新 manifest 确定性重绑并与当前 9 个 Codex 题位逐字节 canonical 对比；Codex 被列为补跑目标、源链不完整或任一继承字段漂移均拒绝发布。题目、图片、评分、审核和 Provider 调用规则不变。
+- [x] paperbanana-api（源发布 lineage、Codex provenance 与重绑定题位校验及正反回归）
+- [ ] 部署 / 运维（部署后重放当前 Seedream remediation 原子发布）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
+
 ### [2026-09-02] Scientific V2 管理员发布失败的安全诊断码 — by Codex
 变更：受保护的管理员内网传输在 Scientific V2 操作被拒绝时，可额外返回一个严格白名单 `diagnosticCode`：业务错误仅允许 `SCIENTIFIC_V2_*`，Mongo 错误仅允许数值 code 与规范化 codeName；公开/未授权请求继续只返回统一错误，不暴露数据库消息、键值、对象路径、凭据或响应正文。root-only 管理桥只把该白名单码附在失败标识后，便于定位原子发布回滚原因。成功响应、公开 API、排行榜字段、图片、评分、审核和 Provider 调用规则不变。
 - [x] paperbanana-api / 运维桥（白名单诊断码、非管理员不泄漏及回归测试）
