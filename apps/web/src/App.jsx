@@ -14,7 +14,9 @@ import {
   Send,
   Settings2,
   ShieldCheck,
+  Sparkles,
   Smartphone,
+  Undo2,
   Users,
   X,
 } from 'lucide-react';
@@ -29,6 +31,7 @@ import {
   getJobRequest,
   modelCapabilityRequest,
   modelRegistryRequest,
+  optimizeInputsRequest,
   providerAccountCatalogRequest,
   finalizeReferenceUploadRequest,
   prepareReferenceUploadRequest,
@@ -69,6 +72,7 @@ import FeaturedTemplateStudio from './components/FeaturedTemplateStudio';
 import FeedbackDialog from './components/FeedbackDialog';
 import GenerationSettingsDrawer from './components/GenerationSettingsDrawer';
 import GuidePanel from './components/GuidePanel';
+import InputOptimizationDialog from './components/InputOptimizationDialog';
 import JobStatus from './components/JobStatus';
 import JobTable from './components/JobTable';
 import ModelRoutingSettings from './components/ModelRoutingSettings';
@@ -103,6 +107,48 @@ const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDia
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
 const RefinePanel = lazy(() => import('./components/RefinePanel'));
 
+const INPUT_OPTIMIZATION_TARGET_LABELS = Object.freeze({
+  methodContent: '论文方法内容',
+  caption: '目标图注',
+  negativePrompt: '负向提示词',
+});
+
+const INPUT_OPTIMIZATION_CONTROL_LABELS = Object.freeze({
+  methodContent: '方法栏',
+  caption: '图注栏',
+  negativePrompt: '负向提示栏',
+});
+
+function emptyInputOptimizationUndos() {
+  return { methodContent: null, caption: null, negativePrompt: null };
+}
+
+function InputOptimizationFieldActions({ target, disabledReason, hasUndo, onOptimize, onRestore }) {
+  const reasonId = `input-optimization-${target}-reason`;
+  const controlLabel = INPUT_OPTIMIZATION_CONTROL_LABELS[target];
+  return (
+    <div className="input-optimization-field-actions">
+      <button
+        type="button"
+        className="input-optimization-trigger"
+        aria-label={`优化输入：${controlLabel}`}
+        aria-describedby={disabledReason ? reasonId : undefined}
+        title={disabledReason || '生成候选优化稿，确认后才会替换原文'}
+        disabled={Boolean(disabledReason)}
+        onClick={() => onOptimize(target)}
+      >
+        <Sparkles size={14} />优化输入
+      </button>
+      {hasUndo ? (
+        <button type="button" className="input-optimization-restore" aria-label={`恢复${controlLabel}优化前内容`} onClick={() => onRestore(target)}>
+          <Undo2 size={13} />恢复优化前内容
+        </button>
+      ) : null}
+      {disabledReason ? <small className="input-optimization-disabled-reason" id={reasonId}>{disabledReason}</small> : null}
+    </div>
+  );
+}
+
 export default function App() {
   const authSession = useAuthSession();
   const [activeTab, setActiveTab] = useState('generate');
@@ -121,6 +167,20 @@ export default function App() {
   const [caption, setCaption] = useState('图 1：所提出的多智能体学术图示生成框架总览。');
   const [negativePrompt, setNegativePrompt] = useState('');
   const [inputIsDirty, setInputIsDirty] = useState(false);
+  const [inputOptimizationGuidance, setInputOptimizationGuidance] = useState('');
+  const [inputOptimizationUndos, setInputOptimizationUndos] = useState(emptyInputOptimizationUndos);
+  const [isOptimizingInput, setIsOptimizingInput] = useState(false);
+  const [inputOptimizationDialog, setInputOptimizationDialog] = useState({
+    open: false,
+    target: 'methodContent',
+    original: '',
+    candidate: '',
+    inputs: null,
+    status: 'loading',
+    error: '',
+  });
+  const inputOptimizationSequenceRef = useRef(0);
+  const activeInputOptimizationRef = useRef(0);
   const [infographicCategory, setInfographicCategory] = useState('method_framework');
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
@@ -209,6 +269,7 @@ export default function App() {
   const activeMainRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find((model) => model.id === activeMainModelName);
   const activeImageRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find((model) => model.id === activeImageGenModelName);
   const activeVisionRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find((model) => model.id === activeReferenceVisionModelName);
+  const inputOptimizationSupported = Number(modelRegistry?.inputOptimizationContractVersion) >= 1;
   const selectedModelNotes = uniqueRegistryModels([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(Boolean));
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
   const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
@@ -771,6 +832,143 @@ export default function App() {
     }
   }
 
+  function currentInputOptimizationContext() {
+    const mainRoute = activeModelRoutes?.main;
+    if (!mainRoute?.accessProvider
+      || !mainRoute?.modelId
+      || activeMainRegistryEntry?.selectable !== true
+      || !activeMainRegistryEntry?.roles?.includes('main')) {
+      setInputOptimizationGuidance('请先在生成设置中选择一个可用的主模型，再优化输入。');
+      setGenerationFocusSetting('main-model');
+      setShowGenerationSettings(true);
+      return null;
+    }
+    const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
+    if (!apiKey) {
+      setInputOptimizationGuidance('请先在生成设置中填写当前主模型接入渠道的密钥。');
+      setGenerationFocusSetting('api-key');
+      setShowGenerationSettings(true);
+      return null;
+    }
+    return {
+      mainRoute: { accessProvider: mainRoute.accessProvider, modelId: mainRoute.modelId },
+      apiKey,
+    };
+  }
+
+  async function runInputOptimization(target, inputs) {
+    if (activeInputOptimizationRef.current) return;
+    const context = currentInputOptimizationContext();
+    if (!context) return;
+    const requestId = inputOptimizationSequenceRef.current + 1;
+    inputOptimizationSequenceRef.current = requestId;
+    activeInputOptimizationRef.current = requestId;
+    setIsOptimizingInput(true);
+    setInputOptimizationGuidance('');
+    setInputOptimizationDialog({
+      open: true,
+      target,
+      original: inputs[target],
+      candidate: '',
+      inputs,
+      status: 'loading',
+      error: '',
+    });
+    try {
+      const result = await optimizeInputsRequest(apiBaseNormalized, health, {
+        target,
+        inputs,
+        mainRoute: context.mainRoute,
+        apiKey: context.apiKey,
+      });
+      if (result.target !== target) throw new Error('优化结果与请求输入栏不一致。');
+      if (inputOptimizationSequenceRef.current !== requestId) return;
+      setInputOptimizationDialog((current) => ({
+        ...current,
+        candidate: String(result.optimizedText ?? ''),
+        status: 'success',
+        error: '',
+      }));
+    } catch (optimizationError) {
+      if (inputOptimizationSequenceRef.current !== requestId) return;
+      setInputOptimizationDialog((current) => ({
+        ...current,
+        candidate: '',
+        status: 'error',
+        error: optimizationError?.message || String(optimizationError),
+      }));
+    } finally {
+      if (activeInputOptimizationRef.current === requestId) {
+        activeInputOptimizationRef.current = 0;
+        setIsOptimizingInput(false);
+      }
+    }
+  }
+
+  function requestInputOptimization(target) {
+    const inputs = { methodContent, caption, negativePrompt };
+    void runInputOptimization(target, inputs);
+  }
+
+  function closeInputOptimization() {
+    inputOptimizationSequenceRef.current += 1;
+    setInputOptimizationDialog((current) => ({
+      ...current,
+      open: false,
+      candidate: '',
+      inputs: null,
+      error: '',
+    }));
+  }
+
+  function retryInputOptimization() {
+    if (!inputOptimizationDialog.inputs || activeInputOptimizationRef.current) return;
+    void runInputOptimization(inputOptimizationDialog.target, inputOptimizationDialog.inputs);
+  }
+
+  function setInputValue(target, value) {
+    if (target === 'methodContent') setMethodContent(value);
+    else if (target === 'caption') setCaption(value);
+    else setNegativePrompt(value);
+  }
+
+  function handleInputValueChange(target, value) {
+    setInputValue(target, value);
+    setInputIsDirty(true);
+    setInputOptimizationUndos((current) => current[target] === null ? current : { ...current, [target]: null });
+  }
+
+  function adoptInputOptimization() {
+    if (inputOptimizationDialog.status !== 'success') return;
+    const { target, original, candidate } = inputOptimizationDialog;
+    setInputValue(target, candidate);
+    setInputOptimizationUndos((current) => ({ ...current, [target]: original }));
+    setInputIsDirty(true);
+    closeInputOptimization();
+  }
+
+  function restoreInputBeforeOptimization(target) {
+    const snapshot = inputOptimizationUndos[target];
+    if (snapshot === null) return;
+    setInputValue(target, snapshot);
+    setInputOptimizationUndos((current) => ({ ...current, [target]: null }));
+    setInputIsDirty(true);
+  }
+
+  function clearInputOptimizationUndos() {
+    setInputOptimizationUndos(emptyInputOptimizationUndos());
+  }
+
+  function inputOptimizationDisabledReason(target) {
+    if (isOptimizingInput) return '已有输入正在优化，请等待当前请求完成。';
+    if (target === 'methodContent' && !methodContent.trim()) return '请先填写论文方法内容。';
+    if (target === 'caption' && !caption.trim()) return '请先填写目标图注。';
+    if (target === 'negativePrompt' && !methodContent.trim() && !caption.trim() && !negativePrompt.trim()) {
+      return '请先填写三栏中的至少一栏。';
+    }
+    return '';
+  }
+
   async function submitJob(event) {
     event.preventDefault();
     setError('');
@@ -898,6 +1096,7 @@ export default function App() {
   }
 
   function applyFeaturedTemplate(template) {
+    clearInputOptimizationUndos();
     setInfographicCategory(template.category);
     setMethodContent(template.methodContent);
     setCaption(template.caption);
@@ -906,6 +1105,7 @@ export default function App() {
   }
 
   function clearPrivateWorkspace() {
+    clearInputOptimizationUndos();
     referenceImagesRef.current.forEach((image) => URL.revokeObjectURL(image.previewUrl));
     referenceImagesRef.current = [];
     setReferenceImages([]);
@@ -1303,6 +1503,19 @@ export default function App() {
 
       {settingsDrawer}
 
+      <InputOptimizationDialog
+        open={inputOptimizationDialog.open}
+        target={inputOptimizationDialog.target}
+        targetLabel={INPUT_OPTIMIZATION_TARGET_LABELS[inputOptimizationDialog.target]}
+        original={inputOptimizationDialog.original}
+        candidate={inputOptimizationDialog.candidate}
+        status={inputOptimizationDialog.status}
+        error={inputOptimizationDialog.error}
+        onClose={closeInputOptimization}
+        onRetry={retryInputOptimization}
+        onAdopt={adoptInputOptimization}
+      />
+
       {showContactDialog ? (
         <div className="feedback-dialog-backdrop" onClick={() => setShowContactDialog(false)}>
           <section className="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title" onClick={(event) => event.stopPropagation()}>
@@ -1420,24 +1633,61 @@ export default function App() {
               onRemove={removeReferenceImage}
             />
 
-            <div className="two-col input-copy">
-              <label className="field">
-                <span>论文方法内容</span>
-                <textarea value={methodContent} onChange={(event) => { setMethodContent(event.target.value); setInputIsDirty(true) }} rows={12} maxLength={INPUT_LIMITS.methodContent} />
-                <small>{methodContent.length.toLocaleString()} / {INPUT_LIMITS.methodContent.toLocaleString()} 字符</small>
-              </label>
+            {inputOptimizationGuidance ? (
+              <div className="input-optimization-guidance" role="alert"><AlertTriangle size={16} />{inputOptimizationGuidance}</div>
+            ) : null}
 
-              <label className="field">
-                <span>目标图注</span>
-                <textarea value={caption} onChange={(event) => { setCaption(event.target.value); setInputIsDirty(true) }} rows={12} maxLength={INPUT_LIMITS.caption} />
+            <div className="two-col input-copy">
+              <div className="field">
+                <div className="input-field-head">
+                  <label htmlFor="method-content">论文方法内容</label>
+                  {inputOptimizationSupported ? (
+                    <InputOptimizationFieldActions
+                      target="methodContent"
+                      disabledReason={inputOptimizationDisabledReason('methodContent')}
+                      hasUndo={inputOptimizationUndos.methodContent !== null}
+                      onOptimize={requestInputOptimization}
+                      onRestore={restoreInputBeforeOptimization}
+                    />
+                  ) : null}
+                </div>
+                <textarea id="method-content" value={methodContent} onChange={(event) => handleInputValueChange('methodContent', event.target.value)} rows={12} maxLength={INPUT_LIMITS.methodContent} />
+                <small>{methodContent.length.toLocaleString()} / {INPUT_LIMITS.methodContent.toLocaleString()} 字符</small>
+              </div>
+
+              <div className="field">
+                <div className="input-field-head">
+                  <label htmlFor="target-caption">目标图注</label>
+                  {inputOptimizationSupported ? (
+                    <InputOptimizationFieldActions
+                      target="caption"
+                      disabledReason={inputOptimizationDisabledReason('caption')}
+                      hasUndo={inputOptimizationUndos.caption !== null}
+                      onOptimize={requestInputOptimization}
+                      onRestore={restoreInputBeforeOptimization}
+                    />
+                  ) : null}
+                </div>
+                <textarea id="target-caption" value={caption} onChange={(event) => handleInputValueChange('caption', event.target.value)} rows={12} maxLength={INPUT_LIMITS.caption} />
                 <small>{caption.length.toLocaleString()} / {INPUT_LIMITS.caption.toLocaleString()} 字符</small>
-              </label>
+              </div>
             </div>
-            <label className="field negative-prompt-field">
-              <span>负向提示词（可选）</span>
-              <textarea value={negativePrompt} onChange={(event) => { setNegativePrompt(event.target.value); setInputIsDirty(true) }} rows={4} maxLength={INPUT_LIMITS.negativePrompt} placeholder="例如：避免文字拥挤、模糊箭头、装饰性背景。" />
+            <div className="field negative-prompt-field">
+              <div className="input-field-head">
+                <label htmlFor="negative-prompt">负向提示词（可选）</label>
+                {inputOptimizationSupported ? (
+                  <InputOptimizationFieldActions
+                    target="negativePrompt"
+                    disabledReason={inputOptimizationDisabledReason('negativePrompt')}
+                    hasUndo={inputOptimizationUndos.negativePrompt !== null}
+                    onOptimize={requestInputOptimization}
+                    onRestore={restoreInputBeforeOptimization}
+                  />
+                ) : null}
+              </div>
+              <textarea id="negative-prompt" value={negativePrompt} onChange={(event) => handleInputValueChange('negativePrompt', event.target.value)} rows={4} maxLength={INPUT_LIMITS.negativePrompt} placeholder="例如：避免文字拥挤、模糊箭头、装饰性背景。" />
               <small>{negativePrompt.length.toLocaleString()} / {INPUT_LIMITS.negativePrompt.toLocaleString()} 字符</small>
-            </label>
+            </div>
           </div>
 
           <div className="results-col">

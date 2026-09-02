@@ -61,20 +61,22 @@ export default function ModelRoutingSettings({
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>API 接入渠道</span>
-          <div className="segmented provider-segmented" role="group" aria-label="API 接入渠道">
-            {Object.entries(providerConfigs).map(([id, item]) => (
-              <button
-                type="button"
-                key={id}
-                className={simpleProvider === id ? 'active' : ''}
-                aria-pressed={simpleProvider === id}
-                disabled={Boolean(modelRegistry && !modelRegistry.providers?.[id])}
-                title={modelRegistry?.unavailableProviders?.[id] || ''}
-                onClick={() => onSimpleProviderChange(id)}
-              >
-                {providerLabel(id, providerConfigs)}
-              </button>
-            ))}
+          <div data-focus-setting="main-model" tabIndex={-1}>
+            <div className="segmented provider-segmented" role="group" aria-label="API 接入渠道">
+              {Object.entries(providerConfigs).map(([id]) => (
+                <button
+                  type="button"
+                  key={id}
+                  className={simpleProvider === id ? 'active' : ''}
+                  aria-pressed={simpleProvider === id}
+                  disabled={Boolean(modelRegistry && !modelRegistry.providers?.[id])}
+                  title={modelRegistry?.unavailableProviders?.[id] || ''}
+                  onClick={() => onSimpleProviderChange(id)}
+                >
+                  {providerLabel(id, providerConfigs)}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       ) : (
