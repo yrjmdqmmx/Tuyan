@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Scientific V2 release head / lifecycle 最小 Mongo 权限 — by Codex
+变更：生产原子替代发布需要 paperbanana-api 在独立 `paperbanana_benchmark_release_heads` 与 `paperbanana_benchmark_release_lifecycle` 集合上读取当前 active head、插入新 lifecycle 并以 CAS 更新旧 lifecycle/head。Mongo root migration 现只给 API 账号增加这两个集合的 `find/insert/update`，不授予 delete、drop、索引管理或宽泛数据库权限；常驻 Benchmark Worker 仍无这两个集合的读写权限。公开 API、排行榜字段、题集、图片、评分、审核和 Provider 调用规则不变。
+- [x] paperbanana-api / Mongo 迁移（两个 release 状态集合的最小权限与 RBAC 回归测试）
+- [ ] 部署 / 运维（运行 root Mongo migration，复验 API 可原子 supersede、Worker 仍拒绝写入后重试当前 remediation 发布）
+- [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开契约不变，无需改造）
+
 ### [2026-09-02] Scientific V2 公开证据渲染绑定真实 batchId — by Codex
 变更：公开证据 render bundle 暂存与执行工作流新增必填 `batch_id`，并分别与签名 operator attestation、受保护 render bundle 和最终 publish input 做精确相等校验；不再从 `manifestHash` 推导普通批次名，因此 remediation 批次可进入相同的零 Provider 证据渲染与原子发布链。暂存另以必填 `manifest_code_sha` 绑定原始冻结/生成 lineage，和当前 control/deployed SHA 分开校验，避免为执行后续安全修复而伪造原批次代码 provenance。普通批次传入自己的真实 batchId 与 manifest code SHA 即可，公开 API、排行榜字段、图片、评分和审核结果均不变。
 - [x] Benchmark Worker / 运维（两条受保护渲染工作流、真实 batchId 绑定与失败关闭）
