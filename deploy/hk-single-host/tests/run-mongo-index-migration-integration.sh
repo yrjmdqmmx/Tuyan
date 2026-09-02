@@ -211,6 +211,10 @@ run_migration
     || JSON.stringify(releaseLookup.key) !== JSON.stringify({suiteId: 1, evaluationMode: 1, evaluationEpoch: 1, profileStatus: 1, publishedAt: -1})
     || releaseLookup.partialFilterExpression !== undefined) throw new Error("scientific_v2_release_identity_lookup differs")
   if (releaseIndexes.some(index => index.name === "scientific_v2_release_identity")) throw new Error("legacy scientific_v2_release_identity remains")
+  const collectionNames = new Set(benchmark.getCollectionNames())
+  for (const collection of ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle"]) {
+    if (!collectionNames.has(collection)) throw new Error(`Scientific V2 transactional collection is missing: ${collection}`)
+  }
 '
 
 docker exec "$mongo_container" mongosh --quiet \
