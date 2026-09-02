@@ -197,6 +197,25 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
   throw new Error('图片精修需要使用 Laf 或登录网关后端。');
 }
 
+export async function optimizeInputsRequest(apiBase, health, payload) {
+  if (shouldUsePaperbananaApi(apiBase, health)) {
+    const data = await fetchJson(lafEndpoint(apiBase), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'optimizeInputs',
+        target: payload.target,
+        inputs: payload.inputs,
+        mainRoute: payload.mainRoute,
+        apiKey: payload.apiKey,
+      }),
+    });
+    return { target: data.target, optimizedText: data.optimizedText };
+  }
+
+  throw new Error('输入优化需要使用 Laf 或登录网关后端。');
+}
+
 export async function prepareReferenceUploadRequest(apiBase, health, files) {
   if (shouldUsePaperbananaApi(apiBase, health)) {
     const data = await fetchJson(lafEndpoint(apiBase), {

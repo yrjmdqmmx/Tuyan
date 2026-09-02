@@ -18,6 +18,7 @@ import {
   providerAccountCatalogRequest,
   referenceLibraryRequest,
   refineImageRequest,
+  optimizeInputsRequest,
   userJobsRequest,
 } from './jobs.js';
 
@@ -108,6 +109,63 @@ test('createJobRequest sends negative prompt with transport-specific casing', as
   } finally {
     fetchMock.restore();
   }
+});
+
+test('optimizeInputsRequest sends only the selected main route and key without mutating the payload', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {
+    code: 0,
+    target: 'caption',
+    optimizedText: 'A concise caption for the proposed method.',
+  } }));
+  const payload = {
+    target: 'caption',
+    inputs: {
+      methodContent: 'We propose a structured visual generation workflow.',
+      caption: 'Proposed workflow.',
+      negativePrompt: 'Avoid decorative gradients.',
+    },
+    mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    apiKey: 'openai-key',
+    clientPlatform: 'web',
+    modelRoutes: {
+      main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+      vision: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+    },
+    apiKeys: { openai: 'openai-key', bailian: 'bailian-key', gemini: 'gemini-key' },
+    imageRoute: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
+    visionRoute: { accessProvider: 'gemini', modelId: 'gemini-3.7-flash' },
+  };
+  const payloadSnapshot = structuredClone(payload);
+  try {
+    const result = await optimizeInputsRequest('https://gateway.example', { backendMode: 'gateway' }, payload);
+
+    assert.deepEqual(result, {
+      target: 'caption',
+      optimizedText: 'A concise caption for the proposed method.',
+    });
+    assert.equal(fetchMock.calls.length, 1);
+    assert.equal(fetchMock.calls[0].url, 'https://gateway.example/paperbanana-api');
+    assert.equal(fetchMock.calls[0].options.method, 'POST');
+    assert.equal(fetchMock.calls[0].options.headers['Content-Type'], 'application/json');
+    assert.deepEqual(JSON.parse(fetchMock.calls[0].options.body), {
+      action: 'optimizeInputs',
+      target: 'caption',
+      inputs: payload.inputs,
+      mainRoute: payload.mainRoute,
+      apiKey: 'openai-key',
+    });
+    assert.deepEqual(payload, payloadSnapshot);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('optimizeInputsRequest rejects legacy backends', async () => {
+  await assert.rejects(
+    optimizeInputsRequest('https://fast.example', { backendMode: 'fastapi' }, {}),
+    /输入优化需要使用 Laf 或登录网关后端。/,
+  );
 });
 
 test('getJobRequest normalizes negative prompt to canonical snake case and a camel alias', async () => {
