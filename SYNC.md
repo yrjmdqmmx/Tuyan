@@ -3,7 +3,7 @@
 ### [2026-09-02] Scientific V2 修正发布收窄为两个 Seedream、Recraft 保持基线 — by Codex
 变更：按最新生产口径停止三个 Recraft 的补跑和审核；修正发布只把 `seedream-4.5`、`seedream-5.0` 的 18 个已成功题位从当前 active predecessor 引入，其余 38 个模型（含三个 Recraft）的图片、评分、维度、证据与审核内容从 `f1f31caf…` 基线原样移植，只允许全榜 `overallRank` / `dimensionRanks` 和证据行 release/rank/时间派生字段变化。该固定 correction 使用 `targetSlotIds=[]` / `sha256("[]")` 的显式零 Provider 模式，completed state 由不可变 Worker 镜像在 `--network none` 下重建签名报告后进入双盲审核；控制面精确白名单禁止 Recraft 出现在目标模型列表。公开 API 字段不变。
 - [x] paperbanana-api / Benchmark Worker / 控制面（Seedream-only 固定计划、零调用继承、双重原子发布门与回归）
-- [ ] 生产执行（部署固定 SHA；零 Provider 导入 completed state；仅 18 个 Seedream 题位 A/B + 仲裁；原子发布并验证 38 个非目标模型非排名字段与基线一致）
+- [x] 生产执行（部署固定 SHA；零 Provider 导入 completed state；仅 18 个 Seedream 题位 A/B + 仲裁；原子发布并验证 38 个非目标模型非排名字段与基线一致）
 - [x] Web / Gateway / 小程序 / Android / iOS / Windows / macOS / HarmonyOS（公开 action 与字段不变，无需改造）
 
 ### [2026-09-02] Web 三输入栏 main 路由单次 AI 优化 — by Codex
