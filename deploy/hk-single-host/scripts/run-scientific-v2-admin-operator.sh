@@ -152,7 +152,7 @@ if(operation==="attest"){
     exact(data.correction,["baseline","activePredecessor","targetModelIds","targetSlotIds","targetSlotSetHash"]);
     exact(data.correction.baseline,["releaseId","releaseHash","batchId","manifestHash"]);
     exact(data.correction.activePredecessor,["releaseId","releaseHash","batchId","manifestHash"]);
-    if(!Array.isArray(data.correction.targetModelIds)||data.correction.targetModelIds.length<1||!Array.isArray(data.correction.targetSlotIds)||data.correction.targetSlotIds.length<1||!/^[a-f0-9]{64}$/.test(String(data.correction.targetSlotSetHash||"")))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
+    if(!Array.isArray(data.correction.targetModelIds)||data.correction.targetModelIds.length<1||!Array.isArray(data.correction.targetSlotIds)||!/^[a-f0-9]{64}$/.test(String(data.correction.targetSlotSetHash||""))||(data.correction.targetSlotIds.length===0&&data.correction.targetSlotSetHash!=="4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
   }
 }
 if(operation==="diagnose"){

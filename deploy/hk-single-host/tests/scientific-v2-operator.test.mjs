@@ -49,11 +49,13 @@ const lockName = '/run/lock/paperbanana-hk-production.lock'
 const correctiveBaselineReleaseHash = 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a'
 const correctiveActivePredecessorReleaseHash = '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe'
 const correctiveTargetModelIds = [
+  'seedream-4.5',
+  'seedream-5.0',
+]
+const correctiveExcludedRecraftModelIds = [
   'recraft/recraft-v4-pro-vector',
   'recraft/recraft-v4-styles-pro-vector',
   'recraft/recraft-v4-styles-vector',
-  'seedream-4.5',
-  'seedream-5.0',
 ]
 const confirmations = {
   inspect: 'inspect-scientific-v2-disabled-worker',
@@ -681,6 +683,7 @@ test('scientific v2 admin input accepts only an exact draft JSON asset and a clo
   assert.match(source, new RegExp(correctiveBaselineReleaseHash))
   assert.match(source, new RegExp(correctiveActivePredecessorReleaseHash))
   for (const modelId of correctiveTargetModelIds) assert.equal(source.split(`\"${modelId}\"`).length - 1, 1, modelId)
+  for (const modelId of correctiveExcludedRecraftModelIds) assert.equal(source.includes(`\"${modelId}\"`), false, modelId)
   assert.match(source, /\["attestationHash","report","reportHash"\]/)
   assert.match(source, /\["assignment","batchId","objectBindings"\]/)
   assert.match(source, /\["batchId","result"\]/)
@@ -691,6 +694,54 @@ test('scientific v2 admin input accepts only an exact draft JSON asset and a clo
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.match(source, /providerCalls\":0/)
   assert.doesNotMatch(source, /gh release|gh api --method (?:POST|PATCH|DELETE)|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+})
+
+test('admin remediation staging executes exact target-set validation for ordinary and zero-call correction inputs', () => {
+  const source = readFileSync(adminInputStagingWorkflow, 'utf8')
+  const jqMatch = source.match(/jq -e --arg purpose "\$PURPOSE" '\n([\s\S]*?)\n\s+' "\$input" >\/dev\/null/)
+  const nodeMatch = source.match(/node --input-type=module - "\$input" <<'NODE'\n([\s\S]*?)\n\s+NODE/)
+  assert.ok(jqMatch, 'admin jq validator must remain extractable')
+  assert.ok(nodeMatch, 'admin target-set hash validator must remain extractable')
+  const root = mkdtempSync(join(tmpdir(), 'scientific-v2-admin-targets-'))
+  let counter = 0
+  try {
+    const validate = (value) => {
+      const jqResult = spawnSync('jq', ['-e', '--arg', 'purpose', 'remediate-freeze', jqMatch[1]], {
+        encoding: 'utf8', input: JSON.stringify(value),
+      })
+      if (jqResult.status !== 0) return jqResult
+      const inputPath = join(root, `input-${counter += 1}.json`)
+      writeFileSync(inputPath, JSON.stringify(value))
+      return spawnSync(process.execPath, ['--input-type=module', '-', inputPath], {
+        encoding: 'utf8', input: nodeMatch[1],
+      })
+    }
+    const ordinarySlots = ['model-a:case-1']
+    const ordinary = {
+      batchId: 'batch-ordinary', sourceBatchId: 'source-ordinary',
+      sourceManifestHash: 'a'.repeat(64), sourceReleaseHash: 'b'.repeat(64),
+      targetModelIds: ['model-a'], targetSlotIds: ordinarySlots,
+      targetSlotSetHash: canonicalHash(ordinarySlots),
+    }
+    assert.equal(validate(ordinary).status, 0)
+    assert.notEqual(validate({ ...ordinary, targetModelIds: [], targetSlotIds: [], targetSlotSetHash: canonicalHash([]) }).status, 0)
+    assert.notEqual(validate({ ...ordinary, targetSlotSetHash: 'f'.repeat(64) }).status, 0)
+    assert.notEqual(validate({
+      ...ordinary,
+      targetModelIds: ['model-b', 'model-a'],
+      targetSlotIds: ['model-b:case-1', 'model-a:case-1'],
+      targetSlotSetHash: canonicalHash(['model-b:case-1', 'model-a:case-1']),
+    }).status, 0)
+    assert.equal(validate({
+      batchId: 'batch-correction', sourceBatchId: 'source-correction',
+      sourceManifestHash: 'c'.repeat(64), sourceReleaseHash: correctiveActivePredecessorReleaseHash,
+      baselineBatchId: 'baseline-batch', baselineManifestHash: 'd'.repeat(64),
+      baselineReleaseId: 'baseline-release', baselineReleaseHash: correctiveBaselineReleaseHash,
+      targetModelIds: correctiveTargetModelIds, targetSlotIds: [], targetSlotSetHash: canonicalHash([]),
+    }).status, 0)
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
 })
 
 test('review pack bundle is derived offline from one exact completed state with automatic judges fixed to zero', () => {
@@ -708,6 +759,7 @@ test('review pack bundle is derived offline from one exact completed state with 
   assert.match(source, new RegExp(correctiveBaselineReleaseHash))
   assert.match(source, new RegExp(correctiveActivePredecessorReleaseHash))
   for (const modelId of correctiveTargetModelIds) assert.equal(source.split(`'${modelId}'`).length - 1, 1, modelId)
+  for (const modelId of correctiveExcludedRecraftModelIds) assert.equal(source.includes(`'${modelId}'`), false, modelId)
   assert.match(source, /automaticJudgeCalls\":0/)
   assert.match(source, /providerCalls\":0/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
@@ -744,9 +796,50 @@ test('public rendition bundle binds the same completed state and cannot publish 
   assert.match(source, new RegExp(correctiveBaselineReleaseHash))
   assert.match(source, new RegExp(correctiveActivePredecessorReleaseHash))
   for (const modelId of correctiveTargetModelIds) assert.equal(source.split(`'${modelId}'`).length - 1, 1, modelId)
+  for (const modelId of correctiveExcludedRecraftModelIds) assert.equal(source.includes(`'${modelId}'`), false, modelId)
   assert.match(source, /providerCalls\":0/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.doesNotMatch(source, /adminBenchmarkPublish|operation['"]:\s*['"]publish['"]|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
+})
+
+test('review and render correction guards execute the exact empty target-slot binding', () => {
+  const valid = {
+    baseline: {
+      releaseId: 'baseline-release', releaseHash: correctiveBaselineReleaseHash,
+      batchId: 'baseline-batch', manifestHash: 'a'.repeat(64),
+    },
+    activePredecessor: {
+      releaseId: 'active-release', releaseHash: correctiveActivePredecessorReleaseHash,
+      batchId: 'active-batch', manifestHash: 'b'.repeat(64),
+    },
+    targetModelIds: correctiveTargetModelIds,
+    targetSlotIds: [],
+    targetSlotSetHash: canonicalHash([]),
+  }
+  const executeGuard = (path, correction) => {
+    const source = readFileSync(path, 'utf8')
+    const matched = source.match(/if \(not isinstance\(correction[.]get\('baseline'\), dict\)[\s\S]*?raise RuntimeError\('correction-targets'\)/)
+    assert.ok(matched, path)
+    const lines = matched[0].split('\n')
+    const indentation = Math.min(...lines.filter(Boolean).map((line) => line.match(/^\s*/)[0].length))
+    const guard = lines.map((line) => line.slice(indentation)).join('\n')
+    return spawnSync('python3', ['-c', [
+      'import json',
+      `correction = json.loads(${JSON.stringify(JSON.stringify(correction))})`,
+      "expected_target_model_ids = ['seedream-4.5', 'seedream-5.0']",
+      "target_model_ids = correction['targetModelIds']",
+      guard,
+    ].join('\n')], { encoding: 'utf8' })
+  }
+
+  for (const path of [reviewPackStagingWorkflow, publicRenderStagingWorkflow]) {
+    assert.equal(executeGuard(path, valid).status, 0, path)
+    const nonempty = structuredClone(valid)
+    nonempty.targetSlotIds = ['seedream-4.5:scientific-gen-01-method-flow']
+    nonempty.targetSlotSetHash = canonicalHash(nonempty.targetSlotIds)
+    assert.notEqual(executeGuard(path, nonempty).status, 0, path)
+    assert.notEqual(executeGuard(path, { ...valid, targetSlotSetHash: 'f'.repeat(64) }).status, 0, path)
+  }
 })
 
 test('blind assignment export keeps mappings on-host and uploads only short-lived public A/B packages', () => {
@@ -1043,6 +1136,7 @@ test('publish-input inspection verifies the protected rendered payload and expos
   assert.match(diagnostic, new RegExp(correctiveBaselineReleaseHash))
   assert.match(diagnostic, new RegExp(correctiveActivePredecessorReleaseHash))
   for (const modelId of correctiveTargetModelIds) assert.equal(diagnostic.split(`'${modelId}'`).length - 1, 1, modelId)
+  for (const modelId of correctiveExcludedRecraftModelIds) assert.equal(diagnostic.includes(`'${modelId}'`), false, modelId)
   assert.doesNotMatch(diagnostic, /insertOne|updateOne|deleteOne|findOneAndUpdate|fetch\(|axios|provider dispatch/i)
   assert.doesNotMatch(diagnostic, /process[.]stdout[.]write\([^\n]*(?:secret|uri|objectKey)/i)
   assert.doesNotMatch(source, /cat\s+|set -x|printenv|objectKey[^\n]*printf|evidence[^\n]*printf/)

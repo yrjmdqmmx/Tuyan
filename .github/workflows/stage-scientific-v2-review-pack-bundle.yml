@@ -192,9 +192,6 @@ jobs:
           if 'correction' in attestation:
               correction = attestation['correction']
               expected_target_model_ids = [
-                  'recraft/recraft-v4-pro-vector',
-                  'recraft/recraft-v4-styles-pro-vector',
-                  'recraft/recraft-v4-styles-vector',
                   'seedream-4.5',
                   'seedream-5.0',
               ]
@@ -207,7 +204,9 @@ jobs:
                       or set(correction['activePredecessor']) != {'releaseId', 'releaseHash', 'batchId', 'manifestHash'}
                       or correction['baseline'].get('releaseHash') != 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a'
                       or correction['activePredecessor'].get('releaseHash') != '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe'
-                      or target_model_ids != expected_target_model_ids):
+                      or target_model_ids != expected_target_model_ids
+                      or correction.get('targetSlotIds') != []
+                      or correction.get('targetSlotSetHash') != '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945'):
                   raise RuntimeError('correction-targets')
               target_slots = [slot for slot in state.get('slots', []) if slot.get('canonicalModelId') in set(target_model_ids)]
               if (len(target_slots) != len(target_model_ids) * 9
