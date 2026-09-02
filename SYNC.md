@@ -7,8 +7,8 @@
 - **安全/失败**：Key 只进入单次执行闭包；Gateway 严格白名单、维护门禁与 50 秒专属超时，Core Provider 超时 45 秒。空白、无变化、超长、科研 token 漂移、Provider 超时/失败均保留原文并返回稳定错误，不暴露原始 Provider 响应。
 - **Web 交互**：三个字段独立入口，候选经原文/优化稿差异弹窗确认后才采用；支持重新优化、取消和一次恢复优化前内容。页面不展示模型名或费用，缺主模型/对应 Key 时打开设置引导且不发起调用。
 各端待办：
-- [ ] packages-api / auth-gateway / paperbanana-api（共享 DTO、真实转发、单次 Provider 调用与 TDD）
-- [ ] Web（三入口、可访问差异弹窗、采用与单步恢复）
+- [x] packages-api / auth-gateway / paperbanana-api（共享 DTO、真实转发、单次 Provider 调用与 TDD）
+- [x] Web（三入口、可访问差异弹窗、采用与单步恢复）
 - [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（新增 action 为可选能力，现有请求不变）
 - [ ] 部署 / 运维（PR/CI、Core/Gateway/HK/Pages 和生产非计费 smoke）
 
