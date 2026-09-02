@@ -23,6 +23,16 @@ const capableRegistry = {
         { id: 'image', label: '图像模型', vendor: 'Wan', roles: ['image'], selectable: true, lifecycle: 'stable', inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K'], refineResolutions: ['2K'], aspectRatios: ['16:9'], refineAspectRatios: ['16:9'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
+    openai: {
+      accessKind: 'direct',
+      routeContractVersion: 1,
+      accountCatalogRequired: false,
+      defaults: { main: 'openai-main', image: 'openai-image', vision: 'openai-main' },
+      models: [
+        { id: 'openai-main', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable', capabilities: {} },
+        { id: 'openai-image', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], selectable: true, lifecycle: 'stable', capabilities: { outputFormats: ['png'], resolutions: ['1K'], refineResolutions: ['2K'], imageEditMode: 'direct-edit' } },
+      ],
+    },
   },
 }
 
@@ -52,6 +62,7 @@ function installBackend(registry = capableRegistry, options = {}) {
       if (options.optimizeInputs) return options.optimizeInputs(body, optimizationIndex++)
       return Response.json({ code: 0, target: body.target, optimizedText: `优化后的${body.target}` })
     }
+    if (body.action === 'createJob') return Response.json({ code: 0, jobId: 'input-optimization-job', status: 'queued' })
     if (body.action === 'getJob') return Response.json({ code: 0, job: { id: body.jobId, status: 'succeeded', resultImages: [], stages: [] } })
     throw new Error(`unexpected request ${JSON.stringify(body)}`)
   }
@@ -71,6 +82,16 @@ async function renderReady(registry = capableRegistry, options = {}) {
 async function enterMainKey(user, value = ' single-main-key ') {
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.type(screen.getByLabelText('阿里百炼 接入密钥'), value)
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+}
+
+async function configureAdvancedVanillaOpenAiMain(user) {
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
+  await user.click(screen.getByRole('button', { name: /专业模式/u }))
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  await user.click(screen.getByRole('button', { name: 'OpenAI' }))
+  await user.click(screen.getByRole('button', { name: /OpenAI Main/u }))
+  await user.selectOptions(screen.getByLabelText('生成流程'), 'vanilla')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 }
 
@@ -159,6 +180,62 @@ test('invalid main route and missing main key open settings at the right focus t
   await new Promise((resolve) => setTimeout(resolve, 50))
   assert.equal(document.activeElement, screen.getByLabelText('阿里百炼 接入密钥'))
   assert.match(screen.getByRole('alert').textContent, /密钥/u)
+})
+
+test('advanced vanilla optimization reveals and focuses its otherwise unreachable main-provider key without sending a request', async () => {
+  const { requests, user } = await renderReady()
+  await configureAdvancedVanillaOpenAiMain(user)
+
+  fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
+
+  assert.equal(optimizationRequests(requests).length, 0)
+  const drawer = screen.getByRole('dialog', { name: /生成设置/u })
+  assert.equal(drawer.getAttribute('data-focus-target'), 'api-key')
+  const openAiKey = screen.getByLabelText('OpenAI 接入密钥')
+  await new Promise((resolve) => setTimeout(resolve, 50))
+  assert.equal(document.activeElement, openAiKey)
+  assert.ok(screen.getByLabelText('阿里百炼 接入密钥'), 'generation image key remains available')
+})
+
+test('closing settings clears the temporary optimization credential provider', async () => {
+  const { user } = await renderReady()
+  await configureAdvancedVanillaOpenAiMain(user)
+  fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
+  await user.type(screen.getByLabelText('OpenAI 接入密钥'), 'configured-openai-key')
+
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
+  assert.equal(screen.queryByLabelText('OpenAI 接入密钥'), null)
+  assert.ok(screen.getByLabelText('阿里百炼 接入密钥'))
+})
+
+test('temporary optimization credentials never expand vanilla generation key scope', async () => {
+  const { requests, user } = await renderReady()
+  await configureAdvancedVanillaOpenAiMain(user)
+  fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
+  await user.type(screen.getByLabelText('OpenAI 接入密钥'), 'openai-optimization-key')
+  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-image-key')
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+
+  const submit = screen.getAllByRole('button', { name: '生成候选图' }).find((button) => button.type === 'submit')
+  await user.click(submit)
+  await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
+  const create = requests.find((request) => request.body?.action === 'createJob').body
+  assert.deepEqual(create.apiKeys, { bailian: 'bailian-image-key' })
+  assert.equal(create.modelRoutes.main.accessProvider, 'openai')
+})
+
+test('changing the main route clears the temporary optimization credential provider', async () => {
+  const { user } = await renderReady()
+  await configureAdvancedVanillaOpenAiMain(user)
+  fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
+  assert.ok(screen.getByLabelText('OpenAI 接入密钥'))
+
+  await user.click(screen.getByRole('button', { name: '主模型' }))
+  await user.click(screen.getByRole('button', { name: '阿里百炼' }))
+  await user.click(screen.getByRole('button', { name: /^主模型main/u }))
+  await waitFor(() => assert.equal(screen.queryByLabelText('OpenAI 接入密钥'), null))
+  assert.ok(screen.getByLabelText('阿里百炼 接入密钥'))
 })
 
 test('a valid click sends only the three-input snapshot, selected main route, and its single trimmed key', async () => {

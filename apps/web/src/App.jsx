@@ -159,6 +159,7 @@ export default function App() {
   const [showAccountDialog, setShowAccountDialog] = useState(false);
   const [showGenerationSettings, setShowGenerationSettings] = useState(false);
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
+  const [inputOptimizationCredentialProvider, setInputOptimizationCredentialProvider] = useState('');
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
   const [configurationMode, setConfigurationMode] = useState('simple');
   const [provider, setProvider] = useState('bailian');
@@ -327,6 +328,10 @@ export default function App() {
   const refineRouteRoles = requiredRefineRouteRoles({ refineMode: refineCapability.mode });
   const credentialRouteRoles = activeTab === 'refine' ? refineRouteRoles : createRouteRoles;
   const credentialProviders = uniqueProvidersForRoles(activeModelRoutes, credentialRouteRoles);
+  const settingsCredentialProviders = inputOptimizationCredentialProvider
+    && !credentialProviders.includes(inputOptimizationCredentialProvider)
+    ? [inputOptimizationCredentialProvider, ...credentialProviders]
+    : credentialProviders;
   const activeArkProbes = arkProbesForRoles(activeModelRoutes, credentialRouteRoles);
   const activeArkProbeSignature = activeArkProbes.map(arkVerificationKey).join('|');
   arkKeySnapshotRef.current = apiKeys.ark;
@@ -422,6 +427,10 @@ export default function App() {
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
   useEffect(() => {
     setReferenceImageMode(mainModelCanReadImages(activeModelRoutes.main.accessProvider, activeMainModelName) ? 'main_model' : 'vision_model');
+  }, [activeModelRoutes.main.accessProvider, activeMainModelName]);
+
+  useEffect(() => {
+    setInputOptimizationCredentialProvider('');
   }, [activeModelRoutes.main.accessProvider, activeMainModelName]);
 
   useEffect(() => {
@@ -838,6 +847,7 @@ export default function App() {
       || !mainRoute?.modelId
       || activeMainRegistryEntry?.selectable !== true
       || !activeMainRegistryEntry?.roles?.includes('main')) {
+      setInputOptimizationCredentialProvider('');
       setInputOptimizationGuidance('请先在生成设置中选择一个可用的主模型，再优化输入。');
       setGenerationFocusSetting('main-model');
       setShowGenerationSettings(true);
@@ -845,6 +855,7 @@ export default function App() {
     }
     const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
     if (!apiKey) {
+      setInputOptimizationCredentialProvider(mainRoute.accessProvider);
       setInputOptimizationGuidance('请先在生成设置中填写当前主模型接入渠道的密钥。');
       setGenerationFocusSetting('api-key');
       setShowGenerationSettings(true);
@@ -1271,8 +1282,13 @@ export default function App() {
     }
   }
 
+  function closeGenerationSettings() {
+    setShowGenerationSettings(false);
+    setInputOptimizationCredentialProvider('');
+  }
+
   const settingsDrawer = (
-    <GenerationSettingsDrawer open={showGenerationSettings} onClose={() => setShowGenerationSettings(false)} focusSetting={generationFocusSetting}>
+    <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
       <ModelRoutingSettings
         configurationMode={configurationMode}
         onModeChange={handleConfigurationModeChange}
@@ -1284,7 +1300,7 @@ export default function App() {
         providerConfigs={PROVIDERS}
         outputFormat={activeTab === 'refine' ? 'png' : outputFormat}
         executionRouteRoles={credentialRouteRoles}
-        credentialProviders={credentialProviders}
+        credentialProviders={settingsCredentialProviders}
         apiKeys={apiKeys}
         onApiKeyChange={handleApiKeyChange}
         arkProbes={activeArkProbes}
