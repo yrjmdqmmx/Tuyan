@@ -68,6 +68,8 @@ async function main() {
     const dispatches = db.collection('paperbanana_benchmark_scientific_v2_dispatches')
     const reviews = db.collection('paperbanana_benchmark_scientific_v2_review_artifacts')
     const releases = db.collection('paperbanana_benchmark_releases')
+    const releaseHeads = db.collection('paperbanana_benchmark_release_heads')
+    const releaseLifecycle = db.collection('paperbanana_benchmark_release_lifecycle')
     const batch = await batches.findOne({ batchId: input.batchId })
     addCheck(checks, 'batch_publishable', Boolean(batch && ['review_finalized', 'review_ready'].includes(batch.status) && batch.reviewFinalHash), {
       batchStatus: batch?.status || null,
@@ -85,13 +87,24 @@ async function main() {
       succeededCount: Array.isArray(batch.state?.slots) ? batch.state.slots.filter((slot) => slot.status === 'succeeded').length : -1,
     })
 
+    const publicationCodeSha = String(process.env.PAPERBANANA_CODE_SHA || '')
     const lineageComplete = ['manifestCodeSha', 'executionCodeSha', 'legacyRecoveryStateHash'].every((key) => Object.hasOwn(batch, key))
+    const publicationCodeDiffAllowed = batch.executionCodeSha === publicationCodeSha || Boolean(
+      ['review_ready', 'review_finalized', 'published'].includes(String(batch.status || ''))
+      && batch.state?.status === 'completed'
+      && batch.stateHash === batch.state?.stateHash
+      && /^[a-f0-9]{64}$/.test(String(batch.reviewFinalHash || ''))
+      && !(await dispatches.findOne({ manifestHash: batch.manifestHash, status: 'started' })),
+    )
     addCheck(checks, 'code_lineage', lineageComplete
       && batch.manifestCodeSha === batch.manifest?.codeSha
-      && batch.executionCodeSha === process.env.PAPERBANANA_CODE_SHA
+      && /^[a-f0-9]{40}$/.test(String(batch.executionCodeSha || ''))
+      && /^[a-f0-9]{40}$/.test(publicationCodeSha)
+      && publicationCodeDiffAllowed
       && (batch.legacyRecoveryStateHash === null || /^[a-f0-9]{64}$/.test(String(batch.legacyRecoveryStateHash))), {
       manifestMatches: batch.manifestCodeSha === batch.manifest?.codeSha,
-      executionMatches: batch.executionCodeSha === process.env.PAPERBANANA_CODE_SHA,
+      executionMatches: batch.executionCodeSha === publicationCodeSha,
+      publicationCodeDiffAllowed,
       legacyRecovery: batch.legacyRecoveryStateHash !== null,
     })
 
@@ -265,11 +278,36 @@ async function main() {
       expectedCount: succeededCount, actualCount: reviewSlots.size, failureCount: coverageFailures,
     })
 
-    const competing = await releases.countDocuments({
+    const identityQuery = {
       suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2',
       evaluationEpoch: 'codex-scientific-2026-09-v1', profileStatus: 'published',
-    }, { limit: 2 })
-    addCheck(checks, 'release_identity_available', competing === 0, { competingCount: competing })
+    }
+    const releaseHeadId = 'benchmark-release-head:pb-scientific-figure-v2:codex_scientific_v2:codex-scientific-2026-09-v1'
+    const currentHead = await releaseHeads.findOne({ _id: releaseHeadId })
+    const legacyCandidates = currentHead ? [] : await releases.find(identityQuery).sort({ publishedAt: -1 }).limit(2).toArray()
+    const competing = currentHead
+      ? await releases.findOne({ _id: currentHead.releaseId, releaseHash: currentHead.releaseHash, ...identityQuery })
+      : legacyCandidates[0] || null
+    const lifecycle = currentHead && competing
+      ? await releaseLifecycle.findOne({ releaseId: currentHead.releaseId, releaseHash: currentHead.releaseHash, status: 'active' })
+      : null
+    const remediation = batch.remediationOf
+    const targetSlotIds = remediation?.targetSlotIds
+    const remediationMatches = competing ? Boolean(remediation
+      && remediation.releaseId === competing._id
+      && remediation.releaseHash === competing.releaseHash
+      && remediation.batchId === competing.batchId
+      && remediation.manifestHash === competing.batchManifestHash
+      && Array.isArray(remediation.targetModelIds) && remediation.targetModelIds.length > 0
+      && Array.isArray(targetSlotIds) && targetSlotIds.length > 0
+      && remediation.targetSlotSetHash === canonicalHash(targetSlotIds)) : !remediation
+    const headConsistent = currentHead ? Boolean(competing && lifecycle) : legacyCandidates.length <= 1
+    addCheck(checks, 'release_identity_compatible', headConsistent && remediationMatches, {
+      currentHeadPresent: Boolean(currentHead),
+      lifecycleActive: Boolean(lifecycle),
+      competingCount: currentHead ? Number(Boolean(competing)) : legacyCandidates.length,
+      remediationMatches,
+    })
 
     const failed = checks.filter((check) => !check.passed).map((check) => check.stage)
     process.stdout.write(`${JSON.stringify({
