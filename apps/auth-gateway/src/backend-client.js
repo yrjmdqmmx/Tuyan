@@ -8,6 +8,8 @@ export class BackendError extends Error {
   }
 }
 
+const MAX_REQUEST_TIMEOUT_MS = 120_000;
+
 export function createBackendClient({
   mode,
   url,
@@ -24,11 +26,11 @@ export function createBackendClient({
     code: 'NOT_CHECKED',
   };
 
-  async function requestJson(target, init) {
+  async function requestJson(target, init, requestTimeoutMs = timeoutMs) {
     const controller = new AbortController();
     const timeout = setTimeout(
       () => controller.abort(new DOMException('Backend request timed out', 'TimeoutError')),
-      timeoutMs,
+      requestTimeoutMs,
     );
     timeout.unref?.();
     try {
@@ -84,7 +86,7 @@ export function createBackendClient({
       method: 'POST',
       headers,
       body: JSON.stringify(body),
-    });
+    }, requestTimeout(timeoutMs, options.timeoutMs));
   }
 
   async function ready(requestContext = {}) {
@@ -131,6 +133,14 @@ export function createBackendClient({
       return { ...readinessStatus };
     },
   };
+}
+
+function requestTimeout(defaultTimeoutMs, override) {
+  if (override === undefined) return defaultTimeoutMs;
+  if (!Number.isFinite(override) || !Number.isInteger(override) || override < 1 || override > MAX_REQUEST_TIMEOUT_MS) {
+    throw new BackendError(500, 'BACKEND_TIMEOUT_INVALID', 'Backend timeout override must be an integer between 1 and 120000');
+  }
+  return override;
 }
 
 function sanitizeBody(input) {

@@ -140,6 +140,55 @@ test('aborts expired requests and maps them to a typed 504', async () => {
   );
 });
 
+test('per-call timeout overrides control aborts while calls without an override keep the default', async () => {
+  let requestCount = 0;
+  const client = createBackendClient({
+    mode: 'node',
+    url: 'http://core/paperbanana-api',
+    timeoutMs: 10,
+    gatewayToken: 'token',
+    fetchImpl: async (_url, init) => {
+      requestCount += 1;
+      if (requestCount === 1) {
+        return new Promise((resolve, reject) => {
+          const complete = setTimeout(() => resolve(jsonResponse({ code: 0 })), 25);
+          init.signal.addEventListener('abort', () => {
+            clearTimeout(complete);
+            reject(init.signal.reason);
+          }, { once: true });
+        });
+      }
+      return new Promise((_resolve, reject) => {
+        init.signal.addEventListener('abort', () => reject(init.signal.reason), { once: true });
+      });
+    },
+  });
+
+  assert.deepEqual(
+    await client.call({ action: 'optimizeInputs' }, {}, { timeoutMs: 50 }),
+    { status: 200, data: { code: 0 } },
+  );
+  await assert.rejects(
+    () => client.call({ action: 'modelRegistry' }),
+    (error) => error instanceof BackendError && error.status === 504 && error.code === 'BACKEND_TIMEOUT',
+  );
+});
+
+test('rejects unsafe per-call timeout overrides', async () => {
+  const client = createBackendClient({
+    mode: 'node',
+    url: 'http://core/paperbanana-api',
+    timeoutMs: 500,
+    gatewayToken: 'token',
+    fetchImpl: async () => jsonResponse({ code: 0 }),
+  });
+
+  await assert.rejects(
+    () => client.call({ action: 'optimizeInputs' }, {}, { timeoutMs: 120_001 }),
+    (error) => error instanceof BackendError && error.status === 500 && error.code === 'BACKEND_TIMEOUT_INVALID',
+  );
+});
+
 test('Node readiness calls the protected core GET /ready and requires ready true', async () => {
   const requests = [];
   const client = createBackendClient({
