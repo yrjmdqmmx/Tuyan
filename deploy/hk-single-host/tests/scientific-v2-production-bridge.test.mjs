@@ -36,6 +36,14 @@ const canonicalJson = (value) => Array.isArray(value)
 const canonicalHash = (value) => createHash('sha256').update(canonicalJson(value)).digest('hex')
 const fileHash = (path) => createHash('sha256').update(readFileSync(path)).digest('hex')
 
+test('scientific v2 admin bridge reports only the bounded server diagnostic code on rejection', () => {
+  const source = readFileSync(admin, 'utf8')
+  assert.match(source, /result[.]diagnosticCode/)
+  assert.match(source, /SCIENTIFIC_V2_ADMIN_CORE_REJECTED/)
+  assert.match(source, /diagnosticCode[?]`:\$\{diagnosticCode\}`/)
+  assert.doesNotMatch(source, /result[.]error|JSON[.]stringify\(result\)/)
+})
+
 test('root-only prepare bridge creates server-attested content-addressed private bundles without exporting secrets', () => {
   for (const path of [prepare, prepareWorkflow]) assert.equal(existsSync(path), true, path)
   assert.equal(statSync(prepare).mode & 0o111, 0o111)

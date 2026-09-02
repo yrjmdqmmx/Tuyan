@@ -272,7 +272,47 @@ test('scientific v2 operator diagnostic reaches control with only trusted transp
     })
     const rejected = await request({ arbitraryUserField: true })
     assert.equal(rejected.status, 200)
-    assert.deepEqual(await rejected.json(), { code: 400, error: 'Benchmark request rejected' })
+    assert.deepEqual(await rejected.json(), {
+      code: 400, error: 'Benchmark request rejected',
+      diagnosticCode: 'SCIENTIFIC_V2_OPERATOR_DIAGNOSTIC_SCHEMA_INVALID',
+    })
+  } finally {
+    await new Promise<void>((resolve) => server.close(() => resolve()))
+  }
+})
+
+test('scientific v2 admin transport exposes only a bounded diagnostic code on rejected operations', async () => {
+  const mongoFailure = Object.assign(new Error('private duplicate key detail must stay hidden'), {
+    code: 11000,
+    codeName: 'DuplicateKey',
+    keyValue: { privateObjectKey: 'must-not-leak' },
+  })
+  const benchmarkService = { async handle() { throw mongoFailure } }
+  const server = createServer({
+    handler: async () => ({ code: 0 }), readinessProbe: async () => ({ ready: true }), healthSnapshot: () => ({ ready: true }),
+    config: { ...config, adminToken: 'configured-server-admin-token', adminTransportToken: 'configured-admin-transport-token' },
+    logger: { info() {}, warn() {}, error() {} }, benchmarkService,
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const { port } = server.address() as AddressInfo
+  const request = (trusted: boolean) => fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json', 'x-paperbanana-gateway-token': config.gatewayToken,
+      ...(trusted ? {
+        'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
+        'x-paperbanana-admin-user-id': 'immutable-admin-id',
+      } : {}),
+    },
+    body: JSON.stringify({ action: 'adminBenchmarkPublish', evaluationMode: 'codex_scientific_v2' }),
+  })
+  try {
+    const trusted = await request(true)
+    assert.deepEqual(await trusted.json(), {
+      code: 400, error: 'Benchmark request rejected', diagnosticCode: 'MONGO_11000_DUPLICATE_KEY',
+    })
+    const untrusted = await request(false)
+    assert.deepEqual(await untrusted.json(), { code: 400, error: 'Benchmark request rejected' })
   } finally {
     await new Promise<void>((resolve) => server.close(() => resolve()))
   }
