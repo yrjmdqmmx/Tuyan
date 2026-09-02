@@ -145,6 +145,10 @@ mongo_root=(
     {runId: 1, sampleId: 1, provider: 1, judgeEpoch: 1},
     {unique: true, name: "runId_1_sampleId_1_provider_1_judgeEpoch_1"},
   )
+  benchmark.getCollection("paperbanana_benchmark_releases").createIndex(
+    {suiteId: 1, evaluationMode: 1, evaluationEpoch: 1},
+    {unique: true, name: "scientific_v2_release_identity", partialFilterExpression: {evaluationMode: "codex_scientific_v2", profileStatus: "published"}},
+  )
 '
 
 run_migration() {
@@ -194,7 +198,6 @@ run_migration
     ["paperbanana_benchmark_scientific_v2_batches", "scientific_v2_manifest_hash", {manifestHash: 1}, undefined],
     ["paperbanana_benchmark_scientific_v2_dispatches", "scientific_v2_dispatch_identity", {manifestHash: 1, slotId: 1, attemptIndex: 1}, undefined],
     ["paperbanana_benchmark_scientific_v2_review_artifacts", "scientific_v2_review_identity", {batchManifestHash: 1, sourceSetHash: 1, role: 1}, undefined],
-    ["paperbanana_benchmark_releases", "scientific_v2_release_identity", {suiteId: 1, evaluationMode: 1, evaluationEpoch: 1}, {evaluationMode: "codex_scientific_v2", profileStatus: "published"}],
     ["paperbanana_benchmark_scientific_v2_public_evidence", "scientific_v2_public_evidence_identity", {sourceReleaseHash: 1, profileId: 1, caseId: 1}, undefined],
   ]
   for (const [collection, name, keys, partial] of scientificIndexes) {
@@ -202,6 +205,12 @@ run_migration
     if (!actual || actual.unique !== true || JSON.stringify(actual.key) !== JSON.stringify(keys)
       || JSON.stringify(actual.partialFilterExpression) !== JSON.stringify(partial)) throw new Error(`${name} differs`)
   }
+  const releaseIndexes = benchmark.getCollection("paperbanana_benchmark_releases").getIndexes()
+  const releaseLookup = releaseIndexes.find(index => index.name === "scientific_v2_release_identity_lookup")
+  if (!releaseLookup || releaseLookup.unique === true
+    || JSON.stringify(releaseLookup.key) !== JSON.stringify({suiteId: 1, evaluationMode: 1, evaluationEpoch: 1, profileStatus: 1, publishedAt: -1})
+    || releaseLookup.partialFilterExpression !== undefined) throw new Error("scientific_v2_release_identity_lookup differs")
+  if (releaseIndexes.some(index => index.name === "scientific_v2_release_identity")) throw new Error("legacy scientific_v2_release_identity remains")
 '
 
 docker exec "$mongo_container" mongosh --quiet \
