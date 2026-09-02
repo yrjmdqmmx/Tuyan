@@ -73,7 +73,7 @@ type LegacyPolicyModule = {
   verifyUploadedReferenceObjects(images: Array<Record<string, unknown>>, bucket?: Record<string, unknown>): Promise<void>
   configureRuntimeFetch(fetchImpl?: typeof fetch): void
   fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts?: number): Promise<Response>
-  callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>): Promise<string>
+  callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>, policy?: { attempts?: number; signal?: AbortSignal }): Promise<string>
   callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>): Promise<string>
   callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string, strictImageSize?: boolean): Promise<string>
   normalizeModelName(provider: string, model: string): string
@@ -5332,4 +5332,436 @@ test('OpenRouter sends only an exactly declared fixed ratio and omits auto', asy
   assert.equal(imageBodies[0].aspect_ratio, '4:3')
   assert.equal(Object.hasOwn(imageBodies[1], 'aspect_ratio'), false)
   assert.equal(imageBodies.length, 2)
+})
+
+const inputOptimizationGatewayToken = 'input-optimization-gateway-token'
+const inputOptimizationApiKey = 'input-optimization-secret-key'
+
+function inputOptimizationContext(body: Record<string, unknown>) {
+  return {
+    request: { method: 'POST' },
+    body,
+    headers: {},
+    response: { setHeader() {}, status() {} },
+  }
+}
+
+function inputOptimizationBody(overrides: Record<string, unknown> = {}) {
+  return {
+    action: 'optimizeInputs',
+    gatewayToken: inputOptimizationGatewayToken,
+    target: 'methodContent',
+    inputs: {
+      methodContent: 'The encoder processes the input.',
+      caption: 'Encoder overview.',
+      negativePrompt: 'blurry labels',
+    },
+    mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+    apiKey: inputOptimizationApiKey,
+    ...overrides,
+  }
+}
+
+function inputOptimizationChatResponse(text: string) {
+  return Response.json({ choices: [{ message: { content: text } }] })
+}
+
+function inputOptimizationOpenRouterCatalog(modelId = 'openai/gpt-5.6-sol') {
+  return {
+    data: [{
+      id: modelId,
+      name: modelId,
+      architecture: { input_modalities: ['text'], output_modalities: ['text'] },
+      supported_parameters: {},
+    }],
+  }
+}
+
+test('input optimization advertises contract version 1 and requires the gateway trust boundary', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let inferenceCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    inferenceCalls += 1
+    return inputOptimizationChatResponse('A clearer encoder method.')
+  })
+  try {
+    const registry = await legacy.default(inputOptimizationContext({ action: 'modelRegistry' }))
+    assert.equal(registry.inputOptimizationContractVersion, 1)
+    inferenceCalls = 0
+
+    const denied = await legacy.default(inputOptimizationContext(inputOptimizationBody({ gatewayToken: undefined })))
+    assert.equal(denied.code, 401)
+    assert.equal(inferenceCalls, 0)
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization gives each target conservative instructions and all three fields as read-only JSON context', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  const requests: any[] = []
+  const outputs: Record<string, string> = {
+    methodContent: 'The encoder processes the input in a clear causal sequence.',
+    caption: 'Concise visualization of the encoder overview.',
+    negativePrompt: 'Avoid blurry labels, visual clutter, and illegible text.',
+  }
+  legacy.configureRuntimeFetch(async (_input, init) => {
+    const body = JSON.parse(String(init?.body || '{}'))
+    requests.push(body)
+    const user = String(body.messages?.[1]?.content || '')
+    const target = (['methodContent', 'caption', 'negativePrompt'] as const).find((candidate) => user.includes(`\"target\":\"${candidate}\"`))
+    return inputOptimizationChatResponse(outputs[target || 'methodContent'])
+  })
+  try {
+    for (const target of ['methodContent', 'caption', 'negativePrompt'] as const) {
+      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({ target })))
+      assert.deepEqual(result, { code: 0, target, optimizedText: outputs[target] })
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+
+  assert.equal(requests.length, 3)
+  for (const [index, target] of (['methodContent', 'caption', 'negativePrompt'] as const).entries()) {
+    const system = String(requests[index].messages?.[0]?.content || '')
+    const user = String(requests[index].messages?.[1]?.content || '')
+    assert.match(system, /untrusted data/i)
+    assert.match(system, /original language/i)
+    assert.match(system, /do not (?:add|invent).*scientific facts/i)
+    assert.match(system, /proper nouns/i)
+    assert.match(system, /other two fields.*read-only/i)
+    assert.match(system, /plain text/i)
+    assert.match(user, /\{"target":"(?:methodContent|caption|negativePrompt)","inputs":\{/)
+    assert.match(user, /"methodContent":"The encoder processes the input\."/)
+    assert.match(user, /"caption":"Encoder overview\."/)
+    assert.match(user, /"negativePrompt":"blurry labels"/)
+    if (target === 'methodContent') assert.match(system, /structure.*causal.*stages/i)
+    if (target === 'caption') assert.match(system, /visualization intent.*concise/i)
+    if (target === 'negativePrompt') assert.match(system, /executable visual prohibitions/i)
+  }
+})
+
+test('input optimization dispatches each exact authoritative main route once without images or fallback', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  const fixtures = [
+    { provider: 'gemini', modelId: 'gemini-3.7-flash', endpoint: /generativelanguage\.googleapis\.com\/v1beta\/models\/gemini-3\.7-flash:generateContent/ },
+    { provider: 'openai', modelId: 'gpt-5.6-sol', endpoint: /api\.openai\.com\/v1\/chat\/completions/ },
+    { provider: 'bailian', modelId: 'qwen3.8-max', endpoint: /dashscope\.aliyuncs\.com\/compatible-mode\/v1\/chat\/completions/ },
+    { provider: 'ark', modelId: 'doubao-seed-2-1-pro-260628', endpoint: /ark\.cn-beijing\.volces\.com\/api\/v3\/chat\/completions/ },
+    { provider: 'openrouter', modelId: 'openai/gpt-5.6-sol', endpoint: /openrouter\.ai\/api\/v1\/chat\/completions/ },
+  ]
+  try {
+    for (const fixture of fixtures) {
+      const inferenceRequests: Array<{ url: string; init?: RequestInit; body: any }> = []
+      legacy.configureRuntimeFetch(async (input, init) => {
+        const url = String(input)
+        if (url.endsWith('/api/v1/models')) return Response.json(inputOptimizationOpenRouterCatalog(fixture.modelId))
+        if (url.endsWith('/api/v1/images/models')) return Response.json({ data: [] })
+        const body = JSON.parse(String(init?.body || '{}'))
+        inferenceRequests.push({ url, init, body })
+        if (fixture.provider === 'gemini') {
+          return Response.json({ candidates: [{ content: { parts: [{ text: 'A clearer encoder method.' }] } }] })
+        }
+        return inputOptimizationChatResponse('A clearer encoder method.')
+      })
+
+      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+        mainRoute: { accessProvider: fixture.provider, modelId: fixture.modelId },
+      })))
+      assert.deepEqual(result, { code: 0, target: 'methodContent', optimizedText: 'A clearer encoder method.' })
+      assert.equal(inferenceRequests.length, 1, fixture.provider)
+      assert.match(inferenceRequests[0].url, fixture.endpoint, fixture.provider)
+      if (fixture.provider !== 'gemini') assert.equal(inferenceRequests[0].body.model, fixture.modelId, fixture.provider)
+      const serializedBody = JSON.stringify(inferenceRequests[0].body)
+      assert.doesNotMatch(serializedBody, /image_url|inlineData|input_image/, fixture.provider)
+      assert.ok(inferenceRequests[0].init?.signal instanceof AbortSignal, fixture.provider)
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization rejects malformed, empty, and oversized inputs before inference', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let inferenceCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    inferenceCalls += 1
+    return inputOptimizationChatResponse('must not run')
+  })
+  const invalidBodies = [
+    inputOptimizationBody({ target: 'unknown' }),
+    inputOptimizationBody({ target: 1 }),
+    inputOptimizationBody({ inputs: null }),
+    inputOptimizationBody({ inputs: { methodContent: 1, caption: '', negativePrompt: '' } }),
+    inputOptimizationBody({ inputs: { methodContent: '   ', caption: 'caption', negativePrompt: '' } }),
+    inputOptimizationBody({ target: 'caption', inputs: { methodContent: 'method', caption: '   ', negativePrompt: '' } }),
+    inputOptimizationBody({ target: 'negativePrompt', inputs: { methodContent: ' ', caption: '', negativePrompt: '  ' } }),
+    inputOptimizationBody({ inputs: { methodContent: 'm'.repeat(12_001), caption: 'caption', negativePrompt: '' } }),
+    inputOptimizationBody({ inputs: { methodContent: 'method', caption: 'c'.repeat(1_001), negativePrompt: '' } }),
+    inputOptimizationBody({ inputs: { methodContent: 'method', caption: 'caption', negativePrompt: 'n'.repeat(1_001) } }),
+  ]
+  try {
+    for (const body of invalidBodies) {
+      const result = await legacy.default(inputOptimizationContext(body))
+      assert.equal(result.code, 400)
+      assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_REQUEST_INVALID')
+      assert.equal(result.error, 'Invalid input optimization request.')
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+  assert.equal(inferenceCalls, 0)
+})
+
+test('input optimization rejects non-main, non-selectable, unknown, and malformed routes before inference', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let inferenceCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    inferenceCalls += 1
+    return inputOptimizationChatResponse('must not run')
+  })
+  const routes = [
+    null,
+    { accessProvider: 'openai', modelId: 1 },
+    { accessProvider: 'unknown', modelId: 'gpt-5.6-sol' },
+    { accessProvider: 'openai', modelId: 'missing-model' },
+    { accessProvider: 'openai', modelId: 'gpt-image-2' },
+    { accessProvider: 'ark', modelId: 'doubao-seed-character-260628' },
+  ]
+  try {
+    for (const mainRoute of routes) {
+      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({ mainRoute })))
+      assert.equal(result.code, 400)
+      assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_ROUTE_INVALID')
+      assert.equal(result.error, 'Invalid input optimization route.')
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+  assert.equal(inferenceCalls, 0)
+})
+
+test('input optimization requires one non-empty singular API key before inference', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let inferenceCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    inferenceCalls += 1
+    return inputOptimizationChatResponse('must not run')
+  })
+  try {
+    for (const apiKey of [undefined, null, 1, '', '   ']) {
+      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({ apiKey })))
+      assert.equal(result.code, 400)
+      assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_KEY_REQUIRED')
+      assert.equal(result.error, 'Input optimization API key is required.')
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+  assert.equal(inferenceCalls, 0)
+})
+
+test('input optimization preserves scientific tokens byte-for-byte and rejects drift', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  const original = 'We use $x_i$ and $$L=\\sum_i x_i$$ with \\(z=1\\), \\[A=2\\], and \\citep{Smith2025}. Accuracy is 95%, latency is 12 ms, with [1], [1-3], and [1, 2]; see https://example.org/v1?q=2 and DOI 10.1000/xyz-123.'
+  const preserved = `${original} The stages are now described in causal order.`
+  let output = preserved
+  legacy.configureRuntimeFetch(async () => inputOptimizationChatResponse(output))
+  try {
+    const success = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+      inputs: { methodContent: original, caption: 'Overview.', negativePrompt: '' },
+    })))
+    assert.deepEqual(success, { code: 0, target: 'methodContent', optimizedText: preserved })
+
+    const drifts = [
+      preserved.replace('$x_i$', '$y_i$'),
+      preserved.replace('\\citep{Smith2025}', '\\citep{Jones2026}'),
+      preserved.replace('95%', '96%'),
+      preserved.replace('12 ms', '112 ms'),
+      preserved.replace('[1-3]', '[1-4]'),
+      preserved.replace('https://example.org/v1?q=2', 'https://example.org/v2?q=2'),
+      preserved.replace('10.1000/xyz-123', '10.1000/xyz-124'),
+    ]
+    for (const drifted of drifts) {
+      output = drifted
+      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+        inputs: { methodContent: original, caption: 'Overview.', negativePrompt: '' },
+      })))
+      assert.equal(result.code, 422)
+      assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_RESULT_INVALID')
+      assert.equal(result.error, 'Input optimization returned an invalid result.')
+    }
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization preserves URL and DOI tokens without freezing surrounding sentence punctuation', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  const original = 'See https://example.org/paper and DOI 10.1000/xyz-123.'
+  const output = 'See https://example.org/paper; DOI 10.1000/xyz-123 remains the source.'
+  legacy.configureRuntimeFetch(async () => inputOptimizationChatResponse(output))
+  try {
+    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+      inputs: { methodContent: original, caption: 'Source overview.', negativePrompt: '' },
+    })))
+    assert.deepEqual(result, { code: 0, target: 'methodContent', optimizedText: output })
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization rejects empty, unchanged, and oversized provider candidates', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let output = ''
+  legacy.configureRuntimeFetch(async () => inputOptimizationChatResponse(output))
+  try {
+    output = '   '
+    const empty = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    assert.equal(empty.code, 422)
+    assert.equal(empty.businessCode, 'INPUT_OPTIMIZATION_RESULT_INVALID')
+
+    output = '  The encoder processes the input.  '
+    const unchanged = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    assert.equal(unchanged.code, 422)
+    assert.equal(unchanged.businessCode, 'INPUT_OPTIMIZATION_NO_CHANGE')
+    assert.equal(unchanged.error, 'Input optimization returned no change.')
+
+    output = 'm'.repeat(12_001)
+    const oversized = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    assert.equal(oversized.code, 422)
+    assert.equal(oversized.businessCode, 'INPUT_OPTIMIZATION_RESULT_INVALID')
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization maps one network rejection to a stable redacted provider failure', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let inferenceCalls = 0
+  const providerSecret = `provider body ${inputOptimizationApiKey} https://internal.invalid/generate`
+  legacy.configureRuntimeFetch(async () => {
+    inferenceCalls += 1
+    throw new Error(providerSecret)
+  })
+  try {
+    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    assert.deepEqual(result, {
+      code: 502,
+      error: 'Input optimization provider request failed.',
+      businessCode: 'INPUT_OPTIMIZATION_PROVIDER_FAILED',
+    })
+    assert.equal(inferenceCalls, 1)
+    assert.doesNotMatch(JSON.stringify(result), new RegExp(inputOptimizationApiKey))
+    assert.doesNotMatch(JSON.stringify(result), /provider body|internal\.invalid/)
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization maps one abort rejection to a stable redacted timeout', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let inferenceCalls = 0
+  legacy.configureRuntimeFetch(async (_input, init) => {
+    inferenceCalls += 1
+    assert.ok(init?.signal instanceof AbortSignal)
+    throw new DOMException(`timeout ${inputOptimizationApiKey} https://internal.invalid/timeout`, 'AbortError')
+  })
+  try {
+    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    assert.deepEqual(result, {
+      code: 504,
+      error: 'Input optimization provider timed out.',
+      businessCode: 'INPUT_OPTIMIZATION_PROVIDER_TIMEOUT',
+    })
+    assert.equal(inferenceCalls, 1)
+    assert.doesNotMatch(JSON.stringify(result), new RegExp(inputOptimizationApiKey))
+    assert.doesNotMatch(JSON.stringify(result), /internal\.invalid/)
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization hides a non-2xx provider response body after one inference call', async () => {
+  const legacy = await loadLegacy()
+  const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
+  process.env.PAPERBANANA_GATEWAY_TOKEN = inputOptimizationGatewayToken
+  let inferenceCalls = 0
+  legacy.configureRuntimeFetch(async () => {
+    inferenceCalls += 1
+    return Response.json({ error: { message: `raw ${inputOptimizationApiKey} https://internal.invalid/body` } }, { status: 500 })
+  })
+  try {
+    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    assert.equal(result.code, 502)
+    assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_PROVIDER_FAILED')
+    assert.equal(inferenceCalls, 1)
+    assert.doesNotMatch(JSON.stringify(result), new RegExp(inputOptimizationApiKey))
+    assert.doesNotMatch(JSON.stringify(result), /raw|internal\.invalid/)
+  } finally {
+    legacy.configureRuntimeFetch()
+    if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
+  }
+})
+
+test('input optimization leaves the existing callTextModel default retry count unchanged', async () => {
+  const legacy = await loadLegacy()
+  let attempts = 0
+  legacy.configureRuntimeFetch(async () => {
+    attempts += 1
+    if (attempts === 1) throw new Error('transient network rejection')
+    return inputOptimizationChatResponse('existing retry succeeded')
+  })
+  try {
+    const result = await legacy.callTextModel('openai', 'gpt-5.6-sol', 'key', 'system', 'user')
+    assert.equal(result, 'existing retry succeeded')
+    assert.equal(attempts, 2)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
 })
