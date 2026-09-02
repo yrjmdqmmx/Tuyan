@@ -16,7 +16,8 @@
 - [x] packages-api / auth-gateway / paperbanana-api（共享 DTO、真实转发、单次 Provider 调用与 TDD）
 - [x] Web（三入口、可访问差异弹窗、采用与单步恢复）
 - [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（新增 action 为可选能力，现有请求不变）
-- [ ] 部署 / 运维（PR/CI、Core/Gateway/HK/Pages 和生产非计费 smoke）
+- [x] 部署 / 运维（PR #152、10/10 CI、Core/Gateway/HK/Pages 和生产非计费 smoke）
+发布证据：merge SHA `2f0166901c5f939091cbe92281b4b5712689153a`；Core 镜像发布 run `33631832942`（`sha256:79ce2d53ebf7af78f6d5881ffb2795f52341567c1b8dcf2e244fcd7aa01e0c13`）；Gateway 镜像发布 run `33631832269`（`sha256:af9126414b17500060a1c8f1445b7162a60ebba8bbbd7189b3a652ea6a0fda21`）；香港部署 run `33632618871`；Pages 部署 run `33633364781`（Bench 保持开启）。现网 `/health`、`/ready`、Registry contract version 1 和空 Key `INPUT_OPTIMIZATION_KEY_REQUIRED` 均通过；未执行真实 Provider 成功链。
 
 ### [2026-09-02] Scientific V2 五模型修正发布恢复正确基线与真实审核理由 — by Codex
 变更：针对误将全量 343 张图片重审并重算 40 模型的已发布 V2，修正批次现同时签名绑定正确数据基线 release 与当前错误 active predecessor。发布端只重新审核、渲染并重算精确的 5 个目标模型；其他 35 个模型的分数、维度、图片、证据与审核内容从基线原样移植，只允许 `overallRank` / `dimensionRanks` 和证据行的 release/rank/时间派生字段变化。目标模型每个 9 题位必须全部成功才能生成修正审核包和公开证据，因此三个 Recraft 未补跑完成时不可伪装成已更新。A/B 与 xhigh 仲裁每个题位必填真实具体审核理由，禁止通用占位文案；最终按 competition ranking 重算受影响排名后在单一 Mongo 事务内原子 supersede。公开 API 字段不变。
