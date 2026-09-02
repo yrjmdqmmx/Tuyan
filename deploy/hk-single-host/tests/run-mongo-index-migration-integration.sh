@@ -215,6 +215,8 @@ docker exec "$mongo_container" mongosh --quiet \
     const reviews = benchmark.getCollection("paperbanana_benchmark_scientific_v2_review_artifacts")
     const publicEvidence = benchmark.getCollection("paperbanana_benchmark_scientific_v2_public_evidence")
     const releases = benchmark.getCollection("paperbanana_benchmark_releases")
+    const releaseHeads = benchmark.getCollection("paperbanana_benchmark_release_heads")
+    const releaseLifecycle = benchmark.getCollection("paperbanana_benchmark_release_lifecycle")
     if (batches.createIndex({batchId: 1}, {unique: true, name: "scientific_v2_batch_id"}) !== "scientific_v2_batch_id"
       || !batches.getIndexes().some(index => index.name === "scientific_v2_manifest_hash")) {
       throw new Error("Scientific V2 API createIndex/listIndexes must succeed")
@@ -230,6 +232,12 @@ docker exec "$mongo_container" mongosh --quiet \
     publicEvidence.updateOne({_id: "scientific-v2-api-evidence"}, {$set: {published: true}})
     releases.insertOne({_id: "scientific-v2-api-release", releaseHash: "d".repeat(64)})
     if (!releases.findOne({_id: "scientific-v2-api-release"})) throw new Error("Scientific V2 API release access failed")
+    releaseHeads.insertOne({_id: "scientific-v2-api-release-head", releaseId: "scientific-v2-api-release", releaseHash: "d".repeat(64)})
+    releaseHeads.updateOne({_id: "scientific-v2-api-release-head"}, {$set: {updated: true}})
+    if (releaseHeads.findOne({_id: "scientific-v2-api-release-head"})?.updated !== true) throw new Error("Scientific V2 API release head CRUD failed")
+    releaseLifecycle.insertOne({_id: "scientific-v2-api-release-lifecycle", releaseId: "scientific-v2-api-release", releaseHash: "d".repeat(64), status: "active"})
+    releaseLifecycle.updateOne({_id: "scientific-v2-api-release-lifecycle"}, {$set: {updated: true}})
+    if (releaseLifecycle.findOne({_id: "scientific-v2-api-release-lifecycle"})?.updated !== true) throw new Error("Scientific V2 API release lifecycle CRUD failed")
     let releaseUpdateRejected = false
     try { releases.updateOne({_id: "scientific-v2-api-release"}, {$set: {profileStatus: "draft"}}) }
     catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") releaseUpdateRejected = true; else throw error }
@@ -294,6 +302,8 @@ docker exec "$mongo_container" mongosh --quiet \
     rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_scientific_v2_review_artifacts"), "review")
     rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_scientific_v2_public_evidence"), "public evidence")
     rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_releases"), "release")
+    rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_release_heads"), "release head")
+    rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_release_lifecycle"), "release lifecycle")
     let scientificDeleteRejected = false
     try { scientificBatches.deleteOne({_id: "scientific-v2-worker-batch"}) }
     catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") scientificDeleteRejected = true; else throw error }

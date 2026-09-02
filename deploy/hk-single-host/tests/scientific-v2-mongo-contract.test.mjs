@@ -13,6 +13,10 @@ const collections = {
   reviews: 'paperbanana_benchmark_scientific_v2_review_artifacts',
   publicEvidence: 'paperbanana_benchmark_scientific_v2_public_evidence',
 }
+const releaseStateCollections = [
+  'paperbanana_benchmark_release_heads',
+  'paperbanana_benchmark_release_lifecycle',
+]
 
 function parseSingleLineArray(source, name) {
   const matched = source.match(new RegExp(`const ${name} = (\\[[^\\n]+\\])`))
@@ -52,6 +56,7 @@ test('scientific v2 API and Worker collection allowlists are exact and least pri
   const initMongo = readDeploy('scripts/init-mongo.sh')
   const scientificRepository = readRepository('apps/paperbanana-api/src/scientific-v2-repository.ts')
   assert.deepEqual(parseSingleLineArray(initMongo, 'scientificV2ApiWritableCollections'), Object.values(collections))
+  assert.deepEqual(parseSingleLineArray(initMongo, 'scientificV2ApiReleaseStateCollections'), releaseStateCollections)
   assert.deepEqual(parseSingleLineArray(initMongo, 'scientificV2WorkerWritableCollections'), [collections.batches, collections.dispatches])
 
   const workerRoleStart = initMongo.indexOf('role: "paperbanana_benchmark_worker_role"')
@@ -63,9 +68,11 @@ test('scientific v2 API and Worker collection allowlists are exact and least pri
   assert.match(workerRole, /scientificV2WorkerWritableCollections\.map\(collection => \(\{resource: \{db: "paperbanana_benchmark", collection}, actions: \["find", "insert", "update"\]\}\)\)/)
   assert.doesNotMatch(workerRole, /scientificV2ApiWritableCollections/)
   assert.doesNotMatch(workerRole, /paperbanana_benchmark_scientific_v2_(?:review_artifacts|public_evidence)/)
+  for (const collection of releaseStateCollections) assert.doesNotMatch(workerRole, new RegExp(collection))
   assert.match(workerRole, /collection: "paperbanana_benchmark_releases"[\s\S]*actions: \["find"\]/)
 
   assert.match(apiRole, /scientificV2ApiWritableCollections\.map\(collection => \(\{resource: \{db: "paperbanana_benchmark", collection}, actions: \["find", "insert", "update", "createIndex", "listIndexes"\]\}\)\)/)
+  assert.match(apiRole, /scientificV2ApiReleaseStateCollections\.map\(collection => \(\{resource: \{db: "paperbanana_benchmark", collection}, actions: \["find", "insert", "update"\]\}\)\)/)
   assert.match(apiRole, /collection: "paperbanana_benchmark_releases"[\s\S]*actions: \["find", "insert"\]/)
   assert.equal(apiRole.match(/collection: "paperbanana_benchmark_releases"/g)?.length, 1)
   const releasePrivilege = apiRole.match(/\{resource: \{db: "paperbanana_benchmark", collection: "paperbanana_benchmark_releases"\}, actions: \[[^\]]+\]\}/)?.[0] || ''
@@ -105,9 +112,13 @@ test('Mongo integration harness proves scientific v2 API access and Worker denia
   assert.match(harness, /Scientific V2 API release createIndex must be rejected as Unauthorized/)
   assert.match(harness, /Scientific V2 API release listIndexes must be rejected as Unauthorized/)
   assert.match(harness, /Scientific V2 API release update must be rejected as Unauthorized/)
+  assert.match(harness, /Scientific V2 API release head CRUD failed/)
+  assert.match(harness, /Scientific V2 API release lifecycle CRUD failed/)
   assert.match(harness, /Scientific V2 Worker \$\{label\} write must be rejected as Unauthorized/)
   assert.match(harness, /rejectWrite\([^\n]+, "review"\)/)
   assert.match(harness, /rejectWrite\([^\n]+, "public evidence"\)/)
   assert.match(harness, /rejectWrite\([^\n]+, "release"\)/)
+  assert.match(harness, /rejectWrite\([^\n]+, "release head"\)/)
+  assert.match(harness, /rejectWrite\([^\n]+, "release lifecycle"\)/)
   assert.match(harness, /Scientific V2 Worker delete must be rejected as Unauthorized/)
 })
