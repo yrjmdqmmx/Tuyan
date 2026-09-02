@@ -1577,6 +1577,13 @@ export function createMongoBenchmarkRepository(
           sourceBatchId: input.sourceBatchId,
           sourceManifestHash: input.sourceManifestHash,
           sourceReleaseHash: input.sourceReleaseHash,
+          ...(['baselineBatchId', 'baselineManifestHash', 'baselineReleaseId', 'baselineReleaseHash']
+            .some((key) => Object.hasOwn(input, key)) ? {
+            baselineBatchId: input.baselineBatchId,
+            baselineManifestHash: input.baselineManifestHash,
+            baselineReleaseId: input.baselineReleaseId,
+            baselineReleaseHash: input.baselineReleaseHash,
+          } : {}),
           targetModelIds: input.targetModelIds,
           targetSlotIds: input.targetSlotIds,
           targetSlotSetHash: input.targetSlotSetHash,

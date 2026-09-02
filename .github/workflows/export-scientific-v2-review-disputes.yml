@@ -297,8 +297,8 @@ jobs:
                   raise RuntimeError('public-binding')
               public_disputes.append({
                   'packetHash': found['packetHash'], 'item': found['item'], 'reasons': dispute.get('reasons'),
-                  'firstReview': {'scores': first.get('scores'), 'redLines': first.get('redLines'), 'lowConfidence': first.get('lowConfidence')},
-                  'secondReview': {'scores': second.get('scores'), 'redLines': second.get('redLines'), 'lowConfidence': second.get('lowConfidence')},
+                  'firstReview': {'scores': first.get('scores'), 'redLines': first.get('redLines'), 'lowConfidence': first.get('lowConfidence'), 'rationale': first.get('rationale')},
+                  'secondReview': {'scores': second.get('scores'), 'redLines': second.get('redLines'), 'lowConfidence': second.get('lowConfidence'), 'rationale': second.get('rationale')},
               })
           output = {
               'schemaVersion': 2, 'batchManifestHash': manifest_hash, 'sourceSetHash': reviewer_a['sourceSetHash'],

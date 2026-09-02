@@ -91,13 +91,18 @@ jobs:
               (keys | sort) == ["packetHash","results"] and (.packetHash | test("^[a-f0-9]{64}$")) and
               (.results | type) == "array" and (.results | length) > 0 and (.results | length) <= 24 and
               all(.results[];
-                (keys | sort) == ["blindLabel","itemHash","lowConfidence","redLines","scores"] and
+                (keys | sort) == ["blindLabel","itemHash","lowConfidence","rationale","redLines","scores"] and
                 (.blindLabel | type) == "string" and (.blindLabel | length) >= 1 and (.blindLabel | length) <= 128 and
                 (.itemHash | test("^[a-f0-9]{64}$")) and (.lowConfidence | type) == "boolean" and
+                (.rationale | type) == "string" and (.rationale | length) >= 8 and (.rationale | length) <= 500 and
+                (.rationale | test("[\\u0000-\\u001f\\u007f]|\\p{Cf}") | not) and
+                (.rationale | test("(?:https?://|ｈｔｔｐｓ?：／／|www\\.|ｗｗｗ．|mailto:|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}|reviewer|blind-|attestation|hmac|/tmp/|/Users/|/home/|api[-_ ]?key|access[-_ ]?token|secret|password|credential|authorization|bearer|(?:sk|gh[pousr])[-_][A-Za-z0-9_-]{8,})"; "i") | not) and
+                (.rationale | test("^(?:加分：?双盲审核未确认红线问题|双盲审核未确认红线问题|整体表现良好|整体符合要求|基本符合要求|未发现明显问题|没有明显问题|无明显问题|图像质量良好|内容基本准确|结果符合题意|整体效果不错|整体效果良好|符合要求|looks good|meets requirements|no obvious issues|overall good)"; "i") | not) and
                 (.redLines | type) == "array" and (.redLines | length) <= 16 and all(.redLines[]; type == "string") and
                 (.scores | type) == "object" and all(.scores[]; type == "number" and . >= 0 and . <= 10)
               )
             ) and
+            ([.submissions[].results[].rationale] | unique | length) == ([.submissions[].results[]] | length) and
             ([.. | objects | keys[]] | index("privateMappings") == null) and
             ([.. | objects | keys[]] | index("privateEnvelope") == null) and
             ([.. | objects | keys[]] | index("attestationSecret") == null) and

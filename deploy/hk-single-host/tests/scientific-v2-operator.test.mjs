@@ -46,6 +46,15 @@ const priceHash = 'd'.repeat(64)
 const manifestHash = 'e'.repeat(64)
 const modelCount = 4
 const lockName = '/run/lock/paperbanana-hk-production.lock'
+const correctiveBaselineReleaseHash = 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a'
+const correctiveActivePredecessorReleaseHash = '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe'
+const correctiveTargetModelIds = [
+  'recraft/recraft-v4-pro-vector',
+  'recraft/recraft-v4-styles-pro-vector',
+  'recraft/recraft-v4-styles-vector',
+  'seedream-4.5',
+  'seedream-5.0',
+]
 const confirmations = {
   inspect: 'inspect-scientific-v2-disabled-worker',
   run: 'run-exact-scientific-v2-bundle-disabled-worker',
@@ -665,6 +674,13 @@ test('scientific v2 admin input accepts only an exact draft JSON asset and a clo
   assert.match(source, /releases\/assets\/\$ASSET_ID/)
   assert.match(source, /attest\|import-worker\|import-codex\|export-review\|import-review\|import-arbitration\|publish/)
   assert.match(source, /\["batchId","manifestHash"\]/)
+  assert.match(source, /baselineBatchId/)
+  assert.match(source, /baselineManifestHash/)
+  assert.match(source, /baselineReleaseId/)
+  assert.match(source, /baselineReleaseHash/)
+  assert.match(source, new RegExp(correctiveBaselineReleaseHash))
+  assert.match(source, new RegExp(correctiveActivePredecessorReleaseHash))
+  for (const modelId of correctiveTargetModelIds) assert.equal(source.split(`\"${modelId}\"`).length - 1, 1, modelId)
   assert.match(source, /\["attestationHash","report","reportHash"\]/)
   assert.match(source, /\["assignment","batchId","objectBindings"\]/)
   assert.match(source, /\["batchId","result"\]/)
@@ -687,6 +703,11 @@ test('review pack bundle is derived offline from one exact completed state with 
   assert.match(source, /STAGER_SHA/)
   assert.match(source, /scientific-v2-review-pack-stager[.]mjs:ro/)
   assert.match(source, /[.]operation\s*==\s*["']review_pack["']/)
+  assert.match(source, /targetModelIds/)
+  assert.match(source, /correction-incomplete/)
+  assert.match(source, new RegExp(correctiveBaselineReleaseHash))
+  assert.match(source, new RegExp(correctiveActivePredecessorReleaseHash))
+  for (const modelId of correctiveTargetModelIds) assert.equal(source.split(`'${modelId}'`).length - 1, 1, modelId)
   assert.match(source, /automaticJudgeCalls\":0/)
   assert.match(source, /providerCalls\":0/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
@@ -718,6 +739,11 @@ test('public rendition bundle binds the same completed state and cannot publish 
   assert.match(source, /state[.]get\(['"]status['"]\)\s*!=\s*['"]completed['"]/)
   assert.match(source, /paperbanana\/scientific-v2\/operator-attestation\/v1/)
   assert.match(source, /['"]operation['"]:\s*['"]render_public_evidence['"]/)
+  assert.match(source, /targetModelIds/)
+  assert.match(source, /correction-incomplete/)
+  assert.match(source, new RegExp(correctiveBaselineReleaseHash))
+  assert.match(source, new RegExp(correctiveActivePredecessorReleaseHash))
+  for (const modelId of correctiveTargetModelIds) assert.equal(source.split(`'${modelId}'`).length - 1, 1, modelId)
   assert.match(source, /providerCalls\":0/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.doesNotMatch(source, /adminBenchmarkPublish|operation['"]:\s*['"]publish['"]|PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
@@ -807,6 +833,7 @@ test('review validation bundle accepts one exact blind submission and restores p
   assert.match(source, /review_validate/)
   assert.match(source, /privateAssignment/)
   assert.match(source, /publicAssignment/)
+  assert.match(source, /rationale/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
   assert.match(source, /providerCalls['"]?:\s*0/)
   assert.doesNotMatch(source, /PAPERBANANA_BENCH_(?:BAILIAN|ARK|OPENROUTER)_API_KEY|set -x|printenv|rm -rf/)
@@ -835,6 +862,8 @@ test('review dispute export derives only blind xhigh work and never exports mapp
   assert.match(source, /node dist\/scientific-v2-operator[.]mjs/)
   assert.doesNotMatch(source, /dist\/scientific-v2-review[.]js/)
   assert.match(source, /public-arbitration[.]json/)
+  assert.match(source, /'rationale': first[.]get\('rationale'\)/)
+  assert.match(source, /'rationale': second[.]get\('rationale'\)/)
   assert.match(source, /automaticJudgeCalls/)
   assert.match(source, /retention-days:\s*1/)
   assert.match(source, /--network none/)
@@ -848,6 +877,7 @@ test('xhigh arbitration bundle binds exact disputes and both signed reviewer res
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /review-validated[.]json/)
   assert.match(source, /reasoningEffort.*xhigh/)
+  assert.match(source, /\["itemHash","rationale","redLines","scores"\]/)
   assert.match(source, /review_arbitrate/)
   assert.match(source, /automaticJudges.*\[\]/)
   assert.match(source, /install -o 0 -g 0 -m 0600/)
@@ -890,6 +920,7 @@ test('current frozen batch has a dedicated zero-provider public render runner wi
   const source = readFileSync(publicRenderRunWorkflow, 'utf8')
   assert.match(source, /paperbanana-hk-production[.]lock/)
   assert.match(source, /render_public_evidence/)
+  assert.match(source, /targetModelIds/)
   assert.match(source, /publishInput[.]batchId/)
   assert.match(source, /publishInputHash/)
   assert.match(source, /publish-input[.]json/)
@@ -1006,6 +1037,12 @@ test('publish-input inspection verifies the protected rendered payload and expos
   assert.match(diagnostic, /publicationCodeDiffAllowed/)
   assert.match(diagnostic, /release_identity_compatible/)
   assert.match(diagnostic, /remediationMatches/)
+  assert.match(diagnostic, /correction_target_scope/)
+  assert.match(diagnostic, /correction_baseline/)
+  assert.match(diagnostic, /review_rationales/)
+  assert.match(diagnostic, new RegExp(correctiveBaselineReleaseHash))
+  assert.match(diagnostic, new RegExp(correctiveActivePredecessorReleaseHash))
+  for (const modelId of correctiveTargetModelIds) assert.equal(diagnostic.split(`'${modelId}'`).length - 1, 1, modelId)
   assert.doesNotMatch(diagnostic, /insertOne|updateOne|deleteOne|findOneAndUpdate|fetch\(|axios|provider dispatch/i)
   assert.doesNotMatch(diagnostic, /process[.]stdout[.]write\([^\n]*(?:secret|uri|objectKey)/i)
   assert.doesNotMatch(source, /cat\s+|set -x|printenv|objectKey[^\n]*printf|evidence[^\n]*printf/)

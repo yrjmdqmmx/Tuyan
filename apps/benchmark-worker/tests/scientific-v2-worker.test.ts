@@ -1452,8 +1452,45 @@ function reviewAuthority(registryHash: string, modelKeys: string[]) {
   return { manifest: built.manifest, state: completed }
 }
 
-test('render_public_evidence reads exact private objects and emits an API-ready secret-free publish payload without runtime calls', async () => {
-  const authority = reviewAuthority(H64('7'), ['render-model'])
+function stateWithOneConfirmedTargetFailure(
+  authority: ReturnType<typeof reviewAuthority>,
+  targetModelId: string,
+) {
+  const state = structuredClone(authority.state)
+  const slot = state.slots.find((candidate) => candidate.canonicalModelId === targetModelId && !candidate.isProviderCanary)!
+  const original = slot.attempts[0]
+  const previousCost = Number(slot.costCny || 0)
+  slot.attempts = Array.from({ length: 4 }, (_, index) => {
+    const attempt = {
+      ...original,
+      attemptIndex: index + 1,
+      responseClass: 'confirmed_technical_failure' as const,
+      actualCny: null,
+      startedAt: new Date(Date.parse(CREATED_AT) + (index + 1) * 2_000).toISOString(),
+      completedAt: new Date(Date.parse(CREATED_AT) + (index + 1) * 2_000 + 1_000).toISOString(),
+      rawImageHash: null,
+      byteSize: null,
+      width: null,
+      height: null,
+      format: null,
+      editedHash: null,
+    }
+    delete (attempt as any).attemptHash
+    return { ...attempt, attemptHash: canonicalHash(attempt) }
+  })
+  slot.status = 'failed'
+  slot.costCny = Number(original.estimatedCny) * 4
+  if (slot.provider && slot.provider !== 'codex') {
+    state.providerSpentCny[slot.provider] += Number(slot.costCny) - previousCost
+  }
+  const completed = rehashStateSnapshot(state)
+  verifyScientificV2BatchState(completed, authority.manifest)
+  return completed
+}
+
+test('render_public_evidence can emit only an attested correction target roster without runtime calls', async () => {
+  const authority = reviewAuthority(H64('7'), ['render-model-a', 'render-model-b'])
+  const targetModelId = authority.manifest.models[0].canonicalModelId
   const raw = await sharp({ create: { width: 800, height: 400, channels: 3, background: '#abc' } }).png().toBuffer()
   const rawHash = createHash('sha256').update(raw).digest('hex')
   const state = structuredClone(authority.state)
@@ -1476,7 +1513,7 @@ test('render_public_evidence reads exact private objects and emits an API-ready 
   const output = await executeScientificV2OperatorBundle({
     operation: 'render_public_evidence', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
     manifest: authority.manifest, state: completed,
-    input: { batchId: 'render-public-batch' },
+    input: { batchId: 'render-public-batch', targetModelIds: [targetModelId] },
   } as any, {
     env: {
       PAPERBANANA_BENCH_ENABLED: 'false', PAPERBANANA_BENCH_CONCURRENCY: '1',
@@ -1509,14 +1546,30 @@ test('render_public_evidence reads exact private objects and emits an API-ready 
   assert.equal(runtimeLoads, 0)
   const publishInput = output.publishInput as any
   assert.equal(publishInput.batchId, 'render-public-batch')
-  assert.equal(publishInput.evidence.length, completed.slots.length)
+  const targetSlots = completed.slots.filter((slot) => slot.canonicalModelId === targetModelId)
+  assert.equal(publishInput.evidence.length, targetSlots.length)
+  assert.ok(publishInput.evidence.every((item: any) => item.canonicalModelId === targetModelId))
   assert.ok(publishInput.evidence.every((item: any) => item.requestedResolution === '2K'))
   assert.ok(publishInput.evidence.every((item: any) => item.actualOutputPixels.width === 800
     && item.actualOutputPixels.height === 400 && item.actualOutputPixels.fileSizeBytes === raw.length))
   assert.deepEqual(publishInput.objectBindings.map((item: any) => item.imageHash).sort(), [rawHash, SCIENTIFIC_EDIT_SOURCE.sourceHash].sort())
-  assert.equal(puts.length, completed.slots.length * 3 + completed.slots.filter((slot) => slot.operation === 'edit').length * 3)
+  assert.equal(puts.length, targetSlots.length * 3 + targetSlots.filter((slot) => slot.operation === 'edit').length * 3)
   assert.match(String(output.publishInputHash), /^[a-f0-9]{64}$/)
   assert.equal(JSON.stringify(output).includes('render-secret'), false)
+
+  const incomplete = stateWithOneConfirmedTargetFailure(authority, targetModelId)
+  await assert.rejects(() => renderScientificV2PublicEvidence({
+    batchId: 'render-incomplete-correction', manifest: authority.manifest, state: incomplete, targetModelIds: [targetModelId],
+    repository: { async loadCompletedBatch() { return { manifest: authority.manifest, state: incomplete } } } as any,
+    store: {
+      async persistPrivate() { throw new Error('must reject before object access') },
+      async readPrivate() { throw new Error('must reject before object access') },
+      async put() { throw new Error('must reject before object access') },
+      async get() { throw new Error('must reject before object access') },
+      async head() { throw new Error('must reject before object access') },
+      async getACL() { throw new Error('must reject before object access') },
+    },
+  }), /SCIENTIFIC_V2_PUBLIC_RENDER_TARGET_SET_INVALID/)
 })
 
 test('public render always persists and binds the fixed edit source when every edit slot failed', async () => {
@@ -1613,16 +1666,25 @@ function attestedReviewSources(registryHash: string, modelKeys: string[], packet
 }
 
 function reviewerSubmission(assignment: ReturnType<typeof createScientificBlindReviewPackages>['reviewerA'], score: number, overrides: Record<string, unknown> = {}) {
+  const { rationale: rationaleOverride, ...resultOverrides } = overrides
+  let itemIndex = 0
   return assignment.packages.map((packet) => ({
     packetHash: packet.packetHash,
-    results: packet.items.map((item) => ({
-      itemHash: item.itemHash,
-      blindLabel: item.blindLabel,
-      scores: Object.fromEntries(item.applicableAxes.map((axis) => [axis, score])),
-      redLines: [],
-      lowConfidence: false,
-      ...overrides,
-    })),
+    results: packet.items.map((item) => {
+      const index = itemIndex++
+      const rationale = typeof rationaleOverride === 'function'
+        ? (rationaleOverride as (item: typeof packet.items[number], index: number) => unknown)(item, index)
+        : rationaleOverride ?? `第${index + 1}幅图中主体结构完整，关键关系和文字均可直接核验。`
+      return {
+        itemHash: item.itemHash,
+        blindLabel: item.blindLabel,
+        scores: Object.fromEntries(item.applicableAxes.map((axis) => [axis, score])),
+        redLines: [],
+        lowConfidence: false,
+        rationale,
+        ...resultOverrides,
+      }
+    }),
   }))
 }
 
@@ -1640,6 +1702,42 @@ test('review pack stager bundles Core and Worker review logic without runtime Ty
   assert.equal(staged.input.sources.length, authority.manifest.models.length)
   assert.match(staged.input.sourceSetHash, /^[a-f0-9]{64}$/)
   assert.match(staged.input.seed, /^[a-f0-9]{64}$/)
+})
+
+test('correction review pack stages only the exact target-model roster', () => {
+  const authority = reviewAuthority(H64('6'), ['alpha', 'beta', 'gamma'])
+  const targetModelIds = ['secret-model-alpha', 'secret-model-gamma']
+  const staged = createScientificV2ReviewPackStagingBundle({
+    manifest: authority.manifest,
+    state: authority.state,
+    attestationSecret: REVIEW_ATTESTATION_SECRET,
+    issuedAt: CREATED_AT,
+    targetModelIds,
+  } as any)
+  assert.deepEqual(staged.input.targetModelIds, targetModelIds)
+  assert.deepEqual(staged.input.sources.map((source) => source.modelKey).sort(), targetModelIds)
+  const { attestationSecret: _attestationSecret, ...reviewInput } = staged.input
+  const packed = createScientificBlindReviewPackages(reviewInput, REVIEW_ATTESTATION_SECRET)
+  assert.deepEqual(
+    [...new Set(packed.reviewerA.privateMappings.map((mapping) => mapping.modelKey))].sort(),
+    targetModelIds,
+  )
+  assert.equal(packed.reviewerA.packages.flatMap((packet) => packet.items).length, 18)
+  assert.throws(() => createScientificV2ReviewPackStagingBundle({
+    manifest: authority.manifest,
+    state: authority.state,
+    attestationSecret: REVIEW_ATTESTATION_SECRET,
+    issuedAt: CREATED_AT,
+    targetModelIds: ['secret-model-gamma', 'secret-model-alpha'],
+  } as any), /SCIENTIFIC_V2_REVIEW_TARGET_SET_INVALID/)
+  const incomplete = stateWithOneConfirmedTargetFailure(authority, targetModelIds[0])
+  assert.throws(() => createScientificV2ReviewPackStagingBundle({
+    manifest: authority.manifest,
+    state: incomplete,
+    attestationSecret: REVIEW_ATTESTATION_SECRET,
+    issuedAt: CREATED_AT,
+    targetModelIds,
+  } as any), /SCIENTIFIC_V2_REVIEW_TARGET_INCOMPLETE/)
 })
 
 test('review roster retains a zero-success model while packaging only exact successful state items', () => {
@@ -1767,10 +1865,11 @@ test('review validation fails closed and finalization averages agreement or requ
   assert.deepEqual(pending.disputes[0].reasons, ['score_gap_gt_2', 'red_line_conflict', 'low_confidence'])
   const arbitration = {
     reasoningEffort: 'xhigh' as const,
-    results: pending.disputes.map((dispute) => ({
+    results: pending.disputes.map((dispute, index) => ({
       itemHash: dispute.itemHash,
       scores: Object.fromEntries(dispute.applicableAxes.map((axis) => [axis, 9])),
       redLines: [],
+      rationale: `第${index + 1}个争议题位的主体结构、文字与题目约束经复核一致。`,
     })),
   }
   const final = finalizeScientificDoubleReview({ reviewerA: validatedA, reviewerB: disputedB, automaticJudges: [], arbitration }, REVIEW_ATTESTATION_SECRET)
@@ -1795,6 +1894,105 @@ test('review validation fails closed and finalization averages agreement or requ
   assert.throws(() => validateScientificReviewerResults({ role: 'A', assignment: mixed.reviewerA, submissions: reviewerSubmission(mixed.reviewerA, 8, { redLines: ['unknown_red_line'] }) }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RED_LINE_INVALID/)
   const forbiddenAutomaticJudges: unknown[] = ['judge']
   assert.throws(() => finalizeScientificDoubleReview({ reviewerA: validatedA, reviewerB: validatedB, automaticJudges: forbiddenAutomaticJudges }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_AUTOMATIC_JUDGE_FORBIDDEN/)
+})
+
+test('review validation requires concrete public rationale and arbitration owns the final disputed rationale', () => {
+  const secret = REVIEW_PACKET_SIGNING_SECRET
+  const attested = attestedReviewSources(H64('b'), ['alpha'], secret)
+  const mixed = createScientificBlindReviewPackages({
+    batchManifestHash: attested.batchManifestHash,
+    manifest: attested.manifest,
+    state: attested.state,
+    sourceSetHash: attested.sourceSetHash,
+    seed: 'rationale-bound-review',
+    sources: attested.sources,
+  }, REVIEW_ATTESTATION_SECRET)
+  const rationaleA = '流程节点齐全，箭头方向与题目要求一致，主要文字清晰可读。'
+  const rationaleB = '结构关系表达正确，但右下角次要标注略显拥挤。'
+  const firstFinalItemHash = mixed.reviewerA.packages.flatMap((packet) => packet.items.map((item) => item.itemHash))
+    .sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right)))[0]
+  const reviewerA = validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: (item: { itemHash: string }, index: number) => item.itemHash === firstFinalItemHash ? rationaleA : `${rationaleA} 第${index + 1}幅图的局部排布已单独核对。` }),
+  }, REVIEW_ATTESTATION_SECRET)
+  const reviewerB = validateScientificReviewerResults({
+    role: 'B', assignment: mixed.reviewerB,
+    submissions: reviewerSubmission(mixed.reviewerB, 7, { rationale: (item: { itemHash: string }, index: number) => item.itemHash === firstFinalItemHash ? rationaleB : `${rationaleB} 第${index + 1}幅图的标注密度已单独核对。` }),
+  }, REVIEW_ATTESTATION_SECRET)
+
+  const agreed = finalizeScientificDoubleReview({ reviewerA, reviewerB, automaticJudges: [] }, REVIEW_ATTESTATION_SECRET)
+  assert.deepEqual(agreed.results[0].rationales, [rationaleA, rationaleB])
+
+  const disputedB = validateScientificReviewerResults({
+    role: 'B', assignment: mixed.reviewerB,
+    submissions: reviewerSubmission(mixed.reviewerB, 4, { rationale: (_item: unknown, index: number) => `第${index + 1}幅图的关键箭头方向与题意冲突，定量标签也不完整。` }),
+  }, REVIEW_ATTESTATION_SECRET)
+  const pending = finalizeScientificDoubleReview({ reviewerA, reviewerB: disputedB, automaticJudges: [] }, REVIEW_ATTESTATION_SECRET)
+  const arbitrationRationale = '复核后确认主体流程正确，但关键定量标签缺失，因此按对应维度降分。'
+  const arbitration = {
+    reasoningEffort: 'xhigh' as const,
+    results: pending.disputes.map((dispute, index) => ({
+      itemHash: dispute.itemHash,
+      scores: Object.fromEntries(dispute.applicableAxes.map((axis) => [axis, 6])),
+      redLines: [],
+      rationale: index === 0 ? arbitrationRationale : `${arbitrationRationale} 第${index + 1}个争议题位已独立复核。`,
+    })),
+  }
+  const finalized = finalizeScientificDoubleReview({ reviewerA, reviewerB: disputedB, automaticJudges: [], arbitration }, REVIEW_ATTESTATION_SECRET)
+  assert.equal(finalized.results[0].rationales[0], arbitrationRationale)
+  assert.ok(finalized.results.every((item) => item.rationales.length === 1))
+  assert.equal(new Set(finalized.results.map((item) => item.rationales[0])).size, finalized.results.length)
+
+  const missingRationale = reviewerSubmission(mixed.reviewerA, 8)
+  delete (missingRationale[0].results[0] as any).rationale
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: missingRationale,
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: 'blind-a-001 reviewerA /tmp/private.json' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '加分：双盲审核未确认红线问题' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '整体表现良好。' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '整体表现良好。题位01' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '具体结构说明见 https://internal.example/review/1' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '题位结构正确，api_key_live_abcdefgh 仅供内部复核。' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '详见 ｈｔｔｐｓ：／／internal.example／review，主体结构正确。' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '主\u200b体结构完整，关键关系与文字可直接核验。' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, { rationale: '主体结构完整，关键关系与文字可直接核验。' }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
+  assert.throws(() => validateScientificReviewerResults({
+    role: 'A', assignment: mixed.reviewerA,
+    submissions: reviewerSubmission(mixed.reviewerA, 8, {
+      rationale: (_item: unknown, index: number) => index === 0
+        ? '关键箭头由左向右连续，标题与数值标注清晰。'
+        : index === 1 ? '关键箭头由左向右连续，标题与数值标注清晰！' : `第${index + 1}幅图的层级连线清晰，主要文字均未被遮挡。`,
+    }),
+  }, REVIEW_ATTESTATION_SECRET), /SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID/)
 })
 
 test('source and assignment HMACs prevent model rebinding and cross-batch A/B finalization', () => {
@@ -1994,10 +2192,11 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
     assert.equal(pending.canFinalize, false)
     const arbitration = {
       reasoningEffort: 'xhigh' as const,
-      results: pending.disputes.map((dispute) => ({
+      results: pending.disputes.map((dispute, index) => ({
         itemHash: dispute.itemHash,
         scores: Object.fromEntries(dispute.applicableAxes.map((axis) => [axis, 7])),
         redLines: [],
+        rationale: `第${index + 1}个争议题位的主体结构基本正确，但细节表达仍需扣分。`,
       })),
     }
     const arbitrationOutput = runBundle('review-arbitrate', {

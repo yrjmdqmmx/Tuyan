@@ -38,22 +38,21 @@ export const SCIENTIFIC_V2_RELEASE_HEAD_ID = [
 
 const hashPattern = /^[a-f0-9]{64}$/
 const codeShaPattern = /^[a-f0-9]{40}$/
+const SCIENTIFIC_V2_CORRECTIVE_RELEASE_PLAN = Object.freeze({
+  baselineReleaseHash: 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a',
+  activePredecessorReleaseHash: '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe',
+  targetModelIds: Object.freeze([
+    'recraft/recraft-v4-pro-vector',
+    'recraft/recraft-v4-styles-pro-vector',
+    'recraft/recraft-v4-styles-vector',
+    'seedream-4.5',
+    'seedream-5.0',
+  ]),
+})
 const OPERATOR_ATTESTATION_DOMAIN = 'paperbanana/scientific-v2/operator-attestation/v1'
 const OPERATOR_DIAGNOSTIC_DOMAIN = 'paperbanana/scientific-v2/operator-diagnostic/v1'
 const productionLockName = '/run/lock/paperbanana-hk-production.lock'
 const providers = ['bailian', 'ark', 'openrouter'] as const
-const reviewRedLineNotes = Object.freeze({
-  missing_required_content: '扣分：缺少题目要求的关键内容',
-  scientific_inaccuracy: '扣分：存在科学事实偏差',
-  topology_error: '扣分：结构或拓扑关系错误',
-  text_symbol_error: '扣分：文字或符号表达错误',
-  quantitative_error: '扣分：定量表达不准确',
-  instruction_violation: '扣分：未完整遵循生成或编辑指令',
-  readability_issue: '扣分：信息层级或可读性不足',
-  publication_quality_issue: '扣分：未达到出版级视觉质量',
-  edit_target_miss: '扣分：未准确完成目标区域编辑',
-  non_target_changed: '扣分：非目标区域发生不当变化',
-} as const)
 const reviewRedLineCodes = new Set<string>(SCIENTIFIC_REVIEW_RED_LINE_CODES)
 const scientificCaseOrder = new Map(PB_SCIENTIFIC_FIGURE_V2.cases.map((scientificCase, index) => [scientificCase.id, index]))
 const stateOperationReportPayloadKeys = [
@@ -178,6 +177,34 @@ function assertReviewRedLines(value: unknown) {
     || value.some((code) => typeof code !== 'string' || code.length > 64 || !reviewRedLineCodes.has(code))) {
     scientificError('SCIENTIFIC_V2_REVIEW_REDLINE_INVALID')
   }
+}
+
+function normalizeReviewRationale(value: unknown) {
+  if (typeof value !== 'string') scientificError('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
+  const rationale = value.trim()
+  const normalized = rationale.normalize('NFKC')
+  const compact = normalized.toLocaleLowerCase('en-US').replace(/[\s，。！？、；：,.!?;:'"“”‘’（）()_-]/gu, '')
+  const securityCompact = normalized.toLocaleLowerCase('en-US').replace(/[\s_-]+/gu, '')
+  const genericPrefixes = [
+    '加分双盲审核未确认红线问题', '双盲审核未确认红线问题', '整体表现良好', '整体符合要求', '基本符合要求',
+    '未发现明显问题', '没有明显问题', '无明显问题', '图像质量良好', '内容基本准确', '结果符合题意', '整体效果不错', '整体效果良好', '符合要求',
+    'looksgood', 'meetsrequirements', 'noobviousissues', 'overallgood',
+  ]
+  if (genericPrefixes.some((prefix) => compact.startsWith(prefix))
+    || rationale !== value || rationale.length < 8 || rationale.length > 500
+    || /[\u0000-\u001f\u007f]|\p{Cf}/u.test(rationale)
+    || /(?:reviewer\s*[ab]?|blind-[a-z0-9-]+|object\s*key|mapping\s*hash|attestation|hmac|\/tmp\/|bench\/scientific-v2\/private\/)/iu.test(normalized)
+    || /(?:https?:\/\/|www\.|mailto:|\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b|\b(?:api[-_ ]?key|access[-_ ]?token|secret|password|credential|authorization|bearer)\b|\b(?:localhost|127\.0\.0\.1|0\.0\.0\.0)\b|(?:\/Users\/|\/home\/|[a-z]:\\)|\b(?:sk-|gh[pousr]_)[a-z0-9_-]{8,})/iu.test(normalized)
+    || /(?:apikey|accesskey|secretkey|privatekey|accesstoken|refreshtoken|authorization|bearer|password|credential)/u.test(securityCompact)
+    || /(?:sk|gh[pousr])[-_][a-z0-9_-]{8,}/iu.test(normalized)
+    || /\b[a-f0-9]{40}(?:[a-f0-9]{24})?\b/iu.test(normalized)) {
+    scientificError('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
+  }
+  return rationale
+}
+
+function reviewRationaleUniquenessKey(rationale: string) {
+  return rationale.normalize('NFKC').toLocaleLowerCase('en-US').replace(/[\p{P}\p{Z}\p{Cf}]/gu, '')
 }
 
 function scientificError(code: string): never {
@@ -540,14 +567,19 @@ function assertReviewerResult(result: AnyRecord, assignment: AnyRecord, secret: 
   }
   const expectedItems = new Map(assignment.packages.flatMap((packet: AnyRecord) => packet.items.map((item: AnyRecord) => [item.itemHash, { packetHash: packet.packetHash, item }])))
   if (!Array.isArray(result.items) || result.items.length !== expectedItems.size) scientificError('SCIENTIFIC_V2_REVIEW_RESULT_SET_INVALID')
+  const seenRationales = new Set<string>()
   for (const item of result.items) {
-    assertExactKeys(item, ['packetHash', 'itemHash', 'applicableAxes', 'scores', 'redLines', 'lowConfidence'], 'SCIENTIFIC_V2_REVIEW_RESULT_TAMPERED')
+    assertExactKeys(item, ['packetHash', 'itemHash', 'applicableAxes', 'scores', 'redLines', 'lowConfidence', 'rationale'], 'SCIENTIFIC_V2_REVIEW_RESULT_TAMPERED')
     const expected = expectedItems.get(item.itemHash) as AnyRecord | undefined
     if (!expected || expected.packetHash !== item.packetHash || canonicalHash(item.applicableAxes) !== canonicalHash(expected.item.applicableAxes)
       || typeof item.lowConfidence !== 'boolean') {
       scientificError('SCIENTIFIC_V2_REVIEW_RESULT_SET_INVALID')
     }
     assertReviewRedLines(item.redLines)
+    const rationale = normalizeReviewRationale(item.rationale)
+    const rationaleKey = reviewRationaleUniquenessKey(rationale)
+    if (seenRationales.has(rationaleKey)) scientificError('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
+    seenRationales.add(rationaleKey)
     assertExactKeys(item.scores, item.applicableAxes, 'SCIENTIFIC_V2_REVIEW_SCORE_INVALID')
     if (item.applicableAxes.some((axis: string) => !Number.isFinite(item.scores[axis]) || item.scores[axis] < 0 || item.scores[axis] > 10)) {
       scientificError('SCIENTIFIC_V2_REVIEW_SCORE_INVALID')
@@ -573,6 +605,7 @@ function combineReviews(left: AnyRecord, right: AnyRecord) {
       applicableAxes: structuredClone(item.applicableAxes),
       scores: Object.fromEntries(item.applicableAxes.map((axis: string) => [axis, (item.scores[axis] + other.scores[axis]) / 2])),
       redLines: [...new Set([...leftLines, ...rightLines])].sort(),
+      rationales: [...new Set([item.rationale, other.rationale])],
       resolution: reasons.length ? 'pending_arbitration' : 'ab_mean',
     }
   })
@@ -856,6 +889,11 @@ export function createScientificV2MongoRepository(
     verifyReviewObject?: (objectKey: string, imageHash: string) => Promise<void>
     claimLeaseMs?: number
     requireRegistryAuthority?: boolean
+    correctionPlanForTest?: {
+      baselineReleaseHash: string
+      activePredecessorReleaseHash: string
+      targetModelIds: string[]
+    }
   } = {},
 ) {
   const batches = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.batches)
@@ -868,7 +906,21 @@ export function createScientificV2MongoRepository(
   const verifyObject = options.verifyObject || (async () => {})
   const verifyReviewObject = options.verifyReviewObject || verifyObject
   const claimLeaseMs = options.claimLeaseMs ?? 120_000
+  const correctionPlan = options.correctionPlanForTest || SCIENTIFIC_V2_CORRECTIVE_RELEASE_PLAN
   if (!Number.isInteger(claimLeaseMs) || claimLeaseMs < 1) scientificError('SCIENTIFIC_V2_CLAIM_LEASE_INVALID')
+
+  const assertExactCorrectionPlanBatch = (batch: AnyRecord) => {
+    const correctionBaseline = batch?.correctionBaseline
+    const remediation = batch?.remediationOf
+    const requiresCorrection = remediation?.releaseHash === correctionPlan.activePredecessorReleaseHash
+    if (!requiresCorrection && correctionBaseline === undefined) return
+    if (!requiresCorrection || !correctionBaseline
+      || correctionBaseline.releaseHash !== correctionPlan.baselineReleaseHash
+      || !Array.isArray(remediation.targetModelIds)
+      || canonicalHash(remediation.targetModelIds) !== canonicalHash(correctionPlan.targetModelIds)) {
+      scientificError('SCIENTIFIC_V2_CORRECTION_PLAN_INVALID')
+    }
+  }
 
   const operatorSecret = () => {
     const secret = options.operatorReportSecret
@@ -1023,18 +1075,19 @@ export function createScientificV2MongoRepository(
       || remediation.targetSlotIds.some((slotId: unknown) => typeof slotId !== 'string' || slotId.startsWith('codex:gpt-image-2:'))) {
       scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
     }
+    const source = batch.correctionBaseline || remediation
     const sourceBatch = await batches.findOne({
-      batchId: remediation.batchId,
-      manifestHash: remediation.manifestHash,
+      batchId: source.batchId,
+      manifestHash: source.manifestHash,
       status: 'published',
-      releaseId: remediation.releaseId,
-      releaseHash: remediation.releaseHash,
+      releaseId: source.releaseId,
+      releaseHash: source.releaseHash,
     })
     const sourceRelease = await releases.findOne({
-      _id: remediation.releaseId,
-      releaseHash: remediation.releaseHash,
-      batchId: remediation.batchId,
-      batchManifestHash: remediation.manifestHash,
+      _id: source.releaseId,
+      releaseHash: source.releaseHash,
+      batchId: source.batchId,
+      batchManifestHash: source.manifestHash,
       profileStatus: 'published',
       ...SCIENTIFIC_BENCHMARK_IDENTITY,
     })
@@ -1158,10 +1211,13 @@ export function createScientificV2MongoRepository(
       return { batchId, manifestHash: document.manifestHash, stateHash: document.stateHash, replayed: false }
     },
     async freezeRemediationBatch(input: AnyRecord) {
-      assertExactKeys(input, [
+      const baseKeys = [
         'batchId', 'sourceBatchId', 'sourceManifestHash', 'sourceReleaseHash',
         'targetModelIds', 'targetSlotIds', 'targetSlotSetHash',
-      ], 'SCIENTIFIC_V2_REMEDIATION_INPUT_INVALID')
+      ]
+      const correctionKeys = ['baselineBatchId', 'baselineManifestHash', 'baselineReleaseId', 'baselineReleaseHash']
+      const hasCorrectionBaseline = correctionKeys.some((key) => Object.hasOwn(input || {}, key))
+      assertExactKeys(input, hasCorrectionBaseline ? [...baseKeys, ...correctionKeys] : baseKeys, 'SCIENTIFIC_V2_REMEDIATION_INPUT_INVALID')
       const batchId = String(input.batchId || '')
       const sourceBatchId = String(input.sourceBatchId || '')
       if (![batchId, sourceBatchId].every((value) => /^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$/.test(value))
@@ -1170,6 +1226,12 @@ export function createScientificV2MongoRepository(
       const targetModelIds = exactSortedStrings(input.targetModelIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID', 64)
       const targetSlotIds = exactSortedStrings(input.targetSlotIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
       if (canonicalHash(targetSlotIds) !== input.targetSlotSetHash) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+      if ((input.sourceReleaseHash === correctionPlan.activePredecessorReleaseHash && !hasCorrectionBaseline)
+        || (hasCorrectionBaseline && (input.baselineReleaseHash !== correctionPlan.baselineReleaseHash
+        || input.sourceReleaseHash !== correctionPlan.activePredecessorReleaseHash
+        || canonicalHash(targetModelIds) !== canonicalHash(correctionPlan.targetModelIds)))) {
+        scientificError('SCIENTIFIC_V2_CORRECTION_PLAN_INVALID')
+      }
       const source = await batches.findOne({
         batchId: sourceBatchId, manifestHash: input.sourceManifestHash,
         releaseHash: input.sourceReleaseHash, status: 'published',
@@ -1183,6 +1245,8 @@ export function createScientificV2MongoRepository(
         profileStatus: 'published',
       })
       if (!sourceRelease) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+      const { _id: _sourceReleaseId, releaseHash: sourceReleaseHash, ...sourceReleaseBase } = sourceRelease
+      if (canonicalHash(sourceReleaseBase) !== sourceReleaseHash) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
       verifyScientificV2ImportedState(source.state, source.manifest)
       const modelSet = new Set(targetModelIds)
       if (targetModelIds.some((modelId) => !source.manifest.models.some((model: AnyRecord) => model.canonicalModelId === modelId))) {
@@ -1215,7 +1279,70 @@ export function createScientificV2MongoRepository(
         targetSlotIds,
         targetSlotSetHash: remediation.targetSlotSetHash,
       }
-      const frozenInputHash = canonicalHash({ ...remediationOf, batchId, manifestHash: remediation.manifest.manifestHash, stateHash: remediation.initialState.stateHash })
+      let correctionBaseline: AnyRecord | undefined
+      if (hasCorrectionBaseline) {
+        if (![input.baselineBatchId, input.baselineReleaseId].every((value) => typeof value === 'string' && value.length > 0)
+          || !hashPattern.test(String(input.baselineManifestHash || ''))
+          || !hashPattern.test(String(input.baselineReleaseHash || ''))
+          || input.baselineReleaseHash === input.sourceReleaseHash) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        }
+        const baselineBatch = await batches.findOne({
+          batchId: input.baselineBatchId,
+          manifestHash: input.baselineManifestHash,
+          releaseId: input.baselineReleaseId,
+          releaseHash: input.baselineReleaseHash,
+          status: 'published',
+        })
+        const baselineRelease = await releases.findOne({
+          _id: input.baselineReleaseId,
+          releaseHash: input.baselineReleaseHash,
+          batchId: input.baselineBatchId,
+          batchManifestHash: input.baselineManifestHash,
+          profileStatus: 'published',
+          ...SCIENTIFIC_BENCHMARK_IDENTITY,
+        })
+        const sourceLifecycle = await releaseLifecycle.findOne({
+          releaseId: source.releaseId,
+          releaseHash: input.sourceReleaseHash,
+          status: 'active',
+          supersedesReleaseId: input.baselineReleaseId,
+          supersedesReleaseHash: input.baselineReleaseHash,
+        })
+        const baselineLifecycle = await releaseLifecycle.findOne({
+          releaseId: input.baselineReleaseId,
+          releaseHash: input.baselineReleaseHash,
+          status: 'superseded',
+          supersededByReleaseId: source.releaseId,
+          supersededByReleaseHash: input.sourceReleaseHash,
+        })
+        if (!baselineBatch || baselineBatch.state?.status !== 'completed' || !baselineRelease
+          || !sourceLifecycle || !baselineLifecycle) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        const { _id: _baselineReleaseId, releaseHash: baselineReleaseHash, ...baselineReleaseBase } = baselineRelease
+        const baselineModelIds = Array.isArray(baselineRelease.models)
+          ? baselineRelease.models.map((model: AnyRecord) => model.canonicalModelId).sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+          : []
+        const sourceModelIds = sourceRelease.models.map((model: AnyRecord) => model.canonicalModelId)
+          .sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+        if (canonicalHash(baselineReleaseBase) !== baselineReleaseHash
+          || canonicalHash(baselineModelIds) !== canonicalHash(sourceModelIds)
+          || targetModelIds.some((modelId) => !baselineModelIds.includes(modelId))) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        }
+        correctionBaseline = {
+          releaseId: input.baselineReleaseId,
+          releaseHash: input.baselineReleaseHash,
+          batchId: input.baselineBatchId,
+          manifestHash: input.baselineManifestHash,
+        }
+      }
+      const frozenInputHash = canonicalHash({
+        ...remediationOf,
+        ...(correctionBaseline ? { correctionBaseline } : {}),
+        batchId,
+        manifestHash: remediation.manifest.manifestHash,
+        stateHash: remediation.initialState.stateHash,
+      })
       const existing = await batches.findOne({ batchId })
         || await batches.findOne({ manifestHash: remediation.manifest.manifestHash })
       if (existing) {
@@ -1276,6 +1403,7 @@ export function createScientificV2MongoRepository(
         latestStateReportHash: null,
         frozenInputHash,
         remediationOf: structuredClone(remediationOf),
+        ...(correctionBaseline ? { correctionBaseline: structuredClone(correctionBaseline) } : {}),
         carriedDispatchCount: carriedDispatches.length,
         createdAt: now(),
       }
@@ -1305,6 +1433,7 @@ export function createScientificV2MongoRepository(
     async operatorAttestation(input: { batchId?: string; manifestHash?: string }) {
       const batch = await batches.findOne(input.batchId ? { batchId: input.batchId } : { manifestHash: input.manifestHash })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_FOUND')
+      assertExactCorrectionPlanBatch(batch)
       const secret = operatorSecret()
       if (batch.manifestHash !== batch.manifest?.manifestHash
         || canonicalWithoutHash(batch.manifest, 'manifestHash') !== batch.manifestHash) scientificError('SCIENTIFIC_V2_MANIFEST_HASH_INVALID')
@@ -1313,6 +1442,18 @@ export function createScientificV2MongoRepository(
       const manifestSnapshot = structuredClone(batch.manifest)
       const stateSnapshot = structuredClone(batch.state)
       const codeLineage = await ensureBatchCodeLineage(batch)
+      const correction = batch.correctionBaseline ? {
+        baseline: structuredClone(batch.correctionBaseline),
+        activePredecessor: {
+          releaseId: batch.remediationOf.releaseId,
+          releaseHash: batch.remediationOf.releaseHash,
+          batchId: batch.remediationOf.batchId,
+          manifestHash: batch.remediationOf.manifestHash,
+        },
+        targetModelIds: structuredClone(batch.remediationOf.targetModelIds),
+        targetSlotIds: structuredClone(batch.remediationOf.targetSlotIds),
+        targetSlotSetHash: batch.remediationOf.targetSlotSetHash,
+      } : undefined
       const report = {
         schemaVersion: 2 as const,
         ...SCIENTIFIC_BENCHMARK_IDENTITY,
@@ -1328,6 +1469,7 @@ export function createScientificV2MongoRepository(
         modelCount: batch.manifest.models.length,
         slotCount: batch.manifest.executionOrder.length,
         revision: Number(batch.revision || 0),
+        ...(correction ? { correction } : {}),
         issuedAt: now().toISOString(),
       }
       const reportHash = canonicalHash(report)
@@ -1492,6 +1634,22 @@ export function createScientificV2MongoRepository(
       })
       if (!batch) scientificError('SCIENTIFIC_V2_REVIEW_BATCH_NOT_READY')
       assertReviewAssignment(input.assignment, batch, operatorSecret())
+      if (batch.correctionBaseline) {
+        const expectedTargetModels = exactSortedStrings(
+          batch.remediationOf?.targetModelIds,
+          'SCIENTIFIC_V2_CORRECTION_REVIEW_SCOPE_INVALID',
+          64,
+        )
+        const assignedModels = input.assignment.privateEnvelope.sources
+          .map((source: AnyRecord) => source.modelKey)
+          .sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+        const mappedModels = [...new Set<string>(input.assignment.privateMappings.map((mapping: AnyRecord) => String(mapping.modelKey)))]
+          .sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+        if (canonicalHash(assignedModels) !== canonicalHash(expectedTargetModels)
+          || mappedModels.some((modelId) => !expectedTargetModels.includes(modelId))) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_REVIEW_SCOPE_INVALID')
+        }
+      }
       const peerRole = input.assignment.role === 'A' ? 'B' : 'A'
       const peer = await reviews.findOne({
         artifactType: 'review_assignment_private', batchManifestHash: batch.manifestHash,
@@ -1691,18 +1849,30 @@ export function createScientificV2MongoRepository(
         || input.arbitration.results.length !== finalRow.disputes.length) scientificError('SCIENTIFIC_V2_ARBITRATION_ATTESTATION_INVALID')
       const pending = new Map(finalRow.disputes.map((item: AnyRecord) => [item.itemHash, item]))
       const arbitrated = new Map<string, AnyRecord>()
+      const seenRationales = new Set<string>()
       for (const result of input.arbitration.results) {
         const dispute = pending.get(result.itemHash) as AnyRecord | undefined
         if (!dispute || arbitrated.has(result.itemHash)) scientificError('SCIENTIFIC_V2_ARBITRATION_SET_INVALID')
+        assertExactKeys(result, ['itemHash', 'scores', 'redLines', 'rationale'], 'SCIENTIFIC_V2_ARBITRATION_SET_INVALID')
         assertExactKeys(result.scores, dispute.applicableAxes, 'SCIENTIFIC_V2_ARBITRATION_SET_INVALID')
         if (dispute.applicableAxes.some((axis: string) => !Number.isFinite(result.scores[axis]) || result.scores[axis] < 0 || result.scores[axis] > 10)
           || !Array.isArray(result.redLines)) scientificError('SCIENTIFIC_V2_ARBITRATION_SET_INVALID')
         assertReviewRedLines(result.redLines)
+        const rationale = normalizeReviewRationale(result.rationale)
+        const rationaleKey = reviewRationaleUniquenessKey(rationale)
+        if (seenRationales.has(rationaleKey)) scientificError('SCIENTIFIC_V2_REVIEW_RATIONALE_INVALID')
+        seenRationales.add(rationaleKey)
         arbitrated.set(result.itemHash, result)
       }
       const results = finalRow.results.map((item: AnyRecord) => {
         const arbitration = arbitrated.get(item.itemHash)
-        return arbitration ? { ...item, scores: structuredClone(arbitration.scores), redLines: [...arbitration.redLines].sort(), resolution: 'xhigh_arbitration' } : item
+        return arbitration ? {
+          ...item,
+          scores: structuredClone(arbitration.scores),
+          redLines: [...arbitration.redLines].sort(),
+          rationales: [normalizeReviewRationale(arbitration.rationale)],
+          resolution: 'xhigh_arbitration',
+        } : item
       })
       const finalBase = {
         batchManifestHash: batch.manifestHash,
@@ -1759,11 +1929,126 @@ export function createScientificV2MongoRepository(
       }
       const batch = await batches.findOne({ batchId: input.batchId, status: { $in: ['review_finalized', 'review_ready'] }, reviewFinalHash: { $exists: true } })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_PUBLISHABLE')
+      assertExactCorrectionPlanBatch(batch)
       const secret = operatorSecret()
       const codeLineage = await publicationBatchCodeLineage(batch)
       verifyScientificV2ImportedState(batch.state, batch.manifest)
       if (batch.state.status !== 'completed' || batch.state.slots.some((slot: AnyRecord) => !['succeeded', 'failed', 'unsupported'].includes(slot.status))) {
         scientificError('SCIENTIFIC_V2_BATCH_NOT_TERMINAL')
+      }
+      let correctionBaselineRelease: AnyRecord | null = null
+      let correctionTargetModelIds: Set<string> | null = null
+      const correctionBaselinePublicRows = new Map<string, AnyRecord>()
+      if (batch.correctionBaseline !== undefined) {
+        assertExactKeys(batch.correctionBaseline, ['releaseId', 'releaseHash', 'batchId', 'manifestHash'], 'SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        if (!batch.remediationOf || !hashPattern.test(String(batch.correctionBaseline.releaseHash || ''))
+          || typeof batch.correctionBaseline.releaseId !== 'string' || !batch.correctionBaseline.releaseId
+          || typeof batch.correctionBaseline.batchId !== 'string' || !batch.correctionBaseline.batchId
+          || !hashPattern.test(String(batch.correctionBaseline.manifestHash || ''))) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        }
+        correctionTargetModelIds = new Set(exactSortedStrings(
+          batch.remediationOf.targetModelIds,
+          'SCIENTIFIC_V2_CORRECTION_TARGET_SET_INVALID',
+          64,
+        ))
+        if (batch.correctionBaseline.releaseHash !== correctionPlan.baselineReleaseHash
+          || batch.remediationOf.releaseHash !== correctionPlan.activePredecessorReleaseHash
+          || canonicalHash([...correctionTargetModelIds]) !== canonicalHash(correctionPlan.targetModelIds)) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_PLAN_INVALID')
+        }
+        const correctionTargetSlots = batch.state.slots.filter((slot: AnyRecord) => correctionTargetModelIds!.has(slot.canonicalModelId))
+        if (correctionTargetSlots.length !== correctionTargetModelIds.size * 9
+          || correctionTargetSlots.some((slot: AnyRecord) => slot.status !== 'succeeded'
+            || !hashPattern.test(String(slot.attempts.at(-1)?.rawImageHash || ''))
+            || !['succeeded', 'succeeded_low_quality'].includes(String(slot.attempts.at(-1)?.responseClass)))) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE')
+        }
+        const correctionTargetSlotIds = exactSortedStrings(
+          batch.remediationOf.targetSlotIds,
+          'SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE',
+        )
+        if (batch.remediationOf.targetSlotSetHash !== canonicalHash(correctionTargetSlotIds)
+          || correctionTargetSlotIds.some((slotId) => {
+            const slot = batch.state.slots.find((candidate: AnyRecord) => candidate.slotId === slotId)
+            return !slot || !correctionTargetModelIds!.has(slot.canonicalModelId)
+              || slot.status !== 'succeeded' || !hashPattern.test(String(slot.attempts.at(-1)?.rawImageHash || ''))
+          })) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE')
+        }
+        correctionBaselineRelease = await releases.findOne({
+          _id: batch.correctionBaseline.releaseId,
+          releaseHash: batch.correctionBaseline.releaseHash,
+          batchId: batch.correctionBaseline.batchId,
+          batchManifestHash: batch.correctionBaseline.manifestHash,
+          profileStatus: 'published',
+          ...SCIENTIFIC_BENCHMARK_IDENTITY,
+        })
+        if (!correctionBaselineRelease) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        const { _id: _baselineId, releaseHash: baselineHash, ...baselineBase } = correctionBaselineRelease
+        const baselineModels = Array.isArray(correctionBaselineRelease.models) ? correctionBaselineRelease.models : []
+        const manifestModelIds = batch.manifest.models.map((model: AnyRecord) => model.canonicalModelId).sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+        const baselineModelIds = baselineModels.map((model: AnyRecord) => model.canonicalModelId).sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
+        if (canonicalHash(baselineBase) !== baselineHash
+          || canonicalHash(manifestModelIds) !== canonicalHash(baselineModelIds)
+          || [...correctionTargetModelIds].some((modelId) => !manifestModelIds.includes(modelId))) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        }
+        const baselineByModel = new Map(baselineModels.map((model: AnyRecord) => [model.canonicalModelId, model]))
+        for (const slot of batch.state.slots) if (!correctionTargetModelIds.has(slot.canonicalModelId)) {
+          const baselineModel = baselineByModel.get(slot.canonicalModelId) as AnyRecord | undefined
+          const baselineEvidence = baselineModel?.evidence?.find((item: AnyRecord) => item.caseId === slot.caseId)
+          const finalAttempt = slot.attempts.at(-1)
+          if (!baselineEvidence || baselineEvidence.status !== slot.status
+            || (slot.status === 'succeeded' && baselineEvidence.imageHash !== finalAttempt?.rawImageHash)) {
+            scientificError('SCIENTIFIC_V2_CORRECTION_NON_TARGET_DRIFT')
+          }
+        }
+        const baselineRows = await publicEvidence.find({ sourceReleaseHash: batch.correctionBaseline.releaseHash }).toArray()
+        const expectedBaselineSlots = new Set<string>()
+        for (const baselineModel of baselineModels) {
+          if (!Array.isArray(baselineModel.evidence) || baselineModel.evidence.length !== 9) {
+            scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+          }
+          for (const evidence of baselineModel.evidence) {
+            const key = `${baselineModel.canonicalModelId}\0${evidence.caseId}`
+            if (expectedBaselineSlots.has(key)) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+            expectedBaselineSlots.add(key)
+          }
+        }
+        if (baselineRows.length !== expectedBaselineSlots.size) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+        for (const row of baselineRows) {
+          const key = `${row.canonicalModelId}\0${row.caseId}`
+          const baselineModel = baselineByModel.get(row.canonicalModelId) as AnyRecord | undefined
+          const baselineEvidence = baselineModel?.evidence?.find((item: AnyRecord) => item.caseId === row.caseId)
+          if (!baselineEvidence || !expectedBaselineSlots.has(key) || correctionBaselinePublicRows.has(key)
+            || row.sourceReleaseHash !== batch.correctionBaseline.releaseHash
+            || row.profileId !== baselineModel?.profileId || row.overallRank !== baselineModel?.overallRank) {
+            scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+          }
+          assertExactKeys(row, [
+            '_id', 'sourceReleaseHash', 'profileId', 'canonicalModelId', 'overallRank',
+            ...Object.keys(baselineEvidence), 'createdAt',
+          ], 'SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+          const publicPayload: AnyRecord = structuredClone(row)
+          delete publicPayload._id
+          delete publicPayload.sourceReleaseHash
+          delete publicPayload.profileId
+          delete publicPayload.canonicalModelId
+          delete publicPayload.overallRank
+          delete publicPayload.createdAt
+          if (Array.isArray(publicPayload.variants)) {
+            publicPayload.variants = publicPayload.variants.map((variant: AnyRecord) => publicVariant(variant, baselineEvidence.imageHash))
+          }
+          if (Array.isArray(publicPayload.beforeVariants)) {
+            if (!hashPattern.test(String(baselineEvidence.sourceHash || ''))) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+            publicPayload.beforeVariants = publicPayload.beforeVariants.map((variant: AnyRecord) => publicVariant(variant, baselineEvidence.sourceHash))
+          }
+          if (canonicalHash(publicPayload) !== canonicalHash(baselineEvidence)) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+          for (const variant of row.variants || []) await verifyObject(variant.objectKey, variant.imageHash)
+          for (const variant of row.beforeVariants || []) await verifyObject(variant.objectKey, variant.imageHash)
+          correctionBaselinePublicRows.set(key, structuredClone(row))
+        }
       }
       const stateReportRow = await reviews.findOne({ _id: `scientific-v2-state-report:${batch.latestStateReportHash}` })
       if (!stateReportRow || stateReportRow.reportHash !== batch.latestStateReportHash
@@ -1855,7 +2140,13 @@ export function createScientificV2MongoRepository(
         if (byItem.size !== recomputedReview.disputes.length) scientificError('SCIENTIFIC_V2_REVIEW_FINAL_INVALID')
         recomputedResults = recomputedReview.results.map((item: AnyRecord) => {
           const arbitration = byItem.get(item.itemHash) as AnyRecord | undefined
-          return arbitration ? { ...item, scores: structuredClone(arbitration.scores), redLines: [...arbitration.redLines].sort(), resolution: 'xhigh_arbitration' } : item
+          return arbitration ? {
+            ...item,
+            scores: structuredClone(arbitration.scores),
+            redLines: [...arbitration.redLines].sort(),
+            rationales: [normalizeReviewRationale(arbitration.rationale)],
+            resolution: 'xhigh_arbitration',
+          } : item
         })
       } else if (finalReview.arbitrationHash !== undefined) scientificError('SCIENTIFIC_V2_REVIEW_FINAL_INVALID')
       if (canonicalHash(recomputedResults) !== canonicalHash(finalReview.results)
@@ -1885,11 +2176,14 @@ export function createScientificV2MongoRepository(
         bindingByHash.set(binding.imageHash, binding)
       }
       const requiredRawBindings = new Map<string, string>()
-      for (const slot of batch.state.slots) if (slot.status === 'succeeded') {
+      for (const slot of batch.state.slots) if (slot.status === 'succeeded'
+        && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId))) {
         const attempt = slot.attempts.at(-1)
         requiredRawBindings.set(attempt.rawImageHash, `bench/scientific-v2/private/objects/${attempt.rawImageHash}.${attempt.format}`)
       }
-      for (const scientificCase of batch.manifest.cases) if (scientificCase.kind === 'edit') {
+      for (const scientificCase of batch.manifest.cases) if (scientificCase.kind === 'edit'
+        && batch.state.slots.some((slot: AnyRecord) => slot.caseId === scientificCase.id && slot.status === 'succeeded'
+          && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId)))) {
         requiredRawBindings.set(scientificCase.sourceHash, `bench/scientific-v2/private/objects/${scientificCase.sourceHash}.png`)
       }
       if (bindingByHash.size !== requiredRawBindings.size || [...requiredRawBindings].some(([hash, objectKey]) => bindingByHash.get(hash)?.objectKey !== objectKey)) {
@@ -1900,6 +2194,9 @@ export function createScientificV2MongoRepository(
       const evidenceBySlot = new Map<string, AnyRecord>()
       const evidenceRows: AnyRecord[] = []
       for (const item of input.evidence) {
+        if (correctionTargetModelIds && !correctionTargetModelIds.has(item.canonicalModelId)) {
+          scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
+        }
         const key = `${item.canonicalModelId}\0${item.caseId}`
         if (evidenceBySlot.has(key)) scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
         const slot = batch.state.slots.find((candidate: AnyRecord) => candidate.canonicalModelId === item.canonicalModelId && candidate.caseId === item.caseId)
@@ -1945,7 +2242,8 @@ export function createScientificV2MongoRepository(
         } else if (item.beforeVariants !== undefined || item.sourceHash !== undefined) scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
         evidenceBySlot.set(key, { ...item, variants, beforeVariants })
       }
-      if (evidenceBySlot.size !== batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded').length) {
+      if (evidenceBySlot.size !== batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded'
+        && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId))).length) {
         scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
       }
 
@@ -1958,7 +2256,9 @@ export function createScientificV2MongoRepository(
         if (reviewBySlot.has(key) || publicItem.imageHash === undefined) scientificError('SCIENTIFIC_V2_REVIEW_FINAL_INVALID')
         reviewBySlot.set(key, { publicItem, result })
       }
-      const modelDrafts = batch.manifest.models.map((model: AnyRecord) => {
+      const recomputedModelDrafts = batch.manifest.models
+        .filter((model: AnyRecord) => !correctionTargetModelIds || correctionTargetModelIds.has(model.canonicalModelId))
+        .map((model: AnyRecord) => {
         const slots = batch.state.slots.filter((slot: AnyRecord) => slot.canonicalModelId === model.canonicalModelId)
         if (slots.length !== 9) scientificError('SCIENTIFIC_V2_FIXED_SLOT_SET_INVALID')
         const fixed = slots.map((slot: AnyRecord) => {
@@ -1993,9 +2293,7 @@ export function createScientificV2MongoRepository(
             actualOutputPixels: structuredClone(stored.actualOutputPixels),
             ...(scientificCase.kind === 'edit' ? { sourceHash: scientificCase.sourceHash, editedHash: stored.imageHash, region: scientificCase.region } : {}),
             scores: structuredClone(review.result.scores),
-            reviewNotes: review.result.redLines.length
-              ? review.result.redLines.map((code: keyof typeof reviewRedLineNotes) => reviewRedLineNotes[code])
-              : ['加分：双盲审核未确认红线问题'],
+            reviewNotes: review.result.rationales.map((rationale: unknown) => normalizeReviewRationale(rationale)),
             attemptSummary, ...publicStored,
           }
         })
@@ -2018,13 +2316,32 @@ export function createScientificV2MongoRepository(
           failureReasons: evidence.filter((item: AnyRecord) => item.failureReason).map((item: AnyRecord) => ({ caseId: item.caseId, reason: item.failureReason })),
           evidence,
         }
-      })
+        })
+      const correctionEvaluationKeys = [
+        'scores', 'dimensions', 'generationSuccessRate', 'editSuccessRate', 'successRate',
+        'attemptSummary', 'failureReasons', 'evidence',
+      ] as const
+      const modelDrafts = correctionBaselineRelease && correctionTargetModelIds
+        ? batch.manifest.models.map((model: AnyRecord) => {
+          const baseline = correctionBaselineRelease!.models.find((candidate: AnyRecord) => candidate.canonicalModelId === model.canonicalModelId)
+          if (!baseline) return undefined
+          const draft = structuredClone(baseline)
+          if (!correctionTargetModelIds!.has(model.canonicalModelId)) return draft
+          const recomputed = recomputedModelDrafts.find((candidate: AnyRecord) => candidate.canonicalModelId === model.canonicalModelId)
+          if (!recomputed) return undefined
+          for (const key of correctionEvaluationKeys) draft[key] = structuredClone(recomputed[key])
+          return draft
+        })
+        : recomputedModelDrafts
+      if (modelDrafts.some((model: AnyRecord) => !model)) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
       const overallRanked = rankScientificModels(modelDrafts.map((model: AnyRecord) => ({ modelId: model.modelId, scores: model.scores })))
       const overallByModel = new Map(overallRanked.map((item) => [item.modelId, item]))
       const dimensionRanks = Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, competitionRanks(modelDrafts.map((model: AnyRecord) => model.scores[axis]))]))
       const models = modelDrafts.map((model: AnyRecord, index: number) => ({
         ...model,
-        overallScore: overallByModel.get(model.modelId)!.overallScore,
+        overallScore: correctionTargetModelIds && !correctionTargetModelIds.has(model.canonicalModelId)
+          ? model.overallScore
+          : overallByModel.get(model.modelId)!.overallScore,
         overallRank: overallByModel.get(model.modelId)!.overallRank,
         dimensionRanks: Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, dimensionRanks[axis][index]])),
       })).sort((left: AnyRecord, right: AnyRecord) => left.overallRank - right.overallRank || Buffer.compare(Buffer.from(left.modelId), Buffer.from(right.modelId)))
@@ -2072,6 +2389,17 @@ export function createScientificV2MongoRepository(
       const releaseHash = canonicalHash(releaseBase)
       const releaseId = `bench-scientific-v2-release-${releaseHash.slice(0, 20)}`
       const publicRows = models.flatMap((model: AnyRecord) => model.evidence.map((item: AnyRecord) => {
+        if (correctionTargetModelIds && !correctionTargetModelIds.has(model.canonicalModelId)) {
+          const baselineRow = correctionBaselinePublicRows.get(`${model.canonicalModelId}\0${item.caseId}`)
+          if (!baselineRow) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+          return {
+            ...structuredClone(baselineRow),
+            _id: `scientific-v2-public-evidence:${canonicalHash([releaseHash, model.profileId, item.caseId])}`,
+            sourceReleaseHash: releaseHash,
+            overallRank: model.overallRank,
+            createdAt: now(),
+          }
+        }
         const stored = evidenceBySlot.get(`${model.canonicalModelId}\0${item.caseId}`)
         const row = {
           _id: `scientific-v2-public-evidence:${canonicalHash([releaseHash, model.profileId, item.caseId])}`,
@@ -2091,6 +2419,11 @@ export function createScientificV2MongoRepository(
         await session.withTransaction(async () => {
           const current = await batches.findOne({ _id: batch._id, status: batch.status, stateHash: batch.stateHash, reviewFinalHash: batch.reviewFinalHash, revision: batch.revision, latestStateReportHash: batch.latestStateReportHash }, { session } as any)
           if (!current || canonicalHash({ stateHash: current.stateHash, reviewFinalHash: current.reviewFinalHash, status: current.status, revision: current.revision, latestStateReportHash: current.latestStateReportHash }) !== snapshotHash) {
+            scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
+          }
+          assertExactCorrectionPlanBatch(current)
+          if (canonicalHash(current.remediationOf) !== canonicalHash(batch.remediationOf)
+            || canonicalHash(current.correctionBaseline) !== canonicalHash(batch.correctionBaseline)) {
             scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
           }
           const identityQuery = {
@@ -2130,6 +2463,27 @@ export function createScientificV2MongoRepository(
             }
           } else if (remediationOf) {
             scientificError('SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT')
+          }
+          if (batch.correctionBaseline) {
+            if (!competing) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+            const baselineInSnapshot = await releases.findOne({
+              _id: batch.correctionBaseline.releaseId,
+              releaseHash: batch.correctionBaseline.releaseHash,
+              batchId: batch.correctionBaseline.batchId,
+              batchManifestHash: batch.correctionBaseline.manifestHash,
+              profileStatus: 'published',
+              ...SCIENTIFIC_BENCHMARK_IDENTITY,
+            }, { session } as any)
+            const baselineLifecycle = await releaseLifecycle.findOne({
+              releaseId: batch.correctionBaseline.releaseId,
+              releaseHash: batch.correctionBaseline.releaseHash,
+              status: 'superseded',
+              supersededByReleaseId: competing._id,
+              supersededByReleaseHash: competing.releaseHash,
+            }, { session } as any)
+            if (!baselineInSnapshot || !baselineLifecycle) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
+            const { _id: _baselineId, releaseHash: baselineHash, ...baselineBase } = baselineInSnapshot
+            if (canonicalHash(baselineBase) !== baselineHash) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
           }
           await releases.insertOne({ _id: releaseId, ...releaseBase, releaseHash }, { session } as any)
           for (const row of publicRows) await publicEvidence.insertOne(row, { session } as any)
