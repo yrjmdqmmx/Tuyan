@@ -56,8 +56,7 @@ jobs:
           [[ "$worker_id" =~ ^[a-f0-9]+$ ]]
           docker exec -e SCIENTIFIC_V2_ACTIVE_RELEASE_HASH="$SCIENTIFIC_V2_ACTIVE_RELEASE_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
           const targets = new Set([
-            'seedream-4.5', 'seedream-5.0', 'recraft/recraft-v4-styles-vector',
-            'recraft/recraft-v4-styles-pro-vector', 'recraft/recraft-v4-pro-vector',
+            'seedream-4.5', 'seedream-5.0',
           ]);
           const release = db.getCollection('paperbanana_benchmark_releases').findOne({releaseHash: process.env.SCIENTIFIC_V2_ACTIVE_RELEASE_HASH, profileStatus: 'published'});
           if (!release || typeof release.batchManifestHash !== 'string') throw new Error('SCIENTIFIC_V2_RELEASE_BINDING_INVALID');
@@ -82,7 +81,7 @@ jobs:
           process.stdout.write(JSON.stringify({providerCalls:0, ark:{status:response.status, visibleModelIds:visible}})+"\n");
           '
           docker exec "$worker_id" node --input-type=module -e '
-          const ids=["recraft/recraft-v4-styles-vector","recraft/recraft-v4-styles-pro-vector","recraft/recraft-v4-pro-vector","bytedance-seed/seedream-4.5","bytedance-seed/seedream-5-0-lite"];
+          const ids=["bytedance-seed/seedream-4.5","bytedance-seed/seedream-5-0-lite"];
           const rows=[];
           for(const id of ids){
             const response=await fetch(`https://openrouter.ai/api/v1/models/${id}/endpoints`,{signal:AbortSignal.timeout(15000)});

@@ -1052,6 +1052,47 @@ test('remediation freeze resets only exact exhausted failures and rebinds carrie
   assert.doesNotThrow(() => verifyWorkerScientificV2BatchState(remediation.initialState as never, remediation.manifest as never))
 })
 
+test('zero-call correction freeze carries a completed state without creating provider work', () => {
+  const fixture = scientificBatchFixture({ secondBailianModel: true })
+  const source = completedScientificState(fixture)
+  const carriedBefore = source.slots.map((slot: any) => ({
+    slotId: slot.slotId,
+    status: slot.status,
+    attemptCount: slot.attempts.length,
+    rawImageHash: slot.attempts.at(-1)?.rawImageHash ?? null,
+  }))
+
+  assert.throws(() => buildScientificV2RemediationFreeze({
+    sourceManifest: fixture.manifest,
+    sourceState: source,
+    codeSha: 'b'.repeat(40),
+    targetSlotIds: [],
+    now: new Date('2026-09-02T00:00:00.000Z'),
+  }), /SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID/)
+
+  const correction = buildScientificV2RemediationFreeze({
+    sourceManifest: fixture.manifest,
+    sourceState: source,
+    codeSha: 'b'.repeat(40),
+    targetSlotIds: [],
+    zeroCallCorrection: true,
+    now: new Date('2026-09-02T00:00:00.000Z'),
+  })
+
+  assert.equal(correction.initialState.status, 'completed')
+  assert.equal(correction.targetSlotIds.length, 0)
+  assert.equal(correction.targetSlotSetHash, canonicalHash([]))
+  assert.equal(correction.initialState.slots.some((slot: any) => ['pending', 'retrying'].includes(slot.status)), false)
+  assert.deepEqual(correction.initialState.slots.map((slot: any) => ({
+    slotId: slot.slotId,
+    status: slot.status,
+    attemptCount: slot.attempts.length,
+    rawImageHash: slot.attempts.at(-1)?.rawImageHash ?? null,
+  })), carriedBefore)
+  assert.doesNotThrow(() => verifyScientificV2ImportedState(correction.initialState, correction.manifest))
+  assert.doesNotThrow(() => verifyWorkerScientificV2BatchState(correction.initialState as never, correction.manifest as never))
+})
+
 test('freezeBatch accepts Worker-shaped generation-only manifests with unsupported edit routes still pending initially', async () => {
   const fixture = scientificBatchFixture({ directEdit: false })
   const storage = scientificDb()
@@ -2973,6 +3014,10 @@ test('correction publication grafts target models onto the exact baseline and ch
   secondBatch.state = inheritedState
   secondBatch.stateHash = inheritedStateHash
   secondBatch.latestStateReportHash = inheritedReportHash
+  secondBatch.zeroCallCorrection = true
+  secondBatch.stateTransitionFromHash = wrongBatch.stateHash
+  secondBatch.remediationOf.targetSlotIds = []
+  secondBatch.remediationOf.targetSlotSetHash = canonicalHash([])
 
   const publishedSecond = await second.publishScientificV2({ batchId: secondBatchId, ...secondInput })
   assert.notEqual(publishedSecond.releaseHash, publishedFirst.releaseHash)
@@ -3129,6 +3174,117 @@ test('correction freeze separately binds the superseded data baseline and the cu
     targetSlotIds: failedSlotIds,
     targetSlotSetHash: canonicalHash(failedSlotIds),
   })
+})
+
+test('zero-call correction freeze carries successful target models and binds the prior completed state', async () => {
+  const baselineFixture = scientificBatchFixture({ secondBailianModel: true })
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-zero-call-correction-secret-32-bytes'
+  const baselineBatchId = 'scientific-v2-zero-call-baseline'
+  const baselineRepository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'zero-call-baseline', {
+    operatorReportSecret: secret, immutableCodeSha: baselineFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await baselineRepository.freezeBatch({ batchId: baselineBatchId, ...baselineFixture })
+  const baselineInput = await preparePublishFacts(
+    baselineRepository, baselineFixture, completedScientificState(baselineFixture), secret, baselineBatchId,
+  )
+  const baselinePublished = await baselineRepository.publishScientificV2({ batchId: baselineBatchId, ...baselineInput })
+  const baselineRelease = storage.rows.get('paperbanana_benchmark_releases')![0]
+
+  const activeFixtureInput = structuredClone(baselineFixture)
+  activeFixtureInput.manifest.codeSha = 'b'.repeat(40)
+  const activeFixture = rehashFreezeFixture(activeFixtureInput)
+  const activeBatchId = 'scientific-v2-zero-call-active'
+  const activeRepository = createScientificV2MongoRepository(storage.db, () => new Date('2026-09-01T00:00:00.000Z'), () => 'zero-call-active', {
+    operatorReportSecret: secret, immutableCodeSha: activeFixture.manifest.codeSha, verifyObject: async () => {},
+  })
+  await activeRepository.freezeBatch({ batchId: activeBatchId, ...activeFixture })
+  const activeState = completedScientificState(activeFixture)
+  const activeInput = await preparePublishFacts(activeRepository, activeFixture, activeState, secret, activeBatchId)
+  const activeBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!.find((row) => row.batchId === activeBatchId)!
+  const targetModelId = activeFixture.manifest.models.find((model: any) => model.canonicalModelId !== 'codex:gpt-image-2')!.canonicalModelId
+  const supersedeSlotId = `${targetModelId}:scientific-gen-01-method-flow`
+  activeBatch.remediationOf = {
+    batchId: baselineBatchId, manifestHash: baselineRelease.batchManifestHash,
+    releaseId: baselineRelease._id, releaseHash: baselinePublished.releaseHash,
+    targetModelIds: [targetModelId], targetSlotIds: [supersedeSlotId], targetSlotSetHash: canonicalHash([supersedeSlotId]),
+  }
+  const activePublished = await activeRepository.publishScientificV2({ batchId: activeBatchId, ...activeInput })
+  const activeRelease = storage.rows.get('paperbanana_benchmark_releases')![1]
+
+  const correctionRepository = createScientificV2MongoRepository(storage.db, () => new Date('2026-09-02T00:00:00.000Z'), () => 'zero-call-correction', {
+    operatorReportSecret: secret, immutableCodeSha: 'c'.repeat(40), verifyObject: async () => {},
+    correctionPlanForTest: {
+      baselineReleaseHash: baselinePublished.releaseHash,
+      activePredecessorReleaseHash: activePublished.releaseHash,
+      targetModelIds: [targetModelId],
+    },
+  })
+  const correctionInput = {
+    batchId: 'scientific-v2-zero-call-correction',
+    sourceBatchId: activeBatchId,
+    sourceManifestHash: activeRelease.batchManifestHash,
+    sourceReleaseHash: activePublished.releaseHash,
+    baselineBatchId,
+    baselineManifestHash: baselineRelease.batchManifestHash,
+    baselineReleaseId: baselineRelease._id,
+    baselineReleaseHash: baselinePublished.releaseHash,
+    targetModelIds: [targetModelId],
+    targetSlotIds: [],
+    targetSlotSetHash: canonicalHash([]),
+  }
+
+  const authenticActiveStateHash = activeBatch.stateHash
+  activeBatch.stateHash = 'f'.repeat(64)
+  await assert.rejects(
+    () => correctionRepository.freezeRemediationBatch({ ...correctionInput, batchId: 'scientific-v2-zero-call-outer-state-drift' }),
+    /SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID/,
+  )
+  activeBatch.stateHash = authenticActiveStateHash
+
+  const authenticActiveState = structuredClone(activeBatch.state)
+  const targetSlot = activeBatch.state.slots.find((slot: any) => slot.slotId === supersedeSlotId)!
+  const targetAttempt = targetSlot.attempts.at(-1)!
+  const dispatch = storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!
+    .find((row) => row.manifestHash === activeBatch.manifestHash
+      && row.slotId === targetSlot.slotId
+      && row.attemptIndex === targetAttempt.attemptIndex)!
+  const authenticDispatch = structuredClone(dispatch)
+  targetAttempt.rawImageHash = 'd'.repeat(64)
+  const { attemptHash: _attemptHash, ...targetAttemptBase } = targetAttempt
+  targetAttempt.attemptHash = canonicalHash(targetAttemptBase)
+  dispatch.attempt = structuredClone(targetAttempt)
+  const { stateHash: _stateHash, ...activeStateBase } = activeBatch.state
+  activeBatch.state.stateHash = canonicalHash(activeStateBase)
+  activeBatch.stateHash = activeBatch.state.stateHash
+  await assert.rejects(
+    () => correctionRepository.freezeRemediationBatch({ ...correctionInput, batchId: 'scientific-v2-zero-call-release-evidence-drift' }),
+    /SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID/,
+  )
+  activeBatch.state = authenticActiveState
+  activeBatch.stateHash = authenticActiveStateHash
+  Object.assign(dispatch, authenticDispatch)
+
+  const correction = await correctionRepository.freezeRemediationBatch(correctionInput)
+
+  const correctionBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!
+    .find((row) => row.batchId === correction.batchId)!
+  assert.equal(correction.targetSlotCount, 0)
+  assert.equal(correctionBatch.state.status, 'completed')
+  assert.equal(correctionBatch.zeroCallCorrection, true)
+  assert.equal(correctionBatch.stateTransitionFromHash, activeBatch.stateHash)
+  assert.equal(correctionBatch.state.slots.some((slot: any) => ['pending', 'retrying'].includes(slot.status)), false)
+  assert.deepEqual(correctionBatch.remediationOf.targetSlotIds, [])
+  assert.equal(correctionBatch.remediationOf.targetSlotSetHash, canonicalHash([]))
+  correctionBatch.remediationOf.targetSlotSetHash = 'f'.repeat(64)
+  await assert.rejects(
+    () => correctionRepository.operatorAttestation({ batchId: correction.batchId }),
+    /SCIENTIFIC_V2_CORRECTION_PLAN_INVALID/,
+  )
+  correctionBatch.remediationOf.targetSlotSetHash = canonicalHash([])
+  const attestation = await correctionRepository.operatorAttestation({ batchId: correction.batchId })
+  assert.deepEqual(attestation.correction?.targetModelIds, [targetModelId])
+  assert.deepEqual(attestation.correction?.targetSlotIds, [])
 })
 
 test('Scientific V2 remediation supersede rolls back release, evidence, head and lifecycle on final batch CAS failure', async () => {

@@ -42,9 +42,6 @@ const SCIENTIFIC_V2_CORRECTIVE_RELEASE_PLAN = Object.freeze({
   baselineReleaseHash: 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a',
   activePredecessorReleaseHash: '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe',
   targetModelIds: Object.freeze([
-    'recraft/recraft-v4-pro-vector',
-    'recraft/recraft-v4-styles-pro-vector',
-    'recraft/recraft-v4-styles-vector',
     'seedream-4.5',
     'seedream-5.0',
   ]),
@@ -823,12 +820,17 @@ export function buildScientificV2RemediationFreeze(input: {
   sourceState: AnyRecord
   codeSha: string
   targetSlotIds: string[]
+  zeroCallCorrection?: true
   now: Date
 }) {
   if (!codeShaPattern.test(input.codeSha) || !(input.now instanceof Date) || !Number.isFinite(input.now.getTime())) {
     scientificError('SCIENTIFIC_V2_REMEDIATION_INPUT_INVALID')
   }
-  const targetSlotIds = exactSortedStrings(input.targetSlotIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+  const zeroCallCorrection = input.zeroCallCorrection === true
+  const targetSlotIds = zeroCallCorrection && Array.isArray(input.targetSlotIds) && input.targetSlotIds.length === 0
+    ? []
+    : exactSortedStrings(input.targetSlotIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+  if (zeroCallCorrection !== (targetSlotIds.length === 0)) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
   verifyScientificV2ImportedState(input.sourceState, input.sourceManifest)
   if (input.sourceState.status !== 'completed'
     || input.sourceState.slots.some((slot: AnyRecord) => !['succeeded', 'failed', 'unsupported'].includes(slot.status))) {
@@ -864,7 +866,7 @@ export function buildScientificV2RemediationFreeze(input: {
     manifestHash: manifest.manifestHash,
     // A remediation state deliberately mixes carried terminal slots with pending targets.
     // `running` is the only canonical state shape that permits that mix before a lease is claimed.
-    status: 'running',
+    status: zeroCallCorrection ? 'completed' : 'running',
     pauseReason: null,
     blockReason: null,
     createdAt: input.sourceState.createdAt,
@@ -914,10 +916,16 @@ export function createScientificV2MongoRepository(
     const remediation = batch?.remediationOf
     const requiresCorrection = remediation?.releaseHash === correctionPlan.activePredecessorReleaseHash
     if (!requiresCorrection && correctionBaseline === undefined) return
+    const zeroCallCorrection = batch?.zeroCallCorrection === true
     if (!requiresCorrection || !correctionBaseline
       || correctionBaseline.releaseHash !== correctionPlan.baselineReleaseHash
       || !Array.isArray(remediation.targetModelIds)
-      || canonicalHash(remediation.targetModelIds) !== canonicalHash(correctionPlan.targetModelIds)) {
+      || canonicalHash(remediation.targetModelIds) !== canonicalHash(correctionPlan.targetModelIds)
+      || (zeroCallCorrection && (batch.state?.status !== 'completed'
+        || !hashPattern.test(String(batch.stateTransitionFromHash || ''))
+        || canonicalHash(remediation.targetSlotIds) !== canonicalHash([])
+        || remediation.targetSlotSetHash !== canonicalHash([])))
+      || (!zeroCallCorrection && Array.isArray(remediation.targetSlotIds) && remediation.targetSlotIds.length === 0)) {
       scientificError('SCIENTIFIC_V2_CORRECTION_PLAN_INVALID')
     }
   }
@@ -1224,7 +1232,10 @@ export function createScientificV2MongoRepository(
         || !hashPattern.test(String(input.sourceManifestHash || ''))
         || !hashPattern.test(String(input.sourceReleaseHash || ''))) scientificError('SCIENTIFIC_V2_REMEDIATION_INPUT_INVALID')
       const targetModelIds = exactSortedStrings(input.targetModelIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID', 64)
-      const targetSlotIds = exactSortedStrings(input.targetSlotIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+      const zeroCallCorrection = hasCorrectionBaseline && Array.isArray(input.targetSlotIds) && input.targetSlotIds.length === 0
+      const targetSlotIds = zeroCallCorrection
+        ? []
+        : exactSortedStrings(input.targetSlotIds, 'SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
       if (canonicalHash(targetSlotIds) !== input.targetSlotSetHash) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
       if ((input.sourceReleaseHash === correctionPlan.activePredecessorReleaseHash && !hasCorrectionBaseline)
         || (hasCorrectionBaseline && (input.baselineReleaseHash !== correctionPlan.baselineReleaseHash
@@ -1236,7 +1247,9 @@ export function createScientificV2MongoRepository(
         batchId: sourceBatchId, manifestHash: input.sourceManifestHash,
         releaseHash: input.sourceReleaseHash, status: 'published',
       })
-      if (!source || source.state?.status !== 'completed' || source.releaseId === undefined) {
+      if (!source || source.state?.status !== 'completed' || source.releaseId === undefined
+        || source.stateHash !== source.state?.stateHash
+        || source.manifestHash !== source.manifest?.manifestHash) {
         scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
       }
       const sourceRelease = await releases.findOne({
@@ -1257,10 +1270,34 @@ export function createScientificV2MongoRepository(
         .map((slot: AnyRecord) => slot.slotId)
         .sort((left: string, right: string) => Buffer.compare(Buffer.from(left), Buffer.from(right)))
       if (canonicalHash(exactFailedSlots) !== canonicalHash(targetSlotIds)) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
+      if (zeroCallCorrection) {
+        const targetSlots = source.state.slots.filter((slot: AnyRecord) => modelSet.has(slot.canonicalModelId))
+        if (targetSlots.length !== targetModelIds.length * 9
+          || targetSlots.some((slot: AnyRecord) => slot.status !== 'succeeded'
+            || !hashPattern.test(String(slot.attempts.at(-1)?.rawImageHash || ''))
+            || !['succeeded', 'succeeded_low_quality'].includes(String(slot.attempts.at(-1)?.responseClass)))) {
+          scientificError('SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE')
+        }
+        if (!Array.isArray(sourceRelease.models)) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+        for (const modelId of targetModelIds) {
+          const releaseModels = sourceRelease.models.filter((model: AnyRecord) => model.canonicalModelId === modelId)
+          const releaseEvidence = releaseModels[0]?.evidence
+          const modelSlots = targetSlots.filter((slot: AnyRecord) => slot.canonicalModelId === modelId)
+          if (releaseModels.length !== 1 || !Array.isArray(releaseEvidence)
+            || releaseEvidence.length !== modelSlots.length) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+          const evidenceByCase = new Map(releaseEvidence.map((item: AnyRecord) => [item.caseId, item]))
+          if (evidenceByCase.size !== releaseEvidence.length
+            || modelSlots.some((slot: AnyRecord) => {
+              const evidence = evidenceByCase.get(slot.caseId) as AnyRecord | undefined
+              const finalAttempt = slot.attempts.at(-1)
+              return !evidence || evidence.status !== slot.status || evidence.imageHash !== finalAttempt?.rawImageHash
+            })) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+        }
+      }
       const immutableCodeSha = String(options.immutableCodeSha || '')
       const remediation = buildScientificV2RemediationFreeze({
         sourceManifest: source.manifest, sourceState: source.state, codeSha: immutableCodeSha,
-        targetSlotIds, now: now(),
+        targetSlotIds, ...(zeroCallCorrection ? { zeroCallCorrection: true as const } : {}), now: now(),
       })
       const derivedInput = {
         batchId,
@@ -1339,6 +1376,7 @@ export function createScientificV2MongoRepository(
       const frozenInputHash = canonicalHash({
         ...remediationOf,
         ...(correctionBaseline ? { correctionBaseline } : {}),
+        ...(zeroCallCorrection ? { zeroCallCorrection: true } : {}),
         batchId,
         manifestHash: remediation.manifest.manifestHash,
         stateHash: remediation.initialState.stateHash,
@@ -1397,13 +1435,14 @@ export function createScientificV2MongoRepository(
         manifestHash: remediation.manifest.manifestHash,
         stateHash: remediation.initialState.stateHash,
         state: structuredClone(remediation.initialState),
-        stateTransitionFromHash: null,
+        stateTransitionFromHash: zeroCallCorrection ? source.stateHash : null,
         status: 'frozen',
         revision: 0,
         latestStateReportHash: null,
         frozenInputHash,
         remediationOf: structuredClone(remediationOf),
         ...(correctionBaseline ? { correctionBaseline: structuredClone(correctionBaseline) } : {}),
+        ...(zeroCallCorrection ? { zeroCallCorrection: true } : {}),
         carriedDispatchCount: carriedDispatches.length,
         createdAt: now(),
       }
@@ -1964,10 +2003,13 @@ export function createScientificV2MongoRepository(
             || !['succeeded', 'succeeded_low_quality'].includes(String(slot.attempts.at(-1)?.responseClass)))) {
           scientificError('SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE')
         }
-        const correctionTargetSlotIds = exactSortedStrings(
-          batch.remediationOf.targetSlotIds,
-          'SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE',
-        )
+        const correctionTargetSlotIds = batch.zeroCallCorrection === true
+          && Array.isArray(batch.remediationOf.targetSlotIds) && batch.remediationOf.targetSlotIds.length === 0
+          ? []
+          : exactSortedStrings(
+              batch.remediationOf.targetSlotIds,
+              'SCIENTIFIC_V2_CORRECTION_TARGET_INCOMPLETE',
+            )
         if (batch.remediationOf.targetSlotSetHash !== canonicalHash(correctionTargetSlotIds)
           || correctionTargetSlotIds.some((slotId) => {
             const slot = batch.state.slots.find((candidate: AnyRecord) => candidate.slotId === slotId)
@@ -2457,7 +2499,8 @@ export function createScientificV2MongoRepository(
               || remediationOf.batchId !== competing.batchId
               || remediationOf.manifestHash !== competing.batchManifestHash
               || !Array.isArray(remediationOf.targetModelIds) || !remediationOf.targetModelIds.length
-              || !Array.isArray(targetSlotIds) || !targetSlotIds.length
+              || !Array.isArray(targetSlotIds)
+              || (!targetSlotIds.length && batch.zeroCallCorrection !== true)
               || remediationOf.targetSlotSetHash !== canonicalHash(targetSlotIds)) {
               scientificError('SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT')
             }

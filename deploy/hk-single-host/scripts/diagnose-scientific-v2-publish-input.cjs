@@ -10,9 +10,6 @@ const correctiveReleasePlan = Object.freeze({
   baselineReleaseHash: 'f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a',
   activePredecessorReleaseHash: '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe',
   targetModelIds: Object.freeze([
-    'recraft/recraft-v4-pro-vector',
-    'recraft/recraft-v4-styles-pro-vector',
-    'recraft/recraft-v4-styles-vector',
     'seedream-4.5',
     'seedream-5.0',
   ]),
@@ -367,7 +364,8 @@ async function main() {
       && remediation.batchId === competing.batchId
       && remediation.manifestHash === competing.batchManifestHash
       && Array.isArray(remediation.targetModelIds) && remediation.targetModelIds.length > 0
-      && Array.isArray(targetSlotIds) && targetSlotIds.length > 0
+      && Array.isArray(targetSlotIds)
+      && (targetSlotIds.length > 0 || batch.zeroCallCorrection === true)
       && remediation.targetSlotSetHash === canonicalHash(targetSlotIds)) : !remediation
     const headConsistent = currentHead ? Boolean(competing && lifecycle) : legacyCandidates.length <= 1
     addCheck(checks, 'release_identity_compatible', headConsistent && remediationMatches, {

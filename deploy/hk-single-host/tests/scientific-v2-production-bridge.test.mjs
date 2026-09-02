@@ -646,9 +646,9 @@ test('V2 admin bridge reuses localhost admin transport, exact schemas, shared lo
     correction: {
       baseline: { releaseId: 'baseline-release', releaseHash: '1'.repeat(64), batchId: 'baseline-batch', manifestHash: '2'.repeat(64) },
       activePredecessor: { releaseId: 'bad-release', releaseHash: '3'.repeat(64), batchId: 'bad-batch', manifestHash: '4'.repeat(64) },
-      targetModelIds: ['recraft/recraft-v4-pro-vector'],
-      targetSlotIds: ['recraft/recraft-v4-pro-vector:scientific-gen-01-method-flow'],
-      targetSlotSetHash: '5'.repeat(64),
+      targetModelIds: ['seedream-4.5', 'seedream-5.0'],
+      targetSlotIds: [],
+      targetSlotSetHash: canonicalHash([]),
     },
     reportHash: 'c'.repeat(64), attestationHash: 'd'.repeat(64),
     manifestSnapshot: { manifestHash: 'a'.repeat(64), models: [], executionOrder: [] },

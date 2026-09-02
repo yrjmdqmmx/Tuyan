@@ -75,19 +75,20 @@ jobs:
             (type == "object") and
             (if $purpose == "remediate-freeze" then
                (((keys | sort) == ["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash","targetModelIds","targetSlotIds","targetSlotSetHash"] and
-                 .sourceReleaseHash != "25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe") or
+                 .sourceReleaseHash != "25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe" and
+                 (.targetModelIds | type) == "array" and (.targetModelIds | length) > 0 and
+                 (.targetSlotIds | type) == "array" and (.targetSlotIds | length) > 0) or
                 ((keys | sort) == ["baselineBatchId","baselineManifestHash","baselineReleaseHash","baselineReleaseId","batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash","targetModelIds","targetSlotIds","targetSlotSetHash"] and
                  ([.baselineBatchId,.baselineReleaseId] | all(type == "string" and test("^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$"))) and
                  ([.baselineManifestHash,.baselineReleaseHash] | all(type == "string" and test("^[a-f0-9]{64}$"))) and
                  .baselineReleaseHash == "f1f31caf50b810b456f434a4fd1d6eed55a60d3f8a54fa3795a08284df4cf70a" and
                  .sourceReleaseHash == "25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe" and
                  .targetModelIds == [
-                   "recraft/recraft-v4-pro-vector",
-                   "recraft/recraft-v4-styles-pro-vector",
-                   "recraft/recraft-v4-styles-vector",
                    "seedream-4.5",
                    "seedream-5.0"
-                 ]))
+                 ] and
+                 .targetSlotIds == [] and
+                 .targetSlotSetHash == "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"))
              elif $purpose == "attest" then (keys | sort) == ["batchId","manifestHash"]
              elif ($purpose == "import-worker" or $purpose == "import-codex") then (keys | sort) == ["attestationHash","report","reportHash"]
              elif $purpose == "export-review" then (keys | sort) == ["assignment","batchId","objectBindings"]
@@ -98,6 +99,22 @@ jobs:
             ([.. | objects | keys[]] | index("attestationSecret") == null) and
             ([.. | objects | keys[]] | map(test("(?:API_KEY|ACCESS_KEY|SECRET_KEY|PRIVATE_KEY)$")) | any | not)
           ' "$input" >/dev/null
+          node --input-type=module - "$input" <<'NODE'
+          import { createHash } from 'node:crypto'
+          import { readFileSync } from 'node:fs'
+
+          const input = JSON.parse(readFileSync(process.argv[2], 'utf8'))
+          if (!Object.hasOwn(input, 'targetSlotIds')) process.exit(0)
+          const sortedUniqueStrings = (value) => Array.isArray(value) && value.length <= 512
+            && value.every((item) => typeof item === 'string' && item.length > 0 && item.length <= 300)
+            && new Set(value).size === value.length
+            && JSON.stringify(value) === JSON.stringify([...value].sort((left, right) => Buffer.compare(Buffer.from(left), Buffer.from(right))))
+          if (!sortedUniqueStrings(input.targetModelIds) || !sortedUniqueStrings(input.targetSlotIds)) process.exit(1)
+          const targetSlotSetHash = createHash('sha256').update(JSON.stringify(input.targetSlotIds)).digest('hex')
+          if (input.targetSlotSetHash !== targetSlotSetHash) process.exit(1)
+          const isCorrection = input.sourceReleaseHash === '25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe'
+          if (isCorrection !== (input.targetSlotIds.length === 0)) process.exit(1)
+          NODE
 
       - name: Configure SSH
         env:
