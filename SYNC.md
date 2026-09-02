@@ -1,5 +1,17 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Web 三输入栏 main 路由单次 AI 优化 — by Codex
+变更：新增同步 `optimizeInputs` action，分别优化论文方法内容、目标图注或负向提示词。请求只携带当前生效的 `mainRoute {accessProvider,modelId}`、该 Provider 的单个 `apiKey` 和三栏只读快照；Core 校验主模型注册表角色后最多发起一次文本 Provider HTTP 请求，不重试、不回退、不落库。`modelRegistry` 顶层新增 `inputOptimizationContractVersion:1`，旧后端下 Web 隐藏入口。
+契约（影响共享 / Web）：
+- **请求/响应**：`optimizeInputs` 接受 `target=methodContent|caption|negativePrompt`、`inputs`、`mainRoute`、`apiKey`，成功仅返回 `{code:0,target,optimizedText}`；方法/图注需非空，负向提示词可由其他两栏从空白生成。
+- **安全/失败**：Key 只进入单次执行闭包；Gateway 严格白名单、维护门禁与 50 秒专属超时，Core Provider 超时 45 秒。空白、无变化、超长、科研 token 漂移、Provider 超时/失败均保留原文并返回稳定错误，不暴露原始 Provider 响应。
+- **Web 交互**：三个字段独立入口，候选经原文/优化稿差异弹窗确认后才采用；支持重新优化、取消和一次恢复优化前内容。页面不展示模型名或费用，缺主模型/对应 Key 时打开设置引导且不发起调用。
+各端待办：
+- [ ] packages-api / auth-gateway / paperbanana-api（共享 DTO、真实转发、单次 Provider 调用与 TDD）
+- [ ] Web（三入口、可访问差异弹窗、采用与单步恢复）
+- [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（新增 action 为可选能力，现有请求不变）
+- [ ] 部署 / 运维（PR/CI、Core/Gateway/HK/Pages 和生产非计费 smoke）
+
 ### [2026-09-02] Scientific V2 remediation Worker 报告继承 Codex provenance — by Codex
 变更：当补跑批次只执行普通 Provider、最终签名状态报告为 `worker` 时，发布端不再要求该报告伪装成 `codex`，也不信任 Worker 自报 Codex provenance。发布端会沿 `remediationOf` 精确读取已发布源 batch/release、复验源 release 内容 hash、源 Codex 状态报告的 schema/HMAC/disclosure/9 题/36 次上限/artifact canary，再把源 Codex 题位按新 manifest 确定性重绑并与当前 9 个 Codex 题位逐字节 canonical 对比；Codex 被列为补跑目标、源链不完整或任一继承字段漂移均拒绝发布。题目、图片、评分、审核和 Provider 调用规则不变。
 - [x] paperbanana-api（源发布 lineage、Codex provenance 与重绑定题位校验及正反回归）
