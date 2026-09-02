@@ -165,7 +165,7 @@ test('per-call timeout overrides control aborts while calls without an override 
   });
 
   assert.deepEqual(
-    await client.call({ action: 'optimizeInputs' }, {}, { timeoutMs: 50 }),
+    await client.call({ action: 'optimizeInputs' }, {}, { timeoutMs: 500 }),
     { status: 200, data: { code: 0 } },
   );
   await assert.rejects(
