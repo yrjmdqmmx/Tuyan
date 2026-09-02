@@ -998,6 +998,81 @@ export function createScientificV2MongoRepository(
     return { ...stored.lineage, publicationCodeSha }
   }
 
+  const verifiedCodexProvenance = (report: AnyRecord, state: AnyRecord) => {
+    assertExactKeys(report.codexProvenance, ['modelId', 'successfulSlots', 'toolCalls', 'firstCaseId', 'artifactCanaryHash'], 'SCIENTIFIC_V2_CODEX_PROVENANCE_INVALID')
+    assertExactKeys(report.disclosure, ['containsSecrets', 'automaticJudges', 'reviewerIdentity'], 'SCIENTIFIC_V2_CODEX_DISCLOSURE_INVALID')
+    const codexSlots = state.slots.filter((slot: AnyRecord) => slot.provider === 'codex')
+    const successfulSlots = codexSlots.filter((slot: AnyRecord) => slot.status === 'succeeded').length
+    const toolCalls = codexSlots.reduce((sum: number, slot: AnyRecord) => sum + slot.attempts.length, 0)
+    if (codexSlots.length !== 9 || codexSlots[0]?.status !== 'succeeded'
+      || codexSlots.some((slot: AnyRecord) => !['succeeded', 'failed'].includes(slot.status))
+      || report.codexProvenance.modelId !== 'codex:gpt-image-2'
+      || report.codexProvenance.successfulSlots !== successfulSlots
+      || report.codexProvenance.toolCalls !== toolCalls || toolCalls > 36
+      || report.codexProvenance.firstCaseId !== codexSlots[0]?.caseId
+      || report.codexProvenance.artifactCanaryHash !== codexSlots[0]?.attempts.at(-1)?.rawImageHash
+      || report.disclosure.containsSecrets !== false
+      || canonicalHash(report.disclosure.automaticJudges) !== canonicalHash([])
+      || report.disclosure.reviewerIdentity !== null) scientificError('SCIENTIFIC_V2_CODEX_PROVENANCE_INVALID')
+    return structuredClone(report.codexProvenance)
+  }
+
+  const inheritedRemediationCodexProvenance = async (batch: AnyRecord) => {
+    const remediation = batch.remediationOf
+    if (!remediation || !Array.isArray(remediation.targetSlotIds)
+      || remediation.targetSlotIds.some((slotId: unknown) => typeof slotId !== 'string' || slotId.startsWith('codex:gpt-image-2:'))) {
+      scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
+    }
+    const sourceBatch = await batches.findOne({
+      batchId: remediation.batchId,
+      manifestHash: remediation.manifestHash,
+      status: 'published',
+      releaseId: remediation.releaseId,
+      releaseHash: remediation.releaseHash,
+    })
+    const sourceRelease = await releases.findOne({
+      _id: remediation.releaseId,
+      releaseHash: remediation.releaseHash,
+      batchId: remediation.batchId,
+      batchManifestHash: remediation.manifestHash,
+      profileStatus: 'published',
+      ...SCIENTIFIC_BENCHMARK_IDENTITY,
+    })
+    if (!sourceBatch || !sourceRelease || sourceBatch.state?.status !== 'completed'
+      || sourceBatch.stateHash !== sourceBatch.state?.stateHash
+      || !hashPattern.test(String(sourceBatch.latestStateReportHash || ''))) {
+      scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
+    }
+    const { _id: _releaseId, releaseHash: sourceReleaseHash, ...sourceReleaseBase } = sourceRelease
+    if (canonicalHash(sourceReleaseBase) !== sourceReleaseHash) scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
+    const sourceReportRow = await reviews.findOne({ _id: `scientific-v2-state-report:${sourceBatch.latestStateReportHash}` })
+    if (!sourceReportRow || sourceReportRow.reportHash !== sourceBatch.latestStateReportHash
+      || normalizeScientificV2StateOperationReport(sourceReportRow.report).reportHash !== sourceReportRow.reportHash
+      || !safeHmacEqual(sourceReportRow.attestationHash, createHmac('sha256', operatorSecret()).update(sourceReportRow.reportHash).digest('hex'))
+      || sourceReportRow.report.kind !== 'codex'
+      || sourceReportRow.report.batchId !== sourceBatch.batchId
+      || sourceReportRow.report.batchManifestHash !== sourceBatch.manifestHash
+      || sourceReportRow.report.stateHash !== sourceBatch.stateHash
+      || canonicalHash(sourceReportRow.report.state) !== canonicalHash(sourceBatch.state)) {
+      scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
+    }
+    verifyScientificV2ImportedState(sourceReportRow.report.state, sourceBatch.manifest)
+    const provenance = verifiedCodexProvenance(sourceReportRow.report, sourceReportRow.report.state)
+    const currentCodexSlots = new Map(batch.state.slots
+      .filter((slot: AnyRecord) => slot.provider === 'codex')
+      .map((slot: AnyRecord) => [slot.slotId, slot]))
+    const sourceCodexSlots = sourceBatch.state.slots.filter((slot: AnyRecord) => slot.provider === 'codex')
+    if (sourceCodexSlots.length !== 9 || currentCodexSlots.size !== 9) scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
+    for (const sourceSlot of sourceCodexSlots) {
+      const currentSlot = currentCodexSlots.get(sourceSlot.slotId) as AnyRecord | undefined
+      if (!currentSlot) scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
+      const expected = structuredClone(sourceSlot)
+      expected.attempts = sourceSlot.attempts.map((attempt: AnyRecord) => rebindRemediationAttempt(batch.manifest, currentSlot, attempt))
+      if (canonicalHash(expected) !== canonicalHash(currentSlot)) scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
+    }
+    return provenance
+  }
+
   return {
     async ensureIndexes() {
       const indexes = [
@@ -1701,26 +1776,18 @@ export function createScientificV2MongoRepository(
         || canonicalHash(stateReportRow.report.state) !== canonicalHash(batch.state)) {
         scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       }
-      const codexProvenance = stateReportRow.report.codexProvenance
       const providerCanary = stateReportRow.report.providerCanaryAttestation
       const orderAttestation = stateReportRow.report.executionOrderAttestation
-      const codexSlots = batch.state.slots.filter((slot: AnyRecord) => slot.provider === 'codex')
-      const successfulCodexSlots = codexSlots.filter((slot: AnyRecord) => slot.status === 'succeeded').length
-      const codexToolCalls = codexSlots.reduce((sum: number, slot: AnyRecord) => sum + slot.attempts.length, 0)
       assertExactKeys(providerCanary, ['providers', 'passed', 'attemptSetHash'], 'SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       const expectedCanaries = providerCanaryFacts(batch.state, batch.manifest)
-      if (stateReportRow.report.kind !== 'codex' || codexProvenance.modelId !== 'codex:gpt-image-2'
-        || codexProvenance.successfulSlots !== successfulCodexSlots
-        || codexProvenance.toolCalls !== codexToolCalls || codexToolCalls > 36
-        || codexSlots.length !== 9 || codexSlots[0]?.status !== 'succeeded'
-        || codexSlots.some((slot: AnyRecord) => !['succeeded', 'failed'].includes(slot.status))
-        || codexProvenance.firstCaseId !== codexSlots[0]?.caseId
-        || codexProvenance.artifactCanaryHash !== codexSlots[0]?.attempts.at(-1)?.rawImageHash
-        || providerCanary.passed !== expectedCanaries.passed || canonicalHash(providerCanary.providers) !== canonicalHash(expectedCanaries.providers)
+      if (providerCanary.passed !== expectedCanaries.passed || canonicalHash(providerCanary.providers) !== canonicalHash(expectedCanaries.providers)
         || providerCanary.attemptSetHash !== expectedCanaries.attemptSetHash
         || orderAttestation.passed !== true || canonicalHash(orderAttestation.slotIds) !== canonicalHash(batch.state.slots.map((slot: AnyRecord) => slot.slotId))) {
         scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       }
+      if (stateReportRow.report.kind === 'codex') verifiedCodexProvenance(stateReportRow.report, batch.state)
+      else if (stateReportRow.report.kind === 'worker') await inheritedRemediationCodexProvenance(batch)
+      else scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
 
       const markers = await dispatches.find({ manifestHash: batch.manifestHash }).toArray()
       const unknownReconciliations = await reviews.find({

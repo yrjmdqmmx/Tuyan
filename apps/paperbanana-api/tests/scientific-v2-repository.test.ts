@@ -2705,22 +2705,71 @@ test('only an exact remediation batch atomically supersedes the active Scientifi
     operatorReportSecret: secret, immutableCodeSha: rehashedSecondFixture.manifest.codeSha, verifyObject: async () => {},
   })
   await second.freezeBatch({ batchId: secondBatchId, ...rehashedSecondFixture })
-  const secondInput = await preparePublishFacts(second, rehashedSecondFixture, completedScientificState(rehashedSecondFixture), secret, secondBatchId)
+  const secondState = completedScientificState(rehashedSecondFixture)
+  const secondInput = await preparePublishFacts(second, rehashedSecondFixture, secondState, secret, secondBatchId)
   await assert.rejects(
     () => second.publishScientificV2({ batchId: secondBatchId, ...secondInput }),
     /SCIENTIFIC_V2_RELEASE_IDENTITY_CONFLICT/,
   )
   const secondBatch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!
     .find((row) => row.batchId === secondBatchId)!
+  const inheritedWorkerReport = signedStateReport(secret, rehashedSecondFixture, secondState, 'worker', {
+    batchId: secondBatchId,
+    previousStateHash: secondBatch.stateTransitionFromHash,
+    revision: 2,
+  })
+  storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts')!.push({
+    _id: `scientific-v2-state-report:${inheritedWorkerReport.reportHash}`,
+    artifactType: 'state_report', batchManifestHash: rehashedSecondFixture.manifest.manifestHash,
+    sourceSetHash: secondState.stateHash, role: 'worker_state', report: inheritedWorkerReport.report,
+    reportHash: inheritedWorkerReport.reportHash, attestationHash: inheritedWorkerReport.attestationHash,
+    reviewReady: true, createdAt: FIXED_NOW,
+  })
+  secondBatch.latestStateReportHash = inheritedWorkerReport.reportHash
+  secondBatch.codexProvenance = null
+  secondBatch.disclosure = null
+  const remediationTarget = firstReleaseBefore.models.find((model: any) => model.canonicalModelId !== 'codex:gpt-image-2')!
+  const remediationTargetSlotId = `${remediationTarget.canonicalModelId}:scientific-gen-01-method-flow`
   secondBatch.remediationOf = {
     batchId: firstBatchId,
     manifestHash: firstReleaseBefore.batchManifestHash,
     releaseId: firstReleaseBefore._id,
     releaseHash: publishedFirst.releaseHash,
-    targetModelIds: [firstReleaseBefore.models[0].canonicalModelId],
-    targetSlotIds: [`${firstReleaseBefore.models[0].canonicalModelId}:scientific-gen-01-method-flow`],
-    targetSlotSetHash: canonicalHash([`${firstReleaseBefore.models[0].canonicalModelId}:scientific-gen-01-method-flow`]),
+    targetModelIds: [remediationTarget.canonicalModelId],
+    targetSlotIds: [remediationTargetSlotId],
+    targetSlotSetHash: canonicalHash([remediationTargetSlotId]),
   }
+
+  const inheritedState = secondBatch.state
+  const inheritedStateHash = secondBatch.stateHash
+  const inheritedReportHash = secondBatch.latestStateReportHash
+  const tamperedState = structuredClone(inheritedState)
+  const tamperedCodexAttempt = tamperedState.slots.find((slot: any) => slot.provider === 'codex').attempts[0]
+  tamperedCodexAttempt.byteSize += 1
+  delete tamperedCodexAttempt.attemptHash
+  tamperedCodexAttempt.attemptHash = canonicalHash(tamperedCodexAttempt)
+  delete tamperedState.stateHash
+  tamperedState.stateHash = canonicalHash(tamperedState)
+  const tamperedWorkerReport = signedStateReport(secret, rehashedSecondFixture, tamperedState, 'worker', {
+    batchId: secondBatchId, previousStateHash: secondBatch.stateTransitionFromHash, revision: 2,
+  })
+  storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts')!.push({
+    _id: `scientific-v2-state-report:${tamperedWorkerReport.reportHash}`,
+    artifactType: 'state_report', batchManifestHash: rehashedSecondFixture.manifest.manifestHash,
+    sourceSetHash: tamperedState.stateHash, role: 'worker_state', report: tamperedWorkerReport.report,
+    reportHash: tamperedWorkerReport.reportHash, attestationHash: tamperedWorkerReport.attestationHash,
+    reviewReady: true, createdAt: FIXED_NOW,
+  })
+  secondBatch.state = tamperedState
+  secondBatch.stateHash = tamperedState.stateHash
+  secondBatch.latestStateReportHash = tamperedWorkerReport.reportHash
+  await assert.rejects(
+    () => second.publishScientificV2({ batchId: secondBatchId, ...secondInput }),
+    /SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID/,
+  )
+  secondBatch.state = inheritedState
+  secondBatch.stateHash = inheritedStateHash
+  secondBatch.latestStateReportHash = inheritedReportHash
 
   const publishedSecond = await second.publishScientificV2({ batchId: secondBatchId, ...secondInput })
   assert.notEqual(publishedSecond.releaseHash, publishedFirst.releaseHash)
