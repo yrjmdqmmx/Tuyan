@@ -278,6 +278,66 @@ test('relays a real upstream HTTP status and envelope unchanged', async () => {
   });
 });
 
+test('optimizeInputs relays the business envelope with an exact anonymous DTO and dedicated timeout', async () => {
+  const backend = fakeBackend(async () => ({
+    status: 422,
+    data: { code: 422, error: 'INPUT_OPTIMIZATION_INVALID' },
+  }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const response = await post(baseUrl, {
+      action: 'optimizeInputs',
+      target: 'caption',
+      inputs: {
+        methodContent: 'Method snapshot',
+        caption: 'Caption snapshot',
+        negativePrompt: 'Avoid gradients',
+        injected: 'must-not-relay',
+      },
+      mainRoute: {
+        accessProvider: 'openai',
+        modelId: 'gpt-5.6-sol',
+        imageModelId: 'must-not-relay',
+      },
+      apiKey: 'selected-provider-key',
+      apiKeys: { openai: 'must-not-relay' },
+      modelRoutes: { image: { accessProvider: 'bailian', modelId: 'must-not-relay' } },
+      clientPlatform: 'web',
+      userId: 'forged-user',
+      userEmail: 'forged@example.com',
+      image: 'must-not-relay',
+      vision: 'must-not-relay',
+      unexpected: 'must-not-relay',
+    });
+
+    assert.equal(response.status, 422);
+    assert.deepEqual(await response.json(), { code: 422, error: 'INPUT_OPTIMIZATION_INVALID' });
+    assert.equal(response.headers.get('set-cookie'), null);
+    assert.equal(backend.calls.length, 1);
+    assert.deepEqual(backend.calls[0].body, {
+      action: 'optimizeInputs',
+      target: 'caption',
+      inputs: {
+        methodContent: 'Method snapshot',
+        caption: 'Caption snapshot',
+        negativePrompt: 'Avoid gradients',
+      },
+      mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
+      apiKey: 'selected-provider-key',
+    });
+    assert.deepEqual(backend.calls[0].options, { timeoutMs: 50_000 });
+  });
+});
+
+test('maintenance blocks optimizeInputs before it reaches the backend', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend, isMaintenance: () => true }, async ({ baseUrl }) => {
+    const response = await post(baseUrl, { action: 'optimizeInputs' });
+    assert.equal(response.status, 503);
+    assert.deepEqual(await response.json(), { code: 503, error: 'MAINTENANCE_MODE' });
+    assert.equal(backend.calls.length, 0);
+  });
+});
+
 test('modelRegistry is a public read-only backend action', async () => {
   const backend = fakeBackend(async (body) => ({
     status: 200,

@@ -5045,3 +5045,321 @@ figcaption {
 @media (prefers-reduced-motion: reduce) {
   .featured-carousel-track { transition: none; }
 }
+
+/* Input optimization keeps the three editors authoritative until explicit adoption. */
+.input-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.input-field-head > label {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 680;
+}
+
+.input-optimization-field-actions {
+  display: inline-flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.input-optimization-disabled-reason {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 560;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.input-optimization-trigger,
+.input-optimization-restore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 28px;
+  padding: 4px 9px;
+  color: var(--sage);
+  background: #edf5ef;
+  border: 1px solid #c8d8cc;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 760;
+  line-height: 1.15;
+}
+
+.input-optimization-trigger:hover:not(:disabled),
+.input-optimization-restore:hover {
+  border-color: var(--sage);
+  box-shadow: 0 5px 16px rgba(49, 95, 81, 0.12);
+}
+
+.input-optimization-trigger:disabled {
+  color: var(--muted-2);
+  background: var(--surface-muted);
+  border-color: var(--hairline);
+  cursor: not-allowed;
+}
+
+.input-optimization-restore {
+  color: #77510b;
+  background: var(--accent-wash);
+  border-color: #e5cd8e;
+}
+
+.input-optimization-guidance {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  color: #7c2f25;
+  background: #fff1ed;
+  border: 1px solid #e7b9af;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.input-optimization-guidance svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.input-optimization-dialog {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(1120px, calc(100vw - 48px));
+  max-height: min(820px, calc(100dvh - 48px));
+  min-height: 520px;
+  overflow: hidden;
+  background: var(--paper-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(23, 21, 19, 0.28);
+}
+
+.input-optimization-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 21px 24px 17px;
+  background: linear-gradient(135deg, #fffffb, #edf5ef);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.input-optimization-dialog-head h2,
+.input-optimization-dialog-head p {
+  margin: 0;
+}
+
+.input-optimization-dialog-head > div > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sage);
+  font-size: 10px;
+  font-weight: 820;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.input-optimization-dialog-head h2 {
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: clamp(22px, 2.4vw, 30px);
+}
+
+.input-optimization-dialog-head p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.input-optimization-dialog-head > button {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+}
+
+.input-optimization-dialog-body {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 13px;
+  min-height: 0;
+  padding: 18px 24px 15px;
+  overflow: hidden;
+}
+
+.input-optimization-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  min-height: 0;
+}
+
+.input-optimization-side {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 13px;
+}
+
+.input-optimization-side > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.input-optimization-side > header span {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 780;
+}
+
+.input-optimization-side > header small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.original-side > header { background: #fff5f2; }
+.candidate-side > header { background: #eff8f1; }
+
+.input-optimization-copy {
+  min-width: 0;
+  min-height: 260px;
+  padding: 16px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.input-optimization-copy del,
+.input-optimization-copy ins {
+  padding: 1px 2px;
+  border-radius: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.input-optimization-copy del {
+  color: #7c2f25;
+  background: #ffe4de;
+  text-decoration-color: #ad584b;
+}
+
+.input-optimization-copy ins {
+  color: #215e3c;
+  background: #dff3e5;
+  text-decoration: none;
+  box-shadow: inset 0 -1px #62a77b;
+}
+
+.input-optimization-pending,
+.input-optimization-empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 9px;
+  min-height: 100%;
+  color: var(--muted);
+  text-align: center;
+}
+
+.input-optimization-live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  margin: 0;
+  padding: 8px 11px;
+  color: var(--muted);
+  background: var(--surface-muted);
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.input-optimization-live.error { color: var(--danger); background: #fff1ed; }
+.input-optimization-live.success { color: var(--sage); background: #edf5ef; }
+
+.input-optimization-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  padding: 14px 24px max(16px, env(safe-area-inset-bottom));
+  background: rgba(255, 255, 251, .94);
+  border-top: 1px solid var(--hairline);
+}
+
+.input-optimization-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 9px;
+  font-weight: 740;
+}
+
+.input-optimization-actions .primary-button { width: auto; margin: 0; }
+
+@media (max-width: 720px) {
+  .input-optimization-dialog {
+    width: 100vw;
+    max-height: 100dvh;
+    min-height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .input-optimization-dialog-head { padding: max(16px, env(safe-area-inset-top)) 16px 14px; }
+  .input-optimization-dialog-body { padding: 13px 16px; overflow-y: auto; }
+  .input-optimization-copy { min-height: 180px; max-height: 34dvh; }
+  .input-optimization-actions { flex-wrap: wrap; padding-inline: 16px; }
+  .input-optimization-actions button { flex: 1 1 auto; }
+}
+
+@media (max-width: 390px) {
+  .input-field-head { align-items: flex-start; flex-direction: column; }
+  .input-optimization-field-actions { width: 100%; justify-content: flex-start; }
+  .input-optimization-disabled-reason { text-align: left; }
+  .input-optimization-comparison { grid-template-columns: 1fr; }
+  .input-optimization-dialog-body { overflow-x: hidden; }
+  .input-optimization-copy { min-height: 138px; max-height: 25dvh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input-optimization-dialog,
+  .input-optimization-trigger,
+  .input-optimization-restore { transition: none; }
+  .input-optimization-dialog .spin { animation: none; }
+}

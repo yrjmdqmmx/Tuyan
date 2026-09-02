@@ -1,5 +1,17 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-02] Web 三输入栏 main 路由单次 AI 优化 — by Codex
+变更：新增同步 `optimizeInputs` action，分别优化论文方法内容、目标图注或负向提示词。请求只携带当前生效的 `mainRoute {accessProvider,modelId}`、该 Provider 的单个 `apiKey` 和三栏只读快照；Core 校验主模型注册表角色后最多发起一次文本 Provider HTTP 请求，不重试、不回退、不落库。`modelRegistry` 顶层新增 `inputOptimizationContractVersion:1`，旧后端下 Web 隐藏入口。
+契约（影响共享 / Web）：
+- **请求/响应**：`optimizeInputs` 接受 `target=methodContent|caption|negativePrompt`、`inputs`、`mainRoute`、`apiKey`，成功仅返回 `{code:0,target,optimizedText}`；方法/图注需非空，负向提示词可由其他两栏从空白生成。
+- **安全/失败**：Key 只进入单次执行闭包；Gateway 严格白名单、维护门禁与 50 秒专属超时，Core Provider 超时 45 秒。空白、无变化、超长、科研 token 漂移、Provider 超时/失败均保留原文并返回稳定错误，不暴露原始 Provider 响应。
+- **Web 交互**：三个字段独立入口，候选经原文/优化稿差异弹窗确认后才采用；支持重新优化、取消和一次恢复优化前内容。页面不展示模型名或费用，缺主模型/对应 Key 时打开设置引导且不发起调用。
+各端待办：
+- [x] packages-api / auth-gateway / paperbanana-api（共享 DTO、真实转发、单次 Provider 调用与 TDD）
+- [x] Web（三入口、可访问差异弹窗、采用与单步恢复）
+- [x] 微信小程序 / Android / iOS / Windows / macOS / HarmonyOS（新增 action 为可选能力，现有请求不变）
+- [ ] 部署 / 运维（PR/CI、Core/Gateway/HK/Pages 和生产非计费 smoke）
+
 ### [2026-09-02] Scientific V2 五模型修正发布恢复正确基线与真实审核理由 — by Codex
 变更：针对误将全量 343 张图片重审并重算 40 模型的已发布 V2，修正批次现同时签名绑定正确数据基线 release 与当前错误 active predecessor。发布端只重新审核、渲染并重算精确的 5 个目标模型；其他 35 个模型的分数、维度、图片、证据与审核内容从基线原样移植，只允许 `overallRank` / `dimensionRanks` 和证据行的 release/rank/时间派生字段变化。目标模型每个 9 题位必须全部成功才能生成修正审核包和公开证据，因此三个 Recraft 未补跑完成时不可伪装成已更新。A/B 与 xhigh 仲裁每个题位必填真实具体审核理由，禁止通用占位文案；最终按 competition ranking 重算受影响排名后在单一 Mongo 事务内原子 supersede。公开 API 字段不变。
 - [x] paperbanana-api / Benchmark Worker / 控制面（基线移植、目标范围审核与渲染、真实 rationale、竞争排名与原子发布回归）

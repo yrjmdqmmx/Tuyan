@@ -12,6 +12,16 @@ test('redacts secrets embedded in JSON-shaped log strings', () => {
   assert.equal((value.match(/\[REDACTED\]/g) || []).length, 4);
 });
 
+test('redacts a singular input-optimization apiKey in structured and text log details', () => {
+  const value = redactText(
+    'input optimization failed ' + JSON.stringify({ apiKey: 'selected-provider-key', target: 'caption' })
+      + ' apiKey=second-selected-key',
+  );
+  assert.doesNotMatch(value, /selected-provider-key|second-selected-key/);
+  assert.match(value, /caption/);
+  assert.match(value, /\[REDACTED\]/);
+});
+
 test('continues to redact Mongo credentials, authorization and URL query secrets', () => {
   const value = redactText(
     'mongodb://owner:mongo-secret@mongodb:27017/auth Authorization: Bearer bearer-secret https://example.test/?api_key=query-secret&safe=value',

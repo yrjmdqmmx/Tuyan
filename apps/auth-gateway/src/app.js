@@ -31,6 +31,7 @@ const MAINTENANCE_ACTIONS = new Set([
   'finalizeReferenceUpload',
   'abortReferenceUpload',
   'providerAccountCatalog',
+  'optimizeInputs',
   'submitFeedback',
   'benchmarkPromptSubmission',
   ...ADMIN_MUTATING_ACTIONS,
@@ -262,6 +263,13 @@ export function createApp({
             },
             context,
           ),
+        );
+      }
+
+      if (action === 'optimizeInputs') {
+        return relay(
+          response,
+          await backend.call(normalizeOptimizeInputsBody(request.body), context, { timeoutMs: 50_000 }),
         );
       }
 
@@ -526,6 +534,23 @@ function normalizeProviderAccountCatalogBody(body) {
     apiKeys: arkKey === undefined ? {} : { ark: arkKey },
     probes: body?.probes,
     confirmPaidImageProbe: body?.confirmPaidImageProbe,
+  };
+}
+
+function normalizeOptimizeInputsBody(body) {
+  return {
+    action: 'optimizeInputs',
+    target: body?.target,
+    inputs: {
+      methodContent: body?.inputs?.methodContent,
+      caption: body?.inputs?.caption,
+      negativePrompt: body?.inputs?.negativePrompt,
+    },
+    mainRoute: {
+      accessProvider: body?.mainRoute?.accessProvider,
+      modelId: body?.mainRoute?.modelId,
+    },
+    apiKey: body?.apiKey,
   };
 }
 
