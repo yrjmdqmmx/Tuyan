@@ -84,7 +84,6 @@ done
     {name: "scientific_v2_manifest_hash", collection: "paperbanana_benchmark_scientific_v2_batches", keys: {manifestHash: 1}, options: {unique: true}},
     {name: "scientific_v2_dispatch_identity", collection: "paperbanana_benchmark_scientific_v2_dispatches", keys: {manifestHash: 1, slotId: 1, attemptIndex: 1}, options: {unique: true}},
     {name: "scientific_v2_review_identity", collection: "paperbanana_benchmark_scientific_v2_review_artifacts", keys: {batchManifestHash: 1, sourceSetHash: 1, role: 1}, options: {unique: true}},
-    {name: "scientific_v2_release_identity", collection: "paperbanana_benchmark_releases", keys: {suiteId: 1, evaluationMode: 1, evaluationEpoch: 1}, options: {unique: true, partialFilterExpression: {evaluationMode: "codex_scientific_v2", profileStatus: "published"}}},
     {name: "scientific_v2_public_evidence_identity", collection: "paperbanana_benchmark_scientific_v2_public_evidence", keys: {sourceReleaseHash: 1, profileId: 1, caseId: 1}, options: {unique: true}},
   ]
   for (const contract of scientificV2IndexContracts) {
@@ -97,6 +96,17 @@ done
       throw new Error(`${contract.name} verification failed`)
     }
   }
+
+  const scientificReleaseCollection = benchmark.getCollection("paperbanana_benchmark_releases")
+  const scientificReleaseLookupKeys = {suiteId: 1, evaluationMode: 1, evaluationEpoch: 1, profileStatus: 1, publishedAt: -1}
+  scientificReleaseCollection.createIndex(scientificReleaseLookupKeys, {name: "scientific_v2_release_identity_lookup"})
+  const scientificReleaseLookup = scientificReleaseCollection.getIndexes().find(index => index.name === "scientific_v2_release_identity_lookup")
+  if (!scientificReleaseLookup || JSON.stringify(scientificReleaseLookup.key) !== JSON.stringify(scientificReleaseLookupKeys)
+    || scientificReleaseLookup.unique === true || scientificReleaseLookup.partialFilterExpression !== undefined) {
+    throw new Error("scientific_v2_release_identity_lookup verification failed")
+  }
+  const legacyScientificReleaseIndex = scientificReleaseCollection.getIndexes().find(index => index.name === "scientific_v2_release_identity")
+  if (legacyScientificReleaseIndex) scientificReleaseCollection.dropIndex(legacyScientificReleaseIndex.name)
 
   const roleDefinitions = [
     {

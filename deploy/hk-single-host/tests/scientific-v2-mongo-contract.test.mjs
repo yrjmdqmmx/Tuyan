@@ -39,14 +39,16 @@ test('Mongo root migration creates every API-declared scientific v2 index before
     assert.match(repository, new RegExp(`name: '${name}'`), `${name} must remain API-declared`)
     assert.match(initMongo, new RegExp(`name: "${name}"`), `${name} must be root-migrated`)
   }
-  assert.doesNotMatch(repository, /name: 'scientific_v2_release_identity'/)
-  assert.match(initMongo, /name: "scientific_v2_release_identity"/)
+  assert.doesNotMatch(repository, /name: 'scientific_v2_release_identity(?:_lookup)?'/)
+  assert.match(initMongo, /name: "scientific_v2_release_identity_lookup"/)
   assert.match(initMongo, /scientific_v2_batch_id[\s\S]*\{batchId:\s*1\}[\s\S]*unique:\s*true/)
   assert.match(initMongo, /scientific_v2_manifest_hash[\s\S]*\{manifestHash:\s*1\}[\s\S]*unique:\s*true/)
   assert.match(initMongo, /scientific_v2_dispatch_identity[\s\S]*\{manifestHash:\s*1,\s*slotId:\s*1,\s*attemptIndex:\s*1\}[\s\S]*unique:\s*true/)
   assert.match(initMongo, /scientific_v2_review_identity[\s\S]*\{batchManifestHash:\s*1,\s*sourceSetHash:\s*1,\s*role:\s*1\}[\s\S]*unique:\s*true/)
   assert.match(initMongo, /scientific_v2_public_evidence_identity[\s\S]*\{sourceReleaseHash:\s*1,\s*profileId:\s*1,\s*caseId:\s*1\}[\s\S]*unique:\s*true/)
-  assert.match(initMongo, /scientific_v2_release_identity[\s\S]*partialFilterExpression:[\s\S]*evaluationMode:\s*"codex_scientific_v2"[\s\S]*profileStatus:\s*"published"/)
+  assert.match(initMongo, /scientificReleaseLookupKeys\s*=\s*\{suiteId:\s*1,\s*evaluationMode:\s*1,\s*evaluationEpoch:\s*1,\s*profileStatus:\s*1,\s*publishedAt:\s*-1\}[\s\S]*scientific_v2_release_identity_lookup/)
+  assert.match(initMongo, /legacyScientificReleaseIndex[\s\S]*name === "scientific_v2_release_identity"[\s\S]*dropIndex/)
+  assert.ok(initMongo.indexOf('scientific_v2_release_identity_lookup') < initMongo.indexOf('dropIndex(legacyScientificReleaseIndex.name)'))
   assert.ok(initMongo.indexOf('scientific_v2_batch_id') < initMongo.indexOf('const roleDefinitions'))
   assert.match(compose, /paperbanana-api:[\s\S]*depends_on:[\s\S]*mongo-init:[\s\S]*condition:\s*service_completed_successfully/)
   assert.match(compose, /benchmark-worker:[\s\S]*depends_on:[\s\S]*mongo-init:[\s\S]*condition:\s*service_completed_successfully/)
@@ -106,8 +108,9 @@ test('Mongo integration harness proves scientific v2 API access and Worker denia
   const harness = readDeploy('tests/run-mongo-index-migration-integration.sh')
   for (const name of [
     'scientific_v2_batch_id', 'scientific_v2_manifest_hash', 'scientific_v2_dispatch_identity',
-    'scientific_v2_review_identity', 'scientific_v2_release_identity', 'scientific_v2_public_evidence_identity',
+    'scientific_v2_review_identity', 'scientific_v2_release_identity_lookup', 'scientific_v2_public_evidence_identity',
   ]) assert.match(harness, new RegExp(name))
+  assert.match(harness, /legacy scientific_v2_release_identity remains/)
   assert.match(harness, /Scientific V2 API createIndex\/listIndexes must succeed/)
   assert.match(harness, /Scientific V2 API release createIndex must be rejected as Unauthorized/)
   assert.match(harness, /Scientific V2 API release listIndexes must be rejected as Unauthorized/)
