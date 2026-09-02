@@ -46,7 +46,12 @@ done
   const apiWritableCollections = ["paperbanana_benchmark_suites", "paperbanana_benchmark_models", "paperbanana_benchmark_runs", "paperbanana_benchmark_samples", "paperbanana_benchmark_judgments", "paperbanana_benchmark_public_evidence", "paperbanana_benchmark_prompt_submissions", "paperbanana_benchmark_prompt_digests"]
   const scientificV2ApiWritableCollections = ["paperbanana_benchmark_scientific_v2_batches", "paperbanana_benchmark_scientific_v2_dispatches", "paperbanana_benchmark_scientific_v2_review_artifacts", "paperbanana_benchmark_scientific_v2_public_evidence"]
   const scientificV2ApiReleaseStateCollections = ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle"]
+  const scientificV2TransactionalCollections = ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle"]
   const scientificV2WorkerWritableCollections = ["paperbanana_benchmark_scientific_v2_batches", "paperbanana_benchmark_scientific_v2_dispatches"]
+  const existingBenchmarkCollections = new Set(benchmark.getCollectionNames())
+  for (const collection of scientificV2TransactionalCollections) {
+    if (!existingBenchmarkCollections.has(collection)) benchmark.createCollection(collection)
+  }
   const sampleCollection = benchmark.getCollection("paperbanana_benchmark_samples")
   sampleCollection.createIndex(
     {runId: 1, phase: 1, caseId: 1, repetition: 1},

@@ -49,6 +49,9 @@ test('Mongo root migration creates every API-declared scientific v2 index before
   assert.match(initMongo, /scientificReleaseLookupKeys\s*=\s*\{suiteId:\s*1,\s*evaluationMode:\s*1,\s*evaluationEpoch:\s*1,\s*profileStatus:\s*1,\s*publishedAt:\s*-1\}[\s\S]*scientific_v2_release_identity_lookup/)
   assert.match(initMongo, /legacyScientificReleaseIndex[\s\S]*name === "scientific_v2_release_identity"[\s\S]*dropIndex/)
   assert.ok(initMongo.indexOf('scientific_v2_release_identity_lookup') < initMongo.indexOf('dropIndex(legacyScientificReleaseIndex.name)'))
+  assert.deepEqual(parseSingleLineArray(initMongo, 'scientificV2TransactionalCollections'), releaseStateCollections)
+  assert.match(initMongo, /scientificV2TransactionalCollections[\s\S]*createCollection\(collection\)/)
+  assert.ok(initMongo.indexOf('createCollection(collection)') < initMongo.indexOf('const roleDefinitions'))
   assert.ok(initMongo.indexOf('scientific_v2_batch_id') < initMongo.indexOf('const roleDefinitions'))
   assert.match(compose, /paperbanana-api:[\s\S]*depends_on:[\s\S]*mongo-init:[\s\S]*condition:\s*service_completed_successfully/)
   assert.match(compose, /benchmark-worker:[\s\S]*depends_on:[\s\S]*mongo-init:[\s\S]*condition:\s*service_completed_successfully/)
@@ -111,6 +114,7 @@ test('Mongo integration harness proves scientific v2 API access and Worker denia
     'scientific_v2_review_identity', 'scientific_v2_release_identity_lookup', 'scientific_v2_public_evidence_identity',
   ]) assert.match(harness, new RegExp(name))
   assert.match(harness, /legacy scientific_v2_release_identity remains/)
+  assert.match(harness, /Scientific V2 transactional collection is missing/)
   assert.match(harness, /Scientific V2 API createIndex\/listIndexes must succeed/)
   assert.match(harness, /Scientific V2 API release createIndex must be rejected as Unauthorized/)
   assert.match(harness, /Scientific V2 API release listIndexes must be rejected as Unauthorized/)
