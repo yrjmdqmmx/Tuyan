@@ -27,7 +27,7 @@ function EvidenceNav({ current }) {
       {current === 'leaderboard' ? <span aria-current="page">排行榜</span> : <a href={LEADERBOARD_HREF}>排行榜</a>}
       {current === 'methodology' ? <span aria-current="page">方法说明</span> : <a href={METHODOLOGY_HREF}>方法说明</a>}
       {current === 'submit' ? <span aria-current="page">提交评估题</span> : <a href={SUBMIT_HREF}>提交评估题</a>}
-      <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
+      <a href="https://github.com/yrjmdqmmx/Tuyan-clients" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
     </nav>
   )
 }

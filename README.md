@@ -116,7 +116,7 @@ pnpm --filter @paperbanana/android typecheck
 - 32 位：`armeabi-v7a`
 - 64 位：`arm64-v8a`
 
-当前发布包可在 GitHub Releases 的 [`android-preview-0.1.3`](https://github.com/zdywrnm/PaperBanana-clients/releases/tag/android-preview-0.1.3) 中获取。
+当前发布包可在 GitHub Releases 的 [`android-preview-0.1.3`](https://github.com/yrjmdqmmx/Tuyan-clients/releases/tag/android-preview-0.1.3) 中获取。
 
 ## HarmonyOS Native Client
 

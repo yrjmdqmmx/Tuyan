@@ -1451,10 +1451,10 @@ export default function App() {
           <a href="https://huggingface.co/papers/2601.23265" target="_blank" rel="noreferrer">
             <FileText size={16} /> 论文
           </a>
-          <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">
+          <a href="https://github.com/yrjmdqmmx/Tuyan-clients" target="_blank" rel="noreferrer">
             <Github size={16} /> GitHub
           </a>
-          <a href="https://github.com/zdywrnm/PaperBanana-clients/tree/main/apps/miniprogram" target="_blank" rel="noreferrer">
+          <a href="https://github.com/yrjmdqmmx/Tuyan-clients/tree/main/apps/miniprogram" target="_blank" rel="noreferrer">
             <MessageCircle size={16} /> 微信小程序
           </a>
           <a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a>

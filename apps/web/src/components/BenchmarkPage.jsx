@@ -91,7 +91,7 @@ function LeaderboardNav() {
       <span aria-current="page">排行榜</span>
       <a href={METHODOLOGY_HREF}>方法说明</a>
       <a href={SUBMIT_HREF}>提交评估题</a>
-      <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
+      <a href="https://github.com/yrjmdqmmx/Tuyan-clients" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
     </nav>
   )
 }
