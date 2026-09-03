@@ -11,14 +11,14 @@ test('main routes leaderboard and canonicalizes legacy bench before render', () 
   assert.doesNotMatch(source, /PaperBanana 模型横评/u)
 })
 
-test('workspace header exposes leaderboard and mobile clients without Windows or Mac links', () => {
+test('workspace header exposes leaderboard and mini-program without retired client links', () => {
   const source = readSource('../src/App.jsx')
   assert.match(source, /BENCH_ENABLED\s*\?\s*<a href=\{appPath\('\/leaderboard'\)\}[^>]*>[\s\S]*?排行榜/u)
-  assert.match(source, /Android 版/u)
   assert.match(source, /微信小程序/u)
   assert.match(source, />\s*论文/u)
   assert.match(source, />\s*GitHub/u)
-  assert.doesNotMatch(source, /Windows 版|Mac 版|MonitorDown|\bApple\b/u)
+  assert.doesNotMatch(source, /Android 版|Windows 版|Mac 版|MonitorDown|\bApple\b/u)
+  assert.doesNotMatch(source, /className="brand-tags"|>多智能体<|>学术图示生成</u)
 })
 
 test('rendered leaderboard search keeps a visible two-pixel keyboard focus outline', () => {

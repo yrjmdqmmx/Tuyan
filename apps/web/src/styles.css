@@ -1113,6 +1113,8 @@ button {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex: 0 0 auto;
+  min-width: max-content;
 }
 
 .brand-logo {
@@ -1137,38 +1139,7 @@ button {
   line-height: 1.1;
   font-weight: 780;
   letter-spacing: 0;
-}
-
-.brand-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 7px;
-}
-
-.brand-tags span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 22px;
-  padding: 3px 10px;
-  color: #5a3b06;
-  background: var(--accent-wash);
-  border: 1px solid #ead28d;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 720;
-}
-
-.brand-tags span:first-child {
-  color: var(--sage);
-  background: #edf5ef;
-  border-color: #c8d8cc;
-}
-
-.brand-tags span:nth-child(2) {
-  color: #6b4807;
-  background: var(--accent-wash);
-  border-color: #e9d18c;
+  white-space: nowrap;
 }
 
 .section-head p {

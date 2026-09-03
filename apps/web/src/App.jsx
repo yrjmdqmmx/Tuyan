@@ -15,7 +15,6 @@ import {
   Settings2,
   ShieldCheck,
   Sparkles,
-  Smartphone,
   Undo2,
   Users,
   X,
@@ -1439,10 +1438,6 @@ export default function App() {
           <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
           <div>
             <h1>图研Tuyan工作台</h1>
-            <div className="brand-tags">
-              <span>多智能体</span>
-              <span>学术图示生成</span>
-            </div>
           </div>
         </div>
         <div className="header-links">
@@ -1458,9 +1453,6 @@ export default function App() {
           </a>
           <a href="https://github.com/zdywrnm/PaperBanana-clients" target="_blank" rel="noreferrer">
             <Github size={16} /> GitHub
-          </a>
-          <a href="https://github.com/zdywrnm/PaperBanana-clients/releases/tag/android-preview-0.1.3" target="_blank" rel="noreferrer">
-            <Smartphone size={16} /> Android 版
           </a>
           <a href="https://github.com/zdywrnm/PaperBanana-clients/tree/main/apps/miniprogram" target="_blank" rel="noreferrer">
             <MessageCircle size={16} /> 微信小程序
