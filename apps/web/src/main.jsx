@@ -11,12 +11,13 @@ import './components/benchmark.css';
 const currentAppLocation = appRelativeLocation(globalThis.location, APP_BASE_URL);
 const leaderboardLocation = canonicalizeLeaderboardLocation(currentAppLocation, globalThis.history, APP_BASE_URL);
 const leaderboardRoute = resolveLeaderboardRoute(leaderboardLocation?.pathname);
-if (leaderboardRoute.methodology) document.title = 'PaperBanana 排行榜方法说明';
-else if (leaderboardRoute.promptSubmission) document.title = '提交评估题 · PaperBanana';
-else if (leaderboardRoute.promptAdmin) document.title = '社区评估题审核 · PaperBanana';
-else if (leaderboardRoute.modelProfileId) document.title = '模型生成证据 · PaperBanana';
-else if (leaderboardRoute.caseId) document.title = '同题模型对比 · PaperBanana';
-else if (leaderboardRoute.isLeaderboard) document.title = 'PaperBanana 生图模型排行榜';
+const TUYAN_BENCHMARK_TITLE = '图研 Tuyan Benchmark · 科研图示生成与编辑模型基准评测';
+if (leaderboardRoute.methodology) document.title = '图研 Tuyan Benchmark · 方法说明';
+else if (leaderboardRoute.promptSubmission) document.title = '提交评估题 · 图研 Tuyan Benchmark';
+else if (leaderboardRoute.promptAdmin) document.title = '社区评估题审核 · 图研 Tuyan Benchmark';
+else if (leaderboardRoute.modelProfileId) document.title = '模型生成证据 · 图研 Tuyan Benchmark';
+else if (leaderboardRoute.caseId) document.title = '同题模型对比 · 图研 Tuyan Benchmark';
+else if (leaderboardRoute.isLeaderboard) document.title = TUYAN_BENCHMARK_TITLE;
 
 createRoot(document.getElementById('root')).render(
   leaderboardRoute.isLeaderboard

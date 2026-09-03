@@ -7,7 +7,7 @@ const readSource = (relativePath) => readFileSync(new URL(relativePath, import.m
 test('main routes leaderboard and canonicalizes legacy bench before render', () => {
   const source = readSource('../src/main.jsx')
   assert.match(source, /canonicalizeLeaderboardLocation/u)
-  assert.match(source, /PaperBanana 生图模型排行榜/u)
+  assert.match(source, /图研 Tuyan Benchmark · 科研图示生成与编辑模型基准评测/u)
   assert.doesNotMatch(source, /PaperBanana 模型横评/u)
 })
 

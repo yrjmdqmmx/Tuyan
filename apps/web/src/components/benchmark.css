@@ -26,6 +26,9 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .bench-eyebrow{font:700 10px/1 ui-monospace,SFMono-Regular,monospace;letter-spacing:.14em;color:#8b6000;text-transform:uppercase}
 .bench-hero h1,.bench-subpage-hero h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.05em;margin:10px 0 8px}
 .bench-hero p,.bench-subpage-hero p{color:var(--bench-muted);margin:0;max-width:810px;line-height:1.7;font-size:14px}
+.bench-hero .bench-hero-subtitle{color:var(--bench-ink);font-size:16px;font-weight:800;line-height:1.45}
+.bench-hero .bench-hero-subtitle-en{color:#8b6000;font-size:12px;line-height:1.5;margin-top:2px}
+.bench-hero .bench-hero-description{margin-top:8px}
 .bench-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:19px}
 .bench-meta span{border:1px solid #d8d1c5;background:#fff;border-radius:8px;padding:6px 9px;font-size:11px}
 .bench-meta .accent{background:#fff1c7;border-color:#e4c263;color:#765100}

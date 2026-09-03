@@ -100,9 +100,11 @@ function LeaderboardHero({ release }) {
   const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
   return (
     <header className="bench-hero">
-      <div className="bench-eyebrow">PAPERBANANA IMAGE MODEL LEADERBOARD</div>
-      <h1>生图模型排行榜</h1>
-      <p>{scientific ? '用九个固定科研题位观察模型在十个关键维度上的真实差异，并以失败记 0 的十维等权均值形成 Overall 排名。' : '用同一套轻量诊断题观察模型在七个关键维度上的真实差异，并以七维等权均值形成可比较的 Overall 排名。'}</p>
+      <div className="bench-eyebrow">TUYAN BENCHMARK</div>
+      <h1>图研 Tuyan Benchmark</h1>
+      <p className="bench-hero-subtitle">科研图示生成与编辑模型基准评测</p>
+      <p className="bench-hero-subtitle-en"><em>Tuyan Benchmark for Scientific Figure Generation &amp; Editing Models</em></p>
+      <p className="bench-hero-description">面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据的生成与编辑模型横向评测。</p>
       <div className="bench-meta" aria-label="排行榜方法摘要">
         <span className="accent">{release.eligibleModelCount ?? release.models?.length ?? 0} 个合格模型</span>
         <span>{scientific ? '固定 9 题 · 6 生成 + 3 编辑' : '固定 4 题 · 每模型 4 张'}</span>

@@ -57,13 +57,13 @@ test('every leaderboard deep-link entry boots the shared React route resolver', 
     assert.equal(existsSync(url), true, `${relativePath} should exist`)
     const html = readFileSync(url, 'utf8')
     if (relativePath === 'leaderboard/methodology/index.html') {
-      assert.match(html, /<title>PaperBanana 排行榜方法说明<\/title>/u)
+      assert.match(html, /<title>图研 Tuyan Benchmark · 方法说明<\/title>/u)
     } else if (relativePath === 'leaderboard/submit-prompt/index.html') {
-      assert.match(html, /<title>提交评估题 · PaperBanana<\/title>/u)
+      assert.match(html, /<title>提交评估题 · 图研 Tuyan Benchmark<\/title>/u)
     } else if (relativePath === 'leaderboard/admin/prompt-submissions/index.html') {
-      assert.match(html, /<title>社区评估题审核 · PaperBanana<\/title>/u)
+      assert.match(html, /<title>社区评估题审核 · 图研 Tuyan Benchmark<\/title>/u)
     } else {
-      assert.match(html, /<title>PaperBanana 生图模型排行榜<\/title>/u)
+      assert.match(html, /<title>图研 Tuyan Benchmark · 科研图示生成与编辑模型基准评测<\/title>/u)
     }
     assert.match(html, /<script type="module" src="\/src\/main\.jsx"><\/script>/u)
   }
