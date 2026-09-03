@@ -48,7 +48,7 @@ function licenseText(license) {
 function MethodologyNav() {
   return (
     <nav className="bench-nav" aria-label="排行榜导航">
-      <a className="bench-brand" href={WORKSPACE_HREF}><img src={LOGO_HREF} alt="" />PaperBanana</a>
+      <a className="bench-brand" href={WORKSPACE_HREF}><img src={LOGO_HREF} alt="" />图研Tuyan</a>
       <a href={WORKSPACE_HREF}>工作台</a>
       <a href={LEADERBOARD_HREF}>排行榜</a>
       <span aria-current="page">方法说明</span>

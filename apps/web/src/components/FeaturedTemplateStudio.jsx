@@ -117,7 +117,7 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
       >
         <div className="featured-template-copy">
           <h2>从真实研究图示开始</h2>
-          <p>PaperBanana 是开源的学术图示工作台。精选模板直接来自 306 条研究参考图库，套用后仍可完整改写你的方法、图注与排除项。</p>
+          <p>图研Tuyan 是开源的学术图示工作台。精选模板直接来自 306 条研究参考图库，套用后仍可完整改写你的方法、图注与排除项。</p>
           <button type="button" className="featured-template-cta" onClick={openLibrary}>
             <LayoutTemplate size={17} />浏览模板
           </button>

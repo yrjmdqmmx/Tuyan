@@ -7,7 +7,8 @@ const readSource = (relativePath) => readFileSync(new URL(relativePath, import.m
 test('main routes leaderboard and canonicalizes legacy bench before render', () => {
   const source = readSource('../src/main.jsx')
   assert.match(source, /canonicalizeLeaderboardLocation/u)
-  assert.match(source, /PaperBanana 生图模型排行榜/u)
+  assert.match(source, /图研Tuyan 生图模型排行榜/u)
+  assert.doesNotMatch(source, /PaperBanana 生图模型排行榜/u)
   assert.doesNotMatch(source, /PaperBanana 模型横评/u)
 })
 
@@ -19,6 +20,17 @@ test('workspace header exposes leaderboard and mini-program without retired clie
   assert.match(source, />\s*GitHub/u)
   assert.doesNotMatch(source, /Android 版|Windows 版|Mac 版|MonitorDown|\bApple\b/u)
   assert.doesNotMatch(source, /className="brand-tags"|>多智能体<|>学术图示生成</u)
+})
+
+test('leaderboard headers use the 图研Tuyan brand without the retired subtitle', () => {
+  for (const relativePath of ['../src/components/LeaderboardRoot.jsx', '../src/components/BenchmarkPage.jsx', '../src/components/BenchmarkMethodologyPage.jsx', '../src/components/BenchmarkEvidencePages.jsx']) {
+    const source = readSource(relativePath)
+    assert.doesNotMatch(source, /PaperBanana 标志|>PaperBanana<|PAPERBANANA IMAGE MODEL LEADERBOARD/u)
+  }
+  const root = readSource('../src/components/LeaderboardRoot.jsx')
+  assert.match(root, /alt="图研Tuyan 标志"/u)
+  assert.match(root, /<strong>图研Tuyan<\/strong>/u)
+  assert.doesNotMatch(root, /<small>|多智能体|学术图示生成/u)
 })
 
 test('rendered leaderboard search keeps a visible two-pixel keyboard focus outline', () => {

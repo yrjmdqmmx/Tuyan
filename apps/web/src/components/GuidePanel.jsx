@@ -57,7 +57,7 @@ export default function GuidePanel({
           </GuideSection>
 
           <GuideSection id="guide-library" title="模板与参考图库">
-            <p>精选模板图片来自 PaperBananaBench 的 306 条分页研究语料。完整图库支持搜索、分类、详情预览和最多 10 项手选；模板请求只按精确参考 ID 读取。图片暂时不可用时，结构预览仍会保留模板文本和套用能力。</p>
+            <p>精选模板图片来自图研Tuyan 参考库的 306 条分页研究语料。完整图库支持搜索、分类、详情预览和最多 10 项手选；模板请求只按精确参考 ID 读取。图片暂时不可用时，结构预览仍会保留模板文本和套用能力。</p>
             <p>本地上传参考图与图库检索是两种风格锚点：使用检索时先不要上传；上传图片后，后端也会以你的图片为唯一视觉来源。</p>
           </GuideSection>
 
@@ -114,7 +114,7 @@ export default function GuidePanel({
 
           <GuideSection id="guide-trust" title="错误、隐私与开源">
             <p>目录、能力或凭据未满足时，界面会在付费调用前给出原因并引导到对应设置；不会用不兼容模型静默替换。若任务中断，可在任务记录查看错误并重试。</p>
-            <p><ShieldCheck size={15} aria-hidden="true" /> 方法、图注、参考图和结果按隐私政策处理；API Key 不落库。<Github size={15} aria-hidden="true" /> PaperBanana 客户端以开源方式维护，欢迎通过 GitHub 查看实现与提交问题。</p>
+            <p><ShieldCheck size={15} aria-hidden="true" /> 方法、图注、参考图和结果按隐私政策处理；API Key 不落库。<Github size={15} aria-hidden="true" /> 图研Tuyan 客户端以开源方式维护，欢迎通过 GitHub 查看实现与提交问题。</p>
             {onContact ? <button type="button" className="guide-link" onClick={onContact}>仍有问题？联系作者</button> : null}
           </GuideSection>
         </article>

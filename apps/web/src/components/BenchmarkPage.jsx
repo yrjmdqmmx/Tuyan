@@ -86,7 +86,7 @@ function MetricValue({ model, metricId }) {
 function LeaderboardNav() {
   return (
     <nav className="bench-nav" aria-label="排行榜导航">
-      <a className="bench-brand" href={WORKSPACE_HREF}><img src={LOGO_HREF} alt="" />PaperBanana</a>
+      <a className="bench-brand" href={WORKSPACE_HREF}><img src={LOGO_HREF} alt="" />图研Tuyan</a>
       <a href={WORKSPACE_HREF}>工作台</a>
       <span aria-current="page">排行榜</span>
       <a href={METHODOLOGY_HREF}>方法说明</a>
@@ -100,7 +100,7 @@ function LeaderboardHero({ release }) {
   const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
   return (
     <header className="bench-hero">
-      <div className="bench-eyebrow">PAPERBANANA IMAGE MODEL LEADERBOARD</div>
+      <div className="bench-eyebrow">TUYAN IMAGE MODEL LEADERBOARD</div>
       <h1>生图模型排行榜</h1>
       <p>{scientific ? '用九个固定科研题位观察模型在十个关键维度上的真实差异，并以失败记 0 的十维等权均值形成 Overall 排名。' : '用同一套轻量诊断题观察模型在七个关键维度上的真实差异，并以七维等权均值形成可比较的 Overall 排名。'}</p>
       <div className="bench-meta" aria-label="排行榜方法摘要">

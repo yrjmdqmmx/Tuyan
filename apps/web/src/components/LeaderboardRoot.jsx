@@ -109,8 +109,8 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
   return (
     <header className="benchmark-site-header">
       <a className="benchmark-site-brand" href={appPath('/')}>
-        <img src={appPath('/logo.svg')} alt="PaperBanana 标志" />
-        <span><strong>PaperBanana</strong><small><i>多智能体</i><i>学术图示生成</i></small></span>
+        <img src={appPath('/logo.svg')} alt="图研Tuyan 标志" />
+        <span><strong>图研Tuyan</strong></span>
       </a>
       <nav className="benchmark-site-nav" aria-label="排行榜导航">
         {navItems.map((item) => active === item.id

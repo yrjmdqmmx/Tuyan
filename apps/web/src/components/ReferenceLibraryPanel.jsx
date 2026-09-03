@@ -53,7 +53,7 @@ export default function ReferenceLibraryPanel({ references, selectedIds, pageInf
   return (
     <div className="reference-library-panel">
       <div className="reference-library-head">
-        <div><strong><BookOpen size={15} /> 手动参考案例</strong><span>从完整 PaperBananaBench 中选择最多 10 个案例。</span></div>
+        <div><strong><BookOpen size={15} /> 手动参考案例</strong><span>从完整图研Tuyan 参考库中选择最多 10 个案例。</span></div>
         <span className="reference-library-count">已选 {selected.size}/10</span>
       </div>
       <button type="button" className="reference-gallery-launcher" onClick={() => setShowGallery(true)}>
@@ -63,7 +63,7 @@ export default function ReferenceLibraryPanel({ references, selectedIds, pageInf
 
       <AccessibleDialog open={showGallery} onClose={() => setShowGallery(false)} labelledBy={galleryTitleId} describedBy={galleryDescriptionId} className="reference-gallery-dialog">
         <header className="reference-gallery-dialog-head">
-          <div><span className="reference-gallery-eyebrow">PaperBananaBench · {pageInfo?.corpusVersion || '当前语料'}</span><h2 id={galleryTitleId}>参考案例图库</h2><p id={galleryDescriptionId}>图片点击进入完整预览；“选用”独立操作，选择会跨页、搜索与筛选保留。</p></div>
+          <div><span className="reference-gallery-eyebrow">图研Tuyan 参考库 · {pageInfo?.corpusVersion || '当前语料'}</span><h2 id={galleryTitleId}>参考案例图库</h2><p id={galleryDescriptionId}>图片点击进入完整预览；“选用”独立操作，选择会跨页、搜索与筛选保留。</p></div>
           <button type="button" className="reference-gallery-close" aria-label="关闭参考图库" onClick={() => setShowGallery(false)}><X size={20} /></button>
         </header>
 

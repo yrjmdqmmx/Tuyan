@@ -11,12 +11,12 @@ import './components/benchmark.css';
 const currentAppLocation = appRelativeLocation(globalThis.location, APP_BASE_URL);
 const leaderboardLocation = canonicalizeLeaderboardLocation(currentAppLocation, globalThis.history, APP_BASE_URL);
 const leaderboardRoute = resolveLeaderboardRoute(leaderboardLocation?.pathname);
-if (leaderboardRoute.methodology) document.title = 'PaperBanana 排行榜方法说明';
-else if (leaderboardRoute.promptSubmission) document.title = '提交评估题 · PaperBanana';
-else if (leaderboardRoute.promptAdmin) document.title = '社区评估题审核 · PaperBanana';
-else if (leaderboardRoute.modelProfileId) document.title = '模型生成证据 · PaperBanana';
-else if (leaderboardRoute.caseId) document.title = '同题模型对比 · PaperBanana';
-else if (leaderboardRoute.isLeaderboard) document.title = 'PaperBanana 生图模型排行榜';
+if (leaderboardRoute.methodology) document.title = '图研Tuyan 排行榜方法说明';
+else if (leaderboardRoute.promptSubmission) document.title = '提交评估题 · 图研Tuyan';
+else if (leaderboardRoute.promptAdmin) document.title = '社区评估题审核 · 图研Tuyan';
+else if (leaderboardRoute.modelProfileId) document.title = '模型生成证据 · 图研Tuyan';
+else if (leaderboardRoute.caseId) document.title = '同题模型对比 · 图研Tuyan';
+else if (leaderboardRoute.isLeaderboard) document.title = '图研Tuyan 生图模型排行榜';
 
 createRoot(document.getElementById('root')).render(
   leaderboardRoute.isLeaderboard
