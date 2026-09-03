@@ -1344,7 +1344,7 @@ export default function App() {
               <input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder="仅本地开发构建可修改" />
             </label>
           ) : (
-            <div className="service-boundary-note"><ShieldCheck size={16} />已锁定 PaperBanana 官方后端，API 密钥不会发送到用户指定的第三方地址。</div>
+            <div className="service-boundary-note"><ShieldCheck size={16} />已锁定图研官方后端，API 密钥不会发送到用户指定的第三方地址。</div>
           )}
 
           <div className="settings-grid">
@@ -1436,9 +1436,9 @@ export default function App() {
     <main className="app-shell">
       <header className="paper-header">
         <div className="brand">
-          <img className="brand-logo" src={logoUrl} alt="PaperBanana 标志" />
+          <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
           <div>
-            <h1>PaperBanana 工作台</h1>
+            <h1>图研Tuyan工作台</h1>
             <div className="brand-tags">
               <span>多智能体</span>
               <span>学术图示生成</span>
