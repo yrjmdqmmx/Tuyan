@@ -1,10 +1,9 @@
 import { formatError, requestJson } from '../../utils/api'
 import { getApiKeys, replaceApiKeys } from '../../utils/api-keys'
-import { getArkVerification } from '../../utils/ark-verification'
 import { buildAspectRatioOptions, buildResolutionOptions } from '../../utils/aspect-ratios'
 import { findRegistryModel, type ModelProviderId, type ModelRegistry } from '../../utils/model-registry'
 import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
-import { arkProbesForRoles, missingArkVerifications, providerDefaultRoutes, requiredRefineRouteRoles, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
+import { providerDefaultRoutes, requiredRefineRouteRoles, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import type { ImageAsset } from '../../utils/job-assets'
 import { normalizeJob, readLocalJobs, type Job } from '../../utils/jobs'
 import { buildRefineJobPayload } from '../../utils/refine'
@@ -94,8 +93,7 @@ Component({
       const roles = requiredRefineRouteRoles({ refineMode: this.data.refineMode })
       const keys = getApiKeys()
       const hasKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(keys[provider]?.trim()))
-      const hasArkVerification = missingArkVerifications(arkProbesForRoles(settings.modelRoutes, roles), getArkVerification()).length === 0
-      this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && hasArkVerification && !this.data.isSubmitting) })
+      this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && !this.data.isSubmitting) })
     },
     async submitRefine() {
       if (!this.data.canSubmit || this.data.isSubmitting || !this.data.source) return

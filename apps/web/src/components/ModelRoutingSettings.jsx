@@ -130,8 +130,8 @@ export default function ModelRoutingSettings({
 
         {arkProbes.length ? (
           <section className="ark-verification" aria-label="Ark 所选模型验证">
-            <div className="ark-verification-head"><ShieldCheck size={17} /><strong>验证所选 Ark 模型</strong></div>
-            <p>完整激活目录需 AK/SK，当前使用推理调用验证；验证结果和 Key 都只保留在页面内存中。</p>
+            <div className="ark-verification-head"><ShieldCheck size={17} /><strong>Ark 模型验证（可选）</strong></div>
+            <p>完整激活目录需 AK/SK；这里的推理探针只用于提前诊断账号可用性，不是提交前置条件。验证结果和 Key 都只保留在页面内存中。</p>
             <ul>
               {arkProbes.map((probe) => (
                 <li key={arkVerificationKey(probe)}>
