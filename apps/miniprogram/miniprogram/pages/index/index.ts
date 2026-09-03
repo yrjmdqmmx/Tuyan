@@ -1,4 +1,4 @@
-import { formatError, requestJson, uploadReferenceFile } from '../../utils/api'
+import { formatError, requestHealth, requestJson, uploadReferenceFile } from '../../utils/api'
 import {
   ASPECT_RATIO_OPTIONS,
   CANDIDATE_OPTIONS,
@@ -895,11 +895,8 @@ Component({
 
     async checkHealth() {
       try {
-        const data = await requestJson<{ code?: number; ok?: boolean; runtime?: string; laf?: { ok?: boolean } }>(
-          { action: 'health' },
-          // 启动期探测用短超时：失败只影响警示条展示，避免 60s 超时在控制台报 Error: timeout
-          { timeout: 15000 },
-        )
+        // 公开只读探测不带登录 Cookie；仅连接被关闭时内部再探测一次。
+        const data = await requestHealth<{ code?: number; ok?: boolean; runtime?: string; laf?: { ok?: boolean } }>()
         const laf = data.laf || {}
         const ok = Boolean(data.ok || laf.ok || data.code === 0)
         this.setData({

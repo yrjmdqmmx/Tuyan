@@ -17,6 +17,23 @@ export function requestJson<T>(body: WechatMiniprogram.IAnyObject, options: Requ
   return postJson<T>(API_ENDPOINT, body, options)
 }
 
+// 仅用于无副作用的公开健康探测。微信 Cronet 偶发关闭复用连接时允许再探测一次；
+// 创建任务、精修等可能计费的业务请求仍由 requestJson 单次发送，绝不自动重试。
+export async function requestHealth<T>(): Promise<T> {
+  const probe = () => requestJson<T>({ action: 'health' }, { auth: false, timeout: 15000 })
+  try {
+    return await probe()
+  } catch (error) {
+    if (!isRetryableHealthTransportError(error)) throw error
+    return probe()
+  }
+}
+
+export function isRetryableHealthTransportError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error || '')
+  return /ERR_CONNECTION_(?:CLOSED|RESET|ABORTED)|ERR_NETWORK_CHANGED|network connection (?:lost|closed)|socket (?:is )?closed/i.test(message)
+}
+
 // 防御解析：wx.request 严格 JSON.parse 失败时 res.data 会退化为字符串（如网关/代理异常时
 // 返回的 HTML 错误页、或上游响应被意外破坏），导致轮询拿不到 job。这里清洗 0x00–0x1F 后
 // 重试解析（换行/制表符替换为空格），仍失败才原样返回交给错误处理。属通用兜底，非已知后端缺陷。
@@ -201,6 +218,7 @@ export function formatError(error: unknown): string {
   if (message.includes('Please log in') || message.includes('请先登录') || message.includes('Unauthorized')) return '请先登录后再使用任务记录。'
   if (message.includes('Forbidden')) return '当前账号没有权限查看这个任务。'
   if (message.includes('url not in domain list')) return '请先在小程序后台配置 request 合法域名。'
+  if (isRetryableHealthTransportError(error)) return '网络连接临时中断，请稍后重试。'
   if (message.includes('timeout')) return '请求超时，请稍后重试。'
   if (message.includes('Invalid gateway token')) return '后端网关配置异常。'
   if (message.includes('password')) return '密码至少需要 8 位。'
