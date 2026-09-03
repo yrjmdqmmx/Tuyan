@@ -110,7 +110,7 @@ Component({
       }))
       const probes = arkProbesForRoles(draft.modelRoutes, normalizeRoles(this.properties.executionRoles))
       const missing = missingArkVerifications(probes, getArkVerification())
-      const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线待验证` : 'Ark 路线已验证') : ''
+      const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
       this.setData({
         draft, routeRows, ratioOptions, resolutionOptions, keyFields,
         providerIndex: Math.max(0, MODEL_PROVIDER_IDS.indexOf(draft.simpleProvider)),

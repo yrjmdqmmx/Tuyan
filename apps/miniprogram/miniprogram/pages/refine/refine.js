@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_1 = require("../../utils/api");
 const api_keys_1 = require("../../utils/api-keys");
-const ark_verification_1 = require("../../utils/ark-verification");
 const aspect_ratios_1 = require("../../utils/aspect-ratios");
 const model_registry_1 = require("../../utils/model-registry");
 const model_registry_store_1 = require("../../utils/model-registry-store");
@@ -104,8 +103,7 @@ Component({
             const roles = (0, model_routing_1.requiredRefineRouteRoles)({ refineMode: this.data.refineMode });
             const keys = (0, api_keys_1.getApiKeys)();
             const hasKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = keys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
-            const hasArkVerification = (0, model_routing_1.missingArkVerifications)((0, model_routing_1.arkProbesForRoles)(settings.modelRoutes, roles), (0, ark_verification_1.getArkVerification)()).length === 0;
-            this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && hasArkVerification && !this.data.isSubmitting) });
+            this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && !this.data.isSubmitting) });
         },
         async submitRefine() {
             var _a, _b;

@@ -173,18 +173,24 @@ test('advanced mode selects mixed provider routes and deduplicates involved cred
   })
 })
 
-test('Ark never probes on key input, requires paid confirmation, gates submit, and clears verification when key changes', async () => {
-  const { requests, user } = await renderReadyApp()
+test('Ark verification is optional and a failed probe does not block submit', async () => {
+  const { requests, user } = await renderReadyApp(registryV1, {
+    providerAccountCatalog: (body) => Response.json({
+      code: 0,
+      provider: 'ark',
+      probeResults: body.probes.map((probe) => ({ ...probe, state: probe.role === 'image' ? 'failed' : 'verified' })),
+    }),
+  })
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.click(screen.getByRole('button', { name: '火山方舟' }))
   await user.type(screen.getByLabelText('火山方舟 接入密钥'), 'ark-key')
   assert.equal(requests.some((request) => request.body?.action === 'providerAccountCatalog'), false)
 
   await user.click(submitButton())
-  assert.equal(requests.some((request) => request.body?.action === 'createJob'), false)
-  assert.ok(screen.getAllByText(/验证所选 Ark 模型/).length >= 1)
+  await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
+  assert.equal(requests.filter((request) => request.body?.action === 'providerAccountCatalog').length, 0)
+
   const verifyButton = screen.getByRole('button', { name: '验证所选模型' })
-  assert.equal(verifyButton.disabled, false)
   await user.click(verifyButton)
   await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'providerAccountCatalog').length, 1))
   const freeProbe = requests.find((request) => request.body?.action === 'providerAccountCatalog').body
@@ -192,26 +198,21 @@ test('Ark never probes on key input, requires paid confirmation, gates submit, a
   assert.deepEqual(freeProbe.probes.map(({ role, modelId }) => [role, modelId]), [
     ['main', 'doubao-text'], ['vision', 'doubao-vision'],
   ])
-  await user.click(submitButton())
-  assert.equal(requests.some((request) => request.body?.action === 'createJob'), false)
 
   await user.click(screen.getByLabelText('会按所选图片模型的最低支持分辨率产生一次图片调用费用'))
-  assert.equal(verifyButton.disabled, false)
   await user.click(verifyButton)
   await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'providerAccountCatalog').length, 2))
-  const probe = requests.filter((request) => request.body?.action === 'providerAccountCatalog')[1].body
-  assert.equal(probe.confirmPaidImageProbe, true)
-  assert.deepEqual(probe.probes.map(({ role, modelId }) => [role, modelId]), [
-    ['image', 'doubao-image'],
-  ])
+  const imageProbe = requests.filter((request) => request.body?.action === 'providerAccountCatalog')[1].body
+  assert.equal(imageProbe.confirmPaidImageProbe, true)
+  assert.deepEqual(imageProbe.probes.map(({ role, modelId }) => [role, modelId]), [['image', 'doubao-image']])
+  assert.ok(screen.getAllByText('failed').length >= 1)
 
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
-  const firstCreateCount = requests.filter((request) => request.body?.action === 'createJob').length
+  const createCount = requests.filter((request) => request.body?.action === 'createJob').length
   fireEvent.change(screen.getByLabelText('火山方舟 接入密钥'), { target: { value: 'changed-key' } })
   await user.click(submitButton())
-  assert.equal(requests.filter((request) => request.body?.action === 'createJob').length, firstCreateCount)
-  assert.ok(screen.getAllByText(/验证所选 Ark 模型/).length >= 1)
+  await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'createJob').length, createCount + 1))
 })
 
 test('Ark discards an in-flight verification response after the key changes', async () => {

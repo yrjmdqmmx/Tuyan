@@ -6,7 +6,6 @@ const jobs_1 = require("../../utils/jobs");
 const media_1 = require("../../utils/media");
 const payload_1 = require("../../utils/payload");
 const api_keys_1 = require("../../utils/api-keys");
-const ark_verification_1 = require("../../utils/ark-verification");
 const featured_templates_1 = require("../../utils/featured-templates");
 const model_registry_1 = require("../../utils/model-registry");
 const model_registry_store_1 = require("../../utils/model-registry-store");
@@ -1014,9 +1013,7 @@ Component({
             }, settings.maxCriticRounds);
             const apiKeys = (0, api_keys_1.getApiKeys)();
             const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
-            const hasArkVerification = (0, model_routing_1.missingArkVerifications)((0, model_routing_1.arkProbesForRoles)(settings.modelRoutes, roles), (0, ark_verification_1.getArkVerification)()).length === 0;
             const canSubmit = Boolean(hasRequiredKeys &&
-                hasArkVerification &&
                 this.data.methodContent.trim().length >= 20 &&
                 this.data.caption.trim().length >= 3 &&
                 this.data.negativePrompt.length <= 1000 &&

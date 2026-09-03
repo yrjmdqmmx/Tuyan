@@ -37,11 +37,10 @@ import {
 import { downloadShareFile, saveImageToAlbum } from '../../utils/media'
 import { buildCreateJobPayload, type UploadedReferenceImage } from '../../utils/payload'
 import { getApiKeys, replaceApiKeys } from '../../utils/api-keys'
-import { getArkVerification } from '../../utils/ark-verification'
 import { attachFeaturedTemplateImages, FEATURED_TEMPLATES, featuredTemplateRequest, type FeaturedTemplate } from '../../utils/featured-templates'
 import { findRegistryModel, type ModelRegistry, type ModelProviderId } from '../../utils/model-registry'
 import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
-import { arkProbesForRoles, missingArkVerifications, providerDefaultRoutes, requiredCreateRouteRoles, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
+import { providerDefaultRoutes, requiredCreateRouteRoles, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import {
   buildReferenceImage,
   filenameFromPath,
@@ -1110,10 +1109,8 @@ Component({
       }, settings.maxCriticRounds)
       const apiKeys = getApiKeys()
       const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(apiKeys[provider]?.trim()))
-      const hasArkVerification = missingArkVerifications(arkProbesForRoles(settings.modelRoutes, roles), getArkVerification()).length === 0
       const canSubmit = Boolean(
         hasRequiredKeys &&
-          hasArkVerification &&
           this.data.methodContent.trim().length >= 20 &&
           this.data.caption.trim().length >= 3 &&
           this.data.negativePrompt.length <= 1000 &&

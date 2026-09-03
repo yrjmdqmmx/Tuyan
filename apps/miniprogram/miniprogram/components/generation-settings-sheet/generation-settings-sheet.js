@@ -100,7 +100,7 @@ Component({
             }));
             const probes = (0, model_routing_1.arkProbesForRoles)(draft.modelRoutes, normalizeRoles(this.properties.executionRoles));
             const missing = (0, model_routing_1.missingArkVerifications)(probes, (0, ark_verification_1.getArkVerification)());
-            const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线待验证` : 'Ark 路线已验证') : '';
+            const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : '';
             this.setData({
                 draft, routeRows, ratioOptions, resolutionOptions, keyFields,
                 providerIndex: Math.max(0, model_registry_1.MODEL_PROVIDER_IDS.indexOf(draft.simpleProvider)),

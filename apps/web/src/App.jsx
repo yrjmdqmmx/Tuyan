@@ -92,7 +92,6 @@ import {
   buildModelSubmission,
   clearArkVerificationForRole,
   firstInvalidRequiredRoute,
-  missingArkVerifications,
   nextArkVerificationBatch,
   providerDefaultRoutes,
   requiredCreateRouteRoles,
@@ -336,7 +335,6 @@ export default function App() {
   arkKeySnapshotRef.current = apiKeys.ark;
   arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
   const missingCredentialProviders = credentialProviders.filter((routeProvider) => !apiKeys[routeProvider]?.trim());
-  const missingVerifiedArkRoutes = missingArkVerifications(activeArkProbes, arkVerification);
   const refineConfigSummary = `图像：${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName} / 视觉：${visionProviderConfig.label} · ${activeVisionRegistryEntry?.label || activeReferenceVisionModelName}`;
 
   useEffect(() => {
@@ -996,7 +994,6 @@ export default function App() {
     const canMock = isAdvancedMode && mock && health?.mock_enabled;
     const missingSetting = firstMissingGenerationSetting({
       missingCredentialProviders: canMock ? [] : missingCredentialProviders,
-      missingVerifiedArkRoutes: canMock ? [] : missingVerifiedArkRoutes,
       requiredRouteRoles: createRouteRoles,
       isAdvancedMode,
       retrievalSetting,
@@ -1224,12 +1221,6 @@ export default function App() {
     }
     if (missingCredentialProviders.length) {
       setRefineError(`请先填写${missingCredentialProviders.map((item) => PROVIDERS[item]?.label || item).join('、')}接入密钥。`);
-      setGenerationFocusSetting('api-key');
-      setShowGenerationSettings(true);
-      return;
-    }
-    if (missingVerifiedArkRoutes.length) {
-      setRefineError('请先验证所选 Ark 模型后再提交精修。');
       setGenerationFocusSetting('api-key');
       setShowGenerationSettings(true);
       return;
@@ -1722,7 +1713,7 @@ export default function App() {
             aspectRatio={refineAspectRatio}
             aspectRatioOptions={refineAspectRatioOptions}
             settingsSummary={refineConfigSummary}
-            canSubmit={authReady && refineResolutionOptions.length > 0 && !missingCredentialProviders.length && !missingVerifiedArkRoutes.length && Boolean(refineSource.objectKey || refineSource.url) && refineInstruction.trim().length >= 3 && !isSubmittingRefine && refineCapability.mode !== 'none'}
+            canSubmit={authReady && refineResolutionOptions.length > 0 && !missingCredentialProviders.length && Boolean(refineSource.objectKey || refineSource.url) && refineInstruction.trim().length >= 3 && !isSubmittingRefine && refineCapability.mode !== 'none'}
             isSubmitting={isSubmittingRefine}
             error={refineError}
             job={job}
@@ -1860,7 +1851,6 @@ function formatVerification(model) {
 
 function firstMissingGenerationSetting({
   missingCredentialProviders,
-  missingVerifiedArkRoutes,
   requiredRouteRoles,
   isAdvancedMode,
   retrievalSetting,
@@ -1873,7 +1863,6 @@ function firstMissingGenerationSetting({
   visionEntry,
 }) {
   if (missingCredentialProviders.length) return { setting: 'api-key', message: `请填写${missingCredentialProviders.map((item) => PROVIDERS[item]?.label || item).join('、')}接入密钥。` };
-  if (missingVerifiedArkRoutes.length) return { setting: 'api-key', message: '请先验证所选 Ark 模型后再提交。' };
   const invalidRoute = firstInvalidRequiredRoute({
     roles: requiredRouteRoles,
     entries: { main: mainEntry, image: imageEntry, vision: visionEntry },
