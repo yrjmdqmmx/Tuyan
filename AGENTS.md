@@ -1,6 +1,6 @@
 # AGENTS.md
 
-PaperBanana 多端 monorepo：`web`（React+Vite）/ `miniprogram`（微信小程序）/ `android`（Expo RN）/ `windows`（WinUI3）/ `macos`（SwiftUI）/ `laf-functions`（Sealaf 云函数后端）/ `auth-gateway`（Sealos 上的 Node 登录网关）。**各端常由不同的、互不可见的 AI 会话分别开发。**
+图研Tuyan monorepo：用户客户端只保留 Web（`apps/web`，React + Vite）与微信小程序（`apps/miniprogram`）；服务端继续保留 `paperbanana-api`、`auth-gateway`、`laf-functions`、`plot-worker` 和 `benchmark-worker`。**各模块常由不同的、互不可见的 AI 会话分别开发。**
 
 ## ⚠️ 跨端协调（最重要）
 **开工前先读 [SYNC.md](./SYNC.md) 并遵守它的协议：**

@@ -1,5 +1,12 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-03] 产品线收缩为 Web 与微信小程序 — by Codex
+变更：用户客户端只保留 `apps/web` 与 `apps/miniprogram`；删除 Android、Electron Desktop、HarmonyOS、iOS、macOS 和 Windows 客户端源码、专属 CI/发布工作流、App Store 元数据与专属测试。后端、共享包、Benchmark、历史 Git 记录和 GitHub Releases 不删除。
+契约：现有 API 字段和数据库记录不迁移；服务端及保留客户端继续识别历史 `clientPlatform` 值，确保旧任务来源可读，但不再新增或发布退役客户端。
+- [x] Web / 微信小程序（保留并继续开发）
+- [x] CI / 文档 / 仓库元数据（移除退役客户端入口）
+- [x] 后端 / 共享包（公开契约不变，保留历史兼容）
+
 ### [2026-09-02] Scientific V2 修正发布收窄为两个 Seedream、Recraft 保持基线 — by Codex
 变更：按最新生产口径停止三个 Recraft 的补跑和审核；修正发布只把 `seedream-4.5`、`seedream-5.0` 的 18 个已成功题位从当前 active predecessor 引入，其余 38 个模型（含三个 Recraft）的图片、评分、维度、证据与审核内容从 `f1f31caf…` 基线原样移植，只允许全榜 `overallRank` / `dimensionRanks` 和证据行 release/rank/时间派生字段变化。该固定 correction 使用 `targetSlotIds=[]` / `sha256("[]")` 的显式零 Provider 模式，completed state 由不可变 Worker 镜像在 `--network none` 下重建签名报告后进入双盲审核；控制面精确白名单禁止 Recraft 出现在目标模型列表。公开 API 字段不变。
 - [x] paperbanana-api / Benchmark Worker / 控制面（Seedream-only 固定计划、零调用继承、双重原子发布门与回归）
@@ -66,8 +73,8 @@
 - [x] Benchmark Worker / 控制面（离线签名 stager、root-only admin handoff 与契约测试）
 - [ ] 部署 / 运维（完成当前 Seedream remediation 的签名导入、双盲复审与原子 supersede）
 
-本仓库是多端 monorepo，由多个独立的 AI 会话 / 开发者分别开发各端
-（`web` / `miniprogram` / `android` / `windows` / `macos` / `laf-functions` 后端 / `auth-gateway`）。
+本仓库的用户客户端只保留 `web` 与 `miniprogram`；后端和 Benchmark 基础设施继续由独立 AI 会话 / 开发者维护
+（`paperbanana-api` / `auth-gateway` / `laf-functions` / `plot-worker` / `benchmark-worker`）。
 各会话互不可见——**本文件是唯一的跨端协调真相。**
 
 ## 协议（所有会话 / agent 必须遵守）

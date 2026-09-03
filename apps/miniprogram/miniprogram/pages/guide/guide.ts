@@ -3,7 +3,7 @@ import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } fr
 
 const LINKS: Record<string, { label: string; url: string }> = {
   site: { label: '网站端', url: 'https://www.paperbanana.asia/#guide-settings' },
-  github: { label: 'GitHub 仓库', url: 'https://github.com/yrjmdqmmx/paperbanana-clients' },
+  github: { label: 'GitHub 仓库', url: 'https://github.com/yrjmdqmmx/Tuyan-clients' },
   paper: { label: 'PaperBanana 论文', url: 'https://huggingface.co/papers/2601.23265' },
 }
 

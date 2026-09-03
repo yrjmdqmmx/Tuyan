@@ -4,7 +4,6 @@ node_modules/
 # Build outputs
 dist/
 build/
-!apps/desktop/build/
 bin/
 obj/
 out/
@@ -41,25 +40,9 @@ pnpm-debug.log*
 .vite/
 .turbo/
 .cache/
-.expo/
 __pycache__/
 *.py[cod]
-apps/android/.expo/
-
-# SwiftPM and local macOS app builds
-.build/
-.swiftpm/
 
 # WeChat Developer Tools local overrides
 apps/miniprogram/project.private.config.json
-
-# Android and Gradle
-.gradle/
-local.properties
-captures/
-
-# iOS/macOS project metadata if generated later
-DerivedData/
-xcuserdata/
-*.xcuserstate
 .gstack/

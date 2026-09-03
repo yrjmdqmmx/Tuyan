@@ -537,11 +537,8 @@ test('Core operations documentation includes Ark in the four-origin Singapore eg
   assert.doesNotMatch(coreReadme, /does not yet classify the Ark origin/);
 });
 
-test('shipping Web and iOS clients default to the Aliyun production edge', () => {
+test('shipping Web client defaults to the Aliyun production edge', () => {
   const clientFiles = [
-    '../../apps/ios/PaperBanana/Core/AppDefaults.swift',
-    '../../apps/ios/Scripts/e2e-gateway-smoke.mjs',
-    '../../apps/ios/README.md',
     '../../apps/web/.env.example',
   ].map(read);
 

@@ -4,10 +4,13 @@ import test from 'node:test'
 
 const publicDir = new URL('../public/', import.meta.url)
 
-test('privacy policy describes the live multi-platform data flow without placeholders', async () => {
+test('privacy policy describes the current Web and WeChat Mini Program data flow without placeholders', async () => {
   const source = await readFile(new URL('privacy-policy.html', publicDir), 'utf8')
   assert.doesNotMatch(source, /初稿模板|DRAFT TEMPLATE|\[fill in|请补充/)
   assert.match(source, /2026-08-19/)
+  assert.match(source, /2026-09-03/)
+  assert.match(source, /可通过 Web 与微信小程序使用/)
+  assert.match(source, /available on the Web and WeChat Mini Program/)
   assert.match(source, /阿里云香港|Alibaba Cloud Hong Kong/)
   assert.match(source, /新加坡.*出口|Singapore.*egress/is)
   assert.match(source, /clientPlatform/)
@@ -30,12 +33,8 @@ test('terms match the gateway transit-only API key behavior and contain no legal
   assert.match(source, /People's Republic of China/)
 })
 
-test('each release legal document makes the required current data disclosures', async () => {
+test('each canonical Web legal document makes the required current data disclosures', async () => {
   const documents = [
-    ['privacy policy Markdown', '../../../docs/app-store-submission/privacy-policy.md', true],
-    ['privacy policy HTML', '../../../docs/app-store-submission/privacy-policy.html', true],
-    ['terms Markdown', '../../../docs/app-store-submission/terms-of-service.md', false],
-    ['terms HTML', '../../../docs/app-store-submission/terms-of-service.html', false],
     ['public privacy policy HTML', '../public/privacy-policy.html', true],
     ['public terms HTML', '../public/terms-of-service.html', false],
   ]
@@ -59,14 +58,12 @@ test('each release legal document makes the required current data disclosures', 
 })
 
 test('terms HTML states that BYOK reaches the provider or platform selected by the user', async () => {
-  const source = await readFile(new URL('../../../docs/app-store-submission/terms-of-service.html', import.meta.url), 'utf8')
-  assert.match(source, /Hong Kong gateway\/core service to the provider\/platform you selected/)
+  const source = await readFile(new URL('../public/terms-of-service.html', import.meta.url), 'utf8')
+  assert.match(source, /gateway and job core to the selected platform/i)
 })
 
-test('every canonical privacy policy documents deletion sequencing and minimized runtime safety fields', async () => {
+test('the canonical privacy policy documents deletion sequencing and minimized runtime safety fields', async () => {
   const policies = [
-    ['privacy policy Markdown', '../../../docs/app-store-submission/privacy-policy.md'],
-    ['privacy policy HTML', '../../../docs/app-store-submission/privacy-policy.html'],
     ['public privacy policy HTML', '../public/privacy-policy.html'],
   ]
 
@@ -81,34 +78,4 @@ test('every canonical privacy policy documents deletion sequencing and minimized
     assert.match(source, /最小化|data minimization|minimi[sz]ation/i, `${name} must describe data minimization`)
     assert.match(source, /不.*追踪|No Tracking|do not track/i, `${name} must disclose no tracking`)
   }
-})
-
-test('App Store README reflects the current iOS legal entries, providers, pipeline, and release gate', async () => {
-  const source = await readFile(new URL('../../../docs/app-store-submission/README.md', import.meta.url), 'utf8')
-  assert.match(source, /指南页[\s\S]*隐私政策[\s\S]*服务条款/)
-  assert.match(source, /设置页[\s\S]*隐私政策[\s\S]*服务条款/)
-  assert.match(source, /Keychain/)
-  assert.match(source, /香港.*网关|Hong Kong.*gateway/is)
-  assert.match(source, /短生命周期|ephemeral/i)
-  assert.match(source, /不持久化.*(?:记录|日志|回显)|do not persist, log, or echo/is)
-  assert.match(source, /方舟|Ark/)
-  assert.match(source, /动态.*registry|dynamic registry/is)
-  assert.match(source, /rerender\/finalize/)
-  assert.match(source, /独立.*(?:Refine|精修)/)
-  assert.match(source, /五个 Tab/)
-  assert.match(source, /TestFlight/)
-  assert.match(source, /不提交 App Review/)
-  assert.doesNotMatch(source, /四家.*provider|four.*provider|仅本机存储不上传|never uploaded to our servers|从不上传我方服务器|规划\s*→\s*渲染\s*→\s*评审\s*(?:\[[^\]]+\])?\s*→\s*精修|plan\s*→\s*render\s*→\s*critique\s*→\s*refine/i)
-})
-
-test('App Store listing and review notes keep pipeline finalization distinct from independent Refine', async () => {
-  const paths = [
-    '../../../docs/app-store-submission/app-store-listing.md',
-    '../../../docs/app-store-submission/review-notes.md',
-  ]
-  const joined = (await Promise.all(paths.map(path => readFile(new URL(path, import.meta.url), 'utf8')))).join('\n')
-  assert.match(joined, /rerender\/finalize/)
-  assert.match(joined, /重渲染\/定稿/)
-  assert.match(joined, /Independent Refine|独立「精修」/)
-  assert.doesNotMatch(joined, /plan\s*→\s*render\s*→\s*critique\s*→\s*refine|规划\s*→\s*渲染\s*→\s*评审\s*→\s*精修/i)
 })

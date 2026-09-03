@@ -4,7 +4,7 @@ const config_1 = require("../../utils/config");
 const model_registry_store_1 = require("../../utils/model-registry-store");
 const LINKS = {
     site: { label: '网站端', url: 'https://www.paperbanana.asia/#guide-settings' },
-    github: { label: 'GitHub 仓库', url: 'https://github.com/yrjmdqmmx/paperbanana-clients' },
+    github: { label: 'GitHub 仓库', url: 'https://github.com/yrjmdqmmx/Tuyan-clients' },
     paper: { label: 'PaperBanana 论文', url: 'https://huggingface.co/papers/2601.23265' },
 };
 const CHAPTERS = [
