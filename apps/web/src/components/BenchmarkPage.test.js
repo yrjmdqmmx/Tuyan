@@ -419,7 +419,10 @@ test('overview requests only the leaderboard action and never methodology', asyn
   }
   try {
     render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard' }))
-    await screen.findByRole('heading', { name: '生图模型排行榜' })
+    await screen.findByRole('heading', { name: '图研 Tuyan Benchmark' })
+    assert.match(document.body.textContent, /科研图示生成与编辑模型基准评测/u)
+    assert.match(document.body.textContent, /Tuyan Benchmark for Scientific Figure Generation & Editing Models/u)
+    assert.match(document.body.textContent, /面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据的生成与编辑模型横向评测。/u)
     assert.deepEqual(bodies, [{ action: 'benchmarkLeaderboard' }])
     assert.equal(bodies.some((body) => body.action === 'benchmarkMethodology'), false)
   } finally {

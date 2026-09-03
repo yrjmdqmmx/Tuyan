@@ -19,7 +19,7 @@ test('root Vite build emits the standalone leaderboard methodology entry', async
     const methodologyEntry = join(outputDir, 'leaderboard/methodology/index.html')
     assert.equal(existsSync(methodologyEntry), true)
     const html = readFileSync(methodologyEntry, 'utf8')
-    assert.match(html, /PaperBanana 排行榜方法说明/u)
+    assert.match(html, /图研 Tuyan Benchmark · 方法说明/u)
     assert.match(html, /src="\/assets\/[^"]+\.js"/u)
   } finally {
     rmSync(outputDir, { recursive: true, force: true })
