@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "test": "node --import tsx --import ./tests/dom-setup.mjs --test",
-    "build": "vite build",
+    "build": "vite build && node scripts/publish-agent-skills.mjs",
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {

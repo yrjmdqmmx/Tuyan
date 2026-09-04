@@ -15,6 +15,10 @@
   "dependencies": {
     "@alicloud/dm20151123": "^1.10.2",
     "@better-auth/mongo-adapter": "^1.6.0",
+    "@modelcontextprotocol/express": "2.0.0",
+    "@modelcontextprotocol/node": "2.0.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "@paperbanana/tuyan-knowledge": "workspace:*",
     "better-auth": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",

@@ -3,6 +3,7 @@ import express from 'express';
 
 import { createBoundedAuthHandler } from './auth-http.js';
 import { readGuestIdentity, resolveGuestIdentity } from './guest-identity.js';
+import { createTuyanMcpRouter } from './mcp.js';
 import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
 import { redactErrorForLog } from './redaction.js';
 
@@ -50,6 +51,7 @@ export function createApp({
   const accountDeletionOperations = new Map();
   app.disable('x-powered-by');
   app.set('trust proxy', config.trustProxy);
+  app.use('/mcp', createTuyanMcpRouter({ logger, nowMs: () => nowSeconds() * 1000 }));
 
   const origins = new Set(config.frontendOrigins);
   app.use(
