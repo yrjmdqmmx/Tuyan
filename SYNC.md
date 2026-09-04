@@ -1,5 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-04] 匿名只读科研图示 MCP 与跨 Agent Skill v1 — by Codex
+变更：新增 `@paperbanana/tuyan-knowledge` 共享知识包与 `tuyan-scientific-figure` Agent Skill；Gateway 新增匿名、无状态 Streamable HTTP `/mcp`，只公开一个只读工具 `tuyan.get_workflow_bundle` 及版本化 Resources。MCP 只接受 `operation / visualCategory / outputFormat / locale / knowledgeMajor` 五个枚举字段，不接受论文、图片、提示词、API Key 或自由文本，不创建会话、Cookie、数据库记录或后台任务。PaperBananaBench 只由 Agent 经用户同意后从固定上游 revision 下载到本机，图研不重新托管；既有 Web、微信小程序和云端生成/精修 API 行为不变。
+契约：knowledge major 固定为 `1`；8 类视觉 ID 为 `method_framework / workflow / system_architecture / mechanism / comparison / timeline / data_stat / concept_map`；版本化 Schema URI 为 `tuyan://schemas/*/v1`；本地产物默认写入 `./tuyan-output/<timestamp>-<slug>/`。Gateway MCP 路由独立限制 64 KiB、每 IP 每分钟 60 次，日志不记录调用参数。
+- [x] 共享知识包 / Schema / 离线快照（中英内容、固定数据集 manifest 与 306 条选择校验）
+- [x] auth-gateway（匿名 MCP、闭合输入、Tools/Resources、限流与回归测试）
+- [x] Agent Skill / Web 发布包（Codex、OpenClaw、Hermes 标准安装说明；well-known 构建产物）
+- [x] Web / 微信小程序 / paperbanana-api（既有生成管线和公开 action 不变，无需改造）
+- [ ] 发布 / 生产 smoke（合并部署后仅执行一次 `initialize → tools/list → get_workflow_bundle → resources/read`）
+
 ### [2026-09-03] 产品线收缩为 Web 与微信小程序 — by Codex
 变更：用户客户端只保留 `apps/web` 与 `apps/miniprogram`；删除 Android、Electron Desktop、HarmonyOS、iOS、macOS 和 Windows 客户端源码、专属 CI/发布工作流、App Store 元数据与专属测试。后端、共享包、Benchmark、历史 Git 记录和 GitHub Releases 不删除。
 契约：现有 API 字段和数据库记录不迁移；服务端及保留客户端继续识别历史 `clientPlatform` 值，确保旧任务来源可读，但不再新增或发布退役客户端。

@@ -16,6 +16,18 @@ importers:
       '@better-auth/mongo-adapter':
         specifier: ^1.6.0
         version: 1.6.11(@better-auth/core@1.6.11(@better-auth/utils@0.4.0)(@better-fetch/fetch@1.1.21)(better-call@1.3.5(zod@4.4.3))(jose@6.2.3)(kysely@0.28.17)(nanostores@1.3.0))(@better-auth/utils@0.4.0)(mongodb@6.21.0(socks@2.8.9))
+      '@modelcontextprotocol/express':
+        specifier: 2.0.0
+        version: 2.0.0(@modelcontextprotocol/server@2.0.0)(express@4.22.2)
+      '@modelcontextprotocol/node':
+        specifier: 2.0.0
+        version: 2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.5)
+      '@modelcontextprotocol/server':
+        specifier: 2.0.0
+        version: 2.0.0
+      '@paperbanana/tuyan-knowledge':
+        specifier: workspace:*
+        version: link:../../packages/tuyan-knowledge
       better-auth:
         specifier: ^1.6.0
         version: 1.6.11(mongodb@6.21.0(socks@2.8.9))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -195,6 +207,15 @@ importers:
   packages/business: {}
 
   packages/design-tokens: {}
+
+  packages/tuyan-knowledge:
+    devDependencies:
+      ajv:
+        specifier: 8.17.1
+        version: 8.17.1
+      ajv-formats:
+        specifier: 3.0.1
+        version: 3.0.1(ajv@8.17.1)
 
   packages/types: {}
 
@@ -944,6 +965,12 @@ packages:
       '@noble/hashes':
         optional: true
 
+  '@hono/node-server@1.19.17':
+    resolution: {integrity: sha512-dSneS5qhiauZWGDCeK4o695Xd9nUNjviSZCMQrj10eetr8Uln1ucn6bbphOM6UynAMMtNIzZNSpL9vnASJwrPQ==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      hono: ^4
+
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
     engines: {node: '>=18'}
@@ -1124,6 +1151,31 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@modelcontextprotocol/core@2.0.0':
+    resolution: {integrity: sha512-pJCEwGG7Lfr/+PQp9ZTwKXNeO5wzbfKL7H3MYpCorM4oFBoQrdjnBgEoqG+RjhsvS1FKrDbKux+M1HhlnGWqcA==}
+    engines: {node: '>=20'}
+
+  '@modelcontextprotocol/express@2.0.0':
+    resolution: {integrity: sha512-Snlr8j9FR9LcVvEJPF7qJ7d5zTL4Bes2dk7RcacN9eSZ7OLohwxqhEvWu1+UxELyScgLbLLOdeVEGdwKI1iwVQ==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@modelcontextprotocol/server': ^2.0.0
+      express: ^4.18.0 || ^5.0.0
+
+  '@modelcontextprotocol/node@2.0.0':
+    resolution: {integrity: sha512-Y4hAC2XdGDUdDOCbLDOCA4+aL3NUldjsOWlDL/YwpAxrPhRm1xHd7lZ+mLacvZ9t3PaH28wgNoaLQGrIk1P2pg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@modelcontextprotocol/server': ^2.0.0
+      hono: ^4.11.4
+    peerDependenciesMeta:
+      hono:
+        optional: true
+
+  '@modelcontextprotocol/server@2.0.0':
+    resolution: {integrity: sha512-YhHWdHfpFMQfd0prsEnxKeS3Qz3ytIGmsS0sth4KDjnacIT7hxk6hXHkJ9KysxlkvTM+WZAtQbbcUhdoP4Hvtw==}
+    engines: {node: '>=20'}
 
   '@mongodb-js/saslprep@1.4.11':
     resolution: {integrity: sha512-o9rAHc0IpIjuPSxRutWpE1F62x7n+4mVS4rCNHkzhIUMQcc18bb6xEq5wd2NdN0WjepIyXIppRshYI2kQDOZVA==}
@@ -1419,6 +1471,17 @@ packages:
   agentkeepalive@3.5.3:
     resolution: {integrity: sha512-yqXL+k5rr8+ZRpOAntkaaRgWgE5o8ESAj5DyRmVTCSoZxXmqemb9Dd7T4i5UzwuERdLAJUy6XzR9zFVuf0kzkw==}
     engines: {node: '>= 4.0.0'}
+
+  ajv-formats@3.0.1:
+    resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
+    peerDependencies:
+      ajv: ^8.0.0
+    peerDependenciesMeta:
+      ajv:
+        optional: true
+
+  ajv@8.17.1:
+    resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
 
   ali-oss@6.23.0:
     resolution: {integrity: sha512-FipRmyd16Pr/tEey/YaaQ/24Pc3HEpLM9S1DRakEuXlSLXNIJnu1oJtHM53eVYpvW3dXapSjrip3xylZUTIZVQ==}
@@ -1746,6 +1809,12 @@ packages:
     resolution: {integrity: sha512-zCnTtlxNoAiDc3gqY2aYAWFx7XWWiasuF2K8Me5WbN8otHKTUKBwjPtNpRs/rbUZm7KxWAaNj7P1a/p52GbVug==}
     engines: {node: '>=0.10.0'}
 
+  fast-deep-equal@3.1.3:
+    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+
+  fast-uri@3.1.7:
+    resolution: {integrity: sha512-dOvZVzjdZdz7phd9v6jCbwxrBW3fK6n8Rc0CtdmM4bumzMnxywBYhuph6J819RRw/ku+rLbelwfMunktuzVVHg==}
+
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
     engines: {node: '>=12.0.0'}
@@ -1818,6 +1887,10 @@ packages:
   hasown@2.0.3:
     resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
     engines: {node: '>= 0.4'}
+
+  hono@4.13.5:
+    resolution: {integrity: sha512-O6+/eCYRkzzzy0rPWwKLiGBR1nFuUPZynnwjxN1MBA62NNqbT0wQEzQyK2gSO5yDIDB336sXQleAhOHrzlYyKw==}
+    engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@6.0.0:
     resolution: {integrity: sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==}
@@ -1921,6 +1994,9 @@ packages:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
     engines: {node: '>=6'}
     hasBin: true
+
+  json-schema-traverse@1.0.0:
+    resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
 
   json5@2.2.3:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
@@ -3281,6 +3357,10 @@ snapshots:
     optionalDependencies:
       '@noble/hashes': 2.2.0
 
+  '@hono/node-server@1.19.17(hono@4.13.5)':
+    dependencies:
+      hono: 4.13.5
+
   '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.3':
@@ -3411,6 +3491,28 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@modelcontextprotocol/core@2.0.0':
+    dependencies:
+      zod: 4.4.3
+
+  '@modelcontextprotocol/express@2.0.0(@modelcontextprotocol/server@2.0.0)(express@4.22.2)':
+    dependencies:
+      '@modelcontextprotocol/server': 2.0.0
+      cors: 2.8.6
+      express: 4.22.2
+
+  '@modelcontextprotocol/node@2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.5)':
+    dependencies:
+      '@hono/node-server': 1.19.17(hono@4.13.5)
+      '@modelcontextprotocol/server': 2.0.0
+    optionalDependencies:
+      hono: 4.13.5
+
+  '@modelcontextprotocol/server@2.0.0':
+    dependencies:
+      '@modelcontextprotocol/core': 2.0.0
+      zod: 4.4.3
 
   '@mongodb-js/saslprep@1.4.11':
     dependencies:
@@ -3659,6 +3761,17 @@ snapshots:
   agentkeepalive@3.5.3:
     dependencies:
       humanize-ms: 1.2.1
+
+  ajv-formats@3.0.1(ajv@8.17.1):
+    optionalDependencies:
+      ajv: 8.17.1
+
+  ajv@8.17.1:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-uri: 3.1.7
+      json-schema-traverse: 1.0.0
+      require-from-string: 2.0.2
 
   ali-oss@6.23.0:
     dependencies:
@@ -4078,6 +4191,10 @@ snapshots:
     dependencies:
       is-extendable: 0.1.1
 
+  fast-deep-equal@3.1.3: {}
+
+  fast-uri@3.1.7: {}
+
   fdir@6.5.0(picomatch@4.0.4):
     optionalDependencies:
       picomatch: 4.0.4
@@ -4158,6 +4275,8 @@ snapshots:
   hasown@2.0.3:
     dependencies:
       function-bind: 1.1.2
+
+  hono@4.13.5: {}
 
   html-encoding-sniffer@6.0.0(@noble/hashes@2.2.0):
     dependencies:
@@ -4277,6 +4396,8 @@ snapshots:
       - '@noble/hashes'
 
   jsesc@3.1.0: {}
+
+  json-schema-traverse@1.0.0: {}
 
   json5@2.2.3: {}
 
