@@ -7,7 +7,8 @@
 - [x] auth-gateway（匿名 MCP、闭合输入、Tools/Resources、限流与回归测试）
 - [x] Agent Skill / Web 发布包（Codex、OpenClaw、Hermes 标准安装说明；well-known 构建产物）
 - [x] Web / 微信小程序 / paperbanana-api（既有生成管线和公开 action 不变，无需改造）
-- [ ] 发布 / 生产 smoke（合并部署后仅执行一次 `initialize → tools/list → get_workflow_bundle → resources/read`）
+- [x] 发布 / 生产 smoke（合并部署后仅执行一次 `initialize → tools/list → get_workflow_bundle → resources/read`）
+发布证据：功能合并 PR `#158` / SHA `7ccdfcd3bea848a74dde81517889b36cd4774346`；移除已迁移 OpenVac 部署耦合 PR `#159` / 最终部署 SHA `2abc66c6ff50baa5f793135294682e847547e822`；Pages run `33855670006`；Gateway/Core/Benchmark 镜像 runs `33859200958` / `33859200731` / `33859201062`；香港部署 run `33859351493`。生产 MCP `2025-06-18` 协议 smoke 已按计划执行一次并通过：只声明 `tools/resources`，唯一工具为 `tuyan.get_workflow_bundle`，Workflow 与 Manifest Resource 可读，未创建 Session 或 Cookie。
 
 ### [2026-09-03] 产品线收缩为 Web 与微信小程序 — by Codex
 变更：用户客户端只保留 `apps/web` 与 `apps/miniprogram`；删除 Android、Electron Desktop、HarmonyOS、iOS、macOS 和 Windows 客户端源码、专属 CI/发布工作流、App Store 元数据与专属测试。后端、共享包、Benchmark、历史 Git 记录和 GitHub Releases 不删除。
