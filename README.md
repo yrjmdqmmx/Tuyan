@@ -13,8 +13,8 @@
   <a href="https://www.paperbanana.asia/">在线工作台</a> ·
   <a href="https://www.paperbanana.asia/leaderboard/">Tuyan Benchmark</a> ·
   <a href="apps/miniprogram/">微信小程序</a> ·
-  <a href="skills/tuyan-scientific-figure/">Agent Skill</a> ·
-  <a href="https://api.paperbanana.asia/mcp">匿名 MCP</a>
+  <a href="https://github.com/yrjmdqmmx/Tuyan-Skill">Agent Skill</a> ·
+  <a href="https://github.com/yrjmdqmmx/Tuyan-MCP">匿名 MCP</a>
 </p>
 
 <p align="center">
@@ -26,6 +26,8 @@
 </p>
 
 图研 Tuyan 将三类能力放在同一个开源项目中：可直接使用的 Web 与微信小程序工作台、公开可追溯的科研图示模型排行榜，以及可接入 Codex、OpenClaw、Hermes 等 Agent 的本地优先 Skill + 匿名只读 MCP。
+
+Agent 能力已拆分为两个可独立使用的开源仓库：[Tuyan-Skill](https://github.com/yrjmdqmmx/Tuyan-Skill) 提供本地科研图示工作流，[Tuyan-MCP](https://github.com/yrjmdqmmx/Tuyan-MCP) 提供匿名只读公共知识服务。主仓库继续保留现有生产部署使用的源码。
 
 ![图研 Tuyan 工作台](docs/readme/workbench.png)
 
@@ -93,17 +95,22 @@ Agent 工作流默认把 `figure-spec.json`、实际提示词、参考来源、�
 
 ### Codex（已完成端到端验收）
 
-从本仓库根目录安装到当前项目：
+安装 Skill（先克隆独立 Skill 仓库，再复制到用户级 Skill 目录）：
 
 ```bash
-mkdir -p .agents/skills
-cp -R skills/tuyan-scientific-figure .agents/skills/tuyan-scientific-figure
+git clone --depth 1 https://github.com/yrjmdqmmx/Tuyan-Skill.git
+mkdir -p ~/.agents/skills
+cp -R Tuyan-Skill/tuyan-scientific-figure ~/.agents/skills/tuyan-scientific-figure
+```
 
+安装 MCP（使用托管端点，不需要克隆 MCP 仓库）：
+
+```bash
 codex mcp add tuyan --url https://api.paperbanana.asia/mcp
 codex mcp list
 ```
 
-也可以把完整 Skill 目录复制到 `~/.agents/skills/tuyan-scientific-figure`，供所有项目使用。安装后新建一个 Codex 任务并调用：
+如需只在当前项目启用 Skill，把目标目录改成 `.agents/skills/tuyan-scientific-figure`。安装后新建一个 Codex 任务并调用：
 
 ```text
 $tuyan-scientific-figure 请把这段论文方法整理成方法框架图
@@ -113,7 +120,7 @@ $tuyan-scientific-figure 请把这段论文方法整理成方法框架图
 <summary>OpenClaw 标准接入方式</summary>
 
 ```bash
-openclaw skills install ./skills/tuyan-scientific-figure \
+openclaw skills install ./Tuyan-Skill/tuyan-scientific-figure \
   --as tuyan-scientific-figure
 
 openclaw mcp add tuyan \
@@ -142,7 +149,7 @@ hermes mcp test tuyan
 
 OpenClaw 与 Hermes 命令遵循各自标准 Skill/MCP 接口，但首版未完成真实客户端端到端验收，因此本项目不宣称已经验证这两个客户端。
 
-详细说明：[客户端安装指南](skills/tuyan-scientific-figure/references/client-installation.md)。
+详细说明：[独立 Skill 仓库安装指南](https://github.com/yrjmdqmmx/Tuyan-Skill/blob/main/tuyan-scientific-figure/references/client-installation.md)。MCP 的独立运行源码与测试见 [Tuyan-MCP](https://github.com/yrjmdqmmx/Tuyan-MCP)。
 
 ## 隐私边界
 
@@ -180,7 +187,7 @@ packages/
   types/               共享 TypeScript 类型
   ui-core/             共享 React UI
 skills/
-  tuyan-scientific-figure/  跨 Agent 科研图示 Skill
+  tuyan-scientific-figure/  跨 Agent 科研图示 Skill 的主仓库副本
 ```
 
 用户客户端目前只提供 Web 与微信小程序，不再发布 macOS、Windows 或 Android 安装包；后端、Worker 和历史 `clientPlatform` 数据保持兼容。
