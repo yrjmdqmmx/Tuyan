@@ -31,8 +31,6 @@ if ! jq -e '
   exit 1
 fi
 curl --fail --silent --show-error http://127.0.0.1:13005/health >/dev/null
-curl --fail --silent --show-error http://127.0.0.1:3010/ >/dev/null
-curl --fail --silent --show-error http://127.0.0.1:3010/api/health >/dev/null
 
 for service in mongodb paperbanana-api plot-worker; do
   if [[ -n "$("${compose[@]}" port "$service" 2>/dev/null)" ]]; then
@@ -166,4 +164,4 @@ fi
 
 "$script_dir/transaction-smoke.sh"
 
-echo "Local health, isolation, unauthorized-core, benchmark and OpenVac smoke checks passed."
+echo "Local health, isolation, unauthorized-core and benchmark smoke checks passed."
