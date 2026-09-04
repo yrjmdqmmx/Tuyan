@@ -43,8 +43,6 @@ check_json_endpoint "API readiness" "https://api.paperbanana.asia/ready" \
    (.backend.data.dependencies.providerEgress == "ready" or .backend.data.dependencies.providerEgress == "degraded")'
 check_json_endpoint "Legacy compatibility proxy" "https://yifbnnzrwmxn.sealoshzh.site/health" \
   '.ok == true and .runtime == "gateway" and .backend.ok == true'
-check_json_endpoint "OpenVac health" "http://127.0.0.1:3010/api/health" \
-  '(.ok == true) or (.status == "ok") or (.status == "healthy")'
 
 for container_name in \
   paperbanana-hk-auth-gateway-1 \

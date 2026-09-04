@@ -63,7 +63,6 @@ test('production health monitor covers application, data, backup, TLS and 5xx si
   assert.match(monitor, /https:\/\/api\.paperbanana\.asia\/ready/);
   assert.match(monitor, /\.backend\.data\.ready == true/);
   assert.match(monitor, /https:\/\/yifbnnzrwmxn\.sealoshzh\.site\/health/);
-  assert.match(monitor, /127\.0\.0\.1:3010\/api\/health/);
   assert.match(monitor, /countDocuments/);
   assert.match(monitor, /getCollection\("paperbanana_jobs"\)/);
   assert.match(monitor, /queued/);
@@ -81,6 +80,17 @@ test('production health monitor covers application, data, backup, TLS and 5xx si
   assert.match(timer, /OnUnitActiveSec=5m/);
   assert.match(timer, /Persistent=true/);
   assert.match(installer, /systemctl enable --now paperbanana-health-monitor\.timer/);
+});
+
+test('Hong Kong deployment is independent from the migrated OpenVac service', () => {
+  for (const path of [
+    'README.md',
+    'scripts/install-gvisor.sh',
+    'scripts/monitor-health.sh',
+    'scripts/smoke.sh',
+  ]) {
+    assert.doesNotMatch(read(path), /OpenVac|openvac|127\.0\.0\.1:3010/, `${path} must not depend on OpenVac`);
+  }
 });
 
 test('compose keeps the public edge on loopback and all data services private', () => {

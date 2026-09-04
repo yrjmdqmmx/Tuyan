@@ -21,8 +21,6 @@ VPC peering.
   gateway-initiated egress, and still allows established replies to host Nginx.
   A five-minute systemd timer refreshes that destination set without changing
   the fail-closed policy when DNS is unavailable.
-- Existing `openvac-production-*` containers and port `3010` are outside this
-  Compose project and are health-checked before and after maintenance.
 
 ## Host layout
 
@@ -56,8 +54,8 @@ documents. It refuses to overwrite an initialized environment.
    wrapper's inherited descriptor for that exact locked path; its dry-run no
    longer advertises direct apply.
 3. The apply path creates the maintenance marker, recreates only this Compose
-   project, waits up to 30 minutes for graceful core drain, runs isolation and
-   OpenVac smoke checks, and clears maintenance only after success.
+   project, waits up to 30 minutes for graceful core drain, runs local health
+   and isolation smoke checks, and clears maintenance only after success.
 4. Install the bootstrap HTTP vhost, switch DNS, issue the certificate using
    the webroot `/var/www/letsencrypt`, then install the TLS vhost.
 5. Run `backup-mongo.sh`; pass that archive to `restore-drill.sh` before
@@ -240,7 +238,7 @@ The production health monitor requires a root-only
 must be limited to `cms:PutCustomEvent`. Run
 `scripts/install-health-monitor.sh --apply` after the CMS custom-event rule and
 contact group exist. Every five minutes it checks public health/readiness,
-OpenVac, all PaperBanana containers, Mongo connectivity and stuck jobs, backup
+all PaperBanana containers, Mongo connectivity and stuck jobs, backup
 freshness, TLS lifetime, and new Nginx 5xx responses. It reports state changes
 and hourly reminders through `PaperBananaProductionHealthFailure`.
 Core `providerEgress: degraded` remains an explicit health signal but does not

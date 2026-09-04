@@ -14,21 +14,8 @@ test -s "$snapshot_marker" || {
   exit 1
 }
 
-openvac_containers=(
-  openvac-production-web-1
-  openvac-production-worker-1
-  openvac-production-postgres-1
-)
-for container in "${openvac_containers[@]}"; do
-  test "$(docker inspect -f '{{.State.Running}}' "$container")" = true || {
-    echo "OpenVac precheck failed: $container is not running" >&2
-    exit 1
-  }
-done
-curl --fail --silent --show-error http://127.0.0.1:3010/api/health >/dev/null
-
 if [[ "$mode" == "--dry-run" ]]; then
-  echo "Snapshot marker and OpenVac prechecks passed. --apply installs runsc and restarts Docker once."
+  echo "Snapshot marker precheck passed. --apply installs runsc and restarts Docker once."
   exit 0
 fi
 
@@ -43,20 +30,12 @@ systemctl restart docker
 
 for _ in $(seq 1 90); do
   if docker info --format '{{json .Runtimes}}' 2>/dev/null | grep -q 'runsc'; then
-    all_running=true
-    for container in "${openvac_containers[@]}"; do
-      if [[ "$(docker inspect -f '{{.State.Running}}' "$container" 2>/dev/null || true)" != true ]]; then
-        all_running=false
-      fi
-    done
-    if [[ "$all_running" == true ]] && curl --fail --silent http://127.0.0.1:3010/api/health >/dev/null 2>&1; then
-      runsc --version
-      echo "gVisor installed; Docker and OpenVac recovered successfully."
-      exit 0
-    fi
+    runsc --version
+    echo "gVisor installed and Docker recovered successfully."
+    exit 0
   fi
   sleep 2
 done
 
-echo "Docker/OpenVac did not recover within the expected window" >&2
+echo "Docker did not recover within the expected window" >&2
 exit 1
