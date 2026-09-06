@@ -91,6 +91,7 @@ function expectedCaptureIdentities(requirements: ScientificV2PriceRequirement[])
     expected.push({ provider: 'openrouter', kind: 'models-api', url: OFFICIAL_URLS.openrouterModels })
     for (const modelId of [...new Set(requirements.filter((item) => item.provider === 'openrouter').map((item) => item.modelId))].sort()) {
       expected.push({ provider: 'openrouter', kind: 'endpoints-api', url: `https://openrouter.ai/api/v1/images/models/${modelId}/endpoints` })
+      if (modelId === 'microsoft/mai-image-2.6') expected.push({ provider: 'openrouter', kind: 'endpoints-api', url: `https://openrouter.ai/api/v1/models/${modelId}/endpoints` })
       if (Object.hasOwn(KREA_PRICES, modelId)) expected.push({ provider: 'openrouter', kind: 'pricing-page', url: `https://openrouter.ai/${modelId}` })
     }
     expected.push({ provider: 'fx', kind: 'fx-reference', url: OFFICIAL_URLS.ecbFx })
@@ -209,6 +210,10 @@ export async function refreshScientificV2OfficialPriceSources(input: {
         provider: 'openrouter', kind: 'endpoints-api',
         url: `https://openrouter.ai/api/v1/images/models/${modelId}/endpoints`, capturedAt: input.capturedAt, fetchImpl,
       })
+      if (modelId === 'microsoft/mai-image-2.6') await capture({
+        provider: 'openrouter', kind: 'endpoints-api',
+        url: `https://openrouter.ai/api/v1/models/${modelId}/endpoints`, capturedAt: input.capturedAt, fetchImpl,
+      })
       if (Object.hasOwn(KREA_PRICES, modelId)) await capture({
         provider: 'openrouter', kind: 'pricing-page', url: `https://openrouter.ai/${modelId}`,
         capturedAt: input.capturedAt, fetchImpl,
@@ -314,6 +319,34 @@ function assertKreaPriceEvidence(bytes: Buffer, modelId: keyof typeof KREA_PRICE
   }
 }
 
+function assertMai26ConservativePriceEvidence(imageBytes: Buffer, tokenBytes: Buffer) {
+  const invalid = () => scientificV2Error('SCIENTIFIC_V2_MAI_PRICE_EVIDENCE_INVALID')
+  let image: any
+  let token: any
+  try {
+    const imageJson = JSON.parse(imageBytes.toString('utf8'))
+    const tokenJson = JSON.parse(tokenBytes.toString('utf8'))
+    image = imageJson.data || imageJson
+    token = tokenJson.data || tokenJson
+  } catch { invalid() }
+  const id = 'microsoft/mai-image-2.6'
+  if (image?.id !== id || token?.id !== id || !Array.isArray(image?.endpoints) || !Array.isArray(token?.endpoints)) invalid()
+  const imageRoutes = image.endpoints.filter((route: any) => route.provider_slug === 'azure')
+  const tokenRoutes = token.endpoints.filter((route: any) => route.tag === 'azure' && route.model_id === id)
+  if (imageRoutes.length !== 1 || tokenRoutes.length !== 1) invalid()
+  const imageRoute = imageRoutes[0]
+  const tokenRoute = tokenRoutes[0]
+  const prices = imageRoute.pricing
+  const expected: Record<string, number> = { input_text: 0.000005, input_image: 0.000008, output_image: 0.000038 }
+  if (!Array.isArray(prices) || prices.length !== 3 || new Set(prices.map((price: any) => price.billable)).size !== 3
+    || prices.some((price: any) => price.unit !== 'token' || !Object.hasOwn(expected, price.billable) || Number(price.cost_usd) !== expected[price.billable])
+    || !Number.isSafeInteger(tokenRoute.context_length) || tokenRoute.context_length < 1 || tokenRoute.context_length > 32_000
+    || !Number.isSafeInteger(tokenRoute.max_completion_tokens) || tokenRoute.max_completion_tokens < 1 || tokenRoute.max_completion_tokens > 1_024
+    || Number(tokenRoute.pricing?.prompt) !== expected.input_text
+    || Number(tokenRoute.pricing?.image_output) !== expected.output_image
+    || imageRoute.supported_parameters?.n?.max !== 1) invalid()
+}
+
 export async function extractScientificV2OfficialPriceObservations(input: {
   canonicalManifest: Parameters<typeof deriveScientificV2PriceRequirements>[0]
   refreshReport: ScientificV2OfficialPriceRefreshReport
@@ -350,6 +383,15 @@ export async function extractScientificV2OfficialPriceObservations(input: {
     if (!rateDate || !usd || !cny) scientificV2Error('SCIENTIFIC_V2_FX_EVIDENCE_INVALID')
     fx = { source: source(captured.capture), rateDate, baseCurrency: 'EUR', usdPerBaseDecimal: usd, cnyPerBaseDecimal: cny }
     return fx
+  }
+  // Check this ceiling before any extractor that can fall back to operator
+  // bounds. A changed MAI rate or token ceiling must never use a stale bound.
+  if (requirements.some((requirement) => requirement.provider === 'openrouter' && requirement.modelId === 'microsoft/mai-image-2.6')) {
+    const [imageEndpoint, tokenEndpoint] = await Promise.all([
+      bytesFor('https://openrouter.ai/api/v1/images/models/microsoft/mai-image-2.6/endpoints'),
+      bytesFor('https://openrouter.ai/api/v1/models/microsoft/mai-image-2.6/endpoints'),
+    ])
+    assertMai26ConservativePriceEvidence(imageEndpoint.bytes, tokenEndpoint.bytes)
   }
   for (const requirement of requirements) {
     if (requirement.provider === 'ark' && Object.hasOwn(ARK_PRICES, requirement.modelId)) {

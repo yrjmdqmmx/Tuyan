@@ -1572,6 +1572,7 @@ export function createMongoBenchmarkRepository(
     async control(input: AnyRecord) {
       if (input.evaluationMode === 'codex_scientific_v2') {
         if (input.command === 'freezeBatch') return scientificV2.freezeBatch(input)
+        if (input.command === 'freezeExpansionBatch') return scientificV2.freezeExpansionBatch(input)
         if (input.command === 'freezeRemediationBatch') return scientificV2.freezeRemediationBatch({
           batchId: input.batchId,
           sourceBatchId: input.sourceBatchId,

@@ -2,6 +2,8 @@ import {
   PB_SCIENTIFIC_FIGURE_V2,
   SCIENTIFIC_EDIT_SOURCE,
   buildScientificV2CanonicalManifest,
+  deriveScientificV2ExecutionCanonicalManifest,
+  type ScientificV2Expansion,
   canonicalHash,
 } from '@paperbanana/benchmark-core'
 import { createHash } from 'node:crypto'
@@ -90,6 +92,7 @@ export interface ScientificV2OperatorInspectBundle {
   gate: OperatorGate
   batchInput: {
     canonicalManifest: CanonicalManifest
+    expansion?: ScientificV2Expansion
     registrySnapshot: Parameters<typeof buildScientificV2Batch>[0]['registrySnapshot']
     suiteHash: string
     codeSha: string
@@ -100,6 +103,7 @@ export interface ScientificV2OperatorInspectBundle {
 
 export type ScientificV2OperatorBundle = ScientificV2OperatorInspectBundle | {
   operation: 'prepare'; gate: OperatorGate; input: {
+    expansion?: ScientificV2Expansion
     registryAuthority: Record<string, unknown>
     signedPriceSnapshot: unknown
     codeSha: string
@@ -429,6 +433,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     assertExactScientificV2Keys(bundle, ['operation', 'gate', 'input'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     assertExactScientificV2Keys(bundle.input, [
       'registryAuthority', 'signedPriceSnapshot', 'codeSha', 'createdAt',
+      ...(Object.hasOwn(bundle.input, 'expansion') ? ['expansion'] : []),
     ], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     assertExactScientificV2Keys(bundle.input.registryAuthority, [
       'schemaVersion', 'codeSha', 'capturedAt', 'registryVersion', 'registryBytesHash',
@@ -450,7 +455,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     if (signedPriceCapturedAt !== bundle.input.createdAt) scientificV2Error('SCIENTIFIC_V2_PRICE_ATTESTATION_BINDING_MISMATCH')
     const priceSnapshot = verifyScientificV2SignedPriceSnapshot(bundle.input.signedPriceSnapshot, {
       secret: String((context?.env || process.env).PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET || ''),
-      canonicalManifest,
+      canonicalManifest: deriveScientificV2ExecutionCanonicalManifest(canonicalManifest, bundle.input.expansion),
       expectedCodeSha: bundle.input.codeSha,
       now: context?.now || (() => new Date()),
       maxAgeMs: 24 * 60 * 60 * 1_000,
@@ -464,6 +469,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     const registrySnapshot = { ...registryBase, snapshotHash: canonicalHash(registryBase) }
     const built = buildScientificV2Batch({
       canonicalManifest, registrySnapshot, suite: PB_SCIENTIFIC_FIGURE_V2,
+      ...(Object.hasOwn(bundle.input, 'expansion') ? { expansion: bundle.input.expansion } : {}),
       codeSha: bundle.input.codeSha, priceSnapshot, createdAt: bundle.input.createdAt,
       lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME,
     })
@@ -476,6 +482,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
       operation: 'inspect', gate: bundle.gate,
       batchInput: {
         canonicalManifest, registrySnapshot, suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash,
+        ...(Object.hasOwn(bundle.input, 'expansion') ? { expansion: bundle.input.expansion } : {}),
         codeSha: bundle.input.codeSha, priceSnapshot, createdAt: bundle.input.createdAt,
       },
     }
@@ -493,9 +500,10 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
   }
   if (bundle.operation === 'inspect') {
     assertExactScientificV2Keys(bundle, ['operation', 'gate', 'batchInput'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
-    assertExactScientificV2Keys(bundle.batchInput, ['canonicalManifest', 'registrySnapshot', 'suiteHash', 'codeSha', 'priceSnapshot', 'createdAt'], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
+    assertExactScientificV2Keys(bundle.batchInput, ['canonicalManifest', 'registrySnapshot', 'suiteHash', 'codeSha', 'priceSnapshot', 'createdAt', ...(Object.hasOwn(bundle.batchInput, 'expansion') ? ['expansion'] : [])], 'SCIENTIFIC_V2_OPERATOR_BUNDLE_INVALID')
     if (bundle.batchInput.suiteHash !== PB_SCIENTIFIC_FIGURE_V2.manifestHash) scientificV2Error('SCIENTIFIC_V2_SUITE_MISMATCH')
     const built = buildScientificV2Batch({
+      ...(Object.hasOwn(bundle.batchInput, 'expansion') ? { expansion: bundle.batchInput.expansion } : {}),
       canonicalManifest: bundle.batchInput.canonicalManifest, registrySnapshot: bundle.batchInput.registrySnapshot, suite: PB_SCIENTIFIC_FIGURE_V2,
       codeSha: bundle.batchInput.codeSha, priceSnapshot: bundle.batchInput.priceSnapshot,
       createdAt: bundle.batchInput.createdAt, lockName: SCIENTIFIC_V2_PRODUCTION_LOCK_NAME,

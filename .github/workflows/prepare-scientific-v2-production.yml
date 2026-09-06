@@ -3,6 +3,7 @@ name: Prepare Scientific Benchmark V2 Production
 on:
   workflow_dispatch:
     inputs:
+      expansion_sha256: { description: Optional SHA-256 of the staged single-model expansion descriptor., required: false, default: "" }
       expected_deployed_sha:
         description: Exact deployed Core and Worker SHA.
         required: true
@@ -38,11 +39,13 @@ jobs:
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           PRICE_HASH: ${{ inputs.signed_price_snapshot_sha256 }}
+          EXPANSION_SHA: ${{ inputs.expansion_sha256 }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$EXPECTED_SHA" && "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$PRICE_HASH"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ -z "$EXPANSION_SHA" || "$EXPANSION_SHA" =~ ^[a-f0-9]{64}$ ]]
           [[ "$CONFIRM" == prepare-scientific-v2-production-disabled-worker ]]
           bash -n deploy/hk-single-host/scripts/prepare-scientific-v2-production.sh
       - name: Configure SSH
@@ -63,10 +66,11 @@ jobs:
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           PRICE_HASH: ${{ inputs.signed_price_snapshot_sha256 }}
+          EXPANSION_SHA: ${{ inputs.expansion_sha256 }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
-          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --signed-price-snapshot-sha256 %q --confirm %q' \
+          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --signed-price-snapshot-sha256 %q --expansion-sha256 %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/prepare-scientific-v2-production.sh \
-            "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$PRICE_HASH" "$CONFIRM"
+            "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$PRICE_HASH" "$EXPANSION_SHA" "$CONFIRM"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "$command"

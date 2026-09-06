@@ -1,5 +1,15 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-06] MAI-Image-2.6 接入与 Scientific V2 单模型增量扩榜 — by Codex
+变更：按用户要求仅评测非 Flash `microsoft/mai-image-2.6`。OpenRouter 精确型号根据 Microsoft 官方 PNG 输出契约接入，运行时继续校验真实图片字节；请求固定 Azure、单图、关闭 web grounding 和 provider fallback。目录仍标记 `verificationState:catalog` / `verified:false`，文档支持不冒充账号调用已验证，Flash 不在新增名单中。
+契约：新增 `freezeExpansionBatch` 与 `expansion` 描述，精确绑定当前 active release/batch/manifest 和唯一新增模型。保留完整签名 registry/canonical authority，但执行、价格、调用记录和审评仅覆盖新增模型的固定 6 生成 + 3 编辑；不产生新 Codex 出图调用。发布在同一事务内复验 active predecessor，原样继承旧模型的图片、评分、逐题审核说明和来源，只重算全榜排名。确认失败/不支持保持固定九题零分规则，未知结果停跑；旧 Seedream correction 白名单不变。
+价格：新型号的 Azure 文本/图片输入和图片输出费率、输出 token 上限均需由当前官方 endpoint 捕获校验；采用明确标注的 operator 保守上界，费用漂移拒绝运行。受保护 price/prepare 工作流新增可选 `expansion_sha256`，常驻 Worker 继续 disabled、单并发。
+- [x] Core 模型适配（精确 PNG profile、生成/编辑、无未声明尺寸参数、正常与负向回归）
+- [x] Benchmark Core / Worker / API（单模型冻结、执行、审评、继承与事务扩榜；40→41 集成验证、失败计零、旧 head/证据漂移与回滚测试通过）
+- [x] 运维（受保护 descriptor / price / prepare / run / publish 接线与合同测试）
+- [x] Web / 微信小程序（消费现有动态目录与排行榜字段，无新请求要求）
+- [ ] 发布 / 真实验收（真实九题、A/B 审评及必要仲裁、41 模型扩榜、旧 40 模型非排名字段逐项不变）
+
 ### [2026-09-04] 匿名只读科研图示 MCP 与跨 Agent Skill v1 — by Codex
 变更：新增 `@paperbanana/tuyan-knowledge` 共享知识包与 `tuyan-scientific-figure` Agent Skill；Gateway 新增匿名、无状态 Streamable HTTP `/mcp`，只公开一个只读工具 `tuyan.get_workflow_bundle` 及版本化 Resources。MCP 只接受 `operation / visualCategory / outputFormat / locale / knowledgeMajor` 五个枚举字段，不接受论文、图片、提示词、API Key 或自由文本，不创建会话、Cookie、数据库记录或后台任务。PaperBananaBench 只由 Agent 经用户同意后从固定上游 revision 下载到本机，图研不重新托管；既有 Web、微信小程序和云端生成/精修 API 行为不变。
 契约：knowledge major 固定为 `1`；8 类视觉 ID 为 `method_framework / workflow / system_architecture / mechanism / comparison / timeline / data_stat / concept_map`；版本化 Schema URI 为 `tuyan://schemas/*/v1`；本地产物默认写入 `./tuyan-output/<timestamp>-<slug>/`。Gateway MCP 路由独立限制 64 KiB、每 IP 每分钟 60 次，日志不记录调用参数。

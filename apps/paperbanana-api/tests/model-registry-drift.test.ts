@@ -43,8 +43,8 @@ const paidVerifiedProfileIds = [
   'x-ai/grok-imagine-image-quality',
 ].sort()
 
-test('OpenRouter drift policy tracks the exact paid-verified normalization profile', () => {
-  assert.deepEqual([...openRouterNormalizedImageProfileIds].sort(), paidVerifiedProfileIds)
+test('OpenRouter drift policy tracks paid profiles and the explicitly documented MAI 2.6 profile', () => {
+  assert.deepEqual([...openRouterNormalizedImageProfileIds].sort(), [...paidVerifiedProfileIds, 'microsoft/mai-image-2.6'].sort())
 })
 
 test('OpenRouter drift check warns when a paid-verified normalized image route disappears', () => {

@@ -23,6 +23,11 @@ set('openrouter', 'krea/krea-2-medium', '0.24', '0.28')
 set('openrouter', 'krea/krea-2-medium-turbo', '0.12', '0.14')
 set('openrouter', 'microsoft/mai-image-2.5', '0.548864', '0.811008')
 set('openrouter', 'microsoft/mai-image-2.5-pro', '1.048576', '1.31072')
+// MAI 2.6 only: conservative 32,000 text tokens and (for edit) another
+// 32,000 image tokens, plus the captured Azure 1,024 output-token ceiling.
+// Rates are $5/$8/$38 per million tokens, converted at USD * 8 CNY.
+// Fresh exact-model/rate/ceiling evidence is required by price-refresh.ts.
+set('openrouter', 'microsoft/mai-image-2.6', '1.591296', '3.639296')
 set('openrouter', 'qwen/qwen-image-3', '0.24', '0.264')
 set('openrouter', 'black-forest-labs/flux.2-flex', '1.92', '3.05246208')
 set('openrouter', 'black-forest-labs/flux.2-klein-4b', '0.448', '0.448')

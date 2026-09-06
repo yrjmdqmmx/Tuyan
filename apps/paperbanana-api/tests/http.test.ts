@@ -159,6 +159,7 @@ test('protected scientific v2 freeze transport accepts its bounded production-si
   const { port } = server.address() as AddressInfo
   try {
     const padding = 'x'.repeat(1_700_000)
+    for (const [operation, command] of [['freeze', 'freezeBatch'], ['remediate-freeze', 'freezeRemediationBatch'], ['expansion-freeze', 'freezeExpansionBatch']]) {
     const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
       method: 'POST',
       headers: {
@@ -166,12 +167,12 @@ test('protected scientific v2 freeze transport accepts its bounded production-si
         'x-paperbanana-gateway-token': config.gatewayToken,
         'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
         'x-paperbanana-admin-user-id': 'immutable-admin-id',
-        'x-paperbanana-scientific-v2-admin-operation': 'freeze',
+        'x-paperbanana-scientific-v2-admin-operation': operation,
       },
       body: JSON.stringify({
         action: 'adminBenchmarkControl',
         evaluationMode: 'codex_scientific_v2',
-        command: 'freezeBatch',
+        command,
         padding,
       }),
     })
@@ -179,8 +180,9 @@ test('protected scientific v2 freeze transport accepts its bounded production-si
     assert.equal(response.status, 200)
     assert.equal((await response.json()).code, 0)
     assert.equal(receivedBody?.action, 'adminBenchmarkControl')
-    assert.equal(receivedBody?.command, 'freezeBatch')
+    assert.equal(receivedBody?.command, command)
     assert.equal(receivedBody?.padding, padding)
+    }
   } finally {
     await new Promise<void>((resolve) => server.close(() => resolve()))
   }
@@ -203,6 +205,7 @@ test('scientific v2 freeze body allowance cannot be reused by a different admin 
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
   const { port } = server.address() as AddressInfo
   try {
+    for (const [operation, command] of [['freeze', 'operatorAttestation'], ['freeze', 'freezeExpansionBatch'], ['expansion-freeze', 'freezeBatch']]) {
     const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
       method: 'POST',
       headers: {
@@ -210,12 +213,12 @@ test('scientific v2 freeze body allowance cannot be reused by a different admin 
         'x-paperbanana-gateway-token': config.gatewayToken,
         'x-paperbanana-admin-transport-token': 'configured-admin-transport-token',
         'x-paperbanana-admin-user-id': 'immutable-admin-id',
-        'x-paperbanana-scientific-v2-admin-operation': 'freeze',
+        'x-paperbanana-scientific-v2-admin-operation': operation,
       },
       body: JSON.stringify({
         action: 'adminBenchmarkControl',
         evaluationMode: 'codex_scientific_v2',
-        command: 'operatorAttestation',
+        command,
         padding: 'x'.repeat(1_700_000),
       }),
     })
@@ -223,6 +226,7 @@ test('scientific v2 freeze body allowance cannot be reused by a different admin 
     assert.equal(response.status, 400)
     assert.deepEqual(await response.json(), { code: 400, error: 'Scientific V2 admin transport rejected' })
     assert.equal(called, false)
+    }
   } finally {
     await new Promise<void>((resolve) => server.close(() => resolve()))
   }

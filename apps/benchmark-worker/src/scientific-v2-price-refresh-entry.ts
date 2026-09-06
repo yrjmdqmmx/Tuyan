@@ -3,7 +3,7 @@ import { constants } from 'node:fs'
 import { chmod, lstat, mkdir, open, rename, rm } from 'node:fs/promises'
 import { isAbsolute, join, resolve } from 'node:path'
 
-import { buildScientificV2CanonicalManifest, canonicalHash } from '@paperbanana/benchmark-core'
+import { buildScientificV2CanonicalManifest, deriveScientificV2ExecutionCanonicalManifest, canonicalHash } from '@paperbanana/benchmark-core'
 import { refreshScientificV2OfficialPriceSourcesFromAuthority } from './scientific-v2-price-refresh.js'
 
 const MAX_JSON_BYTES = 4 * 1024 * 1024
@@ -65,11 +65,14 @@ export async function runScientificV2PriceRefreshEntry(env: Record<string, strin
       schemaVersion: authority.schemaVersion, codeSha: authority.codeSha, capturedAt: authority.capturedAt,
       registryVersion: authority.registryVersion, registryBytesHash: authority.registryBytesHash, registry: authority.registry,
     }) !== authority.snapshotHash) fail()
-  const canonicalManifest = buildScientificV2CanonicalManifest({
+  const fullCanonical = buildScientificV2CanonicalManifest({
     registryVersion: authority.registryVersion,
     registryHash: canonicalHash(authority.registry),
     registry: authority.registry,
   })
+  const expansionPath = env.PAPERBANANA_SCIENTIFIC_V2_EXPANSION_PATH
+  const expansion = expansionPath ? (await readProtectedJson(expansionPath)).value : undefined
+  const canonicalManifest = deriveScientificV2ExecutionCanonicalManifest(fullCanonical, expansion)
   const staging = join(captureRoot, `.staging-${process.pid}-${randomBytes(8).toString('hex')}`)
   await mkdir(staging, { mode: 0o700 })
   await chmod(staging, 0o700)

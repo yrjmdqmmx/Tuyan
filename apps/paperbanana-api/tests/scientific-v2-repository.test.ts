@@ -11,6 +11,7 @@ import {
   buildScientificV2PriceSnapshot,
   canonicalHash,
   deriveScientificV2PriceRequirements,
+  deriveScientificV2ExecutionCanonicalManifest,
 } from '@paperbanana/benchmark-core'
 
 import { createMongoBenchmarkRepository } from '../src/benchmark-repository.js'
@@ -26,11 +27,12 @@ import {
 import {
   verifyScientificV2BatchManifest as verifyWorkerScientificV2BatchManifest,
   verifyScientificV2BatchState as verifyWorkerScientificV2BatchState,
+  buildScientificV2Batch,
 } from '../../benchmark-worker/src/scientific-v2-manifest.js'
 
 const FIXED_NOW = new Date('2026-08-31T00:00:00.000Z')
 
-function scientificBatchFixture(options: { directEdit?: boolean; secondBailianModel?: boolean; splitCanonicalAcrossProviders?: boolean } = {}) {
+function scientificBatchFixture(options: { directEdit?: boolean; secondBailianModel?: boolean; splitCanonicalAcrossProviders?: boolean; extraModels?: number; unitCny?: string } = {}) {
   const directEdit = options.directEdit !== false
   const sharedCanonicalModelId = 'alibaba:shared-route-model'
   const primaryLabel = options.splitCanonicalAcrossProviders ? 'Shared Route Model' : 'Qwen Image 3 Pro'
@@ -44,7 +46,10 @@ function scientificBatchFixture(options: { directEdit?: boolean; secondBailianMo
           }, ...(options.secondBailianModel ? [{
             id: 'wanx-image-1.0-pro', label: 'Wanx Image 1 Pro', vendor: 'Alibaba', selectable: true,
             roles: ['image'], capabilities: { imageGeneration: true, imageEditMode: directEdit ? 'direct-edit' as const : 'none' as const, resolutions: ['2K'] },
-          }] : [])],
+          }] : []), ...Array.from({ length: options.extraModels || 0 }, (_, index) => ({
+            id: `fixture-baseline-${index}`, label: `Fixture Baseline ${index}`, vendor: 'Fixture', selectable: true,
+            roles: ['image'], capabilities: { imageGeneration: true, imageEditMode: 'direct-edit' as const, resolutions: ['2K'] },
+          }))],
         },
         ...(options.splitCanonicalAcrossProviders ? { openrouter: { models: [{
           id: 'alibaba/shared-route-model', canonicalModelId: sharedCanonicalModelId,
@@ -70,7 +75,7 @@ function scientificBatchFixture(options: { directEdit?: boolean; secondBailianMo
       }
       if (requirement.provider !== 'openrouter') return {
         ...common,
-        charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: '1', quantityDecimal: '1', resolutionTier: requirement.imageSize }],
+        charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: options.unitCny || '1', quantityDecimal: '1', resolutionTier: requirement.imageSize }],
         source, openRouterEvidence: null, fxEvidence: null,
       }
       const pricing = [
@@ -484,9 +489,10 @@ function completedScientificState(fixture: ReturnType<typeof scientificBatchFixt
             : { sourceHash: scientificCase.sourceHash, region: scientificCase.region }),
         })
     const imageHash = canonicalHash(`image:${slot.slotId}`)
+    const price = slot.provider === 'codex' ? 0 : Number(fixture.manifest.priceSnapshot.entries.find((entry: any) => entry.provider === slot.provider && entry.modelId === slot.modelId && entry.operation === slot.operation)!.unitCny)
     const attemptBase = {
       attemptIndex: 1, provider: slot.provider, model: slot.modelId, operation: slot.operation, payloadHash,
-      responseClass: 'succeeded', estimatedCny: slot.provider === 'codex' ? 0 : 1, actualCny: slot.provider === 'codex' ? 0 : 1,
+      responseClass: 'succeeded', estimatedCny: price, actualCny: price,
       startedAt: '2026-08-31T00:00:01.000Z', completedAt: '2026-08-31T00:00:02.000Z',
       rawImageHash: imageHash, byteSize: 4096, width: 2048, height: 1152, format: 'png',
       sourceHash: scientificCase.kind === 'edit' ? scientificCase.sourceHash : null,
@@ -495,7 +501,7 @@ function completedScientificState(fixture: ReturnType<typeof scientificBatchFixt
     slot.attempts = [{ ...attemptBase, attemptHash: canonicalHash(attemptBase) }]
     slot.status = 'succeeded'
     slot.costCny = attemptBase.actualCny
-    if (slot.provider !== 'codex') spent[slot.provider as keyof typeof spent] += attemptBase.actualCny
+    if (slot.provider !== 'codex') spent[slot.provider as keyof typeof spent] = Number((spent[slot.provider as keyof typeof spent] + attemptBase.actualCny).toFixed(8))
   }
   state.status = 'completed'
   state.providerSpentCny = spent
@@ -2451,8 +2457,10 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
   reviewerAScore?: number
   reviewerBScore?: number
   reviewTargetModelIds?: string[]
+  completedStateAlreadyImported?: boolean
   lineage?: { manifestCodeSha: string; executionCodeSha: string; legacyRecoveryStateHash: string | null }
 } = {}) {
+  if (!options.completedStateAlreadyImported) {
   const claimed = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
   assert.ok(claimed)
   let current = claimed.state as any
@@ -2463,7 +2471,7 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
       nextSlot.attempts = structuredClone(finalSlot.attempts.slice(0, attempt.attemptIndex))
       nextSlot.costCny = nextSlot.attempts.reduce((sum: number, item: any) => sum + (item.actualCny ?? item.estimatedCny), 0)
       nextSlot.status = attempt.attemptIndex === finalSlot.attempts.length ? finalSlot.status : 'retrying'
-      next.providerSpentCny[finalSlot.provider] += attempt.actualCny ?? attempt.estimatedCny
+      next.providerSpentCny[finalSlot.provider] = Number((next.providerSpentCny[finalSlot.provider] + (attempt.actualCny ?? attempt.estimatedCny)).toFixed(8))
       if (nextSlot.isProviderCanary && nextSlot.status === 'failed') {
         for (const propagated of state.slots.filter((slot: any) => slot.provider === finalSlot.provider
           && !slot.isProviderCanary && slot.status === 'failed' && slot.attempts.length === 0)) {
@@ -2474,6 +2482,7 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
         }
       }
       next.updatedAt = '2026-08-31T00:00:03.000Z'
+      if (next.slots.every((slot: any) => ['succeeded', 'failed', 'unsupported'].includes(slot.status))) next.status = 'completed'
       delete next.stateHash
       next.stateHash = canonicalHash(next)
       const marker = { manifestHash: fixture.manifest.manifestHash, slotId: finalSlot.slotId, attemptIndex: attempt.attemptIndex, payloadHash: attempt.payloadHash }
@@ -2481,6 +2490,12 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
       current = await repository.commitAttempt({ claimToken: claimed.claimToken, expectedStateHash: current.stateHash, marker, attempt, nextState: next })
     }
   }
+  if ((fixture.manifest as any).expansion) {
+    state = refreshState(state, '2026-08-31T00:00:06.000Z')
+    await repository.importStateReport(signedStateReport(secret, fixture, state, 'worker', {
+      batchId, previousStateHash: current.stateHash, revision: 1, ...options.lineage,
+    }))
+  } else {
   const awaiting = structuredClone(current)
   awaiting.status = 'awaiting_artifacts'
   for (const slot of awaiting.slots) if (slot.provider === 'codex') slot.status = 'awaiting_artifact'
@@ -2495,6 +2510,8 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
     batchId, previousStateHash: awaiting.stateHash, revision: 2, ...options.lineage,
   })
   await repository.importStateReport(codexImport)
+  }
+  }
   const assignments = fullReviewAssignments(secret, fixture, state, options.reviewTargetModelIds)
   const bindingsFor = (assignment: any) => assignment.packages.flatMap((packet: any) => packet.items.map((item: any) => ({ imageHash: item.imageHash, objectKey: `bench/scientific-v2/private/objects/${item.imageHash}.png` })))
   await repository.exportReviewAssignment({ batchId, assignment: assignments.A, objectBindings: bindingsFor(assignments.A) })
@@ -2543,7 +2560,7 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
     })
   }
   const sourceHash = (fixture.manifest.cases.find((item: any) => item.kind === 'edit') as any)?.sourceHash
-  if (sourceHash) objectBindings.push({ imageHash: sourceHash, objectKey: `bench/scientific-v2/private/objects/${sourceHash}.png` })
+  if (sourceHash && state.slots.some((slot: any) => slot.operation === 'edit' && slot.status === 'succeeded')) objectBindings.push({ imageHash: sourceHash, objectKey: `bench/scientific-v2/private/objects/${sourceHash}.png` })
   return { objectBindings, evidence }
 }
 
@@ -3605,4 +3622,211 @@ test('published V2 evidence is immediately consumable by model profile and pagin
   const secondPage = await service.handle({ action: 'benchmarkCaseEvidence', caseId: edit.caseId, limit: 1, cursor: firstPage.nextCursor }, false) as any
   assert.equal(secondPage.items.length, 1)
   assert.equal(secondPage.nextCursor, null)
+})
+
+function expansionFixture(baseline: any, options: { directEdit?: boolean; targetModelId?: string } = {}) {
+  const full = scientificBatchFixture({ secondBailianModel: true, directEdit: options.directEdit })
+  const expansion = {
+    schemaVersion: 1 as const, kind: 'single_model_expansion' as const,
+    baseline: { releaseId: baseline._id, releaseHash: baseline.releaseHash, batchId: baseline.batchId, manifestHash: baseline.batchManifestHash },
+    targetModelId: options.targetModelId || 'wanx-image-1.0-pro',
+  }
+  const execution = deriveScientificV2ExecutionCanonicalManifest(full.canonicalManifest, expansion)
+  const priceSnapshot = buildScientificV2PriceSnapshot({
+    canonicalManifest: execution, capturedAt: FIXED_NOW.toISOString(),
+    observations: deriveScientificV2PriceRequirements(execution).map((requirement) => ({
+      provider: requirement.provider, modelId: requirement.modelId, operation: requirement.operation, imageSize: requirement.imageSize,
+      billingRegion: 'cn-beijing', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: '1', quantityDecimal: '1', resolutionTier: requirement.imageSize }],
+      source: { url: 'https://example.com/new-model-price', mediaType: 'application/json', capturedAt: FIXED_NOW.toISOString(), bytesSha256: 'a'.repeat(64) },
+      openRouterEvidence: null, fxEvidence: null,
+    })),
+  })
+  const built = buildScientificV2Batch({
+    canonicalManifest: full.canonicalManifest, registrySnapshot: full.registrySnapshot,
+    suite: PB_SCIENTIFIC_FIGURE_V2, codeSha: full.manifest.codeSha, priceSnapshot,
+    createdAt: FIXED_NOW.toISOString(), lockName: full.manifest.lockName, expansion,
+  })
+  return { ...full, manifest: built.manifest, initialState: built.state } as any
+}
+
+async function expansionBaselineFixture(modelCount = 2) {
+  const storage = atomicScientificDb()
+  const secret = 'scientific-v2-expansion-secret-at-least-32-bytes'
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'expansion-claim', {
+    operatorReportSecret: secret, immutableCodeSha: 'a'.repeat(40),
+  })
+  const fixture = scientificBatchFixture({ extraModels: modelCount - 2, unitCny: modelCount > 10 ? '0.01' : '1' })
+  const batchId = 'scientific-v2-expansion-baseline'
+  await repository.freezeBatch({ batchId, ...fixture })
+  const completed = completedScientificState(fixture)
+  if (modelCount > 10) {
+    // The historical release is already persisted in production. Seed its valid signed report
+    // and exact committed ledger; only the new model needs a live dispatch/CAS simulation here.
+    await repository.importStateReport(signedStateReport(secret, fixture, completed, 'codex', { batchId }))
+    const ledger = storage.db.collection('paperbanana_benchmark_scientific_v2_dispatches')
+    for (const slot of completed.slots) if (slot.provider && slot.provider !== 'codex') {
+      for (const attempt of slot.attempts) await ledger.insertOne({
+        _id: `baseline-dispatch:${slot.slotId}:${attempt.attemptIndex}`,
+        manifestHash: fixture.manifest.manifestHash, slotId: slot.slotId, attemptIndex: attempt.attemptIndex,
+        payloadHash: attempt.payloadHash, attempt: structuredClone(attempt), status: 'committed',
+      })
+    }
+  }
+  const input = await preparePublishFacts(repository, fixture, completed, secret, batchId, { completedStateAlreadyImported: modelCount > 10 })
+  const published = await repository.publishScientificV2({ batchId, ...input })
+  const baseline = storage.rows.get('paperbanana_benchmark_releases')!.find((row) => row.releaseHash === published.releaseHash)!
+  return { storage, secret, repository, baseline }
+}
+
+test('single-model expansion runs nine new slots, independently arbitrates, and atomically preserves all 40 historical model evaluations', async () => {
+  const { storage, secret, repository, baseline } = await expansionBaselineFixture(40)
+  const prior = structuredClone(baseline)
+  const priorRows = structuredClone(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!)
+  const fixture = expansionFixture(baseline)
+  assert.equal(fixture.manifest.models.length, 1)
+  assert.equal(fixture.manifest.executionOrder.length, 9)
+  assert.equal(fixture.initialState.slots.some((slot: any) => slot.provider === 'codex'), false)
+  assert.equal(fixture.manifest.priceSnapshot.entries.every((entry: any) => entry.modelId === 'wanx-image-1.0-pro'), true)
+  assert.equal(fixture.manifest.priceSnapshot.canonicalManifestHash === fixture.canonicalManifest.manifestHash, false)
+  const batchId = 'scientific-v2-single-expansion'
+  const frozen = await repository.freezeExpansionBatch({ batchId, ...fixture })
+  assert.equal((await repository.freezeExpansionBatch({ batchId, ...fixture })).replayed, true)
+  const attestation = await repository.operatorAttestation({ batchId })
+  assert.equal(attestation.modelCount, 1)
+  assert.equal(attestation.codexToolCallLimit, 0)
+  assert.equal(attestation.stateHash, frozen.stateHash)
+  const input = await preparePublishFacts(repository, fixture, completedScientificState(fixture), secret, batchId, { dispute: true })
+  const published = await repository.publishScientificV2({ batchId, ...input })
+  const release = storage.rows.get('paperbanana_benchmark_releases')!.find((row) => row.releaseHash === published.releaseHash)!
+  assert.equal(release.models.length, 41)
+  assert.equal(release.sampleCount, 369)
+  assert.deepEqual(release.expansion, fixture.manifest.expansion)
+  const newModel = release.models.find((model: any) => model.canonicalModelId === 'wanx-image-1.0-pro')
+  assert.equal(newModel.overallScore, 7)
+  const preserved = (model: any) => { const { overallRank, dimensionRanks, ...other } = model; return other }
+  for (const model of prior.models) {
+    assert.deepEqual(preserved(release.models.find((item: any) => item.canonicalModelId === model.canonicalModelId)), preserved(model))
+  }
+  const newRows = storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!.filter((row) => row.sourceReleaseHash === release.releaseHash)
+  const rowPayload = (row: any) => { const { _id, sourceReleaseHash, overallRank, createdAt, ...other } = row; return other }
+  for (const row of priorRows) assert.deepEqual(rowPayload(newRows.find((item) => item.profileId === row.profileId && item.caseId === row.caseId)), rowPayload(row))
+  assert.deepEqual(storage.rows.get('paperbanana_benchmark_releases')!.find((row) => row._id === prior._id), prior)
+  const deltaDispatches = storage.rows.get('paperbanana_benchmark_scientific_v2_dispatches')!.filter((row) => row.manifestHash === fixture.manifest.manifestHash)
+  assert.equal(deltaDispatches.length, 9)
+  assert.equal(deltaDispatches.every((row) => row.slotId.startsWith('wanx-image-1.0-pro:')), true)
+  const head = storage.rows.get('paperbanana_benchmark_release_heads')![0]
+  assert.equal(head.releaseHash, release.releaseHash)
+  assert.equal(head.previousReleaseHash, baseline.releaseHash)
+  assert.equal((await repository.publishScientificV2({ batchId, ...input })).replayed, true)
+})
+
+test('expansion refuses ordinary freeze, stale baseline, existing model, and forged source provenance before execution', async (t) => {
+  const { storage, repository, baseline } = await expansionBaselineFixture()
+  const fixture = expansionFixture(baseline)
+  await assert.rejects(() => repository.freezeBatch({ batchId: 'expansion-wrong-command', ...fixture }), /EXPANSION_COMMAND_REQUIRED/)
+  await assert.rejects(() => repository.freezeExpansionBatch({ batchId: 'expansion-existing-model', ...expansionFixture(baseline, { targetModelId: 'qwen-image-3.0-pro' }) }), /EXPANSION_TARGET_NOT_NEW/)
+  await t.test('stale active head', async () => {
+    const head = storage.rows.get('paperbanana_benchmark_release_heads')![0]
+    head.releaseHash = 'f'.repeat(64)
+    await assert.rejects(() => repository.freezeExpansionBatch({ batchId: 'expansion-stale-baseline', ...fixture }), /EXPANSION_BASELINE_NOT_ACTIVE/)
+    head.releaseHash = baseline.releaseHash
+  })
+  await t.test('source report signature', async () => {
+    const report = storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts')!.find((row) => row.artifactType === 'state_report' && row.report.kind === 'codex')!
+    const signature = report.attestationHash
+    report.attestationHash = 'f'.repeat(64)
+    await assert.rejects(() => repository.freezeExpansionBatch({ batchId: 'expansion-forged-provenance', ...fixture }), /SCIENTIFIC_V2_/)
+    report.attestationHash = signature
+  })
+  assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!.length, 1)
+})
+
+test('expansion publication rejects baseline drift and transaction failure without partial release or evidence', async () => {
+  const { storage, secret, repository, baseline } = await expansionBaselineFixture()
+  const fixture = expansionFixture(baseline)
+  const batchId = 'scientific-v2-expansion-cas'
+  await repository.freezeExpansionBatch({ batchId, ...fixture })
+  const input = await preparePublishFacts(repository, fixture, completedScientificState(fixture), secret, batchId)
+  const releasesBefore = structuredClone(storage.rows.get('paperbanana_benchmark_releases'))
+  const evidenceBefore = structuredClone(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence'))
+  const head = storage.rows.get('paperbanana_benchmark_release_heads')![0]
+  head.releaseHash = 'f'.repeat(64)
+  await assert.rejects(() => repository.publishScientificV2({ batchId, ...input }), /EXPANSION_BASELINE_NOT_ACTIVE/)
+  head.releaseHash = baseline.releaseHash
+  const oldRow = storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')![0]
+  const priorNotes = structuredClone(oldRow.reviewNotes)
+  oldRow.reviewNotes = ['篡改后的历史评分说明不得被继承。']
+  await assert.rejects(() => repository.publishScientificV2({ batchId, ...input }), /EXPANSION_BASELINE_EVIDENCE_INVALID/)
+  oldRow.reviewNotes = priorNotes
+  storage.failNextPublishBatchCas()
+  await assert.rejects(() => repository.publishScientificV2({ batchId, ...input }), /PUBLISH_STATE_CONFLICT/)
+  assert.deepEqual(storage.rows.get('paperbanana_benchmark_releases'), releasesBefore)
+  assert.deepEqual(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence'), evidenceBefore)
+  assert.equal(storage.rows.get('paperbanana_benchmark_release_heads')![0].releaseHash, baseline.releaseHash)
+})
+
+test('expansion retains fixed nine-slot denominator for unsupported edits and rejects forged Codex reports', async () => {
+  const { storage, secret, repository, baseline } = await expansionBaselineFixture()
+  const fixture = expansionFixture(baseline, { directEdit: false })
+  const batchId = 'scientific-v2-expansion-generation-only'
+  await repository.freezeExpansionBatch({ batchId, ...fixture })
+  const state = completedScientificState(fixture)
+  await assert.rejects(() => repository.importStateReport(signedStateReport(secret, fixture, state, 'codex', { batchId })), /EXPANSION_CODEX_REPORT_FORBIDDEN/)
+  const input = await preparePublishFacts(repository, fixture, state, secret, batchId)
+  assert.equal(input.evidence.length, 6)
+  await repository.publishScientificV2({ batchId, ...input })
+  const release = storage.rows.get('paperbanana_benchmark_releases')!.at(-1)!
+  const added = release.models.find((model: any) => model.canonicalModelId === 'wanx-image-1.0-pro')
+  assert.equal(added.evidence.length, 9)
+  assert.equal(added.editSuccessRate, 0)
+  assert.equal(added.successRate, 6 / 9)
+  assert.equal(added.attemptSummary.unsupported, 3)
+  assert.equal(added.scores.edit_target_accuracy, 0)
+  assert.equal(added.scores.non_target_preservation, 0)
+})
+
+test('expansion publishes confirmed exhausted failures as zero while reviewing only successful new images', async () => {
+  const { storage, secret, repository, baseline } = await expansionBaselineFixture()
+  const fixture = expansionFixture(baseline)
+  const batchId = 'scientific-v2-expansion-one-failed'
+  await repository.freezeExpansionBatch({ batchId, ...fixture })
+  const { state } = completedStateWithAuditedUnknownFailures(fixture)
+  const input = await preparePublishFacts(repository, fixture, state, secret, batchId)
+  assert.equal(input.evidence.length, 8)
+  await repository.publishScientificV2({ batchId, ...input })
+  const release = storage.rows.get('paperbanana_benchmark_releases')!.at(-1)!
+  const added = release.models.find((model: any) => model.canonicalModelId === fixture.manifest.expansion.targetModelId)
+  assert.equal(added.evidence.length, 9)
+  assert.equal(added.successRate, 8 / 9)
+  assert.equal(added.attemptSummary.failed, 1)
+  assert.equal(added.evidence.find((item: any) => item.status === 'failed').attemptSummary.count, 4)
+  const assignments = storage.rows.get('paperbanana_benchmark_scientific_v2_review_artifacts')!
+    .filter((row) => row.batchManifestHash === fixture.manifest.manifestHash && row.artifactType === 'review_assignment_private')
+  assert.deepEqual(assignments.map((row) => row.assignment.packages.flatMap((packet: any) => packet.items).length), [8, 8])
+})
+
+test('expansion rechecks its active predecessor inside the publication transaction after object verification', async () => {
+  const { storage, secret, repository, baseline } = await expansionBaselineFixture()
+  const fixture = expansionFixture(baseline)
+  const batchId = 'scientific-v2-expansion-head-race'
+  await repository.freezeExpansionBatch({ batchId, ...fixture })
+  const state = completedScientificState(fixture)
+  const input = await preparePublishFacts(repository, fixture, state, secret, batchId)
+  let raced = false
+  const publisher = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'expansion-race', {
+    operatorReportSecret: secret, immutableCodeSha: 'a'.repeat(40),
+    verifyObject: async (_key, imageHash) => {
+      if (!raced && imageHash === state.slots[0].attempts[0].rawImageHash) {
+        raced = true
+        storage.rows.get('paperbanana_benchmark_release_heads')![0].releaseHash = 'e'.repeat(64)
+      }
+    },
+  })
+  const releaseCount = storage.rows.get('paperbanana_benchmark_releases')!.length
+  const evidenceCount = storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!.length
+  await assert.rejects(() => publisher.publishScientificV2({ batchId, ...input }), /SCIENTIFIC_V2_(?:RELEASE_HEAD_CONFLICT|EXPANSION_BASELINE_NOT_ACTIVE)/)
+  assert.equal(raced, true)
+  assert.equal(storage.rows.get('paperbanana_benchmark_releases')!.length, releaseCount)
+  assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!.length, evidenceCount)
 })

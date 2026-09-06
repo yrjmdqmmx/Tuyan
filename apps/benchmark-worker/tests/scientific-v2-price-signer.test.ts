@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
 
-import { PB_SCIENTIFIC_FIGURE_V2, buildScientificV2CanonicalManifest, canonicalHash, deriveScientificV2PriceRequirements } from '@paperbanana/benchmark-core'
+import { PB_SCIENTIFIC_FIGURE_V2, buildScientificV2CanonicalManifest, canonicalHash, deriveScientificV2PriceRequirements, deriveScientificV2ExecutionCanonicalManifest, type ScientificV2Expansion } from '@paperbanana/benchmark-core'
 import {
   createScientificV2OfficialSignedPriceSnapshot,
   assertScientificV2RootSnapshotFileFacts,
@@ -17,12 +17,13 @@ import {
   refreshScientificV2OfficialPriceSourcesFromAuthority,
 } from '../src/scientific-v2-price-refresh.js'
 import { buildScientificV2Batch } from '../src/scientific-v2-manifest.js'
+import { executeScientificV2OperatorBundle } from '../src/scientific-v2-operator-runtime.js'
 
 const SECRET = 'official-price-signer-secret-value-32-bytes'
 const CODE_SHA = 'a'.repeat(40)
 const CAPTURED_AT = '2026-08-31T05:00:00.000Z'
 
-async function fixture() {
+async function fixture(expansionMode = false) {
   const registry = {
     registryVersion: 'official-price-authority-v1', routeContractVersion: 1,
     providers: { ark: { models: [{
@@ -45,9 +46,15 @@ async function fixture() {
     ...authorityBase, snapshotHash,
     attestationHash: createHmac('sha256', registryKey).update(snapshotHash).digest('hex'),
   }
+  const expansion: ScientificV2Expansion | undefined = expansionMode ? {
+    schemaVersion: 1, kind: 'single_model_expansion',
+    baseline: { releaseId: 'baseline-release', releaseHash: 'b'.repeat(64), batchId: 'baseline-batch', manifestHash: 'c'.repeat(64) },
+    targetModelId: 'seedream-5.0-pro',
+  } : undefined
+  const executionCanonical = deriveScientificV2ExecutionCanonicalManifest(canonicalManifest, expansion)
   const rawByHash = new Map<string, Buffer>()
   const refreshReport = await refreshScientificV2OfficialPriceSources({
-    canonicalManifest, capturedAt: CAPTURED_AT,
+    canonicalManifest: executionCanonical, capturedAt: CAPTURED_AT,
     persistCapture: async (capture, bytes) => { rawByHash.set(capture.bytesSha256, Buffer.from(bytes)) },
     fetchImpl: async (input) => {
       assert.equal(String(input), 'https://docs.volcengine.com/docs/82379/1544106?lang=zh')
@@ -57,7 +64,7 @@ async function fixture() {
       })
     },
   })
-  return { canonicalManifest, registryAuthority, refreshReport, rawByHash }
+  return { canonicalManifest: executionCanonical, registryAuthority, refreshReport, rawByHash, ...(expansion ? { expansion } : {}) }
 }
 
 test('official signer binds server authority, captures and requirements without exposing the master secret', async () => {
@@ -227,4 +234,29 @@ test('operator-authorized conservative upper bounds close unresolved requirement
     ...common,
     operatorAuthorization: { ...lowerBase, authorizationHash: canonicalHash(lowerBase) },
   }), /SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID/)
+})
+
+
+test('expansion price signing and operator prepare project the signed authority without weakening full registry validation', async () => {
+  const input = await fixture(true)
+  const signed = await createScientificV2OfficialSignedPriceSnapshot({
+    ...input, codeSha: CODE_SHA, secret: SECRET, now: () => new Date(CAPTURED_AT),
+    loadCaptureBytes: async (capture) => input.rawByHash.get(capture.bytesSha256)!,
+  })
+  assert.equal(signed.priceSnapshot.canonicalManifestHash, input.canonicalManifest.manifestHash)
+  const prepared = await executeScientificV2OperatorBundle({
+    operation: 'prepare',
+    gate: { enabled: false, concurrency: 1, lockName: '/run/lock/paperbanana-hk-production.lock' },
+    input: { expansion: input.expansion, registryAuthority: input.registryAuthority, signedPriceSnapshot: signed, codeSha: CODE_SHA, createdAt: CAPTURED_AT },
+  }, { env: { PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET: SECRET }, now: () => new Date(CAPTURED_AT) })
+  assert.equal(prepared.modelCount, 1)
+  assert.equal((prepared.manifest as any).executionOrder.length, 9)
+  assert.equal((prepared.manifest as any).canonicalManifest.models.length, 2)
+  assert.equal((prepared.manifest as any).priceSnapshot.canonicalManifestHash, signed.canonicalManifestHash)
+  const inspected = await executeScientificV2OperatorBundle(prepared.inspectBundle as any)
+  assert.equal(inspected.manifestHash, prepared.manifestHash)
+  await assert.rejects(createScientificV2OfficialSignedPriceSnapshot({
+    ...input, expansion: undefined, codeSha: CODE_SHA, secret: SECRET, now: () => new Date(CAPTURED_AT),
+    loadCaptureBytes: async (capture) => input.rawByHash.get(capture.bytesSha256)!,
+  }), /PRICE_ATTESTATION_BINDING_MISMATCH/)
 })

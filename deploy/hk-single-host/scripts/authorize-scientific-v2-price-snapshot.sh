@@ -2,9 +2,9 @@
 set -Eeuo pipefail
 umask 077
 
-expected_sha='' expected_core_digest='' expected_worker_digest='' authority_sha256='' refresh_sha256='' confirm=''
+expected_sha='' expected_core_digest='' expected_worker_digest='' authority_sha256='' refresh_sha256='' confirm='' expansion_sha256=''
 usage() {
-  echo 'usage: authorize-scientific-v2-price-snapshot.sh --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --registry-authority-sha256 64_HEX --refresh-report-sha256 64_HEX --confirm authorize-scientific-v2-price-snapshot' >&2
+  echo 'usage: authorize-scientific-v2-price-snapshot.sh --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --registry-authority-sha256 64_HEX --refresh-report-sha256 64_HEX [--expansion-sha256 64_HEX] --confirm authorize-scientific-v2-price-snapshot' >&2
   exit 64
 }
 while (($#)); do
@@ -14,6 +14,7 @@ while (($#)); do
     --expected-worker-digest) expected_worker_digest="${2:-}"; shift 2 ;;
     --registry-authority-sha256) authority_sha256="${2:-}"; shift 2 ;;
     --refresh-report-sha256) refresh_sha256="${2:-}"; shift 2 ;;
+    --expansion-sha256) expansion_sha256="${2:-}"; shift 2 ;;
     --confirm) confirm="${2:-}"; shift 2 ;;
     *) usage ;;
   esac
@@ -21,6 +22,7 @@ done
 [[ "$expected_sha" =~ ^[a-f0-9]{40}$ && "$expected_core_digest" =~ ^[a-f0-9]{64}$
   && "$expected_worker_digest" =~ ^[a-f0-9]{64}$ && "$authority_sha256" =~ ^[a-f0-9]{64}$
   && "$refresh_sha256" =~ ^[a-f0-9]{64}$ && "$confirm" == authorize-scientific-v2-price-snapshot ]] || usage
+[[ -z "$expansion_sha256" || "$expansion_sha256" =~ ^[a-f0-9]{64}$ ]] || usage
 [[ "$(id -u)" == 0 ]] || { echo 'scientific v2 price authorization must run as root' >&2; exit 1; }
 
 repo_root='/opt/paperbanana/repo'
@@ -41,6 +43,12 @@ install -d -o root -g root -m 0700 "$authorization_dir" "$(dirname "$lock_path")
 exec 9>"$lock_path"
 flock -x 9
 export PAPERBANANA_HK_SHARED_LOCK_FD=9
+
+[[ "$(git -C "$repo_root" rev-parse --verify HEAD)" == "$expected_sha" ]] || exit 1
+git -C "$repo_root" ls-files --error-unmatch deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh >/dev/null 2>&1 || exit 1
+git -C "$repo_root" diff --quiet "$expected_sha" -- deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh || exit 1
+source "$repo_root/deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh"
+load_scientific_v2_expansion || { echo "scientific v2 expansion input is invalid" >&2; exit 1; }
 
 read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
 sha256_file() { sha256sum "$1" 2>/dev/null | awk '{print $1}' || shasum -a 256 "$1" | awk '{print $1}'; }
@@ -112,6 +120,7 @@ docker run --rm --pull=never --network none --read-only --cap-drop ALL --securit
   -v "$report_path:/run/paperbanana-scientific-v2/price-refresh-report.json:ro" \
   -v "$capture_dir:/run/paperbanana-scientific-v2/captures:ro" \
   -v "$authorization_dir:/run/paperbanana-scientific-v2/output" \
+  "${expansion_docker_args[@]}" \
   "$worker_image_id" node dist/scientific-v2-price-authorization.mjs >"$authorization_result"
 
 jq -e '
@@ -128,7 +137,7 @@ authorization_sha256="$(jq -r .fileSha256 "$authorization_result")"
 PAPERBANANA_HK_SHARED_LOCK_FD=9 "$repo_root/deploy/hk-single-host/scripts/create-scientific-v2-price-snapshot.sh" \
   --expected-sha "$expected_sha" --expected-worker-digest "$expected_worker_digest" \
   --registry-authority-sha256 "$authority_sha256" --refresh-report-sha256 "$refresh_sha256" \
-  --operator-authorization-sha256 "$authorization_sha256" --confirm create-scientific-v2-price-snapshot >"$signer_result"
+  --operator-authorization-sha256 "$authorization_sha256" "${expansion_cli_args[@]}" --confirm create-scientific-v2-price-snapshot >"$signer_result"
 jq -e '(.fileSha256 | test("^[a-f0-9]{64}$")) and (.snapshotHash | test("^[a-f0-9]{64}$")) and
   (.capturedAt | test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T"))' "$signer_result" >/dev/null
 

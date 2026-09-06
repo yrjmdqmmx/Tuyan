@@ -390,6 +390,35 @@ test('production argument gate makes all six mutating modes fail closed without 
   }
 })
 
+test('single-model expansion keeps full registry while gating nine target slots and zero Codex calls', () => {
+  const item = fixture()
+  const target = 'microsoft/mai-image-2.6'
+  const expansion = { schemaVersion: 1, kind: 'single_model_expansion', baseline: { releaseId: 'baseline-release', releaseHash: 'a'.repeat(64), batchId: 'baseline-batch', manifestHash: 'b'.repeat(64) }, targetModelId: target }
+  const slots = Array.from({ length: 9 }, (_, index) => ({ canonicalModelId: target, provider: 'openrouter', caseId: `case-${index}`, status: 'pending' }))
+  const manifest = { codeSha: item.sha, registryHash, suiteHash, priceHash, manifestHash, expansion,
+    models: [{ canonicalModelId: target }], cases: Array.from({ length: 9 }, () => ({})), executionOrder: slots,
+    providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
+    codexLimits: { modelId: 'codex:gpt-image-2', successfulSlots: 0, maxAttemptsPerSlot: 4, maxToolCalls: 0 }, concurrency: 1, lockName }
+  const bundle = { operation: 'run', gate: { enabled: false, concurrency: 1, lockName }, executionPhase: 'full', manifestCodeSha: item.sha, executionCodeSha: item.sha, legacyRecoveryStateHash: null,
+    manifest, state: { manifestHash, status: 'canary_complete', slots }, report: { batchId: 'expansion-batch', revision: 1, createdAt: '2026-09-06T06:00:00.000Z', attestationSecret: 'scientific-v2-expansion-test-secret-32-bytes' } }
+  try {
+    const run = (value) => item.run('run', ['--bundle-sha256', item.writeBundle(value), '--model-count', '1'])
+    const valid = run(bundle)
+    assert.equal(valid.status, 0, valid.stderr)
+    assert.equal(JSON.parse(valid.stdout).codexMaxToolCalls, 0)
+    for (const value of [
+      { ...bundle, manifest: { ...manifest, codexLimits: { ...manifest.codexLimits, maxToolCalls: 36 } } },
+      { ...bundle, state: { ...bundle.state, slots: slots.slice(1) } },
+      { ...bundle, state: { ...bundle.state, slots: [{ ...slots[0], canonicalModelId: 'old-model' }, ...slots.slice(1)] } },
+    ]) assert.notEqual(run(value).status, 0)
+    const inspect = { operation: 'inspect', gate: bundle.gate, batchInput: { expansion, codeSha: item.sha, suiteHash,
+      canonicalManifest: { registryHash, canonicalModelCount: 41, models: [{ canonicalModelId: target }] }, priceSnapshot: { snapshotHash: priceHash } } }
+    const checked = item.run('inspect', ['--bundle-sha256', item.writeBundle(inspect), '--model-count', '1'])
+    assert.equal(checked.status, 0, checked.stderr)
+    assert.equal(JSON.parse(checked.stdout).codexMaxToolCalls, 0)
+  } finally { rmSync(item.root, { recursive: true, force: true }) }
+})
+
 test('run accepts the exact Worker bundle without env, rejects env and never prints the report secret', () => {
   const item = fixture()
   const attestationSecret = 'do-not-print-scientific-v2-report-secret'

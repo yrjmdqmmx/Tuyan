@@ -3448,6 +3448,66 @@ test('OpenRouter paid-verified default image profiles expose all 34 routes as no
   }
 })
 
+test('OpenRouter MAI 2.6 uses documented PNG and exact Azure generation/edit without enabling Flash', async () => {
+  const legacy = await loadLegacy()
+  const model = {
+    id: 'microsoft/mai-image-2.6', name: 'Microsoft: MAI-Image-2.6',
+    architecture: { input_modalities: ['text', 'image'], output_modalities: ['image'] },
+    supported_parameters: {
+      aspect_ratio: { type: 'enum', values: ['16:9'] },
+      n: { type: 'range', min: 1, max: 1 },
+      input_references: { type: 'range', min: 0, max: 5 },
+    },
+  }
+  const requests: any[] = []
+  let corruptOutput = false
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: [] })
+    if (url.endsWith('/images/models')) return Response.json({ data: [model, { ...model, id: `${model.id}-flash` }] })
+    if (url.endsWith('/api/v1/images')) {
+      requests.push(JSON.parse(String(init?.body || '{}')))
+      return Response.json({ data: [{ b64_json: corruptOutput ? Buffer.from('not an image').toString('base64') : onePixelPngBase64 }] })
+    }
+    throw new Error(`unexpected request: ${url}`)
+  })
+  try {
+    const registry = await legacy.default({
+      request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
+      response: { setHeader() {}, status() {} },
+    })
+    const entries = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
+    const entry = entries.get(model.id)
+    assert.equal(entry.selectable, true)
+    assert.equal(entry.capabilities.imageEditMode, 'direct-edit')
+    assert.deepEqual(entry.capabilities.outputFormats, ['png'])
+    assert.deepEqual(entry.capabilities.refineResolutions, [])
+    assert.equal(entry.verified, false)
+    assert.equal(entry.verificationState, 'catalog')
+    assert.match(entry.roleReasons.image, /Provider documentation/)
+    assert.doesNotMatch(entry.roleReasons.image, /paid-verified/)
+    assert.equal(entries.get(`${model.id}-flash`).selectable, false)
+    for (const source of ['', `data:image/png;base64,${onePixelPngBase64}`]) {
+      assert.equal(await legacy.callImageModel('openrouter', model.id, 'fixture-key', 'fixed scientific task', '16:9', source, ''), onePixelPngBase64)
+    }
+    assert.equal(requests.length, 2)
+    for (const request of requests) {
+      assert.equal(request.model, model.id)
+      assert.equal(request.n, 1)
+      assert.equal(request.aspect_ratio, '16:9')
+      assert.equal(request.prompt, 'fixed scientific task')
+      assert.deepEqual(request.provider, { only: ['azure'], allow_fallbacks: false, options: { azure: { web_grounding: false } } })
+      for (const parameter of ['resolution', 'quality', 'seed', 'output_format']) assert.equal(Object.hasOwn(request, parameter), false)
+    }
+    assert.equal(Object.hasOwn(requests[0], 'input_references'), false)
+    assert.equal(requests[1].input_references[0].image_url.url, `data:image/png;base64,${onePixelPngBase64}`)
+    corruptOutput = true
+    await assert.rejects(legacy.callImageModel('openrouter', model.id, 'fixture-key', 'fixed scientific task', '16:9', '', ''), /unsupported image format/)
+  } finally {
+    legacy.configureRuntimeFetch()
+  }
+})
+
 test('OpenRouter paid-profile JPEG responses are converted to real PNG bytes', async () => {
   const legacy = await loadLegacy()
   const model = {

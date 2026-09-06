@@ -3,6 +3,7 @@ name: Authorize Scientific V2 Price Snapshot
 on:
   workflow_dispatch:
     inputs:
+      expansion_sha256: { description: Optional SHA-256 of the staged single-model expansion descriptor., required: false, default: "" }
       expected_deployed_sha: { description: Exact deployed Core and Worker SHA., required: true }
       expected_core_digest: { description: Exact Core image digest without sha256 prefix., required: true }
       expected_worker_digest: { description: Exact Worker image digest without sha256 prefix., required: true }
@@ -28,11 +29,13 @@ jobs:
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           AUTHORITY_SHA: ${{ inputs.registry_authority_sha256 }}
           REFRESH_SHA: ${{ inputs.refresh_report_sha256 }}
+          EXPANSION_SHA: ${{ inputs.expansion_sha256 }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$EXPECTED_SHA" && "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$AUTHORITY_SHA" "$REFRESH_SHA"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ -z "$EXPANSION_SHA" || "$EXPANSION_SHA" =~ ^[a-f0-9]{64}$ ]]
           [[ "$CONFIRM" == authorize-scientific-v2-price-snapshot ]]
           bash -n deploy/hk-single-host/scripts/authorize-scientific-v2-price-snapshot.sh
           bash -n deploy/hk-single-host/scripts/create-scientific-v2-price-snapshot.sh
@@ -55,10 +58,11 @@ jobs:
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
           AUTHORITY_SHA: ${{ inputs.registry_authority_sha256 }}
           REFRESH_SHA: ${{ inputs.refresh_report_sha256 }}
+          EXPANSION_SHA: ${{ inputs.expansion_sha256 }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
-          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --registry-authority-sha256 %q --refresh-report-sha256 %q --confirm %q' \
+          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --registry-authority-sha256 %q --refresh-report-sha256 %q --expansion-sha256 %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/authorize-scientific-v2-price-snapshot.sh \
-            "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$AUTHORITY_SHA" "$REFRESH_SHA" "$CONFIRM"
+            "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$AUTHORITY_SHA" "$REFRESH_SHA" "$EXPANSION_SHA" "$CONFIRM"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "$command"
