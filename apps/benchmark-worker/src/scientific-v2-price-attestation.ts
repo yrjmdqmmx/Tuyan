@@ -5,6 +5,8 @@ import { isAbsolute, join, resolve } from 'node:path'
 
 import {
   buildScientificV2CanonicalManifest,
+  deriveScientificV2ExecutionCanonicalManifest,
+  type ScientificV2Expansion,
   buildScientificV2PriceSnapshot,
   canonicalHash,
   deriveScientificV2PriceRequirements,
@@ -161,6 +163,7 @@ export function verifyScientificV2RegistryAuthority(value: unknown, input: { cod
 }
 
 export async function createScientificV2OfficialSignedPriceSnapshot(input: {
+  expansion?: ScientificV2Expansion
   canonicalManifest: CanonicalManifest
   registryAuthority: unknown
   refreshReport: ScientificV2OfficialPriceRefreshReport
@@ -176,9 +179,9 @@ export async function createScientificV2OfficialSignedPriceSnapshot(input: {
   if (!Number.isFinite(now.getTime())) scientificV2Error('SCIENTIFIC_V2_PRICE_ATTESTATION_EXPIRED')
   const authority = verifyScientificV2RegistryAuthority(input.registryAuthority, { codeSha: input.codeSha, secret: input.secret, now })
   const registryHash = canonicalHash(authority.registry)
-  const canonicalManifest = buildScientificV2CanonicalManifest({
+  const canonicalManifest = deriveScientificV2ExecutionCanonicalManifest(buildScientificV2CanonicalManifest({
     registryVersion: authority.registryVersion, registryHash, registry: authority.registry,
-  })
+  }), input.expansion)
   const capturedAt = new Date(input.refreshReport?.capturedAt)
   if (canonicalManifest.manifestHash !== input.canonicalManifest.manifestHash
     || input.refreshReport.capturedAt !== authority.capturedAt

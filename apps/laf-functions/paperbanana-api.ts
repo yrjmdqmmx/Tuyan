@@ -5194,6 +5194,10 @@ async function callOpenRouterImage(
   const actualModel = toOpenRouterModel(model)
   const route = await resolveOpenRouterImageRoute(actualModel)
   const body: any = { model: actualModel, prompt }
+  if (actualModel === 'microsoft/mai-image-2.6') {
+    body.n = 1
+    body.provider = { only: ['azure'], allow_fallbacks: false, options: { azure: { web_grounding: false } } }
+  }
   const parameters = route.model.supportedParameters || {}
   const runtimeResolutionValues = openRouterRuntimeResolutions(actualModel, parameters.resolution?.values)
   const runtimeResolution = runtimeResolutionValues
@@ -5967,10 +5971,12 @@ function parseOpenRouterCatalog(data: any) {
 type OpenRouterNormalizedImageProfile = {
   defaultFormat: 'png' | 'jpeg' | 'webp'
   minimumResolution?: ImageResolution
+  documentedFormatSource?: string
 }
 
-// These exact Dedicated Image API IDs were exercised once each on 2026-08-20
-// with the model-level output_format omitted. The provider response is still
+// Except for explicitly documented profiles, these exact Dedicated Image API
+// IDs were exercised once each on 2026-08-20 with output_format omitted.
+// Documented profiles are not evidence of a paid call. The response is still
 // validated by magic bytes and normalized to PNG on every request; unknown IDs
 // remain fail-closed even when the live catalog advertises image output.
 const openRouterNormalizedImageProfiles = new Map<string, OpenRouterNormalizedImageProfile>([
@@ -5988,6 +5994,10 @@ const openRouterNormalizedImageProfiles = new Map<string, OpenRouterNormalizedIm
   ['krea/krea-2-medium-turbo', { defaultFormat: 'png' }],
   ['microsoft/mai-image-2.5', { defaultFormat: 'png' }],
   ['microsoft/mai-image-2.5-pro', { defaultFormat: 'png' }],
+  ['microsoft/mai-image-2.6', {
+    defaultFormat: 'png',
+    documentedFormatSource: 'https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image#response-format',
+  }],
   ['openai/gpt-5-image', { defaultFormat: 'png' }],
   ['openai/gpt-5-image-mini', { defaultFormat: 'png' }],
   ['openai/gpt-5.4-image-2', { defaultFormat: 'png' }],
@@ -6133,7 +6143,9 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         roleReasons: selectable
           ? {
             image: normalizedProfile
-              ? `OpenRouter Dedicated Image API route uses a paid-verified ${normalizedProfile.defaultFormat.toUpperCase()} response profile with normalized PNG output`
+              ? normalizedProfile.documentedFormatSource
+                ? `Provider documentation declares ${normalizedProfile.defaultFormat.toUpperCase()} output; runtime validates image bytes and returns normalized PNG; account inference remains unverified`
+                : `OpenRouter Dedicated Image API route uses a paid-verified ${normalizedProfile.defaultFormat.toUpperCase()} response profile with normalized PNG output`
               : `OpenRouter Dedicated Image API catalog declares explicit ${compatibleOutputFormat?.toUpperCase()} output; PaperBanana returns normalized PNG`,
           }
           : {},

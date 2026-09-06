@@ -2,9 +2,9 @@
 set -Eeuo pipefail
 umask 077
 
-expected_sha='' expected_core_digest='' expected_worker_digest='' signed_price_snapshot_sha256='' confirm=''
+expected_sha='' expected_core_digest='' expected_worker_digest='' signed_price_snapshot_sha256='' confirm='' expansion_sha256=''
 usage() {
-  echo 'usage: prepare-scientific-v2-production.sh --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --signed-price-snapshot-sha256 64_HEX --confirm prepare-scientific-v2-production-disabled-worker' >&2
+  echo 'usage: prepare-scientific-v2-production.sh --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --signed-price-snapshot-sha256 64_HEX [--expansion-sha256 64_HEX] --confirm prepare-scientific-v2-production-disabled-worker' >&2
   exit 64
 }
 while (($#)); do
@@ -13,6 +13,7 @@ while (($#)); do
     --expected-core-digest) expected_core_digest="${2:-}"; shift 2 ;;
     --expected-worker-digest) expected_worker_digest="${2:-}"; shift 2 ;;
     --signed-price-snapshot-sha256) signed_price_snapshot_sha256="${2:-}"; shift 2 ;;
+    --expansion-sha256) expansion_sha256="${2:-}"; shift 2 ;;
     --confirm) confirm="${2:-}"; shift 2 ;;
     *) usage ;;
   esac
@@ -20,6 +21,7 @@ done
 [[ "$expected_sha" =~ ^[a-f0-9]{40}$ && "$expected_core_digest" =~ ^[a-f0-9]{64}$
   && "$expected_worker_digest" =~ ^[a-f0-9]{64}$ && "$signed_price_snapshot_sha256" =~ ^[a-f0-9]{64}$
   && "$confirm" == prepare-scientific-v2-production-disabled-worker ]] || usage
+[[ -z "$expansion_sha256" || "$expansion_sha256" =~ ^[a-f0-9]{64}$ ]] || usage
 [[ "$(id -u)" == 0 ]] || { echo 'scientific v2 prepare must run as root' >&2; exit 1; }
 
 repo_root='/opt/paperbanana/repo'
@@ -39,6 +41,12 @@ lock_path='/run/lock/paperbanana-hk-production.lock'
 install -d -m 0700 "$bundle_dir" "$admin_input_dir" "$source_dir" "$(dirname "$lock_path")"
 exec 9>"$lock_path"
 flock -x 9
+
+[[ "$(git -C "$repo_root" rev-parse --verify HEAD)" == "$expected_sha" ]] || exit 1
+git -C "$repo_root" ls-files --error-unmatch deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh >/dev/null 2>&1 || exit 1
+git -C "$repo_root" diff --quiet "$expected_sha" -- deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh || exit 1
+source "$repo_root/deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh"
+load_scientific_v2_expansion || { echo "scientific v2 expansion input is invalid" >&2; exit 1; }
 
 read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
 stat_mode() { stat -c '%u:%a' -- "$1" 2>/dev/null || stat -f '%u:%Lp' -- "$1"; }
@@ -134,9 +142,9 @@ cmp -s \
 
 created_at="$(jq -er '.capturedAt | select(type == "string" and test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[.]([0-9]{3})Z$"))' "$price_path")"
 jq -cn --slurpfile authority "$authority_path" --slurpfile signedPrice "$price_path" \
-  --arg sha "$expected_sha" --arg createdAt "$created_at" \
+  --arg sha "$expected_sha" --arg createdAt "$created_at" --argjson expansion "$expansion_json" \
   '{operation:"prepare",gate:{enabled:false,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"},
-    input:{registryAuthority:$authority[0],signedPriceSnapshot:$signedPrice[0],codeSha:$sha,createdAt:$createdAt}}' >"$prepare_input"
+    input:({registryAuthority:$authority[0],signedPriceSnapshot:$signedPrice[0],codeSha:$sha,createdAt:$createdAt} + (if $expansion == null then {} else {expansion:$expansion} end))}' >"$prepare_input"
 prepare_hash="$(sha256sum "$prepare_input" | awk '{print $1}')"
 install -o root -g 1000 -m 0440 "$prepare_input" "$prepare_snapshot_dir/bundle.json"
 chmod 0550 "$prepare_snapshot_dir"
@@ -179,10 +187,10 @@ attest_bundle_hash="$(persist_content_addressed '.attestInput' attest admin)"
 install -o root -g root -m 0600 "$prepare_input" "$source_dir/$prepare_hash.prepare-input.json"
 
 jq -cn --arg manifestHash "$(jq -r .manifestHash "$prepare_result")" --arg stateHash "$(jq -r .stateHash "$prepare_result")" \
-  --arg registryHash "$(jq -r .registryHash "$prepare_result")" --arg priceHash "$(jq -r .priceHash "$prepare_result")" \
+  --arg registryHash "$(jq -r .registryHash "$prepare_result")" --arg suiteHash "$(jq -r .manifest.suiteHash "$prepare_result")" --arg priceHash "$(jq -r .priceHash "$prepare_result")" \
   --arg manifestBundleHash "$manifest_bundle_hash" --arg stateBundleHash "$state_bundle_hash" \
   --arg inspectBundleHash "$inspect_bundle_hash" --arg freezeBundleHash "$freeze_bundle_hash" --arg attestBundleHash "$attest_bundle_hash" \
   --argjson modelCount "$(jq -r .modelCount "$prepare_result")" \
   '{operation:"prepare-scientific-v2-production",providerCalls:0,manifestHash:$manifestHash,stateHash:$stateHash,
-    registryHash:$registryHash,priceHash:$priceHash,modelCount:$modelCount,
+    registryHash:$registryHash,suiteHash:$suiteHash,priceHash:$priceHash,modelCount:$modelCount,
     bundles:{manifest:$manifestBundleHash,state:$stateBundleHash,inspect:$inspectBundleHash,freeze:$freezeBundleHash,attest:$attestBundleHash}}'

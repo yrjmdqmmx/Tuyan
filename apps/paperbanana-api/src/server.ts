@@ -140,7 +140,7 @@ export function createApp({
     const declaredScientificOperation = request.get(scientificV2AdminOperationHeader)
     const protectedFreezeTransport = request.method === 'POST'
       && request.path === '/paperbanana-api'
-      && (declaredScientificOperation === 'freeze' || declaredScientificOperation === 'remediate-freeze')
+      && ['freeze', 'remediate-freeze', 'expansion-freeze'].includes(String(declaredScientificOperation))
       && Boolean(config.adminTransportToken)
       && tokensMatch(request.get('x-paperbanana-gateway-token') || '', config.gatewayToken)
       && tokensMatch(request.get('x-paperbanana-admin-transport-token') || '', config.adminTransportToken || '')
@@ -211,9 +211,13 @@ export function createApp({
     const isScientificV2RemediationFreeze = action === 'adminBenchmarkControl'
       && body.evaluationMode === 'codex_scientific_v2'
       && body.command === 'freezeRemediationBatch'
+    const isScientificV2ExpansionFreeze = action === 'adminBenchmarkControl'
+      && body.evaluationMode === 'codex_scientific_v2'
+      && body.command === 'freezeExpansionBatch'
     const expectedScientificOperation = isScientificV2Freeze ? 'freeze'
-      : isScientificV2RemediationFreeze ? 'remediate-freeze' : ''
-    if ((declaredScientificV2AdminOperation || (isAdminTransport && (isScientificV2Freeze || isScientificV2RemediationFreeze)))
+      : isScientificV2RemediationFreeze ? 'remediate-freeze'
+        : isScientificV2ExpansionFreeze ? 'expansion-freeze' : ''
+    if ((declaredScientificV2AdminOperation || (isAdminTransport && (isScientificV2Freeze || isScientificV2RemediationFreeze || isScientificV2ExpansionFreeze)))
       && !(declaredScientificV2AdminOperation === expectedScientificOperation
         && gatewayTransport && isAdminTransport && Boolean(expectedScientificOperation))) {
       return response.status(400).json({ code: 400, error: 'Scientific V2 admin transport rejected' })

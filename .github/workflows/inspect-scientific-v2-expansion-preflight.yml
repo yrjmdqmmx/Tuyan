@@ -1,0 +1,49 @@
+name: Inspect Scientific V2 Expansion Preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_control_sha: { description: Exact workflow checkout SHA., required: true }
+      active_release_hash: { description: Exact active public release hash., required: true }
+      confirm: { description: Type inspect-scientific-v2-expansion-read-only., required: true }
+
+permissions: { contents: read }
+concurrency:
+  group: paperbanana-hk-production
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    environment: paperbanana-production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate read-only request
+        env:
+          CONTROL_SHA: ${{ inputs.expected_control_sha }}
+          ACTIVE_RELEASE_HASH: ${{ inputs.active_release_hash }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -Eeuo pipefail
+          [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$ACTIVE_RELEASE_HASH" =~ ^[a-f0-9]{64}$ && "$CONFIRM" == inspect-scientific-v2-expansion-read-only ]]
+          bash -n deploy/hk-single-host/scripts/inspect-scientific-v2-expansion-preflight.sh
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_HK_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.ALIYUN_HK_SSH_KNOWN_HOSTS }}
+        run: |
+          set -Eeuo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Read verified deployment and active baseline metadata
+        env:
+          DEPLOY_HOST: ${{ secrets.ALIYUN_HK_HOST }}
+          DEPLOY_USER: ${{ secrets.ALIYUN_HK_USER }}
+          ACTIVE_RELEASE_HASH: ${{ inputs.active_release_hash }}
+        run: |
+          set -Eeuo pipefail
+          printf -v command 'sudo env SCIENTIFIC_V2_ACTIVE_RELEASE_HASH=%q bash -s' "$ACTIVE_RELEASE_HASH"
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command" < deploy/hk-single-host/scripts/inspect-scientific-v2-expansion-preflight.sh

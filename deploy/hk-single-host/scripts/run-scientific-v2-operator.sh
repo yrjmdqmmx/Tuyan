@@ -498,7 +498,11 @@ if [[ "$mode" == inspect ]]; then
     '.operation == "inspect" and '"$common_jq"' and
      .batchInput.codeSha == $sha and .batchInput.suiteHash == $suite and
      .batchInput.canonicalManifest.registryHash == $registry and
-     .batchInput.canonicalManifest.canonicalModelCount == $models and
+     (if .batchInput | has("expansion") then
+        $models == 1 and .batchInput.expansion.schemaVersion == 1 and
+        .batchInput.expansion.kind == "single_model_expansion" and
+        (.batchInput.expansion.targetModelId as $target | [.batchInput.canonicalManifest.models[] | select(.canonicalModelId == $target)] | length) == 1
+      else .batchInput.canonicalManifest.canonicalModelCount == $models end) and
      .batchInput.priceSnapshot.snapshotHash == $price' "$snapshot_path" >/dev/null || {
     echo 'scientific v2 inspect bundle binding is invalid' >&2; exit 1;
   }
@@ -532,7 +536,14 @@ elif [[ "$mode" == run ]]; then
      .manifest.manifestHash == $manifest and .state.manifestHash == $manifest and
      (.manifest.models | length) == $models and (.manifest.cases | length) == 9 and
      .manifest.providerBudgetsCny == {bailian:180,ark:180,openrouter:360} and
-     .manifest.codexLimits == {modelId:"codex:gpt-image-2",successfulSlots:9,maxAttemptsPerSlot:4,maxToolCalls:36} and
+     (if .manifest | has("expansion") then
+        .manifest.expansion.schemaVersion == 1 and .manifest.expansion.kind == "single_model_expansion" and
+        $models == 1 and .manifest.models[0].canonicalModelId == .manifest.expansion.targetModelId and
+        (.manifest.executionOrder | length) == 9 and (.state.slots | length) == 9 and
+        (.manifest.expansion.targetModelId as $target |
+          all(.manifest.executionOrder[],.state.slots[]; .canonicalModelId == $target and .provider != "codex")) and
+        .manifest.codexLimits == {modelId:"codex:gpt-image-2",successfulSlots:0,maxAttemptsPerSlot:4,maxToolCalls:0}
+      else .manifest.codexLimits == {modelId:"codex:gpt-image-2",successfulSlots:9,maxAttemptsPerSlot:4,maxToolCalls:36} end) and
      .manifest.concurrency == 1 and
      .manifest.lockName == "/run/lock/paperbanana-hk-production.lock"' "$snapshot_path" >/dev/null || {
     echo 'scientific v2 run bundle binding is invalid' >&2; exit 1;
@@ -636,15 +647,17 @@ raise SystemExit(74)
 PY
 fi
 
+codex_max_tool_calls="$(jq -r 'if (.manifest | has("expansion")) or (.batchInput | has("expansion")) then 0 else 36 end' "$snapshot_path")"
+
 emit_dry_run() {
   jq -cn \
     --arg operation "$mode" --arg codeSha "$expected_sha" --arg bundleHash "$bundle_sha256" \
     --arg registryHash "$registry_hash" --arg suiteHash "$suite_hash" --arg priceHash "$price_hash" \
-    --arg manifestHash "$manifest_hash" --argjson modelCount "$model_count" \
+    --arg manifestHash "$manifest_hash" --argjson modelCount "$model_count" --argjson codexMaxToolCalls "$codex_max_tool_calls" \
     '{schemaVersion:2,operation:$operation,dryRun:true,providerCalls:0,codeSha:$codeSha,bundleHash:$bundleHash,
       registryHash:$registryHash,suiteHash:$suiteHash,priceHash:$priceHash,manifestHash:$manifestHash,
       modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:360},
-      codexMaxToolCalls:36,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
+      codexMaxToolCalls:$codexMaxToolCalls,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
 }
 test_signed_result=false
 if [[ -n "$test_root" && -n "${PAPERBANANA_SCIENTIFIC_V2_TEST_SIGNED_RESULT:-}" ]]; then
@@ -960,11 +973,11 @@ if [[ "$mode" == inspect ]]; then
   jq -cn \
     --arg operation "$mode" --arg codeSha "$expected_sha" --arg bundleHash "$bundle_sha256" \
     --arg registryHash "$registry_hash" --arg suiteHash "$suite_hash" --arg priceHash "$price_hash" \
-    --arg manifestHash "$manifest_hash" --arg stateHash "$state_hash" --argjson modelCount "$model_count" \
+    --arg manifestHash "$manifest_hash" --arg stateHash "$state_hash" --argjson modelCount "$model_count" --argjson codexMaxToolCalls "$codex_max_tool_calls" \
     '{schemaVersion:2,operation:$operation,dryRun:false,providerCalls:0,codeSha:$codeSha,bundleHash:$bundleHash,
       registryHash:$registryHash,suiteHash:$suiteHash,priceHash:$priceHash,manifestHash:$manifestHash,stateHash:$stateHash,
       modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:360},
-      codexMaxToolCalls:36,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
+      codexMaxToolCalls:$codexMaxToolCalls,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
 elif [[ "$mode" == run ]]; then
   state_hash="$(jq -r .report.stateHash "$result_path")"
   report_hash="$(jq -r .reportHash "$result_path")"

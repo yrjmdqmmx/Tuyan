@@ -3,6 +3,7 @@ name: Refresh Scientific V2 Official Price Sources
 on:
   workflow_dispatch:
     inputs:
+      expansion_sha256: { description: Optional SHA-256 of the staged single-model expansion descriptor., required: false, default: "" }
       expected_deployed_sha: { description: Exact deployed Core and Worker SHA., required: true }
       expected_core_digest: { description: Exact Core image digest without sha256 prefix., required: true }
       expected_worker_digest: { description: Exact Worker image digest without sha256 prefix., required: true }
@@ -36,13 +37,15 @@ jobs:
           EXPECTED_SHA: ${{ inputs.expected_deployed_sha }}
           CORE_DIGEST: ${{ inputs.expected_core_digest }}
           WORKER_DIGEST: ${{ inputs.expected_worker_digest }}
+          EXPANSION_SHA: ${{ inputs.expansion_sha256 }}
           CONFIRM: ${{ inputs.confirm }}
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$EXPECTED_SHA" && "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
+          [[ -z "$EXPANSION_SHA" || "$EXPANSION_SHA" =~ ^[a-f0-9]{64}$ ]]
           [[ "$CONFIRM" == refresh-scientific-v2-price-sources ]]
-          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --confirm %q' \
+          printf -v command 'cd %q && sudo %q --expected-sha %q --expected-core-digest %q --expected-worker-digest %q --expansion-sha256 %q --confirm %q' \
             /opt/paperbanana/repo deploy/hk-single-host/scripts/refresh-scientific-v2-price-sources.sh \
-            "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$CONFIRM"
+            "$EXPECTED_SHA" "$CORE_DIGEST" "$WORKER_DIGEST" "$EXPANSION_SHA" "$CONFIRM"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" "$command"

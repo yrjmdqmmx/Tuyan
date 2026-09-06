@@ -33,6 +33,47 @@ interface ScientificManifestRoute {
 const providerOrder: readonly ProductionProvider[] = ['bailian', 'ark', 'openrouter']
 const priority: Record<ScientificAccessProvider, number> = { bailian: 0, ark: 1, openrouter: 2, codex: 3 }
 
+export interface ScientificV2Expansion {
+  schemaVersion: 1
+  kind: 'single_model_expansion'
+  baseline: { releaseId: string; releaseHash: string; batchId: string; manifestHash: string }
+  targetModelId: string
+}
+
+/** The complete registry remains authoritative; only the execution/price roster is projected. */
+export function deriveScientificV2ExecutionCanonicalManifest(
+  fullCanonical: ReturnType<typeof buildScientificV2CanonicalManifest>,
+  expansion?: ScientificV2Expansion,
+): ReturnType<typeof buildScientificV2CanonicalManifest> {
+  if (expansion === undefined) return fullCanonical
+  const exactKeys = (value: unknown, keys: string[]) => {
+    if (value === null || typeof value !== 'object' || Array.isArray(value)
+      || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) return false
+    const actualKeys = Reflect.ownKeys(value)
+    return actualKeys.length === keys.length && actualKeys.every((key) => {
+      const descriptor = Object.getOwnPropertyDescriptor(value, key)
+      return typeof key === 'string' && keys.includes(key) && descriptor?.enumerable === true && 'value' in descriptor
+    })
+  }
+  if (!exactKeys(expansion, ['schemaVersion', 'kind', 'baseline', 'targetModelId'])
+    || expansion.schemaVersion !== 1 || expansion.kind !== 'single_model_expansion'
+    || !exactKeys(expansion.baseline, ['releaseId', 'releaseHash', 'batchId', 'manifestHash'])
+    || ![expansion.baseline.releaseHash, expansion.baseline.manifestHash].every((value) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value))
+    || ![expansion.baseline.releaseId, expansion.baseline.batchId].every((value) => typeof value === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,255}$/.test(value))
+    || typeof expansion.targetModelId !== 'string' || expansion.targetModelId.startsWith('codex:')
+    || expansion.targetModelId !== normalizeCanonicalModelId(expansion.targetModelId)) {
+    throw new Error('SCIENTIFIC_V2_EXPANSION_INVALID')
+  }
+  const { manifestHash, ...base } = fullCanonical
+  if (canonicalHash(base) !== manifestHash) throw new Error('SCIENTIFIC_V2_CANONICAL_MANIFEST_HASH_MISMATCH')
+  const models = fullCanonical.models.filter((model) => model.canonicalModelId === expansion.targetModelId)
+  if (models.length !== 1 || models[0]!.routes.some((route) => route.provider === 'codex')) {
+    throw new Error('SCIENTIFIC_V2_EXPANSION_TARGET_INVALID')
+  }
+  const projected = { ...base, models: structuredClone(models), canonicalModelCount: 1, rawRouteCount: models[0]!.routes.length }
+  return deepFreeze({ ...projected, manifestHash: canonicalHash(projected) })
+}
+
 export function compareScientificIdentifiers(left: string, right: string) {
   return Buffer.compare(Buffer.from(left, 'utf8'), Buffer.from(right, 'utf8'))
 }

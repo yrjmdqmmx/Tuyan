@@ -21,6 +21,7 @@ export const openRouterNormalizedImageProfileIds = [
   'krea/krea-2-medium-turbo',
   'microsoft/mai-image-2.5',
   'microsoft/mai-image-2.5-pro',
+  'microsoft/mai-image-2.6',
   'openai/gpt-5-image',
   'openai/gpt-5-image-mini',
   'openai/gpt-5.4-image-2',

@@ -469,6 +469,32 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
     }
     const canarySuccess = execute(sign(reportBase))
     assert.equal(canarySuccess.status, 0, canarySuccess.stderr)
+    const expansion = { schemaVersion: 1, kind: 'single_model_expansion', baseline: {
+      releaseId: 'release-baseline', releaseHash: 'c'.repeat(64), batchId: 'batch-baseline', manifestHash: 'd'.repeat(64),
+    }, targetModelId: 'microsoft/mai-image-2.6' }
+    const expansionSlots = Array.from({ length: 9 }, (_, index) => ({ canonicalModelId: expansion.targetModelId, provider: 'openrouter', caseId: `case-${index}`, status: 'pending', attempts: [] }))
+    const expansionBase = { ...manifestBase, expansion, models: [{ canonicalModelId: expansion.targetModelId }],
+      cases: Array.from({ length: 9 }, () => ({})), executionOrder: expansionSlots,
+      codexLimits: { modelId: 'codex:gpt-image-2', successfulSlots: 0, maxAttemptsPerSlot: 4, maxToolCalls: 0 } }
+    const verifyExpansion = (base, slots = expansionSlots) => {
+      const manifestValue = { ...base, manifestHash: canonicalHash(base) }
+      const nextState = { ...stateBase, manifestHash: manifestValue.manifestHash, slots }
+      const stateValue = { ...nextState, stateHash: canonicalHash(nextState) }
+      const attestation = sign({ ...reportBase, batchManifestHash: manifestValue.manifestHash, stateHash: stateValue.stateHash, slotCount: 9, codexToolCallLimit: base.codexLimits.maxToolCalls })
+      return execute(attestation, { manifestValue, stateValue, expectedManifestHash: manifestValue.manifestHash })
+    }
+    const validExpansion = verifyExpansion(expansionBase)
+    assert.equal(validExpansion.status, 0, validExpansion.stderr)
+    for (const malformed of [
+      { ...expansionBase, expansion: null },
+      { ...expansionBase, expansion: { ...expansion, baseline: { ...expansion.baseline, releaseHash: 'invalid' } } },
+      { ...expansionBase, codexLimits: manifestBase.codexLimits },
+      { ...expansionBase, executionOrder: [{ ...expansionSlots[0], canonicalModelId: 'other-model' }, ...expansionSlots.slice(1)] },
+    ]) {
+      const rejected = verifyExpansion(malformed)
+      assert.notEqual(rejected.status, 0)
+      assert.match(rejected.stderr, /assembly failed \[expansion\]/)
+    }
     const legacyBlockedReport = {
       ...reportBase, batchManifestHash: legacyManifest.manifestHash, stateHash: legacyBlockedState.stateHash,
       manifestCodeSha: legacyCodeSha, executionCodeSha: codeSha, legacyRecoveryStateHash: legacyBlockedState.stateHash,

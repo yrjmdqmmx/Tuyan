@@ -16,6 +16,8 @@ import {
   canonicalHash,
   createScientificReviewPacket,
   deriveScientificV2PriceRequirements,
+  deriveScientificV2ExecutionCanonicalManifest,
+  type ScientificV2Expansion,
 } from '@paperbanana/benchmark-core'
 
 import {
@@ -2223,4 +2225,107 @@ test('built scientific v2 operator executes inspect, production run, Codex impor
   } finally {
     rmSync(root, { recursive: true, force: true })
   }
+})
+
+
+function expansionFixture() {
+  const full = canonicalManifest({ providers: ['bailian'], modelsPerProvider: 2 })
+  const expansion: ScientificV2Expansion = {
+    schemaVersion: 1, kind: 'single_model_expansion',
+    baseline: { releaseId: 'baseline-release', releaseHash: H64('b'), batchId: 'baseline-batch', manifestHash: H64('c') },
+    targetModelId: full.models.find((model) => model.canonicalModelId !== 'codex:gpt-image-2')!.canonicalModelId,
+  }
+  const execution = deriveScientificV2ExecutionCanonicalManifest(full, expansion)
+  const input = {
+    canonicalManifest: full, expansion, registrySnapshot: registrySnapshot(full),
+    suite: PB_SCIENTIFIC_FIGURE_V2, codeSha: CODE_SHA,
+    priceSnapshot: priceSnapshot(execution), createdAt: CREATED_AT, lockName: LOCK_NAME,
+  }
+  return { full, expansion, input, ...buildScientificV2Batch(input) }
+}
+
+test('single model expansion retains full authority but binds only nine target slots and projected prices', async () => {
+  const built = expansionFixture()
+  assert.equal(built.manifest.canonicalManifest.models.length, 3)
+  assert.deepEqual(built.manifest.models.map((model) => model.canonicalModelId), [built.expansion.targetModelId])
+  assert.equal(built.manifest.canonicalManifestHash, built.full.manifestHash)
+  assert.notEqual(built.manifest.priceSnapshot.canonicalManifestHash, built.full.manifestHash)
+  assert.equal(built.state.slots.length, 9)
+  assert.equal(built.manifest.priceSnapshot.entries.length, 2)
+  assert.deepEqual(built.manifest.codexLimits, { modelId: 'codex:gpt-image-2', successfulSlots: 0, maxAttemptsPerSlot: 4, maxToolCalls: 0 })
+  verifyScientificV2BatchManifest(built.manifest)
+  verifyScientificV2BatchState(built.state, built.manifest)
+  const inspected = await executeScientificV2OperatorBundle({
+    operation: 'inspect', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    batchInput: { ...built.input, suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash, suite: undefined, lockName: undefined } as any,
+  }).catch(() => null)
+  // Unknown keys still fail closed in operator bundles.
+  assert.equal(inspected, null)
+  const { suite: _suite, lockName: _lock, ...batchInput } = built.input
+  const result = await executeScientificV2OperatorBundle({
+    operation: 'inspect', gate: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    batchInput: { ...batchInput, suiteHash: PB_SCIENTIFIC_FIGURE_V2.manifestHash },
+  })
+  assert.equal(result.modelCount, 1)
+  assert.equal(result.slotCount, 9)
+  assert.throws(() => buildScientificV2Batch({ ...built.input, priceSnapshot: priceSnapshot(built.full) }), /PRICE_SNAPSHOT_INVALID/)
+  const forged = structuredClone(built.manifest)
+  forged.models.push(built.full.models.find((model) => model.canonicalModelId === 'codex:gpt-image-2')!)
+  const { manifestHash: _oldHash, ...forgedBase } = forged
+  forged.manifestHash = canonicalHash(forgedBase)
+  assert.throws(() => verifyScientificV2BatchManifest(forged), /MANIFEST_SCHEMA_INVALID|MANIFEST_REBUILD_MISMATCH/)
+})
+
+test('expansion canary and full resume dispatch exactly nine target calls and produce one complete review packet', async () => {
+  const built = expansionFixture()
+  const png = await sharp({ create: { width: 1024, height: 1024, channels: 3, background: '#456' } }).png().toBuffer()
+  const calls: string[] = []
+  const dependencies = {
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'expansion-lock' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request: any) {
+      assert.equal(request.canonicalModelId, built.expansion.targetModelId)
+      calls.push(request.slotId)
+      return { responseClass: 'succeeded' as const, actualCny: request.estimatedCny, bytes: png }
+    } },
+  }
+  const canary = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'canary-only' }, ...dependencies,
+  })
+  assert.equal(canary.state.status, 'canary_complete')
+  assert.equal(calls.length, 1)
+  const full = await runScientificV2Batch({
+    manifest: built.manifest, state: canary.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME, phase: 'full' }, ...dependencies,
+  })
+  assert.equal(full.state.status, 'completed')
+  assert.equal(calls.length, 9)
+  assert.equal(new Set(calls).size, 9)
+  const packet = createScientificV2ReviewPackStagingBundle({
+    manifest: built.manifest, state: full.state, attestationSecret: REVIEW_ATTESTATION_SECRET, issuedAt: new Date().toISOString(),
+  })
+  assert.equal(packet.input.sources.length, 1)
+  assert.equal(packet.input.sources[0].packet!.items.length, 9)
+  const failed = stateWithOneConfirmedTargetFailure({ manifest: built.manifest, state: full.state }, built.expansion.targetModelId)
+  const failedPacket = createScientificV2ReviewPackStagingBundle({
+    manifest: built.manifest, state: failed, attestationSecret: REVIEW_ATTESTATION_SECRET, issuedAt: new Date().toISOString(),
+  })
+  assert.equal(failedPacket.input.sources[0].packet!.items.length, 8)
+})
+
+test('unknown outcome in expansion pauses after one target call without dispatching legacy models', async () => {
+  const built = expansionFixture()
+  let calls = 0
+  const result = await runScientificV2Batch({
+    manifest: built.manifest, state: built.state,
+    attestation: { enabled: false, concurrency: 1, lockName: LOCK_NAME },
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'expansion-unknown' }, async heartbeat() {}, async release() {} },
+    executor: { async execute() { calls += 1; throw new UnknownProviderOutcomeError('UNKNOWN_PROVIDER_OUTCOME') } },
+  })
+  assert.equal(calls, 1)
+  assert.equal(result.state.status, 'paused')
+  assert.equal(result.state.slots.filter((slot) => slot.status === 'unknown').length, 1)
+  assert.equal(result.state.slots.filter((slot) => slot.status === 'not_executed').length, 8)
 })

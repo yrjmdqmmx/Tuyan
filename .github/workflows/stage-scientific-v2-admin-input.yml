@@ -6,7 +6,7 @@ on:
       purpose:
         required: true
         type: choice
-        options: [remediate-freeze, attest, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+        options: [expansion-descriptor, remediate-freeze, attest, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       release_id: { required: true }
@@ -44,7 +44,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
-          [[ "$PURPOSE" =~ ^(remediate-freeze|attest|import-worker|import-codex|export-review|import-review|import-arbitration|publish)$ ]]
+          [[ "$PURPOSE" =~ ^(expansion-descriptor|remediate-freeze|attest|import-worker|import-codex|export-review|import-review|import-arbitration|publish)$ ]]
           [[ "$RELEASE_ID" =~ ^[1-9][0-9]*$ && "$ASSET_ID" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" =~ ^[1-9][0-9]*$ ]]
           [[ "$ASSET_SHA" =~ ^[a-f0-9]{64}$ && "$ASSET_SIZE" -le 67108864 ]]
           [[ "$ASSET_NAME" == "scientific-v2-$PURPOSE-$ASSET_SHA.json" ]]
@@ -73,7 +73,14 @@ jobs:
           [[ "$(stat -c %s "$input")" == "$ASSET_SIZE" && "$(sha256sum "$input" | awk '{print $1}')" == "$ASSET_SHA" ]]
           jq -e --arg purpose "$PURPOSE" '
             (type == "object") and
-            (if $purpose == "remediate-freeze" then
+            (if $purpose == "expansion-descriptor" then
+               (keys | sort) == ["baseline","kind","schemaVersion","targetModelId"] and
+               .schemaVersion == 1 and .kind == "single_model_expansion" and
+               (.baseline | keys | sort) == ["batchId","manifestHash","releaseHash","releaseId"] and
+               ([.baseline.releaseId,.baseline.batchId] | all(type == "string" and test("^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$"))) and
+               ([.baseline.releaseHash,.baseline.manifestHash] | all(type == "string" and test("^[a-f0-9]{64}$"))) and
+               (.targetModelId | type == "string" and length > 0 and length <= 200 and (startswith("codex:") | not))
+             elif $purpose == "remediate-freeze" then
                (((keys | sort) == ["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash","targetModelIds","targetSlotIds","targetSlotSetHash"] and
                  .sourceReleaseHash != "25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe" and
                  (.targetModelIds | type) == "array" and (.targetModelIds | length) > 0 and

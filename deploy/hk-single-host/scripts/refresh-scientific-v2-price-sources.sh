@@ -2,9 +2,9 @@
 set -Eeuo pipefail
 umask 077
 
-expected_sha='' expected_core_digest='' expected_worker_digest='' confirm=''
+expected_sha='' expected_core_digest='' expected_worker_digest='' confirm='' expansion_sha256=''
 usage() {
-  echo 'usage: refresh-scientific-v2-price-sources.sh --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --confirm refresh-scientific-v2-price-sources' >&2
+  echo 'usage: refresh-scientific-v2-price-sources.sh --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX [--expansion-sha256 64_HEX] --confirm refresh-scientific-v2-price-sources' >&2
   exit 64
 }
 while (($#)); do
@@ -12,12 +12,14 @@ while (($#)); do
     --expected-sha) expected_sha="${2:-}"; shift 2 ;;
     --expected-core-digest) expected_core_digest="${2:-}"; shift 2 ;;
     --expected-worker-digest) expected_worker_digest="${2:-}"; shift 2 ;;
+    --expansion-sha256) expansion_sha256="${2:-}"; shift 2 ;;
     --confirm) confirm="${2:-}"; shift 2 ;;
     *) usage ;;
   esac
 done
 [[ "$expected_sha" =~ ^[a-f0-9]{40}$ && "$expected_core_digest" =~ ^[a-f0-9]{64}$
   && "$expected_worker_digest" =~ ^[a-f0-9]{64}$ && "$confirm" == refresh-scientific-v2-price-sources ]] || usage
+[[ -z "$expansion_sha256" || "$expansion_sha256" =~ ^[a-f0-9]{64}$ ]] || usage
 [[ "$(id -u)" == 0 ]] || { echo 'scientific v2 price refresh must run as root' >&2; exit 1; }
 
 repo_root='/opt/paperbanana/repo'
@@ -32,6 +34,12 @@ lock_path='/run/lock/paperbanana-hk-production.lock'
 install -d -o root -g root -m 0700 "$authority_dir" "$capture_root" "$report_root" "$(dirname "$lock_path")"
 exec 9>"$lock_path"
 flock -x 9
+
+[[ "$(git -C "$repo_root" rev-parse --verify HEAD)" == "$expected_sha" ]] || exit 1
+git -C "$repo_root" ls-files --error-unmatch deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh >/dev/null 2>&1 || exit 1
+git -C "$repo_root" diff --quiet "$expected_sha" -- deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh || exit 1
+source "$repo_root/deploy/hk-single-host/scripts/scientific-v2-expansion-input.sh"
+load_scientific_v2_expansion || { echo "scientific v2 expansion input is invalid" >&2; exit 1; }
 
 read_env_value() { awk -F= -v key="$2" '$1==key {value=substr($0,index($0,"=")+1);count++} END {if(count==1)print value;else exit 1}' "$1"; }
 sha256_file() { sha256sum "$1" 2>/dev/null | awk '{print $1}' || shasum -a 256 "$1" | awk '{print $1}'; }
@@ -92,6 +100,7 @@ else install -o root -g root -m 0600 "$authority_tmp" "$authority_path"; fi
   -v "$authority_path:/run/paperbanana-scientific-v2/registry-authority.json:ro" \
   -v "$capture_root:/run/paperbanana-scientific-v2/captures" \
   -v "$report_root:/run/paperbanana-scientific-v2/reports" \
+  "${expansion_docker_args[@]}" \
   benchmark-operator node dist/scientific-v2-price-refresh.mjs >"$refresh_result"
 jq -e --arg authority "$authority_sha256" '.authorityFileSha256 == $authority and (.refreshReportFileSha256|test("^[a-f0-9]{64}$")) and (.captureCount|type)=="number" and .captureCount > 0' "$refresh_result" >/dev/null
 jq -cn --arg registryAuthoritySha256 "$authority_sha256" --slurpfile refresh "$refresh_result" \

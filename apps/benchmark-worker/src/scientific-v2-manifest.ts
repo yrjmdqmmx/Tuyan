@@ -6,6 +6,8 @@ import {
   canonicalHash,
   compareScientificIdentifiers,
   deriveScientificV2PriceRequirements,
+  deriveScientificV2ExecutionCanonicalManifest,
+  type ScientificV2Expansion,
   verifyScientificV2PriceSnapshot,
   type ScientificV2AttestedPriceEntry,
   type ScientificV2PriceSnapshotV2,
@@ -106,12 +108,13 @@ export interface ScientificV2BatchManifest {
   priceHash: string
   priceOperatorAuthorizationHash: string | null
   canonicalManifest: CanonicalManifest
+  expansion?: ScientificV2Expansion
   models: CanonicalManifest['models']
   cases: typeof PB_SCIENTIFIC_FIGURE_V2.cases[number][]
   executionOrder: ScientificV2ExecutionSlot[]
   providerOrder: Array<Exclude<ScientificV2Provider, 'codex'>>
   providerBudgetsCny: Record<Exclude<ScientificV2Provider, 'codex'>, number>
-  codexLimits: { modelId: 'codex:gpt-image-2'; successfulSlots: 9; maxAttemptsPerSlot: 4; maxToolCalls: 36 }
+  codexLimits: { modelId: 'codex:gpt-image-2'; successfulSlots: 0 | 9; maxAttemptsPerSlot: 4; maxToolCalls: 0 | 36 }
   concurrency: 1
   lockName: string
   priceSnapshot: ScientificV2PriceSnapshot
@@ -215,6 +218,7 @@ function stateHash(state: Omit<ScientificV2BatchState, 'stateHash'>) {
 }
 
 export function buildScientificV2Batch(input: {
+  expansion?: ScientificV2Expansion
   canonicalManifest: CanonicalManifest
   registrySnapshot: ScientificV2RegistrySnapshot
   suite: typeof PB_SCIENTIFIC_FIGURE_V2
@@ -236,10 +240,11 @@ export function buildScientificV2Batch(input: {
     if ((input.canonicalManifest as unknown as Record<string, unknown>)[key] !== value) scientificV2Error('SCIENTIFIC_V2_IDENTITY_MISMATCH')
   }
 
-  const models = structuredClone(input.canonicalManifest.models)
+  const executionCanonical = deriveScientificV2ExecutionCanonicalManifest(input.canonicalManifest, input.expansion)
+  const models = structuredClone(executionCanonical.models)
   const cases: ScientificV2BatchManifest['cases'] = structuredClone([...PB_SCIENTIFIC_FIGURE_V2.cases])
   const providerRank: Record<ScientificV2Provider, number> = { bailian: 0, ark: 1, openrouter: 2, codex: 3 }
-  const priceRequirements = new Map(deriveScientificV2PriceRequirements(input.canonicalManifest)
+  const priceRequirements = new Map(deriveScientificV2PriceRequirements(executionCanonical)
     .map((requirement) => [`${requirement.provider}\0${requirement.modelId}\0${requirement.operation}`, requirement]))
   const executionOrder: ScientificV2ExecutionSlot[] = []
   const providerCanaries = new Set<string>()
@@ -289,7 +294,7 @@ export function buildScientificV2Batch(input: {
       providerCanaries.add(slot.provider)
     }
   })
-  verifyScientificV2PriceSnapshot(input.priceSnapshot, input.canonicalManifest)
+  verifyScientificV2PriceSnapshot(input.priceSnapshot, executionCanonical)
   if (input.priceSnapshot.capturedAt !== input.createdAt) scientificV2Error('SCIENTIFIC_V2_PRICE_CAPTURE_DRIFT')
   const base = {
     schemaVersion: 2 as const,
@@ -304,12 +309,13 @@ export function buildScientificV2Batch(input: {
     priceHash: input.priceSnapshot.snapshotHash,
     priceOperatorAuthorizationHash: input.priceSnapshot.operatorAuthorizationHash,
     canonicalManifest: structuredClone(input.canonicalManifest),
+    ...(input.expansion ? { expansion: structuredClone(input.expansion) } : {}),
     models,
     cases,
     executionOrder,
     providerOrder: [...SCIENTIFIC_V2_PROVIDERS],
     providerBudgetsCny: { ...SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY },
-    codexLimits: { modelId: 'codex:gpt-image-2' as const, successfulSlots: 9 as const, maxAttemptsPerSlot: 4 as const, maxToolCalls: 36 as const },
+    codexLimits: { modelId: 'codex:gpt-image-2' as const, successfulSlots: input.expansion ? 0 as const : 9 as const, maxAttemptsPerSlot: 4 as const, maxToolCalls: input.expansion ? 0 as const : 36 as const },
     concurrency: 1 as const,
     lockName: input.lockName,
     priceSnapshot: structuredClone(input.priceSnapshot),
@@ -337,6 +343,7 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
     'codeSha', 'registryVersion', 'registryHash', 'registrySnapshotHash', 'registrySnapshot', 'canonicalManifestHash', 'suiteHash', 'priceHash', 'priceOperatorAuthorizationHash',
     'canonicalManifest', 'models', 'cases', 'executionOrder', 'providerOrder', 'providerBudgetsCny',
     'codexLimits', 'concurrency', 'lockName', 'priceSnapshot', 'createdAt', 'manifestHash',
+    ...(Object.hasOwn(manifest, 'expansion') ? ['expansion'] : []),
   ], 'SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   assertBoundedScientificV2PlainData(manifest, { maxDepth: 14, maxNodes: 200_000, maxArrayLength: 4_096, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   if (!manifest || typeof manifest !== 'object' || !isScientificV2Hash(manifest.manifestHash)) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
@@ -358,7 +365,7 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
     || canonicalHash(manifest.cases) !== canonicalHash(PB_SCIENTIFIC_FIGURE_V2.cases)
     || canonicalHash(manifest.providerOrder) !== canonicalHash(SCIENTIFIC_V2_PROVIDERS)
     || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY)
-    || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 })
+    || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: manifest.expansion ? 0 : 9, maxAttemptsPerSlot: 4, maxToolCalls: manifest.expansion ? 0 : 36 })
     || manifest.lockName !== SCIENTIFIC_V2_PRODUCTION_LOCK_NAME
     || manifest.executionOrder.length !== manifest.models.length * 9
     || manifest.executionOrder.some((slot, index) => slot.sequence !== index + 1)) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
@@ -375,10 +382,11 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
     }
     if (slot.supported && slot.provider !== 'codex' && slot.provider !== null && !slot.modelId) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   }
-  verifyScientificV2PriceSnapshot(manifest.priceSnapshot, manifest.canonicalManifest)
+  verifyScientificV2PriceSnapshot(manifest.priceSnapshot, deriveScientificV2ExecutionCanonicalManifest(manifest.canonicalManifest, manifest.expansion))
   if (manifest.priceSnapshot.capturedAt !== manifest.createdAt) scientificV2Error('SCIENTIFIC_V2_PRICE_CAPTURE_DRIFT')
   const rebuilt = buildScientificV2Batch({
     canonicalManifest: manifest.canonicalManifest,
+    ...(Object.hasOwn(manifest, 'expansion') ? { expansion: manifest.expansion } : {}),
     registrySnapshot: manifest.registrySnapshot,
     suite: PB_SCIENTIFIC_FIGURE_V2,
     codeSha: manifest.codeSha,

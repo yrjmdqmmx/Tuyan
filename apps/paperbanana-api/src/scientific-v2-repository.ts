@@ -10,6 +10,7 @@ import {
   buildScientificV2CanonicalManifest,
   canonicalHash,
   deriveScientificV2PriceRequirements,
+  deriveScientificV2ExecutionCanonicalManifest,
   rankScientificModels,
   verifyScientificV2PriceSnapshot,
 } from '@paperbanana/benchmark-core'
@@ -17,6 +18,11 @@ import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypt
 import type { Db } from 'mongodb'
 
 import { verifyScientificV2RegistryAuthority } from './scientific-v2-production-bridge.js'
+import {
+  assertScientificV2ExpansionDescriptor,
+  assertScientificV2ExpansionBaseline,
+  assertScientificV2ExpansionPreservedModels,
+} from './scientific-v2-expansion.js'
 
 type AnyRecord = { _id?: string; [key: string]: any }
 
@@ -700,11 +706,14 @@ function assertRegistryAndManifest(input: AnyRecord) {
     for (const route of model.routes) assertExactKeys(route, ['provider', 'modelId', 'editMode', 'resolutions'], 'SCIENTIFIC_V2_CANONICAL_MANIFEST_MISMATCH')
   }
   const manifest = input.manifest
+  if (manifest?.expansion !== undefined) assertScientificV2ExpansionDescriptor(manifest.expansion)
+  const executionCanonical = deriveScientificV2ExecutionCanonicalManifest(canonicalManifest as any, manifest?.expansion)
   assertExactKeys(manifest, [
     'schemaVersion', 'suiteId', 'evaluationMode', 'evaluationEpoch', 'reviewProtocol', 'presentationVersion',
     'codeSha', 'registryVersion', 'registryHash', 'registrySnapshotHash', 'registrySnapshot', 'canonicalManifestHash', 'suiteHash', 'priceHash', 'priceOperatorAuthorizationHash',
     'canonicalManifest', 'models', 'cases', 'executionOrder', 'providerOrder', 'providerBudgetsCny',
     'codexLimits', 'concurrency', 'lockName', 'priceSnapshot', 'createdAt', 'manifestHash',
+    ...(manifest?.expansion !== undefined ? ['expansion'] : []),
   ], 'SCIENTIFIC_V2_BATCH_MANIFEST_INVALID')
   assertIsoInstant(manifest.createdAt, 'SCIENTIFIC_V2_BATCH_MANIFEST_INVALID')
   if (!manifest || manifest.schemaVersion !== 2 || !hashPattern.test(String(manifest.manifestHash || ''))
@@ -720,14 +729,14 @@ function assertRegistryAndManifest(input: AnyRecord) {
     || manifest.concurrency !== 1 || manifest.lockName !== productionLockName
     || canonicalHash(manifest.providerOrder) !== canonicalHash(providers)
     || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY)
-    || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: 9, maxAttemptsPerSlot: 4, maxToolCalls: 36 })
-    || canonicalHash(manifest.models) !== canonicalHash(canonicalManifest.models)
-    || !Array.isArray(manifest.executionOrder) || manifest.executionOrder.length !== canonicalManifest.models.length * 9
+    || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: manifest.expansion ? 0 : 9, maxAttemptsPerSlot: 4, maxToolCalls: manifest.expansion ? 0 : 36 })
+    || canonicalHash(manifest.models) !== canonicalHash(executionCanonical.models)
+    || !Array.isArray(manifest.executionOrder) || manifest.executionOrder.length !== executionCanonical.models.length * 9
     || Object.entries(SCIENTIFIC_BENCHMARK_IDENTITY).some(([key, value]) => manifest[key] !== value)) {
     scientificError('SCIENTIFIC_V2_BATCH_MANIFEST_INVALID')
   }
   const price = manifest.priceSnapshot
-  const typedCanonicalManifest = canonicalManifest as unknown as Parameters<typeof verifyScientificV2PriceSnapshot>[1]
+  const typedCanonicalManifest = executionCanonical as unknown as Parameters<typeof verifyScientificV2PriceSnapshot>[1]
   verifyScientificV2PriceSnapshot(price, typedCanonicalManifest)
   if (manifest.priceHash !== price.snapshotHash || price.capturedAt !== manifest.createdAt
     || manifest.priceOperatorAuthorizationHash !== price.operatorAuthorizationHash) scientificError('SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
@@ -743,7 +752,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
       'sequence', 'slotId', 'canonicalModelId', 'caseId', 'provider', 'modelId', 'operation', 'supported',
       'imageSize', 'isProviderCanary', 'routeStatus',
     ], 'SCIENTIFIC_V2_EXECUTION_SLOT_INVALID')
-    const model = canonicalManifest.models.find((candidate: AnyRecord) => candidate.canonicalModelId === slot.canonicalModelId)
+    const model = executionCanonical.models.find((candidate: AnyRecord) => candidate.canonicalModelId === slot.canonicalModelId)
     const scientificCase = PB_SCIENTIFIC_FIGURE_V2.cases.find((candidate) => candidate.id === slot.caseId)
     if (!model || !scientificCase || slot.sequence !== index + 1 || slotIds.has(slot.slotId)
       || slot.operation !== scientificCase.kind || slot.supported !== Boolean(slot.provider && slot.modelId)
@@ -767,7 +776,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
       estimates[slot.provider as keyof typeof estimates] += unit
     }
   }
-  if (modelIds.size !== canonicalManifest.models.length
+  if (modelIds.size !== executionCanonical.models.length
     || providers.some((provider) => estimates[provider] > SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[provider])) {
     scientificError('SCIENTIFIC_V2_PREFLIGHT_BUDGET_INVALID')
   }
@@ -912,6 +921,10 @@ export function createScientificV2MongoRepository(
   if (!Number.isInteger(claimLeaseMs) || claimLeaseMs < 1) scientificError('SCIENTIFIC_V2_CLAIM_LEASE_INVALID')
 
   const assertExactCorrectionPlanBatch = (batch: AnyRecord) => {
+    if (batch?.manifest?.expansion !== undefined && (batch.remediationOf !== undefined
+      || batch.correctionBaseline !== undefined || batch.zeroCallCorrection !== undefined)) {
+      scientificError('SCIENTIFIC_V2_EXPANSION_MIXED_LINEAGE')
+    }
     const correctionBaseline = batch?.correctionBaseline
     const remediation = batch?.remediationOf
     const requiresCorrection = remediation?.releaseHash === correctionPlan.activePredecessorReleaseHash
@@ -936,6 +949,41 @@ export function createScientificV2MongoRepository(
       scientificError('SCIENTIFIC_V2_OPERATOR_REPORT_SECRET_INVALID')
     }
     return secret
+  }
+
+  const loadExpansionBaseline = async (manifest: AnyRecord, session?: any) => {
+    assertScientificV2ExpansionDescriptor(manifest.expansion)
+    const expansion = manifest.expansion
+    const queryOptions = session ? { session } : undefined
+    const baseline = expansion.baseline
+    const release = await releases.findOne({ _id: baseline.releaseId, releaseHash: baseline.releaseHash }, queryOptions as any)
+    assertScientificV2ExpansionBaseline(expansion, release)
+    const head = await releaseHeads.findOne({ _id: SCIENTIFIC_V2_RELEASE_HEAD_ID }, queryOptions as any)
+    const lifecycle = await releaseLifecycle.findOne({ releaseId: baseline.releaseId, releaseHash: baseline.releaseHash, status: 'active' }, queryOptions as any)
+    if (!head || head.releaseId !== baseline.releaseId || head.releaseHash !== baseline.releaseHash || !lifecycle) {
+      scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_NOT_ACTIVE')
+    }
+    const source = await batches.findOne({
+      batchId: baseline.batchId, manifestHash: baseline.manifestHash,
+      releaseId: baseline.releaseId, releaseHash: baseline.releaseHash, status: 'published',
+    }, queryOptions as any)
+    if (!source || source.manifestHash !== source.manifest?.manifestHash
+      || canonicalWithoutHash(source.manifest, 'manifestHash') !== baseline.manifestHash
+      || source.stateHash !== source.state?.stateHash || source.state?.status !== 'completed'
+      || canonicalWithoutHash(source.state, 'stateHash') !== source.stateHash
+      || source.manifest?.suiteHash !== manifest.suiteHash) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_INVALID')
+    assertRegistryAndManifest(source)
+    verifyScientificV2ImportedState(source.state, source.manifest)
+    const sourceReport = await reviews.findOne({ _id: `scientific-v2-state-report:${source.latestStateReportHash}` }, queryOptions as any)
+    if (!sourceReport || sourceReport.reportHash !== source.latestStateReportHash
+      || canonicalHash(sourceReport.report?.state) !== canonicalHash(source.state)
+      || release!.reviewFinalHash !== source.reviewFinalHash) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_PROVENANCE_INVALID')
+    normalizeScientificV2SignedStateOperationReport({ report: sourceReport.report, reportHash: sourceReport.reportHash, attestationHash: sourceReport.attestationHash }, operatorSecret())
+    if (manifest.models.length !== 1 || manifest.models[0].canonicalModelId !== expansion.targetModelId
+      || manifest.executionOrder.length !== 9 || manifest.executionOrder.some((slot: AnyRecord) => slot.canonicalModelId !== expansion.targetModelId || slot.provider === 'codex')) {
+      scientificError('SCIENTIFIC_V2_EXPANSION_ROSTER_INVALID')
+    }
+    return release!
   }
 
   const validateStoredCodeLineage = (batch: AnyRecord) => {
@@ -1162,7 +1210,11 @@ export function createScientificV2MongoRepository(
       const page = ordered.slice(offset, offset + limit + 1)
       return { items: page.slice(0, limit), nextCursor: page.length > limit ? String(offset + limit) : null }
     },
-    async freezeBatch(input: AnyRecord) {
+    async freezeExpansionBatch(input: AnyRecord): Promise<AnyRecord> {
+      return this.freezeBatch(input, true)
+    },
+    async freezeBatch(input: AnyRecord, expansionMode = false): Promise<AnyRecord> {
+      if ((input?.manifest?.expansion !== undefined) !== expansionMode) scientificError('SCIENTIFIC_V2_EXPANSION_COMMAND_REQUIRED')
       const batchId = String(input?.batchId || '')
       if (!/^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$/.test(batchId)) scientificError('SCIENTIFIC_V2_BATCH_ID_INVALID')
       if (options.requireRegistryAuthority) {
@@ -1194,6 +1246,7 @@ export function createScientificV2MongoRepository(
       assertRegistryAndManifest(input)
       if (options.immutableCodeSha && input.manifest.codeSha !== options.immutableCodeSha) scientificError('SCIENTIFIC_V2_CODE_SHA_MISMATCH')
       assertInitialState(input)
+      if (expansionMode) await loadExpansionBaseline(input.manifest)
       const document = {
         _id: `scientific-v2-batch:${batchId}`,
         ...structuredClone(immutableInput),
@@ -1208,7 +1261,15 @@ export function createScientificV2MongoRepository(
         createdAt: now(),
       }
       try {
-        await batches.insertOne(document)
+        if (expansionMode) {
+          const session = db.client.startSession()
+          try {
+            await session.withTransaction(async () => {
+              await loadExpansionBaseline(input.manifest, session)
+              await batches.insertOne(document, { session } as any)
+            }, { readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } })
+          } finally { await session.endSession() }
+        } else await batches.insertOne(document)
       } catch (error) {
         if ((error as { code?: number })?.code !== 11000) throw error
         const raced = await batches.findOne({ batchId })
@@ -1473,6 +1534,7 @@ export function createScientificV2MongoRepository(
       const batch = await batches.findOne(input.batchId ? { batchId: input.batchId } : { manifestHash: input.manifestHash })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_FOUND')
       assertExactCorrectionPlanBatch(batch)
+      if (batch.manifest?.expansion !== undefined && batch.status !== 'published') await loadExpansionBaseline(batch.manifest)
       const secret = operatorSecret()
       if (batch.manifestHash !== batch.manifest?.manifestHash
         || canonicalWithoutHash(batch.manifest, 'manifestHash') !== batch.manifestHash) scientificError('SCIENTIFIC_V2_MANIFEST_HASH_INVALID')
@@ -1566,6 +1628,10 @@ export function createScientificV2MongoRepository(
         || input.report.stateHash !== input.report.state?.stateHash) scientificError('SCIENTIFIC_V2_OPERATOR_REPORT_SCHEMA_INVALID')
       const batch = await batches.findOne({ batchId: input.report.batchId, manifestHash: input.report.batchManifestHash })
       if (!batch) scientificError('SCIENTIFIC_V2_BATCH_NOT_FOUND')
+      if (batch.manifest?.expansion !== undefined && (input.report.kind !== 'worker'
+        || input.report.codexProvenance !== null || input.report.disclosure !== null)) {
+        scientificError('SCIENTIFIC_V2_EXPANSION_CODEX_REPORT_FORBIDDEN')
+      }
       const codeLineage = await ensureBatchCodeLineage(batch)
       if (input.report.manifestCodeSha !== codeLineage.manifestCodeSha
         || input.report.executionCodeSha !== codeLineage.executionCodeSha
@@ -1975,6 +2041,28 @@ export function createScientificV2MongoRepository(
       if (batch.state.status !== 'completed' || batch.state.slots.some((slot: AnyRecord) => !['succeeded', 'failed', 'unsupported'].includes(slot.status))) {
         scientificError('SCIENTIFIC_V2_BATCH_NOT_TERMINAL')
       }
+      const expansion = batch.manifest.expansion
+      const expansionBaselineRelease = expansion !== undefined ? await loadExpansionBaseline(batch.manifest) : null
+      const expansionBaselinePublicRows = new Map<string, AnyRecord>()
+      if (expansionBaselineRelease) {
+        const rows = await publicEvidence.find({ sourceReleaseHash: expansion.baseline.releaseHash }).toArray()
+        if (rows.length !== expansionBaselineRelease.models.length * 9) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
+        for (const row of rows) {
+          const key = `${row.canonicalModelId}\0${row.caseId}`
+          const model = expansionBaselineRelease.models.find((item: AnyRecord) => item.canonicalModelId === row.canonicalModelId)
+          const evidence = model?.evidence?.find((item: AnyRecord) => item.caseId === row.caseId)
+          if (!evidence || expansionBaselinePublicRows.has(key) || row.profileId !== model.profileId
+            || row.overallRank !== model.overallRank) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
+          assertExactKeys(row, ['_id', 'sourceReleaseHash', 'profileId', 'canonicalModelId', 'overallRank', ...Object.keys(evidence), 'createdAt'], 'SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
+          const payload = structuredClone(row)
+          for (const field of ['_id', 'sourceReleaseHash', 'profileId', 'canonicalModelId', 'overallRank', 'createdAt']) delete payload[field]
+          if (Array.isArray(payload.variants)) payload.variants = payload.variants.map((variant: AnyRecord) => publicVariant(variant, evidence.imageHash))
+          if (Array.isArray(payload.beforeVariants)) payload.beforeVariants = payload.beforeVariants.map((variant: AnyRecord) => publicVariant(variant, evidence.sourceHash))
+          if (canonicalHash(payload) !== canonicalHash(evidence)) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
+          for (const variant of [...(row.variants || []), ...(row.beforeVariants || [])]) await verifyObject(variant.objectKey, variant.imageHash)
+          expansionBaselinePublicRows.set(key, structuredClone(row))
+        }
+      }
       let correctionBaselineRelease: AnyRecord | null = null
       let correctionTargetModelIds: Set<string> | null = null
       const correctionBaselinePublicRows = new Map<string, AnyRecord>()
@@ -2112,7 +2200,12 @@ export function createScientificV2MongoRepository(
         || orderAttestation.passed !== true || canonicalHash(orderAttestation.slotIds) !== canonicalHash(batch.state.slots.map((slot: AnyRecord) => slot.slotId))) {
         scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
       }
-      if (stateReportRow.report.kind === 'codex') verifiedCodexProvenance(stateReportRow.report, batch.state)
+      if (expansion !== undefined) {
+        if (stateReportRow.report.kind !== 'worker' || stateReportRow.report.codexProvenance !== null
+          || stateReportRow.report.disclosure !== null || batch.state.slots.some((slot: AnyRecord) => slot.provider === 'codex')) {
+          scientificError('SCIENTIFIC_V2_EXPANSION_CODEX_REPORT_FORBIDDEN')
+        }
+      } else if (stateReportRow.report.kind === 'codex') verifiedCodexProvenance(stateReportRow.report, batch.state)
       else if (stateReportRow.report.kind === 'worker') await inheritedRemediationCodexProvenance(batch)
       else scientificError('SCIENTIFIC_V2_OPERATION_ATTESTATION_INVALID')
 
@@ -2363,7 +2456,9 @@ export function createScientificV2MongoRepository(
         'scores', 'dimensions', 'generationSuccessRate', 'editSuccessRate', 'successRate',
         'attemptSummary', 'failureReasons', 'evidence',
       ] as const
-      const modelDrafts = correctionBaselineRelease && correctionTargetModelIds
+      const modelDrafts = expansionBaselineRelease
+        ? [...structuredClone(expansionBaselineRelease.models), ...recomputedModelDrafts]
+        : correctionBaselineRelease && correctionTargetModelIds
         ? batch.manifest.models.map((model: AnyRecord) => {
           const baseline = correctionBaselineRelease!.models.find((candidate: AnyRecord) => candidate.canonicalModelId === model.canonicalModelId)
           if (!baseline) return undefined
@@ -2381,12 +2476,14 @@ export function createScientificV2MongoRepository(
       const dimensionRanks = Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, competitionRanks(modelDrafts.map((model: AnyRecord) => model.scores[axis]))]))
       const models = modelDrafts.map((model: AnyRecord, index: number) => ({
         ...model,
-        overallScore: correctionTargetModelIds && !correctionTargetModelIds.has(model.canonicalModelId)
+        overallScore: (expansionBaselineRelease && model.canonicalModelId !== expansion.targetModelId)
+          || (correctionTargetModelIds && !correctionTargetModelIds.has(model.canonicalModelId))
           ? model.overallScore
           : overallByModel.get(model.modelId)!.overallScore,
         overallRank: overallByModel.get(model.modelId)!.overallRank,
         dimensionRanks: Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, dimensionRanks[axis][index]])),
       })).sort((left: AnyRecord, right: AnyRecord) => left.overallRank - right.overallRank || Buffer.compare(Buffer.from(left.modelId), Buffer.from(right.modelId)))
+      if (expansionBaselineRelease) assertScientificV2ExpansionPreservedModels(expansionBaselineRelease, models, expansion.targetModelId)
 
       // The object contract is immutable and content addressed; verify every referenced object again immediately before hashing the release.
       for (const [imageHash, binding] of bindingByHash) await verifyObject(binding.objectKey, imageHash)
@@ -2408,7 +2505,9 @@ export function createScientificV2MongoRepository(
         batchId: batch.batchId,
         batchManifestHash: batch.manifestHash,
         reviewFinalHash: batch.reviewFinalHash,
-        sampleCount: batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded').length,
+        ...(expansion ? { expansion: structuredClone(expansion) } : {}),
+        sampleCount: batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded').length
+          + (expansionBaselineRelease ? expansionBaselineRelease.models.reduce((sum: number, model: AnyRecord) => sum + model.evidence.filter((item: AnyRecord) => item.status === 'succeeded').length, 0) : 0),
         automaticJudges: [] as unknown[], automaticJudgeCalls: 0,
         models,
         methodology: {
@@ -2431,6 +2530,15 @@ export function createScientificV2MongoRepository(
       const releaseHash = canonicalHash(releaseBase)
       const releaseId = `bench-scientific-v2-release-${releaseHash.slice(0, 20)}`
       const publicRows = models.flatMap((model: AnyRecord) => model.evidence.map((item: AnyRecord) => {
+        if (expansionBaselineRelease && model.canonicalModelId !== expansion.targetModelId) {
+          const row = expansionBaselinePublicRows.get(`${model.canonicalModelId}\0${item.caseId}`)
+          if (!row) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
+          return {
+            ...structuredClone(row),
+            _id: `scientific-v2-public-evidence:${canonicalHash([releaseHash, model.profileId, item.caseId])}`,
+            sourceReleaseHash: releaseHash, overallRank: model.overallRank, createdAt: now(),
+          }
+        }
         if (correctionTargetModelIds && !correctionTargetModelIds.has(model.canonicalModelId)) {
           const baselineRow = correctionBaselinePublicRows.get(`${model.canonicalModelId}\0${item.caseId}`)
           if (!baselineRow) scientificError('SCIENTIFIC_V2_CORRECTION_BASELINE_INVALID')
@@ -2465,7 +2573,8 @@ export function createScientificV2MongoRepository(
           }
           assertExactCorrectionPlanBatch(current)
           if (canonicalHash(current.remediationOf) !== canonicalHash(batch.remediationOf)
-            || canonicalHash(current.correctionBaseline) !== canonicalHash(batch.correctionBaseline)) {
+            || canonicalHash(current.correctionBaseline) !== canonicalHash(batch.correctionBaseline)
+            || (expansion !== undefined && canonicalHash(current.manifest) !== canonicalHash(batch.manifest))) {
             scientificError('SCIENTIFIC_V2_PUBLISH_STATE_CONFLICT')
           }
           const identityQuery = {
@@ -2491,7 +2600,18 @@ export function createScientificV2MongoRepository(
             competing = legacyCandidates[0] || null
           }
           const remediationOf = batch.remediationOf
-          if (competing) {
+          if (expansion !== undefined) {
+            const verifiedBaseline = await loadExpansionBaseline(current.manifest, session)
+            if (!competing || competing._id !== verifiedBaseline._id || competing.releaseHash !== verifiedBaseline.releaseHash) {
+              scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_NOT_ACTIVE')
+            }
+            const rowsInSnapshot = await publicEvidence.find({ sourceReleaseHash: expansion.baseline.releaseHash }, { session } as any).toArray()
+            if (rowsInSnapshot.length !== expansionBaselinePublicRows.size || rowsInSnapshot.some((row: AnyRecord) => {
+              const original = expansionBaselinePublicRows.get(`${row.canonicalModelId}\0${row.caseId}`)
+              return !original || canonicalHash(row) !== canonicalHash(original)
+            })) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
+            assertScientificV2ExpansionPreservedModels(verifiedBaseline, models, expansion.targetModelId)
+          } else if (competing) {
             const targetSlotIds = remediationOf?.targetSlotIds
             if (!remediationOf
               || remediationOf.releaseId !== competing._id

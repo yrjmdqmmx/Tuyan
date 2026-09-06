@@ -1,4 +1,4 @@
-import { canonicalHash, buildScientificV2CanonicalManifest } from '@paperbanana/benchmark-core'
+import { canonicalHash, buildScientificV2CanonicalManifest, deriveScientificV2ExecutionCanonicalManifest } from '@paperbanana/benchmark-core'
 import { constants } from 'node:fs'
 import { lstat, open } from 'node:fs/promises'
 import { isAbsolute, join, resolve } from 'node:path'
@@ -52,9 +52,12 @@ export async function runScientificV2PriceSignerEntry(env: Record<string, string
   const operatorAuthorization = await readJson(operatorAuthorizationPath)
   const registry = registryAuthority?.registry
   if (!registry || typeof registry !== 'object' || Array.isArray(registry)) fail()
-  const canonicalManifest = buildScientificV2CanonicalManifest({ registryVersion: registryAuthority.registryVersion, registryHash: canonicalHash(registry), registry })
+  const fullCanonical = buildScientificV2CanonicalManifest({ registryVersion: registryAuthority.registryVersion, registryHash: canonicalHash(registry), registry })
+  const expansionPath = env.PAPERBANANA_SCIENTIFIC_V2_EXPANSION_PATH
+  const expansion = expansionPath ? await readJson(expansionPath) : undefined
+  const canonicalManifest = deriveScientificV2ExecutionCanonicalManifest(fullCanonical, expansion)
   return persistScientificV2OfficialSignedPriceSnapshot({
-    canonicalManifest, registryAuthority, refreshReport, operatorAuthorization, codeSha, secret, outputDirectory,
+    canonicalManifest, ...(expansion ? { expansion } : {}), registryAuthority, refreshReport, operatorAuthorization, codeSha, secret, outputDirectory,
     async loadCaptureBytes(capture: ScientificV2OfficialPriceCapture) {
       if (!/^[a-f0-9]{64}$/.test(capture.bytesSha256) || !Number.isSafeInteger(capture.byteSize) || capture.byteSize < 1) fail()
       return readRootFile(join(captureDirectory, `${capture.bytesSha256}.raw`), capture.byteSize)
