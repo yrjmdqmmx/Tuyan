@@ -75,7 +75,7 @@ Agent 工作流默认把 `figure-spec.json`、实际提示词、参考来源、�
 
 ## Tuyan Benchmark 排行榜
 
-[Tuyan Benchmark](https://www.paperbanana.asia/leaderboard/) 面向真实科研图示任务公开题集、评分标准、审核机制和逐模型证据。当前榜单包含 40 个合格模型、固定 9 题（6 个生成题、3 个编辑题），采用十维等权评分，失败记 0，并提供双盲审核与争议仲裁。
+[Tuyan Benchmark](https://www.paperbanana.asia/leaderboard/) 面向真实科研图示任务公开题集、评分标准、审核机制和逐模型证据。当前榜单包含 41 个合格模型、固定 9 题（6 个生成题、3 个编辑题），采用十维等权评分，失败记 0，并提供双盲审核与争议仲裁。
 
 ### 综合总矩阵
 

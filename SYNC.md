@@ -8,7 +8,9 @@
 - [x] Benchmark Core / Worker / API（单模型冻结、执行、审评、继承与事务扩榜；40→41 集成验证、失败计零、旧 head/证据漂移与回滚测试通过）
 - [x] 运维（受保护 descriptor / price / prepare / run / publish 接线与合同测试）
 - [x] Web / 微信小程序（消费现有动态目录与排行榜字段，无新请求要求）
-- [ ] 发布 / 真实验收（真实九题、A/B 审评及必要仲裁、41 模型扩榜、旧 40 模型非排名字段逐项不变）
+- [x] 发布 / 真实验收（真实九题、A/B 审评及必要仲裁、41 模型扩榜、旧 40 模型非排名字段逐项不变）
+发布证据：冻结、执行与发布数据面 SHA 均为 `d224bcd7c83386226f1a96a5ed76f13cd556afda`；审核文本校验修复后的工作流 control SHA 为 `0b0b876bdc87ef96a07ba9c3b6220ba27d7b7245`。真实完整九题 run `34027402729`；A/B 审评导入 runs `34028531187` / `34028634359`；五项 xhigh 仲裁导入 run `34028820757`；原子发布 run `34028848702`。新 releaseId 为 `bench-scientific-v2-release-1f652f6370203d1ecf6a`，releaseHash 为 `1f652f6370203d1ecf6a8f8ce679097b968b412cd4ab0bdf0362e3a5dce9d482`。
+真实验收：MAI 的 6 个生成题和 3 个编辑题均成功（9/9，九次调用）；公开九题图片 hash、分数和逐题审核说明与四项 A/B 均值及五项最终仲裁逐项一致。请求尺寸均为冻结的 `provider-default`，生成实际为 1360×768、编辑为 1365×768；公开图片 hash、尺寸和调用记录与 completed Worker 报告一致。新榜共 41 个合格模型、352 个成功样本；旧 40 个模型的全部公开模型行仅允许 `overallRank` / `dimensionRanks` 变化，其余字段逐项相等。十轴固定分母和 competition 排名重算通过，MAI 总分 `7.3575396825396835`（页面 `7.36`），排名第 `15/41`，编辑目标准确性 `9.50`、该维度第 1。公开 profile 的 9 个 cases / 9 项 evidence 与榜单 release、分数和排名一致；浏览器榜单与详情显示一致，高清图可打开。
 
 ### [2026-09-04] 匿名只读科研图示 MCP 与跨 Agent Skill v1 — by Codex
 变更：新增 `@paperbanana/tuyan-knowledge` 共享知识包与 `tuyan-scientific-figure` Agent Skill；Gateway 新增匿名、无状态 Streamable HTTP `/mcp`，只公开一个只读工具 `tuyan.get_workflow_bundle` 及版本化 Resources。MCP 只接受 `operation / visualCategory / outputFormat / locale / knowledgeMajor` 五个枚举字段，不接受论文、图片、提示词、API Key 或自由文本，不创建会话、Cookie、数据库记录或后台任务。PaperBananaBench 只由 Agent 经用户同意后从固定上游 revision 下载到本机，图研不重新托管；既有 Web、微信小程序和云端生成/精修 API 行为不变。
