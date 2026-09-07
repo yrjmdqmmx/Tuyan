@@ -66,6 +66,73 @@ test('async channels submit once, poll the returned URL, and encode distinct edi
  }
 })
 
+test('fal accepts task-ID-only acknowledgements and polls the app root for generation and editing',async()=>{
+ for(const model of ['fal-ai/flux-2-pro','fal-ai/flux/dev']) for(const editing of [false,true]) {
+  if(model==='fal-ai/flux/dev'&&editing)continue
+  const requestId='764cabcf-1234_5678'
+  const resultUrl='https://queue.fal.run/'+model.split('/').slice(0,2).join('/')+'/requests/'+requestId
+  const {io,calls}=fixture((url,init)=>{
+    if(init.method==='POST')return Response.json({request_id:requestId})
+    if(url===resultUrl+'/status')return Response.json({status:'COMPLETED'})
+    assert.equal(url,resultUrl)
+    return Response.json({images:[{url:'https://asset.invalid/output.png'}]})
+  })
+  assert.equal(await callExtendedImageChannel({...defaults,provider:'fal',model,size:{...defaults.size,size:'16:9'},source:editing?source:null},io),png)
+  assert.equal(calls.filter(c=>c.init.method==='POST').length,1)
+  assert.deepEqual(calls.slice(1,3).map(c=>c.url),[resultUrl+'/status',resultUrl])
+ }
+ for(const request_id of [undefined,'','../other','x?key=secret','x#status','a'.repeat(201)]) {
+  const {io,calls}=fixture(()=>Response.json({request_id}))
+  await assert.rejects(callExtendedImageChannel({...defaults,provider:'fal',model:'fal-ai/flux-2-pro'},io),/invalid task ID/)
+  assert.equal(calls.length,1)
+ }
+ const invalid=fixture(()=>Response.json({request_id:'fixture',status_url:'https://evil.invalid/status'}))
+ await assert.rejects(callExtendedImageChannel({...defaults,provider:'fal',model:'fal-ai/flux-2-pro'},invalid.io),/invalid task URL/)
+ assert.equal(invalid.calls.length,1)
+})
+
+function asyncFixture(provider:string, respond:(phase:'poll'|'result')=>Response) {
+ const polling=provider==='bfl'?'https://api.bfl.ai/v1/get_result?id=fixture':provider==='fal'?'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture/status':'https://api.replicate.com/v1/predictions/fixture'
+ const resultUrl='https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture'
+ return fixture((url,init)=>init.method==='POST'
+   ?Response.json(provider==='bfl'?{polling_url:polling}:provider==='fal'?{request_id:'fixture'}:{status:'starting',urls:{get:polling}})
+   :respond(url===resultUrl?'result':'poll'))
+}
+const asyncInput=(provider:string):ImageChannelInput=>({...defaults,provider,model:provider==='fal'?'fal-ai/flux-2-pro':provider==='replicate'?'black-forest-labs/flux-2-pro':'flux-2-pro'})
+const completed=(provider:string)=>Response.json(provider==='bfl'?{status:'Ready',result:{sample:'https://asset.invalid/output.png'}}:provider==='fal'?{status:'COMPLETED'}:{status:'succeeded',output:'https://asset.invalid/output.png'})
+
+test('async status and fal result HTTP failures recover within the deadline without resubmitting',async()=>{
+ for(const provider of ['bfl','fal','replicate']) for(const code of [408,429,500,502,503,504]) {
+  let polls=0,results=0
+  const {io,calls}=asyncFixture(provider,phase=>{
+    if(phase==='poll')return ++polls===1?new Response('',{status:code}):completed(provider)
+    return ++results===1?new Response('',{status:code}):Response.json({images:[{url:'https://asset.invalid/output.png'}]})
+  })
+  assert.equal(await callExtendedImageChannel(asyncInput(provider),io),png)
+  assert.equal(polls,2);assert.equal(results,provider==='fal'?2:0)
+  assert.equal(calls.filter(c=>c.init.method==='POST').length,1)
+  assert.equal(calls[0].attempts,1)
+ }
+})
+
+test('async reads fail permanent HTTP errors immediately and bound transient errors and Retry-After',async()=>{
+ for(const provider of ['bfl','fal','replicate']) for(const phase of provider==='fal'?['poll','result']:['poll']) {
+  for(const code of [400,401,403,404,422]) {
+   const {io,calls}=asyncFixture(provider,current=>current===phase?new Response('',{status:code}):completed(provider))
+   await assert.rejects(callExtendedImageChannel(asyncInput(provider),io),new RegExp('HTTP '+code))
+   assert.equal(calls.length,phase==='poll'?2:3)
+  }
+  for(const retryAfter of [null,'invalid','0','120','Thu, 01 Jan 1970 00:02:00 GMT']) {
+   const {io,calls}=asyncFixture(provider,current=>current===phase?new Response('',{status:429,headers:retryAfter==null?{}:{'Retry-After':retryAfter}}):completed(provider))
+   await assert.rejects(callExtendedImageChannel(asyncInput(provider),io),/timed out; do not submit a duplicate/)
+   assert.equal(io.now(),20)
+   assert.equal(calls.filter(c=>c.init.method==='POST').length,1)
+   const affected=calls.filter(c=>c.init.method!=='POST'&&(phase==='poll'||!c.url.endsWith('/status')))
+   assert.equal(affected.length,retryAfter==='120'||retryAfter?.startsWith('Thu')?1:3)
+  }
+ }
+})
+
 test('submission errors, task failures, missing results, timeout, and URL redirects never create duplicate work',async()=>{
  for(const code of [400,401,403,422,429,500,503]){
   const {io,calls}=fixture(()=>new Response('',{status:code}))

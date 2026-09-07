@@ -1694,12 +1694,40 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     polling=imageTaskUrl(state.polling_url,provider)
   } else if (provider === 'fal') {
     state=await submit('https://queue.fal.run/'+wire.endpoint,body)
-    polling=imageTaskUrl(state.status_url,provider);resultUrl=imageTaskUrl(state.response_url,provider)
+    let fallback: string | undefined
+    if (state.status_url == null || state.response_url == null) {
+      if (typeof state.request_id !== 'string' || !/^[A-Za-z0-9_-]{1,200}$/.test(state.request_id)) throw new Error('fal returned an invalid task ID')
+      // Match fal's official SDK: queue reads belong to the app, without /edit or other endpoint paths.
+      const parts = wire.endpoint.split('/')
+      const app = parts.slice(0, ['workflows','comfy'].includes(parts[0]) ? 3 : 2).join('/')
+      fallback = `https://queue.fal.run/${app}/requests/${state.request_id}`
+    }
+    polling=imageTaskUrl(state.status_url ?? fallback + '/status',provider)
+    resultUrl=imageTaskUrl(state.response_url ?? fallback,provider)
+    // A successful submission may only acknowledge request_id.
+    if (state.status == null) state.status='IN_QUEUE'
   } else if (provider === 'replicate') {
     state=await submit(wire.version ? 'https://api.replicate.com/v1/predictions' : `https://api.replicate.com/v1/models/${wire.endpoint}/predictions`,{...(wire.version?{version:wire.version}:{}),input:body})
     polling=imageTaskUrl(state.urls?.get,provider)
   } else throw new Error(`Unsupported image channel: ${provider}`)
   const deadline=io.now()+(io.pollTimeoutMs ?? 600000)
+  const timeout = () => new Error(`${provider} image task timed out; do not submit a duplicate task`)
+  const readTask = async (url:string, phase:string): Promise<any> => {
+    let retries = 0
+    while (io.now() < deadline) {
+      const response = await io.request(url,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' '+phase,2)
+      // Transport retries do not inspect HTTP status. Only these read-only requests can be repeated.
+      if (response.status !== 408 && response.status !== 429 && response.status < 500) return read(response)
+      const retryAfter = response.headers.get('retry-after')
+      const instructedDelay = retryAfter == null ? NaN : /^\d+(?:\.\d+)?$/.test(retryAfter)
+        ? Number(retryAfter) * 1000 : Date.parse(retryAfter) - io.now()
+      await response.body?.cancel().catch(() => {})
+      const backoff = Math.min(30000, Math.max(1,io.pollIntervalMs ?? 1500) * 2 ** Math.min(retries++,5))
+      const delay = Number.isFinite(instructedDelay) ? Math.max(backoff,instructedDelay) : backoff
+      await io.sleep(Math.min(delay,Math.max(0,deadline-io.now())))
+    }
+    throw timeout()
+  }
   while (io.now() < deadline) {
     if (provider==='bfl' && state.status==='Ready') return asset(state.result?.sample)
     if (provider==='replicate' && state.status==='succeeded') {
@@ -1708,7 +1736,7 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
       return asset(first?.url || first)
     }
     if (provider==='fal' && state.status==='COMPLETED') {
-      const result=await io.request(resultUrl!,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' result',2).then(read)
+      const result=await readTask(resultUrl!,'result')
       if (result.has_nsfw_concepts?.some(Boolean)) throw new Error('fal image was moderated')
       return asset(result.images?.[0]?.url || result.image?.url)
     }
@@ -1716,11 +1744,11 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     // The initial BFL submission has id/polling_url without a status.
     if (state.status && !pending.includes(state.status)) throw new Error(`${provider} image task ${String(state.status).slice(0,100)}`)
     if (!state.status && provider!=='bfl') throw new Error(`${provider} returned no task status`)
-    state=await io.request(polling,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' poll',2).then(read)
+    state=await readTask(polling,'poll')
     if (!state.status) throw new Error(`${provider} returned no task status`)
     if (pending.includes(state.status)) await io.sleep(Math.min(io.pollIntervalMs ?? 1500, Math.max(0,deadline-io.now())))
   }
-  throw new Error(`${provider} image task timed out; do not submit a duplicate task`)
+  throw timeout()
 }
 
 const extendedModelChannels: Record<string, any> = {"bfl":{"label":"Black Forest Labs","accessKind":"direct","guideUrl":"https://docs.bfl.ai/quick_start/generating_images","textBaseUrl":"","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"","image":"flux-2-pro","vision":""},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]},"stability":{"label":"Stability AI","accessKind":"direct","guideUrl":"https://platform.stability.ai/docs/api-reference","textBaseUrl":"","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"","image":"stable-image-ultra","vision":""},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]},"ideogram":{"label":"Ideogram","accessKind":"direct","guideUrl":"https://developer.ideogram.ai/ideogram-api/api-setup","textBaseUrl":"","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"","image":"ideogram-v4","vision":""},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]},"minimax":{"label":"MiniMax","accessKind":"direct","guideUrl":"https://platform.minimax.io/docs/api-reference/text-openai-api","textBaseUrl":"https://api.minimax.io/v1","regions":{"default":"global","options":[{"id":"global","label":"国际","textBaseUrl":"https://api.minimax.io/v1","imageBaseUrl":"https://api.minimax.io/v1"},{"id":"cn","label":"中国大陆","textBaseUrl":"https://api.minimax.cn/v1","imageBaseUrl":"https://api.minimax.cn/v1"}]},"reviewedAt":"2026-09-07","defaults":{"main":"MiniMax-M3","image":"image-01","vision":"MiniMax-M3"},"keyPlaceholder":"API Key","guideSteps":["先选择区域，再使用该区域官方平台创建的 API Key。","国内与国际凭据分别保存在本地会话内；切换区域不会把 Key 发送到另一平台。","模型列表按区域过滤；实际账户额度和权限由所选平台决定。"]},"mistral":{"label":"Mistral AI","accessKind":"direct","guideUrl":"https://docs.mistral.ai/api","textBaseUrl":"https://api.mistral.ai/v1","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"mistral-small-2603","image":"","vision":"mistral-small-2603"},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]},"together":{"label":"Together AI","accessKind":"aggregator","guideUrl":"https://docs.together.ai/docs/serverless/models","textBaseUrl":"https://api.together.ai/v1","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"moonshotai/Kimi-K3","image":"black-forest-labs/FLUX.2-pro","vision":"moonshotai/Kimi-K3"},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]},"fireworks":{"label":"Fireworks AI","accessKind":"aggregator","guideUrl":"https://docs.fireworks.ai/guides/querying-vision-language-models","textBaseUrl":"https://api.fireworks.ai/inference/v1","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"accounts/fireworks/models/kimi-k2p5","image":"","vision":"accounts/fireworks/models/kimi-k2p5"},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]},"fal":{"label":"fal","accessKind":"aggregator","guideUrl":"https://fal.ai/models/fal-ai/flux-2-pro/api","textBaseUrl":"","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"","image":"fal-ai/flux-2-pro","vision":""},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]},"replicate":{"label":"Replicate","accessKind":"aggregator","guideUrl":"https://replicate.com/black-forest-labs/flux-2-pro/api/schema","textBaseUrl":"","regions":["global-endpoint"],"reviewedAt":"2026-09-07","defaults":{"main":"","image":"black-forest-labs/flux-2-pro","vision":""},"keyPlaceholder":"API Key","guideSteps":["在对应平台创建 API Key，并确认账户可访问所选模型。","本渠道使用国际公共 API；不要混用其他地区或平台的密钥。","目录来自官方文档，实际账户额度和模型权限尚需验证。"]}}

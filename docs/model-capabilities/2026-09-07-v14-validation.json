@@ -1,34 +1,34 @@
 {
   "catalogVersion": "2026-09-07.v14",
-  "recordedAt": "2026-09-07T12:48:27.505327+00:00",
+  "recordedAt": "2026-09-07T13:17:56.122468+00:00",
   "branch": "codex/model-capabilities-20260907",
   "baseCommit": "800c91fc7e1d23588771bfb2703ad25a006c6e21",
-  "implementationState": "local working-tree changes; not committed, pushed or deployed",
+  "implementationState": "PR #170 pushed; review corrections locally verified and awaiting updated CI; production not deployed",
   "checks": {
     "coreFull": {
       "command": "pnpm --filter @paperbanana/paperbanana-api test",
       "result": {
-        "tests": 445,
-        "pass": 445,
+        "tests": 448,
+        "pass": 448,
         "fail": 0,
         "cancelled": 0,
         "skipped": 0,
         "todo": 0
       },
-      "logSha256": "72b6624e114ff19add148153c1b698e36db0a38a838260e7fccc50ddca1b4360"
+      "logSha256": "1296fd22ab1055879d2861cac3d9fb9623d7d3f120cc40797d9abcd0605f0c8b"
     },
     "webFull": {
       "command": "pnpm --filter @paperbanana/web test",
       "result": {
-        "tests": 340,
-        "pass": 340,
+        "tests": 342,
+        "pass": 342,
         "fail": 0,
         "cancelled": 0,
         "skipped": 0,
         "todo": 0
       },
-      "logSha256": "ec201cc8e27d945843b6831bf0b889065eefac16de2c615c146b8cfe0761f283",
-      "notes": "Rerun after OpenAcad workspace and leaderboard navigation links."
+      "logSha256": "57524de8c9edb828d358e36c71d3cb74c136b0570d2e8a5c3fcda67b31c90c85",
+      "notes": "Rendered China and global MiniMax refine submissions preserve region and isolated credentials; OpenAcad navigation tests included."
     },
     "sharedLafMiniAndRootFull": {
       "command": "node --test apps/miniprogram/tests/*.test.cjs apps/laf-functions/tests/*.test.cjs packages/api/src/*.test.js tests/*.test.mjs tests/client-platform/*.test.mjs",
@@ -40,7 +40,7 @@
         "skipped": 0,
         "todo": 0
       },
-      "logSha256": "a89725f7c712c6df03c99bf3b39761f266926ba6162f0e50ca73602631f2eab3"
+      "logSha256": "b2b8aefc5bb549ca6953605483ac2e55cd470bb5d208926bb66c4a5543b53ff6"
     },
     "deploymentFullBeforeContractCorrection": {
       "command": "node --test deploy/hk-single-host/tests/*.test.mjs deploy/sg-egress/tests/*.test.mjs",
@@ -116,12 +116,12 @@
     "coreBuild": {
       "passed": true,
       "command": "pnpm --filter @paperbanana/paperbanana-api build",
-      "logSha256": "015532416a1968316a4def915155c3c7ed6f3011cd24b96efb4eefeb5f223f04"
+      "logSha256": "b3746121ef90543836b639c592f6d97021d3250c53b31459c7efda8654b15dab"
     },
     "webBuild": {
       "passed": true,
       "command": "pnpm --filter @paperbanana/web build",
-      "logSha256": "0d8d1ece2a4c0501be733bf266d6ecc07bbdd0d9f6c44ae93e592a760dff9254"
+      "logSha256": "2a4496c78ddf1b8afe3bf918b6ad6858d85f1b2f282c733ef370d4f551dcbf52"
     },
     "miniTypes": {
       "passed": true,
@@ -157,8 +157,8 @@
     "officialDeveloperToolsPackaged": false
   },
   "release": {
-    "pushed": false,
-    "ciTriggered": false,
+    "pushed": true,
+    "ciTriggered": true,
     "coreDeployed": false,
     "webDeployed": false,
     "sgAclApplied": false,
@@ -176,7 +176,7 @@
   ],
   "sourceFileSha256": {
     "SYNC.md": "0713723e394c4965c62774cc40635725defc70207c1f28c97464163c9c9e2aa8",
-    "apps/laf-functions/paperbanana-api.ts": "1ea0cce4353ebcc585f8e6def3aebfdb3814cfab6dbdca09be854b2280cf0684",
+    "apps/laf-functions/paperbanana-api.ts": "8fd3814de380ec6a3b6e771c259c9289e29719be3761a3080154fe1dde03be71",
     "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.js": "01251cf266aa15a1a431faae37921324d2b6de95333f084434d57f2f8c4c2928",
     "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.ts": "8a07628a6388c6b912b8ea9f9dd65fbb6ce9a833b12589d5ba4f8b223f67d960",
     "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.wxml": "e6fede08480b94af2e5019772b6affd6e2cf4e9253d775b9f90a91e350694d0e",
@@ -215,13 +215,13 @@
     "apps/paperbanana-api/README.md": "3f9afde53f7d96409d602e47c449bd4baf43b06870eaab9575503bc7e89f94d7",
     "apps/paperbanana-api/src/legacy-entry.d.mts": "e4927708a7834d14569155f7c1be63d239a9296ab1552ce772417bd82e8d80c8",
     "apps/paperbanana-api/src/provider-egress.ts": "1e4a97f1cb52a27162b362a42ecb3909cf6c263593495de7d49369dd52b5cea5",
-    "apps/paperbanana-api/tests/image-channel-adapters.test.ts": "a3f1b28cb3ae75af9095b6f024f4ead18a694411fbffa7b54642165a2cdef1da",
+    "apps/paperbanana-api/tests/image-channel-adapters.test.ts": "03fb02e474c345e9e9e7af097c7037919200a16ea2f08306f9a1289f95d7d79b",
     "apps/paperbanana-api/tests/image-size-contract.test.ts": "c8b718ad324508b530044327032bf90246e294d7f0179c12edeffed879ff5921",
     "apps/paperbanana-api/tests/legacy-composition.test.ts": "401a489619de6d3707eecd67c9658a7541347b39428056623d4f50d79ffdeada",
     "apps/paperbanana-api/tests/model-channel-contracts.test.ts": "007dec51e0659684e532f548feabbde504ae047b51cff3a4eb6e0af51a159593",
     "apps/paperbanana-api/tests/provider-egress.test.ts": "f9fc84265b1f9a17e8cb6916fdf3dd3a128389de4058bed9f4ba6f6e3bafdf62",
     "apps/paperbanana-api/tests/provider-regions.test.ts": "182bab6123b6661b4d4036fa9c86f9638b2e1cb67bd299ee603b133257af18e7",
-    "apps/web/src/App.jsx": "30052c974bc674155212b096249eef59bd0d3d9e0c94ca2d61a2bb21ea750e23",
+    "apps/web/src/App.jsx": "33218271e35354f7d74261c56de14c8b03a62cbcf14ef8b8b514fcfa8b91162f",
     "apps/web/src/components/LeaderboardRoot.jsx": "2242dd412cd5679e3901b43ec9057d9bf28acc3a535504854d225586f62bb615",
     "apps/web/src/components/LeaderboardRoot.test.js": "db51e10af1cfeb1eb5da500908ab5084e42d310a0102dd6afa26aa2598bffc33",
     "apps/web/src/components/ModelPicker.jsx": "3260b913d21746909704cc7f07f99b7e8c61edd51cc8f4ed292e546e39f1cd3b",
@@ -238,7 +238,7 @@
     "apps/web/tests/featured-app-integration.test.mjs": "0642e761bf7a77e88da4d3edd582b3b8f6685f2185a878562c643d444c4d90b3",
     "apps/web/tests/featured-studio-and-ratio.test.mjs": "c77c1778535e3b7e4973872a32808861f424ef7e5cb58a87632c427cb7d54c35",
     "apps/web/tests/generation-drawer-contract.test.mjs": "8ce3cba5656bcecf71634925b9710e0a9f882966eb89b30755458f36af4ad128",
-    "apps/web/tests/multi-provider-app.test.mjs": "c3aeff8dd122d560bd8996b08ed27eb3c5e05756d9b1d2f13d6eb63b176ce2dd",
+    "apps/web/tests/multi-provider-app.test.mjs": "1462ce688a85ead0c94b5b216faf0976cdb3eaf276cc4272af88952f7e16a167",
     "apps/web/tests/rendered-interactions.test.mjs": "1f399e47a248a88669e282bcb67896dd2dd7161213bbfca9561425264e434d89",
     "config/image-channel-routes.json": "738090caf42903f75dd64704559b47da77ae1e0e8f6e040c252f7b19bec21828",
     "config/image-size-contracts.json": "b2ca5f52d5cfb784ebfe058e8363b50c2b02cf7df520c302af15466ac71eb356",
@@ -250,7 +250,7 @@
     "deploy/sg-egress/README.md": "0b8a94e07bd69f890e4edeb1c68a182a96b068f0dff9510d670ef96d452cded8",
     "deploy/sg-egress/scripts/install-egress.sh": "c977b016456eec22f2fecdb406a44e8f00c51316e344b00063d4134fe5d2d975",
     "deploy/sg-egress/tests/contracts.test.mjs": "5facbc35bf39517ac1ef1a8880f71c5bb6693b689e959bf029478a84be6a6e51",
-    "packages/api/src/image-channel-adapters.ts": "5f6932101ec51f83f9597dbd6f8941fb6ac9f33b02aa83b7cdb30dea594be36d",
+    "packages/api/src/image-channel-adapters.ts": "55bf410331fff1c250b7a77abadbf632c4758cf5b63e118a4f88e0bd5f6438ea",
     "packages/api/src/image-channel-routes.ts": "01f8717347dc7c89276dd697bb7efde85a17ac75efd939f6a2d8c616e722afe5",
     "packages/api/src/jobs.js": "0343e5ebf68c2f332b73f4eae5a0a5c991d9c8e71dc100831d0dbd4d885b3448",
     "packages/types/src/image-size-contract.ts": "6d3256d97d483d161dd2d15d38accf4751c7238f57d1e43552e71fabceaba88d",
@@ -258,5 +258,16 @@
     "packages/types/src/provider-regions.ts": "1a844d67646555d307a1a87fa33161cb7de5f3810da06dec6cb8a7e4a1933855",
     "scripts/sync-model-catalog.mjs": "3ac88dca9cc86e859f845138a884590fdb66e27d55cdccd3561da60f1bfb59d4",
     "tests/model-catalog-source-contract.test.mjs": "a995998588ede0b0835440a33d29f6b5fac9976981f00fc5fe8fddae74bb46bb"
+  },
+  "reviewCorrections": {
+    "pr": 170,
+    "reviewedCommit": "3e4b2f829f0c255e499d040ef87beb6168ad5be7",
+    "regressions": [
+      "Rendered MiniMax refine sends providerRegions for cn and global and only the selected regional key",
+      "BFL/fal/Replicate GET 408/429/5xx and fal result retry within one deadline; permanent HTTP errors fail immediately; Retry-After bounded; only one submission POST",
+      "fal task-ID-only acknowledgement derives app-level status/result URLs; nested generation/edit paths and invalid IDs tested"
+    ],
+    "officialFalSdk": "https://github.com/fal-ai/fal-js/blob/main/libs/client/src/queue.ts",
+    "officialFalEndpointParsing": "https://github.com/fal-ai/fal-js/blob/main/libs/client/src/utils.ts"
   }
 }

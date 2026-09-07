@@ -136,6 +136,37 @@ test('MiniMax region selector keeps independent keys and submits only the select
   assert.doesNotMatch(JSON.stringify(body),/fixture-global-key|minimax:cn|minimax:global/)
 })
 
+for (const region of ['cn','global']) test('rendered MiniMax refine submits the '+region+' region and its isolated key',async()=>{
+  const registry=structuredClone(registryV1)
+  registry.providerRegionContractVersion=1
+  registry.providers.minimax=structuredClone(STATIC_MODEL_REGISTRY.minimax)
+  const {requests,user}=await renderReadyApp(registry,{
+    getJob:({jobId})=>({id:jobId,status:'succeeded',outputFormat:'png',
+      resultImages:[{filename:'result.png',candidateId:0,mimeType:'image/png',url:'/result.png',objectKey:`jobs/${jobId}/result.png`}],stages:[]}),
+  })
+  await user.click(screen.getByRole('button',{name:'打开完整设置'}))
+  await user.type(screen.getByLabelText('阿里百炼 接入密钥'),'fixture-bailian-key')
+  await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
+  await user.click(submitButton())
+  await user.click(await screen.findByRole('button',{name:'精修候选图 1'},{timeout:5000}))
+  await user.click(await screen.findByRole('button',{name:'精修设置'}))
+  await user.click(screen.getByRole('button',{name:'MiniMax',exact:true}))
+  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'global')
+  await user.type(screen.getByLabelText('MiniMax 接入密钥'),'fixture-global-key')
+  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'cn')
+  await user.type(screen.getByLabelText('MiniMax 接入密钥'),'fixture-cn-key')
+  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),region)
+  await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
+  await user.type(screen.getByLabelText('精修指令'),'放大标签并保持版式')
+  await user.click(screen.getByRole('button',{name:'提交精修'}))
+  await waitFor(()=>assert.ok(requests.some(request=>request.body?.action==='refineImage')))
+  const body=requests.find(request=>request.body?.action==='refineImage').body
+  assert.deepEqual(body.providerRegions,{minimax:region})
+  assert.deepEqual(body.apiKeys,{minimax:`fixture-${region}-key`})
+  assert.equal(body.provider,'minimax')
+  assert.doesNotMatch(JSON.stringify(body),new RegExp(region==='cn'?'fixture-global-key':'fixture-cn-key'))
+})
+
 test('generation settings drawer never steals focus after the user enters a credential field', async () => {
   const { user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))

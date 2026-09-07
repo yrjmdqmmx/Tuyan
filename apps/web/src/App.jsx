@@ -1272,6 +1272,7 @@ export default function App() {
         provider: modelSubmission.provider,
         apiKeys: scopedApiKeys,
         modelRoutes: modelSubmission.modelRoutes,
+        providerRegions: modelSubmission.providerRegions,
         mainModelName: modelSubmission.mainModelName,
         imageModelName: modelSubmission.imageGenModelName,
         referenceVisionModelName: modelSubmission.referenceVisionModelName,

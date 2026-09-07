@@ -6,9 +6,13 @@
 
 - 开发分支 `codex/model-capabilities-20260907`，基线 `800c91fc7e1d23588771bfb2703ad25a006c6e21`，已核对当前 `origin/main` 相同。
 - [逐型号实现与官方依据](../model-capabilities/2026-09-07-catalog-v14.md)、[本地验证记录](../model-capabilities/2026-09-07-v14-validation.json)。静态目录 669 个型号，OpenRouter 当前快照 466 个型号；不兼容型号从运行目录与选择器移除。
-- OpenAcad 外链加入工作台与排行榜导航，沿用新标签打开；目标地址本次只读 GET 返回 HTTP 200、标题 OpenAcad 开放学术。Web 340 项全量测试及构建通过。
+- OpenAcad 外链加入工作台与排行榜导航，沿用新标签打开；目标地址本次只读 GET 返回 HTTP 200、标题 OpenAcad 开放学术。Web 342 项全量测试及构建通过。
 - 已核对现有 GitHub 登录、仓库合并权限、生产 SSH、服务健康与不可变镜像。生产代码仍为 `590419b24e222b23d4f6adafc2474e0106153dc1`，Core 保持 sg-required，常驻 Benchmark Worker 保持 disabled。
 - 发布使用项目现有手动工作流、环境保护和主机锁；新建 Core 与配套 Worker 镜像，沿用现有 Gateway、Plot Worker、Mongo 镜像。SG 仅更新已核对的 Provider 允许名单和对应安装脚本。
+
+## 合并前审阅修正
+
+[PR #170](https://github.com/yrjmdqmmx/Tuyan/pull/170) 首版 3e4b2f8 的两组 Linux CI 全部通过（34123971574 / 34123990009）。自动审阅指出三项 P1：Web 精修缺少区域、查询 HTTP 临时失败不会重试、fal 任务 ID 应答不兼容。已逐项修复并同步 Laf；新增两区实际精修提交、三个异步渠道状态/结果恢复及超时/永久错误、fal 应用根地址回归。修复后本地 Core 448、Web 342、共享 70 全通过，Core 类型/构建与 Web 构建通过，目录 669 项无漂移。等待修复后的完整 CI。
 
 ## 发布门
 

@@ -166,12 +166,40 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     polling=imageTaskUrl(state.polling_url,provider)
   } else if (provider === 'fal') {
     state=await submit('https://queue.fal.run/'+wire.endpoint,body)
-    polling=imageTaskUrl(state.status_url,provider);resultUrl=imageTaskUrl(state.response_url,provider)
+    let fallback: string | undefined
+    if (state.status_url == null || state.response_url == null) {
+      if (typeof state.request_id !== 'string' || !/^[A-Za-z0-9_-]{1,200}$/.test(state.request_id)) throw new Error('fal returned an invalid task ID')
+      // Match fal's official SDK: queue reads belong to the app, without /edit or other endpoint paths.
+      const parts = wire.endpoint.split('/')
+      const app = parts.slice(0, ['workflows','comfy'].includes(parts[0]) ? 3 : 2).join('/')
+      fallback = `https://queue.fal.run/${app}/requests/${state.request_id}`
+    }
+    polling=imageTaskUrl(state.status_url ?? fallback + '/status',provider)
+    resultUrl=imageTaskUrl(state.response_url ?? fallback,provider)
+    // A successful submission may only acknowledge request_id.
+    if (state.status == null) state.status='IN_QUEUE'
   } else if (provider === 'replicate') {
     state=await submit(wire.version ? 'https://api.replicate.com/v1/predictions' : `https://api.replicate.com/v1/models/${wire.endpoint}/predictions`,{...(wire.version?{version:wire.version}:{}),input:body})
     polling=imageTaskUrl(state.urls?.get,provider)
   } else throw new Error(`Unsupported image channel: ${provider}`)
   const deadline=io.now()+(io.pollTimeoutMs ?? 600000)
+  const timeout = () => new Error(`${provider} image task timed out; do not submit a duplicate task`)
+  const readTask = async (url:string, phase:string): Promise<any> => {
+    let retries = 0
+    while (io.now() < deadline) {
+      const response = await io.request(url,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' '+phase,2)
+      // Transport retries do not inspect HTTP status. Only these read-only requests can be repeated.
+      if (response.status !== 408 && response.status !== 429 && response.status < 500) return read(response)
+      const retryAfter = response.headers.get('retry-after')
+      const instructedDelay = retryAfter == null ? NaN : /^\d+(?:\.\d+)?$/.test(retryAfter)
+        ? Number(retryAfter) * 1000 : Date.parse(retryAfter) - io.now()
+      await response.body?.cancel().catch(() => {})
+      const backoff = Math.min(30000, Math.max(1,io.pollIntervalMs ?? 1500) * 2 ** Math.min(retries++,5))
+      const delay = Number.isFinite(instructedDelay) ? Math.max(backoff,instructedDelay) : backoff
+      await io.sleep(Math.min(delay,Math.max(0,deadline-io.now())))
+    }
+    throw timeout()
+  }
   while (io.now() < deadline) {
     if (provider==='bfl' && state.status==='Ready') return asset(state.result?.sample)
     if (provider==='replicate' && state.status==='succeeded') {
@@ -180,7 +208,7 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
       return asset(first?.url || first)
     }
     if (provider==='fal' && state.status==='COMPLETED') {
-      const result=await io.request(resultUrl!,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' result',2).then(read)
+      const result=await readTask(resultUrl!,'result')
       if (result.has_nsfw_concepts?.some(Boolean)) throw new Error('fal image was moderated')
       return asset(result.images?.[0]?.url || result.image?.url)
     }
@@ -188,9 +216,9 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     // The initial BFL submission has id/polling_url without a status.
     if (state.status && !pending.includes(state.status)) throw new Error(`${provider} image task ${String(state.status).slice(0,100)}`)
     if (!state.status && provider!=='bfl') throw new Error(`${provider} returned no task status`)
-    state=await io.request(polling,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' poll',2).then(read)
+    state=await readTask(polling,'poll')
     if (!state.status) throw new Error(`${provider} returned no task status`)
     if (pending.includes(state.status)) await io.sleep(Math.min(io.pollIntervalMs ?? 1500, Math.max(0,deadline-io.now())))
   }
-  throw new Error(`${provider} image task timed out; do not submit a duplicate task`)
+  throw timeout()
 }
