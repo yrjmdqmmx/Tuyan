@@ -8,7 +8,8 @@
 - [x] 微信小程序（同源目录、元数据、尺寸/比例、TS/JS 同步）
 - [x] 共享 API / Gateway（沿用透传；512/auto 契约验证，无新增网关规则）
 - [x] 审计与排除决定（1,014 条证据逐项落实，见 [实现报告](docs/model-catalog-repair-2026-09-07.md) 与 [型号清单](docs/model-catalog-decisions.csv)）
-- [ ] 部署 / 发布（本轮未执行；旧条目的运维待办仍保留）
+- [x] Core / Web / SG 发布（PR #166；固定部署 SHA `8cbd41520906502f9348b8b48b2cd2613bb5369d`；生产目录 v12、306 静态型号及 471 OpenRouter 条目、逐字段对照与无密钥出口验收通过，见 [发布记录](docs/releases/2026-09-07-model-catalog-v12.md)）
+- [ ] 微信小程序上传 / 平台发布（用户于本轮明确暂不处理；代码与本地验证已完成）
 验证：Core 418、Web 331、共享 API/目录 31 项测试通过，小程序 21 个测试文件通过；Core/Web/小程序构建与目录无漂移检查通过。没有真实推理或付费调用。
 
 ### [2026-09-07] 第一批七个原生 API 渠道与 Recraft SVG — by Codex
@@ -17,7 +18,8 @@
 - [x] Web（渠道与官方目录、普通/专业选择、Key、SVG 角色与使用说明）
 - [x] 小程序（相同目录/路由、旧服务端兼容、内存 Key 与 TS/JS 同步）
 - [x] Gateway（沿用现有透传契约，无新增 action）
-- [ ] 部署 / 运维（部署 API 与 Web，发布小程序；更新 SG Squid 三个精确主机后验证出口）
+- [x] Core / Web / SG（随 v12 上线；Anthropic、xAI、Recraft 精确主机 CONNECT 与既有允许/拒绝探针通过）
+- [ ] 小程序上传 / 发布（用户明确暂缓）
 
 ### [2026-09-07] 官方模型目录更新与视觉角色同步 — by Codex
 变更：目录版本升至 `2026-09-07.v10`，补入 Gemini 3.8 Flash、GPT-6 Astra、百炼九个文本/视觉入口及 Qwen Image 3.0；修正 Qwen3.8 Max 视觉角色。OpenRouter 动态目录继续生效，客户端补齐八个近期文本/视觉型号、MAI Image 2.6 与 Flash；Flash 使用官方 PNG/Azure 适配，要求风格参考图的型号不进入当前生成流程。Astra 原生走 Responses，OpenRouter Astra/Fable 不发送目录未声明的 temperature。默认模型不变。
@@ -25,7 +27,8 @@
 - [x] Core / Sealaf 共享实现（目录、角色、协议与参数适配）
 - [x] Web（回退目录、读图判定、目录展示文案）
 - [x] 微信小程序（TS/JS 回退目录、读图判定、目录展示文案）
-- [ ] 发布（合并与部署后确认生产目录版本；本次仅完成本地更新）
+- [x] Core / Web 发布（随 v12 合并部署，生产目录版本已确认）
+- [ ] 小程序上传 / 发布（用户明确暂缓）
 
 ### [2026-09-06] MAI-Image-2.6 接入与 Scientific V2 单模型增量扩榜 — by Codex
 变更：按用户要求仅评测非 Flash `microsoft/mai-image-2.6`。OpenRouter 精确型号根据 Microsoft 官方 PNG 输出契约接入，运行时继续校验真实图片字节；请求固定 Azure、单图、关闭 web grounding 和 provider fallback。目录仍标记 `verificationState:catalog` / `verified:false`，文档支持不冒充账号调用已验证，Flash 不在新增名单中。
