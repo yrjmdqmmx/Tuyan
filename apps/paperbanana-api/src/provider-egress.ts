@@ -16,6 +16,9 @@ type CompatibleRequest = string | URL | globalThis.Request | UndiciRequest
 
 const targetHosts = new Set([
   'api.openai.com',
+  'api.anthropic.com',
+  'api.x.ai',
+  'external.api.recraft.ai',
   'generativelanguage.googleapis.com',
   'openrouter.ai',
   'ark.cn-beijing.volces.com',

@@ -5,10 +5,10 @@
 ## 1.0.0 功能
 
 - 分层工作台：六套精选模板、当前设置摘要、原子设置抽屉和宽幅移动端布局。
-- 服务端 `modelRegistry` 是五个 API 渠道、模型角色、权益、验证状态、比例、清晰度和精修能力的唯一提交依据；目录不可用时禁止新建、精修和 Ark 验证。
+- 服务端 `modelRegistry` 是十二个 API 渠道、模型角色、权益、验证状态、比例、清晰度和精修能力的唯一提交依据；目录不可用时禁止新建、精修和 Ark 验证。
 - 普通模式使用单渠道服务端默认三角色；专业模式支持跨渠道 `modelRoutes`，模型选择器按“API 渠道 → 模型厂商 → 具体模型”分组并支持数百项搜索。
 - 方法 12,000 字、图注 1,000 字、独立负向提示词 1,000 字；请求固定发送 `clientPlatform: "miniprogram"`。
-- 自动 + 十种规范比例；生成和精修分别读取 `aspectRatios/resolutions` 与 `refineAspectRatios/refineResolutions`。
+- 自动 + 二十六种比例（按具体型号启用）；生成和精修分别读取 `aspectRatios/resolutions` 与 `refineAspectRatios/refineResolutions`。
 - 参考图库使用 `scope=bench`、每页 12 条，支持关键词、视觉类别、研究领域、diagram/plot、详情与跨页最多 10 项选择。
 - 上传参考图使用 prepare → PUT → finalize，失败时 abort；上传与图库检索互斥。
 - 四个一级入口：生成 / 记录 / 精修 / 教程。任务记录保留来源端、显式路由、负向提示词、比例、阶段、业务错误和 `objectKey`。

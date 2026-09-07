@@ -9,37 +9,27 @@ const {
   supportedResolutions,
 } = require('../miniprogram/utils/constants.js')
 
-// bailian 模型常量与 apps/web/src/constants.js（SYNC.md 2026-06-08 条目）同步
-const bailian = PROVIDERS.find((provider) => provider.id === 'bailian')
-assert.ok(bailian)
-assert.equal(bailian.mainModel, 'qwen3.8-max')
-assert.equal(bailian.imageModel, 'wan2.7-image-pro')
-assert.equal(bailian.visionModel, 'qwen3.8-max')
-assert.deepEqual(
-  bailian.mainModels.map((option) => option.value),
-  ['qwen3.8-max', 'qwen3.7-plus', 'qwen3.7-flash', 'deepseek-v4-pro', 'deepseek-v4-flash', 'kimi/kimi-k3', 'glm-5.2', 'MiniMax/MiniMax-M3'],
-)
-assert.deepEqual(
-  bailian.imageModels.map((option) => option.value),
-  ['wan2.7-image-pro', 'qwen-image-3.0-pro', 'qwen-image-3.0'],
-)
-assert.deepEqual(
-  bailian.visionModels.map((option) => option.value),
-  ['qwen3.8-max', 'qwen3.7-plus', 'qwen3.5-omni-plus', 'kimi/kimi-k3'],
-)
-
-// 已剔除的旧模型不应再出现
-const allBailianValues = [...bailian.mainModels, ...bailian.imageModels, ...bailian.visionModels].map((option) => option.value)
-for (const removed of ['deepseek-v3.2', 'kimi-k2.5', 'glm-5', 'MiniMax-M2.5', 'wan2.7-image', 'qwen-image-2.0', 'qwen3.6-plus']) {
-  assert.ok(allBailianValues.indexOf(removed) < 0, `bailian 不应再包含 ${removed}`)
+// The bundled fallback must retain every role from the shared backend catalog.
+const { STATIC_MODEL_REGISTRY } = require('../miniprogram/utils/static-model-catalog.js')
+for (const provider of PROVIDERS) {
+  const registry = STATIC_MODEL_REGISTRY[provider.id]
+  if (!registry) continue
+  for (const role of ['main', 'image', 'vision']) {
+    assert.equal(provider[role + 'Model'], registry.defaults[role], `${provider.id}/${role} default`)
+    assert.deepEqual(provider[role + 'Models'].map((m) => m.value), registry.models.filter((m) => m.selectable && m.roles.includes(role)).map((m) => m.id), `${provider.id}/${role}`)
+  }
 }
+// Still-supported older models remain available; realtime models need a different protocol.
+const bailian = PROVIDERS.find((provider) => provider.id === 'bailian')
+for (const id of ['kimi-k2.5', 'glm-5', 'MiniMax-M2.5', 'qwen3.6-plus']) assert.ok(bailian.mainModels.some((m) => m.value === id), id)
+assert.equal(bailian.mainModels.some((m) => m.value.includes('-realtime')), false)
 
 // 清晰度档位按 provider 过滤
-assert.deepEqual(supportedResolutions('bailian', 'wan2.7-image-pro'), ['1K', '2K'])
-assert.deepEqual(supportedResolutions('gemini', 'gemini-3.1-flash-image'), ['1K', '2K'])
+assert.deepEqual(supportedResolutions('bailian', 'wan2.7-image-pro'), ['1K', '2K', '4K'])
+assert.deepEqual(supportedResolutions('gemini', 'gemini-3.1-flash-image'), ['512', '1K', '2K', '4K'])
 assert.deepEqual(supportedResolutions('openai', 'gpt-image-2'), ['1K', '2K', '4K'])
 assert.deepEqual(supportedResolutions('openrouter', 'openrouter/openai/gpt-5.4-image-2'), ['1K', '2K', '4K'])
-assert.deepEqual(RESOLUTION_OPTIONS.map((option) => option.value), ['1K', '2K', '4K'])
+assert.deepEqual(RESOLUTION_OPTIONS.map((option) => option.value), ['512', '1K', '2K', '4K', 'auto'])
 
 // 主模型读图能力正则（bailian 固定能力，SYNC.md 2026-06-08）
 assert.equal(mainModelCanReadImages('bailian', 'qwen3.7-plus'), true)
@@ -47,7 +37,7 @@ assert.equal(mainModelCanReadImages('bailian', 'qwen3.5-omni-plus'), true)
 assert.equal(mainModelCanReadImages('bailian', 'kimi/kimi-k3'), true)
 assert.equal(mainModelCanReadImages('bailian', 'qwen3.8-max'), true)
 assert.equal(mainModelCanReadImages('bailian', 'deepseek-v4-pro'), false)
-assert.equal(mainModelCanReadImages('bailian', 'MiniMax/MiniMax-M3'), false)
+assert.equal(mainModelCanReadImages('bailian', 'MiniMax/MiniMax-M3'), true)
 assert.equal(mainModelCanReadImages('gemini', 'gemini-3.5-flash'), true)
 assert.equal(mainModelCanReadImages('openrouter', 'openrouter/anthropic/claude-opus-4.8'), true)
 assert.equal(mainModelCanReadImages('openai', 'gpt-5.5'), true)
@@ -59,3 +49,7 @@ assert.deepEqual(REFERENCE_IMAGE_MODES.map((option) => option.value), ['main_mod
 assert.deepEqual(RETRIEVAL_OPTIONS.map((option) => option.value), ['none', 'auto', 'random', 'manual'])
 
 console.log('constants.test.cjs passed')
+
+for (const id of ['qwen3.8-max-0902', 'qwen3.8-flash', 'qwen3.8-27b', 'ZHIPU/GLM-5.3-Flash', 'kimi-k3']) assert.equal(mainModelCanReadImages('bailian', id), true, id)
+assert.equal(mainModelCanReadImages('bailian', 'ZHIPU/GLM-5.3'), false)
+assert.equal(mainModelCanReadImages('openai', 'gpt-6-astra'), true)

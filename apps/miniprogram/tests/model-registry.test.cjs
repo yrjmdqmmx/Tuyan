@@ -32,7 +32,7 @@ function registry() {
   }
 }
 
-assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter'])
+assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'])
 const normalized = normalizeModelRegistry(registry())
 assert.equal(normalized.registryVersion, '2026-08-21.v9')
 assert.equal(normalized.providers.openrouter.models.length, 3)
@@ -44,7 +44,7 @@ assert.deepEqual(modelAvailabilityPresentation({ lifecycle: 'stable', verificati
   lifecycleLabel: '稳定', verificationLabel: '注册表已验证', verifiedForAccount: false,
 })
 assert.equal(modelAvailabilityPresentation({ lifecycle: 'unknown', verificationState: 'catalog' }).lifecycleLabel, '生命周期未知')
-assert.equal(modelAvailabilityPresentation({ lifecycle: 'stable', verificationState: 'catalog' }).verificationLabel, '目录可见，尚未实测')
+assert.equal(modelAvailabilityPresentation({ lifecycle: 'stable', verificationState: 'catalog' }).verificationLabel, '官方目录')
 assert.equal(modelAvailabilityPresentation({ lifecycle: 'stable', verificationState: 'inference-verified' }).verifiedForAccount, true)
 
 const partition = partitionRegistryModels([
@@ -57,3 +57,28 @@ assert.deepEqual(partition.incompatible.map((item) => item.selectionDisabledReas
 assert.deepEqual(groupRegistryModels(partition.compatible).map((group) => group.vendor), ['OpenAI'])
 
 console.log('model-registry.test.cjs passed')
+
+// Older servers remain usable while new channels roll out. New partial-role
+// catalogs are valid only when every role they do expose has a valid default.
+const previousProviders = Object.fromEntries(['gemini', 'openai', 'bailian', 'ark', 'openrouter'].map((id) => [id, provider(id)]))
+assert.equal(normalizeModelRegistry({ ...registry(), providers: previousProviders }).providers.xai, undefined)
+const textOnly = { ...provider('anthropic'), defaults: { main: 'anthropic-main', image: '', vision: 'anthropic-vision' }, models: provider('anthropic').models.filter((item) => !item.roles.includes('image')) }
+const imageOnly = { ...provider('recraft'), defaults: { main: '', image: 'recraft-image', vision: '' }, models: provider('recraft').models.filter((item) => item.roles.includes('image')) }
+const partial = normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: textOnly, recraft: imageOnly } })
+assert.equal(partial.providers.anthropic.defaults.image, '')
+assert.equal(partial.providers.recraft.defaults.main, '')
+assert.throws(() => normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: { ...textOnly, defaults: { ...textOnly.defaults, main: '' } } } }), /默认主模型/)
+
+const datedFixture = registry()
+datedFixture.providers.openai.models[0].expirationDate = '2000-01-01'
+datedFixture.providers.openai.models[1].earliestRetirementDate = '2000-01-01'
+datedFixture.providers.openai.models[1].replacementModelId = 'next-image'
+datedFixture.providers.openai.models[1].regions = ['cn-beijing']
+datedFixture.providers.openai.models[1].roleProtocols = { image: 'openai-images' }
+const dated = normalizeModelRegistry(datedFixture)
+assert.equal(partitionRegistryModels(dated.providers.openai.models, { role: 'main' }).compatible.length, 0)
+assert.equal(partitionRegistryModels(dated.providers.openai.models, { role: 'image' }).compatible.length, 1)
+assert.equal(dated.providers.openai.models[1].earliestRetirementDate, '2000-01-01')
+assert.equal(dated.providers.openai.models[1].replacementModelId, 'next-image')
+assert.deepEqual(dated.providers.openai.models[1].roleProtocols, { image: 'openai-images' })
+assert.deepEqual(dated.providers.openai.models[1].regions, ['cn-beijing'])

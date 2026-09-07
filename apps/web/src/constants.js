@@ -1,11 +1,14 @@
+import { STATIC_MODEL_REGISTRY } from './lib/staticModelCatalog.js'
 export function mainModelCanReadImages(provider, model) {
+  const known = STATIC_MODEL_REGISTRY[provider]?.models.find((entry) => entry.id === model)
+  if (known) return known.roles.includes('main') && known.inputModalities.includes('image')
   const m = String(model || '').toLowerCase()
-  if (provider === 'bailian') return /qwen3\.8-max|qwen3\.7-plus|qwen3\.5-omni|omni|kimi[\/-]kimi-k3|qwen-?vl|qwen3-?vl|-vl-|qvq/.test(m)
+  if (provider === 'bailian') return /qwen3\.8-(?:max|flash|27b)|zhipu\/glm-5\.3-flash|qwen3\.7-plus|qwen3\.5-omni|omni|(?:kimi\/)?kimi-k3|qwen-?vl|qwen3-?vl|-vl-|qvq/.test(m)
   if (provider === 'gemini') return true
-  if (provider === 'openai') return /gpt-4|gpt-5|o4|gpt-4o|gpt-4.1/.test(m)
+  if (provider === 'openai') return /gpt-6-astra|gpt-4|gpt-5|o4|gpt-4o|gpt-4.1/.test(m)
   if (provider === 'openrouter') return true
   if (provider === 'ark') return true
-  return false
+  return Boolean(PROVIDERS[provider]?.visionModels.some(([id]) => id === model))
 }
 
 export const PROVIDERS = {
@@ -17,6 +20,14 @@ export const PROVIDERS = {
     imageModel: 'sourceful/riverflow-v2.5-pro',
     visionModel: 'google/gemini-3.7-flash',
     mainModels: [
+      ['openrouter/openai/gpt-6-astra', 'GPT-6 Astra', 'OpenAI'],
+      ['openrouter/openai/gpt-6-astra-pro', 'GPT-6 Astra Pro', 'OpenAI'],
+      ['openrouter/google/gemini-3.8-flash', 'Gemini 3.8 Flash', 'Google'],
+      ['openrouter/qwen/qwen3.8-max-0902', 'Qwen3.8 Max 0902', 'Qwen'],
+      ['openrouter/qwen/qwen3.8-flash', 'Qwen3.8 Flash', 'Qwen'],
+      ['openrouter/anthropic/claude-fable-5.1', 'Claude Fable 5.1', 'Anthropic'],
+      ['openrouter/z-ai/glm-5.3-flash', 'GLM 5.3 Flash', 'Z.ai'],
+      ['openrouter/deepseek/deepseek-v4-flash-vision-exp', 'DeepSeek V4 Flash Vision Experimental', 'DeepSeek'],
       ['openai/gpt-5.6-sol', 'GPT-5.6 Sol', 'OpenAI'],
       ['openrouter/openai/gpt-5.5', 'GPT-5.5', 'OpenAI'],
       ['openrouter/openai/gpt-5.5-pro', 'GPT-5.5 Pro', 'OpenAI'],
@@ -56,6 +67,8 @@ export const PROVIDERS = {
       ['openrouter/stepfun/step-3.7-flash', 'Step 3.7 Flash', 'StepFun'],
     ],
     imageModels: [
+      ['openrouter/microsoft/mai-image-2.6', 'MAI Image 2.6', 'Microsoft'],
+      ['openrouter/microsoft/mai-image-2.6-flash', 'MAI Image 2.6 Flash', 'Microsoft'],
       ['sourceful/riverflow-v2.5-pro', 'Riverflow 2.5 Pro', 'Sourceful'],
       ['openrouter/openai/gpt-5.4-image-2', 'GPT-5.4 Image 2', 'OpenAI'],
       ['openrouter/openai/gpt-5-image', 'GPT-5 Image', 'OpenAI'],
@@ -75,6 +88,14 @@ export const PROVIDERS = {
       ['openrouter/sourceful/riverflow-v2-fast', 'Riverflow V2 Fast', 'Sourceful'],
     ],
     visionModels: [
+      ['openrouter/openai/gpt-6-astra', 'GPT-6 Astra', 'OpenAI'],
+      ['openrouter/openai/gpt-6-astra-pro', 'GPT-6 Astra Pro', 'OpenAI'],
+      ['openrouter/google/gemini-3.8-flash', 'Gemini 3.8 Flash', 'Google'],
+      ['openrouter/qwen/qwen3.8-max-0902', 'Qwen3.8 Max 0902', 'Qwen'],
+      ['openrouter/qwen/qwen3.8-flash', 'Qwen3.8 Flash', 'Qwen'],
+      ['openrouter/anthropic/claude-fable-5.1', 'Claude Fable 5.1', 'Anthropic'],
+      ['openrouter/z-ai/glm-5.3-flash', 'GLM 5.3 Flash', 'Z.ai'],
+      ['openrouter/deepseek/deepseek-v4-flash-vision-exp', 'DeepSeek V4 Flash Vision Experimental', 'DeepSeek'],
       ['google/gemini-3.7-flash', 'Gemini 3.7 Flash', 'Google'],
       ['openrouter/google/gemini-3.5-flash', 'Gemini 3.5 Flash', 'Google'],
       ['openrouter/google/gemini-3.1-flash-lite', 'Gemini 3.1 Flash Lite', 'Google'],
@@ -100,6 +121,7 @@ export const PROVIDERS = {
     imageModel: 'gemini-3.1-flash-image',
     visionModel: 'gemini-3.7-flash',
     mainModels: [
+      ['gemini-3.8-flash', 'Gemini 3.8 Flash', 'Google'],
       ['gemini-3.7-flash', 'Gemini 3.7 Flash', 'Gemini 3.7'],
       ['gemini-3.6-flash', 'Gemini 3.6 Flash', 'Gemini 3.6'],
       ['gemini-3.5-flash', 'Gemini 3.5 Flash', 'Gemini 3.5'],
@@ -116,6 +138,7 @@ export const PROVIDERS = {
       ['gemini-2.5-flash-image', 'Nano Banana / Gemini 2.5 Flash Image', 'Nano Banana'],
     ],
     visionModels: [
+      ['gemini-3.8-flash', 'Gemini 3.8 Flash', 'Google'],
       ['gemini-3.7-flash', 'Gemini 3.7 Flash', 'Gemini 3.7'],
       ['gemini-3.6-flash', 'Gemini 3.6 Flash', 'Gemini 3.6'],
       ['gemini-3.5-flash', 'Gemini 3.5 Flash', 'Gemini 3.5'],
@@ -139,6 +162,7 @@ export const PROVIDERS = {
     imageModel: 'gpt-image-2',
     visionModel: 'gpt-5.6-sol',
     mainModels: [
+      ['gpt-6-astra', 'GPT-6 Astra', 'OpenAI'],
       ['gpt-5.6-sol', 'GPT-5.6 Sol', 'GPT-5.6'],
       ['gpt-5.6-terra', 'GPT-5.6 Terra', 'GPT-5.6'],
       ['gpt-5.6-luna', 'GPT-5.6 Luna', 'GPT-5.6'],
@@ -156,6 +180,7 @@ export const PROVIDERS = {
       ['gpt-image-1-mini', 'GPT Image 1 Mini', 'GPT Image'],
     ],
     visionModels: [
+      ['gpt-6-astra', 'GPT-6 Astra', 'OpenAI'],
       ['gpt-5.6-sol', 'GPT-5.6 Sol', 'GPT-5.6'],
       ['gpt-5.6-terra', 'GPT-5.6 Terra', 'GPT-5.6'],
       ['gpt-5.6-luna', 'GPT-5.6 Luna', 'GPT-5.6'],
@@ -178,6 +203,15 @@ export const PROVIDERS = {
     imageModel: 'wan2.7-image-pro',
     visionModel: 'qwen3.7-plus',
     mainModels: [
+      ['qwen3.8-max-0902', 'Qwen3.8 Max 0902', 'Alibaba Qwen'],
+      ['qwen3.8-flash', 'Qwen3.8 Flash', 'Alibaba Qwen'],
+      ['qwen3.8-27b', 'Qwen3.8 27B', 'Alibaba Qwen'],
+      ['qwen3.8-2.4t-a95b', 'Qwen3.8 2.4T A95B', 'Alibaba Qwen'],
+      ['deepseek-v4-pro-0813', 'DeepSeek V4 Pro 0813', 'DeepSeek'],
+      ['deepseek-v4-flash-0731', 'DeepSeek V4 Flash 0731', 'DeepSeek'],
+      ['ZHIPU/GLM-5.3', 'GLM 5.3', 'Zhipu'],
+      ['ZHIPU/GLM-5.3-Flash', 'GLM 5.3 Flash', 'Zhipu'],
+      ['kimi-k3', 'Kimi K3 (Bailian hosted)', 'Moonshot AI'],
       ['qwen3.8-max', 'Qwen3.8 Max（可直读图）', '通义千问'],
       ['qwen3.7-plus', 'Qwen3.7 Plus（可直读图）', '通义千问'],
       ['qwen3.7-flash', 'Qwen3.7 Flash', '通义千问'],
@@ -193,6 +227,11 @@ export const PROVIDERS = {
       ['qwen-image-3.0', 'Qwen Image 3.0', '通义千问 Image'],
     ],
     visionModels: [
+      ['qwen3.8-max-0902', 'Qwen3.8 Max 0902', 'Alibaba Qwen'],
+      ['qwen3.8-flash', 'Qwen3.8 Flash', 'Alibaba Qwen'],
+      ['qwen3.8-27b', 'Qwen3.8 27B', 'Alibaba Qwen'],
+      ['ZHIPU/GLM-5.3-Flash', 'GLM 5.3 Flash', 'Zhipu'],
+      ['kimi-k3', 'Kimi K3 (Bailian hosted)', 'Moonshot AI'],
       ['qwen3.8-max', 'Qwen3.8 Max（图像理解）', '通义千问'],
       ['qwen3.7-plus', 'Qwen3.7 Plus（图像理解）', '通义千问'],
       ['qwen3.5-omni-plus', 'Qwen3.5 Omni Plus（全模态）', '通义千问'],
@@ -252,7 +291,323 @@ export const PROVIDERS = {
       '如需提前确认账号可用性，可手动点击“验证所选模型”；图片验证会按该模型的最低支持分辨率产生一次调用费用。',
     ],
   },
+  deepseek: {
+    "label": "DeepSeek",
+    "keyName": "deepseek",
+    "keyPlaceholder": "sk-...",
+    "mainModel": "deepseek-v4-pro",
+    "imageModel": "",
+    "visionModel": "deepseek-v4-flash-vision-exp",
+    "mainModels": [
+      [
+        "deepseek-v4-pro",
+        "DeepSeek V4 Pro",
+        "DeepSeek"
+      ],
+      [
+        "deepseek-v4-flash",
+        "DeepSeek V4 Flash",
+        "DeepSeek"
+      ],
+      [
+        "deepseek-v4-flash-vision-exp",
+        "DeepSeek V4 Flash Vision Experimental",
+        "DeepSeek"
+      ]
+    ],
+    "imageModels": [],
+    "visionModels": [
+      [
+        "deepseek-v4-flash-vision-exp",
+        "DeepSeek V4 Flash Vision Experimental",
+        "DeepSeek"
+      ]
+    ],
+    "guideUrl": "https://platform.deepseek.com/api_keys",
+    "guideSteps": [
+      "登录 DeepSeek 官方开放平台，进入 API Key 管理页面。",
+      "创建 API Key，并确认账户已开通所选模型。",
+      "复制密钥并粘贴到对应渠道的输入框。"
+    ]
+  },
+  kimi: {
+    "label": "Kimi（月之暗面）",
+    "keyName": "kimi",
+    "keyPlaceholder": "sk-...",
+    "mainModel": "kimi-k3",
+    "imageModel": "",
+    "visionModel": "kimi-k3",
+    "mainModels": [
+      [
+        "kimi-k3",
+        "Kimi K3",
+        "Moonshot"
+      ],
+      [
+        "kimi-k2.7-code",
+        "Kimi K2.7 Code",
+        "Moonshot"
+      ],
+      [
+        "kimi-k2.7-code-highspeed",
+        "Kimi K2.7 Code Highspeed",
+        "Moonshot"
+      ],
+      [
+        "kimi-k2.6",
+        "Kimi K2.6",
+        "Moonshot"
+      ]
+    ],
+    "imageModels": [],
+    "visionModels": [
+      [
+        "kimi-k3",
+        "Kimi K3",
+        "Moonshot"
+      ],
+      [
+        "kimi-k2.7-code",
+        "Kimi K2.7 Code",
+        "Moonshot"
+      ],
+      [
+        "kimi-k2.7-code-highspeed",
+        "Kimi K2.7 Code Highspeed",
+        "Moonshot"
+      ],
+      [
+        "kimi-k2.6",
+        "Kimi K2.6",
+        "Moonshot"
+      ]
+    ],
+    "guideUrl": "https://platform.kimi.com/",
+    "guideSteps": [
+      "登录 Kimi（月之暗面） 官方开放平台，进入 API Key 管理页面。",
+      "创建 API Key，并确认账户已开通所选模型。",
+      "复制密钥并粘贴到对应渠道的输入框。"
+    ]
+  },
+  zhipu: {
+    "label": "智谱 GLM",
+    "keyName": "zhipu",
+    "keyPlaceholder": "sk-...",
+    "mainModel": "glm-5.2",
+    "imageModel": "glm-image",
+    "visionModel": "glm-5v-turbo",
+    "mainModels": [
+      [
+        "glm-5.2",
+        "GLM 5.2",
+        "Zhipu"
+      ],
+      [
+        "glm-5v-turbo",
+        "GLM 5V Turbo",
+        "Zhipu"
+      ]
+    ],
+    "imageModels": [
+      [
+        "glm-image",
+        "GLM Image",
+        "Zhipu"
+      ]
+    ],
+    "visionModels": [
+      [
+        "glm-5v-turbo",
+        "GLM 5V Turbo",
+        "Zhipu"
+      ]
+    ],
+    "guideUrl": "https://open.bigmodel.cn/",
+    "guideSteps": [
+      "登录 智谱 GLM 官方开放平台，进入 API Key 管理页面。",
+      "创建 API Key，并确认账户已开通所选模型。",
+      "复制密钥并粘贴到对应渠道的输入框。"
+    ]
+  },
+  siliconflow: {
+    "label": "硅基流动 SiliconFlow",
+    "keyName": "siliconflow",
+    "keyPlaceholder": "sk-...",
+    "mainModel": "Pro/moonshotai/Kimi-K2.6",
+    "imageModel": "Qwen/Qwen-Image",
+    "visionModel": "Pro/moonshotai/Kimi-K2.6",
+    "mainModels": [
+      [
+        "Pro/moonshotai/Kimi-K2.6",
+        "Kimi K2.6",
+        "Moonshot"
+      ]
+    ],
+    "imageModels": [
+      [
+        "Qwen/Qwen-Image",
+        "Qwen Image",
+        "Alibaba Qwen"
+      ],
+      [
+        "Kwai-Kolors/Kolors",
+        "Kolors",
+        "Kwai"
+      ]
+    ],
+    "visionModels": [
+      [
+        "Pro/moonshotai/Kimi-K2.6",
+        "Kimi K2.6",
+        "Moonshot"
+      ]
+    ],
+    "guideUrl": "https://cloud.siliconflow.cn/account/ak",
+    "guideSteps": [
+      "登录 硅基流动 SiliconFlow 官方开放平台，进入 API Key 管理页面。",
+      "创建 API Key，并确认账户已开通所选模型。",
+      "复制密钥并粘贴到对应渠道的输入框。"
+    ]
+  },
+  anthropic: {
+    "label": "Anthropic Claude",
+    "keyName": "anthropic",
+    "keyPlaceholder": "sk-ant-...",
+    "mainModel": "claude-fable-5-1",
+    "imageModel": "",
+    "visionModel": "claude-fable-5-1",
+    "mainModels": [
+      [
+        "claude-fable-5-1",
+        "Claude Fable 5.1",
+        "Anthropic"
+      ],
+      [
+        "claude-opus-5",
+        "Claude Opus 5",
+        "Anthropic"
+      ],
+      [
+        "claude-sonnet-5",
+        "Claude Sonnet 5",
+        "Anthropic"
+      ],
+      [
+        "claude-haiku-4-5-20251001",
+        "Claude Haiku 4.5",
+        "Anthropic"
+      ]
+    ],
+    "imageModels": [],
+    "visionModels": [
+      [
+        "claude-fable-5-1",
+        "Claude Fable 5.1",
+        "Anthropic"
+      ],
+      [
+        "claude-opus-5",
+        "Claude Opus 5",
+        "Anthropic"
+      ],
+      [
+        "claude-sonnet-5",
+        "Claude Sonnet 5",
+        "Anthropic"
+      ],
+      [
+        "claude-haiku-4-5-20251001",
+        "Claude Haiku 4.5",
+        "Anthropic"
+      ]
+    ],
+    "guideUrl": "https://platform.claude.com/settings/keys",
+    "guideSteps": [
+      "登录 Anthropic Claude 官方开放平台，进入 API Key 管理页面。",
+      "创建 API Key，并确认账户已开通所选模型。",
+      "复制密钥并粘贴到对应渠道的输入框。"
+    ]
+  },
+  recraft: {
+    "label": "Recraft",
+    "keyName": "recraft",
+    "keyPlaceholder": "API Key",
+    "mainModel": "",
+    "imageModel": "recraftv4_1",
+    "visionModel": "",
+    "mainModels": [],
+    "imageModels": [
+      [
+        "recraftv4_1",
+        "Recraft V4.1",
+        "Recraft"
+      ],
+      [
+        "recraftv4_1_pro",
+        "Recraft V4.1 Pro",
+        "Recraft"
+      ],
+      [
+        "recraftv4_1_vector",
+        "Recraft V4.1 Vector",
+        "Recraft"
+      ],
+      [
+        "recraftv4_1_pro_vector",
+        "Recraft V4.1 Pro Vector",
+        "Recraft"
+      ]
+    ],
+    "visionModels": [],
+    "guideUrl": "https://app.recraft.ai/",
+    "guideSteps": [
+      "登录 Recraft 官方开放平台，进入 API Key 管理页面。",
+      "创建 API Key，并确认账户已开通所选模型。",
+      "复制密钥并粘贴到对应渠道的输入框。"
+    ]
+  },
+  xai: {
+    "label": "xAI",
+    "keyName": "xai",
+    "keyPlaceholder": "xai-...",
+    "mainModel": "grok-4.6",
+    "imageModel": "grok-imagine-image-2.0",
+    "visionModel": "grok-4.6",
+    "mainModels": [
+      [
+        "grok-4.6",
+        "Grok 4.6",
+        "xAI"
+      ]
+    ],
+    "imageModels": [
+      [
+        "grok-imagine-image-2.0",
+        "Grok Imagine Image 2.0",
+        "xAI"
+      ]
+    ],
+    "visionModels": [
+      [
+        "grok-4.6",
+        "Grok 4.6",
+        "xAI"
+      ]
+    ],
+    "guideUrl": "https://console.x.ai/",
+    "guideSteps": [
+      "登录 xAI 官方开放平台，进入 API Key 管理页面。",
+      "创建 API Key，并确认账户已开通所选模型。",
+      "复制密钥并粘贴到对应渠道的输入框。"
+    ]
+  },
 };
+
+// Generated catalog is the common fallback; public runtime registry remains authoritative.
+for (const [id, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
+  const options = (role) => registry.models.filter((model) => model.selectable !== false && model.roles.includes(role)).map((model) => [model.id, model.label, model.vendor])
+  PROVIDERS[id] = { ...PROVIDERS[id], mainModel: registry.defaults.main, imageModel: registry.defaults.image, visionModel: registry.defaults.vision, mainModels: options('main'), imageModels: options('image'), visionModels: options('vision'), registryModels: registry.models }
+}
 
 export const REFERENCE_IMAGE_LIMITS = {
   maxCount: 3,
@@ -279,10 +634,12 @@ export const OUTPUT_FORMATS = [
   ['svg', 'SVG 矢量图'],
 ];
 
-export const RESOLUTION_OPTIONS = [['1K', '1K（标准）'], ['2K', '2K（高清）'], ['4K', '4K（超清）']];
+export const RESOLUTION_OPTIONS = [['512', '512（预览）'], ['auto', '原生尺寸'], ['1K', '1K（标准）'], ['2K', '2K（高清）'], ['4K', '4K（超清）']];
 
 // 不同图像生成模型支持的清晰度子集（自动精修由清晰度档位驱动）。
 export function supportedResolutions(provider, imageModel) {
+  const entry = STATIC_MODEL_REGISTRY[provider]?.models.find((model) => model.id === imageModel)
+  if (entry) return entry.capabilities.resolutions || []
   if (provider === 'bailian') return ['1K', '2K'];
   if (provider === 'gemini') return ['1K', '2K'];
   if (provider === 'openai') return ['1K', '2K', '4K'];

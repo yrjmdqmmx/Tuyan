@@ -82,6 +82,9 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
   await withMockRouting('sg-required', async ({ direct, proxy, create }) => {
     const proxied = [
       ['https://api.openai.com', '/v1/models'],
+      ['https://api.anthropic.com', '/v1/messages'],
+      ['https://api.x.ai', '/v1/responses'],
+      ['https://external.api.recraft.ai', '/v1/images/generations'],
       ['https://generativelanguage.googleapis.com', '/v1/models'],
       ['https://openrouter.ai', '/api/v1/models'],
       ['https://ark.cn-beijing.volces.com', '/api/v3/models'],
@@ -91,6 +94,11 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
       ['https://bucket.oss-cn-hongkong-internal.aliyuncs.com', '/reference.png'],
       ['https://bucket.oss-cn-hongkong.aliyuncs.com', '/result.png?Signature=signed'],
       ['http://plot-worker.internal', '/render'],
+      ['https://api.deepseek.com', '/v1/chat/completions'],
+      ['https://api.moonshot.cn', '/v1/chat/completions'],
+      ['https://open.bigmodel.cn', '/api/paas/v4/chat/completions'],
+      ['https://api.siliconflow.cn', '/v1/images/generations'],
+      ['https://api.x.ai.evil.example', '/v1/responses'],
       ['https://api.openai.com.evil.example', '/v1/models'],
       ['https://ark.cn-beijing.volces.com.evil.example', '/api/v3/models'],
       ['https://ark.cn-beijing.volces.com..', '/api/v3/models'],

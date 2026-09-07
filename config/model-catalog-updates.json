@@ -1,0 +1,6794 @@
+{
+  "version": "2026-09-07.v12",
+  "providers": {
+    "deepseek": [],
+    "kimi": [],
+    "zhipu": [
+      {
+        "id": "glm-5.3",
+        "label": "glm-5.3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-5.1",
+        "label": "glm-5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-5-turbo",
+        "label": "glm-5-turbo",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-5",
+        "label": "glm-5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.7",
+        "label": "glm-4.7",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.7-flashx",
+        "label": "glm-4.7-flashx",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.7-flash",
+        "label": "glm-4.7-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.6",
+        "label": "glm-4.6",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.5-air",
+        "label": "glm-4.5-air",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.5-airx",
+        "label": "glm-4.5-airx",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.5-flash",
+        "label": "glm-4.5-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4-flash-250414",
+        "label": "glm-4-flash-250414",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4-flashx-250414",
+        "label": "glm-4-flashx-250414",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4-long",
+        "label": "glm-4-long",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-5.3-flash",
+        "label": "glm-5.3-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.6v",
+        "label": "glm-4.6v",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.6v-flash",
+        "label": "glm-4.6v-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.1v-thinking-flashx",
+        "label": "glm-4.1v-thinking-flashx",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.1v-thinking-flash",
+        "label": "glm-4.1v-thinking-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4v-flash",
+        "label": "glm-4v-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "glm-4.6v-flashx",
+        "label": "glm-4.6v-flashx",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        }
+      },
+      {
+        "id": "cogview-4-250304",
+        "label": "cogview-4-250304",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "cogview-4",
+        "label": "cogview-4",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "cogview-3-flash",
+        "label": "cogview-3-flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "glm-image",
+        "label": "GLM Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "尺寸按 GLM-Image 的 32 像素对齐、推荐边长范围和总像素上限构造。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Zhipu",
+          "recommended": true,
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      }
+    ],
+    "siliconflow": [
+      {
+        "id": "zai-org/GLM-5.3",
+        "label": "zai-org/GLM-5.3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "zai-org",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V4-Flash",
+        "label": "deepseek-ai/DeepSeek-V4-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Pro/zai-org/GLM-5.1",
+        "label": "Pro/zai-org/GLM-5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Pro",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "baidu/ERNIE-Image-Turbo",
+        "label": "baidu/ERNIE-Image-Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。中国站 Images API；当前渠道文档只足以确认 1024x1024 请求，不继承原厂或其他托管渠道的分辨率范围。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1"
+          ],
+          "refineAspectRatios": [
+            "1:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ],
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "meituan-longcat/LongCat-2.0",
+        "label": "meituan-longcat/LongCat-2.0",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "meituan-longcat",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.6-35B-A3B",
+        "label": "Qwen/Qwen3.6-35B-A3B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.6-27B",
+        "label": "Qwen/Qwen3.6-27B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V4-Pro",
+        "label": "deepseek-ai/DeepSeek-V4-Pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "moonshotai/Kimi-K2.7-Code",
+        "label": "moonshotai/Kimi-K2.7-Code",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "moonshotai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "zai-org/GLM-5.2",
+        "label": "zai-org/GLM-5.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "zai-org",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Tongyi-MAI/Z-Image",
+        "label": "Tongyi-MAI/Z-Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。中国站 Images API；当前渠道文档只足以确认 1024x1024 请求，不继承原厂或其他托管渠道的分辨率范围。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1"
+          ],
+          "refineAspectRatios": [
+            "1:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Tongyi-MAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ],
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "Tongyi-MAI/Z-Image-Turbo",
+        "label": "Tongyi-MAI/Z-Image-Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。中国站 Images API；当前渠道文档只足以确认 1024x1024 请求，不继承原厂或其他托管渠道的分辨率范围。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1"
+          ],
+          "refineAspectRatios": [
+            "1:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Tongyi-MAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ],
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "stepfun-ai/Step-3.5-Flash",
+        "label": "stepfun-ai/Step-3.5-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "stepfun-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.5-35B-A3B",
+        "label": "Qwen/Qwen3.5-35B-A3B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.5-4B",
+        "label": "Qwen/Qwen3.5-4B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.5-9B",
+        "label": "Qwen/Qwen3.5-9B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.5-27B",
+        "label": "Qwen/Qwen3.5-27B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.5-122B-A10B",
+        "label": "Qwen/Qwen3.5-122B-A10B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V3.2",
+        "label": "deepseek-ai/DeepSeek-V3.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen-Image-Edit",
+        "label": "Qwen/Qwen-Image-Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。仅图像编辑，必须有源图；接口不支持 image_size，输出尺寸由源图和模型决定。",
+        "capabilities": {
+          "imageGeneration": false,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "auto"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1,
+          "requiresSourceImage": true
+        },
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ],
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen-Image-Edit-2509",
+        "label": "Qwen/Qwen-Image-Edit-2509",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。仅图像编辑，必须有源图；接口不支持 image_size，输出尺寸由源图和模型决定。",
+        "capabilities": {
+          "imageGeneration": false,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "auto"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 3,
+          "requiresSourceImage": true
+        },
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ],
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "inclusionAI/Ling-mini-2.0",
+        "label": "inclusionAI/Ling-mini-2.0",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "inclusionAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "inclusionAI/Ling-flash-2.0",
+        "label": "inclusionAI/Ling-flash-2.0",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "inclusionAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Pro/deepseek-ai/DeepSeek-V3",
+        "label": "Pro/deepseek-ai/DeepSeek-V3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Pro",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Pro/deepseek-ai/DeepSeek-R1",
+        "label": "Pro/deepseek-ai/DeepSeek-R1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Pro",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Pro/deepseek-ai/DeepSeek-V3.1-Terminus",
+        "label": "Pro/deepseek-ai/DeepSeek-V3.1-Terminus",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Pro",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Pro/deepseek-ai/DeepSeek-V3.2",
+        "label": "Pro/deepseek-ai/DeepSeek-V3.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Pro",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-8B",
+        "label": "Qwen/Qwen3-8B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-VL-32B-Thinking",
+        "label": "Qwen/Qwen3-VL-32B-Thinking",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-VL-32B-Instruct",
+        "label": "Qwen/Qwen3-VL-32B-Instruct",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V3.1-Terminus",
+        "label": "deepseek-ai/DeepSeek-V3.1-Terminus",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-VL-8B-Instruct",
+        "label": "Qwen/Qwen3-VL-8B-Instruct",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-VL-8B-Thinking",
+        "label": "Qwen/Qwen3-VL-8B-Thinking",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+        "label": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-VL-30B-A3B-Thinking",
+        "label": "Qwen/Qwen3-VL-30B-A3B-Thinking",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-Omni-30B-A3B-Instruct",
+        "label": "Qwen/Qwen3-Omni-30B-A3B-Instruct",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-Omni-30B-A3B-Thinking",
+        "label": "Qwen/Qwen3-Omni-30B-A3B-Thinking",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V3",
+        "label": "deepseek-ai/DeepSeek-V3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-R1",
+        "label": "deepseek-ai/DeepSeek-R1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "ByteDance-Seed/Seed-OSS-36B-Instruct",
+        "label": "ByteDance-Seed/Seed-OSS-36B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "ByteDance-Seed",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "zai-org/GLM-4.5V",
+        "label": "zai-org/GLM-4.5V",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "zai-org",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+        "label": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "zai-org/GLM-4.5-Air",
+        "label": "zai-org/GLM-4.5-Air",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "zai-org",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+        "label": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "tencent/Hunyuan-A13B-Instruct",
+        "label": "tencent/Hunyuan-A13B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-32B",
+        "label": "Qwen/Qwen3-32B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen3-14B",
+        "label": "Qwen/Qwen3-14B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        "label": "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "THUDM/GLM-Z1-9B-0414",
+        "label": "THUDM/GLM-Z1-9B-0414",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "THUDM",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen2.5-7B-Instruct",
+        "label": "Qwen/Qwen2.5-7B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen2.5-32B-Instruct",
+        "label": "Qwen/Qwen2.5-32B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen2.5-72B-Instruct",
+        "label": "Qwen/Qwen2.5-72B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "THUDM/GLM-4-9B-0414",
+        "label": "THUDM/GLM-4-9B-0414",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "THUDM",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "THUDM/GLM-4-32B-0414",
+        "label": "THUDM/GLM-4-32B-0414",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "THUDM",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Qwen/Qwen2.5-72B-Instruct-128K",
+        "label": "Qwen/Qwen2.5-72B-Instruct-128K",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "Pro/Qwen/Qwen2.5-7B-Instruct",
+        "label": "Pro/Qwen/Qwen2.5-7B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Pro",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "regions": [
+            "cn"
+          ]
+        }
+      }
+    ],
+    "anthropic": [
+      {
+        "id": "claude-fable-5",
+        "label": "claude-fable-5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"
+        }
+      },
+      {
+        "id": "claude-opus-4-8",
+        "label": "claude-opus-4-8",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"
+        }
+      },
+      {
+        "id": "claude-opus-4-7",
+        "label": "claude-opus-4-7",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"
+        }
+      },
+      {
+        "id": "claude-opus-4-6",
+        "label": "claude-opus-4-6",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"
+        }
+      },
+      {
+        "id": "claude-opus-4-5-20251101",
+        "label": "claude-opus-4-5-20251101",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"
+        }
+      },
+      {
+        "id": "claude-sonnet-4-6",
+        "label": "claude-sonnet-4-6",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"
+        }
+      },
+      {
+        "id": "claude-sonnet-4-5-20250929",
+        "label": "claude-sonnet-4-5-20250929",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"
+        }
+      }
+    ],
+    "recraft": [
+      {
+        "id": "recraftv4_1_utility",
+        "label": "recraftv4_1_utility",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_1_utility_vector",
+        "label": "recraftv4_1_utility_vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_1_utility_pro",
+        "label": "recraftv4_1_utility_pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "2K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_1_utility_pro_vector",
+        "label": "recraftv4_1_utility_pro_vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "2K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4",
+        "label": "recraftv4",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_vector",
+        "label": "recraftv4_vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_pro",
+        "label": "recraftv4_pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "2K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_pro_vector",
+        "label": "recraftv4_pro_vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "2K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv3",
+        "label": "recraftv3",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv3_vector",
+        "label": "recraftv3_vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv2",
+        "label": "recraftv2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv2_vector",
+        "label": "recraftv2_vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_1",
+        "label": "Recraft V4.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "recommended": true,
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_1_vector",
+        "label": "Recraft V4.1 Vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "recommended": false,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_1_pro",
+        "label": "Recraft V4.1 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "2K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "recommended": false,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "recraftv4_1_pro_vector",
+        "label": "Recraft V4.1 Pro Vector",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "2K"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "2:1",
+            "1:2",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "5:4",
+            "4:5",
+            "6:10",
+            "14:10",
+            "10:14",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png",
+            "svg"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+          "recommended": false,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      }
+    ],
+    "xai": [
+      {
+        "id": "grok-4.5",
+        "label": "grok-4.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "xAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models"
+        }
+      },
+      {
+        "id": "grok-4.3",
+        "label": "grok-4.3",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "xAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models"
+        }
+      },
+      {
+        "id": "grok-4.20-0309-reasoning",
+        "label": "grok-4.20-0309-reasoning",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "xAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models"
+        }
+      },
+      {
+        "id": "grok-4.20-0309-non-reasoning",
+        "label": "grok-4.20-0309-non-reasoning",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "xAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models"
+        }
+      },
+      {
+        "id": "grok-imagine-image",
+        "label": "grok-imagine-image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "2:1",
+            "1:2",
+            "19.5:9",
+            "9:19.5",
+            "20:9",
+            "9:20"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "2:1",
+            "1:2",
+            "19.5:9",
+            "9:19.5",
+            "20:9",
+            "9:20"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "grok-imagine-image-2.0",
+        "label": "Grok Imagine Image 2.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "2:1",
+            "1:2",
+            "19.5:9",
+            "9:19.5",
+            "20:9",
+            "9:20",
+            "21:9",
+            "5:2"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "2:1",
+            "1:2",
+            "19.5:9",
+            "9:19.5",
+            "20:9",
+            "9:20",
+            "21:9",
+            "5:2"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 5
+        },
+        "metadata": {
+          "vendor": "xAI",
+          "recommended": true,
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      }
+    ],
+    "gemini": [
+      {
+        "id": "gemini-3.1-flash-image",
+        "label": "Nano Banana 2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "gemini-interactions",
+        "availabilityNotes": "官方 512 / 1K / 2K / 4K；支持该型号的 14 种比例。图研精修当前传 1 张源图。",
+        "metadata": {
+          "vendor": "Google",
+          "recommended": true,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog"
+        },
+        "capabilities": {
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "512",
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "512",
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "1:4",
+            "1:8",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:1",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:1",
+            "9:16",
+            "16:9",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "1:4",
+            "1:8",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:1",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:1",
+            "9:16",
+            "16:9",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14
+        }
+      }
+    ],
+    "bailian": [
+      {
+        "id": "qwen3.7-max",
+        "label": "qwen3.7-max",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.7-max-2026-06-08",
+        "label": "qwen3.7-max-2026-06-08",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.7-max-2026-05-20",
+        "label": "qwen3.7-max-2026-05-20",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.7-max-preview",
+        "label": "qwen3.7-max-preview",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.7-max-2026-05-17",
+        "label": "qwen3.7-max-2026-05-17",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-max",
+        "label": "qwen-max",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.7-plus-2026-05-26",
+        "label": "qwen3.7-plus-2026-05-26",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.6-plus",
+        "label": "qwen3.6-plus",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.6-plus-2026-04-02",
+        "label": "qwen3.6-plus-2026-04-02",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-plus",
+        "label": "qwen3.5-plus",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-plus-2026-04-20",
+        "label": "qwen3.5-plus-2026-04-20",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-plus-2026-02-15",
+        "label": "qwen3.5-plus-2026-02-15",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-plus",
+        "label": "qwen-plus",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-plus-latest",
+        "label": "qwen-plus-latest",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-plus-2025-12-01",
+        "label": "qwen-plus-2025-12-01",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-plus-2025-07-14",
+        "label": "qwen-plus-2025-07-14",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-plus-2025-04-28",
+        "label": "qwen-plus-2025-04-28",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-plus-2025-01-25",
+        "label": "qwen-plus-2025-01-25",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.7-flash-2026-07-15",
+        "label": "qwen3.7-flash-2026-07-15",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.6-flash",
+        "label": "qwen3.6-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.6-flash-2026-04-16",
+        "label": "qwen3.6-flash-2026-04-16",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-flash",
+        "label": "qwen3.5-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-flash-2026-02-23",
+        "label": "qwen3.5-flash-2026-02-23",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-flash",
+        "label": "qwen-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-flash-2025-07-28",
+        "label": "qwen-flash-2025-07-28",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen-long",
+        "label": "qwen-long",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-omni-plus",
+        "label": "Qwen3.5 Omni Plus",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "inputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "recommended": false,
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-omni-plus-2026-03-15",
+        "label": "qwen3.5-omni-plus-2026-03-15",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-omni-flash",
+        "label": "qwen3.5-omni-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-omni-flash-2026-03-15",
+        "label": "qwen3.5-omni-flash-2026-03-15",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3-omni-flash",
+        "label": "qwen3-omni-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3-omni-flash-2025-12-01",
+        "label": "qwen3-omni-flash-2025-12-01",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3-omni-flash-2025-09-15",
+        "label": "qwen3-omni-flash-2025-09-15",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3-coder-flash",
+        "label": "qwen3-coder-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3-coder-flash-2025-07-28",
+        "label": "qwen3-coder-flash-2025-07-28",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.6-35b-a3b",
+        "label": "qwen3.6-35b-a3b",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.6-27b",
+        "label": "qwen3.6-27b",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-397b-a17b",
+        "label": "qwen3.5-397b-a17b",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-122b-a10b",
+        "label": "qwen3.5-122b-a10b",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-27b",
+        "label": "qwen3.5-27b",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "qwen3.5-35b-a3b",
+        "label": "qwen3.5-35b-a3b",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "deepseek-r1-distill-qwen-1.5b",
+        "label": "deepseek-r1-distill-qwen-1.5b",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "deepseek-r1-distill-llama-8b",
+        "label": "deepseek-r1-distill-llama-8b",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "deepseek-r1-distill-llama-70b",
+        "label": "deepseek-r1-distill-llama-70b",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "vanchin/deepseek-v3.2-think",
+        "label": "vanchin/deepseek-v3.2-think",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Vanchin · DeepSeek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "vanchin/deepseek-v3.1-terminus",
+        "label": "vanchin/deepseek-v3.1-terminus",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Vanchin · DeepSeek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "vanchin/deepseek-r1",
+        "label": "vanchin/deepseek-r1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Vanchin · DeepSeek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "vanchin/deepseek-v3",
+        "label": "vanchin/deepseek-v3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Vanchin · DeepSeek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "vanchin/deepseek-v4-pro",
+        "label": "vanchin/deepseek-v4-pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Vanchin · DeepSeek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "vanchin/deepseek-v4-pro-0813",
+        "label": "vanchin/deepseek-v4-pro-0813",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Vanchin · DeepSeek",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "kimi-k2.7-code",
+        "label": "kimi-k2.7-code",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "kimi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "kimi-k2.6",
+        "label": "kimi-k2.6",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "kimi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "kimi-k2.5",
+        "label": "kimi-k2.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "kimi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "kimi/kimi-k2.7-code-highspeed",
+        "label": "kimi/kimi-k2.7-code-highspeed",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "kimi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "kimi/kimi-k2.7-code",
+        "label": "kimi/kimi-k2.7-code",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "kimi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "kimi/kimi-k2.6",
+        "label": "kimi/kimi-k2.6",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "kimi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "kimi/kimi-k2.5",
+        "label": "kimi/kimi-k2.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "kimi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "glm-5.2-fast-preview",
+        "label": "glm-5.2-fast-preview",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "glm",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "glm-5.1",
+        "label": "glm-5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "glm",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "glm-5",
+        "label": "glm-5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "glm",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "ZHIPU/GLM-5.2",
+        "label": "ZHIPU/GLM-5.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "ZHIPU",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "ZHIPU/GLM-5.1",
+        "label": "ZHIPU/GLM-5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "ZHIPU",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "ZHIPU/GLM-5",
+        "label": "ZHIPU/GLM-5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "ZHIPU",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "MiniMax-M2.5",
+        "label": "MiniMax-M2.5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "MiniMax",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access"
+        }
+      },
+      {
+        "id": "MiniMax/MiniMax-M2.7",
+        "label": "MiniMax/MiniMax-M2.7",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "MiniMax",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "MiniMax/MiniMax-M2.5",
+        "label": "MiniMax/MiniMax-M2.5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "MiniMax",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "MiniMax/MiniMax-M2.1",
+        "label": "MiniMax/MiniMax-M2.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "MiniMax",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "xiaomi/mimo-v2.5-pro",
+        "label": "xiaomi/mimo-v2.5-pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "stepfun/step-3.7-flash",
+        "label": "stepfun/step-3.7-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "unisound/unisound-u2",
+        "label": "unisound/unisound-u2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "Unisound",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation"
+        }
+      },
+      {
+        "id": "qwen-image-2.0-pro-2026-06-22",
+        "label": "qwen-image-2.0-pro-2026-06-22",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-multimodal-generation",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "qwen-image-2.0-pro-2026-04-22",
+        "label": "qwen-image-2.0-pro-2026-04-22",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-multimodal-generation",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "qwen-image-2.0-pro-2026-03-03",
+        "label": "qwen-image-2.0-pro-2026-03-03",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-multimodal-generation",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "qwen-image-2.0-2026-03-03",
+        "label": "qwen-image-2.0-2026-03-03",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-multimodal-generation",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wan2.6-t2i",
+        "label": "wan2.6-t2i",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-multimodal-generation",
+        "availabilityNotes": "北京接入；采用官方 1280²..1440² 总像素范围；清晰度为原生约 1K，未标虚构 2K/4K。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wan2.5-t2i-preview",
+        "label": "wan2.5-t2i-preview",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；采用官方 1280²..1440² 总像素范围；清晰度为原生约 1K，未标虚构 2K/4K。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wan2.2-t2i-plus",
+        "label": "wan2.2-t2i-plus",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wan2.2-t2i-flash",
+        "label": "wan2.2-t2i-flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wanx2.1-t2i-plus",
+        "label": "wanx2.1-t2i-plus",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wanx2.1-t2i-turbo",
+        "label": "wanx2.1-t2i-turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wanx2.0-t2i-turbo",
+        "label": "wanx2.0-t2i-turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wanx-v1",
+        "label": "wanx-v1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "imageEditMode": "analyze-redraw",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wan2.6-image",
+        "label": "wan2.6-image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；文生图使用异步图文混排模式且 max_images=1；精修关闭混排，支持 1K/2K。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 4
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wan2.5-i2i-preview",
+        "label": "wan2.5-i2i-preview",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；仅图像编辑；异步 image2image，尺寸总像素不超过 1280²。",
+        "capabilities": {
+          "imageGeneration": false,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:4",
+            "4:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 3,
+          "requiresSourceImage": true
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "wanx2.1-imageedit",
+        "label": "wanx2.1-imageedit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；通用 description_edit 操作；源图尺寸决定输出；蒙版/扩图等专用操作未开放。",
+        "capabilities": {
+          "imageGeneration": false,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "auto"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1,
+          "requiresSourceImage": true
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "kling/kling-v3-image-generation",
+        "label": "kling/kling-v3-image-generation",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；普通款参考图按模型概览限制为 1 张，Omni 官方最多 10 张；图研精修当前传 1 张。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "kling/kling-v3-omni-image-generation",
+        "label": "kling/kling-v3-omni-image-generation",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；普通款参考图按模型概览限制为 1 张，Omni 官方最多 10 张；图研精修当前传 1 张。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 10
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "vidu/vidu-image_reference2image",
+        "label": "vidu/vidu-image_reference2image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "9:21"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "9:21"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "vidu/vidu-image-pro_reference2image",
+        "label": "vidu/vidu-image-pro_reference2image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "9:21"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "9:21"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "vidu/vidu-image-lite_reference2image",
+        "label": "vidu/vidu-image-lite_reference2image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "9:21"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "9:21"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "vidu/viduq3-fast_reference2image",
+        "label": "vidu/viduq3-fast_reference2image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "4:5",
+            "5:4",
+            "1:4",
+            "4:1",
+            "1:8",
+            "8:1"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "4:5",
+            "5:4",
+            "1:4",
+            "4:1",
+            "1:8",
+            "8:1"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "vidu/viduq2-pro_reference2image",
+        "label": "vidu/viduq2-pro_reference2image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "4:5",
+            "5:4"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "4:5",
+            "5:4"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "vidu/viduq2-fast_reference2image",
+        "label": "vidu/viduq2-fast_reference2image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-async-images",
+        "availabilityNotes": "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "4:5",
+            "5:4"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "4:5",
+            "5:4"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14
+        },
+        "metadata": {
+          "vendor": "Alibaba Qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "supplier-activation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      }
+    ],
+    "openai": [
+      {
+        "id": "gpt-5.1",
+        "label": "gpt-5.1",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "OpenAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      },
+      {
+        "id": "gpt-5.2",
+        "label": "gpt-5.2",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "OpenAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      },
+      {
+        "id": "gpt-4o",
+        "label": "gpt-4o",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "OpenAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      },
+      {
+        "id": "gpt-4o-mini",
+        "label": "gpt-4o-mini",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "OpenAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      },
+      {
+        "id": "gpt-5.2-pro",
+        "label": "gpt-5.2-pro",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "OpenAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      },
+      {
+        "id": "gpt-5.3-codex",
+        "label": "gpt-5.3-codex",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "OpenAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      },
+      {
+        "id": "chat-latest",
+        "label": "chat-latest",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录支持；访问权限以当前账号及接入地区为准。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "OpenAI",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models",
+          "lifecycle": "unknown"
+        }
+      },
+      {
+        "id": "gpt-image-2",
+        "label": "GPT Image 2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "自定义 16 像素对齐尺寸，最长边 ≤3840、比例 ≤3:1、总像素 ≤8294400；自动比例使用所选分辨率的方形画布；大于 2560x1440 的输出属于官方实验范围。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "2:5",
+            "5:2"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "2:5",
+            "5:2"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "recommended": true,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      },
+      {
+        "id": "gpt-image-1",
+        "label": "GPT Image 1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "lifecycle": "legacy",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models",
+          "expirationDate": "2026-10-23",
+          "replacementModelId": "gpt-image-2",
+          "recommended": false
+        }
+      },
+      {
+        "id": "gpt-image-1-mini",
+        "label": "GPT Image 1 Mini",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "lifecycle": "legacy",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models",
+          "expirationDate": "2026-12-01",
+          "replacementModelId": "gpt-image-2",
+          "recommended": false
+        }
+      },
+      {
+        "id": "gpt-image-1.5",
+        "label": "gpt-image-1.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "lifecycle": "legacy",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models",
+          "expirationDate": "2026-12-01",
+          "replacementModelId": "gpt-image-2",
+          "recommended": false
+        }
+      },
+      {
+        "id": "chatgpt-image-latest",
+        "label": "chatgpt-image-latest",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K"
+          ],
+          "refineResolutions": [
+            "1K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "lifecycle": "legacy",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models",
+          "expirationDate": "2026-12-01",
+          "replacementModelId": "gpt-image-2",
+          "recommended": false
+        }
+      },
+      {
+        "id": "gpt-image-2",
+        "label": "GPT Image 2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "自定义 16 像素对齐尺寸，最长边 ≤3840、比例 ≤3:1、总像素 ≤8294400；自动比例使用所选分辨率的方形画布；大于 2560x1440 的输出属于官方实验范围。",
+        "capabilities": {
+          "maxReferenceImages": 1,
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "recommended": true,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models"
+        }
+      }
+    ],
+    "ark": [
+      {
+        "id": "doubao-seedream-5-0-260128",
+        "label": "Doubao Seedream 5.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "ark-images",
+        "availabilityNotes": "接口按 2K/4K 档位协商图片尺寸；当前只开放自动比例，实际比例以返回图片为准。",
+        "capabilities": {
+          "referenceImages": true,
+          "imageEditing": true,
+          "resolutions": [
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "ByteDance Seedream",
+          "requiresEntitlement": true,
+          "entitlement": "ark-account-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1824121?lang=zh"
+        }
+      },
+      {
+        "id": "doubao-seedream-4-5-251128",
+        "label": "Doubao Seedream 4.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "ark-images",
+        "availabilityNotes": "接口按 2K/4K 档位协商图片尺寸；当前只开放自动比例，实际比例以返回图片为准。",
+        "capabilities": {
+          "referenceImages": true,
+          "imageEditing": true,
+          "resolutions": [
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [],
+          "refineAspectRatios": [],
+          "outputFormats": [
+            "png"
+          ],
+          "maxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "ByteDance Seedream",
+          "lifecycle": "legacy",
+          "requiresEntitlement": true,
+          "entitlement": "ark-account-access",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "officialSourceUrl": "https://docs.volcengine.com/docs/82379/1824121?lang=zh"
+        }
+      }
+    ]
+  },
+  "lifecycle": {
+    "bailian": {
+      "qwen3.8-max-preview": {
+        "replacementModelId": "qwen3.8-max",
+        "selectable": false,
+        "disabledReason": "预览阶段已结束，已有配置迁移至 qwen3.8-max。",
+        "lifecycle": "legacy"
+      },
+      "deepseek-v4-flash": {
+        "replacementModelId": "deepseek-v4-flash-0731",
+        "expirationDate": "2026-10-10",
+        "lifecycle": "legacy"
+      }
+    },
+    "openai": {
+      "gpt-5-mini": {
+        "expirationDate": "2026-12-11",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-5.4-mini"
+      }
+    },
+    "gemini": {
+      "gemini-2.5-flash-image": {
+        "earliestRetirementDate": "2026-10-02",
+        "replacementModelId": "gemini-3.1-flash-lite-image"
+      }
+    }
+  },
+  "regions": {
+    "bailian": [
+      "cn-beijing"
+    ],
+    "ark": [
+      "cn-beijing"
+    ],
+    "siliconflow": [
+      "cn"
+    ],
+    "zhipu": [
+      "cn"
+    ]
+  }
+}

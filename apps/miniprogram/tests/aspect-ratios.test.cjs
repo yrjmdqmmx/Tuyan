@@ -7,9 +7,9 @@ const {
   normalizeSelectedAspectRatio,
 } = require('../miniprogram/utils/aspect-ratios.js')
 
-assert.deepEqual(CANONICAL_ASPECT_RATIOS, ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1'])
+assert.deepEqual(CANONICAL_ASPECT_RATIOS, ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20'])
 const declared = buildAspectRatioOptions({ capabilities: { aspectRatios: ['1:1', '16:9'] }, capabilityField: 'aspectRatios', modelLabel: 'Image X' })
-assert.equal(declared.length, 11)
+assert.equal(declared.length, 27)
 assert.deepEqual(declared.filter((item) => !item.disabled).map((item) => item.value), ['auto', '1:1', '16:9'])
 assert.match(declared.find((item) => item.value === '4:1').reason, /Image X/)
 

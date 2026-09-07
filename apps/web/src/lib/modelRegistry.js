@@ -8,11 +8,11 @@ export function mergeProviderRegistry(fallback, registry) {
   const mainModels = optionsForRole('main')
   const imageModels = optionsForRole('image')
   const visionModels = optionsForRole('vision')
-  if (!mainModels.length || !imageModels.length || !visionModels.length) return fallback
+  if (!mainModels.length && !imageModels.length && !visionModels.length) return fallback
 
   const safeDefault = (role, requested, options) => {
     const match = registry.models.find((model) => model.id === requested)
-    return match?.selectable !== false && match?.roles?.includes(role) ? requested : options[0][0]
+    return match?.selectable !== false && match?.roles?.includes(role) ? requested : options[0]?.[0] || ''
   }
 
   return {
@@ -87,13 +87,14 @@ function registryModelSearchValues(model) {
 }
 
 function annotateModelForRole(model, { role, outputFormat }) {
+  const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(`${model.expirationDate}T00:00:00Z`))
   const outputFormats = model.capabilities?.outputFormats || []
   const roleMismatch = !model.roles?.includes(role)
   const formatMismatch = role === 'image' && outputFormat && outputFormats.length && !outputFormats.includes(outputFormat)
   return {
     ...model,
-    selectionDisabled: model.selectable === false || roleMismatch || Boolean(formatMismatch),
-    selectionDisabledReason: model.disabledReason
+    selectionDisabled: expired || model.selectable === false || roleMismatch || Boolean(formatMismatch),
+    selectionDisabledReason: (expired ? `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
       || (roleMismatch ? model.roleReasons?.[role] || `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
       || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
   }

@@ -153,8 +153,9 @@ test('rendered model cards distinguish catalog compatibility, account visibility
 
   await user.click(screen.getByRole('button', { name: '主模型' }))
   await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
-  assert.ok(screen.getByText('目录兼容（未实测）'))
-  assert.ok(screen.getByText('账号可见（未实测）'))
+  assert.ok(screen.getByText('官方目录'))
+  assert.equal(screen.queryByText(/未实测/), null)
+  assert.ok(screen.getByText('账号目录可见'))
   assert.ok(screen.getByText('真实调用已验证'))
   const catalogCard = screen.getAllByText('Catalog Only').at(-1)?.closest('button')
   assert.ok(catalogCard)
@@ -568,4 +569,45 @@ test('opening the reference gallery does not queue a delayed reset after paginat
   await act(async () => { await new Promise((resolve) => setTimeout(resolve, 350)) })
   assert.ok(screen.getByText('竞态第二页'))
   assert.deepEqual(requests, [2])
+})
+
+test('ordinary mode offers only complete providers', async () => {
+  const { default: ModelRoutingSettings } = await import('../src/components/ModelRoutingSettings.jsx')
+  const { PROVIDERS } = await import('../src/constants.js')
+  const modelRegistry = { routeContractVersion: 1, providers: {
+    xai: { defaults: { main: 'grok-4.6', image: 'grok-imagine-image-2.0', vision: 'grok-4.6' }, models: [] },
+    anthropic: { defaults: { main: 'claude-fable-5-1', image: '', vision: 'claude-fable-5-1' }, models: [] },
+    recraft: { defaults: { main: '', image: 'recraftv4_1', vision: '' }, models: [] },
+  } }
+  const { container } = render(React.createElement(ModelRoutingSettings, {
+    configurationMode: 'simple', simpleProvider: 'xai', modelRegistry, providerConfigs: PROVIDERS,
+    credentialProviders: [], apiKeys: {}, arkProbes: [], arkVerification: {},
+  }))
+  assert.ok(screen.getByRole('button', { name: 'xAI' }))
+  assert.equal(screen.queryByRole('button', { name: 'Anthropic Claude' }), null)
+  assert.equal(screen.queryByRole('button', { name: 'Recraft' }), null)
+  assert.equal(screen.queryByRole('button', { name: 'DeepSeek' }), null)
+  assert.doesNotMatch(container.textContent, /未实测/)
+})
+
+test('professional model picker selects native vector routes and hides text-only channels for the image role', async () => {
+  const user = userEvent.setup()
+  const choices = []
+  render(React.createElement(ModelPicker, {
+    label: '图像生成模型', role: 'image', outputFormat: 'svg',
+    route: { accessProvider: 'recraft', modelId: 'recraftv4_1_vector' },
+    onRouteChange: (route) => choices.push(route),
+    providerConfigs: { recraft: { label: 'Recraft' }, anthropic: { label: 'Anthropic Claude' } },
+    registry: { providers: {
+      recraft: { accessKind: 'direct', models: [{ id: 'recraftv4_1_vector', label: 'Recraft V4.1 Vector', vendor: 'Recraft', roles: ['image'], selectable: true, verificationState: 'catalog', capabilities: { outputFormats: ['png', 'svg'] } }] },
+      anthropic: { accessKind: 'direct', models: [{ id: 'claude-fable-5-1', label: 'Claude Fable 5.1', roles: ['main', 'vision'], selectable: true }] },
+    } },
+  }))
+  await user.click(screen.getByRole('button', { name: '图像生成模型' }))
+  assert.ok(screen.getByRole('button', { name: 'Recraft' }))
+  assert.equal(screen.queryByRole('button', { name: 'Anthropic Claude' }), null)
+  const option = screen.getAllByText('Recraft V4.1 Vector').map((element) => element.closest('button')).find((button) => button?.classList.contains('model-option'))
+  assert.ok(option)
+  await user.click(option)
+  assert.deepEqual(choices, [{ accessProvider: 'recraft', modelId: 'recraftv4_1_vector' }])
 })

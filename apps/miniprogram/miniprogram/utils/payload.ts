@@ -61,6 +61,7 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
   const taskName = input.categoryId === PLOT_CATEGORY_ID ? 'plot' : 'diagram'
   const maxCriticRounds = input.maxCriticRounds
   const routeRoles = requiredCreateRouteRoles({
+    modelRoutes,
     outputFormat: input.outputFormat,
     taskName,
     pipelineMode,

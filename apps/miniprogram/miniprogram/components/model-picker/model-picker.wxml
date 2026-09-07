@@ -35,7 +35,7 @@
         <input class="model-search" value="{{query}}" placeholder="搜索模型、厂商或能力" bindinput="onSearch" />
         <view class="model-count">{{compatibleModels.length}} 个兼容模型</view>
         <button class="model-row {{item.selected ? 'selected' : ''}}" wx:for="{{visibleCompatibleModels}}" wx:key="id" data-model="{{item.id}}" bindtap="choose">
-          <view class="model-main"><view class="model-name">{{item.label}}</view><view class="model-id">{{item.id}}</view><view class="model-badges"><text class="model-badge" wx:if="{{item.recommended}}">推荐</text><text class="model-badge">{{item.lifecycleText}}</text><text class="model-badge">{{item.verificationText}}</text><text class="model-badge" wx:if="{{item.requiresEntitlement}}">需权益</text></view></view>
+          <view class="model-main"><view class="model-name">{{item.label}}</view><view class="model-id">{{item.id}}</view><view class="model-badges"><text class="model-badge" wx:if="{{item.recommended}}">推荐</text><text class="model-badge">{{item.lifecycleText}}</text><text class="model-badge">{{item.verificationText}}</text><text class="model-badge" wx:if="{{item.requiresEntitlement}}">需权益</text></view><view class="card-note" wx:if="{{item.availabilityNotes}}">{{item.availabilityNotes}}</view></view>
           <view class="model-check">{{item.selected ? '✓' : '›'}}</view>
         </button>
         <button class="model-more" wx:if="{{hasMore}}" bindtap="loadMore">显示更多模型</button>

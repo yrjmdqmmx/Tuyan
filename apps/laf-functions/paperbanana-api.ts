@@ -38,7 +38,7 @@ function isProviderEgressUnavailable(error: any): boolean {
   return error?.code === providerEgressUnavailableCode
 }
 
-type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark'
+type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai'
 type JobStatus = 'queued' | 'running' | 'succeeded' | 'failed'
 type OutputFormat = 'png' | 'svg'
 type TaskName = 'diagram' | 'plot'
@@ -57,8 +57,8 @@ type ModelLifecycle = 'stable' | 'preview' | 'legacy' | 'invite-only' | 'unknown
 type ModelVerificationState = 'registry' | 'catalog' | 'account-visible' | 'inference-verified' | 'unverified'
 type ProviderAccessKind = 'direct' | 'aggregator'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
-type ImageResolution = '1K' | '2K' | '4K'
-type FixedAspectRatio = '1:1' | '3:2' | '2:3' | '4:3' | '3:4' | '16:9' | '9:16' | '21:9' | '1:4' | '4:1'
+type ImageResolution = '512' | '1K' | '2K' | '4K' | 'auto'
+type FixedAspectRatio = '1:1' | '3:2' | '2:3' | '4:3' | '3:4' | '16:9' | '9:16' | '21:9' | '1:4' | '4:1' | '1:2' | '2:1' | '4:5' | '5:4' | '1:8' | '8:1' | '5:2' | '2:5' | '9:21' | '6:10' | '14:10' | '10:14' | '19.5:9' | '9:19.5' | '20:9' | '9:20'
 type AspectRatio = FixedAspectRatio | 'auto'
 type ModelProtocol =
   | 'openai-chat-completions'
@@ -68,22 +68,19 @@ type ModelProtocol =
   | 'gemini-interactions'
   | 'bailian-openai-chat'
   | 'bailian-multimodal-generation'
+  | 'bailian-async-images'
   | 'ark-openai-chat'
   | 'ark-images'
   | 'openrouter-chat-completions'
   | 'openrouter-images'
+  | 'anthropic-messages'
+  | 'provider-images'
 type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
 type FeedbackPlatform = 'web' | 'miniprogram' | 'android' | 'ios' | 'windows' | 'macos' | 'harmony'
 type ClientPlatform = 'web' | 'miniprogram' | 'android' | 'ios' | 'windows' | 'macos' | 'harmony'
 type InputOptimizationTarget = 'methodContent' | 'caption' | 'negativePrompt'
 
-type ApiKeys = {
-  openrouter?: string
-  gemini?: string
-  openai?: string
-  bailian?: string
-  ark?: string
-}
+type ApiKeys = Partial<Record<Provider, string>>
 
 type CreateJobBody = {
   action: 'createJob'
@@ -236,7 +233,7 @@ export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBod
 
 const routeContractVersion = 1 as const
 const modelIdMaxLength = 120
-const recognizedRouteProviders = new Set<Provider>(['openrouter', 'gemini', 'openai', 'bailian', 'ark'])
+const recognizedRouteProviders = new Set<Provider>(['openrouter', 'gemini', 'openai', 'bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'])
 
 function modelRouteError(message: string, businessCode = 'MODEL_ROUTE_INVALID') {
   const error: any = new Error(message)
@@ -336,8 +333,8 @@ export function requiredCreateRouteRoles(body: Record<string, any>, maxCriticRou
   const outputFormat = normalizeOutputFormat(body.outputFormat || body.output_format)
   const taskName = normalizeTaskName(body.taskName)
   const pipelineMode = body.pipelineMode || 'planner_critic'
-  if (outputFormat === 'svg' || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
-  if (outputFormat === 'png' && taskName !== 'plot') roles.push('image')
+  if ((outputFormat === 'svg' && !nativeRecraftVectorRoute(body)) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
+  if ((outputFormat === 'png' || nativeRecraftVectorRoute(body)) && taskName !== 'plot') roles.push('image')
   if (taskName === 'plot' && (body.imageSize === '2K' || body.imageSize === '4K') && body.imageRefineMode === 'direct-edit') roles.push('image')
   if ((body.referenceImages || []).length) roles.push(body.referenceImageModeUsed === 'main_model' ? 'main' : 'vision')
   if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
@@ -703,6 +700,11 @@ type ModelRegistryEntry = {
   verificationState: ModelVerificationState
   selectable: boolean
   releasedAt: string | null
+  expirationDate?: string | null
+  earliestRetirementDate?: string | null
+  replacementModelId?: string
+  regions?: string[]
+  roleProtocols?: Partial<Record<ModelRole, ModelProtocol>>
   officialSourceUrl: string
   disabledReason?: string
   roles: ModelRole[]
@@ -717,6 +719,9 @@ type ModelRegistryEntry = {
     refineAspectRatios: FixedAspectRatio[]
     resolutions?: string[]
     outputFormats?: string[]
+    maxReferenceImages?: number
+    providerMaxReferenceImages?: number
+    requiresSourceImage?: boolean
   }
   protocol: ModelProtocol
   availabilityNotes: string
@@ -860,6 +865,7 @@ type OpenRouterCatalogModel = {
   inputModalities: string[]
   outputModalities: string[]
   supportedParameters: any
+  expirationDate: string | null
 }
 let openRouterModelCache: { expiresAt: number; models: Map<string, OpenRouterCatalogModel> } | null = null
 let accountDeletionSweepPromise: Promise<void> | null = null
@@ -885,7 +891,7 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-08-21.v9'
+const modelRegistryVersion = '2026-09-07.v12'
 const inputOptimizationContractVersion = 1 as const
 const inputOptimizationTimeoutMs = 45_000
 const inputOptimizationLimits: Record<InputOptimizationTarget, number> = {
@@ -894,9 +900,10 @@ const inputOptimizationLimits: Record<InputOptimizationTarget, number> = {
   negativePrompt: 1_000,
 }
 const referenceCorpusVersion = 'zh-CN.v2'
-const canonicalImageResolutions: ImageResolution[] = ['1K', '2K', '4K']
+const canonicalImageResolutions: ImageResolution[] = ['512', '1K', '2K', '4K', 'auto']
 const canonicalFixedAspectRatios: FixedAspectRatio[] = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1']
-const canonicalAspectRatioSet = new Set<string>(canonicalFixedAspectRatios)
+const allFixedAspectRatios: FixedAspectRatio[] = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20']
+const canonicalAspectRatioSet = new Set<string>(allFixedAspectRatios)
 const commonImageAspectRatios = canonicalFixedAspectRatios.slice(0, 8)
 const openAiImageAspectRatios: FixedAspectRatio[] = ['1:1', '3:2', '2:3']
 const arkConservativeAspectRatios: FixedAspectRatio[] = ['16:9']
@@ -908,14 +915,15 @@ function canonicalRefineResolutions(values: unknown): ImageResolution[] {
 
 function canonicalAspectRatios(values: unknown): FixedAspectRatio[] {
   const declared = new Set(Array.isArray(values) ? values.map(String) : [])
-  return canonicalFixedAspectRatios.filter((value) => declared.has(value))
+  return allFixedAspectRatios.filter((value) => declared.has(value))
 }
 
 type RegistryEntryMetadata = Partial<Pick<
   ModelRegistryEntry,
   'vendor' | 'lifecycle' | 'recommended' | 'requiresEntitlement' | 'entitlement' |
   'inputModalities' | 'outputModalities' | 'verified' | 'verificationState' | 'selectable' | 'releasedAt' |
-  'officialSourceUrl' | 'disabledReason' | 'roleReasons'
+  'officialSourceUrl' | 'disabledReason' | 'roleReasons' | 'expirationDate' | 'earliestRetirementDate' |
+  'replacementModelId' | 'regions' | 'roleProtocols'
 >>
 
 function officialSourceUrlForProtocol(protocol: ModelProtocol) {
@@ -964,6 +972,11 @@ function registryEntry(
     verificationState: metadata.verificationState || (metadata.verified === false ? 'unverified' : 'registry'),
     selectable: metadata.selectable !== false,
     releasedAt: metadata.releasedAt ?? null,
+    expirationDate: metadata.expirationDate ?? null,
+    earliestRetirementDate: metadata.earliestRetirementDate ?? null,
+    ...(metadata.replacementModelId ? { replacementModelId: metadata.replacementModelId } : {}),
+    ...(metadata.regions ? { regions: metadata.regions } : {}),
+    roleProtocols: metadata.roleProtocols || Object.fromEntries(roles.map((role) => [role, protocol])),
     officialSourceUrl: metadata.officialSourceUrl || officialSourceUrlForProtocol(protocol),
     ...(metadata.disabledReason ? { disabledReason: metadata.disabledReason } : {}),
     roles,
@@ -971,6 +984,7 @@ function registryEntry(
     protocol,
     availabilityNotes,
     capabilities: {
+      maxReferenceImages: imageEditing ? 1 : referenceImages ? 3 : 0,
       referenceImages,
       imageGeneration,
       imageEditing,
@@ -984,12 +998,78 @@ function registryEntry(
 }
 
 const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModelRegistry> = {
+  deepseek: {
+    accessKind: 'direct', routeContractVersion, accountCatalogRequired: false,
+    defaults: {"main": "deepseek-v4-pro", "image": "", "vision": "deepseek-v4-flash-vision-exp"},
+    models: [
+      registryEntry("deepseek-v4-pro", "DeepSeek V4 Pro", ["main"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "DeepSeek", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://api-docs.deepseek.com/guides/vision/"}),
+      registryEntry("deepseek-v4-flash", "DeepSeek V4 Flash", ["main"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "DeepSeek", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://api-docs.deepseek.com/guides/vision/"}),
+      registryEntry("deepseek-v4-flash-vision-exp", "DeepSeek V4 Flash Vision Experimental", ["main", "vision"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "DeepSeek", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://api-docs.deepseek.com/guides/vision/", "lifecycle": "preview"}),
+    ],
+  },
+  kimi: {
+    accessKind: 'direct', routeContractVersion, accountCatalogRequired: false,
+    defaults: {"main": "kimi-k3", "image": "", "vision": "kimi-k3"},
+    models: [
+      registryEntry("kimi-k3", "Kimi K3", ["main", "vision"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "Moonshot", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.kimi.com/docs/get-api-key"}),
+      registryEntry("kimi-k2.7-code", "Kimi K2.7 Code", ["main", "vision"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "Moonshot", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.kimi.com/docs/get-api-key"}),
+      registryEntry("kimi-k2.7-code-highspeed", "Kimi K2.7 Code Highspeed", ["main", "vision"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "Moonshot", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.kimi.com/docs/get-api-key"}),
+      registryEntry("kimi-k2.6", "Kimi K2.6", ["main", "vision"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "Moonshot", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.kimi.com/docs/get-api-key"}),
+    ],
+  },
+  zhipu: {
+    accessKind: 'direct', routeContractVersion, accountCatalogRequired: false,
+    defaults: {"main": "glm-5.2", "image": "glm-image", "vision": "glm-5v-turbo"},
+    models: [
+      registryEntry("glm-5.2", "GLM 5.2", ["main"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "Zhipu", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"}),
+      registryEntry("glm-5v-turbo", "GLM 5V Turbo", ["main", "vision"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "Zhipu", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview"}),
+      registryEntry("glm-image", "GLM Image", ["image"], "provider-images", "Official API documentation", {"referenceImages": false, "imageEditing": false, "resolutions": ["1K", "2K"], "refineResolutions": [], "aspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16"], "refineAspectRatios": [], "outputFormats": ["png"]}, {"vendor": "Zhipu", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.bigmodel.cn/api-reference/模型-api/图像生成"}),
+    ],
+  },
+  siliconflow: {
+    accessKind: 'aggregator', routeContractVersion, accountCatalogRequired: false,
+    defaults: {"main": "Pro/moonshotai/Kimi-K2.6", "image": "Qwen/Qwen-Image", "vision": "Pro/moonshotai/Kimi-K2.6"},
+    models: [
+      registryEntry("Pro/moonshotai/Kimi-K2.6", "Kimi K2.6", ["main", "vision"], "openai-chat-completions", "Official API documentation", {}, {"vendor": "Moonshot", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.siliconflow.cn/docs/userguide/capabilities/vision"}),
+      registryEntry("Qwen/Qwen-Image", "Qwen Image", ["image"], "provider-images", "Official API documentation", {"referenceImages": false, "imageEditing": false, "resolutions": ["1K"], "refineResolutions": [], "aspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16"], "refineAspectRatios": [], "outputFormats": ["png"]}, {"vendor": "Alibaba Qwen", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.siliconflow.cn/docs/api/images-generations-post"}),
+      registryEntry("Kwai-Kolors/Kolors", "Kolors", ["image"], "provider-images", "Official API documentation", {"referenceImages": true, "imageEditing": true, "resolutions": ["1K"], "refineResolutions": ["1K"], "aspectRatios": ["1:1", "3:4", "9:16"], "refineAspectRatios": ["1:1", "3:4", "9:16"], "outputFormats": ["png"]}, {"vendor": "Kwai", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.siliconflow.cn/docs/api/images-generations-post"}),
+    ],
+  },
+  anthropic: {
+    accessKind: 'direct', routeContractVersion, accountCatalogRequired: false,
+    defaults: {"main": "claude-fable-5-1", "image": "", "vision": "claude-fable-5-1"},
+    models: [
+      registryEntry("claude-fable-5-1", "Claude Fable 5.1", ["main", "vision"], "anthropic-messages", "Official API documentation", {}, {"vendor": "Anthropic", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"}),
+      registryEntry("claude-opus-5", "Claude Opus 5", ["main", "vision"], "anthropic-messages", "Official API documentation", {}, {"vendor": "Anthropic", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"}),
+      registryEntry("claude-sonnet-5", "Claude Sonnet 5", ["main", "vision"], "anthropic-messages", "Official API documentation", {}, {"vendor": "Anthropic", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"}),
+      registryEntry("claude-haiku-4-5-20251001", "Claude Haiku 4.5", ["main", "vision"], "anthropic-messages", "Official API documentation", {}, {"vendor": "Anthropic", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://platform.claude.com/docs/en/models/overview"}),
+    ],
+  },
+  recraft: {
+    accessKind: 'direct', routeContractVersion, accountCatalogRequired: false,
+    defaults: {"main": "", "image": "recraftv4_1", "vision": ""},
+    models: [
+      registryEntry("recraftv4_1", "Recraft V4.1", ["image"], "provider-images", "Official API documentation", {"referenceImages": true, "imageEditing": true, "resolutions": ["1K"], "refineResolutions": ["1K"], "aspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16"], "refineAspectRatios": [], "outputFormats": ["png"]}, {"vendor": "Recraft", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/endpoints"}),
+      registryEntry("recraftv4_1_pro", "Recraft V4.1 Pro", ["image"], "provider-images", "Official API documentation", {"referenceImages": true, "imageEditing": true, "resolutions": ["2K"], "refineResolutions": ["2K"], "aspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16"], "refineAspectRatios": [], "outputFormats": ["png"]}, {"vendor": "Recraft", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/endpoints"}),
+      registryEntry("recraftv4_1_vector", "Recraft V4.1 Vector", ["image"], "provider-images", "Official API documentation", {"referenceImages": true, "imageEditing": true, "resolutions": ["1K"], "refineResolutions": ["1K"], "aspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16"], "refineAspectRatios": [], "outputFormats": ["png", "svg"]}, {"vendor": "Recraft", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/endpoints"}),
+      registryEntry("recraftv4_1_pro_vector", "Recraft V4.1 Pro Vector", ["image"], "provider-images", "Official API documentation", {"referenceImages": true, "imageEditing": true, "resolutions": ["2K"], "refineResolutions": ["2K"], "aspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16"], "refineAspectRatios": [], "outputFormats": ["png", "svg"]}, {"vendor": "Recraft", "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/endpoints"}),
+    ],
+  },
+  xai: {
+    accessKind: 'direct', routeContractVersion, accountCatalogRequired: false,
+    defaults: {"main": "grok-4.6", "image": "grok-imagine-image-2.0", "vision": "grok-4.6"},
+    models: [
+      registryEntry("grok-4.6", "Grok 4.6", ["main", "vision"], "openai-responses", "Official API documentation", {}, {"vendor": "xAI", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.x.ai/developers/models/grok-4.6"}),
+      registryEntry("grok-imagine-image-2.0", "Grok Imagine Image 2.0", ["image"], "provider-images", "Official API documentation", {"referenceImages": true, "imageEditing": true, "resolutions": ["1K", "2K"], "refineResolutions": ["1K", "2K"], "aspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16", "21:9"], "refineAspectRatios": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16", "21:9"], "outputFormats": ["png"]}, {"vendor": "xAI", "recommended": true, "verified": false, "verificationState": "catalog", "officialSourceUrl": "https://docs.x.ai/developers/model-capabilities/images/generation"}),
+    ],
+  },
   gemini: {
     accessKind: 'direct',
     routeContractVersion,
     accountCatalogRequired: false,
     defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
     models: [
+      registryEntry('gemini-3.8-flash', 'Gemini 3.8 Flash', ['main', 'vision'], 'gemini-generate-content', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Google', verified: false, verificationState: 'catalog', releasedAt: '2026-09-02', officialSourceUrl: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash' }),
       registryEntry('gemini-3.7-flash', 'Gemini 3.7 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable; recommended Gemini text and vision model', {}, { vendor: 'Google', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.6-flash', 'Gemini 3.6 Flash', ['main', 'vision'], 'gemini-generate-content', 'Previous stable Gemini Flash model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('gemini-3.5-flash', 'Gemini 3.5 Flash', ['main', 'vision'], 'gemini-generate-content', 'Stable frontier Flash model', {}, { vendor: 'Google', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
@@ -1012,7 +1092,16 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
     accountCatalogRequired: true,
     defaults: { main: 'qwen3.8-max', image: 'wan2.7-image-pro', vision: 'qwen3.7-plus' },
     models: [
-      registryEntry('qwen3.8-max', 'Qwen3.8 Max', ['main'], 'bailian-openai-chat', 'Stable main model; access varies by account, workspace, and region', {}, { vendor: 'Alibaba Qwen', recommended: true, requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('qwen3.8-max-0902', 'Qwen3.8 Max 0902', ['main', 'vision'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Alibaba Qwen', verified: false, verificationState: 'catalog', releasedAt: '2026-09-02', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('qwen3.8-flash', 'Qwen3.8 Flash', ['main', 'vision'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Alibaba Qwen', verified: false, verificationState: 'catalog', releasedAt: '2026-08-26', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('qwen3.8-27b', 'Qwen3.8 27B', ['main', 'vision'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Alibaba Qwen', verified: false, verificationState: 'catalog', releasedAt: '2026-08-17', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('qwen3.8-2.4t-a95b', 'Qwen3.8 2.4T A95B', ['main'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Alibaba Qwen', verified: false, verificationState: 'catalog', releasedAt: '2026-08-12', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('deepseek-v4-pro-0813', 'DeepSeek V4 Pro 0813', ['main'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'DeepSeek', verified: false, verificationState: 'catalog', releasedAt: '2026-08-14', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('deepseek-v4-flash-0731', 'DeepSeek V4 Flash 0731', ['main'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'DeepSeek', verified: false, verificationState: 'catalog', releasedAt: '2026-08-01', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('ZHIPU/GLM-5.3', 'GLM 5.3', ['main'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Zhipu', verified: false, verificationState: 'catalog', releasedAt: '2026-08-17', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('ZHIPU/GLM-5.3-Flash', 'GLM 5.3 Flash', ['main', 'vision'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Zhipu', verified: false, verificationState: 'catalog', releasedAt: '2026-08-31', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('kimi-k3', 'Kimi K3 (Bailian hosted)', ['main', 'vision'], 'bailian-openai-chat', 'Official model documentation; availability varies by account and region', {}, { vendor: 'Moonshot AI', verified: false, verificationState: 'catalog', releasedAt: '2026-08-19', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models', requiresEntitlement: true, entitlement: 'workspace-access' }),
+      registryEntry('qwen3.8-max', 'Qwen3.8 Max', ['main', 'vision'], 'bailian-openai-chat', 'Documented text and vision model; availability varies by account and region', {}, { vendor: 'Alibaba Qwen', recommended: true, requiresEntitlement: true, entitlement: 'workspace-access', verified: false, verificationState: 'catalog', releasedAt: '2026-08-02', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/newly-released-models' }),
       registryEntry('qwen3.7-plus', 'Qwen3.7 Plus', ['main', 'vision'], 'bailian-openai-chat', 'Stable visual model; recommended default', {}, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('qwen3.7-flash', 'Qwen3.7 Flash', ['main', 'vision'], 'bailian-openai-chat', 'Stable lower-latency visual model', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['text'] }),
       registryEntry('qwen3.8-max-preview', 'Qwen3.8 Max Preview', ['main'], 'bailian-openai-chat', 'Preview compatibility entry; requires Model Studio Token Plan entitlement', {}, { vendor: 'Alibaba Qwen', lifecycle: 'preview', requiresEntitlement: true, entitlement: 'token-plan' }),
@@ -1024,6 +1113,7 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
       registryEntry('qwen3.5-omni-plus', 'Qwen3.5 Omni Plus', ['vision'], 'bailian-openai-chat', 'Multimodal understanding; Beijing and Singapore', {}, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image', 'audio', 'video'], outputModalities: ['text'] }),
       registryEntry('wan2.7-image-pro', 'Wan 2.7 Image Pro', ['image'], 'bailian-multimodal-generation', 'Recommended; exact custom pixel sizes within the documented 1:8–8:1 range; text-to-image up to 4K and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Wan', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
       registryEntry('wan2.7-image', 'Wan 2.7 Image', ['image'], 'bailian-multimodal-generation', 'Faster Wan 2.7 direct editing; exact custom pixel sizes within the documented 1:8–8:1 range; up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Wan', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
+      registryEntry('qwen-image-3.0', 'Qwen Image 3.0', ['image'], 'bailian-multimodal-generation', 'Official model documentation; availability varies by account and region', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', verified: false, verificationState: 'catalog', releasedAt: '2026-08-04', officialSourceUrl: 'https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference' }),
       registryEntry('qwen-image-3.0-pro', 'Qwen Image 3.0 Pro', ['image'], 'bailian-multimodal-generation', 'Invite-only; documented custom 1:8–8:1 sizes for generation and direct editing up to 2K', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: canonicalFixedAspectRatios, refineAspectRatios: canonicalFixedAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', lifecycle: 'invite-only', requiresEntitlement: true, entitlement: 'invite', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
       registryEntry('qwen-image-2.0-pro', 'Qwen Image 2.0 Pro', ['image'], 'bailian-multimodal-generation', 'Recommended generally available Qwen image model; conservative common exact custom sizes for generation and direct editing', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['image'] }),
       registryEntry('qwen-image-2.0', 'Qwen Image 2.0', ['image'], 'bailian-multimodal-generation', 'Faster Qwen image generation and direct editing; conservative common exact custom sizes', { referenceImages: true, imageEditing: true, resolutions: ['1K', '2K'], refineResolutions: ['1K', '2K'], aspectRatios: commonImageAspectRatios, refineAspectRatios: commonImageAspectRatios, outputFormats: ['png'] }, { vendor: 'Alibaba Qwen', inputModalities: ['text', 'image'], outputModalities: ['image'] }),
@@ -1036,6 +1126,7 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
     accountCatalogRequired: false,
     defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
     models: [
+      registryEntry('gpt-6-astra', 'GPT-6 Astra', ['main', 'vision'], 'openai-responses', 'Official model documentation; availability varies by account and region', {}, { vendor: 'OpenAI', verified: false, verificationState: 'catalog', releasedAt: null, officialSourceUrl: 'https://developers.openai.com/api/docs/models/gpt-6-astra' }),
       registryEntry('gpt-5.6-sol', 'GPT-5.6 Sol', ['main', 'vision'], 'openai-chat-completions', 'Current flagship model', {}, { vendor: 'OpenAI', recommended: true, inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
       registryEntry('gpt-5.6-terra', 'GPT-5.6 Terra', ['main', 'vision'], 'openai-chat-completions', 'Current balanced model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
       registryEntry('gpt-5.6-luna', 'GPT-5.6 Luna', ['main', 'vision'], 'openai-chat-completions', 'Current cost-sensitive model', {}, { vendor: 'OpenAI', inputModalities: ['text', 'image'], outputModalities: ['text'], releasedAt: '2026-07-09' }),
@@ -1353,6 +1444,244 @@ const staticModelRegistry: Record<Exclude<Provider, 'openrouter'>, ProviderModel
   },
 }
 
+function upsertAuditedModel(provider: Exclude<Provider, 'openrouter'>, entry: ModelRegistryEntry) {
+  const registry = staticModelRegistry[provider]
+  const index = registry.models.findIndex((model) => model.id === entry.id)
+  if (index < 0) registry.models.push(entry)
+  else registry.models[index] = entry
+}
+
+// BEGIN GENERATED AUDITED CATALOG
+// Source: config/model-catalog-updates.json; run node scripts/sync-model-catalog.mjs.
+upsertAuditedModel('zhipu', registryEntry("glm-5.3", "glm-5.3", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-5.1", "glm-5.1", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-5-turbo", "glm-5-turbo", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-5", "glm-5", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.7", "glm-4.7", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.7-flashx", "glm-4.7-flashx", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.7-flash", "glm-4.7-flash", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.6", "glm-4.6", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.5-air", "glm-4.5-air", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.5-airx", "glm-4.5-airx", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.5-flash", "glm-4.5-flash", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4-flash-250414", "glm-4-flash-250414", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4-flashx-250414", "glm-4-flashx-250414", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4-long", "glm-4-long", ["main"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-5.3-flash", "glm-5.3-flash", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.6v", "glm-4.6v", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.6v-flash", "glm-4.6v-flash", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.1v-thinking-flashx", "glm-4.1v-thinking-flashx", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.1v-thinking-flash", "glm-4.1v-thinking-flash", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4v-flash", "glm-4v-flash", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("glm-4.6v-flashx", "glm-4.6v-flashx", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview"}))
+upsertAuditedModel('zhipu', registryEntry("cogview-4-250304", "cogview-4-250304", ["image"], "provider-images", "官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('zhipu', registryEntry("cogview-4", "cogview-4", ["image"], "provider-images", "官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('zhipu', registryEntry("cogview-3-flash", "cogview-3-flash", ["image"], "provider-images", "官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Zhipu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('zhipu', registryEntry("glm-image", "GLM Image", ["image"], "provider-images", "尺寸按 GLM-Image 的 32 像素对齐、推荐边长范围和总像素上限构造。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Zhipu","recommended":true,"verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.bigmodel.cn/cn/guide/start/model-overview","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('siliconflow', registryEntry("zai-org/GLM-5.3", "zai-org/GLM-5.3", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"zai-org","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("deepseek-ai/DeepSeek-V4-Flash", "deepseek-ai/DeepSeek-V4-Flash", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Pro/zai-org/GLM-5.1", "Pro/zai-org/GLM-5.1", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Pro","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("baidu/ERNIE-Image-Turbo", "baidu/ERNIE-Image-Turbo", ["image"], "provider-images", "硅基流动中国站；账号需完成实名。中国站 Images API；当前渠道文档只足以确认 1024x1024 请求，不继承原厂或其他托管渠道的分辨率范围。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1"],"refineAspectRatios":["1:1"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"baidu","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"],"inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('siliconflow', registryEntry("meituan-longcat/LongCat-2.0", "meituan-longcat/LongCat-2.0", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"meituan-longcat","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3.6-35B-A3B", "Qwen/Qwen3.6-35B-A3B", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3.6-27B", "Qwen/Qwen3.6-27B", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("deepseek-ai/DeepSeek-V4-Pro", "deepseek-ai/DeepSeek-V4-Pro", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("moonshotai/Kimi-K2.7-Code", "moonshotai/Kimi-K2.7-Code", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"moonshotai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("zai-org/GLM-5.2", "zai-org/GLM-5.2", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"zai-org","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Tongyi-MAI/Z-Image", "Tongyi-MAI/Z-Image", ["image"], "provider-images", "硅基流动中国站；账号需完成实名。中国站 Images API；当前渠道文档只足以确认 1024x1024 请求，不继承原厂或其他托管渠道的分辨率范围。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1"],"refineAspectRatios":["1:1"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Tongyi-MAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"],"inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('siliconflow', registryEntry("Tongyi-MAI/Z-Image-Turbo", "Tongyi-MAI/Z-Image-Turbo", ["image"], "provider-images", "硅基流动中国站；账号需完成实名。中国站 Images API；当前渠道文档只足以确认 1024x1024 请求，不继承原厂或其他托管渠道的分辨率范围。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1"],"refineAspectRatios":["1:1"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Tongyi-MAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"],"inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('siliconflow', registryEntry("stepfun-ai/Step-3.5-Flash", "stepfun-ai/Step-3.5-Flash", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"stepfun-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3.5-35B-A3B", "Qwen/Qwen3.5-35B-A3B", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-4B", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3.5-9B", "Qwen/Qwen3.5-9B", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3.5-27B", "Qwen/Qwen3.5-27B", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3.5-122B-A10B", "Qwen/Qwen3.5-122B-A10B", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("deepseek-ai/DeepSeek-V3.2", "deepseek-ai/DeepSeek-V3.2", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen-Image-Edit", "Qwen/Qwen-Image-Edit", ["image"], "provider-images", "硅基流动中国站；账号需完成实名。仅图像编辑，必须有源图；接口不支持 image_size，输出尺寸由源图和模型决定。", {"imageGeneration":false,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["auto"],"refineResolutions":["auto"],"aspectRatios":[],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1,"requiresSourceImage":true}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"],"inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen-Image-Edit-2509", "Qwen/Qwen-Image-Edit-2509", ["image"], "provider-images", "硅基流动中国站；账号需完成实名。仅图像编辑，必须有源图；接口不支持 image_size，输出尺寸由源图和模型决定。", {"imageGeneration":false,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["auto"],"refineResolutions":["auto"],"aspectRatios":[],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":3,"requiresSourceImage":true}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"],"inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('siliconflow', registryEntry("inclusionAI/Ling-mini-2.0", "inclusionAI/Ling-mini-2.0", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"inclusionAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("inclusionAI/Ling-flash-2.0", "inclusionAI/Ling-flash-2.0", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"inclusionAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Pro/deepseek-ai/DeepSeek-V3", "Pro/deepseek-ai/DeepSeek-V3", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Pro","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Pro/deepseek-ai/DeepSeek-R1", "Pro/deepseek-ai/DeepSeek-R1", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Pro","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Pro/deepseek-ai/DeepSeek-V3.1-Terminus", "Pro/deepseek-ai/DeepSeek-V3.1-Terminus", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Pro","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Pro/deepseek-ai/DeepSeek-V3.2", "Pro/deepseek-ai/DeepSeek-V3.2", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Pro","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-8B", "Qwen/Qwen3-8B", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-VL-32B-Thinking", "Qwen/Qwen3-VL-32B-Thinking", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-VL-32B-Instruct", "Qwen/Qwen3-VL-32B-Instruct", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("deepseek-ai/DeepSeek-V3.1-Terminus", "deepseek-ai/DeepSeek-V3.1-Terminus", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-VL-8B-Instruct", "Qwen/Qwen3-VL-8B-Instruct", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-VL-8B-Thinking", "Qwen/Qwen3-VL-8B-Thinking", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-VL-30B-A3B-Instruct", "Qwen/Qwen3-VL-30B-A3B-Instruct", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-VL-30B-A3B-Thinking", "Qwen/Qwen3-VL-30B-A3B-Thinking", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-Omni-30B-A3B-Instruct", "Qwen/Qwen3-Omni-30B-A3B-Instruct", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-Omni-30B-A3B-Thinking", "Qwen/Qwen3-Omni-30B-A3B-Thinking", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("deepseek-ai/DeepSeek-V3", "deepseek-ai/DeepSeek-V3", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("deepseek-ai/DeepSeek-R1", "deepseek-ai/DeepSeek-R1", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("ByteDance-Seed/Seed-OSS-36B-Instruct", "ByteDance-Seed/Seed-OSS-36B-Instruct", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"ByteDance-Seed","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("zai-org/GLM-4.5V", "zai-org/GLM-4.5V", ["main","vision"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"zai-org","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-Coder-30B-A3B-Instruct", "Qwen/Qwen3-Coder-30B-A3B-Instruct", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("zai-org/GLM-4.5-Air", "zai-org/GLM-4.5-Air", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"zai-org","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-30B-A3B-Instruct-2507", "Qwen/Qwen3-30B-A3B-Instruct-2507", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("tencent/Hunyuan-A13B-Instruct", "tencent/Hunyuan-A13B-Instruct", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"tencent","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-32B", "Qwen/Qwen3-32B", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen3-14B", "Qwen/Qwen3-14B", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("deepseek-ai/DeepSeek-R1-0528-Qwen3-8B", "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek-ai","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("THUDM/GLM-Z1-9B-0414", "THUDM/GLM-Z1-9B-0414", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"THUDM","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen2.5-7B-Instruct", "Qwen/Qwen2.5-7B-Instruct", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen2.5-32B-Instruct", "Qwen/Qwen2.5-32B-Instruct", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen2.5-72B-Instruct", "Qwen/Qwen2.5-72B-Instruct", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("THUDM/GLM-4-9B-0414", "THUDM/GLM-4-9B-0414", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"THUDM","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("THUDM/GLM-4-32B-0414", "THUDM/GLM-4-32B-0414", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"THUDM","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Qwen/Qwen2.5-72B-Instruct-128K", "Qwen/Qwen2.5-72B-Instruct-128K", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('siliconflow', registryEntry("Pro/Qwen/Qwen2.5-7B-Instruct", "Pro/Qwen/Qwen2.5-7B-Instruct", ["main"], "openai-chat-completions", "硅基流动中国站；账号需完成实名。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Pro","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.siliconflow.cn/models","regions":["cn"]}))
+upsertAuditedModel('anthropic', registryEntry("claude-fable-5", "claude-fable-5", ["main","vision"], "anthropic-messages", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Anthropic","verified":false,"verificationState":"catalog","officialSourceUrl":"https://platform.claude.com/docs/en/models/overview"}))
+upsertAuditedModel('anthropic', registryEntry("claude-opus-4-8", "claude-opus-4-8", ["main","vision"], "anthropic-messages", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Anthropic","verified":false,"verificationState":"catalog","officialSourceUrl":"https://platform.claude.com/docs/en/models/overview"}))
+upsertAuditedModel('anthropic', registryEntry("claude-opus-4-7", "claude-opus-4-7", ["main","vision"], "anthropic-messages", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Anthropic","verified":false,"verificationState":"catalog","officialSourceUrl":"https://platform.claude.com/docs/en/models/overview"}))
+upsertAuditedModel('anthropic', registryEntry("claude-opus-4-6", "claude-opus-4-6", ["main","vision"], "anthropic-messages", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Anthropic","verified":false,"verificationState":"catalog","officialSourceUrl":"https://platform.claude.com/docs/en/models/overview"}))
+upsertAuditedModel('anthropic', registryEntry("claude-opus-4-5-20251101", "claude-opus-4-5-20251101", ["main","vision"], "anthropic-messages", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Anthropic","verified":false,"verificationState":"catalog","officialSourceUrl":"https://platform.claude.com/docs/en/models/overview"}))
+upsertAuditedModel('anthropic', registryEntry("claude-sonnet-4-6", "claude-sonnet-4-6", ["main","vision"], "anthropic-messages", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Anthropic","verified":false,"verificationState":"catalog","officialSourceUrl":"https://platform.claude.com/docs/en/models/overview"}))
+upsertAuditedModel('anthropic', registryEntry("claude-sonnet-4-5-20250929", "claude-sonnet-4-5-20250929", ["main","vision"], "anthropic-messages", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Anthropic","verified":false,"verificationState":"catalog","officialSourceUrl":"https://platform.claude.com/docs/en/models/overview"}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1_utility", "recraftv4_1_utility", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1_utility_vector", "recraftv4_1_utility_vector", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png","svg"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1_utility_pro", "recraftv4_1_utility_pro", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["2K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1_utility_pro_vector", "recraftv4_1_utility_pro_vector", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["2K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png","svg"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4", "recraftv4", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_vector", "recraftv4_vector", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png","svg"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_pro", "recraftv4_pro", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["2K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_pro_vector", "recraftv4_pro_vector", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["2K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png","svg"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv3", "recraftv3", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv3_vector", "recraftv3_vector", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png","svg"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv2", "recraftv2", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv2_vector", "recraftv2_vector", ["image"], "provider-images", "原生 SVG 保留矢量；PNG 按模型原生分辨率输出。编辑尺寸由源图和厂商决定。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"outputFormats":["png","svg"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1", "Recraft V4.1", ["image"], "provider-images", "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","recommended":true,"verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1_vector", "Recraft V4.1 Vector", ["image"], "provider-images", "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png","svg"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","recommended":false,"inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1_pro", "Recraft V4.1 Pro", ["image"], "provider-images", "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["2K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","recommended":false,"inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('recraft', registryEntry("recraftv4_1_pro_vector", "Recraft V4.1 Pro Vector", ["image"], "provider-images", "原生 SVG 或归一化 PNG；编辑保留源图构图，厂商决定尺寸，不发送无效的尺寸选择。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["2K"],"refineResolutions":["auto"],"aspectRatios":["1:1","2:1","1:2","3:2","2:3","4:3","3:4","5:4","4:5","6:10","14:10","10:14","16:9","9:16"],"refineAspectRatios":[],"outputFormats":["png","svg"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Recraft","verified":false,"verificationState":"catalog","officialSourceUrl":"https://www.recraft.ai/docs/api-reference/appendix","recommended":false,"inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('xai', registryEntry("grok-4.5", "grok-4.5", ["main","vision"], "openai-responses", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"xAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.x.ai/developers/models"}))
+upsertAuditedModel('xai', registryEntry("grok-4.3", "grok-4.3", ["main","vision"], "openai-responses", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"xAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.x.ai/developers/models"}))
+upsertAuditedModel('xai', registryEntry("grok-4.20-0309-reasoning", "grok-4.20-0309-reasoning", ["main","vision"], "openai-responses", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"xAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.x.ai/developers/models"}))
+upsertAuditedModel('xai', registryEntry("grok-4.20-0309-non-reasoning", "grok-4.20-0309-non-reasoning", ["main","vision"], "openai-responses", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"xAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.x.ai/developers/models"}))
+upsertAuditedModel('xai', registryEntry("grok-imagine-image", "grok-imagine-image", ["image"], "provider-images", "官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","16:9","9:16","4:3","3:4","3:2","2:3","2:1","1:2","19.5:9","9:19.5","20:9","9:20"],"refineAspectRatios":["1:1","16:9","9:16","4:3","3:4","3:2","2:3","2:1","1:2","19.5:9","9:19.5","20:9","9:20"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":3}, {"vendor":"xAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.x.ai/developers/models","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('xai', registryEntry("grok-imagine-image-2.0", "Grok Imagine Image 2.0", ["image"], "provider-images", "官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","16:9","9:16","4:3","3:4","3:2","2:3","2:1","1:2","19.5:9","9:19.5","20:9","9:20","21:9","5:2"],"refineAspectRatios":["1:1","16:9","9:16","4:3","3:4","3:2","2:3","2:1","1:2","19.5:9","9:19.5","20:9","9:20","21:9","5:2"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":5}, {"vendor":"xAI","recommended":true,"verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.x.ai/developers/models","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('gemini', registryEntry("gemini-3.1-flash-image", "Nano Banana 2", ["image"], "gemini-interactions", "官方 512 / 1K / 2K / 4K；支持该型号的 14 种比例。图研精修当前传 1 张源图。", {"referenceImages":true,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","resolutions":["512","1K","2K","4K"],"refineResolutions":["512","1K","2K","4K"],"aspectRatios":["1:1","1:4","1:8","2:3","3:2","3:4","4:1","4:3","4:5","5:4","8:1","9:16","16:9","21:9"],"refineAspectRatios":["1:1","1:4","1:8","2:3","3:2","3:4","4:1","4:3","4:5","5:4","8:1","9:16","16:9","21:9"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":14}, {"vendor":"Google","recommended":true,"inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"catalog"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.7-max", "qwen3.7-max", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.7-max-2026-06-08", "qwen3.7-max-2026-06-08", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.7-max-2026-05-20", "qwen3.7-max-2026-05-20", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.7-max-preview", "qwen3.7-max-preview", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.7-max-2026-05-17", "qwen3.7-max-2026-05-17", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-max", "qwen-max", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.7-plus-2026-05-26", "qwen3.7-plus-2026-05-26", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.6-plus", "qwen3.6-plus", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.6-plus-2026-04-02", "qwen3.6-plus-2026-04-02", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-plus", "qwen3.5-plus", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-plus-2026-04-20", "qwen3.5-plus-2026-04-20", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-plus-2026-02-15", "qwen3.5-plus-2026-02-15", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-plus", "qwen-plus", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-plus-latest", "qwen-plus-latest", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-plus-2025-12-01", "qwen-plus-2025-12-01", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-plus-2025-07-14", "qwen-plus-2025-07-14", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-plus-2025-04-28", "qwen-plus-2025-04-28", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-plus-2025-01-25", "qwen-plus-2025-01-25", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.7-flash-2026-07-15", "qwen3.7-flash-2026-07-15", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.6-flash", "qwen3.6-flash", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.6-flash-2026-04-16", "qwen3.6-flash-2026-04-16", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-flash", "qwen3.5-flash", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-flash-2026-02-23", "qwen3.5-flash-2026-02-23", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-flash", "qwen-flash", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-flash-2025-07-28", "qwen-flash-2025-07-28", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen-long", "qwen-long", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-omni-plus", "Qwen3.5 Omni Plus", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","inputModalities":["text","image","audio","video"],"outputModalities":["text"],"verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","recommended":false,"regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-omni-plus-2026-03-15", "qwen3.5-omni-plus-2026-03-15", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-omni-flash", "qwen3.5-omni-flash", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-omni-flash-2026-03-15", "qwen3.5-omni-flash-2026-03-15", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3-omni-flash", "qwen3-omni-flash", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3-omni-flash-2025-12-01", "qwen3-omni-flash-2025-12-01", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3-omni-flash-2025-09-15", "qwen3-omni-flash-2025-09-15", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3-coder-flash", "qwen3-coder-flash", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3-coder-flash-2025-07-28", "qwen3-coder-flash-2025-07-28", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.6-35b-a3b", "qwen3.6-35b-a3b", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.6-27b", "qwen3.6-27b", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-397b-a17b", "qwen3.5-397b-a17b", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-122b-a10b", "qwen3.5-122b-a10b", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-27b", "qwen3.5-27b", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("qwen3.5-35b-a3b", "qwen3.5-35b-a3b", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("deepseek-r1-distill-qwen-1.5b", "deepseek-r1-distill-qwen-1.5b", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("deepseek-r1-distill-llama-8b", "deepseek-r1-distill-llama-8b", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("deepseek-r1-distill-llama-70b", "deepseek-r1-distill-llama-70b", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"deepseek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("vanchin/deepseek-v3.2-think", "vanchin/deepseek-v3.2-think", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Vanchin · DeepSeek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("vanchin/deepseek-v3.1-terminus", "vanchin/deepseek-v3.1-terminus", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Vanchin · DeepSeek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("vanchin/deepseek-r1", "vanchin/deepseek-r1", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Vanchin · DeepSeek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("vanchin/deepseek-v3", "vanchin/deepseek-v3", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Vanchin · DeepSeek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("vanchin/deepseek-v4-pro", "vanchin/deepseek-v4-pro", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Vanchin · DeepSeek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("vanchin/deepseek-v4-pro-0813", "vanchin/deepseek-v4-pro-0813", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Vanchin · DeepSeek","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("kimi-k2.7-code", "kimi-k2.7-code", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"kimi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("kimi-k2.6", "kimi-k2.6", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"kimi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("kimi-k2.5", "kimi-k2.5", ["main","vision"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"kimi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("kimi/kimi-k2.7-code-highspeed", "kimi/kimi-k2.7-code-highspeed", ["main","vision"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"kimi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("kimi/kimi-k2.7-code", "kimi/kimi-k2.7-code", ["main","vision"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"kimi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("kimi/kimi-k2.6", "kimi/kimi-k2.6", ["main","vision"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"kimi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("kimi/kimi-k2.5", "kimi/kimi-k2.5", ["main","vision"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"kimi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("glm-5.2-fast-preview", "glm-5.2-fast-preview", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"glm","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("glm-5.1", "glm-5.1", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"glm","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("glm-5", "glm-5", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"glm","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("ZHIPU/GLM-5.2", "ZHIPU/GLM-5.2", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"ZHIPU","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("ZHIPU/GLM-5.1", "ZHIPU/GLM-5.1", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"ZHIPU","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("ZHIPU/GLM-5", "ZHIPU/GLM-5", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"ZHIPU","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("MiniMax-M2.5", "MiniMax-M2.5", ["main"], "bailian-openai-chat", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"MiniMax","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access"}))
+upsertAuditedModel('bailian', registryEntry("MiniMax/MiniMax-M2.7", "MiniMax/MiniMax-M2.7", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"MiniMax","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("MiniMax/MiniMax-M2.5", "MiniMax/MiniMax-M2.5", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"MiniMax","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("MiniMax/MiniMax-M2.1", "MiniMax/MiniMax-M2.1", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"MiniMax","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("xiaomi/mimo-v2.5-pro", "xiaomi/mimo-v2.5-pro", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"xiaomi","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("stepfun/step-3.7-flash", "stepfun/step-3.7-flash", ["main","vision"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"stepfun","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("unisound/unisound-u2", "unisound/unisound-u2", ["main"], "bailian-openai-chat", "北京接入；需在百炼开通对应合作厂商服务。官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"Unisound","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation"}))
+upsertAuditedModel('bailian', registryEntry("qwen-image-2.0-pro-2026-06-22", "qwen-image-2.0-pro-2026-06-22", ["image"], "bailian-multimodal-generation", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":3}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("qwen-image-2.0-pro-2026-04-22", "qwen-image-2.0-pro-2026-04-22", ["image"], "bailian-multimodal-generation", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":3}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("qwen-image-2.0-pro-2026-03-03", "qwen-image-2.0-pro-2026-03-03", ["image"], "bailian-multimodal-generation", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":3}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("qwen-image-2.0-2026-03-03", "qwen-image-2.0-2026-03-03", ["image"], "bailian-multimodal-generation", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":3}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wan2.6-t2i", "wan2.6-t2i", ["image"], "bailian-multimodal-generation", "北京接入；采用官方 1280²..1440² 总像素范围；清晰度为原生约 1K，未标虚构 2K/4K。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wan2.5-t2i-preview", "wan2.5-t2i-preview", ["image"], "bailian-async-images", "北京接入；采用官方 1280²..1440² 总像素范围；清晰度为原生约 1K，未标虚构 2K/4K。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wan2.2-t2i-plus", "wan2.2-t2i-plus", ["image"], "bailian-async-images", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wan2.2-t2i-flash", "wan2.2-t2i-flash", ["image"], "bailian-async-images", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wanx2.1-t2i-plus", "wanx2.1-t2i-plus", ["image"], "bailian-async-images", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wanx2.1-t2i-turbo", "wanx2.1-t2i-turbo", ["image"], "bailian-async-images", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wanx2.0-t2i-turbo", "wanx2.0-t2i-turbo", ["image"], "bailian-async-images", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wanx-v1", "wanx-v1", ["image"], "bailian-async-images", "北京接入；官方目录支持；访问权限以当前账号及接入地区为准。", {"imageGeneration":true,"imageEditing":false,"referenceImages":false,"imageEditMode":"analyze-redraw","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","16:9","9:16"],"refineAspectRatios":["1:1","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":0,"providerMaxReferenceImages":0}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wan2.6-image", "wan2.6-image", ["image"], "bailian-async-images", "北京接入；文生图使用异步图文混排模式且 max_images=1；精修关闭混排，支持 1K/2K。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":4}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wan2.5-i2i-preview", "wan2.5-i2i-preview", ["image"], "bailian-async-images", "北京接入；仅图像编辑；异步 image2image，尺寸总像素不超过 1280²。", {"imageGeneration":false,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:4","4:1"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":3,"requiresSourceImage":true}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("wanx2.1-imageedit", "wanx2.1-imageedit", ["image"], "bailian-async-images", "北京接入；通用 description_edit 操作；源图尺寸决定输出；蒙版/扩图等专用操作未开放。", {"imageGeneration":false,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["auto"],"refineResolutions":["auto"],"aspectRatios":[],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1,"requiresSourceImage":true}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("kling/kling-v3-image-generation", "kling/kling-v3-image-generation", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；普通款参考图按模型概览限制为 1 张，Omni 官方最多 10 张；图研精修当前传 1 张。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K"],"refineResolutions":["1K","2K"],"aspectRatios":["1:1","16:9","9:16"],"refineAspectRatios":["1:1","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":1}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("kling/kling-v3-omni-image-generation", "kling/kling-v3-omni-image-generation", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；普通款参考图按模型概览限制为 1 张，Omni 官方最多 10 张；图研精修当前传 1 张。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","16:9","9:16"],"refineAspectRatios":["1:1","16:9","9:16"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":10}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("vidu/vidu-image_reference2image", "vidu/vidu-image_reference2image", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","9:21"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","9:21"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":14}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("vidu/vidu-image-pro_reference2image", "vidu/vidu-image-pro_reference2image", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","9:21"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","9:21"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":14}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("vidu/vidu-image-lite_reference2image", "vidu/vidu-image-lite_reference2image", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","9:21"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","9:21"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":14}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("vidu/viduq3-fast_reference2image", "vidu/viduq3-fast_reference2image", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","4:5","5:4","1:4","4:1","1:8","8:1"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","4:5","5:4","1:4","4:1","1:8","8:1"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":14}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("vidu/viduq2-pro_reference2image", "vidu/viduq2-pro_reference2image", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","4:5","5:4"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","4:5","5:4"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":14}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('bailian', registryEntry("vidu/viduq2-fast_reference2image", "vidu/viduq2-fast_reference2image", ["image"], "bailian-async-images", "北京接入；需在百炼开通对应合作厂商服务。异步图像接口；按本型号官方像素枚举映射比例与分辨率。图研单图精修传 1 张源图。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","4:5","5:4"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","4:5","5:4"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":14}, {"vendor":"Alibaba Qwen","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/model-pricing","regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"supplier-activation","inputModalities":["text","image"],"outputModalities":["image"]}))
+upsertAuditedModel('openai', registryEntry("gpt-5.1", "gpt-5.1", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('openai', registryEntry("gpt-5.2", "gpt-5.2", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('openai', registryEntry("gpt-4o", "gpt-4o", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('openai', registryEntry("gpt-4o-mini", "gpt-4o-mini", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('openai', registryEntry("gpt-5.2-pro", "gpt-5.2-pro", ["main","vision"], "openai-responses", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('openai', registryEntry("gpt-5.3-codex", "gpt-5.3-codex", ["main","vision"], "openai-responses", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('openai', registryEntry("chat-latest", "chat-latest", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models","lifecycle":"unknown"}))
+upsertAuditedModel('openai', registryEntry("gpt-image-2", "GPT Image 2", ["image"], "openai-images", "自定义 16 像素对齐尺寸，最长边 ≤3840、比例 ≤3:1、总像素 ≤8294400；自动比例使用所选分辨率的方形画布；大于 2560x1440 的输出属于官方实验范围。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","4:5","5:4","2:5","5:2"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","4:5","5:4","2:5","5:2"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":16}, {"vendor":"OpenAI","recommended":true,"inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('openai', registryEntry("gpt-image-1", "GPT Image 1", ["image"], "openai-images", "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3"],"refineAspectRatios":["1:1","3:2","2:3"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":16}, {"vendor":"OpenAI","lifecycle":"legacy","inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models","expirationDate":"2026-10-23","replacementModelId":"gpt-image-2","recommended":false}))
+upsertAuditedModel('openai', registryEntry("gpt-image-1-mini", "GPT Image 1 Mini", ["image"], "openai-images", "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3"],"refineAspectRatios":["1:1","3:2","2:3"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":16}, {"vendor":"OpenAI","lifecycle":"legacy","inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models","expirationDate":"2026-12-01","replacementModelId":"gpt-image-2","recommended":false}))
+upsertAuditedModel('openai', registryEntry("gpt-image-1.5", "gpt-image-1.5", ["image"], "openai-images", "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3"],"refineAspectRatios":["1:1","3:2","2:3"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":16}, {"vendor":"OpenAI","lifecycle":"legacy","inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models","expirationDate":"2026-12-01","replacementModelId":"gpt-image-2","recommended":false}))
+upsertAuditedModel('openai', registryEntry("chatgpt-image-latest", "chatgpt-image-latest", ["image"], "openai-images", "原生固定尺寸 1024² / 1536x1024 / 1024x1536；历史 2K 配置兼容请求原生尺寸，界面不再承诺 2K。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"imageEditMode":"direct-edit","resolutions":["1K"],"refineResolutions":["1K"],"aspectRatios":["1:1","3:2","2:3"],"refineAspectRatios":["1:1","3:2","2:3"],"outputFormats":["png"],"maxReferenceImages":1,"providerMaxReferenceImages":16}, {"vendor":"OpenAI","lifecycle":"legacy","inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models","expirationDate":"2026-12-01","replacementModelId":"gpt-image-2","recommended":false}))
+upsertAuditedModel('openai', registryEntry("gpt-image-2", "GPT Image 2", ["image"], "openai-images", "自定义 16 像素对齐尺寸，最长边 ≤3840、比例 ≤3:1、总像素 ≤8294400；自动比例使用所选分辨率的方形画布；大于 2560x1440 的输出属于官方实验范围。", {"maxReferenceImages":1,"referenceImages":true,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","resolutions":["1K","2K","4K"],"refineResolutions":["1K","2K","4K"],"aspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","4:5","5:4","5:2","2:5"],"refineAspectRatios":["1:1","3:2","2:3","4:3","3:4","16:9","9:16","21:9","1:2","2:1","4:5","5:4","5:2","2:5"],"outputFormats":["png"],"providerMaxReferenceImages":16}, {"vendor":"OpenAI","recommended":true,"inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
+upsertAuditedModel('ark', registryEntry("doubao-seedream-5-0-260128", "Doubao Seedream 5.0", ["image"], "ark-images", "接口按 2K/4K 档位协商图片尺寸；当前只开放自动比例，实际比例以返回图片为准。", {"referenceImages":true,"imageEditing":true,"resolutions":["2K","4K"],"refineResolutions":["2K","4K"],"aspectRatios":[],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1}, {"vendor":"ByteDance Seedream","requiresEntitlement":true,"entitlement":"ark-account-access","inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"officialSourceUrl":"https://docs.volcengine.com/docs/82379/1824121?lang=zh"}))
+upsertAuditedModel('ark', registryEntry("doubao-seedream-4-5-251128", "Doubao Seedream 4.5", ["image"], "ark-images", "接口按 2K/4K 档位协商图片尺寸；当前只开放自动比例，实际比例以返回图片为准。", {"referenceImages":true,"imageEditing":true,"resolutions":["2K","4K"],"refineResolutions":["2K","4K"],"aspectRatios":[],"refineAspectRatios":[],"outputFormats":["png"],"maxReferenceImages":1}, {"vendor":"ByteDance Seedream","lifecycle":"legacy","requiresEntitlement":true,"entitlement":"ark-account-access","inputModalities":["text","image"],"outputModalities":["image"],"verified":false,"officialSourceUrl":"https://docs.volcengine.com/docs/82379/1824121?lang=zh"}))
+Object.assign(staticModelRegistry.bailian.models.find((model) => model.id === "qwen3.8-max-preview")!, {"replacementModelId":"qwen3.8-max","selectable":false,"disabledReason":"预览阶段已结束，已有配置迁移至 qwen3.8-max。","lifecycle":"legacy"})
+Object.assign(staticModelRegistry.bailian.models.find((model) => model.id === "deepseek-v4-flash")!, {"replacementModelId":"deepseek-v4-flash-0731","expirationDate":"2026-10-10","lifecycle":"legacy"})
+Object.assign(staticModelRegistry.openai.models.find((model) => model.id === "gpt-5-mini")!, {"expirationDate":"2026-12-11","lifecycle":"legacy","replacementModelId":"gpt-5.4-mini"})
+Object.assign(staticModelRegistry.gemini.models.find((model) => model.id === "gemini-2.5-flash-image")!, {"earliestRetirementDate":"2026-10-02","replacementModelId":"gemini-3.1-flash-lite-image"})
+for (const model of staticModelRegistry.bailian.models) model.regions = ["cn-beijing"]
+for (const model of staticModelRegistry.ark.models) model.regions = ["cn-beijing"]
+for (const model of staticModelRegistry.siliconflow.models) model.regions = ["cn"]
+for (const model of staticModelRegistry.zhipu.models) model.regions = ["cn"]
+// END GENERATED AUDITED CATALOG
+
 const fallbackReferences: RetrievedReference[] = [
   {
     id: 'paperbanana-style-agent-flow',
@@ -1666,20 +1995,20 @@ async function abortReferenceUpload(body: ReferenceUploadLifecycleBody) {
 }
 
 async function modelCapability(body: ModelCapabilityBody) {
-  if (!['openrouter', 'gemini', 'openai', 'bailian', 'ark'].includes(body.provider)) return fail('Invalid provider', 400)
+  if (!['openrouter', 'gemini', 'openai', 'bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'].includes(body.provider)) return fail('Invalid provider', 400)
   if (!body.model) return fail('model is required', 400)
   return ok(await referenceModelCapability(body.provider, normalizeModelName(body.provider, body.model)))
 }
 
 async function modelRegistry(body: ModelRegistryBody) {
   const requestedProvider = body.provider
-  if (requestedProvider && !['openrouter', 'gemini', 'openai', 'bailian', 'ark'].includes(requestedProvider)) {
+  if (requestedProvider && !['openrouter', 'gemini', 'openai', 'bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'].includes(requestedProvider)) {
     return fail('Invalid provider', 400)
   }
 
   const providers: Partial<Record<Provider, ProviderModelRegistry>> = {}
   const unavailableProviders: Partial<Record<Provider, string>> = {}
-  for (const provider of ['gemini', 'openai', 'bailian', 'ark'] as const) {
+  for (const provider of Object.keys(staticModelRegistry) as Array<Exclude<Provider, 'openrouter'>>) {
     if (!requestedProvider || requestedProvider === provider) providers[provider] = publicProviderModelRegistry(staticModelRegistry[provider])
   }
   if (!requestedProvider || requestedProvider === 'openrouter') {
@@ -1923,7 +2252,7 @@ function publicProviderModelRegistry(registry: ProviderModelRegistry): ProviderM
         }
         return left.index - right.index
       })
-      .map(({ model }) => model),
+      .map(({ model }) => applyModelLifecycle(model)),
   }
 }
 
@@ -2297,20 +2626,20 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     aspectRatio: normalizeAspectRatio(body.aspectRatio),
     // 清晰度三档：1K = 仅基础渲染；2K/4K = 基础渲染后再自动精修放大到该分辨率。
     // 默认 1K（最快、最省），未知值同样归一到 1K。
-    imageSize: body.imageSize === '4K' ? '4K' as const : body.imageSize === '2K' ? '2K' as const : '1K' as const,
+    imageSize: canonicalImageResolutions.includes(body.imageSize as ImageResolution) ? body.imageSize as ImageResolution : '1K' as const,
     retrievalSetting: hasUploadedReference ? ('none' as const) : normalizeRetrievalSetting(body.retrievalSetting),
     manualReferenceIds: hasUploadedReference ? [] : normalizeManualReferenceIds(body.manualReferenceIds || []),
   }
   const normalizedBody = toCreateExecutionBody(normalizedBodyWithSecrets)
   let prevalidatedRegistries = new Map<Provider, ProviderModelRegistry>()
   const couldReachImageRoute = (
-    (normalizedBody.outputFormat === 'png' && normalizedBody.taskName !== 'plot')
+    ((normalizedBody.outputFormat === 'png' || nativeRecraftVectorRoute(normalizedBody)) && normalizedBody.taskName !== 'plot')
     || (normalizedBody.taskName === 'plot' && (normalizedBody.imageSize === '2K' || normalizedBody.imageSize === '4K'))
   )
   if (couldReachImageRoute) {
     const imageRoute = routing.modelRoutes.image
     try {
-      if (normalizedBody.outputFormat === 'png' && normalizedBody.taskName !== 'plot') {
+      if ((normalizedBody.outputFormat === 'png' || nativeRecraftVectorRoute(normalizedBody)) && normalizedBody.taskName !== 'plot') {
         prevalidatedRegistries = await validateModelRouting(routing.modelRoutes, ['image'], prevalidatedRegistries)
       } else {
         prevalidatedRegistries.set(imageRoute.accessProvider, await providerModelRegistry(imageRoute.accessProvider))
@@ -2323,7 +2652,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     }
     const imageRegistry = prevalidatedRegistries.get(imageRoute.accessProvider)!
     const refineCapability = registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
-    const reachesImageRoute = normalizedBody.outputFormat === 'png' && normalizedBody.taskName !== 'plot'
+    const reachesImageRoute = (normalizedBody.outputFormat === 'png' || nativeRecraftVectorRoute(normalizedBody)) && normalizedBody.taskName !== 'plot'
       ? true
       : refineCapability.mode === 'direct-edit'
     if (reachesImageRoute && normalizedBody.taskName === 'plot') {
@@ -2336,6 +2665,8 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
         }
       }
     }
+    const imageEntry = prevalidatedRegistries.get(imageRoute.accessProvider)?.models.find((model) => model.id === imageRoute.modelId)
+    if (imageEntry?.capabilities.requiresSourceImage) return { ...fail('当前型号仅支持图像编辑，请在精修中使用或更换生图模型。', 400), businessCode: 'IMAGE_MODEL_EDIT_ONLY' }
     const supportedRatios = registryImageAspectRatios(imageRoute.accessProvider, imageRegistry, imageRoute.modelId, false)
     if (reachesImageRoute && normalizedBody.aspectRatio !== 'auto' && !supportedRatios.includes(normalizedBody.aspectRatio)) {
       return {
@@ -3257,12 +3588,15 @@ async function runCandidate(
   }
 
   if (normalizeOutputFormat(body.outputFormat) === 'svg') {
-    const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
+    const nativeVector = nativeRecraftVectorRoute(body)
+    const renderRoute = modelRouteAccess(body, routeSecrets, nativeVector ? 'image' : 'main')
     const description = await buildVisualDescription(jobId, candidateId, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceImages, true)
     await logStage('plan ready')
     await logStage('rendering SVG')
     const svgRenderStartedAt = new Date()
-    const svg = await callSvgModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, withNegativePrompt(description, body.negativePrompt))
+    const svg = nativeVector
+      ? await callRecraftSvg(renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), body.aspectRatio || 'auto')
+      : await callSvgModel(renderRoute.provider, renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt))
     const stageImage = await saveStageImage(jobId, candidateId, 'svg-final', svg, 'image/svg+xml', 'utf8')
     await recordStage(jobId, {
       candidateId,
@@ -4429,11 +4763,11 @@ async function rasterizeSvgReferenceImage(bucket: any, image: ReferenceImageInpu
   }
 }
 
-async function rasterizeSvgReferenceToPng(rawSvg: string) {
+async function rasterizeSvgReferenceToPng(rawSvg: string, width = svgReferenceRasterWidth) {
   const svg = sanitizeReferenceSvg(rawSvg)
   const { Resvg } = await loadResvgWasm()
   const resvg = new Resvg(svg, {
-    fitTo: { mode: 'width', value: svgReferenceRasterWidth },
+    fitTo: { mode: 'width', value: width },
   })
   return Buffer.from(resvg.render().asPng())
 }
@@ -4526,6 +4860,9 @@ export async function callVisionModel(
   images: VisionImageInput[],
 ): Promise<string> {
   if (!images.length) return ''
+  model = normalizeModelName(provider, model)
+  if (provider === 'anthropic') return callAnthropicMessages(model, apiKey, referenceVisionSystemPrompt(), referenceVisionUserPrompt(methodContent, caption), images)
+  if (provider === 'xai') return callOpenAiResponses(model, apiKey, referenceVisionSystemPrompt(), referenceVisionUserPrompt(methodContent, caption), images, {}, 'xai')
   if (provider === 'gemini') {
     return callGeminiVision(model, apiKey, methodContent, caption, images)
   }
@@ -4546,7 +4883,7 @@ export async function callVisionModel(
   for (const image of requestImages) {
     content.push({ type: 'image_url', image_url: { url: image.url } })
   }
-  const chosenModel = provider === 'openrouter' ? toOpenRouterModel(model) : model
+  const chosenModel = provider === 'openrouter' ? toOpenRouterModel(model) : normalizeModelName(provider, model)
 
   const runVision = async (visionModelName: string) => {
     const requestBody: any = {
@@ -4557,7 +4894,7 @@ export async function callVisionModel(
       ],
     }
     if (provider === 'ark' && arkShouldDisableThinking(visionModelName)) requestBody.thinking = { type: 'disabled' }
-    if (!usesGemini3ProviderDefaults(provider, visionModelName)) requestBody.temperature = 0.2
+    applyChatModelParameters(requestBody, provider, visionModelName, 0.2)
     const response = await fetchWithRetry(`${baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
@@ -4566,8 +4903,7 @@ export async function callVisionModel(
       },
       body: JSON.stringify(requestBody),
     }, `${provider} vision model ${visionModelName}`)
-    const data = await parseModelResponse(response)
-    return data.choices?.[0]?.message?.content || ''
+    return parseChatModelResponse(response, requestBody.stream === true)
   }
 
   try {
@@ -4624,6 +4960,9 @@ export async function callTextModel(
   images: VisionImageInput[] = [],
   policy: TextRequestPolicy = {},
 ): Promise<string> {
+  model = normalizeModelName(provider, model)
+  if (provider === 'anthropic') return callAnthropicMessages(model, apiKey, system, user, images, policy)
+  if (provider === 'xai') return callOpenAiResponses(model, apiKey, system, user, images, policy, 'xai')
   if (provider === 'gemini') {
     try {
       return await callGeminiText(model, apiKey, system, user, images, policy)
@@ -4641,7 +4980,7 @@ export async function callTextModel(
     }
   }
   const baseUrl = textApiBaseUrl(provider)
-  const chosenModel = provider === 'openrouter' ? toOpenRouterModel(model) : model
+  const chosenModel = provider === 'openrouter' ? toOpenRouterModel(model) : normalizeModelName(provider, model)
   // Bailian only accepts PUBLIC image urls (data: URLs are rejected), so when a
   // bailian call carries images, materialize each url into a bucket url first.
   // We RESPECT the chosen model and only fall back to a VL model if it cannot
@@ -4663,7 +5002,7 @@ export async function callTextModel(
       ],
     }
     if (provider === 'ark' && arkShouldDisableThinking(textModelName)) requestBody.thinking = { type: 'disabled' }
-    if (!usesGemini3ProviderDefaults(provider, textModelName)) requestBody.temperature = 1
+    applyChatModelParameters(requestBody, provider, textModelName, 1)
     const response = await fetchWithRetry(`${baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
@@ -4673,8 +5012,7 @@ export async function callTextModel(
       body: JSON.stringify(requestBody),
       ...(policy.signal ? { signal: policy.signal } : {}),
     }, `${provider} text model ${textModelName}`, policy.attempts)
-    const data = await parseModelResponse(response)
-    return data.choices?.[0]?.message?.content || ''
+    return parseChatModelResponse(response, requestBody.stream === true)
   }
 
   try {
@@ -4694,8 +5032,123 @@ export async function callTextModel(
   }
 }
 
+async function callAnthropicMessages(
+  model: string, apiKey: string, system: string, user: string,
+  images: VisionImageInput[] = [], policy: TextRequestPolicy = {},
+): Promise<string> {
+  const content: any[] = [{ type: 'text', text: user }]
+  for (const image of images) {
+    // Materialize references so the native Messages request has a supported
+    // media type and does not depend on the provider fetching private URLs.
+    content.push({ type: 'image', source: {
+      type: 'base64', media_type: image.mimeType,
+      data: await visionImageBase64(image, 'Claude reference image download'),
+    } })
+  }
+  const response = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model, max_tokens: 16384, system, messages: [{ role: 'user', content }] }),
+    ...(policy.signal ? { signal: policy.signal } : {}),
+  }, `anthropic messages model ${model}`, policy.attempts)
+  const data = await parseModelResponse(response)
+  if (data.stop_reason === 'max_tokens') throw new Error(`Claude model ${model} reached the output limit; please shorten the request`)
+  return (data.content || []).filter((part: any) => part?.type === 'text').map((part: any) => part.text || '').join('')
+}
+
+function nativeRecraftVectorRoute(body: Record<string, any>): boolean {
+  return body.modelRoutes?.image?.accessProvider === 'recraft'
+    && staticModelRegistry.recraft.models.some((model) => model.id === body.modelRoutes.image.modelId && model.selectable && model.capabilities.outputFormats?.includes('svg'))
+}
+
+// Each native image API has a different wire format. Keep the provider's
+// credentials on its API request only; returned asset downloads carry no key.
+async function requestNativeProviderImage(
+  provider: Provider, model: string, apiKey: string, prompt: string,
+  aspectRatio: AspectRatio, source: NormalizedSourceImage | null, imageSize: string,
+  strictImageSize = false,
+): Promise<{ b64_json: string; media_type: string }> {
+  if (!['zhipu', 'siliconflow', 'recraft', 'xai'].includes(provider)) throw new Error(`Provider ${provider} does not support image generation`)
+  const entry = staticModelRegistry[provider as Exclude<Provider, 'openrouter'>].models.find((item) => item.id === model && item.roles.includes('image'))
+  if (!entry) throw new Error(`Image model ${model} is not registered for ${provider}`)
+  const resolutions = (source ? entry.capabilities.refineResolutions : entry.capabilities.resolutions) || []
+  const resolution = resolutions.includes(imageSize) ? imageSize : resolutions[0]
+  if (strictImageSize && resolution !== imageSize) throw new Error(`Model ${model} does not support ${imageSize}`)
+  const body: Record<string, any> = { model, prompt }
+  let endpoint: string
+  if (provider === 'xai') {
+    endpoint = `https://api.x.ai/v1/images/${source ? 'edits' : 'generations'}`
+    body.response_format = 'b64_json'
+    body.resolution = String(resolution).toLowerCase()
+    if (aspectRatio !== 'auto') body.aspect_ratio = aspectRatio
+    if (source) body.image = { url: source.dataUrl, type: 'image_url' }
+  } else if (provider === 'recraft') {
+    const limit = /^recraftv[23](?:_|$)/.test(model) ? 1000 : 10000
+    if (prompt.length > limit) throw new Error(`Recraft ${model} prompt exceeds ${limit} characters`)
+    endpoint = `https://external.api.recraft.ai/v1/images/${source ? 'imageToImage' : 'generations'}`
+    body.response_format = 'b64_json'
+    if (!source && aspectRatio !== 'auto') body.size = aspectRatio
+    if (source) {
+      if (Buffer.byteLength(source.base64, 'base64') >= 10 * 1024 * 1024) throw new Error('Recraft source image must be smaller than 10 MB')
+      body.image_url = source.dataUrl
+      body.strength = 0.5
+    }
+  } else if (provider === 'zhipu') {
+    if (source) throw new Error('GLM Image does not support direct editing')
+    endpoint = 'https://open.bigmodel.cn/api/paas/v4/images/generations'
+    const glm = model === 'glm-image'
+    const [w, h] = (aspectRatio === 'auto' ? '1:1' : aspectRatio).split(':').map(Number)
+    const alignment = glm ? 32 : 16
+    const minSide = glm ? 1024 : 512
+    const pixels = glm ? 4194304 : 2097152
+    const target = resolution === '2K' ? 2048 : 1024
+    const unit = Math.min(
+      Math.floor(Math.min(2048 / Math.max(w, h), Math.sqrt(pixels / (w * h))) / alignment) * alignment,
+      Math.max(Math.ceil(minSide / Math.min(w, h) / alignment) * alignment, Math.floor(target / Math.max(w, h) / alignment) * alignment),
+    )
+    body.size = `${w * unit}x${h * unit}`
+
+  } else {
+    endpoint = 'https://api.siliconflow.cn/v1/images/generations'
+    const qwenSizes: Record<string, string> = { '1:1': '1328x1328', '16:9': '1664x928', '9:16': '928x1664', '4:3': '1472x1140', '3:4': '1140x1472', '3:2': '1584x1056', '2:3': '1056x1584' }
+    const kolorsSizes: Record<string, string> = { '1:1': '1024x1024', '3:4': '960x1280', '9:16': '720x1280' }
+    const sizes = model === 'Kwai-Kolors/Kolors' ? kolorsSizes : model === 'Qwen/Qwen-Image' ? qwenSizes : { '1:1': '1024x1024' }
+    if (!model.startsWith('Qwen/Qwen-Image-Edit')) {
+      body.image_size = sizes[aspectRatio === 'auto' ? '1:1' : aspectRatio]
+      if (!body.image_size) throw new Error(`Model ${model} does not support aspect ratio ${aspectRatio}`)
+    }
+    if (source) body.image = source.dataUrl
+    if (model === 'Qwen/Qwen-Image') { body.num_inference_steps = 50; body.cfg = 4 }
+  }
+  const response = await fetchWithRetry(endpoint, {
+    method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }, `${provider} image model ${model}`)
+  const data = await parseBoundedModelResponse(response, maxProviderImageResponseBytes, `${provider} image response`)
+  const output = provider === 'siliconflow' ? data.images?.[0] : data.data?.[0]
+  let base64 = output?.b64_json
+  if (!base64 && output?.url) {
+    const url = new URL(output.url)
+    if (url.protocol !== 'https:' || url.username || url.password) throw new Error(`${provider} returned an invalid image URL`)
+    base64 = await fetchImageAsBase64(url.href, `${provider} generated image download`, maxProviderImageBytes)
+  }
+  return {
+    b64_json: validateProviderImageBase64(base64 || '', maxProviderImageBytes, `${provider} image`),
+    media_type: provider === 'recraft' && model.endsWith('_vector') ? 'image/svg+xml' : '',
+  }
+}
+
+export async function callRecraftSvg(model: string, apiKey: string, prompt: string, aspectRatio: string): Promise<string> {
+  if (!staticModelRegistry.recraft.models.some((entry) => entry.id === model && entry.capabilities.outputFormats?.includes('svg'))) throw new Error('Recraft SVG output requires a vector model')
+  const ratio = normalizeAspectRatio(aspectRatio)
+  const entry = staticModelRegistry.recraft.models.find((item) => item.id === model)!
+  if (ratio !== 'auto' && !entry.capabilities.aspectRatios?.includes(ratio)) throw new Error(`Model ${model} does not support aspect ratio ${ratio}`)
+  const image = await requestNativeProviderImage('recraft', model, apiKey, prompt, ratio, null, '')
+  return sanitizeSvg(Buffer.from(image.b64_json, 'base64').toString('utf8'))
+}
+
 function usesOpenAiResponses(model: string) {
-  return model === 'gpt-5.5-pro' || model === 'gpt-5.4-pro'
+  return staticModelRegistry.openai.models.some((entry) => entry.id === model && entry.protocol === 'openai-responses')
 }
 
 async function callOpenAiResponses(
@@ -4705,6 +5158,7 @@ async function callOpenAiResponses(
   user: string,
   images: VisionImageInput[] = [],
   policy: TextRequestPolicy = {},
+  provider: 'openai' | 'xai' = 'openai',
 ) {
   const input: any = images.length
     ? [{
@@ -4715,13 +5169,14 @@ async function callOpenAiResponses(
         ],
       }]
     : user
-  const response = await fetchWithRetry('https://api.openai.com/v1/responses', {
+  const response = await fetchWithRetry(provider === 'xai' ? 'https://api.x.ai/v1/responses' : 'https://api.openai.com/v1/responses', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ model, instructions, input, store: false }),
     ...(policy.signal ? { signal: policy.signal } : {}),
-  }, `openai responses model ${model}`, policy.attempts)
+  }, `${provider} responses model ${model}`, policy.attempts)
   const data = await parseModelResponse(response)
+  if (data.error || data.status === 'failed' || data.status === 'incomplete') throw new Error(`${provider} Responses request ${data.status || 'failed'}: ${data.error?.message || data.incomplete_details?.reason || 'no completed output'}`)
   if (typeof data.output_text === 'string') return data.output_text
   return (data.output || [])
     .flatMap((item: any) => item?.type === 'message' ? item.content || [] : [])
@@ -4751,10 +5206,17 @@ export async function callImageModel(
   imageSize = '2K',
   strictImageSize = false,
 ): Promise<string> {
+  model = normalizeModelName(provider, model)
+  const entry = provider === 'openrouter' ? undefined : staticModelRegistry[provider].models.find((item) => item.id === model)
+  if (entry && !applyModelLifecycle(entry).selectable) throw new Error(applyModelLifecycle(entry).disabledReason || `Model ${model} is unavailable`)
+  if (entry?.capabilities.requiresSourceImage && !sourceImage.trim()) throw new Error(`Model ${model} requires a source image and is only available for refinement`)
+  const supportedSizes = sourceImage.trim() ? entry?.capabilities.refineResolutions : entry?.capabilities.resolutions
+  if ((strictImageSize || provider === 'ark') && supportedSizes?.length && !supportedSizes.includes(imageSize as ImageResolution)) throw new Error(`Model ${model} does not support ${imageSize}`)
+  if (supportedSizes?.length && !supportedSizes.includes(imageSize as ImageResolution)) imageSize = supportedSizes.includes('2K') ? '2K' : supportedSizes[0]
   const normalizedAspectRatio = normalizeAspectRatio(aspectRatio)
   if (provider !== 'openrouter' && normalizedAspectRatio !== 'auto') {
     const normalizedModel = normalizeModelName(provider, model)
-    const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizedModel && candidate.capabilities.imageGeneration)
+    const entry = staticModelRegistry[provider].models.find((candidate) => candidate.id === normalizedModel && candidate.roles.includes('image'))
     const ratios = String(sourceImage || '').trim()
       ? entry?.capabilities.refineAspectRatios || []
       : entry?.capabilities.aspectRatios || []
@@ -4775,7 +5237,7 @@ export async function callImageModel(
 
   if (provider === 'openai') {
     if (source) {
-      return callOpenAiImageEdit(model, apiKey, prompt, source, normalizedAspectRatio)
+      return callOpenAiImageEdit(model, apiKey, prompt, source, normalizedAspectRatio, imageSize)
     }
     const response = await fetchWithRetry('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -4786,7 +5248,7 @@ export async function callImageModel(
       body: JSON.stringify({
         model,
         prompt,
-        size: openAiImageSize(normalizedAspectRatio),
+        size: openAiImageSize(model, normalizedAspectRatio, imageSize),
         quality: 'high',
         background: 'opaque',
         output_format: 'png',
@@ -4808,7 +5270,12 @@ export async function callImageModel(
     return callArkImage(normalizeModelName('ark', model), apiKey, prompt, normalizedAspectRatio, source, imageSize)
   }
 
-  return callOpenRouterImage(model, apiKey, prompt, normalizedAspectRatio, source, imageSize, strictImageSize)
+  if (['zhipu', 'siliconflow', 'recraft', 'xai'].includes(provider)) {
+    const image = await requestNativeProviderImage(provider, model, apiKey, prompt, normalizedAspectRatio, source, imageSize, strictImageSize)
+    return normalizeOpenRouterDedicatedImage(image, model, provider, model.includes('_pro') ? 2048 : 1024)
+  }
+  if (provider === 'openrouter') return callOpenRouterImage(model, apiKey, prompt, normalizedAspectRatio, source, imageSize, strictImageSize)
+  throw new Error(`Provider ${provider} does not support image generation`)
 }
 
 async function callArkImage(
@@ -5194,7 +5661,7 @@ async function callOpenRouterImage(
   const actualModel = toOpenRouterModel(model)
   const route = await resolveOpenRouterImageRoute(actualModel)
   const body: any = { model: actualModel, prompt }
-  if (actualModel === 'microsoft/mai-image-2.6') {
+  if (actualModel === 'microsoft/mai-image-2.6' || actualModel === 'microsoft/mai-image-2.6-flash') {
     body.n = 1
     body.provider = { only: ['azure'], allow_fallbacks: false, options: { azure: { web_grounding: false } } }
   }
@@ -5232,23 +5699,23 @@ async function callOpenRouterImage(
   return await normalizeOpenRouterDedicatedImage(data.data?.[0], actualModel)
 }
 
-async function normalizeOpenRouterDedicatedImage(image: any, model: string): Promise<string> {
-  const base64 = validateProviderImageBase64(image?.b64_json || '', maxProviderImageBytes, 'OpenRouter image')
+async function normalizeOpenRouterDedicatedImage(image: any, model: string, label = 'OpenRouter', svgWidth = svgReferenceRasterWidth): Promise<string> {
+  const base64 = validateProviderImageBase64(image?.b64_json || '', maxProviderImageBytes, `${label} image`)
   const bytes = Buffer.from(base64, 'base64')
   if (isPngBytes(bytes)) {
-    validatePngDimensions(bytes, 'OpenRouter image')
+    validatePngDimensions(bytes, `${label} image`)
     return base64
   }
-  if (isJpegBytes(bytes)) return await normalizeJpegImageToPng(base64, 'OpenRouter image')
-  if (isWebpBytes(bytes)) return await normalizeWebpImageToPng(base64, 'OpenRouter image')
+  if (isJpegBytes(bytes)) return await normalizeJpegImageToPng(base64, `${label} image`)
+  if (isWebpBytes(bytes)) return await normalizeWebpImageToPng(base64, `${label} image`)
   const mediaType = String(image?.media_type || '').trim().toLowerCase()
   if (mediaType === 'image/svg+xml') {
-    const png = await rasterizeSvgReferenceToPng(Buffer.from(base64, 'base64').toString('utf8'))
-    if (!png.length) throw new Error('OpenRouter SVG rasterization returned an empty PNG')
-    if (png.length > maxProviderImageBytes) throw new Error(`OpenRouter rasterized image exceeds ${maxProviderImageBytes} byte limit`)
+    const png = await rasterizeSvgReferenceToPng(Buffer.from(base64, 'base64').toString('utf8'), svgWidth)
+    if (!png.length) throw new Error(`${label} SVG rasterization returned an empty PNG`)
+    if (png.length > maxProviderImageBytes) throw new Error(`${label} rasterized image exceeds ${maxProviderImageBytes} byte limit`)
     return png.toString('base64')
   }
-  throw new Error(`OpenRouter image model ${model} returned an unsupported image format`)
+  throw new Error(`${label} image model ${model} returned an unsupported image format`)
 }
 
 function supportedOpenRouterValue(descriptor: any, requested: string, fallbacks: string[]) {
@@ -5290,21 +5757,25 @@ async function normalizeSourceImage(sourceImage: string): Promise<NormalizedSour
   return { base64: value, mimeType: 'image/png', dataUrl: `data:image/png;base64,${value}` }
 }
 
-function openAiImageSize(aspectRatio: AspectRatio) {
-  const sizes: Record<AspectRatio, '1024x1024' | '1536x1024' | '1024x1536' | 'auto'> = {
-    '1:1': '1024x1024',
-    '3:2': '1536x1024',
-    '2:3': '1024x1536',
-    '4:3': '1536x1024',
-    '3:4': '1024x1536',
-    '16:9': '1536x1024',
-    '9:16': '1024x1536',
-    '21:9': '1536x1024',
-    '1:4': '1024x1536',
-    '4:1': '1536x1024',
-    auto: 'auto',
+// GPT Image 2 accepts custom pixels, with 16-pixel alignment, <= 3:1,
+// <= 3840 per edge and 655360..8294400 total pixels. Preserve the exact ratio.
+export function openAiImageSize(model: string, aspectRatio: AspectRatio, imageSize: string) {
+  if (model !== 'gpt-image-2') {
+    const sizes: Record<string, string> = { '1:1': '1024x1024', '3:2': '1536x1024', '2:3': '1024x1536', auto: 'auto' }
+    if (!sizes[aspectRatio]) throw new Error(`Model ${model} does not support aspect ratio ${aspectRatio}`)
+    return sizes[aspectRatio]
   }
-  return sizes[aspectRatio]
+  // Auto composition still honors the chosen resolution using a square canvas.
+  let [w, h] = (aspectRatio === 'auto' ? '1:1' : aspectRatio).split(':').map(Number)
+  const gcd = (a: number, b: number): number => b ? gcd(b, a % b) : a
+  const divisor = gcd(w, h)
+  w /= divisor; h /= divisor
+  if (Math.max(w, h) / Math.min(w, h) > 3) throw new Error('GPT Image 2 supports at most a 3:1 aspect ratio')
+  const edge = imageSize === '4K' ? 3840 : imageSize === '2K' ? 2048 : 1024
+  const minUnit = Math.ceil(Math.sqrt(655360 / (w * h)) / 16) * 16
+  const maxUnit = Math.floor(Math.min(edge / Math.max(w, h), Math.sqrt(8294400 / (w * h))) / 16) * 16
+  const unit = Math.max(minUnit, maxUnit)
+  return `${w * unit}x${h * unit}`
 }
 
 async function callOpenAiImageEdit(
@@ -5313,11 +5784,14 @@ async function callOpenAiImageEdit(
   prompt: string,
   source: NormalizedSourceImage,
   aspectRatio: AspectRatio,
+  imageSize: string,
 ): Promise<string> {
   const form = new FormData()
   form.append('model', model)
   form.append('prompt', prompt)
-  form.append('size', openAiImageSize(aspectRatio))
+  form.append('size', openAiImageSize(model, aspectRatio, imageSize))
+  form.append('output_format', 'png')
+  form.append('background', 'opaque')
   form.append('quality', 'high')
   const ext = source.mimeType === 'image/jpeg' ? 'jpg' : source.mimeType === 'image/webp' ? 'webp' : 'png'
   const blob = new Blob([Buffer.from(source.base64, 'base64')], { type: source.mimeType })
@@ -5340,7 +5814,12 @@ function textApiBaseUrl(provider: Provider) {
   if (provider === 'openrouter') return 'https://openrouter.ai/api/v1'
   if (provider === 'bailian') return 'https://dashscope.aliyuncs.com/compatible-mode/v1'
   if (provider === 'ark') return 'https://ark.cn-beijing.volces.com/api/v3'
-  return 'https://api.openai.com/v1'
+  if (provider === 'openai') return 'https://api.openai.com/v1'
+  if (provider === 'deepseek') return 'https://api.deepseek.com/v1'
+  if (provider === 'kimi') return 'https://api.moonshot.cn/v1'
+  if (provider === 'zhipu') return 'https://open.bigmodel.cn/api/paas/v4'
+  if (provider === 'siliconflow') return 'https://api.siliconflow.cn/v1'
+  throw new Error(`Provider ${provider} does not support Chat Completions`)
 }
 
 async function callGeminiText(
@@ -5385,8 +5864,65 @@ function geminiSamplingConfig(model: string, temperature: number) {
   return { temperature }
 }
 
-function usesGemini3ProviderDefaults(provider: Provider, model: string) {
-  return provider === 'openrouter' && /^google\/gemini-3(?:[.-]|$)/.test(model)
+function applyChatModelParameters(body: Record<string, any>, provider: Provider, model: string, temperature: number) {
+  if (provider === 'openai') {
+    const exact = model.replace(/-\d{4}-\d{2}-\d{2}$/, '')
+    if (['gpt-5.1', 'gpt-5.2'].includes(exact)) {
+      body.reasoning_effort = 'none'
+      body.temperature = temperature
+    } else if (['gpt-4.1', 'gpt-4.1-mini', 'gpt-4o', 'gpt-4o-mini'].includes(exact)) {
+      body.temperature = temperature
+    }
+    // Old GPT-5 rejects sampling; other reasoning models keep their own defaults.
+    return
+  }
+  const omni = (provider === 'bailian' && /^qwen3(?:\.5)?-omni-/.test(model))
+    || (provider === 'siliconflow' && /^Qwen\/Qwen3-Omni-/.test(model))
+  if (omni) {
+    body.stream = true
+    if (provider === 'bailian') body.modalities = ['text']
+    return
+  }
+  if (provider === 'bailian') { body.stream = true; return }
+  if (!usesProviderSamplingDefaults(provider, model)) body.temperature = temperature
+}
+
+// The workflow needs a final text value; consume SSE with a byte bound, then
+// aggregate only visible content. Never turn a partial/error stream into success.
+export async function parseChatModelResponse(response: Response, streaming = false): Promise<string> {
+  if (!streaming || !response.ok || response.headers.get('content-type')?.includes('application/json')) {
+    const data = await parseModelResponse(response)
+    if (data.error || data.code) throw new Error(data.error?.message || data.message || data.code)
+    return data.choices?.[0]?.message?.content || ''
+  }
+  const wire = (await readResponseWithLimit(response, 8 * 1024 * 1024, 'Chat event stream')).toString('utf8')
+  let text = ''
+  let complete = false
+  for (const event of wire.replace(/\r\n/g, '\n').split(/\n\n/)) {
+    const payload = event.split('\n').filter((line) => line.startsWith('data:')).map((line) => line.slice(5).trimStart()).join('\n')
+    if (!payload) continue
+    if (payload === '[DONE]') { complete = true; continue }
+    let data: any
+    try { data = JSON.parse(payload) } catch { throw new Error('Invalid Chat event stream') }
+    if (data.error || data.code) throw new Error(data.error?.message || data.message || String(data.code))
+    const choice = data.choices?.find((item: any) => item.index === 0) || data.choices?.[0]
+    if (!choice) continue // Usage-only events.
+    if (typeof choice.delta?.content === 'string') text += choice.delta.content
+    if (choice.finish_reason === 'length' || choice.finish_reason === 'content_filter') throw new Error(`Chat stream ended with ${choice.finish_reason}`)
+    if (choice.finish_reason === 'stop') complete = true
+  }
+  if (!complete || !text.trim()) throw new Error('Chat event stream ended without a complete text response')
+  return text
+}
+
+function usesProviderSamplingDefaults(provider: Provider, model: string) {
+  if (['deepseek', 'kimi', 'zhipu', 'siliconflow'].includes(provider)) return true
+  // Gemini 3 uses calibrated defaults; Astra and Fable do not expose temperature.
+  return provider === 'openrouter' && (
+    /^google\/gemini-3(?:[.-]|$)/.test(model)
+    || /^openai\/gpt-6-astra(?:-pro)?(?::batch)?$/.test(model)
+    || /^anthropic\/claude-fable-5\.1(?::batch)?$/.test(model)
+  )
 }
 
 function arkShouldDisableThinking(model: string) {
@@ -5487,10 +6023,114 @@ function geminiInteractionRemoteUrl(value: any): string {
 }
 
 function geminiImageSize(model: string, imageSize: string) {
+  if (model === 'gemini-3.1-flash-image' && imageSize === '512') return '512'
   if (model === 'gemini-3.1-flash-lite-image' || model === 'gemini-2.5-flash-image') return '1K'
   if (imageSize === '4K' && /^(gemini-3\.1-flash-image|gemini-3-pro-image)$/.test(model)) return '4K'
   if (imageSize === '4K' || imageSize === '2K') return '2K'
   return '1K'
+}
+
+// Pixels are constructed by a documented family profile; no shared image size
+// enum is assumed for Qwen, Wan, Kling and Vidu.
+function exactPixelSize(ratio: AspectRatio, edge: number, maxPixels: number, separator = '*', minPixels = 0) {
+  const [w, h] = (ratio === 'auto' ? '1:1' : ratio).split(':').map(Number)
+  const unit = Math.max(Math.ceil(Math.sqrt(minPixels / (w * h))), Math.floor(Math.min(edge / Math.max(w, h), Math.sqrt(maxPixels / (w * h)))))
+  return `${w * unit}${separator}${h * unit}`
+}
+
+function wanLegacyImageSize(model: string, ratio: AspectRatio, imageSize: string) {
+  if (model === 'wanx2.1-imageedit') return undefined
+  if (model === 'wan2.6-image') {
+    if (ratio === 'auto') return imageSize === '2K' ? '2K' : '1K'
+    return exactPixelSize(ratio, imageSize === '2K' ? 2048 : 1280, imageSize === '2K' ? 4194304 : 1638400, '*', 589824)
+  }
+  if (model === 'wan2.5-i2i-preview') return ratio === 'auto' ? undefined : exactPixelSize(ratio, 1280, 1638400, '*', 589824)
+  if (model === 'wan2.5-t2i-preview' || model === 'wan2.6-t2i') return exactPixelSize(ratio, 1440, 2073600, '*', 1638400)
+  const fixed: Record<string, string> = { auto: '1024*1024', '1:1': '1024*1024', '16:9': '1280*720', '9:16': '720*1280', '3:2': '1152*768', '2:3': '768*1152', '4:3': '1024*768', '3:4': '768*1024', '21:9': '1344*576' }
+  return fixed[ratio]
+}
+
+function viduImageSize(model: string, ratio: AspectRatio, resolution: string): string {
+  const standardRatios = ['1:1', '1:2', '2:1', '4:3', '3:4', '16:9', '9:16', '3:2', '2:3', '21:9', '9:21']
+  const standard: Record<string, string[]> = {
+    '1K': ['1024*1024', '720*1440', '1440*720', '1024*768', '768*1024', '1920*1088', '1088*1920', '1536*1024', '1024*1536', '1920*816', '816*1920'],
+    '2K': ['2048*2048', '1088*2160', '2160*1088', '2736*2048', '2048*2736', '2560*1440', '1440*2560', '3072*2048', '2048*3072', '2560*1104', '1104*2560'],
+    '4K': ['2880*2880', '1440*2880', '2880*1440', '3312*2480', '2480*3312', '3840*2160', '2160*3840', '3520*2352', '2352*3520', '3840*1648', '1648*3840'],
+  }
+  const qRatios = ['1:1', '9:16', '2:3', '3:4', '4:5', '5:4', '4:3', '3:2', '16:9', '21:9', '1:4', '4:1', '1:8', '8:1']
+  const qSizes = ['1024*1024', '768*1376', '848*1264', '896*1200', '928*1152', '1152*928', '1200*896', '1264*848', '1376*768', '1584*672', '512*2064', '2064*512', '352*2928', '2928*352']
+  const index = (model.includes('/vidu-image') ? standardRatios : qRatios).indexOf(ratio === 'auto' ? '1:1' : ratio)
+  if (index < 0) throw new Error(`Vidu ${model} does not support ${ratio}`)
+  if (model.includes('/vidu-image')) return standard[resolution]?.[index]
+  const scale = resolution === '4K' ? 4 : resolution === '2K' ? 2 : 1
+  return qSizes[index].split('*').map((side) => Number(side) * scale).join('*')
+}
+
+async function callBailianAsyncImage(model: string, apiKey: string, prompt: string, ratio: AspectRatio, resolution: string, source: NormalizedSourceImage | null): Promise<string> {
+  let endpoint = 'image-generation/generation'
+  let input: any
+  const parameters: any = { n: 1, watermark: false }
+  const sourceUrl = source ? await toBailianImageUrl(source.remoteUrl || source.dataUrl) : ''
+  if (model.startsWith('kling/') || model.startsWith('vidu/') || model === 'wan2.6-image') {
+    input = { messages: [{ role: 'user', content: [...(sourceUrl ? [{ image: sourceUrl }] : []), { text: prompt }] }] }
+    if (model.startsWith('kling/')) {
+      if (prompt.length > 2500) throw new Error('Kling prompt exceeds 2500 characters')
+      parameters.resolution = resolution.toLowerCase()
+      if (ratio !== 'auto') parameters.aspect_ratio = ratio
+      if (model.includes('omni')) parameters.result_type = 'single'
+    } else if (model.startsWith('vidu/')) {
+      if (prompt.length > 5000) throw new Error('Vidu prompt exceeds 5000 characters')
+      parameters.size = viduImageSize(model, ratio, resolution)
+    } else {
+      parameters.enable_interleave = !source
+      parameters.size = wanLegacyImageSize(model, ratio, resolution)
+      if (!source) parameters.max_images = 1
+    }
+  } else if (model === 'wan2.5-i2i-preview' || model === 'wanx2.1-imageedit') {
+    if (!sourceUrl) throw new Error(`${model} requires a source image`)
+    endpoint = 'image2image/image-synthesis'
+    input = model === 'wan2.5-i2i-preview'
+      ? { prompt, images: [sourceUrl] }
+      : { function: 'description_edit', prompt, base_image_url: sourceUrl }
+    if (model === 'wanx2.1-imageedit') delete parameters.watermark
+    const size = wanLegacyImageSize(model, ratio, resolution)
+    if (size) parameters.size = size
+  } else {
+    endpoint = 'text2image/image-synthesis'
+    input = { prompt }
+    parameters.size = wanLegacyImageSize(model, ratio, resolution)
+    if (model === 'wanx-v1') delete parameters.watermark
+  }
+  // A failed/timed-out POST may already have created a billable task. Submit
+  // once; retry only the read-only polling operation, never recreate the task.
+  const response = await fetchWithRetry(`https://dashscope.aliyuncs.com/api/v1/services/aigc/${endpoint}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json', 'X-DashScope-Async': 'enable' },
+    body: JSON.stringify({ model, input, parameters }),
+  }, `bailian async image model ${model}`, 1)
+  const submitted = await parseDashScopeResponse(response, 1024 * 1024, 'Bailian task submission')
+  const taskId = submitted.output?.task_id
+  if (typeof taskId !== 'string' || !/^[a-zA-Z0-9_-]{1,160}$/.test(taskId)) throw new Error('Bailian did not return a valid task ID')
+  const result = await pollBailianImageTask(taskId, apiKey)
+  const imageUrl = extractDashScopeImageUrl(result) || result.output?.results?.find((item: any) => item.url)?.url
+  if (!imageUrl) throw new Error(`Bailian task ${taskId} succeeded without an image`)
+  return fetchImageAsBase64(imageUrl, 'Bailian generated image download', maxProviderImageBytes)
+}
+
+export async function pollBailianImageTask(taskId: string, apiKey: string, policy = { intervalMs: 5000, timeoutMs: 600000 }): Promise<any> {
+  const deadline = Date.now() + policy.timeoutMs
+  while (Date.now() < deadline) {
+    const response = await fetchWithRetry(`https://dashscope.aliyuncs.com/api/v1/tasks/${encodeURIComponent(taskId)}`, {
+      method: 'GET', headers: { Authorization: `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(Math.max(1, deadline - Date.now())),
+    }, `bailian image task ${taskId}`, 2)
+    const data = await parseDashScopeResponse(response, 1024 * 1024, 'Bailian task response')
+    const status = data.output?.task_status
+    if (status === 'SUCCEEDED') return data
+    if (status !== 'PENDING' && status !== 'RUNNING') throw new Error(`Bailian task ${taskId}: ${status || 'missing status'} ${data.output?.message || data.output?.code || ''}`)
+    await sleep(Math.min(policy.intervalMs, Math.max(0, deadline - Date.now())))
+  }
+  throw new Error(`Bailian task ${taskId} timed out; do not submit a duplicate task`)
 }
 
 async function callBailianImage(
@@ -5501,6 +6141,8 @@ async function callBailianImage(
   imageSize = '2K',
   source: NormalizedSourceImage | null = null,
 ): Promise<string> {
+  const entry = staticModelRegistry.bailian.models.find((item) => item.id === model)
+  if (entry?.protocol === 'bailian-async-images') return callBailianAsyncImage(model, apiKey, prompt, aspectRatio, imageSize, source)
   const parameters: any = { n: 1, watermark: false }
   const size = bailianImageSize(model, aspectRatio, imageSize, Boolean(source))
   if (size) parameters.size = size
@@ -5544,10 +6186,11 @@ function extractDashScopeImageUrl(data: any) {
 }
 
 function bailianImageSize(model: string, aspectRatio: AspectRatio, imageSize = '1K', editing = false) {
+  if (model === 'wan2.6-t2i') return wanLegacyImageSize(model, aspectRatio, imageSize)
   if (aspectRatio === 'auto') return undefined
   const supports4K = model === 'wan2.7-image-pro' && !editing
   const tier = imageSize === '4K' && supports4K ? '4K' : imageSize === '1K' ? '1K' : '2K'
-  const wanDimensions: Record<string, Record<FixedAspectRatio, string>> = {
+  const wanDimensions: Record<string, Partial<Record<FixedAspectRatio, string>>> = {
     '1K': {
       '1:1': '1024*1024', '3:2': '1152*768', '2:3': '768*1152', '4:3': '1024*768', '3:4': '768*1024',
       '16:9': '1280*720', '9:16': '720*1280', '21:9': '1344*576', '1:4': '512*2048', '4:1': '2048*512',
@@ -5561,7 +6204,7 @@ function bailianImageSize(model: string, aspectRatio: AspectRatio, imageSize = '
       '16:9': '4096*2304', '9:16': '2304*4096', '21:9': '4032*1728', '1:4': '1024*4096', '4:1': '4096*1024',
     },
   }
-  const conservativeDimensions: Record<string, Record<FixedAspectRatio, string>> = {
+  const conservativeDimensions: Record<string, Partial<Record<FixedAspectRatio, string>>> = {
     '1K': wanDimensions['1K'],
     '2K': {
       '1:1': '1536*1536', '3:2': '1872*1248', '2:3': '1248*1872', '4:3': '1728*1296', '3:4': '1296*1728',
@@ -5570,7 +6213,7 @@ function bailianImageSize(model: string, aspectRatio: AspectRatio, imageSize = '
     '4K': wanDimensions['4K'],
   }
   const dimensions = /^wan2\.7-image/.test(model) ? wanDimensions : conservativeDimensions
-  return dimensions[tier][aspectRatio]
+  return dimensions[tier][aspectRatio] || exactPixelSize(aspectRatio, tier === '1K' ? 1024 : 2048, tier === '1K' ? 1048576 : 4194304, '*')
 }
 
 export async function readResponseWithLimit(response: Response, maxBytes: number, label: string): Promise<Buffer> {
@@ -5626,6 +6269,8 @@ async function visionImageBase64(image: VisionImageInput, label: string) {
     const bucket = cloud.storage.bucket(bucketName)
     return (await readStoredObject(bucket, image.objectKey, maxReferenceBytes, label)).toString('base64')
   }
+  const inline = image.url.match(/^data:image\/(?:png|jpeg|webp|gif);base64,([\s\S]+)$/i)
+  if (inline) return validateProviderImageBase64(inline[1], maxReferenceBytes, label)
   return await fetchImageAsBase64(image.url, label, maxReferenceBytes)
 }
 
@@ -5963,6 +6608,7 @@ function parseOpenRouterCatalog(data: any) {
         ? model.architecture.output_modalities.map(String)
         : [],
       supportedParameters: model?.supported_parameters || {},
+      expirationDate: typeof model?.expiration_date === 'string' ? model.expiration_date : null,
     })
   }
   return models
@@ -5995,6 +6641,10 @@ const openRouterNormalizedImageProfiles = new Map<string, OpenRouterNormalizedIm
   ['microsoft/mai-image-2.5', { defaultFormat: 'png' }],
   ['microsoft/mai-image-2.5-pro', { defaultFormat: 'png' }],
   ['microsoft/mai-image-2.6', {
+    defaultFormat: 'png',
+    documentedFormatSource: 'https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image#response-format',
+  }],
+  ['microsoft/mai-image-2.6-flash', {
     defaultFormat: 'png',
     documentedFormatSource: 'https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image#response-format',
   }],
@@ -6035,6 +6685,12 @@ async function resolveOpenRouterImageRoute(model: string) {
   if (!dedicated || !dedicated.outputModalities.includes('image')) {
     throw new Error(`Model ${model} is not available in the authoritative OpenRouter image catalog`)
   }
+  if (dedicated.expirationDate && !dedicated.expirationDate.startsWith('2098') && Date.now() >= Date.parse(`${dedicated.expirationDate}T00:00:00Z`)) {
+    throw new Error(`Model ${model} expired on ${dedicated.expirationDate}`)
+  }
+  if (openRouterRequiresStyleReferences(dedicated.supportedParameters)) {
+    throw new Error(`Model ${model} requires style references, which this image workflow does not supply`)
+  }
   const outputFormat = safeOpenRouterOutputFormat(dedicated.supportedParameters)
   const normalizedProfile = openRouterNormalizedImageProfiles.get(model)
   if (outputFormat === null && !normalizedProfile) {
@@ -6047,6 +6703,10 @@ async function resolveOpenRouterImageRoute(model: string) {
     throw new Error(`Model ${model} no longer declares a supported resolution at or above ${normalizedProfile.minimumResolution}`)
   }
   return { protocol: 'openrouter-images' as const, model: dedicated, outputFormat, normalizedProfile }
+}
+
+function openRouterRequiresStyleReferences(parameters: any): boolean {
+  return Number(parameters?.input_references?.min) > 0
 }
 
 function safeOpenRouterOutputFormat(supportedParameters: any): 'png' | 'svg' | null {
@@ -6068,8 +6728,6 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
   ])
   const entries = new Map<string, ModelRegistryEntry>()
   for (const model of textModels.values()) {
-    const dedicated = dedicatedModels.get(model.id)
-    if (dedicated && safeOpenRouterOutputFormat(dedicated.supportedParameters) !== null) continue
     if (!model.inputModalities.includes('text') || !model.outputModalities.includes('text')) continue
     const roles: ModelRole[] = ['main']
     if (model.inputModalities.includes('image')) roles.push('vision')
@@ -6088,6 +6746,7 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         outputModalities: model.outputModalities,
         verified: false,
         verificationState: 'catalog',
+        expirationDate: model.expirationDate,
         roleReasons: {
           main: 'OpenRouter Models API declares text input and text output',
           ...(roles.includes('vision') ? { vision: 'OpenRouter Models API input_modalities includes image' } : {}),
@@ -6103,16 +6762,20 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
     const aspectRatioValues = canonicalAspectRatios(model.supportedParameters?.aspect_ratio?.values)
     const formatSelectable = compatibleOutputFormat !== null || Boolean(normalizedProfile)
     const minimumResolutionAvailable = !normalizedProfile?.minimumResolution || Boolean(resolutionValues?.length)
-    const selectable = formatSelectable && minimumResolutionAvailable
+    const requiresStyleReferences = openRouterRequiresStyleReferences(model.supportedParameters)
+    const selectable = formatSelectable && minimumResolutionAvailable && !requiresStyleReferences
     const directEdit = selectable && supportsOpenRouterParameter(model.supportedParameters, 'input_references')
     const declaredOutputFormats = openRouterOutputFormats(model.supportedParameters)
     const outputFormats = selectable ? ['png'] : declaredOutputFormats
     const disabledReason = selectable
       ? ''
-      : !formatSelectable
-        ? `OpenRouter catalog does not declare explicit PNG or SVG output_format values${declaredOutputFormats.length ? ` (declared: ${declaredOutputFormats.join(', ')})` : ''}; unavailable for PaperBanana submission`
-        : `OpenRouter catalog no longer declares a canonical ${normalizedProfile?.minimumResolution} or higher resolution; unavailable for PaperBanana submission`
-    entries.set(model.id, registryEntry(
+      : requiresStyleReferences
+        ? 'This model requires style references, which this image workflow does not supply'
+        : !formatSelectable
+          ? `OpenRouter catalog does not declare explicit PNG or SVG output_format values${declaredOutputFormats.length ? ` (declared: ${declaredOutputFormats.join(', ')})` : ''}; unavailable for PaperBanana submission`
+          : `OpenRouter catalog no longer declares a canonical ${normalizedProfile?.minimumResolution} or higher resolution; unavailable for PaperBanana submission`
+    const textEntry = entries.get(model.id)
+    const imageEntry = registryEntry(
       model.id,
       model.name,
       selectable ? ['image'] : [],
@@ -6124,6 +6787,8 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         imageGeneration: true,
         referenceImages: directEdit,
         imageEditing: directEdit,
+        maxReferenceImages: directEdit ? 1 : 0,
+        providerMaxReferenceImages: directEdit && Number.isInteger(model.supportedParameters?.input_references?.max) ? model.supportedParameters.input_references.max : undefined,
         resolutions: resolutionValues,
         refineResolutions: canonicalRefineResolutions(resolutionValues),
         aspectRatios: aspectRatioValues,
@@ -6138,7 +6803,9 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
         outputModalities: model.outputModalities,
         verified: false,
         verificationState: 'catalog',
+        expirationDate: model.expirationDate,
         selectable,
+        officialSourceUrl: normalizedProfile?.documentedFormatSource || 'https://openrouter.ai/api/v1/images/models',
         disabledReason,
         roleReasons: selectable
           ? {
@@ -6150,16 +6817,28 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
           }
           : {},
       },
-    ))
+    )
+    entries.set(model.id, textEntry ? {
+      ...imageEntry,
+      selectable: textEntry.selectable || imageEntry.selectable,
+      disabledReason: undefined,
+      roles: [...new Set([...textEntry.roles, ...imageEntry.roles])],
+      roleReasons: { ...textEntry.roleReasons, ...imageEntry.roleReasons, ...(!selectable ? { image: disabledReason } : {}) },
+      roleProtocols: { ...textEntry.roleProtocols, ...(selectable ? imageEntry.roleProtocols : {}) },
+      inputModalities: [...new Set([...textEntry.inputModalities, ...imageEntry.inputModalities])],
+      outputModalities: [...new Set([...textEntry.outputModalities, ...imageEntry.outputModalities])],
+      expirationDate: imageEntry.expirationDate || textEntry.expirationDate,
+      capabilities: { ...imageEntry.capabilities, referenceImages: textEntry.capabilities.referenceImages || directEdit },
+    } : imageEntry)
   }
-  const models = [...entries.values()].sort((a, b) => {
+  const models = [...entries.values()].map(applyModelLifecycle).sort((a, b) => {
     if (a.recommended !== b.recommended) return a.recommended ? -1 : 1
     const recommendationOrder = (openRouterRecommendationRank.get(a.id) ?? Number.MAX_SAFE_INTEGER)
       - (openRouterRecommendationRank.get(b.id) ?? Number.MAX_SAFE_INTEGER)
     return recommendationOrder || a.vendor.localeCompare(b.vendor) || a.id.localeCompare(b.id)
   })
-  const firstForRole = (role: ModelRole) => models.find((model) => model.roles.includes(role))?.id || ''
-  const preferred = (id: string, role: ModelRole) => entries.get(id)?.roles.includes(role) ? id : firstForRole(role)
+  const firstForRole = (role: ModelRole) => models.find((model) => model.selectable && model.roles.includes(role))?.id || ''
+  const preferred = (id: string, role: ModelRole) => models.some((model) => model.id === id && model.selectable && model.roles.includes(role)) ? id : firstForRole(role)
   return {
     accessKind: 'aggregator',
     routeContractVersion,
@@ -6198,9 +6877,22 @@ function openRouterOutputFormats(parameters: any) {
     : []
 }
 
+function applyModelLifecycle(model: ModelRegistryEntry): ModelRegistryEntry {
+  const date = model.expirationDate
+  // Retain far-future provider placeholders as evidence; do not describe them
+  // as a guaranteed service lifetime. Earliest dates never disable a model.
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date) || date.startsWith('2098')) return model
+  const retired = Date.now() >= Date.parse(`${date}T00:00:00Z`)
+  return {
+    ...model, lifecycle: 'legacy', recommended: false,
+    selectable: retired ? false : model.selectable,
+    ...(retired ? { disabledReason: `官方服务已于 ${date} 到期${model.replacementModelId ? `，请改用 ${model.replacementModelId}` : ''}` } : {}),
+  }
+}
+
 async function providerModelRegistry(provider: Provider): Promise<ProviderModelRegistry> {
   if (provider === 'openrouter') return openRouterProviderRegistry()
-  return staticModelRegistry[provider]
+  return publicProviderModelRegistry(staticModelRegistry[provider])
 }
 
 function providerRegistryFailure(provider: Provider, error: any): string {
@@ -7270,7 +7962,7 @@ function validateRefineBody(body: RefineImageBody) {
   if (body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) throw new Error('Invalid clientPlatform')
   normalizeAspectRatio(body.aspectRatio)
   if (body.imageSize !== undefined && !canonicalImageResolutions.includes(body.imageSize)) {
-    throw new Error('Invalid imageSize. Must be 1K, 2K, or 4K.')
+    throw new Error('Invalid imageSize. Must be 512, 1K, 2K, 4K, or auto.')
   }
   if (!body.modelRoutes && !body.imageModelName) throw new Error('imageModelName is required')
   if (!body.sourceImageUrl && !body.sourceImageObjectKey) throw new Error('source image is required')
@@ -7280,12 +7972,7 @@ function validateRefineBody(body: RefineImageBody) {
 }
 
 function selectApiKey(provider: Provider, apiKeys: ApiKeys) {
-  if (provider === 'openrouter') return apiKeys?.openrouter?.trim() || ''
-  if (provider === 'gemini') return apiKeys?.gemini?.trim() || ''
-  if (provider === 'openai') return apiKeys?.openai?.trim() || ''
-  if (provider === 'bailian') return apiKeys?.bailian?.trim() || ''
-  if (provider === 'ark') return apiKeys?.ark?.trim() || ''
-  return ''
+  return apiKeys?.[provider]?.trim() || ''
 }
 
 async function publicJob(job: any) {
@@ -7650,67 +8337,32 @@ function toOpenRouterModel(model: string) {
 }
 
 export function normalizeModelName(provider: string, model: string) {
-  if (provider === 'gemini') {
-    const aliases: Record<string, string> = {
+  const id = String(model || '').trim()
+  if (provider === 'openrouter') return id // Native-channel retirement never rewrites a hosted ID.
+  const entry = staticModelRegistry[provider as Exclude<Provider, 'openrouter'>]?.models.find((item) => item.id === id)
+  if (entry) {
+    if (entry.replacementModelId && (entry.selectable === false || entry.expirationDate && Date.now() >= Date.parse(`${entry.expirationDate}T00:00:00Z`))) return entry.replacementModelId
+    return id
+  }
+  const aliases: Record<string, Record<string, string>> = {
+    gemini: {
       'gemini-3.1-flash-image-preview': 'gemini-3.1-flash-image',
+      'gemini-3-pro-image-preview': 'gemini-3-pro-image',
       'gemini-3.1-pro': 'gemini-3.1-pro-preview',
       'gemini-3-flash': 'gemini-3-flash-preview',
       'gemini-3-pro-preview': 'gemini-3.1-pro-preview',
       'gemini-3.1-flash-lite-preview': 'gemini-3.1-flash-lite',
-    }
-    return aliases[model] || model
+    },
+    ark: { 'doubao-seedream-5-0-lite-260128': 'doubao-seedream-5-0-260128' },
+    bailian: {
+      'mimo-v2.5-pro': 'xiaomi/mimo-v2.5-pro',
+      'MiniMax-M2.7': 'MiniMax/MiniMax-M2.7',
+      'wan2.1-t2i-plus': 'wanx2.1-t2i-plus',
+      'wan2.1-t2i-turbo': 'wanx2.1-t2i-turbo',
+      'qwen-max-latest': 'qwen-max',
+    },
   }
-  if (provider === 'openai') {
-    const aliases: Record<string, string> = {
-      'gpt-5.2': 'gpt-5.5',
-      'gpt-5.1': 'gpt-5.5',
-      'gpt-4o': 'gpt-4.1',
-      'gpt-4o-mini': 'gpt-4.1-mini',
-      'gpt-image-1.5': 'gpt-image-2',
-    }
-    return aliases[model] || model
-  }
-  if (provider === 'openrouter') {
-    const aliases: Record<string, string> = {
-      'openrouter/google/gemini-3.1-flash-image-preview': 'openrouter/google/gemini-3.1-flash-image',
-      'openrouter/google/gemini-3-pro-image-preview': 'openrouter/google/gemini-3-pro-image',
-      'openrouter/openai/gpt-5-image': 'openrouter/openai/gpt-image-2',
-      'openrouter/openai/gpt-5-image-mini': 'openrouter/openai/gpt-image-1-mini',
-    }
-    return aliases[model] || model
-  }
-  if (provider === 'bailian') {
-    const aliases: Record<string, string> = {
-      'qwen3.7-max': 'qwen3.7-plus',
-      'qwen3.7-max-2026-05-20': 'qwen3.7-plus',
-      'qwen3.6-flash': 'qwen3.7-flash',
-      'qwen3.6-plus': 'qwen3.7-plus',
-      'qwen-plus-latest': 'qwen3.7-plus',
-      'qwen-max-latest': 'qwen3.7-plus',
-      'qwen-flash': 'qwen3.7-flash',
-      'glm-5.1': 'glm-5.2',
-      'kimi-k2.6': 'kimi/kimi-k3',
-      'MiniMax-M2.7': 'MiniMax/MiniMax-M3',
-      'MiniMax/MiniMax-M2.7': 'MiniMax/MiniMax-M3',
-      'qwen-image-max': 'qwen-image-2.0-pro',
-      'qwen-image-plus': 'qwen-image-2.0',
-      'qwen-image': 'qwen-image-2.0',
-      'wan2.6-image': 'wan2.7-image',
-      'wan2.6-t2i': 'wan2.7-image',
-      'wan2.5-t2i-preview': 'wan2.7-image',
-      'wan2.2-t2i-plus': 'wan2.7-image',
-      'wan2.2-t2i-flash': 'wan2.7-image',
-      'mimo-v2.5-pro': 'qwen3.7-plus',
-    }
-    return aliases[model] || model
-  }
-  if (provider === 'ark') {
-    const aliases: Record<string, string> = {
-      'doubao-seedream-5-0-lite-260128': 'doubao-seedream-5-0-260128',
-    }
-    return aliases[model] || model
-  }
-  return model
+  return aliases[provider]?.[id] || id
 }
 
 function normalizeOutputFormat(format?: string): OutputFormat {

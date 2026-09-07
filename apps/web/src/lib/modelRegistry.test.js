@@ -152,3 +152,15 @@ test('refine presentation never calls a model direct edit without input referenc
     capabilities: { imageEditMode: 'direct-edit' },
   }).label, '分析后重绘')
 })
+
+test('cached expiration dates disable selection, while earliest dates and provider placeholders remain informational', () => {
+  const models = [
+    { id: 'expired', selectable: true, roles: ['main'], expirationDate: '2000-01-01' },
+    { id: 'earliest', selectable: true, roles: ['main'], earliestRetirementDate: '2000-01-01' },
+    { id: 'placeholder', selectable: true, roles: ['main'], expirationDate: '2098-12-31' },
+  ]
+  const { compatible, incompatible } = partitionRegistryModels(models, { role: 'main' })
+  assert.deepEqual(compatible.map((m) => m.id), ['earliest', 'placeholder'])
+  assert.equal(incompatible[0].id, 'expired')
+  assert.match(incompatible[0].selectionDisabledReason, /2000-01-01/)
+})

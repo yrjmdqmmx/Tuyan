@@ -39,13 +39,16 @@ function buildModelSubmission(input) {
     };
 }
 function requiredCreateRouteRoles(body, maxCriticRounds) {
+    var _a;
     const roles = [];
     const outputFormat = body.outputFormat === 'svg' ? 'svg' : 'png';
     const taskName = body.taskName === 'plot' ? 'plot' : 'diagram';
     const pipelineMode = typeof body.pipelineMode === 'string' ? body.pipelineMode : 'planner_critic';
-    if (outputFormat === 'svg' || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto')
+    const imageRoute = (_a = body.modelRoutes) === null || _a === void 0 ? void 0 : _a.image;
+    const nativeVector = (imageRoute === null || imageRoute === void 0 ? void 0 : imageRoute.accessProvider) === 'recraft' && /^recraftv(?:[23]|4(?:_1)?)(?:_utility)?(?:_pro)?_vector$/.test(imageRoute.modelId);
+    if ((outputFormat === 'svg' && !nativeVector) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto')
         roles.push('main');
-    if (outputFormat === 'png' && taskName !== 'plot')
+    if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot')
         roles.push('image');
     const references = Array.isArray(body.referenceImages) ? body.referenceImages : [];
     if (references.length)

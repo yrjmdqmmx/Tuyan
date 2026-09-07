@@ -6,7 +6,7 @@ exports.modelAvailabilityPresentation = modelAvailabilityPresentation;
 exports.partitionRegistryModels = partitionRegistryModels;
 exports.groupRegistryModels = groupRegistryModels;
 exports.findRegistryModel = findRegistryModel;
-exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'];
+exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'];
 function normalizeModelRegistry(input) {
     const source = asRecord(input);
     const registryVersion = stringValue(source.registryVersion);
@@ -17,12 +17,13 @@ function normalizeModelRegistry(input) {
         throw new Error('服务端模型路由契约不可用。');
     }
     const providerSource = asRecord(source.providers);
-    const missingProviders = exports.MODEL_PROVIDER_IDS.filter((id) => !providerSource[id]);
+    const missingProviders = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'].filter((id) => !providerSource[id]);
     if (missingProviders.length)
         throw new Error('服务端模型目录必须包含五个 API 渠道。');
     const providers = {};
     for (const providerId of exports.MODEL_PROVIDER_IDS) {
-        providers[providerId] = normalizeProvider(providerId, providerSource[providerId]);
+        if (providerSource[providerId])
+            providers[providerId] = normalizeProvider(providerId, providerSource[providerId]);
     }
     return { registryVersion, routeContractVersion, supportsModelRoutes: true, providers };
 }
@@ -43,6 +44,8 @@ function normalizeProvider(providerId, input) {
     };
     const labels = { main: '主模型', image: '图像模型', vision: '识别模型' };
     for (const role of ['main', 'image', 'vision']) {
+        if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role)))
+            continue;
         const entry = models.find((model) => model.id === defaults[role]);
         if (!entry || entry.selectable === false || !entry.roles.includes(role)) {
             throw new Error(`${providerId} 默认${labels[role]}无效。`);
@@ -86,6 +89,11 @@ function normalizeModel(input) {
         protocol: stringValue(source.protocol),
         availabilityNotes: stringValue(source.availabilityNotes),
         releasedAt: validReleasedAt(source.releasedAt),
+        expirationDate: validReleasedAt(source.expirationDate),
+        earliestRetirementDate: validReleasedAt(source.earliestRetirementDate),
+        replacementModelId: stringValue(source.replacementModelId),
+        regions: stringArray(source.regions),
+        roleProtocols: asRecord(source.roleProtocols),
         capabilities: asRecord(source.capabilities),
     };
 }
@@ -105,8 +113,8 @@ function modelAvailabilityPresentation(model) {
             : state === 'registry' && model.verified === true
                 ? '注册表已验证'
                 : state === 'catalog'
-                    ? '目录可见，尚未实测'
-                    : '尚未验证当前账号',
+                    ? '官方目录'
+                    : '模型目录',
         verifiedForAccount: state === 'inference-verified',
     };
 }
@@ -135,19 +143,21 @@ function groupRegistryModels(models) {
         .map(([vendor, vendorModels]) => ({ vendor, models: vendorModels.sort(compareReleasedAt) }));
 }
 function findRegistryModel(registry, provider, modelId) {
+    var _a;
     if (!registry || !exports.MODEL_PROVIDER_IDS.includes(provider))
         return null;
-    return registry.providers[provider].models.find((model) => model.id === modelId) || null;
+    return ((_a = registry.providers[provider]) === null || _a === void 0 ? void 0 : _a.models.find((model) => model.id === modelId)) || null;
 }
 function annotateModel(model, role, outputFormat) {
+    const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(`${model.expirationDate}T00:00:00Z`));
     const capabilities = model.capabilities || {};
     const formats = stringArray(capabilities.outputFormats);
     const roleMismatch = !model.roles.includes(role);
     const formatMismatch = role === 'image' && Boolean(outputFormat) && formats.length > 0 && !formats.includes(outputFormat);
     return {
         ...model,
-        selectionDisabled: !model.selectable || roleMismatch || formatMismatch,
-        selectionDisabledReason: model.disabledReason
+        selectionDisabled: expired || !model.selectable || roleMismatch || formatMismatch,
+        selectionDisabledReason: (expired ? `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
             || (roleMismatch ? model.roleReasons[role] || '服务端未授权该模型用于当前角色' : '')
             || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
     };

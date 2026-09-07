@@ -39,8 +39,10 @@ export function requiredCreateRouteRoles(body: Record<string, unknown>, maxCriti
   const outputFormat = body.outputFormat === 'svg' ? 'svg' : 'png'
   const taskName = body.taskName === 'plot' ? 'plot' : 'diagram'
   const pipelineMode = typeof body.pipelineMode === 'string' ? body.pipelineMode : 'planner_critic'
-  if (outputFormat === 'svg' || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
-  if (outputFormat === 'png' && taskName !== 'plot') roles.push('image')
+  const imageRoute = (body.modelRoutes as ModelRoutes | undefined)?.image
+  const nativeVector = imageRoute?.accessProvider === 'recraft' && /^recraftv(?:[23]|4(?:_1)?)(?:_utility)?(?:_pro)?_vector$/.test(imageRoute.modelId)
+  if ((outputFormat === 'svg' && !nativeVector) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
+  if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot') roles.push('image')
   const references = Array.isArray(body.referenceImages) ? body.referenceImages : []
   if (references.length) roles.push(body.referenceImageMode === 'main_model' ? 'main' : 'vision')
   if (maxCriticRounds > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')

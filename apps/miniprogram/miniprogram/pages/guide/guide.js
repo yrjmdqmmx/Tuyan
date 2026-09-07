@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("../../utils/constants");
 const config_1 = require("../../utils/config");
 const model_registry_store_1 = require("../../utils/model-registry-store");
 const LINKS = {
@@ -20,12 +21,12 @@ const SETTING_CARDS = [
     ['配置模式', '普通模式使用单一 API 渠道的服务端默认三角色；专业模式可为主模型、图像模型和识别模型分别选择渠道。'],
     ['API 渠道', '先选实际调用的接入渠道，再在渠道下按模型厂商选择具体模型。密钥属于渠道，不属于模型厂商。'],
     ['主模型', '负责规划、SVG、统计图、自动检索和部分评审；只有任务真实可达主模型时才要求对应渠道密钥。'],
-    ['图像生成模型', '负责 PNG 渲染与精修。比例、清晰度、输出格式和编辑模式完全以 registry 声明为准。'],
+    ['图像生成模型', '负责 PNG 渲染与精修；Recraft Vector 还可生成 SVG。比例、清晰度、输出格式和编辑模式完全以 registry 声明为准。'],
     ['参考图识别模型', '上传参考图且主模型不直读时负责图像理解；未走到该角色时不会要求它的渠道密钥。'],
     ['生成流程', '规划器 + 评审器适合日常质量；完整流程更细致；基础生成最快但跳过部分评审。'],
     ['检索设置', '不检索、自动、随机或手动选择图库案例。上传参考图后检索强制关闭。'],
     ['画面比例', '自动 + 十种规范比例。灰掉或不出现的比例表示当前模型没有声明支持，系统不会静默改成 16:9。'],
-    ['导出格式', 'PNG 适合直接预览与精修；SVG 由主模型生成，适合论文排版与无损缩放。'],
+    ['导出格式', 'PNG 适合直接预览与精修；SVG 默认由主模型生成；选择 Recraft Vector 时由主模型规划、Recraft 生成，需两个渠道的 Key。'],
     ['输出清晰度', '生成读取 resolutions；独立精修读取 refineResolutions，两者互不推断。'],
     ['候选数量', '一次生成 1–3 张独立候选，数量越多耗时与计费越高。'],
     ['评审轮数', '0–2 轮“评审 → 重渲染”；轮数越多通常更细致，也会增加时间与费用。'],
@@ -49,7 +50,7 @@ Component({
                 return;
             }
             const provider = state.registry.providers.bailian;
-            this.setData({ registryVersion: state.registry.registryVersion, providerLabels: 'Google Gemini API · OpenAI · 阿里百炼 · 火山方舟 · OpenRouter', defaultRoutes: `${provider.defaults.main} / ${provider.defaults.image} / ${provider.defaults.vision}`, registryError: '' });
+            this.setData({ registryVersion: state.registry.registryVersion, providerLabels: Object.keys(state.registry.providers).map((id) => { var _a; return ((_a = constants_1.PROVIDERS.find((item) => item.id === id)) === null || _a === void 0 ? void 0 : _a.label) || (id === 'ark' ? '火山方舟' : id); }).join(' · '), defaultRoutes: `${provider === null || provider === void 0 ? void 0 : provider.defaults.main} / ${provider === null || provider === void 0 ? void 0 : provider.defaults.image} / ${provider === null || provider === void 0 ? void 0 : provider.defaults.vision}`, registryError: '' });
         },
         toggleChapter(event) { const index = Number(event.currentTarget.dataset.index); if (!Number.isInteger(index))
             return; const chapters = this.data.chapters.map((chapter, chapterIndex) => chapterIndex === index ? { ...chapter, open: !chapter.open } : chapter); this.setData({ chapters }); },
