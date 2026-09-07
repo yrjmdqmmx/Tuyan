@@ -28,6 +28,7 @@ async function main(): Promise<void> {
   const mongo = createMongoAdapter(config.mongodb)
   const oss = createOssAdapter(config.oss)
   const providerEgress = createProviderEgress(config.providerEgress)
+  let configureDeletionCleanup: (cleanup: (userId: string) => Promise<void>) => void = () => {}
   let legacyLifecycle = {
     stop() {},
     async drain() {},
@@ -41,6 +42,7 @@ async function main(): Promise<void> {
       const legacy = await import('./legacy-entry.mjs')
       legacy.configureRuntimeFetch(providerEgress.fetch)
       legacy.configureJobAdmission(config.admission)
+      configureDeletionCleanup = legacy.configureAccountDeletionDataCleanup
       legacy.startAccountDeletionSweep()
       legacyLifecycle = {
         stop() {
@@ -88,10 +90,18 @@ async function main(): Promise<void> {
         {
           operatorReportSecret: config.benchmark.reviewSigningSecret,
           requireRegistryAuthority: true,
+          async assertAccountAcceptingWork(userId: string) {
+            if (await mongo.db.collection('paperbanana_account_deletions').findOne({ _id: `user:${userId}` } as any)) {
+              throw new Error('ACCOUNT_DELETION_IN_PROGRESS')
+            }
+          },
           verifyReviewEvidence: verifyScientificReviewEvidence,
         },
       )
       await benchmarkRepository.ensureSuite()
+      configureDeletionCleanup(async (userId) => {
+        await benchmarkMongo.db.collection('paperbanana_benchmark_prompt_submissions').deleteMany({ userId })
+      })
       benchmarkService = createBenchmarkService({
         repository: benchmarkRepository,
         signEvidence: (key) => benchmarkBucket.getDownloadUrl(key, 15 * 60),

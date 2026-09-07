@@ -22,3 +22,8 @@ assert.ok(removed.includes('paperbanana_auth_cookie'))
 assert.ok(removed.includes('paperbanana_mini_jobs'))
 
 console.log('account.test.cjs passed')
+
+const { accountLifecycleMessage } = require('../miniprogram/utils/account.js')
+assert.match(accountLifecycleMessage('review_required'), /需要核对/)
+assert.match(accountLifecycleMessage('deleting'), /申请已受理/)
+assert.equal(accountLifecycleMessage('active'), '')

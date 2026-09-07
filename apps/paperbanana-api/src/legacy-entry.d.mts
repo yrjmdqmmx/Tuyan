@@ -29,4 +29,5 @@ export function stopJobAdmission(): void
 export function drainJobAdmission(): Promise<void>
 export function startAccountDeletionSweep(intervalMs?: number): void
 export function stopAccountDeletionSweep(): void
+export function configureAccountDeletionDataCleanup(cleanup: (userId: string) => Promise<void>): void
 export default handler

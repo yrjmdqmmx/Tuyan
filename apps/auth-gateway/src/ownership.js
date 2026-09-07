@@ -11,10 +11,8 @@ export function authorizeJobOwner(job, principal = {}) {
   if (!owner.userId && !owner.userEmail) return false;
 
   const accountId = String(principal.userId || '').trim();
-  const accountEmail = String(principal.email || '').trim().toLowerCase();
   const guestOwner = String(principal.guestOwner || '').trim();
   if (accountId && owner.userId === accountId) return true;
-  if (accountEmail && owner.userEmail === accountEmail) return true;
   return Boolean(guestOwner && owner.userId === guestOwner);
 }
 

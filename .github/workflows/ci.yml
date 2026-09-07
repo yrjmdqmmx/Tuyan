@@ -35,6 +35,8 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @paperbanana/auth-gateway test
+      - name: Account lifecycle with disposable Mongo replica set
+        run: apps/auth-gateway/tests/integration/run-account-lifecycle.sh
       - run: pnpm --filter @paperbanana/paperbanana-api test
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/paperbanana-api build

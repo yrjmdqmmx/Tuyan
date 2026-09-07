@@ -1193,6 +1193,7 @@ export function createMongoBenchmarkRepository(
   readOperatorReport: (objectKey: string, maxBytes: number) => Promise<Uint8Array> = async () => { throw new Error('BENCHMARK_OPERATOR_REPORT_READER_UNAVAILABLE') },
   scientificV2Options: {
     operatorReportSecret?: string
+    assertAccountAcceptingWork?: (userId: string) => Promise<void>
     createClaimToken?: () => string
     requireRegistryAuthority?: boolean
     verifyReviewEvidence?: (objectKey: string, imageHash: string) => Promise<void>
@@ -1299,6 +1300,7 @@ export function createMongoBenchmarkRepository(
       return { items: rows.slice(0, limit), nextCursor: rows.length > limit ? String(offset + limit) : null }
     },
     async submitPrompt(input: AnyRecord) {
+      await scientificV2Options.assertAccountAcceptingWork?.(input.userId)
       const timestamp = now()
       const dayStart = new Date(timestamp)
       dayStart.setUTCHours(0, 0, 0, 0)
@@ -1320,6 +1322,8 @@ export function createMongoBenchmarkRepository(
       }
       try {
         await promptSubmissions.insertOne(document)
+        try { await scientificV2Options.assertAccountAcceptingWork?.(input.userId) }
+        catch (error) { await promptSubmissions.deleteOne({ _id: submissionId, userId: input.userId }); throw error }
       } catch (error: any) {
         if (error?.code !== 11000) throw error
         const existing = await promptSubmissions.findOne({ _id: submissionId })

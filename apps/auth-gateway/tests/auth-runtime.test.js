@@ -15,7 +15,10 @@ function fakeDatabase() {
     account: {
       async deleteMany(query) { operations.push(['account.deleteMany', query]); },
     },
+    accountDeletionOperations: { async createIndex() {} },
+    accountVerificationTokens: { async createIndex() {} },
     user: {
+      async createIndex() {},
       async deleteOne(query) { operations.push(['user.deleteOne', query]); },
       async findOne(query, options) { operations.push(['user.findOne', query, options]); return null; },
       find() {
@@ -180,6 +183,8 @@ test('sign-up hides account existence and never forwards a session cookie', asyn
 test('readiness fails closed when MongoDB does not support auth deletion transactions', async () => {
   const db = fakeDatabase();
   db.collection = () => ({
+    async createIndex() {},
+    find() { return { async toArray() { return [] } } },
     async findOne() {
       throw new Error('Transaction numbers are only allowed on a replica set member or mongos');
     },
@@ -348,6 +353,7 @@ function transactionalFixture(failAt = '') {
     async command() { return { ok: 1 }; },
     collection(name) {
       return {
+        async createIndex() {},
         async deleteMany(query, options) {
           operations.push({ name, query, options });
           assert.equal(options.session, mongoSession);

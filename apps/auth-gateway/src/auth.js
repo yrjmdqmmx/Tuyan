@@ -1,3 +1,7 @@
+import { createAccountWriteGuard } from './account-write-guard.js';
+import { createAccountVerification, authUserFilter } from './account-verification.js';
+import { createDeletionStore } from './account-deletion.js';
+import { ensureAccountIndexes, normalizeAccountInput } from './account-indexes.js';
 import { betterAuth } from 'better-auth';
 import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { fromNodeHeaders } from 'better-auth/node';
@@ -25,6 +29,8 @@ export async function createAuthRuntime(
   await mongoClient.connect();
   const db = mongoClient.db(config.mongoDbName);
   let status = { ok: true, checkedAt: null };
+  try { await ensureAccountIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
+  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'));
 
   const advanced = {
     useSecureCookies: config.production,
@@ -52,6 +58,7 @@ export async function createAuthRuntime(
     ...config.authEmail,
     authBaseUrl: config.authBaseUrl,
   };
+  const verification = createAccountVerification({ db, mongoClient, callbackUrl: emailConfig.verificationCallbackUrl });
   const limiter = createDatabaseMailLimiter({
     collection: db.collection('authMailRateLimit'),
     secret: config.authSecret,
@@ -77,6 +84,10 @@ export async function createAuthRuntime(
 
   const auth = betterAuthFactory({
     appName: 'PaperBanana',
+    databaseHooks: { ...createAccountWriteGuard(db), user: {
+      create: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
+      update: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
+    } },
     secret: config.authSecret,
     baseURL: config.authBaseUrl,
     trustedOrigins: config.frontendOrigins,
@@ -91,7 +102,8 @@ export async function createAuthRuntime(
       autoSignInAfterVerification: false,
       expiresIn: 60 * 60,
       async sendVerificationEmail({ user, url, token }, request) {
-        await accountEmail.sendVerification({ email: user.email, url, token, request });
+        const boundToken = await verification.issue(user);
+        await accountEmail.sendVerification({ email: user.email, url, token: boundToken, request });
       },
     },
     emailAndPassword: {
@@ -134,7 +146,13 @@ export async function createAuthRuntime(
   });
 
   return {
-    webHandler: createRegistrationPrivacyHandler(auth.handler),
+    deletionStore,
+    webHandler: createRegistrationPrivacyHandler(
+      async (request) => await verification.handler(request) || auth.handler(request),
+      async (email) => Boolean(await db.collection('user').findOne(
+        { email }, { projection: { _id: 1 }, collation: { locale: 'en', strength: 2 } },
+      )),
+    ),
     async optionalSession(request) {
       return auth.api.getSession({
         headers: fromNodeHeadersImpl(request.headers),
@@ -161,8 +179,8 @@ export async function createAuthRuntime(
         response.append('Set-Cookie', cookie);
       }
     },
-    async deleteUser(userId) {
-      await deleteAuthUser(mongoClient, db, userId);
+    async deleteUser(userId, operation) {
+      await deleteAuthUser(mongoClient, db, userId, operation);
     },
     async listUsers(body = {}) {
       return listAuthUsers(db, body);
@@ -187,10 +205,11 @@ export async function createAuthRuntime(
   };
 }
 
-function createRegistrationPrivacyHandler(webHandler) {
+function createRegistrationPrivacyHandler(webHandler, userExists = async () => false) {
   return async function registrationPrivacyHandler(request) {
-    const response = await webHandler(request);
     const url = new URL(request.url);
+    const signupBody = request.method === 'POST' && url.pathname === '/api/auth/sign-up/email' ? request.clone() : null;
+    const response = await webHandler(request);
     if (request.method !== 'POST' || url.pathname !== '/api/auth/sign-up/email') return response;
 
     let duplicate = false;
@@ -200,6 +219,13 @@ function createRegistrationPrivacyHandler(webHandler) {
         'USER_ALREADY_EXISTS',
         'USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL',
       ].includes(body?.code);
+      if (!duplicate && body?.code === 'FAILED_TO_CREATE_USER') {
+        const input = await signupBody?.json().catch(() => null);
+        const email = String(input?.email || '').trim().toLowerCase();
+        // The unique index can win after the library's existence precheck.
+        // Confirm that collision; do not mask unrelated database failures.
+        duplicate = Boolean(email && await userExists(email));
+      }
     }
     if (!response.ok && !duplicate) return response;
 
@@ -217,10 +243,8 @@ function createRegistrationPrivacyHandler(webHandler) {
 async function markAuthEmailVerified(db, userId) {
   const id = String(userId || '');
   if (!id) throw new Error('Auth user id is required');
-  const candidates = [{ id }, { _id: id }];
-  if (ObjectId.isValid(id)) candidates.push({ _id: new ObjectId(id) });
   await db.collection('user').updateOne(
-    { $or: candidates },
+    authUserFilter(id),
     { $set: { emailVerified: true, updatedAt: new Date() } },
   );
 }
@@ -244,7 +268,7 @@ async function probeTransactionSupport(mongoClient, db) {
   }
 }
 
-async function deleteAuthUser(mongoClient, db, userId) {
+async function deleteAuthUser(mongoClient, db, userId, operation) {
   const id = String(userId || '');
   if (!id) throw new Error('Auth user id is required');
   const candidates = [id];
@@ -257,14 +281,31 @@ async function deleteAuthUser(mongoClient, db, userId) {
   try {
     await session.withTransaction(async () => {
       const options = { session };
+      if (operation) {
+        const op = await db.collection('accountDeletionOperations').findOne({
+          _id: id, operationId: operation.operationId, leaseToken: operation.leaseToken, phase: 'auth', status: 'pending', contractVersion: 3,
+        }, options);
+        if (!op) throw new Error('ACCOUNT_DELETION_OPERATION_MISMATCH');
+      }
       await db.collection('session').deleteMany({ userId: { $in: candidates } }, options);
       await db.collection('account').deleteMany({ userId: { $in: candidates } }, options);
+      if (operation) {
+        await db.collection('accountVerificationTokens').deleteMany({ userId: id }, options);
+        await db.collection('verification').deleteMany({ value: { $in: candidates } }, options);
+      }
       const userDeletion = await db.collection('user').deleteOne(
-        objectId ? { $or: [{ _id: objectId }, { id }] } : { $or: [{ _id: id }, { id }] },
+        authUserFilter(id),
         options,
       );
-      if (userDeletion.deletedCount !== 1) {
+      if (userDeletion.deletedCount !== 1 && !(operation && userDeletion.deletedCount === 0)) {
         throw new Error('Auth user deletion did not match exactly one user');
+      }
+      if (operation) {
+        const committed = await db.collection('accountDeletionOperations').updateOne(
+          { _id: id, operationId: operation.operationId, leaseToken: operation.leaseToken, phase: 'auth' },
+          { $set: { phase: 'ack', authDeletedAt: new Date(), updatedAt: new Date() } }, options,
+        );
+        if (committed.matchedCount !== 1) throw new Error('ACCOUNT_DELETION_LEASE_LOST');
       }
     }, {
       readConcern: { level: 'snapshot' },

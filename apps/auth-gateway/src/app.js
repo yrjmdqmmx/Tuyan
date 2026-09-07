@@ -46,6 +46,7 @@ export function createApp({
   nowSeconds = () => Math.floor(Date.now() / 1000),
   randomBytes,
   logger = console,
+  accountDeletion,
 }) {
   const app = express();
   const accountDeletionOperations = new Map();
@@ -128,6 +129,12 @@ export function createApp({
     }),
   );
 
+  app.get('/api/account/status', asyncRoute(async (request, response) => {
+    const session = await requireSession(auth, request);
+    if (!accountDeletion) return response.status(503).json({ code: 503, error: 'ACCOUNT_DELETION_CONTRACT_UNAVAILABLE' });
+    return relay(response, await accountDeletion.status(String(session.user.id || '')));
+  }));
+
   app.post(
     '/api/account/delete',
     asyncRoute(async (request, response) => {
@@ -152,55 +159,9 @@ export function createApp({
       }
 
       const userId = String(session.user.id || '');
-      const deletion = await runOnce(accountDeletionOperations, userId, async () => {
-        const context = requestContext(request);
-        const capability = await backend.call({ action: 'accountDeletionCapability' }, context);
-        if (
-          capability.status < 200 ||
-          capability.status >= 300 ||
-          Number(capability.data?.code) !== 0 ||
-          Number(capability.data?.deletionContractVersion) !== 2
-        ) {
-          return { contractUnavailable: true };
-        }
-
-        const cleanup = await backend.call(
-          {
-            action: 'deleteAccount',
-            userId,
-            userEmail: String(session.user.email || ''),
-          },
-          context,
-        );
-        if (
-          cleanup.status < 200 ||
-          cleanup.status >= 300 ||
-          Number(cleanup.data?.code) !== 0 ||
-          cleanup.data?.ok !== true
-        ) {
-          return { cleanup };
-        }
-        if (Number(cleanup.data?.deletionContractVersion) !== 2) {
-          return { contractUnavailable: true };
-        }
-
-        await auth.deleteUser(userId);
-        return { cleanup, committed: true };
-      });
-
-      if (deletion.contractUnavailable) {
-        return response.status(503).json({ code: 503, error: 'ACCOUNT_DELETION_CONTRACT_UNAVAILABLE' });
-      }
-      const cleanup = deletion.cleanup;
-      if (
-        !cleanup ||
-        cleanup.status < 200 ||
-        cleanup.status >= 300 ||
-        Number(cleanup.data?.code) !== 0 ||
-        cleanup.data?.ok !== true
-      ) {
-        return relay(response, cleanup);
-      }
+      if (!accountDeletion) return response.status(503).json({ code: 503, error: 'ACCOUNT_DELETION_CONTRACT_UNAVAILABLE' });
+      const deletion = await runOnce(accountDeletionOperations, userId, () => accountDeletion.request(userId));
+      if (deletion.status !== 200 || deletion.data?.code !== 0 || deletion.data?.ok !== true) return relay(response, deletion);
       try {
         await auth.clearSessionCookie(request, response);
       } catch (error) {
@@ -222,6 +183,11 @@ export function createApp({
       }
 
       const context = requestContext(request);
+      if (auth.deletionStore && ['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission', 'optimizeInputs'].includes(action)) {
+        const session = await auth.optionalSession(request);
+        const operation = session?.user?.id ? await auth.deletionStore.get(String(session.user.id)) : null;
+        if (operation) return response.status(409).json({ code: 409, error: operation.status === 'review_required' ? 'ACCOUNT_DELETION_REVIEW_REQUIRED' : 'ACCOUNT_DELETION_PROCESSING' });
+      }
       if (action === 'adminStatus') {
         const session = await auth.optionalSession(request);
         return response.status(200).json({ code: 0, isAdmin: isAdminUser(config, session?.user) });

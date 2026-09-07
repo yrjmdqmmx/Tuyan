@@ -9,6 +9,7 @@ export function formatErrorMessage(error, context = '') {
   const code = typeof error === 'object' ? String(error.code || '') : '';
   const status = typeof error === 'object' ? Number(error.status || 0) : 0;
   const message = typeof error === 'string' ? error : String(error.message || error);
+  if (code === 'ACCOUNT_LIFECYCLE_CLOSED' || message.includes('no longer accepting credential')) return '该账号正在注销或已失效，无法建立新的登录会话。';
   if (code === 'EMAIL_NOT_VERIFIED') return '邮箱尚未验证，请先完成验证。';
   if (code === 'ACCOUNT_EMAIL_RATE_LIMITED' || status === 429) return '请求过于频繁，请稍后重试。';
   if (code === 'ACCOUNT_EMAIL_DELIVERY_FAILED') return '账号邮件暂时无法发送，请稍后重试。';
@@ -28,8 +29,11 @@ export function formatErrorMessage(error, context = '') {
   if (message.includes('Please log in') || message.includes('请先登录') || message.includes('Unauthorized')) return '请先登录后再使用生成服务。';
   if (message.includes('INVALID_PASSWORD')) return '密码不正确，请重新输入。';
   if (message.includes('EMAIL_MISMATCH')) return '确认邮箱与当前登录账号不一致。';
-  if (message.includes('ACCOUNT_DELETION_WAITING_FOR_UPLOADS')) return '账号已冻结新任务；请在参考图上传链接失效后按提示重试注销。';
-  if (message.includes('ACCOUNT_DELETION_WAITING_FOR_JOBS')) return '账号已冻结新任务；正在等待运行中的任务安全结束，请稍后重试注销。';
+  if (message.includes('ACCOUNT_DELETION_REVIEW_REQUIRED')) return '此前的注销未完整结束，需要核对已清理的数据后处理，请联系作者。';
+  if (message.includes('ACCOUNT_DELETION_RETRY_SCHEDULED') || message.includes('ACCOUNT_DELETION_PROCESSING')) return '注销申请已受理，后台将自动继续处理。';
+  if (/Account deletion is in progress|ACCOUNT_DELETION_IN_PROGRESS/i.test(message)) return '当前账号正在注销，已暂停新任务与上传。请打开账号设置查看处理状态。';
+  if (message.includes('ACCOUNT_DELETION_WAITING_FOR_UPLOADS')) return '账号已冻结新任务；正在等待上传链接失效及在途上传结束，后台会自动继续注销。';
+  if (message.includes('ACCOUNT_DELETION_WAITING_FOR_JOBS')) return '账号已冻结新任务；正在等待运行中的任务安全结束，后台会自动继续注销。';
   if (message.includes('ACCOUNT_DELETION_CONTRACT_UNAVAILABLE')) return '账号注销服务正在升级，请稍后重试。';
   if (message.includes('password')) return '密码至少需要 8 位。';
   if (message.includes('ADMIN_TOKEN is not configured')) return '管理接口未启用：还没有配置 ADMIN_TOKEN。';

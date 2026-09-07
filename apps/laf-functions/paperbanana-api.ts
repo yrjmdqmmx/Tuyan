@@ -625,7 +625,8 @@ type UserJobsBody = {
 }
 
 type DeleteAccountBody = {
-  action: 'deleteAccount'
+  action: 'deleteAccount' | 'completeAccountDeletion' | 'accountDeletionStatus'
+  operationId?: string
   userId?: string
   userEmail?: string
 }
@@ -847,7 +848,6 @@ const maxProviderImageBytes = Number(process.env.PAPERBANANA_MAX_PROVIDER_IMAGE_
 const maxProviderImageResponseBytes = Math.ceil(maxProviderImageBytes * 4 / 3) + 1024 * 1024
 const referenceUploadTtlSeconds = Number(process.env.PAPERBANANA_REFERENCE_UPLOAD_TTL_SECONDS || 900)
 const referenceUploadStateRetentionMs = 24 * 60 * 60 * 1000
-const accountDeletionQuietMs = clamp(Number(process.env.PAPERBANANA_ACCOUNT_DELETION_QUIET_MS || 1000), 100, 5000)
 const accountDeletionSweepIntervalMs = clamp(Number(process.env.PAPERBANANA_ACCOUNT_DELETION_SWEEP_INTERVAL_MS || 30000), 5000, 300000)
 const allowedReferenceMimeTypes = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'])
 const allowedAnalysisMimeTypes = new Set(['image/png', 'image/jpeg', 'image/webp'])
@@ -1820,6 +1820,8 @@ const identityScopedActions = new Set([
   'abortReferenceUpload',
   'providerAccountCatalog',
   'deleteAccount',
+  'completeAccountDeletion',
+  'accountDeletionStatus',
 ])
 
 export default async function (ctx: FunctionContext) {
@@ -1873,7 +1875,7 @@ export default async function (ctx: FunctionContext) {
       return await providerAccountCatalog(body as ProviderAccountCatalogBody, ctx)
     }
     if (action === 'accountDeletionCapability') {
-      return ok({ deletionContractVersion: 2 })
+      return ok({ deletionContractVersion: 3 })
     }
     if (action === 'referenceLibrary') {
       return await referenceLibrary(body as ReferenceLibraryBody)
@@ -1893,6 +1895,8 @@ export default async function (ctx: FunctionContext) {
     if (action === 'userJobs') {
       return await userJobs(body as UserJobsBody)
     }
+    if (action === 'accountDeletionStatus') return await accountDeletionStatus(body as DeleteAccountBody)
+    if (action === 'completeAccountDeletion') return await completeAccountDeletion(body as DeleteAccountBody)
     if (action === 'deleteAccount') {
       return await deleteAccount(body as DeleteAccountBody)
     }
@@ -3081,137 +3085,180 @@ async function adminFeedback(body: AdminFeedbackBody) {
 
 async function userJobs(body: UserJobsBody) {
   const userId = body.userId?.trim() || ''
-  const userEmail = body.userEmail?.trim() || ''
-  if (!userId && !userEmail) return fail('userId is required', 400)
+  if (!userId) return fail('userId is required', 400)
   const limit = clamp(Number(body.limit || 50), 1, 200)
-  const query = userId
-    ? { $or: [{ userId }, { user_id: userId }] }
-    : { $or: [{ userEmail }, { user_email: userEmail }] }
+  const query = accountIdQuery(userId)
   const list = await jobs.find(query).sort({ createdAt: -1 }).limit(limit).toArray()
   return ok({ jobs: await Promise.all(list.map(publicJob)) })
 }
 
-// Account deletion (App Store guideline 5.1.1(v)). Only reachable through the
-// auth-gateway (gatewayToken) or admin tooling (adminToken) — see
-// identityScopedActions / requireTrustedCaller — because it trusts the
-// caller-supplied userId/userEmail. The gateway has already re-authenticated the
-// user (session + password) before forwarding this call.
-//
-// Scope: purge this user's business data. Stored result, stage and reference
-// objects are deleted before the authoritative job records. A storage failure
-// aborts the operation so the gateway can retry without losing the object keys.
-// Deletion of the Better Auth user/session lives in the gateway.
-//
-// Idempotent: deleteMany / deleteFile are safe to re-run, so the gateway can
-// retry this action without leaving the account half-deleted.
+// V3 never adopts legacy deletion markers. Their object scope and failure phase
+// require an operator review; merely retrying a password must not finish them.
+function accountIdQuery(userId: string) {
+  return { $or: [{ userId }, { userId: { $in: [null, ''] }, user_id: userId }] }
+}
+
+export async function accountDeletionStatus(body: { userId?: string }) {
+  const userId = String(body.userId || '').trim()
+  if (!userId) return fail('userId is required', 400)
+  const row = await accountDeletions.findOne({ _id: `user:${userId}` })
+  if (!row) return ok({ state: 'active', phase: 'active', deletionContractVersion: 3 })
+  return ok({
+    state: row.contractVersion === 3 ? row.status : 'review_required',
+    phase: row.contractVersion === 3 ? row.phase : 'legacy_review',
+    startedAt: row.createdAt, completedAt: row.deletedAt || null,
+    error: row.contractVersion === 3 ? row.lastErrorCode || '' : 'ACCOUNT_DELETION_REVIEW_REQUIRED',
+    deletionContractVersion: 3,
+  })
+}
+
+let deleteAdditionalAccountData: (userId: string) => Promise<void> = async () => {}
+export function configureAccountDeletionDataCleanup(cleanup: (userId: string) => Promise<void>) {
+  deleteAdditionalAccountData = cleanup
+}
+
 async function deleteAccount(body: DeleteAccountBody) {
   const userId = String(body.userId || '').trim()
-  const userEmail = String(body.userEmail || '').trim()
-  if (!userId && !userEmail) return fail('userId or userEmail is required', 400)
-  const ownerKeys = accountOwnerKeys({ userId, userEmail })
-  const ownerPrefixes = [...new Set([userId, userEmail].filter(Boolean).map((value) => sanitizePathPart(String(value))))]
+  const operationId = String(body.operationId || '')
+  if (!/^[A-Za-z0-9_-]{1,80}$/.test(userId) || !/^[A-Za-z0-9-]{16,80}$/.test(operationId)) {
+    return fail('ACCOUNT_DELETION_V3_ID_REQUIRED', 400)
+  }
+  const ownerKey = `user:${userId}`
+  const filter = { _id: ownerKey, contractVersion: 3, operationId }
   const now = new Date()
-  for (const ownerKey of ownerKeys) {
-    await accountDeletions.updateOne(
-      { _id: ownerKey },
-      {
-        $set: { status: 'deleting', ownerPrefixes, updatedAt: now },
-        $setOnInsert: { createdAt: now, userId, userEmail },
-      },
-      { upsert: true },
-    )
+  await accountDeletions.updateOne({ _id: ownerKey }, { $setOnInsert: {
+    contractVersion: 3, operationId, userId, status: 'deleting', phase: 'waiting',
+    createdAt: now, updatedAt: now, attempts: 0,
+  } }, { upsert: true })
+  let row = await accountDeletions.findOne({ _id: ownerKey })
+  if (row?.contractVersion !== 3) return fail('ACCOUNT_DELETION_REVIEW_REQUIRED', 409)
+  if (row.operationId !== operationId) return fail('ACCOUNT_DELETION_OPERATION_MISMATCH', 409)
+  if (row.status === 'review_required') return fail('ACCOUNT_DELETION_REVIEW_REQUIRED', 409)
+  if (row.phase === 'awaiting_auth' || row.phase === 'completed') {
+    return ok({ ok: true, deletionContractVersion: 3, operationId, phase: row.phase })
   }
-  jobAdmission.freezeOwners(ownerKeys)
-
-  const uploadStates = ownerKeys.length
-    ? await referenceUploadState.find({
-        ownerKey: { $in: ownerKeys },
-        status: 'prepared',
-        expiresAt: { $gt: now },
-      }).sort({ expiresAt: -1 }).limit(1).toArray()
-    : []
-  const latestUploadExpiry = uploadStates.reduce(
-    (latest: number, item: any) => Math.max(latest, new Date(item?.expiresAt || 0).getTime() || 0),
-    0,
-  )
-  if (latestUploadExpiry > Date.now()) {
-    return {
-      code: 409,
-      error: 'ACCOUNT_DELETION_WAITING_FOR_UPLOADS',
-      retryAfterSeconds: Math.max(1, Math.ceil((latestUploadExpiry - Date.now()) / 1000)),
+  jobAdmission.freezeOwners([ownerKey])
+  const leaseToken = randomId()
+  const lease = await accountDeletions.updateOne({ ...filter, status: 'deleting', $or: [
+    { leaseUntil: { $exists: false } }, { leaseUntil: { $lte: now } },
+  ] }, { $set: { leaseToken, leaseUntil: new Date(Date.now() + 120000), updatedAt: now }, $inc: { attempts: 1 } })
+  if (lease.matchedCount !== 1) return fail('ACCOUNT_DELETION_PROCESSING', 409)
+  const held = { ...filter, leaseToken }
+  const checkpoint = async (fields: any) => {
+    const result = await accountDeletions.updateOne(held, { $set: {
+      ...fields, updatedAt: new Date(), leaseUntil: new Date(Date.now() + 120000),
+    } })
+    if (result.matchedCount !== 1) throw new Error('ACCOUNT_DELETION_LEASE_LOST')
+    row = { ...row, ...fields }
+  }
+  try {
+    // Re-read after acquiring the lease; a prior worker may have advanced the
+    // phase between our initial read and this successful claim.
+    row = await accountDeletions.findOne(held)
+    if (!row) throw new Error('ACCOUNT_DELETION_LEASE_LOST')
+    if (row.phase === 'awaiting_auth' || row.phase === 'completed') return ok({ ok: true, deletionContractVersion: 3, operationId, phase: row.phase })
+    if (row.phase === 'waiting') {
+      // A finalized signed PUT can still be replayed until expiry. Include all
+      // upload states, then a full-day settlement window, before freezing keys.
+      const uploads = await referenceUploadState.find({ ownerKey }).toArray()
+      if (uploads.some((upload: any) => !Number.isFinite(new Date(upload.expiresAt).getTime()) || new Date(upload.expiresAt).getTime() <= 0)) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
+      const latestExpiry = uploads.reduce((max: number, upload: any) => Math.max(max, new Date(upload.expiresAt).getTime() || 0), 0)
+      const settleUntil = latestExpiry ? latestExpiry + referenceUploadStateRetentionMs : 0
+      if (settleUntil > Date.now()) {
+        await checkpoint({ lastErrorCode: 'ACCOUNT_DELETION_WAITING_FOR_UPLOADS', settleUntil: new Date(settleUntil) })
+        return { code: 409, error: 'ACCOUNT_DELETION_WAITING_FOR_UPLOADS', retryAfterSeconds: Math.ceil((settleUntil - Date.now()) / 1000) }
+      }
+      await jobs.updateMany({ ...accountIdQuery(userId), status: 'queued' }, { $set: {
+        status: 'failed', error: 'Account deletion cancelled this queued job.', errorCode: 'ACCOUNT_DELETION_IN_PROGRESS',
+        retryable: false, completedAt: new Date(), updatedAt: new Date(),
+      } })
+      const active = await jobs.find({ ...accountIdQuery(userId), status: { $in: ['reserved', 'queued', 'running'] } }).limit(1).toArray()
+      if (active.length) {
+        await checkpoint({ lastErrorCode: 'ACCOUNT_DELETION_WAITING_FOR_JOBS' })
+        return { code: 409, error: 'ACCOUNT_DELETION_WAITING_FOR_JOBS', retryAfterSeconds: 30 }
+      }
+      const ownedJobs = await jobs.find(accountIdQuery(userId)).toArray()
+      const jobIds = ownedJobs.map((job: any) => String(job._id))
+      if (jobIds.some((id: string) => !/^[A-Za-z0-9._-]{1,200}$/.test(id))) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
+      const referencePrefix = `references/${userId}/`
+      const jobPrefixes = jobIds.map((id: string) => `${id}/`)
+      const inScope = (key: string) => key.startsWith(referencePrefix) || jobPrefixes.some((prefix: string) => key.startsWith(prefix))
+      const keys = new Set<string>(ownedJobs.flatMap(storedObjectKeysForJob))
+      for (const upload of uploads) keys.add(String(upload.objectKey || upload._id))
+      if ([...keys].some((key) => !inScope(key))) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
+      // Inventory exact immutable-ID prefixes once, including untracked files.
+      // Never enumerate a reusable email prefix, even for historical rows.
+      for (const prefix of [referencePrefix, ...jobPrefixes]) {
+        for (const key of await listAccountObjectKeys(prefix)) keys.add(key)
+        await checkpoint({ lastErrorCode: '' })
+      }
+      await checkpoint({ phase: 'objects', objectKeys: [...keys], jobIds, objectCursor: 0, inventoryAt: new Date(), lastErrorCode: '' })
     }
-  }
-
-  const jobIdConditions: any[] = []
-  const feedbackIdConditions: any[] = []
-  if (userId) {
-    jobIdConditions.push({ userId }, { user_id: userId })
-    feedbackIdConditions.push({ userId }, { user_id: userId })
-  }
-  if (userEmail) {
-    jobIdConditions.push({ userEmail }, { user_email: userEmail })
-    feedbackIdConditions.push({ userEmail }, { user_email: userEmail })
-  }
-
-  await jobs.updateMany(
-    { $or: jobIdConditions, status: 'queued' },
-    {
-      $set: {
-        status: 'failed',
-        error: 'Account deletion cancelled this queued job.',
-        errorCode: 'ACCOUNT_DELETION_IN_PROGRESS',
-        retryable: false,
-        completedAt: new Date(),
-        updatedAt: new Date(),
-      },
-    },
-  )
-
-  const activeJobs = await jobs.find({
-    $or: jobIdConditions,
-    status: { $in: ['reserved', 'queued', 'running'] },
-  }).limit(1).toArray()
-  if (activeJobs.length) {
-    return { code: 409, error: 'ACCOUNT_DELETION_WAITING_FOR_JOBS', retryAfterSeconds: 2 }
-  }
-
-  const ownedJobs = await jobs.find({ $or: jobIdConditions }).toArray()
-  const ownedJobIds = [...new Set(ownedJobs.map((job: any) => String(job?._id || '').trim()).filter(Boolean))]
-  if (ownedJobIds.length) {
-    for (const ownerKey of ownerKeys) {
-      await accountDeletions.updateOne(
-        { _id: ownerKey },
-        { $addToSet: { jobIds: { $each: ownedJobIds } }, $set: { updatedAt: new Date() } },
-      )
+    if (row.phase === 'objects') {
+      const bucket = cloud.storage.bucket(bucketName)
+      for (let index = Number(row.objectCursor || 0); index < row.objectKeys.length; index += 1) {
+        await checkpoint({ objectCursor: index, irreversibleStartedAt: row.irreversibleStartedAt || new Date() })
+        // OSS delete is idempotent. Persisting the cursor after deletion safely
+        // retries a missing key if the process stops between these two writes.
+        await bucket.deleteFile(row.objectKeys[index])
+        await checkpoint({ objectCursor: index + 1, irreversibleStartedAt: row.irreversibleStartedAt || new Date() })
+      }
+      await checkpoint({ phase: 'business', lastErrorCode: '' })
     }
+    if (row.phase === 'business') {
+      const remainingJobs = await jobs.find(accountIdQuery(userId)).toArray()
+      if (remainingJobs.some((job: any) => !row.jobIds.includes(String(job._id)))) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
+      await checkpoint({ irreversibleStartedAt: row.irreversibleStartedAt || new Date() })
+      await deleteAdditionalAccountData(userId)
+      const jobsResult = await jobs.deleteMany({ ...accountIdQuery(userId), _id: { $in: row.jobIds } })
+      const feedbackResult = await feedback.deleteMany(accountIdQuery(userId))
+      await referenceUploadState.deleteMany({ ownerKey })
+      await checkpoint({ phase: 'awaiting_auth', businessDeletedAt: new Date(), lastErrorCode: '',
+        deletedJobCount: Number(row.deletedJobCount || 0) + Number(jobsResult.deletedCount || 0),
+        deletedFeedbackCount: Number(row.deletedFeedbackCount || 0) + Number(feedbackResult.deletedCount || 0),
+      })
+    }
+    return ok({ ok: true, deletionContractVersion: 3, operationId, phase: row.phase })
+  } catch (error: any) {
+    const review = error?.message === 'ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED'
+    await accountDeletions.updateOne(held, { $set: {
+      ...(review ? { status: 'review_required' } : {}),
+      lastErrorCode: review ? error.message : `ACCOUNT_DELETION_${String(row.phase).toUpperCase()}_FAILED`,
+      lastFailedAt: new Date(), updatedAt: new Date(),
+    } })
+    return fail(review ? 'ACCOUNT_DELETION_REVIEW_REQUIRED' : 'ACCOUNT_DELETION_RETRY_SCHEDULED', review ? 409 : 503)
+  } finally {
+    await accountDeletions.updateOne(held, { $unset: { leaseToken: '', leaseUntil: '' } })
   }
-  const deletedResultObjectCount = await deleteStoredObjectsForJobs(ownedJobs)
+}
 
-  // Purge the user's uploaded reference images. They are stored
-  // under references/<owner>/... where owner = sanitizePathPart(userId || userEmail
-  // || 'anon') at upload time (see prepareReferenceUpload). We try both possible
-  // owner prefixes. Storage errors abort deletion so no private object is left
-  // behind after the account row is removed.
-  const deletedReferenceObjectCount = await purgeReferencePrefixesUntilQuiet(ownerPrefixes)
+async function listAccountObjectKeys(prefix: string): Promise<string[]> {
+  const keys: string[] = []
+  let marker = ''
+  do {
+    const listing: any = await cloud.storage.bucket(bucketName).listFiles({ Prefix: prefix, ...(marker ? { Marker: marker } : {}) })
+    const contents = listing?.Contents || []
+    for (const item of contents) {
+      const key = String(item.Key || '')
+      if (!key.startsWith(prefix)) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
+      keys.push(key)
+    }
+    const next = listing.IsTruncated ? String(listing.NextMarker || contents.at(-1)?.Key || '') : ''
+    if (listing.IsTruncated && (!next || next === marker)) throw new Error('Account object inventory is incomplete')
+    marker = next
+  } while (marker)
+  return keys
+}
 
-  const jobsResult = await jobs.deleteMany({ $or: jobIdConditions })
-  const feedbackResult = await feedback.deleteMany({ $or: feedbackIdConditions })
-  for (const ownerKey of ownerKeys) {
-    await accountDeletions.updateOne(
-      { _id: ownerKey },
-      { $set: { status: 'deleted', deletedAt: new Date(), ownerPrefixes, updatedAt: new Date() } },
-    )
-  }
-  scheduleAccountDeletionSweep(true)
-
-  return ok({
-    ok: true,
-    deletionContractVersion: 2,
-    deletedJobCount: jobsResult?.deletedCount || 0,
-    deletedFeedbackCount: feedbackResult?.deletedCount || 0,
-    deletedResultObjectCount,
-    deletedReferenceObjectCount,
+async function completeAccountDeletion(body: DeleteAccountBody) {
+  const filter = { _id: `user:${body.userId}`, contractVersion: 3, operationId: body.operationId }
+  const row = await accountDeletions.findOne(filter)
+  if (!row || !['awaiting_auth', 'completed'].includes(row.phase)) return fail('ACCOUNT_DELETION_NOT_READY', 409)
+  if (row.phase !== 'completed') await accountDeletions.updateOne({ ...filter, phase: 'awaiting_auth' }, {
+    $set: { phase: 'completed', status: 'deleted', deletedAt: new Date(), updatedAt: new Date() },
+    $unset: { objectKeys: '', jobIds: '' },
   })
+  return ok({ ok: true, deletionContractVersion: 3, operationId: body.operationId, phase: 'completed' })
 }
 
 function storedObjectKeysForJob(job: any): string[] {
@@ -3230,110 +3277,6 @@ function storedObjectKeysForJob(job: any): string[] {
   const sourceKey = String(job?.sourceImageObjectKey || job?.source_image_object_key || '').trim()
   if (sourceKey) keys.add(sourceKey)
   return [...keys]
-}
-
-async function deleteStoredObjectsForJobs(ownedJobs: any[]): Promise<number> {
-  const keys = new Set<string>()
-  for (const job of ownedJobs || []) {
-    for (const key of storedObjectKeysForJob(job)) keys.add(key)
-  }
-  if (!keys.size) return 0
-
-  const bucket = cloud.storage.bucket(bucketName)
-  let deleted = 0
-  for (const key of keys) {
-    try {
-      await bucket.deleteFile(key)
-      deleted += 1
-    } catch (error: any) {
-      console.warn(`[deleteAccount] failed to delete stored job object ${key}: ${error?.message || error}`)
-      throw new Error('Unable to remove all stored account data. Please retry account deletion.')
-    }
-  }
-  return deleted
-}
-
-async function deleteStoredObjectsForJobPrefix(jobId: string): Promise<number> {
-  const prefix = `${sanitizePathPart(jobId)}/`
-  const bucket = cloud.storage.bucket(bucketName)
-  let deleted = 0
-  let continuationMarker: string | undefined
-  do {
-    const listing: any = await bucket.listFiles({ Prefix: prefix, Marker: continuationMarker })
-    const contents: any[] = listing?.Contents || []
-    for (const object of contents) {
-      const key = String(object?.Key || '').trim()
-      if (!key) continue
-      try {
-        await bucket.deleteFile(key)
-        deleted += 1
-      } catch (error: any) {
-        console.warn(`[deleteAccount] failed to sweep late job object ${key}: ${error?.message || error}`)
-      }
-    }
-    continuationMarker = listing?.IsTruncated
-      ? (listing?.NextMarker || (contents.length ? contents[contents.length - 1]?.Key : undefined))
-      : undefined
-  } while (continuationMarker)
-  return deleted
-}
-
-// List and delete every object under references/<owner>/. Cleanup callers may
-// keep the historical best-effort behavior; account deletion uses strict mode.
-async function deleteReferenceObjectsForOwner(owner: string, strict = false): Promise<number> {
-  const prefix = `references/${owner}/`
-  let deleted = 0
-  try {
-    const bucket = cloud.storage.bucket(bucketName)
-    let continuationMarker: string | undefined
-    // ListObjects is paginated (max 1000 keys); loop until the bucket reports
-    // no more truncation.
-    do {
-      const listing: any = await bucket.listFiles({ Prefix: prefix, Marker: continuationMarker })
-      const contents: any[] = listing?.Contents || []
-      for (const object of contents) {
-        const key = object?.Key
-        if (!key) continue
-        try {
-          await bucket.deleteFile(key)
-          deleted += 1
-        } catch (error: any) {
-          console.warn(`[deleteAccount] failed to delete reference object ${key}: ${error?.message || error}`)
-          if (strict) throw error
-        }
-      }
-      continuationMarker = listing?.IsTruncated
-        ? (listing?.NextMarker || (contents.length ? contents[contents.length - 1]?.Key : undefined))
-        : undefined
-    } while (continuationMarker)
-  } catch (error: any) {
-    console.warn(`[deleteAccount] failed to list reference objects for ${prefix}: ${error?.message || error}`)
-    if (strict) throw new Error('Unable to remove all uploaded reference images. Please retry account deletion.')
-  }
-  return deleted
-}
-
-async function purgeReferencePrefixesUntilQuiet(ownerPrefixes: string[]): Promise<number> {
-  let deletedTotal = 0
-  let observedQuietRound = false
-  for (let round = 0; round < 3; round += 1) {
-    let deletedThisRound = 0
-    for (const owner of ownerPrefixes) {
-      deletedThisRound += await deleteReferenceObjectsForOwner(owner, true)
-    }
-    deletedTotal += deletedThisRound
-    if (deletedThisRound === 0 && round > 0) {
-      observedQuietRound = true
-      break
-    }
-    if (round < 2) await sleep(accountDeletionQuietMs)
-  }
-  if (!observedQuietRound) {
-    // The persistent tombstone remains active and the scheduled sweep will
-    // continue removing PUTs that finish after this bounded request window.
-    scheduleAccountDeletionSweep(true)
-  }
-  return deletedTotal
 }
 
 function scheduleAccountDeletionSweep(force = false) {
@@ -3362,36 +3305,19 @@ export function stopAccountDeletionSweep() {
 }
 
 async function sweepDeletedAccountObjects() {
-  const tombstones = await accountDeletions
-    .find({ status: { $in: ['deleting', 'deleted'] } })
-    .sort({ updatedAt: 1 })
-    .limit(25)
-    .toArray()
-  for (const tombstone of tombstones) {
-    const ownerPrefixes = Array.isArray(tombstone?.ownerPrefixes)
-      ? tombstone.ownerPrefixes.map(String).filter(Boolean)
-      : []
-    for (const owner of ownerPrefixes) {
-      await deleteReferenceObjectsForOwner(owner, false)
-    }
-    const jobIds = Array.isArray(tombstone?.jobIds)
-      ? tombstone.jobIds.map(String).filter(Boolean)
-      : []
-    for (const jobId of jobIds) {
-      await deleteStoredObjectsForJobPrefix(jobId)
-    }
-    await accountDeletions.updateOne(
-      { _id: tombstone._id },
-      { $set: { lastSweptAt: new Date(), updatedAt: new Date() } },
-    )
-  }
-  // Lifecycle rows are only needed while a signed PUT can still be in flight.
-  // Keep a full-day grace period beyond expiry, then prune them during the
-  // existing bounded sweep so successful uploads do not grow this collection
-  // indefinitely.
-  await referenceUploadState.deleteMany({
+  // V3 is driven by the gateway's durable, password-authorized operation queue.
+  // Legacy tombstones have no trustworthy phase/scope; do not delete anything
+  // from them on deployment or restart. Keep them blocking until reviewed.
+  // Prune only rows for owners with no tombstone; pending inventories need the
+  // exact signed keys and deadlines even if they have expired.
+  const expired = await referenceUploadState.find({
     expiresAt: { $lt: new Date(Date.now() - referenceUploadStateRetentionMs) },
-  })
+  }).limit(100).toArray()
+  for (const upload of expired) {
+    if (!(await accountDeletions.findOne({ _id: upload.ownerKey }))) {
+      await referenceUploadState.deleteOne({ _id: upload._id, expiresAt: upload.expiresAt })
+    }
+  }
 }
 
 export async function resolveReferenceImageMode(body: CreateExecutionBody & { referenceImageMode: ReferenceImageMode }) {

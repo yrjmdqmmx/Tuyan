@@ -130,6 +130,7 @@ done
     {
       role: "paperbanana_benchmark_api_role",
       privileges: [
+        {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_prompt_submissions"}, actions: ["remove"]},
         ...apiWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]})),
         ...scientificV2ApiWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]})),
         ...scientificV2ApiReleaseStateCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update"]})),
