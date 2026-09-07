@@ -39,7 +39,7 @@ test('simple provider defaults produce one complete non-mixed route state', () =
 })
 
 test('safe bootstrap uses current official defaults and Google user-facing naming', () => {
-  assert.equal(PROVIDERS.gemini.label, 'Google Gemini API')
+  assert.equal(PROVIDERS.gemini.label, 'Google')
   assert.deepEqual([
     PROVIDERS.gemini.mainModel, PROVIDERS.gemini.imageModel, PROVIDERS.gemini.visionModel,
   ], ['gemini-3.7-flash', 'gemini-3.1-flash-image', 'gemini-3.7-flash'])

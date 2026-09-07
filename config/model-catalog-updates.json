@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-07.v14",
+  "version": "2026-09-07.v15",
   "providers": {
     "deepseek": [],
     "kimi": [],
@@ -18000,7 +18000,7 @@
   },
   "channels": {
     "bfl": {
-      "label": "Black Forest Labs",
+      "label": "BFL",
       "accessKind": "direct",
       "guideUrl": "https://docs.bfl.ai/quick_start/generating_images",
       "textBaseUrl": "",

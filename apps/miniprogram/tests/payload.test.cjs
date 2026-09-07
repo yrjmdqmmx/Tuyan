@@ -75,4 +75,20 @@ assert.equal(simple.maxCriticRounds, 2)
 // imageSize 普通模式同样生效（web 端清晰度对两种模式都可见）
 assert.equal(simple.imageSize, '2K')
 
+// A stale selection must not escape through the request builder after a catalog refresh.
+const registry = { routeContractVersion: 1, providers: { bailian: { models: [{ id: 'wan-image', capabilities: {
+  resolutions: ['1K', '2K'], aspectRatiosByResolution: { '1K': ['1:1'], '2K': ['1:1', '21:9'] },
+} }] } } }
+assert.equal(buildCreateJobPayload({ ...baseInput, registry }).aspectRatio, '21:9')
+assert.throws(() => buildCreateJobPayload({ ...baseInput, registry, imageSize: '1K' }), /当前比例或清晰度不可用/)
+assert.throws(() => buildCreateJobPayload({ ...baseInput, registry, imageSize: '4K', aspectRatio: 'auto' }), /当前比例或清晰度不可用/)
+assert.equal(buildCreateJobPayload({ ...baseInput, registry, imageSize: '1K', aspectRatio: 'auto' }).aspectRatio, 'auto')
+
+const vector = {
+  ...baseInput, outputFormat: 'svg', pipelineMode: 'vanilla', aspectRatio: '9:22',
+  modelRoutes: { ...baseInput.modelRoutes, image: { accessProvider: 'recraft', modelId: 'recraftv4_vector' } },
+  registry: { routeContractVersion: 1, providers: { recraft: { models: [{ id: 'recraftv4_vector', capabilities: { resolutions: ['2K'], aspectRatios: ['1:1'] } }] } } },
+}
+assert.throws(() => buildCreateJobPayload(vector), /当前比例或清晰度不可用/)
+assert.equal(buildCreateJobPayload({ ...vector, aspectRatio: '1:1' }).aspectRatio, '1:1')
 console.log('payload.test.cjs passed')

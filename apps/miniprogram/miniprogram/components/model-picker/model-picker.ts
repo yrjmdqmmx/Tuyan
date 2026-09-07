@@ -1,25 +1,14 @@
+import { MODEL_CHANNEL_LABELS, modelDeveloper } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { registryForRegions } from '../../utils/provider-regions'
-import { EXTENDED_MODEL_CHANNELS } from '../../utils/static-model-catalog'
 import { MODEL_PROVIDER_IDS, groupRegistryModels, partitionRegistryModels, type ModelProviderId, type ModelRegistry, type ModelRole, type RegistryModel } from '../../utils/model-registry'
 
-const PROVIDER_LABELS: Record<string, string> = {
-  ...Object.fromEntries(Object.entries(EXTENDED_MODEL_CHANNELS).map(([id, channel]) => [id, channel.label])),
-  deepseek: "DeepSeek",
-  kimi: "Kimi（月之暗面）",
-  zhipu: "智谱 GLM",
-  siliconflow: "硅基流动 SiliconFlow",
-  anthropic: "Anthropic Claude",
-  recraft: "Recraft",
-  xai: "xAI",
-
-  gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
-}
+const PROVIDER_LABELS = MODEL_CHANNEL_LABELS
 const MODEL_PAGE_SIZE = 30
 
 interface ProviderCard { id: ModelProviderId; label: string; kindText: string; count: number }
 interface VendorCard { vendor: string; count: number; compatibleCount: number }
-interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'recommended' | 'requiresEntitlement' | 'availabilityNotes'> { lifecycleText: string; verificationText: string; selected: boolean }
+interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'recommended' | 'requiresEntitlement' | 'availabilityNotes'> { lifecycleText: string; verificationText: string; serviceTier: string; capabilityText: string; releaseText: string; selected: boolean }
 
 Component({
   options: { styleIsolation: 'apply-shared' },
@@ -44,9 +33,10 @@ Component({
     activeVendor: '',
     activeProviderIsAggregator: false,
     query: '',
-    catalogMode: 'recommended' as 'recommended' | 'all',
+    catalogMode: 'all' as 'recommended' | 'all',
     visibleLimit: MODEL_PAGE_SIZE,
     hasMore: false,
+    expandedModel: '',
   },
   methods: {
     noop() {},
@@ -70,7 +60,7 @@ Component({
       }).filter((item) => item.count > 0)
       this.setData({
         step: 'providers', roleLabel: roleLabel(role), providerCards, vendorCards: [], compatibleCount: 0, visibleCompatibleModels: [],
-        activeProvider: '', activeProviderLabel: '', activeVendor: '', activeProviderIsAggregator: false, query: '', catalogMode: 'recommended', visibleLimit: MODEL_PAGE_SIZE,
+        activeProvider: '', activeProviderLabel: '', activeVendor: '', activeProviderIsAggregator: false, query: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE,
       })
     },
     selectProvider(event: WechatMiniprogram.TouchEvent) {
@@ -89,10 +79,9 @@ Component({
       const isAggregator = provider.accessKind === 'aggregator'
       this.setData({
         activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,
-        activeProviderIsAggregator: isAggregator, activeVendor: '', vendorCards, query: '', catalogMode: 'recommended',
-        visibleLimit: MODEL_PAGE_SIZE, step: isAggregator ? 'vendors' : 'models',
+        activeProviderIsAggregator: isAggregator, activeVendor: '', vendorCards, query: '', catalogMode: 'all',
+        visibleLimit: MODEL_PAGE_SIZE, step: 'vendors',
       })
-      if (!isAggregator) this.refreshModelLists()
     },
     selectVendor(event: WechatMiniprogram.TouchEvent) {
       const vendor = String(event.currentTarget.dataset.vendor || '')
@@ -102,7 +91,7 @@ Component({
     },
     backStep() {
       if (this.data.step === 'models') {
-        this.setData({ step: this.data.activeProviderIsAggregator ? 'vendors' : 'providers', query: '' })
+        this.setData({ step: 'vendors', query: '' })
         return
       }
       if (this.data.step === 'vendors') this.setData({ step: 'providers' })
@@ -115,7 +104,7 @@ Component({
       const role = normalizeRole(this.properties.role)
       const options = { role, query: this.data.query, outputFormat: String(this.properties.outputFormat || ''), recommendedOnly: providerId === 'openrouter' && this.data.catalogMode === 'recommended' }
       let partition = partitionRegistryModels(provider?.models || [], options)
-      const inVendor = (model: RegistryModel) => !this.data.activeProviderIsAggregator || model.vendor === this.data.activeVendor
+      const inVendor = (model: RegistryModel) => modelDeveloper(providerId, model).label === this.data.activeVendor
       if (options.recommendedOnly && !partition.compatible.some(inVendor)) {
         partition = partitionRegistryModels(provider?.models || [], { ...options, recommendedOnly: false })
         this.setData({ catalogMode: 'all' })
@@ -141,6 +130,8 @@ Component({
       if (event.currentTarget.dataset.disabled) return
       this.triggerEvent('select', { provider: this.data.activeProvider, modelId: String(event.currentTarget.dataset.model || '') })
     },
+    copyId(event: WechatMiniprogram.TouchEvent) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }) },
+    toggleDetails(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }) },
     close() { this.triggerEvent('close') },
   },
 })
@@ -151,6 +142,9 @@ function presentModel(model: RegistryModel, selectedProvider: unknown, selectedM
   return {
     id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
     availabilityNotes: [model.availabilityNotes, model.capabilities?.requiresSourceImage ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
+    serviceTier: model.serviceTier || '',
+    capabilityText: [model.roles.includes('main') ? '文本' : '', model.roles.includes('vision') ? '视觉理解' : '', model.roles.includes('image') && !model.capabilities?.requiresSourceImage ? '生图' : '', model.capabilities?.imageEditMode === 'direct-edit' ? '编辑' : ''].filter(Boolean).join(' · '),
+    releaseText: model.releasedAt || (model.releaseOrder ? '按官方版本排序' : '发布日期待确认'),
     lifecycleText: model.lifecycle === 'stable' ? '稳定版' : model.lifecycle === 'preview' ? '预览版' : model.lifecycle === 'legacy' ? '旧版维护' : '状态未知',
     verificationText: model.verificationState === 'inference-verified' ? '账号已验证' : model.verificationState === 'catalog' ? '官方目录' : model.verified ? '注册表验证' : '模型目录',
     selected: String(selectedProvider || '') === providerId && String(selectedModel || '') === model.id,

@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildCreateJobPayload = buildCreateJobPayload;
+const aspect_ratios_1 = require("./aspect-ratios");
 const constants_1 = require("./constants");
 const model_routing_1 = require("./model-routing");
 // createJob 请求体构造，字段与 packages/api/src/jobs.js 的 createJobRequest 白名单逐一对应。
 // 纯函数（不依赖 wx），便于 node 单测覆盖 plot / 锁检索 / 手动参考的组合语义。
 function buildCreateJobPayload(input) {
+    var _a, _b;
     const hasUploadedReferences = input.uploadedReferenceImages.length > 0;
     const modelRoutes = input.modelRoutes || {
         main: { accessProvider: input.provider, modelId: String(input.mainModelName || '') },
@@ -32,6 +34,13 @@ function buildCreateJobPayload(input) {
         referenceImages: input.uploadedReferenceImages,
         referenceImageMode: input.referenceImageMode,
     }, maxCriticRounds);
+    if (routeRoles.includes('image') && ((_a = input.registry) === null || _a === void 0 ? void 0 : _a.providers)) {
+        const route = modelRoutes.image;
+        const model = (_b = input.registry.providers[route.accessProvider]) === null || _b === void 0 ? void 0 : _b.models.find((model) => model.id === route.modelId);
+        const ratios = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (model === null || model === void 0 ? void 0 : model.capabilities) || {}, capabilityField: 'aspectRatios', resolution: input.imageSize });
+        if (!ratios.some((option) => option.value === input.aspectRatio))
+            throw new Error('当前比例或清晰度不可用，请重新选择生成设置。');
+    }
     const providedKeys = Object.fromEntries(Object.entries(input.apiKeys || {}).map(([provider, key]) => [provider, String(key || '').trim()]));
     if (input.apiKey && !providedKeys[input.provider])
         providedKeys[input.provider] = input.apiKey.trim();

@@ -1,5 +1,17 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-07] 模型选择与比例呈现 v15 — by Codex
+变更：新增共享公司/平台名称、别名、渠道路径、官方日期与版本顺序配置 `config/model-presentation.json`；公开模型条目新增可选 `vendorId / serviceTier / releaseFamily / releaseOrder / releaseSourceUrl / releaseOrderSourceUrl`。后端及两端用同一生成源规范化公司名称和新到旧顺序，推荐标签不参与排序。所有渠道保持“API 接入渠道 → 模型厂商 → 服务端模型目录”；完整调用 ID 与显示名分离。静态目录仍为 669 项，既有协议、能力、地区和请求 ID 不变。
+比例：Web、小程序共享 `packages/types/src/aspect-ratios.ts`，按渠道内型号、生成/编辑及分辨率只展示合法项；旧选择失效自动收敛，缺失能力时不伪造选项，提交前验证当前比例，包含 Recraft 原生 SVG。原生客户端版本兼容新增可选字段，无新增 action、env 或网关规则。
+- [x] Core / Laf（静态与 OpenRouter 动态目录；名称、版本顺序、可选字段）
+- [x] Web（三栏/窄屏三步、名称和 ID、复制、比例过滤与提交校验）
+- [x] 微信小程序（同一分类/排序/比例规则，分页视图与 TS/JS 同步）
+- [x] 共享目录 / API 契约（生成源一致性、原请求字段不变；见 [核对记录](docs/model-picker-2026-09-07.md)）
+- [x] 本地验证（Core 451、Web 342、仓库契约 10、共享 API 28、小程序 22 个测试文件；15,502 种静态比例组合；Chrome 和微信官方组件模拟渲染）
+- [ ] 微信原生模拟器 / 真机验证（开发者工具要求重新登录；组件模拟验证已完成）
+- [ ] v15 Core / Web 生产发布及线上验收（尚未执行）
+- [ ] 小程序上传 / 平台发布（继续遵循既有暂缓要求）
+
 ### [2026-09-07] 模型目录 v14、MiniMax 区域入口与不兼容条目移除 — by Codex
 变更：承接 v13 的图片尺寸扩展，全面核对现有 21 渠道。MiniMax 统一产品入口，新增可选 `providerRegions.minimax=global|cn`，区域匹配官方 API 与当前页面内存中的独立 Key；创建/精修/输入优化/任务快照透传区域。注册表新增 `providerRegionContractVersion:1`，旧后端不接受中国区提交。共享 `expirationAt` 可记录公告明确的时区与时刻，到期前不提前排除。生成/编辑分别维护尺寸、像素、边长、对齐与字段；45 种候选比例按具体型号合法性开放。
 目录：相对仓库基线 306 项，新增 367、修正 73、移除 4，最终 669 个静态型号；OpenRouter 核对 471 个唯一 ID，移除 5 个不兼容型号，实际目录 466 项。不兼容型号直接从后端目录及 Web/小程序选择器移除，原因仅保留审计记录。新增/修正 native、multipart、SSE 和异步队列适配；审阅回归补齐 Web 精修区域透传、异步查询 HTTP 错误重试及 fal 仅任务 ID 的应答；Together 使用 api.together.ai，MiniMax 中国直接出站、国际经 SG。没有新增 action 或生产 env。

@@ -71,9 +71,9 @@ assert.equal(picker.data.providerCards.find((item) => item.id === 'ark').unavail
 
 picker.selectProvider({ currentTarget: { dataset: { provider: 'bailian' } } })
 assert.equal(picker.data.step, 'vendors')
-assert.deepEqual(picker.data.vendorCards.map((item) => item.vendor), ['Alibaba Qwen', 'DeepSeek'])
+assert.deepEqual(picker.data.vendorCards.map((item) => item.vendor), ['阿里巴巴', '深度求索'])
 
-picker.selectVendor({ currentTarget: { dataset: { vendor: 'DeepSeek' } } })
+picker.selectVendor({ currentTarget: { dataset: { vendor: '深度求索' } } })
 assert.equal(picker.data.step, 'models')
 assert.deepEqual(picker.data.visibleCompatibleModels.map((item) => item.id), ['deepseek-main'])
 
@@ -81,6 +81,8 @@ picker.backStep()
 assert.equal(picker.data.step, 'vendors')
 
 picker.selectProvider({ currentTarget: { dataset: { provider: 'gemini' } } })
+assert.equal(picker.data.step, 'vendors')
+picker.selectVendor({ currentTarget: { dataset: { vendor: 'Google' } } })
 assert.equal(picker.data.step, 'models')
 assert.deepEqual(picker.data.visibleCompatibleModels.map((item) => item.id), ['gemini-main'])
 

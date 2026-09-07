@@ -1,6 +1,6 @@
+import { MODEL_CHANNEL_LABELS } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { MINIMAX_REGIONS, minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions, type ProviderRegions } from '../../utils/provider-regions'
-import { EXTENDED_MODEL_CHANNELS } from '../../utils/static-model-catalog'
 import { buildAspectRatioOptions, buildResolutionOptions, normalizeSelectedAspectRatio } from '../../utils/aspect-ratios'
 import { formatError, requestJson } from '../../utils/api'
 import { clearArkVerification, getArkVerification, setArkProbeResults } from '../../utils/ark-verification'
@@ -9,18 +9,7 @@ import { MODEL_PROVIDER_IDS, findRegistryModel, type ModelProviderId, type Model
 import { arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, providerDefaultRoutes, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import { toggleReferenceSelection } from '../../utils/reference-library'
 
-const PROVIDER_LABELS: Record<string, string> = {
-  ...Object.fromEntries(Object.entries(EXTENDED_MODEL_CHANNELS).map(([id, channel]) => [id, channel.label])),
-  deepseek: "DeepSeek",
-  kimi: "Kimi（月之暗面）",
-  zhipu: "智谱 GLM",
-  siliconflow: "硅基流动 SiliconFlow",
-  anthropic: "Anthropic Claude",
-  recraft: "Recraft",
-  xai: "xAI",
-
-  gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
-}
+const PROVIDER_LABELS = MODEL_CHANNEL_LABELS
 
 interface SettingsDraft {
   providerRegions?: ProviderRegions

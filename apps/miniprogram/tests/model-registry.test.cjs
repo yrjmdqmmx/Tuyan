@@ -53,7 +53,7 @@ const partition = partitionRegistryModels([
   { id: 'wrong', vendor: 'OpenAI', roles: ['main'], roleReasons: { image: '不提供图片输出' } },
 ], { role: 'image', outputFormat: 'png' })
 assert.deepEqual(partition.compatible.map((item) => item.id), ['ok'])
-assert.deepEqual(partition.incompatible.map((item) => item.selectionDisabledReason), ['不提供图片输出', '当前账号无权益'])
+assert.deepEqual(partition.incompatible.map((item) => item.selectionDisabledReason), ['当前账号无权益', '不提供图片输出'])
 assert.deepEqual(groupRegistryModels(partition.compatible).map((group) => group.vendor), ['OpenAI'])
 
 console.log('model-registry.test.cjs passed')

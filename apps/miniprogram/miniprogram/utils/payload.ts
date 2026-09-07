@@ -1,3 +1,5 @@
+import { buildAspectRatioOptions } from './aspect-ratios'
+import type { ModelRegistry, ModelProviderId } from './model-registry'
 import type { ProviderRegions } from './provider-regions'
 import { PLOT_CATEGORY_ID, type ImageSize, type ProviderId, type RetrievalSetting } from './constants'
 import {
@@ -20,7 +22,7 @@ export interface CreateJobInput {
   providerRegions?: ProviderRegions
   configurationMode: 'simple' | 'advanced'
   provider: ProviderId
-  registry?: { routeContractVersion?: number; providerRegionContractVersion?: number } | null
+  registry?: { routeContractVersion?: number; providerRegionContractVersion?: number; providers?: ModelRegistry['providers'] } | null
   modelRoutes?: ModelRoutes
   apiKeys?: Record<string, string>
   apiKey?: string
@@ -73,6 +75,12 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
     referenceImages: input.uploadedReferenceImages,
     referenceImageMode: input.referenceImageMode,
   }, maxCriticRounds)
+  if (routeRoles.includes('image') && input.registry?.providers) {
+    const route = modelRoutes.image
+    const model = input.registry.providers[route.accessProvider as ModelProviderId]?.models.find((model) => model.id === route.modelId)
+    const ratios = buildAspectRatioOptions({ capabilities: model?.capabilities || {}, capabilityField: 'aspectRatios', resolution: input.imageSize })
+    if (!ratios.some((option) => option.value === input.aspectRatio)) throw new Error('当前比例或清晰度不可用，请重新选择生成设置。')
+  }
   const providedKeys = Object.fromEntries(Object.entries(input.apiKeys || {}).map(([provider, key]) => [provider, String(key || '').trim()]))
   if (input.apiKey && !providedKeys[input.provider]) providedKeys[input.provider] = input.apiKey.trim()
 

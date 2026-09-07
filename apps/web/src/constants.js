@@ -1,3 +1,4 @@
+import { MODEL_CHANNEL_LABELS } from './lib/modelPresentation.js'
 import { EXTENDED_MODEL_CHANNELS, STATIC_MODEL_REGISTRY } from './lib/staticModelCatalog.js'
 export function mainModelCanReadImages(provider, model) {
   const known = STATIC_MODEL_REGISTRY[provider]?.models.find((entry) => entry.id === model)
@@ -27,7 +28,7 @@ export const PROVIDERS = {
       ['openrouter/qwen/qwen3.8-flash', 'Qwen3.8 Flash', 'Qwen'],
       ['openrouter/anthropic/claude-fable-5.1', 'Claude Fable 5.1', 'Anthropic'],
       ['openrouter/z-ai/glm-5.3-flash', 'GLM 5.3 Flash', 'Z.ai'],
-      ['openrouter/deepseek/deepseek-v4-flash-vision-exp', 'DeepSeek V4 Flash Vision Experimental', 'DeepSeek'],
+      ['openrouter/deepseek/deepseek-v4-flash-vision-exp', 'DeepSeek V4 Flash Vision Experimental', '深度求索'],
       ['openai/gpt-5.6-sol', 'GPT-5.6 Sol', 'OpenAI'],
       ['openrouter/openai/gpt-5.5', 'GPT-5.5', 'OpenAI'],
       ['openrouter/openai/gpt-5.5-pro', 'GPT-5.5 Pro', 'OpenAI'],
@@ -55,12 +56,12 @@ export const PROVIDERS = {
       ['openrouter/qwen/qwen3.6-flash', 'Qwen3.6 Flash', 'Qwen'],
       ['openrouter/qwen/qwen3.6-max-preview', 'Qwen3.6 Max Preview', 'Qwen'],
       ['openrouter/qwen/qwen3.5-plus-20260420', 'Qwen3.5 Plus 2026-04-20', 'Qwen'],
-      ['openrouter/deepseek/deepseek-v4-pro', 'DeepSeek V4 Pro', 'DeepSeek'],
-      ['openrouter/deepseek/deepseek-v4-flash', 'DeepSeek V4 Flash', 'DeepSeek'],
-      ['openrouter/x-ai/grok-4.3', 'Grok 4.3', 'xAI'],
-      ['openrouter/x-ai/grok-4.20', 'Grok 4.20', 'xAI'],
-      ['openrouter/x-ai/grok-4.20-multi-agent', 'Grok 4.20 Multi-Agent', 'xAI'],
-      ['openrouter/x-ai/grok-build-0.1', 'Grok Build 0.1', 'xAI'],
+      ['openrouter/deepseek/deepseek-v4-pro', 'DeepSeek V4 Pro', '深度求索'],
+      ['openrouter/deepseek/deepseek-v4-flash', 'DeepSeek V4 Flash', '深度求索'],
+      ['openrouter/x-ai/grok-4.3', 'Grok 4.3', 'SpaceXAI'],
+      ['openrouter/x-ai/grok-4.20', 'Grok 4.20', 'SpaceXAI'],
+      ['openrouter/x-ai/grok-4.20-multi-agent', 'Grok 4.20 Multi-Agent', 'SpaceXAI'],
+      ['openrouter/x-ai/grok-build-0.1', 'Grok Build 0.1', 'SpaceXAI'],
       ['openrouter/moonshotai/kimi-k2.6', 'Kimi K2.6', 'Moonshot'],
       ['openrouter/z-ai/glm-5.1', 'GLM 5.1', 'Z.ai'],
       ['openrouter/minimax/minimax-m2.7', 'MiniMax M2.7', 'MiniMax'],
@@ -76,7 +77,7 @@ export const PROVIDERS = {
       ['openrouter/google/gemini-3.1-flash-image-preview', 'Nano Banana 2 / Gemini 3.1 Flash Image Preview', 'Google'],
       ['openrouter/google/gemini-3-pro-image-preview', 'Nano Banana Pro / Gemini 3 Pro Image Preview', 'Google'],
       ['openrouter/google/gemini-2.5-flash-image', 'Nano Banana / Gemini 2.5 Flash Image', 'Google'],
-      ['openrouter/x-ai/grok-imagine-image-quality', 'Grok Imagine Image Quality', 'xAI'],
+      ['openrouter/x-ai/grok-imagine-image-quality', 'Grok Imagine Image Quality', 'SpaceXAI'],
       ['openrouter/recraft/recraft-v4.1-pro', 'Recraft V4.1 Pro', 'Recraft'],
       ['openrouter/recraft/recraft-v4.1', 'Recraft V4.1', 'Recraft'],
       ['openrouter/recraft/recraft-v4.1-pro-vector', 'Recraft V4.1 Pro Vector', 'Recraft'],
@@ -95,7 +96,7 @@ export const PROVIDERS = {
       ['openrouter/qwen/qwen3.8-flash', 'Qwen3.8 Flash', 'Qwen'],
       ['openrouter/anthropic/claude-fable-5.1', 'Claude Fable 5.1', 'Anthropic'],
       ['openrouter/z-ai/glm-5.3-flash', 'GLM 5.3 Flash', 'Z.ai'],
-      ['openrouter/deepseek/deepseek-v4-flash-vision-exp', 'DeepSeek V4 Flash Vision Experimental', 'DeepSeek'],
+      ['openrouter/deepseek/deepseek-v4-flash-vision-exp', 'DeepSeek V4 Flash Vision Experimental', '深度求索'],
       ['google/gemini-3.7-flash', 'Gemini 3.7 Flash', 'Google'],
       ['openrouter/google/gemini-3.5-flash', 'Gemini 3.5 Flash', 'Google'],
       ['openrouter/google/gemini-3.1-flash-lite', 'Gemini 3.1 Flash Lite', 'Google'],
@@ -114,7 +115,7 @@ export const PROVIDERS = {
     ],
   },
   gemini: {
-    label: 'Google Gemini API',
+    label: 'Google',
     keyName: 'gemini',
     keyPlaceholder: 'AIza...',
     mainModel: 'gemini-3.7-flash',
@@ -207,8 +208,8 @@ export const PROVIDERS = {
       ['qwen3.8-flash', 'Qwen3.8 Flash', 'Alibaba Qwen'],
       ['qwen3.8-27b', 'Qwen3.8 27B', 'Alibaba Qwen'],
       ['qwen3.8-2.4t-a95b', 'Qwen3.8 2.4T A95B', 'Alibaba Qwen'],
-      ['deepseek-v4-pro-0813', 'DeepSeek V4 Pro 0813', 'DeepSeek'],
-      ['deepseek-v4-flash-0731', 'DeepSeek V4 Flash 0731', 'DeepSeek'],
+      ['deepseek-v4-pro-0813', 'DeepSeek V4 Pro 0813', '深度求索'],
+      ['deepseek-v4-flash-0731', 'DeepSeek V4 Flash 0731', '深度求索'],
       ['ZHIPU/GLM-5.3', 'GLM 5.3', 'Zhipu'],
       ['ZHIPU/GLM-5.3-Flash', 'GLM 5.3 Flash', 'Zhipu'],
       ['kimi-k3', 'Kimi K3 (Bailian hosted)', 'Moonshot AI'],
@@ -262,10 +263,10 @@ export const PROVIDERS = {
       ['doubao-seed-2-0-mini-260215', 'Doubao Seed 2.0 Mini (2026-02)', 'ByteDance Doubao'],
       ['doubao-seed-2-0-code-preview-260215', 'Doubao Seed 2.0 Code Preview', 'ByteDance Doubao'],
       ['glm-5-2-260617', 'GLM 5.2', 'Zhipu'],
-      ['deepseek-v4-pro-ga-260813', 'DeepSeek V4 Pro GA', 'DeepSeek'],
-      ['deepseek-v4-flash-ga-260731', 'DeepSeek V4 Flash GA', 'DeepSeek'],
-      ['deepseek-v4-pro-260425', 'DeepSeek V4 Pro', 'DeepSeek'],
-      ['deepseek-v4-flash-260425', 'DeepSeek V4 Flash', 'DeepSeek'],
+      ['deepseek-v4-pro-ga-260813', 'DeepSeek V4 Pro GA', '深度求索'],
+      ['deepseek-v4-flash-ga-260731', 'DeepSeek V4 Flash GA', '深度求索'],
+      ['deepseek-v4-pro-260425', 'DeepSeek V4 Pro', '深度求索'],
+      ['deepseek-v4-flash-260425', 'DeepSeek V4 Flash', '深度求索'],
     ],
     imageModels: [
       ['doubao-seedream-5-0-pro-260628', 'Doubao Seedream 5.0 Pro', 'ByteDance Seedream'],
@@ -292,7 +293,7 @@ export const PROVIDERS = {
     ],
   },
   deepseek: {
-    "label": "DeepSeek",
+    "label": "深度求索",
     "keyName": "deepseek",
     "keyPlaceholder": "sk-...",
     "mainModel": "deepseek-v4-pro",
@@ -302,17 +303,17 @@ export const PROVIDERS = {
       [
         "deepseek-v4-pro",
         "DeepSeek V4 Pro",
-        "DeepSeek"
+        "深度求索"
       ],
       [
         "deepseek-v4-flash",
         "DeepSeek V4 Flash",
-        "DeepSeek"
+        "深度求索"
       ],
       [
         "deepseek-v4-flash-vision-exp",
         "DeepSeek V4 Flash Vision Experimental",
-        "DeepSeek"
+        "深度求索"
       ]
     ],
     "imageModels": [],
@@ -320,12 +321,12 @@ export const PROVIDERS = {
       [
         "deepseek-v4-flash-vision-exp",
         "DeepSeek V4 Flash Vision Experimental",
-        "DeepSeek"
+        "深度求索"
       ]
     ],
     "guideUrl": "https://platform.deepseek.com/api_keys",
     "guideSteps": [
-      "登录 DeepSeek 官方开放平台，进入 API Key 管理页面。",
+      "登录深度求索官方开放平台，进入 API Key 管理页面。",
       "创建 API Key，并确认账户已开通所选模型。",
       "复制密钥并粘贴到对应渠道的输入框。"
     ]
@@ -390,7 +391,7 @@ export const PROVIDERS = {
     ]
   },
   zhipu: {
-    "label": "智谱 GLM",
+    "label": "智谱",
     "keyName": "zhipu",
     "keyPlaceholder": "sk-...",
     "mainModel": "glm-5.2",
@@ -424,13 +425,13 @@ export const PROVIDERS = {
     ],
     "guideUrl": "https://open.bigmodel.cn/",
     "guideSteps": [
-      "登录 智谱 GLM 官方开放平台，进入 API Key 管理页面。",
+      "登录 智谱 官方开放平台，进入 API Key 管理页面。",
       "创建 API Key，并确认账户已开通所选模型。",
       "复制密钥并粘贴到对应渠道的输入框。"
     ]
   },
   siliconflow: {
-    "label": "硅基流动 SiliconFlow",
+    "label": "硅基流动",
     "keyName": "siliconflow",
     "keyPlaceholder": "sk-...",
     "mainModel": "Pro/moonshotai/Kimi-K2.6",
@@ -464,13 +465,13 @@ export const PROVIDERS = {
     ],
     "guideUrl": "https://cloud.siliconflow.cn/account/ak",
     "guideSteps": [
-      "登录 硅基流动 SiliconFlow 官方开放平台，进入 API Key 管理页面。",
+      "登录 硅基流动 官方开放平台，进入 API Key 管理页面。",
       "创建 API Key，并确认账户已开通所选模型。",
       "复制密钥并粘贴到对应渠道的输入框。"
     ]
   },
   anthropic: {
-    "label": "Anthropic Claude",
+    "label": "Anthropic",
     "keyName": "anthropic",
     "keyPlaceholder": "sk-ant-...",
     "mainModel": "claude-fable-5-1",
@@ -523,7 +524,7 @@ export const PROVIDERS = {
     ],
     "guideUrl": "https://platform.claude.com/settings/keys",
     "guideSteps": [
-      "登录 Anthropic Claude 官方开放平台，进入 API Key 管理页面。",
+      "登录 Anthropic 官方开放平台，进入 API Key 管理页面。",
       "创建 API Key，并确认账户已开通所选模型。",
       "复制密钥并粘贴到对应渠道的输入框。"
     ]
@@ -567,7 +568,7 @@ export const PROVIDERS = {
     ]
   },
   xai: {
-    "label": "xAI",
+    "label": "SpaceXAI",
     "keyName": "xai",
     "keyPlaceholder": "xai-...",
     "mainModel": "grok-4.6",
@@ -577,26 +578,26 @@ export const PROVIDERS = {
       [
         "grok-4.6",
         "Grok 4.6",
-        "xAI"
+        "SpaceXAI"
       ]
     ],
     "imageModels": [
       [
         "grok-imagine-image-2.0",
         "Grok Imagine Image 2.0",
-        "xAI"
+        "SpaceXAI"
       ]
     ],
     "visionModels": [
       [
         "grok-4.6",
         "Grok 4.6",
-        "xAI"
+        "SpaceXAI"
       ]
     ],
     "guideUrl": "https://console.x.ai/",
     "guideSteps": [
-      "登录 xAI 官方开放平台，进入 API Key 管理页面。",
+      "登录 SpaceXAI 官方开放平台，进入 API Key 管理页面。",
       "创建 API Key，并确认账户已开通所选模型。",
       "复制密钥并粘贴到对应渠道的输入框。"
     ]
@@ -680,3 +681,5 @@ export const STATUS_LABELS = {
   succeeded: '已完成',
   failed: '失败',
 };
+
+for (const [id, label] of Object.entries(MODEL_CHANNEL_LABELS)) if (PROVIDERS[id]) { PROVIDERS[id].label = label; PROVIDERS[id].name = label }

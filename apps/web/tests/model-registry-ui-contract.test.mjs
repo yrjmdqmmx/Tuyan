@@ -15,14 +15,10 @@ test('Web fails closed until the server model registry loads and offers a retry 
 })
 
 test('OpenRouter catalog scope and search changes reset the incremental list before rendering fewer rows', () => {
-  assert.match(modelPicker, /function changeCatalogMode\(mode\)/u)
   assert.match(modelPicker, /function resetModelList\(\)/u)
   assert.match(modelPicker, /setCompatibleLimit\(COMPATIBLE_PAGE_SIZE\)/u)
   assert.match(modelPicker, /windowRef\.current\.scrollTop = 0/u)
-  assert.match(modelPicker, /setCatalogMode\(mode\); resetModelList\(\)/u)
   assert.match(modelPicker, /setQuery\(event\.target\.value\); resetModelList\(\)/u)
-  assert.match(modelPicker, /onClick=\{\(\) => changeCatalogMode\('recommended'\)\}/u)
-  assert.match(modelPicker, /onClick=\{\(\) => changeCatalogMode\('all'\)\}/u)
 })
 
 test('selected model notes keep unknown lifecycle and catalog-only verification explicit', () => {

@@ -14,6 +14,23 @@ const end = '// END GENERATED AUDITED CATALOG'
 const sizeConfig = JSON.parse(fs.readFileSync(path.join(root, 'config/image-size-contracts.json'), 'utf8'))
 const sizeRuntime = fs.readFileSync(path.join(root, 'packages/types/src/image-size-contract.ts'), 'utf8')
 const lines = [start, '// Source: config/model-catalog-updates.json; run node scripts/sync-model-catalog.mjs.']
+const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
+const presentationData = `export const MODEL_PRESENTATION: {
+  channels: Record<string, string>;
+  vendors: Record<string, {label: string; aliases: string[]; source: string; legalName?: string; parentCompany?: string}>;
+  routes: {channels: string[]; pattern: string; vendorId: string; source: string}[];
+  families: {id: string; vendorId: string; newestFirst: string[]; source: string}[];
+  releases: {vendorId: string; pattern: string; releasedAt: string; source: string; channels?: string[]}[];
+  reviewedAt: string;
+} = ${JSON.stringify(presentation)}\n`
+write(path.join(root, 'packages/types/src/model-presentation-data.ts'), '// Generated from config/model-presentation.json\n' + presentationData)
+const presentationRuntime = presentationData + fs.readFileSync(path.join(root, 'packages/types/src/model-presentation.ts'), 'utf8').replace(/^import .*model-presentation-data\.js'\n/m, '')
+lines.push(presentationRuntime)
+write(path.join(root, 'apps/web/src/lib/modelPresentation.js'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + ts.transpileModule(presentationRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation.ts'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + presentationRuntime)
+const aspectRuntime = fs.readFileSync(path.join(root, 'packages/types/src/aspect-ratios.ts'), 'utf8')
+write(path.join(root, 'apps/web/src/lib/aspectRatios.js'), '// Generated from packages/types/src/aspect-ratios.ts\n' + ts.transpileModule(aspectRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/aspect-ratios.ts'), '// Generated from packages/types/src/aspect-ratios.ts\n' + aspectRuntime)
 const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/image-channel-routes.json'), 'utf8'))
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
@@ -74,6 +91,9 @@ lines.push(`for (const [key, route] of Object.entries(imageSizeRoutes)) {
       caps.refineAspectRatios = ratios
     }
   }
+}`)
+lines.push(`for (const [provider, registry] of Object.entries(staticModelRegistry)) {
+  registry.models = sortModelsNewestFirst(registry.models.map(model => presentRegistryModel(provider, model)))
 }`)
 lines.push(end)
 const block = lines.join('\n')

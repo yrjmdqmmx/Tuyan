@@ -2,7 +2,6 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
   CANONICAL_ASPECT_RATIOS,
-  LEGACY_SAFE_ASPECT_RATIOS,
   buildAspectRatioOptions,
   normalizeSelectedAspectRatio,
 } from './aspectRatios.js'
@@ -14,22 +13,16 @@ test('aspect ratio options always expose auto plus all supported fixed ratios in
     capabilityField: 'aspectRatios',
     modelLabel: 'Wan Image',
   })
-  assert.deepEqual(options.map((option) => option.value), ['auto', ...CANONICAL_ASPECT_RATIOS])
+  assert.deepEqual(options.map((option) => option.value), ['auto', '1:1', '16:9'])
   assert.equal(options[0].disabled, false)
   assert.equal(options.find((option) => option.value === '16:9').disabled, false)
-  const disabledReason = options.find((option) => option.value === '21:9').reason
-  assert.match(disabledReason, /Wan Image/u)
-  assert.match(disabledReason, /21:9/u)
-  assert.match(disabledReason, /不支持/u)
+  assert.equal(options.find((option) => option.value === '21:9'), undefined)
 })
 
-test('old registries use the safe four ratios and unsupported values normalize to auto', () => {
-  assert.deepEqual(LEGACY_SAFE_ASPECT_RATIOS, ['16:9', '21:9', '3:2', '1:1'])
-  const options = buildAspectRatioOptions({ capabilities: {}, capabilityField: 'aspectRatios', modelLabel: '旧版图像模型' })
-  assert.deepEqual(options.filter((option) => !option.disabled).map((option) => option.value), ['auto', '1:1', '3:2', '16:9', '21:9'])
-  assert.equal(normalizeSelectedAspectRatio('4:1', options), 'auto')
-  assert.equal(normalizeSelectedAspectRatio('3:2', options), '3:2')
-  assert.equal(normalizeSelectedAspectRatio('auto', options), 'auto')
+test('missing capability metadata fails closed, including the auto selection', () => {
+  const options = buildAspectRatioOptions({ capabilities: {}, capabilityField: 'aspectRatios' })
+  assert.deepEqual(options, [])
+  assert.equal(normalizeSelectedAspectRatio('auto', options), '')
 })
 
 test('refine ratios consume refineAspectRatios independently from generation ratios', () => {
@@ -37,7 +30,7 @@ test('refine ratios consume refineAspectRatios independently from generation rat
   const generation = buildAspectRatioOptions({ capabilities, capabilityField: 'aspectRatios', modelLabel: 'Image X' })
   const refine = buildAspectRatioOptions({ capabilities, capabilityField: 'refineAspectRatios', modelLabel: 'Image X' })
   assert.equal(generation.find((option) => option.value === '4:1').disabled, false)
-  assert.equal(refine.find((option) => option.value === '4:1').disabled, true)
+  assert.equal(refine.find((option) => option.value === '4:1'), undefined)
   assert.equal(refine.find((option) => option.value === '2:3').disabled, false)
 })
 
