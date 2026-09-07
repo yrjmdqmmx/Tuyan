@@ -1,10 +1,11 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, Check, ChevronDown, Search, Sparkles, X } from 'lucide-react'
+import { ArrowLeft, Check, ChevronDown, Copy, Search, Sparkles, X } from 'lucide-react'
 import { groupRegistryModels, partitionRegistryModels } from '../lib/modelRegistry'
+import { MODEL_CHANNEL_LABELS, presentRegistryModel } from '../lib/modelPresentation'
 
 const COMPATIBLE_PAGE_SIZE = 24
 const COMPACT_MEDIA_QUERY = '(max-width: 1076px)'
-const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'
+const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), summary, a[href], [tabindex]:not([tabindex="-1"])'
 const MOBILE_FOCUS_SELECTORS = Object.freeze({
   'providers-back': '[data-mobile-focus="providers-back"]',
   'models-back': '[data-mobile-focus="models-back"]',
@@ -13,8 +14,7 @@ const MOBILE_FOCUS_SELECTORS = Object.freeze({
 })
 
 function providerDisplayName(provider, providerConfigs) {
-  if (provider === 'gemini') return 'Google Gemini API'
-  return providerConfigs?.[provider]?.label || provider
+  return MODEL_CHANNEL_LABELS[provider] || providerConfigs?.[provider]?.label || provider
 }
 
 function lifecycleLabel(value) {
@@ -36,8 +36,8 @@ function verificationLabel(model) {
 
 function capabilityLabel(model) {
   const capabilities = []
-  if (model.roles?.includes('main')) capabilities.push('主模型')
-  if (model.roles?.includes('image')) capabilities.push('图像生成')
+  if (model.roles?.includes('main')) capabilities.push('文本')
+  if (model.roles?.includes('image') && !model.capabilities?.requiresSourceImage) capabilities.push('图像生成')
   if (model.roles?.includes('vision')) capabilities.push('图像理解')
   if (model.capabilities?.imageEditMode === 'direct-edit') capabilities.push('直接编辑')
   return capabilities.join(' · ') || '能力以服务端目录为准'
@@ -58,7 +58,7 @@ export default function ModelPicker({
   providerConfigs,
 }) {
   const effectiveRoute = route || { accessProvider: provider, modelId: value }
-  const effectiveRegistry = registry?.providers
+  const sourceRegistry = registry?.providers
     ? registry
     : {
         providers: {
@@ -68,13 +68,14 @@ export default function ModelPicker({
           },
         },
       }
-  const providerIds = Object.keys(effectiveRegistry.providers || {}).filter((id) => {
+  const effectiveRegistry = useMemo(() => ({ ...sourceRegistry, providers: Object.fromEntries(Object.entries(sourceRegistry.providers || {}).map(([id, entry]) => [id, { ...entry, models: entry.models.map((model) => presentRegistryModel(id, model)) }])) }), [registry, models, provider])
+  const providerIds = useMemo(() => Object.keys(effectiveRegistry.providers || {}).filter((id) => {
     const available = partitionRegistryModels(effectiveRegistry.providers[id].models, { role, outputFormat })
     return available.compatible.length > 0
-  })
+  }), [effectiveRegistry, role, outputFormat])
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const [catalogMode, setCatalogMode] = useState('recommended')
+  const [copyStatus, setCopyStatus] = useState('')
   const [selectedProvider, setSelectedProvider] = useState(effectiveRoute.accessProvider || providerIds[0] || '')
   const [selectedVendor, setSelectedVendor] = useState('')
   const [mobileStep, setMobileStep] = useState('providers')
@@ -89,42 +90,15 @@ export default function ModelPicker({
   const dialogTitleId = useId()
 
   const activeProviderRegistry = effectiveRegistry.providers?.[selectedProvider] || { accessKind: 'direct', models: [] }
-  const isAggregator = activeProviderRegistry.accessKind === 'aggregator'
-  const isOpenRouter = selectedProvider === 'openrouter'
   const allPartition = useMemo(
     () => partitionRegistryModels(activeProviderRegistry.models, { role, query, outputFormat }),
     [activeProviderRegistry.models, role, query, outputFormat],
   )
-  const recommendedCompatible = useMemo(
-    () => allPartition.compatible.filter((model) => model.recommended === true && model.lifecycle === 'stable'),
-    [allPartition.compatible],
-  )
-  const allCompatibleGrouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
-  const allVendorGrouped = useMemo(
-    () => groupRegistryModels(allPartition.compatible
-      .filter((model) => model.roles?.includes(role)
-        || (role === 'image' && (model.outputModalities?.includes('image') || model.protocol === 'openrouter-images')))),
-    [allPartition.compatible, role],
-  )
-  const recommendedGrouped = useMemo(() => groupRegistryModels(recommendedCompatible), [recommendedCompatible])
-  const availableVendors = isAggregator ? allVendorGrouped.map((group) => group.vendor) : []
-  const activeVendor = isAggregator
-    ? (availableVendors.includes(selectedVendor)
-        ? selectedVendor
-        : allVendorGrouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || '')
-    : ''
-  const hasRecommendedInScope = isAggregator
-    ? recommendedGrouped.some((group) => group.vendor === activeVendor && group.models.length)
-    : recommendedCompatible.length > 0
-  const effectiveCatalogMode = isOpenRouter && catalogMode === 'recommended' && allPartition.compatible.length && !hasRecommendedInScope
-    ? 'all'
-    : catalogMode
-  const compatible = isOpenRouter && effectiveCatalogMode === 'recommended' ? recommendedCompatible : allPartition.compatible
-  const grouped = useMemo(() => groupRegistryModels(compatible), [compatible])
-  const rows = useMemo(
-    () => (isAggregator ? grouped.find((group) => group.vendor === activeVendor)?.models || [] : compatible),
-    [activeVendor, compatible, grouped, isAggregator],
-  )
+  const grouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
+  const availableVendors = grouped.map((group) => group.vendor)
+  const activeVendor = availableVendors.includes(selectedVendor) ? selectedVendor
+    : grouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || ''
+  const rows = grouped.find((group) => group.vendor === activeVendor)?.models || []
   const selectedModel = activeProviderRegistry.models?.find((model) => model.id === effectiveRoute.modelId)
     || models?.find((model) => model.id === value)
 
@@ -133,7 +107,10 @@ export default function ModelPicker({
     if (windowRef.current) windowRef.current.scrollTop = 0
   }
 
-  function changeCatalogMode(mode) { setCatalogMode(mode); resetModelList() }
+  async function copyModelId(id) {
+    try { await navigator.clipboard.writeText(id); setCopyStatus('已复制模型 ID') }
+    catch { setCopyStatus('复制失败，请选中下方完整 ID 复制') }
+  }
 
   function moveMobileStep(step, focusTarget) {
     pendingMobileFocusRef.current = focusTarget
@@ -165,7 +142,7 @@ export default function ModelPicker({
         return
       }
       if (event.key !== 'Tab') return
-      const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE) || [])]
+      const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE) || [])].filter((element) => !element.closest('details:not([open])') || element.tagName === 'SUMMARY')
       if (!focusable.length) return
       const first = focusable[0]
       const last = focusable.at(-1)
@@ -201,7 +178,7 @@ export default function ModelPicker({
     setSelectedVendor(nextGroups.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || nextGroups[0]?.vendor || '')
     setMobileStep('providers')
     setQuery('')
-    setCatalogMode('recommended')
+    setCopyStatus('')
     resetModelList()
     setOpen(true)
   }
@@ -213,7 +190,7 @@ export default function ModelPicker({
     setSelectedVendor(nextGroups[0]?.vendor || '')
     setQuery('')
     resetModelList()
-    if (compact) moveMobileStep(nextRegistry.accessKind === 'aggregator' ? 'vendors' : 'models', nextRegistry.accessKind === 'aggregator' ? 'providers-back' : 'models-back')
+    if (compact) moveMobileStep('vendors', 'providers-back')
   }
 
   function chooseVendor(vendor) {
@@ -230,7 +207,7 @@ export default function ModelPicker({
   }
 
   function backFromModels() {
-    moveMobileStep(isAggregator ? 'vendors' : 'providers', isAggregator ? 'selected-vendor' : 'selected-provider')
+    moveMobileStep('vendors', 'selected-vendor')
   }
 
   function revealMoreModels() {
@@ -257,55 +234,53 @@ export default function ModelPicker({
     </div>
   )
 
-  const vendorRail = isAggregator ? (
-    <div className="model-vendor-rail" role="group" aria-label="模型开发厂商">
-      <h3>模型开发厂商</h3>
+  const vendorRail = (
+    <div className="model-vendor-rail" role="group" aria-label="模型厂商">
+      <h3>模型厂商</h3>
       {availableVendors.map((vendor) => (
         <button type="button" key={vendor} aria-label={`厂商 ${vendor}`} aria-pressed={activeVendor === vendor} className={activeVendor === vendor ? 'active' : ''} onClick={() => chooseVendor(vendor)}>
           {vendor}
         </button>
       ))}
     </div>
-  ) : null
+  )
 
   const modelBrowser = (
     <section className="model-browser" aria-label="具体模型列表">
       <div className="model-browser-tools">
-        {isOpenRouter ? (
-          <div className="model-catalog-tabs" role="group" aria-label="OpenRouter 模型范围">
-            <button type="button" aria-pressed={effectiveCatalogMode === 'recommended'} className={effectiveCatalogMode === 'recommended' ? 'active' : ''} onClick={() => changeCatalogMode('recommended')}>推荐模型</button>
-            <button type="button" aria-pressed={effectiveCatalogMode === 'all'} className={effectiveCatalogMode === 'all' ? 'active' : ''} onClick={() => changeCatalogMode('all')}>全部兼容模型</button>
-          </div>
-        ) : <div className="model-catalog-title"><Sparkles size={15} /> 服务端模型目录</div>}
+        <div className="model-catalog-title"><Sparkles size={15} /> 服务端模型目录 <small>{rows.length}</small></div>
         <label className="model-picker-search">
           <Search size={16} />
           <span className="sr-only">搜索{label}</span>
-          <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); resetModelList() }} placeholder="搜索模型、厂商或能力" />
+          <input type="search" autoComplete="off" name="model-catalog-search" value={query} onChange={(event) => { setQuery(event.target.value); resetModelList() }} placeholder="搜索模型、厂商或能力" />
         </label>
       </div>
       <div ref={windowRef} className="model-picker-window">
         <div ref={listRef} className="model-picker-list">
           {rows.slice(0, compatibleLimit).map((model, rowIndex) => (
-              <button
-                key={model.id}
-                type="button"
-                className={`model-option ${effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}
-                data-model-index={rowIndex}
-                aria-disabled="false"
-                onClick={() => chooseModel(model)}
-              >
-                <span className="model-option-main"><strong>{model.label || model.id}</strong><small>{model.id}</small></span>
+            <article key={model.id} className={`model-option ${effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}>
+              <button type="button" className="model-option-select" data-model-index={rowIndex} aria-label={`选择 ${model.label || model.id}`} onClick={() => chooseModel(model)}>
+                <span className="model-option-main"><strong>{model.label || model.id}</strong></span>
+                {effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? <Check size={18} /> : null}
+                <span className="model-option-meta">{capabilityLabel(model)}</span>
                 <span className="model-option-badges">
-                  {model.recommended && model.lifecycle === 'stable' ? <em>推荐</em> : null}
+                  {model.releasedAt ? <time dateTime={model.releasedAt}>{model.releasedAt}</time> : <span>{model.releaseOrder ? '按官方版本排序' : '发布日期待确认'}</span>}
                   <em>{lifecycleLabel(model.lifecycle)}</em>
-                  {model.capabilities?.requiresSourceImage ? <em>仅图像编辑</em> : null}
-                  <em>{verificationLabel(model)}</em>
-                  {model.requiresEntitlement ? <em>需权益</em> : <em>标准权限</em>}
-                  {effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? <Check size={16} /> : null}
+                  {model.serviceTier ? <em>{model.serviceTier}</em> : null}
+                  {model.recommended && model.lifecycle === 'stable' ? <em>推荐</em> : null}
+                  {model.capabilities?.requiresSourceImage ? <em>仅编辑</em> : null}
+                  {model.requiresEntitlement ? <em>需权益</em> : null}
                 </span>
-                <span className="model-option-meta">{providerDisplayName(selectedProvider, providerConfigs)} · {capabilityLabel(model)}{model.releasedAt ? ` · ${model.releasedAt}` : ' · 发布时间未知'}</span>
-                <span className="model-option-note">{model.entitlement ? `权益要求：${model.entitlement}` : '无需额外模型权益'}{model.availabilityNotes ? ` · ${model.availabilityNotes}` : ''}{model.expirationDate && !model.expirationDate.startsWith('2098') ? ` · 官方到期日：${model.expirationDate}` : ''}{model.earliestRetirementDate ? ` · 最早退役日：${model.earliestRetirementDate}，以正式公告为准` : ''}{model.replacementModelId ? ` · 迁移目标：${model.replacementModelId}` : ''}</span>
               </button>
+              <div className="model-id-row"><code title={model.id}>{model.id}</code><button type="button" className="model-id-copy" aria-label={`复制模型 ID ${model.id}`} onClick={() => copyModelId(model.id)}><Copy size={14} /><span>复制 ID</span></button></div>
+              <details className="model-option-details"><summary>模型详情</summary>
+                <p>{verificationLabel(model)}{model.entitlement ? ` · 权益要求：${model.entitlement}` : ''}</p>
+                {model.availabilityNotes ? <p>{model.availabilityNotes}</p> : null}
+                {model.releaseSourceUrl || model.releaseOrderSourceUrl ? <a href={model.releaseSourceUrl || model.releaseOrderSourceUrl} target="_blank" rel="noreferrer">官方发布与版本依据</a> : null}
+                {model.earliestRetirementDate ? <p>最早退役日：{model.earliestRetirementDate}，以正式公告为准</p> : null}
+              </details>
+              {model.expirationDate && !model.expirationDate.startsWith('2098') ? <p className="model-retirement">官方到期日：{model.expirationDate}{model.replacementModelId ? ` · 请迁移至 ${model.replacementModelId}` : ''}</p> : null}
+            </article>
           ))}
         </div>
         {compatibleLimit < rows.length ? (
@@ -318,6 +293,7 @@ export default function ModelPicker({
           >显示更多模型</button>
         ) : null}
       </div>
+      <p className="model-copy-status" role="status">{copyStatus}</p>
       {!rows.length ? <p className="model-picker-empty">没有匹配当前角色与输出格式的可用模型。</p> : null}
 
     </section>
@@ -329,7 +305,7 @@ export default function ModelPicker({
       <button type="button" className="model-picker-trigger" aria-expanded={open} aria-labelledby={labelId} onClick={openPicker}>
         <span>
           <strong>{selectedModel?.label || effectiveRoute.modelId || '请选择模型'}</strong>
-          <small>{providerDisplayName(effectiveRoute.accessProvider, providerConfigs)} · {selectedModel?.vendor || '服务端目录'}</small>
+          <small>{[...new Set([providerDisplayName(effectiveRoute.accessProvider, providerConfigs), selectedModel?.vendor].filter(Boolean))].join(' · ')}</small>
         </span>
         <ChevronDown size={17} />
       </button>
@@ -337,7 +313,7 @@ export default function ModelPicker({
         <div className="model-route-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
           <aside ref={panelRef} className="model-route-drawer" role="dialog" aria-modal="true" aria-labelledby={dialogTitleId}>
             <header className="model-route-head">
-              <div><span>Model routing</span><h2 id={dialogTitleId}>{label} · API 渠道与模型</h2></div>
+              <div><span>API 接入渠道 → 模型厂商 → 服务端模型目录</span><h2 id={dialogTitleId}>{label} · API 渠道与模型</h2></div>
               <button type="button" aria-label="关闭模型选择" onClick={() => setOpen(false)}><X size={20} /></button>
             </header>
             {compact ? (
@@ -348,18 +324,18 @@ export default function ModelPicker({
                 {mobileStep === 'vendors' ? (
                   <>
                     <button type="button" className="model-route-back" data-mobile-focus="providers-back" onClick={() => moveMobileStep('providers', 'selected-provider')}><ArrowLeft size={16} /> 返回 API 接入渠道</button>
-                    <h3>选择模型开发厂商</h3>{vendorRail}
+                    <h3>选择模型厂商</h3>{vendorRail}
                   </>
                 ) : null}
                 {mobileStep === 'models' ? (
                   <>
-                    <button type="button" className="model-route-back" data-mobile-focus="models-back" onClick={backFromModels}><ArrowLeft size={16} /> 返回 {isAggregator ? '模型开发厂商' : 'API 接入渠道'}</button>
+                    <button type="button" className="model-route-back" data-mobile-focus="models-back" onClick={backFromModels}><ArrowLeft size={16} /> 返回 模型厂商</button>
                     <h3>选择具体模型</h3>{modelBrowser}
                   </>
                 ) : null}
               </div>
             ) : (
-              <div className={`model-route-desktop-layout ${isAggregator ? 'has-vendor' : 'direct'}`}>{providerRail}{vendorRail}{modelBrowser}</div>
+              <div className="model-route-desktop-layout has-vendor">{providerRail}{vendorRail}{modelBrowser}</div>
             )}
           </aside>
         </div>

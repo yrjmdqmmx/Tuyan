@@ -7,6 +7,7 @@ exports.getModelIndex = getModelIndex;
 exports.getModelLabel = getModelLabel;
 exports.readPickerIndex = readPickerIndex;
 exports.readDatasetBoolean = readDatasetBoolean;
+const model_presentation_1 = require("./model-presentation");
 const static_model_catalog_1 = require("./static-model-catalog");
 // 模型常量与 apps/web/src/constants.js 保持同步（SYNC.md 2026-06-08 起 bailian 为官方真实模型）。
 exports.PROVIDERS = [
@@ -22,8 +23,8 @@ exports.PROVIDERS = [
             { label: 'Alibaba Qwen / Qwen3.8 Flash', value: 'qwen3.8-flash' },
             { label: 'Alibaba Qwen / Qwen3.8 27B', value: 'qwen3.8-27b' },
             { label: 'Alibaba Qwen / Qwen3.8 2.4T A95B', value: 'qwen3.8-2.4t-a95b' },
-            { label: 'DeepSeek / DeepSeek V4 Pro 0813', value: 'deepseek-v4-pro-0813' },
-            { label: 'DeepSeek / DeepSeek V4 Flash 0731', value: 'deepseek-v4-flash-0731' },
+            { label: '深度求索 / DeepSeek V4 Pro 0813', value: 'deepseek-v4-pro-0813' },
+            { label: '深度求索 / DeepSeek V4 Flash 0731', value: 'deepseek-v4-flash-0731' },
             { label: 'Zhipu / GLM 5.3', value: 'ZHIPU/GLM-5.3' },
             { label: 'Zhipu / GLM 5.3 Flash', value: 'ZHIPU/GLM-5.3-Flash' },
             { label: 'Moonshot AI / Kimi K3 (Bailian hosted)', value: 'kimi-k3' },
@@ -69,7 +70,7 @@ exports.PROVIDERS = [
             { label: 'Qwen / Qwen3.8 Flash', value: 'openrouter/qwen/qwen3.8-flash' },
             { label: 'Anthropic / Claude Fable 5.1', value: 'openrouter/anthropic/claude-fable-5.1' },
             { label: 'Z.ai / GLM 5.3 Flash', value: 'openrouter/z-ai/glm-5.3-flash' },
-            { label: 'DeepSeek / DeepSeek V4 Flash Vision Experimental', value: 'openrouter/deepseek/deepseek-v4-flash-vision-exp' },
+            { label: '深度求索 / DeepSeek V4 Flash Vision Experimental', value: 'openrouter/deepseek/deepseek-v4-flash-vision-exp' },
             { label: 'OpenAI / GPT-5.5', value: 'openrouter/openai/gpt-5.5' },
             { label: 'OpenAI / GPT-5.5 Pro', value: 'openrouter/openai/gpt-5.5-pro' },
             { label: 'OpenAI / GPT-5.4', value: 'openrouter/openai/gpt-5.4' },
@@ -96,12 +97,12 @@ exports.PROVIDERS = [
             { label: 'Qwen / Qwen3.6 Flash', value: 'openrouter/qwen/qwen3.6-flash' },
             { label: 'Qwen / Qwen3.6 Max Preview', value: 'openrouter/qwen/qwen3.6-max-preview' },
             { label: 'Qwen / Qwen3.5 Plus 2026-04-20', value: 'openrouter/qwen/qwen3.5-plus-20260420' },
-            { label: 'DeepSeek / DeepSeek V4 Pro', value: 'openrouter/deepseek/deepseek-v4-pro' },
-            { label: 'DeepSeek / DeepSeek V4 Flash', value: 'openrouter/deepseek/deepseek-v4-flash' },
-            { label: 'xAI / Grok 4.3', value: 'openrouter/x-ai/grok-4.3' },
-            { label: 'xAI / Grok 4.20', value: 'openrouter/x-ai/grok-4.20' },
-            { label: 'xAI / Grok 4.20 Multi-Agent', value: 'openrouter/x-ai/grok-4.20-multi-agent' },
-            { label: 'xAI / Grok Build 0.1', value: 'openrouter/x-ai/grok-build-0.1' },
+            { label: '深度求索 / DeepSeek V4 Pro', value: 'openrouter/deepseek/deepseek-v4-pro' },
+            { label: '深度求索 / DeepSeek V4 Flash', value: 'openrouter/deepseek/deepseek-v4-flash' },
+            { label: 'SpaceXAI / Grok 4.3', value: 'openrouter/x-ai/grok-4.3' },
+            { label: 'SpaceXAI / Grok 4.20', value: 'openrouter/x-ai/grok-4.20' },
+            { label: 'SpaceXAI / Grok 4.20 Multi-Agent', value: 'openrouter/x-ai/grok-4.20-multi-agent' },
+            { label: 'SpaceXAI / Grok Build 0.1', value: 'openrouter/x-ai/grok-build-0.1' },
             { label: 'Moonshot / Kimi K2.6', value: 'openrouter/moonshotai/kimi-k2.6' },
             { label: 'Z.ai / GLM 5.1', value: 'openrouter/z-ai/glm-5.1' },
             { label: 'MiniMax / MiniMax M2.7', value: 'openrouter/minimax/minimax-m2.7' },
@@ -116,7 +117,7 @@ exports.PROVIDERS = [
             { label: 'Google / Nano Banana 2', value: 'openrouter/google/gemini-3.1-flash-image-preview' },
             { label: 'Google / Nano Banana Pro', value: 'openrouter/google/gemini-3-pro-image-preview' },
             { label: 'Google / Nano Banana', value: 'openrouter/google/gemini-2.5-flash-image' },
-            { label: 'xAI / Grok Imagine Image Quality', value: 'openrouter/x-ai/grok-imagine-image-quality' },
+            { label: 'SpaceXAI / Grok Imagine Image Quality', value: 'openrouter/x-ai/grok-imagine-image-quality' },
             { label: 'Recraft / Recraft V4.1 Pro', value: 'openrouter/recraft/recraft-v4.1-pro' },
             { label: 'Recraft / Recraft V4.1', value: 'openrouter/recraft/recraft-v4.1' },
             { label: 'Recraft / Recraft V4.1 Pro Vector', value: 'openrouter/recraft/recraft-v4.1-pro-vector' },
@@ -135,7 +136,7 @@ exports.PROVIDERS = [
             { label: 'Qwen / Qwen3.8 Flash', value: 'openrouter/qwen/qwen3.8-flash' },
             { label: 'Anthropic / Claude Fable 5.1', value: 'openrouter/anthropic/claude-fable-5.1' },
             { label: 'Z.ai / GLM 5.3 Flash', value: 'openrouter/z-ai/glm-5.3-flash' },
-            { label: 'DeepSeek / DeepSeek V4 Flash Vision Experimental', value: 'openrouter/deepseek/deepseek-v4-flash-vision-exp' },
+            { label: '深度求索 / DeepSeek V4 Flash Vision Experimental', value: 'openrouter/deepseek/deepseek-v4-flash-vision-exp' },
             { label: 'Google / Gemini 3.5 Flash', value: 'openrouter/google/gemini-3.5-flash' },
             { label: 'Google / Gemini 3.1 Flash Lite', value: 'openrouter/google/gemini-3.1-flash-lite' },
             { label: 'OpenAI / GPT Chat Latest', value: 'openrouter/openai/gpt-chat-latest' },
@@ -221,7 +222,7 @@ exports.PROVIDERS = [
     },
     {
         "id": "deepseek",
-        "label": "DeepSeek",
+        "label": "深度求索",
         "keyPlaceholder": "sk-...",
         "mainModel": "deepseek-v4-pro",
         "imageModel": "",
@@ -248,7 +249,7 @@ exports.PROVIDERS = [
             }
         ],
         "guideSteps": [
-            "登录 DeepSeek 官方开放平台，进入 API Key 管理页面。",
+            "登录深度求索官方开放平台，进入 API Key 管理页面。",
             "创建 API Key，并确认账户已开通所选模型。",
             "复制密钥并粘贴到对应渠道的输入框。"
         ]
@@ -305,7 +306,7 @@ exports.PROVIDERS = [
     },
     {
         "id": "zhipu",
-        "label": "智谱 GLM",
+        "label": "智谱",
         "keyPlaceholder": "sk-...",
         "mainModel": "glm-5.2",
         "imageModel": "glm-image",
@@ -333,14 +334,14 @@ exports.PROVIDERS = [
             }
         ],
         "guideSteps": [
-            "登录 智谱 GLM 官方开放平台，进入 API Key 管理页面。",
+            "登录 智谱 官方开放平台，进入 API Key 管理页面。",
             "创建 API Key，并确认账户已开通所选模型。",
             "复制密钥并粘贴到对应渠道的输入框。"
         ]
     },
     {
         "id": "siliconflow",
-        "label": "硅基流动 SiliconFlow",
+        "label": "硅基流动",
         "keyPlaceholder": "sk-...",
         "mainModel": "Pro/moonshotai/Kimi-K2.6",
         "imageModel": "Qwen/Qwen-Image",
@@ -368,14 +369,14 @@ exports.PROVIDERS = [
             }
         ],
         "guideSteps": [
-            "登录 硅基流动 SiliconFlow 官方开放平台，进入 API Key 管理页面。",
+            "登录 硅基流动 官方开放平台，进入 API Key 管理页面。",
             "创建 API Key，并确认账户已开通所选模型。",
             "复制密钥并粘贴到对应渠道的输入框。"
         ]
     },
     {
         "id": "anthropic",
-        "label": "Anthropic Claude",
+        "label": "Anthropic",
         "keyPlaceholder": "sk-ant-...",
         "mainModel": "claude-fable-5-1",
         "imageModel": "",
@@ -418,7 +419,7 @@ exports.PROVIDERS = [
             }
         ],
         "guideSteps": [
-            "登录 Anthropic Claude 官方开放平台，进入 API Key 管理页面。",
+            "登录 Anthropic 官方开放平台，进入 API Key 管理页面。",
             "创建 API Key，并确认账户已开通所选模型。",
             "复制密钥并粘贴到对应渠道的输入框。"
         ]
@@ -458,7 +459,7 @@ exports.PROVIDERS = [
     },
     {
         "id": "xai",
-        "label": "xAI",
+        "label": "SpaceXAI",
         "keyPlaceholder": "xai-...",
         "mainModel": "grok-4.6",
         "imageModel": "grok-imagine-image-2.0",
@@ -482,7 +483,7 @@ exports.PROVIDERS = [
             }
         ],
         "guideSteps": [
-            "登录 xAI 官方开放平台，进入 API Key 管理页面。",
+            "登录 SpaceXAI 官方开放平台，进入 API Key 管理页面。",
             "创建 API Key，并确认账户已开通所选模型。",
             "复制密钥并粘贴到对应渠道的输入框。"
         ]
@@ -650,3 +651,6 @@ function readDatasetBoolean(value, fallback) {
         return false;
     return fallback;
 }
+for (const provider of exports.PROVIDERS)
+    if (model_presentation_1.MODEL_CHANNEL_LABELS[provider.id])
+        provider.label = model_presentation_1.MODEL_CHANNEL_LABELS[provider.id];

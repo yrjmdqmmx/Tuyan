@@ -136,7 +136,7 @@ test('prominent settings summary opens full settings and negative prompt is coun
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   assert.ok(screen.getByRole('dialog', { name: /生成设置/u }))
   await user.click(screen.getByRole('button', { name: '画面比例 4:1' }))
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'test-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'test-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 
   const negative = screen.getByLabelText(/负向提示词（可选）/u)
@@ -156,15 +156,15 @@ test('model capability changes normalize an unsupported fixed ratio to auto', as
   await user.click(screen.getByRole('button', { name: '画面比例 4:1' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   await waitFor(() => assert.equal(screen.getByRole('button', { name: '画面比例 自动' }).getAttribute('aria-pressed'), 'true'))
-  assert.equal(screen.getByRole('button', { name: /画面比例 4:1，OpenAI Image 不支持 4:1 比例/u }).disabled, true)
+  assert.equal(screen.queryByRole('button', { name: /画面比例 4:1，OpenAI Image 不支持 4:1 比例/u }), null)
 })
 
 test('refine panel renders all ratios and consumes refineAspectRatios truthfully', async () => {
   const { user } = await renderReady()
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  assert.equal((await screen.findAllByRole('button', { name: /^目标比例 /u })).length, 46)
+  assert.equal((await screen.findAllByRole('button', { name: /^目标比例 /u })).length, 4)
   assert.equal(screen.getByRole('button', { name: '目标比例 2:3' }).disabled, false)
-  assert.equal(screen.getByRole('button', { name: /目标比例 4:1，图像模型 Gamma 不支持 4:1 比例/u }).disabled, true)
+  assert.equal(screen.queryByRole('button', { name: /目标比例 4:1，图像模型 Gamma 不支持 4:1 比例/u }), null)
 })
 
 
@@ -179,12 +179,12 @@ test('changing resolution clears an incompatible selected ratio in generation an
   await user.click(screen.getByRole('button', { name: '画面比例 4:1' }))
   await user.selectOptions(screen.getByLabelText('输出清晰度'), '1K')
   await waitFor(() => assert.equal(screen.getByRole('button', { name: '画面比例 自动' }).getAttribute('aria-pressed'), 'true'))
-  assert.equal(screen.getByRole('button', { name: /画面比例 4:1，/u }).disabled, true)
+  assert.equal(screen.queryByRole('button', { name: /画面比例 4:1，/u }), null)
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '精修图片' }))
   await user.selectOptions(screen.getByLabelText('清晰度'), '2K')
   await user.click(screen.getByRole('button', { name: '目标比例 2:3' }))
   await user.selectOptions(screen.getByLabelText('清晰度'), '1K')
   await waitFor(() => assert.equal(screen.getByRole('button', { name: '目标比例 自动' }).getAttribute('aria-pressed'), 'true'))
-  assert.equal(screen.getByRole('button', { name: /目标比例 2:3，/u }).disabled, true)
+  assert.equal(screen.queryByRole('button', { name: /目标比例 2:3，/u }), null)
 })

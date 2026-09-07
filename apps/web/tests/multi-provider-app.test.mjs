@@ -17,7 +17,7 @@ const registryV1 = {
       models: [
         { id: 'qwen3.8-max', label: 'Qwen Main', vendor: 'Alibaba Qwen', roles: ['main'], lifecycle: 'stable', selectable: true, recommended: true, capabilities: {} },
         { id: 'qwen3.7-plus', label: 'Qwen Vision', vendor: 'Alibaba Qwen', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'wan2.7-image-pro', label: 'Wan Image', vendor: 'Alibaba Wan', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'wan2.7-image-pro', label: 'Wan Image', vendor: 'Alibaba Wan', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
     openai: {
@@ -25,7 +25,7 @@ const registryV1 = {
       defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
       models: [
         { id: 'gpt-5.6-sol', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'gpt-image-2', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'gpt-image-2', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
     gemini: {
@@ -33,7 +33,7 @@ const registryV1 = {
       defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
       models: [
         { id: 'gemini-3.7-flash', label: 'Google Vision', vendor: 'Google', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'gemini-3.1-flash-image', label: 'Google Image', vendor: 'Google', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'gemini-3.1-flash-image', label: 'Google Image', vendor: 'Google', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
     ark: {
@@ -42,7 +42,7 @@ const registryV1 = {
       models: [
         { id: 'doubao-text', label: 'Doubao Main', vendor: 'ByteDance Doubao', roles: ['main'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, capabilities: {} },
         { id: 'doubao-vision', label: 'Doubao Vision', vendor: 'ByteDance Doubao', roles: ['vision'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: {} },
-        { id: 'doubao-image', label: 'Seedream Image', vendor: 'ByteDance Seedream', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
+        { id: 'doubao-image', label: 'Seedream Image', vendor: 'ByteDance Seedream', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
   },
@@ -145,7 +145,7 @@ for (const region of ['cn','global']) test('rendered MiniMax refine submits the 
       resultImages:[{filename:'result.png',candidateId:0,mimeType:'image/png',url:'/result.png',objectKey:`jobs/${jobId}/result.png`}],stages:[]}),
   })
   await user.click(screen.getByRole('button',{name:'打开完整设置'}))
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'),'fixture-bailian-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'),'fixture-bailian-key')
   await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
   await user.click(submitButton())
   await user.click(await screen.findByRole('button',{name:'精修候选图 1'},{timeout:5000}))
@@ -170,7 +170,7 @@ for (const region of ['cn','global']) test('rendered MiniMax refine submits the 
 test('generation settings drawer never steals focus after the user enters a credential field', async () => {
   const { user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  const keyInput = screen.getByLabelText('阿里百炼 接入密钥')
+  const keyInput = screen.getByLabelText('阿里云百炼 接入密钥')
   keyInput.focus()
   assert.equal(document.activeElement === keyInput, true)
   await new Promise((resolve) => setTimeout(resolve, 120))
@@ -183,10 +183,10 @@ test('simple mode uses one access channel default routes and sends only its reac
   const modeGroup = screen.getByRole('group', { name: '使用模式' })
   assert.equal(modeGroup.querySelector('button[aria-pressed="true"]')?.textContent.includes('普通模式'), true)
   const providerGroup = screen.getByRole('group', { name: 'API 接入渠道' })
-  assert.equal(providerGroup.querySelector('button[aria-pressed="true"]')?.textContent.includes('阿里百炼'), true)
+  assert.equal(providerGroup.querySelector('button[aria-pressed="true"]')?.textContent.includes('阿里云百炼'), true)
   assert.ok(screen.getByText('接入凭据'))
   await new Promise((resolve) => setTimeout(resolve, 100))
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-key')
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
   const body = requests.find((request) => request.body?.action === 'createJob').body
@@ -210,14 +210,14 @@ test('advanced mode selects mixed provider routes and deduplicates involved cred
 
   await user.click(screen.getByRole('button', { name: '主模型' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
-  await user.click(screen.getByRole('button', { name: /OpenAI Main/ }))
+  await user.click(screen.getByRole('button', { name: '选择 OpenAI Main' }))
   await user.click(screen.getByRole('button', { name: '参考图识别模型' }))
-  await user.click(screen.getByRole('button', { name: 'Google Gemini API' }))
-  await user.click(screen.getByRole('button', { name: /Google Vision/ }))
+  await user.click(screen.getByRole('button', { name: 'Google' }))
+  await user.click(screen.getByRole('button', { name: '选择 Google Vision' }))
 
   await user.type(screen.getByLabelText('OpenAI 接入密钥'), 'openai-key')
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
-  await user.type(screen.getByLabelText('Google Gemini API 接入密钥'), 'google-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-key')
+  await user.type(screen.getByLabelText('Google 接入密钥'), 'google-key')
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
   const body = requests.find((request) => request.body?.action === 'createJob').body
@@ -383,7 +383,7 @@ test('SVG generation rejects a disabled image route even though image execution 
   const { requests, user } = await renderReadyApp(invalidRegistry)
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-key')
   await user.click(submitButton())
 
   assert.equal(requests.some((request) => request.body?.action === 'createJob'), false)
@@ -394,7 +394,7 @@ test('legacy registry keeps simple fallback without explicit routes', async () =
   const legacyRegistry = { ...registryV1, routeContractVersion: 0, supportsModelRoutes: false }
   const { requests, user } = await renderReadyApp(legacyRegistry)
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'legacy-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'legacy-key')
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
   const body = requests.find((request) => request.body?.action === 'createJob').body
@@ -408,13 +408,13 @@ test('legacy registry keeps simple fallback without explicit routes', async () =
 test('refine tab independently shows route summary and opens shared settings focused on refine models and credentials', async () => {
   const { user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  assert.ok(await screen.findByText(/图像：阿里百炼 · Wan Image/))
-  assert.ok(screen.getByText(/视觉：阿里百炼 · Qwen Vision/))
+  assert.ok(await screen.findByText(/图像：阿里云百炼 · Wan Image/))
+  assert.ok(screen.getByText(/视觉：阿里云百炼 · Qwen Vision/))
   await user.click(screen.getByRole('button', { name: '精修设置' }))
   assert.ok(screen.getByRole('dialog', { name: /生成设置/ }))
   assert.ok(screen.getByRole('button', { name: /普通模式/ }).classList.contains('active'))
   assert.ok(screen.getByText('接入凭据'))
-  assert.ok(screen.getByLabelText('阿里百炼 接入密钥'))
+  assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'))
 })
 
 test('refine resolution choices use refine metadata while generation keeps its separate resolution metadata', async () => {
@@ -437,7 +437,7 @@ test('Gemini and Ark expose their declared 4K refine capability', async () => {
   const { user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '精修图片' }))
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
-  await user.click(screen.getByRole('button', { name: 'Google Gemini API' }))
+  await user.click(screen.getByRole('button', { name: 'Google' }))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   assert.deepEqual([...screen.getByLabelText('清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
 
@@ -477,14 +477,14 @@ test('switching from a 4K refine model to a 2K-only model normalizes before rend
     }),
   })
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(submitButton())
   await user.click(await screen.findByRole('button', { name: '精修候选图 1' }, { timeout: 5_000 }))
 
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
-  await user.click(screen.getByRole('button', { name: 'Google Gemini API' }))
-  await user.type(screen.getByLabelText('Google Gemini API 接入密钥'), 'gemini-key')
+  await user.click(screen.getByRole('button', { name: 'Google' }))
+  await user.type(screen.getByLabelText('Google 接入密钥'), 'gemini-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.selectOptions(screen.getByLabelText('清晰度'), '4K')
 

@@ -96,15 +96,15 @@ test('selected model notes are unique when one model fills main and vision roles
   assert.deepEqual(uniqueRegistryModels([shared, image, shared]), [shared, image])
 })
 
-test('recommended models sort first and searchable results stay grouped by vendor', () => {
+test('unknown release dates keep catalog order regardless of recommendation and vendor grouping stays canonical', () => {
   const models = [
     { id: 'xai/grok-image', label: 'Grok Image', vendor: 'xAI', roles: ['image'], selectable: true },
     { id: 'google/gemini-image', label: 'Gemini Image', vendor: 'Google', roles: ['image'], selectable: true, recommended: true },
     { id: 'openai/gpt-image', label: 'GPT Image', vendor: 'OpenAI', roles: ['image'], selectable: true, recommended: true },
   ]
   const visible = filterRegistryModels(models, { role: 'image', query: 'image', outputFormat: 'png' })
-  assert.deepEqual(visible.map((model) => model.id), ['google/gemini-image', 'openai/gpt-image', 'xai/grok-image'])
-  assert.deepEqual(groupRegistryModels(visible).map((group) => group.vendor), ['OpenAI', 'Google', 'xAI'])
+  assert.deepEqual(visible.map((model) => model.id), ['xai/grok-image', 'google/gemini-image', 'openai/gpt-image'])
+  assert.deepEqual(groupRegistryModels(visible).map((group) => group.vendor), ['OpenAI', 'Google', 'SpaceXAI'])
 })
 
 test('role and output format filters keep incompatible entries visible but disabled', () => {

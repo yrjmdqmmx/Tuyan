@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const model_presentation_1 = require("../../utils/model-presentation");
 const model_registry_store_1 = require("../../utils/model-registry-store");
 const provider_regions_1 = require("../../utils/provider-regions");
-const static_model_catalog_1 = require("../../utils/static-model-catalog");
 const aspect_ratios_1 = require("../../utils/aspect-ratios");
 const api_1 = require("../../utils/api");
 const ark_verification_1 = require("../../utils/ark-verification");
@@ -10,17 +10,7 @@ const constants_1 = require("../../utils/constants");
 const model_registry_1 = require("../../utils/model-registry");
 const model_routing_1 = require("../../utils/model-routing");
 const reference_library_1 = require("../../utils/reference-library");
-const PROVIDER_LABELS = {
-    ...Object.fromEntries(Object.entries(static_model_catalog_1.EXTENDED_MODEL_CHANNELS).map(([id, channel]) => [id, channel.label])),
-    deepseek: "DeepSeek",
-    kimi: "Kimi（月之暗面）",
-    zhipu: "智谱 GLM",
-    siliconflow: "硅基流动 SiliconFlow",
-    anthropic: "Anthropic Claude",
-    recraft: "Recraft",
-    xai: "xAI",
-    gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
-};
+const PROVIDER_LABELS = model_presentation_1.MODEL_CHANNEL_LABELS;
 Component({
     options: { styleIsolation: 'apply-shared', multipleSlots: true },
     properties: {

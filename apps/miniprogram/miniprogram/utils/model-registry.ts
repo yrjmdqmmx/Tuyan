@@ -1,3 +1,4 @@
+import { presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
 export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
@@ -20,7 +21,13 @@ export interface RegistryModel {
   outputModalities: string[]
   protocol: string
   availabilityNotes: string
-  releasedAt: string
+  releasedAt: string | null
+  vendorId?: string
+  serviceTier?: string
+  releaseFamily?: string
+  releaseOrder?: number
+  releaseSourceUrl?: string
+  releaseOrderSourceUrl?: string
   expirationDate?: string
   expirationAt?: string
   earliestRetirementDate?: string
@@ -77,7 +84,7 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   const defaultsSource = asRecord(source.defaults)
   const modelsSource = Array.isArray(source.models) ? source.models : []
   if (!modelsSource.length) throw new Error(`${providerId} 模型目录为空。`)
-  const models = modelsSource.map(normalizeModel)
+  const models = sortModelsNewestFirst(modelsSource.map((model) => presentRegistryModel(providerId, normalizeModel(model))))
   const uniqueIds = new Set(models.map((model) => model.id))
   if (uniqueIds.size !== models.length) throw new Error(`${providerId} 模型目录包含重复 ID。`)
 
@@ -132,6 +139,12 @@ function normalizeModel(input: unknown): RegistryModel {
     protocol: stringValue(source.protocol),
     availabilityNotes: stringValue(source.availabilityNotes),
     releasedAt: validReleasedAt(source.releasedAt),
+    vendorId: stringValue(source.vendorId),
+    serviceTier: stringValue(source.serviceTier),
+    releaseFamily: stringValue(source.releaseFamily),
+    releaseOrder: numberValue(source.releaseOrder),
+    releaseSourceUrl: stringValue(source.releaseSourceUrl),
+    releaseOrderSourceUrl: stringValue(source.releaseOrderSourceUrl),
     expirationDate: validReleasedAt(source.expirationDate),
     expirationAt: typeof source.expirationAt === 'string' && Number.isFinite(Date.parse(source.expirationAt)) ? source.expirationAt : '',
     earliestRetirementDate: validReleasedAt(source.earliestRetirementDate),
@@ -178,9 +191,9 @@ export function partitionRegistryModels(
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))
     .filter((model) => !query || modelSearchValues(model).some((value) => value.toLocaleLowerCase('zh-CN').includes(query)))
     .map((model) => annotateModel(model, options.role, stringValue(options.outputFormat)))
-    .sort(compareModels)
+
   return {
-    compatible: annotated.filter((model) => !model.selectionDisabled),
+    compatible: sortModelsNewestFirst(annotated.filter((model) => !model.selectionDisabled)),
     incompatible: annotated.filter((model) => Boolean(model.selectionDisabled)),
   }
 }
@@ -188,13 +201,14 @@ export function partitionRegistryModels(
 export function groupRegistryModels(models: RegistryModel[]): Array<{ vendor: string; models: RegistryModel[] }> {
   const groups = new Map<string, RegistryModel[]>()
   for (const model of models) {
-    const current = groups.get(model.vendor) || []
+    const vendor = modelDeveloper('', model).label
+    const current = groups.get(vendor) || []
     current.push(model)
-    groups.set(model.vendor, current)
+    groups.set(vendor, current)
   }
   return [...groups.entries()]
     .sort(([left], [right]) => vendorIndex(left) - vendorIndex(right) || left.localeCompare(right, 'zh-CN'))
-    .map(([vendor, vendorModels]) => ({ vendor, models: vendorModels.sort(compareReleasedAt) }))
+    .map(([vendor, vendorModels]) => ({ vendor, models: sortModelsNewestFirst(vendorModels) }))
 }
 
 export function findRegistryModel(registry: ModelRegistry | null, provider: string, modelId: string): RegistryModel | null {
@@ -221,23 +235,10 @@ function modelSearchValues(model: RegistryModel): string[] {
   return [model.id, model.label, model.vendor, model.protocol, model.availabilityNotes, model.disabledReason, ...model.roles]
 }
 
-const VENDOR_ORDER = ['OpenAI', 'Google', 'Anthropic', 'Alibaba Qwen', 'Alibaba Wan', 'ByteDance Doubao', 'ByteDance Seedream']
+const VENDOR_ORDER = ['OpenAI', 'Google', 'Anthropic', '阿里巴巴', '深度求索', '智谱', '字节跳动', 'SpaceXAI']
 function vendorIndex(vendor: string): number {
   const index = VENDOR_ORDER.indexOf(vendor)
   return index < 0 ? 999 : index
-}
-
-function compareModels(left: RegistryModel, right: RegistryModel): number {
-  return vendorIndex(left.vendor) - vendorIndex(right.vendor)
-    || left.vendor.localeCompare(right.vendor, 'zh-CN')
-    || compareReleasedAt(left, right)
-}
-
-function compareReleasedAt(left: RegistryModel, right: RegistryModel): number {
-  if (left.releasedAt && right.releasedAt) return right.releasedAt.localeCompare(left.releasedAt)
-  if (left.releasedAt) return -1
-  if (right.releasedAt) return 1
-  return 0
 }
 
 function validReleasedAt(value: unknown): string {

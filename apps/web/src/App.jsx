@@ -1,3 +1,4 @@
+import { presentRegistryModel, sortModelsNewestFirst } from './lib/modelPresentation'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -370,7 +371,7 @@ export default function App() {
     modelRegistryRequest(apiBaseNormalized, health)
       .then((registry) => {
         if (cancelled) return;
-        setModelRegistry(registry);
+        setModelRegistry({ ...registry, providers: Object.fromEntries(Object.entries(registry.providers || {}).map(([id, entry]) => [id, { ...entry, models: sortModelsNewestFirst(entry.models.map((model) => presentRegistryModel(id, model))) }])) });
         const unavailable = Object.values(registry.unavailableProviders || {}).filter(Boolean);
         setModelRegistryError(unavailable.join('；'));
       })
@@ -413,11 +414,13 @@ export default function App() {
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, imageSize, activeImageRegistryEntry]);
 
   useEffect(() => {
+    if (!activeImageRegistryEntry) return;
     const normalized = normalizeSelectedAspectRatio(aspectRatio, generationAspectRatioOptions);
     if (normalized !== aspectRatio) setAspectRatio(normalized);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, aspectRatio, imageSize]);
 
   useEffect(() => {
+    if (!activeImageRegistryEntry) return;
     const normalized = normalizeSelectedAspectRatio(refineAspectRatio, refineAspectRatioOptions);
     if (normalized !== refineAspectRatio) setRefineAspectRatio(normalized);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, refineAspectRatio, refineImageSize]);
@@ -1008,6 +1011,7 @@ export default function App() {
       setError('当前型号仅支持图像编辑，请在精修中使用或更换生图模型。');
       return;
     }
+    if (createRouteRoles.includes('image') && !generationAspectRatioOptions.some((option) => option.value === aspectRatio)) { setError('当前比例或清晰度不可用，请重新选择图像设置。'); setShowGenerationSettings(true); return; }
     const canMock = isAdvancedMode && mock && health?.mock_enabled;
     const missingSetting = firstMissingGenerationSetting({
       missingCredentialProviders: canMock ? [] : missingCredentialProviders,
@@ -1228,6 +1232,7 @@ export default function App() {
   async function submitRefine(event) {
     event.preventDefault();
     setRefineError('');
+    if (!refineAspectRatioOptions.some((option) => option.value === refineAspectRatio)) { setRefineError('当前精修比例不可用，请重新选择。'); return; }
     if (!refineResolutionOptions.length) {
       setRefineError('当前图像模型未声明可执行的精修清晰度，请更换模型后重试。');
       return;

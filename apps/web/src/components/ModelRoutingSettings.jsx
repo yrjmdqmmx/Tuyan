@@ -1,3 +1,4 @@
+import { MODEL_CHANNEL_LABELS } from '../lib/modelPresentation'
 import { MINIMAX_REGIONS, minimaxRegion } from '../lib/providerRegions'
 import { KeyRound, Loader2, Settings2, ShieldCheck, Sparkles } from 'lucide-react'
 import ApiKeyGuide from './ApiKeyGuide'
@@ -5,7 +6,7 @@ import ModelPicker from './ModelPicker'
 import { arkVerificationKey, providerDefaultRoutes } from '../lib/modelRouting'
 
 function providerLabel(provider, providerConfigs) {
-  if (provider === 'gemini') return 'Google Gemini API'
+  if (MODEL_CHANNEL_LABELS[provider]) return MODEL_CHANNEL_LABELS[provider]
   return providerConfigs[provider]?.label || provider
 }
 

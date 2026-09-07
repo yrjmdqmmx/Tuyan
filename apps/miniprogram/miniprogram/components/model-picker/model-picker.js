@@ -1,20 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const model_presentation_1 = require("../../utils/model-presentation");
 const model_registry_store_1 = require("../../utils/model-registry-store");
 const provider_regions_1 = require("../../utils/provider-regions");
-const static_model_catalog_1 = require("../../utils/static-model-catalog");
 const model_registry_1 = require("../../utils/model-registry");
-const PROVIDER_LABELS = {
-    ...Object.fromEntries(Object.entries(static_model_catalog_1.EXTENDED_MODEL_CHANNELS).map(([id, channel]) => [id, channel.label])),
-    deepseek: "DeepSeek",
-    kimi: "Kimi（月之暗面）",
-    zhipu: "智谱 GLM",
-    siliconflow: "硅基流动 SiliconFlow",
-    anthropic: "Anthropic Claude",
-    recraft: "Recraft",
-    xai: "xAI",
-    gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
-};
+const PROVIDER_LABELS = model_presentation_1.MODEL_CHANNEL_LABELS;
 const MODEL_PAGE_SIZE = 30;
 Component({
     options: { styleIsolation: 'apply-shared' },
@@ -41,9 +31,10 @@ Component({
         activeVendor: '',
         activeProviderIsAggregator: false,
         query: '',
-        catalogMode: 'recommended',
+        catalogMode: 'all',
         visibleLimit: MODEL_PAGE_SIZE,
         hasMore: false,
+        expandedModel: '',
     },
     methods: {
         noop() { },
@@ -67,7 +58,7 @@ Component({
             }).filter((item) => item.count > 0);
             this.setData({
                 step: 'providers', roleLabel: roleLabel(role), providerCards, vendorCards: [], compatibleCount: 0, visibleCompatibleModels: [],
-                activeProvider: '', activeProviderLabel: '', activeVendor: '', activeProviderIsAggregator: false, query: '', catalogMode: 'recommended', visibleLimit: MODEL_PAGE_SIZE,
+                activeProvider: '', activeProviderLabel: '', activeVendor: '', activeProviderIsAggregator: false, query: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE,
             });
         },
         selectProvider(event) {
@@ -87,11 +78,9 @@ Component({
             const isAggregator = provider.accessKind === 'aggregator';
             this.setData({
                 activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,
-                activeProviderIsAggregator: isAggregator, activeVendor: '', vendorCards, query: '', catalogMode: 'recommended',
-                visibleLimit: MODEL_PAGE_SIZE, step: isAggregator ? 'vendors' : 'models',
+                activeProviderIsAggregator: isAggregator, activeVendor: '', vendorCards, query: '', catalogMode: 'all',
+                visibleLimit: MODEL_PAGE_SIZE, step: 'vendors',
             });
-            if (!isAggregator)
-                this.refreshModelLists();
         },
         selectVendor(event) {
             const vendor = String(event.currentTarget.dataset.vendor || '');
@@ -102,7 +91,7 @@ Component({
         },
         backStep() {
             if (this.data.step === 'models') {
-                this.setData({ step: this.data.activeProviderIsAggregator ? 'vendors' : 'providers', query: '' });
+                this.setData({ step: 'vendors', query: '' });
                 return;
             }
             if (this.data.step === 'vendors')
@@ -118,7 +107,7 @@ Component({
             const role = normalizeRole(this.properties.role);
             const options = { role, query: this.data.query, outputFormat: String(this.properties.outputFormat || ''), recommendedOnly: providerId === 'openrouter' && this.data.catalogMode === 'recommended' };
             let partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], options);
-            const inVendor = (model) => !this.data.activeProviderIsAggregator || model.vendor === this.data.activeVendor;
+            const inVendor = (model) => (0, model_presentation_1.modelDeveloper)(providerId, model).label === this.data.activeVendor;
             if (options.recommendedOnly && !partition.compatible.some(inVendor)) {
                 partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { ...options, recommendedOnly: false });
                 this.setData({ catalogMode: 'all' });
@@ -145,16 +134,21 @@ Component({
                 return;
             this.triggerEvent('select', { provider: this.data.activeProvider, modelId: String(event.currentTarget.dataset.model || '') });
         },
+        copyId(event) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }); },
+        toggleDetails(event) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }); },
         close() { this.triggerEvent('close'); },
     },
 });
 function normalizeRole(value) { return value === 'image' || value === 'vision' ? value : 'main'; }
 function roleLabel(role) { return role === 'image' ? '图像生成模型' : role === 'vision' ? '参考图识别模型' : '主模型'; }
 function presentModel(model, selectedProvider, selectedModel, providerId) {
-    var _a;
+    var _a, _b, _c;
     return {
         id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
         availabilityNotes: [model.availabilityNotes, ((_a = model.capabilities) === null || _a === void 0 ? void 0 : _a.requiresSourceImage) ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
+        serviceTier: model.serviceTier || '',
+        capabilityText: [model.roles.includes('main') ? '文本' : '', model.roles.includes('vision') ? '视觉理解' : '', model.roles.includes('image') && !((_b = model.capabilities) === null || _b === void 0 ? void 0 : _b.requiresSourceImage) ? '生图' : '', ((_c = model.capabilities) === null || _c === void 0 ? void 0 : _c.imageEditMode) === 'direct-edit' ? '编辑' : ''].filter(Boolean).join(' · '),
+        releaseText: model.releasedAt || (model.releaseOrder ? '按官方版本排序' : '发布日期待确认'),
         lifecycleText: model.lifecycle === 'stable' ? '稳定版' : model.lifecycle === 'preview' ? '预览版' : model.lifecycle === 'legacy' ? '旧版维护' : '状态未知',
         verificationText: model.verificationState === 'inference-verified' ? '账号已验证' : model.verificationState === 'catalog' ? '官方目录' : model.verified ? '注册表验证' : '模型目录',
         selected: String(selectedProvider || '') === providerId && String(selectedModel || '') === model.id,

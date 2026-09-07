@@ -81,7 +81,7 @@ async function renderReady(registry = capableRegistry, options = {}) {
 
 async function enterMainKey(user, value = ' single-main-key ') {
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), value)
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), value)
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 }
 
@@ -178,7 +178,7 @@ test('invalid main route and missing main key open settings at the right focus t
   drawer = screen.getByRole('dialog', { name: /生成设置/u })
   assert.equal(drawer.getAttribute('data-focus-target'), 'api-key')
   await new Promise((resolve) => setTimeout(resolve, 50))
-  assert.equal(document.activeElement, screen.getByLabelText('阿里百炼 接入密钥'))
+  assert.equal(document.activeElement, screen.getByLabelText('阿里云百炼 接入密钥'))
   assert.match(screen.getByRole('alert').textContent, /密钥/u)
 })
 
@@ -194,7 +194,7 @@ test('advanced vanilla optimization reveals and focuses its otherwise unreachabl
   const openAiKey = screen.getByLabelText('OpenAI 接入密钥')
   await new Promise((resolve) => setTimeout(resolve, 50))
   assert.equal(document.activeElement, openAiKey)
-  assert.ok(screen.getByLabelText('阿里百炼 接入密钥'), 'generation image key remains available')
+  assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'), 'generation image key remains available')
 })
 
 test('closing settings clears the temporary optimization credential provider', async () => {
@@ -206,7 +206,7 @@ test('closing settings clears the temporary optimization credential provider', a
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   assert.equal(screen.queryByLabelText('OpenAI 接入密钥'), null)
-  assert.ok(screen.getByLabelText('阿里百炼 接入密钥'))
+  assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'))
 })
 
 test('temporary optimization credentials never expand vanilla generation key scope', async () => {
@@ -214,7 +214,7 @@ test('temporary optimization credentials never expand vanilla generation key sco
   await configureAdvancedVanillaOpenAiMain(user)
   fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
   await user.type(screen.getByLabelText('OpenAI 接入密钥'), 'openai-optimization-key')
-  await user.type(screen.getByLabelText('阿里百炼 接入密钥'), 'bailian-image-key')
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-image-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 
   const submit = screen.getAllByRole('button', { name: '生成候选图' }).find((button) => button.type === 'submit')
@@ -232,10 +232,10 @@ test('changing the main route clears the temporary optimization credential provi
   assert.ok(screen.getByLabelText('OpenAI 接入密钥'))
 
   await user.click(screen.getByRole('button', { name: '主模型' }))
-  await user.click(screen.getByRole('button', { name: '阿里百炼' }))
-  await user.click(screen.getByRole('button', { name: /^主模型main/u }))
+  await user.click(screen.getByRole('button', { name: '阿里云百炼' }))
+  await user.click(screen.getByRole('button', { name: /^选择 主模型/u }))
   await waitFor(() => assert.equal(screen.queryByLabelText('OpenAI 接入密钥'), null))
-  assert.ok(screen.getByLabelText('阿里百炼 接入密钥'))
+  assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'))
 })
 
 test('a valid click sends only the three-input snapshot, selected main route, and its single trimmed key', async () => {

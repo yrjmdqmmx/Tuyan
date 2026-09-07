@@ -1,3 +1,4 @@
+import { modelDeveloper, sortModelsNewestFirst } from './modelPresentation.js'
 export function mergeProviderRegistry(fallback, registry) {
   if (!registry?.defaults || !Array.isArray(registry.models)) return fallback
 
@@ -30,20 +31,19 @@ export function mergeProviderRegistry(fallback, registry) {
   }
 }
 
-const VENDOR_ORDER = ['OpenAI', 'Google', 'Anthropic', 'Alibaba Qwen', 'Alibaba Wan', 'Qwen', 'DeepSeek', 'xAI']
+const VENDOR_ORDER = ['OpenAI', 'Google', 'Anthropic', '阿里巴巴', '深度求索', '智谱', '字节跳动', 'SpaceXAI']
 
 export function filterRegistryModels(models, { role, query = '', outputFormat = '', recommendedOnly = false } = {}) {
   const needle = query.trim().toLocaleLowerCase('zh-CN')
-  return (models || [])
+  return sortModelsNewestFirst((models || [])
     .filter((model) => model?.roles?.includes(role)
       || (role === 'image' && (model?.outputModalities?.includes('image') || model?.protocol === 'openrouter-images')))
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || registryModelSearchValues(model)
       .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
-    .map((model) => annotateModelForRole(model, { role, outputFormat }))
+    .map((model) => annotateModelForRole(model, { role, outputFormat })))
     .sort((left, right) => Number(left.selectionDisabled) - Number(right.selectionDisabled)
-      || Number(left.selectable === false) - Number(right.selectable === false)
-      || compareRegistryModels(left, right))
+      || Number(left.selectable === false) - Number(right.selectable === false))
 }
 
 export function partitionRegistryModels(models, { role, query = '', outputFormat = '', recommendedOnly = false } = {}) {
@@ -56,9 +56,9 @@ export function partitionRegistryModels(models, { role, query = '', outputFormat
     .filter((model) => !needle || registryModelSearchValues(model)
       .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
     .map((model) => annotateModelForRole(model, { role, outputFormat }))
-    .sort(compareRegistryModels)
+
   return {
-    compatible: annotated.filter((model) => !model.selectionDisabled),
+    compatible: sortModelsNewestFirst(annotated.filter((model) => !model.selectionDisabled)),
     incompatible: annotated.filter((model) => model.selectionDisabled),
   }
 }
@@ -100,29 +100,10 @@ function annotateModelForRole(model, { role, outputFormat }) {
   }
 }
 
-function compareRegistryModels(left, right) {
-  const vendorOrder = String(left.vendor || '').localeCompare(String(right.vendor || ''), 'en')
-  if (vendorOrder) return vendorOrder
-  return compareReleasedAt(left, right)
-}
-
-function compareReleasedAt(left, right) {
-  const leftReleased = validReleasedAt(left.releasedAt)
-  const rightReleased = validReleasedAt(right.releasedAt)
-  if (leftReleased && rightReleased) return rightReleased.localeCompare(leftReleased)
-  if (leftReleased) return -1
-  if (rightReleased) return 1
-  return 0
-}
-
-function validReleasedAt(value) {
-  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : ''
-}
-
 export function groupRegistryModels(models) {
   const groups = new Map()
   for (const model of models || []) {
-    const vendor = model.vendor || '其他'
+    const vendor = modelDeveloper('', model).label
     if (!groups.has(vendor)) groups.set(vendor, [])
     groups.get(vendor).push(model)
   }
@@ -133,7 +114,7 @@ export function groupRegistryModels(models) {
       if (leftIndex >= 0 || rightIndex >= 0) return (leftIndex < 0 ? 999 : leftIndex) - (rightIndex < 0 ? 999 : rightIndex)
       return left.localeCompare(right, 'zh-CN')
     })
-    .map(([vendor, vendorModels]) => ({ vendor, models: [...vendorModels].sort(compareReleasedAt) }))
+    .map(([vendor, vendorModels]) => ({ vendor, models: sortModelsNewestFirst(vendorModels) }))
 }
 
 export function modelRefinePresentation(model) {

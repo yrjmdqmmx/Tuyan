@@ -2,6 +2,7 @@ import { useRef } from 'react'
 
 export default function AspectRatioPicker({ label, value, options, onChange, compact = false }) {
   const buttonRefs = useRef([])
+  options = options.filter((option) => !option.disabled)
 
   function moveFocus(index, direction) {
     const enabled = options
@@ -16,6 +17,7 @@ export default function AspectRatioPicker({ label, value, options, onChange, com
   return (
     <fieldset className={`aspect-ratio-picker${compact ? ' compact' : ''}`}>
       <legend>{label}</legend>
+      {!options.length ? <p className="model-picker-empty">当前模型没有可用比例，请检查型号与清晰度。</p> : null}
       <div className="aspect-ratio-options" role="group" aria-label={label}>
         {options.map((option, index) => {
           const ariaLabel = option.disabled

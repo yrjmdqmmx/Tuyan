@@ -9,13 +9,13 @@ const {
 
 assert.deepEqual(CANONICAL_ASPECT_RATIOS, ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20', '1:3', '3:1', '5:8', '8:5', '9:22', '22:9', '9:23', '23:9', '3:8', '8:3', '5:12', '12:5', '10:16', '16:10', '2.35:1', '7:5', '5:7', '3:5', '5:3'])
 const declared = buildAspectRatioOptions({ capabilities: { aspectRatios: ['1:1', '16:9'] }, capabilityField: 'aspectRatios', modelLabel: 'Image X' })
-assert.equal(declared.length, 46)
+assert.equal(declared.length, 3)
 assert.deepEqual(declared.filter((item) => !item.disabled).map((item) => item.value), ['auto', '1:1', '16:9'])
-assert.match(declared.find((item) => item.value === '4:1').reason, /Image X/)
+assert.equal(declared.find((item) => item.value === '4:1'), undefined)
 
 const missing = buildAspectRatioOptions({ capabilities: {}, capabilityField: 'aspectRatios', modelLabel: '未知模型' })
-assert.deepEqual(missing.filter((item) => !item.disabled).map((item) => item.value), ['auto'])
-assert.equal(normalizeSelectedAspectRatio('4:1', missing), 'auto')
+assert.deepEqual(missing.filter((item) => !item.disabled).map((item) => item.value), [])
+assert.equal(normalizeSelectedAspectRatio('4:1', missing), '')
 
 const capabilities = {
   resolutions: ['1K', '2K'], refineResolutions: ['4K'],

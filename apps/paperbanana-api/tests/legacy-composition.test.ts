@@ -1608,14 +1608,13 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   }
 
   const openaiOrdered = openai.providers.openai.models
-  assert.deepEqual(openaiOrdered.slice(0, 3).map((model: any) => [model.id, model.releasedAt]), [
+  assert.deepEqual(openaiOrdered.slice(0, 4).map((model: any) => [model.id, model.releasedAt]), [
+    ['gpt-6-astra', '2026-09-03'],
     ['gpt-5.6-sol', '2026-07-09'],
     ['gpt-5.6-terra', '2026-07-09'],
     ['gpt-5.6-luna', '2026-07-09'],
   ])
-  const firstUnknownOpenAiRelease = openaiOrdered.findIndex((model: any) => model.releasedAt === null)
-  assert.ok(firstUnknownOpenAiRelease >= 3)
-  assert.equal(openaiOrdered.slice(firstUnknownOpenAiRelease).every((model: any) => model.releasedAt === null), true)
+  assert.equal(openaiOrdered[0].releaseOrder > openaiOrdered[1].releaseOrder, true)
 
   const ark = await legacy.default(context({ action: 'modelRegistry', provider: 'ark' }))
   assert.equal(ark.code, 0)
@@ -1628,7 +1627,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     vision: 'doubao-seed-2-1-pro-260628',
   })
   const arkModels = new Map<string, any>(ark.providers.ark.models.map((model: any) => [model.id, model]))
-  assert.deepEqual([...arkModels.keys()], [
+  assert.deepEqual(new Set(arkModels.keys()), new Set([
     'doubao-seed-2-1-pro-260628',
     'doubao-seed-2-1-turbo-260628',
     'doubao-seed-evolving',
@@ -1658,7 +1657,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     'doubao-1-5-lite-32k-250115',
     'glm-4-7-251222',
     'doubao-1-5-vision-pro-32k-250115',
-  ])
+  ]))
   assert.deepEqual(arkModels.get('doubao-seed-2-1-pro-260628')?.roles, ['main', 'vision'])
   assert.equal(arkModels.get('doubao-seed-2-1-pro-260628')?.recommended, true)
   assert.equal(arkModels.get('doubao-seed-evolving')?.lifecycle, 'unknown')
@@ -1724,7 +1723,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-07.v14')
+    assert.equal(result.registryVersion, '2026-09-07.v15')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2886,7 +2885,7 @@ test('OpenRouter refinement execution rejects resolution catalog drift instead o
   }
 })
 
-test('OpenRouter recommendations sort first without hiding the complete compatible catalog', async () => {
+test('OpenRouter official releases sort first without promoting recommendation badges', async () => {
   const legacy = await loadLegacy()
   const textModels = [
     { id: 'vendor/zeta', name: 'Aardvark', architecture: { input_modalities: ['text'], output_modalities: ['text'] } },
@@ -2917,12 +2916,12 @@ test('OpenRouter recommendations sort first without hiding the complete compatib
       response: { setHeader() {}, status() {} },
     })
     assert.deepEqual(registry.providers.openrouter.models.map((model: any) => model.id), [
-      'openai/gpt-5.6-sol', 'sourceful/riverflow-v2.5-pro', 'google/gemini-3.7-flash', 'vendor/alpha', 'vendor/zeta',
+      'google/gemini-3.7-flash', 'openai/gpt-5.6-sol', 'vendor/zeta', 'vendor/alpha', 'sourceful/riverflow-v2.5-pro',
     ])
     assert.equal(registry.providers.openrouter.models.length, 5)
     assert.equal(registry.providers.openrouter.models[0].recommended, true)
     assert.equal(registry.providers.openrouter.models[1].recommended, true)
-    assert.equal(registry.providers.openrouter.models[2].recommended, true)
+    assert.equal(registry.providers.openrouter.models[4].recommended, true)
     assert.deepEqual(registry.providers.openrouter.defaults, {
       main: 'openai/gpt-5.6-sol',
       image: 'sourceful/riverflow-v2.5-pro',
@@ -2932,7 +2931,7 @@ test('OpenRouter recommendations sort first without hiding the complete compatib
     assert.equal(registry.providers.openrouter.routeContractVersion, 1)
     assert.equal(registry.providers.openrouter.accountCatalogRequired, false)
     for (const model of registry.providers.openrouter.models) {
-      assert.equal(model.releasedAt, null, `${model.id} must not reuse OpenRouter created as a vendor release date`)
+      assert.equal(model.releasedAt, model.id === 'google/gemini-3.7-flash' ? '2026-08-13' : null, `${model.id} uses an official release source, never OpenRouter created`)
       assert.match(model.officialSourceUrl, /^https:\/\//)
     }
   } finally {
@@ -2974,7 +2973,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-07.v14')
+    assert.equal(registry.registryVersion, '2026-09-07.v15')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5209,7 +5208,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-07.v14')
+    assert.equal(registry.registryVersion, '2026-09-07.v15')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
