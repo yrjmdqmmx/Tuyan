@@ -1,9 +1,9 @@
 {
   "catalogVersion": "2026-09-07.v14",
-  "recordedAt": "2026-09-07T13:17:56.122468+00:00",
+  "recordedAt": "2026-09-07T13:38:13.055668+00:00",
   "branch": "codex/model-capabilities-20260907",
   "baseCommit": "800c91fc7e1d23588771bfb2703ad25a006c6e21",
-  "implementationState": "PR #170 pushed; review corrections locally verified and awaiting updated CI; production not deployed",
+  "implementationState": "PR #170 merged; Core/Web/SG deployed and verified at b4bbc0f1473479044509ed25416ad927a1546739; Mini Program upload paused",
   "checks": {
     "coreFull": {
       "command": "pnpm --filter @paperbanana/paperbanana-api test",
@@ -91,7 +91,7 @@
       "logSha256": "0fd6f979bfcf855b29736973cfd0a5b2e2b16ec116931bc2c95200ecaf1589c7"
     }
   },
-  "deploymentNote": "Both old host-list documentation assertions found in the two full runs are corrected. Affected HK/SG contract files passed 47/47 afterward. No full 331-test rerun after that correction is claimed.",
+  "deploymentNote": "Full Linux CI passed on corrected PR head (34126665327 / 34126661308) and exact merge SHA (34127102588); earlier local host-list assertion failure is historical.",
   "coverage": {
     "legalImageSizeSelections": 15502,
     "extendedBackendImageDispatches": 7345,
@@ -159,13 +159,15 @@
   "release": {
     "pushed": true,
     "ciTriggered": true,
-    "coreDeployed": false,
-    "webDeployed": false,
-    "sgAclApplied": false,
+    "coreDeployed": true,
+    "webDeployed": true,
+    "sgAclApplied": true,
     "miniUploaded": false,
     "miniPublished": false,
     "paidInference": false,
-    "accountEntitlementsVerified": false
+    "accountEntitlementsVerified": false,
+    "deploymentSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+    "evidence": "../releases/2026-09-07-model-catalog-v14-evidence.json"
   },
   "knownLimits": [
     "Official documents and public schemas do not prove account entitlement or regional network access.",
@@ -175,7 +177,7 @@
     "Mini Program upload remains paused."
   ],
   "sourceFileSha256": {
-    "SYNC.md": "0713723e394c4965c62774cc40635725defc70207c1f28c97464163c9c9e2aa8",
+    "SYNC.md": "ffbcdfa807d9f234f1a56e9acfe21f3df442269958a855eacd67772740350640",
     "apps/laf-functions/paperbanana-api.ts": "8fd3814de380ec6a3b6e771c259c9289e29719be3761a3080154fe1dde03be71",
     "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.js": "01251cf266aa15a1a431faae37921324d2b6de95333f084434d57f2f8c4c2928",
     "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.ts": "8a07628a6388c6b912b8ea9f9dd65fbb6ce9a833b12589d5ba4f8b223f67d960",
@@ -269,5 +271,6 @@
     ],
     "officialFalSdk": "https://github.com/fal-ai/fal-js/blob/main/libs/client/src/queue.ts",
     "officialFalEndpointParsing": "https://github.com/fal-ai/fal-js/blob/main/libs/client/src/utils.ts"
-  }
+  },
+  "sourceHashCommit": "b4bbc0f1473479044509ed25416ad927a1546739"
 }
