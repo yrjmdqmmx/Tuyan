@@ -62,7 +62,7 @@ Auth 的 user/account/session、一次性邮箱验证令牌、按 userId 保存�
 - Gateway 语法检查、Core TypeScript/服务端构建、Web 生产构建、小程序 TypeScript/JS 构建通过。
 - Mongo 8 实际 Better Auth/Core/Gateway 生命周期集成通过；Mongo 8 受限 API/Worker 角色集成通过，私人投稿允许删除，评测/发布数据删除仍拒绝。
 - Web 保留现有大 chunk 构建提示；未发起外部模型调用或真实邮件。
-- 以上为本地结果；远端 CI 尚未运行，未部署。历史资料可恢复性、旧账号处置及 OSS 超长在途 PUT 边界仍是发布/数据处置的独立事项。
+- 以上为本地结果；合并前与合并版本 CI 均通过，Core/Gateway/Web 已上线，授权的原身份已恢复，详见 [发布记录](releases/2026-09-07-account-lifecycle-v3.md)。缺失图片可恢复性、另一历史账号处置及 OSS 超长在途 PUT 边界仍是独立事项。
 
 
 ## 保留原身份的恢复操作
