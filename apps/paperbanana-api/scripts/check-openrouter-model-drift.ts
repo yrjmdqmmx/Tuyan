@@ -22,6 +22,7 @@ export const openRouterNormalizedImageProfileIds = [
   'microsoft/mai-image-2.5',
   'microsoft/mai-image-2.5-pro',
   'microsoft/mai-image-2.6',
+  'microsoft/mai-image-2.6-flash',
   'openai/gpt-5-image',
   'openai/gpt-5-image-mini',
   'openai/gpt-5.4-image-2',
@@ -62,6 +63,7 @@ export function hasExplicitPngOrSvgOutputFormat(model: CatalogModel) {
 }
 
 export function isRuntimeSelectableImageModel(model: CatalogModel) {
+  if (typeof model !== 'string' && Number(model?.supported_parameters?.input_references?.min) > 0) return false
   const id = catalogModelId(model)
   return hasExplicitPngOrSvgOutputFormat(model) || openRouterNormalizedImageProfiles.has(id)
 }

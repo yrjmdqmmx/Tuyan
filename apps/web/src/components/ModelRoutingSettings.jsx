@@ -1,7 +1,7 @@
 import { KeyRound, Loader2, Settings2, ShieldCheck, Sparkles } from 'lucide-react'
 import ApiKeyGuide from './ApiKeyGuide'
 import ModelPicker from './ModelPicker'
-import { arkVerificationKey } from '../lib/modelRouting'
+import { arkVerificationKey, providerDefaultRoutes } from '../lib/modelRouting'
 
 function providerLabel(provider, providerConfigs) {
   if (provider === 'gemini') return 'Google Gemini API'
@@ -61,9 +61,10 @@ export default function ModelRoutingSettings({
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>API 接入渠道</span>
+          <small>更多渠道可在专业模式中分别选择主模型、图像模型和识别模型。</small>
           <div data-focus-setting="main-model" tabIndex={-1}>
             <div className="segmented provider-segmented" role="group" aria-label="API 接入渠道">
-              {Object.entries(providerConfigs).map(([id]) => (
+              {Object.entries(providerConfigs).filter(([id]) => providerDefaultRoutes(id, modelRegistry, providerConfigs)).map(([id]) => (
                 <button
                   type="button"
                   key={id}

@@ -158,7 +158,7 @@ test('model capability changes normalize an unsupported fixed ratio to auto', as
 test('refine panel renders all ratios and consumes refineAspectRatios truthfully', async () => {
   const { user } = await renderReady()
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  assert.equal((await screen.findAllByRole('button', { name: /^目标比例 /u })).length, 11)
+  assert.equal((await screen.findAllByRole('button', { name: /^目标比例 /u })).length, 27)
   assert.equal(screen.getByRole('button', { name: '目标比例 2:3' }).disabled, false)
   assert.equal(screen.getByRole('button', { name: /目标比例 4:1，图像模型 Gamma 不支持 4:1 比例/u }).disabled, true)
 })

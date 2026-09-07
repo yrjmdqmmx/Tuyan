@@ -819,3 +819,13 @@ test('benchmark clients use only the public and admin action contracts', async (
     fetchMock.restore();
   }
 });
+
+test('shared job payloads preserve 512 and native-size resolution values', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, jobId: 'fixture-size', status: 'queued' } }))
+  try {
+    for (const imageSize of ['512', 'auto']) {
+      await refineImageRequest('https://fixture.invalid/api', { backendMode: 'gateway' }, { provider: 'gemini', sourceImageObjectKey: 'owned/source.png', editInstruction: 'clear labels', imageSize })
+      assert.equal(JSON.parse(fetchMock.calls.at(-1).options.body).imageSize, imageSize)
+    }
+  } finally { fetchMock.restore() }
+})

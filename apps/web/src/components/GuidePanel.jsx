@@ -67,10 +67,10 @@ export default function GuidePanel({
             <div className="guide-parameter-grid">
               <ParameterGuide title="使用模式"><strong>普通模式</strong>适合第一次使用：同一渠道自动配好主、图、识三类模型，只需选择格式、清晰度和比例。<strong>专业模式</strong>适合需要独立选模型、检索参考、增加候选图或评审轮数的任务。</ParameterGuide>
               <ParameterGuide title="API 接入渠道与密钥">先选择 OpenRouter、Gemini、OpenAI、阿里百炼或火山方舟，再填写该渠道的 BYOK 密钥。只需填写当前任务实际会调用的渠道；密钥仅保存在页面内存，不会写入数据库。</ParameterGuide>
-              <ParameterGuide title="主模型">负责理解论文方法、规划图中模块和文字内容，并执行文字层面的评审。复杂方法或长文本优先选择规划能力更强的模型；生成 SVG 时也由主模型直接输出矢量内容。</ParameterGuide>
+              <ParameterGuide title="主模型">负责理解论文方法、规划图中模块和文字内容，并执行文字层面的评审。复杂方法或长文本优先选择规划能力更强的模型；SVG 默认由主模型输出；选择 Recraft Vector 时，由主模型规划、Recraft 生成矢量图。</ParameterGuide>
               <ParameterGuide title="图像生成模型">负责 PNG 的绘制、重渲染与支持时的直接精修，决定画面风格、比例和可用清晰度。先看模型卡的格式、比例、分辨率和权益状态，不要只按模型名称选择。</ParameterGuide>
               <ParameterGuide title="参考图识别模型">负责读取上传图片或图库参考，并在启用评审时检查结果图的结构与语义。没有参考图且不需要视觉评审时调用会更少；复杂机制图或强参考风格更依赖其识图能力。</ParameterGuide>
-              <ParameterGuide title="导出格式"><strong>PNG</strong>适合包含真实质感、复杂配色或需要直接投稿的插图，由图像模型生成并统一为 PNG。<strong>SVG</strong>适合流程图和架构图，便于后续矢量编辑，由主模型直接生成且本次不要求图像模型 Key。</ParameterGuide>
+              <ParameterGuide title="导出格式"><strong>PNG</strong>适合包含真实质感、复杂配色或需要直接投稿的插图，由图像模型生成并统一为 PNG。<strong>SVG</strong>适合流程图和架构图，便于后续矢量编辑，默认由主模型生成；选择 Recraft Vector 时需要同时填写主模型和 Recraft 的 Key。</ParameterGuide>
               <ParameterGuide title="输出清晰度"><strong>1K</strong>用于快速草稿和低成本试错；<strong>2K</strong>适合论文正文、汇报与大多数正式图片；<strong>4K</strong>用于最终导出、海报或细节密集图。分辨率越高通常等待越久、文件越大，也可能增加费用；只会开放模型明确支持的档位。</ParameterGuide>
               <ParameterGuide title="画面比例"><strong>自动</strong>让模型按内容决定；1:1 适合概念总览，4:3 / 3:2 适合论文常规图，16:9 适合横向流程和演示，3:4 / 2:3 / 9:16 适合纵向通路，21:9、1:4、4:1 适合超长链路。禁用项表示当前图像模型不支持。</ParameterGuide>
               <ParameterGuide title="生成流程"><strong>基础生成</strong>调用最少、速度最快，适合提示词已经很明确的草稿；<strong>规划器 + 评审器</strong>是推荐默认值，会先规划再检查并按需修正；<strong>完整流程</strong>执行更多生成阶段，适合复杂高要求图，但耗时和调用费用最高。</ParameterGuide>

@@ -7,8 +7,8 @@ import {
   normalizeSelectedAspectRatio,
 } from './aspectRatios.js'
 
-test('aspect ratio options always expose auto plus ten fixed ratios in canonical order', () => {
-  assert.deepEqual(CANONICAL_ASPECT_RATIOS, ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1'])
+test('aspect ratio options always expose auto plus all supported fixed ratios in canonical order', () => {
+  assert.deepEqual(CANONICAL_ASPECT_RATIOS, ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20'])
   const options = buildAspectRatioOptions({
     capabilities: { aspectRatios: ['1:1', '16:9'] },
     capabilityField: 'aspectRatios',

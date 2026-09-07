@@ -1,7 +1,7 @@
-export const CANONICAL_ASPECT_RATIOS = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1'] as const
+export const CANONICAL_ASPECT_RATIOS = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20'] as const
 export type CanonicalAspectRatio = typeof CANONICAL_ASPECT_RATIOS[number]
 export type AspectRatioValue = CanonicalAspectRatio | 'auto'
-export type ResolutionValue = '1K' | '2K' | '4K'
+export type ResolutionValue = '512' | '1K' | '2K' | '4K' | 'auto'
 
 export interface AspectRatioOption {
   value: AspectRatioValue
@@ -43,8 +43,8 @@ export function buildResolutionOptions(
 ): Array<{ value: ResolutionValue; label: string }> {
   const declared = Array.isArray(capabilities[capabilityField]) ? capabilities[capabilityField] as unknown[] : []
   const supported = new Set(declared.map(String))
-  const labels: Record<ResolutionValue, string> = { '1K': '1K（标准）', '2K': '2K（高清）', '4K': '4K（超清）' }
-  return (['1K', '2K', '4K'] as ResolutionValue[])
+  const labels: Record<ResolutionValue, string> = { '512': '512（预览）', 'auto': '原生尺寸', '1K': '1K（标准）', '2K': '2K（高清）', '4K': '4K（超清）' }
+  return (['512', '1K', '2K', '4K', 'auto'] as ResolutionValue[])
     .filter((value) => supported.has(value))
     .map((value) => ({ value, label: labels[value] }))
 }

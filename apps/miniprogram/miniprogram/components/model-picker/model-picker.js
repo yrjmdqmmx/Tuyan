@@ -2,6 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_registry_1 = require("../../utils/model-registry");
 const PROVIDER_LABELS = {
+    deepseek: "DeepSeek",
+    kimi: "Kimi（月之暗面）",
+    zhipu: "智谱 GLM",
+    siliconflow: "硅基流动 SiliconFlow",
+    anthropic: "Anthropic Claude",
+    recraft: "Recraft",
+    xai: "xAI",
     gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
 };
 const MODEL_PAGE_SIZE = 30;
@@ -45,11 +52,11 @@ Component({
             }
             const providerCards = model_registry_1.MODEL_PROVIDER_IDS.map((id) => {
                 const provider = registry.providers[id];
-                const partition = (0, model_registry_1.partitionRegistryModels)(provider.models, { role, outputFormat: String(this.properties.outputFormat || '') });
+                const partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { role, outputFormat: String(this.properties.outputFormat || '') });
                 return {
                     id,
                     label: PROVIDER_LABELS[id],
-                    kindText: provider.accessKind === 'aggregator' ? '聚合渠道' : '官方直连',
+                    kindText: (provider === null || provider === void 0 ? void 0 : provider.accessKind) === 'aggregator' ? '聚合渠道' : '官方直连',
                     count: partition.compatible.length,
                     unavailableCount: partition.incompatible.length,
                 };
@@ -66,7 +73,7 @@ Component({
             if (!provider)
                 return;
             const role = normalizeRole(this.properties.role);
-            const partition = (0, model_registry_1.partitionRegistryModels)(provider.models, { role, outputFormat: String(this.properties.outputFormat || '') });
+            const partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { role, outputFormat: String(this.properties.outputFormat || '') });
             const compatibleIds = new Set(partition.compatible.map((item) => item.id));
             const vendorCards = (0, model_registry_1.groupRegistryModels)([...partition.compatible, ...partition.incompatible]).map((group) => ({
                 vendor: group.vendor,
@@ -107,10 +114,10 @@ Component({
                 return;
             const role = normalizeRole(this.properties.role);
             const options = { role, query: this.data.query, outputFormat: String(this.properties.outputFormat || ''), recommendedOnly: providerId === 'openrouter' && this.data.catalogMode === 'recommended' };
-            let partition = (0, model_registry_1.partitionRegistryModels)(provider.models, options);
+            let partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], options);
             const inVendor = (model) => !this.data.activeProviderIsAggregator || model.vendor === this.data.activeVendor;
             if (options.recommendedOnly && !partition.compatible.some(inVendor)) {
-                partition = (0, model_registry_1.partitionRegistryModels)(provider.models, { ...options, recommendedOnly: false });
+                partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { ...options, recommendedOnly: false });
                 this.setData({ catalogMode: 'all' });
             }
             const compatibleModels = partition.compatible.filter(inVendor).map((model) => presentModel(model, this.properties.selectedProvider, this.properties.selectedModel, providerId));
@@ -143,10 +150,12 @@ Component({
 function normalizeRole(value) { return value === 'image' || value === 'vision' ? value : 'main'; }
 function roleLabel(role) { return role === 'image' ? '图像生成模型' : role === 'vision' ? '参考图识别模型' : '主模型'; }
 function presentModel(model, selectedProvider, selectedModel, providerId) {
+    var _a;
     return {
         ...model,
+        availabilityNotes: [model.availabilityNotes, ((_a = model.capabilities) === null || _a === void 0 ? void 0 : _a.requiresSourceImage) ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
         lifecycleText: model.lifecycle === 'stable' ? '稳定版' : model.lifecycle === 'preview' ? '预览版' : model.lifecycle === 'legacy' ? '旧版维护' : '状态未知',
-        verificationText: model.verificationState === 'inference-verified' ? '账号已验证' : model.verificationState === 'catalog' ? '目录未实测' : model.verified ? '注册表验证' : '未验证',
+        verificationText: model.verificationState === 'inference-verified' ? '账号已验证' : model.verificationState === 'catalog' ? '官方目录' : model.verified ? '注册表验证' : '模型目录',
         selected: String(selectedProvider || '') === providerId && String(selectedModel || '') === model.id,
     };
 }

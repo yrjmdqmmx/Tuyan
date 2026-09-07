@@ -1,5 +1,32 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-07] 全渠道 API 修正与逐型号目录 v12 — by Codex
+变更：静态目录 101→306 项（新增 205 个渠道内 ID），OpenRouter 动态目录合并主/视觉/图片角色并保留官方到期日期。修正 OpenAI 生成/编辑像素尺寸及逐型号采样参数、百炼 Omni SSE；新增 Kling/Vidu/旧 Wan 异步适配、CogView 与硅基流动图片型号、Recraft 各代非 Styles 及仍支持的历史文本/视觉型号。已结束服务的 ID 按本渠道迁移，仍有效版本保留；直连与聚合、北京与其他地区不共用生命周期规则。
+共享契约：目录版本 `2026-09-07.v12`；新增 `expirationDate / earliestRetirementDate / replacementModelId / regions / roleProtocols` 与 `requiresSourceImage / maxReferenceImages / providerMaxReferenceImages`，分辨率枚举允许 `512 / auto`，增加型号需要的比例；既有 API 字段继续兼容透传。编辑专用模型在普通生图入队前返回 `IMAGE_MODEL_EDIT_ONLY`。`config/model-catalog-updates.json` 和 `scripts/sync-model-catalog.mjs` 统一后端/Web/小程序静态目录。无新增外部 API 主机、环境变量或 action，无新增验证状态类型。
+- [x] Core / Laf 共享实现（接口、目录、生命周期、地区与本地模拟回归）
+- [x] Web（全量回退目录、尺寸/比例、到期和编辑专用说明）
+- [x] 微信小程序（同源目录、元数据、尺寸/比例、TS/JS 同步）
+- [x] 共享 API / Gateway（沿用透传；512/auto 契约验证，无新增网关规则）
+- [x] 审计与排除决定（1,014 条证据逐项落实，见 [实现报告](docs/model-catalog-repair-2026-09-07.md) 与 [型号清单](docs/model-catalog-decisions.csv)）
+- [ ] 部署 / 发布（本轮未执行；旧条目的运维待办仍保留）
+验证：Core 418、Web 331、共享 API/目录 31 项测试通过，小程序 21 个测试文件通过；Core/Web/小程序构建与目录无漂移检查通过。没有真实推理或付费调用。
+
+### [2026-09-07] 第一批七个原生 API 渠道与 Recraft SVG — by Codex
+变更：目录版本 `2026-09-07.v11`；新增 `deepseek / kimi / zhipu / siliconflow / anthropic / recraft / xai`，各角色的 `modelRoutes.accessProvider` 与 `apiKeys` 接受这些 ID。主模型/识别专用渠道与 Recraft 图像专用渠道允许缺省角色为空，只在专业模式混合使用；普通模式只展示具备三个默认角色的渠道。Recraft Vector + SVG 会实际调用 image 路线，因此前后端按同一规则收集 main + image Key（vanilla 直出只需 image）。Claude 使用原生 Messages、xAI 使用 Responses 与 JSON 图片 API；图片输出统一 PNG，Recraft Vector 可保留 SVG。用户界面不增加“未实测”标签。SG 精确出口白名单新增三个域名，详见接入文档。
+- [x] paperbanana-api / Laf（注册表、原生适配器、角色/密钥范围、SVG 与本地回归）
+- [x] Web（渠道与官方目录、普通/专业选择、Key、SVG 角色与使用说明）
+- [x] 小程序（相同目录/路由、旧服务端兼容、内存 Key 与 TS/JS 同步）
+- [x] Gateway（沿用现有透传契约，无新增 action）
+- [ ] 部署 / 运维（部署 API 与 Web，发布小程序；更新 SG Squid 三个精确主机后验证出口）
+
+### [2026-09-07] 官方模型目录更新与视觉角色同步 — by Codex
+变更：目录版本升至 `2026-09-07.v10`，补入 Gemini 3.8 Flash、GPT-6 Astra、百炼九个文本/视觉入口及 Qwen Image 3.0；修正 Qwen3.8 Max 视觉角色。OpenRouter 动态目录继续生效，客户端补齐八个近期文本/视觉型号、MAI Image 2.6 与 Flash；Flash 使用官方 PNG/Azure 适配，要求风格参考图的型号不进入当前生成流程。Astra 原生走 Responses，OpenRouter Astra/Fable 不发送目录未声明的 temperature。默认模型不变。
+契约：沿用现有 `catalog` 来源字段，不新增状态类型；模型列表不显示“未实测”标签。官方依据、账号验证边界与未纳入项见 [核对记录](docs/model-catalog-2026-09-07.md)。本次没有付费模型调用或排行榜更新。
+- [x] Core / Sealaf 共享实现（目录、角色、协议与参数适配）
+- [x] Web（回退目录、读图判定、目录展示文案）
+- [x] 微信小程序（TS/JS 回退目录、读图判定、目录展示文案）
+- [ ] 发布（合并与部署后确认生产目录版本；本次仅完成本地更新）
+
 ### [2026-09-06] MAI-Image-2.6 接入与 Scientific V2 单模型增量扩榜 — by Codex
 变更：按用户要求仅评测非 Flash `microsoft/mai-image-2.6`。OpenRouter 精确型号根据 Microsoft 官方 PNG 输出契约接入，运行时继续校验真实图片字节；请求固定 Azure、单图、关闭 web grounding 和 provider fallback。目录仍标记 `verificationState:catalog` / `verified:false`，文档支持不冒充账号调用已验证，Flash 不在新增名单中。
 契约：新增 `freezeExpansionBatch` 与 `expansion` 描述，精确绑定当前 active release/batch/manifest 和唯一新增模型。保留完整签名 registry/canonical authority，但执行、价格、调用记录和审评仅覆盖新增模型的固定 6 生成 + 3 编辑；不产生新 Codex 出图调用。发布在同一事务内复验 active predecessor，原样继承旧模型的图片、评分、逐题审核说明和来源，只重算全榜排名。确认失败/不支持保持固定九题零分规则，未知结果停跑；旧 Seedream correction 白名单不变。

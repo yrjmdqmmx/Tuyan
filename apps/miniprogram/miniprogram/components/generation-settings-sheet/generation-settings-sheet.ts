@@ -7,6 +7,14 @@ import { arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, p
 import { toggleReferenceSelection } from '../../utils/reference-library'
 
 const PROVIDER_LABELS: Record<string, string> = {
+  deepseek: "DeepSeek",
+  kimi: "Kimi（月之暗面）",
+  zhipu: "智谱 GLM",
+  siliconflow: "硅基流动 SiliconFlow",
+  anthropic: "Anthropic Claude",
+  recraft: "Recraft",
+  xai: "xAI",
+
   gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
 }
 
@@ -86,6 +94,10 @@ Component({
       const draft = this.data.draft
       const registry = this.properties.registry as ModelRegistry | null
       if (!draft || !registry) return
+      const providerOptions = MODEL_PROVIDER_IDS.filter((id) => {
+        const defaults = registry.providers[id]?.defaults
+        return defaults?.main && defaults?.image && defaults?.vision
+      }).map((value) => ({ value, label: PROVIDER_LABELS[value] }))
       const imageEntry = findRegistryModel(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId)
       const ratioAll = buildAspectRatioOptions({ capabilities: imageEntry?.capabilities || {}, capabilityField: 'aspectRatios', modelLabel: imageEntry?.label })
       const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
@@ -113,7 +125,8 @@ Component({
       const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
       this.setData({
         draft, routeRows, ratioOptions, resolutionOptions, keyFields,
-        providerIndex: Math.max(0, MODEL_PROVIDER_IDS.indexOf(draft.simpleProvider)),
+        providerOptions,
+        providerIndex: Math.max(0, providerOptions.findIndex((item) => item.value === draft.simpleProvider)),
         ratioIndex: Math.max(0, ratioOptions.findIndex((item) => item.value === draft.aspectRatio)),
         resolutionIndex: Math.max(0, resolutionOptions.findIndex((item) => item.value === draft.imageSize)),
         outputIndex: draft.outputFormat === 'svg' ? 1 : 0,
@@ -136,7 +149,8 @@ Component({
       const draft = this.data.draft
       if (!draft) return
       const index = Number(event.detail.value) || 0
-      const provider = MODEL_PROVIDER_IDS[index] || MODEL_PROVIDER_IDS[0]
+      const provider = this.data.providerOptions[index]?.value
+      if (!provider) return
       draft.simpleProvider = provider
       draft.modelRoutes = providerDefaultRoutes(provider, this.properties.registry as ModelRegistry)
       this.setData({ draft })

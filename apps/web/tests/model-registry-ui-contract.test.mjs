@@ -29,7 +29,23 @@ test('selected model notes keep unknown lifecycle and catalog-only verification 
   assert.match(app, /if \(value === 'stable'\) return '稳定版';/u)
   assert.match(app, /return '状态未知';/u)
   assert.match(app, /function formatVerification\(model\)/u)
-  assert.match(app, /目录兼容（未实测）/u)
+  assert.match(app, /官方目录/u)
   assert.match(app, /\{formatVerification\(model\)\}/u)
   assert.match(styles, /\.model-option-badges\s*\{[^}]*flex-wrap:\s*wrap;/su)
+})
+
+test('partial-role provider catalogs merge without inventing defaults for missing roles', async () => {
+  const { mergeProviderRegistry } = await import('../src/lib/modelRegistry.js')
+  const { providerDefaultRoutes, requiredCreateRouteRoles, scopedApiKeysForRoles } = await import('../src/lib/modelRouting.js')
+  const partial = { defaults: { main: 'claude-fable-5-1', image: '', vision: 'claude-fable-5-1' }, models: [{ id: 'claude-fable-5-1', roles: ['main', 'vision'] }] }
+  const merged = mergeProviderRegistry({ label: 'Claude' }, partial)
+  assert.equal(merged.mainModel, 'claude-fable-5-1')
+  assert.equal(merged.imageModel, '')
+  assert.deepEqual(merged.imageModels, [])
+  assert.equal(providerDefaultRoutes('anthropic', { providers: { anthropic: partial } }, {}), null)
+  const routes = { main: { accessProvider: 'anthropic', modelId: 'claude-fable-5-1' }, image: { accessProvider: 'recraft', modelId: 'recraftv4_1_vector' }, vision: { accessProvider: 'xai', modelId: 'grok-4.6' } }
+  const roles = requiredCreateRouteRoles({ outputFormat: 'svg', modelRoutes: routes }, 0)
+  assert.deepEqual(roles, ['main', 'image'])
+  assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'svg', pipelineMode: 'vanilla', modelRoutes: routes }, 0), ['image'])
+  assert.deepEqual(scopedApiKeysForRoles(routes, roles, { anthropic: 'text-key', recraft: 'vector-key', xai: 'unused' }), { anthropic: 'text-key', recraft: 'vector-key' })
 })

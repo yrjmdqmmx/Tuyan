@@ -1,4 +1,4 @@
-import type { ModelProviderId } from './model-registry'
+import { MODEL_PROVIDER_IDS, type ModelProviderId } from './model-registry'
 
 const keys: Partial<Record<ModelProviderId, string>> = {}
 
@@ -24,5 +24,5 @@ export function clearApiKeys(): void {
 }
 
 function isProvider(value: string): value is ModelProviderId {
-  return value === 'gemini' || value === 'openai' || value === 'bailian' || value === 'ark' || value === 'openrouter'
+  return (MODEL_PROVIDER_IDS as readonly string[]).includes(value)
 }

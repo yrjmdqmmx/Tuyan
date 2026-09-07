@@ -120,7 +120,7 @@ Component({
     resolutionOptions: RESOLUTION_OPTIONS.filter((option) => supportedResolutions(PROVIDERS[0].id, PROVIDERS[0].imageModel).indexOf(option.value) >= 0),
     resolutionIndex: 0,
     imageSize: '1K' as ImageSize,
-    imageSizeLabel: RESOLUTION_OPTIONS[0].label,
+    imageSizeLabel: RESOLUTION_OPTIONS.find((option) => option.value === '1K')!.label,
     // 检索设置（专业模式）：上传参考图后锁为不检索
     retrievalOptions: RETRIEVAL_OPTIONS,
     retrievalIndex: 0,
@@ -362,7 +362,7 @@ Component({
 
     createExecutionRoles(settings: GenerationSettings) {
       const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
-      return requiredCreateRouteRoles({ outputFormat: settings.outputFormat, taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds)
+      return requiredCreateRouteRoles({ modelRoutes: settings.modelRoutes, outputFormat: settings.outputFormat, taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds)
     },
 
     onFeaturedTemplateApply(event: WechatMiniprogram.CustomEvent<{ id: string }>) {
@@ -935,6 +935,11 @@ Component({
         this.refreshCanSubmit()
         return
       }
+      const imageEntry = findRegistryModel(registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId)
+      if (imageEntry?.capabilities.requiresSourceImage && settings.outputFormat !== 'svg') {
+        this.setData({ isSubmitting: false, error: '当前型号仅支持图像编辑，请在精修中使用或更换生图模型。' })
+        return
+      }
       const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
       const mainRoute = settings.modelRoutes.main
       const mainEntry = findRegistryModel(registry, mainRoute.accessProvider, mainRoute.modelId)
@@ -1096,6 +1101,7 @@ Component({
         this.data.manualReferenceIds.length > 0
       const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
       const roles = requiredCreateRouteRoles({
+        modelRoutes: settings.modelRoutes,
         outputFormat: settings.outputFormat,
         taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram',
         pipelineMode: settings.pipelineMode,

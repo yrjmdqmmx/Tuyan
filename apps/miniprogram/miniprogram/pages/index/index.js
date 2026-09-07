@@ -54,7 +54,7 @@ Component({
         resolutionOptions: constants_1.RESOLUTION_OPTIONS.filter((option) => (0, constants_1.supportedResolutions)(constants_1.PROVIDERS[0].id, constants_1.PROVIDERS[0].imageModel).indexOf(option.value) >= 0),
         resolutionIndex: 0,
         imageSize: '1K',
-        imageSizeLabel: constants_1.RESOLUTION_OPTIONS[0].label,
+        imageSizeLabel: constants_1.RESOLUTION_OPTIONS.find((option) => option.value === '1K').label,
         // 检索设置（专业模式）：上传参考图后锁为不检索
         retrievalOptions: constants_1.RETRIEVAL_OPTIONS,
         retrievalIndex: 0,
@@ -299,7 +299,7 @@ Component({
         },
         createExecutionRoles(settings) {
             const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
-            return (0, model_routing_1.requiredCreateRouteRoles)({ outputFormat: settings.outputFormat, taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds);
+            return (0, model_routing_1.requiredCreateRouteRoles)({ modelRoutes: settings.modelRoutes, outputFormat: settings.outputFormat, taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds);
         },
         onFeaturedTemplateApply(event) {
             const template = featured_templates_1.FEATURED_TEMPLATES.find((item) => item.id === event.detail.id);
@@ -844,6 +844,11 @@ Component({
                 this.refreshCanSubmit();
                 return;
             }
+            const imageEntry = (0, model_registry_1.findRegistryModel)(registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId);
+            if ((imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.capabilities.requiresSourceImage) && settings.outputFormat !== 'svg') {
+                this.setData({ isSubmitting: false, error: '当前型号仅支持图像编辑，请在精修中使用或更换生图模型。' });
+                return;
+            }
             const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
             const mainRoute = settings.modelRoutes.main;
             const mainEntry = (0, model_registry_1.findRegistryModel)(registry, mainRoute.accessProvider, mainRoute.modelId);
@@ -1002,6 +1007,7 @@ Component({
                 this.data.manualReferenceIds.length > 0;
             const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
             const roles = (0, model_routing_1.requiredCreateRouteRoles)({
+                modelRoutes: settings.modelRoutes,
                 outputFormat: settings.outputFormat,
                 taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram',
                 pipelineMode: settings.pipelineMode,

@@ -4,6 +4,7 @@ exports.getApiKeys = getApiKeys;
 exports.setApiKey = setApiKey;
 exports.replaceApiKeys = replaceApiKeys;
 exports.clearApiKeys = clearApiKeys;
+const model_registry_1 = require("./model-registry");
 const keys = {};
 function getApiKeys() {
     return { ...keys };
@@ -27,5 +28,5 @@ function clearApiKeys() {
         delete keys[provider];
 }
 function isProvider(value) {
-    return value === 'gemini' || value === 'openai' || value === 'bailian' || value === 'ark' || value === 'openrouter';
+    return model_registry_1.MODEL_PROVIDER_IDS.includes(value);
 }

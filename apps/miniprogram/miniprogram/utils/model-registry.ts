@@ -1,4 +1,4 @@
-export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'] as const
+export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
@@ -21,6 +21,11 @@ export interface RegistryModel {
   protocol: string
   availabilityNotes: string
   releasedAt: string
+  expirationDate?: string
+  earliestRetirementDate?: string
+  replacementModelId?: string
+  regions?: string[]
+  roleProtocols?: Record<string, unknown>
   capabilities: Record<string, unknown>
   selectionDisabled?: boolean
   selectionDisabledReason?: string
@@ -38,7 +43,7 @@ export interface ModelRegistry {
   registryVersion: string
   routeContractVersion: number
   supportsModelRoutes: boolean
-  providers: Record<ModelProviderId, RegistryProvider>
+  providers: Partial<Record<ModelProviderId, RegistryProvider>>
 }
 
 export interface RegistryModelPartition {
@@ -55,12 +60,12 @@ export function normalizeModelRegistry(input: unknown): ModelRegistry {
     throw new Error('服务端模型路由契约不可用。')
   }
   const providerSource = asRecord(source.providers)
-  const missingProviders = MODEL_PROVIDER_IDS.filter((id) => !providerSource[id])
+  const missingProviders = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'].filter((id) => !providerSource[id])
   if (missingProviders.length) throw new Error('服务端模型目录必须包含五个 API 渠道。')
 
-  const providers = {} as Record<ModelProviderId, RegistryProvider>
+  const providers: Partial<Record<ModelProviderId, RegistryProvider>> = {}
   for (const providerId of MODEL_PROVIDER_IDS) {
-    providers[providerId] = normalizeProvider(providerId, providerSource[providerId])
+    if (providerSource[providerId]) providers[providerId] = normalizeProvider(providerId, providerSource[providerId])
   }
   return { registryVersion, routeContractVersion, supportsModelRoutes: true, providers }
 }
@@ -81,6 +86,7 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   }
   const labels: Record<ModelRole, string> = { main: '主模型', image: '图像模型', vision: '识别模型' }
   for (const role of ['main', 'image', 'vision'] as const) {
+    if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role))) continue
     const entry = models.find((model) => model.id === defaults[role])
     if (!entry || entry.selectable === false || !entry.roles.includes(role)) {
       throw new Error(`${providerId} 默认${labels[role]}无效。`)
@@ -124,6 +130,11 @@ function normalizeModel(input: unknown): RegistryModel {
     protocol: stringValue(source.protocol),
     availabilityNotes: stringValue(source.availabilityNotes),
     releasedAt: validReleasedAt(source.releasedAt),
+    expirationDate: validReleasedAt(source.expirationDate),
+    earliestRetirementDate: validReleasedAt(source.earliestRetirementDate),
+    replacementModelId: stringValue(source.replacementModelId),
+    regions: stringArray(source.regions),
+    roleProtocols: asRecord(source.roleProtocols),
     capabilities: asRecord(source.capabilities),
   }
 }
@@ -148,8 +159,8 @@ export function modelAvailabilityPresentation(model: Partial<RegistryModel>): {
       : state === 'registry' && model.verified === true
         ? '注册表已验证'
         : state === 'catalog'
-          ? '目录可见，尚未实测'
-          : '尚未验证当前账号',
+          ? '官方目录'
+          : '模型目录',
     verifiedForAccount: state === 'inference-verified',
   }
 }
@@ -185,18 +196,19 @@ export function groupRegistryModels(models: RegistryModel[]): Array<{ vendor: st
 
 export function findRegistryModel(registry: ModelRegistry | null, provider: string, modelId: string): RegistryModel | null {
   if (!registry || !MODEL_PROVIDER_IDS.includes(provider as ModelProviderId)) return null
-  return registry.providers[provider as ModelProviderId].models.find((model) => model.id === modelId) || null
+  return registry.providers[provider as ModelProviderId]?.models.find((model) => model.id === modelId) || null
 }
 
 function annotateModel(model: RegistryModel, role: ModelRole, outputFormat: string): RegistryModel {
+  const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(`${model.expirationDate}T00:00:00Z`))
   const capabilities = model.capabilities || {}
   const formats = stringArray(capabilities.outputFormats)
   const roleMismatch = !model.roles.includes(role)
   const formatMismatch = role === 'image' && Boolean(outputFormat) && formats.length > 0 && !formats.includes(outputFormat)
   return {
     ...model,
-    selectionDisabled: !model.selectable || roleMismatch || formatMismatch,
-    selectionDisabledReason: model.disabledReason
+    selectionDisabled: expired || !model.selectable || roleMismatch || formatMismatch,
+    selectionDisabledReason: (expired ? `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
       || (roleMismatch ? model.roleReasons[role] || '服务端未授权该模型用于当前角色' : '')
       || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
   }

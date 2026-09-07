@@ -28,11 +28,11 @@ function lifecycleLabel(value) {
 }
 
 function verificationLabel(model) {
-  if (model.verificationState === 'catalog') return '目录兼容（未实测）'
-  if (model.verificationState === 'account-visible') return '账号可见（未实测）'
+  if (model.verificationState === 'catalog') return '官方目录'
+  if (model.verificationState === 'account-visible') return '账号目录可见'
   if (model.verificationState === 'inference-verified') return '真实调用已验证'
   if (model.verificationState === 'registry') return '静态注册信息'
-  return model.verified === true ? '注册表已确认' : '尚未实测'
+  return model.verified === true ? '注册表已确认' : '模型目录'
 }
 
 function capabilityLabel(model) {
@@ -69,7 +69,10 @@ export default function ModelPicker({
           },
         },
       }
-  const providerIds = Object.keys(effectiveRegistry.providers || {})
+  const providerIds = Object.keys(effectiveRegistry.providers || {}).filter((id) => {
+    const available = partitionRegistryModels(effectiveRegistry.providers[id].models, { role, outputFormat })
+    return available.compatible.length + available.incompatible.length > 0
+  })
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [catalogMode, setCatalogMode] = useState('recommended')
@@ -305,12 +308,13 @@ export default function ModelPicker({
                 <span className="model-option-badges">
                   {model.recommended && model.lifecycle === 'stable' ? <em>推荐</em> : null}
                   <em>{lifecycleLabel(model.lifecycle)}</em>
+                  {model.capabilities?.requiresSourceImage ? <em>仅图像编辑</em> : null}
                   <em>{verificationLabel(model)}</em>
                   {model.requiresEntitlement ? <em>需权益</em> : <em>标准权限</em>}
                   {effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? <Check size={16} /> : null}
                 </span>
                 <span className="model-option-meta">{providerDisplayName(selectedProvider, providerConfigs)} · {capabilityLabel(model)}{model.releasedAt ? ` · ${model.releasedAt}` : ' · 发布时间未知'}</span>
-                <span className="model-option-note">{model.entitlement ? `权益要求：${model.entitlement}` : '无需额外模型权益'}{model.availabilityNotes ? ` · ${model.availabilityNotes}` : ''}</span>
+                <span className="model-option-note">{model.entitlement ? `权益要求：${model.entitlement}` : '无需额外模型权益'}{model.availabilityNotes ? ` · ${model.availabilityNotes}` : ''}{model.expirationDate && !model.expirationDate.startsWith('2098') ? ` · 官方到期日：${model.expirationDate}` : ''}{model.earliestRetirementDate ? ` · 最早退役日：${model.earliestRetirementDate}，以正式公告为准` : ''}{model.replacementModelId ? ` · 迁移目标：${model.replacementModelId}` : ''}</span>
               </button>
           ))}
         </div>

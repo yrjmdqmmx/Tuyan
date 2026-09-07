@@ -22,6 +22,7 @@ function buildCreateJobPayload(input) {
     const taskName = input.categoryId === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram';
     const maxCriticRounds = input.maxCriticRounds;
     const routeRoles = (0, model_routing_1.requiredCreateRouteRoles)({
+        modelRoutes,
         outputFormat: input.outputFormat,
         taskName,
         pipelineMode,

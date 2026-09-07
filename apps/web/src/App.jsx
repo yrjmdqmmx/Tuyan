@@ -161,7 +161,7 @@ export default function App() {
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
   const [configurationMode, setConfigurationMode] = useState('simple');
   const [provider, setProvider] = useState('bailian');
-  const [apiKeys, setApiKeys] = useState({ openrouter: '', gemini: '', openai: '', bailian: '', ark: '' });
+  const [apiKeys, setApiKeys] = useState(() => Object.fromEntries(Object.keys(PROVIDERS).map((id) => [id, ''])));
   const [methodContent, setMethodContent] = useState(SAMPLE_METHOD);
   const [caption, setCaption] = useState('图 1：所提出的多智能体学术图示生成框架总览。');
   const [negativePrompt, setNegativePrompt] = useState('');
@@ -314,6 +314,7 @@ export default function App() {
   const effectiveRetrievalSetting = isAdvancedMode && !referenceImages.length ? retrievalSetting : 'none';
   const effectiveTaskName = isPlotCategory ? 'plot' : 'diagram';
   const createRouteRoles = requiredCreateRouteRoles({
+    modelRoutes: activeModelRoutes,
     taskName: effectiveTaskName,
     outputFormat,
     pipelineMode: effectivePipelineMode === 'demo_planner_critic' ? 'planner_critic' : effectivePipelineMode === 'demo_full' ? 'full' : effectivePipelineMode,
@@ -989,6 +990,10 @@ export default function App() {
       setShowGenerationSettings(true);
       setError(routingError.message);
       setErrorContext('configuration');
+      return;
+    }
+    if (activeImageRegistryEntry?.capabilities?.requiresSourceImage && outputFormat !== 'svg') {
+      setError('当前型号仅支持图像编辑，请在精修中使用或更换生图模型。');
       return;
     }
     const canMock = isAdvancedMode && mock && health?.mock_enabled;
@@ -1842,11 +1847,11 @@ function formatLifecycle(value) {
 }
 
 function formatVerification(model) {
-  if (model.verificationState === 'catalog') return '目录兼容（未实测）';
-  if (model.verificationState === 'account-visible') return '账号可见（未实测）';
+  if (model.verificationState === 'catalog') return '官方目录';
+  if (model.verificationState === 'account-visible') return '账号目录可见';
   if (model.verificationState === 'inference-verified') return '真实调用已验证';
   if (model.verificationState === 'registry') return '静态注册信息';
-  return model.verified === true ? '注册表已确认' : '尚未实测';
+  return model.verified === true ? '注册表已确认' : '模型目录';
 }
 
 function firstMissingGenerationSetting({

@@ -8,6 +8,13 @@ const model_registry_1 = require("../../utils/model-registry");
 const model_routing_1 = require("../../utils/model-routing");
 const reference_library_1 = require("../../utils/reference-library");
 const PROVIDER_LABELS = {
+    deepseek: "DeepSeek",
+    kimi: "Kimi（月之暗面）",
+    zhipu: "智谱 GLM",
+    siliconflow: "硅基流动 SiliconFlow",
+    anthropic: "Anthropic Claude",
+    recraft: "Recraft",
+    xai: "xAI",
     gemini: 'Google Gemini API', openai: 'OpenAI', bailian: '阿里百炼', ark: '火山方舟', openrouter: 'OpenRouter',
 };
 Component({
@@ -76,6 +83,11 @@ Component({
             const registry = this.properties.registry;
             if (!draft || !registry)
                 return;
+            const providerOptions = model_registry_1.MODEL_PROVIDER_IDS.filter((id) => {
+                var _a;
+                const defaults = (_a = registry.providers[id]) === null || _a === void 0 ? void 0 : _a.defaults;
+                return (defaults === null || defaults === void 0 ? void 0 : defaults.main) && (defaults === null || defaults === void 0 ? void 0 : defaults.image) && (defaults === null || defaults === void 0 ? void 0 : defaults.vision);
+            }).map((value) => ({ value, label: PROVIDER_LABELS[value] }));
             const imageEntry = (0, model_registry_1.findRegistryModel)(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId);
             const ratioAll = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.capabilities) || {}, capabilityField: 'aspectRatios', modelLabel: imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.label });
             const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
@@ -103,7 +115,8 @@ Component({
             const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : '';
             this.setData({
                 draft, routeRows, ratioOptions, resolutionOptions, keyFields,
-                providerIndex: Math.max(0, model_registry_1.MODEL_PROVIDER_IDS.indexOf(draft.simpleProvider)),
+                providerOptions,
+                providerIndex: Math.max(0, providerOptions.findIndex((item) => item.value === draft.simpleProvider)),
                 ratioIndex: Math.max(0, ratioOptions.findIndex((item) => item.value === draft.aspectRatio)),
                 resolutionIndex: Math.max(0, resolutionOptions.findIndex((item) => item.value === draft.imageSize)),
                 outputIndex: draft.outputFormat === 'svg' ? 1 : 0,
@@ -125,11 +138,14 @@ Component({
             this.refreshPresentation();
         },
         onProviderChange(event) {
+            var _a;
             const draft = this.data.draft;
             if (!draft)
                 return;
             const index = Number(event.detail.value) || 0;
-            const provider = model_registry_1.MODEL_PROVIDER_IDS[index] || model_registry_1.MODEL_PROVIDER_IDS[0];
+            const provider = (_a = this.data.providerOptions[index]) === null || _a === void 0 ? void 0 : _a.value;
+            if (!provider)
+                return;
             draft.simpleProvider = provider;
             draft.modelRoutes = (0, model_routing_1.providerDefaultRoutes)(provider, this.properties.registry);
             this.setData({ draft });
