@@ -10,7 +10,8 @@
 - [x] 本地验证（Core 448、Web 342、共享/Laf/小程序/根契约 70；尺寸 15502、新渠道派发 7345、官方 schema 4877、OpenRouter 派发 1446 组合；小程序视图 1472 组分辨率选项、2.83 MB 增长目录；类型检查和构建通过）
 - [x] 本地浏览器（MiniMax 单入口、两区地址/Key 说明、Live 中国区专属与七种固定比例、不兼容列表消失）
 - [x] SG 出口允许名单与运维说明代码同步（本地验证；中国 MiniMax 不走 SG）
-- [ ] 实际发布 / SG ACL 应用 / 真实账号权限与推理验收（本次未执行；小程序上传继续暂停）
+- [x] Core / Web / SG 实际发布（PR #170，部署 SHA `b4bbc0f1473479044509ed25416ad927a1546739`；完整 CI、镜像、健康、669 型号 9366 字段、OpenAcad 导航与 MiniMax 区域验收通过；见 [发布记录](docs/releases/2026-09-07-model-catalog-v14.md)）
+- [ ] 真实账号权限与推理验收（本次未执行）；小程序上传 / 平台发布继续暂停
 证据：[v14 核对与验证](docs/model-capabilities/2026-09-07-catalog-v14.md)、[逐型号现行目录](docs/model-capabilities/2026-09-07-catalog-v14.csv)、[差异与移除理由](docs/model-catalog-decisions.csv)。当前保留客户端为 Web 与微信小程序。
 
 ### [2026-09-07] 图片尺寸契约与渠道扩展 v13 — by Codex
@@ -21,7 +22,8 @@
 - [x] 共享目录（配置、生成脚本、官方来源与穷举边界测试）
 - [x] 厂商与聚合平台扩展（BFL、Stability、Ideogram、MiniMax 国际、Mistral、Together、Fireworks、fal、Replicate；21 渠道 / 323 静态型号 / 82 图片路线）
 - [x] 本地回归与构建（Core 436、Web 337、Laf/共享 API 34；小程序 21 文件；尺寸 6222 组合、后端新增图片派发 1104 组合）
-- [ ] 发布 / SG ACL 应用 / 账号权限与真实推理验收（本次未执行；小程序上传继续暂停）
+- [x] Core / Web / SG 发布（随 v14、PR #170 完成，见上条发布记录）
+- [ ] 账号权限与真实推理验收；小程序上传 / 平台发布（本次未执行）
 证据：[尺寸与渠道核对记录](docs/model-capabilities/2026-09-07-audit.md)。
 
 ### [2026-09-07] 原身份恢复与生命周期隔离 — by Codex

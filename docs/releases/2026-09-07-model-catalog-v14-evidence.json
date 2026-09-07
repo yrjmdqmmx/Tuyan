@@ -1,0 +1,326 @@
+{
+  "recordedAt": "2026-09-07T13:38:13.055668+00:00",
+  "pr": 170,
+  "deploymentSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+  "runs": {
+    "prCi": 34126665327,
+    "branchCi": 34126661308,
+    "mergeCi": 34127102588,
+    "coreBuildRun": 34127135593,
+    "benchmarkBuildRun": 34127150733,
+    "hkRun": 34127504017,
+    "pagesRun": 34127736455
+  },
+  "runtime": {
+    "codeSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+    "services": [
+      {
+        "service": "paperbanana-api",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:d6e4b5c787daa531e0f87a93449c08e17a2f1568125a65c15eb2244d9cfa196e",
+        "health": "healthy",
+        "codeSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+        "egressMode": "sg-required"
+      },
+      {
+        "service": "benchmark-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:0a9aa868e2c653e73248f408a597878ce6aa1b96c7440b92108347bc892e40c5",
+        "health": "healthy",
+        "codeSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+        "enabled": false
+      },
+      {
+        "service": "auth-gateway",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:9feee7f1744bfcdf2eec970bfb84349255e1ad62ea22ff99b4e94daeb2f3d058",
+        "health": "healthy"
+      },
+      {
+        "service": "plot-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy"
+      },
+      {
+        "service": "mongodb",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy"
+      }
+    ],
+    "checks": {
+      "health": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-07T13:32:23.947Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "laf": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-07T13:32:23.947Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true,
+            "checkedAt": "2026-09-07T13:32:23.930Z"
+          },
+          "backend": {
+            "mode": "node",
+            "ok": true,
+            "checkedAt": "2026-09-07T13:32:23.947Z",
+            "status": 200,
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        }
+      },
+      "ready": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "laf": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true
+          },
+          "backend": {
+            "ok": true,
+            "status": 200,
+            "data": {
+              "ok": true,
+              "service": "paperbanana-api",
+              "runtime": "node",
+              "version": "0.1.0",
+              "ready": true,
+              "dependencies": {
+                "mongodb": "ready",
+                "oss": "ready",
+                "providerEgress": "ready",
+                "benchmark": "ready"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "catalog": {
+    "checkedAt": "2026-09-07T13:30:05.843Z",
+    "catalogVersion": "2026-09-07.v14",
+    "providerRegionContractVersion": 1,
+    "staticModels": 669,
+    "fieldChecks": 9366,
+    "providerCounts": {
+      "deepseek": 3,
+      "kimi": 4,
+      "zhipu": 27,
+      "siliconflow": 63,
+      "anthropic": 11,
+      "recraft": 16,
+      "xai": 9,
+      "gemini": 15,
+      "bailian": 176,
+      "openai": 62,
+      "ark": 29,
+      "bfl": 12,
+      "stability": 6,
+      "ideogram": 13,
+      "minimax": 10,
+      "mistral": 15,
+      "together": 47,
+      "fireworks": 22,
+      "fal": 40,
+      "replicate": 89,
+      "openrouter": 466
+    },
+    "openrouterModels": 466,
+    "openrouterImageModels": 45,
+    "removedOpenrouterIds": [
+      "meta/muse-image",
+      "recraft/recraft-v4-styles",
+      "recraft/recraft-v4-styles-pro",
+      "recraft/recraft-v4-styles-pro-vector",
+      "recraft/recraft-v4-styles-vector"
+    ],
+    "benchmarkReleaseId": "bench-scientific-v2-release-1f652f6370203d1ecf6a",
+    "benchmarkReleaseHash": "1f652f6370203d1ecf6a8f8ce679097b968b412cd4ab0bdf0362e3a5dce9d482",
+    "benchmarkModels": 41,
+    "benchmarkUnchanged": true
+  },
+  "egress": {
+    "squidSha256": "404f6dbbfef09305aec93680126450c13502e9dff5b11282e22c6b65233c9e56",
+    "installScriptSha256": "c977b016456eec22f2fecdb406a44e8f00c51316e344b00063d4134fe5d2d975",
+    "probes": [
+      {
+        "url": "https://api.bfl.ai/openapi.json",
+        "exit": 0,
+        "http": "200",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.us.bfl.ai/openapi.json",
+        "exit": 0,
+        "http": "200",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.stability.ai/v1/user/account",
+        "exit": 0,
+        "http": "401",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.ideogram.ai/generate",
+        "exit": 0,
+        "http": "405",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.minimax.io/v1/image_generation",
+        "exit": 0,
+        "http": "404",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.mistral.ai/v1/models",
+        "exit": 0,
+        "http": "401",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.together.ai/v1/models",
+        "exit": 0,
+        "http": "401",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.fireworks.ai/inference/v1/models",
+        "exit": 0,
+        "http": "401",
+        "connect": "200"
+      },
+      {
+        "url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture/status",
+        "exit": 0,
+        "http": "404",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.replicate.com/v1/models",
+        "exit": 0,
+        "http": "401",
+        "connect": "200"
+      },
+      {
+        "url": "https://api.minimax.cn/v1/image_generation",
+        "exit": 56,
+        "http": "000",
+        "connect": "403"
+      }
+    ],
+    "existingProvidersAndNegativeBoundariesPassed": true,
+    "additionalLegacyProbe": {
+      "host": "api.us1.bfl.ai",
+      "result": "CONNECT timeout; optional legacy host, current api.bfl.ai and documented api.us.bfl.ai both returned 200",
+      "officialEndpointGuide": "https://docs.bfl.ai/api_integration/integration_guidelines"
+    }
+  },
+  "browser": {
+    "workspace": "https://www.paperbanana.asia/",
+    "leaderboard": "https://www.paperbanana.asia/leaderboard/",
+    "bundle": "assets/main-DgEjLtIr.js",
+    "openAcad": {
+      "href": "https://openacad.xyz/",
+      "target": "_blank",
+      "presentOnBothHeaders": true
+    },
+    "viewportWidth": 397,
+    "horizontalOverflow": false,
+    "pageErrors": [],
+    "minimax": {
+      "singleEntry": true,
+      "regionalEndpoints": [
+        "https://api.minimax.io/v1",
+        "https://api.minimax.cn/v1"
+      ],
+      "chinaLiveRatios": [
+        "auto",
+        "1:1",
+        "3:2",
+        "2:3",
+        "4:3",
+        "3:4",
+        "16:9",
+        "9:16"
+      ],
+      "switchToGlobalRemovesLive": true,
+      "realCredentialsEntered": false,
+      "inferenceSubmitted": false
+    }
+  },
+  "limits": {
+    "miniUploaded": false,
+    "miniPublished": false,
+    "realModelInference": false,
+    "benchmarkRun": false,
+    "rollbackExecuted": false
+  }
+}
