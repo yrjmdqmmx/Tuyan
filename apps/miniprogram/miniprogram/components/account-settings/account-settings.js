@@ -12,10 +12,21 @@ Component({
                 this.reset(); } },
         currentEmail: { type: String, value: '' },
     },
-    data: { email: '', password: '', confirmed: false, deleting: false, error: '' },
+    data: { email: '', password: '', confirmed: false, deleting: false, error: '', lifecycleMessage: '', lifecycleState: '', statusLoaded: false },
     methods: {
         noop() { },
-        reset() { this.setData({ email: '', password: '', confirmed: false, deleting: false, error: '' }); },
+        reset() { this.setData({ email: '', password: '', confirmed: false, deleting: false, error: '', lifecycleMessage: '', statusLoaded: false }); void this.refreshLifecycle(); },
+        async refreshLifecycle() {
+            try {
+                const response = await (0, api_1.gatewayRequest)(`${config_1.API_BASE}/api/account/status`, 'GET');
+                if (response.code !== 0)
+                    throw new Error('账号状态暂时无法获取。');
+                this.setData({ statusLoaded: true, lifecycleState: response.state, lifecycleMessage: (0, account_1.accountLifecycleMessage)(response.state || '') });
+            }
+            catch (error) {
+                this.setData({ error: (0, api_1.formatError)(error) });
+            }
+        },
         close() { if (!this.data.deleting)
             this.triggerEvent('close'); },
         onEmailInput(event) { this.setData({ email: event.detail.value }); },
@@ -23,6 +34,8 @@ Component({
         onConfirmChange(event) { this.setData({ confirmed: event.detail.value.includes('confirmed') }); },
         async logout() { await (0, session_1.signOut)(); this.triggerEvent('signedout'); },
         deleteAccount() {
+            if (!this.data.statusLoaded || this.data.lifecycleState !== 'active')
+                return;
             const validation = (0, account_1.validateDeleteAccountInput)({ currentEmail: this.properties.currentEmail, email: this.data.email, password: this.data.password, confirmed: this.data.confirmed });
             if (validation) {
                 this.setData({ error: validation });
@@ -38,6 +51,10 @@ Component({
             this.setData({ deleting: true, error: '' });
             try {
                 const response = await (0, api_1.gatewayRequest)(`${config_1.API_BASE}/api/account/delete`, 'POST', (0, account_1.buildDeleteAccountPayload)(this.data.email, this.data.password));
+                if (response.code === 202 && response.accepted) {
+                    this.setData({ password: '', confirmed: false, lifecycleState: 'deleting', lifecycleMessage: (0, account_1.accountLifecycleMessage)('deleting') });
+                    return;
+                }
                 if (Number(response.code) !== 0 || response.ok !== true)
                     throw new Error('账号删除未完成。');
                 (0, account_1.clearAccountClientState)((key) => wx.removeStorageSync(key), api_keys_1.clearApiKeys);

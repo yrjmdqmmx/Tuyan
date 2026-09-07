@@ -30,3 +30,10 @@ test('account deletion surfaces gateway errors without treating them as success'
     /INVALID_PASSWORD/,
   )
 })
+
+
+test('pending deletion is distinguishable from completed deletion', async () => {
+  const result = await deleteAccountRequest('', {}, async () => Response.json({ code: 202, accepted: true }, { status: 202 }))
+  assert.equal(result.accepted, true)
+  assert.equal(result.ok, undefined)
+})

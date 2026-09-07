@@ -86,7 +86,10 @@ test('scientific v2 API and Worker collection allowlists are exact and least pri
   assert.match(scientificRepository, /releases\.insertOne\(/)
   assert.doesNotMatch(scientificRepository, /releases\.(?:update|updateOne|findOneAndUpdate|replaceOne|deleteOne|remove|bulkWrite)\(/)
   const roleDefinitions = initMongo.slice(initMongo.indexOf('const roleDefinitions'), initMongo.indexOf('const users'))
-  assert.doesNotMatch(roleDefinitions, /"delete"|"remove"|"dropCollection"|"dropIndex"|"anyAction"/)
+  const privateDeletion = '{resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_prompt_submissions"}, actions: ["remove"]}'
+  assert.ok(apiRole.includes(privateDeletion))
+  assert.doesNotMatch(workerRole, /"remove"/)
+  assert.doesNotMatch(roleDefinitions.replace(privateDeletion, ''), /"delete"|"remove"|"dropCollection"|"dropIndex"|"anyAction"/)
   assert.doesNotMatch(roleDefinitions, /resource:\s*\{db:\s*"(?:paperbanana_benchmark)?",\s*collection:\s*""\}/)
 })
 

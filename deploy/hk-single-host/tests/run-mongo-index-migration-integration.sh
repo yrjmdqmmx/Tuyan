@@ -223,6 +223,9 @@ docker exec "$mongo_container" mongosh --quiet \
   --authenticationDatabase paperbanana_benchmark \
   --eval '
     const benchmark = db.getSiblingDB("paperbanana_benchmark")
+    const privateSubmissions = benchmark.getCollection("paperbanana_benchmark_prompt_submissions")
+    privateSubmissions.insertOne({_id: "account-delete-fixture", userId: "deleted-user"})
+    if (privateSubmissions.deleteOne({_id: "account-delete-fixture", userId: "deleted-user"}).deletedCount !== 1) throw new Error("API must be able to delete private account submissions")
     const batches = benchmark.getCollection("paperbanana_benchmark_scientific_v2_batches")
     const dispatches = benchmark.getCollection("paperbanana_benchmark_scientific_v2_dispatches")
     const reviews = benchmark.getCollection("paperbanana_benchmark_scientific_v2_review_artifacts")

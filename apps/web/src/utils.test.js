@@ -28,8 +28,8 @@ test('provider egress and account deletion failures have actionable messages', (
   assert.equal(formatErrorMessage('PROVIDER_EGRESS_UNAVAILABLE'), '海外模型出口暂不可用，请稍后重试。')
   assert.equal(formatErrorMessage('INVALID_PASSWORD'), '密码不正确，请重新输入。')
   assert.equal(formatErrorMessage('EMAIL_MISMATCH'), '确认邮箱与当前登录账号不一致。')
-  assert.equal(formatErrorMessage('ACCOUNT_DELETION_WAITING_FOR_UPLOADS'), '账号已冻结新任务；请在参考图上传链接失效后按提示重试注销。')
-  assert.equal(formatErrorMessage('ACCOUNT_DELETION_WAITING_FOR_JOBS'), '账号已冻结新任务；正在等待运行中的任务安全结束，请稍后重试注销。')
+  assert.equal(formatErrorMessage('ACCOUNT_DELETION_WAITING_FOR_UPLOADS'), '账号已冻结新任务；正在等待上传链接失效及在途上传结束，后台会自动继续注销。')
+  assert.equal(formatErrorMessage('ACCOUNT_DELETION_WAITING_FOR_JOBS'), '账号已冻结新任务；正在等待运行中的任务安全结束，后台会自动继续注销。')
 })
 
 test('account security errors use stable codes instead of provider English', () => {

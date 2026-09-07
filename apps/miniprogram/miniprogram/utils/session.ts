@@ -71,7 +71,7 @@ export async function signUp(email: string, password: string, name: string): Pro
     password,
     name: name || email.split('@')[0] || '图研Tuyan 用户',
   })
-  return refreshSession()
+  return null
 }
 
 export async function signOut(): Promise<void> {

@@ -82,6 +82,11 @@ Component({
         const user = this.data.authIsSignUp
           ? await signUp(email, password, this.data.authName.trim())
           : await signIn(email, password)
+        if (this.data.authIsSignUp) {
+          this.setData({ authPassword: '', authIsSignUp: false, authError: '注册请求已受理；如需验证，请查收邮件。已有账号请直接登录或找回密码，此提示不代表创建了新账号。' })
+          wx.hideLoading()
+          return
+        }
         if (!user) throw new Error('登录状态校验失败，请重试。')
         this.setData({ authPassword: '' })
         wx.hideLoading()

@@ -68,7 +68,7 @@ async function signUp(email, password, name) {
         password,
         name: name || email.split('@')[0] || '图研Tuyan 用户',
     });
-    return refreshSession();
+    return null;
 }
 async function signOut() {
     sessionEpoch++;

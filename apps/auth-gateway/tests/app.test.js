@@ -3,6 +3,8 @@ import { once } from 'node:events';
 import { request as httpRequest } from 'node:http';
 import test from 'node:test';
 
+import { createAccountDeletionService, createDeletionStore } from '../src/account-deletion.js';
+import { memoryDb } from '../../../test-support/memory-db.mjs';
 import { createApp } from '../src/app.js';
 import { loadGatewayConfig } from '../src/config.js';
 import { createGuestToken, readGuestIdentity } from '../src/guest-identity.js';
@@ -118,7 +120,9 @@ async function withApp({
   isMaintenance = () => false,
   logger = { info() {}, warn() {}, error() {} },
 }, run) {
+  const accountDeletion = createAccountDeletionService({ auth, backend, store: createDeletionStore(memoryDb().collection('operations')), isMaintenance, logger });
   const app = createApp({
+    accountDeletion,
     config: appConfig,
     auth,
     backend,
@@ -568,13 +572,13 @@ test('getJob allows a matching guest owner and rejects missing or mismatched own
   });
 });
 
-test('getJob accepts historical account email and immutable-id admins', async () => {
+test('getJob rejects historical email-only ownership and accepts immutable-id admins', async () => {
   let job = { id: 'job-1', userEmail: 'old@example.com' };
   const backend = fakeBackend(async () => ({ status: 200, data: { code: 0, job } }));
   await withApp({ backend }, async ({ baseUrl }) => {
     assert.equal(
       (await post(baseUrl, { action: 'getJob' }, { 'x-test-session': 'new-id|OLD@example.com' })).status,
-      200,
+      403,
     );
     job = {};
     assert.equal(
@@ -792,9 +796,9 @@ test('account deletion mutates auth only after semantic backend success', async 
   const backend = fakeBackend(async (body) => {
     order.push(body.action);
     if (body.action === 'accountDeletionCapability') {
-      return { status: 200, data: { code: 0, deletionContractVersion: 2 } };
+      return { status: 200, data: { code: 0, deletionContractVersion: 3 } };
     }
-    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 2 } };
+    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 3, operationId: body.operationId, phase: body.action === 'completeAccountDeletion' ? 'completed' : 'awaiting_auth' } };
   });
   await withApp({ auth, backend }, async ({ baseUrl }) => {
     const response = await fetch(`${baseUrl}/api/account/delete`, {
@@ -803,14 +807,14 @@ test('account deletion mutates auth only after semantic backend success', async 
       body: JSON.stringify({ email: 'OWNER@example.com', password: 'secret' }),
     });
     assert.equal(response.status, 200);
-    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'deleteAccount', 'delete', 'clear']);
+    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'accountDeletionStatus', 'accountDeletionCapability', 'deleteAccount', 'delete', 'completeAccountDeletion', 'clear']);
   });
 });
 
-test('account deletion preflights the v2 contract before any destructive backend call', async () => {
+test('account deletion preflights the v3 contract before any destructive backend call', async () => {
   const auth = fakeAuth({
     async verifyPassword() { return true; },
-    async deleteUser() { assert.fail('Auth must remain intact when the backend lacks deletion v2'); },
+    async deleteUser() { assert.fail('Auth must remain intact when the backend lacks deletion v3'); },
   });
   const backend = fakeBackend(async (body) => {
     assert.equal(body.action, 'accountDeletionCapability');
@@ -848,11 +852,10 @@ test('concurrent account deletion requests share one destructive operation', asy
   });
   const backend = fakeBackend(async (body) => {
     if (body.action === 'accountDeletionCapability') {
-      return { status: 200, data: { code: 0, deletionContractVersion: 2 } };
+      return { status: 200, data: { code: 0, deletionContractVersion: 3 } };
     }
-    backendDeletes += 1;
-    await deleteGate;
-    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 2 } };
+    if (body.action === 'deleteAccount') { backendDeletes += 1; await deleteGate; }
+    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 3, operationId: body.operationId, phase: body.action === 'completeAccountDeletion' ? 'completed' : 'awaiting_auth' } };
   });
 
   await withApp({ auth, backend }, async ({ baseUrl }) => {
@@ -882,9 +885,9 @@ test('account deletion succeeds after commit even when cookie clearing fails', a
   const backend = fakeBackend(async (body) => {
     order.push(body.action);
     if (body.action === 'accountDeletionCapability') {
-      return { status: 200, data: { code: 0, deletionContractVersion: 2 } };
+      return { status: 200, data: { code: 0, deletionContractVersion: 3 } };
     }
-    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 2 } };
+    return { status: 200, data: { code: 0, ok: true, deletionContractVersion: 3, operationId: body.operationId, phase: body.action === 'completeAccountDeletion' ? 'completed' : 'awaiting_auth' } };
   });
   await withApp({ auth, backend }, async ({ baseUrl }) => {
     const response = await fetch(`${baseUrl}/api/account/delete`, {
@@ -894,7 +897,7 @@ test('account deletion succeeds after commit even when cookie clearing fails', a
     });
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), { code: 0, ok: true });
-    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'deleteAccount', 'delete', 'clear']);
+    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'accountDeletionStatus', 'accountDeletionCapability', 'deleteAccount', 'delete', 'completeAccountDeletion', 'clear']);
   });
 });
 
@@ -977,38 +980,21 @@ test('route-shaped multi-key failures keep every BYOK secret out of logs and the
   );
 });
 
-test('account deletion preserves auth on business failure and returns the original envelope', async () => {
-  const auth = fakeAuth();
-  const backend = fakeBackend(async (body) => body.action === 'accountDeletionCapability'
-    ? { status: 200, data: { code: 0, deletionContractVersion: 2 } }
-    : { status: 200, data: { code: 503, ok: false, error: 'cleanup failed' } });
-  await withApp({ auth, backend }, async ({ baseUrl }) => {
-    const response = await fetch(`${baseUrl}/api/account/delete`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
-      body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
+test('account deletion persists retry on business failure or incomplete success without deleting Auth', async () => {
+  for (const data of [{ code: 503, error: 'cleanup failed' }, { code: 0 }]) {
+    const auth = fakeAuth();
+    const backend = fakeBackend(async (body) => ['accountDeletionCapability', 'accountDeletionStatus'].includes(body.action)
+      ? { status: 200, data: { code: 0, state: 'active', deletionContractVersion: 3 } } : { status: 200, data });
+    await withApp({ auth, backend }, async ({ baseUrl }) => {
+      const response = await fetch(`${baseUrl}/api/account/delete`, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
+        body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
+      });
+      assert.equal(response.status, 202);
+      assert.equal((await response.json()).accepted, true);
+      assert.deepEqual(auth.events, ['password']);
     });
-    assert.equal(response.status, 200);
-    assert.deepEqual(await response.json(), { code: 503, ok: false, error: 'cleanup failed' });
-    assert.deepEqual(auth.events, ['password']);
-  });
-});
-
-test('account deletion preserves auth when cleanup success fields are missing', async () => {
-  const auth = fakeAuth();
-  const backend = fakeBackend(async (body) => body.action === 'accountDeletionCapability'
-    ? { status: 200, data: { code: 0, deletionContractVersion: 2 } }
-    : { status: 200, data: { code: 0 } });
-  await withApp({ auth, backend }, async ({ baseUrl }) => {
-    const response = await fetch(`${baseUrl}/api/account/delete`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
-      body: JSON.stringify({ email: 'owner@example.com', password: 'secret' }),
-    });
-    assert.equal(response.status, 200);
-    assert.deepEqual(await response.json(), { code: 0 });
-    assert.deepEqual(auth.events, ['password']);
-  });
+  }
 });
 
 test('account deletion refuses a legacy cleanup response that cannot prove complete object deletion', async () => {
@@ -1050,6 +1036,30 @@ test('returns a stable 1 MiB JSON body error envelope', async () => {
     });
     assert.equal(response.status, 413);
     assert.deepEqual(await response.json(), { code: 413, error: 'Request body too large' });
+    assert.equal(backend.calls.length, 0);
+  });
+});
+
+test('account status uses the session identity and internal deletion actions are not public', async () => {
+  const backend = fakeBackend(async (body) => ({ status: 200, data: { code: 0, deletionContractVersion: 3, state: 'review_required', phase: 'legacy_review' } }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    assert.equal((await fetch(`${baseUrl}/api/account/status`)).status, 401);
+    const response = await fetch(`${baseUrl}/api/account/status?userId=other-id`, { headers: { 'x-test-session': 'account-1|owner@example.com' } });
+    assert.equal((await response.json()).state, 'review_required');
+    assert.deepEqual(backend.calls[0].body, { action: 'accountDeletionStatus', userId: 'account-1' });
+    for (const action of ['deleteAccount', 'completeAccountDeletion', 'accountDeletionStatus']) {
+      assert.equal((await post(baseUrl, { action, userId: 'other-id' }, { 'x-test-session': 'account-1|owner@example.com' })).status, 400);
+    }
+  });
+});
+
+test('a durable deletion blocks new work even before Core first accepts the cleanup request', async () => {
+  const auth = fakeAuth({ deletionStore: { async get(id) { return id === 'account-1' ? { status: 'pending' } : null; } } });
+  await withApp({ auth }, async ({ baseUrl, backend }) => {
+    for (const action of ['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission']) {
+      const response = await post(baseUrl, { action }, { 'x-test-session': 'account-1|owner@example.com' });
+      assert.equal(response.status, 409);
+    }
     assert.equal(backend.calls.length, 0);
   });
 });

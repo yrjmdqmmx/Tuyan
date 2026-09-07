@@ -241,6 +241,7 @@ export function createApp({
         const message = String((error as Error)?.message || '')
         const code = message.startsWith('BENCHMARK_ADMIN_REQUIRED') || message.startsWith('BENCHMARK_PROMPT_LOGIN_REQUIRED')
           ? 401
+          : message === 'ACCOUNT_DELETION_IN_PROGRESS' ? 409
           : message.startsWith('BENCHMARK_PROMPT_RATE_LIMIT_') ? 429 : 400
         logger.warn('benchmark request rejected', { action, code })
         const scientificV2AdminDiagnostic = isAdminTransport
@@ -250,7 +251,7 @@ export function createApp({
           : ''
         return response.status(200).json({
           code,
-          error: 'Benchmark request rejected',
+          error: message === 'ACCOUNT_DELETION_IN_PROGRESS' ? message : 'Benchmark request rejected',
           ...(scientificV2AdminDiagnostic ? { diagnosticCode: scientificV2AdminDiagnostic } : {}),
         })
       }

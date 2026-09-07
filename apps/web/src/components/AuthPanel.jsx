@@ -76,7 +76,7 @@ export default function AuthPanel({ onAuthenticated, onCancel }) {
     const verification = mode === 'pending-verification';
     return (
       <section className="auth-panel" aria-live="polite">
-        <div className="section-head"><MailCheck size={22} /><div><h2>{verification ? '等待验证' : '检查你的邮箱'}</h2><p>{verification ? '验证邮件已发送，请在 1 小时内完成验证后返回登录。' : '如该邮箱存在，我们已发送 1 小时内有效的重置链接。'}</p></div></div>
+        <div className="section-head"><MailCheck size={22} /><div><h2>{verification ? '等待验证' : '检查你的邮箱'}</h2><p>{verification ? '注册或验证请求已受理；如需验证，请查收 1 小时内有效的邮件。已有账号请直接登录或找回密码，此提示不代表创建了新账号。' : '如该邮箱存在，我们已发送 1 小时内有效的重置链接。'}</p></div></div>
         {verification ? <button className="secondary-button" type="button" disabled={isSubmitting || cooldown > 0} onClick={resendVerification}>{isSubmitting ? <Loader2 className="spin" size={18} /> : <MailCheck size={18} />}{cooldown > 0 ? `${cooldown} 秒后可重发` : '重发验证邮件'}</button> : null}
         {error ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
         <button className="text-button" type="button" onClick={() => { setMode('sign-in'); setError(''); }}>返回登录</button>

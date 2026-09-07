@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, Loader2, ShieldCheck, Trash2, X } from 'lucide-react'
-import { deleteAccountRequest } from '../lib/account.js'
+import { deleteAccountRequest, accountStatusRequest, accountLifecycleMessage } from '../lib/account.js'
 import { formatErrorMessage } from '../utils.js'
 
 export default function AccountSettingsDialog({ apiBase, email, onClose, onDeleted }) {
@@ -9,7 +9,9 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
   const [confirmation, setConfirmation] = useState('')
   const [error, setError] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
-  const canDelete = password.length >= 8 && confirmation.trim() === '删除账号' && !isDeleting
+  const [lifecycle, setLifecycle] = useState(null)
+  const [statusLoaded, setStatusLoaded] = useState(false)
+  const canDelete = password.length >= 8 && confirmation.trim() === '删除账号' && !isDeleting && statusLoaded && lifecycle?.state === 'active'
 
   useEffect(() => {
     const previous = document.activeElement
@@ -24,14 +26,30 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
     }
   }, [isDeleting, onClose])
 
+  useEffect(() => {
+    let active = true
+    async function refresh() {
+      try {
+        const state = await accountStatusRequest(apiBase)
+        if (active) { setLifecycle(state); setStatusLoaded(true) }
+      } catch (err) { if (active) setError(err.message) }
+    }
+    void refresh()
+    const timer = setInterval(refresh, 30000)
+    return () => { active = false; clearInterval(timer) }
+  }, [apiBase])
+
   async function submit(event) {
     event.preventDefault()
     if (!canDelete) return
     setError('')
     setIsDeleting(true)
     try {
-      await deleteAccountRequest(apiBase, { email, password })
-      await onDeleted()
+      const result = await deleteAccountRequest(apiBase, { email, password })
+      setPassword('')
+      setConfirmation('')
+      if (result.accepted) { setLifecycle({ state: 'deleting', phase: result.phase }); setIsDeleting(false) }
+      else await onDeleted()
     } catch (requestError) {
       setError(requestError?.message || String(requestError))
       setIsDeleting(false)
@@ -55,9 +73,10 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
           <a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a>
           <a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a>
         </div>
+        {lifecycle?.state !== 'active' ? <p role="status">{accountLifecycleMessage(lifecycle)}</p> : null}
         <form className="account-delete-panel" onSubmit={submit}>
           <div className="danger-heading"><Trash2 size={18} />永久删除账号</div>
-          <p>将删除任务记录、生成结果、参考图、反馈、会话和账号。此操作不可恢复。</p>
+          <p>将删除任务记录、生成结果、参考图、反馈、个人投稿、会话和账号。此操作不可恢复。</p>
           <label className="field">
             <span>当前登录密码</span>
             <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />

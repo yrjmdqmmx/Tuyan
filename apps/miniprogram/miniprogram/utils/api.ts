@@ -206,6 +206,12 @@ function parseCookieHeader(header: string): Map<string, string> {
 export function formatError(error: unknown): string {
   if (error instanceof BusinessError) return businessErrorGuidance(error).message
   const message = error instanceof Error ? error.message : String(error || '')
+  if (/ACCOUNT_DELETION_REVIEW_REQUIRED/.test(message)) return '此前的注销未完整结束，需要核对已清理的数据后处理，请联系作者。'
+  if (/ACCOUNT_LIFECYCLE_CLOSED|no longer accepting credential/.test(message)) return '该账号正在注销或已失效，无法建立新的登录会话。'
+  if (/Account deletion is in progress|ACCOUNT_DELETION_IN_PROGRESS/i.test(message)) return '当前账号正在注销，请打开账号设置查看处理状态。'
+  if (/ACCOUNT_DELETION_(PROCESSING|RETRY_SCHEDULED|WAITING_FOR_)/.test(message)) return '注销申请已受理，后台会自动继续处理。'
+  if (/ACCOUNT_DELETION_CONTRACT_UNAVAILABLE/.test(message)) return '账号注销服务正在升级，请稍后重试。'
+
   if (message.includes('Invalid email or password')) return '邮箱或密码不正确。'
   if (message.includes('Invalid origin') || message.includes('Origin not allowed')) {
     return '登录请求被后端来源校验拦截。需要在网关的 FRONTEND_ORIGINS / Better Auth trustedOrigins 放行微信小程序来源后重新部署。'

@@ -7,10 +7,10 @@ import {
   ownerFields,
 } from '../src/ownership.js';
 
-test('allows current account id, historical account email, guest owner, or admin', () => {
+test('allows immutable IDs, guest owner and admin; reused email cannot grant ownership', () => {
   const job = { userId: 'account-1', user_email: 'old@example.com' };
   assert.equal(authorizeJobOwner(job, { userId: 'account-1', email: 'new@example.com' }), true);
-  assert.equal(authorizeJobOwner(job, { userId: 'account-2', email: 'OLD@example.com' }), true);
+  assert.equal(authorizeJobOwner(job, { userId: 'account-2', email: 'OLD@example.com' }), false);
   assert.equal(authorizeJobOwner({ user_id: 'guest:abc' }, { guestOwner: 'guest:abc' }), true);
   assert.equal(authorizeJobOwner({}, { isAdmin: true }), true);
 });
@@ -85,4 +85,8 @@ test('allows an external URL only behind the explicit Laf rollback switch', () =
     normalizeRefineSource(input, { backendMode: 'laf', allowLegacyExternalUrl: true }),
     { objectKey: '', jobId: '', payload: input, legacyExternal: true },
   );
+});
+
+test('email-only legacy rows need explicit migration even if email matches', () => {
+  assert.equal(authorizeJobOwner({ userEmail: 'same@example.test' }, { userId: 'new-id', email: 'same@example.test' }), false);
 });

@@ -326,3 +326,12 @@ test('deploy apply rejects an inherited FD that points at the wrong path', () =>
     fixture.cleanup();
   }
 });
+
+test('maintenance stops old Gateway then old Core before any replacement starts', () => {
+  const script = readFileSync(deployScriptPath, 'utf8');
+  const maintenance = script.indexOf('install -m 0640 -o 0 -g 1000 /dev/null "$maintenance_file"');
+  const gateway = script.indexOf('"${compose[@]}" stop auth-gateway');
+  const core = script.indexOf('"${compose[@]}" stop paperbanana-api');
+  const up = script.indexOf('"${compose[@]}" up -d --remove-orphans --wait');
+  assert.ok(maintenance >= 0 && gateway > maintenance && core > gateway && up > core);
+});

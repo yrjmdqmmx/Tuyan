@@ -1,3 +1,4 @@
+import { createAccountDeletionService } from './account-deletion.js';
 import { createApp } from './app.js';
 import { createAuthRuntime } from './auth.js';
 import { createBackendClient } from './backend-client.js';
@@ -18,6 +19,7 @@ export async function startGateway({
   const config = loadGatewayConfig(env);
   const auth = await createAuthRuntimeImpl(config);
   let server;
+  let accountDeletion;
   try {
     const backend = createBackendClientImpl({
       ...config.backend,
@@ -26,8 +28,10 @@ export async function startGateway({
       adminTransportToken: config.adminTransportToken,
     });
     const isMaintenance = createMaintenanceCheckImpl(config.maintenance);
-    const app = createAppImpl({ config, auth, backend, isMaintenance, logger });
+    if (auth.deletionStore) accountDeletion = createAccountDeletionService({ auth, backend, store: auth.deletionStore, isMaintenance, logger });
+    const app = createAppImpl({ config, auth, backend, isMaintenance, logger, accountDeletion });
     server = await listenImpl(app, config.port, config.listenHost);
+    accountDeletion?.start();
   } catch (error) {
     await auth.close().catch(() => {});
     throw error;
@@ -54,6 +58,7 @@ export async function startGateway({
         shutdownError = error;
       }
       try {
+        await accountDeletion?.stop();
         await auth.close();
       } catch (error) {
         shutdownError ||= error;
