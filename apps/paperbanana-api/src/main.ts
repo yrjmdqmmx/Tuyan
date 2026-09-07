@@ -90,10 +90,13 @@ async function main(): Promise<void> {
         {
           operatorReportSecret: config.benchmark.reviewSigningSecret,
           requireRegistryAuthority: true,
-          async assertAccountAcceptingWork(userId: string) {
-            if (await mongo.db.collection('paperbanana_account_deletions').findOne({ _id: `user:${userId}` } as any)) {
+          async assertAccountAcceptingWork(userId: string, expectedGeneration?: string | void) {
+            const head = await mongo.db.collection('paperbanana_account_deletions').findOne({ _id: `user:${userId}` } as any)
+            const generation = head?.accountGeneration || ''
+            if ((head && !(head.contractVersion === 3 && head.status === 'active')) || (expectedGeneration !== undefined && expectedGeneration !== generation)) {
               throw new Error('ACCOUNT_DELETION_IN_PROGRESS')
             }
+            return generation
           },
           verifyReviewEvidence: verifyScientificReviewEvidence,
         },

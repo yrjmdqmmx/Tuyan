@@ -1,6 +1,6 @@
 # 账号生命周期 v3 修复与发布说明
 
-本分支基于 `8460584908e7dfd4ca6089f0e28b8d1611db9b4e`。这是代码及本地验证交付，尚未部署或调整生产注销记录、对象、认证数据、索引及后台任务。
+本分支基于 `8460584908e7dfd4ca6089f0e28b8d1611db9b4e`。生命周期基础修复为 `18e2a89`。用户现已明确选择保留原账号身份并授权上线；以下补齐恢复实现与发布门，生产结果以本次 release 记录为准。
 
 ## 历史记录必须先隔离
 
@@ -57,9 +57,24 @@ Auth 的 user/account/session、一次性邮箱验证令牌、按 userId 保存�
 
 ## 本轮本地验证结果
 
-- Gateway 132/132；Core 427/427；Web 335/335；小程序 21/21 测试文件。
-- Laf 策略 6/6；共享 API 28/28；香港部署契约 219/219。
+- Gateway 132/132；Core 428/428；Web 335/335；小程序 21/21 测试文件。
+- Laf 策略 6/6；共享 API 28/28；香港部署契约 220/220。
 - Gateway 语法检查、Core TypeScript/服务端构建、Web 生产构建、小程序 TypeScript/JS 构建通过。
 - Mongo 8 实际 Better Auth/Core/Gateway 生命周期集成通过；Mongo 8 受限 API/Worker 角色集成通过，私人投稿允许删除，评测/发布数据删除仍拒绝。
 - Web 保留现有大 chunk 构建提示；未发起外部模型调用或真实邮件。
 - 以上为本地结果；远端 CI 尚未运行，未部署。历史资料可恢复性、旧账号处置及 OSS 超长在途 PUT 边界仍是发布/数据处置的独立事项。
+
+
+## 保留原身份的恢复操作
+
+恢复只适用于经逐账号核查的旧版 `deleting` 且原 Auth 身份、凭证仍存在的账号。新增受控运维模块 `apps/auth-gateway/src/account-restoration.js` 与镜像内 CLI `scripts/restore-account.mjs`，没有公开 HTTP 入口。生产执行必须在共享 host lock 下开启维护、停止全部 Gateway/Core 实例；通过只读 `inspect <账号指纹>` 生成包含身份、凭证、会话、任务、反馈、上传及注销记录的 SHA-256 审核摘要，再以 `restore <指纹> <摘要>` 执行。摘要变化、活跃任务、未过期上传、仍可执行的 Auth 删除操作或不匹配身份均拒绝恢复。
+
+跨 Auth/Business DB 的一个 Mongo 事务会把旧删除范围及操作原样存入 `paperbanana_account_deletion_history` / `accountDeletionOperationHistory`，标为关闭且 `cleanupAllowed=false`；当前 head 保留在 `paperbanana_account_deletions`，状态为 active，具有随机 `accountGeneration`、恢复时间及归档指针。只归档处于 review_required 的 Auth 操作并移出执行队列；绝不删除或重建 user/account/session、任务、反馈或存储对象。同一审核摘要可幂等重试，不生成第二个生命周期。
+
+Core 在服务端绑定生命周期编号，忽略客户端伪造值。新任务入库及后台写回均校验该编号；旧任务体缺少编号时不能在恢复后写入。新参考图目录为 `references/<userId>/lifecycles/<generation>/...`，旧 PUT URL 无法写到新目录，旧 finalize/abort 不能作用于新周期。后续用户再次明确注销时，Gateway 把当前编号绑定到新的持久化操作，Core 才允许 active → deleting；旧操作无此编号会被拒绝。新注销按该身份的全部历史记录和固定 ID 目录清理，关闭的历史记录不参与自动清理。
+
+`GET /api/account/status` 增加可选 `accountGeneration/restoredAt`，客户端仍用 active 状态开放操作；编号由服务端维护，客户端无需发送。私人投稿的前后检查也绑定同一周期。Webhook、其他客户端及模型目录无新要求。
+
+本次生产处置范围只包括指纹 `24d87b8676e0`。另一条中断记录仍暂停并保留，等待该账号的独立处置决定。98 个当前缺失对象不在身份恢复操作中重建，历史任务记录保留不代表图片已经恢复。
+
+运行 CLI 的一次性容器使用已核验的 Gateway 不可变镜像、仅挂载只读 Mongo root password 文件、只接 backend 网络、只读文件系统、移除所有 Linux capabilities；不启动 Web 服务、邮件或模型调用。凭证只在进程内使用，不输出或写入审核清单。维护停止约束由 host 操作核验，CLI 同时要求 `PAPERBANANA_RESTORATION_QUIESCED=true`。结束后用同一不可变镜像重启 Core/Gateway，验收通过才解除维护。

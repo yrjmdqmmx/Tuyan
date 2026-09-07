@@ -15,7 +15,7 @@ function extract(name: string) {
   const end = remaining.slice(1).search(/\n(?:export )?(?:async )?function |\n(?:export )?(?:const|let|type) /)
   return remaining.slice(0, end < 0 ? undefined : end + 1).replace(/^export /, '')
 }
-const functions = ['accountIdQuery', 'accountDeletionStatus', 'deleteAccount', 'listAccountObjectKeys', 'completeAccountDeletion', 'storedObjectKeysForJob', 'accountOwnerKeys', 'ensureAccountAcceptingWork', 'sweepDeletedAccountObjects']
+const functions = ['accountIdQuery', 'accountDeletionStatus', 'deleteAccount', 'listAccountObjectKeys', 'completeAccountDeletion', 'storedObjectKeysForJob', 'accountOwnerKeys', 'ensureAccountAcceptingWork', 'bindAccountGeneration', 'referenceUploadOwner', 'assertOwnerKeysAcceptingWork', 'assertJobOwnerAcceptingWork', 'sweepDeletedAccountObjects']
 const javascript = stripTypeScriptTypes(functions.map(extract).join('\n'))
 function fixture({ jobs = [], tombstones = [], uploads = [], objects = [] } : any = {}) {
   const db = memoryDb({ paperbanana_jobs: jobs, paperbanana_account_deletions: tombstones, paperbanana_reference_upload_state: uploads })
@@ -33,6 +33,7 @@ function fixture({ jobs = [], tombstones = [], uploads = [], objects = [] } : an
     Date: Clock, console, accountDeletions: db.collection('paperbanana_account_deletions'), jobs: db.collection('paperbanana_jobs'),
     feedback: db.collection('feedback'), referenceUploadState: db.collection('paperbanana_reference_upload_state'),
     jobAdmission: { freezeOwners() {} }, cloud: { storage: { bucket: () => bucket } }, bucketName: 'fake',
+    sanitizePathPart: (value: string) => value.replace(/[^A-Za-z0-9._-]+/g, '-'),
     randomId: () => 'lease-test', referenceUploadStateRetentionMs: 86400000,
     deleteAdditionalAccountData: async (userId: string) => db.collection('submissions').deleteMany({ userId }),
     ok: (body: any) => ({ code: 0, ...body }), fail: (error: string, code: number) => ({ code, error }),
@@ -155,4 +156,29 @@ test('private prompt submission rejects frozen owners before insert and compensa
     await assert.rejects(repository.submitPrompt({ userId: 'old-id', clientIp: '127.0.0.1', prompt: 'fixture' }), /ACCOUNT_DELETION_IN_PROGRESS/)
     assert.equal(db.collection(BENCHMARK_COLLECTIONS.promptSubmissions).rows.length, 0)
   }
+})
+
+
+test('restored identity keeps old generation closed, binds fresh work and prevents old deletion replay', async () => {
+  const generation = '12345678-aaaa-1234-1234-123456789abc'
+  const f = fixture({ jobs: [oldJob], tombstones: [{ _id: 'user:old-id', userId: 'old-id', status: 'active', phase: 'active', contractVersion: 3, accountGeneration: generation }] })
+  assert.equal((await f.context.accountDeletionStatus(f.body)).state, 'active')
+  assert.equal(await f.context.ensureAccountAcceptingWork({ userId: 'old-id' }), false)
+  await assert.rejects(f.context.assertJobOwnerAcceptingWork('old-job'), /deletion/)
+  const fresh = { userId: 'old-id', accountGeneration: 'client-forged' }
+  await f.context.bindAccountGeneration(fresh)
+  assert.equal(fresh.accountGeneration, generation)
+  assert.equal(await f.context.ensureAccountAcceptingWork(fresh), true)
+  assert.equal(f.context.referenceUploadOwner(fresh), `old-id/lifecycles/${generation}`)
+  await f.db.collection('paperbanana_jobs').insertOne({ _id: 'fresh-job', ...fresh })
+  await f.context.assertJobOwnerAcceptingWork('fresh-job')
+  assert.equal((await f.run()).error, 'ACCOUNT_DELETION_OPERATION_MISMATCH')
+  assert.equal((await f.context.completeAccountDeletion(f.body)).code, 409)
+  await f.context.sweepDeletedAccountObjects()
+  assert.deepEqual(f.deleted, [])
+  assert.deepEqual(f.listed, [])
+  assert.equal(f.db.collection('paperbanana_jobs').rows.length, 2)
+  const nextDeletion = { ...f.body, accountGeneration: generation }
+  assert.equal((await f.context.deleteAccount(nextDeletion)).phase, 'awaiting_auth')
+  assert.equal(f.db.collection('paperbanana_jobs').rows.length, 0)
 })

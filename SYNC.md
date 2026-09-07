@@ -1,5 +1,15 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-07] 原身份恢复与生命周期隔离 — by Codex
+变更：用户明确选择保留原账号身份并授权上线。旧注销范围和已暂停的 Auth 操作在跨库事务中归档，当前生命周期 head 保留并设为 active，生成新的 `accountGeneration`。用户、凭证、会话、任务和反馈原样保留；不重建缺失图片。新增仅运维可运行的指纹 + 快照摘要恢复 CLI，要求维护并停止 Core/Gateway。新任务持久化周期编号，参考图使用独立子目录，旧写回及旧注销请求不能影响新周期。发布明确先停旧 Gateway 再停旧 Core，新旧清理器不重叠。
+契约：`GET /api/account/status` 可选新增 `accountGeneration/restoredAt`；编号由 Core 绑定，客户端无需提交。内部注销绑定该编号。新增归档集合 `paperbanana_account_deletion_history` / `accountDeletionOperationHistory`，不新增公开 action、密钥或模型调用。
+- [x] Core / Gateway / 共享实现（恢复事务、周期校验、旧操作关闭、新注销继续支持）
+- [x] Web / 微信小程序（沿用 active/deleting/review_required 契约，无需额外请求字段）
+- [x] 本地验证（生产函数回归、真实 Mongo 跨库事务、身份和历史不变、摘要漂移及幂等重试）
+- [ ] 生产发布和原身份恢复验收（结果见本次 release 记录）
+- [ ] 另一条历史中断注销（继续暂停，未获该账号处置决定）
+- [ ] 小程序上传 / 平台发布（用户要求暂缓）
+
 ### [2026-09-07] 账号生命周期 v3 与同邮箱重新注册隔离 — by Codex
 变更：历史 v2/无版本注销记录停止自动清扫、保留冻结并要求核对；新注销先在 Auth DB 持久化授权操作，再按不可变用户 ID 等待在途写入、冻结对象清单、清理业务数据、事务删除 Auth 并确认完成。Gateway 定时续跑、跨进程租约、失败阶段与游标持久化；不再无限扫描邮箱目录。任务权限及注销范围取消邮箱回退，历史仅邮箱记录需显式迁移。原始个人投稿纳入删除并补齐前后写入检查；Mongo 初始化脚本只为 Benchmark API 的个人投稿集合增加 remove 权限，公开评测与 Worker 删除权限仍禁止。
 契约：内部 `accountDeletionCapability.deletionContractVersion=3`；`deleteAccount` 必须有 `userId + operationId`，新增内部 `completeAccountDeletion` / `accountDeletionStatus`，均要求可信 Gateway。公开新增登录态 `GET /api/account/status`；`POST /api/account/delete` 完成返回原 `200 {code:0,ok:true}`，已持久化待续跑返回 `202 {code:202,accepted:true,phase,error,retryAfterSeconds}`，历史/范围不明返回 `409 ACCOUNT_DELETION_REVIEW_REQUIRED`。202 不代表删除成功，不清除客户端任务和草稿。

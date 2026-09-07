@@ -146,6 +146,10 @@ if [[ "${PAPERBANANA_SKIP_PULL:-false}" != true ]]; then
 fi
 "$script_dir/install-worker-firewall.sh"
 "$script_dir/install-directmail-egress-timer.sh" --apply
+# Stop the old Gateway before Core so an in-flight v2 deletion cannot overlap
+# a newly created v3 operation. Core's SIGTERM handler drains accepted jobs.
+"${compose[@]}" stop auth-gateway
+"${compose[@]}" stop paperbanana-api
 "${compose[@]}" up -d --remove-orphans --wait --wait-timeout 1800
 "$script_dir/install-worker-firewall.sh"
 "$script_dir/sync-reference-metadata.sh"

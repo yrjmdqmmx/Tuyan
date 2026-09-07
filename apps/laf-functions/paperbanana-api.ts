@@ -96,6 +96,7 @@ type CreateJobBody = {
   caption: string
   infographicCategory?: string
   userId?: string
+  accountGeneration?: string
   userEmail?: string
   outputFormat?: OutputFormat
   output_format?: OutputFormat
@@ -131,6 +132,7 @@ type RefineImageBody = {
   aspectRatio?: AspectRatio
   imageSize?: ImageResolution
   userId?: string
+  accountGeneration?: string
   userEmail?: string
   clientPlatform?: ClientPlatform
   refineMode?: ImageEditMode
@@ -192,6 +194,7 @@ export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody 
     caption: routed.caption,
     infographicCategory: routed.infographicCategory,
     userId: routed.userId,
+    accountGeneration: routed.accountGeneration,
     userEmail: routed.userEmail,
     outputFormat: routed.outputFormat,
     referenceImageMode: routed.referenceImageMode,
@@ -224,6 +227,7 @@ export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBod
     aspectRatio: routed.aspectRatio,
     imageSize: routed.imageSize,
     userId: routed.userId,
+    accountGeneration: routed.accountGeneration,
     userEmail: routed.userEmail,
     clientPlatform: routed.clientPlatform,
     refineMode: routed.refineMode,
@@ -546,6 +550,7 @@ type PrepareReferenceUploadBody = {
   action: 'prepareReferenceUpload'
   files?: ReferenceUploadDescriptor[]
   userId?: string
+  accountGeneration?: string
   userEmail?: string
 }
 
@@ -553,6 +558,7 @@ type ReferenceUploadLifecycleBody = {
   action: 'finalizeReferenceUpload' | 'abortReferenceUpload'
   uploads?: ReferenceImageInput[]
   userId?: string
+  accountGeneration?: string
   userEmail?: string
 }
 
@@ -607,6 +613,7 @@ type SubmitFeedbackBody = {
   clientVersion?: string
   contact?: string
   userId?: string
+  accountGeneration?: string
   userEmail?: string
 }
 
@@ -628,6 +635,7 @@ type DeleteAccountBody = {
   action: 'deleteAccount' | 'completeAccountDeletion' | 'accountDeletionStatus'
   operationId?: string
   userId?: string
+  accountGeneration?: string
   userEmail?: string
 }
 
@@ -682,6 +690,7 @@ type ProviderAccountCatalogBody = {
   provider?: Provider
   apiKeys?: ApiKeys
   userId?: string
+  accountGeneration?: string
   userEmail?: string
   probes?: Array<{ role: ModelRole; modelId: string }>
   confirmPaidImageProbe?: boolean
@@ -1840,6 +1849,9 @@ export default async function (ctx: FunctionContext) {
       const denied = requireTrustedCaller(body)
       if (denied) return denied
     }
+    if (['optimizeInputs', 'submitFeedback', 'prepareReferenceUpload', 'finalizeReferenceUpload', 'abortReferenceUpload'].includes(action)) {
+      await bindAccountGeneration(body as any)
+    }
     if ((action === 'createJob' || action === 'refineImage') && body.clientPlatform && !normalizeClientPlatform(body.clientPlatform)) {
       return fail('Invalid clientPlatform', 400)
     }
@@ -1933,7 +1945,7 @@ async function prepareReferenceUpload(body: PrepareReferenceUploadBody) {
     return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
 
-  const owner = sanitizePathPart(body.userId || body.userEmail || 'anon')
+  const owner = referenceUploadOwner(body)
   const ownerKeys = accountOwnerKeys(body)
   const bucket = cloud.storage.bucket(bucketName)
   const uploads = []
@@ -1982,6 +1994,7 @@ async function finalizeReferenceUpload(body: ReferenceUploadLifecycleBody) {
     await abortPreparedReferenceUploads(body, uploads)
     return fail('Account deletion is in progress. Uploaded references were removed.', 409)
   }
+  if (body.accountGeneration && uploads.some((upload) => [upload.objectKey, upload.analysisObjectKey].filter(Boolean).some((key) => !String(key).startsWith(`references/${referenceUploadOwner(body)}/`)))) return fail('ACCOUNT_REFERENCE_LIFECYCLE_MISMATCH', 409)
   await verifyUploadedReferenceObjects(uploads)
   await markReferenceUploadsFinalized(uploads)
   if (!(await ensureAccountAcceptingWork(body))) {
@@ -2746,6 +2759,9 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       }
     }
   }
+  await bindAccountGeneration(body)
+  normalizedBody.accountGeneration = body.accountGeneration
+  jobBody.accountGeneration = body.accountGeneration
   if (!(await ensureAccountAcceptingWork(body))) {
     return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
@@ -2779,6 +2795,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     configurationMode: limitText(normalizedBody.configurationMode, 40) || 'advanced',
     taskName: normalizedBody.taskName,
     userId: normalizedBody.userId || '',
+    accountGeneration: normalizedBody.accountGeneration || '',
     userEmail: normalizedBody.userEmail || '',
     methodContent: normalizedBody.methodContent,
     negativePrompt: normalizedBody.negativePrompt,
@@ -2909,6 +2926,8 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
       businessCode: 'REFINE_ASPECT_RATIO_UNSUPPORTED',
     }
   }
+  await bindAccountGeneration(body)
+  normalizedBodyWithSecrets.accountGeneration = body.accountGeneration
   if (!(await ensureAccountAcceptingWork(body))) {
     return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
   }
@@ -2952,6 +2971,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
     configurationMode: normalizedBody.configurationMode,
     taskName: 'diagram',
     userId: normalizedBody.userId || '',
+    accountGeneration: normalizedBody.accountGeneration || '',
     userEmail: normalizedBody.userEmail || '',
     methodContent: normalizedBody.editInstruction,
     caption: 'Refine existing PaperBanana image',
@@ -3103,6 +3123,7 @@ export async function accountDeletionStatus(body: { userId?: string }) {
   if (!userId) return fail('userId is required', 400)
   const row = await accountDeletions.findOne({ _id: `user:${userId}` })
   if (!row) return ok({ state: 'active', phase: 'active', deletionContractVersion: 3 })
+  if (row.contractVersion === 3 && row.status === 'active') return ok({ state: 'active', phase: 'active', accountGeneration: row.accountGeneration, restoredAt: row.restoredAt, deletionContractVersion: 3 })
   return ok({
     state: row.contractVersion === 3 ? row.status : 'review_required',
     phase: row.contractVersion === 3 ? row.phase : 'legacy_review',
@@ -3126,6 +3147,14 @@ async function deleteAccount(body: DeleteAccountBody) {
   const ownerKey = `user:${userId}`
   const filter = { _id: ownerKey, contractVersion: 3, operationId }
   const now = new Date()
+  const head = await accountDeletions.findOne({ _id: ownerKey })
+  if (head?.status === 'active') {
+    if (!head.accountGeneration || body.accountGeneration !== head.accountGeneration) return fail('ACCOUNT_DELETION_OPERATION_MISMATCH', 409)
+    const claimed = await accountDeletions.updateOne({ _id: ownerKey, status: 'active', contractVersion: 3, accountGeneration: body.accountGeneration }, { $set: {
+      operationId, status: 'deleting', phase: 'waiting', createdAt: now, updatedAt: now, attempts: 0,
+    } })
+    if (claimed.matchedCount !== 1) return fail('ACCOUNT_DELETION_OPERATION_MISMATCH', 409)
+  }
   await accountDeletions.updateOne({ _id: ownerKey }, { $setOnInsert: {
     contractVersion: 3, operationId, userId, status: 'deleting', phase: 'waiting',
     createdAt: now, updatedAt: now, attempts: 0,
@@ -3137,7 +3166,7 @@ async function deleteAccount(body: DeleteAccountBody) {
   if (row.phase === 'awaiting_auth' || row.phase === 'completed') {
     return ok({ ok: true, deletionContractVersion: 3, operationId, phase: row.phase })
   }
-  jobAdmission.freezeOwners([ownerKey])
+  jobAdmission.freezeOwners([ownerKey, ...(row.accountGeneration ? [`${ownerKey}@${row.accountGeneration}`] : [])])
   const leaseToken = randomId()
   const lease = await accountDeletions.updateOne({ ...filter, status: 'deleting', $or: [
     { leaseUntil: { $exists: false } }, { leaseUntil: { $lte: now } },
@@ -3314,7 +3343,8 @@ async function sweepDeletedAccountObjects() {
     expiresAt: { $lt: new Date(Date.now() - referenceUploadStateRetentionMs) },
   }).limit(100).toArray()
   for (const upload of expired) {
-    if (!(await accountDeletions.findOne({ _id: upload.ownerKey }))) {
+    const head = await accountDeletions.findOne({ _id: upload.ownerKey })
+    if (!head || (head.contractVersion === 3 && head.status === 'active')) {
       await referenceUploadState.deleteOne({ _id: upload._id, expiresAt: upload.expiresAt })
     }
   }
@@ -6233,7 +6263,7 @@ export async function saveResult(
   mimeType: string,
   encoding: 'base64' | 'utf8',
 ) {
-  const ownerKeys = await assertJobOwnerAcceptingWork(jobId)
+  await assertJobOwnerAcceptingWork(jobId)
   const filename = `${jobId}/candidate-${candidateId}.${resultExtension(mimeType)}`
   const buffer = encoding === 'base64' ? Buffer.from(content, 'base64') : Buffer.from(content, 'utf8')
   const base64 = encoding === 'base64' ? content : buffer.toString('base64')
@@ -6241,7 +6271,7 @@ export async function saveResult(
     const bucket = cloud.storage.bucket(bucketName)
     await bucket.writeFile(filename, buffer, { ContentType: mimeType })
     try {
-      await assertOwnerKeysAcceptingWork(ownerKeys)
+      await assertJobOwnerAcceptingWork(jobId)
     } catch (error) {
       try { await bucket.deleteFile(filename) } catch {}
       throw error
@@ -6272,7 +6302,7 @@ export async function saveStageImage(
   mimeType: string,
   encoding: 'base64' | 'utf8',
 ) {
-  const ownerKeys = await assertJobOwnerAcceptingWork(jobId)
+  await assertJobOwnerAcceptingWork(jobId)
   const safeStageName = sanitizePathPart(stageName)
   const filename = `${jobId}/candidate-${candidateId}-${safeStageName}.${resultExtension(mimeType)}`
   const buffer = encoding === 'base64' ? Buffer.from(content, 'base64') : Buffer.from(content, 'utf8')
@@ -6281,7 +6311,7 @@ export async function saveStageImage(
     const bucket = cloud.storage.bucket(bucketName)
     await bucket.writeFile(filename, buffer, { ContentType: mimeType })
     try {
-      await assertOwnerKeysAcceptingWork(ownerKeys)
+      await assertJobOwnerAcceptingWork(jobId)
     } catch (error) {
       try { await bucket.deleteFile(filename) } catch {}
       throw error
@@ -8163,15 +8193,30 @@ function accountOwnerKeys(body: { userId?: string; userEmail?: string }): string
   return []
 }
 
-async function ensureAccountAcceptingWork(body: { userId?: string; userEmail?: string }): Promise<boolean> {
-  const ownerKeys = accountOwnerKeys(body)
-  if (!ownerKeys.length) return true
-  return !(await accountDeletions.findOne({ _id: { $in: ownerKeys } }))
+// The head remains durable after restoration. Old operations and old job bodies
+// stay closed even though this same immutable identity can create new work.
+async function bindAccountGeneration(body: { userId?: string; accountGeneration?: string }) {
+  const head = body.userId ? await accountDeletions.findOne({ _id: `user:${body.userId}` }) : null
+  body.accountGeneration = head?.contractVersion === 3 && head.status === 'active' ? head.accountGeneration || '' : ''
 }
 
-async function assertOwnerKeysAcceptingWork(ownerKeys: string[]) {
+function referenceUploadOwner(body: { userId?: string; userEmail?: string; accountGeneration?: string }) {
+  const owner = sanitizePathPart(body.userId || body.userEmail || 'anon')
+  return body.accountGeneration ? `${owner}/lifecycles/${sanitizePathPart(body.accountGeneration)}` : owner
+}
+
+async function ensureAccountAcceptingWork(body: { userId?: string; userEmail?: string; accountGeneration?: string }): Promise<boolean> {
+  const ownerKeys = accountOwnerKeys(body)
+  if (!ownerKeys.length) return true
+  const head = await accountDeletions.findOne({ _id: { $in: ownerKeys } })
+  if (!head) return !body.accountGeneration
+  return head.contractVersion === 3 && head.status === 'active' && !!head.accountGeneration && head.accountGeneration === body.accountGeneration
+}
+
+async function assertOwnerKeysAcceptingWork(ownerKeys: string[], accountGeneration = '') {
   if (!ownerKeys.length) return
-  if (await accountDeletions.findOne({ _id: { $in: ownerKeys } })) {
+  const head = await accountDeletions.findOne({ _id: { $in: ownerKeys } })
+  if (head ? !(head.contractVersion === 3 && head.status === 'active' && head.accountGeneration === accountGeneration && !!accountGeneration) : !!accountGeneration) {
     const error: any = new Error('Account deletion is in progress. Stored output was cancelled.')
     error.code = 'ACCOUNT_DELETION_IN_PROGRESS'
     throw error
@@ -8182,7 +8227,7 @@ async function assertJobOwnerAcceptingWork(jobId: string): Promise<string[]> {
   const job = await jobs.findOne({ _id: jobId })
   if (!job) throw new Error('Job not found while checking account deletion state')
   const ownerKeys = accountOwnerKeys(job)
-  await assertOwnerKeysAcceptingWork(ownerKeys)
+  await assertOwnerKeysAcceptingWork(ownerKeys, job.accountGeneration || '')
   return ownerKeys
 }
 
@@ -8224,7 +8269,7 @@ async function markReferenceUploadsFinalized(images: Array<Pick<StoredReferenceI
 }
 
 async function abortPreparedReferenceUploads(
-  body: { userId?: string; userEmail?: string },
+  body: { userId?: string; userEmail?: string; accountGeneration?: string },
   uploads: Array<Partial<ReferenceImageInput>>,
 ) {
   const ownerKeys = accountOwnerKeys(body)
@@ -8233,6 +8278,7 @@ async function abortPreparedReferenceUploads(
   const now = new Date()
   for (const upload of uploads) {
     for (const objectKey of [upload.objectKey, upload.analysisObjectKey].filter(Boolean).map(String)) {
+      if (body.accountGeneration && !objectKey.startsWith(`references/${referenceUploadOwner(body)}/`)) continue
       const state = await referenceUploadState.findOne({ _id: objectKey, ownerKey: { $in: ownerKeys } })
       if (!state) continue
       try { await bucket.deleteFile(objectKey) } catch {}
@@ -8245,14 +8291,14 @@ async function abortPreparedReferenceUploads(
 }
 
 function jobAdmissionPrincipal(
-  body: Pick<CreateExecutionBody | RefineExecutionBody, 'userId' | 'userEmail'>,
+  body: Pick<CreateExecutionBody | RefineExecutionBody, 'userId' | 'userEmail' | 'accountGeneration'>,
   ctx: FunctionContext,
 ): JobPrincipal {
   const ip = getClientIp(ctx) || 'unknown'
   const userId = String(body.userId || '').trim()
   const userEmail = String(body.userEmail || '').trim().toLowerCase()
   const owner = userId ? `user:${userId}` : userEmail ? `email:${userEmail}` : `anonymous:${ip}`
-  return { ownerKey: owner, ipKey: `ip:${ip}` }
+  return { ownerKey: body.accountGeneration ? `${owner}@${body.accountGeneration}` : owner, ipKey: `ip:${ip}` }
 }
 
 function toOpenRouterModel(model: string) {

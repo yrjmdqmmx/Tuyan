@@ -10,9 +10,9 @@ const valid = (result) => result?.status >= 200 && result.status < 300 && result
 // acknowledgement can be committed in one transaction (see deleteAuthUser).
 export function createDeletionStore(collection, now = () => new Date()) {
   return {
-    async begin(userId) {
+    async begin(userId, accountGeneration = '') {
       await collection.updateOne({ _id: userId }, { $setOnInsert: {
-        operationId: randomUUID(), userId, contractVersion: VERSION, phase: 'business',
+        operationId: randomUUID(), userId, accountGeneration, contractVersion: VERSION, phase: 'business',
         status: 'pending', attempts: 0, createdAt: now(), updatedAt: now(), nextAttemptAt: now(),
       } }, { upsert: true });
       return collection.findOne({ _id: userId });
@@ -59,7 +59,7 @@ export function createAccountDeletionService({ auth, backend, store, isMaintenan
     try {
       if (!await capability()) throw new Error('ACCOUNT_DELETION_CONTRACT_UNAVAILABLE');
       if (op.phase === 'business') {
-        const result = await backend.call({ action: 'deleteAccount', userId: op.userId, operationId: op.operationId }, {}, { timeoutMs: 120000 });
+        const result = await backend.call({ action: 'deleteAccount', userId: op.userId, operationId: op.operationId, accountGeneration: op.accountGeneration || '' }, {}, { timeoutMs: 120000 });
         if (result.data?.error === 'ACCOUNT_DELETION_REVIEW_REQUIRED' || result.data?.error === 'ACCOUNT_DELETION_OPERATION_MISMATCH') {
           await store.save(op, { status: 'review_required', lastErrorCode: result.data.error });
           return { status: 409, data: { code: 409, error: 'ACCOUNT_DELETION_REVIEW_REQUIRED' } };
@@ -111,7 +111,9 @@ export function createAccountDeletionService({ auth, backend, store, isMaintenan
       if (!userId) return unavailable();
       if (!await capability()) return unavailable();
       // begin must be durable BEFORE Core is allowed to freeze or remove data.
-      await store.begin(userId);
+      const status = await backend.call({ action: 'accountDeletionStatus', userId });
+      if (!valid(status) || status.data.deletionContractVersion !== VERSION) return unavailable();
+      await store.begin(userId, status.data.accountGeneration || '');
       return advance(userId);
     },
     async status(userId) {

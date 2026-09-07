@@ -807,7 +807,7 @@ test('account deletion mutates auth only after semantic backend success', async 
       body: JSON.stringify({ email: 'OWNER@example.com', password: 'secret' }),
     });
     assert.equal(response.status, 200);
-    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'accountDeletionCapability', 'deleteAccount', 'delete', 'completeAccountDeletion', 'clear']);
+    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'accountDeletionStatus', 'accountDeletionCapability', 'deleteAccount', 'delete', 'completeAccountDeletion', 'clear']);
   });
 });
 
@@ -897,7 +897,7 @@ test('account deletion succeeds after commit even when cookie clearing fails', a
     });
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), { code: 0, ok: true });
-    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'accountDeletionCapability', 'deleteAccount', 'delete', 'completeAccountDeletion', 'clear']);
+    assert.deepEqual(order, ['password', 'accountDeletionCapability', 'accountDeletionStatus', 'accountDeletionCapability', 'deleteAccount', 'delete', 'completeAccountDeletion', 'clear']);
   });
 });
 
@@ -983,8 +983,8 @@ test('route-shaped multi-key failures keep every BYOK secret out of logs and the
 test('account deletion persists retry on business failure or incomplete success without deleting Auth', async () => {
   for (const data of [{ code: 503, error: 'cleanup failed' }, { code: 0 }]) {
     const auth = fakeAuth();
-    const backend = fakeBackend(async (body) => body.action === 'accountDeletionCapability'
-      ? { status: 200, data: { code: 0, deletionContractVersion: 3 } } : { status: 200, data });
+    const backend = fakeBackend(async (body) => ['accountDeletionCapability', 'accountDeletionStatus'].includes(body.action)
+      ? { status: 200, data: { code: 0, state: 'active', deletionContractVersion: 3 } } : { status: 200, data });
     await withApp({ auth, backend }, async ({ baseUrl }) => {
       const response = await fetch(`${baseUrl}/api/account/delete`, {
         method: 'POST', headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' },
