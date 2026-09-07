@@ -22,12 +22,12 @@
           <view class="manual-library-note">选择会随“保存全部设置”一次生效，取消设置不会改变首页草稿。</view>
           <reference-library task-name="{{libraryTaskName}}" selected-ids="{{draftManualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
         </view>
-        <view class="setting-block"><view class="setting-label">渠道密钥</view><view class="key-field" wx:for="{{keyFields}}" wx:key="provider"><view class="key-label">{{item.label}}</view><input class="key-input" password value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" /></view><view class="privacy-note">密钥仅保存在当前页面内存，不写入 Storage、日志或任务记录。</view><button class="ark-verify" wx:if="{{arkStatus}}" loading="{{verifyingArk}}" disabled="{{verifyingArk}}" bindtap="verifyArkRoutes">{{arkStatus}} · 点击验证</button></view>
+        <view class="setting-block"><view class="setting-label">渠道密钥</view><view class="key-field" wx:for="{{keyFields}}" wx:key="provider"><view class="key-label">{{item.label}}</view><view wx:if="{{item.provider === 'minimax'}}"><view class="setting-label">MiniMax 区域</view><picker range="{{minimaxRegionOptions}}" range-key="label" value="{{minimaxRegionIndex}}" bindchange="onMiniMaxRegionChange"><view class="setting-picker">{{minimaxRegionOptions[minimaxRegionIndex].label}}</view></picker><view class="privacy-note">{{minimaxApiBase}} · 请填写该区域平台的 Key</view></view><input class="key-input" password value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" /></view><view class="privacy-note">密钥仅保存在当前页面内存，不写入 Storage、日志或任务记录。</view><button class="ark-verify" wx:if="{{arkStatus}}" loading="{{verifyingArk}}" disabled="{{verifyingArk}}" bindtap="verifyArkRoutes">{{arkStatus}} · 点击验证</button></view>
       </view>
       <view class="sheet-error" wx:if="{{error}}">{{error}}</view>
       <view class="sheet-bottom-space"></view>
     </scroll-view>
     <button class="sheet-save" disabled="{{!draft}}" bindtap="save">保存全部设置</button>
   </view>
-  <model-picker show="{{showModelPicker}}" registry="{{registry}}" role="{{editingRole}}" output-format="{{draft.outputFormat || ''}}" selected-provider="{{pickerProvider}}" selected-model="{{pickerModel}}" bind:select="selectModel" bind:close="closeModelPicker" />
+  <model-picker show="{{showModelPicker}}" registry-version="{{registryVersion}}" provider-regions="{{draft.providerRegions}}" role="{{editingRole}}" output-format="{{draft.outputFormat || ''}}" selected-provider="{{pickerProvider}}" selected-model="{{pickerModel}}" bind:select="selectModel" bind:close="closeModelPicker" />
 </view>

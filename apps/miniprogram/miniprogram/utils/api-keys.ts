@@ -1,6 +1,6 @@
 import { MODEL_PROVIDER_IDS, type ModelProviderId } from './model-registry'
 
-const keys: Partial<Record<ModelProviderId, string>> = {}
+const keys: Record<string, string> = {}
 
 export function getApiKeys(): Record<string, string> {
   return { ...keys }
@@ -16,6 +16,7 @@ export function replaceApiKeys(input: Record<string, string>): void {
   clearApiKeys()
   for (const [provider, value] of Object.entries(input)) {
     if (isProvider(provider)) setApiKey(provider, value)
+    else if (/^minimax:(cn|global)$/.test(provider) && typeof value === 'string') keys[provider] = value.trim()
   }
 }
 

@@ -93,6 +93,7 @@ const navItems = [
   { id: 'leaderboard', label: '排行榜', href: appPath('/leaderboard') },
   { id: 'methodology', label: '方法说明', href: appPath('/leaderboard/methodology') },
   { id: 'submit', label: '提交评估题', href: appPath('/leaderboard/submit-prompt') },
+  { id: 'openacad', label: 'OpenAcad', href: 'https://openacad.xyz/', external: true },
   { id: 'github', label: 'GitHub', href: 'https://github.com/yrjmdqmmx/Tuyan-clients', external: true },
 ]
 

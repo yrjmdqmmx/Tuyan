@@ -19,6 +19,9 @@ const targetHosts = new Set([
   'api.anthropic.com',
   'api.x.ai',
   'external.api.recraft.ai',
+  'api.bfl.ai', 'api.eu.bfl.ai', 'api.us.bfl.ai',
+  'api.stability.ai', 'api.ideogram.ai', 'api.minimax.io', 'api.mistral.ai',
+  'api.together.ai', 'api.fireworks.ai', 'queue.fal.run', 'api.replicate.com',
   'generativelanguage.googleapis.com',
   'openrouter.ai',
   'ark.cn-beijing.volces.com',
@@ -58,7 +61,7 @@ function normalizedTargetOrigin(origin: string | URL | undefined): boolean {
   // Strip exactly one DNS root label. Multiple trailing dots and IDNA
   // lookalikes remain non-targets instead of being widened into the allowlist.
   if (!hostname || hostname.endsWith('.')) return false
-  return targetHosts.has(hostname)
+  return targetHosts.has(hostname) || /^api\.[a-z0-9.-]+\.bfl\.ai$/.test(hostname)
 }
 
 function requestHeaders(request: { headers?: { forEach?(callback: (value: string, key: string) => void): void } }) {

@@ -1,3 +1,4 @@
+import { normalizeProviderRegions } from './providerRegions.js'
 export const MODEL_ROUTE_ROLES = Object.freeze(['main', 'image', 'vision'])
 
 export function providerDefaultRoutes(provider, registry, fallbackProviders) {
@@ -15,7 +16,7 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
   }]))
 }
 
-export function buildModelSubmission({ configurationMode, modelRoutes, registry }) {
+export function buildModelSubmission({ configurationMode, modelRoutes, registry, providerRegions }) {
   assertCompleteRoutes(modelRoutes)
   const explicitRoutesSupported = Number(registry?.routeContractVersion || 0) >= 1
   if (configurationMode === 'advanced' && !explicitRoutesSupported) {
@@ -27,6 +28,10 @@ export function buildModelSubmission({ configurationMode, modelRoutes, registry 
     mainModelName: modelRoutes.main.modelId,
     imageGenModelName: modelRoutes.image.modelId,
     referenceVisionModelName: modelRoutes.vision.modelId,
+  }
+  if (providerRegions && Object.values(modelRoutes).some(route => route.accessProvider === 'minimax')) {
+    submission.providerRegions = normalizeProviderRegions(providerRegions)
+    if (submission.providerRegions.minimax === 'cn' && !registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 MiniMax 国内区域。')
   }
   if (explicitRoutesSupported) submission.modelRoutes = modelRoutes
   return submission

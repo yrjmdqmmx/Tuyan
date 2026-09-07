@@ -17,4 +17,4 @@
   <view class="footer-space"></view>
 </scroll-view>
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />
-<generation-settings-sheet show="{{showSettings}}" registry="{{registry}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" bind:close="closeSettings" bind:save="saveSettings" />
+<generation-settings-sheet show="{{showSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" bind:close="closeSettings" bind:save="saveSettings" />

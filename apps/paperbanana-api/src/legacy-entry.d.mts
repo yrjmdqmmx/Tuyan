@@ -3,7 +3,7 @@ import type { LegacyHandler } from './server.js'
 declare const handler: LegacyHandler
 export function configureRuntimeFetch(fetchImpl?: typeof fetch): void
 export function callImageModel(
-  provider: 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark',
+  provider: 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate',
   model: string,
   apiKey: string,
   prompt: string,
@@ -11,6 +11,7 @@ export function callImageModel(
   sourceImage?: string,
   imageSize?: string,
   strictImageSize?: boolean,
+  region?: 'cn' | 'global',
 ): Promise<string>
 export function configureJobAdmission(config: {
   maxActive: number

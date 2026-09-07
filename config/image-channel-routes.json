@@ -1,0 +1,2904 @@
+{
+  "bfl/flux-pro-1.1": {
+    "generation": {
+      "endpoint": "/v1/flux-pro-1.1",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "bfl/flux-dev": {
+    "generation": {
+      "endpoint": "/v1/flux-dev",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "bfl/flux-pro-1.1-ultra": {
+    "generation": {
+      "endpoint": "/v1/flux-pro-1.1-ultra",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-pro-1.1-ultra",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image_prompt",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-2-flex": {
+    "generation": {
+      "endpoint": "/v1/flux-2-flex",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-2-flex",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-2-klein-9b": {
+    "generation": {
+      "endpoint": "/v1/flux-2-klein-9b",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-2-klein-9b",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-2-klein-9b-preview": {
+    "generation": {
+      "endpoint": "/v1/flux-2-klein-9b-preview",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-2-klein-9b-preview",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-2-klein-4b": {
+    "generation": {
+      "endpoint": "/v1/flux-2-klein-4b",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-2-klein-4b",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-2-max": {
+    "generation": {
+      "endpoint": "/v1/flux-2-max",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-2-max",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-2-pro-preview": {
+    "generation": {
+      "endpoint": "/v1/flux-2-pro-preview",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-2-pro-preview",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-2-pro": {
+    "generation": {
+      "endpoint": "/v1/flux-2-pro",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-2-pro",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-kontext-max": {
+    "generation": {
+      "endpoint": "/v1/flux-kontext-max",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-kontext-max",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "bfl/flux-kontext-pro": {
+    "generation": {
+      "endpoint": "/v1/flux-kontext-pro",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/flux-kontext-pro",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "input_image",
+      "sourceEncoding": "base64"
+    }
+  },
+  "ideogram/ideogram-v3": {
+    "generation": {
+      "endpoint": "/v1/ideogram-v3/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioSeparator": "x",
+      "constants": {
+        "rendering_speed": "DEFAULT"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/ideogram-v3/remix",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioSeparator": "x",
+      "sourceField": "image",
+      "constants": {
+        "rendering_speed": "DEFAULT"
+      }
+    }
+  },
+  "ideogram/p-image-ideogram": {
+    "generation": {
+      "endpoint": "/v1/text-to-image/p-image-ideogram",
+      "sizeMode": "dimensions",
+      "widthField": "custom_width",
+      "heightField": "custom_height"
+    }
+  },
+  "ideogram/ideogram-edit": {
+    "editing": {
+      "endpoint": "/v1/edit",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioSeparator": "x",
+      "sourceField": "images"
+    }
+  },
+  "ideogram/ideogram-v3-transparent": {
+    "generation": {
+      "endpoint": "/v1/ideogram-v3/generate-transparent",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioSeparator": "x",
+      "promptField": "prompt"
+    }
+  },
+  "ideogram/ideogram-v4-transparent": {
+    "generation": {
+      "endpoint": "/v1/ideogram-v4/generate-transparent",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioSeparator": "x",
+      "promptField": "text_prompt",
+      "resolutionField": "output_resolution"
+    }
+  },
+  "ideogram/V_1": {
+    "generation": {
+      "endpoint": "/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioPrefix": "ASPECT_",
+      "ratioSeparator": "_",
+      "constants": {
+        "model": "V_1"
+      },
+      "jsonEnvelope": "image_request"
+    }
+  },
+  "ideogram/V_1_TURBO": {
+    "generation": {
+      "endpoint": "/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioPrefix": "ASPECT_",
+      "ratioSeparator": "_",
+      "constants": {
+        "model": "V_1_TURBO"
+      },
+      "jsonEnvelope": "image_request"
+    }
+  },
+  "ideogram/V_2": {
+    "generation": {
+      "endpoint": "/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioPrefix": "ASPECT_",
+      "ratioSeparator": "_",
+      "constants": {
+        "model": "V_2"
+      },
+      "jsonEnvelope": "image_request"
+    }
+  },
+  "ideogram/V_2_TURBO": {
+    "generation": {
+      "endpoint": "/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioPrefix": "ASPECT_",
+      "ratioSeparator": "_",
+      "constants": {
+        "model": "V_2_TURBO"
+      },
+      "jsonEnvelope": "image_request"
+    }
+  },
+  "ideogram/V_2A": {
+    "generation": {
+      "endpoint": "/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioPrefix": "ASPECT_",
+      "ratioSeparator": "_",
+      "constants": {
+        "model": "V_2A"
+      },
+      "jsonEnvelope": "image_request"
+    }
+  },
+  "ideogram/V_2A_TURBO": {
+    "generation": {
+      "endpoint": "/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioPrefix": "ASPECT_",
+      "ratioSeparator": "_",
+      "constants": {
+        "model": "V_2A_TURBO"
+      },
+      "jsonEnvelope": "image_request"
+    }
+  },
+  "ideogram/AUTO": {
+    "generation": {
+      "endpoint": "/generate",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "ratioPrefix": "ASPECT_",
+      "ratioSeparator": "_",
+      "constants": {
+        "model": "AUTO"
+      },
+      "jsonEnvelope": "image_request"
+    }
+  },
+  "fal/alibaba/qwen-image-3/text-to-image": {
+    "generation": {
+      "endpoint": "alibaba/qwen-image-3/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "maxPromptLength": 5000
+    }
+  },
+  "fal/bria/fibo-edit-1.5/edit": {
+    "editing": {
+      "endpoint": "bria/fibo-edit-1.5/edit",
+      "promptField": "instruction",
+      "sizeMode": "none",
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/bria/fibo-gen-1.5/text-to-image": {
+    "generation": {
+      "endpoint": "bria/fibo-gen-1.5/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1MP",
+        "2K": "4MP"
+      }
+    }
+  },
+  "fal/bytedance/seedream/v5/pro/text-to-image": {
+    "generation": {
+      "endpoint": "bytedance/seedream/v5/pro/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size"
+    },
+    "editing": {
+      "endpoint": "bytedance/seedream/v5/pro/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/fal-ai/bytedance/seedream/v4.5/text-to-image": {
+    "generation": {
+      "endpoint": "fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "num_images": 1
+      },
+      "sizeField": "image_size"
+    },
+    "editing": {
+      "endpoint": "fal-ai/bytedance/seedream/v4.5/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/fal-ai/bytedance/seedream/v4/text-to-image": {
+    "generation": {
+      "endpoint": "fal-ai/bytedance/seedream/v4/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "num_images": 1
+      },
+      "sizeField": "image_size"
+    },
+    "editing": {
+      "endpoint": "fal-ai/bytedance/seedream/v4/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/fal-ai/bytedance/seedream/v5/lite/edit": {
+    "editing": {
+      "endpoint": "fal-ai/bytedance/seedream/v5/lite/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/fal-ai/fast-sdxl": {
+    "generation": {
+      "endpoint": "fal-ai/fast-sdxl",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/flux-1/schnell": {
+    "generation": {
+      "endpoint": "fal-ai/flux-1/schnell",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/flux-2": {
+    "generation": {
+      "endpoint": "fal-ai/flux-2",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size"
+    }
+  },
+  "fal/fal-ai/flux-2-flex": {
+    "generation": {
+      "endpoint": "fal-ai/flux-2-flex",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/flux-2-pro": {
+    "generation": {
+      "endpoint": "fal-ai/flux-2-pro",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "image_size"
+    },
+    "editing": {
+      "endpoint": "fal-ai/flux-2-pro/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/fal-ai/flux-2/flash": {
+    "generation": {
+      "endpoint": "fal-ai/flux-2/flash",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size"
+    }
+  },
+  "fal/fal-ai/flux-2/klein/9b": {
+    "generation": {
+      "endpoint": "fal-ai/flux-2/klein/9b",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/flux-2/turbo": {
+    "generation": {
+      "endpoint": "fal-ai/flux-2/turbo",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size"
+    }
+  },
+  "fal/fal-ai/flux-kontext-lora": {
+    "editing": {
+      "endpoint": "fal-ai/flux-kontext-lora",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sourceField": "image_url",
+      "sourceArray": false
+    }
+  },
+  "fal/fal-ai/flux-lora": {
+    "generation": {
+      "endpoint": "fal-ai/flux-lora",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/flux-pro/kontext": {
+    "editing": {
+      "endpoint": "fal-ai/flux-pro/kontext",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_url",
+      "sourceArray": false
+    }
+  },
+  "fal/fal-ai/flux-pro/v1.1": {
+    "generation": {
+      "endpoint": "fal-ai/flux-pro/v1.1",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/flux-pro/v1.1-ultra": {
+    "generation": {
+      "endpoint": "fal-ai/flux-pro/v1.1-ultra",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "fal-ai/flux-pro/v1.1-ultra",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_url",
+      "sourceArray": false
+    }
+  },
+  "fal/fal-ai/flux/dev": {
+    "generation": {
+      "endpoint": "fal-ai/flux/dev",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/flux/schnell": {
+    "generation": {
+      "endpoint": "fal-ai/flux/schnell",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/gpt-image-1.5": {
+    "generation": {
+      "endpoint": "fal-ai/gpt-image-1.5",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "maxPromptLength": 32000
+    }
+  },
+  "fal/fal-ai/krea-2/turbo": {
+    "generation": {
+      "endpoint": "fal-ai/krea-2/turbo",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      },
+      "maxPromptLength": 5000
+    }
+  },
+  "fal/fal-ai/nano-banana": {
+    "generation": {
+      "endpoint": "fal-ai/nano-banana",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "maxPromptLength": 50000
+    },
+    "editing": {
+      "endpoint": "fal-ai/nano-banana/edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 50000
+    }
+  },
+  "fal/fal-ai/nano-banana-2": {
+    "generation": {
+      "endpoint": "fal-ai/nano-banana-2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "512": "0.5K",
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "maxPromptLength": 50000
+    },
+    "editing": {
+      "endpoint": "fal-ai/nano-banana-2/edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "512": "0.5K",
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 50000
+    }
+  },
+  "fal/fal-ai/nano-banana-pro": {
+    "generation": {
+      "endpoint": "fal-ai/nano-banana-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "maxPromptLength": 50000
+    },
+    "editing": {
+      "endpoint": "fal-ai/nano-banana-pro/edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 50000
+    }
+  },
+  "fal/fal-ai/qwen-image": {
+    "generation": {
+      "endpoint": "fal-ai/qwen-image",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/fal-ai/recraft/v3/text-to-image": {
+    "generation": {
+      "endpoint": "fal-ai/recraft/v3/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      },
+      "maxPromptLength": 1000
+    }
+  },
+  "fal/fal-ai/recraft/v4/pro/text-to-image": {
+    "generation": {
+      "endpoint": "fal-ai/recraft/v4/pro/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      },
+      "maxPromptLength": 10000
+    }
+  },
+  "fal/fal-ai/z-image/turbo": {
+    "generation": {
+      "endpoint": "fal-ai/z-image/turbo",
+      "promptField": "prompt",
+      "sizeMode": "preset",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  },
+  "fal/google/nano-banana-2-lite": {
+    "generation": {
+      "endpoint": "google/nano-banana-2-lite",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "maxPromptLength": 50000
+    }
+  },
+  "fal/imagineart/imagineart-2.0-preview/text-to-image": {
+    "generation": {
+      "endpoint": "imagineart/imagineart-2.0-preview/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K"
+      }
+    }
+  },
+  "fal/krea/v2/large/text-to-image": {
+    "generation": {
+      "endpoint": "krea/v2/large/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "maxPromptLength": 5000
+    }
+  },
+  "fal/meta/muse-image/text-to-image": {
+    "generation": {
+      "endpoint": "meta/muse-image/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "meta/muse-image/edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_urls",
+      "sourceArray": true
+    }
+  },
+  "fal/openai/gpt-image-2": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "openai/gpt-image-2/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 32000
+    }
+  },
+  "fal/xai/grok-imagine-image": {
+    "generation": {
+      "endpoint": "xai/grok-imagine-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k"
+      },
+      "maxPromptLength": 8000
+    },
+    "editing": {
+      "endpoint": "xai/grok-imagine-image/edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 8000
+    }
+  },
+  "fal/xai/grok-imagine-image/quality/text-to-image": {
+    "generation": {
+      "endpoint": "xai/grok-imagine-image/quality/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k"
+      },
+      "maxPromptLength": 8000
+    },
+    "editing": {
+      "endpoint": "xai/grok-imagine-image/quality/edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k"
+      },
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 8000
+    }
+  },
+  "fal/xai/grok-imagine-image/v2.0/text-to-image": {
+    "generation": {
+      "endpoint": "xai/grok-imagine-image/v2.0/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k"
+      },
+      "maxPromptLength": 8000
+    }
+  },
+  "replicate/adirik/realvisxl-v3.0-turbo": {
+    "generation": {
+      "endpoint": "adirik/realvisxl-v3.0-turbo",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "3dc73c805b11b4b01a60555e532fd3ab3f0e60d26f6584d9b8ba7e1b95858243",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "adirik/realvisxl-v3.0-turbo",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "3dc73c805b11b4b01a60555e532fd3ab3f0e60d26f6584d9b8ba7e1b95858243",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/ai-forever/kandinsky-2": {
+    "generation": {
+      "endpoint": "ai-forever/kandinsky-2",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "3c6374e7a9a17e01afe306a5218cc67de55b19ea536466d6ea2602cfecea40a9",
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "replicate/ai-forever/kandinsky-2.2": {
+    "generation": {
+      "endpoint": "ai-forever/kandinsky-2.2",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "ad9d7879fbffa2874e1d909d1d37d9bc682889cc65b31f7bb00d2362619f194a",
+      "constants": {
+        "output_format": "png",
+        "num_outputs": 1
+      }
+    }
+  },
+  "replicate/alibaba/wan-3": {
+    "generation": {
+      "endpoint": "alibaba/wan-3",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "alibaba/wan-3",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/black-forest-labs/flux-1.1-pro": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-1.1-pro",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      }
+    }
+  },
+  "replicate/black-forest-labs/flux-1.1-pro-ultra": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-1.1-pro-ultra",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/black-forest-labs/flux-2-flex": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-2-flex",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      }
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-2-flex",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      },
+      "sourceField": "input_images",
+      "sourceArray": true
+    }
+  },
+  "replicate/black-forest-labs/flux-2-klein-4b": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-2-klein-4b",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-2-klein-4b",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "images",
+      "sourceArray": true
+    }
+  },
+  "replicate/black-forest-labs/flux-2-max": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-2-max",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      }
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-2-max",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      },
+      "sourceField": "input_images",
+      "sourceArray": true
+    }
+  },
+  "replicate/black-forest-labs/flux-2-pro": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-2-pro",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      }
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-2-pro",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      },
+      "sourceField": "input_images",
+      "sourceArray": true
+    }
+  },
+  "replicate/black-forest-labs/flux-dev": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-dev",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_outputs": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-dev",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png",
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/black-forest-labs/flux-dev-lora": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-dev-lora",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_outputs": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-dev-lora",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png",
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/black-forest-labs/flux-kontext-dev": {
+    "editing": {
+      "endpoint": "black-forest-labs/flux-kontext-dev",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "input_image",
+      "sourceArray": false
+    }
+  },
+  "replicate/black-forest-labs/flux-kontext-max": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-kontext-max",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-kontext-max",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "input_image",
+      "sourceArray": false
+    }
+  },
+  "replicate/black-forest-labs/flux-kontext-pro": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-kontext-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "black-forest-labs/flux-kontext-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "input_image",
+      "sourceArray": false
+    }
+  },
+  "replicate/black-forest-labs/flux-pro": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-pro",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "aspect_ratio": "custom"
+      }
+    }
+  },
+  "replicate/black-forest-labs/flux-schnell": {
+    "generation": {
+      "endpoint": "black-forest-labs/flux-schnell",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "num_outputs": 1
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/bria/fibo": {
+    "generation": {
+      "endpoint": "bria/fibo",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "bria/fibo",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/bria/fibo-edit": {
+    "editing": {
+      "endpoint": "bria/fibo-edit",
+      "promptField": "instruction",
+      "sizeMode": "none",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/bria/image-3.2": {
+    "generation": {
+      "endpoint": "bria/image-3.2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/bytedance/bagel": {
+    "generation": {
+      "endpoint": "bytedance/bagel",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "7dd8def79e503990740db4704fa81af995d440fefe714958531d7044d2757c9c",
+      "constants": {
+        "output_format": "png"
+      }
+    },
+    "editing": {
+      "endpoint": "bytedance/bagel",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "7dd8def79e503990740db4704fa81af995d440fefe714958531d7044d2757c9c",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/bytedance/sdxl-lightning-4step": {
+    "generation": {
+      "endpoint": "bytedance/sdxl-lightning-4step",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "version": "6f7a773af6fc3e8de9d5a3c00be77c17308914bf67772726aff83496ba1e3bbe",
+      "constants": {
+        "num_outputs": 1
+      }
+    }
+  },
+  "replicate/bytedance/seedream-3": {
+    "generation": {
+      "endpoint": "bytedance/seedream-3",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "aspect_ratio": "custom"
+      }
+    }
+  },
+  "replicate/bytedance/seedream-4": {
+    "generation": {
+      "endpoint": "bytedance/seedream-4",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "size": "custom"
+      }
+    },
+    "editing": {
+      "endpoint": "bytedance/seedream-4",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "size": "custom"
+      },
+      "sourceField": "image_input",
+      "sourceArray": true
+    }
+  },
+  "replicate/bytedance/seedream-4.5": {
+    "generation": {
+      "endpoint": "bytedance/seedream-4.5",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "size": "custom"
+      },
+      "maxPromptLength": 4000
+    },
+    "editing": {
+      "endpoint": "bytedance/seedream-4.5",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "size": "custom"
+      },
+      "sourceField": "image_input",
+      "sourceArray": true,
+      "maxPromptLength": 4000
+    }
+  },
+  "replicate/bytedance/seedream-5-lite": {
+    "generation": {
+      "endpoint": "bytedance/seedream-5-lite",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "size",
+      "resolutionValues": {
+        "2K": "2K"
+      },
+      "maxPromptLength": 4000
+    },
+    "editing": {
+      "endpoint": "bytedance/seedream-5-lite",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "size",
+      "resolutionValues": {
+        "2K": "2K"
+      },
+      "sourceField": "image_input",
+      "sourceArray": true,
+      "maxPromptLength": 4000
+    }
+  },
+  "replicate/datacte/proteus-v0.2": {
+    "generation": {
+      "endpoint": "datacte/proteus-v0.2",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "06775cd262843edbde5abab958abdbb65a0a6b58ca301c9fd78fa55c775fc019",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "datacte/proteus-v0.2",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "06775cd262843edbde5abab958abdbb65a0a6b58ca301c9fd78fa55c775fc019",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/datacte/proteus-v0.3": {
+    "generation": {
+      "endpoint": "datacte/proteus-v0.3",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "b28b79d725c8548b173b6a19ff9bffd16b9b80df5b18b8dc5cb9e1ee471bfa48",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "datacte/proteus-v0.3",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "b28b79d725c8548b173b6a19ff9bffd16b9b80df5b18b8dc5cb9e1ee471bfa48",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/fofr/latent-consistency-model": {
+    "generation": {
+      "endpoint": "fofr/latent-consistency-model",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "683d19dc312f7a9f0428b04429a9ccefd28dbf7785fef083ad5cf991b65f406f",
+      "constants": {
+        "num_images": 1
+      }
+    },
+    "editing": {
+      "endpoint": "fofr/latent-consistency-model",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "683d19dc312f7a9f0428b04429a9ccefd28dbf7785fef083ad5cf991b65f406f",
+      "constants": {
+        "num_images": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/fofr/sdxl-emoji": {
+    "generation": {
+      "endpoint": "fofr/sdxl-emoji",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "dee76b5afde21b0f01ed7925f0665b7e879c50ee718c5f78a9d38e04d523cc5e",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "fofr/sdxl-emoji",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "dee76b5afde21b0f01ed7925f0665b7e879c50ee718c5f78a9d38e04d523cc5e",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/fofr/sticker-maker": {
+    "generation": {
+      "endpoint": "fofr/sticker-maker",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "4acb778eb059772225ec213948f0660867b2e03f277448f18cf1800b96a65a1a",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      }
+    }
+  },
+  "replicate/google/imagen-3": {
+    "generation": {
+      "endpoint": "google/imagen-3",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/google/imagen-3-fast": {
+    "generation": {
+      "endpoint": "google/imagen-3-fast",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/google/imagen-4": {
+    "generation": {
+      "endpoint": "google/imagen-4",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "image_size",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K"
+      }
+    }
+  },
+  "replicate/google/imagen-4-fast": {
+    "generation": {
+      "endpoint": "google/imagen-4-fast",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/google/imagen-4-ultra": {
+    "generation": {
+      "endpoint": "google/imagen-4-ultra",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "image_size",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K"
+      }
+    }
+  },
+  "replicate/google/nano-banana": {
+    "generation": {
+      "endpoint": "google/nano-banana",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "google/nano-banana",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_input",
+      "sourceArray": true
+    }
+  },
+  "replicate/google/nano-banana-2": {
+    "generation": {
+      "endpoint": "google/nano-banana-2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      }
+    },
+    "editing": {
+      "endpoint": "google/nano-banana-2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "sourceField": "image_input",
+      "sourceArray": true
+    }
+  },
+  "replicate/google/nano-banana-pro": {
+    "generation": {
+      "endpoint": "google/nano-banana-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      }
+    },
+    "editing": {
+      "endpoint": "google/nano-banana-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "sourceField": "image_input",
+      "sourceArray": true
+    }
+  },
+  "replicate/ideogram-ai/ideogram-v2": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-v2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/ideogram-ai/ideogram-v2-turbo": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-v2-turbo",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/ideogram-ai/ideogram-v2a": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-v2a",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/ideogram-ai/ideogram-v2a-turbo": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-v2a-turbo",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/ideogram-ai/ideogram-v3-balanced": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-v3-balanced",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/ideogram-ai/ideogram-v3-quality": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-v3-quality",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/ideogram-ai/ideogram-v3-turbo": {
+    "generation": {
+      "endpoint": "ideogram-ai/ideogram-v3-turbo",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/leonardoai/lucid-origin": {
+    "generation": {
+      "endpoint": "leonardoai/lucid-origin",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "num_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/lucataco/dreamshaper-xl-turbo": {
+    "generation": {
+      "endpoint": "lucataco/dreamshaper-xl-turbo",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "0a1710e0187b01a255302738ca0158ff02a22f4638679533e111082f9dd1b615",
+      "constants": {
+        "num_outputs": 1
+      }
+    }
+  },
+  "replicate/lucataco/omnigen2": {
+    "editing": {
+      "endpoint": "lucataco/omnigen2",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "version": "5b9ea1d0821a60be9c861ebfc3513d121ecd8cab1932d3aa8d703e517988502e",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/lucataco/open-dalle-v1.1": {
+    "generation": {
+      "endpoint": "lucataco/open-dalle-v1.1",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "lucataco/open-dalle-v1.1",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/lucataco/realistic-vision-v5.1": {
+    "generation": {
+      "endpoint": "lucataco/realistic-vision-v5.1",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "version": "2c8e954decbf70b7607a4414e5785ef9e4de4b8c51d50fb8b8b349160e0ef6bb"
+    }
+  },
+  "replicate/lucataco/ssd-1b": {
+    "generation": {
+      "endpoint": "lucataco/ssd-1b",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "b19e3639452c59ce8295b82aba70a231404cb062f2eb580ea894b31e8ce5bbb6",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "lucataco/ssd-1b",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "b19e3639452c59ce8295b82aba70a231404cb062f2eb580ea894b31e8ce5bbb6",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/luma/photon": {
+    "generation": {
+      "endpoint": "luma/photon",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/luma/photon-flash": {
+    "generation": {
+      "endpoint": "luma/photon-flash",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/minimax/image-01": {
+    "generation": {
+      "endpoint": "minimax/image-01",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/nvidia/sana": {
+    "generation": {
+      "endpoint": "nvidia/sana",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6"
+    }
+  },
+  "replicate/nvidia/sana-sprint-1.6b": {
+    "generation": {
+      "endpoint": "nvidia/sana-sprint-1.6b",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "version": "038aee6907b53a5c148780983e39a50ce7cd0747b4e2642e78387f48cf36039a",
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "replicate/openai/gpt-image-1.5": {
+    "generation": {
+      "endpoint": "openai/gpt-image-1.5",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "openai/gpt-image-1.5",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "input_images",
+      "sourceArray": true
+    }
+  },
+  "replicate/openai/gpt-image-2": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "openai/gpt-image-2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "input_images",
+      "sourceArray": true
+    }
+  },
+  "replicate/playgroundai/playground-v2.5-1024px-aesthetic": {
+    "generation": {
+      "endpoint": "playgroundai/playground-v2.5-1024px-aesthetic",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "version": "a45f82a1382bed5c7aeb861dac7c7d191b0fdf74d8d57c4a0e6ed7d4d0bf7d24",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "playgroundai/playground-v2.5-1024px-aesthetic",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "version": "a45f82a1382bed5c7aeb861dac7c7d191b0fdf74d8d57c4a0e6ed7d4d0bf7d24",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/prunaai/flux-fast": {
+    "generation": {
+      "endpoint": "prunaai/flux-fast",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/prunaai/flux-kontext-fast": {
+    "editing": {
+      "endpoint": "prunaai/flux-kontext-fast",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "img_cond_path",
+      "sourceArray": false
+    }
+  },
+  "replicate/prunaai/hidream-l1-dev": {
+    "generation": {
+      "endpoint": "prunaai/hidream-l1-dev",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "4dfcd146c0def4812455415f55556f6bc84025dcb15193cf1977f01bd384d191",
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "replicate/prunaai/hidream-l1-fast": {
+    "generation": {
+      "endpoint": "prunaai/hidream-l1-fast",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "replicate/prunaai/hidream-l1-full": {
+    "generation": {
+      "endpoint": "prunaai/hidream-l1-full",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "03d58532fd29e39fd2ed80e86c3da1cebec28ef2734081cf1366710d30388f42",
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "replicate/prunaai/p-image": {
+    "generation": {
+      "endpoint": "prunaai/p-image",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "aspect_ratio": "custom"
+      }
+    }
+  },
+  "replicate/prunaai/p-image-edit": {
+    "editing": {
+      "endpoint": "prunaai/p-image-edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "sourceField": "images",
+      "sourceArray": true
+    }
+  },
+  "replicate/prunaai/p-image-lora": {
+    "generation": {
+      "endpoint": "prunaai/p-image-lora",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "aspect_ratio": "custom"
+      }
+    }
+  },
+  "replicate/prunaai/sdxl-lightning": {
+    "generation": {
+      "endpoint": "prunaai/sdxl-lightning",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "123d4264aec4d1c81d8bf142e0d90d6fd4c346f1a869406019f6d1653882d7c3",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      }
+    }
+  },
+  "replicate/prunaai/wan-2.2-image": {
+    "generation": {
+      "endpoint": "prunaai/wan-2.2-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/prunaai/z-image-turbo": {
+    "generation": {
+      "endpoint": "prunaai/z-image-turbo",
+      "promptField": "prompt",
+      "sizeMode": "dimensions",
+      "constants": {
+        "output_format": "png",
+        "num_outputs": 1
+      }
+    }
+  },
+  "replicate/qwen/qwen-image": {
+    "generation": {
+      "endpoint": "qwen/qwen-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "qwen/qwen-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/qwen/qwen-image-edit": {
+    "editing": {
+      "endpoint": "qwen/qwen-image-edit",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/qwen/qwen-image-edit-plus": {
+    "editing": {
+      "endpoint": "qwen/qwen-image-edit-plus",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": true
+    }
+  },
+  "replicate/recraft-ai/recraft-v3": {
+    "generation": {
+      "endpoint": "recraft-ai/recraft-v3",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/recraft-ai/recraft-v4-pro": {
+    "generation": {
+      "endpoint": "recraft-ai/recraft-v4-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/recraft-ai/recraft-v4.1": {
+    "generation": {
+      "endpoint": "recraft-ai/recraft-v4.1",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/sourceful/riverflow-2.0-pro": {
+    "generation": {
+      "endpoint": "sourceful/riverflow-2.0-pro",
+      "promptField": "instruction",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      }
+    },
+    "editing": {
+      "endpoint": "sourceful/riverflow-2.0-pro",
+      "promptField": "instruction",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K",
+        "4K": "4K"
+      },
+      "sourceField": "init_images",
+      "sourceArray": true
+    }
+  },
+  "replicate/stability-ai/sdxl": {
+    "generation": {
+      "endpoint": "stability-ai/sdxl",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc",
+      "constants": {
+        "num_outputs": 1
+      }
+    },
+    "editing": {
+      "endpoint": "stability-ai/sdxl",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/stability-ai/stable-diffusion": {
+    "generation": {
+      "endpoint": "stability-ai/stable-diffusion",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4",
+      "constants": {
+        "num_outputs": 1
+      }
+    }
+  },
+  "replicate/stability-ai/stable-diffusion-3.5-large": {
+    "generation": {
+      "endpoint": "stability-ai/stable-diffusion-3.5-large",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "stability-ai/stable-diffusion-3.5-large",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/stability-ai/stable-diffusion-3.5-large-turbo": {
+    "generation": {
+      "endpoint": "stability-ai/stable-diffusion-3.5-large-turbo",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "stability-ai/stable-diffusion-3.5-large-turbo",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/stability-ai/stable-diffusion-3.5-medium": {
+    "generation": {
+      "endpoint": "stability-ai/stable-diffusion-3.5-medium",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "stability-ai/stable-diffusion-3.5-medium",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/tencent/hunyuan-image-3": {
+    "generation": {
+      "endpoint": "tencent/hunyuan-image-3",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    }
+  },
+  "replicate/tstramer/material-diffusion": {
+    "generation": {
+      "endpoint": "tstramer/material-diffusion",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "a42692c54c0f407f803a0a8a9066160976baedb77c91171a01730f9b0d7beeff",
+      "constants": {
+        "num_outputs": 1
+      }
+    }
+  },
+  "replicate/wan-video/wan-2.7-image": {
+    "generation": {
+      "endpoint": "wan-video/wan-2.7-image",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sizeField": "size"
+    },
+    "editing": {
+      "endpoint": "wan-video/wan-2.7-image",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sizeField": "size",
+      "sourceField": "images",
+      "sourceArray": true
+    }
+  },
+  "replicate/wan-video/wan-2.7-image-pro": {
+    "generation": {
+      "endpoint": "wan-video/wan-2.7-image-pro",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sizeField": "size"
+    },
+    "editing": {
+      "endpoint": "wan-video/wan-2.7-image-pro",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "constants": {
+        "num_outputs": 1
+      },
+      "sizeField": "size",
+      "sourceField": "images",
+      "sourceArray": true
+    }
+  },
+  "replicate/xai/grok-imagine-image": {
+    "generation": {
+      "endpoint": "xai/grok-imagine-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "xai/grok-imagine-image",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/zsxkib/step1x-edit": {
+    "editing": {
+      "endpoint": "zsxkib/step1x-edit",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "version": "12b5a5a61e3419f792eb56cfc16eed046252740ebf5d470228f9b4cf2c861610",
+      "constants": {
+        "output_format": "png"
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "together/google/imagen-4.0-preview": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/imagen-4.0-preview",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/google/imagen-4.0-fast": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/imagen-4.0-fast",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/google/imagen-4.0-ultra": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/imagen-4.0-ultra",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/google/flash-image-2.5": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/flash-image-2.5",
+        "n": 1,
+        "response_format": "base64"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/flash-image-2.5",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sourceField": "reference_images",
+      "sourceArray": true,
+      "sourceEncoding": "public-url"
+    }
+  },
+  "together/google/gemini-3-pro-image": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/gemini-3-pro-image",
+        "n": 1,
+        "response_format": "base64"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/gemini-3-pro-image",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sourceField": "reference_images",
+      "sourceArray": true,
+      "sourceEncoding": "public-url"
+    }
+  },
+  "together/black-forest-labs/FLUX.1.1-pro": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "black-forest-labs/FLUX.1.1-pro",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/black-forest-labs/FLUX.1-kontext-pro": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "ratio",
+      "constants": {
+        "model": "black-forest-labs/FLUX.1-kontext-pro",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "ratio",
+      "constants": {
+        "model": "black-forest-labs/FLUX.1-kontext-pro",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_url",
+      "sourceEncoding": "public-url"
+    }
+  },
+  "together/black-forest-labs/FLUX.1-kontext-max": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "ratio",
+      "constants": {
+        "model": "black-forest-labs/FLUX.1-kontext-max",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "ratio",
+      "constants": {
+        "model": "black-forest-labs/FLUX.1-kontext-max",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_url",
+      "sourceEncoding": "public-url"
+    }
+  },
+  "together/black-forest-labs/FLUX.2-pro": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "dimensions",
+      "constants": {
+        "model": "black-forest-labs/FLUX.2-pro",
+        "n": 1,
+        "response_format": "base64"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "dimensions",
+      "constants": {
+        "model": "black-forest-labs/FLUX.2-pro",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sourceField": "reference_images",
+      "sourceArray": true,
+      "sourceEncoding": "public-url"
+    }
+  },
+  "together/black-forest-labs/FLUX.2-dev": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "black-forest-labs/FLUX.2-dev",
+        "n": 1,
+        "response_format": "base64"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "black-forest-labs/FLUX.2-dev",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sourceField": "reference_images",
+      "sourceArray": true,
+      "sourceEncoding": "public-url"
+    }
+  },
+  "together/black-forest-labs/FLUX.2-flex": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "dimensions",
+      "constants": {
+        "model": "black-forest-labs/FLUX.2-flex",
+        "n": 1,
+        "response_format": "base64"
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "dimensions",
+      "constants": {
+        "model": "black-forest-labs/FLUX.2-flex",
+        "n": 1,
+        "response_format": "base64"
+      },
+      "sourceField": "reference_images",
+      "sourceArray": true,
+      "sourceEncoding": "public-url"
+    }
+  },
+  "together/ByteDance-Seed/Seedream-3.0": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "ByteDance-Seed/Seedream-3.0",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/ByteDance-Seed/Seedream-4.0": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "ByteDance-Seed/Seedream-4.0",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/ByteDance/Seedream-5.0-lite": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "ByteDance/Seedream-5.0-lite",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/Qwen/Qwen-Image": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "Qwen/Qwen-Image",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/RunDiffusion/Juggernaut-pro-flux": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "RunDiffusion/Juggernaut-pro-flux",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/Rundiffusion/Juggernaut-Lightning-Flux": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "Rundiffusion/Juggernaut-Lightning-Flux",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/ideogram/ideogram-3.0": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "ideogram/ideogram-3.0",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/stabilityai/stable-diffusion-xl-base-1.0": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "stabilityai/stable-diffusion-xl-base-1.0",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/black-forest-labs/FLUX.2-max": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "black-forest-labs/FLUX.2-max",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/google/flash-image-3.1": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/flash-image-3.1",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/openai/gpt-image-1.5": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "openai/gpt-image-1.5",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/Qwen/Qwen-Image-2.0": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "Qwen/Qwen-Image-2.0",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/Qwen/Qwen-Image-2.0-Pro": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "Qwen/Qwen-Image-2.0-Pro",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/Wan-AI/Wan2.6-image": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "Wan-AI/Wan2.6-image",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/ideogram/ideogram-4.0": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "ideogram/ideogram-4.0",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/openai/gpt-image-2": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "openai/gpt-image-2",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/google/flash-image-3.1-lite": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "google/flash-image-3.1-lite",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "together/prunaai/p-image-ideogram": {
+    "generation": {
+      "endpoint": "/v1/images/generations",
+      "sizeMode": "none",
+      "constants": {
+        "model": "prunaai/p-image-ideogram",
+        "n": 1,
+        "response_format": "base64"
+      }
+    }
+  },
+  "fal/fal-ai/ideogram/v3": {
+    "generation": {
+      "endpoint": "fal-ai/ideogram/v3",
+      "sizeMode": "preset",
+      "sizeField": "image_size",
+      "sizeValues": {
+        "1:1": "square_hd",
+        "3:4": "portrait_4_3",
+        "9:16": "portrait_16_9",
+        "4:3": "landscape_4_3",
+        "16:9": "landscape_16_9"
+      }
+    }
+  }
+}

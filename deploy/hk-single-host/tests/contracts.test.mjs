@@ -537,11 +537,13 @@ test('legacy Laf rollback remains verification-only until the console dependency
   assert.match(workflow, /sharp/);
 });
 
-test('Core operations documentation includes Ark in the four-origin Singapore egress contract', () => {
+test('Core operations documentation links the current overseas allowlist and distinguishes MiniMax regions', () => {
   const coreReadme = read('../../apps/paperbanana-api/README.md');
 
-  assert.match(coreReadme, /OpenAI, Gemini, OpenRouter, and Ark/);
-  assert.match(coreReadme, /four canonical origins/);
+  assert.match(coreReadme, /src\/provider-egress\.ts/);
+  assert.match(coreReadme, /MiniMax China.*retain their direct route/);
+  assert.match(coreReadme, /api\.minimax\.io\/v1/);
+  assert.match(coreReadme, /api\.minimax\.cn\/v1/);
   assert.match(coreReadme, /ark\.cn-beijing\.volces\.com/);
   assert.doesNotMatch(coreReadme, /only those three canonical origins/);
   assert.doesNotMatch(coreReadme, /does not yet classify the Ark origin/);

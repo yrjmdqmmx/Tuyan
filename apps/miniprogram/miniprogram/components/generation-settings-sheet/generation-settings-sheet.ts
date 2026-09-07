@@ -1,3 +1,6 @@
+import { getModelRegistryState } from '../../utils/model-registry-store'
+import { MINIMAX_REGIONS, minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions, type ProviderRegions } from '../../utils/provider-regions'
+import { EXTENDED_MODEL_CHANNELS } from '../../utils/static-model-catalog'
 import { buildAspectRatioOptions, buildResolutionOptions, normalizeSelectedAspectRatio } from '../../utils/aspect-ratios'
 import { formatError, requestJson } from '../../utils/api'
 import { clearArkVerification, getArkVerification, setArkProbeResults } from '../../utils/ark-verification'
@@ -7,6 +10,7 @@ import { arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, p
 import { toggleReferenceSelection } from '../../utils/reference-library'
 
 const PROVIDER_LABELS: Record<string, string> = {
+  ...Object.fromEntries(Object.entries(EXTENDED_MODEL_CHANNELS).map(([id, channel]) => [id, channel.label])),
   deepseek: "DeepSeek",
   kimi: "Kimi（月之暗面）",
   zhipu: "智谱 GLM",
@@ -19,6 +23,7 @@ const PROVIDER_LABELS: Record<string, string> = {
 }
 
 interface SettingsDraft {
+  providerRegions?: ProviderRegions
   configurationMode: 'simple' | 'advanced'
   simpleProvider: ModelProviderId
   modelRoutes: ModelRoutes
@@ -35,7 +40,7 @@ Component({
   options: { styleIsolation: 'apply-shared', multipleSlots: true },
   properties: {
     show: { type: Boolean, value: false, observer(this: any, show: boolean) { if (show) this.resetDraft() } },
-    registry: { type: Object, value: {} },
+    registryVersion: { type: String, value: '', observer(this: any) { if (this.properties.show) this.refreshPresentation() } },
     settings: { type: Object, value: {} },
     apiKeys: { type: Object, value: {} },
     executionRoles: { type: Array, value: [] as string[] },
@@ -44,6 +49,8 @@ Component({
   },
   data: {
     draft: null as SettingsDraft | null,
+    minimaxRegionOptions: [{value:'global',label:'国际'}, {value:'cn',label:'中国大陆'}],
+    minimaxRegionIndex: 0, minimaxApiBase: '',
     providerOptions: MODEL_PROVIDER_IDS.map((value) => ({ value, label: PROVIDER_LABELS[value] })),
     providerIndex: 0,
     routeRows: [] as Array<{ role: ModelRole; label: string; provider: string; providerLabel: string; modelId: string; modelLabel: string }>,
@@ -74,8 +81,10 @@ Component({
   },
   methods: {
     noop() {},
+    // Keep full capability metadata in the logic-layer store, outside setData.
+    getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.data.draft?.providerRegions) },
     resetDraft() {
-      const registry = this.properties.registry as ModelRegistry | null
+      const registry = getModelRegistryState().registry
       const incoming = this.properties.settings as SettingsDraft | null
       if (!registry || !incoming) {
         this.setData({ draft: null, error: '模型目录尚未就绪，暂时不能编辑生成设置。' })
@@ -92,20 +101,20 @@ Component({
     },
     refreshPresentation() {
       const draft = this.data.draft
-      const registry = this.properties.registry as ModelRegistry | null
+      const registry = this.getRegistry()
       if (!draft || !registry) return
       const providerOptions = MODEL_PROVIDER_IDS.filter((id) => {
         const defaults = registry.providers[id]?.defaults
         return defaults?.main && defaults?.image && defaults?.vision
       }).map((value) => ({ value, label: PROVIDER_LABELS[value] }))
       const imageEntry = findRegistryModel(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId)
-      const ratioAll = buildAspectRatioOptions({ capabilities: imageEntry?.capabilities || {}, capabilityField: 'aspectRatios', modelLabel: imageEntry?.label })
-      const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
-      draft.aspectRatio = normalizeSelectedAspectRatio(draft.aspectRatio, ratioAll)
       const resolutionOptions = buildResolutionOptions(imageEntry?.capabilities || {}, 'resolutions')
       if (draft.outputFormat === 'png' && !resolutionOptions.some((item) => item.value === draft.imageSize)) {
         draft.imageSize = resolutionOptions[0]?.value || ''
       }
+      const ratioAll = buildAspectRatioOptions({ capabilities: imageEntry?.capabilities || {}, capabilityField: 'aspectRatios', modelLabel: imageEntry?.label, resolution: draft.imageSize })
+      const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
+      draft.aspectRatio = normalizeSelectedAspectRatio(draft.aspectRatio, ratioAll)
       const routeRows = (['main', 'image', 'vision'] as ModelRole[]).map((role) => {
         const route = draft.modelRoutes[role]
         const model = findRegistryModel(registry, route.accessProvider, route.modelId)
@@ -117,7 +126,7 @@ Component({
       })
       const providers = uniqueProvidersForRoles(draft.modelRoutes, normalizeRoles(this.properties.executionRoles))
       const keyFields = providers.map((provider) => ({
-        provider, label: PROVIDER_LABELS[provider] || provider, value: this.data.draftKeys[provider] || '',
+        provider, label: PROVIDER_LABELS[provider] || provider, value: selectRegionApiKeys(this.data.draftKeys, draft.providerRegions)[provider] || '',
         placeholder: provider === 'gemini' ? 'AIza...' : provider === 'openrouter' ? 'sk-or-v1-...' : 'sk-...',
       }))
       const probes = arkProbesForRoles(draft.modelRoutes, normalizeRoles(this.properties.executionRoles))
@@ -126,6 +135,8 @@ Component({
       this.setData({
         draft, routeRows, ratioOptions, resolutionOptions, keyFields,
         providerOptions,
+        minimaxRegionIndex: minimaxRegion(draft.providerRegions) === 'cn' ? 1 : 0,
+        minimaxApiBase: MINIMAX_REGIONS[minimaxRegion(draft.providerRegions)].apiBase,
         providerIndex: Math.max(0, providerOptions.findIndex((item) => item.value === draft.simpleProvider)),
         ratioIndex: Math.max(0, ratioOptions.findIndex((item) => item.value === draft.aspectRatio)),
         resolutionIndex: Math.max(0, resolutionOptions.findIndex((item) => item.value === draft.imageSize)),
@@ -141,7 +152,9 @@ Component({
       const draft = this.data.draft
       if (!draft) return
       draft.configurationMode = event.currentTarget.dataset.mode === 'advanced' ? 'advanced' : 'simple'
-      if (draft.configurationMode === 'simple') draft.modelRoutes = providerDefaultRoutes(draft.simpleProvider, this.properties.registry as ModelRegistry)
+      const registry = this.getRegistry()
+      if (!registry) return
+      if (draft.configurationMode === 'simple') draft.modelRoutes = providerDefaultRoutes(draft.simpleProvider, registry)
       this.setData({ draft })
       this.refreshPresentation()
     },
@@ -152,7 +165,9 @@ Component({
       const provider = this.data.providerOptions[index]?.value
       if (!provider) return
       draft.simpleProvider = provider
-      draft.modelRoutes = providerDefaultRoutes(provider, this.properties.registry as ModelRegistry)
+      const registry = this.getRegistry()
+      if (!registry) return
+      draft.modelRoutes = providerDefaultRoutes(provider, registry)
       this.setData({ draft })
       this.refreshPresentation()
     },
@@ -225,10 +240,22 @@ Component({
       draft.maxCriticRounds = this.data.criticOptions[Number(event.detail.value) || 0]?.value || 0
       this.setData({ draft, criticIndex: Number(event.detail.value) || 0 })
     },
+    onMiniMaxRegionChange(event: WechatMiniprogram.PickerChange) {
+      const draft = this.data.draft
+      if (!draft) return
+      const region = Number(event.detail.value) === 1 ? 'cn' : 'global'
+      if (region === 'cn' && !this.getRegistry()?.providerRegionContractVersion) {
+        this.setData({error: '当前服务端尚未支持 MiniMax 国内区域。'}); return
+      }
+      draft.providerRegions = {minimax: region}
+      if (region === 'global' && draft.modelRoutes.image.accessProvider === 'minimax' && draft.modelRoutes.image.modelId === 'image-01-live') draft.modelRoutes.image.modelId = 'image-01'
+      this.setData({draft, error: ''})
+      this.refreshPresentation()
+    },
     onKeyInput(event: WechatMiniprogram.Input) {
       const provider = String(event.currentTarget.dataset.provider || '')
       if (provider === 'ark' && this.data.draftKeys.ark !== event.detail.value) clearArkVerification()
-      const draftKeys = { ...this.data.draftKeys, [provider]: event.detail.value }
+      const draftKeys = { ...this.data.draftKeys, [regionApiKeySlot(provider, this.data.draft?.providerRegions)]: event.detail.value }
       this.setData({ draftKeys })
       this.refreshPresentation()
     },

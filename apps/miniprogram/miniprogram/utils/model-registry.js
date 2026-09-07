@@ -6,7 +6,7 @@ exports.modelAvailabilityPresentation = modelAvailabilityPresentation;
 exports.partitionRegistryModels = partitionRegistryModels;
 exports.groupRegistryModels = groupRegistryModels;
 exports.findRegistryModel = findRegistryModel;
-exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'];
+exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'];
 function normalizeModelRegistry(input) {
     const source = asRecord(input);
     const registryVersion = stringValue(source.registryVersion);
@@ -25,7 +25,7 @@ function normalizeModelRegistry(input) {
         if (providerSource[providerId])
             providers[providerId] = normalizeProvider(providerId, providerSource[providerId]);
     }
-    return { registryVersion, routeContractVersion, supportsModelRoutes: true, providers };
+    return { registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers };
 }
 function normalizeProvider(providerId, input) {
     const source = asRecord(input);
@@ -90,6 +90,7 @@ function normalizeModel(input) {
         availabilityNotes: stringValue(source.availabilityNotes),
         releasedAt: validReleasedAt(source.releasedAt),
         expirationDate: validReleasedAt(source.expirationDate),
+        expirationAt: typeof source.expirationAt === 'string' && Number.isFinite(Date.parse(source.expirationAt)) ? source.expirationAt : '',
         earliestRetirementDate: validReleasedAt(source.earliestRetirementDate),
         replacementModelId: stringValue(source.replacementModelId),
         regions: stringArray(source.regions),
@@ -149,7 +150,7 @@ function findRegistryModel(registry, provider, modelId) {
     return ((_a = registry.providers[provider]) === null || _a === void 0 ? void 0 : _a.models.find((model) => model.id === modelId)) || null;
 }
 function annotateModel(model, role, outputFormat) {
-    const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(`${model.expirationDate}T00:00:00Z`));
+    const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`));
     const capabilities = model.capabilities || {};
     const formats = stringArray(capabilities.outputFormats);
     const roleMismatch = !model.roles.includes(role);

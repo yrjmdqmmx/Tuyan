@@ -4,9 +4,10 @@ exports.CANONICAL_ASPECT_RATIOS = void 0;
 exports.buildAspectRatioOptions = buildAspectRatioOptions;
 exports.normalizeSelectedAspectRatio = normalizeSelectedAspectRatio;
 exports.buildResolutionOptions = buildResolutionOptions;
-exports.CANONICAL_ASPECT_RATIOS = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20'];
+exports.CANONICAL_ASPECT_RATIOS = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20', '1:3', '3:1', '5:8', '8:5', '9:22', '22:9', '9:23', '23:9', '3:8', '8:3', '5:12', '12:5', '10:16', '16:10', '2.35:1', '7:5', '5:7', '3:5', '5:3'];
 function buildAspectRatioOptions(input) {
-    const declared = Array.isArray(input.capabilities[input.capabilityField])
+    const byResolution = input.capabilities[`${input.capabilityField}ByResolution`];
+    const declared = byResolution && input.resolution ? (byResolution[input.resolution] || []) : Array.isArray(input.capabilities[input.capabilityField])
         ? input.capabilities[input.capabilityField]
         : [];
     const supported = new Set(declared.map(String));

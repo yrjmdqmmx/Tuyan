@@ -21,6 +21,8 @@ function replaceApiKeys(input) {
     for (const [provider, value] of Object.entries(input)) {
         if (isProvider(provider))
             setApiKey(provider, value);
+        else if (/^minimax:(cn|global)$/.test(provider) && typeof value === 'string')
+            keys[provider] = value.trim();
     }
 }
 function clearApiKeys() {

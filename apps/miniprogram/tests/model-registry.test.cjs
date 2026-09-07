@@ -32,7 +32,7 @@ function registry() {
   }
 }
 
-assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'])
+assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'])
 const normalized = normalizeModelRegistry(registry())
 assert.equal(normalized.registryVersion, '2026-08-21.v9')
 assert.equal(normalized.providers.openrouter.models.length, 3)
@@ -82,3 +82,15 @@ assert.equal(dated.providers.openai.models[1].earliestRetirementDate, '2000-01-0
 assert.equal(dated.providers.openai.models[1].replacementModelId, 'next-image')
 assert.deepEqual(dated.providers.openai.models[1].roleProtocols, { image: 'openai-images' })
 assert.deepEqual(dated.providers.openai.models[1].regions, ['cn-beijing'])
+
+const originalNow = Date.now
+const zoneFixture = registry()
+zoneFixture.providers.openai.models[0].expirationDate = '2026-10-10'
+zoneFixture.providers.openai.models[0].expirationAt = '2026-10-10T00:00:00+08:00'
+const zoned = normalizeModelRegistry(zoneFixture).providers.openai.models
+try {
+  Date.now = () => Date.parse('2026-10-09T15:59:59.999Z')
+  assert.equal(partitionRegistryModels(zoned, { role: 'main' }).compatible.length, 1)
+  Date.now = () => Date.parse('2026-10-09T16:00:00Z')
+  assert.equal(partitionRegistryModels(zoned, { role: 'main' }).incompatible.length, 1)
+} finally { Date.now = originalNow }

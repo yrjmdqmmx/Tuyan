@@ -1,5 +1,29 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-07] 模型目录 v14、MiniMax 区域入口与不兼容条目移除 — by Codex
+变更：承接 v13 的图片尺寸扩展，全面核对现有 21 渠道。MiniMax 统一产品入口，新增可选 `providerRegions.minimax=global|cn`，区域匹配官方 API 与当前页面内存中的独立 Key；创建/精修/输入优化/任务快照透传区域。注册表新增 `providerRegionContractVersion:1`，旧后端不接受中国区提交。共享 `expirationAt` 可记录公告明确的时区与时刻，到期前不提前排除。生成/编辑分别维护尺寸、像素、边长、对齐与字段；45 种候选比例按具体型号合法性开放。
+目录：相对仓库基线 306 项，新增 367、修正 73、移除 4，最终 669 个静态型号；OpenRouter 核对 471 个唯一 ID，移除 5 个不兼容型号，实际目录 466 项。不兼容型号直接从后端目录及 Web/小程序选择器移除，原因仅保留审计记录。新增/修正 native、multipart、SSE 和异步队列适配；审阅回归补齐 Web 精修区域透传、异步查询 HTTP 错误重试及 fal 仅任务 ID 的应答；Together 使用 api.together.ai，MiniMax 中国直接出站、国际经 SG。没有新增 action 或生产 env。
+- [x] Core / Laf（区域、生命周期、模型/尺寸/格式/异步接口；实际 Node 后端复用同一源文件）
+- [x] Web（MiniMax 区域与独立 Key；逐分辨率比例；移除不兼容型号/厂商列表）
+- [x] 微信小程序（区域、路由、生成/精修 payload、目录与选择器；完整目录留在逻辑层，避免 1 MiB setData 溢出，当前最大视图更新约 16.3 KB；TS/JS 同步）
+- [x] 共享 API / 目录（配置、生成脚本、140 份独立 schema、完整差异与官方来源）
+- [x] 本地验证（Core 448、Web 342、共享/Laf/小程序/根契约 70；尺寸 15502、新渠道派发 7345、官方 schema 4877、OpenRouter 派发 1446 组合；小程序视图 1472 组分辨率选项、2.83 MB 增长目录；类型检查和构建通过）
+- [x] 本地浏览器（MiniMax 单入口、两区地址/Key 说明、Live 中国区专属与七种固定比例、不兼容列表消失）
+- [x] SG 出口允许名单与运维说明代码同步（本地验证；中国 MiniMax 不走 SG）
+- [ ] 实际发布 / SG ACL 应用 / 真实账号权限与推理验收（本次未执行；小程序上传继续暂停）
+证据：[v14 核对与验证](docs/model-capabilities/2026-09-07-catalog-v14.md)、[逐型号现行目录](docs/model-capabilities/2026-09-07-catalog-v14.csv)、[差异与移除理由](docs/model-catalog-decisions.csv)。当前保留客户端为 Web 与微信小程序。
+
+### [2026-09-07] 图片尺寸契约与渠道扩展 v13 — by Codex
+变更：按型号 + 接入渠道 + 生成/编辑维护尺寸规则；新增 `aspectRatiosByResolution` / `refineAspectRatiosByResolution`、尺寸核对日期与官方来源。共享解析器校验宽高、总像素、边长、比例和对齐，固定型号使用官方枚举。修复 Qwen 最小像素、Seedream 4.5/5.0 lite 最小面积、Wan 生成/编辑不同上限；补齐 Gemini、Kolors 比例；Recraft 直接编辑只提供原生尺寸。输出解码仍限制 20 MP，边长扩到 16384 以容纳 Gemini/Vidu 官方超宽输出。请求字段不变；新增尺寸组合错误码 `IMAGE_SIZE_UNSUPPORTED` / `REFINE_IMAGE_SIZE_UNSUPPORTED`，在入队前校验。精修保留 512/auto，自动增强禁止静默降档。新增渠道 apiKeys/modelRoutes ID 同步三端；Gateway 沿用透传，无新增 action/env。SG 出口主机清单已更新代码，尚未应用线上。
+- [x] Core / Laf（共享尺寸解析、合法请求校验、自动模式）
+- [x] Web（按所选分辨率生成比例选项）
+- [x] 微信小程序（生成/精修随分辨率更新；TS/JS 同步）
+- [x] 共享目录（配置、生成脚本、官方来源与穷举边界测试）
+- [x] 厂商与聚合平台扩展（BFL、Stability、Ideogram、MiniMax 国际、Mistral、Together、Fireworks、fal、Replicate；21 渠道 / 323 静态型号 / 82 图片路线）
+- [x] 本地回归与构建（Core 436、Web 337、Laf/共享 API 34；小程序 21 文件；尺寸 6222 组合、后端新增图片派发 1104 组合）
+- [ ] 发布 / SG ACL 应用 / 账号权限与真实推理验收（本次未执行；小程序上传继续暂停）
+证据：[尺寸与渠道核对记录](docs/model-capabilities/2026-09-07-audit.md)。
+
 ### [2026-09-07] 原身份恢复与生命周期隔离 — by Codex
 变更：用户明确选择保留原账号身份并授权上线。旧注销范围和已暂停的 Auth 操作在跨库事务中归档，当前生命周期 head 保留并设为 active，生成新的 `accountGeneration`。用户、凭证、会话、任务和反馈原样保留；不重建缺失图片。新增仅运维可运行的指纹 + 快照摘要恢复 CLI，要求维护并停止 Core/Gateway。新任务持久化周期编号，参考图使用独立子目录，旧写回及旧注销请求不能影响新周期。发布明确先停旧 Gateway 再停旧 Core，新旧清理器不重叠。
 契约：`GET /api/account/status` 可选新增 `accountGeneration/restoredAt`；编号由 Core 绑定，客户端无需提交。内部注销绑定该编号。新增归档集合 `paperbanana_account_deletion_history` / `accountDeletionOperationHistory`，不新增公开 action、密钥或模型调用。

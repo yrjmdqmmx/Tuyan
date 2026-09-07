@@ -29,7 +29,8 @@ test('backend and both bundled catalogs are generated from the same reviewed sou
 test('every original audit row has an explicit implementation or exclusion decision', () => {
   assert.deepEqual(audit.auditRows, { '02-native': 79, '03-siliconflow': 92, '04-bailian': 262, '01-existing': 101, '05-openrouter-text': 430, '05-openrouter-images': 50 })
   assert.equal(audit.originalStaticCount, 101)
-  assert.equal(audit.staticCount, 306)
+  assert.equal(audit.staticCount, 669)
+  assert.equal(audit.incompatiblePolicy, 'omit-from-catalog')
   for (const row of audit.decisions) {
     assert.ok(row.reason.trim().length > 10, `${row.provider}/${row.id}: missing rationale`)
     assert.match(row.source, /^https:\/\//)
@@ -41,7 +42,10 @@ test('every original audit row has an explicit implementation or exclusion decis
   }
   for (const [provider, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
     assert.equal(new Set(registry.models.map((m) => m.id)).size, registry.models.length)
-    for (const model of registry.models) assert.ok(audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id), `${provider}/${model.id} lacks audit evidence`)
+    for (const model of registry.models) {
+      assert.equal(model.selectable, true, `${provider}/${model.id} incompatible entries must be omitted`)
+      assert.ok(audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id), `${provider}/${model.id} lacks audit evidence`)
+    }
   }
 })
 

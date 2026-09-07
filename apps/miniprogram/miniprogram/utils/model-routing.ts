@@ -1,3 +1,4 @@
+import { normalizeProviderRegions, selectRegionApiKeys, type ProviderRegions } from './provider-regions'
 import type { ModelRegistry, ModelRole } from './model-registry'
 
 export const MODEL_ROUTE_ROLES: ModelRole[] = ['main', 'image', 'vision']
@@ -18,13 +19,18 @@ export function providerDefaultRoutes(provider: string, registry: ModelRegistry 
 export function buildModelSubmission(input: {
   configurationMode: 'simple' | 'advanced'
   modelRoutes: ModelRoutes
-  registry: { routeContractVersion?: number } | null
+  providerRegions?: ProviderRegions
+  registry: { routeContractVersion?: number; providerRegionContractVersion?: number } | null
 }): Record<string, unknown> {
   assertCompleteRoutes(input.modelRoutes)
   if (!input.registry || Number(input.registry.routeContractVersion || 0) < 1) {
     throw new Error('服务端模型目录不可用，已禁止新建付费任务。')
   }
+  const regions = normalizeProviderRegions(input.providerRegions)
+  const usesMiniMax = Object.values(input.modelRoutes).some(route => route.accessProvider === 'minimax')
+  if (usesMiniMax && regions.minimax === 'cn' && !input.registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 MiniMax 国内区域。')
   return {
+    ...(usesMiniMax && input.providerRegions ? {providerRegions: regions} : {}),
     configurationMode: input.configurationMode,
     provider: input.modelRoutes.main.accessProvider,
     modelRoutes: input.modelRoutes,
@@ -62,8 +68,9 @@ export function uniqueProvidersForRoles(modelRoutes: ModelRoutes, roles: ModelRo
   return providers
 }
 
-export function scopedApiKeysForRoles(modelRoutes: ModelRoutes, roles: ModelRole[], apiKeys: Record<string, string>): Record<string, string> {
-  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).map((provider) => [provider, apiKeys[provider] || '']))
+export function scopedApiKeysForRoles(modelRoutes: ModelRoutes, roles: ModelRole[], apiKeys: Record<string, string>, regions?: ProviderRegions): Record<string, string> {
+  const selected = selectRegionApiKeys(apiKeys, regions)
+  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).map((provider) => [provider, selected[provider] || '']))
 }
 
 export interface ArkProbe { role: ModelRole; modelId: string }

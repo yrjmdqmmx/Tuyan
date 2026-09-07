@@ -1,3 +1,4 @@
+import type { ProviderRegions } from './provider-regions'
 import { PLOT_CATEGORY_ID, type ImageSize, type ProviderId, type RetrievalSetting } from './constants'
 import {
   buildModelSubmission,
@@ -16,9 +17,10 @@ export interface UploadedReferenceImage {
 }
 
 export interface CreateJobInput {
+  providerRegions?: ProviderRegions
   configurationMode: 'simple' | 'advanced'
   provider: ProviderId
-  registry?: { routeContractVersion?: number } | null
+  registry?: { routeContractVersion?: number; providerRegionContractVersion?: number } | null
   modelRoutes?: ModelRoutes
   apiKeys?: Record<string, string>
   apiKey?: string
@@ -52,6 +54,7 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
     vision: { accessProvider: input.provider, modelId: String(input.referenceVisionModelName || '') },
   }
   const modelSubmission = buildModelSubmission({
+    providerRegions: input.providerRegions,
     configurationMode: input.configurationMode,
     modelRoutes,
     registry: input.registry || null,
@@ -77,7 +80,7 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
     action: 'createJob',
     clientPlatform: 'miniprogram',
     ...modelSubmission,
-    apiKeys: scopedApiKeysForRoles(modelRoutes, routeRoles, providedKeys),
+    apiKeys: scopedApiKeysForRoles(modelRoutes, routeRoles, providedKeys, input.providerRegions),
     taskName,
     methodContent: input.methodContent.trim(),
     caption: input.caption.trim(),

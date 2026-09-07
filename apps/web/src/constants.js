@@ -1,4 +1,4 @@
-import { STATIC_MODEL_REGISTRY } from './lib/staticModelCatalog.js'
+import { EXTENDED_MODEL_CHANNELS, STATIC_MODEL_REGISTRY } from './lib/staticModelCatalog.js'
 export function mainModelCanReadImages(provider, model) {
   const known = STATIC_MODEL_REGISTRY[provider]?.models.find((entry) => entry.id === model)
   if (known) return known.roles.includes('main') && known.inputModalities.includes('image')
@@ -606,7 +606,7 @@ export const PROVIDERS = {
 // Generated catalog is the common fallback; public runtime registry remains authoritative.
 for (const [id, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
   const options = (role) => registry.models.filter((model) => model.selectable !== false && model.roles.includes(role)).map((model) => [model.id, model.label, model.vendor])
-  PROVIDERS[id] = { ...PROVIDERS[id], mainModel: registry.defaults.main, imageModel: registry.defaults.image, visionModel: registry.defaults.vision, mainModels: options('main'), imageModels: options('image'), visionModels: options('vision'), registryModels: registry.models }
+  PROVIDERS[id] = { ...PROVIDERS[id], ...(EXTENDED_MODEL_CHANNELS[id] ? { ...EXTENDED_MODEL_CHANNELS[id], name: EXTENDED_MODEL_CHANNELS[id].label, keyName: id, keyPlaceholder: 'API Key' } : {}), mainModel: registry.defaults.main, imageModel: registry.defaults.image, visionModel: registry.defaults.vision, mainModels: options('main'), imageModels: options('image'), visionModels: options('vision'), registryModels: registry.models }
 }
 
 export const REFERENCE_IMAGE_LIMITS = {

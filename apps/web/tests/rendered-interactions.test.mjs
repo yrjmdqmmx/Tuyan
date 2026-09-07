@@ -70,7 +70,7 @@ test('rendered SVG submit ignores the image model format because the main model 
   }
 })
 
-test('rendered OpenRouter full catalog shows incompatible image entries disabled with the server reason', async () => {
+test('rendered OpenRouter full catalog omits incompatible models and vendors', async () => {
   const user = userEvent.setup()
   const { container } = render(React.createElement(ModelPicker, {
     label: '图像生成模型',
@@ -89,17 +89,12 @@ test('rendered OpenRouter full catalog shows incompatible image entries disabled
   await user.click(screen.getByRole('button', { name: '全部兼容模型' }))
   assert.equal(screen.getByRole('button', { name: '全部兼容模型' }).getAttribute('aria-pressed'), 'true')
   assert.equal(container.querySelector('.model-incompatible .model-option'), null)
-  await user.click(screen.getByText(/暂不兼容/))
-  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 24)
-  await user.click(screen.getByRole('button', { name: /显示更多不兼容模型/ }))
-  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 26)
-  const blocked = screen.getByText('Blocked Model 0').closest('button')
-  assert.ok(blocked)
-  assert.equal(blocked.disabled, true)
-  assert.match(blocked.textContent, /未声明 PNG\/SVG 输出/)
+  assert.equal(screen.queryByText(/暂不兼容/), null)
+  assert.equal(screen.queryByText('Blocked Model 0'), null)
+  assert.equal(screen.queryByRole('button', { name: '厂商 Google' }), null)
 })
 
-test('rendered aggregator drawers expose disabled-only vendors and their unsupported models', async () => {
+test('rendered aggregator drawers omit disabled-only vendors and unsupported roles', async () => {
   const user = userEvent.setup()
   const { container } = render(React.createElement(ModelPicker, {
     label: '主模型', role: 'main', outputFormat: 'png',
@@ -119,16 +114,10 @@ test('rendered aggregator drawers expose disabled-only vendors and their unsuppo
 
   await user.click(screen.getByRole('button', { name: '主模型' }))
   assert.ok(screen.getByRole('button', { name: '厂商 ByteDance Doubao' }))
-  assert.ok(screen.getByRole('button', { name: '厂商 Specialist Labs' }))
-  assert.equal(screen.queryAllByRole('button', { name: '厂商 Image Labs' }).length, 0)
-  await user.click(screen.getByRole('button', { name: '厂商 Specialist Labs' }))
-  assert.ok(screen.getByText(/暂不兼容/))
-  await user.click(screen.getByText(/暂不兼容/))
-  const disabled = screen.getByText('Specialized Only').closest('button')
-  assert.ok(disabled)
-  assert.equal(disabled.disabled, true)
-  assert.match(disabled.textContent, /尚未完成 PaperBanana 适配/)
-  assert.equal(container.querySelectorAll('.model-incompatible .model-option').length, 1)
+  assert.equal(screen.queryByRole('button', { name: '厂商 Specialist Labs' }), null)
+  assert.equal(screen.queryByRole('button', { name: '厂商 Image Labs' }), null)
+  assert.equal(screen.queryByText('Specialized Only'), null)
+  assert.equal(container.querySelector('.model-incompatible'), null)
 })
 
 test('rendered model cards distinguish catalog compatibility, account visibility, and real-call verification', async () => {
@@ -432,7 +421,7 @@ test('rendered model search resets both incremental state and a deeply scrolled 
   assert.ok(screen.getByText('Model 35'))
 })
 
-test('rendered model list reveals compatible batches and keeps keyboard focus moving into native incompatible details', async () => {
+test('rendered model list reveals compatible batches and wraps keyboard focus without incompatible entries', async () => {
   const models = [
     ...Array.from({ length: 26 }, (_, index) => ({
       id: `model-${index}`,
@@ -462,8 +451,8 @@ test('rendered model list reveals compatible batches and keeps keyboard focus mo
   await user.tab()
   assert.match(document.activeElement?.textContent || '', /Model 25/)
   await user.tab()
-  const summary = screen.getByText(/暂不兼容/).closest('summary')
-  assert.equal(document.activeElement, summary)
+  assert.equal(screen.queryByText(/暂不兼容/), null)
+  assert.equal(document.activeElement, screen.getByRole('button', { name: '关闭模型选择' }))
 })
 
 test('rendered generation drawer focuses its target, closes on Escape, restores focus, and preserves mounted state', async () => {

@@ -11,6 +11,7 @@ exports.arkProbesForRoles = arkProbesForRoles;
 exports.arkVerificationKey = arkVerificationKey;
 exports.missingArkVerifications = missingArkVerifications;
 exports.nextArkVerificationBatch = nextArkVerificationBatch;
+const provider_regions_1 = require("./provider-regions");
 exports.MODEL_ROUTE_ROLES = ['main', 'image', 'vision'];
 function providerDefaultRoutes(provider, registry) {
     var _a;
@@ -25,11 +26,17 @@ function providerDefaultRoutes(provider, registry) {
     };
 }
 function buildModelSubmission(input) {
+    var _a;
     assertCompleteRoutes(input.modelRoutes);
     if (!input.registry || Number(input.registry.routeContractVersion || 0) < 1) {
         throw new Error('服务端模型目录不可用，已禁止新建付费任务。');
     }
+    const regions = (0, provider_regions_1.normalizeProviderRegions)(input.providerRegions);
+    const usesMiniMax = Object.values(input.modelRoutes).some(route => route.accessProvider === 'minimax');
+    if (usesMiniMax && regions.minimax === 'cn' && !((_a = input.registry) === null || _a === void 0 ? void 0 : _a.providerRegionContractVersion))
+        throw new Error('当前服务端尚未支持 MiniMax 国内区域。');
     return {
+        ...(usesMiniMax && input.providerRegions ? { providerRegions: regions } : {}),
         configurationMode: input.configurationMode,
         provider: input.modelRoutes.main.accessProvider,
         modelRoutes: input.modelRoutes,
@@ -70,8 +77,9 @@ function uniqueProvidersForRoles(modelRoutes, roles) {
     }
     return providers;
 }
-function scopedApiKeysForRoles(modelRoutes, roles, apiKeys) {
-    return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).map((provider) => [provider, apiKeys[provider] || '']));
+function scopedApiKeysForRoles(modelRoutes, roles, apiKeys, regions) {
+    const selected = (0, provider_regions_1.selectRegionApiKeys)(apiKeys, regions);
+    return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).map((provider) => [provider, selected[provider] || '']));
 }
 function arkProbesForRoles(modelRoutes, roles) {
     return orderedUniqueRoles(roles)

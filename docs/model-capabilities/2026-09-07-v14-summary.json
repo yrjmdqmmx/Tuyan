@@ -1,0 +1,3407 @@
+{
+  "catalogVersion": "2026-09-07.v14",
+  "providers": 21,
+  "staticModels": 669,
+  "selectableStaticModels": 669,
+  "staticImageRoutes": 275,
+  "dimensionProfiles": 231,
+  "wireRoutes": 182,
+  "officialSchemas": 140,
+  "officialSourceSnapshots": 302,
+  "decisions": 1365,
+  "comparison": {
+    "before": 306,
+    "after": 669,
+    "addedCount": 367,
+    "correctedCount": 73,
+    "removedCount": 4,
+    "added": [
+      "siliconflow/nex-agi/Nex-N2-Pro",
+      "siliconflow/MiniMaxAI/MiniMax-M2.5",
+      "siliconflow/Pro/MiniMaxAI/MiniMax-M2.5",
+      "siliconflow/Qwen/Qwen3.5-397B-A17B",
+      "xai/grok-build-0.1",
+      "xai/grok-imagine-image-quality",
+      "bailian/qwen3.6-max-preview",
+      "bailian/qwen3-max",
+      "bailian/qwen3-max-2026-01-23",
+      "bailian/qwen3-max-2025-09-23",
+      "bailian/qwen3-max-preview",
+      "bailian/qwen-turbo",
+      "bailian/qwq-plus",
+      "bailian/qwen-long-latest",
+      "bailian/qwen-long-2025-01-25",
+      "bailian/qwen-omni-turbo",
+      "bailian/qvq-max",
+      "bailian/qvq-plus",
+      "bailian/qwen3-vl-flash",
+      "bailian/qwen-vl-max",
+      "bailian/qwen-vl-plus",
+      "bailian/qwen3-coder-plus",
+      "bailian/qwen3-coder-plus-2025-09-23",
+      "bailian/qwen3-coder-plus-2025-07-22",
+      "bailian/qwen3-next-80b-a3b-thinking",
+      "bailian/qwen3-next-80b-a3b-instruct",
+      "bailian/qwen3-235b-a22b-thinking-2507",
+      "bailian/qwen3-235b-a22b-instruct-2507",
+      "bailian/qwen3-30b-a3b-thinking-2507",
+      "bailian/qwen3-30b-a3b-instruct-2507",
+      "bailian/qwen3-235b-a22b",
+      "bailian/qwen3-32b",
+      "bailian/qwen3-30b-a3b",
+      "bailian/qwen3-14b",
+      "bailian/qwen3-8b",
+      "bailian/qwen2.5-omni-7b",
+      "bailian/qwen3-coder-next",
+      "bailian/qwen3-coder-480b-a35b-instruct",
+      "bailian/qwen3-coder-30b-a3b-instruct",
+      "bailian/deepseek-v3.2",
+      "bailian/deepseek-v3.2-exp",
+      "bailian/deepseek-v3.1",
+      "bailian/deepseek-r1",
+      "bailian/deepseek-r1-0528",
+      "bailian/deepseek-v3",
+      "bailian/deepseek-r1-distill-qwen-7b",
+      "bailian/deepseek-r1-distill-qwen-14b",
+      "bailian/deepseek-r1-distill-qwen-32b",
+      "bailian/kimi-k2-thinking",
+      "bailian/Moonshot-Kimi-K2-Instruct",
+      "bailian/glm-4.7",
+      "bailian/glm-4.5",
+      "bailian/glm-4.5-air",
+      "bailian/MiniMax-M2.1",
+      "bailian/qwen-image-max",
+      "bailian/qwen-image-max-2025-12-30",
+      "bailian/qwen-image-plus",
+      "bailian/qwen-image-plus-2026-01-09",
+      "bailian/qwen-image",
+      "bailian/qwen-image-edit-max",
+      "bailian/qwen-image-edit-max-2026-01-16",
+      "bailian/qwen-image-edit-plus",
+      "bailian/qwen-image-edit-plus-2025-12-15",
+      "bailian/qwen-image-edit-plus-2025-10-30",
+      "bailian/qwen-image-edit",
+      "openai/gpt-5",
+      "openai/gpt-5-2025-08-07",
+      "openai/gpt-5-mini-2025-08-07",
+      "openai/gpt-5-nano",
+      "openai/gpt-5-nano-2025-08-07",
+      "openai/gpt-5-pro",
+      "openai/gpt-5-pro-2025-10-06",
+      "openai/o3",
+      "openai/o3-2025-04-16",
+      "openai/o3-pro",
+      "openai/o3-pro-2025-06-10",
+      "openai/gpt-4.1-nano",
+      "openai/gpt-4.1-nano-2025-04-14",
+      "openai/o1",
+      "openai/o1-2024-12-17",
+      "openai/o1-pro",
+      "openai/o1-pro-2025-03-19",
+      "openai/o3-mini",
+      "openai/o3-mini-2025-01-31",
+      "openai/o4-mini",
+      "openai/o4-mini-2025-04-16",
+      "openai/gpt-4-turbo",
+      "openai/gpt-4-turbo-2024-04-09",
+      "openai/gpt-4",
+      "openai/gpt-4-0613",
+      "openai/gpt-3.5-turbo",
+      "openai/gpt-3.5-turbo-0125",
+      "openai/gpt-4-1106-preview",
+      "openai/gpt-4o-2024-05-13",
+      "openai/gpt-3.5-turbo-1106",
+      "openai/gpt-4.1-2025-04-14",
+      "openai/gpt-4.1-mini-2025-04-14",
+      "openai/gpt-5.2-2025-12-11",
+      "openai/gpt-5.1-2025-11-13",
+      "openai/gpt-4o-2024-08-06",
+      "openai/gpt-4o-2024-11-20",
+      "openai/gpt-4o-mini-2024-07-18",
+      "ark/doubao-seed-1-8-251228",
+      "ark/doubao-seed-code-preview-251028",
+      "ark/doubao-seed-1-6-flash-250828",
+      "ark/doubao-seed-1-6-vision-250815",
+      "ark/doubao-seed-1-6-250615",
+      "ark/doubao-seed-1-6-251015",
+      "ark/doubao-seed-1-6-flash-250615",
+      "ark/doubao-1-5-pro-32k-250115",
+      "ark/doubao-1-5-lite-32k-250115",
+      "ark/glm-4-7-251222",
+      "ark/doubao-1-5-vision-pro-32k-250115",
+      "bfl/flux-pro-1.1",
+      "bfl/flux-dev",
+      "bfl/flux-pro-1.1-ultra",
+      "bfl/flux-2-flex",
+      "bfl/flux-2-klein-9b",
+      "bfl/flux-2-klein-9b-preview",
+      "bfl/flux-2-klein-4b",
+      "bfl/flux-2-max",
+      "bfl/flux-2-pro-preview",
+      "bfl/flux-2-pro",
+      "bfl/flux-kontext-max",
+      "bfl/flux-kontext-pro",
+      "stability/stable-image-ultra",
+      "stability/stable-image-core",
+      "stability/sd3.5-large",
+      "stability/sd3.5-large-turbo",
+      "stability/sd3.5-medium",
+      "stability/sd3.5-flash",
+      "ideogram/ideogram-v4",
+      "ideogram/ideogram-v3",
+      "ideogram/p-image-ideogram",
+      "ideogram/ideogram-edit",
+      "ideogram/ideogram-v3-transparent",
+      "ideogram/ideogram-v4-transparent",
+      "ideogram/V_1",
+      "ideogram/V_1_TURBO",
+      "ideogram/V_2",
+      "ideogram/V_2_TURBO",
+      "ideogram/V_2A",
+      "ideogram/V_2A_TURBO",
+      "ideogram/AUTO",
+      "minimax/MiniMax-M3",
+      "minimax/MiniMax-M2.7",
+      "minimax/image-01",
+      "minimax/MiniMax-M2.7-highspeed",
+      "minimax/MiniMax-M2.5",
+      "minimax/MiniMax-M2.5-highspeed",
+      "minimax/MiniMax-M2.1",
+      "minimax/MiniMax-M2.1-highspeed",
+      "minimax/MiniMax-M2",
+      "minimax/image-01-live",
+      "mistral/mistral-small-2603",
+      "mistral/mistral-large-2512",
+      "mistral/codestral-2508",
+      "mistral/codestral-latest",
+      "mistral/ministral-14b-2512",
+      "mistral/ministral-14b-latest",
+      "mistral/labs-leanstral-1-5",
+      "mistral/mistral-medium-3-5",
+      "mistral/mistral-medium-3",
+      "mistral/mistral-medium-latest",
+      "mistral/ministral-8b-2512",
+      "mistral/ministral-8b-latest",
+      "mistral/ministral-3b-2512",
+      "mistral/ministral-3b-latest",
+      "mistral/zai-glm-5-2",
+      "together/thinkingmachines/Inkling",
+      "together/MiniMaxAI/MiniMax-M3",
+      "together/Qwen/Qwen3.8-2.4T-A95B",
+      "together/Qwen/Qwen3.7-Max",
+      "together/Qwen/Qwen3.6-Plus",
+      "together/Qwen/Qwen3.5-9B",
+      "together/moonshotai/Kimi-K3",
+      "together/zai-org/GLM-5.3",
+      "together/zai-org/GLM-5.3-Flash",
+      "together/zai-org/GLM-5.2",
+      "together/openai/gpt-oss-120b",
+      "together/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "together/deepseek-ai/DeepSeek-V4-Pro-0813",
+      "together/meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "together/Qwen/Qwen3.7-Plus",
+      "together/Prism-ML/Ternary-Bonsai-27B",
+      "together/meta-models/Muse-Glimmer-30B",
+      "together/Qwen/Qwen3.8-Flash",
+      "together/google/imagen-4.0-preview",
+      "together/google/imagen-4.0-fast",
+      "together/google/imagen-4.0-ultra",
+      "together/google/flash-image-2.5",
+      "together/google/gemini-3-pro-image",
+      "together/black-forest-labs/FLUX.1.1-pro",
+      "together/black-forest-labs/FLUX.1-kontext-pro",
+      "together/black-forest-labs/FLUX.1-kontext-max",
+      "together/black-forest-labs/FLUX.2-pro",
+      "together/black-forest-labs/FLUX.2-dev",
+      "together/black-forest-labs/FLUX.2-flex",
+      "together/ByteDance-Seed/Seedream-3.0",
+      "together/ByteDance-Seed/Seedream-4.0",
+      "together/ByteDance/Seedream-5.0-lite",
+      "together/Qwen/Qwen-Image",
+      "together/RunDiffusion/Juggernaut-pro-flux",
+      "together/Rundiffusion/Juggernaut-Lightning-Flux",
+      "together/ideogram/ideogram-3.0",
+      "together/stabilityai/stable-diffusion-xl-base-1.0",
+      "together/black-forest-labs/FLUX.2-max",
+      "together/google/flash-image-3.1",
+      "together/openai/gpt-image-1.5",
+      "together/Qwen/Qwen-Image-2.0",
+      "together/Qwen/Qwen-Image-2.0-Pro",
+      "together/Wan-AI/Wan2.6-image",
+      "together/ideogram/ideogram-4.0",
+      "together/openai/gpt-image-2",
+      "together/google/flash-image-3.1-lite",
+      "together/prunaai/p-image-ideogram",
+      "fireworks/accounts/fireworks/models/kimi-k2p5",
+      "fireworks/accounts/fireworks/models/kimi-k3",
+      "fireworks/accounts/fireworks/models/kimi-k2p7-code",
+      "fireworks/accounts/fireworks/models/kimi-k2p6",
+      "fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+      "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+      "fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+      "fireworks/accounts/fireworks/models/glm-5p3-flash",
+      "fireworks/accounts/fireworks/models/glm-5p3",
+      "fireworks/accounts/fireworks/models/glm-5p2",
+      "fireworks/accounts/fireworks/models/qwen3p7-plus",
+      "fireworks/accounts/fireworks/models/qwen3p8-max",
+      "fireworks/accounts/fireworks/models/minimax-m3",
+      "fireworks/accounts/fireworks/models/gpt-oss-120b",
+      "fireworks/accounts/fireworks/models/muse-glimmer-30b",
+      "fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+      "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+      "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4",
+      "fireworks/accounts/fireworks/models/qwen3-8b",
+      "fireworks/accounts/fireworks/models/gemma-4-31b-it",
+      "fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
+      "fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b",
+      "fal/alibaba/qwen-image-3/text-to-image",
+      "fal/bria/fibo-edit-1.5/edit",
+      "fal/bria/fibo-gen-1.5/text-to-image",
+      "fal/bytedance/seedream/v5/pro/text-to-image",
+      "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "fal/fal-ai/bytedance/seedream/v5/lite/edit",
+      "fal/fal-ai/fast-sdxl",
+      "fal/fal-ai/flux-1/schnell",
+      "fal/fal-ai/flux-2",
+      "fal/fal-ai/flux-2-flex",
+      "fal/fal-ai/flux-2-pro",
+      "fal/fal-ai/flux-2/flash",
+      "fal/fal-ai/flux-2/klein/9b",
+      "fal/fal-ai/flux-2/turbo",
+      "fal/fal-ai/flux-kontext-lora",
+      "fal/fal-ai/flux-lora",
+      "fal/fal-ai/flux-pro/kontext",
+      "fal/fal-ai/flux-pro/v1.1",
+      "fal/fal-ai/flux-pro/v1.1-ultra",
+      "fal/fal-ai/flux/dev",
+      "fal/fal-ai/flux/schnell",
+      "fal/fal-ai/gpt-image-1.5",
+      "fal/fal-ai/krea-2/turbo",
+      "fal/fal-ai/nano-banana",
+      "fal/fal-ai/nano-banana-2",
+      "fal/fal-ai/nano-banana-pro",
+      "fal/fal-ai/qwen-image",
+      "fal/fal-ai/recraft/v3/text-to-image",
+      "fal/fal-ai/recraft/v4/pro/text-to-image",
+      "fal/fal-ai/z-image/turbo",
+      "fal/google/nano-banana-2-lite",
+      "fal/imagineart/imagineart-2.0-preview/text-to-image",
+      "fal/krea/v2/large/text-to-image",
+      "fal/meta/muse-image/text-to-image",
+      "fal/openai/gpt-image-2",
+      "fal/xai/grok-imagine-image",
+      "fal/xai/grok-imagine-image/quality/text-to-image",
+      "fal/xai/grok-imagine-image/v2.0/text-to-image",
+      "fal/fal-ai/ideogram/v3",
+      "replicate/adirik/realvisxl-v3.0-turbo",
+      "replicate/ai-forever/kandinsky-2",
+      "replicate/ai-forever/kandinsky-2.2",
+      "replicate/alibaba/wan-3",
+      "replicate/black-forest-labs/flux-1.1-pro",
+      "replicate/black-forest-labs/flux-1.1-pro-ultra",
+      "replicate/black-forest-labs/flux-2-flex",
+      "replicate/black-forest-labs/flux-2-klein-4b",
+      "replicate/black-forest-labs/flux-2-max",
+      "replicate/black-forest-labs/flux-2-pro",
+      "replicate/black-forest-labs/flux-dev",
+      "replicate/black-forest-labs/flux-dev-lora",
+      "replicate/black-forest-labs/flux-kontext-dev",
+      "replicate/black-forest-labs/flux-kontext-max",
+      "replicate/black-forest-labs/flux-kontext-pro",
+      "replicate/black-forest-labs/flux-pro",
+      "replicate/black-forest-labs/flux-schnell",
+      "replicate/bria/fibo",
+      "replicate/bria/fibo-edit",
+      "replicate/bria/image-3.2",
+      "replicate/bytedance/bagel",
+      "replicate/bytedance/sdxl-lightning-4step",
+      "replicate/bytedance/seedream-3",
+      "replicate/bytedance/seedream-4",
+      "replicate/bytedance/seedream-4.5",
+      "replicate/bytedance/seedream-5-lite",
+      "replicate/datacte/proteus-v0.2",
+      "replicate/datacte/proteus-v0.3",
+      "replicate/fofr/latent-consistency-model",
+      "replicate/fofr/sdxl-emoji",
+      "replicate/fofr/sticker-maker",
+      "replicate/google/imagen-3",
+      "replicate/google/imagen-3-fast",
+      "replicate/google/imagen-4",
+      "replicate/google/imagen-4-fast",
+      "replicate/google/imagen-4-ultra",
+      "replicate/google/nano-banana",
+      "replicate/google/nano-banana-2",
+      "replicate/google/nano-banana-pro",
+      "replicate/ideogram-ai/ideogram-v2",
+      "replicate/ideogram-ai/ideogram-v2-turbo",
+      "replicate/ideogram-ai/ideogram-v2a",
+      "replicate/ideogram-ai/ideogram-v2a-turbo",
+      "replicate/ideogram-ai/ideogram-v3-balanced",
+      "replicate/ideogram-ai/ideogram-v3-quality",
+      "replicate/ideogram-ai/ideogram-v3-turbo",
+      "replicate/leonardoai/lucid-origin",
+      "replicate/lucataco/dreamshaper-xl-turbo",
+      "replicate/lucataco/omnigen2",
+      "replicate/lucataco/open-dalle-v1.1",
+      "replicate/lucataco/realistic-vision-v5.1",
+      "replicate/lucataco/ssd-1b",
+      "replicate/luma/photon",
+      "replicate/luma/photon-flash",
+      "replicate/minimax/image-01",
+      "replicate/nvidia/sana",
+      "replicate/nvidia/sana-sprint-1.6b",
+      "replicate/openai/gpt-image-1.5",
+      "replicate/openai/gpt-image-2",
+      "replicate/playgroundai/playground-v2.5-1024px-aesthetic",
+      "replicate/prunaai/flux-fast",
+      "replicate/prunaai/flux-kontext-fast",
+      "replicate/prunaai/hidream-l1-dev",
+      "replicate/prunaai/hidream-l1-fast",
+      "replicate/prunaai/hidream-l1-full",
+      "replicate/prunaai/p-image",
+      "replicate/prunaai/p-image-edit",
+      "replicate/prunaai/p-image-lora",
+      "replicate/prunaai/sdxl-lightning",
+      "replicate/prunaai/wan-2.2-image",
+      "replicate/prunaai/z-image-turbo",
+      "replicate/qwen/qwen-image",
+      "replicate/qwen/qwen-image-edit",
+      "replicate/qwen/qwen-image-edit-plus",
+      "replicate/recraft-ai/recraft-v3",
+      "replicate/recraft-ai/recraft-v4-pro",
+      "replicate/recraft-ai/recraft-v4.1",
+      "replicate/sourceful/riverflow-2.0-pro",
+      "replicate/stability-ai/sdxl",
+      "replicate/stability-ai/stable-diffusion",
+      "replicate/stability-ai/stable-diffusion-3.5-large",
+      "replicate/stability-ai/stable-diffusion-3.5-large-turbo",
+      "replicate/stability-ai/stable-diffusion-3.5-medium",
+      "replicate/tencent/hunyuan-image-3",
+      "replicate/tstramer/material-diffusion",
+      "replicate/wan-video/wan-2.7-image",
+      "replicate/wan-video/wan-2.7-image-pro",
+      "replicate/xai/grok-imagine-image",
+      "replicate/zsxkib/step1x-edit"
+    ],
+    "corrected": [
+      {
+        "provider": "zhipu",
+        "id": "glm-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "zhipu",
+        "id": "cogview-4-250304",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "zhipu",
+        "id": "cogview-4",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "zhipu",
+        "id": "cogview-3-flash",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "siliconflow",
+        "id": "Qwen/Qwen-Image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "siliconflow",
+        "id": "Kwai-Kolors/Kolors",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "siliconflow",
+        "id": "baidu/ERNIE-Image-Turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "siliconflow",
+        "id": "Tongyi-MAI/Z-Image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "siliconflow",
+        "id": "Tongyi-MAI/Z-Image-Turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "siliconflow",
+        "id": "Qwen/Qwen-Image-Edit",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "siliconflow",
+        "id": "Qwen/Qwen-Image-Edit-2509",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_pro_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_utility",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_utility_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_utility_pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_1_utility_pro_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv4_pro_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv3",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv3_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv2",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "recraft",
+        "id": "recraftv2_vector",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "xai",
+        "id": "grok-imagine-image-2.0",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "xai",
+        "id": "grok-imagine-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-3.1-flash-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-3.1-flash-lite-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-3-pro-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-2.5-flash-image",
+        "fields": [
+          "expirationDate",
+          "earliestRetirementDate",
+          "replacementModelId",
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.7-image-pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.7-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-3.0",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-3.0-pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "z-image-turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro-2026-06-22",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro-2026-04-22",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro-2026-03-03",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-2026-03-03",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.6-t2i",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.5-t2i-preview",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.2-t2i-plus",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.2-t2i-flash",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx2.1-t2i-plus",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx2.1-t2i-turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx2.0-t2i-turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx-v1",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.6-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.5-i2i-preview",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx2.1-imageedit",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "kling/kling-v3-image-generation",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "kling/kling-v3-omni-image-generation",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "vidu/vidu-image_reference2image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "vidu/vidu-image-pro_reference2image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "vidu/vidu-image-lite_reference2image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "vidu/viduq3-fast_reference2image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "vidu/viduq2-pro_reference2image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "vidu/viduq2-fast_reference2image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-5-mini",
+        "fields": [
+          "label"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-image-2",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-image-1",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-image-1-mini",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-image-1.5",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "chatgpt-image-latest",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-5-0-pro-260628",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-5-0-260128",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-4-5-251128",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-4-0-250828",
+        "fields": [
+          "capabilities"
+        ]
+      }
+    ],
+    "removed": [
+      "bailian/qwen3.8-max-preview",
+      "ark/doubao-seed-character-260628",
+      "ark/doubao-seed-character-251128",
+      "ark/doubao-seed-translation-250915"
+    ],
+    "channels": {
+      "deepseek": {
+        "before": 3,
+        "after": 3,
+        "selectable": 3,
+        "addedIds": [],
+        "corrected": [],
+        "removedIds": []
+      },
+      "kimi": {
+        "before": 4,
+        "after": 4,
+        "selectable": 4,
+        "addedIds": [],
+        "corrected": [],
+        "removedIds": []
+      },
+      "zhipu": {
+        "before": 27,
+        "after": 27,
+        "selectable": 27,
+        "addedIds": [],
+        "corrected": [
+          {
+            "id": "glm-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "cogview-4-250304",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "cogview-4",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "cogview-3-flash",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "siliconflow": {
+        "before": 59,
+        "after": 63,
+        "selectable": 63,
+        "addedIds": [
+          "nex-agi/Nex-N2-Pro",
+          "MiniMaxAI/MiniMax-M2.5",
+          "Pro/MiniMaxAI/MiniMax-M2.5",
+          "Qwen/Qwen3.5-397B-A17B"
+        ],
+        "corrected": [
+          {
+            "id": "Qwen/Qwen-Image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "Kwai-Kolors/Kolors",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "baidu/ERNIE-Image-Turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "Tongyi-MAI/Z-Image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "Tongyi-MAI/Z-Image-Turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "Qwen/Qwen-Image-Edit",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "Qwen/Qwen-Image-Edit-2509",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "anthropic": {
+        "before": 11,
+        "after": 11,
+        "selectable": 11,
+        "addedIds": [],
+        "corrected": [],
+        "removedIds": []
+      },
+      "recraft": {
+        "before": 16,
+        "after": 16,
+        "selectable": 16,
+        "addedIds": [],
+        "corrected": [
+          {
+            "id": "recraftv4_1",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_1_pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_1_vector",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_1_pro_vector",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_1_utility",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_1_utility_vector",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_1_utility_pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_1_utility_pro_vector",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_vector",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv4_pro_vector",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv3",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv3_vector",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv2",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "recraftv2_vector",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "xai": {
+        "before": 7,
+        "after": 9,
+        "selectable": 9,
+        "addedIds": [
+          "grok-build-0.1",
+          "grok-imagine-image-quality"
+        ],
+        "corrected": [
+          {
+            "id": "grok-imagine-image-2.0",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "grok-imagine-image",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "gemini": {
+        "before": 15,
+        "after": 15,
+        "selectable": 15,
+        "addedIds": [],
+        "corrected": [
+          {
+            "id": "gemini-3.1-flash-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "gemini-3.1-flash-lite-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "gemini-3-pro-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "gemini-2.5-flash-image",
+            "fields": [
+              "expirationDate",
+              "earliestRetirementDate",
+              "replacementModelId",
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "bailian": {
+        "before": 118,
+        "after": 176,
+        "selectable": 176,
+        "addedIds": [
+          "qwen3.6-max-preview",
+          "qwen3-max",
+          "qwen3-max-2026-01-23",
+          "qwen3-max-2025-09-23",
+          "qwen3-max-preview",
+          "qwen-turbo",
+          "qwq-plus",
+          "qwen-long-latest",
+          "qwen-long-2025-01-25",
+          "qwen-omni-turbo",
+          "qvq-max",
+          "qvq-plus",
+          "qwen3-vl-flash",
+          "qwen-vl-max",
+          "qwen-vl-plus",
+          "qwen3-coder-plus",
+          "qwen3-coder-plus-2025-09-23",
+          "qwen3-coder-plus-2025-07-22",
+          "qwen3-next-80b-a3b-thinking",
+          "qwen3-next-80b-a3b-instruct",
+          "qwen3-235b-a22b-thinking-2507",
+          "qwen3-235b-a22b-instruct-2507",
+          "qwen3-30b-a3b-thinking-2507",
+          "qwen3-30b-a3b-instruct-2507",
+          "qwen3-235b-a22b",
+          "qwen3-32b",
+          "qwen3-30b-a3b",
+          "qwen3-14b",
+          "qwen3-8b",
+          "qwen2.5-omni-7b",
+          "qwen3-coder-next",
+          "qwen3-coder-480b-a35b-instruct",
+          "qwen3-coder-30b-a3b-instruct",
+          "deepseek-v3.2",
+          "deepseek-v3.2-exp",
+          "deepseek-v3.1",
+          "deepseek-r1",
+          "deepseek-r1-0528",
+          "deepseek-v3",
+          "deepseek-r1-distill-qwen-7b",
+          "deepseek-r1-distill-qwen-14b",
+          "deepseek-r1-distill-qwen-32b",
+          "kimi-k2-thinking",
+          "Moonshot-Kimi-K2-Instruct",
+          "glm-4.7",
+          "glm-4.5",
+          "glm-4.5-air",
+          "MiniMax-M2.1",
+          "qwen-image-max",
+          "qwen-image-max-2025-12-30",
+          "qwen-image-plus",
+          "qwen-image-plus-2026-01-09",
+          "qwen-image",
+          "qwen-image-edit-max",
+          "qwen-image-edit-max-2026-01-16",
+          "qwen-image-edit-plus",
+          "qwen-image-edit-plus-2025-12-15",
+          "qwen-image-edit-plus-2025-10-30",
+          "qwen-image-edit"
+        ],
+        "corrected": [
+          {
+            "id": "wan2.7-image-pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.7-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-3.0",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-3.0-pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "z-image-turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro-2026-06-22",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro-2026-04-22",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro-2026-03-03",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-2026-03-03",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.6-t2i",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.5-t2i-preview",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.2-t2i-plus",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.2-t2i-flash",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx2.1-t2i-plus",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx2.1-t2i-turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx2.0-t2i-turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx-v1",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.6-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.5-i2i-preview",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx2.1-imageedit",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "kling/kling-v3-image-generation",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "kling/kling-v3-omni-image-generation",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "vidu/vidu-image_reference2image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "vidu/vidu-image-pro_reference2image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "vidu/vidu-image-lite_reference2image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "vidu/viduq3-fast_reference2image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "vidu/viduq2-pro_reference2image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "vidu/viduq2-fast_reference2image",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": [
+          "qwen3.8-max-preview"
+        ]
+      },
+      "openai": {
+        "before": 25,
+        "after": 62,
+        "selectable": 62,
+        "addedIds": [
+          "gpt-5",
+          "gpt-5-2025-08-07",
+          "gpt-5-mini-2025-08-07",
+          "gpt-5-nano",
+          "gpt-5-nano-2025-08-07",
+          "gpt-5-pro",
+          "gpt-5-pro-2025-10-06",
+          "o3",
+          "o3-2025-04-16",
+          "o3-pro",
+          "o3-pro-2025-06-10",
+          "gpt-4.1-nano",
+          "gpt-4.1-nano-2025-04-14",
+          "o1",
+          "o1-2024-12-17",
+          "o1-pro",
+          "o1-pro-2025-03-19",
+          "o3-mini",
+          "o3-mini-2025-01-31",
+          "o4-mini",
+          "o4-mini-2025-04-16",
+          "gpt-4-turbo",
+          "gpt-4-turbo-2024-04-09",
+          "gpt-4",
+          "gpt-4-0613",
+          "gpt-3.5-turbo",
+          "gpt-3.5-turbo-0125",
+          "gpt-4-1106-preview",
+          "gpt-4o-2024-05-13",
+          "gpt-3.5-turbo-1106",
+          "gpt-4.1-2025-04-14",
+          "gpt-4.1-mini-2025-04-14",
+          "gpt-5.2-2025-12-11",
+          "gpt-5.1-2025-11-13",
+          "gpt-4o-2024-08-06",
+          "gpt-4o-2024-11-20",
+          "gpt-4o-mini-2024-07-18"
+        ],
+        "corrected": [
+          {
+            "id": "gpt-5-mini",
+            "fields": [
+              "label"
+            ]
+          },
+          {
+            "id": "gpt-image-2",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "gpt-image-1",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "gpt-image-1-mini",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "gpt-image-1.5",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "chatgpt-image-latest",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "ark": {
+        "before": 21,
+        "after": 29,
+        "selectable": 29,
+        "addedIds": [
+          "doubao-seed-1-8-251228",
+          "doubao-seed-code-preview-251028",
+          "doubao-seed-1-6-flash-250828",
+          "doubao-seed-1-6-vision-250815",
+          "doubao-seed-1-6-250615",
+          "doubao-seed-1-6-251015",
+          "doubao-seed-1-6-flash-250615",
+          "doubao-1-5-pro-32k-250115",
+          "doubao-1-5-lite-32k-250115",
+          "glm-4-7-251222",
+          "doubao-1-5-vision-pro-32k-250115"
+        ],
+        "corrected": [
+          {
+            "id": "doubao-seedream-5-0-pro-260628",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "doubao-seedream-5-0-260128",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "doubao-seedream-4-5-251128",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "doubao-seedream-4-0-250828",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": [
+          "doubao-seed-character-260628",
+          "doubao-seed-character-251128",
+          "doubao-seed-translation-250915"
+        ]
+      },
+      "bfl": {
+        "before": 0,
+        "after": 12,
+        "selectable": 12,
+        "addedIds": [
+          "flux-pro-1.1",
+          "flux-dev",
+          "flux-pro-1.1-ultra",
+          "flux-2-flex",
+          "flux-2-klein-9b",
+          "flux-2-klein-9b-preview",
+          "flux-2-klein-4b",
+          "flux-2-max",
+          "flux-2-pro-preview",
+          "flux-2-pro",
+          "flux-kontext-max",
+          "flux-kontext-pro"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "stability": {
+        "before": 0,
+        "after": 6,
+        "selectable": 6,
+        "addedIds": [
+          "stable-image-ultra",
+          "stable-image-core",
+          "sd3.5-large",
+          "sd3.5-large-turbo",
+          "sd3.5-medium",
+          "sd3.5-flash"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "ideogram": {
+        "before": 0,
+        "after": 13,
+        "selectable": 13,
+        "addedIds": [
+          "ideogram-v4",
+          "ideogram-v3",
+          "p-image-ideogram",
+          "ideogram-edit",
+          "ideogram-v3-transparent",
+          "ideogram-v4-transparent",
+          "V_1",
+          "V_1_TURBO",
+          "V_2",
+          "V_2_TURBO",
+          "V_2A",
+          "V_2A_TURBO",
+          "AUTO"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "minimax": {
+        "before": 0,
+        "after": 10,
+        "selectable": 10,
+        "addedIds": [
+          "MiniMax-M3",
+          "MiniMax-M2.7",
+          "image-01",
+          "MiniMax-M2.7-highspeed",
+          "MiniMax-M2.5",
+          "MiniMax-M2.5-highspeed",
+          "MiniMax-M2.1",
+          "MiniMax-M2.1-highspeed",
+          "MiniMax-M2",
+          "image-01-live"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "mistral": {
+        "before": 0,
+        "after": 15,
+        "selectable": 15,
+        "addedIds": [
+          "mistral-small-2603",
+          "mistral-large-2512",
+          "codestral-2508",
+          "codestral-latest",
+          "ministral-14b-2512",
+          "ministral-14b-latest",
+          "labs-leanstral-1-5",
+          "mistral-medium-3-5",
+          "mistral-medium-3",
+          "mistral-medium-latest",
+          "ministral-8b-2512",
+          "ministral-8b-latest",
+          "ministral-3b-2512",
+          "ministral-3b-latest",
+          "zai-glm-5-2"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "together": {
+        "before": 0,
+        "after": 47,
+        "selectable": 47,
+        "addedIds": [
+          "thinkingmachines/Inkling",
+          "MiniMaxAI/MiniMax-M3",
+          "Qwen/Qwen3.8-2.4T-A95B",
+          "Qwen/Qwen3.7-Max",
+          "Qwen/Qwen3.6-Plus",
+          "Qwen/Qwen3.5-9B",
+          "moonshotai/Kimi-K3",
+          "zai-org/GLM-5.3",
+          "zai-org/GLM-5.3-Flash",
+          "zai-org/GLM-5.2",
+          "openai/gpt-oss-120b",
+          "deepseek-ai/DeepSeek-V4-Flash-0731",
+          "deepseek-ai/DeepSeek-V4-Pro-0813",
+          "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+          "Qwen/Qwen3.7-Plus",
+          "Prism-ML/Ternary-Bonsai-27B",
+          "meta-models/Muse-Glimmer-30B",
+          "Qwen/Qwen3.8-Flash",
+          "google/imagen-4.0-preview",
+          "google/imagen-4.0-fast",
+          "google/imagen-4.0-ultra",
+          "google/flash-image-2.5",
+          "google/gemini-3-pro-image",
+          "black-forest-labs/FLUX.1.1-pro",
+          "black-forest-labs/FLUX.1-kontext-pro",
+          "black-forest-labs/FLUX.1-kontext-max",
+          "black-forest-labs/FLUX.2-pro",
+          "black-forest-labs/FLUX.2-dev",
+          "black-forest-labs/FLUX.2-flex",
+          "ByteDance-Seed/Seedream-3.0",
+          "ByteDance-Seed/Seedream-4.0",
+          "ByteDance/Seedream-5.0-lite",
+          "Qwen/Qwen-Image",
+          "RunDiffusion/Juggernaut-pro-flux",
+          "Rundiffusion/Juggernaut-Lightning-Flux",
+          "ideogram/ideogram-3.0",
+          "stabilityai/stable-diffusion-xl-base-1.0",
+          "black-forest-labs/FLUX.2-max",
+          "google/flash-image-3.1",
+          "openai/gpt-image-1.5",
+          "Qwen/Qwen-Image-2.0",
+          "Qwen/Qwen-Image-2.0-Pro",
+          "Wan-AI/Wan2.6-image",
+          "ideogram/ideogram-4.0",
+          "openai/gpt-image-2",
+          "google/flash-image-3.1-lite",
+          "prunaai/p-image-ideogram"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "fireworks": {
+        "before": 0,
+        "after": 22,
+        "selectable": 22,
+        "addedIds": [
+          "accounts/fireworks/models/kimi-k2p5",
+          "accounts/fireworks/models/kimi-k3",
+          "accounts/fireworks/models/kimi-k2p7-code",
+          "accounts/fireworks/models/kimi-k2p6",
+          "accounts/fireworks/models/deepseek-v4-pro-0813",
+          "accounts/fireworks/models/deepseek-v4-flash-0731",
+          "accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+          "accounts/fireworks/models/glm-5p3-flash",
+          "accounts/fireworks/models/glm-5p3",
+          "accounts/fireworks/models/glm-5p2",
+          "accounts/fireworks/models/qwen3p7-plus",
+          "accounts/fireworks/models/qwen3p8-max",
+          "accounts/fireworks/models/minimax-m3",
+          "accounts/fireworks/models/gpt-oss-120b",
+          "accounts/fireworks/models/muse-glimmer-30b",
+          "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+          "accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+          "accounts/fireworks/models/step-3p7-flash-nvfp4",
+          "accounts/fireworks/models/qwen3-8b",
+          "accounts/fireworks/models/gemma-4-31b-it",
+          "accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
+          "accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "fal": {
+        "before": 0,
+        "after": 40,
+        "selectable": 40,
+        "addedIds": [
+          "alibaba/qwen-image-3/text-to-image",
+          "bria/fibo-edit-1.5/edit",
+          "bria/fibo-gen-1.5/text-to-image",
+          "bytedance/seedream/v5/pro/text-to-image",
+          "fal-ai/bytedance/seedream/v4.5/text-to-image",
+          "fal-ai/bytedance/seedream/v4/text-to-image",
+          "fal-ai/bytedance/seedream/v5/lite/edit",
+          "fal-ai/fast-sdxl",
+          "fal-ai/flux-1/schnell",
+          "fal-ai/flux-2",
+          "fal-ai/flux-2-flex",
+          "fal-ai/flux-2-pro",
+          "fal-ai/flux-2/flash",
+          "fal-ai/flux-2/klein/9b",
+          "fal-ai/flux-2/turbo",
+          "fal-ai/flux-kontext-lora",
+          "fal-ai/flux-lora",
+          "fal-ai/flux-pro/kontext",
+          "fal-ai/flux-pro/v1.1",
+          "fal-ai/flux-pro/v1.1-ultra",
+          "fal-ai/flux/dev",
+          "fal-ai/flux/schnell",
+          "fal-ai/gpt-image-1.5",
+          "fal-ai/krea-2/turbo",
+          "fal-ai/nano-banana",
+          "fal-ai/nano-banana-2",
+          "fal-ai/nano-banana-pro",
+          "fal-ai/qwen-image",
+          "fal-ai/recraft/v3/text-to-image",
+          "fal-ai/recraft/v4/pro/text-to-image",
+          "fal-ai/z-image/turbo",
+          "google/nano-banana-2-lite",
+          "imagineart/imagineart-2.0-preview/text-to-image",
+          "krea/v2/large/text-to-image",
+          "meta/muse-image/text-to-image",
+          "openai/gpt-image-2",
+          "xai/grok-imagine-image",
+          "xai/grok-imagine-image/quality/text-to-image",
+          "xai/grok-imagine-image/v2.0/text-to-image",
+          "fal-ai/ideogram/v3"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "replicate": {
+        "before": 0,
+        "after": 89,
+        "selectable": 89,
+        "addedIds": [
+          "adirik/realvisxl-v3.0-turbo",
+          "ai-forever/kandinsky-2",
+          "ai-forever/kandinsky-2.2",
+          "alibaba/wan-3",
+          "black-forest-labs/flux-1.1-pro",
+          "black-forest-labs/flux-1.1-pro-ultra",
+          "black-forest-labs/flux-2-flex",
+          "black-forest-labs/flux-2-klein-4b",
+          "black-forest-labs/flux-2-max",
+          "black-forest-labs/flux-2-pro",
+          "black-forest-labs/flux-dev",
+          "black-forest-labs/flux-dev-lora",
+          "black-forest-labs/flux-kontext-dev",
+          "black-forest-labs/flux-kontext-max",
+          "black-forest-labs/flux-kontext-pro",
+          "black-forest-labs/flux-pro",
+          "black-forest-labs/flux-schnell",
+          "bria/fibo",
+          "bria/fibo-edit",
+          "bria/image-3.2",
+          "bytedance/bagel",
+          "bytedance/sdxl-lightning-4step",
+          "bytedance/seedream-3",
+          "bytedance/seedream-4",
+          "bytedance/seedream-4.5",
+          "bytedance/seedream-5-lite",
+          "datacte/proteus-v0.2",
+          "datacte/proteus-v0.3",
+          "fofr/latent-consistency-model",
+          "fofr/sdxl-emoji",
+          "fofr/sticker-maker",
+          "google/imagen-3",
+          "google/imagen-3-fast",
+          "google/imagen-4",
+          "google/imagen-4-fast",
+          "google/imagen-4-ultra",
+          "google/nano-banana",
+          "google/nano-banana-2",
+          "google/nano-banana-pro",
+          "ideogram-ai/ideogram-v2",
+          "ideogram-ai/ideogram-v2-turbo",
+          "ideogram-ai/ideogram-v2a",
+          "ideogram-ai/ideogram-v2a-turbo",
+          "ideogram-ai/ideogram-v3-balanced",
+          "ideogram-ai/ideogram-v3-quality",
+          "ideogram-ai/ideogram-v3-turbo",
+          "leonardoai/lucid-origin",
+          "lucataco/dreamshaper-xl-turbo",
+          "lucataco/omnigen2",
+          "lucataco/open-dalle-v1.1",
+          "lucataco/realistic-vision-v5.1",
+          "lucataco/ssd-1b",
+          "luma/photon",
+          "luma/photon-flash",
+          "minimax/image-01",
+          "nvidia/sana",
+          "nvidia/sana-sprint-1.6b",
+          "openai/gpt-image-1.5",
+          "openai/gpt-image-2",
+          "playgroundai/playground-v2.5-1024px-aesthetic",
+          "prunaai/flux-fast",
+          "prunaai/flux-kontext-fast",
+          "prunaai/hidream-l1-dev",
+          "prunaai/hidream-l1-fast",
+          "prunaai/hidream-l1-full",
+          "prunaai/p-image",
+          "prunaai/p-image-edit",
+          "prunaai/p-image-lora",
+          "prunaai/sdxl-lightning",
+          "prunaai/wan-2.2-image",
+          "prunaai/z-image-turbo",
+          "qwen/qwen-image",
+          "qwen/qwen-image-edit",
+          "qwen/qwen-image-edit-plus",
+          "recraft-ai/recraft-v3",
+          "recraft-ai/recraft-v4-pro",
+          "recraft-ai/recraft-v4.1",
+          "sourceful/riverflow-2.0-pro",
+          "stability-ai/sdxl",
+          "stability-ai/stable-diffusion",
+          "stability-ai/stable-diffusion-3.5-large",
+          "stability-ai/stable-diffusion-3.5-large-turbo",
+          "stability-ai/stable-diffusion-3.5-medium",
+          "tencent/hunyuan-image-3",
+          "tstramer/material-diffusion",
+          "wan-video/wan-2.7-image",
+          "wan-video/wan-2.7-image-pro",
+          "xai/grok-imagine-image",
+          "zsxkib/step1x-edit"
+        ],
+        "corrected": [],
+        "removedIds": []
+      }
+    }
+  },
+  "previousStageComparison": {
+    "before": 323,
+    "after": 669,
+    "addedCount": 351,
+    "correctedCount": 41,
+    "removedCount": 5,
+    "added": [
+      "siliconflow/nex-agi/Nex-N2-Pro",
+      "siliconflow/MiniMaxAI/MiniMax-M2.5",
+      "siliconflow/Pro/MiniMaxAI/MiniMax-M2.5",
+      "siliconflow/Qwen/Qwen3.5-397B-A17B",
+      "xai/grok-build-0.1",
+      "xai/grok-imagine-image-quality",
+      "bailian/qwen3.6-max-preview",
+      "bailian/qwen3-max",
+      "bailian/qwen3-max-2026-01-23",
+      "bailian/qwen3-max-2025-09-23",
+      "bailian/qwen3-max-preview",
+      "bailian/qwen-turbo",
+      "bailian/qwq-plus",
+      "bailian/qwen-long-latest",
+      "bailian/qwen-long-2025-01-25",
+      "bailian/qwen-omni-turbo",
+      "bailian/qvq-max",
+      "bailian/qvq-plus",
+      "bailian/qwen3-vl-flash",
+      "bailian/qwen-vl-max",
+      "bailian/qwen-vl-plus",
+      "bailian/qwen3-coder-plus",
+      "bailian/qwen3-coder-plus-2025-09-23",
+      "bailian/qwen3-coder-plus-2025-07-22",
+      "bailian/qwen3-next-80b-a3b-thinking",
+      "bailian/qwen3-next-80b-a3b-instruct",
+      "bailian/qwen3-235b-a22b-thinking-2507",
+      "bailian/qwen3-235b-a22b-instruct-2507",
+      "bailian/qwen3-30b-a3b-thinking-2507",
+      "bailian/qwen3-30b-a3b-instruct-2507",
+      "bailian/qwen3-235b-a22b",
+      "bailian/qwen3-32b",
+      "bailian/qwen3-30b-a3b",
+      "bailian/qwen3-14b",
+      "bailian/qwen3-8b",
+      "bailian/qwen2.5-omni-7b",
+      "bailian/qwen3-coder-next",
+      "bailian/qwen3-coder-480b-a35b-instruct",
+      "bailian/qwen3-coder-30b-a3b-instruct",
+      "bailian/deepseek-v3.2",
+      "bailian/deepseek-v3.2-exp",
+      "bailian/deepseek-v3.1",
+      "bailian/deepseek-r1",
+      "bailian/deepseek-r1-0528",
+      "bailian/deepseek-v3",
+      "bailian/deepseek-r1-distill-qwen-7b",
+      "bailian/deepseek-r1-distill-qwen-14b",
+      "bailian/deepseek-r1-distill-qwen-32b",
+      "bailian/kimi-k2-thinking",
+      "bailian/Moonshot-Kimi-K2-Instruct",
+      "bailian/glm-4.7",
+      "bailian/glm-4.5",
+      "bailian/glm-4.5-air",
+      "bailian/MiniMax-M2.1",
+      "bailian/qwen-image-max",
+      "bailian/qwen-image-max-2025-12-30",
+      "bailian/qwen-image-plus",
+      "bailian/qwen-image-plus-2026-01-09",
+      "bailian/qwen-image",
+      "bailian/qwen-image-edit-max",
+      "bailian/qwen-image-edit-max-2026-01-16",
+      "bailian/qwen-image-edit-plus",
+      "bailian/qwen-image-edit-plus-2025-12-15",
+      "bailian/qwen-image-edit-plus-2025-10-30",
+      "bailian/qwen-image-edit",
+      "openai/gpt-5",
+      "openai/gpt-5-2025-08-07",
+      "openai/gpt-5-mini-2025-08-07",
+      "openai/gpt-5-nano",
+      "openai/gpt-5-nano-2025-08-07",
+      "openai/gpt-5-pro",
+      "openai/gpt-5-pro-2025-10-06",
+      "openai/o3",
+      "openai/o3-2025-04-16",
+      "openai/o3-pro",
+      "openai/o3-pro-2025-06-10",
+      "openai/gpt-4.1-nano",
+      "openai/gpt-4.1-nano-2025-04-14",
+      "openai/o1",
+      "openai/o1-2024-12-17",
+      "openai/o1-pro",
+      "openai/o1-pro-2025-03-19",
+      "openai/o3-mini",
+      "openai/o3-mini-2025-01-31",
+      "openai/o4-mini",
+      "openai/o4-mini-2025-04-16",
+      "openai/gpt-4-turbo",
+      "openai/gpt-4-turbo-2024-04-09",
+      "openai/gpt-4",
+      "openai/gpt-4-0613",
+      "openai/gpt-3.5-turbo",
+      "openai/gpt-3.5-turbo-0125",
+      "openai/gpt-4-1106-preview",
+      "openai/gpt-4o-2024-05-13",
+      "openai/gpt-3.5-turbo-1106",
+      "openai/gpt-4.1-2025-04-14",
+      "openai/gpt-4.1-mini-2025-04-14",
+      "openai/gpt-5.2-2025-12-11",
+      "openai/gpt-5.1-2025-11-13",
+      "openai/gpt-4o-2024-08-06",
+      "openai/gpt-4o-2024-11-20",
+      "openai/gpt-4o-mini-2024-07-18",
+      "ark/doubao-seed-1-8-251228",
+      "ark/doubao-seed-code-preview-251028",
+      "ark/doubao-seed-1-6-flash-250828",
+      "ark/doubao-seed-1-6-vision-250815",
+      "ark/doubao-seed-1-6-250615",
+      "ark/doubao-seed-1-6-251015",
+      "ark/doubao-seed-1-6-flash-250615",
+      "ark/doubao-1-5-pro-32k-250115",
+      "ark/doubao-1-5-lite-32k-250115",
+      "ark/glm-4-7-251222",
+      "ark/doubao-1-5-vision-pro-32k-250115",
+      "bfl/flux-pro-1.1",
+      "bfl/flux-dev",
+      "bfl/flux-pro-1.1-ultra",
+      "bfl/flux-2-klein-9b",
+      "bfl/flux-2-klein-9b-preview",
+      "bfl/flux-2-klein-4b",
+      "bfl/flux-2-max",
+      "bfl/flux-2-pro-preview",
+      "bfl/flux-kontext-max",
+      "bfl/flux-kontext-pro",
+      "stability/sd3.5-large",
+      "stability/sd3.5-large-turbo",
+      "stability/sd3.5-medium",
+      "stability/sd3.5-flash",
+      "ideogram/ideogram-v3",
+      "ideogram/p-image-ideogram",
+      "ideogram/ideogram-edit",
+      "ideogram/ideogram-v3-transparent",
+      "ideogram/ideogram-v4-transparent",
+      "ideogram/V_1",
+      "ideogram/V_1_TURBO",
+      "ideogram/V_2",
+      "ideogram/V_2_TURBO",
+      "ideogram/V_2A",
+      "ideogram/V_2A_TURBO",
+      "ideogram/AUTO",
+      "minimax/MiniMax-M2.7-highspeed",
+      "minimax/MiniMax-M2.5",
+      "minimax/MiniMax-M2.5-highspeed",
+      "minimax/MiniMax-M2.1",
+      "minimax/MiniMax-M2.1-highspeed",
+      "minimax/MiniMax-M2",
+      "minimax/image-01-live",
+      "mistral/codestral-2508",
+      "mistral/codestral-latest",
+      "mistral/ministral-14b-2512",
+      "mistral/ministral-14b-latest",
+      "mistral/labs-leanstral-1-5",
+      "mistral/mistral-medium-3-5",
+      "mistral/mistral-medium-3",
+      "mistral/mistral-medium-latest",
+      "mistral/ministral-8b-2512",
+      "mistral/ministral-8b-latest",
+      "mistral/ministral-3b-2512",
+      "mistral/ministral-3b-latest",
+      "mistral/zai-glm-5-2",
+      "together/thinkingmachines/Inkling",
+      "together/MiniMaxAI/MiniMax-M3",
+      "together/Qwen/Qwen3.8-2.4T-A95B",
+      "together/Qwen/Qwen3.7-Max",
+      "together/Qwen/Qwen3.6-Plus",
+      "together/moonshotai/Kimi-K3",
+      "together/zai-org/GLM-5.3",
+      "together/zai-org/GLM-5.3-Flash",
+      "together/zai-org/GLM-5.2",
+      "together/openai/gpt-oss-120b",
+      "together/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "together/deepseek-ai/DeepSeek-V4-Pro-0813",
+      "together/meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "together/Qwen/Qwen3.7-Plus",
+      "together/Prism-ML/Ternary-Bonsai-27B",
+      "together/meta-models/Muse-Glimmer-30B",
+      "together/Qwen/Qwen3.8-Flash",
+      "together/google/imagen-4.0-preview",
+      "together/google/imagen-4.0-fast",
+      "together/google/imagen-4.0-ultra",
+      "together/google/flash-image-2.5",
+      "together/google/gemini-3-pro-image",
+      "together/black-forest-labs/FLUX.1.1-pro",
+      "together/black-forest-labs/FLUX.1-kontext-pro",
+      "together/black-forest-labs/FLUX.1-kontext-max",
+      "together/black-forest-labs/FLUX.2-dev",
+      "together/ByteDance-Seed/Seedream-3.0",
+      "together/ByteDance-Seed/Seedream-4.0",
+      "together/ByteDance/Seedream-5.0-lite",
+      "together/Qwen/Qwen-Image",
+      "together/RunDiffusion/Juggernaut-pro-flux",
+      "together/Rundiffusion/Juggernaut-Lightning-Flux",
+      "together/ideogram/ideogram-3.0",
+      "together/stabilityai/stable-diffusion-xl-base-1.0",
+      "together/black-forest-labs/FLUX.2-max",
+      "together/google/flash-image-3.1",
+      "together/openai/gpt-image-1.5",
+      "together/Qwen/Qwen-Image-2.0",
+      "together/Qwen/Qwen-Image-2.0-Pro",
+      "together/Wan-AI/Wan2.6-image",
+      "together/ideogram/ideogram-4.0",
+      "together/openai/gpt-image-2",
+      "together/google/flash-image-3.1-lite",
+      "together/prunaai/p-image-ideogram",
+      "fireworks/accounts/fireworks/models/kimi-k3",
+      "fireworks/accounts/fireworks/models/kimi-k2p7-code",
+      "fireworks/accounts/fireworks/models/kimi-k2p6",
+      "fireworks/accounts/fireworks/models/deepseek-v4-pro-0813",
+      "fireworks/accounts/fireworks/models/deepseek-v4-flash-0731",
+      "fireworks/accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+      "fireworks/accounts/fireworks/models/glm-5p3-flash",
+      "fireworks/accounts/fireworks/models/glm-5p3",
+      "fireworks/accounts/fireworks/models/glm-5p2",
+      "fireworks/accounts/fireworks/models/qwen3p7-plus",
+      "fireworks/accounts/fireworks/models/qwen3p8-max",
+      "fireworks/accounts/fireworks/models/minimax-m3",
+      "fireworks/accounts/fireworks/models/gpt-oss-120b",
+      "fireworks/accounts/fireworks/models/muse-glimmer-30b",
+      "fireworks/accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+      "fireworks/accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+      "fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4",
+      "fireworks/accounts/fireworks/models/qwen3-8b",
+      "fireworks/accounts/fireworks/models/gemma-4-31b-it",
+      "fireworks/accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
+      "fireworks/accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b",
+      "fal/alibaba/qwen-image-3/text-to-image",
+      "fal/bria/fibo-edit-1.5/edit",
+      "fal/bria/fibo-gen-1.5/text-to-image",
+      "fal/bytedance/seedream/v5/pro/text-to-image",
+      "fal/fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "fal/fal-ai/bytedance/seedream/v4/text-to-image",
+      "fal/fal-ai/bytedance/seedream/v5/lite/edit",
+      "fal/fal-ai/fast-sdxl",
+      "fal/fal-ai/flux-1/schnell",
+      "fal/fal-ai/flux-2",
+      "fal/fal-ai/flux-2-flex",
+      "fal/fal-ai/flux-2/flash",
+      "fal/fal-ai/flux-2/klein/9b",
+      "fal/fal-ai/flux-2/turbo",
+      "fal/fal-ai/flux-kontext-lora",
+      "fal/fal-ai/flux-lora",
+      "fal/fal-ai/flux-pro/kontext",
+      "fal/fal-ai/flux-pro/v1.1",
+      "fal/fal-ai/flux-pro/v1.1-ultra",
+      "fal/fal-ai/flux/dev",
+      "fal/fal-ai/flux/schnell",
+      "fal/fal-ai/gpt-image-1.5",
+      "fal/fal-ai/krea-2/turbo",
+      "fal/fal-ai/nano-banana",
+      "fal/fal-ai/nano-banana-2",
+      "fal/fal-ai/nano-banana-pro",
+      "fal/fal-ai/qwen-image",
+      "fal/fal-ai/recraft/v3/text-to-image",
+      "fal/fal-ai/recraft/v4/pro/text-to-image",
+      "fal/fal-ai/z-image/turbo",
+      "fal/google/nano-banana-2-lite",
+      "fal/imagineart/imagineart-2.0-preview/text-to-image",
+      "fal/krea/v2/large/text-to-image",
+      "fal/meta/muse-image/text-to-image",
+      "fal/openai/gpt-image-2",
+      "fal/xai/grok-imagine-image",
+      "fal/xai/grok-imagine-image/quality/text-to-image",
+      "fal/xai/grok-imagine-image/v2.0/text-to-image",
+      "fal/fal-ai/ideogram/v3",
+      "replicate/adirik/realvisxl-v3.0-turbo",
+      "replicate/ai-forever/kandinsky-2",
+      "replicate/ai-forever/kandinsky-2.2",
+      "replicate/alibaba/wan-3",
+      "replicate/black-forest-labs/flux-1.1-pro",
+      "replicate/black-forest-labs/flux-1.1-pro-ultra",
+      "replicate/black-forest-labs/flux-2-flex",
+      "replicate/black-forest-labs/flux-2-klein-4b",
+      "replicate/black-forest-labs/flux-2-max",
+      "replicate/black-forest-labs/flux-dev",
+      "replicate/black-forest-labs/flux-dev-lora",
+      "replicate/black-forest-labs/flux-kontext-dev",
+      "replicate/black-forest-labs/flux-kontext-max",
+      "replicate/black-forest-labs/flux-kontext-pro",
+      "replicate/black-forest-labs/flux-pro",
+      "replicate/black-forest-labs/flux-schnell",
+      "replicate/bria/fibo",
+      "replicate/bria/fibo-edit",
+      "replicate/bria/image-3.2",
+      "replicate/bytedance/bagel",
+      "replicate/bytedance/sdxl-lightning-4step",
+      "replicate/bytedance/seedream-3",
+      "replicate/bytedance/seedream-4",
+      "replicate/bytedance/seedream-4.5",
+      "replicate/bytedance/seedream-5-lite",
+      "replicate/datacte/proteus-v0.2",
+      "replicate/datacte/proteus-v0.3",
+      "replicate/fofr/latent-consistency-model",
+      "replicate/fofr/sdxl-emoji",
+      "replicate/fofr/sticker-maker",
+      "replicate/google/imagen-3",
+      "replicate/google/imagen-3-fast",
+      "replicate/google/imagen-4",
+      "replicate/google/imagen-4-fast",
+      "replicate/google/imagen-4-ultra",
+      "replicate/google/nano-banana",
+      "replicate/google/nano-banana-2",
+      "replicate/google/nano-banana-pro",
+      "replicate/ideogram-ai/ideogram-v2",
+      "replicate/ideogram-ai/ideogram-v2-turbo",
+      "replicate/ideogram-ai/ideogram-v2a",
+      "replicate/ideogram-ai/ideogram-v2a-turbo",
+      "replicate/ideogram-ai/ideogram-v3-balanced",
+      "replicate/ideogram-ai/ideogram-v3-quality",
+      "replicate/ideogram-ai/ideogram-v3-turbo",
+      "replicate/leonardoai/lucid-origin",
+      "replicate/lucataco/dreamshaper-xl-turbo",
+      "replicate/lucataco/omnigen2",
+      "replicate/lucataco/open-dalle-v1.1",
+      "replicate/lucataco/realistic-vision-v5.1",
+      "replicate/lucataco/ssd-1b",
+      "replicate/luma/photon",
+      "replicate/luma/photon-flash",
+      "replicate/minimax/image-01",
+      "replicate/nvidia/sana",
+      "replicate/nvidia/sana-sprint-1.6b",
+      "replicate/openai/gpt-image-1.5",
+      "replicate/openai/gpt-image-2",
+      "replicate/playgroundai/playground-v2.5-1024px-aesthetic",
+      "replicate/prunaai/flux-fast",
+      "replicate/prunaai/flux-kontext-fast",
+      "replicate/prunaai/hidream-l1-dev",
+      "replicate/prunaai/hidream-l1-fast",
+      "replicate/prunaai/hidream-l1-full",
+      "replicate/prunaai/p-image",
+      "replicate/prunaai/p-image-edit",
+      "replicate/prunaai/p-image-lora",
+      "replicate/prunaai/sdxl-lightning",
+      "replicate/prunaai/wan-2.2-image",
+      "replicate/prunaai/z-image-turbo",
+      "replicate/qwen/qwen-image",
+      "replicate/qwen/qwen-image-edit",
+      "replicate/qwen/qwen-image-edit-plus",
+      "replicate/recraft-ai/recraft-v3",
+      "replicate/recraft-ai/recraft-v4-pro",
+      "replicate/recraft-ai/recraft-v4.1",
+      "replicate/sourceful/riverflow-2.0-pro",
+      "replicate/stability-ai/sdxl",
+      "replicate/stability-ai/stable-diffusion",
+      "replicate/stability-ai/stable-diffusion-3.5-large",
+      "replicate/stability-ai/stable-diffusion-3.5-large-turbo",
+      "replicate/stability-ai/stable-diffusion-3.5-medium",
+      "replicate/tencent/hunyuan-image-3",
+      "replicate/tstramer/material-diffusion",
+      "replicate/wan-video/wan-2.7-image",
+      "replicate/wan-video/wan-2.7-image-pro",
+      "replicate/xai/grok-imagine-image",
+      "replicate/zsxkib/step1x-edit"
+    ],
+    "corrected": [
+      {
+        "provider": "zhipu",
+        "id": "glm-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "zhipu",
+        "id": "cogview-4-250304",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "zhipu",
+        "id": "cogview-4",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "zhipu",
+        "id": "cogview-3-flash",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "gemini",
+        "id": "gemini-2.5-flash-image",
+        "fields": [
+          "expirationDate",
+          "earliestRetirementDate",
+          "replacementModelId"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.7-image-pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.7-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-3.0",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-3.0-pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "z-image-turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro-2026-06-22",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro-2026-04-22",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-pro-2026-03-03",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "qwen-image-2.0-2026-03-03",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.6-t2i",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.5-t2i-preview",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.2-t2i-plus",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.2-t2i-flash",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx2.1-t2i-plus",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx2.1-t2i-turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wanx2.0-t2i-turbo",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.6-image",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bailian",
+        "id": "wan2.5-i2i-preview",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-5-mini",
+        "fields": [
+          "label"
+        ]
+      },
+      {
+        "provider": "openai",
+        "id": "gpt-image-2",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-5-0-pro-260628",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-5-0-260128",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-4-5-251128",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "ark",
+        "id": "doubao-seedream-4-0-250828",
+        "fields": [
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bfl",
+        "id": "flux-2-flex",
+        "fields": [
+          "label",
+          "regions",
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "bfl",
+        "id": "flux-2-pro",
+        "fields": [
+          "label",
+          "regions",
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "minimax",
+        "id": "MiniMax-M3",
+        "fields": [
+          "regions"
+        ]
+      },
+      {
+        "provider": "minimax",
+        "id": "MiniMax-M2.7",
+        "fields": [
+          "regions"
+        ]
+      },
+      {
+        "provider": "minimax",
+        "id": "image-01",
+        "fields": [
+          "regions",
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "together",
+        "id": "Qwen/Qwen3.5-9B",
+        "fields": [
+          "label",
+          "vendor",
+          "regions"
+        ]
+      },
+      {
+        "provider": "together",
+        "id": "black-forest-labs/FLUX.2-pro",
+        "fields": [
+          "label",
+          "vendor",
+          "regions",
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "together",
+        "id": "black-forest-labs/FLUX.2-flex",
+        "fields": [
+          "label",
+          "vendor",
+          "regions",
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "fal",
+        "id": "fal-ai/flux-2-pro",
+        "fields": [
+          "label",
+          "vendor",
+          "regions",
+          "capabilities"
+        ]
+      },
+      {
+        "provider": "replicate",
+        "id": "black-forest-labs/flux-2-pro",
+        "fields": [
+          "label",
+          "vendor",
+          "regions",
+          "capabilities"
+        ]
+      }
+    ],
+    "removed": [
+      "bailian/qwen3.8-max-preview",
+      "ark/doubao-seed-character-260628",
+      "ark/doubao-seed-character-251128",
+      "ark/doubao-seed-translation-250915",
+      "together/Qwen/Qwen3.5-397B-A17B"
+    ],
+    "channels": {
+      "deepseek": {
+        "before": 3,
+        "after": 3,
+        "selectable": 3,
+        "addedIds": [],
+        "corrected": [],
+        "removedIds": []
+      },
+      "kimi": {
+        "before": 4,
+        "after": 4,
+        "selectable": 4,
+        "addedIds": [],
+        "corrected": [],
+        "removedIds": []
+      },
+      "zhipu": {
+        "before": 27,
+        "after": 27,
+        "selectable": 27,
+        "addedIds": [],
+        "corrected": [
+          {
+            "id": "glm-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "cogview-4-250304",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "cogview-4",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "cogview-3-flash",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "siliconflow": {
+        "before": 59,
+        "after": 63,
+        "selectable": 63,
+        "addedIds": [
+          "nex-agi/Nex-N2-Pro",
+          "MiniMaxAI/MiniMax-M2.5",
+          "Pro/MiniMaxAI/MiniMax-M2.5",
+          "Qwen/Qwen3.5-397B-A17B"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "anthropic": {
+        "before": 11,
+        "after": 11,
+        "selectable": 11,
+        "addedIds": [],
+        "corrected": [],
+        "removedIds": []
+      },
+      "recraft": {
+        "before": 16,
+        "after": 16,
+        "selectable": 16,
+        "addedIds": [],
+        "corrected": [],
+        "removedIds": []
+      },
+      "xai": {
+        "before": 7,
+        "after": 9,
+        "selectable": 9,
+        "addedIds": [
+          "grok-build-0.1",
+          "grok-imagine-image-quality"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "gemini": {
+        "before": 15,
+        "after": 15,
+        "selectable": 15,
+        "addedIds": [],
+        "corrected": [
+          {
+            "id": "gemini-2.5-flash-image",
+            "fields": [
+              "expirationDate",
+              "earliestRetirementDate",
+              "replacementModelId"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "bailian": {
+        "before": 118,
+        "after": 176,
+        "selectable": 176,
+        "addedIds": [
+          "qwen3.6-max-preview",
+          "qwen3-max",
+          "qwen3-max-2026-01-23",
+          "qwen3-max-2025-09-23",
+          "qwen3-max-preview",
+          "qwen-turbo",
+          "qwq-plus",
+          "qwen-long-latest",
+          "qwen-long-2025-01-25",
+          "qwen-omni-turbo",
+          "qvq-max",
+          "qvq-plus",
+          "qwen3-vl-flash",
+          "qwen-vl-max",
+          "qwen-vl-plus",
+          "qwen3-coder-plus",
+          "qwen3-coder-plus-2025-09-23",
+          "qwen3-coder-plus-2025-07-22",
+          "qwen3-next-80b-a3b-thinking",
+          "qwen3-next-80b-a3b-instruct",
+          "qwen3-235b-a22b-thinking-2507",
+          "qwen3-235b-a22b-instruct-2507",
+          "qwen3-30b-a3b-thinking-2507",
+          "qwen3-30b-a3b-instruct-2507",
+          "qwen3-235b-a22b",
+          "qwen3-32b",
+          "qwen3-30b-a3b",
+          "qwen3-14b",
+          "qwen3-8b",
+          "qwen2.5-omni-7b",
+          "qwen3-coder-next",
+          "qwen3-coder-480b-a35b-instruct",
+          "qwen3-coder-30b-a3b-instruct",
+          "deepseek-v3.2",
+          "deepseek-v3.2-exp",
+          "deepseek-v3.1",
+          "deepseek-r1",
+          "deepseek-r1-0528",
+          "deepseek-v3",
+          "deepseek-r1-distill-qwen-7b",
+          "deepseek-r1-distill-qwen-14b",
+          "deepseek-r1-distill-qwen-32b",
+          "kimi-k2-thinking",
+          "Moonshot-Kimi-K2-Instruct",
+          "glm-4.7",
+          "glm-4.5",
+          "glm-4.5-air",
+          "MiniMax-M2.1",
+          "qwen-image-max",
+          "qwen-image-max-2025-12-30",
+          "qwen-image-plus",
+          "qwen-image-plus-2026-01-09",
+          "qwen-image",
+          "qwen-image-edit-max",
+          "qwen-image-edit-max-2026-01-16",
+          "qwen-image-edit-plus",
+          "qwen-image-edit-plus-2025-12-15",
+          "qwen-image-edit-plus-2025-10-30",
+          "qwen-image-edit"
+        ],
+        "corrected": [
+          {
+            "id": "wan2.7-image-pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.7-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-3.0",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-3.0-pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "z-image-turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro-2026-06-22",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro-2026-04-22",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-pro-2026-03-03",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "qwen-image-2.0-2026-03-03",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.6-t2i",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.5-t2i-preview",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.2-t2i-plus",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.2-t2i-flash",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx2.1-t2i-plus",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx2.1-t2i-turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wanx2.0-t2i-turbo",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.6-image",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "wan2.5-i2i-preview",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": [
+          "qwen3.8-max-preview"
+        ]
+      },
+      "openai": {
+        "before": 25,
+        "after": 62,
+        "selectable": 62,
+        "addedIds": [
+          "gpt-5",
+          "gpt-5-2025-08-07",
+          "gpt-5-mini-2025-08-07",
+          "gpt-5-nano",
+          "gpt-5-nano-2025-08-07",
+          "gpt-5-pro",
+          "gpt-5-pro-2025-10-06",
+          "o3",
+          "o3-2025-04-16",
+          "o3-pro",
+          "o3-pro-2025-06-10",
+          "gpt-4.1-nano",
+          "gpt-4.1-nano-2025-04-14",
+          "o1",
+          "o1-2024-12-17",
+          "o1-pro",
+          "o1-pro-2025-03-19",
+          "o3-mini",
+          "o3-mini-2025-01-31",
+          "o4-mini",
+          "o4-mini-2025-04-16",
+          "gpt-4-turbo",
+          "gpt-4-turbo-2024-04-09",
+          "gpt-4",
+          "gpt-4-0613",
+          "gpt-3.5-turbo",
+          "gpt-3.5-turbo-0125",
+          "gpt-4-1106-preview",
+          "gpt-4o-2024-05-13",
+          "gpt-3.5-turbo-1106",
+          "gpt-4.1-2025-04-14",
+          "gpt-4.1-mini-2025-04-14",
+          "gpt-5.2-2025-12-11",
+          "gpt-5.1-2025-11-13",
+          "gpt-4o-2024-08-06",
+          "gpt-4o-2024-11-20",
+          "gpt-4o-mini-2024-07-18"
+        ],
+        "corrected": [
+          {
+            "id": "gpt-5-mini",
+            "fields": [
+              "label"
+            ]
+          },
+          {
+            "id": "gpt-image-2",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "ark": {
+        "before": 21,
+        "after": 29,
+        "selectable": 29,
+        "addedIds": [
+          "doubao-seed-1-8-251228",
+          "doubao-seed-code-preview-251028",
+          "doubao-seed-1-6-flash-250828",
+          "doubao-seed-1-6-vision-250815",
+          "doubao-seed-1-6-250615",
+          "doubao-seed-1-6-251015",
+          "doubao-seed-1-6-flash-250615",
+          "doubao-1-5-pro-32k-250115",
+          "doubao-1-5-lite-32k-250115",
+          "glm-4-7-251222",
+          "doubao-1-5-vision-pro-32k-250115"
+        ],
+        "corrected": [
+          {
+            "id": "doubao-seedream-5-0-pro-260628",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "doubao-seedream-5-0-260128",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "doubao-seedream-4-5-251128",
+            "fields": [
+              "capabilities"
+            ]
+          },
+          {
+            "id": "doubao-seedream-4-0-250828",
+            "fields": [
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": [
+          "doubao-seed-character-260628",
+          "doubao-seed-character-251128",
+          "doubao-seed-translation-250915"
+        ]
+      },
+      "bfl": {
+        "before": 2,
+        "after": 12,
+        "selectable": 12,
+        "addedIds": [
+          "flux-pro-1.1",
+          "flux-dev",
+          "flux-pro-1.1-ultra",
+          "flux-2-klein-9b",
+          "flux-2-klein-9b-preview",
+          "flux-2-klein-4b",
+          "flux-2-max",
+          "flux-2-pro-preview",
+          "flux-kontext-max",
+          "flux-kontext-pro"
+        ],
+        "corrected": [
+          {
+            "id": "flux-2-flex",
+            "fields": [
+              "label",
+              "regions",
+              "capabilities"
+            ]
+          },
+          {
+            "id": "flux-2-pro",
+            "fields": [
+              "label",
+              "regions",
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "stability": {
+        "before": 2,
+        "after": 6,
+        "selectable": 6,
+        "addedIds": [
+          "sd3.5-large",
+          "sd3.5-large-turbo",
+          "sd3.5-medium",
+          "sd3.5-flash"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "ideogram": {
+        "before": 1,
+        "after": 13,
+        "selectable": 13,
+        "addedIds": [
+          "ideogram-v3",
+          "p-image-ideogram",
+          "ideogram-edit",
+          "ideogram-v3-transparent",
+          "ideogram-v4-transparent",
+          "V_1",
+          "V_1_TURBO",
+          "V_2",
+          "V_2_TURBO",
+          "V_2A",
+          "V_2A_TURBO",
+          "AUTO"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "minimax": {
+        "before": 3,
+        "after": 10,
+        "selectable": 10,
+        "addedIds": [
+          "MiniMax-M2.7-highspeed",
+          "MiniMax-M2.5",
+          "MiniMax-M2.5-highspeed",
+          "MiniMax-M2.1",
+          "MiniMax-M2.1-highspeed",
+          "MiniMax-M2",
+          "image-01-live"
+        ],
+        "corrected": [
+          {
+            "id": "MiniMax-M3",
+            "fields": [
+              "regions"
+            ]
+          },
+          {
+            "id": "MiniMax-M2.7",
+            "fields": [
+              "regions"
+            ]
+          },
+          {
+            "id": "image-01",
+            "fields": [
+              "regions",
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "mistral": {
+        "before": 2,
+        "after": 15,
+        "selectable": 15,
+        "addedIds": [
+          "codestral-2508",
+          "codestral-latest",
+          "ministral-14b-2512",
+          "ministral-14b-latest",
+          "labs-leanstral-1-5",
+          "mistral-medium-3-5",
+          "mistral-medium-3",
+          "mistral-medium-latest",
+          "ministral-8b-2512",
+          "ministral-8b-latest",
+          "ministral-3b-2512",
+          "ministral-3b-latest",
+          "zai-glm-5-2"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "together": {
+        "before": 4,
+        "after": 47,
+        "selectable": 47,
+        "addedIds": [
+          "thinkingmachines/Inkling",
+          "MiniMaxAI/MiniMax-M3",
+          "Qwen/Qwen3.8-2.4T-A95B",
+          "Qwen/Qwen3.7-Max",
+          "Qwen/Qwen3.6-Plus",
+          "moonshotai/Kimi-K3",
+          "zai-org/GLM-5.3",
+          "zai-org/GLM-5.3-Flash",
+          "zai-org/GLM-5.2",
+          "openai/gpt-oss-120b",
+          "deepseek-ai/DeepSeek-V4-Flash-0731",
+          "deepseek-ai/DeepSeek-V4-Pro-0813",
+          "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+          "Qwen/Qwen3.7-Plus",
+          "Prism-ML/Ternary-Bonsai-27B",
+          "meta-models/Muse-Glimmer-30B",
+          "Qwen/Qwen3.8-Flash",
+          "google/imagen-4.0-preview",
+          "google/imagen-4.0-fast",
+          "google/imagen-4.0-ultra",
+          "google/flash-image-2.5",
+          "google/gemini-3-pro-image",
+          "black-forest-labs/FLUX.1.1-pro",
+          "black-forest-labs/FLUX.1-kontext-pro",
+          "black-forest-labs/FLUX.1-kontext-max",
+          "black-forest-labs/FLUX.2-dev",
+          "ByteDance-Seed/Seedream-3.0",
+          "ByteDance-Seed/Seedream-4.0",
+          "ByteDance/Seedream-5.0-lite",
+          "Qwen/Qwen-Image",
+          "RunDiffusion/Juggernaut-pro-flux",
+          "Rundiffusion/Juggernaut-Lightning-Flux",
+          "ideogram/ideogram-3.0",
+          "stabilityai/stable-diffusion-xl-base-1.0",
+          "black-forest-labs/FLUX.2-max",
+          "google/flash-image-3.1",
+          "openai/gpt-image-1.5",
+          "Qwen/Qwen-Image-2.0",
+          "Qwen/Qwen-Image-2.0-Pro",
+          "Wan-AI/Wan2.6-image",
+          "ideogram/ideogram-4.0",
+          "openai/gpt-image-2",
+          "google/flash-image-3.1-lite",
+          "prunaai/p-image-ideogram"
+        ],
+        "corrected": [
+          {
+            "id": "Qwen/Qwen3.5-9B",
+            "fields": [
+              "label",
+              "vendor",
+              "regions"
+            ]
+          },
+          {
+            "id": "black-forest-labs/FLUX.2-pro",
+            "fields": [
+              "label",
+              "vendor",
+              "regions",
+              "capabilities"
+            ]
+          },
+          {
+            "id": "black-forest-labs/FLUX.2-flex",
+            "fields": [
+              "label",
+              "vendor",
+              "regions",
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": [
+          "Qwen/Qwen3.5-397B-A17B"
+        ]
+      },
+      "fireworks": {
+        "before": 1,
+        "after": 22,
+        "selectable": 22,
+        "addedIds": [
+          "accounts/fireworks/models/kimi-k3",
+          "accounts/fireworks/models/kimi-k2p7-code",
+          "accounts/fireworks/models/kimi-k2p6",
+          "accounts/fireworks/models/deepseek-v4-pro-0813",
+          "accounts/fireworks/models/deepseek-v4-flash-0731",
+          "accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+          "accounts/fireworks/models/glm-5p3-flash",
+          "accounts/fireworks/models/glm-5p3",
+          "accounts/fireworks/models/glm-5p2",
+          "accounts/fireworks/models/qwen3p7-plus",
+          "accounts/fireworks/models/qwen3p8-max",
+          "accounts/fireworks/models/minimax-m3",
+          "accounts/fireworks/models/gpt-oss-120b",
+          "accounts/fireworks/models/muse-glimmer-30b",
+          "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+          "accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+          "accounts/fireworks/models/step-3p7-flash-nvfp4",
+          "accounts/fireworks/models/qwen3-8b",
+          "accounts/fireworks/models/gemma-4-31b-it",
+          "accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
+          "accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b"
+        ],
+        "corrected": [],
+        "removedIds": []
+      },
+      "fal": {
+        "before": 1,
+        "after": 40,
+        "selectable": 40,
+        "addedIds": [
+          "alibaba/qwen-image-3/text-to-image",
+          "bria/fibo-edit-1.5/edit",
+          "bria/fibo-gen-1.5/text-to-image",
+          "bytedance/seedream/v5/pro/text-to-image",
+          "fal-ai/bytedance/seedream/v4.5/text-to-image",
+          "fal-ai/bytedance/seedream/v4/text-to-image",
+          "fal-ai/bytedance/seedream/v5/lite/edit",
+          "fal-ai/fast-sdxl",
+          "fal-ai/flux-1/schnell",
+          "fal-ai/flux-2",
+          "fal-ai/flux-2-flex",
+          "fal-ai/flux-2/flash",
+          "fal-ai/flux-2/klein/9b",
+          "fal-ai/flux-2/turbo",
+          "fal-ai/flux-kontext-lora",
+          "fal-ai/flux-lora",
+          "fal-ai/flux-pro/kontext",
+          "fal-ai/flux-pro/v1.1",
+          "fal-ai/flux-pro/v1.1-ultra",
+          "fal-ai/flux/dev",
+          "fal-ai/flux/schnell",
+          "fal-ai/gpt-image-1.5",
+          "fal-ai/krea-2/turbo",
+          "fal-ai/nano-banana",
+          "fal-ai/nano-banana-2",
+          "fal-ai/nano-banana-pro",
+          "fal-ai/qwen-image",
+          "fal-ai/recraft/v3/text-to-image",
+          "fal-ai/recraft/v4/pro/text-to-image",
+          "fal-ai/z-image/turbo",
+          "google/nano-banana-2-lite",
+          "imagineart/imagineart-2.0-preview/text-to-image",
+          "krea/v2/large/text-to-image",
+          "meta/muse-image/text-to-image",
+          "openai/gpt-image-2",
+          "xai/grok-imagine-image",
+          "xai/grok-imagine-image/quality/text-to-image",
+          "xai/grok-imagine-image/v2.0/text-to-image",
+          "fal-ai/ideogram/v3"
+        ],
+        "corrected": [
+          {
+            "id": "fal-ai/flux-2-pro",
+            "fields": [
+              "label",
+              "vendor",
+              "regions",
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      },
+      "replicate": {
+        "before": 1,
+        "after": 89,
+        "selectable": 89,
+        "addedIds": [
+          "adirik/realvisxl-v3.0-turbo",
+          "ai-forever/kandinsky-2",
+          "ai-forever/kandinsky-2.2",
+          "alibaba/wan-3",
+          "black-forest-labs/flux-1.1-pro",
+          "black-forest-labs/flux-1.1-pro-ultra",
+          "black-forest-labs/flux-2-flex",
+          "black-forest-labs/flux-2-klein-4b",
+          "black-forest-labs/flux-2-max",
+          "black-forest-labs/flux-dev",
+          "black-forest-labs/flux-dev-lora",
+          "black-forest-labs/flux-kontext-dev",
+          "black-forest-labs/flux-kontext-max",
+          "black-forest-labs/flux-kontext-pro",
+          "black-forest-labs/flux-pro",
+          "black-forest-labs/flux-schnell",
+          "bria/fibo",
+          "bria/fibo-edit",
+          "bria/image-3.2",
+          "bytedance/bagel",
+          "bytedance/sdxl-lightning-4step",
+          "bytedance/seedream-3",
+          "bytedance/seedream-4",
+          "bytedance/seedream-4.5",
+          "bytedance/seedream-5-lite",
+          "datacte/proteus-v0.2",
+          "datacte/proteus-v0.3",
+          "fofr/latent-consistency-model",
+          "fofr/sdxl-emoji",
+          "fofr/sticker-maker",
+          "google/imagen-3",
+          "google/imagen-3-fast",
+          "google/imagen-4",
+          "google/imagen-4-fast",
+          "google/imagen-4-ultra",
+          "google/nano-banana",
+          "google/nano-banana-2",
+          "google/nano-banana-pro",
+          "ideogram-ai/ideogram-v2",
+          "ideogram-ai/ideogram-v2-turbo",
+          "ideogram-ai/ideogram-v2a",
+          "ideogram-ai/ideogram-v2a-turbo",
+          "ideogram-ai/ideogram-v3-balanced",
+          "ideogram-ai/ideogram-v3-quality",
+          "ideogram-ai/ideogram-v3-turbo",
+          "leonardoai/lucid-origin",
+          "lucataco/dreamshaper-xl-turbo",
+          "lucataco/omnigen2",
+          "lucataco/open-dalle-v1.1",
+          "lucataco/realistic-vision-v5.1",
+          "lucataco/ssd-1b",
+          "luma/photon",
+          "luma/photon-flash",
+          "minimax/image-01",
+          "nvidia/sana",
+          "nvidia/sana-sprint-1.6b",
+          "openai/gpt-image-1.5",
+          "openai/gpt-image-2",
+          "playgroundai/playground-v2.5-1024px-aesthetic",
+          "prunaai/flux-fast",
+          "prunaai/flux-kontext-fast",
+          "prunaai/hidream-l1-dev",
+          "prunaai/hidream-l1-fast",
+          "prunaai/hidream-l1-full",
+          "prunaai/p-image",
+          "prunaai/p-image-edit",
+          "prunaai/p-image-lora",
+          "prunaai/sdxl-lightning",
+          "prunaai/wan-2.2-image",
+          "prunaai/z-image-turbo",
+          "qwen/qwen-image",
+          "qwen/qwen-image-edit",
+          "qwen/qwen-image-edit-plus",
+          "recraft-ai/recraft-v3",
+          "recraft-ai/recraft-v4-pro",
+          "recraft-ai/recraft-v4.1",
+          "sourceful/riverflow-2.0-pro",
+          "stability-ai/sdxl",
+          "stability-ai/stable-diffusion",
+          "stability-ai/stable-diffusion-3.5-large",
+          "stability-ai/stable-diffusion-3.5-large-turbo",
+          "stability-ai/stable-diffusion-3.5-medium",
+          "tencent/hunyuan-image-3",
+          "tstramer/material-diffusion",
+          "wan-video/wan-2.7-image",
+          "wan-video/wan-2.7-image-pro",
+          "xai/grok-imagine-image",
+          "zsxkib/step1x-edit"
+        ],
+        "corrected": [
+          {
+            "id": "black-forest-labs/flux-2-pro",
+            "fields": [
+              "label",
+              "vendor",
+              "regions",
+              "capabilities"
+            ]
+          }
+        ],
+        "removedIds": []
+      }
+    }
+  },
+  "openrouter": {
+    "sourceRows": {
+      "text": 430,
+      "images": 50
+    },
+    "reviewedUniqueModels": 471,
+    "catalogModels": 466,
+    "selectable": 466,
+    "adaptedImageModels": 45
+  }
+}

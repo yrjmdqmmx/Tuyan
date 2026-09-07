@@ -1,3 +1,4 @@
+import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestHealth, requestJson, uploadReferenceFile } from '../../utils/api'
 import {
   ASPECT_RATIO_OPTIONS,
@@ -39,7 +40,7 @@ import { buildCreateJobPayload, type UploadedReferenceImage } from '../../utils/
 import { getApiKeys, replaceApiKeys } from '../../utils/api-keys'
 import { attachFeaturedTemplateImages, FEATURED_TEMPLATES, featuredTemplateRequest, type FeaturedTemplate } from '../../utils/featured-templates'
 import { findRegistryModel, type ModelRegistry, type ModelProviderId } from '../../utils/model-registry'
-import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
+import { getModelRegistryState, loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
 import { providerDefaultRoutes, requiredCreateRouteRoles, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import {
   buildReferenceImage,
@@ -67,6 +68,7 @@ interface ReferenceUpload {
 }
 
 interface GenerationSettings {
+  providerRegions?: ProviderRegions
   configurationMode: 'simple' | 'advanced'
   simpleProvider: ModelProviderId
   modelRoutes: ModelRoutes
@@ -157,7 +159,6 @@ Component({
     quickStartExamples: QUICK_START_EXAMPLES,
     featuredTemplates: attachFeaturedTemplateImages([]),
     featuredTemplatesLoading: true,
-    registry: {} as ModelRegistry | Record<string, never>,
     registryReady: false,
     registryVersion: '等待服务端目录',
     registryError: '',
@@ -282,14 +283,13 @@ Component({
     },
     applyRegistryState(state: ModelRegistryState) {
       if (!state.registry) {
-        this.setData({ registry: {}, registryReady: false, registryVersion: '目录不可用', registryError: state.error })
+        this.setData({ registryReady: false, registryVersion: '目录不可用', registryError: state.error })
         this.refreshCanSubmit()
         return
       }
       const current = this.data.settings as GenerationSettings
       const settings = current.modelRoutes ? current : defaultGenerationSettings(state.registry)
       this.setData({
-        registry: state.registry,
         registryReady: true,
         registryVersion: state.registry.registryVersion,
         registryError: '',
@@ -818,7 +818,7 @@ Component({
       const settings = this.data.settings as GenerationSettings
       const mainRoute = settings.modelRoutes?.main
       const mainEntry = mainRoute && this.data.registryReady
-        ? findRegistryModel(this.data.registry as ModelRegistry, mainRoute.accessProvider, mainRoute.modelId)
+        ? findRegistryModel(getModelRegistryState().registry, mainRoute.accessProvider, mainRoute.modelId)
         : null
       const mainCanRead = Boolean(mainEntry && (mainEntry.inputModalities.includes('image') || mainEntry.capabilities.referenceImages === true))
       const modeState = buildReferenceModeState({
@@ -960,6 +960,7 @@ Component({
         const uploadedReferenceImages = await this.uploadReferencesForJob()
         const payload = buildCreateJobPayload({
           configurationMode: settings.configurationMode,
+          providerRegions: settings.providerRegions,
           provider: mainRoute.accessProvider as ProviderId,
           registry,
           modelRoutes: settings.modelRoutes,
@@ -1110,7 +1111,7 @@ Component({
         referenceImages: this.data.referenceImages,
         referenceImageMode: this.data.referenceImageMode,
       }, settings.maxCriticRounds)
-      const apiKeys = getApiKeys()
+      const apiKeys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
       const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(apiKeys[provider]?.trim()))
       const canSubmit = Boolean(
         hasRequiredKeys &&

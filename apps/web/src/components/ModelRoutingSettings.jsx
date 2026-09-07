@@ -1,3 +1,4 @@
+import { MINIMAX_REGIONS, minimaxRegion } from '../lib/providerRegions'
 import { KeyRound, Loader2, Settings2, ShieldCheck, Sparkles } from 'lucide-react'
 import ApiKeyGuide from './ApiKeyGuide'
 import ModelPicker from './ModelPicker'
@@ -28,6 +29,8 @@ export default function ModelRoutingSettings({
   credentialProviders,
   apiKeys,
   onApiKeyChange,
+  providerRegions,
+  onMiniMaxRegionChange,
   arkProbes,
   arkVerification,
   arkProbePaidConfirmed,
@@ -109,6 +112,13 @@ export default function ModelRoutingSettings({
           const label = providerLabel(provider, providerConfigs)
           return (
             <div className="credential-provider" key={provider}>
+              {provider === 'minimax' ? <label className="field">
+                <span>MiniMax 区域</span>
+                <select aria-label="MiniMax 区域" value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
+                  {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{region.label}</option>)}
+                </select>
+                <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase} · 请填写该区域平台的 Key</small>
+              </label> : null}
               <label className="field">
                 <span>{label} 接入密钥</span>
                 <div className="key-input">
@@ -123,7 +133,7 @@ export default function ModelRoutingSettings({
                   />
                 </div>
               </label>
-              <ApiKeyGuide providerConfig={config} />
+              <ApiKeyGuide providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 MiniMax 开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
             </div>
           )
         })}

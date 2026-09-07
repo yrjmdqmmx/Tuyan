@@ -1,4 +1,4 @@
-export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai'] as const
+export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
@@ -22,6 +22,7 @@ export interface RegistryModel {
   availabilityNotes: string
   releasedAt: string
   expirationDate?: string
+  expirationAt?: string
   earliestRetirementDate?: string
   replacementModelId?: string
   regions?: string[]
@@ -40,6 +41,7 @@ export interface RegistryProvider {
 }
 
 export interface ModelRegistry {
+  providerRegionContractVersion?: number
   registryVersion: string
   routeContractVersion: number
   supportsModelRoutes: boolean
@@ -67,7 +69,7 @@ export function normalizeModelRegistry(input: unknown): ModelRegistry {
   for (const providerId of MODEL_PROVIDER_IDS) {
     if (providerSource[providerId]) providers[providerId] = normalizeProvider(providerId, providerSource[providerId])
   }
-  return { registryVersion, routeContractVersion, supportsModelRoutes: true, providers }
+  return { registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers }
 }
 
 function normalizeProvider(providerId: ModelProviderId, input: unknown): RegistryProvider {
@@ -131,6 +133,7 @@ function normalizeModel(input: unknown): RegistryModel {
     availabilityNotes: stringValue(source.availabilityNotes),
     releasedAt: validReleasedAt(source.releasedAt),
     expirationDate: validReleasedAt(source.expirationDate),
+    expirationAt: typeof source.expirationAt === 'string' && Number.isFinite(Date.parse(source.expirationAt)) ? source.expirationAt : '',
     earliestRetirementDate: validReleasedAt(source.earliestRetirementDate),
     replacementModelId: stringValue(source.replacementModelId),
     regions: stringArray(source.regions),
@@ -200,7 +203,7 @@ export function findRegistryModel(registry: ModelRegistry | null, provider: stri
 }
 
 function annotateModel(model: RegistryModel, role: ModelRole, outputFormat: string): RegistryModel {
-  const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(`${model.expirationDate}T00:00:00Z`))
+  const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
   const capabilities = model.capabilities || {}
   const formats = stringArray(capabilities.outputFormats)
   const roleMismatch = !model.roles.includes(role)

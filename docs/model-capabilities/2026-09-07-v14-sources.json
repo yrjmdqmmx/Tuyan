@@ -1,0 +1,2103 @@
+{
+  "reviewedAt": "2026-09-07",
+  "scope": "Official public model lists, model cards, deprecations and schemas; no account credentials or paid inference.",
+  "sources": [
+    {
+      "url": "https://platform.minimaxi.com/docs/api-reference/text-openai-api.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5ea20365be7ca498d7ba3f1647bd1729d580a3821c9e78b7e0596fbc6e0f8cac",
+      "evidenceName": "minimax-cn-text",
+      "bytes": 12016
+    },
+    {
+      "url": "https://platform.minimaxi.com/docs/api-reference/image-generation-t2i.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "65024fbdc5d1b51a8ac49b4048a0a23f0f8200c542960bfed4238ec99bbc96f0",
+      "evidenceName": "minimax-cn-image",
+      "bytes": 7661
+    },
+    {
+      "url": "https://platform.minimaxi.com/docs/guides/models-intro.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0a17e4b1e3ea1f187a2ef9688ad427ee7bcaa0d0c71b28112768323ef70ea13f",
+      "evidenceName": "minimax-cn-models",
+      "bytes": 7995
+    },
+    {
+      "url": "https://platform.minimax.io/docs/api-reference/text-openai-api.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "843901ed9bb23eaf3cbedff886db9b37cb0838e360dd6c8375cd11a92005c41c",
+      "evidenceName": "minimax-global-text",
+      "bytes": 14160
+    },
+    {
+      "url": "https://platform.minimax.io/docs/guides/models-intro.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "647190c20bafd9febb4ad61b5b1846b764ea755e573b5c66ab6229199242fa6a",
+      "evidenceName": "minimax-global-models",
+      "bytes": 11342
+    },
+    {
+      "url": "https://api.bfl.ai/openapi.json",
+      "reviewedAt": "2026-09-07",
+      "sha256": "23cc1eaa94471f82f2a957c9c02ab15f6ad619dc75eabfd10752bf5eda09e04b",
+      "evidenceName": "bfl-schema",
+      "bytes": 79118
+    },
+    {
+      "url": "https://docs.bfl.ai/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "541fdc91736b783137346bcb691541ff8efc32a9fbc4d0e500d107b0acbbfd1a",
+      "evidenceName": "bfl-index",
+      "bytes": 22499
+    },
+    {
+      "url": "https://docs.bfl.ai/flux_2/flux2_overview.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0aef14fa788d32211bd4596714f9739c7654aa09e31d2929cf654b229bd47e37",
+      "evidenceName": "bfl-family",
+      "bytes": 15339
+    },
+    {
+      "url": "https://docs.bfl.ai/release-notes.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "68bec5b2e06059e8c2a10ac95eafb99663a281a9f10584634411df46f219c7d3",
+      "evidenceName": "bfl-retire",
+      "bytes": 22779
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3ab42bed07db35274b48abcc1f0d59467febffca73c3f8a042cdf3c86d7af8e3",
+      "evidenceName": "openai-models",
+      "bytes": 364123
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/deprecations",
+      "reviewedAt": "2026-09-07",
+      "sha256": "37219c83a4fabad705cde4a992ff8cd9288096da306656e63b160ed80c52f8df",
+      "evidenceName": "openai-retire",
+      "bytes": 449184
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "95cfe0acba41a85f2cda734f7f819a36615e8471c93d852f2ad85339aa8df92e",
+      "evidenceName": "gemini-models",
+      "bytes": 148772
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "reviewedAt": "2026-09-07",
+      "sha256": "74008f8c4068448f950b73f2de6c29bd0430d57786f46bfb3176aa5b571bfe4a",
+      "evidenceName": "gemini-retire",
+      "bytes": 116026
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/models/overview.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b2ae292320b5d068b20c426e6e4e0333d1a11e25c8457748ca39de25de283c27",
+      "evidenceName": "claude-models",
+      "bytes": 16851
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0230d571767d0ef6a3f76db87a2e4c9edff9faad8baab36abf69ee0581bd9922",
+      "evidenceName": "claude-retire",
+      "bytes": 13514
+    },
+    {
+      "url": "https://docs.mistral.ai/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1b6514735846f2cbd0c885c26217c394eef31576af7ee796e75de6a96f22bdb9",
+      "evidenceName": "mistral-models",
+      "bytes": 1281708
+    },
+    {
+      "url": "https://docs.mistral.ai/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b7242cd250f797dbd72cbd8eaa810ecdd885ab61fb1343285cbaa22047443e4c",
+      "evidenceName": "mistral-index",
+      "bytes": 14658
+    },
+    {
+      "url": "https://docs.together.ai/docs/serverless/models.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "276be1a960c296b52a570bcf4cda9329d28b5f10f69deb0e1ed171051ebffdc2",
+      "evidenceName": "together-models",
+      "bytes": 24458
+    },
+    {
+      "url": "https://docs.together.ai/docs/deprecations.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "00265625fed841d19a50ca79472069541251dae19ff2f3caae8cb5b5a74932f4",
+      "evidenceName": "together-retire",
+      "bytes": 51586
+    },
+    {
+      "url": "https://docs.fireworks.ai/getting-started/models.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "07e45abf8bc5f7e08372663a2f2532d8195346e297a3a3714a85cf48f3e5ef40",
+      "evidenceName": "fireworks-models",
+      "bytes": 14798
+    },
+    {
+      "url": "https://docs.fireworks.ai/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "da7693973274a45d5746d611fef8df483e3ff62cef7b1a40de3d0ab9ee39b186",
+      "evidenceName": "fireworks-index",
+      "bytes": 56011
+    },
+    {
+      "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "reviewedAt": "2026-09-07",
+      "sha256": "cf2c6fb2dd8a32a538f12a8176175b8809a3516326a5cb30dfe52d63c490a968",
+      "evidenceName": "deepseek-models",
+      "bytes": 23168
+    },
+    {
+      "url": "https://platform.kimi.com/docs/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8956f6ef66a9c3f7e679ea53fd18237525b8f938d17d0f85cc9617d568555ad7",
+      "evidenceName": "kimi-index",
+      "bytes": 39906
+    },
+    {
+      "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "25fec1263379bff50b0acceaeece938f5b81b1709e9efbd3de49f04f0df59290",
+      "evidenceName": "zhipu-models",
+      "bytes": 12365
+    },
+    {
+      "url": "https://www.recraft.ai/docs/api-reference/appendix",
+      "reviewedAt": "2026-09-07",
+      "sha256": "a400ce6fec7bd5a752901ec3572b9412adb80345d2dec81b62c0c2cf11542949",
+      "evidenceName": "recraft-models",
+      "bytes": 223911
+    },
+    {
+      "url": "https://www.recraft.ai/docs/api-reference/endpoints",
+      "reviewedAt": "2026-09-07",
+      "sha256": "51cd6322aeb5fabae4221614e8bec95aaee9841958a549e68c1364b4f4a347bf",
+      "evidenceName": "recraft-endpoints",
+      "bytes": 1333616
+    },
+    {
+      "url": "https://docs.x.ai/developers/models.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "71680d490a8dbba6e378ff1cfe898fe6da8eda49a966c408aaba03d0d04b5f54",
+      "evidenceName": "xai-models",
+      "bytes": 4386
+    },
+    {
+      "url": "https://developer.ideogram.ai/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "faeb014858b732f66d3a93490cfc969ae4ca823349b88e59706f856fd2cfdac3",
+      "evidenceName": "ideogram-index",
+      "bytes": 7090
+    },
+    {
+      "url": "https://fal.ai/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7aacc1cf1a6ce34fe01368afbafd673f74d6f97faf384fc64693236c5daa26d7",
+      "evidenceName": "fal-models",
+      "bytes": 5747645
+    },
+    {
+      "url": "https://fal.ai/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3807010fb3254f21cf1e9b16c02ad84b7efb8c656a21486a34e0ad397ab1c1ad",
+      "evidenceName": "fal-index",
+      "bytes": 7898
+    },
+    {
+      "url": "https://replicate.com/collections/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "890ccdddeb62370cc0e0e6e8cfb4533f8ac868f2dfd1a7b22d9a5c651c32d74c",
+      "evidenceName": "replicate-models",
+      "bytes": 408037
+    },
+    {
+      "url": "https://replicate.com/collections/image-editing",
+      "reviewedAt": "2026-09-07",
+      "sha256": "054545efb6dcf8ffd238ee4f51e9728c4fabe58912a532d98386832f540eee3c",
+      "evidenceName": "replicate-edit",
+      "bytes": 254726
+    },
+    {
+      "url": "https://openrouter.ai/api/v1/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9509a1b0b8a1b379d028b9b4434524b2fd92c214bf5a1164aa3613384a0e9686",
+      "evidenceName": "openrouter-text",
+      "bytes": 708306
+    },
+    {
+      "url": "https://openrouter.ai/api/v1/images/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f5bfaf6932022c6148d759b1ff9aa0c7434da09c14660848c86afacdaa829934",
+      "evidenceName": "openrouter-images",
+      "bytes": 38778
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "070570b75cecce68cf8f475ca69b7ebf1de04892ac93d1f80257f5788a77cd82",
+      "evidenceName": "bailian-models",
+      "bytes": 90327
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/model-deployment-upgrade",
+      "reviewedAt": "2026-09-07",
+      "sha256": "fd282b5a076acc7f574af0bc7620c509bf13ecce04f93b653fccb85367fb4931",
+      "evidenceName": "bailian-retire",
+      "bytes": 24695
+    },
+    {
+      "url": "https://docs.volcengine.com/docs/82379/1330310",
+      "reviewedAt": "2026-09-07",
+      "sha256": "423b7cd49b0f32b4d01ecce91715a24620d9e88d9ec47dd72f8258fda201f03b",
+      "evidenceName": "ark-models",
+      "bytes": 898200
+    },
+    {
+      "url": "https://platform.stability.ai/docs/api-reference",
+      "reviewedAt": "2026-09-07",
+      "sha256": "56734d78080b1ff4a4940b0aac8a4a24bc9f44a818e97063f84ff9d5bb82e663",
+      "evidenceName": "stability-api",
+      "bytes": 1644
+    },
+    {
+      "url": "https://docs.fireworks.ai/serverless/pricing.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c967c0cdab7ac6b80e4fe3c9b8d40a813dae14de324f9dbf02077082b8382d96",
+      "evidenceName": "fireworks-pricing",
+      "bytes": 7646
+    },
+    {
+      "url": "https://docs.fireworks.ai/guides/recommended-models.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2a125827aee76d89ada118dfc416ed25b1ea19d8d27755912e866accb521f078",
+      "evidenceName": "fireworks-recommended",
+      "bytes": 13417
+    },
+    {
+      "url": "https://docs.fireworks.ai/guides/querying-vision-language-models.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f63a446f9be697d28224ada70627f5350b70e323b6304b50996a006981ad6ab0",
+      "evidenceName": "fireworks-vision",
+      "bytes": 10125
+    },
+    {
+      "url": "https://platform.kimi.com/docs/models.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "cc4b3606b96d40ba4957eec6f2ba8d3a273b14b5b5eb39f4c3fef28c64114e27",
+      "evidenceName": "kimi-models",
+      "bytes": 3598
+    },
+    {
+      "url": "https://platform.kimi.com/docs/api/models-overview.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e9b489e3359793955db7b2debdfda17399cd7bd30450f1f2e0d966dd84133482",
+      "evidenceName": "kimi-api",
+      "bytes": 9138
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/text-generation-model/",
+      "reviewedAt": "2026-09-07",
+      "sha256": "662dc589a1f58ea274c63f86c14ea2c154035ef2ec2565958369c34e63f7480a",
+      "evidenceName": "bailian-text",
+      "bytes": 99397
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/vision-model",
+      "reviewedAt": "2026-09-07",
+      "sha256": "35514f86fb445f36db96e859e0989960f052adea851e447f2193f59502295d3e",
+      "evidenceName": "bailian-vision",
+      "bytes": 73286
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/image-model",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5666bf191a173f0d45beee33c41ba0d258edf8f151095328663cf038c0e1c722",
+      "evidenceName": "bailian-image",
+      "bytes": 63859
+    },
+    {
+      "url": "https://www.aliyun.com/notice/118177",
+      "reviewedAt": "2026-09-07",
+      "sha256": "4cc3fb96b085cb8419568f2cc1ef9317b66c0fc6ebf22171024bca63a3df1c26",
+      "evidenceName": "bailian-notice-118177",
+      "bytes": 31196
+    },
+    {
+      "url": "https://www.aliyun.com/notice/118344",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2104626d3d5e0dd30eb9c286f26eabdf68d4aa9d48dc5289022da40e0abfa99d",
+      "evidenceName": "bailian-notice-118344",
+      "bytes": 30991
+    },
+    {
+      "url": "https://www.aliyun.com/notice/118345",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2a645ce7b107eb440e80184f81e42515108952f28ee08f8d6b824b280e010463",
+      "evidenceName": "bailian-notice-118345",
+      "bytes": 30991
+    },
+    {
+      "url": "https://www.aliyun.com/notice/118434",
+      "reviewedAt": "2026-09-07",
+      "sha256": "63ec65ca17dab445693b8eec1a0d0a92a609f18403f905c503e06d669a3ba2ef",
+      "evidenceName": "bailian-notice-118434",
+      "bytes": 30600
+    },
+    {
+      "url": "https://www.siliconflow.cn/models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "cbf45722d9f2988349da8f4418af17889993926c5f24e9269a3906be0ddd2942",
+      "evidenceName": "siliconflow-models",
+      "bytes": 528039
+    },
+    {
+      "url": "https://api-docs.deepseek.com/guides/vision",
+      "reviewedAt": "2026-09-07",
+      "sha256": "fd13bccdebc14e189cf5de63077d1e30580612ffcda392f421fc5d87ad2e37e6",
+      "evidenceName": "deepseek-vision",
+      "bytes": 78116
+    },
+    {
+      "url": "https://docs.x.ai/developers/models/grok-imagine-image-quality.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5119ed378aed3cbd81c3cfeed222c80de282f4e62f287fe4b934a27429654c89",
+      "evidenceName": "xai-quality",
+      "bytes": 498
+    },
+    {
+      "url": "https://docs.x.ai/developers/models/grok-build-0.1.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e8c0cbcb733852896245ef05be4475e4bf08e54d741b47a5d031fd7d213baef0",
+      "evidenceName": "xai-build",
+      "bytes": 915
+    },
+    {
+      "url": "https://docs.x.ai/developers/model-capabilities/images/generation.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3e8a8d6a4782d667b0915d408f3fb4df7de905e5b462d1f937ecec20b1baeef6",
+      "evidenceName": "xai-image",
+      "bytes": 13862
+    },
+    {
+      "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v3.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "84ba20075339a8e0fc7a838233b3f271236c0c5fe25232c096b5099173b13d54",
+      "evidenceName": "ideogram-v3",
+      "bytes": 17789
+    },
+    {
+      "url": "https://developer.ideogram.ai/api-reference/edit-images/remix-v3.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "536607a265ba6ecc3dbfade27ef3642d60a173c3073e065e20a129b677e9f354",
+      "evidenceName": "ideogram-v3-edit",
+      "bytes": 16657
+    },
+    {
+      "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-p-image-ideogram.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3a594dde8366bddf5db39ad9ba53aece61bb58e54cbac1b5032474a85e093300",
+      "evidenceName": "ideogram-pimage",
+      "bytes": 13304
+    },
+    {
+      "url": "https://developer.ideogram.ai/api-reference/edit-images/edit-with-prompt.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8c5e53af598c2cad8ca6be4696d5809ae1329bae08e034311aefbab001618a59",
+      "evidenceName": "ideogram-pimage-edit",
+      "bytes": 11379
+    },
+    {
+      "url": "https://fal.ai/explore/best-ai-image-generators",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f73f0da739ef0d55fdddd137a7316cfc2764c38617b9e15f380590b18e70215a",
+      "evidenceName": "fal-image-list",
+      "bytes": 279640
+    },
+    {
+      "url": "https://fal.ai/explore/best-image-editing-models",
+      "reviewedAt": "2026-09-07",
+      "sha256": "aa6c3d17a32e196736c8f320a4c1d000c28220b8663d456f3ccb724faeda0646",
+      "evidenceName": "fal-edit-list",
+      "bytes": 188861
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/imagen",
+      "reviewedAt": "2026-09-07",
+      "sha256": "74a430b96f238fb8b5cc0f706258472f515c29a7069dc731a5d7bf8a464be2ab",
+      "evidenceName": "gemini-imagen",
+      "bytes": 169925
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/o3-mini",
+      "reviewedAt": "2026-09-07",
+      "sha256": "51d4ac8c9b9177aad69959c754b4fabe0188a35a86ba3c79e9352f4ba23e14c2",
+      "evidenceName": "openai-o3mini",
+      "bytes": 402502
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4-turbo",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7e2f6e20652d950fe981a33bdef3c55cea58e1e4cb02d6c7847df07208d388ec",
+      "evidenceName": "openai-gpt4turbo",
+      "bytes": 397432
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9971d2c730978ea775657137bafebfc182b936e3bff82cea818603eb11b4ad23",
+      "evidenceName": "openai-gpt4omini",
+      "bytes": 395737
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/o4-mini",
+      "reviewedAt": "2026-09-07",
+      "sha256": "74ba83aee2a1d3d0d82881eff45f9056b709bd4bff9293ba40bbb46da9dd5873",
+      "evidenceName": "openai-o4mini",
+      "bytes": 398577
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4o",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b46dd0680a501b8e4785c99396041985d9936fc7833e4037b255584e2b993c64",
+      "evidenceName": "openai-gpt4o",
+      "bytes": 395609
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/o1",
+      "reviewedAt": "2026-09-07",
+      "sha256": "14e5a35e446ce834781ff59261674d647d9af79701835be1419e6cf69428b3f8",
+      "evidenceName": "openai-o1",
+      "bytes": 399164
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/o3",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d99941630178ba56b290eb7a809ad62dfbec6b983e908f75b5b2186909577ad0",
+      "evidenceName": "openai-o3",
+      "bytes": 400733
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2d54d21443b564540df6768a85ccf07847853484ba1ddabad799d9576c2b00fc",
+      "evidenceName": "openai-gpt4",
+      "bytes": 396838
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+      "reviewedAt": "2026-09-07",
+      "sha256": "60e22998e64ed1e03e9f5a231dae11847f944e29f93882be5179f03d3d29fbc4",
+      "evidenceName": "openai-gpt35turbo",
+      "bytes": 398457
+    },
+    {
+      "url": "https://docs.together.ai/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "71751346be1d243f85c1c72d08964b6f8ff85eed08951d7f56f3c81d1f2c1436",
+      "evidenceName": "together-index",
+      "bytes": 62427
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/models/fable-5-1.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f773571dce56353d7cb8a501b9ad2eb6531d8164938c5868f1aee8dbda8b462f",
+      "evidenceName": "claude-fable51",
+      "bytes": 14914
+    },
+    {
+      "url": "https://platform.minimax.io/docs/api-reference/image-generation-t2i.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "22683b9f905175c6ff561ef71d291e61dbf3f29c5ca7c1b25fb28ef60cb4f2bb",
+      "evidenceName": "minimax-global-image",
+      "bytes": 7120
+    },
+    {
+      "url": "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+      "reviewedAt": "2026-09-07",
+      "sha256": "739634d4ff9df00933dec4cf6372b58d4202cb6df7866965d597cce16452493d",
+      "evidenceName": "mistral-mistral-medium-3-5-26-04",
+      "bytes": 1183268
+    },
+    {
+      "url": "https://docs.mistral.ai/models/zai-glm-5-2",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3d8bb17695f8e7135006931c3d24b8e8a01c0925424f7269828ada0f09a22c89",
+      "evidenceName": "mistral-zai-glm-5-2",
+      "bytes": 1169317
+    },
+    {
+      "url": "https://docs.mistral.ai/models/ministral-3-14b-25-12",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d86e7a8dd3fbeb4f3d7599ffa78e89c0af8fbc5f1dcd76b3703657174239bd04",
+      "evidenceName": "mistral-ministral-3-14b-25-12",
+      "bytes": 1178920
+    },
+    {
+      "url": "https://docs.mistral.ai/models/ministral-3-8b-25-12",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6e3a29ae21886ff98fce0ed12da64197693238c5b3aa8b3ee7c7e8b10b1a118d",
+      "evidenceName": "mistral-ministral-3-8b-25-12",
+      "bytes": 1178212
+    },
+    {
+      "url": "https://docs.mistral.ai/models/ministral-3-3b-25-12",
+      "reviewedAt": "2026-09-07",
+      "sha256": "dc7dede2af4c58587522ec900cd45d0981cd6c60a52786e292d87f4f83382cbf",
+      "evidenceName": "mistral-ministral-3-3b-25-12",
+      "bytes": 1178540
+    },
+    {
+      "url": "https://docs.mistral.ai/models/codestral-25-08",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d8aca1a945363c6804e6689dc6fc31e1657a8d7313dbcad10928d90f21ea53a5",
+      "evidenceName": "mistral-codestral-25-08",
+      "bytes": 1158343
+    },
+    {
+      "url": "https://docs.mistral.ai/models/leanstral-1-5",
+      "reviewedAt": "2026-09-07",
+      "sha256": "cb56a8ec67de631301884fa3d1dbb3a6729c97ceeedc6cd5484ed9061681237b",
+      "evidenceName": "mistral-leanstral-1-5",
+      "bytes": 1159352
+    },
+    {
+      "url": "https://docs.together.ai/docs/inference/images/overview.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e06fa6b0374f0cfdea1ec68646b5469dc0fffba9eacbf0c0b44d3f3f85554ca6",
+      "evidenceName": "together-text-to-image-generation",
+      "bytes": 8324
+    },
+    {
+      "url": "https://docs.together.ai/docs/inference/images/reference-images.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f0d311649304d9da6b056a90c0f13931bc9c347f2df57e76bc591c92acfbd01b",
+      "evidenceName": "together-image-to-image-generation",
+      "bytes": 4463
+    },
+    {
+      "url": "https://docs.together.ai/docs/inference/images/parameters.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d619bb089b7569d5b49c8eb7c9168c8b5821715e7ea338a746a002353c6dd4f0",
+      "evidenceName": "together-image-generation-parameters",
+      "bytes": 16145
+    },
+    {
+      "url": "https://docs.together.ai/docs/inference/videos/reference-and-keyframes.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7f5dd5a5b7aeb963aae2a0b6ec21e03cfaeb2f7a2bb4fb525d202fb9f3a7dff2",
+      "evidenceName": "together-reference-images-and-keyframes",
+      "bytes": 4959
+    },
+    {
+      "url": "https://docs.together.ai/docs/inference/vision/overview.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "a167ec7ece7280314e775e3fc2c6425fd45f9b96860c6fba4c5a8f59198e9344",
+      "evidenceName": "together-use-image-inputs",
+      "bytes": 9008
+    },
+    {
+      "url": "https://docs.together.ai/docs/quickstart-flux.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "671286e3f6fbdca30306def6f3fb4eeb94467c22af6241e94fddcca40058e96e",
+      "evidenceName": "together-flux-2-quickstart",
+      "bytes": 31422
+    },
+    {
+      "url": "https://docs.together.ai/docs/quickstart-flux-kontext.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "816a65c88e8de073fce7aa3416bc9002060416f13e9567c8c8dd89ec71eab08b",
+      "evidenceName": "together-flux-kontext-quickstart",
+      "bytes": 3893
+    },
+    {
+      "url": "https://docs.together.ai/external-link-02.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8f6b8cdede53243bec046b2e71dd9c9aca87c3481d5c6a64a9d0691dceab9d32",
+      "evidenceName": "together-build-a-real-time-image-generator-with-flux-and-together-ai",
+      "bytes": 342372
+    },
+    {
+      "url": "https://docs.together.ai/docs/how-to-use-qwen-code.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3b08ec2ecb4d9b057593cd19ecda3e55ae86e062f2fecdb09ff842f1ac249829",
+      "evidenceName": "together-configure-qwen-code-with-together-ai-models",
+      "bytes": 4921
+    },
+    {
+      "url": "https://docs.together.ai/docs/dedicated_containers_image.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "76fe17fa53dc8aa2c6e27651c6a7e49a87bb61595d23532b612744003c27055a",
+      "evidenceName": "together-image-generation-with-flux2",
+      "bytes": 12931
+    },
+    {
+      "url": "https://docs.together.ai/reference/post-images-generations.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e42670698222f3a7dd364d6e5f89312d7457c32ba65e688311380227ca3ce55b",
+      "evidenceName": "together-create-image",
+      "bytes": 9450
+    },
+    {
+      "url": "https://docs.bigmodel.cn/llms.txt",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e8de9268a5bd4b4c5daeec845f907de7ca7ad99c54cd1b7946408ec4992110c4",
+      "evidenceName": "zhipu-index",
+      "bytes": 47948
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e20a343135c4414877ea97a678988c2e1f7218daf555dc155e16f67310abcc0c",
+      "evidenceName": "bailian-qwen-gen",
+      "bytes": 237454
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6fe0c723dbcac8a7755ef1fa0f251deb415c39dae54daee71b51053d12b653fc",
+      "evidenceName": "bailian-qwen-edit",
+      "bytes": 151976
+    },
+    {
+      "url": "https://docs.x.ai/developers/model-capabilities/images/editing.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7eef300bdb5bf28f4edfd50b7e8c68c216b3b96b3d3e3e11df6305c8f755e66a",
+      "evidenceName": "xai-edit",
+      "bytes": 3166
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2-flex",
+      "reviewedAt": "2026-09-07",
+      "sha256": "62472115742121da0c208bee583b3459798033252901f6cdbb39f03fc783dd5b",
+      "evidenceName": "fal-schema-fal-ai__flux-2-flex",
+      "bytes": 7001
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-lora-fast-training",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b6a3c493c90be5592898eacc8b3e90d0a5907c4ed52f1f1921818a2a54911e17",
+      "evidenceName": "fal-schema-fal-ai__flux-lora-fast-training",
+      "bytes": 7228
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/kling-video/o3/standard/image-to-video",
+      "reviewedAt": "2026-09-07",
+      "sha256": "34d292f322fc35f60cbb7a361001af7f1b549af7bd362f438db062e70fe85608",
+      "evidenceName": "fal-schema-fal-ai__kling-video__o3__standard__image-to-video",
+      "bytes": 7191
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana-pro/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8fc8f2035948f50dbe864feb2e81a92ea6a9b5f322a38ca602a99eb6c77d7469",
+      "evidenceName": "fal-schema-fal-ai__nano-banana-pro__edit",
+      "bytes": 8166
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/veo3.1",
+      "reviewedAt": "2026-09-07",
+      "sha256": "574d2e131e2d9762ae38507cf179dc0705e819e8d969f08dde1c690b99403cf0",
+      "evidenceName": "fal-schema-fal-ai__veo3.1",
+      "bytes": 6562
+    },
+    {
+      "url": "https://replicate.com/adirik/realvisxl-v3.0-turbo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3a7652d2c4f92502451fa94c319d90163926cb167ea259ffc07799f4a578a7bc",
+      "evidenceName": "replicate-schema-adirik__realvisxl-v3.0-turbo",
+      "bytes": 215994
+    },
+    {
+      "url": "https://replicate.com/ai-forever/kandinsky-2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1b035eb347638efa87d1f54d1ccad32f1b6674d0bd1d43d6f351c427d3edd8a9",
+      "evidenceName": "replicate-schema-ai-forever__kandinsky-2",
+      "bytes": 177659
+    },
+    {
+      "url": "https://replicate.com/ai-forever/kandinsky-2.2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "891f1d6ad221c2ce739c2a075e370fda91789c2f48b72b8f60090e20e55be47b",
+      "evidenceName": "replicate-schema-ai-forever__kandinsky-2.2",
+      "bytes": 178251
+    },
+    {
+      "url": "https://replicate.com/alibaba/wan-3/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f58b62325155add8cd279f2a04b19b6c1c085837f85d83a24dac59234104adb9",
+      "evidenceName": "replicate-schema-alibaba__wan-3",
+      "bytes": 154127
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-1.1-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "054edd5f57f841363cc1bcc0d2256632b0032c461bfde58c2e4740f5681c400b",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-1.1-pro",
+      "bytes": 192294
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2dc5c41e3310b62baceaed743de06855d756d511eb0abbe62ff23786496f5006",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-1.1-pro-ultra",
+      "bytes": 178469
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-2-flex/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f37ebbbc1fdf2e86b0b83b830c3e1018f5cc5ecfadcc922ac922491b5322f113",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-2-flex",
+      "bytes": 210619
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-2-klein-4b/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "109a618a49280c762b5f71aee3fe1514c7c2cb90cb886c5c0110b741c39c887f",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-2-klein-4b",
+      "bytes": 189191
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-2-max/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "28fdcb5e14bd984863b04e1128efae06a0886bf22caa35cdfe80b1b9fd6223bd",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-2-max",
+      "bytes": 202466
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-2-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "a8eb5c6e60a3018b475c383b84d985da98557ada6385a625c5a4ccb79b097148",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-2-pro",
+      "bytes": 202045
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-canny-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c936605e4cda9d7a615a3cbfbd41865a720701344e671bf917c8be582fadfe8f",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-canny-pro",
+      "bytes": 179178
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-depth-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e82265078b4801bc0514256e22a203d2372cf6ce2d274d138e2f529c251b08c5",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-depth-pro",
+      "bytes": 179297
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-dev/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9358fff3b2e036ad65adf270d437dbfa3da6b29d6d3b6c8707ffcca48921fbf0",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-dev",
+      "bytes": 204177
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-dev-lora/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e2f2ed18127d04cb003a2fcff3e54387e5d9bcdbc11650ac38afb1777bdf047c",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-dev-lora",
+      "bytes": 248373
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-fill-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "32199c83ebacd18100b27910ce26e7c84d2b3c1dce2b21aa2112197c5e531655",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-fill-pro",
+      "bytes": 195213
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-kontext-dev/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f9a0ceceb6182d16bf7aa0cc7aa16a9deb37eca529ec70d2c64f2741888d32ec",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-kontext-dev",
+      "bytes": 189401
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-kontext-max/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "112104cfe2b7827a68522a16489e7c91b122c0b63e377eb124a61ff9e75b631e",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-kontext-max",
+      "bytes": 176604
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-kontext-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "36ba541d1b988f942318b33d314165efbc4632ca5b98e2caf0df0247f4f329cc",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-kontext-pro",
+      "bytes": 176673
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1c6f728e5311ef0926d00336ac1ac3b8da8c5b5d0fa893e77fb0805eb79cb565",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-pro",
+      "bytes": 198887
+    },
+    {
+      "url": "https://replicate.com/black-forest-labs/flux-schnell/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "a3a4359f157dec33e60ccd956aaad2c99039d46c9878bebe3eb93bafeefcdd5b",
+      "evidenceName": "replicate-schema-black-forest-labs__flux-schnell",
+      "bytes": 187878
+    },
+    {
+      "url": "https://replicate.com/bria/eraser/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c79e4b98486ca545a55853ca1876de35cdaae23df69bc04883dbd011d3b59b2a",
+      "evidenceName": "replicate-schema-bria__eraser",
+      "bytes": 169233
+    },
+    {
+      "url": "https://replicate.com/bria/expand-image/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0fdc31d203832682f16c562741efcfb49c3a3ee14e1fe8a4d186bf500c7564b6",
+      "evidenceName": "replicate-schema-bria__expand-image",
+      "bytes": 189937
+    },
+    {
+      "url": "https://replicate.com/bria/fibo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ca00bbb542d3241e0d325519888a8bf55d3ad21bf1d5a523970a9b84f18ef843",
+      "evidenceName": "replicate-schema-bria__fibo",
+      "bytes": 174237
+    },
+    {
+      "url": "https://replicate.com/bria/fibo-edit/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d00f34f36c6015cb14a8199bfe81715bb223583c6e0cc392d7cdf65d4cd182d6",
+      "evidenceName": "replicate-schema-bria__fibo-edit",
+      "bytes": 169845
+    },
+    {
+      "url": "https://replicate.com/bria/generate-background/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3e0502ed921d8786a476209b14ac8f54ada8b1ffc9ddf791ad7a22bf750937a7",
+      "evidenceName": "replicate-schema-bria__generate-background",
+      "bytes": 193537
+    },
+    {
+      "url": "https://replicate.com/bria/genfill/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "34978ef314072b705b1b9cb80b979dc7f2e051dae1bffa8e87d70741383d1eb5",
+      "evidenceName": "replicate-schema-bria__genfill",
+      "bytes": 173255
+    },
+    {
+      "url": "https://replicate.com/bria/image-3.2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b1808a5088acb9c95afab0a80aad309b41a1f99763fc305efecaa37754b05401",
+      "evidenceName": "replicate-schema-bria__image-3.2",
+      "bytes": 173813
+    },
+    {
+      "url": "https://replicate.com/bytedance/bagel/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "bfb2bc0d1fca72c1dc764a1668b322d82a9d0208f8c92aeaa74c227a4645b3f5",
+      "evidenceName": "replicate-schema-bytedance__bagel",
+      "bytes": 194989
+    },
+    {
+      "url": "https://replicate.com/bytedance/sdxl-lightning-4step/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "524de2c2a54ae3b97d10a0fb0faa6a1a4947a3ee7a44b2520fbfdd3db1ac5306",
+      "evidenceName": "replicate-schema-bytedance__sdxl-lightning-4step",
+      "bytes": 181653
+    },
+    {
+      "url": "https://replicate.com/bytedance/seedream-3/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "13375431af34fd647f78e044aee81df25004706c7cd39601a2de91ddcd0ff32f",
+      "evidenceName": "replicate-schema-bytedance__seedream-3",
+      "bytes": 175385
+    },
+    {
+      "url": "https://replicate.com/bytedance/seedream-4/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c0d96a9e39c38cb4138cda50527803a53dda6f8448463e1d5e164120176116d7",
+      "evidenceName": "replicate-schema-bytedance__seedream-4",
+      "bytes": 192331
+    },
+    {
+      "url": "https://replicate.com/bytedance/seedream-4.5/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "043a3fc56f8e9e2340aea7202af113b93bff8793b98f2f53f2bc63e0034bd3df",
+      "evidenceName": "replicate-schema-bytedance__seedream-4.5",
+      "bytes": 174122
+    },
+    {
+      "url": "https://replicate.com/bytedance/seedream-5-lite/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b633b98eb8ea271ba64c22c494c9237de34e8673e2a5ea6022c07e2e449dad91",
+      "evidenceName": "replicate-schema-bytedance__seedream-5-lite",
+      "bytes": 168516
+    },
+    {
+      "url": "https://replicate.com/comfyui/any-comfyui-workflow/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b1d6b74cc4650e55ac7673ef3ae759be880264d965e16b3f878d5e49cf8d1c60",
+      "evidenceName": "replicate-schema-comfyui__any-comfyui-workflow",
+      "bytes": 249771
+    },
+    {
+      "url": "https://replicate.com/datacte/proteus-v0.2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ff8c2c84c67e90448ebab29c1d4fb8a333e260fe21735f1d9010ace67ca6bcac",
+      "evidenceName": "replicate-schema-datacte__proteus-v0.2",
+      "bytes": 204088
+    },
+    {
+      "url": "https://replicate.com/datacte/proteus-v0.3/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b53409a39240f5ee4844bfc1d68243367c6650624a3e40d3a5e8a102549e1eac",
+      "evidenceName": "replicate-schema-datacte__proteus-v0.3",
+      "bytes": 206246
+    },
+    {
+      "url": "https://replicate.com/fermatresearch/sdxl-controlnet-lora/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "96bb524aaa59a102dc5eede398bad6581313baf7365f521c2a49189919afa345",
+      "evidenceName": "replicate-schema-fermatresearch__sdxl-controlnet-lora",
+      "bytes": 205860
+    },
+    {
+      "url": "https://replicate.com/flux-kontext-apps/multi-image-kontext-max/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "743fed3292ca6e27179210ff47602212a1045fd7add7faba912eeb280b38db45",
+      "evidenceName": "replicate-schema-flux-kontext-apps__multi-image-kontext-max",
+      "bytes": 171919
+    },
+    {
+      "url": "https://replicate.com/flux-kontext-apps/multi-image-kontext-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c9c2ebd6f99d9fa91e4875d04bdd30c6b10cc0ee3648fd0063e51abe64d2f158",
+      "evidenceName": "replicate-schema-flux-kontext-apps__multi-image-kontext-pro",
+      "bytes": 174207
+    },
+    {
+      "url": "https://replicate.com/flux-kontext-apps/multi-image-list/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "51d7f14550013f21c9e28bddda9379863a7bd8a35b1e0e2c0591d2f7f8439e1c",
+      "evidenceName": "replicate-schema-flux-kontext-apps__multi-image-list",
+      "bytes": 170978
+    },
+    {
+      "url": "https://replicate.com/flux-kontext-apps/restore-image/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0f647738341ef2443c07823e4c1a37c46281ac1ca23b20fdf39dcb44f26edacd",
+      "evidenceName": "replicate-schema-flux-kontext-apps__restore-image",
+      "bytes": 154654
+    },
+    {
+      "url": "https://replicate.com/fofr/color-matcher/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b9225c5c260c91c26b6c95e5eefe91764636ae11883196b7f1613482da82da2a",
+      "evidenceName": "replicate-schema-fofr__color-matcher",
+      "bytes": 167378
+    },
+    {
+      "url": "https://replicate.com/fofr/latent-consistency-model/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "feac96c7129ee446e2851203b64e385341bf5294efcc71a10d8b214ec05793fc",
+      "evidenceName": "replicate-schema-fofr__latent-consistency-model",
+      "bytes": 213050
+    },
+    {
+      "url": "https://replicate.com/fofr/sdxl-emoji/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "04c5963c4d555843e4e4e092b6b4d67ca6e26597c602a6e49bda5a4d733a9e0f",
+      "evidenceName": "replicate-schema-fofr__sdxl-emoji",
+      "bytes": 215118
+    },
+    {
+      "url": "https://replicate.com/fofr/sdxl-multi-controlnet-lora/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ac7234c09285a1cd65a39c69b851285e656853f532fe355dda58a0b2dd884a7d",
+      "evidenceName": "replicate-schema-fofr__sdxl-multi-controlnet-lora",
+      "bytes": 291497
+    },
+    {
+      "url": "https://replicate.com/fofr/sticker-maker/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "660c02facc7f30dc713d5e19bb5e27a27dfd93febb45b447282d13afa1ebdd7e",
+      "evidenceName": "replicate-schema-fofr__sticker-maker",
+      "bytes": 169589
+    },
+    {
+      "url": "https://replicate.com/google/imagen-3/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8b543afdd0d673daa4b10a7ca65a10c0165368898a42350d5a77302b2349fb09",
+      "evidenceName": "replicate-schema-google__imagen-3",
+      "bytes": 166370
+    },
+    {
+      "url": "https://replicate.com/google/imagen-3-fast/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f2f8d1727d0a1c32798fcf2356df5750f757c4e495c5dd07bd21d95d489b7e8a",
+      "evidenceName": "replicate-schema-google__imagen-3-fast",
+      "bytes": 165962
+    },
+    {
+      "url": "https://replicate.com/google/imagen-4/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8baf11c3f34c54a1f4fe0318002bc305bcf783e029eda0b509dff22232fd68c9",
+      "evidenceName": "replicate-schema-google__imagen-4",
+      "bytes": 166659
+    },
+    {
+      "url": "https://replicate.com/google/imagen-4-fast/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8e03327e19de761b3b0bb7de803736a7daa80c9ce9489a6d4d07e1b92e226204",
+      "evidenceName": "replicate-schema-google__imagen-4-fast",
+      "bytes": 151172
+    },
+    {
+      "url": "https://replicate.com/google/imagen-4-ultra/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "78ba205343a917ec63d02b7a6d08234f20fa7c7f1c50efb69bad81f57e8db29d",
+      "evidenceName": "replicate-schema-google__imagen-4-ultra",
+      "bytes": 152955
+    },
+    {
+      "url": "https://replicate.com/google/nano-banana/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "4ec7614e66bf5471c03a19da680cf95927600601ee689e923a2a534734fa235b",
+      "evidenceName": "replicate-schema-google__nano-banana",
+      "bytes": 162463
+    },
+    {
+      "url": "https://replicate.com/google/nano-banana-2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "65b2e17a3f0cecee6b5c9a455609807040ed7f0d9a54fd9558d4267ea719f6b1",
+      "evidenceName": "replicate-schema-google__nano-banana-2",
+      "bytes": 158304
+    },
+    {
+      "url": "https://replicate.com/google/nano-banana-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b90cbf751c59cecbeb4b656341bc263f56cf829a36faa300be56e0fc11779629",
+      "evidenceName": "replicate-schema-google__nano-banana-pro",
+      "bytes": 162995
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d6760fd3369d3b745d4039155a3eedcc36ac6a75b098a9c19c8365d3b47f7bb2",
+      "evidenceName": "replicate-schema-ideogram-ai__ideogram-v2",
+      "bytes": 208003
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v2-turbo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9e3847249b1fe371d1985dbf9b307fa5483fabb97583dc4f65af3ad0ad6b8e22",
+      "evidenceName": "replicate-schema-ideogram-ai__ideogram-v2-turbo",
+      "bytes": 208276
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v2a/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "65e78ee1f98109c9a812eae36e27e7a9b7792ab9a3e459d3af11d2562dd62cd1",
+      "evidenceName": "replicate-schema-ideogram-ai__ideogram-v2a",
+      "bytes": 197170
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v2a-turbo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "73d1d65fe8a81b3eed5b2b98a18a413ac14c46819e995e2e1e43c24d716d2e02",
+      "evidenceName": "replicate-schema-ideogram-ai__ideogram-v2a-turbo",
+      "bytes": 197577
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v3-balanced/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f525bdfd2b748155c61318ad635f43f546149e864e4867dd22f31bf317887e02",
+      "evidenceName": "replicate-schema-ideogram-ai__ideogram-v3-balanced",
+      "bytes": 229756
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v3-quality/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c2c0851774d4c426268c6ce85e185f53a094abb60ed1b1f87738dde4de459fa2",
+      "evidenceName": "replicate-schema-ideogram-ai__ideogram-v3-quality",
+      "bytes": 229639
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v3-turbo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "239cb6e49898254baae70e22935dcaea1fd2e5c848bd9baca8f8232a4a3fcc21",
+      "evidenceName": "replicate-schema-ideogram-ai__ideogram-v3-turbo",
+      "bytes": 229647
+    },
+    {
+      "url": "https://replicate.com/jagilley/controlnet-scribble/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3b45dbdd8e54e4e10079e69c1036cafac957ab5b78eba5898cfaa9175ddc0784",
+      "evidenceName": "replicate-schema-jagilley__controlnet-scribble",
+      "bytes": 151824
+    },
+    {
+      "url": "https://replicate.com/leonardoai/lucid-origin/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "66063dbd02781fd858f0a3f3c283a0b0e95a063c93ec7c8dacee40221a1da1e4",
+      "evidenceName": "replicate-schema-leonardoai__lucid-origin",
+      "bytes": 160880
+    },
+    {
+      "url": "https://replicate.com/lucataco/dreamshaper-xl-turbo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1288a7a033530a20981a4eab65d32da9b2c38bda08163e9509ced911d79a7803",
+      "evidenceName": "replicate-schema-lucataco__dreamshaper-xl-turbo",
+      "bytes": 188888
+    },
+    {
+      "url": "https://replicate.com/lucataco/omnigen2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9346fbf93cad2407fcdd35d3f2473930fb2d8d18542e2eceefe5ca96eb99ebf6",
+      "evidenceName": "replicate-schema-lucataco__omnigen2",
+      "bytes": 211047
+    },
+    {
+      "url": "https://replicate.com/lucataco/open-dalle-v1.1/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3cefbe4d6c4cf11b7b5d88e163e733959f8a1e6614aa03d8d8e4a11f3b53d614",
+      "evidenceName": "replicate-schema-lucataco__open-dalle-v1.1",
+      "bytes": 206236
+    },
+    {
+      "url": "https://replicate.com/lucataco/realistic-vision-v5.1/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d1ac0494a0ab65a1c94b5ab9ed3125b46312ddb45a9f9a7dd6b22c974235e543",
+      "evidenceName": "replicate-schema-lucataco__realistic-vision-v5.1",
+      "bytes": 179664
+    },
+    {
+      "url": "https://replicate.com/lucataco/ssd-1b/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "10bc055c5d34cf1dbfb75ab96088debde1013469bd6bf5b91f63fa61309826fb",
+      "evidenceName": "replicate-schema-lucataco__ssd-1b",
+      "bytes": 210710
+    },
+    {
+      "url": "https://replicate.com/luma/photon/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2fc9bbb60e9b180473e66bbe516a31522eb660390cefd31ab53012d38b8c0100",
+      "evidenceName": "replicate-schema-luma__photon",
+      "bytes": 179823
+    },
+    {
+      "url": "https://replicate.com/luma/photon-flash/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8e66ca397248195f3e9165a2d20e9c255d755344767681945991f86e04a96efe",
+      "evidenceName": "replicate-schema-luma__photon-flash",
+      "bytes": 179830
+    },
+    {
+      "url": "https://replicate.com/minimax/image-01/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b773649fc6286f65c5ec9e2feac975b35b2b1b08ab92e578698ab027d805a10b",
+      "evidenceName": "replicate-schema-minimax__image-01",
+      "bytes": 162171
+    },
+    {
+      "url": "https://replicate.com/nvidia/sana/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6f7533bd17b02f0610e506603429bce9e006bedd8de0fda09d9b760246ff81f9",
+      "evidenceName": "replicate-schema-nvidia__sana",
+      "bytes": 174993
+    },
+    {
+      "url": "https://replicate.com/nvidia/sana-sprint-1.6b/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "4bd629b572701a8085757d616600c4a6e764baf1aefd830020f1d6366206aef6",
+      "evidenceName": "replicate-schema-nvidia__sana-sprint-1.6b",
+      "bytes": 178129
+    },
+    {
+      "url": "https://replicate.com/openai/gpt-image-1/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "de9f24e6334d06215b5e00bc58bcc37c81902931c9175d37e679663e65f90699",
+      "evidenceName": "replicate-schema-openai__gpt-image-1",
+      "bytes": 195705
+    },
+    {
+      "url": "https://replicate.com/openai/gpt-image-1.5/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "a6988ff8027d32e6359de4a7c620fce9e7902671ac3d82b45e5fe00c370e5e3c",
+      "evidenceName": "replicate-schema-openai__gpt-image-1.5",
+      "bytes": 198349
+    },
+    {
+      "url": "https://replicate.com/openai/gpt-image-2/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c0f84d8a14b11c97e8426f52d6d0ebd23933fd0bb91097aafe72b771733ae7a7",
+      "evidenceName": "replicate-schema-openai__gpt-image-2",
+      "bytes": 174246
+    },
+    {
+      "url": "https://replicate.com/orpatashnik/styleclip/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f15f5149d865486801966f78a3dc3a80a8ae06b96bd839823a934a74c515cec8",
+      "evidenceName": "replicate-schema-orpatashnik__styleclip",
+      "bytes": 126362
+    },
+    {
+      "url": "https://replicate.com/playgroundai/playground-v2.5-1024px-aesthetic/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "45ebb19e7291c3c56c4021e8107e03d5cae0fb648a30ff00de1facd277c8880a",
+      "evidenceName": "replicate-schema-playgroundai__playground-v2.5-1024px-aesthetic",
+      "bytes": 205734
+    },
+    {
+      "url": "https://replicate.com/prunaai/flux-fast/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8cc70f79b031e88509b7c6e563d64f5dadc420230e6e01b29952bfd44f852a15",
+      "evidenceName": "replicate-schema-prunaai__flux-fast",
+      "bytes": 180087
+    },
+    {
+      "url": "https://replicate.com/prunaai/flux-kontext-fast/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7db7f724267768e2098b0ee6967bdaebc2161f60b214f840f3dd57b1a73f44d6",
+      "evidenceName": "replicate-schema-prunaai__flux-kontext-fast",
+      "bytes": 185276
+    },
+    {
+      "url": "https://replicate.com/prunaai/hidream-l1-dev/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0a7e9fde9505b766680b5d9a87273504f5277a779e1803c98a8c8f1a705eba44",
+      "evidenceName": "replicate-schema-prunaai__hidream-l1-dev",
+      "bytes": 172926
+    },
+    {
+      "url": "https://replicate.com/prunaai/hidream-l1-fast/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9336d84dd83a6e1074227b5faa06b701ef33b54ed0e323e987e8ede493fd5334",
+      "evidenceName": "replicate-schema-prunaai__hidream-l1-fast",
+      "bytes": 182935
+    },
+    {
+      "url": "https://replicate.com/prunaai/hidream-l1-full/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3b7d66d1f0bc9a5712453fa771ccb2e636c903c0dee2c33f269abd7e239290b4",
+      "evidenceName": "replicate-schema-prunaai__hidream-l1-full",
+      "bytes": 173274
+    },
+    {
+      "url": "https://replicate.com/prunaai/p-image/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "342405fcbf5387b779fa7470827512181b7efe11aa4e96838d768549e5604185",
+      "evidenceName": "replicate-schema-prunaai__p-image",
+      "bytes": 174353
+    },
+    {
+      "url": "https://replicate.com/prunaai/p-image-edit/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "4c6f4b61fe97be5d4da14158f4e1b2acd6726a98b4c81c4e896d8aa7c5d6bcaf",
+      "evidenceName": "replicate-schema-prunaai__p-image-edit",
+      "bytes": 162453
+    },
+    {
+      "url": "https://replicate.com/prunaai/p-image-lora/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e9abc2ee624ed97e3b577a1e3359083b14a30c843a067d680864589e02bb9a16",
+      "evidenceName": "replicate-schema-prunaai__p-image-lora",
+      "bytes": 171586
+    },
+    {
+      "url": "https://replicate.com/prunaai/sdxl-lightning/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6b112227a87070f2b519e63fd93fd002420b29f7a8b8bc1498959bd68580122a",
+      "evidenceName": "replicate-schema-prunaai__sdxl-lightning",
+      "bytes": 165534
+    },
+    {
+      "url": "https://replicate.com/prunaai/wan-2.2-image/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "85cb039d508fc0b685b9baddcd40e98600dd0bd0cc7598b1bcc91479989de8ad",
+      "evidenceName": "replicate-schema-prunaai__wan-2.2-image",
+      "bytes": 188885
+    },
+    {
+      "url": "https://replicate.com/prunaai/z-image-turbo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0691fca0b1092e871348330cbf1444156d9a65bdf9852a8686c4a63a2935555d",
+      "evidenceName": "replicate-schema-prunaai__z-image-turbo",
+      "bytes": 182248
+    },
+    {
+      "url": "https://replicate.com/quiverai/arrow-1.1/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d2490fe0dd951eb383f940ec2a1950a753ad82a417f3d391d5cc2fc9c94f1eae",
+      "evidenceName": "replicate-schema-quiverai__arrow-1.1",
+      "bytes": 143596
+    },
+    {
+      "url": "https://replicate.com/quiverai/arrow-1.1-max/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "cd0e7836f539adc4bd00924f6f3da98faae2701b74a01ce2a9b3e8a71f2fa66d",
+      "evidenceName": "replicate-schema-quiverai__arrow-1.1-max",
+      "bytes": 144028
+    },
+    {
+      "url": "https://replicate.com/qwen/qwen-image/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "a58d1a77290b244efc0ee7a54cd47aeca52ec90d27bda4c54208ed8ec06d904b",
+      "evidenceName": "replicate-schema-qwen__qwen-image",
+      "bytes": 225243
+    },
+    {
+      "url": "https://replicate.com/qwen/qwen-image-edit/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "283c5ec821e0053a96814ba1aa11d69060df31434bfd7075e4e720e02020ae56",
+      "evidenceName": "replicate-schema-qwen__qwen-image-edit",
+      "bytes": 179999
+    },
+    {
+      "url": "https://replicate.com/qwen/qwen-image-edit-plus/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "364fa3f7c9d7daf9dcdfe4a945fc0bf79d2c0468822ddc2816d52798bec7e7a6",
+      "evidenceName": "replicate-schema-qwen__qwen-image-edit-plus",
+      "bytes": 180375
+    },
+    {
+      "url": "https://replicate.com/recraft-ai/recraft-v3/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8b115e4b9f9cf4f80219e40a5c3485486c4c39d3a6b3b51b2df5bb2136e2679e",
+      "evidenceName": "replicate-schema-recraft-ai__recraft-v3",
+      "bytes": 182194
+    },
+    {
+      "url": "https://replicate.com/recraft-ai/recraft-v3-svg/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7add73fa7d22624ca64ee05694471202d2ef4ece92a557988d4bc450fa05ca34",
+      "evidenceName": "replicate-schema-recraft-ai__recraft-v3-svg",
+      "bytes": 167361
+    },
+    {
+      "url": "https://replicate.com/recraft-ai/recraft-v4-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8ac9ab90b16ef6c1de5f379bf2d26c3d67cae8c9344ed5bc6a12081bcab7f3d3",
+      "evidenceName": "replicate-schema-recraft-ai__recraft-v4-pro",
+      "bytes": 166449
+    },
+    {
+      "url": "https://replicate.com/recraft-ai/recraft-v4-pro-svg/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e48a5cf7ec80c4c96c9f8d48bc65c7e39d50566f325fc262bde51af94c21a85b",
+      "evidenceName": "replicate-schema-recraft-ai__recraft-v4-pro-svg",
+      "bytes": 166658
+    },
+    {
+      "url": "https://replicate.com/recraft-ai/recraft-v4-styles-svg/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "be33d193a277b65787bcf53d7e0905cb6679f28815c8c763b1c1e4da355b174f",
+      "evidenceName": "replicate-schema-recraft-ai__recraft-v4-styles-svg",
+      "bytes": 63179
+    },
+    {
+      "url": "https://replicate.com/recraft-ai/recraft-v4-svg/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b0ef3032276201d2be0f330a6f6bad2fc180995209e4695a140e3c624064c17d",
+      "evidenceName": "replicate-schema-recraft-ai__recraft-v4-svg",
+      "bytes": 166106
+    },
+    {
+      "url": "https://replicate.com/recraft-ai/recraft-v4.1/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "4f293c7ad5e827a06bdc7b6ee7b128bccffe94a6461cee22eb4c6a3b11bf1c5e",
+      "evidenceName": "replicate-schema-recraft-ai__recraft-v4.1",
+      "bytes": 142333
+    },
+    {
+      "url": "https://replicate.com/sdxl-based/realvisxl-v3-multi-controlnet-lora/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "436267c02cc7b68da0da2a9ba6d5ab1ce6a02b6382fce7106aa0f6b53169aeed",
+      "evidenceName": "replicate-schema-sdxl-based__realvisxl-v3-multi-controlnet-lora",
+      "bytes": 289804
+    },
+    {
+      "url": "https://replicate.com/sourceful/riverflow-2.0-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6ed3735bcb9d0b7db58b8ebd87977fedebdb00d758a717357bacc72949893870",
+      "evidenceName": "replicate-schema-sourceful__riverflow-2.0-pro",
+      "bytes": 194807
+    },
+    {
+      "url": "https://replicate.com/stability-ai/sdxl/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "016af52205ff97050d436d0cc030799f92f8bcdc44ec14dd24af239991a3b278",
+      "evidenceName": "replicate-schema-stability-ai__sdxl",
+      "bytes": 298919
+    },
+    {
+      "url": "https://replicate.com/stability-ai/stable-diffusion/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9bdd56b628d7af9e08c57262ba8e62ff2d6d495dcd2b3dfc529324770017fb14",
+      "evidenceName": "replicate-schema-stability-ai__stable-diffusion",
+      "bytes": 170778
+    },
+    {
+      "url": "https://replicate.com/stability-ai/stable-diffusion-3.5-large/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "df9cf00d80ade6762c50739046f4568ffde2e9d8a37056beb4ddc5b8ce092fcd",
+      "evidenceName": "replicate-schema-stability-ai__stable-diffusion-3.5-large",
+      "bytes": 184592
+    },
+    {
+      "url": "https://replicate.com/stability-ai/stable-diffusion-3.5-large-turbo/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2b1bb46617731727395bb63ca797f5d8f321844eee6a76e62263e34a89289b32",
+      "evidenceName": "replicate-schema-stability-ai__stable-diffusion-3.5-large-turbo",
+      "bytes": 181415
+    },
+    {
+      "url": "https://replicate.com/stability-ai/stable-diffusion-3.5-medium/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "155871d89060b732c34228b201bd73f9fc71b0bcefed896959147a3a4dc5b069",
+      "evidenceName": "replicate-schema-stability-ai__stable-diffusion-3.5-medium",
+      "bytes": 181977
+    },
+    {
+      "url": "https://replicate.com/tencent/hunyuan-image-3/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ab431377cd1b2e6f730cf1f9d85cd95948b5303907f1e7f636372545ce26892d",
+      "evidenceName": "replicate-schema-tencent__hunyuan-image-3",
+      "bytes": 176315
+    },
+    {
+      "url": "https://replicate.com/tstramer/material-diffusion/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "dbc517b663fe07aacc28049721e624313bb47e24f6dc6efbe7fd71238f066970",
+      "evidenceName": "replicate-schema-tstramer__material-diffusion",
+      "bytes": 144920
+    },
+    {
+      "url": "https://replicate.com/wan-video/wan-2.7-image/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "88bd9cd4234aa4caf1babab1231faf8fc6a7c60a28632fbde0324ed8ced092f7",
+      "evidenceName": "replicate-schema-wan-video__wan-2.7-image",
+      "bytes": 153674
+    },
+    {
+      "url": "https://replicate.com/wan-video/wan-2.7-image-pro/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "0b7b35cf0e68a751505b58c1e1ea314aa40f72ce305d92f7c00f261b08f433d7",
+      "evidenceName": "replicate-schema-wan-video__wan-2.7-image-pro",
+      "bytes": 155970
+    },
+    {
+      "url": "https://replicate.com/xai/grok-imagine-image/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9627020fa451e84c700b2764c77ade8b1ce8e6633fe89363bc24f5c7c5d2bf57",
+      "evidenceName": "replicate-schema-xai__grok-imagine-image",
+      "bytes": 161221
+    },
+    {
+      "url": "https://replicate.com/zsxkib/step1x-edit/api/schema",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1f618315fd50a12654962daa48b8ef7bc0d174ee4ac38cc4ef6839785c8ccd67",
+      "evidenceName": "replicate-schema-zsxkib__step1x-edit",
+      "bytes": 165367
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=alibaba/qwen-image-3/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e963a80288e95fad1d74b2a9cd722b3c860e9337eed371469a0f52e9eddd2b23",
+      "evidenceName": "fal-schema-alibaba__qwen-image-3__text-to-image",
+      "bytes": 6961
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=bria/fibo-edit-1.5/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "4c74c8c8b0841b5770a75c047cfaf36c034b2970d1dc882423ed66a13ec90179",
+      "evidenceName": "fal-schema-bria__fibo-edit-1.5__edit",
+      "bytes": 13662
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=bria/fibo-gen-1.5/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8f05fadb08a354edf7fb2cf07b25af8962380dc6668ea632fddbaa263bd9b943",
+      "evidenceName": "fal-schema-bria__fibo-gen-1.5__text-to-image",
+      "bytes": 12525
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=bytedance/seedream/v5/pro/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5739d451488066b3cb52e7c5f8598957531d43e7a2523fd7c4b32bf7d8bb901a",
+      "evidenceName": "fal-schema-bytedance__seedream__v5__pro__edit",
+      "bytes": 7247
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=bytedance/seedream/v5/pro/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "066779f34a1d6572aa9acca3901be3b6182aebb3ea10ef0e6d97bef0db8b4370",
+      "evidenceName": "fal-schema-bytedance__seedream__v5__pro__text-to-image",
+      "bytes": 6900
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/bytedance/seedream/v4.5/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5852f6b2ddfdb9d155cc29510bc21d01a2dee72573c14219fb8f2acea4f0195b",
+      "evidenceName": "fal-schema-fal-ai__bytedance__seedream__v4.5__edit",
+      "bytes": 7856
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/bytedance/seedream/v4.5/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1387381985eda3bf803dfd9e916802d1e552e54eded01a7d3f916cc54f75100e",
+      "evidenceName": "fal-schema-fal-ai__bytedance__seedream__v4.5__text-to-image",
+      "bytes": 7674
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/bytedance/seedream/v4/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "581f4a629e0a9d81a44c0e5bb5c2f22a4cc2c2efea1da46f14a690024427d72c",
+      "evidenceName": "fal-schema-fal-ai__bytedance__seedream__v4__edit",
+      "bytes": 8303
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/bytedance/seedream/v4/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2f6e91df2ca69d95b425b971a32fb927c5fe6de873628e646a4181447c123ed1",
+      "evidenceName": "fal-schema-fal-ai__bytedance__seedream__v4__text-to-image",
+      "bytes": 7608
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/bytedance/seedream/v5/lite/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e8b0d5190271a5d886c1cae0ddb2f35bd1468a1c0be2bf1c12d4fb5fce5f875f",
+      "evidenceName": "fal-schema-fal-ai__bytedance__seedream__v5__lite__edit",
+      "bytes": 7799
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/fast-sdxl",
+      "reviewedAt": "2026-09-07",
+      "sha256": "37193c35ee90daab16f7b5508f551d635eee95c552ef20ee95e8647f371a1a13",
+      "evidenceName": "fal-schema-fal-ai__fast-sdxl",
+      "bytes": 9352
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-1/schnell",
+      "reviewedAt": "2026-09-07",
+      "sha256": "006d5afd8109c8cd017070f186a740aa79606511b0e05a9114b47bed99d1f25c",
+      "evidenceName": "fal-schema-fal-ai__flux-1__schnell",
+      "bytes": 7302
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2",
+      "reviewedAt": "2026-09-07",
+      "sha256": "274e55a179995876aca895a269c825abff9c8922081bc8579cd0fe38bed1c750",
+      "evidenceName": "fal-schema-fal-ai__flux-2",
+      "bytes": 8117
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2-pro",
+      "reviewedAt": "2026-09-07",
+      "sha256": "566206481c27e625459445e1d101cecdc07d3f81c4b6452070709757df13e26e",
+      "evidenceName": "fal-schema-fal-ai__flux-2-pro",
+      "bytes": 6603
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2-pro/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "40f4ad05b13a706c011f34211a559a39655f2603feb5bcd197073df05af7f4f6",
+      "evidenceName": "fal-schema-fal-ai__flux-2-pro__edit",
+      "bytes": 6770
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2/flash",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f297a10bf6ca7dea55eddcfcc4cab4d3427e81d09096e4acc50c35e5ad63f69e",
+      "evidenceName": "fal-schema-fal-ai__flux-2__flash",
+      "bytes": 7897
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2/klein/9b",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7e997d20cabe79c0a1c5f6c90d0f76962aa99162109dfb31c186952292ff5216",
+      "evidenceName": "fal-schema-fal-ai__flux-2__klein__9b",
+      "bytes": 7673
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2/turbo",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d2be15920e188e57055c0336cbd0180c3e36251b4045ea34014035cdd6e0489a",
+      "evidenceName": "fal-schema-fal-ai__flux-2__turbo",
+      "bytes": 7628
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-kontext-lora",
+      "reviewedAt": "2026-09-07",
+      "sha256": "627b928cc09c6159ea540952602333e3bd7aa66687d95ec6d07724afb5163c85",
+      "evidenceName": "fal-schema-fal-ai__flux-kontext-lora",
+      "bytes": 8897
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-lora",
+      "reviewedAt": "2026-09-07",
+      "sha256": "85256e501df0d959b5a03fd2f342167c653381bd4917e0202bf5ed3394f32b29",
+      "evidenceName": "fal-schema-fal-ai__flux-lora",
+      "bytes": 7923
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-pro/kontext",
+      "reviewedAt": "2026-09-07",
+      "sha256": "14258667aad525b7374dc0d052b05ba295c52aa364cc4bc4d9d0346c3ad79ef8",
+      "evidenceName": "fal-schema-fal-ai__flux-pro__kontext",
+      "bytes": 7664
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-pro/v1.1",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7f5c494f587748d8946490118c41f62038c03523a38e4e09dc6a3c1d4b5cc567",
+      "evidenceName": "fal-schema-fal-ai__flux-pro__v1.1",
+      "bytes": 6882
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-pro/v1.1-ultra",
+      "reviewedAt": "2026-09-07",
+      "sha256": "bc3242d15f1812b9906ffabf23dd1d2feec4ebc94fc28ad4e1c53bb6c6676352",
+      "evidenceName": "fal-schema-fal-ai__flux-pro__v1.1-ultra",
+      "bytes": 6997
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux/dev",
+      "reviewedAt": "2026-09-07",
+      "sha256": "59e1ba50092e22eb2d65333efad05b5132d254343e10faf586a35af9631dcb94",
+      "evidenceName": "fal-schema-fal-ai__flux__dev",
+      "bytes": 7192
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux/schnell",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f173bceb009f434e2e5586a8714401dd45654850852110ba0bc7e18c5f064460",
+      "evidenceName": "fal-schema-fal-ai__flux__schnell",
+      "bytes": 7321
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/gpt-image-1.5",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b42b32dee2481318b4c1f0b1a935cc445c7498da127bd33a0c5988e265175915",
+      "evidenceName": "fal-schema-fal-ai__gpt-image-1.5",
+      "bytes": 6032
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/krea-2/turbo",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e5c815902ca1310c0a659445d87ed79afa0c38d847b83109927b555fb764ebc1",
+      "evidenceName": "fal-schema-fal-ai__krea-2__turbo",
+      "bytes": 7521
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3697735354a2172aca7481c9c37ea7f8eb4db8fbe0cf55be9a48872c46cd31ec",
+      "evidenceName": "fal-schema-fal-ai__nano-banana",
+      "bytes": 6565
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana-2",
+      "reviewedAt": "2026-09-07",
+      "sha256": "854882ad05eda368276d3acfa7d548076246b7f047a11c703dbfd6ee9cb1e19f",
+      "evidenceName": "fal-schema-fal-ai__nano-banana-2",
+      "bytes": 7941
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana-2/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1840c973b269770de9b6207df678d3113e0b308d889011ec03c052c4c3acd61c",
+      "evidenceName": "fal-schema-fal-ai__nano-banana-2__edit",
+      "bytes": 9190
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana-pro",
+      "reviewedAt": "2026-09-07",
+      "sha256": "77978cc5eb3e32ad35cc490e13b269eb4ab4f90b8317818a8131fe85f5b7dcce",
+      "evidenceName": "fal-schema-fal-ai__nano-banana-pro",
+      "bytes": 7455
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/nano-banana/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f4aff804ec70366481b3ed629ff3528a0d3ddc82e86852cb69036eb581fd2a9a",
+      "evidenceName": "fal-schema-fal-ai__nano-banana__edit",
+      "bytes": 6853
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/qwen-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "70f88962689084268bd0899885e7a70471501d92c505ac5cf7c926875f98ce28",
+      "evidenceName": "fal-schema-fal-ai__qwen-image",
+      "bytes": 8622
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/recraft/v3/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5153213bb06b11fabf79b83da5acccfc987c477b9377dd8a382c52d42593ab72",
+      "evidenceName": "fal-schema-fal-ai__recraft__v3__text-to-image",
+      "bytes": 9049
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/recraft/v4/pro/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "35d1ae7d1662e31acaa659ab9287ffe6efc89ded4066247000a9b67584047cb4",
+      "evidenceName": "fal-schema-fal-ai__recraft__v4__pro__text-to-image",
+      "bytes": 6555
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/z-image/turbo",
+      "reviewedAt": "2026-09-07",
+      "sha256": "aff2d5bbbea461d1134771b9906e3639c70bfdb2670d7e84b16c233eb0a259d0",
+      "evidenceName": "fal-schema-fal-ai__z-image__turbo",
+      "bytes": 8267
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=google/gemini-omni-flash",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5da820ba077bd653091d8fa4679798b0f33273abad39b28134e63b54bdb006af",
+      "evidenceName": "fal-schema-google__gemini-omni-flash",
+      "bytes": 5141
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=google/gemini-omni-flash/v1.1/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ad62c4db90a12a554a8720b4e2532e4e54e6fd289e0f6ed099f68d3bc40d4901",
+      "evidenceName": "fal-schema-google__gemini-omni-flash__v1.1__edit",
+      "bytes": 4716
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=google/nano-banana-2-lite",
+      "reviewedAt": "2026-09-07",
+      "sha256": "35d840424aff74aa02102d293712f2203f528dd0c0bd42437c42d43fb3d0bf2b",
+      "evidenceName": "fal-schema-google__nano-banana-2-lite",
+      "bytes": 7566
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=imagineart/imagineart-2.0-preview/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2caa4b9c76de0e4375d0cf4b998e2f8073166fdcc4cb4c7336b4ada27cc95eeb",
+      "evidenceName": "fal-schema-imagineart__imagineart-2.0-preview__text-to-image",
+      "bytes": 7155
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v2/large/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "81b6fe3e7c23d721420e1d16fd0e26388ce5eec3661000b86315aaa19c91cb14",
+      "evidenceName": "fal-schema-krea__v2__large__text-to-image",
+      "bytes": 7847
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=meta/muse-image/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ed24d5427f2a342c3a60ec739c1fb7984a7ddc065a3133171d4ac448326bfa12",
+      "evidenceName": "fal-schema-meta__muse-image__edit",
+      "bytes": 5852
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=meta/muse-image/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ade3fbdb4a04652ba4c2797a0a46075b9f1a1b5745791e5dbb47a80126618b76",
+      "evidenceName": "fal-schema-meta__muse-image__text-to-image",
+      "bytes": 5620
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=openai/gpt-image-2",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c2b68e574aa03a8d735aa631bd1a9bfffa89995b83e4103381e9bb25900163f1",
+      "evidenceName": "fal-schema-openai__gpt-image-2",
+      "bytes": 6732
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=openai/gpt-image-2/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6419ac5215dfb3aa1a35ce106196e5a4be52a922c010fdd090baa77bcef46817",
+      "evidenceName": "fal-schema-openai__gpt-image-2__edit",
+      "bytes": 7261
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=recraft/v4/style/pro/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "616caf123d540b9aff3822382d214442219c155d000f857b95356d078db6c9be",
+      "evidenceName": "fal-schema-recraft__v4__style__pro__text-to-image",
+      "bytes": 7040
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=recraft/v4/style/pro/text-to-vector",
+      "reviewedAt": "2026-09-07",
+      "sha256": "90282eacc662236ed263d819ccfa706e163235e225eb4f09a30f8161d168b9a7",
+      "evidenceName": "fal-schema-recraft__v4__style__pro__text-to-vector",
+      "bytes": 7034
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=recraft/v4/style/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "a526fdf5870799967b1079c30d5bfc3b00e769d2c82ee49f731ced59e4798770",
+      "evidenceName": "fal-schema-recraft__v4__style__text-to-image",
+      "bytes": 7232
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=recraft/v4/style/text-to-vector",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9e9a8001245d7965525b826ebffddf1b8d2808a5a613a1bf49074567fb86dbc8",
+      "evidenceName": "fal-schema-recraft__v4__style__text-to-vector",
+      "bytes": 6974
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=xai/grok-imagine-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f54445720dc03a1b37ea6243af08e68181a235b1c00464b2c9db75e950321b82",
+      "evidenceName": "fal-schema-xai__grok-imagine-image",
+      "bytes": 5943
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=xai/grok-imagine-image/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "518afa7017d88650102cf960f625731e889df03e1889a259191c91508e3b9416",
+      "evidenceName": "fal-schema-xai__grok-imagine-image__edit",
+      "bytes": 6270
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=xai/grok-imagine-image/quality/edit",
+      "reviewedAt": "2026-09-07",
+      "sha256": "bac27133e3c5e625c448debdad08d88d55deeb5f3e5c3fceb93795f73a4fd9de",
+      "evidenceName": "fal-schema-xai__grok-imagine-image__quality__edit",
+      "bytes": 6507
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=xai/grok-imagine-image/quality/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d90574c0af78d94ce8da95a490864dd50b290f1fc029ad1cdd49ac5f0015fd91",
+      "evidenceName": "fal-schema-xai__grok-imagine-image__quality__text-to-image",
+      "bytes": 6366
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=xai/grok-imagine-image/v2.0/text-to-image",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6f890f86d03b17c545bf1431e564f20b0c1b9515242257a283d959f9bdc3e724",
+      "evidenceName": "fal-schema-xai__grok-imagine-image__v2.0__text-to-image",
+      "bytes": 6274
+    },
+    {
+      "url": "https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "e7538a30de3be67d7805e63d2800f91d968ac39a65f12df41f5cf2c378fdaaad",
+      "evidenceName": "zhipu-chat",
+      "bytes": 69409
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/kimi-k2p5",
+      "reviewedAt": "2026-09-07",
+      "sha256": "172054d575274c1837d7358c8c5fbf7890372e9c54a0c16c171eb2372f5630c1",
+      "evidenceName": "fireworks-card-kimi-k2p5"
+    },
+    {
+      "url": "https://fal.ai/docs/platform-apis/v1/models.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9227b412eaef9e75999a73ba7d6c12fa64f30e366a2cf398245d025dc3a1ed4e",
+      "evidenceName": "fal-model-discovery",
+      "bytes": 26402
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/kimi-k3",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5431bcd545246b5e9a326f0cbd80b6f28e6b82f61c29716c1f29979cede1051b",
+      "evidenceName": "fireworks-card-kimi-k3"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/kimi-k2p7-code",
+      "reviewedAt": "2026-09-07",
+      "sha256": "947d43985159aaa694d25758edcb0b5bfb82c38e56c85b5108ffab447b16d774",
+      "evidenceName": "fireworks-card-kimi-k2p7-code"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/kimi-k2p6",
+      "reviewedAt": "2026-09-07",
+      "sha256": "99b6207be0121b157754d12a33d5ce9ba2e6e0a13be5be4b1c92738e19eb334d",
+      "evidenceName": "fireworks-card-kimi-k2p6"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813",
+      "reviewedAt": "2026-09-07",
+      "sha256": "183a7008d590a5a8fc6b37ec3e4f59f471e9e030d280ff99e27529df0939c415",
+      "evidenceName": "fireworks-card-deepseek-v4-pro-0813"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731",
+      "reviewedAt": "2026-09-07",
+      "sha256": "6fb79681492213f3fde9a67ffacc20d01088aa03ea985fce7a1e91f32aa8802a",
+      "evidenceName": "fireworks-card-deepseek-v4-flash-0731"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp",
+      "reviewedAt": "2026-09-07",
+      "sha256": "3d064c087a8b1aff6d45e9c530448debdcb0796b58568653c2e36359a1b31ef2",
+      "evidenceName": "fireworks-card-deepseek-v4-flash-vision-exp"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/glm-5p3-flash",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b93feb76bbd6d9efd81224c5fe4f654116afbc91f1b31f9dcb0b694baa5a65e5",
+      "evidenceName": "fireworks-card-glm-5p3-flash"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/glm-5p3",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2ff35d03b7d2f9dcc5d04216b84680dc3a1310510ef8885b560fcc78dc5ed642",
+      "evidenceName": "fireworks-card-glm-5p3"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/glm-5p2",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f9b38645aad64b285643285adcac3ed85352ba992ab5b847d3c74b4002890a38",
+      "evidenceName": "fireworks-card-glm-5p2"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/qwen3p7-plus",
+      "reviewedAt": "2026-09-07",
+      "sha256": "67bae76485175c32585c4b3d67b1165f89c1401398d06fb27ca388f53af9129a",
+      "evidenceName": "fireworks-card-qwen3p7-plus"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/qwen3p8-max",
+      "reviewedAt": "2026-09-07",
+      "sha256": "764f8a5c019e26ffad8f4a3ee0470c226664255738376d23ce83b93fbaa88267",
+      "evidenceName": "fireworks-card-qwen3p8-max"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/minimax-m3",
+      "reviewedAt": "2026-09-07",
+      "sha256": "1ada22d21dde043399ad557c6d10d2a41b25a0b19876069a9c6d97a3948eba39",
+      "evidenceName": "fireworks-card-minimax-m3"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/gpt-oss-120b",
+      "reviewedAt": "2026-09-07",
+      "sha256": "c44ac21c62e4ef742f46e6350d934eec3f01be6183752a94363b076030e9194b",
+      "evidenceName": "fireworks-card-gpt-oss-120b"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/muse-glimmer-30b",
+      "reviewedAt": "2026-09-07",
+      "sha256": "dc846e5c6dc9b43242eacf85cdd86a20f00534d683980fb57627f675df2f035c",
+      "evidenceName": "fireworks-card-muse-glimmer-30b"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
+      "reviewedAt": "2026-09-07",
+      "sha256": "bce3e0eb85800c80e09b09d157bba74bd5c2c7b4c29751a61981ce39302748f9",
+      "evidenceName": "fireworks-card-nemotron-lightning-3p5-30b-a3b"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4",
+      "reviewedAt": "2026-09-07",
+      "sha256": "b656da64fd4e262f9f9d57710d277c591012d82454049af7e3d0a6a9086f5456",
+      "evidenceName": "fireworks-card-nemotron-3-ultra-nvfp4"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4",
+      "reviewedAt": "2026-09-07",
+      "sha256": "63c918d6c4380f51379f552a74afe4fc0f4c99d14ed9441d21dbf3461aaf2d4e",
+      "evidenceName": "fireworks-card-step-3p7-flash-nvfp4"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/qwen3-8b",
+      "reviewedAt": "2026-09-07",
+      "sha256": "080c9a83e0b58c7d4365b45c2c201af28ccc437dbfcd0b7caa2557a58eb68244",
+      "evidenceName": "fireworks-card-qwen3-8b"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/gemma-4-31b-it",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2b48c2a4e75fdc5d763b2cd24b0d3a8a7dbbc63c2a1c032bd7845d6b15e1eb49",
+      "evidenceName": "fireworks-card-gemma-4-31b-it"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct",
+      "reviewedAt": "2026-09-07",
+      "sha256": "d0b7ce1826f87ef02d267a2ad804d2fafacb1ffc1343d53517d85e4e8e7b161a",
+      "evidenceName": "fireworks-card-qwen3-omni-30b-a3b-instruct"
+    },
+    {
+      "url": "https://app.fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b",
+      "reviewedAt": "2026-09-07",
+      "sha256": "ea3246f2af784e382b7ae56d8af81add8bdc21a375f237a39d98235c0868dc93",
+      "evidenceName": "fireworks-card-nvidia-nemotron-3-nano-omni-30b-a3b"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-5",
+      "reviewedAt": "2026-09-07",
+      "sha256": "5e3c0e3171d8457430071a7ef6ad6814391d910e7323a9db8f227c85e80a17b7",
+      "evidenceName": "openai-card-gpt-5"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-5-mini",
+      "reviewedAt": "2026-09-07",
+      "sha256": "f5bd8a221a33732c8c3b19e2c8926b0a4de97195544ef87295eb1f8b1f768c7c",
+      "evidenceName": "openai-card-gpt-5-mini"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-5-nano",
+      "reviewedAt": "2026-09-07",
+      "sha256": "9501453812a9f5d192f866b68d77220b8f1649fdb7620962e02a36672982391c",
+      "evidenceName": "openai-card-gpt-5-nano"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-5.1",
+      "reviewedAt": "2026-09-07",
+      "sha256": "8f2fc7ddca89079f11e781916caa1282970595664dcb69584b4d2fa7b213da70",
+      "evidenceName": "openai-card-gpt-5.1"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-5.2",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2357637d6502c00d71e521a6e4c1c6ad310ef8b581b09cc497d608890e7854fa",
+      "evidenceName": "openai-card-gpt-5.2"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4.1",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7008d445244c12e6bce442adc9e298d6d4c56354a6e7b4e917738b6601dda18c",
+      "evidenceName": "openai-card-gpt-4.1"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+      "reviewedAt": "2026-09-07",
+      "sha256": "deb095b2e8347179229b26795a4c9f4072c73f6ad37699e6e51b4cfa486b7e62",
+      "evidenceName": "openai-card-gpt-4.1-mini"
+    },
+    {
+      "url": "https://developer.ideogram.ai/api-reference/api-reference/generate-transparent-v4.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "7e0d66c4138b7a35c7c4d2d067720dca75f32bc9af9b29939338584272026475",
+      "evidenceName": "ideogram-transparent4"
+    },
+    {
+      "url": "https://developer.ideogram.ai/api-reference/api-reference/generate-transparent-v3.md",
+      "reviewedAt": "2026-09-07",
+      "sha256": "2f372372a01074f501984940d94d43666a786f4e6c9b9255fcba8ccf9dc758a8",
+      "evidenceName": "ideogram-transparent3"
+    }
+  ],
+  "failedReads": [
+    {
+      "url": "https://docs.siliconflow.cn/llms.txt",
+      "reason": "curl: (56) The requested URL returned error: 404\n"
+    },
+    {
+      "url": "https://replicate.com/bytedance/seedream-5.0/api/schema",
+      "reason": "curl: (56) The requested URL returned error: 404\n"
+    },
+    {
+      "url": "https://replicate.com/ideogram-ai/ideogram-v3/api/schema",
+      "reason": "curl: (56) The requested URL returned error: 404\n"
+    }
+  ]
+}

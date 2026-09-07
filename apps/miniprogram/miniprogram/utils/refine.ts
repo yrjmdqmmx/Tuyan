@@ -1,3 +1,4 @@
+import type { ProviderRegions } from './provider-regions'
 import {
   buildModelSubmission,
   requiredRefineRouteRoles,
@@ -15,9 +16,10 @@ export function refineRequestSource(source: RefineSource): { sourceImageObjectKe
 }
 
 export function buildRefineJobPayload(input: {
+  providerRegions?: ProviderRegions
   configurationMode: 'simple' | 'advanced'
   modelRoutes: ModelRoutes
-  registry: { routeContractVersion?: number } | null
+  registry: { routeContractVersion?: number; providerRegionContractVersion?: number } | null
   apiKeys: Record<string, string>
   source: RefineSource
   editInstruction: string
@@ -31,7 +33,7 @@ export function buildRefineJobPayload(input: {
     action: 'refineImage',
     clientPlatform: 'miniprogram',
     ...modelSubmission,
-    apiKeys: scopedApiKeysForRoles(input.modelRoutes, roles, input.apiKeys),
+    apiKeys: scopedApiKeysForRoles(input.modelRoutes, roles, input.apiKeys, input.providerRegions),
     ...refineRequestSource(input.source),
     editInstruction: input.editInstruction.trim(),
     aspectRatio: input.aspectRatio,
