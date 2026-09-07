@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const provider_regions_1 = require("../../utils/provider-regions");
 const api_1 = require("../../utils/api");
 const constants_1 = require("../../utils/constants");
 const jobs_1 = require("../../utils/jobs");
@@ -91,7 +92,6 @@ Component({
         quickStartExamples: constants_1.QUICK_START_EXAMPLES,
         featuredTemplates: (0, featured_templates_1.attachFeaturedTemplateImages)([]),
         featuredTemplatesLoading: true,
-        registry: {},
         registryReady: false,
         registryVersion: '等待服务端目录',
         registryError: '',
@@ -224,14 +224,13 @@ Component({
         },
         applyRegistryState(state) {
             if (!state.registry) {
-                this.setData({ registry: {}, registryReady: false, registryVersion: '目录不可用', registryError: state.error });
+                this.setData({ registryReady: false, registryVersion: '目录不可用', registryError: state.error });
                 this.refreshCanSubmit();
                 return;
             }
             const current = this.data.settings;
             const settings = current.modelRoutes ? current : defaultGenerationSettings(state.registry);
             this.setData({
-                registry: state.registry,
                 registryReady: true,
                 registryVersion: state.registry.registryVersion,
                 registryError: '',
@@ -730,7 +729,7 @@ Component({
             const settings = this.data.settings;
             const mainRoute = (_a = settings.modelRoutes) === null || _a === void 0 ? void 0 : _a.main;
             const mainEntry = mainRoute && this.data.registryReady
-                ? (0, model_registry_1.findRegistryModel)(this.data.registry, mainRoute.accessProvider, mainRoute.modelId)
+                ? (0, model_registry_1.findRegistryModel)((0, model_registry_store_1.getModelRegistryState)().registry, mainRoute.accessProvider, mainRoute.modelId)
                 : null;
             const mainCanRead = Boolean(mainEntry && (mainEntry.inputModalities.includes('image') || mainEntry.capabilities.referenceImages === true));
             const modeState = (0, reference_mode_1.buildReferenceModeState)({
@@ -868,6 +867,7 @@ Component({
                 const uploadedReferenceImages = await this.uploadReferencesForJob();
                 const payload = (0, payload_1.buildCreateJobPayload)({
                     configurationMode: settings.configurationMode,
+                    providerRegions: settings.providerRegions,
                     provider: mainRoute.accessProvider,
                     registry,
                     modelRoutes: settings.modelRoutes,
@@ -1016,7 +1016,7 @@ Component({
                 referenceImages: this.data.referenceImages,
                 referenceImageMode: this.data.referenceImageMode,
             }, settings.maxCriticRounds);
-            const apiKeys = (0, api_keys_1.getApiKeys)();
+            const apiKeys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
             const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
             const canSubmit = Boolean(hasRequiredKeys &&
                 this.data.methodContent.trim().length >= 20 &&

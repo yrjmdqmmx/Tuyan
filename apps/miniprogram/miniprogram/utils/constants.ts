@@ -1,8 +1,8 @@
-import { STATIC_MODEL_REGISTRY } from './static-model-catalog'
+import { EXTENDED_MODEL_CHANNELS, STATIC_MODEL_REGISTRY } from './static-model-catalog'
 import type { OutputFormat } from './job-assets'
 import type { ReferenceImageMode } from './reference-mode'
 
-export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai'
+export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate'
 export type ConfigurationMode = 'simple' | 'advanced'
 export type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
 export type ImageSize = '512' | '1K' | '2K' | '4K' | 'auto'
@@ -534,6 +534,8 @@ for (const [id, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
   let provider = PROVIDERS.find((item) => item.id === id)
   if (!provider) {
     provider = { id: id as ProviderId, label: id === 'ark' ? '火山方舟' : id, keyPlaceholder: 'API Key', mainModel: '', imageModel: '', visionModel: '', mainModels: [], imageModels: [], visionModels: [], guideSteps: [] }
+    const channel = (EXTENDED_MODEL_CHANNELS as Record<string, any>)[id]
+    if (channel) Object.assign(provider, {label: channel.label, keyPlaceholder: channel.keyPlaceholder, guideSteps: channel.guideSteps})
     PROVIDERS.push(provider)
   }
   const options = (role: string) => registry.models.filter((model: any) => model.selectable !== false && model.roles.includes(role)).map((model: any) => ({ value: model.id, label: model.label }))

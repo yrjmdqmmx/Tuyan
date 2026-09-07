@@ -3,7 +3,6 @@ import { ArrowLeft, Check, ChevronDown, Search, Sparkles, X } from 'lucide-react
 import { groupRegistryModels, partitionRegistryModels } from '../lib/modelRegistry'
 
 const COMPATIBLE_PAGE_SIZE = 24
-const INCOMPATIBLE_PAGE_SIZE = 24
 const COMPACT_MEDIA_QUERY = '(max-width: 1076px)'
 const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'
 const MOBILE_FOCUS_SELECTORS = Object.freeze({
@@ -71,7 +70,7 @@ export default function ModelPicker({
       }
   const providerIds = Object.keys(effectiveRegistry.providers || {}).filter((id) => {
     const available = partitionRegistryModels(effectiveRegistry.providers[id].models, { role, outputFormat })
-    return available.compatible.length + available.incompatible.length > 0
+    return available.compatible.length > 0
   })
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -81,8 +80,6 @@ export default function ModelPicker({
   const [mobileStep, setMobileStep] = useState('providers')
   const [compact, setCompact] = useState(false)
   const [compatibleLimit, setCompatibleLimit] = useState(COMPATIBLE_PAGE_SIZE)
-  const [showIncompatible, setShowIncompatible] = useState(false)
-  const [incompatibleLimit, setIncompatibleLimit] = useState(INCOMPATIBLE_PAGE_SIZE)
   const windowRef = useRef(null)
   const listRef = useRef(null)
   const panelRef = useRef(null)
@@ -104,10 +101,10 @@ export default function ModelPicker({
   )
   const allCompatibleGrouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
   const allVendorGrouped = useMemo(
-    () => groupRegistryModels([...allPartition.compatible, ...allPartition.incompatible]
+    () => groupRegistryModels(allPartition.compatible
       .filter((model) => model.roles?.includes(role)
         || (role === 'image' && (model.outputModalities?.includes('image') || model.protocol === 'openrouter-images')))),
-    [allPartition.compatible, allPartition.incompatible, role],
+    [allPartition.compatible, role],
   )
   const recommendedGrouped = useMemo(() => groupRegistryModels(recommendedCompatible), [recommendedCompatible])
   const availableVendors = isAggregator ? allVendorGrouped.map((group) => group.vendor) : []
@@ -136,12 +133,7 @@ export default function ModelPicker({
     if (windowRef.current) windowRef.current.scrollTop = 0
   }
 
-  function resetIncompatible() {
-    setShowIncompatible(false)
-    setIncompatibleLimit(INCOMPATIBLE_PAGE_SIZE)
-  }
-
-  function changeCatalogMode(mode) { setCatalogMode(mode); resetModelList(); resetIncompatible() }
+  function changeCatalogMode(mode) { setCatalogMode(mode); resetModelList() }
 
   function moveMobileStep(step, focusTarget) {
     pendingMobileFocusRef.current = focusTarget
@@ -210,7 +202,6 @@ export default function ModelPicker({
     setMobileStep('providers')
     setQuery('')
     setCatalogMode('recommended')
-    resetIncompatible()
     resetModelList()
     setOpen(true)
   }
@@ -221,7 +212,6 @@ export default function ModelPicker({
     setSelectedProvider(nextProvider)
     setSelectedVendor(nextGroups[0]?.vendor || '')
     setQuery('')
-    resetIncompatible()
     resetModelList()
     if (compact) moveMobileStep(nextRegistry.accessKind === 'aggregator' ? 'vendors' : 'models', nextRegistry.accessKind === 'aggregator' ? 'providers-back' : 'models-back')
   }
@@ -290,7 +280,7 @@ export default function ModelPicker({
         <label className="model-picker-search">
           <Search size={16} />
           <span className="sr-only">搜索{label}</span>
-          <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); resetModelList(); resetIncompatible() }} placeholder="搜索模型、厂商或能力" />
+          <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); resetModelList() }} placeholder="搜索模型、厂商或能力" />
         </label>
       </div>
       <div ref={windowRef} className="model-picker-window">
@@ -329,24 +319,7 @@ export default function ModelPicker({
         ) : null}
       </div>
       {!rows.length ? <p className="model-picker-empty">没有匹配当前角色与输出格式的可用模型。</p> : null}
-      {isAggregator && allPartition.incompatible.length ? (
-        <details className="model-incompatible" open={showIncompatible} onToggle={(event) => setShowIncompatible(event.currentTarget.open)}>
-          <summary>暂不兼容（{allPartition.incompatible.length}）</summary>
-          {showIncompatible ? <div>
-            {allPartition.incompatible.slice(0, incompatibleLimit).map((model) => (
-              <button key={model.id} type="button" className="model-option incompatible" disabled aria-disabled="true" title={model.selectionDisabledReason}>
-                <span className="model-option-main"><strong>{model.label || model.id}</strong><small>{model.id}</small></span>
-                <span className="model-disabled-reason">{model.selectionDisabledReason}</span>
-              </button>
-            ))}
-            {incompatibleLimit < allPartition.incompatible.length ? (
-              <button type="button" className="model-incompatible-more" onClick={() => setIncompatibleLimit((current) => current + INCOMPATIBLE_PAGE_SIZE)}>
-                显示更多不兼容模型
-              </button>
-            ) : null}
-          </div> : null}
-        </details>
-      ) : null}
+
     </section>
   )
 

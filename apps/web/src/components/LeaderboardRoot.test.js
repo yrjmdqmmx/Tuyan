@@ -33,13 +33,13 @@ test('one provider performs exactly one session request for header and multiple 
   assert.equal(requests, 1)
 })
 
-test('benchmark header preserves the five nav labels, hrefs, external target, and active semantics', () => {
+test('benchmark header preserves nav labels, hrefs, external targets, and active semantics', () => {
   render(React.createElement(LeaderboardSessionProvider, { authEnabled: false },
     React.createElement(BenchmarkSiteHeader, { route: { methodology: true }, onFeedback() {}, onLogin() {}, onAccount() {}, onSignOut() {} }),
   ))
   const nav = screen.getByRole('navigation', { name: '排行榜导航' })
   const labels = [...nav.children].map((item) => item.textContent)
-  assert.deepEqual(labels, ['工作台', '排行榜', '方法说明', '提交评估题', 'GitHub'])
+  assert.deepEqual(labels, ['工作台', '排行榜', '方法说明', '提交评估题', 'OpenAcad', 'GitHub'])
   assert.equal(screen.getByText('方法说明').getAttribute('aria-current'), 'page')
   assert.equal(screen.getByRole('link', { name: '工作台' }).getAttribute('href'), '/')
   assert.equal(screen.getByRole('link', { name: '排行榜' }).getAttribute('href'), '/leaderboard')
@@ -47,6 +47,9 @@ test('benchmark header preserves the five nav labels, hrefs, external target, an
   const github = screen.getByRole('link', { name: 'GitHub' })
   assert.equal(github.getAttribute('href'), 'https://github.com/yrjmdqmmx/Tuyan-clients')
   assert.equal(github.getAttribute('target'), '_blank')
+  const openacad = screen.getByRole('link', { name: 'OpenAcad' })
+  assert.equal(openacad.getAttribute('href'), 'https://openacad.xyz/')
+  assert.equal(openacad.getAttribute('target'), '_blank')
 })
 
 test('benchmark header exposes a dedicated feedback action for narrow responsive layouts', () => {

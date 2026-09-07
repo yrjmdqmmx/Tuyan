@@ -356,7 +356,7 @@ test('smoke tests only exercise safe expected statuses and assert the deny bound
   assert.doesNotMatch(smoke, /Authorization:|api[_-]?key=|sk-[A-Za-z0-9]/i);
 });
 
-test('Singapore policy has exactly seven approved data-plane provider hosts including Ark', () => {
+test('Singapore policy contains the reviewed overseas channels and keeps MiniMax China direct', () => {
   const installer = read('scripts/install-egress.sh');
   const approved = installer.match(/^acl approved dstdomain -n (.+)$/m);
   assert.ok(approved, 'Singapore Squid policy must declare approved exact hosts without PTR lookup');
@@ -368,9 +368,19 @@ test('Singapore policy has exactly seven approved data-plane provider hosts incl
     'api.anthropic.com',
     'api.x.ai',
     'external.api.recraft.ai',
+    '.bfl.ai',
+    'api.stability.ai',
+    'api.ideogram.ai',
+    'api.minimax.io',
+    'api.mistral.ai',
+    'api.together.ai',
+    'api.fireworks.ai',
+    'queue.fal.run',
+    'api.replicate.com',
   ]);
-  assert.match(installer, /seven approved HTTPS hosts/);
-  assert.match(read('README.md'), /seven exact hosts[\s\S]*ark\.cn-beijing\.volces\.com/);
+  assert.ok(!approved[1].split(' ').includes('api.minimax.cn'));
+  assert.match(installer, /reviewed HTTPS provider hosts/);
+  assert.match(read('README.md'), /MiniMax China.*direct/);
 });
 
 test('health monitor runs only from Hong Kong every five minutes and sends failures to journal', () => {

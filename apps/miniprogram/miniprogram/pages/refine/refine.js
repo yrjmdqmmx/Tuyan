@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const provider_regions_1 = require("../../utils/provider-regions");
 const api_1 = require("../../utils/api");
 const api_keys_1 = require("../../utils/api-keys");
 const aspect_ratios_1 = require("../../utils/aspect-ratios");
@@ -11,7 +12,7 @@ const refine_1 = require("../../utils/refine");
 const session_1 = require("../../utils/session");
 Component({
     data: {
-        registry: {}, registryReady: false, registryVersion: '等待目录', registryError: '',
+        registryReady: false, registryVersion: '等待目录', registryError: '',
         settings: {}, showSettings: false, apiKeysForSheet: {},
         settingsExecutionRoles: [],
         sourceOptions: [], sourceIndex: 0, source: null,
@@ -46,13 +47,13 @@ Component({
     methods: {
         applyRegistryState(state) {
             if (!state.registry) {
-                this.setData({ registry: {}, registryReady: false, registryError: state.error });
+                this.setData({ registryReady: false, registryError: state.error });
                 this.refreshCanSubmit();
                 return;
             }
             const current = this.data.settings;
             const settings = current.modelRoutes ? current : defaultSettings(state.registry);
-            this.setData({ registry: state.registry, registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings });
+            this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings });
             this.refreshCapabilities();
             this.refreshCanSubmit();
         },
@@ -77,20 +78,34 @@ Component({
         onSourceChange(event) { const sourceIndex = Number(event.detail.value) || 0; this.setData({ sourceIndex, source: this.data.sourceOptions[sourceIndex] || null }); this.refreshCanSubmit(); },
         onInstructionInput(event) { this.setData({ instruction: event.detail.value }); this.refreshCanSubmit(); },
         onRatioChange(event) { this.setData({ ratioIndex: Number(event.detail.value) || 0 }); this.refreshCanSubmit(); },
-        onResolutionChange(event) { this.setData({ resolutionIndex: Number(event.detail.value) || 0 }); this.refreshCanSubmit(); },
+        onResolutionChange(event) { this.setData({ resolutionIndex: Number(event.detail.value) || 0 }); this.refreshRatioOptions(); this.refreshCanSubmit(); },
+        refreshRatioOptions() {
+            var _a, _b;
+            const registry = (0, model_registry_store_1.getModelRegistryState)().registry;
+            const settings = this.data.settings;
+            if (!registry || !settings.modelRoutes)
+                return;
+            const route = settings.modelRoutes.image;
+            const entry = (0, model_registry_1.findRegistryModel)(registry, route.accessProvider, route.modelId);
+            const resolution = (_a = this.data.resolutionOptions[this.data.resolutionIndex]) === null || _a === void 0 ? void 0 : _a.value;
+            const previous = (_b = this.data.ratioOptions[this.data.ratioIndex]) === null || _b === void 0 ? void 0 : _b.value;
+            const ratioOptions = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, capabilityField: 'refineAspectRatios', resolution }).filter(item => !item.disabled).map(item => ({ value: item.value, label: item.label }));
+            this.setData({ ratioOptions, ratioIndex: Math.max(0, ratioOptions.findIndex(item => item.value === previous)) });
+        },
         openSettings() { if (this.data.registryReady)
             this.setData({ showSettings: true, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), settingsExecutionRoles: (0, model_routing_1.requiredRefineRouteRoles)({ refineMode: this.data.refineMode }) }); },
         closeSettings() { this.setData({ showSettings: false }); },
         saveSettings(event) { (0, api_keys_1.replaceApiKeys)(event.detail.apiKeys); this.setData({ settings: event.detail.settings, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), showSettings: false }); this.refreshCapabilities(); this.refreshCanSubmit(); },
         refreshCapabilities() {
-            const registry = this.data.registryReady ? this.data.registry : null;
+            var _a;
+            const registry = this.data.registryReady ? (0, model_registry_store_1.getModelRegistryState)().registry : null;
             const settings = this.data.settings;
             if (!registry || !settings.modelRoutes)
                 return;
             const entry = (0, model_registry_1.findRegistryModel)(registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId);
             const capability = String((entry === null || entry === void 0 ? void 0 : entry.capabilities.imageEditMode) || 'none');
             const refineMode = capability === 'direct-edit' && ((entry === null || entry === void 0 ? void 0 : entry.inputModalities.includes('image')) || (entry === null || entry === void 0 ? void 0 : entry.capabilities.referenceImages) === true) ? 'direct-edit' : (entry === null || entry === void 0 ? void 0 : entry.roles.includes('image')) ? 'analyze-redraw' : 'none';
-            const ratioOptions = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, capabilityField: 'refineAspectRatios', modelLabel: entry === null || entry === void 0 ? void 0 : entry.label }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
+            const ratioOptions = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, capabilityField: 'refineAspectRatios', modelLabel: entry === null || entry === void 0 ? void 0 : entry.label, resolution: (_a = entry === null || entry === void 0 ? void 0 : entry.capabilities.refineResolutions) === null || _a === void 0 ? void 0 : _a[0] }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
             const resolutionOptions = (0, aspect_ratios_1.buildResolutionOptions)((entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, 'refineResolutions');
             this.setData({ refineMode, refineModeLabel: refineMode === 'direct-edit' ? '直接编辑' : refineMode === 'analyze-redraw' ? '分析后重绘' : '不支持精修', ratioOptions, resolutionOptions, ratioIndex: 0, resolutionIndex: 0 });
         },
@@ -101,7 +116,7 @@ Component({
                 return;
             }
             const roles = (0, model_routing_1.requiredRefineRouteRoles)({ refineMode: this.data.refineMode });
-            const keys = (0, api_keys_1.getApiKeys)();
+            const keys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
             const hasKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = keys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
             this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && !this.data.isSubmitting) });
         },
@@ -119,7 +134,7 @@ Component({
             }
             const settings = this.data.settings;
             try {
-                const payload = (0, refine_1.buildRefineJobPayload)({ configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: (0, api_keys_1.getApiKeys)(), source: { url: this.data.source.url, objectKey: this.data.source.objectKey }, editInstruction: this.data.instruction, aspectRatio: ((_a = this.data.ratioOptions[this.data.ratioIndex]) === null || _a === void 0 ? void 0 : _a.value) || 'auto', imageSize: ((_b = this.data.resolutionOptions[this.data.resolutionIndex]) === null || _b === void 0 ? void 0 : _b.value) || '', refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' });
+                const payload = (0, refine_1.buildRefineJobPayload)({ providerRegions: settings.providerRegions, configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: (0, api_keys_1.getApiKeys)(), source: { url: this.data.source.url, objectKey: this.data.source.objectKey }, editInstruction: this.data.instruction, aspectRatio: ((_a = this.data.ratioOptions[this.data.ratioIndex]) === null || _a === void 0 ? void 0 : _a.value) || 'auto', imageSize: ((_b = this.data.resolutionOptions[this.data.resolutionIndex]) === null || _b === void 0 ? void 0 : _b.value) || '', refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' });
                 const response = await (0, api_1.requestJson)(payload);
                 const jobId = response.jobId || response.id || '';
                 if (!jobId)

@@ -1,3 +1,4 @@
+import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
@@ -161,7 +162,7 @@ export default function App() {
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
   const [configurationMode, setConfigurationMode] = useState('simple');
   const [provider, setProvider] = useState('bailian');
-  const [apiKeys, setApiKeys] = useState(() => Object.fromEntries(Object.keys(PROVIDERS).map((id) => [id, ''])));
+  const [apiKeyRing, setApiKeys] = useState(() => Object.fromEntries(Object.keys(PROVIDERS).map((id) => [id, ''])));
   const [methodContent, setMethodContent] = useState(SAMPLE_METHOD);
   const [caption, setCaption] = useState('图 1：所提出的多智能体学术图示生成框架总览。');
   const [negativePrompt, setNegativePrompt] = useState('');
@@ -204,7 +205,10 @@ export default function App() {
   const [maxCriticRounds, setMaxCriticRounds] = useState(1);
   const [health, setHealth] = useState(null);
   const [healthError, setHealthError] = useState('');
-  const [modelRegistry, setModelRegistry] = useState(null);
+  const [rawModelRegistry, setModelRegistry] = useState(null);
+  const [providerRegions, setProviderRegions] = useState({ minimax: 'global' });
+  const modelRegistry = useMemo(() => registryForRegions(rawModelRegistry, providerRegions), [rawModelRegistry, providerRegions]);
+  const apiKeys = useMemo(() => selectRegionApiKeys(apiKeyRing, providerRegions), [apiKeyRing, providerRegions]);
   const [modelRegistryError, setModelRegistryError] = useState('');
   const [modelRegistryRetryNonce, setModelRegistryRetryNonce] = useState(0);
   const [mock, setMock] = useState(false);
@@ -279,11 +283,13 @@ export default function App() {
   const generationAspectRatioOptions = buildAspectRatioOptions({
     capabilities: activeImageRegistryEntry?.capabilities,
     capabilityField: 'aspectRatios',
+    resolution: imageSize,
     modelLabel: activeImageRegistryEntry?.label || activeImageGenModelName,
   });
   const refineAspectRatioOptions = buildAspectRatioOptions({
     capabilities: activeImageRegistryEntry?.capabilities,
     capabilityField: 'refineAspectRatios',
+    resolution: refineImageSize,
     modelLabel: activeImageRegistryEntry?.label || activeImageGenModelName,
   });
   const refineResolutionMetadata = activeImageRegistryEntry?.capabilities;
@@ -409,12 +415,12 @@ export default function App() {
   useEffect(() => {
     const normalized = normalizeSelectedAspectRatio(aspectRatio, generationAspectRatioOptions);
     if (normalized !== aspectRatio) setAspectRatio(normalized);
-  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, aspectRatio]);
+  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, aspectRatio, imageSize]);
 
   useEffect(() => {
     const normalized = normalizeSelectedAspectRatio(refineAspectRatio, refineAspectRatioOptions);
     if (normalized !== refineAspectRatio) setRefineAspectRatio(normalized);
-  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, refineAspectRatio]);
+  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, refineAspectRatio, refineImageSize]);
 
   // 精修清晰度是独立执行能力；路由或目录变化时回到新模型声明的第一档。
   useEffect(() => {
@@ -785,7 +791,7 @@ export default function App() {
   }
 
   function handleApiKeyChange(routeProvider, value) {
-    setApiKeys((current) => ({ ...current, [routeProvider]: value }));
+    setApiKeys((current) => ({ ...current, [regionApiKeySlot(routeProvider, providerRegions)]: value }));
     if (routeProvider === 'ark') {
       arkKeySnapshotRef.current = value;
       arkProbeGenerationRef.current += 1;
@@ -851,6 +857,10 @@ export default function App() {
       setShowGenerationSettings(true);
       return null;
     }
+    if (mainRoute.accessProvider === 'minimax' && minimaxRegion(providerRegions) === 'cn' && !modelRegistry?.providerRegionContractVersion) {
+      setInputOptimizationGuidance('当前服务端尚未支持 MiniMax 国内区域，请等待服务端更新。');
+      return null;
+    }
     const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
     if (!apiKey) {
       setInputOptimizationCredentialProvider(mainRoute.accessProvider);
@@ -861,6 +871,7 @@ export default function App() {
     }
     return {
       mainRoute: { accessProvider: mainRoute.accessProvider, modelId: mainRoute.modelId },
+      providerRegions: mainRoute.accessProvider === 'minimax' ? providerRegions : undefined,
       apiKey,
     };
   }
@@ -888,6 +899,7 @@ export default function App() {
         target,
         inputs,
         mainRoute: context.mainRoute,
+        providerRegions: context.providerRegions,
         apiKey: context.apiKey,
       });
       if (result.target !== target) throw new Error('优化结果与请求输入栏不一致。');
@@ -984,7 +996,7 @@ export default function App() {
     setErrorContext('');
     let modelSubmission;
     try {
-      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry });
+      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
     } catch (routingError) {
       setGenerationFocusSetting('configuration-mode');
       setShowGenerationSettings(true);
@@ -1243,7 +1255,7 @@ export default function App() {
     }
     let modelSubmission;
     try {
-      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry });
+      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
     } catch (routingError) {
       setRefineError(routingError.message);
       setGenerationFocusSetting('configuration-mode');
@@ -1298,6 +1310,13 @@ export default function App() {
         credentialProviders={settingsCredentialProviders}
         apiKeys={apiKeys}
         onApiKeyChange={handleApiKeyChange}
+        providerRegions={providerRegions}
+        onMiniMaxRegionChange={(region) => {
+          setProviderRegions({ minimax: region });
+          // The China-only image variant cannot carry into the international region.
+          if (region === 'global') setModelRoutes(current => current.image.accessProvider === 'minimax' && current.image.modelId === 'image-01-live'
+            ? {...current, image: {accessProvider: 'minimax', modelId: 'image-01'}} : current);
+        }}
         arkProbes={activeArkProbes}
         arkVerification={arkVerification}
         arkProbePaidConfirmed={arkProbePaidConfirmed}
@@ -1438,6 +1457,7 @@ export default function App() {
         </div>
         <div className="header-links">
           {BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
+          <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
           <button type="button" className="contact-author-button" onClick={() => setShowContactDialog(true)}>
             <QrCode size={16} /> 联系作者
           </button>

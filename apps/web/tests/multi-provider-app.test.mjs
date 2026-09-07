@@ -4,6 +4,7 @@ import React from 'react'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../src/App.jsx'
+import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 
 const registryV1 = {
   registryVersion: 'routing-test-v1',
@@ -107,6 +108,32 @@ afterEach(() => {
   document.body.innerHTML = ''
   restoreFetch?.()
   restoreFetch = null
+})
+
+test('MiniMax region selector keeps independent keys and submits only the selected regional credential', async () => {
+  const registry = structuredClone(registryV1)
+  registry.providerRegionContractVersion = 1
+  registry.providers.minimax = structuredClone(STATIC_MODEL_REGISTRY.minimax)
+  const {requests,user} = await renderReadyApp(registry)
+  await user.click(screen.getByRole('button',{name:'打开完整设置'}))
+  await user.click(screen.getByRole('button',{name:'MiniMax',exact:true}))
+  const key = screen.getByLabelText('MiniMax 接入密钥')
+  await user.type(key,'fixture-global-key')
+  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'cn')
+  assert.equal(key.value,'')
+  assert.match(document.body.textContent,/api\.minimax\.cn/)
+  await user.type(key,'fixture-cn-key')
+  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'global')
+  assert.equal(key.value,'fixture-global-key')
+  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'cn')
+  assert.equal(key.value,'fixture-cn-key')
+  await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
+  await user.click(submitButton())
+  await waitFor(()=>assert.ok(requests.some(request=>request.body?.action==='createJob')))
+  const body=requests.find(request=>request.body?.action==='createJob').body
+  assert.deepEqual(body.providerRegions,{minimax:'cn'})
+  assert.equal(body.apiKeys.minimax,'fixture-cn-key')
+  assert.doesNotMatch(JSON.stringify(body),/fixture-global-key|minimax:cn|minimax:global/)
 })
 
 test('generation settings drawer never steals focus after the user enters a credential field', async () => {

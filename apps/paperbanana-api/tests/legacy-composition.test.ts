@@ -73,9 +73,9 @@ type LegacyPolicyModule = {
   verifyUploadedReferenceObjects(images: Array<Record<string, unknown>>, bucket?: Record<string, unknown>): Promise<void>
   configureRuntimeFetch(fetchImpl?: typeof fetch): void
   fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts?: number): Promise<Response>
-  callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>, policy?: { attempts?: number; signal?: AbortSignal }): Promise<string>
-  callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>): Promise<string>
-  callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string, strictImageSize?: boolean): Promise<string>
+  callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>, policy?: { attempts?: number; signal?: AbortSignal; region?: 'cn' | 'global' }): Promise<string>
+  callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>, region?: 'cn' | 'global'): Promise<string>
+  callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string, strictImageSize?: boolean, region?: 'cn' | 'global'): Promise<string>
   callRecraftSvg(model: string, apiKey: string, prompt: string, aspectRatio: string): Promise<string>
   pollBailianImageTask(taskId: string, apiKey: string, policy?: { intervalMs: number; timeoutMs: number }): Promise<any>
   normalizeModelName(provider: string, model: string): string
@@ -1157,8 +1157,8 @@ test('refine dispatch retains image only for direct edit and vision plus image f
       ['https://cdn.invalid/refined.png', '', ''],
     ])
     const source = fs.readFileSync(legacyPath, 'utf8')
-    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K', true\)/)
-    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K', true\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K', true, imageRoute\.region\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K', true, imageRoute\.region\)/)
   } finally {
     legacy.configureRuntimeFetch()
     state.ossWriteMode = previousWriteMode
@@ -1208,7 +1208,7 @@ test('analyze-redraw refinement preserves an explicitly requested canonical 1K s
     await legacy.drainJobAdmission()
     assert.equal(state.inserts[0].imageSize, '1K')
     const render = calls.find((call) => call.url.includes('/multimodal-generation/generation'))
-    assert.equal(render?.body.parameters.size, '1280*720')
+    assert.equal(render?.body.parameters.size, '1360*765')
   } finally {
     legacy.configureRuntimeFetch()
     state.ossWriteMode = previousWriteMode
@@ -1561,19 +1561,17 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     vision: 'qwen3.7-plus',
   })
   const bailianModels = new Map<string, any>(bailian.providers.bailian.models.map((model: any) => [model.id, model]))
-  for (const current of ['qwen3.8-max', 'qwen3.8-max-preview', 'qwen3.7-plus', 'qwen3.7-flash', 'glm-5.2', 'kimi/kimi-k3', 'MiniMax/MiniMax-M3', 'qwen-image-3.0-pro', 'qwen-image-2.0-pro', 'qwen-image-2.0', 'z-image-turbo']) {
+  for (const current of ['qwen3.8-max', 'qwen3.7-plus', 'qwen3.7-flash', 'glm-5.2', 'kimi/kimi-k3', 'MiniMax/MiniMax-M3', 'qwen-image-3.0-pro', 'qwen-image-2.0-pro', 'qwen-image-2.0', 'z-image-turbo']) {
     assert.equal(bailianModels.has(current), true, current)
   }
   for (const retired of ['qwen3.7-max', 'qwen3.6-flash', 'glm-5.1', 'kimi-k2.6', 'MiniMax/MiniMax-M2.7']) {
     assert.equal(bailianModels.has(retired), true, `${retired} remains officially supported`)
   }
   assert.deepEqual(bailianModels.get('qwen3.8-max')?.roles, ['main', 'vision'])
-  assert.deepEqual(bailianModels.get('qwen3.8-max-preview')?.roles, ['main'])
+  assert.equal(bailianModels.get('qwen3.8-max-preview'), undefined)
   assert.deepEqual(bailianModels.get('qwen3.7-plus')?.roles, ['main', 'vision'])
   assert.deepEqual(bailianModels.get('qwen3.7-flash')?.roles, ['main', 'vision'])
   assert.deepEqual(bailianModels.get('MiniMax/MiniMax-M3')?.roles, ['main', 'vision'])
-  assert.equal(bailianModels.get('qwen3.8-max-preview')?.requiresEntitlement, true)
-  assert.equal(bailianModels.get('qwen3.8-max-preview')?.entitlement, 'token-plan')
   assert.equal(bailianModels.get('qwen-image-3.0-pro')?.lifecycle, 'invite-only')
 
   const openai = await legacy.default(context({ action: 'modelRegistry', provider: 'openai' }))
@@ -1640,9 +1638,6 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     'doubao-seed-2-0-lite-260215',
     'doubao-seed-2-0-mini-260215',
     'doubao-seed-2-0-code-preview-260215',
-    'doubao-seed-character-260628',
-    'doubao-seed-character-251128',
-    'doubao-seed-translation-250915',
     'glm-5-2-260617',
     'deepseek-v4-pro-ga-260813',
     'deepseek-v4-flash-ga-260731',
@@ -1652,13 +1647,24 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     'doubao-seedream-5-0-260128',
     'doubao-seedream-4-5-251128',
     'doubao-seedream-4-0-250828',
+    'doubao-seed-1-8-251228',
+    'doubao-seed-code-preview-251028',
+    'doubao-seed-1-6-flash-250828',
+    'doubao-seed-1-6-vision-250815',
+    'doubao-seed-1-6-250615',
+    'doubao-seed-1-6-251015',
+    'doubao-seed-1-6-flash-250615',
+    'doubao-1-5-pro-32k-250115',
+    'doubao-1-5-lite-32k-250115',
+    'glm-4-7-251222',
+    'doubao-1-5-vision-pro-32k-250115',
   ])
   assert.deepEqual(arkModels.get('doubao-seed-2-1-pro-260628')?.roles, ['main', 'vision'])
   assert.equal(arkModels.get('doubao-seed-2-1-pro-260628')?.recommended, true)
   assert.equal(arkModels.get('doubao-seed-evolving')?.lifecycle, 'unknown')
   assert.equal(arkModels.get('doubao-seed-2-0-code-preview-260215')?.lifecycle, 'preview')
-  assert.equal(arkModels.get('doubao-seed-character-260628')?.selectable, false)
-  assert.equal(arkModels.get('doubao-seed-translation-250915')?.selectable, false)
+  assert.equal(arkModels.get('doubao-seed-character-260628'), undefined)
+  assert.equal(arkModels.get('doubao-seed-translation-250915'), undefined)
   assert.deepEqual(arkModels.get('glm-5-2-260617')?.roles, ['main'])
   assert.deepEqual(arkModels.get('deepseek-v4-pro-ga-260813')?.roles, ['main'])
   assert.deepEqual(arkModels.get('doubao-seedream-5-0-pro-260628')?.capabilities.resolutions, ['1K', '2K'])
@@ -1671,7 +1677,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.deepEqual(arkModels.get('doubao-seedream-4-0-250828')?.capabilities.outputFormats, ['png'])
   for (const model of arkModels.values()) {
     assert.equal(model.verified, false)
-    assert.equal(model.verificationState, 'unverified')
+    assert.ok(['unverified', 'catalog'].includes(model.verificationState))
     assert.equal(model.requiresEntitlement, true)
     assert.equal(model.releasedAt, null)
     assert.match(model.officialSourceUrl, /^https:\/\//)
@@ -1718,7 +1724,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-07.v12')
+    assert.equal(result.registryVersion, '2026-09-07.v14')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -1793,7 +1799,7 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
   assert.deepEqual(calls[2].body, {
     model: 'doubao-seedream-4-0-250828',
     prompt: 'diagram',
-    size: '2048x1152',
+    size: '2720x1530',
     sequential_image_generation: 'disabled',
     stream: false,
     response_format: 'b64_json',
@@ -1802,7 +1808,7 @@ test('Ark text, vision, and image generation use the exact CN data plane with be
     model: 'doubao-seedream-4-0-250828',
     prompt: 'edit diagram',
     image: ['data:image/png;base64,YQ=='],
-    size: '2048x1152',
+    size: '2720x1530',
     sequential_image_generation: 'disabled',
     stream: false,
     response_format: 'b64_json',
@@ -1839,7 +1845,7 @@ test('Ark current models disable default thinking and use model-specific Seedrea
   assert.deepEqual(calls[1].body, {
     model: 'doubao-seedream-5-0-pro-260628',
     prompt: 'pro image',
-    size: '1280x720',
+    size: '1360x765',
     response_format: 'b64_json',
   })
   assert.deepEqual(calls[2].body, {
@@ -2685,9 +2691,7 @@ test('Required style-reference image models stay unavailable even with declared 
       response: { setHeader() {}, status() {} },
     })
     const entry = registry.providers.openrouter.models.find((model: any) => model.id === id)
-    assert.equal(entry.selectable, false)
-    assert.deepEqual(entry.roles, [])
-    assert.match(entry.disabledReason, /requires style references/)
+    assert.equal(entry, undefined)
     await assert.rejects(legacy.callImageModel('openrouter', id, 'fixture-key', 'diagram', '1:1', '', ''), /requires style references/)
   } finally { legacy.configureRuntimeFetch() }
 })
@@ -2970,7 +2974,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-07.v12')
+    assert.equal(registry.registryVersion, '2026-09-07.v14')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -3773,9 +3777,7 @@ test('OpenRouter disables Seedream 4.5 before dispatch when catalog drift offers
       response: { setHeader() {}, status() {} },
     })
     const entry = registry.providers.openrouter.models.find((candidate: any) => candidate.id === model.id)
-    assert.equal(entry.selectable, false)
-    assert.deepEqual(entry.capabilities.resolutions, [])
-    assert.match(entry.disabledReason, /2K or higher/i)
+    assert.equal(entry, undefined)
     await assert.rejects(
       legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '1:1', '', '1K'),
       /no longer declares a supported resolution at or above 2K/i,
@@ -3786,7 +3788,7 @@ test('OpenRouter disables Seedream 4.5 before dispatch when catalog drift offers
   }
 })
 
-test('OpenRouter keeps unknown incompatible image models disabled while enabling a paid-verified normalization profile', async () => {
+test('OpenRouter omits incompatible image models while enabling an adapted normalization profile', async () => {
   const legacy = await loadLegacy()
   const normalized = {
     id: 'sourceful/riverflow-v2.5-fast',
@@ -3834,11 +3836,7 @@ test('OpenRouter keeps unknown incompatible image models disabled while enabling
     assert.deepEqual(normalizedEntry?.capabilities.outputFormats, ['png'])
     assert.match(normalizedEntry?.roleReasons.image, /normalized PNG/i)
     const incompatibleEntry = registryModels.get(incompatible.id)
-    assert.ok(incompatibleEntry)
-    assert.equal(incompatibleEntry.selectable, false)
-    assert.equal(incompatibleEntry.roles.includes('image'), false)
-    assert.match(incompatibleEntry.disabledReason, /PNG or SVG/)
-    assert.deepEqual(incompatibleEntry.capabilities.outputFormats, ['webp'])
+    assert.equal(incompatibleEntry, undefined)
     assert.equal(registryModels.get(safe.id)?.selectable, true)
     assert.equal(registryModels.get(safe.id)?.roles.includes('image'), true)
     await assert.rejects(
@@ -3880,10 +3878,7 @@ async function assertOpenRouterUnknownOutputFormatFailsClosed(model: Record<stri
       response: { setHeader() {}, status() {} },
     })
     const entry = registry.providers.openrouter.models.find((candidate: any) => candidate.id === model.id)
-    assert.ok(entry)
-    assert.equal(entry.selectable, false)
-    assert.deepEqual(entry.roles, [])
-    assert.match(entry.disabledReason, /explicit PNG or SVG output_format/)
+    assert.equal(entry, undefined)
     await assert.rejects(
       legacy.callImageModel('openrouter', `openrouter/${model.id}`, 'key', 'diagram', '16:9'),
       /does not expose a PNG or SVG output format/,
@@ -3967,9 +3962,7 @@ test('OpenRouter image default stays recommended while exact paid-verified profi
       assert.equal(models.get(id)?.roles.includes('image'), true, id)
       assert.equal(models.get(id)?.recommended, false, id)
     }
-    assert.equal(models.get('sourceful/jpeg-only')?.selectable, false)
-    assert.equal(models.get('sourceful/jpeg-only')?.roles.includes('image'), false)
-    assert.equal(models.get('sourceful/jpeg-only')?.recommended, false)
+    assert.equal(models.get('sourceful/jpeg-only'), undefined)
 
     const rejected = await legacy.default(context({
       action: 'createJob', provider: 'openrouter', apiKeys: { openrouter: 'key' },
@@ -4005,14 +3998,14 @@ test('Bailian current image models use their official multimodal parameters and 
     legacy.configureRuntimeFetch()
   }
 
-  assert.equal(payloads[0].parameters.size, '4096*2304')
+  assert.equal(payloads[0].parameters.size, '5456*3069')
   assert.equal(payloads[0].parameters.thinking_mode, true)
   assert.equal(Object.hasOwn(payloads[0].parameters, 'prompt_extend'), false)
-  assert.equal(payloads[1].parameters.size, '2048*1152')
+  assert.equal(payloads[1].parameters.size, '2720*1530')
   assert.equal(payloads[1].parameters.prompt_extend, true)
   assert.equal(Object.hasOwn(payloads[1].parameters, 'thinking_mode'), false)
   assert.equal(payloads[1].model, 'qwen-image-2.0-pro')
-  assert.equal(payloads[2].parameters.size, '2048*1152')
+  assert.equal(payloads[2].parameters.size, '2720*1530')
   assert.equal(Object.hasOwn(payloads[2].parameters, 'prompt_extend'), false)
   assert.equal(Object.hasOwn(payloads[2].parameters, 'thinking_mode'), false)
 })
@@ -4051,7 +4044,7 @@ test('Bailian direct-edit models forward source pixels as an image input', async
     { image: 'https://images.invalid/source.png' },
     { text: 'Make labels clearer' },
   ])
-  assert.equal(generationPayload.parameters.size, '2048*1152')
+  assert.equal(generationPayload.parameters.size, '2720*1530')
 })
 
 test('refine prefers owned object bytes over a preview URL when both source fields are present', async () => {
@@ -4508,7 +4501,7 @@ test('create generation prompts use a separate avoidance block across PNG, criti
     (source.match(/diagramPromptFromDescription\(description, body\.negativePrompt\)/g) || []).length >= 2,
     'initial PNG and critic-driven re-render must both carry negativePrompt',
   )
-  assert.match(source, /callSvgModel\([^\n]+withNegativePrompt\(description, body\.negativePrompt\)\)/)
+  assert.match(source, /callSvgModel\([^\n]+withNegativePrompt\(description, body\.negativePrompt\), renderRoute\.region\)/)
   assert.match(source, /plannerUserPrompt\([^\n]+body\.negativePrompt\)/)
   assert.match(source, /imageCriticUserPrompt\([^\n]+body\.negativePrompt\)/)
   assert.match(source, /plotPlannerUserPrompt\([^\n]+body\.negativePrompt\)/)
@@ -5178,36 +5171,36 @@ test('new and historical result DTOs expose the authoritative bucket object key'
 })
 
 const canonicalFixedAspectRatios = ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1']
-const allImageAspectRatios = [...canonicalFixedAspectRatios, '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20']
+const allImageAspectRatios = [...canonicalFixedAspectRatios, '1:2', '2:1', '4:5', '5:4', '1:8', '8:1', '5:2', '2:5', '9:21', '6:10', '14:10', '10:14', '19.5:9', '9:19.5', '20:9', '9:20', '1:3', '3:1', '5:8', '8:5', '9:22', '22:9', '9:23', '23:9', '3:8', '8:3', '5:12', '12:5', '10:16', '16:10', '2.35:1', '7:5', '5:7', '3:5', '5:3']
 const commonImageAspectRatios = canonicalFixedAspectRatios.slice(0, 8)
 
-test('v12 static image registry exposes exact canonical generation and refinement aspect-ratio contracts', async () => {
+test('v14 static image registry exposes exact canonical generation and refinement aspect-ratio contracts', async () => {
   const legacy = await loadLegacy()
   const expected = {
     gemini: {
       'gemini-3.1-flash-image': ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '4:5', '5:4', '1:8', '8:1'],
-      'gemini-3.1-flash-lite-image': commonImageAspectRatios,
-      'gemini-3-pro-image': commonImageAspectRatios,
-      'gemini-2.5-flash-image': commonImageAspectRatios,
+      'gemini-3.1-flash-lite-image': [...commonImageAspectRatios, '4:5', '5:4'],
+      'gemini-3-pro-image': [...commonImageAspectRatios, '4:5', '5:4'],
+      'gemini-2.5-flash-image': [...commonImageAspectRatios, '4:5', '5:4'],
     },
     openai: {
-      'gpt-image-2': ['1:1', '3:2', '2:3', '4:3', '3:4', '16:9', '9:16', '21:9', '1:2', '2:1', '4:5', '5:4', '5:2', '2:5'],
+      'gpt-image-2': allImageAspectRatios.filter(ratio => { const [w,h] = ratio.split(':').map(Number); return Math.max(w,h) / Math.min(w,h) <= 3 }),
       'gpt-image-1': ['1:1', '3:2', '2:3'],
       'gpt-image-1-mini': ['1:1', '3:2', '2:3'],
     },
     bailian: {
-      'wan2.7-image-pro': canonicalFixedAspectRatios,
-      'wan2.7-image': canonicalFixedAspectRatios,
-      'qwen-image-3.0-pro': canonicalFixedAspectRatios,
-      'qwen-image-2.0-pro': commonImageAspectRatios,
-      'qwen-image-2.0': commonImageAspectRatios,
-      'z-image-turbo': commonImageAspectRatios,
+      'wan2.7-image-pro': allImageAspectRatios,
+      'wan2.7-image': allImageAspectRatios,
+      'qwen-image-3.0-pro': allImageAspectRatios,
+      'qwen-image-2.0-pro': allImageAspectRatios,
+      'qwen-image-2.0': allImageAspectRatios,
+      'z-image-turbo': allImageAspectRatios,
     },
     ark: {
-      'doubao-seedream-5-0-pro-260628': ['16:9'],
-      'doubao-seedream-5-0-260128': [],
-      'doubao-seedream-4-5-251128': [],
-      'doubao-seedream-4-0-250828': ['16:9'],
+      'doubao-seedream-5-0-pro-260628': allImageAspectRatios,
+      'doubao-seedream-5-0-260128': allImageAspectRatios,
+      'doubao-seedream-4-5-251128': allImageAspectRatios,
+      'doubao-seedream-4-0-250828': allImageAspectRatios,
     },
   } as const
 
@@ -5216,7 +5209,7 @@ test('v12 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-07.v12')
+    assert.equal(registry.registryVersion, '2026-09-07.v14')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -5301,14 +5294,14 @@ test('invalid and unsupported ratios reject before account checks, credentials, 
     sourceImageObjectKey: 'owned/source.png', editInstruction: 'Make the labels clearer.', imageSize: '1K',
   }
   try {
-    assert.deepEqual(await legacy.default(context({ ...createBase, aspectRatio: '5:7' })), {
+    assert.deepEqual(await legacy.default(context({ ...createBase, aspectRatio: '999:1' })), {
       code: 400, error: 'Invalid aspectRatio', businessCode: 'INVALID_ASPECT_RATIO',
     })
     const unsupportedCreate = await legacy.default(context({ ...createBase, aspectRatio: '1:4' }))
     assert.equal(unsupportedCreate.code, 400)
     assert.equal(unsupportedCreate.businessCode, 'ASPECT_RATIO_UNSUPPORTED')
 
-    assert.deepEqual(await legacy.default(context({ ...refineBase, aspectRatio: '5:7' })), {
+    assert.deepEqual(await legacy.default(context({ ...refineBase, aspectRatio: '999:1' })), {
       code: 400, error: 'Invalid aspectRatio', businessCode: 'INVALID_ASPECT_RATIO',
     })
     const unsupportedRefine = await legacy.default(context({ ...refineBase, aspectRatio: '1:4' }))
@@ -5423,17 +5416,11 @@ test('static adapters encode exact supported ratios and delegate auto without si
     await legacy.callImageModel('bailian', 'z-image-turbo', 'key', 'documented ultrawide', '21:9', '', '2K')
     await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'wide', '16:9', '', '2K')
     await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'default', 'auto', '', '2K')
+    await legacy.callImageModel('bailian', 'qwen-image-2.0-pro', 'key', 'newly supported', '4:1', '', '2K')
+    await legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'newly supported', '4:3', '', '2K')
     await assert.rejects(
-      legacy.callImageModel('bailian', 'qwen-image-2.0-pro', 'key', 'unsupported', '4:1', '', '2K'),
-      /does not support aspect ratio 4:1/,
-    )
-    await assert.rejects(
-      legacy.callImageModel('ark', 'doubao-seedream-4-0-250828', 'key', 'unsupported', '4:3', '', '2K'),
-      /does not support aspect ratio 4:3/,
-    )
-    await assert.rejects(
-      legacy.callImageModel('openai', 'gpt-image-2', 'key', 'invalid', '5:7'),
-      /Invalid aspectRatio/,
+      legacy.callImageModel('openai', 'gpt-image-2', 'key', 'invalid', '999:1'),
+      /Unsupported aspect ratio/,
     )
   } finally {
     legacy.configureRuntimeFetch()
@@ -5446,10 +5433,10 @@ test('static adapters encode exact supported ratios and delegate auto without si
   assert.equal(Object.hasOwn(geminiCalls[1].body.response_format, 'aspect_ratio'), false)
   const bailianCalls = calls.filter((call) => call.url.includes('/multimodal-generation/generation'))
   assert.equal(bailianCalls[0].body.parameters.size, '1024*4096')
-  assert.equal(Object.hasOwn(bailianCalls[1].body.parameters, 'size'), false)
-  assert.equal(bailianCalls[2].body.parameters.size, '2016*864')
+  assert.equal(bailianCalls[1].body.parameters.size, '2K')
+  assert.equal(bailianCalls[2].body.parameters.size, '3122*1338')
   const arkCalls = calls.filter((call) => call.url.includes('ark.cn-beijing.volces.com'))
-  assert.deepEqual(arkCalls.map((call) => call.body.size), ['2048x1152', '2K'])
+  assert.deepEqual(arkCalls.map((call) => call.body.size), ['2720x1530', '2K', '2364x1773'])
 })
 
 test('OpenRouter sends only an exactly declared fixed ratio and omits auto', async () => {
@@ -6047,7 +6034,7 @@ test('native image adapters honor their own generation/edit schemas and download
   const before = calls.length
   await assert.rejects(legacy.callImageModel('deepseek', 'deepseek-v4-pro', 'secret', 'draw', 'auto'), /does not support image generation/)
   await assert.rejects(legacy.callImageModel('zhipu', 'glm-image', 'key', 'edit', 'auto', source), /does not accept a source image/)
-  await assert.rejects(legacy.callImageModel('xai', 'grok-imagine-image-2.0', 'key', 'draw', '1:4'), /does not support aspect ratio/)
+  await assert.rejects(legacy.callImageModel('xai', 'grok-imagine-image-2.0', 'key', 'draw', '1:4'), /Unsupported aspect ratio/)
   await assert.rejects(legacy.callImageModel('recraft', 'recraftv4_1', 'key', 'draw', 'auto', '', '4K', true), /does not support 4K/)
   assert.equal(calls.length, before)
 })
@@ -6241,8 +6228,7 @@ test('catalog repair: OpenRouter unions text and image roles, preserves dates an
     assert.deepEqual(models.get(ids[1]).roles, ['main', 'vision'])
     assert.equal(models.get(ids[1]).selectable, true)
     assert.match(models.get(ids[1]).roleReasons.image, /output_format/)
-    assert.equal(models.get(ids[2]).selectable, false)
-    assert.equal(models.get(ids[2]).expirationDate, dates[2])
+    assert.equal(models.get(ids[2]), undefined)
     assert.equal(models.get(ids[3]).selectable, true)
     assert.equal(models.get(ids[3]).expirationDate, dates[3])
     assert.notEqual(r.providers.openrouter.defaults.main, ids[2])
@@ -6416,4 +6402,246 @@ test('catalog repair: Gemini 512 and native-size edit values reach the provider 
     await legacy.callImageModel('recraft', 'recraftv4_1', 'fixture-only', 'edit', 'auto', `data:image/png;base64,${onePixelPngBase64}`, 'auto', true)
     assert.equal(Object.hasOwn(bodies[1], 'size'), false, 'imageToImage inherits the source size')
   } finally { legacy.configureRuntimeFetch() }
+})
+
+test('channel extensions: runtime dispatches every new selectable image option using the reviewed wire contract', async (t) => {
+  const legacy=await loadLegacy()
+  const extensions=JSON.parse(fs.readFileSync(path.resolve(packageRoot,'../../config/model-catalog-updates.json'),'utf8')).channels
+  const raster=(await sharp({create:{width:64,height:64,channels:3,background:'#fff'}}).png().toBuffer()).toString('base64')
+  const calls:Array<{url:string;body:any;headers:Headers}>=[]
+  legacy.configureRuntimeFetch(async(input,init)=>{
+    const url=String(input),headers=new Headers(init?.headers)
+    const body=init?.body instanceof FormData?Object.fromEntries(init.body.entries()):init?.body?JSON.parse(String(init.body)):undefined
+    calls.push({url,body,headers})
+    if(url.startsWith('https://asset.invalid/')){assert.equal(headers.has('Authorization'),false);assert.equal(headers.has('x-key'),false);return new Response(Buffer.from(raster,'base64'),{headers:{'Content-Type':'image/png'}})}
+    if(url.includes('/chat/completions'))return Response.json({choices:[{message:{content:'A scientific diagram.'},finish_reason:'stop'}]})
+    if(url.startsWith('https://api.bfl.ai/v1/'))return Response.json({id:'fixture',polling_url:'https://api.us1.bfl.ai/v1/get_result?id=fixture'})
+    if(url.startsWith('https://api.us1.bfl.ai/'))return Response.json({status:'Ready',result:{sample:'https://asset.invalid/output.png'}})
+    if(url.startsWith('https://queue.fal.run/'))return Response.json(init?.method==='POST'?{status:'IN_QUEUE',request_id:'fixture',status_url:'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture/status',response_url:'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture'}:url.endsWith('/status')?{status:'COMPLETED'}:{images:[{url:'https://asset.invalid/output.png'}]})
+    if(url.startsWith('https://api.replicate.com/'))return Response.json(init?.method==='POST'?{status:'starting',urls:{get:'https://api.replicate.com/v1/predictions/fixture'}}:{status:'succeeded',output:'https://asset.invalid/output.png'})
+    if(url.startsWith('https://api.stability.ai/'))return Response.json({finish_reason:'SUCCESS',image:raster})
+    if(/^https:\/\/api\.minimax\.(io|cn)\/v1\/image_generation/.test(url))return Response.json({base_resp:{status_code:0},data:{image_base64:[raster]}})
+    if(url.startsWith('https://api.ideogram.ai/'))return Response.json({data:[{url:'https://asset.invalid/output.png',is_image_safe:true}]})
+    if(url.startsWith('https://api.together.ai/v1/images'))return Response.json({data:[{b64_json:raster}]})
+    throw new Error(`Unexpected extension endpoint: ${url}`)
+  })
+  let combinations=0
+  try {
+    for(const provider of Object.keys(extensions)) {
+      const registry=await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider},headers:{},response:{setHeader(){},status(){}}})
+      assert.equal(registry.code,0,provider)
+      for(const model of registry.providers[provider].models) {
+        if(!model.selectable)continue
+        const region = provider==='minimax' && model.regions?.includes('cn') && !model.regions?.includes('global') ? 'cn' : 'global'
+        for(const role of model.roles.filter((role:string)=>role!=='image')) {
+          const start=calls.length
+          if(role==='main')await legacy.callTextModel(provider,model.id,'extension-fixture-secret','system','plan a figure')
+          else await legacy.callVisionModel(provider,model.id,'extension-fixture-secret','describe figure','caption',[{url:`data:image/png;base64,${raster}`,mimeType:'image/png',base64:raster}])
+          const call=calls.slice(start).find(call=>call.url.endsWith('/chat/completions'))!
+          assert.ok(call,`${provider}/${model.id}/${role}`);assert.equal(call.body.model,model.id)
+          assert.equal(call.headers.get('Authorization'),'Bearer extension-fixture-secret')
+          if(provider==='minimax')assert.equal(call.body.reasoning_split,true)
+        }
+        if(!model.roles.includes('image'))continue
+        for(const editing of [false,true]) {
+          if(editing&&model.capabilities.imageEditMode!=='direct-edit')continue
+          const maps=model.capabilities[editing?'refineAspectRatiosByResolution':'aspectRatiosByResolution']
+          for(const [resolution,ratios] of Object.entries(maps) as Array<[string,string[]]>) for(const ratio of ['auto',...ratios]) {
+            const start=calls.length
+            const image=await legacy.callImageModel(provider,model.id,'extension-fixture-secret','scientific figure',ratio,editing?'https://asset.invalid/source.png':'',resolution,true,region)
+            assert.ok(image);combinations++
+            const api=calls.slice(start).find(call=>call.body)!
+            assert.ok(api,`${provider}/${model.id}/${ratio}`)
+            // Independent schema and size-boundary tests cover each wire field. This
+            // integration loop checks that every advertised selection reaches an adapted
+            // endpoint through the actual backend (including region and source plumbing).
+            if (provider==='minimax') {
+              assert.equal(api.url, `https://api.minimax.${region==='cn'?'cn':'io'}/v1/image_generation`)
+              if(model.id==='image-01-live') { assert.equal(api.body.width,undefined); assert.ok(api.body.aspect_ratio) }
+              else { assert.ok(api.body.width>=512 && api.body.width<=2048); assert.equal(api.body.width%8,0) }
+            }
+            if(provider==='stability' && model.id.startsWith('sd3.5-')) {
+              assert.equal(api.body.model,model.id)
+              assert.equal(api.body.mode,editing?'image-to-image':'text-to-image')
+              if(editing)assert.equal(api.body.aspect_ratio,undefined)
+            }
+            if(provider==='replicate')assert.ok(api.body.input.prompt || api.body.input.instruction)
+
+          }
+        }
+      }
+    }
+    t.diagnostic(`${combinations} extension selections dispatched through the backend`)
+    assert.ok(combinations>500,`only ${combinations} extension combinations exercised`)
+    const before=calls.length
+    await assert.rejects(legacy.callImageModel('ideogram','ideogram-v4','key','figure','9:22','','1K',true),/Unsupported image size combination/)
+    await assert.rejects(legacy.callImageModel('bfl','flux-2-pro','key','figure','1:1','','4K',true),/does not support 4K/)
+    assert.equal(calls.length,before,'invalid combinations must never reach transport')
+  } finally {legacy.configureRuntimeFetch()}
+})
+
+test('Bailian scheduled retirement follows the official Beijing midnight boundary', async () => {
+  const legacy = await loadLegacy()
+  const now = Date.now
+  const inspect = async () => {
+    const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'bailian' }, headers: {}, response: { setHeader() {}, status() {} } })
+    return result.providers.bailian.models.find((model: any) => model.id === 'qwen-turbo')
+  }
+  try {
+    Date.now = () => Date.parse('2026-10-09T15:59:59.999Z')
+    assert.equal((await inspect()).selectable, true)
+    Date.now = () => Date.parse('2026-10-09T16:00:00Z')
+    const retired = await inspect()
+    assert.equal(retired, undefined)
+  } finally { Date.now = now }
+})
+
+test('xAI normalizes WebP references to supported PNG for planning, vision and image editing', async () => {
+  const legacy = await loadLegacy()
+  const images = [{ url: `data:image/webp;base64,${onePixelWebpBase64}`, mimeType: 'image/webp' }]
+  const bodies: any[] = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const body = JSON.parse(String(init?.body)); bodies.push(body)
+    assert.ok(String(input).startsWith('https://api.x.ai/'))
+    return String(input).endsWith('/responses') ? Response.json({ output_text: 'fixture-ok' }) : Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
+  })
+  try {
+    await legacy.callTextModel('xai', 'grok-build-0.1', 'fixture', 'system', 'describe', images)
+    await legacy.callVisionModel('xai', 'grok-4.6', 'fixture', 'method', 'caption', images)
+    await legacy.callImageModel('xai', 'grok-imagine-image-quality', 'fixture', 'edit figure', '1:1', images[0].url, '1K', true)
+    for (const body of bodies) {
+      const url = body.image?.url || body.input[0].content[1].image_url
+      assert.match(url, /^data:image\/png;base64,/)
+      const bytes = Buffer.from(url.split(',')[1], 'base64')
+      assert.equal(bytes.subarray(0, 8).toString('hex'), '89504e470d0a1a0a', body.model)
+      // Core deliberately enables only the WebP input decoder in sharp;
+      // verify the encoded PNG header without changing that global policy.
+      assert.equal(bytes.readUInt32BE(16), 1)
+      assert.equal(bytes.readUInt32BE(20), 1)
+    }
+    assert.equal(bodies.length, 3)
+  } finally { legacy.configureRuntimeFetch() }
+})
+
+test('current OpenRouter public catalog accounts for every model and exposes only compatible selections', async (t) => {
+  const snapshot = JSON.parse(fs.readFileSync(path.resolve(packageRoot, '../../config/openrouter-catalog-review.json'), 'utf8'))
+  const legacy = await loadLegacy()
+  const imageCards = new Map<string, any>(snapshot.images.map((model: any) => [model.id, model]))
+  let submissions = 0
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    if (url.endsWith('/images/models')) return Response.json({ data: snapshot.images })
+    if (url.endsWith('/api/v1/models')) return Response.json({ data: snapshot.text })
+    assert.equal(url, 'https://openrouter.ai/api/v1/images')
+    const body = JSON.parse(String(init?.body))
+    const card = imageCards.get(body.model)
+    assert.ok(card, body.model)
+    const parameters = card.supported_parameters || {}
+    for (const key of ['resolution', 'aspect_ratio', 'output_format']) {
+      if (body[key] !== undefined) assert.ok(parameters[key]?.values?.includes(body[key]), `${body.model}/${key}: ${body[key]}`)
+    }
+    if (body.input_references) assert.ok(parameters.input_references, body.model + ' editing')
+    submissions++
+    return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
+  })
+  try {
+    const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
+    assert.equal(result.code, 0)
+    const registry = result.providers.openrouter
+    const expected = new Set([...snapshot.text, ...snapshot.images].map((model: any) => model.id))
+    assert.equal(expected.size, 471)
+    for (const id of ['meta/muse-image', 'recraft/recraft-v4-styles', 'recraft/recraft-v4-styles-pro', 'recraft/recraft-v4-styles-vector', 'recraft/recraft-v4-styles-pro-vector']) expected.delete(id)
+    assert.equal(expected.size, 466)
+    assert.deepEqual(new Set(registry.models.map((model: any) => model.id)), expected)
+    for (const model of registry.models) {
+      if (!model.selectable) assert.ok(model.disabledReason, model.id + ' needs a reason')
+      if (!model.selectable || !model.roles.includes('image')) continue
+      for (const editing of [false, true]) {
+        if (editing && !model.capabilities.imageEditing) continue
+        const resolutions = model.capabilities[editing ? 'refineResolutions' : 'resolutions'] || []
+        const ratios = model.capabilities[editing ? 'refineAspectRatios' : 'aspectRatios'] || []
+        for (const resolution of resolutions.length ? resolutions : ['auto']) for (const ratio of ['auto', ...ratios]) {
+          await legacy.callImageModel('openrouter', model.id, 'fixture-only', 'Scientific figure', ratio, editing ? `data:image/png;base64,${onePixelPngBase64}` : '', resolution, resolution !== 'auto')
+        }
+      }
+    }
+    const imageModels = registry.models.filter((model: any) => model.selectable && model.roles.includes('image')).length
+    t.diagnostic(`${registry.models.length} catalog IDs; ${imageModels} adapted image models; ${submissions} legal image requests`)
+    // Optional local audit capture; ordinary tests do not modify repository files.
+    if (process.env.TUYAN_CATALOG_REVIEW_OUTPUT) fs.writeFileSync(process.env.TUYAN_CATALOG_REVIEW_OUTPUT, JSON.stringify(registry, null, 2) + '\n')
+  } finally { legacy.configureRuntimeFetch() }
+})
+
+test('per-resolution combinations reject before account lookup, credentials or persistence', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previousInserts = state.inserts, previousQueries = state.accountDeletionFindQueries
+  state.inserts = []; state.accountDeletionFindQueries = []
+  let calls = 0
+  legacy.configureRuntimeFetch(async () => { calls++; throw new Error('unexpected dispatch') })
+  const shared = { provider:'openai',configurationMode:'advanced', userId:'fixture-owner', apiKeys:{}, imageSize:'1K', aspectRatio:'9:22',
+    modelRoutes: { main:{accessProvider:'openai',modelId:'gpt-5.6-sol'}, image:{accessProvider:'ideogram',modelId:'ideogram-v4'}, vision:{accessProvider:'openai',modelId:'gpt-5.6-sol'} } }
+  const invoke = (body:any) => legacy.default({request:{method:'POST'},body,headers:{},response:{setHeader(){},status(){}}})
+  try {
+    const create = await invoke({...shared, action:'createJob',methodContent:'A sufficiently detailed method section for image size validation.',caption:'A scientific diagram.',outputFormat:'png',pipelineMode:'vanilla'})
+    const refine = await invoke({...shared, action:'refineImage',sourceImageObjectKey:'owned/fixture.png',editInstruction:'Improve the labels.'})
+    assert.equal(create.code,400); assert.equal(create.businessCode,'IMAGE_SIZE_UNSUPPORTED')
+    assert.equal(refine.code,400); assert.equal(refine.businessCode,'REFINE_IMAGE_SIZE_UNSUPPORTED')
+    assert.equal(state.inserts.length,0); assert.equal(state.accountDeletionFindQueries.length,0); assert.equal(calls,0)
+  } finally { legacy.configureRuntimeFetch(); state.inserts=previousInserts; state.accountDeletionFindQueries=previousQueries }
+})
+
+test('refine admission preserves 512 and native-size requests through persistence and API dispatch', async () => {
+  const legacy = await loadLegacy()
+  const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
+  const previous = { writes:state.ossWriteMode, stored:state.storedObjectBytes, inserts:state.inserts }
+  state.ossWriteMode='success'; state.storedObjectBytes={'owned/size-fixture.png':Buffer.from(onePixelPngBase64,'base64')};state.inserts=[]
+  const calls:Array<{url:string;body:any}>=[]
+  legacy.configureRuntimeFetch(async (input,init) => {
+    const url=String(input), body=typeof init?.body==='string'?JSON.parse(init.body):undefined
+    calls.push({url,body})
+    if(url.includes('generativelanguage.googleapis.com')) return Response.json({output_image:{data:onePixelPngBase64,mime_type:'image/png'}})
+    if(url.includes('external.api.recraft.ai')) return Response.json({data:[{b64_json:onePixelPngBase64}]})
+    throw new Error(`Unexpected native-size dispatch ${url}`)
+  })
+  try {
+    for(const [provider,model,imageSize] of [['gemini','gemini-3.1-flash-image','512'],['recraft','recraftv4_1','auto']]) {
+      const result=await legacy.default({request:{method:'POST'},body:{action:'refineImage',provider:'openai',configurationMode:'advanced',apiKeys:{[provider]:'fixture-only'},aspectRatio:'auto',imageSize,sourceImageObjectKey:'owned/size-fixture.png',editInstruction:'Improve label clarity.',modelRoutes:{main:{accessProvider:'openai',modelId:'gpt-5.6-sol'},image:{accessProvider:provider,modelId:model},vision:{accessProvider:'openai',modelId:'gpt-5.6-sol'}}},headers:{},response:{setHeader(){},status(){}}})
+      assert.equal(result.code,0,JSON.stringify(result));await legacy.drainJobAdmission()
+      assert.equal(state.inserts.at(-1).imageSize,imageSize)
+    }
+    assert.equal(calls.find(call=>call.url.includes('generativelanguage.googleapis.com'))?.body.response_format.image_size,'512')
+    assert.equal(Object.hasOwn(calls.find(call=>call.url.includes('external.api.recraft.ai'))!.body,'size'),false)
+  } finally {legacy.configureRuntimeFetch();state.ossWriteMode=previous.writes;state.storedObjectBytes=previous.stored;state.inserts=previous.inserts;state.deletedOwnerKeys=[]}
+})
+
+
+test('MiniMax regions survive routing and execution snapshots and reject incompatible regional models before fetch', async()=>{
+ const legacy=await loadLegacy()
+ const modelRoutes={main:{accessProvider:'minimax',modelId:'MiniMax-M3'},vision:{accessProvider:'minimax',modelId:'MiniMax-M3'},image:{accessProvider:'minimax',modelId:'image-01-live'}}
+ const routing=legacy.resolveModelRouting({provider:'minimax',modelRoutes,providerRegions:{minimax:'cn'}})
+ assert.deepEqual(routing.providerRegions,{minimax:'cn'})
+ for(const snapshot of [legacy.toCreateExecutionBody({...routing,apiKeys:{minimax:'never-persist'}}),legacy.toRefineExecutionBody({...routing,apiKeys:{minimax:'never-persist'}})]){
+  assert.deepEqual(snapshot.providerRegions,{minimax:'cn'});assert.equal('apiKeys' in snapshot,false)
+ }
+ assert.throws(()=>legacy.resolveModelRouting({provider:'minimax',modelRoutes}),/unavailable/)
+ assert.throws(()=>legacy.resolveModelRouting({provider:'minimax',modelRoutes,providerRegions:{minimax:'elsewhere'}}),/Invalid provider region/)
+ const calls:Array<{url:string;key:string}>=[]
+ legacy.configureRuntimeFetch(async(input,init)=>{
+  const url=String(input),key=new Headers(init?.headers).get('authorization')||'';calls.push({url,key})
+  assert.equal(key,url.includes('minimax.cn')?'Bearer cn-fixture':'Bearer global-fixture')
+  return url.endsWith('/image_generation')?Response.json({base_resp:{status_code:0},data:{image_base64:[onePixelPngBase64]}}):Response.json({choices:[{message:{content:'Plan'}}]})
+ })
+ try {
+  await Promise.all((['cn','global'] as const).flatMap(region=>[
+   legacy.callTextModel('minimax','MiniMax-M3',region+'-fixture','system','figure',[],{region}),
+   legacy.callVisionModel('minimax','MiniMax-M3',region+'-fixture','figure','caption',[{url:'data:image/png;base64,'+onePixelPngBase64,mimeType:'image/png'}],region),
+   legacy.callImageModel('minimax','image-01',region+'-fixture','figure','16:9','','1K',true,region),
+  ]))
+  assert.equal(calls.filter(x=>x.url.includes('minimax.cn')).length,3);assert.equal(calls.filter(x=>x.url.includes('minimax.io')).length,3)
+  const before=calls.length
+  await assert.rejects(legacy.callImageModel('minimax','image-01-live','global-fixture','figure','1:1','','1K',true,'global'),/unavailable/)
+  await assert.rejects(legacy.callImageModel('minimax','image-01-live','cn-fixture','figure','21:9','','1K',true,'cn'),/Unsupported (image size|aspect ratio)/)
+  assert.equal(calls.length,before)
+ } finally {legacy.configureRuntimeFetch()}
 })

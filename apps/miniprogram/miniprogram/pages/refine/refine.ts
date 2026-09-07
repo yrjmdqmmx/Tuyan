@@ -1,8 +1,9 @@
+import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestJson } from '../../utils/api'
 import { getApiKeys, replaceApiKeys } from '../../utils/api-keys'
 import { buildAspectRatioOptions, buildResolutionOptions } from '../../utils/aspect-ratios'
 import { findRegistryModel, type ModelProviderId, type ModelRegistry } from '../../utils/model-registry'
-import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
+import { getModelRegistryState, loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
 import { providerDefaultRoutes, requiredRefineRouteRoles, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import type { ImageAsset } from '../../utils/job-assets'
 import { normalizeJob, readLocalJobs, type Job } from '../../utils/jobs'
@@ -10,6 +11,7 @@ import { buildRefineJobPayload } from '../../utils/refine'
 import { getCurrentUser, isSessionChecked, subscribeSession } from '../../utils/session'
 
 interface RefineSettings {
+  providerRegions?: ProviderRegions
   configurationMode: 'simple' | 'advanced'; simpleProvider: ModelProviderId; modelRoutes: ModelRoutes
   outputFormat: 'png' | 'svg'; imageSize: string; aspectRatio: string; pipelineMode: string
   retrievalSetting: string; numCandidates: number; maxCriticRounds: number
@@ -18,7 +20,7 @@ interface RefineSourceOption { label: string; jobId: string; url: string; object
 
 Component({
   data: {
-    registry: {} as ModelRegistry | Record<string, never>, registryReady: false, registryVersion: '等待目录', registryError: '',
+    registryReady: false, registryVersion: '等待目录', registryError: '',
     settings: {} as RefineSettings | Record<string, never>, showSettings: false, apiKeysForSheet: {} as Record<string, string>,
     settingsExecutionRoles: [] as string[],
     sourceOptions: [] as RefineSourceOption[], sourceIndex: 0, source: null as RefineSourceOption | null,
@@ -47,10 +49,10 @@ Component({
   pageLifetimes: { show() { this.loadSources() }, hide() { this.stopPolling() } },
   methods: {
     applyRegistryState(state: ModelRegistryState) {
-      if (!state.registry) { this.setData({ registry: {}, registryReady: false, registryError: state.error }); this.refreshCanSubmit(); return }
+      if (!state.registry) { this.setData({ registryReady: false, registryError: state.error }); this.refreshCanSubmit(); return }
       const current = this.data.settings as RefineSettings
       const settings = current.modelRoutes ? current : defaultSettings(state.registry)
-      this.setData({ registry: state.registry, registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings })
+      this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings })
       this.refreshCapabilities(); this.refreshCanSubmit()
     },
     async retryRegistry() { await loadModelRegistry(true) },
@@ -72,18 +74,29 @@ Component({
     onSourceChange(event: WechatMiniprogram.PickerChange) { const sourceIndex = Number(event.detail.value) || 0; this.setData({ sourceIndex, source: this.data.sourceOptions[sourceIndex] || null }); this.refreshCanSubmit() },
     onInstructionInput(event: WechatMiniprogram.TextareaInput) { this.setData({ instruction: event.detail.value }); this.refreshCanSubmit() },
     onRatioChange(event: WechatMiniprogram.PickerChange) { this.setData({ ratioIndex: Number(event.detail.value) || 0 }); this.refreshCanSubmit() },
-    onResolutionChange(event: WechatMiniprogram.PickerChange) { this.setData({ resolutionIndex: Number(event.detail.value) || 0 }); this.refreshCanSubmit() },
+    onResolutionChange(event: WechatMiniprogram.PickerChange) { this.setData({ resolutionIndex: Number(event.detail.value) || 0 }); this.refreshRatioOptions(); this.refreshCanSubmit() },
+    refreshRatioOptions() {
+      const registry = getModelRegistryState().registry
+      const settings = this.data.settings as RefineSettings
+      if (!registry || !settings.modelRoutes) return
+      const route = settings.modelRoutes.image
+      const entry = findRegistryModel(registry, route.accessProvider, route.modelId)
+      const resolution = this.data.resolutionOptions[this.data.resolutionIndex]?.value
+      const previous = this.data.ratioOptions[this.data.ratioIndex]?.value
+      const ratioOptions = buildAspectRatioOptions({capabilities: entry?.capabilities || {}, capabilityField: 'refineAspectRatios', resolution}).filter(item => !item.disabled).map(item => ({value: item.value, label: item.label}))
+      this.setData({ratioOptions, ratioIndex: Math.max(0, ratioOptions.findIndex(item => item.value === previous))})
+    },
     openSettings() { if (this.data.registryReady) this.setData({ showSettings: true, apiKeysForSheet: getApiKeys(), settingsExecutionRoles: requiredRefineRouteRoles({ refineMode: this.data.refineMode }) }) },
     closeSettings() { this.setData({ showSettings: false }) },
     saveSettings(event: WechatMiniprogram.CustomEvent<{ settings: RefineSettings; apiKeys: Record<string, string> }>) { replaceApiKeys(event.detail.apiKeys); this.setData({ settings: event.detail.settings, apiKeysForSheet: getApiKeys(), showSettings: false }); this.refreshCapabilities(); this.refreshCanSubmit() },
     refreshCapabilities() {
-      const registry = this.data.registryReady ? this.data.registry as ModelRegistry : null
+      const registry = this.data.registryReady ? getModelRegistryState().registry : null
       const settings = this.data.settings as RefineSettings
       if (!registry || !settings.modelRoutes) return
       const entry = findRegistryModel(registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId)
       const capability = String(entry?.capabilities.imageEditMode || 'none')
       const refineMode = capability === 'direct-edit' && (entry?.inputModalities.includes('image') || entry?.capabilities.referenceImages === true) ? 'direct-edit' : entry?.roles.includes('image') ? 'analyze-redraw' : 'none'
-      const ratioOptions = buildAspectRatioOptions({ capabilities: entry?.capabilities || {}, capabilityField: 'refineAspectRatios', modelLabel: entry?.label }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
+      const ratioOptions = buildAspectRatioOptions({ capabilities: entry?.capabilities || {}, capabilityField: 'refineAspectRatios', modelLabel: entry?.label, resolution: (entry?.capabilities.refineResolutions as string[] | undefined)?.[0] }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
       const resolutionOptions = buildResolutionOptions(entry?.capabilities || {}, 'refineResolutions')
       this.setData({ refineMode, refineModeLabel: refineMode === 'direct-edit' ? '直接编辑' : refineMode === 'analyze-redraw' ? '分析后重绘' : '不支持精修', ratioOptions, resolutionOptions, ratioIndex: 0, resolutionIndex: 0 })
     },
@@ -91,7 +104,7 @@ Component({
       const settings = this.data.settings as RefineSettings
       if (!this.data.registryReady || !settings.modelRoutes) { this.setData({ canSubmit: false }); return }
       const roles = requiredRefineRouteRoles({ refineMode: this.data.refineMode })
-      const keys = getApiKeys()
+      const keys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
       const hasKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(keys[provider]?.trim()))
       this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && !this.data.isSubmitting) })
     },
@@ -107,7 +120,7 @@ Component({
       }
       const settings = this.data.settings as RefineSettings
       try {
-        const payload = buildRefineJobPayload({ configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: getApiKeys(), source: { url: this.data.source.url, objectKey: this.data.source.objectKey }, editInstruction: this.data.instruction, aspectRatio: this.data.ratioOptions[this.data.ratioIndex]?.value || 'auto', imageSize: this.data.resolutionOptions[this.data.resolutionIndex]?.value || '', refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' })
+        const payload = buildRefineJobPayload({ providerRegions: settings.providerRegions, configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: getApiKeys(), source: { url: this.data.source.url, objectKey: this.data.source.objectKey }, editInstruction: this.data.instruction, aspectRatio: this.data.ratioOptions[this.data.ratioIndex]?.value || 'auto', imageSize: this.data.resolutionOptions[this.data.resolutionIndex]?.value || '', refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' })
         const response = await requestJson<{ jobId?: string; id?: string }>(payload)
         const jobId = response.jobId || response.id || ''; if (!jobId) throw new Error('后端没有返回精修任务 ID')
         this.setData({ currentJobId: jobId }); this.startPolling(jobId); wx.showToast({ title: '精修已提交', icon: 'success' })

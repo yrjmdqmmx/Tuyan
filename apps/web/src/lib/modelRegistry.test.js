@@ -164,3 +164,14 @@ test('cached expiration dates disable selection, while earliest dates and provid
   assert.equal(incompatible[0].id, 'expired')
   assert.match(incompatible[0].selectionDisabledReason, /2000-01-01/)
 })
+
+test('cached retirement instants honor the channel time zone', () => {
+  const now = Date.now
+  const model = { id: 'cn', roles: ['main'], selectable: true, expirationDate: '2026-10-10', expirationAt: '2026-10-10T00:00:00+08:00' }
+  try {
+    Date.now = () => Date.parse('2026-10-09T15:59:59.999Z')
+    assert.equal(partitionRegistryModels([model], { role: 'main' }).compatible.length, 1)
+    Date.now = () => Date.parse('2026-10-09T16:00:00Z')
+    assert.equal(partitionRegistryModels([model], { role: 'main' }).incompatible.length, 1)
+  } finally { Date.now = now }
+})

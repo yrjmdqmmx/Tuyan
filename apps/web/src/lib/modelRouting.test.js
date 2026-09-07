@@ -178,3 +178,10 @@ test('unreachable image route still needs registry role capability but not the c
     message: '当前图像模型不支持 SVG 输出。',
   })
 })
+
+test('MiniMax China is explicit routing data and cannot be submitted to an older backend', () => {
+  const modelRoutes = {main:{accessProvider:'minimax',modelId:'MiniMax-M3'},image:{accessProvider:'minimax',modelId:'image-01'},vision:{accessProvider:'minimax',modelId:'MiniMax-M3'}}
+  const input = {configurationMode:'simple', modelRoutes, providerRegions:{minimax:'cn'}, registry:{routeContractVersion:1,providerRegionContractVersion:1}}
+  assert.deepEqual(buildModelSubmission(input).providerRegions,{minimax:'cn'})
+  assert.throws(()=>buildModelSubmission({...input,registry:{routeContractVersion:1}}),/MiniMax 国内区域/)
+})

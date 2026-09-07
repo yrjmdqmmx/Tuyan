@@ -192,7 +192,7 @@ test('ratio picker renders auto and all fixed values with precise disabled reaso
   render(React.createElement(AspectRatioPicker, { label: '画面比例', value: '16:9', options, onChange: (value) => changed.push(value) }))
   const group = document.querySelector('.aspect-ratio-options')
   assert.ok(group)
-  assert.equal(group.querySelectorAll('button').length, 27)
+  assert.equal(group.querySelectorAll('button').length, 46)
   assert.equal(screen.getByRole('button', { name: '画面比例 自动' }).disabled, false)
   assert.equal(screen.getByRole('button', { name: '画面比例 21:9，Wan Image 不支持 21:9 比例' }).disabled, true)
   await user.click(screen.getByRole('button', { name: '画面比例 1:1' }))

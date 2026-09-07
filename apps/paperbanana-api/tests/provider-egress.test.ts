@@ -82,6 +82,16 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
   await withMockRouting('sg-required', async ({ direct, proxy, create }) => {
     const proxied = [
       ['https://api.openai.com', '/v1/models'],
+      ['https://api.bfl.ai', '/v1/flux-2-pro'],
+      ['https://api.us1.bfl.ai', '/v1/get_result?id=fixture'],
+      ['https://api.stability.ai', '/v2beta/stable-image/generate/ultra'],
+      ['https://api.ideogram.ai', '/v1/ideogram-v4/generate'],
+      ['https://api.minimax.io', '/v1/image_generation'],
+      ['https://api.mistral.ai', '/v1/chat/completions'],
+      ['https://api.together.ai', '/v1/images/generations'],
+      ['https://api.fireworks.ai', '/inference/v1/chat/completions'],
+      ['https://queue.fal.run', '/fal-ai/flux-2-pro'],
+      ['https://api.replicate.com', '/v1/predictions/fixture'],
       ['https://api.anthropic.com', '/v1/messages'],
       ['https://api.x.ai', '/v1/responses'],
       ['https://external.api.recraft.ai', '/v1/images/generations'],
@@ -90,6 +100,7 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
       ['https://ark.cn-beijing.volces.com', '/api/v3/models'],
     ] as const
     const bypassed = [
+      ['https://api.minimax.cn', '/v1/image_generation'],
       ['https://dashscope.aliyuncs.com', '/compatible-mode/v1/models'],
       ['https://bucket.oss-cn-hongkong-internal.aliyuncs.com', '/reference.png'],
       ['https://bucket.oss-cn-hongkong.aliyuncs.com', '/result.png?Signature=signed'],
@@ -98,6 +109,8 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
       ['https://api.moonshot.cn', '/v1/chat/completions'],
       ['https://open.bigmodel.cn', '/api/paas/v4/chat/completions'],
       ['https://api.siliconflow.cn', '/v1/images/generations'],
+      ['https://api.bfl.ai.evil.example', '/v1/get_result'],
+      ['https://queue.fal.run.evil.example', '/requests/fixture'],
       ['https://api.x.ai.evil.example', '/v1/responses'],
       ['https://api.openai.com.evil.example', '/v1/models'],
       ['https://ark.cn-beijing.volces.com.evil.example', '/api/v3/models'],

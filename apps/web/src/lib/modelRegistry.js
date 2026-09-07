@@ -87,7 +87,7 @@ function registryModelSearchValues(model) {
 }
 
 function annotateModelForRole(model, { role, outputFormat }) {
-  const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(`${model.expirationDate}T00:00:00Z`))
+  const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
   const outputFormats = model.capabilities?.outputFormats || []
   const roleMismatch = !model.roles?.includes(role)
   const formatMismatch = role === 'image' && outputFormat && outputFormats.length && !outputFormats.includes(outputFormat)

@@ -3,6 +3,7 @@ const assert = require('node:assert/strict')
 let definition
 global.Component = (value) => { definition = value }
 require('../miniprogram/components/model-picker/model-picker.js')
+const { getModelRegistryState } = require('../miniprogram/utils/model-registry-store.js')
 
 assert.equal(typeof definition.methods.resetFlow, 'function')
 assert.equal(typeof definition.methods.selectProvider, 'function')
@@ -51,11 +52,13 @@ const registry = {
   },
 }
 
+getModelRegistryState().registry = registry
+
 function context() {
   const state = JSON.parse(JSON.stringify(definition.data))
   return Object.assign({
     data: state,
-    properties: { registry, role: 'main', outputFormat: 'png', selectedProvider: 'bailian', selectedModel: 'qwen-main' },
+    properties: { registryVersion: 'fixture', role: 'main', outputFormat: 'png', selectedProvider: 'bailian', selectedModel: 'qwen-main' },
     setData(patch) { Object.assign(state, patch) },
     triggerEvent() {},
   }, definition.methods)
@@ -64,7 +67,7 @@ function context() {
 const picker = context()
 picker.resetFlow()
 assert.equal(picker.data.step, 'providers')
-assert.equal(picker.data.providerCards.find((item) => item.id === 'ark').unavailableCount, 1)
+assert.equal(picker.data.providerCards.find((item) => item.id === 'ark').unavailableCount, undefined)
 
 picker.selectProvider({ currentTarget: { dataset: { provider: 'bailian' } } })
 assert.equal(picker.data.step, 'vendors')
@@ -72,28 +75,26 @@ assert.deepEqual(picker.data.vendorCards.map((item) => item.vendor), ['Alibaba Q
 
 picker.selectVendor({ currentTarget: { dataset: { vendor: 'DeepSeek' } } })
 assert.equal(picker.data.step, 'models')
-assert.deepEqual(picker.data.compatibleModels.map((item) => item.id), ['deepseek-main'])
+assert.deepEqual(picker.data.visibleCompatibleModels.map((item) => item.id), ['deepseek-main'])
 
 picker.backStep()
 assert.equal(picker.data.step, 'vendors')
 
 picker.selectProvider({ currentTarget: { dataset: { provider: 'gemini' } } })
 assert.equal(picker.data.step, 'models')
-assert.deepEqual(picker.data.compatibleModels.map((item) => item.id), ['gemini-main'])
+assert.deepEqual(picker.data.visibleCompatibleModels.map((item) => item.id), ['gemini-main'])
 
 picker.backStep()
 picker.selectProvider({ currentTarget: { dataset: { provider: 'openrouter' } } })
 picker.selectVendor({ currentTarget: { dataset: { vendor: 'Anthropic' } } })
 assert.equal(picker.data.catalogMode, 'all')
-assert.deepEqual(picker.data.compatibleModels.map((item) => item.id), ['or-claude'])
+assert.deepEqual(picker.data.visibleCompatibleModels.map((item) => item.id), ['or-claude'])
 
 picker.backStep()
 picker.backStep()
 picker.selectProvider({ currentTarget: { dataset: { provider: 'ark' } } })
-assert.ok(picker.data.vendorCards.some((item) => item.vendor === 'Restricted Vendor' && item.compatibleCount === 0))
-picker.selectVendor({ currentTarget: { dataset: { vendor: 'Restricted Vendor' } } })
-assert.deepEqual(picker.data.compatibleModels, [])
-assert.deepEqual(picker.data.incompatibleModels.map((item) => item.id), ['ark-disabled'])
+assert.equal(picker.data.vendorCards.some((item) => item.vendor === 'Restricted Vendor'), false)
+assert.equal(picker.data.incompatibleModels, undefined)
 
 delete global.Component
 console.log('model-picker-flow.test.cjs passed')

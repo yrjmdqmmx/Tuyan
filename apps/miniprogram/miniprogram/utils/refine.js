@@ -17,7 +17,7 @@ function buildRefineJobPayload(input) {
         action: 'refineImage',
         clientPlatform: 'miniprogram',
         ...modelSubmission,
-        apiKeys: (0, model_routing_1.scopedApiKeysForRoles)(input.modelRoutes, roles, input.apiKeys),
+        apiKeys: (0, model_routing_1.scopedApiKeysForRoles)(input.modelRoutes, roles, input.apiKeys, input.providerRegions),
         ...refineRequestSource(input.source),
         editInstruction: input.editInstruction.trim(),
         aspectRatio: input.aspectRatio,

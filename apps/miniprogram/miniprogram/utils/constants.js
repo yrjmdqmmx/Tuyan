@@ -494,6 +494,9 @@ for (const [id, registry] of Object.entries(static_model_catalog_1.STATIC_MODEL_
     let provider = exports.PROVIDERS.find((item) => item.id === id);
     if (!provider) {
         provider = { id: id, label: id === 'ark' ? '火山方舟' : id, keyPlaceholder: 'API Key', mainModel: '', imageModel: '', visionModel: '', mainModels: [], imageModels: [], visionModels: [], guideSteps: [] };
+        const channel = static_model_catalog_1.EXTENDED_MODEL_CHANNELS[id];
+        if (channel)
+            Object.assign(provider, { label: channel.label, keyPlaceholder: channel.keyPlaceholder, guideSteps: channel.guideSteps });
         exports.PROVIDERS.push(provider);
     }
     const options = (role) => registry.models.filter((model) => model.selectable !== false && model.roles.includes(role)).map((model) => ({ value: model.id, label: model.label }));

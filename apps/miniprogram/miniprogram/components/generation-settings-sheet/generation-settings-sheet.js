@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const model_registry_store_1 = require("../../utils/model-registry-store");
+const provider_regions_1 = require("../../utils/provider-regions");
+const static_model_catalog_1 = require("../../utils/static-model-catalog");
 const aspect_ratios_1 = require("../../utils/aspect-ratios");
 const api_1 = require("../../utils/api");
 const ark_verification_1 = require("../../utils/ark-verification");
@@ -8,6 +11,7 @@ const model_registry_1 = require("../../utils/model-registry");
 const model_routing_1 = require("../../utils/model-routing");
 const reference_library_1 = require("../../utils/reference-library");
 const PROVIDER_LABELS = {
+    ...Object.fromEntries(Object.entries(static_model_catalog_1.EXTENDED_MODEL_CHANNELS).map(([id, channel]) => [id, channel.label])),
     deepseek: "DeepSeek",
     kimi: "Kimi（月之暗面）",
     zhipu: "智谱 GLM",
@@ -22,7 +26,8 @@ Component({
     properties: {
         show: { type: Boolean, value: false, observer(show) { if (show)
                 this.resetDraft(); } },
-        registry: { type: Object, value: {} },
+        registryVersion: { type: String, value: '', observer() { if (this.properties.show)
+                this.refreshPresentation(); } },
         settings: { type: Object, value: {} },
         apiKeys: { type: Object, value: {} },
         executionRoles: { type: Array, value: [] },
@@ -31,6 +36,8 @@ Component({
     },
     data: {
         draft: null,
+        minimaxRegionOptions: [{ value: 'global', label: '国际' }, { value: 'cn', label: '中国大陆' }],
+        minimaxRegionIndex: 0, minimaxApiBase: '',
         providerOptions: model_registry_1.MODEL_PROVIDER_IDS.map((value) => ({ value, label: PROVIDER_LABELS[value] })),
         providerIndex: 0,
         routeRows: [],
@@ -61,8 +68,10 @@ Component({
     },
     methods: {
         noop() { },
+        // Keep full capability metadata in the logic-layer store, outside setData.
+        getRegistry() { var _a; return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, (_a = this.data.draft) === null || _a === void 0 ? void 0 : _a.providerRegions); },
         resetDraft() {
-            const registry = this.properties.registry;
+            const registry = (0, model_registry_store_1.getModelRegistryState)().registry;
             const incoming = this.properties.settings;
             if (!registry || !incoming) {
                 this.setData({ draft: null, error: '模型目录尚未就绪，暂时不能编辑生成设置。' });
@@ -80,7 +89,7 @@ Component({
         refreshPresentation() {
             var _a;
             const draft = this.data.draft;
-            const registry = this.properties.registry;
+            const registry = this.getRegistry();
             if (!draft || !registry)
                 return;
             const providerOptions = model_registry_1.MODEL_PROVIDER_IDS.filter((id) => {
@@ -89,13 +98,13 @@ Component({
                 return (defaults === null || defaults === void 0 ? void 0 : defaults.main) && (defaults === null || defaults === void 0 ? void 0 : defaults.image) && (defaults === null || defaults === void 0 ? void 0 : defaults.vision);
             }).map((value) => ({ value, label: PROVIDER_LABELS[value] }));
             const imageEntry = (0, model_registry_1.findRegistryModel)(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId);
-            const ratioAll = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.capabilities) || {}, capabilityField: 'aspectRatios', modelLabel: imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.label });
-            const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
-            draft.aspectRatio = (0, aspect_ratios_1.normalizeSelectedAspectRatio)(draft.aspectRatio, ratioAll);
             const resolutionOptions = (0, aspect_ratios_1.buildResolutionOptions)((imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.capabilities) || {}, 'resolutions');
             if (draft.outputFormat === 'png' && !resolutionOptions.some((item) => item.value === draft.imageSize)) {
                 draft.imageSize = ((_a = resolutionOptions[0]) === null || _a === void 0 ? void 0 : _a.value) || '';
             }
+            const ratioAll = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.capabilities) || {}, capabilityField: 'aspectRatios', modelLabel: imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.label, resolution: draft.imageSize });
+            const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
+            draft.aspectRatio = (0, aspect_ratios_1.normalizeSelectedAspectRatio)(draft.aspectRatio, ratioAll);
             const routeRows = ['main', 'image', 'vision'].map((role) => {
                 const route = draft.modelRoutes[role];
                 const model = (0, model_registry_1.findRegistryModel)(registry, route.accessProvider, route.modelId);
@@ -107,7 +116,7 @@ Component({
             });
             const providers = (0, model_routing_1.uniqueProvidersForRoles)(draft.modelRoutes, normalizeRoles(this.properties.executionRoles));
             const keyFields = providers.map((provider) => ({
-                provider, label: PROVIDER_LABELS[provider] || provider, value: this.data.draftKeys[provider] || '',
+                provider, label: PROVIDER_LABELS[provider] || provider, value: (0, provider_regions_1.selectRegionApiKeys)(this.data.draftKeys, draft.providerRegions)[provider] || '',
                 placeholder: provider === 'gemini' ? 'AIza...' : provider === 'openrouter' ? 'sk-or-v1-...' : 'sk-...',
             }));
             const probes = (0, model_routing_1.arkProbesForRoles)(draft.modelRoutes, normalizeRoles(this.properties.executionRoles));
@@ -116,6 +125,8 @@ Component({
             this.setData({
                 draft, routeRows, ratioOptions, resolutionOptions, keyFields,
                 providerOptions,
+                minimaxRegionIndex: (0, provider_regions_1.minimaxRegion)(draft.providerRegions) === 'cn' ? 1 : 0,
+                minimaxApiBase: provider_regions_1.MINIMAX_REGIONS[(0, provider_regions_1.minimaxRegion)(draft.providerRegions)].apiBase,
                 providerIndex: Math.max(0, providerOptions.findIndex((item) => item.value === draft.simpleProvider)),
                 ratioIndex: Math.max(0, ratioOptions.findIndex((item) => item.value === draft.aspectRatio)),
                 resolutionIndex: Math.max(0, resolutionOptions.findIndex((item) => item.value === draft.imageSize)),
@@ -132,8 +143,11 @@ Component({
             if (!draft)
                 return;
             draft.configurationMode = event.currentTarget.dataset.mode === 'advanced' ? 'advanced' : 'simple';
+            const registry = this.getRegistry();
+            if (!registry)
+                return;
             if (draft.configurationMode === 'simple')
-                draft.modelRoutes = (0, model_routing_1.providerDefaultRoutes)(draft.simpleProvider, this.properties.registry);
+                draft.modelRoutes = (0, model_routing_1.providerDefaultRoutes)(draft.simpleProvider, registry);
             this.setData({ draft });
             this.refreshPresentation();
         },
@@ -147,7 +161,10 @@ Component({
             if (!provider)
                 return;
             draft.simpleProvider = provider;
-            draft.modelRoutes = (0, model_routing_1.providerDefaultRoutes)(provider, this.properties.registry);
+            const registry = this.getRegistry();
+            if (!registry)
+                return;
+            draft.modelRoutes = (0, model_routing_1.providerDefaultRoutes)(provider, registry);
             this.setData({ draft });
             this.refreshPresentation();
         },
@@ -237,11 +254,28 @@ Component({
             draft.maxCriticRounds = ((_a = this.data.criticOptions[Number(event.detail.value) || 0]) === null || _a === void 0 ? void 0 : _a.value) || 0;
             this.setData({ draft, criticIndex: Number(event.detail.value) || 0 });
         },
+        onMiniMaxRegionChange(event) {
+            var _a;
+            const draft = this.data.draft;
+            if (!draft)
+                return;
+            const region = Number(event.detail.value) === 1 ? 'cn' : 'global';
+            if (region === 'cn' && !((_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providerRegionContractVersion)) {
+                this.setData({ error: '当前服务端尚未支持 MiniMax 国内区域。' });
+                return;
+            }
+            draft.providerRegions = { minimax: region };
+            if (region === 'global' && draft.modelRoutes.image.accessProvider === 'minimax' && draft.modelRoutes.image.modelId === 'image-01-live')
+                draft.modelRoutes.image.modelId = 'image-01';
+            this.setData({ draft, error: '' });
+            this.refreshPresentation();
+        },
         onKeyInput(event) {
+            var _a;
             const provider = String(event.currentTarget.dataset.provider || '');
             if (provider === 'ark' && this.data.draftKeys.ark !== event.detail.value)
                 (0, ark_verification_1.clearArkVerification)();
-            const draftKeys = { ...this.data.draftKeys, [provider]: event.detail.value };
+            const draftKeys = { ...this.data.draftKeys, [(0, provider_regions_1.regionApiKeySlot)(provider, (_a = this.data.draft) === null || _a === void 0 ? void 0 : _a.providerRegions)]: event.detail.value };
             this.setData({ draftKeys });
             this.refreshPresentation();
         },

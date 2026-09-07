@@ -50,6 +50,7 @@ export async function createJobRequest(apiBase, health, payload) {
         provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
         apiKeys: payload.apiKeys,
         modelRoutes: payload.modelRoutes,
+        providerRegions: payload.providerRegions,
         taskName: payload.taskName,
         methodContent: payload.methodContent,
         negativePrompt: payload.negativePrompt,
@@ -173,6 +174,7 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
         provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
         apiKeys: payload.apiKeys,
         modelRoutes: payload.modelRoutes,
+        providerRegions: payload.providerRegions,
         mainModelName: payload.mainModelName,
         imageModelName: payload.imageModelName,
         referenceVisionModelName: payload.referenceVisionModelName,
@@ -207,6 +209,7 @@ export async function optimizeInputsRequest(apiBase, health, payload) {
         target: payload.target,
         inputs: payload.inputs,
         mainRoute: payload.mainRoute,
+        providerRegions: payload.providerRegions,
         apiKey: payload.apiKey,
       }),
     });

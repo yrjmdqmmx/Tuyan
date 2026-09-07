@@ -13,6 +13,7 @@ function buildCreateJobPayload(input) {
         vision: { accessProvider: input.provider, modelId: String(input.referenceVisionModelName || '') },
     };
     const modelSubmission = (0, model_routing_1.buildModelSubmission)({
+        providerRegions: input.providerRegions,
         configurationMode: input.configurationMode,
         modelRoutes,
         registry: input.registry || null,
@@ -38,7 +39,7 @@ function buildCreateJobPayload(input) {
         action: 'createJob',
         clientPlatform: 'miniprogram',
         ...modelSubmission,
-        apiKeys: (0, model_routing_1.scopedApiKeysForRoles)(modelRoutes, routeRoles, providedKeys),
+        apiKeys: (0, model_routing_1.scopedApiKeysForRoles)(modelRoutes, routeRoles, providedKeys, input.providerRegions),
         taskName,
         methodContent: input.methodContent.trim(),
         caption: input.caption.trim(),

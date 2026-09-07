@@ -1,0 +1,262 @@
+{
+  "catalogVersion": "2026-09-07.v14",
+  "recordedAt": "2026-09-07T12:48:27.505327+00:00",
+  "branch": "codex/model-capabilities-20260907",
+  "baseCommit": "800c91fc7e1d23588771bfb2703ad25a006c6e21",
+  "implementationState": "local working-tree changes; not committed, pushed or deployed",
+  "checks": {
+    "coreFull": {
+      "command": "pnpm --filter @paperbanana/paperbanana-api test",
+      "result": {
+        "tests": 445,
+        "pass": 445,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "72b6624e114ff19add148153c1b698e36db0a38a838260e7fccc50ddca1b4360"
+    },
+    "webFull": {
+      "command": "pnpm --filter @paperbanana/web test",
+      "result": {
+        "tests": 340,
+        "pass": 340,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "ec201cc8e27d945843b6831bf0b889065eefac16de2c615c146b8cfe0761f283",
+      "notes": "Rerun after OpenAcad workspace and leaderboard navigation links."
+    },
+    "sharedLafMiniAndRootFull": {
+      "command": "node --test apps/miniprogram/tests/*.test.cjs apps/laf-functions/tests/*.test.cjs packages/api/src/*.test.js tests/*.test.mjs tests/client-platform/*.test.mjs",
+      "result": {
+        "tests": 70,
+        "pass": 70,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "a89725f7c712c6df03c99bf3b39761f266926ba6162f0e50ca73602631f2eab3"
+    },
+    "deploymentFullBeforeContractCorrection": {
+      "command": "node --test deploy/hk-single-host/tests/*.test.mjs deploy/sg-egress/tests/*.test.mjs",
+      "result": {
+        "tests": 331,
+        "pass": 330,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "34b9c5beca77b96cfd7f3fa90a9ea751a32c418b07b479426dbcec76da6acd3d"
+    },
+    "deploymentAffectedFilesAfterCorrection": {
+      "command": "node --test deploy/hk-single-host/tests/contracts.test.mjs deploy/sg-egress/tests/contracts.test.mjs",
+      "result": {
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "bebbcbb1ddb15d59ff528ff3c5a092fdfe6e06cf30e09b770883e4dfed1c704b"
+    },
+    "openrouterExportAfterTestHelperCleanup": {
+      "command": "TUYAN_CATALOG_REVIEW_OUTPUT=<public-catalog-output.json> node --import tsx --test --test-name-pattern=\"current OpenRouter public catalog\" tests/legacy-composition.test.ts (cwd=apps/paperbanana-api)",
+      "result": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "39eb12d72a36afc74b1ba9e8dbe818cc6328fec4416e2a7465df4a429331e7ba"
+    },
+    "miniCurrentPublicCatalog": {
+      "command": "TUYAN_MINI_OPENROUTER_SNAPSHOT=<public-catalog-output.json> node --test apps/miniprogram/tests/model-registry-view-boundary.test.cjs",
+      "result": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "0fd6f979bfcf855b29736973cfd0a5b2e2b16ec116931bc2c95200ecaf1589c7"
+    }
+  },
+  "deploymentNote": "Both old host-list documentation assertions found in the two full runs are corrected. Affected HK/SG contract files passed 47/47 afterward. No full 331-test rerun after that correction is claimed.",
+  "coverage": {
+    "legalImageSizeSelections": 15502,
+    "extendedBackendImageDispatches": 7345,
+    "officialSchemaOperations": 177,
+    "officialSchemaSelections": 4877,
+    "openrouterAdaptedImageModels": 45,
+    "openrouterImageDispatches": 1446,
+    "miniView": {
+      "registryBytes": 1362591,
+      "maxPatchBytes": 16277,
+      "checkedResolutionOptions": 1472
+    },
+    "miniGrowthRegistryBytes": 2828587,
+    "miniGrowthMaxPatchBytes": 13727
+  },
+  "builds": {
+    "coreTypes": {
+      "passed": true,
+      "command": "pnpm --filter @paperbanana/paperbanana-api check",
+      "logSha256": "c85796fb2cb988892b77c83fc5870ed55361611a948d7c9eb59077ca7f0c8a52"
+    },
+    "coreBuild": {
+      "passed": true,
+      "command": "pnpm --filter @paperbanana/paperbanana-api build",
+      "logSha256": "015532416a1968316a4def915155c3c7ed6f3011cd24b96efb4eefeb5f223f04"
+    },
+    "webBuild": {
+      "passed": true,
+      "command": "pnpm --filter @paperbanana/web build",
+      "logSha256": "0d8d1ece2a4c0501be733bf266d6ecc07bbdd0d9f6c44ae93e592a760dff9254"
+    },
+    "miniTypes": {
+      "passed": true,
+      "command": "pnpm --filter @paperbanana/miniprogram check",
+      "logSha256": "a9ff3cbd498ff8162f3078c5edb6908a9d41b4a38227d325178d62f925da3b96"
+    },
+    "miniBuild": {
+      "passed": true,
+      "command": "pnpm --filter @paperbanana/miniprogram build",
+      "logSha256": "9e43ee95532f4d0d6b9cb0859efa95dcf8b3be1a74897c94aebee965bbbbc54b"
+    }
+  },
+  "catalogConsistency": {
+    "command": "node scripts/sync-model-catalog.mjs --check",
+    "staticModels": 669,
+    "drift": false
+  },
+  "browser": {
+    "target": "http://127.0.0.1:5187",
+    "api": "loopback catalog fixture; inference actions rejected",
+    "observations": [
+      "Single MiniMax provider label",
+      "China region official API and key portal",
+      "Image-01 Live present only for China",
+      "Live auto plus seven fixed ratios",
+      "Global switch removes Live and selects image-01",
+      "No incompatible model list"
+    ],
+    "realKeysEntered": false
+  },
+  "miniPackageEstimate": {
+    "runnableFileBytesBeforeMinification": 1490787,
+    "officialDeveloperToolsPackaged": false
+  },
+  "release": {
+    "pushed": false,
+    "ciTriggered": false,
+    "coreDeployed": false,
+    "webDeployed": false,
+    "sgAclApplied": false,
+    "miniUploaded": false,
+    "miniPublished": false,
+    "paidInference": false,
+    "accountEntitlementsVerified": false
+  },
+  "knownLimits": [
+    "Official documents and public schemas do not prove account entitlement or regional network access.",
+    "Stability Flash body ID and stale enum require real account acceptance.",
+    "Together image routes without exact per-model size constraints expose only provider-default sizes.",
+    "Web build retains a large-chunk warning.",
+    "Mini Program upload remains paused."
+  ],
+  "sourceFileSha256": {
+    "SYNC.md": "0713723e394c4965c62774cc40635725defc70207c1f28c97464163c9c9e2aa8",
+    "apps/laf-functions/paperbanana-api.ts": "1ea0cce4353ebcc585f8e6def3aebfdb3814cfab6dbdca09be854b2280cf0684",
+    "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.js": "01251cf266aa15a1a431faae37921324d2b6de95333f084434d57f2f8c4c2928",
+    "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.ts": "8a07628a6388c6b912b8ea9f9dd65fbb6ce9a833b12589d5ba4f8b223f67d960",
+    "apps/miniprogram/miniprogram/components/generation-settings-sheet/generation-settings-sheet.wxml": "e6fede08480b94af2e5019772b6affd6e2cf4e9253d775b9f90a91e350694d0e",
+    "apps/miniprogram/miniprogram/components/model-picker/model-picker.js": "e46a890308b67b9c4c2461034bde752c92c1752b246cd8cc1e3d1a5d0040742b",
+    "apps/miniprogram/miniprogram/components/model-picker/model-picker.ts": "f7c867ed7b43b090efb79b7fca6b5ef06b6d18b5dbb86aec39e484de8cab3718",
+    "apps/miniprogram/miniprogram/components/model-picker/model-picker.wxml": "b2f3792b21fb30d52303d3d8107546129989782b21fe0914d5cb94b6bcf68892",
+    "apps/miniprogram/miniprogram/pages/index/index.js": "e506acdee988a61247c6491960ac85f3714e213afc69833b62e623ffe62f2afc",
+    "apps/miniprogram/miniprogram/pages/index/index.ts": "29efb4fae0c9eccad2c506e06604385236c470a0a5467d610989f9bf920a0835",
+    "apps/miniprogram/miniprogram/pages/index/index.wxml": "cff8ed6469e87ee9a8ae789d691d1c8fb1b019bef92b7bd12fd98ecbb0cf80dd",
+    "apps/miniprogram/miniprogram/pages/refine/refine.js": "198431e81bbc5cc3ae1615b6c1c44699501f4a4d37b7e9c52eb3d765e2a4bba3",
+    "apps/miniprogram/miniprogram/pages/refine/refine.ts": "93ccd3d3482d42e7b494f1b053c5a35439e5c461f3947c6d5c9a103ed7020952",
+    "apps/miniprogram/miniprogram/pages/refine/refine.wxml": "a21562c25cfd1c8f4c9a0735c7362f1583f3b6a635e68b8a47661fe849866b6d",
+    "apps/miniprogram/miniprogram/utils/api-keys.js": "4975dbf252a6645ad96267df35a0adcac99f3af9bb1ac48f187ff603fbbe6b58",
+    "apps/miniprogram/miniprogram/utils/api-keys.ts": "dc48c7ccfcf832c6d2cb206134bdff594e40e003b85e08b317c409e135aa40d3",
+    "apps/miniprogram/miniprogram/utils/aspect-ratios.js": "60c0145845d7b67808a4c53095bd0635a1907ad548226ea020c23037cd50ef63",
+    "apps/miniprogram/miniprogram/utils/aspect-ratios.ts": "6c11eef24def88efbeec05f6caf473d87b12f9142314015a29994363edaa0eec",
+    "apps/miniprogram/miniprogram/utils/constants.js": "88e92aaf02773a4a29d3e6c824dc3d9dd152644e6707cc329c2185037d54e3bb",
+    "apps/miniprogram/miniprogram/utils/constants.ts": "2714ade9a2829817bd91def75192bbc1640bfefc6be56b116897b69b3ec7cd7e",
+    "apps/miniprogram/miniprogram/utils/model-registry.js": "5c100d56b2b427ebbabe5cfae0f1745d8f7a024d59cf68cbe8b82334c52b2b14",
+    "apps/miniprogram/miniprogram/utils/model-registry.ts": "4c5869124a8fc156dc7e66b8edeab2c47bb277237eeb97dbcc207b941e14b3b7",
+    "apps/miniprogram/miniprogram/utils/model-routing.js": "0164658ece24867aa9168407c18a43101218510569b94a109eba59f19e585748",
+    "apps/miniprogram/miniprogram/utils/model-routing.ts": "1c37e7ba2cf709553b5f2116eaff083c802f448d05c28eb80cb53247f31b300a",
+    "apps/miniprogram/miniprogram/utils/payload.js": "de1570e29431f0eccbe53fa406404d030c9bf15ee217de212aca58a739ec2047",
+    "apps/miniprogram/miniprogram/utils/payload.ts": "180500ee8b7b80b3c150858f7095d85c306bda8428457916718ffb9875736564",
+    "apps/miniprogram/miniprogram/utils/provider-regions.js": "417095c84441c41de303bebf3065dc0e19f7902fef560a07f13b808cffa2b200",
+    "apps/miniprogram/miniprogram/utils/provider-regions.ts": "6ef12701aeb3a9fcca685ad4b1f1960392a0b2b7f4c48c8f125d46eda15c8230",
+    "apps/miniprogram/miniprogram/utils/refine.js": "83fd5cf3ea96dc797cf83a048805b62529d6ddf65dd42882342d8d4753d8d2e8",
+    "apps/miniprogram/miniprogram/utils/refine.ts": "6c86ea0753bdf8bfbcb1fbc0aa9f93f9083db4bb6a9e5b95c3dc1505ff30966a",
+    "apps/miniprogram/miniprogram/utils/static-model-catalog.js": "6a10713105583459d18c8352b5716c825b599b51914d1916cf8e67e68be8d378",
+    "apps/miniprogram/miniprogram/utils/static-model-catalog.ts": "fde31720d3aae4beb1b1ad32ffe0f7b6c85bba44671017762071f60242058ca3",
+    "apps/miniprogram/tests/aspect-ratios.test.cjs": "816ba1367cbb1d2cb221584675d0cbd981573a7ff45092bd2d9dce1bd95fdf8a",
+    "apps/miniprogram/tests/model-picker-flow.test.cjs": "6b0d211592eabeec7fc741f775a13b66811f6c3d356a83e5bcf8a408215933e5",
+    "apps/miniprogram/tests/model-registry-view-boundary.test.cjs": "9daa72f9026797b87b2d02a6d4dbca4fb8da81daf2d471aa4f10ce1712660c47",
+    "apps/miniprogram/tests/model-registry.test.cjs": "ab55acc641b3659fa5df262143966512dd9453723042d71541e8fabdcdbc75cd",
+    "apps/miniprogram/tests/model-routing.test.cjs": "ea569c8a2aefb2a2e4e2d6099c944f34ba60645f3cbd551a570a0488bcae8b22",
+    "apps/paperbanana-api/README.md": "3f9afde53f7d96409d602e47c449bd4baf43b06870eaab9575503bc7e89f94d7",
+    "apps/paperbanana-api/src/legacy-entry.d.mts": "e4927708a7834d14569155f7c1be63d239a9296ab1552ce772417bd82e8d80c8",
+    "apps/paperbanana-api/src/provider-egress.ts": "1e4a97f1cb52a27162b362a42ecb3909cf6c263593495de7d49369dd52b5cea5",
+    "apps/paperbanana-api/tests/image-channel-adapters.test.ts": "a3f1b28cb3ae75af9095b6f024f4ead18a694411fbffa7b54642165a2cdef1da",
+    "apps/paperbanana-api/tests/image-size-contract.test.ts": "c8b718ad324508b530044327032bf90246e294d7f0179c12edeffed879ff5921",
+    "apps/paperbanana-api/tests/legacy-composition.test.ts": "401a489619de6d3707eecd67c9658a7541347b39428056623d4f50d79ffdeada",
+    "apps/paperbanana-api/tests/model-channel-contracts.test.ts": "007dec51e0659684e532f548feabbde504ae047b51cff3a4eb6e0af51a159593",
+    "apps/paperbanana-api/tests/provider-egress.test.ts": "f9fc84265b1f9a17e8cb6916fdf3dd3a128389de4058bed9f4ba6f6e3bafdf62",
+    "apps/paperbanana-api/tests/provider-regions.test.ts": "182bab6123b6661b4d4036fa9c86f9638b2e1cb67bd299ee603b133257af18e7",
+    "apps/web/src/App.jsx": "30052c974bc674155212b096249eef59bd0d3d9e0c94ca2d61a2bb21ea750e23",
+    "apps/web/src/components/LeaderboardRoot.jsx": "2242dd412cd5679e3901b43ec9057d9bf28acc3a535504854d225586f62bb615",
+    "apps/web/src/components/LeaderboardRoot.test.js": "db51e10af1cfeb1eb5da500908ab5084e42d310a0102dd6afa26aa2598bffc33",
+    "apps/web/src/components/ModelPicker.jsx": "3260b913d21746909704cc7f07f99b7e8c61edd51cc8f4ed292e546e39f1cd3b",
+    "apps/web/src/components/ModelRoutingSettings.jsx": "53fbe6dfddeb0432d07867c81c6d0dd09332188f0f418fae4a203ff3f986f213",
+    "apps/web/src/constants.js": "9fe69f13d23e47b4b70f5d62ea28e51a2d375db7d5ea77e09d38f532b587ffbc",
+    "apps/web/src/lib/aspectRatios.js": "23e8b681c3bae1e19d0cf242b32fae0e005eb07a172adcc1024106ffba5c2cf2",
+    "apps/web/src/lib/aspectRatios.test.js": "591086c56bc836d410572e4d185955f79ae12d0d40929a5f0b1a964e12749e5a",
+    "apps/web/src/lib/modelRegistry.js": "d2d83856c1d59b05198042925ac92e39f13e1285b7184c6733f2222a1f5b1cc3",
+    "apps/web/src/lib/modelRegistry.test.js": "4d72ea1c1582b23f212552165b16d79bf8a104b0d0c16efdfc2dae11fabdcbde",
+    "apps/web/src/lib/modelRouting.js": "beefa74217bd0f1028b638f1bda652990e91c1073c9ca02c0ce5fcd9d8dee10f",
+    "apps/web/src/lib/modelRouting.test.js": "ea70e567bc148dfed4a3fdc62742c753a6b745f863f46beea1994a5643aca51f",
+    "apps/web/src/lib/providerRegions.js": "6b07afe5a2585f3e8632d96971f38e31eeddec2b3c2f5d55926784cd84cc95d8",
+    "apps/web/src/lib/staticModelCatalog.js": "74bbc9b2dce84ac71c18bb1bc5141f08f68886bb313ed0dc7da5539358c3886c",
+    "apps/web/tests/featured-app-integration.test.mjs": "0642e761bf7a77e88da4d3edd582b3b8f6685f2185a878562c643d444c4d90b3",
+    "apps/web/tests/featured-studio-and-ratio.test.mjs": "c77c1778535e3b7e4973872a32808861f424ef7e5cb58a87632c427cb7d54c35",
+    "apps/web/tests/generation-drawer-contract.test.mjs": "8ce3cba5656bcecf71634925b9710e0a9f882966eb89b30755458f36af4ad128",
+    "apps/web/tests/multi-provider-app.test.mjs": "c3aeff8dd122d560bd8996b08ed27eb3c5e05756d9b1d2f13d6eb63b176ce2dd",
+    "apps/web/tests/rendered-interactions.test.mjs": "1f399e47a248a88669e282bcb67896dd2dd7161213bbfca9561425264e434d89",
+    "config/image-channel-routes.json": "738090caf42903f75dd64704559b47da77ae1e0e8f6e040c252f7b19bec21828",
+    "config/image-size-contracts.json": "b2ca5f52d5cfb784ebfe058e8363b50c2b02cf7df520c302af15466ac71eb356",
+    "config/model-catalog-audit.json": "864c317dbac40d48cbcc634da58916d83b446b6c9ca43975f064ddb9f9d67b8e",
+    "config/model-catalog-updates.json": "578c20ffe48da04f37ecdefc43fa507d70a89ef0a3cf907819ab42f6b4d39909",
+    "config/model-channel-schemas.json": "eb97cb8a4a71843d49eb24d88283d3d17cf8a90152340cb52e9b49c62227ebd9",
+    "config/openrouter-catalog-review.json": "ece3a728a9f8b8f662856ff3466dfcb39c1c189106e14e500559202428fbcb96",
+    "deploy/hk-single-host/tests/contracts.test.mjs": "b2ce8de155a74c3b27809e40b6da755fe28d89d3ecf19e9c547b6b800b7ec37a",
+    "deploy/sg-egress/README.md": "0b8a94e07bd69f890e4edeb1c68a182a96b068f0dff9510d670ef96d452cded8",
+    "deploy/sg-egress/scripts/install-egress.sh": "c977b016456eec22f2fecdb406a44e8f00c51316e344b00063d4134fe5d2d975",
+    "deploy/sg-egress/tests/contracts.test.mjs": "5facbc35bf39517ac1ef1a8880f71c5bb6693b689e959bf029478a84be6a6e51",
+    "packages/api/src/image-channel-adapters.ts": "5f6932101ec51f83f9597dbd6f8941fb6ac9f33b02aa83b7cdb30dea594be36d",
+    "packages/api/src/image-channel-routes.ts": "01f8717347dc7c89276dd697bb7efde85a17ac75efd939f6a2d8c616e722afe5",
+    "packages/api/src/jobs.js": "0343e5ebf68c2f332b73f4eae5a0a5c991d9c8e71dc100831d0dbd4d885b3448",
+    "packages/types/src/image-size-contract.ts": "6d3256d97d483d161dd2d15d38accf4751c7238f57d1e43552e71fabceaba88d",
+    "packages/types/src/index.ts": "9d87d9a18ca893723edcc56122c072ea796ca5dd7365dced353e0cfc7270ce41",
+    "packages/types/src/provider-regions.ts": "1a844d67646555d307a1a87fa33161cb7de5f3810da06dec6cb8a7e4a1933855",
+    "scripts/sync-model-catalog.mjs": "3ac88dca9cc86e859f845138a884590fdb66e27d55cdccd3561da60f1bfb59d4",
+    "tests/model-catalog-source-contract.test.mjs": "a995998588ede0b0835440a33d29f6b5fac9976981f00fc5fe8fddae74bb46bb"
+  }
+}

@@ -61,3 +61,10 @@ clearApiKeys()
 assert.deepEqual(getApiKeys(), {})
 
 assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'svg', pipelineMode: 'vanilla', modelRoutes: vectorRoutes }, 0), ['image'])
+
+const minimaxRoutes = {main:{accessProvider:'minimax',modelId:'MiniMax-M3'},image:{accessProvider:'minimax',modelId:'image-01'},vision:{accessProvider:'minimax',modelId:'MiniMax-M3'}}
+const regionInput = {configurationMode:'simple',modelRoutes:minimaxRoutes,providerRegions:{minimax:'cn'},registry:{routeContractVersion:1,providerRegionContractVersion:1}}
+assert.deepEqual(buildModelSubmission(regionInput).providerRegions,{minimax:'cn'})
+assert.throws(()=>buildModelSubmission({...regionInput,registry:{routeContractVersion:1}}),/MiniMax 国内区域/)
+assert.deepEqual(scopedApiKeysForRoles(minimaxRoutes,['main','image'],{minimax:'legacy-global','minimax:cn':'china-key','minimax:global':'global-key'},{minimax:'cn'}),{minimax:'china-key'})
+assert.deepEqual(scopedApiKeysForRoles(minimaxRoutes,['image'],{minimax:'legacy-global'},{minimax:'cn'}),{minimax:''})

@@ -33,14 +33,18 @@ const registry = {
 
 let restoreFetch
 
-function installBackend({ failFeatured = false } = {}) {
+function installBackend({ failFeatured = false, imageCapabilities } = {}) {
   const requests = []
   const previousFetch = globalThis.fetch
   globalThis.fetch = async (input, init = {}) => {
     const body = init.body ? JSON.parse(String(init.body)) : null
     requests.push({ url: String(input), body })
     if (!body) return Response.json({ code: 0, runtime: 'laf' })
-    if (body.action === 'modelRegistry') return Response.json({ code: 0, ...registry })
+    if (body.action === 'modelRegistry') {
+      const result = structuredClone(registry)
+      if (imageCapabilities) Object.assign(result.providers.bailian.models[2].capabilities, imageCapabilities)
+      return Response.json({ code: 0, ...result })
+    }
     if (body.action === 'referenceLibrary') {
       if (failFeatured) return Response.json({ code: 500, error: 'featured unavailable' })
       return Response.json({
@@ -158,7 +162,29 @@ test('model capability changes normalize an unsupported fixed ratio to auto', as
 test('refine panel renders all ratios and consumes refineAspectRatios truthfully', async () => {
   const { user } = await renderReady()
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  assert.equal((await screen.findAllByRole('button', { name: /^目标比例 /u })).length, 27)
+  assert.equal((await screen.findAllByRole('button', { name: /^目标比例 /u })).length, 46)
   assert.equal(screen.getByRole('button', { name: '目标比例 2:3' }).disabled, false)
   assert.equal(screen.getByRole('button', { name: /目标比例 4:1，图像模型 Gamma 不支持 4:1 比例/u }).disabled, true)
+})
+
+
+test('changing resolution clears an incompatible selected ratio in generation and refinement', async () => {
+  const { user } = await renderReady({ imageCapabilities: {
+    refineResolutions: ['1K', '2K'],
+    aspectRatiosByResolution: { '1K': ['1:1','16:9'], '2K': ['1:1','16:9','4:1'] },
+    refineAspectRatiosByResolution: { '1K': ['1:1'], '2K': ['1:1','2:3'] },
+  } })
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
+  await user.selectOptions(screen.getByLabelText('输出清晰度'), '2K')
+  await user.click(screen.getByRole('button', { name: '画面比例 4:1' }))
+  await user.selectOptions(screen.getByLabelText('输出清晰度'), '1K')
+  await waitFor(() => assert.equal(screen.getByRole('button', { name: '画面比例 自动' }).getAttribute('aria-pressed'), 'true'))
+  assert.equal(screen.getByRole('button', { name: /画面比例 4:1，/u }).disabled, true)
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
+  await user.click(screen.getByRole('button', { name: '精修图片' }))
+  await user.selectOptions(screen.getByLabelText('清晰度'), '2K')
+  await user.click(screen.getByRole('button', { name: '目标比例 2:3' }))
+  await user.selectOptions(screen.getByLabelText('清晰度'), '1K')
+  await waitFor(() => assert.equal(screen.getByRole('button', { name: '目标比例 自动' }).getAttribute('aria-pressed'), 'true'))
+  assert.equal(screen.getByRole('button', { name: /目标比例 2:3，/u }).disabled, true)
 })
