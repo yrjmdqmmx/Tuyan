@@ -1,0 +1,488 @@
+{
+  "recordedAt": "2026-09-07T15:59:08.610944+00:00",
+  "pr": 172,
+  "deploymentSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+  "runs": {
+    "benchmarkBuild": {
+      "conclusion": "success",
+      "createdAt": "2026-09-07T15:46:22Z",
+      "headSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+      "id": 34139994411,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "name": "build",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-07T15:47:22Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34139994411",
+      "workflowName": "Publish Benchmark Worker Image"
+    },
+    "mergeCi": {
+      "conclusion": "success",
+      "createdAt": "2026-09-07T15:45:52Z",
+      "headSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+      "id": 34139952455,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "name": "mongo-index-migration",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "node",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "images",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-07T15:49:09Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34139952455",
+      "workflowName": "CI"
+    },
+    "branchCi": {
+      "conclusion": "success",
+      "createdAt": "2026-09-07T15:35:27Z",
+      "headSha": "bd039f1711f958a7b77596ada87ab91fae710d4a",
+      "id": 34139086433,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "name": "node",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "images",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "mongo-index-migration",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-07T15:39:19Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34139086433",
+      "workflowName": "CI"
+    },
+    "coreBuild": {
+      "conclusion": "success",
+      "createdAt": "2026-09-07T15:46:21Z",
+      "headSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+      "id": 34139992780,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "name": "build",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-07T15:47:19Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34139992780",
+      "workflowName": "Publish Core API Image"
+    },
+    "pages": {
+      "conclusion": "success",
+      "createdAt": "2026-09-07T15:54:21Z",
+      "headSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+      "id": 34140656406,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "name": "build",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "deploy",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-07T15:56:06Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34140656406",
+      "workflowName": "Deploy GitHub Pages"
+    },
+    "prCi": {
+      "conclusion": "success",
+      "createdAt": "2026-09-07T15:36:28Z",
+      "headSha": "bd039f1711f958a7b77596ada87ab91fae710d4a",
+      "id": 34139172623,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "name": "mongo-index-migration",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "node",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "images",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-07T15:40:16Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34139172623",
+      "workflowName": "CI"
+    },
+    "hk": {
+      "conclusion": "success",
+      "createdAt": "2026-09-07T15:52:07Z",
+      "headSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+      "id": 34140472043,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "name": "deploy",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-07T15:53:30Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34140472043",
+      "workflowName": "Deploy Hong Kong Production"
+    }
+  },
+  "approvals": [
+    {
+      "comment": "用户已授权图研 v15 上线；PR #172 与合并提交 b96d507 的 CI 已通过，使用对应不可变镜像部署 Web/Core，微信小程序暂缓。",
+      "environments": [
+        "paperbanana-production"
+      ],
+      "state": "approved",
+      "user": "yrjmdqmmx"
+    }
+  ],
+  "runtime": {
+    "codeSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+    "services": [
+      {
+        "service": "paperbanana-api",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:f631bcc118a64510f8b26faac3d1bce4422600cde2612cb962e25ce7d4e86bd5",
+        "health": "healthy",
+        "codeSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+        "egressMode": "sg-required"
+      },
+      {
+        "service": "benchmark-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:5a55e529d88491d5c77b274aa740dfd232899aaefa18585649f0f2c9a94145a9",
+        "health": "healthy",
+        "codeSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+        "enabled": false
+      },
+      {
+        "service": "auth-gateway",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:9feee7f1744bfcdf2eec970bfb84349255e1ad62ea22ff99b4e94daeb2f3d058",
+        "health": "healthy"
+      },
+      {
+        "service": "plot-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy"
+      },
+      {
+        "service": "mongodb",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy"
+      }
+    ],
+    "checks": {
+      "health": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-07T15:53:49.934Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "laf": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-07T15:53:49.934Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true,
+            "checkedAt": "2026-09-07T15:53:49.916Z"
+          },
+          "backend": {
+            "mode": "node",
+            "ok": true,
+            "checkedAt": "2026-09-07T15:53:49.934Z",
+            "status": 200,
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        }
+      },
+      "ready": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "laf": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true
+          },
+          "backend": {
+            "ok": true,
+            "status": 200,
+            "data": {
+              "ok": true,
+              "service": "paperbanana-api",
+              "runtime": "node",
+              "version": "0.1.0",
+              "ready": true,
+              "dependencies": {
+                "mongodb": "ready",
+                "oss": "ready",
+                "providerEgress": "ready",
+                "benchmark": "ready"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "registry": {
+    "checkedAt": "2026-09-07T15:53:58.886Z",
+    "catalogVersion": "2026-09-07.v15",
+    "providerRegionContractVersion": 1,
+    "staticModels": 669,
+    "fieldChecks": 14049,
+    "providerCounts": {
+      "deepseek": 3,
+      "kimi": 4,
+      "zhipu": 27,
+      "siliconflow": 63,
+      "anthropic": 11,
+      "recraft": 16,
+      "xai": 9,
+      "gemini": 15,
+      "bailian": 176,
+      "openai": 62,
+      "ark": 29,
+      "bfl": 12,
+      "stability": 6,
+      "ideogram": 13,
+      "minimax": 10,
+      "mistral": 15,
+      "together": 47,
+      "fireworks": 22,
+      "fal": 40,
+      "replicate": 89,
+      "openrouter": 466
+    },
+    "openrouterModels": 466,
+    "openrouterImageModels": 45,
+    "removedOpenrouterIds": [
+      "meta/muse-image",
+      "recraft/recraft-v4-styles",
+      "recraft/recraft-v4-styles-pro",
+      "recraft/recraft-v4-styles-pro-vector",
+      "recraft/recraft-v4-styles-vector"
+    ],
+    "benchmarkReleaseId": "bench-scientific-v2-release-1f652f6370203d1ecf6a",
+    "benchmarkReleaseHash": "1f652f6370203d1ecf6a8f8ce679097b968b412cd4ab0bdf0362e3a5dce9d482",
+    "benchmarkModels": 41,
+    "benchmarkUnchanged": true
+  },
+  "web": {
+    "checkedAt": "2026-09-07T15:57:08.309Z",
+    "assets": [
+      "https://www.paperbanana.asia/assets/appPaths-CcqO_JPo.js",
+      "https://www.paperbanana.asia/assets/main-DR8e5daZ.js"
+    ],
+    "browser": "Chrome / Playwright on production",
+    "url": "https://www.paperbanana.asia/",
+    "navigationMs": 2631.5,
+    "viewports": [
+      "1440x1000",
+      "390x844"
+    ],
+    "geometry": {
+      "drawer": {
+        "x": 130,
+        "y": 24,
+        "width": 1180,
+        "height": 952,
+        "top": 24,
+        "right": 1310,
+        "bottom": 976,
+        "left": 130
+      },
+      "rails": [
+        {
+          "width": 195,
+          "overflow": false
+        },
+        {
+          "width": 193,
+          "overflow": false
+        },
+        {
+          "width": 788,
+          "overflow": false
+        }
+      ],
+      "nameEllipsis": false
+    },
+    "checks": [
+      "canonical vendors",
+      "newest first",
+      "full ID clipboard",
+      "keyboard focus wraps within the model dialog",
+      "copy preserves dialog",
+      "direct channel vendor level",
+      "narrow three-step flow",
+      "no horizontal overflow",
+      "resolution-specific ratio filtering",
+      "invalid ratio normalized after model or resolution change"
+    ],
+    "errors": []
+  },
+  "localValidation": {
+    "core": 451,
+    "web": 342,
+    "miniFiles": 22,
+    "sharedApi": 28,
+    "repository": 10,
+    "legalSizeCombinations": 15502
+  },
+  "screenshots": [
+    {
+      "name": "web-desktop.png",
+      "sha256": "82f4d74fc2b5538c38cadf663384bc5fbb551858ab19c0528281d25059eb3605",
+      "storage": "local release verification artifacts"
+    },
+    {
+      "name": "web-narrow.png",
+      "sha256": "0b06502328a440bb72fe3666991227e6ea0c6cd739ea97d222e971229c4ceaf7",
+      "storage": "local release verification artifacts"
+    },
+    {
+      "name": "web-ratios.png",
+      "sha256": "bceb30cf54ef8d5204e859e8115ce41ca19720e6f470cae62d3ae6593d6d1c3f",
+      "storage": "local release verification artifacts"
+    }
+  ],
+  "verificationNotes": [
+    "The first browser run stopped because its read-only action allowlist omitted referenceLibrary. After reviewing that read handler, only the local verification script was corrected; the full browser run passed."
+  ],
+  "boundaries": {
+    "webAndCore": "published and verified",
+    "miniProgram": "native validation, upload and platform release deferred by user",
+    "providerInference": "not performed",
+    "benchmarkWorkerEnabled": false,
+    "sgChanged": false
+  },
+  "rollbackBaseline": {
+    "codeSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+    "services": [
+      {
+        "service": "paperbanana-api",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:d6e4b5c787daa531e0f87a93449c08e17a2f1568125a65c15eb2244d9cfa196e",
+        "health": "healthy",
+        "codeSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+        "egressMode": "sg-required"
+      },
+      {
+        "service": "benchmark-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:0a9aa868e2c653e73248f408a597878ce6aa1b96c7440b92108347bc892e40c5",
+        "health": "healthy",
+        "codeSha": "b4bbc0f1473479044509ed25416ad927a1546739",
+        "enabled": false
+      },
+      {
+        "service": "auth-gateway",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:9feee7f1744bfcdf2eec970bfb84349255e1ad62ea22ff99b4e94daeb2f3d058",
+        "health": "healthy"
+      },
+      {
+        "service": "plot-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy"
+      },
+      {
+        "service": "mongodb",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy"
+      }
+    ]
+  }
+}
