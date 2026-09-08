@@ -1,0 +1,421 @@
+{
+  "releaseDate": "2026-09-08",
+  "pr": 176,
+  "mergeSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+  "implementationSha": "d6795d3dceb3f8b3e0018743c1cdf39721982d42",
+  "rootCause": {
+    "registrationToFirstLinkFetchSeconds": 4,
+    "laterSameLinkFetchObserved": true,
+    "firstRequesterNotIdentified": true,
+    "legacyGetMutatedVerification": true
+  },
+  "workflows": {
+    "branchCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:31:19Z",
+      "databaseId": 34187282751,
+      "headSha": "d6795d3dceb3f8b3e0018743c1cdf39721982d42",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:34:57Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187282751"
+    },
+    "prCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:31:24Z",
+      "databaseId": 34187287815,
+      "headSha": "d6795d3dceb3f8b3e0018743c1cdf39721982d42",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:35:16Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187287815"
+    },
+    "mergedCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:35:59Z",
+      "databaseId": 34187560472,
+      "headSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:39:36Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187560472"
+    },
+    "gatewayImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:36:17Z",
+      "databaseId": 34187578391,
+      "headSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:36:57Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187578391"
+    },
+    "coreImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:36:19Z",
+      "databaseId": 34187580914,
+      "headSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:36:56Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187580914"
+    },
+    "benchmarkImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:36:22Z",
+      "databaseId": 34187583226,
+      "headSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:37:21Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187583226"
+    },
+    "webPages": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:40:28Z",
+      "databaseId": 34187824622,
+      "headSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:42:08Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187824622"
+    },
+    "hongKongDeploy": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T04:40:36Z",
+      "databaseId": 34187832204,
+      "headSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+      "status": "completed",
+      "updatedAt": "2026-09-08T04:47:16Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187832204"
+    }
+  },
+  "images": {
+    "gateway": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:6538d2a76a39c5367a23166fab0bcb36ea6e0e0396a0c3df54c992260a56dee6",
+    "core": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:f5ac2f2a3d64e60ab54947f4f8e9b993d239bf983df0df4d0969df18a2e3d8f8",
+    "benchmark": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:ca529814a2c3685a44fa399c2409173c5d90199cae3a738a987fe8476d7c7979",
+    "plot": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+    "mongo": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd"
+  },
+  "runtime": {
+    "codeSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+    "containers": {
+      "auth-gateway": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:6538d2a76a39c5367a23166fab0bcb36ea6e0e0396a0c3df54c992260a56dee6",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:6538d2a76a39c5367a23166fab0bcb36ea6e0e0396a0c3df54c992260a56dee6",
+        "imageId": "sha256:6538d2a76a39c5367a23166fab0bcb36ea6e0e0396a0c3df54c992260a56dee6",
+        "health": "healthy",
+        "revision": "2c82f49d962247353551540b8198dbb7034f69cd"
+      },
+      "paperbanana-api": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:f5ac2f2a3d64e60ab54947f4f8e9b993d239bf983df0df4d0969df18a2e3d8f8",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:f5ac2f2a3d64e60ab54947f4f8e9b993d239bf983df0df4d0969df18a2e3d8f8",
+        "imageId": "sha256:f5ac2f2a3d64e60ab54947f4f8e9b993d239bf983df0df4d0969df18a2e3d8f8",
+        "health": "healthy",
+        "revision": "2c82f49d962247353551540b8198dbb7034f69cd",
+        "provenance": {
+          "codeSha": "2c82f49d962247353551540b8198dbb7034f69cd"
+        }
+      },
+      "benchmark-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:ca529814a2c3685a44fa399c2409173c5d90199cae3a738a987fe8476d7c7979",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:ca529814a2c3685a44fa399c2409173c5d90199cae3a738a987fe8476d7c7979",
+        "imageId": "sha256:ca529814a2c3685a44fa399c2409173c5d90199cae3a738a987fe8476d7c7979",
+        "health": "healthy",
+        "revision": "2c82f49d962247353551540b8198dbb7034f69cd",
+        "provenance": {
+          "codeSha": "2c82f49d962247353551540b8198dbb7034f69cd"
+        }
+      },
+      "plot-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy"
+      },
+      "mongodb": {
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "lockedImage": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy"
+      }
+    },
+    "sourceHashes": {
+      "account-verification.js": "4a5e26d94da3ce831d264233320f015b8cbc1e2441463f8063385bdf8d2b976a",
+      "auth.js": "811ab8c965f6dd1acb434ab8c07193a9e593ccd2b409ef25799a05905a228189",
+      "email.js": "743b56f03e19faf7d09e7bda058bbaedd1dc36fdc55015d4d2fc48a810dd7488",
+      "redaction.js": "d4aaa1994e9c7eb1e605abb6ce9f1430b1983eb9ae955c45a6d105b79623f429"
+    },
+    "maintenanceCleared": true,
+    "unrelatedEnvironmentUnchanged": true,
+    "providerEgress": "sg-required",
+    "benchmarkExecutionEnabled": false
+  },
+  "publicHealth": {
+    "/health": {
+      "http": 200,
+      "ok": true,
+      "code": 0,
+      "keys": [
+        "code",
+        "ok",
+        "runtime",
+        "auth",
+        "authReady",
+        "backend",
+        "laf",
+        "dependencies"
+      ]
+    },
+    "/ready": {
+      "http": 200,
+      "ok": true,
+      "code": 0,
+      "keys": [
+        "code",
+        "ok",
+        "runtime",
+        "auth",
+        "authReady",
+        "backend",
+        "laf",
+        "dependencies"
+      ]
+    },
+    "modelRegistry": {
+      "http": 200,
+      "registryVersion": "2026-09-07.v15",
+      "providerRegionContractVersion": 1
+    }
+  },
+  "localTests": {
+    "gateway": 140,
+    "web": 353,
+    "webBuild": "passed",
+    "realMongoIntegration": "passed",
+    "realAuthBrowser": {
+      "browser": "Chrome via Playwright; Browser plugin not available",
+      "webBase": "http://127.0.0.1:5193",
+      "apiBase": "http://127.0.0.1:3108",
+      "viewports": [
+        "1440x1000",
+        "390x844 dark"
+      ],
+      "auth": "real Better Auth and disposable Mongo replica set",
+      "mail": "in-memory transport, no external delivery",
+      "checks": {
+        "legacyGetHeadPrefetchDoesNotVerify": true,
+        "pagePreviewWithJavaScriptDoesNotVerify": true,
+        "registrationStaysPendingUntilClick": true,
+        "explicitConfirmationPost": true,
+        "fragmentRemoved": true,
+        "pageIdentity": true,
+        "notBlank": true,
+        "noOverlay": true,
+        "consoleErrors": [],
+        "firstVerification": true,
+        "repeatCompletion": true,
+        "originalPageUpdatedWithoutRefresh": true,
+        "passwordCleared": true,
+        "explicitLogin": true,
+        "invalidLinkGuidance": true,
+        "mobileNoOverflow": true,
+        "noResend": true
+      },
+      "statusRequests": 3,
+      "screenshots": [
+        "confirmation-before-click-mobile.png",
+        "registration-still-pending.png",
+        "first-link-mobile.png",
+        "registration-updated.png",
+        "repeat-link-mobile.png",
+        "invalid-link-mobile.png"
+      ]
+    }
+  },
+  "productionBrowser": {
+    "checkedAt": "2026-09-08T04:48:10.367Z",
+    "sha": "2c82f49d962247353551540b8198dbb7034f69cd",
+    "site": "https://www.paperbanana.asia",
+    "api": "https://api.paperbanana.asia",
+    "checks": [
+      {
+        "viewport": 1440,
+        "loginEntry": true,
+        "notBlank": true,
+        "noOverflow": true,
+        "loadMs": 3571
+      },
+      {
+        "viewport": 1440,
+        "legacyGetHeadReadOnly": true,
+        "previewNoPost": true,
+        "explicitPostOnly": true,
+        "tokenRemoved": true,
+        "unknownTokenRejected": true
+      },
+      {
+        "viewport": 1440,
+        "landing": "TOKEN_USED",
+        "title": "邮箱已验证",
+        "noOverflow": true
+      },
+      {
+        "viewport": 1440,
+        "landing": "TOKEN_EXPIRED",
+        "title": "链接已失效",
+        "noOverflow": true
+      },
+      {
+        "viewport": 1440,
+        "landing": "VERIFICATION_UNAVAILABLE",
+        "title": "暂时无法确认验证结果",
+        "noOverflow": true
+      },
+      {
+        "viewport": 1440,
+        "invalidRedirect": true,
+        "fixedOrigin": true,
+        "returnToLogin": true,
+        "noSessionCreated": true
+      },
+      {
+        "viewport": 390,
+        "loginEntry": true,
+        "notBlank": true,
+        "noOverflow": true,
+        "loadMs": 2271
+      },
+      {
+        "viewport": 390,
+        "legacyGetHeadReadOnly": true,
+        "previewNoPost": true,
+        "explicitPostOnly": true,
+        "tokenRemoved": true,
+        "unknownTokenRejected": true
+      },
+      {
+        "viewport": 390,
+        "landing": "TOKEN_USED",
+        "title": "邮箱已验证",
+        "noOverflow": true
+      },
+      {
+        "viewport": 390,
+        "landing": "TOKEN_EXPIRED",
+        "title": "链接已失效",
+        "noOverflow": true
+      },
+      {
+        "viewport": 390,
+        "landing": "VERIFICATION_UNAVAILABLE",
+        "title": "暂时无法确认验证结果",
+        "noOverflow": true
+      },
+      {
+        "viewport": 390,
+        "invalidRedirect": true,
+        "fixedOrigin": true,
+        "returnToLogin": true,
+        "noSessionCreated": true
+      }
+    ],
+    "mail": "No external mail or production account writes",
+    "screenshots": [
+      "login-1440.png",
+      "confirmation-1440.png",
+      "verified-1440.png",
+      "invalid-1440.png",
+      "login-390.png",
+      "confirmation-390.png",
+      "verified-390.png",
+      "invalid-390.png"
+    ],
+    "sourceHashes": {
+      "email-verify.html": "17d4a719e5f6fd6a47bb8f9002d4a7df2d70dbdb59518bc8fa9a94ac588153ba",
+      "email-verify.js": "123106c0b0c6928aa018db4e833fc4c5d948be7b5c08db135aad6c5d4c7f16ae",
+      "email-verified.html": "97bbb449e62c9fbfb1b0c8f1b2f307836dba01fdb522b31b8c8a7b6a8b16d720",
+      "email-verified.js": "1f1ef55d824b586e1e67158f765b3a1a66c6c836b964eac80820a192340992f8"
+    },
+    "webAssets": [
+      "https://www.paperbanana.asia/assets/appPaths-Ba0fLi8f.js",
+      "https://www.paperbanana.asia/assets/main-CEnDB2Og.js"
+    ],
+    "statusEndpoint": {
+      "http": 200,
+      "cache": "no-store",
+      "body": {
+        "status": "pending"
+      }
+    },
+    "consoleErrors": [
+      {
+        "message": "Failed to load resource: the server responded with a status of 400 ()",
+        "location": {
+          "url": "https://api.paperbanana.asia/api/auth/verify-email",
+          "line": 0,
+          "column": 0,
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 400 ()",
+        "location": {
+          "url": "https://api.paperbanana.asia/api/auth/verify-email",
+          "line": 0,
+          "column": 0,
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      }
+    ],
+    "applicationErrors": [],
+    "expectedNegativeResponses": [
+      {
+        "message": "Failed to load resource: the server responded with a status of 400 ()",
+        "location": {
+          "url": "https://api.paperbanana.asia/api/auth/verify-email",
+          "line": 0,
+          "column": 0,
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      },
+      {
+        "message": "Failed to load resource: the server responded with a status of 400 ()",
+        "location": {
+          "url": "https://api.paperbanana.asia/api/auth/verify-email",
+          "line": 0,
+          "column": 0,
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      }
+    ],
+    "failedRequests": [
+      {
+        "path": "https://api.paperbanana.asia/api/auth/verify-email",
+        "status": 400
+      },
+      {
+        "path": "https://api.paperbanana.asia/api/auth/verify-email",
+        "status": 400
+      }
+    ],
+    "passed": true
+  },
+  "rollback": {
+    "codeSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+    "images": {
+      "auth-gateway": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:c1486e6fbb639a7df717c19b546156c2eac98995d8a5416f3d838fd3ccf9d479",
+      "paperbanana-api": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:3363866e3152afff79191b4fa428b4ef6afc8bb860e04f76792cfb5c5b177db3",
+      "benchmark-worker": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:8c6ae69cc3a78b589f4ce11269c5dd652768d40252b11d93e50a67676da3d444",
+      "plot-worker": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "mongodb": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd"
+    },
+    "protectedHostBackupCreated": true,
+    "triggered": false
+  },
+  "boundaries": {
+    "realEmailsSent": false,
+    "productionTestAccountsCreated": false,
+    "productionUserStateReset": false,
+    "real163ClientReproduced": false,
+    "miniProgramPublished": false,
+    "paidModelCalls": false
+  }
+}
