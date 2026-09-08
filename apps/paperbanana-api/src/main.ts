@@ -1,3 +1,5 @@
+import type { Db } from 'mongodb'
+import { createAdminOperations } from './admin-operations.js'
 import path from 'node:path'
 import { createHash } from 'node:crypto'
 
@@ -57,6 +59,7 @@ async function main(): Promise<void> {
     readinessProbeTimeoutMs: config.readinessProbeTimeoutMs,
   })
 
+  let adminBenchmarkDb: Db | undefined
   let benchmarkService: ReturnType<typeof createBenchmarkService> | undefined
   let closeBenchmark = async () => {}
   let benchmarkReady = !config.benchmark
@@ -102,6 +105,7 @@ async function main(): Promise<void> {
         },
       )
       await benchmarkRepository.ensureSuite()
+      adminBenchmarkDb = benchmarkMongo.db
       configureDeletionCleanup(async (userId) => {
         await benchmarkMongo.db.collection('paperbanana_benchmark_prompt_submissions').deleteMany({ userId })
       })
@@ -135,7 +139,17 @@ async function main(): Promise<void> {
     return { ...base, ready: base.ready && benchmarkReady, dependencies: { ...(base.dependencies || {}), benchmark: benchmarkReady ? 'ready' : 'unavailable' } }
   }
 
+  const adminOperations = createAdminOperations({ db: mongo.db, benchmarkDb: adminBenchmarkDb,
+    publicJob: async (jobId) => await runtime.handler({ request: { method: 'POST' }, body: { action: 'getJob', jobId, gatewayToken: config.gatewayToken }, headers: {}, response: { setHeader() {}, status() {} } }) as Record<string, any>,
+  })
+  try { await adminOperations.ensureIndexes() }
+  catch (error) {
+    legacyLifecycle.stop()
+    await closeAll().catch(() => {})
+    throw error
+  }
   const server = createServer({
+    adminOperations,
     handler: runtime.handler,
     readinessProbe,
     healthSnapshot,

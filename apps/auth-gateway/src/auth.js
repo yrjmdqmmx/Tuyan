@@ -1,3 +1,4 @@
+import { createAdminAccounts } from './admin-accounts.js';
 import { createAccountWriteGuard } from './account-write-guard.js';
 import { randomBytes } from 'node:crypto';
 import { createAccountVerification, authUserFilter } from './account-verification.js';
@@ -193,6 +194,7 @@ export async function createAuthRuntime(
     async deleteUser(userId, operation) {
       await deleteAuthUser(mongoClient, db, userId, operation);
     },
+    adminAccounts: createAdminAccounts(db),
     async listUsers(body = {}) {
       return listAuthUsers(db, body);
     },

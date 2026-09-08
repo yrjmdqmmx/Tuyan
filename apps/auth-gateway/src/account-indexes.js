@@ -16,6 +16,9 @@ export async function ensureAccountIndexes(db) {
     seen.add(normalized);
   }
   await users.createIndex({ email: 1 }, { name: 'auth_email_unique_v1', unique: true, collation: { locale: 'en', strength: 2 } });
+  await users.createIndex({ createdAt: -1, _id: -1 });
+  await db.collection('account').createIndex({ userId: 1 });
+  await db.collection('session').createIndex({ userId: 1, createdAt: -1 });
   await db.collection('accountVerificationTokens').createIndex({ expiresAt: 1 }, { name: 'account_verification_expiry', expireAfterSeconds: 0 });
   await db.collection('accountDeletionOperations').createIndex({ status: 1, nextAttemptAt: 1 }, { name: 'account_deletion_recovery' });
 }

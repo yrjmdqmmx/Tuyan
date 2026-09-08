@@ -367,6 +367,13 @@ export async function getJobRequest(apiBase, health, jobId, options = {}) {
   return fetchJson(`${apiBase}/api/jobs/${jobId}`);
 }
 
+// Admin operations use the authenticated gateway and never accept a browser-supplied admin token.
+export async function adminOperationsRequest(apiBase, action, payload = {}, { signal } = {}) {
+  const actions = ['adminOverview', 'adminUserList', 'adminUserDetail', 'adminTaskList', 'adminTaskDetail', 'adminTaskFollowup', 'adminCommunityList', 'adminCommunityDetail', 'adminCommunityEdit', 'adminFeedbackList', 'adminBenchmarkPromptDecision'];
+  if (!actions.includes(action)) throw new Error('Unsupported admin operation');
+  return fetchJson(lafEndpoint(apiBase), { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, action }), signal });
+}
+
 export async function adminStatusRequest(apiBase, health) {
   if (BACKEND_MODE === 'gateway' || health?.backendMode === 'gateway') {
     const data = await fetchJson(lafEndpoint(apiBase), {

@@ -8,6 +8,15 @@ import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
 import { redactErrorForLog } from './redaction.js';
 
 const ADMIN_BACKEND_ACTIONS = new Set([
+  'adminOperationsOverview',
+  'adminTaskList',
+  'adminTaskDetail',
+  'adminTaskFollowup',
+  'adminCommunityList',
+  'adminCommunityDetail',
+  'adminCommunityEdit',
+  'adminContactMatches',
+  'adminFeedbackList',
   'adminJobs',
   'adminFeedback',
   'importReferences',
@@ -24,7 +33,7 @@ const ADMIN_BACKEND_ACTIONS = new Set([
   'adminBenchmarkPromptDigest',
   'adminBenchmarkPromptDecision',
 ]);
-const ADMIN_MUTATING_ACTIONS = new Set(['importReferences', 'evaluateJob', 'initDatabase']);
+const ADMIN_MUTATING_ACTIONS = new Set(['adminTaskFollowup', 'adminCommunityEdit', 'adminBenchmarkPromptDecision', 'importReferences', 'evaluateJob', 'initDatabase']);
 const MAINTENANCE_ACTIONS = new Set([
   'createJob',
   'refineImage',
@@ -191,6 +200,31 @@ export function createApp({
       if (action === 'adminStatus') {
         const session = await auth.optionalSession(request);
         return response.status(200).json({ code: 0, isAdmin: isAdminUser(config, session?.user) });
+      }
+
+      if (action.startsWith('admin')) response.set('Cache-Control', 'no-store');
+      if (['adminOverview', 'adminUserList', 'adminUserDetail'].includes(action)) {
+        const adminSession = await requireAdmin(config, auth, request);
+        if (!auth.adminAccounts) return response.status(503).json({ code: 503, error: '后台账号查询暂不可用' });
+        const adminOptions = { adminAction: true, adminUserId: String(adminSession.user.id) };
+        if (action === 'adminUserDetail') return response.json({ code: 0, ...await auth.adminAccounts.detail(request.body) });
+        if (action === 'adminUserList') {
+          let contactIds = [];
+          if (request.body.searchBy === 'contact' && request.body.q) {
+            const match = await backend.call({ action: 'adminContactMatches', q: request.body.q }, context, adminOptions);
+            if (match.status !== 200 || match.data?.code !== 0) return relay(response, match);
+            contactIds = match.data.userIds;
+          }
+          return response.json({ code: 0, ...await auth.adminAccounts.list(request.body, contactIds) });
+        }
+        const [accounts, operations] = await Promise.allSettled([
+          auth.adminAccounts.overview(request.body),
+          backend.call({ action: 'adminOperationsOverview', from: request.body.from, to: request.body.to }, context, adminOptions),
+        ]);
+        if (accounts.status === 'rejected' && accounts.reason?.status === 400) throw accounts.reason;
+        const ops = operations.status === 'fulfilled' && operations.value.status === 200 && operations.value.data?.code === 0 ? operations.value.data : null;
+        return response.json({ code: 0, users: accounts.status === 'fulfilled' ? { available: true, ...accounts.value } : { available: false, error: '账号统计暂不可用' },
+          tasks: ops ? { available: true, ...ops.tasks } : { available: false, error: '任务统计暂不可用' }, community: ops?.community || { available: false, error: '社区统计暂不可用' }, asOf: new Date().toISOString() });
       }
 
       if (action === 'adminUsers') {
