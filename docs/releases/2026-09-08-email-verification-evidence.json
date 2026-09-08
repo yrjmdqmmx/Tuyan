@@ -1,0 +1,437 @@
+{
+  "schemaVersion": 1,
+  "release": "email-verification-feedback",
+  "date": "2026-09-08",
+  "implementationPr": "https://github.com/yrjmdqmmx/Tuyan/pull/174",
+  "implementationHead": "fa551c77c65c90fc6b3996ad6ece3764d8764074",
+  "deployedSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+  "workflows": [
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:41:38Z",
+      "databaseId": 34184387388,
+      "headSha": "fa551c77c65c90fc6b3996ad6ece3764d8764074",
+      "name": "CI",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:45:28Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34184387388"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:41:41Z",
+      "databaseId": 34184389439,
+      "headSha": "fa551c77c65c90fc6b3996ad6ece3764d8764074",
+      "name": "CI",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:45:33Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34184389439"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:48:30Z",
+      "databaseId": 34184784540,
+      "headSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+      "name": "CI",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:52:13Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34184784540"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:48:52Z",
+      "databaseId": 34184803955,
+      "headSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+      "name": "Publish Auth Gateway Image",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:49:29Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34184803955"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:48:54Z",
+      "databaseId": 34184805975,
+      "headSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+      "name": "Publish Core API Image",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:49:35Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34184805975"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:48:57Z",
+      "databaseId": 34184808476,
+      "headSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+      "name": "Publish Benchmark Worker Image",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:49:38Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34184808476"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:52:35Z",
+      "databaseId": 34185014445,
+      "headSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+      "name": "Deploy Hong Kong Production",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:58:51Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34185014445"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T03:52:38Z",
+      "databaseId": 34185016924,
+      "headSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+      "name": "Deploy GitHub Pages",
+      "status": "completed",
+      "updatedAt": "2026-09-08T03:54:00Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34185016924"
+    }
+  ],
+  "localTests": {
+    "gateway": 138,
+    "web": 349,
+    "core": 451,
+    "realAuthAndMongoIntegration": "passed",
+    "externalMailSent": false
+  },
+  "host": {
+    "codeSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+    "containers": {
+      "auth-gateway": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:c1486e6fbb639a7df717c19b546156c2eac98995d8a5416f3d838fd3ccf9d479",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:c1486e6fbb639a7df717c19b546156c2eac98995d8a5416f3d838fd3ccf9d479",
+        "imageId": "sha256:c1486e6fbb639a7df717c19b546156c2eac98995d8a5416f3d838fd3ccf9d479",
+        "health": "healthy",
+        "revision": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0"
+      },
+      "paperbanana-api": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:3363866e3152afff79191b4fa428b4ef6afc8bb860e04f76792cfb5c5b177db3",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:3363866e3152afff79191b4fa428b4ef6afc8bb860e04f76792cfb5c5b177db3",
+        "imageId": "sha256:3363866e3152afff79191b4fa428b4ef6afc8bb860e04f76792cfb5c5b177db3",
+        "health": "healthy",
+        "revision": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+        "provenance": {
+          "codeSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0"
+        }
+      },
+      "benchmark-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:8c6ae69cc3a78b589f4ce11269c5dd652768d40252b11d93e50a67676da3d444",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:8c6ae69cc3a78b589f4ce11269c5dd652768d40252b11d93e50a67676da3d444",
+        "imageId": "sha256:8c6ae69cc3a78b589f4ce11269c5dd652768d40252b11d93e50a67676da3d444",
+        "health": "healthy",
+        "revision": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+        "provenance": {
+          "codeSha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0"
+        }
+      },
+      "plot-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "lockedImage": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy"
+      },
+      "mongodb": {
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "lockedImage": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy"
+      }
+    },
+    "sourceHashes": {
+      "account-verification.js": "f20562b0126c5b6bdd62c841f178b9975e02af11b34c14ff59624810e7e6d39b",
+      "auth.js": "1e31bbe721301210c0f6a1cc1c2463e1c9cbcf51ec5aa71f0fde154526b435f7",
+      "redaction.js": "d4aaa1994e9c7eb1e605abb6ce9f1430b1983eb9ae955c45a6d105b79623f429"
+    },
+    "maintenanceCleared": true,
+    "unrelatedEnvironmentUnchanged": true,
+    "providerEgress": "sg-required",
+    "benchmarkExecutionEnabled": false
+  },
+  "public": {
+    "checkedAt": "2026-09-08T03:59:20.037Z",
+    "/health": {
+      "http": 200,
+      "body": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-08T03:59:25.233Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "laf": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-08T03:59:25.233Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true,
+            "checkedAt": "2026-09-08T03:59:25.215Z"
+          },
+          "backend": {
+            "mode": "node",
+            "ok": true,
+            "checkedAt": "2026-09-08T03:59:25.233Z",
+            "status": 200,
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "http": 200,
+      "body": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "laf": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true
+          },
+          "backend": {
+            "ok": true,
+            "status": 200,
+            "data": {
+              "ok": true,
+              "service": "paperbanana-api",
+              "runtime": "node",
+              "version": "0.1.0",
+              "ready": true,
+              "dependencies": {
+                "mongodb": "ready",
+                "oss": "ready",
+                "providerEgress": "ready",
+                "benchmark": "ready"
+              }
+            }
+          }
+        }
+      }
+    },
+    "catalog": {
+      "http": 200,
+      "registryVersion": "2026-09-07.v15",
+      "providerRegionContractVersion": 1,
+      "providerIds": [
+        "deepseek",
+        "kimi",
+        "zhipu",
+        "siliconflow",
+        "anthropic",
+        "recraft",
+        "xai",
+        "gemini",
+        "bailian",
+        "openai",
+        "ark",
+        "bfl",
+        "stability",
+        "ideogram",
+        "minimax",
+        "mistral",
+        "together",
+        "fireworks",
+        "fal",
+        "replicate",
+        "openrouter"
+      ]
+    }
+  },
+  "browser": {
+    "checkedAt": "2026-09-08T04:00:53.757Z",
+    "sha": "f84659eb4cafc9f1330a65f0aa0d6cf89695abd0",
+    "site": "https://www.paperbanana.asia",
+    "api": "https://api.paperbanana.asia",
+    "checks": [
+      {
+        "viewport": 1440,
+        "loginEntry": true,
+        "notBlank": true,
+        "noOverflow": true,
+        "loadMs": 2014
+      },
+      {
+        "viewport": 1440,
+        "landing": "TOKEN_USED",
+        "title": "邮箱已验证",
+        "noOverflow": true
+      },
+      {
+        "viewport": 1440,
+        "landing": "TOKEN_EXPIRED",
+        "title": "链接已失效",
+        "noOverflow": true
+      },
+      {
+        "viewport": 1440,
+        "landing": "VERIFICATION_UNAVAILABLE",
+        "title": "暂时无法确认验证结果",
+        "noOverflow": true
+      },
+      {
+        "viewport": 1440,
+        "invalidRedirect": true,
+        "fixedOrigin": true,
+        "returnToLogin": true,
+        "noSessionCreated": true
+      },
+      {
+        "viewport": 390,
+        "loginEntry": true,
+        "notBlank": true,
+        "noOverflow": true,
+        "loadMs": 2161
+      },
+      {
+        "viewport": 390,
+        "landing": "TOKEN_USED",
+        "title": "邮箱已验证",
+        "noOverflow": true
+      },
+      {
+        "viewport": 390,
+        "landing": "TOKEN_EXPIRED",
+        "title": "链接已失效",
+        "noOverflow": true
+      },
+      {
+        "viewport": 390,
+        "landing": "VERIFICATION_UNAVAILABLE",
+        "title": "暂时无法确认验证结果",
+        "noOverflow": true
+      },
+      {
+        "viewport": 390,
+        "invalidRedirect": true,
+        "fixedOrigin": true,
+        "returnToLogin": true,
+        "noSessionCreated": true
+      }
+    ],
+    "mail": "No external mail or production account writes",
+    "screenshots": [
+      "login-1440.png",
+      "verified-1440.png",
+      "invalid-1440.png",
+      "login-390.png",
+      "verified-390.png",
+      "invalid-390.png"
+    ],
+    "landingScriptSha256": "1f1ef55d824b586e1e67158f765b3a1a66c6c836b964eac80820a192340992f8",
+    "webAssets": [
+      "https://www.paperbanana.asia/assets/appPaths-Ba0fLi8f.js",
+      "https://www.paperbanana.asia/assets/main-CEnDB2Og.js"
+    ],
+    "statusEndpoint": {
+      "http": 200,
+      "cache": "no-store",
+      "body": {
+        "status": "pending"
+      }
+    },
+    "passed": true,
+    "consoleErrors": [
+      {
+        "message": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": {
+          "url": "https://www.paperbanana.asia/favicon.ico",
+          "line": 0,
+          "column": 0,
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      }
+    ],
+    "failedRequests": [],
+    "applicationErrors": [],
+    "nonBlockingWarnings": [
+      {
+        "message": "Failed to load resource: the server responded with a status of 404 ()",
+        "location": {
+          "url": "https://www.paperbanana.asia/favicon.ico",
+          "line": 0,
+          "column": 0,
+          "lineNumber": 0,
+          "columnNumber": 0
+        }
+      }
+    ],
+    "assessment": "All ten functional and layout checks passed. The only browser resource warning is the pre-existing missing favicon.ico; preserved above, not treated as an application error."
+  },
+  "rollback": {
+    "codeSha": "b96d507c4bcb2424c1814d6cdf4e81aae2b4cfb6",
+    "gatewayImage": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:9feee7f1744bfcdf2eec970bfb84349255e1ad62ea22ff99b4e94daeb2f3d058",
+    "coreImage": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:f631bcc118a64510f8b26faac3d1bce4422600cde2612cb962e25ce7d4e86bd5",
+    "benchmarkImage": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:5a55e529d88491d5c77b274aa740dfd232899aaefa18585649f0f2c9a94145a9",
+    "secretMode": "configured-disabled",
+    "triggered": false
+  },
+  "limits": [
+    "No real 163/WeChat email-click reproduction",
+    "No production test-account writes or external email",
+    "Previously deleted token receipts cannot be recovered",
+    "Mini-program native acceptance and publishing deferred"
+  ]
+}
