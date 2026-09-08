@@ -1,0 +1,408 @@
+{
+  "recordedAt": "2026-09-08T07:35:53.179066+00:00",
+  "featurePr": 178,
+  "correctivePr": 179,
+  "webSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+  "backendSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+  "initialUploadAcceptance": {
+    "passed": false,
+    "cause": "Reference key validator rejected server-generated lifecycle paths for restored identities",
+    "correctedByPr": 179
+  },
+  "workflows": {
+    "featureBranchCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T06:57:03Z",
+      "databaseId": 34196962640,
+      "headSha": "8cf16b79855c56dfed53eff4bca37a4d6304a21f",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:01:31Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34196962640"
+    },
+    "featurePrCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T06:57:16Z",
+      "databaseId": 34196981017,
+      "headSha": "8cf16b79855c56dfed53eff4bca37a4d6304a21f",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:00:27Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34196981017"
+    },
+    "featureMergedCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:01:54Z",
+      "databaseId": 34197350922,
+      "headSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:05:45Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34197350922"
+    },
+    "initialHongKongDeploy": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:10:38Z",
+      "databaseId": 34198048235,
+      "headSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:11:54Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34198048235"
+    },
+    "webPages": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:12:20Z",
+      "databaseId": 34198181074,
+      "headSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:14:10Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34198181074"
+    },
+    "fixBranchCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:17:12Z",
+      "databaseId": 34198576738,
+      "headSha": "6b03e923cc14f515182e531c7969c5c365579ecb",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:21:04Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34198576738"
+    },
+    "fixPrCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:17:35Z",
+      "databaseId": 34198606015,
+      "headSha": "6b03e923cc14f515182e531c7969c5c365579ecb",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:21:31Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34198606015"
+    },
+    "fixMergedCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:22:11Z",
+      "databaseId": 34198977664,
+      "headSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:26:05Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34198977664"
+    },
+    "fixHongKongDeploy": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:31:44Z",
+      "databaseId": 34199774340,
+      "headSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:33:10Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34199774340"
+    }
+  },
+  "initialImageWorkflows": {
+    "gateway": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:02:06Z",
+      "databaseId": 34197367099,
+      "headSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:02:50Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34197367099"
+    },
+    "core": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:02:09Z",
+      "databaseId": 34197371480,
+      "headSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:02:45Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34197371480"
+    },
+    "benchmark": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:02:12Z",
+      "databaseId": 34197375596,
+      "headSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:02:57Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34197375596"
+    }
+  },
+  "finalImageWorkflows": {
+    "gateway": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:22:26Z",
+      "databaseId": 34198998266,
+      "headSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:23:04Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34198998266"
+    },
+    "core": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:22:29Z",
+      "databaseId": 34199002348,
+      "headSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:23:04Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34199002348"
+    },
+    "benchmark": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:22:32Z",
+      "databaseId": 34199006462,
+      "headSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:23:13Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34199006462"
+    }
+  },
+  "runtime": {
+    "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+    "images": {
+      "PAPERBANANA_GATEWAY_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:486bec77202f1a0c2f499b7d8655b0279c7916e2f10c002c0037a3884610f65d",
+      "PAPERBANANA_CORE_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:2158ab118d8eb41c028cfcc609606d9e4f2323d2c55062af916a3f40314534c7",
+      "PAPERBANANA_PLOT_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "PAPERBANANA_MONGODB_IMAGE": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "PAPERBANANA_BENCH_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:23c8bba1312f064ad5412b0c2b1cbe27e5401adef9ce77bde854f796c642da56"
+    },
+    "benchmarkSecretMode": "configured-disabled",
+    "containers": {
+      "auth-gateway": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:486bec77202f1a0c2f499b7d8655b0279c7916e2f10c002c0037a3884610f65d",
+        "imageId": "sha256:486bec77202f1a0c2f499b7d8655b0279c7916e2f10c002c0037a3884610f65d",
+        "health": "healthy",
+        "revision": "cca7061fa27c536431445ef3899344aeebe57f7d",
+        "codeSha": null,
+        "providerEgress": null,
+        "benchmarkExecutionEnabled": null,
+        "benchmarkConcurrency": null
+      },
+      "benchmark-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:23c8bba1312f064ad5412b0c2b1cbe27e5401adef9ce77bde854f796c642da56",
+        "imageId": "sha256:23c8bba1312f064ad5412b0c2b1cbe27e5401adef9ce77bde854f796c642da56",
+        "health": "healthy",
+        "revision": "cca7061fa27c536431445ef3899344aeebe57f7d",
+        "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+        "providerEgress": null,
+        "benchmarkExecutionEnabled": "false",
+        "benchmarkConcurrency": "1",
+        "provenance": {
+          "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d"
+        }
+      },
+      "paperbanana-api": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:2158ab118d8eb41c028cfcc609606d9e4f2323d2c55062af916a3f40314534c7",
+        "imageId": "sha256:2158ab118d8eb41c028cfcc609606d9e4f2323d2c55062af916a3f40314534c7",
+        "health": "healthy",
+        "revision": "cca7061fa27c536431445ef3899344aeebe57f7d",
+        "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+        "providerEgress": "sg-required",
+        "benchmarkExecutionEnabled": null,
+        "benchmarkConcurrency": null,
+        "provenance": {
+          "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d"
+        }
+      },
+      "plot-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy",
+        "revision": "3ae61e52523b9b2e8d620d925505483eb641047a",
+        "codeSha": null,
+        "providerEgress": null,
+        "benchmarkExecutionEnabled": null,
+        "benchmarkConcurrency": null
+      },
+      "mongodb": {
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy",
+        "revision": null,
+        "codeSha": null,
+        "providerEgress": null,
+        "benchmarkExecutionEnabled": null,
+        "benchmarkConcurrency": null
+      }
+    },
+    "maintenanceMarkers": [],
+    "unrelatedConfigurationUnchanged": true
+  },
+  "public": {
+    "checkedAt": "2026-09-08T07:33:31.175309+00:00",
+    "/health": {
+      "http": 200,
+      "ok": true,
+      "dependencies": null
+    },
+    "/ready": {
+      "http": 200,
+      "ok": true,
+      "dependencies": {
+        "mongodb": "ready",
+        "oss": "ready",
+        "providerEgress": "ready",
+        "benchmark": "ready"
+      }
+    },
+    "modelRegistry": {
+      "http": 200,
+      "registryVersion": "2026-09-07.v15",
+      "providerRegionContractVersion": 1,
+      "refineUpload": {
+        "version": 1,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "maxBytes": 5242880,
+        "maxDimension": 16384,
+        "maxPixels": 20971520,
+        "modelMaxBytes": {}
+      },
+      "inputOptimizationTargets": [
+        "methodContent",
+        "caption",
+        "negativePrompt",
+        "editInstruction"
+      ]
+    },
+    "benchmark": {
+      "releaseId": "bench-scientific-v2-release-1f652f6370203d1ecf6a",
+      "releaseHash": "1f652f6370203d1ecf6a8f8ce679097b968b412cd4ab0bdf0362e3a5dce9d482",
+      "eligibleModelCount": 41,
+      "unchanged": true
+    },
+    "webAssets": [
+      "/assets/appPaths-Ba0fLi8f.js",
+      "/assets/main-DfsMJsLA.js",
+      "/assets/main-C6tMnmxC.css"
+    ]
+  },
+  "productionBrowser": {
+    "site": "https://www.paperbanana.asia/",
+    "browser": "Chrome through CUA",
+    "existingAuthenticatedSession": true,
+    "realUploadPassed": true,
+    "replacementPassed": true,
+    "removePassed": true,
+    "sources": [
+      {
+        "mimeType": "image/png",
+        "width": 120,
+        "height": 80,
+        "serverStatus": "ready"
+      },
+      {
+        "mimeType": "image/jpeg",
+        "width": 160,
+        "height": 90,
+        "serverStatus": "ready"
+      }
+    ],
+    "httpChecks": [
+      {
+        "action": "prepareReferenceUpload",
+        "http": 200
+      },
+      {
+        "method": "PUT",
+        "http": 200
+      },
+      {
+        "action": "finalizeReferenceUpload",
+        "http": 200
+      },
+      {
+        "action": "prepareReferenceUpload",
+        "http": 200
+      },
+      {
+        "action": "abortReferenceUpload",
+        "http": 200
+      },
+      {
+        "method": "PUT",
+        "http": 200
+      },
+      {
+        "action": "finalizeReferenceUpload",
+        "http": 200
+      },
+      {
+        "action": "abortReferenceUpload",
+        "http": 200
+      }
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000,
+        "scrollWidth": 1440
+      },
+      {
+        "width": 390,
+        "height": 843,
+        "scrollWidth": 390,
+        "expandedRatioCount": 46
+      },
+      {
+        "width": 320,
+        "height": 720,
+        "scrollWidth": 320,
+        "expandedRatioCount": 46
+      }
+    ],
+    "ratios": {
+      "fixedRatioCount": 45,
+      "allRectangleRatiosAccurate": true,
+      "includesOneToEightAndEightToOne": true,
+      "automaticUsesIndependentIcon": true,
+      "collapsedCount": 12,
+      "selectedExtremeRatioRetainedWhenCollapsed": true
+    },
+    "optimization": {
+      "entryPresent": true,
+      "modelKeyConfigured": false,
+      "missingKeyOpensSettings": true,
+      "originalInstructionPreserved": true,
+      "providerRequestSent": false,
+      "fullPreviewAdoptCancelRestoreFailureFlow": "passed in local browser and tests with stub provider"
+    },
+    "cleanup": {
+      "testImagesRemoved": true,
+      "instructionCleared": true,
+      "viewportReset": true,
+      "deviceEmulationCleared": true
+    },
+    "dragDrop": "component interaction test; production browser used file chooser"
+  },
+  "localTests": {
+    "web": 358,
+    "core": 455,
+    "gateway": 140,
+    "sharedApi": 29,
+    "coreTypeCheck": "passed",
+    "coreBuild": "passed",
+    "webBuild": "passed",
+    "catalogStaticModels": 669,
+    "catalogDrift": false,
+    "realGatewayCoreWithStubProviders": "passed",
+    "restoredIdentityReproducedBeforeFix": true,
+    "staleLifecycleDenied": true
+  },
+  "rollback": {
+    "stableCodeSha": "2c82f49d962247353551540b8198dbb7034f69cd",
+    "images": {
+      "PAPERBANANA_GATEWAY_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:6538d2a76a39c5367a23166fab0bcb36ea6e0e0396a0c3df54c992260a56dee6",
+      "PAPERBANANA_CORE_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:f5ac2f2a3d64e60ab54947f4f8e9b993d239bf983df0df4d0969df18a2e3d8f8",
+      "PAPERBANANA_PLOT_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "PAPERBANANA_MONGODB_IMAGE": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "PAPERBANANA_BENCH_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:ca529814a2c3685a44fa399c2409173c5d90199cae3a738a987fe8476d7c7979"
+    },
+    "protectedHostBackupCreated": true,
+    "triggered": false
+  },
+  "boundaries": {
+    "paidModelCalls": false,
+    "productionInferenceVerified": false,
+    "modelKeyConfigured": false,
+    "miniProgramPublished": false,
+    "benchmarkExecutionEnabled": false,
+    "syntheticImagesOnly": true
+  }
+}
