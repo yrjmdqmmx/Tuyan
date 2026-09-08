@@ -9,10 +9,12 @@ const lifetimeMs = 3600000;
 
 // Opaque, one-use tokens address an immutable ID. The library's email-only JWT
 // verification path is intentionally replaced, including for legacy links.
-export function createAccountVerification({ db, mongoClient, callbackUrl, now = () => new Date() }) {
+export function createAccountVerification({ db, mongoClient, callbackUrl, frontendOrigins = [], now = () => new Date() }) {
   const tokens = db.collection('accountVerificationTokens');
   const operations = db.collection('accountDeletionOperations');
   const users = db.collection('user');
+  const allowedOrigins = new Set([new URL(callbackUrl).origin, ...frontendOrigins]);
+  const headers = { 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' };
   const invalid = (code = 'INVALID_TOKEN') => Object.assign(new Error('ACCOUNT_VERIFICATION_INVALID'), { verificationCode: code });
   async function currentIdentity(row, options) {
     if (await operations.findOne({ _id: row.userId }, options)) return null;
@@ -55,8 +57,27 @@ export function createAccountVerification({ db, mongoClient, callbackUrl, now = 
           return Response.json({ code: 'VERIFICATION_STATUS_UNAVAILABLE' }, { status: 503, headers: { 'Cache-Control': 'no-store' } });
         }
       }
-      if (url.pathname !== '/api/auth/verify-email' || request.method !== 'GET') return null;
-      const token = url.searchParams.get('token') || '';
+      if (url.pathname !== '/api/auth/verify-email') return null;
+      // Mail previews and security scanners may fetch links before the user.
+      // Even legacy GET/HEAD links only open the first-party confirmation page.
+      if (request.method === 'GET' || request.method === 'HEAD') {
+        const token = url.searchParams.get('token') || '';
+        const target = new URL(callbackUrl);
+        target.search = '';
+        target.hash = '';
+        if (validToken(token)) {
+          target.pathname = new URL('./email-verify.html', target).pathname;
+          target.hash = new URLSearchParams({ token }).toString();
+        } else target.searchParams.set('error', 'INVALID_TOKEN');
+        return new Response(null, { status: 302, headers: { ...headers, Location: target.toString() } });
+      }
+      if (request.method !== 'POST') return Response.json({ code: 'METHOD_NOT_ALLOWED' }, { status: 405, headers: { ...headers, Allow: 'GET, HEAD, POST' } });
+      if (!allowedOrigins.has(request.headers.get('origin'))) return Response.json({ code: 'INVALID_ORIGIN' }, { status: 403, headers });
+      if (request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
+        return Response.json({ code: 'INVALID_CONTENT_TYPE' }, { status: 415, headers });
+      }
+      const body = await request.json().catch(() => null);
+      const token = body?.token;
       let error = 'INVALID_TOKEN';
       if (validToken(token)) {
         const session = mongoClient.startSession();
@@ -84,12 +105,10 @@ export function createAccountVerification({ db, mongoClient, callbackUrl, now = 
         } catch (failure) { error = failure.verificationCode || 'VERIFICATION_UNAVAILABLE'; }
         finally { await session.endSession(); }
       }
-      // The configured first-party destination is the only allowed redirect.
-      // Never echo raw tokens or honor arbitrary callback URLs from a link.
-      const target = new URL(callbackUrl);
-      target.searchParams.delete('error');
-      if (error) target.searchParams.set('error', error);
-      return new Response(null, { status: 302, headers: { Location: target.toString(), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } });
+      const ok = error === null || error === 'TOKEN_USED';
+      return Response.json({ ok, code: error || 'EMAIL_VERIFIED' }, {
+        status: ok ? 200 : error === 'VERIFICATION_UNAVAILABLE' ? 503 : 400, headers,
+      });
     },
   };
 }

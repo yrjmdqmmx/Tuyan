@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>确认验证图研邮箱</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="./account.css">
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><img src="/logo.svg" alt="图研"><span>图研 Tuyan</span></div>
+    <section id="confirm-state" class="hidden">
+      <h1>确认验证邮箱</h1>
+      <p>请点击下方按钮，完成图研账号的邮箱验证。仅打开此页面不会完成验证。</p>
+      <form id="verify-form" class="actions"><button type="submit">确认验证邮箱</button></form>
+      <p id="message" role="status" aria-live="polite"></p>
+    </section>
+    <section id="invalid-state" class="hidden">
+      <h1>请从验证邮件打开</h1>
+      <p>请重新打开邮件中的“验证邮箱”链接，再点击确认按钮。如果此前已完成验证，可直接登录。</p>
+    </section>
+    <noscript><p>请开启浏览器的 JavaScript 后，重新打开邮件中的链接完成验证。</p></noscript>
+    <div class="actions"><a class="secondary" href="/?auth=sign-in">返回图研登录</a></div>
+  </main>
+  <script type="module" src="./email-verify.js"></script>
+</body>
+</html>

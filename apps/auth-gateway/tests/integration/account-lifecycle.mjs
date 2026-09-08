@@ -37,9 +37,22 @@ try {
   const userId = String(user._id);
   const verifier = createAccountVerification({ db, mongoClient: client, callbackUrl: 'https://paperbanana.asia/account/email-verified.html' });
   const initialToken = await verifier.issue({ id: userId });
-  const verificationRequest = () => new Request(`http://127.0.0.1:3002/api/auth/verify-email?token=${initialToken}`);
-  const repeated = await Promise.all([runtime.webHandler(verificationRequest()), runtime.webHandler(verificationRequest())]);
-  assert.deepEqual(repeated.map((r) => new URL(r.headers.get('location')).searchParams.get('error')).sort(), ['TOKEN_USED', null].sort());
+  for (const method of ['GET', 'HEAD']) {
+    const preview = await runtime.webHandler(new Request(`http://127.0.0.1:3002/api/auth/verify-email?token=${initialToken}`, { method }));
+    assert.equal(preview.status, 302);
+    assert.match(new URL(preview.headers.get('location')).pathname, /email-verify.html$/);
+  }
+  assert.equal((await db.collection('user').findOne({})).emailVerified, false, 'prefetch cannot verify');
+  for (const path of ['verify-email/', 'verify-email//']) {
+    const response = await runtime.webHandler(new Request(`http://127.0.0.1:3002/api/auth/${path}?token=${initialToken}`));
+    assert.equal(response.status, 404, 'library verification route aliases must remain disabled');
+  }
+  assert.equal(await db.collection('accountVerificationTokens').countDocuments({ consumedAt: { $exists: true } }), 0);
+  const beforeConfirmation = await authRequest('sign-in/email', { email: user.email, password: 'local-fixture-password' });
+  assert.equal(beforeConfirmation.status, 403);
+  assert.equal((await beforeConfirmation.json()).code, 'EMAIL_NOT_VERIFIED');
+  const repeated = await Promise.all([authRequest('verify-email', { token: initialToken }), authRequest('verify-email', { token: initialToken })]);
+  assert.deepEqual((await Promise.all(repeated.map((r) => r.json()))).map((r) => r.code).sort(), ['TOKEN_USED', 'EMAIL_VERIFIED'].sort());
   assert.equal(await db.collection('session').countDocuments({}), 0, 'verification never creates login sessions');
   const observerResults = await Promise.all(signupResults.map(async (r) => {
     assert.match(r.verificationStatusToken, /^[A-Za-z0-9_-]{43}$/);
@@ -148,12 +161,12 @@ try {
   const newUser = await db.collection('user').findOne({});
   assert.notEqual(String(newUser._id), userId);
   assert.equal((await context.accountDeletionStatus({ userId: String(newUser._id) })).state, 'active');
-  const oldVerification = await runtime.webHandler(new Request(`http://127.0.0.1:3002/api/auth/verify-email?token=${oldToken}`));
-  assert.match(oldVerification.headers.get('location'), /INVALID_TOKEN/);
+  const oldVerification = await authRequest('verify-email', { token: oldToken });
+  assert.equal((await oldVerification.json()).code, 'INVALID_TOKEN');
   assert.equal((await db.collection('user').findOne({ _id: newUser._id })).emailVerified, false);
   const newToken = await verifier.issue({ id: String(newUser._id) });
-  const verified = await runtime.webHandler(new Request(`http://127.0.0.1:3002/api/auth/verify-email?token=${newToken}`));
-  assert.equal(new URL(verified.headers.get('location')).search, '');
+  const verified = await authRequest('verify-email', { token: newToken });
+  assert.equal((await verified.json()).code, 'EMAIL_VERIFIED');
   assert.equal((await db.collection('user').findOne({ _id: newUser._id })).emailVerified, true);
   console.log('PASS same-email reregistration gets new ID; old verification token rejected, new token works');
 } finally {

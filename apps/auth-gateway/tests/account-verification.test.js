@@ -11,21 +11,59 @@ function fixture() {
   } });
   return { db, verification, advance: (ms) => { time = new Date(+time + ms); } };
 }
-const request = (token) => new Request(`https://api.example.test/api/auth/verify-email?token=${token}&callbackURL=https://evil.test`);
-const result = (response) => new URL(response.headers.get('location')).searchParams.get('error');
+const request = (token, overrides = {}) => new Request('https://api.example.test/api/auth/verify-email', {
+  method: 'POST', headers: { origin: 'https://web.example.test', 'content-type': 'application/json' },
+  body: JSON.stringify({ token }), ...overrides,
+});
+const result = async (response) => (await response.json()).code;
 const statusRequest = (token) => new Request('https://api.example.test/api/auth/verification-status', {
   method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token }),
+});
+
+test('legacy GET and HEAD prefetches only redirect to first-party confirmation and never touch the database', async () => {
+  const f = fixture();
+  const token = await f.verification.issue({ id: 'original' });
+  const before = structuredClone(f.db.collection('accountVerificationTokens').rows);
+  f.db.collection('accountVerificationTokens').findOne = async () => assert.fail('prefetch must not query or consume a token');
+  for (const method of ['GET', 'HEAD']) {
+    const response = await f.verification.handler(new Request(`https://api.example.test/api/auth/verify-email?token=${token}&callbackURL=https://evil.test`, { method }));
+    assert.equal(response.status, 302);
+    const target = new URL(response.headers.get('location'));
+    assert.equal(target.origin + target.pathname, 'https://web.example.test/account/email-verify.html');
+    assert.equal(target.search, '');
+    assert.equal(new URLSearchParams(target.hash.slice(1)).get('token'), token);
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
+    assert.equal(response.headers.get('set-cookie'), null);
+  }
+  assert.equal(f.db.collection('user').rows[0].emailVerified, false);
+  assert.deepEqual(f.db.collection('accountVerificationTokens').rows, before);
+});
+
+test('only JSON POST from a trusted page can confirm; other methods cannot fall through to Better Auth', async () => {
+  const f = fixture();
+  const token = await f.verification.issue({ id: 'original' });
+  for (const headers of [{ 'content-type': 'application/json' }, { origin: 'https://evil.test', 'content-type': 'application/json' }]) {
+    assert.equal((await f.verification.handler(request(token, { headers }))).status, 403);
+  }
+  assert.equal((await f.verification.handler(request(token, { headers: { origin: 'https://web.example.test', 'content-type': 'application/x-www-form-urlencoded' } }))).status, 415);
+  for (const method of ['PUT', 'PATCH', 'DELETE']) assert.equal((await f.verification.handler(request(token, { method }))).status, 405);
+  assert.equal(await result(await f.verification.handler(request(token, { body: '{broken' }))), 'INVALID_TOKEN');
+  const queryOnly = new Request(`https://api.example.test/api/auth/verify-email?token=${token}`, { method: 'POST', headers: { origin: 'https://web.example.test', 'content-type': 'application/json' }, body: '{}' });
+  assert.equal(await result(await f.verification.handler(queryOnly)), 'INVALID_TOKEN');
+  assert.equal(f.db.collection('user').rows[0].emailVerified, false);
+  assert.equal(f.db.collection('accountVerificationTokens').rows[0].consumedAt, undefined);
 });
 
 test('opening a verified link again reports completion without repeating the account update', async () => {
   const f = fixture();
   const token = await f.verification.issue({ id: 'original' });
-  assert.equal(result(await f.verification.handler(request(token))), null);
+  assert.equal(await result(await f.verification.handler(request(token))), 'EMAIL_VERIFIED');
   const original = structuredClone(f.db.collection('user').rows[0]);
   f.advance(1000);
   const repeated = await f.verification.handler(request(token));
-  assert.equal(result(repeated), 'TOKEN_USED');
-  assert.equal(new URL(repeated.headers.get('location')).origin, 'https://web.example.test');
+  assert.equal(await result(repeated), 'TOKEN_USED');
+  assert.equal(repeated.headers.get('location'), null);
   assert.equal(repeated.headers.get('cache-control'), 'no-store');
   assert.equal(repeated.headers.get('set-cookie'), null);
   assert.deepEqual(f.db.collection('user').rows[0], original);
@@ -36,10 +74,10 @@ test('expiry, malformed links and database failure have distinct outcomes', asyn
   const f = fixture();
   const token = await f.verification.issue({ id: 'original' });
   f.advance(3600001);
-  assert.equal(result(await f.verification.handler(request(token))), 'TOKEN_EXPIRED');
-  assert.equal(result(await f.verification.handler(request('missing'))), 'INVALID_TOKEN');
+  assert.equal(await result(await f.verification.handler(request(token))), 'TOKEN_EXPIRED');
+  assert.equal(await result(await f.verification.handler(request('missing'))), 'INVALID_TOKEN');
   f.db.collection('accountVerificationTokens').findOne = async () => { throw new Error('database unavailable'); };
-  assert.equal(result(await f.verification.handler(request(token))), 'VERIFICATION_UNAVAILABLE');
+  assert.equal(await result(await f.verification.handler(request(token))), 'VERIFICATION_UNAVAILABLE');
   assert.equal(f.db.collection('user').rows[0].emailVerified, false);
 });
 
@@ -48,7 +86,7 @@ test('the registration observer detects completion but cannot verify or log in',
   const observer = await f.verification.issueStatus({ id: 'original', email: 'fixture@163.test' });
   const status = async (token) => (await f.verification.handler(statusRequest(token))).json();
   assert.deepEqual(await status(observer), { status: 'pending' });
-  assert.equal(result(await f.verification.handler(request(observer))), 'INVALID_TOKEN');
+  assert.equal(await result(await f.verification.handler(request(observer))), 'INVALID_TOKEN');
   assert.equal(f.db.collection('user').rows[0].emailVerified, false);
   const token = await f.verification.issue({ id: 'original' });
   assert.deepEqual(await status(token), { status: 'pending' });
@@ -81,7 +119,7 @@ test('used links and observers remain bound to the original identity and email',
     if (change === 'email-change') f.db.collection('user').rows[0].email = 'changed@example.test';
     if (change === 'replacement') f.db.collection('user').rows[0]._id = 'new-identity';
     if (change === 'unverified') f.db.collection('user').rows[0].emailVerified = false;
-    assert.equal(result(await f.verification.handler(request(token))), 'INVALID_TOKEN', change);
+    assert.equal(await result(await f.verification.handler(request(token))), 'INVALID_TOKEN', change);
     assert.deepEqual(await (await f.verification.handler(statusRequest(observer))).json(), { status: 'pending' }, change);
   }
 });
