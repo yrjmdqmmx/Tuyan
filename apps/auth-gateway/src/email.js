@@ -17,10 +17,12 @@ export function renderAccountEmail(type, actionUrl) {
   const action = verification ? '验证邮箱' : '重置密码';
   const englishAction = verification ? 'Verify email' : 'Reset password';
   const escapedUrl = escapeHtml(actionUrl);
+  const confirmationZh = verification ? '打开链接后，请在页面点击“确认验证邮箱”。' : '';
+  const confirmationEn = verification ? 'After opening the link, click the confirmation button on the page. ' : '';
   return {
     subject: `图研 Tuyan｜${title}`,
-    htmlBody: `<!doctype html><html lang="zh-CN"><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#172033;line-height:1.6"><main style="max-width:560px;margin:32px auto;padding:28px;border:1px solid #e6e9ef;border-radius:18px"><h1 style="font-size:22px">${title}</h1><h2 style="font-size:16px">简体中文</h2><p>请在 1 小时内完成${action}。如果不是你发起的操作，请忽略本邮件。</p><p><a href="${escapedUrl}" style="display:inline-block;padding:12px 18px;background:#5b5bd6;color:white;text-decoration:none;border-radius:10px">${action}</a></p><h2 style="font-size:16px">English</h2><p>Please ${englishAction.toLowerCase()} within one hour. If you did not request this, ignore this email.</p><p><a href="${escapedUrl}">${englishAction}</a></p><p style="color:#6b7280;font-size:13px">This is an account-security message from Tuyan. No marketing or tracking is used.</p></main></body></html>`,
-    textBody: `图研 Tuyan\n\n简体中文：请在 1 小时内完成${action}。如果不是你发起的操作，请忽略本邮件。\n${actionUrl}\n\nEnglish: Please ${englishAction.toLowerCase()} within one hour. If you did not request this, ignore this email.\n${actionUrl}\n\nAccount security only. No marketing or tracking.`,
+    htmlBody: `<!doctype html><html lang="zh-CN"><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#172033;line-height:1.6"><main style="max-width:560px;margin:32px auto;padding:28px;border:1px solid #e6e9ef;border-radius:18px"><h1 style="font-size:22px">${title}</h1><h2 style="font-size:16px">简体中文</h2><p>请在 1 小时内完成${action}。${confirmationZh}如果不是你发起的操作，请忽略本邮件。</p><p><a href="${escapedUrl}" style="display:inline-block;padding:12px 18px;background:#5b5bd6;color:white;text-decoration:none;border-radius:10px">${action}</a></p><h2 style="font-size:16px">English</h2><p>Please ${englishAction.toLowerCase()} within one hour. ${confirmationEn}If you did not request this, ignore this email.</p><p><a href="${escapedUrl}">${englishAction}</a></p><p style="color:#6b7280;font-size:13px">This is an account-security message from Tuyan. No marketing or tracking is used.</p></main></body></html>`,
+    textBody: `图研 Tuyan\n\n简体中文：请在 1 小时内完成${action}。${confirmationZh}如果不是你发起的操作，请忽略本邮件。\n${actionUrl}\n\nEnglish: Please ${englishAction.toLowerCase()} within one hour. ${confirmationEn}If you did not request this, ignore this email.\n${actionUrl}\n\nAccount security only. No marketing or tracking.`,
   };
 }
 
@@ -126,9 +128,9 @@ function fixedActionUrl(config, template, { url, token }) {
     target.searchParams.set('token', token);
     return target.toString();
   }
-  const target = new URL('/api/auth/verify-email', config.authBaseUrl);
-  target.searchParams.set('token', token);
-  target.searchParams.set('callbackURL', config.verificationCallbackUrl);
+  // The fragment stays in the browser and is submitted only after confirmation.
+  const target = new URL('./email-verify.html', config.verificationCallbackUrl);
+  target.hash = new URLSearchParams({ token }).toString();
   return target.toString();
 }
 

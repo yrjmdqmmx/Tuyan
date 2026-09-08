@@ -1,5 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-08] 邮箱验证增加手动确认，避免链接预览提前验证 — by Codex
+变更：邮件链接改为 Web `account/email-verify.html#token=…`，页面读取后立即移除片段，仅在用户点击“确认验证邮箱”时发送请求。旧邮件的 `GET/HEAD /api/auth/verify-email` 只跳转至第一方确认页，不查询或修改账号；Better Auth 原验证路由同时禁用。页面加载、预览、焦点事件均不自动提交。
+共享契约：验证动作改为 `POST /api/auth/verify-email`，必须使用受信任 Origin 与 JSON `{token}`，只接受 body 中的令牌。HTTP 200 `{ok:true,code:'EMAIL_VERIFIED'|'TOKEN_USED'}`；无效/过期为 HTTP 400、暂时失败为 503。保留不可变用户 ID、邮箱摘要、注销屏障、原 1 小时 TTL 与幂等回执；不创建登录态。注册观察接口仍只读，无新增 env、迁移或批量账号状态变更。
+- [x] Auth Gateway（安全 GET/HEAD、显式 POST、禁用原路由、邮件链接及双语说明）
+- [x] Web（手动确认、令牌只在内存、失败手动重试、结果与登录入口）
+- [x] 微信小程序兼容性（邮件链接在浏览器完成确认，原注册/登录/重发接口不变；本轮不发布小程序）
+- [x] 本地验收（Gateway 140、Web 353 项测试及 Web 构建通过；真实 Better Auth / Mongo 与 Chrome 桌面/手机：预取及执行页面脚本后仍未验证，点击后原注册页自动更新；重复链接、无自动登录、注销后重注册隔离）
+- [ ] Web / Gateway 生产发布与验收（先部署确认页，再切换 Gateway）
+
 ### [2026-09-08] 邮箱验证结果与注册等待状态修复 — by Codex
 变更：Gateway 验证成功后在原 1 小时 TTL 内保留哈希回执；重复访问仅在同一不可变用户 ID、发信邮箱、当前已验证且无注销操作时返回 `TOKEN_USED`，不再次修改账号、不创建登录态。区分 `TOKEN_EXPIRED`、`INVALID_TOKEN` 和暂时故障 `VERIFICATION_UNAVAILABLE`，响应禁止缓存；已删除的旧回执无法重建，网页对此提供先登录再决定是否重发的指引。
 共享契约：注册受理响应新增可选 `verificationStatusToken`；新增只读 `POST /api/auth/verification-status`，body 为 `{token}`，返回 `{status:'pending'|'verified'}`，暂时失败为 HTTP 503。凭证与验证令牌用途分离，仅授权观察本次实际新注册的用户与原邮箱，1 小时失效；合成/重复注册返回等形随机凭证，不能观察既有账号。凭证仅存 Web 页面内存；不支持凭邮箱查询，不发送邮件、不授予登录。沿用 `accountVerificationTokens` 的 TTL 和按用户注销清理，无新 env 或数据库迁移。

@@ -147,14 +147,14 @@ test('verification links cannot follow an email to a newly registered ID; repeat
   const oldToken = await verification.issue({ id: 'old-id' });
   await db.collection('user').deleteOne({ _id: 'old-id' });
   await db.collection('user').insertOne({ _id: 'new-id', email: 'same@example.test', emailVerified: false });
-  const request = (token) => new Request(`https://api.paperbanana.asia/api/auth/verify-email?token=${token}&callbackURL=https://evil.test`);
-  assert.match((await verification.handler(request(oldToken))).headers.get('location'), /error=INVALID_TOKEN/);
+  const request = (token) => new Request('https://api.paperbanana.asia/api/auth/verify-email', { method: 'POST', headers: { origin: 'https://paperbanana.asia', 'content-type': 'application/json' }, body: JSON.stringify({ token }) });
+  assert.equal((await (await verification.handler(request(oldToken))).json()).code, 'INVALID_TOKEN');
   assert.equal(db.collection('user').rows[0].emailVerified, false);
   const newToken = await verification.issue({ id: 'new-id' });
-  assert.equal((await verification.handler(request(newToken))).headers.get('location'), 'https://paperbanana.asia/account/email-verified.html');
+  assert.equal((await (await verification.handler(request(newToken))).json()).code, 'EMAIL_VERIFIED');
   assert.equal(db.collection('user').rows[0].emailVerified, true);
-  assert.match((await verification.handler(request(newToken))).headers.get('location'), /error=TOKEN_USED/);
-  assert.match((await verification.handler(request('old-email-only.jwt.token'))).headers.get('location'), /error=INVALID_TOKEN/);
+  assert.equal((await (await verification.handler(request(newToken))).json()).code, 'TOKEN_USED');
+  assert.equal((await (await verification.handler(request('old-email-only.jwt.token'))).json()).code, 'INVALID_TOKEN');
 });
 
 test('a stale password-reset request cannot recreate credentials or sessions after account deletion', async () => {
@@ -184,7 +184,7 @@ test('verification is also bound to the email at issuance, even when the user ID
   } });
   const token = await verification.issue({ id: 'same-id' });
   await db.collection('user').updateOne({ _id: 'same-id' }, { $set: { email: 'after@example.test' } });
-  const response = await verification.handler(new Request(`https://api.paperbanana.asia/api/auth/verify-email?token=${token}`));
-  assert.match(response.headers.get('location'), /INVALID_TOKEN/);
+  const response = await verification.handler(new Request('https://api.paperbanana.asia/api/auth/verify-email', { method: 'POST', headers: { origin: 'https://paperbanana.asia', 'content-type': 'application/json' }, body: JSON.stringify({ token }) }));
+  assert.equal((await response.json()).code, 'INVALID_TOKEN');
   assert.equal(db.collection('user').rows[0].emailVerified, false);
 });

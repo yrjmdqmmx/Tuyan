@@ -59,7 +59,7 @@ export async function createAuthRuntime(
     ...config.authEmail,
     authBaseUrl: config.authBaseUrl,
   };
-  const verification = createAccountVerification({ db, mongoClient, callbackUrl: emailConfig.verificationCallbackUrl });
+  const verification = createAccountVerification({ db, mongoClient, callbackUrl: emailConfig.verificationCallbackUrl, frontendOrigins: config.frontendOrigins });
   const limiter = createDatabaseMailLimiter({
     collection: db.collection('authMailRateLimit'),
     secret: config.authSecret,
@@ -92,6 +92,9 @@ export async function createAuthRuntime(
     secret: config.authSecret,
     baseURL: config.authBaseUrl,
     trustedOrigins: config.frontendOrigins,
+    // The custom confirmation handler is the only verification endpoint.
+    // Disable the library route as well, including its normalized path aliases.
+    disabledPaths: ['/verify-email'],
     // Better Auth 1.6.11 includes full email addresses in several negative-path
     // log records. Application and account-email logs remain available through
     // the injected redacting logger, so disable the library logger completely.

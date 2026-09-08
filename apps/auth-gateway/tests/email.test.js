@@ -47,7 +47,8 @@ test('mail service enforces database-backed email and IP windows before sending'
 
   await service.sendVerification({
     email: 'User@Example.com',
-    url: 'https://api.paperbanana.asia/api/auth/verify-email?token=top-secret',
+    url: 'https://untrusted.example.test/api/auth/verify-email?token=unused',
+    token: 'top-secret',
     request: new Request('https://api.paperbanana.asia', { headers: { 'x-forwarded-for': '203.0.113.7' } }),
   });
 
@@ -56,6 +57,13 @@ test('mail service enforces database-backed email and IP windows before sending'
   assert.equal(sent.length, 1);
   assert.equal(sent[0].toAddress, 'user@example.com');
   assert.match(sent[0].htmlBody, /token=top-secret/);
+  const actionUrl = new URL(sent[0].textBody.match(/https:\/\/\S+/)[0]);
+  assert.equal(actionUrl.origin + actionUrl.pathname, 'https://www.paperbanana.asia/account/email-verify.html');
+  assert.equal(actionUrl.search, '');
+  assert.equal(new URLSearchParams(actionUrl.hash.slice(1)).get('token'), 'top-secret');
+  assert.match(sent[0].textBody, /点击“确认验证邮箱”/);
+  assert.match(sent[0].textBody, /click the confirmation button/);
+  assert.doesNotMatch(sent[0].htmlBody, /untrusted.example|unused/);
   const serializedLogs = JSON.stringify(logs);
   assert.doesNotMatch(serializedLogs, /User@Example|user@example|top-secret/);
   assert.match(serializedLogs, /provider-request-id/);
