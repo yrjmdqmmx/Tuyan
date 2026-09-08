@@ -49,6 +49,8 @@ export async function startAdminFixture(uri, webBase = 'http://127.0.0.1:5194') 
       taskName: i === 0 ? '肿瘤微环境机制图' : `科研图示任务 ${String(i).padStart(2, '0')}`, caption: `图 ${i + 1}：实验流程与对照比较`, methodContent: '收集样本 → 建立模型 → 对照评估。apiKeys: { openai: "SECRET_MAP_CANARY" }',
       status: ['succeeded', 'failed', 'running', 'queued', 'reserved'][i % 5], jobType: i % 3 ? 'generate' : 'refine', provider: 'bailian',
       mainModelName: 'qwen-max', imageModelName: i % 2 ? 'wan-image' : 'nano-banana', referenceVisionModelName: 'qwen-vl',
+      clientPlatform: 'web', configurationMode: 'advanced', infographicCategory: '方法框架图', outputFormat: 'svg', retrievalSetting: 'auto',
+      referenceImageMode: 'auto', referenceImageModeUsed: 'none', referenceImages: [], criticMode: 'text', pipelineMode: 'planner_critic', aspectRatio: '16:9', imageSize: '1K', numCandidates: 1, maxCriticRounds: 0,
       modelRoutes: { main: { accessProvider: 'bailian', modelId: 'qwen-max' }, image: { accessProvider: 'bailian', modelId: i % 2 ? 'wan-image' : 'nano-banana' }, vision: { accessProvider: 'bailian', modelId: 'qwen-vl' } },
       createdAt: new Date(+date - i * day / 3), updatedAt: new Date(+date - i * day / 3), startedAt: i % 5 < 3 ? new Date(+date - i * day / 3 + 1000) : null,
       completedAt: i % 5 < 2 ? new Date(+date - i * day / 3 + 1000 + (i + 1) * 3200) : null,
@@ -56,6 +58,20 @@ export async function startAdminFixture(uri, webBase = 'http://127.0.0.1:5194') 
       error: i % 5 === 1 ? 'Provider timed out; token=ERROR_SECRET_CANARY' : '', errorCode: i % 5 === 1 ? 'PROVIDER_TIMEOUT' : '',
       logs: ['queued', 'authorization: Bearer LOG_SECRET_CANARY'], stages: [{ title: '规划与生成', text: '样本、模型与评估按顺序排列。', type: 'planner' }], apiKeys: { bailian: 'JOB_KEY_CANARY_DO_NOT_RETURN' },
     }));
+    Object.assign(jobRows[0], {
+      jobType: 'generate', retrievalSetting: 'none', referenceImageModeUsed: 'main_model',
+      referenceImages: [{ filename: 'fixture-reference.svg', url: apiBase + '/fixture-result.svg?reference', mimeType: 'image/svg+xml' }],
+      stages: [
+        { title: '规划', type: 'planner', text: '根据样本与模型组织流程。', candidateId: 0, round: 0, startedAt: date, completedAt: new Date(+date + 150), durationMs: 150 },
+        { title: '生成', type: 'generator', text: '生成流程示意图。', image: { filename: 'fixture-stage.svg', url: apiBase + '/fixture-result.svg?stage', mimeType: 'image/svg+xml' } },
+        { title: '评审', type: 'critic', text: '检查对照组与评估节点。', criticSuggestion: '放大对照组标签。token=STAGE_SECRET_CANARY', candidate_id: 0, round: 1, duration_ms: 0 },
+        { title: '完成', type: 'complete', text: '结果已保存。' },
+      ],
+    });
+    // Older stored jobs have no routing object or configuration. Public defaults
+    // must not turn missing history into claims about how this task ran.
+    for (const field of ['clientPlatform', 'configurationMode', 'infographicCategory', 'outputFormat', 'retrievalSetting', 'referenceImageMode', 'referenceImageModeUsed', 'referenceImages', 'criticMode', 'pipelineMode', 'aspectRatio', 'imageSize', 'numCandidates', 'maxCriticRounds', 'stages', 'modelRoutes']) delete jobRows[66][field];
+    delete jobRows[65].modelRoutes;
     await db.collection('paperbanana_jobs').insertMany(jobRows);
     await db.collection('paperbanana_feedback').insertMany(identities.slice(0, 31).map((id, i) => ({ _id: `feedback-${i}`, id: `feedback-${i}`, userId: String(id), userEmail: `researcher${i}@example.test`, jobId: `task-${String(i).padStart(3, '0')}`, contact: i === 0 ? 'wechat:research-lab-0086' : `contact-${i}@example.test`, message: `用户反馈 ${i}：希望改进标注位置。`, category: 'suggestion', status: 'new', platform: 'web', createdAt: new Date(+date - i * 3600000), clientIp: '192.0.2.2' })));
     const promptRows = Array.from({ length: 54 }, (_, i) => ({ _id: `submission-${i}`, submissionId: `submission-${i}`, userId: String(identities[i % identities.length]), status: ['pending', 'grouped', 'candidate', 'approved_for_next_suite', 'merged', 'rejected'][i % 6], prompt: i === 0 ? '绘制 CRISPR 基因编辑实验流程，标注对照组与检测节点。' : `社区评估题 ${String(i).padStart(2, '0')}：绘制科研方法图，体现关键步骤。`, capability: i % 2 ? '方法流程' : '机制通路', requiredElements: '实验组、对照组、检测结果', forbiddenResults: '不添加未经提供的实验结论', notes: '由社区用户提交', normalizedHash: `hash-${i}`, clientIp: '192.0.2.3', createdAt: new Date(+date - i * 3600000), updatedAt: new Date(+date - i * 3600000), ...(i % 6 === 3 ? { decidedBy: adminId, decidedAt: date, decisionNotes: '历史审核记录' } : {}) }));
