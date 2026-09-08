@@ -1,0 +1,830 @@
+{
+  "recordedAt": "2026-09-08T08:22:56.806854+00:00",
+  "pr": 181,
+  "mergeSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+  "implementationSha": "ae428ef7aecba00ddf34b376f8a4867c0f3a6564",
+  "includesPriorReleases": [
+    178,
+    179,
+    180
+  ],
+  "workflows": {
+    "branchCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:46:03Z",
+      "databaseId": 34200985740,
+      "headSha": "ae428ef7aecba00ddf34b376f8a4867c0f3a6564",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:49:31Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34200985740"
+    },
+    "prCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:46:31Z",
+      "databaseId": 34201028142,
+      "headSha": "ae428ef7aecba00ddf34b376f8a4867c0f3a6564",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:50:18Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34201028142"
+    },
+    "mergedCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:50:59Z",
+      "databaseId": 34201407241,
+      "headSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:54:48Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34201407241"
+    },
+    "gatewayImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:51:20Z",
+      "databaseId": 34201437798,
+      "headSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:52:08Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34201437798"
+    },
+    "coreImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:51:24Z",
+      "databaseId": 34201443459,
+      "headSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:51:57Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34201443459"
+    },
+    "benchmarkImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:51:27Z",
+      "databaseId": 34201447985,
+      "headSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+      "status": "completed",
+      "updatedAt": "2026-09-08T07:52:15Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34201447985"
+    },
+    "hongKongDeploy": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T07:55:20Z",
+      "databaseId": 34201770334,
+      "headSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+      "status": "completed",
+      "updatedAt": "2026-09-08T08:01:21Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34201770334"
+    },
+    "webPages": {
+      "conclusion": "success",
+      "createdAt": "2026-09-08T08:02:39Z",
+      "databaseId": 34202384769,
+      "headSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+      "status": "completed",
+      "updatedAt": "2026-09-08T08:04:40Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34202384769"
+    }
+  },
+  "runtime": {
+    "checkedAt": "2026-09-08T08:02:01.918956+00:00",
+    "codeSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+    "images": {
+      "PAPERBANANA_GATEWAY_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:de4fff99c4da266fc10a85073bf575135d12780f97fc78a9f277af6e68a02534",
+      "PAPERBANANA_CORE_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:24d52734f31404bb2f54d9443ddb180dc0f62463bf606099267930394768521f",
+      "PAPERBANANA_PLOT_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "PAPERBANANA_MONGODB_IMAGE": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "PAPERBANANA_BENCH_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:1da00411f12b85293d2f9a55fdc16acd24bf4e0b89144b3d7b0c6256e0795126"
+    },
+    "benchmarkSecretMode": "configured-disabled",
+    "containers": {
+      "auth-gateway": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:de4fff99c4da266fc10a85073bf575135d12780f97fc78a9f277af6e68a02534",
+        "imageId": "sha256:de4fff99c4da266fc10a85073bf575135d12780f97fc78a9f277af6e68a02534",
+        "revision": "fc962212bfa497aab91c770a4edfa7050c027e93",
+        "health": "healthy",
+        "environmentFingerprint": "a610c59a7b634ad15d280eb736ecb6949c34c76d4425173f310433ee08a6ba64",
+        "safeConfiguration": {}
+      },
+      "paperbanana-api": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:24d52734f31404bb2f54d9443ddb180dc0f62463bf606099267930394768521f",
+        "imageId": "sha256:24d52734f31404bb2f54d9443ddb180dc0f62463bf606099267930394768521f",
+        "revision": "fc962212bfa497aab91c770a4edfa7050c027e93",
+        "health": "healthy",
+        "environmentFingerprint": "d7418c41638c300be1412ee8b8ae88f0eaeb2161b3a867a8e3ec55d29293af97",
+        "provenance": {
+          "codeSha": "fc962212bfa497aab91c770a4edfa7050c027e93"
+        },
+        "safeConfiguration": {
+          "PAPERBANANA_PROVIDER_EGRESS_MODE": "sg-required"
+        }
+      },
+      "benchmark-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:1da00411f12b85293d2f9a55fdc16acd24bf4e0b89144b3d7b0c6256e0795126",
+        "imageId": "sha256:1da00411f12b85293d2f9a55fdc16acd24bf4e0b89144b3d7b0c6256e0795126",
+        "revision": "fc962212bfa497aab91c770a4edfa7050c027e93",
+        "health": "healthy",
+        "environmentFingerprint": "0dfb6075a5667de0850fda7e946eb97283dd186f471e03c18a3baef0d5018f08",
+        "provenance": {
+          "codeSha": "fc962212bfa497aab91c770a4edfa7050c027e93"
+        },
+        "safeConfiguration": {
+          "PAPERBANANA_BENCH_ENABLED": "false",
+          "PAPERBANANA_BENCH_CONCURRENCY": "1"
+        }
+      },
+      "plot-worker": {
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "revision": "3ae61e52523b9b2e8d620d925505483eb641047a",
+        "health": "healthy",
+        "environmentFingerprint": "16fadb9dfed7bb2b897df4c639d4088fbf2cec02275d2d2f53ea0c7359fcec5e",
+        "safeConfiguration": {}
+      },
+      "mongodb": {
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "revision": null,
+        "health": "healthy",
+        "environmentFingerprint": "3f2de7815680add2ba1e8a364d8033e0d35b758ed15e4c4d479b6abe4d7358e8",
+        "safeConfiguration": {}
+      }
+    },
+    "maintenanceCleared": true
+  },
+  "indexes": {
+    "paperbanana_business": {
+      "collections": {
+        "paperbanana_jobs": {
+          "canCreateIndex": true,
+          "indexes": [
+            {
+              "name": "_id_",
+              "key": {
+                "_id": 1
+              }
+            },
+            {
+              "name": "createdAt_desc",
+              "key": {
+                "createdAt": -1
+              }
+            },
+            {
+              "name": "status_updatedAt_desc",
+              "key": {
+                "status": 1,
+                "updatedAt": -1
+              }
+            },
+            {
+              "name": "provider_createdAt_desc",
+              "key": {
+                "provider": 1,
+                "createdAt": -1
+              }
+            },
+            {
+              "name": "infographicCategory_createdAt_desc",
+              "key": {
+                "infographicCategory": 1,
+                "createdAt": -1
+              }
+            },
+            {
+              "name": "configurationMode_createdAt_desc",
+              "key": {
+                "configurationMode": 1,
+                "createdAt": -1
+              }
+            },
+            {
+              "name": "createdAt_-1__id_-1",
+              "key": {
+                "createdAt": -1,
+                "_id": -1
+              }
+            },
+            {
+              "name": "userId_1_createdAt_-1",
+              "key": {
+                "userId": 1,
+                "createdAt": -1
+              }
+            },
+            {
+              "name": "status_1_createdAt_-1",
+              "key": {
+                "status": 1,
+                "createdAt": -1
+              }
+            }
+          ],
+          "createdAtTypes": [
+            {
+              "_id": "date",
+              "count": 91
+            }
+          ]
+        },
+        "paperbanana_feedback": {
+          "canCreateIndex": true,
+          "indexes": [
+            {
+              "name": "_id_",
+              "key": {
+                "_id": 1
+              }
+            },
+            {
+              "name": "userId_1_createdAt_-1",
+              "key": {
+                "userId": 1,
+                "createdAt": -1
+              }
+            },
+            {
+              "name": "createdAt_-1__id_-1",
+              "key": {
+                "createdAt": -1,
+                "_id": -1
+              }
+            }
+          ],
+          "createdAtTypes": [
+            {
+              "_id": "date",
+              "count": 4
+            }
+          ]
+        }
+      },
+      "jobsByStatus": [
+        {
+          "_id": "succeeded",
+          "count": 70
+        },
+        {
+          "_id": "failed",
+          "count": 21
+        }
+      ]
+    },
+    "paperbanana_benchmark": {
+      "collections": {
+        "paperbanana_benchmark_prompt_submissions": {
+          "canCreateIndex": true,
+          "indexes": [
+            {
+              "name": "_id_",
+              "key": {
+                "_id": 1
+              }
+            },
+            {
+              "name": "prompt_submission_account_day",
+              "key": {
+                "userId": 1,
+                "createdAt": 1
+              }
+            },
+            {
+              "name": "prompt_submission_ip_day",
+              "key": {
+                "clientIp": 1,
+                "createdAt": 1
+              }
+            },
+            {
+              "name": "prompt_submission_queue",
+              "key": {
+                "status": 1,
+                "createdAt": 1
+              }
+            },
+            {
+              "name": "userId_1_createdAt_-1",
+              "key": {
+                "userId": 1,
+                "createdAt": -1
+              }
+            },
+            {
+              "name": "createdAt_-1__id_-1",
+              "key": {
+                "createdAt": -1,
+                "_id": -1
+              }
+            }
+          ],
+          "createdAtTypes": []
+        }
+      }
+    },
+    "paperbanana_auth": {
+      "collections": {
+        "user": {
+          "canCreateIndex": true,
+          "indexes": [
+            {
+              "name": "_id_",
+              "key": {
+                "_id": 1
+              }
+            },
+            {
+              "name": "auth_email_unique_v1",
+              "key": {
+                "email": 1
+              }
+            },
+            {
+              "name": "createdAt_-1__id_-1",
+              "key": {
+                "createdAt": -1,
+                "_id": -1
+              }
+            }
+          ],
+          "createdAtTypes": [
+            {
+              "_id": "date",
+              "count": 16
+            }
+          ]
+        },
+        "account": {
+          "canCreateIndex": true,
+          "indexes": [
+            {
+              "name": "_id_",
+              "key": {
+                "_id": 1
+              }
+            },
+            {
+              "name": "userId_1",
+              "key": {
+                "userId": 1
+              }
+            }
+          ],
+          "createdAtTypes": [
+            {
+              "_id": "date",
+              "count": 16
+            }
+          ]
+        },
+        "session": {
+          "canCreateIndex": true,
+          "indexes": [
+            {
+              "name": "_id_",
+              "key": {
+                "_id": 1
+              }
+            },
+            {
+              "name": "userId_1_createdAt_-1",
+              "key": {
+                "userId": 1,
+                "createdAt": -1
+              }
+            }
+          ],
+          "createdAtTypes": [
+            {
+              "_id": "date",
+              "count": 40
+            }
+          ]
+        }
+      }
+    }
+  },
+  "public": {
+    "/health": {
+      "http": 200,
+      "body": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-08T08:02:27.348Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "laf": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-08T08:02:27.348Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true,
+            "checkedAt": "2026-09-08T08:02:27.332Z"
+          },
+          "backend": {
+            "mode": "node",
+            "ok": true,
+            "checkedAt": "2026-09-08T08:02:27.348Z",
+            "status": 200,
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "http": 200,
+      "body": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "laf": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true
+          },
+          "backend": {
+            "ok": true,
+            "status": 200,
+            "data": {
+              "ok": true,
+              "service": "paperbanana-api",
+              "runtime": "node",
+              "version": "0.1.0",
+              "ready": true,
+              "dependencies": {
+                "mongodb": "ready",
+                "oss": "ready",
+                "providerEgress": "ready",
+                "benchmark": "ready"
+              }
+            }
+          }
+        }
+      }
+    },
+    "anonymousPermissions": [
+      {
+        "action": "adminOverview",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      },
+      {
+        "action": "adminUserList",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      },
+      {
+        "action": "adminUserDetail",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      },
+      {
+        "action": "adminTaskList",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      },
+      {
+        "action": "adminTaskDetail",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      },
+      {
+        "action": "adminCommunityList",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      },
+      {
+        "action": "adminCommunityDetail",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      },
+      {
+        "action": "adminFeedbackList",
+        "http": 401,
+        "spoofedAdminHeadersRejected": true
+      }
+    ]
+  },
+  "pages": {
+    "run": 34202384769,
+    "codeSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+    "assets": [
+      {
+        "path": "index.html",
+        "http": 200,
+        "sha256": "472c0323aa12f4ef516da307640fa8e51d4b14e00ac51e79ce906674a26a58d0",
+        "artifactMatch": true
+      },
+      {
+        "path": "assets/appPaths-Ba0fLi8f.js",
+        "http": 200,
+        "sha256": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+        "artifactMatch": true
+      },
+      {
+        "path": "assets/main-6UqO_Tv2.js",
+        "http": 200,
+        "sha256": "33680027c4b7288a14a0c27ec36100a9f3989bd3b60367a071c57b06c0360657",
+        "artifactMatch": true
+      },
+      {
+        "path": "assets/main-DE_Ft3oB.css",
+        "http": 200,
+        "sha256": "37d48b97f9f37d3a643f5f6f57c85a7d6fe629ad3f8b4ba8ab97472768d2bf96",
+        "artifactMatch": true
+      },
+      {
+        "path": "assets/AdminWorkspace-CGgEPUVA.js",
+        "http": 200,
+        "sha256": "4468311b5202124d0ca899356a4ac26a221e05fd2b22a74a267271847d2bc61f",
+        "artifactMatch": true
+      }
+    ]
+  },
+  "localTests": {
+    "gateway": 140,
+    "core": 458,
+    "web": 361,
+    "sharedApi": 29,
+    "realMongoAdminAssertions": 66,
+    "localBrowserFlows": 15,
+    "accountLifecycleIntegration": "passed in branch, PR and merged CI",
+    "coreTypecheck": "passed",
+    "coreBuild": "passed",
+    "webBuild": "passed; existing chunk-size warning"
+  },
+  "productionBrowser": {
+    "site": "https://www.paperbanana.asia",
+    "checks": [
+      {
+        "check": "overviewRealData",
+        "users": 16,
+        "registered7Days": 2,
+        "tasks7Days": 1,
+        "pendingCommunity": 0
+      },
+      {
+        "check": "overview30DayFilter",
+        "registered": 6,
+        "tasks": 17
+      },
+      {
+        "check": "userPaginationAndDetail",
+        "pageSize": 10,
+        "page2Rows": 6,
+        "detailSections": true,
+        "emailRevealExplicit": true
+      },
+      {
+        "check": "userDetailReturn",
+        "page": 2,
+        "pageSize": 10
+      },
+      {
+        "check": "exactUserIdSearch",
+        "rows": 1
+      },
+      {
+        "check": "taskStatusPagination",
+        "total": 91,
+        "failed": 21,
+        "failedPage2Rows": 1
+      },
+      {
+        "check": "taskFailureDetail",
+        "inputSummary": true,
+        "errorReason": true,
+        "executionRecords": true,
+        "followupForm": true
+      },
+      {
+        "check": "taskReturnPreservesFailedPage2",
+        "passed": true
+      },
+      {
+        "check": "successTaskResults",
+        "loadedImages": 4,
+        "eachWidth": 1280
+      },
+      {
+        "check": "taskUserTaskNavigation",
+        "associatedTasks": 45
+      },
+      {
+        "check": "communityRealEmptyState",
+        "total": 0,
+        "reviewStatesAvailable": true
+      },
+      {
+        "check": "feedbackRealData",
+        "total": 4,
+        "contactMasked": true
+      },
+      {
+        "check": "mobileOverview",
+        "viewport": 390,
+        "height": 843,
+        "noDocumentOverflow": true
+      },
+      {
+        "check": "mobileTaskTable",
+        "viewport": 354,
+        "noDocumentOverflow": true,
+        "horizontalScrollInsideTable": true
+      },
+      {
+        "check": "desktopLayout",
+        "viewport": 1440,
+        "height": 1080,
+        "noDocumentOverflow": true
+      }
+    ],
+    "network": [
+      {
+        "action": "adminOverview",
+        "http": 200,
+        "code": 0,
+        "cache": "no-store",
+        "inspected": true,
+        "forbiddenFields": []
+      },
+      {
+        "action": "adminUserList",
+        "http": 200,
+        "code": 0,
+        "cache": "no-store",
+        "inspected": true,
+        "forbiddenFields": []
+      },
+      {
+        "action": "adminTaskList",
+        "http": 200,
+        "code": 0,
+        "cache": "no-store",
+        "inspected": true,
+        "forbiddenFields": []
+      },
+      {
+        "action": "adminCommunityList",
+        "http": 200,
+        "code": 0,
+        "cache": "no-store",
+        "inspected": true,
+        "forbiddenFields": []
+      },
+      {
+        "action": "adminFeedbackList",
+        "http": 200,
+        "code": 0,
+        "cache": "no-store",
+        "inspected": true,
+        "forbiddenFields": []
+      }
+    ],
+    "applicationErrors": 0,
+    "toolingNote": "Some extension locator interactions timed out; native Chrome controls completed pagination, search, filtering and detail checks. These are automation-channel failures, not application script errors.",
+    "sensitiveContactRevealPerformed": false,
+    "viewportOverrideReset": true
+  },
+  "rollback": {
+    "backend": {
+      "checkedAt": "2026-09-08T07:48:35.727857+00:00",
+      "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d",
+      "images": {
+        "PAPERBANANA_GATEWAY_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:486bec77202f1a0c2f499b7d8655b0279c7916e2f10c002c0037a3884610f65d",
+        "PAPERBANANA_CORE_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:2158ab118d8eb41c028cfcc609606d9e4f2323d2c55062af916a3f40314534c7",
+        "PAPERBANANA_PLOT_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "PAPERBANANA_MONGODB_IMAGE": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "PAPERBANANA_BENCH_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:23c8bba1312f064ad5412b0c2b1cbe27e5401adef9ce77bde854f796c642da56"
+      },
+      "benchmarkSecretMode": "configured-disabled",
+      "containers": {
+        "auth-gateway": {
+          "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:486bec77202f1a0c2f499b7d8655b0279c7916e2f10c002c0037a3884610f65d",
+          "imageId": "sha256:486bec77202f1a0c2f499b7d8655b0279c7916e2f10c002c0037a3884610f65d",
+          "revision": "cca7061fa27c536431445ef3899344aeebe57f7d",
+          "health": "healthy",
+          "environmentFingerprint": "a610c59a7b634ad15d280eb736ecb6949c34c76d4425173f310433ee08a6ba64",
+          "safeConfiguration": {}
+        },
+        "paperbanana-api": {
+          "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:2158ab118d8eb41c028cfcc609606d9e4f2323d2c55062af916a3f40314534c7",
+          "imageId": "sha256:2158ab118d8eb41c028cfcc609606d9e4f2323d2c55062af916a3f40314534c7",
+          "revision": "cca7061fa27c536431445ef3899344aeebe57f7d",
+          "health": "healthy",
+          "environmentFingerprint": "d7418c41638c300be1412ee8b8ae88f0eaeb2161b3a867a8e3ec55d29293af97",
+          "provenance": {
+            "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d"
+          },
+          "safeConfiguration": {
+            "PAPERBANANA_PROVIDER_EGRESS_MODE": "sg-required"
+          }
+        },
+        "benchmark-worker": {
+          "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:23c8bba1312f064ad5412b0c2b1cbe27e5401adef9ce77bde854f796c642da56",
+          "imageId": "sha256:23c8bba1312f064ad5412b0c2b1cbe27e5401adef9ce77bde854f796c642da56",
+          "revision": "cca7061fa27c536431445ef3899344aeebe57f7d",
+          "health": "healthy",
+          "environmentFingerprint": "0dfb6075a5667de0850fda7e946eb97283dd186f471e03c18a3baef0d5018f08",
+          "provenance": {
+            "codeSha": "cca7061fa27c536431445ef3899344aeebe57f7d"
+          },
+          "safeConfiguration": {
+            "PAPERBANANA_BENCH_CONCURRENCY": "1",
+            "PAPERBANANA_BENCH_ENABLED": "false"
+          }
+        },
+        "plot-worker": {
+          "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+          "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+          "revision": "3ae61e52523b9b2e8d620d925505483eb641047a",
+          "health": "healthy",
+          "environmentFingerprint": "16fadb9dfed7bb2b897df4c639d4088fbf2cec02275d2d2f53ea0c7359fcec5e",
+          "safeConfiguration": {}
+        },
+        "mongodb": {
+          "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+          "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+          "revision": null,
+          "health": "healthy",
+          "environmentFingerprint": "3f2de7815680add2ba1e8a364d8033e0d35b758ed15e4c4d479b6abe4d7358e8",
+          "safeConfiguration": {}
+        }
+      },
+      "maintenanceCleared": true
+    },
+    "webSha": "28000e0be7479cc6a5bc84e323443d86bbdc6bf1",
+    "protectedHostBackup": "/opt/paperbanana/backups/admin-operations-20260908T074958Z",
+    "backupDirectoryMode": "0700",
+    "backupFilesMode": "0600",
+    "triggered": false
+  },
+  "boundaries": {
+    "productionUserOrTaskMutations": false,
+    "realCommunityReviewOrEdits": false,
+    "realEmailSent": false,
+    "paidProviderCalls": false,
+    "benchmarkExecutionEnabled": false,
+    "miniProgramPublished": false,
+    "databaseWrites": "Additive indexes and existing deployment transaction smoke only; no business-state management operations"
+  }
+}
