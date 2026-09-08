@@ -6522,8 +6522,13 @@ test('xAI normalizes WebP references to supported PNG for planning, vision and i
   } finally { legacy.configureRuntimeFetch() }
 })
 
-test('current OpenRouter public catalog accounts for every model and exposes only compatible selections', async (t) => {
+test('reviewed OpenRouter public catalog accounts for every model at its snapshot date and exposes only compatible selections', async (t) => {
   const snapshot = JSON.parse(fs.readFileSync(path.resolve(packageRoot, '../../config/openrouter-catalog-review.json'), 'utf8'))
+  // This fixture describes its review date, not today's live directory. Keep
+  // scheduled retirements from turning an unchanged historical audit red.
+  const reviewedAt = Date.parse(`${snapshot.reviewedAt}T12:00:00Z`)
+  assert.ok(Number.isFinite(reviewedAt))
+  t.mock.method(Date, 'now', () => reviewedAt)
   const legacy = await loadLegacy()
   const imageCards = new Map<string, any>(snapshot.images.map((model: any) => [model.id, model]))
   let submissions = 0

@@ -101,7 +101,7 @@ import {
   scopedApiKeysForRoles,
   uniqueProvidersForRoles,
 } from './lib/modelRouting';
-import { appPath } from './appPaths';
+import { appPath, isLoginEntry } from './appPaths';
 
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
@@ -155,7 +155,7 @@ export default function App() {
   const [showContactDialog, setShowContactDialog] = useState(false);
   const contactCloseRef = useRef(null);
   const [contactQrFailed, setContactQrFailed] = useState(false);
-  const [showAuthPanel, setShowAuthPanel] = useState(false);
+  const [showAuthPanel, setShowAuthPanel] = useState(() => isLoginEntry(window.location.search));
   const [showAccountDialog, setShowAccountDialog] = useState(false);
   const [showGenerationSettings, setShowGenerationSettings] = useState(false);
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');

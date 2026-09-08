@@ -1,5 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-08] 邮箱验证结果与注册等待状态修复 — by Codex
+变更：Gateway 验证成功后在原 1 小时 TTL 内保留哈希回执；重复访问仅在同一不可变用户 ID、发信邮箱、当前已验证且无注销操作时返回 `TOKEN_USED`，不再次修改账号、不创建登录态。区分 `TOKEN_EXPIRED`、`INVALID_TOKEN` 和暂时故障 `VERIFICATION_UNAVAILABLE`，响应禁止缓存；已删除的旧回执无法重建，网页对此提供先登录再决定是否重发的指引。
+共享契约：注册受理响应新增可选 `verificationStatusToken`；新增只读 `POST /api/auth/verification-status`，body 为 `{token}`，返回 `{status:'pending'|'verified'}`，暂时失败为 HTTP 503。凭证与验证令牌用途分离，仅授权观察本次实际新注册的用户与原邮箱，1 小时失效；合成/重复注册返回等形随机凭证，不能观察既有账号。凭证仅存 Web 页面内存；不支持凭邮箱查询，不发送邮件、不授予登录。沿用 `accountVerificationTokens` 的 TTL 和按用户注销清理，无新 env 或数据库迁移。
+- [x] Auth Gateway（重复结果、错误分类、注册观察凭证；账号身份与反枚举回归）
+- [x] Web（等待页自动检查、回到页面即时刷新、成功隐藏重发、清空注册密码、返回登录入口、普通登录不再跳到邮箱验证结果页；旧 Gateway 无凭证时保留手动登录）
+- [x] 微信小程序兼容性（新增响应字段可忽略；原注册/登录/重发请求保持兼容，不要求本轮发布）
+- [x] 本地验证（Gateway 138、Web 349 项；真实 Better Auth / Mongo 副本集并发验证、重复注册反枚举、注销与同邮箱重注册回归；Web 构建；Chrome 1440×1000 / 390×844 首次及重复链接、跨浏览器原页面自动更新、普通登录留在应用内、零脚本错误及无横向溢出）
+- [ ] 生产发布（本轮修复尚未部署；小程序原生验收与平台发布继续暂缓）
+
 ### [2026-09-07] 模型选择与比例呈现 v15 — by Codex
 变更：新增共享公司/平台名称、别名、渠道路径、官方日期与版本顺序配置 `config/model-presentation.json`；公开模型条目新增可选 `vendorId / serviceTier / releaseFamily / releaseOrder / releaseSourceUrl / releaseOrderSourceUrl`。后端及两端用同一生成源规范化公司名称和新到旧顺序，推荐标签不参与排序。所有渠道保持“API 接入渠道 → 模型厂商 → 服务端模型目录”；完整调用 ID 与显示名分离。静态目录仍为 669 项，既有协议、能力、地区和请求 ID 不变。
 比例：Web、小程序共享 `packages/types/src/aspect-ratios.ts`，按渠道内型号、生成/编辑及分辨率只展示合法项；旧选择失效自动收敛，缺失能力时不伪造选项，提交前验证当前比例，包含 Recraft 原生 SVG。原生客户端版本兼容新增可选字段，无新增 action、env 或网关规则。

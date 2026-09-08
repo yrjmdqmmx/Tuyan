@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { AlertTriangle, Loader2, MailCheck, ShieldCheck } from 'lucide-react';
 import { authClient } from '../config';
 import { formatErrorMessage } from '../utils';
+import { useEmailVerificationStatus } from '../hooks/useEmailVerificationStatus';
 
 const VERIFIED_URL = 'https://www.paperbanana.asia/account/email-verified.html';
 const RESET_URL = 'https://www.paperbanana.asia/account/reset-password.html';
 
-export default function AuthPanel({ onAuthenticated, onCancel }) {
+export default function AuthPanel({ onAuthenticated, onCancel, client = authClient }) {
   const [mode, setMode] = useState('sign-in');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,6 +15,8 @@ export default function AuthPanel({ onAuthenticated, onCancel }) {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [verificationToken, setVerificationToken] = useState('');
+  const verificationStatus = useEmailVerificationStatus(mode === 'pending-verification' ? verificationToken : '');
   const isSignUp = mode === 'sign-up';
 
   useEffect(() => {
@@ -28,27 +31,39 @@ export default function AuthPanel({ onAuthenticated, onCancel }) {
     setIsSubmitting(true);
     try {
       if (mode === 'forgot') {
-        const { error: authError } = await authClient.requestPasswordReset({ email, redirectTo: RESET_URL });
+        const { error: authError } = await client.requestPasswordReset({ email, redirectTo: RESET_URL });
         if (authError && authError.status === 429) setCooldown(retryAfter(authError));
         if (authError) throw authError;
         setMode('recovery-sent');
         return;
       }
       const action = isSignUp
-        ? authClient.signUp.email({
+        ? client.signUp.email({
             email,
             password,
             name: name.trim() || email.split('@')[0] || '图研用户',
             callbackURL: VERIFIED_URL,
           })
-        : authClient.signIn.email({ email, password, callbackURL: VERIFIED_URL });
-      const { error: authError } = await action;
+        : client.signIn.email({ email, password });
+      const { data, error: authError } = await action;
       if (authError) {
-        if (authError.code === 'EMAIL_NOT_VERIFIED') setMode('pending-verification');
+        if (authError.code === 'EMAIL_NOT_VERIFIED') {
+          setPassword('');
+          setVerificationToken('');
+          setMode('pending-verification');
+          return;
+        }
         throw authError;
       }
-      if (isSignUp) setMode('pending-verification');
-      else await onAuthenticated();
+      if (isSignUp) {
+        setPassword('');
+        setVerificationToken(data?.verificationStatusToken || '');
+        setMode('pending-verification');
+      }
+      else {
+        setPassword('');
+        await onAuthenticated();
+      }
     } catch (err) {
       setError(err || '操作失败，请稍后重试');
     } finally {
@@ -61,7 +76,7 @@ export default function AuthPanel({ onAuthenticated, onCancel }) {
     setError('');
     setIsSubmitting(true);
     try {
-      const { error: authError } = await authClient.sendVerificationEmail({ email, callbackURL: VERIFIED_URL });
+      const { error: authError } = await client.sendVerificationEmail({ email, callbackURL: VERIFIED_URL });
       if (authError) throw authError;
       setCooldown(60);
     } catch (err) {
@@ -74,12 +89,14 @@ export default function AuthPanel({ onAuthenticated, onCancel }) {
 
   if (mode === 'pending-verification' || mode === 'recovery-sent') {
     const verification = mode === 'pending-verification';
+    const verified = verification && verificationStatus === 'verified';
     return (
       <section className="auth-panel" aria-live="polite">
-        <div className="section-head"><MailCheck size={22} /><div><h2>{verification ? '等待验证' : '检查你的邮箱'}</h2><p>{verification ? '注册或验证请求已受理；如需验证，请查收 1 小时内有效的邮件。已有账号请直接登录或找回密码，此提示不代表创建了新账号。' : '如该邮箱存在，我们已发送 1 小时内有效的重置链接。'}</p></div></div>
-        {verification ? <button className="secondary-button" type="button" disabled={isSubmitting || cooldown > 0} onClick={resendVerification}>{isSubmitting ? <Loader2 className="spin" size={18} /> : <MailCheck size={18} />}{cooldown > 0 ? `${cooldown} 秒后可重发` : '重发验证邮件'}</button> : null}
-        {error ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
-        <button className="text-button" type="button" onClick={() => { setMode('sign-in'); setError(''); }}>返回登录</button>
+        <div className="section-head"><MailCheck size={22} /><div><h2>{verified ? '邮箱验证成功' : verification ? '等待验证' : '检查你的邮箱'}</h2><p>{verified ? '邮箱已验证，无需重发邮件。请使用刚才注册的邮箱和密码登录。' : verification ? '注册或验证请求已受理；如需验证，请查收 1 小时内有效的邮件。已有账号请直接登录或找回密码，此提示不代表创建了新账号。' : '如该邮箱存在，我们已发送 1 小时内有效的重置链接。'}</p></div></div>
+        {verification && !verified ? <p role="status">{verificationStatus === 'unavailable' ? '暂时无法检查验证状态。如果已打开邮件链接，可直接登录，无需等待重发。' : verificationStatus === 'expired' ? '自动检查已结束。如果已完成验证，请直接登录；仍需验证时再重发邮件。' : verificationToken ? '完成邮箱验证后，此页面会自动更新。已经验证也可直接登录。' : '已打开验证链接？请直接登录；只有登录时仍提示未验证，才需要重发。'}</p> : null}
+        {verification && !verified ? <button className="secondary-button" type="button" disabled={isSubmitting || cooldown > 0} onClick={resendVerification}>{isSubmitting ? <Loader2 className="spin" size={18} /> : <MailCheck size={18} />}{cooldown > 0 ? `${cooldown} 秒后可重发` : '重发验证邮件'}</button> : null}
+        {error && !verified ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
+        <button className={verified ? 'primary-button' : 'text-button'} type="button" onClick={() => { setMode('sign-in'); setVerificationToken(''); setError(''); }}>{verified ? '立即登录' : verification ? '已完成验证？直接登录' : '返回登录'}</button>
       </section>
     );
   }

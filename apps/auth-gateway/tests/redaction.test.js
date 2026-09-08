@@ -3,6 +3,13 @@ import test from 'node:test';
 
 import { redactText } from '../src/redaction.js';
 
+test('registration observer capabilities are redacted in structured and text logs', () => {
+  for (const value of [JSON.stringify({ verificationStatusToken: 'observer-secret' }), "{ verificationStatusToken: 'observer-secret' }", 'verificationStatusToken=observer-secret']) {
+    assert.doesNotMatch(redactText(value), /observer-secret/);
+    assert.match(redactText(value), /\[REDACTED\]/);
+  }
+});
+
 test('redacts secrets embedded in JSON-shaped log strings', () => {
   const value = redactText(
     'failed body={"email":"safe@example.com","password":"hunter2","token":"tok-secret","apiKey":"key-secret","cookie":"session-secret"}',

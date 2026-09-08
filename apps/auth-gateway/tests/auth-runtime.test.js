@@ -166,13 +166,18 @@ test('sign-up hides account existence and never forwards a session cookie', asyn
   });
   const created = await runtime.webHandler(request.clone());
   assert.equal(created.status, 200);
-  assert.deepEqual(await created.json(), { status: true, emailVerificationRequired: true });
+  const createdBody = await created.json();
+  assert.match(createdBody.verificationStatusToken, /^[A-Za-z0-9_-]{43}$/);
+  assert.deepEqual({ ...createdBody, verificationStatusToken: undefined }, { status: true, emailVerificationRequired: true, verificationStatusToken: undefined });
   assert.equal(created.headers.get('set-cookie'), null);
 
   responseMode = 'duplicate';
   const duplicate = await runtime.webHandler(request.clone());
   assert.equal(duplicate.status, 200);
-  assert.deepEqual(await duplicate.json(), { status: true, emailVerificationRequired: true });
+  const duplicateBody = await duplicate.json();
+  assert.match(duplicateBody.verificationStatusToken, /^[A-Za-z0-9_-]{43}$/);
+  assert.notEqual(duplicateBody.verificationStatusToken, createdBody.verificationStatusToken);
+  assert.deepEqual({ ...duplicateBody, verificationStatusToken: undefined }, { ...createdBody, verificationStatusToken: undefined });
 
   responseMode = 'invalid';
   const invalid = await runtime.webHandler(request.clone());

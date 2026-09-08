@@ -138,7 +138,7 @@ test('Auth deletion and receipt are atomic; a failed receipt rolls back all iden
   await assert.rejects(runtime.deleteUser('new-id', { operationId, leaseToken }), /OPERATION_MISMATCH/);
 });
 
-test('verification links cannot follow an email to a newly registered ID or be replayed', async () => {
+test('verification links cannot follow an email to a newly registered ID; repeats only report completion', async () => {
   const { createAccountVerification } = await import('../src/account-verification.js');
   const db = memoryDb({ user: [{ _id: 'old-id', email: 'same@example.test', emailVerified: false }] });
   const verification = createAccountVerification({ db, callbackUrl: 'https://paperbanana.asia/account/email-verified.html', mongoClient: {
@@ -153,7 +153,7 @@ test('verification links cannot follow an email to a newly registered ID or be r
   const newToken = await verification.issue({ id: 'new-id' });
   assert.equal((await verification.handler(request(newToken))).headers.get('location'), 'https://paperbanana.asia/account/email-verified.html');
   assert.equal(db.collection('user').rows[0].emailVerified, true);
-  assert.match((await verification.handler(request(newToken))).headers.get('location'), /error=INVALID_TOKEN/);
+  assert.match((await verification.handler(request(newToken))).headers.get('location'), /error=TOKEN_USED/);
   assert.match((await verification.handler(request('old-email-only.jwt.token'))).headers.get('location'), /error=INVALID_TOKEN/);
 });
 

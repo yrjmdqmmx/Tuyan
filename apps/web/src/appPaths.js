@@ -9,6 +9,12 @@ export function normalizeAppBase(base = '/') {
 
 export const APP_BASE_URL = normalizeAppBase(META_ENV.BASE_URL || '/')
 
+// A public navigation hint only; account identity and credentials never travel
+// through the return link or get derived from other query parameters.
+export function isLoginEntry(search = '') {
+  return new URLSearchParams(search).get('auth') === 'sign-in'
+}
+
 export function appPath(path = '/', base = APP_BASE_URL) {
   const value = String(path || '/')
   if (EXTERNAL_OR_FRAGMENT.test(value)) return value

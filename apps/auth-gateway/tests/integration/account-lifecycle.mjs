@@ -22,7 +22,7 @@ try {
   runtime = await createAuthRuntime({
     mongoUri: uri, mongoDbName: dbName, authSecret: 'local-lifecycle-fixture-secret-long-enough',
     authBaseUrl: 'http://127.0.0.1:3002', frontendOrigins: ['http://127.0.0.1:3002'], production: false,
-    authEmail: { deliveryEnabled: false, requireVerification: false },
+    authEmail: { deliveryEnabled: false, requireVerification: true },
   });
   const authRequest = (path, body) => runtime.webHandler(new Request(`http://127.0.0.1:3002/api/auth/${path}`, {
     method: 'POST', headers: { 'content-type': 'application/json', origin: 'http://127.0.0.1:3002' }, body: JSON.stringify(body),
@@ -30,17 +30,31 @@ try {
   const signup = () => authRequest('sign-up/email', { email: 'lifecycle@example.test', password: 'local-fixture-password', name: 'fixture' });
   const signupResponses = await Promise.all([signup(), signup()]);
   assert.deepEqual(signupResponses.map((response) => response.status), [200, 200]);
+  const signupResults = await Promise.all(signupResponses.map((response) => response.json()));
   assert.equal(await db.collection('user').countDocuments({}), 1, 'concurrent signup must have one identity');
   assert.equal(await db.collection('account').countDocuments({}), 1, 'concurrent signup must have one credential');
   const user = await db.collection('user').findOne({});
   const userId = String(user._id);
+  const verifier = createAccountVerification({ db, mongoClient: client, callbackUrl: 'https://paperbanana.asia/account/email-verified.html' });
+  const initialToken = await verifier.issue({ id: userId });
+  const verificationRequest = () => new Request(`http://127.0.0.1:3002/api/auth/verify-email?token=${initialToken}`);
+  const repeated = await Promise.all([runtime.webHandler(verificationRequest()), runtime.webHandler(verificationRequest())]);
+  assert.deepEqual(repeated.map((r) => new URL(r.headers.get('location')).searchParams.get('error')).sort(), ['TOKEN_USED', null].sort());
+  assert.equal(await db.collection('session').countDocuments({}), 0, 'verification never creates login sessions');
+  const observerResults = await Promise.all(signupResults.map(async (r) => {
+    assert.match(r.verificationStatusToken, /^[A-Za-z0-9_-]{43}$/);
+    return (await authRequest('verification-status', { token: r.verificationStatusToken })).json();
+  }));
+  assert.deepEqual(observerResults.map((r) => r.status).sort(), ['pending', 'verified']);
+  const duplicateSignup = await (await signup()).json();
+  assert.deepEqual(await (await authRequest('verification-status', { token: duplicateSignup.verificationStatusToken })).json(), { status: 'pending' });
+  console.log('PASS concurrent verification gives success/used, registration observer detects completion, duplicate signup cannot observe existing account');
   const signedIn = await authRequest('sign-in/email', { email: user.email, password: 'local-fixture-password' });
   assert.equal(signedIn.status, 200);
   const oldCookie = signedIn.headers.getSetCookie().map((cookie) => cookie.split(';')[0]).join('; ');
   assert.ok(await db.collection('session').countDocuments({}));
   console.log('PASS real Better Auth concurrent signup, unique email index and credential/session hooks');
 
-  const verifier = createAccountVerification({ db, mongoClient: client, callbackUrl: 'https://paperbanana.asia/account/email-verified.html' });
   const oldToken = await verifier.issue({ id: userId });
   await db.collection('verification').insertOne({ identifier: 'reset-password:fixture', value: userId, expiresAt: new Date(Date.now() + 3600000) });
   const business = db.collection('paperbanana_jobs');
