@@ -1,5 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-08] 站长近期任务信息与图片下载补齐 — by Codex
+变更：恢复旧任务卡片的来源、模式、类别、格式、检索、阶段数、参考图处理与评审模式；列表可按需展开输入、图片和执行记录，详情复用同一展示。恢复单张结果图/参考图/阶段图下载、原图打开与全部图片 ZIP 下载，保留服务端分页和原有运营跟进规则。
+共享契约（仅站长 DTO 兼容性新增）：Core `adminTaskList / adminTaskDetail` 新增 `clientPlatform / configurationMode / infographicCategory / outputFormat / retrievalSetting / referenceImageMode / referenceImageModeUsed / criticMode / pipelineMode / aspectRatio / imageSize / numCandidates / maxCriticRounds / stageCount / referenceCount`；阶段详情新增 `suggestion / candidateId / round`，缺少阶段耗时返回 `null`，已记录 `0` 保留。配置从数据库已保存字段读取，不采用公开任务序列化器的历史默认值；缺少配置为 `''`，缺少数值/数组计数为 `null`，已保存的空参考图数组可判定未使用参考图。识图模型配置与实际参考图处理分开显示。
+权限与兼容性：沿用现有服务端站长校验、字段白名单、敏感文本脱敏和短期图片签名。列表仅返回配置与计数，完整输入/阶段/图片在用户展开或进入详情时读取。无新 action、环境变量、数据库迁移或管理操作。
+- [x] Core / Web（字段、展示和下载补齐）
+- [x] Gateway / 共享 API / 微信小程序兼容性（新增可选响应字段透传；普通任务契约不变，无需改动或发布小程序）
+- [x] 本地验收（Web 361、Core 458、真实 Auth/Gateway/Core/Mongo 集成 87、桌面/390px 浏览器 20 项；真实单图/ZIP 字节、展开与返回定位、权限边界通过；见 [交付记录](docs/admin-task-parity-2026-09-08.md)）
+- [ ] Web / Node Core 生产发布（本轮尚未发布；上线需先 Core 后 Web，旧后端只会让新增配置显示“未记录”）
+
 ### [2026-09-08] 站长运营工作区：真实统计、服务端列表与可追溯审核 — by Codex
 变更：合并账号、任务、反馈和社区评估题入口；新增按时间的真实总览、服务端分页/筛选/排序、用户与任务/提交详情互跳及列表上下文保留。账号以 Better Auth 不可变用户 ID 关联登录方式与会话；联系方式搜索只使用已存在的反馈 `contact`，不将其视为已验证身份。
 共享契约：新增 Gateway `adminOverview / adminUserList / adminUserDetail`；新增 Core `adminOperationsOverview / adminTaskList / adminTaskDetail / adminTaskFollowup / adminCommunityList / adminCommunityDetail / adminCommunityEdit / adminContactMatches / adminFeedbackList`。分页统一 `page / pageSize(10|20|50)` 和 `pagination{page,pageSize,total,totalPages}`；时间为 UTC ISO `[from,to)`，排序白名单。所有入口校验站长不可变身份，Core 另验内部管理员传输凭证；DTO 白名单、列表邮箱/联系方式脱敏，按用户显式查看完整联系方式，不返回凭证、原始会话、IP 或密钥。

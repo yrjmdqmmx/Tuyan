@@ -59,7 +59,19 @@ try {
   const models = await call('adminTaskList', { model: 'nano-banana', type: 'refine' });
   verify(models.body.rows.every((r) => r.models.image === 'nano-banana' && r.type === 'refine'), 'model and type filtering');
   const detail = await call('adminTaskDetail', { id: 'task-000' });
-  verify(detail.body.task.results.length === 1 && detail.body.task.stages.length === 1 && !JSON.stringify(detail.body).includes('CANARY'), 'task input, results, stages allowlisted and free text redacted');
+  verify(detail.body.task.results.length === 1 && detail.body.task.stages.length === 4 && !JSON.stringify(detail.body).includes('CANARY'), 'task input, results, stages allowlisted and free text redacted');
+  const task = detail.body.task, firstTask = taskFirst.body.rows.find((row) => row.id === task.id);
+  for (const [field, expected] of Object.entries({ clientPlatform: 'web', configurationMode: 'advanced', infographicCategory: '方法框架图', outputFormat: 'svg', retrievalSetting: 'none', stageCount: 4, referenceCount: 1, referenceImageMode: 'auto', referenceImageModeUsed: 'main_model', criticMode: 'text', pipelineMode: 'planner_critic', aspectRatio: '16:9', imageSize: '1K', numCandidates: 1, maxCriticRounds: 0 })) {
+    verify(task[field] === expected && firstTask[field] === expected, `stored task configuration agrees in list and detail: ${field}`);
+  }
+  verify(!('methodContent' in firstTask) && !('stages' in firstTask) && !('resultImages' in firstTask) && !('modelRoutes' in firstTask), 'paginated summary does not fetch full task payload or routes');
+  verify(task.references[0].mimeType === 'image/svg+xml' && task.stages[1].image.url.endsWith('?stage'), 'reference and stage download descriptors retained');
+  verify(task.stages[0].candidateId === 0 && task.stages[0].durationMs === 150 && task.stages[2].round === 1 && task.stages[2].durationMs === 0 && task.stages[2].suggestion.includes('放大对照组标签'), 'stage timing, zero values, candidate and redacted review suggestion retained');
+  const historical = (await call('adminTaskDetail', { id: 'task-066' })).body.task;
+  verify(historical.configurationMode === '' && historical.outputFormat === '' && historical.retrievalSetting === '' && historical.referenceImageModeUsed === '' && historical.stageCount === null && historical.referenceCount === null && historical.maxCriticRounds === null, 'missing historical fields do not acquire synthetic defaults');
+  verify(historical.models.image === 'nano-banana', 'stored imageModelName still works without modelRoutes');
+  const noReference = (await call('adminTaskDetail', { id: 'task-065' })).body.task;
+  verify(noReference.referenceCount === 0 && noReference.referenceImageModeUsed === 'none' && noReference.models.vision === 'qwen-vl', 'configured vision model remains distinct from actual reference processing');
   const revision = detail.body.task.revision;
   const operations = await Promise.all(['followup', 'resolved'].map((followup) => call('adminTaskFollowup', { id: 'task-000', expectedRevision: revision, followup, notes: '检查结果并跟进', adminUserId: 'forged-admin' })));
   verify(operations.filter((r) => r.body.code === 0).length === 1 && operations.some((r) => r.status === 409), 'concurrent task notes use compare-and-swap');

@@ -2,7 +2,15 @@ import type { Collection, Db } from 'mongodb'
 import { mutateCommunityPrompt } from './admin-community.js'
 import { AdminError, COMMUNITY_STATES, FOLLOWUP_STATES, JOB_STATES, OPEN_COMMUNITY_STATES, literal, mask, option, paging, requireRevision, revision, safe, text, timeFilter, versionFilter, type Input } from './admin-policy.js'
 
-const JOB_PROJECTION = { resultCount: { $size: { $ifNull: ['$resultImages', []] } }, _id: 1, userId: 1, user_id: 1, userEmail: 1, user_email: 1, taskName: 1, caption: 1, status: 1, jobType: 1, provider: 1, mainModelName: 1, imageModelName: 1, referenceVisionModelName: 1, 'modelRoutes.main.modelId': 1, 'modelRoutes.image.modelId': 1, 'modelRoutes.vision.modelId': 1, createdAt: 1, updatedAt: 1, startedAt: 1, completedAt: 1, errorCode: 1, adminVersion: 1, 'adminOperations.status': 1 }
+const storedCount = (field: string) => ({ $cond: [{ $isArray: `$${field}` }, { $size: `$${field}` }, null] })
+const JOB_PROJECTION = {
+  resultCount: { $size: { $ifNull: ['$resultImages', []] } }, stageCount: storedCount('stages'), referenceCount: storedCount('referenceImages'),
+  _id: 1, userId: 1, user_id: 1, userEmail: 1, user_email: 1, taskName: 1, caption: 1, status: 1, jobType: 1, provider: 1,
+  mainModelName: 1, imageModelName: 1, referenceVisionModelName: 1, 'modelRoutes.main.modelId': 1, 'modelRoutes.image.modelId': 1, 'modelRoutes.vision.modelId': 1,
+  clientPlatform: 1, client_platform: 1, configurationMode: 1, infographicCategory: 1, outputFormat: 1, retrievalSetting: 1,
+  referenceImageMode: 1, referenceImageModeUsed: 1, criticMode: 1, pipelineMode: 1, aspectRatio: 1, imageSize: 1, numCandidates: 1, maxCriticRounds: 1,
+  createdAt: 1, updatedAt: 1, startedAt: 1, completedAt: 1, errorCode: 1, adminVersion: 1, 'adminOperations.status': 1,
+}
 const COMMUNITY_PROJECTION = { _id: 0, submissionId: 1, status: 1, prompt: 1, capability: 1, requiredElements: 1, forbiddenResults: 1, notes: 1, userId: 1, createdAt: 1, updatedAt: 1, digestId: 1, adminEditedPrompt: 1, adminEditedCapability: 1, adminVersion: 1, decisionNotes: 1, decidedBy: 1, decidedAt: 1 }
 const FEEDBACK_PROJECTION = { _id: 1, id: 1, message: 1, category: 1, jobId: 1, platform: 1, contact: 1, userId: 1, userEmail: 1, status: 1, createdAt: 1 }
 
@@ -16,6 +24,13 @@ function jobSummary(row: Input) {
     id: String(row._id), userId: safe(row.userId || row.user_id), email: mask(row.userEmail || row.user_email),
     title: safe(row.taskName || row.caption || '未命名任务', 160), type: safe(row.jobType || 'generate'), status: safe(row.status),
     provider: safe(row.provider), models: { main: safe(row.modelRoutes?.main?.modelId || row.mainModelName), image: safe(row.modelRoutes?.image?.modelId || row.imageModelName), vision: safe(row.modelRoutes?.vision?.modelId || row.referenceVisionModelName) },
+    // Read saved configuration, not publicJob's defaults for incomplete history.
+    clientPlatform: safe(row.clientPlatform || row.client_platform), configurationMode: safe(row.configurationMode),
+    infographicCategory: safe(row.infographicCategory), outputFormat: safe(row.outputFormat), retrievalSetting: safe(row.retrievalSetting),
+    referenceImageMode: safe(row.referenceImageMode), referenceImageModeUsed: safe(row.referenceImageModeUsed || (row.referenceCount === 0 ? 'none' : '')),
+    criticMode: safe(row.criticMode), pipelineMode: safe(row.pipelineMode), aspectRatio: safe(row.aspectRatio), imageSize: safe(row.imageSize),
+    stageCount: row.stageCount ?? null, referenceCount: row.referenceCount ?? null,
+    numCandidates: Number.isFinite(row.numCandidates) ? row.numCandidates : null, maxCriticRounds: Number.isFinite(row.maxCriticRounds) ? row.maxCriticRounds : null,
     createdAt: row.createdAt ?? null, startedAt: row.startedAt ?? null, completedAt: row.completedAt ?? null, updatedAt: row.updatedAt ?? null,
     durationMs: duration(row), resultCount: Number(row.resultCount || 0), errorCode: safe(row.errorCode), followup: safe(row.adminOperations?.status || 'unreviewed'), revision: revision(row),
   }
@@ -122,7 +137,7 @@ export function createAdminOperations({ db, benchmarkDb, publicJob, now = () => 
         const image = (v: Input) => ({ filename: safe(v.filename), url: /^https?:\/\//.test(String(v.url || '')) ? v.url : '', mimeType: safe(v.mimeType || v.mime_type) })
         return { code: 0, task: { ...jobSummary(row), methodContent: safe(job.methodContent, 16000), caption: safe(job.caption, 2000), negativePrompt: safe(job.negativePrompt, 2000), error: safe(row.error || job.error, 6000),
           results: (job.resultImages || []).map(image), references: (job.referenceImages || []).map(image),
-          stages: (job.stages || []).map((s: Input) => ({ title: safe(s.title), type: safe(s.type), text: safe(s.text || s.description || s.message, 12000), error: safe(s.error, 4000), startedAt: s.startedAt, completedAt: s.completedAt, durationMs: Number(s.durationMs || 0), image: s.image ? image(s.image) : null })),
+          stages: (job.stages || []).map((s: Input) => ({ title: safe(s.title), type: safe(s.type), text: safe(s.text || s.description || s.message, 12000), suggestion: safe(s.suggestion || s.criticSuggestion, 12000), candidateId: Number.isFinite(s.candidateId ?? s.candidate_id) ? (s.candidateId ?? s.candidate_id) : null, round: Number.isFinite(s.round) ? s.round : null, error: safe(s.error, 4000), startedAt: s.startedAt ?? s.started_at ?? null, completedAt: s.completedAt ?? s.completed_at ?? null, durationMs: Number.isFinite(s.durationMs ?? s.duration_ms) ? (s.durationMs ?? s.duration_ms) : null, image: s.image ? image(s.image) : null })),
           logs: (Array.isArray(job.logs) ? job.logs : []).slice(-200).map((s: unknown) => safe(typeof s === 'string' ? s : JSON.stringify(s), 2000)), history: history(row.adminOperations?.history),
         } }
       }
