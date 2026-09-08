@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { redactText } from './redaction.js';
+import { publicEmail } from './identity-store.js';
 
 const fail = (status, message) => { throw Object.assign(new Error(message), { status, statusCode: status }); };
 const text = (v, max = 200) => {
@@ -49,7 +50,7 @@ export function createAdminAccounts(db, now = () => new Date()) {
     return rows.map((row) => {
       const id = String(row._id), session = sessionMap.get(id), deletion = row.deletion?.[0];
       return {
-        id, name: safe(row.name), email: reveal ? safe(row.email, 300) : mask(row.email), emailVerified: row.emailVerified === true,
+        id, name: safe(row.name), email: reveal ? safe(publicEmail(row.email), 300) : mask(publicEmail(row.email)), emailVerified: Boolean(publicEmail(row.email) && row.emailVerified === true),
         createdAt: row.createdAt ?? null, updatedAt: row.updatedAt ?? null, status: row.lifecycleStatus || 'active',
         loginMethods: [...new Set(accounts.filter((a) => String(a.userId) === id).map((a) => safe(a.providerId)))],
         activeSessions: Number(session?.activeSessions || 0), latestRetainedLoginAt: session?.latestRetainedLoginAt || null,

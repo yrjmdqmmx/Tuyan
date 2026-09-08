@@ -1,3 +1,5 @@
+import { loadIdentityConfig } from './identity-config.js';
+
 const DEFAULT_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
@@ -91,6 +93,7 @@ export function loadGatewayConfig(env = process.env) {
     mongoUri: required(env, 'MONGODB_URI'),
     mongoDbName: stringValue(env.MONGODB_DB) || 'paperbanana_auth',
     frontendOrigins,
+    identity: loadIdentityConfig(env, { production, frontendOrigins }),
     authEmail: {
       deliveryEnabled: emailDeliveryEnabled,
       requireVerification: requireEmailVerification,

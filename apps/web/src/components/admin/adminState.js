@@ -6,7 +6,7 @@ export const LABELS = {
   active: '正常', pending: '待处理', review_required: '注销待复核', completed: '注销已完成',
   grouped: '已归组', candidate: '待审核候选', approved_for_next_suite: '已通过 · 下期候选', merged: '已合并', rejected: '已拒绝',
   unreviewed: '未跟进', followup: '跟进中', resolved: '已处理', generate: '生成', refine: '精修',
-  credential: '邮箱密码', github: 'GitHub', verified: '已验证', unverified: '未验证', open: '全部待审核', new: '新反馈',
+  credential: '邮箱密码', github: 'GitHub', google: 'Google', verified: '已验证', unverified: '未验证', unbound: '未绑定邮箱', open: '全部待审核', new: '新反馈',
 };
 export const JOB_STATES = ['reserved', 'queued', 'running', 'succeeded', 'failed'];
 export const REVIEW_STATES = ['open', 'pending', 'grouped', 'candidate', 'approved_for_next_suite', 'merged', 'rejected'];

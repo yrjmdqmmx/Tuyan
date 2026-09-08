@@ -40,9 +40,15 @@ importers:
       express:
         specifier: ^4.22.1
         version: 4.22.2
+      jose:
+        specifier: 6.2.3
+        version: 6.2.3
       mongodb:
         specifier: ^6.21.0
         version: 6.21.0(socks@2.8.9)
+      zod:
+        specifier: 4.4.3
+        version: 4.4.3
 
   apps/benchmark-worker:
     dependencies:

@@ -3,16 +3,18 @@ import { AlertTriangle, Loader2, MailCheck, ShieldCheck } from 'lucide-react';
 import { authClient } from '../config';
 import { formatErrorMessage } from '../utils';
 import { useEmailVerificationStatus } from '../hooks/useEmailVerificationStatus';
+import SocialLogin from './SocialLogin';
+import { identityMessage, isIdentityError } from '../lib/identity';
 
 const VERIFIED_URL = 'https://www.paperbanana.asia/account/email-verified.html';
 const RESET_URL = 'https://www.paperbanana.asia/account/reset-password.html';
 
-export default function AuthPanel({ onAuthenticated, onCancel, client = authClient }) {
+export default function AuthPanel({ onAuthenticated, onCancel, client = authClient, oauthResult = '' }) {
   const [mode, setMode] = useState('sign-in');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(isIdentityError(oauthResult) ? identityMessage(oauthResult) : '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const [verificationToken, setVerificationToken] = useState('');
@@ -92,7 +94,7 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
     const verified = verification && verificationStatus === 'verified';
     return (
       <section className="auth-panel" aria-live="polite">
-        <div className="section-head"><MailCheck size={22} /><div><h2>{verified ? '邮箱验证成功' : verification ? '等待验证' : '检查你的邮箱'}</h2><p>{verified ? '邮箱已验证，无需重发邮件。请使用刚才注册的邮箱和密码登录。' : verification ? '注册或验证请求已受理；如需验证，请查收 1 小时内有效的邮件。已有账号请直接登录或找回密码，此提示不代表创建了新账号。' : '如该邮箱存在，我们已发送 1 小时内有效的重置链接。'}</p></div></div>
+        <div className="section-head"><MailCheck size={22} /><div><h2>{verified ? '邮箱验证成功' : verification ? '等待验证' : '检查你的邮箱'}</h2><p>{verified ? '邮箱已验证，无需重发邮件。请使用刚才注册的邮箱和密码登录。' : verification ? '注册或验证请求已受理；如需验证，请查收 1 小时内有效的邮件。已有账号请直接登录或找回密码，此提示不代表创建了新账号。若曾使用 GitHub 或 Google，请用原方式登录后绑定邮箱。' : '如该邮箱存在，我们已发送 1 小时内有效的重置链接。'}</p></div></div>
         {verification && !verified ? <p role="status">{verificationStatus === 'unavailable' ? '暂时无法检查验证状态。如果已打开邮件链接，可直接登录，无需等待重发。' : verificationStatus === 'expired' ? '自动检查已结束。如果已完成验证，请直接登录；仍需验证时再重发邮件。' : verificationToken ? '完成邮箱验证后，此页面会自动更新。已经验证也可直接登录。' : '已打开验证链接？请直接登录；只有登录时仍提示未验证，才需要重发。'}</p> : null}
         {verification && !verified ? <button className="secondary-button" type="button" disabled={isSubmitting || cooldown > 0} onClick={resendVerification}>{isSubmitting ? <Loader2 className="spin" size={18} /> : <MailCheck size={18} />}{cooldown > 0 ? `${cooldown} 秒后可重发` : '重发验证邮件'}</button> : null}
         {error && !verified ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
@@ -114,6 +116,7 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
       </form>
       {!isSignUp && !forgot ? <button className="text-button" type="button" onClick={() => { setMode('forgot'); setError(''); }}>忘记密码</button> : null}
       <button className="text-button" type="button" onClick={() => { setMode(isSignUp || forgot ? 'sign-in' : 'sign-up'); setError(''); }}>{isSignUp || forgot ? '返回登录' : '没有账号，去注册'}</button>
+      {!forgot && <SocialLogin />}
       {onCancel ? <button className="text-button muted" type="button" onClick={onCancel}>暂不登录</button> : null}
     </section>
   );

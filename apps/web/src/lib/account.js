@@ -4,7 +4,7 @@ export async function deleteAccountRequest(apiBase, credentials, fetchImpl = fet
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+    body: JSON.stringify(credentials?.verification === 'identity' ? { verification: 'identity' } : {
       email: String(credentials?.email || '').trim(),
       password: String(credentials?.password || ''),
     }),
@@ -12,7 +12,7 @@ export async function deleteAccountRequest(apiBase, credentials, fetchImpl = fet
   const data = await response.json().catch(() => ({}))
   if (response.status === 202 && data?.accepted === true) return data
   if (!response.ok || Number(data?.code) !== 0 || data?.ok !== true) {
-    throw new Error(data?.error || `Account deletion failed: HTTP ${response.status}`)
+    throw Object.assign(new Error(data?.error || `Account deletion failed: HTTP ${response.status}`), { code: data?.error })
   }
   return data
 }

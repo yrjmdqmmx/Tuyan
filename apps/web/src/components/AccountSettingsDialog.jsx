@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, Loader2, ShieldCheck, Trash2, X } from 'lucide-react'
 import { deleteAccountRequest, accountStatusRequest, accountLifecycleMessage } from '../lib/account.js'
 import { formatErrorMessage } from '../utils.js'
+import LoginMethods from './LoginMethods'
+import { identityMessage } from '../lib/identity'
 
-export default function AccountSettingsDialog({ apiBase, email, onClose, onDeleted }) {
+export default function AccountSettingsDialog({ apiBase, email, onClose, onDeleted, onChanged, oauthResult }) {
   const closeButtonRef = useRef(null)
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
@@ -11,7 +13,9 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
   const [isDeleting, setIsDeleting] = useState(false)
   const [lifecycle, setLifecycle] = useState(null)
   const [statusLoaded, setStatusLoaded] = useState(false)
-  const canDelete = password.length >= 8 && confirmation.trim() === '删除账号' && !isDeleting && statusLoaded && lifecycle?.state === 'active'
+  const [identity, setIdentity] = useState(null)
+  const useIdentityProof = Boolean(identity?.deleteVerified)
+  const canDelete = (useIdentityProof || (identity?.hasCredential !== false && password.length >= 8)) && confirmation.trim() === '删除账号' && !isDeleting && statusLoaded && lifecycle?.state === 'active'
 
   useEffect(() => {
     const previous = document.activeElement
@@ -45,13 +49,13 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
     setError('')
     setIsDeleting(true)
     try {
-      const result = await deleteAccountRequest(apiBase, { email, password })
+      const result = await deleteAccountRequest(apiBase, useIdentityProof ? { verification: 'identity' } : { email, password })
       setPassword('')
       setConfirmation('')
       if (result.accepted) { setLifecycle({ state: 'deleting', phase: result.phase }); setIsDeleting(false) }
       else await onDeleted()
     } catch (requestError) {
-      setError(requestError?.message || String(requestError))
+      setError(requestError?.code ? identityMessage(requestError) : requestError?.message || String(requestError))
       setIsDeleting(false)
     }
   }
@@ -66,7 +70,7 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
           <ShieldCheck size={22} />
           <div>
             <h2 id="account-dialog-title">账号与隐私</h2>
-            <p>{email}</p>
+            <p>{email || '尚未绑定邮箱'}</p>
           </div>
         </div>
         <div className="legal-links" aria-label="法律文件">
@@ -74,13 +78,14 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
           <a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a>
         </div>
         {lifecycle?.state !== 'active' ? <p role="status">{accountLifecycleMessage(lifecycle)}</p> : null}
+        {lifecycle?.state === 'active' && <LoginMethods apiBase={apiBase} onState={setIdentity} onChanged={onChanged} oauthResult={oauthResult} />}
         <form className="account-delete-panel" onSubmit={submit}>
           <div className="danger-heading"><Trash2 size={18} />永久删除账号</div>
           <p>将删除任务记录、生成结果、参考图、反馈、个人投稿、会话和账号。此操作不可恢复。</p>
-          <label className="field">
+          {useIdentityProof ? <p role="status">注销身份已验证，请输入下方确认文字。</p> : identity?.hasCredential === false ? <p role="status">请先在上方使用已绑定账号“验证以注销账号”。</p> : <label className="field">
             <span>当前登录密码</span>
             <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />
-          </label>
+          </label>}
           <label className="field">
             <span>输入“删除账号”确认</span>
             <input value={confirmation} onChange={(event) => setConfirmation(event.target.value)} autoComplete="off" required />

@@ -15,8 +15,12 @@ function fakeDatabase() {
     },
     account: {
       async createIndex() {},
+      find() { return { async toArray() { return []; } }; },
       async deleteMany(query) { operations.push(['account.deleteMany', query]); },
     },
+    authIdentityChallenges: { async createIndex() {}, async deleteMany() {} },
+    authIdentityRateLimits: { async createIndex() {} },
+    authIdentityFences: { async createIndex() {} },
     accountDeletionOperations: { async createIndex() {} },
     accountVerificationTokens: { async createIndex() {} },
     user: {
@@ -338,6 +342,7 @@ test('verifyPassword maps only Better Auth INVALID_PASSWORD and propagates inter
 function transactionalFixture(failAt = '') {
   const id = new ObjectId('507f1f77bcf86cd799439011');
   const state = {
+    authIdentityChallenges: [{ userId: String(id) }],
     session: [{ userId: id }, { userId: String(id) }],
     account: [{ userId: id }, { userId: String(id) }],
     user: [{ _id: id, id: String(id) }],
@@ -429,16 +434,17 @@ test('hard deletion commits session, account, and user removal in one Mongo tran
     session: 0,
     account: 0,
     user: 0,
+    authIdentityChallenges: 0,
   });
   assert.equal(fixture.ended(), 1);
-  assert.deepEqual(fixture.operations.map(({ name }) => name), ['session', 'account', 'user']);
-  const candidates = fixture.operations[0].query.userId.$in;
+  assert.deepEqual(fixture.operations.map(({ name }) => name), ['authIdentityChallenges', 'session', 'account', 'user']);
+  const candidates = fixture.operations[1].query.userId.$in;
   assert.ok(candidates.some((value) => typeof value === 'string'));
   assert.ok(candidates.some((value) => value instanceof ObjectId));
 });
 
 test('hard deletion rolls back without partial auth loss on every injected delete failure', async () => {
-  for (const failAt of ['session', 'account', 'user', 'user-missing']) {
+  for (const failAt of ['authIdentityChallenges', 'session', 'account', 'user', 'user-missing']) {
     const fixture = transactionalFixture(failAt);
     const runtime = await runtimeForTransaction(fixture);
 
@@ -448,7 +454,7 @@ test('hard deletion rolls back without partial auth loss on every injected delet
     );
     assert.deepEqual(
       Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])),
-      { session: 2, account: 2, user: 1 },
+      { authIdentityChallenges: 1, session: 2, account: 2, user: 1 },
       failAt,
     );
     assert.equal(fixture.ended(), 1);
@@ -461,6 +467,6 @@ test('hard deletion rejects an empty current-session user id', async () => {
   await assert.rejects(() => runtime.deleteUser(''), /Auth user id is required/);
   assert.deepEqual(
     Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])),
-    { session: 2, account: 2, user: 1 },
+    { authIdentityChallenges: 1, session: 2, account: 2, user: 1 },
   );
 });

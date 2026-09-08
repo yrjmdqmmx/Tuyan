@@ -149,17 +149,22 @@ export function createApp({
     asyncRoute(async (request, response) => {
       if (isMaintenance()) return maintenanceResponse(response, config);
       const session = await requireSession(auth, request);
+      const useIdentityProof = request.body?.verification === 'identity';
+      if (useIdentityProof) {
+        if (!origins.has(request.get('origin')) || !request.is('application/json')) return response.status(403).json({ code: 403, error: 'IDENTITY_ORIGIN_REJECTED' });
+        if (!await auth.consumeIdentityProof?.(request, 'delete')) return response.status(401).json({ code: 401, error: 'IDENTITY_REAUTH_REQUIRED' });
+      }
       const sessionEmail = normalizedEmail(session.user.email);
       const requestedEmail = normalizedEmail(request.body?.email);
       const password = String(request.body?.password || '');
-      if (!requestedEmail || !password) {
+      if (!useIdentityProof && (!requestedEmail || !password)) {
         return response.status(400).json({ code: 400, error: 'email and password are required' });
       }
-      if (sessionEmail !== requestedEmail) {
+      if (!useIdentityProof && sessionEmail !== requestedEmail) {
         return response.status(403).json({ code: 403, error: 'EMAIL_MISMATCH' });
       }
 
-      const passwordValid = await auth.verifyPassword({
+      const passwordValid = useIdentityProof || await auth.verifyPassword({
         password,
         headers: request.headers,
       });

@@ -1,6 +1,7 @@
 // No implicit legacy migration: whitespace/collisions must be reviewed before
 // creating the unique index. The index also closes concurrent-signup races.
 export function normalizeAccountInput(input) {
+  if (typeof input.email === 'string' && input.email.trim().toLowerCase().endsWith('@accounts.tuyan.invalid')) throw new Error('Reserved account address');
   return typeof input.email === 'string' ? { ...input, email: input.email.trim().toLowerCase() } : input;
 }
 export async function ensureAccountIndexes(db) {

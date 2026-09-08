@@ -26,6 +26,7 @@ test('registration updates after verification in another browser without refresh
   let verified = false;
   const calls = [];
   globalThis.fetch = async (url, init) => {
+    if (url.endsWith('/identity/capabilities')) return Response.json({ providers: { github: false, google: false } });
     calls.push({ url, init });
     return Response.json({ status: verified ? 'verified' : 'pending' });
   };

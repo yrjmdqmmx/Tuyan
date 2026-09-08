@@ -1,4 +1,6 @@
 import { createAdminAccounts } from './admin-accounts.js';
+import { createIdentityStore, ensureIdentityIndexes, deleteIdentityState, publicEmail, identityError } from './identity-store.js';
+import { createIdentityPlugin } from './identity-plugin.js';
 import { createAccountWriteGuard } from './account-write-guard.js';
 import { randomBytes } from 'node:crypto';
 import { createAccountVerification, authUserFilter } from './account-verification.js';
@@ -25,13 +27,14 @@ export async function createAuthRuntime(
     fromNodeHeadersImpl = fromNodeHeaders,
     directMailClientFactory = createDirectMailClient,
     logger = console,
+    identityProviders = {},
   } = {},
 ) {
   const mongoClient = new MongoClientClass(config.mongoUri);
   await mongoClient.connect();
   const db = mongoClient.db(config.mongoDbName);
   let status = { ok: true, checkedAt: null };
-  try { await ensureAccountIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
+  try { await ensureAccountIndexes(db); await ensureIdentityIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
   const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'));
 
   const advanced = {
@@ -84,10 +87,22 @@ export async function createAuthRuntime(
     logger,
   });
 
-  const auth = betterAuthFactory({
+  const identityStore = createIdentityStore({ db, mongoClient, secret: config.authSecret, oauth: config.identity?.oauth,
+    sendBindingEmail: identityProviders.sendBindingEmail || (emailConfig.deliveryEnabled ? async ({ email, code }) => {
+      await transport.send({ toAddress: email, subject: '图研 Tuyan｜绑定邮箱验证码',
+        htmlBody: `<p>你正在为图研账号绑定邮箱。验证码：<strong>${code}</strong>，5 分钟内有效。请在账号设置中输入验证码；如果不是你发起的操作，请忽略本邮件。</p>` });
+    } : null),
+  });
+  let auth;
+  const identities = createIdentityPlugin({ store: identityStore, config, ...identityProviders });
+  auth = betterAuthFactory({
     appName: 'PaperBanana',
     databaseHooks: { ...createAccountWriteGuard(db), user: {
-      create: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
+      create: { before: async (user) => {
+        const data = normalizeAccountInput(user);
+        if (await identityStore.socialEmailOwner(data.email)) throw identityError('USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL', 'UNPROCESSABLE_ENTITY');
+        return { data };
+      } },
       update: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
     } },
     secret: config.authSecret,
@@ -95,7 +110,9 @@ export async function createAuthRuntime(
     trustedOrigins: config.frontendOrigins,
     // The custom confirmation handler is the only verification endpoint.
     // Disable the library route as well, including its normalized path aliases.
-    disabledPaths: ['/verify-email'],
+    disabledPaths: ['/verify-email', '/link-social', '/unlink-account', '/change-email', '/set-password', '/delete-user', '/delete-user/callback', '/reset-password', '/change-password'],
+    account: { accountLinking: { enabled: false, disableImplicitLinking: true }, storeAccountCookie: false, encryptOAuthTokens: true },
+    plugins: [identities],
     // Better Auth 1.6.11 includes full email addresses in several negative-path
     // log records. Application and account-email logs remain available through
     // the injected redacting logger, so disable the library logger completely.
@@ -107,6 +124,7 @@ export async function createAuthRuntime(
       autoSignInAfterVerification: false,
       expiresIn: 60 * 60,
       async sendVerificationEmail({ user, url, token }, request) {
+        if (!publicEmail(user.email)) return;
         const boundToken = await verification.issue(user);
         await accountEmail.sendVerification({ email: user.email, url, token: boundToken, request });
       },
@@ -120,6 +138,7 @@ export async function createAuthRuntime(
       revokeSessionsOnPasswordReset: true,
       autoSignIn: false,
       async sendResetPassword({ user, url, token }, request) {
+        if (!publicEmail(user.email)) return;
         await accountEmail.sendPasswordReset({ email: user.email, url, token, request });
       },
       async onPasswordReset({ user }) {
@@ -153,10 +172,26 @@ export async function createAuthRuntime(
   return {
     deletionStore,
     webHandler: createRegistrationPrivacyHandler(
-      async (request) => await verification.handler(request) || auth.handler(request),
+      async (request) => {
+        const url = new URL(request.url), route = url.pathname.replace(/\/+$/, '');
+        if (request.method === 'POST' && ['/api/auth/reset-password', '/api/auth/change-password'].includes(route)) {
+          const data = await request.clone().json().catch(() => ({}));
+          if (route.endsWith('/reset-password') && !data.token && url.searchParams.get('token')) data.token = url.searchParams.get('token');
+          url.pathname = route.endsWith('/reset-password') ? '/api/auth/identity/email/reset' : '/api/auth/identity/email/change-password';
+          url.search = '';
+          request = new Request(url, { method: 'POST', headers: request.headers, body: JSON.stringify(data) });
+        }
+        const response = await verification.handler(request) || await auth.handler(request);
+        if (new URL(request.url).pathname.replace(/\/$/, '') !== '/api/auth/get-session' || !response.ok) return response;
+        const body = await response.clone().json().catch(() => null);
+        if (!body?.user) return response;
+        body.user.email = publicEmail(body.user.email);
+        const headers = new Headers(response.headers); headers.delete('content-length'); headers.set('cache-control', 'no-store');
+        return Response.json(body, { status: response.status, headers });
+      },
       async (email) => Boolean(await db.collection('user').findOne(
         { email }, { projection: { _id: 1 }, collation: { locale: 'en', strength: 2 } },
-      )),
+      ) || await identityStore.socialEmailOwner(email)),
       async (user) => {
         try { return await verification.issueStatus(user); }
         catch {
@@ -166,9 +201,21 @@ export async function createAuthRuntime(
       },
     ),
     async optionalSession(request) {
-      return auth.api.getSession({
+      const session = await auth.api.getSession({
         headers: fromNodeHeadersImpl(request.headers),
       });
+      return session?.user ? { ...session, user: { ...session.user, email: publicEmail(session.user.email) } } : session;
+    },
+    async consumeIdentityProof(request, purpose) {
+      const session = await auth.api.getSession({ headers: fromNodeHeadersImpl(request.headers) });
+      if (!session) return false;
+      try {
+        await identityStore.transaction(async (options) => {
+          await identityStore.active(session.user.id, options, true);
+          await identityStore.proof(session, purpose, options);
+        });
+        return true;
+      } catch { return false; }
     },
     async verifyPassword({ password, headers }) {
       try {
@@ -192,7 +239,7 @@ export async function createAuthRuntime(
       }
     },
     async deleteUser(userId, operation) {
-      await deleteAuthUser(mongoClient, db, userId, operation);
+      await deleteAuthUser(mongoClient, db, userId, operation, config.authSecret);
     },
     adminAccounts: createAdminAccounts(db),
     async listUsers(body = {}) {
@@ -285,7 +332,7 @@ async function probeTransactionSupport(mongoClient, db) {
   }
 }
 
-async function deleteAuthUser(mongoClient, db, userId, operation) {
+async function deleteAuthUser(mongoClient, db, userId, operation, secret) {
   const id = String(userId || '');
   if (!id) throw new Error('Auth user id is required');
   const candidates = [id];
@@ -304,6 +351,7 @@ async function deleteAuthUser(mongoClient, db, userId, operation) {
         }, options);
         if (!op) throw new Error('ACCOUNT_DELETION_OPERATION_MISMATCH');
       }
+      await deleteIdentityState(db, id, options, secret);
       await db.collection('session').deleteMany({ userId: { $in: candidates } }, options);
       await db.collection('account').deleteMany({ userId: { $in: candidates } }, options);
       if (operation) {
@@ -377,7 +425,7 @@ async function latestSessionsByUser(db, userIds, userIdStrings) {
 function publicAuthUser(user, session) {
   return {
     id: String(user._id || user.id || ''),
-    email: user.email || '',
+    email: publicEmail(user.email),
     name: user.name || '',
     emailVerified: Boolean(user.emailVerified),
     image: user.image || '',

@@ -1,5 +1,19 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-08] 邮箱 / GitHub / Google 统一账号与登录方式管理 — by Codex
+变更：新增 GitHub OAuth 与 Google OIDC 登录、已登录账号绑定/解绑、密码或第三方重新验证身份、无密码账号注销。用户已取消手机号注册登录与短信服务，本轮不新增短信端点、依赖或配置。
+契约：Gateway `/api/auth/identity/` 下新增 GET `capabilities / methods`；POST `oauth/start / reauth/password / unlink / email/request / email/verify`；GET `oauth/callback/:provider`。OAuth 稳定 subject 与 provider 唯一绑定内部 user ID，邮箱相同不自动合并。邮箱绑定需账号复验、邮箱验证码及新密码，第三方授权不修改 `emailVerified`。无邮箱账号的对外 `user.email` 为 `''`，客户端显示昵称；业务归属仍只用不可变 user ID。`/api/account/delete` 兼容原邮箱密码请求，并可发送 `{verification:'identity'}` 使用当前会话上已完成的 delete 用途复验。
+安全：绑定/解绑/注销凭证绑定 user/session/purpose，5 分钟内一次使用；最后一种可用方式在 Mongo 事务内保护，注销清理挑战与身份并阻断旧 OAuth 回调。验证码为 HMAC 摘要、5 分钟有效、最多 5 次尝试；复验/授权/邮件发送持久化限流。OAuth state/浏览器 cookie 双重绑定、PKCE、Google 签名/issuer/audience/nonce 校验，供应商令牌仅服务端短时使用，不存储或回传。
+邮箱兼容：原 POST `/api/auth/reset-password / change-password` 及请求字段保留，在 Gateway 内部交给 `identity/email/reset / email/change-password` 事务处理，避免旧重置链接重新创建已解绑凭据；重置密码撤销全部会话，修改密码撤销其他会话。已被第三方账号使用的已验证邮箱，再次注册仍返回原反枚举中性响应，界面引导先用原方式登录后绑定。
+配置：新增 `AUTH_GITHUB_ENABLED / AUTH_GITHUB_CLIENT_ID / AUTH_GITHUB_CLIENT_SECRET / AUTH_GOOGLE_ENABLED / AUTH_GOOGLE_CLIENT_ID / AUTH_GOOGLE_CLIENT_SECRET / AUTH_IDENTITY_RETURN_URL`，两渠道默认关闭。Auth DB 新增 `authIdentityChallenges / authIdentityRateLimits / authIdentityFences` TTL 集合与第三方 subject 唯一索引；应用已有 Auth DB 权限需允许创建索引。无用户 ID 或业务数据迁移。
+- [x] Auth Gateway（登录/绑定/复验/注销契约与服务端安全边界）
+- [x] Web（统一登录入口、账号设置、独立验证状态、错误与桌面/手机适配）
+- [x] Core / 共享 API 兼容性（已有 user ID / session 转发及业务注销契约不变，无新 Core action）
+- [x] 微信小程序旧邮箱流程兼容性（注册、验证、登录、找回密码、邮箱密码注销请求保持不变）
+- [x] 本地验收（Gateway 147、Web 364、共享 API / 小程序 51；新增认证集成 20 组、原邮箱生命周期集成 5 组；Chrome 桌面 / 390px 手机 11 组；Web 构建、小程序类型检查通过）
+- [ ] 微信小程序第三方登录与登录方式管理界面（本轮不实施；沿用小程序上传/发布暂缓约定）
+- [ ] GitHub / Google 真实应用配置、真实授权与生产发布（本轮默认关闭、未发布；见 [实现与配置说明](docs/account-identities-2026-09-08.md)）
+
 ### [2026-09-08] 站长运营工作区：真实统计、服务端列表与可追溯审核 — by Codex
 变更：合并账号、任务、反馈和社区评估题入口；新增按时间的真实总览、服务端分页/筛选/排序、用户与任务/提交详情互跳及列表上下文保留。账号以 Better Auth 不可变用户 ID 关联登录方式与会话；联系方式搜索只使用已存在的反馈 `contact`，不将其视为已验证身份。
 共享契约：新增 Gateway `adminOverview / adminUserList / adminUserDetail`；新增 Core `adminOperationsOverview / adminTaskList / adminTaskDetail / adminTaskFollowup / adminCommunityList / adminCommunityDetail / adminCommunityEdit / adminContactMatches / adminFeedbackList`。分页统一 `page / pageSize(10|20|50)` 和 `pagination{page,pageSize,total,totalPages}`；时间为 UTC ISO `[from,to)`，排序白名单。所有入口校验站长不可变身份，Core 另验内部管理员传输凭证；DTO 白名单、列表邮箱/联系方式脱敏，按用户显式查看完整联系方式，不返回凭证、原始会话、IP 或密钥。

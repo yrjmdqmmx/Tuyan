@@ -96,6 +96,7 @@ import {
   uniqueProvidersForRoles,
 } from './lib/modelRouting';
 import { appPath, isLoginEntry } from './appPaths';
+import { readIdentityResult, clearIdentityResult } from './lib/identity';
 
 const AdminWorkspace = lazy(() => import('./components/admin/AdminWorkspace'));
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
@@ -128,7 +129,9 @@ export default function App() {
   const [showContactDialog, setShowContactDialog] = useState(false);
   const contactCloseRef = useRef(null);
   const [contactQrFailed, setContactQrFailed] = useState(false);
-  const [showAuthPanel, setShowAuthPanel] = useState(() => isLoginEntry(window.location.search));
+  const [authResult, setAuthResult] = useState(() => readIdentityResult());
+  const authResultHandled = useRef(false);
+  const [showAuthPanel, setShowAuthPanel] = useState(() => isLoginEntry(window.location.search) || Boolean(readIdentityResult()));
   const [showAccountDialog, setShowAccountDialog] = useState(false);
   const [showGenerationSettings, setShowGenerationSettings] = useState(false);
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
@@ -219,6 +222,15 @@ export default function App() {
   const arkKeySnapshotRef = useRef('');
   const arkProbeRoutesSnapshotRef = useRef('');
   const currentUser = AUTH_ENABLED ? authSession.session?.user : null;
+  useEffect(() => {
+    if (!authResult || authSession.isPending || authResultHandled.current) return;
+    authResultHandled.current = true;
+    clearIdentityResult();
+    if (currentUser) {
+      setShowAuthPanel(false);
+      if (authResult !== 'signed-in') setShowAccountDialog(true);
+    } else setShowAuthPanel(true);
+  }, [authResult, authSession.isPending, currentUser?.id]);
   const isAdmin = Boolean(currentUser?.id && adminIdentity === currentUser.id);
   const authReady = !AUTH_REQUIRED || Boolean(!authSession.isPending && currentUser);
   const apiBaseNormalized = useMemo(() => {
@@ -1151,6 +1163,7 @@ export default function App() {
   }
 
   async function handleSignOut() {
+    setAuthResult('');
     clearPrivateWorkspace();
     await authClient.signOut();
     await authSession.refresh();
@@ -1487,7 +1500,7 @@ export default function App() {
             currentUser ? (
               <div className="auth-user">
                 <ShieldCheck size={16} />
-                <span title={currentUser.email}>{currentUser.email}</span>
+                <span title={currentUser.email || currentUser.name}>{currentUser.email || currentUser.name || '图研用户'}</span>
                 <button type="button" onClick={() => setShowAccountDialog(true)}>账号</button>
                 <button type="button" onClick={handleSignOut}>退出</button>
               </div>
@@ -1518,8 +1531,10 @@ export default function App() {
           <AccountSettingsDialog
             apiBase={apiBaseNormalized}
             email={currentUser.email || ''}
-            onClose={() => setShowAccountDialog(false)}
+            onClose={() => { setShowAccountDialog(false); setAuthResult(''); }}
             onDeleted={handleAccountDeleted}
+            onChanged={authSession.refresh}
+            oauthResult={authResult}
           />
         </Suspense>
       ) : null}
@@ -1581,12 +1596,13 @@ export default function App() {
           <p>正在检查登录状态</p>
         </section>
       ) : AUTH_REQUIRED && !currentUser ? (
-        <AuthPanel onAuthenticated={authSession.refresh} />
+        <AuthPanel onAuthenticated={authSession.refresh} oauthResult={authResult} />
       ) : (
         <>
       {AUTH_UI_ENABLED && showAuthPanel && !currentUser ? (
         AUTH_ENABLED ? (
           <AuthPanel
+            oauthResult={authResult}
             onAuthenticated={async () => {
               await authSession.refresh();
               setShowAuthPanel(false);

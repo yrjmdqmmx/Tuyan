@@ -49,6 +49,8 @@ export function createBoundedAuthHandler(webHandler, { limit = BODY_LIMIT } = {}
         ? Buffer.alloc(0)
         : await readBoundedBody(request, limit);
       const headers = incomingHeaders(request);
+      // Overwrite client-supplied values with Express's configured proxy boundary.
+      headers.set('x-tuyan-client-ip', String(request.ip || 'unknown'));
       const url = `${request.protocol}://${request.get('host')}${request.originalUrl}`;
       const init = { method, headers };
       if (body.byteLength) init.body = body;
