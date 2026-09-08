@@ -180,6 +180,7 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
         referenceVisionModelName: payload.referenceVisionModelName,
         sourceImageUrl: payload.sourceImageUrl,
         sourceImageObjectKey: payload.sourceImageObjectKey,
+        sourceImageUpload: payload.sourceImageUpload ? { objectKey: payload.sourceImageUpload.objectKey } : undefined,
         editInstruction: payload.editInstruction,
         aspectRatio: payload.aspectRatio,
         imageSize: payload.imageSize,
@@ -232,20 +233,20 @@ export async function prepareReferenceUploadRequest(apiBase, health, files) {
   throw new Error('参考图上传需要使用 Laf 或登录网关后端。');
 }
 
-export async function finalizeReferenceUploadRequest(apiBase, health, uploads) {
-  return referenceUploadLifecycleRequest(apiBase, health, 'finalizeReferenceUpload', uploads)
+export async function finalizeReferenceUploadRequest(apiBase, health, uploads, options = {}) {
+  return referenceUploadLifecycleRequest(apiBase, health, 'finalizeReferenceUpload', uploads, options)
 }
 
 export async function abortReferenceUploadRequest(apiBase, health, uploads) {
   return referenceUploadLifecycleRequest(apiBase, health, 'abortReferenceUpload', uploads)
 }
 
-async function referenceUploadLifecycleRequest(apiBase, health, action, uploads) {
+async function referenceUploadLifecycleRequest(apiBase, health, action, uploads, options = {}) {
   if (shouldUsePaperbananaApi(apiBase, health)) {
     return fetchJson(lafEndpoint(apiBase), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, uploads }),
+      body: JSON.stringify({ action, uploads, ...(options.purpose === 'refine' ? { purpose: 'refine' } : {}) }),
     })
   }
   throw new Error('参考图上传生命周期需要使用 Laf 或登录网关后端。')

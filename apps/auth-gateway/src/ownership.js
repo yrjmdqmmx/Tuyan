@@ -17,6 +17,14 @@ export function authorizeJobOwner(job, principal = {}) {
 }
 
 export function normalizeRefineSource(body = {}, config = {}) {
+  if (body.sourceImageUpload !== undefined) {
+    const key = body.sourceImageUpload?.objectKey;
+    if (typeof key !== 'string' || key.length > 300 || !/^references\/[A-Za-z0-9._/-]+$/.test(key)
+      || key.split('/').some((part) => !part || part === '.' || part === '..')) throw forbidden();
+    // This is a reference to a finalized upload, not an authorization. Core checks
+    // its durable owner and account generation before reading any object bytes.
+    return { objectKey: '', jobId: '', uploaded: true, payload: { sourceImageUpload: { objectKey: key } } };
+  }
   const explicitKey = String(body.sourceImageObjectKey || '').trim();
   if (explicitKey) return normalizedObjectKey(explicitKey);
 

@@ -38,6 +38,48 @@ const capableRegistry = {
 
 let restoreFetch
 
+test('refinement optimization previews, cancels, adopts and restores only the edit instruction, preserving it on failure', async () => {
+  const registry = structuredClone(capableRegistry)
+  registry.inputOptimizationTargets = ['methodContent', 'caption', 'negativePrompt', 'editInstruction']
+  let fail = false
+  const candidate = '需要调整：放大标签。需要保留：文字、配色和布局。'
+  const { requests, user } = await renderReady(registry, { optimizeInputs(body) {
+    return fail ? Response.json({ code: 502, error: '测试模型暂不可用' }) : Response.json({ code: 0, target: body.target, optimizedText: candidate })
+  } })
+  await enterMainKey(user)
+  const beforeMethod = screen.getByLabelText(/论文方法内容/u).value
+  await user.click(screen.getByRole('button', { name: '精修图片', exact: true }))
+  const input = await screen.findByLabelText('精修指令')
+  const original = '放大标签，保留文字、配色和布局。'
+  assert.equal(screen.getByRole('button', { name: '优化输入：精修指令' }).disabled, true)
+  fireEvent.change(input, { target: { value: original } })
+  async function optimize() {
+    await user.click(screen.getByRole('button', { name: '优化输入：精修指令' }))
+    return screen.findByRole('dialog', { name: '优化精修指令' })
+  }
+  let dialog = await optimize()
+  await expectCandidate(dialog, candidate)
+  assert.equal(input.value, original)
+  const request = optimizationRequests(requests).at(-1).body
+  assert.deepEqual(request.inputs, { methodContent: '', caption: '', negativePrompt: '', editInstruction: original })
+  assert.deepEqual(request.mainRoute, { accessProvider: 'bailian', modelId: 'main' })
+  await user.click(within(dialog).getByRole('button', { name: '取消' }))
+  assert.equal(input.value, original)
+  dialog = await optimize()
+  await expectCandidate(dialog, candidate)
+  await user.click(within(dialog).getByRole('button', { name: '采用优化稿' }))
+  assert.equal(input.value, candidate)
+  await user.click(screen.getByRole('button', { name: '恢复精修指令优化前内容' }))
+  assert.equal(input.value, original)
+  fail = true
+  dialog = await optimize()
+  await within(dialog).findByRole('alert')
+  await user.click(within(dialog).getByRole('button', { name: '取消' }))
+  assert.equal(input.value, original)
+  await user.click(screen.getAllByRole('button', { name: '生成候选图', exact: true })[0])
+  assert.equal(screen.getByLabelText(/论文方法内容/u).value, beforeMethod)
+})
+
 function deferred() {
   let resolve
   let reject

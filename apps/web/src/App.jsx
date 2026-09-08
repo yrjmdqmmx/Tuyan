@@ -74,6 +74,9 @@ import FeedbackDialog from './components/FeedbackDialog';
 import GenerationSettingsDrawer from './components/GenerationSettingsDrawer';
 import GuidePanel from './components/GuidePanel';
 import InputOptimizationDialog from './components/InputOptimizationDialog';
+import InputOptimizationFieldActions from './components/InputOptimizationFieldActions';
+import useRefineUpload from './hooks/useRefineUpload';
+import { refineUploadLimits, validateRefineDimensions, validateRefineFile } from './lib/refineUpload';
 import JobStatus from './components/JobStatus';
 import JobTable from './components/JobTable';
 import ModelRoutingSettings from './components/ModelRoutingSettings';
@@ -111,42 +114,11 @@ const INPUT_OPTIMIZATION_TARGET_LABELS = Object.freeze({
   methodContent: '论文方法内容',
   caption: '目标图注',
   negativePrompt: '负向提示词',
-});
-
-const INPUT_OPTIMIZATION_CONTROL_LABELS = Object.freeze({
-  methodContent: '方法栏',
-  caption: '图注栏',
-  negativePrompt: '负向提示栏',
+  editInstruction: '精修指令',
 });
 
 function emptyInputOptimizationUndos() {
-  return { methodContent: null, caption: null, negativePrompt: null };
-}
-
-function InputOptimizationFieldActions({ target, disabledReason, hasUndo, onOptimize, onRestore }) {
-  const reasonId = `input-optimization-${target}-reason`;
-  const controlLabel = INPUT_OPTIMIZATION_CONTROL_LABELS[target];
-  return (
-    <div className="input-optimization-field-actions">
-      <button
-        type="button"
-        className="input-optimization-trigger"
-        aria-label={`优化输入：${controlLabel}`}
-        aria-describedby={disabledReason ? reasonId : undefined}
-        title={disabledReason || '生成候选优化稿，确认后才会替换原文'}
-        disabled={Boolean(disabledReason)}
-        onClick={() => onOptimize(target)}
-      >
-        <Sparkles size={14} />优化输入
-      </button>
-      {hasUndo ? (
-        <button type="button" className="input-optimization-restore" aria-label={`恢复${controlLabel}优化前内容`} onClick={() => onRestore(target)}>
-          <Undo2 size={13} />恢复优化前内容
-        </button>
-      ) : null}
-      {disabledReason ? <small className="input-optimization-disabled-reason" id={reasonId}>{disabledReason}</small> : null}
-    </div>
-  );
+  return { methodContent: null, caption: null, negativePrompt: null, editInstruction: null };
 }
 
 export default function App() {
@@ -233,7 +205,11 @@ export default function App() {
   const [feedbackError, setFeedbackError] = useState('');
   const [feedbackSuccess, setFeedbackSuccess] = useState(false);
   const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
-  const [refineSource, setRefineSource] = useState({ url: '', objectKey: '' });
+  const [refineJobId, setRefineJobId] = useState('');
+  const [refineJob, setRefineJob] = useState(null);
+  const [refinePollError, setRefinePollError] = useState('');
+  const refineSubmitLock = useRef(false);
+  const refineRequestGeneration = useRef(0);
   const [refineInstruction, setRefineInstruction] = useState('');
   const [refineImageSize, setRefineImageSize] = useState('2K');
   const [refineAspectRatio, setRefineAspectRatio] = useState('16:9');
@@ -273,7 +249,12 @@ export default function App() {
   const activeMainRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find((model) => model.id === activeMainModelName);
   const activeImageRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find((model) => model.id === activeImageGenModelName);
   const activeVisionRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find((model) => model.id === activeReferenceVisionModelName);
+  const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, activeModelRoutes.image);
+  const { source: refineSource, setSource: setRefineSource, upload: refineUpload, selectFiles: selectRefineFiles, retry: retryRefineUpload } = useRefineUpload({
+    apiBase: apiBaseNormalized, health, limits: activeRefineUploadLimits, authReady, ownerId: currentUser?.id || '',
+  });
   const inputOptimizationSupported = Number(modelRegistry?.inputOptimizationContractVersion) >= 1;
+  const refineOptimizationSupported = inputOptimizationSupported && modelRegistry?.inputOptimizationTargets?.includes('editInstruction');
   const selectedModelNotes = uniqueRegistryModels([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(Boolean));
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
   const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
@@ -343,7 +324,17 @@ export default function App() {
   arkKeySnapshotRef.current = apiKeys.ark;
   arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
   const missingCredentialProviders = credentialProviders.filter((routeProvider) => !apiKeys[routeProvider]?.trim());
-  const refineConfigSummary = `图像：${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName} / 视觉：${visionProviderConfig.label} · ${activeVisionRegistryEntry?.label || activeReferenceVisionModelName}`;
+  const refineConfigSummary = `${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName}`;
+  const refineRunning = isSubmittingRefine || refineJob?.status === 'queued' || refineJob?.status === 'running';
+  const refineSubmitHint = !authReady ? '请先登录，再提交精修。'
+    : refineRunning ? '正在处理当前精修，请等待完成。'
+    : ['validating', 'uploading', 'checking'].includes(refineUpload.status) ? '请等待原图上传与校验完成。'
+    : !Object.keys(refineRequestSource(refineSource)).length ? '请先选择并上传一张原图。'
+    : refineCapability.mode === 'none' ? '请在精修设置中选择支持精修的图像模型。'
+    : !refineResolutionOptions.length || !refineAspectRatioOptions.some(option => option.value === refineAspectRatio) ? '请在精修设置中选择可用模型和参数。'
+    : missingCredentialProviders.length ? '请在精修设置中填写所需接入密钥。'
+    : refineInstruction.trim().length < 3 ? '请填写至少 3 个字符的精修指令。'
+    : refineInstruction.length > 2000 ? '精修指令不能超过 2000 个字符。' : '';
 
   useEffect(() => {
     let cancelled = false;
@@ -724,6 +715,45 @@ export default function App() {
     }
   }
 
+  useEffect(() => {
+    if (!refineJobId) return undefined;
+    let cancelled = false;
+    let timer;
+    let failures = 0;
+    async function poll() {
+      try {
+        const data = await getJobRequest(apiBaseNormalized, health, refineJobId);
+        if (cancelled) return;
+        failures = 0;
+        setRefinePollError('');
+        setRefineJob(data);
+        if (shouldPollJob(data)) timer = setTimeout(poll, globalThis.document?.hidden ? 10000 : 3000);
+        else if (currentUser) void loadUserJobs({ silent: true });
+      } catch (error) {
+        if (cancelled) return;
+        setRefinePollError(error.message || '暂时无法获取精修状态，正在重试。');
+        const delay = pollRetryDelay(error, ++failures, Boolean(globalThis.document?.hidden));
+        if (delay === null) {
+          setRefineJobId('');
+          setRefineJob(null);
+          if (shouldClearAuthForJobError(error)) authSession.clear();
+        } else timer = setTimeout(poll, delay);
+      }
+    }
+    void poll();
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [apiBaseNormalized, health, refineJobId]);
+
+  useEffect(() => {
+    refineRequestGeneration.current += 1;
+    setRefineJobId('');
+    setRefineJob(null);
+    setRefinePollError('');
+    setRefineError('');
+    setInputOptimizationUndos(current => ({ ...current, editInstruction: null }));
+    if (inputOptimizationDialog.target === 'editInstruction') closeInputOptimization();
+  }, [refineSource.url]);
+
   async function loadReferenceLibrary(options = {}) {
     if (!options.silent) setReferenceLibraryError('');
     const sequence = referenceRequestRef.current.sequence + 1;
@@ -930,7 +960,9 @@ export default function App() {
   }
 
   function requestInputOptimization(target) {
-    const inputs = { methodContent, caption, negativePrompt };
+    const inputs = target === 'editInstruction'
+      ? { methodContent: '', caption: '', negativePrompt: '', editInstruction: refineInstruction }
+      : { methodContent, caption, negativePrompt };
     void runInputOptimization(target, inputs);
   }
 
@@ -953,6 +985,7 @@ export default function App() {
   function setInputValue(target, value) {
     if (target === 'methodContent') setMethodContent(value);
     else if (target === 'caption') setCaption(value);
+    else if (target === 'editInstruction') setRefineInstruction(value);
     else setNegativePrompt(value);
   }
 
@@ -985,6 +1018,8 @@ export default function App() {
 
   function inputOptimizationDisabledReason(target) {
     if (isOptimizingInput) return '已有输入正在优化，请等待当前请求完成。';
+    if (target === 'editInstruction' && refineRunning) return '精修处理中，暂时不能优化指令。';
+    if (target === 'editInstruction' && !refineInstruction.trim()) return '请先填写精修指令。';
     if (target === 'methodContent' && !methodContent.trim()) return '请先填写论文方法内容。';
     if (target === 'caption' && !caption.trim()) return '请先填写目标图注。';
     if (target === 'negativePrompt' && !methodContent.trim() && !caption.trim() && !negativePrompt.trim()) {
@@ -1133,6 +1168,7 @@ export default function App() {
   }
 
   function clearPrivateWorkspace() {
+    refineRequestGeneration.current += 1;
     clearInputOptimizationUndos();
     referenceImagesRef.current.forEach((image) => URL.revokeObjectURL(image.previewUrl));
     referenceImagesRef.current = [];
@@ -1156,6 +1192,9 @@ export default function App() {
     setJob(null);
     setUserJobs([]);
     setRefineSource({ url: '', objectKey: '' });
+    setRefineJobId('');
+    setRefineJob(null);
+    closeInputOptimization();
     setRefineInstruction('');
     setRefineError('');
     setError('');
@@ -1223,6 +1262,7 @@ export default function App() {
   }
 
   function useResultForRefine(url, image) {
+    if (refineRunning) { setActiveTab('refine'); return; }
     setRefineSource(normalizeRefineSource(url, image));
     setRefineInstruction('');
     setRefineError('');
@@ -1232,6 +1272,12 @@ export default function App() {
   async function submitRefine(event) {
     event.preventDefault();
     setRefineError('');
+    if (refineSubmitLock.current) return;
+    if (refineSubmitHint) { setRefineError(refineSubmitHint); return; }
+    if (refineSource.uploaded) {
+      try { validateRefineFile({ type: refineSource.mimeType, size: refineSource.size }, activeRefineUploadLimits); validateRefineDimensions(refineSource, activeRefineUploadLimits); }
+      catch (error) { setRefineError(error.message); return; }
+    }
     if (!refineAspectRatioOptions.some((option) => option.value === refineAspectRatio)) { setRefineError('当前精修比例不可用，请重新选择。'); return; }
     if (!refineResolutionOptions.length) {
       setRefineError('当前图像模型未声明可执行的精修清晰度，请更换模型后重试。');
@@ -1267,9 +1313,12 @@ export default function App() {
       setShowGenerationSettings(true);
       return;
     }
+    const requestGeneration = refineRequestGeneration.current;
+    refineSubmitLock.current = true;
     setIsSubmittingRefine(true);
-    setJob(null);
-    latestJobRef.current = null;
+    setRefineJobId('');
+    setRefineJob(null);
+    setRefinePollError('');
     try {
       const scopedApiKeys = scopedApiKeysForRoles(activeModelRoutes, refineRouteRoles, apiKeys);
       const created = await refineImageRequest(apiBaseNormalized, health, {
@@ -1286,11 +1335,15 @@ export default function App() {
         aspectRatio: refineAspectRatio,
         imageSize: refineImageSize,
       });
-      setCurrentJobId(created.id);
+      if (requestGeneration !== refineRequestGeneration.current) return;
+      setRefineJob({ id: created.id, status: created.status || 'queued', result_images: [] });
+      setRefineJobId(created.id);
       if (currentUser) void loadUserJobs({ silent: true });
     } catch (refineRequestError) {
+      if (requestGeneration !== refineRequestGeneration.current) return;
       setRefineError(refineRequestError?.message || String(refineRequestError));
     } finally {
+      refineSubmitLock.current = false;
       setIsSubmittingRefine(false);
     }
   }
@@ -1735,8 +1788,22 @@ export default function App() {
       ) : activeTab === 'refine' ? (
         <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
           <RefinePanel
-            sourceUrl={refineSource.url}
-            sourceObjectKey={refineSource.objectKey}
+            source={refineSource}
+            upload={refineUpload}
+            uploadLimits={activeRefineUploadLimits}
+            uploadEnabled={modelRegistry?.refineUpload?.version >= 1}
+            onUpload={selectRefineFiles}
+            onRetryUpload={retryRefineUpload}
+            onRemoveSource={() => setRefineSource({ url: '', objectKey: '' })}
+            onOpenRecords={() => setActiveTab('records')}
+            onOpenGenerate={() => setActiveTab('generate')}
+            onUseForRefine={useResultForRefine}
+            optimizationSupported={refineOptimizationSupported}
+            optimizationDisabledReason={inputOptimizationDisabledReason('editInstruction')}
+            optimizationHasUndo={inputOptimizationUndos.editInstruction !== null}
+            optimizationGuidance={inputOptimizationGuidance}
+            onOptimize={requestInputOptimization}
+            onRestore={restoreInputBeforeOptimization}
             capability={refineCapability}
             instruction={refineInstruction}
             imageSize={refineImageSize}
@@ -1744,12 +1811,14 @@ export default function App() {
             aspectRatio={refineAspectRatio}
             aspectRatioOptions={refineAspectRatioOptions}
             settingsSummary={refineConfigSummary}
-            canSubmit={authReady && refineResolutionOptions.length > 0 && !missingCredentialProviders.length && Boolean(refineSource.objectKey || refineSource.url) && refineInstruction.trim().length >= 3 && !isSubmittingRefine && refineCapability.mode !== 'none'}
+            canSubmit={!refineSubmitHint}
+            submitHint={refineSubmitHint}
             isSubmitting={isSubmittingRefine}
             error={refineError}
-            job={job}
+            job={refineJob}
+            pollError={refinePollError}
             apiBase={apiBaseNormalized}
-            onInstructionChange={setRefineInstruction}
+            onInstructionChange={(value) => handleInputValueChange('editInstruction', value)}
             onImageSizeChange={setRefineImageSize}
             onAspectRatioChange={setRefineAspectRatio}
             onOpenSettings={() => {

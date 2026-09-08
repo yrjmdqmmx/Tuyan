@@ -408,8 +408,8 @@ test('legacy registry keeps simple fallback without explicit routes', async () =
 test('refine tab independently shows route summary and opens shared settings focused on refine models and credentials', async () => {
   const { user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  assert.ok(await screen.findByText(/图像：阿里云百炼 · Wan Image/))
-  assert.ok(screen.getByText(/视觉：阿里云百炼 · Qwen Vision/))
+  assert.match((await screen.findByLabelText('精修模型路由')).textContent, /阿里云百炼 · Wan Image/)
+  assert.ok(screen.getByText('直接编辑'))
   await user.click(screen.getByRole('button', { name: '精修设置' }))
   assert.ok(screen.getByRole('dialog', { name: /生成设置/ }))
   assert.ok(screen.getByRole('button', { name: /普通模式/ }).classList.contains('active'))

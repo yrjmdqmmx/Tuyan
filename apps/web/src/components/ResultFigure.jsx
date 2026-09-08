@@ -31,8 +31,8 @@ export default function ResultFigure({ image, apiBase, labelPrefix = '候选图'
         {url ? (
           <span className="result-actions">
             {onUseForRefine ? (
-              <button type="button" onClick={() => onUseForRefine(url, image)} aria-label={`精修${labelPrefix} ${candidateNumber}`}>
-                精修
+              <button type="button" onClick={() => onUseForRefine(url, image)} aria-label={`${labelPrefix === '精修结果' ? '继续精修结果' : `精修${labelPrefix}`} ${candidateNumber}`} >
+                {labelPrefix === '精修结果' ? '继续精修' : '精修'}
               </button>
             ) : null}
             <button type="button" onClick={downloadImage} disabled={isDownloading} aria-label={`下载${labelPrefix} ${candidateNumber}`}>
