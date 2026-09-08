@@ -1,1 +1,40 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图研邮箱验证</title><link rel="stylesheet" href="./account.css"></head><body><main class="card"><div class="brand"><img src="/logo.svg" alt="图研"><span>图研 Tuyan</span></div><section id="success"><h1>邮箱验证成功</h1><p>你的邮箱已验证，现在可以返回图研登录。</p><div class="status success">账号安全状态已更新。</div></section><section id="expired" class="hidden"><h1>链接已失效</h1><p>验证链接已过期，请返回登录页重新发送验证邮件。</p></section><section id="used" class="hidden"><h1>链接已使用</h1><p>该链接已经使用或邮箱已验证，你可以直接登录。</p></section><section id="invalid" class="hidden"><h1>无法验证</h1><p>链接缺失或无效，请重新发送验证邮件。</p></section><div class="actions"><a href="/">返回图研</a></div></main><script>const e=new URLSearchParams(location.search).get('error');const state=!e?'success':/expired/i.test(e)?'expired':/used|already/i.test(e)?'used':'invalid';for(const id of ['success','expired','used','invalid'])document.getElementById(id).classList.toggle('hidden',id!==state);</script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>图研邮箱验证</title>
+  <link rel="stylesheet" href="./account.css">
+</head>
+<body>
+  <main class="card" aria-live="polite">
+    <div class="brand"><img src="/logo.svg" alt="图研"><span>图研 Tuyan</span></div>
+    <section id="success" class="hidden">
+      <h1>邮箱验证成功</h1>
+      <p>邮箱已验证，无需重发邮件。请返回图研，使用注册时的邮箱和密码登录。</p>
+      <div class="status success">验证邮箱后还需登录，才能使用账号功能。</div>
+    </section>
+    <section id="expired" class="hidden">
+      <h1>链接已失效</h1>
+      <p>这条链接已过期。如果此前已完成验证，可直接登录；登录时仍提示未验证，再重新发送验证邮件。</p>
+    </section>
+    <section id="used" class="hidden">
+      <h1>邮箱已验证</h1>
+      <p>该链接已使用，邮箱验证已完成。无需重发邮件，请直接登录。</p>
+      <div class="status success">重复打开链接不会影响已完成的验证。</div>
+    </section>
+    <section id="invalid" class="hidden">
+      <h1>无法确认此链接</h1>
+      <p>这条链接无法继续使用，但不代表注册失败。如果你已打开过验证链接，请先尝试登录；登录时仍提示未验证，再重新发送邮件。</p>
+    </section>
+    <section id="unavailable" class="hidden">
+      <h1>暂时无法确认验证结果</h1>
+      <p>服务暂时不可用，请稍后重新打开邮件链接。也可先尝试登录，无需立即重发邮件。</p>
+    </section>
+    <noscript><p>请返回图研尝试登录；如果仍提示邮箱未验证，再重新发送验证邮件。</p></noscript>
+    <div class="actions"><a href="/?auth=sign-in">返回图研登录</a></div>
+  </main>
+  <script type="module" src="./email-verified.js"></script>
+</body>
+</html>

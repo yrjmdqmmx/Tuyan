@@ -1,4 +1,5 @@
 import { createAccountWriteGuard } from './account-write-guard.js';
+import { randomBytes } from 'node:crypto';
 import { createAccountVerification, authUserFilter } from './account-verification.js';
 import { createDeletionStore } from './account-deletion.js';
 import { ensureAccountIndexes, normalizeAccountInput } from './account-indexes.js';
@@ -152,6 +153,13 @@ export async function createAuthRuntime(
       async (email) => Boolean(await db.collection('user').findOne(
         { email }, { projection: { _id: 1 }, collation: { locale: 'en', strength: 2 } },
       )),
+      async (user) => {
+        try { return await verification.issueStatus(user); }
+        catch {
+          logger.warn?.('registration status unavailable', { result: 'observer-unavailable' });
+          return randomBytes(32).toString('base64url');
+        }
+      },
     ),
     async optionalSession(request) {
       return auth.api.getSession({
@@ -205,7 +213,7 @@ export async function createAuthRuntime(
   };
 }
 
-function createRegistrationPrivacyHandler(webHandler, userExists = async () => false) {
+function createRegistrationPrivacyHandler(webHandler, userExists, issueStatus) {
   return async function registrationPrivacyHandler(request) {
     const url = new URL(request.url);
     const signupBody = request.method === 'POST' && url.pathname === '/api/auth/sign-up/email' ? request.clone() : null;
@@ -229,12 +237,16 @@ function createRegistrationPrivacyHandler(webHandler, userExists = async () => f
     }
     if (!response.ok && !duplicate) return response;
 
+    const accepted = response.ok ? await response.clone().json().catch(() => null) : null;
+    const verificationStatusToken = await issueStatus(accepted?.user);
+
     const headers = new Headers(response.headers);
     headers.delete('set-cookie');
     headers.delete('content-length');
     headers.set('content-type', 'application/json; charset=utf-8');
+    headers.set('cache-control', 'no-store');
     return new Response(
-      JSON.stringify({ status: true, emailVerificationRequired: true }),
+      JSON.stringify({ status: true, emailVerificationRequired: true, verificationStatusToken }),
       { status: 200, headers },
     );
   };
