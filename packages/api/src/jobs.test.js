@@ -1,6 +1,20 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
+test('uploaded refinement source serializes only its object key and marks finalize purpose explicitly', async () => {
+  const mock = mockJsonFetch(() => ({ code: 0, jobId: 'refine-upload', status: 'queued', source: { width: 120, height: 80 } }));
+  try {
+    await refineImageRequest('https://gateway.example', { backendMode: 'gateway' }, {
+      sourceImageUpload: { objectKey: 'references/owner/source.png', userId: 'forged-owner', uploadToken: 'must-not-copy' },
+      editInstruction: '放大标签', imageSize: '1K', aspectRatio: '1:1',
+    });
+    assert.deepEqual(JSON.parse(mock.calls[0].options.body).sourceImageUpload, { objectKey: 'references/owner/source.png' });
+    const result = await finalizeReferenceUploadRequest('https://gateway.example', { backendMode: 'gateway' }, [], { purpose: 'refine' });
+    assert.equal(JSON.parse(mock.calls[1].options.body).purpose, 'refine');
+    assert.deepEqual(result.source, { width: 120, height: 80 });
+  } finally { mock.restore(); }
+});
+
 import {
   createJobRequest,
   adminJobsRequest,

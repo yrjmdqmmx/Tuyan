@@ -1,5 +1,17 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-08] Web 精修上传、指令优化与比例示意 — by Codex
+变更：精修页按原图、指令、参数、提交组织；桌面双栏、手机单栏，独立精修状态和结果。新增点击/拖拽上传、真实进度、失败重试、替换/移除；源图校验通过后复制到任务目录，避免后续替换或删除影响正在执行的精修。比例示意保持真实宽高比，自动项独立显示，默认折叠并保持选中项可见。
+共享契约（兼容性新增）：公开注册表新增 `refineUpload={version:1,mimeTypes,maxBytes,maxDimension,maxPixels,modelMaxBytes}` 和 `inputOptimizationTargets`；Web 仅在明确声明后启用入口。现有 `finalizeReferenceUpload` 可带 `purpose:'refine'`，成功返回 `source:{width,height}`；现有 `refineImage` 可带 `sourceImageUpload:{objectKey}`。Gateway 清除互斥源字段，Core 以不可变账号 ID、当前 lifecycle、已 finalized 记录及实际对象字节校验来源，任务只使用独立源图快照。既有任务结果入口和请求字段继续支持。
+输入优化新增 `target:'editInstruction'` 与 `inputs.editInstruction`（最多 2000 字）；沿用主模型路由、区域密钥、预览/采用/取消/恢复，不发送生成页内容作为精修上下文。Gateway 补齐已有 MiniMax 区域字段的优化请求透传。无新增 action、env 或数据库迁移。
+- [x] Core / Laf（上传归属与解码、任务快照、能力声明、精修优化目标）
+- [x] Auth Gateway / 共享 API（上传描述符、精修 finalize、优化目标及区域透传）
+- [x] Web（布局、上传、优化、比例示意、提交校验、独立轮询）
+- [x] 本地验收（Web 358、Core 454、Gateway 140、共享 API 29；新增真实 Gateway/Core 集成测试与模型请求像素核对，模型服务为测试桩；构建、类型检查、目录无漂移；详见 [验收记录](docs/refine-upload-2026-09-08.md)）
+- [ ] Web / Core / Gateway 生产部署与线上验收（用户已授权走上线流程，待 CI 与固定镜像发布）
+- [ ] 真实供应商精修与优化输出验收（需要当前账号的模型 Key；本地已覆盖真实处理器与适配器，供应商为测试桩）
+- [ ] 微信小程序原生验证、上传与平台发布（沿用用户暂缓要求；新增可选字段不影响旧请求）
+
 ### [2026-09-08] 邮箱验证增加手动确认，避免链接预览提前验证 — by Codex
 变更：邮件链接改为 Web `account/email-verify.html#token=…`，页面读取后立即移除片段，仅在用户点击“确认验证邮箱”时发送请求。旧邮件的 `GET/HEAD /api/auth/verify-email` 只跳转至第一方确认页，不查询或修改账号；Better Auth 原验证路由同时禁用。页面加载、预览、焦点事件均不自动提交。
 共享契约：验证动作改为 `POST /api/auth/verify-email`，必须使用受信任 Origin 与 JSON `{token}`，只接受 body 中的令牌。HTTP 200 `{ok:true,code:'EMAIL_VERIFIED'|'TOKEN_USED'}`；无效/过期为 HTTP 400、暂时失败为 503。保留不可变用户 ID、邮箱摘要、注销屏障、原 1 小时 TTL 与幂等回执；不创建登录态。注册观察接口仍只读，无新增 env、迁移或批量账号状态变更。

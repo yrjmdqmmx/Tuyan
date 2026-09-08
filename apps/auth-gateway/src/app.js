@@ -314,6 +314,10 @@ export function createApp({
           userEmail: principal.userEmail,
         };
         if (source.objectKey) delete body.sourceImageUrl;
+        if (source.uploaded) {
+          delete body.sourceImageUrl;
+          delete body.sourceImageObjectKey;
+        } else delete body.sourceImageUpload;
         return relay(response, await backend.call(body, context));
       }
 
@@ -513,12 +517,14 @@ function normalizeOptimizeInputsBody(body) {
       methodContent: body?.inputs?.methodContent,
       caption: body?.inputs?.caption,
       negativePrompt: body?.inputs?.negativePrompt,
+      ...(body?.target === 'editInstruction' ? { editInstruction: body?.inputs?.editInstruction } : {}),
     },
     mainRoute: {
       accessProvider: body?.mainRoute?.accessProvider,
       modelId: body?.mainRoute?.modelId,
     },
     apiKey: body?.apiKey,
+    ...(body?.providerRegions ? { providerRegions: { minimax: body.providerRegions.minimax } } : {}),
   };
 }
 

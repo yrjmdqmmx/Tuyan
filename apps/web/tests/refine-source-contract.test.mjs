@@ -6,12 +6,14 @@ const source = readFileSync(new URL('../src/components/RefinePanel.jsx', import.
 const app = readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8');
 const refineSource = readFileSync(new URL('../src/lib/refineSource.js', import.meta.url), 'utf8');
 
-test('refine only accepts an owned result selected inside PaperBanana', () => {
+test('refine uses a file uploader or owned results instead of arbitrary URL input', () => {
   assert.doesNotMatch(source, /<input[^>]+value=\{sourceUrl\}/u);
   assert.doesNotMatch(source, /https:\/\/\.\.\.|data:image/u);
-  assert.match(source, /从“生成结果”或“任务记录”选择本人图片/u);
-  assert.match(source, /sourceUrl\s*\?/u);
-  assert.match(source, /<img[^>]+src=\{sourceUrl\}/u);
+  assert.match(source, /type="file"/u);
+  assert.match(source, /onDrop=/u);
+  assert.match(source, /onOpenRecords/u);
+  assert.match(source, /onOpenGenerate/u);
+  assert.match(source, /<img[^>]+src=\{source.url\}/u);
 });
 
 test('refine submits the authoritative object key and displays server model capability', () => {
