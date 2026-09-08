@@ -8,7 +8,7 @@ test('privacy policy describes the current Web and WeChat Mini Program data flow
   const source = await readFile(new URL('privacy-policy.html', publicDir), 'utf8')
   assert.doesNotMatch(source, /初稿模板|DRAFT TEMPLATE|\[fill in|请补充/)
   assert.match(source, /2026-08-19/)
-  assert.match(source, /2026-09-03/)
+  assert.match(source, /2026-09-08/)
   assert.match(source, /可通过 Web 与微信小程序使用/)
   assert.match(source, /available on the Web and WeChat Mini Program/)
   assert.match(source, /阿里云香港|Alibaba Cloud Hong Kong/)
