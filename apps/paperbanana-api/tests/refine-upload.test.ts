@@ -4,8 +4,12 @@ import sharp from 'sharp'
 import { crc32 } from 'node:zlib'
 import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 
-test('real gateway/Core upload, ownership validation, source snapshot and image editing compose end to end', async () => {
+for (const accountGeneration of ['', 'restored-fixture-generation']) {
+test(`real gateway/Core upload, ownership validation, source snapshot and image editing compose end to end (${accountGeneration || 'original identity'})`, async () => {
   const runtime = await createRefineRuntime()
+  if (accountGeneration) await runtime.db.collection('paperbanana_account_deletions').insertOne({
+    _id: 'user:refine-owner', userId: 'refine-owner', contractVersion: 3, status: 'active', accountGeneration,
+  })
   const source = { filename: 'source.png', mimeType: 'image/png', size: runtime.image.length }
   const refine = {
     action: 'refineImage', provider: 'openai', apiKeys: { openai: 'local-fixture-key' }, mainModelName: 'gpt-4.1',
@@ -16,6 +20,7 @@ test('real gateway/Core upload, ownership validation, source snapshot and image 
     const prepared = await runtime.post({ action: 'prepareReferenceUpload', files: [source] })
     assert.equal(prepared.data.code, 0, JSON.stringify(prepared))
     const upload = prepared.data.uploads[0]
+    if (accountGeneration) assert.ok(upload.objectKey.startsWith(`references/refine-owner/lifecycles/${accountGeneration}/`))
     const request = { ...refine, sourceImageUpload: { objectKey: upload.objectKey } }
     const unfinalized = await runtime.post(request)
     assert.equal(unfinalized.data.code, 403, JSON.stringify(unfinalized))
@@ -24,6 +29,14 @@ test('real gateway/Core upload, ownership validation, source snapshot and image 
     const finalized = await runtime.post({ action: 'finalizeReferenceUpload', purpose: 'refine', uploads: [upload] })
     assert.equal(finalized.data.code, 0, JSON.stringify(finalized))
     assert.deepEqual(finalized.data.source, { width: 120, height: 80 })
+    if (accountGeneration) {
+      assert.equal((await runtime.post({ action: 'finalizeReferenceUpload', uploads: [upload] })).data.code, 0, 'ordinary reference finalize accepts restored identity paths too')
+      const heads = runtime.db.collection('paperbanana_account_deletions')
+      await heads.updateOne({ _id: 'user:refine-owner' }, { $set: { accountGeneration: 'next-generation' } })
+      assert.equal((await runtime.post({ action: 'finalizeReferenceUpload', purpose: 'refine', uploads: [upload] })).data.code, 409)
+      assert.equal((await runtime.post(request)).data.code, 403, 'prior lifecycle uploads cannot become new sources')
+      await heads.updateOne({ _id: 'user:refine-owner' }, { $set: { accountGeneration } })
+    }
     assert.equal((await runtime.post(request, 'other-owner')).data.code, 403)
     const legacyBypass = await runtime.post({ ...refine, sourceImageObjectKey: upload.objectKey })
     assert.equal(legacyBypass.status, 403, 'upload cannot bypass dedicated finalized source authorization')
@@ -53,6 +66,7 @@ test('real gateway/Core upload, ownership validation, source snapshot and image 
     assert.ok(registry.data.refineUpload.maxBytes > 0)
   } finally { await runtime.close() }
 })
+}
 
 test('finalized sources reject corrupted, mismatched, oversized and animated data before provider calls', async () => {
   const runtime = await createRefineRuntime()

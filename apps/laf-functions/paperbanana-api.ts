@@ -8667,7 +8667,11 @@ function safeEqual(left: string, right: string) {
 }
 
 function validateObjectKey(objectKey: string) {
-  if (!/^references\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\.(png|jpg|jpeg|webp|svg)$/i.test(objectKey || '')) {
+  // Restored identities upload inside the current lifecycle; authorization is
+  // still checked against the signed declaration and the server-bound owner.
+  if (typeof objectKey !== 'string' || objectKey.length > 300
+    || !/^references\/[A-Za-z0-9._-]+\/(?:lifecycles\/[A-Za-z0-9._-]+\/)?[A-Za-z0-9._-]+\.(png|jpg|jpeg|webp|svg)$/i.test(objectKey)
+    || objectKey.split('/').some((part) => part === '.' || part === '..')) {
     throw new Error('Invalid reference object key')
   }
 }

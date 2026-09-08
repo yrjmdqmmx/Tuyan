@@ -1,5 +1,13 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-08] 恢复身份后的参考图路径校验修正 — by Codex
+生产精修上传验收发现：`prepareReferenceUpload` 为恢复身份生成 `references/<owner>/lifecycles/<generation>/<file>`，旧 finalize 校验器只接受无 lifecycle 的路径，导致真实上传校验返回 500。现按既有生成规则接受可选 lifecycle 子目录，继续校验签名、实际对象、账号归属及当前生命周期；拒绝路径穿越和任意附加目录。没有新增字段、action、env 或权限。
+- [x] Core（普通参考图与精修上传共享的路径校验修正）
+- [x] Web / Gateway / 共享 API（沿用已有描述符，无需改动客户端）
+- [x] 回归用例（普通身份与恢复身份均覆盖上传 → finalize → 源图快照 → 编辑；旧生命周期 finalize/refine 仍拒绝）
+- [ ] Core 固定镜像发布及真实生产上传复验（首次部署版本 `28000e0` 未通过上传验收，修复后再记录结果）
+- [ ] 小程序原生验收及发布（继续暂缓）
+
 ### [2026-09-08] Web 精修上传、指令优化与比例示意 — by Codex
 变更：精修页按原图、指令、参数、提交组织；桌面双栏、手机单栏，独立精修状态和结果。新增点击/拖拽上传、真实进度、失败重试、替换/移除；源图校验通过后复制到任务目录，避免后续替换或删除影响正在执行的精修。比例示意保持真实宽高比，自动项独立显示，默认折叠并保持选中项可见。
 共享契约（兼容性新增）：公开注册表新增 `refineUpload={version:1,mimeTypes,maxBytes,maxDimension,maxPixels,modelMaxBytes}` 和 `inputOptimizationTargets`；Web 仅在明确声明后启用入口。现有 `finalizeReferenceUpload` 可带 `purpose:'refine'`，成功返回 `source:{width,height}`；现有 `refineImage` 可带 `sourceImageUpload:{objectKey}`。Gateway 清除互斥源字段，Core 以不可变账号 ID、当前 lifecycle、已 finalized 记录及实际对象字节校验来源，任务只使用独立源图快照。既有任务结果入口和请求字段继续支持。
