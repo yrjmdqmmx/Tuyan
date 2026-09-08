@@ -1,10 +1,10 @@
+import { isAdminEntry, selectWorkspaceEntry } from './lib/adminEntry';
 import { presentRegistryModel, sortModelsNewestFirst } from './lib/modelPresentation'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   BarChart3,
-  Eye,
   FileText,
   Github,
   Image as ImageIcon,
@@ -12,20 +12,15 @@ import {
   MessageCircle,
   MessageSquare,
   QrCode,
-  RefreshCcw,
   Send,
   Settings2,
   ShieldCheck,
   Sparkles,
   Undo2,
-  Users,
   X,
 } from 'lucide-react';
 import {
-  adminFeedbackRequest,
-  adminJobsRequest,
   adminStatusRequest,
-  adminUsersRequest,
   abortReferenceUploadRequest,
   createJobRequest,
   fetchBackendHealth,
@@ -64,9 +59,6 @@ import {
   supportedResolutions,
 } from './constants';
 import AspectRatioPicker from './components/AspectRatioPicker';
-import AdminFeedbackTable from './components/AdminFeedbackTable';
-import AdminUsersTable from './components/AdminUsersTable';
-import BenchmarkAdminPanel from './components/BenchmarkAdminPanel';
 import AuthPanel from './components/AuthPanel';
 import AuthUnavailablePanel from './components/AuthUnavailablePanel';
 import FeaturedTemplateStudio from './components/FeaturedTemplateStudio';
@@ -78,7 +70,6 @@ import InputOptimizationFieldActions from './components/InputOptimizationFieldAc
 import useRefineUpload from './hooks/useRefineUpload';
 import { refineUploadLimits, validateRefineDimensions, validateRefineFile } from './lib/refineUpload';
 import JobStatus from './components/JobStatus';
-import JobTable from './components/JobTable';
 import ModelRoutingSettings from './components/ModelRoutingSettings';
 import ReferenceUploadPanel from './components/ReferenceUploadPanel';
 import Select from './components/Select';
@@ -106,6 +97,7 @@ import {
 } from './lib/modelRouting';
 import { appPath, isLoginEntry } from './appPaths';
 
+const AdminWorkspace = lazy(() => import('./components/admin/AdminWorkspace'));
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
 const RefinePanel = lazy(() => import('./components/RefinePanel'));
@@ -123,7 +115,16 @@ function emptyInputOptimizationUndos() {
 
 export default function App() {
   const authSession = useAuthSession();
-  const [activeTab, setActiveTab] = useState('generate');
+  const [activeTab, setActiveTab] = useState(() => isAdminEntry(window.location.search) ? 'admin' : 'generate');
+  function selectTab(tab) {
+    selectWorkspaceEntry(tab);
+    setActiveTab(tab);
+  }
+  useEffect(() => {
+    const pop = () => setActiveTab((current) => isAdminEntry(window.location.search) ? 'admin' : current === 'admin' ? 'generate' : current);
+    window.addEventListener('popstate', pop);
+    return () => window.removeEventListener('popstate', pop);
+  }, []);
   const [showContactDialog, setShowContactDialog] = useState(false);
   const contactCloseRef = useRef(null);
   const [contactQrFailed, setContactQrFailed] = useState(false);
@@ -192,13 +193,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [errorContext, setErrorContext] = useState('');
   const [pollRetryNonce, setPollRetryNonce] = useState(0);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminJobs, setAdminJobs] = useState([]);
-  const [adminUsers, setAdminUsers] = useState([]);
-  const [adminFeedback, setAdminFeedback] = useState([]);
-  const [adminError, setAdminError] = useState('');
-  const [adminUsersError, setAdminUsersError] = useState('');
-  const [adminFeedbackError, setAdminFeedbackError] = useState('');
+  const [adminIdentity, setAdminIdentity] = useState('');
   const [userJobs, setUserJobs] = useState([]);
   const [userJobsError, setUserJobsError] = useState('');
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
@@ -224,6 +219,7 @@ export default function App() {
   const arkKeySnapshotRef = useRef('');
   const arkProbeRoutesSnapshotRef = useRef('');
   const currentUser = AUTH_ENABLED ? authSession.session?.user : null;
+  const isAdmin = Boolean(currentUser?.id && adminIdentity === currentUser.id);
   const authReady = !AUTH_REQUIRED || Boolean(!authSession.isPending && currentUser);
   const apiBaseNormalized = useMemo(() => {
     try {
@@ -554,35 +550,22 @@ export default function App() {
   useEffect(() => {
     let cancelled = false;
     if (!AUTH_ENABLED || authSession.isPending || !currentUser) {
-      setIsAdmin(false);
+      setAdminIdentity('');
       return undefined;
     }
 
     adminStatusRequest(apiBaseNormalized, health)
       .then((data) => {
-        if (!cancelled) setIsAdmin(Boolean(data.isAdmin));
+        if (!cancelled) setAdminIdentity(data.isAdmin ? currentUser.id : '');
       })
       .catch(() => {
-        if (!cancelled) setIsAdmin(false);
+        if (!cancelled) setAdminIdentity('');
       });
 
     return () => {
       cancelled = true;
     };
   }, [apiBaseNormalized, authSession.isPending, currentUser?.id, currentUser?.email, health]);
-
-  useEffect(() => {
-    if (!isAdmin && activeTab === 'admin') setActiveTab('generate');
-  }, [activeTab, isAdmin]);
-
-  useEffect(() => {
-    if (!isAdmin) return undefined;
-    let cancelled = false;
-    loadAdminOverview({ silent: true, cancelledRef: () => cancelled });
-    return () => {
-      cancelled = true;
-    };
-  }, [apiBaseNormalized, health, isAdmin]);
 
   function addReferenceFiles(files) {
     setReferenceUploadError('');
@@ -1111,40 +1094,6 @@ export default function App() {
     }
   }
 
-  async function loadAdminOverview(options = {}) {
-    if (!isAdmin) return;
-    if (!options.silent) {
-      setAdminError('');
-      setAdminUsersError('');
-      setAdminFeedbackError('');
-    }
-    const [jobsResult, usersResult, feedbackResult] = await Promise.allSettled([
-      adminJobsRequest(apiBaseNormalized, health),
-      adminUsersRequest(apiBaseNormalized, health),
-      adminFeedbackRequest(apiBaseNormalized, health, { limit: 50 }),
-    ]);
-
-    if (options.cancelledRef?.()) return;
-
-    if (jobsResult.status === 'fulfilled') {
-      setAdminJobs(jobsResult.value.jobs || []);
-    } else {
-      setAdminError(jobsResult.reason?.message || String(jobsResult.reason));
-    }
-
-    if (usersResult.status === 'fulfilled') {
-      setAdminUsers(usersResult.value.users || []);
-    } else {
-      setAdminUsersError(usersResult.reason?.message || String(usersResult.reason));
-    }
-
-    if (feedbackResult.status === 'fulfilled') {
-      setAdminFeedback(feedbackResult.value.feedback || []);
-    } else {
-      setAdminFeedbackError(feedbackResult.reason?.message || String(feedbackResult.reason));
-    }
-  }
-
   async function loadUserJobs(options = {}) {
     if (!AUTH_ENABLED || !currentUser) return;
     if (!options.silent) setUserJobsError('');
@@ -1207,7 +1156,7 @@ export default function App() {
     await authSession.refresh();
     setShowAuthPanel(false);
     setShowAccountDialog(false);
-    setIsAdmin(false);
+    setAdminIdentity('');
     setActiveTab('generate');
   }
 
@@ -1215,7 +1164,7 @@ export default function App() {
     clearPrivateWorkspace();
     authSession.clear();
     setShowAccountDialog(false);
-    setIsAdmin(false);
+    setAdminIdentity('');
     setActiveTab('generate');
     try {
       await authSession.refresh();
@@ -1617,12 +1566,12 @@ export default function App() {
       ) : null}
 
       <nav className="paper-tabs">
-        <button type="button" className={activeTab === 'generate' ? 'active' : ''} onClick={() => setActiveTab('generate')}>生成候选图</button>
-        <button type="button" className={activeTab === 'records' ? 'active' : ''} onClick={() => setActiveTab('records')}>任务记录</button>
-        <button type="button" className={activeTab === 'refine' ? 'active' : ''} onClick={() => setActiveTab('refine')}>精修图片</button>
-        <button type="button" className={activeTab === 'guide' ? 'active' : ''} onClick={() => setActiveTab('guide')}>使用教程</button>
+        <button type="button" className={activeTab === 'generate' ? 'active' : ''} onClick={() => selectTab('generate')}>生成候选图</button>
+        <button type="button" className={activeTab === 'records' ? 'active' : ''} onClick={() => selectTab('records')}>任务记录</button>
+        <button type="button" className={activeTab === 'refine' ? 'active' : ''} onClick={() => selectTab('refine')}>精修图片</button>
+        <button type="button" className={activeTab === 'guide' ? 'active' : ''} onClick={() => selectTab('guide')}>使用教程</button>
         {isAdmin ? (
-          <button type="button" className={activeTab === 'admin' ? 'active' : ''} onClick={() => setActiveTab('admin')}>站长</button>
+          <button type="button" className={activeTab === 'admin' ? 'active' : ''} onClick={() => selectTab('admin')}>站长</button>
         ) : null}
       </nav>
 
@@ -1828,54 +1777,9 @@ export default function App() {
             onSubmit={submitRefine}
           />
         </Suspense>
-      ) : activeTab === 'admin' && isAdmin ? (
-        <section className="admin-panel">
-          <div className="section-head">
-            <Eye size={20} />
-            <div>
-              <h2>站长观察面板</h2>
-              <p>已通过登录账号识别管理员身份，可查看账号、反馈和最近任务。</p>
-            </div>
-          </div>
-          <div className="admin-controls admin-controls-single">
-            <button type="button" onClick={() => loadAdminOverview()}><RefreshCcw size={17} />刷新</button>
-          </div>
-          <div className="admin-section">
-            <div className="admin-section-title">
-              <Users size={17} />
-              <strong>账号记录</strong>
-              <span>{adminUsers.length ? `${adminUsers.length} 个账号` : '注册/登录后会出现在这里'}</span>
-            </div>
-            {adminUsersError ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(adminUsersError)}</div> : null}
-            <AdminUsersTable users={adminUsers} />
-          </div>
-          <div className="admin-section">
-            <div className="admin-section-title">
-              <MessageSquare size={17} />
-              <strong>用户反馈</strong>
-              <span>{adminFeedback.length ? `${adminFeedback.length} 条反馈` : '暂无反馈数据'}</span>
-            </div>
-            {adminFeedbackError ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(adminFeedbackError)}</div> : null}
-            <AdminFeedbackTable feedback={adminFeedback} />
-          </div>
-          <div className="admin-section">
-            <div className="admin-section-title">
-              <FileText size={17} />
-              <strong>最近任务</strong>
-              <span>{adminJobs.length ? `${adminJobs.length} 条任务` : '暂无任务数据'}</span>
-            </div>
-            {adminError ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(adminError)}</div> : null}
-            <JobTable jobs={adminJobs} showUser apiBase={apiBaseNormalized} />
-          </div>
-          <div className="admin-section">
-            <div className="admin-section-title">
-              <BarChart3 size={17} />
-              <strong>出图模型 Bench</strong>
-              <span>候选、预算、运行、Codex 审核与不可变发布</span>
-            </div>
-            <BenchmarkAdminPanel apiBase={apiBaseNormalized} health={health} />
-          </div>
-        </section>
+      ) : activeTab === 'admin' ? (
+        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /></Suspense>
+          : <section className="card"><h2>站长运营后台</h2><p role="status">{authSession.isPending ? '正在确认登录状态…' : '需要已登录的站长账号才能访问，后台接口会再次校验权限。'}</p>{!currentUser && <button onClick={() => setShowAuthPanel(true)}>登录账号</button>}</section>
       ) : activeTab === 'guide' ? (
         <GuidePanel
           onStart={() => setActiveTab('generate')}

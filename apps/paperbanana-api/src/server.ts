@@ -1,3 +1,4 @@
+import { ADMIN_OPERATIONS_ACTIONS, AdminError } from './admin-policy.js'
 import { createHash, timingSafeEqual } from 'node:crypto'
 import http from 'node:http'
 
@@ -39,6 +40,7 @@ type AppDependencies = {
   healthSnapshot: () => Readiness
   config: AppConfig
   logger: ServiceLogger
+  adminOperations?: { handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>> }
   benchmarkService?: {
     handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>>
   }
@@ -53,6 +55,7 @@ const corsHeaders = {
 }
 
 const adminActions = new Set([
+  ...ADMIN_OPERATIONS_ACTIONS,
   'adminJobs',
   'adminFeedback',
   'importReferences',
@@ -129,7 +132,7 @@ function legacyHeaders(request: Request): Request['headers'] {
 }
 
 export function createApp({
-  handler, readinessProbe, healthSnapshot, config, logger, benchmarkService,
+  handler, readinessProbe, healthSnapshot, config, logger, benchmarkService, adminOperations,
   prepareScientificV2RegistryAuthority,
 }: AppDependencies): Express {
   const app = express()
@@ -228,6 +231,18 @@ export function createApp({
       body.adminToken = config.adminToken
       body.adminUserId = adminUserId
     }
+    if (ADMIN_OPERATIONS_ACTIONS.includes(action)) {
+      response.setHeader('Cache-Control', 'no-store')
+      const isAdmin = Boolean(isAdminTransport && config.adminToken && body.adminToken === config.adminToken)
+      if (!isAdmin) return response.status(403).json({ code: 403, error: '需要管理员身份' })
+      if (!adminOperations) return response.status(503).json({ code: 503, error: '后台查询服务暂不可用' })
+      try { return response.json(await adminOperations.handle(body, isAdmin)) }
+      catch (error) {
+        const status = error instanceof AdminError ? error.status : 503
+        logger.warn('admin operations rejected', { action, status })
+        return response.status(status).json({ code: status, error: error instanceof AdminError ? error.message : '后台数据暂不可用，请稍后重试' })
+      }
+    }
     if (benchmarkService && (action.startsWith('benchmark') || action.startsWith('adminBenchmark'))) {
       try {
         const isAdmin = Boolean(isAdminTransport && config.adminToken && body.adminToken === config.adminToken && adminActions.has(action))
@@ -239,7 +254,7 @@ export function createApp({
         return response.status(200).send(await benchmarkService.handle(body, isAdmin))
       } catch (error) {
         const message = String((error as Error)?.message || '')
-        const code = message.startsWith('BENCHMARK_ADMIN_REQUIRED') || message.startsWith('BENCHMARK_PROMPT_LOGIN_REQUIRED')
+        const code = error instanceof AdminError ? error.status : message.startsWith('BENCHMARK_ADMIN_REQUIRED') || message.startsWith('BENCHMARK_PROMPT_LOGIN_REQUIRED')
           ? 401
           : message === 'ACCOUNT_DELETION_IN_PROGRESS' ? 409
           : message.startsWith('BENCHMARK_PROMPT_RATE_LIMIT_') ? 429 : 400
@@ -251,7 +266,7 @@ export function createApp({
           : ''
         return response.status(200).json({
           code,
-          error: message === 'ACCOUNT_DELETION_IN_PROGRESS' ? message : 'Benchmark request rejected',
+          error: error instanceof AdminError || message === 'ACCOUNT_DELETION_IN_PROGRESS' ? message : 'Benchmark request rejected',
           ...(scientificV2AdminDiagnostic ? { diagnosticCode: scientificV2AdminDiagnostic } : {}),
         })
       }

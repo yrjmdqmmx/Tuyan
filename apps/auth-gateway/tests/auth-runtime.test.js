@@ -9,10 +9,12 @@ function fakeDatabase() {
   const operations = [];
   const collections = {
     session: {
+      async createIndex() {},
       async deleteMany(query) { operations.push(['session.deleteMany', query]); },
       aggregate() { return { async toArray() { return []; } }; },
     },
     account: {
+      async createIndex() {},
       async deleteMany(query) { operations.push(['account.deleteMany', query]); },
     },
     accountDeletionOperations: { async createIndex() {} },

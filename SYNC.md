@@ -1,5 +1,16 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-08] 站长运营工作区：真实统计、服务端列表与可追溯审核 — by Codex
+变更：合并账号、任务、反馈和社区评估题入口；新增按时间的真实总览、服务端分页/筛选/排序、用户与任务/提交详情互跳及列表上下文保留。账号以 Better Auth 不可变用户 ID 关联登录方式与会话；联系方式搜索只使用已存在的反馈 `contact`，不将其视为已验证身份。
+共享契约：新增 Gateway `adminOverview / adminUserList / adminUserDetail`；新增 Core `adminOperationsOverview / adminTaskList / adminTaskDetail / adminTaskFollowup / adminCommunityList / adminCommunityDetail / adminCommunityEdit / adminContactMatches / adminFeedbackList`。分页统一 `page / pageSize(10|20|50)` 和 `pagination{page,pageSize,total,totalPages}`；时间为 UTC ISO `[from,to)`，排序白名单。所有入口校验站长不可变身份，Core 另验内部管理员传输凭证；DTO 白名单、列表邮箱/联系方式脱敏，按用户显式查看完整联系方式，不返回凭证、原始会话、IP 或密钥。
+操作契约：任务新增独立 `adminOperations` 跟进状态/历史，保持执行状态不变；社区保留原始题目，通过 `adminEditedPrompt / adminEditedCapability` 保存编辑。新页面的编辑/审核/跟进提交 `expectedRevision`，原子更新与追加历史，冲突返回 409；既有 `adminBenchmarkPromptDecision` 路由继续可用且补充处理记录。审核终态不可重复修改，通过仅进入下期候选；没有提交到正式题集/发布的可靠关联时明确显示未关联，不伪造“已发布”。
+- [x] Core Node / Auth Gateway（新查询、真实统计、白名单、索引、版本冲突与操作记录）
+- [x] Web（统一后台及原社区审核入口复用；搜索/筛选/分页/详情/管理操作与异常反馈）
+- [x] 微信小程序兼容性（不调用新站长接口；原登录/注册/任务/社区提交契约不变，本轮无客户端修改或发布）
+- [x] 本地验证（真实 Auth/Gateway/Core/Mongo 集成和桌面/窄屏浏览器验收；结果见下方交付记录）
+- [ ] 发布（本轮未发布；须先升级 Node Core 与 Gateway，再发布 Web；Laf 回退运行时不提供这组新查询）
+运行依赖：无新增环境变量。沿用业务、认证、评测数据库；启动时创建列表索引，需要对应库的 createIndex 权限。新增审计嵌入原文档，不要求评测账号获得新集合写权限；不触发模型调用、正式评测或发布。详见 [交付与验收记录](docs/admin-operations-2026-09-08.md)。
+
 ### [2026-09-08] 恢复身份后的参考图路径校验修正 — by Codex
 生产精修上传验收发现：`prepareReferenceUpload` 为恢复身份生成 `references/<owner>/lifecycles/<generation>/<file>`，旧 finalize 校验器只接受无 lifecycle 的路径，导致真实上传校验返回 500。现按既有生成规则接受可选 lifecycle 子目录，继续校验签名、实际对象、账号归属及当前生命周期；拒绝路径穿越和任意附加目录。没有新增字段、action、env 或权限。
 - [x] Core（普通参考图与精修上传共享的路径校验修正）

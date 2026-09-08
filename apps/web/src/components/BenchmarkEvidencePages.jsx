@@ -1,7 +1,6 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ExternalLink, Image as ImageIcon, Loader2, Search, Send, X } from 'lucide-react'
 import {
-  adminBenchmarkRequest,
   adminStatusRequest,
   benchmarkCaseEvidenceRequest,
   benchmarkModelProfileRequest,
@@ -13,6 +12,7 @@ import { LEADERBOARD_AXES, SCIENTIFIC_LEADERBOARD_AXES, leaderboardDetailHref } 
 import { hasScientificHint, normalizeScientificCaseResponse, normalizeScientificProfile } from './benchmarkRelease.js'
 import { useLeaderboardSession } from './LeaderboardRoot.jsx'
 
+const AdminWorkspace = lazy(() => import('./admin/AdminWorkspace'));
 const WORKSPACE_HREF = appPath('/')
 const LEADERBOARD_HREF = appPath('/leaderboard')
 const METHODOLOGY_HREF = appPath('/leaderboard/methodology')
@@ -305,49 +305,25 @@ export function BenchmarkPromptSubmissionPage({ apiBase, backendMode, showNaviga
 
 export function BenchmarkPromptAdminPage({ apiBase, backendMode, showNavigation = true }) {
   const auth = useLeaderboardSession()
-  const [admin, setAdmin] = useState(false)
-  const [rows, setRows] = useState([])
+  const [adminIdentity, setAdminIdentity] = useState('')
+  const admin = Boolean(auth.session?.user?.id && adminIdentity === auth.session.user.id)
   const [error, setError] = useState('')
-  const reload = async (requestGeneration = auth.generation) => {
-    const results = await Promise.all(['pending', 'grouped', 'candidate'].map((status) => adminBenchmarkRequest(apiBase, { backendMode }, 'adminBenchmarkPromptQueue', { status, limit: 200 })))
-    if (auth.isCurrentGeneration(requestGeneration)) setRows(results.flatMap((result) => result.submissions || []))
-  }
   useEffect(() => {
-    if (auth.isPending) return undefined
-    if (!auth.session?.user) {
-      setAdmin(false)
-      setRows([])
-      setError('')
-      return undefined
-    }
-    let cancelled = false
-    const requestGeneration = auth.generation
-    setAdmin(false)
-    setRows([])
+    setAdminIdentity('')
     setError('')
+    if (auth.isPending || !auth.session?.user) return undefined
+    let cancelled = false
+    const generation = auth.generation
     adminStatusRequest(apiBase, { backendMode }).then((result) => {
-      if (cancelled || !auth.isCurrentGeneration(requestGeneration)) return undefined
-      setAdmin(result.isAdmin)
-      if (result.isAdmin) return reload(requestGeneration)
-      return undefined
+      if (!cancelled && auth.isCurrentGeneration(generation)) setAdminIdentity(result.isAdmin ? auth.session.user.id : '')
     }).catch((reason) => {
-      if (!cancelled && auth.isCurrentGeneration(requestGeneration)) setError(reason?.message || String(reason))
+      if (!cancelled && auth.isCurrentGeneration(generation)) setError(reason?.message || String(reason))
     })
     return () => { cancelled = true }
   }, [apiBase, backendMode, auth.generation, auth.isPending, auth.session?.user?.id])
-  const updateRow = (submissionId, key, value) => setRows((current) => current.map((row) => row.submissionId === submissionId ? { ...row, [key]: value } : row))
-  const decide = async (row, decision) => {
-    const requestGeneration = auth.generation
-    try { await adminBenchmarkRequest(apiBase, { backendMode }, 'adminBenchmarkPromptDecision', { submissionId: row.submissionId, decision, editedPrompt: row.prompt, editedCapability: row.capability }); if (auth.isCurrentGeneration(requestGeneration)) await reload(requestGeneration) }
-    catch (reason) { if (auth.isCurrentGeneration(requestGeneration)) setError(reason?.message || String(reason)) }
-  }
-  return (
-    <main className="bench-shell bench-prompt-page">
-      {showNavigation ? <EvidenceNav current="submit" /> : null}
-      <header className="bench-subpage-hero"><a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a><div className="bench-eyebrow">ADMIN REVIEW</div><h1>社区评估题审核</h1><p>这里只处理候选池，不修改当前正式题集或榜单。</p></header>
-      {auth.isPending ? <EvidenceState><Loader2 className="spin" />正在确认管理员身份…</EvidenceState> : !admin ? <EvidenceState error>{error || '需要站长账号才能访问。'}</EvidenceState> : (
-        <section className="bench-prompt-admin-list">{rows.map((row) => <article key={row.submissionId}><header><strong>{row.status}</strong><code>{row.submissionId}</code></header><label>能力分类<input value={row.capability || ''} onChange={(event) => updateRow(row.submissionId, 'capability', event.target.value)} /></label><label>规范提示词<textarea value={row.prompt || ''} onChange={(event) => updateRow(row.submissionId, 'prompt', event.target.value)} /></label><dl><div><dt>必须项</dt><dd>{row.requiredElements || '无'}</dd></div><div><dt>禁止项</dt><dd>{row.forbiddenResults || '无'}</dd></div></dl><footer><button onClick={() => decide(row, 'approved_for_next_suite')}>批准为下期候选</button><button onClick={() => decide(row, 'merged')}>标记已合并</button><button onClick={() => decide(row, 'rejected')}>拒绝</button></footer></article>)}</section>
-      )}
-    </main>
-  )
+  return <main className="bench-shell bench-prompt-page">
+    {showNavigation ? <EvidenceNav current="submit" /> : null}
+    <header className="bench-subpage-hero"><a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a><h1>社区评估题审核</h1><p>社区审核已纳入统一站长工作区，处理候选池，不修改当前正式题集或榜单。</p></header>
+    {auth.isPending ? <EvidenceState><Loader2 className="spin" />正在确认管理员身份…</EvidenceState> : !admin || !auth.session?.user ? <EvidenceState error>{error || '需要站长账号才能访问。'}</EvidenceState> : <Suspense fallback={<EvidenceState>正在加载后台…</EvidenceState>}><AdminWorkspace key={auth.session.user.id} apiBase={apiBase} health={{ backendMode }} defaultSection="community" /></Suspense>}
+  </main>
 }

@@ -1,3 +1,4 @@
+import { mutateCommunityPrompt } from './admin-community.js'
 import {
   BENCHMARK_AXES,
   BENCHMARK_COLLECTIONS,
@@ -1394,19 +1395,7 @@ export function createMongoBenchmarkRepository(
       }
     },
     async decidePrompt(input: AnyRecord) {
-      const submissionId = text(input.submissionId, 200)
-      const decision = String(input.decision || '')
-      if (!submissionId || !['approved_for_next_suite', 'merged', 'rejected'].includes(decision)) throw new Error('BENCHMARK_PROMPT_DECISION_INVALID')
-      const result = await promptSubmissions.updateOne(
-        { submissionId, status: { $in: ['pending', 'grouped', 'candidate'] } },
-        { $set: {
-          status: decision, decisionNotes: text(input.decisionNotes, 1_000), decidedBy: text(input.adminUserId, 200),
-          adminEditedPrompt: text(input.editedPrompt, 4_000), adminEditedCapability: text(input.editedCapability, 1_000),
-          decidedAt: now(), updatedAt: now(),
-        } },
-      )
-      if (result.modifiedCount !== 1) throw new Error('BENCHMARK_PROMPT_DECISION_CONFLICT')
-      return { submissionId, status: decision }
+      return mutateCommunityPrompt(promptSubmissions, input, { now, assertAccountAcceptingWork: scientificV2Options.assertAccountAcceptingWork })
     },
     async candidates() {
       return (await models.find({}).sort({ detectedAt: -1 }).limit(200).toArray()).map(adminCandidate)

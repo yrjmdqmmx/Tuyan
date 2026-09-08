@@ -84,7 +84,7 @@ test('clearing session immediately clears admin rows and ignores late queue resp
   globalThis.fetch = async (_input, options = {}) => {
     const body = JSON.parse(options.body)
     if (body.action === 'adminStatus') return new Response(JSON.stringify({ code: 0, isAdmin: true }), { status: 200 })
-    if (body.action === 'adminBenchmarkPromptQueue') {
+    if (body.action === 'adminCommunityList') {
       const operation = deferred()
       queueOperations.push(operation)
       return operation.promise
@@ -96,10 +96,10 @@ test('clearing session immediately clears admin rows and ignores late queue resp
       React.createElement(ClearSessionButton),
       React.createElement(BenchmarkPromptAdminPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', showNavigation: false }),
     ))
-    await waitFor(() => assert.equal(queueOperations.length, 3))
+    await waitFor(() => assert.equal(queueOperations.length, 1))
     fireEvent.click(screen.getByRole('button', { name: '清除排行榜会话' }))
     await act(async () => {
-      queueOperations.forEach((operation, index) => operation.resolve(new Response(JSON.stringify({ code: 0, submissions: [{ submissionId: `late-${index}`, status: 'pending', prompt: '迟到数据', capability: 'race' }] }), { status: 200 })))
+      queueOperations.forEach((operation, index) => operation.resolve(new Response(JSON.stringify({ code: 0, pagination: { page: 1, pageSize: 20, total: 1, totalPages: 1 }, rows: [{ submissionId: `late-${index}`, status: 'pending', prompt: '迟到数据', capability: 'race' }] }), { status: 200 })))
       await Promise.all(queueOperations.map((operation) => operation.promise))
     })
     assert.equal(screen.queryByText('迟到数据'), null)
