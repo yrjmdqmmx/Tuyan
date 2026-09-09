@@ -1607,7 +1607,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     }
   }
 
-  const openaiOrdered = openai.providers.openai.models
+  const openaiOrdered = openai.providers.openai.models.filter((model: any) => model.roles.includes('main'))
   assert.deepEqual(openaiOrdered.slice(0, 4).map((model: any) => [model.id, model.releasedAt]), [
     ['gpt-6-astra', '2026-09-03'],
     ['gpt-5.6-sol', '2026-07-09'],
@@ -1723,7 +1723,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-07.v15')
+    assert.equal(result.registryVersion, '2026-09-09.v16')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2973,7 +2973,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-07.v15')
+    assert.equal(registry.registryVersion, '2026-09-09.v16')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -3904,6 +3904,75 @@ test('OpenRouter fails closed when a dedicated image model declares no output_fo
     architecture: { input_modalities: ['text'], output_modalities: ['image'] },
     supported_parameters: { output_format: { values: [] } },
   })
+})
+
+test('GPT Image 2.5 direct aliases and dated snapshots submit valid generation and edit requests', async () => {
+  const legacy = await loadLegacy()
+  const calls: Array<{url:string; body:any}> = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url = String(input)
+    assert.ok(url === 'https://api.openai.com/v1/images/generations' || url === 'https://api.openai.com/v1/images/edits')
+    const body = init?.body instanceof FormData ? Object.fromEntries(init.body.entries()) : JSON.parse(String(init?.body))
+    calls.push({url, body})
+    return Response.json({data:[{b64_json:onePixelPngBase64}]})
+  })
+  try {
+    for (const variant of ['sunburst','flare']) for (const suffix of ['', '-2026-09-08']) {
+      const model = `gpt-image-2.5-${variant}${suffix}`
+      for (const editing of [false,true]) {
+        assert.equal(await legacy.callImageModel('openai',model,'fixture-only','Scientific figure','16:9',editing?`data:image/png;base64,${onePixelPngBase64}`:'','4K'),onePixelPngBase64)
+        const call = calls.at(-1)!
+        assert.equal(call.body.model,model)
+        assert.equal(call.body.size,'3840x2160')
+        assert.equal(call.body.output_format,'png')
+        assert.equal(call.body.quality,'high')
+        assert.equal(Object.hasOwn(call.body,'input_fidelity'),false)
+        assert.equal(Object.hasOwn(call.body,'image'),editing)
+      }
+      const before = calls.length
+      await assert.rejects(legacy.callImageModel('openai',model,'fixture-only','Scientific figure','1:8','','4K'),/Unsupported aspect ratio/)
+      assert.equal(calls.length,before)
+    }
+    assert.equal(calls.length,8)
+  } finally { legacy.configureRuntimeFetch() }
+})
+
+test('OpenRouter GPT Image 2.5 is selectable from live schema without inventing output format or resolution parameters', async () => {
+  const legacy = await loadLegacy()
+  const snapshot = JSON.parse(fs.readFileSync(new URL('../../../config/openrouter-catalog-review.json', import.meta.url),'utf8'))
+  const cards = snapshot.images.filter((model:any) => /^openai\/gpt-image-2[.]5-(sunburst|flare)$/.test(model.id))
+  assert.equal(cards.length,2)
+  const bodies:any[] = []
+  legacy.configureRuntimeFetch(async (input, init) => {
+    const url=String(input)
+    if(url.endsWith('/api/v1/models'))return Response.json({data:[]})
+    if(url.endsWith('/images/models'))return Response.json({data:cards})
+    assert.equal(url,'https://openrouter.ai/api/v1/images')
+    bodies.push(JSON.parse(String(init?.body)))
+    return Response.json({data:[{b64_json:onePixelPngBase64}]})
+  })
+  try {
+    const response=await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+    for(const card of cards) {
+      const model=response.providers.openrouter.models.find((m:any)=>m.id===card.id)
+      assert.equal(model.selectable,true)
+      assert.equal(model.verified,false)
+      assert.equal(model.verificationState,'catalog')
+      assert.equal(model.capabilities.imageEditing,true)
+      assert.equal(model.capabilities.providerMaxReferenceImages,16)
+      assert.match(model.roleReasons.image,/documentation.*PNG/)
+      assert.doesNotMatch(model.roleReasons.image,/paid-verified/)
+      for(const editing of [false,true]) {
+        await legacy.callImageModel('openrouter',card.id,'fixture-only','Scientific figure','21:9',editing?`data:image/png;base64,${onePixelPngBase64}`:'','auto')
+        const body=bodies.at(-1)
+        assert.equal(body.model,card.id)
+        assert.equal(body.aspect_ratio,'21:9')
+        for(const field of ['resolution','size','output_format'])assert.equal(Object.hasOwn(body,field),false,field)
+        assert.equal(Boolean(body.input_references),editing)
+      }
+    }
+    assert.equal(bodies.length,4)
+  } finally { legacy.configureRuntimeFetch() }
 })
 
 test('OpenRouter image default stays recommended while exact paid-verified profiles are also selectable', async () => {
@@ -5208,7 +5277,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-07.v15')
+    assert.equal(registry.registryVersion, '2026-09-09.v16')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6553,9 +6622,9 @@ test('reviewed OpenRouter public catalog accounts for every model at its snapsho
     assert.equal(result.code, 0)
     const registry = result.providers.openrouter
     const expected = new Set([...snapshot.text, ...snapshot.images].map((model: any) => model.id))
-    assert.equal(expected.size, 471)
+    assert.equal(expected.size, 473)
     for (const id of ['meta/muse-image', 'recraft/recraft-v4-styles', 'recraft/recraft-v4-styles-pro', 'recraft/recraft-v4-styles-vector', 'recraft/recraft-v4-styles-pro-vector']) expected.delete(id)
-    assert.equal(expected.size, 466)
+    assert.equal(expected.size, 468)
     assert.deepEqual(new Set(registry.models.map((model: any) => model.id)), expected)
     for (const model of registry.models) {
       if (!model.selectable) assert.ok(model.disabledReason, model.id + ' needs a reason')

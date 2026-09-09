@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-07.v15",
+  "version": "2026-09-09.v16",
   "providers": {
     "deepseek": [],
     "kimi": [],
@@ -9507,6 +9507,314 @@
           "verificationState": "catalog",
           "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-4o-mini"
         }
+      },
+      {
+        "id": "gpt-image-2.5-sunburst",
+        "label": "GPT Image 2.5 Sunburst",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "支持生成与直接编辑；16 像素对齐、最长边 3840、比例 1:3–3:1、总像素 655360–8294400；高于 2560×1440 属于实验尺寸。当前使用 high 质量、PNG 输出，账号调用权限待验证。",
+        "capabilities": {
+          "maxReferenceImages": 1,
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "recommended": false,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+          "releasedAt": "2026-09-08"
+        }
+      },
+      {
+        "id": "gpt-image-2.5-sunburst-2026-09-08",
+        "label": "GPT Image 2.5 Sunburst (2026-09-08)",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "支持生成与直接编辑；16 像素对齐、最长边 3840、比例 1:3–3:1、总像素 655360–8294400；高于 2560×1440 属于实验尺寸。当前使用 high 质量、PNG 输出，账号调用权限待验证。",
+        "capabilities": {
+          "maxReferenceImages": 1,
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "recommended": false,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+          "releasedAt": "2026-09-08"
+        }
+      },
+      {
+        "id": "gpt-image-2.5-flare",
+        "label": "GPT Image 2.5 Flare",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "支持生成与直接编辑；16 像素对齐、最长边 3840、比例 1:3–3:1、总像素 655360–8294400；高于 2560×1440 属于实验尺寸。当前使用 high 质量、PNG 输出，账号调用权限待验证。",
+        "capabilities": {
+          "maxReferenceImages": 1,
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "recommended": false,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+          "releasedAt": "2026-09-08"
+        }
+      },
+      {
+        "id": "gpt-image-2.5-flare-2026-09-08",
+        "label": "GPT Image 2.5 Flare (2026-09-08)",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "支持生成与直接编辑；16 像素对齐、最长边 3840、比例 1:3–3:1、总像素 655360–8294400；高于 2560×1440 属于实验尺寸。当前使用 high 质量、PNG 输出，账号调用权限待验证。",
+        "capabilities": {
+          "maxReferenceImages": 1,
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "resolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "refineResolutions": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "1:2",
+            "2:1",
+            "4:5",
+            "5:4",
+            "5:2",
+            "2:5"
+          ],
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "recommended": false,
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+          "releasedAt": "2026-09-08"
+        }
       }
     ],
     "ark": [
@@ -14983,6 +15291,76 @@
           "verificationState": "catalog",
           "officialSourceUrl": "https://fal.ai/models/fal-ai/ideogram/v3/api"
         }
+      },
+      {
+        "id": "openai/gpt-image-2.5/sunburst/text-to-image",
+        "label": "GPT Image 2.5 Sunburst",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "支持生成与直接编辑；提供 1K/2K/4K 和多种比例。当前输出 PNG，账号调用权限待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.5/flare/text-to-image",
+        "label": "GPT Image 2.5 Flare",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "支持生成与直接编辑；提供 1K/2K/4K 和多种比例。当前输出 PNG，账号调用权限待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 16
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
+        }
       }
     ],
     "replicate": [
@@ -17876,6 +18254,74 @@
             "image"
           ],
           "vendor": "zsxkib"
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.5-sunburst",
+        "label": "GPT Image 2.5 Sunburst",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "支持生成与直接编辑；提供 7 种固定比例，输出尺寸由平台自动选择。当前输出 PNG，账号调用权限待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/openai/gpt-image-2.5-sunburst/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.5-flare",
+        "label": "GPT Image 2.5 Flare",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "支持生成与直接编辑；提供 7 种固定比例，输出尺寸由平台自动选择。当前输出 PNG，账号调用权限待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/openai/gpt-image-2.5-flare/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "openai",
+          "recommended": false
         }
       }
     ]

@@ -29,6 +29,8 @@ export const openRouterNormalizedImageProfileIds = [
   'openai/gpt-image-1',
   'openai/gpt-image-1-mini',
   'openai/gpt-image-2',
+  'openai/gpt-image-2.5-sunburst',
+  'openai/gpt-image-2.5-flare',
   'qwen/qwen-image-3',
   'qwen/qwen-image-3-pro',
   'recraft/recraft-v3',

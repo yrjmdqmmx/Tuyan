@@ -21153,6 +21153,148 @@
       },
       "supports_streaming": false,
       "endpoints": "/api/v1/images/models/google/gemini-2.5-flash-image/endpoints"
+    },
+    {
+      "id": "openai/gpt-image-2.5-sunburst",
+      "name": "OpenAI: GPT Image 2.5 Sunburst",
+      "description": "GPT Image 2.5 Sunburst is an image generation and editing model from OpenAI, positioned as the precision-oriented tier of the GPT Image 2.5 series. It is suited to detailed creative...",
+      "created": 1788916368,
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ]
+      },
+      "supported_parameters": {
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "auto"
+          ]
+        },
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "supports_streaming": true,
+      "endpoints": "/api/v1/images/models/openai/gpt-image-2.5-sunburst/endpoints"
+    },
+    {
+      "id": "openai/gpt-image-2.5-flare",
+      "name": "OpenAI: GPT Image 2.5 Flare",
+      "description": "GPT Image 2.5 Flare is an image generation and editing model from OpenAI, positioned as the speed-oriented tier of the GPT Image 2.5 series. It is suited to high-volume everyday...",
+      "created": 1788916350,
+      "architecture": {
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ]
+      },
+      "supported_parameters": {
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9",
+            "auto"
+          ]
+        },
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "supports_streaming": true,
+      "endpoints": "/api/v1/images/models/openai/gpt-image-2.5-flare/endpoints"
+    }
+  ],
+  "incrementalReviews": [
+    {
+      "reviewedAt": "2026-09-09",
+      "source": "https://openrouter.ai/api/v1/images/models",
+      "modelIds": [
+        "openai/gpt-image-2.5-sunburst",
+        "openai/gpt-image-2.5-flare"
+      ]
     }
   ]
 }

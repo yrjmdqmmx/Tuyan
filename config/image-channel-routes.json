@@ -2900,5 +2900,105 @@
         "16:9": "landscape_16_9"
       }
     }
+  },
+  "fal/openai/gpt-image-2.5/sunburst/text-to-image": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2.5/sunburst/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "openai/gpt-image-2.5/sunburst/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 32000
+    }
+  },
+  "replicate/openai/gpt-image-2.5-sunburst": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2.5-sunburst",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "openai/gpt-image-2.5-sunburst",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "input_images",
+      "sourceArray": true
+    }
+  },
+  "fal/openai/gpt-image-2.5/flare/text-to-image": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2.5/flare/text-to-image",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "openai/gpt-image-2.5/flare/edit",
+      "promptField": "prompt",
+      "sizeMode": "object",
+      "constants": {
+        "output_format": "png",
+        "num_images": 1
+      },
+      "sizeField": "image_size",
+      "sourceField": "image_urls",
+      "sourceArray": true,
+      "maxPromptLength": 32000
+    }
+  },
+  "replicate/openai/gpt-image-2.5-flare": {
+    "generation": {
+      "endpoint": "openai/gpt-image-2.5-flare",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "openai/gpt-image-2.5-flare",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png",
+        "number_of_images": 1
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "input_images",
+      "sourceArray": true
+    }
   }
 }
