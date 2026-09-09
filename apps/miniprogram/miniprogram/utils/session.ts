@@ -1,3 +1,4 @@
+import { clearApiKeys } from './api-keys'
 import { authRequest } from './api'
 import { AUTH_COOKIE_KEY } from './config'
 import {
@@ -23,6 +24,7 @@ export interface AuthenticatedSignInResult {
 export interface VerificationRequiredSignUpResult {
   status: 'verification-required'
   email: string
+  verificationStatusToken?: string
 }
 
 export type SessionListener = (user: CurrentUser | null) => void
@@ -50,6 +52,7 @@ export function subscribeSession(listener: SessionListener): () => void {
 }
 
 function setCurrentUser(user: CurrentUser | null) {
+  if (currentUser && currentUser.id !== user?.id) clearApiKeys()
   currentUser = user
   sessionChecked = true
   listeners.forEach((listener) => listener(currentUser))
@@ -88,8 +91,15 @@ export async function signIn(email: string, password: string): Promise<Authentic
 
 export async function signUp(email: string, password: string, name: string): Promise<VerificationRequiredSignUpResult> {
   const payload = buildSignUpPayload(email, password, name)
-  await authRequest<{ status?: boolean; emailVerificationRequired?: boolean }>('/sign-up/email', 'POST', payload)
-  return { status: 'verification-required', email: payload.email }
+  const response = await authRequest<{ verificationStatusToken?: string }>('/sign-up/email', 'POST', payload)
+  const token = typeof response?.verificationStatusToken === 'string' ? response.verificationStatusToken : ''
+  return { status: 'verification-required', email: payload.email, ...(token ? { verificationStatusToken: token } : {}) }
+}
+
+export async function getVerificationStatus(token: string): Promise<'pending' | 'verified'> {
+  const response = await authRequest<{ status?: string }>('/verification-status', 'POST', { token }, { auth: false, timeout: 8000 })
+  if (response.status !== 'pending' && response.status !== 'verified') throw new Error('验证状态暂时无法查询。')
+  return response.status
 }
 
 export async function sendVerificationEmail(email: string): Promise<void> {

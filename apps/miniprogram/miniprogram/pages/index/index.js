@@ -17,6 +17,8 @@ const session_1 = require("../../utils/session");
 const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft';
 Component({
     data: {
+        settingsPurpose: 'create',
+        optimizationBusy: false, optimizationInputs: {},
         logoSrc: '/images/logo.png',
         providers: constants_1.PROVIDERS,
         providerIndex: 0,
@@ -124,7 +126,10 @@ Component({
     },
     lifetimes: {
         attached() {
+            var _a;
             ;
+            this.ownerId = ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '';
+            this.ownerEpoch = 0;
             this.isPageVisible = true;
             this.restoreDraft();
             // 悬浮反馈按钮放到右下角（movable-view 的 x/y 是相对 movable-area 左上角的 px 值）
@@ -142,11 +147,19 @@ Component({
                 // 取不到屏幕信息时停留在默认位置，可手动拖动
             }
             const unsubscribe = (0, session_1.subscribeSession)((user) => {
+                if (this.ownerId !== ((user === null || user === void 0 ? void 0 : user.id) || '')) {
+                    ;
+                    this.ownerId = (user === null || user === void 0 ? void 0 : user.id) || '';
+                    this.ownerEpoch++;
+                    this.stopPolling();
+                    this.setData({ currentJobId: '', job: null, resultImages: [], statusLabel: '', error: '', referenceImages: [], referenceUploadError: '', isSubmitting: false, isUploadingReferences: false, apiKeysForSheet: {}, showGenerationSettings: false });
+                }
                 this.setData({
                     isLoggedIn: Boolean(user),
                     currentUserEmail: user ? user.email : '',
                     isAuthChecking: false,
                 });
+                this.refreshCanSubmit();
             });
             this.unsubscribeSession = unsubscribe;
             const user = (0, session_1.getCurrentUser)();
@@ -163,6 +176,9 @@ Component({
             void this.loadFeaturedTemplates();
         },
         detached() {
+            ;
+            this.ownerEpoch++;
+            this.detached = true;
             this.stopPolling();
             const draftTimer = this.draftTimer;
             if (draftTimer)
@@ -259,7 +275,7 @@ Component({
                 return;
             }
             const settings = this.data.settings;
-            this.setData({ showGenerationSettings: true, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), settingsExecutionRoles: this.createExecutionRoles(settings) });
+            this.setData({ settingsPurpose: 'create', showGenerationSettings: true, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), settingsExecutionRoles: this.createExecutionRoles(settings) });
         },
         closeGenerationSettings() { this.setData({ showGenerationSettings: false }); },
         saveGenerationSettings(event) {
@@ -297,8 +313,9 @@ Component({
             this.refreshReferenceModeState();
         },
         createExecutionRoles(settings) {
+            var _a;
             const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
-            return (0, model_routing_1.requiredCreateRouteRoles)({ modelRoutes: settings.modelRoutes, outputFormat: settings.outputFormat, taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds);
+            return (0, model_routing_1.requiredCreateRouteRoles)({ imageRefineMode: (_a = (0, model_registry_1.findRegistryModel)((0, model_registry_store_1.getModelRegistryState)().registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId)) === null || _a === void 0 ? void 0 : _a.capabilities.imageEditMode, modelRoutes: settings.modelRoutes, outputFormat: settings.outputFormat, taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds);
         },
         onFeaturedTemplateApply(event) {
             const template = featured_templates_1.FEATURED_TEMPLATES.find((item) => item.id === event.detail.id);
@@ -747,8 +764,15 @@ Component({
             });
         },
         async uploadReferencesForJob() {
+            var _a;
             if (!this.data.referenceImages.length)
                 return [];
+            const epoch = this.ownerEpoch;
+            const owner = ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '';
+            const sameOwner = () => { var _a; return owner === (((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '') && epoch === this.ownerEpoch; };
+            const check = () => { if (!sameOwner() || this.detached)
+                throw new Error('账号已切换，已停止本次上传。'); };
+            const references = [...this.data.referenceImages];
             this.setData({
                 isUploadingReferences: true,
                 referenceUploadError: '',
@@ -756,7 +780,7 @@ Component({
             this.refreshCanSubmit();
             let preparedUploads = [];
             try {
-                const files = this.data.referenceImages.map((image) => ({
+                const files = references.map((image) => ({
                     clientId: `${image.id}:original`,
                     role: 'original',
                     filename: image.filename,
@@ -768,14 +792,17 @@ Component({
                     files,
                 });
                 preparedUploads = prepared.uploads || [];
+                check();
                 const uploadMap = new Map(preparedUploads.map((upload) => [upload.clientId, upload]));
-                for (const image of this.data.referenceImages) {
+                for (const image of references) {
                     const upload = uploadMap.get(`${image.id}:original`);
                     if (!upload || !upload.uploadUrl)
                         throw new Error('参考图上传地址创建失败。');
+                    check();
                     await (0, api_1.uploadReferenceFile)(image.path, upload.uploadUrl, image.mimeType);
+                    check();
                 }
-                const uploaded = this.data.referenceImages.map((image) => {
+                const uploaded = references.map((image) => {
                     const upload = uploadMap.get(`${image.id}:original`);
                     if (!upload)
                         throw new Error('参考图上传结果缺少原图记录。');
@@ -788,19 +815,23 @@ Component({
                     };
                 });
                 await (0, api_1.requestJson)({ action: 'finalizeReferenceUpload', uploads: uploaded });
+                check();
                 return uploaded;
             }
             catch (error) {
-                if (preparedUploads.length) {
-                    await (0, api_1.requestJson)({ action: 'abortReferenceUpload', uploads: preparedUploads }).catch(() => undefined);
+                if (preparedUploads.length && sameOwner()) {
+                    await (0, api_1.requestJson)({ action: 'abortReferenceUpload', uploads: preparedUploads.map(({ objectKey, uploadToken, filename, mimeType, size }) => ({ objectKey, uploadToken, filename, mimeType, size })) }).catch(() => undefined);
                 }
                 const message = (0, api_1.formatError)(error);
-                this.setData({ referenceUploadError: message });
+                if (sameOwner())
+                    this.setData({ referenceUploadError: message });
                 throw new Error(message);
             }
             finally {
-                this.setData({ isUploadingReferences: false });
-                this.refreshCanSubmit();
+                if (sameOwner()) {
+                    this.setData({ isUploadingReferences: false });
+                    this.refreshCanSubmit();
+                }
             }
         },
         async checkHealth() {
@@ -826,10 +857,18 @@ Component({
         async submitJob() {
             if (!this.data.canSubmit || this.data.isSubmitting)
                 return;
+            if (!(0, session_1.getCurrentUser)()) {
+                this.openAuthPanel();
+                return;
+            }
+            const epoch = this.ownerEpoch;
+            const current = () => epoch === this.ownerEpoch && !this.detached;
             // 生产目录是每次付费任务的唯一真相。提交前强制重新读取，失败时在任何上传或任务写入前停止。
             this.setData({ isSubmitting: true, error: '' });
             const registryState = await (0, model_registry_store_1.loadModelRegistry)(true);
             const registry = registryState.registry;
+            if (!current())
+                return;
             if (!registry) {
                 this.setData({ isSubmitting: false, error: '模型目录不可用，已禁止新建任务。' });
                 this.refreshCanSubmit();
@@ -864,7 +903,8 @@ Component({
             });
             wx.showLoading({ title: '提交中' });
             try {
-                const uploadedReferenceImages = await this.uploadReferencesForJob();
+                // Validate the complete selection before creating any upload. Replace descriptors with server-issued ones below.
+                const uploadedReferenceImages = this.data.referenceImages.map(image => ({ filename: image.filename, mimeType: image.mimeType, size: image.size, objectKey: '', uploadToken: '' }));
                 const payload = (0, payload_1.buildCreateJobPayload)({
                     configurationMode: settings.configurationMode,
                     providerRegions: settings.providerRegions,
@@ -888,7 +928,12 @@ Component({
                     numCandidates: settings.numCandidates,
                     maxCriticRounds: settings.maxCriticRounds,
                 });
+                payload.referenceImages = await this.uploadReferencesForJob();
+                if (!current())
+                    return;
                 const data = await (0, api_1.requestJson)(payload);
+                if (!current())
+                    return;
                 const jobId = data.jobId || data.id || '';
                 if (!jobId)
                     throw new Error('后端没有返回任务 ID');
@@ -904,13 +949,17 @@ Component({
                 }
             }
             catch (error) {
-                this.setData({ error: (0, api_1.formatError)(error) });
-                wx.hideLoading();
-                wx.showToast({ title: '提交失败', icon: 'none' });
+                if (current()) {
+                    this.setData({ error: (0, api_1.formatError)(error) });
+                    wx.showToast({ title: '提交失败', icon: 'none' });
+                }
             }
             finally {
-                this.setData({ isSubmitting: false });
-                this.refreshCanSubmit();
+                wx.hideLoading();
+                if (current()) {
+                    this.setData({ isSubmitting: false });
+                    this.refreshCanSubmit();
+                }
             }
         },
         async refreshCurrentJob() {
@@ -919,13 +968,18 @@ Component({
             await this.loadJob(this.data.currentJobId);
         },
         async loadJob(jobId) {
+            const epoch = this.ownerEpoch;
+            const key = `${epoch}:${jobId}`;
+            if (this.pollingRequest === key)
+                return;
+            this.pollingRequest = key;
             try {
                 const data = await (0, api_1.requestJson)({
                     action: 'getJob',
                     jobId,
                 });
                 // 在途响应可能晚于新任务提交落地：只接受当前任务的响应，避免旧任务覆盖状态/误停新轮询
-                if (jobId !== this.data.currentJobId)
+                if (jobId !== this.data.currentJobId || epoch !== this.ownerEpoch || this.detached)
                     return;
                 const job = (0, jobs_1.normalizeJob)(data.job);
                 this.setData({
@@ -940,9 +994,13 @@ Component({
                 }
             }
             catch (error) {
-                if (jobId !== this.data.currentJobId)
+                if (jobId !== this.data.currentJobId || epoch !== this.ownerEpoch || this.detached)
                     return;
                 this.setData({ error: (0, api_1.formatError)(error) });
+            }
+            finally {
+                if (this.pollingRequest === key)
+                    this.pollingRequest = undefined;
             }
         },
         startPolling(jobId) {
@@ -995,7 +1053,23 @@ Component({
                 return;
             wx.navigateTo({ url: `/pages/job-detail/job-detail?jobId=${this.data.currentJobId}` });
         },
+        onOptimizationBusy(event) {
+            this.setData({ optimizationBusy: event.detail.busy });
+            this.refreshCanSubmit();
+        },
+        onOptimizationApply(event) {
+            if (!['methodContent', 'caption', 'negativePrompt'].includes(event.detail.target))
+                return;
+            this.setData({ [event.detail.target]: event.detail.value, inputDirty: true });
+            this.refreshCanSubmit();
+            this.schedulePersistDraft();
+        },
+        openOptimizationSettings() {
+            this.setData({ settingsPurpose: 'optimize', showGenerationSettings: true, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), settingsExecutionRoles: ['main'] });
+        },
         refreshCanSubmit() {
+            var _a;
+            this.setData({ optimizationInputs: { methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt } });
             const settings = this.data.settings;
             if (!this.data.registryReady || !settings.modelRoutes) {
                 this.setData({ canSubmit: false });
@@ -1008,6 +1082,7 @@ Component({
             const category = constants_1.INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || constants_1.INFOGRAPHIC_CATEGORIES[0];
             const roles = (0, model_routing_1.requiredCreateRouteRoles)({
                 modelRoutes: settings.modelRoutes,
+                imageRefineMode: (_a = (0, model_registry_1.findRegistryModel)((0, model_registry_store_1.getModelRegistryState)().registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId)) === null || _a === void 0 ? void 0 : _a.capabilities.imageEditMode,
                 outputFormat: settings.outputFormat,
                 taskName: category.id === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram',
                 pipelineMode: settings.pipelineMode,
@@ -1026,7 +1101,7 @@ Component({
                 hasManualReferences &&
                 this.data.referenceModeCanSubmit &&
                 !this.data.isUploadingReferences &&
-                !this.data.isSubmitting);
+                !this.data.isSubmitting && !this.data.optimizationBusy);
             this.setData({ canSubmit });
         },
         openAuthPanel() {

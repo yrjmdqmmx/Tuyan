@@ -79,6 +79,12 @@ assert.equal(simple.imageSize, '2K')
 const registry = { routeContractVersion: 1, providers: { bailian: { models: [{ id: 'wan-image', capabilities: {
   resolutions: ['1K', '2K'], aspectRatiosByResolution: { '1K': ['1:1'], '2K': ['1:1', '21:9'] },
 } }] } } }
+for (const [role, route] of Object.entries(baseInput.modelRoutes)) {
+  const provider = registry.providers[route.accessProvider] ||= { models: [] }
+  let model = provider.models.find(m => m.id === route.modelId)
+  if (!model) provider.models.push(model = { id: route.modelId, capabilities: {} })
+  Object.assign(model, { selectable: true, roles: [role] })
+}
 assert.equal(buildCreateJobPayload({ ...baseInput, registry }).aspectRatio, '21:9')
 assert.throws(() => buildCreateJobPayload({ ...baseInput, registry, imageSize: '1K' }), /当前比例或清晰度不可用/)
 assert.throws(() => buildCreateJobPayload({ ...baseInput, registry, imageSize: '4K', aspectRatio: 'auto' }), /当前比例或清晰度不可用/)
@@ -88,6 +94,12 @@ const vector = {
   ...baseInput, outputFormat: 'svg', pipelineMode: 'vanilla', aspectRatio: '9:22',
   modelRoutes: { ...baseInput.modelRoutes, image: { accessProvider: 'recraft', modelId: 'recraftv4_vector' } },
   registry: { routeContractVersion: 1, providers: { recraft: { models: [{ id: 'recraftv4_vector', capabilities: { resolutions: ['2K'], aspectRatios: ['1:1'] } }] } } },
+}
+for (const [role, route] of Object.entries(vector.modelRoutes)) {
+  const provider = vector.registry.providers[route.accessProvider] ||= { models: [] }
+  let model = provider.models.find(m => m.id === route.modelId)
+  if (!model) provider.models.push(model = { id: route.modelId, capabilities: {} })
+  Object.assign(model, { selectable: true, roles: [role] })
 }
 assert.throws(() => buildCreateJobPayload(vector), /当前比例或清晰度不可用/)
 assert.equal(buildCreateJobPayload({ ...vector, aspectRatio: '1:1' }).aspectRatio, '1:1')

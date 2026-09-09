@@ -1,4 +1,4 @@
-import { normalizeProviderRegions, selectRegionApiKeys, type ProviderRegions } from './provider-regions'
+import { modelAvailableInRegion, normalizeProviderRegions, selectRegionApiKeys, type ProviderRegions } from './provider-regions'
 import type { ModelRegistry, ModelRole } from './model-registry'
 
 export const MODEL_ROUTE_ROLES: ModelRole[] = ['main', 'image', 'vision']
@@ -20,11 +20,18 @@ export function buildModelSubmission(input: {
   configurationMode: 'simple' | 'advanced'
   modelRoutes: ModelRoutes
   providerRegions?: ProviderRegions
-  registry: { routeContractVersion?: number; providerRegionContractVersion?: number } | null
+  registry: { routeContractVersion?: number; providerRegionContractVersion?: number; providers?: ModelRegistry['providers'] } | null
 }): Record<string, unknown> {
   assertCompleteRoutes(input.modelRoutes)
   if (!input.registry || Number(input.registry.routeContractVersion || 0) < 1) {
     throw new Error('服务端模型目录不可用，已禁止新建付费任务。')
+  }
+  if (input.registry.providers) {
+    for (const role of MODEL_ROUTE_ROLES) {
+      const route = input.modelRoutes[role]
+      const model = input.registry.providers[route.accessProvider as keyof ModelRegistry['providers']]?.models?.find(entry => entry.id === route.modelId)
+      if (!model || !model.selectable || !model.roles?.includes(role) || !modelAvailableInRegion(route.accessProvider, model, input.providerRegions)) throw new Error(`模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`)
+    }
   }
   const regions = normalizeProviderRegions(input.providerRegions)
   const usesMiniMax = Object.values(input.modelRoutes).some(route => route.accessProvider === 'minimax')
@@ -49,6 +56,7 @@ export function requiredCreateRouteRoles(body: Record<string, unknown>, maxCriti
   const nativeVector = imageRoute?.accessProvider === 'recraft' && /^recraftv(?:[23]|4(?:_1)?)(?:_utility)?(?:_pro)?_vector$/.test(imageRoute.modelId)
   if ((outputFormat === 'svg' && !nativeVector) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
   if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot') roles.push('image')
+  if (taskName === 'plot' && ['2K', '4K'].includes(String(body.imageSize)) && body.imageRefineMode === 'direct-edit') roles.push('image')
   const references = Array.isArray(body.referenceImages) ? body.referenceImages : []
   if (references.length) roles.push(body.referenceImageMode === 'main_model' ? 'main' : 'vision')
   if (maxCriticRounds > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')

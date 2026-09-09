@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const auth_security_1 = require("../../utils/auth-security");
 const session_1 = require("../../utils/session");
+const verification_observer_1 = require("../../utils/verification-observer");
 const VERIFICATION_REQUEST_STATUS = '请求已受理。如账号需要验证，邮件将发送；已有账号请直接登录或找回密码。';
 const AUTH_MODE_CONTENT = {
     'sign-in': {
@@ -65,11 +66,17 @@ Component({
         authCanSubmit: false,
         authCooldownSeconds: 0,
         authResendDisabled: false,
+        verificationObserved: false, verificationConfirmed: false, verificationState: '',
     },
     lifetimes: {
         detached() {
             this.resetAuthPanel();
         },
+    },
+    pageLifetimes: {
+        hide() { var _a; (_a = this.verificationObserver) === null || _a === void 0 ? void 0 : _a.pause(); },
+        show() { var _a; if (this.properties.show)
+            void ((_a = this.verificationObserver) === null || _a === void 0 ? void 0 : _a.resume()); },
     },
     methods: {
         close() {
@@ -78,6 +85,34 @@ Component({
         },
         // 拦截点击冒泡，避免点对话框内容触发遮罩层的 close
         noop() { },
+        stopVerificationObserver() {
+            var _a;
+            ;
+            (_a = this.verificationObserver) === null || _a === void 0 ? void 0 : _a.stop();
+            this.verificationObserver = undefined;
+        },
+        observeVerification(token) {
+            this.stopVerificationObserver();
+            this.setData({ verificationObserved: true });
+            const observer = (0, verification_observer_1.createVerificationObserver)({ query: () => (0, session_1.getVerificationStatus)(token), onStatus: (status) => {
+                    if (this.data.authMode !== 'pending-verification')
+                        return;
+                    this.setData({ verificationState: status });
+                    if (status === 'verified') {
+                        this.clearAuthCooldown();
+                        this.setData({ verificationConfirmed: true, authCooldownSeconds: 0, authResendDisabled: true, authTitle: '邮箱已验证', authStatus: '邮箱验证已完成，请返回登录。', authNote: '请使用邮箱和密码登录，验证不会自动建立会话。', authError: '' });
+                    }
+                    else if (status === 'unavailable')
+                        this.setData({ authError: '暂时无法检查验证状态，可稍后刷新或返回登录。' });
+                    else if (status === 'expired')
+                        this.setData({ authError: '本次状态查询已过期，请返回登录；如仍未验证可重新发起。' });
+                    else
+                        this.setData({ authError: '' });
+                } });
+            this.verificationObserver = observer;
+            void observer.resume();
+        },
+        refreshVerification() { var _a; void ((_a = this.verificationObserver) === null || _a === void 0 ? void 0 : _a.refresh()); },
         clearAuthCooldown() {
             const timer = this.authCooldownTimer;
             if (timer !== undefined)
@@ -85,7 +120,7 @@ Component({
             this.authCooldownTimer = undefined;
         },
         resetAuthPanel() {
-            ;
+            this.stopVerificationObserver();
             this.authOperationEpoch = Number(this.authOperationEpoch || 0) + 1;
             this.clearAuthCooldown();
             const content = AUTH_MODE_CONTENT['sign-in'];
@@ -105,10 +140,11 @@ Component({
                 authCanSubmit: false,
                 authCooldownSeconds: 0,
                 authResendDisabled: false,
+                verificationObserved: false, verificationConfirmed: false, verificationState: '',
             });
         },
         setAuthMode(mode) {
-            ;
+            this.stopVerificationObserver();
             this.authOperationEpoch = Number(this.authOperationEpoch || 0) + 1;
             this.clearAuthCooldown();
             const content = AUTH_MODE_CONTENT[mode];
@@ -125,6 +161,7 @@ Component({
                 authSubmitting: false,
                 authCooldownSeconds: 0,
                 authResendDisabled: false,
+                verificationObserved: false, verificationConfirmed: false, verificationState: '',
             });
             this.refreshAuthCanSubmit();
         },
@@ -201,6 +238,8 @@ Component({
                     return;
                 if (result.status === 'verification-required') {
                     this.enterPendingVerification(VERIFICATION_REQUEST_STATUS);
+                    if (result.verificationStatusToken)
+                        this.observeVerification(result.verificationStatusToken);
                     return;
                 }
                 this.setData({ authPassword: '' });
@@ -227,6 +266,8 @@ Component({
             }
         },
         async resendVerification() {
+            if (this.data.verificationConfirmed)
+                return;
             if (!this.data.authEmail.trim() || this.data.authResendDisabled || this.data.authSubmitting)
                 return;
             const operationEpoch = Number(this.authOperationEpoch || 0);

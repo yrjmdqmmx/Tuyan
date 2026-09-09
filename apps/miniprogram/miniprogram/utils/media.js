@@ -31,7 +31,12 @@ function copyImageUrl(url) {
 function downloadShareFile(url, fileName = '') {
     if (!url)
         return;
-    const name = fileName || decodeURIComponent(url.split('?')[0].split('/').pop() || '') || 'paperbanana.svg';
+    let inferredName = url.split('?')[0].split('/').pop() || '';
+    try {
+        inferredName = decodeURIComponent(inferredName);
+    }
+    catch { /* Keep a malformed remote filename downloadable. */ }
+    const name = fileName || inferredName || 'paperbanana.svg';
     if (!/^https?:\/\//i.test(url)) {
         shareLocalFile(url, name, '');
         return;

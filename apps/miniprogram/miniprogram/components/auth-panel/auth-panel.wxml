@@ -11,15 +11,17 @@
 
     <view class="auth-state-card" wx:if="{{authMode === 'pending-verification'}}">
       <view class="auth-state-icon">✉</view>
-      <view class="auth-state-title">检查账号邮箱</view>
+      <view class="auth-state-title">{{verificationConfirmed ? '邮箱已验证' : '检查账号邮箱'}}</view>
       <view class="auth-state-email">{{authEmail}}</view>
-      <view class="auth-state-copy">如该账号需要验证，系统会发送邮件，验证链接 1 小时内有效。已有账号请直接返回登录；忘记密码可在登录页找回。</view>
+      <view class="auth-state-copy" wx:if="{{!verificationConfirmed}}">如该账号需要验证，系统会发送邮件。请打开邮件并点击网页中的“确认验证邮箱”，再回到这里登录。链接 1 小时内有效。已有账号请直接返回登录；忘记密码可在登录页找回。</view>
       <button
+        wx:if="{{!verificationConfirmed}}"
         class="primary-button auth-action"
         loading="{{authSubmitting}}"
         disabled="{{authResendDisabled || authSubmitting}}"
         bindtap="resendVerification"
       >{{authCooldownSeconds > 0 ? authCooldownSeconds + ' 秒后可重发' : '重发验证邮件'}}</button>
+      <button wx:if="{{verificationObserved && !verificationConfirmed && verificationState !== 'expired'}}" class="text-button" bindtap="refreshVerification">我已确认，刷新状态</button>
       <button class="text-button auth-back" bindtap="showSignIn">返回登录</button>
     </view>
 

@@ -6,7 +6,7 @@ import { formatError, requestJson } from '../../utils/api'
 import { clearArkVerification, getArkVerification, setArkProbeResults } from '../../utils/ark-verification'
 import { MANUAL_REFERENCE_LIMIT } from '../../utils/constants'
 import { MODEL_PROVIDER_IDS, findRegistryModel, type ModelProviderId, type ModelRegistry, type ModelRole } from '../../utils/model-registry'
-import { arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, providerDefaultRoutes, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
+import { buildModelSubmission, requiredCreateRouteRoles, requiredRefineRouteRoles, arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, providerDefaultRoutes, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import { toggleReferenceSelection } from '../../utils/reference-library'
 
 const PROVIDER_LABELS = MODEL_CHANNEL_LABELS
@@ -28,7 +28,10 @@ interface SettingsDraft {
 Component({
   options: { styleIsolation: 'apply-shared', multipleSlots: true },
   properties: {
-    show: { type: Boolean, value: false, observer(this: any, show: boolean) { if (show) this.resetDraft() } },
+    show: { type: Boolean, value: false, observer(this: any, show: boolean) { (this as any).epoch = Number((this as any).epoch || 0) + 1; if (show) this.resetDraft(); else this.setData({ draftKeys: {}, keyFields: [], showModelPicker: false, verifyingArk: false }) } },
+    purpose: { type: String, value: '' },
+    referenceCount: { type: Number, value: 0 },
+    referenceImageMode: { type: String, value: 'vision_model' },
     registryVersion: { type: String, value: '', observer(this: any) { if (this.properties.show) this.refreshPresentation() } },
     settings: { type: Object, value: {} },
     apiKeys: { type: Object, value: {} },
@@ -72,6 +75,17 @@ Component({
     noop() {},
     // Keep full capability metadata in the logic-layer store, outside setData.
     getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.data.draft?.providerRegions) },
+    effectiveRoles(): ModelRole[] {
+      const draft = this.data.draft
+      if (!draft || !this.properties.purpose) return normalizeRoles(this.properties.executionRoles)
+      if (this.properties.purpose === 'optimize') return ['main']
+      const registry = this.getRegistry()
+      const image = findRegistryModel(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId)
+      if (this.properties.purpose === 'refine') return requiredRefineRouteRoles({ refineMode: String(image?.capabilities.imageEditMode || 'none') })
+      const main = findRegistryModel(registry, draft.modelRoutes.main.accessProvider, draft.modelRoutes.main.modelId)
+      const referenceMode = draft.configurationMode === 'simple' ? (main?.inputModalities.includes('image') || main?.capabilities.referenceImages === true ? 'main_model' : 'vision_model') : this.properties.referenceImageMode
+      return requiredCreateRouteRoles({ ...draft, taskName: this.properties.libraryTaskName, imageRefineMode: image?.capabilities.imageEditMode, referenceImages: this.properties.referenceCount > 0 ? [{}] : [], referenceImageMode: referenceMode }, draft.maxCriticRounds)
+    },
     resetDraft() {
       const registry = getModelRegistryState().registry
       const incoming = this.properties.settings as SettingsDraft | null
@@ -80,6 +94,7 @@ Component({
         return
       }
       const draft = cloneDraft(incoming)
+      draft.providerRegions = draft.providerRegions || {}
       this.setData({
         draft,
         draftKeys: { ...(this.properties.apiKeys as Record<string, string> || {}) },
@@ -97,14 +112,15 @@ Component({
         return defaults?.main && defaults?.image && defaults?.vision
       }).map((value) => ({ value, label: PROVIDER_LABELS[value] }))
       const imageEntry = findRegistryModel(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId)
-      const resolutionOptions = buildResolutionOptions(imageEntry?.capabilities || {}, 'resolutions')
-      if (draft.outputFormat === 'png' && !resolutionOptions.some((item) => item.value === draft.imageSize)) {
+      const refinement = this.properties.purpose === 'refine' || (this.properties.libraryTaskName === 'plot' && imageEntry?.capabilities.imageEditMode === 'direct-edit')
+      const resolutionOptions = buildResolutionOptions(imageEntry?.capabilities || {}, refinement ? 'refineResolutions' : 'resolutions')
+      if (this.properties.purpose !== 'optimize' && draft.outputFormat === 'png' && !resolutionOptions.some((item) => item.value === draft.imageSize)) {
         draft.imageSize = resolutionOptions[0]?.value || ''
       }
-      const ratioAll = buildAspectRatioOptions({ capabilities: imageEntry?.capabilities || {}, capabilityField: 'aspectRatios', modelLabel: imageEntry?.label, resolution: draft.imageSize })
+      const ratioAll = buildAspectRatioOptions({ capabilities: imageEntry?.capabilities || {}, capabilityField: refinement ? 'refineAspectRatios' : 'aspectRatios', modelLabel: imageEntry?.label, resolution: draft.imageSize })
       const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
-      draft.aspectRatio = normalizeSelectedAspectRatio(draft.aspectRatio, ratioAll)
-      const routeRows = (['main', 'image', 'vision'] as ModelRole[]).map((role) => {
+      if (this.properties.purpose !== 'optimize') draft.aspectRatio = normalizeSelectedAspectRatio(draft.aspectRatio, ratioAll)
+      const routeRows = (this.properties.purpose === 'optimize' ? ['main'] as ModelRole[] : ['main', 'image', 'vision'] as ModelRole[]).map((role) => {
         const route = draft.modelRoutes[role]
         const model = findRegistryModel(registry, route.accessProvider, route.modelId)
         return {
@@ -113,12 +129,12 @@ Component({
           modelId: route.modelId, modelLabel: model?.label || route.modelId,
         }
       })
-      const providers = uniqueProvidersForRoles(draft.modelRoutes, normalizeRoles(this.properties.executionRoles))
+      const providers = uniqueProvidersForRoles(draft.modelRoutes, this.effectiveRoles())
       const keyFields = providers.map((provider) => ({
         provider, label: PROVIDER_LABELS[provider] || provider, value: selectRegionApiKeys(this.data.draftKeys, draft.providerRegions)[provider] || '',
         placeholder: provider === 'gemini' ? 'AIza...' : provider === 'openrouter' ? 'sk-or-v1-...' : 'sk-...',
       }))
-      const probes = arkProbesForRoles(draft.modelRoutes, normalizeRoles(this.properties.executionRoles))
+      const probes = arkProbesForRoles(draft.modelRoutes, this.effectiveRoles())
       const missing = missingArkVerifications(probes, getArkVerification())
       const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
       this.setData({
@@ -163,13 +179,14 @@ Component({
     openModelPicker(event: WechatMiniprogram.TouchEvent) {
       const draft = this.data.draft
       const role = normalizeRole(event.currentTarget.dataset.role)
-      if (!draft || draft.configurationMode !== 'advanced') return
+      if (!draft || (draft.configurationMode !== 'advanced' && this.properties.purpose !== 'optimize')) return
       this.setData({ editingRole: role, showModelPicker: true, pickerProvider: draft.modelRoutes[role].accessProvider, pickerModel: draft.modelRoutes[role].modelId })
     },
     closeModelPicker() { this.setData({ showModelPicker: false }) },
     selectModel(event: WechatMiniprogram.CustomEvent<{ provider: string; modelId: string }>) {
       const draft = this.data.draft
       if (!draft) return
+      if (this.properties.purpose === 'optimize') draft.configurationMode = 'advanced'
       draft.modelRoutes[this.data.editingRole] = { accessProvider: event.detail.provider, modelId: event.detail.modelId }
       this.setData({ draft, showModelPicker: false })
       this.refreshPresentation()
@@ -186,24 +203,28 @@ Component({
       if (!draft) return
       draft.aspectRatio = this.data.ratioOptions[Number(event.detail.value) || 0]?.value || 'auto'
       this.setData({ draft, ratioIndex: Number(event.detail.value) || 0 })
+      this.refreshPresentation()
     },
     onResolutionChange(event: WechatMiniprogram.PickerChange) {
       const draft = this.data.draft
       if (!draft) return
       draft.imageSize = this.data.resolutionOptions[Number(event.detail.value) || 0]?.value || ''
       this.setData({ draft, resolutionIndex: Number(event.detail.value) || 0 })
+      this.refreshPresentation()
     },
     onPipelineChange(event: WechatMiniprogram.PickerChange) {
       const draft = this.data.draft
       if (!draft) return
       draft.pipelineMode = this.data.pipelineOptions[Number(event.detail.value) || 0]?.value || 'planner_critic'
       this.setData({ draft, pipelineIndex: Number(event.detail.value) || 0 })
+      this.refreshPresentation()
     },
     onRetrievalChange(event: WechatMiniprogram.PickerChange) {
       const draft = this.data.draft
       if (!draft) return
       draft.retrievalSetting = this.data.retrievalOptions[Number(event.detail.value) || 0]?.value || 'none'
       this.setData({ draft, retrievalIndex: Number(event.detail.value) || 0 })
+      this.refreshPresentation()
     },
     selectRetrieval(event: WechatMiniprogram.TouchEvent) {
       const draft = this.data.draft
@@ -211,7 +232,7 @@ Component({
       const value = String(event.currentTarget.dataset.value || 'none')
       const retrievalIndex = Math.max(0, this.data.retrievalOptions.findIndex((item) => item.value === value))
       draft.retrievalSetting = this.data.retrievalOptions[retrievalIndex]?.value || 'none'
-      this.setData({ draft, retrievalIndex })
+      this.setData({ draft, retrievalIndex }); this.refreshPresentation()
     },
     onManualReferenceToggle(event: WechatMiniprogram.CustomEvent<{ id: string }>) {
       const result = toggleReferenceSelection(this.data.draftManualReferenceIds, String(event.detail.id || ''), MANUAL_REFERENCE_LIMIT)
@@ -222,12 +243,14 @@ Component({
       if (!draft) return
       draft.numCandidates = this.data.candidateOptions[Number(event.detail.value) || 0]?.value || 1
       this.setData({ draft, candidateIndex: Number(event.detail.value) || 0 })
+      this.refreshPresentation()
     },
     onCriticChange(event: WechatMiniprogram.PickerChange) {
       const draft = this.data.draft
       if (!draft) return
       draft.maxCriticRounds = this.data.criticOptions[Number(event.detail.value) || 0]?.value || 0
       this.setData({ draft, criticIndex: Number(event.detail.value) || 0 })
+      this.refreshPresentation()
     },
     onMiniMaxRegionChange(event: WechatMiniprogram.PickerChange) {
       const draft = this.data.draft
@@ -251,7 +274,7 @@ Component({
     verifyArkRoutes() {
       const draft = this.data.draft
       if (!draft || this.data.verifyingArk) return
-      const probes = arkProbesForRoles(draft.modelRoutes, normalizeRoles(this.properties.executionRoles))
+      const probes = arkProbesForRoles(draft.modelRoutes, this.effectiveRoles())
       if (!probes.length) return
       if (!String(this.data.draftKeys.ark || '').trim()) { this.setData({ error: '请先填写火山方舟 API Key。' }); return }
       const freeBatch = nextArkVerificationBatch(probes, getArkVerification(), false)
@@ -261,23 +284,26 @@ Component({
       wx.showModal({ title: '确认付费图像验证', content: '图像路线 probe 会调用一次图片生成接口，可能产生费用。仅在你明确确认后执行。', confirmText: '确认验证', success: (result) => { if (result.confirm) void this.runArkProbeBatch(paidBatch.probes, true) } })
     },
     async runArkProbeBatch(probes: Array<{ role: ModelRole; modelId: string }>, confirmPaidImageProbe: boolean) {
+      const epoch = (this as any).epoch
       this.setData({ verifyingArk: true, error: '' })
       try {
         const response = await requestJson<{ probeResults?: Array<{ role?: string; modelId?: string; state?: string }> }>({ action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: String(this.data.draftKeys.ark || '').trim() }, probes, confirmPaidImageProbe })
+        if (epoch !== (this as any).epoch) return
         setArkProbeResults(response.probeResults || [])
         this.refreshPresentation()
         wx.showToast({ title: confirmPaidImageProbe ? '图像路线已验证' : '免费路线已验证', icon: 'success' })
-      } catch (error) { this.setData({ error: formatError(error) }) }
-      finally { this.setData({ verifyingArk: false }) }
+      } catch (error) { if (epoch === (this as any).epoch) this.setData({ error: formatError(error) }) }
+      finally { if (epoch === (this as any).epoch) this.setData({ verifyingArk: false }) }
     },
     cancel() { this.setData({ showModelPicker: false }); this.triggerEvent('close') },
     save() {
       const draft = this.data.draft
       if (!draft) return
-      if (draft.outputFormat === 'png' && !draft.imageSize) {
+      if (this.properties.purpose !== 'optimize' && draft.outputFormat === 'png' && !draft.imageSize) {
         this.setData({ error: '当前图像模型未声明可用清晰度，请更换模型。' })
         return
       }
+      try { if (this.properties.purpose !== 'optimize') buildModelSubmission({ ...draft, registry: this.getRegistry() }) } catch (error) { this.setData({ error: formatError(error) }); return }
       this.triggerEvent('save', {
         settings: cloneDraft(draft),
         apiKeys: { ...this.data.draftKeys },

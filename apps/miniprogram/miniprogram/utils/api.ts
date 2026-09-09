@@ -59,7 +59,7 @@ export function authRequest<T>(path: string, method: 'GET' | 'POST', data?: Wech
 
 export function gatewayRequest<T>(url: string, method: 'GET' | 'POST', data?: WechatMiniprogram.IAnyObject, options: RequestOptions = {}): Promise<T> {
   return new Promise((resolve, reject) => {
-    const header = requestHeader(true)
+    const header = requestHeader(options.auth !== false)
     wx.request({
       url,
       method,
@@ -67,7 +67,7 @@ export function gatewayRequest<T>(url: string, method: 'GET' | 'POST', data?: We
       header,
       data,
       success(res: WxRequestResult<T & { message?: string; code?: string; error?: string }>) {
-        persistCookies(res)
+        if (options.auth !== false) persistCookies(res)
         const responseData = coerceJsonResponse<T & { message?: string; code?: string; error?: string }>(res.data)
         if (res.statusCode < 200 || res.statusCode >= 300) {
           const body = responseData || ({} as T & { message?: string; code?: string; error?: string })
@@ -92,7 +92,7 @@ export function postJson<T>(url: string, body: WechatMiniprogram.IAnyObject, opt
       header: requestHeader(options.auth !== false),
       data: body,
       success(res: WxRequestResult<T & { code?: number; error?: string; detail?: string }>) {
-        persistCookies(res)
+        if (options.auth !== false) persistCookies(res)
         const data = coerceJsonResponse<T & { code?: number; error?: string; detail?: string }>(res.data) || ({} as T & { code?: number; error?: string; detail?: string })
         if (res.statusCode < 200 || res.statusCode >= 300 || (data.code && data.code !== 0)) {
           reject(toBusinessError(res.statusCode, data, res.header))
@@ -107,12 +107,12 @@ export function postJson<T>(url: string, body: WechatMiniprogram.IAnyObject, opt
   })
 }
 
-export function uploadReferenceFile(filePath: string, uploadUrl: string, mimeType: string): Promise<void> {
+export function uploadReferenceFile(filePath: string, uploadUrl: string, mimeType: string, onTask?: (task: WechatMiniprogram.RequestTask) => void): Promise<void> {
   return new Promise((resolve, reject) => {
     wx.getFileSystemManager().readFile({
       filePath,
       success(readResult) {
-        wx.request({
+        const task = wx.request({
           url: uploadUrl,
           method: 'PUT',
           timeout: 60000,
@@ -131,6 +131,7 @@ export function uploadReferenceFile(filePath: string, uploadUrl: string, mimeTyp
             reject(new Error(error.errMsg || '参考图上传失败'))
           },
         })
+        onTask?.(task)
       },
       fail(error) {
         reject(new Error(error.errMsg || '读取参考图失败'))
@@ -204,14 +205,14 @@ function parseCookieHeader(header: string): Map<string, string> {
 }
 
 export function formatError(error: unknown): string {
-  if (error instanceof BusinessError) return businessErrorGuidance(error).message
-  const message = error instanceof Error ? error.message : String(error || '')
+  const message = error instanceof BusinessError ? `${error.businessCode} ${error.message}` : error instanceof Error ? error.message : String(error || '')
   if (/ACCOUNT_DELETION_REVIEW_REQUIRED/.test(message)) return '此前的注销未完整结束，需要核对已清理的数据后处理，请联系作者。'
   if (/ACCOUNT_LIFECYCLE_CLOSED|no longer accepting credential/.test(message)) return '该账号正在注销或已失效，无法建立新的登录会话。'
   if (/Account deletion is in progress|ACCOUNT_DELETION_IN_PROGRESS/i.test(message)) return '当前账号正在注销，请打开账号设置查看处理状态。'
   if (/ACCOUNT_DELETION_(PROCESSING|RETRY_SCHEDULED|WAITING_FOR_)/.test(message)) return '注销申请已受理，后台会自动继续处理。'
   if (/ACCOUNT_DELETION_CONTRACT_UNAVAILABLE/.test(message)) return '账号注销服务正在升级，请稍后重试。'
 
+  if (error instanceof BusinessError) return businessErrorGuidance(error).message
   if (message.includes('Invalid email or password')) return '邮箱或密码不正确。'
   if (message.includes('Invalid origin') || message.includes('Origin not allowed')) {
     return '登录请求被后端来源校验拦截。需要在网关的 FRONTEND_ORIGINS / Better Auth trustedOrigins 放行微信小程序来源后重新部署。'

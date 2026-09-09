@@ -3,6 +3,7 @@
   "usingComponents": {
     "generation-settings-sheet": "/components/generation-settings-sheet/generation-settings-sheet",
     "auth-panel": "/components/auth-panel/auth-panel",
-    "stage-timeline": "/components/stage-timeline/stage-timeline"
+    "stage-timeline": "/components/stage-timeline/stage-timeline",
+    "input-optimizer": "/components/input-optimizer/input-optimizer"
   }
 }

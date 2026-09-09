@@ -47,21 +47,24 @@
     <view class="field">
       <view class="field-label-row"><view class="field-label">研究方法与流程</view><view class="field-count">{{methodContent.length}} / 12000</view></view>
       <textarea class="textarea method-textarea-v1" maxlength="12000" show-confirm-bar="{{false}}" cursor-spacing="20" value="{{methodContent}}" placeholder="粘贴论文方法部分，描述模块、数据流、实验步骤与输入输出…" bindinput="onMethodInput" />
+      <input-optimizer target="methodContent" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main}}" provider-regions="{{settings.providerRegions}}" disabled="{{isSubmitting || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="field">
       <view class="field-label-row"><view class="field-label">目标图注</view><view class="field-count">{{caption.length}} / 1000</view></view>
       <textarea class="textarea caption-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{caption}}" placeholder="例如：图 1：所提出方法框架总览。" bindinput="onCaptionInput" />
+      <input-optimizer target="caption" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main}}" provider-regions="{{settings.providerRegions}}" disabled="{{isSubmitting || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="field negative-field">
       <view class="field-label-row"><view class="field-label">负向提示词 <text class="field-optional">可选</text></view><view class="field-count">{{negativePrompt.length}} / 1000</view></view>
       <textarea class="textarea negative-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{negativePrompt}}" placeholder="例如：避免过密文字、装饰性背景、模糊箭头与无法辨认的小字号。" bindinput="onNegativePromptInput" />
+      <input-optimizer target="negativePrompt" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main}}" provider-regions="{{settings.providerRegions}}" disabled="{{isSubmitting || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="reference-shell">
       <view class="reference-upload-head">
-        <view><view class="field-label">参考来源</view><view class="field-tip">上传参考图与图库检索互斥；所有权和文件类型会由 Gateway 校验。</view></view>
+        <view><view class="field-label">参考来源</view><view class="field-tip">可上传参考图或使用图库检索，二者择一。</view></view>
         <button wx:if="{{!showReferenceLibrary}}" class="ghost-button" size="mini" disabled="{{!referenceCanAddImage || isSubmitting || isUploadingReferences}}" bindtap="chooseReferenceFile">{{isUploadingReferences ? '上传中' : '添加参考图'}}</button>
       </view>
       <view class="reference-mode-chip" wx:if="{{showReferenceLibrary}}">当前使用参考图库</view>
@@ -106,6 +109,6 @@
 
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />
 <feedback-panel show="{{showFeedbackPanel}}" job-id="{{currentJobId}}" bind:close="closeFeedbackPanel" />
-<generation-settings-sheet show="{{showGenerationSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
+<generation-settings-sheet purpose="{{settingsPurpose}}" reference-count="{{referenceImages.length}}" reference-image-mode="{{referenceImageMode}}" show="{{showGenerationSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
 
 <movable-area class="fab-area"><movable-view class="feedback-fab" direction="all" x="{{fabX}}" y="{{fabY}}" inertia bindtap="openFeedbackPanel">反馈</movable-view></movable-area>

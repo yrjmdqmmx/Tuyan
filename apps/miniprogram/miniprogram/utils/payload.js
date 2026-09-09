@@ -7,7 +7,7 @@ const model_routing_1 = require("./model-routing");
 // createJob 请求体构造，字段与 packages/api/src/jobs.js 的 createJobRequest 白名单逐一对应。
 // 纯函数（不依赖 wx），便于 node 单测覆盖 plot / 锁检索 / 手动参考的组合语义。
 function buildCreateJobPayload(input) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e;
     const hasUploadedReferences = input.uploadedReferenceImages.length > 0;
     const modelRoutes = input.modelRoutes || {
         main: { accessProvider: input.provider, modelId: String(input.mainModelName || '') },
@@ -24,7 +24,9 @@ function buildCreateJobPayload(input) {
     const retrievalSetting = !hasUploadedReferences ? input.retrievalSetting : 'none';
     const taskName = input.categoryId === constants_1.PLOT_CATEGORY_ID ? 'plot' : 'diagram';
     const maxCriticRounds = input.maxCriticRounds;
+    const selectedImage = (_c = (_b = (_a = input.registry) === null || _a === void 0 ? void 0 : _a.providers) === null || _b === void 0 ? void 0 : _b[modelRoutes.image.accessProvider]) === null || _c === void 0 ? void 0 : _c.models.find(model => model.id === modelRoutes.image.modelId);
     const routeRoles = (0, model_routing_1.requiredCreateRouteRoles)({
+        imageRefineMode: selectedImage === null || selectedImage === void 0 ? void 0 : selectedImage.capabilities.imageEditMode,
         modelRoutes,
         outputFormat: input.outputFormat,
         taskName,
@@ -34,11 +36,16 @@ function buildCreateJobPayload(input) {
         referenceImages: input.uploadedReferenceImages,
         referenceImageMode: input.referenceImageMode,
     }, maxCriticRounds);
-    if (routeRoles.includes('image') && ((_a = input.registry) === null || _a === void 0 ? void 0 : _a.providers)) {
+    if (routeRoles.includes('image') && ((_d = input.registry) === null || _d === void 0 ? void 0 : _d.providers)) {
         const route = modelRoutes.image;
-        const model = (_b = input.registry.providers[route.accessProvider]) === null || _b === void 0 ? void 0 : _b.models.find((model) => model.id === route.modelId);
-        const ratios = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (model === null || model === void 0 ? void 0 : model.capabilities) || {}, capabilityField: 'aspectRatios', resolution: input.imageSize });
-        if (!ratios.some((option) => option.value === input.aspectRatio))
+        const model = (_e = input.registry.providers[route.accessProvider]) === null || _e === void 0 ? void 0 : _e.models.find((model) => model.id === route.modelId);
+        if (model === null || model === void 0 ? void 0 : model.capabilities.requiresSourceImage)
+            throw new Error('当前型号仅支持图像编辑，请在精修中使用或更换生图模型。');
+        if (Array.isArray(model === null || model === void 0 ? void 0 : model.capabilities.outputFormats) && !model.capabilities.outputFormats.includes(input.outputFormat))
+            throw new Error('当前模型不支持此输出格式，请重新选择。');
+        const ratios = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (model === null || model === void 0 ? void 0 : model.capabilities) || {}, capabilityField: taskName === 'plot' ? 'refineAspectRatios' : 'aspectRatios', resolution: input.imageSize });
+        const resolutions = (0, aspect_ratios_1.buildResolutionOptions)((model === null || model === void 0 ? void 0 : model.capabilities) || {}, taskName === 'plot' ? 'refineResolutions' : 'resolutions');
+        if (!ratios.some((option) => option.value === input.aspectRatio && !option.disabled) || !resolutions.some(option => option.value === input.imageSize))
             throw new Error('当前比例或清晰度不可用，请重新选择生成设置。');
     }
     const providedKeys = Object.fromEntries(Object.entries(input.apiKeys || {}).map(([provider, key]) => [provider, String(key || '').trim()]));

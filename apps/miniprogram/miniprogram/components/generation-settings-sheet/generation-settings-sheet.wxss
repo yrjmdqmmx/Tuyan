@@ -12,3 +12,5 @@
 .retrieval-options{display:grid;grid-template-columns:1fr 1fr;gap:10rpx}
 .retrieval-option{display:flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:66rpx;margin:0;padding:8rpx 10rpx;border:1rpx solid #d8dcd5;border-radius:13rpx;background:#fff;color:#4e5752;font-size:20rpx;line-height:1.25}
 .retrieval-option.active{border-color:#285c4c;background:#285c4c;color:#fff;font-weight:780}
+
+.settings-sheet{display:flex;flex-direction:column}.sheet-handle,.sheet-head{flex-shrink:0}.sheet-cancel{width:116rpx;flex:none}.sheet-scroll{height:0;flex:1;min-height:0}.sheet-footer{flex-shrink:0;background:#f8f7f2;padding:20rpx 0 calc(20rpx + env(safe-area-inset-bottom))}.sheet-save{position:static;width:100%;min-width:0}.sheet-bottom-space{height:24rpx}

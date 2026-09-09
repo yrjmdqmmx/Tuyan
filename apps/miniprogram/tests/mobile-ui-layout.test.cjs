@@ -32,7 +32,7 @@ for (const label of ['流程', '检索', '候选', '评审']) {
   assert.match(settingsWxml, new RegExp(`class="setting-label">${label}<`))
 }
 assert.doesNotMatch(settingsWxml, /configurationMode === 'advanced'[^>]*><view class="setting-label">(?:流程|检索|候选|评审)</)
-assert.match(settingsWxml, /manual-library" wx:if="\{\{draft\.retrievalSetting === 'manual'\}\}"/)
+assert.match(settingsWxml, /manual-library" wx:if=".*purpose !== 'refine'.*purpose !== 'optimize'.*draft\.retrievalSetting === 'manual'/)
 assert.match(settingsWxml, /<reference-library task-name="\{\{libraryTaskName\}\}"/)
 assert.match(settingsWxss, /\.sheet-save\{[^}]*display:flex[^}]*align-items:center[^}]*justify-content:center/)
 

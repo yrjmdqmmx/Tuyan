@@ -34,7 +34,7 @@
       </view>
       <view class="job-record-card" wx:for="{{accountJobs}}" wx:key="id">
         <view class="job-record-topline">
-          <view class="history-status {{item.status}}">{{item.status_text}}</view>
+          <view class="history-status {{item.status}}">{{item.job_type === 'refine' ? '精修 · ' : ''}}{{item.status_text}}</view>
           <view class="job-record-time">{{item.created_text}}</view>
         </view>
         <view class="job-record-title">{{item.caption || '未记录图注'}}</view>
@@ -157,7 +157,7 @@
         <view class="history-title">{{item.caption || item.id}}</view>
         <view class="history-meta">任务来源：{{item.client_platform_text}} · {{item.infographic_category}} · {{item.provider || '模型服务'}}</view>
       </view>
-      <view class="history-status {{item.status}}">{{item.status_text}}</view>
+      <view class="history-status {{item.status}}">{{item.job_type === 'refine' ? '精修 · ' : ''}}{{item.status_text}}</view>
     </view>
   </view>
 

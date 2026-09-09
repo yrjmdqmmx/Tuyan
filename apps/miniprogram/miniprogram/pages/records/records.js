@@ -20,15 +20,24 @@ Component({
     },
     lifetimes: {
         attached() {
+            var _a;
+            ;
+            this.ownerId = ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '';
+            this.requestSequence = 0;
             const unsubscribe = (0, session_1.subscribeSession)((user) => {
-                const wasLoggedIn = this.data.isLoggedIn;
+                const changed = this.ownerId !== ((user === null || user === void 0 ? void 0 : user.id) || '');
+                this.ownerId = (user === null || user === void 0 ? void 0 : user.id) || '';
+                if (changed) {
+                    this.requestSequence++;
+                    this.setData({ accountJobs: [], accountJobsError: '', accountJobsLoading: false, localJobs: (0, jobs_1.readLocalJobs)() });
+                }
                 this.setData({
                     isLoggedIn: Boolean(user),
                     currentUserEmail: user ? user.email : '',
                     currentUserEmailVerified: user ? user.emailVerified : false,
                     isAuthChecking: false,
                 });
-                if (user && !wasLoggedIn) {
+                if (user && changed) {
                     this.loadAccountJobs();
                 }
                 if (!user) {
@@ -45,6 +54,8 @@ Component({
             });
         },
         detached() {
+            ;
+            this.requestSequence++;
             const unsubscribe = this.unsubscribeSession;
             if (unsubscribe)
                 unsubscribe();
@@ -60,19 +71,23 @@ Component({
     },
     methods: {
         async loadAccountJobs(options) {
+            var _a;
             if (!this.data.isLoggedIn)
                 return;
             // 在途响应只对发起请求时的账号有效：登出/换号后丢弃，避免旧账号任务列表跨账号泄露
             const requestUser = (0, session_1.getCurrentUser)();
             const requestUserId = requestUser ? requestUser.id : '';
+            const sequence = this.requestSequence = Number(this.requestSequence || 0) + 1;
             if (!options || !options.silent) {
                 this.setData({ accountJobsLoading: true, accountJobsError: '' });
             }
             try {
                 const data = await (0, api_1.requestJson)({ action: 'myJobs', limit: 50 });
-                const jobs = await (0, jobs_1.hydrateRecordJobs)((data.jobs || []).map(jobs_1.normalizeJob));
+                if ((((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '') !== requestUserId || sequence !== this.requestSequence)
+                    return;
+                const jobs = await (0, jobs_1.hydrateRecordJobs)((data.jobs || []).map(jobs_1.normalizeJob), () => { var _a; return (((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '') === requestUserId && sequence === this.requestSequence; });
                 const currentUser = (0, session_1.getCurrentUser)();
-                if ((currentUser ? currentUser.id : '') !== requestUserId)
+                if ((currentUser ? currentUser.id : '') !== requestUserId || sequence !== this.requestSequence)
                     return;
                 this.setData({
                     accountJobs: jobs.map(jobs_1.toRecordJobSummary),
@@ -82,7 +97,7 @@ Component({
             }
             catch (error) {
                 const currentUser = (0, session_1.getCurrentUser)();
-                if ((currentUser ? currentUser.id : '') !== requestUserId)
+                if ((currentUser ? currentUser.id : '') !== requestUserId || sequence !== this.requestSequence)
                     return;
                 this.setData({
                     accountJobsError: (0, api_1.formatError)(error),

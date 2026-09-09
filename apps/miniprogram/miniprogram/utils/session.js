@@ -6,10 +6,12 @@ exports.subscribeSession = subscribeSession;
 exports.refreshSession = refreshSession;
 exports.signIn = signIn;
 exports.signUp = signUp;
+exports.getVerificationStatus = getVerificationStatus;
 exports.sendVerificationEmail = sendVerificationEmail;
 exports.requestPasswordReset = requestPasswordReset;
 exports.changePassword = changePassword;
 exports.signOut = signOut;
+const api_keys_1 = require("./api-keys");
 const api_1 = require("./api");
 const config_1 = require("./config");
 const auth_security_1 = require("./auth-security");
@@ -32,6 +34,8 @@ function subscribeSession(listener) {
     };
 }
 function setCurrentUser(user) {
+    if (currentUser && currentUser.id !== (user === null || user === void 0 ? void 0 : user.id))
+        (0, api_keys_1.clearApiKeys)();
     currentUser = user;
     sessionChecked = true;
     listeners.forEach((listener) => listener(currentUser));
@@ -72,8 +76,15 @@ async function signIn(email, password) {
 }
 async function signUp(email, password, name) {
     const payload = (0, auth_security_1.buildSignUpPayload)(email, password, name);
-    await (0, api_1.authRequest)('/sign-up/email', 'POST', payload);
-    return { status: 'verification-required', email: payload.email };
+    const response = await (0, api_1.authRequest)('/sign-up/email', 'POST', payload);
+    const token = typeof (response === null || response === void 0 ? void 0 : response.verificationStatusToken) === 'string' ? response.verificationStatusToken : '';
+    return { status: 'verification-required', email: payload.email, ...(token ? { verificationStatusToken: token } : {}) };
+}
+async function getVerificationStatus(token) {
+    const response = await (0, api_1.authRequest)('/verification-status', 'POST', { token }, { auth: false, timeout: 8000 });
+    if (response.status !== 'pending' && response.status !== 'verified')
+        throw new Error('验证状态暂时无法查询。');
+    return response.status;
 }
 async function sendVerificationEmail(email) {
     await (0, api_1.authRequest)('/send-verification-email', 'POST', (0, auth_security_1.buildSendVerificationPayload)(email));

@@ -1,0 +1,36 @@
+{
+  "version": "miniprogram-3.1.0",
+  "registry": "2026-09-09.v16",
+  "checks": [
+    "model picker accepts absent region binding and lists MiniMax global models",
+    "OpenRouter GPT Image 2.5 Sunburst/Flare searchable and auto-only sizing",
+    "live reference library pagination, distinct pages, category filtering and matching selected label"
+  ],
+  "mainChannels": [
+    "gemini",
+    "openai",
+    "bailian",
+    "ark",
+    "openrouter",
+    "deepseek",
+    "kimi",
+    "zhipu",
+    "siliconflow",
+    "anthropic",
+    "xai",
+    "minimax",
+    "mistral",
+    "together",
+    "fireworks"
+  ],
+  "image25": [
+    "openai/gpt-image-2.5-sunburst",
+    "openai/gpt-image-2.5-flare"
+  ],
+  "library": {
+    "total": 66,
+    "pages": 6,
+    "pageSize": 12
+  },
+  "errors": []
+}

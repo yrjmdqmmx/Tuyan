@@ -4,16 +4,16 @@ import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } fr
 
 const LINKS: Record<string, { label: string; url: string }> = {
   site: { label: '网站端', url: 'https://www.paperbanana.asia/#guide-settings' },
-  github: { label: 'GitHub 仓库', url: 'https://github.com/yrjmdqmmx/Tuyan-clients' },
+  github: { label: 'GitHub 仓库', url: 'https://github.com/yrjmdqmmx/Tuyan' },
   paper: { label: 'PaperBanana 论文', url: 'https://huggingface.co/papers/2601.23265' },
 }
 
 const CHAPTERS = [
   { id: 'quick', title: '三步开始生成', summary: '选模板与设置 → 写方法与图注 → 提交并查看演化', open: true },
   { id: 'settings', title: '完整生成设置', summary: '普通/专业、三角色模型、格式、比例、清晰度与评审', open: false },
-  { id: 'models', title: '模型目录与渠道', summary: '服务端 registry 是提交真相，目录不可用时失败关闭', open: false },
+  { id: 'models', title: '模型目录与渠道', summary: '渠道、区域与模型能力随服务端目录更新', open: false },
   { id: 'references', title: '参考图库与上传', summary: '306 个案例、跨页选择，以及上传和检索互斥', open: false },
-  { id: 'refine', title: '独立精修', summary: 'objectKey 优先、直接编辑与分析后重绘', open: false },
+  { id: 'refine', title: '独立精修', summary: '上传原图或历史结果，优化指令后继续编辑', open: false },
   { id: 'records', title: '任务记录与错误', summary: '来源端、路由、输入、阶段、资产与重试建议', open: false },
   { id: 'privacy', title: '账户与隐私', summary: 'BYOK 仅在页面内存；退出与永久删除账号', open: false },
 ]
@@ -22,15 +22,16 @@ const SETTING_CARDS = [
   ['配置模式', '普通模式使用单一 API 渠道的服务端默认三角色；专业模式可为主模型、图像模型和识别模型分别选择渠道。'],
   ['API 渠道', '先选实际调用的接入渠道，再在渠道下按模型厂商选择具体模型。密钥属于渠道，不属于模型厂商。'],
   ['主模型', '负责规划、SVG、统计图、自动检索和部分评审；只有任务真实可达主模型时才要求对应渠道密钥。'],
-  ['图像生成模型', '负责 PNG 渲染与精修；Recraft Vector 还可生成 SVG。比例、清晰度、输出格式和编辑模式完全以 registry 声明为准。'],
+  ['图像生成模型', '负责 PNG 渲染与精修；Recraft Vector 还可生成 SVG。比例、清晰度、输出格式和编辑模式以当前目录为准。'],
   ['参考图识别模型', '上传参考图且主模型不直读时负责图像理解；未走到该角色时不会要求它的渠道密钥。'],
   ['生成流程', '规划器 + 评审器适合日常质量；完整流程更细致；基础生成最快但跳过部分评审。'],
   ['检索设置', '不检索、自动、随机或手动选择图库案例。上传参考图后检索强制关闭。'],
-  ['画面比例', '自动 + 十种规范比例。灰掉或不出现的比例表示当前模型没有声明支持，系统不会静默改成 16:9。'],
+  ['画面比例', '按当前模型与清晰度显示可用比例。灰掉或不出现的比例表示当前模型没有声明支持，系统不会静默改成 16:9。'],
   ['导出格式', 'PNG 适合直接预览与精修；SVG 默认由主模型生成；选择 Recraft Vector 时由主模型规划、Recraft 生成，需两个渠道的 Key。'],
-  ['输出清晰度', '生成读取 resolutions；独立精修读取 refineResolutions，两者互不推断。'],
+  ['输出清晰度', '生成和精修分别提供模型实际支持的档位；原生尺寸表示由模型按源图决定。'],
   ['候选数量', '一次生成 1–3 张独立候选，数量越多耗时与计费越高。'],
   ['评审轮数', '0–2 轮“评审 → 重渲染”；轮数越多通常更细致，也会增加时间与费用。'],
+  ['输入优化', '方法、图注、负向提示词和精修指令均可优化。只使用主模型渠道密钥，可能计费；结果先预览，确认采用后替换，也可恢复原文。'],
   ['负向提示词', '单独描述不希望出现的内容，最多 1000 字；它会独立落盘，不拼进研究方法。'],
 ]
 

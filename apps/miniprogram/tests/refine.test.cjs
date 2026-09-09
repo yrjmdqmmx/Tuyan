@@ -30,6 +30,12 @@ assert.deepEqual(redraw.apiKeys, { ark: 'ark-key', gemini: 'gemini-key' })
 const registry = { routeContractVersion: 1, providers: { ark: { models: [{ id: 'image', capabilities: {
   aspectRatios: ['1:1', '16:9'], refineResolutions: ['2K'], refineAspectRatiosByResolution: { '2K': ['1:1'] },
 } }] } } }
+for (const [role, route] of Object.entries(routes)) {
+  const provider = registry.providers[route.accessProvider] ||= { models: [] }
+  let model = provider.models.find(m => m.id === route.modelId)
+  if (!model) provider.models.push(model = { id: route.modelId, capabilities: {} })
+  Object.assign(model, { selectable: true, roles: [role] })
+}
 assert.equal(buildRefineJobPayload({ ...base, registry, refineMode: 'direct-edit' }).aspectRatio, '1:1')
 assert.throws(() => buildRefineJobPayload({ ...base, registry, refineMode: 'direct-edit', aspectRatio: '16:9' }), /当前精修比例或清晰度不可用/)
 assert.throws(() => buildRefineJobPayload({ ...base, registry, refineMode: 'direct-edit', imageSize: '1K' }), /当前精修比例或清晰度不可用/)

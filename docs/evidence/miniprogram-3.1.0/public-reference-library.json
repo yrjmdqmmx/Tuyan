@@ -1,0 +1,140 @@
+[
+  {
+    "request": {
+      "action": "referenceLibrary",
+      "scope": "bench",
+      "query": "",
+      "visualCategory": "",
+      "researchDomain": "",
+      "taskName": "diagram",
+      "page": 1,
+      "pageSize": 12
+    },
+    "http": 200,
+    "code": 0,
+    "count": 12,
+    "total": 66,
+    "page": 1,
+    "ids": [
+      "ref_240",
+      "ref_241",
+      "ref_242",
+      "ref_243",
+      "ref_244",
+      "ref_245",
+      "ref_246",
+      "ref_247",
+      "ref_248",
+      "ref_249",
+      "ref_250",
+      "ref_251"
+    ],
+    "facets": {
+      "visualCategories": [
+        {
+          "value": "视觉感知框架图",
+          "count": 21
+        },
+        {
+          "value": "智能体推理框架图",
+          "count": 20
+        },
+        {
+          "value": "生成式学习框架图",
+          "count": 14
+        },
+        {
+          "value": "科学应用框架图",
+          "count": 11
+        }
+      ],
+      "researchDomains": [
+        {
+          "value": "计算机视觉",
+          "count": 21
+        },
+        {
+          "value": "语言与推理",
+          "count": 20
+        },
+        {
+          "value": "生成式学习",
+          "count": 14
+        },
+        {
+          "value": "科学应用",
+          "count": 11
+        }
+      ]
+    }
+  },
+  {
+    "request": {
+      "action": "referenceLibrary",
+      "scope": "bench",
+      "query": "",
+      "visualCategory": "",
+      "researchDomain": "",
+      "taskName": "diagram",
+      "page": 2,
+      "pageSize": 12
+    },
+    "http": 200,
+    "code": 0,
+    "count": 12,
+    "total": 66,
+    "page": 2,
+    "ids": [
+      "ref_252",
+      "ref_253",
+      "ref_254",
+      "ref_255",
+      "ref_256",
+      "ref_257",
+      "ref_258",
+      "ref_259",
+      "ref_260",
+      "ref_261",
+      "ref_262",
+      "ref_263"
+    ],
+    "facets": {
+      "visualCategories": [
+        {
+          "value": "视觉感知框架图",
+          "count": 21
+        },
+        {
+          "value": "智能体推理框架图",
+          "count": 20
+        },
+        {
+          "value": "生成式学习框架图",
+          "count": 14
+        },
+        {
+          "value": "科学应用框架图",
+          "count": 11
+        }
+      ],
+      "researchDomains": [
+        {
+          "value": "计算机视觉",
+          "count": 21
+        },
+        {
+          "value": "语言与推理",
+          "count": 20
+        },
+        {
+          "value": "生成式学习",
+          "count": 14
+        },
+        {
+          "value": "科学应用",
+          "count": 11
+        }
+      ]
+    }
+  }
+]

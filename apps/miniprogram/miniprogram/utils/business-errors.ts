@@ -26,6 +26,19 @@ export function toBusinessError(httpStatus: number, input: unknown, headers?: un
 
 export function businessErrorGuidance(error: BusinessError): { setting: string; message: string } {
   const mapping: Record<string, { setting: string; message: string }> = {
+    INPUT_OPTIMIZATION_REQUEST_INVALID: { setting: 'input', message: '待优化内容无效或过长，原文已保留，请调整后重试。' },
+    INPUT_OPTIMIZATION_ROUTE_INVALID: { setting: 'model-routing', message: '请选择支持输入优化的主模型。' },
+    INPUT_OPTIMIZATION_KEY_REQUIRED: { setting: 'api-key', message: '请填写当前主模型接入渠道与区域的密钥。' },
+    INPUT_OPTIMIZATION_PROVIDER_TIMEOUT: { setting: 'retry', message: '优化超时，原文已保留。请稍后手动重试。' },
+    INPUT_OPTIMIZATION_PROVIDER_FAILED: { setting: 'retry', message: '优化服务暂时不可用，原文已保留。请检查模型权限或稍后重试。' },
+    INPUT_OPTIMIZATION_RESULT_INVALID: { setting: 'retry', message: '优化结果无效，原文已保留。' },
+    INPUT_OPTIMIZATION_NO_CHANGE: { setting: 'input', message: '优化结果与原文一致，已保留原文。' },
+    REFINE_UPLOAD_INVALID: { setting: 'refine-source', message: '精修原图已失效或校验未通过，请重新上传。' },
+    REFINE_IMAGE_SIZE_UNSUPPORTED: { setting: 'refine-resolution', message: '当前模型不支持此精修比例与清晰度组合，请重新选择。' },
+    IMAGE_SIZE_UNSUPPORTED: { setting: 'aspect-ratio', message: '当前模型不支持此比例与清晰度组合，请重新选择。' },
+    IMAGE_MODEL_EDIT_ONLY: { setting: 'model-routing', message: '当前模型仅支持编辑，请在精修中使用，或改选生图模型。' },
+    MODEL_ROUTE_INVALID: { setting: 'model-routing', message: '模型路线已失效，请刷新目录并重新选择。' },
+    ACCOUNT_REFERENCE_LIFECYCLE_MISMATCH: { setting: 'refine-source', message: '原图属于此前的账号状态，请重新上传。' },
     MODEL_ROUTE_CONFLICT: { setting: 'model-routing', message: '模型渠道与角色设置冲突，请重新选择模型路线。' },
     INVALID_ASPECT_RATIO: { setting: 'aspect-ratio', message: '图片比例无效，请选择注册表中的规范比例。' },
     ASPECT_RATIO_UNSUPPORTED: { setting: 'aspect-ratio', message: '当前图像模型不支持这个生成比例。' },

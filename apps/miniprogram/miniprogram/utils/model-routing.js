@@ -26,14 +26,22 @@ function providerDefaultRoutes(provider, registry) {
     };
 }
 function buildModelSubmission(input) {
-    var _a;
+    var _a, _b, _c, _d;
     assertCompleteRoutes(input.modelRoutes);
     if (!input.registry || Number(input.registry.routeContractVersion || 0) < 1) {
         throw new Error('服务端模型目录不可用，已禁止新建付费任务。');
     }
+    if (input.registry.providers) {
+        for (const role of exports.MODEL_ROUTE_ROLES) {
+            const route = input.modelRoutes[role];
+            const model = (_b = (_a = input.registry.providers[route.accessProvider]) === null || _a === void 0 ? void 0 : _a.models) === null || _b === void 0 ? void 0 : _b.find(entry => entry.id === route.modelId);
+            if (!model || !model.selectable || !((_c = model.roles) === null || _c === void 0 ? void 0 : _c.includes(role)) || !(0, provider_regions_1.modelAvailableInRegion)(route.accessProvider, model, input.providerRegions))
+                throw new Error(`模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`);
+        }
+    }
     const regions = (0, provider_regions_1.normalizeProviderRegions)(input.providerRegions);
     const usesMiniMax = Object.values(input.modelRoutes).some(route => route.accessProvider === 'minimax');
-    if (usesMiniMax && regions.minimax === 'cn' && !((_a = input.registry) === null || _a === void 0 ? void 0 : _a.providerRegionContractVersion))
+    if (usesMiniMax && regions.minimax === 'cn' && !((_d = input.registry) === null || _d === void 0 ? void 0 : _d.providerRegionContractVersion))
         throw new Error('当前服务端尚未支持 MiniMax 国内区域。');
     return {
         ...(usesMiniMax && input.providerRegions ? { providerRegions: regions } : {}),
@@ -56,6 +64,8 @@ function requiredCreateRouteRoles(body, maxCriticRounds) {
     if ((outputFormat === 'svg' && !nativeVector) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto')
         roles.push('main');
     if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot')
+        roles.push('image');
+    if (taskName === 'plot' && ['2K', '4K'].includes(String(body.imageSize)) && body.imageRefineMode === 'direct-edit')
         roles.push('image');
     const references = Array.isArray(body.referenceImages) ? body.referenceImages : [];
     if (references.length)

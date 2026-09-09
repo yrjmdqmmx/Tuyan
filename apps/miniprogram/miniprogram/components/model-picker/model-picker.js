@@ -38,7 +38,7 @@ Component({
     },
     methods: {
         noop() { },
-        getRegistry() { return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, this.properties.providerRegions); },
+        getRegistry() { return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, this.properties.providerRegions == null ? undefined : this.properties.providerRegions); },
         resetFlow() {
             const registry = this.getRegistry();
             const role = normalizeRole(this.properties.role);

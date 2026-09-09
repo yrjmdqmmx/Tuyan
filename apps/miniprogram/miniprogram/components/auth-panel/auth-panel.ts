@@ -1,5 +1,6 @@
 import { mapAuthError, validatePassword } from '../../utils/auth-security'
-import { requestPasswordReset, sendVerificationEmail, signIn, signUp } from '../../utils/session'
+import { getVerificationStatus, requestPasswordReset, sendVerificationEmail, signIn, signUp } from '../../utils/session'
+import { createVerificationObserver, type VerificationStatus } from '../../utils/verification-observer'
 
 const VERIFICATION_REQUEST_STATUS = '请求已受理。如账号需要验证，邮件将发送；已有账号请直接登录或找回密码。'
 
@@ -76,12 +77,17 @@ Component({
     authCanSubmit: false,
     authCooldownSeconds: 0,
     authResendDisabled: false,
+    verificationObserved: false, verificationConfirmed: false, verificationState: '',
   },
 
   lifetimes: {
     detached() {
       this.resetAuthPanel()
     },
+  },
+  pageLifetimes: {
+    hide() { (this as any).verificationObserver?.pause() },
+    show() { if (this.properties.show) void (this as any).verificationObserver?.resume() },
   },
 
   methods: {
@@ -92,6 +98,27 @@ Component({
 
     // 拦截点击冒泡，避免点对话框内容触发遮罩层的 close
     noop() {},
+    stopVerificationObserver() {
+      ;(this as any).verificationObserver?.stop()
+      ;(this as any).verificationObserver = undefined
+    },
+    observeVerification(token: string) {
+      this.stopVerificationObserver()
+      this.setData({ verificationObserved: true })
+      const observer = createVerificationObserver({ query: () => getVerificationStatus(token), onStatus: (status: VerificationStatus) => {
+        if (this.data.authMode !== 'pending-verification') return
+        this.setData({ verificationState: status })
+        if (status === 'verified') {
+          this.clearAuthCooldown()
+          this.setData({ verificationConfirmed: true, authCooldownSeconds: 0, authResendDisabled: true, authTitle: '邮箱已验证', authStatus: '邮箱验证已完成，请返回登录。', authNote: '请使用邮箱和密码登录，验证不会自动建立会话。', authError: '' })
+        } else if (status === 'unavailable') this.setData({ authError: '暂时无法检查验证状态，可稍后刷新或返回登录。' })
+        else if (status === 'expired') this.setData({ authError: '本次状态查询已过期，请返回登录；如仍未验证可重新发起。' })
+        else this.setData({ authError: '' })
+      } })
+      ;(this as any).verificationObserver = observer
+      void observer.resume()
+    },
+    refreshVerification() { void (this as any).verificationObserver?.refresh() },
 
     clearAuthCooldown() {
       const timer = (this as any).authCooldownTimer as ReturnType<typeof setInterval> | undefined
@@ -100,6 +127,7 @@ Component({
     },
 
     resetAuthPanel() {
+      this.stopVerificationObserver()
       ;(this as any).authOperationEpoch = Number((this as any).authOperationEpoch || 0) + 1
       this.clearAuthCooldown()
       const content = AUTH_MODE_CONTENT['sign-in']
@@ -119,10 +147,12 @@ Component({
         authCanSubmit: false,
         authCooldownSeconds: 0,
         authResendDisabled: false,
+        verificationObserved: false, verificationConfirmed: false, verificationState: '',
       })
     },
 
     setAuthMode(mode: AuthMode) {
+      this.stopVerificationObserver()
       ;(this as any).authOperationEpoch = Number((this as any).authOperationEpoch || 0) + 1
       this.clearAuthCooldown()
       const content = AUTH_MODE_CONTENT[mode]
@@ -139,6 +169,7 @@ Component({
         authSubmitting: false,
         authCooldownSeconds: 0,
         authResendDisabled: false,
+        verificationObserved: false, verificationConfirmed: false, verificationState: '',
       })
       this.refreshAuthCanSubmit()
     },
@@ -215,12 +246,13 @@ Component({
         const password = this.data.authPassword
         const result = mode === 'sign-up'
           ? await signUp(email, password, this.data.authName.trim()) as
-              | { status: 'verification-required'; email: string }
+              | { status: 'verification-required'; email: string; verificationStatusToken?: string }
               | { status: 'authenticated'; user: unknown }
           : await signIn(email, password)
         if (operationEpoch !== Number((this as any).authOperationEpoch || 0)) return
         if (result.status === 'verification-required') {
           this.enterPendingVerification(VERIFICATION_REQUEST_STATUS)
+          if (result.verificationStatusToken) this.observeVerification(result.verificationStatusToken)
           return
         }
 
@@ -245,6 +277,7 @@ Component({
     },
 
     async resendVerification() {
+      if (this.data.verificationConfirmed) return
       if (!this.data.authEmail.trim() || this.data.authResendDisabled || this.data.authSubmitting) return
       const operationEpoch = Number((this as any).authOperationEpoch || 0)
       this.setData({ authSubmitting: true, authError: '', authStatus: '' })

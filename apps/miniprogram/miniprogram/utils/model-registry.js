@@ -26,7 +26,16 @@ function normalizeModelRegistry(input) {
         if (providerSource[providerId])
             providers[providerId] = normalizeProvider(providerId, providerSource[providerId]);
     }
-    return { registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers };
+    const upload = asRecord(source.refineUpload);
+    const positive = (value) => Number.isFinite(Number(value)) && Number(value) > 0;
+    const refineUpload = upload.version === 1 && Array.isArray(upload.mimeTypes) && upload.mimeTypes.length > 0 && [upload.maxBytes, upload.maxDimension, upload.maxPixels].every(positive)
+        ? { version: 1, mimeTypes: stringArray(upload.mimeTypes).filter(mime => ['image/png', 'image/jpeg', 'image/webp'].includes(mime)), maxBytes: Number(upload.maxBytes), maxDimension: Number(upload.maxDimension), maxPixels: Number(upload.maxPixels), modelMaxBytes: Object.fromEntries(Object.entries(asRecord(upload.modelMaxBytes)).filter(([, value]) => positive(value)).map(([key, value]) => [key, Number(value)])) }
+        : undefined;
+    return { registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers,
+        inputOptimizationContractVersion: numberValue(source.inputOptimizationContractVersion),
+        ...(Array.isArray(source.inputOptimizationTargets) ? { inputOptimizationTargets: stringArray(source.inputOptimizationTargets) } : {}),
+        ...((refineUpload === null || refineUpload === void 0 ? void 0 : refineUpload.mimeTypes.length) ? { refineUpload } : {}),
+    };
 }
 function normalizeProvider(providerId, input) {
     const source = asRecord(input);

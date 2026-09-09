@@ -15,7 +15,7 @@ Component({
         visualIndex: 0, domainIndex: 0, page: 1, totalPages: 1, totalItems: 0,
         selectedCount: 0, limit: constants_1.MANUAL_REFERENCE_LIMIT, detail: null,
     },
-    lifetimes: { attached() { this.loadLibrary(); } },
+    lifetimes: { attached() { this.loadLibrary(); }, detached() { this.loadSeq = Number(this.loadSeq || 0) + 1; } },
     methods: {
         noop() { },
         resetAndLoad() { this.setData({ page: 1 }); this.loadLibrary(); },
@@ -29,10 +29,15 @@ Component({
                     return;
                 const page = (0, reference_library_1.normalizeReferenceLibraryPage)(response);
                 this.references = page.references;
+                const visualOptions = [{ value: '', label: '全部视觉类别' }, ...page.facets.visualCategories.map(item => ({ value: item.value, label: `${item.value} (${item.count})` }))];
+                const domainOptions = [{ value: '', label: '全部研究领域' }, ...page.facets.researchDomains.map(item => ({ value: item.value, label: `${item.value} (${item.count})` }))];
+                if (this.data.visualCategory && !visualOptions.some(item => item.value === this.data.visualCategory))
+                    visualOptions.push({ value: this.data.visualCategory, label: this.data.visualCategory });
+                if (this.data.researchDomain && !domainOptions.some(item => item.value === this.data.researchDomain))
+                    domainOptions.push({ value: this.data.researchDomain, label: this.data.researchDomain });
                 this.setData({
+                    visualOptions, domainOptions, visualIndex: Math.max(0, visualOptions.findIndex(item => item.value === this.data.visualCategory)), domainIndex: Math.max(0, domainOptions.findIndex(item => item.value === this.data.researchDomain)),
                     page: page.page, totalPages: page.totalPages, totalItems: page.totalItems,
-                    visualOptions: [{ value: '', label: '全部视觉类别' }, ...page.facets.visualCategories.map((item) => ({ value: item.value, label: `${item.value} (${item.count})` }))],
-                    domainOptions: [{ value: '', label: '全部研究领域' }, ...page.facets.researchDomains.map((item) => ({ value: item.value, label: `${item.value} (${item.count})` }))],
                     isLoading: false,
                 });
                 this.refreshCards();

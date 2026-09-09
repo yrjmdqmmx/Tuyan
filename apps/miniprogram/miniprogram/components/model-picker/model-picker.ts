@@ -40,7 +40,7 @@ Component({
   },
   methods: {
     noop() {},
-    getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.properties.providerRegions) },
+    getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.properties.providerRegions == null ? undefined : this.properties.providerRegions) },
     resetFlow() {
       const registry = this.getRegistry()
       const role = normalizeRole(this.properties.role)
