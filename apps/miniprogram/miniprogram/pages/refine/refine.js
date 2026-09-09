@@ -14,6 +14,7 @@ const refine_1 = require("../../utils/refine");
 const session_1 = require("../../utils/session");
 Component({
     data: {
+        emptyObject: {},
         settingsPurpose: 'refine',
         uploadEnabled: false, uploadBusy: false, uploadStage: '', uploadError: '', canRetryUpload: false,
         optimizationBusy: false, optimizationInputs: { editInstruction: '' },

@@ -29,5 +29,5 @@
     </scroll-view>
     <view class="sheet-footer"><button class="sheet-save" disabled="{{!draft}}" bindtap="save">保存全部设置</button></view>
   </view>
-  <model-picker show="{{showModelPicker}}" registry-version="{{registryVersion}}" provider-regions="{{draft.providerRegions}}" role="{{editingRole}}" output-format="{{draft.outputFormat || ''}}" selected-provider="{{pickerProvider}}" selected-model="{{pickerModel}}" bind:select="selectModel" bind:close="closeModelPicker" />
+  <model-picker show="{{showModelPicker}}" registry-version="{{registryVersion}}" provider-regions="{{draft.providerRegions || emptyObject}}" role="{{editingRole}}" output-format="{{draft.outputFormat || ''}}" selected-provider="{{pickerProvider}}" selected-model="{{pickerModel}}" bind:select="selectModel" bind:close="closeModelPicker" />
 </view>

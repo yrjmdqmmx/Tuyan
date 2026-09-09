@@ -1,16 +1,16 @@
 <view wx:if="{{supported}}" class="optimization-actions">
-  <button size="mini" disabled="{{disabled || busy}}" loading="{{busy}}" bindtap="optimize">优化文字</button>
-  <button size="mini" wx:if="{{hasUndo}}" disabled="{{disabled || busy}}" bindtap="restore">恢复原文</button>
+  <button class="optimization-action" size="mini" disabled="{{disabled || busy}}" loading="{{busy}}" bindtap="optimize">优化文字</button>
+  <button class="optimization-action" size="mini" wx:if="{{hasUndo}}" disabled="{{disabled || busy}}" bindtap="restore">恢复原文</button>
   <view wx:if="{{error && !open}}" class="optimization-error">{{error}}</view>
 </view>
 <view wx:if="{{open}}" class="optimization-mask" catchtouchmove="noop" catchtap="cancel">
   <view class="optimization-sheet" catchtap="noop" role="dialog" aria-label="优化文字预览">
-    <view class="optimization-head"><view><view class="optimization-title">{{label}} · 优化预览</view><view class="optimization-note">使用主模型优化，可能计费。确认采用后才替换原文。</view></view><button size="mini" bindtap="cancel">关闭</button></view>
+    <view class="optimization-head"><view><view class="optimization-title">{{label}} · 优化预览</view><view class="optimization-note">使用主模型优化，可能计费。确认采用后才替换原文。</view></view><button class="optimization-action" size="mini" bindtap="cancel">关闭</button></view>
     <scroll-view class="optimization-scroll" scroll-y enhanced>
       <view class="optimization-label">原文</view><text class="optimization-text" user-select>{{original || '未填写'}}</text>
       <view class="optimization-label">优化稿</view><text class="optimization-text candidate" user-select>{{busy ? '正在优化，请稍候…' : (candidate || '暂未取得优化稿，原文已保留。')}}</text>
       <view class="optimization-error" wx:if="{{error}}">{{error}}</view>
     </scroll-view>
-    <view class="optimization-footer"><button disabled="{{busy}}" bindtap="optimize">重新优化</button><button class="adopt" disabled="{{busy || !candidate}}" bindtap="apply">采用优化稿</button></view>
+    <view class="optimization-footer"><button class="optimization-footer-action" disabled="{{busy}}" bindtap="optimize">重新优化</button><button class="optimization-footer-action adopt" disabled="{{busy || !candidate}}" bindtap="apply">采用优化稿</button></view>
   </view>
 </view>

@@ -85,6 +85,7 @@ const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft'
 
 Component({
   data: {
+    emptyObject: {},
     settingsPurpose: 'create',
     optimizationBusy: false, optimizationInputs: {} as Record<string, string>,
     logoSrc: '/images/logo.png',

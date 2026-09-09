@@ -30,6 +30,7 @@ Component({
         libraryTaskName: { type: String, value: 'diagram' },
     },
     data: {
+        emptyObject: {},
         draft: null,
         minimaxRegionOptions: [{ value: 'global', label: '国际' }, { value: 'cn', label: '中国大陆' }],
         minimaxRegionIndex: 0, minimaxApiBase: '',

@@ -22,6 +22,7 @@ interface RefineSourceOption { label: string; jobId: string; url: string; object
 
 Component({
   data: {
+    emptyObject: {},
     settingsPurpose: 'refine',
     uploadEnabled: false, uploadBusy: false, uploadStage: '', uploadError: '', canRetryUpload: false,
     optimizationBusy: false, optimizationInputs: { editInstruction: '' },
