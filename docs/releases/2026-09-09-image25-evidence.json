@@ -1,0 +1,492 @@
+{
+  "recordedAt": "2026-09-09T05:12:52.976547+00:00",
+  "deploymentSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+  "documentationOnly": true,
+  "implementation": {
+    "pr": 185,
+    "initialImplementationSha": "f0a437561273964e915669eed9699816f8c06b72",
+    "initialMergeSha": "e911b4b07b63c6909281042a18bfaf3ed3446e9c",
+    "fixPr": 186,
+    "fixImplementationSha": "737ca2537f2d53e4ddf25af4a245464f9df4bb54",
+    "runs": {
+      "initialBranchCI": 34310229905,
+      "initialPrCI": 34310266438,
+      "initialMergeCI": 34311521830,
+      "initialCoreImage": 34311560890,
+      "initialBenchmarkImage": 34311564022,
+      "initialHongKongDeploy": 34311867984,
+      "fixBranchCI": 34312445540,
+      "fixPrCI": 34312449203,
+      "finalMergeCI": 34312831067,
+      "finalCoreImage": 34312834222,
+      "finalBenchmarkImage": 34312836979,
+      "finalHongKongDeploy": 34313064489,
+      "webPages": 34313236102
+    },
+    "firstStageIssue": {
+      "serviceHealth": "healthy",
+      "staticCatalog": "677 models matched local source before the verifier stopped at the dynamic model assertion",
+      "openRouterRefineResolutions": [],
+      "effect": "Image 2.5 direct editing could not select a refinement resolution; strict auto requests also failed",
+      "webDeployed": false,
+      "remediation": "PR #186 adds explicit provider-native size capability and strict auto support without sending an undeclared resolution field"
+    },
+    "finalMergeSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+    "fixMergedAt": "2026-09-09T04:55:08Z"
+  },
+  "finalWorkflows": {
+    "finalMergeCI": {
+      "conclusion": "success",
+      "createdAt": "2026-09-09T04:55:11Z",
+      "headSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+      "status": "completed",
+      "updatedAt": "2026-09-09T04:58:25Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34312831067"
+    },
+    "finalCoreImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-09T04:55:13Z",
+      "headSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+      "status": "completed",
+      "updatedAt": "2026-09-09T04:55:53Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34312834222"
+    },
+    "finalBenchmarkImage": {
+      "conclusion": "success",
+      "createdAt": "2026-09-09T04:55:16Z",
+      "headSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+      "status": "completed",
+      "updatedAt": "2026-09-09T04:56:12Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34312836979"
+    },
+    "finalHongKongDeploy": {
+      "conclusion": "success",
+      "createdAt": "2026-09-09T04:59:04Z",
+      "headSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+      "status": "completed",
+      "updatedAt": "2026-09-09T05:00:20Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34313064489"
+    },
+    "webPages": {
+      "conclusion": "success",
+      "createdAt": "2026-09-09T05:01:41Z",
+      "headSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+      "status": "completed",
+      "updatedAt": "2026-09-09T05:03:32Z",
+      "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34313236102"
+    }
+  },
+  "host": {
+    "repoSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+    "images": {
+      "PAPERBANANA_GATEWAY_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:de4fff99c4da266fc10a85073bf575135d12780f97fc78a9f277af6e68a02534",
+      "PAPERBANANA_CORE_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:bb826ac8d4ca41860b5904aea36947fcaecde3ab3da4cf71f60bd2003228051c",
+      "PAPERBANANA_PLOT_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "PAPERBANANA_MONGODB_IMAGE": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "PAPERBANANA_BENCH_WORKER_IMAGE": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:74716d25703ba1858db76b5884f3bffc275df90feab9a6c8d4e01fc7d0b7eed7",
+      "PAPERBANANA_BENCH_SECRET_MODE": "configured-disabled",
+      "COMPOSE_PROFILES": "benchmark"
+    },
+    "services": [
+      {
+        "name": "paperbanana-hk-auth-gateway-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:de4fff99c4da266fc10a85073bf575135d12780f97fc78a9f277af6e68a02534",
+        "imageId": "sha256:de4fff99c4da266fc10a85073bf575135d12780f97fc78a9f277af6e68a02534",
+        "health": "healthy",
+        "publicEnv": {},
+        "envFingerprintWithoutCodeSha": "76c0e00c486107fd1b7f404ff9f75af5ca131895498145ac9b0488dd70ca8b44"
+      },
+      {
+        "name": "paperbanana-hk-paperbanana-api-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:bb826ac8d4ca41860b5904aea36947fcaecde3ab3da4cf71f60bd2003228051c",
+        "imageId": "sha256:bb826ac8d4ca41860b5904aea36947fcaecde3ab3da4cf71f60bd2003228051c",
+        "health": "healthy",
+        "publicEnv": {
+          "PAPERBANANA_CODE_SHA": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+          "PAPERBANANA_PROVIDER_EGRESS_MODE": "sg-required"
+        },
+        "envFingerprintWithoutCodeSha": "689e31cfe55610cb9fc5a3402619daee1a09de4cb2e422b94d4100e71a0223d7"
+      },
+      {
+        "name": "paperbanana-hk-benchmark-worker-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:74716d25703ba1858db76b5884f3bffc275df90feab9a6c8d4e01fc7d0b7eed7",
+        "imageId": "sha256:74716d25703ba1858db76b5884f3bffc275df90feab9a6c8d4e01fc7d0b7eed7",
+        "health": "healthy",
+        "publicEnv": {
+          "PAPERBANANA_CODE_SHA": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+          "PAPERBANANA_BENCH_ENABLED": "false"
+        },
+        "envFingerprintWithoutCodeSha": "b62af1322e6e0fd6e42eaeab935d2b9c4c25238fe3dea191c15f25c5bc4e5d0d"
+      },
+      {
+        "name": "paperbanana-hk-plot-worker-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy",
+        "publicEnv": {},
+        "envFingerprintWithoutCodeSha": "18459850908e5feb8714f42f5d91d2d718d818bbbb71d1410469388c3401cfb3"
+      },
+      {
+        "name": "paperbanana-hk-mongodb-1",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy",
+        "publicEnv": {},
+        "envFingerprintWithoutCodeSha": "dab358071272ea093942a2abb8785cf47c5ad7f3d2b6143273f44d7825ef9124"
+      }
+    ],
+    "maintenance": false
+  },
+  "environmentFingerprintsMatchStableBaselineExcludingCodeSha": true,
+  "provenance": {
+    "core": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+    "benchmarkCompanion": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+    "method": "Read /app/build-provenance.json from each immutable image, --network none --read-only"
+  },
+  "publicHealth": {
+    "health": {
+      "code": 0,
+      "ok": true,
+      "runtime": "gateway",
+      "auth": "better-auth",
+      "authReady": true,
+      "backend": {
+        "mode": "node",
+        "ok": true,
+        "checkedAt": "2026-09-09T05:01:26.638Z",
+        "status": 200,
+        "ready": true,
+        "dependencies": {
+          "mongodb": "ready",
+          "oss": "ready",
+          "providerEgress": "ready",
+          "benchmark": "ready"
+        }
+      },
+      "laf": {
+        "mode": "node",
+        "ok": true,
+        "checkedAt": "2026-09-09T05:01:26.638Z",
+        "status": 200,
+        "ready": true,
+        "dependencies": {
+          "mongodb": "ready",
+          "oss": "ready",
+          "providerEgress": "ready",
+          "benchmark": "ready"
+        }
+      },
+      "dependencies": {
+        "auth": {
+          "ok": true,
+          "checkedAt": "2026-09-09T05:01:26.625Z"
+        },
+        "backend": {
+          "mode": "node",
+          "ok": true,
+          "checkedAt": "2026-09-09T05:01:26.638Z",
+          "status": 200,
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        }
+      }
+    },
+    "ready": {
+      "code": 0,
+      "ok": true,
+      "runtime": "gateway",
+      "auth": "better-auth",
+      "authReady": true,
+      "backend": {
+        "ok": true,
+        "status": 200,
+        "data": {
+          "ok": true,
+          "service": "paperbanana-api",
+          "runtime": "node",
+          "version": "0.1.0",
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        }
+      },
+      "laf": {
+        "ok": true,
+        "status": 200,
+        "data": {
+          "ok": true,
+          "service": "paperbanana-api",
+          "runtime": "node",
+          "version": "0.1.0",
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        }
+      },
+      "dependencies": {
+        "auth": {
+          "ok": true
+        },
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        }
+      }
+    }
+  },
+  "catalog": {
+    "checkedAt": "2026-09-09T05:01:30.993Z",
+    "version": "2026-09-09.v16",
+    "checkedModels": 677,
+    "checkedFields": 18786,
+    "allStaticFieldsMatch": true,
+    "allStaticOrderMatches": true,
+    "openrouterCount": 469,
+    "addedDynamic": [
+      {
+        "id": "openai/gpt-image-2.5-sunburst",
+        "label": "GPT Image 2.5 Sunburst",
+        "verified": false,
+        "verificationState": "catalog",
+        "capabilities": {
+          "maxReferenceImages": 1,
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "providerMaxReferenceImages": 16,
+          "resolutions": [
+            "auto"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ]
+        }
+      },
+      {
+        "id": "openai/gpt-image-2.5-flare",
+        "label": "GPT Image 2.5 Flare",
+        "verified": false,
+        "verificationState": "catalog",
+        "capabilities": {
+          "maxReferenceImages": 1,
+          "referenceImages": true,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "providerMaxReferenceImages": 16,
+          "resolutions": [
+            "auto"
+          ],
+          "refineResolutions": [
+            "auto"
+          ],
+          "aspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "refineAspectRatios": [
+            "1:1",
+            "3:2",
+            "2:3",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "21:9"
+          ],
+          "outputFormats": [
+            "png"
+          ]
+        }
+      }
+    ],
+    "benchmarkUnchanged": true,
+    "benchmarkReleaseId": "bench-scientific-v2-release-1f652f6370203d1ecf6a",
+    "benchmarkReleaseHash": "1f652f6370203d1ecf6a8f8ce679097b968b412cd4ab0bdf0362e3a5dce9d482"
+  },
+  "web": {
+    "verifiedAt": "2026-09-09T05:07:58.165847+00:00",
+    "url": "https://www.paperbanana.asia/",
+    "sourceSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+    "workflowRun": 34313236102,
+    "assets": [
+      {
+        "path": "index.html",
+        "status": 200,
+        "sha256": "d08486578363812aea2eae89d812284b7630c502d086f06e52483baaeec3d147",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/AccountSettingsDialog-DC8jVrTx.js",
+        "status": 200,
+        "sha256": "82e1030b78dd422c2545ca08202e2460efecc215c177abfc21620c2bbe78697d",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/AdminWorkspace-F6oVjhSe.js",
+        "status": 200,
+        "sha256": "751cf056706c9685adf8e5766aaf53bf8b94a4de346afce90c6201b02b7d68ca",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/ReferenceLibraryPanel-CvxApVYx.js",
+        "status": 200,
+        "sha256": "9857fa7ea8c6096652a03b1a1d0a79d83b74086c7f471d3bf63520bd7656d8c6",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/RefinePanel-Cb-LxIZL.js",
+        "status": 200,
+        "sha256": "0805a4b80320bb1d1edeef2385ed48eb4adcf6dfbcec23bcef9197c948bbe460",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/appPaths-Ba0fLi8f.js",
+        "status": 200,
+        "sha256": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/jszip.min-D7KnG0-e.js",
+        "status": 200,
+        "sha256": "b4660c703fcb2fed3c9365fe4144b4317777d677387a49f28684b3516071de07",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/main-DE_Ft3oB.css",
+        "status": 200,
+        "sha256": "37d48b97f9f37d3a643f5f6f57c85a7d6fe629ad3f8b4ba8ab97472768d2bf96",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/main-DbQYOfGG.js",
+        "status": 200,
+        "sha256": "92023bb199e5b031facf5bf14fe984e91b9b4ea50b92509e9c5675435ee51231",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/not-found-K_dFyY8s.js",
+        "status": 200,
+        "sha256": "c7ae696534b58ce86f367d452a4eb0a7f757860be1804c548200e015cbd15962",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/trash-2-b6wmtEut.js",
+        "status": 200,
+        "sha256": "f43726ba092eefe80598139f5026d4a21081b9157feeca662f185cbcc2e10f6a",
+        "matchesArtifact": true
+      },
+      {
+        "path": "assets/upload-DUnUc_sk.js",
+        "status": 200,
+        "sha256": "e8c4d0147d22dfccb74f7a5aebf9443f6733433f91f3a14ba099d4a4dc480f50",
+        "matchesArtifact": true
+      }
+    ]
+  },
+  "browser": {
+    "verifiedAt": "2026-09-09T05:10:08.419Z",
+    "url": "https://www.paperbanana.asia/",
+    "sourceSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+    "browser": "Codex in-app browser",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "checks": {
+      "openaiFourNewEntriesBeforeImage2": true,
+      "openai1K2K4KAnd16to9": true,
+      "falTwoModelsAnd4K16to9": true,
+      "replicateTwoModelsNativeSizeSevenFixedRatiosPlusAuto": true,
+      "openrouterTwoModelsGenerationNativeOnly": true,
+      "openrouterSunburstAndFlareRefinementNativeOnly": true,
+      "mobileThreeStepNavigationAndReturn": true,
+      "mobileLongFalIdsWrap": true,
+      "documentHorizontalOverflow": false,
+      "paidInference": false,
+      "uploads": false
+    },
+    "consoleErrors": [],
+    "screenshots": [],
+    "visualEvidence": "Live CUA getScreenshot and accessibility/DOM inspection; no screenshot files archived."
+  },
+  "rollback": {
+    "backupPath": "/opt/paperbanana/backups/image25-20260909T044011Z",
+    "repoSha": "fc962212bfa497aab91c770a4edfa7050c027e93",
+    "mode": "0700",
+    "fileMode": "0600"
+  },
+  "boundaries": {
+    "paidModelCalls": 0,
+    "benchmarkExecutionEnabled": false,
+    "productionUploads": 0,
+    "productionUserDataMutations": 0,
+    "emailsSent": 0,
+    "miniProgramPublished": false,
+    "miniProgramSourceSynchronized": true,
+    "newModelVerificationState": "catalog",
+    "newModelVerified": false
+  }
+}
