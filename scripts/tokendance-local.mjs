@@ -1,4 +1,4 @@
-// Local paid preview: real Better Auth, persistent Mongo/files and real TokenDance.
+// Local paid preview: production accounts, persistent local jobs/files and real TokenDance.
 // Run from apps/paperbanana-api: node --import tsx ../../scripts/tokendance-local.mjs
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -9,7 +9,7 @@ import path from 'node:path';
 import os from 'node:os';
 import http from 'node:http';
 import { once } from 'node:events';
-import { createAuthRuntime } from '../apps/auth-gateway/src/auth.js';
+import { createProductionAuthBridge } from './lib/tokendance-production-auth.mjs';
 import { createApp as createGateway } from '../apps/auth-gateway/src/app.js';
 import { createBackendClient } from '../apps/auth-gateway/src/backend-client.js';
 import { createServer as createCore } from '../apps/paperbanana-api/src/server.ts';
@@ -128,13 +128,12 @@ core.listen(0, '127.0.0.1'); await once(core, 'listening');
 const backend = createBackendClient({ mode: 'node', url: 'http://127.0.0.1:' + core.address().port + '/paperbanana-api', gatewayToken: secrets.transport, timeoutMs: 40000 });
 const config = {
   production: false, trustProxy: false, frontendOrigins: [webBase, apiBase], adminUserIds: new Set(),
-  authBaseUrl: apiBase, authSecret: secrets.auth, mongoUri, mongoDbName: 'tuyan_tokendance_local_auth', cookieSameSite: 'lax',
-  authEmail: { deliveryEnabled: false, requireVerification: false, verificationCallbackUrl: webBase + '/account/email-verified.html' },
   guestCookie: { name: 'tuyan_local_guest', secret: secrets.guest, ttlSeconds: 86400, secure: false },
   backend: { mode: 'node' }, maintenance: { retryAfterSeconds: 30 },
   oss: { bucket: 'tuyan-local', publicEndpoint: apiBase, allowLegacyExternalRefineUrl: false },
 };
-const auth = await createAuthRuntime(config, { logger });
+const auth = await createProductionAuthBridge({ db, secret: secrets.auth, apiBase, frontendOrigins: config.frontendOrigins });
+await auth.ready();
 const api = express();
 api.disable('x-powered-by');
 api.use((req, res, next) => {
@@ -167,7 +166,7 @@ Object.assign(process.env, { VITE_API_BASE: apiBase, VITE_AUTH_BASE: apiBase, VI
 const vite = await createVite({ root: path.join(root, 'apps/web'), server: { host: '127.0.0.1', port: 5173, strictPort: true }, logLevel: 'error' });
 await vite.listen();
 console.log('TokenDance real-consumption local preview ready: ' + webBase);
-console.log('Local account database and encrypted keys persist on this Mac. Model calls occur only after user submission.');
+console.log('Connected to production account service. Preview jobs and encrypted keys persist on this Mac; model calls require user submission.');
 let closing = false;
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => {
   if (closing) return; closing = true;

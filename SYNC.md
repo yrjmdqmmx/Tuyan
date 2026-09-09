@@ -1,5 +1,12 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-09] TokenDance 本地预览改接正式账号服务 — by Codex
+根据用户要求，本地真实消费预览从独立账号库改为使用正式图研账号。固定 loopback 账号代理校验本地 Host/Origin，只转发允许的账号操作到固定正式 HTTPS 接口；上游 Cookie 加密保存在本机，浏览器仅保存 HttpOnly 随机会话标识，受保护请求重新确认正式身份及账号生命周期。注册/找回密码保留正式站点回调，解决独立本地认证拒绝该地址产生的 Invalid redirectURL。正式账号管理引导回正式站点；本次预览任务、图片和 TokenDance 授权仍在本机，绑定正式账号不可变 ID。未修改线上部署、正式 CORS 配置或公开 API 契约。
+- [x] 本地运行器 / 账号代理 / Web 提示与账号入口，见 [本地消费预览](docs/tokendance/local-preview.md)
+- [x] 代理 9 项回归、Web 367 项及构建；正式服务匿名查询与随机不存在账号的负向登录通过，未自动创建正式账号或发送邮件
+- [x] Core / 共享类型 / 小程序兼容性核对：沿用既有可信身份和 TokenDance 契约，无本轮修改或小程序发布
+- [ ] 用户正式账号正向登录、真实 TokenDance 授权及消费（页面已打开，需用户自行输入凭据和发起消费）
+
 ### [2026-09-09] TokenDance 本地真实消费预览 — by Codex
 新增本机运行器：真实 Better Auth、本地持久 Mongo 与签名文件存储，正式 Gateway/Core 和真实 TokenDance OAuth/余额/模型/支付适配器。稳定加密配置保存在仓库外的私有目录。仅开发环境使用 VITE_LOCAL_CONSUMPTION_TEST 展示消费提示，并初始选择 TokenDance、单候选、零评审；没有新增生产 API 契约。用户自行授权和点击发起消费，未部署生产。
 - [x] Web 本地入口、运行器及说明，见 [本地消费预览](docs/tokendance/local-preview.md)

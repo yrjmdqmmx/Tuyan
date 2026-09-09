@@ -47,6 +47,7 @@ import {
   BENCH_ENABLED,
   CLIENT_VERSION,
   CUSTOM_API_BASE_ENABLED,
+  LOCAL_CONSUMPTION_TEST,
   authClient,
   logoUrl,
 } from './config';
@@ -104,7 +105,6 @@ const AdminWorkspace = lazy(() => import('./components/admin/AdminWorkspace'));
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
 const RefinePanel = lazy(() => import('./components/RefinePanel'));
-const LOCAL_CONSUMPTION_TEST = import.meta.env?.DEV && import.meta.env?.VITE_LOCAL_CONSUMPTION_TEST === 'true';
 const INITIAL_PROVIDER = LOCAL_CONSUMPTION_TEST ? 'tokendance' : 'bailian';
 
 const INPUT_OPTIMIZATION_TARGET_LABELS = Object.freeze({
@@ -1480,7 +1480,7 @@ export default function App() {
 
   return (
     <main className="app-shell">
-      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label="本地消费测试"><strong>本地消费测试 · 使用真实 TokenDance 余额</strong><p>先注册或登录本地测试账号，再连接你已有的 TokenDance 账号。点击生成、精修或优化输入会产生实际模型费用。</p><small>本地账号、任务和图片保存在本机。初始为 1 张候选图、0 轮评审，可在设置中调整。</small></section>}
+      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label="本地消费测试"><strong>已连接正式图研账号服务 · TokenDance 消费预览</strong><p>使用你已有的图研账号登录，再连接 TokenDance。生成、精修和优化输入会使用真实 TokenDance 余额。</p><small>本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">正式图研</a>查看。初始为 1 张候选图、0 轮评审。</small></section>}
       <header className="paper-header">
         <div className="brand">
           <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
@@ -1545,6 +1545,7 @@ export default function App() {
         <Suspense fallback={null}>
           <AccountSettingsDialog
             apiBase={apiBaseNormalized}
+            productionPreview={LOCAL_CONSUMPTION_TEST}
             email={currentUser.email || ''}
             onClose={() => setShowAccountDialog(false)}
             onDeleted={handleAccountDeleted}
