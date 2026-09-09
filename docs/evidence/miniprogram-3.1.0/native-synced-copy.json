@@ -1,0 +1,20 @@
+{
+  "projectRoot": "/Users/a1-6/WeChatProjects/miniprogram-9",
+  "sourceCodeCommit": "b9e2ab938f091033554b92b786bfd0893a88f5e5",
+  "verifiedAt": "2026-09-09T07:15:18.728Z",
+  "clientVersion": "miniprogram-3.1.0",
+  "page": "pages/guide/guide",
+  "guideVersion": "miniprogram-3.1.0",
+  "registryVersion": "2026-09-09.v16",
+  "registryError": "",
+  "authenticationMutation": false,
+  "storageReadByTest": false,
+  "storageWriteByTest": false,
+  "productionWrite": false,
+  "cuaRecompile": {
+    "unsupportedSelectorWarnings": false,
+    "objectPropertyWarnings": false,
+    "wxmlCompileErrors": false,
+    "existingLibraryTimeout": true
+  }
+}
