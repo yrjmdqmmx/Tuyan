@@ -1,5 +1,7 @@
 # TokenDance 本地验证记录
 
+后续发布：2026-09-09 已完成 Core/Gateway/Web/SG 生产发布，实际 SHA `2c518f9`；最终 Core 481、小程序 28。以下为初始本地验证时点记录，最新部署和真实联调边界以 [生产发布记录](../releases/2026-09-09-tokendance.md) 为准。
+
 日期：2026-09-09。代码位于独立分支 codex/tokendance-integration-20260909，基于 origin/main 27aa954d168e7e0ed05d6b2251965161f8d66e30。16:33（北京时间）重新 fetch 后主线未变。原桌面工作区及上轮发布 worktree 保留，没有合并无关 #183 改动。
 
 ## 状态
