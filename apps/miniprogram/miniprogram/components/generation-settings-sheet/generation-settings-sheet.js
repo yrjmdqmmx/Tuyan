@@ -29,7 +29,7 @@ Component({
         draft: null,
         minimaxRegionOptions: [{ value: 'global', label: '国际' }, { value: 'cn', label: '中国大陆' }],
         minimaxRegionIndex: 0, minimaxApiBase: '',
-        providerOptions: model_registry_1.MODEL_PROVIDER_IDS.map((value) => ({ value, label: PROVIDER_LABELS[value] })),
+        providerOptions: (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map((value) => ({ value, label: PROVIDER_LABELS[value] })),
         providerIndex: 0,
         routeRows: [],
         ratioOptions: [],
@@ -85,7 +85,7 @@ Component({
             const registry = this.getRegistry();
             if (!draft || !registry)
                 return;
-            const providerOptions = model_registry_1.MODEL_PROVIDER_IDS.filter((id) => {
+            const providerOptions = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).filter((id) => {
                 var _a;
                 const defaults = (_a = registry.providers[id]) === null || _a === void 0 ? void 0 : _a.defaults;
                 return (defaults === null || defaults === void 0 ? void 0 : defaults.main) && (defaults === null || defaults === void 0 ? void 0 : defaults.image) && (defaults === null || defaults === void 0 ? void 0 : defaults.vision);

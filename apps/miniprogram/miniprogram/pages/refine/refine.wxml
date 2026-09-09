@@ -1,5 +1,5 @@
-<button class="registry-retry" bindtap="openTokenDance">TokenDance 连接与钱包</button>
 <scroll-view class="page refine-page" scroll-y type="list">
+  <view class="td-refine-account"><text>观猹 TokenDance</text><button class="ghost-button" size="mini" bindtap="openTokenDance">账户与钱包</button></view>
   <view class="refine-hero"><view class="refine-kicker">INDEPENDENT REFINE</view><view class="refine-title">精修你的研究图示</view><view class="refine-sub">从本人任务结果继续编辑；源文件优先通过 objectKey 锁定，签名链接仅用于预览。</view></view>
   <view class="registry-banner ready" wx:if="{{registryReady}}">模型目录 {{registryVersion}}</view><view class="registry-banner error" wx:else>{{registryError || '正在读取模型目录'}}<button class="registry-retry" bindtap="retryRegistry">重试</button></view>
   <view class="section">

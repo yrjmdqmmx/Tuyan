@@ -16,10 +16,13 @@ let callbackPromise;
 export function useTokenDance(apiBase, userId, ready) {
   const [connection, setConnection] = useState({ connected: false, available: false });
   const [wallet, setWallet] = useState(null), [payment, setPayment] = useState(null);
+  const [payments, setPayments] = useState([]), [historyLoaded, setHistoryLoaded] = useState(false);
   const [error, setError] = useState(''), [notice, setNotice] = useState(''), [busy, setBusy] = useState(false);
   const currentUser = useRef(userId); currentUser.current = userId;
   const context = `${apiBase}\0${userId || ''}`;
   const currentContext = useRef(context); currentContext.current = context;
+  const operations = useRef({ context, count: 0 });
+  if (operations.current.context !== context) operations.current = { context, count: 0 };
   const [stateContext, setStateContext] = useState(context);
   const endpoint = apiBase.endsWith('/paperbanana-api') ? apiBase : `${apiBase}/paperbanana-api`;
   const request = useCallback(async (action, body = {}) => {
@@ -36,7 +39,7 @@ export function useTokenDance(apiBase, userId, ready) {
     return result;
   }, [request, userId]);
   useEffect(() => {
-    setConnection({ connected: false, available: false }); setWallet(null); setPayment(null); setError(''); setNotice(''); setBusy(false); setStateContext(context);
+    setConnection({ connected: false, available: false }); setWallet(null); setPayment(null); setPayments([]); setHistoryLoaded(false); setError(''); setNotice(''); setBusy(false); setStateContext(context);
     if (ready && userId) refresh().catch(() => {});
   }, [ready, userId, refresh]);
   useEffect(() => {
@@ -44,7 +47,7 @@ export function useTokenDance(apiBase, userId, ready) {
     if (!callbackPromise) callbackPromise = request(callback.cancelled ? 'tokenDanceCancel' : 'tokenDanceExchange', callback).finally(() => { callback.code = ''; });
     callbackPromise.then(() => {
       if (currentUser.current !== userId) return;
-      setNotice(callback.cancelled ? 'TokenDance 授权已取消。' : 'TokenDance 已连接，可以选择模型。');
+      setNotice(callback.cancelled ? '观猹 TokenDance 授权已取消。' : '观猹 TokenDance 已连接，可以选择模型。');
       refresh().catch(() => {});
       const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('tuyan-tokendance') : null;
       channel?.postMessage('connection-changed'); channel?.close();
@@ -59,11 +62,13 @@ export function useTokenDance(apiBase, userId, ready) {
     return () => { window.removeEventListener('focus', refreshOnFocus); channel?.close(); };
   }, [refresh]);
   async function perform(operation) {
-    setBusy(true); setError('');
-    try { return await operation(); } catch (err) { if (currentContext.current === context) setError(err.message); return null; } finally { if (currentContext.current === context) setBusy(false); }
+    if (currentContext.current !== context) return null;
+    operations.current.count++;
+    setBusy(true); setError(''); setNotice('');
+    try { return await operation(); } catch (err) { if (currentContext.current === context) setError(err.message); return null; } finally { if (currentContext.current === context) { operations.current.count--; setBusy(operations.current.count > 0); } }
   }
   async function authorize() {
-    if (!userId) { setError('请先登录图研，再连接 TokenDance。'); return; }
+    if (!userId) { setError('请先登录图研，再连接观猹 TokenDance。'); return; }
     const popup = window.open('about:blank', 'tuyan-tokendance', 'popup,width=680,height=760');
     await perform(async () => {
       try {
@@ -74,19 +79,33 @@ export function useTokenDance(apiBase, userId, ready) {
     });
   }
   async function balance() { return perform(async () => { const result = await request('tokenDanceBalance'); setWallet(result.wallet); return result; }); }
-  async function disconnect() { return perform(async () => { await request('tokenDanceDisconnect'); setWallet(null); setPayment(null); await refresh(); setNotice('已解除图研连接。若需撤销远端 Key，请前往 TokenDance 密钥管理。'); }); }
+  async function disconnect() { return perform(async () => { await request('tokenDanceDisconnect'); setWallet(null); setPayment(null); setPayments([]); setHistoryLoaded(false); await refresh(); setNotice('已解除图研连接。若需撤销远端 Key，请前往观猹 TokenDance 密钥管理。'); }); }
   async function createPayment(amount) {
     return perform(async () => {
       const result = await request('tokenDancePaymentCreate', { amount, attemptId: crypto.randomUUID() });
-      setPayment(result); return result;
+      setPayment(result); setPayments(rows => [result, ...rows.filter(row => row.attemptId !== result.attemptId)].slice(0, 10)); return result;
     });
   }
   async function recoverPayment() {
     return perform(async () => {
       const result = await request('tokenDancePayments');
-      const row = result.payments.find(item => item.session);
-      if (row) setPayment(row);
-      else setNotice(result.payments.some(item => item.state === 'unknown' || item.state === 'creating') ? '存在创建结果未确认的订单，请到 TokenDance 核对，暂不重复创建。' : '暂无充值订单。');
+      setPayments(result.payments); setHistoryLoaded(true);
+      const row = result.payments.find(item => item.session?.status === 'pending');
+      setPayment(previous => result.payments.find(item => item.attemptId === previous?.attemptId) || row || null);
+      if (result.payments.some(item => item.state === 'unknown' || item.state === 'creating')) setNotice('存在创建结果未确认的订单，请到观猹 TokenDance 核对，暂不重复创建。');
+      return result;
+    });
+  }
+  async function paymentStatus(attemptId = payment?.attemptId) {
+    if (!attemptId) return;
+    return perform(async () => {
+      const result = await request('tokenDancePaymentStatus', { attemptId });
+      setPayment(result);
+      setPayments(rows => rows.map(row => row.attemptId === attemptId ? { ...row, ...result } : row));
+      if (result.session?.status === 'paid') {
+        const result = await request('tokenDanceBalance'); setWallet(result.wallet);
+        setNotice('充值已确认到账。可以返回原任务继续。');
+      }
       return result;
     });
   }
@@ -98,7 +117,11 @@ export function useTokenDance(apiBase, userId, ready) {
         const result = await request('tokenDancePaymentStatus', { attemptId: payment.attemptId });
         if (cancelled) return;
         setPayment(result);
-        if (result.session.status === 'paid') { setNotice('充值已确认到账。可以恢复原任务。'); balance(); }
+        setPayments(rows => rows.map(row => row.attemptId === result.attemptId ? { ...row, ...result } : row));
+        if (result.session.status === 'paid') {
+          const result = await request('tokenDanceBalance');
+          if (!cancelled) { setWallet(result.wallet); setNotice('充值已确认到账。可以返回原任务继续。'); }
+        }
         else if (result.session.status === 'pending' && result.session.expired_at * 1000 > Date.now()) timer = setTimeout(tick, 3000);
         else if (result.session.status === 'pending') setNotice('支付会话已过期，请查询最终状态后再创建新订单。');
       } catch (err) { if (!cancelled) setError(err.message); }
@@ -106,8 +129,8 @@ export function useTokenDance(apiBase, userId, ready) {
     timer = setTimeout(tick, 3000);
     return () => { cancelled = true; clearTimeout(timer); };
   }, [payment?.attemptId, payment?.session?.status, request, userId]);
-  const state = stateContext === context ? { connection, wallet, payment, error, notice, busy } : { connection: { connected: false, available: false }, wallet: null, payment: null, error: '', notice: '', busy: false };
-  return { ...state, authorize, disconnect, balance, createPayment, recoverPayment, request, perform, userId };
+  const state = stateContext === context ? { connection, wallet, payment, payments, historyLoaded, error, notice, busy } : { connection: { connected: false, available: false }, wallet: null, payment: null, payments: [], historyLoaded: false, error: '', notice: '', busy: false };
+  return { ...state, authorize, disconnect, balance, createPayment, recoverPayment, paymentStatus, request, perform, userId };
 }
 
 export function isTokenDanceWalletEntry(search) { return new URLSearchParams(search).has('tokendance_wallet'); }

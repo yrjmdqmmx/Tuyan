@@ -14,10 +14,10 @@ export class TokenDanceError extends Error {
 
 export function tokenDanceFailure(status: number, action = '', retryAfter = '') {
   const messages: Record<string, string> = {
-    top_up_balance: 'TokenDance 钱包余额不足，请充值后恢复任务。',
-    reauthorize_api_key: 'TokenDance 授权已过期、被禁用或失效，请重新授权。',
-    api_key_quota: 'TokenDance Key 的额度已用尽，请调整 Key 限额或重新授权；充值不改变 Key 限额。',
-    rate_limit: 'TokenDance 请求频率受限，请稍后恢复。',
+    top_up_balance: '观猹 TokenDance 钱包余额不足，请充值后恢复任务。',
+    reauthorize_api_key: '观猹 TokenDance 授权已过期、被禁用或失效，请重新授权。',
+    api_key_quota: '观猹 TokenDance Key 的额度已用尽，请调整 Key 限额或重新授权；充值不改变 Key 限额。',
+    rate_limit: '观猹 TokenDance 请求频率受限，请稍后恢复。',
   }
   const recovery = Object.hasOwn(messages, action) ? action as TokenDanceRecovery : status === 429 ? 'rate_limit' : status === 401 ? 'reauthorize_api_key' : undefined
   const seconds = /^\d+$/.test(retryAfter) ? Number(retryAfter) : Math.max(0, Math.ceil((Date.parse(retryAfter) - Date.now()) / 1000))
@@ -32,13 +32,13 @@ export function tokenDanceAmount(value: unknown): number {
 export function tokenDanceBalance(value: any) {
   const balance = value?.balance
   for (const key of ['credits', 'credits_used', 'balance']) {
-    if (typeof balance?.[key] !== 'number' || !Number.isSafeInteger(balance[key])) throw new TokenDanceError(502, 'TokenDance 余额格式暂不可识别。')
+    if (typeof balance?.[key] !== 'number' || !Number.isSafeInteger(balance[key])) throw new TokenDanceError(502, '观猹 TokenDance 余额格式暂不可识别。')
   }
   return { ...Object.fromEntries(['credits', 'credits_used', 'balance'].map(key => [key, balance[key]])), unit: 'microyuan', microyuanPerYuan: 1_000_000, keyLimit: null, keyLimitStatus: 'not_available' }
 }
 
 export async function tokenDanceResponse(fetcher: typeof fetch, path: string, key: string, body?: unknown, signal?: AbortSignal): Promise<Response> {
-  if (!path.startsWith('/gateway/') && !path.startsWith('/portal/api/v1/')) throw new TokenDanceError(400, '不受支持的 TokenDance 请求。')
+  if (!path.startsWith('/gateway/') && !path.startsWith('/portal/api/v1/')) throw new TokenDanceError(400, '不受支持的观猹 TokenDance 请求。')
   let response: Response
   try {
     response = await fetcher(TOKENDANCE_ORIGIN + path, {
@@ -48,7 +48,7 @@ export async function tokenDanceResponse(fetcher: typeof fetch, path: string, ke
       signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(600_000)]) : AbortSignal.timeout(600_000),
     })
   } catch {
-    throw new TokenDanceError(502, body === undefined ? 'TokenDance 暂时无法连接。' : 'TokenDance 请求结果不确定，请先核对调用或订单记录，避免重复扣费。', body === undefined ? undefined : 'review_request', 0, body !== undefined)
+    throw new TokenDanceError(502, body === undefined ? '观猹 TokenDance 暂时无法连接。' : '观猹 TokenDance 请求结果不确定，请先核对调用或订单记录，避免重复扣费。', body === undefined ? undefined : 'review_request', 0, body !== undefined)
   }
   if (!response.ok) {
     // Never include the upstream body: providers may echo credentials or prompts.
@@ -60,7 +60,7 @@ export async function tokenDanceResponse(fetcher: typeof fetch, path: string, ke
 
 export async function tokenDanceJson(response: Response, maxBytes = 2 * 1024 * 1024): Promise<any> {
   const reader = response.body?.getReader()
-  if (!reader) throw new TokenDanceError(502, 'TokenDance 返回空响应。', 'review_request', 0, true)
+  if (!reader) throw new TokenDanceError(502, '观猹 TokenDance 返回空响应。', 'review_request', 0, true)
   let size = 0, text = ''
   const decoder = new TextDecoder()
   try {
@@ -74,7 +74,7 @@ export async function tokenDanceJson(response: Response, maxBytes = 2 * 1024 * 1
     return JSON.parse(text + decoder.decode())
   } catch {
     await reader.cancel().catch(() => {})
-    throw new TokenDanceError(502, 'TokenDance 响应未完整接收，请核对调用记录。', 'review_request', 0, true)
+    throw new TokenDanceError(502, '观猹 TokenDance 响应未完整接收，请核对调用记录。', 'review_request', 0, true)
   }
 }
 
@@ -88,7 +88,7 @@ export function tokenDanceChatBody(model: string, system: string, user: string, 
   tokenDanceModel(model, images.length ? 'vision' : 'main')
   // Three is Tuyan's reference limit, not a claimed upstream maximum.
   if (images.length > 8) throw new TokenDanceError(400, '本次图像分析输入超过图研的 8 张组合上限。')
-  for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw new TokenDanceError(400, 'TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
+  for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw new TokenDanceError(400, '观猹 TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
   return { model, messages: [{ role: 'system', content: system }, { role: 'user', content: images.length ? [{ type: 'text', text: user }, ...images.map(image => ({ type: 'image_url', image_url: { url: image.url } }))] : user }], stream }
 }
 

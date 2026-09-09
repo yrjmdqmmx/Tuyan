@@ -31,10 +31,10 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
   const flows = db.collection<any>('paperbanana_tokendance_flows')
   const payments = db.collection<any>('paperbanana_tokendance_payments')
   const callback = new URL(callbackUrl)
-  if (callback.origin !== new URL(TOKENDANCE_APP_URL).origin && !['localhost', '127.0.0.1'].includes(callback.hostname)) throw new Error('TokenDance callback must be first party or explicit local test URL')
+  if (callback.origin !== new URL(TOKENDANCE_APP_URL).origin && !['localhost', '127.0.0.1'].includes(callback.hostname)) throw new Error('观猹 TokenDance callback must be first party or explicit local test URL')
   if (callback.hash || callback.username || callback.password) throw new Error('Invalid TokenDance callback URL')
   const request = async (path: string, key: string, body?: unknown) => tokenDanceJson(await tokenDanceResponse(fetcher, path, key, body, AbortSignal.timeout(30_000)))
-  const enabled = () => { if (!cipher) throw new TokenDanceError(503, 'TokenDance 连接服务尚未配置。') }
+  const enabled = () => { if (!cipher) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。') }
   const owner = (userId: string) => { if (!/^[A-Za-z0-9._:-]{3,200}$/.test(userId) || userId.startsWith('guest:')) throw new TokenDanceError(401, '请先登录图研。'); return userId }
   async function accepting(userId: string) {
     owner(userId)
@@ -44,7 +44,7 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
   async function credential(userId: string) {
     enabled(); await accepting(userId)
     const row = await connections.findOne({ _id: userId })
-    if (!row) throw new TokenDanceError(401, '请先连接 TokenDance。', 'reauthorize_api_key')
+    if (!row) throw new TokenDanceError(401, '请先连接观猹 TokenDance。', 'reauthorize_api_key')
     return { key: cipher!.open(row.secret, userId).key as string, version: row.version as string }
   }
   async function begin(userId: string, platform: unknown) {
@@ -93,7 +93,7 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
     }
   }
   function validateSession(session: any, expectedAmount: number, expectedId?: string) {
-    if (!session || typeof session.id !== 'string' || !idPattern.test(session.id) || (expectedId && session.id !== expectedId) || session.amount !== expectedAmount || !['pending', 'paid', 'failed', 'closed', 'refunded'].includes(session.status) || !Number.isSafeInteger(session.expired_at) || session.expired_at <= 0 || !Number.isSafeInteger(session.created_at) || session.created_at <= 0) throw new TokenDanceError(502, '支付状态格式无效，请核对 TokenDance 订单。', 'review_request', 0, true)
+    if (!session || typeof session.id !== 'string' || !idPattern.test(session.id) || (expectedId && session.id !== expectedId) || session.amount !== expectedAmount || !['pending', 'paid', 'failed', 'closed', 'refunded'].includes(session.status) || !Number.isSafeInteger(session.expired_at) || session.expired_at <= 0 || !Number.isSafeInteger(session.created_at) || session.created_at <= 0) throw new TokenDanceError(502, '支付状态格式无效，请核对观猹 TokenDance 订单。', 'review_request', 0, true)
     if (session.status_url !== `${TOKENDANCE_ORIGIN}/portal/api/v1/payment/sessions/${session.id}`) throw new TokenDanceError(502, '支付查询地址无效。', 'review_request', 0, true)
     if (session.payment_url && !/^https:\/\//.test(session.payment_url)) throw new TokenDanceError(502, '支付二维码内容无效。')
     if (session.alipay_url && !/^alipays:\/\/platformapi\/startapp\?/.test(session.alipay_url)) throw new TokenDanceError(502, '支付宝地址无效。')
@@ -108,7 +108,7 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
     if (existing) {
       if (existing.amount !== amount) throw new TokenDanceError(409, '支付请求编号与金额不匹配。')
       if (existing.session) return { session: publicSession(existing.session), attemptId }
-      throw new TokenDanceError(409, '支付创建结果尚未确认，请在 TokenDance 核对订单后再操作。', 'review_request', 0, true)
+      throw new TokenDanceError(409, '支付创建结果尚未确认，请在观猹 TokenDance 核对订单后再操作。', 'review_request', 0, true)
     }
     await payments.updateMany({ userId, active: true, expiresAt: { $lte: new Date(now()) } }, { $set: { active: false } })
     const pending = await payments.countDocuments({ userId, active: true, expiresAt: { $gt: new Date(now()) } })
@@ -191,8 +191,8 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
         case 'tokenDanceBalance': return { code: 0, wallet: tokenDanceBalance(await request('/portal/api/v1/user/balance', (await credential(userId)).key)) }
         case 'tokenDancePaymentCreate': return { code: 0, ...await createPayment(userId, body.amount, body.attemptId) }
         case 'tokenDancePaymentStatus': return { code: 0, ...await paymentStatus(userId, body.attemptId) }
-        case 'tokenDancePayments': return { code: 0, payments: (await payments.find({ userId }).sort({ createdAt: -1 }).limit(10).toArray()).map(row => ({ attemptId: row._id.slice(userId.length + 1), amount: row.amount, state: row.state, ...(row.session ? { session: publicSession(row.session) } : {}) })) }
-        default: throw new TokenDanceError(400, '不受支持的 TokenDance 操作。')
+        case 'tokenDancePayments': return { code: 0, payments: (await payments.find({ userId }).sort({ createdAt: -1 }).limit(10).toArray()).map(row => ({ attemptId: row._id.slice(userId.length + 1), amount: row.amount, state: row.state, createdAt: row.createdAt?.toISOString(), checkedAt: row.checkedAt?.toISOString(), ...(row.session ? { session: publicSession(row.session) } : {}) })) }
+        default: throw new TokenDanceError(400, '不受支持的观猹 TokenDance 操作。')
       }
     },
   }

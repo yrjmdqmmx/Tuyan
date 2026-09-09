@@ -41,8 +41,8 @@ test('wallet uses microyuan while payment submits integer yuan and rejects fract
   media(true); const amounts = [];
   render(React.createElement(TokenDancePanel, { controller: controller({ createPayment(amount) { amounts.push(amount); } }) }));
   assert.equal(formatTokenDanceMoney(1_234_567), '1.234567');
-  assert.ok(screen.getByText(/Key 额度需在 TokenDance/));
-  const input = screen.getByRole('spinbutton', { name: 'TokenDance 充值金额' });
+  assert.ok(screen.getByText(/Key 额度需在观猹 TokenDance/));
+  const input = screen.getByRole('spinbutton', { name: '观猹 TokenDance 充值金额' });
   fireEvent.change(input, { target: { value: '1.5' } });
   assert.equal(screen.getByRole('button', { name: '创建 ¥1.5 充值单' }).disabled, true);
   fireEvent.change(input, { target: { value: '10' } });
@@ -94,4 +94,51 @@ test('a task loaded from account history exposes saved-step recovery and actual 
   page.rerender(React.createElement(TaskRecordsPanel, { ...props, jobs: [{ ...job, status: 'running' }] }));
   assert.equal(screen.queryByRole('button', { name: '从已完成步骤继续' }), null);
   assert.ok(screen.getByRole('status'));
+});
+
+test('account history keeps each order and blocks another purchase while creation is uncertain', async () => {
+  media(true);
+  render(React.createElement(TokenDancePanel, { controller: controller({ historyLoaded: true, payments: [
+    { attemptId: 'paid', amount: 20, state: 'paid', session: { ...session, amount: 20, status: 'paid' } },
+    { attemptId: 'unknown', amount: 10, state: 'unknown' },
+  ] }) }));
+  assert.equal(document.querySelectorAll('.td-payment-history li').length, 2);
+  assert.ok(screen.getByText('已确认到账'));
+  assert.ok(screen.getByText('创建结果待核对'));
+  assert.equal(screen.getByRole('button', { name: '创建 ¥10 充值单' }).disabled, true);
+});
+
+test('late history and stale account callbacks never populate or busy-lock the next user', async () => {
+  const original = globalThis.fetch; let finish;
+  globalThis.fetch = async (_url, init) => JSON.parse(init.body).action === 'tokenDancePayments'
+    ? new Promise(resolve => { finish = resolve; }) : Response.json({ connected: true, available: true });
+  try {
+    const hook = renderHook(({ user }) => useTokenDance('https://gateway.example.test', user, true), { initialProps: { user: 'a' } });
+    await waitFor(() => assert.ok(hook.result.current.connection.connected));
+    const previous = hook.result.current; let pending;
+    act(() => { pending = previous.recoverPayment(); });
+    hook.rerender({ user: 'b' });
+    await act(async () => { finish(Response.json({ payments: [{ attemptId: 'private-order-a', amount: 10 }] })); await pending; await previous.balance(); });
+    assert.deepEqual(hook.result.current.payments, []);
+    assert.equal(hook.result.current.busy, false);
+    assert.equal(hook.result.current.error, '');
+    hook.unmount();
+  } finally { globalThis.fetch = original; }
+});
+
+test('account entry keeps a failed balance explanation instead of clearing it with a history refresh', async () => {
+  const original = globalThis.fetch, calls = [];
+  globalThis.fetch = async (_url, init) => {
+    const action = JSON.parse(init.body).action; calls.push(action);
+    if (action === 'tokenDanceStatus') return Response.json({ connected: true, available: true });
+    if (action === 'tokenDanceBalance') return Response.json({ error: '授权已失效，请重新授权。' }, { status: 403 });
+    throw new Error('unexpected request');
+  };
+  function Page() { return React.createElement(TokenDancePanel, { controller: useTokenDance('https://gateway.example.test', 'fixture-owner', true) }); }
+  try {
+    render(React.createElement(Page));
+    await waitFor(() => assert.match(screen.getByRole('alert').textContent, /授权已失效/));
+    assert.equal(calls.includes('tokenDancePayments'), false);
+    assert.equal(screen.getByRole('button', { name: '重新授权' }).disabled, false);
+  } finally { globalThis.fetch = original; }
 });

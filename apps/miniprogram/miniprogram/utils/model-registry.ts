@@ -24,6 +24,8 @@ export interface RegistryModel {
   releasedAt: string | null
   vendorId?: string
   serviceTier?: string
+  releaseKind?: string
+  lifecycleSourceUrl?: string
   releaseFamily?: string
   releaseOrder?: number
   releaseSourceUrl?: string
@@ -141,6 +143,8 @@ function normalizeModel(input: unknown): RegistryModel {
     releasedAt: validReleasedAt(source.releasedAt),
     vendorId: stringValue(source.vendorId),
     serviceTier: stringValue(source.serviceTier),
+    releaseKind: stringValue(source.releaseKind),
+    lifecycleSourceUrl: stringValue(source.lifecycleSourceUrl),
     releaseFamily: stringValue(source.releaseFamily),
     releaseOrder: numberValue(source.releaseOrder),
     releaseSourceUrl: stringValue(source.releaseSourceUrl),

@@ -1,4 +1,3 @@
-<button class="registry-retry" bindtap="openTokenDance">TokenDance 连接与钱包</button>
 <scroll-view class="page workbench-page" scroll-y type="list">
   <view class="paper-header tuyan-header">
     <view class="brand">
@@ -9,7 +8,7 @@
       </view>
     </view>
     <view class="auth-chip logged" wx:if="{{isLoggedIn}}">
-      <text class="auth-dot"></text><text class="auth-email">{{currentUserEmail}}</text><text class="auth-signout" bindtap="signOut">退出</text>
+      <text class="auth-dot"></text><text class="auth-email">{{currentUserEmail}}</text><text class="auth-signout" bindtap="openTokenDance">账户</text>
     </view>
     <button class="auth-chip" wx:else bindtap="openAuthPanel">登录 / 注册</button>
   </view>

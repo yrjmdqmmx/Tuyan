@@ -132,6 +132,12 @@ test('payment units, local idempotency, owner isolation, authoritative paid stat
   assert.equal((await f.request('tokenDancePaymentStatus', body)).session.status, 'pending')
   f.pay(); f.advance(3001)
   assert.equal((await f.request('tokenDancePaymentStatus', body)).session.status, 'paid')
+  const history = (await f.request('tokenDancePayments')).payments
+  assert.equal(history.length, 1)
+  assert.equal(history[0].session.status, 'paid')
+  assert.equal(new Date(history[0].createdAt).toISOString(), history[0].createdAt)
+  assert.ok(Date.parse(history[0].checkedAt) > Date.parse(history[0].createdAt))
+  assert.deepEqual((await f.request('tokenDancePayments', {}, 'other-user')).payments, [])
   f.losePayment()
   await assert.rejects(f.request('tokenDancePaymentCreate', { ...body, attemptId: 'attempt-fixture-0002' }), (e: any) => e.uncertain)
   const count = f.calls.length

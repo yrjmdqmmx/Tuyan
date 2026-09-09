@@ -11,6 +11,15 @@ const presentationReleases = MODEL_PRESENTATION.releases.map((rule) => ({ ...rul
 
 export const MODEL_CHANNEL_LABELS: Record<string, string> = MODEL_PRESENTATION.channels
 
+// Display order only: never use this list to pick a default or replace a route.
+export function orderModelChannels<T extends string>(channels: readonly T[]): T[] {
+  return [...channels.filter(id => id === 'tokendance'), ...channels.filter(id => id !== 'tokendance')]
+}
+
+export function modelLifecycleLabel(lifecycle: string): string {
+  return ({ stable: '稳定版', preview: '预览版', 'invite-only': '邀测', legacy: '旧版维护', deprecated: '即将下线' } as Record<string, string>)[lifecycle] || '状态未知'
+}
+
 export function modelDeveloper(provider: string, model: PresentedModel): { id: string; label: string } {
   const route = presentationRoutes.find((rule) => rule.channels.includes(provider) && rule.regex.test(model.id))
   // Only reviewed namespaces are aliases; Pro and deployment paths are never developers.
@@ -31,7 +40,9 @@ export function presentRegistryModel<T extends PresentedModel>(provider: string,
     vendor: developer.label,
     vendorId: developer.id,
     serviceTier: /^Pro\//i.test(model.id) ? 'Pro' : model.serviceTier || '',
-    releasedAt: release?.releasedAt || validModelReleaseDate(model.releasedAt) || null,
+    releasedAt: release ? validModelReleaseDate(release.releasedAt) || null : validModelReleaseDate(model.releasedAt) || null,
+    lifecycle: release?.lifecycle || model.lifecycle,
+    releaseKind: release?.releaseKind || model.releaseKind || '',
     releaseSourceUrl: release?.source || model.releaseSourceUrl || '',
     releaseFamily: family?.id || '',
     releaseOrder: order >= 0 ? family!.patterns.length - order : 0,
@@ -60,8 +71,9 @@ export function validModelReleaseDate(value: unknown): string {
 
 // A stable topological order combines known dates with explicit version relations.
 // Unlike a pairwise date-or-version comparator, this cannot become non-transitive.
-// Official dates win if a version relation conflicts. Ties retain catalog order;
-// neither recommendation badges nor lexicographic API IDs influence chronology.
+// Official dates win if a version relation conflicts. IDs only break otherwise
+// indistinguishable ties, so refreshing a shuffled catalog cannot reorder them.
+// IDs and recommendation/selection state never establish version relations.
 export function sortModelsNewestFirst<T extends PresentedModel>(models: readonly T[]): T[] {
   const nodes = models.map((model, index) => ({ model, index, date: validModelReleaseDate(model.releasedAt), next: new Set<number>(), incoming: 0 }))
   function edge(from: number, to: number) {
@@ -101,7 +113,7 @@ export function sortModelsNewestFirst<T extends PresentedModel>(models: readonly
     ready.sort((a, b) => Number(Boolean(b.date)) - Number(Boolean(a.date))
       || b.date.localeCompare(a.date)
       || Number(Boolean(b.model.releaseOrder)) - Number(Boolean(a.model.releaseOrder))
-      || a.index - b.index)
+      || (a.model.id < b.model.id ? -1 : a.model.id > b.model.id ? 1 : 0))
     const node = ready.shift()!
     result.push(node.model)
     for (const next of node.next) if (--nodes[next].incoming === 0) ready.push(nodes[next])

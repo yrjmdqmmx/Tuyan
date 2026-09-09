@@ -92,6 +92,8 @@ function normalizeModel(input) {
         releasedAt: validReleasedAt(source.releasedAt),
         vendorId: stringValue(source.vendorId),
         serviceTier: stringValue(source.serviceTier),
+        releaseKind: stringValue(source.releaseKind),
+        lifecycleSourceUrl: stringValue(source.lifecycleSourceUrl),
         releaseFamily: stringValue(source.releaseFamily),
         releaseOrder: numberValue(source.releaseOrder),
         releaseSourceUrl: stringValue(source.releaseSourceUrl),

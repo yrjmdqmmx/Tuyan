@@ -1,3 +1,4 @@
+import { orderModelChannels } from '../../utils/model-presentation'
 import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance, optimizeTokenDanceInput } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestHealth, requestJson, uploadReferenceFile } from '../../utils/api'
@@ -11,7 +12,7 @@ import {
   PIPELINE_OPTIONS,
   PLOT_CATEGORY_ID,
   PLOT_NOTE,
-  PROVIDERS,
+  PROVIDERS as CATALOG_PROVIDERS,
   QUICK_START_EXAMPLES,
   REFERENCE_IMAGE_LIMITS,
   REFERENCE_IMAGE_MODES,
@@ -81,26 +82,28 @@ interface GenerationSettings {
   numCandidates: number
   maxCriticRounds: number
 }
+const DEFAULT_PROVIDER = CATALOG_PROVIDERS[0]
+const PROVIDERS = orderModelChannels(CATALOG_PROVIDERS.map(item => item.id)).map(id => CATALOG_PROVIDERS.find(item => item.id === id)!)
 const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft'
 
 Component({
   data: {
     logoSrc: '/images/logo.png',
     providers: PROVIDERS,
-    providerIndex: 0,
-    providerLabel: PROVIDERS[0].label,
-    providerMainModel: PROVIDERS[0].mainModel,
-    providerImageModel: PROVIDERS[0].imageModel,
-    providerGuideSteps: PROVIDERS[0].guideSteps,
-    mainModelOptions: PROVIDERS[0].mainModels,
-    mainModelIndex: getModelIndex(PROVIDERS[0].mainModels, PROVIDERS[0].mainModel),
-    mainModelLabel: getModelLabel(PROVIDERS[0].mainModels, PROVIDERS[0].mainModel),
-    imageModelOptions: PROVIDERS[0].imageModels,
-    imageModelIndex: getModelIndex(PROVIDERS[0].imageModels, PROVIDERS[0].imageModel),
-    imageModelLabel: getModelLabel(PROVIDERS[0].imageModels, PROVIDERS[0].imageModel),
-    referenceVisionModelOptions: PROVIDERS[0].visionModels,
-    referenceVisionModelIndex: getModelIndex(PROVIDERS[0].visionModels, PROVIDERS[0].visionModel),
-    referenceVisionModelLabel: getModelLabel(PROVIDERS[0].visionModels, PROVIDERS[0].visionModel),
+    providerIndex: PROVIDERS.findIndex(item => item.id === DEFAULT_PROVIDER.id),
+    providerLabel: DEFAULT_PROVIDER.label,
+    providerMainModel: DEFAULT_PROVIDER.mainModel,
+    providerImageModel: DEFAULT_PROVIDER.imageModel,
+    providerGuideSteps: DEFAULT_PROVIDER.guideSteps,
+    mainModelOptions: DEFAULT_PROVIDER.mainModels,
+    mainModelIndex: getModelIndex(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+    mainModelLabel: getModelLabel(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+    imageModelOptions: DEFAULT_PROVIDER.imageModels,
+    imageModelIndex: getModelIndex(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+    imageModelLabel: getModelLabel(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+    referenceVisionModelOptions: DEFAULT_PROVIDER.visionModels,
+    referenceVisionModelIndex: getModelIndex(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
+    referenceVisionModelLabel: getModelLabel(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
     configurationMode: 'simple' as ConfigurationMode,
     isAdvancedMode: false,
     pipelineOptions: PIPELINE_OPTIONS,
@@ -120,7 +123,7 @@ Component({
     outputFormatIndex: 0,
     outputFormatLabel: OUTPUT_FORMATS[0].label,
     // 输出清晰度：1K 仅基础渲染；2K/4K 出图后自动精修放大。选项按 provider/图像模型过滤。
-    resolutionOptions: RESOLUTION_OPTIONS.filter((option) => supportedResolutions(PROVIDERS[0].id, PROVIDERS[0].imageModel).indexOf(option.value) >= 0),
+    resolutionOptions: RESOLUTION_OPTIONS.filter((option) => supportedResolutions(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.imageModel).indexOf(option.value) >= 0),
     resolutionIndex: 0,
     imageSize: '1K' as ImageSize,
     imageSizeLabel: RESOLUTION_OPTIONS.find((option) => option.value === '1K')!.label,
@@ -133,7 +136,7 @@ Component({
     showReferenceLibrary: false,
     libraryTaskName: 'diagram',
     referenceImageModeOptions: REFERENCE_IMAGE_MODES,
-    referenceImageMode: defaultReferenceImageMode(mainModelCanReadImages(PROVIDERS[0].id, PROVIDERS[0].mainModel)),
+    referenceImageMode: defaultReferenceImageMode(mainModelCanReadImages(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel)),
     referenceImages: [] as ReferenceImage[],
     referenceImageCount: 0,
     referenceCanAddImage: true,
@@ -141,14 +144,14 @@ Component({
     referenceModeCanSubmit: true,
     referenceNeedsVisionModel: false,
     shouldShowReferenceModeSelector: false,
-    canSelectMainModelDirect: mainModelCanReadImages(PROVIDERS[0].id, PROVIDERS[0].mainModel),
+    canSelectMainModelDirect: mainModelCanReadImages(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel),
     referenceUploadError: '',
     isUploadingReferences: false,
-    mainModelName: PROVIDERS[0].mainModel,
-    imageModelName: PROVIDERS[0].imageModel,
-    referenceVisionModelName: PROVIDERS[0].visionModel,
+    mainModelName: DEFAULT_PROVIDER.mainModel,
+    imageModelName: DEFAULT_PROVIDER.imageModel,
+    referenceVisionModelName: DEFAULT_PROVIDER.visionModel,
     apiKey: '',
-    apiKeyPlaceholder: PROVIDERS[0].keyPlaceholder,
+    apiKeyPlaceholder: DEFAULT_PROVIDER.keyPlaceholder,
     categories: INFOGRAPHIC_CATEGORIES,
     categoryIndex: 0,
     categoryLabel: INFOGRAPHIC_CATEGORIES[0].label,
@@ -413,7 +416,7 @@ Component({
     },
     onProviderChange(event: WechatMiniprogram.PickerChange) {
       const providerIndex = readPickerIndex(event.detail.value, PROVIDERS.length)
-      const provider = PROVIDERS[providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[providerIndex] || DEFAULT_PROVIDER
       this.setData({
         providerIndex,
         providerLabel: provider.label,
@@ -513,7 +516,7 @@ Component({
 
     // provider / 图像生成模型 / 模式切换时重算清晰度可选项；当前档位不被支持时收敛到第一档
     refreshResolutionOptions() {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const activeImageModel = this.data.isAdvancedMode
         ? this.data.imageModelName.trim() || provider.imageModel
         : provider.imageModel
@@ -573,7 +576,7 @@ Component({
     },
 
     onMainModelChange(event: WechatMiniprogram.PickerChange) {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const mainModelIndex = readPickerIndex(event.detail.value, provider.mainModels.length)
       const option = provider.mainModels[mainModelIndex] || provider.mainModels[0]
       this.setData({
@@ -588,7 +591,7 @@ Component({
     },
 
     onImageModelChange(event: WechatMiniprogram.PickerChange) {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const imageModelIndex = readPickerIndex(event.detail.value, provider.imageModels.length)
       const option = provider.imageModels[imageModelIndex] || provider.imageModels[0]
       this.setData({
@@ -601,7 +604,7 @@ Component({
     },
 
     onReferenceVisionModelChange(event: WechatMiniprogram.PickerChange) {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const referenceVisionModelIndex = readPickerIndex(event.detail.value, provider.visionModels.length)
       const option = provider.visionModels[referenceVisionModelIndex] || provider.visionModels[0]
       this.setData({

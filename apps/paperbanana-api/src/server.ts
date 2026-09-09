@@ -223,7 +223,7 @@ export function createApp({
       try {
         const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || ''
         if (tokenDanceAction) {
-          if (!tokenDance) throw new TokenDanceError(503, 'TokenDance 连接服务尚未配置。')
+          if (!tokenDance) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。')
           if (action === 'tokenDanceResume') {
             if (!providerWorkflow || !resumeTokenDanceJob) throw new TokenDanceError(503, '任务恢复服务暂不可用。')
             return response.json(await providerWorkflow.resume(String(body.jobId || ''), userId, resumeTokenDanceJob))
@@ -232,14 +232,14 @@ export function createApp({
         }
         body.userId = userId
         if (!requiresTokenDanceCredential || await requiresTokenDanceCredential(body)) {
-          if (!tokenDance) throw new TokenDanceError(503, 'TokenDance 连接服务尚未配置。')
+          if (!tokenDance) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。')
           const credential = await tokenDance.credential(userId)
           body.apiKeys = { ...(body.apiKeys as object || {}), tokendance: credential.key }
           if (action === 'optimizeInputs') body.apiKey = credential.key
         }
       } catch (error: any) {
         const status = error?.name === 'TokenDanceError' ? error.status : 503
-        return response.status(status).json({ code: status, error: error?.name === 'TokenDanceError' ? error.message : 'TokenDance 服务暂不可用。', recoveryAction: error?.recoveryAction, retryAfterSeconds: error?.retryAfterSeconds || 0, uncertain: Boolean(error?.uncertain) })
+        return response.status(status).json({ code: status, error: error?.name === 'TokenDanceError' ? error.message : '观猹 TokenDance 服务暂不可用。', recoveryAction: error?.recoveryAction, retryAfterSeconds: error?.retryAfterSeconds || 0, uncertain: Boolean(error?.uncertain) })
       }
     }
     if (action === 'getJob' && providerWorkflow) await providerWorkflow.reconcile(String(body.jobId || ''))

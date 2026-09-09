@@ -11,7 +11,7 @@ export function compareTokenDanceCatalog(approved, live) {
     newModels: live.data.filter(m => !old.has(m.id)).map(m => m.id).sort(),
     retiredModels: approved.models.filter(m => !next.has(m.id)).map(m => m.id).sort(),
     protocolChanges: live.data.filter(m => old.has(m.id) && protocols(m) !== protocols(old.get(m.id))).map(m => m.id).sort(),
-    metadataReview: live.data.filter(m => old.has(m.id) && (m.description !== old.get(m.id).description || m.context_length !== old.get(m.id).context_length)).map(m => m.id).sort(),
+    metadataReview: live.data.filter(m => old.has(m.id) && (m.name !== old.get(m.id).name || m.description !== old.get(m.id).description || m.context_length !== old.get(m.id).context_length)).map(m => m.id).sort(),
     liveCount: live.data.length,
   }
 }

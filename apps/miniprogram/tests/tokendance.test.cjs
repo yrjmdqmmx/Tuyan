@@ -57,3 +57,25 @@ test('mini payment polling never overlaps and server-owned TD keys are omitted f
   assert.deepEqual(scopedApiKeysForRoles(routes, ['main', 'image', 'vision'], { tokendance: 'must-not-send', openai: 'fixture-openai' }), { openai: 'fixture-openai' })
   assert.deepEqual(requiredCreateRouteRoles({ taskName: 'plot', imageSize: '3K', imageRefineMode: 'direct-edit' }, 0), ['main', 'image'])
 })
+
+test('mini account lists all orders, queries the selected order and blocks uncertain duplicate creation', async () => {
+  const calls = [];
+  const f = pageFixture(async body => {
+    calls.push(body);
+    if (body.action === 'tokenDancePayments') return { payments: [
+      { attemptId: 'one', amount: 10, state: 'paid', session: { amount: 10, status: 'paid' } },
+      { attemptId: 'two', amount: 20, state: 'unknown' },
+    ] };
+    if (body.action === 'tokenDancePaymentStatus') return { session: { amount: 10, status: 'refunded' } };
+    throw new Error('unexpected request');
+  });
+  await f.page.recentPayments();
+  assert.equal(f.page.data.payments.length, 2);
+  await f.page.createPayment();
+  assert.equal(calls.some(body => body.action === 'tokenDancePaymentCreate'), false);
+  await f.page.queryHistoryPayment({ currentTarget: { dataset: { attemptId: 'one' } } });
+  assert.equal(calls.at(-1).attemptId, 'one');
+  assert.equal(f.page.data.payments[0].statusText, '已退款');
+  assert.equal(f.page.data.payments[1].state, 'unknown');
+  f.close();
+});

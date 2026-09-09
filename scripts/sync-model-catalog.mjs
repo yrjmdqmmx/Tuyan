@@ -20,7 +20,7 @@ const presentationData = `export const MODEL_PRESENTATION: {
   vendors: Record<string, {label: string; aliases: string[]; source: string; legalName?: string; parentCompany?: string}>;
   routes: {channels: string[]; pattern: string; vendorId: string; source: string}[];
   families: {id: string; vendorId: string; newestFirst: string[]; source: string}[];
-  releases: {vendorId: string; pattern: string; releasedAt: string; source: string; channels?: string[]}[];
+  releases: {vendorId: string; pattern: string; releasedAt: string | null; source: string; channels?: string[]; lifecycle?: string; releaseKind?: string}[];
   reviewedAt: string;
 } = ${JSON.stringify(presentation)}\n`
 write(path.join(root, 'packages/types/src/model-presentation-data.ts'), '// Generated from config/model-presentation.json\n' + presentationData)
@@ -53,7 +53,7 @@ config.providers.tokendance = [...tokenDanceCatalog.models].filter(m => m.roles.
     roles:m.roles.filter(role => ['main','vision','image'].includes(role)), protocol:image?'ark-images':'openai-chat-completions',
     availabilityNotes:'官方目录及协议已核对，真实调用待验证。'+m.conflicts.join(''),
     capabilities:{referenceImages:vision||image,maxReferenceImages:vision?3:image?1:0,imageGeneration:image,imageEditing:image,imageEditMode:image?'direct-edit':'none',outputFormats:image?['png']:[],...(image?{providerMaxReferenceImages:m.id.endsWith('pro')?10:14}:{})},
-    metadata:{vendor:m.vendorId,lifecycle:/preview|exp/.test(m.id)?'preview':'stable',verified:false,verificationState:'catalog',officialSourceUrl:m.sourceUrl,inputModalities:m.inputModalities,outputModalities:m.outputModalities,regions:['tokendance-global']}}
+    metadata:{vendor:m.vendorId,lifecycle:m.lifecycle || 'unknown',releaseKind:m.releaseKind || '',lifecycleSourceUrl:m.lifecycleSourceUrl,verified:false,verificationState:'catalog',officialSourceUrl:m.sourceUrl,inputModalities:m.inputModalities,outputModalities:m.outputModalities,regions:['tokendance-global']}}
 })
 const tokenDanceModels = 'export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = ' + JSON.stringify(tokenDanceCatalog.models.map(m => ({id:m.id, roles:m.roles, protocols:m.supported_protocols}))) + '\n'
 write(path.join(root, 'packages/api/src/tokendance-models.ts'), '// Generated from config/tokendance/catalog.json\n' + tokenDanceModels)

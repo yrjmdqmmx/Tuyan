@@ -1610,9 +1610,9 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   const openaiOrdered = openai.providers.openai.models.filter((model: any) => model.roles.includes('main'))
   assert.deepEqual(openaiOrdered.slice(0, 4).map((model: any) => [model.id, model.releasedAt]), [
     ['gpt-6-astra', '2026-09-03'],
+    ['gpt-5.6-luna', '2026-07-09'],
     ['gpt-5.6-sol', '2026-07-09'],
     ['gpt-5.6-terra', '2026-07-09'],
-    ['gpt-5.6-luna', '2026-07-09'],
   ])
   assert.equal(openaiOrdered[0].releaseOrder > openaiOrdered[1].releaseOrder, true)
 
@@ -1723,7 +1723,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-09.v17')
+    assert.equal(result.registryVersion, '2026-09-09.v18')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2916,12 +2916,12 @@ test('OpenRouter official releases sort first without promoting recommendation b
       response: { setHeader() {}, status() {} },
     })
     assert.deepEqual(registry.providers.openrouter.models.map((model: any) => model.id), [
-      'google/gemini-3.7-flash', 'openai/gpt-5.6-sol', 'vendor/zeta', 'vendor/alpha', 'sourceful/riverflow-v2.5-pro',
+      'google/gemini-3.7-flash', 'openai/gpt-5.6-sol', 'sourceful/riverflow-v2.5-pro', 'vendor/alpha', 'vendor/zeta',
     ])
     assert.equal(registry.providers.openrouter.models.length, 5)
     assert.equal(registry.providers.openrouter.models[0].recommended, true)
     assert.equal(registry.providers.openrouter.models[1].recommended, true)
-    assert.equal(registry.providers.openrouter.models[4].recommended, true)
+    assert.equal(registry.providers.openrouter.models.find((model: any) => model.id === 'sourceful/riverflow-v2.5-pro').recommended, true)
     assert.deepEqual(registry.providers.openrouter.defaults, {
       main: 'openai/gpt-5.6-sol',
       image: 'sourceful/riverflow-v2.5-pro',
@@ -2973,7 +2973,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-09.v17')
+    assert.equal(registry.registryVersion, '2026-09-09.v18')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5311,7 +5311,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-09.v17')
+    assert.equal(registry.registryVersion, '2026-09-09.v18')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities

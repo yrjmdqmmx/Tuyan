@@ -235,7 +235,7 @@ export function createApp({
       if (['tokenDanceStatus', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDanceCancel', 'tokenDanceDisconnect', 'tokenDanceBalance', 'tokenDancePaymentCreate', 'tokenDancePaymentStatus', 'tokenDancePayments', 'tokenDanceResume'].includes(action)) {
         const origin = request.get('origin');
         if (origin && !config.frontendOrigins.includes(origin)) return response.status(403).json({ code: 403, error: '不受信任的请求来源。' });
-        if (backend.mode !== 'node') return response.status(503).json({ code: 503, error: 'TokenDance 需要 Node Core 连接服务。' });
+        if (backend.mode !== 'node') return response.status(503).json({ code: 503, error: '观猹 TokenDance 需要 Node Core 连接服务。' });
         const session = await requireSession(auth, request);
         return relay(response, await backend.call(request.body, context, { authUserId: String(session.user.id), timeoutMs: 40_000 }));
       }

@@ -76,12 +76,13 @@ datedFixture.providers.openai.models[1].replacementModelId = 'next-image'
 datedFixture.providers.openai.models[1].regions = ['cn-beijing']
 datedFixture.providers.openai.models[1].roleProtocols = { image: 'openai-images' }
 const dated = normalizeModelRegistry(datedFixture)
+const datedImage = dated.providers.openai.models.find(item => item.id === datedFixture.providers.openai.models[1].id)
 assert.equal(partitionRegistryModels(dated.providers.openai.models, { role: 'main' }).compatible.length, 0)
 assert.equal(partitionRegistryModels(dated.providers.openai.models, { role: 'image' }).compatible.length, 1)
-assert.equal(dated.providers.openai.models[1].earliestRetirementDate, '2000-01-01')
-assert.equal(dated.providers.openai.models[1].replacementModelId, 'next-image')
-assert.deepEqual(dated.providers.openai.models[1].roleProtocols, { image: 'openai-images' })
-assert.deepEqual(dated.providers.openai.models[1].regions, ['cn-beijing'])
+assert.equal(datedImage.earliestRetirementDate, '2000-01-01')
+assert.equal(datedImage.replacementModelId, 'next-image')
+assert.deepEqual(datedImage.roleProtocols, { image: 'openai-images' })
+assert.deepEqual(datedImage.regions, ['cn-beijing'])
 
 const originalNow = Date.now
 const zoneFixture = registry()

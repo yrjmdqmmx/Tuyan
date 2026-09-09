@@ -1,1 +1,4 @@
-{"navigationBarTitleText":"TokenDance 连接与钱包","usingComponents":{}}
+{
+  "navigationBarTitleText": "账户",
+  "usingComponents": { "account-settings": "/components/account-settings/account-settings" }
+}

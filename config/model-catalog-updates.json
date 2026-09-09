@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-09.v17",
+  "version": "2026-09-09.v18",
   "providers": {
     "deepseek": [],
     "kimi": [],
@@ -18649,7 +18649,7 @@
       ]
     },
     "tokendance": {
-      "label": "TokenDance",
+      "label": "观猹 TokenDance",
       "accessKind": "aggregator",
       "guideUrl": "https://tokendance.space/docs/api-key-oauth",
       "textBaseUrl": "https://tokendance.space/gateway/v1",
