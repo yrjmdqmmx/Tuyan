@@ -1,4 +1,5 @@
-import { MODEL_CHANNEL_LABELS } from '../../utils/model-presentation'
+import { openTokenDance } from '../../utils/tokendance'
+import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { MINIMAX_REGIONS, minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions, type ProviderRegions } from '../../utils/provider-regions'
 import { buildAspectRatioOptions, buildResolutionOptions, normalizeSelectedAspectRatio } from '../../utils/aspect-ratios'
@@ -40,7 +41,7 @@ Component({
     draft: null as SettingsDraft | null,
     minimaxRegionOptions: [{value:'global',label:'国际'}, {value:'cn',label:'中国大陆'}],
     minimaxRegionIndex: 0, minimaxApiBase: '',
-    providerOptions: MODEL_PROVIDER_IDS.map((value) => ({ value, label: PROVIDER_LABELS[value] })),
+    providerOptions: orderModelChannels(MODEL_PROVIDER_IDS).map((value) => ({ value, label: PROVIDER_LABELS[value] })),
     providerIndex: 0,
     routeRows: [] as Array<{ role: ModelRole; label: string; provider: string; providerLabel: string; modelId: string; modelLabel: string }>,
     ratioOptions: [] as Array<{ value: string; label: string }>,
@@ -58,6 +59,7 @@ Component({
     criticOptions: [{ value: 0, label: '0 轮' }, { value: 1, label: '1 轮' }, { value: 2, label: '2 轮' }],
     criticIndex: 1,
     keyFields: [] as Array<{ provider: string; label: string; value: string; placeholder: string }>,
+    encryptedRecovery: false,
     draftKeys: {} as Record<string, string>,
     draftManualReferenceIds: [] as string[],
     showModelPicker: false,
@@ -69,6 +71,7 @@ Component({
     verifyingArk: false,
   },
   methods: {
+    openTokenDance,
     noop() {},
     // Keep full capability metadata in the logic-layer store, outside setData.
     getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.data.draft?.providerRegions) },
@@ -92,7 +95,7 @@ Component({
       const draft = this.data.draft
       const registry = this.getRegistry()
       if (!draft || !registry) return
-      const providerOptions = MODEL_PROVIDER_IDS.filter((id) => {
+      const providerOptions = orderModelChannels(MODEL_PROVIDER_IDS).filter((id) => {
         const defaults = registry.providers[id]?.defaults
         return defaults?.main && defaults?.image && defaults?.vision
       }).map((value) => ({ value, label: PROVIDER_LABELS[value] }))
@@ -122,7 +125,7 @@ Component({
       const missing = missingArkVerifications(probes, getArkVerification())
       const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
       this.setData({
-        draft, routeRows, ratioOptions, resolutionOptions, keyFields,
+        draft, routeRows, ratioOptions, resolutionOptions, keyFields, encryptedRecovery: providers.includes('tokendance'),
         providerOptions,
         minimaxRegionIndex: minimaxRegion(draft.providerRegions) === 'cn' ? 1 : 0,
         minimaxApiBase: MINIMAX_REGIONS[minimaxRegion(draft.providerRegions)].apiBase,

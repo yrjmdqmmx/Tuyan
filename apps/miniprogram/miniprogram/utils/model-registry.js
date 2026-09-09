@@ -7,7 +7,7 @@ exports.partitionRegistryModels = partitionRegistryModels;
 exports.groupRegistryModels = groupRegistryModels;
 exports.findRegistryModel = findRegistryModel;
 const model_presentation_1 = require("./model-presentation");
-exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'];
+exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'];
 function normalizeModelRegistry(input) {
     const source = asRecord(input);
     const registryVersion = stringValue(source.registryVersion);
@@ -92,6 +92,8 @@ function normalizeModel(input) {
         releasedAt: validReleasedAt(source.releasedAt),
         vendorId: stringValue(source.vendorId),
         serviceTier: stringValue(source.serviceTier),
+        releaseKind: stringValue(source.releaseKind),
+        lifecycleSourceUrl: stringValue(source.lifecycleSourceUrl),
         releaseFamily: stringValue(source.releaseFamily),
         releaseOrder: numberValue(source.releaseOrder),
         releaseSourceUrl: stringValue(source.releaseSourceUrl),

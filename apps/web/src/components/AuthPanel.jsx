@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AlertTriangle, Loader2, MailCheck, ShieldCheck } from 'lucide-react';
-import { authClient } from '../config';
+import { authClient, LOCAL_CONSUMPTION_TEST } from '../config';
 import { formatErrorMessage } from '../utils';
 import { useEmailVerificationStatus } from '../hooks/useEmailVerificationStatus';
 
@@ -104,7 +104,7 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
   const forgot = mode === 'forgot';
   return (
     <section className="auth-panel">
-      <div className="section-head"><ShieldCheck size={22} /><div><h2>{forgot ? '忘记密码' : isSignUp ? '注册账号' : '登录账号'}</h2><p>{forgot ? '输入邮箱后，我们会发送密码重置链接。' : '登录后可同步任务记录与账号数据。'}</p></div></div>
+      <div className="section-head"><ShieldCheck size={22} /><div><h2>{forgot ? '忘记密码' : isSignUp ? '注册账号' : '登录账号'}</h2><p>{forgot ? '输入邮箱后，我们会发送密码重置链接。' : LOCAL_CONSUMPTION_TEST ? '使用现有图研账号登录；注册、邮箱验证和找回密码由正式账号服务处理。' : '登录后可同步任务记录与账号数据。'}</p></div></div>
       <form className="auth-form" onSubmit={submitAuth}>
         {isSignUp ? <label className="field"><span>昵称</span><input className="auth-name-input" value={name} onChange={(event) => setName(event.target.value)} placeholder="可选" autoComplete="name" maxLength={24} /></label> : null}
         <label className="field"><span>邮箱</span><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" required /></label>

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tokendance_1 = require("../../utils/tokendance");
 const model_presentation_1 = require("../../utils/model-presentation");
 const model_registry_store_1 = require("../../utils/model-registry-store");
 const provider_regions_1 = require("../../utils/provider-regions");
@@ -28,7 +29,7 @@ Component({
         draft: null,
         minimaxRegionOptions: [{ value: 'global', label: '国际' }, { value: 'cn', label: '中国大陆' }],
         minimaxRegionIndex: 0, minimaxApiBase: '',
-        providerOptions: model_registry_1.MODEL_PROVIDER_IDS.map((value) => ({ value, label: PROVIDER_LABELS[value] })),
+        providerOptions: (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map((value) => ({ value, label: PROVIDER_LABELS[value] })),
         providerIndex: 0,
         routeRows: [],
         ratioOptions: [],
@@ -46,6 +47,7 @@ Component({
         criticOptions: [{ value: 0, label: '0 轮' }, { value: 1, label: '1 轮' }, { value: 2, label: '2 轮' }],
         criticIndex: 1,
         keyFields: [],
+        encryptedRecovery: false,
         draftKeys: {},
         draftManualReferenceIds: [],
         showModelPicker: false,
@@ -57,6 +59,7 @@ Component({
         verifyingArk: false,
     },
     methods: {
+        openTokenDance: tokendance_1.openTokenDance,
         noop() { },
         // Keep full capability metadata in the logic-layer store, outside setData.
         getRegistry() { var _a; return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, (_a = this.data.draft) === null || _a === void 0 ? void 0 : _a.providerRegions); },
@@ -82,7 +85,7 @@ Component({
             const registry = this.getRegistry();
             if (!draft || !registry)
                 return;
-            const providerOptions = model_registry_1.MODEL_PROVIDER_IDS.filter((id) => {
+            const providerOptions = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).filter((id) => {
                 var _a;
                 const defaults = (_a = registry.providers[id]) === null || _a === void 0 ? void 0 : _a.defaults;
                 return (defaults === null || defaults === void 0 ? void 0 : defaults.main) && (defaults === null || defaults === void 0 ? void 0 : defaults.image) && (defaults === null || defaults === void 0 ? void 0 : defaults.vision);
@@ -113,7 +116,7 @@ Component({
             const missing = (0, model_routing_1.missingArkVerifications)(probes, (0, ark_verification_1.getArkVerification)());
             const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : '';
             this.setData({
-                draft, routeRows, ratioOptions, resolutionOptions, keyFields,
+                draft, routeRows, ratioOptions, resolutionOptions, keyFields, encryptedRecovery: providers.includes('tokendance'),
                 providerOptions,
                 minimaxRegionIndex: (0, provider_regions_1.minimaxRegion)(draft.providerRegions) === 'cn' ? 1 : 0,
                 minimaxApiBase: provider_regions_1.MINIMAX_REGIONS[(0, provider_regions_1.minimaxRegion)(draft.providerRegions)].apiBase,

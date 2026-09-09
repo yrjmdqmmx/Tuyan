@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tokendance_1 = require("../../utils/tokendance");
 const api_1 = require("../../utils/api");
 const constants_1 = require("../../utils/constants");
 const jobs_1 = require("../../utils/jobs");
@@ -30,6 +31,23 @@ Component({
         },
     },
     methods: {
+        openTokenDance: tokendance_1.openTokenDance,
+        async resumeJob() {
+            var _a, _b;
+            if (!((_b = (_a = this.data.job) === null || _a === void 0 ? void 0 : _a.recovery) === null || _b === void 0 ? void 0 : _b.canResume) || this.resuming)
+                return;
+            this.resuming = true;
+            try {
+                await (0, api_1.requestJson)({ action: 'tokenDanceResume', jobId: this.data.jobId });
+                this.startPolling();
+            }
+            catch (error) {
+                this.setData({ error: (0, api_1.formatError)(error) });
+            }
+            finally {
+                this.resuming = false;
+            }
+        },
         onLoad(options) {
             const jobId = String(options.jobId || '');
             if (!jobId) {

@@ -35,6 +35,7 @@ const ADMIN_BACKEND_ACTIONS = new Set([
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['adminTaskFollowup', 'adminCommunityEdit', 'adminBenchmarkPromptDecision', 'importReferences', 'evaluateJob', 'initDatabase']);
 const MAINTENANCE_ACTIONS = new Set([
+  'tokenDanceResume', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDancePaymentCreate',
   'createJob',
   'refineImage',
   'prepareReferenceUpload',
@@ -227,6 +228,17 @@ export function createApp({
           tasks: ops ? { available: true, ...ops.tasks } : { available: false, error: '任务统计暂不可用' }, community: ops?.community || { available: false, error: '社区统计暂不可用' }, asOf: new Date().toISOString() });
       }
 
+      if (action === 'adminTokenDancePricing') {
+        const session = await requireAdmin(config, auth, request);
+        return relay(response, await backend.call({ action }, context, { adminAction: true, adminUserId: String(session.user.id) }));
+      }
+      if (['tokenDanceStatus', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDanceCancel', 'tokenDanceDisconnect', 'tokenDanceBalance', 'tokenDancePaymentCreate', 'tokenDancePaymentStatus', 'tokenDancePayments', 'tokenDanceResume'].includes(action)) {
+        const origin = request.get('origin');
+        if (origin && !config.frontendOrigins.includes(origin)) return response.status(403).json({ code: 403, error: '不受信任的请求来源。' });
+        if (backend.mode !== 'node') return response.status(503).json({ code: 503, error: '观猹 TokenDance 需要 Node Core 连接服务。' });
+        const session = await requireSession(auth, request);
+        return relay(response, await backend.call(request.body, context, { authUserId: String(session.user.id), timeoutMs: 40_000 }));
+      }
       if (action === 'adminUsers') {
         await requireAdmin(config, auth, request);
         return response.status(200).json({ code: 0, ...(await auth.listUsers(request.body)) });
@@ -269,10 +281,9 @@ export function createApp({
       }
 
       if (action === 'optimizeInputs') {
-        return relay(
-          response,
-          await backend.call(normalizeOptimizeInputsBody(request.body), context, { timeoutMs: 50_000 }),
-        );
+        const td = request.body?.mainRoute?.accessProvider === 'tokendance';
+        const session = td ? await requireSession(auth, request) : null;
+        return relay(response, await backend.call({ ...normalizeOptimizeInputsBody(request.body), ...(td ? { userId: String(session.user.id) } : {}) }, context, { timeoutMs: 50_000, ...(td ? { authUserId: String(session.user.id) } : {}) }));
       }
 
       if (action === 'submitFeedback') {
@@ -297,6 +308,8 @@ export function createApp({
         action === 'abortReferenceUpload' ||
         action === 'providerAccountCatalog'
       ) {
+        const td = request.body?.provider === 'tokendance' || Object.values(request.body?.modelRoutes || {}).some(route => route?.accessProvider === 'tokendance');
+        if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const body = action === 'createJob'
           ? normalizeCreateJobBody(request.body)
@@ -312,11 +325,14 @@ export function createApp({
               userEmail: principal.userEmail,
             },
             context,
+            td ? { authUserId: principal.userId } : {},
           ),
         );
       }
 
       if (action === 'refineImage') {
+        const td = request.body?.provider === 'tokendance' || Object.values(request.body?.modelRoutes || {}).some(route => route?.accessProvider === 'tokendance');
+        if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const source = normalizeRefineSource(request.body, {
           backendMode: backend.mode,
@@ -352,7 +368,7 @@ export function createApp({
           delete body.sourceImageUrl;
           delete body.sourceImageObjectKey;
         } else delete body.sourceImageUpload;
-        return relay(response, await backend.call(body, context));
+        return relay(response, await backend.call(body, context, td ? { authUserId: principal.userId } : {}));
       }
 
       if (action === 'getJob') {
@@ -395,6 +411,7 @@ export function createApp({
               limit: request.body?.limit || 50,
             },
             context,
+            { authUserId: String(session.user.id || '') },
           ),
         );
       }

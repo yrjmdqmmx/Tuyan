@@ -548,7 +548,9 @@ exports.OUTPUT_FORMATS = [
 exports.RESOLUTION_OPTIONS = [
     { label: '512（预览）', value: '512' },
     { label: '1K（标准）', value: '1K' },
+    { label: '1.5K', value: '1.5K' },
     { label: '2K（高清）', value: '2K' },
+    { label: '3K', value: '3K' },
     { label: '4K（超清）', value: '4K' },
     { label: '原生尺寸', value: 'auto' },
 ];

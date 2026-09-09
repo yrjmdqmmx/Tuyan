@@ -4349,6 +4349,46 @@
       "tiers": {
         "auto": {}
       }
+    },
+    "tokendance-seedream-5-pro": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "1.5K": {
+          "targetPixels": 2359296
+        },
+        "2K": {
+          "targetPixels": 4194304
+        }
+      },
+      "minPixels": 921600,
+      "maxPixels": 4624220,
+      "maxRatio": 16,
+      "alignment": 1,
+      "separator": "x",
+      "auto": "tier"
+    },
+    "tokendance-seedream-5-lite": {
+      "mode": "pixels",
+      "tiers": {
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "3K": {
+          "targetPixels": 9437184
+        },
+        "4K": {
+          "targetPixels": 16777216
+        }
+      },
+      "minPixels": 3686400,
+      "maxPixels": 16777216,
+      "maxRatio": 16,
+      "alignment": 1,
+      "separator": "x",
+      "auto": "tier"
     }
   },
   "routes": {
@@ -6945,6 +6985,26 @@
         "https://replicate.com/openai/gpt-image-2.5-flare/api/schema"
       ],
       "notes": "依据本渠道新型号 schema；直接编辑使用独立 editing 路由。"
+    },
+    "tokendance/seedream-5.0-pro": {
+      "generation": "tokendance-seedream-5-pro",
+      "editing": "tokendance-seedream-5-pro",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://tokendance.space/docs/ark-image-generations",
+        "https://ark.volcengine.com/region:cn-beijing/docs/82379/1541523?lang=zh"
+      ],
+      "notes": "TokenDance 精确模型 ID；单图 PNG；Ark 生成与编辑同端点。"
+    },
+    "tokendance/seedream-5.0-lite": {
+      "generation": "tokendance-seedream-5-lite",
+      "editing": "tokendance-seedream-5-lite",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://tokendance.space/docs/ark-image-generations",
+        "https://ark.volcengine.com/region:cn-beijing/docs/82379/1541523?lang=zh"
+      ],
+      "notes": "TokenDance 精确模型 ID；单图 PNG；Ark 生成与编辑同端点。"
     }
   }
 }

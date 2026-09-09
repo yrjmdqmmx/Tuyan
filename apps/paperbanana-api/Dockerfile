@@ -15,6 +15,7 @@ RUN pnpm install --filter @paperbanana/paperbanana-api... --frozen-lockfile
 COPY apps/paperbanana-api apps/paperbanana-api
 COPY apps/laf-functions/paperbanana-api.ts apps/laf-functions/paperbanana-api.ts
 COPY packages/benchmark-core packages/benchmark-core
+COPY packages/api/src/tokendance*.ts packages/api/src/
 RUN pnpm --filter @paperbanana/paperbanana-api build
 RUN pnpm --filter @paperbanana/paperbanana-api deploy --prod --legacy /opt/paperbanana-api
 RUN printf '%s' "$PAPERBANANA_CODE_SHA" | grep -Eq '^[0-9a-f]{40}$' && printf '{"codeSha":"%s"}\n' "$PAPERBANANA_CODE_SHA" > /opt/paperbanana-api/build-provenance.json && chmod 0444 /opt/paperbanana-api/build-provenance.json

@@ -8,7 +8,7 @@
       </view>
     </view>
     <view class="auth-chip logged" wx:if="{{isLoggedIn}}">
-      <text class="auth-dot"></text><text class="auth-email">{{currentUserEmail}}</text><text class="auth-signout" bindtap="signOut">退出</text>
+      <text class="auth-dot"></text><text class="auth-email">{{currentUserEmail}}</text><text class="auth-signout" bindtap="openTokenDance">账户</text>
     </view>
     <button class="auth-chip" wx:else bindtap="openAuthPanel">登录 / 注册</button>
   </view>
@@ -46,7 +46,7 @@
 
     <view class="field">
       <view class="field-label-row"><view class="field-label">研究方法与流程</view><view class="field-count">{{methodContent.length}} / 12000</view></view>
-      <textarea class="textarea method-textarea-v1" maxlength="12000" show-confirm-bar="{{false}}" cursor-spacing="20" value="{{methodContent}}" placeholder="粘贴论文方法部分，描述模块、数据流、实验步骤与输入输出…" bindinput="onMethodInput" />
+      <textarea class="textarea method-textarea-v1" maxlength="12000" show-confirm-bar="{{false}}" cursor-spacing="20" value="{{methodContent}}" placeholder="粘贴论文方法部分，描述模块、数据流、实验步骤与输入输出…" bindinput="onMethodInput" /><button class="registry-retry" bindtap="optimizeDescription">优化方法描述</button>
     </view>
 
     <view class="field">
@@ -109,3 +109,5 @@
 <generation-settings-sheet show="{{showGenerationSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
 
 <movable-area class="fab-area"><movable-view class="feedback-fab" direction="all" x="{{fabX}}" y="{{fabY}}" inertia bindtap="openFeedbackPanel">反馈</movable-view></movable-area>
+
+<view wx:if="{{job.recovery}}" class="error-box">{{job.recovery.message}}<navigator url="/pages/job-detail/job-detail?jobId={{job.id}}">查看原任务并恢复</navigator></view>

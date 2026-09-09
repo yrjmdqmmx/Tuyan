@@ -270,7 +270,7 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
     assert.equal(result.providers.ark.defaults.main, 'doubao-seed-2-1-pro-260628')
     assert.equal(Object.hasOwn(result.providers, 'openrouter'), false)
-    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。' })
+    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。', tokendance: 'TokenDance 实时目录暂不可用，请稍后刷新。' })
     assert.doesNotMatch(JSON.stringify(result), /OpenRouter model metadata|request failed/)
   } finally {
     legacy.configureRuntimeFetch()
@@ -1243,7 +1243,7 @@ test('refinement rejects noncanonical image sizes before persistence or provider
         headers: {}, response: { setHeader() {}, status() {} },
       })
       await legacy.drainJobAdmission()
-      assert.deepEqual(result, { code: 400, error: 'Invalid imageSize. Must be 512, 1K, 2K, 4K, or auto.' }, String(imageSize))
+      assert.deepEqual(result, { code: 400, error: 'Invalid imageSize. Must be 512, 1K, 1.5K, 2K, 3K, 4K, or auto.' }, String(imageSize))
     }
     assert.equal(state.inserts.length, 0)
     assert.equal(providerCalls, 0)
@@ -1610,9 +1610,9 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   const openaiOrdered = openai.providers.openai.models.filter((model: any) => model.roles.includes('main'))
   assert.deepEqual(openaiOrdered.slice(0, 4).map((model: any) => [model.id, model.releasedAt]), [
     ['gpt-6-astra', '2026-09-03'],
+    ['gpt-5.6-luna', '2026-07-09'],
     ['gpt-5.6-sol', '2026-07-09'],
     ['gpt-5.6-terra', '2026-07-09'],
-    ['gpt-5.6-luna', '2026-07-09'],
   ])
   assert.equal(openaiOrdered[0].releaseOrder > openaiOrdered[1].releaseOrder, true)
 
@@ -1723,7 +1723,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-09.v16')
+    assert.equal(result.registryVersion, '2026-09-09.v18')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2916,12 +2916,12 @@ test('OpenRouter official releases sort first without promoting recommendation b
       response: { setHeader() {}, status() {} },
     })
     assert.deepEqual(registry.providers.openrouter.models.map((model: any) => model.id), [
-      'google/gemini-3.7-flash', 'openai/gpt-5.6-sol', 'vendor/zeta', 'vendor/alpha', 'sourceful/riverflow-v2.5-pro',
+      'google/gemini-3.7-flash', 'openai/gpt-5.6-sol', 'sourceful/riverflow-v2.5-pro', 'vendor/alpha', 'vendor/zeta',
     ])
     assert.equal(registry.providers.openrouter.models.length, 5)
     assert.equal(registry.providers.openrouter.models[0].recommended, true)
     assert.equal(registry.providers.openrouter.models[1].recommended, true)
-    assert.equal(registry.providers.openrouter.models[4].recommended, true)
+    assert.equal(registry.providers.openrouter.models.find((model: any) => model.id === 'sourceful/riverflow-v2.5-pro').recommended, true)
     assert.deepEqual(registry.providers.openrouter.defaults, {
       main: 'openai/gpt-5.6-sol',
       image: 'sourceful/riverflow-v2.5-pro',
@@ -2973,7 +2973,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-09.v16')
+    assert.equal(registry.registryVersion, '2026-09-09.v18')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5311,7 +5311,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-09.v16')
+    assert.equal(registry.registryVersion, '2026-09-09.v18')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6515,6 +6515,8 @@ test('channel extensions: runtime dispatches every new selectable image option u
     const url=String(input),headers=new Headers(init?.headers)
     const body=init?.body instanceof FormData?Object.fromEntries(init.body.entries()):init?.body?JSON.parse(String(init.body)):undefined
     calls.push({url,body,headers})
+    if(url==='https://tokendance.space/gateway/v1/models')return Response.json({data:JSON.parse(fs.readFileSync(path.resolve(packageRoot,'../../config/tokendance/catalog.json'),'utf8')).models})
+    if(url==='https://tokendance.space/gateway/ark/v3/images/generations'){assert.equal(headers.get('X-App-URL'),'https://www.paperbanana.asia/');return Response.json({model:body.model,data:[{b64_json:raster}]})}
     if(url.startsWith('https://asset.invalid/')){assert.equal(headers.has('Authorization'),false);assert.equal(headers.has('x-key'),false);return new Response(Buffer.from(raster,'base64'),{headers:{'Content-Type':'image/png'}})}
     if(url.includes('/chat/completions'))return Response.json({choices:[{message:{content:'A scientific diagram.'},finish_reason:'stop'}]})
     if(url.startsWith('https://api.bfl.ai/v1/'))return Response.json({id:'fixture',polling_url:'https://api.us1.bfl.ai/v1/get_result?id=fixture'})

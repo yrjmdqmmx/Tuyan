@@ -5,7 +5,7 @@ import ResultFigure from './ResultFigure';
 import StatusBadge from './StatusBadge';
 import { formatClientPlatform } from '@paperbanana/api';
 
-export default function JobTable({ jobs, showUser, apiBase, onUseForRefine }) {
+export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, renderRecovery }) {
   return (
     <div className="job-table">
       {!jobs.length ? <div className="job-empty">暂无任务记录</div> : null}
@@ -91,8 +91,10 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine }) {
           </div>
 
           {item.status === 'failed' && (item.error || item.logs_tail) ? (
-            <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(item.error || lastDiagnosticLine(item.logs_tail))}</div>
+            <div className="error-line"><AlertTriangle size={16} /> {item.recovery?.message || formatErrorMessage(item.error || lastDiagnosticLine(item.logs_tail))}</div>
           ) : null}
+          {renderRecovery?.(item)}
+          {item.providerCalls?.length > 0 && <details><summary>模型调用记录</summary>{item.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {call.actualModel || '未返回实际型号'}<br />请求编号：{call.requestId || '未返回'}；供应商：{call.supplier || '未返回'}</p>)}</details>}
 
           {(item.reference_images || []).some((image) => image.url) ? (
             <div className="job-record-images">

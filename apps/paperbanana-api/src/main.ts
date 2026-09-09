@@ -1,3 +1,5 @@
+import { createTokenDanceService } from './tokendance-service.js'
+import { createProviderWorkflow } from './provider-workflow.js'
 import type { Db } from 'mongodb'
 import { createAdminOperations } from './admin-operations.js'
 import path from 'node:path'
@@ -59,6 +61,14 @@ async function main(): Promise<void> {
     readinessProbeTimeoutMs: config.readinessProbeTimeoutMs,
   })
 
+  const tokenDance = createTokenDanceService({ db: mongo.db, fetcher: providerEgress.fetch, secret: process.env.TOKENDANCE_ENCRYPTION_KEY, callbackUrl: process.env.TOKENDANCE_CALLBACK_URL, managementKey: process.env.TOKENDANCE_MANAGEMENT_KEY, applicationId: process.env.TOKENDANCE_APPLICATION_ID })
+  const providerWorkflow = createProviderWorkflow({ db: mongo.db, service: tokenDance })
+  const legacy = await import('./legacy-entry.mjs')
+  legacy.configureProviderWorkflow(providerWorkflow)
+  await tokenDance.ensureIndexes()
+  await providerWorkflow.ensureIndexes()
+  let removeBenchmarkData = async (_userId: string) => {}
+  configureDeletionCleanup(async userId => { await tokenDance.eraseUserData(userId); await providerWorkflow.remove(userId); await removeBenchmarkData(userId) })
   let adminBenchmarkDb: Db | undefined
   let benchmarkService: ReturnType<typeof createBenchmarkService> | undefined
   let closeBenchmark = async () => {}
@@ -106,9 +116,9 @@ async function main(): Promise<void> {
       )
       await benchmarkRepository.ensureSuite()
       adminBenchmarkDb = benchmarkMongo.db
-      configureDeletionCleanup(async (userId) => {
+      removeBenchmarkData = async (userId) => {
         await benchmarkMongo.db.collection('paperbanana_benchmark_prompt_submissions').deleteMany({ userId })
-      })
+      }
       benchmarkService = createBenchmarkService({
         repository: benchmarkRepository,
         signEvidence: (key) => benchmarkBucket.getDownloadUrl(key, 15 * 60),
@@ -150,6 +160,7 @@ async function main(): Promise<void> {
   }
   const server = createServer({
     adminOperations,
+    tokenDance, providerWorkflow, resumeTokenDanceJob: legacy.resumeTokenDanceJob, requiresTokenDanceCredential: legacy.requiresTokenDanceCredential,
     handler: runtime.handler,
     readinessProbe,
     healthSnapshot,

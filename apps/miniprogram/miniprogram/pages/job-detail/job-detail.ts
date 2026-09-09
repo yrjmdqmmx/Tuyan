@@ -1,3 +1,4 @@
+import { openTokenDance } from '../../utils/tokendance'
 import { formatError, requestJson } from '../../utils/api'
 import { readDatasetBoolean } from '../../utils/constants'
 import { normalizeJob, type Job } from '../../utils/jobs'
@@ -31,6 +32,12 @@ Component({
   },
 
   methods: {
+    openTokenDance,
+    async resumeJob() {
+      if (!this.data.job?.recovery?.canResume || (this as any).resuming) return
+      ;(this as any).resuming = true
+      try { await requestJson({ action: 'tokenDanceResume', jobId: this.data.jobId }); this.startPolling() } catch (error) { this.setData({ error: formatError(error) }) } finally { (this as any).resuming = false }
+    },
     onLoad(options: Record<string, string | undefined>) {
       const jobId = String(options.jobId || '')
       if (!jobId) {

@@ -57,6 +57,8 @@ function requiredCreateRouteRoles(body, maxCriticRounds) {
         roles.push('main');
     if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot')
         roles.push('image');
+    if (taskName === 'plot' && ['1.5K', '2K', '3K', '4K'].includes(String(body.imageSize)) && body.imageRefineMode === 'direct-edit')
+        roles.push('image');
     const references = Array.isArray(body.referenceImages) ? body.referenceImages : [];
     if (references.length)
         roles.push(body.referenceImageMode === 'main_model' ? 'main' : 'vision');
@@ -79,7 +81,7 @@ function uniqueProvidersForRoles(modelRoutes, roles) {
 }
 function scopedApiKeysForRoles(modelRoutes, roles, apiKeys, regions) {
     const selected = (0, provider_regions_1.selectRegionApiKeys)(apiKeys, regions);
-    return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).map((provider) => [provider, selected[provider] || '']));
+    return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).filter(provider => provider !== 'tokendance').map((provider) => [provider, selected[provider] || '']));
 }
 function arkProbesForRoles(modelRoutes, roles) {
     return orderedUniqueRoles(roles)

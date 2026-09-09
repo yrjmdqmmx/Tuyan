@@ -28,8 +28,8 @@ export function normalizeSelectedAspectRatio(value, options) {
 export function buildResolutionOptions(capabilities, capabilityField) {
     const declared = Array.isArray(capabilities[capabilityField]) ? capabilities[capabilityField] : [];
     const supported = new Set(declared.map(String));
-    const labels = { '512': '512（预览）', 'auto': '原生尺寸', '1K': '1K（标准）', '2K': '2K（高清）', '4K': '4K（超清）' };
-    return ['512', '1K', '2K', '4K', 'auto']
+    const labels = { '512': '512（预览）', 'auto': '原生尺寸', '1K': '1K（标准）', '1.5K': '1.5K', '3K': '3K', '2K': '2K（高清）', '4K': '4K（超清）' };
+    return ['512', '1K', '1.5K', '2K', '3K', '4K', 'auto']
         .filter((value) => supported.has(value))
         .map((value) => ({ value, label: labels[value] }));
 }

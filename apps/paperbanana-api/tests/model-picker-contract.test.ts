@@ -88,3 +88,37 @@ test('known dates and version relations produce a stable newest-first order with
   assert.equal(catalog.anthropic.models[0].id, 'claude-fable-5-1')
   assert.equal(catalog.gemini.models[0].id, 'gemini-3.8-flash')
 })
+
+test('all catalogs keep deterministic chronology after refresh, without changing routes or IDs', async () => {
+  const { orderModelChannels, MODEL_CHANNEL_LABELS } = await import('../../../packages/types/src/model-presentation.js')
+  const ids = Object.keys(catalog)
+  assert.deepEqual(orderModelChannels(ids), ['tokendance', ...ids.filter(id => id !== 'tokendance')])
+  assert.equal(MODEL_CHANNEL_LABELS.tokendance, '观猹 TokenDance')
+  assert.deepEqual(ids, Object.keys(catalog))
+  for (const [channel, entry] of Object.entries(catalog) as [string, any][]) {
+    const models = entry.models.map((m: any) => presentRegistryModel(channel, m))
+    const expected = sortModelsNewestFirst(models).map((m: any) => m.id)
+    for (const shuffled of [[...models].reverse(), [...models.filter((_: any, i: number) => i % 2), ...models.filter((_: any, i: number) => !(i % 2))]]) {
+      assert.deepEqual(sortModelsNewestFirst(shuffled).map((m: any) => m.id), expected, channel)
+    }
+    assert.equal(new Set(expected).size, models.length)
+  }
+})
+
+test('TokenDance versions, preview SKUs and snapshots retain their channel-specific official meaning', () => {
+  const deepseek = catalog.tokendance.models.filter((m: any) => m.vendorId === 'deepseek')
+  assert.equal(deepseek[0].id, 'deepseek-v4.1-flash')
+  assert.equal(deepseek[0].releasedAt, null, 'catalog creation timestamp is not a publication date')
+  assert.equal(deepseek[0].lifecycle, 'preview')
+  for (const id of ['deepseek-v4-pro', 'deepseek-v4-flash']) {
+    const preview = deepseek.find((m: any) => m.id === id)
+    assert.equal(preview.lifecycle, 'preview')
+    assert.equal(preview.releasedAt, '2026-04-24')
+    assert.equal((presentRegistryModel('deepseek', { id, vendorId: 'deepseek' }) as any).releasedAt.startsWith('2026-0'), true)
+  }
+  for (const id of ['deepseek-v4-pro-0813', 'deepseek-v4-flash-0731', 'deepseek-chat-v3-0324']) assert.equal(deepseek.find((m: any) => m.id === id).releaseKind, 'snapshot')
+  const image = presentRegistryModel('tokendance', { id: 'seedream-5.0-pro', vendorId: 'bytedance' }) as any
+  const old = presentRegistryModel('ark', { id: 'doubao-seedream-4-5-251128', vendorId: 'bytedance' }) as any
+  assert.equal(image.releaseFamily, old.releaseFamily)
+  assert.ok(image.releaseOrder > old.releaseOrder)
+})

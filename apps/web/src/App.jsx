@@ -1,4 +1,8 @@
-import { isAdminEntry, selectWorkspaceEntry } from './lib/adminEntry';
+import { useTokenDance } from './hooks/useTokenDance';
+import { TokenDanceRecovery, TokenDanceStatus } from './components/TokenDancePanel';
+import AccountPage from './components/AccountPage';
+import TokenDancePricing from './components/admin/TokenDancePricing';
+import { workspaceEntry, selectWorkspaceEntry } from './lib/adminEntry';
 import { presentRegistryModel, sortModelsNewestFirst } from './lib/modelPresentation'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
@@ -44,6 +48,7 @@ import {
   BENCH_ENABLED,
   CLIENT_VERSION,
   CUSTOM_API_BASE_ENABLED,
+  LOCAL_CONSUMPTION_TEST,
   authClient,
   logoUrl,
 } from './config';
@@ -101,6 +106,7 @@ const AdminWorkspace = lazy(() => import('./components/admin/AdminWorkspace'));
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
 const RefinePanel = lazy(() => import('./components/RefinePanel'));
+const INITIAL_PROVIDER = LOCAL_CONSUMPTION_TEST ? 'tokendance' : 'bailian';
 
 const INPUT_OPTIMIZATION_TARGET_LABELS = Object.freeze({
   methodContent: '论文方法内容',
@@ -115,13 +121,25 @@ function emptyInputOptimizationUndos() {
 
 export default function App() {
   const authSession = useAuthSession();
-  const [activeTab, setActiveTab] = useState(() => isAdminEntry(window.location.search) ? 'admin' : 'generate');
+  const [activeTab, setActiveTab] = useState(() => workspaceEntry(window.location.search));
+  const accountReturn = useRef({ tab: 'generate', scroll: 0 });
+  const workspaceTab = activeTab === 'account' ? accountReturn.current.tab : activeTab;
+  function openAccount() {
+    if (activeTab !== 'account') accountReturn.current = { tab: activeTab, scroll: window.scrollY };
+    setShowGenerationSettings(false);
+    selectTab('account');
+    window.scrollTo?.({ top: 0 });
+  }
+  function returnFromAccount() {
+    selectTab(accountReturn.current.tab);
+    requestAnimationFrame(() => window.scrollTo?.({ top: accountReturn.current.scroll }));
+  }
   function selectTab(tab) {
     selectWorkspaceEntry(tab);
     setActiveTab(tab);
   }
   useEffect(() => {
-    const pop = () => setActiveTab((current) => isAdminEntry(window.location.search) ? 'admin' : current === 'admin' ? 'generate' : current);
+    const pop = () => setActiveTab(workspaceEntry(window.location.search));
     window.addEventListener('popstate', pop);
     return () => window.removeEventListener('popstate', pop);
   }, []);
@@ -134,8 +152,8 @@ export default function App() {
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
   const [inputOptimizationCredentialProvider, setInputOptimizationCredentialProvider] = useState('');
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
-  const [configurationMode, setConfigurationMode] = useState('simple');
-  const [provider, setProvider] = useState('bailian');
+  const [configurationMode, setConfigurationMode] = useState(LOCAL_CONSUMPTION_TEST ? 'advanced' : 'simple');
+  const [provider, setProvider] = useState(INITIAL_PROVIDER);
   const [apiKeyRing, setApiKeys] = useState(() => Object.fromEntries(Object.keys(PROVIDERS).map((id) => [id, ''])));
   const [methodContent, setMethodContent] = useState(SAMPLE_METHOD);
   const [caption, setCaption] = useState('图 1：所提出的多智能体学术图示生成框架总览。');
@@ -158,7 +176,7 @@ export default function App() {
   const [infographicCategory, setInfographicCategory] = useState('method_framework');
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
-  const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes('bailian', null, PROVIDERS));
+  const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes(INITIAL_PROVIDER, null, PROVIDERS));
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
   const [mainModelCapability, setMainModelCapability] = useState(null);
@@ -176,7 +194,7 @@ export default function App() {
   const [isLoadingReferenceLibrary, setIsLoadingReferenceLibrary] = useState(false);
   const [aspectRatio, setAspectRatio] = useState('16:9');
   const [numCandidates, setNumCandidates] = useState(1);
-  const [maxCriticRounds, setMaxCriticRounds] = useState(1);
+  const [maxCriticRounds, setMaxCriticRounds] = useState(LOCAL_CONSUMPTION_TEST ? 0 : 1);
   const [health, setHealth] = useState(null);
   const [healthError, setHealthError] = useState('');
   const [rawModelRegistry, setModelRegistry] = useState(null);
@@ -228,6 +246,7 @@ export default function App() {
       return officialApiBase(globalThis.location?.origin);
     }
   }, [apiBase]);
+  const tokenDance = useTokenDance(apiBaseNormalized, currentUser?.id, !authSession.isPending);
   const selectedInfographicCategory = INFOGRAPHIC_CATEGORIES.find(([id]) => id === infographicCategory) || INFOGRAPHIC_CATEGORIES[0];
   const isAdvancedMode = configurationMode === 'advanced';
   const isPlotCategory = infographicCategory === 'data_stat';
@@ -309,7 +328,7 @@ export default function App() {
     referenceImageMode: activeReferenceImageMode,
   }, isAdvancedMode ? Number(maxCriticRounds) : 1);
   const refineRouteRoles = requiredRefineRouteRoles({ refineMode: refineCapability.mode });
-  const credentialRouteRoles = activeTab === 'refine' ? refineRouteRoles : createRouteRoles;
+  const credentialRouteRoles = workspaceTab === 'refine' ? refineRouteRoles : createRouteRoles;
   const credentialProviders = uniqueProvidersForRoles(activeModelRoutes, credentialRouteRoles);
   const settingsCredentialProviders = inputOptimizationCredentialProvider
     && !credentialProviders.includes(inputOptimizationCredentialProvider)
@@ -319,7 +338,7 @@ export default function App() {
   const activeArkProbeSignature = activeArkProbes.map(arkVerificationKey).join('|');
   arkKeySnapshotRef.current = apiKeys.ark;
   arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
-  const missingCredentialProviders = credentialProviders.filter((routeProvider) => !apiKeys[routeProvider]?.trim());
+  const missingCredentialProviders = credentialProviders.filter((routeProvider) => routeProvider === 'tokendance' ? !tokenDance.connection.connected : !apiKeys[routeProvider]?.trim());
   const refineConfigSummary = `${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName}`;
   const refineRunning = isSubmittingRefine || refineJob?.status === 'queued' || refineJob?.status === 'running';
   const refineSubmitHint = !authReady ? '请先登录，再提交精修。'
@@ -878,7 +897,7 @@ export default function App() {
       return null;
     }
     const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
-    if (!apiKey) {
+    if (!apiKey && !(mainRoute.accessProvider === 'tokendance' && tokenDance.connection.connected)) {
       setInputOptimizationCredentialProvider(mainRoute.accessProvider);
       setInputOptimizationGuidance('请先在生成设置中填写当前主模型接入渠道的密钥。');
       setGenerationFocusSetting('api-key');
@@ -1157,7 +1176,7 @@ export default function App() {
     setShowAuthPanel(false);
     setShowAccountDialog(false);
     setAdminIdentity('');
-    setActiveTab('generate');
+    selectTab('generate');
   }
 
   async function handleAccountDeleted() {
@@ -1165,7 +1184,7 @@ export default function App() {
     authSession.clear();
     setShowAccountDialog(false);
     setAdminIdentity('');
-    setActiveTab('generate');
+    selectTab('generate');
     try {
       await authSession.refresh();
     } catch {
@@ -1211,11 +1230,11 @@ export default function App() {
   }
 
   function useResultForRefine(url, image) {
-    if (refineRunning) { setActiveTab('refine'); return; }
+    if (refineRunning) { selectTab('refine'); return; }
     setRefineSource(normalizeRefineSource(url, image));
     setRefineInstruction('');
     setRefineError('');
-    setActiveTab('refine');
+    selectTab('refine');
   }
 
   async function submitRefine(event) {
@@ -1302,6 +1321,22 @@ export default function App() {
     setInputOptimizationCredentialProvider('');
   }
 
+  async function showResumedTask(id) {
+    const resumed = await getJobRequest(apiBaseNormalized, health, id);
+    if (resumed.refine_mode) {
+      setRefineJobId('');
+      setRefineJob(resumed);
+      setRefineJobId(id);
+      selectTab('refine');
+    } else {
+      setCurrentJobId(id);
+      setJob(resumed);
+      setPollRetryNonce(value => value + 1);
+      selectTab('generate');
+    }
+    await loadUserJobs();
+  }
+
   const settingsDrawer = (
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
       <ModelRoutingSettings
@@ -1313,10 +1348,12 @@ export default function App() {
         onRouteChange={handleModelRouteChange}
         modelRegistry={modelRegistry}
         providerConfigs={PROVIDERS}
-        outputFormat={activeTab === 'refine' ? 'png' : outputFormat}
+        outputFormat={workspaceTab === 'refine' ? 'png' : outputFormat}
         executionRouteRoles={credentialRouteRoles}
         credentialProviders={settingsCredentialProviders}
         apiKeys={apiKeys}
+        tokenDance={tokenDance}
+        onOpenAccount={openAccount}
         onApiKeyChange={handleApiKeyChange}
         providerRegions={providerRegions}
         onMiniMaxRegionChange={(region) => {
@@ -1334,7 +1371,7 @@ export default function App() {
         onVerifyArk={verifySelectedArkModels}
       />
 
-      {activeTab === 'refine' ? (
+      {workspaceTab === 'refine' ? (
         <div className="refine-settings-note" role="note">
           {refineResolutionOptions.length
             ? `精修固定输出 PNG；清晰度（${refineImageSize}）与目标比例（${refineAspectRatio}）请在精修面板设置。`
@@ -1455,7 +1492,8 @@ export default function App() {
   );
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell${activeTab === 'account' ? ' account-view' : ''}`}>
+      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label="本地消费测试"><strong>已连接正式图研账号服务 · 观猹 TokenDance 消费预览</strong><p>使用你已有的图研账号登录，再连接观猹 TokenDance。生成、精修和优化输入会使用真实观猹 TokenDance 余额。</p><small>本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">正式图研</a>查看。初始为 1 张候选图、0 轮评审。</small></section>}
       <header className="paper-header">
         <div className="brand">
           <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
@@ -1488,7 +1526,7 @@ export default function App() {
               <div className="auth-user">
                 <ShieldCheck size={16} />
                 <span title={currentUser.email}>{currentUser.email}</span>
-                <button type="button" onClick={() => setShowAccountDialog(true)}>账号</button>
+                <button type="button" onClick={openAccount} aria-current={activeTab === 'account' ? 'page' : undefined}>账户</button>
                 <button type="button" onClick={handleSignOut}>退出</button>
               </div>
             ) : (
@@ -1500,6 +1538,7 @@ export default function App() {
         </div>
       </header>
 
+      {activeTab !== 'account' && (tokenDance.notice || tokenDance.error) && <div className="service-alert" role="status">{tokenDance.error || tokenDance.notice}<button type="button" className="account-button" onClick={openAccount}>查看账户</button></div>}
       {healthError ? (
         <div className="service-alert" role="status"><AlertTriangle size={16} />后端连接异常：{formatErrorMessage(healthError)}</div>
       ) : null}
@@ -1517,6 +1556,7 @@ export default function App() {
         <Suspense fallback={null}>
           <AccountSettingsDialog
             apiBase={apiBaseNormalized}
+            productionPreview={LOCAL_CONSUMPTION_TEST}
             email={currentUser.email || ''}
             onClose={() => setShowAccountDialog(false)}
             onDeleted={handleAccountDeleted}
@@ -1590,7 +1630,7 @@ export default function App() {
             onAuthenticated={async () => {
               await authSession.refresh();
               setShowAuthPanel(false);
-              setActiveTab('records');
+              if (activeTab !== 'account') selectTab('records');
             }}
             onCancel={() => setShowAuthPanel(false)}
           />
@@ -1599,7 +1639,13 @@ export default function App() {
         )
       ) : null}
 
-      {activeTab === 'generate' ? (
+      {['generate', 'refine'].includes(activeTab) && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') && <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} />}
+
+      {activeTab === 'account' && (
+        <AccountPage user={currentUser} controller={tokenDance} onReturn={returnFromAccount} returnLabel={accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台'} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
+      )}
+      <div style={{ display: activeTab === 'account' ? 'none' : 'contents' }} aria-hidden={activeTab === 'account' ? true : undefined}>
+      {workspaceTab === 'generate' ? (
         <section className="workspace">
         <FeaturedTemplateStudio templates={featuredTemplates} isDirty={inputIsDirty} onApply={applyFeaturedTemplate} />
         <form className="generation-form" onSubmit={submitJob}>
@@ -1730,12 +1776,14 @@ export default function App() {
                 <p>{currentJobId ? `任务编号 ${currentJobId}` : '提交任务后显示生成结果。'}</p>
               </div>
             </div>
+            <TokenDanceRecovery job={job} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
             <JobStatus job={job} apiBase={apiBaseNormalized} onUseForRefine={useResultForRefine} />
           </div>
         </section>
         </section>
-      ) : activeTab === 'refine' ? (
+      ) : workspaceTab === 'refine' ? (
         <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
+          <TokenDanceRecovery job={refineJob} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
           <RefinePanel
             source={refineSource}
             upload={refineUpload}
@@ -1777,12 +1825,12 @@ export default function App() {
             onSubmit={submitRefine}
           />
         </Suspense>
-      ) : activeTab === 'admin' ? (
-        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /></Suspense>
+      ) : workspaceTab === 'admin' ? (
+        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /><TokenDancePricing apiBase={apiBaseNormalized} /></Suspense>
           : <section className="card"><h2>站长运营后台</h2><p role="status">{authSession.isPending ? '正在确认登录状态…' : '需要已登录的站长账号才能访问，后台接口会再次校验权限。'}</p>{!currentUser && <button onClick={() => setShowAuthPanel(true)}>登录账号</button>}</section>
-      ) : activeTab === 'guide' ? (
+      ) : workspaceTab === 'guide' ? (
         <GuidePanel
-          onStart={() => setActiveTab('generate')}
+          onStart={() => selectTab('generate')}
           onContact={() => setShowContactDialog(true)}
           registryVersion={modelRegistry?.registryVersion || '等待服务端目录'}
           providerLabels={Object.keys(modelRegistry?.providers || {}).map((id) => PROVIDERS[id]?.label || id)}
@@ -1803,8 +1851,10 @@ export default function App() {
           onLogin={() => setShowAuthPanel(true)}
           onRefresh={() => loadUserJobs()}
           onUseForRefine={useResultForRefine}
+          renderRecovery={item => <TokenDanceRecovery job={item} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />}
         />
       )}
+      </div>
         </>
       )}
     </main>

@@ -1,5 +1,5 @@
 import { presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
-export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'] as const
+export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
@@ -24,6 +24,8 @@ export interface RegistryModel {
   releasedAt: string | null
   vendorId?: string
   serviceTier?: string
+  releaseKind?: string
+  lifecycleSourceUrl?: string
   releaseFamily?: string
   releaseOrder?: number
   releaseSourceUrl?: string
@@ -141,6 +143,8 @@ function normalizeModel(input: unknown): RegistryModel {
     releasedAt: validReleasedAt(source.releasedAt),
     vendorId: stringValue(source.vendorId),
     serviceTier: stringValue(source.serviceTier),
+    releaseKind: stringValue(source.releaseKind),
+    lifecycleSourceUrl: stringValue(source.lifecycleSourceUrl),
     releaseFamily: stringValue(source.releaseFamily),
     releaseOrder: numberValue(source.releaseOrder),
     releaseSourceUrl: stringValue(source.releaseSourceUrl),

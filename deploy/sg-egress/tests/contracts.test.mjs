@@ -377,6 +377,7 @@ test('Singapore policy contains the reviewed overseas channels and keeps MiniMax
     'api.fireworks.ai',
     'queue.fal.run',
     'api.replicate.com',
+    'tokendance.space',
   ]);
   assert.ok(!approved[1].split(' ').includes('api.minimax.cn'));
   assert.match(installer, /reviewed HTTPS provider hosts/);

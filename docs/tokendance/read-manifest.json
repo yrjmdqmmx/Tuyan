@@ -1,0 +1,551 @@
+{
+  "indexUrl": "https://tokendance.space/llms.txt",
+  "fullBytes": 254748,
+  "docs": [
+    {
+      "url": "https://tokendance.space/docs/ai-integration.md",
+      "bytes": 3170,
+      "sha256": "a2636143dfaa5a4d60e9a0c1aa1957f6401ed9234cbf723aa2d792ec2fce2ea9",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/quickstart.md",
+      "bytes": 2434,
+      "sha256": "3468951b2110944995cd0902b63e7c36530b7dcbdb61ac6d0c9ec5a32af7f1fc",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/principles.md",
+      "bytes": 2795,
+      "sha256": "38176d950ded0656b0af61c5273d70bf21bf1c8a0a4320bd73d88c22b3dad262",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/api-keys.md",
+      "bytes": 3420,
+      "sha256": "b977c9fcb47c7c395ed2d61a1b976306fc1c1f31209df1873092224bf85e80c9",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/api-key-oauth.md",
+      "bytes": 7360,
+      "sha256": "0ab948b261587bf27246e705d9a6ae72ae503088968a1098fbedacb2c0198b10",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/provider-routing.md",
+      "bytes": 5379,
+      "sha256": "ab16006ffc8084ccc24e10547a1851fbf81fcf3b10d40e2348762cba365e2245",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/model-fallbacks.md",
+      "bytes": 3513,
+      "sha256": "e28d003bd2399de4c0bc420891ecc50218b32b0fa0fd3767a035c9d426272872",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/rate-limits.md",
+      "bytes": 1729,
+      "sha256": "497857d0cdc175233ac4e0160b6e85e8a4be037cd3361d18a94f673008d1556e",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/app-attribution.md",
+      "bytes": 4381,
+      "sha256": "6bca23ca21a5b1cf42f33e36fb99a9ca4af1f8a8bf526d08dbb6d89e56717585",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/open-api.md",
+      "bytes": 3269,
+      "sha256": "8d256ff8264132107048c2a54db7496bc8511c17fc5459ba77bceaa6b9e30eb1",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/agent-payment.md",
+      "bytes": 3750,
+      "sha256": "9586ab0865da0392eb1ca2b0758c80f7d6076adb4bd5091fab2ee2493e8d314e",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/async-webhook.md",
+      "bytes": 1836,
+      "sha256": "73b3de2aba44d75eb76650182b8c9798cbe67ac12c60667be77d6c8d0a1f88ef",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/cc-switch.md",
+      "bytes": 2537,
+      "sha256": "59d8c83f2562e7a90a30c4a8f728cea7e8d5c67c769734d286f1a1c553214585",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/claude-code.md",
+      "bytes": 3330,
+      "sha256": "dde02f22a9624ac08e5ee2a64d5ab2c3e801b3f651592da4e359d01424f6ffa9",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/cline.md",
+      "bytes": 2205,
+      "sha256": "305becff06df6fa97b69f31ccd44d3218fc4b505b62e8bf3fe54a39368b1633f",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/codex.md",
+      "bytes": 6531,
+      "sha256": "9868ac51fed8bed522afb19bd33d536e92bdb960f864bdf37b8b8c50536ed7dc",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/deepseek-harness.md",
+      "bytes": 5244,
+      "sha256": "82f19643e19d286c56ee4244632dca42ff460b651421e4391b1760c85900104e",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/github-copilot.md",
+      "bytes": 2815,
+      "sha256": "4b7fb43fb39d9487106449d9936b23704fea85f219b76b28f6aa213d5d482590",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/hermes-agent.md",
+      "bytes": 2396,
+      "sha256": "52dc9ce2260b8f5ae3723173c463d456475663badedb142f2cabf72b9a0fc0c6",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/neovate.md",
+      "bytes": 2568,
+      "sha256": "01fbb547760fdf44f5ce992a41970b728b09187817ca6226ff256ab1a7c6cd95",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/opencode.md",
+      "bytes": 2299,
+      "sha256": "6fc948f6fab639355bc3db94522c9c383f82f17cc70c85e79762d4b5290f68c6",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/trae-ide.md",
+      "bytes": 2070,
+      "sha256": "362047ed01e26039a411718a517663440476d9c18455f7c25c59eed8c5762039",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/alice.md",
+      "bytes": 2070,
+      "sha256": "5dee02131f39d807b476d1da6e06404112c0bb2ae71187a1eadfa8e6b8e54e7d",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/cherry-studio.md",
+      "bytes": 2204,
+      "sha256": "b0e85a847aca33a641e151f5eb254d6daebf6161b27bb4df8696588d2e65e0f0",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/ima.md",
+      "bytes": 2220,
+      "sha256": "2dd6abb9cb652f2a8a4bd4ecbfe476c2343ed058e663c1ee341ede3101cdb64d",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/obsidian.md",
+      "bytes": 2676,
+      "sha256": "20eeb1683864e75cac726def56ac0c4e99b8c0329bf726bcf91e00ad3439b7d0",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/qclaw.md",
+      "bytes": 2134,
+      "sha256": "03647be51387a1741632c4ed33e1358ba3fffc08212c9f2922a5052a4f1a8337",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/rikkahub.md",
+      "bytes": 2842,
+      "sha256": "fec63f467d477a0f028f01cb6b9b3316ea55b95b98f78f5f329ce9c4471ead31",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/trae-work.md",
+      "bytes": 2856,
+      "sha256": "24e6c18586a3ca3c6bf34edbc9d4ef0a45a081511400ca682a20b1ff9d79f7f6",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/workbuddy.md",
+      "bytes": 2873,
+      "sha256": "d5d77c91d6723508f7c782021eafc74ccca465dcea757b77c5386114f1d7d437",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/models.md",
+      "bytes": 3029,
+      "sha256": "ded150137962c8ffba61184fba09c375b89f01c0d8139276a202ff8c7d38f8b6",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/multi-protocol.md",
+      "bytes": 4725,
+      "sha256": "744afec58b8c8f467642dd06e8e46a54f68b1d2ad94446e65177b1d62c91a8a1",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-openai-chat-completions.md",
+      "bytes": 1576,
+      "sha256": "c3a840a44d5b48745e04f0f404781c893d1a8a2f3ea7a47e86ee57bd8c14f8b8",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-openai-responses.md",
+      "bytes": 2106,
+      "sha256": "98ec7b0acb947ed8948013450509a5e33a1de5b536cd3fbf2cc51f5b61b0f0b5",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-openai-embeddings.md",
+      "bytes": 985,
+      "sha256": "dd880b46962b46dba584e75be39e25c2e52b07b5a7205a3ccbdffd76fe1bdbb4",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-openai-image-generations.md",
+      "bytes": 996,
+      "sha256": "0e347b0964c6353afb3468f86c762e4763db4a4826d7acc747b64c5d8778b64f",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-anthropic-messages.md",
+      "bytes": 1360,
+      "sha256": "af5dc5bbd2762cd101a22b2c470ecbac1ed8bff7bae534b26b0725de4b068c93",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-gemini-generate-content.md",
+      "bytes": 1097,
+      "sha256": "ce34011f1a36d363a9d9194dad16fc2a159dc09d268f49d425e365f34fa7c308",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/ark-image-generations.md",
+      "bytes": 4352,
+      "sha256": "16074a84c4157dc478793a362c9653c70d51c905120f3c5d944e52db2a9d8058",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/seedance-generations.md",
+      "bytes": 5419,
+      "sha256": "6bfb93a93eb3e709ab3ba5da2f7658eb723094be5d5d2f5cc6a38658376dd4f7",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/kimi-thinking-models.md",
+      "bytes": 4612,
+      "sha256": "0a3470fe3d1b2b09519ab515cc06baa9fa01dbda504326f1304cb26019a8a5a5",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/minimax-video-generation.md",
+      "bytes": 4644,
+      "sha256": "64292d6146493fe5a2ba73aa1d217935b13417a1c632a36202427d4f13c2016a",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-ark-image-generations.md",
+      "bytes": 1733,
+      "sha256": "ee390090471ca822ced7a2befb414c2bfe5cdb3e083cc8deab6584bd26587a5e",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-seedance-generations.md",
+      "bytes": 11221,
+      "sha256": "787ed788a13839b73820c894a4ee4841cfb7eb5011bc432f09fa27119ea16030",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-vidu-text2video.md",
+      "bytes": 626,
+      "sha256": "ec9ae39f2409e779d15fd2c8e17e3d2765408a609153d733ef6954500c43529e",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-vidu-img2video.md",
+      "bytes": 540,
+      "sha256": "c03728bba59ae44f8b21edf8ffa28baef5e2dc0a31aa6d16b85068f7bc9542ea",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-vidu-reference2video.md",
+      "bytes": 546,
+      "sha256": "bc7f02728f2a1720a2f269ed2da0b9daeb7dc4764ce0647d55a83f30f456a1e7",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-vidu-start-end2video.md",
+      "bytes": 576,
+      "sha256": "d083435869583442babbd94597ceae1132eff4916fcef8e87e204a7f1a3f1a4d",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-kling-text2video.md",
+      "bytes": 2379,
+      "sha256": "df8da5a862811806d58775eb27cb9c154760dd882349c9e2294de2bf93a4e8df",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-kling-image2video.md",
+      "bytes": 2759,
+      "sha256": "eeaf37cd2a549abd7f951793dc2d8744e610225885bd469adf007f9ce561efd7",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-kling-omni-video.md",
+      "bytes": 6046,
+      "sha256": "3e53f8fe28c05530a91a7c7e2b7891204e36453600ebf22c5a8fff4227d46682",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-wan3-video-synthesis.md",
+      "bytes": 7398,
+      "sha256": "62e30460a5a7c60dc094b3749879e39a9e5c469d59e18bea37e31e90981955d9",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-happyhorse-video-synthesis.md",
+      "bytes": 2044,
+      "sha256": "3ae1c1802a3cdf39f61d858e695b580b882009a4c92fe94de76e49da12d5c411",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-minimax-video-generation-v2.md",
+      "bytes": 2465,
+      "sha256": "a9095233282301afa8418331729db2f777a6f5d80ffba63a8c2ad23e82db1cc3",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-ark-tts.md",
+      "bytes": 3668,
+      "sha256": "59e75854267fd3b08c90dc68c83873375913e76b902d8944f7a2cc04c38641e8",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-ark-tts-ws.md",
+      "bytes": 9715,
+      "sha256": "e87b44bdcd383d9a9bf8cd644248ce208971ec786d12af6f9fe1165021671c61",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-minimax-t2a-v2.md",
+      "bytes": 3710,
+      "sha256": "b570f01ea510e766f053add96c21dae7b1794221ed27904a9b5f6aa8a3238063",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-minimax-t2a-v2-ws.md",
+      "bytes": 3538,
+      "sha256": "0c104fea644138cfc67a886d9e5b55631c07860b403e2b32b35fbad99ef993c9",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-minimax-voice-clone.md",
+      "bytes": 4856,
+      "sha256": "93fa12c2213722a53cb8e7a64b76070dc24481e127b1fe16cfa5a4c4acb33dc4",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-qwen-text-rerank.md",
+      "bytes": 4947,
+      "sha256": "a630cdc454e62db501bb0a82bae4407ea7da4ef316d71967dd1e81df0111d915",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-zai-layout-parsing.md",
+      "bytes": 1079,
+      "sha256": "a06e653ae8d4e185e58d41d2cb3d4e9a3600868b623e1c959d184dd30b3e2003",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-bocha-web-search.md",
+      "bytes": 1379,
+      "sha256": "d41544a4d1b960a9d89b64aa64826c92eaef21fe5ce4da27180ae7a7a65fca88",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-unifuncs-web-search.md",
+      "bytes": 1517,
+      "sha256": "a4625039c01eb75ca99f1340a5e649cdf32053a5de633456baa5a795fd1ee43e",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/protocol-unifuncs-web-reader.md",
+      "bytes": 2067,
+      "sha256": "8fbd7f9942d432745b9ded343d1650a32d5f56746923dc5b1a8de400a88e8ee9",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/changelog.md",
+      "bytes": 35349,
+      "sha256": "88bdcc831e0fec992cb6c9fd54cb9dcda2eee95874e68e7eb8fe423e2704e583",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/docs-updates.md",
+      "bytes": 672,
+      "sha256": "e6af798ec04f49b66d67f02a62f38e097141488a5af7face7b8ffa47ff80b471",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": false
+    },
+    {
+      "url": "https://tokendance.space/docs/faq.md",
+      "bytes": 3648,
+      "sha256": "b5e4e150325c810d38668dd2e0a60763082d38163e396a1c2ac9c86188a3d152",
+      "exactlyIncludedInFull": false,
+      "ok": true,
+      "normalizedMatch": true
+    },
+    {
+      "url": "https://tokendance.space/docs/contact.md",
+      "bytes": 175,
+      "sha256": "23c3d61f8f8f7b8e00c8c18fb39101f1a44cd9ee83717a878082fd5cea649f42",
+      "exactlyIncludedInFull": true,
+      "ok": true,
+      "normalizedMatch": true
+    }
+  ],
+  "modelCount": 93
+}

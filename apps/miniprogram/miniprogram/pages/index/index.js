@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const model_presentation_1 = require("../../utils/model-presentation");
+const tokendance_1 = require("../../utils/tokendance");
 const provider_regions_1 = require("../../utils/provider-regions");
 const api_1 = require("../../utils/api");
 const constants_1 = require("../../utils/constants");
@@ -14,25 +16,27 @@ const model_routing_1 = require("../../utils/model-routing");
 const reference_files_1 = require("../../utils/reference-files");
 const reference_mode_1 = require("../../utils/reference-mode");
 const session_1 = require("../../utils/session");
+const DEFAULT_PROVIDER = constants_1.PROVIDERS[0];
+const PROVIDERS = (0, model_presentation_1.orderModelChannels)(constants_1.PROVIDERS.map(item => item.id)).map(id => constants_1.PROVIDERS.find(item => item.id === id));
 const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft';
 Component({
     data: {
         logoSrc: '/images/logo.png',
-        providers: constants_1.PROVIDERS,
-        providerIndex: 0,
-        providerLabel: constants_1.PROVIDERS[0].label,
-        providerMainModel: constants_1.PROVIDERS[0].mainModel,
-        providerImageModel: constants_1.PROVIDERS[0].imageModel,
-        providerGuideSteps: constants_1.PROVIDERS[0].guideSteps,
-        mainModelOptions: constants_1.PROVIDERS[0].mainModels,
-        mainModelIndex: (0, constants_1.getModelIndex)(constants_1.PROVIDERS[0].mainModels, constants_1.PROVIDERS[0].mainModel),
-        mainModelLabel: (0, constants_1.getModelLabel)(constants_1.PROVIDERS[0].mainModels, constants_1.PROVIDERS[0].mainModel),
-        imageModelOptions: constants_1.PROVIDERS[0].imageModels,
-        imageModelIndex: (0, constants_1.getModelIndex)(constants_1.PROVIDERS[0].imageModels, constants_1.PROVIDERS[0].imageModel),
-        imageModelLabel: (0, constants_1.getModelLabel)(constants_1.PROVIDERS[0].imageModels, constants_1.PROVIDERS[0].imageModel),
-        referenceVisionModelOptions: constants_1.PROVIDERS[0].visionModels,
-        referenceVisionModelIndex: (0, constants_1.getModelIndex)(constants_1.PROVIDERS[0].visionModels, constants_1.PROVIDERS[0].visionModel),
-        referenceVisionModelLabel: (0, constants_1.getModelLabel)(constants_1.PROVIDERS[0].visionModels, constants_1.PROVIDERS[0].visionModel),
+        providers: PROVIDERS,
+        providerIndex: PROVIDERS.findIndex(item => item.id === DEFAULT_PROVIDER.id),
+        providerLabel: DEFAULT_PROVIDER.label,
+        providerMainModel: DEFAULT_PROVIDER.mainModel,
+        providerImageModel: DEFAULT_PROVIDER.imageModel,
+        providerGuideSteps: DEFAULT_PROVIDER.guideSteps,
+        mainModelOptions: DEFAULT_PROVIDER.mainModels,
+        mainModelIndex: (0, constants_1.getModelIndex)(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+        mainModelLabel: (0, constants_1.getModelLabel)(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+        imageModelOptions: DEFAULT_PROVIDER.imageModels,
+        imageModelIndex: (0, constants_1.getModelIndex)(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+        imageModelLabel: (0, constants_1.getModelLabel)(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+        referenceVisionModelOptions: DEFAULT_PROVIDER.visionModels,
+        referenceVisionModelIndex: (0, constants_1.getModelIndex)(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
+        referenceVisionModelLabel: (0, constants_1.getModelLabel)(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
         configurationMode: 'simple',
         isAdvancedMode: false,
         pipelineOptions: constants_1.PIPELINE_OPTIONS,
@@ -52,7 +56,7 @@ Component({
         outputFormatIndex: 0,
         outputFormatLabel: constants_1.OUTPUT_FORMATS[0].label,
         // 输出清晰度：1K 仅基础渲染；2K/4K 出图后自动精修放大。选项按 provider/图像模型过滤。
-        resolutionOptions: constants_1.RESOLUTION_OPTIONS.filter((option) => (0, constants_1.supportedResolutions)(constants_1.PROVIDERS[0].id, constants_1.PROVIDERS[0].imageModel).indexOf(option.value) >= 0),
+        resolutionOptions: constants_1.RESOLUTION_OPTIONS.filter((option) => (0, constants_1.supportedResolutions)(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.imageModel).indexOf(option.value) >= 0),
         resolutionIndex: 0,
         imageSize: '1K',
         imageSizeLabel: constants_1.RESOLUTION_OPTIONS.find((option) => option.value === '1K').label,
@@ -65,7 +69,7 @@ Component({
         showReferenceLibrary: false,
         libraryTaskName: 'diagram',
         referenceImageModeOptions: constants_1.REFERENCE_IMAGE_MODES,
-        referenceImageMode: (0, reference_mode_1.defaultReferenceImageMode)((0, constants_1.mainModelCanReadImages)(constants_1.PROVIDERS[0].id, constants_1.PROVIDERS[0].mainModel)),
+        referenceImageMode: (0, reference_mode_1.defaultReferenceImageMode)((0, constants_1.mainModelCanReadImages)(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel)),
         referenceImages: [],
         referenceImageCount: 0,
         referenceCanAddImage: true,
@@ -73,14 +77,14 @@ Component({
         referenceModeCanSubmit: true,
         referenceNeedsVisionModel: false,
         shouldShowReferenceModeSelector: false,
-        canSelectMainModelDirect: (0, constants_1.mainModelCanReadImages)(constants_1.PROVIDERS[0].id, constants_1.PROVIDERS[0].mainModel),
+        canSelectMainModelDirect: (0, constants_1.mainModelCanReadImages)(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel),
         referenceUploadError: '',
         isUploadingReferences: false,
-        mainModelName: constants_1.PROVIDERS[0].mainModel,
-        imageModelName: constants_1.PROVIDERS[0].imageModel,
-        referenceVisionModelName: constants_1.PROVIDERS[0].visionModel,
+        mainModelName: DEFAULT_PROVIDER.mainModel,
+        imageModelName: DEFAULT_PROVIDER.imageModel,
+        referenceVisionModelName: DEFAULT_PROVIDER.visionModel,
         apiKey: '',
-        apiKeyPlaceholder: constants_1.PROVIDERS[0].keyPlaceholder,
+        apiKeyPlaceholder: DEFAULT_PROVIDER.keyPlaceholder,
         categories: constants_1.INFOGRAPHIC_CATEGORIES,
         categoryIndex: 0,
         categoryLabel: constants_1.INFOGRAPHIC_CATEGORIES[0].label,
@@ -178,7 +182,7 @@ Component({
     },
     pageLifetimes: {
         show() {
-            ;
+            void (0, tokendance_1.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit());
             this.isPageVisible = true;
             // tabBar 页不销毁：回到本页时若任务未到终态则恢复轮询
             if (this.pollingTimer)
@@ -195,6 +199,36 @@ Component({
         },
     },
     methods: {
+        async optimizeDescription() {
+            var _a;
+            const settings = this.data.settings;
+            if (!((_a = settings === null || settings === void 0 ? void 0 : settings.modelRoutes) === null || _a === void 0 ? void 0 : _a.main))
+                return;
+            const original = this.data.methodContent;
+            const mainRoute = settings.modelRoutes.main;
+            const keys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
+            if (mainRoute.accessProvider === 'tokendance' ? !(0, tokendance_1.hasTokenDanceConnection)() : !keys[mainRoute.accessProvider]) {
+                this.setData({ error: '请先连接主模型渠道。' });
+                return;
+            }
+            if (this.optimizing)
+                return;
+            this.optimizing = true;
+            try {
+                const result = await (0, tokendance_1.optimizeTokenDanceInput)({ mainRoute, providerRegions: settings.providerRegions, apiKey: keys[mainRoute.accessProvider], target: 'methodContent', inputs: { methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt } });
+                wx.showModal({ title: '优化结果', content: result.candidate, confirmText: '采用', success: res => { if (res.confirm && this.data.methodContent === original) {
+                        this.setData({ methodContent: result.candidate });
+                        this.refreshCanSubmit();
+                    } } });
+            }
+            catch (error) {
+                this.setData({ error: (0, api_1.formatError)(error) });
+            }
+            finally {
+                this.optimizing = false;
+            }
+        },
+        openTokenDance: tokendance_1.openTokenDance,
         restoreDraft() {
             try {
                 const draft = wx.getStorageSync(DRAFT_STORAGE_KEY);
@@ -330,8 +364,8 @@ Component({
             wx.showToast({ title: '模板已套用', icon: 'success' });
         },
         onProviderChange(event) {
-            const providerIndex = (0, constants_1.readPickerIndex)(event.detail.value, constants_1.PROVIDERS.length);
-            const provider = constants_1.PROVIDERS[providerIndex] || constants_1.PROVIDERS[0];
+            const providerIndex = (0, constants_1.readPickerIndex)(event.detail.value, PROVIDERS.length);
+            const provider = PROVIDERS[providerIndex] || DEFAULT_PROVIDER;
             this.setData({
                 providerIndex,
                 providerLabel: provider.label,
@@ -423,7 +457,7 @@ Component({
         },
         // provider / 图像生成模型 / 模式切换时重算清晰度可选项；当前档位不被支持时收敛到第一档
         refreshResolutionOptions() {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const activeImageModel = this.data.isAdvancedMode
                 ? this.data.imageModelName.trim() || provider.imageModel
                 : provider.imageModel;
@@ -482,7 +516,7 @@ Component({
             this.refreshCanSubmit();
         },
         onMainModelChange(event) {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const mainModelIndex = (0, constants_1.readPickerIndex)(event.detail.value, provider.mainModels.length);
             const option = provider.mainModels[mainModelIndex] || provider.mainModels[0];
             this.setData({
@@ -496,7 +530,7 @@ Component({
             this.refreshCanSubmit();
         },
         onImageModelChange(event) {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const imageModelIndex = (0, constants_1.readPickerIndex)(event.detail.value, provider.imageModels.length);
             const option = provider.imageModels[imageModelIndex] || provider.imageModels[0];
             this.setData({
@@ -508,7 +542,7 @@ Component({
             this.refreshCanSubmit();
         },
         onReferenceVisionModelChange(event) {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const referenceVisionModelIndex = (0, constants_1.readPickerIndex)(event.detail.value, provider.visionModels.length);
             const option = provider.visionModels[referenceVisionModelIndex] || provider.visionModels[0];
             this.setData({
@@ -1017,7 +1051,7 @@ Component({
                 referenceImageMode: this.data.referenceImageMode,
             }, settings.maxCriticRounds);
             const apiKeys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
-            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
+            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return (provider === 'tokendance' ? (0, tokendance_1.hasTokenDanceConnection)() : Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim())); });
             const canSubmit = Boolean(hasRequiredKeys &&
                 this.data.methodContent.trim().length >= 20 &&
                 this.data.caption.trim().length >= 3 &&

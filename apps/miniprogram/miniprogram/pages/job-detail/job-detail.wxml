@@ -163,3 +163,6 @@
 
   <view class="footer-space" />
 </scroll-view>
+
+<view wx:if="{{job.providerCalls.length}}" class="section"><view class="record-asset-title">模型调用记录</view><view wx:for="{{job.providerCalls}}" wx:key="index"><view>{{item.requestedModel}} → {{item.actualModel || '未返回实际型号'}}</view><view>请求编号：{{item.requestId || '未返回'}}；供应商：{{item.supplier || '未返回'}}</view></view></view>
+<view wx:if="{{job.recovery && job.status === 'failed'}}" class="section"><view>{{job.recovery.message}}</view><button bindtap="openTokenDance">连接与充值</button><button wx:if="{{job.recovery.canResume}}" bindtap="resumeJob">从已保存步骤继续</button></view>
