@@ -15,6 +15,11 @@ assert.equal(error.detail, '4:5 is not canonical')
 assert.equal(businessErrorGuidance(error).setting, 'aspect-ratio')
 assert.match(businessErrorGuidance(error).message, /比例/)
 
+const authEnvelope = toBusinessError(403, { code: 403, error: 'EMAIL_NOT_VERIFIED' })
+assert.equal(authEnvelope.businessCode, 'EMAIL_NOT_VERIFIED')
+assert.equal(authEnvelope.message, 'EMAIL_NOT_VERIFIED')
+assert.equal(toBusinessError(401, { code: 401, error: 'Invalid email or password' }).businessCode, '')
+
 const expectedSettings = {
   MODEL_ROUTE_CONFLICT: 'model-routing',
   ASPECT_RATIO_UNSUPPORTED: 'aspect-ratio',

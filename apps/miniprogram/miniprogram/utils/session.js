@@ -6,9 +6,13 @@ exports.subscribeSession = subscribeSession;
 exports.refreshSession = refreshSession;
 exports.signIn = signIn;
 exports.signUp = signUp;
+exports.sendVerificationEmail = sendVerificationEmail;
+exports.requestPasswordReset = requestPasswordReset;
+exports.changePassword = changePassword;
 exports.signOut = signOut;
 const api_1 = require("./api");
 const config_1 = require("./config");
+const auth_security_1 = require("./auth-security");
 // 登录态在模块级缓存并广播给各页面；cookie 本身由 utils/api 持久化在 storage，天然跨页共享。
 let currentUser = null;
 let sessionChecked = false;
@@ -45,6 +49,7 @@ async function refreshSession() {
                 id: String(user.id),
                 email: String(user.email || ''),
                 name: String(user.name || ''),
+                emailVerified: user.emailVerified === true,
             });
         }
         else {
@@ -59,16 +64,25 @@ async function refreshSession() {
     return currentUser;
 }
 async function signIn(email, password) {
-    await (0, api_1.authRequest)('/sign-in/email', 'POST', { email, password });
-    return refreshSession();
+    await (0, api_1.authRequest)('/sign-in/email', 'POST', (0, auth_security_1.buildSignInPayload)(email, password));
+    const user = await refreshSession();
+    if (!user)
+        throw new Error('登录状态校验失败，请重试。');
+    return { status: 'authenticated', user };
 }
 async function signUp(email, password, name) {
-    await (0, api_1.authRequest)('/sign-up/email', 'POST', {
-        email,
-        password,
-        name: name || email.split('@')[0] || '图研Tuyan 用户',
-    });
-    return null;
+    const payload = (0, auth_security_1.buildSignUpPayload)(email, password, name);
+    await (0, api_1.authRequest)('/sign-up/email', 'POST', payload);
+    return { status: 'verification-required', email: payload.email };
+}
+async function sendVerificationEmail(email) {
+    await (0, api_1.authRequest)('/send-verification-email', 'POST', (0, auth_security_1.buildSendVerificationPayload)(email));
+}
+async function requestPasswordReset(email) {
+    await (0, api_1.authRequest)('/request-password-reset', 'POST', (0, auth_security_1.buildPasswordResetRequestPayload)(email));
+}
+async function changePassword(currentPassword, newPassword) {
+    await (0, api_1.authRequest)('/change-password', 'POST', (0, auth_security_1.buildChangePasswordPayload)(currentPassword, newPassword));
 }
 async function signOut() {
     sessionEpoch++;

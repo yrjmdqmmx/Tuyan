@@ -71,7 +71,7 @@ function gatewayRequest(url, method, data, options = {}) {
                 const responseData = coerceJsonResponse(res.data);
                 if (res.statusCode < 200 || res.statusCode >= 300) {
                     const body = responseData || {};
-                    reject((0, business_errors_1.toBusinessError)(res.statusCode, body));
+                    reject((0, business_errors_1.toBusinessError)(res.statusCode, body, res.header));
                     return;
                 }
                 resolve(responseData);
@@ -94,7 +94,7 @@ function postJson(url, body, options = {}) {
                 persistCookies(res);
                 const data = coerceJsonResponse(res.data) || {};
                 if (res.statusCode < 200 || res.statusCode >= 300 || (data.code && data.code !== 0)) {
-                    reject((0, business_errors_1.toBusinessError)(res.statusCode, data));
+                    reject((0, business_errors_1.toBusinessError)(res.statusCode, data, res.header));
                     return;
                 }
                 resolve(data);

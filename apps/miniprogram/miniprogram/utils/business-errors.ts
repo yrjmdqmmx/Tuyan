@@ -3,23 +3,25 @@ export class BusinessError extends Error {
   readonly code: unknown
   readonly businessCode: string
   readonly detail: string
+  readonly retryAfterSeconds: number | undefined
 
-  constructor(message: string, input: { httpStatus: number; code: unknown; businessCode: string; detail: string }) {
+  constructor(message: string, input: { httpStatus: number; code: unknown; businessCode: string; detail: string; retryAfterSeconds?: number }) {
     super(message)
     this.name = 'BusinessError'
     this.httpStatus = input.httpStatus
     this.code = input.code
     this.businessCode = input.businessCode
     this.detail = input.detail
+    this.retryAfterSeconds = input.retryAfterSeconds
   }
 }
 
-export function toBusinessError(httpStatus: number, input: unknown): BusinessError {
+export function toBusinessError(httpStatus: number, input: unknown, headers?: unknown): BusinessError {
   const data = input && typeof input === 'object' ? input as Record<string, unknown> : {}
-  const businessCode = text(data.businessCode) || (typeof data.code === 'string' ? data.code : '')
+  const businessCode = text(data.businessCode) || (typeof data.code === 'string' ? data.code : '') || stableErrorIdentifier(data.error)
   const detail = text(data.detail)
   const message = text(data.error) || text(data.message) || detail || `HTTP ${httpStatus}`
-  return new BusinessError(message, { httpStatus, code: data.code, businessCode, detail })
+  return new BusinessError(message, { httpStatus, code: data.code, businessCode, detail, retryAfterSeconds: retryAfterFromHeaders(headers) })
 }
 
 export function businessErrorGuidance(error: BusinessError): { setting: string; message: string } {
@@ -42,4 +44,21 @@ export function businessErrorGuidance(error: BusinessError): { setting: string; 
 
 function text(value: unknown): string {
   return typeof value === 'string' ? value.trim() : ''
+}
+
+function stableErrorIdentifier(value: unknown): string {
+  const identifier = text(value)
+  return /^[A-Z][A-Z0-9_]*$/.test(identifier) ? identifier : ''
+}
+
+function retryAfterFromHeaders(headers: unknown): number | undefined {
+  if (!headers || typeof headers !== 'object') return undefined
+  const entries = Object.entries(headers as Record<string, unknown>)
+  for (const preferredName of ['x-retry-after', 'retry-after']) {
+    const match = entries.find(([name]) => name.toLocaleLowerCase() === preferredName)
+    const value = Array.isArray(match?.[1]) ? match?.[1][0] : match?.[1]
+    const seconds = Number(value)
+    if (Number.isFinite(seconds) && seconds > 0) return Math.ceil(seconds)
+  }
+  return undefined
 }
