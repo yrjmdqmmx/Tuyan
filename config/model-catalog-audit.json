@@ -1,6 +1,6 @@
 {
   "auditDate": "2026-09-09",
-  "version": "2026-09-09.v16",
+  "version": "2026-09-09.v17",
   "incompatiblePolicy": "omit-from-catalog",
   "auditRows": {
     "02-native": 79,
@@ -8,11 +8,12 @@
     "04-bailian": 262,
     "01-existing": 101,
     "05-openrouter-text": 430,
-    "05-openrouter-images": 50
+    "05-openrouter-images": 50,
+    "06-tokendance": 93
   },
   "originalStaticCount": 101,
-  "staticCount": 677,
-  "selectableStaticCount": 677,
+  "staticCount": 739,
+  "selectableStaticCount": 739,
   "repositoryBaseline": {
     "commit": "800c91fc7e1d23588771bfb2703ad25a006c6e21",
     "version": "2026-09-07.v12",
@@ -18333,6 +18334,750 @@
       "reason": "Dedicated Images 目录和 OpenAI provider endpoint 已确认；使用官方 PNG 默认格式 profile，沿用运行时图像字节校验。本轮通过本地契约测试，未执行付费调用。",
       "source": "https://openrouter.ai/api/v1/images/models/openai/gpt-image-2.5-flare/endpoints",
       "reviewedAt": "2026-09-09"
+    },
+    {
+      "provider": "tokendance",
+      "id": "bocha-web-search",
+      "resolvedId": "bocha-web-search",
+      "decision": "excluded",
+      "reason": "网页搜索接口；现有参考库检索并非开放网页搜索，需要新增检索工具契约。",
+      "source": "https://tokendance.space/models/bocha-web-search"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-chat-v3-0324",
+      "resolvedId": "deepseek-chat-v3-0324",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-chat-v3-0324"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-ocr-2",
+      "resolvedId": "deepseek-ocr-2",
+      "decision": "excluded",
+      "reason": "OCR 专用模型，不能证明支持通用图像分析及评审；且下线公告与实时目录冲突。",
+      "source": "https://tokendance.space/models/deepseek-ocr-2"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v3.2",
+      "resolvedId": "deepseek-v3.2",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-v3.2"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v4-flash",
+      "resolvedId": "deepseek-v4-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-v4-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v4-flash-0731",
+      "resolvedId": "deepseek-v4-flash-0731",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-v4-flash-0731"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v4-flash-vision-exp",
+      "resolvedId": "deepseek-v4-flash-vision-exp",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-v4-flash-vision-exp"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v4-pro",
+      "resolvedId": "deepseek-v4-pro",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-v4-pro"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v4-pro-0813",
+      "resolvedId": "deepseek-v4-pro-0813",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-v4-pro-0813"
+    },
+    {
+      "provider": "tokendance",
+      "id": "deepseek-v4.1-flash",
+      "resolvedId": "deepseek-v4.1-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/deepseek-v4.1-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "dots-3-note-preview",
+      "resolvedId": "dots-3-note-preview",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/dots-3-note-preview"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-4.5-air",
+      "resolvedId": "glm-4.5-air",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-4.5-air"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-4.6v",
+      "resolvedId": "glm-4.6v",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-4.6v"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-4.7",
+      "resolvedId": "glm-4.7",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-4.7"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5",
+      "resolvedId": "glm-5",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-5"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5.1",
+      "resolvedId": "glm-5.1",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-5.1"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5.2",
+      "resolvedId": "glm-5.2",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-5.2"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5.3",
+      "resolvedId": "glm-5.3",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-5.3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5.3-flash",
+      "resolvedId": "glm-5.3-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-5.3-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5v-turbo",
+      "resolvedId": "glm-5v-turbo",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/glm-5v-turbo"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-ocr",
+      "resolvedId": "glm-ocr",
+      "decision": "excluded",
+      "reason": "专用文档 OCR 协议；图研视觉角色需要通用图像分析及评审，需新增文档 OCR 角色与解析能力。",
+      "source": "https://tokendance.space/models/glm-ocr"
+    },
+    {
+      "provider": "tokendance",
+      "id": "happyhorse-1.0-i2v",
+      "resolvedId": "happyhorse-1.0-i2v",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/happyhorse-1.0-i2v"
+    },
+    {
+      "provider": "tokendance",
+      "id": "happyhorse-1.0-r2v",
+      "resolvedId": "happyhorse-1.0-r2v",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/happyhorse-1.0-r2v"
+    },
+    {
+      "provider": "tokendance",
+      "id": "happyhorse-1.0-t2v",
+      "resolvedId": "happyhorse-1.0-t2v",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/happyhorse-1.0-t2v"
+    },
+    {
+      "provider": "tokendance",
+      "id": "happyhorse-1.0-video-edit",
+      "resolvedId": "happyhorse-1.0-video-edit",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/happyhorse-1.0-video-edit"
+    },
+    {
+      "provider": "tokendance",
+      "id": "happyhorse-1.1-i2v",
+      "resolvedId": "happyhorse-1.1-i2v",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/happyhorse-1.1-i2v"
+    },
+    {
+      "provider": "tokendance",
+      "id": "happyhorse-1.1-r2v",
+      "resolvedId": "happyhorse-1.1-r2v",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/happyhorse-1.1-r2v"
+    },
+    {
+      "provider": "tokendance",
+      "id": "happyhorse-1.1-t2v",
+      "resolvedId": "happyhorse-1.1-t2v",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/happyhorse-1.1-t2v"
+    },
+    {
+      "provider": "tokendance",
+      "id": "hy3",
+      "resolvedId": "hy3",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/hy3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "hy3-preview",
+      "resolvedId": "hy3-preview",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/hy3-preview"
+    },
+    {
+      "provider": "tokendance",
+      "id": "hy4-preview",
+      "resolvedId": "hy4-preview",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/hy4-preview"
+    },
+    {
+      "provider": "tokendance",
+      "id": "kimi-k2.5",
+      "resolvedId": "kimi-k2.5",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/kimi-k2.5"
+    },
+    {
+      "provider": "tokendance",
+      "id": "kimi-k2.6",
+      "resolvedId": "kimi-k2.6",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/kimi-k2.6"
+    },
+    {
+      "provider": "tokendance",
+      "id": "kimi-k2.7-code",
+      "resolvedId": "kimi-k2.7-code",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/kimi-k2.7-code"
+    },
+    {
+      "provider": "tokendance",
+      "id": "kimi-k3",
+      "resolvedId": "kimi-k3",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/kimi-k3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "kling-3.0",
+      "resolvedId": "kling-3.0",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/kling-3.0"
+    },
+    {
+      "provider": "tokendance",
+      "id": "kling-3.0-omni",
+      "resolvedId": "kling-3.0-omni",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/kling-3.0-omni"
+    },
+    {
+      "provider": "tokendance",
+      "id": "kling-3.0-turbo",
+      "resolvedId": "kling-3.0-turbo",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/kling-3.0-turbo"
+    },
+    {
+      "provider": "tokendance",
+      "id": "ling-3.0-flash",
+      "resolvedId": "ling-3.0-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/ling-3.0-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "longcat-2.0",
+      "resolvedId": "longcat-2.0",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/longcat-2.0"
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5",
+      "resolvedId": "mimo-v2.5",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/mimo-v2.5"
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5-pro",
+      "resolvedId": "mimo-v2.5-pro",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/mimo-v2.5-pro"
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5-tts",
+      "resolvedId": "mimo-v2.5-tts",
+      "decision": "excluded",
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/mimo-v2.5-tts"
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5-tts-voiceclone",
+      "resolvedId": "mimo-v2.5-tts-voiceclone",
+      "decision": "excluded",
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/mimo-v2.5-tts-voiceclone"
+    },
+    {
+      "provider": "tokendance",
+      "id": "mimo-v2.5-tts-voicedesign",
+      "resolvedId": "mimo-v2.5-tts-voicedesign",
+      "decision": "excluded",
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/mimo-v2.5-tts-voicedesign"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-h3",
+      "resolvedId": "minimax-h3",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/minimax-h3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-h3-max",
+      "resolvedId": "minimax-h3-max",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/minimax-h3-max"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-m2.5",
+      "resolvedId": "minimax-m2.5",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/minimax-m2.5"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-m2.7",
+      "resolvedId": "minimax-m2.7",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/minimax-m2.7"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-m3",
+      "resolvedId": "minimax-m3",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/minimax-m3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-speech-2.8-hd",
+      "resolvedId": "minimax-speech-2.8-hd",
+      "decision": "excluded",
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/minimax-speech-2.8-hd"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-speech-2.8-turbo",
+      "resolvedId": "minimax-speech-2.8-turbo",
+      "decision": "excluded",
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/minimax-speech-2.8-turbo"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen-text-embedding-v4",
+      "resolvedId": "qwen-text-embedding-v4",
+      "decision": "excluded",
+      "reason": "embedding 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/qwen-text-embedding-v4"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3-30b-a3b-instruct-2507",
+      "resolvedId": "qwen3-30b-a3b-instruct-2507",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3-30b-a3b-instruct-2507"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3-max",
+      "resolvedId": "qwen3-max",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3-max"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3-vl-plus",
+      "resolvedId": "qwen3-vl-plus",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3-vl-plus"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.5-35b-a3b",
+      "resolvedId": "qwen3.5-35b-a3b",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.5-35b-a3b"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.5-flash",
+      "resolvedId": "qwen3.5-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.5-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.5-plus",
+      "resolvedId": "qwen3.5-plus",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.5-plus"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.6-max-preview",
+      "resolvedId": "qwen3.6-max-preview",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.6-max-preview"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.6-plus",
+      "resolvedId": "qwen3.6-plus",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.6-plus"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.7-max",
+      "resolvedId": "qwen3.7-max",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.7-max"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.7-plus",
+      "resolvedId": "qwen3.7-plus",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.7-plus"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.7-text-embedding",
+      "resolvedId": "qwen3.7-text-embedding",
+      "decision": "excluded",
+      "reason": "embedding 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/qwen3.7-text-embedding"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.8-flash",
+      "resolvedId": "qwen3.8-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.8-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.8-max",
+      "resolvedId": "qwen3.8-max",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.8-max"
+    },
+    {
+      "provider": "tokendance",
+      "id": "qwen3.8-max-0902",
+      "resolvedId": "qwen3.8-max-0902",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/qwen3.8-max-0902"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-2.0-code",
+      "resolvedId": "seed-2.0-code",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seed-2.0-code"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-2.0-lite",
+      "resolvedId": "seed-2.0-lite",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seed-2.0-lite"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-2.0-mini",
+      "resolvedId": "seed-2.0-mini",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seed-2.0-mini"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-2.0-pro",
+      "resolvedId": "seed-2.0-pro",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seed-2.0-pro"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-2.1-pro",
+      "resolvedId": "seed-2.1-pro",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seed-2.1-pro"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-2.1-turbo",
+      "resolvedId": "seed-2.1-turbo",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seed-2.1-turbo"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-evolving",
+      "resolvedId": "seed-evolving",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seed-evolving"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seed-tts-2.0",
+      "resolvedId": "seed-tts-2.0",
+      "decision": "excluded",
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/seed-tts-2.0"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seedance-2.0",
+      "resolvedId": "seedance-2.0",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/seedance-2.0"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seedance-2.0-fast",
+      "resolvedId": "seedance-2.0-fast",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/seedance-2.0-fast"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seedance-2.0-mini",
+      "resolvedId": "seedance-2.0-mini",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/seedance-2.0-mini"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seedance-2.5",
+      "resolvedId": "seedance-2.5",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/seedance-2.5"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seedream-5.0-lite",
+      "resolvedId": "seedream-5.0-lite",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：image, refine。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seedream-5.0-lite"
+    },
+    {
+      "provider": "tokendance",
+      "id": "seedream-5.0-pro",
+      "resolvedId": "seedream-5.0-pro",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：image, refine。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/seedream-5.0-pro"
+    },
+    {
+      "provider": "tokendance",
+      "id": "spark-x2.5-1.7b",
+      "resolvedId": "spark-x2.5-1.7b",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/spark-x2.5-1.7b"
+    },
+    {
+      "provider": "tokendance",
+      "id": "spark-x2.5-4b",
+      "resolvedId": "spark-x2.5-4b",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/spark-x2.5-4b"
+    },
+    {
+      "provider": "tokendance",
+      "id": "step-3.5-flash",
+      "resolvedId": "step-3.5-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/step-3.5-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "step-3.7-flash",
+      "resolvedId": "step-3.7-flash",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize, vision。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/step-3.7-flash"
+    },
+    {
+      "provider": "tokendance",
+      "id": "unifuncs-s3",
+      "resolvedId": "unifuncs-s3",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/unifuncs-s3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "unifuncs-s3-pro",
+      "resolvedId": "unifuncs-s3-pro",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/unifuncs-s3-pro"
+    },
+    {
+      "provider": "tokendance",
+      "id": "unifuncs-u3",
+      "resolvedId": "unifuncs-u3",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/unifuncs-u3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "unifuncs-u3-pro",
+      "resolvedId": "unifuncs-u3-pro",
+      "decision": "added",
+      "reason": "实时目录、型号详情及独立协议已核对；支持图研角色：main, optimize。供应商付费调用仍待联调。",
+      "source": "https://tokendance.space/models/unifuncs-u3-pro"
+    },
+    {
+      "provider": "tokendance",
+      "id": "unifuncs-web-reader",
+      "resolvedId": "unifuncs-web-reader",
+      "decision": "excluded",
+      "reason": "网页抓取接口；需要新增阅读工具与 URL 输入能力。",
+      "source": "https://tokendance.space/models/unifuncs-web-reader"
+    },
+    {
+      "provider": "tokendance",
+      "id": "unifuncs-web-search",
+      "resolvedId": "unifuncs-web-search",
+      "decision": "excluded",
+      "reason": "网页搜索接口；需要新增搜索工具与结果引用处理。",
+      "source": "https://tokendance.space/models/unifuncs-web-search"
+    },
+    {
+      "provider": "tokendance",
+      "id": "wan3.0-video",
+      "resolvedId": "wan3.0-video",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/wan3.0-video"
+    },
+    {
+      "provider": "tokendance",
+      "id": "wan3.0-video-prime",
+      "resolvedId": "wan3.0-video-prime",
+      "decision": "excluded",
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "source": "https://tokendance.space/models/wan3.0-video-prime"
     }
   ],
   "latestUpdate": {

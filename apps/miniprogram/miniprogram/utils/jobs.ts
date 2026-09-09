@@ -39,6 +39,8 @@ export interface JobStage {
 }
 
 export interface Job {
+  recovery?: { canResume: boolean; message: string; action: string; retryAt?: string } | null
+  providerCalls?: unknown[]
   id: string
   status: JobStatus
   provider: string
@@ -122,6 +124,8 @@ export function normalizeJob(input: unknown): Job {
 
   return {
     id: jobId,
+    recovery: job.recovery || null,
+    providerCalls: job.providerCalls || [],
     status,
     provider: String(job.provider || ''),
     client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),

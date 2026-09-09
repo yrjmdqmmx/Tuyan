@@ -3,10 +3,10 @@ import { EXTENDED_MODEL_CHANNELS, STATIC_MODEL_REGISTRY } from './static-model-c
 import type { OutputFormat } from './job-assets'
 import type { ReferenceImageMode } from './reference-mode'
 
-export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate'
+export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'tokendance'
 export type ConfigurationMode = 'simple' | 'advanced'
 export type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
-export type ImageSize = '512' | '1K' | '2K' | '4K' | 'auto'
+export type ImageSize = '512' | '1K' | '1.5K' | '2K' | '3K' | '4K' | 'auto'
 export type RetrievalSetting = 'none' | 'auto' | 'random' | 'manual'
 
 export interface ModelOption {
@@ -588,7 +588,9 @@ export const OUTPUT_FORMATS: { label: string; value: OutputFormat }[] = [
 export const RESOLUTION_OPTIONS: { label: string; value: ImageSize }[] = [
   { label: '512（预览）', value: '512' },
   { label: '1K（标准）', value: '1K' },
+  { label: '1.5K', value: '1.5K' },
   { label: '2K（高清）', value: '2K' },
+  { label: '3K', value: '3K' },
   { label: '4K（超清）', value: '4K' },
   { label: '原生尺寸', value: 'auto' },
 ]

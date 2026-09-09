@@ -32,7 +32,7 @@ function registry() {
   }
 }
 
-assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'])
+assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'])
 const normalized = normalizeModelRegistry(registry())
 assert.equal(normalized.registryVersion, '2026-08-21.v9')
 assert.equal(normalized.providers.openrouter.models.length, 3)

@@ -46,7 +46,7 @@ export function requiredCreateRouteRoles(body, maxCriticRounds) {
   const nativeVector = imageRoute?.accessProvider === 'recraft' && /^recraftv(?:[23]|4(?:_1)?)(?:_utility)?(?:_pro)?_vector$/.test(imageRoute.modelId)
   if ((outputFormat === 'svg' && !nativeVector) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
   if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot') roles.push('image')
-  if (taskName === 'plot' && ['2K', '4K'].includes(body.imageSize) && body.imageRefineMode === 'direct-edit') roles.push('image')
+  if (taskName === 'plot' && ['1.5K', '2K', '3K', '4K'].includes(body.imageSize) && body.imageRefineMode === 'direct-edit') roles.push('image')
   if ((body.referenceImages || []).length) roles.push((body.referenceImageModeUsed || body.referenceImageMode) === 'main_model' ? 'main' : 'vision')
   if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
   return orderedUniqueRoles(roles)
@@ -66,7 +66,7 @@ export function uniqueProvidersForRoles(modelRoutes, roles) {
 }
 
 export function scopedApiKeysForRoles(modelRoutes, roles, apiKeys) {
-  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).map((provider) => [provider, apiKeys?.[provider] || '']))
+  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).filter(provider => provider !== 'tokendance').map((provider) => [provider, apiKeys?.[provider] || '']))
 }
 
 export function arkProbesForRoles(modelRoutes, roles) {

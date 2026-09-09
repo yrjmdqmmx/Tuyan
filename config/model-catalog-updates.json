@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-09.v16",
+  "version": "2026-09-09.v17",
   "providers": {
     "deepseek": [],
     "kimi": [],
@@ -18646,6 +18646,23 @@
         "在对应平台创建 API Key，并确认账户可访问所选模型。",
         "本渠道使用国际公共 API；不要混用其他地区或平台的密钥。",
         "目录来自官方文档，实际账户额度和模型权限尚需验证。"
+      ]
+    },
+    "tokendance": {
+      "label": "TokenDance",
+      "accessKind": "aggregator",
+      "guideUrl": "https://tokendance.space/docs/api-key-oauth",
+      "textBaseUrl": "https://tokendance.space/gateway/v1",
+      "reviewedAt": "2026-09-09",
+      "defaults": {
+        "main": "qwen3.8-flash",
+        "image": "seedream-5.0-lite",
+        "vision": "qwen3.8-flash"
+      },
+      "guideSteps": [
+        "登录图研后连接 TokenDance。",
+        "在 TokenDance 授权页设置 Key 的有效期和额度；图研安全保存授权。",
+        "钱包余额与 Key 额度是两个独立限制。"
       ]
     }
   },

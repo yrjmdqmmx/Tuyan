@@ -51,6 +51,8 @@ function normalizeJob(input) {
     const retrievalSetting = String(job.retrieval_setting || job.retrievalSetting || 'none');
     return {
         id: jobId,
+        recovery: job.recovery || null,
+        providerCalls: job.providerCalls || [],
         status,
         provider: String(job.provider || ''),
         client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),

@@ -234,7 +234,7 @@ acl hk src 10.77.0.1/32
 acl CONNECT method CONNECT
 acl SSL_ports port 443
 # -n prevents reverse-DNS/PTR lookups from turning an IP literal into an approved name.
-acl approved dstdomain -n api.openai.com generativelanguage.googleapis.com openrouter.ai ark.cn-beijing.volces.com api.anthropic.com api.x.ai external.api.recraft.ai .bfl.ai api.stability.ai api.ideogram.ai api.minimax.io api.mistral.ai api.together.ai api.fireworks.ai queue.fal.run api.replicate.com
+acl approved dstdomain -n api.openai.com generativelanguage.googleapis.com openrouter.ai ark.cn-beijing.volces.com api.anthropic.com api.x.ai external.api.recraft.ai .bfl.ai api.stability.ai api.ideogram.ai api.minimax.io api.mistral.ai api.together.ai api.fireworks.ai queue.fal.run api.replicate.com tokendance.space
 acl literal_ipv4 url_regex -i ^[0-9]{1,3}(\.[0-9]{1,3}){3}:[0-9]+$
 acl literal_ipv6 url_regex -i ^\[[0-9a-f:.]+\]:[0-9]+$
 acl literal_ipv4_url url_regex -i ^https?://[0-9]{1,3}(\.[0-9]{1,3}){3}[:/]

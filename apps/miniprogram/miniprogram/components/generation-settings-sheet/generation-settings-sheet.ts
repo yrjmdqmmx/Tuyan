@@ -1,3 +1,4 @@
+import { openTokenDance } from '../../utils/tokendance'
 import { MODEL_CHANNEL_LABELS } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { MINIMAX_REGIONS, minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions, type ProviderRegions } from '../../utils/provider-regions'
@@ -58,6 +59,7 @@ Component({
     criticOptions: [{ value: 0, label: '0 轮' }, { value: 1, label: '1 轮' }, { value: 2, label: '2 轮' }],
     criticIndex: 1,
     keyFields: [] as Array<{ provider: string; label: string; value: string; placeholder: string }>,
+    encryptedRecovery: false,
     draftKeys: {} as Record<string, string>,
     draftManualReferenceIds: [] as string[],
     showModelPicker: false,
@@ -69,6 +71,7 @@ Component({
     verifyingArk: false,
   },
   methods: {
+    openTokenDance,
     noop() {},
     // Keep full capability metadata in the logic-layer store, outside setData.
     getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.data.draft?.providerRegions) },
@@ -122,7 +125,7 @@ Component({
       const missing = missingArkVerifications(probes, getArkVerification())
       const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
       this.setData({
-        draft, routeRows, ratioOptions, resolutionOptions, keyFields,
+        draft, routeRows, ratioOptions, resolutionOptions, keyFields, encryptedRecovery: providers.includes('tokendance'),
         providerOptions,
         minimaxRegionIndex: minimaxRegion(draft.providerRegions) === 'cn' ? 1 : 0,
         minimaxApiBase: MINIMAX_REGIONS[minimaxRegion(draft.providerRegions)].apiBase,

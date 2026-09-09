@@ -2,7 +2,7 @@ import { AlertTriangle, FileText, Loader2, RefreshCcw, ShieldCheck } from 'lucid
 import { formatErrorMessage } from '../utils';
 import JobTable from './JobTable';
 
-export default function TaskRecordsPanel({ authEnabled, currentUser, isPending, jobs, error, apiBase, onLogin, onRefresh, onUseForRefine }) {
+export default function TaskRecordsPanel({ authEnabled, currentUser, isPending, jobs, error, apiBase, onLogin, onRefresh, onUseForRefine, renderRecovery }) {
   return (
     <section className="user-jobs-panel">
       <div className="section-head">
@@ -41,7 +41,7 @@ export default function TaskRecordsPanel({ authEnabled, currentUser, isPending, 
             <button type="button" onClick={onRefresh}><RefreshCcw size={17} />刷新</button>
           </div>
           {error ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
-          <JobTable jobs={jobs} showUser={false} apiBase={apiBase} onUseForRefine={onUseForRefine} />
+          <JobTable jobs={jobs} showUser={false} apiBase={apiBase} onUseForRefine={onUseForRefine} renderRecovery={renderRecovery} />
         </>
       )}
     </section>

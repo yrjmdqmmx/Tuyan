@@ -21,7 +21,8 @@
     "together": "Together AI",
     "fireworks": "Fireworks AI",
     "fal": "fal",
-    "replicate": "Replicate"
+    "replicate": "Replicate",
+    "tokendance": "TokenDance"
   },
   "vendors": {
     "deepseek": {
@@ -474,6 +475,25 @@
         "Segmind"
       ],
       "source": "https://huggingface.co/segmind/SSD-1B"
+    },
+    "dots": {
+      "label": "Dots Studio",
+      "aliases": [
+        "dots-studio"
+      ],
+      "source": "https://tokendance.space/models"
+    },
+    "unifuncs": {
+      "label": "UniFuncs",
+      "aliases": [],
+      "source": "https://tokendance.space/models"
+    },
+    "xunfei": {
+      "label": "讯飞星火",
+      "aliases": [
+        "xinghuo"
+      ],
+      "source": "https://tokendance.space/models"
     }
   },
   "routes": [

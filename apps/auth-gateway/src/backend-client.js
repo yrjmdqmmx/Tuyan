@@ -63,6 +63,7 @@ export function createBackendClient({
 
     if (mode === 'node') {
       headers['x-paperbanana-gateway-token'] = gatewayToken;
+      if (options.authUserId) headers['x-paperbanana-auth-user-id'] = safeHeader(options.authUserId, 200);
       if (options.adminAction) {
         if (!adminTransportToken) {
           throw new BackendError(503, 'ADMIN_API_DISABLED', 'Admin API disabled: transport assertion is not configured');

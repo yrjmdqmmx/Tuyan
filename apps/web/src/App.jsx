@@ -1,3 +1,6 @@
+import { useTokenDance, isTokenDanceWalletEntry } from './hooks/useTokenDance';
+import TokenDancePanel, { TokenDanceRecovery } from './components/TokenDancePanel';
+import TokenDancePricing from './components/admin/TokenDancePricing';
 import { isAdminEntry, selectWorkspaceEntry } from './lib/adminEntry';
 import { presentRegistryModel, sortModelsNewestFirst } from './lib/modelPresentation'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
@@ -228,6 +231,8 @@ export default function App() {
       return officialApiBase(globalThis.location?.origin);
     }
   }, [apiBase]);
+  const tokenDance = useTokenDance(apiBaseNormalized, currentUser?.id, !authSession.isPending);
+  const [showTokenDanceWallet, setShowTokenDanceWallet] = useState(() => isTokenDanceWalletEntry(window.location.search));
   const selectedInfographicCategory = INFOGRAPHIC_CATEGORIES.find(([id]) => id === infographicCategory) || INFOGRAPHIC_CATEGORIES[0];
   const isAdvancedMode = configurationMode === 'advanced';
   const isPlotCategory = infographicCategory === 'data_stat';
@@ -319,7 +324,7 @@ export default function App() {
   const activeArkProbeSignature = activeArkProbes.map(arkVerificationKey).join('|');
   arkKeySnapshotRef.current = apiKeys.ark;
   arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
-  const missingCredentialProviders = credentialProviders.filter((routeProvider) => !apiKeys[routeProvider]?.trim());
+  const missingCredentialProviders = credentialProviders.filter((routeProvider) => routeProvider === 'tokendance' ? !tokenDance.connection.connected : !apiKeys[routeProvider]?.trim());
   const refineConfigSummary = `${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName}`;
   const refineRunning = isSubmittingRefine || refineJob?.status === 'queued' || refineJob?.status === 'running';
   const refineSubmitHint = !authReady ? '请先登录，再提交精修。'
@@ -878,7 +883,7 @@ export default function App() {
       return null;
     }
     const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
-    if (!apiKey) {
+    if (!apiKey && !(mainRoute.accessProvider === 'tokendance' && tokenDance.connection.connected)) {
       setInputOptimizationCredentialProvider(mainRoute.accessProvider);
       setInputOptimizationGuidance('请先在生成设置中填写当前主模型接入渠道的密钥。');
       setGenerationFocusSetting('api-key');
@@ -1302,6 +1307,22 @@ export default function App() {
     setInputOptimizationCredentialProvider('');
   }
 
+  async function showResumedTask(id) {
+    const resumed = await getJobRequest(apiBaseNormalized, health, id);
+    if (resumed.refine_mode) {
+      setRefineJobId('');
+      setRefineJob(resumed);
+      setRefineJobId(id);
+      setActiveTab('refine');
+    } else {
+      setCurrentJobId(id);
+      setJob(resumed);
+      setPollRetryNonce(value => value + 1);
+      setActiveTab('generate');
+    }
+    await loadUserJobs();
+  }
+
   const settingsDrawer = (
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
       <ModelRoutingSettings
@@ -1317,6 +1338,7 @@ export default function App() {
         executionRouteRoles={credentialRouteRoles}
         credentialProviders={settingsCredentialProviders}
         apiKeys={apiKeys}
+        tokenDance={tokenDance}
         onApiKeyChange={handleApiKeyChange}
         providerRegions={providerRegions}
         onMiniMaxRegionChange={(region) => {
@@ -1500,6 +1522,9 @@ export default function App() {
         </div>
       </header>
 
+      {(tokenDance.notice || tokenDance.error) && <div className="service-alert" role="status">{tokenDance.error || tokenDance.notice}<button type="button" onClick={() => setShowTokenDanceWallet(true)}>查看 TokenDance</button></div>}
+      {currentUser && <button type="button" className="td-link" onClick={() => setShowTokenDanceWallet(value => !value)}>TokenDance 连接与钱包</button>}
+      {showTokenDanceWallet && <TokenDancePanel controller={tokenDance} />}
       {healthError ? (
         <div className="service-alert" role="status"><AlertTriangle size={16} />后端连接异常：{formatErrorMessage(healthError)}</div>
       ) : null}
@@ -1730,12 +1755,14 @@ export default function App() {
                 <p>{currentJobId ? `任务编号 ${currentJobId}` : '提交任务后显示生成结果。'}</p>
               </div>
             </div>
+            <TokenDanceRecovery job={job} controller={tokenDance} onResumed={showResumedTask} />
             <JobStatus job={job} apiBase={apiBaseNormalized} onUseForRefine={useResultForRefine} />
           </div>
         </section>
         </section>
       ) : activeTab === 'refine' ? (
         <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
+          <TokenDanceRecovery job={refineJob} controller={tokenDance} onResumed={showResumedTask} />
           <RefinePanel
             source={refineSource}
             upload={refineUpload}
@@ -1778,7 +1805,7 @@ export default function App() {
           />
         </Suspense>
       ) : activeTab === 'admin' ? (
-        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /></Suspense>
+        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /><TokenDancePricing apiBase={apiBaseNormalized} /></Suspense>
           : <section className="card"><h2>站长运营后台</h2><p role="status">{authSession.isPending ? '正在确认登录状态…' : '需要已登录的站长账号才能访问，后台接口会再次校验权限。'}</p>{!currentUser && <button onClick={() => setShowAuthPanel(true)}>登录账号</button>}</section>
       ) : activeTab === 'guide' ? (
         <GuidePanel
@@ -1803,6 +1830,7 @@ export default function App() {
           onLogin={() => setShowAuthPanel(true)}
           onRefresh={() => loadUserJobs()}
           onUseForRefine={useResultForRefine}
+          renderRecovery={item => <TokenDanceRecovery job={item} controller={tokenDance} onResumed={showResumedTask} />}
         />
       )}
         </>

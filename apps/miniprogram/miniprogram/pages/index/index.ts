@@ -1,3 +1,4 @@
+import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance, optimizeTokenDanceInput } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestHealth, requestJson, uploadReferenceFile } from '../../utils/api'
 import {
@@ -242,6 +243,7 @@ Component({
 
   pageLifetimes: {
     show() {
+      void refreshTokenDanceConnection().then(() => this.refreshCanSubmit())
       ;(this as any).isPageVisible = true
       // tabBar 页不销毁：回到本页时若任务未到终态则恢复轮询
       if ((this as any).pollingTimer) return
@@ -257,6 +259,22 @@ Component({
   },
 
   methods: {
+    async optimizeDescription() {
+      const settings = this.data.settings as GenerationSettings
+      if (!settings?.modelRoutes?.main) return
+      const original = this.data.methodContent
+      const mainRoute = settings.modelRoutes.main
+      const keys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
+      if (mainRoute.accessProvider === 'tokendance' ? !hasTokenDanceConnection() : !keys[mainRoute.accessProvider]) { this.setData({ error: '请先连接主模型渠道。' }); return }
+      if ((this as any).optimizing) return
+      ;(this as any).optimizing = true
+      try {
+        const result = await optimizeTokenDanceInput({mainRoute, providerRegions: settings.providerRegions, apiKey: keys[mainRoute.accessProvider], target: 'methodContent', inputs: {methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt}})
+        wx.showModal({ title: '优化结果', content: result.candidate, confirmText: '采用', success: res => { if (res.confirm && this.data.methodContent === original) { this.setData({ methodContent: result.candidate }); this.refreshCanSubmit() } } })
+      } catch (error) { this.setData({ error: formatError(error) }) } finally { (this as any).optimizing = false }
+    },
+
+    openTokenDance,
     restoreDraft() {
       try {
         const draft = wx.getStorageSync(DRAFT_STORAGE_KEY) as Record<string, unknown>
@@ -1112,7 +1130,7 @@ Component({
         referenceImageMode: this.data.referenceImageMode,
       }, settings.maxCriticRounds)
       const apiKeys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
-      const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(apiKeys[provider]?.trim()))
+      const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => (provider === 'tokendance' ? hasTokenDanceConnection() : Boolean(apiKeys[provider]?.trim())))
       const canSubmit = Boolean(
         hasRequiredKeys &&
           this.data.methodContent.trim().length >= 20 &&

@@ -1,5 +1,5 @@
 import { presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
-export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'] as const
+export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 

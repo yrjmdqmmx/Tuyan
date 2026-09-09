@@ -1,5 +1,20 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-09] TokenDance 独立渠道、授权钱包与可恢复任务 — by Codex
+目录 v17：在原 677 个静态型号上新增 TokenDance 62 个独立型号（60 主模型及输入优化、27 参考图识别、2 生图及直接精修；角色有重叠），逐一审核当前实时 93 个型号，31 个不映射现有能力的型号在覆盖清单逐项说明。主源为 `config/tokendance/catalog.json`，由 `sync-model-catalog.mjs` 生成 Core/Web/小程序目录；新增公开 API 差异检查脚本，运行时 15 分钟刷新已审核型号的存活和协议状态。分润不参与目录或推荐筛选。
+共享契约：新增 `tokenDanceStatus/Authorize/Exchange/Cancel/Disconnect/Balance/PaymentCreate/PaymentStatus/Payments/Resume` 和仅站长使用的 `adminTokenDancePricing` action；Gateway 要求图研登录，给 Core 传受保护的不可变用户 ID。用户 Key 经 S256 PKCE 交换后只在 Core 加密保存，禁止客户端自带 TokenDance Key；`app_url`、`X-App-URL` 固定为 `https://www.paperbanana.asia/`。钱包为整数微元，充值 amount 为整数人民币元；支付状态接口确认到账。增加 job.recovery/providerCalls，按原 jobId 复用已完成的模型调用；结果不确定时禁止自动重试。扩展 1.5K/3K 以及 Seedream Pro/Lite 各自尺寸契约。新可选 env 见 Core `.env.example`，用户 Key 与管理凭据完全分开。
+- [x] canonical catalog / Node Core / Laf 共享处理器（文本/视觉/Ark 独立适配、归因、加密授权、支付、步骤恢复与注销清理）
+- [x] Auth Gateway / 共享 API 与类型（登录/内部身份/站长边界、金额单位、错误/恢复 DTO、历史记录识别中断执行与旧进程队列）
+- [x] Web（连接、钱包、桌面二维码/移动支付宝、完整选择器、生成/精修/优化、任务恢复、站长价目）
+- [x] 小程序源码与编译产物（系统浏览器授权链接/一次性 code、钱包、系统浏览器充值引导、错误与原任务恢复、模型角色和尺寸同步）
+- [x] 本地契约及浏览器验收，范围及测试环境见 [验证记录](docs/tokendance/validation.md)
+- [x] 隔离真实 MongoDB 8.0.16 联调（一次性交换、加密落库、TTL/订单唯一索引、新连接/执行器恢复、并发 CAS、注销清理）；上游模型与支付仍为测试桩
+- [x] CI 加入隔离 Mongo 回归、现有每日目录差异工作流加入 TokenDance；Core 与新加坡 Squid 的 tokendance.space 精确域名规则同步，线上工作流和代理尚未更新
+- [ ] 真实用户 OAuth / 供应商调用 / 支付到账 / 产品方管理价目联调（缺已授权测试凭据及消费额度；不把测试桩当真实调用）
+- [ ] Web / Core / Gateway 与出口代理生产部署（未执行，先配置稳定加密主密钥；独立管理凭据只影响站长价目，随后分阶段发布）
+- [ ] 微信开发者工具、真机授权/支付宝跨应用验证、上传与平台发布（未执行）
+
+
 ### [2026-09-09] Image 2.5 上线复验：OpenRouter 原生尺寸与精修契约 — by Codex
 公网复验发现，OpenRouter 两个 GPT Image 2.5 型号虽然声明支持直接编辑，未声明 resolution 时却返回空的 `refineResolutions`，导致两端无法选择精修参数；实际精修严格校验也会拒绝 `auto`。现仅为这两个已核对型号声明平台原生尺寸：当实时目录完全未提供 resolution 字段时，生成/编辑能力均返回 `['auto']`，严格精修允许 auto，出站仍省略 resolution。目录日后若声明 resolution，继续按实际枚举处理；不覆盖空、未知或改变类型的显式声明，不放开 4K。
 - [x] Core / Laf（精确型号 profile、能力目录与严格请求校验）

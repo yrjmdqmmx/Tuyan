@@ -4,7 +4,8 @@
     "pages/records/records",
     "pages/refine/refine",
     "pages/guide/guide",
-    "pages/job-detail/job-detail"
+    "pages/job-detail/job-detail",
+    "pages/tokendance/tokendance"
   ],
   "window": {
     "navigationBarTextStyle": "black",

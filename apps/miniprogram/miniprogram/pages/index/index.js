@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tokendance_1 = require("../../utils/tokendance");
 const provider_regions_1 = require("../../utils/provider-regions");
 const api_1 = require("../../utils/api");
 const constants_1 = require("../../utils/constants");
@@ -178,7 +179,7 @@ Component({
     },
     pageLifetimes: {
         show() {
-            ;
+            void (0, tokendance_1.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit());
             this.isPageVisible = true;
             // tabBar 页不销毁：回到本页时若任务未到终态则恢复轮询
             if (this.pollingTimer)
@@ -195,6 +196,36 @@ Component({
         },
     },
     methods: {
+        async optimizeDescription() {
+            var _a;
+            const settings = this.data.settings;
+            if (!((_a = settings === null || settings === void 0 ? void 0 : settings.modelRoutes) === null || _a === void 0 ? void 0 : _a.main))
+                return;
+            const original = this.data.methodContent;
+            const mainRoute = settings.modelRoutes.main;
+            const keys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
+            if (mainRoute.accessProvider === 'tokendance' ? !(0, tokendance_1.hasTokenDanceConnection)() : !keys[mainRoute.accessProvider]) {
+                this.setData({ error: '请先连接主模型渠道。' });
+                return;
+            }
+            if (this.optimizing)
+                return;
+            this.optimizing = true;
+            try {
+                const result = await (0, tokendance_1.optimizeTokenDanceInput)({ mainRoute, providerRegions: settings.providerRegions, apiKey: keys[mainRoute.accessProvider], target: 'methodContent', inputs: { methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt } });
+                wx.showModal({ title: '优化结果', content: result.candidate, confirmText: '采用', success: res => { if (res.confirm && this.data.methodContent === original) {
+                        this.setData({ methodContent: result.candidate });
+                        this.refreshCanSubmit();
+                    } } });
+            }
+            catch (error) {
+                this.setData({ error: (0, api_1.formatError)(error) });
+            }
+            finally {
+                this.optimizing = false;
+            }
+        },
+        openTokenDance: tokendance_1.openTokenDance,
         restoreDraft() {
             try {
                 const draft = wx.getStorageSync(DRAFT_STORAGE_KEY);
@@ -1017,7 +1048,7 @@ Component({
                 referenceImageMode: this.data.referenceImageMode,
             }, settings.maxCriticRounds);
             const apiKeys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
-            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
+            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return (provider === 'tokendance' ? (0, tokendance_1.hasTokenDanceConnection)() : Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim())); });
             const canSubmit = Boolean(hasRequiredKeys &&
                 this.data.methodContent.trim().length >= 20 &&
                 this.data.caption.trim().length >= 3 &&

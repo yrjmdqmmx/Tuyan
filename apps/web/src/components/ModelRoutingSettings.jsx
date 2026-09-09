@@ -1,3 +1,4 @@
+import TokenDancePanel from './TokenDancePanel'
 import { MODEL_CHANNEL_LABELS } from '../lib/modelPresentation'
 import { MINIMAX_REGIONS, minimaxRegion } from '../lib/providerRegions'
 import { KeyRound, Loader2, Settings2, ShieldCheck, Sparkles } from 'lucide-react'
@@ -29,6 +30,7 @@ export default function ModelRoutingSettings({
   executionRouteRoles = [],
   credentialProviders,
   apiKeys,
+  tokenDance,
   onApiKeyChange,
   providerRegions,
   onMiniMaxRegionChange,
@@ -106,10 +108,11 @@ export default function ModelRoutingSettings({
 
       <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
         <summary><KeyRound size={17} /> 接入凭据</summary>
-        <p>仅填写当前任务执行阶段会实际使用的渠道；密钥只保留在本页内存中。</p>
+        <p>填写当前任务所需的渠道密钥，或连接 TokenDance 授权账户。{credentialProviders.includes('tokendance') ? '可恢复任务所需的其他渠道密钥会在服务端加密保存，任务完成即删除，最长保留 7 天。' : '手动填写的密钥只保留在本页内存中。'}</p>
         {credentialProviders.map((provider) => {
           const config = providerConfigs[provider]
           if (!config) return null
+          if (provider === 'tokendance') return tokenDance ? <TokenDancePanel key={provider} controller={tokenDance} /> : <p key={provider}>请连接 TokenDance 账户。</p>
           const label = providerLabel(provider, providerConfigs)
           return (
             <div className="credential-provider" key={provider}>
@@ -134,7 +137,7 @@ export default function ModelRoutingSettings({
                   />
                 </div>
               </label>
-              <ApiKeyGuide providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 MiniMax 开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
+              <ApiKeyGuide recoverable={credentialProviders.includes('tokendance')} providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 MiniMax 开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
             </div>
           )
         })}

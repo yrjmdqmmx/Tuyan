@@ -39,6 +39,8 @@ jobs:
         run: apps/auth-gateway/tests/integration/run-account-lifecycle.sh
       - name: Admin operations with real auth and disposable Mongo replica set
         run: apps/paperbanana-api/tests/integration/run-admin-operations.sh
+      - name: TokenDance encrypted recovery and payments with disposable Mongo
+        run: bash apps/paperbanana-api/tests/integration/run-tokendance.sh
       - run: pnpm --filter @paperbanana/paperbanana-api test
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/paperbanana-api build

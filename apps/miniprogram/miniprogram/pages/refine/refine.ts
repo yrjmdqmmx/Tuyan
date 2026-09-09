@@ -1,3 +1,4 @@
+import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance, optimizeTokenDanceInput } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestJson } from '../../utils/api'
 import { getApiKeys, replaceApiKeys } from '../../utils/api-keys'
@@ -46,8 +47,24 @@ Component({
       this.stopPolling()
     },
   },
-  pageLifetimes: { show() { this.loadSources() }, hide() { this.stopPolling() } },
+  pageLifetimes: { show() { void refreshTokenDanceConnection().then(() => this.refreshCanSubmit()); this.loadSources() }, hide() { this.stopPolling() } },
   methods: {
+    async optimizeDescription() {
+      const settings = this.data.settings as RefineSettings
+      if (!settings?.modelRoutes?.main) return
+      const original = this.data.instruction
+      const mainRoute = settings.modelRoutes.main
+      const keys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
+      if (mainRoute.accessProvider === 'tokendance' ? !hasTokenDanceConnection() : !keys[mainRoute.accessProvider]) { this.setData({ error: '请先连接主模型渠道。' }); return }
+      if ((this as any).optimizing) return
+      ;(this as any).optimizing = true
+      try {
+        const result = await optimizeTokenDanceInput({mainRoute, providerRegions: settings.providerRegions, apiKey: keys[mainRoute.accessProvider], target: 'editInstruction', inputs: {methodContent: '', caption: '', negativePrompt: '', editInstruction: this.data.instruction}})
+        wx.showModal({ title: '优化结果', content: result.candidate, confirmText: '采用', success: res => { if (res.confirm && this.data.instruction === original) { this.setData({ instruction: result.candidate }); this.refreshCanSubmit() } } })
+      } catch (error) { this.setData({ error: formatError(error) }) } finally { (this as any).optimizing = false }
+    },
+
+    openTokenDance,
     applyRegistryState(state: ModelRegistryState) {
       if (!state.registry) { this.setData({ registryReady: false, registryError: state.error }); this.refreshCanSubmit(); return }
       const current = this.data.settings as RefineSettings
@@ -105,7 +122,7 @@ Component({
       if (!this.data.registryReady || !settings.modelRoutes) { this.setData({ canSubmit: false }); return }
       const roles = requiredRefineRouteRoles({ refineMode: this.data.refineMode })
       const keys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
-      const hasKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(keys[provider]?.trim()))
+      const hasKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => (provider === 'tokendance' ? hasTokenDanceConnection() : Boolean(keys[provider]?.trim())))
       this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && !this.data.isSubmitting) })
     },
     async submitRefine() {

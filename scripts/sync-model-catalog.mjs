@@ -45,6 +45,19 @@ lines.push(`const auditedModelAliases: Record<string, Record<string, string>> = 
 for (const [provider, channel] of Object.entries(config.channels || {})) {
   lines.push(`staticModelRegistry[${JSON.stringify(provider)}] = ${JSON.stringify({accessKind:channel.accessKind, routeContractVersion:1, accountCatalogRequired:false, defaults:channel.defaults, models:[]})}`)
 }
+const tokenDanceCatalog = JSON.parse(fs.readFileSync(path.join(root, 'config/tokendance/catalog.json'), 'utf8'))
+// TokenDance has one canonical audit snapshot; derive all clients from it.
+config.providers.tokendance = [...tokenDanceCatalog.models].filter(m => m.roles.length).sort((a,b) => b.created-a.created || a.id.localeCompare(b.id)).map(m => {
+  const image = m.roles.includes('image'), vision = m.roles.includes('vision')
+  return { id:m.id, label:m.name.replace('：',': ').split(': ').slice(1).join(': ') || m.name,
+    roles:m.roles.filter(role => ['main','vision','image'].includes(role)), protocol:image?'ark-images':'openai-chat-completions',
+    availabilityNotes:'官方目录及协议已核对，真实调用待验证。'+m.conflicts.join(''),
+    capabilities:{referenceImages:vision||image,maxReferenceImages:vision?3:image?1:0,imageGeneration:image,imageEditing:image,imageEditMode:image?'direct-edit':'none',outputFormats:image?['png']:[],...(image?{providerMaxReferenceImages:m.id.endsWith('pro')?10:14}:{})},
+    metadata:{vendor:m.vendorId,lifecycle:/preview|exp/.test(m.id)?'preview':'stable',verified:false,verificationState:'catalog',officialSourceUrl:m.sourceUrl,inputModalities:m.inputModalities,outputModalities:m.outputModalities,regions:['tokendance-global']}}
+})
+const tokenDanceModels = 'export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = ' + JSON.stringify(tokenDanceCatalog.models.map(m => ({id:m.id, roles:m.roles, protocols:m.supported_protocols}))) + '\n'
+write(path.join(root, 'packages/api/src/tokendance-models.ts'), '// Generated from config/tokendance/catalog.json\n' + tokenDanceModels)
+lines.push(tokenDanceModels, fs.readFileSync(path.join(root, 'packages/api/src/tokendance.ts'), 'utf8').replace(/^import .*tokendance-models.js'\n/m, ''))
 lines.push(sizeRuntime, `const imageSizeProfiles: Record<string, ImageSizeContract> = ${JSON.stringify(sizeConfig.profiles)}`, `const imageSizeRoutes: Record<string, {generation: string | null; editing: string | null; reviewedAt: string; sources: string[]; notes: string}> = ${JSON.stringify(sizeConfig.routes)}`)
 lines.push(`export function resolveModelImageSize(provider: string, model: string, ratio: string, resolution: string, editing = false): ResolvedImageSize {
   const route = imageSizeRoutes[provider + '/' + model]

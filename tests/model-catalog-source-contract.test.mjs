@@ -27,9 +27,9 @@ test('backend and both bundled catalogs are generated from the same reviewed sou
 })
 
 test('every original audit row has an explicit implementation or exclusion decision', () => {
-  assert.deepEqual(audit.auditRows, { '02-native': 79, '03-siliconflow': 92, '04-bailian': 262, '01-existing': 101, '05-openrouter-text': 430, '05-openrouter-images': 50 })
+  assert.deepEqual(audit.auditRows, { '02-native': 79, '03-siliconflow': 92, '04-bailian': 262, '01-existing': 101, '05-openrouter-text': 430, '05-openrouter-images': 50, '06-tokendance': 93 })
   assert.equal(audit.originalStaticCount, 101)
-  assert.equal(audit.staticCount, 677)
+  assert.equal(audit.staticCount, 739)
   assert.equal(audit.incompatiblePolicy, 'omit-from-catalog')
   for (const row of audit.decisions) {
     assert.ok(row.reason.trim().length > 10, `${row.provider}/${row.id}: missing rationale`)
