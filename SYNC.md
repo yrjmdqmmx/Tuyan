@@ -1,5 +1,12 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-09] Image 2.5 上线复验：OpenRouter 原生尺寸与精修契约 — by Codex
+公网复验发现，OpenRouter 两个 GPT Image 2.5 型号虽然声明支持直接编辑，未声明 resolution 时却返回空的 `refineResolutions`，导致两端无法选择精修参数；实际精修严格校验也会拒绝 `auto`。现仅为这两个已核对型号声明平台原生尺寸：当实时目录完全未提供 resolution 字段时，生成/编辑能力均返回 `['auto']`，严格精修允许 auto，出站仍省略 resolution。目录日后若声明 resolution，继续按实际枚举处理；不覆盖空、未知或改变类型的显式声明，不放开 4K。
+- [x] Core / Laf（精确型号 profile、能力目录与严格请求校验）
+- [x] Web / 微信小程序 / 共享契约兼容（既有原生尺寸选项直接消费服务端元数据，无客户端代码或请求字段变化）
+- [x] 回归（实际注册表 → 生成/精修严格调用，省略未声明字段；拒绝 4K 和目录变化时不回退）
+- [ ] 修正版本的 Core / Web 发布与生产复验（进行中；小程序发布继续暂缓）
+
 ### [2026-09-09] GPT Image 2.5 四渠道目录 v16 — by Codex
 变更：按现有 21 个接入渠道的官方文档/公开目录核对 GPT Image 2.5，确认 OpenAI、OpenRouter、fal、Replicate 的 Sunburst / Flare。新增 8 个静态条目（OpenAI 两个别名及两个日期快照，fal / Replicate 各两个），静态目录 669 → 677；OpenRouter 新增两个动态图片条目的已审阅契约，继续以运行时目录为准。其他渠道本轮没有已确认新增项；火山方舟和 Stability 的文档访问不完整，不能据此断言未支持。
 共享契约：目录版本 `2026-09-09.v16`；生成/直接编辑使用各渠道精确 ID、入口和官方参数。OpenAI / fal 开放受像素约束的 1K/2K/4K；Replicate 保留七种固定比例及平台自动尺寸；OpenRouter 只发送实时目录声明的参数。补充六份独立官方 schema 和两个 OpenRouter PNG 默认格式 profile。新条目按版本排序，保持 `verified:false`；默认推荐型号不变。无新增 action、env、网关规则或数据库迁移。

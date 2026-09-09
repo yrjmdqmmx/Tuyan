@@ -3960,19 +3960,53 @@ test('OpenRouter GPT Image 2.5 is selectable from live schema without inventing 
       assert.equal(model.verificationState,'catalog')
       assert.equal(model.capabilities.imageEditing,true)
       assert.equal(model.capabilities.providerMaxReferenceImages,16)
+      assert.deepEqual(model.capabilities.resolutions,['auto'])
+      assert.deepEqual(model.capabilities.refineResolutions,['auto'])
       assert.match(model.roleReasons.image,/documentation.*PNG/)
       assert.doesNotMatch(model.roleReasons.image,/paid-verified/)
       for(const editing of [false,true]) {
-        await legacy.callImageModel('openrouter',card.id,'fixture-only','Scientific figure','21:9',editing?`data:image/png;base64,${onePixelPngBase64}`:'','auto')
+        await legacy.callImageModel('openrouter',card.id,'fixture-only','Scientific figure','21:9',editing?`data:image/png;base64,${onePixelPngBase64}`:'','auto',true)
         const body=bodies.at(-1)
         assert.equal(body.model,card.id)
         assert.equal(body.aspect_ratio,'21:9')
         for(const field of ['resolution','size','output_format'])assert.equal(Object.hasOwn(body,field),false,field)
         assert.equal(Boolean(body.input_references),editing)
       }
+      const before=bodies.length
+      await assert.rejects(legacy.callImageModel('openrouter',card.id,'fixture-only','Scientific figure','21:9',`data:image/png;base64,${onePixelPngBase64}`,'4K',true),/no longer declares requested refinement resolution/)
+      assert.equal(bodies.length,before)
     }
     assert.equal(bodies.length,4)
   } finally { legacy.configureRuntimeFetch() }
+})
+
+test('OpenRouter Image 2.5 native size never overrides an explicit or changed resolution descriptor', async () => {
+  const snapshot = JSON.parse(fs.readFileSync(new URL('../../../config/openrouter-catalog-review.json', import.meta.url),'utf8'))
+  for (const descriptor of [{values:['2K','4K']}, {values:[]}, {type:'range',min:512,max:2048}, null]) {
+    const legacy = await loadLegacy()
+    const card = structuredClone(snapshot.images.find((model:any)=>model.id==='openai/gpt-image-2.5-sunburst'))
+    card.supported_parameters.resolution = descriptor
+    const bodies:any[] = []
+    legacy.configureRuntimeFetch(async (input,init)=>{
+      const url=String(input)
+      if(url.endsWith('/api/v1/models'))return Response.json({data:[]})
+      if(url.endsWith('/images/models'))return Response.json({data:[card]})
+      assert.equal(url,'https://openrouter.ai/api/v1/images')
+      bodies.push(JSON.parse(String(init?.body)))
+      return Response.json({data:[{b64_json:onePixelPngBase64}]})
+    })
+    try {
+      const registry=await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+      const model=registry.providers.openrouter.models.find((entry:any)=>entry.id===card.id)
+      assert.deepEqual(model.capabilities.refineResolutions,descriptor?.values || [])
+      await assert.rejects(legacy.callImageModel('openrouter',card.id,'fixture-only','edit','16:9',`data:image/png;base64,${onePixelPngBase64}`,'auto',true),/no longer declares requested refinement resolution/)
+      assert.equal(bodies.length,0)
+      if(descriptor?.values?.length) {
+        await legacy.callImageModel('openrouter',card.id,'fixture-only','edit','16:9',`data:image/png;base64,${onePixelPngBase64}`,'2K',true)
+        assert.equal(bodies[0].resolution,'2K')
+      }
+    } finally { legacy.configureRuntimeFetch() }
+  }
 })
 
 test('OpenRouter image default stays recommended while exact paid-verified profiles are also selectable', async () => {
