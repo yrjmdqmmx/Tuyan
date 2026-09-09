@@ -1,5 +1,17 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-09] GPT Image 2.5 四渠道目录 v16 — by Codex
+变更：按现有 21 个接入渠道的官方文档/公开目录核对 GPT Image 2.5，确认 OpenAI、OpenRouter、fal、Replicate 的 Sunburst / Flare。新增 8 个静态条目（OpenAI 两个别名及两个日期快照，fal / Replicate 各两个），静态目录 669 → 677；OpenRouter 新增两个动态图片条目的已审阅契约，继续以运行时目录为准。其他渠道本轮没有已确认新增项；火山方舟和 Stability 的文档访问不完整，不能据此断言未支持。
+共享契约：目录版本 `2026-09-09.v16`；生成/直接编辑使用各渠道精确 ID、入口和官方参数。OpenAI / fal 开放受像素约束的 1K/2K/4K；Replicate 保留七种固定比例及平台自动尺寸；OpenRouter 只发送实时目录声明的参数。补充六份独立官方 schema 和两个 OpenRouter PNG 默认格式 profile。新条目按版本排序，保持 `verified:false`；默认推荐型号不变。无新增 action、env、网关规则或数据库迁移。
+- [x] Core / Laf（目录、渠道路由、尺寸约束、OpenRouter 动态目录与格式校验）
+- [x] Web（共享源生成的静态目录、型号顺序与合法比例选项）
+- [x] 微信小程序源码（同一目录及排序；TS/JS 同步，类型检查和构建通过）
+- [x] 共享 API / 契约 / 证据（官方 schema、来源摘要、生成一致性及实际请求参数回归；见 [核对记录](docs/model-capabilities/2026-09-09-image25.md)）
+- [x] 本地验证（Core 461、Web 361、仓库/共享 41、小程序 22 个测试文件；Core/Web 构建、Core/小程序类型检查、目录无漂移）
+- [ ] Web / Core 生产发布及线上目录验收（本轮未执行）
+- [ ] 真实账号权限与供应商出图/精修验收（本轮零付费模型调用）
+- [ ] 小程序原生验收 / 上传 / 平台发布（沿用暂缓要求）
+
 ### [2026-09-08] 站长运营工作区：真实统计、服务端列表与可追溯审核 — by Codex
 变更：合并账号、任务、反馈和社区评估题入口；新增按时间的真实总览、服务端分页/筛选/排序、用户与任务/提交详情互跳及列表上下文保留。账号以 Better Auth 不可变用户 ID 关联登录方式与会话；联系方式搜索只使用已存在的反馈 `contact`，不将其视为已验证身份。
 共享契约：新增 Gateway `adminOverview / adminUserList / adminUserDetail`；新增 Core `adminOperationsOverview / adminTaskList / adminTaskDetail / adminTaskFollowup / adminCommunityList / adminCommunityDetail / adminCommunityEdit / adminContactMatches / adminFeedbackList`。分页统一 `page / pageSize(10|20|50)` 和 `pagination{page,pageSize,total,totalPages}`；时间为 UTC ISO `[from,to)`，排序白名单。所有入口校验站长不可变身份，Core 另验内部管理员传输凭证；DTO 白名单、列表邮箱/联系方式脱敏，按用户显式查看完整联系方式，不返回凭证、原始会话、IP 或密钥。

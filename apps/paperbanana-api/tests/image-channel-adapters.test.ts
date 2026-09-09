@@ -91,6 +91,30 @@ test('fal accepts task-ID-only acknowledgements and polls the app root for gener
  assert.equal(invalid.calls.length,1)
 })
 
+test('GPT Image 2.5 hosted channels use their documented generation and editing endpoints', async()=>{
+ for(const provider of ['fal','replicate']) for(const variant of ['sunburst','flare']) for(const editing of [false,true]) {
+  const model=provider==='fal'?`openai/gpt-image-2.5/${variant}/text-to-image`:`openai/gpt-image-2.5-${variant}`
+  const resultUrl=provider==='fal'?'https://queue.fal.run/openai/gpt-image-2.5/requests/fixture':'https://api.replicate.com/v1/predictions/fixture'
+  const {io,calls}=fixture((url,init)=>{
+    if(init.method==='POST')return Response.json(provider==='fal'?{request_id:'fixture'}:{status:'starting',urls:{get:resultUrl}})
+    if(url.endsWith('/status'))return Response.json({status:'COMPLETED'})
+    assert.equal(url,resultUrl)
+    return Response.json(provider==='fal'?{images:[{url:'https://asset.invalid/image.png'}]}:{status:'succeeded',output:['https://asset.invalid/image.png']})
+  })
+  await callExtendedImageChannel({...defaults,provider,model,aspectRatio:'16:9',resolution:provider==='fal'?'4K':'auto',size:provider==='fal'?{width:3840,height:2160,size:'3840x2160'}:{size:'16:9'},source:editing?source:null},io)
+  const submitted=calls.filter(c=>c.init.method==='POST')
+  assert.equal(submitted.length,1)
+  const expected=provider==='fal'?`https://queue.fal.run/openai/gpt-image-2.5/${variant}/${editing?'edit':'text-to-image'}`:`https://api.replicate.com/v1/models/${model}/predictions`
+  assert.equal(submitted[0].url,expected)
+  assert.equal(submitted[0].attempts,1)
+  const wire=JSON.parse(String(submitted[0].init.body));const body=provider==='fal'?wire:wire.input
+  assert.equal(body.output_format,'png')
+  assert.deepEqual(body[provider==='fal'?'image_urls':'input_images'],editing?[source.dataUrl]:undefined)
+  if(provider==='fal')assert.deepEqual(body.image_size,{width:3840,height:2160})
+  else {assert.equal(body.aspect_ratio,'16:9');assert.equal(Object.hasOwn(body,'openai_api_key'),false)}
+ }
+})
+
 function asyncFixture(provider:string, respond:(phase:'poll'|'result')=>Response) {
  const polling=provider==='bfl'?'https://api.bfl.ai/v1/get_result?id=fixture':provider==='fal'?'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture/status':'https://api.replicate.com/v1/predictions/fixture'
  const resultUrl='https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture'

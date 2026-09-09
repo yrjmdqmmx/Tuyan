@@ -1,0 +1,232 @@
+{
+  "reviewedAt": "2026-09-09",
+  "scope": "GPT Image 2.5 availability in the 21 existing channels; not a full model-catalog refresh",
+  "providerCalls": 0,
+  "sources": [
+    {
+      "provider": "openai",
+      "url": "https://developers.openai.com/api/reference/resources/images/methods/edit",
+      "bytes": 582171,
+      "sha256": "7ac0392b3ed3cff900b31405080cabb8e961ad605112bea2a28634c94d822090",
+      "status": "confirmed",
+      "confirmedModels": [
+        "gpt-image-2.5-sunburst",
+        "gpt-image-2.5-sunburst-2026-09-08",
+        "gpt-image-2.5-flare",
+        "gpt-image-2.5-flare-2026-09-08"
+      ]
+    },
+    {
+      "provider": "openrouter",
+      "url": "https://openrouter.ai/api/v1/images/models/openai/gpt-image-2.5-sunburst/endpoints",
+      "bytes": 807,
+      "sha256": "a588d76faaca4832c59cb96071561261817874ffbb93ebe3a532d2471514b614",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5-sunburst"
+      ]
+    },
+    {
+      "provider": "fal",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "bytes": 399884,
+      "sha256": "8b13978f5b5244745c931745e4b23a2a43748cd3fdc1915f7e3334647aefed8d",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5/sunburst/text-to-image"
+      ]
+    },
+    {
+      "provider": "fal",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api",
+      "bytes": 402218,
+      "sha256": "fe381471f94c836f4ebe2746f9a39303f76378586948c81d3044437a9e13acd6",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5/sunburst/edit"
+      ]
+    },
+    {
+      "provider": "replicate",
+      "url": "https://replicate.com/openai/gpt-image-2.5-sunburst/api/schema",
+      "bytes": 143447,
+      "sha256": "d65cc90172d17bf45532e99ec5453faffb48c6d79d0500b7e48668d0c555e48e",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5-sunburst"
+      ]
+    },
+    {
+      "provider": "openrouter",
+      "url": "https://openrouter.ai/api/v1/images/models/openai/gpt-image-2.5-flare/endpoints",
+      "bytes": 804,
+      "sha256": "be27ba2e3db925f015c487c943c33790fa98c817d6b71a4c6f35c8da4988e74f",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5-flare"
+      ]
+    },
+    {
+      "provider": "fal",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "bytes": 399067,
+      "sha256": "7a44065aba8c835cf108af234761ac98e59cc9118f2944f40ab0984c8fca3a15",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5/flare/text-to-image"
+      ]
+    },
+    {
+      "provider": "fal",
+      "url": "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api",
+      "bytes": 402399,
+      "sha256": "f5446afe0d6198833353608e8b0664a9bb7371f164378dfb7247c5ac99eff7ac",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5/flare/edit"
+      ]
+    },
+    {
+      "provider": "replicate",
+      "url": "https://replicate.com/openai/gpt-image-2.5-flare/api/schema",
+      "bytes": 143065,
+      "sha256": "7dda8909fd3e67b2141307f95c6463f04d72d51b738dc88660eb421695b12a5d",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5-flare"
+      ]
+    },
+    {
+      "provider": "openrouter",
+      "url": "https://openrouter.ai/api/v1/images/models",
+      "bytes": 40553,
+      "sha256": "2c09750ed5985e68f120d9266067b1c9eaa44c14ddb2ee04177a16f88e6e483e",
+      "status": "confirmed",
+      "confirmedModels": [
+        "openai/gpt-image-2.5-sunburst",
+        "openai/gpt-image-2.5-flare"
+      ]
+    },
+    {
+      "provider": "deepseek",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing",
+      "bytes": 23168,
+      "sha256": "cf2c6fb2dd8a32a538f12a8176175b8809a3516326a5cb30dfe52d63c490a968",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "kimi",
+      "url": "https://platform.moonshot.cn/docs/introduction",
+      "bytes": 232598,
+      "sha256": "383935e9dc7f9a817b57a30edb13443d0be7e42a00b022a689d060ce4aad5a5a",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "zhipu",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+      "bytes": 889303,
+      "sha256": "29b58deca34e9f133ddd66fe181154da42ff4ff13838ff3d6e574559b167e1b6",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "siliconflow",
+      "url": "https://www.siliconflow.cn/models",
+      "bytes": 528111,
+      "sha256": "f5de37d0c8df5f35772d54e4f0d363a1009b2d34f42734311e9821767ea37135",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "anthropic",
+      "url": "https://platform.claude.com/docs/en/models/overview",
+      "bytes": 462689,
+      "sha256": "ecf56780a26aac7ec5b19fb6cd2a0fea7f3e6b7e7aaada22a4c65cc9470a0299",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "recraft",
+      "url": "https://www.recraft.ai/docs/api-reference/appendix",
+      "bytes": 223911,
+      "sha256": "b18b32b855cf370d947f9782b47789749300f4ad095914a1e9127cf401bc81dc",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "xai",
+      "url": "https://docs.x.ai/developers/models",
+      "bytes": 407108,
+      "sha256": "bbe5e0eda3d290569e1ce385c5ae74a79a4eeedcd486feae7f439a05e2fa1ebf",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "gemini",
+      "url": "https://ai.google.dev/gemini-api/docs/models",
+      "bytes": 148768,
+      "sha256": "b1ef2737637dcfd39edf84fa20493dcbe6979137e7cf3d2dea7fcbe6687e9b9c",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "bailian",
+      "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "bytes": 1401550,
+      "sha256": "c52b4df079bec39a509495eb34243db5a808683ec6dc375cba31b014c4a60e50",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "ark",
+      "url": "https://docs.volcengine.com/docs/82379/1824121?lang=zh",
+      "bytes": 11083,
+      "sha256": "d2e2e6e0046c9732a964a6a0a1b6f8a7d9034089243c7618736f1ec15540f063",
+      "status": "incomplete-document-access",
+      "limitation": "Only a JavaScript shell or access challenge was returned; absence is not confirmed."
+    },
+    {
+      "provider": "bfl",
+      "url": "https://api.bfl.ai/openapi.json",
+      "bytes": 79118,
+      "sha256": "23cc1eaa94471f82f2a957c9c02ab15f6ad619dc75eabfd10752bf5eda09e04b",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "stability",
+      "url": "https://platform.stability.ai/docs/api-reference",
+      "bytes": 1644,
+      "sha256": "2de66843eacea3f438e696578f92a045240fb500d138567712de80e0682348c6",
+      "status": "incomplete-document-access",
+      "limitation": "Only a JavaScript shell or access challenge was returned; absence is not confirmed."
+    },
+    {
+      "provider": "ideogram",
+      "url": "https://developer.ideogram.ai/api-reference/generate-images/generate-v4",
+      "bytes": 1031794,
+      "sha256": "70ea9945abe9548bcfdb8286acd3b9712afa31630418e6e19cd6b896de468e1d",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "minimax",
+      "url": "https://platform.minimax.io/docs/api-reference/image-generation-t2i",
+      "bytes": 601590,
+      "sha256": "978fdb15afdbb00d3ad4d2ae85b85421926afffb1235f44933bf4565f4f06cf8",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "mistral",
+      "url": "https://docs.mistral.ai/models",
+      "bytes": 1281708,
+      "sha256": "1b6514735846f2cbd0c885c26217c394eef31576af7ee796e75de6a96f22bdb9",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "fireworks",
+      "url": "https://fireworks.ai/models",
+      "bytes": 2781845,
+      "sha256": "8b561936f1589952642ac210d0f6f368ac906ad14b7e0b4fb3abff49661c5ec2",
+      "status": "not-found-in-reviewed-source"
+    },
+    {
+      "provider": "together",
+      "url": "https://docs.together.ai/docs/serverless/models",
+      "bytes": 504787,
+      "sha256": "83db00bdcd8bf0fb7d5a0dbe79697c5fc6d3e8a49e2c38809b44dc87fe8045ea",
+      "status": "not-found-in-reviewed-source"
+    }
+  ]
+}

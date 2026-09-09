@@ -43,8 +43,8 @@ const paidVerifiedProfileIds = [
   'x-ai/grok-imagine-image-quality',
 ].sort()
 
-test('OpenRouter drift policy tracks paid profiles and the explicitly documented MAI 2.6 profiles', () => {
-  assert.deepEqual([...openRouterNormalizedImageProfileIds].sort(), [...paidVerifiedProfileIds, 'microsoft/mai-image-2.6', 'microsoft/mai-image-2.6-flash'].sort())
+test('OpenRouter drift policy distinguishes paid profiles from documented MAI 2.6 and GPT Image 2.5 profiles', () => {
+  assert.deepEqual([...openRouterNormalizedImageProfileIds].sort(), [...paidVerifiedProfileIds, 'microsoft/mai-image-2.6', 'microsoft/mai-image-2.6-flash', 'openai/gpt-image-2.5-sunburst', 'openai/gpt-image-2.5-flare'].sort())
 })
 
 test('OpenRouter drift check warns when a paid-verified normalized image route disappears', () => {

@@ -1,6 +1,6 @@
 {
-  "auditDate": "2026-09-07",
-  "version": "2026-09-07.v15",
+  "auditDate": "2026-09-09",
+  "version": "2026-09-09.v16",
   "incompatiblePolicy": "omit-from-catalog",
   "auditRows": {
     "02-native": 79,
@@ -11,8 +11,8 @@
     "05-openrouter-images": 50
   },
   "originalStaticCount": 101,
-  "staticCount": 669,
-  "selectableStaticCount": 669,
+  "staticCount": 677,
+  "selectableStaticCount": 677,
   "repositoryBaseline": {
     "commit": "800c91fc7e1d23588771bfb2703ad25a006c6e21",
     "version": "2026-09-07.v12",
@@ -3404,12 +3404,12 @@
   "openrouter": {
     "sourceRows": {
       "text": 430,
-      "images": 50
+      "images": 52
     },
-    "reviewedUniqueModels": 471,
-    "catalogModels": 466,
-    "selectable": 466,
-    "adaptedImageModels": 45
+    "reviewedUniqueModels": 473,
+    "catalogModels": 468,
+    "selectable": 468,
+    "adaptedImageModels": 47
   },
   "channels": {
     "deepseek": {
@@ -3943,8 +3943,8 @@
     },
     "openai": {
       "before": 25,
-      "after": 62,
-      "selectable": 62,
+      "after": 66,
+      "selectable": 66,
       "addedIds": [
         "gpt-5",
         "gpt-5-2025-08-07",
@@ -3982,7 +3982,11 @@
         "gpt-5.1-2025-11-13",
         "gpt-4o-2024-08-06",
         "gpt-4o-2024-11-20",
-        "gpt-4o-mini-2024-07-18"
+        "gpt-4o-mini-2024-07-18",
+        "gpt-image-2.5-sunburst",
+        "gpt-image-2.5-sunburst-2026-09-08",
+        "gpt-image-2.5-flare",
+        "gpt-image-2.5-flare-2026-09-08"
       ],
       "corrected": [
         {
@@ -4263,8 +4267,8 @@
     },
     "fal": {
       "before": 0,
-      "after": 40,
-      "selectable": 40,
+      "after": 42,
+      "selectable": 42,
       "addedIds": [
         "alibaba/qwen-image-3/text-to-image",
         "bria/fibo-edit-1.5/edit",
@@ -4305,15 +4309,17 @@
         "xai/grok-imagine-image",
         "xai/grok-imagine-image/quality/text-to-image",
         "xai/grok-imagine-image/v2.0/text-to-image",
-        "fal-ai/ideogram/v3"
+        "fal-ai/ideogram/v3",
+        "openai/gpt-image-2.5/sunburst/text-to-image",
+        "openai/gpt-image-2.5/flare/text-to-image"
       ],
       "corrected": [],
       "removedIds": []
     },
     "replicate": {
       "before": 0,
-      "after": 89,
-      "selectable": 89,
+      "after": 91,
+      "selectable": 91,
       "addedIds": [
         "adirik/realvisxl-v3.0-turbo",
         "ai-forever/kandinsky-2",
@@ -4403,7 +4409,9 @@
         "wan-video/wan-2.7-image",
         "wan-video/wan-2.7-image-pro",
         "xai/grok-imagine-image",
-        "zsxkib/step1x-edit"
+        "zsxkib/step1x-edit",
+        "openai/gpt-image-2.5-sunburst",
+        "openai/gpt-image-2.5-flare"
       ],
       "corrected": [],
       "removedIds": []
@@ -18225,6 +18233,128 @@
       "reason": "Together Serverless 于 2026-06-29 结束服务；专属部署不能冒充共享 API。",
       "source": "https://docs.together.ai/docs/deprecations",
       "reviewedAt": "2026-09-07"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "openai",
+      "id": "gpt-image-2.5-sunburst",
+      "resolvedId": "gpt-image-2.5-sunburst",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "openai",
+      "id": "gpt-image-2.5-sunburst-2026-09-08",
+      "resolvedId": "gpt-image-2.5-sunburst-2026-09-08",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "fal",
+      "id": "openai/gpt-image-2.5/sunburst/text-to-image",
+      "resolvedId": "openai/gpt-image-2.5/sunburst/text-to-image",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "replicate",
+      "id": "openai/gpt-image-2.5-sunburst",
+      "resolvedId": "openai/gpt-image-2.5-sunburst",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://replicate.com/openai/gpt-image-2.5-sunburst/api/schema",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "openai",
+      "id": "gpt-image-2.5-flare",
+      "resolvedId": "gpt-image-2.5-flare",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "openai",
+      "id": "gpt-image-2.5-flare-2026-09-08",
+      "resolvedId": "gpt-image-2.5-flare-2026-09-08",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "fal",
+      "id": "openai/gpt-image-2.5/flare/text-to-image",
+      "resolvedId": "openai/gpt-image-2.5/flare/text-to-image",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "replicate",
+      "id": "openai/gpt-image-2.5-flare",
+      "resolvedId": "openai/gpt-image-2.5-flare",
+      "decision": "added",
+      "reason": "官方新型号及接口 schema 已核对；适配当前生成/直接编辑流程，不视为真实供应商调用已验证。",
+      "source": "https://replicate.com/openai/gpt-image-2.5-flare/api/schema",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "openrouter",
+      "id": "openai/gpt-image-2.5-sunburst",
+      "resolvedId": "openai/gpt-image-2.5-sunburst",
+      "decision": "dynamic",
+      "reason": "Dedicated Images 目录和 OpenAI provider endpoint 已确认；使用官方 PNG 默认格式 profile，沿用运行时图像字节校验。本轮通过本地契约测试，未执行付费调用。",
+      "source": "https://openrouter.ai/api/v1/images/models/openai/gpt-image-2.5-sunburst/endpoints",
+      "reviewedAt": "2026-09-09"
+    },
+    {
+      "auditList": "07-image25-v16",
+      "provider": "openrouter",
+      "id": "openai/gpt-image-2.5-flare",
+      "resolvedId": "openai/gpt-image-2.5-flare",
+      "decision": "dynamic",
+      "reason": "Dedicated Images 目录和 OpenAI provider endpoint 已确认；使用官方 PNG 默认格式 profile，沿用运行时图像字节校验。本轮通过本地契约测试，未执行付费调用。",
+      "source": "https://openrouter.ai/api/v1/images/models/openai/gpt-image-2.5-flare/endpoints",
+      "reviewedAt": "2026-09-09"
     }
-  ]
+  ],
+  "latestUpdate": {
+    "scope": "GPT Image 2.5 only",
+    "reviewedAt": "2026-09-09",
+    "baselineCommit": "f565b75b2f574a0ccbe327009c88f37451415708",
+    "beforeStatic": 669,
+    "afterStatic": 677,
+    "addedStatic": [
+      "openai/gpt-image-2.5-sunburst",
+      "openai/gpt-image-2.5-sunburst-2026-09-08",
+      "fal/openai/gpt-image-2.5/sunburst/text-to-image",
+      "replicate/openai/gpt-image-2.5-sunburst",
+      "openai/gpt-image-2.5-flare",
+      "openai/gpt-image-2.5-flare-2026-09-08",
+      "fal/openai/gpt-image-2.5/flare/text-to-image",
+      "replicate/openai/gpt-image-2.5-flare"
+    ],
+    "addedDynamic": [
+      "openai/gpt-image-2.5-sunburst",
+      "openai/gpt-image-2.5-flare"
+    ],
+    "providerCalls": 0
+  }
 }

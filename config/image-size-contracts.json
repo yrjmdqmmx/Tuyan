@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "reviewedAt": "2026-09-07",
+  "version": "2026-09-09.v16",
+  "reviewedAt": "2026-09-09",
   "profiles": {
     "qwen": {
       "mode": "pixels",
@@ -6863,6 +6863,88 @@
         "https://fal.ai/models/fal-ai/ideogram/v3/api"
       ],
       "notes": "平台固定预设，不继承 Ideogram 直连的 resolution 枚举。"
+    },
+    "openai/gpt-image-2.5-sunburst": {
+      "generation": "gpt2",
+      "editing": "gpt2",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "https://developers.openai.com/api/docs/guides/image-generation",
+        "https://developers.openai.com/api/reference/resources/images/methods/edit"
+      ],
+      "notes": "GPT Image 2.5 官方文档独立确认与现有 gpt2 像素约束相同；产品保留单参考图。"
+    },
+    "openai/gpt-image-2.5-sunburst-2026-09-08": {
+      "generation": "gpt2",
+      "editing": "gpt2",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+        "https://developers.openai.com/api/docs/guides/image-generation",
+        "https://developers.openai.com/api/reference/resources/images/methods/edit"
+      ],
+      "notes": "GPT Image 2.5 官方文档独立确认与现有 gpt2 像素约束相同；产品保留单参考图。"
+    },
+    "fal/openai/gpt-image-2.5/sunburst/text-to-image": {
+      "generation": "fal_openai_gpt-image-2_pixels",
+      "editing": "fal_openai_gpt-image-2_edit_pixels",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image/api",
+        "https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit/api"
+      ],
+      "notes": "新型号 schema 明确要求 16 像素对齐、最长边 3840、比例 ≤3:1、总像素 655360–8294400；复用数值相同的尺寸 profile。"
+    },
+    "replicate/openai/gpt-image-2.5-sunburst": {
+      "generation": "replicate_openai_gpt-image-2_ratios",
+      "editing": "replicate_openai_gpt-image-2_ratios",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://replicate.com/openai/gpt-image-2.5-sunburst/api/schema"
+      ],
+      "notes": "依据本渠道新型号 schema；直接编辑使用独立 editing 路由。"
+    },
+    "openai/gpt-image-2.5-flare": {
+      "generation": "gpt2",
+      "editing": "gpt2",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "https://developers.openai.com/api/docs/guides/image-generation",
+        "https://developers.openai.com/api/reference/resources/images/methods/edit"
+      ],
+      "notes": "GPT Image 2.5 官方文档独立确认与现有 gpt2 像素约束相同；产品保留单参考图。"
+    },
+    "openai/gpt-image-2.5-flare-2026-09-08": {
+      "generation": "gpt2",
+      "editing": "gpt2",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        "https://developers.openai.com/api/docs/guides/image-generation",
+        "https://developers.openai.com/api/reference/resources/images/methods/edit"
+      ],
+      "notes": "GPT Image 2.5 官方文档独立确认与现有 gpt2 像素约束相同；产品保留单参考图。"
+    },
+    "fal/openai/gpt-image-2.5/flare/text-to-image": {
+      "generation": "fal_openai_gpt-image-2_pixels",
+      "editing": "fal_openai_gpt-image-2_edit_pixels",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api",
+        "https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api"
+      ],
+      "notes": "新型号 schema 明确要求 16 像素对齐、最长边 3840、比例 ≤3:1、总像素 655360–8294400；复用数值相同的尺寸 profile。"
+    },
+    "replicate/openai/gpt-image-2.5-flare": {
+      "generation": "replicate_openai_gpt-image-2_ratios",
+      "editing": "replicate_openai_gpt-image-2_ratios",
+      "reviewedAt": "2026-09-09",
+      "sources": [
+        "https://replicate.com/openai/gpt-image-2.5-flare/api/schema"
+      ],
+      "notes": "依据本渠道新型号 schema；直接编辑使用独立 editing 路由。"
     }
   }
 }
