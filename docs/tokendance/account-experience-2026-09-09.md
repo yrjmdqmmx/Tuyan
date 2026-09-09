@@ -1,5 +1,7 @@
 # 图研账户与观猹 TokenDance 体验改进
 
+后续发布：账户体验及 TokenDance 已随 `2c518f9` 上线；以下保留原本地阶段证据，最终修复、生产验收和剩余消费验证见 [生产发布记录](../releases/2026-09-09-tokendance.md)。观猹身份登录按用户指示暂缓。
+
 实施基线：隔离分支 `codex/tokendance-integration-20260909`，本轮起始提交 `09d525c`。开工已核对工作区 AGENTS.md、SYNC.md、已有改动与主线；继续使用已有 TokenDance 隔离工作区，未改动桌面旧 checkout。
 
 ## 信息结构与行为
