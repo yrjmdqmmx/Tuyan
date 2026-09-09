@@ -6537,7 +6537,8 @@ async function callOpenRouterImage(
     ? { ...parameters.resolution, values: runtimeResolutionValues }
     : parameters.resolution
   const resolution = supportedOpenRouterValue(runtimeResolution, imageSize, ['2K', '1K', '4K', '512'])
-  if (strictImageSize && resolution !== imageSize) {
+  const providerDefaultSize = openRouterUsesProviderDefaultSize(actualModel, parameters)
+  if (strictImageSize && (providerDefaultSize ? imageSize !== 'auto' : resolution !== imageSize)) {
     throw new Error(`Model ${actualModel} no longer declares requested refinement resolution ${imageSize}`)
   }
   const declaredRatios = canonicalAspectRatios(parameters.aspect_ratio?.values)
@@ -7416,6 +7417,7 @@ type OpenRouterNormalizedImageProfile = {
   defaultFormat: 'png' | 'jpeg' | 'webp'
   minimumResolution?: ImageResolution
   documentedFormatSource?: string
+  providerDefaultSize?: boolean
 }
 
 // Except for explicitly documented profiles, these exact Dedicated Image API
@@ -7455,10 +7457,12 @@ const openRouterNormalizedImageProfiles = new Map<string, OpenRouterNormalizedIm
   ['openai/gpt-image-2.5-sunburst', {
     defaultFormat: 'png',
     documentedFormatSource: 'https://developers.openai.com/api/docs/guides/image-generation#output-format',
+    providerDefaultSize: true,
   }],
   ['openai/gpt-image-2.5-flare', {
     defaultFormat: 'png',
     documentedFormatSource: 'https://developers.openai.com/api/docs/guides/image-generation#output-format',
+    providerDefaultSize: true,
   }],
   ['qwen/qwen-image-3', { defaultFormat: 'png' }],
   ['qwen/qwen-image-3-pro', { defaultFormat: 'png' }],
@@ -7475,6 +7479,11 @@ const openRouterNormalizedImageProfiles = new Map<string, OpenRouterNormalizedIm
   ['x-ai/grok-imagine-image-2.0', { defaultFormat: 'jpeg' }],
   ['x-ai/grok-imagine-image-quality', { defaultFormat: 'jpeg' }],
 ])
+
+function openRouterUsesProviderDefaultSize(modelId: string, parameters: any): boolean {
+  return Boolean(openRouterNormalizedImageProfiles.get(modelId)?.providerDefaultSize)
+    && !Object.prototype.hasOwnProperty.call(parameters, 'resolution')
+}
 
 function openRouterRuntimeResolutions(modelId: string, values: unknown): string[] | undefined {
   const declared = Array.isArray(values) ? values.map(String) : undefined
@@ -7564,7 +7573,9 @@ async function openRouterProviderRegistry(): Promise<ProviderModelRegistry> {
     if (!model.outputModalities.includes('image')) continue
     const compatibleOutputFormat = safeOpenRouterOutputFormat(model.supportedParameters)
     const normalizedProfile = openRouterNormalizedImageProfiles.get(model.id)
-    const resolutionValues = openRouterRuntimeResolutions(model.id, model.supportedParameters?.resolution?.values)
+    const resolutionValues = openRouterUsesProviderDefaultSize(model.id, model.supportedParameters)
+      ? ['auto']
+      : openRouterRuntimeResolutions(model.id, model.supportedParameters?.resolution?.values)
     const aspectRatioValues = canonicalAspectRatios(model.supportedParameters?.aspect_ratio?.values)
     const formatSelectable = compatibleOutputFormat !== null || Boolean(normalizedProfile)
     const minimumResolutionAvailable = !normalizedProfile?.minimumResolution || Boolean(resolutionValues?.length)
