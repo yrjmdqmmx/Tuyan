@@ -3,7 +3,7 @@ import { TOKENDANCE_MODELS } from './tokendance-models.js'
 export const TOKENDANCE_APP_URL = 'https://www.paperbanana.asia/'
 export const TOKENDANCE_ORIGIN = 'https://tokendance.space'
 export const TOKENDANCE_ACTIONS = ['tokenDanceStatus', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDanceCancel', 'tokenDanceDisconnect', 'tokenDanceBalance', 'tokenDancePaymentCreate', 'tokenDancePaymentStatus', 'tokenDancePayments', 'tokenDanceResume'] as const
-export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'review_request'
+export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'retry_request' | 'review_request'
 
 export class TokenDanceError extends Error {
   constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false) {

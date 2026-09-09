@@ -1933,7 +1933,7 @@ export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[
 export const TOKENDANCE_APP_URL = 'https://www.paperbanana.asia/'
 export const TOKENDANCE_ORIGIN = 'https://tokendance.space'
 export const TOKENDANCE_ACTIONS = ['tokenDanceStatus', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDanceCancel', 'tokenDanceDisconnect', 'tokenDanceBalance', 'tokenDancePaymentCreate', 'tokenDancePaymentStatus', 'tokenDancePayments', 'tokenDanceResume'] as const
-export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'review_request'
+export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'retry_request' | 'review_request'
 
 export class TokenDanceError extends Error {
   constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false) {
@@ -3241,7 +3241,12 @@ async function tokenDanceLiveModels() {
   return data.data
 }
 async function assertTokenDanceLiveModel(model: string) {
-  const live = (await tokenDanceLiveModels()).find((m: any) => m.id === model)
+  // This read-only preflight precedes paid transport. Its failure is safe to
+  // retry; paid request timeouts must retain their uncertain outcome instead.
+  const models = await tokenDanceLiveModels().catch(() => {
+    throw new TokenDanceError(503, '观猹 TokenDance 实时目录暂不可用，请稍后从已保存步骤继续。', 'retry_request', 5)
+  })
+  const live = models.find((m: any) => m.id === model)
   const expected = model.startsWith('seedream-') ? 'ark:image-generations' : 'openai:chat-completions'
   if (!live?.supported_protocols.includes(expected)) throw new TokenDanceError(400, '所选 TokenDance 型号已下架或协议发生变化，请刷新目录。')
 }

@@ -141,7 +141,16 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
     const { key } = row.secret ? cipher!.open(row.secret, id) : await credential(userId)
     // Never accept a status URL from a client or append their arbitrary path.
     const path = new URL(row.session.status_url).pathname
-    const data = await request(path, key)
+    let data
+    try { data = await request(path, key) }
+    catch (error) {
+      // Reauthorization may revoke the order's captured key. Retry this GET
+      // once with the same owner's current key only after an explicit rejection.
+      if (!(error instanceof TokenDanceError) || error.uncertain || error.recoveryAction !== 'reauthorize_api_key') throw error
+      const current = await credential(userId)
+      if (current.key === key) throw error
+      data = await request(path, current.key)
+    }
     if (!data.session?.id || typeof data.session.status !== 'string') throw new TokenDanceError(502, '支付状态尚未确认。')
     const session = validateSession({ ...row.session, ...data.session }, row.amount, row.session.id)
     await payments.updateOne({ _id: id, userId }, { $set: { session, state: session.status, active: session.status === 'pending' && session.expired_at * 1000 > now(), checkedAt: new Date(now()) } })

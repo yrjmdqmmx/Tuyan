@@ -79,3 +79,75 @@ test('mini account lists all orders, queries the selected order and blocks uncer
   assert.equal(f.page.data.payments[1].state, 'unknown');
   f.close();
 });
+
+function componentFrom(file, mocks, extra = {}) {
+  let definition
+  const filename = require.resolve(file)
+  const localRequire = require('node:module').createRequire(filename)
+  vm.runInNewContext(fs.readFileSync(filename, 'utf8'), {
+    exports: {}, Component(value) { definition = value },
+    require(name) { const key = name.split('/').at(-1); return mocks[key] || localRequire(name) },
+    ...extra,
+  })
+  const page = { data: { ...definition.data }, setData(value) { Object.assign(this.data, value) } }
+  for (const [name, method] of Object.entries(definition.methods)) page[name] = method.bind(page)
+  return { page, definition }
+}
+
+test('mini failed-job recovery counts down, rejects an early tap, refreshes after returning and resumes once eligible', async () => {
+  let time = Date.now(), serial = 0, resumes = 0, polls = 0
+  const timers = new Map()
+  const f = componentFrom('../miniprogram/pages/job-detail/job-detail.js', {
+    api: { formatError: error => error.message, requestJson: async body => { assert.equal(body.action, 'tokenDanceResume'); resumes++; return { jobId: 'original-job' } } },
+    tokendance: { openTokenDance() {} },
+  }, { Date: class extends Date { static now() { return time } }, setInterval(fn) { timers.set(++serial, fn); return serial }, clearInterval(id) { timers.delete(id) } })
+  f.page.data.jobId = 'original-job'
+  f.page.data.job = { status: 'failed', recovery: { canResume: true, retryAt: new Date(time + 5000).toISOString() } }
+  f.page.startPolling = () => { polls++ }
+  f.page.startRecoveryCountdown()
+  assert.equal(f.page.data.retrySeconds, 5)
+  await f.page.resumeJob()
+  assert.equal(resumes, 0); assert.match(f.page.data.error, /5 秒/)
+  f.definition.pageLifetimes.hide.call(f.page); assert.equal(timers.size, 0)
+  time += 2000
+  f.definition.pageLifetimes.show.call(f.page); assert.equal(f.page.data.retrySeconds, 3)
+  time += 3000
+  for (const tick of [...timers.values()]) tick()
+  assert.equal(f.page.data.retrySeconds, 0); assert.equal(timers.size, 0)
+  await f.page.resumeJob()
+  assert.equal(resumes, 1); assert.equal(polls, 1); assert.equal(f.page.data.error, '')
+  f.definition.lifetimes.detached.call(f.page)
+  assert.equal(timers.size, 0)
+})
+
+test('mini generation and refinement use the API optimizedText contract and preserve cancelled or changed inputs', async () => {
+  for (const [name, field, target] of [['index', 'methodContent', 'methodContent'], ['refine', 'instruction', 'editInstruction']]) {
+    const calls = [], modals = [], exports = {}
+    let response = { target, optimizedText: '优化后的科研说明' }
+    const api = { formatError: error => error.message, requestJson: async body => { calls.push(body); return body.action === 'tokenDanceStatus' ? { connected: true } : response } }
+    vm.runInNewContext(fs.readFileSync(require.resolve('../miniprogram/utils/tokendance.js'), 'utf8'), {
+      exports, require: key => key === './api' ? api : { getCurrentUser: () => ({ id: 'mini-owner' }), subscribeSession() {} },
+    })
+    await exports.refreshTokenDanceConnection()
+    const { page } = componentFrom(`../miniprogram/pages/${name}/${name}.js`, {
+      api, tokendance: exports, 'api-keys': { getApiKeys: () => ({ tokendance: 'must-not-send' }) },
+    }, { wx: { showModal(modal) { modals.push(modal) } } })
+    page.refreshCanSubmit = () => {}
+    page.data.settings = { modelRoutes: { main: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' } } }
+    for (const decision of ['adopt', 'cancel', 'changed']) {
+      page.data[field] = '原始科研说明'
+      await page.optimizeDescription()
+      const modal = modals.at(-1)
+      assert.equal(modal.content, response.optimizedText)
+      assert.equal(calls.at(-1).target, target); assert.equal(calls.at(-1).apiKey, undefined)
+      if (decision === 'changed') page.data[field] = '正在编辑的科研说明'
+      modal.success({ confirm: decision !== 'cancel' })
+      assert.equal(page.data[field], decision === 'adopt' ? response.optimizedText : decision === 'cancel' ? '原始科研说明' : '正在编辑的科研说明')
+    }
+    response = { candidate: 'obsolete field' }
+    const before = modals.length
+    await page.optimizeDescription()
+    assert.equal(modals.length, before); assert.match(page.data.error, /优化结果为空/)
+    assert.equal(page.data[field], '正在编辑的科研说明')
+  }
+})

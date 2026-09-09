@@ -31,5 +31,8 @@ async function refreshTokenDanceConnection() {
 }
 function openTokenDance() { wx.navigateTo({ url: '/pages/tokendance/tokendance' }); }
 async function optimizeTokenDanceInput(input) {
-    return (0, api_1.requestJson)({ action: 'optimizeInputs', ...input, ...(input.mainRoute.accessProvider === 'tokendance' ? { apiKey: undefined } : {}) });
+    const result = await (0, api_1.requestJson)({ action: 'optimizeInputs', ...input, ...(input.mainRoute.accessProvider === 'tokendance' ? { apiKey: undefined } : {}) });
+    if (typeof result.optimizedText !== 'string' || !result.optimizedText.trim())
+        throw new Error('优化结果为空，请重试。');
+    return result;
 }

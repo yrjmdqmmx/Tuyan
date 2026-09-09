@@ -13,6 +13,7 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
   legacy: {
     drainJobAdmission(): Promise<void>;
     configureRuntimeFetch(fetcher: (...args: any[]) => Promise<Response>): void;
+    configureProviderWorkflow(workflow: ReturnType<typeof import('../apps/paperbanana-api/src/provider-workflow.js').createProviderWorkflow>): void;
     callTextModel(...args: any[]): Promise<string>;
     callVisionModel(...args: any[]): Promise<string>;
     callImageModel(...args: any[]): Promise<string>;
