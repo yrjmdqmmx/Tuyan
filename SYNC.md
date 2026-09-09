@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-09] TokenDance 本地真实消费预览 — by Codex
+新增本机运行器：真实 Better Auth、本地持久 Mongo 与签名文件存储，正式 Gateway/Core 和真实 TokenDance OAuth/余额/模型/支付适配器。稳定加密配置保存在仓库外的私有目录。仅开发环境使用 VITE_LOCAL_CONSUMPTION_TEST 展示消费提示，并初始选择 TokenDance、单候选、零评审；没有新增生产 API 契约。用户自行授权和点击发起消费，未部署生产。
+- [x] Web 本地入口、运行器及说明，见 [本地消费预览](docs/tokendance/local-preview.md)
+- [x] 本地真实注册/登录、S256 入口和取消、匿名/Origin/Host/文件签名边界
+- [ ] 用户真实 TokenDance 授权交换、模型消费和支付验证（待用户在页面操作；不将本地登录测试当供应商联调）
+
 ### [2026-09-09] TokenDance 独立渠道、授权钱包与可恢复任务 — by Codex
 目录 v17：在原 677 个静态型号上新增 TokenDance 62 个独立型号（60 主模型及输入优化、27 参考图识别、2 生图及直接精修；角色有重叠），逐一审核当前实时 93 个型号，31 个不映射现有能力的型号在覆盖清单逐项说明。主源为 `config/tokendance/catalog.json`，由 `sync-model-catalog.mjs` 生成 Core/Web/小程序目录；新增公开 API 差异检查脚本，运行时 15 分钟刷新已审核型号的存活和协议状态。分润不参与目录或推荐筛选。
 共享契约：新增 `tokenDanceStatus/Authorize/Exchange/Cancel/Disconnect/Balance/PaymentCreate/PaymentStatus/Payments/Resume` 和仅站长使用的 `adminTokenDancePricing` action；Gateway 要求图研登录，给 Core 传受保护的不可变用户 ID。用户 Key 经 S256 PKCE 交换后只在 Core 加密保存，禁止客户端自带 TokenDance Key；`app_url`、`X-App-URL` 固定为 `https://www.paperbanana.asia/`。钱包为整数微元，充值 amount 为整数人民币元；支付状态接口确认到账。增加 job.recovery/providerCalls，按原 jobId 复用已完成的模型调用；结果不确定时禁止自动重试。扩展 1.5K/3K 以及 Seedream Pro/Lite 各自尺寸契约。新可选 env 见 Core `.env.example`，用户 Key 与管理凭据完全分开。

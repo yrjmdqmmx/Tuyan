@@ -104,6 +104,8 @@ const AdminWorkspace = lazy(() => import('./components/admin/AdminWorkspace'));
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
 const RefinePanel = lazy(() => import('./components/RefinePanel'));
+const LOCAL_CONSUMPTION_TEST = import.meta.env?.DEV && import.meta.env?.VITE_LOCAL_CONSUMPTION_TEST === 'true';
+const INITIAL_PROVIDER = LOCAL_CONSUMPTION_TEST ? 'tokendance' : 'bailian';
 
 const INPUT_OPTIMIZATION_TARGET_LABELS = Object.freeze({
   methodContent: '论文方法内容',
@@ -137,8 +139,8 @@ export default function App() {
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
   const [inputOptimizationCredentialProvider, setInputOptimizationCredentialProvider] = useState('');
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
-  const [configurationMode, setConfigurationMode] = useState('simple');
-  const [provider, setProvider] = useState('bailian');
+  const [configurationMode, setConfigurationMode] = useState(LOCAL_CONSUMPTION_TEST ? 'advanced' : 'simple');
+  const [provider, setProvider] = useState(INITIAL_PROVIDER);
   const [apiKeyRing, setApiKeys] = useState(() => Object.fromEntries(Object.keys(PROVIDERS).map((id) => [id, ''])));
   const [methodContent, setMethodContent] = useState(SAMPLE_METHOD);
   const [caption, setCaption] = useState('图 1：所提出的多智能体学术图示生成框架总览。');
@@ -161,7 +163,7 @@ export default function App() {
   const [infographicCategory, setInfographicCategory] = useState('method_framework');
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
-  const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes('bailian', null, PROVIDERS));
+  const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes(INITIAL_PROVIDER, null, PROVIDERS));
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
   const [mainModelCapability, setMainModelCapability] = useState(null);
@@ -179,7 +181,7 @@ export default function App() {
   const [isLoadingReferenceLibrary, setIsLoadingReferenceLibrary] = useState(false);
   const [aspectRatio, setAspectRatio] = useState('16:9');
   const [numCandidates, setNumCandidates] = useState(1);
-  const [maxCriticRounds, setMaxCriticRounds] = useState(1);
+  const [maxCriticRounds, setMaxCriticRounds] = useState(LOCAL_CONSUMPTION_TEST ? 0 : 1);
   const [health, setHealth] = useState(null);
   const [healthError, setHealthError] = useState('');
   const [rawModelRegistry, setModelRegistry] = useState(null);
@@ -1478,6 +1480,7 @@ export default function App() {
 
   return (
     <main className="app-shell">
+      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label="本地消费测试"><strong>本地消费测试 · 使用真实 TokenDance 余额</strong><p>先注册或登录本地测试账号，再连接你已有的 TokenDance 账号。点击生成、精修或优化输入会产生实际模型费用。</p><small>本地账号、任务和图片保存在本机。初始为 1 张候选图、0 轮评审，可在设置中调整。</small></section>}
       <header className="paper-header">
         <div className="brand">
           <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
