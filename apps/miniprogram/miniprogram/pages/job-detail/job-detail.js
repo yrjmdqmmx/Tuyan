@@ -11,14 +11,17 @@ Component({
         job: null,
         error: '',
         isLoading: true,
+        retrySeconds: 0,
     },
     lifetimes: {
         detached() {
             this.stopPolling();
+            this.stopRecoveryCountdown();
         },
     },
     pageLifetimes: {
         show() {
+            this.startRecoveryCountdown();
             if (this.pollingTimer)
                 return;
             const status = this.data.job ? this.data.job.status : '';
@@ -28,6 +31,7 @@ Component({
         },
         hide() {
             this.stopPolling();
+            this.stopRecoveryCountdown();
         },
     },
     methods: {
@@ -36,7 +40,14 @@ Component({
             var _a, _b;
             if (!((_b = (_a = this.data.job) === null || _a === void 0 ? void 0 : _a.recovery) === null || _b === void 0 ? void 0 : _b.canResume) || this.resuming)
                 return;
+            this.startRecoveryCountdown();
+            if (this.data.retrySeconds > 0) {
+                this.setData({ error: `请等待 ${this.data.retrySeconds} 秒后恢复原任务。` });
+                return;
+            }
+            ;
             this.resuming = true;
+            this.setData({ error: '' });
             try {
                 await (0, api_1.requestJson)({ action: 'tokenDanceResume', jobId: this.data.jobId });
                 this.startPolling();
@@ -47,6 +58,27 @@ Component({
             finally {
                 this.resuming = false;
             }
+        },
+        startRecoveryCountdown() {
+            this.stopRecoveryCountdown();
+            const update = () => {
+                var _a;
+                const recovery = (_a = this.data.job) === null || _a === void 0 ? void 0 : _a.recovery;
+                const retryAt = (recovery === null || recovery === void 0 ? void 0 : recovery.canResume) ? Date.parse(recovery.retryAt || '') : 0;
+                const retrySeconds = Number.isFinite(retryAt) ? Math.max(0, Math.ceil((retryAt - Date.now()) / 1000)) : 0;
+                this.setData({ retrySeconds });
+                if (!retrySeconds)
+                    this.stopRecoveryCountdown();
+            };
+            update();
+            if (this.data.retrySeconds > 0)
+                this.recoveryTimer = setInterval(update, 1000);
+        },
+        stopRecoveryCountdown() {
+            const timer = this.recoveryTimer;
+            if (timer)
+                clearInterval(timer);
+            this.recoveryTimer = undefined;
         },
         onLoad(options) {
             const jobId = String(options.jobId || '');
@@ -59,6 +91,7 @@ Component({
         },
         onUnload() {
             this.stopPolling();
+            this.stopRecoveryCountdown();
         },
         async loadJob() {
             const jobId = this.data.jobId;
@@ -75,6 +108,7 @@ Component({
                 if (job.status === 'succeeded' || job.status === 'failed') {
                     this.stopPolling();
                 }
+                this.startRecoveryCountdown();
             }
             catch (error) {
                 this.setData({

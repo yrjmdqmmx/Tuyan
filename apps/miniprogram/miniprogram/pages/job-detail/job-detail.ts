@@ -10,16 +10,19 @@ Component({
     job: null as Job | null,
     error: '',
     isLoading: true,
+    retrySeconds: 0,
   },
 
   lifetimes: {
     detached() {
       this.stopPolling()
+      this.stopRecoveryCountdown()
     },
   },
 
   pageLifetimes: {
     show() {
+      this.startRecoveryCountdown()
       if ((this as any).pollingTimer) return
       const status = this.data.job ? this.data.job.status : ''
       if (this.data.jobId && status !== 'succeeded' && status !== 'failed') {
@@ -28,6 +31,7 @@ Component({
     },
     hide() {
       this.stopPolling()
+      this.stopRecoveryCountdown()
     },
   },
 
@@ -35,8 +39,28 @@ Component({
     openTokenDance,
     async resumeJob() {
       if (!this.data.job?.recovery?.canResume || (this as any).resuming) return
+      this.startRecoveryCountdown()
+      if (this.data.retrySeconds > 0) { this.setData({ error: `请等待 ${this.data.retrySeconds} 秒后恢复原任务。` }); return }
       ;(this as any).resuming = true
+      this.setData({ error: '' })
       try { await requestJson({ action: 'tokenDanceResume', jobId: this.data.jobId }); this.startPolling() } catch (error) { this.setData({ error: formatError(error) }) } finally { (this as any).resuming = false }
+    },
+    startRecoveryCountdown() {
+      this.stopRecoveryCountdown()
+      const update = () => {
+        const recovery = this.data.job?.recovery
+        const retryAt = recovery?.canResume ? Date.parse(recovery.retryAt || '') : 0
+        const retrySeconds = Number.isFinite(retryAt) ? Math.max(0, Math.ceil((retryAt - Date.now()) / 1000)) : 0
+        this.setData({ retrySeconds })
+        if (!retrySeconds) this.stopRecoveryCountdown()
+      }
+      update()
+      if (this.data.retrySeconds > 0) (this as any).recoveryTimer = setInterval(update, 1000)
+    },
+    stopRecoveryCountdown() {
+      const timer = (this as any).recoveryTimer as number | undefined
+      if (timer) clearInterval(timer)
+      ;(this as any).recoveryTimer = undefined
     },
     onLoad(options: Record<string, string | undefined>) {
       const jobId = String(options.jobId || '')
@@ -50,6 +74,7 @@ Component({
 
     onUnload() {
       this.stopPolling()
+      this.stopRecoveryCountdown()
     },
 
     async loadJob() {
@@ -66,6 +91,7 @@ Component({
         if (job.status === 'succeeded' || job.status === 'failed') {
           this.stopPolling()
         }
+        this.startRecoveryCountdown()
       } catch (error) {
         this.setData({
           error: formatError(error),

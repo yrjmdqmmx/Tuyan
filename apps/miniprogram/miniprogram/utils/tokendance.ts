@@ -15,5 +15,7 @@ export async function refreshTokenDanceConnection() {
 }
 export function openTokenDance() { wx.navigateTo({ url: '/pages/tokendance/tokendance' }) }
 export async function optimizeTokenDanceInput(input: { mainRoute: { accessProvider: string; modelId: string }; apiKey?: string; target: string; inputs: Record<string, string>; providerRegions?: unknown }) {
-  return requestJson<{ candidate: string }>({ action: 'optimizeInputs', ...input, ...(input.mainRoute.accessProvider === 'tokendance' ? { apiKey: undefined } : {}) })
+  const result = await requestJson<{ target: string; optimizedText: string }>({ action: 'optimizeInputs', ...input, ...(input.mainRoute.accessProvider === 'tokendance' ? { apiKey: undefined } : {}) })
+  if (typeof result.optimizedText !== 'string' || !result.optimizedText.trim()) throw new Error('优化结果为空，请重试。')
+  return result
 }

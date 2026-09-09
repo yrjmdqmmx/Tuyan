@@ -216,8 +216,8 @@ Component({
             this.optimizing = true;
             try {
                 const result = await (0, tokendance_1.optimizeTokenDanceInput)({ mainRoute, providerRegions: settings.providerRegions, apiKey: keys[mainRoute.accessProvider], target: 'methodContent', inputs: { methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt } });
-                wx.showModal({ title: '优化结果', content: result.candidate, confirmText: '采用', success: res => { if (res.confirm && this.data.methodContent === original) {
-                        this.setData({ methodContent: result.candidate });
+                wx.showModal({ title: '优化结果', content: result.optimizedText, confirmText: '采用', success: res => { if (res.confirm && this.data.methodContent === original) {
+                        this.setData({ methodContent: result.optimizedText });
                         this.refreshCanSubmit();
                     } } });
             }

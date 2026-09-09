@@ -56,9 +56,20 @@ try {
   assert.equal(resumes.filter(row => row.status === 'fulfilled').length, 1)
   assert.equal(planned, 1); assert.equal(rendered, 2)
   assert.equal((await db.collection('paperbanana_provider_executions').findOne({ _id: task.jobId })).state, 'complete')
+  let retryTime = Date.now(), queued = 0
+  workflow = createProviderWorkflow({ db, service, now: () => retryTime })
+  const limited = { ...task, jobId: 'mongo-rate-limit' }
+  await assert.rejects(workflow.run(limited, () => workflow.call(['rate-limited'], async () => { throw new TokenDanceError(429, 'wait', 'rate_limit', 30) })))
+  const enqueue = async restored => { queued++; assert.equal(restored.jobId, limited.jobId) }
+  await assert.rejects(workflow.resume(limited.jobId, 'test-owner', enqueue), error => error.status === 429 && error.retryAfterSeconds === 30)
+  assert.equal(queued, 0)
+  assert.equal((await db.collection('paperbanana_provider_executions').findOne({ _id: limited.jobId })).state, 'blocked')
+  retryTime += 30000
+  const retries = await Promise.allSettled([workflow.resume(limited.jobId, 'test-owner', enqueue), workflow.resume(limited.jobId, 'test-owner', enqueue)])
+  assert.equal(retries.filter(row => row.status === 'fulfilled').length, 1); assert.equal(queued, 1)
   await service.eraseUserData('test-owner'); await workflow.remove('test-owner')
   for (const name of ['paperbanana_tokendance_connections', 'paperbanana_tokendance_flows', 'paperbanana_tokendance_payments', 'paperbanana_provider_executions', 'paperbanana_provider_steps', 'paperbanana_provider_step_chunks']) assert.equal(await db.collection(name).countDocuments({}), 0)
-  console.log(JSON.stringify({ mongo: 'real isolated MongoDB', provider: 'fixtures only', passed: ['one-use exchange', 'encrypted storage', 'unique active order', 'TTL indexes', 'fresh-client nested-step recovery', 'concurrent resume CAS', 'account erasure'], planned, rendered, paymentPosts }))
+  console.log(JSON.stringify({ mongo: 'real isolated MongoDB', provider: 'fixtures only', passed: ['one-use exchange', 'encrypted storage', 'unique active order', 'TTL indexes', 'fresh-client nested-step recovery', 'concurrent resume CAS', 'retryAt gate before enqueue', 'account erasure'], planned, rendered, paymentPosts }))
 } finally {
   await client.db(database).dropDatabase().catch(() => {})
   await client.close()

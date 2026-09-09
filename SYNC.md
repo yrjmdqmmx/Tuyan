@@ -1,5 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-09] TokenDance 上线前恢复流程修正 — by Codex
+共享契约：任务恢复新增 `retry_request`，仅用于付费请求发出前的实时目录预检失败；已发出请求但结果不确定时继续禁止自动重试。`tokenDanceResume` 在入队前校验 `recovery.retryAt` 并用原子条件保护，过早恢复返回 429 和剩余等待秒数。支付状态只在旧 Key 明确失效时使用当前用户的新 Key 重试一次 GET，不重发创建订单请求。没有新增 env、权限、型号或 OAuth 身份接口。
+- [x] Node Core / Laf / 共享 API 与类型：预检错误分类、恢复等待、重新授权后的订单查询；复用已完成调用与用户隔离保持
+- [x] Web / Auth Gateway：沿用现有恢复按钮、倒计时与错误 DTO，兼容新增 action，无需修改
+- [x] 小程序源码及 JS：原任务恢复倒计时与页面往返、错误反馈；优化输入采用既有 `optimizedText` 字段，保留取消和编辑冲突保护
+- [x] 验证：Core 全量 481 项、小程序 28 项、隔离真实 Mongo 回归通过；Core 类型检查/构建与目录一致性通过。包括目录 503/超时/损坏、付费响应丢失、旧 Key 401/403 与网络/5xx、原任务等待及优化稿采用/取消
+- [ ] CI、最终镜像、生产部署与验收（原部署已取消，生产仍为上一稳定版本）
+- [ ] 小程序真机验证和平台发布（继续暂缓）；观猹身份登录继续暂缓
+
 ### [2026-09-09] 账户工作区、观猹 TokenDance 展示与目录排序 v18 — by Codex
 共享变更：用户可见渠道名称改为“观猹 TokenDance”，新增集中维护的稳定置顶规则，仅调整展示顺序，不替换默认/已选路由。目录 v18 保持 739 个静态型号、TokenDance 62 个接入型号；补齐已审阅版本序、预览/稳定/日期快照元数据，未知日期仍为 null，同代同日平局使用稳定 ID，API 数组顺序和选中状态不参与年代推断。`releaseKind / lifecycleSourceUrl` 为可选目录字段；`tokenDancePayments` 增加可选 ISO `createdAt / checkedAt`。内部 `tokendance`、金额单位、用户身份绑定、`app_url` 和 `X-App-URL=https://www.paperbanana.asia/` 不变，无新增 env 或认证 action。
 - [x] canonical catalog / 共享类型 / API：版本、审计、展示来源同步；目录生成无漂移，名称变化纳入实时差异审阅

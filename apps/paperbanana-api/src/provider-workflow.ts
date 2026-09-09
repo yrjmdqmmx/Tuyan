@@ -131,8 +131,11 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     async record(info: unknown) { const current = context.getStore(); if (current) await jobs.updateOne({ _id: current.task.jobId }, { $push: { providerCalls: info } } as any) },
     async resume(jobId: string, userId: string, enqueue: (task: any) => Promise<any>) {
       await reconcile(jobId); await service.accepting(userId)
+      const pending = await executions.findOne({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true })
+      const retryAt = pending?.recovery?.retryAt?.getTime() || 0
+      if (retryAt > now()) throw new TokenDanceError(429, '等待时间尚未结束，请稍后恢复原任务。', pending.recovery.action === 'retry_request' ? 'retry_request' : 'rate_limit', Math.ceil((retryAt - now()) / 1000))
       const connected = await service.credential(userId)
-      const row = await executions.findOneAndUpdate({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true, expiresAt: { $gt: new Date(now()) } }, { $set: { state: 'queued', instanceId } }, { returnDocument: 'before' })
+      const row = await executions.findOneAndUpdate({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true, expiresAt: { $gt: new Date(now()) }, $or: [{ 'recovery.retryAt': { $exists: false } }, { 'recovery.retryAt': { $lte: new Date(now()) } }] }, { $set: { state: 'queued', instanceId } }, { returnDocument: 'before' })
       if (!row) throw new TokenDanceError(409, '原任务不可恢复、已过期或正在执行。')
       try {
         const snapshot = service.cipher!.open(row.secret, jobId)

@@ -77,22 +77,23 @@ test('streaming decodes split Chinese text, records actual model, never retries 
   assert.equal(calls, 1)
 })
 
-function fixture() {
+function fixture(statusResponse?: (authorization: string) => Response | undefined) {
   const db = memoryDb(), calls: any[] = []
-  let time = Date.now(), paid = false, lostPayment = false
+  let time = Date.now(), paid = false, lostPayment = false, nextKey = 'fixture-user-key'
   const service = createTokenDanceService({ db: db as any, secret, now: () => time, fetcher: (async (url: any, init: any) => {
     calls.push({ url: String(url), init })
     assert.equal(init.headers['X-App-URL'], TOKENDANCE_APP_URL)
-    if (String(url).endsWith('/auth/keys')) return Response.json({ key: 'fixture-user-key' })
+    if (String(url).endsWith('/auth/keys')) return Response.json({ key: nextKey })
     if (String(url).endsWith('/user/balance')) return Response.json({ balance: { credits: 12_000_000, credits_used: 500_001, balance: 11_499_999 } })
     if (String(url).includes('/payment/sessions')) {
+      if (init.method === 'GET') { const response = statusResponse?.(init.headers.Authorization); if (response) return response }
       if (lostPayment && init.method === 'POST') throw new Error('fixture dropped reply')
       return Response.json({ session: { id: 'order-fixture', amount: 10, status: paid ? 'paid' : 'pending', payment_url: 'https://pay.example.com/fixture', alipay_url: 'alipays://platformapi/startapp?appId=fixture', status_url: 'https://tokendance.space/portal/api/v1/payment/sessions/order-fixture', created_at: Math.floor(time / 1000), expired_at: Math.floor(time / 1000) + 600, ...(paid ? { paid_at: Math.floor(time / 1000) } : {}) } }, { status: init.method === 'POST' ? 201 : 200 })
     }
     throw new Error('unexpected fixture endpoint')
   }) as any })
   const request = (action: string, body = {}, user = 'user-one') => service.handle({ action, ...body }, user)
-  return { db, calls, service, request, advance(ms: number) { time += ms }, pay() { paid = true }, losePayment() { lostPayment = true } }
+  return { db, calls, service, request, now: () => time, advance(ms: number) { time += ms }, pay() { paid = true }, losePayment() { lostPayment = true }, rotateKey() { nextKey = 'fixture-rotated-key' } }
 }
 
 test('S256 binds callback to immutable user, consumes once, encrypts at rest, supports cancellation and rejects expiration', async () => {
@@ -351,4 +352,79 @@ test('real Gateway/Core compose login, authorization, generation, balance failur
     await runtime.legacy.drainJobAdmission()
     assert.equal((await runtime.post({ action: 'getJob', jobId: unused.data.jobId })).data.job.status, 'succeeded')
   } finally { await runtime.close() }
+})
+
+test('a revoked order key retries status once with the current owner key, never retries creation or uncertain reads', async () => {
+  for (const scenario of ['401', '403', 'same-key', '503', 'network', 'both-rejected']) {
+    const reads: string[] = []
+    const f = fixture(authorization => {
+      reads.push(authorization)
+      if (scenario === 'network') throw new Error('fixture read interrupted')
+      if (scenario === '503') return new Response('', { status: 503 })
+      if (authorization === 'Bearer fixture-user-key' || scenario === 'both-rejected') return new Response('', { status: scenario === '403' ? 403 : 401, headers: { 'TokenDance-Recovery-Action': 'reauthorize_api_key' } })
+    })
+    const connect = async () => { const flow = await f.request('tokenDanceAuthorize'); await f.request('tokenDanceExchange', { state: flow.state, code: 'fixture-code' }) }
+    await connect()
+    const order = { amount: 10, attemptId: 'rotated-order-0001' }
+    await f.request('tokenDancePaymentCreate', order)
+    if (scenario !== 'same-key') { f.rotateKey(); await connect() }
+    f.pay()
+    await assert.rejects(f.request('tokenDancePaymentStatus', order, 'another-owner'))
+    assert.equal(reads.length, 0)
+    if (scenario === '401' || scenario === '403') {
+      assert.equal((await f.request('tokenDancePaymentStatus', order)).session.status, 'paid')
+      assert.equal((await f.request('tokenDancePayments')).payments[0].state, 'paid')
+    } else await assert.rejects(f.request('tokenDancePaymentStatus', order))
+    assert.deepEqual(reads, ['401', '403', 'both-rejected'].includes(scenario) ? ['Bearer fixture-user-key', 'Bearer fixture-rotated-key'] : ['Bearer fixture-user-key'])
+    assert.equal(f.calls.filter(call => call.init.method === 'POST' && call.url.endsWith('/payment/sessions')).length, 1)
+  }
+})
+
+test('catalog preflight failures resume the original workflow after retryAt without repeating completed steps or ambiguous paid transport', async () => {
+  for (const failure of ['503', 'network', 'malformed']) {
+    const f = fixture(), flow = await f.request('tokenDanceAuthorize')
+    await f.request('tokenDanceExchange', { state: flow.state, code: 'fixture-code' })
+    const runtime = await createRefineRuntime()
+    const workflow = createProviderWorkflow({ db: f.db as any, service: f.service, now: f.now })
+    let catalogs = 0, paid = 0, previous = 0, losePaidReply = false, enqueued = 0
+    try {
+      runtime.legacy.configureProviderWorkflow(workflow)
+      runtime.legacy.configureRuntimeFetch(async (url: any, init: any = {}) => {
+        if (String(url).endsWith('/gateway/v1/models')) {
+          catalogs++
+          if (catalogs === 1) {
+            if (failure === 'network') throw new Error('fixture catalog timeout')
+            return new Response(failure === 'malformed' ? '{' : '', { status: failure === '503' ? 503 : 200 })
+          }
+          return Response.json({ data: catalog.models })
+        }
+        paid++
+        if (losePaidReply) throw new Error('fixture paid reply lost')
+        return Response.json({ model: JSON.parse(init.body).model, choices: [{ message: { content: 'saved output' } }] })
+      })
+      const task = { jobId: 'catalog-' + failure, kind: 'create', body: { userId: 'user-one' }, routeSecrets: { tokendance: 'fixture-user-key' } }
+      await f.db.collection('paperbanana_jobs').insertOne({ _id: task.jobId })
+      const run = () => workflow.run(task, async () => {
+        assert.equal(await workflow.call(['previous step'], async () => { previous++; return 'saved previous' }), 'saved previous')
+        assert.equal(await runtime.legacy.callTextModel('tokendance', 'qwen3.8-flash', 'fixture-user-key', 'system', 'input'), 'saved output')
+      })
+      await assert.rejects(run(), (error: any) => error.recoveryAction === 'retry_request' && !error.uncertain)
+      assert.equal(paid, 0)
+      const recovery = (await f.db.collection('paperbanana_jobs').findOne({ _id: task.jobId })).recovery
+      assert.equal(recovery.canResume, true)
+      assert.equal(recovery.retryAt.getTime(), f.now() + 5000)
+      const enqueue = async (restored: any) => { enqueued++; assert.equal(restored.jobId, task.jobId); return run() }
+      await assert.rejects(workflow.resume(task.jobId, 'user-one', enqueue), (error: any) => error.status === 429 && error.retryAfterSeconds === 5)
+      assert.equal(enqueued, 0)
+      assert.equal((await f.db.collection('paperbanana_provider_executions').findOne({ _id: task.jobId })).state, 'blocked')
+      f.advance(5000)
+      await workflow.resume(task.jobId, 'user-one', enqueue)
+      assert.equal(previous, 1); assert.equal(paid, 1); assert.equal(catalogs, 2); assert.equal(enqueued, 1)
+      losePaidReply = true
+      const ambiguous = { ...task, jobId: task.jobId + '-uncertain' }
+      await assert.rejects(workflow.run(ambiguous, async () => { await runtime.legacy.callTextModel('tokendance', 'qwen3.8-flash', 'fixture-user-key', 'system', 'new input') }), (error: any) => error.uncertain)
+      await assert.rejects(workflow.resume(ambiguous.jobId, 'user-one', async () => { enqueued++ }))
+      assert.equal(paid, 2); assert.equal(enqueued, 1)
+    } finally { await runtime.close() }
+  }
 })

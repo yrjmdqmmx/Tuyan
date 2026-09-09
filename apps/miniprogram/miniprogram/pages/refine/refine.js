@@ -63,8 +63,8 @@ Component({
             this.optimizing = true;
             try {
                 const result = await (0, tokendance_1.optimizeTokenDanceInput)({ mainRoute, providerRegions: settings.providerRegions, apiKey: keys[mainRoute.accessProvider], target: 'editInstruction', inputs: { methodContent: '', caption: '', negativePrompt: '', editInstruction: this.data.instruction } });
-                wx.showModal({ title: '优化结果', content: result.candidate, confirmText: '采用', success: res => { if (res.confirm && this.data.instruction === original) {
-                        this.setData({ instruction: result.candidate });
+                wx.showModal({ title: '优化结果', content: result.optimizedText, confirmText: '采用', success: res => { if (res.confirm && this.data.instruction === original) {
+                        this.setData({ instruction: result.optimizedText });
                         this.refreshCanSubmit();
                     } } });
             }
