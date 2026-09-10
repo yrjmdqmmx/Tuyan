@@ -428,3 +428,17 @@ test('catalog preflight failures resume the original workflow after retryAt with
     } finally { await runtime.close() }
   }
 })
+
+test('deterministic reference validation never hides an earlier uncertain provider call', async () => {
+  const f = fixture(), flow = await f.request('tokenDanceAuthorize')
+  await f.request('tokenDanceExchange',{state:flow.state,code:'fixture-code'})
+  const workflow = createProviderWorkflow({db:f.db as any,service:f.service})
+  const task = {jobId:'invalid-after-unknown',kind:'create',body:{userId:'user-one'},routeSecrets:{tokendance:'fixture-key'}}
+  await f.db.collection('paperbanana_jobs').insertOne({_id:task.jobId})
+  await assert.rejects(workflow.run(task,async()=>{
+    await workflow.call('uncertain-call',async()=>{throw new Error('reply lost')}).catch(()=>{})
+    await workflow.call('input-check',async()=>{const error=new Error('invalid reference');error.name='ReferenceUploadValidationError';throw error})
+  }))
+  const job = await f.db.collection('paperbanana_jobs').findOne({_id:task.jobId})
+  assert.equal(job.recovery.action,'review_request');assert.equal(job.recovery.canResume,false)
+})

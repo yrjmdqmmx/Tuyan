@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-09-10T06:41:34.073997+00:00",
+  "reviewedHead": "ce19c93a2818c34223dd75020275036d9c0f4004",
+  "findingsAddressed": 3,
+  "localTests": {
+    "core": 491,
+    "mini": 29,
+    "targetedReferenceAndTokenDance": 27
+  },
+  "builds": [
+    "Core typecheck",
+    "Core build",
+    "Mini build",
+    "shared reference policy drift"
+  ],
+  "sourceSha256": {
+    "SYNC.md": "ab4d1930e082528bb4ebc00111383b0064ef692c41f7c755e9ef584e7228e047",
+    "apps/laf-functions/paperbanana-api.ts": "c5d77c013a814a693d07cb0a85f0d3a624e4218e19e444ad70f7e87f3a6dd889",
+    "apps/miniprogram/miniprogram/pages/index/index.js": "6c3e4a09e5c09ae015acbb0d408222716a2a532fbc6780b251509b3c53cc6c80",
+    "apps/miniprogram/miniprogram/pages/index/index.ts": "2e9ff93ec7eff93cf42fcac88a583c6a22b0edfb86808fd7a31f5566b7282e10",
+    "apps/miniprogram/miniprogram/pages/index/index.wxml": "d4b6a9c33769ff4cccca06891082c5550117c4228af1f16897cd9a5db5859616",
+    "apps/miniprogram/tests/tokendance.test.cjs": "1306e93c364c4bc84c7da3d5ff98d9c108d37c986a96c2f098ba000fea87d9a3",
+    "apps/paperbanana-api/.env.example": "fad225671476bc9c3f83e337909d565dbf4f5709a0dc8af6e17c6d488e8ace46",
+    "apps/paperbanana-api/src/provider-workflow.ts": "9e5e956ca04d99f9a0e91007c30509e46f12a9e748a0a7cb5c4401e85335af52",
+    "apps/paperbanana-api/tests/reference-upload-policy.test.ts": "1650c67932973c14125a90de99caaf20a7cf853327df6a3291007343df890d5f",
+    "apps/paperbanana-api/tests/tokendance.test.ts": "1ebc46477012c61365d711f9d9c488f7712d958490e06854fe730d69ec866088",
+    "docs/reference-upload/2026-09-10-audit.md": "88897c0b0d8253927a1e1572375ab8144b48a20eadc7f415ee553dbf4ea2fd3d"
+  },
+  "productionDeployed": false,
+  "realPaidCalls": 0,
+  "pending": [
+    "exact-head CI and automated review",
+    "production deployment and browser QA"
+  ]
+}

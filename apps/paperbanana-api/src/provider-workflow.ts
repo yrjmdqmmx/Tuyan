@@ -8,6 +8,7 @@ type ConnectionService = ReturnType<typeof createTokenDanceService>
 type Task = { jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
 type Context = { task: Task; scope: string; counts: Map<string, number> }
 const version = 'tokendance-workflow-v1'
+const isReferenceValidationError = (error: any) => error?.name === 'ReferenceUploadValidationError' && !error.uncertain
 
 /** Paid calls are durably claimed BEFORE transport and committed AFTER their
  * complete result is stored. An abandoned claim is never automatically retried. */
@@ -73,7 +74,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await steps.updateOne({ _id: id, state: 'running' }, { $set: { state: 'complete', chunks: count, completedAt: new Date(now()) } })
       return result
     } catch (error: any) {
-      const rejected = error?.name === 'TokenDanceError' && !error.uncertain && Boolean(error.recoveryAction)
+      const rejected = isReferenceValidationError(error) || (error?.name === 'TokenDanceError' && !error.uncertain && Boolean(error.recoveryAction))
       await steps.updateOne({ _id: id }, { $set: { state: rejected ? 'rejected' : 'unknown', retryAt: new Date(now() + (error.retryAfterSeconds || 0) * 1000) } })
       throw error
     }
@@ -100,6 +101,13 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await jobs.updateOne({ _id: task.jobId }, { $unset: { recovery: '' } })
     } catch (error: any) {
       await acceptingData(userId)
+      // Invalid source bytes/limits need changed inputs, not a payment inquiry.
+      // Never hide another in-flight or uncertain paid step in a composite task.
+      if (isReferenceValidationError(error) && await steps.countDocuments({ jobId: task.jobId, state: { $in: ['running', 'unknown'] } }) === 0) {
+        await executions.updateOne({ _id: task.jobId, owner }, { $set: { state: 'failed' }, $unset: { secret: '', recovery: '' } })
+        await jobs.updateOne({ _id: task.jobId }, { $unset: { recovery: '' } })
+        throw error
+      }
       const unsafe = error?.uncertain || !error?.recoveryAction || error.recoveryAction === 'review_request'
       const recovery = { channel: 'tokendance', canResume: !unsafe, action: unsafe ? 'review_request' : error.recoveryAction, message: unsafe ? '调用结果尚未确认，请核对调用记录；自动重试已停止。' : error.message, retryAt: new Date(now() + (error.retryAfterSeconds || 0) * 1000), expiresAt: expires() }
       await executions.updateOne({ _id: task.jobId, owner }, { $set: { state: 'blocked', recovery } })

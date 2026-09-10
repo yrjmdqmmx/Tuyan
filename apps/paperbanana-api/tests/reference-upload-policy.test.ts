@@ -222,3 +222,27 @@ test('processed aggregate budget stops a real multi-image batch before a paid tr
     for (const upload of uploads) assert.ok(r.objects.has(upload.objectKey))
   } finally { await r.close() }
 })
+
+test('TokenDance invalid reference bytes fail with actionable input errors before any paid call', async () => {
+  const r = await createRefineRuntime({ tokenDance: true })
+  try {
+    const flow = await r.post({action:'tokenDanceAuthorize'})
+    await r.post({action:'tokenDanceExchange',state:flow.data.state,code:'fixture-code'})
+    const routes = { main:{accessProvider:'tokendance',modelId:'qwen3.8-flash'}, image:{accessProvider:'tokendance',modelId:'seedream-5.0-pro'}, vision:{accessProvider:'tokendance',modelId:'qwen3.8-flash'} }
+    const invalid = [r.image.subarray(0,40), await sharp(r.image).jpeg().toBuffer()]
+    for (const bytes of invalid) {
+      const uploads = await upload(r,[bytes])
+      const queued = await r.post({action:'createJob',provider:'tokendance',modelRoutes:routes,referenceImages:uploads,referenceImageMode:'main_model',pipelineMode:'vanilla',methodContent:'研究一种通过输入、处理和输出三个阶段生成学术图示的方法。',caption:'图一：方法流程。',retrievalSetting:'none',imageSize:'2K',aspectRatio:'16:9',numCandidates:1,maxCriticRounds:0})
+      assert.equal(queued.data.code,0,JSON.stringify(queued))
+      await r.legacy.drainJobAdmission()
+      const job = await r.db.collection('paperbanana_jobs').findOne({_id:queued.data.jobId})
+      assert.equal(job.status,'failed',JSON.stringify(job))
+      assert.match(job.error,/解码|损坏|格式/)
+      assert.equal(job.recovery,undefined,'known input failure must not claim uncertain billing')
+      const execution = await r.db.collection('paperbanana_provider_executions').findOne({_id:queued.data.jobId})
+      assert.equal(execution.state,'failed'); assert.equal(execution.secret,undefined)
+      assert.ok(r.objects.has(uploads[0].objectKey),'original is retained for inspection')
+    }
+    assert.equal(r.tokenDanceCalls.filter((call:any)=>/\/chat\/completions$|\/images\/generations$/.test(call.url)).length,0)
+  } finally { await r.close() }
+})

@@ -62,7 +62,7 @@
     <view class="reference-shell">
       <view class="reference-upload-head">
         <view><view class="field-label">参考来源</view><view class="field-tip">上传参考图用于识图与提示词规划，和图库检索二选一。</view></view>
-        <button wx:if="{{!showReferenceLibrary}}" class="ghost-button" size="mini" disabled="{{!referenceCanAddImage || isSubmitting || isUploadingReferences}}" bindtap="chooseReferenceFile">{{isUploadingReferences ? '上传中' : '添加参考图'}}</button>
+        <button wx:if="{{!showReferenceLibrary}}" class="ghost-button" size="mini" disabled="{{!referenceCanAddImage || isSubmitting || isUploadingReferences || isInspectingReferences}}" bindtap="chooseReferenceFile">{{isInspectingReferences ? '检查图片中' : (isUploadingReferences ? '上传中' : '添加参考图')}}</button>
       </view>
       <view class="field-tip">{{referenceLimitHint}}</view>
       <view class="field-tip">{{referenceProcessingHint}}</view>
@@ -85,7 +85,7 @@
       <reference-library wx:if="{{showReferenceLibrary}}" task-name="{{libraryTaskName}}" selected-ids="{{manualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
     </view>
 
-    <button class="primary-button generate-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitJob">{{isUploadingReferences ? '正在上传参考图' : (isSubmitting ? '正在提交' : '生成学术图示')}}</button>
+    <button class="primary-button generate-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitJob">{{isInspectingReferences ? '正在检查参考图' : (isUploadingReferences ? '正在上传参考图' : (isSubmitting ? '正在提交' : '生成学术图示'))}}</button>
     <view wx:if="{{!canSubmit}}" class="submit-tip">请确认模型目录可用、填写本次可达渠道的 API Key，并完成至少 20 字方法内容与图注。</view>
     <view wx:if="{{error}}" class="error-box">{{error}}</view>
   </view>

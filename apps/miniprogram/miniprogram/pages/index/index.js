@@ -84,6 +84,7 @@ Component({
         canSelectMainModelDirect: (0, constants_1.mainModelCanReadImages)(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel),
         referenceUploadError: '',
         isUploadingReferences: false,
+        isInspectingReferences: false,
         mainModelName: DEFAULT_PROVIDER.mainModel,
         imageModelName: DEFAULT_PROVIDER.imageModel,
         referenceVisionModelName: DEFAULT_PROVIDER.visionModel,
@@ -619,7 +620,7 @@ Component({
             wx.showToast({ title: '已填入案例', icon: 'success' });
         },
         chooseReferenceFile() {
-            if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences)
+            if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences)
                 return;
             wx.showActionSheet({
                 itemList: ['图片 / 相册 / 拍照', 'SVG 文件'],
@@ -635,6 +636,8 @@ Component({
             });
         },
         chooseReferenceImages() {
+            if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences)
+                return;
             const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length;
             if (remaining <= 0) {
                 this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` });
@@ -646,42 +649,52 @@ Component({
                 sourceType: ['album', 'camera'],
                 sizeType: ['original'],
                 success: async (res) => {
-                    const accepted = [];
-                    let error = '';
-                    for (const [index, file] of res.tempFiles.entries()) {
-                        const path = file.tempFilePath;
-                        const size = Number(file.size || 0);
-                        const mimeType = (0, reference_files_1.mimeTypeFromPath)(path);
-                        if (constants_1.REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
-                            error = '参考图仅支持 PNG、JPG、WebP 或 SVG。';
-                            continue;
+                    this.setData({ isInspectingReferences: true });
+                    this.refreshCanSubmit();
+                    try {
+                        const accepted = [];
+                        let error = '';
+                        for (const [index, file] of res.tempFiles.entries()) {
+                            const path = file.tempFilePath;
+                            const size = Number(file.size || 0);
+                            const mimeType = (0, reference_files_1.mimeTypeFromPath)(path);
+                            if (constants_1.REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
+                                error = '参考图仅支持 PNG、JPG、WebP 或 SVG。';
+                                continue;
+                            }
+                            if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
+                                error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`;
+                                continue;
+                            }
+                            let dimensions = {};
+                            try {
+                                dimensions = await new Promise((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }));
+                            }
+                            catch {
+                                error = '无法读取图片尺寸，请重新导出静态图片。';
+                                continue;
+                            }
+                            accepted.push((0, reference_files_1.buildReferenceImage)({
+                                width: dimensions.width, height: dimensions.height,
+                                id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+                                path,
+                                filename: (0, reference_files_1.filenameFromPath)(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
+                                mimeType,
+                                size,
+                            }));
                         }
-                        if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
-                            error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`;
-                            continue;
-                        }
-                        let dimensions = {};
-                        try {
-                            dimensions = await new Promise((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }));
-                        }
-                        catch {
-                            error = '无法读取图片尺寸，请重新导出静态图片。';
-                            continue;
-                        }
-                        accepted.push((0, reference_files_1.buildReferenceImage)({
-                            width: dimensions.width, height: dimensions.height,
-                            id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
-                            path,
-                            filename: (0, reference_files_1.filenameFromPath)(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
-                            mimeType,
-                            size,
-                        }));
+                        this.appendReferenceImages(accepted, error);
                     }
-                    this.appendReferenceImages(accepted, error);
+                    finally {
+                        this.setData({ isInspectingReferences: false });
+                        this.refreshCanSubmit();
+                    }
                 },
             });
         },
         chooseReferenceSvgFile() {
+            if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences)
+                return;
             const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length;
             if (remaining <= 0) {
                 this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` });
@@ -887,7 +900,7 @@ Component({
             }
         },
         async submitJob() {
-            if (!this.data.canSubmit || this.data.isSubmitting)
+            if (!this.data.canSubmit || this.data.isSubmitting || this.data.isInspectingReferences)
                 return;
             // 生产目录是每次付费任务的唯一真相。提交前强制重新读取，失败时在任何上传或任务写入前停止。
             this.setData({ isSubmitting: true, error: '' });
@@ -1090,6 +1103,7 @@ Component({
                 this.data.referenceModeCanSubmit &&
                 !this.data.referenceSelectionIssue &&
                 !this.data.isUploadingReferences &&
+                !this.data.isInspectingReferences &&
                 !this.data.isSubmitting);
             this.setData({ canSubmit });
         },

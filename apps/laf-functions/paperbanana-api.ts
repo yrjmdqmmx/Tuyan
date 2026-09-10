@@ -533,7 +533,7 @@ export function createJobAdmissionController(
   config: JobAdmissionConfig,
   dependencies: {
     execute(task: AdmittedJobTask): Promise<void>
-    markFailed(jobId: string, error: string): Promise<void>
+    markFailed(jobId: string, error: string, referenceValidation?: boolean): Promise<void>
     logError(message: string): void
   },
 ) {
@@ -602,7 +602,7 @@ export function createJobAdmissionController(
           Object.values(task.routeSecrets || {}).filter(Boolean) as string[],
         )
         try {
-          await dependencies.markFailed(task.jobId, safeTaskError)
+          await dependencies.markFailed(task.jobId, safeTaskError, error instanceof ReferenceUploadValidationError)
         } catch (persistenceError: any) {
           try {
             dependencies.logError(
@@ -6055,21 +6055,21 @@ async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, 
 export async function buildVisionImageInputs(referenceImages: ReferenceImageInput[], jobId = '', route?: ModelRoute) {
   const bucket = cloud.storage.bucket(bucketName)
   const policy = referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '')
-  if (referenceImages.length > policy.maxCount) throw new Error(`当前模型最多提交 ${policy.maxCount} 张参考图；请减少图片或更换模型。`)
+  if (referenceImages.length > policy.maxCount) throw new ReferenceUploadValidationError(`当前模型最多提交 ${policy.maxCount} 张参考图；请减少图片或更换模型。`)
   assertReferenceTotalBytes(referenceImages)
   const inputs: VisionImageInput[] = []
   let total = 0
   for (const image of referenceImages) {
-    if (!image.objectKey) throw new Error('Reference objectKey is required')
+    if (!image.objectKey) throw new ReferenceUploadValidationError('Reference objectKey is required')
     // Always derive from the original. An old/client-supplied analysis image must
     // not bypass a newly selected model's limits or be downscaled repeatedly.
     const processed = await withReferenceProcessing(async () => {
       const bytes = await readStoredObject(bucket, image.objectKey, maxReferenceBytes, 'Reference original')
-      if (bytes.length !== image.size) throw new Error('参考图与上传记录大小不一致，请重新上传。')
+      if (bytes.length !== image.size) throw new ReferenceUploadValidationError('参考图与上传记录大小不一致，请重新上传。')
       return normalizeReferenceForModel(bytes, image.mimeType, policy)
     }, true)
     total += processed.bytes.length
-    if (total > policy.maxTotalBytes) throw new Error(`无损处理后参考图合计超过当前模型 ${referenceBytesLabel(policy.maxTotalBytes)}；请减少图片、裁剪或更换模型。原图已保留。`)
+    if (total > policy.maxTotalBytes) throw new ReferenceUploadValidationError(`无损处理后参考图合计超过当前模型 ${referenceBytesLabel(policy.maxTotalBytes)}；请减少图片、裁剪或更换模型。原图已保留。`)
     const suffix = crypto.createHash('sha256').update(JSON.stringify(policy)).digest('hex').slice(0, 12)
     const key = image.objectKey.replace(/\.[^.]+$/, `-analysis-${suffix}.${extensionForMimeType(processed.mimeType)}`)
     await bucket.writeFile(key, processed.bytes, { ContentType: processed.mimeType })
@@ -6113,29 +6113,29 @@ export async function normalizeReferenceForModel(bytes: Buffer, mimeType: string
     const viewBox = root.match(/\bviewBox\s*=\s*["']([^"']+)["']/i)?.[1]?.trim().split(/[\s,]+/).map(Number)
     const numberAttribute = (name: string) => Number(root.match(new RegExp('\\b' + name + '\\s*=\\s*["\']([0-9.]+)(?:px)?["\']', 'i'))?.[1])
     const width = viewBox?.[2] || numberAttribute('width'), height = viewBox?.[3] || numberAttribute('height')
-    if (![width, height].every(n => Number.isFinite(n) && n > 0) || width > REFERENCE_UPLOAD_PLATFORM.maxDimension || height > REFERENCE_UPLOAD_PLATFORM.maxDimension || width * height > REFERENCE_UPLOAD_PLATFORM.maxPixels) throw new Error('SVG 需要有效的 width/height 或 viewBox，单边不能超过 16384px、面积不能超过 32MP。')
+    if (![width, height].every(n => Number.isFinite(n) && n > 0) || width > REFERENCE_UPLOAD_PLATFORM.maxDimension || height > REFERENCE_UPLOAD_PLATFORM.maxDimension || width * height > REFERENCE_UPLOAD_PLATFORM.maxPixels) throw new ReferenceUploadValidationError('SVG 需要有效的 width/height 或 viewBox，单边不能超过 16384px、面积不能超过 32MP。')
     const scale = Math.min(1, policy.maxDimension / Math.max(width, height), Math.sqrt(policy.maxPixels / (width * height)))
     source = await rasterizeSvgReferenceToPng(svg, Math.max(1, Math.floor(width * scale)))
     mimeType = 'image/png'
   }
   const matches = mimeType === 'image/png' ? isPngBytes(source) : mimeType === 'image/jpeg' ? isJpegBytes(source) : mimeType === 'image/webp' && isWebpBytes(source)
-  if (!matches) throw new Error('图片内容与声明格式不符，请重新导出静态 PNG/JPG/WebP。')
+  if (!matches) throw new ReferenceUploadValidationError('图片内容与声明格式不符，请重新导出静态 PNG/JPG/WebP。')
   const dimensions = isPngBytes(source) ? pngDimensions(source) : isJpegBytes(source) ? jpegDimensions(source) : webpDimensions(source)
   if (!dimensions || dimensions.width > REFERENCE_UPLOAD_PLATFORM.maxDimension || dimensions.height > REFERENCE_UPLOAD_PLATFORM.maxDimension
     || dimensions.width * dimensions.height > REFERENCE_UPLOAD_PLATFORM.maxPixels || ('animated' in dimensions && dimensions.animated)
-    || (isPngBytes(source) && pngHasAnimation(source))) throw new Error('图片尺寸超限、文件损坏或包含动画；请使用单边最多 16384px、单张 32MP 的静态图。')
-  if (Math.min(dimensions.width, dimensions.height) < policy.minDimension || Math.max(dimensions.width / dimensions.height, dimensions.height / dimensions.width) > policy.maxAspectRatio) throw new Error(`当前模型要求每边至少 ${policy.minDimension}px、长短边之比不超过 ${policy.maxAspectRatio}；请裁剪或更换模型。`)
+    || (isPngBytes(source) && pngHasAnimation(source))) throw new ReferenceUploadValidationError('图片尺寸超限、文件损坏或包含动画；请使用单边最多 16384px、单张 32MP 的静态图。')
+  if (Math.min(dimensions.width, dimensions.height) < policy.minDimension || Math.max(dimensions.width / dimensions.height, dimensions.height / dimensions.width) > policy.maxAspectRatio) throw new ReferenceUploadValidationError(`当前模型要求每边至少 ${policy.minDimension}px、长短边之比不超过 ${policy.maxAspectRatio}；请裁剪或更换模型。`)
   if (inspectOnly) {
     try {
       const metadata = await sharp(source, { limitInputPixels: REFERENCE_UPLOAD_PLATFORM.maxPixels }).metadata()
       await sharp(source, { failOn: 'warning', limitInputPixels: REFERENCE_UPLOAD_PLATFORM.maxPixels, limitInputChannels: 4 }).resize(1, 1).png().timeout({ seconds: 15 }).toBuffer()
       const swap = [5, 6, 7, 8].includes(metadata.orientation || 1)
       return { bytes: Buffer.alloc(0), mimeType, width: swap ? dimensions.height : dimensions.width, height: swap ? dimensions.width : dimensions.height, changed: false }
-    } catch { throw new Error('无法解码图片，文件可能已损坏。请重新导出后上传。') }
+    } catch { throw new ReferenceUploadValidationError('无法解码图片，文件可能已损坏。请重新导出后上传。') }
   }
   const scale = Math.min(1, policy.maxDimension / Math.max(dimensions.width, dimensions.height), Math.sqrt(policy.maxPixels / (dimensions.width * dimensions.height)))
   const targetWidth = Math.max(1, Math.floor(dimensions.width * scale)), targetHeight = Math.max(1, Math.floor(dimensions.height * scale))
-  if (Math.min(targetWidth, targetHeight) < policy.minDimension) throw new Error(`等比缩小后短边不足当前模型要求的 ${policy.minDimension}px；请裁剪长边或更换模型，原图已保留。`)
+  if (Math.min(targetWidth, targetHeight) < policy.minDimension) throw new ReferenceUploadValidationError(`等比缩小后短边不足当前模型要求的 ${policy.minDimension}px；请裁剪长边或更换模型，原图已保留。`)
   if (['image/jpeg', 'image/webp'].includes(mimeType) && policy.mimeTypes.includes(mimeType) && scale === 1 && source.length <= policy.maxBytes) {
     try {
       const metadata = await sharp(source).metadata()
@@ -6144,7 +6144,7 @@ export async function normalizeReferenceForModel(bytes: Buffer, mimeType: string
           .resize(1, 1).png().timeout({ seconds: 15 }).toBuffer()
         return { bytes: source, mimeType, width: dimensions.width, height: dimensions.height, changed: false }
       }
-    } catch { throw new Error('无法解码图片，文件可能已损坏。请重新导出后上传。') }
+    } catch { throw new ReferenceUploadValidationError('无法解码图片，文件可能已损坏。请重新导出后上传。') }
   }
   let normalized
   try {
@@ -6152,8 +6152,8 @@ export async function normalizeReferenceForModel(bytes: Buffer, mimeType: string
     normalized = await sharp(source, { failOn: 'warning', limitInputPixels: REFERENCE_UPLOAD_PLATFORM.maxPixels, limitInputChannels: 4 })
       .rotate().resize({ width: Math.max(targetWidth, targetHeight), height: Math.max(targetWidth, targetHeight), fit: 'inside', withoutEnlargement: true })
       .png({ compressionLevel: 6 }).timeout({ seconds: 15 }).toBuffer({ resolveWithObject: true })
-  } catch { throw new Error('无法解码图片，文件可能已损坏。请重新导出后上传。') }
-  if (normalized.data.length > policy.maxBytes) throw new Error(`无损处理后单图超过当前模型 ${referenceBytesLabel(policy.maxBytes)}；请裁剪、自行压缩或更换模型。原文件已保留。`)
+  } catch { throw new ReferenceUploadValidationError('无法解码图片，文件可能已损坏。请重新导出后上传。') }
+  if (normalized.data.length > policy.maxBytes) throw new ReferenceUploadValidationError(`无损处理后单图超过当前模型 ${referenceBytesLabel(policy.maxBytes)}；请裁剪、自行压缩或更换模型。原文件已保留。`)
   return { bytes: normalized.data, mimeType: 'image/png', width: normalized.info.width, height: normalized.info.height, changed: scale !== 1 || !source.equals(normalized.data) }
 }
 
@@ -6453,7 +6453,7 @@ async function callTextModelRaw(
 export function checkedReferenceRequest(provider: string, model: string, body: unknown) {
   const serialized = JSON.stringify(body)
   const limit = referenceSubmissionPolicy(provider, model).requestMaxBytes
-  if (Buffer.byteLength(serialized) > limit) throw new Error(`图片和文字编码后的请求超过当前渠道 ${referenceBytesLabel(limit)} 上限；请减少图片或文字。`)
+  if (Buffer.byteLength(serialized) > limit) throw new ReferenceUploadValidationError(`图片和文字编码后的请求超过当前渠道 ${referenceBytesLabel(limit)} 上限；请减少图片或文字。`)
   return serialized
 }
 
@@ -7770,14 +7770,14 @@ function resultExtension(mimeType: string) {
   return 'png'
 }
 
-async function markFailed(jobId: string, error: string) {
+async function markFailed(jobId: string, error: string, referenceValidation = false) {
   const safeError = redactSecretText(error)
   await jobs.updateOne(
     { _id: jobId },
     {
       $set: {
         status: 'failed',
-        error: stablePublicJobFailure(safeError),
+        error: referenceValidation ? safeError : stablePublicJobFailure(safeError),
         completedAt: new Date(),
         updatedAt: new Date(),
       },
@@ -9083,9 +9083,10 @@ function sanitizeReferenceSvg(raw: string) {
 }
 
 function referenceSvgForRaster(raw: string) {
-  const svg = sanitizeReferenceSvg(raw)
+  let svg: string
+  try { svg = sanitizeReferenceSvg(raw) } catch (error: any) { throw new ReferenceUploadValidationError(error.message) }
   // This runtime has no bundled fonts; resvg otherwise silently omits labels.
-  if (/<(?:text|tspan|textPath)\b/i.test(svg)) throw new Error('SVG 包含尚未转曲的文字；请将文字转为路径，或导出 PNG 后重试，以保留科研图标签。原文件已保留。')
+  if (/<(?:text|tspan|textPath)\b/i.test(svg)) throw new ReferenceUploadValidationError('SVG 包含尚未转曲的文字；请将文字转为路径，或导出 PNG 后重试，以保留科研图标签。原文件已保留。')
   return svg
 }
 
@@ -9139,7 +9140,7 @@ function extractSvg(raw: string) {
   return text.slice(start, end + '</svg>'.length)
 }
 
-class ReferenceUploadValidationError extends Error { statusCode = 400 }
+class ReferenceUploadValidationError extends Error { name = 'ReferenceUploadValidationError'; statusCode = 400 }
 
 function assertReferenceTotalBytes(files: { size: number; analysisSize?: number }[]) {
   const total = files.reduce((sum, file) => sum + Number(file.size || 0) + Number(file.analysisSize || 0), 0)
