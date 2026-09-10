@@ -79,6 +79,7 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
     try { const url = new URL(origin); return url.origin === origin && ['http:', 'https:'].includes(url.protocol)
       && !['servicewechat.com', 'developers.weixin.qq.com'].includes(url.hostname); } catch { return false; }
   }));
+  const fallbackOrigin = [...origins].find((origin) => origin.startsWith('https://')) || [...origins][0] || (enabled ? new URL(config.authBaseUrl).origin : '');
   const cookieName = config.production ? '__Host-paperbanana_watcha' : 'paperbanana_watcha';
   const cookieOptions = { httpOnly: true, secure: config.production, sameSite: 'lax', path: '/', maxAge: TTL_MS / 1000 };
   const txs = db.collection('watchaTransactions');
@@ -178,6 +179,24 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
     });
   }
   return {
+    async handle(request, handler) {
+      const url = new URL(request.url);
+      if (!enabled || request.method !== 'GET' || url.pathname !== '/api/auth/oauth2/callback/watcha') return handler(request);
+      let returnOrigin = fallbackOrigin;
+      try {
+        const state = url.searchParams.get('state');
+        const cookie = (request.headers.get('cookie') || '').split(';').map((part) => part.trim()).find((part) => part.startsWith(`${cookieName}=`))?.slice(cookieName.length + 1);
+        if (validOpaque(state) && validOpaque(cookie)) {
+          const row = await txs.findOne({ _id: digest(state), kind: 'state', browserHash: digest(cookie), expiresAt: { $gt: now() } }, { projection: { returnOrigin: 1 } });
+          if (row && origins.has(row.returnOrigin)) returnOrigin = row.returnOrigin;
+        }
+        const response = await handler(request);
+        if (response.status < 400) return response;
+      } catch { /* Better Auth may throw deferred database hooks after the endpoint finishes. */ }
+      // Discard all cookies on an outer lifecycle/adapter failure as well.
+      return new Response(null, { status: 302, headers: { Location: `${returnOrigin}/account/watcha-callback.html?watcha=error`,
+        'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } });
+    },
     async ensureIndexes() {
       if (!enabled) return;
       for (const collection of [txs, codes, confirmations]) await collection.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
@@ -226,7 +245,7 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
       watchaCallback: endpoint('/oauth2/callback/watcha', 'GET', async (ctx) => {
         const query = new URL(ctx.request.url).searchParams;
         const state = query.get('state');
-        let target = `${[...origins].find((origin) => origin.startsWith('https://')) || [...origins][0] || new URL(config.authBaseUrl).origin}/account/watcha-callback.html?watcha=error`;
+        let target = `${fallbackOrigin}/account/watcha-callback.html?watcha=error`;
         try {
           if (!validOpaque(state) || !browserHash(ctx)) throw fail('INVALID_STATE');
           // Wrong browser cannot consume another browser's transaction.

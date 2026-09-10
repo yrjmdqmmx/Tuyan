@@ -8,7 +8,7 @@ import { createAuthRuntime } from '../../src/auth.js';
 import { createBoundedAuthHandler } from '../../src/auth-http.js';
 import express from 'express';
 
-export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now } = {}) {
+export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, databaseBarrier } = {}) {
   if (!/^mongodb:\/\/127\.0\.0\.1:\d+\//.test(uri || '')) throw new Error('Disposable loopback Mongo required');
   if (webOrigin && !/^http:\/\/127\.0\.0\.1:\d+$/.test(webOrigin)) throw new Error('Loopback Web origin required');
   const client = new MongoClient(uri); await client.connect();
@@ -23,7 +23,27 @@ export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now }
     watcha: { enabled: true, clientId: 'fixture-id', clientSecret: 'fixture-secret', scopes: 'read email' },
     authEmail: { deliveryEnabled: true, requireVerification: true, windowMax: mailMax, dailyMax: mailMax,
       directMail: { accountName: 'fixture@example.test', fromAlias: 'Fixture' } } };
-  const runtime = await createAuthRuntime(config, { logger: { info() {}, warn() {} }, ...(now ? { watchaNow: now } : {}),
+  class FixtureMongoClient extends MongoClient {
+    db(name) {
+      const database = super.db(name);
+      if (!databaseBarrier) return database;
+      const collection = database.collection.bind(database);
+      database.collection = (collectionName, ...args) => {
+        const target = collection(collectionName, ...args);
+        return new Proxy(target, { get(object, key) {
+          const value = object[key];
+          if (typeof value !== 'function') return value;
+          if (!['updateOne', 'insertOne'].includes(key)) return value.bind(object);
+          return async (...methodArgs) => {
+            await databaseBarrier({ collection: collectionName, method: key, args: methodArgs });
+            return value.apply(object, methodArgs);
+          };
+        } });
+      };
+      return database;
+    }
+  }
+  const runtime = await createAuthRuntime(config, { MongoClientClass: FixtureMongoClient, logger: { info() {}, warn() {} }, ...(now ? { watchaNow: now } : {}),
     directMailClientFactory: () => ({ async singleSendMail(message) { mail.push(message); return { body: { requestId: 'fixture' } }; } }),
     watchaFetch: async (url, options) => {
       calls.push({ url, method: options.method });

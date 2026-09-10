@@ -35,7 +35,7 @@ export async function createAuthRuntime(
   const db = mongoClient.db(config.mongoDbName);
   let status = { ok: true, checkedAt: null };
   try { await ensureAccountIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
-  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'));
+  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'), () => new Date(), { mongoClient, users: db.collection('user') });
 
   const advanced = {
     useSecureCookies: config.production,
@@ -164,7 +164,7 @@ export async function createAuthRuntime(
     deletionStore,
     consumeDeletionConfirmation: watcha.consumeDeletionConfirmation,
     webHandler: createRegistrationPrivacyHandler(
-      async (request) => await verification.handler(request) || auth.handler(request),
+      async (request) => await verification.handler(request) || watcha.handle(request, (input) => auth.handler(input)),
       async (email) => Boolean(await db.collection('user').findOne(
         { email }, { projection: { _id: 1 }, collation: { locale: 'en', strength: 2 } },
       )),

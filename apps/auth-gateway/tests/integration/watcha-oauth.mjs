@@ -5,7 +5,18 @@ import { createAuthRuntime } from '../../src/auth.js';
 import { createWatchaFixture } from './watcha-fixture.mjs';
 
 let clock = new Date();
-const fixture = await createWatchaFixture({ uri: process.env.WATCHA_TEST_MONGO_URI, now: () => clock });
+let databaseBarrier = async () => {};
+const fixture = await createWatchaFixture({ uri: process.env.WATCHA_TEST_MONGO_URI, now: () => clock, databaseBarrier: (call) => databaseBarrier(call) });
+function barrierWhen(predicate) {
+  let reached; let resume; let armed = true;
+  const entered = new Promise((resolve) => { reached = resolve; });
+  const released = new Promise((resolve) => { resume = resolve; });
+  databaseBarrier = async (call) => {
+    if (!armed || !predicate(call)) return;
+    armed = false; reached(); await released;
+  };
+  return { entered, resume: () => { databaseBarrier = async () => {}; resume(); } };
+}
 const { origin, runtime, db, mail } = fixture;
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 function browser() {
@@ -177,6 +188,39 @@ try {
   await db.command({ collMod: 'account', validator: {} });
   assert.equal((await rollback.json('watcha/complete', { email: 'rollback@example.test', code })).status, 200);
   console.log('PASS real Mongo unique identity/email concurrent collision and forced account-write rollback');
+
+  const freezing = browser(); const freezingUser = await existingUser(freezing, 'freezing@example.test');
+  assert.match((await callback(freezing, await start(freezing, 'link'), 81)).headers.get('location'), /watcha=pending$/);
+  const freezeBarrier = barrierWhen(({ collection, method, args }) => collection === 'user' && method === 'updateOne' && args[0].emailVerified === true);
+  const staleLink = freezing.json('watcha/link', {});
+  await freezeBarrier.entered;
+  // The link transaction has read no deletion operation in its snapshot but
+  // has not yet written the user. Freeze completes while business cleanup is
+  // deliberately not advanced. The stale writer must conflict, retry and deny.
+  try { await runtime.deletionStore.begin(freezingUser.id); } finally { freezeBarrier.resume(); }
+  const staleResult = await staleLink;
+  assert.equal(staleResult.status, 403, JSON.stringify(staleResult.data));
+  assert.equal(staleResult.data.code, 'WATCHA_ACCOUNT_UNAVAILABLE');
+  assert.equal(await db.collection('account').countDocuments({ providerId: 'watcha', accountId: '81' }), 0);
+  assert.equal((await runtime.deletionStore.get(freezingUser.id)).phase, 'business');
+  console.log('PASS deterministic link snapshot versus deletion freeze interleave retries and leaves no binding');
+
+  const sessionOwner = browser(); await pending(sessionOwner, 82);
+  const sessionCode = await sendCode(sessionOwner, 'signup', 'session-freeze@example.test');
+  assert.equal((await sessionOwner.json('watcha/complete', { email: 'session-freeze@example.test', code: sessionCode })).status, 200);
+  const sessionUserId = (await sessionOwner.json('get-session')).data.user.id;
+  const sessionCount = await db.collection('session').countDocuments({ userId: new ObjectId(sessionUserId) });
+  const sessionLogin = browser(); const sessionState = await start(sessionLogin);
+  const sessionBarrier = barrierWhen(({ collection, method, args }) => collection === 'session' && method === 'insertOne' && String(args[0].userId) === sessionUserId);
+  const lateSession = callback(sessionLogin, sessionState, 82);
+  await sessionBarrier.entered;
+  try { await runtime.deletionStore.begin(sessionUserId); } finally { sessionBarrier.resume(); }
+  const lateResult = await lateSession;
+  assert.match(lateResult.headers.get('location'), /watcha=error$/);
+  assert.equal(lateResult.headers.getSetCookie().some((cookie) => /paperbanana\.session_token=.+;/.test(cookie)), false);
+  assert.equal(await db.collection('session').countDocuments({ userId: new ObjectId(sessionUserId) }), sessionCount);
+  console.log('PASS deterministic session insertion versus deletion freeze compensates the late session and emits no login cookie');
+
 
   const life = browser(); await signIn(life, 'owner@example.test'); const lifeState = await start(life, 'link');
   await db.collection('accountDeletionOperationHistory').insertOne({ _id: 'fixture-restoration', userId: oldUser.id, closedAt: new Date() });

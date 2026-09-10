@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { authUserFilter } from './account-verification.js';
 
 const VERSION = 3;
 const pending = (phase = 'waiting', error = 'ACCOUNT_DELETION_PROCESSING') => ({
@@ -8,14 +9,33 @@ const valid = (result) => result?.status >= 200 && result.status < 300 && result
 
 // This collection is in the Auth database so deleting Auth and advancing to
 // acknowledgement can be committed in one transaction (see deleteAuthUser).
-export function createDeletionStore(collection, now = () => new Date()) {
+export function createDeletionStore(collection, now = () => new Date(), { mongoClient, users } = {}) {
+  if (Boolean(mongoClient) !== Boolean(users)) throw new Error('ACCOUNT_DELETION_TRANSACTION_CONFIGURATION_REQUIRED');
   return {
     async begin(userId, accountGeneration = '') {
-      await collection.updateOne({ _id: userId }, { $setOnInsert: {
-        operationId: randomUUID(), userId, accountGeneration, contractVersion: VERSION, phase: 'business',
-        status: 'pending', attempts: 0, createdAt: now(), updatedAt: now(), nextAttemptAt: now(),
-      } }, { upsert: true });
-      return collection.findOne({ _id: userId });
+      const begin = async (options = {}) => {
+        const existing = await collection.findOne({ _id: userId }, options);
+        if (existing) return existing;
+        if (users) {
+          // Share the user-document write lock with Watcha mutations. A stale
+          // snapshot that read no operation must conflict and retry after this
+          // transaction durably freezes the account, before Core is called.
+          const touched = await users.updateOne(authUserFilter(userId), { $inc: { watchaWriteVersion: 1 } }, options);
+          if (touched.matchedCount !== 1) throw new Error('ACCOUNT_DELETION_USER_UNAVAILABLE');
+        }
+        await collection.updateOne({ _id: userId }, { $setOnInsert: {
+          operationId: randomUUID(), userId, accountGeneration, contractVersion: VERSION, phase: 'business',
+          status: 'pending', attempts: 0, createdAt: now(), updatedAt: now(), nextAttemptAt: now(),
+        } }, { ...options, upsert: true });
+        return collection.findOne({ _id: userId }, options);
+      };
+      if (!mongoClient) return begin();
+      const session = mongoClient.startSession();
+      try {
+        return await session.withTransaction(() => begin({ session }), {
+          readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' },
+        });
+      } finally { await session.endSession(); }
     },
     get: (userId) => collection.findOne({ _id: userId }),
     async due() {
