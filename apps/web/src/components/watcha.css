@@ -1,0 +1,9 @@
+.watcha-identity { margin-block: 16px; padding: 16px; border: 1px solid var(--line, #e6e9ef); border-radius: 14px; background: var(--surface, #fff); min-width: 0; }
+.watcha-heading { display: flex; align-items: center; gap: 8px; }
+.watcha-identity p { color: var(--muted, #64748b); font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+.watcha-identity .field { display: flex; flex-direction: column; gap: 6px; margin-block: 10px; }
+.watcha-identity input { box-sizing: border-box; width: 100%; min-width: 0; }
+.watcha-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-block: 12px; }
+.watcha-login-button { width: 100%; justify-content: center; }
+.watcha-identity .error-line { color: #b42318; }
+@media (max-width: 480px) { .watcha-identity { padding: 12px; } .watcha-actions > button { flex: 1 1 auto; } }
