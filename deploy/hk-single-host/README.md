@@ -17,7 +17,7 @@ VPC peering.
   by a persistent `DOCKER-USER` rule.
 - The gateway also joins a dedicated routable edge bridge so Docker can publish
   its loopback-only port; `DOCKER-USER` allows only TLS to the currently
-  resolved public IPv4 addresses for `dm.aliyuncs.com`, blocks all other
+  resolved public IPv4 addresses for `dm.aliyuncs.com` and `watcha.cn`, blocks all other
   gateway-initiated egress, and still allows established replies to host Nginx.
   A five-minute systemd timer refreshes that destination set without changing
   the fail-closed policy when DNS is unavailable.

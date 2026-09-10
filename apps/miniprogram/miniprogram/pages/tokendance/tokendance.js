@@ -7,7 +7,7 @@ function paymentLabel(status) {
     return { pending: '等待支付', paid: '已确认到账', closed: '订单已关闭', failed: '支付失败', refunded: '已退款', creating: '正在确认订单', unknown: '创建结果待核对' }[status] || '状态待查询';
 }
 Component({
-    data: { email: '', isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
+    data: { email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
     pageLifetimes: {
         show() { this.visible = true; void this.refresh(); this.pollPayment(); },
         hide() { this.visible = false; this.stopPolling(); this.oneUseCode = ''; this.setData({ code: '', hasCode: false, showAuthPanel: false, showAccountSettings: false }); },
@@ -25,7 +25,7 @@ Component({
                     if (this.visible)
                         void this.refresh();
                 }
-                this.setData({ email: (user === null || user === void 0 ? void 0 : user.email) || '', isLoggedIn: Boolean(user) });
+                this.setData({ email: (user === null || user === void 0 ? void 0 : user.email) || '', emailVerified: (user === null || user === void 0 ? void 0 : user.emailVerified) === true, isLoggedIn: Boolean(user) });
             });
         },
         detached() { var _a, _b; this.visible = false; this.resetAccount(); (_b = (_a = this).unsubscribe) === null || _b === void 0 ? void 0 : _b.call(_a); },
@@ -37,7 +37,7 @@ Component({
             this.stopPolling();
             this.flow = undefined;
             this.oneUseCode = '';
-            this.setData({ connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' });
+            this.setData({ connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' });
         },
         current(epoch) { var _a, _b; return epoch === this.epoch && Boolean((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) && this.owner === ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id); },
         async accountRequest(body) {
@@ -49,6 +49,7 @@ Component({
                 throw new Error('账户已切换，请重新操作。');
             return result;
         },
+        openWatcha() { wx.navigateTo({ url: '/pages/watcha/watcha' }); },
         openAuthPanel() { this.setData({ showAuthPanel: true }); },
         closeAuthPanel() { this.setData({ showAuthPanel: false }); },
         onAuthed() { this.closeAuthPanel(); void this.refresh(); },
@@ -59,9 +60,9 @@ Component({
         closeAccountSettings() { this.setData({ showAccountSettings: false }); },
         returnToTask: tokendance_1.returnFromTokenDance,
         async refresh() {
-            var _a;
+            var _a, _b;
             const epoch = this.epoch;
-            this.setData({ email: ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.email) || '', isLoggedIn: Boolean((0, session_1.getCurrentUser)()), statusLoading: true });
+            this.setData({ email: ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.email) || '', emailVerified: ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.emailVerified) === true, isLoggedIn: Boolean((0, session_1.getCurrentUser)()), statusLoading: true });
             const status = await (0, tokendance_1.refreshTokenDanceConnection)();
             if (epoch !== this.epoch)
                 return;

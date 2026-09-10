@@ -1,9 +1,10 @@
+import { watchaRequest } from '../../utils/watcha'
 import { accountLifecycleMessage, buildDeleteAccountPayload, clearAccountClientState, validateDeleteAccountInput } from '../../utils/account'
 import { mapAuthError, retryAfterSeconds, validateChangePassword } from '../../utils/auth-security'
 import { gatewayRequest, formatError } from '../../utils/api'
 import { clearApiKeys } from '../../utils/api-keys'
 import { API_BASE } from '../../utils/config'
-import { changePassword, sendVerificationEmail, signOut, getCurrentUser } from '../../utils/session'
+import { changePassword, sendVerificationEmail, signOut, getCurrentUser, subscribeSession, requestPasswordReset } from '../../utils/session'
 
 function changePasswordValidationMessage(code: ReturnType<typeof validateChangePassword>): string {
   switch (code) {
@@ -22,12 +23,13 @@ function changePasswordValidationMessage(code: ReturnType<typeof validateChangeP
 Component({
   options: { styleIsolation: 'apply-shared' },
   properties: {
-    show: { type: Boolean, value: false, observer(this: any, show: boolean) { this.reset(); if (show) void this.refreshLifecycle() } },
+    show: { type: Boolean, value: false, observer(this: any, show: boolean) { this.reset(); if (show) { void this.refreshLifecycle(); void this.refreshWatcha() } } },
     currentEmail: { type: String, value: '' },
     emailVerified: { type: Boolean, value: false },
   },
   data: {
     // 删除账号状态与改密状态刻意分离，防止一个流程读取或清理另一个流程的密码。
+    watchaLoaded: false, passwordless: false, deletionCode: '', hasDeletionCode: false, deletionCodeSent: false, sendingDeletionCode: false, deletionCooldown: 0,
     email: '',
     password: '',
     confirmed: false,
@@ -48,10 +50,47 @@ Component({
     resendingVerification: false,
   },
   lifetimes: {
-    detached() { this.reset() },
+    attached() {
+      let owner = getCurrentUser()?.id || ''
+      ;(this as any).unsubscribeSecurity = subscribeSession?.(user => {
+        if (owner !== (user?.id || '')) { owner = user?.id || ''; this.reset(); if (this.properties.show) { void this.refreshLifecycle(); void this.refreshWatcha() } }
+      })
+    },
+    detached() { (this as any).unsubscribeSecurity?.(); this.reset() },
   },
   methods: {
     noop() {},
+    async refreshWatcha() {
+      const epoch = Number((this as any).securityOperationEpoch || 0), owner = getCurrentUser()?.id
+      const valid = () => epoch === Number((this as any).securityOperationEpoch || 0) && owner === getCurrentUser()?.id
+      try {
+        const status = await watchaRequest('mini-status', undefined, valid)
+        if (valid()) this.setData({ watchaLoaded: true, passwordless: status.available && status.linked && !status.hasPassword })
+      } catch { if (valid()) this.setData({ watchaLoaded: false }) }
+    },
+    onDeletionCodeInput(event: WechatMiniprogram.Input) { (this as any).deletionProofCode = event.detail.value.replace(/\D/g, '').slice(0, 6); this.setData({ hasDeletionCode: /^\d{6}$/.test((this as any).deletionProofCode) }) },
+    async sendDeletionCode() {
+      if (!this.data.passwordless || this.data.deletionCooldown > 0 || this.data.sendingDeletionCode || this.data.deleting || this.data.lifecycleState !== 'active') return
+      const epoch = Number((this as any).securityOperationEpoch || 0), owner = getCurrentUser()?.id
+      const valid = () => epoch === Number((this as any).securityOperationEpoch || 0) && owner === getCurrentUser()?.id
+      this.setData({ sendingDeletionCode: true, error: '' })
+      try {
+        await watchaRequest('email-code', { purpose: 'delete' }, valid)
+        if (!valid()) return
+        ;(this as any).deletionProofCode = ''; this.setData({ deletionCodeSent: true, deletionCode: '', hasDeletionCode: false, deletionCooldown: 60 })
+        clearInterval((this as any).deletionTimer)
+        ;(this as any).deletionTimer = setInterval(() => { this.setData({ deletionCooldown: Math.max(0, this.data.deletionCooldown - 1) }); if (!this.data.deletionCooldown) clearInterval((this as any).deletionTimer) }, 1000)
+      } catch (error) { if (valid()) this.setData({ error: (error as Error).message }) }
+      finally { if (valid()) this.setData({ sendingDeletionCode: false }) }
+    },
+    async setupPassword() {
+      if (this.data.resendCooldownSeconds || this.data.resendingVerification) return
+      const epoch = Number((this as any).securityOperationEpoch || 0), owner = getCurrentUser()?.id
+      this.setData({ resendingVerification: true, securityError: '' })
+      try { await requestPasswordReset(this.properties.currentEmail); if (epoch === Number((this as any).securityOperationEpoch || 0) && owner === getCurrentUser()?.id) { this.startResendCooldown(60); this.setData({ securityStatus: '请按邮箱中的重置说明设置图研密码，完成后重新登录。' }) } }
+      catch (error) { if (epoch === Number((this as any).securityOperationEpoch || 0)) this.setData({ securityError: formatError(error) }) }
+      finally { if (epoch === Number((this as any).securityOperationEpoch || 0)) this.setData({ resendingVerification: false }) }
+    },
     async refreshLifecycle() {
       const epoch = Number((this as any).securityOperationEpoch || 0)
       const ownerId = getCurrentUser()?.id
@@ -78,7 +117,9 @@ Component({
       ;(this as any).securityOperationEpoch = Number((this as any).securityOperationEpoch || 0) + 1
       this.clearResendCooldown()
       this.clearChangePasswordCooldown()
+      clearInterval((this as any).deletionTimer); (this as any).deletionProofCode = ''
       this.setData({
+        watchaLoaded: false, passwordless: false, deletionCode: '', hasDeletionCode: false, deletionCodeSent: false, sendingDeletionCode: false, deletionCooldown: 0,
         email: '', password: '', confirmed: false, deleting: false, error: '',
         lifecycleMessage: '', lifecycleState: '', statusLoaded: false,
         currentPassword: '', newPassword: '', confirmPassword: '', changingPassword: false,
@@ -168,20 +209,30 @@ Component({
     },
     deleteAccount() {
       if (!this.data.statusLoaded || this.data.lifecycleState !== 'active' || this.data.deleting) return
-      const validation = validateDeleteAccountInput({ currentEmail: this.properties.currentEmail, email: this.data.email, password: this.data.password, confirmed: this.data.confirmed })
+      const validation = this.data.passwordless
+        ? this.data.email.trim().toLowerCase() !== this.properties.currentEmail.trim().toLowerCase() ? '请输入当前账号邮箱。' : !this.data.deletionCodeSent || !this.data.hasDeletionCode ? '请输入本次注销的邮箱验证码。' : !this.data.confirmed ? '请完成二次确认。' : ''
+        : validateDeleteAccountInput({ currentEmail: this.properties.currentEmail, email: this.data.email, password: this.data.password, confirmed: this.data.confirmed })
       if (validation) { this.setData({ error: validation }); return }
+      const epoch = Number((this as any).securityOperationEpoch || 0), owner = getCurrentUser()?.id
       wx.showModal({
         title: '永久删除账号？', content: '账号、任务记录和对象存储中的个人资产将被永久删除，此操作不可撤销。', confirmText: '永久删除', confirmColor: '#a43f31',
-        success: (result) => { if (result.confirm) void this.performDelete() },
+        success: (result) => { if (result.confirm && epoch === Number((this as any).securityOperationEpoch || 0) && owner === getCurrentUser()?.id) void this.performDelete() },
       })
     },
     async performDelete() {
       if (!this.data.statusLoaded || this.data.lifecycleState !== 'active' || this.data.deleting) return
       const epoch = Number((this as any).securityOperationEpoch || 0)
       const ownerId = getCurrentUser()?.id
-      const payload = buildDeleteAccountPayload(this.data.email, this.data.password)
+      let payload: { email: string; password?: string; confirmationToken?: string } = buildDeleteAccountPayload(this.data.email, this.data.password)
       this.setData({ deleting: true, error: '' })
       try {
+        if (this.data.passwordless) {
+          const code = (this as any).deletionProofCode; (this as any).deletionProofCode = ''; this.setData({ deletionCode: '', hasDeletionCode: false, deletionCodeSent: false })
+          const proof = await watchaRequest('delete-confirmation', { code }, () => epoch === Number((this as any).securityOperationEpoch || 0) && ownerId === getCurrentUser()?.id)
+          if (epoch !== Number((this as any).securityOperationEpoch || 0) || ownerId !== getCurrentUser()?.id) return
+          if (!/^[A-Za-z0-9_-]{43}$/.test(proof.confirmationToken)) throw new Error('注销确认未完成，请重新发送验证码。')
+          payload = { email: this.data.email.trim(), confirmationToken: proof.confirmationToken }
+        }
         const response = await gatewayRequest<{ code?: number; ok?: boolean; accepted?: boolean }>(`${API_BASE}/api/account/delete`, 'POST', payload)
         if (epoch !== Number((this as any).securityOperationEpoch || 0) || ownerId !== getCurrentUser()?.id) return
         if (response.code === 202 && response.accepted) {

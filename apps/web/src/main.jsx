@@ -7,6 +7,7 @@ import { API_BASE_DEFAULT, BACKEND_MODE, BENCH_ENABLED } from './config.js';
 import { canonicalizeLeaderboardLocation, resolveLeaderboardRoute } from './leaderboardRoutes.js';
 import './styles.css';
 import './components/tokendance.css';
+import './components/watcha.css';
 import './components/benchmark.css';
 import './components/admin/admin.css';
 

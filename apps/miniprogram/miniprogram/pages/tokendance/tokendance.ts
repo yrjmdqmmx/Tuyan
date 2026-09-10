@@ -7,7 +7,7 @@ function paymentLabel(status: string): string {
 }
 
 Component({
-  data: { email: '', isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [] as any[], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null as any, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
+  data: { email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [] as any[], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null as any, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
   pageLifetimes: {
     show() { (this as any).visible = true; void this.refresh(); this.pollPayment() },
     hide() { (this as any).visible = false; this.stopPolling(); (this as any).oneUseCode = ''; this.setData({ code: '', hasCode: false, showAuthPanel: false, showAccountSettings: false }) },
@@ -17,7 +17,7 @@ Component({
       ;(this as any).epoch = 0; (this as any).owner = getCurrentUser()?.id || ''
       ;(this as any).unsubscribe = subscribeSession(user => {
         if ((this as any).owner !== (user?.id || '')) { (this as any).owner = user?.id || ''; this.resetAccount(); if ((this as any).visible) void this.refresh() }
-        this.setData({ email: user?.email || '', isLoggedIn: Boolean(user) })
+        this.setData({ email: user?.email || '', emailVerified: user?.emailVerified === true, isLoggedIn: Boolean(user) })
       })
     },
     detached() { (this as any).visible = false; this.resetAccount(); (this as any).unsubscribe?.() },
@@ -25,7 +25,7 @@ Component({
   methods: {
     resetAccount() {
       ;(this as any).epoch++; this.stopPolling(); (this as any).flow = undefined; (this as any).oneUseCode = ''
-      this.setData({ connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' })
+      this.setData({ connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' })
     },
     current(epoch: number) { return epoch === (this as any).epoch && Boolean(getCurrentUser()?.id) && (this as any).owner === getCurrentUser()?.id },
     async accountRequest(body: Record<string, unknown>): Promise<any> {
@@ -35,6 +35,7 @@ Component({
       if (!this.current(epoch)) throw new Error('账户已切换，请重新操作。')
       return result
     },
+    openWatcha() { wx.navigateTo({ url: '/pages/watcha/watcha' }) },
     openAuthPanel() { this.setData({ showAuthPanel: true }) },
     closeAuthPanel() { this.setData({ showAuthPanel: false }) },
     onAuthed() { this.closeAuthPanel(); void this.refresh() },
@@ -43,7 +44,7 @@ Component({
     returnToTask: returnFromTokenDance,
     async refresh() {
       const epoch = (this as any).epoch
-      this.setData({ email: getCurrentUser()?.email || '', isLoggedIn: Boolean(getCurrentUser()), statusLoading: true })
+      this.setData({ email: getCurrentUser()?.email || '', emailVerified: getCurrentUser()?.emailVerified === true, isLoggedIn: Boolean(getCurrentUser()), statusLoading: true })
       const status = await refreshTokenDanceConnection()
       if (epoch !== (this as any).epoch) return
       this.setData({ connected: status.connected, statusLoading: false, error: status.error || (status.available === false ? '观猹 TokenDance 暂不可用，请稍后刷新。' : '') })

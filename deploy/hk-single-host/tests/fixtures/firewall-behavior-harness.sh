@@ -24,24 +24,32 @@ fail_action=""
 append_calls=0
 
 getent() {
-  [[ "${1:-}" == "ahostsv4" && "${2:-}" == "$directmail_host" ]] || return 2
+  [[ "${1:-}" == "ahostsv4" && ( "${2:-}" == "dm.aliyuncs.com" || "${2:-}" == "watcha.cn" ) ]] || return 2
+  if [[ "${2:-}" == "watcha.cn" ]]; then
+    case "$dns_scenario" in
+      watcha-empty) return 0 ;;
+      watcha-private) printf "10.0.0.1 STREAM watcha.cn\n"; return 0 ;;
+      watcha-error) return 42 ;;
+      *) printf "101.201.111.157 STREAM watcha.cn\n"; return 0 ;;
+    esac
+  fi
   case "$dns_scenario" in
-    valid)
-      printf '47.246.1.1 STREAM %s\n' "$directmail_host"
+    valid|watcha-empty|watcha-private|watcha-error)
+      printf '47.246.1.1 STREAM %s\n' "${2:-}"
       ;;
     empty)
       ;;
     private)
-      printf '10.0.0.1 STREAM %s\n' "$directmail_host"
+      printf '10.0.0.1 STREAM %s\n' "${2:-}"
       ;;
     partial-error)
-      printf '47.246.1.1 STREAM %s\n' "$directmail_host"
+      printf '47.246.1.1 STREAM %s\n' "${2:-}"
       return 42
       ;;
     oversized)
       local suffix
       for suffix in $(seq 1 33); do
-        printf '8.8.4.%s STREAM %s\n' "$suffix" "$directmail_host"
+        printf '8.8.4.%s STREAM %s\n' "$suffix" "${2:-}"
       done
       ;;
     *)
@@ -163,7 +171,7 @@ expect_failure() {
   }
 }
 
-for scenario in empty private oversized partial-error; do
+for scenario in empty private oversized partial-error watcha-empty watcha-private watcha-error; do
   reset_state
   dns_scenario="$scenario"
   expect_failure
@@ -174,7 +182,7 @@ for scenario in empty private oversized partial-error; do
   }
 done
 
-for scenario in create flush append-1 append-2 append-3 append-4 append-5 append-6 append-7 insert delete; do
+for scenario in create flush append-1 append-2 append-3 append-4 append-5 append-6 append-7 append-8 insert delete; do
   reset_state
   fail_action="$scenario"
   expect_failure
@@ -187,6 +195,18 @@ reset_state
 run_main
 [[ "$(cat "$jumps_file")" == "$chain_a" ]] || { echo "first swap did not converge to chain A" >&2; exit 1; }
 assert_active_complete
+# Both dedicated HTTPS destinations precede the terminal gateway rejection.
+python3 - "$rules_dir/$chain_a" <<'VERIFY'
+import sys
+rules = open(sys.argv[1]).read().splitlines()
+source = '-s 172.31.0.10/32 '
+allows = [r for r in rules if r.startswith(source) and '--ctstate NEW -j ACCEPT' in r]
+assert len(allows) == 2
+for ip in ('47.246.1.1', '101.201.111.157'):
+    rule = source + '-d ' + ip + ' -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT'
+    assert rule in allows
+    assert rules.index(rule) < rules.index(source + '-m conntrack --ctstate NEW -j REJECT')
+VERIFY
 run_main
 [[ "$(cat "$jumps_file")" == "$chain_b" ]] || { echo "second swap did not converge to chain B" >&2; exit 1; }
 assert_active_complete
@@ -205,7 +225,7 @@ events_file="$3"
 lock_file="$4"
 require_root() { :; }
 require_commands() { :; }
-resolve_directmail_ips() { directmail_ips=(47.246.1.1); }
+resolve_gateway_ips() { gateway_ips=(47.246.1.1 101.201.111.157); }
 prepare_bridge_filtering() {
   printf 'start:%s\n' "$label" >> "$events_file"
   sleep 0.2

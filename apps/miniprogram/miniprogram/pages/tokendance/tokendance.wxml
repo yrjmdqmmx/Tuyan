@@ -6,6 +6,11 @@
     <button class="td-button" wx:if="{{email}}" bindtap="manageAccount">账号与隐私</button>
     <button class="td-button" bindtap="returnToTask">返回原页面</button>
   </view>
+  <view class="td-card">
+    <view class="td-title">观猹身份登录</view>
+    <view class="td-note">使用观猹登录图研，管理与当前账号的绑定。</view>
+    <button class="td-button" bindtap="openWatcha">{{isLoggedIn ? '管理观猹登录与绑定' : '使用观猹登录'}}</button>
+  </view>
   <view class="td-error" wx:if="{{error}}">{{error}}</view>
   <view class="td-note" wx:if="{{notice}}">{{notice}}</view>
   <view class="td-card">
@@ -49,6 +54,6 @@
     <view wx:if="{{historyLoaded && !payments.length}}" class="td-note">暂无充值记录</view>
   </view>
 </view>
-<account-settings show="{{showAccountSettings}}" bind:close="closeAccountSettings" />
+<account-settings show="{{showAccountSettings}}" current-email="{{email}}" email-verified="{{emailVerified}}" bind:close="closeAccountSettings" />
 
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />

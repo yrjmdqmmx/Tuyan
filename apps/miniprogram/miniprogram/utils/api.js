@@ -68,6 +68,10 @@ function gatewayRequest(url, method, data, options = {}) {
             header,
             data,
             success(res) {
+                if (options.isCurrent && !options.isCurrent()) {
+                    reject(new Error('账号或操作已变化，请重新尝试。'));
+                    return;
+                }
                 if (options.auth !== false)
                     persistCookies(res);
                 const responseData = coerceJsonResponse(res.data);
@@ -93,6 +97,10 @@ function postJson(url, body, options = {}) {
             header: requestHeader(options.auth !== false),
             data: body,
             success(res) {
+                if (options.isCurrent && !options.isCurrent()) {
+                    reject(new Error('账号或操作已变化，请重新尝试。'));
+                    return;
+                }
                 if (options.auth !== false)
                     persistCookies(res);
                 const data = coerceJsonResponse(res.data) || {};

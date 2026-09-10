@@ -5,7 +5,8 @@
     "pages/refine/refine",
     "pages/guide/guide",
     "pages/job-detail/job-detail",
-    "pages/tokendance/tokendance"
+    "pages/tokendance/tokendance",
+    "pages/watcha/watcha"
   ],
   "window": {
     "navigationBarTextStyle": "black",

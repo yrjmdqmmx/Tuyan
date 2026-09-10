@@ -41,6 +41,7 @@ Component({
         styleIsolation: 'apply-shared',
     },
     properties: {
+        hideWatcha: { type: Boolean, value: false },
         show: {
             type: Boolean,
             value: false,
@@ -213,6 +214,12 @@ Component({
             this.setAuthMode('pending-verification');
             this.setData({ authPassword: '', authStatus: status });
             this.startAuthCooldown(60);
+        },
+        openWatcha() {
+            if (this.data.authSubmitting)
+                return;
+            this.close();
+            wx.navigateTo({ url: '/pages/watcha/watcha' });
         },
         async submitAuth() {
             if (!this.data.authCanSubmit || this.data.authSubmitting)

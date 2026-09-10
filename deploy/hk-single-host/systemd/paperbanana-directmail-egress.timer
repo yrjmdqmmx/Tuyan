@@ -1,5 +1,5 @@
 [Unit]
-Description=Refresh PaperBanana DirectMail egress destinations
+Description=Refresh PaperBanana DirectMail and Watcha egress destinations
 
 [Timer]
 OnBootSec=2m

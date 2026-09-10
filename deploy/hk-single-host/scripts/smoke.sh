@@ -123,11 +123,14 @@ fi
 
 "${compose[@]}" exec -T auth-gateway node --input-type=module -e '
   import tls from "node:tls";
-  const host = "dm.aliyuncs.com";
-  const socket = tls.connect({ host, port: 443, servername: host, rejectUnauthorized: true });
-  const timeout = setTimeout(() => { socket.destroy(); process.exit(1); }, 5000);
-  socket.once("secureConnect", () => { clearTimeout(timeout); socket.destroy(); process.exit(0); });
-  socket.once("error", () => { clearTimeout(timeout); process.exit(1); });
+  for (const host of ["dm.aliyuncs.com", "watcha.cn"]) {
+    await new Promise((resolve, reject) => {
+      const socket = tls.connect({ host, port: 443, servername: host, rejectUnauthorized: true });
+      const timeout = setTimeout(() => { socket.destroy(); process.exit(1); }, 5000);
+      socket.once("secureConnect", () => { clearTimeout(timeout); socket.destroy(); resolve(); });
+      socket.once("error", () => { clearTimeout(timeout); reject(new Error(`Gateway TLS unavailable: ${host}`)); });
+    });
+  }
 '
 
 if "${compose[@]}" exec -T auth-gateway node --input-type=module -e '

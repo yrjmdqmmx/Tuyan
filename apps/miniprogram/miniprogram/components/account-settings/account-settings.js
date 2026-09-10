@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const watcha_1 = require("../../utils/watcha");
 const account_1 = require("../../utils/account");
 const auth_security_1 = require("../../utils/auth-security");
 const api_1 = require("../../utils/api");
@@ -22,13 +23,16 @@ function changePasswordValidationMessage(code) {
 Component({
     options: { styleIsolation: 'apply-shared' },
     properties: {
-        show: { type: Boolean, value: false, observer(show) { this.reset(); if (show)
-                void this.refreshLifecycle(); } },
+        show: { type: Boolean, value: false, observer(show) { this.reset(); if (show) {
+                void this.refreshLifecycle();
+                void this.refreshWatcha();
+            } } },
         currentEmail: { type: String, value: '' },
         emailVerified: { type: Boolean, value: false },
     },
     data: {
         // 删除账号状态与改密状态刻意分离，防止一个流程读取或清理另一个流程的密码。
+        watchaLoaded: false, passwordless: false, deletionCode: '', hasDeletionCode: false, deletionCodeSent: false, sendingDeletionCode: false, deletionCooldown: 0,
         email: '',
         password: '',
         confirmed: false,
@@ -49,10 +53,87 @@ Component({
         resendingVerification: false,
     },
     lifetimes: {
-        detached() { this.reset(); },
+        attached() {
+            var _a;
+            let owner = ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '';
+            this.unsubscribeSecurity = session_1.subscribeSession === null || session_1.subscribeSession === void 0 ? void 0 : (0, session_1.subscribeSession)(user => {
+                if (owner !== ((user === null || user === void 0 ? void 0 : user.id) || '')) {
+                    owner = (user === null || user === void 0 ? void 0 : user.id) || '';
+                    this.reset();
+                    if (this.properties.show) {
+                        void this.refreshLifecycle();
+                        void this.refreshWatcha();
+                    }
+                }
+            });
+        },
+        detached() { var _a, _b; (_b = (_a = this).unsubscribeSecurity) === null || _b === void 0 ? void 0 : _b.call(_a); this.reset(); },
     },
     methods: {
         noop() { },
+        async refreshWatcha() {
+            var _a;
+            const epoch = Number(this.securityOperationEpoch || 0), owner = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
+            const valid = () => { var _a; return epoch === Number(this.securityOperationEpoch || 0) && owner === ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id); };
+            try {
+                const status = await (0, watcha_1.watchaRequest)('mini-status', undefined, valid);
+                if (valid())
+                    this.setData({ watchaLoaded: true, passwordless: status.available && status.linked && !status.hasPassword });
+            }
+            catch {
+                if (valid())
+                    this.setData({ watchaLoaded: false });
+            }
+        },
+        onDeletionCodeInput(event) { this.deletionProofCode = event.detail.value.replace(/\D/g, '').slice(0, 6); this.setData({ hasDeletionCode: /^\d{6}$/.test(this.deletionProofCode) }); },
+        async sendDeletionCode() {
+            var _a;
+            if (!this.data.passwordless || this.data.deletionCooldown > 0 || this.data.sendingDeletionCode || this.data.deleting || this.data.lifecycleState !== 'active')
+                return;
+            const epoch = Number(this.securityOperationEpoch || 0), owner = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
+            const valid = () => { var _a; return epoch === Number(this.securityOperationEpoch || 0) && owner === ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id); };
+            this.setData({ sendingDeletionCode: true, error: '' });
+            try {
+                await (0, watcha_1.watchaRequest)('email-code', { purpose: 'delete' }, valid);
+                if (!valid())
+                    return;
+                this.deletionProofCode = '';
+                this.setData({ deletionCodeSent: true, deletionCode: '', hasDeletionCode: false, deletionCooldown: 60 });
+                clearInterval(this.deletionTimer);
+                this.deletionTimer = setInterval(() => { this.setData({ deletionCooldown: Math.max(0, this.data.deletionCooldown - 1) }); if (!this.data.deletionCooldown)
+                    clearInterval(this.deletionTimer); }, 1000);
+            }
+            catch (error) {
+                if (valid())
+                    this.setData({ error: error.message });
+            }
+            finally {
+                if (valid())
+                    this.setData({ sendingDeletionCode: false });
+            }
+        },
+        async setupPassword() {
+            var _a, _b;
+            if (this.data.resendCooldownSeconds || this.data.resendingVerification)
+                return;
+            const epoch = Number(this.securityOperationEpoch || 0), owner = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
+            this.setData({ resendingVerification: true, securityError: '' });
+            try {
+                await (0, session_1.requestPasswordReset)(this.properties.currentEmail);
+                if (epoch === Number(this.securityOperationEpoch || 0) && owner === ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id)) {
+                    this.startResendCooldown(60);
+                    this.setData({ securityStatus: '请按邮箱中的重置说明设置图研密码，完成后重新登录。' });
+                }
+            }
+            catch (error) {
+                if (epoch === Number(this.securityOperationEpoch || 0))
+                    this.setData({ securityError: (0, api_1.formatError)(error) });
+            }
+            finally {
+                if (epoch === Number(this.securityOperationEpoch || 0))
+                    this.setData({ resendingVerification: false });
+            }
+        },
         async refreshLifecycle() {
             var _a, _b, _c;
             const epoch = Number(this.securityOperationEpoch || 0);
@@ -87,7 +168,10 @@ Component({
             this.securityOperationEpoch = Number(this.securityOperationEpoch || 0) + 1;
             this.clearResendCooldown();
             this.clearChangePasswordCooldown();
+            clearInterval(this.deletionTimer);
+            this.deletionProofCode = '';
             this.setData({
+                watchaLoaded: false, passwordless: false, deletionCode: '', hasDeletionCode: false, deletionCodeSent: false, sendingDeletionCode: false, deletionCooldown: 0,
                 email: '', password: '', confirmed: false, deleting: false, error: '',
                 lifecycleMessage: '', lifecycleState: '', statusLoaded: false,
                 currentPassword: '', newPassword: '', confirmPassword: '', changingPassword: false,
@@ -194,30 +278,45 @@ Component({
             }
         },
         deleteAccount() {
+            var _a;
             if (!this.data.statusLoaded || this.data.lifecycleState !== 'active' || this.data.deleting)
                 return;
-            const validation = (0, account_1.validateDeleteAccountInput)({ currentEmail: this.properties.currentEmail, email: this.data.email, password: this.data.password, confirmed: this.data.confirmed });
+            const validation = this.data.passwordless
+                ? this.data.email.trim().toLowerCase() !== this.properties.currentEmail.trim().toLowerCase() ? '请输入当前账号邮箱。' : !this.data.deletionCodeSent || !this.data.hasDeletionCode ? '请输入本次注销的邮箱验证码。' : !this.data.confirmed ? '请完成二次确认。' : ''
+                : (0, account_1.validateDeleteAccountInput)({ currentEmail: this.properties.currentEmail, email: this.data.email, password: this.data.password, confirmed: this.data.confirmed });
             if (validation) {
                 this.setData({ error: validation });
                 return;
             }
+            const epoch = Number(this.securityOperationEpoch || 0), owner = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
             wx.showModal({
                 title: '永久删除账号？', content: '账号、任务记录和对象存储中的个人资产将被永久删除，此操作不可撤销。', confirmText: '永久删除', confirmColor: '#a43f31',
-                success: (result) => { if (result.confirm)
+                success: (result) => { var _a; if (result.confirm && epoch === Number(this.securityOperationEpoch || 0) && owner === ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id))
                     void this.performDelete(); },
             });
         },
         async performDelete() {
-            var _a, _b, _c;
+            var _a, _b, _c, _d;
             if (!this.data.statusLoaded || this.data.lifecycleState !== 'active' || this.data.deleting)
                 return;
             const epoch = Number(this.securityOperationEpoch || 0);
             const ownerId = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
-            const payload = (0, account_1.buildDeleteAccountPayload)(this.data.email, this.data.password);
+            let payload = (0, account_1.buildDeleteAccountPayload)(this.data.email, this.data.password);
             this.setData({ deleting: true, error: '' });
             try {
+                if (this.data.passwordless) {
+                    const code = this.deletionProofCode;
+                    this.deletionProofCode = '';
+                    this.setData({ deletionCode: '', hasDeletionCode: false, deletionCodeSent: false });
+                    const proof = await (0, watcha_1.watchaRequest)('delete-confirmation', { code }, () => { var _a; return epoch === Number(this.securityOperationEpoch || 0) && ownerId === ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id); });
+                    if (epoch !== Number(this.securityOperationEpoch || 0) || ownerId !== ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id))
+                        return;
+                    if (!/^[A-Za-z0-9_-]{43}$/.test(proof.confirmationToken))
+                        throw new Error('注销确认未完成，请重新发送验证码。');
+                    payload = { email: this.data.email.trim(), confirmationToken: proof.confirmationToken };
+                }
                 const response = await (0, api_1.gatewayRequest)(`${config_1.API_BASE}/api/account/delete`, 'POST', payload);
-                if (epoch !== Number(this.securityOperationEpoch || 0) || ownerId !== ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id))
+                if (epoch !== Number(this.securityOperationEpoch || 0) || ownerId !== ((_c = (0, session_1.getCurrentUser)()) === null || _c === void 0 ? void 0 : _c.id))
                     return;
                 if (response.code === 202 && response.accepted) {
                     this.setData({ password: '', confirmed: false, lifecycleState: 'deleting', lifecycleMessage: (0, account_1.accountLifecycleMessage)('deleting') });
@@ -231,7 +330,7 @@ Component({
                 this.triggerEvent('deleted');
             }
             catch (error) {
-                if (epoch === Number(this.securityOperationEpoch || 0) && ownerId === ((_c = (0, session_1.getCurrentUser)()) === null || _c === void 0 ? void 0 : _c.id))
+                if (epoch === Number(this.securityOperationEpoch || 0) && ownerId === ((_d = (0, session_1.getCurrentUser)()) === null || _d === void 0 ? void 0 : _d.id))
                     this.setData({ error: (0, api_1.formatError)(error) });
             }
             finally {

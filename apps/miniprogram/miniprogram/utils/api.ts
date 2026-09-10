@@ -12,6 +12,7 @@ export interface WxRequestResult<T> {
 export interface RequestOptions {
   auth?: boolean
   timeout?: number
+  isCurrent?: () => boolean
 }
 
 export function requestJson<T>(body: WechatMiniprogram.IAnyObject, options: RequestOptions = {}): Promise<T> {
@@ -68,6 +69,7 @@ export function gatewayRequest<T>(url: string, method: 'GET' | 'POST', data?: We
       header,
       data,
       success(res: WxRequestResult<T & { message?: string; code?: string; error?: string }>) {
+        if (options.isCurrent && !options.isCurrent()) { reject(new Error('账号或操作已变化，请重新尝试。')); return }
         if (options.auth !== false) persistCookies(res)
         const responseData = coerceJsonResponse<T & { message?: string; code?: string; error?: string }>(res.data)
         if (res.statusCode < 200 || res.statusCode >= 300) {
@@ -93,6 +95,7 @@ export function postJson<T>(url: string, body: WechatMiniprogram.IAnyObject, opt
       header: requestHeader(options.auth !== false),
       data: body,
       success(res: WxRequestResult<T & { code?: number; error?: string; detail?: string }>) {
+        if (options.isCurrent && !options.isCurrent()) { reject(new Error('账号或操作已变化，请重新尝试。')); return }
         if (options.auth !== false) persistCookies(res)
         const data = coerceJsonResponse<T & { code?: number; error?: string; detail?: string }>(res.data) || ({} as T & { code?: number; error?: string; detail?: string })
         if (res.statusCode < 200 || res.statusCode >= 300 || (data.code && data.code !== 0)) {

@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 worker_source="172.29.0.30/32"
 gateway_source="172.31.0.10/32"
-directmail_host="dm.aliyuncs.com"
+gateway_hosts=(dm.aliyuncs.com watcha.cn)
 legacy_chain="PAPERBANANA-EGRESS"
 chain_a="PAPERBANANA-EGRESS-A"
 chain_b="PAPERBANANA-EGRESS-B"
@@ -28,35 +28,40 @@ acquire_update_lock() {
   flock -x 9
 }
 
-resolve_directmail_ips() {
-  local resolved_output directmail_ip
+resolve_gateway_ips() {
+  local resolved_output gateway_ip gateway_host
+  local -a resolved_ips
   # Resolve and validate the complete destination set before touching either
   # active jump. A transient DNS failure preserves the last known-good rules.
-  if ! resolved_output="$(
-    getent ahostsv4 "$directmail_host" \
-      | awk '$2 == "STREAM" { print $1 }' \
-      | sort -u
-  )"; then
-    echo "DirectMail DNS resolution failed" >&2
-    return 1
-  fi
-  directmail_ips=()
-  while IFS= read -r directmail_ip; do
-    [[ -n "$directmail_ip" ]] && directmail_ips+=("$directmail_ip")
-  done <<< "$resolved_output"
-  if (( ${#directmail_ips[@]} == 0 || ${#directmail_ips[@]} > 32 )); then
-    echo "DirectMail DNS returned an invalid address count" >&2
-    return 1
-  fi
-  python3 - "${directmail_ips[@]}" <<'PY'
+  gateway_ips=()
+  for gateway_host in "${gateway_hosts[@]}"; do
+    if ! resolved_output="$(
+      getent ahostsv4 "$gateway_host" \
+        | awk '$2 == "STREAM" { print $1 }' \
+        | sort -u
+    )"; then
+      echo "Gateway destination DNS resolution failed: $gateway_host" >&2
+      return 1
+    fi
+    resolved_ips=()
+    while IFS= read -r gateway_ip; do
+      [[ -n "$gateway_ip" ]] && resolved_ips+=("$gateway_ip")
+    done <<< "$resolved_output"
+    if (( ${#resolved_ips[@]} == 0 || ${#resolved_ips[@]} > 32 )); then
+      echo "Gateway destination DNS returned an invalid address count: $gateway_host" >&2
+      return 1
+    fi
+    python3 - "${resolved_ips[@]}" <<'PY'
 import ipaddress
 import sys
 
 for value in sys.argv[1:]:
     address = ipaddress.ip_address(value)
     if address.version != 4 or not address.is_global:
-        raise SystemExit("DirectMail DNS returned a non-public IPv4 address")
+        raise SystemExit("Gateway destination DNS returned a non-public IPv4 address")
 PY
+    gateway_ips+=("${resolved_ips[@]}")
+  done
 }
 
 prepare_bridge_filtering() {
@@ -95,7 +100,7 @@ remove_jump() {
 }
 
 swap_firewall_rules() {
-  local active_chain staging_chain directmail_ip obsolete_chain
+  local active_chain staging_chain gateway_ip obsolete_chain
   active_chain="$(first_active_chain)"
   if [[ "$active_chain" == "$chain_a" ]]; then
     staging_chain="$chain_b"
@@ -115,8 +120,8 @@ swap_firewall_rules() {
   iptables -A "$staging_chain" -s "$worker_source" -j REJECT
 
   iptables -A "$staging_chain" -s "$gateway_source" -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-  for directmail_ip in "${directmail_ips[@]}"; do
-    iptables -A "$staging_chain" -s "$gateway_source" -d "$directmail_ip" -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT
+  for gateway_ip in "${gateway_ips[@]}"; do
+    iptables -A "$staging_chain" -s "$gateway_source" -d "$gateway_ip" -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT
   done
   iptables -A "$staging_chain" -s "$gateway_source" -m conntrack --ctstate NEW -j REJECT
   iptables -A "$staging_chain" -s "$gateway_source" -j REJECT
@@ -146,14 +151,14 @@ main() {
   require_root
   require_commands
   acquire_update_lock
-  resolve_directmail_ips
+  resolve_gateway_ips
   prepare_bridge_filtering
   swap_firewall_rules
   if [[ "$mode" == "--apply" ]]; then
     persist_rules
   fi
 
-  echo "Worker isolation and DirectMail-only gateway egress rules installed."
+  echo "Worker isolation and DirectMail/Watcha HTTPS gateway egress rules installed."
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then

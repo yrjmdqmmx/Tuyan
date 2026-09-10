@@ -33,6 +33,7 @@
     </view>
 
     <view class="auth-form" wx:else>
+      <button wx:if="{{!hideWatcha && authMode === 'sign-in'}}" class="watcha-auth-button" bindtap="openWatcha" disabled="{{authSubmitting}}"><image src="/assets/watcha-rounded.svg" mode="aspectFit" />使用观猹登录</button>
       <view class="field" wx:if="{{authMode === 'sign-up'}}">
         <view class="field-label">昵称 <text class="field-optional">选填</text></view>
         <input class="input auth-input" type="nickname" maxlength="24" value="{{authName}}" placeholder="怎么称呼你" aria-label="昵称，可选" bindinput="onAuthNameInput" />

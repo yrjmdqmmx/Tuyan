@@ -3,11 +3,13 @@ import { AlertTriangle, Loader2, MailCheck, ShieldCheck } from 'lucide-react';
 import { authClient, LOCAL_CONSUMPTION_TEST } from '../config';
 import { formatErrorMessage } from '../utils';
 import { useEmailVerificationStatus } from '../hooks/useEmailVerificationStatus';
+import WatchaIdentityPanel from './WatchaIdentityPanel';
 
 const VERIFIED_URL = 'https://www.paperbanana.asia/account/email-verified.html';
 const RESET_URL = 'https://www.paperbanana.asia/account/reset-password.html';
 
-export default function AuthPanel({ onAuthenticated, onCancel, client = authClient }) {
+export default function AuthPanel({ onAuthenticated, onCancel, client = authClient, watcha }) {
+  const [existingAccount, setExistingAccount] = useState(false);
   const [mode, setMode] = useState('sign-in');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -102,9 +104,13 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
   }
 
   const forgot = mode === 'forgot';
+  const pendingWatcha = Boolean(watcha?.status?.pending && !existingAccount);
   return (
     <section className="auth-panel">
       <div className="section-head"><ShieldCheck size={22} /><div><h2>{forgot ? '忘记密码' : isSignUp ? '注册账号' : '登录账号'}</h2><p>{forgot ? '输入邮箱后，我们会发送密码重置链接。' : LOCAL_CONSUMPTION_TEST ? '使用现有图研账号登录；注册、邮箱验证和找回密码由正式账号服务处理。' : '登录后可同步任务记录与账号数据。'}</p></div></div>
+      {!existingAccount && !forgot && !isSignUp ? <WatchaIdentityPanel controller={watcha} onSignIn={() => { setExistingAccount(true); setMode('sign-in'); setError(''); }} /> : null}
+      {existingAccount && watcha?.status?.pending ? <p role="status">请登录已有图研账号，然后在账户页确认绑定观猹。</p> : null}
+      {!pendingWatcha || forgot || isSignUp ? <>
       <form className="auth-form" onSubmit={submitAuth}>
         {isSignUp ? <label className="field"><span>昵称</span><input className="auth-name-input" value={name} onChange={(event) => setName(event.target.value)} placeholder="可选" autoComplete="name" maxLength={24} /></label> : null}
         <label className="field"><span>邮箱</span><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" required /></label>
@@ -114,6 +120,8 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
       </form>
       {!isSignUp && !forgot ? <button className="text-button" type="button" onClick={() => { setMode('forgot'); setError(''); }}>忘记密码</button> : null}
       <button className="text-button" type="button" onClick={() => { setMode(isSignUp || forgot ? 'sign-in' : 'sign-up'); setError(''); }}>{isSignUp || forgot ? '返回登录' : '没有账号，去注册'}</button>
+      </> : null}
+      {existingAccount && watcha?.status?.pending ? <button className="text-button" type="button" onClick={() => { setExistingAccount(false); setMode('sign-in'); }}>返回观猹注册</button> : null}
       {onCancel ? <button className="text-button muted" type="button" onClick={onCancel}>暂不登录</button> : null}
     </section>
   );

@@ -1,6 +1,7 @@
 import { activeReferenceUploadPolicy, referenceUploadSelectionError, referenceModelDimensionsError } from './lib/referenceUploadPolicy';
 import { uploadReferenceFiles } from './lib/referenceUpload';
 import { useTokenDance } from './hooks/useTokenDance';
+import { useWatcha } from './hooks/useWatcha';
 import { TokenDanceRecovery, TokenDanceStatus } from './components/TokenDancePanel';
 import AccountPage from './components/AccountPage';
 import TokenDancePricing from './components/admin/TokenDancePricing';
@@ -45,6 +46,7 @@ import {
 import {
   API_BASE_DEFAULT,
   AUTH_ENABLED,
+  AUTH_BASE_DEFAULT,
   AUTH_REQUIRED,
   AUTH_UI_ENABLED,
   BENCH_ENABLED,
@@ -260,6 +262,16 @@ export default function App() {
     }
   }, [apiBase]);
   const tokenDance = useTokenDance(apiBaseNormalized, currentUser?.id, !authSession.isPending);
+  const watcha = useWatcha(AUTH_BASE_DEFAULT, currentUser?.id, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {
+    await authSession.refresh();
+    setShowAuthPanel(false);
+  });
+  async function handleEmailAuthenticated() {
+    await authSession.refresh();
+    setShowAuthPanel(false);
+    if (watcha.status.pending) openAccount();
+    else if (activeTab !== 'account') selectTab('records');
+  }
   const selectedInfographicCategory = INFOGRAPHIC_CATEGORIES.find(([id]) => id === infographicCategory) || INFOGRAPHIC_CATEGORIES[0];
   const isAdvancedMode = configurationMode === 'advanced';
   const isPlotCategory = infographicCategory === 'data_stat';
@@ -1586,6 +1598,7 @@ export default function App() {
           <AccountSettingsDialog
             apiBase={apiBaseNormalized}
             productionPreview={LOCAL_CONSUMPTION_TEST}
+            watcha={watcha}
             email={currentUser.email || ''}
             onClose={() => setShowAccountDialog(false)}
             onDeleted={handleAccountDeleted}
@@ -1649,17 +1662,14 @@ export default function App() {
           <p>正在检查登录状态</p>
         </section>
       ) : AUTH_REQUIRED && !currentUser ? (
-        <AuthPanel onAuthenticated={authSession.refresh} />
+        <AuthPanel watcha={watcha} onAuthenticated={handleEmailAuthenticated} />
       ) : (
         <>
       {AUTH_UI_ENABLED && showAuthPanel && !currentUser ? (
         AUTH_ENABLED ? (
           <AuthPanel
-            onAuthenticated={async () => {
-              await authSession.refresh();
-              setShowAuthPanel(false);
-              if (activeTab !== 'account') selectTab('records');
-            }}
+            watcha={watcha}
+            onAuthenticated={handleEmailAuthenticated}
             onCancel={() => setShowAuthPanel(false)}
           />
         ) : (
@@ -1670,7 +1680,7 @@ export default function App() {
       {['generate', 'refine'].includes(activeTab) && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') && <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} />}
 
       {activeTab === 'account' && (
-        <AccountPage user={currentUser} controller={tokenDance} onReturn={returnFromAccount} returnLabel={accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台'} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
+        <AccountPage user={currentUser} controller={tokenDance} watcha={watcha} onReturn={returnFromAccount} returnLabel={accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台'} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
       )}
       <div style={{ display: activeTab === 'account' ? 'none' : 'contents' }} aria-hidden={activeTab === 'account' ? true : undefined}>
       {workspaceTab === 'generate' ? (

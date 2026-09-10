@@ -127,7 +127,7 @@ test('initial sample is clean, then edited text requires confirmation and cancel
 test('prominent settings summary opens full settings and negative prompt is counted and submitted with simple-mode ratio', async () => {
   const { requests, user } = await renderReady()
   const summary = screen.getByRole('region', { name: '当前生成设置' })
-  assert.match(summary.textContent, /主模型 Alpha/u)
+  await waitFor(() => assert.match(summary.textContent, /主模型 Alpha/u))
   assert.match(summary.textContent, /图像模型 Gamma/u)
   assert.match(summary.textContent, /识图模型 Beta/u)
   assert.match(summary.textContent, /16:9/u)
