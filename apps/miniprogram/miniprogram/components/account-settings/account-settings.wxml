@@ -24,7 +24,7 @@
 
       <view class="security-message success" wx:if="{{securityStatus}}" aria-label="操作成功">{{securityStatus}}</view>
       <view class="security-message error" wx:if="{{securityError}}" aria-label="操作失败">{{securityError}}</view>
-      <view class="privacy-card"><view class="privacy-title">隐私说明</view><view>图研Tuyan 仅为登录、任务所有权与结果资产保存处理必要账号信息。API Key 只存在当前页面内存，不进入 Storage、日志或任务记录。</view></view>
+      <view class="privacy-card"><view class="privacy-title">隐私说明</view><view>图研Tuyan 仅为登录、任务所有权与结果资产保存处理必要账号信息。手动填写的 API Key 只保留在页面内存，不进入 Storage、日志或任务记录。观猹 TokenDance 授权 Key 加密保存在服务端，可在账户页解除连接。</view></view>
       <button class="logout-button" bindtap="logout">退出当前账号</button>
       <view class="danger-zone">
         <view class="danger-title">永久删除账号</view>

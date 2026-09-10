@@ -9,6 +9,16 @@ permissions:
   contents: read
 
 jobs:
+  report-tokendance-drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Review new, retired and changed TokenDance models
+        run: node scripts/check-tokendance-catalog.mjs
   report-openrouter-drift:
     runs-on: ubuntu-latest
     steps:

@@ -1,4 +1,10 @@
-import { isAdminEntry, selectWorkspaceEntry } from './lib/adminEntry';
+import { activeReferenceUploadPolicy, referenceUploadSelectionError, referenceModelDimensionsError } from './lib/referenceUploadPolicy';
+import { uploadReferenceFiles } from './lib/referenceUpload';
+import { useTokenDance } from './hooks/useTokenDance';
+import { TokenDanceRecovery, TokenDanceStatus } from './components/TokenDancePanel';
+import AccountPage from './components/AccountPage';
+import TokenDancePricing from './components/admin/TokenDancePricing';
+import { workspaceEntry, selectWorkspaceEntry } from './lib/adminEntry';
 import { presentRegistryModel, sortModelsNewestFirst } from './lib/modelPresentation'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
@@ -44,6 +50,7 @@ import {
   BENCH_ENABLED,
   CLIENT_VERSION,
   CUSTOM_API_BASE_ENABLED,
+  LOCAL_CONSUMPTION_TEST,
   authClient,
   logoUrl,
 } from './config';
@@ -68,7 +75,7 @@ import GuidePanel from './components/GuidePanel';
 import InputOptimizationDialog from './components/InputOptimizationDialog';
 import InputOptimizationFieldActions from './components/InputOptimizationFieldActions';
 import useRefineUpload from './hooks/useRefineUpload';
-import { refineUploadLimits, validateRefineDimensions, validateRefineFile } from './lib/refineUpload';
+import { refineUploadLimits, validateRefineDimensions, validateRefineFile, readImageDimensions } from './lib/refineUpload';
 import JobStatus from './components/JobStatus';
 import ModelRoutingSettings from './components/ModelRoutingSettings';
 import ReferenceUploadPanel from './components/ReferenceUploadPanel';
@@ -87,6 +94,7 @@ import {
   arkVerificationKey,
   buildModelSubmission,
   clearArkVerificationForRole,
+  DEFAULT_WEB_PROVIDER,
   firstInvalidRequiredRoute,
   nextArkVerificationBatch,
   providerDefaultRoutes,
@@ -101,6 +109,7 @@ const AdminWorkspace = lazy(() => import('./components/admin/AdminWorkspace'));
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
 const ReferenceLibraryPanel = lazy(() => import('./components/ReferenceLibraryPanel'));
 const RefinePanel = lazy(() => import('./components/RefinePanel'));
+const WORKSPACE_TABS = [['generate', '生成候选图'], ['records', '任务记录'], ['refine', '精修图片'], ['account', '账户'], ['guide', '使用教程']];
 
 const INPUT_OPTIMIZATION_TARGET_LABELS = Object.freeze({
   methodContent: '论文方法内容',
@@ -115,16 +124,36 @@ function emptyInputOptimizationUndos() {
 
 export default function App() {
   const authSession = useAuthSession();
-  const [activeTab, setActiveTab] = useState(() => isAdminEntry(window.location.search) ? 'admin' : 'generate');
+  const [activeTab, setActiveTab] = useState(() => workspaceEntry(window.location.search));
+  const accountReturn = useRef({ tab: 'generate', scroll: 0 });
+  const workspaceTab = activeTab === 'account' ? accountReturn.current.tab : activeTab;
+  function openAccount() {
+    selectTab('account');
+  }
+  function returnFromAccount() {
+    selectTab(accountReturn.current.tab);
+    requestAnimationFrame(() => window.scrollTo?.({ top: accountReturn.current.scroll }));
+  }
   function selectTab(tab) {
+    if (tab === activeTab) return;
+    if (tab === 'account') {
+      accountReturn.current = { tab: activeTab, scroll: window.scrollY };
+      window.scrollTo?.({ top: 0 });
+    }
+    setShowGenerationSettings(false);
     selectWorkspaceEntry(tab);
     setActiveTab(tab);
   }
   useEffect(() => {
-    const pop = () => setActiveTab((current) => isAdminEntry(window.location.search) ? 'admin' : current === 'admin' ? 'generate' : current);
+    const pop = () => {
+      const tab = workspaceEntry(window.location.search);
+      if (tab === 'account' && activeTab !== 'account') accountReturn.current = { tab: activeTab, scroll: window.scrollY };
+      setShowGenerationSettings(false);
+      setActiveTab(tab);
+    };
     window.addEventListener('popstate', pop);
     return () => window.removeEventListener('popstate', pop);
-  }, []);
+  }, [activeTab]);
   const [showContactDialog, setShowContactDialog] = useState(false);
   const contactCloseRef = useRef(null);
   const [contactQrFailed, setContactQrFailed] = useState(false);
@@ -134,8 +163,8 @@ export default function App() {
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
   const [inputOptimizationCredentialProvider, setInputOptimizationCredentialProvider] = useState('');
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
-  const [configurationMode, setConfigurationMode] = useState('simple');
-  const [provider, setProvider] = useState('bailian');
+  const [configurationMode, setConfigurationMode] = useState(LOCAL_CONSUMPTION_TEST ? 'advanced' : 'simple');
+  const [provider, setProvider] = useState(DEFAULT_WEB_PROVIDER);
   const [apiKeyRing, setApiKeys] = useState(() => Object.fromEntries(Object.keys(PROVIDERS).map((id) => [id, ''])));
   const [methodContent, setMethodContent] = useState(SAMPLE_METHOD);
   const [caption, setCaption] = useState('图 1：所提出的多智能体学术图示生成框架总览。');
@@ -158,13 +187,15 @@ export default function App() {
   const [infographicCategory, setInfographicCategory] = useState('method_framework');
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
-  const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes('bailian', null, PROVIDERS));
+  const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS));
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
   const [mainModelCapability, setMainModelCapability] = useState(null);
   const referenceImagesRef = useRef([]);
   const [referenceUploadError, setReferenceUploadError] = useState('');
   const [isUploadingReferences, setIsUploadingReferences] = useState(false);
+  const [isInspectingReferences, setIsInspectingReferences] = useState(false);
+  const referenceInspectionRef = useRef(false);
   const [pipelineMode, setPipelineMode] = useState('demo_planner_critic');
   const [retrievalSetting, setRetrievalSetting] = useState('none');
   const [manualReferenceIds, setManualReferenceIds] = useState([]);
@@ -176,7 +207,7 @@ export default function App() {
   const [isLoadingReferenceLibrary, setIsLoadingReferenceLibrary] = useState(false);
   const [aspectRatio, setAspectRatio] = useState('16:9');
   const [numCandidates, setNumCandidates] = useState(1);
-  const [maxCriticRounds, setMaxCriticRounds] = useState(1);
+  const [maxCriticRounds, setMaxCriticRounds] = useState(LOCAL_CONSUMPTION_TEST ? 0 : 1);
   const [health, setHealth] = useState(null);
   const [healthError, setHealthError] = useState('');
   const [rawModelRegistry, setModelRegistry] = useState(null);
@@ -228,6 +259,7 @@ export default function App() {
       return officialApiBase(globalThis.location?.origin);
     }
   }, [apiBase]);
+  const tokenDance = useTokenDance(apiBaseNormalized, currentUser?.id, !authSession.isPending);
   const selectedInfographicCategory = INFOGRAPHIC_CATEGORIES.find(([id]) => id === infographicCategory) || INFOGRAPHIC_CATEGORIES[0];
   const isAdvancedMode = configurationMode === 'advanced';
   const isPlotCategory = infographicCategory === 'data_stat';
@@ -245,7 +277,8 @@ export default function App() {
   const activeMainRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find((model) => model.id === activeMainModelName);
   const activeImageRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find((model) => model.id === activeImageGenModelName);
   const activeVisionRegistryEntry = modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find((model) => model.id === activeReferenceVisionModelName);
-  const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, activeModelRoutes.image);
+  const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
+  const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'], refineCapability.mode === 'direct-edit' ? 'refine' : 'generation');
   const { source: refineSource, setSource: setRefineSource, upload: refineUpload, selectFiles: selectRefineFiles, retry: retryRefineUpload } = useRefineUpload({
     apiBase: apiBaseNormalized, health, limits: activeRefineUploadLimits, authReady, ownerId: currentUser?.id || '',
   });
@@ -253,7 +286,6 @@ export default function App() {
   const refineOptimizationSupported = inputOptimizationSupported && modelRegistry?.inputOptimizationTargets?.includes('editInstruction');
   const selectedModelNotes = uniqueRegistryModels([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(Boolean));
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
-  const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
   const resolutionValues = activeImageRegistryEntry?.capabilities?.resolutions?.length
     ? activeImageRegistryEntry.capabilities.resolutions
     : supportedResolutions(activeModelRoutes.image.accessProvider, activeImageGenModelName);
@@ -284,6 +316,8 @@ export default function App() {
   const activeReferenceImageMode = isAdvancedMode
     ? referenceImageMode
     : (mainModelCanRead ? 'main_model' : 'vision_model');
+  const activeReferenceUpload = activeReferenceUploadPolicy(modelRegistry?.referenceUpload, activeModelRoutes[activeReferenceImageMode === 'main_model' ? 'main' : 'vision']);
+  const referenceSelectionIssue = referenceUploadSelectionError(referenceImages, activeReferenceUpload);
   const mainModelDirectUnsupported = referenceImages.length > 0
     && activeReferenceImageMode === 'main_model'
     && !mainModelCanRead;
@@ -309,7 +343,7 @@ export default function App() {
     referenceImageMode: activeReferenceImageMode,
   }, isAdvancedMode ? Number(maxCriticRounds) : 1);
   const refineRouteRoles = requiredRefineRouteRoles({ refineMode: refineCapability.mode });
-  const credentialRouteRoles = activeTab === 'refine' ? refineRouteRoles : createRouteRoles;
+  const credentialRouteRoles = workspaceTab === 'refine' ? refineRouteRoles : createRouteRoles;
   const credentialProviders = uniqueProvidersForRoles(activeModelRoutes, credentialRouteRoles);
   const settingsCredentialProviders = inputOptimizationCredentialProvider
     && !credentialProviders.includes(inputOptimizationCredentialProvider)
@@ -319,12 +353,15 @@ export default function App() {
   const activeArkProbeSignature = activeArkProbes.map(arkVerificationKey).join('|');
   arkKeySnapshotRef.current = apiKeys.ark;
   arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
-  const missingCredentialProviders = credentialProviders.filter((routeProvider) => !apiKeys[routeProvider]?.trim());
+  const missingCredentialProviders = credentialProviders.filter((routeProvider) => routeProvider === 'tokendance' ? !tokenDance.connection.connected : !apiKeys[routeProvider]?.trim());
   const refineConfigSummary = `${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName}`;
   const refineRunning = isSubmittingRefine || refineJob?.status === 'queued' || refineJob?.status === 'running';
+  const refineSourcePolicyIssue = activeRefineUploadLimits?.submissionPolicy
+    ? referenceModelDimensionsError(refineSource, activeRefineUploadLimits.submissionPolicy) : '';
   const refineSubmitHint = !authReady ? '请先登录，再提交精修。'
     : refineRunning ? '正在处理当前精修，请等待完成。'
     : ['validating', 'uploading', 'checking'].includes(refineUpload.status) ? '请等待原图上传与校验完成。'
+    : refineSourcePolicyIssue ? refineSourcePolicyIssue
     : !Object.keys(refineRequestSource(refineSource)).length ? '请先选择并上传一张原图。'
     : refineCapability.mode === 'none' ? '请在精修设置中选择支持精修的图像模型。'
     : !refineResolutionOptions.length || !refineAspectRatioOptions.some(option => option.value === refineAspectRatio) ? '请在精修设置中选择可用模型和参数。'
@@ -389,7 +426,10 @@ export default function App() {
   }, [apiBaseNormalized, health]);
 
   useEffect(() => {
-    if (modelRegistry && !modelRegistry.providers?.[provider]) setProvider('bailian');
+    if (!modelRegistry || modelRegistry.providers?.[provider]) return;
+    const available = [DEFAULT_WEB_PROVIDER, ...Object.keys(modelRegistry.providers || {})].find(id =>
+      modelRegistry.providers?.[id] && providerDefaultRoutes(id, modelRegistry, PROVIDERS));
+    if (available) setProvider(available);
   }, [modelRegistry, provider]);
 
   // provider / 图像生成模型变化时，若当前清晰度不再被支持则收敛到第一档。
@@ -567,7 +607,8 @@ export default function App() {
     };
   }, [apiBaseNormalized, authSession.isPending, currentUser?.id, currentUser?.email, health]);
 
-  function addReferenceFiles(files) {
+  async function addReferenceFiles(files) {
+    if (referenceInspectionRef.current || isSubmitting || isUploadingReferences) return;
     setReferenceUploadError('');
     if (!files.length) return;
     if (isAdvancedMode && retrievalSetting !== 'none') {
@@ -575,39 +616,53 @@ export default function App() {
       return;
     }
 
-    const availableSlots = REFERENCE_IMAGE_LIMITS.maxCount - referenceImages.length;
+    const availableSlots = activeReferenceUpload.platform.maxCount - referenceImages.length;
     if (availableSlots <= 0) {
-      setReferenceUploadError(`最多只能上传 ${REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。`);
+      setReferenceUploadError(`最多只能上传 ${activeReferenceUpload.platform.maxCount} 张参考图。`);
       return;
     }
 
-    const accepted = [];
-    for (const file of files.slice(0, availableSlots)) {
-      const mimeType = normalizeReferenceMimeType(file);
-      if (!REFERENCE_IMAGE_LIMITS.mimeTypes.includes(mimeType)) {
-        setReferenceUploadError('参考图仅支持 PNG、JPG、WebP 或 SVG。');
-        continue;
+    referenceInspectionRef.current = true;
+    setIsInspectingReferences(true);
+    try {
+      const accepted = [];
+      for (const file of files.slice(0, availableSlots)) {
+        const mimeType = normalizeReferenceMimeType(file);
+        if (!activeReferenceUpload.platform.mimeTypes.includes(mimeType)) {
+          setReferenceUploadError('参考图仅支持 PNG、JPG、WebP 或 SVG。');
+          continue;
+        }
+        if (!file.size || file.size > activeReferenceUpload.platform.maxBytes) {
+          setReferenceUploadError(`单张原图须大于 0 且不超过 ${activeReferenceUpload.platform.maxBytes / 1024 / 1024}MiB。`);
+          continue;
+        }
+        const previewUrl = URL.createObjectURL(file);
+        let dimensions;
+        try {
+          dimensions = await readImageDimensions(previewUrl);
+          validateRefineDimensions(dimensions, activeReferenceUpload.platform);
+        } catch (error) { URL.revokeObjectURL(previewUrl); setReferenceUploadError(error.message); continue; }
+        accepted.push({
+          ...dimensions,
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+          file,
+          filename: file.name || `reference-${referenceImages.length + accepted.length + 1}.${extensionForMimeType(mimeType)}`,
+          mimeType,
+          size: file.size,
+          previewUrl,
+        });
       }
-      if (file.size > REFERENCE_IMAGE_LIMITS.maxBytes) {
-        setReferenceUploadError('单张参考图不能超过 5MB。');
-        continue;
+
+      if (files.length > availableSlots) {
+        setReferenceUploadError(`最多只能上传 ${activeReferenceUpload.platform.maxCount} 张参考图，已忽略多余文件。`);
       }
-      accepted.push({
-        id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-        file,
-        filename: file.name || `reference-${referenceImages.length + accepted.length + 1}.${extensionForMimeType(mimeType)}`,
-        mimeType,
-        size: file.size,
-        previewUrl: URL.createObjectURL(file),
-      });
-    }
 
-    if (files.length > availableSlots) {
-      setReferenceUploadError(`最多只能上传 ${REFERENCE_IMAGE_LIMITS.maxCount} 张参考图，已忽略多余文件。`);
-    }
-
-    if (accepted.length) {
-      setReferenceImages((current) => [...current, ...accepted]);
+      if (accepted.length) {
+        setReferenceImages((current) => [...current, ...accepted]);
+      }
+    } finally {
+      referenceInspectionRef.current = false;
+      setIsInspectingReferences(false);
     }
   }
 
@@ -622,6 +677,7 @@ export default function App() {
   async function uploadReferencesForJob() {
     if (!referenceImages.length) return [];
 
+    if (referenceSelectionIssue) throw new Error(referenceSelectionIssue);
     setIsUploadingReferences(true);
     setReferenceUploadError('');
     let prepared;
@@ -646,16 +702,7 @@ export default function App() {
       );
       const uploadMap = new Map((prepared.uploads || []).map((upload) => [upload.clientId, upload]));
 
-      await Promise.all(uploadItems.map(async (item) => {
-        const upload = uploadMap.get(item.clientId);
-        if (!upload?.uploadUrl) throw new Error('参考图上传地址创建失败。');
-        const response = await fetch(upload.uploadUrl, {
-          method: 'PUT',
-          headers: { 'Content-Type': item.mimeType },
-          body: item.file,
-        });
-        if (!response.ok) throw new Error(`参考图上传失败：HTTP ${response.status}`);
-      }));
+      await uploadReferenceFiles(uploadItems, uploadMap, activeReferenceUpload.platform.uploadConcurrency);
 
       const lifecycleUploads = (prepared.uploads || []).map((upload) => ({
         objectKey: upload.objectKey,
@@ -878,7 +925,7 @@ export default function App() {
       return null;
     }
     const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
-    if (!apiKey) {
+    if (!apiKey && !(mainRoute.accessProvider === 'tokendance' && tokenDance.connection.connected)) {
       setInputOptimizationCredentialProvider(mainRoute.accessProvider);
       setInputOptimizationGuidance('请先在生成设置中填写当前主模型接入渠道的密钥。');
       setGenerationFocusSetting('api-key');
@@ -1013,8 +1060,10 @@ export default function App() {
 
   async function submitJob(event) {
     event.preventDefault();
+    if (referenceInspectionRef.current) { setReferenceUploadError('正在检查参考图尺寸，请完成后再生成。'); return; }
     setError('');
     setErrorContext('');
+    if (referenceSelectionIssue) { setReferenceUploadError(referenceSelectionIssue); return; }
     let modelSubmission;
     try {
       modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
@@ -1157,7 +1206,7 @@ export default function App() {
     setShowAuthPanel(false);
     setShowAccountDialog(false);
     setAdminIdentity('');
-    setActiveTab('generate');
+    selectTab('generate');
   }
 
   async function handleAccountDeleted() {
@@ -1165,7 +1214,7 @@ export default function App() {
     authSession.clear();
     setShowAccountDialog(false);
     setAdminIdentity('');
-    setActiveTab('generate');
+    selectTab('generate');
     try {
       await authSession.refresh();
     } catch {
@@ -1211,11 +1260,11 @@ export default function App() {
   }
 
   function useResultForRefine(url, image) {
-    if (refineRunning) { setActiveTab('refine'); return; }
+    if (refineRunning) { selectTab('refine'); return; }
     setRefineSource(normalizeRefineSource(url, image));
     setRefineInstruction('');
     setRefineError('');
-    setActiveTab('refine');
+    selectTab('refine');
   }
 
   async function submitRefine(event) {
@@ -1302,6 +1351,22 @@ export default function App() {
     setInputOptimizationCredentialProvider('');
   }
 
+  async function showResumedTask(id) {
+    const resumed = await getJobRequest(apiBaseNormalized, health, id);
+    if (resumed.refine_mode) {
+      setRefineJobId('');
+      setRefineJob(resumed);
+      setRefineJobId(id);
+      selectTab('refine');
+    } else {
+      setCurrentJobId(id);
+      setJob(resumed);
+      setPollRetryNonce(value => value + 1);
+      selectTab('generate');
+    }
+    await loadUserJobs();
+  }
+
   const settingsDrawer = (
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
       <ModelRoutingSettings
@@ -1313,10 +1378,12 @@ export default function App() {
         onRouteChange={handleModelRouteChange}
         modelRegistry={modelRegistry}
         providerConfigs={PROVIDERS}
-        outputFormat={activeTab === 'refine' ? 'png' : outputFormat}
+        outputFormat={workspaceTab === 'refine' ? 'png' : outputFormat}
         executionRouteRoles={credentialRouteRoles}
         credentialProviders={settingsCredentialProviders}
         apiKeys={apiKeys}
+        tokenDance={tokenDance}
+        onOpenAccount={openAccount}
         onApiKeyChange={handleApiKeyChange}
         providerRegions={providerRegions}
         onMiniMaxRegionChange={(region) => {
@@ -1334,7 +1401,7 @@ export default function App() {
         onVerifyArk={verifySelectedArkModels}
       />
 
-      {activeTab === 'refine' ? (
+      {workspaceTab === 'refine' ? (
         <div className="refine-settings-note" role="note">
           {refineResolutionOptions.length
             ? `精修固定输出 PNG；清晰度（${refineImageSize}）与目标比例（${refineAspectRatio}）请在精修面板设置。`
@@ -1455,7 +1522,8 @@ export default function App() {
   );
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell${activeTab === 'account' ? ' account-view' : ''}`}>
+      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label="本地消费测试"><strong>已连接正式图研账号服务 · 观猹 TokenDance 消费预览</strong><p>使用你已有的图研账号登录，再连接观猹 TokenDance。生成、精修和优化输入会使用真实观猹 TokenDance 余额。</p><small>本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">正式图研</a>查看。初始为 1 张候选图、0 轮评审。</small></section>}
       <header className="paper-header">
         <div className="brand">
           <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
@@ -1488,7 +1556,6 @@ export default function App() {
               <div className="auth-user">
                 <ShieldCheck size={16} />
                 <span title={currentUser.email}>{currentUser.email}</span>
-                <button type="button" onClick={() => setShowAccountDialog(true)}>账号</button>
                 <button type="button" onClick={handleSignOut}>退出</button>
               </div>
             ) : (
@@ -1500,6 +1567,7 @@ export default function App() {
         </div>
       </header>
 
+      {activeTab !== 'account' && (tokenDance.notice || tokenDance.error) && <div className="service-alert" role="status">{tokenDance.error || tokenDance.notice}<button type="button" className="account-button" onClick={openAccount}>查看账户</button></div>}
       {healthError ? (
         <div className="service-alert" role="status"><AlertTriangle size={16} />后端连接异常：{formatErrorMessage(healthError)}</div>
       ) : null}
@@ -1517,6 +1585,7 @@ export default function App() {
         <Suspense fallback={null}>
           <AccountSettingsDialog
             apiBase={apiBaseNormalized}
+            productionPreview={LOCAL_CONSUMPTION_TEST}
             email={currentUser.email || ''}
             onClose={() => setShowAccountDialog(false)}
             onDeleted={handleAccountDeleted}
@@ -1565,13 +1634,12 @@ export default function App() {
         </div>
       ) : null}
 
-      <nav className="paper-tabs">
-        <button type="button" className={activeTab === 'generate' ? 'active' : ''} onClick={() => selectTab('generate')}>生成候选图</button>
-        <button type="button" className={activeTab === 'records' ? 'active' : ''} onClick={() => selectTab('records')}>任务记录</button>
-        <button type="button" className={activeTab === 'refine' ? 'active' : ''} onClick={() => selectTab('refine')}>精修图片</button>
-        <button type="button" className={activeTab === 'guide' ? 'active' : ''} onClick={() => selectTab('guide')}>使用教程</button>
+      <nav className="paper-tabs" aria-label="主导航">
+        {WORKSPACE_TABS.map(([tab, label]) => (
+          <button key={tab} type="button" className={activeTab === tab ? 'active' : ''} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => selectTab(tab)}>{label}</button>
+        ))}
         {isAdmin ? (
-          <button type="button" className={activeTab === 'admin' ? 'active' : ''} onClick={() => selectTab('admin')}>站长</button>
+          <button type="button" className={activeTab === 'admin' ? 'active' : ''} aria-current={activeTab === 'admin' ? 'page' : undefined} onClick={() => selectTab('admin')}>站长</button>
         ) : null}
       </nav>
 
@@ -1590,7 +1658,7 @@ export default function App() {
             onAuthenticated={async () => {
               await authSession.refresh();
               setShowAuthPanel(false);
-              setActiveTab('records');
+              if (activeTab !== 'account') selectTab('records');
             }}
             onCancel={() => setShowAuthPanel(false)}
           />
@@ -1599,7 +1667,13 @@ export default function App() {
         )
       ) : null}
 
-      {activeTab === 'generate' ? (
+      {['generate', 'refine'].includes(activeTab) && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') && <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} />}
+
+      {activeTab === 'account' && (
+        <AccountPage user={currentUser} controller={tokenDance} onReturn={returnFromAccount} returnLabel={accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台'} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
+      )}
+      <div style={{ display: activeTab === 'account' ? 'none' : 'contents' }} aria-hidden={activeTab === 'account' ? true : undefined}>
+      {workspaceTab === 'generate' ? (
         <section className="workspace">
         <FeaturedTemplateStudio templates={featuredTemplates} isDirty={inputIsDirty} onApply={applyFeaturedTemplate} />
         <form className="generation-form" onSubmit={submitJob}>
@@ -1615,8 +1689,8 @@ export default function App() {
               <div><span>画面比例</span><strong>{aspectRatio === 'auto' ? '自动' : aspectRatio}</strong></div>
               <div><span>输出</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
             </div>
-            <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences}>
-              {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isUploadingReferences ? '上传参考图' : '生成候选图'}
+            <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences || isInspectingReferences}>
+              {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isInspectingReferences ? '检查参考图' : isUploadingReferences ? '上传参考图' : '生成候选图'}
             </button>
           </section>
 
@@ -1657,8 +1731,10 @@ export default function App() {
 
             <ReferenceUploadPanel
               images={referenceImages}
-              error={referenceUploadError}
-              disabled={isSubmitting}
+              error={referenceSelectionIssue || referenceUploadError}
+              policy={activeReferenceUpload}
+              disabled={isSubmitting || isInspectingReferences}
+              isInspecting={isInspectingReferences}
               isUploading={isUploadingReferences}
               retrievalBlocked={isAdvancedMode && retrievalSetting !== 'none'}
               onAddFiles={addReferenceFiles}
@@ -1730,15 +1806,17 @@ export default function App() {
                 <p>{currentJobId ? `任务编号 ${currentJobId}` : '提交任务后显示生成结果。'}</p>
               </div>
             </div>
+            <TokenDanceRecovery job={job} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
             <JobStatus job={job} apiBase={apiBaseNormalized} onUseForRefine={useResultForRefine} />
           </div>
         </section>
         </section>
-      ) : activeTab === 'refine' ? (
+      ) : workspaceTab === 'refine' ? (
         <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
+          <TokenDanceRecovery job={refineJob} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
           <RefinePanel
             source={refineSource}
-            upload={refineUpload}
+            upload={{ ...refineUpload, error: refineSourcePolicyIssue || refineUpload.error }}
             uploadLimits={activeRefineUploadLimits}
             uploadEnabled={modelRegistry?.refineUpload?.version >= 1}
             onUpload={selectRefineFiles}
@@ -1777,12 +1855,12 @@ export default function App() {
             onSubmit={submitRefine}
           />
         </Suspense>
-      ) : activeTab === 'admin' ? (
-        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /></Suspense>
+      ) : workspaceTab === 'admin' ? (
+        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /><TokenDancePricing apiBase={apiBaseNormalized} /></Suspense>
           : <section className="card"><h2>站长运营后台</h2><p role="status">{authSession.isPending ? '正在确认登录状态…' : '需要已登录的站长账号才能访问，后台接口会再次校验权限。'}</p>{!currentUser && <button onClick={() => setShowAuthPanel(true)}>登录账号</button>}</section>
-      ) : activeTab === 'guide' ? (
+      ) : workspaceTab === 'guide' ? (
         <GuidePanel
-          onStart={() => setActiveTab('generate')}
+          onStart={() => selectTab('generate')}
           onContact={() => setShowContactDialog(true)}
           registryVersion={modelRegistry?.registryVersion || '等待服务端目录'}
           providerLabels={Object.keys(modelRegistry?.providers || {}).map((id) => PROVIDERS[id]?.label || id)}
@@ -1803,8 +1881,10 @@ export default function App() {
           onLogin={() => setShowAuthPanel(true)}
           onRefresh={() => loadUserJobs()}
           onUseForRefine={useResultForRefine}
+          renderRecovery={item => <TokenDanceRecovery job={item} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />}
         />
       )}
+      </div>
         </>
       )}
     </main>

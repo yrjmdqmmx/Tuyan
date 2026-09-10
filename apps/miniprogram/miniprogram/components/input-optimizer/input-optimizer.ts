@@ -1,3 +1,4 @@
+import { hasTokenDanceConnection, openTokenDance } from '../../utils/tokendance'
 import { getCurrentUser, subscribeSession } from '../../utils/session'
 import { requestJson, formatError } from '../../utils/api'
 import { getApiKeys } from '../../utils/api-keys'
@@ -35,10 +36,11 @@ Component({
       const target = this.properties.target as OptimizationTarget
       let payload
       try {
-        payload = buildOptimizationRequest({ target, inputs: this.properties.inputs, mainRoute: this.properties.mainRoute as ModelRoute, providerRegions: this.properties.providerRegions == null ? undefined : this.properties.providerRegions, apiKeys: getApiKeys(), registry: getModelRegistryState().registry })
+        payload = buildOptimizationRequest({ target, inputs: this.properties.inputs, mainRoute: this.properties.mainRoute as ModelRoute, providerRegions: this.properties.providerRegions == null ? undefined : this.properties.providerRegions, apiKeys: getApiKeys(), tokenDanceConnected: hasTokenDanceConnection(), registry: getModelRegistryState().registry })
       } catch (error) {
         this.setData({ error: formatError(error) })
-        if (/主模型|密钥/.test(formatError(error))) this.triggerEvent('settings')
+        if (/连接观猹 TokenDance/.test(formatError(error))) openTokenDance()
+        else if (/主模型|密钥/.test(formatError(error))) this.triggerEvent('settings')
         return
       }
       const sequence = Number((this as any).sequence || 0) + 1

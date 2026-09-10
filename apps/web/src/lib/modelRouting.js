@@ -1,5 +1,7 @@
 import { normalizeProviderRegions } from './providerRegions.js'
 export const MODEL_ROUTE_ROLES = Object.freeze(['main', 'image', 'vision'])
+export const DEFAULT_WEB_PROVIDER = 'tokendance'
+const DEFAULT_TOKENDANCE_IMAGE_MODEL = 'seedream-5.0-pro'
 
 export function providerDefaultRoutes(provider, registry, fallbackProviders) {
   const serverDefaults = registry?.providers?.[provider]?.defaults
@@ -10,9 +12,15 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
     vision: fallback.visionModel,
   } : null)
   if (!defaults?.main || !defaults?.image || !defaults?.vision) return null
+  // Web's initial route differs from the shared catalog recommendation. Only
+  // resolve defaults here; explicit user-selected routes never pass through it.
+  const models = registry?.providers?.[provider]?.models ?? fallback?.registryModels
+  const imageModel = provider === DEFAULT_WEB_PROVIDER && models?.some(model =>
+    model.id === DEFAULT_TOKENDANCE_IMAGE_MODEL && model.selectable !== false && model.roles?.includes('image'))
+    ? DEFAULT_TOKENDANCE_IMAGE_MODEL : defaults.image
   return Object.fromEntries(MODEL_ROUTE_ROLES.map((role) => [role, {
     accessProvider: provider,
-    modelId: defaults[role],
+    modelId: role === 'image' ? imageModel : defaults[role],
   }]))
 }
 
@@ -46,7 +54,7 @@ export function requiredCreateRouteRoles(body, maxCriticRounds) {
   const nativeVector = imageRoute?.accessProvider === 'recraft' && /^recraftv(?:[23]|4(?:_1)?)(?:_utility)?(?:_pro)?_vector$/.test(imageRoute.modelId)
   if ((outputFormat === 'svg' && !nativeVector) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
   if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot') roles.push('image')
-  if (taskName === 'plot' && ['2K', '4K'].includes(body.imageSize) && body.imageRefineMode === 'direct-edit') roles.push('image')
+  if (taskName === 'plot' && ['1.5K', '2K', '3K', '4K'].includes(body.imageSize) && body.imageRefineMode === 'direct-edit') roles.push('image')
   if ((body.referenceImages || []).length) roles.push((body.referenceImageModeUsed || body.referenceImageMode) === 'main_model' ? 'main' : 'vision')
   if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
   return orderedUniqueRoles(roles)
@@ -66,7 +74,7 @@ export function uniqueProvidersForRoles(modelRoutes, roles) {
 }
 
 export function scopedApiKeysForRoles(modelRoutes, roles, apiKeys) {
-  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).map((provider) => [provider, apiKeys?.[provider] || '']))
+  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).filter(provider => provider !== 'tokendance').map((provider) => [provider, apiKeys?.[provider] || '']))
 }
 
 export function arkProbesForRoles(modelRoutes, roles) {

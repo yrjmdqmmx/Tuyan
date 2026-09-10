@@ -67,3 +67,26 @@ test('WeChat serializes absent optional Object bindings as null; optimization ke
   assert.equal(instance.data.error, '')
   assert.ok(instance.data.candidate)
 })
+
+
+test('all four TokenDance optimizer targets require connection, omit keys and retain preview/apply/undo', async () => {
+  const td = { ...registry, providers: { tokendance: { models: [{ id: 'qwen3.8-flash', roles: ['main'], selectable: true }] } } }
+  for (const target of registry.inputOptimizationTargets) {
+    const args = { ...input, target, inputs: { methodContent: 'original method', caption: 'original caption', negativePrompt: 'original exclusion', editInstruction: 'original edit' }, mainRoute: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' }, providerRegions: {}, apiKeys: { tokendance: 'must-not-leak' }, registry: td }
+    assert.throws(() => buildOptimizationRequest(args), /连接观猹/)
+    const payload = buildOptimizationRequest({ ...args, tokenDanceConnected: true })
+    assert.equal(Object.hasOwn(payload, 'apiKey'), false)
+    const { instance, events, patches } = loadComponent('components/input-optimizer/input-optimizer.js', {
+      '../../utils/api': { requestJson: async body => { assert.equal(Object.hasOwn(body, 'apiKey'), false); assert.equal(body.target, target); return { target, optimizedText: 'improved scientific wording' } }, formatError: e => e.message },
+      '../../utils/api-keys': { getApiKeys: () => args.apiKeys },
+      '../../utils/tokendance': { hasTokenDanceConnection: () => true },
+      '../../utils/model-registry-store': { getModelRegistryState: () => ({ registry: td }) },
+    })
+    Object.assign(instance.properties, args)
+    await instance.optimize(); assert.equal(instance.data.candidate, 'improved scientific wording'); assert.equal(events.some(e => e.name === 'apply'), false)
+    instance.apply(); assert.equal(events.find(e => e.name === 'apply').detail.target, target)
+    instance.properties.inputs = { ...args.inputs, [target]: 'improved scientific wording' }; instance.restore()
+    assert.equal(events.filter(e => e.name === 'apply').at(-1).detail.value, args.inputs[target])
+    assert.ok(!JSON.stringify(patches).includes('must-not-leak'))
+  }
+})

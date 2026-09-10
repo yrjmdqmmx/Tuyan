@@ -46,7 +46,7 @@ Component({
                 this.setData({ step: 'providers', roleLabel: roleLabel(role), providerCards: [], vendorCards: [], compatibleCount: 0, visibleCompatibleModels: [] });
                 return;
             }
-            const providerCards = model_registry_1.MODEL_PROVIDER_IDS.map((id) => {
+            const providerCards = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map((id) => {
                 const provider = registry.providers[id];
                 const partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { role, outputFormat: String(this.properties.outputFormat || '') });
                 return {
@@ -148,8 +148,8 @@ function presentModel(model, selectedProvider, selectedModel, providerId) {
         availabilityNotes: [model.availabilityNotes, ((_a = model.capabilities) === null || _a === void 0 ? void 0 : _a.requiresSourceImage) ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
         serviceTier: model.serviceTier || '',
         capabilityText: [model.roles.includes('main') ? '文本' : '', model.roles.includes('vision') ? '视觉理解' : '', model.roles.includes('image') && !((_b = model.capabilities) === null || _b === void 0 ? void 0 : _b.requiresSourceImage) ? '生图' : '', ((_c = model.capabilities) === null || _c === void 0 ? void 0 : _c.imageEditMode) === 'direct-edit' ? '编辑' : ''].filter(Boolean).join(' · '),
-        releaseText: model.releasedAt || (model.releaseOrder ? '按官方版本排序' : '发布日期待确认'),
-        lifecycleText: model.lifecycle === 'stable' ? '稳定版' : model.lifecycle === 'preview' ? '预览版' : model.lifecycle === 'legacy' ? '旧版维护' : '状态未知',
+        releaseText: [model.releasedAt || (model.releaseOrder ? '按官方版本排序 · 日期待确认' : '发布日期待确认'), model.releaseKind === 'snapshot' ? '日期快照' : ''].filter(Boolean).join(' · '),
+        lifecycleText: (0, model_presentation_1.modelLifecycleLabel)(model.lifecycle),
         verificationText: model.verificationState === 'inference-verified' ? '账号已验证' : model.verificationState === 'catalog' ? '官方目录' : model.verified ? '注册表验证' : '模型目录',
         selected: String(selectedProvider || '') === providerId && String(selectedModel || '') === model.id,
     };

@@ -3,7 +3,7 @@ import { AlertTriangle, Loader2, ShieldCheck, Trash2, X } from 'lucide-react'
 import { deleteAccountRequest, accountStatusRequest, accountLifecycleMessage } from '../lib/account.js'
 import { formatErrorMessage } from '../utils.js'
 
-export default function AccountSettingsDialog({ apiBase, email, onClose, onDeleted }) {
+export default function AccountSettingsDialog({ apiBase, email, onClose, onDeleted, productionPreview = false }) {
   const closeButtonRef = useRef(null)
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
@@ -27,6 +27,7 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
   }, [isDeleting, onClose])
 
   useEffect(() => {
+    if (productionPreview) return;
     let active = true
     async function refresh() {
       try {
@@ -37,7 +38,7 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
     void refresh()
     const timer = setInterval(refresh, 30000)
     return () => { active = false; clearInterval(timer) }
-  }, [apiBase])
+  }, [apiBase, productionPreview])
 
   async function submit(event) {
     event.preventDefault()
@@ -73,6 +74,7 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
           <a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a>
           <a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a>
         </div>
+        {productionPreview ? <p role="status">当前使用正式图研账号。请在<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">正式图研站点</a>管理账号与隐私；本地预览的任务和图片保存在本机。</p> : <>
         {lifecycle?.state !== 'active' ? <p role="status">{accountLifecycleMessage(lifecycle)}</p> : null}
         <form className="account-delete-panel" onSubmit={submit}>
           <div className="danger-heading"><Trash2 size={18} />永久删除账号</div>
@@ -91,6 +93,7 @@ export default function AccountSettingsDialog({ apiBase, email, onClose, onDelet
           </button>
           {error ? <div className="error-line"><AlertTriangle size={16} />{formatErrorMessage(error)}</div> : null}
         </form>
+        </>}
       </section>
     </div>
   )

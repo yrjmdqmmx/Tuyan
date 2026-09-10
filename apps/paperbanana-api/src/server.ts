@@ -1,3 +1,6 @@
+import { TOKENDANCE_ACTIONS, TokenDanceError } from '../../../packages/api/src/tokendance.js'
+import type { createTokenDanceService } from './tokendance-service.js'
+import type { createProviderWorkflow } from './provider-workflow.js'
 import { ADMIN_OPERATIONS_ACTIONS, AdminError } from './admin-policy.js'
 import { createHash, timingSafeEqual } from 'node:crypto'
 import http from 'node:http'
@@ -35,6 +38,10 @@ export type AppConfig = {
 }
 
 type AppDependencies = {
+  tokenDance?: ReturnType<typeof createTokenDanceService>
+  providerWorkflow?: ReturnType<typeof createProviderWorkflow>
+  resumeTokenDanceJob?: (task: any) => Promise<any>
+  requiresTokenDanceCredential?: (body: Record<string, any>) => Promise<boolean>
   handler: LegacyHandler
   readinessProbe: ReadinessProbe
   healthSnapshot: () => Readiness
@@ -133,7 +140,7 @@ function legacyHeaders(request: Request): Request['headers'] {
 
 export function createApp({
   handler, readinessProbe, healthSnapshot, config, logger, benchmarkService, adminOperations,
-  prepareScientificV2RegistryAuthority,
+  prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential,
 }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
@@ -207,6 +214,36 @@ export function createApp({
       && adminTransport
       && tokensMatch(adminTransport, config.adminTransportToken),
     )
+    const tokenDanceAction = (TOKENDANCE_ACTIONS as readonly string[]).includes(action) || action === 'adminTokenDancePricing'
+    const usesTokenDance = ['createJob', 'refineImage', 'optimizeInputs'].includes(action) && (body.provider === 'tokendance' || (body.mainRoute as any)?.accessProvider === 'tokendance' || Object.values((body.modelRoutes || {}) as any).some((route: any) => route?.accessProvider === 'tokendance'))
+    // Client-supplied TD keys and identities are never authoritative.
+    if (body.apiKeys && typeof body.apiKeys === 'object') { body.apiKeys = { ...(body.apiKeys as object) }; delete (body.apiKeys as any).tokendance }
+    if (usesTokenDance || tokenDanceAction) {
+      response.setHeader('Cache-Control', 'no-store')
+      try {
+        const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || ''
+        if (tokenDanceAction) {
+          if (!tokenDance) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。')
+          if (action === 'tokenDanceResume') {
+            if (!providerWorkflow || !resumeTokenDanceJob) throw new TokenDanceError(503, '任务恢复服务暂不可用。')
+            return response.json(await providerWorkflow.resume(String(body.jobId || ''), userId, resumeTokenDanceJob))
+          }
+          return response.json(await tokenDance.handle(body, userId, isAdminTransport && Boolean(config.adminToken)))
+        }
+        body.userId = userId
+        if (!requiresTokenDanceCredential || await requiresTokenDanceCredential(body)) {
+          if (!tokenDance) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。')
+          const credential = await tokenDance.credential(userId)
+          body.apiKeys = { ...(body.apiKeys as object || {}), tokendance: credential.key }
+          if (action === 'optimizeInputs') body.apiKey = credential.key
+        }
+      } catch (error: any) {
+        const status = error?.name === 'TokenDanceError' ? error.status : 503
+        return response.status(status).json({ code: status, error: error?.name === 'TokenDanceError' ? error.message : '观猹 TokenDance 服务暂不可用。', recoveryAction: error?.recoveryAction, retryAfterSeconds: error?.retryAfterSeconds || 0, uncertain: Boolean(error?.uncertain) })
+      }
+    }
+    if (action === 'getJob' && providerWorkflow) await providerWorkflow.reconcile(String(body.jobId || ''))
+    if (action === 'userJobs' && providerWorkflow) await providerWorkflow.reconcileUser(safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || '')
     const declaredScientificV2AdminOperation = request.get(scientificV2AdminOperationHeader) || ''
     const isScientificV2Freeze = action === 'adminBenchmarkControl'
       && body.evaluationMode === 'codex_scientific_v2'

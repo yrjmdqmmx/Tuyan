@@ -33,14 +33,8 @@ export function normalizeRefineSource(body = {}, config = {}) {
   const signedKey = objectKeyFromSignedOssUrl(rawUrl, config);
   if (signedKey) return normalizedObjectKey(signedKey);
 
-  if (config.backendMode === 'laf' && config.allowLegacyExternalUrl) {
-    return {
-      objectKey: '',
-      jobId: '',
-      payload: { sourceImageUrl: rawUrl },
-      legacyExternal: true,
-    };
-  }
+  // Core inspects image bytes. Legacy arbitrary URLs must not become server-side
+  // fetch destinations, including when restoring a Laf deployment.
   throw forbidden();
 }
 

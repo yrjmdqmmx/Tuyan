@@ -24,6 +24,7 @@ const targetHosts = new Set([
   'api.together.ai', 'api.fireworks.ai', 'queue.fal.run', 'api.replicate.com',
   'generativelanguage.googleapis.com',
   'openrouter.ai',
+  'tokendance.space',
   'ark.cn-beijing.volces.com',
 ])
 

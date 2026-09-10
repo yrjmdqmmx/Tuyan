@@ -23,6 +23,15 @@ contract `PAPERBANANA_PROVIDER_EGRESS_MODE=disabled|sg-required` and the fixed
 Change those fields only with `scripts/set-provider-egress-mode.sh`; the script
 does not source or print the file.
 
+TokenDance also uses `core.env`: `TOKENDANCE_ENCRYPTION_KEY` is an independent,
+stable 32-byte random key encoded as canonical base64. Missing means connections
+are disabled. Preserve it across deployments; replacing it requires a controlled
+ciphertext migration or reauthorization. `TOKENDANCE_MANAGEMENT_KEY` is optional
+and only enables administrator unit-share pricing. It must never be used as a
+user inference key. The registered App URL is exactly
+`https://www.paperbanana.asia/`; see
+[TokenDance operations](../../../docs/tokendance/implementation.md) before enabling.
+
 `bench.env` starts with `PAPERBANANA_BENCH_ENABLED=false` and a Mongo user that
 can write only `paperbanana_benchmark`. Never append credentials by hand. The
 manual `Configure Benchmark Credentials Disabled` workflow stages exactly

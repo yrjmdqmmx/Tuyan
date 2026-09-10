@@ -442,7 +442,7 @@ test('rendered model list reveals compatible batches and wraps keyboard focus wi
   await new Promise((resolve) => setTimeout(resolve, 40))
   showMore.focus()
   await user.keyboard('{Enter}')
-  const model24 = screen.getByRole('button', { name: /Model 24/ })
+  const model24 = container.querySelectorAll('.model-option-select')[24]
   await new Promise((resolve) => setTimeout(resolve, 80))
   assert.equal(document.activeElement, model24)
   await user.tab()

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "账户",
+  "usingComponents": {
+    "account-settings": "/components/account-settings/account-settings",
+    "auth-panel": "/components/auth-panel/auth-panel"
+  }
+}

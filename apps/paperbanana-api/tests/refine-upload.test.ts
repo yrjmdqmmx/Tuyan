@@ -83,7 +83,7 @@ test('finalized sources reject corrupted, mismatched, oversized and animated dat
       assert.equal((await finalize(bytes)).data.code, 400)
     }
     assert.equal((await finalize(runtime.image, 'image/jpeg')).data.code, 400)
-    const oversized = await runtime.post({ action: 'prepareReferenceUpload', files: [{ filename: 'large.png', mimeType: 'image/png', size: 6 * 1024 * 1024 }] })
+    const oversized = await runtime.post({ action: 'prepareReferenceUpload', files: [{ filename: 'large.png', mimeType: 'image/png', size: 20 * 1024 * 1024 + 1 }] })
     assert.notEqual(oversized.data.code, 0)
     const animation = Buffer.alloc(20)
     animation.writeUInt32BE(8, 0); animation.write('acTL', 4); animation.writeUInt32BE(2, 8)

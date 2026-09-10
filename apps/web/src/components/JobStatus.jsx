@@ -33,7 +33,7 @@ export default function JobStatus({ job, apiBase, onUseForRefine }) {
       {(job.result_images || []).length > 0 ? (
         <DownloadJobZipButton job={job} apiBase={apiBase} />
       ) : null}
-      {job.error ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(job.error)}</div> : null}
+      {job.error ? <div className="error-line"><AlertTriangle size={16} /> {job.recovery?.message || formatErrorMessage(job.error)}</div> : null}
       {(job.reference_images || []).some((image) => image.url) ? (
         <>
           <p className="echo-label">参考回显（仅作风格参考，不决定版式）</p>
@@ -50,6 +50,7 @@ export default function JobStatus({ job, apiBase, onUseForRefine }) {
         ))}
       </div>
       <StageTimeline job={job} apiBase={apiBase} />
+      {job.providerCalls?.length > 0 && <details><summary>模型调用记录</summary>{job.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {call.actualModel || '未返回实际型号'}<br />请求编号：{call.requestId || '未返回'}；供应商：{call.supplier || '未返回'}</p>)}</details>}
       {job.status === 'running' || job.status === 'queued' ? (
         <div className="running-line"><Loader2 className="spin" size={17} />生成中，页面会自动刷新。</div>
       ) : null}

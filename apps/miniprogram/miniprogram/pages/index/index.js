@@ -1,5 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tokendance_1 = require("../../utils/tokendance");
+const reference_upload_policy_1 = require("../../utils/reference-upload-policy");
+const model_presentation_1 = require("../../utils/model-presentation");
+const tokendance_2 = require("../../utils/tokendance");
 const provider_regions_1 = require("../../utils/provider-regions");
 const api_1 = require("../../utils/api");
 const constants_1 = require("../../utils/constants");
@@ -14,6 +18,8 @@ const model_routing_1 = require("../../utils/model-routing");
 const reference_files_1 = require("../../utils/reference-files");
 const reference_mode_1 = require("../../utils/reference-mode");
 const session_1 = require("../../utils/session");
+const DEFAULT_PROVIDER = constants_1.PROVIDERS[0];
+const PROVIDERS = (0, model_presentation_1.orderModelChannels)(constants_1.PROVIDERS.map(item => item.id)).map(id => constants_1.PROVIDERS.find(item => item.id === id));
 const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft';
 Component({
     data: {
@@ -21,21 +27,21 @@ Component({
         settingsPurpose: 'create',
         optimizationBusy: false, optimizationInputs: {},
         logoSrc: '/images/logo.png',
-        providers: constants_1.PROVIDERS,
-        providerIndex: 0,
-        providerLabel: constants_1.PROVIDERS[0].label,
-        providerMainModel: constants_1.PROVIDERS[0].mainModel,
-        providerImageModel: constants_1.PROVIDERS[0].imageModel,
-        providerGuideSteps: constants_1.PROVIDERS[0].guideSteps,
-        mainModelOptions: constants_1.PROVIDERS[0].mainModels,
-        mainModelIndex: (0, constants_1.getModelIndex)(constants_1.PROVIDERS[0].mainModels, constants_1.PROVIDERS[0].mainModel),
-        mainModelLabel: (0, constants_1.getModelLabel)(constants_1.PROVIDERS[0].mainModels, constants_1.PROVIDERS[0].mainModel),
-        imageModelOptions: constants_1.PROVIDERS[0].imageModels,
-        imageModelIndex: (0, constants_1.getModelIndex)(constants_1.PROVIDERS[0].imageModels, constants_1.PROVIDERS[0].imageModel),
-        imageModelLabel: (0, constants_1.getModelLabel)(constants_1.PROVIDERS[0].imageModels, constants_1.PROVIDERS[0].imageModel),
-        referenceVisionModelOptions: constants_1.PROVIDERS[0].visionModels,
-        referenceVisionModelIndex: (0, constants_1.getModelIndex)(constants_1.PROVIDERS[0].visionModels, constants_1.PROVIDERS[0].visionModel),
-        referenceVisionModelLabel: (0, constants_1.getModelLabel)(constants_1.PROVIDERS[0].visionModels, constants_1.PROVIDERS[0].visionModel),
+        providers: PROVIDERS,
+        providerIndex: PROVIDERS.findIndex(item => item.id === DEFAULT_PROVIDER.id),
+        providerLabel: DEFAULT_PROVIDER.label,
+        providerMainModel: DEFAULT_PROVIDER.mainModel,
+        providerImageModel: DEFAULT_PROVIDER.imageModel,
+        providerGuideSteps: DEFAULT_PROVIDER.guideSteps,
+        mainModelOptions: DEFAULT_PROVIDER.mainModels,
+        mainModelIndex: (0, constants_1.getModelIndex)(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+        mainModelLabel: (0, constants_1.getModelLabel)(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+        imageModelOptions: DEFAULT_PROVIDER.imageModels,
+        imageModelIndex: (0, constants_1.getModelIndex)(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+        imageModelLabel: (0, constants_1.getModelLabel)(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+        referenceVisionModelOptions: DEFAULT_PROVIDER.visionModels,
+        referenceVisionModelIndex: (0, constants_1.getModelIndex)(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
+        referenceVisionModelLabel: (0, constants_1.getModelLabel)(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
         configurationMode: 'simple',
         isAdvancedMode: false,
         pipelineOptions: constants_1.PIPELINE_OPTIONS,
@@ -55,7 +61,7 @@ Component({
         outputFormatIndex: 0,
         outputFormatLabel: constants_1.OUTPUT_FORMATS[0].label,
         // 输出清晰度：1K 仅基础渲染；2K/4K 出图后自动精修放大。选项按 provider/图像模型过滤。
-        resolutionOptions: constants_1.RESOLUTION_OPTIONS.filter((option) => (0, constants_1.supportedResolutions)(constants_1.PROVIDERS[0].id, constants_1.PROVIDERS[0].imageModel).indexOf(option.value) >= 0),
+        resolutionOptions: constants_1.RESOLUTION_OPTIONS.filter((option) => (0, constants_1.supportedResolutions)(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.imageModel).indexOf(option.value) >= 0),
         resolutionIndex: 0,
         imageSize: '1K',
         imageSizeLabel: constants_1.RESOLUTION_OPTIONS.find((option) => option.value === '1K').label,
@@ -68,22 +74,26 @@ Component({
         showReferenceLibrary: false,
         libraryTaskName: 'diagram',
         referenceImageModeOptions: constants_1.REFERENCE_IMAGE_MODES,
-        referenceImageMode: (0, reference_mode_1.defaultReferenceImageMode)((0, constants_1.mainModelCanReadImages)(constants_1.PROVIDERS[0].id, constants_1.PROVIDERS[0].mainModel)),
+        referenceImageMode: (0, reference_mode_1.defaultReferenceImageMode)((0, constants_1.mainModelCanReadImages)(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel)),
         referenceImages: [],
         referenceImageCount: 0,
         referenceCanAddImage: true,
+        referenceLimitHint: '',
+        referenceProcessingHint: '',
+        referenceSelectionIssue: '',
         referenceModeNote: '',
         referenceModeCanSubmit: true,
         referenceNeedsVisionModel: false,
         shouldShowReferenceModeSelector: false,
-        canSelectMainModelDirect: (0, constants_1.mainModelCanReadImages)(constants_1.PROVIDERS[0].id, constants_1.PROVIDERS[0].mainModel),
+        canSelectMainModelDirect: (0, constants_1.mainModelCanReadImages)(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel),
         referenceUploadError: '',
         isUploadingReferences: false,
-        mainModelName: constants_1.PROVIDERS[0].mainModel,
-        imageModelName: constants_1.PROVIDERS[0].imageModel,
-        referenceVisionModelName: constants_1.PROVIDERS[0].visionModel,
+        isInspectingReferences: false,
+        mainModelName: DEFAULT_PROVIDER.mainModel,
+        imageModelName: DEFAULT_PROVIDER.imageModel,
+        referenceVisionModelName: DEFAULT_PROVIDER.visionModel,
         apiKey: '',
-        apiKeyPlaceholder: constants_1.PROVIDERS[0].keyPlaceholder,
+        apiKeyPlaceholder: DEFAULT_PROVIDER.keyPlaceholder,
         categories: constants_1.INFOGRAPHIC_CATEGORIES,
         categoryIndex: 0,
         categoryLabel: constants_1.INFOGRAPHIC_CATEGORIES[0].label,
@@ -153,7 +163,7 @@ Component({
                     this.ownerId = (user === null || user === void 0 ? void 0 : user.id) || '';
                     this.ownerEpoch++;
                     this.stopPolling();
-                    this.setData({ currentJobId: '', job: null, resultImages: [], statusLabel: '', error: '', referenceImages: [], referenceUploadError: '', isSubmitting: false, isUploadingReferences: false, apiKeysForSheet: {}, showGenerationSettings: false });
+                    this.setData({ currentJobId: '', job: null, resultImages: [], statusLabel: '', error: '', referenceImages: [], referenceUploadError: '', isSubmitting: false, isUploadingReferences: false, isInspectingReferences: false, apiKeysForSheet: {}, showGenerationSettings: false });
                 }
                 this.setData({
                     isLoggedIn: Boolean(user),
@@ -195,7 +205,8 @@ Component({
     },
     pageLifetimes: {
         show() {
-            ;
+            (0, tokendance_1.rememberWorkPage)('/pages/index/index');
+            void (0, tokendance_2.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit());
             this.isPageVisible = true;
             // tabBar 页不销毁：回到本页时若任务未到终态则恢复轮询
             if (this.pollingTimer)
@@ -212,6 +223,7 @@ Component({
         },
     },
     methods: {
+        openTokenDance: tokendance_2.openTokenDance,
         restoreDraft() {
             try {
                 const draft = wx.getStorageSync(DRAFT_STORAGE_KEY);
@@ -348,8 +360,8 @@ Component({
             wx.showToast({ title: '模板已套用', icon: 'success' });
         },
         onProviderChange(event) {
-            const providerIndex = (0, constants_1.readPickerIndex)(event.detail.value, constants_1.PROVIDERS.length);
-            const provider = constants_1.PROVIDERS[providerIndex] || constants_1.PROVIDERS[0];
+            const providerIndex = (0, constants_1.readPickerIndex)(event.detail.value, PROVIDERS.length);
+            const provider = PROVIDERS[providerIndex] || DEFAULT_PROVIDER;
             this.setData({
                 providerIndex,
                 providerLabel: provider.label,
@@ -441,7 +453,7 @@ Component({
         },
         // provider / 图像生成模型 / 模式切换时重算清晰度可选项；当前档位不被支持时收敛到第一档
         refreshResolutionOptions() {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const activeImageModel = this.data.isAdvancedMode
                 ? this.data.imageModelName.trim() || provider.imageModel
                 : provider.imageModel;
@@ -500,7 +512,7 @@ Component({
             this.refreshCanSubmit();
         },
         onMainModelChange(event) {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const mainModelIndex = (0, constants_1.readPickerIndex)(event.detail.value, provider.mainModels.length);
             const option = provider.mainModels[mainModelIndex] || provider.mainModels[0];
             this.setData({
@@ -514,7 +526,7 @@ Component({
             this.refreshCanSubmit();
         },
         onImageModelChange(event) {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const imageModelIndex = (0, constants_1.readPickerIndex)(event.detail.value, provider.imageModels.length);
             const option = provider.imageModels[imageModelIndex] || provider.imageModels[0];
             this.setData({
@@ -526,7 +538,7 @@ Component({
             this.refreshCanSubmit();
         },
         onReferenceVisionModelChange(event) {
-            const provider = constants_1.PROVIDERS[this.data.providerIndex] || constants_1.PROVIDERS[0];
+            const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER;
             const referenceVisionModelIndex = (0, constants_1.readPickerIndex)(event.detail.value, provider.visionModels.length);
             const option = provider.visionModels[referenceVisionModelIndex] || provider.visionModels[0];
             this.setData({
@@ -599,7 +611,7 @@ Component({
             wx.showToast({ title: '已填入案例', icon: 'success' });
         },
         chooseReferenceFile() {
-            if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences)
+            if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences)
                 return;
             wx.showActionSheet({
                 itemList: ['图片 / 相册 / 拍照', 'SVG 文件'],
@@ -615,47 +627,83 @@ Component({
             });
         },
         chooseReferenceImages() {
-            const remaining = constants_1.REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length;
+            const epoch = this.ownerEpoch;
+            const current = () => epoch === this.ownerEpoch && !this.detached;
+            if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences)
+                return;
+            const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length;
             if (remaining <= 0) {
-                this.setData({ referenceUploadError: `最多只能上传 ${constants_1.REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` });
+                this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` });
                 return;
             }
             wx.chooseMedia({
                 count: remaining,
                 mediaType: ['image'],
                 sourceType: ['album', 'camera'],
-                sizeType: ['compressed'],
-                success: (res) => {
-                    const accepted = [];
-                    let error = '';
-                    res.tempFiles.forEach((file, index) => {
-                        const path = file.tempFilePath;
-                        const size = Number(file.size || 0);
-                        const mimeType = (0, reference_files_1.mimeTypeFromPath)(path);
-                        if (constants_1.REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
-                            error = '参考图仅支持 PNG、JPG、WebP 或 SVG。';
-                            return;
+                sizeType: ['original'],
+                success: async (res) => {
+                    if (!current())
+                        return;
+                    this.setData({ isInspectingReferences: true });
+                    this.refreshCanSubmit();
+                    try {
+                        const accepted = [];
+                        let error = '';
+                        for (const [index, file] of res.tempFiles.entries()) {
+                            const path = file.tempFilePath;
+                            const size = Number(file.size || 0);
+                            let mimeType = (0, reference_files_1.mimeTypeFromPath)(path);
+                            if (constants_1.REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
+                                error = '参考图仅支持 PNG、JPG、WebP 或 SVG。';
+                                continue;
+                            }
+                            if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
+                                error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`;
+                                continue;
+                            }
+                            let dimensions = {};
+                            try {
+                                dimensions = await new Promise((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }));
+                            }
+                            catch {
+                                error = '无法读取图片尺寸，请重新导出静态图片。';
+                                continue;
+                            }
+                            const type = String(dimensions.type || '').toLowerCase();
+                            if (type)
+                                mimeType = type === 'jpg' || type === 'jpeg' ? 'image/jpeg' : `image/${type}`;
+                            if (!['image/png', 'image/jpeg', 'image/webp'].includes(mimeType)) {
+                                error = '请使用 PNG、JPG 或 WebP 静态图片。';
+                                continue;
+                            }
+                            accepted.push((0, reference_files_1.buildReferenceImage)({
+                                width: dimensions.width, height: dimensions.height,
+                                id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+                                path,
+                                filename: (0, reference_files_1.filenameFromPath)(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
+                                mimeType,
+                                size,
+                            }));
                         }
-                        if (!size || size > constants_1.REFERENCE_IMAGE_LIMITS.maxBytes) {
-                            error = '单张参考图不能超过 5MB。';
+                        if (current())
+                            this.appendReferenceImages(accepted, error);
+                    }
+                    finally {
+                        if (!current())
                             return;
-                        }
-                        accepted.push((0, reference_files_1.buildReferenceImage)({
-                            id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
-                            path,
-                            filename: (0, reference_files_1.filenameFromPath)(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
-                            mimeType,
-                            size,
-                        }));
-                    });
-                    this.appendReferenceImages(accepted, error);
+                        this.setData({ isInspectingReferences: false });
+                        this.refreshCanSubmit();
+                    }
                 },
             });
         },
         chooseReferenceSvgFile() {
-            const remaining = constants_1.REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length;
+            const epoch = this.ownerEpoch;
+            if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences)
+                return;
+            const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length;
             if (remaining <= 0) {
-                this.setData({ referenceUploadError: `最多只能上传 ${constants_1.REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` });
+                this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` });
                 return;
             }
             wx.chooseMessageFile({
@@ -663,6 +711,8 @@ Component({
                 type: 'file',
                 extension: ['svg'],
                 success: (res) => {
+                    if (epoch !== this.ownerEpoch || this.detached)
+                        return;
                     const accepted = [];
                     let error = '';
                     res.tempFiles.forEach((file, index) => {
@@ -674,8 +724,8 @@ Component({
                             error = '请选择 .svg 文件。';
                             return;
                         }
-                        if (!size || size > constants_1.REFERENCE_IMAGE_LIMITS.maxBytes) {
-                            error = '单张参考图不能超过 5MB。';
+                        if (!size || size > this.activeReferencePolicy().platform.maxSvgBytes) {
+                            error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxSvgBytes / 1024 / 1024}MiB。`;
                             return;
                         }
                         accepted.push((0, reference_files_1.buildReferenceImage)({
@@ -692,11 +742,11 @@ Component({
         },
         appendReferenceImages(accepted, error) {
             if (accepted.length) {
-                const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, constants_1.REFERENCE_IMAGE_LIMITS.maxCount);
+                const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, this.activeReferencePolicy().platform.maxCount);
                 this.setData({
                     referenceImages,
                     referenceImageCount: referenceImages.length,
-                    referenceCanAddImage: referenceImages.length < constants_1.REFERENCE_IMAGE_LIMITS.maxCount,
+                    referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
                     referenceUploadError: error,
                 });
                 this.refreshReferenceModeState();
@@ -713,7 +763,7 @@ Component({
             this.setData({
                 referenceImages,
                 referenceImageCount: referenceImages.length,
-                referenceCanAddImage: referenceImages.length < constants_1.REFERENCE_IMAGE_LIMITS.maxCount,
+                referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
                 referenceUploadError: '',
             });
             this.refreshReferenceModeState();
@@ -742,6 +792,13 @@ Component({
             this.refreshReferenceModeState();
             this.refreshCanSubmit();
         },
+        activeReferencePolicy() {
+            var _a;
+            const settings = this.data.settings;
+            const mode = this.data.referenceNeedsVisionModel ? 'vision' : 'main';
+            const registry = (0, model_registry_store_1.getModelRegistryState)().registry;
+            return (0, reference_upload_policy_1.activeReferenceUploadPolicy)(registry === null || registry === void 0 ? void 0 : registry.referenceUpload, (_a = settings.modelRoutes) === null || _a === void 0 ? void 0 : _a[mode]);
+        },
         refreshReferenceModeState() {
             var _a;
             const settings = this.data.settings;
@@ -761,13 +818,22 @@ Component({
                 referenceModeNote: this.data.referenceImages.length ? modeState.referenceModeNote : '',
                 shouldShowReferenceModeSelector: this.data.referenceImages.length > 0 && modeState.shouldShowReferenceModeSelector,
                 canSelectMainModelDirect: modeState.canSelectMainModelDirect,
-                referenceNeedsVisionModel: this.data.referenceImages.length > 0 && modeState.needsVisionModel,
+                referenceNeedsVisionModel: modeState.needsVisionModel,
+            });
+            const policy = this.activeReferencePolicy();
+            this.setData({
+                referenceLimitHint: (0, reference_upload_policy_1.referencePolicyHint)(policy),
+                referenceProcessingHint: (0, reference_upload_policy_1.referenceProcessingHint)(policy),
+                referenceSelectionIssue: (0, reference_upload_policy_1.referenceUploadSelectionError)(this.data.referenceImages, policy),
             });
         },
         async uploadReferencesForJob() {
             var _a;
             if (!this.data.referenceImages.length)
                 return [];
+            const issue = (0, reference_upload_policy_1.referenceUploadSelectionError)(this.data.referenceImages, this.activeReferencePolicy());
+            if (issue)
+                throw new Error(issue);
             const epoch = this.ownerEpoch;
             const owner = ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '';
             const sameOwner = () => { var _a; return owner === (((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '') && epoch === this.ownerEpoch; };
@@ -800,7 +866,7 @@ Component({
                     if (!upload || !upload.uploadUrl)
                         throw new Error('参考图上传地址创建失败。');
                     check();
-                    await (0, api_1.uploadReferenceFile)(image.path, upload.uploadUrl, image.mimeType);
+                    await (0, api_1.uploadReferenceFile)(image.path, upload.uploadUrl, image.mimeType, upload.expiresAt);
                     check();
                 }
                 const uploaded = references.map((image) => {
@@ -856,7 +922,7 @@ Component({
             }
         },
         async submitJob() {
-            if (!this.data.canSubmit || this.data.isSubmitting)
+            if (!this.data.canSubmit || this.data.isSubmitting || this.data.isInspectingReferences)
                 return;
             if (!(0, session_1.getCurrentUser)()) {
                 this.openAuthPanel();
@@ -1093,7 +1159,7 @@ Component({
                 referenceImageMode: this.data.referenceImageMode,
             }, settings.maxCriticRounds);
             const apiKeys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
-            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
+            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return (provider === 'tokendance' ? (0, tokendance_2.hasTokenDanceConnection)() : Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim())); });
             const canSubmit = Boolean(hasRequiredKeys &&
                 this.data.methodContent.trim().length >= 20 &&
                 this.data.caption.trim().length >= 3 &&
@@ -1101,7 +1167,9 @@ Component({
                 (settings.outputFormat === 'svg' || Boolean(settings.imageSize)) &&
                 hasManualReferences &&
                 this.data.referenceModeCanSubmit &&
+                !this.data.referenceSelectionIssue &&
                 !this.data.isUploadingReferences &&
+                !this.data.isInspectingReferences &&
                 !this.data.isSubmitting && !this.data.optimizationBusy);
             this.setData({ canSubmit });
         },
@@ -1112,6 +1180,7 @@ Component({
             this.setData({ showAuthPanel: false });
         },
         onAuthed() {
+            void (0, tokendance_2.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit());
             this.setData({ showAuthPanel: false });
         },
         async signOut() {
@@ -1130,13 +1199,18 @@ Component({
     },
 });
 function defaultGenerationSettings(registry) {
-    const simpleProvider = 'bailian';
+    var _a, _b;
+    const simpleProvider = registry.providers.tokendance ? 'tokendance' : 'bailian';
+    const routes = (0, model_routing_1.providerDefaultRoutes)(simpleProvider, registry);
+    if (simpleProvider === 'tokendance' && ((_a = registry.providers.tokendance) === null || _a === void 0 ? void 0 : _a.models.some(model => model.id === 'seedream-5.0-pro' && model.selectable && model.roles.includes('image'))))
+        routes.image = { accessProvider: simpleProvider, modelId: 'seedream-5.0-pro' };
+    const resolutions = (_b = (0, model_registry_1.findRegistryModel)(registry, routes.image.accessProvider, routes.image.modelId)) === null || _b === void 0 ? void 0 : _b.capabilities.resolutions;
     return {
         configurationMode: 'simple',
         simpleProvider,
-        modelRoutes: (0, model_routing_1.providerDefaultRoutes)(simpleProvider, registry),
+        modelRoutes: routes,
         outputFormat: 'png',
-        imageSize: '1K',
+        imageSize: (resolutions === null || resolutions === void 0 ? void 0 : resolutions.includes('1K')) ? '1K' : (resolutions === null || resolutions === void 0 ? void 0 : resolutions[0]) || '',
         aspectRatio: 'auto',
         pipelineMode: 'planner_critic',
         retrievalSetting: 'none',

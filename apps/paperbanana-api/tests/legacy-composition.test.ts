@@ -6,9 +6,18 @@ import { fileURLToPath } from 'node:url'
 
 import { build } from 'esbuild'
 import sharp from 'sharp'
+import { crc32 } from 'node:zlib'
 
 const onePixelPngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADUlEQVQImWP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=='
 const onePixelWebpBase64 = 'UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAdQuFr1q/+BiOh/AAA='
+
+const referenceFixturePng = await sharp({create: {width:120,height:80,channels:3,background:'#9a9'}}).png().toBuffer()
+function paddedReferenceFixture(size: number) {
+  const chunk = Buffer.alloc(size - referenceFixturePng.length)
+  chunk.writeUInt32BE(chunk.length - 12); chunk.write('tEXt', 4); chunk.write('Comment\0', 8)
+  chunk.writeUInt32BE(crc32(chunk.subarray(4, -4)), chunk.length - 4)
+  return Buffer.concat([referenceFixturePng.subarray(0, -12), chunk, referenceFixturePng.subarray(-12)])
+}
 
 const paidVerifiedOpenRouterDefaultImageFormats = new Map<string, 'png' | 'jpeg' | 'webp'>([
   ['bytedance-seed/seedream-4.5', 'jpeg'],
@@ -270,7 +279,7 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
     assert.equal(result.providers.ark.defaults.main, 'doubao-seed-2-1-pro-260628')
     assert.equal(Object.hasOwn(result.providers, 'openrouter'), false)
-    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。' })
+    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。', tokendance: 'TokenDance 实时目录暂不可用，请稍后刷新。' })
     assert.doesNotMatch(JSON.stringify(result), /OpenRouter model metadata|request failed/)
   } finally {
     legacy.configureRuntimeFetch()
@@ -905,7 +914,7 @@ test('legacy analyze-redraw refine validates its derived vision role and preserv
   const previousInserts = state.inserts
   const previousStoredObjects = state.storedObjectBytes
   state.inserts = []
-  state.storedObjectBytes = { 'owned/refine.png': Buffer.from('source') }
+  state.storedObjectBytes = { 'owned/refine.png': referenceFixturePng }
   const invoke = (mainModelName: string) => legacy.default({
     request: { method: 'POST' },
     body: {
@@ -939,7 +948,7 @@ test('explicit direct refine rejects invalid unused main and vision routes witho
   const previousInserts = state.inserts
   const previousStoredObjects = state.storedObjectBytes
   state.inserts = []
-  state.storedObjectBytes = { 'owned/explicit-direct.png': Buffer.from('source') }
+  state.storedObjectBytes = { 'owned/explicit-direct.png': referenceFixturePng }
   const base = {
     action: 'refineImage', provider: 'openai', configurationMode: 'advanced',
     apiKeys: { gemini: 'image-route-secret' }, sourceImageObjectKey: 'owned/explicit-direct.png',
@@ -1010,7 +1019,7 @@ test('pipeline dispatches model work through role routes instead of the top-leve
   assert.match(visualCritic, /modelRouteAccess\(body, routeSecrets, 'main'\)/)
 
   const referenceAnalysis = section('async function analyzeReferenceImages(', 'async function buildVisionImageInputs(')
-  assert.match(referenceAnalysis, /modelRouteAccess\(body, routeSecrets, 'vision'\)/)
+  assert.match(referenceAnalysis, /modelRouteAccess\(body, routeSecrets, role\)/)
   assert.doesNotMatch(referenceAnalysis, /callVisionModel\(\s*body\.provider/)
 
   const refine = section('async function runRefineJob(', 'export async function resolveRetrievedReferences(')
@@ -1090,8 +1099,8 @@ test('refine dispatch retains image only for direct edit and vision plus image f
   const previousInserts = state.inserts
   state.ossWriteMode = 'success'
   state.storedObjectBytes = {
-    'owned/direct.png': Buffer.from('direct-source'),
-    'owned/analyze.png': Buffer.from('analyze-source'),
+    'owned/direct.png': referenceFixturePng,
+    'owned/analyze.png': referenceFixturePng,
   }
   state.inserts = []
   const calls: Array<{ url: string; authorization: string; googleKey: string; body: any }> = []
@@ -1175,7 +1184,7 @@ test('analyze-redraw refinement preserves an explicitly requested canonical 1K s
   const previousStoredObjects = state.storedObjectBytes
   const previousInserts = state.inserts
   state.ossWriteMode = 'success'
-  state.storedObjectBytes = { 'owned/analyze-1k.png': Buffer.from('analyze-source') }
+  state.storedObjectBytes = { 'owned/analyze-1k.png': referenceFixturePng }
   state.inserts = []
   const calls: Array<{ url: string; body: any }> = []
   legacy.configureRuntimeFetch(async (input, init) => {
@@ -1223,7 +1232,7 @@ test('refinement rejects noncanonical image sizes before persistence or provider
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   const previousStoredObjects = state.storedObjectBytes
   const previousInserts = state.inserts
-  state.storedObjectBytes = { 'owned/invalid-size.png': Buffer.from('source') }
+  state.storedObjectBytes = { 'owned/invalid-size.png': referenceFixturePng }
   state.inserts = []
   let providerCalls = 0
   legacy.configureRuntimeFetch(async () => {
@@ -1243,7 +1252,7 @@ test('refinement rejects noncanonical image sizes before persistence or provider
         headers: {}, response: { setHeader() {}, status() {} },
       })
       await legacy.drainJobAdmission()
-      assert.deepEqual(result, { code: 400, error: 'Invalid imageSize. Must be 512, 1K, 2K, 4K, or auto.' }, String(imageSize))
+      assert.deepEqual(result, { code: 400, error: 'Invalid imageSize. Must be 512, 1K, 1.5K, 2K, 3K, 4K, or auto.' }, String(imageSize))
     }
     assert.equal(state.inserts.length, 0)
     assert.equal(providerCalls, 0)
@@ -1261,8 +1270,8 @@ test('direct-edit refinement rejects registered but unsupported 4K before persis
   const previousStoredObjects = state.storedObjectBytes
   const previousInserts = state.inserts
   state.storedObjectBytes = {
-    'owned/openai-4k.png': Buffer.from('openai-source'),
-    'owned/bailian-4k.png': Buffer.from('bailian-source'),
+    'owned/openai-4k.png': referenceFixturePng,
+    'owned/bailian-4k.png': referenceFixturePng,
   }
   state.inserts = []
   let providerCalls = 0
@@ -1317,7 +1326,7 @@ test('analyze-redraw refinement rejects a canonical size absent from generation 
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   const previousStoredObjects = state.storedObjectBytes
   const previousInserts = state.inserts
-  state.storedObjectBytes = { 'owned/analyze-4k.png': Buffer.from('analyze-source') }
+  state.storedObjectBytes = { 'owned/analyze-4k.png': referenceFixturePng }
   state.inserts = []
   let providerCalls = 0
   legacy.configureRuntimeFetch(async () => {
@@ -1360,9 +1369,9 @@ test('refine persistence and public DTO preserve normalized configuration mode w
   const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
   state.ossWriteMode = 'success'
   state.storedObjectBytes = {
-    'owned/simple.png': Buffer.from('simple-source'),
-    'owned/advanced.png': Buffer.from('advanced-source'),
-    'owned/legacy.png': Buffer.from('legacy-source'),
+    'owned/simple.png': referenceFixturePng,
+    'owned/advanced.png': referenceFixturePng,
+    'owned/legacy.png': referenceFixturePng,
   }
   state.inserts = []
   process.env.PAPERBANANA_GATEWAY_TOKEN = 'refine-mode-gateway'
@@ -1417,7 +1426,7 @@ test('mixed create and direct refine route Ark stages without substituting model
   const previousStoredObjects = state.storedObjectBytes
   const previousInserts = state.inserts
   state.ossWriteMode = 'success'
-  state.storedObjectBytes = { 'owned/ark-source.png': Buffer.from('ark-source') }
+  state.storedObjectBytes = { 'owned/ark-source.png': referenceFixturePng }
   state.inserts = []
   const calls: Array<{ url: string; model: string; authorization: string }> = []
   legacy.configureRuntimeFetch(async (input, init) => {
@@ -1610,9 +1619,9 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   const openaiOrdered = openai.providers.openai.models.filter((model: any) => model.roles.includes('main'))
   assert.deepEqual(openaiOrdered.slice(0, 4).map((model: any) => [model.id, model.releasedAt]), [
     ['gpt-6-astra', '2026-09-03'],
+    ['gpt-5.6-luna', '2026-07-09'],
     ['gpt-5.6-sol', '2026-07-09'],
     ['gpt-5.6-terra', '2026-07-09'],
-    ['gpt-5.6-luna', '2026-07-09'],
   ])
   assert.equal(openaiOrdered[0].releaseOrder > openaiOrdered[1].releaseOrder, true)
 
@@ -1723,7 +1732,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-09.v16')
+    assert.equal(result.registryVersion, '2026-09-09.v18')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2916,12 +2925,12 @@ test('OpenRouter official releases sort first without promoting recommendation b
       response: { setHeader() {}, status() {} },
     })
     assert.deepEqual(registry.providers.openrouter.models.map((model: any) => model.id), [
-      'google/gemini-3.7-flash', 'openai/gpt-5.6-sol', 'vendor/zeta', 'vendor/alpha', 'sourceful/riverflow-v2.5-pro',
+      'google/gemini-3.7-flash', 'openai/gpt-5.6-sol', 'sourceful/riverflow-v2.5-pro', 'vendor/alpha', 'vendor/zeta',
     ])
     assert.equal(registry.providers.openrouter.models.length, 5)
     assert.equal(registry.providers.openrouter.models[0].recommended, true)
     assert.equal(registry.providers.openrouter.models[1].recommended, true)
-    assert.equal(registry.providers.openrouter.models[4].recommended, true)
+    assert.equal(registry.providers.openrouter.models.find((model: any) => model.id === 'sourceful/riverflow-v2.5-pro').recommended, true)
     assert.deepEqual(registry.providers.openrouter.defaults, {
       main: 'openai/gpt-5.6-sol',
       image: 'sourceful/riverflow-v2.5-pro',
@@ -2973,7 +2982,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-09.v16')
+    assert.equal(registry.registryVersion, '2026-09-09.v18')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -4158,7 +4167,7 @@ test('refine prefers owned object bytes over a preview URL when both source fiel
   let interactionPayload: any
   testState.ossWriteMode = 'race'
   testState.deletedOwnerKeys = []
-  testState.storedObjectBytes = { 'owned/source.png': 'owned-object-bytes' }
+  testState.storedObjectBytes = { 'owned/source.png': referenceFixturePng }
   const insertCount = testState.inserts.length
   legacy.configureRuntimeFetch(async (input, init) => {
     const url = String(input)
@@ -4202,7 +4211,7 @@ test('refine prefers owned object bytes over a preview URL when both source fiel
   assert.equal(previewUrlFetched, false)
   assert.equal(
     interactionPayload.input.find((item: any) => item.type === 'image')?.data,
-    Buffer.from('owned-object-bytes').toString('base64'),
+    (await sharp(referenceFixturePng).png({compressionLevel:6}).toBuffer()).toString('base64'),
   )
 })
 
@@ -4244,7 +4253,7 @@ test('owned refine outputs use the 20MiB provider-image cap instead of the 5MiB 
   }
 
   try {
-    await invoke('owned/large-source.png', Buffer.alloc(5 * 1024 * 1024 + 1, 1))
+    await invoke('owned/large-source.png', paddedReferenceFixture(5 * 1024 * 1024 + 1))
     assert.equal(interactionCalls, 1, 'a stored generated output above 5MiB should reach the image model')
     await invoke('owned/oversized-source.png', Buffer.alloc(20 * 1024 * 1024 + 1, 1))
     assert.equal(interactionCalls, 1, 'a stored generated output above 20MiB must fail before provider dispatch')
@@ -5311,7 +5320,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-09.v16')
+    assert.equal(registry.registryVersion, '2026-09-09.v18')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6325,7 +6334,8 @@ test('catalog repair: OpenRouter unions text and image roles, preserves dates an
     assert.deepEqual(dual.roles, ['main', 'vision', 'image'])
     assert.deepEqual(dual.roleProtocols, { main: 'openrouter-chat-completions', vision: 'openrouter-chat-completions', image: 'openrouter-images' })
     assert.equal(dual.expirationDate, dates[0])
-    assert.equal(dual.capabilities.maxReferenceImages, 1)
+    assert.equal(dual.capabilities.maxReferenceImages, 3)
+    assert.equal(dual.capabilities.referenceSubmission.maxCount, 3)
     assert.equal(dual.capabilities.providerMaxReferenceImages, 14)
     assert.deepEqual(models.get(ids[1]).roles, ['main', 'vision'])
     assert.equal(models.get(ids[1]).selectable, true)
@@ -6515,6 +6525,8 @@ test('channel extensions: runtime dispatches every new selectable image option u
     const url=String(input),headers=new Headers(init?.headers)
     const body=init?.body instanceof FormData?Object.fromEntries(init.body.entries()):init?.body?JSON.parse(String(init.body)):undefined
     calls.push({url,body,headers})
+    if(url==='https://tokendance.space/gateway/v1/models')return Response.json({data:JSON.parse(fs.readFileSync(path.resolve(packageRoot,'../../config/tokendance/catalog.json'),'utf8')).models})
+    if(url==='https://tokendance.space/gateway/ark/v3/images/generations'){assert.equal(headers.get('X-App-URL'),'https://www.paperbanana.asia/');return Response.json({model:body.model,data:[{b64_json:raster}]})}
     if(url.startsWith('https://asset.invalid/')){assert.equal(headers.has('Authorization'),false);assert.equal(headers.has('x-key'),false);return new Response(Buffer.from(raster,'base64'),{headers:{'Content-Type':'image/png'}})}
     if(url.includes('/chat/completions'))return Response.json({choices:[{message:{content:'A scientific diagram.'},finish_reason:'stop'}]})
     if(url.startsWith('https://api.bfl.ai/v1/'))return Response.json({id:'fixture',polling_url:'https://api.us1.bfl.ai/v1/get_result?id=fixture'})
@@ -6702,7 +6714,7 @@ test('refine admission preserves 512 and native-size requests through persistenc
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   const previous = { writes:state.ossWriteMode, stored:state.storedObjectBytes, inserts:state.inserts }
-  state.ossWriteMode='success'; state.storedObjectBytes={'owned/size-fixture.png':Buffer.from(onePixelPngBase64,'base64')};state.inserts=[]
+  state.ossWriteMode='success'; state.storedObjectBytes={'owned/size-fixture.png':await sharp({create:{width:512,height:512,channels:3,background:'#9a9'}}).png().toBuffer()};state.inserts=[]
   const calls:Array<{url:string;body:any}>=[]
   legacy.configureRuntimeFetch(async (input,init) => {
     const url=String(input), body=typeof init?.body==='string'?JSON.parse(init.body):undefined

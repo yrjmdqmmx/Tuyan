@@ -96,6 +96,7 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
       ['https://api.x.ai', '/v1/responses'],
       ['https://external.api.recraft.ai', '/v1/images/generations'],
       ['https://generativelanguage.googleapis.com', '/v1/models'],
+      ['https://tokendance.space', '/gateway/v1/models'],
       ['https://openrouter.ai', '/api/v1/models'],
       ['https://ark.cn-beijing.volces.com', '/api/v3/models'],
     ] as const

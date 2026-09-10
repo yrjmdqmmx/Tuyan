@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-09-10T07:07:41.690122+00:00",
+  "lastAutomatedReviewHead": "9577e5a9980cb5ad4f49c9b3c0b67723e5ef173d",
+  "automatedReviewRounds": 3,
+  "totalFindingsAddressed": 12,
+  "lastRoundFindings": 2,
+  "finalDeltaReview": "Inline two-pass pre-landing review: signed deadline propagation, expiration before transport, cancellation/cleanup, error classification and exact 14/15 boundary; no remaining finding. No fourth automated review requested.",
+  "localTests": {
+    "core": 492,
+    "web": 380,
+    "gatewayUnchanged": 140,
+    "mini": 29,
+    "targetedReferencePolicy": 10
+  },
+  "builds": [
+    "Core typecheck/build",
+    "Web build",
+    "Mini build",
+    "reference policy generator check"
+  ],
+  "sourceSha256": {
+    "SYNC.md": "db67386c5949f29a7bbe8f328ab12883661f47004c637e7d16d7b07010287d5c",
+    "apps/laf-functions/paperbanana-api.ts": "583baf8824a2077b56db8671b24c1629f1e47a6de44617e613f3901755e03033",
+    "apps/miniprogram/miniprogram/pages/index/index.js": "9cee2e70859ebdfae30a3619f998eea08f3d8d945d151a38a6c40487994184de",
+    "apps/miniprogram/miniprogram/pages/index/index.ts": "985c1e1f256f2832ee11e4624603d39f0a587c5c6f978293aa3a8a74b8aa6bc7",
+    "apps/miniprogram/miniprogram/utils/api.js": "aeab5854dd303270885043159cb1785cd2a49fd29ee94534847edac4433d2355",
+    "apps/miniprogram/miniprogram/utils/api.ts": "062a0da54416d6ab790f5708fc197eba0f04cb821f4ebbe5a7f3c1c936f63d20",
+    "apps/miniprogram/miniprogram/utils/reference-upload-policy.js": "62502e19036113b135019320fe19b3aa1379a9d7e9a466ec3a167b06e987cb5d",
+    "apps/miniprogram/miniprogram/utils/reference-upload-policy.ts": "366a218dfa54c462757aa99b4530d185a9f65e7a8737d32ec30a2b7786fb1566",
+    "apps/miniprogram/tests/api-parse.test.cjs": "44117735e75a1bc26ae262f00a0cc5f9e9f63e88556bfad889dac8ff706522f2",
+    "apps/paperbanana-api/tests/reference-upload-policy.test.ts": "1c39eeb40c4aae754ec0aedee21158cac5dff369770d856fc3ed165724cf45fb",
+    "apps/web/src/hooks/useRefineUpload.js": "a4a5123c4ae30c81f6ee2fa59b92a6c6bef4cb977c9e26cdb36fa719a800bd29",
+    "apps/web/src/lib/referenceUpload.js": "8cac0f749fe51adb034cb594573dcc5f985a151b685621e06f8ea8fde7dc8437",
+    "apps/web/src/lib/referenceUpload.test.js": "a9d256fc5c7760d1aa09b539a451ade2ba472b322858067fbb1cc1fd76bcdcd9",
+    "apps/web/src/lib/referenceUploadPolicy.js": "85e51441e06b2a6a7f4fd74d45af0346cfd8be549bd735b46b3d635d7f3677bc",
+    "apps/web/src/lib/refineUpload.js": "a2947a37b78ec0c66cf66263c8a59bce52c28cd72dc651278a36267689972efb",
+    "apps/web/tests/refine-upload.test.mjs": "be64ffae27887b113a71f12e0b998ffb7568bf27518f5378093dd786eb37df5a",
+    "docs/reference-upload/2026-09-10-audit.md": "e8c510a15df75b1c507cee915a35a4d3cfb30a12d01c5e72587e994e6c866104",
+    "docs/reference-upload/model-matrix.json": "7d16e1941b87c161c44ef99894b00199eb6ea07c5fa9dad230c14719de0bc11e",
+    "packages/api/src/reference-upload.ts": "e0487a11fbc7276862a3fc99c5ad8b939eec385efbf243d78513d37d919ddb7c"
+  },
+  "realPaidCalls": 0,
+  "productionDeployed": false,
+  "pending": [
+    "exact-head CI",
+    "production and browser QA"
+  ]
+}

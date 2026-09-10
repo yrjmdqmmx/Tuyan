@@ -1,4 +1,5 @@
 <scroll-view class="page refine-page" scroll-y type="list">
+  <view class="td-refine-account"><text>观猹 TokenDance</text><button class="ghost-button" size="mini" bindtap="openTokenDance">账户与钱包</button></view>
   <view class="refine-hero"><view class="refine-kicker">INDEPENDENT REFINE</view><view class="refine-title">精修你的研究图示</view><view class="refine-sub">上传原图，或从自己的生成结果继续修改。</view></view>
   <view class="registry-banner ready" wx:if="{{registryReady}}">模型目录 {{registryVersion}}</view><view class="registry-banner error" wx:else>{{registryError || '正在读取模型目录'}}<button class="registry-retry" bindtap="retryRegistry">重试</button></view>
   <view class="section">
@@ -14,6 +15,8 @@
   </view>
   <view class="section">
     <view class="refine-route"><view><view class="field-label">当前精修能力</view><view class="refine-mode">{{refineModeLabel}}</view></view><button class="ghost-button" size="mini" bindtap="openSettings">模型与密钥</button></view>
+    <view class="refine-processing-note">{{referenceProcessingHint}}</view>
+    <view wx:if="{{sourceSelectionIssue}}" class="error-box">{{sourceSelectionIssue}}</view>
     <view class="field"><view class="field-label">精修指令</view><textarea class="textarea refine-instruction" maxlength="2000" value="{{instruction}}" placeholder="例如：放大标签、减少装饰、保持结构不变并让流程箭头更清晰。" bindinput="onInstructionInput" /><input-optimizer target="editInstruction" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || uploadBusy || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" /></view>
     <view class="refine-grid"><view><view class="field-label">目标比例</view><picker range="{{ratioOptions}}" range-key="label" value="{{ratioIndex}}" bindchange="onRatioChange"><view class="picker-value">{{ratioOptions[ratioIndex].label || '不可用'}}</view></picker></view><view><view class="field-label">清晰度</view><picker range="{{resolutionOptions}}" range-key="label" value="{{resolutionIndex}}" bindchange="onResolutionChange"><view class="picker-value">{{resolutionOptions[resolutionIndex].label || '不可用'}}</view></picker></view></view>
     <button class="primary-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitRefine">提交精修</button><view class="submit-tip" wx:if="{{!canSubmit}}">请登录，选好源图与精修模型，填写指令及所需渠道密钥。</view><view class="error-box" wx:if="{{error}}">{{error}}</view>
@@ -24,6 +27,7 @@
     <view class="empty-state" wx:else>{{job.status_text || '任务已受理，正在等待结果。'}}</view>
     <stage-timeline stages="{{job.stages}}" references="{{job.retrieved_references}}" />
   </view>
+<view wx:if="{{job.recovery}}" class="error-box">{{job.recovery.message}}<navigator url="/pages/job-detail/job-detail?jobId={{job.id}}">查看原任务并恢复</navigator></view>
   <view class="footer-space"></view>
 </scroll-view>
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />

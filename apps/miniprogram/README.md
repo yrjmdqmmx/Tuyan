@@ -2,25 +2,30 @@
 
 图研Tuyan 是 PaperBanana 多端产品的微信原生 TypeScript 客户端。微信端使用“图研Tuyan”品牌；AppID、包名、API、数据库、对象键、Cookie 键和本地任务键继续沿用 PaperBanana 技术标识。
 
-## 3.1.0 当前能力
+## 3.2.0 当前能力
+
+- 独立“账户”底部入口，图研登录与观猹 TokenDance 渠道连接分开管理；支持手动 code 授权、余额、充值记录和原任务恢复。
+- v18 目录含 22 个渠道、739 条静态模型。新会话默认观猹与 Seedream 5.0 Pro，既有选择保持；渠道 Key 加密留在服务端，手动 BYOK 仍仅驻内存。
+- 上传 v2：单张原图 20MiB、最多 8 张/合计 80MiB、16384px/32MP，SVG 5MiB。精修单张原图；按实际识图/编辑模型检查处理限制，原图不会被前端有损压缩。
+
 
 - 分层工作台：六套精选模板、当前设置摘要、原子设置抽屉和宽幅移动端布局。
-- 服务端 `modelRegistry` 是21 个 API 渠道、模型角色、权益、验证状态、比例、清晰度和精修能力的唯一提交依据；目录不可用时禁止新建、精修和 Ark 验证。
+- 服务端 `modelRegistry` 是 22 个 API 渠道、模型角色、权益、验证状态、比例、清晰度和精修能力的唯一提交依据；目录不可用时禁止新建、精修和 Ark 验证。
 - 普通模式使用单渠道服务端默认三角色；专业模式支持跨渠道 `modelRoutes`，模型选择器按“API 渠道 → 模型厂商 → 具体模型”分组并支持数百项搜索。
 - 方法 12,000 字、图注 1,000 字、独立负向提示词 1,000 字；请求固定发送 `clientPlatform: "miniprogram"`。
 - 自动 + 45 种候选比例（按具体型号启用）；生成和精修分别读取 `aspectRatios/resolutions` 与 `refineAspectRatios/refineResolutions`。
 - 参考图库使用 `scope=bench`、每页 12 条，支持关键词、视觉类别、研究领域、diagram/plot、详情与跨页最多 10 项选择。
 - 上传参考图使用 prepare → PUT → finalize，失败时 abort；上传与图库检索互斥。
-- 四个一级入口：生成 / 记录 / 精修 / 教程。任务记录保留来源端、显式路由、负向提示词、比例、阶段、业务错误和 `objectKey`。
+- 五个一级入口：生成 / 记录 / 精修 / 账户 / 教程。任务记录保留来源端、显式路由、负向提示词、比例、阶段、业务错误和 `objectKey`。
 - 独立精修支持校验后的原图 `sourceImageUpload`，历史结果优先使用 `sourceImageObjectKey`；`direct-edit` 只要求 image 路由，`analyze-redraw` 要求 vision + image。
 - 账户设置包含退出、隐私说明和永久删除；删除成功后清理 Cookie、草稿、任务缓存和内存密钥。
-- API Key 只保存在当前页面内存，不写 Storage、日志或任务记录。
+- 手动 BYOK Key 只保存在当前会话内存，不写 Storage、日志或任务记录。
 
-## 3.1.0 本地交付说明
+## 3.2.0 本地交付说明
 
 新增四项输入优化（预览、采用、恢复原文）、原图精修上传与结果操作、邮箱验证状态观察、账号生命周期提示和任务隔离。生成/精修设置按各自能力提供合法比例与清晰度，MiniMax 密钥按区域隔离。真实计费调用不包含在本次本地验收中。
 
-本地检查：`npm test`、`npm run check`、`npm run build`。`tests/release-metadata-3.0.1.test.cjs` 同时验证当前 3.1.0 元数据和保留的 3.0.1 历史功能记录。
+本地检查：`npm test`、`npm run check`、`npm run build`。`tests/release-metadata-3.0.1.test.cjs` 同时验证当前 3.2.0 元数据和保留的 3.0.1 历史功能记录。
 
 本机旧缓存若没有不可变账号 ID，会原样保留但不再展示；登录后从账号任务记录取得本人任务。同步只复制仓库受控文件，保留 `project.private.config.json`、本机授权文件、额外文件和登录态。源码完成、本地副本同步、微信上传、审核、正式发布必须分别核实。
 
@@ -80,7 +85,7 @@ node --test apps/miniprogram/tests/*.test.cjs
 ```text
 miniprogram/
 ├── components/  # 模板、设置抽屉、模型选择、图库、账号等
-├── pages/       # index / records / refine / guide / job-detail
+├── pages/       # index / records / refine / tokendance / guide / job-detail
 └── utils/       # registry、routing、ratio、payload、errors、refine 等纯逻辑
 tests/           # Node 契约与回归测试
 ```

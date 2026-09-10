@@ -29,7 +29,7 @@ assert.deepEqual(supportedResolutions('bailian', 'wan2.7-image-pro'), ['1K', '2K
 assert.deepEqual(supportedResolutions('gemini', 'gemini-3.1-flash-image'), ['512', '1K', '2K', '4K'])
 assert.deepEqual(supportedResolutions('openai', 'gpt-image-2'), ['1K', '2K', '4K'])
 assert.deepEqual(supportedResolutions('openrouter', 'openrouter/openai/gpt-5.4-image-2'), ['1K', '2K', '4K'])
-assert.deepEqual(RESOLUTION_OPTIONS.map((option) => option.value), ['512', '1K', '2K', '4K', 'auto'])
+assert.deepEqual(RESOLUTION_OPTIONS.map((option) => option.value), ['512', '1K', '1.5K', '2K', '3K', '4K', 'auto'])
 
 // 主模型读图能力正则（bailian 固定能力，SYNC.md 2026-06-08）
 assert.equal(mainModelCanReadImages('bailian', 'qwen3.7-plus'), true)

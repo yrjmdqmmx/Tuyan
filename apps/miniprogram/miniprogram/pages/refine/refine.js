@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tokendance_1 = require("../../utils/tokendance");
 const refine_upload_1 = require("../../utils/refine-upload");
 const media_1 = require("../../utils/media");
+const tokendance_2 = require("../../utils/tokendance");
 const provider_regions_1 = require("../../utils/provider-regions");
 const api_1 = require("../../utils/api");
 const api_keys_1 = require("../../utils/api-keys");
@@ -11,12 +13,13 @@ const model_registry_store_1 = require("../../utils/model-registry-store");
 const model_routing_1 = require("../../utils/model-routing");
 const jobs_1 = require("../../utils/jobs");
 const refine_1 = require("../../utils/refine");
+const reference_upload_policy_1 = require("../../utils/reference-upload-policy");
 const session_1 = require("../../utils/session");
 Component({
     data: {
         emptyObject: {},
         settingsPurpose: 'refine',
-        uploadEnabled: false, uploadBusy: false, uploadStage: '', uploadError: '', canRetryUpload: false,
+        uploadEnabled: false, uploadBusy: false, uploadStage: '', sourceSelectionIssue: '', uploadError: '', canRetryUpload: false,
         optimizationBusy: false, optimizationInputs: { editInstruction: '' },
         registryReady: false, registryVersion: '等待目录', registryError: '',
         settings: {}, showSettings: false, apiKeysForSheet: {},
@@ -25,6 +28,7 @@ Component({
         instruction: '', ratioOptions: [], ratioIndex: 0,
         resolutionOptions: [], resolutionIndex: 0, refineMode: 'none', refineModeLabel: '暂不可用',
         canSubmit: false, isSubmitting: false, error: '', currentJobId: '', job: null,
+        referenceProcessingHint: '',
         isLoggedIn: false, isAuthChecking: true, showAuthPanel: false,
     },
     lifetimes: {
@@ -64,11 +68,12 @@ Component({
         },
     },
     pageLifetimes: {
-        show() { var _a; this.visible = true; this.loadSources(); if (this.data.currentJobId && !['succeeded', 'failed'].includes(((_a = this.data.job) === null || _a === void 0 ? void 0 : _a.status) || ''))
+        show() { var _a; (0, tokendance_1.rememberWorkPage)('/pages/refine/refine'); void (0, tokendance_2.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit()); this.visible = true; this.loadSources(); if (this.data.currentJobId && !['succeeded', 'failed'].includes(((_a = this.data.job) === null || _a === void 0 ? void 0 : _a.status) || ''))
             this.startPolling(this.data.currentJobId); },
         hide() { this.visible = false; this.stopPolling(); },
     },
     methods: {
+        openTokenDance: tokendance_2.openTokenDance,
         applyRegistryState(state) {
             var _a;
             if (!state.registry) {
@@ -78,7 +83,7 @@ Component({
             }
             const current = this.data.settings;
             const settings = current.modelRoutes ? current : defaultSettings(state.registry);
-            this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings, uploadEnabled: ((_a = state.registry.refineUpload) === null || _a === void 0 ? void 0 : _a.version) === 1 });
+            this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings, uploadEnabled: [1, 2].includes(((_a = state.registry.refineUpload) === null || _a === void 0 ? void 0 : _a.version) || 0) });
             this.refreshCapabilities();
             this.refreshCanSubmit();
         },
@@ -117,6 +122,7 @@ Component({
         resetUpload() {
             var _a, _b, _c, _d;
             ;
+            this.inspectionSequence = Number(this.inspectionSequence || 0) + 1;
             this.uploadSequence = Number(this.uploadSequence || 0) + 1;
             (_b = (_a = this.uploadTask) === null || _a === void 0 ? void 0 : _a.abort) === null || _b === void 0 ? void 0 : _b.call(_a);
             this.uploadTask = undefined;
@@ -131,7 +137,7 @@ Component({
                 this.openAuthPanel();
                 return;
             }
-            if (!this.data.uploadEnabled || this.data.isSubmitting || this.data.optimizationBusy)
+            if (!this.data.uploadEnabled || this.data.uploadBusy || this.data.isSubmitting || this.data.optimizationBusy)
                 return;
             wx.showActionSheet({ itemList: ['从相册选择原图', '从聊天文件选择'], success: result => {
                     if (result.tapIndex === 0)
@@ -151,9 +157,13 @@ Component({
         async inspectSourceFile(path, size, filename) {
             var _a;
             const epoch = this.ownerEpoch;
+            const inspection = this.inspectionSequence = Number(this.inspectionSequence || 0) + 1;
+            const current = () => epoch === this.ownerEpoch && inspection === this.inspectionSequence && !this.detached;
+            this.setData({ uploadBusy: true, uploadStage: '检查原图尺寸', uploadError: '' });
+            this.refreshCanSubmit();
             try {
                 const info = await new Promise((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }));
-                if (epoch !== this.ownerEpoch || this.detached)
+                if (!current())
                     return;
                 const extension = String(info.type).toLowerCase().replace('jpeg', 'jpg');
                 const mimeType = extension === 'jpg' ? 'image/jpeg' : `image/${extension}`;
@@ -162,8 +172,14 @@ Component({
                 await this.uploadSource(file);
             }
             catch (error) {
-                if (epoch === this.ownerEpoch)
+                if (current())
                     this.setData({ uploadError: (0, api_1.formatError)(error) });
+            }
+            finally {
+                if (current()) {
+                    this.setData({ uploadBusy: false, uploadStage: '' });
+                    this.refreshCanSubmit();
+                }
             }
         },
         async uploadSource(file) {
@@ -183,7 +199,7 @@ Component({
                     isCurrent, canCleanup: sameOwner,
                     onStage: stage => { if (isCurrent())
                         this.setData({ uploadStage: { preparing: '准备上传', uploading: '正在上传原图', checking: '校验图片', ready: '原图已就绪' }[stage] }); },
-                    put: (path, url, mime) => (0, api_1.uploadReferenceFile)(path, url, mime, task => { var _a; if (isCurrent())
+                    put: (path, url, mime, expiresAt) => (0, api_1.uploadReferenceFile)(path, url, mime, expiresAt, task => { var _a; if (isCurrent())
                         this.uploadTask = task;
                     else
                         (_a = task.abort) === null || _a === void 0 ? void 0 : _a.call(task); }),
@@ -239,11 +255,15 @@ Component({
             const refineMode = capability === 'direct-edit' || capability === 'analyze-redraw' ? capability : 'none';
             const ratioOptions = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, capabilityField: 'refineAspectRatios', modelLabel: entry === null || entry === void 0 ? void 0 : entry.label, resolution: settings.imageSize }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
             const resolutionOptions = (0, aspect_ratios_1.buildResolutionOptions)((entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, 'refineResolutions');
+            const consumer = refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision;
+            const policy = (0, reference_upload_policy_1.activeReferenceUploadPolicy)(registry.referenceUpload, consumer, refineMode === 'direct-edit' ? 'refine' : 'generation');
+            this.setData({ referenceProcessingHint: '单张原图，' + (refineMode === 'direct-edit' ? '直接参与编辑' : '先识图分析，再据此重绘') + '。' + consumer.modelId + '：' + (0, reference_upload_policy_1.referenceProcessingHint)(policy) });
             const resolutionIndex = Math.max(0, resolutionOptions.findIndex(item => item.value === settings.imageSize));
             this.setData({ refineMode, refineModeLabel: refineMode === 'direct-edit' ? '直接编辑' : refineMode === 'analyze-redraw' ? '分析后重绘' : '不支持精修', ratioOptions, resolutionOptions, ratioIndex: Math.max(0, ratioOptions.findIndex(item => item.value === settings.aspectRatio)), resolutionIndex });
             this.refreshRatioOptions();
         },
         refreshCanSubmit() {
+            var _a, _b;
             this.setData({ optimizationInputs: { editInstruction: this.data.instruction } });
             const settings = this.data.settings;
             if (!this.data.registryReady || !settings.modelRoutes) {
@@ -252,8 +272,18 @@ Component({
             }
             const roles = (0, model_routing_1.requiredRefineRouteRoles)({ refineMode: this.data.refineMode });
             const keys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
-            const hasKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return Boolean((_a = keys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
-            this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && this.data.isLoggedIn && !this.data.uploadBusy && !this.data.optimizationBusy && !this.data.isSubmitting) });
+            let sourceSelectionIssue = '';
+            if ((_a = this.data.source) === null || _a === void 0 ? void 0 : _a.uploaded) {
+                try {
+                    (0, refine_upload_1.validateRefineModelInput)(this.data.source, (_b = (0, model_registry_store_1.getModelRegistryState)().registry) === null || _b === void 0 ? void 0 : _b.referenceUpload, this.data.refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision, this.data.refineMode === 'direct-edit' ? 'refine' : 'generation');
+                }
+                catch (error) {
+                    sourceSelectionIssue = (0, api_1.formatError)(error);
+                }
+            }
+            this.setData({ sourceSelectionIssue });
+            const hasKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return (provider === 'tokendance' ? (0, tokendance_2.hasTokenDanceConnection)() : Boolean((_a = keys[provider]) === null || _a === void 0 ? void 0 : _a.trim())); });
+            this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && this.data.isLoggedIn && !sourceSelectionIssue && !this.data.uploadBusy && !this.data.optimizationBusy && !this.data.isSubmitting) });
         },
         async submitRefine() {
             var _a, _b;
@@ -274,8 +304,10 @@ Component({
             }
             const settings = this.data.settings;
             try {
-                if (source.uploaded)
+                if (source.uploaded) {
                     (0, refine_upload_1.validateRefineFile)(source, registry.refineUpload, settings.modelRoutes.image);
+                    (0, refine_upload_1.validateRefineModelInput)(source, registry.referenceUpload, this.data.refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision, this.data.refineMode === 'direct-edit' ? 'refine' : 'generation');
+                }
                 const payload = (0, refine_1.buildRefineJobPayload)({ providerRegions: settings.providerRegions, configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: (0, api_keys_1.getApiKeys)(), source, editInstruction: this.data.instruction, aspectRatio: ((_a = this.data.ratioOptions[this.data.ratioIndex]) === null || _a === void 0 ? void 0 : _a.value) || 'auto', imageSize: ((_b = this.data.resolutionOptions[this.data.resolutionIndex]) === null || _b === void 0 ? void 0 : _b.value) || '', refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' });
                 const response = await (0, api_1.requestJson)(payload);
                 if (epoch !== this.ownerEpoch || this.detached)
@@ -344,9 +376,9 @@ Component({
         startPolling(jobId) { this.stopPolling(); void this.loadJob(jobId); this.pollingTimer = setInterval(() => { void this.loadJob(jobId); }, 3000); },
         stopPolling() { const timer = this.pollingTimer; if (timer)
             clearInterval(timer); this.pollingTimer = undefined; },
-        openAuthPanel() { this.setData({ showAuthPanel: true }); }, closeAuthPanel() { this.setData({ showAuthPanel: false }); }, onAuthed() { this.setData({ showAuthPanel: false }); this.loadSources(); },
+        openAuthPanel() { this.setData({ showAuthPanel: true }); }, closeAuthPanel() { this.setData({ showAuthPanel: false }); }, onAuthed() { void (0, tokendance_2.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit()); this.setData({ showAuthPanel: false }); this.loadSources(); },
         onShareAppMessage() { return { title: '图研Tuyan · 独立精修', path: '/pages/refine/refine' }; },
     },
 });
-function defaultSettings(registry) { const simpleProvider = 'bailian'; return { configurationMode: 'simple', simpleProvider, modelRoutes: (0, model_routing_1.providerDefaultRoutes)(simpleProvider, registry), outputFormat: 'png', imageSize: '1K', aspectRatio: 'auto', pipelineMode: 'planner_critic', retrievalSetting: 'none', numCandidates: 1, maxCriticRounds: 1 }; }
+function defaultSettings(registry) { var _a; const simpleProvider = registry.providers.tokendance ? 'tokendance' : 'bailian'; return { configurationMode: 'simple', simpleProvider, modelRoutes: { ...(0, model_routing_1.providerDefaultRoutes)(simpleProvider, registry), ...(simpleProvider === 'tokendance' && ((_a = registry.providers.tokendance) === null || _a === void 0 ? void 0 : _a.models.some(model => model.id === 'seedream-5.0-pro' && model.selectable && model.roles.includes('image'))) ? { image: { accessProvider: simpleProvider, modelId: 'seedream-5.0-pro' } } : {}) }, outputFormat: 'png', imageSize: '1K', aspectRatio: 'auto', pipelineMode: 'planner_critic', retrievalSetting: 'none', numCandidates: 1, maxCriticRounds: 1 }; }
 function sourceOption(job, image, index) { return { label: `${job.caption || job.id} · 结果 ${index + 1}`, jobId: job.id, url: image.url, objectKey: image.object_key }; }

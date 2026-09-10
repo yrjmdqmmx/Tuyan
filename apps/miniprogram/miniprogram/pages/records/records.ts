@@ -1,3 +1,4 @@
+import { rememberWorkPage } from '../../utils/tokendance'
 import { formatError, requestJson } from '../../utils/api'
 import { readDatasetBoolean } from '../../utils/constants'
 import {
@@ -63,7 +64,7 @@ Component({
   },
 
   pageLifetimes: {
-    show() {
+    show() { rememberWorkPage('/pages/records/records');
       this.setData({ localJobs: readLocalJobs() })
       if (this.data.isLoggedIn) {
         this.loadAccountJobs({ silent: this.data.accountJobs.length > 0 })

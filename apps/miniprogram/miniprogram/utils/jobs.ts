@@ -45,6 +45,8 @@ export interface Job {
   refine_mode: string
   refine_mode_text: string
   provider_regions_text: string
+  recovery?: { canResume: boolean; message: string; action: string; retryAt?: string } | null
+  providerCalls?: unknown[]
   id: string
   status: JobStatus
   provider: string
@@ -133,6 +135,8 @@ export function normalizeJob(input: unknown): Job {
     refine_mode_text: (job.refine_mode || job.refineMode) === 'direct-edit' ? '直接编辑' : (job.refine_mode || job.refineMode) === 'analyze-redraw' ? '分析后重绘' : '',
     provider_regions_text: String(job.provider_regions_text || (job.providerRegions?.minimax ? `MiniMax · ${job.providerRegions.minimax === 'cn' ? '国内' : '国际'}` : '')),
     id: jobId,
+    recovery: job.recovery || null,
+    providerCalls: job.providerCalls || [],
     status,
     provider: String(job.provider || ''),
     client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),

@@ -75,16 +75,12 @@ test('rejects external, unsigned, path-traversal, and reference-library refine s
   }
 });
 
-test('allows an external URL only behind the explicit Laf rollback switch', () => {
-  const input = { sourceImageUrl: 'https://legacy-cdn.example/source.png' };
-  assert.throws(
-    () => normalizeRefineSource(input, { backendMode: 'laf', allowLegacyExternalUrl: false }),
-    /REFINE_SOURCE_FORBIDDEN/,
-  );
-  assert.deepEqual(
-    normalizeRefineSource(input, { backendMode: 'laf', allowLegacyExternalUrl: true }),
-    { objectKey: '', jobId: '', payload: input, legacyExternal: true },
-  );
+test('rejects arbitrary refine URLs even with the former Laf rollback switch', () => {
+  for (const url of ['https://legacy-cdn.example/source.png', 'http://127.0.0.1/a', 'https://169.254.169.254/latest/meta-data/', 'https://10.0.0.1/image']) {
+    for (const allowLegacyExternalUrl of [false, true]) assert.throws(
+      () => normalizeRefineSource({sourceImageUrl:url}, {backendMode:'laf',allowLegacyExternalUrl}), /REFINE_SOURCE_FORBIDDEN/,
+    );
+  }
 });
 
 test('email-only legacy rows need explicit migration even if email matches', () => {

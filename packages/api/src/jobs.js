@@ -518,6 +518,8 @@ function normalizeJob(job = {}) {
   return {
     id: job.id || job._id,
     status: job.status,
+    recovery: job.recovery || null,
+    providerCalls: job.providerCalls || [],
     provider: job.provider,
     modelRoutes,
     model_routes: modelRoutes,

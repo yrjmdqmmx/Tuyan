@@ -1,0 +1,409 @@
+{
+  "recordedAt": "2026-09-09T12:45:05.692437+00:00",
+  "releaseSha": "2c518f97c06c3fc0149c299244c3489db232b531",
+  "previousStableSha": "83bb83b120ca9dfc3cd88b5d6504b12cb77f8925",
+  "implementationPullRequest": 188,
+  "fixPullRequest": 189,
+  "workflows": {
+    "branchCi": 34350234562,
+    "prCi": 34350276960,
+    "mainCi": 34350761496,
+    "coreImage": 34350837670,
+    "gatewayImage": 34350843248,
+    "companionImage": 34350849439,
+    "hkDeploy": 34351104624,
+    "pages": 34351477913,
+    "cancelledBeforeApproval": 34349049621,
+    "sgWorkflowTransportFailure": 34347878272
+  },
+  "fixReview": {
+    "headSha": "f20c7f2961f69abd7bb5c82ecf28f516ce767c8f",
+    "completedAt": "2026-09-09T12:24:06.571866Z",
+    "inlineFindings": 0,
+    "botPositiveReactionAt": "2026-09-09T12:24:09Z"
+  },
+  "images": {
+    "gateway_image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:c1e5ef4be571a8fb0ccd71ddeefdd0dc3a7deac06446b1a3ec2781fc129bb44f",
+    "core_image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:04970c609b68e2f4c2b93b3fe646f310d88bb95f9126b7610037ea74d3fa2f24",
+    "worker_image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+    "mongodb_image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+    "benchmark_image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:e9f6694a5e2fd22c4bb80d6b5c59d2a6ad4efab6e86b8eb4130f8034e2704b6f",
+    "benchmark_secret_mode": "configured-disabled",
+    "confirm": "deploy-hk"
+  },
+  "host": {
+    "services": [
+      {
+        "service": "/paperbanana-hk-paperbanana-api-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:04970c609b68e2f4c2b93b3fe646f310d88bb95f9126b7610037ea74d3fa2f24",
+        "health": "healthy"
+      },
+      {
+        "service": "/paperbanana-hk-auth-gateway-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:c1e5ef4be571a8fb0ccd71ddeefdd0dc3a7deac06446b1a3ec2781fc129bb44f",
+        "health": "healthy"
+      },
+      {
+        "service": "/paperbanana-hk-benchmark-worker-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:e9f6694a5e2fd22c4bb80d6b5c59d2a6ad4efab6e86b8eb4130f8034e2704b6f",
+        "health": "healthy"
+      },
+      {
+        "service": "/paperbanana-hk-plot-worker-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "health": "healthy"
+      },
+      {
+        "service": "/paperbanana-hk-mongodb-1",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "health": "healthy"
+      }
+    ],
+    "provenance": {
+      "paperbanana-api": "2c518f97c06c3fc0149c299244c3489db232b531",
+      "benchmark-worker": "2c518f97c06c3fc0149c299244c3489db232b531"
+    },
+    "maintenance": false,
+    "benchmarkExecutionEnabled": false,
+    "stableEncryptionKeyConfigured": true,
+    "sameProtectedBackupKey": true,
+    "callbackCanonical": true,
+    "managementPricingConfigured": false
+  },
+  "productionIndexes": {
+    "paperbanana_tokendance_flows": [
+      {
+        "name": "_id_",
+        "key": {
+          "_id": 1
+        }
+      },
+      {
+        "name": "expiresAt_1",
+        "key": {
+          "expiresAt": 1
+        },
+        "expireAfterSeconds": 0
+      },
+      {
+        "name": "userId_1_createdAt_-1",
+        "key": {
+          "userId": 1,
+          "createdAt": -1
+        }
+      }
+    ],
+    "paperbanana_tokendance_payments": [
+      {
+        "name": "_id_",
+        "key": {
+          "_id": 1
+        }
+      },
+      {
+        "name": "expiresAt_1",
+        "key": {
+          "expiresAt": 1
+        },
+        "expireAfterSeconds": 0
+      },
+      {
+        "name": "userId_1_createdAt_-1",
+        "key": {
+          "userId": 1,
+          "createdAt": -1
+        }
+      },
+      {
+        "name": "userId_1",
+        "key": {
+          "userId": 1
+        },
+        "unique": true,
+        "partialFilterExpression": {
+          "active": true
+        }
+      }
+    ],
+    "paperbanana_provider_executions": [
+      {
+        "name": "_id_",
+        "key": {
+          "_id": 1
+        }
+      },
+      {
+        "name": "expiresAt_1",
+        "key": {
+          "expiresAt": 1
+        },
+        "expireAfterSeconds": 0
+      }
+    ],
+    "paperbanana_provider_steps": [
+      {
+        "name": "_id_",
+        "key": {
+          "_id": 1
+        }
+      },
+      {
+        "name": "expiresAt_1",
+        "key": {
+          "expiresAt": 1
+        },
+        "expireAfterSeconds": 0
+      },
+      {
+        "name": "jobId_1_state_1",
+        "key": {
+          "jobId": 1,
+          "state": 1
+        }
+      }
+    ],
+    "paperbanana_provider_step_chunks": [
+      {
+        "name": "_id_",
+        "key": {
+          "_id": 1
+        }
+      },
+      {
+        "name": "expiresAt_1",
+        "key": {
+          "expiresAt": 1
+        },
+        "expireAfterSeconds": 0
+      }
+    ]
+  },
+  "liveCatalogDrift": {
+    "checkedAt": "2026-09-09T12:19:48.913Z",
+    "newModels": [],
+    "retiredModels": [],
+    "protocolChanges": [],
+    "metadataReview": [],
+    "liveCount": 93
+  },
+  "publicAcceptance": {
+    "checkedAt": "2026-09-09T12:29:56.482Z",
+    "registryVersion": "2026-09-09.v18",
+    "staticModels": 739,
+    "fieldsCompared": 22000,
+    "differences": [],
+    "health": [
+      {
+        "path": "health",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "path": "ready",
+        "status": 200,
+        "ok": true
+      }
+    ],
+    "anonymousTokenDanceStatus": 401,
+    "references": {
+      "totalItems": 306,
+      "corpusVersion": "zh-CN.v2"
+    },
+    "benchmarkUnchanged": true
+  },
+  "tokenDance": {
+    "liveModels": 93,
+    "includedModels": 62,
+    "excludedModels": 31,
+    "roles": {
+      "main": 60,
+      "optimize": 60,
+      "vision": 27,
+      "image": 2,
+      "refine": 2
+    },
+    "imageModels": [
+      "seedream-5.0-lite",
+      "seedream-5.0-pro"
+    ],
+    "appUrl": "https://www.paperbanana.asia/",
+    "walletUnit": "microyuan",
+    "microyuanPerYuan": 1000000,
+    "paymentAmountUnit": "integer yuan",
+    "managementPricingConfigured": false
+  },
+  "pages": {
+    "checkedAt": "2026-09-09T12:33:48.982Z",
+    "releaseSha": "2c518f97c06c3fc0149c299244c3489db232b531",
+    "workflow": 34351477913,
+    "files": [
+      {
+        "file": "index.html",
+        "status": 200,
+        "expected": "0130b8f24ec245be447e074bb182db10ea445f5d94a7887968eb229edfa751d1",
+        "actual": "0130b8f24ec245be447e074bb182db10ea445f5d94a7887968eb229edfa751d1",
+        "match": true
+      },
+      {
+        "file": "assets/AccountSettingsDialog-Dp6FgGj2.js",
+        "status": 200,
+        "expected": "92056ae95c779760f03b3ebb910d166bf5ac233cd25dbd4369f7fb02eab263a1",
+        "actual": "92056ae95c779760f03b3ebb910d166bf5ac233cd25dbd4369f7fb02eab263a1",
+        "match": true
+      },
+      {
+        "file": "assets/AdminWorkspace-Fv1m-zX9.js",
+        "status": 200,
+        "expected": "b6cded6915012fd9b25d897c9a25fb79b70c01f0ba0d138f83474bd016c1b02d",
+        "actual": "b6cded6915012fd9b25d897c9a25fb79b70c01f0ba0d138f83474bd016c1b02d",
+        "match": true
+      },
+      {
+        "file": "assets/ReferenceLibraryPanel-BCJlD7jJ.js",
+        "status": 200,
+        "expected": "64f505a282159a632a7fd959c9b8d62c00c0be2004bc26faa75a1d823e9006c3",
+        "actual": "64f505a282159a632a7fd959c9b8d62c00c0be2004bc26faa75a1d823e9006c3",
+        "match": true
+      },
+      {
+        "file": "assets/RefinePanel-DIZtKAzy.js",
+        "status": 200,
+        "expected": "1ff8e0ac5f51d883f555941fb3c3675e9e4baa673bc3beb3a150492af4e6bff7",
+        "actual": "1ff8e0ac5f51d883f555941fb3c3675e9e4baa673bc3beb3a150492af4e6bff7",
+        "match": true
+      },
+      {
+        "file": "assets/appPaths-Ba0fLi8f.js",
+        "status": 200,
+        "expected": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+        "actual": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+        "match": true
+      },
+      {
+        "file": "assets/jszip.min-CdsY_yRS.js",
+        "status": 200,
+        "expected": "b1bd0b7edd46aa18dc1ec70afe38b2cc9e5f43ed6275d52d2851a7e5986f5cb4",
+        "actual": "b1bd0b7edd46aa18dc1ec70afe38b2cc9e5f43ed6275d52d2851a7e5986f5cb4",
+        "match": true
+      },
+      {
+        "file": "assets/main-3EJ5SZxy.css",
+        "status": 200,
+        "expected": "35f562139678c8dd8c08bb096118c41db3b397ae0e10c6d568f7e3e114496096",
+        "actual": "35f562139678c8dd8c08bb096118c41db3b397ae0e10c6d568f7e3e114496096",
+        "match": true
+      },
+      {
+        "file": "assets/main-CB48KUgS.js",
+        "status": 200,
+        "expected": "262e47b19bbc4a77cc860d526e42427e0283a73462f13f67546c0d821b099287",
+        "actual": "262e47b19bbc4a77cc860d526e42427e0283a73462f13f67546c0d821b099287",
+        "match": true
+      },
+      {
+        "file": "assets/not-found-K_dFyY8s.js",
+        "status": 200,
+        "expected": "c7ae696534b58ce86f367d452a4eb0a7f757860be1804c548200e015cbd15962",
+        "actual": "c7ae696534b58ce86f367d452a4eb0a7f757860be1804c548200e015cbd15962",
+        "match": true
+      },
+      {
+        "file": "assets/trash-2-CidbiEru.js",
+        "status": 200,
+        "expected": "56370cfa8f9b59d8bd12baa6badad7161aa1c27aec22c387f8feb47d92620464",
+        "actual": "56370cfa8f9b59d8bd12baa6badad7161aa1c27aec22c387f8feb47d92620464",
+        "match": true
+      },
+      {
+        "file": "assets/upload-Bup_iuae.js",
+        "status": 200,
+        "expected": "1fbbcbfbc943942cc981a5e7291bf2ea6c04e1c3ce71b6b62def5333358d54f4",
+        "actual": "1fbbcbfbc943942cc981a5e7291bf2ea6c04e1c3ce71b6b62def5333358d54f4",
+        "match": true
+      }
+    ]
+  },
+  "tests": {
+    "core": 481,
+    "web": 372,
+    "gateway": 140,
+    "mini": 28,
+    "sharedLafRepositoryRetainedContracts": 51,
+    "realIsolatedMongo": {
+      "mongo": "real isolated MongoDB",
+      "provider": "fixtures only",
+      "passed": [
+        "one-use exchange",
+        "encrypted storage",
+        "unique active order",
+        "TTL indexes",
+        "fresh-client nested-step recovery",
+        "concurrent resume CAS",
+        "retryAt gate before enqueue",
+        "account erasure"
+      ],
+      "planned": 1,
+      "rendered": 2,
+      "paymentPosts": 1
+    },
+    "supplierResponses": "fixtures",
+    "paidProviderCallsDuringReleaseValidation": 0,
+    "realPaymentOrdersCreated": 0
+  },
+  "singaporeEgress": {
+    "delivery": "existing HK WireGuard management path after workflow SSH timeout",
+    "appliedSourceSha": "034665a5d1c065dd89022db12ea930f373554f74",
+    "squidConfigSha256": "69c9d33001917bed3e79ea183fbc5f25eece3e53e1a4743f57ec169f2d1ad8a3",
+    "installerSha256": "3e42685a1f7e202374dd192980592f3fa2da86da28cc0f028093f1bd5f955d05",
+    "exactNewHost": "tokendance.space",
+    "catalogThroughProxy": 93,
+    "spoofedSuffixConnectStatus": 403,
+    "existingSmokePassed": true,
+    "firewallOrSshOrWireGuardChanged": false
+  },
+  "browser": {
+    "target": "actual production Web and API",
+    "desktop": {
+      "width": 1440,
+      "height": 1000
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    },
+    "authenticatedChromeCssWidth": 354,
+    "accountRoundTripGeneration": true,
+    "accountRoundTripRefinement": true,
+    "textAndModelSelectionPreservedWithinAccountRoundTrip": true,
+    "tokenDanceFirstInSimpleAndRolePickers": true,
+    "deepseek41Before32": true,
+    "proRefineResolutions": [
+      "1K",
+      "1.5K",
+      "2K"
+    ],
+    "liteRefineResolutions": [
+      "2K",
+      "3K",
+      "4K"
+    ],
+    "horizontalOverflow": false,
+    "applicationConsoleErrors": 0,
+    "existingProductionTuyanLogin": true,
+    "productionTokenDanceConnected": false,
+    "connectButtonEnabled": true,
+    "readOnlyPaymentHistory": "empty",
+    "viewportOverridesReset": true,
+    "normalFullReload": "existing default unsubmitted draft initialization; no general draft persistence added",
+    "mobilePickerSteps": true
+  },
+  "remaining": [
+    "Production user TokenDance OAuth connection and callback",
+    "Real model generation/refinement quality and consumption",
+    "Real recharge confirmation and paid-job resume",
+    "Independent application management credential for pricing",
+    "Unpublished per-key quota/revoke/settlement APIs and documented modality conflicts",
+    "Watcha identity login deferred",
+    "Mini Program device validation, upload and platform publication deferred"
+  ]
+}

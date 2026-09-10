@@ -32,7 +32,7 @@ function registry() {
   }
 }
 
-assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'])
+assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'])
 const normalized = normalizeModelRegistry(registry())
 assert.equal(normalized.registryVersion, '2026-08-21.v9')
 assert.equal(normalized.providers.openrouter.models.length, 3)
@@ -76,12 +76,13 @@ datedFixture.providers.openai.models[1].replacementModelId = 'next-image'
 datedFixture.providers.openai.models[1].regions = ['cn-beijing']
 datedFixture.providers.openai.models[1].roleProtocols = { image: 'openai-images' }
 const dated = normalizeModelRegistry(datedFixture)
+const datedImage = dated.providers.openai.models.find(item => item.id === datedFixture.providers.openai.models[1].id)
 assert.equal(partitionRegistryModels(dated.providers.openai.models, { role: 'main' }).compatible.length, 0)
 assert.equal(partitionRegistryModels(dated.providers.openai.models, { role: 'image' }).compatible.length, 1)
-assert.equal(dated.providers.openai.models[1].earliestRetirementDate, '2000-01-01')
-assert.equal(dated.providers.openai.models[1].replacementModelId, 'next-image')
-assert.deepEqual(dated.providers.openai.models[1].roleProtocols, { image: 'openai-images' })
-assert.deepEqual(dated.providers.openai.models[1].regions, ['cn-beijing'])
+assert.equal(datedImage.earliestRetirementDate, '2000-01-01')
+assert.equal(datedImage.replacementModelId, 'next-image')
+assert.deepEqual(datedImage.roleProtocols, { image: 'openai-images' })
+assert.deepEqual(datedImage.regions, ['cn-beijing'])
 
 const originalNow = Date.now
 const zoneFixture = registry()
@@ -94,3 +95,13 @@ try {
   Date.now = () => Date.parse('2026-10-09T16:00:00Z')
   assert.equal(partitionRegistryModels(zoned, { role: 'main' }).incompatible.length, 1)
 } finally { Date.now = originalNow }
+
+const uploadPolicy = require('../miniprogram/utils/reference-upload-policy.js')
+const withUpload = normalizeModelRegistry({ ...registry(), referenceUpload: uploadPolicy.referenceUploadContract() })
+assert.equal(withUpload.referenceUpload.platform.maxTotalBytes, 80 * 1024 * 1024)
+const referenceFiles = Array.from({length:8}, () => ({size: 6 * 1024 * 1024}))
+const qwenPolicy = uploadPolicy.activeReferenceUploadPolicy(withUpload.referenceUpload, {accessProvider:'tokendance', modelId:'qwen3.8-flash'})
+assert.equal(uploadPolicy.referenceUploadSelectionError(referenceFiles, qwenPolicy), '')
+const stricter = uploadPolicy.activeReferenceUploadPolicy(withUpload.referenceUpload, {accessProvider:'zhipu',modelId:'glm-4v-flash'})
+assert.match(uploadPolicy.referenceUploadSelectionError(referenceFiles, stricter), /文件已保留/)
+assert.equal(referenceFiles.length, 8)

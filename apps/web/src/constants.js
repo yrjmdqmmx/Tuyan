@@ -635,7 +635,7 @@ export const OUTPUT_FORMATS = [
   ['svg', 'SVG 矢量图'],
 ];
 
-export const RESOLUTION_OPTIONS = [['512', '512（预览）'], ['auto', '原生尺寸'], ['1K', '1K（标准）'], ['2K', '2K（高清）'], ['4K', '4K（超清）']];
+export const RESOLUTION_OPTIONS = [['512', '512（预览）'], ['auto', '原生尺寸'], ['1K', '1K（标准）'], ['1.5K', '1.5K'], ['2K', '2K（高清）'], ['3K', '3K'], ['4K', '4K（超清）']];
 
 // 不同图像生成模型支持的清晰度子集（自动精修由清晰度档位驱动）。
 export function supportedResolutions(provider, imageModel) {

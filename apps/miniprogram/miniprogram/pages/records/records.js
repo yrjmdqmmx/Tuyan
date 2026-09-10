@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tokendance_1 = require("../../utils/tokendance");
 const api_1 = require("../../utils/api");
 const constants_1 = require("../../utils/constants");
 const jobs_1 = require("../../utils/jobs");
@@ -63,6 +64,7 @@ Component({
     },
     pageLifetimes: {
         show() {
+            (0, tokendance_1.rememberWorkPage)('/pages/records/records');
             this.setData({ localJobs: (0, jobs_1.readLocalJobs)() });
             if (this.data.isLoggedIn) {
                 this.loadAccountJobs({ silent: this.data.accountJobs.length > 0 });

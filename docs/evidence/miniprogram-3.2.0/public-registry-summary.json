@@ -1,0 +1,49 @@
+{
+  "registryVersion": "2026-09-09.v18",
+  "referenceUpload": {
+    "version": 2,
+    "checkedAt": "2026-09-10",
+    "platform": {
+      "maxCount": 8,
+      "maxBytes": 20971520,
+      "maxTotalBytes": 83886080,
+      "maxDimension": 16384,
+      "maxPixels": 32000000,
+      "maxSvgBytes": 5242880,
+      "uploadConcurrency": 2,
+      "mimeTypes": [
+        "image/png",
+        "image/jpeg",
+        "image/webp",
+        "image/svg+xml"
+      ],
+      "accept": "image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.webp,.svg"
+    }
+  },
+  "refineUpload": {
+    "version": 2,
+    "mimeTypes": [
+      "image/png",
+      "image/jpeg",
+      "image/webp"
+    ],
+    "maxBytes": 20971520,
+    "maxDimension": 16384,
+    "maxPixels": 32000000,
+    "maxTotalBytes": 20971520,
+    "modelMaxBytes": {}
+  },
+  "inputOptimizationTargets": [
+    "methodContent",
+    "caption",
+    "negativePrompt",
+    "editInstruction"
+  ],
+  "http": 200,
+  "channels": 22,
+  "staticModels": 739,
+  "tokenDanceModels": 62,
+  "source": "https://api.paperbanana.asia/paperbanana-api",
+  "action": "modelRegistry",
+  "checkedAt": "2026-09-10T09:02:41.437894+00:00"
+}

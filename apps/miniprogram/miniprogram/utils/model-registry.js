@@ -7,7 +7,7 @@ exports.partitionRegistryModels = partitionRegistryModels;
 exports.groupRegistryModels = groupRegistryModels;
 exports.findRegistryModel = findRegistryModel;
 const model_presentation_1 = require("./model-presentation");
-exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate'];
+exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'];
 function normalizeModelRegistry(input) {
     const source = asRecord(input);
     const registryVersion = stringValue(source.registryVersion);
@@ -28,10 +28,11 @@ function normalizeModelRegistry(input) {
     }
     const upload = asRecord(source.refineUpload);
     const positive = (value) => Number.isFinite(Number(value)) && Number(value) > 0;
-    const refineUpload = upload.version === 1 && Array.isArray(upload.mimeTypes) && upload.mimeTypes.length > 0 && [upload.maxBytes, upload.maxDimension, upload.maxPixels].every(positive)
-        ? { version: 1, mimeTypes: stringArray(upload.mimeTypes).filter(mime => ['image/png', 'image/jpeg', 'image/webp'].includes(mime)), maxBytes: Number(upload.maxBytes), maxDimension: Number(upload.maxDimension), maxPixels: Number(upload.maxPixels), modelMaxBytes: Object.fromEntries(Object.entries(asRecord(upload.modelMaxBytes)).filter(([, value]) => positive(value)).map(([key, value]) => [key, Number(value)])) }
+    const refineUpload = [1, 2].includes(Number(upload.version)) && Array.isArray(upload.mimeTypes) && upload.mimeTypes.length > 0 && [upload.maxBytes, upload.maxDimension, upload.maxPixels].every(positive)
+        ? { version: Number(upload.version), mimeTypes: stringArray(upload.mimeTypes).filter(mime => ['image/png', 'image/jpeg', 'image/webp'].includes(mime)), maxBytes: Number(upload.maxBytes), maxDimension: Number(upload.maxDimension), maxPixels: Number(upload.maxPixels), modelMaxBytes: Object.fromEntries(Object.entries(asRecord(upload.modelMaxBytes)).filter(([, value]) => positive(value)).map(([key, value]) => [key, Number(value)])) }
         : undefined;
-    return { registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers,
+    const referenceUpload = source.referenceUpload && typeof source.referenceUpload === 'object' ? asRecord(source.referenceUpload) : undefined;
+    return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers,
         inputOptimizationContractVersion: numberValue(source.inputOptimizationContractVersion),
         ...(Array.isArray(source.inputOptimizationTargets) ? { inputOptimizationTargets: stringArray(source.inputOptimizationTargets) } : {}),
         ...((refineUpload === null || refineUpload === void 0 ? void 0 : refineUpload.mimeTypes.length) ? { refineUpload } : {}),
@@ -101,6 +102,8 @@ function normalizeModel(input) {
         releasedAt: validReleasedAt(source.releasedAt),
         vendorId: stringValue(source.vendorId),
         serviceTier: stringValue(source.serviceTier),
+        releaseKind: stringValue(source.releaseKind),
+        lifecycleSourceUrl: stringValue(source.lifecycleSourceUrl),
         releaseFamily: stringValue(source.releaseFamily),
         releaseOrder: numberValue(source.releaseOrder),
         releaseSourceUrl: stringValue(source.releaseSourceUrl),

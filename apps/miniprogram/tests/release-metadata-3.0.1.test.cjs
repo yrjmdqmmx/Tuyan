@@ -34,9 +34,9 @@ function sectionFrom(markdown, heading) {
   return markdown.slice(start, nextHeading === -1 ? undefined : nextHeading)
 }
 
-assert.equal(packageJson.version, '3.1.0')
-assert.equal(projectConfig.description, '图研Tuyan 3.1.0 微信小程序')
-assert.match(sourceConfig, /export const CLIENT_VERSION = 'miniprogram-3\.1\.0'/)
+assert.equal(packageJson.version, '3.2.0')
+assert.equal(projectConfig.description, '图研Tuyan 3.2.0 微信小程序')
+assert.match(sourceConfig, /export const CLIENT_VERSION = 'miniprogram-3\.2\.0'/)
 
 const parity = sectionFrom(changelog, '## 图研Tuyan 3.1.0（2026-09-09）')
 for (const feature of ['输入优化', '原图精修', '账号 ID', '21 个渠道', '未上传']) assert.ok(parity.includes(feature))

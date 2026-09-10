@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tokendance_1 = require("../../utils/tokendance");
 const session_1 = require("../../utils/session");
 const api_1 = require("../../utils/api");
 const api_keys_1 = require("../../utils/api-keys");
@@ -41,11 +42,13 @@ Component({
             const target = this.properties.target;
             let payload;
             try {
-                payload = (0, input_optimization_1.buildOptimizationRequest)({ target, inputs: this.properties.inputs, mainRoute: this.properties.mainRoute, providerRegions: this.properties.providerRegions == null ? undefined : this.properties.providerRegions, apiKeys: (0, api_keys_1.getApiKeys)(), registry: (0, model_registry_store_1.getModelRegistryState)().registry });
+                payload = (0, input_optimization_1.buildOptimizationRequest)({ target, inputs: this.properties.inputs, mainRoute: this.properties.mainRoute, providerRegions: this.properties.providerRegions == null ? undefined : this.properties.providerRegions, apiKeys: (0, api_keys_1.getApiKeys)(), tokenDanceConnected: (0, tokendance_1.hasTokenDanceConnection)(), registry: (0, model_registry_store_1.getModelRegistryState)().registry });
             }
             catch (error) {
                 this.setData({ error: (0, api_1.formatError)(error) });
-                if (/主模型|密钥/.test((0, api_1.formatError)(error)))
+                if (/连接观猹 TokenDance/.test((0, api_1.formatError)(error)))
+                    (0, tokendance_1.openTokenDance)();
+                else if (/主模型|密钥/.test((0, api_1.formatError)(error)))
                     this.triggerEvent('settings');
                 return;
             }

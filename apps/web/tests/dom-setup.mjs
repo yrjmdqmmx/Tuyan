@@ -1,3 +1,4 @@
+import { afterEach } from 'node:test'
 import { JSDOM } from 'jsdom'
 import React from 'react'
 
@@ -31,3 +32,6 @@ if (!globalThis.ResizeObserver) {
     disconnect() {}
   }
 }
+
+// Each mounted app starts with fresh browser history; navigation is URL-backed.
+afterEach(() => window.history.replaceState({}, '', '/'))

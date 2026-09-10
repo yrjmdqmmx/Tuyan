@@ -1,5 +1,7 @@
-import { uploadRefineSource, validateRefineFile, type RefineFile } from '../../utils/refine-upload'
+import { rememberWorkPage } from '../../utils/tokendance'
+import { uploadRefineSource, validateRefineFile, validateRefineModelInput, type RefineFile } from '../../utils/refine-upload'
 import { saveImageToAlbum, downloadShareFile } from '../../utils/media'
+import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestJson, uploadReferenceFile } from '../../utils/api'
 import { getApiKeys, replaceApiKeys } from '../../utils/api-keys'
@@ -10,6 +12,7 @@ import { providerDefaultRoutes, requiredRefineRouteRoles, uniqueProvidersForRole
 import type { ImageAsset } from '../../utils/job-assets'
 import { appendLocalJob, normalizeJob, readLocalJobs, type Job } from '../../utils/jobs'
 import { buildRefineJobPayload } from '../../utils/refine'
+import { activeReferenceUploadPolicy, referenceProcessingHint } from '../../utils/reference-upload-policy'
 import { getCurrentUser, isSessionChecked, subscribeSession } from '../../utils/session'
 
 interface RefineSettings {
@@ -24,7 +27,7 @@ Component({
   data: {
     emptyObject: {},
     settingsPurpose: 'refine',
-    uploadEnabled: false, uploadBusy: false, uploadStage: '', uploadError: '', canRetryUpload: false,
+    uploadEnabled: false, uploadBusy: false, uploadStage: '', sourceSelectionIssue: '', uploadError: '', canRetryUpload: false,
     optimizationBusy: false, optimizationInputs: { editInstruction: '' },
     registryReady: false, registryVersion: '等待目录', registryError: '',
     settings: {} as RefineSettings | Record<string, never>, showSettings: false, apiKeysForSheet: {} as Record<string, string>,
@@ -33,6 +36,7 @@ Component({
     instruction: '', ratioOptions: [] as Array<{ value: string; label: string }>, ratioIndex: 0,
     resolutionOptions: [] as Array<{ value: string; label: string }>, resolutionIndex: 0, refineMode: 'none', refineModeLabel: '暂不可用',
     canSubmit: false, isSubmitting: false, error: '', currentJobId: '', job: null as Job | null,
+    referenceProcessingHint: '',
     isLoggedIn: false, isAuthChecking: true, showAuthPanel: false,
   },
   lifetimes: {
@@ -63,15 +67,16 @@ Component({
     },
   },
   pageLifetimes: {
-    show() { (this as any).visible = true; this.loadSources(); if (this.data.currentJobId && !['succeeded', 'failed'].includes(this.data.job?.status || '')) this.startPolling(this.data.currentJobId) },
+    show() { rememberWorkPage('/pages/refine/refine'); void refreshTokenDanceConnection().then(() => this.refreshCanSubmit()); (this as any).visible = true; this.loadSources(); if (this.data.currentJobId && !['succeeded', 'failed'].includes(this.data.job?.status || '')) this.startPolling(this.data.currentJobId) },
     hide() { (this as any).visible = false; this.stopPolling() },
   },
   methods: {
+    openTokenDance,
     applyRegistryState(state: ModelRegistryState) {
       if (!state.registry) { this.setData({ registryReady: false, registryError: state.error, uploadEnabled: false }); this.refreshCanSubmit(); return }
       const current = this.data.settings as RefineSettings
       const settings = current.modelRoutes ? current : defaultSettings(state.registry)
-      this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings, uploadEnabled: state.registry.refineUpload?.version === 1 })
+      this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings, uploadEnabled: [1, 2].includes(state.registry.refineUpload?.version || 0) })
       this.refreshCapabilities(); this.refreshCanSubmit()
     },
     async retryRegistry() { await loadModelRegistry(true) },
@@ -100,6 +105,7 @@ Component({
     onOptimizationApply(event: WechatMiniprogram.CustomEvent<{ target: string; value: string }>) { if (event.detail.target === 'editInstruction') { this.setData({ instruction: event.detail.value, optimizationInputs: { editInstruction: event.detail.value } }); this.refreshCanSubmit() } },
     openOptimizationSettings() { this.setData({ settingsPurpose: 'optimize', showSettings: true, apiKeysForSheet: getApiKeys(), settingsExecutionRoles: ['main'] }) },
     resetUpload() {
+      ;(this as any).inspectionSequence = Number((this as any).inspectionSequence || 0) + 1
       ;(this as any).uploadSequence = Number((this as any).uploadSequence || 0) + 1
       ;(this as any).uploadTask?.abort?.(); (this as any).uploadTask = undefined
       void (this as any).uploadCleanup?.(); (this as any).uploadCleanup = undefined; (this as any).uploadFile = undefined
@@ -108,7 +114,7 @@ Component({
     removeSource() { this.resetUpload(); this.setData({ source: null }); this.refreshCanSubmit() },
     chooseSourceFile() {
       if (!this.data.isLoggedIn) { this.openAuthPanel(); return }
-      if (!this.data.uploadEnabled || this.data.isSubmitting || this.data.optimizationBusy) return
+      if (!this.data.uploadEnabled || this.data.uploadBusy || this.data.isSubmitting || this.data.optimizationBusy) return
       wx.showActionSheet({ itemList: ['从相册选择原图', '从聊天文件选择'], success: result => {
         if (result.tapIndex === 0) wx.chooseMedia({ count: 1, mediaType: ['image'], sourceType: ['album'], sizeType: ['original'], success: result => {
           const file = result.tempFiles[0]; if (file) void this.inspectSourceFile(file.tempFilePath, file.size)
@@ -120,15 +126,19 @@ Component({
     },
     async inspectSourceFile(path: string, size: number, filename?: string) {
       const epoch = (this as any).ownerEpoch
+      const inspection = (this as any).inspectionSequence = Number((this as any).inspectionSequence || 0) + 1
+      const current = () => epoch === (this as any).ownerEpoch && inspection === (this as any).inspectionSequence && !(this as any).detached
+      this.setData({ uploadBusy: true, uploadStage: '检查原图尺寸', uploadError: '' }); this.refreshCanSubmit()
       try {
         const info = await new Promise<WechatMiniprogram.GetImageInfoSuccessCallbackResult>((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }))
-        if (epoch !== (this as any).ownerEpoch || (this as any).detached) return
+        if (!current()) return
         const extension = String(info.type).toLowerCase().replace('jpeg', 'jpg')
         const mimeType = extension === 'jpg' ? 'image/jpeg' : `image/${extension}`
         const file = { path, size, filename: filename || `refine-source.${extension}`, mimeType, width: info.width, height: info.height }
         validateRefineFile(file, getModelRegistryState().registry?.refineUpload, (this.data.settings as RefineSettings).modelRoutes.image)
         await this.uploadSource(file)
-      } catch (error) { if (epoch === (this as any).ownerEpoch) this.setData({ uploadError: formatError(error) }) }
+      } catch (error) { if (current()) this.setData({ uploadError: formatError(error) }) }
+      finally { if (current()) { this.setData({ uploadBusy: false, uploadStage: '' }); this.refreshCanSubmit() } }
     },
     async uploadSource(file: RefineFile) {
       this.resetUpload()
@@ -145,7 +155,7 @@ Component({
           limits: getModelRegistryState().registry?.refineUpload, route: (this.data.settings as RefineSettings).modelRoutes.image,
           isCurrent, canCleanup: sameOwner,
           onStage: stage => { if (isCurrent()) this.setData({ uploadStage: { preparing: '准备上传', uploading: '正在上传原图', checking: '校验图片', ready: '原图已就绪' }[stage] }) },
-          put: (path, url, mime) => uploadReferenceFile(path, url, mime, task => { if (isCurrent()) (this as any).uploadTask = task; else task.abort?.() }),
+          put: (path, url, mime, expiresAt) => uploadReferenceFile(path, url, mime, expiresAt, task => { if (isCurrent()) (this as any).uploadTask = task; else task.abort?.() }),
         })
         if (!isCurrent()) { await result.cleanup(); return }
         ;(this as any).uploadCleanup = result.cleanup
@@ -179,6 +189,9 @@ Component({
       const refineMode = capability === 'direct-edit' || capability === 'analyze-redraw' ? capability : 'none'
       const ratioOptions = buildAspectRatioOptions({ capabilities: entry?.capabilities || {}, capabilityField: 'refineAspectRatios', modelLabel: entry?.label, resolution: settings.imageSize }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
       const resolutionOptions = buildResolutionOptions(entry?.capabilities || {}, 'refineResolutions')
+      const consumer = refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision
+      const policy = activeReferenceUploadPolicy(registry.referenceUpload, consumer, refineMode === 'direct-edit' ? 'refine' : 'generation')
+      this.setData({ referenceProcessingHint: '单张原图，' + (refineMode === 'direct-edit' ? '直接参与编辑' : '先识图分析，再据此重绘') + '。' + consumer.modelId + '：' + referenceProcessingHint(policy) })
       const resolutionIndex = Math.max(0, resolutionOptions.findIndex(item => item.value === settings.imageSize))
       this.setData({ refineMode, refineModeLabel: refineMode === 'direct-edit' ? '直接编辑' : refineMode === 'analyze-redraw' ? '分析后重绘' : '不支持精修', ratioOptions, resolutionOptions, ratioIndex: Math.max(0, ratioOptions.findIndex(item => item.value === settings.aspectRatio)), resolutionIndex })
       this.refreshRatioOptions()
@@ -189,8 +202,13 @@ Component({
       if (!this.data.registryReady || !settings.modelRoutes) { this.setData({ canSubmit: false }); return }
       const roles = requiredRefineRouteRoles({ refineMode: this.data.refineMode })
       const keys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
-      const hasKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(keys[provider]?.trim()))
-      this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && this.data.isLoggedIn && !this.data.uploadBusy && !this.data.optimizationBusy && !this.data.isSubmitting) })
+      let sourceSelectionIssue = ''
+      if (this.data.source?.uploaded) {
+        try { validateRefineModelInput(this.data.source as RefineFile, getModelRegistryState().registry?.referenceUpload, this.data.refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision, this.data.refineMode === 'direct-edit' ? 'refine' : 'generation') } catch (error) { sourceSelectionIssue = formatError(error) }
+      }
+      this.setData({ sourceSelectionIssue })
+      const hasKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => (provider === 'tokendance' ? hasTokenDanceConnection() : Boolean(keys[provider]?.trim())))
+      this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && this.data.isLoggedIn && !sourceSelectionIssue && !this.data.uploadBusy && !this.data.optimizationBusy && !this.data.isSubmitting) })
     },
     async submitRefine() {
       if (!this.data.canSubmit || this.data.isSubmitting || !this.data.source) return
@@ -208,7 +226,10 @@ Component({
       }
       const settings = this.data.settings as RefineSettings
       try {
-        if (source.uploaded) validateRefineFile(source as RefineFile, registry.refineUpload, settings.modelRoutes.image)
+        if (source.uploaded) {
+          validateRefineFile(source as RefineFile, registry.refineUpload, settings.modelRoutes.image)
+          validateRefineModelInput(source as RefineFile, registry.referenceUpload, this.data.refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision, this.data.refineMode === 'direct-edit' ? 'refine' : 'generation')
+        }
         const payload = buildRefineJobPayload({ providerRegions: settings.providerRegions, configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: getApiKeys(), source, editInstruction: this.data.instruction, aspectRatio: this.data.ratioOptions[this.data.ratioIndex]?.value || 'auto', imageSize: this.data.resolutionOptions[this.data.resolutionIndex]?.value || '', refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' })
         const response = await requestJson<{ jobId?: string; id?: string }>(payload)
         if (epoch !== (this as any).ownerEpoch || (this as any).detached) return
@@ -241,10 +262,10 @@ Component({
     shareImage(event: WechatMiniprogram.TouchEvent) { const url = String(event.currentTarget.dataset.url || ''); if (url) void downloadShareFile(url) },
     startPolling(jobId: string) { this.stopPolling(); void this.loadJob(jobId); (this as any).pollingTimer = setInterval(() => { void this.loadJob(jobId) }, 3000) },
     stopPolling() { const timer = (this as any).pollingTimer as number | undefined; if (timer) clearInterval(timer); (this as any).pollingTimer = undefined },
-    openAuthPanel() { this.setData({ showAuthPanel: true }) }, closeAuthPanel() { this.setData({ showAuthPanel: false }) }, onAuthed() { this.setData({ showAuthPanel: false }); this.loadSources() },
+    openAuthPanel() { this.setData({ showAuthPanel: true }) }, closeAuthPanel() { this.setData({ showAuthPanel: false }) }, onAuthed() { void refreshTokenDanceConnection().then(() => this.refreshCanSubmit()); this.setData({ showAuthPanel: false }); this.loadSources() },
     onShareAppMessage() { return { title: '图研Tuyan · 独立精修', path: '/pages/refine/refine' } },
   },
 })
 
-function defaultSettings(registry: ModelRegistry): RefineSettings { const simpleProvider: ModelProviderId = 'bailian'; return { configurationMode: 'simple', simpleProvider, modelRoutes: providerDefaultRoutes(simpleProvider, registry), outputFormat: 'png', imageSize: '1K', aspectRatio: 'auto', pipelineMode: 'planner_critic', retrievalSetting: 'none', numCandidates: 1, maxCriticRounds: 1 } }
+function defaultSettings(registry: ModelRegistry): RefineSettings { const simpleProvider: ModelProviderId = registry.providers.tokendance ? 'tokendance' : 'bailian'; return { configurationMode: 'simple', simpleProvider, modelRoutes: { ...providerDefaultRoutes(simpleProvider, registry), ...(simpleProvider === 'tokendance' && registry.providers.tokendance?.models.some(model => model.id === 'seedream-5.0-pro' && model.selectable && model.roles.includes('image')) ? { image: { accessProvider: simpleProvider, modelId: 'seedream-5.0-pro' } } : {}) }, outputFormat: 'png', imageSize: '1K', aspectRatio: 'auto', pipelineMode: 'planner_critic', retrievalSetting: 'none', numCandidates: 1, maxCriticRounds: 1 } }
 function sourceOption(job: Job, image: ImageAsset, index: number): RefineSourceOption { return { label: `${job.caption || job.id} · 结果 ${index + 1}`, jobId: job.id, url: image.url, objectKey: image.object_key } }

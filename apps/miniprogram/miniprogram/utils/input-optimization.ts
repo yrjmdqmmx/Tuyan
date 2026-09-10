@@ -14,7 +14,7 @@ export function supportsOptimization(registry: ModelRegistry | null, target: str
 
 export function buildOptimizationRequest(input: {
   target: OptimizationTarget; inputs: OptimizationInputs; mainRoute: ModelRoute; providerRegions?: ProviderRegions
-  apiKeys: Record<string, string>; registry: ModelRegistry | null
+  apiKeys: Record<string, string>; tokenDanceConnected?: boolean; registry: ModelRegistry | null
 }) {
   if (!supportsOptimization(input.registry, input.target)) throw new Error('当前服务端尚未提供此项输入优化。')
   const { mainRoute, registry } = input
@@ -23,7 +23,8 @@ export function buildOptimizationRequest(input: {
   const regions = normalizeProviderRegions(input.providerRegions)
   if (mainRoute.accessProvider === 'minimax' && regions.minimax === 'cn' && !registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 MiniMax 国内区域。')
   const apiKey = selectRegionApiKeys(input.apiKeys, regions)[mainRoute.accessProvider]?.trim()
-  if (!apiKey) throw new Error('请先在设置中填写当前主模型接入渠道的密钥。')
+  if (mainRoute.accessProvider === 'tokendance' && !input.tokenDanceConnected) throw new Error('请先到账户页连接观猹 TokenDance。')
+  if (mainRoute.accessProvider !== 'tokendance' && !apiKey) throw new Error('请先在设置中填写当前主模型接入渠道的密钥。')
   const inputs: OptimizationInputs = input.target === 'editInstruction'
     ? { editInstruction: String(input.inputs.editInstruction || '') }
     : { methodContent: String(input.inputs.methodContent || ''), caption: String(input.inputs.caption || ''), negativePrompt: String(input.inputs.negativePrompt || '') }
@@ -32,7 +33,7 @@ export function buildOptimizationRequest(input: {
   }
   if (input.target !== 'negativePrompt' && !inputs[input.target]?.trim()) throw new Error('请先填写需要优化的内容。')
   if (input.target === 'negativePrompt' && !Object.values(inputs).some(value => value.trim())) throw new Error('请先填写方法或图注，再优化负向提示词。')
-  return { action: 'optimizeInputs', target: input.target, inputs, mainRoute: { ...mainRoute }, apiKey, ...(mainRoute.accessProvider === 'minimax' ? { providerRegions: regions } : {}) }
+  return { action: 'optimizeInputs', target: input.target, inputs, mainRoute: { ...mainRoute }, ...(mainRoute.accessProvider === 'tokendance' ? {} : { apiKey }), ...(mainRoute.accessProvider === 'minimax' ? { providerRegions: regions } : {}) }
 }
 
 export function validateOptimizationResult(target: OptimizationTarget, original: string, result: { target?: string; optimizedText?: string }): string {

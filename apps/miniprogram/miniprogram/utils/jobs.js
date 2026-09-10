@@ -58,6 +58,8 @@ function normalizeJob(input) {
         refine_mode_text: (job.refine_mode || job.refineMode) === 'direct-edit' ? '直接编辑' : (job.refine_mode || job.refineMode) === 'analyze-redraw' ? '分析后重绘' : '',
         provider_regions_text: String(job.provider_regions_text || (((_a = job.providerRegions) === null || _a === void 0 ? void 0 : _a.minimax) ? `MiniMax · ${job.providerRegions.minimax === 'cn' ? '国内' : '国际'}` : '')),
         id: jobId,
+        recovery: job.recovery || null,
+        providerCalls: job.providerCalls || [],
         status,
         provider: String(job.provider || ''),
         client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),

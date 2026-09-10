@@ -17,6 +17,7 @@ COPY apps/benchmark-worker apps/benchmark-worker
 COPY apps/paperbanana-api apps/paperbanana-api
 COPY apps/laf-functions/paperbanana-api.ts apps/laf-functions/paperbanana-api.ts
 COPY packages/benchmark-core packages/benchmark-core
+COPY packages/api/src/tokendance*.ts packages/api/src/
 RUN pnpm --filter @paperbanana/paperbanana-api build
 RUN pnpm --filter @paperbanana/benchmark-worker build
 RUN pnpm --filter @paperbanana/benchmark-worker deploy --prod --legacy /opt/benchmark-worker

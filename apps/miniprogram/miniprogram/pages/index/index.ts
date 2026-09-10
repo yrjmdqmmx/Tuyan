@@ -1,3 +1,7 @@
+import { rememberWorkPage } from '../../utils/tokendance'
+import { activeReferenceUploadPolicy, referenceUploadSelectionError, referencePolicyHint, referenceProcessingHint } from '../../utils/reference-upload-policy'
+import { orderModelChannels } from '../../utils/model-presentation'
+import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestHealth, requestJson, uploadReferenceFile } from '../../utils/api'
 import {
@@ -10,7 +14,7 @@ import {
   PIPELINE_OPTIONS,
   PLOT_CATEGORY_ID,
   PLOT_NOTE,
-  PROVIDERS,
+  PROVIDERS as CATALOG_PROVIDERS,
   QUICK_START_EXAMPLES,
   REFERENCE_IMAGE_LIMITS,
   REFERENCE_IMAGE_MODES,
@@ -64,6 +68,7 @@ interface ReferenceUpload {
   objectKey: string
   uploadUrl: string
   uploadToken: string
+  expiresAt?: number
   mimeType: string
   size: number
 }
@@ -81,6 +86,8 @@ interface GenerationSettings {
   numCandidates: number
   maxCriticRounds: number
 }
+const DEFAULT_PROVIDER = CATALOG_PROVIDERS[0]
+const PROVIDERS = orderModelChannels(CATALOG_PROVIDERS.map(item => item.id)).map(id => CATALOG_PROVIDERS.find(item => item.id === id)!)
 const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft'
 
 Component({
@@ -90,20 +97,20 @@ Component({
     optimizationBusy: false, optimizationInputs: {} as Record<string, string>,
     logoSrc: '/images/logo.png',
     providers: PROVIDERS,
-    providerIndex: 0,
-    providerLabel: PROVIDERS[0].label,
-    providerMainModel: PROVIDERS[0].mainModel,
-    providerImageModel: PROVIDERS[0].imageModel,
-    providerGuideSteps: PROVIDERS[0].guideSteps,
-    mainModelOptions: PROVIDERS[0].mainModels,
-    mainModelIndex: getModelIndex(PROVIDERS[0].mainModels, PROVIDERS[0].mainModel),
-    mainModelLabel: getModelLabel(PROVIDERS[0].mainModels, PROVIDERS[0].mainModel),
-    imageModelOptions: PROVIDERS[0].imageModels,
-    imageModelIndex: getModelIndex(PROVIDERS[0].imageModels, PROVIDERS[0].imageModel),
-    imageModelLabel: getModelLabel(PROVIDERS[0].imageModels, PROVIDERS[0].imageModel),
-    referenceVisionModelOptions: PROVIDERS[0].visionModels,
-    referenceVisionModelIndex: getModelIndex(PROVIDERS[0].visionModels, PROVIDERS[0].visionModel),
-    referenceVisionModelLabel: getModelLabel(PROVIDERS[0].visionModels, PROVIDERS[0].visionModel),
+    providerIndex: PROVIDERS.findIndex(item => item.id === DEFAULT_PROVIDER.id),
+    providerLabel: DEFAULT_PROVIDER.label,
+    providerMainModel: DEFAULT_PROVIDER.mainModel,
+    providerImageModel: DEFAULT_PROVIDER.imageModel,
+    providerGuideSteps: DEFAULT_PROVIDER.guideSteps,
+    mainModelOptions: DEFAULT_PROVIDER.mainModels,
+    mainModelIndex: getModelIndex(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+    mainModelLabel: getModelLabel(DEFAULT_PROVIDER.mainModels, DEFAULT_PROVIDER.mainModel),
+    imageModelOptions: DEFAULT_PROVIDER.imageModels,
+    imageModelIndex: getModelIndex(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+    imageModelLabel: getModelLabel(DEFAULT_PROVIDER.imageModels, DEFAULT_PROVIDER.imageModel),
+    referenceVisionModelOptions: DEFAULT_PROVIDER.visionModels,
+    referenceVisionModelIndex: getModelIndex(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
+    referenceVisionModelLabel: getModelLabel(DEFAULT_PROVIDER.visionModels, DEFAULT_PROVIDER.visionModel),
     configurationMode: 'simple' as ConfigurationMode,
     isAdvancedMode: false,
     pipelineOptions: PIPELINE_OPTIONS,
@@ -123,7 +130,7 @@ Component({
     outputFormatIndex: 0,
     outputFormatLabel: OUTPUT_FORMATS[0].label,
     // 输出清晰度：1K 仅基础渲染；2K/4K 出图后自动精修放大。选项按 provider/图像模型过滤。
-    resolutionOptions: RESOLUTION_OPTIONS.filter((option) => supportedResolutions(PROVIDERS[0].id, PROVIDERS[0].imageModel).indexOf(option.value) >= 0),
+    resolutionOptions: RESOLUTION_OPTIONS.filter((option) => supportedResolutions(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.imageModel).indexOf(option.value) >= 0),
     resolutionIndex: 0,
     imageSize: '1K' as ImageSize,
     imageSizeLabel: RESOLUTION_OPTIONS.find((option) => option.value === '1K')!.label,
@@ -136,22 +143,26 @@ Component({
     showReferenceLibrary: false,
     libraryTaskName: 'diagram',
     referenceImageModeOptions: REFERENCE_IMAGE_MODES,
-    referenceImageMode: defaultReferenceImageMode(mainModelCanReadImages(PROVIDERS[0].id, PROVIDERS[0].mainModel)),
+    referenceImageMode: defaultReferenceImageMode(mainModelCanReadImages(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel)),
     referenceImages: [] as ReferenceImage[],
     referenceImageCount: 0,
     referenceCanAddImage: true,
+    referenceLimitHint: '',
+    referenceProcessingHint: '',
+    referenceSelectionIssue: '',
     referenceModeNote: '',
     referenceModeCanSubmit: true,
     referenceNeedsVisionModel: false,
     shouldShowReferenceModeSelector: false,
-    canSelectMainModelDirect: mainModelCanReadImages(PROVIDERS[0].id, PROVIDERS[0].mainModel),
+    canSelectMainModelDirect: mainModelCanReadImages(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel),
     referenceUploadError: '',
     isUploadingReferences: false,
-    mainModelName: PROVIDERS[0].mainModel,
-    imageModelName: PROVIDERS[0].imageModel,
-    referenceVisionModelName: PROVIDERS[0].visionModel,
+    isInspectingReferences: false,
+    mainModelName: DEFAULT_PROVIDER.mainModel,
+    imageModelName: DEFAULT_PROVIDER.imageModel,
+    referenceVisionModelName: DEFAULT_PROVIDER.visionModel,
     apiKey: '',
-    apiKeyPlaceholder: PROVIDERS[0].keyPlaceholder,
+    apiKeyPlaceholder: DEFAULT_PROVIDER.keyPlaceholder,
     categories: INFOGRAPHIC_CATEGORIES,
     categoryIndex: 0,
     categoryLabel: INFOGRAPHIC_CATEGORIES[0].label,
@@ -217,7 +228,7 @@ Component({
         if ((this as any).ownerId !== (user?.id || '')) {
           ;(this as any).ownerId = user?.id || ''; (this as any).ownerEpoch++
           this.stopPolling()
-          this.setData({ currentJobId: '', job: null, resultImages: [], statusLabel: '', error: '', referenceImages: [], referenceUploadError: '', isSubmitting: false, isUploadingReferences: false, apiKeysForSheet: {}, showGenerationSettings: false })
+          this.setData({ currentJobId: '', job: null, resultImages: [], statusLabel: '', error: '', referenceImages: [], referenceUploadError: '', isSubmitting: false, isUploadingReferences: false, isInspectingReferences: false, apiKeysForSheet: {}, showGenerationSettings: false })
         }
         this.setData({
           isLoggedIn: Boolean(user),
@@ -254,7 +265,8 @@ Component({
   },
 
   pageLifetimes: {
-    show() {
+    show() { rememberWorkPage('/pages/index/index');
+      void refreshTokenDanceConnection().then(() => this.refreshCanSubmit())
       ;(this as any).isPageVisible = true
       // tabBar 页不销毁：回到本页时若任务未到终态则恢复轮询
       if ((this as any).pollingTimer) return
@@ -270,6 +282,7 @@ Component({
   },
 
   methods: {
+    openTokenDance,
     restoreDraft() {
       try {
         const draft = wx.getStorageSync(DRAFT_STORAGE_KEY) as Record<string, unknown>
@@ -408,7 +421,7 @@ Component({
     },
     onProviderChange(event: WechatMiniprogram.PickerChange) {
       const providerIndex = readPickerIndex(event.detail.value, PROVIDERS.length)
-      const provider = PROVIDERS[providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[providerIndex] || DEFAULT_PROVIDER
       this.setData({
         providerIndex,
         providerLabel: provider.label,
@@ -508,7 +521,7 @@ Component({
 
     // provider / 图像生成模型 / 模式切换时重算清晰度可选项；当前档位不被支持时收敛到第一档
     refreshResolutionOptions() {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const activeImageModel = this.data.isAdvancedMode
         ? this.data.imageModelName.trim() || provider.imageModel
         : provider.imageModel
@@ -568,7 +581,7 @@ Component({
     },
 
     onMainModelChange(event: WechatMiniprogram.PickerChange) {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const mainModelIndex = readPickerIndex(event.detail.value, provider.mainModels.length)
       const option = provider.mainModels[mainModelIndex] || provider.mainModels[0]
       this.setData({
@@ -583,7 +596,7 @@ Component({
     },
 
     onImageModelChange(event: WechatMiniprogram.PickerChange) {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const imageModelIndex = readPickerIndex(event.detail.value, provider.imageModels.length)
       const option = provider.imageModels[imageModelIndex] || provider.imageModels[0]
       this.setData({
@@ -596,7 +609,7 @@ Component({
     },
 
     onReferenceVisionModelChange(event: WechatMiniprogram.PickerChange) {
-      const provider = PROVIDERS[this.data.providerIndex] || PROVIDERS[0]
+      const provider = PROVIDERS[this.data.providerIndex] || DEFAULT_PROVIDER
       const referenceVisionModelIndex = readPickerIndex(event.detail.value, provider.visionModels.length)
       const option = provider.visionModels[referenceVisionModelIndex] || provider.visionModels[0]
       this.setData({
@@ -676,7 +689,7 @@ Component({
     },
 
     chooseReferenceFile() {
-      if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences) return
+      if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
       wx.showActionSheet({
         itemList: ['图片 / 相册 / 拍照', 'SVG 文件'],
         success: (res) => {
@@ -692,9 +705,12 @@ Component({
     },
 
     chooseReferenceImages() {
-      const remaining = REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length
+      const epoch = (this as any).ownerEpoch
+      const current = () => epoch === (this as any).ownerEpoch && !(this as any).detached
+      if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
+      const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length
       if (remaining <= 0) {
-        this.setData({ referenceUploadError: `最多只能上传 ${REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` })
+        this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` })
         return
       }
 
@@ -702,40 +718,59 @@ Component({
         count: remaining,
         mediaType: ['image'],
         sourceType: ['album', 'camera'],
-        sizeType: ['compressed'],
-        success: (res) => {
-          const accepted: ReferenceImage[] = []
-          let error = ''
-          res.tempFiles.forEach((file, index) => {
-            const path = file.tempFilePath
-            const size = Number(file.size || 0)
-            const mimeType = mimeTypeFromPath(path)
-            if (REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
-              error = '参考图仅支持 PNG、JPG、WebP 或 SVG。'
-              return
+        sizeType: ['original'],
+        success: async (res) => {
+          if (!current()) return
+          this.setData({ isInspectingReferences: true })
+          this.refreshCanSubmit()
+          try {
+            const accepted: ReferenceImage[] = []
+            let error = ''
+            for (const [index, file] of res.tempFiles.entries()) {
+              const path = file.tempFilePath
+              const size = Number(file.size || 0)
+              let mimeType = mimeTypeFromPath(path)
+              if (REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
+                error = '参考图仅支持 PNG、JPG、WebP 或 SVG。'
+                continue
+              }
+              if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
+                error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`
+                continue
+              }
+              let dimensions: { width?: number; height?: number } = {}
+              try {
+                dimensions = await new Promise<WechatMiniprogram.GetImageInfoSuccessCallbackResult>((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }))
+              } catch { error = '无法读取图片尺寸，请重新导出静态图片。'; continue }
+              const type = String((dimensions as any).type || '').toLowerCase()
+              if (type) mimeType = type === 'jpg' || type === 'jpeg' ? 'image/jpeg' : `image/${type}`
+              if (!['image/png', 'image/jpeg', 'image/webp'].includes(mimeType)) { error = '请使用 PNG、JPG 或 WebP 静态图片。'; continue }
+              accepted.push(buildReferenceImage({
+                width: dimensions.width, height: dimensions.height,
+                id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+                path,
+                filename: filenameFromPath(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
+                mimeType,
+                size,
+              }))
             }
-            if (!size || size > REFERENCE_IMAGE_LIMITS.maxBytes) {
-              error = '单张参考图不能超过 5MB。'
-              return
-            }
-            accepted.push(buildReferenceImage({
-              id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
-              path,
-              filename: filenameFromPath(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
-              mimeType,
-              size,
-            }))
-          })
 
-          this.appendReferenceImages(accepted, error)
+            if (current()) this.appendReferenceImages(accepted, error)
+          } finally {
+            if (!current()) return
+            this.setData({ isInspectingReferences: false })
+            this.refreshCanSubmit()
+          }
         },
       })
     },
 
     chooseReferenceSvgFile() {
-      const remaining = REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length
+      const epoch = (this as any).ownerEpoch
+      if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
+      const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length
       if (remaining <= 0) {
-        this.setData({ referenceUploadError: `最多只能上传 ${REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` })
+        this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` })
         return
       }
 
@@ -744,6 +779,7 @@ Component({
         type: 'file',
         extension: ['svg'],
         success: (res) => {
+          if (epoch !== (this as any).ownerEpoch || (this as any).detached) return
           const accepted: ReferenceImage[] = []
           let error = ''
           res.tempFiles.forEach((file, index) => {
@@ -755,8 +791,8 @@ Component({
               error = '请选择 .svg 文件。'
               return
             }
-            if (!size || size > REFERENCE_IMAGE_LIMITS.maxBytes) {
-              error = '单张参考图不能超过 5MB。'
+            if (!size || size > this.activeReferencePolicy().platform.maxSvgBytes) {
+              error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxSvgBytes / 1024 / 1024}MiB。`
               return
             }
             accepted.push(buildReferenceImage({
@@ -775,11 +811,11 @@ Component({
 
     appendReferenceImages(accepted: ReferenceImage[], error: string) {
       if (accepted.length) {
-        const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, REFERENCE_IMAGE_LIMITS.maxCount)
+        const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, this.activeReferencePolicy().platform.maxCount)
         this.setData({
           referenceImages,
           referenceImageCount: referenceImages.length,
-          referenceCanAddImage: referenceImages.length < REFERENCE_IMAGE_LIMITS.maxCount,
+          referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
           referenceUploadError: error,
         })
         this.refreshReferenceModeState()
@@ -796,7 +832,7 @@ Component({
       this.setData({
         referenceImages,
         referenceImageCount: referenceImages.length,
-        referenceCanAddImage: referenceImages.length < REFERENCE_IMAGE_LIMITS.maxCount,
+        referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
         referenceUploadError: '',
       })
       this.refreshReferenceModeState()
@@ -827,6 +863,13 @@ Component({
       this.refreshCanSubmit()
     },
 
+    activeReferencePolicy() {
+      const settings = this.data.settings as GenerationSettings
+      const mode = this.data.referenceNeedsVisionModel ? 'vision' : 'main'
+      const registry: any = getModelRegistryState().registry
+      return activeReferenceUploadPolicy(registry?.referenceUpload, settings.modelRoutes?.[mode])
+    },
+
     refreshReferenceModeState() {
       const settings = this.data.settings as GenerationSettings
       const mainRoute = settings.modelRoutes?.main
@@ -845,12 +888,20 @@ Component({
         referenceModeNote: this.data.referenceImages.length ? modeState.referenceModeNote : '',
         shouldShowReferenceModeSelector: this.data.referenceImages.length > 0 && modeState.shouldShowReferenceModeSelector,
         canSelectMainModelDirect: modeState.canSelectMainModelDirect,
-        referenceNeedsVisionModel: this.data.referenceImages.length > 0 && modeState.needsVisionModel,
+        referenceNeedsVisionModel: modeState.needsVisionModel,
+      })
+      const policy = this.activeReferencePolicy()
+      this.setData({
+        referenceLimitHint: referencePolicyHint(policy),
+        referenceProcessingHint: referenceProcessingHint(policy),
+        referenceSelectionIssue: referenceUploadSelectionError(this.data.referenceImages, policy),
       })
     },
 
     async uploadReferencesForJob(): Promise<UploadedReferenceImage[]> {
       if (!this.data.referenceImages.length) return []
+      const issue = referenceUploadSelectionError(this.data.referenceImages, this.activeReferencePolicy())
+      if (issue) throw new Error(issue)
       const epoch = (this as any).ownerEpoch
       const owner = getCurrentUser()?.id || ''
       const sameOwner = () => owner === (getCurrentUser()?.id || '') && epoch === (this as any).ownerEpoch
@@ -884,7 +935,7 @@ Component({
           const upload = uploadMap.get(`${image.id}:original`)
           if (!upload || !upload.uploadUrl) throw new Error('参考图上传地址创建失败。')
           check()
-          await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType)
+          await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType, upload.expiresAt)
           check()
         }
 
@@ -935,7 +986,7 @@ Component({
     },
 
     async submitJob() {
-      if (!this.data.canSubmit || this.data.isSubmitting) return
+      if (!this.data.canSubmit || this.data.isSubmitting || this.data.isInspectingReferences) return
       if (!getCurrentUser()) { this.openAuthPanel(); return }
       const epoch = (this as any).ownerEpoch
       const current = () => epoch === (this as any).ownerEpoch && !(this as any).detached
@@ -1156,7 +1207,7 @@ Component({
         referenceImageMode: this.data.referenceImageMode,
       }, settings.maxCriticRounds)
       const apiKeys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
-      const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => Boolean(apiKeys[provider]?.trim()))
+      const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => (provider === 'tokendance' ? hasTokenDanceConnection() : Boolean(apiKeys[provider]?.trim())))
       const canSubmit = Boolean(
         hasRequiredKeys &&
           this.data.methodContent.trim().length >= 20 &&
@@ -1165,7 +1216,9 @@ Component({
           (settings.outputFormat === 'svg' || Boolean(settings.imageSize)) &&
           hasManualReferences &&
           this.data.referenceModeCanSubmit &&
+          !this.data.referenceSelectionIssue &&
           !this.data.isUploadingReferences &&
+          !this.data.isInspectingReferences &&
           !this.data.isSubmitting && !this.data.optimizationBusy,
       )
       this.setData({ canSubmit })
@@ -1179,7 +1232,7 @@ Component({
       this.setData({ showAuthPanel: false })
     },
 
-    onAuthed() {
+    onAuthed() { void refreshTokenDanceConnection().then(() => this.refreshCanSubmit());
       this.setData({ showAuthPanel: false })
     },
 
@@ -1203,13 +1256,16 @@ Component({
 })
 
 function defaultGenerationSettings(registry: ModelRegistry): GenerationSettings {
-  const simpleProvider: ModelProviderId = 'bailian'
+  const simpleProvider: ModelProviderId = registry.providers.tokendance ? 'tokendance' : 'bailian'
+  const routes = providerDefaultRoutes(simpleProvider, registry)
+  if (simpleProvider === 'tokendance' && registry.providers.tokendance?.models.some(model => model.id === 'seedream-5.0-pro' && model.selectable && model.roles.includes('image'))) routes.image = { accessProvider: simpleProvider, modelId: 'seedream-5.0-pro' }
+  const resolutions = findRegistryModel(registry, routes.image.accessProvider, routes.image.modelId)?.capabilities.resolutions as string[] | undefined
   return {
     configurationMode: 'simple',
     simpleProvider,
-    modelRoutes: providerDefaultRoutes(simpleProvider, registry),
+    modelRoutes: routes,
     outputFormat: 'png',
-    imageSize: '1K',
+    imageSize: resolutions?.includes('1K') ? '1K' : resolutions?.[0] || '',
     aspectRatio: 'auto',
     pipelineMode: 'planner_critic',
     retrievalSetting: 'none',

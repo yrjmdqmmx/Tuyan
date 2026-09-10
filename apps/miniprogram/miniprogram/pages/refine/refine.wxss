@@ -3,3 +3,5 @@
 .source-actions{display:flex;flex-wrap:wrap;gap:16rpx;margin:20rpx 0}.source-actions button{margin:0}.source-name{font-size:24rpx;color:#5b6c63;overflow-wrap:anywhere;margin:12rpx 0}.upload-status{padding:20rpx;border-radius:16rpx;background:#edf8f1;color:#157347;font-size:26rpx}.refine-result{margin-top:20rpx}.refine-preview{max-height:720rpx}
 
 .refine-page .empty-state{padding:32rpx 24rpx;min-height:0}.refine-page .section-head{flex-wrap:wrap}
+.td-refine-account{display:flex;justify-content:space-between;align-items:center;gap:16rpx;margin-bottom:20rpx;font-size:26rpx;color:#315f51}.td-refine-account button{margin:0}
+.refine-processing-note{margin:18rpx 0;font-size:22rpx;line-height:1.6;color:#65776d;overflow-wrap:anywhere}

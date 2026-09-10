@@ -161,7 +161,9 @@ test('startup config provides bounded admission and readiness defaults', () => {
     maxPerIp: 1,
   })
   assert.equal(config.readinessProbeTimeoutMs, 2000)
-  assert.equal(config.referenceImageMaxBytes, 5 * 1024 * 1024)
+  assert.equal(config.referenceImageMaxBytes, 20 * 1024 * 1024)
+  assert.equal(config.referenceImageMaxCount, 8)
+  assert.equal(config.referenceImageMaxTotalBytes, 80 * 1024 * 1024)
   assert.equal(config.providerImageMaxBytes, 20 * 1024 * 1024)
 })
 
@@ -175,8 +177,14 @@ test('startup config rejects unsafe admission and readiness bounds', () => {
     ['PAPERBANANA_MAX_JOBS_PER_IP', '9'],
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '99'],
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '10001'],
-    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(5 * 1024 * 1024 - 1)],
-    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(5 * 1024 * 1024 + 1)],
+    ['PAPERBANANA_MAX_REFERENCE_BYTES', '0'],
+    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(20 * 1024 * 1024 + 1)],
+    ['PAPERBANANA_MAX_REFERENCE_IMAGES', '9'],
+    ['PAPERBANANA_MAX_REFERENCE_IMAGES', '1.5'],
+    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', 'invalid'],
+    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', '1.5'],
+    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', '0'],
+    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', String(80 * 1024 * 1024 + 1)],
     ['PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', String(5 * 1024 * 1024 - 1)],
     ['PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', String(50 * 1024 * 1024 + 1)],
   ]

@@ -10,9 +10,9 @@
         <block wx:elif="{{item.id === 'settings'}}"><view class="setting-card" wx:for="{{settingCards}}" wx:key="name"><view class="setting-card-title">{{item.name}}</view><text class="setting-card-copy">{{item.description}}</text></view></block>
         <block wx:elif="{{item.id === 'models'}}"><view class="guide-copy">生产 registry 是模型、角色、权益、验证状态、比例和清晰度的唯一提交依据。页面先显示 API 渠道，再按模型厂商分组；不兼容模型保留可见并显示禁用原因。目录加载失败时仍可查看记录和教程，但新建、精修和 Ark 验证会关闭。</view><view class="guide-copy">“稳定”描述模型生命周期；“目录可见”不等于当前账号已能调用；Ark 的文本/视觉 probe 免费优先，图像 probe 可能计费，必须单独确认。</view></block>
         <block wx:elif="{{item.id === 'references'}}"><view class="guide-copy">参考图库使用 scope=bench、每页 12 项，支持关键词、视觉类别、研究领域和 diagram/plot 筛选。选择状态跨页保留，最多 10 项；旧查询响应不会覆盖新查询。</view><view class="guide-copy">上传参考图走 prepare → PUT → finalize，任一步失败都会 abort。上传成功后检索自动关闭，避免多个风格来源冲突。</view></block>
-        <block wx:elif="{{item.id === 'refine'}}"><view class="guide-copy">“精修”支持从相册或聊天文件选择 PNG、JPG、WebP 原图，也可选择本人历史结果。上传前检查格式、大小与像素，完成校验后才能提交。</view><view class="guide-copy">直接编辑需要图像模型密钥；分析后重绘还需要识别模型密钥。指令最多 2000 字，可先优化文字、预览后采用。比例与清晰度按所选精修模型提供。</view></block>
+        <block wx:elif="{{item.id === 'refine'}}"><view class="guide-copy">“精修”支持从相册或聊天文件选择 PNG、JPG、WebP 原图，也可选择本人历史结果。上传前检查格式、大小与像素，完成校验后才能提交。</view><view class="guide-copy">直接编辑使用图像模型；分析后重绘还使用识别模型。观猹需连接授权，其他渠道需填写相应 BYOK。指令最多 2000 字，可先优化文字、预览后采用。比例与清晰度按所选精修模型提供。</view></block>
         <block wx:elif="{{item.id === 'records'}}"><view class="guide-copy">成功或失败任务都会显示方法、图注、负向提示词、来源端、显式路线、比例、阶段与可用资产。签名 URL 只负责预览，objectKey 才是长期资产身份。</view><view class="guide-copy">容量 429 请稍后重试；RUNTIME_RESTARTED_RETRY 需要重新提交；能力和比例错误会直接引导回对应设置。</view></block>
-        <block wx:else><view class="guide-copy">BYOK API Key 只保存在当前页面内存，不写 Storage、日志或任务记录。记录页的“账户设置”支持退出、隐私说明与永久删除账号。</view><view class="guide-copy">邮箱验证需在邮件网页明确确认，小程序仅观察状态，不会自动登录。注销需要核对邮箱、重输密码及二次确认；后台处理完成后才视为注销成功。切换账号后不会显示其他账号的任务。</view></block>
+        <block wx:else><view class="guide-copy">“账户”入口管理图研登录、观猹 TokenDance 连接、余额与充值记录。图研登录与渠道授权是两件事；观猹 Key 加密留在服务端，手动 BYOK 仅驻内存，不写 Storage、日志或任务记录。账号与隐私支持退出和永久删除。</view><view class="guide-copy">邮箱验证需在邮件网页明确确认，小程序仅观察状态，不会自动登录。注销需要核对邮箱、重输密码及二次确认；后台处理完成后才视为注销成功。切换账号后不会显示其他账号的任务。</view></block>
       </view>
     </view>
   </view>
