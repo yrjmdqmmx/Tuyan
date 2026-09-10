@@ -50,6 +50,7 @@ export interface RegistryProvider {
 }
 
 export interface ModelRegistry {
+  referenceUpload?: { version: number; platform: Record<string, any> }
   providerRegionContractVersion?: number
   registryVersion: string
   routeContractVersion: number
@@ -78,7 +79,8 @@ export function normalizeModelRegistry(input: unknown): ModelRegistry {
   for (const providerId of MODEL_PROVIDER_IDS) {
     if (providerSource[providerId]) providers[providerId] = normalizeProvider(providerId, providerSource[providerId])
   }
-  return { registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers }
+  const referenceUpload = source.referenceUpload && typeof source.referenceUpload === 'object' ? asRecord(source.referenceUpload) : undefined
+  return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers }
 }
 
 function normalizeProvider(providerId: ModelProviderId, input: unknown): RegistryProvider {

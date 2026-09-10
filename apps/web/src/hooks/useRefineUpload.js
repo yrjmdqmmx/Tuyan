@@ -54,11 +54,11 @@ export default function useRefineUpload({ apiBase, health, limits, authReady, ow
       if (!current()) return;
       updateSource((value) => ({ ...value, ...dimensions }));
       const prepared = await prepareReferenceUploadRequest(apiBase, health, [{ clientId: 'refine-source', filename: file.name, mimeType: file.type, size: file.size }]);
-      uploads = prepared.uploads?.map(({ objectKey, uploadToken, mimeType, size, filename, uploadUrl }) => ({ objectKey, uploadToken, mimeType, size, filename, uploadUrl }));
+      uploads = prepared.uploads?.map(({ objectKey, uploadToken, mimeType, size, filename, uploadUrl, expiresAt }) => ({ objectKey, uploadToken, mimeType, size, filename, uploadUrl, expiresAt }));
       if (!current()) throw new DOMException('已取消上传', 'AbortError');
       if (uploads?.length !== 1 || !uploads[0].uploadUrl) throw new Error('无法获取图片上传地址，请重试。');
       setUpload({ status: 'uploading', progress: 0, error: '' });
-      await putRefineFile(uploads[0].uploadUrl, file, { signal: controller.signal, onProgress: (progress) => {
+      await putRefineFile(uploads[0].uploadUrl, file, { signal: controller.signal, expiresAt: uploads[0].expiresAt, onProgress: (progress) => {
         if (current()) setUpload({ status: 'uploading', progress, error: '' });
       } });
       if (!current()) throw new DOMException('已取消上传', 'AbortError');

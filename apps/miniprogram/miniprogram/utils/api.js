@@ -11,6 +11,7 @@ exports.uploadReferenceFile = uploadReferenceFile;
 exports.requestHeader = requestHeader;
 exports.persistCookies = persistCookies;
 exports.formatError = formatError;
+const reference_upload_policy_1 = require("./reference-upload-policy");
 const config_1 = require("./config");
 const business_errors_1 = require("./business-errors");
 function requestJson(body, options = {}) {
@@ -105,15 +106,24 @@ function postJson(url, body, options = {}) {
         });
     });
 }
-function uploadReferenceFile(filePath, uploadUrl, mimeType) {
+function uploadReferenceFile(filePath, uploadUrl, mimeType, expiresAt) {
     return new Promise((resolve, reject) => {
+        if (!(0, reference_upload_policy_1.referenceUploadTimeout)(expiresAt)) {
+            reject(new Error('参考图上传地址已过期，请重试。'));
+            return;
+        }
         wx.getFileSystemManager().readFile({
             filePath,
             success(readResult) {
+                const timeout = Math.min(600000, (0, reference_upload_policy_1.referenceUploadTimeout)(expiresAt));
+                if (!timeout) {
+                    reject(new Error('参考图上传地址已过期，请重试。'));
+                    return;
+                }
                 wx.request({
                     url: uploadUrl,
                     method: 'PUT',
-                    timeout: 60000,
+                    timeout,
                     header: {
                         'Content-Type': mimeType,
                     },

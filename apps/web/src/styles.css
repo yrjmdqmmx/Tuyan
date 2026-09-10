@@ -1818,6 +1818,8 @@ button {
 }
 
 .reference-upload-head > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
   display: grid;
   gap: 4px;
 }
@@ -3856,9 +3858,9 @@ figcaption {
     white-space: nowrap;
     flex: 0 0 auto;
     min-width: max-content;
-    min-height: 36px;
-    padding: 0 13px;
-    font-size: 13px;
+    min-height: 40px;
+    padding: 0 8px;
+    font-size: 12px;
   }
 
   .generator,
@@ -5446,3 +5448,7 @@ figcaption {
   .refine-parameters .aspect-ratio-options { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .refine-step-head button { min-height: 36px; }
 }
+
+.reference-processing-note { color: var(--muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; margin: 10px 0; }
+.reference-processing-details { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 10px 0; }
+.reference-processing-details summary { cursor: pointer; padding: 6px 0; }

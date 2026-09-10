@@ -151,3 +151,34 @@ test('mini generation and refinement use the API optimizedText contract and pres
     assert.equal(page.data[field], '正在编辑的科研说明')
   }
 })
+
+test('mini blocks submit and repeat selection while original image dimensions are pending', async () => {
+  let media, info, chooserCount = 0, requests = 0
+  const { page } = componentFrom('../miniprogram/pages/index/index.js', {
+    api: { requestJson:async()=>{requests++;throw new Error('must not submit')},formatError:error=>error.message },
+    'api-keys': {getApiKeys:()=>({bailian:'fixture-key'})},
+  }, {wx:{chooseMedia(options){chooserCount++;media=options},getImageInfo(options){info=options}}})
+  page.data.registryReady=true
+  page.data.methodContent='A scientific method with enough text for a generation request.'
+  page.data.caption='Scientific figure'
+  page.data.settings={configurationMode:'simple',outputFormat:'png',imageSize:'2K',pipelineMode:'vanilla',retrievalSetting:'none',maxCriticRounds:0,modelRoutes:{main:{accessProvider:'bailian',modelId:'qwen3.8-flash'},image:{accessProvider:'bailian',modelId:'qwen-image-2.0'},vision:{accessProvider:'bailian',modelId:'qwen3.8-flash'}}}
+  page.data.referenceModeCanSubmit=true
+  page.activeReferencePolicy=()=>({platform:{maxCount:8,maxBytes:20971520}})
+  page.refreshReferenceModeState=()=>{}
+  page.refreshRetrievalState=()=>{}
+  page.refreshCanSubmit();assert.equal(page.data.canSubmit,true)
+  page.chooseReferenceImages()
+  const inspecting=media.success({tempFiles:[{tempFilePath:'/tmp/figure.png',size:20971520}]})
+  assert.equal(page.data.isInspectingReferences,true);assert.equal(page.data.canSubmit,false)
+  page.chooseReferenceImages();page.chooseReferenceSvgFile();page.chooseReferenceFile()
+  assert.equal(chooserCount,1)
+  page.data.canSubmit=true // the handler also guards stale view state
+  await page.submitJob();assert.equal(requests,0)
+  info.success({width:3200,height:2000});await inspecting
+  assert.equal(page.data.isInspectingReferences,false);assert.equal(page.data.referenceImages.length,1);assert.equal(page.data.canSubmit,true)
+  page.chooseReferenceImages()
+  const failed=media.success({tempFiles:[{tempFilePath:'/tmp/broken.png',size:10}]})
+  info.fail(new Error('invalid'));await failed
+  assert.equal(page.data.isInspectingReferences,false);assert.equal(page.data.referenceImages.length,1)
+  assert.match(page.data.referenceUploadError,/无法读取/)
+})

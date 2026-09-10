@@ -7,6 +7,8 @@ export interface ReferenceImage {
   filename: string
   mimeType: string
   size: number
+  width?: number
+  height?: number
   sizeText: string
   canPreview: boolean
   formatText: string

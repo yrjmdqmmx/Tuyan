@@ -10,6 +10,7 @@
   </view>
   <view class="section">
     <view class="refine-route"><view><view class="field-label">当前精修能力</view><view class="refine-mode">{{refineModeLabel}}</view></view><button class="ghost-button" size="mini" bindtap="openSettings">模型与密钥</button></view>
+    <view class="refine-processing-note">{{referenceProcessingHint}}</view>
     <view class="field"><view class="field-label">精修指令</view><textarea class="textarea refine-instruction" maxlength="3000" value="{{instruction}}" placeholder="例如：放大标签、减少装饰、保持结构不变并让流程箭头更清晰。" bindinput="onInstructionInput" /><button class="registry-retry" bindtap="optimizeDescription">优化精修指令</button></view>
     <view class="refine-grid"><view><view class="field-label">目标比例</view><picker range="{{ratioOptions}}" range-key="label" value="{{ratioIndex}}" bindchange="onRatioChange"><view class="picker-value">{{ratioOptions[ratioIndex].label || '不可用'}}</view></picker></view><view><view class="field-label">清晰度</view><picker range="{{resolutionOptions}}" range-key="label" value="{{resolutionIndex}}" bindchange="onResolutionChange"><view class="picker-value">{{resolutionOptions[resolutionIndex].label || '不可用'}}</view></picker></view></view>
     <button class="primary-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitRefine">提交精修</button><view class="submit-tip" wx:if="{{!canSubmit}}">请选择支持精修的模型、来源、比例和清晰度，并填写本次可达渠道密钥。</view><view class="error-box" wx:if="{{error}}">{{error}}</view>

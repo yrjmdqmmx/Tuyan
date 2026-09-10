@@ -9,6 +9,7 @@ import { providerDefaultRoutes, requiredRefineRouteRoles, uniqueProvidersForRole
 import type { ImageAsset } from '../../utils/job-assets'
 import { normalizeJob, readLocalJobs, type Job } from '../../utils/jobs'
 import { buildRefineJobPayload } from '../../utils/refine'
+import { activeReferenceUploadPolicy, referenceProcessingHint } from '../../utils/reference-upload-policy'
 import { getCurrentUser, isSessionChecked, subscribeSession } from '../../utils/session'
 
 interface RefineSettings {
@@ -28,6 +29,7 @@ Component({
     instruction: '', ratioOptions: [] as Array<{ value: string; label: string }>, ratioIndex: 0,
     resolutionOptions: [] as Array<{ value: string; label: string }>, resolutionIndex: 0, refineMode: 'none', refineModeLabel: '暂不可用',
     canSubmit: false, isSubmitting: false, error: '', currentJobId: '', job: null as Job | null,
+    referenceProcessingHint: '',
     isLoggedIn: false, isAuthChecking: true, showAuthPanel: false,
   },
   lifetimes: {
@@ -115,6 +117,9 @@ Component({
       const refineMode = capability === 'direct-edit' && (entry?.inputModalities.includes('image') || entry?.capabilities.referenceImages === true) ? 'direct-edit' : entry?.roles.includes('image') ? 'analyze-redraw' : 'none'
       const ratioOptions = buildAspectRatioOptions({ capabilities: entry?.capabilities || {}, capabilityField: 'refineAspectRatios', modelLabel: entry?.label, resolution: (entry?.capabilities.refineResolutions as string[] | undefined)?.[0] }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }))
       const resolutionOptions = buildResolutionOptions(entry?.capabilities || {}, 'refineResolutions')
+      const consumer = refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision
+      const policy = activeReferenceUploadPolicy(registry.referenceUpload, consumer, refineMode === 'direct-edit' ? 'refine' : 'generation')
+      this.setData({ referenceProcessingHint: '单张原图，' + (refineMode === 'direct-edit' ? '直接参与编辑' : '先识图分析，再据此重绘') + '。' + consumer.modelId + '：' + referenceProcessingHint(policy) })
       this.setData({ refineMode, refineModeLabel: refineMode === 'direct-edit' ? '直接编辑' : refineMode === 'analyze-redraw' ? '分析后重绘' : '不支持精修', ratioOptions, resolutionOptions, ratioIndex: 0, resolutionIndex: 0 })
     },
     refreshCanSubmit() {

@@ -1,3 +1,4 @@
+import { activeReferenceUploadPolicy, referenceUploadSelectionError, referencePolicyHint, referenceProcessingHint } from '../../utils/reference-upload-policy'
 import { orderModelChannels } from '../../utils/model-presentation'
 import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance, optimizeTokenDanceInput } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
@@ -65,6 +66,7 @@ interface ReferenceUpload {
   objectKey: string
   uploadUrl: string
   uploadToken: string
+  expiresAt?: number
   mimeType: string
   size: number
 }
@@ -140,6 +142,9 @@ Component({
     referenceImages: [] as ReferenceImage[],
     referenceImageCount: 0,
     referenceCanAddImage: true,
+    referenceLimitHint: '',
+    referenceProcessingHint: '',
+    referenceSelectionIssue: '',
     referenceModeNote: '',
     referenceModeCanSubmit: true,
     referenceNeedsVisionModel: false,
@@ -147,6 +152,7 @@ Component({
     canSelectMainModelDirect: mainModelCanReadImages(DEFAULT_PROVIDER.id, DEFAULT_PROVIDER.mainModel),
     referenceUploadError: '',
     isUploadingReferences: false,
+    isInspectingReferences: false,
     mainModelName: DEFAULT_PROVIDER.mainModel,
     imageModelName: DEFAULT_PROVIDER.imageModel,
     referenceVisionModelName: DEFAULT_PROVIDER.visionModel,
@@ -684,7 +690,7 @@ Component({
     },
 
     chooseReferenceFile() {
-      if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences) return
+      if (!this.data.referenceCanAddImage || this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
       wx.showActionSheet({
         itemList: ['图片 / 相册 / 拍照', 'SVG 文件'],
         success: (res) => {
@@ -700,9 +706,10 @@ Component({
     },
 
     chooseReferenceImages() {
-      const remaining = REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length
+      if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
+      const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length
       if (remaining <= 0) {
-        this.setData({ referenceUploadError: `最多只能上传 ${REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` })
+        this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` })
         return
       }
 
@@ -710,40 +717,53 @@ Component({
         count: remaining,
         mediaType: ['image'],
         sourceType: ['album', 'camera'],
-        sizeType: ['compressed'],
-        success: (res) => {
-          const accepted: ReferenceImage[] = []
-          let error = ''
-          res.tempFiles.forEach((file, index) => {
-            const path = file.tempFilePath
-            const size = Number(file.size || 0)
-            const mimeType = mimeTypeFromPath(path)
-            if (REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
-              error = '参考图仅支持 PNG、JPG、WebP 或 SVG。'
-              return
+        sizeType: ['original'],
+        success: async (res) => {
+          this.setData({ isInspectingReferences: true })
+          this.refreshCanSubmit()
+          try {
+            const accepted: ReferenceImage[] = []
+            let error = ''
+            for (const [index, file] of res.tempFiles.entries()) {
+              const path = file.tempFilePath
+              const size = Number(file.size || 0)
+              const mimeType = mimeTypeFromPath(path)
+              if (REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
+                error = '参考图仅支持 PNG、JPG、WebP 或 SVG。'
+                continue
+              }
+              if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
+                error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`
+                continue
+              }
+              let dimensions: { width?: number; height?: number } = {}
+              try {
+                dimensions = await new Promise<WechatMiniprogram.GetImageInfoSuccessCallbackResult>((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }))
+              } catch { error = '无法读取图片尺寸，请重新导出静态图片。'; continue }
+              accepted.push(buildReferenceImage({
+                width: dimensions.width, height: dimensions.height,
+                id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+                path,
+                filename: filenameFromPath(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
+                mimeType,
+                size,
+              }))
             }
-            if (!size || size > REFERENCE_IMAGE_LIMITS.maxBytes) {
-              error = '单张参考图不能超过 5MB。'
-              return
-            }
-            accepted.push(buildReferenceImage({
-              id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
-              path,
-              filename: filenameFromPath(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
-              mimeType,
-              size,
-            }))
-          })
 
-          this.appendReferenceImages(accepted, error)
+            this.appendReferenceImages(accepted, error)
+          } finally {
+            this.setData({ isInspectingReferences: false })
+            this.refreshCanSubmit()
+          }
         },
       })
     },
 
     chooseReferenceSvgFile() {
-      const remaining = REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length
+      if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
+      const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length
       if (remaining <= 0) {
-        this.setData({ referenceUploadError: `最多只能上传 ${REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` })
+        this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` })
         return
       }
 
@@ -763,8 +783,8 @@ Component({
               error = '请选择 .svg 文件。'
               return
             }
-            if (!size || size > REFERENCE_IMAGE_LIMITS.maxBytes) {
-              error = '单张参考图不能超过 5MB。'
+            if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
+              error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`
               return
             }
             accepted.push(buildReferenceImage({
@@ -783,11 +803,11 @@ Component({
 
     appendReferenceImages(accepted: ReferenceImage[], error: string) {
       if (accepted.length) {
-        const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, REFERENCE_IMAGE_LIMITS.maxCount)
+        const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, this.activeReferencePolicy().platform.maxCount)
         this.setData({
           referenceImages,
           referenceImageCount: referenceImages.length,
-          referenceCanAddImage: referenceImages.length < REFERENCE_IMAGE_LIMITS.maxCount,
+          referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
           referenceUploadError: error,
         })
         this.refreshReferenceModeState()
@@ -804,7 +824,7 @@ Component({
       this.setData({
         referenceImages,
         referenceImageCount: referenceImages.length,
-        referenceCanAddImage: referenceImages.length < REFERENCE_IMAGE_LIMITS.maxCount,
+        referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
         referenceUploadError: '',
       })
       this.refreshReferenceModeState()
@@ -835,6 +855,13 @@ Component({
       this.refreshCanSubmit()
     },
 
+    activeReferencePolicy() {
+      const settings = this.data.settings as GenerationSettings
+      const mode = this.data.referenceNeedsVisionModel ? 'vision' : 'main'
+      const registry: any = getModelRegistryState().registry
+      return activeReferenceUploadPolicy(registry?.referenceUpload, settings.modelRoutes?.[mode])
+    },
+
     refreshReferenceModeState() {
       const settings = this.data.settings as GenerationSettings
       const mainRoute = settings.modelRoutes?.main
@@ -853,12 +880,20 @@ Component({
         referenceModeNote: this.data.referenceImages.length ? modeState.referenceModeNote : '',
         shouldShowReferenceModeSelector: this.data.referenceImages.length > 0 && modeState.shouldShowReferenceModeSelector,
         canSelectMainModelDirect: modeState.canSelectMainModelDirect,
-        referenceNeedsVisionModel: this.data.referenceImages.length > 0 && modeState.needsVisionModel,
+        referenceNeedsVisionModel: modeState.needsVisionModel,
+      })
+      const policy = this.activeReferencePolicy()
+      this.setData({
+        referenceLimitHint: referencePolicyHint(policy),
+        referenceProcessingHint: referenceProcessingHint(policy),
+        referenceSelectionIssue: referenceUploadSelectionError(this.data.referenceImages, policy),
       })
     },
 
     async uploadReferencesForJob(): Promise<UploadedReferenceImage[]> {
       if (!this.data.referenceImages.length) return []
+      const issue = referenceUploadSelectionError(this.data.referenceImages, this.activeReferencePolicy())
+      if (issue) throw new Error(issue)
 
       this.setData({
         isUploadingReferences: true,
@@ -885,7 +920,7 @@ Component({
         for (const image of this.data.referenceImages) {
           const upload = uploadMap.get(`${image.id}:original`)
           if (!upload || !upload.uploadUrl) throw new Error('参考图上传地址创建失败。')
-          await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType)
+          await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType, upload.expiresAt)
         }
 
         const uploaded = this.data.referenceImages.map((image) => {
@@ -935,7 +970,7 @@ Component({
     },
 
     async submitJob() {
-      if (!this.data.canSubmit || this.data.isSubmitting) return
+      if (!this.data.canSubmit || this.data.isSubmitting || this.data.isInspectingReferences) return
 
       // 生产目录是每次付费任务的唯一真相。提交前强制重新读取，失败时在任何上传或任务写入前停止。
       this.setData({ isSubmitting: true, error: '' })
@@ -1142,7 +1177,9 @@ Component({
           (settings.outputFormat === 'svg' || Boolean(settings.imageSize)) &&
           hasManualReferences &&
           this.data.referenceModeCanSubmit &&
+          !this.data.referenceSelectionIssue &&
           !this.data.isUploadingReferences &&
+          !this.data.isInspectingReferences &&
           !this.data.isSubmitting,
       )
       this.setData({ canSubmit })

@@ -1,3 +1,4 @@
+import { referenceUploadTimeout } from './reference-upload-policy'
 import { API_ENDPOINT, AUTH_BASE, AUTH_COOKIE_KEY } from './config'
 import { BusinessError, businessErrorGuidance, toBusinessError } from './business-errors'
 
@@ -107,15 +108,18 @@ export function postJson<T>(url: string, body: WechatMiniprogram.IAnyObject, opt
   })
 }
 
-export function uploadReferenceFile(filePath: string, uploadUrl: string, mimeType: string): Promise<void> {
+export function uploadReferenceFile(filePath: string, uploadUrl: string, mimeType: string, expiresAt?: number): Promise<void> {
   return new Promise((resolve, reject) => {
+    if (!referenceUploadTimeout(expiresAt)) { reject(new Error('参考图上传地址已过期，请重试。')); return }
     wx.getFileSystemManager().readFile({
       filePath,
       success(readResult) {
+        const timeout = Math.min(600000, referenceUploadTimeout(expiresAt))
+        if (!timeout) { reject(new Error('参考图上传地址已过期，请重试。')); return }
         wx.request({
           url: uploadUrl,
           method: 'PUT',
-          timeout: 60000,
+          timeout,
           header: {
             'Content-Type': mimeType,
           },
