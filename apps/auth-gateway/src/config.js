@@ -82,7 +82,16 @@ export function loadGatewayConfig(env = process.env) {
       }
     : null;
 
+  const watchaEnabled = parseBoolean(env.WATCHA_OAUTH_ENABLED);
+  const watchaScopes = [...new Set((stringValue(env.WATCHA_OAUTH_SCOPES) || 'read email').split(/\s+/))];
+  if (watchaEnabled && !emailDeliveryEnabled) throw new Error('WATCHA_OAUTH_ENABLED requires AUTH_EMAIL_DELIVERY_ENABLED');
+  if (watchaEnabled && (!watchaScopes.includes('read') || watchaScopes.some((scope) => !['read', 'email'].includes(scope)))) {
+    throw new Error('WATCHA_OAUTH_SCOPES must contain read and may contain email');
+  }
+
   return {
+    watcha: { enabled: watchaEnabled, clientId: watchaEnabled ? required(env, 'WATCHA_CLIENT_ID') : '',
+      clientSecret: watchaEnabled ? required(env, 'WATCHA_CLIENT_SECRET') : '', scopes: watchaScopes.join(' ') },
     production,
     port: boundedInteger(env.PORT, 3005, 1, 65_535),
     listenHost: stringValue(env.HOST) || '0.0.0.0',

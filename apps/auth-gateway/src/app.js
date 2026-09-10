@@ -79,7 +79,12 @@ export function createApp({
     }),
   );
 
-  app.all('/api/auth/*', createBoundedAuthHandler(auth.webHandler));
+  app.all('/api/auth/*', (request, response, next) => {
+    const path = request.path.replace(/\/+$/, '');
+    if (isMaintenance() && ((request.method === 'POST' && path.startsWith('/api/auth/watcha/'))
+      || path === '/api/auth/oauth2/callback/watcha')) return maintenanceResponse(response, config);
+    next();
+  }, createBoundedAuthHandler(auth.webHandler));
   app.use(express.json({ limit: '1mb' }));
   app.use((request, response, next) => {
     response.on('finish', () => {
@@ -153,19 +158,19 @@ export function createApp({
       const sessionEmail = normalizedEmail(session.user.email);
       const requestedEmail = normalizedEmail(request.body?.email);
       const password = String(request.body?.password || '');
-      if (!requestedEmail || !password) {
-        return response.status(400).json({ code: 400, error: 'email and password are required' });
+      const confirmationToken = String(request.body?.confirmationToken || '');
+      if (!requestedEmail || (!password && !confirmationToken)) {
+        return response.status(400).json({ code: 400, error: 'email and password or confirmationToken are required' });
       }
       if (sessionEmail !== requestedEmail) {
         return response.status(403).json({ code: 403, error: 'EMAIL_MISMATCH' });
       }
 
-      const passwordValid = await auth.verifyPassword({
-        password,
-        headers: request.headers,
-      });
+      const passwordValid = confirmationToken
+        ? await auth.consumeDeletionConfirmation?.({ confirmationToken, session })
+        : await auth.verifyPassword({ password, headers: request.headers });
       if (!passwordValid) {
-        return response.status(401).json({ code: 401, error: 'INVALID_PASSWORD' });
+        return response.status(401).json({ code: 401, error: confirmationToken ? 'WATCHA_INVALID_CONFIRMATION' : 'INVALID_PASSWORD' });
       }
 
       const userId = String(session.user.id || '');

@@ -1,3 +1,4 @@
+import { createWatchaOAuth } from './watcha-oauth.js';
 import { createAdminAccounts } from './admin-accounts.js';
 import { createAccountWriteGuard } from './account-write-guard.js';
 import { randomBytes } from 'node:crypto';
@@ -25,6 +26,8 @@ export async function createAuthRuntime(
     fromNodeHeadersImpl = fromNodeHeaders,
     directMailClientFactory = createDirectMailClient,
     logger = console,
+    watchaFetch = fetch,
+    watchaNow,
   } = {},
 ) {
   const mongoClient = new MongoClientClass(config.mongoUri);
@@ -32,7 +35,7 @@ export async function createAuthRuntime(
   const db = mongoClient.db(config.mongoDbName);
   let status = { ok: true, checkedAt: null };
   try { await ensureAccountIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
-  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'));
+  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'), () => new Date(), { mongoClient, users: db.collection('user') });
 
   const advanced = {
     useSecureCookies: config.production,
@@ -84,7 +87,14 @@ export async function createAuthRuntime(
     logger,
   });
 
+  let watcha;
+  try {
+    watcha = createWatchaOAuth({ config, db, mongoClient, limiter, transport, fetchImpl: watchaFetch, ...(watchaNow ? { now: watchaNow } : {}) });
+    await watcha.ensureIndexes();
+  } catch (error) { await mongoClient.close(); throw error; }
   const auth = betterAuthFactory({
+    plugins: [watcha.plugin],
+    account: { accountLinking: { disableImplicitLinking: true } },
     appName: 'PaperBanana',
     databaseHooks: { ...createAccountWriteGuard(db), user: {
       create: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
@@ -95,7 +105,7 @@ export async function createAuthRuntime(
     trustedOrigins: config.frontendOrigins,
     // The custom confirmation handler is the only verification endpoint.
     // Disable the library route as well, including its normalized path aliases.
-    disabledPaths: ['/verify-email'],
+    disabledPaths: ['/verify-email', '/unlink-account'],
     // Better Auth 1.6.11 includes full email addresses in several negative-path
     // log records. Application and account-email logs remain available through
     // the injected redacting logger, so disable the library logger completely.
@@ -152,8 +162,9 @@ export async function createAuthRuntime(
 
   return {
     deletionStore,
+    consumeDeletionConfirmation: watcha.consumeDeletionConfirmation,
     webHandler: createRegistrationPrivacyHandler(
-      async (request) => await verification.handler(request) || auth.handler(request),
+      async (request) => await verification.handler(request) || watcha.handle(request, (input) => auth.handler(input)),
       async (email) => Boolean(await db.collection('user').findOne(
         { email }, { projection: { _id: 1 }, collation: { locale: 'en', strength: 2 } },
       )),
@@ -303,6 +314,9 @@ async function deleteAuthUser(mongoClient, db, userId, operation) {
           _id: id, operationId: operation.operationId, leaseToken: operation.leaseToken, phase: 'auth', status: 'pending', contractVersion: 3,
         }, options);
         if (!op) throw new Error('ACCOUNT_DELETION_OPERATION_MISMATCH');
+      }
+      for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations']) {
+        await db.collection(name).deleteMany({ userId: id }, options);
       }
       await db.collection('session').deleteMany({ userId: { $in: candidates } }, options);
       await db.collection('account').deleteMany({ userId: { $in: candidates } }, options);

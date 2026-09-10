@@ -6,12 +6,15 @@ export async function deleteAccountRequest(apiBase, credentials, fetchImpl = fet
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       email: String(credentials?.email || '').trim(),
-      password: String(credentials?.password || ''),
+      ...(credentials?.confirmationToken
+        ? { confirmationToken: String(credentials.confirmationToken) }
+        : { password: String(credentials?.password || '') }),
     }),
   })
   const data = await response.json().catch(() => ({}))
   if (response.status === 202 && data?.accepted === true) return data
   if (!response.ok || Number(data?.code) !== 0 || data?.ok !== true) {
+    if (data?.error === 'WATCHA_INVALID_CONFIRMATION') throw new Error('注销确认已失效，请重新发送邮箱验证码。')
     throw new Error(data?.error || `Account deletion failed: HTTP ${response.status}`)
   }
   return data

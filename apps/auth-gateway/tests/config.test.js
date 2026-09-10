@@ -187,3 +187,13 @@ test('email delivery defaults to the Hangzhou DirectMail API and remains bounded
     fromAlias: '图研 Tuyan',
   });
 });
+
+test('Watcha defaults disabled and enabling requires credentials, mail and approved scope subset', () => {
+  assert.deepEqual(loadGatewayConfig(validEnv()).watcha, { enabled: false, clientId: '', clientSecret: '', scopes: 'read email' });
+  assert.throws(() => loadGatewayConfig(validEnv({ WATCHA_OAUTH_ENABLED: 'true' })), /AUTH_EMAIL_DELIVERY_ENABLED/);
+  const enabled = { WATCHA_OAUTH_ENABLED: 'true', AUTH_EMAIL_DELIVERY_ENABLED: 'true', ALIBABA_DIRECTMAIL_ACCESS_KEY_ID: 'fixture', ALIBABA_DIRECTMAIL_ACCESS_KEY_SECRET: 'fixture', WATCHA_CLIENT_ID: 'fixture-id', WATCHA_CLIENT_SECRET: 'fixture-secret' };
+  assert.equal(loadGatewayConfig(validEnv(enabled)).watcha.enabled, true);
+  assert.throws(() => loadGatewayConfig(validEnv({ ...enabled, WATCHA_CLIENT_SECRET: '' })), /WATCHA_CLIENT_SECRET/);
+  for (const scope of ['email', 'read profile', 'read admin']) assert.throws(() => loadGatewayConfig(validEnv({ ...enabled, WATCHA_OAUTH_SCOPES: scope })), /WATCHA_OAUTH_SCOPES/);
+  assert.equal(loadGatewayConfig(validEnv({ ...enabled, WATCHA_OAUTH_SCOPES: 'read' })).watcha.scopes, 'read');
+});

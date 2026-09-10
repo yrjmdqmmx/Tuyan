@@ -1,8 +1,8 @@
-# 观猹身份登录核对（2026-09-09 更新）
+# 观猹身份登录核对（2026-09-10 更新）
 
-结论：用户补充的官方认证文档解决了主要协议缺口，可以据此设计和开发图研登录适配。正式开放仍需要图研独立的身份登录应用获批及凭据，并确认回调登记规则、申请表客户端类型的矛盾选项。TokenDance 产品方后台和用户 API Key 授权不能代替这项身份应用申请。
+结论：官方已为 **图研 Tuyan** 签发独立身份客户端，登记 Domain 为 `https://api.paperbanana.asia`。负责人提供的官方对话确认：当前表单应选“是，有后端能安全存储 client_secret”，实际接入采用机密客户端并使用 S256 PKCE。本文不记录 client_id、client_secret 或联系方式。
 
-本次仅研究并更新记录，没有修改认证运行代码、展示登录按钮、提交申请或操作用户观猹身份。之前“未获得完整接入协议”的结论已由本记录替代。
+当前开发分支已实现 Gateway 定制 OAuth + 邮箱验证注册/显式绑定，以及 Web 登录和账号管理。功能默认关闭；生产服务器尚未开放新路由，真实回调、客户端实际权限与真实邮件尚未验收。参见 [接入设计](../superpowers/specs/2026-09-10-watcha-login-design.md) 与 [实施计划](../superpowers/plans/2026-09-10-watcha-login.md)。此前“观猹身份登录暂缓”的历史记录由本次用户继续接入的指令更新；小程序平台发布仍暂缓。
 
 ## 阅读证据
 
@@ -33,7 +33,7 @@
 
 ## 文档与表单差异
 
-1. **客户端类型选项矛盾**：题目“是否为公开客户端”下，表单选项为“是，有后端能安全存储 client_secret”与“否，必须使用 PKCE 进行认证”；这与文档中 `is_public=false` 为机密、`true` 为公开相反。图研应按实际含义申请 **机密客户端 is_public=false**，并请官方确认表单选项映射，不能只凭“是/否”提交。
+1. **客户端类型选项矛盾**：题目“是否为公开客户端”下，表单选项为“是，有后端能安全存储 client_secret”与“否，必须使用 PKCE 进行认证”；这与文档中 `is_public=false` 为机密、`true` 为公开相反。图研应按实际含义申请 **机密客户端 is_public=false**，；官方后续确认图研有后端应选第一项“是，有后端能安全存储 client_secret”，不将表单的“是”解释为 `is_public=true`。
 2. 在线“接入准备”的字段名为 **allowed_scopes**，Markdown 附件写 **scope**。前者描述应用获批范围，运行时授权请求仍为 scope；没有公开客户端管理 API，应用开通通过表单及运营处理。
 3. Domain 被称为“URI Schema”，示例却是带 scheme、host 和 port 的 origin。文档只说明 redirect_uri 与 domain 匹配，没有精确定义路径、末尾斜杠、子域、多回调或匹配算法。正式注册前应与官方核对，不套用 TokenDance 的 app_url 精确匹配规则。
 4. 在线 token 请求例子在 form Content-Type 下用 JSON 外形展示字段；附件给出实际表单编码。图研按声明的 Content-Type 与附件采用 form，不发送 JSON。
@@ -43,7 +43,7 @@
 
 图研 Auth Gateway 已使用 Better Auth + Mongo，图研账户拥有不可变 ID，Core 的 TokenDance Key 绑定该 ID。身份登录和消费授权继续分别处理，保留邮箱登录。注册来源不是渠道 Key，也不能把观猹 access_token 当成 TokenDance API Key。
 
-需要补齐三部分：
+本次实现覆盖以下三部分（此节保留设计依据）：
 
 1. **后端认证适配**：Gateway 负责创建 state/verifier、绑定浏览器和登录/绑定意图、一次性交换及读取可信 userinfo，签发既有图研会话。回调只返回允许的工作台路径，原任务上下文保留。令牌不交给 Web 或小程序，不沿用 TokenDance 的 code 交换 action。
 2. **无邮箱用户的首次接入**：本仓库 `ensureAccountIndexes` 要求非空且唯一的规范化邮箱；已安装的 Generic OAuth 插件在 email 缺失时直接返回 `email_is_missing`。因此不是加几项 provider 配置即可完成。建议首次无绑定的观猹身份进入短期服务端待完成状态，提示登录已有图研账号，或补充并验证邮箱创建图研账号。已有绑定的回访用户按绑定查找图研身份，不要求每次重新补邮箱；也不生成假邮箱来绕过索引和验证。
@@ -62,8 +62,8 @@
 | Domain | 建议由 Gateway 承接回调，候选 `https://api.paperbanana.asia`；需官方确认匹配与多环境规则 |
 | 邀请人 | 已对接官方人员的实际名称；不猜测填写 |
 
-若使用 Better Auth 通用插件，默认路径候选为 `https://api.paperbanana.asia/api/auth/oauth2/callback/watcha`；若为首次邮箱确认使用定制 Gateway 回调，路径需随最终实现固定后登记。以上均为申请/实现候选，当前服务器尚未开放这些路由。图研产品首页仍为 `https://www.paperbanana.asia/`，TokenDance 的 app_url 与 X-App-URL 不变。
+本次定制 Gateway 已固定回调为 `https://api.paperbanana.asia/api/auth/oauth2/callback/watcha`。图研产品首页仍为 `https://www.paperbanana.asia/`，TokenDance 的 app_url 与 X-App-URL 不变。
 
-后续所需材料已缩小为：图研身份应用的申请结果、正式 client_id/client_secret 的私有配置位置、获批的 domain/allowed_scopes，以及客户端类型选项和回调规则确认。无需在聊天或仓库提供明文密钥。
+专用凭据已安全保存于仓库外，实际启用需要配置 Gateway 环境变量并部署。仍待确认：完整回调路径是否被获批 Domain 接受、实际获批/授予 scopes、真实用户授权和邮件送达。`email` 缺失或没有 `email_verified` 不再是实现阻塞，系统通过图研自己的邮箱验证码确认。
 
-实施顺序建议：固定申请配置 → Gateway 协议适配与待完成注册/显式绑定 → Web 入口、账户绑定/解绑及任务返回 → 小程序可用授权方式 → 桩测试/真实身份联调 → 单独走生产部署与小程序发布。文档研究、运行代码完成、真实联调和发布是分别验收的阶段。
+本地验收使用隔离 Mongo、模拟官方 token/userinfo 响应和捕获邮件；不使用正式客户端、不发送真实邮件。代码、模拟协议测试、真实联调、部署和小程序发布分别验收。

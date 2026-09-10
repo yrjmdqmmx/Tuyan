@@ -1,5 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-10] 观猹 OAuth 身份登录接入（开发分支，未发布）— by Codex
+新增独立观猹身份登录，与 TokenDance 模型消费授权分开；保留原图研用户 ID、邮箱登录与数据归属。官方已签发图研专用客户端，凭据仅保存于仓库外私有配置。本次默认关闭，正式回调与获批 scopes 仍需联调。
+- [x] Gateway：`/api/auth/watcha/{status,start,email-code,complete,link,unlink,delete-confirmation}`，固定回调 `/api/auth/oauth2/callback/watcha`。状态包含 `available/linked/hasPassword/emailVerified/pending`；原注销接口新增可选 `confirmationToken`（一次性、绑定会话），密码确认继续兼容
+- [x] Web：弹窗授权保留工作台，首次邮箱验证码注册、已有账号明确绑定、邮箱验证码解绑与无密码账号注销。Web 仅接收完成通知，再读取服务端状态；密钥和上游令牌不进入浏览器
+- [x] 配置与生命周期：新增 `WATCHA_OAUTH_ENABLED`（默认 false）、`WATCHA_CLIENT_ID`、`WATCHA_CLIENT_SECRET`、`WATCHA_OAUTH_SCOPES`（默认 `read email`）；开启需邮件服务。唯一身份绑定、一次性 state/S256 PKCE、验证码限次/过期、注销冻结与恢复边界保护
+- [x] 独立规范与质量审阅；Gateway 148、Web 391、Watcha 隔离 Mongo 14 组及原生命周期回归通过；桌面/390px 浏览器首次注册、回访登录、原 ID 显式绑定、解绑、无密码注销与输入保留通过。见 [本地验收](docs/tokendance/watcha-login-validation-20260910.md)
+- [ ] 生产配置、部署、正式观猹授权和邮件验收；未创建支付、未调用付费模型
+- [ ] 小程序 / Android / Windows / macOS：保留原邮箱登录；新增身份入口需各端单独适配安全回调与会话接续，小程序平台发布继续暂缓。Core / Laf 无新增模型消费 action；既有用户 ID 契约兼容
+
 ### [2026-09-10] 默认模型、主导航与参考图上传 v2 生产发布完成 — by Codex
 Web、Node Core、Auth Gateway、Benchmark companion 已发布 `487e3e07bbe368ebd4ec1cfaf66373b83bae8c56`（PR #191）。Web 初始实际选中观猹 TokenDance / `seedream-5.0-pro`，账户位于生成候选图 → 任务记录 → 精修图片 → 账户 → 使用教程第四项，往返保留工作区输入和选择。原图平台额度已启用 8 张 / 20MiB / 80MiB，单边 16384px 且单张 32MP；SVG 5MiB、精修单来源。实际模型提交仍按所选消费者策略。详见 [发布记录](docs/releases/2026-09-10-reference-upload.md) 和 [结构化证据](docs/releases/2026-09-10-reference-upload-evidence.json)。
 - [x] 发布门禁：最终 CI、三轮自动评审的 12 项修正及最后差异复核、固定镜像、正常 production 审批、HK 和 Pages 部署成功；不宣称第四轮自动评审通过

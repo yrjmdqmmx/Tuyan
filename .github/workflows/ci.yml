@@ -39,6 +39,8 @@ jobs:
       - run: pnpm --filter @paperbanana/auth-gateway test
       - name: Account lifecycle with disposable Mongo replica set
         run: apps/auth-gateway/tests/integration/run-account-lifecycle.sh
+      - name: Watcha identity and account races with disposable Mongo replica set
+        run: apps/auth-gateway/tests/integration/run-watcha.sh
       - name: Admin operations with real auth and disposable Mongo replica set
         run: apps/paperbanana-api/tests/integration/run-admin-operations.sh
       - name: TokenDance encrypted recovery and payments with disposable Mongo
