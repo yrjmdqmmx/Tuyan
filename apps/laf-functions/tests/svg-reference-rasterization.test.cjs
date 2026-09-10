@@ -21,7 +21,7 @@ assert.ok(
 );
 
 assert.ok(
-  source.includes('analysisObjectKeyForSvg'),
+  source.includes('image.analysisObjectKey = key'),
   'Rasterized SVG references should be saved back to bucket as analysisObjectKey for records and model input.',
 );
 

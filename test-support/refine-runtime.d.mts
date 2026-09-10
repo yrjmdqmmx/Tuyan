@@ -1,6 +1,7 @@
 import type { memoryDb } from './memory-db.mjs';
+import type { ReferenceSubmissionPolicy } from '../packages/api/src/reference-upload.js';
 
-export function createRefineRuntime(options?: { port?: number; providerDelay?: number; tokenDance?: boolean }): Promise<{
+export function createRefineRuntime(options?: { port?: number; providerDelay?: number; tokenDance?: boolean; frontendOrigin?: string }): Promise<{
   baseUrl: string;
   db: ReturnType<typeof memoryDb>;
   objects: Map<string, { bytes: Buffer; mimeType: string }>;
@@ -17,6 +18,12 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
     callTextModel(...args: any[]): Promise<string>;
     callVisionModel(...args: any[]): Promise<string>;
     callImageModel(...args: any[]): Promise<string>;
+    buildVisionImageInputs(images: any[], jobId?: string, route?: {accessProvider: string; modelId: string}): Promise<any[]>;
+    referenceSubmissionPolicy(provider: string, model: string, workflow?: string): ReferenceSubmissionPolicy;
+    normalizeReferenceForModel(bytes: Buffer, mimeType: string, policy: ReferenceSubmissionPolicy, inspectOnly?: boolean): Promise<{bytes: Buffer; mimeType: string; width: number; height: number; changed: boolean}>;
+    checkedReferenceRequest(provider: string, model: string, body: unknown): string;
+    withReferenceProcessing<T>(work: () => Promise<T>): Promise<T>;
+    referenceProcessingState(): {active: number; peak: number};
   };
   invoke(body: Record<string, unknown>): Promise<any>;
   failProvider(value: boolean): void;

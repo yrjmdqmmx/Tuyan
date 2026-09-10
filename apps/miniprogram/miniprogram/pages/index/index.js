@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const reference_upload_policy_1 = require("../../utils/reference-upload-policy");
 const model_presentation_1 = require("../../utils/model-presentation");
 const tokendance_1 = require("../../utils/tokendance");
 const provider_regions_1 = require("../../utils/provider-regions");
@@ -73,6 +74,9 @@ Component({
         referenceImages: [],
         referenceImageCount: 0,
         referenceCanAddImage: true,
+        referenceLimitHint: '',
+        referenceProcessingHint: '',
+        referenceSelectionIssue: '',
         referenceModeNote: '',
         referenceModeCanSubmit: true,
         referenceNeedsVisionModel: false,
@@ -631,47 +635,56 @@ Component({
             });
         },
         chooseReferenceImages() {
-            const remaining = constants_1.REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length;
+            const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length;
             if (remaining <= 0) {
-                this.setData({ referenceUploadError: `最多只能上传 ${constants_1.REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` });
+                this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` });
                 return;
             }
             wx.chooseMedia({
                 count: remaining,
                 mediaType: ['image'],
                 sourceType: ['album', 'camera'],
-                sizeType: ['compressed'],
-                success: (res) => {
+                sizeType: ['original'],
+                success: async (res) => {
                     const accepted = [];
                     let error = '';
-                    res.tempFiles.forEach((file, index) => {
+                    for (const [index, file] of res.tempFiles.entries()) {
                         const path = file.tempFilePath;
                         const size = Number(file.size || 0);
                         const mimeType = (0, reference_files_1.mimeTypeFromPath)(path);
                         if (constants_1.REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
                             error = '参考图仅支持 PNG、JPG、WebP 或 SVG。';
-                            return;
+                            continue;
                         }
-                        if (!size || size > constants_1.REFERENCE_IMAGE_LIMITS.maxBytes) {
-                            error = '单张参考图不能超过 5MB。';
-                            return;
+                        if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
+                            error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`;
+                            continue;
+                        }
+                        let dimensions = {};
+                        try {
+                            dimensions = await new Promise((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }));
+                        }
+                        catch {
+                            error = '无法读取图片尺寸，请重新导出静态图片。';
+                            continue;
                         }
                         accepted.push((0, reference_files_1.buildReferenceImage)({
+                            width: dimensions.width, height: dimensions.height,
                             id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
                             path,
                             filename: (0, reference_files_1.filenameFromPath)(path, accepted.length + this.data.referenceImages.length + 1, mimeType),
                             mimeType,
                             size,
                         }));
-                    });
+                    }
                     this.appendReferenceImages(accepted, error);
                 },
             });
         },
         chooseReferenceSvgFile() {
-            const remaining = constants_1.REFERENCE_IMAGE_LIMITS.maxCount - this.data.referenceImages.length;
+            const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length;
             if (remaining <= 0) {
-                this.setData({ referenceUploadError: `最多只能上传 ${constants_1.REFERENCE_IMAGE_LIMITS.maxCount} 张参考图。` });
+                this.setData({ referenceUploadError: `最多只能上传 ${this.activeReferencePolicy().platform.maxCount} 张参考图。` });
                 return;
             }
             wx.chooseMessageFile({
@@ -690,8 +703,8 @@ Component({
                             error = '请选择 .svg 文件。';
                             return;
                         }
-                        if (!size || size > constants_1.REFERENCE_IMAGE_LIMITS.maxBytes) {
-                            error = '单张参考图不能超过 5MB。';
+                        if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
+                            error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`;
                             return;
                         }
                         accepted.push((0, reference_files_1.buildReferenceImage)({
@@ -708,11 +721,11 @@ Component({
         },
         appendReferenceImages(accepted, error) {
             if (accepted.length) {
-                const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, constants_1.REFERENCE_IMAGE_LIMITS.maxCount);
+                const referenceImages = [...this.data.referenceImages, ...accepted].slice(0, this.activeReferencePolicy().platform.maxCount);
                 this.setData({
                     referenceImages,
                     referenceImageCount: referenceImages.length,
-                    referenceCanAddImage: referenceImages.length < constants_1.REFERENCE_IMAGE_LIMITS.maxCount,
+                    referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
                     referenceUploadError: error,
                 });
                 this.refreshReferenceModeState();
@@ -729,7 +742,7 @@ Component({
             this.setData({
                 referenceImages,
                 referenceImageCount: referenceImages.length,
-                referenceCanAddImage: referenceImages.length < constants_1.REFERENCE_IMAGE_LIMITS.maxCount,
+                referenceCanAddImage: referenceImages.length < this.activeReferencePolicy().platform.maxCount,
                 referenceUploadError: '',
             });
             this.refreshReferenceModeState();
@@ -758,6 +771,13 @@ Component({
             this.refreshReferenceModeState();
             this.refreshCanSubmit();
         },
+        activeReferencePolicy() {
+            var _a;
+            const settings = this.data.settings;
+            const mode = this.data.referenceNeedsVisionModel ? 'vision' : 'main';
+            const registry = (0, model_registry_store_1.getModelRegistryState)().registry;
+            return (0, reference_upload_policy_1.activeReferenceUploadPolicy)(registry === null || registry === void 0 ? void 0 : registry.referenceUpload, (_a = settings.modelRoutes) === null || _a === void 0 ? void 0 : _a[mode]);
+        },
         refreshReferenceModeState() {
             var _a;
             const settings = this.data.settings;
@@ -777,12 +797,21 @@ Component({
                 referenceModeNote: this.data.referenceImages.length ? modeState.referenceModeNote : '',
                 shouldShowReferenceModeSelector: this.data.referenceImages.length > 0 && modeState.shouldShowReferenceModeSelector,
                 canSelectMainModelDirect: modeState.canSelectMainModelDirect,
-                referenceNeedsVisionModel: this.data.referenceImages.length > 0 && modeState.needsVisionModel,
+                referenceNeedsVisionModel: modeState.needsVisionModel,
+            });
+            const policy = this.activeReferencePolicy();
+            this.setData({
+                referenceLimitHint: (0, reference_upload_policy_1.referencePolicyHint)(policy),
+                referenceProcessingHint: (0, reference_upload_policy_1.referenceProcessingHint)(policy),
+                referenceSelectionIssue: (0, reference_upload_policy_1.referenceUploadSelectionError)(this.data.referenceImages, policy),
             });
         },
         async uploadReferencesForJob() {
             if (!this.data.referenceImages.length)
                 return [];
+            const issue = (0, reference_upload_policy_1.referenceUploadSelectionError)(this.data.referenceImages, this.activeReferencePolicy());
+            if (issue)
+                throw new Error(issue);
             this.setData({
                 isUploadingReferences: true,
                 referenceUploadError: '',
@@ -1059,6 +1088,7 @@ Component({
                 (settings.outputFormat === 'svg' || Boolean(settings.imageSize)) &&
                 hasManualReferences &&
                 this.data.referenceModeCanSubmit &&
+                !this.data.referenceSelectionIssue &&
                 !this.data.isUploadingReferences &&
                 !this.data.isSubmitting);
             this.setData({ canSubmit });

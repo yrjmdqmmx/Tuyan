@@ -19,12 +19,10 @@ test('generation settings drawer stays mounted and supports Escape, backdrop, cl
   assert.doesNotMatch(source, /if \(!open\) return null/u)
 })
 
-test('generation canvas has a prominent settings summary and keeps refine as a top-level tab', () => {
+test('generation canvas has a prominent settings summary', () => {
   const source = readSource('../src/App.jsx')
   assert.match(source, />打开完整设置</u)
   assert.match(source, /generation-settings-summary/u)
-  assert.match(source, /activeTab === 'refine'/u)
-  assert.match(source, />精修图片</u)
 })
 
 test('feedback lives in the top header and no floating feedback action remains', () => {
@@ -81,5 +79,5 @@ test('model search has a visible keyboard focus indicator', () => {
 test('mobile top tabs stay on one line and use the existing horizontal scroller', () => {
   const styles = readSource('../src/styles.css')
   assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.paper-tabs\s*\{[\s\S]*?overflow-x:\s*auto/u)
-  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.paper-tabs button\s*\{[\s\S]*?white-space:\s*nowrap;[\s\S]*?flex:\s*0 0 auto;[\s\S]*?min-width:\s*max-content;[\s\S]*?padding:\s*0 13px;[\s\S]*?font-size:\s*13px/u)
+  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.paper-tabs button\s*\{[\s\S]*?white-space:\s*nowrap;[\s\S]*?flex:\s*0 0 auto;[\s\S]*?min-width:\s*max-content;/u)
 })

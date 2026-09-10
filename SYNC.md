@@ -1,5 +1,15 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-10] 参考图上传 v2：原文件与模型提交额度分离 — by Codex
+共享契约新增 `referenceUpload={version:2,checkedAt,platform}`、模型 `capabilities.referenceSubmission`，并将 `refineUpload` 升级为 v2。平台默认原图 8 张、单张 20MiB、合计 80MiB、单边 16384px/32MP；SVG 原文件仍 5MiB 且文字需转曲，精修仍单来源。实际提交数量、字节、尺寸按读取图片的 main/vision/image 路由决定；不把生图模型多图能力误用于提示词规划。旧客户端字段保留，新客户端连接旧后端按旧额度。新增 `PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES`；已有生产 3/5MiB 环境值需要发布时显式调整。Gateway finalize 超时 40s，OSS 直传不扩大 JSON body。详见 [核查、方案与验证](docs/reference-upload/2026-09-10-audit.md)。
+- [x] Core / Laf：数量、单图、总量、尺寸、实际解码及模型请求预算；每次一个图片处理，忙时可重试；保持生命周期/归属校验，修复 vanilla 主模型读图链路
+- [x] Web：最多两个并行 PUT，动态额度/处理提示，模型切换保留文件，账户往返保留输入和模型；桌面/手机浏览器验收
+- [x] 微信小程序源码 / 编译 JS：原图选择、尺寸/合计校验、注册表字段和模型提示，精修按真实消费者显示；类型检查及契约测试
+- [x] 共享策略 / 生成器 / CI 漂移检查 / 部署默认配置；静态 21 渠道 385 个型号/工作流策略映射（不等于供应商全量实测）
+- [ ] Core / Gateway / Web 生产发布、环境值更新及真实 OSS 大文件验收（本轮未部署）
+- [ ] 真实供应商调用、未公布额度确认及科研文字质量验收；微信开发者工具/真机和小程序发布（沿用暂缓）
+
+
 ### [2026-09-09] 观猹 TokenDance 生产发布完成 — by Codex
 Web、Node Core、Auth Gateway、Benchmark companion 已发布 `2c518f97c06c3fc0149c299244c3489db232b531`（PR #188/#189）；SG 仅增加 tokendance.space 精确出口规则。账户工作区、62 个接入型号、渠道置顶与目录 v18 同步上线。修复目录预检恢复、retryAt 入队保护、重新授权后订单查询及小程序优化结果契约。用户授权 Key 使用服务器稳定加密主密钥，未迁移本地 Key；管理价目仍缺独立凭据，观猹身份登录继续暂缓。
 - [x] 生产发布：主线 CI、自动评审、固定镜像、production 审批、香港后端和 Pages 成功；5 个服务健康，Core/companion provenance 一致，Bench 执行关闭

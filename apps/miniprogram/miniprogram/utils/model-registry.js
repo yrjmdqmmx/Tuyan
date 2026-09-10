@@ -26,7 +26,8 @@ function normalizeModelRegistry(input) {
         if (providerSource[providerId])
             providers[providerId] = normalizeProvider(providerId, providerSource[providerId]);
     }
-    return { registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers };
+    const referenceUpload = source.referenceUpload && typeof source.referenceUpload === 'object' ? asRecord(source.referenceUpload) : undefined;
+    return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers };
 }
 function normalizeProvider(providerId, input) {
     const source = asRecord(input);

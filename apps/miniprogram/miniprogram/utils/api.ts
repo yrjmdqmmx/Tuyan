@@ -115,7 +115,7 @@ export function uploadReferenceFile(filePath: string, uploadUrl: string, mimeTyp
         wx.request({
           url: uploadUrl,
           method: 'PUT',
-          timeout: 60000,
+          timeout: 120000,
           header: {
             'Content-Type': mimeType,
           },

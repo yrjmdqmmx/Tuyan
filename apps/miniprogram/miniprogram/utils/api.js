@@ -113,7 +113,7 @@ function uploadReferenceFile(filePath, uploadUrl, mimeType) {
                 wx.request({
                     url: uploadUrl,
                     method: 'PUT',
-                    timeout: 60000,
+                    timeout: 120000,
                     header: {
                         'Content-Type': mimeType,
                     },

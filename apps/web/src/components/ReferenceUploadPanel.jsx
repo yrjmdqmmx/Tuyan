@@ -1,21 +1,21 @@
 import { FileImage, UploadCloud, X } from 'lucide-react';
-import { REFERENCE_IMAGE_LIMITS } from '../constants';
+import { activeReferenceUploadPolicy, referencePolicyHint, referenceProcessingHint } from '../lib/referenceUploadPolicy';
 
-export default function ReferenceUploadPanel({ images, error, disabled, isUploading, retrievalBlocked = false, onAddFiles, onRemove }) {
+export default function ReferenceUploadPanel({ images, policy = activeReferenceUploadPolicy(null, null), error, disabled, isUploading, retrievalBlocked = false, onAddFiles, onRemove }) {
   const uploadDisabled = disabled || isUploading || retrievalBlocked;
   return (
     <section className="reference-upload-panel">
       <div className="reference-upload-head">
         <div>
           <strong>参考图</strong>
-          <span>PNG/JPG/WebP/SVG，最多 {REFERENCE_IMAGE_LIMITS.maxCount} 张，单张 5MB。</span>
+          <span>PNG/JPG/WebP/SVG。{referencePolicyHint(policy)}</span>
         </div>
         <label className={`reference-upload-button ${uploadDisabled ? 'disabled' : ''}`}>
           <UploadCloud size={16} />
           {isUploading ? '上传中' : '选择图片'}
           <input
             type="file"
-            accept={REFERENCE_IMAGE_LIMITS.accept}
+            accept={policy.platform.accept}
             multiple
             disabled={uploadDisabled}
             onChange={(event) => {
@@ -30,6 +30,7 @@ export default function ReferenceUploadPanel({ images, error, disabled, isUpload
         </label>
       </div>
 
+      <details className="reference-processing-details"><summary>模型限制与图片处理</summary><p className="reference-processing-note">{referenceProcessingHint(policy)}</p></details>
       {retrievalBlocked ? <div className="reference-upload-error">请先将检索设置切换为“不使用检索”，再上传参考图。系统不会自动更改当前检索选择。</div> : null}
       {error ? <div className="reference-upload-error">{error}</div> : null}
 

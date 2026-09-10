@@ -95,3 +95,13 @@ try {
   Date.now = () => Date.parse('2026-10-09T16:00:00Z')
   assert.equal(partitionRegistryModels(zoned, { role: 'main' }).incompatible.length, 1)
 } finally { Date.now = originalNow }
+
+const uploadPolicy = require('../miniprogram/utils/reference-upload-policy.js')
+const withUpload = normalizeModelRegistry({ ...registry(), referenceUpload: uploadPolicy.referenceUploadContract() })
+assert.equal(withUpload.referenceUpload.platform.maxTotalBytes, 80 * 1024 * 1024)
+const referenceFiles = Array.from({length:8}, () => ({size: 6 * 1024 * 1024}))
+const qwenPolicy = uploadPolicy.activeReferenceUploadPolicy(withUpload.referenceUpload, {accessProvider:'tokendance', modelId:'qwen3.8-flash'})
+assert.equal(uploadPolicy.referenceUploadSelectionError(referenceFiles, qwenPolicy), '')
+const stricter = uploadPolicy.activeReferenceUploadPolicy(withUpload.referenceUpload, {accessProvider:'zhipu',modelId:'glm-4v-flash'})
+assert.match(uploadPolicy.referenceUploadSelectionError(referenceFiles, stricter), /文件已保留/)
+assert.equal(referenceFiles.length, 8)

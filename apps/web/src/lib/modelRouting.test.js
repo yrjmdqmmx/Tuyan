@@ -5,6 +5,7 @@ import {
   arkProbesForRoles,
   buildModelSubmission,
   clearArkVerificationForRole,
+  DEFAULT_WEB_PROVIDER,
   firstInvalidRequiredRoute,
   missingArkVerifications,
   nextArkVerificationBatch,
@@ -15,6 +16,30 @@ import {
   uniqueProvidersForRoles,
 } from './modelRouting.js'
 import { PROVIDERS } from '../constants.js'
+import { STATIC_MODEL_REGISTRY } from './staticModelCatalog.js'
+
+test('Web defaults submit the exact TokenDance Pro route before and after the live catalog arrives', () => {
+  assert.equal(DEFAULT_WEB_PROVIDER, 'tokendance')
+  for (const live of [null, { routeContractVersion: 1, providers: STATIC_MODEL_REGISTRY }]) {
+    const routes = providerDefaultRoutes(DEFAULT_WEB_PROVIDER, live, PROVIDERS)
+    assert.deepEqual(routes.image, { accessProvider: 'tokendance', modelId: 'seedream-5.0-pro' })
+    const submission = buildModelSubmission({ configurationMode: 'simple', modelRoutes: routes, registry: live })
+    assert.equal(submission.provider, 'tokendance')
+    assert.equal(submission.imageGenModelName, 'seedream-5.0-pro')
+  }
+  assert.equal(STATIC_MODEL_REGISTRY.tokendance.defaults.image, 'seedream-5.0-lite', 'Web does not mutate the shared catalog')
+})
+
+test('Web defaults respect live availability and explicit Lite selections remain unchanged', () => {
+  const live = { routeContractVersion: 1, providers: structuredClone(STATIC_MODEL_REGISTRY) }
+  const explicit = providerDefaultRoutes('tokendance', live, PROVIDERS)
+  explicit.image.modelId = 'seedream-5.0-lite'
+  assert.equal(buildModelSubmission({ configurationMode: 'advanced', modelRoutes: explicit, registry: live }).imageGenModelName, 'seedream-5.0-lite')
+  live.providers.tokendance.models.find(model => model.id === 'seedream-5.0-pro').selectable = false
+  assert.equal(providerDefaultRoutes('tokendance', live, PROVIDERS).image.modelId, 'seedream-5.0-lite')
+  live.providers.tokendance.models = live.providers.tokendance.models.filter(model => model.id !== 'seedream-5.0-pro')
+  assert.equal(providerDefaultRoutes('tokendance', live, PROVIDERS).image.modelId, 'seedream-5.0-lite')
+})
 
 const fallbackProviders = {
   openai: { mainModel: 'fallback-main', imageModel: 'fallback-image', visionModel: 'fallback-vision' },

@@ -325,7 +325,7 @@ export function createApp({
               userEmail: principal.userEmail,
             },
             context,
-            td ? { authUserId: principal.userId } : {},
+            { ...(td ? { authUserId: principal.userId } : {}), ...(action === 'finalizeReferenceUpload' ? { timeoutMs: 40_000 } : {}) },
           ),
         );
       }

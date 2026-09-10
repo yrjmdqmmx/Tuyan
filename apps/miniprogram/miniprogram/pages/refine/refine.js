@@ -10,6 +10,7 @@ const model_registry_store_1 = require("../../utils/model-registry-store");
 const model_routing_1 = require("../../utils/model-routing");
 const jobs_1 = require("../../utils/jobs");
 const refine_1 = require("../../utils/refine");
+const reference_upload_policy_1 = require("../../utils/reference-upload-policy");
 const session_1 = require("../../utils/session");
 Component({
     data: {
@@ -20,6 +21,7 @@ Component({
         instruction: '', ratioOptions: [], ratioIndex: 0,
         resolutionOptions: [], resolutionIndex: 0, refineMode: 'none', refineModeLabel: '暂不可用',
         canSubmit: false, isSubmitting: false, error: '', currentJobId: '', job: null,
+        referenceProcessingHint: '',
         isLoggedIn: false, isAuthChecking: true, showAuthPanel: false,
     },
     lifetimes: {
@@ -138,6 +140,9 @@ Component({
             const refineMode = capability === 'direct-edit' && ((entry === null || entry === void 0 ? void 0 : entry.inputModalities.includes('image')) || (entry === null || entry === void 0 ? void 0 : entry.capabilities.referenceImages) === true) ? 'direct-edit' : (entry === null || entry === void 0 ? void 0 : entry.roles.includes('image')) ? 'analyze-redraw' : 'none';
             const ratioOptions = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, capabilityField: 'refineAspectRatios', modelLabel: entry === null || entry === void 0 ? void 0 : entry.label, resolution: (_a = entry === null || entry === void 0 ? void 0 : entry.capabilities.refineResolutions) === null || _a === void 0 ? void 0 : _a[0] }).filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
             const resolutionOptions = (0, aspect_ratios_1.buildResolutionOptions)((entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, 'refineResolutions');
+            const consumer = refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision;
+            const policy = (0, reference_upload_policy_1.activeReferenceUploadPolicy)(registry.referenceUpload, consumer, refineMode === 'direct-edit' ? 'refine' : 'generation');
+            this.setData({ referenceProcessingHint: '单张原图，' + (refineMode === 'direct-edit' ? '直接参与编辑' : '先识图分析，再据此重绘') + '。' + consumer.modelId + '：' + (0, reference_upload_policy_1.referenceProcessingHint)(policy) });
             this.setData({ refineMode, refineModeLabel: refineMode === 'direct-edit' ? '直接编辑' : refineMode === 'analyze-redraw' ? '分析后重绘' : '不支持精修', ratioOptions, resolutionOptions, ratioIndex: 0, resolutionIndex: 0 });
         },
         refreshCanSubmit() {

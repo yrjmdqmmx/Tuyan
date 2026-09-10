@@ -15,7 +15,7 @@ const { build } = require('esbuild');
 const sharp = require('sharp');
 const express = require('express');
 
-export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false } = {}) {
+export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, frontendOrigin = 'http://127.0.0.1:5173' } = {}) {
   const db = memoryDb();
   const objects = new Map();
   const prepared = new Map();
@@ -86,8 +86,9 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     providerCalls.push({ url, options });
     if (providerDelay) await new Promise(resolve => setTimeout(resolve, providerDelay));
     if (providerFailure) return Response.json({ error: { message: 'Local provider failure fixture' } }, { status: 400 });
+    if (url === 'https://api.openai.com/v1/responses') return Response.json({output_text: 'A scientific figure preserving the reference labels and connections.'});
     if (url.includes('/chat/completions')) return Response.json({ choices: [{ message: { content: '需要调整：放大标签。需要保留：原有文字、配色和布局；其他内容保持不变。' } }] });
-    if (url === 'https://api.openai.com/v1/images/edits') return Response.json({ data: [{ b64_json: output.toString('base64') }] });
+    if (['https://api.openai.com/v1/images/edits', 'https://api.openai.com/v1/images/generations'].includes(url)) return Response.json({ data: [{ b64_json: output.toString('base64') }] });
     if (url.includes('multimodal-generation/generation')) {
       objects.set('fixture-output.png', { bytes: output, mimeType: 'image/png' });
       return Response.json({ output: { choices: [{ message: { content: [{ image: baseUrl + '/objects/fixture-output.png' }] } }] } });
@@ -111,13 +112,13 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     app.post('/fixture/balance-failure',(_req,res)=>{tdPaid=false;tdFailure='top_up_balance';res.json({fixture:true,paid:false})});
   }
   app.use('/objects', (req, res, next) => {
-    res.set('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+    res.set('Access-Control-Allow-Origin', frontendOrigin);
     res.set('Access-Control-Allow-Methods', 'GET,PUT,OPTIONS');
     res.set('Access-Control-Allow-Headers', 'Content-Type');
     if (req.method === 'OPTIONS') return res.sendStatus(204);
     next();
   });
-  app.put('/objects/*key', express.raw({ type: '*/*', limit: '6mb' }), (req, res) => {
+  app.put('/objects/*key', express.raw({ type: '*/*', limit: '21mb' }), (req, res) => {
     const key = req.params.key.join('/');
     if (!prepared.has(key)) return res.sendStatus(403);
     objects.set(key, { bytes: req.body, mimeType: req.get('content-type') });
@@ -129,7 +130,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     res.type(object.mimeType).send(object.bytes);
   });
   const config = {
-    production: false, trustProxy: 1, frontendOrigins: ['http://127.0.0.1:5173'], adminUserIds: new Set(), adminToken: 'local-test-admin',
+    production: false, trustProxy: 1, frontendOrigins: [frontendOrigin], adminUserIds: new Set(), adminToken: 'local-test-admin',
     guestCookie: { name: 'refine-local-guest', secret: 'local-only-guest-secret-thirty-two-characters', ttlSeconds: 3600, secure: false },
     backend: { mode: 'node' }, maintenance: { retryAfterSeconds: 120 },
     oss: { bucket: 'paperbanana-hk', publicEndpoint: 'https://oss-cn-hongkong.aliyuncs.com', allowLegacyExternalRefineUrl: false },

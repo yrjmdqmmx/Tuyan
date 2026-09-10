@@ -69,9 +69,9 @@ test('upload tracks actual bytes, waits for finalize, supports retry, replacemen
 test('format, byte and dimension validation fails before upload and an invalid replacement preserves the ready original', async () => {
   const selected = refineUploadLimits({ ...limits, modelMaxBytes: { 'channel/model': 1024 } }, { accessProvider: 'channel', modelId: 'model' })
   assert.equal(selected.maxBytes, 1024)
-  assert.throws(() => validateRefineFile({ type: 'image/png', size: 1025 }, selected), /MB/)
+  assert.throws(() => validateRefineFile({ type: 'image/png', size: 1025 }, selected), /MiB/)
   assert.throws(() => validateRefineFile({ type: 'image/svg+xml', size: 100 }, limits), /PNG/)
-  assert.throws(() => validateRefineFile({ type: 'image/png', size: limits.maxBytes + 1 }, limits), /MB/)
+  assert.throws(() => validateRefineFile({ type: 'image/png', size: limits.maxBytes + 1 }, limits), /MiB/)
   assert.throws(() => validateRefineDimensions({ width: 17000, height: 1 }, limits), /尺寸超限/)
   assert.throws(() => validateRefineDimensions({ width: 8000, height: 8000 }, limits), /尺寸超限/)
   const { hook, requests } = uploadHarness()

@@ -34,6 +34,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
+      - name: Shared reference upload policy stays synchronized
+        run: node scripts/sync-reference-upload.mjs --check
       - run: pnpm --filter @paperbanana/auth-gateway test
       - name: Account lifecycle with disposable Mongo replica set
         run: apps/auth-gateway/tests/integration/run-account-lifecycle.sh

@@ -61,9 +61,12 @@
 
     <view class="reference-shell">
       <view class="reference-upload-head">
-        <view><view class="field-label">参考来源</view><view class="field-tip">上传参考图与图库检索互斥；所有权和文件类型会由 Gateway 校验。</view></view>
+        <view><view class="field-label">参考来源</view><view class="field-tip">上传参考图用于识图与提示词规划，和图库检索二选一。</view></view>
         <button wx:if="{{!showReferenceLibrary}}" class="ghost-button" size="mini" disabled="{{!referenceCanAddImage || isSubmitting || isUploadingReferences}}" bindtap="chooseReferenceFile">{{isUploadingReferences ? '上传中' : '添加参考图'}}</button>
       </view>
+      <view class="field-tip">{{referenceLimitHint}}</view>
+      <view class="field-tip">{{referenceProcessingHint}}</view>
+      <view wx:if="{{referenceSelectionIssue}}" class="error-box">{{referenceSelectionIssue}}</view>
       <view class="reference-mode-chip" wx:if="{{showReferenceLibrary}}">当前使用参考图库</view>
       <view class="reference-preview-grid" wx:if="{{referenceImages.length}}">
         <view class="reference-card" wx:for="{{referenceImages}}" wx:key="id">

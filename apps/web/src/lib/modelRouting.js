@@ -1,5 +1,7 @@
 import { normalizeProviderRegions } from './providerRegions.js'
 export const MODEL_ROUTE_ROLES = Object.freeze(['main', 'image', 'vision'])
+export const DEFAULT_WEB_PROVIDER = 'tokendance'
+const DEFAULT_TOKENDANCE_IMAGE_MODEL = 'seedream-5.0-pro'
 
 export function providerDefaultRoutes(provider, registry, fallbackProviders) {
   const serverDefaults = registry?.providers?.[provider]?.defaults
@@ -10,9 +12,15 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
     vision: fallback.visionModel,
   } : null)
   if (!defaults?.main || !defaults?.image || !defaults?.vision) return null
+  // Web's initial route differs from the shared catalog recommendation. Only
+  // resolve defaults here; explicit user-selected routes never pass through it.
+  const models = registry?.providers?.[provider]?.models ?? fallback?.registryModels
+  const imageModel = provider === DEFAULT_WEB_PROVIDER && models?.some(model =>
+    model.id === DEFAULT_TOKENDANCE_IMAGE_MODEL && model.selectable !== false && model.roles?.includes('image'))
+    ? DEFAULT_TOKENDANCE_IMAGE_MODEL : defaults.image
   return Object.fromEntries(MODEL_ROUTE_ROLES.map((role) => [role, {
     accessProvider: provider,
-    modelId: defaults[role],
+    modelId: role === 'image' ? imageModel : defaults[role],
   }]))
 }
 
