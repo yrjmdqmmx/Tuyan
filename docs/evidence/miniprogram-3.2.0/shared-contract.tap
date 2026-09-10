@@ -1,0 +1,11 @@
+✔ backend and both bundled catalogs are generated from the same reviewed source without drift (644.095375ms)
+✔ every original audit row has an explicit implementation or exclusion decision (5.048042ms)
+✔ regional, realtime, edit-only and reference-count boundaries remain channel-specific (0.301625ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 705.359875

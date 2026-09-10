@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-09-10T09:05:33.709872+00:00",
+  "branch": "codex/miniprogram-parity-20260910",
+  "sourceHead": "d5ad4fcd3bba9710e4177814f0dcd7ac775174f8",
+  "main": "8c23a38754f01cf5d43166bfb08cc0f8ab462586",
+  "retainedPreviousHead": "8344611c27cb5ef4052daa090c87ecd943cc0dfe",
+  "tests": {
+    "source": {
+      "passed": 84,
+      "failed": 0
+    },
+    "uploadCopy": {
+      "passed": 84,
+      "failed": 0
+    },
+    "sharedCatalogSource": {
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "typecheck": "passed",
+  "build": "passed",
+  "freshBuildJsMatches": 46,
+  "catalogDrift": "none: v18 / 739 static models",
+  "referencePolicyDrift": "none",
+  "native": {
+    "accountAndRecoveryChecks": 6,
+    "refineUploadAndExportChecks": 4,
+    "capturedExceptionsDuringFinalScenarios": 0,
+    "uploadCopyVersion": "miniprogram-3.2.0",
+    "uploadCopyRegistry": "2026-09-09.v18",
+    "devtools": "Nightly 2.01.2511282",
+    "baseLibrary": "3.16.0",
+    "diagnostic": "Cold starts emitted a WAServiceMainContext timeout; earlier stale navigation and one simulator initialization error were observed. Final scenario exception listeners returned no exceptions. No claim of real-device acceptance."
+  },
+  "sync": {
+    "controlledFiles": 192,
+    "added": 11,
+    "updated": 58,
+    "deleted": 0,
+    "unmanagedPreserved": 9,
+    "postNativeChecksumsMatch": true
+  },
+  "gates": {
+    "source": "committed locally",
+    "localUploadCopy": "synced and verified",
+    "githubPush": "not performed",
+    "wechatUpload": "not performed",
+    "review": "not submitted",
+    "productionRelease": "not performed",
+    "productionBackendChanges": false,
+    "realTokenDanceAuthorization": "not performed",
+    "realPaymentCreates": 0,
+    "realProviderCalls": 0
+  }
+}

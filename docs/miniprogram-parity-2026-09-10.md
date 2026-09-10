@@ -31,3 +31,13 @@
 - 工具诊断：先前多轮调试出现基础库 timeout、一次模拟器初始化 subPackages 错误与失效的导航状态；重新打开隔离项目、仅清编译缓存后完成复验。没有清除用户数据、文件缓存、授权或登录状态；不据此宣称真机无问题。
 - 公共接口只读：registry v18，参考图库两页各 12 条、总 306、无重复；真实生产观猹授权、充值、支付和供应商调用均未执行。
 - 所有带 `mocked` 的截图是原生模拟器真实组件配合模拟响应，不能当成真实余额、到账或模型结果证据。
+
+
+## 最终交付状态
+
+- 源码提交：`d5ad4fcd3bba9710e4177814f0dcd7ac775174f8`，合并父节点为此前 3.1.0 和当前主线；工作分支 `codex/miniprogram-parity-20260910`。本轮未 push、未建发布 PR。
+- 本地副本：`/Users/a1-6/WeChatProjects/miniprogram-9` 已同步；192 文件一致，11 新增、58 更新、0 删除。9 个本机额外文件包括私有配置/授权配置/本机图片及工具文件全部保持原 checksum。备份只包含 58 个被更新的受控旧文件，位于 `/Users/a1-6/.codex/tmp/tuyan-miniprogram-parity-20260910/upload-backup`。
+- 同步后副本独立跑 84/84；实际上传目录的原生运行确认 3.2.0、registry v18、62 个 TD 模型、refineUpload v2，场景捕获异常 0；随后再次验证所有文件和本机文件 checksum。
+- 开发者工具冷启动仍出现基础库 WAServiceMainContext timeout 诊断，最终受控场景无捕获异常；真机跨应用与实际消费仍为独立验收门槛。
+- 微信上传：未执行；平台审核：未提交；正式发布：未执行；生产后端：无变更；真实观猹授权/充值/支付/供应商调用：未执行。
+- 核心证据：[汇总](evidence/miniprogram-3.2.0/validation.json)、[同步清单](evidence/miniprogram-3.2.0/local-sync.json)、[原生账户/任务](evidence/miniprogram-3.2.0/native-tokendance-acceptance.json)、[原生上传/结果](evidence/miniprogram-3.2.0/native-fixture-acceptance.json)、[实际副本](evidence/miniprogram-3.2.0/native-synced-copy.json)。
