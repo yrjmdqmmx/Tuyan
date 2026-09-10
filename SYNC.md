@@ -1,18 +1,26 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-10] 观猹 OAuth 登录已发布并完成真实联调 — by Codex
+Web、Auth Gateway、Core 与 Benchmark companion 发布 `3405f8ccbc2fe72f555831f96853c1fb99dfb747`（PR #193 / #194）。独立身份登录已启用，正式回调 `/api/auth/oauth2/callback/watcha`；配置仅在服务端保存。详见 [发布与联调记录](docs/releases/2026-09-10-watcha-oauth.md) 和 [结构化证据](docs/releases/2026-09-10-watcha-oauth-evidence.json)。
+- [x] Gateway / HK：专用客户端、邮件服务、观猹 TCP 443 出口、正常审批、固定镜像、健康和隔离检查；原有稳定密钥及其他配置保留
+- [x] Web / 身份：真实官方授权和回调、原账号显式绑定、退出后观猹登录返回相同用户 ID；真实邮件验证码解绑成功后恢复绑定；原输入和 TokenDance 连接保持
+- [x] 发布产物：15 个正式站文件与 artifact 一致；桌面和 390px 手机登录入口视觉验收
+- [x] Core / Laf：用户 ID 和消费 action 兼容，无新增端侧迁移
+- [ ] 新用户注册、无密码注销使用独立真实测试身份的操作（本地回归已覆盖）；小程序新增登录入口和平台发布仍暂缓，未进行付费模型或支付调用
+
 ### [2026-09-10] 观猹生产网关出口补齐 — by Codex
 真实发布预检发现网关原仅放行 DirectMail，导致观猹 token/userinfo 请求被拒绝。出口规则加入 `watcha.cn` 解析得到的公共 IPv4 的 TCP 443；任一目标 DNS 异常时保留上一套规则，五分钟刷新同时覆盖邮件和观猹。
 - [x] HK / Gateway：双目标白名单、原子替换、目标解析失败与第二目标私网地址回归；发布 smoke 实测两处 TLS，并验证通用公网仍被拒绝
 - [x] Web / 小程序 / Core / Laf：无 API 字段和客户端契约变更，无端侧待办；小程序平台发布仍暂缓
-- [ ] 生产部署和真实观猹授权验收
+- [x] 生产部署和真实观猹授权验收（见顶部发布记录）
 
-### [2026-09-10] 观猹 OAuth 身份登录接入（开发分支，未发布）— by Codex
-新增独立观猹身份登录，与 TokenDance 模型消费授权分开；保留原图研用户 ID、邮箱登录与数据归属。官方已签发图研专用客户端，凭据仅保存于仓库外私有配置。本次默认关闭，正式回调与获批 scopes 仍需联调。
+### [2026-09-10] 观猹 OAuth 身份登录接入（已发布，见顶部记录）— by Codex
+新增独立观猹身份登录，与 TokenDance 模型消费授权分开；保留原图研用户 ID、邮箱登录与数据归属。官方已签发图研专用客户端，凭据仅保存于仓库外私有配置。代码默认关闭，生产已显式启用；正式回调及真实授权已验证，详见顶部记录。
 - [x] Gateway：`/api/auth/watcha/{status,start,email-code,complete,link,unlink,delete-confirmation}`，固定回调 `/api/auth/oauth2/callback/watcha`。状态包含 `available/linked/hasPassword/emailVerified/pending`；原注销接口新增可选 `confirmationToken`（一次性、绑定会话），密码确认继续兼容
 - [x] Web：弹窗授权保留工作台，首次邮箱验证码注册、已有账号明确绑定、邮箱验证码解绑与无密码账号注销。Web 仅接收完成通知，再读取服务端状态；密钥和上游令牌不进入浏览器
 - [x] 配置与生命周期：新增 `WATCHA_OAUTH_ENABLED`（默认 false）、`WATCHA_CLIENT_ID`、`WATCHA_CLIENT_SECRET`、`WATCHA_OAUTH_SCOPES`（默认 `read email`）；开启需邮件服务。唯一身份绑定、一次性 state/S256 PKCE、验证码限次/过期、注销冻结与恢复边界保护
 - [x] 独立规范与质量审阅；Gateway 148、Web 391、Watcha 隔离 Mongo 14 组及原生命周期回归通过；桌面/390px 浏览器首次注册、回访登录、原 ID 显式绑定、解绑、无密码注销与输入保留通过。见 [本地验收](docs/tokendance/watcha-login-validation-20260910.md)
-- [ ] 生产配置、部署、正式观猹授权和邮件验收；未创建支付、未调用付费模型
+- [x] 生产配置、部署、正式观猹授权和邮件验收；未创建支付、未调用付费模型（见顶部发布记录）
 - [ ] 小程序 / Android / Windows / macOS：保留原邮箱登录；新增身份入口需各端单独适配安全回调与会话接续，小程序平台发布继续暂缓。Core / Laf 无新增模型消费 action；既有用户 ID 契约兼容
 
 ### [2026-09-10] 默认模型、主导航与参考图上传 v2 生产发布完成 — by Codex

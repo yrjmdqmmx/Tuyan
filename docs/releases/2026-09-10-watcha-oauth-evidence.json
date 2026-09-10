@@ -1,0 +1,255 @@
+{
+  "recordedAt": "2026-09-10T10:42:15.502207+00:00",
+  "releaseSha": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+  "previousStableSha": "487e3e07bbe368ebd4ec1cfaf66373b83bae8c56",
+  "pullRequests": {
+    "feature": 193,
+    "productionEgressFix": 194
+  },
+  "workflows": {
+    "featurePrCi": 34462485016,
+    "featureMainCi": 34465063446,
+    "egressBranchCi": 34465569002,
+    "egressPrCi": 34465591449,
+    "mainCi": 34465988707,
+    "gatewayImage": 34466027420,
+    "coreImage": 34466031309,
+    "benchmarkImage": 34466035975,
+    "hkDeploy": 34466186148,
+    "pages": 34466422367
+  },
+  "workflowConclusions": "All listed runs completed successfully at their respective source revisions.",
+  "review": {
+    "feature": "Independent specification and quality reviews passed before merge.",
+    "egressFix": "Independent review of all nine changed files; no blocker. Reviewer repeated behavior and shell syntax checks."
+  },
+  "productionApproval": {
+    "environment": "paperbanana-production",
+    "normalRequiredReviewerApproval": true,
+    "bypassed": false
+  },
+  "configuration": {
+    "protectedBackup": "/opt/paperbanana/backups/watcha-oauth-20260910T101717Z",
+    "newKeys": [
+      "WATCHA_OAUTH_ENABLED",
+      "WATCHA_CLIENT_ID",
+      "WATCHA_CLIENT_SECRET",
+      "WATCHA_OAUTH_SCOPES"
+    ],
+    "scopeRequested": "read email",
+    "credentialValuesRecorded": false,
+    "stableKeysPreserved": true,
+    "rollbackTriggered": false
+  },
+  "preflightFix": {
+    "observed": "Watcha HTTPS rejected by the gateway DirectMail-only egress guard.",
+    "resolved": "Watcha public IPv4 TCP 443 added to atomic refreshed allowlist; DNS failure preserves installed rules.",
+    "testsPassed": 220,
+    "supersededDeployRun": 34465310631,
+    "supersededDeployCancelledBeforeApproval": true
+  },
+  "host": {
+    "checkedAt": "2026-09-10T10:40:54.970831+00:00",
+    "releaseSha": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+    "hostCodeSha": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+    "maintenance": false,
+    "containers": [
+      {
+        "name": "paperbanana-hk-auth-gateway-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:29109ac1d4ee96bcac2e7e0719bc2cbb8ea508ce73e156e03a78e47f94c4bf0d",
+        "revision": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+        "running": true,
+        "health": "healthy",
+        "restarts": 0,
+        "oomKilled": false,
+        "codeSha": null,
+        "watchaEnabled": "true",
+        "benchmarkEnabled": null
+      },
+      {
+        "name": "paperbanana-hk-paperbanana-api-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:cb0677b65bb9f1f0232680239ab83d38667a026c1dc1bc823e4f343827f48ae2",
+        "revision": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+        "running": true,
+        "health": "healthy",
+        "restarts": 0,
+        "oomKilled": false,
+        "codeSha": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+        "watchaEnabled": null,
+        "benchmarkEnabled": null
+      },
+      {
+        "name": "paperbanana-hk-benchmark-worker-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:a6a17397584ae670ddd9b513ec63cc7a800fdcc455272de0e9686d6b316beddf",
+        "revision": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+        "running": true,
+        "health": "healthy",
+        "restarts": 0,
+        "oomKilled": false,
+        "codeSha": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+        "watchaEnabled": null,
+        "benchmarkEnabled": "false"
+      },
+      {
+        "name": "paperbanana-hk-mongodb-1",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "revision": null,
+        "running": true,
+        "health": "healthy",
+        "restarts": 11,
+        "oomKilled": false,
+        "codeSha": null,
+        "watchaEnabled": null,
+        "benchmarkEnabled": null
+      },
+      {
+        "name": "paperbanana-hk-plot-worker-1",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "revision": "3ae61e52523b9b2e8d620d925505483eb641047a",
+        "running": true,
+        "health": "healthy",
+        "restarts": 0,
+        "oomKilled": false,
+        "codeSha": null,
+        "watchaEnabled": null,
+        "benchmarkEnabled": null
+      }
+    ],
+    "allHealthy": true,
+    "noAdditionalRestartsOrOom": true,
+    "changedSettingKeys": {
+      "gateway.env": [
+        "WATCHA_CLIENT_ID",
+        "WATCHA_CLIENT_SECRET",
+        "WATCHA_OAUTH_ENABLED",
+        "WATCHA_OAUTH_SCOPES"
+      ],
+      "core.env": [
+        "PAPERBANANA_CODE_SHA"
+      ],
+      "bench.env": [
+        "PAPERBANANA_CODE_SHA"
+      ],
+      "worker.env": []
+    },
+    "unrelatedSettingsAndStableKeysPreserved": true,
+    "watchaConfigured": true,
+    "watchaEnabled": true,
+    "gatewayReady": true
+  },
+  "pagesComparison": {
+    "releaseSha": "3405f8ccbc2fe72f555831f96853c1fb99dfb747",
+    "pagesRun": 34466422367,
+    "allMatch": true,
+    "files": [
+      {
+        "path": "index.html",
+        "matches": true
+      },
+      {
+        "path": "assets/AccountSettingsDialog-BGJQfmMy.js",
+        "matches": true
+      },
+      {
+        "path": "assets/AdminWorkspace-BnJa2Z1J.js",
+        "matches": true
+      },
+      {
+        "path": "assets/ReferenceLibraryPanel-BfD8g5JT.js",
+        "matches": true
+      },
+      {
+        "path": "assets/RefinePanel-ed5s0UkE.js",
+        "matches": true
+      },
+      {
+        "path": "assets/appPaths-Ba0fLi8f.js",
+        "matches": true
+      },
+      {
+        "path": "assets/jszip.min-JtyqI05Q.js",
+        "matches": true
+      },
+      {
+        "path": "assets/main-Bc5yiTfl.js",
+        "matches": true
+      },
+      {
+        "path": "assets/not-found-K_dFyY8s.js",
+        "matches": true
+      },
+      {
+        "path": "assets/trash-2-efJCFj-t.js",
+        "matches": true
+      },
+      {
+        "path": "assets/upload-AttGw0TL.js",
+        "matches": true
+      },
+      {
+        "path": "assets/main-CK3IGsJ1.css",
+        "matches": true
+      },
+      {
+        "path": "account/watcha-callback.css",
+        "matches": true
+      },
+      {
+        "path": "account/watcha-callback.html",
+        "matches": true
+      },
+      {
+        "path": "account/watcha-callback.js",
+        "matches": true
+      }
+    ]
+  },
+  "realIntegration": {
+    "officialProvider": "https://watcha.cn",
+    "callback": "https://api.paperbanana.asia/api/auth/oauth2/callback/watcha",
+    "officialConsent": true,
+    "tokenExchangeAndUserinfo": true,
+    "explicitExistingAccountBinding": true,
+    "existingAccountPredatesRelease": true,
+    "signOutThenWatchaSignIn": true,
+    "sameUserIdAfterWatchaSignIn": true,
+    "emailCodeRequestHttpStatus": 200,
+    "emailReceipt": {
+      "receivedAt": "2026-09-10T10:36:33.000Z",
+      "subject": "图研 Tuyan｜解除观猹绑定验证码",
+      "dkimPass": true,
+      "spfPass": true,
+      "mailboxMatchedTestAccount": true
+    },
+    "emailCodeUnlinkHttpStatus": 200,
+    "relinkedAfterTest": true,
+    "sameUserIdAfterRelink": true,
+    "originalWorkspaceInputsUnchanged": true,
+    "tokenDanceStillConnected": true,
+    "finalState": "Original account signed in and Watcha linked.",
+    "secretsOrCodesOrPersonalAccountDetailsRecorded": false
+  },
+  "productionOperationsNotPerformed": [
+    "new-user registration with a second Watcha identity",
+    "passwordless account deletion",
+    "paid model generation",
+    "payment creation",
+    "Mini Program publishing"
+  ],
+  "localCoverage": {
+    "gatewayTests": 148,
+    "webTests": 391,
+    "watchaMongoIntegrationGroups": 14,
+    "hkDeploymentTestsAfterEgressFix": 220
+  },
+  "screenshots": [
+    {
+      "file": "watcha-production-desktop-login.png",
+      "sha256": "bb5e7700526931589026b1c94a2040dcb586239a7529fa381be301d64fefb788"
+    },
+    {
+      "file": "watcha-production-mobile-login.png",
+      "sha256": "5ec3b3a4e77a9eb3bfd1e8f6c1bcd9b552d9a39235b1081e353bda0c07c64e89"
+    }
+  ]
+}

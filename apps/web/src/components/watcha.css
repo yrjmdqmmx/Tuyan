@@ -1,5 +1,7 @@
 .watcha-identity { margin-block: 16px; padding: 16px; border: 1px solid var(--line, #e6e9ef); border-radius: 14px; background: var(--surface, #fff); min-width: 0; }
 .watcha-heading { display: flex; align-items: center; gap: 8px; }
+.watcha-mark { display: block; width: 24px; height: 24px; flex: 0 0 auto; object-fit: contain; }
+.watcha-heading .watcha-mark { width: 28px; height: 28px; }
 .watcha-identity p { color: var(--muted, #64748b); font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
 .watcha-identity .field { display: flex; flex-direction: column; gap: 6px; margin-block: 10px; }
 .watcha-identity input { box-sizing: border-box; width: 100%; min-width: 0; }
