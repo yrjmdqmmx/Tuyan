@@ -66,6 +66,7 @@ interface ReferenceUpload {
   objectKey: string
   uploadUrl: string
   uploadToken: string
+  expiresAt?: number
   mimeType: string
   size: number
 }
@@ -919,7 +920,7 @@ Component({
         for (const image of this.data.referenceImages) {
           const upload = uploadMap.get(`${image.id}:original`)
           if (!upload || !upload.uploadUrl) throw new Error('参考图上传地址创建失败。')
-          await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType)
+          await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType, upload.expiresAt)
         }
 
         const uploaded = this.data.referenceImages.map((image) => {

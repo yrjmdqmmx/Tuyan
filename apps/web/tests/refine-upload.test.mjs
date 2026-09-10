@@ -12,7 +12,7 @@ const limits = { mimeTypes: ['image/png', 'image/jpeg', 'image/webp'], maxBytes:
 let restore = () => {}
 afterEach(() => { cleanup(); restore(); restore = () => {} })
 
-function uploadHarness() {
+function uploadHarness(expiresAt = Date.now() + 900000) {
   const before = { fetch: globalThis.fetch, Image: globalThis.Image, XMLHttpRequest: globalThis.XMLHttpRequest, create: URL.createObjectURL, revoke: URL.revokeObjectURL }
   const requests = [], xhrs = [], revoked = []
   let counter = 0
@@ -31,7 +31,7 @@ function uploadHarness() {
   globalThis.fetch = async (_url, init) => {
     const body = JSON.parse(init.body)
     requests.push(body)
-    if (body.action === 'prepareReferenceUpload') return Response.json({ code: 0, uploads: [{ ...body.files[0], objectKey: 'references/owner/' + counter + '.png', uploadUrl: 'https://local.invalid/upload', uploadToken: 'test-token' }] })
+    if (body.action === 'prepareReferenceUpload') return Response.json({ code: 0, uploads: [{ ...body.files[0], objectKey: 'references/owner/' + counter + '.png', uploadUrl: 'https://local.invalid/upload', uploadToken: 'test-token', expiresAt }] })
     return Response.json({ code: 0, source: { width: 120, height: 80 } })
   }
   restore = () => { Object.assign(globalThis, { fetch: before.fetch, Image: before.Image, XMLHttpRequest: before.XMLHttpRequest }); URL.createObjectURL = before.create; URL.revokeObjectURL = before.revoke }
@@ -44,6 +44,7 @@ test('upload tracks actual bytes, waits for finalize, supports retry, replacemen
   const file = new File(['pixels'], 'source.png', { type: 'image/png' })
   act(() => { void hook.result.current.selectFiles([file]) })
   await waitFor(() => assert.equal(xhrs.length, 1))
+  assert.ok(xhrs[0].timeout > 120000 && xhrs[0].timeout <= 895000, 'refine PUT uses the signed upload deadline')
   act(() => xhrs[0].progress(37))
   assert.equal(hook.result.current.upload.progress, 37)
   assert.deepEqual(refineRequestSource(hook.result.current.source), {})
@@ -125,4 +126,16 @@ test('all ratio backgrounds preserve exact geometry, auto is distinct, unsupport
   const rect = portrait.querySelector('rect')
   assert.equal(Number(rect.getAttribute('width')) / Number(rect.getAttribute('height')), 1 / 8)
   assert.equal(view.container.querySelectorAll('.aspect-ratio-options button').length, options.length)
+})
+
+
+test('an expired refine URL fails before PUT and preserves the selected file for retry', async () => {
+  const { hook, requests, xhrs } = uploadHarness(Date.now() - 1)
+  const file = new File(['pixels'], 'source.png', { type: 'image/png' })
+  act(() => { void hook.result.current.selectFiles([file]) })
+  await waitFor(() => assert.equal(hook.result.current.upload.status, 'failed'))
+  assert.match(hook.result.current.upload.error, /已过期/)
+  assert.equal(xhrs.length, 0)
+  assert.equal(hook.result.current.source.filename, 'source.png')
+  assert.ok(requests.some(request => request.action === 'abortReferenceUpload'))
 })

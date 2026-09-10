@@ -246,3 +246,21 @@ test('TokenDance invalid reference bytes fail with actionable input errors befor
     assert.equal(r.tokenDanceCalls.filter((call:any)=>/\/chat\/completions$|\/images\/generations$/.test(call.url)).length,0)
   } finally { await r.close() }
 })
+
+test('Seedream 14px is rejected before queueing and 15px reaches the exact refine adapter', async () => {
+  const r=await createRefineRuntime({tokenDance:true})
+  try {
+    const flow=await r.post({action:'tokenDanceAuthorize'})
+    await r.post({action:'tokenDanceExchange',state:flow.data.state,code:'fixture-code'})
+    const route={accessProvider:'tokendance',modelId:'seedream-5.0-pro'}
+    assert.equal(r.legacy.referenceSubmissionPolicy(route.accessProvider,route.modelId,'refine').minDimension,15)
+    for(const width of [14,15]){
+      const bytes=await sharp({create:{width,height:150,channels:3,background:'white'}}).png().toBuffer()
+      const uploads=await upload(r,[bytes],'refine')
+      const result=await r.post({action:'refineImage',provider:'tokendance',imageModelName:route.modelId,mainModelName:'qwen3.8-flash',referenceVisionModelName:'qwen3.8-flash',sourceImageObjectKey:uploads[0].objectKey,sourceImageUpload:uploads[0],editInstruction:'放大标题并保留线条。',imageSize:'2K',aspectRatio:'1:1'})
+      if(width===14){assert.notEqual(result.data.code,0,JSON.stringify(result));assert.match(result.data.error,/15px/)}
+      else {assert.equal(result.data.code,0,JSON.stringify(result));await r.legacy.drainJobAdmission();const job=await r.db.collection('paperbanana_jobs').findOne({_id:result.data.jobId});assert.equal(job.status,'succeeded',JSON.stringify(job))}
+    }
+    assert.equal(r.tokenDanceCalls.filter((call:any)=>call.url.endsWith('/images/generations')).length,1)
+  } finally {await r.close()}
+})

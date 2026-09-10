@@ -849,7 +849,7 @@ Component({
                     const upload = uploadMap.get(`${image.id}:original`);
                     if (!upload || !upload.uploadUrl)
                         throw new Error('参考图上传地址创建失败。');
-                    await (0, api_1.uploadReferenceFile)(image.path, upload.uploadUrl, image.mimeType);
+                    await (0, api_1.uploadReferenceFile)(image.path, upload.uploadUrl, image.mimeType, upload.expiresAt);
                 }
                 const uploaded = this.data.referenceImages.map((image) => {
                     const upload = uploadMap.get(`${image.id}:original`);

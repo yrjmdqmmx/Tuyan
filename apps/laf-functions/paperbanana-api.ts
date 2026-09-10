@@ -41,7 +41,7 @@ export function referenceSubmissionPolicy(provider: string, model: string, workf
     if ((provider === 'tokendance' && ['seedream-5.0-pro', 'seedream-5.0-lite'].includes(model))
       || (provider === 'ark' && /^doubao-seedream-(?:4|5)-/.test(model))) {
       Object.assign(p, { maxBytes: 10000000, maxTotalBytes: 10000000, maxDimension: 6000, maxPixels: 16000000,
-        minDimension: 14, maxAspectRatio: 16, status: 'partial', source: 'https://tokendance.space/docs/ark-image-generations',
+        minDimension: 15, maxAspectRatio: 16, status: 'partial', source: 'https://tokendance.space/docs/ark-image-generations',
         note: '单图编辑；生成尺寸与输入尺寸是不同约束。渠道未完整公布输入限额，采用保守提交额度。' })
     } else if (provider === 'openai' && /^(gpt-image-|chatgpt-image-latest)/.test(model)) {
       Object.assign(p, { maxBytes: 16000000, maxTotalBytes: 16000000, maxDimension: 8192, maxPixels: 16000000,
@@ -146,6 +146,13 @@ export function referenceProcessingHint(policy: ReturnType<typeof activeReferenc
   if (policy.version < 2) return '当前后端使用旧上传协议，按原有限额校验；升级后将提供模型所需的无损处理与动态提交限额。'
   const s = policy.submission
   return `提交模型前校正方向；符合要求且无需旋转缩放的 JPEG/WebP 保留原字节，其余优先无损 PNG，必要时等比缩至 ${s.maxDimension}px / ${s.maxPixels / 1e6}MP，不放大小图；短边至少 ${s.minDimension}px、长短边之比≤${s.maxAspectRatio}；单张 ${referenceBytesLabel(s.maxBytes)}，合计 ${referenceBytesLabel(s.maxTotalBytes)}。原文件保留，不自动有损压缩；仍超限请裁剪或更换模型。${s.note}`
+}
+
+// Use the server-issued deadline, including time already spent in the PUT queue.
+// Keep five seconds for finalize; older backends use the existing 15-minute TTL.
+export function referenceUploadTimeout(expiresAt?: number, now = Date.now()) {
+  const deadline = Number.isSafeInteger(expiresAt) && Number(expiresAt) > 0 ? Number(expiresAt) : now + 900000
+  return Math.max(0, Math.min(2147483647, deadline - now - 5000))
 }
 
 // END SHARED REFERENCE UPLOAD POLICY
@@ -6668,7 +6675,7 @@ async function callImageModelRaw(
     if (source) {
       const bytes = Buffer.from(source.base64, 'base64')
       const dims = pngDimensions(bytes) || jpegDimensions(bytes) || webpDimensions(bytes)
-      if (bytes.length > 30 * 1024 * 1024 || !dims || Math.min(dims.width, dims.height) <= 14 || dims.width * dims.height > 36_000_000 || Math.max(dims.width / dims.height, dims.height / dims.width) > 16) throw new TokenDanceError(400, 'Seedream 原图尺寸或格式超出支持范围。')
+      if (bytes.length > 30 * 1024 * 1024 || !dims || Math.min(dims.width, dims.height) <= 14 || dims.width * dims.height > 36_000_000 || Math.max(dims.width / dims.height, dims.height / dims.width) > 16) throw new ReferenceUploadValidationError('Seedream 原图尺寸或格式超出支持范围；短边至少 15px，请调整原图后重试。')
     }
     const size = resolveModelImageSize(provider, model, normalizedAspectRatio, imageSize, Boolean(source)).size!
     const response = await tokenDanceResponse(runtimeFetch, '/gateway/ark/v3/images/generations', apiKey, tokenDanceImageBody(model, prompt, size, source ? [source.dataUrl] : []))

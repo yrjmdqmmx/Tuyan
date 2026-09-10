@@ -44,3 +44,16 @@ test('uploads use two connections and finish active requests before cleanup afte
   }), /503/);
   assert.equal(active, 0); assert.equal(completed, 2);
 });
+
+test('slow reference PUTs use the signed deadline and expired queued URLs stop before transport', async (t) => {
+  const now = 1800000000000, timeouts = [];
+  t.mock.method(Date, 'now', () => now);
+  t.mock.method(AbortSignal, 'timeout', milliseconds => { timeouts.push(milliseconds); return new AbortController().signal; });
+  const items = [{clientId:'large',file:new Blob(['fixture']),mimeType:'image/png'}];
+  await uploadReferenceFiles(items,new Map([['large',{uploadUrl:'https://storage.example/large',expiresAt:now+900000}]]),2,async()=>({ok:true}));
+  assert.deepEqual(timeouts,[895000],'20MiB uploads may continue beyond the old 120-second window');
+  let sent=0;
+  await assert.rejects(uploadReferenceFiles(items,new Map([['large',{uploadUrl:'https://storage.example/expired',expiresAt:now}]]),2,async()=>{sent++;return {ok:true}}),/已过期.*原图会保留/);
+  assert.equal(sent,0);
+  assert.equal(items.length,1);
+});

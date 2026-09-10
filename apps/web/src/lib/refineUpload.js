@@ -1,4 +1,4 @@
-import { activeReferenceUploadPolicy, referenceProcessingHint } from './referenceUploadPolicy';
+import { activeReferenceUploadPolicy, referenceProcessingHint, referenceUploadTimeout } from './referenceUploadPolicy';
 export function refineUploadLimits(limits, route, workflow = 'refine') {
   if (!limits) return undefined;
   if (limits.version >= 2) {
@@ -31,8 +31,10 @@ export function readImageDimensions(url) {
 }
 
 // The browser reports actual transmitted bytes; completion still waits for server validation.
-export function putRefineFile(url, file, { signal, onProgress }) {
+export function putRefineFile(url, file, { signal, onProgress, expiresAt }) {
   return new Promise((resolve, reject) => {
+    const timeout = referenceUploadTimeout(expiresAt);
+    if (!timeout) { reject(new Error('原图上传地址已过期，请重试。')); return; }
     const xhr = new XMLHttpRequest();
     const abort = () => xhr.abort();
     const finish = (error) => {
@@ -41,7 +43,7 @@ export function putRefineFile(url, file, { signal, onProgress }) {
     };
     xhr.open('PUT', url);
     xhr.setRequestHeader('Content-Type', file.type);
-    xhr.timeout = 120000;
+    xhr.timeout = timeout;
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) onProgress(Math.round(event.loaded / event.total * 100));
     };
