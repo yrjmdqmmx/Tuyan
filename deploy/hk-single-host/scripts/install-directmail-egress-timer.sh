@@ -12,7 +12,7 @@ fi
 test "${EUID}" -eq 0 || { echo "run as root" >&2; exit 1; }
 
 if [[ "$mode" == "--dry-run" ]]; then
-  echo "Would install and enable the DirectMail egress DNS refresh timer."
+  echo "Would install and enable the DirectMail and Watcha egress DNS refresh timer."
   exit 0
 fi
 
@@ -22,4 +22,4 @@ systemctl daemon-reload
 systemctl enable --now paperbanana-directmail-egress.timer
 systemctl start paperbanana-directmail-egress.service
 
-echo "DirectMail egress DNS refresh timer installed."
+echo "DirectMail and Watcha egress DNS refresh timer installed."

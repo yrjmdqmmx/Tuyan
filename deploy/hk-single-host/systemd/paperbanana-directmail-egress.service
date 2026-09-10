@@ -1,5 +1,5 @@
 [Unit]
-Description=Refresh PaperBanana DirectMail-only gateway egress rules
+Description=Refresh PaperBanana DirectMail and Watcha gateway egress rules
 Wants=network-online.target
 After=network-online.target docker.service
 
