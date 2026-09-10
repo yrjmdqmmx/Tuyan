@@ -6,6 +6,33 @@ import App from '../src/App.jsx';
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js';
 import { workspaceEntry, selectWorkspaceEntry } from '../src/lib/adminEntry.js';
 
+test('generation waits for selected image dimensions instead of submitting the old reference list', async () => {
+  const original = {fetch:globalThis.fetch,Image:globalThis.Image,create:URL.createObjectURL,revoke:URL.revokeObjectURL};
+  const actions = [], pending = [];
+  URL.createObjectURL = () => 'blob:pending-reference';
+  URL.revokeObjectURL = () => {};
+  globalThis.Image = class {naturalWidth=1024;naturalHeight=768;set src(value) {if(value.startsWith('blob:')) pending.push(this);else queueMicrotask(()=>this.onload?.());}};
+  globalThis.fetch = async (_url, init = {}) => {
+    if (!init.body) return Response.json({code:0,runtime:'laf'});
+    const body = JSON.parse(init.body);actions.push(body.action);
+    if (body.action==='modelRegistry') return Response.json({code:0,routeContractVersion:1,providers:STATIC_MODEL_REGISTRY});
+    return Response.json({code:0,jobs:[],references:[]});
+  };
+  try {
+    render(React.createElement(App));
+    await waitFor(()=>assert.ok(actions.includes('modelRegistry')));
+    fireEvent.change(document.querySelector('input[type="file"]'),{target:{files:[new File(['fixture'],'selected.png',{type:'image/png'})]}});
+    assert.equal(pending.length,1);
+    assert.equal(screen.getByRole('button',{name:'检查参考图',exact:true}).disabled,true);
+    fireEvent.submit(document.querySelector('.generation-form'));
+    assert.ok(screen.getByText('正在检查参考图尺寸，请完成后再生成。'));
+    assert.equal(actions.includes('createJob'),false);
+    await act(async()=>pending[0].onload());
+    await waitFor(()=>assert.equal(document.querySelectorAll('.reference-preview-card').length,1));
+    assert.equal(document.querySelector('.generation-form button[type="submit"]').disabled,false);
+  } finally {cleanup();globalThis.fetch=original.fetch;globalThis.Image=original.Image;URL.createObjectURL=original.create;URL.revokeObjectURL=original.revoke;}
+});
+
 test('account entry keeps the actual generation/refine subtree and selected models; history restores the task', async () => {
   const original = globalThis.fetch, scroll = window.scrollTo;
   const actions = [];

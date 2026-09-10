@@ -1,7 +1,7 @@
 import { FileImage, UploadCloud, X } from 'lucide-react';
 import { activeReferenceUploadPolicy, referencePolicyHint, referenceProcessingHint } from '../lib/referenceUploadPolicy';
 
-export default function ReferenceUploadPanel({ images, policy = activeReferenceUploadPolicy(null, null), error, disabled, isUploading, retrievalBlocked = false, onAddFiles, onRemove }) {
+export default function ReferenceUploadPanel({ images, policy = activeReferenceUploadPolicy(null, null), error, disabled, isUploading, isInspecting = false, retrievalBlocked = false, onAddFiles, onRemove }) {
   const uploadDisabled = disabled || isUploading || retrievalBlocked;
   return (
     <section className="reference-upload-panel">
@@ -12,7 +12,7 @@ export default function ReferenceUploadPanel({ images, policy = activeReferenceU
         </div>
         <label className={`reference-upload-button ${uploadDisabled ? 'disabled' : ''}`}>
           <UploadCloud size={16} />
-          {isUploading ? '上传中' : '选择图片'}
+          {isInspecting ? '检查图片中' : isUploading ? '上传中' : '选择图片'}
           <input
             type="file"
             accept={policy.platform.accept}

@@ -67,9 +67,9 @@ export function referenceSubmissionPolicy(provider: string, model: string, workf
     return p
   }
   if (provider === 'bailian' && /^qwen(?:3\.[5-8]|3-vl)/.test(model) && !model.includes('omni')) {
-    Object.assign(p, { maxCount: 8, maxBytes: 16000000, maxTotalBytes: 48000000, maxDimension: 7680,
-      maxPixels: 16777216, minDimension: 11, status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/',
-      mimeTypes: ['image/png', 'image/jpeg'], note: 'URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。' })
+    Object.assign(p, { maxCount: 8, maxBytes: 8000000, maxTotalBytes: 32000000, maxDimension: 4096,
+      maxPixels: 8000000, minDimension: 11, status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/',
+      mimeTypes: ['image/png', 'image/jpeg'], note: 'URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。' })
   } else if (provider === 'bailian' && /^(qwen-vl-|qvq-)/.test(model)) {
     Object.assign(p, { maxCount: 8, maxBytes: 8000000, maxTotalBytes: 32000000, minDimension: 11,
       status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/', note: 'URL 输入单图官方上限 10MB；数量和图文总量受该型号上下文限制。' })
@@ -145,7 +145,7 @@ export function referencePolicyHint(policy: ReturnType<typeof activeReferenceUpl
 export function referenceProcessingHint(policy: ReturnType<typeof activeReferenceUploadPolicy>) {
   if (policy.version < 2) return '当前后端使用旧上传协议，按原有限额校验；升级后将提供模型所需的无损处理与动态提交限额。'
   const s = policy.submission
-  return `提交模型前校正方向，优先无损 PNG，必要时等比缩至 ${s.maxDimension}px / ${s.maxPixels / 1e6}MP，不放大小图；短边至少 ${s.minDimension}px、长短边之比≤${s.maxAspectRatio}；单张 ${referenceBytesLabel(s.maxBytes)}，合计 ${referenceBytesLabel(s.maxTotalBytes)}。原文件保留，不自动有损压缩；仍超限请裁剪或更换模型。${s.note}`
+  return `提交模型前校正方向；符合要求且无需旋转缩放的 JPEG/WebP 保留原字节，其余优先无损 PNG，必要时等比缩至 ${s.maxDimension}px / ${s.maxPixels / 1e6}MP，不放大小图；短边至少 ${s.minDimension}px、长短边之比≤${s.maxAspectRatio}；单张 ${referenceBytesLabel(s.maxBytes)}，合计 ${referenceBytesLabel(s.maxTotalBytes)}。原文件保留，不自动有损压缩；仍超限请裁剪或更换模型。${s.note}`
 }
 
 // END SHARED REFERENCE UPLOAD POLICY
@@ -1034,9 +1034,14 @@ const references = db.collection('paperbanana_references')
 const accountDeletions = db.collection('paperbanana_account_deletions')
 const referenceUploadState = db.collection('paperbanana_reference_upload_state')
 const bucketName = process.env.PAPERBANANA_BUCKET || 'paperbanana'
-const maxReferenceImages = clamp(Number(process.env.PAPERBANANA_MAX_REFERENCE_IMAGES || REFERENCE_UPLOAD_PLATFORM.maxCount), 1, REFERENCE_UPLOAD_PLATFORM.maxCount)
-const maxReferenceBytes = clamp(Number(process.env.PAPERBANANA_MAX_REFERENCE_BYTES || REFERENCE_UPLOAD_PLATFORM.maxBytes), 1, REFERENCE_UPLOAD_PLATFORM.maxBytes)
-const maxReferenceTotalBytes = clamp(Number(process.env.PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES || REFERENCE_UPLOAD_PLATFORM.maxTotalBytes), 1, REFERENCE_UPLOAD_PLATFORM.maxTotalBytes)
+function referenceEnvironmentLimit(name: string, maximum: number) {
+  const value = Number(process.env[name]?.trim() || maximum)
+  if (!Number.isInteger(value) || value < 1 || value > maximum) throw new Error(`${name} must be an integer from 1 to ${maximum}`)
+  return value
+}
+const maxReferenceImages = referenceEnvironmentLimit('PAPERBANANA_MAX_REFERENCE_IMAGES', REFERENCE_UPLOAD_PLATFORM.maxCount)
+const maxReferenceBytes = referenceEnvironmentLimit('PAPERBANANA_MAX_REFERENCE_BYTES', REFERENCE_UPLOAD_PLATFORM.maxBytes)
+const maxReferenceTotalBytes = referenceEnvironmentLimit('PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', REFERENCE_UPLOAD_PLATFORM.maxTotalBytes)
 function runtimeReferenceUploadContract() { return referenceUploadContract({ ...REFERENCE_UPLOAD_PLATFORM, maxCount: maxReferenceImages, maxBytes: maxReferenceBytes, maxTotalBytes: maxReferenceTotalBytes }) }
 const maxProviderImageBytes = Number(process.env.PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES || 20 * 1024 * 1024)
 const maxProviderImageResponseBytes = Math.ceil(maxProviderImageBytes * 4 / 3) + 1024 * 1024
@@ -6062,11 +6067,11 @@ export async function buildVisionImageInputs(referenceImages: ReferenceImageInpu
       const bytes = await readStoredObject(bucket, image.objectKey, maxReferenceBytes, 'Reference original')
       if (bytes.length !== image.size) throw new Error('参考图与上传记录大小不一致，请重新上传。')
       return normalizeReferenceForModel(bytes, image.mimeType, policy)
-    })
+    }, true)
     total += processed.bytes.length
     if (total > policy.maxTotalBytes) throw new Error(`无损处理后参考图合计超过当前模型 ${referenceBytesLabel(policy.maxTotalBytes)}；请减少图片、裁剪或更换模型。原图已保留。`)
     const suffix = crypto.createHash('sha256').update(JSON.stringify(policy)).digest('hex').slice(0, 12)
-    const key = image.objectKey.replace(/\.[^.]+$/, `-analysis-${suffix}.${processed.mimeType === 'image/jpeg' ? 'jpg' : 'png'}`)
+    const key = image.objectKey.replace(/\.[^.]+$/, `-analysis-${suffix}.${extensionForMimeType(processed.mimeType)}`)
     await bucket.writeFile(key, processed.bytes, { ContentType: processed.mimeType })
     image.analysisObjectKey = key; image.analysisMimeType = processed.mimeType; image.analysisSize = processed.bytes.length
     inputs.push({ filename: image.filename, mimeType: processed.mimeType, objectKey: key, url: await bucket.getDownloadUrl(key, 3600) })
@@ -6079,18 +6084,25 @@ export async function buildVisionImageInputs(referenceImages: ReferenceImageInpu
 
 let referenceProcessingActive = 0
 let referenceProcessingPeak = 0
+const referenceProcessingWaiters: (() => void)[] = []
 export function referenceProcessingState() { return { active: referenceProcessingActive, peak: referenceProcessingPeak } }
-export async function withReferenceProcessing<T>(work: () => Promise<T>): Promise<T> {
-  // Fail promptly, rather than retaining arbitrary request bodies/decoded images
-  // while queued. The job admission queue already serializes generation work.
+export async function withReferenceProcessing<T>(work: () => Promise<T>, background = false): Promise<T> {
+  // HTTP inspection fails promptly. Already-admitted jobs wait before reading
+  // bytes, so another user's finalize cannot fail an accepted job.
   if (referenceProcessingActive) {
-    const error: any = new Error('图片处理繁忙，请稍后重试；已选原图会保留。')
-    error.statusCode = 429
-    throw error
-  }
-  referenceProcessingActive++
+    if (!background) {
+      const error: any = new Error('图片处理繁忙，请稍后重试；已选原图会保留。')
+      error.statusCode = 429
+      throw error
+    }
+    await new Promise<void>(resolve => referenceProcessingWaiters.push(resolve))
+  } else referenceProcessingActive++
   referenceProcessingPeak = Math.max(referenceProcessingPeak, referenceProcessingActive)
-  try { return await work() } finally { referenceProcessingActive-- }
+  try { return await work() } finally {
+    const next = referenceProcessingWaiters.shift()
+    if (next) next()
+    else referenceProcessingActive--
+  }
 }
 
 export async function normalizeReferenceForModel(bytes: Buffer, mimeType: string, policy: ReferenceSubmissionPolicy, inspectOnly = false) {
@@ -6124,6 +6136,16 @@ export async function normalizeReferenceForModel(bytes: Buffer, mimeType: string
   const scale = Math.min(1, policy.maxDimension / Math.max(dimensions.width, dimensions.height), Math.sqrt(policy.maxPixels / (dimensions.width * dimensions.height)))
   const targetWidth = Math.max(1, Math.floor(dimensions.width * scale)), targetHeight = Math.max(1, Math.floor(dimensions.height * scale))
   if (Math.min(targetWidth, targetHeight) < policy.minDimension) throw new Error(`等比缩小后短边不足当前模型要求的 ${policy.minDimension}px；请裁剪长边或更换模型，原图已保留。`)
+  if (['image/jpeg', 'image/webp'].includes(mimeType) && policy.mimeTypes.includes(mimeType) && scale === 1 && source.length <= policy.maxBytes) {
+    try {
+      const metadata = await sharp(source).metadata()
+      if (!metadata.orientation || metadata.orientation === 1) {
+        await sharp(source, { failOn: 'warning', limitInputPixels: REFERENCE_UPLOAD_PLATFORM.maxPixels, limitInputChannels: 4 })
+          .resize(1, 1).png().timeout({ seconds: 15 }).toBuffer()
+        return { bytes: source, mimeType, width: dimensions.width, height: dimensions.height, changed: false }
+      }
+    } catch { throw new Error('无法解码图片，文件可能已损坏。请重新导出后上传。') }
+  }
   let normalized
   try {
     // Lossless PNG retains scientific text and lines. Never silently reduce JPEG quality.
@@ -6131,11 +6153,6 @@ export async function normalizeReferenceForModel(bytes: Buffer, mimeType: string
       .rotate().resize({ width: Math.max(targetWidth, targetHeight), height: Math.max(targetWidth, targetHeight), fit: 'inside', withoutEnlargement: true })
       .png({ compressionLevel: 6 }).timeout({ seconds: 15 }).toBuffer({ resolveWithObject: true })
   } catch { throw new Error('无法解码图片，文件可能已损坏。请重新导出后上传。') }
-  // Preserve an already valid JPEG's exact bytes after decoding has established validity.
-  if (mimeType === 'image/jpeg' && policy.mimeTypes.includes('image/jpeg') && scale === 1 && source.length <= policy.maxBytes) {
-    const metadata = await sharp(source).metadata()
-    if (!metadata.orientation || metadata.orientation === 1) return { bytes: source, mimeType, width: dimensions.width, height: dimensions.height, changed: false }
-  }
   if (normalized.data.length > policy.maxBytes) throw new Error(`无损处理后单图超过当前模型 ${referenceBytesLabel(policy.maxBytes)}；请裁剪、自行压缩或更换模型。原文件已保留。`)
   return { bytes: normalized.data, mimeType: 'image/png', width: normalized.info.width, height: normalized.info.height, changed: scale !== 1 || !source.equals(normalized.data) }
 }
@@ -6288,7 +6305,7 @@ async function callVisionModelRaw(
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: checkedReferenceRequest(provider, model, requestBody),
+      body: checkedReferenceRequest(provider, visionModelName, requestBody),
     }, `${provider} vision model ${visionModelName}`)
     return parseChatModelResponse(response, requestBody.stream === true)
   }
@@ -6410,7 +6427,7 @@ async function callTextModelRaw(
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: checkedReferenceRequest(provider, model, requestBody),
+      body: checkedReferenceRequest(provider, textModelName, requestBody),
       ...(policy.signal ? { signal: policy.signal } : {}),
     }, `${provider} text model ${textModelName}`, policy.attempts)
     return parseChatModelResponse(response, requestBody.stream === true)
@@ -9367,6 +9384,7 @@ function validateRefineBody(body: RefineImageBody) {
   }
   if (!body.modelRoutes && !body.imageModelName) throw new Error('imageModelName is required')
   if (!body.sourceImageUrl && !body.sourceImageObjectKey && !body.sourceImageUpload) throw new Error('source image is required')
+  if (body.sourceImageUrl && !body.sourceImageObjectKey && !body.sourceImageUpload) throw new Error('请先上传精修原图或选择当前账号的任务图片；不支持外部图片 URL。')
   const instruction = String(body.editInstruction || '').trim()
   if (instruction.length < 3) throw new Error('editInstruction is required')
   if (instruction.length > 2000) throw new Error('editInstruction exceeds 2000 characters')
@@ -9867,17 +9885,15 @@ async function validateRefineUploadSource(objectKey: unknown, owner: { userId?: 
 
 async function resolveSourceImageUrl(body: RefineExecutionBody) {
   const objectKey = limitText(body.sourceImageObjectKey, 300)
-  const direct = limitText(body.sourceImageUrl, 1200)
-  if (!objectKey && !direct) throw new Error('source image is required')
+  if (!objectKey) throw new Error('请先上传精修原图或选择当前账号的任务图片；不支持外部图片 URL。')
   const route = body.modelRoutes[body.refineMode === 'direct-edit' ? 'image' : 'vision']
   const policy = referenceSubmissionPolicy(route.accessProvider, route.modelId, body.refineMode === 'direct-edit' ? 'refine' : 'generation')
   return withReferenceProcessing(async () => {
-    const bytes = objectKey
-      ? await readStoredObject(cloud.storage.bucket(bucketName), objectKey, maxProviderImageBytes, 'Refine source image download')
-      : Buffer.from(await fetchImageAsBase64(direct, 'Refine source image download', maxProviderImageBytes), 'base64')
-    const processed = await normalizeReferenceForModel(bytes, inferMimeTypeFromUrl(objectKey || direct), policy)
+    const bytes = await readStoredObject(cloud.storage.bucket(bucketName), objectKey, maxProviderImageBytes, 'Refine source image download')
+    const mimeType = isPngBytes(bytes) ? 'image/png' : isJpegBytes(bytes) ? 'image/jpeg' : isWebpBytes(bytes) ? 'image/webp' : inferMimeTypeFromUrl(objectKey)
+    const processed = await normalizeReferenceForModel(bytes, mimeType, policy)
     return `data:${processed.mimeType};base64,${processed.bytes.toString('base64')}`
-  })
+  }, true)
 }
 
 function inferMimeTypeFromUrl(url: string) {

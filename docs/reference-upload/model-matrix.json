@@ -2156,10 +2156,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2169,7 +2169,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2207,10 +2207,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2220,7 +2220,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2258,10 +2258,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2271,7 +2271,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2331,10 +2331,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2344,7 +2344,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2356,10 +2356,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2369,7 +2369,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2381,10 +2381,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2394,7 +2394,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2928,10 +2928,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2941,7 +2941,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2953,10 +2953,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2966,7 +2966,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -2978,10 +2978,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -2991,7 +2991,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3003,10 +3003,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3016,7 +3016,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3028,10 +3028,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3041,7 +3041,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3053,10 +3053,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3066,7 +3066,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3078,10 +3078,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3091,7 +3091,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3103,10 +3103,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3116,7 +3116,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3128,10 +3128,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3141,7 +3141,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3153,10 +3153,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3166,7 +3166,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3178,10 +3178,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3191,7 +3191,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3203,10 +3203,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3216,7 +3216,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3228,10 +3228,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3241,7 +3241,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3253,10 +3253,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3266,7 +3266,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3278,10 +3278,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3291,7 +3291,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3407,10 +3407,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3420,7 +3420,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3432,10 +3432,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3445,7 +3445,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3457,10 +3457,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3470,7 +3470,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -3886,10 +3886,10 @@
       "protocol": "bailian-openai-chat",
       "policy": {
         "maxCount": 8,
-        "maxBytes": 16000000,
-        "maxTotalBytes": 48000000,
-        "maxDimension": 7680,
-        "maxPixels": 16777216,
+        "maxBytes": 8000000,
+        "maxTotalBytes": 32000000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
         "minDimension": 11,
         "maxAspectRatio": 200,
         "requestMaxBytes": 20000000,
@@ -3899,7 +3899,7 @@
         ],
         "status": "partial",
         "source": "https://help.aliyun.com/zh/model-studio/vision/",
-        "note": "URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。"
+        "note": "URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."

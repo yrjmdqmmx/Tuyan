@@ -22,7 +22,7 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
     referenceSubmissionPolicy(provider: string, model: string, workflow?: string): ReferenceSubmissionPolicy;
     normalizeReferenceForModel(bytes: Buffer, mimeType: string, policy: ReferenceSubmissionPolicy, inspectOnly?: boolean): Promise<{bytes: Buffer; mimeType: string; width: number; height: number; changed: boolean}>;
     checkedReferenceRequest(provider: string, model: string, body: unknown): string;
-    withReferenceProcessing<T>(work: () => Promise<T>): Promise<T>;
+    withReferenceProcessing<T>(work: () => Promise<T>, background?: boolean): Promise<T>;
     referenceProcessingState(): {active: number; peak: number};
   };
   invoke(body: Record<string, unknown>): Promise<any>;

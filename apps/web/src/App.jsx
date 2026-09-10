@@ -194,6 +194,8 @@ export default function App() {
   const referenceImagesRef = useRef([]);
   const [referenceUploadError, setReferenceUploadError] = useState('');
   const [isUploadingReferences, setIsUploadingReferences] = useState(false);
+  const [isInspectingReferences, setIsInspectingReferences] = useState(false);
+  const referenceInspectionRef = useRef(false);
   const [pipelineMode, setPipelineMode] = useState('demo_planner_critic');
   const [retrievalSetting, setRetrievalSetting] = useState('none');
   const [manualReferenceIds, setManualReferenceIds] = useState([]);
@@ -606,6 +608,7 @@ export default function App() {
   }, [apiBaseNormalized, authSession.isPending, currentUser?.id, currentUser?.email, health]);
 
   async function addReferenceFiles(files) {
+    if (referenceInspectionRef.current || isSubmitting || isUploadingReferences) return;
     setReferenceUploadError('');
     if (!files.length) return;
     if (isAdvancedMode && retrievalSetting !== 'none') {
@@ -619,40 +622,47 @@ export default function App() {
       return;
     }
 
-    const accepted = [];
-    for (const file of files.slice(0, availableSlots)) {
-      const mimeType = normalizeReferenceMimeType(file);
-      if (!activeReferenceUpload.platform.mimeTypes.includes(mimeType)) {
-        setReferenceUploadError('参考图仅支持 PNG、JPG、WebP 或 SVG。');
-        continue;
+    referenceInspectionRef.current = true;
+    setIsInspectingReferences(true);
+    try {
+      const accepted = [];
+      for (const file of files.slice(0, availableSlots)) {
+        const mimeType = normalizeReferenceMimeType(file);
+        if (!activeReferenceUpload.platform.mimeTypes.includes(mimeType)) {
+          setReferenceUploadError('参考图仅支持 PNG、JPG、WebP 或 SVG。');
+          continue;
+        }
+        if (!file.size || file.size > activeReferenceUpload.platform.maxBytes) {
+          setReferenceUploadError(`单张原图须大于 0 且不超过 ${activeReferenceUpload.platform.maxBytes / 1024 / 1024}MiB。`);
+          continue;
+        }
+        const previewUrl = URL.createObjectURL(file);
+        let dimensions;
+        try {
+          dimensions = await readImageDimensions(previewUrl);
+          validateRefineDimensions(dimensions, activeReferenceUpload.platform);
+        } catch (error) { URL.revokeObjectURL(previewUrl); setReferenceUploadError(error.message); continue; }
+        accepted.push({
+          ...dimensions,
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+          file,
+          filename: file.name || `reference-${referenceImages.length + accepted.length + 1}.${extensionForMimeType(mimeType)}`,
+          mimeType,
+          size: file.size,
+          previewUrl,
+        });
       }
-      if (!file.size || file.size > activeReferenceUpload.platform.maxBytes) {
-        setReferenceUploadError(`单张原图须大于 0 且不超过 ${activeReferenceUpload.platform.maxBytes / 1024 / 1024}MiB。`);
-        continue;
+
+      if (files.length > availableSlots) {
+        setReferenceUploadError(`最多只能上传 ${activeReferenceUpload.platform.maxCount} 张参考图，已忽略多余文件。`);
       }
-      const previewUrl = URL.createObjectURL(file);
-      let dimensions;
-      try {
-        dimensions = await readImageDimensions(previewUrl);
-        validateRefineDimensions(dimensions, activeReferenceUpload.platform);
-      } catch (error) { URL.revokeObjectURL(previewUrl); setReferenceUploadError(error.message); continue; }
-      accepted.push({
-        ...dimensions,
-        id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-        file,
-        filename: file.name || `reference-${referenceImages.length + accepted.length + 1}.${extensionForMimeType(mimeType)}`,
-        mimeType,
-        size: file.size,
-        previewUrl,
-      });
-    }
 
-    if (files.length > availableSlots) {
-      setReferenceUploadError(`最多只能上传 ${activeReferenceUpload.platform.maxCount} 张参考图，已忽略多余文件。`);
-    }
-
-    if (accepted.length) {
-      setReferenceImages((current) => [...current, ...accepted]);
+      if (accepted.length) {
+        setReferenceImages((current) => [...current, ...accepted]);
+      }
+    } finally {
+      referenceInspectionRef.current = false;
+      setIsInspectingReferences(false);
     }
   }
 
@@ -1050,6 +1060,7 @@ export default function App() {
 
   async function submitJob(event) {
     event.preventDefault();
+    if (referenceInspectionRef.current) { setReferenceUploadError('正在检查参考图尺寸，请完成后再生成。'); return; }
     setError('');
     setErrorContext('');
     if (referenceSelectionIssue) { setReferenceUploadError(referenceSelectionIssue); return; }
@@ -1678,8 +1689,8 @@ export default function App() {
               <div><span>画面比例</span><strong>{aspectRatio === 'auto' ? '自动' : aspectRatio}</strong></div>
               <div><span>输出</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
             </div>
-            <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences}>
-              {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isUploadingReferences ? '上传参考图' : '生成候选图'}
+            <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences || isInspectingReferences}>
+              {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isInspectingReferences ? '检查参考图' : isUploadingReferences ? '上传参考图' : '生成候选图'}
             </button>
           </section>
 
@@ -1722,7 +1733,8 @@ export default function App() {
               images={referenceImages}
               error={referenceSelectionIssue || referenceUploadError}
               policy={activeReferenceUpload}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isInspectingReferences}
+              isInspecting={isInspectingReferences}
               isUploading={isUploadingReferences}
               retrievalBlocked={isAdvancedMode && retrievalSetting !== 'none'}
               onAddFiles={addReferenceFiles}

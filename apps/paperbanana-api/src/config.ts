@@ -15,6 +15,8 @@ export type ServiceConfig = {
   }
   readinessProbeTimeoutMs: number
   referenceImageMaxBytes: number
+  referenceImageMaxCount: number
+  referenceImageMaxTotalBytes: number
   providerImageMaxBytes: number
   providerEgress:
     | { mode: 'disabled' }
@@ -183,6 +185,8 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
     },
     readinessProbeTimeoutMs: boundedInteger(env, 'PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', 2000, 100, 10_000),
     referenceImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_BYTES', 20 * 1024 * 1024, 1, 20 * 1024 * 1024),
+    referenceImageMaxCount: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_IMAGES', 8, 1, 8),
+    referenceImageMaxTotalBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', 80 * 1024 * 1024, 1, 80 * 1024 * 1024),
     providerImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', 20 * 1024 * 1024, 5 * 1024 * 1024, 50 * 1024 * 1024),
     providerEgress: providerEgressConfig(env),
     mongodb: {

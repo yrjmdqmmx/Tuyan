@@ -52,9 +52,9 @@ export function referenceSubmissionPolicy(provider: string, model: string, workf
     return p
   }
   if (provider === 'bailian' && /^qwen(?:3\.[5-8]|3-vl)/.test(model) && !model.includes('omni')) {
-    Object.assign(p, { maxCount: 8, maxBytes: 16000000, maxTotalBytes: 48000000, maxDimension: 7680,
-      maxPixels: 16777216, minDimension: 11, status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/',
-      mimeTypes: ['image/png', 'image/jpeg'], note: 'URL 输入单图官方上限 20MB；图文总量还受该型号上下文限制，模型会按视觉像素预算缩放。' })
+    Object.assign(p, { maxCount: 8, maxBytes: 8000000, maxTotalBytes: 32000000, maxDimension: 4096,
+      maxPixels: 8000000, minDimension: 11, status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/',
+      mimeTypes: ['image/png', 'image/jpeg'], note: 'URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。' })
   } else if (provider === 'bailian' && /^(qwen-vl-|qvq-)/.test(model)) {
     Object.assign(p, { maxCount: 8, maxBytes: 8000000, maxTotalBytes: 32000000, minDimension: 11,
       status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/', note: 'URL 输入单图官方上限 10MB；数量和图文总量受该型号上下文限制。' })
@@ -130,5 +130,5 @@ export function referencePolicyHint(policy: ReturnType<typeof activeReferenceUpl
 export function referenceProcessingHint(policy: ReturnType<typeof activeReferenceUploadPolicy>) {
   if (policy.version < 2) return '当前后端使用旧上传协议，按原有限额校验；升级后将提供模型所需的无损处理与动态提交限额。'
   const s = policy.submission
-  return `提交模型前校正方向，优先无损 PNG，必要时等比缩至 ${s.maxDimension}px / ${s.maxPixels / 1e6}MP，不放大小图；短边至少 ${s.minDimension}px、长短边之比≤${s.maxAspectRatio}；单张 ${referenceBytesLabel(s.maxBytes)}，合计 ${referenceBytesLabel(s.maxTotalBytes)}。原文件保留，不自动有损压缩；仍超限请裁剪或更换模型。${s.note}`
+  return `提交模型前校正方向；符合要求且无需旋转缩放的 JPEG/WebP 保留原字节，其余优先无损 PNG，必要时等比缩至 ${s.maxDimension}px / ${s.maxPixels / 1e6}MP，不放大小图；短边至少 ${s.minDimension}px、长短边之比≤${s.maxAspectRatio}；单张 ${referenceBytesLabel(s.maxBytes)}，合计 ${referenceBytesLabel(s.maxTotalBytes)}。原文件保留，不自动有损压缩；仍超限请裁剪或更换模型。${s.note}`
 }

@@ -1,5 +1,12 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-10] 参考图上线评审修正：后台等待与精修来源边界 — by Codex
+Core 已接收的后台任务等待单个图片处理空位，HTTP 上传确认仍在繁忙时返回可重试 429；等待期间不读取图片字节。无需旋转/缩放且符合所选模型格式的 JPEG/WebP 保留原字节。百炼提交额度同时覆盖旧 VL 兼容回退（8MB/32MB、4096px/8MP），模型请求预算使用实际请求型号。新增数量/合计环境变量启动校验。精修仅接受已完成上传或账号内任务图片；Gateway 的旧 `PAPERBANANA_ALLOW_LEGACY_EXTERNAL_REFINE_URL` 不再允许任意外链，Core 也在入队前拒绝，以免回滚到 Laf 时产生服务器任意地址抓取。合法账号内 OSS 签名链接仍归一到 objectKey，实际图片格式按字节识别。
+- [x] Core / Laf / Gateway：并发、格式、回退与来源校验修正及回归
+- [x] Web：选择文件后立即进入检查状态，期间禁止提交和重复选图；账户/工作区保留不变
+- [x] 小程序 / 共享策略：生成策略和提示同步；现有精修均使用已归属任务 objectKey，调用字段不变
+- [ ] 修正后完整 CI、自动复评、生产发布和验收
+
 ### [2026-09-10] 参考图上传 v2：原文件与模型提交额度分离 — by Codex
 共享契约新增 `referenceUpload={version:2,checkedAt,platform}`、模型 `capabilities.referenceSubmission`，并将 `refineUpload` 升级为 v2。平台默认原图 8 张、单张 20MiB、合计 80MiB、单边 16384px/32MP；SVG 原文件仍 5MiB 且文字需转曲，精修仍单来源。实际提交数量、字节、尺寸按读取图片的 main/vision/image 路由决定；不把生图模型多图能力误用于提示词规划。旧客户端字段保留，新客户端连接旧后端按旧额度。新增 `PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES`；已有生产 3/5MiB 环境值需要发布时显式调整。Gateway finalize 超时 40s，OSS 直传不扩大 JSON body。详见 [核查、方案与验证](docs/reference-upload/2026-09-10-audit.md)。
 - [x] Core / Laf：数量、单图、总量、尺寸、实际解码及模型请求预算；每次一个图片处理，忙时可重试；保持生命周期/归属校验，修复 vanilla 主模型读图链路

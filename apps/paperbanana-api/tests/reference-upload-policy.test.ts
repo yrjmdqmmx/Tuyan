@@ -31,12 +31,17 @@ test('8 real uploads, >5MiB originals, processing and vanilla main-model analysi
   try {
     const originals = [paddedPng(r.image, 6 * 1024 * 1024), ...Array.from({length: 7}, () => r.image)]
     const uploads = await upload(r, originals)
+    let releaseInspection!: () => void
+    const inspection = r.legacy.withReferenceProcessing(() => new Promise<void>(resolve => { releaseInspection = resolve }))
     const result = await r.post({ action: 'createJob', provider: 'openai', apiKeys: { openai: 'fixture-only' },
       mainModelName: 'gpt-4.1', imageModelName: 'gpt-image-1', referenceVisionModelName: 'gpt-4.1',
       referenceImageMode: 'main_model', referenceImages: uploads, pipelineMode: 'vanilla',
       methodContent: 'Compare scientific cell pathways with eight reference diagrams and clear labels.', caption: 'Scientific workflow',
       retrievalSetting: 'none', imageSize: '1K', aspectRatio: '1:1', maxCriticRounds: 0, numCandidates: 1 })
     assert.equal(result.data.code, 0, JSON.stringify(result))
+    await new Promise(resolve => setTimeout(resolve, 30))
+    assert.equal(r.providerCalls.length, 0, 'accepted job waits while unrelated HTTP inspection holds the processing slot')
+    releaseInspection(); await inspection
     await r.legacy.drainJobAdmission()
     const job = await r.db.collection('paperbanana_jobs').findOne({ _id: result.data.jobId })
     assert.equal(job.status, 'succeeded', JSON.stringify(job))
@@ -98,6 +103,83 @@ test('decode bounds, lossless failure, actual Base64 request budget, and process
     assert.equal(r.legacy.referenceProcessingState().active, 0)
     assert.equal(r.providerCalls.length, 0)
   } finally { await r.close() }
+})
+
+test('supported photographic WebP is retained before PNG expansion, and Bailian includes its VL fallback bounds', async () => {
+  const r = await createRefineRuntime()
+  try {
+    const webp = await sharp(randomBytes(512*512*3), {raw:{width:512,height:512,channels:3}}).webp({quality:70}).toBuffer()
+    const png = await sharp(webp).png().toBuffer()
+    assert.ok(png.length > webp.length * 2)
+    const policy = {...r.legacy.referenceSubmissionPolicy('openai','gpt-4.1'),maxBytes:webp.length+1}
+    const processed = await r.legacy.normalizeReferenceForModel(webp,'image/webp',policy)
+    assert.equal(processed.mimeType,'image/webp')
+    assert.deepEqual(processed.bytes,webp)
+    for (const model of ['qwen3.7-max','qwen3.8-flash']) {
+      const selected = r.legacy.referenceSubmissionPolicy('bailian',model)
+      const fallback = r.legacy.referenceSubmissionPolicy('bailian','qwen-vl-max')
+      for (const key of ['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes'] as const) assert.ok(selected[key] <= fallback[key],key)
+    }
+    for (const url of ['http://127.0.0.1/a.jpg','https://169.254.169.254/latest/meta-data','https://legacy-cdn.example/image?id=1']) {
+      const denied = await r.invoke({action:'refineImage',provider:'openai',imageModelName:'gpt-image-1',sourceImageUrl:url,editInstruction:'Enlarge labels',userId:'refine-owner'})
+      assert.notEqual(denied.code,0)
+      assert.match(denied.error,/上传精修原图/)
+    }
+    assert.equal(r.providerCalls.length,0)
+  } finally { await r.close() }
+})
+
+test('Bailian compatibility retry receives derivatives within the actual fallback model budget', async () => {
+  const previous = process.env.BAILIAN_VISION_MODEL
+  process.env.BAILIAN_VISION_MODEL = 'qwen-vl-max'
+  const r = await createRefineRuntime()
+  try {
+    const raw = await sharp({create:{width:6000,height:3000,channels:3,background:'#abc'}}).png().toBuffer()
+    const uploads = await upload(r,[raw])
+    const inputs = await r.legacy.buildVisionImageInputs(uploads,'',{accessProvider:'bailian',modelId:'qwen3.7-max'})
+    const seen: string[] = []
+    r.legacy.configureRuntimeFetch(async (_input: any, options: any) => {
+      const body = JSON.parse(options.body);seen.push(body.model)
+      if(body.model==='qwen3.7-max') return Response.json({error:{message:'Unexpected item type in content'}},{status:400})
+      assert.equal(body.model,'qwen-vl-max')
+      const fallback = r.legacy.referenceSubmissionPolicy('bailian',body.model)
+      for(const item of body.messages[1].content.filter((part:any)=>part.type==='image_url')) {
+        const key = decodeURIComponent(new URL(item.image_url.url).pathname.replace('/objects/',''))
+        const bytes = r.objects.get(key)!.bytes
+        const metadata = await sharp(bytes).metadata()
+        assert.ok(bytes.length <= fallback.maxBytes)
+        assert.ok(metadata.width! * metadata.height! <= fallback.maxPixels)
+      }
+      return Response.json({choices:[{message:{content:'Reference labels preserved.'}}]})
+    })
+    const text = await (r.legacy as any).callVisionModel('bailian','qwen3.7-max','fixture-only','Scientific method','Figure caption',inputs)
+    assert.match(text,/preserved/)
+    assert.deepEqual(seen,['qwen3.7-max','qwen-vl-max'])
+  } finally {
+    await r.close()
+    if(previous===undefined) delete process.env.BAILIAN_VISION_MODEL
+    else process.env.BAILIAN_VISION_MODEL = previous
+  }
+})
+
+test('owned extensionless JPEG sources keep working through Gateway and the real refine adapter', async () => {
+  const r = await createRefineRuntime()
+  try {
+    const key = 'owned-jpeg-job/original'
+    const jpeg = await sharp(r.image).jpeg().toBuffer()
+    r.objects.set(key,{bytes:jpeg,mimeType:'image/jpeg'})
+    await r.db.collection('paperbanana_jobs').insertOne({_id:'owned-jpeg-job',userId:'refine-owner',status:'succeeded',resultImages:[{objectKey:key,url:r.baseUrl+'/objects/'+key}]})
+    const queued = await r.post({action:'refineImage',provider:'openai',apiKeys:{openai:'fixture-only'},mainModelName:'gpt-4.1',imageModelName:'gpt-image-1',referenceVisionModelName:'gpt-4.1',sourceImageObjectKey:key,editInstruction:'Enlarge labels',aspectRatio:'1:1',imageSize:'1K',outputFormat:'png'})
+    assert.equal(queued.data.code,0,JSON.stringify(queued))
+    await r.legacy.drainJobAdmission()
+    const job = await r.db.collection('paperbanana_jobs').findOne({_id:queued.data.jobId})
+    assert.equal(job.status,'succeeded',JSON.stringify(job))
+    const call = r.providerCalls.find((item:any)=>item.url.endsWith('/images/edits'))!
+    const form = call.options.body as FormData
+    const part = (form.get('image') || form.get('image[]')) as Blob
+    const pixels = await sharp(Buffer.from(await part.arrayBuffer())).raw().toBuffer()
+    assert.deepEqual(pixels,await sharp(jpeg).raw().toBuffer())
+  } finally {await r.close()}
 })
 
 test('SVG retains vector detail at model size and refuses silent text loss; HTTP busy finalize is retryable', async () => {
