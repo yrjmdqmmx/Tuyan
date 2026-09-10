@@ -1,5 +1,11 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-10] 观猹生产网关出口补齐 — by Codex
+真实发布预检发现网关原仅放行 DirectMail，导致观猹 token/userinfo 请求被拒绝。出口规则加入 `watcha.cn` 解析得到的公共 IPv4 的 TCP 443；任一目标 DNS 异常时保留上一套规则，五分钟刷新同时覆盖邮件和观猹。
+- [x] HK / Gateway：双目标白名单、原子替换、目标解析失败与第二目标私网地址回归；发布 smoke 实测两处 TLS，并验证通用公网仍被拒绝
+- [x] Web / 小程序 / Core / Laf：无 API 字段和客户端契约变更，无端侧待办；小程序平台发布仍暂缓
+- [ ] 生产部署和真实观猹授权验收
+
 ### [2026-09-10] 观猹 OAuth 身份登录接入（开发分支，未发布）— by Codex
 新增独立观猹身份登录，与 TokenDance 模型消费授权分开；保留原图研用户 ID、邮箱登录与数据归属。官方已签发图研专用客户端，凭据仅保存于仓库外私有配置。本次默认关闭，正式回调与获批 scopes 仍需联调。
 - [x] Gateway：`/api/auth/watcha/{status,start,email-code,complete,link,unlink,delete-confirmation}`，固定回调 `/api/auth/oauth2/callback/watcha`。状态包含 `available/linked/hasPassword/emailVerified/pending`；原注销接口新增可选 `confirmationToken`（一次性、绑定会话），密码确认继续兼容

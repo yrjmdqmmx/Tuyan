@@ -11,7 +11,7 @@ const firewall = readFileSync(firewallUrl, 'utf8');
 const deploy = readFileSync(new URL('scripts/deploy.sh', root), 'utf8');
 const smoke = readFileSync(new URL('scripts/smoke.sh', root), 'utf8');
 
-test('gateway edge permits only refreshed DirectMail HTTPS egress and otherwise fails closed', () => {
+test('gateway edge permits only refreshed DirectMail and Watcha HTTPS egress and otherwise fails closed', () => {
   assert.match(compose, /auth-gateway:[\s\S]*networks:[\s\S]*backend:[\s\S]*ipv4_address:\s*172\.28\.0\.10[\s\S]*edge:[\s\S]*ipv4_address:\s*172\.31\.0\.10/);
   assert.match(compose, /edge:\s*\n\s+driver:\s*bridge/);
   assert.doesNotMatch(compose, /edge:\s*\n\s+internal:\s*true/);
@@ -20,9 +20,9 @@ test('gateway edge permits only refreshed DirectMail HTTPS egress and otherwise 
   assert.match(firewall, /net\.bridge\.bridge-nf-call-iptables=1/);
   assert.match(firewall, /\/etc\/modules-load\.d\/paperbanana\.conf/);
   assert.match(firewall, /\/etc\/sysctl\.d\/99-paperbanana-bridge\.conf/);
-  assert.match(firewall, /directmail_host="dm\.aliyuncs\.com"/);
+  assert.match(firewall, /gateway_hosts=\(dm\.aliyuncs\.com watcha\.cn\)/);
   assert.match(firewall, /getent ahostsv4/);
-  assert.match(firewall, /-s "\$gateway_source" -d "\$directmail_ip" -p tcp --dport 443/);
+  assert.match(firewall, /-s "\$gateway_source" -d "\$gateway_ip" -p tcp --dport 443/);
   assert.match(firewall, /flock -x 9/);
   assert.match(firewall, /PAPERBANANA-EGRESS-A/);
   assert.match(firewall, /PAPERBANANA-EGRESS-B/);
@@ -44,6 +44,7 @@ test('gateway edge permits only refreshed DirectMail HTTPS egress and otherwise 
 
   assert.match(smoke, /dm\.aliyuncs\.com/);
   assert.match(smoke, /tls\.connect/);
+  assert.match(smoke, /watcha\.cn/);
   assert.match(smoke, /1\.1\.1\.1/);
 });
 
