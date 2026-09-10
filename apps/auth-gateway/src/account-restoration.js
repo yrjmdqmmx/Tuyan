@@ -72,6 +72,12 @@ export async function restoreAccountIdentity({ client, authDb, businessDb, userF
       if (snapshot.deletionOperation && snapshot.deletionOperation.status !== 'review_required') throw new Error('RESTORATION_AUTH_OPERATION_MUST_BE_HELD');
       const restoredAt = now();
       if (snapshot.uploads.some((upload) => !Number.isFinite(new Date(upload.expiresAt).getTime()) || new Date(upload.expiresAt).getTime() + 86400000 > restoredAt.getTime())) throw new Error('RESTORATION_UPLOADS_NOT_SETTLED');
+      // These ephemeral confirmations cannot outlive the interrupted account
+      // lifecycle. Deleting in this transaction also conflicts with any stale
+      // Watcha mutation concurrently trying to consume the same proof.
+      for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations']) {
+        await authDb.collection(name).deleteMany({ userId }, { session });
+      }
       const accountGeneration = randomUUID();
       const archiveId = `${userId}:${accountGeneration}`;
       await businessDb.collection('paperbanana_account_deletion_history').insertOne({

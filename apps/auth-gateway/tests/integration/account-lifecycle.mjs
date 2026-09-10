@@ -103,11 +103,17 @@ try {
   await restoredBusinessDb.collection('paperbanana_account_deletions').insertOne(legacy);
   const reviewOptions = { client, authDb: db, businessDb: restoredBusinessDb, userFingerprint: uidFingerprint };
   await db.collection('accountDeletionOperations').insertOne({ _id: userId, userId, operationId: 'held-legacy-operation', status: 'review_required', phase: 'business', contractVersion: 3 });
+  for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations']) {
+    await db.collection(name).insertOne({ _id: 'stale-watcha-fixture', userId, expiresAt: new Date(Date.now() + 60000) });
+  }
   const review = await inspectAccountRestoration(reviewOptions);
   const authBefore = { user: await db.collection('user').findOne({}), account: await db.collection('account').find({}).toArray(), sessions: await db.collection('session').find({}).toArray() };
   await assert.rejects(restoreAccountIdentity({ ...reviewOptions, expectedReviewSha256: '0'.repeat(64) }), /REVIEW_CHANGED/);
   const restored = await restoreAccountIdentity({ ...reviewOptions, expectedReviewSha256: review.summary.reviewSha256 });
   assert.equal(restored.state, 'active');
+  for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations']) {
+    assert.equal(await db.collection(name).countDocuments({ userId }), 0, 'restoration invalidates stale Watcha proofs');
+  }
   assert.equal(restored.alreadyRestored, false);
   assert.equal(await db.collection('accountDeletionOperations').countDocuments({}), 0);
   assert.equal(await db.collection('accountDeletionOperationHistory').countDocuments({}), 1);

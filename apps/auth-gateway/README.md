@@ -112,3 +112,13 @@ docker build -f apps/auth-gateway/Dockerfile -t paperbanana-auth-gateway .
 
 Never commit real MongoDB, Better Auth, gateway, guest-cookie, admin, or model
 provider secrets.
+
+### 观猹身份登录（默认关闭）
+
+`WATCHA_OAUTH_ENABLED=true` 需要专属 `WATCHA_CLIENT_ID` / `WATCHA_CLIENT_SECRET`、`AUTH_EMAIL_DELIVERY_ENABLED=true` 及完整 DirectMail 配置。`WATCHA_OAUTH_SCOPES` 默认 `read email`，仅允许 `read` 和可选 `email`；令牌实际授权必须含 `read`。授权、token、userinfo 地址固定为 `watcha.cn`，回调固定为 `AUTH_BASE_URL` origin 下的 `/api/auth/oauth2/callback/watcha`。返回地址只接受发起请求的可信 Web origin，固定回到 `/account/watcha-callback.html`。
+
+相对 `/api/auth` 的接口：`GET /watcha/status`；`POST /watcha/start`（intent、returnOrigin）；`POST /watcha/email-code`（purpose=signup/unlink/delete，signup 提供 email）；`POST /watcha/complete`（email、code）；`POST /watcha/link`；`POST /watcha/unlink`（code）；`POST /watcha/delete-confirmation`（code）。既有 `/api/account/delete` 接受 email + password 或 email + confirmationToken。验证码5分钟、至多5次尝试；授权与待注册身份10分钟，均有 TTL 索引并在请求时检查过期。发送通过原有邮件地址/IP limiter，验证码只存 HMAC。token 与用户信息仅在内存完成交换，不保存身份 OAuth 长期令牌。
+
+已有观猹绑定登录原图研 ID；首次登录必须明确绑定已登录且本地邮箱已验证的原账号，或用邮件验证码创建无密码新账号。上游邮箱不用于合并。已有邮箱返回 `WATCHA_EXISTING_ACCOUNT` 并保留待绑定身份。解绑前必须另有密码 credential，密码可通过既有找回密码流程设置。Better Auth 的通用 `/unlink-account` 被禁用，观猹解绑只能走上述确认接口；隐式账号关联也禁用。账号删除事务清理绑定、会话及该用户的 Watcha 临时记录。旧待绑定请求在账号生命周期改变后失效。
+
+本地隔离回归：`apps/auth-gateway/tests/integration/run-watcha.sh` 自动创建随机名字、随机 loopback 端口的 Mongo 8.0.16 replica set，结束即销毁。所有上游 OAuth 和邮件由 fixture 接管，零真实发送。浏览器验收可运行 `WATCHA_FIXTURE_BROWSER=1 WATCHA_FIXTURE_WEB_ORIGIN=http://127.0.0.1:5186 apps/auth-gateway/tests/integration/run-watcha.sh`，它打印随机 Gateway origin 与仅本地的 `/fixture/mail`。浏览器测试应拦截官方 authorize URL 并重定向到该 Gateway 的 `/fixture/authorize`，保留查询参数；生产接口始终返回固定官方 URL。通过 SIGINT 关闭 fixture 会删除测试数据库和容器，不影响既有服务。

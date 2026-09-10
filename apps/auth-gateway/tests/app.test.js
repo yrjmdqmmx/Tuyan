@@ -1063,3 +1063,35 @@ test('a durable deletion blocks new work even before Core first accepts the clea
     assert.equal(backend.calls.length, 0);
   });
 });
+
+test('maintenance blocks Watcha mutations and OAuth callback while allowing status and email sign-in', async () => {
+  const auth = fakeAuth();
+  await withApp({ auth, isMaintenance: () => true }, async ({ baseUrl }) => {
+    for (const path of ['watcha/start', 'watcha/email-code', 'watcha/complete', 'watcha/link', 'watcha/unlink', 'watcha/delete-confirmation']) {
+      const response = await fetch(`${baseUrl}/api/auth/${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
+      assert.equal(response.status, 503, path);
+    }
+    assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/watcha?state=fixture`)).status, 503);
+    assert.equal(auth.webRequests.length, 0);
+    assert.equal((await fetch(`${baseUrl}/api/auth/watcha/status`)).status, 200);
+    assert.equal((await fetch(`${baseUrl}/api/auth/sign-in/email`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })).status, 200);
+  });
+});
+
+test('account deletion confirmation replaces only password reauthentication and keeps email matching', async () => {
+  let confirmations = 0;
+  const auth = fakeAuth({
+    async verifyPassword() { assert.fail('confirmation deletion must not require password'); },
+    async consumeDeletionConfirmation({ confirmationToken, session }) { confirmations += 1; assert.equal(session.user.id, 'account-1'); return confirmationToken === 'fixture-proof'; },
+  });
+  const backend = fakeBackend(async (body) => ({ status: 200, data: { code: 0, ok: true, deletionContractVersion: 3,
+    operationId: body.operationId, phase: body.action === 'completeAccountDeletion' ? 'completed' : 'awaiting_auth' } }));
+  await withApp({ auth, backend }, async ({ baseUrl }) => {
+    const remove = (email, confirmationToken) => fetch(`${baseUrl}/api/account/delete`, { method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-test-session': 'account-1|owner@example.com' }, body: JSON.stringify({ email, confirmationToken }) });
+    assert.equal((await remove('wrong@example.com', 'fixture-proof')).status, 403); assert.equal(confirmations, 0);
+    assert.equal((await remove('owner@example.com', 'wrong')).status, 401);
+    assert.equal((await remove('owner@example.com', 'fixture-proof')).status, 200);
+    assert.equal(confirmations, 2);
+  });
+});
