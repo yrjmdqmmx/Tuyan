@@ -1,5 +1,6 @@
+import { readUiSettings, saveUiSettings } from '../../utils/ui-settings'
 import { rememberWorkPage } from '../../utils/tokendance'
-import { activeReferenceUploadPolicy, referenceUploadSelectionError, referencePolicyHint, referenceProcessingHint } from '../../utils/reference-upload-policy'
+import { activeReferenceUploadPolicy, referenceUploadSelectionError, referencePolicyHint, referenceProcessingHint, referenceBytesLabel } from '../../utils/reference-upload-policy'
 import { orderModelChannels } from '../../utils/model-presentation'
 import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
@@ -147,7 +148,7 @@ Component({
     referenceImages: [] as ReferenceImage[],
     referenceImageCount: 0,
     referenceCanAddImage: true,
-    referenceLimitHint: '',
+    referenceLimitHint: '', referenceSummary: '', referenceDetailsOpen: false,
     referenceProcessingHint: '',
     referenceSelectionIssue: '',
     referenceModeNote: '',
@@ -200,9 +201,6 @@ Component({
     isAuthChecking: true,
     showAuthPanel: false,
     showFeedbackPanel: false,
-    // 反馈悬浮按钮初始位置（px，attached 时按屏幕尺寸算到右下角）
-    fabX: 0,
-    fabY: 0,
   },
 
   lifetimes: {
@@ -211,19 +209,6 @@ Component({
       ;(this as any).ownerEpoch = 0
       ;(this as any).isPageVisible = true
       this.restoreDraft()
-      // 悬浮反馈按钮放到右下角（movable-view 的 x/y 是相对 movable-area 左上角的 px 值）
-      try {
-        // getSystemInfoSync 已废弃；优先用 getWindowInfo（基础库 2.20.1+），旧环境回退
-        const getWindowInfo = (wx as any).getWindowInfo
-        const info = typeof getWindowInfo === 'function' ? getWindowInfo() : wx.getSystemInfoSync()
-        const rpx = info.windowWidth / 750
-        this.setData({
-          fabX: Math.max(0, info.windowWidth - 144 * rpx - 24 * rpx),
-          fabY: Math.max(0, info.windowHeight - 76 * rpx - 48 * rpx),
-        })
-      } catch {
-        // 取不到屏幕信息时停留在默认位置，可手动拖动
-      }
       const unsubscribe = subscribeSession((user) => {
         if ((this as any).ownerId !== (user?.id || '')) {
           ;(this as any).ownerId = user?.id || ''; (this as any).ownerEpoch++
@@ -236,6 +221,7 @@ Component({
           isAuthChecking: false,
         })
         this.refreshCanSubmit()
+        if (user && (this as any).isPageVisible) void refreshTokenDanceConnection().then(() => this.refreshCanSubmit())
       })
       ;(this as any).unsubscribeSession = unsubscribe
       const user = getCurrentUser()
@@ -314,7 +300,7 @@ Component({
         return
       }
       const current = this.data.settings as GenerationSettings
-      const settings = current.modelRoutes ? current : defaultGenerationSettings(state.registry)
+      const settings = current.modelRoutes ? current : readUiSettings('create', defaultGenerationSettings(state.registry))
       this.setData({
         registryReady: true,
         registryVersion: state.registry.registryVersion,
@@ -364,10 +350,12 @@ Component({
         showGenerationSettings: false,
         apiKeysForSheet: getApiKeys(),
       })
+      saveUiSettings('create', settings)
       this.syncLegacySettings(settings)
       this.refreshCanSubmit()
     },
 
+    toggleReferenceDetails() { this.setData({ referenceDetailsOpen: !this.data.referenceDetailsOpen }) },
     syncLegacySettings(settings: GenerationSettings) {
       const main = settings.modelRoutes.main
       const image = settings.modelRoutes.image
@@ -892,6 +880,7 @@ Component({
       })
       const policy = this.activeReferencePolicy()
       this.setData({
+        referenceSummary: `PNG / JPG / WebP / SVG · 最多 ${policy.maxCount} 张 · 单张 ${referenceBytesLabel(policy.platform.maxBytes)}（SVG ${referenceBytesLabel(policy.platform.maxSvgBytes)}）· 合计 ${referenceBytesLabel(policy.platform.maxTotalBytes)}`,
         referenceLimitHint: referencePolicyHint(policy),
         referenceProcessingHint: referenceProcessingHint(policy),
         referenceSelectionIssue: referenceUploadSelectionError(this.data.referenceImages, policy),
@@ -1032,6 +1021,8 @@ Component({
       })
 
       wx.showLoading({ title: '提交中' })
+      let loadingShown = true
+      const finishLoading = () => { if (loadingShown) { loadingShown = false; wx.hideLoading() } }
       try {
         // Validate the complete selection before creating any upload. Replace descriptors with server-issued ones below.
         const uploadedReferenceImages = this.data.referenceImages.map(image => ({ filename: image.filename, mimeType: image.mimeType, size: image.size, objectKey: '', uploadToken: '' }))
@@ -1071,16 +1062,16 @@ Component({
           currentJobId: jobId,
           statusLabel: STATUS_LABELS[data.status || 'queued'] || String(data.status || '排队中'),
         })
-        wx.hideLoading()
+        finishLoading()
         wx.showToast({ title: '任务已提交', icon: 'success' })
         // 提交等待期间用户可能已切到别的 tab：隐藏时不起 timer，回到本页由 pageLifetimes.show 恢复
         if ((this as any).isPageVisible !== false) {
           this.startPolling(jobId)
         }
       } catch (error) {
-        if (current()) { this.setData({ error: formatError(error) }); wx.showToast({ title: '提交失败', icon: 'none' }) }
+        if (current()) { finishLoading(); this.setData({ error: formatError(error) }); wx.showToast({ title: '提交失败', icon: 'none' }) }
       } finally {
-        wx.hideLoading()
+        finishLoading()
         if (current()) { this.setData({ isSubmitting: false }); this.refreshCanSubmit() }
       }
     },
@@ -1276,7 +1267,10 @@ function defaultGenerationSettings(registry: ModelRegistry): GenerationSettings 
 
 function formatSettingsSummary(settings: GenerationSettings): string {
   const routes = settings.modelRoutes
-  return `主 ${routes.main.modelId} · 图 ${routes.image.modelId} · 识 ${routes.vision.modelId}`
+  const registry = getModelRegistryState().registry
+  const label = (role: 'main' | 'image' | 'vision') => findRegistryModel(registry, routes[role].accessProvider, routes[role].modelId)?.label || routes[role].modelId
+  const textRoute = routes.main.accessProvider === routes.vision.accessProvider && routes.main.modelId === routes.vision.modelId ? `主 / 识图 ${label('main')}` : `主 ${label('main')} · 识图 ${label('vision')}`
+  return `图像 ${label('image')} · ${textRoute}`
 }
 
 function formatSettingsSummaryDetails(settings: GenerationSettings): string[] {

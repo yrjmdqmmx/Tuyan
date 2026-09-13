@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ui_settings_1 = require("../../utils/ui-settings");
+const model_presentation_1 = require("../../utils/model-presentation");
 const tokendance_1 = require("../../utils/tokendance");
 const refine_upload_1 = require("../../utils/refine-upload");
 const media_1 = require("../../utils/media");
@@ -28,7 +30,7 @@ Component({
         instruction: '', ratioOptions: [], ratioIndex: 0,
         resolutionOptions: [], resolutionIndex: 0, refineMode: 'none', refineModeLabel: '暂不可用',
         canSubmit: false, isSubmitting: false, error: '', currentJobId: '', job: null,
-        referenceProcessingHint: '',
+        referenceProcessingHint: '', detailsOpen: false, modelLabel: '', providerLabel: '', connected: false, sourceSummary: '', submitHint: '',
         isLoggedIn: false, isAuthChecking: true, showAuthPanel: false,
     },
     lifetimes: {
@@ -50,6 +52,8 @@ Component({
                 }
                 this.setData({ isLoggedIn: Boolean(user), isAuthChecking: false });
                 this.loadSources();
+                if (user && this.visible)
+                    void (0, tokendance_2.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit());
             });
             this.setData({ isLoggedIn: Boolean((0, session_1.getCurrentUser)()), isAuthChecking: !(0, session_1.isSessionChecked)() });
             void (0, model_registry_store_1.loadModelRegistry)();
@@ -74,6 +78,9 @@ Component({
     },
     methods: {
         openTokenDance: tokendance_2.openTokenDance,
+        toggleDetails() { this.setData({ detailsOpen: !this.data.detailsOpen }); },
+        previewSource() { var _a; if ((_a = this.data.source) === null || _a === void 0 ? void 0 : _a.url)
+            wx.previewImage({ current: this.data.source.url, urls: [this.data.source.url] }); },
         applyRegistryState(state) {
             var _a;
             if (!state.registry) {
@@ -82,7 +89,7 @@ Component({
                 return;
             }
             const current = this.data.settings;
-            const settings = current.modelRoutes ? current : defaultSettings(state.registry);
+            const settings = current.modelRoutes ? current : (0, ui_settings_1.readUiSettings)('refine', defaultSettings(state.registry));
             this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings, uploadEnabled: [1, 2].includes(((_a = state.registry.refineUpload) === null || _a === void 0 ? void 0 : _a.version) || 0) });
             this.refreshCapabilities();
             this.refreshCanSubmit();
@@ -108,7 +115,7 @@ Component({
             const sourceOptions = jobs.flatMap((job) => job.result_images.filter(image => image.can_preview).map((image, index) => sourceOption(job, image, index))).filter((item) => Boolean(item.url || item.objectKey));
             const previous = this.data.source;
             const sourceIndex = Math.max(0, sourceOptions.findIndex((item) => item.jobId === (previous === null || previous === void 0 ? void 0 : previous.jobId) && item.objectKey === (previous === null || previous === void 0 ? void 0 : previous.objectKey)));
-            this.setData({ sourceOptions, sourceIndex, source: (previous === null || previous === void 0 ? void 0 : previous.uploaded) || this.data.uploadBusy ? previous : sourceOptions[sourceIndex] || null });
+            this.setData({ sourceOptions, sourceIndex, source: (previous === null || previous === void 0 ? void 0 : previous.uploaded) || this.data.uploadBusy ? previous : previous ? sourceOptions.find(item => item.jobId === previous.jobId && item.objectKey === previous.objectKey) || null : null });
             this.refreshCanSubmit();
         },
         onSourceChange(event) { this.resetUpload(); const sourceIndex = Number(event.detail.value) || 0; this.setData({ sourceIndex, source: this.data.sourceOptions[sourceIndex] || null }); this.refreshCanSubmit(); },
@@ -226,26 +233,47 @@ Component({
         },
         retryUpload() { const file = this.uploadFile; if (file && !this.data.uploadBusy)
             void this.uploadSource(file); },
-        onRatioChange(event) { this.setData({ ratioIndex: Number(event.detail.value) || 0 }); this.refreshCanSubmit(); },
-        onResolutionChange(event) { this.setData({ resolutionIndex: Number(event.detail.value) || 0 }); this.refreshRatioOptions(); this.refreshCanSubmit(); },
+        selectRatio(event) {
+            const index = this.data.ratioOptions.findIndex(item => item.value === event.detail.value);
+            if (index >= 0)
+                this.onRatioChange({ detail: { value: String(index) } });
+        },
+        onRatioChange(event) {
+            var _a;
+            const value = (_a = this.data.ratioOptions[Number(event.detail.value)]) === null || _a === void 0 ? void 0 : _a.value;
+            if (!value || this.data.isSubmitting)
+                return;
+            this.setData({ settings: { ...this.data.settings, aspectRatio: value } });
+            this.refreshCapabilities();
+            this.refreshCanSubmit();
+            (0, ui_settings_1.saveUiSettings)('refine', this.data.settings);
+        },
+        onResolutionChange(event) {
+            var _a;
+            const value = (_a = this.data.resolutionOptions[Number(event.detail.value)]) === null || _a === void 0 ? void 0 : _a.value;
+            if (!value || this.data.isSubmitting)
+                return;
+            this.setData({ settings: { ...this.data.settings, imageSize: value } });
+            this.refreshCapabilities();
+            this.refreshCanSubmit();
+            (0, ui_settings_1.saveUiSettings)('refine', this.data.settings);
+        },
         refreshRatioOptions() {
-            var _a, _b;
-            const registry = (0, model_registry_store_1.getModelRegistryState)().registry;
-            const settings = this.data.settings;
+            var _a;
+            const registry = (0, model_registry_store_1.getModelRegistryState)().registry, settings = this.data.settings;
             if (!registry || !settings.modelRoutes)
                 return;
-            const route = settings.modelRoutes.image;
-            const entry = (0, model_registry_1.findRegistryModel)(registry, route.accessProvider, route.modelId);
-            const resolution = (_a = this.data.resolutionOptions[this.data.resolutionIndex]) === null || _a === void 0 ? void 0 : _a.value;
-            const previous = (_b = this.data.ratioOptions[this.data.ratioIndex]) === null || _b === void 0 ? void 0 : _b.value;
-            const ratioOptions = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, capabilityField: 'refineAspectRatios', resolution }).filter(item => !item.disabled).map(item => ({ value: item.value, label: item.label }));
-            this.setData({ ratioOptions, ratioIndex: Math.max(0, ratioOptions.findIndex(item => item.value === previous)) });
+            const route = settings.modelRoutes.image, entry = (0, model_registry_1.findRegistryModel)(registry, route.accessProvider, route.modelId);
+            const ratioOptions = (0, aspect_ratios_1.buildAspectRatioOptions)({ capabilities: (entry === null || entry === void 0 ? void 0 : entry.capabilities) || {}, capabilityField: 'refineAspectRatios', resolution: settings.imageSize }).filter(item => !item.disabled).map(({ value, label }) => ({ value, label }));
+            const value = ratioOptions.some(item => item.value === settings.aspectRatio) ? settings.aspectRatio : ((_a = ratioOptions[0]) === null || _a === void 0 ? void 0 : _a.value) || '';
+            this.setData({ settings: { ...settings, aspectRatio: value }, ratioOptions, ratioIndex: Math.max(0, ratioOptions.findIndex(item => item.value === value)) });
         },
         openSettings() { if (this.data.registryReady && !this.data.isSubmitting && !this.data.uploadBusy)
             this.setData({ settingsPurpose: 'refine', showSettings: true, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), settingsExecutionRoles: (0, model_routing_1.requiredRefineRouteRoles)({ refineMode: this.data.refineMode }) }); },
         closeSettings() { this.setData({ showSettings: false }); },
-        saveSettings(event) { (0, api_keys_1.replaceApiKeys)(event.detail.apiKeys); this.setData({ settings: event.detail.settings, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), showSettings: false }); this.refreshCapabilities(); this.refreshCanSubmit(); },
+        saveSettings(event) { (0, api_keys_1.replaceApiKeys)(event.detail.apiKeys); this.setData({ settings: event.detail.settings, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), showSettings: false }); this.refreshCapabilities(); this.refreshCanSubmit(); (0, ui_settings_1.saveUiSettings)('refine', this.data.settings); },
         refreshCapabilities() {
+            var _a, _b;
             const registry = this.data.registryReady ? (0, model_registry_store_1.getModelRegistryState)().registry : null;
             const settings = this.data.settings;
             if (!registry || !settings.modelRoutes)
@@ -258,8 +286,10 @@ Component({
             const consumer = refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision;
             const policy = (0, reference_upload_policy_1.activeReferenceUploadPolicy)(registry.referenceUpload, consumer, refineMode === 'direct-edit' ? 'refine' : 'generation');
             this.setData({ referenceProcessingHint: '单张原图，' + (refineMode === 'direct-edit' ? '直接参与编辑' : '先识图分析，再据此重绘') + '。' + consumer.modelId + '：' + (0, reference_upload_policy_1.referenceProcessingHint)(policy) });
+            this.setData({ modelLabel: (entry === null || entry === void 0 ? void 0 : entry.label) || settings.modelRoutes.image.modelId, providerLabel: model_presentation_1.MODEL_CHANNEL_LABELS[settings.modelRoutes.image.accessProvider] || settings.modelRoutes.image.accessProvider, sourceSummary: `PNG / JPG / WebP · 单张最多 ${Number((((_a = registry.refineUpload) === null || _a === void 0 ? void 0 : _a.maxBytes) || 20 * 1024 * 1024) / 1024 / 1024).toFixed(0)}MiB` });
             const resolutionIndex = Math.max(0, resolutionOptions.findIndex(item => item.value === settings.imageSize));
             this.setData({ refineMode, refineModeLabel: refineMode === 'direct-edit' ? '直接编辑' : refineMode === 'analyze-redraw' ? '分析后重绘' : '不支持精修', ratioOptions, resolutionOptions, ratioIndex: Math.max(0, ratioOptions.findIndex(item => item.value === settings.aspectRatio)), resolutionIndex });
+            this.setData({ settings: { ...settings, imageSize: ((_b = resolutionOptions[resolutionIndex]) === null || _b === void 0 ? void 0 : _b.value) || '' } });
             this.refreshRatioOptions();
         },
         refreshCanSubmit() {
@@ -281,17 +311,17 @@ Component({
                     sourceSelectionIssue = (0, api_1.formatError)(error);
                 }
             }
-            this.setData({ sourceSelectionIssue });
+            this.setData({ sourceSelectionIssue, connected: (0, tokendance_2.hasTokenDanceConnection)() });
             const hasKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return (provider === 'tokendance' ? (0, tokendance_2.hasTokenDanceConnection)() : Boolean((_a = keys[provider]) === null || _a === void 0 ? void 0 : _a.trim())); });
-            this.setData({ canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && this.data.isLoggedIn && !sourceSelectionIssue && !this.data.uploadBusy && !this.data.optimizationBusy && !this.data.isSubmitting) });
+            const submitHint = !this.data.isLoggedIn ? '请先登录图研。' : this.data.uploadBusy ? '正在上传原图，请稍候。' : !this.data.source ? '请选择一张原图。' : this.data.instruction.trim().length < 3 ? '请写下需要修改的内容。' : this.data.refineMode === 'none' ? '当前模型不支持精修，请调整模型。' : !hasKeys ? '请在账户页连接观猹，或在精修设置中填写所需渠道密钥。' : '';
+            this.setData({ submitHint, canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && this.data.isLoggedIn && !sourceSelectionIssue && !this.data.uploadBusy && !this.data.optimizationBusy && !this.data.isSubmitting) });
         },
         async submitRefine() {
-            var _a, _b;
             if (!this.data.canSubmit || this.data.isSubmitting || !this.data.source)
                 return;
             const epoch = this.ownerEpoch;
             const source = this.data.source;
-            this.setData({ isSubmitting: true, error: '', job: null });
+            this.setData({ isSubmitting: true, error: '', currentJobId: '', job: null });
             this.stopPolling();
             const registryState = await (0, model_registry_store_1.loadModelRegistry)(true);
             const registry = registryState.registry;
@@ -308,7 +338,7 @@ Component({
                     (0, refine_upload_1.validateRefineFile)(source, registry.refineUpload, settings.modelRoutes.image);
                     (0, refine_upload_1.validateRefineModelInput)(source, registry.referenceUpload, this.data.refineMode === 'direct-edit' ? settings.modelRoutes.image : settings.modelRoutes.vision, this.data.refineMode === 'direct-edit' ? 'refine' : 'generation');
                 }
-                const payload = (0, refine_1.buildRefineJobPayload)({ providerRegions: settings.providerRegions, configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: (0, api_keys_1.getApiKeys)(), source, editInstruction: this.data.instruction, aspectRatio: ((_a = this.data.ratioOptions[this.data.ratioIndex]) === null || _a === void 0 ? void 0 : _a.value) || 'auto', imageSize: ((_b = this.data.resolutionOptions[this.data.resolutionIndex]) === null || _b === void 0 ? void 0 : _b.value) || '', refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' });
+                const payload = (0, refine_1.buildRefineJobPayload)({ providerRegions: settings.providerRegions, configurationMode: settings.configurationMode, modelRoutes: settings.modelRoutes, registry, apiKeys: (0, api_keys_1.getApiKeys)(), source, editInstruction: this.data.instruction, aspectRatio: settings.aspectRatio, imageSize: settings.imageSize, refineMode: this.data.refineMode === 'direct-edit' ? 'direct-edit' : 'analyze-redraw' });
                 const response = await (0, api_1.requestJson)(payload);
                 if (epoch !== this.ownerEpoch || this.detached)
                     return;

@@ -29,7 +29,17 @@ interface SettingsDraft {
 Component({
   options: { styleIsolation: 'apply-shared', multipleSlots: true },
   properties: {
-    show: { type: Boolean, value: false, observer(this: any, show: boolean) { (this as any).epoch = Number((this as any).epoch || 0) + 1; if (show) this.resetDraft(); else this.setData({ draftKeys: {}, keyFields: [], showModelPicker: false, verifyingArk: false }) } },
+    show: { type: Boolean, value: false, observer(this: any, show: boolean) {
+      this.epoch = Number(this.epoch || 0) + 1
+      if (show) {
+        this.resetDraft()
+        const measure = () => { this.baseHeight = (wx as any).getWindowInfo?.().windowHeight || 0 }
+        measure(); wx.hideTabBar?.({ animation: false, success: measure })
+      } else {
+        wx.showTabBar?.({ animation: false }); this.focusedProvider = ''
+        this.setData({ draftKeys: {}, keyFields: [], showModelPicker: false, verifyingArk: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '' })
+      }
+    } },
     purpose: { type: String, value: '' },
     referenceCount: { type: Number, value: 0 },
     referenceImageMode: { type: String, value: 'vision_model' },
@@ -41,7 +51,7 @@ Component({
     libraryTaskName: { type: String, value: 'diagram' },
   },
   data: {
-    emptyObject: {},
+    emptyObject: {}, advancedExpanded: false, credentialsExpanded: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '', normalizationNotice: '',
     draft: null as SettingsDraft | null,
     minimaxRegionOptions: [{value:'global',label:'国际'}, {value:'cn',label:'中国大陆'}],
     minimaxRegionIndex: 0, minimaxApiBase: '',
@@ -74,9 +84,26 @@ Component({
     arkStatus: '',
     verifyingArk: false,
   },
+  lifetimes: {
+    attached() {
+      const listener = (event: { height: number }) => {
+        if (!this.properties.show) return
+        const currentHeight = (wx as any).getWindowInfo?.().windowHeight || (this as any).baseHeight
+        const shrink = Math.max(0, ((this as any).baseHeight || currentHeight) - currentHeight)
+        this.setData({ keyboardHeight: Math.max(0, event.height - shrink), keyboardOpen: event.height > 0, focusedKeyId: '' }, () => {
+          if (event.height > 0 && (this as any).focusedProvider) this.setData({ focusedKeyId: 'credential-' + (this as any).focusedProvider })
+        })
+      }
+      ;(this as any).keyboardListener = listener; wx.onKeyboardHeightChange?.(listener)
+    },
+    detached() { wx.offKeyboardHeightChange?.((this as any).keyboardListener); if (this.properties.show) wx.showTabBar?.({ animation: false }) },
+  },
   methods: {
     openTokenDance,
+    toggleAdvanced() { this.setData({ advancedExpanded: !this.data.advancedExpanded }) },
+    toggleCredentials() { this.setData({ credentialsExpanded: !this.data.credentialsExpanded }) },
     noop() {},
+    onKeyFocus(event: WechatMiniprogram.InputFocus) { (this as any).focusedProvider = String(event.currentTarget.dataset.provider || ''); this.setData({ focusedKeyId: 'credential-' + (this as any).focusedProvider }) },
     // Keep full capability metadata in the logic-layer store, outside setData.
     getRegistry(): ModelRegistry | null { return registryForRegions(getModelRegistryState().registry, this.data.draft?.providerRegions) },
     effectiveRoles(): ModelRole[] {
@@ -103,7 +130,7 @@ Component({
         draft,
         draftKeys: { ...(this.properties.apiKeys as Record<string, string> || {}) },
         draftManualReferenceIds: [...(this.properties.manualReferenceIds as string[] || [])],
-        error: '',
+        error: '', advancedExpanded: false, credentialsExpanded: false, normalizationNotice: '',
       })
       this.refreshPresentation()
     },
@@ -115,6 +142,7 @@ Component({
         const defaults = registry.providers[id]?.defaults
         return defaults?.main && defaults?.image && defaults?.vision
       }).map((value) => ({ value, label: PROVIDER_LABELS[value] }))
+      const previousSize = draft.imageSize, previousRatio = draft.aspectRatio
       const imageEntry = findRegistryModel(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId)
       const refinement = this.properties.purpose === 'refine' || (this.properties.libraryTaskName === 'plot' && imageEntry?.capabilities.imageEditMode === 'direct-edit')
       const resolutionOptions = buildResolutionOptions(imageEntry?.capabilities || {}, refinement ? 'refineResolutions' : 'resolutions')
@@ -142,7 +170,8 @@ Component({
       const missing = missingArkVerifications(probes, getArkVerification())
       const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
       this.setData({
-        draft, routeRows, ratioOptions, resolutionOptions, keyFields, encryptedRecovery: providers.includes('tokendance'),
+        draft, routeRows, ratioOptions, resolutionOptions, keyFields,
+        normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.includes('tokendance'),
         providerOptions,
         minimaxRegionIndex: minimaxRegion(draft.providerRegions) === 'cn' ? 1 : 0,
         minimaxApiBase: MINIMAX_REGIONS[minimaxRegion(draft.providerRegions)].apiBase,
@@ -160,10 +189,12 @@ Component({
     setMode(event: WechatMiniprogram.TouchEvent) {
       const draft = this.data.draft
       if (!draft) return
-      draft.configurationMode = event.currentTarget.dataset.mode === 'advanced' ? 'advanced' : 'simple'
+      const mode = event.currentTarget.dataset.mode === 'advanced' ? 'advanced' : 'simple'
+      if (mode === draft.configurationMode) return
+      draft.configurationMode = mode
       const registry = this.getRegistry()
       if (!registry) return
-      if (draft.configurationMode === 'simple') draft.modelRoutes = providerDefaultRoutes(draft.simpleProvider, registry)
+      if (draft.configurationMode === 'simple' && Object.values(draft.modelRoutes).some(route => route.accessProvider !== draft.simpleProvider)) draft.modelRoutes = providerDefaultRoutes(draft.simpleProvider, registry)
       this.setData({ draft })
       this.refreshPresentation()
     },
@@ -172,7 +203,7 @@ Component({
       if (!draft) return
       const index = Number(event.detail.value) || 0
       const provider = this.data.providerOptions[index]?.value
-      if (!provider) return
+      if (!provider || provider === draft.simpleProvider) return
       draft.simpleProvider = provider
       const registry = this.getRegistry()
       if (!registry) return
@@ -183,14 +214,14 @@ Component({
     openModelPicker(event: WechatMiniprogram.TouchEvent) {
       const draft = this.data.draft
       const role = normalizeRole(event.currentTarget.dataset.role)
-      if (!draft || (draft.configurationMode !== 'advanced' && this.properties.purpose !== 'optimize')) return
+      if (!draft) return
       this.setData({ editingRole: role, showModelPicker: true, pickerProvider: draft.modelRoutes[role].accessProvider, pickerModel: draft.modelRoutes[role].modelId })
     },
     closeModelPicker() { this.setData({ showModelPicker: false }) },
     selectModel(event: WechatMiniprogram.CustomEvent<{ provider: string; modelId: string }>) {
       const draft = this.data.draft
       if (!draft) return
-      if (this.properties.purpose === 'optimize') draft.configurationMode = 'advanced'
+      if (this.properties.purpose === 'optimize' || event.detail.provider !== draft.simpleProvider) draft.configurationMode = 'advanced'
       draft.modelRoutes[this.data.editingRole] = { accessProvider: event.detail.provider, modelId: event.detail.modelId }
       this.setData({ draft, showModelPicker: false })
       this.refreshPresentation()
@@ -201,6 +232,10 @@ Component({
       draft.outputFormat = Number(event.detail.value) === 1 ? 'svg' : 'png'
       this.setData({ draft })
       this.refreshPresentation()
+    },
+    selectRatio(event: WechatMiniprogram.CustomEvent<{ value: string }>) {
+      const index = this.data.ratioOptions.findIndex(item => item.value === event.detail.value)
+      if (index >= 0) this.onRatioChange({ detail: { value: String(index) } } as WechatMiniprogram.PickerChange)
     },
     onRatioChange(event: WechatMiniprogram.PickerChange) {
       const draft = this.data.draft

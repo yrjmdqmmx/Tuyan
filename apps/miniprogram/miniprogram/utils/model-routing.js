@@ -14,14 +14,14 @@ exports.nextArkVerificationBatch = nextArkVerificationBatch;
 const provider_regions_1 = require("./provider-regions");
 exports.MODEL_ROUTE_ROLES = ['main', 'image', 'vision'];
 function providerDefaultRoutes(provider, registry) {
-    var _a;
+    var _a, _b, _c;
     const providers = registry === null || registry === void 0 ? void 0 : registry.providers;
     const defaults = (_a = providers === null || providers === void 0 ? void 0 : providers[provider]) === null || _a === void 0 ? void 0 : _a.defaults;
     if (!(defaults === null || defaults === void 0 ? void 0 : defaults.main) || !defaults.image || !defaults.vision)
         throw new Error('当前 API 渠道没有完整默认路由。');
     return {
         main: { accessProvider: provider, modelId: defaults.main },
-        image: { accessProvider: provider, modelId: defaults.image },
+        image: { accessProvider: provider, modelId: provider === 'tokendance' && ((_c = (_b = providers === null || providers === void 0 ? void 0 : providers[provider]) === null || _b === void 0 ? void 0 : _b.models) === null || _c === void 0 ? void 0 : _c.some((model) => { var _a; return model.id === 'seedream-5.0-pro' && model.selectable && ((_a = model.roles) === null || _a === void 0 ? void 0 : _a.includes('image')); })) ? 'seedream-5.0-pro' : defaults.image },
         vision: { accessProvider: provider, modelId: defaults.vision },
     };
 }

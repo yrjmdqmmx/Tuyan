@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ui_settings_1 = require("../../utils/ui-settings");
 const tokendance_1 = require("../../utils/tokendance");
 const reference_upload_policy_1 = require("../../utils/reference-upload-policy");
 const model_presentation_1 = require("../../utils/model-presentation");
@@ -78,7 +79,7 @@ Component({
         referenceImages: [],
         referenceImageCount: 0,
         referenceCanAddImage: true,
-        referenceLimitHint: '',
+        referenceLimitHint: '', referenceSummary: '', referenceDetailsOpen: false,
         referenceProcessingHint: '',
         referenceSelectionIssue: '',
         referenceModeNote: '',
@@ -131,9 +132,6 @@ Component({
         isAuthChecking: true,
         showAuthPanel: false,
         showFeedbackPanel: false,
-        // 反馈悬浮按钮初始位置（px，attached 时按屏幕尺寸算到右下角）
-        fabX: 0,
-        fabY: 0,
     },
     lifetimes: {
         attached() {
@@ -143,20 +141,6 @@ Component({
             this.ownerEpoch = 0;
             this.isPageVisible = true;
             this.restoreDraft();
-            // 悬浮反馈按钮放到右下角（movable-view 的 x/y 是相对 movable-area 左上角的 px 值）
-            try {
-                // getSystemInfoSync 已废弃；优先用 getWindowInfo（基础库 2.20.1+），旧环境回退
-                const getWindowInfo = wx.getWindowInfo;
-                const info = typeof getWindowInfo === 'function' ? getWindowInfo() : wx.getSystemInfoSync();
-                const rpx = info.windowWidth / 750;
-                this.setData({
-                    fabX: Math.max(0, info.windowWidth - 144 * rpx - 24 * rpx),
-                    fabY: Math.max(0, info.windowHeight - 76 * rpx - 48 * rpx),
-                });
-            }
-            catch {
-                // 取不到屏幕信息时停留在默认位置，可手动拖动
-            }
             const unsubscribe = (0, session_1.subscribeSession)((user) => {
                 if (this.ownerId !== ((user === null || user === void 0 ? void 0 : user.id) || '')) {
                     ;
@@ -171,6 +155,8 @@ Component({
                     isAuthChecking: false,
                 });
                 this.refreshCanSubmit();
+                if (user && this.isPageVisible)
+                    void (0, tokendance_2.refreshTokenDanceConnection)().then(() => this.refreshCanSubmit());
             });
             this.unsubscribeSession = unsubscribe;
             const user = (0, session_1.getCurrentUser)();
@@ -258,7 +244,7 @@ Component({
                 return;
             }
             const current = this.data.settings;
-            const settings = current.modelRoutes ? current : defaultGenerationSettings(state.registry);
+            const settings = current.modelRoutes ? current : (0, ui_settings_1.readUiSettings)('create', defaultGenerationSettings(state.registry));
             this.setData({
                 registryReady: true,
                 registryVersion: state.registry.registryVersion,
@@ -305,9 +291,11 @@ Component({
                 showGenerationSettings: false,
                 apiKeysForSheet: (0, api_keys_1.getApiKeys)(),
             });
+            (0, ui_settings_1.saveUiSettings)('create', settings);
             this.syncLegacySettings(settings);
             this.refreshCanSubmit();
         },
+        toggleReferenceDetails() { this.setData({ referenceDetailsOpen: !this.data.referenceDetailsOpen }); },
         syncLegacySettings(settings) {
             const main = settings.modelRoutes.main;
             const image = settings.modelRoutes.image;
@@ -822,6 +810,7 @@ Component({
             });
             const policy = this.activeReferencePolicy();
             this.setData({
+                referenceSummary: `PNG / JPG / WebP / SVG · 最多 ${policy.maxCount} 张 · 单张 ${(0, reference_upload_policy_1.referenceBytesLabel)(policy.platform.maxBytes)}（SVG ${(0, reference_upload_policy_1.referenceBytesLabel)(policy.platform.maxSvgBytes)}）· 合计 ${(0, reference_upload_policy_1.referenceBytesLabel)(policy.platform.maxTotalBytes)}`,
                 referenceLimitHint: (0, reference_upload_policy_1.referencePolicyHint)(policy),
                 referenceProcessingHint: (0, reference_upload_policy_1.referenceProcessingHint)(policy),
                 referenceSelectionIssue: (0, reference_upload_policy_1.referenceUploadSelectionError)(this.data.referenceImages, policy),
@@ -969,6 +958,11 @@ Component({
                 statusLabel: '',
             });
             wx.showLoading({ title: '提交中' });
+            let loadingShown = true;
+            const finishLoading = () => { if (loadingShown) {
+                loadingShown = false;
+                wx.hideLoading();
+            } };
             try {
                 // Validate the complete selection before creating any upload. Replace descriptors with server-issued ones below.
                 const uploadedReferenceImages = this.data.referenceImages.map(image => ({ filename: image.filename, mimeType: image.mimeType, size: image.size, objectKey: '', uploadToken: '' }));
@@ -1008,7 +1002,7 @@ Component({
                     currentJobId: jobId,
                     statusLabel: constants_1.STATUS_LABELS[data.status || 'queued'] || String(data.status || '排队中'),
                 });
-                wx.hideLoading();
+                finishLoading();
                 wx.showToast({ title: '任务已提交', icon: 'success' });
                 // 提交等待期间用户可能已切到别的 tab：隐藏时不起 timer，回到本页由 pageLifetimes.show 恢复
                 if (this.isPageVisible !== false) {
@@ -1017,12 +1011,13 @@ Component({
             }
             catch (error) {
                 if (current()) {
+                    finishLoading();
                     this.setData({ error: (0, api_1.formatError)(error) });
                     wx.showToast({ title: '提交失败', icon: 'none' });
                 }
             }
             finally {
-                wx.hideLoading();
+                finishLoading();
                 if (current()) {
                     this.setData({ isSubmitting: false });
                     this.refreshCanSubmit();
@@ -1220,7 +1215,10 @@ function defaultGenerationSettings(registry) {
 }
 function formatSettingsSummary(settings) {
     const routes = settings.modelRoutes;
-    return `主 ${routes.main.modelId} · 图 ${routes.image.modelId} · 识 ${routes.vision.modelId}`;
+    const registry = (0, model_registry_store_1.getModelRegistryState)().registry;
+    const label = (role) => { var _a; return ((_a = (0, model_registry_1.findRegistryModel)(registry, routes[role].accessProvider, routes[role].modelId)) === null || _a === void 0 ? void 0 : _a.label) || routes[role].modelId; };
+    const textRoute = routes.main.accessProvider === routes.vision.accessProvider && routes.main.modelId === routes.vision.modelId ? `主 / 识图 ${label('main')}` : `主 ${label('main')} · 识图 ${label('vision')}`;
+    return `图像 ${label('image')} · ${textRoute}`;
 }
 function formatSettingsSummaryDetails(settings) {
     const pipelineLabels = { planner_critic: '规划器 + 评审器', full: '完整流程', vanilla: '基础生成' };

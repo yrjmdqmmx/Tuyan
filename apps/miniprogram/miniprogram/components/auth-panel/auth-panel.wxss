@@ -25,4 +25,4 @@
 .auth-privacy { margin-top:20rpx; color:#8a958f; font-size:18rpx; line-height:1.5; text-align:center; }
 @media (max-width:360px) { .auth-panel { width:calc(100% - 28rpx); padding:28rpx 22rpx 22rpx; } .auth-head { gap:14rpx; } .auth-head .section-title { font-size:34rpx; } }
 
-.watcha-auth-button{display:flex;align-items:center;justify-content:center;gap:16rpx;background:#eef2e9;color:#315f51;font-size:28rpx;line-height:1.5;padding:20rpx;margin:0 0 26rpx;border-radius:18rpx}.watcha-auth-button image{width:40rpx;height:40rpx}
+.watcha-auth-button{display:flex;align-items:center;justify-content:center;gap:16rpx;background:#eef2e9;color:#315f51;font-size:28rpx;line-height:1.5;padding:20rpx;margin:0 0 26rpx;border-radius:18rpx}.watcha-auth-icon{width:40rpx;height:40rpx}

@@ -15,10 +15,21 @@ const PROVIDER_LABELS = model_presentation_1.MODEL_CHANNEL_LABELS;
 Component({
     options: { styleIsolation: 'apply-shared', multipleSlots: true },
     properties: {
-        show: { type: Boolean, value: false, observer(show) { this.epoch = Number(this.epoch || 0) + 1; if (show)
-                this.resetDraft();
-            else
-                this.setData({ draftKeys: {}, keyFields: [], showModelPicker: false, verifyingArk: false }); } },
+        show: { type: Boolean, value: false, observer(show) {
+                var _a, _b;
+                this.epoch = Number(this.epoch || 0) + 1;
+                if (show) {
+                    this.resetDraft();
+                    const measure = () => { var _a, _b; this.baseHeight = ((_b = (_a = wx).getWindowInfo) === null || _b === void 0 ? void 0 : _b.call(_a).windowHeight) || 0; };
+                    measure();
+                    (_a = wx.hideTabBar) === null || _a === void 0 ? void 0 : _a.call(wx, { animation: false, success: measure });
+                }
+                else {
+                    (_b = wx.showTabBar) === null || _b === void 0 ? void 0 : _b.call(wx, { animation: false });
+                    this.focusedProvider = '';
+                    this.setData({ draftKeys: {}, keyFields: [], showModelPicker: false, verifyingArk: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '' });
+                }
+            } },
         purpose: { type: String, value: '' },
         referenceCount: { type: Number, value: 0 },
         referenceImageMode: { type: String, value: 'vision_model' },
@@ -31,7 +42,7 @@ Component({
         libraryTaskName: { type: String, value: 'diagram' },
     },
     data: {
-        emptyObject: {},
+        emptyObject: {}, advancedExpanded: false, credentialsExpanded: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '', normalizationNotice: '',
         draft: null,
         minimaxRegionOptions: [{ value: 'global', label: '国际' }, { value: 'cn', label: '中国大陆' }],
         minimaxRegionIndex: 0, minimaxApiBase: '',
@@ -64,9 +75,32 @@ Component({
         arkStatus: '',
         verifyingArk: false,
     },
+    lifetimes: {
+        attached() {
+            var _a;
+            const listener = (event) => {
+                var _a, _b;
+                if (!this.properties.show)
+                    return;
+                const currentHeight = ((_b = (_a = wx).getWindowInfo) === null || _b === void 0 ? void 0 : _b.call(_a).windowHeight) || this.baseHeight;
+                const shrink = Math.max(0, (this.baseHeight || currentHeight) - currentHeight);
+                this.setData({ keyboardHeight: Math.max(0, event.height - shrink), keyboardOpen: event.height > 0, focusedKeyId: '' }, () => {
+                    if (event.height > 0 && this.focusedProvider)
+                        this.setData({ focusedKeyId: 'credential-' + this.focusedProvider });
+                });
+            };
+            this.keyboardListener = listener;
+            (_a = wx.onKeyboardHeightChange) === null || _a === void 0 ? void 0 : _a.call(wx, listener);
+        },
+        detached() { var _a, _b; (_a = wx.offKeyboardHeightChange) === null || _a === void 0 ? void 0 : _a.call(wx, this.keyboardListener); if (this.properties.show)
+            (_b = wx.showTabBar) === null || _b === void 0 ? void 0 : _b.call(wx, { animation: false }); },
+    },
     methods: {
         openTokenDance: tokendance_1.openTokenDance,
+        toggleAdvanced() { this.setData({ advancedExpanded: !this.data.advancedExpanded }); },
+        toggleCredentials() { this.setData({ credentialsExpanded: !this.data.credentialsExpanded }); },
         noop() { },
+        onKeyFocus(event) { this.focusedProvider = String(event.currentTarget.dataset.provider || ''); this.setData({ focusedKeyId: 'credential-' + this.focusedProvider }); },
         // Keep full capability metadata in the logic-layer store, outside setData.
         getRegistry() { var _a; return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, (_a = this.data.draft) === null || _a === void 0 ? void 0 : _a.providerRegions); },
         effectiveRoles() {
@@ -96,7 +130,7 @@ Component({
                 draft,
                 draftKeys: { ...(this.properties.apiKeys || {}) },
                 draftManualReferenceIds: [...(this.properties.manualReferenceIds || [])],
-                error: '',
+                error: '', advancedExpanded: false, credentialsExpanded: false, normalizationNotice: '',
             });
             this.refreshPresentation();
         },
@@ -111,6 +145,7 @@ Component({
                 const defaults = (_a = registry.providers[id]) === null || _a === void 0 ? void 0 : _a.defaults;
                 return (defaults === null || defaults === void 0 ? void 0 : defaults.main) && (defaults === null || defaults === void 0 ? void 0 : defaults.image) && (defaults === null || defaults === void 0 ? void 0 : defaults.vision);
             }).map((value) => ({ value, label: PROVIDER_LABELS[value] }));
+            const previousSize = draft.imageSize, previousRatio = draft.aspectRatio;
             const imageEntry = (0, model_registry_1.findRegistryModel)(registry, draft.modelRoutes.image.accessProvider, draft.modelRoutes.image.modelId);
             const refinement = this.properties.purpose === 'refine' || (this.properties.libraryTaskName === 'plot' && (imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.capabilities.imageEditMode) === 'direct-edit');
             const resolutionOptions = (0, aspect_ratios_1.buildResolutionOptions)((imageEntry === null || imageEntry === void 0 ? void 0 : imageEntry.capabilities) || {}, refinement ? 'refineResolutions' : 'resolutions');
@@ -139,7 +174,8 @@ Component({
             const missing = (0, model_routing_1.missingArkVerifications)(probes, (0, ark_verification_1.getArkVerification)());
             const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : '';
             this.setData({
-                draft, routeRows, ratioOptions, resolutionOptions, keyFields, encryptedRecovery: providers.includes('tokendance'),
+                draft, routeRows, ratioOptions, resolutionOptions, keyFields,
+                normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.includes('tokendance'),
                 providerOptions,
                 minimaxRegionIndex: (0, provider_regions_1.minimaxRegion)(draft.providerRegions) === 'cn' ? 1 : 0,
                 minimaxApiBase: provider_regions_1.MINIMAX_REGIONS[(0, provider_regions_1.minimaxRegion)(draft.providerRegions)].apiBase,
@@ -158,11 +194,14 @@ Component({
             const draft = this.data.draft;
             if (!draft)
                 return;
-            draft.configurationMode = event.currentTarget.dataset.mode === 'advanced' ? 'advanced' : 'simple';
+            const mode = event.currentTarget.dataset.mode === 'advanced' ? 'advanced' : 'simple';
+            if (mode === draft.configurationMode)
+                return;
+            draft.configurationMode = mode;
             const registry = this.getRegistry();
             if (!registry)
                 return;
-            if (draft.configurationMode === 'simple')
+            if (draft.configurationMode === 'simple' && Object.values(draft.modelRoutes).some(route => route.accessProvider !== draft.simpleProvider))
                 draft.modelRoutes = (0, model_routing_1.providerDefaultRoutes)(draft.simpleProvider, registry);
             this.setData({ draft });
             this.refreshPresentation();
@@ -174,7 +213,7 @@ Component({
                 return;
             const index = Number(event.detail.value) || 0;
             const provider = (_a = this.data.providerOptions[index]) === null || _a === void 0 ? void 0 : _a.value;
-            if (!provider)
+            if (!provider || provider === draft.simpleProvider)
                 return;
             draft.simpleProvider = provider;
             const registry = this.getRegistry();
@@ -187,7 +226,7 @@ Component({
         openModelPicker(event) {
             const draft = this.data.draft;
             const role = normalizeRole(event.currentTarget.dataset.role);
-            if (!draft || (draft.configurationMode !== 'advanced' && this.properties.purpose !== 'optimize'))
+            if (!draft)
                 return;
             this.setData({ editingRole: role, showModelPicker: true, pickerProvider: draft.modelRoutes[role].accessProvider, pickerModel: draft.modelRoutes[role].modelId });
         },
@@ -196,7 +235,7 @@ Component({
             const draft = this.data.draft;
             if (!draft)
                 return;
-            if (this.properties.purpose === 'optimize')
+            if (this.properties.purpose === 'optimize' || event.detail.provider !== draft.simpleProvider)
                 draft.configurationMode = 'advanced';
             draft.modelRoutes[this.data.editingRole] = { accessProvider: event.detail.provider, modelId: event.detail.modelId };
             this.setData({ draft, showModelPicker: false });
@@ -209,6 +248,11 @@ Component({
             draft.outputFormat = Number(event.detail.value) === 1 ? 'svg' : 'png';
             this.setData({ draft });
             this.refreshPresentation();
+        },
+        selectRatio(event) {
+            const index = this.data.ratioOptions.findIndex(item => item.value === event.detail.value);
+            if (index >= 0)
+                this.onRatioChange({ detail: { value: String(index) } });
         },
         onRatioChange(event) {
             var _a;

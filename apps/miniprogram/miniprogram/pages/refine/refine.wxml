@@ -1,33 +1,45 @@
-<scroll-view class="page refine-page" scroll-y type="list">
-  <view class="td-refine-account"><text>观猹 TokenDance</text><button class="ghost-button" size="mini" bindtap="openTokenDance">账户与钱包</button></view>
-  <view class="refine-hero"><view class="refine-kicker">INDEPENDENT REFINE</view><view class="refine-title">精修你的研究图示</view><view class="refine-sub">上传原图，或从自己的生成结果继续修改。</view></view>
-  <view class="registry-banner ready" wx:if="{{registryReady}}">模型目录 {{registryVersion}}</view><view class="registry-banner error" wx:else>{{registryError || '正在读取模型目录'}}<button class="registry-retry" bindtap="retryRegistry">重试</button></view>
-  <view class="section">
-    <view class="section-head"><view><view class="section-title">选择源图</view><view class="section-note">支持 PNG、JPG、WebP 原图，也可选择账号中的历史结果。</view></view><button wx:if="{{!isLoggedIn && !isAuthChecking}}" class="ghost-button" size="mini" bindtap="openAuthPanel">登录</button></view>
-    <picker wx:if="{{sourceOptions.length}}" range="{{sourceOptions}}" range-key="label" value="{{sourceIndex}}" bindchange="onSourceChange"><view class="picker-value">{{sourceOptions[sourceIndex].label}}</view></picker>
-    <view class="empty-state" wx:else>暂无历史结果，可上传一张原图开始。</view>
-    <view class="source-actions"><button class="ghost-button" size="mini" wx:if="{{uploadEnabled}}" disabled="{{isSubmitting || optimizationBusy}}" bindtap="chooseSourceFile">{{source ? '更换原图' : '上传原图'}}</button><button class="ghost-button" size="mini" wx:if="{{source || uploadBusy}}" disabled="{{isSubmitting}}" bindtap="removeSource">{{uploadBusy ? '取消上传' : '移除源图'}}</button></view>
-    <view class="field-tip" wx:if="{{!uploadEnabled && registryReady}}">当前服务尚未提供原图上传，请使用历史任务结果。</view>
-    <view class="upload-status" wx:if="{{uploadStage}}">{{uploadStage}}</view>
-    <view class="error-box" wx:if="{{uploadError}}">{{uploadError}}<button wx:if="{{canRetryUpload}}" size="mini" bindtap="retryUpload">重新上传</button></view>
-    <view class="source-name" wx:if="{{source}}">{{source.label}}<text wx:if="{{source.width}}"> · {{source.width}} × {{source.height}}</text></view>
-    <image wx:if="{{source.url}}" class="refine-preview" src="{{source.url}}" mode="widthFix" />
+<scroll-view class="page refine-page" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="refine-heading"><view class="refine-title">精修图片</view><view class="refine-sub">保留原图，按你的指令调整细节。</view></view>
+  <view class="error-box registry-error" wx:if="{{!registryReady}}">{{registryError || '正在读取模型目录'}}<button class="compact-button" bindtap="retryRegistry">重试</button></view>
+  <view class="refine-workspace">
+    <view class="refine-step">
+      <view class="step-heading"><view class="step-label"><text class="step-number">1</text>选择原图</view><button wx:if="{{!isLoggedIn && !isAuthChecking}}" class="compact-button" bindtap="openAuthPanel">登录</button></view>
+      <button wx:if="{{!source && !uploadBusy}}" class="source-empty" disabled="{{!uploadEnabled || isSubmitting || optimizationBusy}}" bindtap="chooseSourceFile"><text class="upload-symbol">＋</text><text class="upload-title">上传精修原图</text><text class="upload-caption">{{sourceSummary || 'PNG / JPG / WebP'}}</text></button>
+      <view class="source-selected" wx:if="{{source}}">
+        <image wx:if="{{source.url}}" class="refine-preview" src="{{source.url}}" mode="aspectFit" bindtap="previewSource" />
+        <view class="source-name">{{source.label}}<text wx:if="{{source.width}}"> · {{source.width}} × {{source.height}}</text></view>
+        <view class="source-actions"><button class="compact-button" wx:if="{{uploadEnabled}}" disabled="{{isSubmitting || optimizationBusy || uploadBusy}}" bindtap="chooseSourceFile">替换原图</button><button class="compact-button quiet" disabled="{{isSubmitting}}" bindtap="removeSource">移除</button></view>
+      </view>
+      <view class="source-history" wx:if="{{sourceOptions.length}}"><picker range="{{sourceOptions}}" range-key="label" value="{{sourceIndex}}" bindchange="onSourceChange" disabled="{{isSubmitting || uploadBusy}}"><view class="history-link">从任务结果选择 <text>›</text></view></picker></view>
+      <view class="upload-status" wx:if="{{uploadStage}}"><text>{{uploadStage}}</text><button wx:if="{{uploadBusy}}" class="compact-button" bindtap="removeSource">取消上传</button></view>
+      <view class="error-box" wx:if="{{uploadError}}">{{uploadError}}<button class="compact-button" wx:if="{{canRetryUpload}}" bindtap="retryUpload">重新上传</button></view>
+      <view class="field-tip" wx:if="{{!uploadEnabled && registryReady}}">原图上传暂不可用，请从任务结果选择。</view>
+      <view class="error-box" wx:if="{{sourceSelectionIssue}}">{{sourceSelectionIssue}}</view>
+      <button class="details-toggle" bindtap="toggleDetails" aria-expanded="{{detailsOpen}}"><text>模型限制与图片处理</text><text>{{detailsOpen ? '−' : '+'}}</text></button>
+      <view wx:if="{{detailsOpen}}" class="details-content">{{referenceProcessingHint}}</view>
+    </view>
+    <view class="refine-step">
+      <view class="step-heading"><view class="step-label"><text class="step-number">2</text>精修指令</view><text class="instruction-count">{{instruction.length}} / 2000</text></view>
+      <textarea class="textarea refine-instruction" maxlength="2000" value="{{instruction}}" placeholder="例如：放大标签，让箭头更清晰；保留原有文字、配色和布局。" bindinput="onInstructionInput" cursor-spacing="24" show-confirm-bar="{{false}}" />
+      <view class="instruction-tools"><text class="instruction-tip">写清修改内容与需要保留的部分。</text><input-optimizer target="editInstruction" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || uploadBusy || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" /></view>
+    </view>
+    <view class="refine-step">
+      <view class="step-heading"><view class="step-label"><text class="step-number">3</text>调整参数</view><button class="compact-button quiet" bindtap="openSettings">精修设置 ›</button></view>
+      <view class="refine-route"><text class="route-name">{{providerLabel}} · {{modelLabel}}</text><text class="refine-mode">{{refineModeLabel}}</text></view>
+      <view class="connection-line" wx:if="{{settings.modelRoutes.image.accessProvider === 'tokendance'}}"><text class="connection-dot {{connected ? 'connected' : ''}}"></text><text>{{connected ? '观猹账户已连接' : '请在账户页连接观猹 TokenDance'}}</text></view>
+      <view class="resolution-row"><text class="field-label">清晰度</text><picker range="{{resolutionOptions}}" range-key="label" value="{{resolutionIndex}}" bindchange="onResolutionChange" disabled="{{isSubmitting}}"><view class="resolution-picker">{{resolutionOptions[resolutionIndex].label || '不可用'}} <text>⌄</text></view></picker></view>
+      <view class="field-label">目标比例</view><ratio-picker options="{{ratioOptions}}" value="{{settings.aspectRatio || 'auto'}}" disabled="{{isSubmitting}}" bind:change="selectRatio" />
+    </view>
+    <view class="refine-submit"><button class="refine-submit-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitRefine">{{isSubmitting ? '正在提交精修' : '提交精修'}}</button><view class="submit-tip" wx:if="{{!canSubmit && submitHint}}">{{submitHint}}</view><view class="error-box" wx:if="{{error && (!job || job.status !== 'failed')}}">{{error}}</view></view>
   </view>
-  <view class="section">
-    <view class="refine-route"><view><view class="field-label">当前精修能力</view><view class="refine-mode">{{refineModeLabel}}</view></view><button class="ghost-button" size="mini" bindtap="openSettings">模型与密钥</button></view>
-    <view class="refine-processing-note">{{referenceProcessingHint}}</view>
-    <view wx:if="{{sourceSelectionIssue}}" class="error-box">{{sourceSelectionIssue}}</view>
-    <view class="field"><view class="field-label">精修指令</view><textarea class="textarea refine-instruction" maxlength="2000" value="{{instruction}}" placeholder="例如：放大标签、减少装饰、保持结构不变并让流程箭头更清晰。" bindinput="onInstructionInput" /><input-optimizer target="editInstruction" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || uploadBusy || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" /></view>
-    <view class="refine-grid"><view><view class="field-label">目标比例</view><picker range="{{ratioOptions}}" range-key="label" value="{{ratioIndex}}" bindchange="onRatioChange"><view class="picker-value">{{ratioOptions[ratioIndex].label || '不可用'}}</view></picker></view><view><view class="field-label">清晰度</view><picker range="{{resolutionOptions}}" range-key="label" value="{{resolutionIndex}}" bindchange="onResolutionChange"><view class="picker-value">{{resolutionOptions[resolutionIndex].label || '不可用'}}</view></picker></view></view>
-    <button class="primary-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitRefine">提交精修</button><view class="submit-tip" wx:if="{{!canSubmit}}">请登录，选好源图与精修模型，填写指令及所需渠道密钥。</view><view class="error-box" wx:if="{{error}}">{{error}}</view>
+  <view class="refine-results">
+    <view class="step-heading"><view class="step-label">精修结果</view><view class="result-actions" wx:if="{{currentJobId}}"><button class="compact-button quiet" bindtap="refreshCurrentJob">刷新</button><button class="compact-button quiet" bindtap="openJobDetail">详情 ›</button></view></view>
+    <view class="result-empty" wx:if="{{!currentJobId}}"><text class="result-empty-symbol">▧</text><view class="result-empty-title">让原图更接近你的想法</view><view>选择原图，描述修改，再提交精修。</view></view>
+    <view class="result-status {{job.status === 'failed' ? 'failed' : ''}}" wx:elif="{{!job.result_images.length}}"><view class="result-status-title">{{job.status === 'failed' ? '精修未完成' : (job.status_text || '任务已受理，正在处理')}}</view><view wx:if="{{job.status === 'failed'}}">{{error || job.error}}</view><view wx:else>可到任务记录查看进度，返回后继续查看结果。</view></view>
+    <view class="result-grid" wx:if="{{job.result_images.length}}"><view wx:for="{{job.result_images}}" wx:key="url" class="refine-result"><image class="result-image" src="{{item.url}}" mode="widthFix" data-url="{{item.url}}" bindtap="previewImage" /><view class="source-name">{{item.filename}}</view><view class="source-actions"><button class="compact-button" data-url="{{item.url}}" bindtap="saveImage">保存图片</button><button class="compact-button" data-url="{{item.url}}" bindtap="shareImage">发送文件</button></view></view></view>
+    <stage-timeline wx:if="{{job}}" stages="{{job.stages}}" references="{{job.retrieved_references}}" />
+    <view wx:if="{{job.recovery}}" class="error-box">{{job.recovery.message}}<navigator url="/pages/job-detail/job-detail?jobId={{job.id}}">查看原任务并恢复</navigator></view>
   </view>
-  <view class="section" wx:if="{{currentJobId}}">
-    <view class="section-head"><view class="section-title">精修结果 · {{job.status_text || '排队中'}}</view><button size="mini" class="ghost-button" bindtap="refreshCurrentJob">刷新</button><button size="mini" class="ghost-button" bindtap="openJobDetail">详情</button></view>
-    <view class="result-grid" wx:if="{{job.result_images.length}}"><view wx:for="{{job.result_images}}" wx:key="url" class="refine-result"><image class="result-image" src="{{item.url}}" mode="widthFix" data-url="{{item.url}}" bindtap="previewImage" /><view class="source-name">{{item.filename}}</view><view class="source-actions"><button size="mini" data-url="{{item.url}}" bindtap="saveImage">保存图片</button><button size="mini" data-url="{{item.url}}" bindtap="shareImage">发送文件</button></view></view></view>
-    <view class="empty-state" wx:else>{{job.status_text || '任务已受理，正在等待结果。'}}</view>
-    <stage-timeline stages="{{job.stages}}" references="{{job.retrieved_references}}" />
-  </view>
-<view wx:if="{{job.recovery}}" class="error-box">{{job.recovery.message}}<navigator url="/pages/job-detail/job-detail?jobId={{job.id}}">查看原任务并恢复</navigator></view>
   <view class="footer-space"></view>
 </scroll-view>
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />

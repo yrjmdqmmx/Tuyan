@@ -1,0 +1,11 @@
+<view class="ratio-control">
+<view class="ratio-grid" role="group" aria-label="画面比例">
+  <button wx:for="{{visibleOptions}}" wx:key="value" class="ratio-choice {{value === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="select" disabled="{{disabled}}" aria-label="{{item.label}}{{value === item.value ? '，已选中' : ''}}">
+    <view class="ratio-icon"><view class="ratio-shape {{item.auto ? 'auto' : ''}}" style="width:{{item.width}}px;height:{{item.height}}px"></view></view>
+    <text class="ratio-label">{{item.label}}</text><text wx:if="{{value === item.value}}" class="ratio-check">✓</text>
+  </button>
+</view>
+<button wx:if="{{hasMore}}" class="ratio-expand" bindtap="toggle" aria-expanded="{{expanded}}">{{expanded ? '收起更多比例' : '展开全部 ' + total + ' 种比例'}} <text>{{expanded ? '⌃' : '⌄'}}</text></button>
+<view wx:if="{{!total}}" class="ratio-empty">当前模型与清晰度暂无可用比例，请调整模型或清晰度。</view>
+
+</view>

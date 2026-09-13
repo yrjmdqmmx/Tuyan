@@ -1,59 +1,30 @@
 <view class="td-page">
-  <view class="td-card">
-    <view class="td-title">图研账号</view>
-    <view class="td-email">{{email || '登录后管理账号、授权和钱包'}}</view>
-    <button class="td-button" wx:if="{{!isLoggedIn}}" bindtap="openAuthPanel">登录 / 注册</button>
-    <button class="td-button" wx:if="{{email}}" bindtap="manageAccount">账号与隐私</button>
-    <button class="td-button" bindtap="returnToTask">返回原页面</button>
+  <view class="td-heading"><view class="td-heading-title">账户</view><button class="td-text-button" bindtap="returnToTask">返回原页面 ›</button></view>
+  <view class="td-identity">
+    <view class="td-avatar">图</view><view class="td-identity-info"><view class="td-title">图研账号</view><view class="td-email">{{email || '登录后同步任务与设置'}}</view></view>
+    <button class="td-small-button" wx:if="{{isLoggedIn}}" bindtap="manageAccount">管理</button><button class="td-small-button td-primary" wx:else bindtap="openAuthPanel">登录</button>
   </view>
-  <view class="td-card">
-    <view class="td-title">观猹身份登录</view>
-    <view class="td-note">使用观猹登录图研，管理与当前账号的绑定。</view>
-    <button class="td-button" bindtap="openWatcha">{{isLoggedIn ? '管理观猹登录与绑定' : '使用观猹登录'}}</button>
-  </view>
-  <view class="td-error" wx:if="{{error}}">{{error}}</view>
-  <view class="td-note" wx:if="{{notice}}">{{notice}}</view>
-  <view class="td-card">
-    <view class="td-title">观猹 TokenDance</view>
-    <view>{{statusLoading ? '正在查询连接状态' : (connected ? '已连接' : '未连接')}}</view>
-    <view class="td-note">使用自己的账户额度生成和精修图片。授权 Key 加密保存在服务端。</view>
-    <button class="td-button" bindtap="authorize" loading="{{busy}}" disabled="{{busy}}">{{connected ? '重新授权' : '连接观猹 TokenDance'}}</button>
-    <view wx:if="{{authorizationPending}}">
-      <view class="td-note">链接已复制。在系统浏览器完成授权，将一次性 code 粘贴到下方。</view>
-      <button class="td-button" bindtap="copyAuthorization">复制授权链接</button>
-      <input class="td-input" maxlength="2048" placeholder="一次性授权 code" password value="{{code}}" bindinput="codeInput"/>
-      <button class="td-button" bindtap="exchange" disabled="{{busy || !hasCode}}">完成授权</button>
-      <button class="td-button" bindtap="cancel">取消授权</button>
+  <view class="td-section">
+    <button class="td-list-row" bindtap="openWatcha"><view class="td-list-copy"><view class="td-label">观猹身份绑定</view><view class="td-note">用于登录图研</view></view><text class="td-row-action">{{isLoggedIn ? '管理绑定' : '观猹登录'}} ›</text></button>
+    <view class="td-divider"></view>
+    <view class="td-list-row"><view class="td-list-copy"><view class="td-label">TokenDance 消费授权</view><view class="td-note td-connection"><text class="td-dot {{connected ? 'td-connected' : ''}}"></text>{{statusLoading ? '正在查询' : (connected ? '已连接 · 使用观猹账户额度' : '未连接')}}</view></view><button class="td-small-button" wx:if="{{connected}}" bindtap="toggleManagement" aria-expanded="{{managementExpanded}}">管理 {{managementExpanded ? '−' : '+'}}</button><button class="td-small-button td-primary" wx:else bindtap="authorize" loading="{{busy}}" disabled="{{busy || authorizationPending}}">连接</button></view>
+    <view class="td-management" wx:if="{{managementExpanded && connected}}"><view class="td-note">授权 Key 加密保存在服务端，供生成与精修使用。</view><view class="td-inline-actions"><button class="td-small-button" bindtap="authorize" disabled="{{busy || authorizationPending}}">重新授权</button><button class="td-small-button td-danger" bindtap="disconnect" disabled="{{busy}}">解除连接</button></view></view>
+    <view class="td-authorization" wx:if="{{authorizationPending}}">
+      <view class="td-label">完成消费授权</view><view class="td-note">在系统浏览器打开链接完成授权，再粘贴一次性 code。请在 10 分钟内完成。</view>
+      <button class="td-text-button" bindtap="copyAuthorization">复制授权链接</button><input class="td-input" maxlength="2048" placeholder="粘贴一次性授权 code" password value="{{code}}" bindinput="codeInput" cursor-spacing="24" />
+      <view class="td-inline-actions"><button class="td-small-button td-primary" bindtap="exchange" disabled="{{busy || !hasCode}}" loading="{{busy}}">完成授权</button><button class="td-text-button" bindtap="cancel">取消</button></view>
     </view>
-    <button class="td-button" wx:if="{{connected}}" bindtap="disconnect">解除连接</button>
   </view>
-  <view class="td-card" wx:if="{{connected}}">
-    <view class="td-title">钱包与充值</view>
-    <view>可用余额 ¥{{balance || '—'}}</view>
-    <button class="td-button" bindtap="queryBalance">查询余额</button>
-    <view class="td-note">钱包余额与 Key 额度不同。Key 额度需在观猹 TokenDance 查看；充值不会调整 Key 限额，也不会恢复已禁用或到期的 Key。</view>
-    <view>充值金额（人民币元）</view>
-    <input class="td-input" type="number" value="{{amount}}" bindinput="amountInput"/>
-    <button class="td-button" bindtap="createPayment" disabled="{{busy || paymentUncertain}}">创建 ¥{{amount}} 充值单</button>
-    <view wx:if="{{payment}}">
-      <view>¥{{payment.amount}} · {{payment.status === 'paid' ? '已确认到账' : payment.status === 'pending' ? '等待支付' : payment.status === 'refunded' ? '已退款' : '支付未完成'}}</view>
-      <button class="td-button" wx:if="{{payment.status === 'pending' && payment.alipay_url}}" bindtap="copyAlipay">复制支付宝支付链接</button>
-      <view class="td-note" wx:if="{{payment.status === 'pending'}}">微信小程序不能直接唤起支付宝。请用系统浏览器打开支付宝链接，或在图研网页充值；返回后查询支付状态。</view>
-      <button class="td-button" bindtap="paymentStatus">查询支付状态</button>
-    </view>
-    <button class="td-button" bindtap="openWebWallet">复制图研网页账户入口</button>
+  <view class="td-error" wx:if="{{error}}">{{error}}</view><view class="td-notice" wx:if="{{notice}}">{{notice}}</view>
+  <view class="td-section td-wallet" wx:if="{{connected}}">
+    <view class="td-wallet-heading"><view class="td-label">观猹钱包</view><button class="td-text-button" bindtap="queryBalance">{{balance ? '刷新余额' : '查看余额'}}</button></view>
+    <view class="td-balance"><text class="td-currency">¥</text>{{balance || '—'}}</view><view class="td-wallet-actions"><button class="td-small-button td-primary" bindtap="toggleRecharge" aria-expanded="{{rechargeExpanded}}">{{rechargeExpanded ? '收起充值' : '充值'}}</button><button class="td-text-button" bindtap="openWebWallet">在网页账户中管理 ›</button></view>
+    <view class="td-recharge" wx:if="{{rechargeExpanded}}"><view class="td-label">充值金额（人民币元）</view><input class="td-input" type="number" value="{{amount}}" bindinput="amountInput" cursor-spacing="24" /><button class="td-wide-button td-primary" bindtap="createPayment" disabled="{{busy || paymentUncertain}}" loading="{{busy}}">创建 ¥{{amount}} 充值单</button></view>
+    <view class="td-payment" wx:if="{{payment}}"><view class="td-label">¥{{payment.amount}} · {{payment.status === 'paid' ? '已确认到账' : payment.status === 'pending' ? '等待支付' : payment.status === 'refunded' ? '已退款' : '支付未完成'}}</view><view class="td-note" wx:if="{{payment.status === 'pending'}}">请用系统浏览器打开支付宝链接，支付后返回查询状态。</view><view class="td-inline-actions"><button class="td-small-button" wx:if="{{payment.status === 'pending' && payment.alipay_url}}" bindtap="copyAlipay">复制支付链接</button><button class="td-text-button" bindtap="paymentStatus">查询状态</button></view></view>
+    <button class="td-disclosure" bindtap="toggleWalletDetails" aria-expanded="{{walletDetailsOpen}}"><text>余额与 Key 额度说明</text><text>{{walletDetailsOpen ? '−' : '+'}}</text></button><view class="td-note td-details" wx:if="{{walletDetailsOpen}}">钱包余额与 Key 额度不同。Key 额度需在观猹 TokenDance 查看；充值不会调整 Key 限额，也不会恢复已禁用或到期的 Key。</view>
   </view>
-  <view class="td-card">
-    <view class="td-title">充值记录</view>
-    <view class="td-note">最近 10 笔通过图研创建的充值单；到账以支付状态查询为准。</view>
-    <button class="td-button" bindtap="recentPayments">刷新记录</button>
-    <view class="td-history-row" wx:for="{{payments}}" wx:key="attemptId">
-      <view class="td-history-meta"><text class="td-history-label">¥{{item.amount}}</text><text class="td-history-label">{{item.statusText}}</text><view wx:if="{{item.createdText}}" class="td-note">{{item.createdText}}</view></view>
-      <button class="td-button" wx:if="{{item.session}}" data-attempt-id="{{item.attemptId}}" bindtap="queryHistoryPayment">查询状态</button>
-    </view>
-    <view wx:if="{{historyLoaded && !payments.length}}" class="td-note">暂无充值记录</view>
-  </view>
+  <view class="td-section" wx:if="{{isLoggedIn}}"><button class="td-list-row" bindtap="toggleHistory" aria-expanded="{{historyExpanded}}"><view class="td-label">充值记录</view><text class="td-row-action">{{historyExpanded ? '收起 −' : '查看 ›'}}</text></button><view class="td-history" wx:if="{{historyExpanded}}"><view class="td-wallet-heading"><view class="td-note">最近 10 笔，到账以查询状态为准。</view><button class="td-text-button" bindtap="recentPayments">刷新</button></view><view class="td-history-row" wx:for="{{payments}}" wx:key="attemptId"><view class="td-history-meta"><view class="td-label">¥{{item.amount}} · {{item.statusText}}</view><view wx:if="{{item.createdText}}" class="td-note">{{item.createdText}}</view></view><button class="td-text-button" wx:if="{{item.session}}" data-attempt-id="{{item.attemptId}}" bindtap="queryHistoryPayment">查询</button></view><view wx:if="{{historyLoaded && !payments.length}}" class="td-note td-empty">暂无充值记录</view></view></view>
+  <view class="td-footer-note">图研账号与观猹消费授权独立管理。</view>
 </view>
 <account-settings show="{{showAccountSettings}}" current-email="{{email}}" email-verified="{{emailVerified}}" bind:close="closeAccountSettings" />
-
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />

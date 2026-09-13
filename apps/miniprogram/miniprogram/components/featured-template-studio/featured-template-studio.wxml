@@ -1,9 +1,8 @@
 <view class="template-studio">
   <view class="studio-head">
     <view>
-      <view class="studio-kicker">FEATURED STUDIO</view>
       <view class="studio-title">从研究图示开始</view>
-      <view class="studio-note">六套经过整理的学术结构，一键带入内容与负向提示词。</view>
+      <view class="studio-note">滑动选择模板，一键带入内容。</view>
     </view>
     <view class="studio-count">6 套</view>
   </view>

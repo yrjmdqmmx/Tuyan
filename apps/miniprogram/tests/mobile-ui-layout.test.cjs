@@ -28,12 +28,11 @@ assert.match(indexWxml, /summary-details/)
 assert.match(indexWxss, /\.summary-value\{[^}]*white-space:normal/)
 assert.match(templateWxss, /\.template-apply\s*\{[^}]*display:flex[^}]*align-items:center[^}]*justify-content:center/)
 
-for (const label of ['流程', '检索', '候选', '评审']) {
-  assert.match(settingsWxml, new RegExp(`class="setting-label">${label}<`))
-}
-assert.doesNotMatch(settingsWxml, /configurationMode === 'advanced'[^>]*><view class="setting-label">(?:流程|检索|候选|评审)</)
-assert.match(settingsWxml, /manual-library" wx:if=".*purpose !== 'refine'.*purpose !== 'optimize'.*draft\.retrievalSetting === 'manual'/)
+for (const label of ['模型', '输出参数', '生成流程', '接入凭据']) assert.ok(settingsWxml.includes(label))
+assert.match(settingsWxml, /wx:if="{{advancedExpanded}}"/)
+assert.match(settingsWxml, /manual-library" wx:if="{{draft\.retrievalSetting === 'manual'}}"/)
 assert.match(settingsWxml, /<reference-library task-name="\{\{libraryTaskName\}\}"/)
+assert.match(settingsWxml, /<ratio-picker /)
 assert.match(settingsWxss, /\.sheet-save\{[^}]*display:flex[^}]*align-items:center[^}]*justify-content:center/)
 
 assert.match(modelWxml, /model-steps/)

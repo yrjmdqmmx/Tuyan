@@ -11,7 +11,7 @@ export function providerDefaultRoutes(provider: string, registry: ModelRegistry 
   if (!defaults?.main || !defaults.image || !defaults.vision) throw new Error('当前 API 渠道没有完整默认路由。')
   return {
     main: { accessProvider: provider, modelId: defaults.main },
-    image: { accessProvider: provider, modelId: defaults.image },
+    image: { accessProvider: provider, modelId: provider === 'tokendance' && (providers?.[provider] as any)?.models?.some((model: any) => model.id === 'seedream-5.0-pro' && model.selectable && model.roles?.includes('image')) ? 'seedream-5.0-pro' : defaults.image },
     vision: { accessProvider: provider, modelId: defaults.vision },
   }
 }

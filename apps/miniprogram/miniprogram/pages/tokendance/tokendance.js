@@ -7,7 +7,7 @@ function paymentLabel(status) {
     return { pending: '等待支付', paid: '已确认到账', closed: '订单已关闭', failed: '支付失败', refunded: '已退款', creating: '正在确认订单', unknown: '创建结果待核对' }[status] || '状态待查询';
 }
 Component({
-    data: { email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
+    data: { managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
     pageLifetimes: {
         show() { this.visible = true; void this.refresh(); this.pollPayment(); },
         hide() { this.visible = false; this.stopPolling(); this.oneUseCode = ''; this.setData({ code: '', hasCode: false, showAuthPanel: false, showAccountSettings: false }); },
@@ -37,7 +37,7 @@ Component({
             this.stopPolling();
             this.flow = undefined;
             this.oneUseCode = '';
-            this.setData({ connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' });
+            this.setData({ managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' });
         },
         current(epoch) { var _a, _b; return epoch === this.epoch && Boolean((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) && this.owner === ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id); },
         async accountRequest(body) {
@@ -49,6 +49,11 @@ Component({
                 throw new Error('账户已切换，请重新操作。');
             return result;
         },
+        toggleManagement() { this.setData({ managementExpanded: !this.data.managementExpanded }); },
+        toggleRecharge() { this.setData({ rechargeExpanded: !this.data.rechargeExpanded }); },
+        toggleWalletDetails() { this.setData({ walletDetailsOpen: !this.data.walletDetailsOpen }); },
+        toggleHistory() { const historyExpanded = !this.data.historyExpanded; this.setData({ historyExpanded }); if (historyExpanded && !this.data.historyLoaded)
+            void this.recentPayments(); },
         openWatcha() { wx.navigateTo({ url: '/pages/watcha/watcha' }); },
         openAuthPanel() { this.setData({ showAuthPanel: true }); },
         closeAuthPanel() { this.setData({ showAuthPanel: false }); },
@@ -149,7 +154,10 @@ Component({
             if (this.data.busy)
                 return;
             const epoch = this.epoch;
-            this.setData({ busy: true });
+            const confirmed = await new Promise(resolve => wx.showModal({ title: '解除消费授权？', content: '解除后，图研不能再使用此观猹账户额度。观猹身份绑定和钱包余额会保留。', confirmText: '解除连接', confirmColor: '#a63327', success: result => resolve(result.confirm), fail: () => resolve(false) }));
+            if (!confirmed || !this.current(epoch) || this.data.busy)
+                return;
+            this.setData({ busy: true, error: '' });
             try {
                 await this.accountRequest({ action: 'tokenDanceDisconnect' });
                 (0, tokendance_1.invalidateTokenDanceConnection)();
