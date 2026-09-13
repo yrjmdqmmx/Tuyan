@@ -1,0 +1,35 @@
+{
+  "codeCommit": "a68aeedee91380e5920f8b1dc22861dbd574dce6",
+  "version": "3.4.0",
+  "source": {
+    "build": "pass",
+    "typecheck": "pass",
+    "tests": {
+      "passed": 99,
+      "failed": 0
+    }
+  },
+  "uploadCopy": {
+    "typecheck": "pass",
+    "tests": {
+      "passed": 99,
+      "failed": 0
+    }
+  },
+  "controlledFiles": 209,
+  "preservedLocalFiles": 9,
+  "newFiles": 8,
+  "updatedFiles": 32,
+  "deletedFiles": 0,
+  "apiContractChanged": false,
+  "providerCalls": 0,
+  "paymentOrders": 0,
+  "identityMutations": 0,
+  "realKeyboard": "pending device verification",
+  "wechatUpload": "not performed",
+  "gatewayDeployment": "not performed",
+  "tsJsPairs": 50,
+  "actualProjectVersion": "miniprogram-3.4.0",
+  "actualDraftRetained": true,
+  "localFilesPreservedAfterReopen": true
+}
