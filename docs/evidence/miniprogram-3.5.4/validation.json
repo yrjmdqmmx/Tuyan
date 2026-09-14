@@ -1,0 +1,57 @@
+{
+  "version": "3.5.4",
+  "sourceCommit": "e44212455718ff20921e580ba453bd490a142217",
+  "sourceTests": {
+    "passed": 117,
+    "failed": 0
+  },
+  "uploadCopyTests": {
+    "passed": 117,
+    "failed": 0
+  },
+  "typecheck": "source and upload copy passed",
+  "build": "passed",
+  "catalogGeneratorDrift": "passed; Web and backend output unchanged",
+  "catalogModels": 739,
+  "catalogPreservation": "runtime canonical SHA256 and full Web JSON equality passed; nested object identity isolation passed",
+  "bytes": {
+    "beforeIncludingTypeScript": 3655797,
+    "afterIncludingTypeScript": 1556074,
+    "afterRuntimeUnminified": 1136695,
+    "mediaBefore": 259930,
+    "mediaAfter": 189978,
+    "watchaSvgBefore": 92260,
+    "watchaPngAfter": 22308
+  },
+  "native": {
+    "toolVersion": "2.02.2608070",
+    "library": "3.16.0",
+    "qualityScanAtLocal": "2026-09-14 21:26",
+    "qualitySummary": "小程序表现良好，未发现代码质量问题",
+    "mainPackage": "passed",
+    "mediaBudget": "passed",
+    "totalChecks": 13,
+    "failedChecks": 0,
+    "dependencyAnalysisSize": "1.48MB",
+    "modelFlow": "Google -> Google -> 11 compatible main models; saved Gemini 3.8 Flash selected",
+    "preservedRoutes": "main Gemini 3.8 Flash / image Seedream 5.0 Pro / vision Qwen3.8 Flash",
+    "preservedInputLengths": {
+      "method": 158,
+      "caption": 28,
+      "negativePrompt": 44
+    },
+    "account": "TokenDance consumer authorization remains connected",
+    "watchaIcon": "512px PNG rendered in identity page",
+    "clientVersion": "miniprogram-3.5.4",
+    "finalPage": "pages/refine/refine",
+    "screenshots": "Real native screenshots emitted inline in the conversation; no fabricated local image artifacts"
+  },
+  "knownBackendIssue": "Opening identity management still calls /api/auth/watcha/mini-status and receives 404. Page explains unsupported bridge. Existing TokenDance spending authorization remains connected. No backend changes or hidden logs.",
+  "controlledFiles": 215,
+  "unmanagedFilesPreserved": 9,
+  "uploadedByAgent": false,
+  "submittedForReview": false,
+  "published": false,
+  "paidProviderCalls": 0,
+  "newAuthOrPayments": false
+}
