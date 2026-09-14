@@ -25,7 +25,7 @@ Component({
     step: 'providers' as 'providers' | 'vendors' | 'models',
     roleLabel: '主模型',
     providerCards: [] as ProviderCard[],
-    vendorCards: [] as VendorCard[],
+    vendorCards: [] as VendorCard[], vendorOptions: ['全部厂商'], vendorIndex: 0,
     compatibleCount: 0,
     visibleCompatibleModels: [] as ModelCard[],
     activeProvider: '' as ModelProviderId | '',
@@ -80,8 +80,15 @@ Component({
       this.setData({
         activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,
         activeProviderIsAggregator: isAggregator, activeVendor: '', vendorCards, query: '', catalogMode: 'all',
-        visibleLimit: MODEL_PAGE_SIZE, step: 'vendors',
+        visibleLimit: MODEL_PAGE_SIZE, step: 'models', expandedModel: '', vendorOptions: ['全部厂商', ...vendorCards.map(item => item.vendor)], vendorIndex: 0,
       })
+      this.refreshModelLists()
+    },
+    showProviders() { this.setData({ step: 'providers', query: '', expandedModel: '' }) },
+    filterVendor(event: WechatMiniprogram.PickerChange) {
+      const index = Number(event.detail.value) || 0
+      this.setData({ activeVendor: index ? this.data.vendorCards[index - 1]?.vendor || '' : '', vendorIndex: index, visibleLimit: MODEL_PAGE_SIZE })
+      this.refreshModelLists()
     },
     selectVendor(event: WechatMiniprogram.TouchEvent) {
       const vendor = String(event.currentTarget.dataset.vendor || '')
@@ -91,7 +98,7 @@ Component({
     },
     backStep() {
       if (this.data.step === 'models') {
-        this.setData({ step: 'vendors', query: '' })
+        this.showProviders()
         return
       }
       if (this.data.step === 'vendors') this.setData({ step: 'providers' })
@@ -104,7 +111,7 @@ Component({
       const role = normalizeRole(this.properties.role)
       const options = { role, query: this.data.query, outputFormat: String(this.properties.outputFormat || ''), recommendedOnly: providerId === 'openrouter' && this.data.catalogMode === 'recommended' }
       let partition = partitionRegistryModels(provider?.models || [], options)
-      const inVendor = (model: RegistryModel) => modelDeveloper(providerId, model).label === this.data.activeVendor
+      const inVendor = (model: RegistryModel) => !this.data.activeVendor || modelDeveloper(providerId, model).label === this.data.activeVendor
       if (options.recommendedOnly && !partition.compatible.some(inVendor)) {
         partition = partitionRegistryModels(provider?.models || [], { ...options, recommendedOnly: false })
         this.setData({ catalogMode: 'all' })
@@ -128,7 +135,10 @@ Component({
     },
     choose(event: WechatMiniprogram.TouchEvent) {
       if (event.currentTarget.dataset.disabled) return
-      this.triggerEvent('select', { provider: this.data.activeProvider, modelId: String(event.currentTarget.dataset.model || '') })
+      const modelId = String(event.currentTarget.dataset.model || '')
+      const provider = this.getRegistry()?.providers[this.data.activeProvider as ModelProviderId]
+      if (!partitionRegistryModels(provider?.models || [], {role: normalizeRole(this.properties.role), outputFormat: this.properties.outputFormat}).compatible.some(model => model.id === modelId)) return
+      this.triggerEvent('select', { provider: this.data.activeProvider, modelId })
     },
     copyId(event: WechatMiniprogram.TouchEvent) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }) },
     toggleDetails(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }) },

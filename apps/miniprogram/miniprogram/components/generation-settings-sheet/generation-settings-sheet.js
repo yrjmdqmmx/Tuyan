@@ -27,9 +27,11 @@ Component({
                 else {
                     (_b = wx.showTabBar) === null || _b === void 0 ? void 0 : _b.call(wx, { animation: false });
                     this.focusedProvider = '';
-                    this.setData({ draftKeys: {}, keyFields: [], showModelPicker: false, verifyingArk: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '' });
+                    this.setData({ draftKeys: {}, keyFields: [], autoFocusProvider: '', showModelPicker: false, verifyingArk: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '' });
                 }
             } },
+        focusProvider: { type: String, value: '', observer(value) { if (this.properties.show && value)
+                this.focusCredential(value); } },
         purpose: { type: String, value: '' },
         referenceCount: { type: Number, value: 0 },
         referenceImageMode: { type: String, value: 'vision_model' },
@@ -42,7 +44,7 @@ Component({
         libraryTaskName: { type: String, value: 'diagram' },
     },
     data: {
-        emptyObject: {}, advancedExpanded: false, credentialsExpanded: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '', normalizationNotice: '',
+        emptyObject: {}, advancedExpanded: false, credentialsExpanded: false, autoFocusProvider: '', credentialSummary: '', keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '', normalizationNotice: '',
         draft: null,
         minimaxRegionOptions: [{ value: 'global', label: '国际' }, { value: 'cn', label: '中国大陆' }],
         minimaxRegionIndex: 0, minimaxApiBase: '',
@@ -97,6 +99,14 @@ Component({
     },
     methods: {
         openTokenDance: tokendance_1.openTokenDance,
+        configureRoleKey(event) { this.focusCredential(String(event.currentTarget.dataset.provider || '')); },
+        focusCredential(provider) {
+            if (!this.data.keyFields.some(field => field.provider === provider))
+                return;
+            this.setData({ credentialsExpanded: true, focusedKeyId: '', autoFocusProvider: '' }, () => {
+                this.setData({ focusedKeyId: 'credential-' + provider, autoFocusProvider: provider === 'tokendance' ? '' : provider });
+            });
+        },
         toggleAdvanced() { this.setData({ advancedExpanded: !this.data.advancedExpanded }); },
         toggleCredentials() { this.setData({ credentialsExpanded: !this.data.credentialsExpanded }); },
         noop() { },
@@ -133,6 +143,8 @@ Component({
                 error: '', advancedExpanded: false, credentialsExpanded: false, normalizationNotice: '',
             });
             this.refreshPresentation();
+            if (this.properties.focusProvider)
+                this.focusCredential(this.properties.focusProvider);
         },
         refreshPresentation() {
             var _a;
@@ -156,17 +168,24 @@ Component({
             const ratioOptions = ratioAll.filter((item) => !item.disabled).map((item) => ({ value: item.value, label: item.label }));
             if (this.properties.purpose !== 'optimize')
                 draft.aspectRatio = (0, aspect_ratios_1.normalizeSelectedAspectRatio)(draft.aspectRatio, ratioAll);
+            const executionRoles = this.effectiveRoles();
+            const selectedKeys = (0, provider_regions_1.selectRegionApiKeys)(this.data.draftKeys, draft.providerRegions);
+            const connected = (0, tokendance_1.hasTokenDanceConnection)();
             const routeRows = (this.properties.purpose === 'optimize' ? ['main'] : ['main', 'image', 'vision']).map((role) => {
+                var _a, _b;
                 const route = draft.modelRoutes[role];
                 const model = (0, model_registry_1.findRegistryModel)(registry, route.accessProvider, route.modelId);
                 return {
                     role, label: role === 'main' ? '主模型' : role === 'image' ? '图像生成模型' : '参考图识别模型',
                     provider: route.accessProvider, providerLabel: PROVIDER_LABELS[route.accessProvider] || route.accessProvider,
                     modelId: route.modelId, modelLabel: (model === null || model === void 0 ? void 0 : model.label) || route.modelId,
+                    required: executionRoles.includes(role),
+                    credentialReady: route.accessProvider === 'tokendance' ? connected : Boolean((_a = selectedKeys[route.accessProvider]) === null || _a === void 0 ? void 0 : _a.trim()),
+                    credentialStatus: route.accessProvider === 'tokendance' ? (connected ? '使用观猹账户授权' : '未连接观猹账户') : (((_b = selectedKeys[route.accessProvider]) === null || _b === void 0 ? void 0 : _b.trim()) ? '已配置' : '缺少 API Key'),
                 };
             });
             const providers = (0, model_routing_1.uniqueProvidersForRoles)(draft.modelRoutes, this.effectiveRoles());
-            const keyFields = providers.map((provider) => ({
+            const keyFields = (0, model_routing_1.uniqueProvidersForRoles)(draft.modelRoutes, routeRows.map(row => row.role)).map((provider) => ({
                 provider, label: PROVIDER_LABELS[provider] || provider, value: (0, provider_regions_1.selectRegionApiKeys)(this.data.draftKeys, draft.providerRegions)[provider] || '',
                 placeholder: provider === 'gemini' ? 'AIza...' : provider === 'openrouter' ? 'sk-or-v1-...' : 'sk-...',
             }));
@@ -175,6 +194,7 @@ Component({
             const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : '';
             this.setData({
                 draft, routeRows, ratioOptions, resolutionOptions, keyFields,
+                credentialSummary: [...new Set(routeRows.filter(row => row.required && !row.credentialReady).map(row => row.providerLabel + (row.provider === 'tokendance' ? ' 未连接' : ' 缺少 API Key')))].join('；') || '本次任务所需凭据已就绪',
                 normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.includes('tokendance'),
                 providerOptions,
                 minimaxRegionIndex: (0, provider_regions_1.minimaxRegion)(draft.providerRegions) === 'cn' ? 1 : 0,
@@ -224,11 +244,13 @@ Component({
             this.refreshPresentation();
         },
         openModelPicker(event) {
+            var _a;
             const draft = this.data.draft;
             const role = normalizeRole(event.currentTarget.dataset.role);
             if (!draft)
                 return;
-            this.setData({ editingRole: role, showModelPicker: true, pickerProvider: draft.modelRoutes[role].accessProvider, pickerModel: draft.modelRoutes[role].modelId });
+            (_a = wx.hideKeyboard) === null || _a === void 0 ? void 0 : _a.call(wx);
+            this.setData({ autoFocusProvider: '', editingRole: role, showModelPicker: true, pickerProvider: draft.modelRoutes[role].accessProvider, pickerModel: draft.modelRoutes[role].modelId });
         },
         closeModelPicker() { this.setData({ showModelPicker: false }); },
         selectModel(event) {
@@ -392,7 +414,7 @@ Component({
                     this.setData({ verifyingArk: false });
             }
         },
-        cancel() { this.setData({ showModelPicker: false }); this.triggerEvent('close'); },
+        cancel() { var _a; (_a = wx.hideKeyboard) === null || _a === void 0 ? void 0 : _a.call(wx); this.setData({ showModelPicker: false }); this.triggerEvent('close'); },
         save() {
             const draft = this.data.draft;
             if (!draft)

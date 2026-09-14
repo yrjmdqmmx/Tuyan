@@ -48,6 +48,7 @@ Component({
       ;(this as any).requestInFlight = true
       const original = String(this.properties.inputs[target] || '')
       this.setData({ open: true, busy: true, original, candidate: '', error: '', label: OPTIMIZATION_LABELS[target] })
+      this.triggerEvent('visibility', {open:true})
       this.triggerEvent('busy', { busy: true })
       try {
         const result = await requestJson<{ target?: string; optimizedText?: string }>(payload, { timeout: 55000 })
@@ -63,6 +64,7 @@ Component({
     cancel() {
       ;(this as any).sequence = Number((this as any).sequence || 0) + 1
       this.setData({ open: false, busy: false, candidate: '', original: '', error: '' })
+      this.triggerEvent('visibility', {open:false})
       this.triggerEvent('busy', { busy: false })
     },
     apply() {

@@ -1,5 +1,5 @@
 <view class="library-panel">
-  <view class="library-head"><view><view class="library-title">参考图库</view><view class="library-note">全库 306 · 当前{{taskName === 'plot' ? '统计图' : '结构图'}} · 已选 {{selectedCount}} / {{limit}}</view></view><button class="library-refresh" size="mini" bindtap="onRefresh">刷新</button></view>
+  <view class="library-head"><view class="library-heading-copy"><view class="library-title">参考图库</view><view class="library-note">全库 306 · 当前{{taskName === 'plot' ? '统计图' : '结构图'}} · 已选 {{selectedCount}} / {{limit}}</view></view><button class="library-refresh" size="mini" bindtap="onRefresh">刷新</button></view>
   <view class="library-search"><input class="library-search-input" value="{{query}}" placeholder="搜索标题、方法或关键词" confirm-type="search" bindinput="onQueryInput" bindconfirm="onSearch" /><button class="library-search-button" bindtap="onSearch">搜索</button></view>
   <view class="library-filters">
     <picker range="{{visualOptions}}" range-key="label" value="{{visualIndex}}" bindchange="onVisualChange"><view class="library-filter-value">{{visualOptions[visualIndex].label}}</view></picker>
@@ -10,13 +10,13 @@
   <view class="library-grid" wx:else>
     <view class="library-card {{item.selected ? 'selected' : ''}}" wx:for="{{cards}}" wx:key="id">
       <view class="library-image-wrap" data-id="{{item.id}}" bindtap="openDetail">
-        <image wx:if="{{item.imageUrl}}" class="library-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load />
+        <image wx:if="{{item.imageUrl}}" class="library-image" src="{{item.imageUrl}}" mode="aspectFit" lazy-load />
         <view wx:else class="library-image fallback">结构预览</view>
         <view class="library-task">{{item.taskName === 'plot' ? 'PLOT' : 'DIAGRAM'}}</view>
       </view>
       <view class="library-card-body"><view class="library-card-title">{{item.title || item.id}}</view><view class="library-card-meta">{{item.visualCategory}} · {{item.researchDomain}}</view><button class="library-select" data-id="{{item.id}}" bindtap="onToggle">{{item.selected ? '取消选择' : '选择参考'}}</button></view>
     </view>
   </view>
-  <view class="library-pagination"><button class="library-page-button" disabled="{{page <= 1}}" bindtap="previousPage">上一页</button><view class="library-page-state">当前匹配 {{totalItems}} · {{page}} / {{totalPages}} 页</view><button class="library-page-button" disabled="{{page >= totalPages}}" bindtap="nextPage">下一页</button></view>
+  <view class="library-pagination"><button class="library-page-button" disabled="{{page <= 1}}" bindtap="previousPage">上一页</button><view class="library-page-state"><view>{{page}} / {{totalPages}} 页</view><view class="library-page-total">{{totalItems}} 项匹配</view></view><button class="library-page-button" disabled="{{page >= totalPages}}" bindtap="nextPage">下一页</button></view>
 </view>
 <view class="library-detail-mask" wx:if="{{detail}}" bindtap="closeDetail"><view class="library-detail" catchtap="noop"><image class="library-detail-image" wx:if="{{detail.imageUrl}}" src="{{detail.imageUrl}}" mode="widthFix" bindtap="previewDetail" /><view class="library-detail-title">{{detail.title}}</view><view class="library-detail-summary">{{detail.summary}}</view><button class="library-detail-close" bindtap="closeDetail">关闭</button></view></view>

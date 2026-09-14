@@ -57,6 +57,7 @@ Component({
             this.requestInFlight = true;
             const original = String(this.properties.inputs[target] || '');
             this.setData({ open: true, busy: true, original, candidate: '', error: '', label: input_optimization_1.OPTIMIZATION_LABELS[target] });
+            this.triggerEvent('visibility', { open: true });
             this.triggerEvent('busy', { busy: true });
             try {
                 const result = await (0, api_1.requestJson)(payload, { timeout: 55000 });
@@ -81,6 +82,7 @@ Component({
             ;
             this.sequence = Number(this.sequence || 0) + 1;
             this.setData({ open: false, busy: false, candidate: '', original: '', error: '' });
+            this.triggerEvent('visibility', { open: false });
             this.triggerEvent('busy', { busy: false });
         },
         apply() {

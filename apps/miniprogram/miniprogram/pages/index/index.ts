@@ -1,3 +1,4 @@
+import { MODEL_CHANNEL_LABELS } from '../../utils/model-presentation'
 import { readUiSettings, saveUiSettings } from '../../utils/ui-settings'
 import { rememberWorkPage } from '../../utils/tokendance'
 import { activeReferenceUploadPolicy, referenceUploadSelectionError, referencePolicyHint, referenceProcessingHint, referenceBytesLabel } from '../../utils/reference-upload-policy'
@@ -189,7 +190,7 @@ Component({
     healthText: '检测中',
     healthOk: false,
     healthChecked: false,
-    canSubmit: false,
+    canSubmit: false, submitHint: '', missingCredentialProvider: '', credentialFocusProvider: '', editingInput: false, templateConfirmOpen: false, optimizationOpen: false, libraryDetailOpen: false,
     isSubmitting: false,
     currentJobId: '',
     job: null as Job | null,
@@ -335,7 +336,7 @@ Component({
       this.setData({ settingsPurpose: 'create', showGenerationSettings: true, apiKeysForSheet: getApiKeys(), settingsExecutionRoles: this.createExecutionRoles(settings) })
     },
 
-    closeGenerationSettings() { this.setData({ showGenerationSettings: false }) },
+    closeGenerationSettings() { this.setData({ showGenerationSettings: false, credentialFocusProvider: '', apiKeysForSheet: {} }) },
 
     saveGenerationSettings(event: WechatMiniprogram.CustomEvent<{ settings: GenerationSettings; apiKeys: Record<string, string>; manualReferenceIds: string[] }>) {
       const settings = event.detail.settings
@@ -347,8 +348,8 @@ Component({
         settingsSummary: formatSettingsSummary(settings),
         settingsSummaryDetails: formatSettingsSummaryDetails(settings),
         manualReferenceIds: settings.retrievalSetting === 'manual' ? manualReferenceIds : [],
-        showGenerationSettings: false,
-        apiKeysForSheet: getApiKeys(),
+        showGenerationSettings: false, credentialFocusProvider: '',
+        apiKeysForSheet: {},
       })
       saveUiSettings('create', settings)
       this.syncLegacySettings(settings)
@@ -386,11 +387,13 @@ Component({
         this.applyFeaturedTemplate(template)
         return
       }
+      this.setData({templateConfirmOpen: true})
       wx.showModal({
         title: '替换当前内容？',
         content: '你已经修改了类别、方法、图注或负向提示词。套用模板会替换这些内容。',
         confirmText: '继续套用',
         success: (result) => { if (result.confirm) this.applyFeaturedTemplate(template) },
+        complete: () => this.setData({templateConfirmOpen: false}),
       })
     },
 
@@ -1177,7 +1180,7 @@ Component({
       this.setData({ optimizationInputs: { methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt } })
       const settings = this.data.settings as GenerationSettings
       if (!this.data.registryReady || !settings.modelRoutes) {
-        this.setData({ canSubmit: false })
+        this.setData({ canSubmit: false, submitHint: '模型目录尚未就绪，请重试读取目录。', missingCredentialProvider: '' })
         return
       }
       const hasManualReferences =
@@ -1198,7 +1201,8 @@ Component({
         referenceImageMode: this.data.referenceImageMode,
       }, settings.maxCriticRounds)
       const apiKeys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
-      const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => (provider === 'tokendance' ? hasTokenDanceConnection() : Boolean(apiKeys[provider]?.trim())))
+      const missingProviders = uniqueProvidersForRoles(settings.modelRoutes, roles).filter(provider => provider === 'tokendance' ? !hasTokenDanceConnection() : !apiKeys[provider]?.trim())
+      const hasRequiredKeys = missingProviders.length === 0
       const canSubmit = Boolean(
         hasRequiredKeys &&
           this.data.methodContent.trim().length >= 20 &&
@@ -1212,9 +1216,15 @@ Component({
           !this.data.isInspectingReferences &&
           !this.data.isSubmitting && !this.data.optimizationBusy,
       )
-      this.setData({ canSubmit })
+      const submitHint = missingProviders.length ? missingProviders.map(provider => (MODEL_CHANNEL_LABELS[provider] || provider) + (provider === 'tokendance' ? ' 未连接账户授权' : ' 缺少 API Key')).join('；') : !hasManualReferences ? '请至少选择一个手动参考案例。' : this.data.methodContent.trim().length < 20 ? '请填写至少 20 字研究方法。' : this.data.caption.trim().length < 3 ? '请填写至少 3 字目标图注。' : this.data.referenceSelectionIssue || (!this.data.referenceModeCanSubmit ? '请检查参考图处理方式。' : '请等待当前操作完成，并检查输出参数。')
+      this.setData({ canSubmit, submitHint, missingCredentialProvider: missingProviders[0] || '' })
     },
 
+    onOptimizerVisibility(event: WechatMiniprogram.CustomEvent<{open:boolean}>) { this.setData({optimizationOpen:event.detail.open}) },
+    onLibraryVisibility(event: WechatMiniprogram.CustomEvent<{open:boolean}>) { this.setData({libraryDetailOpen:event.detail.open}) },
+    onInputFocus() { this.setData({ editingInput: true }) },
+    onInputBlur() { this.setData({ editingInput: false }) },
+    configureMissingCredential() { this.setData({ credentialFocusProvider: this.data.missingCredentialProvider }); this.openGenerationSettings() },
     openAuthPanel() {
       this.setData({ showAuthPanel: true })
     },

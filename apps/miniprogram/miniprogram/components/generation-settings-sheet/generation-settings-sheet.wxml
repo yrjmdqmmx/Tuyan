@@ -8,7 +8,11 @@
           <view class="setting-heading">模型</view>
           <view class="mode-tabs" wx:if="{{purpose !== 'optimize'}}"><button class="mode-tab {{draft.configurationMode === 'simple' ? 'active' : ''}}" data-mode="simple" bindtap="setMode">普通模式</button><button class="mode-tab {{draft.configurationMode === 'advanced' ? 'active' : ''}}" data-mode="advanced" bindtap="setMode">专业模式</button></view>
           <view class="channel-line" wx:if="{{purpose !== 'optimize' && draft.configurationMode === 'simple'}}"><text class="setting-label">统一渠道</text><picker range="{{providerOptions}}" range-key="label" value="{{providerIndex}}" bindchange="onProviderChange"><view class="channel-value">{{providerOptions[providerIndex].label}} <text>⌄</text></view></picker></view>
-          <view class="route-list"><view class="route-row" wx:for="{{routeRows}}" wx:key="role" data-role="{{item.role}}" bindtap="openModelPicker" role="button" aria-label="{{item.label}}：{{item.modelLabel}}"><view class="route-copy"><view class="route-role">{{item.label}}</view><view wx:if="{{draft.configurationMode === 'advanced'}}" class="route-provider">{{item.providerLabel}}</view></view><view class="route-model">{{item.modelLabel}}</view><text class="route-arrow">›</text></view></view>
+          <view class="route-list"><view class="role-config" wx:for="{{routeRows}}" wx:key="role">
+            <view class="route-row" data-role="{{item.role}}" bindtap="openModelPicker" role="button" aria-label="{{item.label}}：{{item.modelLabel}}"><view class="route-copy"><view class="route-role">{{item.label}}</view><view class="route-provider">{{item.providerLabel}}</view></view><view class="route-model">{{item.modelLabel}}</view><text class="route-arrow">›</text></view>
+            <view class="role-credential"><view class="role-credential-copy"><view class="credential-state {{item.credentialReady ? 'ready' : 'missing'}}">{{item.credentialStatus}}</view><view class="role-usage">{{item.required ? '本次任务需要' : '本次任务不调用此角色'}}</view></view><button class="role-key-button" data-provider="{{item.provider}}" bindtap="configureRoleKey" aria-label="配置{{item.label}}的{{item.providerLabel}}凭据">{{item.provider === 'tokendance' ? '账户授权' : '配置 Key'}} ›</button></view>
+          </view></view>
+          <view class="privacy-note">角色独立选渠道与模型；同一渠道共享 Key，MiniMax 按区域区分。</view>
         </view>
         <view class="setting-section" wx:if="{{purpose !== 'optimize'}}">
           <view class="setting-heading">输出参数</view>
@@ -32,13 +36,13 @@
         </view>
         <view class="setting-section">
           <button class="disclosure credentials-heading" bindtap="toggleCredentials" aria-expanded="{{credentialsExpanded}}"><text class="setting-heading">接入凭据</text><text>{{credentialsExpanded ? '收起 −' : '查看 +'}}</text></button>
-          <view wx:if="{{!credentialsExpanded}}" class="credential-summary">{{encryptedRecovery ? '观猹 TokenDance 使用账户授权' : '按当前任务需要的渠道填写密钥'}}</view>
+          <view wx:if="{{!credentialsExpanded}}" class="credential-summary">{{credentialSummary}}</view>
           <view wx:if="{{credentialsExpanded}}">
             <view class="key-field" id="credential-{{item.provider}}" wx:for="{{keyFields}}" wx:key="provider">
               <view class="setting-label">{{item.label}}</view>
               <view wx:if="{{item.provider === 'minimax'}}"><picker range="{{minimaxRegionOptions}}" range-key="label" value="{{minimaxRegionIndex}}" bindchange="onMiniMaxRegionChange"><view class="setting-picker">{{minimaxRegionOptions[minimaxRegionIndex].label}}</view></picker><view class="privacy-note">{{minimaxApiBase}} · 请使用该区域的 Key</view></view>
-              <view wx:if="{{item.provider === 'tokendance'}}" class="credential-status">在“账户”页连接和管理观猹 TokenDance，无需粘贴 Key。</view>
-              <input wx:else class="key-input" password value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" bindfocus="onKeyFocus" adjust-position="{{false}}" cursor-spacing="20" />
+              <view wx:if="{{item.provider === 'tokendance'}}" class="credential-status">在“账户”页连接和管理观猹 TokenDance，无需粘贴 Key。保存设置后再前往账户，可保留本次修改。</view>
+              <input wx:else class="key-input" password focus="{{autoFocusProvider === item.provider}}" value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" bindfocus="onKeyFocus" adjust-position="{{false}}" cursor-spacing="20" />
             </view>
             <view class="privacy-note">{{encryptedRecovery ? '任务恢复所需的其他渠道密钥加密保留，完成即删，最长 7 天。' : '密钥仅保存在本次会话内存，不写入本地存储。'}}</view>
             <button class="ark-verify" wx:if="{{arkStatus}}" loading="{{verifyingArk}}" disabled="{{verifyingArk}}" bindtap="verifyArkRoutes">{{arkStatus}} · 验证</button>

@@ -1,7 +1,7 @@
 <view class="td-page">
   <view class="td-heading"><view class="td-heading-title">账户</view><button class="td-text-button" bindtap="returnToTask">返回原页面 ›</button></view>
   <view class="td-identity">
-    <view class="td-avatar">图</view><view class="td-identity-info"><view class="td-title">图研账号</view><view class="td-email">{{email || '登录后同步任务与设置'}}</view></view>
+    <view class="td-identity-info"><view class="td-title">图研账号</view><view class="td-email">{{email || '登录后同步任务与设置'}}</view></view>
     <button class="td-small-button" wx:if="{{isLoggedIn}}" bindtap="manageAccount">管理</button><button class="td-small-button td-primary" wx:else bindtap="openAuthPanel">登录</button>
   </view>
   <view class="td-section">

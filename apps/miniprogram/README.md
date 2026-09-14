@@ -2,7 +2,7 @@
 
 图研Tuyan 是 PaperBanana 多端产品的微信原生 TypeScript 客户端。微信端使用“图研Tuyan”品牌；AppID、包名、API、数据库、对象键、Cookie 键和本地任务键继续沿用 PaperBanana 技术标识。
 
-## 3.4.0 当前能力
+## 3.5.0 当前能力
 
 - 生成页缩短模板与参考来源区域，限制说明按需展开；设置按模型、输出、流程和凭据分组，保留原子保存/取消。
 - 生成和精修共用比例图形选择器，常用比例优先，其余展开；选项由当前模型与清晰度约束产生。
@@ -28,11 +28,11 @@
 - 账户设置包含退出、隐私说明和永久删除；删除成功后清理 Cookie、草稿、任务缓存和内存密钥。
 - 手动 BYOK Key 只保存在当前会话内存，不写 Storage、日志或任务记录。
 
-## 3.4.0 本地交付说明
+## 3.5.0 本地交付说明
 
 新增四项输入优化（预览、采用、恢复原文）、原图精修上传与结果操作、邮箱验证状态观察、账号生命周期提示和任务隔离。生成/精修设置按各自能力提供合法比例与清晰度，MiniMax 密钥按区域隔离。真实计费调用不包含在本次本地验收中。
 
-本地检查：`npm test`、`npm run check`、`npm run build`。`tests/release-metadata-3.0.1.test.cjs` 同时验证当前 3.4.0 元数据和保留的 3.0.1 历史功能记录。
+本地检查：`npm test`、`npm run check`、`npm run build`。`tests/release-metadata-3.0.1.test.cjs` 同时验证当前 3.5.0 元数据和保留的 3.0.1 历史功能记录。
 
 本机旧缓存若没有不可变账号 ID，会原样保留但不再展示；登录后从账号任务记录取得本人任务。同步只复制仓库受控文件，保留 `project.private.config.json`、本机授权文件、额外文件和登录态。源码完成、本地副本同步、微信上传、审核、正式发布必须分别核实。
 
@@ -98,3 +98,6 @@ tests/           # Node 契约与回归测试
 ```
 
 参考：[微信网络规范](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/network.html) · [开发者工具 CLI](https://developers.weixin.qq.com/miniprogram/dev/devtools/cli.html)
+
+
+模型凭据：主模型、图像生成和参考识图可独立选择渠道与型号；同一渠道共享会话内 Key，MiniMax 各区域独立。角色旁的状态不等于供应商账号实测可用。打开目录只浏览，选定后进入设置草稿，保存才生效。

@@ -23,7 +23,7 @@ Component({
         step: 'providers',
         roleLabel: '主模型',
         providerCards: [],
-        vendorCards: [],
+        vendorCards: [], vendorOptions: ['全部厂商'], vendorIndex: 0,
         compatibleCount: 0,
         visibleCompatibleModels: [],
         activeProvider: '',
@@ -79,8 +79,16 @@ Component({
             this.setData({
                 activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,
                 activeProviderIsAggregator: isAggregator, activeVendor: '', vendorCards, query: '', catalogMode: 'all',
-                visibleLimit: MODEL_PAGE_SIZE, step: 'vendors',
+                visibleLimit: MODEL_PAGE_SIZE, step: 'models', expandedModel: '', vendorOptions: ['全部厂商', ...vendorCards.map(item => item.vendor)], vendorIndex: 0,
             });
+            this.refreshModelLists();
+        },
+        showProviders() { this.setData({ step: 'providers', query: '', expandedModel: '' }); },
+        filterVendor(event) {
+            var _a;
+            const index = Number(event.detail.value) || 0;
+            this.setData({ activeVendor: index ? ((_a = this.data.vendorCards[index - 1]) === null || _a === void 0 ? void 0 : _a.vendor) || '' : '', vendorIndex: index, visibleLimit: MODEL_PAGE_SIZE });
+            this.refreshModelLists();
         },
         selectVendor(event) {
             const vendor = String(event.currentTarget.dataset.vendor || '');
@@ -91,7 +99,7 @@ Component({
         },
         backStep() {
             if (this.data.step === 'models') {
-                this.setData({ step: 'vendors', query: '' });
+                this.showProviders();
                 return;
             }
             if (this.data.step === 'vendors')
@@ -107,7 +115,7 @@ Component({
             const role = normalizeRole(this.properties.role);
             const options = { role, query: this.data.query, outputFormat: String(this.properties.outputFormat || ''), recommendedOnly: providerId === 'openrouter' && this.data.catalogMode === 'recommended' };
             let partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], options);
-            const inVendor = (model) => (0, model_presentation_1.modelDeveloper)(providerId, model).label === this.data.activeVendor;
+            const inVendor = (model) => !this.data.activeVendor || (0, model_presentation_1.modelDeveloper)(providerId, model).label === this.data.activeVendor;
             if (options.recommendedOnly && !partition.compatible.some(inVendor)) {
                 partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { ...options, recommendedOnly: false });
                 this.setData({ catalogMode: 'all' });
@@ -130,9 +138,14 @@ Component({
             this.refreshModelLists();
         },
         choose(event) {
+            var _a;
             if (event.currentTarget.dataset.disabled)
                 return;
-            this.triggerEvent('select', { provider: this.data.activeProvider, modelId: String(event.currentTarget.dataset.model || '') });
+            const modelId = String(event.currentTarget.dataset.model || '');
+            const provider = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers[this.data.activeProvider];
+            if (!(0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { role: normalizeRole(this.properties.role), outputFormat: this.properties.outputFormat }).compatible.some(model => model.id === modelId))
+                return;
+            this.triggerEvent('select', { provider: this.data.activeProvider, modelId });
         },
         copyId(event) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }); },
         toggleDetails(event) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }); },

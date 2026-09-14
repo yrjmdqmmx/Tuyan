@@ -32,6 +32,11 @@ export async function watchaRequest<T = any>(action: Action, body?: WechatMinipr
     if (!result || (action === 'mini-status' ? result.miniProgramSupported !== true : action === 'mini-start' ? typeof result.url !== 'string' : action === 'delete-confirmation' ? typeof result.confirmationToken !== 'string' : result.ok !== true)) throw new Error('WATCHA_INVALID_RESPONSE')
     return result
   } catch (error) {
+    if (action === 'mini-status' && (error as any)?.httpStatus === 404) {
+      const unavailable = new Error('当前网关尚未部署小程序观猹身份接续接口（404）。可继续使用邮箱登录；已连接的观猹消费授权不受此接口影响。')
+      ;(unavailable as any).code = 'WATCHA_MINI_NOT_DEPLOYED'
+      throw unavailable
+    }
     const raw = String((error as any)?.businessCode || '') + ' ' + String((error as any)?.message || '')
     const key = Object.keys(messages).find(code => raw.includes(code))
     const mapped = new Error(key ? messages[key] : '观猹账号操作暂未完成，请刷新状态重试；也可使用邮箱登录。')

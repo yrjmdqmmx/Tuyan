@@ -67,8 +67,8 @@ Component({
         } },
         onToggle(event) { const id = String(event.currentTarget.dataset.id || ''); if (id)
             this.triggerEvent('toggle', { id }); },
-        openDetail(event) { const id = String(event.currentTarget.dataset.id || ''); this.setData({ detail: this.data.cards.find((item) => item.id === id) || null }); },
-        closeDetail() { this.setData({ detail: null }); },
+        openDetail(event) { const id = String(event.currentTarget.dataset.id || ''); this.setData({ detail: this.data.cards.find((item) => item.id === id) || null }); this.triggerEvent('visibility', { open: Boolean(this.data.detail) }); },
+        closeDetail() { this.setData({ detail: null }); this.triggerEvent('visibility', { open: false }); },
         previewDetail() { var _a; if ((_a = this.data.detail) === null || _a === void 0 ? void 0 : _a.imageUrl)
             wx.previewImage({ current: this.data.detail.imageUrl, urls: [this.data.detail.imageUrl] }); },
         onRefresh() { this.loadLibrary(); },

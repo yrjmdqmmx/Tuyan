@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const model_presentation_1 = require("../../utils/model-presentation");
 const ui_settings_1 = require("../../utils/ui-settings");
 const tokendance_1 = require("../../utils/tokendance");
 const reference_upload_policy_1 = require("../../utils/reference-upload-policy");
-const model_presentation_1 = require("../../utils/model-presentation");
+const model_presentation_2 = require("../../utils/model-presentation");
 const tokendance_2 = require("../../utils/tokendance");
 const provider_regions_1 = require("../../utils/provider-regions");
 const api_1 = require("../../utils/api");
@@ -20,7 +21,7 @@ const reference_files_1 = require("../../utils/reference-files");
 const reference_mode_1 = require("../../utils/reference-mode");
 const session_1 = require("../../utils/session");
 const DEFAULT_PROVIDER = constants_1.PROVIDERS[0];
-const PROVIDERS = (0, model_presentation_1.orderModelChannels)(constants_1.PROVIDERS.map(item => item.id)).map(id => constants_1.PROVIDERS.find(item => item.id === id));
+const PROVIDERS = (0, model_presentation_2.orderModelChannels)(constants_1.PROVIDERS.map(item => item.id)).map(id => constants_1.PROVIDERS.find(item => item.id === id));
 const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft';
 Component({
     data: {
@@ -120,7 +121,7 @@ Component({
         healthText: '检测中',
         healthOk: false,
         healthChecked: false,
-        canSubmit: false,
+        canSubmit: false, submitHint: '', missingCredentialProvider: '', credentialFocusProvider: '', editingInput: false, templateConfirmOpen: false, optimizationOpen: false, libraryDetailOpen: false,
         isSubmitting: false,
         currentJobId: '',
         job: null,
@@ -276,7 +277,7 @@ Component({
             const settings = this.data.settings;
             this.setData({ settingsPurpose: 'create', showGenerationSettings: true, apiKeysForSheet: (0, api_keys_1.getApiKeys)(), settingsExecutionRoles: this.createExecutionRoles(settings) });
         },
-        closeGenerationSettings() { this.setData({ showGenerationSettings: false }); },
+        closeGenerationSettings() { this.setData({ showGenerationSettings: false, credentialFocusProvider: '', apiKeysForSheet: {} }); },
         saveGenerationSettings(event) {
             const settings = event.detail.settings;
             (0, api_keys_1.replaceApiKeys)(event.detail.apiKeys);
@@ -288,8 +289,8 @@ Component({
                 settingsSummary: formatSettingsSummary(settings),
                 settingsSummaryDetails: formatSettingsSummaryDetails(settings),
                 manualReferenceIds: settings.retrievalSetting === 'manual' ? manualReferenceIds : [],
-                showGenerationSettings: false,
-                apiKeysForSheet: (0, api_keys_1.getApiKeys)(),
+                showGenerationSettings: false, credentialFocusProvider: '',
+                apiKeysForSheet: {},
             });
             (0, ui_settings_1.saveUiSettings)('create', settings);
             this.syncLegacySettings(settings);
@@ -326,12 +327,14 @@ Component({
                 this.applyFeaturedTemplate(template);
                 return;
             }
+            this.setData({ templateConfirmOpen: true });
             wx.showModal({
                 title: '替换当前内容？',
                 content: '你已经修改了类别、方法、图注或负向提示词。套用模板会替换这些内容。',
                 confirmText: '继续套用',
                 success: (result) => { if (result.confirm)
                     this.applyFeaturedTemplate(template); },
+                complete: () => this.setData({ templateConfirmOpen: false }),
             });
         },
         applyFeaturedTemplate(template) {
@@ -1134,7 +1137,7 @@ Component({
             this.setData({ optimizationInputs: { methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt } });
             const settings = this.data.settings;
             if (!this.data.registryReady || !settings.modelRoutes) {
-                this.setData({ canSubmit: false });
+                this.setData({ canSubmit: false, submitHint: '模型目录尚未就绪，请重试读取目录。', missingCredentialProvider: '' });
                 return;
             }
             const hasManualReferences = settings.configurationMode !== 'advanced' ||
@@ -1154,7 +1157,8 @@ Component({
                 referenceImageMode: this.data.referenceImageMode,
             }, settings.maxCriticRounds);
             const apiKeys = (0, provider_regions_1.selectRegionApiKeys)((0, api_keys_1.getApiKeys)(), settings.providerRegions);
-            const hasRequiredKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return (provider === 'tokendance' ? (0, tokendance_2.hasTokenDanceConnection)() : Boolean((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim())); });
+            const missingProviders = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).filter(provider => { var _a; return provider === 'tokendance' ? !(0, tokendance_2.hasTokenDanceConnection)() : !((_a = apiKeys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
+            const hasRequiredKeys = missingProviders.length === 0;
             const canSubmit = Boolean(hasRequiredKeys &&
                 this.data.methodContent.trim().length >= 20 &&
                 this.data.caption.trim().length >= 3 &&
@@ -1166,8 +1170,14 @@ Component({
                 !this.data.isUploadingReferences &&
                 !this.data.isInspectingReferences &&
                 !this.data.isSubmitting && !this.data.optimizationBusy);
-            this.setData({ canSubmit });
+            const submitHint = missingProviders.length ? missingProviders.map(provider => (model_presentation_1.MODEL_CHANNEL_LABELS[provider] || provider) + (provider === 'tokendance' ? ' 未连接账户授权' : ' 缺少 API Key')).join('；') : !hasManualReferences ? '请至少选择一个手动参考案例。' : this.data.methodContent.trim().length < 20 ? '请填写至少 20 字研究方法。' : this.data.caption.trim().length < 3 ? '请填写至少 3 字目标图注。' : this.data.referenceSelectionIssue || (!this.data.referenceModeCanSubmit ? '请检查参考图处理方式。' : '请等待当前操作完成，并检查输出参数。');
+            this.setData({ canSubmit, submitHint, missingCredentialProvider: missingProviders[0] || '' });
         },
+        onOptimizerVisibility(event) { this.setData({ optimizationOpen: event.detail.open }); },
+        onLibraryVisibility(event) { this.setData({ libraryDetailOpen: event.detail.open }); },
+        onInputFocus() { this.setData({ editingInput: true }); },
+        onInputBlur() { this.setData({ editingInput: false }); },
+        configureMissingCredential() { this.setData({ credentialFocusProvider: this.data.missingCredentialProvider }); this.openGenerationSettings(); },
         openAuthPanel() {
             this.setData({ showAuthPanel: true });
         },

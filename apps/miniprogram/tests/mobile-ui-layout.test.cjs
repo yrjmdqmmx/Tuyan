@@ -35,11 +35,11 @@ assert.match(settingsWxml, /<reference-library task-name="\{\{libraryTaskName\}\
 assert.match(settingsWxml, /<ratio-picker /)
 assert.match(settingsWxss, /\.sheet-save\{[^}]*display:flex[^}]*align-items:center[^}]*justify-content:center/)
 
-assert.match(modelWxml, /model-steps/)
+assert.match(modelWxml, /model-toolbar/)
 assert.match(modelWxml, /provider-card/)
-assert.match(modelWxml, /vendor-card/)
+assert.match(modelWxml, /vendor-filter/)
 assert.match(modelWxml, /model-list/)
-assert.match(modelWxml, /服务端模型目录/)
+assert.match(modelWxml, /仅显示当前角色可用模型/)
 assert.match(modelWxml, /复制 ID/)
 
 assert.match(recordsWxss, /\.job-record-meta\s*\{[^}]*grid-template-columns:repeat\(2/)
@@ -47,7 +47,7 @@ assert.match(recordsWxss, /\.job-models text:last-child\s*\{[^}]*white-space:nor
 assert.match(recordsWxss, /\.job-prompt-preview\s*\{[^}]*max-height:none/)
 
 assert.match(libraryWxml, /全库 306/)
-assert.match(libraryWxml, /当前匹配 \{\{totalItems\}\}/)
+assert.match(libraryWxml, /\{\{totalItems\}\} 项匹配/)
 assert.match(libraryWxss, /\.library-search-input\{[^}]*min-width:0/)
 assert.match(libraryWxss, /\.library-search-input\{[^}]*box-sizing:border-box/)
 

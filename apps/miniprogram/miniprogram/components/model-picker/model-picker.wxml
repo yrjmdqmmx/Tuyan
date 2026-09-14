@@ -1,48 +1,21 @@
 <view wx:if="{{show}}" class="model-modal" catchtouchmove="noop">
   <view class="model-panel" catchtap="noop">
-    <view class="model-head">
-      <view><view class="model-kicker">选择{{roleLabel}}</view><view class="model-note">API 接入渠道 → 模型厂商 → 服务端模型目录</view></view>
-      <button class="model-close" bindtap="close">关闭</button>
-    </view>
-    <view class="model-steps">
-      <view class="model-step {{step === 'providers' ? 'active' : 'done'}}"><text class="model-step-index">1</text>API 渠道</view>
-      <view class="model-step {{step === 'vendors' ? 'active' : (step === 'models' ? 'done' : '')}}"><text class="model-step-index">2</text>模型厂商</view>
-      <view class="model-step {{step === 'models' ? 'active' : ''}}"><text class="model-step-index">3</text>模型目录</view>
-    </view>
-    <scroll-view class="model-scroll" scroll-y type="list">
+    <view class="model-head"><view class="model-head-copy"><view class="model-kicker">选择{{roleLabel}}</view><view class="model-note">{{step === 'providers' ? '选择 API 接入渠道' : activeProviderLabel + ' · 仅显示当前角色可用模型'}}</view></view><button class="model-close" bindtap="close">关闭</button></view>
+    <view class="model-toolbar" wx:if="{{step === 'models'}}"><button class="step-back" bindtap="showProviders">‹ 更换渠道</button><picker class="vendor-picker" range="{{vendorOptions}}" value="{{vendorIndex}}" bindchange="filterVendor"><view class="vendor-filter">{{vendorOptions[vendorIndex]}} ⌄</view></picker></view>
+    <input wx:if="{{step === 'models'}}" class="model-search" value="{{query}}" placeholder="搜索模型、厂商或能力" bindinput="onSearch" />
+    <scroll-view class="model-scroll" scroll-y enhanced show-scrollbar="{{false}}">
       <view wx:if="{{step === 'providers'}}" class="provider-list">
-        <view class="step-title">选择 API 接入渠道</view>
-        <button class="provider-card" wx:for="{{providerCards}}" wx:key="id" data-provider="{{item.id}}" bindtap="selectProvider">
-          <view><view class="card-title">{{item.label}}</view><view class="card-note">{{item.kindText}}</view></view>
-          <view class="card-count">{{item.count}} 可用 <text class="provider-arrow">›</text></view>
-        </button>
-      </view>
-      <view wx:elif="{{step === 'vendors'}}" class="vendor-list">
-        <button class="step-back" bindtap="backStep">‹ 返回渠道</button>
-        <view class="step-context">{{activeProviderLabel}} · {{activeProviderIsAggregator ? '聚合渠道' : '官方直连'}}</view>
-        <view class="step-title">选择模型开发厂商</view>
-        <button class="vendor-card" wx:for="{{vendorCards}}" wx:key="vendor" data-vendor="{{item.vendor}}" bindtap="selectVendor">
-          <view><view class="card-title">{{item.vendor}}</view><view class="card-note">{{item.compatibleCount}} 兼容</view></view><text class="vendor-arrow">›</text>
-        </button>
+        <button class="provider-card {{selectedProvider === item.id ? 'current' : ''}}" wx:for="{{providerCards}}" wx:key="id" data-provider="{{item.id}}" bindtap="selectProvider"><view class="provider-copy"><view class="card-title">{{item.label}}</view><view class="card-note">{{item.kindText}}{{selectedProvider === item.id ? ' · 当前渠道' : ''}}</view></view><view class="card-count">{{item.count}} 个可用 ›</view></button>
       </view>
       <view wx:else class="model-list">
-        <button class="step-back" bindtap="backStep">‹ 返回厂商</button>
-        <view class="step-context">{{activeProviderLabel}}{{activeVendor && activeVendor !== activeProviderLabel ? ' · ' + activeVendor : ''}}</view>
-        <view class="step-title">服务端模型目录</view>
-        <input class="model-search" value="{{query}}" placeholder="搜索模型、厂商或能力" bindinput="onSearch" />
-        <view class="model-count">{{compatibleCount}} 个兼容模型</view>
+        <view class="model-count">{{compatibleCount}} 个匹配模型 · 点击名称选择</view>
         <view class="model-row {{item.selected ? 'selected' : ''}}" wx:for="{{visibleCompatibleModels}}" wx:key="id">
-          <button class="model-select" data-model="{{item.id}}" bindtap="choose">
-            <view class="model-main"><view class="model-name">{{item.label}}</view><view class="model-capability">{{item.capabilityText}}</view><view class="model-badges"><text>{{item.releaseText}}</text><text class="model-badge">{{item.lifecycleText}}</text><text class="model-badge" wx:if="{{item.serviceTier}}">{{item.serviceTier}}</text><text class="model-badge" wx:if="{{item.recommended}}">推荐</text><text class="model-badge" wx:if="{{item.requiresEntitlement}}">需权益</text></view></view>
-            <view class="model-check">{{item.selected ? '✓' : '›'}}</view>
-          </button>
-          <view class="model-id-line"><text class="model-id" selectable>{{item.id}}</text><button class="model-copy" data-model="{{item.id}}" catchtap="copyId">复制 ID</button></view>
-          <button class="model-details-toggle" data-model="{{item.id}}" bindtap="toggleDetails">{{expandedModel === item.id ? '收起详情' : '模型详情'}}</button>
-          <view class="card-note" wx:if="{{expandedModel === item.id}}">{{item.verificationText}} · {{item.availabilityNotes}}</view>
+          <button class="model-select" data-model="{{item.id}}" bindtap="choose"><view class="model-main"><view class="model-name">{{item.label}}</view><view class="model-capability">{{item.capabilityText}}{{item.requiresEntitlement ? ' · 需权益' : ''}}</view></view><view class="model-check">{{item.selected ? '✓ 已选' : '选择'}}</view></button>
+          <button class="model-details-toggle" data-model="{{item.id}}" bindtap="toggleDetails" aria-expanded="{{expandedModel === item.id}}">{{expandedModel === item.id ? '收起详情 −' : '型号与详情 +'}}</button>
+          <view class="model-details" wx:if="{{expandedModel === item.id}}"><text class="model-id" user-select>{{item.id}}</text><view class="card-note">{{item.releaseText}} · {{item.lifecycleText}} {{item.serviceTier}}</view><view class="card-note">{{item.verificationText}} · {{item.availabilityNotes}}</view><button class="model-copy" data-model="{{item.id}}" catchtap="copyId">复制 ID</button></view>
         </view>
         <button class="model-more" wx:if="{{hasMore}}" bindtap="loadMore">显示更多模型</button>
         <view class="model-empty" wx:if="{{!compatibleCount}}">没有匹配当前角色与输出格式的可用模型。</view>
-
       </view>
     </scroll-view>
   </view>

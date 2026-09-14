@@ -6,4 +6,4 @@ export const AUTH_BASE = `${API_BASE}/api/auth`
 export const LOCAL_JOBS_KEY = 'paperbanana_mini_jobs'
 export const AUTH_COOKIE_KEY = 'paperbanana_auth_cookie'
 
-export const CLIENT_VERSION = 'miniprogram-3.4.0'
+export const CLIENT_VERSION = 'miniprogram-3.5.0'

@@ -312,8 +312,9 @@ Component({
                 }
             }
             this.setData({ sourceSelectionIssue, connected: (0, tokendance_2.hasTokenDanceConnection)() });
-            const hasKeys = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).every((provider) => { var _a; return (provider === 'tokendance' ? (0, tokendance_2.hasTokenDanceConnection)() : Boolean((_a = keys[provider]) === null || _a === void 0 ? void 0 : _a.trim())); });
-            const submitHint = !this.data.isLoggedIn ? '请先登录图研。' : this.data.uploadBusy ? '正在上传原图，请稍候。' : !this.data.source ? '请选择一张原图。' : this.data.instruction.trim().length < 3 ? '请写下需要修改的内容。' : this.data.refineMode === 'none' ? '当前模型不支持精修，请调整模型。' : !hasKeys ? '请在账户页连接观猹，或在精修设置中填写所需渠道密钥。' : '';
+            const missingProviders = (0, model_routing_1.uniqueProvidersForRoles)(settings.modelRoutes, roles).filter(provider => { var _a; return provider === 'tokendance' ? !(0, tokendance_2.hasTokenDanceConnection)() : !((_a = keys[provider]) === null || _a === void 0 ? void 0 : _a.trim()); });
+            const hasKeys = missingProviders.length === 0;
+            const submitHint = !this.data.isLoggedIn ? '请先登录图研。' : this.data.uploadBusy ? '正在上传原图，请稍候。' : !this.data.source ? '请选择一张原图。' : this.data.instruction.trim().length < 3 ? '请写下需要修改的内容。' : this.data.refineMode === 'none' ? '当前模型不支持精修，请调整模型。' : !hasKeys ? missingProviders.map(provider => (model_presentation_1.MODEL_CHANNEL_LABELS[provider] || provider) + (provider === 'tokendance' ? ' 未连接账户授权' : ' 缺少 API Key')).join('；') : '';
             this.setData({ submitHint, canSubmit: Boolean(this.data.source && this.data.instruction.trim().length >= 3 && this.data.refineMode !== 'none' && this.data.ratioOptions.length && this.data.resolutionOptions.length && hasKeys && this.data.isLoggedIn && !sourceSelectionIssue && !this.data.uploadBusy && !this.data.optimizationBusy && !this.data.isSubmitting) });
         },
         async submitRefine() {

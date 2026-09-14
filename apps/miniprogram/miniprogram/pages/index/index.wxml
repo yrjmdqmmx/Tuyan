@@ -18,7 +18,7 @@
   </view>
   <view class="health-banner" wx:if="{{healthChecked && !healthOk}}">{{healthText}}</view>
 
-  <featured-template-studio class="featured-studio" templates="{{featuredTemplates}}" loading="{{featuredTemplatesLoading}}" bind:apply="onFeaturedTemplateApply" />
+  <featured-template-studio class="featured-studio" paused="{{optimizationOpen || libraryDetailOpen || showGenerationSettings || showAuthPanel || showFeedbackPanel || editingInput || templateConfirmOpen || optimizationBusy || isSubmitting || isUploadingReferences || isInspectingReferences}}" templates="{{featuredTemplates}}" loading="{{featuredTemplatesLoading}}" bind:apply="onFeaturedTemplateApply" />
 
   <view class="settings-summary-card" bindtap="openGenerationSettings">
     <view class="summary-copy">
@@ -46,20 +46,20 @@
 
     <view class="field">
       <view class="field-label-row"><view class="field-label">研究方法与流程</view><view class="field-count">{{methodContent.length}} / 12000</view></view>
-      <textarea class="textarea method-textarea-v1" maxlength="12000" show-confirm-bar="{{false}}" cursor-spacing="20" value="{{methodContent}}" placeholder="粘贴论文方法部分，描述模块、数据流、实验步骤与输入输出…" bindinput="onMethodInput" />
-      <input-optimizer target="methodContent" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
+      <textarea bindfocus="onInputFocus" bindblur="onInputBlur" class="textarea method-textarea-v1" maxlength="12000" show-confirm-bar="{{false}}" cursor-spacing="20" value="{{methodContent}}" placeholder="粘贴论文方法部分，描述模块、数据流、实验步骤与输入输出…" bindinput="onMethodInput" />
+      <input-optimizer target="methodContent" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:visibility="onOptimizerVisibility" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="field">
       <view class="field-label-row"><view class="field-label">目标图注</view><view class="field-count">{{caption.length}} / 1000</view></view>
-      <textarea class="textarea caption-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{caption}}" placeholder="例如：图 1：所提出方法框架总览。" bindinput="onCaptionInput" />
-      <input-optimizer target="caption" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
+      <textarea bindfocus="onInputFocus" bindblur="onInputBlur" class="textarea caption-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{caption}}" placeholder="例如：图 1：所提出方法框架总览。" bindinput="onCaptionInput" />
+      <input-optimizer target="caption" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:visibility="onOptimizerVisibility" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="field negative-field">
       <view class="field-label-row"><view class="field-label">负向提示词 <text class="field-optional">可选</text></view><view class="field-count">{{negativePrompt.length}} / 1000</view></view>
-      <textarea class="textarea negative-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{negativePrompt}}" placeholder="例如：避免过密文字、装饰性背景、模糊箭头与无法辨认的小字号。" bindinput="onNegativePromptInput" />
-      <input-optimizer target="negativePrompt" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
+      <textarea bindfocus="onInputFocus" bindblur="onInputBlur" class="textarea negative-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{negativePrompt}}" placeholder="例如：避免过密文字、装饰性背景、模糊箭头与无法辨认的小字号。" bindinput="onNegativePromptInput" />
+      <input-optimizer target="negativePrompt" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:visibility="onOptimizerVisibility" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="reference-shell">
@@ -85,11 +85,11 @@
       <button class="details-toggle" bindtap="toggleReferenceDetails" aria-expanded="{{referenceDetailsOpen}}"><text>模型限制与图片处理</text><text>{{referenceDetailsOpen ? '−' : '+'}}</text></button>
       <view wx:if="{{referenceDetailsOpen}}" class="details-content"><view>参考图用于识图与提示词规划，和图库检索二选一。</view><view>{{referenceLimitHint}}</view><view>{{referenceProcessingHint}}</view><view wx:if="{{referenceModeNote}}">{{referenceModeNote}}</view></view>
       <view wx:if="{{referenceUploadError}}" class="error-box">{{referenceUploadError}}</view>
-      <reference-library wx:if="{{showReferenceLibrary}}" task-name="{{libraryTaskName}}" selected-ids="{{manualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
+      <reference-library bind:visibility="onLibraryVisibility" wx:if="{{showReferenceLibrary}}" task-name="{{libraryTaskName}}" selected-ids="{{manualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
     </view>
 
     <button class="primary-button generate-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitJob">{{isInspectingReferences ? '正在检查参考图' : (isUploadingReferences ? '正在上传参考图' : (isSubmitting ? '正在提交' : '生成学术图示'))}}</button>
-    <view wx:if="{{!canSubmit}}" class="submit-tip">请确认模型目录可用、填写本次可达渠道的 API Key，并完成至少 20 字方法内容与图注。</view>
+    <view wx:if="{{!canSubmit}}" class="submit-tip">{{submitHint}}</view><button wx:if="{{missingCredentialProvider}}" class="credential-fix" bindtap="configureMissingCredential">配置缺失凭据 ›</button>
     <view wx:if="{{error}}" class="error-box">{{error}}</view>
   </view>
 
@@ -113,7 +113,7 @@
 
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />
 <feedback-panel show="{{showFeedbackPanel}}" job-id="{{currentJobId}}" bind:close="closeFeedbackPanel" />
-<generation-settings-sheet purpose="{{settingsPurpose}}" reference-count="{{referenceImages.length}}" reference-image-mode="{{referenceImageMode}}" show="{{showGenerationSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
+<generation-settings-sheet focus-provider="{{credentialFocusProvider}}" purpose="{{settingsPurpose}}" reference-count="{{referenceImages.length}}" reference-image-mode="{{referenceImageMode}}" show="{{showGenerationSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
 
 
 <view wx:if="{{job.recovery}}" class="error-box">{{job.recovery.message}}<navigator url="/pages/job-detail/job-detail?jobId={{job.id}}">查看原任务并恢复</navigator></view>

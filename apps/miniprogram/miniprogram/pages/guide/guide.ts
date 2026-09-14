@@ -1,4 +1,5 @@
-import { PROVIDERS } from '../../utils/constants'
+import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../../utils/model-presentation'
+import type { ModelProviderId } from '../../utils/model-registry'
 import { CLIENT_VERSION } from '../../utils/config'
 import { loadModelRegistry, subscribeModelRegistry, type ModelRegistryState } from '../../utils/model-registry-store'
 
@@ -19,8 +20,8 @@ const CHAPTERS = [
 ]
 
 const SETTING_CARDS = [
-  ['配置模式', '普通模式使用单一 API 渠道的服务端默认三角色；专业模式可为主模型、图像模型和识别模型分别选择渠道。'],
-  ['API 渠道', '先选实际调用的接入渠道，再在渠道下按模型厂商选择具体模型。密钥属于渠道，不属于模型厂商。'],
+  ['配置模式', '普通模式可统一切换渠道；三个角色均可单独选择模型。跨渠道选择自动切换专业模式，保存后生效。'],
+  ['API 渠道', '先选接入渠道，再搜索或按厂商筛选模型。角色旁可配置凭据；同一渠道共享 Key，MiniMax 按区域分别保存。'],
   ['主模型', '负责规划、SVG、统计图、自动检索和部分评审；只有任务真实可达主模型时才要求对应渠道密钥。'],
   ['图像生成模型', '负责 PNG 渲染与精修；Recraft Vector 还可生成 SVG。比例、清晰度、输出格式和编辑模式以当前目录为准。'],
   ['参考图识别模型', '上传参考图且主模型不直读时负责图像理解；未走到该角色时不会要求它的渠道密钥。'],
@@ -39,7 +40,7 @@ Component({
   data: {
     qrSrc: '/images/contact-qr.jpg', clientVersion: CLIENT_VERSION, showFeedbackPanel: false, scrollAnchor: '',
     chapters: CHAPTERS, settingCards: SETTING_CARDS.map(([name, description]) => ({ name, description })),
-    registryVersion: '正在读取', providerLabels: '等待服务端目录', defaultRoutes: '等待服务端目录', registryError: '',
+    registryVersion: '正在读取', providerChannels: [] as Array<{id:string;label:string}>, channelsExpanded: false, registryError: '',
   },
   lifetimes: {
     attached() { ;(this as any).unsubscribeRegistry = subscribeModelRegistry((state) => this.applyRegistry(state)); void loadModelRegistry() },
@@ -47,10 +48,11 @@ Component({
   },
   methods: {
     applyRegistry(state: ModelRegistryState) {
-      if (!state.registry) { this.setData({ registryVersion: '目录不可用', providerLabels: '生成与精修已禁用', defaultRoutes: '不可用', registryError: state.error }); return }
-      const provider = state.registry.providers.bailian
-      this.setData({ registryVersion: state.registry.registryVersion, providerLabels: Object.keys(state.registry.providers).map((id) => PROVIDERS.find((item) => item.id === id)?.label || (id === 'ark' ? '火山方舟' : id)).join(' · '), defaultRoutes: `${provider?.defaults.main} / ${provider?.defaults.image} / ${provider?.defaults.vision}`, registryError: '' })
+      if (!state.registry) { this.setData({ registryVersion: '目录不可用', providerChannels: [], registryError: state.error }); return }
+      const providerChannels = orderModelChannels(Object.keys(state.registry.providers) as ModelProviderId[]).map(id => ({id, label: MODEL_CHANNEL_LABELS[id] || id}))
+      this.setData({ registryVersion: state.registry.registryVersion, providerChannels, registryError: '' })
     },
+    toggleChannels() { this.setData({channelsExpanded: !this.data.channelsExpanded}) },
     toggleChapter(event: WechatMiniprogram.TouchEvent) { const index = Number(event.currentTarget.dataset.index); if (!Number.isInteger(index)) return; const chapters = this.data.chapters.map((chapter, chapterIndex) => chapterIndex === index ? { ...chapter, open: !chapter.open } : chapter); this.setData({ chapters }) },
     goGenerate() { wx.switchTab({ url: '/pages/index/index' }) },
     scrollToContact() { this.setData({ scrollAnchor: '' }); wx.nextTick(() => this.setData({ scrollAnchor: 'contact-section' })) },
