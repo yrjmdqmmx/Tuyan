@@ -43,6 +43,12 @@
               <view wx:if="{{item.provider === 'minimax'}}"><picker range="{{minimaxRegionOptions}}" range-key="label" value="{{minimaxRegionIndex}}" bindchange="onMiniMaxRegionChange"><view class="setting-picker">{{minimaxRegionOptions[minimaxRegionIndex].label}}</view></picker><view class="privacy-note">{{minimaxApiBase}} · 请使用该区域的 Key</view></view>
               <view wx:if="{{item.provider === 'tokendance'}}" class="credential-status">{{tokenDanceConnected ? '观猹账户已连接，无需再次授权或填写 Key。可在“账户”页管理消费授权。' : '请在“账户”页连接观猹 TokenDance，无需粘贴 Key。'}}保存设置后再前往账户，可保留本次修改。</view>
               <input wx:else class="key-input" password focus="{{autoFocusProvider === item.provider}}" value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" bindfocus="onKeyFocus" adjust-position="{{false}}" cursor-spacing="20" />
+              <view wx:if="{{item.guideUrl}}" class="api-key-guide">
+                <view class="guide-title">API Key 申请指南</view>
+                <view class="guide-step" wx:for="{{item.guideSteps}}" wx:for-item="step" wx:for-index="stepIndex" wx:key="*this"><text class="guide-number">{{stepIndex + 1}}.</text><text class="guide-text">{{step}}</text></view>
+                <button class="guide-link" data-provider="{{item.provider}}" bindtap="copyKeyGuide" aria-label="复制{{item.label}}官方申请说明链接">复制官方申请/说明链接 ›</button>
+                <text class="guide-host" user-select>{{item.guideHost}} · 在浏览器打开</text>
+              </view>
             </view>
             <view class="privacy-note">{{encryptedRecovery ? '任务恢复所需的其他渠道密钥加密保留，完成即删，最长 7 天。' : '密钥仅保存在本次会话内存，不写入本地存储。'}}</view>
             <button class="ark-verify" wx:if="{{arkStatus}}" loading="{{verifyingArk}}" disabled="{{verifyingArk}}" bindtap="verifyArkRoutes">{{arkStatus}} · 验证</button>

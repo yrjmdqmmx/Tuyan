@@ -63,7 +63,6 @@ Component({
         else
             this.openAuthPanel(); },
         closeAccountSettings() { this.setData({ showAccountSettings: false }); },
-        returnToTask: tokendance_1.returnFromTokenDance,
         async refresh() {
             var _a, _b;
             const epoch = this.epoch;

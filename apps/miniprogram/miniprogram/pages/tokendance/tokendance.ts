@@ -1,5 +1,5 @@
 import { formatError, requestJson } from '../../utils/api'
-import { refreshTokenDanceConnection, getTokenDanceConnectionStatus, invalidateTokenDanceConnection, returnFromTokenDance } from '../../utils/tokendance'
+import { refreshTokenDanceConnection, getTokenDanceConnectionStatus, invalidateTokenDanceConnection } from '../../utils/tokendance'
 import { getCurrentUser, subscribeSession } from '../../utils/session'
 
 function paymentLabel(status: string): string {
@@ -45,7 +45,6 @@ Component({
     onAuthed() { this.closeAuthPanel(); void this.refresh() },
     manageAccount() { if (getCurrentUser()) this.setData({ showAccountSettings: true }); else this.openAuthPanel() },
     closeAccountSettings() { this.setData({ showAccountSettings: false }) },
-    returnToTask: returnFromTokenDance,
     async refresh() {
       const epoch = (this as any).epoch
       const sequence = (this as any).refreshSequence = Number((this as any).refreshSequence || 0) + 1

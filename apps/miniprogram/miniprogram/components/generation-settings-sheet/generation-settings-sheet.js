@@ -186,10 +186,18 @@ Component({
                 };
             });
             const providers = (0, model_routing_1.uniqueProvidersForRoles)(draft.modelRoutes, this.effectiveRoles());
-            const keyFields = (0, model_routing_1.uniqueProvidersForRoles)(draft.modelRoutes, routeRows.map(row => row.role)).map((provider) => ({
-                provider, label: PROVIDER_LABELS[provider] || provider, value: (0, provider_regions_1.selectRegionApiKeys)(this.data.draftKeys, draft.providerRegions)[provider] || '',
-                placeholder: provider === 'gemini' ? 'AIza...' : provider === 'openrouter' ? 'sk-or-v1-...' : 'sk-...',
-            }));
+            const keyFields = (0, model_routing_1.uniqueProvidersForRoles)(draft.modelRoutes, routeRows.map(row => row.role)).map((provider) => {
+                var _a;
+                const config = constants_1.PROVIDERS.find(item => item.id === provider);
+                const region = provider_regions_1.MINIMAX_REGIONS[(0, provider_regions_1.minimaxRegion)(draft.providerRegions)];
+                const guideUrl = provider === 'tokendance' ? '' : provider === 'minimax' ? region.keyUrl : (config === null || config === void 0 ? void 0 : config.guideUrl) || '';
+                return {
+                    provider, label: PROVIDER_LABELS[provider] || provider, value: selectedKeys[provider] || '',
+                    placeholder: (config === null || config === void 0 ? void 0 : config.keyPlaceholder) || 'API Key',
+                    guideSteps: provider === 'minimax' ? [`登录 MiniMax ${region.label}平台，进入 API Key 页面创建密钥。`, ...((config === null || config === void 0 ? void 0 : config.guideSteps) || []).slice(1)] : (config === null || config === void 0 ? void 0 : config.guideSteps) || [],
+                    guideUrl, guideHost: ((_a = guideUrl.match(/^https:\/\/([^/]+)/)) === null || _a === void 0 ? void 0 : _a[1]) || '',
+                };
+            });
             const probes = (0, model_routing_1.arkProbesForRoles)(draft.modelRoutes, this.effectiveRoles());
             const missing = (0, model_routing_1.missingArkVerifications)(probes, (0, ark_verification_1.getArkVerification)());
             const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : '';
@@ -361,6 +369,13 @@ Component({
                 draft.modelRoutes.image.modelId = 'image-01';
             this.setData({ draft, error: '' });
             this.refreshPresentation();
+        },
+        copyKeyGuide(event) {
+            const provider = String(event.currentTarget.dataset.provider || '');
+            const field = this.data.keyFields.find(item => item.provider === provider);
+            if (!(field === null || field === void 0 ? void 0 : field.guideUrl.startsWith('https://')))
+                return;
+            wx.setClipboardData({ data: field.guideUrl, success: () => wx.showToast({ title: '链接已复制，请在浏览器打开', icon: 'none' }), fail: () => wx.showToast({ title: '复制失败，请重试', icon: 'none' }) });
         },
         onKeyInput(event) {
             var _a;

@@ -8,7 +8,7 @@ const {buildCreateJobPayload}=require('../miniprogram/utils/payload.js');
 const {getApiKeys,replaceApiKeys}=require('../miniprogram/utils/api-keys.js');
 const registry=normalizeModelRegistry({registryVersion:'ui14',routeContractVersion:1,providerRegionContractVersion:1,supportsModelRoutes:true,providers:{...STATIC_MODEL_REGISTRY,openrouter:STATIC_MODEL_REGISTRY.openai}});getModelRegistryState().registry=registry;
 const base=()=>({configurationMode:'advanced',simpleProvider:'tokendance',modelRoutes:{...providerDefaultRoutes('tokendance',registry),main:providerDefaultRoutes('gemini',registry).main},outputFormat:'png',imageSize:'1K',aspectRatio:'auto',pipelineMode:'planner_critic',retrievalSetting:'none',numCandidates:1,maxCriticRounds:1});
-function sheet(settings,keys={},connected=true){const f=loadComponent('components/generation-settings-sheet/generation-settings-sheet.js',{'../../utils/tokendance':{hasTokenDanceConnection:()=>connected}});const p=f.instance;p.setData=function(patch,cb){Object.assign(this.data,patch);cb?.()};Object.assign(p.properties,{settings,purpose:'create',apiKeys:keys});p.resetDraft();return f}
+function sheet(settings,keys={},connected=true,wx={}){const f=loadComponent('components/generation-settings-sheet/generation-settings-sheet.js',{'../../utils/tokendance':{hasTokenDanceConnection:()=>connected}},{wx});const p=f.instance;p.setData=function(patch,cb){Object.assign(this.data,patch);cb?.()};Object.assign(p.properties,{settings,purpose:'create',apiKeys:keys});p.resetDraft();return f}
 test('mixed routes identify Google despite connected TD; direct focus, cancel and save keep shared channel keys coherent',()=>{
  const settings=base(),f=sheet(settings),p=f.instance;
  assert.equal(p.data.routeRows.find(r=>r.role==='main').credentialStatus,'缺少 API Key');assert.equal(p.data.routeRows.find(r=>r.role==='image').credentialStatus,'已连接 · 使用观猹账户额度');assert.match(p.data.credentialSummary,/Google.*API Key/);assert.equal(p.data.routeRows.find(r=>r.role==='image').credentialAction,'管理授权');const disconnected=sheet(settings,{},false).instance;assert.equal(disconnected.data.routeRows.find(r=>r.role==='image').credentialAction,'连接账户');assert.equal(disconnected.data.tokenDanceConnected,false);
@@ -37,4 +37,26 @@ test('MiniMax channel key fields follow region slots and preserve the other regi
 test('missing mini-status route reports undeployed identity bridge without masking the 404',async()=>{
  const fs=require('node:fs'),vm=require('node:vm');const output={};vm.runInNewContext(fs.readFileSync(require.resolve('../miniprogram/utils/watcha.js'),'utf8'),{exports:output,require(name){if(name==='./api')return {authRequest:async()=>{const e=new Error('HTTP 404');e.httpStatus=404;throw e}};if(name==='./config')return {AUTH_BASE:'https://fixture.invalid/api/auth'};throw Error(name)}});
  await assert.rejects(output.watchaRequest('mini-status'),e=>e.code==='WATCHA_MINI_NOT_DEPLOYED'&&e.message.includes('404')&&e.message.includes('消费授权不受'));
+});
+
+test('each keyed channel shows its own guide; copying cannot alter keys or routes and TD requires no key guide',()=>{
+ const {PROVIDERS}=require('../miniprogram/utils/constants.js');
+ const clipboard=[],toasts=[];
+ const wx={setClipboardData(o){clipboard.push(o.data);o.success()},showToast(o){toasts.push(o.title)}};
+ for(const config of PROVIDERS.filter(c=>c.id!=='tokendance')){
+  assert.equal(config.guideSteps.length,3,config.id);assert.match(config.guideUrl,/^https:\/\//,config.id);
+  const chosen=base();const role=['main','image','vision'].find(role=>registry.providers[config.id]?.models.some(m=>m.roles.includes(role)&&m.selectable!==false));assert.ok(role,config.id);
+  chosen.modelRoutes[role]={accessProvider:config.id,modelId:registry.providers[config.id].models.find(m=>m.roles.includes(role)&&m.selectable!==false).id};
+  const p=sheet(chosen,{[config.id]:'fictional-secret'},true,wx).instance;
+  const before=JSON.stringify({draft:p.data.draft,keys:p.data.draftKeys});const field=p.data.keyFields.find(f=>f.provider===config.id);assert.ok(field?.guideSteps.length&&field.guideHost,config.id);
+  p.copyKeyGuide({currentTarget:{dataset:{provider:config.id}}});assert.equal(clipboard.at(-1),field.guideUrl);assert.ok(!clipboard.at(-1).includes('fictional-secret'));assert.equal(JSON.stringify({draft:p.data.draft,keys:p.data.draftKeys}),before);
+ }
+ const p=sheet(base(),{},true,wx).instance;const count=clipboard.length;assert.equal(p.data.keyFields.find(f=>f.provider==='tokendance').guideUrl,'');
+ for(const provider of ['tokendance','unavailable'])p.copyKeyGuide({currentTarget:{dataset:{provider}}});assert.equal(clipboard.length,count);assert.equal(toasts.length,21);
+});
+test('MiniMax guide and copied link follow draft region, including switching back without saving',()=>{
+ const chosen=base();chosen.modelRoutes.main=providerDefaultRoutes('minimax',registry).main;const copied=[];
+ const f=sheet(chosen,{},true,{setClipboardData(o){copied.push(o.data)},showToast(){}});const p=f.instance;
+ p.onMiniMaxRegionChange({detail:{value:'1'}});let field=p.data.keyFields.find(f=>f.provider==='minimax');assert.match(field.guideUrl,/platform.minimaxi.com/);assert.match(field.guideSteps[0],/中国大陆/);p.copyKeyGuide({currentTarget:{dataset:{provider:'minimax'}}});assert.equal(copied.at(-1),field.guideUrl);
+ p.onMiniMaxRegionChange({detail:{value:'0'}});field=p.data.keyFields.find(f=>f.provider==='minimax');assert.match(field.guideUrl,/platform.minimax.io/);assert.match(field.guideSteps[0],/国际/);p.cancel();assert.equal(f.events.at(-1).name,'close');assert.equal(chosen.providerRegions,undefined);
 });

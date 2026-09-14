@@ -5,7 +5,7 @@ import { MINIMAX_REGIONS, minimaxRegion, regionApiKeySlot, selectRegionApiKeys, 
 import { buildAspectRatioOptions, buildResolutionOptions, normalizeSelectedAspectRatio } from '../../utils/aspect-ratios'
 import { formatError, requestJson } from '../../utils/api'
 import { clearArkVerification, getArkVerification, setArkProbeResults } from '../../utils/ark-verification'
-import { MANUAL_REFERENCE_LIMIT } from '../../utils/constants'
+import { MANUAL_REFERENCE_LIMIT, PROVIDERS } from '../../utils/constants'
 import { MODEL_PROVIDER_IDS, findRegistryModel, type ModelProviderId, type ModelRegistry, type ModelRole } from '../../utils/model-registry'
 import { buildModelSubmission, requiredCreateRouteRoles, requiredRefineRouteRoles, arkProbesForRoles, missingArkVerifications, nextArkVerificationBatch, providerDefaultRoutes, uniqueProvidersForRoles, type ModelRoutes } from '../../utils/model-routing'
 import { toggleReferenceSelection } from '../../utils/reference-library'
@@ -73,7 +73,7 @@ Component({
     candidateIndex: 0,
     criticOptions: [{ value: 0, label: '0 轮' }, { value: 1, label: '1 轮' }, { value: 2, label: '2 轮' }],
     criticIndex: 1,
-    keyFields: [] as Array<{ provider: string; label: string; value: string; placeholder: string }>,
+    keyFields: [] as Array<{ provider: string; label: string; value: string; placeholder: string; guideSteps: string[]; guideUrl: string; guideHost: string }>,
     encryptedRecovery: false,
     draftKeys: {} as Record<string, string>,
     draftManualReferenceIds: [] as string[],
@@ -178,10 +178,17 @@ Component({
         }
       })
       const providers = uniqueProvidersForRoles(draft.modelRoutes, this.effectiveRoles())
-      const keyFields = uniqueProvidersForRoles(draft.modelRoutes, routeRows.map(row => row.role)).map((provider) => ({
-        provider, label: PROVIDER_LABELS[provider] || provider, value: selectRegionApiKeys(this.data.draftKeys, draft.providerRegions)[provider] || '',
-        placeholder: provider === 'gemini' ? 'AIza...' : provider === 'openrouter' ? 'sk-or-v1-...' : 'sk-...',
-      }))
+      const keyFields = uniqueProvidersForRoles(draft.modelRoutes, routeRows.map(row => row.role)).map((provider) => {
+        const config = PROVIDERS.find(item => item.id === provider)
+        const region = MINIMAX_REGIONS[minimaxRegion(draft.providerRegions)]
+        const guideUrl = provider === 'tokendance' ? '' : provider === 'minimax' ? region.keyUrl : config?.guideUrl || ''
+        return {
+          provider, label: PROVIDER_LABELS[provider] || provider, value: selectedKeys[provider] || '',
+          placeholder: config?.keyPlaceholder || 'API Key',
+          guideSteps: provider === 'minimax' ? [`登录 MiniMax ${region.label}平台，进入 API Key 页面创建密钥。`, ...(config?.guideSteps || []).slice(1)] : config?.guideSteps || [],
+          guideUrl, guideHost: guideUrl.match(/^https:\/\/([^/]+)/)?.[1] || '',
+        }
+      })
       const probes = arkProbesForRoles(draft.modelRoutes, this.effectiveRoles())
       const missing = missingArkVerifications(probes, getArkVerification())
       const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
@@ -320,6 +327,12 @@ Component({
       if (region === 'global' && draft.modelRoutes.image.accessProvider === 'minimax' && draft.modelRoutes.image.modelId === 'image-01-live') draft.modelRoutes.image.modelId = 'image-01'
       this.setData({draft, error: ''})
       this.refreshPresentation()
+    },
+    copyKeyGuide(event: WechatMiniprogram.TouchEvent) {
+      const provider = String(event.currentTarget.dataset.provider || '')
+      const field = this.data.keyFields.find(item => item.provider === provider)
+      if (!field?.guideUrl.startsWith('https://')) return
+      wx.setClipboardData({ data: field.guideUrl, success: () => wx.showToast({ title: '链接已复制，请在浏览器打开', icon: 'none' }), fail: () => wx.showToast({ title: '复制失败，请重试', icon: 'none' }) })
     },
     onKeyInput(event: WechatMiniprogram.Input) {
       const provider = String(event.currentTarget.dataset.provider || '')
