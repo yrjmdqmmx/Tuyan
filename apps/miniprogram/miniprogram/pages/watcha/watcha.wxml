@@ -1,6 +1,6 @@
 <view class="watcha-page">
   <view class="watcha-card">
-    <view class="watcha-heading"><image class="watcha-mark" src="/assets/watcha-rounded.svg" mode="aspectFit" /><view><view class="watcha-title">观猹登录与绑定</view><view class="watcha-subtitle">{{email || '登录图研，继续你的科研创作'}}</view></view></view>
+    <view class="watcha-heading"><image class="watcha-mark" src="/assets/watcha-rounded.png" mode="aspectFit" /><view><view class="watcha-title">观猹登录与绑定</view><view class="watcha-subtitle">{{email || '登录图研，继续你的科研创作'}}</view></view></view>
     <view class="watcha-note">用于登录图研账号。模型额度与钱包请在账户页单独连接观猹 TokenDance。</view>
     <view wx:if="{{!loaded}}" class="watcha-note">正在查询登录服务…</view>
     <view wx:elif="{{!status.available || !status.miniProgramSupported}}">
