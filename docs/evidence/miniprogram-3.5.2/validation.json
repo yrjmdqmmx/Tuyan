@@ -1,0 +1,41 @@
+{
+  "version": "3.5.2",
+  "sourceCommit": "2057f718cc9d63ae09d65c7010f84b9c70e1cf18",
+  "sourceChecks": {
+    "typecheck": "passed",
+    "build": "passed",
+    "tests": {
+      "passed": 110,
+      "failed": 0
+    },
+    "webGuideParity": {
+      "matched": 22,
+      "total": 22
+    }
+  },
+  "uploadChecks": {
+    "typecheck": "passed",
+    "tests": {
+      "passed": 110,
+      "failed": 0
+    },
+    "controlledHashesMatched": 210,
+    "localFilesPreserved": 9
+  },
+  "native": {
+    "application": "微信开发者工具 2.02.2608070",
+    "project": "/Users/a1-6/WeChatProjects/miniprogram-9",
+    "accountReturnButton": "removed and visually confirmed on 430px",
+    "guide320px": "Google steps wrap, official-link copied toast, footer visible",
+    "guide430px": "Google guide, TD connected explanation, footer visible",
+    "home390px": "home renders, saved input lengths and model choices retained; guide interaction not accepted in this session",
+    "originalDeviceRestored": "iPhone 15 Pro Max"
+  },
+  "limitations": [
+    "Physical keyboard and browser handoff require a real WeChat device; only simulator and existing keyboard regression tests used.",
+    "No real API key creation, credential entry, paid model calls, authorization changes or payments.",
+    "Existing mini-status backend deployment gate unchanged; no backend edits.",
+    "No push, deployment, WeChat upload, review or release."
+  ],
+  "screenshots": "Native account, Google guide at 320px and 430px and successful copy toast displayed inline in task."
+}
