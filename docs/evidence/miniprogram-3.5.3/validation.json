@@ -1,0 +1,111 @@
+{
+  "clientVersion": "3.5.3",
+  "sourceCommit": "d3f080a79e2f882aa90717108d344a85d1900b35",
+  "branch": "codex/miniprogram-mobile-ui-20260914",
+  "source": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/miniprogram-mobile-ui-20260914/apps/miniprogram",
+  "uploadCopy": "/Users/a1-6/WeChatProjects/miniprogram-9",
+  "checks": {
+    "sourceTypecheck": "passed",
+    "sourceBuild": "passed",
+    "sourceTests": {
+      "passed": 115,
+      "failed": 0
+    },
+    "uploadTypecheck": "passed",
+    "uploadTests": {
+      "passed": 115,
+      "failed": 0
+    },
+    "controlledHashes": 211,
+    "localFilesPreserved": 9
+  },
+  "reference": {
+    "web": "https://www.paperbanana.asia/",
+    "observed": "Main model, Kimi channel, Moonshot vendor, four Kimi model IDs",
+    "code": [
+      "apps/web/src/components/ModelPicker.jsx",
+      "apps/miniprogram/miniprogram/utils/model-registry.ts",
+      "apps/miniprogram/miniprogram/utils/model-presentation.ts"
+    ]
+  },
+  "nativeChecks": [
+    {
+      "case": "430px three steps",
+      "result": "passed",
+      "detail": "Channel list -> Kimi -> explicit single Moonshot vendor -> four models; top active step and path visible."
+    },
+    {
+      "case": "Search and details",
+      "result": "passed",
+      "detail": "K2.7 query shows two matching Kimi models, details display kimi-k2.7-code; no saved route changes."
+    },
+    {
+      "case": "Draft and reopen",
+      "result": "passed",
+      "detail": "Choosing Kimi K2.7 Code changes main draft only; reopening displays Kimi -> Moonshot -> Kimi K2.7 Code."
+    },
+    {
+      "case": "Cancel",
+      "result": "passed",
+      "detail": "Cancel preserves saved Google Gemini 3.8 Flash and the other two routes."
+    },
+    {
+      "case": "Image role",
+      "result": "passed",
+      "detail": "TokenDance -> ByteDance -> Seedream 5.0 Lite / Pro, Pro marked selected; explicit one-vendor step."
+    },
+    {
+      "case": "Vision role",
+      "result": "passed",
+      "detail": "TokenDance lists 8 compatible vendors; Alibaba lists 8 models, Qwen3.8 Flash selected."
+    },
+    {
+      "case": "Save and restore",
+      "result": "passed",
+      "detail": "Saved vision Qwen3.8 Max, home and reopened picker reflect it without changing main/image; restored Qwen3.8 Flash and saved."
+    },
+    {
+      "case": "320px steps and scrolling",
+      "result": "passed",
+      "detail": "All three steps fit; TokenDance main lists 14 vendors; Alibaba lists 13 models; back returns model -> vendor -> channel."
+    },
+    {
+      "case": "Original device",
+      "result": "restored",
+      "detail": "iPhone 15 Pro Max 430 x 932"
+    }
+  ],
+  "submissionValidation": {
+    "method": "Tests drive real picker select event -> real settings draft/save -> buildCreateJobPayload; no paid network call.",
+    "cases": [
+      {
+        "role": "main",
+        "channel": "kimi",
+        "modelId": "kimi-k3"
+      },
+      {
+        "role": "image",
+        "channel": "gemini",
+        "modelId": "gemini-3.1-flash-image"
+      },
+      {
+        "role": "vision",
+        "channel": "openai",
+        "modelId": "gpt-5.6-sol"
+      }
+    ],
+    "assertions": [
+      "exact channel and model ID from chosen route",
+      "other role routes unchanged",
+      "provider-scoped API keys only",
+      "no shared apiKey override",
+      "cancel restores original draft"
+    ]
+  },
+  "screenshots": "Native screenshots of channels, Kimi vendor, Kimi model list, aggregator vendor lists, selected roles, and 320px steps displayed inline in task.",
+  "limits": [
+    "No real provider inference, new authorization, payments, upload, review, publication, push or backend deployment.",
+    "Keyboard/device-specific behavior still requires physical WeChat testing.",
+    "Existing independent Watcha mini-status backend deployment gate unchanged."
+  ]
+}
