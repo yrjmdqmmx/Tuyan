@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-14",
+  "clientVersion": "miniprogram-3.5.1",
+  "sourceCommit": "ef53238e24be7410db81e59aeba5558e4ee893e4",
+  "checks": {
+    "sourceTypecheck": "passed",
+    "sourceBuild": "passed",
+    "sourceTestsPassed": 108,
+    "targetTypecheck": "passed",
+    "targetTestsPassed": 108,
+    "controlledFiles": 210,
+    "updatedFiles": 17,
+    "preservedLocalFiles": 9,
+    "checksumsReverifiedAfterNativeNavigation": true
+  },
+  "behavior": [
+    "Account entry uses the current owner's confirmed status immediately and revalidates in the background.",
+    "Only first-time or invalidated status needs a loading message; concurrent status reads share one request.",
+    "Failed refresh clears cached readiness, shows unable-to-confirm with retry, and does not silently claim connection is valid.",
+    "Logout/account change, successful disconnect and new authorization invalidate status; late responses cannot restore a previous connection.",
+    "Connected TokenDance roles show connected/account-credit status and Manage authorization; unconnected roles show Connect account."
+  ],
+  "native": {
+    "devtools": "Stable 2.02.2608070",
+    "baseLibrary": "3.16.0",
+    "device": "iPhone 15 Pro Max",
+    "accountVisits": "Repeated home/account navigation displays connected; pending-response behavior separately verified with controlled unit tests.",
+    "roleButtons": "Actual connected image and vision roles show 管理授权; Google main still reports missing API Key.",
+    "inputPreserved": {
+      "methodCharacters": 166,
+      "captionCharacters": 23,
+      "models": [
+        "gemini/gemini-3.8-flash",
+        "tokendance/seedream-5.0-pro",
+        "tokendance/qwen3.8-flash"
+      ],
+      "output": "PNG / 1K / auto"
+    },
+    "notTestedOnRealAccount": [
+      "intentional network failure",
+      "disconnect",
+      "switch account",
+      "new authorization"
+    ],
+    "evidence": "Inline native screenshots in this conversation; no repository PNGs.",
+    "versionObserved": "miniprogram-3.5.1",
+    "authorizationExplanationObserved": "观猹账户已连接，无需再次授权或填写 Key。",
+    "finalPage": "pages/index/index",
+    "finalConsole": {
+      "errors": 0,
+      "warnings": [
+        "gray base-library notice",
+        "automatic hot-reload notices"
+      ]
+    }
+  },
+  "backendChanged": false,
+  "productionIdentity404Fixed": false,
+  "realPaidProviderCalls": 0,
+  "push": false,
+  "wechatUploadOrRelease": false
+}
