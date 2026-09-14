@@ -1,19 +1,35 @@
 import { requestJson, formatError } from './api'
 import { getCurrentUser, subscribeSession } from './session'
+type ConnectionStatus = { connected: boolean; available: boolean; error: string }
 let connectedUser = '', owner = getCurrentUser()?.id || '', epoch = 0
+let confirmedStatus: ConnectionStatus | null = null
+let pending: { id: string; epoch: number; promise: Promise<ConnectionStatus> } | null = null
 let returnPage = '/pages/index/index', returnOwner = ''
-subscribeSession(user => { if (owner !== (user?.id || '')) { owner = user?.id || ''; connectedUser = ''; epoch++; returnPage = '/pages/index/index'; returnOwner = '' } })
+subscribeSession(user => { if (owner !== (user?.id || '')) { owner = user?.id || ''; invalidateTokenDanceConnection(); returnPage = '/pages/index/index'; returnOwner = '' } })
 export function hasTokenDanceConnection() { return Boolean(connectedUser && connectedUser === getCurrentUser()?.id) }
-export function invalidateTokenDanceConnection() { connectedUser = ''; epoch++ }
-export async function refreshTokenDanceConnection() {
+// Only a successful status response is reusable for display; never persist identity or credentials.
+export function getTokenDanceConnectionStatus(): ConnectionStatus | null {
+  return owner && owner === getCurrentUser()?.id && confirmedStatus ? { ...confirmedStatus } : null
+}
+export function invalidateTokenDanceConnection() { connectedUser = ''; confirmedStatus = null; pending = null; epoch++ }
+export async function refreshTokenDanceConnection(): Promise<ConnectionStatus> {
   const id = getCurrentUser()?.id, currentEpoch = epoch
-  if (!id) { connectedUser = ''; return { connected: false, available: true, error: '' } }
-  try {
-    const result = await requestJson<{ connected: boolean; available: boolean }>({ action: 'tokenDanceStatus' })
-    if (getCurrentUser()?.id !== id || epoch !== currentEpoch) return { connected: false, available: false, error: '' }
-    connectedUser = result.connected ? id : ''
-    return { ...result, error: '' }
-  } catch (error) { if (getCurrentUser()?.id === id && epoch === currentEpoch) connectedUser = ''; return { connected: false, available: false, error: formatError(error) } }
+  if (!id) { connectedUser = ''; confirmedStatus = null; return { connected: false, available: true, error: '' } }
+  if (pending?.id === id && pending.epoch === currentEpoch) return pending.promise
+  const promise = (async () => {
+    try {
+      const result = await requestJson<{ connected: boolean; available: boolean }>({ action: 'tokenDanceStatus' })
+      if (getCurrentUser()?.id !== id || epoch !== currentEpoch) return { connected: false, available: false, error: '' }
+      connectedUser = result.connected ? id : ''
+      confirmedStatus = { ...result, error: '' }
+      return { ...confirmedStatus }
+    } catch (error) {
+      if (getCurrentUser()?.id === id && epoch === currentEpoch) { connectedUser = ''; confirmedStatus = null }
+      return { connected: false, available: false, error: formatError(error) }
+    }
+  })()
+  pending = { id, epoch: currentEpoch, promise }
+  try { return await promise } finally { if (pending?.promise === promise) pending = null }
 }
 export function rememberWorkPage(url: string) { returnPage = url; returnOwner = getCurrentUser()?.id || '' }
 export function openTokenDance() {

@@ -7,7 +7,7 @@ function paymentLabel(status) {
     return { pending: '等待支付', paid: '已确认到账', closed: '订单已关闭', failed: '支付失败', refunded: '已退款', creating: '正在确认订单', unknown: '创建结果待核对' }[status] || '状态待查询';
 }
 Component({
-    data: { managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
+    data: { managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [], historyLoaded: false, connected: false, busy: false, statusLoading: false, statusFailed: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
     pageLifetimes: {
         show() { this.visible = true; void this.refresh(); this.pollPayment(); },
         hide() { this.visible = false; this.stopPolling(); this.oneUseCode = ''; this.setData({ code: '', hasCode: false, showAuthPanel: false, showAccountSettings: false }); },
@@ -37,7 +37,7 @@ Component({
             this.stopPolling();
             this.flow = undefined;
             this.oneUseCode = '';
-            this.setData({ managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' });
+            this.setData({ managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, connected: false, busy: false, statusLoading: false, statusFailed: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' });
         },
         current(epoch) { var _a, _b; return epoch === this.epoch && Boolean((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) && this.owner === ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id); },
         async accountRequest(body) {
@@ -67,11 +67,13 @@ Component({
         async refresh() {
             var _a, _b;
             const epoch = this.epoch;
-            this.setData({ email: ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.email) || '', emailVerified: ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.emailVerified) === true, isLoggedIn: Boolean((0, session_1.getCurrentUser)()), statusLoading: true });
+            const sequence = this.refreshSequence = Number(this.refreshSequence || 0) + 1;
+            const confirmed = (0, tokendance_1.getTokenDanceConnectionStatus)();
+            this.setData({ email: ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.email) || '', emailVerified: ((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.emailVerified) === true, isLoggedIn: Boolean((0, session_1.getCurrentUser)()), connected: (confirmed === null || confirmed === void 0 ? void 0 : confirmed.connected) === true, statusFailed: false, statusLoading: Boolean((0, session_1.getCurrentUser)()) && !confirmed });
             const status = await (0, tokendance_1.refreshTokenDanceConnection)();
-            if (epoch !== this.epoch)
+            if (epoch !== this.epoch || sequence !== this.refreshSequence)
                 return;
-            this.setData({ connected: status.connected, statusLoading: false, error: status.error || (status.available === false ? '观猹 TokenDance 暂不可用，请稍后刷新。' : '') });
+            this.setData({ connected: status.connected, statusLoading: false, statusFailed: Boolean(status.error) || status.available === false, error: status.error || (status.available === false ? '观猹 TokenDance 暂不可用，请稍后刷新。' : '') });
             const flow = this.flow;
             if (flow && flow.expiresAt <= Date.now()) {
                 this.flow = undefined;
@@ -122,6 +124,7 @@ Component({
                 if (this.flow !== flow)
                     return;
                 this.flow = undefined;
+                (0, tokendance_1.invalidateTokenDanceConnection)();
                 this.setData({ authorizationPending: false, notice: '观猹 TokenDance 已连接，可以返回原任务。' });
                 await this.refresh();
             }
@@ -160,10 +163,11 @@ Component({
             this.setData({ busy: true, error: '' });
             try {
                 await this.accountRequest({ action: 'tokenDanceDisconnect' });
+                this.refreshSequence = Number(this.refreshSequence || 0) + 1;
                 (0, tokendance_1.invalidateTokenDanceConnection)();
                 this.stopPolling();
                 this.flow = undefined;
-                this.setData({ connected: false, balance: '', payment: null, authorizationPending: false, notice: '已解除图研连接。远端 Key 如需撤销，请到观猹 TokenDance 密钥管理操作。' });
+                this.setData({ connected: false, statusLoading: false, statusFailed: false, balance: '', payment: null, authorizationPending: false, notice: '已解除图研连接。远端 Key 如需撤销，请到观猹 TokenDance 密钥管理操作。' });
             }
             catch (error) {
                 if (this.current(epoch))

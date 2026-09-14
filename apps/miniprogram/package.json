@@ -1,6 +1,6 @@
 {
   "name": "@paperbanana/miniprogram",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "图研Tuyan WeChat Mini Program client (PaperBanana technical identity).",
   "private": true,
   "scripts": {

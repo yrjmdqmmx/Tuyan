@@ -52,7 +52,7 @@ Component({
     libraryTaskName: { type: String, value: 'diagram' },
   },
   data: {
-    emptyObject: {}, advancedExpanded: false, credentialsExpanded: false, autoFocusProvider: '', credentialSummary: '', keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '', normalizationNotice: '',
+    emptyObject: {}, advancedExpanded: false, credentialsExpanded: false, autoFocusProvider: '', credentialSummary: '', tokenDanceConnected: false, keyboardHeight: 0, keyboardOpen: false, focusedKeyId: '', normalizationNotice: '',
     draft: null as SettingsDraft | null,
     minimaxRegionOptions: [{value:'global',label:'国际'}, {value:'cn',label:'中国大陆'}],
     minimaxRegionIndex: 0, minimaxApiBase: '',
@@ -172,8 +172,9 @@ Component({
           provider: route.accessProvider, providerLabel: PROVIDER_LABELS[route.accessProvider] || route.accessProvider,
           modelId: route.modelId, modelLabel: model?.label || route.modelId,
           required: executionRoles.includes(role),
+          credentialAction: route.accessProvider === 'tokendance' ? (connected ? '管理授权' : '连接账户') : '配置 Key',
           credentialReady: route.accessProvider === 'tokendance' ? connected : Boolean(selectedKeys[route.accessProvider]?.trim()),
-          credentialStatus: route.accessProvider === 'tokendance' ? (connected ? '使用观猹账户授权' : '未连接观猹账户') : (selectedKeys[route.accessProvider]?.trim() ? '已配置' : '缺少 API Key'),
+          credentialStatus: route.accessProvider === 'tokendance' ? (connected ? '已连接 · 使用观猹账户额度' : '未连接观猹账户') : (selectedKeys[route.accessProvider]?.trim() ? '已配置' : '缺少 API Key'),
         }
       })
       const providers = uniqueProvidersForRoles(draft.modelRoutes, this.effectiveRoles())
@@ -185,7 +186,7 @@ Component({
       const missing = missingArkVerifications(probes, getArkVerification())
       const arkStatus = probes.length ? (missing.length ? `${missing.length} 条 Ark 路线可选验证` : 'Ark 路线已验证') : ''
       this.setData({
-        draft, routeRows, ratioOptions, resolutionOptions, keyFields,
+        draft, routeRows, ratioOptions, resolutionOptions, keyFields, tokenDanceConnected: connected,
         credentialSummary: [...new Set(routeRows.filter(row => row.required && !row.credentialReady).map(row => row.providerLabel + (row.provider === 'tokendance' ? ' 未连接' : ' 缺少 API Key')))].join('；') || '本次任务所需凭据已就绪',
         normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.includes('tokendance'),
         providerOptions,

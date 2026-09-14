@@ -2,6 +2,7 @@
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.hasTokenDanceConnection = hasTokenDanceConnection;
+exports.getTokenDanceConnectionStatus = getTokenDanceConnectionStatus;
 exports.invalidateTokenDanceConnection = invalidateTokenDanceConnection;
 exports.refreshTokenDanceConnection = refreshTokenDanceConnection;
 exports.rememberWorkPage = rememberWorkPage;
@@ -10,34 +11,57 @@ exports.returnFromTokenDance = returnFromTokenDance;
 const api_1 = require("./api");
 const session_1 = require("./session");
 let connectedUser = '', owner = ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || '', epoch = 0;
+let confirmedStatus = null;
+let pending = null;
 let returnPage = '/pages/index/index', returnOwner = '';
 (0, session_1.subscribeSession)(user => { if (owner !== ((user === null || user === void 0 ? void 0 : user.id) || '')) {
     owner = (user === null || user === void 0 ? void 0 : user.id) || '';
-    connectedUser = '';
-    epoch++;
+    invalidateTokenDanceConnection();
     returnPage = '/pages/index/index';
     returnOwner = '';
 } });
 function hasTokenDanceConnection() { var _a; return Boolean(connectedUser && connectedUser === ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id)); }
-function invalidateTokenDanceConnection() { connectedUser = ''; epoch++; }
+// Only a successful status response is reusable for display; never persist identity or credentials.
+function getTokenDanceConnectionStatus() {
+    var _a;
+    return owner && owner === ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) && confirmedStatus ? { ...confirmedStatus } : null;
+}
+function invalidateTokenDanceConnection() { connectedUser = ''; confirmedStatus = null; pending = null; epoch++; }
 async function refreshTokenDanceConnection() {
-    var _a, _b, _c;
+    var _a;
     const id = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id, currentEpoch = epoch;
     if (!id) {
         connectedUser = '';
+        confirmedStatus = null;
         return { connected: false, available: true, error: '' };
     }
+    if ((pending === null || pending === void 0 ? void 0 : pending.id) === id && pending.epoch === currentEpoch)
+        return pending.promise;
+    const promise = (async () => {
+        var _a, _b;
+        try {
+            const result = await (0, api_1.requestJson)({ action: 'tokenDanceStatus' });
+            if (((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) !== id || epoch !== currentEpoch)
+                return { connected: false, available: false, error: '' };
+            connectedUser = result.connected ? id : '';
+            confirmedStatus = { ...result, error: '' };
+            return { ...confirmedStatus };
+        }
+        catch (error) {
+            if (((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id) === id && epoch === currentEpoch) {
+                connectedUser = '';
+                confirmedStatus = null;
+            }
+            return { connected: false, available: false, error: (0, api_1.formatError)(error) };
+        }
+    })();
+    pending = { id, epoch: currentEpoch, promise };
     try {
-        const result = await (0, api_1.requestJson)({ action: 'tokenDanceStatus' });
-        if (((_b = (0, session_1.getCurrentUser)()) === null || _b === void 0 ? void 0 : _b.id) !== id || epoch !== currentEpoch)
-            return { connected: false, available: false, error: '' };
-        connectedUser = result.connected ? id : '';
-        return { ...result, error: '' };
+        return await promise;
     }
-    catch (error) {
-        if (((_c = (0, session_1.getCurrentUser)()) === null || _c === void 0 ? void 0 : _c.id) === id && epoch === currentEpoch)
-            connectedUser = '';
-        return { connected: false, available: false, error: (0, api_1.formatError)(error) };
+    finally {
+        if ((pending === null || pending === void 0 ? void 0 : pending.promise) === promise)
+            pending = null;
     }
 }
 function rememberWorkPage(url) { var _a; returnPage = url; returnOwner = ((_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id) || ''; }

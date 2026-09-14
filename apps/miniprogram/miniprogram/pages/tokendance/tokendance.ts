@@ -1,5 +1,5 @@
 import { formatError, requestJson } from '../../utils/api'
-import { refreshTokenDanceConnection, invalidateTokenDanceConnection, returnFromTokenDance } from '../../utils/tokendance'
+import { refreshTokenDanceConnection, getTokenDanceConnectionStatus, invalidateTokenDanceConnection, returnFromTokenDance } from '../../utils/tokendance'
 import { getCurrentUser, subscribeSession } from '../../utils/session'
 
 function paymentLabel(status: string): string {
@@ -7,7 +7,7 @@ function paymentLabel(status: string): string {
 }
 
 Component({
-  data: { managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [] as any[], historyLoaded: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null as any, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
+  data: { managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, email: '', emailVerified: false, isLoggedIn: false, showAuthPanel: false, showAccountSettings: false, payments: [] as any[], historyLoaded: false, connected: false, busy: false, statusLoading: false, statusFailed: false, authorizationPending: false, hasCode: false, code: '', amount: '10', balance: '', error: '', notice: '', payment: null as any, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' },
   pageLifetimes: {
     show() { (this as any).visible = true; void this.refresh(); this.pollPayment() },
     hide() { (this as any).visible = false; this.stopPolling(); (this as any).oneUseCode = ''; this.setData({ code: '', hasCode: false, showAuthPanel: false, showAccountSettings: false }) },
@@ -25,7 +25,7 @@ Component({
   methods: {
     resetAccount() {
       ;(this as any).epoch++; this.stopPolling(); (this as any).flow = undefined; (this as any).oneUseCode = ''
-      this.setData({ managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, connected: false, busy: false, statusLoading: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' })
+      this.setData({ managementExpanded: false, rechargeExpanded: false, historyExpanded: false, walletDetailsOpen: false, connected: false, busy: false, statusLoading: false, statusFailed: false, authorizationPending: false, code: '', hasCode: false, balance: '', email: '', emailVerified: false, isLoggedIn: false, showAccountSettings: false, showAuthPanel: false, payments: [], historyLoaded: false, error: '', notice: '', payment: null, attemptId: '', paymentUncertain: false, uncertainAttemptId: '' })
     },
     current(epoch: number) { return epoch === (this as any).epoch && Boolean(getCurrentUser()?.id) && (this as any).owner === getCurrentUser()?.id },
     async accountRequest(body: Record<string, unknown>): Promise<any> {
@@ -48,10 +48,12 @@ Component({
     returnToTask: returnFromTokenDance,
     async refresh() {
       const epoch = (this as any).epoch
-      this.setData({ email: getCurrentUser()?.email || '', emailVerified: getCurrentUser()?.emailVerified === true, isLoggedIn: Boolean(getCurrentUser()), statusLoading: true })
+      const sequence = (this as any).refreshSequence = Number((this as any).refreshSequence || 0) + 1
+      const confirmed = getTokenDanceConnectionStatus()
+      this.setData({ email: getCurrentUser()?.email || '', emailVerified: getCurrentUser()?.emailVerified === true, isLoggedIn: Boolean(getCurrentUser()), connected: confirmed?.connected === true, statusFailed: false, statusLoading: Boolean(getCurrentUser()) && !confirmed })
       const status = await refreshTokenDanceConnection()
-      if (epoch !== (this as any).epoch) return
-      this.setData({ connected: status.connected, statusLoading: false, error: status.error || (status.available === false ? '观猹 TokenDance 暂不可用，请稍后刷新。' : '') })
+      if (epoch !== (this as any).epoch || sequence !== (this as any).refreshSequence) return
+      this.setData({ connected: status.connected, statusLoading: false, statusFailed: Boolean(status.error) || status.available === false, error: status.error || (status.available === false ? '观猹 TokenDance 暂不可用，请稍后刷新。' : '') })
       const flow = (this as any).flow
       if (flow && flow.expiresAt <= Date.now()) { (this as any).flow = undefined; this.setData({ authorizationPending: false, hasCode: false, code: '', notice: '授权链接已过期，请重新连接。' }) }
     },
@@ -79,6 +81,7 @@ Component({
         await this.accountRequest({ action: 'tokenDanceExchange', state: flow.state, code })
         if ((this as any).flow !== flow) return
         ;(this as any).flow = undefined
+        invalidateTokenDanceConnection()
         this.setData({ authorizationPending: false, notice: '观猹 TokenDance 已连接，可以返回原任务。' }); await this.refresh()
       } catch (error) { if (this.current(epoch)) this.setData({ error: formatError(error) }) } finally { if (this.current(epoch)) this.setData({ busy: false }) }
     },
@@ -95,7 +98,7 @@ Component({
       const confirmed = await new Promise<boolean>(resolve => wx.showModal({ title: '解除消费授权？', content: '解除后，图研不能再使用此观猹账户额度。观猹身份绑定和钱包余额会保留。', confirmText: '解除连接', confirmColor: '#a63327', success: result => resolve(result.confirm), fail: () => resolve(false) }))
       if (!confirmed || !this.current(epoch) || this.data.busy) return
       this.setData({ busy: true, error: '' })
-      try { await this.accountRequest({ action: 'tokenDanceDisconnect' }); invalidateTokenDanceConnection(); this.stopPolling(); (this as any).flow = undefined; this.setData({ connected: false, balance: '', payment: null, authorizationPending: false, notice: '已解除图研连接。远端 Key 如需撤销，请到观猹 TokenDance 密钥管理操作。' }) }
+      try { await this.accountRequest({ action: 'tokenDanceDisconnect' }); (this as any).refreshSequence = Number((this as any).refreshSequence || 0) + 1; invalidateTokenDanceConnection(); this.stopPolling(); (this as any).flow = undefined; this.setData({ connected: false, statusLoading: false, statusFailed: false, balance: '', payment: null, authorizationPending: false, notice: '已解除图研连接。远端 Key 如需撤销，请到观猹 TokenDance 密钥管理操作。' }) }
       catch (error) { if (this.current(epoch)) this.setData({ error: formatError(error) }) } finally { if (this.current(epoch)) this.setData({ busy: false }) }
     },
     async queryBalance() {
