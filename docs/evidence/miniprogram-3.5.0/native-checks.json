@@ -1,0 +1,143 @@
+{
+  "date": "2026-09-14",
+  "sourceCommit": "d57c3e888638c5804b5d95fa804033a5dd56e929",
+  "devtools": "Stable 2.02.2608070",
+  "baseLibrary": "3.16.0 (gray release)",
+  "environment": {
+    "qaProject": "/Users/a1-6/.codex/tmp/tuyan-mini-ui-20260913/qa-project",
+    "identityWalletAndSubmissions": "local response fixture; no real provider calls",
+    "catalogAndReferenceLibrary": "public modelRegistry/referenceLibrary responses from production; real images",
+    "servicePort": "left disabled"
+  },
+  "screens": [
+    {
+      "viewport": "320x568",
+      "device": "iPhone 5",
+      "observed": [
+        "full-width carousel image and indicators",
+        "all role credentials accessible by scrolling; fixed save footer",
+        "Google missing key despite TokenDance connected",
+        "password input focus and masking; cancel discards fixture key",
+        "provider/model rows full width; selected Gemini preserved while browsing",
+        "one-column long reference titles and readable 1 / 6 page center",
+        "choose SpaceServe, next/previous page preserves draft selection; save applies reference id",
+        "fixture key save enables generation; intercepted request matches saved routes and reference"
+      ]
+    },
+    {
+      "viewport": "390x844",
+      "device": "iPhone 12/13 Pro",
+      "observed": [
+        "home carousel, summary and bottom navigation",
+        "guide registry v18 and folded 22-channel list; expanded tags include Bailian",
+        "removed account placeholder avatar; account, identity and consumption/wallet controls retained"
+      ]
+    },
+    {
+      "viewport": "430x932",
+      "device": "iPhone 15 Pro Max",
+      "observed": [
+        "all three role status/config rows and fixed save footer",
+        "vision picker explicitly identifies role; TokenDance 26 compatible models versus main 59",
+        "qwen search returns 8 compatible models; existing Qwen3.8 Flash remains selected",
+        "two-column reference card alignment and readable pagination after images load",
+        "SpaceServe search returns 1 / 1 page, 1 matching result; research-domain picker exposes matching language/reasoning option",
+        "modal keeps carousel on 2 / 6; closing resumes automatic display (4 / 6 observed), method text remains 66 characters"
+      ]
+    }
+  ],
+  "requestEvidence": {
+    "transport": "actual native page submit handler; wx.request intercepted only in disposable fixture",
+    "paidProviderCalls": 0,
+    "modelRoutes": {
+      "main": {
+        "accessProvider": "gemini",
+        "modelId": "gemini-3.8-flash"
+      },
+      "image": {
+        "accessProvider": "tokendance",
+        "modelId": "seedream-5.0-pro"
+      },
+      "vision": {
+        "accessProvider": "tokendance",
+        "modelId": "qwen3.8-flash"
+      }
+    },
+    "credentialChannelNamesOnly": [
+      "gemini"
+    ],
+    "manualReferenceIds": [
+      "ref_251"
+    ],
+    "plaintextKeyCapturedInEvidence": false
+  },
+  "consoleInQa": {
+    "errors": 0,
+    "warnings": [
+      "gray base-library 3.16.0 notice"
+    ],
+    "selectableDeprecation": false,
+    "businessSelectorWarnings": false
+  },
+  "watchaProduction": {
+    "miniStatusUrl": "https://api.paperbanana.asia/api/auth/watcha/mini-status",
+    "miniStatusHttp": 404,
+    "miniStatusBodyBytes": 0,
+    "webStatusUrl": "https://api.paperbanana.asia/api/auth/watcha/status",
+    "webStatusAvailable": true,
+    "miniProgramSupportedInWebStatus": false,
+    "deploymentRevisionVerified": false,
+    "clientBehavior": "preserves real 404 and reports missing mini bridge; email fallback; TokenDance consumption connection independent",
+    "gatewayChangedOrDeployed": false
+  },
+  "limitations": [
+    "No physical-device software IME or real mobile keyboard acceptance; native desktop focus/masking and automated keyboard-inset cases passed.",
+    "No real provider generation/refinement, payment, new identity login/binding/unbinding, or WeChat upload/review/release.",
+    "Existing upload/task-recovery flows covered by regression; not repeated as real-device end-to-end calls in this UI round."
+  ],
+  "screenshots": {
+    "format": "native tool inline images in this conversation; not separately saved as repository PNGs",
+    "before": "user-provided Sep14 3.4.0 screenshots plus pre-change native home",
+    "after": [
+      "home/carousel",
+      "role credentials",
+      "provider/model list",
+      "library/pagination",
+      "guide",
+      "account"
+    ],
+    "comparison": "different device zooms; visual behavior comparison, not pixel-diff"
+  },
+  "actualUploadCopy": {
+    "path": "/Users/a1-6/WeChatProjects/miniprogram-9",
+    "clientVersionObserved": "miniprogram-3.5.0",
+    "methodCharactersPreserved": 166,
+    "captionCharactersPreserved": 23,
+    "routesPreserved": [
+      "gemini/gemini-3.8-flash",
+      "tokendance/seedream-5.0-pro",
+      "tokendance/qwen3.8-flash"
+    ],
+    "outputPreserved": "PNG / 1K / auto",
+    "settingsNearRoleStates": [
+      "Google missing API Key",
+      "TokenDance account authorization for image and vision"
+    ],
+    "existingTuyanLoginPreserved": true,
+    "existingTokenDanceConnected": true,
+    "balanceReadOnlyQuerySucceeded": true,
+    "miniIdentityPage404AndSpecificFallbackMessageObserved": true,
+    "returnToHomePreservesInputsAndModels": true,
+    "finalVisiblePage": "pages/index/index",
+    "consoleAfterIdentityVisit": {
+      "errors": [
+        "real GET /api/auth/watcha/mini-status 404"
+      ],
+      "warnings": [
+        "gray base-library notice",
+        "DevTools automatic hot-reload notices"
+      ],
+      "selectableDeprecation": false
+    }
+  }
+}

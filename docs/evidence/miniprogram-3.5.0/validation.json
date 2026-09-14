@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-14",
+  "sourceCommit": "d57c3e888638c5804b5d95fa804033a5dd56e929",
+  "clientVersion": "miniprogram-3.5.0",
+  "source": {
+    "typecheck": "passed",
+    "build": "passed",
+    "testsPassed": 104,
+    "testsFailed": 0
+  },
+  "uploadCopy": {
+    "typecheck": "passed",
+    "testsPassed": 104,
+    "testsFailed": 0,
+    "controlledChecksums": 210,
+    "updated": 40,
+    "added": 1,
+    "deleted": 0,
+    "unmanagedPreserved": 9,
+    "versionAndRuntimePreservationVerified": true,
+    "checksumsReverifiedAfterNativeReopen": true
+  },
+  "newBehaviorTests": [
+    "mixed channels, named missing Google credentials and per-provider payload keys",
+    "same-provider roles share one key field",
+    "MiniMax per-region key preservation",
+    "native carousel pause/resume and apply-only changes",
+    "mini-status 404 diagnostic"
+  ],
+  "apiContractChanged": false,
+  "push": false,
+  "gatewayDeployment": false,
+  "wechatUpload": false,
+  "wechatReviewOrPublication": false,
+  "realProviderCalls": 0,
+  "nativeEvidence": "native-checks.json",
+  "syncEvidence": "local-sync.json"
+}
