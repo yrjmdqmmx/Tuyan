@@ -37,7 +37,11 @@ assert.match(settingsWxss, /\.sheet-save\{[^}]*display:flex[^}]*align-items:cent
 
 assert.match(modelWxml, /model-toolbar/)
 assert.match(modelWxml, /provider-card/)
-assert.match(modelWxml, /vendor-filter/)
+assert.match(modelWxml, /vendor-list/)
+assert.match(modelWxml, /① 接入渠道/)
+assert.match(modelWxml, /② 模型厂商/)
+assert.match(modelWxml, /③ 具体模型/)
+assert.doesNotMatch(modelWxml, /vendor-picker|更换渠道|全部厂商/)
 assert.match(modelWxml, /model-list/)
 assert.match(modelWxml, /仅显示当前角色可用模型/)
 assert.match(modelWxml, /复制 ID/)
