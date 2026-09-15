@@ -1,0 +1,157 @@
+
+> @paperbanana/miniprogram@3.5.5 test /Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/miniprogram-mobile-ui-20260914/apps/miniprogram
+> node --test tests/*.test.cjs
+
+✔ account safety keeps lifecycle status and 202 accepted deletion without claiming completion (37.756167ms)
+✔ closing account settings invalidates an in-flight lifecycle response (1.6145ms)
+✔ account security exposes verified state and parent wiring contracts (29.604416ms)
+✔ unverified account can resend and retry-after starts a visible cooldown (2.996083ms)
+✔ change-password validates required, 8/128 boundaries, and confirmation mismatch (1.898208ms)
+✔ change-password validates current password at 8 and 128 character boundaries (1.146875ms)
+✔ successful password change clears only change-password secrets and preserves delete flow state (1.173417ms)
+✔ change-password errors use stable auth mapping (2.55725ms)
+✔ change-password 429 starts an independent cooldown and blocks repeat submission (2.947042ms)
+✔ reset, close, and detach clear both password domains and cooldown timers (1.067042ms)
+✔ closing account settings invalidates an in-flight password change result (0.590416ms)
+account.test.cjs passed
+✔ tests/account.test.cjs (153.068708ms)
+api-parse.test.cjs passed
+✔ mini PUT uses the remaining signed window with a ten-minute client cap (2.112083ms)
+ark-verification-optional.test.cjs passed
+✔ tests/ark-verification-optional.test.cjs (143.174916ms)
+aspect-ratios.test.cjs passed
+✔ tests/aspect-ratios.test.cjs (350.281708ms)
+auth-panel-auth-contract.test.cjs passed
+✔ tests/auth-panel-auth-contract.test.cjs (159.370583ms)
+✔ sign-in authenticates, clears the password, and emits authed (13.105625ms)
+✔ EMAIL_NOT_VERIFIED enters pending verification without retaining a password or authenticating (2.834375ms)
+✔ sign-up verification-required enters pending state and never emits authed (1.028917ms)
+✔ pending verification copy does not claim that a generic response delivered email (0.882625ms)
+✔ sign-up remains compatible with an authenticated result (1.538708ms)
+✔ forgot-password accepts email only and always shows generic recovery guidance on success (4.325166ms)
+✔ unknown-email password reset success uses the same generic recovery state (2.102667ms)
+✔ verification resend honors retry-after and exposes a disabled countdown (1.8385ms)
+✔ verification resend success stays neutral and starts cooldown (0.674709ms)
+✔ mode changes, close, and detach clear secrets, messages, and timers (0.943417ms)
+✔ closing the panel invalidates an in-flight authentication result (0.82825ms)
+✔ auth submit, close, and stale completion never use the global loading HUD (0.603917ms)
+auth-security.test.cjs passed
+✔ tests/auth-security.test.cjs (157.168416ms)
+auth-session-contract.test.cjs passed
+✔ tests/auth-session-contract.test.cjs (124.142625ms)
+business-errors.test.cjs passed
+✔ tests/business-errors.test.cjs (100.659958ms)
+client-platform.test.cjs passed
+✔ tests/client-platform.test.cjs (327.706375ms)
+constants.test.cjs passed
+✔ tests/constants.test.cjs (309.237834ms)
+featured-templates.test.cjs passed
+✔ tests/featured-templates.test.cjs (197.94625ms)
+health-request.test.cjs passed
+✔ tests/health-request.test.cjs (151.776917ms)
+✔ optimization uses only the selected main route and region key; refine sends no generation context (2.367875ms)
+✔ unsupported optimization, invalid main role, missing key and invalid results fail before writes (0.542125ms)
+✔ optimization previews first, applies explicitly, restores once and rejects changes since request (69.8635ms)
+✔ cancelled optimization cannot overwrite a later field value (3.428375ms)
+✔ WeChat serializes absent optional Object bindings as null; optimization keeps the default region (2.597ms)
+✔ all four TokenDance optimizer targets require connection, omit keys and retain preview/apply/undo (7.681125ms)
+job-assets.test.cjs passed
+✔ tests/job-assets.test.cjs (209.694625ms)
+job-normalization.test.cjs passed
+✔ tests/job-normalization.test.cjs (265.905834ms)
+✔ mixed routes identify Google despite connected TD; direct focus, cancel and save keep shared channel keys coherent (80.059834ms)
+✔ workbench blocks missing Google and points to it without treating TD as a shared credential (94.536875ms)
+✔ carousel native autoplay pauses on touch/modal/background and never applies templates on change (5.096666ms)
+✔ MiniMax channel key fields follow region slots and preserve the other regional key (2.725ms)
+✔ missing mini-status route reports undeployed identity bridge without masking the 404 (1.834458ms)
+✔ each keyed channel shows its own guide; copying cannot alter keys or routes and TD requires no key guide (264.035542ms)
+✔ MiniMax guide and copied link follow draft region, including switching back without saving (15.136834ms)
+✔ first-use defaults use Pro; explicit Lite survives opening, repeated mode/provider taps, cancel, and reload (66.431625ms)
+✔ saving a changed model normalizes incompatible output only in draft and submits the saved choices (20.961375ms)
+✔ preference persistence is scoped and excludes keys, identity, prompt and unknown fields (0.398667ms)
+✔ refine inline controls, reopened draft, persisted settings and actual submit all agree (35.011083ms)
+✔ visual ratios retain selected uncommon ratio, exclude unsupported values and bound extreme shapes (2.566458ms)
+✔ disconnect requires confirmation and rejects confirmation after account switch (3.583417ms)
+✔ keyboard inset accounts for resized viewport and clears on close (2.951583ms)
+✔ restored login refreshes consumer authorization on the visible workbench (14.623666ms)
+mobile-ui-layout.test.cjs passed
+✔ tests/mobile-ui-layout.test.cjs (281.142ms)
+model-picker-flow.test.cjs passed
+✔ tests/model-picker-flow.test.cjs (398.242458ms)
+✔ Kimi single vendor remains an explicit step; reopening restores the full selected path without emitting selection (45.874958ms)
+✔ aggregator vendor boundaries, backtracking and channel switching clear stale lower lists (170.22625ms)
+✔ every role and region uses exact compatible channel-vendor-model membership, including format filters (1444.348583ms)
+✔ each role selects only into its draft; save payload matches channel and ID, cancel restores, credentials stay separate (40.321458ms)
+✔ role and directory changes reset stale browse state; incompatible saved routes never become selectable (7.834459ms)
+{"registryBytes":3653618,"maxPatchBytes":20139,"checkedResolutionOptions":1576}
+✔ tests/model-registry-view-boundary.test.cjs (3717.468916ms)
+model-registry.test.cjs passed
+✔ tests/model-registry.test.cjs (354.790959ms)
+model-routing.test.cjs passed
+✔ tests/model-routing.test.cjs (253.491083ms)
+✔ packed catalog restores every canonical field without sharing mutable model data (429.07575ms)
+✔ main package and static media stay within conservative source byte budgets (50.926625ms)
+✔ registry retains optimization and validated upload limits, malformed declarations fail closed (196.224167ms)
+✔ request builders reject stale routes, unavailable regions, edit-only generation and invalid size pairs (2.861875ms)
+✔ uploaded refine sources use their exclusive contract and auto resolution remains legal (0.79225ms)
+✔ business errors keep lifecycle and optimization guidance instead of leaking raw identifiers (1.081083ms)
+✔ local history preserves unowned legacy entries but displays only the current immutable account ID (10.06675ms)
+✔ clearing history affects only the current owner and keeps other accounts and legacy rows (0.525833ms)
+✔ refine source responses from an old account are ignored, and finalized uploads survive list refresh (17.856917ms)
+✔ refine polling does not overlap and rejects results after account switch (2.649583ms)
+✔ input optimizer discards candidate and undo state when account identity changes (3.267125ms)
+✔ settings recompute ratio and reachable keys from unsaved changes; refine accepts edit-only tiers (15.864458ms)
+✔ verification-status requests omit session cookies and never persist a server cookie response (0.509459ms)
+payload.test.cjs passed
+✔ tests/payload.test.cjs (329.17475ms)
+project-config.test.cjs passed
+✔ tests/project-config.test.cjs (302.802084ms)
+reference-library.test.cjs passed
+✔ tests/reference-library.test.cjs (281.50075ms)
+reference-mode.test.cjs passed
+✔ tests/reference-mode.test.cjs (181.0505ms)
+✔ refine v2 accepts platform originals independently from model transfer quota and checks direct-edit dimensions (3.153833ms)
+✔ generation v2 preserves files when count, total, SVG or selected model limits block submission (0.763416ms)
+✔ signed deadline is retained through refinement PUT and expired uploads stop before finalize (1.27675ms)
+✔ refine file validation follows declared MIME, model byte and pixel limits (1.963ms)
+✔ refine upload finalizes with purpose and retains cleanup without leaking token into source (2.180792ms)
+✔ failed or replaced upload is aborted and cannot become a ready source (1.4385ms)
+refine.test.cjs passed
+✔ tests/refine.test.cjs (160.021417ms)
+release-metadata-3.0.1.test.cjs passed
+✔ tests/release-metadata-3.0.1.test.cjs (199.924458ms)
+stable-url.test.cjs passed
+✔ tests/stable-url.test.cjs (237.16525ms)
+✔ connection refresh shares concurrent requests and keeps confirmed display state only until the next result (10.780417ms)
+✔ connection invalidation and A-B-A account changes reject late successful status replies (3.566125ms)
+✔ account re-entry renders a confirmed connection during refresh, distinguishes failure and clears it on logout (12.362666ms)
+✔ a background status response cannot undo a completed disconnect or turn it into a query error (4.765167ms)
+✔ mini uses headless PKCE flow and clears the one-use code before exchange (2.720667ms)
+✔ mini rejects fractional yuan and drops a payment reply after logout (1.419791ms)
+✔ mini payment polling never overlaps and server-owned TD keys are omitted from generation payloads (7.79125ms)
+✔ mini account lists all orders, queries the selected order and blocks uncertain duplicate creation (2.730292ms)
+✔ mini failed-job recovery counts down, rejects an early tap, refreshes after returning and resumes once eligible (76.989708ms)
+✔ mini blocks submit and repeat selection while original image dimensions are pending (12.862875ms)
+✔ account A-B-A, detached and selected-order changes discard late replies (10.477333ms)
+✔ one-use codes stay out of view data and are cleared on hide; uncertain creation blocks a retry (1.909542ms)
+✔ definite payment rejection permits retry while uncertain server failures remain locked (14.813ms)
+✔ returning to account from its reopened job detail pops the native stack and keeps the original task (1.464125ms)
+✔ TD throttling and uncertain errors retain recovery guidance instead of generic capacity failures (0.399208ms)
+✔ verification observer stays read-only, pauses and resumes, and ends on verified (2.841042ms)
+✔ verification observer expires after one hour and rejects a stale response after stop (0.361875ms)
+✔ verification observer never overlaps requests and recovers from temporary failure (0.497833ms)
+✔ Watcha launch links accept only the gateway handoff route and opaque state (3.351958ms)
+✔ native initiation is unavailable on old gateways and drops a response after A-B-A account switching (5.812834ms)
+✔ one-use code stays outside view state, clears before exchange and cannot submit twice (2.088084ms)
+✔ pending existing identity is explicitly linked, and last login method cannot be unlinked (3.388583ms)
+✔ email code is purpose-bound, clears on email edits and only sent once during cooldown (2.871209ms)
+✔ late authentication response cannot replace cookies after cancellation or owner change (5.857125ms)
+✔ passwordless deletion exchanges email proof before deletion and drops confirmation after owner changes (12.700792ms)
+ℹ tests 119
+ℹ suites 0
+ℹ pass 119
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4240.223
