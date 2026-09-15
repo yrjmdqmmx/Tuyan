@@ -1,6 +1,9 @@
-import { activeReferenceUploadPolicy, referenceUploadSelectionError, referencePolicyHint, referenceProcessingHint } from '../../utils/reference-upload-policy'
+import { MODEL_CHANNEL_LABELS } from '../../utils/model-presentation'
+import { readUiSettings, saveUiSettings } from '../../utils/ui-settings'
+import { rememberWorkPage } from '../../utils/tokendance'
+import { activeReferenceUploadPolicy, referenceUploadSelectionError, referencePolicyHint, referenceProcessingHint, referenceBytesLabel } from '../../utils/reference-upload-policy'
 import { orderModelChannels } from '../../utils/model-presentation'
-import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance, optimizeTokenDanceInput } from '../../utils/tokendance'
+import { hasTokenDanceConnection, refreshTokenDanceConnection, openTokenDance } from '../../utils/tokendance'
 import { selectRegionApiKeys, type ProviderRegions } from '../../utils/provider-regions'
 import { formatError, requestHealth, requestJson, uploadReferenceFile } from '../../utils/api'
 import {
@@ -62,6 +65,7 @@ import {
 import { getCurrentUser, isSessionChecked, signOut as sessionSignOut, subscribeSession } from '../../utils/session'
 
 interface ReferenceUpload {
+  filename?: string
   clientId: string
   objectKey: string
   uploadUrl: string
@@ -90,6 +94,9 @@ const DRAFT_STORAGE_KEY = 'paperbanana_mini_draft'
 
 Component({
   data: {
+    emptyObject: {},
+    settingsPurpose: 'create',
+    optimizationBusy: false, optimizationInputs: {} as Record<string, string>,
     logoSrc: '/images/logo.png',
     providers: PROVIDERS,
     providerIndex: PROVIDERS.findIndex(item => item.id === DEFAULT_PROVIDER.id),
@@ -142,7 +149,7 @@ Component({
     referenceImages: [] as ReferenceImage[],
     referenceImageCount: 0,
     referenceCanAddImage: true,
-    referenceLimitHint: '',
+    referenceLimitHint: '', referenceSummary: '', referenceDetailsOpen: false,
     referenceProcessingHint: '',
     referenceSelectionIssue: '',
     referenceModeNote: '',
@@ -183,7 +190,7 @@ Component({
     healthText: '检测中',
     healthOk: false,
     healthChecked: false,
-    canSubmit: false,
+    canSubmit: false, submitHint: '', missingCredentialProvider: '', credentialFocusProvider: '', editingInput: false, templateConfirmOpen: false, optimizationOpen: false, libraryDetailOpen: false,
     isSubmitting: false,
     currentJobId: '',
     job: null as Job | null,
@@ -195,34 +202,27 @@ Component({
     isAuthChecking: true,
     showAuthPanel: false,
     showFeedbackPanel: false,
-    // 反馈悬浮按钮初始位置（px，attached 时按屏幕尺寸算到右下角）
-    fabX: 0,
-    fabY: 0,
   },
 
   lifetimes: {
     attached() {
+      ;(this as any).ownerId = getCurrentUser()?.id || ''
+      ;(this as any).ownerEpoch = 0
       ;(this as any).isPageVisible = true
       this.restoreDraft()
-      // 悬浮反馈按钮放到右下角（movable-view 的 x/y 是相对 movable-area 左上角的 px 值）
-      try {
-        // getSystemInfoSync 已废弃；优先用 getWindowInfo（基础库 2.20.1+），旧环境回退
-        const getWindowInfo = (wx as any).getWindowInfo
-        const info = typeof getWindowInfo === 'function' ? getWindowInfo() : wx.getSystemInfoSync()
-        const rpx = info.windowWidth / 750
-        this.setData({
-          fabX: Math.max(0, info.windowWidth - 144 * rpx - 24 * rpx),
-          fabY: Math.max(0, info.windowHeight - 76 * rpx - 48 * rpx),
-        })
-      } catch {
-        // 取不到屏幕信息时停留在默认位置，可手动拖动
-      }
       const unsubscribe = subscribeSession((user) => {
+        if ((this as any).ownerId !== (user?.id || '')) {
+          ;(this as any).ownerId = user?.id || ''; (this as any).ownerEpoch++
+          this.stopPolling()
+          this.setData({ currentJobId: '', job: null, resultImages: [], statusLabel: '', error: '', referenceImages: [], referenceUploadError: '', isSubmitting: false, isUploadingReferences: false, isInspectingReferences: false, apiKeysForSheet: {}, showGenerationSettings: false })
+        }
         this.setData({
           isLoggedIn: Boolean(user),
           currentUserEmail: user ? user.email : '',
           isAuthChecking: false,
         })
+        this.refreshCanSubmit()
+        if (user && (this as any).isPageVisible) void refreshTokenDanceConnection().then(() => this.refreshCanSubmit())
       })
       ;(this as any).unsubscribeSession = unsubscribe
       const user = getCurrentUser()
@@ -239,6 +239,7 @@ Component({
       void this.loadFeaturedTemplates()
     },
     detached() {
+      ;(this as any).ownerEpoch++; (this as any).detached = true
       this.stopPolling()
       const draftTimer = (this as any).draftTimer as number | undefined
       if (draftTimer) clearTimeout(draftTimer)
@@ -251,7 +252,7 @@ Component({
   },
 
   pageLifetimes: {
-    show() {
+    show() { rememberWorkPage('/pages/index/index');
       void refreshTokenDanceConnection().then(() => this.refreshCanSubmit())
       ;(this as any).isPageVisible = true
       // tabBar 页不销毁：回到本页时若任务未到终态则恢复轮询
@@ -268,21 +269,6 @@ Component({
   },
 
   methods: {
-    async optimizeDescription() {
-      const settings = this.data.settings as GenerationSettings
-      if (!settings?.modelRoutes?.main) return
-      const original = this.data.methodContent
-      const mainRoute = settings.modelRoutes.main
-      const keys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
-      if (mainRoute.accessProvider === 'tokendance' ? !hasTokenDanceConnection() : !keys[mainRoute.accessProvider]) { this.setData({ error: '请先连接主模型渠道。' }); return }
-      if ((this as any).optimizing) return
-      ;(this as any).optimizing = true
-      try {
-        const result = await optimizeTokenDanceInput({mainRoute, providerRegions: settings.providerRegions, apiKey: keys[mainRoute.accessProvider], target: 'methodContent', inputs: {methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt}})
-        wx.showModal({ title: '优化结果', content: result.optimizedText, confirmText: '采用', success: res => { if (res.confirm && this.data.methodContent === original) { this.setData({ methodContent: result.optimizedText }); this.refreshCanSubmit() } } })
-      } catch (error) { this.setData({ error: formatError(error) }) } finally { (this as any).optimizing = false }
-    },
-
     openTokenDance,
     restoreDraft() {
       try {
@@ -315,7 +301,7 @@ Component({
         return
       }
       const current = this.data.settings as GenerationSettings
-      const settings = current.modelRoutes ? current : defaultGenerationSettings(state.registry)
+      const settings = current.modelRoutes ? current : readUiSettings('create', defaultGenerationSettings(state.registry))
       this.setData({
         registryReady: true,
         registryVersion: state.registry.registryVersion,
@@ -347,10 +333,10 @@ Component({
         return
       }
       const settings = this.data.settings as GenerationSettings
-      this.setData({ showGenerationSettings: true, apiKeysForSheet: getApiKeys(), settingsExecutionRoles: this.createExecutionRoles(settings) })
+      this.setData({ settingsPurpose: 'create', showGenerationSettings: true, apiKeysForSheet: getApiKeys(), settingsExecutionRoles: this.createExecutionRoles(settings) })
     },
 
-    closeGenerationSettings() { this.setData({ showGenerationSettings: false }) },
+    closeGenerationSettings() { this.setData({ showGenerationSettings: false, credentialFocusProvider: '', apiKeysForSheet: {} }) },
 
     saveGenerationSettings(event: WechatMiniprogram.CustomEvent<{ settings: GenerationSettings; apiKeys: Record<string, string>; manualReferenceIds: string[] }>) {
       const settings = event.detail.settings
@@ -362,13 +348,15 @@ Component({
         settingsSummary: formatSettingsSummary(settings),
         settingsSummaryDetails: formatSettingsSummaryDetails(settings),
         manualReferenceIds: settings.retrievalSetting === 'manual' ? manualReferenceIds : [],
-        showGenerationSettings: false,
-        apiKeysForSheet: getApiKeys(),
+        showGenerationSettings: false, credentialFocusProvider: '',
+        apiKeysForSheet: {},
       })
+      saveUiSettings('create', settings)
       this.syncLegacySettings(settings)
       this.refreshCanSubmit()
     },
 
+    toggleReferenceDetails() { this.setData({ referenceDetailsOpen: !this.data.referenceDetailsOpen }) },
     syncLegacySettings(settings: GenerationSettings) {
       const main = settings.modelRoutes.main
       const image = settings.modelRoutes.image
@@ -389,7 +377,7 @@ Component({
 
     createExecutionRoles(settings: GenerationSettings) {
       const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
-      return requiredCreateRouteRoles({ modelRoutes: settings.modelRoutes, outputFormat: settings.outputFormat, taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds)
+      return requiredCreateRouteRoles({ imageRefineMode: findRegistryModel(getModelRegistryState().registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId)?.capabilities.imageEditMode, modelRoutes: settings.modelRoutes, outputFormat: settings.outputFormat, taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram', pipelineMode: settings.pipelineMode, retrievalSetting: settings.retrievalSetting, imageSize: settings.imageSize, referenceImages: this.data.referenceImages, referenceImageMode: this.data.referenceImageMode }, settings.maxCriticRounds)
     },
 
     onFeaturedTemplateApply(event: WechatMiniprogram.CustomEvent<{ id: string }>) {
@@ -399,11 +387,13 @@ Component({
         this.applyFeaturedTemplate(template)
         return
       }
+      this.setData({templateConfirmOpen: true})
       wx.showModal({
         title: '替换当前内容？',
         content: '你已经修改了类别、方法、图注或负向提示词。套用模板会替换这些内容。',
         confirmText: '继续套用',
         success: (result) => { if (result.confirm) this.applyFeaturedTemplate(template) },
+        complete: () => this.setData({templateConfirmOpen: false}),
       })
     },
 
@@ -706,6 +696,8 @@ Component({
     },
 
     chooseReferenceImages() {
+      const epoch = (this as any).ownerEpoch
+      const current = () => epoch === (this as any).ownerEpoch && !(this as any).detached
       if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
       const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length
       if (remaining <= 0) {
@@ -719,6 +711,7 @@ Component({
         sourceType: ['album', 'camera'],
         sizeType: ['original'],
         success: async (res) => {
+          if (!current()) return
           this.setData({ isInspectingReferences: true })
           this.refreshCanSubmit()
           try {
@@ -727,7 +720,7 @@ Component({
             for (const [index, file] of res.tempFiles.entries()) {
               const path = file.tempFilePath
               const size = Number(file.size || 0)
-              const mimeType = mimeTypeFromPath(path)
+              let mimeType = mimeTypeFromPath(path)
               if (REFERENCE_IMAGE_LIMITS.mimeTypes.indexOf(mimeType) < 0) {
                 error = '参考图仅支持 PNG、JPG、WebP 或 SVG。'
                 continue
@@ -740,6 +733,9 @@ Component({
               try {
                 dimensions = await new Promise<WechatMiniprogram.GetImageInfoSuccessCallbackResult>((resolve, reject) => wx.getImageInfo({ src: path, success: resolve, fail: reject }))
               } catch { error = '无法读取图片尺寸，请重新导出静态图片。'; continue }
+              const type = String((dimensions as any).type || '').toLowerCase()
+              if (type) mimeType = type === 'jpg' || type === 'jpeg' ? 'image/jpeg' : `image/${type}`
+              if (!['image/png', 'image/jpeg', 'image/webp'].includes(mimeType)) { error = '请使用 PNG、JPG 或 WebP 静态图片。'; continue }
               accepted.push(buildReferenceImage({
                 width: dimensions.width, height: dimensions.height,
                 id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
@@ -750,8 +746,9 @@ Component({
               }))
             }
 
-            this.appendReferenceImages(accepted, error)
+            if (current()) this.appendReferenceImages(accepted, error)
           } finally {
+            if (!current()) return
             this.setData({ isInspectingReferences: false })
             this.refreshCanSubmit()
           }
@@ -760,6 +757,7 @@ Component({
     },
 
     chooseReferenceSvgFile() {
+      const epoch = (this as any).ownerEpoch
       if (this.data.isSubmitting || this.data.isUploadingReferences || this.data.isInspectingReferences) return
       const remaining = this.activeReferencePolicy().platform.maxCount - this.data.referenceImages.length
       if (remaining <= 0) {
@@ -772,6 +770,7 @@ Component({
         type: 'file',
         extension: ['svg'],
         success: (res) => {
+          if (epoch !== (this as any).ownerEpoch || (this as any).detached) return
           const accepted: ReferenceImage[] = []
           let error = ''
           res.tempFiles.forEach((file, index) => {
@@ -783,8 +782,8 @@ Component({
               error = '请选择 .svg 文件。'
               return
             }
-            if (!size || size > this.activeReferencePolicy().platform.maxBytes) {
-              error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxBytes / 1024 / 1024}MiB。`
+            if (!size || size > this.activeReferencePolicy().platform.maxSvgBytes) {
+              error = `单张参考图不能超过 ${this.activeReferencePolicy().platform.maxSvgBytes / 1024 / 1024}MiB。`
               return
             }
             accepted.push(buildReferenceImage({
@@ -884,6 +883,7 @@ Component({
       })
       const policy = this.activeReferencePolicy()
       this.setData({
+        referenceSummary: `PNG / JPG / WebP / SVG · 最多 ${policy.maxCount} 张 · 单张 ${referenceBytesLabel(policy.platform.maxBytes)}（SVG ${referenceBytesLabel(policy.platform.maxSvgBytes)}）· 合计 ${referenceBytesLabel(policy.platform.maxTotalBytes)}`,
         referenceLimitHint: referencePolicyHint(policy),
         referenceProcessingHint: referenceProcessingHint(policy),
         referenceSelectionIssue: referenceUploadSelectionError(this.data.referenceImages, policy),
@@ -894,6 +894,11 @@ Component({
       if (!this.data.referenceImages.length) return []
       const issue = referenceUploadSelectionError(this.data.referenceImages, this.activeReferencePolicy())
       if (issue) throw new Error(issue)
+      const epoch = (this as any).ownerEpoch
+      const owner = getCurrentUser()?.id || ''
+      const sameOwner = () => owner === (getCurrentUser()?.id || '') && epoch === (this as any).ownerEpoch
+      const check = () => { if (!sameOwner() || (this as any).detached) throw new Error('账号已切换，已停止本次上传。') }
+      const references = [...this.data.referenceImages]
 
       this.setData({
         isUploadingReferences: true,
@@ -903,7 +908,7 @@ Component({
 
       let preparedUploads: ReferenceUpload[] = []
       try {
-        const files = this.data.referenceImages.map((image) => ({
+        const files = references.map((image) => ({
           clientId: `${image.id}:original`,
           role: 'original',
           filename: image.filename,
@@ -915,15 +920,18 @@ Component({
           files,
         })
         preparedUploads = prepared.uploads || []
+        check()
         const uploadMap = new Map(preparedUploads.map((upload) => [upload.clientId, upload]))
 
-        for (const image of this.data.referenceImages) {
+        for (const image of references) {
           const upload = uploadMap.get(`${image.id}:original`)
           if (!upload || !upload.uploadUrl) throw new Error('参考图上传地址创建失败。')
+          check()
           await uploadReferenceFile(image.path, upload.uploadUrl, image.mimeType, upload.expiresAt)
+          check()
         }
 
-        const uploaded = this.data.referenceImages.map((image) => {
+        const uploaded = references.map((image) => {
           const upload = uploadMap.get(`${image.id}:original`)
           if (!upload) throw new Error('参考图上传结果缺少原图记录。')
           return {
@@ -935,17 +943,17 @@ Component({
           }
         })
         await requestJson({ action: 'finalizeReferenceUpload', uploads: uploaded })
+        check()
         return uploaded
       } catch (error) {
-        if (preparedUploads.length) {
-          await requestJson({ action: 'abortReferenceUpload', uploads: preparedUploads }).catch(() => undefined)
+        if (preparedUploads.length && sameOwner()) {
+          await requestJson({ action: 'abortReferenceUpload', uploads: preparedUploads.map(({ objectKey, uploadToken, filename, mimeType, size }) => ({ objectKey, uploadToken, filename, mimeType, size })) }).catch(() => undefined)
         }
         const message = formatError(error)
-        this.setData({ referenceUploadError: message })
+        if (sameOwner()) this.setData({ referenceUploadError: message })
         throw new Error(message)
       } finally {
-        this.setData({ isUploadingReferences: false })
-        this.refreshCanSubmit()
+        if (sameOwner()) { this.setData({ isUploadingReferences: false }); this.refreshCanSubmit() }
       }
     },
 
@@ -971,11 +979,15 @@ Component({
 
     async submitJob() {
       if (!this.data.canSubmit || this.data.isSubmitting || this.data.isInspectingReferences) return
+      if (!getCurrentUser()) { this.openAuthPanel(); return }
+      const epoch = (this as any).ownerEpoch
+      const current = () => epoch === (this as any).ownerEpoch && !(this as any).detached
 
       // 生产目录是每次付费任务的唯一真相。提交前强制重新读取，失败时在任何上传或任务写入前停止。
       this.setData({ isSubmitting: true, error: '' })
       const registryState = await loadModelRegistry(true)
       const registry = registryState.registry
+      if (!current()) return
       if (!registry) {
         this.setData({ isSubmitting: false, error: '模型目录不可用，已禁止新建任务。' })
         this.refreshCanSubmit()
@@ -1012,8 +1024,11 @@ Component({
       })
 
       wx.showLoading({ title: '提交中' })
+      let loadingShown = true
+      const finishLoading = () => { if (loadingShown) { loadingShown = false; wx.hideLoading() } }
       try {
-        const uploadedReferenceImages = await this.uploadReferencesForJob()
+        // Validate the complete selection before creating any upload. Replace descriptors with server-issued ones below.
+        const uploadedReferenceImages = this.data.referenceImages.map(image => ({ filename: image.filename, mimeType: image.mimeType, size: image.size, objectKey: '', uploadToken: '' }))
         const payload = buildCreateJobPayload({
           configurationMode: settings.configurationMode,
           providerRegions: settings.providerRegions,
@@ -1038,7 +1053,10 @@ Component({
           maxCriticRounds: settings.maxCriticRounds,
         })
 
+        payload.referenceImages = await this.uploadReferencesForJob()
+        if (!current()) return
         const data = await requestJson<{ jobId?: string; id?: string; status?: string }>(payload)
+        if (!current()) return
 
         const jobId = data.jobId || data.id || ''
         if (!jobId) throw new Error('后端没有返回任务 ID')
@@ -1047,19 +1065,17 @@ Component({
           currentJobId: jobId,
           statusLabel: STATUS_LABELS[data.status || 'queued'] || String(data.status || '排队中'),
         })
-        wx.hideLoading()
+        finishLoading()
         wx.showToast({ title: '任务已提交', icon: 'success' })
         // 提交等待期间用户可能已切到别的 tab：隐藏时不起 timer，回到本页由 pageLifetimes.show 恢复
         if ((this as any).isPageVisible !== false) {
           this.startPolling(jobId)
         }
       } catch (error) {
-        this.setData({ error: formatError(error) })
-        wx.hideLoading()
-        wx.showToast({ title: '提交失败', icon: 'none' })
+        if (current()) { finishLoading(); this.setData({ error: formatError(error) }); wx.showToast({ title: '提交失败', icon: 'none' }) }
       } finally {
-        this.setData({ isSubmitting: false })
-        this.refreshCanSubmit()
+        finishLoading()
+        if (current()) { this.setData({ isSubmitting: false }); this.refreshCanSubmit() }
       }
     },
 
@@ -1069,13 +1085,17 @@ Component({
     },
 
     async loadJob(jobId: string) {
+      const epoch = (this as any).ownerEpoch
+      const key = `${epoch}:${jobId}`
+      if ((this as any).pollingRequest === key) return
+      ;(this as any).pollingRequest = key
       try {
         const data = await requestJson<{ job?: unknown }>({
           action: 'getJob',
           jobId,
         })
         // 在途响应可能晚于新任务提交落地：只接受当前任务的响应，避免旧任务覆盖状态/误停新轮询
-        if (jobId !== this.data.currentJobId) return
+        if (jobId !== this.data.currentJobId || epoch !== (this as any).ownerEpoch || (this as any).detached) return
         const job = normalizeJob(data.job)
         this.setData({
           job: toCurrentJobSummary(job),
@@ -1089,9 +1109,9 @@ Component({
           this.stopPolling()
         }
       } catch (error) {
-        if (jobId !== this.data.currentJobId) return
+        if (jobId !== this.data.currentJobId || epoch !== (this as any).ownerEpoch || (this as any).detached) return
         this.setData({ error: formatError(error) })
-      }
+      } finally { if ((this as any).pollingRequest === key) (this as any).pollingRequest = undefined }
     },
 
     startPolling(jobId: string) {
@@ -1145,10 +1165,22 @@ Component({
       wx.navigateTo({ url: `/pages/job-detail/job-detail?jobId=${this.data.currentJobId}` })
     },
 
+    onOptimizationBusy(event: WechatMiniprogram.CustomEvent<{ busy: boolean }>) {
+      this.setData({ optimizationBusy: event.detail.busy }); this.refreshCanSubmit()
+    },
+    onOptimizationApply(event: WechatMiniprogram.CustomEvent<{ target: string; value: string }>) {
+      if (!['methodContent', 'caption', 'negativePrompt'].includes(event.detail.target)) return
+      this.setData({ [event.detail.target]: event.detail.value, inputDirty: true })
+      this.refreshCanSubmit(); this.schedulePersistDraft()
+    },
+    openOptimizationSettings() {
+      this.setData({ settingsPurpose: 'optimize', showGenerationSettings: true, apiKeysForSheet: getApiKeys(), settingsExecutionRoles: ['main'] })
+    },
     refreshCanSubmit() {
+      this.setData({ optimizationInputs: { methodContent: this.data.methodContent, caption: this.data.caption, negativePrompt: this.data.negativePrompt } })
       const settings = this.data.settings as GenerationSettings
       if (!this.data.registryReady || !settings.modelRoutes) {
-        this.setData({ canSubmit: false })
+        this.setData({ canSubmit: false, submitHint: '模型目录尚未就绪，请重试读取目录。', missingCredentialProvider: '' })
         return
       }
       const hasManualReferences =
@@ -1159,6 +1191,7 @@ Component({
       const category = INFOGRAPHIC_CATEGORIES[this.data.categoryIndex] || INFOGRAPHIC_CATEGORIES[0]
       const roles = requiredCreateRouteRoles({
         modelRoutes: settings.modelRoutes,
+        imageRefineMode: findRegistryModel(getModelRegistryState().registry, settings.modelRoutes.image.accessProvider, settings.modelRoutes.image.modelId)?.capabilities.imageEditMode,
         outputFormat: settings.outputFormat,
         taskName: category.id === PLOT_CATEGORY_ID ? 'plot' : 'diagram',
         pipelineMode: settings.pipelineMode,
@@ -1168,7 +1201,8 @@ Component({
         referenceImageMode: this.data.referenceImageMode,
       }, settings.maxCriticRounds)
       const apiKeys = selectRegionApiKeys(getApiKeys(), settings.providerRegions)
-      const hasRequiredKeys = uniqueProvidersForRoles(settings.modelRoutes, roles).every((provider) => (provider === 'tokendance' ? hasTokenDanceConnection() : Boolean(apiKeys[provider]?.trim())))
+      const missingProviders = uniqueProvidersForRoles(settings.modelRoutes, roles).filter(provider => provider === 'tokendance' ? !hasTokenDanceConnection() : !apiKeys[provider]?.trim())
+      const hasRequiredKeys = missingProviders.length === 0
       const canSubmit = Boolean(
         hasRequiredKeys &&
           this.data.methodContent.trim().length >= 20 &&
@@ -1180,11 +1214,17 @@ Component({
           !this.data.referenceSelectionIssue &&
           !this.data.isUploadingReferences &&
           !this.data.isInspectingReferences &&
-          !this.data.isSubmitting,
+          !this.data.isSubmitting && !this.data.optimizationBusy,
       )
-      this.setData({ canSubmit })
+      const submitHint = missingProviders.length ? missingProviders.map(provider => (MODEL_CHANNEL_LABELS[provider] || provider) + (provider === 'tokendance' ? ' 未连接账户授权' : ' 缺少 API Key')).join('；') : !hasManualReferences ? '请至少选择一个手动参考案例。' : this.data.methodContent.trim().length < 20 ? '请填写至少 20 字研究方法。' : this.data.caption.trim().length < 3 ? '请填写至少 3 字目标图注。' : this.data.referenceSelectionIssue || (!this.data.referenceModeCanSubmit ? '请检查参考图处理方式。' : '请等待当前操作完成，并检查输出参数。')
+      this.setData({ canSubmit, submitHint, missingCredentialProvider: missingProviders[0] || '' })
     },
 
+    onOptimizerVisibility(event: WechatMiniprogram.CustomEvent<{open:boolean}>) { this.setData({optimizationOpen:event.detail.open}) },
+    onLibraryVisibility(event: WechatMiniprogram.CustomEvent<{open:boolean}>) { this.setData({libraryDetailOpen:event.detail.open}) },
+    onInputFocus() { this.setData({ editingInput: true }) },
+    onInputBlur() { this.setData({ editingInput: false }) },
+    configureMissingCredential() { this.setData({ credentialFocusProvider: this.data.missingCredentialProvider }); this.openGenerationSettings() },
     openAuthPanel() {
       this.setData({ showAuthPanel: true })
     },
@@ -1193,7 +1233,7 @@ Component({
       this.setData({ showAuthPanel: false })
     },
 
-    onAuthed() {
+    onAuthed() { void refreshTokenDanceConnection().then(() => this.refreshCanSubmit());
       this.setData({ showAuthPanel: false })
     },
 
@@ -1217,13 +1257,16 @@ Component({
 })
 
 function defaultGenerationSettings(registry: ModelRegistry): GenerationSettings {
-  const simpleProvider: ModelProviderId = 'bailian'
+  const simpleProvider: ModelProviderId = registry.providers.tokendance ? 'tokendance' : 'bailian'
+  const routes = providerDefaultRoutes(simpleProvider, registry)
+  if (simpleProvider === 'tokendance' && registry.providers.tokendance?.models.some(model => model.id === 'seedream-5.0-pro' && model.selectable && model.roles.includes('image'))) routes.image = { accessProvider: simpleProvider, modelId: 'seedream-5.0-pro' }
+  const resolutions = findRegistryModel(registry, routes.image.accessProvider, routes.image.modelId)?.capabilities.resolutions as string[] | undefined
   return {
     configurationMode: 'simple',
     simpleProvider,
-    modelRoutes: providerDefaultRoutes(simpleProvider, registry),
+    modelRoutes: routes,
     outputFormat: 'png',
-    imageSize: '1K',
+    imageSize: resolutions?.includes('1K') ? '1K' : resolutions?.[0] || '',
     aspectRatio: 'auto',
     pipelineMode: 'planner_critic',
     retrievalSetting: 'none',
@@ -1234,7 +1277,10 @@ function defaultGenerationSettings(registry: ModelRegistry): GenerationSettings 
 
 function formatSettingsSummary(settings: GenerationSettings): string {
   const routes = settings.modelRoutes
-  return `主 ${routes.main.modelId} · 图 ${routes.image.modelId} · 识 ${routes.vision.modelId}`
+  const registry = getModelRegistryState().registry
+  const label = (role: 'main' | 'image' | 'vision') => findRegistryModel(registry, routes[role].accessProvider, routes[role].modelId)?.label || routes[role].modelId
+  const textRoute = routes.main.accessProvider === routes.vision.accessProvider && routes.main.modelId === routes.vision.modelId ? `主 / 识图 ${label('main')}` : `主 ${label('main')} · 识图 ${label('vision')}`
+  return `图像 ${label('image')} · ${textRoute}`
 }
 
 function formatSettingsSummaryDetails(settings: GenerationSettings): string[] {

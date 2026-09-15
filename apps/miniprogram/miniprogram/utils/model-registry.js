@@ -26,8 +26,17 @@ function normalizeModelRegistry(input) {
         if (providerSource[providerId])
             providers[providerId] = normalizeProvider(providerId, providerSource[providerId]);
     }
+    const upload = asRecord(source.refineUpload);
+    const positive = (value) => Number.isFinite(Number(value)) && Number(value) > 0;
+    const refineUpload = [1, 2].includes(Number(upload.version)) && Array.isArray(upload.mimeTypes) && upload.mimeTypes.length > 0 && [upload.maxBytes, upload.maxDimension, upload.maxPixels].every(positive)
+        ? { version: Number(upload.version), mimeTypes: stringArray(upload.mimeTypes).filter(mime => ['image/png', 'image/jpeg', 'image/webp'].includes(mime)), maxBytes: Number(upload.maxBytes), maxDimension: Number(upload.maxDimension), maxPixels: Number(upload.maxPixels), modelMaxBytes: Object.fromEntries(Object.entries(asRecord(upload.modelMaxBytes)).filter(([, value]) => positive(value)).map(([key, value]) => [key, Number(value)])) }
+        : undefined;
     const referenceUpload = source.referenceUpload && typeof source.referenceUpload === 'object' ? asRecord(source.referenceUpload) : undefined;
-    return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers };
+    return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers,
+        inputOptimizationContractVersion: numberValue(source.inputOptimizationContractVersion),
+        ...(Array.isArray(source.inputOptimizationTargets) ? { inputOptimizationTargets: stringArray(source.inputOptimizationTargets) } : {}),
+        ...((refineUpload === null || refineUpload === void 0 ? void 0 : refineUpload.mimeTypes.length) ? { refineUpload } : {}),
+    };
 }
 function normalizeProvider(providerId, input) {
     const source = asRecord(input);

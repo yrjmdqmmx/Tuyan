@@ -1,0 +1,10 @@
+{
+  "version": "miniprogram-3.2.0",
+  "registry": "2026-09-09.v18",
+  "route": "pages/guide/guide",
+  "uploadVersion": 2,
+  "td": 62,
+  "project": "/Users/a1-6/WeChatProjects/miniprogram-9",
+  "errors": [],
+  "mode": "actual upload-copy runtime, public registry read only; no auth or payment actions"
+}

@@ -1,0 +1,23 @@
+{
+  "miniprogramTests": {
+    "passed": 70,
+    "failed": 0
+  },
+  "sharedContractTests": {
+    "passed": 8,
+    "failed": 0
+  },
+  "typecheck": "passed",
+  "build": "passed",
+  "generatedJavaScript": {
+    "files": 43,
+    "rebuildChangedFiles": 0
+  },
+  "catalog": {
+    "version": "2026-09-09.v16",
+    "staticModels": 677,
+    "drift": false
+  },
+  "productionMutations": false,
+  "paidProviderCalls": false
+}

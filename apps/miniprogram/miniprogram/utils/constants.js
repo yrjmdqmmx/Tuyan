@@ -53,7 +53,8 @@ exports.PROVIDERS = [
             { label: '通义千问 / Qwen3.5 Omni Plus（全模态）', value: 'qwen3.5-omni-plus' },
             { label: '百炼第三方 / Kimi K3（图像理解）', value: 'kimi/kimi-k3' },
         ],
-        guideSteps: ['打开阿里云百炼控制台', '进入 API Key 页面创建密钥', '复制 sk- 开头密钥到小程序'],
+        guideUrl: "https://help.aliyun.com/zh/model-studio/get-api-key",
+        guideSteps: ["登录阿里云百炼控制台，确认已开通百炼模型服务。", "进入 API Key 页面，点击创建 API Key。", "建议选择默认业务空间和全部权限，复制 sk- 开头密钥。"],
     },
     {
         id: 'openrouter',
@@ -146,7 +147,8 @@ exports.PROVIDERS = [
             { label: 'Anthropic / Claude Opus 4.8', value: 'openrouter/anthropic/claude-opus-4.8' },
             { label: 'Anthropic / Claude Opus 4.8 Fast', value: 'openrouter/anthropic/claude-opus-4.8-fast' },
         ],
-        guideSteps: ['登录 OpenRouter', '进入 Keys 页面创建 API Key', '复制 sk-or-v1- 开头密钥'],
+        guideUrl: "https://openrouter.ai/settings/keys",
+        guideSteps: ["登录 OpenRouter，进入 Keys 页面。", "点击 Create Key，创建一个新的 API Key。", "复制 sk-or-v1- 开头的密钥，粘贴到上方输入框。"],
     },
     {
         id: 'gemini',
@@ -182,7 +184,8 @@ exports.PROVIDERS = [
             { label: 'Gemini 2.5 / Flash', value: 'gemini-2.5-flash' },
             { label: 'Gemini 2.5 / Flash-Lite', value: 'gemini-2.5-flash-lite' },
         ],
-        guideSteps: ['登录 Google AI Studio', '创建 API key', '复制 AIza 开头密钥'],
+        guideUrl: "https://aistudio.google.com/app/apikey",
+        guideSteps: ["登录 Google AI Studio，进入 API Keys 页面。", "点击 Create API key，选择或创建项目。", "复制生成的 AIza 开头密钥，粘贴到上方输入框。"],
     },
     {
         id: 'openai',
@@ -218,7 +221,8 @@ exports.PROVIDERS = [
             { label: 'GPT-4.1 / GPT-4.1 Mini', value: 'gpt-4.1-mini' },
             { label: 'GPT-5 / GPT-5 Mini', value: 'gpt-5-mini' },
         ],
-        guideSteps: ['登录 OpenAI Platform', '创建 secret key', '复制 sk- 开头密钥'],
+        guideUrl: "https://platform.openai.com/api-keys",
+        guideSteps: ["登录 OpenAI Platform，进入 API keys 页面。", "点击 Create new secret key，创建密钥。", "复制 sk- 开头的密钥，粘贴到上方输入框。"],
     },
     {
         "id": "deepseek",
@@ -248,11 +252,8 @@ exports.PROVIDERS = [
                 "label": "DeepSeek V4 Flash Vision Experimental"
             }
         ],
-        "guideSteps": [
-            "登录深度求索官方开放平台，进入 API Key 管理页面。",
-            "创建 API Key，并确认账户已开通所选模型。",
-            "复制密钥并粘贴到对应渠道的输入框。"
-        ]
+        guideUrl: "https://platform.deepseek.com/api_keys",
+        guideSteps: ["登录深度求索官方开放平台，进入 API Key 管理页面。", "创建 API Key，并确认账户已开通所选模型。", "复制密钥并粘贴到对应渠道的输入框。"]
     },
     {
         "id": "kimi",
@@ -298,11 +299,8 @@ exports.PROVIDERS = [
                 "label": "Kimi K2.6"
             }
         ],
-        "guideSteps": [
-            "登录 Kimi（月之暗面） 官方开放平台，进入 API Key 管理页面。",
-            "创建 API Key，并确认账户已开通所选模型。",
-            "复制密钥并粘贴到对应渠道的输入框。"
-        ]
+        guideUrl: "https://platform.kimi.com/",
+        guideSteps: ["登录 Kimi（月之暗面） 官方开放平台，进入 API Key 管理页面。", "创建 API Key，并确认账户已开通所选模型。", "复制密钥并粘贴到对应渠道的输入框。"]
     },
     {
         "id": "zhipu",
@@ -333,11 +331,8 @@ exports.PROVIDERS = [
                 "label": "GLM 5V Turbo"
             }
         ],
-        "guideSteps": [
-            "登录 智谱 官方开放平台，进入 API Key 管理页面。",
-            "创建 API Key，并确认账户已开通所选模型。",
-            "复制密钥并粘贴到对应渠道的输入框。"
-        ]
+        guideUrl: "https://open.bigmodel.cn/",
+        guideSteps: ["登录 智谱 官方开放平台，进入 API Key 管理页面。", "创建 API Key，并确认账户已开通所选模型。", "复制密钥并粘贴到对应渠道的输入框。"]
     },
     {
         "id": "siliconflow",
@@ -368,11 +363,8 @@ exports.PROVIDERS = [
                 "label": "Kimi K2.6"
             }
         ],
-        "guideSteps": [
-            "登录 硅基流动 官方开放平台，进入 API Key 管理页面。",
-            "创建 API Key，并确认账户已开通所选模型。",
-            "复制密钥并粘贴到对应渠道的输入框。"
-        ]
+        guideUrl: "https://cloud.siliconflow.cn/account/ak",
+        guideSteps: ["登录 硅基流动 官方开放平台，进入 API Key 管理页面。", "创建 API Key，并确认账户已开通所选模型。", "复制密钥并粘贴到对应渠道的输入框。"]
     },
     {
         "id": "anthropic",
@@ -418,11 +410,8 @@ exports.PROVIDERS = [
                 "label": "Claude Haiku 4.5"
             }
         ],
-        "guideSteps": [
-            "登录 Anthropic 官方开放平台，进入 API Key 管理页面。",
-            "创建 API Key，并确认账户已开通所选模型。",
-            "复制密钥并粘贴到对应渠道的输入框。"
-        ]
+        guideUrl: "https://platform.claude.com/settings/keys",
+        guideSteps: ["登录 Anthropic 官方开放平台，进入 API Key 管理页面。", "创建 API Key，并确认账户已开通所选模型。", "复制密钥并粘贴到对应渠道的输入框。"]
     },
     {
         "id": "recraft",
@@ -451,11 +440,8 @@ exports.PROVIDERS = [
             }
         ],
         "visionModels": [],
-        "guideSteps": [
-            "登录 Recraft 官方开放平台，进入 API Key 管理页面。",
-            "创建 API Key，并确认账户已开通所选模型。",
-            "复制密钥并粘贴到对应渠道的输入框。"
-        ]
+        guideUrl: "https://app.recraft.ai/",
+        guideSteps: ["登录 Recraft 官方开放平台，进入 API Key 管理页面。", "创建 API Key，并确认账户已开通所选模型。", "复制密钥并粘贴到对应渠道的输入框。"]
     },
     {
         "id": "xai",
@@ -482,11 +468,8 @@ exports.PROVIDERS = [
                 "label": "Grok 4.6"
             }
         ],
-        "guideSteps": [
-            "登录 SpaceXAI 官方开放平台，进入 API Key 管理页面。",
-            "创建 API Key，并确认账户已开通所选模型。",
-            "复制密钥并粘贴到对应渠道的输入框。"
-        ]
+        guideUrl: "https://console.x.ai/",
+        guideSteps: ["登录 SpaceXAI 官方开放平台，进入 API Key 管理页面。", "创建 API Key，并确认账户已开通所选模型。", "复制密钥并粘贴到对应渠道的输入框。"]
     },
 ];
 // 主模型能否直读参考图按模型固定判定，与 apps/web/src/constants.js 的 mainModelCanReadImages 同步。
@@ -494,10 +477,12 @@ exports.PROVIDERS = [
 for (const [id, registry] of Object.entries(static_model_catalog_1.STATIC_MODEL_REGISTRY)) {
     let provider = exports.PROVIDERS.find((item) => item.id === id);
     if (!provider) {
-        provider = { id: id, label: id === 'ark' ? '火山方舟' : id, keyPlaceholder: 'API Key', mainModel: '', imageModel: '', visionModel: '', mainModels: [], imageModels: [], visionModels: [], guideSteps: [] };
+        provider = { id: id, label: id === 'ark' ? '火山方舟' : id, keyPlaceholder: 'API Key', mainModel: '', imageModel: '', visionModel: '', mainModels: [], imageModels: [], visionModels: [], guideUrl: '', guideSteps: [] };
         const channel = static_model_catalog_1.EXTENDED_MODEL_CHANNELS[id];
         if (channel)
-            Object.assign(provider, { label: channel.label, keyPlaceholder: channel.keyPlaceholder, guideSteps: channel.guideSteps });
+            Object.assign(provider, { label: channel.label, keyPlaceholder: channel.keyPlaceholder, guideSteps: channel.guideSteps, guideUrl: channel.guideUrl });
+        if (id === 'ark')
+            Object.assign(provider, { "guideUrl": "https://console.volcengine.com/ark/", "guideSteps": ["登录火山方舟控制台，开通所需模型的推理服务。", "创建推理 API Key；该 Key 不能读取需要 AK/SK 的完整激活目录。", "如需提前确认账号可用性，可手动点击“验证所选模型”；图片验证会按该模型的最低支持分辨率产生一次调用费用。"] });
         exports.PROVIDERS.push(provider);
     }
     const options = (role) => registry.models.filter((model) => model.selectable !== false && model.roles.includes(role)).map((model) => ({ value: model.id, label: model.label }));

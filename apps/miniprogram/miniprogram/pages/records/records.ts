@@ -1,3 +1,4 @@
+import { rememberWorkPage } from '../../utils/tokendance'
 import { formatError, requestJson } from '../../utils/api'
 import { readDatasetBoolean } from '../../utils/constants'
 import {
@@ -16,6 +17,7 @@ Component({
     isLoggedIn: false,
     isAuthChecking: true,
     currentUserEmail: '',
+    currentUserEmailVerified: false,
     accountJobs: [] as Job[],
     accountJobsError: '',
     accountJobsLoading: false,
@@ -26,14 +28,19 @@ Component({
 
   lifetimes: {
     attached() {
+      ;(this as any).ownerId = getCurrentUser()?.id || ''
+      ;(this as any).requestSequence = 0
       const unsubscribe = subscribeSession((user) => {
-        const wasLoggedIn = this.data.isLoggedIn
+        const changed = (this as any).ownerId !== (user?.id || '')
+        ;(this as any).ownerId = user?.id || ''
+        if (changed) { (this as any).requestSequence++; this.setData({ accountJobs: [], accountJobsError: '', accountJobsLoading: false, localJobs: readLocalJobs() }) }
         this.setData({
           isLoggedIn: Boolean(user),
           currentUserEmail: user ? user.email : '',
+          currentUserEmailVerified: user ? user.emailVerified : false,
           isAuthChecking: false,
         })
-        if (user && !wasLoggedIn) {
+        if (user && changed) {
           this.loadAccountJobs()
         }
         if (!user) {
@@ -45,17 +52,19 @@ Component({
       this.setData({
         isLoggedIn: Boolean(user),
         currentUserEmail: user ? user.email : '',
+        currentUserEmailVerified: user ? user.emailVerified : false,
         isAuthChecking: !isSessionChecked(),
       })
     },
     detached() {
+      ;(this as any).requestSequence++
       const unsubscribe = (this as any).unsubscribeSession as (() => void) | undefined
       if (unsubscribe) unsubscribe()
     },
   },
 
   pageLifetimes: {
-    show() {
+    show() { rememberWorkPage('/pages/records/records');
       this.setData({ localJobs: readLocalJobs() })
       if (this.data.isLoggedIn) {
         this.loadAccountJobs({ silent: this.data.accountJobs.length > 0 })
@@ -69,14 +78,16 @@ Component({
       // 在途响应只对发起请求时的账号有效：登出/换号后丢弃，避免旧账号任务列表跨账号泄露
       const requestUser = getCurrentUser()
       const requestUserId = requestUser ? requestUser.id : ''
+      const sequence = (this as any).requestSequence = Number((this as any).requestSequence || 0) + 1
       if (!options || !options.silent) {
         this.setData({ accountJobsLoading: true, accountJobsError: '' })
       }
       try {
         const data = await requestJson<{ jobs?: unknown[] }>({ action: 'myJobs', limit: 50 })
-        const jobs = await hydrateRecordJobs((data.jobs || []).map(normalizeJob))
+        if ((getCurrentUser()?.id || '') !== requestUserId || sequence !== (this as any).requestSequence) return
+        const jobs = await hydrateRecordJobs((data.jobs || []).map(normalizeJob), () => (getCurrentUser()?.id || '') === requestUserId && sequence === (this as any).requestSequence)
         const currentUser = getCurrentUser()
-        if ((currentUser ? currentUser.id : '') !== requestUserId) return
+        if ((currentUser ? currentUser.id : '') !== requestUserId || sequence !== (this as any).requestSequence) return
         this.setData({
           accountJobs: jobs.map(toRecordJobSummary),
           accountJobsError: '',
@@ -84,7 +95,7 @@ Component({
         })
       } catch (error) {
         const currentUser = getCurrentUser()
-        if ((currentUser ? currentUser.id : '') !== requestUserId) return
+        if ((currentUser ? currentUser.id : '') !== requestUserId || sequence !== (this as any).requestSequence) return
         this.setData({
           accountJobsError: formatError(error),
           accountJobsLoading: false,

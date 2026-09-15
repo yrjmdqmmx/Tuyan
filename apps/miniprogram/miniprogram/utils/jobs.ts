@@ -1,3 +1,4 @@
+import { getCurrentUser } from './session'
 import { API_BASE, LOCAL_JOBS_KEY } from './config'
 import { requestJson } from './api'
 import { STATUS_LABELS } from './constants'
@@ -39,6 +40,11 @@ export interface JobStage {
 }
 
 export interface Job {
+  user_id: string
+  job_type: string
+  refine_mode: string
+  refine_mode_text: string
+  provider_regions_text: string
   recovery?: { canResume: boolean; message: string; action: string; retryAt?: string } | null
   providerCalls?: unknown[]
   id: string
@@ -123,6 +129,11 @@ export function normalizeJob(input: unknown): Job {
   const retrievalSetting = String(job.retrieval_setting || job.retrievalSetting || 'none')
 
   return {
+    user_id: String(job.user_id || job.userId || ''),
+    job_type: String(job.job_type || job.jobType || 'generate'),
+    refine_mode: String(job.refine_mode || job.refineMode || ''),
+    refine_mode_text: (job.refine_mode || job.refineMode) === 'direct-edit' ? '直接编辑' : (job.refine_mode || job.refineMode) === 'analyze-redraw' ? '分析后重绘' : '',
+    provider_regions_text: String(job.provider_regions_text || (job.providerRegions?.minimax ? `MiniMax · ${job.providerRegions.minimax === 'cn' ? '国内' : '国际'}` : '')),
     id: jobId,
     recovery: job.recovery || null,
     providerCalls: job.providerCalls || [],
@@ -350,12 +361,12 @@ function normalizeReferenceImageModeUsed(value: unknown): ReferenceImageModeUsed
 // 补拉详情用并发池（wx.request 真机最多 10 个并发，50 条全量 Promise.all 会直接 request:fail）
 const HYDRATE_CONCURRENCY = 5
 
-export async function hydrateRecordJobs(jobs: Job[]): Promise<Job[]> {
+export async function hydrateRecordJobs(jobs: Job[], isCurrent: () => boolean = () => true): Promise<Job[]> {
   const hydrated = jobs.slice()
   let cursor = 0
 
   async function worker() {
-    while (cursor < hydrated.length) {
+    while (cursor < hydrated.length && isCurrent()) {
       const index = cursor++
       const job = hydrated[index]
       const hasImage = job.result_images.some((image) => image.url)
@@ -365,7 +376,7 @@ export async function hydrateRecordJobs(jobs: Job[]): Promise<Job[]> {
       if ((!hasResult || hasImage) && (!hasReference || hasReferenceImage)) continue
       try {
         const detail = await requestJson<{ job?: unknown }>({ action: 'getJob', jobId: job.id })
-        hydrated[index] = normalizeJob(detail.job)
+        if (isCurrent()) hydrated[index] = normalizeJob(detail.job)
       } catch {
         // 补拉失败保留列表里的原始数据
       }
@@ -377,16 +388,21 @@ export async function hydrateRecordJobs(jobs: Job[]): Promise<Job[]> {
 }
 
 export function readLocalJobs(): Job[] {
+  const owner = getCurrentUser()?.id
+  if (!owner) return []
   const jobs = wx.getStorageSync(LOCAL_JOBS_KEY)
-  return Array.isArray(jobs) ? jobs.map(normalizeJob).filter((job) => job.id).map(toLocalJobSummary) : []
+  // Legacy entries without an immutable owner ID remain stored, but cannot be attributed safely.
+  return Array.isArray(jobs) ? jobs.map(normalizeJob).filter(job => job.id && job.user_id === owner).map(toLocalJobSummary) : []
 }
 
-// 写入本机最近任务（最多 10 条），返回最新列表供页面 setData。
 export function appendLocalJob(job: Job): Job[] {
-  if (!job.id) return readLocalJobs()
-  const nextJobs = [toLocalJobSummary(job), ...readLocalJobs().filter((item) => item.id !== job.id)].slice(0, 10)
-  wx.setStorageSync(LOCAL_JOBS_KEY, nextJobs)
-  return nextJobs
+  const owner = getCurrentUser()?.id
+  if (!job.id || !owner || (job.user_id && job.user_id !== owner)) return readLocalJobs()
+  const own = [toLocalJobSummary({ ...job, user_id: owner }), ...readLocalJobs().filter(item => item.id !== job.id)].slice(0, 10)
+  const previous = wx.getStorageSync(LOCAL_JOBS_KEY)
+  const retained = Array.isArray(previous) ? previous.filter(item => String(item.user_id || item.userId || '') !== owner && item.id !== job.id) : []
+  wx.setStorageSync(LOCAL_JOBS_KEY, [...own, ...retained])
+  return own
 }
 
 export function clearLocalJobs() {

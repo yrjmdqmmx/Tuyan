@@ -149,6 +149,8 @@ export async function createAuthRuntime(
       window: 60,
       max: 100,
       customRules: {
+        '/watcha/mini-start': { window: 15 * 60, max: 10 },
+        '/watcha/mini-exchange': { window: 15 * 60, max: 30 },
         '/sign-in/email': { window: 15 * 60, max: 10 },
         '/sign-up/email': { window: 15 * 60, max: 5 },
         '/send-verification-email': { window: 15 * 60, max: 3 },

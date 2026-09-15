@@ -21,4 +21,5 @@ if [[ "${WATCHA_FIXTURE_BROWSER:-0}" == '1' ]]; then
   node "$repo_dir/apps/auth-gateway/tests/integration/watcha-fixture.mjs"
 else
   node "$repo_dir/apps/auth-gateway/tests/integration/watcha-oauth.mjs"
+  node "$repo_dir/apps/auth-gateway/tests/integration/watcha-mini.mjs"
 fi

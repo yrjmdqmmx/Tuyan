@@ -23,7 +23,9 @@ export function copyImageUrl(url: string) {
 // （发给自己或文件传输助手即可转存/传电脑）。下载失败时退回复制链接。
 export function downloadShareFile(url: string, fileName = '') {
   if (!url) return
-  const name = fileName || decodeURIComponent(url.split('?')[0].split('/').pop() || '') || 'paperbanana.svg'
+  let inferredName = url.split('?')[0].split('/').pop() || ''
+  try { inferredName = decodeURIComponent(inferredName) } catch { /* Keep a malformed remote filename downloadable. */ }
+  const name = fileName || inferredName || 'paperbanana.svg'
   if (!/^https?:\/\//i.test(url)) {
     shareLocalFile(url, name, '')
     return

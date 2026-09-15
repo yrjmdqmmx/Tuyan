@@ -1,4 +1,4 @@
-<scroll-view class="page workbench-page" scroll-y type="list">
+<scroll-view class="page workbench-page" scroll-y enhanced show-scrollbar="{{false}}">
   <view class="paper-header tuyan-header">
     <view class="brand">
       <image class="brand-logo" src="{{logoSrc}}" mode="aspectFill" />
@@ -18,7 +18,7 @@
   </view>
   <view class="health-banner" wx:if="{{healthChecked && !healthOk}}">{{healthText}}</view>
 
-  <featured-template-studio templates="{{featuredTemplates}}" loading="{{featuredTemplatesLoading}}" bind:apply="onFeaturedTemplateApply" />
+  <featured-template-studio class="featured-studio" paused="{{optimizationOpen || libraryDetailOpen || showGenerationSettings || showAuthPanel || showFeedbackPanel || editingInput || templateConfirmOpen || optimizationBusy || isSubmitting || isUploadingReferences || isInspectingReferences}}" templates="{{featuredTemplates}}" loading="{{featuredTemplatesLoading}}" bind:apply="onFeaturedTemplateApply" />
 
   <view class="settings-summary-card" bindtap="openGenerationSettings">
     <view class="summary-copy">
@@ -31,7 +31,7 @@
 
   <view class="section input-workspace">
     <view class="section-head">
-      <view><view class="section-title">描述你的研究图示</view><view class="section-note">把研究方法与图注写清楚，图研会把内容组织成可投稿的视觉结构。</view></view>
+      <view><view class="section-title">描述你的研究图示</view><view class="section-note">描述方法与图注，组织成清楚的研究图示。</view></view>
       <view class="draft-state">自动保留</view>
     </view>
 
@@ -46,26 +46,28 @@
 
     <view class="field">
       <view class="field-label-row"><view class="field-label">研究方法与流程</view><view class="field-count">{{methodContent.length}} / 12000</view></view>
-      <textarea class="textarea method-textarea-v1" maxlength="12000" show-confirm-bar="{{false}}" cursor-spacing="20" value="{{methodContent}}" placeholder="粘贴论文方法部分，描述模块、数据流、实验步骤与输入输出…" bindinput="onMethodInput" /><button class="registry-retry" bindtap="optimizeDescription">优化方法描述</button>
+      <textarea bindfocus="onInputFocus" bindblur="onInputBlur" class="textarea method-textarea-v1" maxlength="12000" show-confirm-bar="{{false}}" cursor-spacing="20" value="{{methodContent}}" placeholder="粘贴论文方法部分，描述模块、数据流、实验步骤与输入输出…" bindinput="onMethodInput" />
+      <input-optimizer target="methodContent" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:visibility="onOptimizerVisibility" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="field">
       <view class="field-label-row"><view class="field-label">目标图注</view><view class="field-count">{{caption.length}} / 1000</view></view>
-      <textarea class="textarea caption-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{caption}}" placeholder="例如：图 1：所提出方法框架总览。" bindinput="onCaptionInput" />
+      <textarea bindfocus="onInputFocus" bindblur="onInputBlur" class="textarea caption-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{caption}}" placeholder="例如：图 1：所提出方法框架总览。" bindinput="onCaptionInput" />
+      <input-optimizer target="caption" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:visibility="onOptimizerVisibility" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="field negative-field">
       <view class="field-label-row"><view class="field-label">负向提示词 <text class="field-optional">可选</text></view><view class="field-count">{{negativePrompt.length}} / 1000</view></view>
-      <textarea class="textarea negative-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{negativePrompt}}" placeholder="例如：避免过密文字、装饰性背景、模糊箭头与无法辨认的小字号。" bindinput="onNegativePromptInput" />
+      <textarea bindfocus="onInputFocus" bindblur="onInputBlur" class="textarea negative-textarea" maxlength="1000" show-confirm-bar="{{false}}" value="{{negativePrompt}}" placeholder="例如：避免过密文字、装饰性背景、模糊箭头与无法辨认的小字号。" bindinput="onNegativePromptInput" />
+      <input-optimizer target="negativePrompt" inputs="{{optimizationInputs}}" main-route="{{settings.modelRoutes.main || emptyObject}}" provider-regions="{{settings.providerRegions || emptyObject}}" disabled="{{isSubmitting || optimizationBusy}}" bind:visibility="onOptimizerVisibility" bind:apply="onOptimizationApply" bind:busy="onOptimizationBusy" bind:settings="openOptimizationSettings" />
     </view>
 
     <view class="reference-shell">
       <view class="reference-upload-head">
-        <view><view class="field-label">参考来源</view><view class="field-tip">上传参考图用于识图与提示词规划，和图库检索二选一。</view></view>
+        <view><view class="field-label">参考来源 <text class="field-optional">可选</text></view></view>
         <button wx:if="{{!showReferenceLibrary}}" class="ghost-button" size="mini" disabled="{{!referenceCanAddImage || isSubmitting || isUploadingReferences || isInspectingReferences}}" bindtap="chooseReferenceFile">{{isInspectingReferences ? '检查图片中' : (isUploadingReferences ? '上传中' : '添加参考图')}}</button>
       </view>
-      <view class="field-tip">{{referenceLimitHint}}</view>
-      <view class="field-tip">{{referenceProcessingHint}}</view>
+      <view class="reference-summary">{{referenceSummary}}</view>
       <view wx:if="{{referenceSelectionIssue}}" class="error-box">{{referenceSelectionIssue}}</view>
       <view class="reference-mode-chip" wx:if="{{showReferenceLibrary}}">当前使用参考图库</view>
       <view class="reference-preview-grid" wx:if="{{referenceImages.length}}">
@@ -80,13 +82,14 @@
         <view class="field-label">参考图处理方式</view>
         <view class="reference-mode-switch"><button wx:for="{{referenceImageModeOptions}}" wx:key="value" class="{{referenceImageMode === item.value ? 'active' : ''}} {{item.value === 'main_model' && !canSelectMainModelDirect ? 'disabled' : ''}}" data-mode="{{item.value}}" bindtap="onReferenceModeTap">{{item.label}}</button></view>
       </view>
-      <view class="field-tip" wx:if="{{referenceModeNote}}">{{referenceModeNote}}</view>
+      <button class="details-toggle" bindtap="toggleReferenceDetails" aria-expanded="{{referenceDetailsOpen}}"><text>模型限制与图片处理</text><text>{{referenceDetailsOpen ? '−' : '+'}}</text></button>
+      <view wx:if="{{referenceDetailsOpen}}" class="details-content"><view>参考图用于识图与提示词规划，和图库检索二选一。</view><view>{{referenceLimitHint}}</view><view>{{referenceProcessingHint}}</view><view wx:if="{{referenceModeNote}}">{{referenceModeNote}}</view></view>
       <view wx:if="{{referenceUploadError}}" class="error-box">{{referenceUploadError}}</view>
-      <reference-library wx:if="{{showReferenceLibrary}}" task-name="{{libraryTaskName}}" selected-ids="{{manualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
+      <reference-library bind:visibility="onLibraryVisibility" wx:if="{{showReferenceLibrary}}" task-name="{{libraryTaskName}}" selected-ids="{{manualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
     </view>
 
     <button class="primary-button generate-button" loading="{{isSubmitting}}" disabled="{{!canSubmit}}" bindtap="submitJob">{{isInspectingReferences ? '正在检查参考图' : (isUploadingReferences ? '正在上传参考图' : (isSubmitting ? '正在提交' : '生成学术图示'))}}</button>
-    <view wx:if="{{!canSubmit}}" class="submit-tip">请确认模型目录可用、填写本次可达渠道的 API Key，并完成至少 20 字方法内容与图注。</view>
+    <view wx:if="{{!canSubmit}}" class="submit-tip">{{submitHint}}</view><button wx:if="{{missingCredentialProvider}}" class="credential-fix" bindtap="configureMissingCredential">配置缺失凭据 ›</button>
     <view wx:if="{{error}}" class="error-box">{{error}}</view>
   </view>
 
@@ -104,13 +107,13 @@
     <stage-timeline wx:if="{{job}}" stages="{{job.stages}}" references="{{job.retrieved_references}}" />
   </view>
 
+  <button class="feedback-link" bindtap="openFeedbackPanel">意见反馈</button>
   <view class="footer-space"></view>
 </scroll-view>
 
 <auth-panel show="{{showAuthPanel}}" bind:close="closeAuthPanel" bind:authed="onAuthed" />
 <feedback-panel show="{{showFeedbackPanel}}" job-id="{{currentJobId}}" bind:close="closeFeedbackPanel" />
-<generation-settings-sheet show="{{showGenerationSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
+<generation-settings-sheet focus-provider="{{credentialFocusProvider}}" purpose="{{settingsPurpose}}" reference-count="{{referenceImages.length}}" reference-image-mode="{{referenceImageMode}}" show="{{showGenerationSettings}}" registry-version="{{registryVersion}}" settings="{{settings}}" api-keys="{{apiKeysForSheet}}" execution-roles="{{settingsExecutionRoles}}" manual-reference-ids="{{manualReferenceIds}}" library-task-name="{{libraryTaskName}}" bind:close="closeGenerationSettings" bind:save="saveGenerationSettings" />
 
-<movable-area class="fab-area"><movable-view class="feedback-fab" direction="all" x="{{fabX}}" y="{{fabY}}" inertia bindtap="openFeedbackPanel">反馈</movable-view></movable-area>
 
 <view wx:if="{{job.recovery}}" class="error-box">{{job.recovery.message}}<navigator url="/pages/job-detail/job-detail?jobId={{job.id}}">查看原任务并恢复</navigator></view>

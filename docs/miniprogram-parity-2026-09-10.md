@@ -1,0 +1,43 @@
+# 小程序 3.2.0：TokenDance、账户与参考图 v2 对齐
+
+权威仓库：https://github.com/yrjmdqmmx/Tuyan 。本轮隔离分支 `codex/miniprogram-parity-20260910`，在已验收的 3.1.0 `8344611` 基础上合并最新主线 `8c23a38754f01cf5d43166bfb08cc0f8ab462586`。旧分支和旧 worktree 保留，不回写主目录。开始时上传副本全部 181 个受控文件与上一轮 checksum 一致，没有私自改写的文件；9 个额外本机文件单独保全。
+
+审计交叉核对 Git 提交、PR #188/#189/#191 及 SYNC，另查 #190/#192 发布证据。#184 多身份登录未合并，#183 管理后台工作不属于本次小程序需求。线上公共 registry 只读检查为 `2026-09-09.v18`，22 渠道、739 条静态模型（观猹 62 条）；referenceUpload/refineUpload 均为 v2。
+
+## 具体缺口与处理
+
+| 功能 / 优先级 | Web、后端当前行为与代码依据 | 3.1.0 上传副本缺口 / 主线已有内容 | 本轮小程序处理与依赖 |
+| --- | --- | --- | --- |
+| 渠道授权 P0 | #188 `034665a`；`packages/api/src/tokendance.ts`、API `tokendance-service.ts`：PKCE、服务端加密 Key，mini 使用 manual-code | 副本无 TD；主线已有授权页，但账号切换隔离、返回工作区与既有安全页需适配 | 复用服务端 action，独立账户 tab；逻辑层存一次性 code，换号/离开清理；迟到结果按 epoch 丢弃。真实跨浏览器授权仍需真机验收 |
+| 账号 P0 | #191 `487e3e0` Web 独立 AccountPage；图研身份与 TD 连接分开 | 副本有 3.1 安全能力，主线页面不能直接替换 | 保留验证/找回/修改密码/退出/删除与生命周期提示；账户第四个 tab，保留生成、精修输入和原任务返回 |
+| 模型与合法参数 P0 | v18；`config/tokendance/catalog.json`、`image-size-contracts.json`；Web 初始 Pro，运行时默认 Lite | 旧副本 21 渠道/677；主线已有 62 个 TD 模型，但新会话偏好须对齐 | 复用目录生成物；首次优先 Pro，既有选择不被排序覆盖。Pro 1K/1.5K/2K，Lite 2K/3K/4K，按分辨率过滤可用比例；TD 不手填/发送 Key |
+| 四处优化 P0 | #189 `2c518f9` `optimizeInputs.optimizedText`，服务端 TD 授权 | 主线仅页面方法与 3.1 四字段组件重叠 | 四处统一组件：方法、图注、负向提示、精修指令。预览、显式采用、一次撤销、取消、编辑冲突与 owner 隔离保留 |
+| 生成参考图 P0 | #191；`packages/api/src/reference-upload.ts`：20MiB/张、8 张/80MiB、16384px/32MP，SVG 5MiB；平台额度与模型提交分离 | 主线已有 v2；副本仍旧限制及缺少原图尺寸异步检查 | 复用共享 policy 生成物，原图读取、检查期间禁止重复选择/提交；账户切换丢弃晚到检查；模型不兼容时保留图片并阻止提交 |
+| 原图精修 P0 | 后端 refineUpload v2；原图 finalize 后使用 sourceImageUpload.objectKey，direct-edit/vision 消费者各异 | 3.1 已有真正上传/取消/重试/结果；主线未包含这些完整改动，且旧 version===1 会禁用新上传 | 适配 v1/v2、20MiB 原图与最终尺寸、模型短边/比例；签名过期时间传到 PUT，失败 abort，换号不越权清理；保留 objectKey 请求与原图质量 |
+| 钱包与充值 P1 | #188/#189：微元余额、整数元充值、attemptId、最近记录、轮询、uncertain | 主线已有初版，副本无；重复创建/晚到订单可能混淆 | 展示六位余额、记录状态；拒绝小数、并发与待核对重复创建；选中订单、owner 变化时忽略旧响应。支付宝仅复制链接/网页入口；真实订单和支付未执行 |
+| 失败恢复 P0 | #189 retry_request、retryAfterSeconds、recovery.canResume/retryAt、providerCalls | 主线新增恢复控件；与 3.1 owner 隔离需合并 | 保留原 jobId 恢复、倒计时、返回刷新、单次提交与账号切换 guard；恢复按钮和调用记录移入滚动区，避免落在屏幕外；余额/Key/限流/不确定调用给具体指引，不自动创建替代任务 |
+| 图库/结果/导出 P1 | bench scope、分页/筛选、objectKey 与图像导出契约未变化 | 3.1 已完成 | 保留并回归；无新后端契约需适配。浏览器下载与桌面后台专属操作不复制成小程序占位界面 |
+| 仅 Web / 外部约束 | OAuth 回调窗口、观猹身份登录研究、管理员价格页与发布运维 | #184 已关闭；身份登录不等于渠道授权 | 不宣称身份登录已发布；mini 采用现有后端 manual-code 流。真实平台跨应用授权/支付/付费生成与正式发布另行验收 |
+
+## 验证与交付
+
+验证、原生截图、受控同步清单见 `docs/evidence/miniprogram-3.2.0/`。源码完成、本地副本同步、微信上传、审核、正式发布分别记录；本轮没有生产后端变更、真实充值/支付或供应商调用。
+
+
+- `npm test` 84/84，通过全部小程序测试；`npm run check` / `npm run build` 通过。全新临时目录构建与 46 个受控 JS 逐文件相同。
+- 共享模型源契约 3/3；`sync-model-catalog --check`（v18/739）与 `sync-reference-upload --check` 无漂移。
+- 微信开发者工具 Nightly 2.01.2511282、基础库 3.16.0：观猹账户/授权 code/余额与订单、四处优化、模型参数和选择保留、工作区往返、原任务恢复至 queued 的最终自动化场景通过，运行捕获异常 0。
+- 任务详情恢复后通过记录 tab 重建详情入口，保存原 jobId；恢复按钮与调用记录在滚动区内。测试验证用户可见的失败恢复流程，不将排队后直接调用已隐藏的授权处理器算作可见流程验收。
+- 工具诊断：先前多轮调试出现基础库 timeout、一次模拟器初始化 subPackages 错误与失效的导航状态；重新打开隔离项目、仅清编译缓存后完成复验。没有清除用户数据、文件缓存、授权或登录状态；不据此宣称真机无问题。
+- 公共接口只读：registry v18，参考图库两页各 12 条、总 306、无重复；真实生产观猹授权、充值、支付和供应商调用均未执行。
+- 所有带 `mocked` 的截图是原生模拟器真实组件配合模拟响应，不能当成真实余额、到账或模型结果证据。
+
+
+## 最终交付状态
+
+- 源码提交：`d5ad4fcd3bba9710e4177814f0dcd7ac775174f8`，合并父节点为此前 3.1.0 和当前主线；工作分支 `codex/miniprogram-parity-20260910`。本轮未 push、未建发布 PR。
+- 本地副本：`/Users/a1-6/WeChatProjects/miniprogram-9` 已同步；192 文件一致，11 新增、58 更新、0 删除。9 个本机额外文件包括私有配置/授权配置/本机图片及工具文件全部保持原 checksum。备份只包含 58 个被更新的受控旧文件，位于 `/Users/a1-6/.codex/tmp/tuyan-miniprogram-parity-20260910/upload-backup`。
+- 同步后副本独立跑 84/84；实际上传目录的原生运行确认 3.2.0、registry v18、62 个 TD 模型、refineUpload v2，场景捕获异常 0；随后再次验证所有文件和本机文件 checksum。
+- 开发者工具冷启动仍出现基础库 WAServiceMainContext timeout 诊断，最终受控场景无捕获异常；真机跨应用与实际消费仍为独立验收门槛。
+- 微信上传：未执行；平台审核：未提交；正式发布：未执行；生产后端：无变更；真实观猹授权/充值/支付/供应商调用：未执行。
+- 核心证据：[汇总](evidence/miniprogram-3.2.0/validation.json)、[同步清单](evidence/miniprogram-3.2.0/local-sync.json)、[原生账户/任务](evidence/miniprogram-3.2.0/native-tokendance-acceptance.json)、[原生上传/结果](evidence/miniprogram-3.2.0/native-fixture-acceptance.json)、[实际副本](evidence/miniprogram-3.2.0/native-synced-copy.json)。

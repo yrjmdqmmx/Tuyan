@@ -1,1 +1,38 @@
-.account-mask{position:fixed;inset:0;z-index:230;display:flex;align-items:flex-end;background:rgba(14,20,18,.58)}.account-sheet{width:100%;height:82vh;box-sizing:border-box;padding:28rpx;border-radius:30rpx 30rpx 0 0;background:#f8f7f2}.account-head{display:flex;align-items:center;justify-content:space-between}.account-title{font-size:34rpx;font-weight:850}.account-email{margin-top:6rpx;color:#737d78;font-size:20rpx}.account-close{margin:0;height:56rpx;line-height:56rpx;font-size:20rpx}.account-scroll{height:calc(82vh - 100rpx);margin-top:22rpx}.privacy-card{padding:20rpx;border:1rpx solid #cadccf;border-radius:17rpx;background:#eef6f0;color:#52625b;font-size:21rpx;line-height:1.65}.privacy-title{margin-bottom:8rpx;color:#2c604f;font-size:24rpx;font-weight:800}.logout-button{margin:20rpx 0 0;border:1rpx solid #ccd3ce;border-radius:15rpx;background:#fff;color:#33423b}.danger-zone{margin-top:26rpx;padding:22rpx;border:1rpx solid #e6c8bd;border-radius:18rpx;background:#fff8f4}.danger-title{color:#993d30;font-size:26rpx;font-weight:850}.danger-note{margin-top:8rpx;color:#7c6963;font-size:20rpx;line-height:1.6}.danger-input{height:72rpx;margin-top:14rpx;padding:0 16rpx;border:1rpx solid #dfd3ce;border-radius:12rpx;background:#fff;font-size:22rpx}.danger-confirm{display:flex;align-items:center;gap:8rpx;margin-top:18rpx;color:#735d56;font-size:20rpx}.delete-button{margin:20rpx 0 0;border-radius:14rpx;background:#a54334;color:#fff}.account-error{margin-top:14rpx;color:#a13e30;font-size:20rpx}
+.account-mask { position:fixed; inset:0; z-index:230; display:flex; align-items:flex-end; background:rgba(14,20,18,.58); }
+.account-sheet { width:100%; height:88vh; max-height:1180rpx; box-sizing:border-box; padding:30rpx 28rpx 0; overflow:hidden; border-radius:34rpx 34rpx 0 0; background:linear-gradient(180deg,#fbfcf8 0%,#f5f5ef 100%); box-shadow:0 -24rpx 70rpx rgba(16,39,29,.2); }
+.account-head { display:flex; align-items:flex-start; justify-content:space-between; gap:24rpx; }
+.account-heading { min-width:0; flex:1; }
+.account-kicker { color:#39715c; font-size:19rpx; font-weight:800; letter-spacing:2rpx; }
+.account-title { margin-top:5rpx; color:#233a30; font-size:36rpx; font-weight:850; line-height:1.25; }
+.account-email { max-width:100%; margin-top:7rpx; overflow-wrap:anywhere; color:#74817b; font-size:21rpx; }
+.account-close { flex:none; min-width:104rpx; min-height:88rpx; margin:0; padding:0 18rpx; border:1rpx solid #d5ddd8; border-radius:44rpx; background:#fff; color:#53635b; font-size:21rpx; line-height:88rpx; }
+.account-scroll { height:calc(88vh - 126rpx); max-height:1040rpx; margin-top:20rpx; }
+.security-card,.security-section { box-sizing:border-box; padding:24rpx; border:1rpx solid #cddfd3; border-radius:20rpx; background:#fff; box-shadow:0 8rpx 26rpx rgba(44,82,62,.05); }
+.security-card { background:linear-gradient(145deg,#eff7f1 0%,#f9fbf7 100%); }
+.security-section { margin-top:20rpx; }
+.security-card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:20rpx; }
+.security-eyebrow { margin-bottom:6rpx; color:#60766b; font-size:18rpx; font-weight:750; letter-spacing:1rpx; }
+.security-title { color:#294f3e; font-size:26rpx; font-weight:850; }
+.security-copy { margin-top:10rpx; color:#66756e; font-size:21rpx; line-height:1.65; }
+.verify-badge { flex:none; padding:8rpx 16rpx; border-radius:999rpx; font-size:19rpx; font-weight:800; }
+.verify-badge.verified { background:#d8ecdf; color:#2b6549; }
+.verify-badge.pending { background:#fff0d7; color:#90601e; }
+.resend-button,.change-password-button { display:flex; align-items:center; justify-content:center; width:100%; min-height:88rpx; box-sizing:border-box; margin:20rpx 0 0; border-radius:16rpx; font-size:23rpx; font-weight:800; }
+.resend-button { border:1rpx solid #bdd5c5; background:#fff; color:#32664f; }
+.change-password-button { background:#2f6e55; color:#fff; }
+.security-input,.danger-input { width:100%; height:88rpx; min-height:88rpx; box-sizing:border-box; margin-top:14rpx; padding:0 18rpx; border:1rpx solid #d6ded9; border-radius:14rpx; background:#fff; font-size:23rpx; line-height:normal; }
+.security-message { box-sizing:border-box; margin-top:16rpx; padding:16rpx 18rpx; border-radius:14rpx; font-size:21rpx; line-height:1.5; overflow-wrap:anywhere; }
+.security-message.success { border:1rpx solid #c8dece; background:#edf7ef; color:#326248; }
+.security-message.error { border:1rpx solid #e8cbc3; background:#fff3f0; color:#9b4032; }
+.privacy-card { margin-top:20rpx; padding:20rpx; border:1rpx solid #d6ddd8; border-radius:17rpx; background:#f5f7f4; color:#5b6862; font-size:20rpx; line-height:1.65; }
+.privacy-title { margin-bottom:8rpx; color:#3d554a; font-size:23rpx; font-weight:800; }
+.logout-button { display:flex; align-items:center; justify-content:center; width:100%; min-height:88rpx; box-sizing:border-box; margin:20rpx 0 0; padding:0 24rpx; border:1rpx solid #ccd3ce; border-radius:16rpx; background:#fff; color:#33423b; font-size:23rpx; line-height:1.2; }
+.danger-zone { box-sizing:border-box; margin-top:28rpx; padding:22rpx; border:1rpx solid #e6c8bd; border-radius:20rpx; background:#fff8f4; }
+.danger-title { color:#993d30; font-size:26rpx; font-weight:850; }
+.danger-note { margin-top:8rpx; color:#7c6963; font-size:20rpx; line-height:1.6; }
+.danger-input { border-color:#dfd3ce; }
+.danger-confirm { display:flex; align-items:center; gap:8rpx; min-height:88rpx; margin-top:10rpx; color:#735d56; font-size:20rpx; }
+.delete-button { display:flex; align-items:center; justify-content:center; min-height:88rpx; box-sizing:border-box; margin:14rpx 0 0; border-radius:16rpx; background:#a54334; color:#fff; font-size:23rpx; font-weight:800; }
+.account-error { margin-top:14rpx; color:#a13e30; font-size:20rpx; line-height:1.5; overflow-wrap:anywhere; }
+.account-safe-space { height:calc(34rpx + env(safe-area-inset-bottom)); }
+@media (max-width:360px) { .account-sheet { padding-left:20rpx; padding-right:20rpx; } .security-card,.security-section,.danger-zone { padding:20rpx; } }

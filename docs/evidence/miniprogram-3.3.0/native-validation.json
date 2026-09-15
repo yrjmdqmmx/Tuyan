@@ -1,0 +1,15 @@
+{
+  "version": "3.3.0",
+  "mode": "native simulator, all identity/email/deletion/network/storage/clipboard responses mocked",
+  "checks": [
+    "native login entry -> browser-code handoff -> email signup -> logged-in account; no code in view state",
+    "return to original workbench preserves method and model selection",
+    "passwordless linked account shows password setup and protects the last login method",
+    "email-verified unlink and explicit bind preserve immutable account ID",
+    "passwordless account deletion uses email proof plus explicit confirmation and renders accepted lifecycle; mocked deletion only"
+  ],
+  "errors": [],
+  "realMail": 0,
+  "realAccountChanges": 0,
+  "realProviderCalls": 0
+}

@@ -1,3 +1,4 @@
+import { createWatchaMiniBridge } from './watcha-mini.js';
 import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from 'node:crypto';
 import { ObjectId } from 'mongodb';
 import { APIError, createAuthEndpoint, getSessionFromCtx } from 'better-auth/api';
@@ -115,6 +116,7 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
     if (!row) throw fail('PENDING_EXPIRED');
     if (row.userId) {
       if (row.userId !== session?.user.id) throw fail('ACCOUNT_CHANGED', 'FORBIDDEN');
+      if (row.sessionBinding && row.sessionBinding !== hmac(session.session.token)) throw fail('ACCOUNT_CHANGED', 'FORBIDDEN');
       await active(row.userId, options, row.generation);
     }
     return row;
@@ -168,8 +170,13 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
   function endpoint(path, method, handler) {
     return createAuthEndpoint(path, { method, requireHeaders: true }, async (ctx) => {
       ctx.setHeader('Cache-Control', 'no-store'); ctx.setHeader('Referrer-Policy', 'no-referrer');
-      if (!enabled && path !== '/watcha/status') throw fail('DISABLED', 'SERVICE_UNAVAILABLE');
-      if (method === 'POST' && (!origins.has(ctx.headers.get('origin')) || ctx.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json')) throw fail('INVALID_ORIGIN', 'FORBIDDEN');
+      if (!enabled && !['/watcha/status', '/watcha/mini-status'].includes(path)) throw fail('DISABLED', 'SERVICE_UNAVAILABLE');
+      const origin = ctx.headers.get('origin');
+      const referer = ctx.headers.get('referer') || '';
+      const nativeOrigin = ['https://servicewechat.com', 'https://developers.weixin.qq.com'].includes(origin) && config.frontendOrigins.includes(origin);
+      const nativeReferer = !origin && /^https:\/\/servicewechat\.com\/wxfb85c471df3d9022\/(?:[0-9]+|devtools)\/page-frame\.html$/.test(referer) && config.frontendOrigins.includes('https://servicewechat.com');
+      const miniAllowed = path !== '/watcha/start' && (nativeOrigin || nativeReferer);
+      if (method === 'POST' && (!(origins.has(origin) || miniAllowed) || ctx.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json')) throw fail('INVALID_ORIGIN', 'FORBIDDEN');
       try { return await handler(ctx); }
       catch (error) {
         if (error instanceof APIError) throw error;
@@ -178,6 +185,16 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
       }
     });
   }
+  async function readStatus(ctx) {
+    if (!enabled) return { available: false, linked: false, hasPassword: false, emailVerified: false, pending: null };
+    const session = await current(ctx);
+    const credentialQuery = session ? { userId: { $in: candidates(session.user.id) } } : null;
+    const linked = Boolean(credentialQuery && await accounts.findOne({ ...credentialQuery, providerId: 'watcha' }));
+    const hasPassword = Boolean(credentialQuery && await accounts.findOne({ ...credentialQuery, providerId: 'credential', password: { $type: 'string', $ne: '' } }));
+    const row = await pending(ctx, session).catch(() => null);
+    return { available: true, linked, hasPassword, emailVerified: session?.localUser.emailVerified === true, pending: row ? { nickname: row.nickname } : null };
+  }
+  const mini = createWatchaMiniBridge({ config, txs, accounts, now, endpoint, current, active, verified, browserHash, cookieName, cookieOptions, expiry, hmac, fail, createSession, readStatus, authorizationUrl: (state, verifier) => watchaAuthorizationUrl(settings, state, verifier) });
   return {
     async handle(request, handler) {
       const url = new URL(request.url);
@@ -219,15 +236,8 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
       } catch { return false; }
     },
     plugin: { id: 'tuyan-watcha', endpoints: {
-      watchaStatus: endpoint('/watcha/status', 'GET', async (ctx) => {
-        if (!enabled) return ctx.json({ available: false, linked: false, hasPassword: false, emailVerified: false, pending: null });
-        const session = await current(ctx);
-        const credentialQuery = session ? { userId: { $in: candidates(session.user.id) } } : null;
-        const linked = Boolean(credentialQuery && await accounts.findOne({ ...credentialQuery, providerId: 'watcha' }));
-        const hasPassword = Boolean(credentialQuery && await accounts.findOne({ ...credentialQuery, providerId: 'credential', password: { $type: 'string', $ne: '' } }));
-        const row = await pending(ctx, session).catch(() => null);
-        return ctx.json({ available: true, linked, hasPassword, emailVerified: session?.localUser.emailVerified === true, pending: row ? { nickname: row.nickname } : null });
-      }),
+      ...mini.endpoints,
+      watchaStatus: endpoint('/watcha/status', 'GET', async ctx => ctx.json(await readStatus(ctx))),
       watchaStart: endpoint('/watcha/start', 'POST', async (ctx) => {
         const { intent, returnOrigin } = ctx.body || {};
         if (!['login', 'link'].includes(intent) || !origins.has(returnOrigin) || returnOrigin !== ctx.headers.get('origin')) throw fail('INVALID_REQUEST');
@@ -240,24 +250,28 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
         await txs.insertOne({ _id: digest(state), kind: 'state', browserHash: digest(browserToken), verifier, intent, returnOrigin,
           ...(session ? { userId: session.user.id, generation: session.generation } : {}), createdAt: now(), expiresAt: expiry() });
         ctx.setCookie(cookieName, browserToken, cookieOptions);
+        ctx.setCookie(`${cookieName}_mini`, '', { ...cookieOptions, maxAge: 0 });
         return ctx.json({ url: watchaAuthorizationUrl(settings, state, verifier) });
       }),
       watchaCallback: endpoint('/oauth2/callback/watcha', 'GET', async (ctx) => {
         const query = new URL(ctx.request.url).searchParams;
         const state = query.get('state');
+        let miniCallback = ctx.getCookie(`${cookieName}_mini`) === '1';
         let target = `${fallbackOrigin}/account/watcha-callback.html?watcha=error`;
         try {
           if (!validOpaque(state) || !browserHash(ctx)) throw fail('INVALID_STATE');
           // Wrong browser cannot consume another browser's transaction.
           const row = await txs.findOneAndDelete({ _id: digest(state), kind: 'state', browserHash: browserHash(ctx), expiresAt: { $gt: now() } });
           if (!row) throw fail('INVALID_STATE');
-          target = `${row.returnOrigin}/account/watcha-callback.html?watcha=error`;
-          const session = await current(ctx, row.intent === 'link');
-          if ((row.intent === 'login' && session) || (row.userId && session?.user.id !== row.userId)) throw fail('ACCOUNT_CHANGED');
+          miniCallback = Boolean(row.clientHash);
+          target = `${row.returnOrigin || fallbackOrigin}/account/watcha-callback.html?watcha=error`;
+          const session = miniCallback ? null : await current(ctx, row.intent === 'link');
+          if (!miniCallback && ((row.intent === 'login' && session) || (row.userId && session?.user.id !== row.userId))) throw fail('ACCOUNT_CHANGED');
           if (row.userId) await active(row.userId, {}, row.generation);
           const code = query.get('code');
           if (query.has('error') || !code || code.length > 4096 || query.getAll('code').length !== 1 || query.getAll('state').length !== 1) throw fail('INVALID_STATE');
           const identity = await exchangeWatchaIdentity(settings, code, row.verifier, fetchImpl);
+          if (miniCallback) return await mini.callback(ctx, row, identity);
           const binding = await accounts.findOne({ providerId: 'watcha', accountId: identity.accountId });
           if (row.intent === 'login' && binding) {
             const found = await active(String(binding.userId));
@@ -272,7 +286,7 @@ export function createWatchaOAuth({ config, db, mongoClient, limiter, transport,
             target = target.replace('watcha=error', 'watcha=pending');
           }
         } catch { /* All provider and state errors use a fixed, secret-free redirect. */ }
-        return ctx.redirect(target);
+        return miniCallback ? mini.result(ctx) : ctx.redirect(target);
       }),
       watchaEmailCode: endpoint('/watcha/email-code', 'POST', async (ctx) => {
         const { purpose, email } = ctx.body || {};

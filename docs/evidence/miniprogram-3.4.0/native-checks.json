@@ -1,0 +1,101 @@
+{
+  "environment": "WeChat DevTools Stable 2.02.2608070, base library 3.16.0",
+  "mode": "native UI with isolated local response fixture; service port remains off",
+  "fixtureProject": "/Users/a1-6/.codex/tmp/tuyan-mini-ui-20260913/qa-project",
+  "baseline": "c3d6a67",
+  "cases": [
+    {
+      "scene": "generation-submit",
+      "device": "iPhone 12/13 (Pro), 390px",
+      "observed": {
+        "request": {
+          "model": "seedream-5.0-pro",
+          "size": "1K",
+          "ratio": "16:9"
+        },
+        "saved": {
+          "model": "seedream-5.0-pro",
+          "size": "1K",
+          "ratio": "16:9"
+        }
+      },
+      "result": "pass; native save and submit buttons, request intercepted locally"
+    },
+    {
+      "scene": "ratio-common-expanded",
+      "observed": "eight common options; all 46 expanded; extreme shapes; selected 16:9; scroll to end; footer visible",
+      "result": "pass"
+    },
+    {
+      "scene": "wxss-warning",
+      "observed": "auth-panel tag selector warning absent after rebuild",
+      "result": "pass"
+    },
+    {
+      "scene": "small-phone-settings",
+      "device": "iPhone 5, 320 x 568",
+      "observed": "模型行不换行挤压；固定紧凑保存区；滚动到高级设置与凭据；16:9 草稿取消后摘要仍为 auto/Pro/1K",
+      "result": "pass"
+    },
+    {
+      "scene": "small-phone-account",
+      "device": "iPhone 5, 320 x 568",
+      "observed": "身份与消费授权分组，管理可展开；充值金额与创建按钮完整可达；未创建充值单",
+      "result": "pass"
+    },
+    {
+      "scene": "refine-flow",
+      "device": "iPhone 15 Pro Max, 430 x 932",
+      "observed": "实际历史选择器选择本地诊断图，指令输入、16:9 比例、原生提交按钮；本地模拟 running/failed/succeeded 布局；保存/发送入口可见",
+      "request": {
+        "model": "seedream-5.0-pro",
+        "size": "1K",
+        "ratio": "16:9"
+      },
+      "result": "pass"
+    },
+    {
+      "scene": "refine-account-round-trip",
+      "device": "iPhone 15 Pro Max, 430 x 932",
+      "observed": "账户返回原页面，原图、指令、16:9 选择保留",
+      "result": "pass"
+    },
+    {
+      "scene": "final-native-console",
+      "device": "iPhone 5, 320 x 568",
+      "observed": "最终冷编译后，通过真实页面处理函数提交本地模拟精修：0 errors / 1 warning（灰度基础库3.16.0）；无 WXSS、ratio value 或 stage-timeline 数组告警",
+      "result": "pass"
+    },
+    {
+      "scene": "screenshots",
+      "observed": "会话内输出生成设置、参考来源、精修、账户四组原生调整前后截图；基线为 c3d6a67 的3.3.0隔离副本；之后截图使用3.4.0在320/390/430px机型验收；截图未另行保存为仓库PNG",
+      "result": "delivered inline"
+    },
+    {
+      "scene": "actual-upload-directory-after-sync",
+      "project": "/Users/a1-6/WeChatProjects/miniprogram-9",
+      "observed": {
+        "client": "miniprogram-3.4.0",
+        "model": "seedream-5.0-pro",
+        "size": "1K",
+        "ratio": "auto",
+        "methodLength": 166,
+        "captionLength": 23,
+        "consoleErrors": 0,
+        "consoleWarnings": "hot reload enabled and gray base-library notices only; no business selector warnings"
+      },
+      "result": "pass; project reopened, existing login and draft visible, returned to generation page"
+    }
+  ],
+  "realProviderCalls": 0,
+  "realPaymentOrders": 0,
+  "realIdentityChanges": 0,
+  "codeCommit": "a68aeedee91380e5920f8b1dc22861dbd574dce6",
+  "limitations": [
+    "真实手机软键盘与输入法未验收；inset/resize重复扣减有单测",
+    "未进行真实新增身份登录、绑定、解绑、充值、供应商生成或精修",
+    "真实文件上传/优化/恢复端到端本轮未重做；沿用已有实现与回归",
+    "CLI服务端口未开启；原生截图和手工交互验收；脚本注入仅作用于隔离fixture的响应/任务状态",
+    "早期诊断脚本输入产生过一次控制台SyntaxError，最终冷编译已清除；不是产品代码运行错误"
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "mode": "native simulator; all account, payment, auth, optimization, resume network and storage writes mocked",
+  "version": "miniprogram-3.2.0",
+  "checks": [
+    "manual-code UI; logic-only code; connection distinct from identity; microyuan balance; explicit payment/order-query mocked",
+    "account round trip retains generation input; all three generation optimization components preview/apply/undo without TD keys",
+    "TD first channel; Pro 1K/1.5K/2K; Lite 2K/3K/4K; saved route remains Lite",
+    "refine account round trip retains instruction; fourth optimizer uses TD",
+    "account return restores original jobId; resume dispatch reuses same failed job and returns it to queued",
+    "uncertain payment reply blocks a second creation"
+  ],
+  "calls": [
+    {
+      "action": "get-session",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "myJobs",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "myJobs",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "modelRegistry",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceAuthorize",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceExchange",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceBalance",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDancePaymentCreate",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDancePaymentStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDancePayments",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDancePaymentCreate",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "optimizeInputs",
+      "target": "methodContent",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "optimizeInputs",
+      "target": "caption",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "optimizeInputs",
+      "target": "negativePrompt",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "myJobs",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "myJobs",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "optimizeInputs",
+      "target": "editInstruction",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "getJob",
+      "hasApiKey": false,
+      "hasTdKey": false,
+      "jobId": "td-native-job"
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "myJobs",
+      "hasApiKey": false,
+      "hasTdKey": false
+    },
+    {
+      "action": "getJob",
+      "hasApiKey": false,
+      "hasTdKey": false,
+      "jobId": "td-native-job"
+    },
+    {
+      "action": "tokenDanceResume",
+      "hasApiKey": false,
+      "hasTdKey": false,
+      "jobId": "td-native-job"
+    },
+    {
+      "action": "getJob",
+      "hasApiKey": false,
+      "hasTdKey": false,
+      "jobId": "td-native-job"
+    }
+  ],
+  "errors": [],
+  "providerCalls": 0,
+  "paymentCreates": 0
+}

@@ -50,12 +50,24 @@ export interface RegistryProvider {
 }
 
 export interface ModelRegistry {
+  inputOptimizationContractVersion?: number
+  inputOptimizationTargets?: string[]
+  refineUpload?: RefineUploadCapability
   referenceUpload?: { version: number; platform: Record<string, any> }
   providerRegionContractVersion?: number
   registryVersion: string
   routeContractVersion: number
   supportsModelRoutes: boolean
   providers: Partial<Record<ModelProviderId, RegistryProvider>>
+}
+
+export interface RefineUploadCapability {
+  version: number
+  mimeTypes: string[]
+  maxBytes: number
+  maxDimension: number
+  maxPixels: number
+  modelMaxBytes: Record<string, number>
 }
 
 export interface RegistryModelPartition {
@@ -79,8 +91,17 @@ export function normalizeModelRegistry(input: unknown): ModelRegistry {
   for (const providerId of MODEL_PROVIDER_IDS) {
     if (providerSource[providerId]) providers[providerId] = normalizeProvider(providerId, providerSource[providerId])
   }
+  const upload = asRecord(source.refineUpload)
+  const positive = (value: unknown) => Number.isFinite(Number(value)) && Number(value) > 0
+  const refineUpload = [1, 2].includes(Number(upload.version)) && Array.isArray(upload.mimeTypes) && upload.mimeTypes.length > 0 && [upload.maxBytes, upload.maxDimension, upload.maxPixels].every(positive)
+    ? { version: Number(upload.version), mimeTypes: stringArray(upload.mimeTypes).filter(mime => ['image/png', 'image/jpeg', 'image/webp'].includes(mime)), maxBytes: Number(upload.maxBytes), maxDimension: Number(upload.maxDimension), maxPixels: Number(upload.maxPixels), modelMaxBytes: Object.fromEntries(Object.entries(asRecord(upload.modelMaxBytes)).filter(([, value]) => positive(value)).map(([key, value]) => [key, Number(value)])) }
+    : undefined
   const referenceUpload = source.referenceUpload && typeof source.referenceUpload === 'object' ? asRecord(source.referenceUpload) : undefined
-  return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers }
+  return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers,
+    inputOptimizationContractVersion: numberValue(source.inputOptimizationContractVersion),
+    ...(Array.isArray(source.inputOptimizationTargets) ? { inputOptimizationTargets: stringArray(source.inputOptimizationTargets) } : {}),
+    ...(refineUpload?.mimeTypes.length ? { refineUpload } : {}),
+  }
 }
 
 function normalizeProvider(providerId: ModelProviderId, input: unknown): RegistryProvider {

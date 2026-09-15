@@ -45,7 +45,7 @@ test('benchmark header preserves nav labels, hrefs, external targets, and active
   assert.equal(screen.getByRole('link', { name: '排行榜' }).getAttribute('href'), '/leaderboard')
   assert.equal(screen.getByRole('link', { name: '提交评估题' }).getAttribute('href'), '/leaderboard/submit-prompt')
   const github = screen.getByRole('link', { name: 'GitHub' })
-  assert.equal(github.getAttribute('href'), 'https://github.com/yrjmdqmmx/Tuyan-clients')
+  assert.equal(github.getAttribute('href'), 'https://github.com/yrjmdqmmx/Tuyan')
   assert.equal(github.getAttribute('target'), '_blank')
   const openacad = screen.getByRole('link', { name: 'OpenAcad' })
   assert.equal(openacad.getAttribute('href'), 'https://openacad.xyz/')

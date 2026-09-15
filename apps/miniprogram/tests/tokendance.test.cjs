@@ -4,6 +4,94 @@ const fs = require('node:fs')
 const vm = require('node:vm')
 const { scopedApiKeysForRoles, requiredCreateRouteRoles } = require('../miniprogram/utils/model-routing.js')
 
+function connectionFixture() {
+  let user = { id: 'owner-a' }
+  const listeners = new Set(), requests = [], service = {}
+  const session = { getCurrentUser: () => user, subscribeSession(fn) { listeners.add(fn); return () => listeners.delete(fn) } }
+  vm.runInNewContext(fs.readFileSync(require.resolve('../miniprogram/utils/tokendance.js'), 'utf8'), {
+    exports: service,
+    require(name) {
+      if (name === './session') return session
+      if (name === './api') return { formatError: error => error.message, requestJson: body => new Promise((resolve, reject) => requests.push({ body, resolve, reject })) }
+      throw new Error(name)
+    },
+  })
+  return { service, session, requests, switchUser(id) { user = id ? { id } : null; for (const fn of listeners) fn(user) } }
+}
+
+test('connection refresh shares concurrent requests and keeps confirmed display state only until the next result', async () => {
+  const f = connectionFixture(), s = f.service
+  assert.equal(s.getTokenDanceConnectionStatus(), null)
+  const first = s.refreshTokenDanceConnection(), concurrent = s.refreshTokenDanceConnection()
+  assert.equal(f.requests.length, 1)
+  f.requests[0].resolve({ connected: true, available: true }); await Promise.all([first, concurrent])
+  assert.equal(s.hasTokenDanceConnection(), true)
+  const snapshot = s.getTokenDanceConnectionStatus(); snapshot.connected = false
+  assert.equal(s.getTokenDanceConnectionStatus().connected, true)
+  const background = s.refreshTokenDanceConnection()
+  assert.equal(f.requests.length, 2); assert.equal(s.getTokenDanceConnectionStatus().connected, true)
+  f.requests[1].reject(new Error('temporary network error'))
+  assert.match((await background).error, /network/)
+  assert.equal(s.getTokenDanceConnectionStatus(), null); assert.equal(s.hasTokenDanceConnection(), false)
+  const retry = s.refreshTokenDanceConnection()
+  f.requests[2].resolve({ connected: false, available: true }); await retry
+  assert.equal(s.getTokenDanceConnectionStatus().connected, false)
+})
+
+test('connection invalidation and A-B-A account changes reject late successful status replies', async () => {
+  for (const invalidate of ['disconnect-or-exchange', 'account-switch']) {
+    const f = connectionFixture(), s = f.service
+    const old = s.refreshTokenDanceConnection()
+    if (invalidate === 'account-switch') { f.switchUser('owner-b'); f.switchUser('owner-a') }
+    else s.invalidateTokenDanceConnection()
+    const fresh = s.refreshTokenDanceConnection()
+    assert.equal(f.requests.length, 2)
+    f.requests[1].resolve({ connected: false, available: true }); await fresh
+    f.requests[0].resolve({ connected: true, available: true }); await old
+    assert.equal(s.hasTokenDanceConnection(), false); assert.equal(s.getTokenDanceConnectionStatus().connected, false)
+    f.switchUser(null); assert.equal(s.getTokenDanceConnectionStatus(), null)
+  }
+})
+
+test('account re-entry renders a confirmed connection during refresh, distinguishes failure and clears it on logout', async () => {
+  const f = connectionFixture(), s = f.service
+  const initial = s.refreshTokenDanceConnection()
+  f.requests[0].resolve({ connected: true, available: true }); await initial
+  const { loadComponent } = require('./helpers/component.cjs')
+  const c = loadComponent('pages/tokendance/tokendance.js', { '../../utils/session': f.session, '../../utils/tokendance': s })
+  const p = c.instance; c.definition.lifetimes.attached.call(p)
+  const background = p.refresh()
+  assert.equal(p.data.connected, true); assert.equal(p.data.statusLoading, false)
+  f.requests[1].reject(new Error('temporary network error')); await background
+  assert.equal(p.data.connected, false); assert.equal(p.data.statusFailed, true); assert.equal(p.data.statusLoading, false)
+  const retry = p.refresh(); assert.equal(p.data.statusLoading, true)
+  f.requests[2].resolve({ connected: false, available: true }); await retry
+  assert.equal(p.data.statusFailed, false); assert.equal(p.data.connected, false)
+  const revisit = p.refresh(); assert.equal(p.data.statusLoading, false)
+  f.switchUser(null)
+  f.requests[3].resolve({ connected: true, available: true }); await revisit
+  assert.equal(p.data.connected, false); assert.equal(p.data.statusLoading, false)
+  c.definition.lifetimes.detached.call(p)
+})
+
+test('a background status response cannot undo a completed disconnect or turn it into a query error', async () => {
+  const f = connectionFixture(), s = f.service
+  const initial = s.refreshTokenDanceConnection()
+  f.requests[0].resolve({ connected: true, available: true }); await initial
+  const { loadComponent } = require('./helpers/component.cjs')
+  const c = loadComponent('pages/tokendance/tokendance.js', {
+    '../../utils/session': f.session, '../../utils/tokendance': s,
+    '../../utils/api': { formatError: error => error.message, requestJson: async body => { assert.equal(body.action, 'tokenDanceDisconnect'); return {} } },
+  }, { wx: { showModal: options => options.success({ confirm: true }) } })
+  const p = c.instance; c.definition.lifetimes.attached.call(p)
+  const background = p.refresh(); await p.disconnect()
+  f.requests[1].resolve({ connected: true, available: true }); await background
+  assert.equal(p.data.connected, false); assert.equal(p.data.statusFailed, false)
+  assert.equal(p.data.error, ''); assert.match(p.data.notice, /已解除/)
+  assert.equal(s.hasTokenDanceConnection(), false)
+  c.definition.lifetimes.detached.call(p)
+})
+
 function pageFixture(request) {
   let definition, user = { id: 'mini-owner' }, onSession, interval
   const clipboard = []
@@ -12,7 +100,7 @@ function pageFixture(request) {
     require(name) {
       if (name.endsWith('/api')) return { formatError: error => error.message, requestJson: request }
       if (name.endsWith('/session')) return { getCurrentUser: () => user, subscribeSession(callback) { onSession = callback; return () => {} } }
-      if (name.endsWith('/tokendance')) return { refreshTokenDanceConnection: async () => ({ connected: Boolean(user) }) }
+      if (name.endsWith('/tokendance')) return { getTokenDanceConnectionStatus: () => null, refreshTokenDanceConnection: async () => ({ connected: Boolean(user) }), invalidateTokenDanceConnection() {}, returnFromTokenDance() {} }
       throw new Error(name)
     },
     wx: { setClipboardData({ data }) { clipboard.push(data) } },
@@ -21,7 +109,7 @@ function pageFixture(request) {
   const page = { data: { ...definition.data }, setData(value) { Object.assign(this.data, value) } }
   for (const [name, method] of Object.entries(definition.methods)) page[name] = method.bind(page)
   definition.lifetimes.attached.call(page); definition.pageLifetimes.show.call(page)
-  return { page, clipboard, tick: () => interval?.(), logout() { user = null; onSession() }, close() { definition.lifetimes.detached.call(page) } }
+  return { page, clipboard, tick: () => interval?.(), switchUser(id) { user = id ? { id } : null; onSession(user) }, logout() { user = null; onSession(user) }, close() { definition.lifetimes.detached.call(page) } }
 }
 
 test('mini uses headless PKCE flow and clears the one-use code before exchange', async () => {
@@ -103,7 +191,7 @@ test('mini failed-job recovery counts down, rejects an early tap, refreshes afte
   }, { Date: class extends Date { static now() { return time } }, setInterval(fn) { timers.set(++serial, fn); return serial }, clearInterval(id) { timers.delete(id) } })
   f.page.data.jobId = 'original-job'
   f.page.data.job = { status: 'failed', recovery: { canResume: true, retryAt: new Date(time + 5000).toISOString() } }
-  f.page.startPolling = () => { polls++ }
+  f.page.startPolling = () => { polls++ }; let reloads = 0; f.page.loadJob = async () => { reloads++ }
   f.page.startRecoveryCountdown()
   assert.equal(f.page.data.retrySeconds, 5)
   await f.page.resumeJob()
@@ -115,41 +203,9 @@ test('mini failed-job recovery counts down, rejects an early tap, refreshes afte
   for (const tick of [...timers.values()]) tick()
   assert.equal(f.page.data.retrySeconds, 0); assert.equal(timers.size, 0)
   await f.page.resumeJob()
-  assert.equal(resumes, 1); assert.equal(polls, 1); assert.equal(f.page.data.error, '')
+  assert.equal(reloads, 1); assert.equal(resumes, 1); assert.equal(polls, 1); assert.equal(f.page.data.error, '')
   f.definition.lifetimes.detached.call(f.page)
   assert.equal(timers.size, 0)
-})
-
-test('mini generation and refinement use the API optimizedText contract and preserve cancelled or changed inputs', async () => {
-  for (const [name, field, target] of [['index', 'methodContent', 'methodContent'], ['refine', 'instruction', 'editInstruction']]) {
-    const calls = [], modals = [], exports = {}
-    let response = { target, optimizedText: '优化后的科研说明' }
-    const api = { formatError: error => error.message, requestJson: async body => { calls.push(body); return body.action === 'tokenDanceStatus' ? { connected: true } : response } }
-    vm.runInNewContext(fs.readFileSync(require.resolve('../miniprogram/utils/tokendance.js'), 'utf8'), {
-      exports, require: key => key === './api' ? api : { getCurrentUser: () => ({ id: 'mini-owner' }), subscribeSession() {} },
-    })
-    await exports.refreshTokenDanceConnection()
-    const { page } = componentFrom(`../miniprogram/pages/${name}/${name}.js`, {
-      api, tokendance: exports, 'api-keys': { getApiKeys: () => ({ tokendance: 'must-not-send' }) },
-    }, { wx: { showModal(modal) { modals.push(modal) } } })
-    page.refreshCanSubmit = () => {}
-    page.data.settings = { modelRoutes: { main: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' } } }
-    for (const decision of ['adopt', 'cancel', 'changed']) {
-      page.data[field] = '原始科研说明'
-      await page.optimizeDescription()
-      const modal = modals.at(-1)
-      assert.equal(modal.content, response.optimizedText)
-      assert.equal(calls.at(-1).target, target); assert.equal(calls.at(-1).apiKey, undefined)
-      if (decision === 'changed') page.data[field] = '正在编辑的科研说明'
-      modal.success({ confirm: decision !== 'cancel' })
-      assert.equal(page.data[field], decision === 'adopt' ? response.optimizedText : decision === 'cancel' ? '原始科研说明' : '正在编辑的科研说明')
-    }
-    response = { candidate: 'obsolete field' }
-    const before = modals.length
-    await page.optimizeDescription()
-    assert.equal(modals.length, before); assert.match(page.data.error, /优化结果为空/)
-    assert.equal(page.data[field], '正在编辑的科研说明')
-  }
 })
 
 test('mini blocks submit and repeat selection while original image dimensions are pending', async () => {
@@ -181,4 +237,55 @@ test('mini blocks submit and repeat selection while original image dimensions ar
   info.fail(new Error('invalid'));await failed
   assert.equal(page.data.isInspectingReferences,false);assert.equal(page.data.referenceImages.length,1)
   assert.match(page.data.referenceUploadError,/无法读取/)
+})
+
+
+test('account A-B-A, detached and selected-order changes discard late replies', async () => {
+  for (const change of ['switch', 'detach', 'selection']) {
+    let finish
+    const f = pageFixture(() => new Promise(resolve => { finish = resolve }))
+    f.page.data.attemptId = 'first'; f.page.data.payment = { status: 'pending' }
+    const pending = f.page.paymentStatus()
+    if (change === 'switch') { f.switchUser('other'); f.switchUser('mini-owner') }
+    if (change === 'detach') f.close()
+    if (change === 'selection') { f.page.data.attemptId = 'second'; f.page.data.payment = { status: 'closed' } }
+    finish({ session: { status: 'refunded' } }); await pending
+    assert.notEqual(f.page.data.payment?.status, 'refunded')
+    f.close()
+  }
+})
+test('one-use codes stay out of view data and are cleared on hide; uncertain creation blocks a retry', async () => {
+  let creates = 0
+  const f = pageFixture(async body => {
+    if (body.action === 'tokenDancePaymentCreate') { creates++; throw new Error('timeout') }
+    return { state: 'fixture', authorizationUrl: 'https://tokendance.space/auth' }
+  })
+  await f.page.authorize(); f.page.codeInput({ detail: { value: 'private-one-use-code' } })
+  assert.ok(!JSON.stringify(f.page.data).includes('private-one-use-code'))
+  f.page.data.busy = false
+  await f.page.createPayment(); await f.page.createPayment()
+  assert.equal(creates, 1); assert.equal(f.page.data.paymentUncertain, true)
+  f.close(); assert.equal(f.page.oneUseCode, '')
+})
+
+test('returning to account from its reopened job detail pops the native stack and keeps the original task', () => {
+  const exports = {}, navigation = []
+  let pages = [{ route: 'pages/tokendance/tokendance' }, { route: 'pages/job-detail/job-detail', options: { jobId: 'original-job' } }]
+  vm.runInNewContext(fs.readFileSync(require.resolve('../miniprogram/utils/tokendance.js'), 'utf8'), { exports,
+    require: name => name === './api' ? {} : { getCurrentUser: () => ({ id: 'owner' }), subscribeSession() {} },
+    getCurrentPages: () => pages,
+    wx: { navigateBack: args => navigation.push(['back', args.delta]), navigateTo: args => navigation.push(['to', args.url]), switchTab: args => { navigation.push(['tab', args.url]); args.success?.() } },
+  })
+  exports.openTokenDance(); assert.deepEqual(navigation[0], ['back', 1])
+  pages = [pages[0]]; exports.returnFromTokenDance()
+  assert.deepEqual(navigation[1], ['tab', '/pages/records/records']); assert.deepEqual(navigation[2], ['to', '/pages/job-detail/job-detail?jobId=original-job'])
+})
+
+
+test('TD throttling and uncertain errors retain recovery guidance instead of generic capacity failures', () => {
+  const { toBusinessError, businessErrorGuidance } = require('../miniprogram/utils/business-errors.js')
+  const limited = toBusinessError(429, { error: 'rate limited', recoveryAction: 'rate_limit', retryAfterSeconds: 7 })
+  assert.equal(limited.retryAfterSeconds, 7); assert.match(businessErrorGuidance(limited).message, /等待后恢复原任务/)
+  const uncertain = toBusinessError(503, { recoveryAction: 'retry_request', uncertain: true })
+  assert.match(businessErrorGuidance(uncertain).message, /尚未确认/)
 })

@@ -14,26 +14,34 @@ exports.nextArkVerificationBatch = nextArkVerificationBatch;
 const provider_regions_1 = require("./provider-regions");
 exports.MODEL_ROUTE_ROLES = ['main', 'image', 'vision'];
 function providerDefaultRoutes(provider, registry) {
-    var _a;
+    var _a, _b, _c;
     const providers = registry === null || registry === void 0 ? void 0 : registry.providers;
     const defaults = (_a = providers === null || providers === void 0 ? void 0 : providers[provider]) === null || _a === void 0 ? void 0 : _a.defaults;
     if (!(defaults === null || defaults === void 0 ? void 0 : defaults.main) || !defaults.image || !defaults.vision)
         throw new Error('当前 API 渠道没有完整默认路由。');
     return {
         main: { accessProvider: provider, modelId: defaults.main },
-        image: { accessProvider: provider, modelId: defaults.image },
+        image: { accessProvider: provider, modelId: provider === 'tokendance' && ((_c = (_b = providers === null || providers === void 0 ? void 0 : providers[provider]) === null || _b === void 0 ? void 0 : _b.models) === null || _c === void 0 ? void 0 : _c.some((model) => { var _a; return model.id === 'seedream-5.0-pro' && model.selectable && ((_a = model.roles) === null || _a === void 0 ? void 0 : _a.includes('image')); })) ? 'seedream-5.0-pro' : defaults.image },
         vision: { accessProvider: provider, modelId: defaults.vision },
     };
 }
 function buildModelSubmission(input) {
-    var _a;
+    var _a, _b, _c, _d;
     assertCompleteRoutes(input.modelRoutes);
     if (!input.registry || Number(input.registry.routeContractVersion || 0) < 1) {
         throw new Error('服务端模型目录不可用，已禁止新建付费任务。');
     }
+    if (input.registry.providers) {
+        for (const role of exports.MODEL_ROUTE_ROLES) {
+            const route = input.modelRoutes[role];
+            const model = (_b = (_a = input.registry.providers[route.accessProvider]) === null || _a === void 0 ? void 0 : _a.models) === null || _b === void 0 ? void 0 : _b.find(entry => entry.id === route.modelId);
+            if (!model || !model.selectable || !((_c = model.roles) === null || _c === void 0 ? void 0 : _c.includes(role)) || !(0, provider_regions_1.modelAvailableInRegion)(route.accessProvider, model, input.providerRegions))
+                throw new Error(`模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`);
+        }
+    }
     const regions = (0, provider_regions_1.normalizeProviderRegions)(input.providerRegions);
     const usesMiniMax = Object.values(input.modelRoutes).some(route => route.accessProvider === 'minimax');
-    if (usesMiniMax && regions.minimax === 'cn' && !((_a = input.registry) === null || _a === void 0 ? void 0 : _a.providerRegionContractVersion))
+    if (usesMiniMax && regions.minimax === 'cn' && !((_d = input.registry) === null || _d === void 0 ? void 0 : _d.providerRegionContractVersion))
         throw new Error('当前服务端尚未支持 MiniMax 国内区域。');
     return {
         ...(usesMiniMax && input.providerRegions ? { providerRegions: regions } : {}),

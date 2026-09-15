@@ -16,7 +16,7 @@ Component({
     visualIndex: 0, domainIndex: 0, page: 1, totalPages: 1, totalItems: 0,
     selectedCount: 0, limit: MANUAL_REFERENCE_LIMIT, detail: null as ReferenceLibraryItem | null,
   },
-  lifetimes: { attached() { this.loadLibrary() } },
+  lifetimes: { attached() { this.loadLibrary() }, detached() { (this as any).loadSeq = Number((this as any).loadSeq || 0) + 1 } },
   methods: {
     noop() {},
     resetAndLoad() { this.setData({ page: 1 }); this.loadLibrary() },
@@ -29,10 +29,13 @@ Component({
         if (seq !== (this as any).loadSeq) return
         const page = normalizeReferenceLibraryPage(response)
         ;(this as any).references = page.references
+        const visualOptions = [{ value: '', label: '全部视觉类别' }, ...page.facets.visualCategories.map(item => ({ value: item.value, label: `${item.value} (${item.count})` }))]
+        const domainOptions = [{ value: '', label: '全部研究领域' }, ...page.facets.researchDomains.map(item => ({ value: item.value, label: `${item.value} (${item.count})` }))]
+        if (this.data.visualCategory && !visualOptions.some(item => item.value === this.data.visualCategory)) visualOptions.push({ value: this.data.visualCategory, label: this.data.visualCategory })
+        if (this.data.researchDomain && !domainOptions.some(item => item.value === this.data.researchDomain)) domainOptions.push({ value: this.data.researchDomain, label: this.data.researchDomain })
         this.setData({
+          visualOptions, domainOptions, visualIndex: Math.max(0, visualOptions.findIndex(item => item.value === this.data.visualCategory)), domainIndex: Math.max(0, domainOptions.findIndex(item => item.value === this.data.researchDomain)),
           page: page.page, totalPages: page.totalPages, totalItems: page.totalItems,
-          visualOptions: [{ value: '', label: '全部视觉类别' }, ...page.facets.visualCategories.map((item) => ({ value: item.value, label: `${item.value} (${item.count})` }))],
-          domainOptions: [{ value: '', label: '全部研究领域' }, ...page.facets.researchDomains.map((item) => ({ value: item.value, label: `${item.value} (${item.count})` }))],
           isLoading: false,
         })
         this.refreshCards()
@@ -53,8 +56,8 @@ Component({
     previousPage() { if (this.data.page > 1) { this.setData({ page: this.data.page - 1 }); this.loadLibrary() } },
     nextPage() { if (this.data.page < this.data.totalPages) { this.setData({ page: this.data.page + 1 }); this.loadLibrary() } },
     onToggle(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset.id || ''); if (id) this.triggerEvent('toggle', { id }) },
-    openDetail(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset.id || ''); this.setData({ detail: (this.data.cards as LibraryCard[]).find((item) => item.id === id) || null }) },
-    closeDetail() { this.setData({ detail: null }) },
+    openDetail(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset.id || ''); this.setData({ detail: (this.data.cards as LibraryCard[]).find((item) => item.id === id) || null }); this.triggerEvent('visibility', {open:Boolean(this.data.detail)}) },
+    closeDetail() { this.setData({ detail: null }); this.triggerEvent('visibility', {open:false}) },
     previewDetail() { if (this.data.detail?.imageUrl) wx.previewImage({ current: this.data.detail.imageUrl, urls: [this.data.detail.imageUrl] }) },
     onRefresh() { this.loadLibrary() },
   },

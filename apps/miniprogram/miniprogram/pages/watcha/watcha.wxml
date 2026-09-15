@@ -1,0 +1,56 @@
+<view class="watcha-page">
+  <view class="watcha-card">
+    <view class="watcha-heading"><image class="watcha-mark" src="/assets/watcha-rounded.png" mode="aspectFit" /><view><view class="watcha-title">观猹登录与绑定</view><view class="watcha-subtitle">{{email || '登录图研，继续你的科研创作'}}</view></view></view>
+    <view class="watcha-note">用于登录图研账号。模型额度与钱包请在账户页单独连接观猹 TokenDance。</view>
+    <view wx:if="{{!loaded}}" class="watcha-note">正在查询登录服务…</view>
+    <view wx:elif="{{!status.available || !status.miniProgramSupported}}">
+      <view class="watcha-note">观猹小程序登录暂不可用，请稍后刷新或使用邮箱登录。</view>
+      <button wx:if="{{!loggedIn}}" class="watcha-secondary" bindtap="openEmailLogin">使用邮箱登录</button>
+    </view>
+    <view wx:elif="{{awaitingCode}}">
+      <view class="watcha-step">1 · 在系统浏览器打开授权链接</view>
+      <button class="watcha-secondary" bindtap="copyLink" disabled="{{busy}}">复制授权链接</button>
+      <view class="watcha-step">2 · 完成授权后，将接续码粘贴到这里</view>
+      <input class="watcha-input" password value="{{code}}" maxlength="128" placeholder="一次性接续码" aria-label="一次性接续码" bindinput="codeInput" />
+      <button class="watcha-primary" bindtap="exchange" loading="{{busy}}" disabled="{{busy || !hasCode}}">完成观猹授权</button>
+      <button class="watcha-text" bindtap="cancel" disabled="{{busy}}">取消本次授权</button>
+    </view>
+    <view wx:elif="{{status.pending}}">
+      <view class="watcha-step">{{status.pending.nickname}}，授权已完成</view>
+      <view wx:if="{{loggedIn}}">
+        <view class="watcha-note">确认绑定到 {{email}}，已有任务和图片仍属于同一个图研账号。</view>
+        <button wx:if="{{status.emailVerified}}" class="watcha-primary" bindtap="link" disabled="{{busy}}">确认绑定当前图研账号</button>
+        <button wx:else class="watcha-secondary" bindtap="sendVerification" disabled="{{busy || cooldown > 0}}">{{cooldown ? cooldown + ' 秒后重发' : '发送图研邮箱验证邮件'}}</button>
+      </view>
+      <view wx:else>
+        <view class="watcha-note">首次使用请验证邮箱；已有图研账号可先登录，再明确绑定。</view>
+        <input class="watcha-input" value="{{signupEmail}}" maxlength="254" placeholder="接收验证的邮箱" aria-label="接收验证的邮箱" bindinput="emailInput" />
+        <input class="watcha-input" type="number" value="{{mailCode}}" maxlength="6" placeholder="6 位邮箱验证码" aria-label="邮箱验证码" bindinput="mailCodeInput" />
+        <button class="watcha-secondary" bindtap="sendCode" disabled="{{busy || cooldown > 0}}">{{cooldown ? cooldown + ' 秒后重发' : '发送验证码'}}</button>
+        <button class="watcha-primary" bindtap="complete" disabled="{{busy || !hasMailCode}}">验证邮箱并创建账号</button>
+        <button class="watcha-text" bindtap="openEmailLogin" disabled="{{busy}}">登录已有图研账号并绑定</button>
+      </view>
+      <button class="watcha-text" bindtap="cancel" disabled="{{busy}}">取消本次授权</button>
+    </view>
+    <view wx:elif="{{status.linked}}">
+      <view class="watcha-step">已绑定观猹</view>
+      <view class="watcha-note">下次可使用观猹登录同一个图研账号。</view>
+      <view wx:if="{{!status.hasPassword}}"><view class="watcha-note">观猹是当前唯一登录方式，请先设置图研密码再解绑。</view><button class="watcha-secondary" bindtap="setPassword" disabled="{{busy || cooldown > 0}}">{{cooldown ? cooldown + ' 秒后重发' : '通过邮箱设置密码'}}</button></view>
+      <view wx:elif="{{unlinking}}">
+        <view class="watcha-note">请用当前图研邮箱的验证码确认解绑。</view>
+        <input class="watcha-input" type="number" value="{{mailCode}}" maxlength="6" placeholder="6 位邮箱验证码" bindinput="mailCodeInput" />
+        <button class="watcha-secondary" bindtap="sendCode" disabled="{{busy || cooldown > 0}}">{{cooldown ? cooldown + ' 秒后重发' : '发送解绑验证码'}}</button>
+        <button class="watcha-primary" bindtap="unlink" disabled="{{busy || !hasMailCode}}">确认解绑观猹</button>
+        <button class="watcha-text" bindtap="cancelUnlink" disabled="{{busy}}">取消解绑</button>
+      </view>
+      <button wx:else class="watcha-secondary" bindtap="showUnlink" disabled="{{busy}}">解绑观猹</button>
+    </view>
+    <view wx:elif="{{loggedIn && !status.emailVerified}}"><view class="watcha-note">绑定前请验证当前图研邮箱。</view><button class="watcha-secondary" bindtap="sendVerification" disabled="{{busy || cooldown > 0}}">{{cooldown ? cooldown + ' 秒后重发' : '发送图研邮箱验证邮件'}}</button></view>
+    <button wx:else class="watcha-primary" bindtap="start" loading="{{busy}}" disabled="{{busy}}">{{loggedIn ? '绑定观猹账号' : '使用观猹登录'}}</button>
+    <view wx:if="{{notice}}" class="watcha-notice" role="status">{{notice}}</view>
+    <view wx:if="{{error}}" class="watcha-error" role="alert">{{error}}</view>
+    <button class="watcha-text" bindtap="refreshIdentity" disabled="{{busy}}">刷新登录状态</button>
+  </view>
+  <button class="watcha-secondary" bindtap="back" disabled="{{busy}}">返回原页面继续</button>
+</view>
+<auth-panel show="{{showAuthPanel}}" hide-watcha="{{true}}" bind:close="closeAuth" bind:authed="onAuthed" />

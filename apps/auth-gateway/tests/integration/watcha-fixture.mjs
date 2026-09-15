@@ -19,7 +19,7 @@ export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, 
   const origin = `http://127.0.0.1:${server.address().port}`;
   const frontend = webOrigin || origin;
   const config = { mongoUri: uri, mongoDbName: dbName, authSecret: 'local-watcha-fixture-secret-not-production', authBaseUrl: origin,
-    frontendOrigins: [origin, frontend], production: false,
+    frontendOrigins: [origin, frontend, 'https://servicewechat.com', 'https://developers.weixin.qq.com'], production: false,
     watcha: { enabled: true, clientId: 'fixture-id', clientSecret: 'fixture-secret', scopes: 'read email' },
     authEmail: { deliveryEnabled: true, requireVerification: true, windowMax: mailMax, dailyMax: mailMax,
       directMail: { accountName: 'fixture@example.test', fromAlias: 'Fixture' } } };

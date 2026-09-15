@@ -40,14 +40,14 @@ test('public legal copy names only the current user clients', () => {
   assert.doesNotMatch(privacy, /可通过 Web、微信小程序、iOS、Android、Windows、macOS 与 HarmonyOS/u)
 })
 
-test('retained clients link to the renamed GitHub repository', () => {
+test('retained clients link to the canonical GitHub repository', () => {
   const sources = [
     read('apps/web/src/App.jsx'),
     read('apps/miniprogram/miniprogram/pages/guide/guide.ts'),
     read('apps/miniprogram/miniprogram/pages/guide/guide.js'),
   ]
   for (const source of sources) {
-    assert.match(source, /https:\/\/github\.com\/yrjmdqmmx\/Tuyan-clients/u)
-    assert.doesNotMatch(source, /paperbanana-clients|PaperBanana-clients/u)
+    assert.match(source, /https:\/\/github\.com\/yrjmdqmmx\/Tuyan(?=[\x27"/])/u)
+    assert.doesNotMatch(source, /paperbanana-clients|PaperBanana-clients|Tuyan-clients/u)
   }
 })

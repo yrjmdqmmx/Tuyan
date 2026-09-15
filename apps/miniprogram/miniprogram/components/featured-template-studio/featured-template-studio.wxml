@@ -1,27 +1,6 @@
-<view class="template-studio">
-  <view class="studio-head">
-    <view>
-      <view class="studio-kicker">FEATURED STUDIO</view>
-      <view class="studio-title">从研究图示开始</view>
-      <view class="studio-note">六套经过整理的学术结构，一键带入内容与负向提示词。</view>
-    </view>
-    <view class="studio-count">6 套</view>
-  </view>
-  <scroll-view class="template-scroll" scroll-x enhanced show-scrollbar="{{false}}">
-    <view class="template-track">
-      <view class="template-card" wx:for="{{templates}}" wx:key="id">
-        <image wx:if="{{item.hasImage}}" class="template-image" src="{{item.imageUrl}}" mode="aspectFill" lazy-load />
-        <view wx:else class="template-fallback">
-          <view class="fallback-node wide"></view>
-          <view class="fallback-row"><view class="fallback-node"></view><view class="fallback-line"></view><view class="fallback-node"></view></view>
-          <view class="fallback-node wide"></view>
-        </view>
-        <view class="template-body">
-          <view class="template-title">{{item.title}}</view>
-          <view class="template-summary">{{item.summary}}</view>
-          <button class="template-apply" data-id="{{item.id}}" bindtap="applyTemplate">套用模板</button>
-        </view>
-      </view>
-    </view>
-  </scroll-view>
+<view class="template-studio" bindtouchstart="touchStart" bindtouchend="touchEnd" bindtouchcancel="touchEnd">
+  <view class="studio-head"><view class="studio-copy"><view class="studio-title">从真实研究图示开始</view><view class="studio-note">滑动浏览，点击套用后才带入内容。</view></view><view class="studio-count">{{current + 1}} / {{templates.length}}</view></view>
+  <swiper class="template-swiper" current="{{current}}" autoplay="{{autoplay}}" interval="3000" duration="450" circular indicator-dots indicator-color="rgba(255,255,255,.3)" indicator-active-color="#e3ca7f" bindchange="onChange">
+    <swiper-item wx:for="{{templates}}" wx:key="id"><view class="template-card"><image wx:if="{{item.hasImage}}" class="template-image" src="{{item.imageUrl}}" mode="aspectFit" /><view wx:else class="template-image template-fallback">结构预览</view><view class="template-body"><view class="template-title">{{item.title}}</view><view class="template-summary">{{item.summary}}</view><button class="template-apply" data-id="{{item.id}}" bindtap="applyTemplate">套用模板</button></view></view></swiper-item>
+  </swiper>
 </view>

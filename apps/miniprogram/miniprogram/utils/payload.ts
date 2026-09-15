@@ -1,4 +1,4 @@
-import { buildAspectRatioOptions } from './aspect-ratios'
+import { buildAspectRatioOptions, buildResolutionOptions } from './aspect-ratios'
 import type { ModelRegistry, ModelProviderId } from './model-registry'
 import type { ProviderRegions } from './provider-regions'
 import { PLOT_CATEGORY_ID, type ImageSize, type ProviderId, type RetrievalSetting } from './constants'
@@ -65,7 +65,9 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
   const retrievalSetting = !hasUploadedReferences ? input.retrievalSetting : 'none'
   const taskName = input.categoryId === PLOT_CATEGORY_ID ? 'plot' : 'diagram'
   const maxCriticRounds = input.maxCriticRounds
+  const selectedImage = input.registry?.providers?.[modelRoutes.image.accessProvider as ModelProviderId]?.models.find(model => model.id === modelRoutes.image.modelId)
   const routeRoles = requiredCreateRouteRoles({
+    imageRefineMode: selectedImage?.capabilities.imageEditMode,
     modelRoutes,
     outputFormat: input.outputFormat,
     taskName,
@@ -78,8 +80,11 @@ export function buildCreateJobPayload(input: CreateJobInput): Record<string, unk
   if (routeRoles.includes('image') && input.registry?.providers) {
     const route = modelRoutes.image
     const model = input.registry.providers[route.accessProvider as ModelProviderId]?.models.find((model) => model.id === route.modelId)
-    const ratios = buildAspectRatioOptions({ capabilities: model?.capabilities || {}, capabilityField: 'aspectRatios', resolution: input.imageSize })
-    if (!ratios.some((option) => option.value === input.aspectRatio)) throw new Error('当前比例或清晰度不可用，请重新选择生成设置。')
+    if (model?.capabilities.requiresSourceImage) throw new Error('当前型号仅支持图像编辑，请在精修中使用或更换生图模型。')
+    if (Array.isArray(model?.capabilities.outputFormats) && !(model.capabilities.outputFormats as string[]).includes(input.outputFormat)) throw new Error('当前模型不支持此输出格式，请重新选择。')
+    const ratios = buildAspectRatioOptions({ capabilities: model?.capabilities || {}, capabilityField: taskName === 'plot' ? 'refineAspectRatios' : 'aspectRatios', resolution: input.imageSize })
+    const resolutions = buildResolutionOptions(model?.capabilities || {}, taskName === 'plot' ? 'refineResolutions' : 'resolutions')
+    if (!ratios.some((option) => option.value === input.aspectRatio && !option.disabled) || !resolutions.some(option => option.value === input.imageSize)) throw new Error('当前比例或清晰度不可用，请重新选择生成设置。')
   }
   const providedKeys = Object.fromEntries(Object.entries(input.apiKeys || {}).map(([provider, key]) => [provider, String(key || '').trim()]))
   if (input.apiKey && !providedKeys[input.provider]) providedKeys[input.provider] = input.apiKey.trim()

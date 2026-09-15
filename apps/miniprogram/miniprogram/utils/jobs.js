@@ -16,6 +16,7 @@ exports.toCurrentJobSummary = toCurrentJobSummary;
 exports.toRecordJobSummary = toRecordJobSummary;
 exports.toLocalJobSummary = toLocalJobSummary;
 exports.formatDate = formatDate;
+const session_1 = require("./session");
 const config_1 = require("./config");
 const api_1 = require("./api");
 const constants_1 = require("./constants");
@@ -23,6 +24,7 @@ const job_assets_1 = require("./job-assets");
 const reference_mode_1 = require("./reference-mode");
 const media_1 = require("./media");
 function normalizeJob(input) {
+    var _a;
     const job = (input || {});
     const jobId = String(job.id || job._id || '');
     const methodContent = String(job.method_content || job.methodContent || '');
@@ -50,6 +52,11 @@ function normalizeJob(input) {
     const referenceImageCount = Number(job.reference_image_count || job.referenceImageCount || referenceImages.length || 0);
     const retrievalSetting = String(job.retrieval_setting || job.retrievalSetting || 'none');
     return {
+        user_id: String(job.user_id || job.userId || ''),
+        job_type: String(job.job_type || job.jobType || 'generate'),
+        refine_mode: String(job.refine_mode || job.refineMode || ''),
+        refine_mode_text: (job.refine_mode || job.refineMode) === 'direct-edit' ? '直接编辑' : (job.refine_mode || job.refineMode) === 'analyze-redraw' ? '分析后重绘' : '',
+        provider_regions_text: String(job.provider_regions_text || (((_a = job.providerRegions) === null || _a === void 0 ? void 0 : _a.minimax) ? `MiniMax · ${job.providerRegions.minimax === 'cn' ? '国内' : '国际'}` : '')),
         id: jobId,
         recovery: job.recovery || null,
         providerCalls: job.providerCalls || [],
@@ -283,11 +290,11 @@ function normalizeReferenceImageModeUsed(value) {
 }
 // 补拉详情用并发池（wx.request 真机最多 10 个并发，50 条全量 Promise.all 会直接 request:fail）
 const HYDRATE_CONCURRENCY = 5;
-async function hydrateRecordJobs(jobs) {
+async function hydrateRecordJobs(jobs, isCurrent = () => true) {
     const hydrated = jobs.slice();
     let cursor = 0;
     async function worker() {
-        while (cursor < hydrated.length) {
+        while (cursor < hydrated.length && isCurrent()) {
             const index = cursor++;
             const job = hydrated[index];
             const hasImage = job.result_images.some((image) => image.url);
@@ -298,7 +305,8 @@ async function hydrateRecordJobs(jobs) {
                 continue;
             try {
                 const detail = await (0, api_1.requestJson)({ action: 'getJob', jobId: job.id });
-                hydrated[index] = normalizeJob(detail.job);
+                if (isCurrent())
+                    hydrated[index] = normalizeJob(detail.job);
             }
             catch {
                 // 补拉失败保留列表里的原始数据
@@ -309,16 +317,24 @@ async function hydrateRecordJobs(jobs) {
     return hydrated;
 }
 function readLocalJobs() {
+    var _a;
+    const owner = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
+    if (!owner)
+        return [];
     const jobs = wx.getStorageSync(config_1.LOCAL_JOBS_KEY);
-    return Array.isArray(jobs) ? jobs.map(normalizeJob).filter((job) => job.id).map(toLocalJobSummary) : [];
+    // Legacy entries without an immutable owner ID remain stored, but cannot be attributed safely.
+    return Array.isArray(jobs) ? jobs.map(normalizeJob).filter(job => job.id && job.user_id === owner).map(toLocalJobSummary) : [];
 }
-// 写入本机最近任务（最多 10 条），返回最新列表供页面 setData。
 function appendLocalJob(job) {
-    if (!job.id)
+    var _a;
+    const owner = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
+    if (!job.id || !owner || (job.user_id && job.user_id !== owner))
         return readLocalJobs();
-    const nextJobs = [toLocalJobSummary(job), ...readLocalJobs().filter((item) => item.id !== job.id)].slice(0, 10);
-    wx.setStorageSync(config_1.LOCAL_JOBS_KEY, nextJobs);
-    return nextJobs;
+    const own = [toLocalJobSummary({ ...job, user_id: owner }), ...readLocalJobs().filter(item => item.id !== job.id)].slice(0, 10);
+    const previous = wx.getStorageSync(config_1.LOCAL_JOBS_KEY);
+    const retained = Array.isArray(previous) ? previous.filter(item => String(item.user_id || item.userId || '') !== owner && item.id !== job.id) : [];
+    wx.setStorageSync(config_1.LOCAL_JOBS_KEY, [...own, ...retained]);
+    return own;
 }
 function clearLocalJobs() {
     wx.removeStorageSync(config_1.LOCAL_JOBS_KEY);

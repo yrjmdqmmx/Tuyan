@@ -6,6 +6,7 @@
     "reference-library": "/components/reference-library/reference-library",
     "stage-timeline": "/components/stage-timeline/stage-timeline",
     "featured-template-studio": "/components/featured-template-studio/featured-template-studio",
-    "generation-settings-sheet": "/components/generation-settings-sheet/generation-settings-sheet"
+    "generation-settings-sheet": "/components/generation-settings-sheet/generation-settings-sheet",
+    "input-optimizer": "/components/input-optimizer/input-optimizer"
   }
 }

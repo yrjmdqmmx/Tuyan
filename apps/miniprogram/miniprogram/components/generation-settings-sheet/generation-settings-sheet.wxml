@@ -1,33 +1,63 @@
-<view wx:if="{{show}}" class="sheet-mask" catchtouchmove="noop">
-  <view class="settings-sheet" catchtap="noop">
+<view wx:if="{{show}}" class="sheet-mask" style="bottom:{{keyboardHeight}}px" catchtouchmove="noop">
+  <view class="settings-sheet {{keyboardOpen ? 'keyboard-open' : ''}}" catchtap="noop" role="dialog" aria-label="{{purpose === 'refine' ? '精修设置' : '生成设置'}}">
     <view class="sheet-handle"></view>
-    <view class="sheet-head"><view><view class="sheet-title">生成设置</view><view class="sheet-note">所有修改将在点击保存后一次生效</view></view><button class="sheet-cancel" bindtap="cancel">取消</button></view>
-    <scroll-view class="sheet-scroll" scroll-y type="list">
-      <view wx:if="{{draft}}">
-        <view class="setting-label">配置模式</view>
-        <view class="mode-tabs"><button class="mode-tab {{draft.configurationMode === 'simple' ? 'active' : ''}}" data-mode="simple" bindtap="setMode">普通模式</button><button class="mode-tab {{draft.configurationMode === 'advanced' ? 'active' : ''}}" data-mode="advanced" bindtap="setMode">专业模式</button></view>
-        <view class="setting-block" wx:if="{{draft.configurationMode === 'simple'}}"><view class="setting-label">API 渠道</view><picker range="{{providerOptions}}" range-key="label" value="{{providerIndex}}" bindchange="onProviderChange"><view class="setting-picker">{{providerOptions[providerIndex].label}}</view></picker></view>
-        <view class="setting-block"><view class="setting-label">模型路线</view><view class="route-row" wx:for="{{routeRows}}" wx:key="role" data-role="{{item.role}}" bindtap="openModelPicker"><view><view class="route-role">{{item.label}}</view><view class="route-provider">{{item.providerLabel}}</view></view><view class="route-model">{{item.modelLabel}}<text class="route-arrow" wx:if="{{draft.configurationMode === 'advanced'}}">›</text></view></view></view>
-        <view class="setting-grid">
-          <view><view class="setting-label">格式</view><picker range="{{outputOptions}}" range-key="label" value="{{outputIndex}}" bindchange="onOutputChange"><view class="setting-picker">{{outputOptions[outputIndex].label}}</view></picker></view>
-          <view><view class="setting-label">比例</view><picker range="{{ratioOptions}}" range-key="label" value="{{ratioIndex}}" bindchange="onRatioChange"><view class="setting-picker">{{ratioOptions[ratioIndex].label || '自动'}}</view></picker></view>
-          <view wx:if="{{draft.outputFormat === 'png'}}"><view class="setting-label">清晰度</view><picker range="{{resolutionOptions}}" range-key="label" value="{{resolutionIndex}}" bindchange="onResolutionChange"><view class="setting-picker">{{resolutionOptions[resolutionIndex].label || '不可用'}}</view></picker></view>
-          <view><view class="setting-label">流程</view><picker range="{{pipelineOptions}}" range-key="label" value="{{pipelineIndex}}" bindchange="onPipelineChange"><view class="setting-picker">{{pipelineOptions[pipelineIndex].label}}</view></picker></view>
-          <view class="retrieval-setting"><view class="setting-label">检索</view><view class="retrieval-options"><button wx:for="{{retrievalOptions}}" wx:key="value" class="retrieval-option {{draft.retrievalSetting === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="selectRetrieval">{{item.label}}</button></view></view>
-          <view><view class="setting-label">候选</view><picker range="{{candidateOptions}}" range-key="label" value="{{candidateIndex}}" bindchange="onCandidateChange"><view class="setting-picker">{{candidateOptions[candidateIndex].label}}</view></picker></view>
-          <view><view class="setting-label">评审</view><picker range="{{criticOptions}}" range-key="label" value="{{criticIndex}}" bindchange="onCriticChange"><view class="setting-picker">{{criticOptions[criticIndex].label}}</view></picker></view>
+    <view class="sheet-head"><view><view class="sheet-title">{{purpose === 'refine' ? '精修设置' : purpose === 'optimize' ? '文字优化设置' : '生成设置'}}</view><view class="sheet-note">保存后生效，取消保留原配置</view></view><button class="sheet-cancel" bindtap="cancel">取消</button></view>
+    <scroll-view class="sheet-scroll" scroll-into-view="{{focusedKeyId}}" scroll-y enhanced show-scrollbar="{{false}}">
+      <view wx:if="{{draft}}" class="sheet-content">
+        <view class="setting-section">
+          <view class="setting-heading">模型</view>
+          <view class="mode-tabs" wx:if="{{purpose !== 'optimize'}}"><button class="mode-tab {{draft.configurationMode === 'simple' ? 'active' : ''}}" data-mode="simple" bindtap="setMode">普通模式</button><button class="mode-tab {{draft.configurationMode === 'advanced' ? 'active' : ''}}" data-mode="advanced" bindtap="setMode">专业模式</button></view>
+          <view class="channel-line" wx:if="{{purpose !== 'optimize' && draft.configurationMode === 'simple'}}"><text class="setting-label">统一渠道</text><picker range="{{providerOptions}}" range-key="label" value="{{providerIndex}}" bindchange="onProviderChange"><view class="channel-value">{{providerOptions[providerIndex].label}} <text>⌄</text></view></picker></view>
+          <view class="route-list"><view class="role-config" wx:for="{{routeRows}}" wx:key="role">
+            <view class="route-row" data-role="{{item.role}}" bindtap="openModelPicker" role="button" aria-label="{{item.label}}：{{item.modelLabel}}"><view class="route-copy"><view class="route-role">{{item.label}}</view><view class="route-provider">{{item.providerLabel}}</view></view><view class="route-model">{{item.modelLabel}}</view><text class="route-arrow">›</text></view>
+            <view class="role-credential"><view class="role-credential-copy"><view class="credential-state {{item.credentialReady ? 'ready' : 'missing'}}">{{item.credentialStatus}}</view><view class="role-usage">{{item.required ? '本次任务需要' : '本次任务不调用此角色'}}</view></view><button class="role-key-button" data-provider="{{item.provider}}" bindtap="configureRoleKey" aria-label="{{item.label}}：{{item.credentialAction}}（{{item.providerLabel}}）">{{item.credentialAction}} ›</button></view>
+          </view></view>
+          <view class="privacy-note">角色独立选渠道与模型；同一渠道共享 Key，MiniMax 按区域区分。</view>
         </view>
-        <view class="manual-library" wx:if="{{draft.retrievalSetting === 'manual'}}">
-          <view class="manual-library-title">选择手动参考案例</view>
-          <view class="manual-library-note">选择会随“保存全部设置”一次生效，取消设置不会改变首页草稿。</view>
-          <reference-library task-name="{{libraryTaskName}}" selected-ids="{{draftManualReferenceIds}}" bind:toggle="onManualReferenceToggle" />
+        <view class="setting-section" wx:if="{{purpose !== 'optimize'}}">
+          <view class="setting-heading">输出参数</view>
+          <view class="setting-grid">
+            <view wx:if="{{purpose !== 'refine'}}"><view class="setting-label">格式</view><picker range="{{outputOptions}}" range-key="label" value="{{outputIndex}}" bindchange="onOutputChange"><view class="setting-picker">{{outputOptions[outputIndex].label}} <text>⌄</text></view></picker></view>
+            <view wx:if="{{draft.outputFormat === 'png'}}"><view class="setting-label">清晰度</view><picker range="{{resolutionOptions}}" range-key="label" value="{{resolutionIndex}}" bindchange="onResolutionChange"><view class="setting-picker">{{resolutionOptions[resolutionIndex].label || '不可用'}} <text>⌄</text></view></picker></view>
+          </view>
+          <view class="setting-block"><view class="setting-label">画面比例</view><ratio-picker options="{{ratioOptions}}" value="{{draft.aspectRatio || 'auto'}}" bind:change="selectRatio" /></view>
+          <view class="adjustment-note" wx:if="{{normalizationNotice}}">{{normalizationNotice}}</view>
         </view>
-        <view class="setting-block"><view class="setting-label">渠道密钥</view><view class="key-field" wx:for="{{keyFields}}" wx:key="provider"><view class="key-label">{{item.label}}</view><view wx:if="{{item.provider === 'minimax'}}"><view class="setting-label">MiniMax 区域</view><picker range="{{minimaxRegionOptions}}" range-key="label" value="{{minimaxRegionIndex}}" bindchange="onMiniMaxRegionChange"><view class="setting-picker">{{minimaxRegionOptions[minimaxRegionIndex].label}}</view></picker><view class="privacy-note">{{minimaxApiBase}} · 请填写该区域平台的 Key</view></view><button wx:if="{{item.provider === 'tokendance'}}" bindtap="openTokenDance">观猹 TokenDance 授权与钱包</button><input wx:else class="key-input" password value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" /></view><view class="privacy-note">{{encryptedRecovery ? '可恢复任务所需的其他渠道密钥会在服务端加密保存，任务完成即删除，最长 7 天。' : '密钥仅保存在当前页面内存，不写入 Storage、日志或任务记录。'}}</view><button class="ark-verify" wx:if="{{arkStatus}}" loading="{{verifyingArk}}" disabled="{{verifyingArk}}" bindtap="verifyArkRoutes">{{arkStatus}} · 点击验证</button></view>
+        <view class="setting-section" wx:if="{{purpose !== 'refine' && purpose !== 'optimize'}}">
+          <view class="setting-heading">生成流程</view>
+          <picker range="{{pipelineOptions}}" range-key="label" value="{{pipelineIndex}}" bindchange="onPipelineChange"><view class="setting-picker">{{pipelineOptions[pipelineIndex].label}} <text>⌄</text></view></picker>
+          <button class="disclosure" bindtap="toggleAdvanced" aria-expanded="{{advancedExpanded}}"><text>检索、候选图与评审</text><text>{{advancedExpanded ? '收起 −' : '展开 +'}}</text></button>
+          <view wx:if="{{advancedExpanded}}">
+            <view class="setting-label">参考图库检索</view><view class="retrieval-options"><button wx:for="{{retrievalOptions}}" wx:key="value" class="retrieval-option {{draft.retrievalSetting === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="selectRetrieval">{{item.label}}</button></view>
+            <view class="setting-grid setting-block"><view><view class="setting-label">候选图</view><picker range="{{candidateOptions}}" range-key="label" value="{{candidateIndex}}" bindchange="onCandidateChange"><view class="setting-picker">{{candidateOptions[candidateIndex].label}} <text>⌄</text></view></picker></view><view><view class="setting-label">评审轮数</view><picker range="{{criticOptions}}" range-key="label" value="{{criticIndex}}" bindchange="onCriticChange"><view class="setting-picker">{{criticOptions[criticIndex].label}} <text>⌄</text></view></picker></view></view>
+            <view class="privacy-note">更多候选图与评审轮数会增加调用费用。</view>
+          </view>
+          <view class="manual-library" wx:if="{{draft.retrievalSetting === 'manual'}}"><view class="setting-label">手动参考案例</view><view class="privacy-note">选择随设置保存，取消不改变原有选择。</view><reference-library task-name="{{libraryTaskName}}" selected-ids="{{draftManualReferenceIds}}" bind:toggle="onManualReferenceToggle" /></view>
+        </view>
+        <view class="setting-section">
+          <button class="disclosure credentials-heading" bindtap="toggleCredentials" aria-expanded="{{credentialsExpanded}}"><text class="setting-heading">接入凭据</text><text>{{credentialsExpanded ? '收起 −' : '查看 +'}}</text></button>
+          <view wx:if="{{!credentialsExpanded}}" class="credential-summary">{{credentialSummary}}</view>
+          <view wx:if="{{credentialsExpanded}}">
+            <view class="key-field" id="credential-{{item.provider}}" wx:for="{{keyFields}}" wx:key="provider">
+              <view class="setting-label">{{item.label}}</view>
+              <view wx:if="{{item.provider === 'minimax'}}"><picker range="{{minimaxRegionOptions}}" range-key="label" value="{{minimaxRegionIndex}}" bindchange="onMiniMaxRegionChange"><view class="setting-picker">{{minimaxRegionOptions[minimaxRegionIndex].label}}</view></picker><view class="privacy-note">{{minimaxApiBase}} · 请使用该区域的 Key</view></view>
+              <view wx:if="{{item.provider === 'tokendance'}}" class="credential-status">{{tokenDanceConnected ? '观猹账户已连接，无需再次授权或填写 Key。可在“账户”页管理消费授权。' : '请在“账户”页连接观猹 TokenDance，无需粘贴 Key。'}}保存设置后再前往账户，可保留本次修改。</view>
+              <input wx:else class="key-input" password focus="{{autoFocusProvider === item.provider}}" value="{{item.value}}" placeholder="{{item.placeholder}}" data-provider="{{item.provider}}" bindinput="onKeyInput" bindfocus="onKeyFocus" adjust-position="{{false}}" cursor-spacing="20" />
+              <view wx:if="{{item.guideUrl}}" class="api-key-guide">
+                <view class="guide-title">API Key 申请指南</view>
+                <view class="guide-step" wx:for="{{item.guideSteps}}" wx:for-item="step" wx:for-index="stepIndex" wx:key="*this"><text class="guide-number">{{stepIndex + 1}}.</text><text class="guide-text">{{step}}</text></view>
+                <button class="guide-link" data-provider="{{item.provider}}" bindtap="copyKeyGuide" aria-label="复制{{item.label}}官方申请说明链接">复制官方申请/说明链接 ›</button>
+                <text class="guide-host" user-select>{{item.guideHost}} · 在浏览器打开</text>
+              </view>
+            </view>
+            <view class="privacy-note">{{encryptedRecovery ? '任务恢复所需的其他渠道密钥加密保留，完成即删，最长 7 天。' : '密钥仅保存在本次会话内存，不写入本地存储。'}}</view>
+            <button class="ark-verify" wx:if="{{arkStatus}}" loading="{{verifyingArk}}" disabled="{{verifyingArk}}" bindtap="verifyArkRoutes">{{arkStatus}} · 验证</button>
+          </view>
+        </view>
       </view>
       <view class="sheet-error" wx:if="{{error}}">{{error}}</view>
-      <view class="sheet-bottom-space"></view>
     </scroll-view>
-    <button class="sheet-save" disabled="{{!draft}}" bindtap="save">保存全部设置</button>
+    <view class="sheet-footer"><button class="sheet-save" disabled="{{!draft}}" bindtap="save">保存全部设置</button></view>
   </view>
-  <model-picker show="{{showModelPicker}}" registry-version="{{registryVersion}}" provider-regions="{{draft.providerRegions}}" role="{{editingRole}}" output-format="{{draft.outputFormat || ''}}" selected-provider="{{pickerProvider}}" selected-model="{{pickerModel}}" bind:select="selectModel" bind:close="closeModelPicker" />
+  <model-picker show="{{showModelPicker}}" registry-version="{{registryVersion}}" provider-regions="{{draft.providerRegions || emptyObject}}" role="{{editingRole}}" output-format="{{draft.outputFormat || ''}}" selected-provider="{{pickerProvider}}" selected-model="{{pickerModel}}" bind:select="selectModel" bind:close="closeModelPicker" />
 </view>

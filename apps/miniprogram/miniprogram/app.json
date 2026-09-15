@@ -5,7 +5,8 @@
     "pages/refine/refine",
     "pages/guide/guide",
     "pages/job-detail/job-detail",
-    "pages/tokendance/tokendance"
+    "pages/tokendance/tokendance",
+    "pages/watcha/watcha"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -30,6 +31,10 @@
       {
         "pagePath": "pages/refine/refine",
         "text": "精修"
+      },
+      {
+        "pagePath": "pages/tokendance/tokendance",
+        "text": "账户"
       },
       {
         "pagePath": "pages/guide/guide",

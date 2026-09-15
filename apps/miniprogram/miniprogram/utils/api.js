@@ -60,7 +60,7 @@ function authRequest(path, method, data, options = {}) {
 }
 function gatewayRequest(url, method, data, options = {}) {
     return new Promise((resolve, reject) => {
-        const header = requestHeader(true);
+        const header = requestHeader(options.auth !== false);
         wx.request({
             url,
             method,
@@ -68,11 +68,16 @@ function gatewayRequest(url, method, data, options = {}) {
             header,
             data,
             success(res) {
-                persistCookies(res);
+                if (options.isCurrent && !options.isCurrent()) {
+                    reject(new Error('账号或操作已变化，请重新尝试。'));
+                    return;
+                }
+                if (options.auth !== false)
+                    persistCookies(res);
                 const responseData = coerceJsonResponse(res.data);
                 if (res.statusCode < 200 || res.statusCode >= 300) {
                     const body = responseData || {};
-                    reject((0, business_errors_1.toBusinessError)(res.statusCode, body));
+                    reject((0, business_errors_1.toBusinessError)(res.statusCode, body, res.header));
                     return;
                 }
                 resolve(responseData);
@@ -92,10 +97,15 @@ function postJson(url, body, options = {}) {
             header: requestHeader(options.auth !== false),
             data: body,
             success(res) {
-                persistCookies(res);
+                if (options.isCurrent && !options.isCurrent()) {
+                    reject(new Error('账号或操作已变化，请重新尝试。'));
+                    return;
+                }
+                if (options.auth !== false)
+                    persistCookies(res);
                 const data = coerceJsonResponse(res.data) || {};
                 if (res.statusCode < 200 || res.statusCode >= 300 || (data.code && data.code !== 0)) {
-                    reject((0, business_errors_1.toBusinessError)(res.statusCode, data));
+                    reject((0, business_errors_1.toBusinessError)(res.statusCode, data, res.header));
                     return;
                 }
                 resolve(data);
@@ -106,7 +116,7 @@ function postJson(url, body, options = {}) {
         });
     });
 }
-function uploadReferenceFile(filePath, uploadUrl, mimeType, expiresAt) {
+function uploadReferenceFile(filePath, uploadUrl, mimeType, expiresAt, onTask) {
     return new Promise((resolve, reject) => {
         if (!(0, reference_upload_policy_1.referenceUploadTimeout)(expiresAt)) {
             reject(new Error('参考图上传地址已过期，请重试。'));
@@ -120,7 +130,7 @@ function uploadReferenceFile(filePath, uploadUrl, mimeType, expiresAt) {
                     reject(new Error('参考图上传地址已过期，请重试。'));
                     return;
                 }
-                wx.request({
+                const task = wx.request({
                     url: uploadUrl,
                     method: 'PUT',
                     timeout,
@@ -139,6 +149,7 @@ function uploadReferenceFile(filePath, uploadUrl, mimeType, expiresAt) {
                         reject(new Error(error.errMsg || '参考图上传失败'));
                     },
                 });
+                onTask === null || onTask === void 0 ? void 0 : onTask(task);
             },
             fail(error) {
                 reject(new Error(error.errMsg || '读取参考图失败'));
@@ -209,9 +220,7 @@ function parseCookieHeader(header) {
     return cookieMap;
 }
 function formatError(error) {
-    if (error instanceof business_errors_1.BusinessError)
-        return (0, business_errors_1.businessErrorGuidance)(error).message;
-    const message = error instanceof Error ? error.message : String(error || '');
+    const message = error instanceof business_errors_1.BusinessError ? `${error.businessCode} ${error.message}` : error instanceof Error ? error.message : String(error || '');
     if (/ACCOUNT_DELETION_REVIEW_REQUIRED/.test(message))
         return '此前的注销未完整结束，需要核对已清理的数据后处理，请联系作者。';
     if (/ACCOUNT_LIFECYCLE_CLOSED|no longer accepting credential/.test(message))
@@ -222,6 +231,8 @@ function formatError(error) {
         return '注销申请已受理，后台会自动继续处理。';
     if (/ACCOUNT_DELETION_CONTRACT_UNAVAILABLE/.test(message))
         return '账号注销服务正在升级，请稍后重试。';
+    if (error instanceof business_errors_1.BusinessError)
+        return (0, business_errors_1.businessErrorGuidance)(error).message;
     if (message.includes('Invalid email or password'))
         return '邮箱或密码不正确。';
     if (message.includes('Invalid origin') || message.includes('Origin not allowed')) {

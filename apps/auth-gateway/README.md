@@ -122,3 +122,7 @@ provider secrets.
 已有观猹绑定登录原图研 ID；首次登录必须明确绑定已登录且本地邮箱已验证的原账号，或用邮件验证码创建无密码新账号。上游邮箱不用于合并。已有邮箱返回 `WATCHA_EXISTING_ACCOUNT` 并保留待绑定身份。解绑前必须另有密码 credential，密码可通过既有找回密码流程设置。Better Auth 的通用 `/unlink-account` 被禁用，观猹解绑只能走上述确认接口；隐式账号关联也禁用。账号删除事务清理绑定、会话及该用户的 Watcha 临时记录。旧待绑定请求在账号生命周期改变后失效。注销冻结与 Watcha 绑定/解绑/确认在同一用户文档上形成事务冲突：旧快照不能跨过已持久化的冻结继续写凭据。真实 Mongo 回归用确定性暂停验证该边界，以及冻结后会话插入的补偿清理与回调错误重定向。
 
 本地隔离回归：`apps/auth-gateway/tests/integration/run-watcha.sh` 自动创建随机名字、随机 loopback 端口的 Mongo 8.0.16 replica set，结束即销毁。所有上游 OAuth 和邮件由 fixture 接管，零真实发送。浏览器验收可运行 `WATCHA_FIXTURE_BROWSER=1 WATCHA_FIXTURE_WEB_ORIGIN=http://127.0.0.1:5186 apps/auth-gateway/tests/integration/run-watcha.sh`，它打印随机 Gateway origin 与仅本地的 `/fixture/mail`。浏览器测试应拦截官方 authorize URL 并重定向到该 Gateway 的 `/fixture/authorize`，保留查询参数；生产接口始终返回固定官方 URL。通过 SIGINT 关闭 fixture 会删除测试数据库和容器，不影响既有服务。
+
+### 微信小程序观猹身份接续
+
+3.3.0 增加 `watcha/mini-status`、`mini-start`、`mini-launch`、`mini-exchange`、`mini-cancel`。沿用已登记观猹回调与现有服务端凭据，使用发起 Cookie 和浏览器一次性接续码共同兑换。既有 Web 登录兼容；`mini-status.miniProgramSupported` 控制小程序启用。详见 [`docs/miniprogram-watcha-2026-09-10.md`](../../docs/miniprogram-watcha-2026-09-10.md)。部署本 Gateway 补充之前，小程序继续提供邮箱登录。

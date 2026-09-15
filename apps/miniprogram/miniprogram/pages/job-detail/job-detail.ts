@@ -1,3 +1,4 @@
+import { getCurrentUser, subscribeSession } from '../../utils/session'
 import { openTokenDance } from '../../utils/tokendance'
 import { formatError, requestJson } from '../../utils/api'
 import { readDatasetBoolean } from '../../utils/constants'
@@ -14,7 +15,19 @@ Component({
   },
 
   lifetimes: {
+    attached() {
+      let owner = getCurrentUser()?.id || ''
+      ;(this as any).epoch = 0
+      ;(this as any).unsubscribeSession = subscribeSession(user => {
+        if (owner !== (user?.id || '')) {
+          ;(this as any).epoch++
+          owner = user?.id || ''
+          this.stopPolling(); this.stopRecoveryCountdown(); this.setData({ retrySeconds: 0, job: null, jobId: '', error: '账号已切换，请从任务记录重新打开。', isLoading: false })
+        }
+      })
+    },
     detached() {
+      ;(this as any).epoch++; (this as any).unsubscribeSession?.()
       this.stopPolling()
       this.stopRecoveryCountdown()
     },
@@ -25,6 +38,7 @@ Component({
       this.startRecoveryCountdown()
       if ((this as any).pollingTimer) return
       const status = this.data.job ? this.data.job.status : ''
+      if (this.data.jobId && ['succeeded', 'failed'].includes(status)) void this.loadJob()
       if (this.data.jobId && status !== 'succeeded' && status !== 'failed') {
         this.startPolling()
       }
@@ -41,9 +55,11 @@ Component({
       if (!this.data.job?.recovery?.canResume || (this as any).resuming) return
       this.startRecoveryCountdown()
       if (this.data.retrySeconds > 0) { this.setData({ error: `请等待 ${this.data.retrySeconds} 秒后恢复原任务。` }); return }
+      const epoch = (this as any).epoch, jobId = this.data.jobId
+      const current = () => epoch === (this as any).epoch && jobId === this.data.jobId
       ;(this as any).resuming = true
       this.setData({ error: '' })
-      try { await requestJson({ action: 'tokenDanceResume', jobId: this.data.jobId }); this.startPolling() } catch (error) { this.setData({ error: formatError(error) }) } finally { (this as any).resuming = false }
+      try { await requestJson({ action: 'tokenDanceResume', jobId }); if (current()) this.startPolling() } catch (error) { if (current()) this.setData({ error: formatError(error) }) } finally { (this as any).resuming = false }
     },
     startRecoveryCountdown() {
       this.stopRecoveryCountdown()
@@ -79,9 +95,13 @@ Component({
 
     async loadJob() {
       const jobId = this.data.jobId
-      if (!jobId) return
+      if (!jobId || (this as any).loadingRequest) return
+      const epoch = (this as any).epoch
+      ;(this as any).loadingRequest = true
+      const current = () => epoch === (this as any).epoch && jobId === this.data.jobId
       try {
         const data = await requestJson<{ job?: unknown }>({ action: 'getJob', jobId })
+        if (!current()) return
         const job = normalizeJob(data.job)
         this.setData({
           job,
@@ -93,11 +113,12 @@ Component({
         }
         this.startRecoveryCountdown()
       } catch (error) {
+        if (!current()) return
         this.setData({
           error: formatError(error),
           isLoading: false,
         })
-      }
+      } finally { (this as any).loadingRequest = false }
     },
 
     startPolling() {

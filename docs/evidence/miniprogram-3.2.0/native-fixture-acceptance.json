@@ -1,0 +1,132 @@
+{
+  "mode": "native simulator with all network/storage writes mocked; no provider calls, mail or uploads",
+  "checks": [
+    "generation optimization: real component tap, preview before apply, explicit apply, restore",
+    "verification observer reaches verified through read-only status; no verification token consumption",
+    "local result preview and album dispatch mocked; simulator file-sharing fallback verified; no real sharing",
+    "file selection callback, actual bundled PNG read, mocked prepare/PUT/finalize, refine submit, poll, result actions rendered"
+  ],
+  "fileSharing": "mocked-dispatch",
+  "calls": [
+    {
+      "action": "GET get-session",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "myJobs",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "myJobs",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "modelRegistry",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "optimizeInputs",
+      "target": "methodContent",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "POST verification-status",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "POST verification-status",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "tokenDanceStatus",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "myJobs",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "prepareReferenceUpload",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "PUT put",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "finalizeReferenceUpload",
+      "hasCookie": false,
+      "sourceKeys": [],
+      "purpose": "refine"
+    },
+    {
+      "action": "optimizeInputs",
+      "target": "editInstruction",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "modelRegistry",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "refineImage",
+      "hasCookie": false,
+      "sourceKeys": [
+        "sourceImageUpload"
+      ]
+    },
+    {
+      "action": "getJob",
+      "hasCookie": false,
+      "sourceKeys": []
+    },
+    {
+      "action": "previewImage",
+      "hasLocalFile": false,
+      "hasPreview": true,
+      "title": ""
+    },
+    {
+      "action": "saveImageToPhotosAlbum",
+      "hasLocalFile": true,
+      "hasPreview": false,
+      "title": ""
+    },
+    {
+      "action": "showToast",
+      "hasLocalFile": false,
+      "hasPreview": false,
+      "title": "已保存到相册"
+    },
+    {
+      "action": "shareFileMessage",
+      "hasLocalFile": true,
+      "hasPreview": false,
+      "title": ""
+    }
+  ],
+  "errors": []
+}

@@ -82,7 +82,7 @@ export function createApp({
   app.all('/api/auth/*', (request, response, next) => {
     const path = request.path.replace(/\/+$/, '');
     if (isMaintenance() && ((request.method === 'POST' && path.startsWith('/api/auth/watcha/'))
-      || path === '/api/auth/oauth2/callback/watcha')) return maintenanceResponse(response, config);
+      || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
     next();
   }, createBoundedAuthHandler(auth.webHandler));
   app.use(express.json({ limit: '1mb' }));

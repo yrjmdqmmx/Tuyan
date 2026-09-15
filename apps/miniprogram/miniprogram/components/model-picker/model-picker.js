@@ -9,15 +9,19 @@ const MODEL_PAGE_SIZE = 30;
 Component({
     options: { styleIsolation: 'apply-shared' },
     properties: {
-        show: { type: Boolean, value: false, observer(show) { if (show)
-                this.resetFlow(); } },
-        registryVersion: { type: String, value: '', observer() { if (this.properties.show)
-                this.resetFlow(); } },
+        show: { type: Boolean, value: false },
+        registryVersion: { type: String, value: '' },
         providerRegions: { type: Object, value: {} },
         role: { type: String, value: 'main' },
         outputFormat: { type: String, value: 'png' },
         selectedProvider: { type: String, value: '' },
         selectedModel: { type: String, value: '' },
+    },
+    observers: {
+        'show, registryVersion, providerRegions, role, outputFormat, selectedProvider, selectedModel'() {
+            if (this.properties.show)
+                this.resetFlow();
+        },
     },
     data: {
         step: 'providers',
@@ -29,6 +33,7 @@ Component({
         activeProvider: '',
         activeProviderLabel: '',
         activeVendor: '',
+        activeModelLabel: '',
         activeProviderIsAggregator: false,
         query: '',
         catalogMode: 'all',
@@ -38,81 +43,102 @@ Component({
     },
     methods: {
         noop() { },
-        getRegistry() { return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, this.properties.providerRegions); },
+        getRegistry() { return (0, provider_regions_1.registryForRegions)((0, model_registry_store_1.getModelRegistryState)().registry, this.properties.providerRegions == null ? undefined : this.properties.providerRegions); },
+        compatibleModels(providerId) {
+            var _a, _b, _c;
+            return (0, model_registry_1.partitionRegistryModels)(((_c = (_b = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers) === null || _b === void 0 ? void 0 : _b[providerId]) === null || _c === void 0 ? void 0 : _c.models) || [], {
+                role: normalizeRole(this.properties.role), outputFormat: String(this.properties.outputFormat || ''),
+            }).compatible;
+        },
+        vendorsFor(providerId) {
+            return (0, model_registry_1.groupRegistryModels)(this.compatibleModels(providerId)).map(group => ({ vendor: group.vendor, count: group.models.length }));
+        },
+        selectedModelLabel(providerId, vendor) {
+            var _a;
+            if (providerId !== this.properties.selectedProvider || !vendor)
+                return '';
+            return ((_a = this.compatibleModels(providerId).find(model => model.id === this.properties.selectedModel && (0, model_presentation_1.modelDeveloper)(providerId, model).label === vendor)) === null || _a === void 0 ? void 0 : _a.label) || '';
+        },
         resetFlow() {
+            var _a;
             const registry = this.getRegistry();
-            const role = normalizeRole(this.properties.role);
-            if (!registry || !registry.providers) {
-                this.setData({ step: 'providers', roleLabel: roleLabel(role), providerCards: [], vendorCards: [], compatibleCount: 0, visibleCompatibleModels: [] });
-                return;
-            }
-            const providerCards = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map((id) => {
-                const provider = registry.providers[id];
-                const partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { role, outputFormat: String(this.properties.outputFormat || '') });
-                return {
-                    id,
-                    label: PROVIDER_LABELS[id],
-                    kindText: (provider === null || provider === void 0 ? void 0 : provider.accessKind) === 'aggregator' ? '聚合渠道' : '官方直连',
-                    count: partition.compatible.length,
-                };
-            }).filter((item) => item.count > 0);
+            const providerCards = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map(id => {
+                var _a;
+                return ({
+                    id, label: PROVIDER_LABELS[id], kindText: ((_a = registry === null || registry === void 0 ? void 0 : registry.providers[id]) === null || _a === void 0 ? void 0 : _a.accessKind) === 'aggregator' ? '聚合渠道' : '官方直连',
+                    count: this.compatibleModels(id).length,
+                });
+            }).filter(item => item.count > 0);
+            const selectedProvider = String(this.properties.selectedProvider || '');
+            const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : '';
+            const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : [];
+            const selected = this.compatibleModels(activeProvider).find(model => model.id === this.properties.selectedModel);
+            const activeVendor = selected ? (0, model_presentation_1.modelDeveloper)(activeProvider, selected).label : '';
             this.setData({
-                step: 'providers', roleLabel: roleLabel(role), providerCards, vendorCards: [], compatibleCount: 0, visibleCompatibleModels: [],
-                activeProvider: '', activeProviderLabel: '', activeVendor: '', activeProviderIsAggregator: false, query: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE,
+                step: 'providers', roleLabel: roleLabel(normalizeRole(this.properties.role)), providerCards, vendorCards,
+                activeProvider, activeProviderLabel: activeProvider ? PROVIDER_LABELS[activeProvider] : '', activeVendor,
+                activeModelLabel: (selected === null || selected === void 0 ? void 0 : selected.label) || '', activeProviderIsAggregator: ((_a = registry === null || registry === void 0 ? void 0 : registry.providers[activeProvider]) === null || _a === void 0 ? void 0 : _a.accessKind) === 'aggregator',
+                query: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE, compatibleCount: 0, visibleCompatibleModels: [], hasMore: false, expandedModel: '',
             });
         },
         selectProvider(event) {
+            var _a, _b;
             const providerId = String(event.currentTarget.dataset.provider || '');
-            const registry = this.getRegistry();
-            const provider = registry === null || registry === void 0 ? void 0 : registry.providers[providerId];
-            if (!provider)
+            if (!this.data.providerCards.some(item => item.id === providerId))
                 return;
-            const role = normalizeRole(this.properties.role);
-            const partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { role, outputFormat: String(this.properties.outputFormat || '') });
-            const compatibleIds = new Set(partition.compatible.map((item) => item.id));
-            const vendorCards = (0, model_registry_1.groupRegistryModels)(partition.compatible).map((group) => ({
-                vendor: group.vendor,
-                count: group.models.length,
-                compatibleCount: group.models.filter((item) => compatibleIds.has(item.id)).length,
-            }));
-            const isAggregator = provider.accessKind === 'aggregator';
+            const vendorCards = this.vendorsFor(providerId);
+            if (!vendorCards.length)
+                return;
+            const activeVendor = providerId === this.data.activeProvider && vendorCards.some(item => item.vendor === this.data.activeVendor) ? this.data.activeVendor : '';
             this.setData({
                 activeProvider: providerId, activeProviderLabel: PROVIDER_LABELS[providerId] || providerId,
-                activeProviderIsAggregator: isAggregator, activeVendor: '', vendorCards, query: '', catalogMode: 'all',
-                visibleLimit: MODEL_PAGE_SIZE, step: 'vendors',
+                activeProviderIsAggregator: ((_b = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers[providerId]) === null || _b === void 0 ? void 0 : _b.accessKind) === 'aggregator',
+                activeVendor, activeModelLabel: this.selectedModelLabel(providerId, activeVendor), vendorCards,
+                step: 'vendors', query: '', catalogMode: 'all', visibleLimit: MODEL_PAGE_SIZE, expandedModel: '',
+                compatibleCount: 0, visibleCompatibleModels: [], hasMore: false,
             });
+        },
+        showProviders() { this.setData({ step: 'providers', query: '', expandedModel: '' }); },
+        showVendors() {
+            if (!this.data.activeProvider)
+                return;
+            this.setData({ step: 'vendors', vendorCards: this.vendorsFor(this.data.activeProvider), query: '', expandedModel: '' });
+        },
+        showModels() {
+            if (!this.data.activeVendor || !this.vendorsFor(this.data.activeProvider).some(item => item.vendor === this.data.activeVendor))
+                return;
+            this.setData({ step: 'models', query: '', expandedModel: '', visibleLimit: MODEL_PAGE_SIZE });
+            this.refreshModelLists();
         },
         selectVendor(event) {
             const vendor = String(event.currentTarget.dataset.vendor || '');
-            if (!vendor)
+            if (!this.vendorsFor(this.data.activeProvider).some(item => item.vendor === vendor))
                 return;
-            this.setData({ activeVendor: vendor, step: 'models', query: '', visibleLimit: MODEL_PAGE_SIZE });
-            this.refreshModelLists();
+            this.setData({ activeVendor: vendor, activeModelLabel: this.selectedModelLabel(this.data.activeProvider, vendor) });
+            this.showModels();
         },
         backStep() {
-            if (this.data.step === 'models') {
-                this.setData({ step: 'vendors', query: '' });
-                return;
-            }
-            if (this.data.step === 'vendors')
-                this.setData({ step: 'providers' });
+            if (this.data.step === 'models')
+                this.showVendors();
+            else if (this.data.step === 'vendors')
+                this.showProviders();
         },
         refreshModelLists() {
-            var _a;
-            const registry = this.getRegistry();
+            var _a, _b;
             const providerId = this.data.activeProvider;
-            const provider = (_a = registry === null || registry === void 0 ? void 0 : registry.providers) === null || _a === void 0 ? void 0 : _a[providerId];
-            if (!provider)
+            const provider = (_b = (_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providers) === null || _b === void 0 ? void 0 : _b[providerId];
+            if (!provider || !this.data.activeVendor) {
+                this.setData({ compatibleCount: 0, visibleCompatibleModels: [], hasMore: false });
                 return;
-            const role = normalizeRole(this.properties.role);
-            const options = { role, query: this.data.query, outputFormat: String(this.properties.outputFormat || ''), recommendedOnly: providerId === 'openrouter' && this.data.catalogMode === 'recommended' };
-            let partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], options);
+            }
+            const options = { role: normalizeRole(this.properties.role), query: this.data.query, outputFormat: String(this.properties.outputFormat || ''), recommendedOnly: providerId === 'openrouter' && this.data.catalogMode === 'recommended' };
+            let partition = (0, model_registry_1.partitionRegistryModels)(provider.models, options);
             const inVendor = (model) => (0, model_presentation_1.modelDeveloper)(providerId, model).label === this.data.activeVendor;
             if (options.recommendedOnly && !partition.compatible.some(inVendor)) {
-                partition = (0, model_registry_1.partitionRegistryModels)((provider === null || provider === void 0 ? void 0 : provider.models) || [], { ...options, recommendedOnly: false });
+                partition = (0, model_registry_1.partitionRegistryModels)(provider.models, { ...options, recommendedOnly: false });
                 this.setData({ catalogMode: 'all' });
             }
-            const compatibleModels = partition.compatible.filter(inVendor).map((model) => presentModel(model, this.properties.selectedProvider, this.properties.selectedModel, providerId));
+            const compatibleModels = partition.compatible.filter(inVendor).map(model => presentModel(model, this.properties.selectedProvider, this.properties.selectedModel, providerId));
             const visibleLimit = Math.max(MODEL_PAGE_SIZE, Number(this.data.visibleLimit) || MODEL_PAGE_SIZE);
             this.setData({ compatibleCount: compatibleModels.length, visibleCompatibleModels: compatibleModels.slice(0, visibleLimit), hasMore: visibleLimit < compatibleModels.length });
         },
@@ -121,18 +147,17 @@ Component({
             this.refreshModelLists();
         },
         setCatalogMode(event) {
-            const catalogMode = event.currentTarget.dataset.mode === 'all' ? 'all' : 'recommended';
-            this.setData({ catalogMode, visibleLimit: MODEL_PAGE_SIZE });
+            this.setData({ catalogMode: event.currentTarget.dataset.mode === 'all' ? 'all' : 'recommended', visibleLimit: MODEL_PAGE_SIZE });
             this.refreshModelLists();
         },
-        loadMore() {
-            this.setData({ visibleLimit: this.data.visibleLimit + MODEL_PAGE_SIZE });
-            this.refreshModelLists();
-        },
+        loadMore() { this.setData({ visibleLimit: this.data.visibleLimit + MODEL_PAGE_SIZE }); this.refreshModelLists(); },
         choose(event) {
-            if (event.currentTarget.dataset.disabled)
+            if (this.data.step !== 'models' || !this.data.activeVendor || event.currentTarget.dataset.disabled)
                 return;
-            this.triggerEvent('select', { provider: this.data.activeProvider, modelId: String(event.currentTarget.dataset.model || '') });
+            const modelId = String(event.currentTarget.dataset.model || '');
+            if (!this.compatibleModels(this.data.activeProvider).some(model => model.id === modelId && (0, model_presentation_1.modelDeveloper)(this.data.activeProvider, model).label === this.data.activeVendor))
+                return;
+            this.triggerEvent('select', { provider: this.data.activeProvider, modelId });
         },
         copyId(event) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }); },
         toggleDetails(event) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }); },

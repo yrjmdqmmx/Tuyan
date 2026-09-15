@@ -28,7 +28,7 @@ const mixed = {
   image: { accessProvider: 'ark', modelId: 'seedream-image' },
   vision: { accessProvider: 'gemini', modelId: 'gemini-vision' },
 }
-assert.deepEqual(buildModelSubmission({ configurationMode: 'advanced', modelRoutes: mixed, registry }), {
+assert.deepEqual(buildModelSubmission({ configurationMode: 'advanced', modelRoutes: mixed, registry: { routeContractVersion: 1 } }), {
   configurationMode: 'advanced', provider: 'openai', modelRoutes: mixed,
   mainModelName: 'gpt-main', imageModelName: 'seedream-image', referenceVisionModelName: 'gemini-vision',
 })

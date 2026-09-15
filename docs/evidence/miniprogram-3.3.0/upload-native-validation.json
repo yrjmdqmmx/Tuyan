@@ -1,0 +1,7 @@
+{
+  "mode": "read-only native runtime check, no login/account mutation",
+  "version": "miniprogram-3.3.0",
+  "watchaRequestLoaded": true,
+  "watchaPageRegistered": true,
+  "verified": true
+}

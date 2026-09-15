@@ -1,4 +1,4 @@
-import { normalizeProviderRegions, selectRegionApiKeys, type ProviderRegions } from './provider-regions'
+import { modelAvailableInRegion, normalizeProviderRegions, selectRegionApiKeys, type ProviderRegions } from './provider-regions'
 import type { ModelRegistry, ModelRole } from './model-registry'
 
 export const MODEL_ROUTE_ROLES: ModelRole[] = ['main', 'image', 'vision']
@@ -11,7 +11,7 @@ export function providerDefaultRoutes(provider: string, registry: ModelRegistry 
   if (!defaults?.main || !defaults.image || !defaults.vision) throw new Error('当前 API 渠道没有完整默认路由。')
   return {
     main: { accessProvider: provider, modelId: defaults.main },
-    image: { accessProvider: provider, modelId: defaults.image },
+    image: { accessProvider: provider, modelId: provider === 'tokendance' && (providers?.[provider] as any)?.models?.some((model: any) => model.id === 'seedream-5.0-pro' && model.selectable && model.roles?.includes('image')) ? 'seedream-5.0-pro' : defaults.image },
     vision: { accessProvider: provider, modelId: defaults.vision },
   }
 }
@@ -20,11 +20,18 @@ export function buildModelSubmission(input: {
   configurationMode: 'simple' | 'advanced'
   modelRoutes: ModelRoutes
   providerRegions?: ProviderRegions
-  registry: { routeContractVersion?: number; providerRegionContractVersion?: number } | null
+  registry: { routeContractVersion?: number; providerRegionContractVersion?: number; providers?: ModelRegistry['providers'] } | null
 }): Record<string, unknown> {
   assertCompleteRoutes(input.modelRoutes)
   if (!input.registry || Number(input.registry.routeContractVersion || 0) < 1) {
     throw new Error('服务端模型目录不可用，已禁止新建付费任务。')
+  }
+  if (input.registry.providers) {
+    for (const role of MODEL_ROUTE_ROLES) {
+      const route = input.modelRoutes[role]
+      const model = input.registry.providers[route.accessProvider as keyof ModelRegistry['providers']]?.models?.find(entry => entry.id === route.modelId)
+      if (!model || !model.selectable || !model.roles?.includes(role) || !modelAvailableInRegion(route.accessProvider, model, input.providerRegions)) throw new Error(`模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`)
+    }
   }
   const regions = normalizeProviderRegions(input.providerRegions)
   const usesMiniMax = Object.values(input.modelRoutes).some(route => route.accessProvider === 'minimax')

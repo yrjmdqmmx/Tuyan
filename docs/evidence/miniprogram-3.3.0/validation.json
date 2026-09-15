@@ -1,0 +1,55 @@
+{
+  "version": "3.3.0",
+  "sourceHead": "0714e911a8d0ec25d2a70c252a258243eec27199",
+  "branch": "codex/miniprogram-watcha-login-20260910",
+  "checkedAt": "2026-09-10T11:41:15.710289+00:00",
+  "sourceTests": {
+    "passed": 91,
+    "failed": 0
+  },
+  "uploadTests": {
+    "passed": 91,
+    "failed": 0
+  },
+  "gatewayTests": {
+    "passed": 148,
+    "failed": 0
+  },
+  "gatewayMongoIntegration": {
+    "webGroups": 14,
+    "miniGroups": 7,
+    "failed": 0
+  },
+  "sharedModelContract": {
+    "passed": 3,
+    "failed": 0
+  },
+  "miniTypecheck": "passed",
+  "miniBuild": "passed",
+  "freshGeneratedJsPairs": 48,
+  "catalogGenerator": "v18, 739 models, no drift",
+  "referenceUploadGenerator": "no drift",
+  "nativeMockedScenarios": 5,
+  "nativeExceptions": 0,
+  "localSync": {
+    "controlledFiles": 201,
+    "added": 9,
+    "updated": 22,
+    "deleted": 0,
+    "preservedUnmanaged": 9,
+    "verified": true
+  },
+  "production": {
+    "gatewaySupplementDeployed": false,
+    "miniStatusHttp": 404,
+    "wechatUploaded": false,
+    "wechatReviewSubmitted": false,
+    "wechatReleased": false,
+    "realEmail": 0,
+    "realAccountMutation": 0,
+    "realProviderCalls": 0,
+    "realPayment": 0
+  },
+  "lineageId": "lin-5b571a51515da5ce",
+  "parentHandoffId": "20260910-171551-codex-tuyan-mini-program-3.2.0-tokendance-pari-01a07efe-e9af-79c0-8f4b-"
+}
