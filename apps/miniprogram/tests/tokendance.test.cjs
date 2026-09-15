@@ -268,6 +268,30 @@ test('one-use codes stay out of view data and are cleared on hide; uncertain cre
   f.close(); assert.equal(f.page.oneUseCode, '')
 })
 
+test('definite payment rejection permits retry while uncertain server failures remain locked', async () => {
+  const { toBusinessError } = require('../miniprogram/utils/business-errors.js')
+  for (const failure of [
+    toBusinessError(401, { recoveryAction: 'reauthorize_api_key' }),
+    toBusinessError(429, { recoveryAction: 'rate_limit' }),
+    toBusinessError(409, { uncertain: true }),
+    toBusinessError(503, { uncertain: false }),
+    toBusinessError(408, {}),
+  ]) {
+    let creates = 0
+    const f = pageFixture(async body => {
+      if (body.action === 'tokenDancePaymentCreate') { creates++; if (creates === 1) throw failure; return { session: { status: 'closed' } } }
+      return {}
+    })
+    await f.page.createPayment()
+    const uncertain = failure.uncertain || failure.httpStatus >= 500 || failure.httpStatus === 408
+    assert.equal(f.page.data.paymentUncertain, uncertain)
+    if (!uncertain) assert.equal(f.page.data.uncertainAttemptId, '')
+    await f.page.createPayment()
+    assert.equal(creates, uncertain ? 1 : 2)
+    f.close()
+  }
+})
+
 test('returning to account from its reopened job detail pops the native stack and keeps the original task', () => {
   const exports = {}, navigation = []
   let pages = [{ route: 'pages/tokendance/tokendance' }, { route: 'pages/job-detail/job-detail', options: { jobId: 'original-job' } }]

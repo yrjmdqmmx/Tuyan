@@ -212,8 +212,14 @@ Component({
                 this.pollPayment();
             }
             catch (error) {
-                if (this.current(epoch))
-                    this.setData({ paymentUncertain: true, uncertainAttemptId: attemptId, error: (0, api_1.formatError)(error) + ' 请先刷新充值记录核对，避免重复创建。' });
+                if (this.current(epoch)) {
+                    const failure = error;
+                    // A definite 4xx rejection permits a new attempt. Transport failures,
+                    // timeouts, 5xx and explicit uncertain responses still require review.
+                    const rejected = failure.uncertain === false && Number(failure.httpStatus) >= 400 && Number(failure.httpStatus) < 500 && failure.httpStatus !== 408;
+                    this.setData({ paymentUncertain: !rejected, uncertainAttemptId: rejected ? '' : attemptId,
+                        error: (0, api_1.formatError)(error) + (rejected ? '' : ' 请先刷新充值记录核对，避免重复创建。') });
+                }
             }
             finally {
                 if (this.current(epoch))

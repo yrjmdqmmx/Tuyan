@@ -1,0 +1,30 @@
+{
+  "clientVersion": "3.5.5",
+  "sourceRevision": "afe4c28",
+  "sourceTests": {
+    "passed": 119,
+    "failed": 0
+  },
+  "uploadCopyTests": {
+    "passed": 119,
+    "failed": 0
+  },
+  "sourceTypecheck": "passed",
+  "sourceBuild": "passed",
+  "controlledFiles": 215,
+  "updatedFiles": 13,
+  "unmanagedFilesPreserved": 9,
+  "runtimeInputLengths": {
+    "method": 158,
+    "caption": 28,
+    "negativePrompt": 44
+  },
+  "runtimeModels": {
+    "main": "Google / Gemini 3.8 Flash",
+    "image": "TokenDance / Seedream 5.0 Pro",
+    "vision": "TokenDance / Qwen3.8 Flash"
+  },
+  "accountDisplay": "已连接 · 使用观猹账户额度",
+  "identityBridgeProduction": "200 / available / miniProgramSupported",
+  "wechatPlatformUploadPerformed": false
+}
