@@ -337,7 +337,18 @@ function appendLocalJob(job) {
     return own;
 }
 function clearLocalJobs() {
-    wx.removeStorageSync(config_1.LOCAL_JOBS_KEY);
+    var _a;
+    const owner = (_a = (0, session_1.getCurrentUser)()) === null || _a === void 0 ? void 0 : _a.id;
+    if (!owner)
+        return;
+    const previous = wx.getStorageSync(config_1.LOCAL_JOBS_KEY);
+    if (!Array.isArray(previous))
+        return;
+    const retained = previous.filter(item => String((item === null || item === void 0 ? void 0 : item.user_id) || (item === null || item === void 0 ? void 0 : item.userId) || '') !== owner);
+    if (retained.length)
+        wx.setStorageSync(config_1.LOCAL_JOBS_KEY, retained);
+    else
+        wx.removeStorageSync(config_1.LOCAL_JOBS_KEY);
 }
 const STAGE_TEXT_LIMIT = 300;
 function toStageSummary(stage) {

@@ -7,4 +7,4 @@ exports.API_ENDPOINT = `${exports.API_BASE}/paperbanana-api`;
 exports.AUTH_BASE = `${exports.API_BASE}/api/auth`;
 exports.LOCAL_JOBS_KEY = 'paperbanana_mini_jobs';
 exports.AUTH_COOKIE_KEY = 'paperbanana_auth_cookie';
-exports.CLIENT_VERSION = 'miniprogram-3.5.4';
+exports.CLIENT_VERSION = 'miniprogram-3.5.5';

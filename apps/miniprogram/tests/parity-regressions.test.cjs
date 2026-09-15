@@ -67,6 +67,24 @@ test('local history preserves unowned legacy entries but displays only the curre
     assert.ok(stored.some(j => j.id === 'legacy'))
   } finally { session.getCurrentUser = previous }
 })
+test('clearing history affects only the current owner and keeps other accounts and legacy rows', () => {
+  const session = require('../miniprogram/utils/session.js'), previous = session.getCurrentUser
+  let user = { id: 'a' }, stored = [{ id: 'a', user_id: 'a' }, { id: 'a-alias', userId: 'a' }, { id: 'b', user_id: 'b' }, { id: 'legacy' }]
+  session.getCurrentUser = () => user
+  global.wx = { getStorageSync: () => stored, setStorageSync: (_, value) => { stored = value }, removeStorageSync: () => { stored = undefined } }
+  const jobs = require('../miniprogram/utils/jobs.js')
+  try {
+    jobs.clearLocalJobs()
+    assert.deepEqual(stored, [{ id: 'b', user_id: 'b' }, { id: 'legacy' }])
+    user = null; jobs.clearLocalJobs()
+    assert.deepEqual(stored, [{ id: 'b', user_id: 'b' }, { id: 'legacy' }])
+    user = { id: 'b' }; jobs.clearLocalJobs()
+    assert.deepEqual(stored, [{ id: 'legacy' }])
+    stored = [{ id: 'b-only', user_id: 'b' }]; jobs.clearLocalJobs()
+    assert.equal(stored, undefined)
+  } finally { session.getCurrentUser = previous }
+})
+
 function refinePage(requestJson) {
   let user = { id: 'a' }; let listener
   const loaded = loadComponent('pages/refine/refine.js', {

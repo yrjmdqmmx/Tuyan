@@ -1,0 +1,105 @@
+{
+  "deployedSourceRevision": "4077ddc60a0d7814a0c6a2ff0484fbae46c3413c",
+  "sourcePR": "https://github.com/yrjmdqmmx/Tuyan/pull/196",
+  "deployment": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34918030044",
+  "productionApproval": {
+    "environment": "paperbanana-production",
+    "normalRequiredReviewerApproval": true,
+    "bypassed": false
+  },
+  "workflows": {
+    "mainCI": 34917893543,
+    "gatewayImage": 34917909316,
+    "coreImage": 34917911951,
+    "benchmarkImage": 34917914408,
+    "hkDeployment": 34918030044,
+    "webPages": 34917917463
+  },
+  "allWorkflowsConclusion": "success",
+  "images": {
+    "gateway": "sha256:a3badc4d3988981fc95a3a84cdad96c64366c2e81b642a3ed2ef43cf30200a09",
+    "core": "sha256:de5bbf83299aac125d4216b0ad13c39a144058935d92cb3c6c4c4f939f0b3b92",
+    "benchmark": "sha256:1d350e5f5b78e068e6910d1186b95c413dd8d0c599253cd58cf3d0a621f7bbfe"
+  },
+  "benchmarkMode": "configured-disabled",
+  "liveSmoke": {
+    "checkedAt": "2026-09-15T01:40:11.408Z",
+    "base": "https://api.paperbanana.asia",
+    "checks": [
+      {
+        "name": "/health",
+        "passed": true,
+        "httpStatus": 200,
+        "ok": true
+      },
+      {
+        "name": "/ready",
+        "passed": true,
+        "httpStatus": 200,
+        "ok": true
+      },
+      {
+        "name": "/api/auth/watcha/status",
+        "passed": true,
+        "httpStatus": 200,
+        "available": true
+      },
+      {
+        "name": "/api/auth/watcha/mini-status",
+        "passed": true,
+        "httpStatus": 200,
+        "available": true,
+        "miniProgramSupported": true
+      },
+      {
+        "name": "wrong native app rejected",
+        "passed": true,
+        "httpStatus": 403
+      },
+      {
+        "name": "native start and browser launch",
+        "passed": true,
+        "httpStatus": 200,
+        "launchStatus": 302,
+        "pkce": "S256",
+        "officialProvider": "watcha.cn"
+      },
+      {
+        "name": "launch ticket cannot replay",
+        "passed": true
+      },
+      {
+        "name": "unknown continuation code rejected",
+        "passed": true,
+        "httpStatus": 400
+      },
+      {
+        "name": "anonymous smoke handoff cancelled",
+        "passed": true
+      }
+    ]
+  },
+  "developerToolsOAuth": {
+    "method": "isolated wx.request cookie jar in WeChat Developer Tools plus real official Watcha authorization in Chrome; existing Mini Program session preserved",
+    "exchange": "complete",
+    "sameUserId": true,
+    "tokenDanceConnected": true,
+    "testSessionSignedOut": true,
+    "originalSessionPreserved": true,
+    "originalCookieStorageUnchanged": true
+  },
+  "tests": {
+    "gateway": 148,
+    "miniprogramBeforeReleaseFollowup": 117,
+    "miniprogram355": 119,
+    "webOAuthMongoGroups": 14,
+    "miniBridgeMongoGroups": 7
+  },
+  "boundaries": {
+    "newProviderCredentials": false,
+    "realPaymentCreated": false,
+    "paidModelCalls": 0,
+    "physicalPhoneLoginTest": false,
+    "wechatReviewOrPublicationPerformed": false
+  }
+}

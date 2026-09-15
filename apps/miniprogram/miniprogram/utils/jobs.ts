@@ -406,7 +406,13 @@ export function appendLocalJob(job: Job): Job[] {
 }
 
 export function clearLocalJobs() {
-  wx.removeStorageSync(LOCAL_JOBS_KEY)
+  const owner = getCurrentUser()?.id
+  if (!owner) return
+  const previous = wx.getStorageSync(LOCAL_JOBS_KEY)
+  if (!Array.isArray(previous)) return
+  const retained = previous.filter(item => String(item?.user_id || item?.userId || '') !== owner)
+  if (retained.length) wx.setStorageSync(LOCAL_JOBS_KEY, retained)
+  else wx.removeStorageSync(LOCAL_JOBS_KEY)
 }
 
 const STAGE_TEXT_LIMIT = 300

@@ -1,12 +1,20 @@
 # 平台同步日志 (Platform Sync Log)
 
+### [2026-09-15] 小程序观猹身份接续生产补发 — by Codex
+PR #196 已合并，生产 Web / Gateway / Core / Benchmark 发布 `4077ddc60a0d7814a0c6a2ff0484fbae46c3413c`，补齐小程序身份接续接口。`mini-status` 从 404 恢复为 200，能力标志可用；没有新增环境变量或 Key，原回调地址和 TokenDance 消费授权保持。详见 [发布与验收](docs/releases/2026-09-15-miniprogram-watcha.md)。
+- [x] Gateway / 运维：CI、固定镜像、正常 production 审批、香港健康与 Web Pages 发布通过
+- [x] 微信小程序：开发者工具“已绑定观猹”，真实 wx.request → Chrome 官方观猹 → 一次性接续兑换成功；原账号、消费授权和原会话保持
+- [x] Web / Core / 共享契约：既有身份、邮箱、模型与消费接口兼容；隔离 Mongo 和生产无付费 smoke 通过
+- [ ] 物理手机跨应用验收，以及新版微信体验版 / 审核 / 正式发布（平台状态单独核实）
+
 ### [2026-09-10] 小程序 3.3.0 观猹身份与浏览器接续 — by Codex
 在已验收小程序 3.2.0 上合并 Web/Gateway #193–#195，新增独立身份入口、首次邮箱验证、显式绑定、验证码解绑与无密码账号注销。Gateway 新增 `/api/auth/watcha/mini-status`、`mini-start`、`mini-launch`、`mini-exchange`、`mini-cancel`；发起 Cookie 与浏览器独立一次性接续码共同兑换，回调仍为已登记路径。`mini-status` 增加 `miniProgramSupported`，旧网关回退邮箱登录。复用现有邮箱管理接口和生命周期，身份与 TokenDance 消费授权保持独立；无新增环境变量、模型或供应商凭据。详见 [设计、接口与交付](docs/miniprogram-watcha-2026-09-10.md)。
 - [x] 小程序源码 / JS：身份登录和账号管理，保留原工作台输入/模型选择/任务，晚到响应写 Cookie 前校验 owner/epoch
 - [x] Auth Gateway：短期双凭据接续、一次兑换、原会话绑定、精确原生来源、取消/过期、限流、维护模式与生命周期；Web 原接口兼容
 - [x] Web / Core / Laf / 共享模型：沿用既有身份和消费契约，无本轮额外适配；官方图标复用
 - [x] 本地原生 5 场景；源码与上传副本各 91/91、Gateway 148/148、隔离 Mongo 14+7 组、48 组 TS/JS 一致；201 个受控文件 checksum 一致（新增 9 / 更新 22 / 删除 0），9 个本机文件保持，实际开发工具为 3.3.0。见 [验证证据](docs/evidence/miniprogram-3.3.0/validation.json)
-- [ ] Gateway 补充部署及真机跨浏览器身份验收；微信上传/审核/正式发布另行安排
+- [x] Gateway 补充部署及开发者工具与 Chrome 真实身份接续验收（2026-09-15，4077ddc，见顶部发布记录）
+- [ ] 物理手机跨浏览器身份验收；微信新版上传/审核/正式发布单独安排
 
 
 

@@ -113,7 +113,16 @@ Component({
       const epoch = (this as any).epoch, attemptId = `mini-${Date.now()}-${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`
       this.setData({ busy: true, error: '', attemptId })
       try { const result = await this.accountRequest({ action: 'tokenDancePaymentCreate', amount, attemptId }); this.setData({ payment: result.session }); this.pollPayment() }
-      catch (error) { if (this.current(epoch)) this.setData({ paymentUncertain: true, uncertainAttemptId: attemptId, error: formatError(error) + ' 请先刷新充值记录核对，避免重复创建。' }) } finally { if (this.current(epoch)) this.setData({ busy: false }) }
+      catch (error) {
+        if (this.current(epoch)) {
+          const failure = error as { httpStatus?: number; uncertain?: boolean }
+          // A definite 4xx rejection permits a new attempt. Transport failures,
+          // timeouts, 5xx and explicit uncertain responses still require review.
+          const rejected = failure.uncertain === false && Number(failure.httpStatus) >= 400 && Number(failure.httpStatus) < 500 && failure.httpStatus !== 408
+          this.setData({ paymentUncertain: !rejected, uncertainAttemptId: rejected ? '' : attemptId,
+            error: formatError(error) + (rejected ? '' : ' 请先刷新充值记录核对，避免重复创建。') })
+        }
+      } finally { if (this.current(epoch)) this.setData({ busy: false }) }
     },
     copyAlipay() { if (/^alipays:\/\/platformapi\/startapp\?/.test(this.data.payment?.alipay_url || '')) { wx.setClipboardData({ data: this.data.payment.alipay_url }); this.setData({ notice: '请将支付宝链接粘贴到系统浏览器，或用图研网页完成充值。返回后查询到账状态。' }) } },
     openWebWallet() { wx.setClipboardData({ data: 'https://www.paperbanana.asia/?view=account' }); this.setData({ notice: '已复制图研账户入口，请用系统浏览器打开，并登录同一图研账号。' }) },
