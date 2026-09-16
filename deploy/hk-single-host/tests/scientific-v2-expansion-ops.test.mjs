@@ -14,6 +14,9 @@ test('expansion descriptor validator rejects widened schemas and Codex execution
   const valid = { schemaVersion: 1, kind: 'single_model_expansion', baseline: { releaseId: 'baseline-release', releaseHash: 'a'.repeat(64), batchId: 'baseline-batch', manifestHash: 'b'.repeat(64) }, targetModelId: 'microsoft/mai-image-2.6' }
   const run = (input) => spawnSync('jq', ['-ce', filter], { input: JSON.stringify(input), encoding: 'utf8' })
   assert.equal(run(valid).status, 0)
+  const replacement = { ...valid, targetModelId: 'openai/gpt-image-2', replacesModelId: 'codex:gpt-image-2' }
+  assert.equal(run(replacement).status, 0)
+  for (const input of [{ ...replacement, replacesModelId: 'other' }, { ...replacement, targetModelId: valid.targetModelId }, { ...replacement, extra: true }]) assert.notEqual(run(input).status, 0)
   for (const invalid of [
     { ...valid, secret: 'forbidden' }, { ...valid, schemaVersion: 2 }, { ...valid, kind: 'remediation' },
     { ...valid, targetModelId: 'codex:gpt-image-2' },
