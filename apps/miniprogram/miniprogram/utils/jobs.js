@@ -60,6 +60,8 @@ function normalizeJob(input) {
         id: jobId,
         recovery: job.recovery || null,
         providerCalls: job.providerCalls || [],
+        failure: job.failure || null,
+        referenceSelection: job.referenceSelection || null,
         status,
         provider: String(job.provider || ''),
         client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),

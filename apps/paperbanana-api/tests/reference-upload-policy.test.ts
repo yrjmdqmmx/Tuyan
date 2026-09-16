@@ -238,9 +238,9 @@ test('TokenDance invalid reference bytes fail with actionable input errors befor
       const job = await r.db.collection('paperbanana_jobs').findOne({_id:queued.data.jobId})
       assert.equal(job.status,'failed',JSON.stringify(job))
       assert.match(job.error,/解码|损坏|格式/)
-      assert.equal(job.recovery,undefined,'known input failure must not claim uncertain billing')
+      assert.equal(job.recovery.requestState,'not_sent'); assert.equal(job.recovery.canResume,false)
       const execution = await r.db.collection('paperbanana_provider_executions').findOne({_id:queued.data.jobId})
-      assert.equal(execution.state,'failed'); assert.equal(execution.secret,undefined)
+      assert.equal(execution.state,'blocked'); assert.ok(execution.secret, 'retain checkpoint envelope without automatically replaying bad input')
       assert.ok(r.objects.has(uploads[0].objectKey),'original is retained for inspection')
     }
     assert.equal(r.tokenDanceCalls.filter((call:any)=>/\/chat\/completions$|\/images\/generations$/.test(call.url)).length,0)

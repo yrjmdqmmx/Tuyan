@@ -2289,6 +2289,8 @@ test('providerAccountCatalog aborts a hung Ark probe by deadline and immediately
   let hungCalls = 0
   process.env.PAPERBANANA_PROVIDER_ACCOUNT_PROBE_TIMEOUT_MS = '100'
   legacy.configureRuntimeFetch(async (_input, init) => {
+    // Shared legacy background catalog reads are not paid Ark probes.
+    if (!String(_input).startsWith('https://ark.cn-beijing.volces.com/api/v3/')) return Response.json({ data: [] })
     hungCalls += 1
     if (init?.signal) observedSignals.push(init.signal as AbortSignal)
     return await new Promise<Response>(() => {})
@@ -3346,12 +3348,12 @@ test('automatic and random retrieval exclude internal fallbacks and sign only se
   }))
   state.signedReferenceKeys = []
   const selected = await legacy.resolveRetrievedReferences({ taskName: 'plot', retrievalSetting: 'random' }, '')
-  assert.equal(selected.length, 10)
-  assert.equal(state.signedReferenceKeys.length, 10, 'discarded random candidates must not be signed')
+  assert.equal(selected.length, 8)
+  assert.equal(state.signedReferenceKeys.length, 8, 'discarded random candidates must not be signed')
 
   state.signedReferenceKeys = []
   legacy.configureRuntimeFetch(async () => Response.json({
-    output: [{ type: 'message', content: [{ type: 'output_text', text: '["ref_1", "ref_12"]' }] }],
+    output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify({selections:[{id:'ref_1',relevance:0.9,visualFit:true,contribution:'overall trends'},{id:'ref_12',relevance:0.8,visualFit:true,contribution:'legend placement'}]}) }] }],
   }))
   try {
     const automatic = await legacy.resolveRetrievedReferences({
@@ -3454,7 +3456,7 @@ test('createJob returns a stable 4xx business error before admission for an unus
     })
     assert.equal(result.code, 422)
     assert.equal(result.businessCode, 'REFERENCE_SELECTION_INVALID')
-    assert.match(result.error, /missing-ref/)
+    assert.match(result.error, /参考图.*刷新图库/)
   } finally {
     legacy.configureJobAdmission({
       maxActive: Number.MAX_SAFE_INTEGER,
@@ -4754,9 +4756,9 @@ test('persisted and public job errors and logs redact credential-bearing text', 
     await legacy.drainJobAdmission()
     const persistedText = JSON.stringify(state.updates)
     assert.doesNotMatch(persistedText, /persisted-query-secret|persisted-bearer-secret|persisted-colon-secret|persisted-google-secret|request-secret/)
-    assert.match(persistedText, /REDACTED/)
+    assert.match(persistedText, /图示规划失败/)
     const terminalUpdate = state.updates.findLast((entry: any) => entry.update?.$set?.status === 'failed')
-    assert.equal(terminalUpdate.update.$set.error, 'Model execution failed. Please retry.')
+    assert.match(terminalUpdate.update.$set.error, /图示规划失败.*输入不符合/)
   } finally {
     legacy.configureRuntimeFetch()
     state.jobRows = []
@@ -6000,7 +6002,7 @@ test('input optimization hides a non-2xx provider response body after one infere
   }
 })
 
-test('input optimization leaves the existing callTextModel default retry count unchanged', async () => {
+test('paid model POST never retries an ambiguous transport failure', async () => {
   const legacy = await loadLegacy()
   let attempts = 0
   legacy.configureRuntimeFetch(async () => {
@@ -6009,9 +6011,8 @@ test('input optimization leaves the existing callTextModel default retry count u
     return inputOptimizationChatResponse('existing retry succeeded')
   })
   try {
-    const result = await legacy.callTextModel('openai', 'gpt-5.6-sol', 'key', 'system', 'user')
-    assert.equal(result, 'existing retry succeeded')
-    assert.equal(attempts, 2)
+    await assert.rejects(legacy.callTextModel('openai', 'gpt-5.6-sol', 'key', 'system', 'user'), /transient network rejection/)
+    assert.equal(attempts, 1)
   } finally {
     legacy.configureRuntimeFetch()
   }

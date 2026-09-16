@@ -1,5 +1,6 @@
+import JobFailureNotice from './JobFailureNotice';
 import { AlertTriangle } from 'lucide-react';
-import { formatConfigurationMode, formatDate, formatErrorMessage, formatOutputFormat, formatReferenceImageMode } from '../utils';
+import { formatConfigurationMode, formatDate, formatOutputFormat, formatReferenceImageMode } from '../utils';
 import DownloadJobZipButton from './DownloadJobZipButton';
 import ResultFigure from './ResultFigure';
 import StatusBadge from './StatusBadge';
@@ -91,7 +92,7 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
           </div>
 
           {item.status === 'failed' && (item.error || item.logs_tail) ? (
-            <div className="error-line"><AlertTriangle size={16} /> {item.recovery?.message || formatErrorMessage(item.error || lastDiagnosticLine(item.logs_tail))}</div>
+            <JobFailureNotice job={{ ...item, error: item.error || lastDiagnosticLine(item.logs_tail) }} />
           ) : null}
           {renderRecovery?.(item)}
           {item.providerCalls?.length > 0 && <details><summary>模型调用记录</summary>{item.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {call.actualModel || '未返回实际型号'}<br />请求编号：{call.requestId || '未返回'}；供应商：{call.supplier || '未返回'}</p>)}</details>}

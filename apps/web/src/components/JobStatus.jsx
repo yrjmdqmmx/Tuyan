@@ -1,5 +1,6 @@
-import { AlertTriangle, Loader2, Settings2 } from 'lucide-react';
-import { formatConfigurationMode, formatErrorMessage, formatOutputFormat, formatReferenceImageMode } from '../utils';
+import JobFailureNotice from './JobFailureNotice';
+import { Loader2, Settings2 } from 'lucide-react';
+import { formatConfigurationMode, formatOutputFormat, formatReferenceImageMode } from '../utils';
 import DownloadJobZipButton from './DownloadJobZipButton';
 import ResultFigure from './ResultFigure';
 import StageTimeline from './StageTimeline';
@@ -33,7 +34,8 @@ export default function JobStatus({ job, apiBase, onUseForRefine }) {
       {(job.result_images || []).length > 0 ? (
         <DownloadJobZipButton job={job} apiBase={apiBase} />
       ) : null}
-      {job.error ? <div className="error-line"><AlertTriangle size={16} /> {job.recovery?.message || formatErrorMessage(job.error)}</div> : null}
+      <JobFailureNotice job={job} />
+      {job.referenceSelection && <p className="echo-label">参考图选择：实际采用 {job.referenceSelection.selectedCount} 张，{job.referenceSelection.mode === 'images' ? `本阶段合计提交 ${job.referenceSelection.imageCount} 张图片` : '本阶段仅使用参考文字'}；按相关性和当前模型限制筛选，无合适参考图时不使用。</p>}
       {(job.reference_images || []).some((image) => image.url) ? (
         <>
           <p className="echo-label">参考回显（仅作风格参考，不决定版式）</p>

@@ -53,7 +53,7 @@ export default function ReferenceLibraryPanel({ references, selectedIds, pageInf
   return (
     <div className="reference-library-panel">
       <div className="reference-library-head">
-        <div><strong><BookOpen size={15} /> 手动参考案例</strong><span>从完整图研Tuyan 参考库中选择最多 10 个案例。</span></div>
+        <div><strong><BookOpen size={15} /> 手动参考案例</strong><span>最多选择 10 个候选案例；实际使用数量按当前模型预算和去重结果确定，不必选满。</span></div>
         <span className="reference-library-count">已选 {selected.size}/10</span>
       </div>
       <button type="button" className="reference-gallery-launcher" onClick={() => setShowGallery(true)}>
