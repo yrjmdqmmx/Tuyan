@@ -27,7 +27,8 @@ export function scientificEvidenceCost(row: Row, batch?: Row | null): Scientific
   if (slot.provider === 'codex' || row.canonicalModelId.startsWith('codex:')) return unavailable()
   if (slot.attempts.length === 0) return { currency: null, amount: '0', basis: 'not_called' }
   const invoice = SCIENTIFIC_V2_BILLING_EVIDENCE.find(item => item.manifestHash === batch.manifestHash
-    && item.modelId === row.canonicalModelId && item.caseId === row.caseId && item.imageHash === row.imageHash
+    && item.modelId === row.canonicalModelId && item.caseId === row.caseId && item.imageHash === (row.imageHash ?? null)
+    && item.imageHash === (slot.attempts.at(-1)?.rawImageHash ?? null)
     && item.attemptCount === slot.attempts.length)
   if (invoice) return { currency: invoice.currency, amount: invoice.amount, basis: 'invoice_reconciled', evidenceHash: invoice.evidenceHash, verifiedAt: invoice.verifiedAt }
   const prices = (batch.manifest.priceSnapshot?.entries || []).filter((entry: Row) => entry.provider === slot.provider

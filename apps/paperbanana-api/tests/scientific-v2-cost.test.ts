@@ -35,6 +35,35 @@ test('flat rate is calculated, failed-attempt accounting is estimated, Codex is 
   batch.state.slots[0].costCny = 999
   assert.equal(scientificEvidenceCost(row, batch).basis, 'unavailable')
 })
+test('invoice-confirmed no-output failure is zero, while a mismatched failure remains unverified', () => {
+  const proof = SCIENTIFIC_V2_BILLING_EVIDENCE.find(item => item.modelId === 'google/nano-banana'
+    && item.caseId === 'scientific-gen-05-math-bilingual')!
+  assert.equal(proof.amount, '0')
+  assert.equal(proof.imageHash, null)
+  const attempts = [{ responseClass: 'confirmed_technical_failure', rawImageHash: null }]
+  const slot = { canonicalModelId: proof.modelId, caseId: proof.caseId, modelId: proof.modelId,
+    provider: 'replicate', operation: 'generation', imageSize: 'provider-default', status: 'failed', attempts, costCny: 0.26157754 }
+  const base = { manifestHash: proof.manifestHash, slots: [slot] }
+  const batch = { status: 'published', manifestHash: proof.manifestHash, manifest: { manifestHash: proof.manifestHash },
+    state: { ...base, stateHash: canonicalHash(base) } }
+  const row = { canonicalModelId: proof.modelId, caseId: proof.caseId, status: 'failed',
+    attemptSummary: { count: 1, responseClasses: ['confirmed_technical_failure'] } }
+  for (const evidence of [row, { ...row, imageHash: null }]) {
+    const cost = scientificEvidenceCost(evidence, batch)
+    assert.equal(cost.basis, 'invoice_reconciled')
+    assert.equal(cost.amount, '0')
+    assert.equal(cost.currency, 'USD')
+  }
+  assert.equal(scientificEvidenceCost({ ...row, status: 'succeeded' }, batch).basis, 'unavailable')
+  assert.equal(scientificEvidenceCost({ ...row, attemptSummary: { count: 2, responseClasses: ['confirmed_technical_failure', 'succeeded'] } }, batch).basis, 'unavailable')
+  assert.notEqual(scientificEvidenceCost({ ...row, imageHash: 'c'.repeat(64) }, batch).basis, 'invoice_reconciled')
+  const withOutput = { ...base, slots: [{ ...slot, attempts: [{ ...attempts[0], rawImageHash: 'e'.repeat(64) }] }] }
+  assert.equal(scientificEvidenceCost(row, { ...batch,
+    state: { ...withOutput, stateHash: canonicalHash(withOutput) } }).basis, 'budget_estimate')
+  const different = { ...base, manifestHash: 'd'.repeat(64) }
+  assert.equal(scientificEvidenceCost(row, { ...batch, manifestHash: different.manifestHash,
+    manifest: { manifestHash: different.manifestHash }, state: { ...different, stateHash: canonicalHash(different) } }).basis, 'budget_estimate')
+})
 test('summary adds decimal amounts exactly and never mixes currencies or treats unknown as free', () => {
   const costs = [
     { currency: 'USD', amount: '0.034', basis: 'official_rate_calculated', evidenceHash: 'a'.repeat(64) },
