@@ -245,6 +245,7 @@ export async function createScientificV2ProductionRunDependencies(
         bailian: env.PAPERBANANA_BENCH_BAILIAN_API_KEY!,
         ark: env.PAPERBANANA_BENCH_ARK_API_KEY!,
         openrouter: env.PAPERBANANA_BENCH_OPENROUTER_API_KEY!,
+        replicate: env.PAPERBANANA_BENCH_REPLICATE_API_TOKEN,
       },
       artifactStore,
       artifactSpool,
@@ -665,6 +666,10 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     })
     verifyScientificV2BatchManifest(bundle.manifest)
     verifyScientificV2BatchState(bundle.state, bundle.manifest)
+    if (bundle.manifest.executionOrder.some((slot) => slot.provider === 'replicate')) {
+      const token = (context?.env || process.env).PAPERBANANA_BENCH_REPLICATE_API_TOKEN
+      if (typeof token !== 'string' || !token || token.trim() !== token || /[\r\n]/.test(token)) scientificV2Error('SCIENTIFIC_V2_PRODUCTION_CREDENTIAL_MISSING')
+    }
     await assertExecutionLineage(context?.env || process.env, bundle.manifest, execution)
     const dependencies = await createScientificV2ProductionRunDependencies(context?.env || process.env, context?.productionDependencies)
     let operationResult: Record<string, unknown> | null = null

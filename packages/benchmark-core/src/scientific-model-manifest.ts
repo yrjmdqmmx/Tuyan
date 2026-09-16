@@ -1,7 +1,8 @@
+import { scientificProviderOrder, SCIENTIFIC_REPLICATE_IMAGE25_MODELS } from './scientific-providers.js'
 import { canonicalHash } from './hash.js'
 import { SCIENTIFIC_BENCHMARK_IDENTITY } from './scientific-contracts.js'
 
-type ProductionProvider = 'bailian' | 'ark' | 'openrouter'
+type ProductionProvider = 'bailian' | 'ark' | 'openrouter' | 'replicate'
 type ScientificAccessProvider = ProductionProvider | 'codex'
 type ImageEditMode = 'direct-edit' | 'analyze-redraw' | 'none'
 
@@ -30,8 +31,7 @@ interface ScientificManifestRoute {
   resolutions: string[]
 }
 
-const providerOrder: readonly ProductionProvider[] = ['bailian', 'ark', 'openrouter']
-const priority: Record<ScientificAccessProvider, number> = { bailian: 0, ark: 1, openrouter: 2, codex: 3 }
+const priority: Record<ScientificAccessProvider, number> = { bailian: 0, ark: 1, openrouter: 2, replicate: 3, codex: 4 }
 
 export interface ScientificV2Expansion {
   schemaVersion: 1
@@ -168,9 +168,10 @@ export function buildScientificV2CanonicalManifest(input: {
 }) {
   if (!input.registryVersion || !/^[a-f0-9]{64}$/i.test(input.registryHash)) throw new Error('INVALID_SCIENTIFIC_REGISTRY_BINDING')
 
+  const providerOrder = scientificProviderOrder(Boolean(input.registry.providers?.replicate))
   let sawUppercaseModelId = false
   const discoveredRoutes: ScientificManifestRoute[] = providerOrder.flatMap((provider) => (input.registry.providers?.[provider]?.models || [])
-    .filter((model) => model.selectable === true && model.roles?.includes('image') && model.capabilities?.imageGeneration === true)
+    .filter((model) => (provider !== 'replicate' || (SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(model.id)) && model.selectable === true && model.roles?.includes('image') && model.capabilities?.imageGeneration === true)
     .flatMap((model) => {
       const parsedModelId = parseScientificModelId(model.id)
       sawUppercaseModelId ||= parsedModelId.hasUppercase

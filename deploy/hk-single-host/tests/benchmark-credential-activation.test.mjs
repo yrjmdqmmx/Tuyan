@@ -432,3 +432,22 @@ test('deploy and smoke require an exact benchmark secret mode and keep configure
   assert.match(smoke, /PAPERBANANA_BENCH_CONCURRENCY/);
   assert.doesNotMatch(smoke, /console\.log\(process\.env|printenv PAPERBANANA_BENCH_(?:BAILIAN|OPENROUTER|ARK|OSS)/);
 });
+
+
+test('optional Replicate token reaches only the disabled Worker and survives a later legacy bundle', () => {
+  const fixture = makeFixture();
+  const token = 'obvious-fake-replicate-token';
+  try {
+    fixture.rewriteBundle(bundleText() + `PAPERBANANA_BENCH_REPLICATE_API_TOKEN=${token}\n`);
+    const first = fixture.run(['--apply-disabled']);
+    assert.equal(first.status, 0, first.stderr);
+    assert.match(readFileSync(fixture.benchEnv, 'utf8'), new RegExp(`PAPERBANANA_BENCH_REPLICATE_API_TOKEN=${token}`));
+    assert.doesNotMatch(readFileSync(fixture.coreEnv, 'utf8'), /REPLICATE_API_TOKEN/);
+    assert.doesNotMatch(first.stdout + first.stderr, new RegExp(token));
+    fixture.rewriteBundle(bundleText());
+    const second = fixture.run(['--apply-disabled']);
+    assert.equal(second.status, 0, second.stderr);
+    assert.match(readFileSync(fixture.benchEnv, 'utf8'), new RegExp(`PAPERBANANA_BENCH_REPLICATE_API_TOKEN=${token}`));
+    assert.match(readFileSync(fixture.benchEnv, 'utf8'), /PAPERBANANA_BENCH_ENABLED=false/);
+  } finally { fixture.cleanup(); }
+});

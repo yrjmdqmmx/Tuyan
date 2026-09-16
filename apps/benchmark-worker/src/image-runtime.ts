@@ -3,7 +3,7 @@ import type { BenchmarkLane } from '@paperbanana/benchmark-core'
 import type { BenchProvider } from './config.js'
 
 type AuthoritativeImageCall = (
-  provider: BenchProvider,
+  provider: BenchProvider | 'replicate',
   model: string,
   apiKey: string,
   prompt: string,
@@ -23,7 +23,7 @@ function laneResolution(lane: BenchmarkLane | '1K' | '2K' | 'provider-default') 
 export function createSharedImageRuntime(callImageModel: AuthoritativeImageCall) {
   return Object.freeze({
     async generate(input: {
-      provider: BenchProvider
+      provider: BenchProvider | 'replicate'
       model: string
       apiKey: string
       prompt: string
@@ -42,7 +42,7 @@ export function createSharedImageRuntime(callImageModel: AuthoritativeImageCall)
       )
     },
     async edit(input: {
-      provider: BenchProvider
+      provider: BenchProvider | 'replicate'
       model: string
       apiKey: string
       prompt: string

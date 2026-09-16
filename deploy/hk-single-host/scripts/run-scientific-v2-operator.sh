@@ -535,7 +535,7 @@ elif [[ "$mode" == run ]]; then
      .manifest.suiteHash == $suite and .manifest.priceHash == $price and
      .manifest.manifestHash == $manifest and .state.manifestHash == $manifest and
      (.manifest.models | length) == $models and (.manifest.cases | length) == 9 and
-     .manifest.providerBudgetsCny == {bailian:180,ark:180,openrouter:360} and
+     .manifest.providerBudgetsCny == ({bailian:180,ark:180,openrouter:360} + (if any(.manifest.executionOrder[]?; .provider == "replicate") then {replicate:40} else {} end)) and
      (if .manifest | has("expansion") then
         .manifest.expansion.schemaVersion == 1 and .manifest.expansion.kind == "single_model_expansion" and
         $models == 1 and .manifest.models[0].canonicalModelId == .manifest.expansion.targetModelId and
@@ -647,16 +647,17 @@ raise SystemExit(74)
 PY
 fi
 
+provider_budgets="$(jq -c '.manifest.providerBudgetsCny // .batchInput.manifest.providerBudgetsCny // {bailian:180,ark:180,openrouter:360}' "$snapshot_path")"
 codex_max_tool_calls="$(jq -r 'if (.manifest | has("expansion")) or (.batchInput | has("expansion")) then 0 else 36 end' "$snapshot_path")"
 
 emit_dry_run() {
   jq -cn \
     --arg operation "$mode" --arg codeSha "$expected_sha" --arg bundleHash "$bundle_sha256" \
     --arg registryHash "$registry_hash" --arg suiteHash "$suite_hash" --arg priceHash "$price_hash" \
-    --arg manifestHash "$manifest_hash" --argjson modelCount "$model_count" --argjson codexMaxToolCalls "$codex_max_tool_calls" \
+    --arg manifestHash "$manifest_hash" --argjson modelCount "$model_count" --argjson codexMaxToolCalls "$codex_max_tool_calls" --argjson providerBudgets "$provider_budgets" \
     '{schemaVersion:2,operation:$operation,dryRun:true,providerCalls:0,codeSha:$codeSha,bundleHash:$bundleHash,
       registryHash:$registryHash,suiteHash:$suiteHash,priceHash:$priceHash,manifestHash:$manifestHash,
-      modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:360},
+      modelCount:$modelCount,caseCount:9,providerBudgetsCny:$providerBudgets,
       codexMaxToolCalls:$codexMaxToolCalls,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
 }
 test_signed_result=false
@@ -973,10 +974,10 @@ if [[ "$mode" == inspect ]]; then
   jq -cn \
     --arg operation "$mode" --arg codeSha "$expected_sha" --arg bundleHash "$bundle_sha256" \
     --arg registryHash "$registry_hash" --arg suiteHash "$suite_hash" --arg priceHash "$price_hash" \
-    --arg manifestHash "$manifest_hash" --arg stateHash "$state_hash" --argjson modelCount "$model_count" --argjson codexMaxToolCalls "$codex_max_tool_calls" \
+    --arg manifestHash "$manifest_hash" --arg stateHash "$state_hash" --argjson modelCount "$model_count" --argjson codexMaxToolCalls "$codex_max_tool_calls" --argjson providerBudgets "$provider_budgets" \
     '{schemaVersion:2,operation:$operation,dryRun:false,providerCalls:0,codeSha:$codeSha,bundleHash:$bundleHash,
       registryHash:$registryHash,suiteHash:$suiteHash,priceHash:$priceHash,manifestHash:$manifestHash,stateHash:$stateHash,
-      modelCount:$modelCount,caseCount:9,providerBudgetsCny:{bailian:180,ark:180,openrouter:360},
+      modelCount:$modelCount,caseCount:9,providerBudgetsCny:$providerBudgets,
       codexMaxToolCalls:$codexMaxToolCalls,concurrency:1,lockName:"/run/lock/paperbanana-hk-production.lock"}'
 elif [[ "$mode" == run ]]; then
   state_hash="$(jq -r .report.stateHash "$result_path")"

@@ -1,3 +1,4 @@
+import { scientificProviderBudgets } from '@paperbanana/benchmark-core'
 import { createHash } from 'node:crypto'
 import { constants } from 'node:fs'
 import { lstat, open } from 'node:fs/promises'
@@ -66,7 +67,7 @@ export async function buildScientificV2OperatorPriceAuthorization(input: {
     refreshReport: input.refreshReport,
     loadCaptureBytes: input.loadCaptureBytes,
   })
-  if (extracted.unresolved.length === 0) scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
+  if (extracted.unresolved.length === 0 && !requirements.every((item) => item.provider === 'replicate')) scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
   const entries = extracted.unresolved.map((unresolved) => {
     const requirement = requirements.find((candidate) => candidate.requirementHash === unresolved.requirementHash)
     if (!requirement) scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
@@ -93,11 +94,11 @@ export async function buildScientificV2OperatorPriceAuthorization(input: {
     capturedAt: authorization.capturedAt,
     observations,
     capturesHash: input.refreshReport.capturesHash,
-    operatorAuthorizationHash: authorization.authorizationHash,
+    operatorAuthorizationHash: authorization.entries.length ? authorization.authorizationHash : null,
   })
   const providerTotals = preview.preflight.providerTotals.map((total) => ({
     provider: total.provider,
-    capCny: SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[total.provider],
+    capCny: scientificProviderBudgets(total.provider === 'replicate')[total.provider],
     baselineCny: Number(total.baselineCnyAtoms) / 100_000_000,
     worstCaseCny: Number(total.worstCaseCnyAtoms) / 100_000_000,
   }))

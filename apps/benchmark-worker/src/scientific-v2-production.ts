@@ -548,7 +548,7 @@ export function createScientificV2OssEvidenceStore(client: {
 
 export interface ScientificV2AuthoritativeImageRuntime {
   generate(input: {
-    provider: BenchProvider
+    provider: BenchProvider | 'replicate'
     model: string
     apiKey: string
     prompt: string
@@ -556,7 +556,7 @@ export interface ScientificV2AuthoritativeImageRuntime {
     imageSize: '1K' | '2K' | 'provider-default'
   }): Promise<string>
   edit(input: {
-    provider: BenchProvider
+    provider: BenchProvider | 'replicate'
     model: string
     apiKey: string
     prompt: string
@@ -636,7 +636,7 @@ function confirmedFailure(error: unknown, estimatedCny: number) {
 
 export function createScientificV2ProviderExecutor(input: {
   runtime: ScientificV2AuthoritativeImageRuntime
-  credentials: Record<BenchProvider, string>
+  credentials: Record<BenchProvider, string> & { replicate?: string }
   artifactStore: ScientificV2ProductionArtifactStore
   fetchImpl: typeof fetch
   editSourcePng?: Buffer
