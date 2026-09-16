@@ -1,5 +1,12 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-16 Scientific V2 替换描述符：生产 Shell 校验补齐
+
+- [x] 后端 / 运维：与已合并的 TypeScript 和输入 staging 契约一致，仅允许 `openai/gpt-image-2` 替换 `codex:gpt-image-2`；Shell 与运行包 Python 校验继续拒绝其他替换对象及额外字段。
+- [x] Web / 小程序：无新增字段或接入待办，沿用现有费用与榜单接口。
+- 实测价格刷新在付费调用之前拒绝旧 Shell 规则；本修复不重发任何模型调用。
+
+
 ### [2026-09-16] 科研评测逐题费用、Replicate 五模型与 GPT Image 2 替换 — by Codex（实施中）
 
 公开 `benchmarkModelProfile` 新增 `costSummary`，题位证据新增 `cost`（币种、精确十进制金额、账单核对 / 官方单价核算 / 预算估算 / 未调用 / 未知）；费用作为读取时注释，不改变历史 release 的评分与哈希。新增受限 `replacesModelId=codex:gpt-image-2` 描述符，仅允许 Replicate `openai/gpt-image-2` 完成九题、双审后原子替换；历史 release 保留。其余四型号为 Nano Banana 2 Lite、2、Pro、原版。追加模型仅对签名的目标题位启用，旧签名清单维持原始语义。目录 v19 增加 Lite；Replicate Pro 禁止回退，Nano 2 关闭搜索。每题最多一次生成调用，常驻 Worker 关闭。

@@ -270,7 +270,8 @@ try:
         raise RuntimeError('attestation-counts')
     if 'expansion' in manifest:
         expansion = manifest['expansion']
-        if (not isinstance(expansion, dict) or set(expansion) != {'schemaVersion','kind','baseline','targetModelId'}
+        if (not isinstance(expansion, dict) or set(expansion) not in ({'schemaVersion','kind','baseline','targetModelId'}, {'schemaVersion','kind','baseline','targetModelId','replacesModelId'})
+                or ('replacesModelId' in expansion and (expansion['replacesModelId'] != 'codex:gpt-image-2' or expansion.get('targetModelId') != 'openai/gpt-image-2'))
                 or expansion.get('schemaVersion') != 1 or expansion.get('kind') != 'single_model_expansion'
                 or not isinstance(expansion.get('targetModelId'), str) or not 1 <= len(expansion['targetModelId']) <= 200
                 or expansion['targetModelId'].startswith('codex:')):

@@ -10,7 +10,9 @@ load_scientific_v2_expansion() {
   [[ -f "$path" && ! -L "$path" && "$(stat -c '%u:%g:%a:%h' "$path")" =~ ^0:0:0?600:1$
     && "$(sha256sum "$path" | awk '{print $1}')" == "$expansion_sha256" ]] || return 1
   expansion_json="$(jq -ce '
-    select((keys | sort) == ["baseline","kind","schemaVersion","targetModelId"] and
+    select(((keys | sort) == ["baseline","kind","schemaVersion","targetModelId"] or
+      ((keys | sort) == ["baseline","kind","replacesModelId","schemaVersion","targetModelId"] and
+       .replacesModelId == "codex:gpt-image-2" and .targetModelId == "openai/gpt-image-2")) and
       .schemaVersion == 1 and .kind == "single_model_expansion" and
       (.baseline | keys | sort) == ["batchId","manifestHash","releaseHash","releaseId"] and
       ([.baseline.releaseId,.baseline.batchId] | all(type == "string" and test("^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$"))) and

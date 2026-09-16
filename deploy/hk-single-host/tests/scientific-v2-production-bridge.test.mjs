@@ -480,11 +480,25 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       const manifestValue = { ...base, manifestHash: canonicalHash(base) }
       const nextState = { ...stateBase, manifestHash: manifestValue.manifestHash, slots }
       const stateValue = { ...nextState, stateHash: canonicalHash(nextState) }
-      const attestation = sign({ ...reportBase, batchManifestHash: manifestValue.manifestHash, stateHash: stateValue.stateHash, slotCount: 9, codexToolCallLimit: base.codexLimits.maxToolCalls })
+      const attestation = sign({ ...reportBase, batchManifestHash: manifestValue.manifestHash, stateHash: stateValue.stateHash, slotCount: 9, codexToolCallLimit: base.codexLimits.maxToolCalls, providerBudgetsCny: base.providerBudgetsCny })
       return execute(attestation, { manifestValue, stateValue, expectedManifestHash: manifestValue.manifestHash })
     }
     const validExpansion = verifyExpansion(expansionBase)
     assert.equal(validExpansion.status, 0, validExpansion.stderr)
+    const replacement = { ...expansion, targetModelId: 'openai/gpt-image-2', replacesModelId: 'codex:gpt-image-2' }
+    const replacementSlots = expansionSlots.map(slot => ({ ...slot, canonicalModelId: replacement.targetModelId, provider: 'replicate' }))
+    const replacementBase = { ...expansionBase, expansion: replacement,
+      models: [{ canonicalModelId: replacement.targetModelId }], executionOrder: replacementSlots,
+      providerBudgetsCny: { ...expansionBase.providerBudgetsCny, replicate: 40 },
+      providerOrder: [...expansionBase.providerOrder, 'replicate'] }
+    const validReplacement = verifyExpansion(replacementBase, replacementSlots)
+    assert.equal(validReplacement.status, 0, validReplacement.stderr)
+    for (const descriptor of [{ ...replacement, replacesModelId: 'other-model' }, { ...replacement, targetModelId: expansion.targetModelId }, { ...replacement, extra: true }]) {
+      const rejected = verifyExpansion({ ...replacementBase, expansion: descriptor }, replacementSlots)
+      assert.notEqual(rejected.status, 0)
+      assert.match(rejected.stderr, /assembly failed \[expansion\]/)
+    }
+
     for (const malformed of [
       { ...expansionBase, expansion: null },
       { ...expansionBase, expansion: { ...expansion, baseline: { ...expansion.baseline, releaseHash: 'invalid' } } },
