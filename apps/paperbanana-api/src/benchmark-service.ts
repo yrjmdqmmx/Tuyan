@@ -1,3 +1,4 @@
+import { publicScientificCost, scientificCostSummary } from './scientific-v2-cost.js'
 import {
   BENCHMARK_AXES,
   PB_IMAGE_LIGHT_V1,
@@ -298,6 +299,7 @@ async function publicScientificEvidenceItems(input: {
       kind: scientificCase.kind,
       status: item.status,
       requestedResolution: item.requestedResolution,
+      cost: publicScientificCost(item.cost),
       attemptSummary,
     }
     if (item.status !== 'succeeded') {
@@ -357,21 +359,24 @@ async function publicScientificEvidenceItems(input: {
   return output
 }
 
-function publicScientificAttemptSummary(value: unknown, status: unknown, failureReason: unknown): { count: number; responseClasses: string[] } | null {
+function publicScientificAttemptSummary(value: unknown, status: unknown, failureReason: unknown): { count: number; responseClasses: string[]; maxAttempts?: number } | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   const summary = value as AnyRecord
   if (!Number.isInteger(summary.count) || summary.count < 0 || summary.count > 4
     || !Array.isArray(summary.responseClasses) || summary.responseClasses.length !== summary.count
     || summary.responseClasses.some((responseClass) => typeof responseClass !== 'string')) return null
+  if (summary.maxAttempts !== undefined && summary.maxAttempts !== 1 && summary.maxAttempts !== 4) return null
+  const maxAttempts = summary.maxAttempts ?? 4
+  if (summary.count > maxAttempts) return null
   const responseClasses = summary.responseClasses.map(String)
   if (status === 'succeeded' && (summary.count < 1 || !scientificSuccessClasses.has(responseClasses.at(-1) || '')
     || responseClasses.slice(0, -1).some((responseClass) => !scientificConfirmedFailureClasses.has(responseClass)))) return null
   if (status === 'failed' && (failureReason === 'provider_canary_confirmed_failed'
     ? summary.count !== 0 || responseClasses.length !== 0
-    : failureReason !== 'confirmed_attempts_exhausted' || summary.count !== 4
+    : failureReason !== 'confirmed_attempts_exhausted' || summary.count !== maxAttempts
       || responseClasses.some((responseClass) => !scientificConfirmedFailureClasses.has(responseClass)))) return null
   if (status === 'unsupported' && (summary.count !== 0 || responseClasses.length !== 0)) return null
-  return { count: summary.count, responseClasses }
+  return { count: summary.count, responseClasses, ...(summary.maxAttempts !== undefined ? { maxAttempts } : {}) }
 }
 
 function exactScientificPublicScores(value: unknown, axes: readonly string[]): value is Record<string, number> {
@@ -540,7 +545,7 @@ export function createBenchmarkService({
         const publicCases = (scientific ? publicScientificMethodologySuite() : publicArenaMethodologySuite()).cases
           .filter((benchmarkCase: AnyRecord) => evidence.some((item: AnyRecord) => item.caseId === benchmarkCase.id))
         return profile
-          ? { code: 0, profile: { ...profile, release: { ...published, models: undefined }, cases: publicCases, evidence } }
+          ? { code: 0, profile: { ...profile, release: { ...published, models: undefined }, cases: publicCases, evidence, ...(scientific ? { costSummary: scientificCostSummary(evidence) } : {}) } }
           : { code: 404, error: 'Benchmark profile not found' }
       }
       if (action === 'benchmarkCaseEvidence') {

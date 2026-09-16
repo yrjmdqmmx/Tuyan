@@ -65,13 +65,13 @@ export async function runScientificV2PriceRefreshEntry(env: Record<string, strin
       schemaVersion: authority.schemaVersion, codeSha: authority.codeSha, capturedAt: authority.capturedAt,
       registryVersion: authority.registryVersion, registryBytesHash: authority.registryBytesHash, registry: authority.registry,
     }) !== authority.snapshotHash) fail()
+  const expansionPath = env.PAPERBANANA_SCIENTIFIC_V2_EXPANSION_PATH
+  const expansion = expansionPath ? (await readProtectedJson(expansionPath)).value : undefined
   const fullCanonical = buildScientificV2CanonicalManifest({
     registryVersion: authority.registryVersion,
     registryHash: canonicalHash(authority.registry),
     registry: authority.registry,
-  })
-  const expansionPath = env.PAPERBANANA_SCIENTIFIC_V2_EXPANSION_PATH
-  const expansion = expansionPath ? (await readProtectedJson(expansionPath)).value : undefined
+  }, expansion)
   const canonicalManifest = deriveScientificV2ExecutionCanonicalManifest(fullCanonical, expansion)
   const staging = join(captureRoot, `.staging-${process.pid}-${randomBytes(8).toString('hex')}`)
   await mkdir(staging, { mode: 0o700 })

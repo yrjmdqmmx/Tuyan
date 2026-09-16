@@ -251,6 +251,7 @@ test('scientific public evidence exposes only exact zero-attempt provider-canary
     kind: failed.kind,
     status: 'failed',
     requestedResolution: '2K',
+    cost: { currency: null, amount: null, basis: 'unavailable' },
     attemptSummary: { count: 0, responseClasses: [] },
     failureReason: 'provider_canary_confirmed_failed',
   }])

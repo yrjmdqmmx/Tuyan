@@ -169,3 +169,13 @@ test('v1 and historical releases retain their existing shape', async () => {
   const release = { presentationVersion: 'arena-leaderboard-v1', models: [{ modelId: 'legacy' }] }
   assert.deepEqual(normalizeLeaderboardRelease(release), release)
 })
+
+test('one-shot confirmed failures and uncalled canary-blocked slots remain visible', async () => {
+  const { normalizeScientificEvidenceSlot } = await import('./benchmarkRelease.js')
+  const base = { caseId: SCIENTIFIC_WEB_CONTRACT.cases[0].id, kind: 'generation', status: 'failed',
+    attemptSummary: { count: 1, maxAttempts: 1, responseClasses: ['confirmed_provider_failure'] }, failureReason: 'confirmed_attempts_exhausted' }
+  assert.ok(normalizeScientificEvidenceSlot(base))
+  assert.equal(normalizeScientificEvidenceSlot({ ...base, attemptSummary: { count: 1, responseClasses: ['confirmed_provider_failure'] } }), null)
+  assert.ok(normalizeScientificEvidenceSlot({ ...base, failureReason: 'provider_canary_confirmed_failed', attemptSummary: { count: 0, maxAttempts: 1, responseClasses: [] } }))
+  assert.equal(normalizeScientificEvidenceSlot({ ...base, attemptSummary: { ...base.attemptSummary, maxAttempts: 99 } }), null)
+})

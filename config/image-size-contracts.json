@@ -7005,6 +7005,15 @@
         "https://ark.volcengine.com/region:cn-beijing/docs/82379/1541523?lang=zh"
       ],
       "notes": "TokenDance 精确模型 ID；单图 PNG；Ark 生成与编辑同端点。"
+    },
+    "replicate/google/nano-banana-2-lite": {
+      "generation": "replicate_google_nano-banana_ratios",
+      "editing": "replicate_google_nano-banana_ratios",
+      "reviewedAt": "2026-09-16",
+      "sources": [
+        "https://replicate.com/google/nano-banana-2-lite/api/schema"
+      ],
+      "notes": "直接编辑。"
     }
   }
 }

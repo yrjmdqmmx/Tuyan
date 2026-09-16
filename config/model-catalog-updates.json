@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-09.v18",
+  "version": "2026-09-16.v19",
   "providers": {
     "deepseek": [],
     "kimi": [],
@@ -18322,6 +18322,39 @@
           ],
           "vendor": "openai",
           "recommended": false
+        }
+      },
+      {
+        "id": "google/nano-banana-2-lite",
+        "label": "Nano Banana 2 Lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "按本接入渠道官方 API 参数适配；账户权限与真实输出待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/google/nano-banana-2-lite/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "google"
         }
       }
     ]

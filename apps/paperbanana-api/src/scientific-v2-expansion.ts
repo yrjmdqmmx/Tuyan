@@ -8,12 +8,13 @@ function fail(code: string): never { throw new Error(`SCIENTIFIC_V2_EXPANSION_${
 export function assertScientificV2ExpansionDescriptor(value: unknown): asserts value is AnyRecord {
   const exact = (item: any, keys: string[]) => item && typeof item === 'object' && !Array.isArray(item)
     && canonicalHash(Object.keys(item).sort()) === canonicalHash(keys.sort())
-  if (!exact(value, ['schemaVersion', 'kind', 'baseline', 'targetModelId'])) fail('SCHEMA_INVALID')
+  if (!exact(value, ['schemaVersion', 'kind', 'baseline', 'targetModelId', ...(value && Object.hasOwn(value, 'replacesModelId') ? ['replacesModelId'] : [])])) fail('SCHEMA_INVALID')
   const expansion = value as AnyRecord
   if (expansion.schemaVersion !== 1 || expansion.kind !== 'single_model_expansion'
     || typeof expansion.targetModelId !== 'string' || !expansion.targetModelId || expansion.targetModelId.length > 200
     || expansion.targetModelId.startsWith('codex:')
     || !exact(expansion.baseline, ['releaseId', 'releaseHash', 'batchId', 'manifestHash'])) fail('SCHEMA_INVALID')
+  if (Object.hasOwn(expansion, 'replacesModelId') && (expansion.replacesModelId !== 'codex:gpt-image-2' || expansion.targetModelId !== 'openai/gpt-image-2')) fail('SCHEMA_INVALID')
   const baseline = expansion.baseline
   if (![baseline.releaseHash, baseline.manifestHash].every((value) => typeof value === 'string' && hashPattern.test(value))
     || typeof baseline.releaseId !== 'string' || !baseline.releaseId || baseline.releaseId.length > 200
@@ -34,6 +35,7 @@ export function assertScientificV2ExpansionBaseline(expansion: AnyRecord, releas
   const ids = release.models.map((model: AnyRecord) => model.canonicalModelId)
   if (new Set(ids).size !== ids.length || ids.some((id: unknown) => typeof id !== 'string' || !id)
     || ids.includes(expansion.targetModelId)) fail('TARGET_NOT_NEW')
+  if (expansion.replacesModelId && !ids.includes(expansion.replacesModelId)) fail('REPLACEMENT_MISSING')
   for (const model of release.models) {
     if (!Array.isArray(model.evidence) || model.evidence.length !== 9
       || canonicalHash(model.evidence.map((item: AnyRecord) => item.caseId).sort())
@@ -48,10 +50,11 @@ export function scientificV2ExpansionPreservedModelHash(model: AnyRecord) {
   return canonicalHash(preserved)
 }
 
-export function assertScientificV2ExpansionPreservedModels(baseline: AnyRecord, models: AnyRecord[], targetModelId: string) {
-  if (models.length !== baseline.models.length + 1
+export function assertScientificV2ExpansionPreservedModels(baseline: AnyRecord, models: AnyRecord[], targetModelId: string, replacesModelId?: string) {
+  if (replacesModelId && (replacesModelId !== 'codex:gpt-image-2' || targetModelId !== 'openai/gpt-image-2' || models.some(model => model.canonicalModelId === replacesModelId))) fail('ROSTER_INVALID')
+  if (models.length !== baseline.models.length + (replacesModelId ? 0 : 1)
     || models.filter((model) => model.canonicalModelId === targetModelId).length !== 1) fail('ROSTER_INVALID')
-  for (const prior of baseline.models) {
+  for (const prior of baseline.models.filter((model: AnyRecord) => model.canonicalModelId !== replacesModelId)) {
     const inherited = models.filter((model) => model.canonicalModelId === prior.canonicalModelId)
     if (inherited.length !== 1 || scientificV2ExpansionPreservedModelHash(inherited[0]) !== scientificV2ExpansionPreservedModelHash(prior)) {
       fail('BASELINE_DRIFT')

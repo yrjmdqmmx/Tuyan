@@ -1,4 +1,4 @@
-import { SCIENTIFIC_REPLICATE_IMAGE25_MODELS } from '@paperbanana/benchmark-core'
+import { SCIENTIFIC_REPLICATE_IMAGE25_MODELS, SCIENTIFIC_REPLICATE_EXPANSION_MODELS, scientificReplicatePrice } from '@paperbanana/benchmark-core'
 import { createHash } from 'node:crypto'
 
 import {
@@ -97,7 +97,7 @@ function expectedCaptureIdentities(requirements: ScientificV2PriceRequirement[])
     }
   }
   for (const modelId of [...new Set(requirements.filter((item) => item.provider === 'replicate').map((item) => item.modelId))].sort()) {
-    if (!(SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(modelId)) scientificV2Error('SCIENTIFIC_V2_REPLICATE_MODEL_INVALID')
+    if (!([...SCIENTIFIC_REPLICATE_IMAGE25_MODELS, ...SCIENTIFIC_REPLICATE_EXPANSION_MODELS] as readonly string[]).includes(modelId)) scientificV2Error('SCIENTIFIC_V2_REPLICATE_MODEL_INVALID')
     expected.push({ provider: 'replicate', kind: 'pricing-page', url: `https://replicate.com/${modelId}` })
   }
   if (providers.has('openrouter') || providers.has('replicate')) expected.push({ provider: 'fx', kind: 'fx-reference', url: OFFICIAL_URLS.ecbFx })
@@ -226,7 +226,7 @@ export async function refreshScientificV2OfficialPriceSources(input: {
     }
   }
   for (const modelId of [...new Set(requirements.filter((item) => item.provider === 'replicate').map((item) => item.modelId))].sort()) {
-    if (!(SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(modelId)) scientificV2Error('SCIENTIFIC_V2_REPLICATE_MODEL_INVALID')
+    if (!([...SCIENTIFIC_REPLICATE_IMAGE25_MODELS, ...SCIENTIFIC_REPLICATE_EXPANSION_MODELS] as readonly string[]).includes(modelId)) scientificV2Error('SCIENTIFIC_V2_REPLICATE_MODEL_INVALID')
     await capture({ provider: 'replicate', kind: 'pricing-page', url: `https://replicate.com/${modelId}`, capturedAt: input.capturedAt, fetchImpl })
   }
   if (providers.has('openrouter') || providers.has('replicate')) await capture({
@@ -357,7 +357,8 @@ function assertMai26ConservativePriceEvidence(imageBytes: Buffer, tokenBytes: Bu
 }
 
 
-export function assertReplicateAutoPriceEvidence(bytes: Buffer) {
+export function assertReplicateAutoPriceEvidence(bytes: Buffer, modelId = 'openai/gpt-image-2.5-sunburst', imageSize = 'provider-default') {
+  const price = scientificReplicatePrice(modelId, imageSize)
   const text = bytes.toString('utf8')
   const marker = '"billingConfig":'
   const configs: any[] = []
@@ -377,11 +378,11 @@ export function assertReplicateAutoPriceEvidence(bytes: Buffer) {
   // The official page repeats the same configuration for separate UI panels.
   if (!configs.length || configs.some((value) => canonicalHash(value) !== canonicalHash(configs[0]))) scientificV2Error('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
   const tiers = configs[0]?.current_tiers
-  const auto = Array.isArray(tiers) ? tiers.filter((tier: any) => canonicalHash(tier.criteria) === canonicalHash([
-    { description: 'auto', subtype: 'string', title: 'model variant', type: 'equals', value: 'auto' },
+  const auto = Array.isArray(tiers) ? tiers.filter((tier: any) => canonicalHash(tier.criteria) === canonicalHash(price.criterion === null ? [] : [
+    { description: price.criterion, subtype: 'string', title: price.criterionTitle, type: 'equals', value: price.criterion },
   ])) : []
   if (auto.length !== 1 || auto[0].prices?.length !== 1 || auto[0].prices[0].metric !== 'image_output_count'
-    || auto[0].prices[0].type !== 'per-unit' || auto[0].prices[0].price !== '$0.25') scientificV2Error('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
+    || auto[0].prices[0].type !== 'per-unit' || auto[0].prices[0].price !== `$${price.rate}`) scientificV2Error('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
 }
 
 export async function extractScientificV2OfficialPriceObservations(input: {
@@ -433,11 +434,12 @@ export async function extractScientificV2OfficialPriceObservations(input: {
   for (const requirement of requirements) {
     if (requirement.provider === 'replicate') {
       const captured = await bytesFor(`https://replicate.com/${requirement.modelId}`)
-      assertReplicateAutoPriceEvidence(captured.bytes)
+      const price = scientificReplicatePrice(requirement.modelId, requirement.imageSize)
+      assertReplicateAutoPriceEvidence(captured.bytes, requirement.modelId, requirement.imageSize)
       observations.push({
         provider: 'replicate', modelId: requirement.modelId, operation: requirement.operation,
         imageSize: requirement.imageSize, billingRegion: 'replicate-global', ...dimensions(requirement.imageSize),
-        charges: [{ billable: 'output_image', unit: 'image', rateDecimal: '0.25', quantityDecimal: '1', resolutionTier: 'quality=auto' }],
+        charges: [{ billable: 'output_image', unit: 'image', rateDecimal: price.rate, quantityDecimal: '1', resolutionTier: price.tier }],
         source: source(captured.capture), openRouterEvidence: null, fxEvidence: await fxEvidence(),
       })
       continue

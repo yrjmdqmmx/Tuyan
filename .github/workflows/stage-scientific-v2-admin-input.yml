@@ -74,7 +74,7 @@ jobs:
           jq -e --arg purpose "$PURPOSE" '
             (type == "object") and
             (if $purpose == "expansion-descriptor" then
-               (keys | sort) == ["baseline","kind","schemaVersion","targetModelId"] and
+               ((keys | sort) == ["baseline","kind","schemaVersion","targetModelId"] or ((keys | sort) == ["baseline","kind","replacesModelId","schemaVersion","targetModelId"] and .replacesModelId == "codex:gpt-image-2" and .targetModelId == "openai/gpt-image-2")) and
                .schemaVersion == 1 and .kind == "single_model_expansion" and
                (.baseline | keys | sort) == ["batchId","manifestHash","releaseHash","releaseId"] and
                ([.baseline.releaseId,.baseline.batchId] | all(type == "string" and test("^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$"))) and

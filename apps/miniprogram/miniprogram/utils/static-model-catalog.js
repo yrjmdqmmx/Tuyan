@@ -5,5 +5,5 @@ exports.STATIC_MODEL_REGISTRY = exports.STATIC_MODEL_REGISTRY_VERSION = exports.
 const unpack_model_catalog_1 = require("./unpack-model-catalog");
 const catalog = (0, unpack_model_catalog_1.unpackModelCatalog)(require('./static-model-catalog-data.js'));
 exports.EXTENDED_MODEL_CHANNELS = catalog.channels;
-exports.STATIC_MODEL_REGISTRY_VERSION = "2026-09-09.v18";
+exports.STATIC_MODEL_REGISTRY_VERSION = "2026-09-16.v19";
 exports.STATIC_MODEL_REGISTRY = catalog.registry;

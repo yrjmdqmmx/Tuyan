@@ -1,3 +1,4 @@
+import { scientificEvidenceCost } from './scientific-v2-cost.js'
 import { scientificProviderOrder, scientificProviderBudgets, scientificProviderZeroes, scientificUsesReplicate, scientificMaxAttempts } from '@paperbanana/benchmark-core'
 import {
   PB_SCIENTIFIC_FIGURE_V2,
@@ -693,7 +694,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
       registryVersion: snapshot.registryVersion,
       registryHash: snapshot.registryHash,
       registry: snapshot.registry,
-    }) as AnyRecord
+    }, input.manifest?.expansion) as AnyRecord
   } catch {
     scientificError('SCIENTIFIC_V2_CANONICAL_MANIFEST_MISMATCH')
   }
@@ -1207,7 +1208,20 @@ export function createScientificV2MongoRepository(
           - (scientificCaseOrder.get(String(right.caseId)) ?? Number.MAX_SAFE_INTEGER))
         : rows
       const page = ordered.slice(offset, offset + limit + 1)
-      return { items: page.slice(0, limit), nextCursor: page.length > limit ? String(offset + limit) : null }
+      const items: AnyRecord[] = page.slice(0, limit).map(row => ({ ...row, cost: { currency: null, amount: null, basis: 'unavailable' } as any }))
+      let source = await releases.findOne({ releaseHash })
+      const visited = new Set<string>()
+      for (let depth = 0; source && depth < 256 && !visited.has(source.releaseHash); depth += 1) {
+        visited.add(source.releaseHash)
+        const { _id, releaseHash: sourceHash, ...sourceBase } = source
+        if (canonicalHash(sourceBase) !== sourceHash) break
+        const batch = await batches.findOne({ batchId: source.batchId, manifestHash: source.batchManifestHash, status: 'published' })
+        for (const item of items) if (item.cost.basis === 'unavailable') item.cost = scientificEvidenceCost(item, batch)
+        if (items.every(item => item.cost.basis !== 'unavailable')) break
+        const predecessor = source.expansion?.baseline
+        source = predecessor ? await releases.findOne({ _id: predecessor.releaseId, releaseHash: predecessor.releaseHash }) : null
+      }
+      return { items, nextCursor: page.length > limit ? String(offset + limit) : null }
     },
     async freezeExpansionBatch(input: AnyRecord): Promise<AnyRecord> {
       return this.freezeBatch(input, true)
@@ -2409,6 +2423,7 @@ export function createScientificV2MongoRepository(
           const stored = evidenceBySlot.get(`${slot.canonicalModelId}\0${slot.caseId}`)
           const attemptSummary = {
             count: slot.attempts.length,
+            ...(slot.provider === 'replicate' ? { maxAttempts: 1 } : {}),
             responseClasses: slot.attempts.map((attempt: AnyRecord) => attempt.responseClass),
           }
           if (slot.status !== 'succeeded') return {
@@ -2456,7 +2471,7 @@ export function createScientificV2MongoRepository(
         'attemptSummary', 'failureReasons', 'evidence',
       ] as const
       const modelDrafts = expansionBaselineRelease
-        ? [...structuredClone(expansionBaselineRelease.models), ...recomputedModelDrafts]
+        ? [...structuredClone(expansionBaselineRelease.models).filter((model: AnyRecord) => model.canonicalModelId !== expansion.replacesModelId), ...recomputedModelDrafts]
         : correctionBaselineRelease && correctionTargetModelIds
         ? batch.manifest.models.map((model: AnyRecord) => {
           const baseline = correctionBaselineRelease!.models.find((candidate: AnyRecord) => candidate.canonicalModelId === model.canonicalModelId)
@@ -2482,7 +2497,7 @@ export function createScientificV2MongoRepository(
         overallRank: overallByModel.get(model.modelId)!.overallRank,
         dimensionRanks: Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, dimensionRanks[axis][index]])),
       })).sort((left: AnyRecord, right: AnyRecord) => left.overallRank - right.overallRank || Buffer.compare(Buffer.from(left.modelId), Buffer.from(right.modelId)))
-      if (expansionBaselineRelease) assertScientificV2ExpansionPreservedModels(expansionBaselineRelease, models, expansion.targetModelId)
+      if (expansionBaselineRelease) assertScientificV2ExpansionPreservedModels(expansionBaselineRelease, models, expansion.targetModelId, expansion.replacesModelId)
 
       // The object contract is immutable and content addressed; verify every referenced object again immediately before hashing the release.
       for (const [imageHash, binding] of bindingByHash) await verifyObject(binding.objectKey, imageHash)
@@ -2506,7 +2521,7 @@ export function createScientificV2MongoRepository(
         reviewFinalHash: batch.reviewFinalHash,
         ...(expansion ? { expansion: structuredClone(expansion) } : {}),
         sampleCount: batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded').length
-          + (expansionBaselineRelease ? expansionBaselineRelease.models.reduce((sum: number, model: AnyRecord) => sum + model.evidence.filter((item: AnyRecord) => item.status === 'succeeded').length, 0) : 0),
+          + (expansionBaselineRelease ? expansionBaselineRelease.models.filter((model: AnyRecord) => model.canonicalModelId !== expansion.replacesModelId).reduce((sum: number, model: AnyRecord) => sum + model.evidence.filter((item: AnyRecord) => item.status === 'succeeded').length, 0) : 0),
         automaticJudges: [] as unknown[], automaticJudgeCalls: 0,
         models,
         methodology: {
@@ -2611,7 +2626,7 @@ export function createScientificV2MongoRepository(
               const original = expansionBaselinePublicRows.get(`${row.canonicalModelId}\0${row.caseId}`)
               return !original || canonicalHash(row) !== canonicalHash(original)
             })) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
-            assertScientificV2ExpansionPreservedModels(verifiedBaseline, models, expansion.targetModelId)
+            assertScientificV2ExpansionPreservedModels(verifiedBaseline, models, expansion.targetModelId, expansion.replacesModelId)
           } else if (competing) {
             const targetSlotIds = remediationOf?.targetSlotIds
             if (!remediationOf

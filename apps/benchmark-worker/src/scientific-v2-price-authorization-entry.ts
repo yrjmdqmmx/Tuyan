@@ -56,13 +56,13 @@ export async function runScientificV2PriceAuthorizationEntry(env: Record<string,
   const authority = verifyScientificV2RegistryAuthority(registryAuthority, { codeSha, secret, now: new Date() })
   if (refreshReport.capturedAt !== authority.capturedAt) fail()
   const registry = authority.registry
+  const expansionPath = env.PAPERBANANA_SCIENTIFIC_V2_EXPANSION_PATH
+  const expansion = expansionPath ? await readJson(expansionPath) : undefined
   const fullCanonical = buildScientificV2CanonicalManifest({
     registryVersion: authority.registryVersion,
     registryHash: canonicalHash(registry),
     registry,
-  })
-  const expansionPath = env.PAPERBANANA_SCIENTIFIC_V2_EXPANSION_PATH
-  const expansion = expansionPath ? await readJson(expansionPath) : undefined
+  }, expansion)
   const canonicalManifest = deriveScientificV2ExecutionCanonicalManifest(fullCanonical, expansion)
   return persistScientificV2OperatorPriceAuthorization({
     canonicalManifest, refreshReport, codeSha, confirmation, outputDirectory,

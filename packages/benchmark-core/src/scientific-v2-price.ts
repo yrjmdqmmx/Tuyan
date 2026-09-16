@@ -1,4 +1,4 @@
-import { scientificProviderOrder, scientificProviderBudgets, scientificMaxAttempts, SCIENTIFIC_REPLICATE_IMAGE25_MODELS } from './scientific-providers.js'
+import { scientificProviderOrder, scientificProviderBudgets, scientificMaxAttempts, scientificReplicatePrice } from './scientific-providers.js'
 import { canonicalHash } from './hash.js'
 import { SCIENTIFIC_EDIT_SOURCE } from './scientific-edit-source.js'
 import { PB_SCIENTIFIC_FIGURE_V2 } from './scientific-suite.js'
@@ -344,12 +344,12 @@ function validateObservation(observation: ScientificV2PriceObservation, requirem
   }
 
   if (observation.provider === 'replicate') {
-    if (!(SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(observation.modelId)
-      || observation.imageSize !== 'provider-default' || observation.billingRegion !== 'replicate-global'
+    const price = scientificReplicatePrice(observation.modelId, observation.imageSize)
+    if (observation.billingRegion !== 'replicate-global'
       || observation.source.url !== `https://replicate.com/${observation.modelId}`
       || observation.openRouterEvidence !== null || !observation.fxEvidence
       || canonicalHash(observation.charges) !== canonicalHash([{
-        billable: 'output_image', unit: 'image', rateDecimal: '0.25', quantityDecimal: '1', resolutionTier: 'quality=auto',
+        billable: 'output_image', unit: 'image', rateDecimal: price.rate, quantityDecimal: '1', resolutionTier: price.tier,
       }])) fail('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
     const fx = observation.fxEvidence
     exactKeys(fx, ['source', 'rateDate', 'baseCurrency', 'usdPerBaseDecimal', 'cnyPerBaseDecimal'], 'SCIENTIFIC_V2_FX_EVIDENCE_INVALID')

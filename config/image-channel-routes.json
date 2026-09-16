@@ -1748,7 +1748,9 @@
       "promptField": "prompt",
       "sizeMode": "ratio",
       "constants": {
-        "output_format": "png"
+        "output_format": "png",
+        "google_search": false,
+        "image_search": false
       },
       "sizeField": "aspect_ratio",
       "resolutionField": "resolution",
@@ -1763,7 +1765,9 @@
       "promptField": "prompt",
       "sizeMode": "ratio",
       "constants": {
-        "output_format": "png"
+        "output_format": "png",
+        "google_search": false,
+        "image_search": false
       },
       "sizeField": "aspect_ratio",
       "resolutionField": "resolution",
@@ -1782,7 +1786,8 @@
       "promptField": "prompt",
       "sizeMode": "ratio",
       "constants": {
-        "output_format": "png"
+        "output_format": "png",
+        "allow_fallback_model": false
       },
       "sizeField": "aspect_ratio",
       "resolutionField": "resolution",
@@ -1797,7 +1802,8 @@
       "promptField": "prompt",
       "sizeMode": "ratio",
       "constants": {
-        "output_format": "png"
+        "output_format": "png",
+        "allow_fallback_model": false
       },
       "sizeField": "aspect_ratio",
       "resolutionField": "resolution",
@@ -2027,7 +2033,8 @@
       "sizeMode": "ratio",
       "constants": {
         "output_format": "png",
-        "number_of_images": 1
+        "number_of_images": 1,
+        "quality": "auto"
       },
       "sizeField": "aspect_ratio"
     },
@@ -2037,7 +2044,8 @@
       "sizeMode": "ratio",
       "constants": {
         "output_format": "png",
-        "number_of_images": 1
+        "number_of_images": 1,
+        "quality": "auto"
       },
       "sizeField": "aspect_ratio",
       "sourceField": "input_images",
@@ -2998,6 +3006,28 @@
       },
       "sizeField": "aspect_ratio",
       "sourceField": "input_images",
+      "sourceArray": true
+    }
+  },
+  "replicate/google/nano-banana-2-lite": {
+    "generation": {
+      "endpoint": "google/nano-banana-2-lite",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "google/nano-banana-2-lite",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "constants": {
+        "output_format": "png"
+      },
+      "sizeField": "aspect_ratio",
+      "sourceField": "image_input",
       "sourceArray": true
     }
   }

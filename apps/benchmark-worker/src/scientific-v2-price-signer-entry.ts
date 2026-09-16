@@ -52,9 +52,9 @@ export async function runScientificV2PriceSignerEntry(env: Record<string, string
   const operatorAuthorization = await readJson(operatorAuthorizationPath)
   const registry = registryAuthority?.registry
   if (!registry || typeof registry !== 'object' || Array.isArray(registry)) fail()
-  const fullCanonical = buildScientificV2CanonicalManifest({ registryVersion: registryAuthority.registryVersion, registryHash: canonicalHash(registry), registry })
   const expansionPath = env.PAPERBANANA_SCIENTIFIC_V2_EXPANSION_PATH
   const expansion = expansionPath ? await readJson(expansionPath) : undefined
+  const fullCanonical = buildScientificV2CanonicalManifest({ registryVersion: registryAuthority.registryVersion, registryHash: canonicalHash(registry), registry }, expansion)
   const canonicalManifest = deriveScientificV2ExecutionCanonicalManifest(fullCanonical, expansion)
   return persistScientificV2OfficialSignedPriceSnapshot({
     canonicalManifest, ...(expansion ? { expansion } : {}), registryAuthority, refreshReport, operatorAuthorization, codeSha, secret, outputDirectory,

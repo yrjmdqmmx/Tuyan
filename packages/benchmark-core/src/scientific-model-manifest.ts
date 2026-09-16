@@ -1,4 +1,4 @@
-import { scientificProviderOrder, SCIENTIFIC_REPLICATE_IMAGE25_MODELS } from './scientific-providers.js'
+import { scientificProviderOrder, SCIENTIFIC_REPLICATE_IMAGE25_MODELS, SCIENTIFIC_REPLICATE_EXPANSION_MODELS } from './scientific-providers.js'
 import { canonicalHash } from './hash.js'
 import { SCIENTIFIC_BENCHMARK_IDENTITY } from './scientific-contracts.js'
 
@@ -38,6 +38,7 @@ export interface ScientificV2Expansion {
   kind: 'single_model_expansion'
   baseline: { releaseId: string; releaseHash: string; batchId: string; manifestHash: string }
   targetModelId: string
+  replacesModelId?: 'codex:gpt-image-2'
 }
 
 /** The complete registry remains authoritative; only the execution/price roster is projected. */
@@ -55,13 +56,14 @@ export function deriveScientificV2ExecutionCanonicalManifest(
       return typeof key === 'string' && keys.includes(key) && descriptor?.enumerable === true && 'value' in descriptor
     })
   }
-  if (!exactKeys(expansion, ['schemaVersion', 'kind', 'baseline', 'targetModelId'])
+  if (!exactKeys(expansion, ['schemaVersion', 'kind', 'baseline', 'targetModelId', ...(expansion && Object.hasOwn(expansion, 'replacesModelId') ? ['replacesModelId'] : [])])
     || expansion.schemaVersion !== 1 || expansion.kind !== 'single_model_expansion'
     || !exactKeys(expansion.baseline, ['releaseId', 'releaseHash', 'batchId', 'manifestHash'])
     || ![expansion.baseline.releaseHash, expansion.baseline.manifestHash].every((value) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value))
     || ![expansion.baseline.releaseId, expansion.baseline.batchId].every((value) => typeof value === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,255}$/.test(value))
     || typeof expansion.targetModelId !== 'string' || expansion.targetModelId.startsWith('codex:')
-    || expansion.targetModelId !== normalizeCanonicalModelId(expansion.targetModelId)) {
+    || expansion.targetModelId !== normalizeCanonicalModelId(expansion.targetModelId)
+    || (Object.hasOwn(expansion, 'replacesModelId') && (expansion.replacesModelId !== 'codex:gpt-image-2' || expansion.targetModelId !== 'openai/gpt-image-2'))) {
     throw new Error('SCIENTIFIC_V2_EXPANSION_INVALID')
   }
   const { manifestHash, ...base } = fullCanonical
@@ -165,13 +167,13 @@ export function buildScientificV2CanonicalManifest(input: {
   registryVersion: string
   registryHash: string
   registry: { providers?: Partial<Record<ProductionProvider, { models?: readonly ScientificRegistryModel[] }>> }
-}) {
+}, expansion?: ScientificV2Expansion) {
   if (!input.registryVersion || !/^[a-f0-9]{64}$/i.test(input.registryHash)) throw new Error('INVALID_SCIENTIFIC_REGISTRY_BINDING')
 
   const providerOrder = scientificProviderOrder(Boolean(input.registry.providers?.replicate))
   let sawUppercaseModelId = false
   const discoveredRoutes: ScientificManifestRoute[] = providerOrder.flatMap((provider) => (input.registry.providers?.[provider]?.models || [])
-    .filter((model) => (provider !== 'replicate' || (SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(model.id)) && model.selectable === true && model.roles?.includes('image') && model.capabilities?.imageGeneration === true)
+    .filter((model) => (provider !== 'replicate' || ((SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(model.id) || (model.id === expansion?.targetModelId && (SCIENTIFIC_REPLICATE_EXPANSION_MODELS as readonly string[]).includes(model.id)))) && model.selectable === true && model.roles?.includes('image') && model.capabilities?.imageGeneration === true)
     .flatMap((model) => {
       const parsedModelId = parseScientificModelId(model.id)
       sawUppercaseModelId ||= parsedModelId.hasUppercase
