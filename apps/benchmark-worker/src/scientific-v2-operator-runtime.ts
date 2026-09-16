@@ -451,7 +451,7 @@ export async function executeScientificV2OperatorBundle(bundle: ScientificV2Oper
     const registryHash = canonicalHash(registry)
     const canonicalManifest = buildScientificV2CanonicalManifest({
       registryVersion: authority.registryVersion as string, registryHash, registry,
-    })
+    }, bundle.input.expansion)
     const signedPriceCapturedAt = (bundle.input.signedPriceSnapshot as Record<string, unknown>)?.capturedAt
     if (signedPriceCapturedAt !== bundle.input.createdAt) scientificV2Error('SCIENTIFIC_V2_PRICE_ATTESTATION_BINDING_MISMATCH')
     const priceSnapshot = verifyScientificV2SignedPriceSnapshot(bundle.input.signedPriceSnapshot, {

@@ -185,7 +185,7 @@ function assertCoreCanonicalManifest(value: CanonicalManifest) {
   if (value.rawRouteCount !== reconstructedRawRouteCount || value.canonicalModelCount !== value.models.length) scientificV2Error('SCIENTIFIC_V2_CANONICAL_COUNT_DERIVATION_INVALID')
 }
 
-function verifyRegistryAuthority(snapshot: ScientificV2RegistrySnapshot, canonicalManifest: CanonicalManifest) {
+function verifyRegistryAuthority(snapshot: ScientificV2RegistrySnapshot, canonicalManifest: CanonicalManifest, expansion?: ScientificV2Expansion) {
   assertBoundedScientificV2PlainData(snapshot, { maxDepth: 10, maxNodes: 100_000, maxArrayLength: 512, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_REGISTRY_SNAPSHOT_INVALID')
   assertExactScientificV2Keys(snapshot, ['registryVersion', 'registryHash', 'registry', 'snapshotHash'], 'SCIENTIFIC_V2_REGISTRY_SNAPSHOT_INVALID')
   const { snapshotHash, ...snapshotBase } = snapshot
@@ -195,7 +195,7 @@ function verifyRegistryAuthority(snapshot: ScientificV2RegistrySnapshot, canonic
   }
   let rebuilt: CanonicalManifest
   try {
-    rebuilt = buildScientificV2CanonicalManifest(snapshotBase)
+    rebuilt = buildScientificV2CanonicalManifest(snapshotBase, expansion)
   } catch {
     scientificV2Error('SCIENTIFIC_V2_REGISTRY_CANONICAL_REBUILD_MISMATCH')
   }
@@ -232,7 +232,7 @@ export function buildScientificV2Batch(input: {
   if (input.lockName !== SCIENTIFIC_V2_PRODUCTION_LOCK_NAME) scientificV2Error('SCIENTIFIC_V2_LOCK_INVALID')
   if (input.suite.manifestHash !== PB_SCIENTIFIC_FIGURE_V2.manifestHash) scientificV2Error('SCIENTIFIC_V2_SUITE_MISMATCH')
   assertCoreCanonicalManifest(input.canonicalManifest)
-  verifyRegistryAuthority(input.registrySnapshot, input.canonicalManifest)
+  verifyRegistryAuthority(input.registrySnapshot, input.canonicalManifest, input.expansion)
   if (!isScientificV2Hash(input.canonicalManifest.registryHash) || !isScientificV2Hash(input.canonicalManifest.manifestHash)) {
     scientificV2Error('SCIENTIFIC_V2_REGISTRY_BINDING_INVALID')
   }
@@ -356,7 +356,7 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
   if (!(manifest.priceOperatorAuthorizationHash === null || isScientificV2Hash(manifest.priceOperatorAuthorizationHash))
     || manifest.priceOperatorAuthorizationHash !== manifest.priceSnapshot.operatorAuthorizationHash) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   assertCoreCanonicalManifest(manifest.canonicalManifest)
-  verifyRegistryAuthority(manifest.registrySnapshot, manifest.canonicalManifest)
+  verifyRegistryAuthority(manifest.registrySnapshot, manifest.canonicalManifest, manifest.expansion)
   if (manifest.canonicalManifest.manifestHash !== manifest.canonicalManifestHash) scientificV2Error('SCIENTIFIC_V2_CANONICAL_MANIFEST_HASH_MISMATCH')
   if (manifest.schemaVersion !== 2 || manifest.concurrency !== 1 || manifest.priceSnapshot.snapshotHash !== manifest.priceHash
     || manifest.registrySnapshot.snapshotHash !== manifest.registrySnapshotHash

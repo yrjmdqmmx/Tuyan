@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
 import {
-  PB_SCIENTIFIC_FIGURE_V2, SCIENTIFIC_REPLICATE_IMAGE25_MODELS,
+  PB_SCIENTIFIC_FIGURE_V2, SCIENTIFIC_REPLICATE_IMAGE25_MODELS, SCIENTIFIC_REPLICATE_EXPANSION_MODELS, scientificReplicatePrice,
   buildScientificV2CanonicalManifest, deriveScientificV2ExecutionCanonicalManifest,
   canonicalHash, buildScientificV2PriceSnapshot, verifyScientificV2PriceSnapshot,
 } from '@paperbanana/benchmark-core'
@@ -21,17 +21,26 @@ const lockName = '/run/lock/paperbanana-hk-production.lock'
 const tier = { criteria: [{ description: 'auto', subtype: 'string', title: 'model variant', type: 'equals', value: 'auto' }], prices: [{ metric: 'image_output_count', type: 'per-unit', price: '$0.25' }] }
 const html = Buffer.from(`<script>{"billingConfig":${JSON.stringify({ current_tiers: [tier] })},"other":{"price":"$0.0001 per second"}}</script>`)
 
+function priceHtml(modelId: string) {
+  const size = ['google/nano-banana-2', 'google/nano-banana-pro'].includes(modelId) ? '2K' : 'provider-default'
+  const p = scientificReplicatePrice(modelId, size)
+  return Buffer.from(JSON.stringify({ billingConfig: { current_tiers: [{
+    criteria: p.criterion === null ? [] : [{ description: p.criterion, subtype: 'string', title: p.criterionTitle, type: 'equals', value: p.criterion }],
+    prices: [{ metric: 'image_output_count', type: 'per-unit', price: `$${p.rate}` }],
+  }] } }))
+}
+
 async function fixture(modelId: string) {
   const registry = { registryVersion: 'replicate-v1', routeContractVersion: 1, providers: {
     bailian: { models: [] }, ark: { models: [] }, openrouter: { models: [] },
-    replicate: { models: [...SCIENTIFIC_REPLICATE_IMAGE25_MODELS, 'unapproved/other'].map(id => ({
+    replicate: { models: [...SCIENTIFIC_REPLICATE_IMAGE25_MODELS, ...SCIENTIFIC_REPLICATE_EXPANSION_MODELS, 'unapproved/other'].map(id => ({
       id, label: id, vendor: 'OpenAI', selectable: true, roles: ['image'],
-      capabilities: { imageGeneration: true, imageEditMode: 'direct-edit' as const, resolutions: ['auto'] },
+      capabilities: { imageGeneration: true, imageEditMode: 'direct-edit' as const, resolutions: ['google/nano-banana-2','google/nano-banana-pro'].includes(id) ? ['1K', '2K', '4K'] : ['auto'] },
     })) },
   } }
-  const full = buildScientificV2CanonicalManifest({ registryVersion: registry.registryVersion, registryHash: canonicalHash(registry), registry })
   const expansion = { schemaVersion: 1 as const, kind: 'single_model_expansion' as const,
     baseline: { releaseId: 'previous-release', releaseHash: 'b'.repeat(64), batchId: 'previous-batch', manifestHash: 'c'.repeat(64) }, targetModelId: modelId }
+  const full = buildScientificV2CanonicalManifest({ registryVersion: registry.registryVersion, registryHash: canonicalHash(registry), registry }, expansion)
   const projected = deriveScientificV2ExecutionCanonicalManifest(full, expansion)
   const captures = new Map<string, Buffer>()
   const refreshReport = await refreshScientificV2OfficialPriceSources({
@@ -42,7 +51,7 @@ async function fixture(modelId: string) {
       assert.equal(new Headers(init?.headers).get('Authorization'), null)
       return String(url).includes('ecb.europa.eu')
         ? new Response(`<Cube time='2026-09-16'><Cube currency='USD' rate='1.2'/><Cube currency='CNY' rate='8.4'/></Cube>`, { headers: { 'content-type': 'application/xml' } })
-        : new Response(html, { headers: { 'content-type': 'text/html' } })
+        : new Response(modelId.includes('2.5-') ? html : priceHtml(modelId), { headers: { 'content-type': 'text/html' } })
     },
   })
   const extractionInput = { canonicalManifest: projected, refreshReport, loadCaptureBytes: async (capture: { bytesSha256: string }) => captures.get(capture.bytesSha256)! }
@@ -125,5 +134,46 @@ test('registry authority retains old three-provider hashes and includes Replicat
     verifyScientificV2RegistryAuthority(authority, { expectedCodeSha: codeSha, secret, now: () => new Date(at) })
     assert.equal(Object.hasOwn(authority.registry.providers as object, 'replicate'), replicate)
     assert.equal(buildScientificV2CanonicalManifest({ registryVersion: registry.registryVersion, registryHash: canonicalHash(registry), registry }).routePriority.length, replicate ? 4 : 3)
+  }
+})
+
+for (const id of SCIENTIFIC_REPLICATE_EXPANSION_MODELS) test(`${id}: opt-in nine-slot manifest survives signing, import, and legacy roster rebuild`, async () => {
+  const f = await fixture(id)
+  const old = buildScientificV2CanonicalManifest({ registryVersion: f.registry.registryVersion, registryHash: canonicalHash(f.registry), registry: f.registry })
+  assert.equal(old.models.length, 3)
+  assert.equal(f.full.models.length, 4)
+  assert.deepEqual(f.full.models.filter(model => model.canonicalModelId !== id), old.models)
+  assert.equal(f.manifest.models.length, 1)
+  assert.equal(f.manifest.executionOrder.length, 9)
+  assert.ok(f.manifest.executionOrder.every(slot => slot.provider === 'replicate' && slot.modelId === id))
+  verifyScientificV2BatchManifest(f.manifest)
+  verifyScientificV2ImportedState(f.state, f.manifest)
+  const p = scientificReplicatePrice(id, f.manifest.executionOrder[0].imageSize!)
+  assert.equal(f.price.entries[0].charges[0].rateDecimal, p.rate)
+  const authority = await createScientificV2RegistryAuthority({ codeSha, secret, now: () => new Date(at), loadCurrentRegistry: async () => ({ code: 0, ...f.registry }) })
+  const signed = await createScientificV2OfficialSignedPriceSnapshot({ ...f.extractionInput, expansion: f.manifest.expansion, registryAuthority: authority, codeSha, secret, now: () => new Date(at) })
+  verifyScientificV2SignedPriceSnapshot(signed, { canonicalManifest: f.projected, secret, expectedCodeSha: codeSha, now: new Date(at), maxAgeMs: 86400000 })
+  assert.throws(() => assertReplicateAutoPriceEvidence(Buffer.from(priceHtml(id).toString().replace(`$${p.rate}`, '$0.001')), id, p.imageSize), /REPLICATE_PRICE_EVIDENCE_INVALID/)
+  assert.throws(() => assertReplicateAutoPriceEvidence(priceHtml(id), id, '4K'), /REPLICATE_PRICE_EVIDENCE_INVALID/)
+})
+
+test('five Replicate request bodies keep exact model, source, resolution and no search or model fallback', async () => {
+  const { buildImageChannelBody } = await import('../../../packages/api/src/image-channel-adapters.js')
+  const { IMAGE_CHANNEL_ROUTES } = await import('../../../packages/api/src/image-channel-routes.js')
+  for (const model of SCIENTIFIC_REPLICATE_EXPANSION_MODELS) for (const operation of ['generation', 'editing']) {
+    const wire = IMAGE_CHANNEL_ROUTES[`replicate/${model}`][operation]
+    assert.equal(wire.endpoint, model)
+    const resolution = ['google/nano-banana-2', 'google/nano-banana-pro'].includes(model) ? '2K' : ''
+    const body = await buildImageChannelBody({ provider: 'replicate', model, apiKey: 'not-sent-by-builder', prompt: 'Fixed scientific prompt', aspectRatio: '16:9', resolution, size: { size: '16:9' },
+      source: operation === 'editing' ? { base64: 'aGVsbG8=', mimeType: 'image/png', dataUrl: 'data:image/png;base64,aGVsbG8=' } : null,
+    }, wire, { publicSource: async () => { throw new Error('No remote source expected') } })
+    assert.equal(body.aspect_ratio, '16:9')
+    assert.equal(body.output_format, 'png')
+    if (resolution) assert.equal(body.resolution, '2K')
+    if (model === 'google/nano-banana-pro') assert.equal(body.allow_fallback_model, false)
+    if (model === 'google/nano-banana-2') { assert.equal(body.google_search, false); assert.equal(body.image_search, false) }
+    if (model === 'openai/gpt-image-2') { assert.equal(body.quality, 'auto'); assert.equal(body.number_of_images, 1) }
+    if (operation === 'editing') assert.deepEqual(body[model.startsWith('openai/') ? 'input_images' : 'image_input'], ['data:image/png;base64,aGVsbG8='])
+    assert.equal(JSON.stringify(body).includes('not-sent-by-builder'), false)
   }
 })

@@ -471,7 +471,7 @@ function successfulTransition(fixture: ReturnType<typeof scientificBatchFixture>
 
 function completedScientificState(fixture: ReturnType<typeof scientificBatchFixture>) {
   const state = structuredClone(fixture.initialState) as any
-  const spent = { bailian: 0, ark: 0, openrouter: 0 }
+  const spent: Record<string, number> = Object.fromEntries(Object.keys(state.providerSpentCny).map(provider => [provider, 0]))
   for (const slot of state.slots) {
     const scientificCase = fixture.manifest.cases.find((candidate: any) => candidate.id === slot.caseId)!
     if (!slot.supported) {
@@ -505,7 +505,7 @@ function completedScientificState(fixture: ReturnType<typeof scientificBatchFixt
   }
   state.status = 'completed'
   state.providerSpentCny = spent
-  state.providerUnreconciledCny = { bailian: 0, ark: 0, openrouter: 0 }
+  state.providerUnreconciledCny = Object.fromEntries(Object.keys(spent).map(provider => [provider, 0]))
   return refreshState(state, '2026-08-31T00:00:03.000Z')
 }
 
@@ -3609,6 +3609,12 @@ test('published V2 evidence is immediately consumable by model profile and pagin
   const profile = await service.handle({ action: 'benchmarkModelProfile', profileId: release.models[0].profileId }, false) as any
   assert.equal(profile.profile.evidence.length, 9)
   assert.equal(profile.profile.evidence[0].requestedResolution, '2K')
+  assert.ok(profile.profile.costSummary)
+  assert.equal(profile.profile.evidence[0].cost.basis, profile.profile.modelId.startsWith('codex:') ? 'unavailable' : 'official_rate_calculated')
+  const pricedProfile = await service.handle({ action: 'benchmarkModelProfile', profileId: release.models.find((model: any) => !model.modelId.startsWith('codex:')).profileId }, false) as any
+  assert.equal(pricedProfile.profile.evidence[0].cost.basis, 'official_rate_calculated')
+  assert.equal(pricedProfile.profile.costSummary.totals[0].amount, '9')
+  assert.equal(profile.profile.costSummary.caseCount, 9)
   assert.deepEqual(profile.profile.evidence[0].actualOutputPixels, {
     width: 2048, height: 1152, megapixels: 2.3593, fileSizeBytes: 4096,
   })
@@ -3829,4 +3835,56 @@ test('expansion rechecks its active predecessor inside the publication transacti
   assert.equal(raced, true)
   assert.equal(storage.rows.get('paperbanana_benchmark_releases')!.length, releaseCount)
   assert.equal(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!.length, evidenceCount)
+})
+
+test('Replicate GPT Image 2 replacement preserves historical evidence and inherited costs', async () => {
+  const { storage, secret, repository, baseline } = await expansionBaselineFixture()
+  const prior = structuredClone(baseline)
+  const template = scientificBatchFixture()
+  const expansion = {
+    schemaVersion: 1 as const, kind: 'single_model_expansion' as const,
+    baseline: { releaseId: baseline._id, releaseHash: baseline.releaseHash, batchId: baseline.batchId, manifestHash: baseline.batchManifestHash },
+    targetModelId: 'openai/gpt-image-2', replacesModelId: 'codex:gpt-image-2' as const,
+  }
+  const registry = { ...template.registrySnapshot.registry, providers: { ...template.registrySnapshot.registry.providers, replicate: { models: [{
+    id: 'openai/gpt-image-2', label: 'GPT Image 2', vendor: 'OpenAI', selectable: true, roles: ['image'],
+    capabilities: { imageGeneration: true, imageEditMode: 'direct-edit' as const, resolutions: ['auto'] },
+  }] } } }
+  const base = { registryVersion: 'replacement-test', registryHash: canonicalHash(registry), registry }
+  const registrySnapshot = { ...base, snapshotHash: canonicalHash(base) }
+  const canonicalManifest = buildScientificV2CanonicalManifest(base, expansion)
+  const execution = deriveScientificV2ExecutionCanonicalManifest(canonicalManifest, expansion)
+  const source = { url: 'https://replicate.com/openai/gpt-image-2', mediaType: 'text/html', capturedAt: FIXED_NOW.toISOString(), bytesSha256: 'a'.repeat(64) }
+  const priceSnapshot = buildScientificV2PriceSnapshot({ canonicalManifest: execution, capturedAt: FIXED_NOW.toISOString(),
+    observations: deriveScientificV2PriceRequirements(execution).map(req => ({
+      provider: req.provider, modelId: req.modelId, operation: req.operation, imageSize: req.imageSize,
+      billingRegion: 'replicate-global', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: '0.128', quantityDecimal: '1', resolutionTier: 'quality=auto' }],
+      source, openRouterEvidence: null, fxEvidence: { source: { ...source, url: 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml' }, rateDate: '2026-08-31', baseCurrency: 'EUR' as const, usdPerBaseDecimal: '1', cnyPerBaseDecimal: '7' },
+    })),
+  })
+  const built = buildScientificV2Batch({ canonicalManifest, registrySnapshot, expansion, suite: PB_SCIENTIFIC_FIGURE_V2, codeSha: template.manifest.codeSha, priceSnapshot, createdAt: FIXED_NOW.toISOString(), lockName: template.manifest.lockName })
+  const fixture: any = { ...template, canonicalManifest, registrySnapshot, manifest: built.manifest, initialState: built.state }
+  const batchId = 'gpt-image-2-replacement'
+  await repository.freezeExpansionBatch({ batchId, ...fixture })
+  const facts = await preparePublishFacts(repository, fixture, completedScientificState(fixture), secret, batchId, { dispute: true })
+  const published = await repository.publishScientificV2({ batchId, ...facts })
+  const result = storage.rows.get('paperbanana_benchmark_releases')!.find(row => row.releaseHash === published.releaseHash)!
+  assert.equal(result.models.length, prior.models.length)
+  assert.equal(result.models.some((model: any) => model.modelId === 'codex:gpt-image-2'), false)
+  assert.equal(result.sampleCount, prior.sampleCount)
+  const replacement = result.models.find((model: any) => model.modelId === 'openai/gpt-image-2')
+  assert.equal(replacement.evidence.length, 9)
+  assert.equal(replacement.attemptSummary.total, 9)
+  const keep = (model: any) => { const { overallRank, dimensionRanks, ...rest } = model; return rest }
+  for (const model of prior.models.filter((model: any) => model.modelId !== 'codex:gpt-image-2')) {
+    assert.deepEqual(keep(result.models.find((item: any) => item.modelId === model.modelId)), keep(model))
+  }
+  assert.deepEqual(storage.rows.get('paperbanana_benchmark_releases')!.find(row => row._id === prior._id), prior)
+  const costs = await repository.publicEvidenceForRelease(result.releaseHash, { profileId: replacement.profileId, limit: 12 })
+  assert.equal(costs.items.length, 9)
+  assert.ok(costs.items.every(item => item.cost.amount === '0.128' && item.cost.basis === 'official_rate_calculated'))
+  const inherited = result.models.find((model: any) => model.modelId !== 'openai/gpt-image-2')
+  const oldCosts = await repository.publicEvidenceForRelease(result.releaseHash, { profileId: inherited.profileId, limit: 12 })
+  assert.ok(oldCosts.items.every(item => item.cost.amount === '1' && item.cost.basis === 'official_rate_calculated'))
 })

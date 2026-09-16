@@ -18725,5 +18725,63 @@
     "official": true,
     "sourceUrl": "https://replicate.com/openai/gpt-image-2.5-flare/api/schema",
     "reviewedAt": "2026-09-09"
+  },
+  "replicate/google/nano-banana-2-lite": {
+    "input": {
+      "type": "object",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "prompt": {
+          "type": "string"
+        },
+        "image_input": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "default": []
+        },
+        "aspect_ratio": {
+          "enum": [
+            "match_input_image",
+            "1:1",
+            "1:4",
+            "1:8",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:1",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:1",
+            "9:16",
+            "16:9",
+            "21:9"
+          ],
+          "type": "string",
+          "default": "match_input_image"
+        },
+        "output_format": {
+          "enum": [
+            "jpg",
+            "png"
+          ],
+          "type": "string",
+          "default": "jpg"
+        }
+      }
+    },
+    "output": {
+      "type": "string",
+      "format": "uri"
+    },
+    "schemas": {},
+    "version": "8bd4298c0f1887a53a351a0b01d46c92ac8aceff14a16c743f958b291d5e5b40",
+    "official": true,
+    "sourceUrl": "https://replicate.com/google/nano-banana-2-lite/api/schema"
   }
 }

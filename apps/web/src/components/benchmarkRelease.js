@@ -51,7 +51,8 @@ export function normalizeScientificEvidenceSlot(item, { requireUrl = false, expe
   if (!isPlainObject(item) || (expectedCaseId && item.caseId !== expectedCaseId)) return null
   const scientificCase = SCIENTIFIC_CASE_BY_ID.get(item.caseId)
   if (!scientificCase || item.kind !== scientificCase.kind || !validAttempts(item.attemptSummary)) return null
-  const { count, responseClasses } = item.attemptSummary
+  const { count, responseClasses, maxAttempts = 4 } = item.attemptSummary
+  if (![1, 4].includes(maxAttempts) || count > maxAttempts) return null
   if (item.status === 'succeeded') {
     const terminal = responseClasses.at(-1)
     if (count < 1 || count > 4 || Object.prototype.hasOwnProperty.call(item, 'failureReason')
@@ -64,8 +65,9 @@ export function normalizeScientificEvidenceSlot(item, { requireUrl = false, expe
         || !validVariants(item.beforeVariants, requireUrl)) return null
     } else if (['sourceHash', 'editedHash', 'region', 'beforeVariants'].some((field) => Object.prototype.hasOwnProperty.call(item, field))) return null
   } else if (item.status === 'failed') {
-    if (count !== 4 || responseClasses.some((entry) => !confirmedFailureClasses.has(entry))
-      || item.failureReason !== 'confirmed_attempts_exhausted' || hasAnyResultField(item)) return null
+    if (hasAnyResultField(item) || (item.failureReason === 'provider_canary_confirmed_failed'
+      ? count !== 0 || responseClasses.length !== 0
+      : item.failureReason !== 'confirmed_attempts_exhausted' || count !== maxAttempts || responseClasses.some((entry) => !confirmedFailureClasses.has(entry)))) return null
   } else if (item.status === 'unsupported') {
     if (scientificCase.kind !== 'edit' || count !== 0 || responseClasses.length !== 0
       || item.failureReason !== 'direct_edit_route_unavailable' || hasAnyResultField(item)) return null

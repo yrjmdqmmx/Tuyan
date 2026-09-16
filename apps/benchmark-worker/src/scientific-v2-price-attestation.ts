@@ -181,7 +181,7 @@ export async function createScientificV2OfficialSignedPriceSnapshot(input: {
   const registryHash = canonicalHash(authority.registry)
   const canonicalManifest = deriveScientificV2ExecutionCanonicalManifest(buildScientificV2CanonicalManifest({
     registryVersion: authority.registryVersion, registryHash, registry: authority.registry,
-  }), input.expansion)
+  }, input.expansion), input.expansion)
   const capturedAt = new Date(input.refreshReport?.capturedAt)
   if (canonicalManifest.manifestHash !== input.canonicalManifest.manifestHash
     || input.refreshReport.capturedAt !== authority.capturedAt

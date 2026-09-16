@@ -37,6 +37,28 @@ function scoreText(value) {
   return Number.isFinite(numeric) ? numeric.toFixed(2) : '—'
 }
 
+const COST_LABELS = {
+  invoice_reconciled: '账单已核对', official_rate_calculated: '按官方单价核算',
+  budget_estimate: '预算记账估算，待核实实扣', not_called: '未发起调用', unavailable: '暂无可核对的费用记录',
+}
+function moneyText(currency, amount) {
+  if (amount === null || amount === undefined || !Number.isFinite(Number(amount))) return '待核对'
+  return `${currency === 'USD' ? '$' : currency === 'CNY' ? '¥' : ''}${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}${currency ? ` ${currency}` : ''}`
+}
+export function BenchmarkCaseCost({ cost }) {
+  return <p className="bench-case-cost"><strong>本题费用 {cost?.amount != null ? moneyText(cost.currency, cost.amount) : '待核对'}</strong><span>{COST_LABELS[cost?.basis] || COST_LABELS.unavailable}</span></p>
+}
+export function BenchmarkModelCost({ summary }) {
+  const totals = summary?.totals || []
+  return <section className="bench-model-cost" aria-label="模型测试费用">
+    <h2>本轮测试总费用</h2>
+    <strong>{totals.length ? totals.map(total => moneyText(total.currency, total.amount)).join(' + ') : '待核对'}</strong>
+    <p>{summary?.knownCaseCount ?? 0} / {summary?.caseCount ?? 9} 题有费用记录；{summary?.billedCaseCount ?? 0} 题已核对账单。包括本轮题位内的调用尝试；审评费用不计入生图金额。</p>
+    {totals.map(total => <p key={total.currency}>账单已核对 {moneyText(total.currency, total.billedAmount)} · 单价核算 {moneyText(total.currency, total.calculatedAmount)} · 预算估算 {moneyText(total.currency, total.budgetAmount)}</p>)}
+    {(summary?.knownCaseCount ?? 0) < (summary?.caseCount ?? 9) ? <p>尚有费用未确认，已知金额不代表完整实扣；未知费用不按零元计算。</p> : null}
+  </section>
+}
+
 function variantByKind(variants, kind) {
   return Array.isArray(variants) ? variants.find((variant) => variant.kind === kind) : null
 }
@@ -114,6 +136,7 @@ function EvidenceCard({ item, benchmarkCase, modelName }) {
         <div><span>{benchmarkCase?.id || item.caseId}</span><h2>{benchmarkCase?.title || item.caseId}</h2></div>
         <small>{item.actualOutputPixels?.width} × {item.actualOutputPixels?.height} · {scoreText(item.actualOutputPixels?.megapixels)} MP</small>
       </header>
+      <BenchmarkCaseCost cost={item.cost} />
       <BenchmarkEvidenceImage variants={item.variants} alt={`${modelName} · ${benchmarkCase?.title || item.caseId}`} />
       <EvidenceScores scores={item.scores} />
       <section className="bench-evidence-notes"><h3>审核依据与扣分说明</h3><ul>{(item.reviewNotes || []).map((note, index) => <li key={`${item.sampleId}-${index}`}>{note}</li>)}</ul></section>
@@ -134,6 +157,7 @@ function ScientificEvidenceCard({ item, benchmarkCase, modelName }) {
       {!successful ? <section className="bench-evidence-failure"><strong>{item.status}</strong><code>{item.failureReason || '未提供失败原因'}</code><p>该固定题位按 0 分计入总体。</p></section> : benchmarkCase?.kind === 'edit' ? (
         <div className="bench-edit-comparison"><figure><figcaption>编辑前</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={`${modelName} · ${benchmarkCase.title} · 编辑前`} /></figure><figure><figcaption>编辑后</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={`${modelName} · ${benchmarkCase.title} · 编辑后`} /></figure></div>
       ) : <BenchmarkEvidenceImage variants={item.variants} alt={`${modelName} · ${benchmarkCase?.title || item.caseId}`} />}
+      <BenchmarkCaseCost cost={item.cost} />
       {successful ? <EvidenceScores scores={item.scores} axes={SCIENTIFIC_LEADERBOARD_AXES.filter((axis) => benchmarkCase?.applicableAxes?.includes(axis.id))} /> : null}
       {successful ? <section className="bench-evidence-notes"><h3>审核依据与扣分说明</h3><ul>{(item.reviewNotes || []).map((note, index) => <li key={`${item.caseId}-${index}`}>{note}</li>)}</ul></section> : null}
       <details className="bench-evidence-prompt" open><summary>完整题目与要求</summary><pre>{benchmarkCase?.instruction || '—'}</pre>{benchmarkCase?.negativePrompt ? <><h4>负向约束</h4><pre>{benchmarkCase.negativePrompt}</pre></> : null}</details>
@@ -180,6 +204,7 @@ export function BenchmarkModelEvidencePage({ apiBase, backendMode, enabled, prof
         <p>{scientific ? '公开九个固定科研题位的状态、尝试摘要、十维分数，以及局部编辑 before / after。' : '公开同一固定题集下的真实生成图片、逐图七维分数与原审核依据。'}</p>
         <div className="bench-meta"><span className="accent">Overall #{profile.overallRank ?? '—'} · {scoreText(profile.overallScore)}</span><span>{profile.evidence?.length || 0} 个固定题位</span>{scientific ? <><span>生成成功率 {scoreText(profile.generationSuccessRate * 100)}%</span><span>编辑成功率 {scoreText(profile.editSuccessRate * 100)}%</span></> : null}<span>{profile.modelId}</span></div>
       </header>
+      <BenchmarkModelCost summary={profile.costSummary} />
       <section className="bench-evidence-list">
         {(profile.evidence || []).map((item) => scientific
           ? <ScientificEvidenceCard item={item} benchmarkCase={cases.get(item.caseId)} modelName={modelName} key={item.caseId} />
@@ -244,6 +269,7 @@ export function BenchmarkCaseEvidencePage({ apiBase, backendMode, enabled, caseI
           const name = item.model?.displayName || item.modelId
           return <article className="bench-case-evidence-item" key={item.sampleId || item.profileId}>
             <header><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(item.profileId)}`)}><strong>{name}</strong><small>{item.modelId}</small></a><span>Overall #{item.model?.overallRank ?? '—'} · {scoreText(item.model?.overallScore)}{item.status === 'succeeded' && item.actualOutputPixels ? ` · ${item.actualOutputPixels.width} × ${item.actualOutputPixels.height} · ${scoreText(item.actualOutputPixels.megapixels)} MP` : ''}</span></header>
+            <BenchmarkCaseCost cost={item.cost} />
             {scientific && item.status !== 'succeeded' ? <section className="bench-evidence-failure"><strong>{item.status}</strong><code>{item.failureReason || '未提供失败原因'}</code><p>该固定题位按 0 分计入总体。</p></section> : scientific && benchmarkCase?.kind === 'edit' ? <div className="bench-edit-comparison"><figure><figcaption>编辑前</figcaption><BenchmarkEvidenceImage variants={item.beforeVariants} alt={`${name} · ${benchmarkCase.title} · 编辑前`} /></figure><figure><figcaption>编辑后</figcaption><BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase.title} · 编辑后`} /></figure></div> : <BenchmarkEvidenceImage variants={item.variants} alt={`${name} · ${benchmarkCase?.title || caseId}`} />}
             {item.status === 'succeeded' || !scientific ? <EvidenceScores scores={item.scores} axes={scientific ? SCIENTIFIC_LEADERBOARD_AXES.filter((axis) => benchmarkCase?.applicableAxes?.includes(axis.id)) : LEADERBOARD_AXES} /> : null}
             <ul className="bench-evidence-note-list">{(item.reviewNotes || []).map((note, index) => <li key={`${item.sampleId}-note-${index}`}>{note}</li>)}</ul>
