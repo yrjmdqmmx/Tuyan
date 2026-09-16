@@ -25,7 +25,7 @@ Replicate 使用现有官方模型创建预测接口及只读轮询。输出单�
 
 两模型合计授权预算 10 USD；成功九题的单模型计划费用为 2.25 USD，总计划费用 4.50 USD。记录每题预测 ID、返回模型版本、质量档、状态、输出数、对应题位和原始响应证据。费用报告按模型区分官方单价核算、账单实扣以及尚未结算的失败/未知请求。不能把预算上限、人民币保护值或计时 metrics 当作美元实扣。任何需要追加付费调用的情况均先核对已有预测，不能自动重跑整批。
 
-生产步骤和严格的 SHA、digest、baseline、batch 绑定见 [单模型增量流程](scientific-v2-single-model-expansion.md)。部署、实际调用、审评与发布证据在执行后单独补齐。
+生产步骤和严格的 SHA、digest、baseline、batch 绑定见 [单模型增量流程](scientific-v2-single-model-expansion.md)。部署、18/18 实际调用、双审与仲裁、43 模型发布及 4.50 USD 账单证据见 [完成记录](releases/2026-09-16-replicate-image25-benchmark.md)。
 
 ## 接入验证
 

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-16",
+  "releaseId": "bench-scientific-v2-release-5129b6df946178963069",
+  "releaseHash": "5129b6df946178963069c24461f16524598be561939aaae636f1c5ab19fd242c",
+  "modelCount": 43,
+  "preservedBaselineModels": 41,
+  "successfulNewCases": 18,
+  "providerCostTotalUsd": "4.50",
+  "models": [
+    {
+      "canonicalModelId": "openai/gpt-image-2.5-sunburst",
+      "overallRank": 9,
+      "overallScore": 8.854960317460318,
+      "scores": {
+        "scientific_faithfulness": 8.25,
+        "structural_topology": 9.035714285714286,
+        "text_symbol_accuracy": 10,
+        "quantitative_accuracy": 9.333333333333334,
+        "instruction_adherence": 8.416666666666666,
+        "readability_visual_hierarchy": 8.5,
+        "information_density": 8.708333333333334,
+        "publication_aesthetics": 8.055555555555555,
+        "edit_target_accuracy": 10,
+        "non_target_preservation": 8.25
+      },
+      "successfulCases": 9,
+      "attempts": 9,
+      "independentReviewers": 2,
+      "arbitratedCases": 1,
+      "providerCostUsd": "2.25",
+      "providerCostBasis": "account invoice 9 auto outputs x USD 0.250000",
+      "manifestCodeSha": "4d6be3d2fddc7de447a0c7ee51ec7009257a5b8c",
+      "executionCodeSha": "4d6be3d2fddc7de447a0c7ee51ec7009257a5b8c",
+      "publicationCodeSha": "4d6be3d2fddc7de447a0c7ee51ec7009257a5b8c"
+    },
+    {
+      "canonicalModelId": "openai/gpt-image-2.5-flare",
+      "overallRank": 14,
+      "overallScore": 8.150396825396825,
+      "scores": {
+        "scientific_faithfulness": 8.5,
+        "structural_topology": 8.142857142857142,
+        "text_symbol_accuracy": 10,
+        "quantitative_accuracy": 9.25,
+        "instruction_adherence": 7.333333333333333,
+        "readability_visual_hierarchy": 8.444444444444445,
+        "information_density": 8.333333333333334,
+        "publication_aesthetics": 7.666666666666667,
+        "edit_target_accuracy": 7.333333333333333,
+        "non_target_preservation": 6.5
+      },
+      "successfulCases": 9,
+      "attempts": 9,
+      "independentReviewers": 2,
+      "arbitratedCases": 3,
+      "providerCostUsd": "2.25",
+      "providerCostBasis": "account invoice 9 auto outputs x USD 0.250000",
+      "manifestCodeSha": "4d6be3d2fddc7de447a0c7ee51ec7009257a5b8c",
+      "executionCodeSha": "4d6be3d2fddc7de447a0c7ee51ec7009257a5b8c",
+      "publicationCodeSha": "2295cc15d9937c0cb0b3c9adebd911aca06b42c0"
+    }
+  ],
+  "publicImageVariantHashChecks": {
+    "outputVariants": 54,
+    "sharedSourceVariants": 3
+  },
+  "finalProduction": {
+    "deployedSha": "2295cc15d9937c0cb0b3c9adebd911aca06b42c0",
+    "coreDigest": "733b7faeb40408715b324359666113994faef9d3e247c76259c3d0047b1e5c92",
+    "workerDigest": "38c6e849c32c36687304892c41875a2fa4f4de7a4e6dc7d6821ff157ceeb4461",
+    "coreCodeSha": "2295cc15d9937c0cb0b3c9adebd911aca06b42c0",
+    "workerCodeSha": "2295cc15d9937c0cb0b3c9adebd911aca06b42c0",
+    "sameSha": true,
+    "worker": {
+      "enabled": false,
+      "concurrency": 1
+    }
+  },
+  "finalProductionReadOnlyRun": 35100515644,
+  "webCodeSha": "5f83d6707521886fcc02bae0afcd0de9341b8c71",
+  "webDeploymentRun": 35100161887,
+  "browserChecks": {
+    "modelCount": 43,
+    "modelDetails": 2,
+    "generationHd": true,
+    "editBeforeAfter": true,
+    "methodologyProviders": 4,
+    "replicateMaxAttempts": 1
+  },
+  "limitations": [
+    "Fixed nine cases per model, one actual production attempt per case; no repeat-run variance estimate.",
+    "Replicate prediction version field is hidden; catalogue metadata is retained separately."
+  ]
+}
