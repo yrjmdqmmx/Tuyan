@@ -1,0 +1,125 @@
+{
+  "deployedSourceRevision": "2295cc15d9937c0cb0b3c9adebd911aca06b42c0",
+  "sourcePR": "https://github.com/yrjmdqmmx/Tuyan/pull/200",
+  "workflows": {
+    "prCI": 35098304559,
+    "branchCI": 35098298820,
+    "mainCI": 35098830486,
+    "coreImage": 35098913917,
+    "benchmarkImage": 35098920795,
+    "hkDeployment": 35099222746,
+    "webPages": 35099350071
+  },
+  "images": {
+    "gateway": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:a3badc4d3988981fc95a3a84cdad96c64366c2e81b642a3ed2ef43cf30200a09",
+    "worker": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+    "mongo": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+    "benchmarkMode": "configured-disabled",
+    "benchEnabled": true,
+    "core": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:733b7faeb40408715b324359666113994faef9d3e247c76259c3d0047b1e5c92",
+    "benchmark": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:38c6e849c32c36687304892c41875a2fa4f4de7a4e6dc7d6821ff157ceeb4461"
+  },
+  "productionApproval": {
+    "environment": "paperbanana-production",
+    "normalRequiredReviewerApproval": true,
+    "bypassed": false
+  },
+  "hostVerification": [
+    "/paperbanana-hk-paperbanana-api-1 ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:733b7faeb40408715b324359666113994faef9d3e247c76259c3d0047b1e5c92 running healthy",
+    "/paperbanana-hk-benchmark-worker-1 ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:38c6e849c32c36687304892c41875a2fa4f4de7a4e6dc7d6821ff157ceeb4461 running healthy",
+    "/paperbanana-hk-auth-gateway-1 ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:a3badc4d3988981fc95a3a84cdad96c64366c2e81b642a3ed2ef43cf30200a09 running healthy",
+    "/paperbanana-hk-plot-worker-1 ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3 running healthy",
+    "/paperbanana-hk-mongodb-1 mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd running healthy",
+    "{\"service\":\"paperbanana-api\",\"build\":{\"codeSha\":\"2295cc15d9937c0cb0b3c9adebd911aca06b42c0\"},\"configuredCodeSha\":\"2295cc15d9937c0cb0b3c9adebd911aca06b42c0\"}",
+    "{\"service\":\"benchmark-worker\",\"build\":{\"codeSha\":\"2295cc15d9937c0cb0b3c9adebd911aca06b42c0\"},\"configuredCodeSha\":\"2295cc15d9937c0cb0b3c9adebd911aca06b42c0\",\"benchmarkEnabled\":\"false\"}",
+    "maintenance=off"
+  ],
+  "tests": {
+    "core": 507,
+    "web": 393,
+    "miniprogram": 119,
+    "sharedAndSourceContracts": 51,
+    "targetedReferenceAndReview": 15
+  },
+  "review": {
+    "automatedFindings": 3,
+    "addressed": 3,
+    "fixCommit": "637df2f39d8cc9566979b2117af3ce721804a7d4",
+    "secondAutomatedReviewClaimed": false
+  },
+  "originalJob": {
+    "id": "1789475537133-hillfxmt",
+    "status": "failed",
+    "displayedError": "图示规划失败：参考图合计超过该模型的 8 张输入上限。",
+    "billing": "unknown",
+    "automaticReplay": false,
+    "createdAndCompletedTimesUnchanged": true,
+    "browserObservedChineseFailure": true,
+    "browserObservedBillingWarning": true,
+    "browserObservedOldVersionRecoveryWarning": true
+  },
+  "boundaries": {
+    "paidModelCallsByThisRelease": 0,
+    "originalTaskRetried": false,
+    "paymentCreated": false,
+    "actualOriginalChargeReconciled": false,
+    "wechatUploadOrPublicationPerformed": false
+  },
+  "rollbackSnapshot": "/opt/paperbanana/backups/reference-budget-20260916",
+  "liveHttp": {
+    "verifiedAt": "2026-09-16T13:04:05.067721+00:00",
+    "checks": [
+      {
+        "path": "/health",
+        "status": 200,
+        "ok": true,
+        "passed": true
+      },
+      {
+        "path": "/ready",
+        "status": 200,
+        "ok": true,
+        "passed": true
+      },
+      {
+        "path": "/api/auth/watcha/status",
+        "status": 200,
+        "available": true,
+        "passed": true
+      },
+      {
+        "path": "/paperbanana-api",
+        "status": 403,
+        "passed": true,
+        "anonymousReadRejected": true
+      }
+    ]
+  },
+  "pagesArtifactMatch": {
+    "verifiedAt": "2026-09-16T13:05:43.366334+00:00",
+    "artifactRun": 35099350071,
+    "sourceSha": "2295cc15d9937c0cb0b3c9adebd911aca06b42c0",
+    "checks": [
+      {
+        "path": "index.html",
+        "match": true,
+        "sha256": "b505739cde33173e30d551c52d4e0fd2b64829b75f27dc3380347085930a1330"
+      },
+      {
+        "path": "assets/appPaths-Ba0fLi8f.js",
+        "match": true,
+        "sha256": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4"
+      },
+      {
+        "path": "assets/main-1BOIpzLl.js",
+        "match": true,
+        "sha256": "98c22d51ac3f766a3fedf5def742c2557ceffd784cfb410cb191826ce8cff5da"
+      },
+      {
+        "path": "assets/main-CI1-MDJh.css",
+        "match": true,
+        "sha256": "1e44f89ffb542f953ef41b68c1b82e45f90f0df041ab712ec0c2bee45c354518"
+      }
+    ]
+  }
+}
