@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto'
 import { MongoClient } from 'mongodb'
 import { createTokenDanceService } from '../../src/tokendance-service.ts'
 import { createProviderWorkflow } from '../../src/provider-workflow.ts'
-import { TokenDanceError, TOKENDANCE_APP_URL } from '../../../../packages/api/src/tokendance.ts'
+import { TokenDanceError, tokenDanceInputError, TOKENDANCE_APP_URL } from '../../../../packages/api/src/tokendance.ts'
 
 const uri = process.env.TOKENDANCE_TEST_MONGO_URI
 if (!uri || new URL(uri).hostname !== '127.0.0.1') throw new Error('A dedicated loopback Mongo test instance is required')
@@ -67,9 +67,21 @@ try {
   retryTime += 30000
   const retries = await Promise.allSettled([workflow.resume(limited.jobId, 'test-owner', enqueue), workflow.resume(limited.jobId, 'test-owner', enqueue)])
   assert.equal(retries.filter(row => row.status === 'fulfilled').length, 1); assert.equal(queued, 1)
+  const local = { ...task, jobId: 'mongo-local-preflight' }
+  await db.collection('paperbanana_jobs').insertOne({ _id: local.jobId, userId: 'test-owner', providerCalls: [{ requestedModel: 'fixture' }] })
+  await assert.rejects(workflow.run(local, async () => {
+    await workflow.call(['saved-selection'], async () => ['reference-1'])
+    await workflow.call(['planner'], async () => { throw tokenDanceInputError('图片数量超过当前模型限制。') })
+  }))
+  const localJob = await db.collection('paperbanana_jobs').findOne({ _id: local.jobId })
+  assert.equal(localJob.recovery.requestState, 'not_sent'); assert.equal(localJob.recovery.billingStatus, 'prior_calls')
+  assert.equal(localJob.recovery.canResume, false)
+  assert.equal(await db.collection('paperbanana_provider_steps').countDocuments({ jobId: local.jobId, state: 'complete' }), 1)
+  assert.equal(await db.collection('paperbanana_provider_steps').countDocuments({ jobId: local.jobId, state: 'unknown' }), 0)
+  await assert.rejects(workflow.resume(local.jobId, 'test-owner', () => assert.fail('invalid inputs must not be replayed')))
   await service.eraseUserData('test-owner'); await workflow.remove('test-owner')
   for (const name of ['paperbanana_tokendance_connections', 'paperbanana_tokendance_flows', 'paperbanana_tokendance_payments', 'paperbanana_provider_executions', 'paperbanana_provider_steps', 'paperbanana_provider_step_chunks']) assert.equal(await db.collection(name).countDocuments({}), 0)
-  console.log(JSON.stringify({ mongo: 'real isolated MongoDB', provider: 'fixtures only', passed: ['one-use exchange', 'encrypted storage', 'unique active order', 'TTL indexes', 'fresh-client nested-step recovery', 'concurrent resume CAS', 'retryAt gate before enqueue', 'account erasure'], planned, rendered, paymentPosts }))
+  console.log(JSON.stringify({ mongo: 'real isolated MongoDB', provider: 'fixtures only', passed: ['one-use exchange', 'encrypted storage', 'unique active order', 'TTL indexes', 'fresh-client nested-step recovery', 'concurrent resume CAS', 'retryAt gate before enqueue', 'local validation preserves checkpoints without unknown charge or replay', 'account erasure'], planned, rendered, paymentPosts }))
 } finally {
   await client.db(database).dropDatabase().catch(() => {})
   await client.close()

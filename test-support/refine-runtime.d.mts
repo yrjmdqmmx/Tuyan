@@ -1,7 +1,7 @@
 import type { memoryDb } from './memory-db.mjs';
 import type { ReferenceSubmissionPolicy } from '../packages/api/src/reference-upload.js';
 
-export function createRefineRuntime(options?: { port?: number; providerDelay?: number; tokenDance?: boolean; frontendOrigin?: string }): Promise<{
+export function createRefineRuntime(options?: { port?: number; providerDelay?: number; tokenDance?: boolean; frontendOrigin?: string; retrievalResponse?: unknown }): Promise<{
   baseUrl: string;
   db: ReturnType<typeof memoryDb>;
   objects: Map<string, { bytes: Buffer; mimeType: string }>;
@@ -13,6 +13,8 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
   payTokenDance(): void;
   legacy: {
     drainJobAdmission(): Promise<void>;
+    preparePlanningReferences(body: any, proposed: any[], uploaded?: any[]): Promise<{references: any[]; images: any[]; visual: boolean; limit: number; omitted: {duplicate: number; unavailable: number; budget: number}}>;
+    assertVisionInputBudget(provider: string, model: string, images: any[]): void;
     configureRuntimeFetch(fetcher: (...args: any[]) => Promise<Response>): void;
     configureProviderWorkflow(workflow: ReturnType<typeof import('../apps/paperbanana-api/src/provider-workflow.js').createProviderWorkflow>): void;
     callTextModel(...args: any[]): Promise<string>;

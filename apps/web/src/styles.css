@@ -5452,3 +5452,10 @@ figcaption {
 .reference-processing-note { color: var(--muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; margin: 10px 0; }
 .reference-processing-details { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 10px 0; }
 .reference-processing-details summary { cursor: pointer; padding: 6px 0; }
+
+/* Multi-line task failures keep the cause, billing and recovery copy readable. */
+.job-failure-notice { align-items: flex-start; }
+.job-failure-notice > svg { flex-shrink: 0; margin-top: 3px; }
+.job-failure-notice > div { min-width: 0; overflow-wrap: anywhere; }
+.job-failure-notice p { margin: 0; }
+.job-failure-notice p + p { margin-top: 8px; }

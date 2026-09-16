@@ -15,7 +15,7 @@ const { build } = require('esbuild');
 const sharp = require('sharp');
 const express = require('express');
 
-export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, frontendOrigin = 'http://127.0.0.1:5173' } = {}) {
+export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173' } = {}) {
   const db = memoryDb();
   const objects = new Map();
   const prepared = new Map();
@@ -74,6 +74,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
       if (url.endsWith('/chat/completions')) {
         if (providerDelay) await new Promise(resolve => setTimeout(resolve, providerDelay));
         const body = JSON.parse(options.body);
+        if (retrievalResponse && String(body.messages?.[0]?.content).includes('Retrieval Agent')) return Response.json({model:body.model,id:'fixture-retrieval',choices:[{message:{content:JSON.stringify(retrievalResponse)}}]});
         return new Response('data: '+JSON.stringify({model:body.model,id:'fixture-text-call',choices:[{delta:{content:'Create a clear scientific workflow diagram with readable labels and directional arrows.'}}]})+'\n\ndata: [DONE]\n\n', { headers: {'Content-Type':'text/event-stream'} });
       }
       if (url.endsWith('/images/generations')) {

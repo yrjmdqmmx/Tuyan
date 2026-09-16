@@ -1,3 +1,5 @@
+import { referenceSubmissionPolicy } from './reference-upload.js'
+import type { RequestState } from './execution-errors.js'
 import { TOKENDANCE_MODELS } from './tokendance-models.js'
 
 export const TOKENDANCE_APP_URL = 'https://www.paperbanana.asia/'
@@ -6,10 +8,14 @@ export const TOKENDANCE_ACTIONS = ['tokenDanceStatus', 'tokenDanceAuthorize', 't
 export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'retry_request' | 'review_request'
 
 export class TokenDanceError extends Error {
-  constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false) {
+  constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false, public requestState: RequestState = 'unknown') {
     super(message)
     this.name = 'TokenDanceError'
   }
+}
+
+export function tokenDanceInputError(message: string) {
+  return new TokenDanceError(400, message, undefined, 0, false, 'not_sent')
 }
 
 export function tokenDanceFailure(status: number, action = '', retryAfter = '') {
@@ -21,11 +27,11 @@ export function tokenDanceFailure(status: number, action = '', retryAfter = '') 
   }
   const recovery = Object.hasOwn(messages, action) ? action as TokenDanceRecovery : status === 429 ? 'rate_limit' : status === 401 ? 'reauthorize_api_key' : undefined
   const seconds = /^\d+$/.test(retryAfter) ? Number(retryAfter) : Math.max(0, Math.ceil((Date.parse(retryAfter) - Date.now()) / 1000))
-  return new TokenDanceError(status, messages[recovery || ''] || `TokenDance 请求失败（HTTP ${status}）。`, recovery, Math.min(86400, Number.isFinite(seconds) ? seconds : 0), status >= 500)
+  return new TokenDanceError(status, messages[recovery || ''] || `TokenDance 请求失败（HTTP ${status}）。`, recovery, Math.min(86400, Number.isFinite(seconds) ? seconds : 0), status >= 500, status >= 500 ? 'unknown' : 'rejected')
 }
 
 export function tokenDanceAmount(value: unknown): number {
-  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 1 || value > 100000) throw new TokenDanceError(400, '充值金额必须为 1 至 100000 元的整数。')
+  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 1 || value > 100000) throw tokenDanceInputError('充值金额必须为 1 至 100000 元的整数。')
   return value
 }
 
@@ -38,7 +44,7 @@ export function tokenDanceBalance(value: any) {
 }
 
 export async function tokenDanceResponse(fetcher: typeof fetch, path: string, key: string, body?: unknown, signal?: AbortSignal): Promise<Response> {
-  if (!path.startsWith('/gateway/') && !path.startsWith('/portal/api/v1/')) throw new TokenDanceError(400, '不受支持的观猹 TokenDance 请求。')
+  if (!path.startsWith('/gateway/') && !path.startsWith('/portal/api/v1/')) throw tokenDanceInputError('不受支持的观猹 TokenDance 请求。')
   let response: Response
   try {
     response = await fetcher(TOKENDANCE_ORIGIN + path, {
@@ -47,8 +53,9 @@ export async function tokenDanceResponse(fetcher: typeof fetch, path: string, ke
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
       signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(600_000)]) : AbortSignal.timeout(600_000),
     })
-  } catch {
-    throw new TokenDanceError(502, body === undefined ? '观猹 TokenDance 暂时无法连接。' : '观猹 TokenDance 请求结果不确定，请先核对调用或订单记录，避免重复扣费。', body === undefined ? undefined : 'review_request', 0, body !== undefined)
+  } catch (error: any) {
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') throw new TokenDanceError(504, '等待观猹 TokenDance 响应超时，请先核对调用记录。', body === undefined ? undefined : 'review_request', 0, body !== undefined, body === undefined ? 'not_sent' : 'unknown')
+    throw new TokenDanceError(502, body === undefined ? '观猹 TokenDance 暂时无法连接。' : '观猹 TokenDance 连接失败或中断，请求结果不确定，请先核对调用或订单记录，避免重复扣费。', body === undefined ? undefined : 'review_request', 0, body !== undefined)
   }
   if (!response.ok) {
     // Never include the upstream body: providers may echo credentials or prompts.
@@ -80,15 +87,15 @@ export async function tokenDanceJson(response: Response, maxBytes = 2 * 1024 * 1
 
 export function tokenDanceModel(model: string, role: 'main' | 'vision' | 'image') {
   const entry = TOKENDANCE_MODELS.find(m => m.id === model)
-  if (!entry?.roles.includes(role)) throw new TokenDanceError(400, `TokenDance 型号 ${model} 不支持当前角色。`)
+  if (!entry?.roles.includes(role)) throw tokenDanceInputError(`TokenDance 型号 ${model} 不支持当前角色。`)
   return entry
 }
 
 export function tokenDanceChatBody(model: string, system: string, user: string, images: { url: string }[] = [], stream = true) {
   tokenDanceModel(model, images.length ? 'vision' : 'main')
-  // Three is Tuyan's reference limit, not a claimed upstream maximum.
-  if (images.length > 8) throw new TokenDanceError(400, '本次图像分析输入超过图研的 8 张组合上限。')
-  for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw new TokenDanceError(400, '观猹 TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
+  const limit = referenceSubmissionPolicy('tokendance', model).maxCount
+  if (images.length > limit) throw tokenDanceInputError(`当前模型最多接收 ${limit} 张图片，本次合计 ${images.length} 张（含上传和检索图片）。`)
+  for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw tokenDanceInputError('观猹 TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
   return { model, messages: [{ role: 'system', content: system }, { role: 'user', content: images.length ? [{ type: 'text', text: user }, ...images.map(image => ({ type: 'image_url', image_url: { url: image.url } }))] : user }], stream }
 }
 
@@ -141,13 +148,13 @@ export async function tokenDanceChat(fetcher: typeof fetch, model: string, key: 
 export function tokenDanceImageBody(model: string, prompt: string, size: string, images: string[] = []) {
   tokenDanceModel(model, 'image')
   const pro = model === 'seedream-5.0-pro'
-  if (images.length > (pro ? 10 : 14)) throw new TokenDanceError(400, 'Seedream 参考图数量超出该型号限制。')
+  if (images.length > (pro ? 10 : 14)) throw tokenDanceInputError('Seedream 参考图数量超出该型号限制。')
   const presets = pro ? ['1K', '1.5K', '2K'] : ['2K', '3K', '4K']
   if (!presets.includes(size)) {
-    if (!/^\d+x\d+$/.test(size)) throw new TokenDanceError(400, 'Seedream 尺寸格式无效。')
+    if (!/^\d+x\d+$/.test(size)) throw tokenDanceInputError('Seedream 尺寸格式无效。')
     const [w, h] = size.split('x').map(Number), pixels = w * h
-    if (w < 1 || h < 1 || Math.max(w / h, h / w) > 16 || pixels < (pro ? 921600 : 3686400) || pixels > (pro ? 4624220 : 16777216)) throw new TokenDanceError(400, 'Seedream 尺寸超出该型号边界。')
+    if (w < 1 || h < 1 || Math.max(w / h, h / w) > 16 || pixels < (pro ? 921600 : 3686400) || pixels > (pro ? 4624220 : 16777216)) throw tokenDanceInputError('Seedream 尺寸超出该型号边界。')
   }
-  if (!prompt.trim() || prompt.length > 20000) throw new TokenDanceError(400, 'Seedream 提示词为空或过长。')
+  if (!prompt.trim() || prompt.length > 20000) throw tokenDanceInputError('Seedream 提示词为空或过长。')
   return { model, prompt, size, response_format: 'b64_json', output_format: 'png', watermark: false, ...(pro ? {} : { sequential_image_generation: 'disabled', stream: false }), ...(images.length ? { image: images } : {}) }
 }

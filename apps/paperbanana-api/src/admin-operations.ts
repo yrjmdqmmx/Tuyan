@@ -120,7 +120,7 @@ export function createAdminOperations({ db, benchmarkDb, publicJob, now = () => 
         if (result.code !== 0 || !result.job) throw new AdminError(502, '任务结果暂不可读取，请重试')
         const job = result.job
         const image = (v: Input) => ({ filename: safe(v.filename), url: /^https?:\/\//.test(String(v.url || '')) ? v.url : '', mimeType: safe(v.mimeType || v.mime_type) })
-        return { code: 0, task: { ...jobSummary(row), methodContent: safe(job.methodContent, 16000), caption: safe(job.caption, 2000), negativePrompt: safe(job.negativePrompt, 2000), error: safe(row.error || job.error, 6000),
+        return { code: 0, task: { ...jobSummary(row), methodContent: safe(job.methodContent, 16000), caption: safe(job.caption, 2000), negativePrompt: safe(job.negativePrompt, 2000), error: safe(job.error || row.error, 6000), errorCode: safe(job.failure?.code), failure: job.failure || null, recovery: job.recovery || null, referenceSelection: job.referenceSelection || null,
           results: (job.resultImages || []).map(image), references: (job.referenceImages || []).map(image),
           stages: (job.stages || []).map((s: Input) => ({ title: safe(s.title), type: safe(s.type), text: safe(s.text || s.description || s.message, 12000), error: safe(s.error, 4000), startedAt: s.startedAt, completedAt: s.completedAt, durationMs: Number(s.durationMs || 0), image: s.image ? image(s.image) : null })),
           logs: (Array.isArray(job.logs) ? job.logs : []).slice(-200).map((s: unknown) => safe(typeof s === 'string' ? s : JSON.stringify(s), 2000)), history: history(row.adminOperations?.history),

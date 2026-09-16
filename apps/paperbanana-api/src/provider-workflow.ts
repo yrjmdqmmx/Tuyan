@@ -1,14 +1,15 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { createHash, randomUUID } from 'node:crypto'
 import type { Db } from 'mongodb'
+import { isLocalInputFailure, publicExecutionFailure } from '../../../packages/api/src/execution-errors.js'
 import { TokenDanceError } from '../../../packages/api/src/tokendance.js'
 import type { createTokenDanceService } from './tokendance-service.js'
 
 type ConnectionService = ReturnType<typeof createTokenDanceService>
 type Task = { jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
 type Context = { task: Task; scope: string; counts: Map<string, number> }
-const version = 'tokendance-workflow-v1'
-const isReferenceValidationError = (error: any) => error?.name === 'ReferenceUploadValidationError' && !error.uncertain
+const version = 'tokendance-workflow-v2-reference-budget'
+const isReferenceValidationError = isLocalInputFailure
 
 /** Paid calls are durably claimed BEFORE transport and committed AFTER their
  * complete result is stored. An abandoned claim is never automatically retried. */
@@ -74,7 +75,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await steps.updateOne({ _id: id, state: 'running' }, { $set: { state: 'complete', chunks: count, completedAt: new Date(now()) } })
       return result
     } catch (error: any) {
-      const rejected = isReferenceValidationError(error) || (error?.name === 'TokenDanceError' && !error.uncertain && Boolean(error.recoveryAction))
+      const rejected = isReferenceValidationError(error) || (error?.name === 'TokenDanceError' && !error.uncertain && (Boolean(error.recoveryAction) || error.requestState === 'rejected'))
       await steps.updateOne({ _id: id }, { $set: { state: rejected ? 'rejected' : 'unknown', retryAt: new Date(now() + (error.retryAfterSeconds || 0) * 1000) } })
       throw error
     }
@@ -101,23 +102,39 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await jobs.updateOne({ _id: task.jobId }, { $unset: { recovery: '' } })
     } catch (error: any) {
       await acceptingData(userId)
-      // Invalid source bytes/limits need changed inputs, not a payment inquiry.
-      // Never hide another in-flight or uncertain paid step in a composite task.
-      if (isReferenceValidationError(error) && await steps.countDocuments({ jobId: task.jobId, state: { $in: ['running', 'unknown'] } }) === 0) {
-        await executions.updateOne({ _id: task.jobId, owner }, { $set: { state: 'failed' }, $unset: { secret: '', recovery: '' } })
-        await jobs.updateOne({ _id: task.jobId }, { $unset: { recovery: '' } })
-        throw error
-      }
-      const unsafe = error?.uncertain || !error?.recoveryAction || error.recoveryAction === 'review_request'
-      const recovery = { channel: 'tokendance', canResume: !unsafe, action: unsafe ? 'review_request' : error.recoveryAction, message: unsafe ? '调用结果尚未确认，请核对调用记录；自动重试已停止。' : error.message, retryAt: new Date(now() + (error.retryAfterSeconds || 0) * 1000), expiresAt: expires() }
+      const unknown = await steps.countDocuments({ jobId: task.jobId, state: { $in: ['running', 'unknown'] } }) > 0
+      const local = isLocalInputFailure(error) && !unknown
+      const refused = error?.requestState === 'rejected' && !error?.uncertain
+      const unsafe = unknown || error?.uncertain || !local && !refused && (!error?.recoveryAction || error.recoveryAction === 'review_request')
+      const job = await jobs.findOne({ _id: task.jobId })
+      const failure = publicExecutionFailure(error, job?.providerCalls?.length || 0, unsafe)
+      // Keep all completed checkpoints, including on local validation failure.
+      // Inputs are immutable: a deterministic bad input needs correction, not an
+      // automatic replay. No old unknown claim is made safe by a later error.
+      const recovery = { channel: 'tokendance', canResume: !unsafe && !local && Boolean(error?.recoveryAction) && error.recoveryAction !== 'review_request',
+        action: unsafe ? 'review_request' : local ? 'change_input' : error.recoveryAction || 'check_request',
+        message: local ? '本步骤在请求发出前校验失败，请调整输入或等待修复。已成功步骤保留；本次失败步骤未发起模型调用。'
+          : unsafe ? '调用结果及费用尚未确认，请核对渠道记录；自动重试已停止，成功步骤已保留。' : failure.message,
+        requestState: failure.requestState, billingStatus: failure.billingStatus, billingMessage: failure.billingMessage,
+        retryAt: new Date(now() + (error.retryAfterSeconds || 0) * 1000), expiresAt: expires() }
       await executions.updateOne({ _id: task.jobId, owner }, { $set: { state: 'blocked', recovery } })
       await jobs.updateOne({ _id: task.jobId }, { $set: { recovery } })
       throw error
     } finally { clearInterval(heartbeat) }
   }
   async function reconcile(jobId: string) {
-    const row = await executions.findOne({ _id: jobId, state: { $in: ['running', 'queued'] } })
+    const row = await executions.findOne({ _id: jobId, state: { $in: ['running', 'queued', 'blocked'] } })
     if (!row) return
+    if (row.version !== version && !(row.state === 'running' && (row.leaseUntil?.getTime() || 0) > now())) {
+      // Request descriptors changed when URLs became budgeted inline images.
+      // Never mistake an old paid checkpoint for a new, uncalled request.
+      const recovery = { channel: 'tokendance', canResume: false, action: 'review_request', requestState: 'unknown', billingStatus: 'unknown',
+        message: '该任务使用旧执行版本，已保留成功步骤。升级后不能安全自动重放，请先核对原调用记录及费用。', expiresAt: row.expiresAt }
+      const changed = await executions.updateOne({ _id: jobId, version: row.version, state: row.state }, { $set: { state: 'blocked', recovery } })
+      if (changed.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery, updatedAt: new Date(now()) } })
+      return
+    }
+    if (row.state === 'blocked') return
     if (row.state === 'queued' ? row.instanceId === instanceId : (row.leaseUntil?.getTime() || 0) > now()) return
     const uncertain = await steps.countDocuments({ jobId, state: { $in: ['running', 'unknown'] } })
     const recovery = { channel: 'tokendance', canResume: uncertain === 0, action: uncertain ? 'review_request' : 'resume', message: uncertain ? '服务中断时存在未确认调用，请核对记录。' : '服务曾中断，可从已保存步骤恢复。', expiresAt: row.expiresAt }
@@ -139,6 +156,8 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     async record(info: unknown) { const current = context.getStore(); if (current) await jobs.updateOne({ _id: current.task.jobId }, { $push: { providerCalls: info } } as any) },
     async resume(jobId: string, userId: string, enqueue: (task: any) => Promise<any>) {
       await reconcile(jobId); await service.accepting(userId)
+      const existing = await executions.findOne({ _id: jobId, userId })
+      if (existing && existing.version !== version) throw new TokenDanceError(409, '原任务使用旧执行版本，成功步骤已保留；请核对原调用记录后处理，不能自动重放。', 'review_request', 0, true)
       const pending = await executions.findOne({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true })
       const retryAt = pending?.recovery?.retryAt?.getTime() || 0
       if (retryAt > now()) throw new TokenDanceError(429, '等待时间尚未结束，请稍后恢复原任务。', pending.recovery.action === 'retry_request' ? 'retry_request' : 'rate_limit', Math.ceil((retryAt - now()) / 1000))

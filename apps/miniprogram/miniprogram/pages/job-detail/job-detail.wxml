@@ -64,7 +64,9 @@
       <view class="detail-method" wx:if="{{job.negative_prompt}}"><view class="record-asset-title">负向提示词</view><view class="detail-method-text">{{job.negative_prompt}}</view></view>
       <view class="detail-method" wx:if="{{job.routing_mode}}"><view class="record-asset-title">模型路由</view><view class="detail-method-text">{{job.routing_mode}} · {{job.model_routes.main.accessProvider}}/{{job.model_routes.main.modelId}} · {{job.model_routes.image.accessProvider}}/{{job.model_routes.image.modelId}} · {{job.model_routes.vision.accessProvider}}/{{job.model_routes.vision.modelId}}</view></view>
 
+      <view wx:if="{{job.referenceSelection}}" class="section-note">参考图实际采用 {{job.referenceSelection.selectedCount}} 张；{{job.referenceSelection.mode === 'images' ? '本阶段合计提交 ' + job.referenceSelection.imageCount + ' 张图片' : '本阶段仅使用参考文字'}}。</view>
       <view class="job-record-error" wx:if="{{job.error}}">{{job.error}}</view>
+      <view class="job-record-error" wx:if="{{job.failure.billingMessage}}">{{job.failure.billingMessage}}</view>
 <view wx:if="{{job.providerCalls.length}}" class="section"><view class="record-asset-title">模型调用记录</view><view wx:for="{{job.providerCalls}}" wx:key="index"><view>{{item.requestedModel}} → {{item.actualModel || '未返回实际型号'}}</view><view>请求编号：{{item.requestId || '未返回'}}；供应商：{{item.supplier || '未返回'}}</view></view></view>
 <view wx:if="{{job.recovery && job.status === 'failed'}}" class="section"><view>{{job.recovery.message}}</view><view wx:if="{{error}}" class="error-box">{{error}}</view><button bindtap="openTokenDance">连接与充值</button><button wx:if="{{job.recovery.canResume}}" disabled="{{retrySeconds > 0}}" bindtap="resumeJob">{{retrySeconds > 0 ? '等待 ' + retrySeconds + ' 秒后继续' : '从已保存步骤继续'}}</button></view>
 
