@@ -1,0 +1,373 @@
+{
+  "verifiedAt": "2026-09-16T19:24:42.550938+00:00",
+  "runtime": {
+    "expected_control_sha": "f5e6e672fce66c2137c129546f6b5907dbc35da1",
+    "expected_deployed_sha": "f5e6e672fce66c2137c129546f6b5907dbc35da1",
+    "expected_core_digest": "ae71836eba4b2349a809590bdd4fabbed88b226f6bb14005e3b3a912f0a1c055",
+    "expected_worker_digest": "5a5c09440edbc023658b4b69c7a9b566f790136052ba38edb0f506bafc5d1131",
+    "baseline": {
+      "releaseId": "bench-scientific-v2-release-7974a66644841271bff2",
+      "releaseHash": "7974a66644841271bff21e02e355cc77d48883d5d9bec83d10d64cd32da97e8a",
+      "batchId": "scientific-v2-f0937d147e944fb8d9c0",
+      "manifestHash": "f0937d147e944fb8d9c03ffabc0a31f753ebf6f4e16c3919fac6ac2797181db0"
+    },
+    "modelCount": 47,
+    "providerCalls": 0,
+    "worker": {
+      "enabled": false,
+      "concurrency": 1
+    }
+  },
+  "costs": {
+    "status": "verified",
+    "releaseHash": "7974a66644841271bff21e02e355cc77d48883d5d9bec83d10d64cd32da97e8a",
+    "modelCount": 47,
+    "preservedModels": 42,
+    "replacedModelId": "codex:gpt-image-2",
+    "caseCount": 423,
+    "feeBasisCounts": {
+      "budget_estimate": 357,
+      "invoice_reconciled": 63,
+      "not_called": 3
+    },
+    "newModels": [
+      {
+        "model": "openai/gpt-image-2",
+        "rank": 8,
+        "score": 8.90813492063492,
+        "cases": 9,
+        "successfulCases": 9,
+        "failedCases": [],
+        "unitUsd": "0.128",
+        "billedUsd": "1.152",
+        "profileId": "openai/gpt-image-2:codex_scientific_v2:codex-scientific-2026-09-v1"
+      },
+      {
+        "model": "google/nano-banana-pro",
+        "rank": 10,
+        "score": 8.710912698412697,
+        "cases": 9,
+        "successfulCases": 9,
+        "failedCases": [],
+        "unitUsd": "0.15",
+        "billedUsd": "1.35",
+        "profileId": "google/nano-banana-pro:codex_scientific_v2:codex-scientific-2026-09-v1"
+      },
+      {
+        "model": "google/nano-banana-2",
+        "rank": 18,
+        "score": 7.527777777777777,
+        "cases": 9,
+        "successfulCases": 9,
+        "failedCases": [],
+        "unitUsd": "0.101",
+        "billedUsd": "0.909",
+        "profileId": "google/nano-banana-2:codex_scientific_v2:codex-scientific-2026-09-v1"
+      },
+      {
+        "model": "google/nano-banana-2-lite",
+        "rank": 21,
+        "score": 7.069047619047619,
+        "cases": 9,
+        "successfulCases": 9,
+        "failedCases": [],
+        "unitUsd": "0.034",
+        "billedUsd": "0.306",
+        "profileId": "google/nano-banana-2-lite:codex_scientific_v2:codex-scientific-2026-09-v1"
+      },
+      {
+        "model": "google/nano-banana",
+        "rank": 35,
+        "score": 4.798214285714286,
+        "cases": 9,
+        "successfulCases": 8,
+        "failedCases": [
+          "scientific-gen-05-math-bilingual"
+        ],
+        "unitUsd": "0.039",
+        "billedUsd": "0.312",
+        "profileId": "google/nano-banana:codex_scientific_v2:codex-scientific-2026-09-v1"
+      }
+    ],
+    "newBilledTotalUsd": "4.029",
+    "reviewModel": "gpt-6-astra",
+    "reviewReasoningEffort": "xhigh"
+  },
+  "browser": {
+    "status": "verified_in_authenticated_Chrome_DOM",
+    "verifiedAt": "2026-09-16T19:21:27.060887+00:00",
+    "leaderboardModelCount": 47,
+    "models": [
+      {
+        "model": "openai/gpt-image-2",
+        "totalUsd": "1.152",
+        "caseCount": 9,
+        "billedCaseCount": 9,
+        "cases": [
+          {
+            "caseId": "scientific-gen-01-method-flow",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-02-biological-pathway",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-03-model-architecture",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-04-quantitative-panels",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-05-math-bilingual",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-06-controls-negative-constraints",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-01-text-label",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-02-node-arrow",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-03-color-legend-callout",
+            "displayedUsd": "0.128",
+            "basisLabel": "账单已核对"
+          }
+        ]
+      },
+      {
+        "model": "google/nano-banana-2-lite",
+        "totalUsd": "0.306",
+        "caseCount": 9,
+        "billedCaseCount": 9,
+        "cases": [
+          {
+            "caseId": "scientific-gen-01-method-flow",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-02-biological-pathway",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-03-model-architecture",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-04-quantitative-panels",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-05-math-bilingual",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-06-controls-negative-constraints",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-01-text-label",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-02-node-arrow",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-03-color-legend-callout",
+            "displayedUsd": "0.034",
+            "basisLabel": "账单已核对"
+          }
+        ]
+      },
+      {
+        "model": "google/nano-banana-2",
+        "totalUsd": "0.909",
+        "caseCount": 9,
+        "billedCaseCount": 9,
+        "cases": [
+          {
+            "caseId": "scientific-gen-01-method-flow",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-02-biological-pathway",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-03-model-architecture",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-04-quantitative-panels",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-05-math-bilingual",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-06-controls-negative-constraints",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-01-text-label",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-02-node-arrow",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-03-color-legend-callout",
+            "displayedUsd": "0.101",
+            "basisLabel": "账单已核对"
+          }
+        ]
+      },
+      {
+        "model": "google/nano-banana-pro",
+        "totalUsd": "1.35",
+        "caseCount": 9,
+        "billedCaseCount": 9,
+        "cases": [
+          {
+            "caseId": "scientific-gen-01-method-flow",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-02-biological-pathway",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-03-model-architecture",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-04-quantitative-panels",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-05-math-bilingual",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-06-controls-negative-constraints",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-01-text-label",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-02-node-arrow",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-03-color-legend-callout",
+            "displayedUsd": "0.15",
+            "basisLabel": "账单已核对"
+          }
+        ]
+      },
+      {
+        "model": "google/nano-banana",
+        "totalUsd": "0.312",
+        "caseCount": 9,
+        "billedCaseCount": 9,
+        "cases": [
+          {
+            "caseId": "scientific-gen-01-method-flow",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-02-biological-pathway",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-03-model-architecture",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-04-quantitative-panels",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-05-math-bilingual",
+            "displayedUsd": "0.00",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-gen-06-controls-negative-constraints",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-01-text-label",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-02-node-arrow",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          },
+          {
+            "caseId": "scientific-edit-03-color-legend-callout",
+            "displayedUsd": "0.039",
+            "basisLabel": "账单已核对"
+          }
+        ]
+      }
+    ],
+    "failedCaseDisplaysZeroScoreAndNoImage": true,
+    "visualLayoutInspected": true,
+    "privateAccountContentExcluded": true
+  },
+  "maintenanceAbsent": true,
+  "verificationNote": "Initial three-way parallel public profile inspection returned 504 for some historical profiles; complete sequential verification passed without changing evidence validation or provider calls."
+}
