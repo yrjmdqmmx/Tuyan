@@ -319,6 +319,7 @@ test('real Gateway/Core compose login, authorization, generation, balance failur
     const before = await runtime.post({ action: 'getJob', jobId: submission.data.jobId })
     assert.equal(before.data.job.status, 'failed', JSON.stringify(before.data))
     assert.equal(before.data.job.recovery.action, 'top_up_balance')
+    const completedStageIds = before.data.job.stages.map((stage: any) => stage.id)
     const plannerCalls = runtime.tokenDanceCalls.filter((call: any) => call.url.endsWith('/chat/completions')).length
     assert.ok(plannerCalls > 0)
     for (const call of runtime.tokenDanceCalls.filter((call: any) => call.url.includes('/gateway/'))) assert.equal(call.options.headers.Authorization, 'Bearer fixture-tokendance-user-key')
@@ -334,6 +335,9 @@ test('real Gateway/Core compose login, authorization, generation, balance failur
     await runtime.legacy.drainJobAdmission()
     const after = await runtime.post({ action: 'getJob', jobId: submission.data.jobId })
     assert.equal(after.data.job.status, 'succeeded', JSON.stringify(after.data))
+    assert.ok(completedStageIds.length > 0)
+    assert.ok(completedStageIds.every((id: string) => after.data.job.stages.some((stage: any) => stage.id === id)))
+    assert.equal(new Set(after.data.job.stages.map((stage: any) => stage.id)).size, after.data.job.stages.length)
     assert.equal(runtime.tokenDanceCalls.filter((call: any) => call.url.endsWith('/chat/completions')).length, plannerCalls)
     assert.ok(after.data.job.providerCalls.length >= 2)
     assert.equal(JSON.stringify(after).includes('fixture-tokendance-user-key'), false)

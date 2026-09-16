@@ -540,7 +540,7 @@ export function createJobAdmissionController(
   config: JobAdmissionConfig,
   dependencies: {
     execute(task: AdmittedJobTask): Promise<void>
-    markFailed(jobId: string, error: string, referenceValidation?: boolean): Promise<void>
+    markFailed(jobId: string, error: string, referenceValidation?: boolean, failure?: any): Promise<void>
     logError(message: string): void
   },
 ) {
@@ -609,7 +609,7 @@ export function createJobAdmissionController(
           Object.values(task.routeSecrets || {}).filter(Boolean) as string[],
         )
         try {
-          await dependencies.markFailed(task.jobId, safeTaskError, error instanceof ReferenceUploadValidationError)
+          await dependencies.markFailed(task.jobId, safeTaskError, error instanceof ReferenceUploadValidationError, { ...error, name: error?.name, message: safeTaskError, status: error?.status, failureStage: error?.failureStage })
         } catch (persistenceError: any) {
           try {
             dependencies.logError(
@@ -967,6 +967,9 @@ type VisionImageInput = {
   mimeType: string
   url: string
   objectKey?: string
+  size?: number
+  width?: number
+  height?: number
 }
 
 type TextRequestPolicy = {
@@ -2080,6 +2083,85 @@ staticModelRegistry["fireworks"] = {"accessKind":"aggregator","routeContractVers
 staticModelRegistry["fal"] = {"accessKind":"aggregator","routeContractVersion":1,"accountCatalogRequired":false,"defaults":{"main":"","image":"fal-ai/flux-2-pro","vision":""},"models":[]}
 staticModelRegistry["replicate"] = {"accessKind":"aggregator","routeContractVersion":1,"accountCatalogRequired":false,"defaults":{"main":"","image":"black-forest-labs/flux-2-pro","vision":""},"models":[]}
 staticModelRegistry["tokendance"] = {"accessKind":"aggregator","routeContractVersion":1,"accountCatalogRequired":false,"defaults":{"main":"qwen3.8-flash","image":"seedream-5.0-lite","vision":"qwen3.8-flash"},"models":[]}
+// Public failures contain controlled copy, never upstream response bodies.
+export type RequestState = 'not_sent' | 'rejected' | 'unknown'
+export const JOB_FAILURE_STAGES = {
+  reference_selection: '参考图检索', reference_preparation: '参考图准备', reference_analysis: '参考图识别',
+  planning: '图示规划', styling: '风格设计', rendering: '图像生成', review: '图示评审', execution: '任务执行',
+} as const
+export async function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> {
+  try { return await operation() } catch (error: any) {
+    if (error && typeof error === 'object' && !error.failureStage) error.failureStage = stage
+    throw error
+  }
+}
+export function isLocalInputFailure(error: any) {
+  return !error?.uncertain && (error?.name === 'ReferenceUploadValidationError'
+    || error?.name === 'TokenDanceError' && error?.requestState === 'not_sent' && error?.status === 400)
+}
+export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknownCall = false) {
+  const status = Number(error?.status || error?.statusCode || 0)
+  const local = isLocalInputFailure(error)
+  const action = error?.recoveryAction
+  const category = local || status === 400 || status === 413 || status === 422 ? 'input'
+    : action === 'top_up_balance' || status === 402 ? 'balance'
+    : action === 'api_key_quota' ? 'quota'
+    : status === 401 || status === 403 || action === 'reauthorize_api_key' ? 'permission'
+    : status === 429 || action === 'rate_limit' ? 'rate_limit'
+    : status === 408 || status === 504 || error?.name === 'AbortError' || error?.name === 'TimeoutError' || /timeout|timed out|ETIMEDOUT|超时/i.test(String(error?.message || '')) ? 'timeout'
+    : /fetch failed|ECONN|ENOTFOUND|network|无法连接|连接.*(?:失败|中断)/i.test(String(error?.message || '')) ? 'network' : 'provider'
+  const copy = {
+    input: ['图片或文字输入不符合当前渠道、模型的要求。', '请减少图片、裁剪过大的图片或缩短文字，也可更换支持该输入的模型。'],
+    balance: ['模型渠道余额不足。', '请补充该渠道余额后恢复原任务，已成功的步骤会复用。'],
+    quota: ['当前授权的调用额度已用尽。', '请调整授权额度或重新授权；充值钱包不一定改变授权额度。'],
+    permission: ['当前账号或授权无权使用所选模型。', '请检查渠道授权、模型权限及地区限制，必要时重新授权。'],
+    rate_limit: ['模型渠道请求频率受限。', '请按等待时间稍后恢复原任务，避免连续提交。'],
+    timeout: ['等待模型响应超时。', '请先核对渠道调用记录；结果未知时不要重复提交，以免重复扣费。'],
+    network: ['连接模型渠道失败或连接中断。', '请检查网络或渠道状态；请求结果未知时先核对调用记录。'],
+    provider: ['模型渠道返回异常或未提供完整结果。', '请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。'],
+  }[category]
+  const stage = Object.hasOwn(JOB_FAILURE_STAGES, error?.failureStage) ? error.failureStage as keyof typeof JOB_FAILURE_STAGES : 'execution'
+  const requestState: RequestState = hasUnknownCall || error?.uncertain ? 'unknown'
+    : local || error?.requestState === 'not_sent' ? 'not_sent'
+    : error?.requestState === 'rejected' || status >= 400 && status < 500 ? 'rejected' : 'unknown'
+  const reason = action === 'retry_request' && requestState === 'not_sent' ? '模型目录暂时无法读取，尚未发起本步骤的模型请求。' : local && /[\u4e00-\u9fff]/u.test(error?.message || '')
+    ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 500) : copy[0]
+  const billingStatus = requestState === 'unknown' ? 'unknown' : completedCalls > 0 ? 'prior_calls' : requestState === 'not_sent' ? 'not_called' : 'unconfirmed'
+  const billingMessage = billingStatus === 'not_called' ? '失败步骤在模型请求发出前停止；该步骤未发起模型调用。此前费用请结合调用记录核对。'
+    : billingStatus === 'prior_calls' ? '此前已有成功调用，已保存成功步骤；费用以渠道账单为准。'
+    : billingStatus === 'unknown' ? '请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。'
+    : '渠道已拒绝本次请求；实际费用以渠道账单为准。'
+  return { stage, stageLabel: JOB_FAILURE_STAGES[stage], category, code: 'MODEL_' + category.toUpperCase(),
+    reason, suggestion: copy[1], requestState, billingStatus, billingMessage,
+    message: `${JOB_FAILURE_STAGES[stage]}失败：${reason} ${copy[1]}` }
+}
+
+// Selection is relevance driven. Limits are ceilings, never target counts.
+export function distinctReferenceCandidates<T extends { id: string; imageObjectKey?: string; imageUrl?: string; title?: string; summary?: string }>(items: T[]): T[] {
+  const ids = new Set<string>(), images = new Set<string>(), descriptions = new Set<string>()
+  return items.filter(item => {
+    const image = item.imageObjectKey || String(item.imageUrl || '').split('?')[0]
+    const description = `${item.title || ''} ${item.summary || ''}`.toLowerCase().replace(/[\s\p{P}]+/gu, '')
+    if (!item.id || ids.has(item.id) || image && images.has(image) || description && descriptions.has(description)) return false
+    ids.add(item.id); if (image) images.add(image); if (description) descriptions.add(description)
+    return true
+  })
+}
+export function relevantReferenceSelection<T extends { id: string; imageObjectKey?: string; imageUrl?: string; title?: string; summary?: string }>(answer: any, candidates: T[], limit: number): T[] {
+  if (!Array.isArray(answer?.selections)) return []
+  const byId = new Map(distinctReferenceCandidates(candidates).map(item => [item.id, item]))
+  const contributions = new Set<string>(), ids = new Set<string>()
+  return answer.selections.filter((row: any) => typeof row?.id === 'string' && byId.has(row.id)
+    && typeof row.relevance === 'number' && row.relevance >= 0.6 && row.relevance <= 1
+    && row.visualFit === true && typeof row.contribution === 'string' && row.contribution.trim())
+    .sort((a: any, b: any) => b.relevance - a.relevance)
+    .filter((row: any) => {
+      const contribution = row.contribution.toLowerCase().replace(/[\s\p{P}]+/gu, '')
+      if (ids.has(row.id) || contributions.has(contribution)) return false
+      ids.add(row.id); contributions.add(contribution); return true
+    }).slice(0, Math.max(0, limit)).map((row: any) => byId.get(row.id)!)
+}
+
 export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = [{"id":"bocha-web-search","roles":[],"protocols":["bocha:web-search"]},{"id":"deepseek-chat-v3-0324","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"deepseek-ocr-2","roles":[],"protocols":["openai:chat-completions"]},{"id":"deepseek-v3.2","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"deepseek-v4-flash","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4-flash-0731","roles":["main","optimize"],"protocols":["openai:chat-completions","openai:responses","anthropic:messages"]},{"id":"deepseek-v4-flash-vision-exp","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4-pro","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4-pro-0813","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4.1-flash","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"dots-3-note-preview","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-4.5-air","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-4.6v","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"glm-4.7","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"glm-5","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.1","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.2","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.3","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.3-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5v-turbo","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"glm-ocr","roles":[],"protocols":["zai:layout-parsing"]},{"id":"happyhorse-1.0-i2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.0-r2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.0-t2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.0-video-edit","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.1-i2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.1-r2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.1-t2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"hy3","roles":["main","optimize"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"hy3-preview","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"hy4-preview","roles":["main","optimize"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"kimi-k2.5","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"kimi-k2.6","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"kimi-k2.7-code","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"kimi-k3","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"kling-3.0","roles":[],"protocols":["kling:text2video","kling:image2video"]},{"id":"kling-3.0-omni","roles":[],"protocols":["kling:omni-video"]},{"id":"kling-3.0-turbo","roles":[],"protocols":["kling:text2video","kling:image2video"]},{"id":"ling-3.0-flash","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"longcat-2.0","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"mimo-v2.5","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"mimo-v2.5-pro","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"mimo-v2.5-tts","roles":[],"protocols":["openai:chat-completions"]},{"id":"mimo-v2.5-tts-voiceclone","roles":[],"protocols":["openai:chat-completions"]},{"id":"mimo-v2.5-tts-voicedesign","roles":[],"protocols":["openai:chat-completions"]},{"id":"minimax-h3","roles":[],"protocols":["minimax:video_generation_v2"]},{"id":"minimax-h3-max","roles":[],"protocols":["minimax:video_generation_v2"]},{"id":"minimax-m2.5","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"minimax-m2.7","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"minimax-m3","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"minimax-speech-2.8-hd","roles":[],"protocols":["minimax:t2a_v2","minimax:t2a_v2_ws","minimax:voice_clone"]},{"id":"minimax-speech-2.8-turbo","roles":[],"protocols":["minimax:t2a_v2","minimax:t2a_v2_ws","minimax:voice_clone"]},{"id":"qwen-text-embedding-v4","roles":[],"protocols":["openai:embeddings"]},{"id":"qwen3-30b-a3b-instruct-2507","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"qwen3-max","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"qwen3-vl-plus","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"qwen3.5-35b-a3b","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"qwen3.5-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"qwen3.5-plus","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"qwen3.6-max-preview","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"qwen3.6-plus","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"qwen3.7-max","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"qwen3.7-plus","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"qwen3.7-text-embedding","roles":[],"protocols":["openai:embeddings"]},{"id":"qwen3.8-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses","anthropic:messages"]},{"id":"qwen3.8-max","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"qwen3.8-max-0902","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-2.0-code","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-2.0-lite","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-2.0-mini","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-2.0-pro","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-2.1-pro","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-2.1-turbo","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-evolving","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-tts-2.0","roles":[],"protocols":["ark:tts","ark:tts_ws"]},{"id":"seedance-2.0","roles":[],"protocols":["seedance:generations"]},{"id":"seedance-2.0-fast","roles":[],"protocols":["seedance:generations"]},{"id":"seedance-2.0-mini","roles":[],"protocols":["seedance:generations"]},{"id":"seedance-2.5","roles":[],"protocols":["seedance:generations"]},{"id":"seedream-5.0-lite","roles":["image","refine"],"protocols":["ark:image-generations","openai:image-generations"]},{"id":"seedream-5.0-pro","roles":["image","refine"],"protocols":["ark:image-generations"]},{"id":"spark-x2.5-1.7b","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"spark-x2.5-4b","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"step-3.5-flash","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"step-3.7-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"unifuncs-s3","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-s3-pro","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-u3","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-u3-pro","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-web-reader","roles":[],"protocols":["unifuncs:web-reader"]},{"id":"unifuncs-web-search","roles":[],"protocols":["unifuncs:web-search"]},{"id":"wan3.0-video","roles":[],"protocols":["wan3:video-synthesis"]},{"id":"wan3.0-video-prime","roles":[],"protocols":["wan3:video-synthesis"]}]
 
 
@@ -2089,10 +2171,14 @@ export const TOKENDANCE_ACTIONS = ['tokenDanceStatus', 'tokenDanceAuthorize', 't
 export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'retry_request' | 'review_request'
 
 export class TokenDanceError extends Error {
-  constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false) {
+  constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false, public requestState: RequestState = 'unknown') {
     super(message)
     this.name = 'TokenDanceError'
   }
+}
+
+export function tokenDanceInputError(message: string) {
+  return new TokenDanceError(400, message, undefined, 0, false, 'not_sent')
 }
 
 export function tokenDanceFailure(status: number, action = '', retryAfter = '') {
@@ -2104,11 +2190,11 @@ export function tokenDanceFailure(status: number, action = '', retryAfter = '') 
   }
   const recovery = Object.hasOwn(messages, action) ? action as TokenDanceRecovery : status === 429 ? 'rate_limit' : status === 401 ? 'reauthorize_api_key' : undefined
   const seconds = /^\d+$/.test(retryAfter) ? Number(retryAfter) : Math.max(0, Math.ceil((Date.parse(retryAfter) - Date.now()) / 1000))
-  return new TokenDanceError(status, messages[recovery || ''] || `TokenDance 请求失败（HTTP ${status}）。`, recovery, Math.min(86400, Number.isFinite(seconds) ? seconds : 0), status >= 500)
+  return new TokenDanceError(status, messages[recovery || ''] || `TokenDance 请求失败（HTTP ${status}）。`, recovery, Math.min(86400, Number.isFinite(seconds) ? seconds : 0), status >= 500, status >= 500 ? 'unknown' : 'rejected')
 }
 
 export function tokenDanceAmount(value: unknown): number {
-  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 1 || value > 100000) throw new TokenDanceError(400, '充值金额必须为 1 至 100000 元的整数。')
+  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 1 || value > 100000) throw tokenDanceInputError('充值金额必须为 1 至 100000 元的整数。')
   return value
 }
 
@@ -2121,7 +2207,7 @@ export function tokenDanceBalance(value: any) {
 }
 
 export async function tokenDanceResponse(fetcher: typeof fetch, path: string, key: string, body?: unknown, signal?: AbortSignal): Promise<Response> {
-  if (!path.startsWith('/gateway/') && !path.startsWith('/portal/api/v1/')) throw new TokenDanceError(400, '不受支持的观猹 TokenDance 请求。')
+  if (!path.startsWith('/gateway/') && !path.startsWith('/portal/api/v1/')) throw tokenDanceInputError('不受支持的观猹 TokenDance 请求。')
   let response: Response
   try {
     response = await fetcher(TOKENDANCE_ORIGIN + path, {
@@ -2130,8 +2216,9 @@ export async function tokenDanceResponse(fetcher: typeof fetch, path: string, ke
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
       signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(600_000)]) : AbortSignal.timeout(600_000),
     })
-  } catch {
-    throw new TokenDanceError(502, body === undefined ? '观猹 TokenDance 暂时无法连接。' : '观猹 TokenDance 请求结果不确定，请先核对调用或订单记录，避免重复扣费。', body === undefined ? undefined : 'review_request', 0, body !== undefined)
+  } catch (error: any) {
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') throw new TokenDanceError(504, '等待观猹 TokenDance 响应超时，请先核对调用记录。', body === undefined ? undefined : 'review_request', 0, body !== undefined, body === undefined ? 'not_sent' : 'unknown')
+    throw new TokenDanceError(502, body === undefined ? '观猹 TokenDance 暂时无法连接。' : '观猹 TokenDance 连接失败或中断，请求结果不确定，请先核对调用或订单记录，避免重复扣费。', body === undefined ? undefined : 'review_request', 0, body !== undefined)
   }
   if (!response.ok) {
     // Never include the upstream body: providers may echo credentials or prompts.
@@ -2163,15 +2250,15 @@ export async function tokenDanceJson(response: Response, maxBytes = 2 * 1024 * 1
 
 export function tokenDanceModel(model: string, role: 'main' | 'vision' | 'image') {
   const entry = TOKENDANCE_MODELS.find(m => m.id === model)
-  if (!entry?.roles.includes(role)) throw new TokenDanceError(400, `TokenDance 型号 ${model} 不支持当前角色。`)
+  if (!entry?.roles.includes(role)) throw tokenDanceInputError(`TokenDance 型号 ${model} 不支持当前角色。`)
   return entry
 }
 
 export function tokenDanceChatBody(model: string, system: string, user: string, images: { url: string }[] = [], stream = true) {
   tokenDanceModel(model, images.length ? 'vision' : 'main')
-  // Three is Tuyan's reference limit, not a claimed upstream maximum.
-  if (images.length > 8) throw new TokenDanceError(400, '本次图像分析输入超过图研的 8 张组合上限。')
-  for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw new TokenDanceError(400, '观猹 TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
+  const limit = referenceSubmissionPolicy('tokendance', model).maxCount
+  if (images.length > limit) throw tokenDanceInputError(`当前模型最多接收 ${limit} 张图片，本次合计 ${images.length} 张（含上传和检索图片）。`)
+  for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw tokenDanceInputError('观猹 TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
   return { model, messages: [{ role: 'system', content: system }, { role: 'user', content: images.length ? [{ type: 'text', text: user }, ...images.map(image => ({ type: 'image_url', image_url: { url: image.url } }))] : user }], stream }
 }
 
@@ -2224,14 +2311,14 @@ export async function tokenDanceChat(fetcher: typeof fetch, model: string, key: 
 export function tokenDanceImageBody(model: string, prompt: string, size: string, images: string[] = []) {
   tokenDanceModel(model, 'image')
   const pro = model === 'seedream-5.0-pro'
-  if (images.length > (pro ? 10 : 14)) throw new TokenDanceError(400, 'Seedream 参考图数量超出该型号限制。')
+  if (images.length > (pro ? 10 : 14)) throw tokenDanceInputError('Seedream 参考图数量超出该型号限制。')
   const presets = pro ? ['1K', '1.5K', '2K'] : ['2K', '3K', '4K']
   if (!presets.includes(size)) {
-    if (!/^\d+x\d+$/.test(size)) throw new TokenDanceError(400, 'Seedream 尺寸格式无效。')
+    if (!/^\d+x\d+$/.test(size)) throw tokenDanceInputError('Seedream 尺寸格式无效。')
     const [w, h] = size.split('x').map(Number), pixels = w * h
-    if (w < 1 || h < 1 || Math.max(w / h, h / w) > 16 || pixels < (pro ? 921600 : 3686400) || pixels > (pro ? 4624220 : 16777216)) throw new TokenDanceError(400, 'Seedream 尺寸超出该型号边界。')
+    if (w < 1 || h < 1 || Math.max(w / h, h / w) > 16 || pixels < (pro ? 921600 : 3686400) || pixels > (pro ? 4624220 : 16777216)) throw tokenDanceInputError('Seedream 尺寸超出该型号边界。')
   }
-  if (!prompt.trim() || prompt.length > 20000) throw new TokenDanceError(400, 'Seedream 提示词为空或过长。')
+  if (!prompt.trim() || prompt.length > 20000) throw tokenDanceInputError('Seedream 提示词为空或过长。')
   return { model, prompt, size, response_format: 'b64_json', output_format: 'png', watermark: false, ...(pro ? {} : { sequential_image_generation: 'disabled', stream: false }), ...(images.length ? { image: images } : {}) }
 }
 
@@ -3110,7 +3197,7 @@ export async function resumeTokenDanceJob(task: any) {
   const reservation = jobAdmission.reserve(jobAdmissionPrincipal(task.body, { headers: {} } as any))
   if (!reservation.ok) throw new TokenDanceError(reservation.code, reservation.error)
   try {
-    await jobs.updateOne({ _id: task.jobId, userId: task.body.userId }, { $set: { status: 'queued', error: '', stages: [], updatedAt: new Date(), completedAt: null } })
+    await jobs.updateOne({ _id: task.jobId, userId: task.body.userId }, { $set: { status: 'queued', error: '', errorCode: '', failure: null, updatedAt: new Date(), completedAt: null } })
     jobAdmission.commit(reservation, task)
     return { code: 0, jobId: task.jobId }
   } catch (error) { jobAdmission.cancel(reservation); throw error }
@@ -3405,11 +3492,11 @@ async function assertTokenDanceLiveModel(model: string) {
   // This read-only preflight precedes paid transport. Its failure is safe to
   // retry; paid request timeouts must retain their uncertain outcome instead.
   const models = await tokenDanceLiveModels().catch(() => {
-    throw new TokenDanceError(503, '观猹 TokenDance 实时目录暂不可用，请稍后从已保存步骤继续。', 'retry_request', 5)
+    throw new TokenDanceError(503, '观猹 TokenDance 实时目录暂不可用，请稍后从已保存步骤继续。', 'retry_request', 5, false, 'not_sent')
   })
   const live = models.find((m: any) => m.id === model)
   const expected = model.startsWith('seedream-') ? 'ark:image-generations' : 'openai:chat-completions'
-  if (!live?.supported_protocols.includes(expected)) throw new TokenDanceError(400, '所选 TokenDance 型号已下架或协议发生变化，请刷新目录。')
+  if (!live?.supported_protocols.includes(expected)) throw tokenDanceInputError('所选 TokenDance 型号已下架或协议发生变化，请刷新目录。')
 }
 
 async function modelRegistry(body: ModelRegistryBody) {
@@ -4946,44 +5033,37 @@ async function runJob(
     { $set: { status: 'running', startedAt: new Date(), updatedAt: new Date() } },
   )
 
-  const retrievedReferences = await providerWorkflow.call(['reference-selection'], () => resolveRetrievedReferences(body, routeSecrets))
-  await jobs.updateOne(
-    { _id: jobId },
-    {
-      $set: {
-        retrievedReferenceIds: retrievedReferences.map((item) => item.id),
-        retrievedReferences,
-        updatedAt: new Date(),
-      },
-    },
-  )
-  if (retrievedReferences.length) {
-    await appendLog(jobId, `Retrieved ${retrievedReferences.length} PaperBanana reference example${retrievedReferences.length > 1 ? 's' : ''}`)
-  }
-
+  // Process only images actually consumed in each stage. Uploads analysed by a
+  // separate vision model consume that stage's budget, not the planner's.
   let referenceAnalysis = ''
   let uploadedVisionInputs: VisionImageInput[] = []
-
   if ((body.referenceImages || []).length) {
-    if (body.referenceImageModeUsed === 'main_model') {
-      await appendLog(jobId, 'Reference mode: main model direct')
-      if (body.pipelineMode === 'vanilla') {
-        referenceAnalysis = await analyzeReferenceImages(jobId, body, routeSecrets, 'main')
-      } else {
-        uploadedVisionInputs = await providerWorkflow.call(['uploaded-reference-inputs'], () => buildVisionImageInputs(body.referenceImages || [], jobId, body.modelRoutes.main))
-      }
+    if (body.referenceImageModeUsed === 'main_model' && body.pipelineMode !== 'vanilla') {
+      uploadedVisionInputs = await atJobStage('reference_preparation', () => providerWorkflow.call(['uploaded-reference-inputs'], async () => {
+        const inputs = await buildVisionImageInputs(body.referenceImages || [], jobId, body.modelRoutes.main)
+        return Promise.all(inputs.map(async image => ({ ...image, url: `data:${image.mimeType};base64,${await visionImageBase64(image, 'uploaded reference')}` })))
+      }))
     } else {
-      await appendLog(jobId, 'Reference mode: independent vision model')
-      referenceAnalysis = await analyzeReferenceImages(jobId, body, routeSecrets)
+      referenceAnalysis = await atJobStage('reference_analysis', () => providerWorkflow.call(['uploaded-reference-analysis'], () => analyzeReferenceImages(jobId, body, routeSecrets, body.referenceImageModeUsed === 'main_model' ? 'main' : 'vision')))
     }
   }
-
+  const proposed = await atJobStage('reference_selection', () => providerWorkflow.call(['reference-selection'], () => resolveRetrievedReferences(body, routeSecrets)))
+  // Freeze prepared bytes so expiring URLs/library edits cannot change paid
+  // request descriptors during recovery. Revalidate the cached inputs below.
+  const prepared = await atJobStage('reference_preparation', () => providerWorkflow.call(['retrieved-reference-inputs'], () => preparePlanningReferences(body, proposed, uploadedVisionInputs)))
+  const retrievedReferences = prepared.references
+  const referenceVisionInputs = [...uploadedVisionInputs, ...prepared.images]
+  await atJobStage('reference_preparation', async () => assertVisionInputBudget(body.modelRoutes.main.accessProvider, body.modelRoutes.main.modelId, referenceVisionInputs))
   const retrievalContext = buildRetrievalContext(retrievedReferences)
-  const mainRoute = body.modelRoutes.main
-  const mainAcceptsRetrievedImages = mainRoute.accessProvider !== 'tokendance' || TOKENDANCE_MODELS.some(model => model.id === mainRoute.modelId && model.roles.includes('vision'))
-  const retrievedVisionInputs = mainAcceptsRetrievedImages ? await providerWorkflow.call(['retrieved-reference-inputs'], () => buildRetrievedVisionInputs(retrievedReferences)) : []
-  if (retrievedReferences.length && !mainAcceptsRetrievedImages) await appendLog(jobId, '当前 TokenDance 主模型仅支持文本，检索参考以文字信息传入规划器。')
-  const referenceVisionInputs = [...uploadedVisionInputs, ...retrievedVisionInputs]
+  await jobs.updateOne({ _id: jobId }, { $set: {
+    retrievedReferenceIds: retrievedReferences.map(item => item.id), retrievedReferences,
+    referenceSelection: { proposedCount: proposed.length, selectedCount: retrievedReferences.length,
+      skippedCount: proposed.length - retrievedReferences.length, imageCount: referenceVisionInputs.length,
+      mode: prepared.visual ? 'images' : 'text', limit: prepared.limit, omitted: prepared.omitted,
+      policyStatus: referenceSubmissionPolicy(body.modelRoutes.main.accessProvider, body.modelRoutes.main.modelId).status }, updatedAt: new Date(),
+  } })
+  if (body.retrievalSetting !== 'none') await appendLog(jobId,
+    `参考图选择：采用 ${retrievedReferences.length} 张，排除重复 ${prepared.omitted.duplicate} 张、无法使用 ${prepared.omitted.unavailable} 张、超出预算 ${prepared.omitted.budget} 张；${prepared.visual ? `规划请求合计 ${referenceVisionInputs.length} 张图片，上限 ${prepared.limit} 张` : '当前阶段仅使用参考文字，不发送检索图片'}。`)
   const results: any[] = []
   const candidateIndexes = Array.from({ length: numCandidates }, (_, index) => index)
   // A recoverable paid workflow stops before starting the next candidate.
@@ -4991,9 +5071,9 @@ async function runJob(
   await runWithConcurrency(candidateIndexes, concurrency, async (i) => {
     const candidateNo = i + 1
     await appendLog(jobId, `Candidate ${candidateNo}: planning`)
-    const result = await providerWorkflow.scope(`candidate-${i}`, () => runCandidate(jobId, i, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceVisionInputs, async (message) => {
+    const result = await atJobStage('planning', () => providerWorkflow.scope(`candidate-${i}`, () => runCandidate(jobId, i, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceVisionInputs, async (message) => {
       await appendLog(jobId, `Candidate ${candidateNo}: ${message}`)
-    }))
+    })))
     await appendLog(jobId, `Candidate ${candidateNo}: saving result`)
     const saved = await saveResult(jobId, i, result.content, result.mimeType, result.encoding)
     results[i] = {
@@ -5072,7 +5152,7 @@ async function runCandidate(
     })
     await logStage('rendering PNG')
     const vanillaRenderStartedAt = new Date()
-    const base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region)
+    const base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region))
     const stageImage = await saveStageImage(jobId, candidateId, 'vanilla-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId,
@@ -5092,7 +5172,7 @@ async function runCandidate(
   let imagePrompt = diagramPromptFromDescription(description, body.negativePrompt)
   await logStage('rendering PNG')
   const initialRenderStartedAt = new Date()
-  let base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region)
+  let base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region))
   let stageImage = await saveStageImage(jobId, candidateId, 'render-0', base64, 'image/png', 'base64')
   await recordStage(jobId, {
     candidateId,
@@ -5113,7 +5193,7 @@ async function runCandidate(
     await logStage(`critic round ${round}`)
     const criticStartedAt = new Date()
     const { critique, error: criticFailure } = await runCriticWithImageFetchRetry(
-      () => critiqueRenderedDiagram(body, routeSecrets, description, base64, referenceAnalysis, retrievalContext),
+      () => atJobStage('review', () => critiqueRenderedDiagram(body, routeSecrets, description, base64, referenceAnalysis, retrievalContext)),
       routeSecrets,
       logStage,
       `critic round ${round}`,
@@ -5157,7 +5237,7 @@ async function runCandidate(
     await logStage(`rerender round ${round}`)
     const rerenderStartedAt = new Date()
     try {
-      base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region)
+      base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region))
       stageImage = await saveStageImage(jobId, candidateId, `render-${round}`, base64, 'image/png', 'base64')
       await recordStage(jobId, {
         candidateId,
@@ -5205,7 +5285,8 @@ async function runCandidate(
 
 function isRetryableCriticImageFetchError(error: any) {
   const message = error?.message || String(error)
-  return /(?:download|fetch).*(?:image|multimodal|file).*(?:timed?\s*out|timeout)/i.test(message)
+  return !error?.uncertain && [400, 422].includes(Number(error?.status))
+    && /(?:download|fetch).*(?:image|multimodal|file).*(?:timed?\s*out|timeout)/i.test(message)
 }
 
 async function runCriticWithImageFetchRetry(
@@ -5428,10 +5509,10 @@ async function enhanceCandidateToResolution(
         'Upscale and sharpen this academic diagram; preserve ALL content, text, layout and colors exactly — only increase resolution and crispness.',
         targetSize,
       ), body.negativePrompt)
-      upscaled = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', 'data:image/png;base64,' + baseBase64, targetSize, true, imageRoute.region)
+      upscaled = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', 'data:image/png;base64,' + baseBase64, targetSize, true, imageRoute.region))
     } else {
       // 无图生图能力（bailian）：用最终描述以更大的安全尺寸重渲染一次。
-      upscaled = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(baseDescription, body.negativePrompt), body.aspectRatio || '16:9', '', targetSize, true, imageRoute.region)
+      upscaled = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(baseDescription, body.negativePrompt), body.aspectRatio || '16:9', '', targetSize, true, imageRoute.region))
     }
     if (!upscaled) throw new Error('enhance pass returned no image data')
     const stageImage = await saveStageImage(jobId, candidateId, `enhance-${targetSize}`, upscaled, 'image/png', 'base64')
@@ -5478,7 +5559,7 @@ async function buildPlotDescription(
   const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
-  const planner = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotPlannerSystemPrompt(), plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region })
+  const planner = await atJobStage('planning', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotPlannerSystemPrompt(), plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region }))
   await recordStage(jobId, {
     candidateId,
     type: 'planner',
@@ -5492,7 +5573,7 @@ async function buildPlotDescription(
 
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
-    description = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotStylistSystemPrompt(), plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region })
+    description = await atJobStage('styling', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotStylistSystemPrompt(), plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region }))
     await recordStage(jobId, {
       candidateId,
       type: 'stylist',
@@ -5509,7 +5590,7 @@ async function buildPlotDescription(
 // Turn a plot description into self-contained matplotlib code (visualizer).
 async function generatePlotCode(body: CreateExecutionBody, routeSecrets: RouteSecrets, description: string) {
   const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
-  const raw = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotVisualizerSystemPrompt(), plotVisualizerUserPrompt(description, body.negativePrompt), [], { region: mainRoute.region })
+  const raw = await atJobStage('rendering', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotVisualizerSystemPrompt(), plotVisualizerUserPrompt(description, body.negativePrompt), [], { region: mainRoute.region }))
   return extractPythonCode(raw)
 }
 
@@ -5643,7 +5724,7 @@ async function buildVisualDescription(
   const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
-  const planner = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plannerSystemPrompt(), plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region })
+  const planner = await atJobStage('planning', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plannerSystemPrompt(), plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region }))
   await recordStage(jobId, {
     candidateId,
     type: 'planner',
@@ -5657,7 +5738,7 @@ async function buildVisualDescription(
 
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
-    description = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, stylistSystemPrompt(), stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region })
+    description = await atJobStage('styling', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, stylistSystemPrompt(), stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region }))
     await recordStage(jobId, {
       candidateId,
       type: 'stylist',
@@ -5672,7 +5753,7 @@ async function buildVisualDescription(
 
   for (let round = 1; round <= textCriticRounds; round += 1) {
     const criticStartedAt = new Date()
-    const critique = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, criticSystemPrompt(), criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [], { region: mainRoute.region })
+    const critique = await atJobStage('review', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, criticSystemPrompt(), criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [], { region: mainRoute.region }))
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
@@ -5716,7 +5797,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
     const editPrompt = refineEditPrompt(body.editInstruction, body.imageSize || '2K')
     description = editPrompt
     const renderStartedAt = new Date()
-    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K', true, imageRoute.region)
+    base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K', true, imageRoute.region))
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -5739,7 +5820,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
     // chat models). Prefer the explicit vision model, then the main chat model.
     // For bailian the existing toBailianImageUrl + isBailianImageContentError
     // fallback to qwen-vl in callTextModel handles the image read.
-    description = await callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, refineSystemPrompt(), refineUserPrompt(body.editInstruction, body.imageSize || '2K'), [sourceImage], { region: visionRoute.region })
+    description = await atJobStage('reference_analysis', () => callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, refineSystemPrompt(), refineUserPrompt(body.editInstruction, body.imageSize || '2K'), [sourceImage], { region: visionRoute.region }))
     await recordStage(jobId, {
       candidateId: 0,
       type: 'planner',
@@ -5751,7 +5832,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
 
     await appendLog(jobId, 'Refine: rendering edited image')
     const renderStartedAt = new Date()
-    base64 = await callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K', true, imageRoute.region)
+    base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K', true, imageRoute.region))
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -5786,43 +5867,32 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
   )
 }
 
+async function planningReferenceBudget(body: CreateExecutionBody) {
+  const route = body.modelRoutes?.main || { accessProvider: body.provider, modelId: body.mainModelName }
+  const policy = referenceSubmissionPolicy(route.accessProvider, route.modelId)
+  const capability = route.accessProvider && route.modelId ? await referenceModelCapability(route.accessProvider, route.modelId) : { status: 'unknown' }
+  const visual = body.pipelineMode !== 'vanilla' && capability.status === 'supported'
+  const uploads = body.referenceImageModeUsed === 'main_model' && visual ? (body.referenceImages || []).length : 0
+  return { route, policy, visual, limit: visual ? Math.max(0, Math.min(maxReferenceImages, policy.maxCount) - uploads) : 8 }
+}
+
 export async function resolveRetrievedReferences(body: CreateExecutionBody, secrets: RouteSecrets | string): Promise<RetrievedReference[]> {
   const setting = normalizeRetrievalSetting(body.retrievalSetting)
   if (setting === 'none') return []
-
-  if (setting === 'manual') {
-    return body.prevalidatedManualReferences
-      || resolveManualRetrievedReferences(body.manualReferenceIds || [])
-  }
-
+  if (setting === 'manual') return body.prevalidatedManualReferences || resolveManualRetrievedReferences(body.manualReferenceIds || [])
+  const budget = await planningReferenceBudget(body)
+  if (!budget.limit) return []
   const taskName = normalizeTaskName(body.taskName)
-  const library = await loadReferenceLibrary(taskName, { limit: 306 })
+  const library = distinctReferenceCandidates(await loadReferenceLibrary(taskName, { limit: 306 }))
   if (!library.length) return []
-
-  if (setting === 'random') {
-    return normalizeSelectedReferenceRows(shuffle(library).slice(0, 10))
-  }
-
+  if (setting === 'random') return normalizeSelectedReferenceRows(shuffle(library).slice(0, budget.limit))
   const routeSecrets: RouteSecrets = typeof secrets === 'string' ? { [body.provider]: secrets } : secrets
-  const selectedIds = await autoSelectReferenceIds(body, routeSecrets, library)
-  const selected = selectedIds
-    .map((id) => library.find((item) => item.id === id))
-    .filter(Boolean) as RetrievedReference[]
-  // On an empty/garbled auto result, return no references rather than dumping
-  // the entire library (which would flood the prompt with irrelevant context).
-  return normalizeSelectedReferenceRows(selected.slice(0, 10))
-}
-
-async function autoSelectReferenceIds(body: CreateExecutionBody, routeSecrets: RouteSecrets, library: RetrievedReference[]) {
   const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
-  const candidates = library.slice(0, 200).map((item) => ({
-    id: item.id,
-    title: item.title,
-    summary: item.summary.slice(0, 1500),
-  }))
-  const raw = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, retrievalSystemPrompt(), retrievalUserPrompt(body.methodContent, body.caption, candidates), [], { region: mainRoute.region })
-  const ids = parseReferenceIds(raw)
-  return ids.filter((id: string) => library.some((item: RetrievedReference) => item.id === id)).slice(0, 10)
+  const candidates = library.slice(0, 200).map(item => ({ id: item.id, title: item.title, summary: item.summary.slice(0, 1500),
+    visualCategory: item.visualCategory, researchDomain: item.researchDomain, keywords: item.keywords }))
+  const raw = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey,
+    retrievalSystemPrompt(budget.limit), retrievalUserPrompt(body.methodContent, body.caption, candidates, taskName), [], { region: mainRoute.region })
+  return normalizeSelectedReferenceRows(relevantReferenceSelection(parseJsonObject(raw), library, budget.limit))
 }
 
 async function loadReferenceLibrary(taskName: TaskName, options: { limit: number }): Promise<RetrievedReference[]> {
@@ -5845,14 +5915,14 @@ async function normalizeSelectedReferenceRows(items: RetrievedReference[]): Prom
 
 export async function resolveManualRetrievedReferences(requestedIds: string[]): Promise<RetrievedReference[]> {
   if (!Array.isArray(requestedIds) || !requestedIds.length) {
-    throw referenceSelectionError('Select at least one reference image.', 400, 'REFERENCE_SELECTION_REQUIRED')
+    throw referenceSelectionError('请选择至少一张候选参考图，或切换为不检索。', 400, 'REFERENCE_SELECTION_REQUIRED')
   }
   if (requestedIds.length > 10) {
-    throw referenceSelectionError('Manual reference selection supports at most 10 IDs.', 400, 'REFERENCE_SELECTION_LIMIT')
+    throw referenceSelectionError('手动最多选择 10 张候选参考图；实际采用数量由当前模型预算决定。', 400, 'REFERENCE_SELECTION_LIMIT')
   }
   const ids = requestedIds.map((id) => limitText(id, 120))
   if (ids.some((id) => !id) || new Set(ids).size !== ids.length) {
-    throw referenceSelectionError('Manual reference IDs must be non-empty and unique.', 400, 'REFERENCE_SELECTION_INVALID')
+    throw referenceSelectionError('参考图选择无效或重复，请重新选择。', 400, 'REFERENCE_SELECTION_INVALID')
   }
   const rows = await references.find({
     id: { $in: ids },
@@ -5868,7 +5938,7 @@ export async function resolveManualRetrievedReferences(requestedIds: string[]): 
   })
   if (missingOrUnusable.length) {
     throw referenceSelectionError(
-      `Selected references are missing or have no usable image: ${missingOrUnusable.join(', ')}`,
+      '部分参考图已下架或没有可用图片，请刷新图库后重新选择。',
       422,
       'REFERENCE_SELECTION_INVALID',
     )
@@ -5877,7 +5947,7 @@ export async function resolveManualRetrievedReferences(requestedIds: string[]): 
   const unsigned = selected.filter((item) => !item.imageUrl).map((item) => item.id)
   if (unsigned.length) {
     throw referenceSelectionError(
-      `Selected references could not be prepared for use: ${unsigned.join(', ')}`,
+      '部分参考图暂时无法读取，请刷新图库或移除这些图片后提交。',
       422,
       'REFERENCE_SELECTION_INVALID',
     )
@@ -5886,9 +5956,10 @@ export async function resolveManualRetrievedReferences(requestedIds: string[]): 
 }
 
 function referenceSelectionError(message: string, statusCode: number, code: string) {
-  const error: any = new Error(message)
+  const error: any = new ReferenceUploadValidationError(message)
   error.statusCode = statusCode
   error.code = code
+  error.failureStage = 'reference_selection'
   return error
 }
 
@@ -5945,26 +6016,68 @@ async function normalizeStoredReference(item: any): Promise<RetrievedReference> 
   }
 }
 
-async function buildRetrievedVisionInputs(items: RetrievedReference[]) {
-  const inputs: VisionImageInput[] = []
-  for (const item of items) {
-    let url = item.imageUrl
-    if (!url && item.imageObjectKey) {
-      try {
-        url = await cloud.storage.bucket(bucketName).getDownloadUrl(item.imageObjectKey, 3600)
-      } catch {
-        url = ''
-      }
+export async function preparePlanningReferences(body: CreateExecutionBody, proposed: RetrievedReference[], uploaded: VisionImageInput[] = []) {
+  const { route, policy, visual } = await planningReferenceBudget(body)
+  const limit = Math.min(maxReferenceImages, policy.maxCount)
+  assertVisionInputBudget(route.accessProvider, route.modelId, uploaded)
+  const candidates = distinctReferenceCandidates(proposed)
+  if (!visual) return { references: candidates.slice(0, 8), images: [] as VisionImageInput[], visual, limit, omitted: { duplicate: proposed.length - candidates.length, unavailable: 0, budget: Math.max(0, candidates.length - 8) } }
+  const references: RetrievedReference[] = [], images: VisionImageInput[] = []
+  const omitted = { duplicate: proposed.length - candidates.length, unavailable: 0, budget: 0 }
+  let total = uploaded.reduce((sum, image) => sum + Number(image.size || 0), 0)
+  // Inline bytes are the most expensive transport. Reserve the actual planner
+  // text plus envelope room before filling the image budget; final serialization
+  // is independently validated by each adapter.
+  const textBytes = Buffer.byteLength(plannerSystemPrompt()) + Buffer.byteLength(plannerUserPrompt(body.methodContent, body.caption, '', buildRetrievalContext(candidates), body.infographicCategory || '', true, body.negativePrompt || '')) + 65536
+  const byteLimit = Math.max(0, Math.min(policy.maxTotalBytes, Math.floor((policy.requestMaxBytes - textBytes) * 3 / 4)))
+  const hashes = new Set<string>()
+  for (const image of uploaded) hashes.add(crypto.createHash('sha256').update(await visionImageBase64(image, 'uploaded reference')).digest('hex'))
+  for (const item of candidates) {
+    if (images.length + uploaded.length >= limit) break
+    try {
+      const input = { filename: item.id, mimeType: inferMimeTypeFromUrl(item.imageUrl), url: item.imageUrl, objectKey: item.imageObjectKey || undefined }
+      const processed = await withReferenceProcessing(async () => {
+        const bytes = Buffer.from(await visionImageBase64(input, 'retrieved reference'), 'base64')
+        // Infer raster format from bytes, not signed URL extensions.
+        const mimeType = bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10])) ? 'image/png'
+          : bytes[0] === 255 && bytes[1] === 216 ? 'image/jpeg' : bytes.toString('ascii', 0, 4) === 'RIFF' ? 'image/webp' : input.mimeType
+        return normalizeReferenceForModel(bytes, mimeType, policy)
+      }, true)
+      const encoded = processed.bytes.toString('base64')
+      const hash = crypto.createHash('sha256').update(encoded).digest('hex')
+      if (hashes.has(hash)) { omitted.duplicate++; continue }
+      if (total + processed.bytes.length > byteLimit) { omitted.budget++; continue }
+      hashes.add(hash); total += processed.bytes.length
+      references.push(item)
+      images.push({ filename: `${item.id}.${extensionForMimeType(processed.mimeType)}`, mimeType: processed.mimeType,
+        url: `data:${processed.mimeType};base64,${encoded}`, size: processed.bytes.length, width: processed.width, height: processed.height })
+    } catch (error: any) {
+      // Optional library assets may be unavailable, damaged or out of budget.
+      // Excluding them must not cause paid selection to be repeated.
+      if (error?.code === 'ACCOUNT_DELETION_IN_PROGRESS') throw error
+      omitted.unavailable++
     }
-    if (!url) continue
-    inputs.push({
-      filename: `${item.id}.png`,
-      mimeType: inferMimeTypeFromUrl(url),
-      url,
-      objectKey: item.imageObjectKey || undefined,
-    })
   }
-  return inputs
+  omitted.budget += Math.max(0, proposed.length - references.length - omitted.duplicate - omitted.unavailable - omitted.budget)
+  assertVisionInputBudget(route.accessProvider, route.modelId, [...uploaded, ...images])
+  return { references, images, visual, limit, omitted }
+}
+
+export function assertVisionInputBudget(provider: string, model: string, images: VisionImageInput[]) {
+  const policy = referenceSubmissionPolicy(provider, model)
+  const limit = Math.min(maxReferenceImages, policy.maxCount)
+  if (images.length > limit) throw new ReferenceUploadValidationError(`当前模型最多接收 ${limit} 张图片，本次合计 ${images.length} 张（含上传和检索图片）。`)
+  let total = 0
+  for (const image of images) {
+    const inline = image.url?.match(/^data:[^;]+;base64,(.*)$/s)
+    const size = inline ? Buffer.byteLength(inline[1], 'base64') : image.size
+    if (size !== undefined) {
+      if (!Number.isSafeInteger(size) || size < 1 || size > policy.maxBytes) throw new ReferenceUploadValidationError(`当前模型单图最多 ${referenceBytesLabel(policy.maxBytes)}，请裁剪或更换图片。`)
+      total += size
+    }
+    if (image.width && image.height && (image.width > policy.maxDimension || image.height > policy.maxDimension || image.width * image.height > policy.maxPixels)) throw new ReferenceUploadValidationError('图片尺寸超过当前模型限制，请缩小或裁剪后提交。')
+  }
+  if (total > policy.maxTotalBytes) throw new ReferenceUploadValidationError(`当前模型的图片合计最多 ${referenceBytesLabel(policy.maxTotalBytes)}，请减少图片。`)
 }
 
 function buildRetrievalContext(items: RetrievedReference[]) {
@@ -6081,7 +6194,7 @@ export async function buildVisionImageInputs(referenceImages: ReferenceImageInpu
     const key = image.objectKey.replace(/\.[^.]+$/, `-analysis-${suffix}.${extensionForMimeType(processed.mimeType)}`)
     await bucket.writeFile(key, processed.bytes, { ContentType: processed.mimeType })
     image.analysisObjectKey = key; image.analysisMimeType = processed.mimeType; image.analysisSize = processed.bytes.length
-    inputs.push({ filename: image.filename, mimeType: processed.mimeType, objectKey: key, url: await bucket.getDownloadUrl(key, 3600) })
+    inputs.push({ filename: image.filename, mimeType: processed.mimeType, objectKey: key, url: await bucket.getDownloadUrl(key, 3600), size: processed.bytes.length, width: processed.width, height: processed.height })
     // Track each derivative even if a later file exceeds the aggregate budget.
     if (jobId) await jobs.updateOne({ _id: jobId }, { $set: { referenceImages, updatedAt: new Date() } })
     if (jobId) await appendLog(jobId, `参考图 ${image.filename}: ${processed.width}×${processed.height}, ${referenceBytesLabel(processed.bytes.length)}；${processed.changed ? '已校正方向/无损转换或等比缩放' : '保留原图像素'}；原文件保留。`)
@@ -6263,6 +6376,7 @@ async function callVisionModelRaw(
   region?: 'cn' | 'global',
 ): Promise<string> {
   if (!images.length) return ''
+  assertVisionInputBudget(provider, model, images)
   if (provider === 'tokendance') {
     await assertTokenDanceLiveModel(model)
     checkedReferenceRequest(provider, model, tokenDanceChatBody(model, referenceVisionSystemPrompt(), referenceVisionUserPrompt(methodContent, caption), images))
@@ -6377,6 +6491,7 @@ async function callTextModelRaw(
   images: VisionImageInput[] = [],
   policy: TextRequestPolicy = {},
 ): Promise<string> {
+  assertVisionInputBudget(provider, model, images)
   if (provider === 'tokendance') {
     await assertTokenDanceLiveModel(model)
     checkedReferenceRequest(provider, model, tokenDanceChatBody(model, system, user, images))
@@ -6392,7 +6507,7 @@ async function callTextModelRaw(
     try {
       return await callGeminiText(model, apiKey, system, user, images, policy)
     } catch (error: any) {
-      if (images.length) throw new Error(mainModelReferenceError(provider, model, error))
+      if (images.length) throw error
       throw error
     }
   }
@@ -6400,7 +6515,7 @@ async function callTextModelRaw(
     try {
       return await callOpenAiResponses(model, apiKey, system, user, images, policy)
     } catch (error: any) {
-      if (images.length) throw new Error(mainModelReferenceError(provider, model, error))
+      if (images.length) throw error
       throw error
     }
   }
@@ -6449,10 +6564,10 @@ async function callTextModelRaw(
       try {
         return await runText(bailianVisionModel())
       } catch (retryError: any) {
-        throw new Error(mainModelReferenceError(provider, bailianVisionModel(), retryError))
+        throw retryError
       }
     }
-    if (images.length) throw new Error(mainModelReferenceError(provider, chosenModel, error))
+    if (images.length) throw error
     throw error
   }
 }
@@ -7777,18 +7892,20 @@ function resultExtension(mimeType: string) {
   return 'png'
 }
 
-async function markFailed(jobId: string, error: string, referenceValidation = false) {
+async function markFailed(jobId: string, error: string, referenceValidation = false, cause?: any) {
   const safeError = redactSecretText(error)
+  const previous = await jobs.findOne({ _id: jobId })
+  const failure = publicExecutionFailure(cause || { message: safeError, ...(referenceValidation ? { name: 'ReferenceUploadValidationError' } : {}) }, previous?.providerCalls?.length || 0, previous?.recovery?.action === 'review_request')
   await jobs.updateOne(
     { _id: jobId },
     {
       $set: {
         status: 'failed',
-        error: referenceValidation ? safeError : stablePublicJobFailure(safeError),
+        error: failure.message, errorCode: failure.code, failure,
         completedAt: new Date(),
         updatedAt: new Date(),
       },
-      $push: { logs: `ERROR: ${safeError}` },
+      $push: { logs: `ERROR: ${failure.message}` },
     },
   )
 }
@@ -7805,6 +7922,9 @@ async function appendLog(jobId: string, message: string) {
 }
 
 async function recordStage(jobId: string, input: Partial<JobStage> & { candidateId: number; type: string; title: string }) {
+  const existing = await jobs.findOne({ _id: jobId })
+  const previous = existing?.stages?.find((stage: any) => stage.candidateId === Number(input.candidateId || 0) && stage.type === input.type && stage.round === Number(input.round || 0))
+  if (previous) return previous
   const now = new Date()
   const startedAt = input.startedAt || now
   const completedAt = input.completedAt || now
@@ -7845,6 +7965,7 @@ async function runWithConcurrency<T>(items: T[], concurrency: number, worker: (i
 }
 
 export async function fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts = 2) {
+  if (options?.method && !['GET', 'HEAD'].includes(options.method.toUpperCase())) attempts = 1
   let lastError: any
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     try {
@@ -7876,14 +7997,6 @@ function chatUserContent(user: string, images: VisionImageInput[]) {
       image_url: { url: image.url },
     })),
   ]
-}
-
-function mainModelReferenceError(provider: Provider, model: string, error: any) {
-  if (isProviderEgressUnavailable(error)) return providerEgressUnavailableMessage
-  const message = error?.message || String(error)
-  const hint = '请改用独立识别模型或更换主模型。'
-  if (message.includes(hint)) return message
-  return `主模型 ${provider}/${model} 直读参考图失败：${message}。${hint}`
 }
 
 async function referenceModelCapability(provider: Provider, model: string): Promise<ModelCapabilityResult> {
@@ -8729,7 +8842,7 @@ function referenceVisionUserPrompt(method: string, caption: string) {
   ].join('\n')
 }
 
-function retrievalSystemPrompt() {
+function retrievalSystemPrompt(limit = 8) {
   return [
     '# Background & Goal',
     'We are building an **AI system to automatically generate method diagrams for academic papers**. Given a paper\'s methodology section and a figure caption, the system needs to create a high-quality illustrative diagram that visualizes the described method.',
@@ -8743,7 +8856,8 @@ function retrievalSystemPrompt() {
     '- **Target Input:** The methodology section and caption of the diagram we need to generate',
     '- **Candidate Pool:** Existing diagrams (each with methodology and caption)',
     '',
-    'You must select the **Top 10 candidates** that would be most helpful as examples for teaching the AI how to draw the target diagram.',
+    `Select between ZERO and ${limit} useful references. This is a ceiling, NEVER a target. Stop when additional references add no complementary value.`,
+    'Choose the smallest sufficient set based on methodology, caption, diagram type, semantic relevance, visual intent and complementary layout/style guidance. Exclude irrelevant, redundant or near-duplicate diagrams. Return no selections when none help; do not fill a quota.',
     '',
     '# Selection Logic (Topic + Intent)',
     '',
@@ -8765,13 +8879,14 @@ function retrievalSystemPrompt() {
     '3.  **Avoid:** Different Visual Intent (e.g., Target is "Pipeline" -> Candidate is "Bar Chart").',
     '',
     '# Output Format',
-    'Provide your output strictly as a single valid JSON object containing only the **exact IDs** of the Top 10 selected diagrams (use the exact IDs from the Candidate Pool). Select at most 10 ids.',
-    'Return JSON only: {"ids":["id-1","id-2"]}.',
+    'Return JSON only: {"selections":[{"id":"exact-candidate-id","relevance":0.9,"visualFit":true,"contribution":"unique useful structure or style this reference adds"}]}.',
+    'Relevance is a number from 0 to 1. Omit any score below 0.6 and any visualFit=false. Contributions must be distinct and meaningful; do not rephrase the same contribution to include redundant references. Empty output: {"selections":[]}.',
   ].join('\n')
 }
 
-function retrievalUserPrompt(method: string, caption: string, candidates: any[]) {
+function retrievalUserPrompt(method: string, caption: string, candidates: any[], taskName = 'diagram') {
   return [
+    `Target figure type: ${taskName}`,
     `Methodology Section:\n${method}`,
     '',
     `Figure Caption:\n${caption}`,
@@ -9147,7 +9262,7 @@ function extractSvg(raw: string) {
   return text.slice(start, end + '</svg>'.length)
 }
 
-class ReferenceUploadValidationError extends Error { name = 'ReferenceUploadValidationError'; statusCode = 400 }
+class ReferenceUploadValidationError extends Error { name = 'ReferenceUploadValidationError'; statusCode = 400; requestState = 'not_sent' as const }
 
 function assertReferenceTotalBytes(files: { size: number; analysisSize?: number }[]) {
   const total = files.reduce((sum, file) => sum + Number(file.size || 0) + Number(file.analysisSize || 0), 0)
@@ -9403,6 +9518,11 @@ function selectApiKey(provider: Provider, apiKeys: ApiKeys) {
 }
 
 async function publicJob(job: any) {
+  // Read-only explanation for the known historical 10-vs-8 failure. Preserve
+  // historical recovery/fee uncertainty; never rewrite or replay old claims.
+  const oldLimit = !job.failure && job.status === 'failed' && (job.logs || []).some((line: any) => typeof line === 'string' && /^ERROR: 本次图像分析输入超过图研的 8 张组合上限。$/.test(line))
+  const failure = job.failure || (oldLimit ? publicExecutionFailure({ name: 'ReferenceUploadValidationError', failureStage: 'planning',
+    message: '参考图合计超过该模型的 8 张输入上限。', requestState: 'not_sent' }, job.providerCalls?.length || 0, true) : null)
   const clientPlatform = normalizeClientPlatform(job.clientPlatform) || normalizeClientPlatform(job.client_platform)
   const storedModelRoutes = normalizeStoredModelRoutes(job.modelRoutes)
   const historicalModelRoutes = storedModelRoutes || deriveHistoricalModelRoutes(job)
@@ -9419,6 +9539,8 @@ async function publicJob(job: any) {
   return {
     recovery: job.recovery || null,
     providerCalls: job.providerCalls || [],
+    failure,
+    referenceSelection: job.referenceSelection || null,
     id: job._id,
     status: job.status,
     provider: historicalModelRoutes?.main.accessProvider || job.provider,
@@ -9461,7 +9583,7 @@ async function publicJob(job: any) {
     referenceImages: await refreshReferenceImageUrls(job.referenceImages || []),
     resultImages: redactPublicValue(await refreshStoredImageUrls(job.resultImages || [])),
     logs: redactPublicValue(job.logs || []),
-    error: redactSecretText(job.error || ''),
+    error: failure?.message || redactSecretText(job.error || ''),
     createdAt: job.createdAt,
     updatedAt: job.updatedAt,
     startedAt: job.startedAt,
@@ -9591,12 +9713,6 @@ function redactPublicValue(value: any, key = ''): any {
   if (Array.isArray(value)) return value.map((entry) => redactPublicValue(entry))
   if (!value || typeof value !== 'object' || value instanceof Date) return value
   return Object.fromEntries(Object.entries(value).map(([entryKey, entry]) => [entryKey, redactPublicValue(entry, entryKey)]))
-}
-
-function stablePublicJobFailure(error: string) {
-  if (error.includes(providerEgressUnavailableMessage)) return providerEgressUnavailableMessage
-  if (/account deletion is in progress/i.test(error)) return 'Account deletion is in progress. Please retry.'
-  return 'Model execution failed. Please retry.'
 }
 
 // ---------------------------------------------------------------------------

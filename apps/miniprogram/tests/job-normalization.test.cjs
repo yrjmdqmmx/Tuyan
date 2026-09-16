@@ -35,3 +35,8 @@ const recordSummary = toRecordJobSummary(job)
 assert.equal(recordSummary.method_content, '完整方法输入')
 
 console.log('job-normalization.test.cjs passed')
+
+const failureJob = normalizeJob({ id: 'failure', status: 'failed', error: '图示规划失败：图片超过模型限制。', failure: { stageLabel: '图示规划', billingMessage: '此前费用以渠道账单为准。' }, referenceSelection: { selectedCount: 2, imageCount: 3, mode: 'images' } })
+assert.equal(failureJob.failure.stageLabel, '图示规划')
+assert.match(failureJob.failure.billingMessage, /账单/)
+assert.equal(failureJob.referenceSelection.imageCount, 3)

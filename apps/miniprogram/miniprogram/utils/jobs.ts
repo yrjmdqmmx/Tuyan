@@ -46,6 +46,8 @@ export interface Job {
   refine_mode_text: string
   provider_regions_text: string
   recovery?: { canResume: boolean; message: string; action: string; retryAt?: string } | null
+  failure?: { message: string; billingMessage: string; stageLabel: string } | null
+  referenceSelection?: { selectedCount: number; imageCount: number; mode: string } | null
   providerCalls?: unknown[]
   id: string
   status: JobStatus
@@ -137,6 +139,8 @@ export function normalizeJob(input: unknown): Job {
     id: jobId,
     recovery: job.recovery || null,
     providerCalls: job.providerCalls || [],
+    failure: job.failure || null,
+    referenceSelection: job.referenceSelection || null,
     status,
     provider: String(job.provider || ''),
     client_platform: normalizeClientPlatform(job.client_platform || job.clientPlatform),
