@@ -315,7 +315,7 @@ function ScientificMethodologyDocument({ data, showNavigation = true }) {
       <PageDirectory />
       <section className="bench-method-section" id="evaluation-process"><div className="bench-method-section-head"><span>01</span><div><div className="bench-eyebrow">PROCESS</div><h2>评测流程</h2></div></div><ol className="bench-method-steps">
         <li><b>01</b><div><strong>固定九题</strong><p>六道生成题与三道确定性局部编辑题；每个模型固定九个题位。</p></div></li>
-        <li><b>02</b><div><strong>确认失败最多 4 次</strong><p>仅确认的技术或渠道失败允许有界重试；UNKNOWN_PROVIDER_OUTCOME 不自动重试，立即暂停对账。</p></div></li>
+        <li><b>02</b><div><strong>确认失败最多 4 次</strong><p>仅确认的技术或渠道失败允许有界重试；UNKNOWN_PROVIDER_OUTCOME 不自动重试，立即暂停对账。</p>{methodology.retryPolicy.providerMaxAttempts?.replicate === 1 ? <p>Replicate：每题最多 1 次提交，不自动重试。</p> : null}</div></li>
         <li><b>03</b><div><strong>固定渠道优先级</strong><p>{methodology.routePriority.join(' → ')}；不得失败后静默换渠道。</p></div></li>
         <li><b>04</b><div><strong>独立双盲审核</strong><p>两位审阅者独立评分，分差或红线冲突进入 xhigh 争议仲裁；automatic Judge 固定 0。</p></div></li>
       </ol></section>

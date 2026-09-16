@@ -218,13 +218,21 @@ function normalizeScientificResponse(response) {
     || !equalArray(scoring.axes, SCIENTIFIC_AXES) || scoring.overallFormula !== 'ten_dimension_raw_equal_weight_mean'
     || scoring.tieMethod !== 'competition') return null
   const rankingMethod = methodology.rankingMethod
+  const replicate = equalArray(methodology.routePriority, ['bailian', 'ark', 'openrouter', 'replicate'])
+  const expectedProviders = ['bailian', 'ark', 'openrouter', ...(replicate ? ['replicate'] : [])]
+  const providerMaxAttempts = methodology.retryPolicy?.providerMaxAttempts
+  if (!isPlainObject(methodology.providerBudgetsCny)
+    || !equalArray(Object.keys(methodology.providerBudgetsCny).sort(), [...expectedProviders].sort())
+    || (replicate ? !isPlainObject(providerMaxAttempts) || !equalArray(Object.keys(providerMaxAttempts), ['replicate'])
+      || providerMaxAttempts.replicate !== 1 || methodology.providerBudgetsCny.replicate !== 40
+      : providerMaxAttempts !== undefined)) return null
   if (methodology.suiteId !== SCIENTIFIC_IDENTITY.suiteId || methodology.suiteHash !== suite.manifestHash
     || methodology.evaluationMode !== SCIENTIFIC_IDENTITY.evaluationMode || methodology.evaluationEpoch !== SCIENTIFIC_IDENTITY.evaluationEpoch
     || methodology.reviewProtocol !== SCIENTIFIC_IDENTITY.reviewProtocol || methodology.presentationVersion !== SCIENTIFIC_IDENTITY.presentationVersion
     || methodology.expectedCaseCount !== 9 || !equalArray(methodology.dimensions, SCIENTIFIC_AXES)
     || methodology.overallFormula !== scoring.overallFormula || methodology.tieMethod !== scoring.tieMethod || methodology.failureScore !== 0
     || methodology.retryPolicy?.confirmedFailureMaxAttempts !== 4 || methodology.retryPolicy?.unknownProviderOutcome !== 'pause_no_retry'
-    || !equalArray(methodology.routePriority, ['bailian', 'ark', 'openrouter'])
+    || !equalArray(methodology.routePriority, expectedProviders)
     || methodology.providerBudgetsCny?.bailian !== 180 || methodology.providerBudgetsCny?.ark !== 180 || methodology.providerBudgetsCny?.openrouter !== 360
     || methodology.blindReview?.reviewers !== 2 || methodology.blindReview?.arbitration !== 'xhigh_on_dispute'
     || !equalArray(methodology.blindReview?.automaticJudges, []) || !equalArray(methodology.automaticJudges, [])
@@ -240,8 +248,8 @@ function normalizeScientificResponse(response) {
       suiteId: methodology.suiteId, suiteHash: methodology.suiteHash, evaluationMode: methodology.evaluationMode,
       evaluationEpoch: methodology.evaluationEpoch, reviewProtocol: methodology.reviewProtocol, presentationVersion: methodology.presentationVersion,
       expectedCaseCount: 9, dimensions: [...SCIENTIFIC_AXES], overallFormula: methodology.overallFormula, tieMethod: 'competition', failureScore: 0,
-      retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' }, routePriority: [...methodology.routePriority],
-      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360 },
+      retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry', ...(replicate ? { providerMaxAttempts: { replicate: 1 } } : {}) }, routePriority: [...methodology.routePriority],
+      providerBudgetsCny: { bailian: 180, ark: 180, openrouter: 360, ...(replicate ? { replicate: 40 } : {}) },
       blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
       knownLimitations: [...methodology.knownLimitations], automaticJudges: [], automaticJudgmentCount: 0,
       rankingMethod: { id: rankingMethod.id, axes: [...SCIENTIFIC_AXES], weights: [...rankingMethod.weights], tieMethod: 'competition' },

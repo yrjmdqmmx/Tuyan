@@ -7,7 +7,8 @@
 - [x] Benchmark Core / Worker / API 与部署脚本回归（67 / 193 / 492 项及运维 92 项通过）
 - [ ] 真实 18 题、双独立盲审及必要仲裁、费用报告
 - [ ] 正式扩榜、旧模型非排名字段一致性、浏览器验收
-- [x] Web / 小程序：无新增客户端字段；已有两型号目录及 Replicate 图片适配沿用
+- [x] Web：方法页兼容三 / 四渠道签名方法数据，展示 Replicate 单次提交限制与预算；原三渠道批次继续可读
+- [x] 小程序：无新增客户端字段；已有两型号目录及 Replicate 图片适配沿用
 
 ### [2026-09-15] 小程序观猹身份接续生产补发 — by Codex
 PR #196 已合并，生产 Web / Gateway / Core / Benchmark 发布 `4077ddc60a0d7814a0c6a2ff0484fbae46c3413c`，补齐小程序身份接续接口。`mini-status` 从 404 恢复为 200，能力标志可用；没有新增环境变量或 Key，原回调地址和 TokenDance 消费授权保持。详见 [发布与验收](docs/releases/2026-09-15-miniprogram-watcha.md)。
