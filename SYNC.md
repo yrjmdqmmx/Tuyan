@@ -9,6 +9,15 @@
 - [ ] 发布与生产验收另行执行。恢复格式升级为 `tokendance-workflow-v2-reference-budget`：旧版执行记录保留，不能自动重放；必须核对旧调用及费用后处置。未核对原失败任务账单，未进行付费模型调用或微信上传发布。
 
 
+### [2026-09-16] Replicate GPT Image 2.5 Scientific V2 增量评测 — by Codex
+
+进行中：正式评测新增 Replicate 的 `openai/gpt-image-2.5-sunburst`、`openai/gpt-image-2.5-flare`，沿用单模型增量冻结及双独立审评，每模型固定 6 生成 + 3 编辑。旧三渠道签名批次保持原样校验；新 Replicate 题位每题仅一次提交、未知结果停跑。原生默认 `quality=auto`、单张 PNG、16:9，价格须从官方当前 auto 档重新抓取并签名。用户两模型合计预算 10 USD，按预测 ID 留存美元费用与账单核对状态。新增可选 Worker 凭据 `PAPERBANANA_BENCH_REPLICATE_API_TOKEN`，常驻 Worker 保持关闭。
+
+- [x] Benchmark Core / Worker / API 与部署脚本回归（67 / 193 / 492 项及运维 92 项通过）
+- [ ] 真实 18 题、双独立盲审及必要仲裁、费用报告
+- [ ] 正式扩榜、旧模型非排名字段一致性、浏览器验收
+- [x] Web / 小程序：无新增客户端字段；已有两型号目录及 Replicate 图片适配沿用
+
 ### [2026-09-15] 小程序观猹身份接续生产补发 — by Codex
 PR #196 已合并，生产 Web / Gateway / Core / Benchmark 发布 `4077ddc60a0d7814a0c6a2ff0484fbae46c3413c`，补齐小程序身份接续接口。`mini-status` 从 404 恢复为 200，能力标志可用；没有新增环境变量或 Key，原回调地址和 TokenDance 消费授权保持。详见 [发布与验收](docs/releases/2026-09-15-miniprogram-watcha.md)。
 - [x] Gateway / 运维：CI、固定镜像、正常 production 审批、香港健康与 Web Pages 发布通过

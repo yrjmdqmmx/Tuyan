@@ -1,6 +1,6 @@
+import { scientificProviderOrder, scientificProviderBudgets, scientificProviderZeroes, scientificUsesReplicate, scientificMaxAttempts } from '@paperbanana/benchmark-core'
 import {
   PB_SCIENTIFIC_FIGURE_V2,
-  SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY,
   SCIENTIFIC_BENCHMARK_AXES,
   SCIENTIFIC_BENCHMARK_IDENTITY,
   SCIENTIFIC_EDIT_SOURCE,
@@ -55,7 +55,6 @@ const SCIENTIFIC_V2_CORRECTIVE_RELEASE_PLAN = Object.freeze({
 const OPERATOR_ATTESTATION_DOMAIN = 'paperbanana/scientific-v2/operator-attestation/v1'
 const OPERATOR_DIAGNOSTIC_DOMAIN = 'paperbanana/scientific-v2/operator-diagnostic/v1'
 const productionLockName = '/run/lock/paperbanana-hk-production.lock'
-const providers = ['bailian', 'ark', 'openrouter'] as const
 const reviewRedLineCodes = new Set<string>(SCIENTIFIC_REVIEW_RED_LINE_CODES)
 const scientificCaseOrder = new Map(PB_SCIENTIFIC_FIGURE_V2.cases.map((scientificCase, index) => [scientificCase.id, index]))
 const stateOperationReportPayloadKeys = [
@@ -86,7 +85,7 @@ async function verifyReviewObjects(
 }
 
 function isExactConfirmedCanaryFailure(slot: AnyRecord) {
-  return slot.isProviderCanary === true && slot.status === 'failed' && slot.attempts.length === 4
+  return slot.isProviderCanary === true && slot.status === 'failed' && slot.attempts.length === scientificMaxAttempts(slot.provider)
     && slot.attempts.every((attempt: AnyRecord) => confirmedFailureResponseClasses.has(attempt.responseClass))
 }
 
@@ -303,10 +302,10 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
   if (state.updatedAt < state.createdAt
     || ![null, 'reconciliation_required', 'price_reconciliation_required', 'artifact_reconciliation_required'].includes(state.pauseReason)
     || ![null, 'provider_budget_exceeded_before_attempt', 'provider_canary_failed'].includes(state.blockReason)) scientificError('SCIENTIFIC_V2_STATE_STATUS_INVALID')
-  assertExactKeys(state.providerSpentCny, providers, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
-  assertExactKeys(state.providerUnreconciledCny, providers, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
-  const totals = { bailian: 0, ark: 0, openrouter: 0 }
-  const unreconciled = { bailian: 0, ark: 0, openrouter: 0 }
+  assertExactKeys(state.providerSpentCny, manifest.providerOrder, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
+  assertExactKeys(state.providerUnreconciledCny, manifest.providerOrder, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
+  const totals = scientificProviderZeroes(scientificUsesReplicate(manifest.models))
+  const unreconciled = scientificProviderZeroes(scientificUsesReplicate(manifest.models))
   for (const [index, slot] of state.slots.entries()) {
     const frozen = manifest.executionOrder[index]
     const scientificCase = manifest.cases.find((candidate: AnyRecord) => candidate.id === slot.caseId)
@@ -315,7 +314,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
       'imageSize', 'isProviderCanary', 'routeStatus', 'status', 'costCny', 'attempts',
     ], 'SCIENTIFIC_V2_STATE_SLOT_INVALID')
     if (!scientificCase || Object.entries(frozen).some(([key, value]) => canonicalHash(slot[key]) !== canonicalHash(value))
-      || !Array.isArray(slot.attempts) || slot.attempts.length > 4
+      || !Array.isArray(slot.attempts) || slot.attempts.length > scientificMaxAttempts(slot.provider)
       || !['pending', 'retrying', 'succeeded', 'unsupported', 'awaiting_artifact', 'unknown', 'failed', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(slot.status)) {
       scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     }
@@ -380,11 +379,11 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     } else if (slot.status === 'succeeded') {
       if (!slot.attempts.length || !['succeeded', 'succeeded_low_quality'].includes(slot.attempts.at(-1).responseClass)) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'failed') {
-      const exhausted = slot.attempts.length === 4 && confirmedFailureResponseClasses.has(slot.attempts.at(-1)?.responseClass)
+      const exhausted = slot.attempts.length === scientificMaxAttempts(slot.provider) && confirmedFailureResponseClasses.has(slot.attempts.at(-1)?.responseClass)
       const propagated = isCanaryRoutePropagatedFailure(slot)
       if (!exhausted && !propagated) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'unknown' && slot.attempts.at(-1)?.responseClass !== 'unknown_provider_outcome') scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
-    else if (slot.status === 'retrying' && (!slot.attempts.length || slot.attempts.length >= 4
+    else if (slot.status === 'retrying' && (!slot.attempts.length || slot.attempts.length >= scientificMaxAttempts(slot.provider)
       || !['confirmed_technical_failure', 'confirmed_provider_failure'].includes(slot.attempts.at(-1)?.responseClass))) scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     else if (slot.status === 'price_reconciliation' && slot.attempts.at(-1)?.responseClass !== 'price_reconciliation_required') scientificError('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     else if (slot.status === 'artifact_reconciliation' && (!slot.attempts.length
@@ -396,7 +395,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     if (slot.attempts.length && slot.status !== 'price_reconciliation' && cnyUnits(slot.costCny) !== slotCost) scientificError('SCIENTIFIC_V2_STATE_BUDGET_INVALID')
     if (slot.provider && slot.provider !== 'codex') totals[slot.provider as keyof typeof totals] += slotCost
   }
-  for (const provider of providers) {
+  for (const provider of manifest.providerOrder) {
     if (cnyUnits(state.providerSpentCny[provider]) !== totals[provider]
       || totals[provider] > cnyUnits(manifest.providerBudgetsCny[provider])
       || cnyUnits(state.providerUnreconciledCny[provider]) !== unreconciled[provider]) {
@@ -446,7 +445,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
     || (state.status === 'awaiting_artifacts' && (!slotStatuses.includes('awaiting_artifact')
       || slotStatuses.some((status: string) => ['pending', 'retrying', 'unknown', 'budget_blocked', 'not_executed', 'price_reconciliation', 'artifact_reconciliation'].includes(status))))
     || (state.status === 'completed' && slotStatuses.some((status: string) => !terminal(status)))
-    || (state.status !== 'completed' && slotStatuses.every(terminal))
+    || (!['completed', 'canary_complete'].includes(state.status) && slotStatuses.every(terminal))
     || (state.status === 'paused' && state.pauseReason === 'reconciliation_required' && slotStatuses.filter((status: string) => status === 'unknown').length !== 1)
     || (state.status === 'paused' && state.pauseReason === 'price_reconciliation_required' && slotStatuses.filter((status: string) => status === 'price_reconciliation').length !== 1)
     || (state.status === 'paused' && state.pauseReason === 'artifact_reconciliation_required' && slotStatuses.filter((status: string) => status === 'artifact_reconciliation').length !== 1)
@@ -727,8 +726,8 @@ function assertRegistryAndManifest(input: AnyRecord) {
     || canonicalHash(manifest.cases) !== canonicalHash(PB_SCIENTIFIC_FIGURE_V2.cases)
     || !codeShaPattern.test(String(manifest.codeSha || ''))
     || manifest.concurrency !== 1 || manifest.lockName !== productionLockName
-    || canonicalHash(manifest.providerOrder) !== canonicalHash(providers)
-    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY)
+    || canonicalHash(manifest.providerOrder) !== canonicalHash(scientificProviderOrder(scientificUsesReplicate(manifest.models)))
+    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(scientificProviderBudgets(scientificUsesReplicate(manifest.models)))
     || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: manifest.expansion ? 0 : 9, maxAttemptsPerSlot: 4, maxToolCalls: manifest.expansion ? 0 : 36 })
     || canonicalHash(manifest.models) !== canonicalHash(executionCanonical.models)
     || !Array.isArray(manifest.executionOrder) || manifest.executionOrder.length !== executionCanonical.models.length * 9
@@ -741,7 +740,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
   if (manifest.priceHash !== price.snapshotHash || price.capturedAt !== manifest.createdAt
     || manifest.priceOperatorAuthorizationHash !== price.operatorAuthorizationHash) scientificError('SCIENTIFIC_V2_PRICE_SNAPSHOT_INVALID')
   const priceByRoute = new Map<string, number>(price.entries.map((entry: AnyRecord) => [`${entry.provider}\0${entry.modelId}\0${entry.operation}`, Number(entry.unitCny)]))
-  const estimates = { bailian: 0, ark: 0, openrouter: 0 }
+  const estimates = scientificProviderZeroes(scientificUsesReplicate(manifest.models))
   const modelIds = new Set<string>()
   const slotIds = new Set<string>()
   const seenCanaries = new Set<string>()
@@ -777,7 +776,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
     }
   }
   if (modelIds.size !== executionCanonical.models.length
-    || providers.some((provider) => estimates[provider] > SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[provider])) {
+    || manifest.providerOrder.some((provider: string) => estimates[provider] > manifest.providerBudgetsCny[provider])) {
     scientificError('SCIENTIFIC_V2_PREFLIGHT_BUDGET_INVALID')
   }
 }
@@ -789,8 +788,8 @@ function assertInitialState(input: AnyRecord) {
   if (!state || state.schemaVersion !== 2 || state.manifestHash !== manifest.manifestHash
     || state.status !== 'ready' || state.pauseReason !== null || state.blockReason !== null
     || !hashPattern.test(String(state.stateHash || '')) || canonicalWithoutHash(state, 'stateHash') !== state.stateHash
-    || canonicalHash(state.providerSpentCny) !== canonicalHash({ bailian: 0, ark: 0, openrouter: 0 })
-    || canonicalHash(state.providerUnreconciledCny) !== canonicalHash({ bailian: 0, ark: 0, openrouter: 0 })
+    || canonicalHash(state.providerSpentCny) !== canonicalHash(scientificProviderZeroes(scientificUsesReplicate(manifest.models)))
+    || canonicalHash(state.providerUnreconciledCny) !== canonicalHash(scientificProviderZeroes(scientificUsesReplicate(manifest.models)))
     || !Array.isArray(state.slots) || state.slots.length !== manifest.executionOrder.length) {
     scientificError('SCIENTIFIC_V2_INITIAL_STATE_INVALID')
   }
@@ -1613,8 +1612,8 @@ export function createScientificV2MongoRepository(
         status: batch.state.status,
         pauseReason: batch.state.pauseReason,
         blockReason: batch.state.blockReason,
-        providerSpentCny: Object.fromEntries(providers.map((provider) => [provider, batch.state.providerSpentCny[provider]])),
-        providerUnreconciledCny: Object.fromEntries(providers.map((provider) => [provider, batch.state.providerUnreconciledCny[provider]])),
+        providerSpentCny: Object.fromEntries(batch.manifest.providerOrder.map((provider: string) => [provider, batch.state.providerSpentCny[provider]])),
+        providerUnreconciledCny: Object.fromEntries(batch.manifest.providerOrder.map((provider: string) => [provider, batch.state.providerUnreconciledCny[provider]])),
         revision: Number(batch.revision || 0),
         providerCanaries,
       }
@@ -2514,8 +2513,10 @@ export function createScientificV2MongoRepository(
           ...SCIENTIFIC_BENCHMARK_IDENTITY,
           suiteHash: batch.manifest.suiteHash, expectedCaseCount: 9, dimensions: [...SCIENTIFIC_BENCHMARK_AXES],
           overallFormula: 'ten_dimension_raw_equal_weight_mean', tieMethod: 'competition', failureScore: 0,
-          retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry' },
-          routePriority: ['bailian', 'ark', 'openrouter'], providerBudgetsCny: { ...SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY },
+          retryPolicy: { confirmedFailureMaxAttempts: 4, unknownProviderOutcome: 'pause_no_retry',
+            ...(scientificUsesReplicate(batch.manifest.models) ? { providerMaxAttempts: { replicate: 1 } } : {}),
+          },
+          routePriority: [...batch.manifest.providerOrder], providerBudgetsCny: { ...batch.manifest.providerBudgetsCny },
           manifestCodeSha: codeLineage.manifestCodeSha,
           executionCodeSha: codeLineage.executionCodeSha,
           publicationCodeSha: codeLineage.publicationCodeSha,

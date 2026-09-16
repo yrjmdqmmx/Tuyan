@@ -1,3 +1,4 @@
+import { scientificMaxAttempts } from '@paperbanana/benchmark-core'
 import { canonicalHash, reconcileScientificV2ActualPrice } from '@paperbanana/benchmark-core'
 
 import { UnknownProviderOutcomeError } from './provider-operation.js'
@@ -58,7 +59,7 @@ export interface ScientificV2ExecutorRequest {
   slotId: string
   canonicalModelId: string
   caseId: string
-  provider: 'bailian' | 'ark' | 'openrouter'
+  provider: 'bailian' | 'ark' | 'openrouter' | 'replicate'
   modelId: string
   operation: 'generation' | 'edit'
   imageSize: '1K' | '2K' | 'provider-default'
@@ -198,7 +199,7 @@ function markFollowingNotExecuted(state: ScientificV2BatchState, sequence: numbe
 
 function markCanaryModelFailure(
   state: ScientificV2BatchState,
-  provider: 'bailian' | 'ark' | 'openrouter',
+  provider: 'bailian' | 'ark' | 'openrouter' | 'replicate',
   canonicalModelId: string,
 ) {
   for (const slot of state.slots) {
@@ -231,7 +232,7 @@ function addCny(left: number, right: number) {
   return scientificV2CnyFromUnits(scientificV2CnyToUnits(left) + scientificV2CnyToUnits(right))
 }
 
-function chargeAttempt(state: ScientificV2BatchState, provider: 'bailian' | 'ark' | 'openrouter', amount: number) {
+function chargeAttempt(state: ScientificV2BatchState, provider: 'bailian' | 'ark' | 'openrouter' | 'replicate', amount: number) {
   state.providerSpentCny[provider] = addCny(state.providerSpentCny[provider], amount)
 }
 
@@ -431,7 +432,7 @@ async function runScientificV2BatchInternal(input: {
       marker: ScientificV2DispatchMarker,
       slotId: string,
       scientificCase: ScientificV2BatchManifest['cases'][number],
-      provider: 'bailian' | 'ark' | 'openrouter',
+      provider: 'bailian' | 'ark' | 'openrouter' | 'replicate',
       modelId: string,
       estimatedCny: number,
       startedAt: string,
@@ -500,7 +501,7 @@ async function runScientificV2BatchInternal(input: {
       const estimatedCny = priceFor(input.manifest, slot)
       const { scientificCase, payloadHash } = buildPayload(input.manifest, slot)
       const firstAttemptIndex = slot.status === 'retrying' ? slot.attempts.length + 1 : 1
-      for (let attemptIndex = firstAttemptIndex; attemptIndex <= 4; attemptIndex += 1) {
+      for (let attemptIndex = firstAttemptIndex; attemptIndex <= scientificMaxAttempts(slot.provider); attemptIndex += 1) {
         const dispatchSlot = slot
         if (scientificV2CnyToUnits(state.providerSpentCny[provider]) + scientificV2CnyToUnits(estimatedCny)
           > scientificV2CnyToUnits(input.manifest.providerBudgetsCny[provider])) {
@@ -646,13 +647,13 @@ async function runScientificV2BatchInternal(input: {
           }
           dispatchSlot.costCny = addCny(dispatchSlot.costCny || 0, chargedCny)
           chargeAttempt(state, provider, chargedCny)
-          dispatchSlot.status = attemptIndex === 4 ? 'failed' : 'retrying'
-          if (attemptIndex === 4 && dispatchSlot.isProviderCanary) {
+          dispatchSlot.status = attemptIndex === scientificMaxAttempts(dispatchSlot.provider) ? 'failed' : 'retrying'
+          if (attemptIndex === scientificMaxAttempts(dispatchSlot.provider) && dispatchSlot.isProviderCanary) {
             markCanaryModelFailure(state, provider, dispatchSlot.canonicalModelId)
           }
           await commitAttempt(marker, attempt, undefined, failureCode)
           attemptCommitted = true
-          if (attemptIndex === 4) break
+          if (attemptIndex === scientificMaxAttempts(dispatchSlot.provider)) break
           slot = state.slots.find((candidate) => candidate.slotId === frozenSlot.slotId)
           if (!slot) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
           } catch (error) {
