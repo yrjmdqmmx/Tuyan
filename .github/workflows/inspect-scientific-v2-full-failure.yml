@@ -163,6 +163,7 @@ jobs:
             ["bailian", "PAPERBANANA_BENCH_BAILIAN_API_KEY", "https://dashscope.aliyuncs.com/api/v1/models/permissions?authorization_scope=AUTHORIZED&action=INFERENCE&model=qwen-image-2.0&page_no=1&page_size=1"],
             ["ark", "PAPERBANANA_BENCH_ARK_API_KEY", "https://ark.cn-beijing.volces.com/ping"],
             ["openrouter", "PAPERBANANA_BENCH_OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/key"],
+            ["replicate", "PAPERBANANA_BENCH_REPLICATE_API_TOKEN", "https://api.replicate.com/v1/account"],
           ];
           const result = {};
           for (const [provider, keyName, url] of checks) {

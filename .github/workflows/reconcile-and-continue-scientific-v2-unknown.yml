@@ -186,10 +186,11 @@ jobs:
           bundle_path="$bundle_dir/$bundle_sha.json"
           if [[ -e "$bundle_path" ]]; then cmp -s "$temporary_bundle" "$bundle_path"; else install -o root -g root -m 0600 "$temporary_bundle" "$bundle_path"; fi
           flock -u 9
+          model_count="$(jq -er '.manifest.models | length | select(. >= 1 and . <= 512)' "$bundle_path")"
           "$repo/deploy/hk-single-host/scripts/run-scientific-v2-operator.sh" \
             --mode run --expected-sha "$DEPLOYED_SHA" --expected-core-digest "$CORE_DIGEST" \
             --expected-worker-digest "$WORKER_DIGEST" --bundle-sha256 "$bundle_sha" \
             --registry-hash "$REGISTRY_HASH" --suite-hash "$SUITE_HASH" --price-hash "$PRICE_HASH" \
-            --manifest-hash "$MANIFEST_HASH" --model-count 40 \
+            --manifest-hash "$MANIFEST_HASH" --model-count "$model_count" \
             --confirm run-exact-scientific-v2-bundle-disabled-worker --apply
           REMOTE
