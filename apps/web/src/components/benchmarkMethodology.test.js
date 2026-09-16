@@ -244,3 +244,24 @@ test('normalizer accepts only the exact scientific v2 nine-case ten-dimension me
   budgetTamper.methodology.providerBudgetsCny.openrouter = 359
   assert.equal(normalizeMethodologyResponse(budgetTamper), null)
 })
+
+
+test('Replicate methodology preserves its one-submit rule and rejects budget or retry drift', async () => {
+  const normalize = await normalizer()
+  const value = scientificResponse()
+  value.methodology.routePriority.push('replicate')
+  value.methodology.providerBudgetsCny.replicate = 40
+  value.methodology.retryPolicy.providerMaxAttempts = { replicate: 1 }
+  const result = normalize(value)
+  assert.equal(result.methodology.providerBudgetsCny.replicate, 40)
+  assert.deepEqual(result.methodology.retryPolicy.providerMaxAttempts, { replicate: 1 })
+  for (const mutate of [
+    (v) => { v.methodology.providerBudgetsCny.replicate = 39 },
+    (v) => { v.methodology.retryPolicy.providerMaxAttempts.replicate = 2 },
+    (v) => { delete v.methodology.retryPolicy.providerMaxAttempts },
+    (v) => { v.methodology.routePriority.push('unknown') },
+  ]) {
+    const invalid = structuredClone(value); mutate(invalid)
+    assert.equal(normalize(invalid), null)
+  }
+})

@@ -404,3 +404,20 @@ test('resolving a clipboard operation after unmount schedules no status timer or
     fetchMock.restore()
   }
 })
+
+
+test('Replicate scientific methodology renders the fourth channel and exact submission limit', async () => {
+  const value = scientificMethodologyResponse()
+  value.methodology.routePriority.push('replicate')
+  value.methodology.providerBudgetsCny.replicate = 40
+  value.methodology.retryPolicy.providerMaxAttempts = { replicate: 1 }
+  const fetchMock = installFetch(() => jsonResponse(value))
+  try {
+    const { container } = render(React.createElement(BenchmarkMethodologyPage, { apiBase: 'https://gateway.example', backendMode: 'gateway' }))
+    await screen.findByRole('heading', { name: '评测方法与完整题集' })
+    assert.match(container.textContent, /bailian → ark → openrouter → replicate/u)
+    assert.match(container.textContent, /Replicate：每题最多 1 次提交，不自动重试。/u)
+    assert.match(container.textContent, /¥40/u)
+    assert.equal(container.querySelectorAll('.bench-method-case').length, 9)
+  } finally { fetchMock.restore() }
+})
