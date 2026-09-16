@@ -248,3 +248,80 @@ test('reference selection, prepared bytes and completed planner survive balance 
     assert.ok(before.stages.every((stage: any) => after.stages.some((saved: any) => saved.id === stage.id)))
   } finally { await r.close() }
 })
+
+test('initial rendering and enhancement success or fallback remain separate visible stages', async () => {
+  for (const enhancementFails of [false, true]) {
+    const r = await createRefineRuntime()
+    try {
+      let renders = 0
+      r.legacy.configureRuntimeFetch(async (input: any) => {
+        const url = String(input)
+        if (url.endsWith('/models')) return Response.json({ data: [] })
+        if (url.endsWith('/responses') || url.endsWith('/chat/completions')) return Response.json({ output_text: 'A scientific workflow with clear labels and arrows.', choices: [{ message: { content: 'A scientific workflow with clear labels and arrows.' } }] })
+        if (/\/images\/(generations|edits)$/.test(url)) {
+          renders++
+          if (enhancementFails && renders === 2) return Response.json({ error: { message: 'enhancement rejected' } }, { status: 400 })
+          return Response.json({ data: [{ b64_json: r.output.toString('base64') }] })
+        }
+        throw new Error('Unexpected fixture request')
+      })
+      const created = await r.post({ action: 'createJob', provider: 'openai', apiKeys: { openai: 'fixture-key' },
+        mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-5.6-sol',
+        methodContent: 'A sufficiently detailed methodology for a scientific workflow diagram.', caption: 'Workflow.',
+        outputFormat: 'png', pipelineMode: 'planner_critic', retrievalSetting: 'none', maxCriticRounds: 0, numCandidates: 1, imageSize: '2K' })
+      assert.equal(created.data.code, 0, JSON.stringify(created))
+      await r.legacy.drainJobAdmission()
+      const job = (await r.post({ action: 'getJob', jobId: created.data.jobId })).data.job
+      assert.equal(job.status, 'succeeded', JSON.stringify(job))
+      assert.equal(renders, 2)
+      const stages = job.stages.filter((stage: any) => stage.type === 'render')
+      assert.equal(stages.length, 2)
+      assert.equal(stages[0].title, '初次渲染')
+      assert.match(stages[1].title, enhancementFails ? /精修放大.*已回退/ : /精修放大（2K）/)
+      assert.equal(Boolean(stages[1].error), enhancementFails)
+      if (!enhancementFails) assert.ok(stages[1].image)
+    } finally { await r.close() }
+  }
+})
+
+test('SVG generation failure reports rendering after a successful saved plan', async () => {
+  const r = await createRefineRuntime()
+  try {
+    let calls = 0
+    r.legacy.configureRuntimeFetch(async (input: any) => {
+      const url = String(input)
+      if (url.endsWith('/models')) return Response.json({ data: [] })
+      assert.ok(url.endsWith('/responses') || url.endsWith('/chat/completions'))
+      calls++
+      return calls === 1 ? Response.json({ output_text: 'A clear scientific diagram with labeled stages.', choices: [{ message: { content: 'A clear scientific diagram with labeled stages.' } }] })
+        : Response.json({ error: { message: 'SVG provider failure' } }, { status: 400 })
+    })
+    const created = await r.post({ action: 'createJob', provider: 'openai', apiKeys: { openai: 'fixture-key' },
+      mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-5.6-sol',
+      methodContent: 'A sufficiently detailed methodology for an SVG workflow diagram.', caption: 'Workflow.',
+      outputFormat: 'svg', pipelineMode: 'planner_critic', retrievalSetting: 'none', maxCriticRounds: 0, numCandidates: 1 })
+    assert.equal(created.data.code, 0, JSON.stringify(created))
+    await r.legacy.drainJobAdmission()
+    const job = (await r.post({ action: 'getJob', jobId: created.data.jobId })).data.job
+    assert.equal(job.status, 'failed'); assert.equal(job.failure.stage, 'rendering')
+    assert.match(job.error, /图像生成失败/)
+    assert.equal(job.stages.filter((stage: any) => stage.type === 'planner').length, 1)
+  } finally { await r.close() }
+})
+
+test('incompatible queued or expired running jobs become visibly failed while live leases stay active', async () => {
+  const db = memoryDb(), cipher = tokenDanceCipher(randomBytes(32).toString('base64'))
+  const workflow = createProviderWorkflow({ db: db as any, now: () => 100000,
+    service: { cipher, accepting: async () => {}, credential: async () => ({ key: 'fixture-key' }) } as any })
+  for (const [id, state, leaseUntil] of [['queued', 'queued', 0], ['expired', 'running', 99999], ['live', 'running', 100001]] as const) {
+    await db.collection('paperbanana_jobs').insertOne({ _id: id, userId: 'owner', status: state, stages: [{ id: 'saved-plan' }] })
+    await db.collection('paperbanana_provider_executions').insertOne({ _id: id, userId: 'owner', version: 'tokendance-workflow-v1', state, leaseUntil: new Date(leaseUntil) })
+  }
+  await workflow.reconcileUser('owner')
+  for (const id of ['queued', 'expired']) {
+    const job = await db.collection('paperbanana_jobs').findOne({ _id: id })
+    assert.equal(job.status, 'failed'); assert.equal(job.recovery.canResume, false)
+    assert.match(job.error, /旧执行版本/); assert.equal(job.stages[0].id, 'saved-plan')
+  }
+  assert.equal((await db.collection('paperbanana_jobs').findOne({ _id: 'live' })).status, 'running')
+})

@@ -5125,9 +5125,9 @@ async function runCandidate(
     await logStage('plan ready')
     await logStage('rendering SVG')
     const svgRenderStartedAt = new Date()
-    const svg = nativeVector
-      ? await callRecraftSvg(renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), body.aspectRatio || 'auto')
-      : await callSvgModel(renderRoute.provider, renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), renderRoute.region)
+    const svg = await atJobStage('rendering', () => nativeVector
+      ? callRecraftSvg(renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), body.aspectRatio || 'auto')
+      : callSvgModel(renderRoute.provider, renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), renderRoute.region))
     const stageImage = await saveStageImage(jobId, candidateId, 'svg-final', svg, 'image/svg+xml', 'utf8')
     await recordStage(jobId, {
       candidateId,
@@ -7923,7 +7923,7 @@ async function appendLog(jobId: string, message: string) {
 
 async function recordStage(jobId: string, input: Partial<JobStage> & { candidateId: number; type: string; title: string }) {
   const existing = await jobs.findOne({ _id: jobId })
-  const previous = existing?.stages?.find((stage: any) => stage.candidateId === Number(input.candidateId || 0) && stage.type === input.type && stage.round === Number(input.round || 0))
+  const previous = existing?.stages?.find((stage: any) => stage.candidateId === Number(input.candidateId || 0) && stage.type === input.type && stage.title === input.title && stage.round === Number(input.round || 0))
   if (previous) return previous
   const now = new Date()
   const startedAt = input.startedAt || now

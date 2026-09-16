@@ -131,7 +131,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       const recovery = { channel: 'tokendance', canResume: false, action: 'review_request', requestState: 'unknown', billingStatus: 'unknown',
         message: '该任务使用旧执行版本，已保留成功步骤。升级后不能安全自动重放，请先核对原调用记录及费用。', expiresAt: row.expiresAt }
       const changed = await executions.updateOne({ _id: jobId, version: row.version, state: row.state }, { $set: { state: 'blocked', recovery } })
-      if (changed.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { recovery } })
+      if (changed.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery, updatedAt: new Date(now()) } })
       return
     }
     if (row.state === 'blocked') return
