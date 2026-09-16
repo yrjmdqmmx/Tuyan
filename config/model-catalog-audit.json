@@ -1,6 +1,6 @@
 {
-  "auditDate": "2026-09-09",
-  "version": "2026-09-09.v18",
+  "auditDate": "2026-09-16",
+  "version": "2026-09-16.v19",
   "incompatiblePolicy": "omit-from-catalog",
   "auditRows": {
     "02-native": 79,
@@ -12,8 +12,8 @@
     "06-tokendance": 93
   },
   "originalStaticCount": 101,
-  "staticCount": 739,
-  "selectableStaticCount": 739,
+  "staticCount": 740,
+  "selectableStaticCount": 740,
   "repositoryBaseline": {
     "commit": "800c91fc7e1d23588771bfb2703ad25a006c6e21",
     "version": "2026-09-07.v12",
@@ -19078,28 +19078,26 @@
       "decision": "excluded",
       "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
       "source": "https://tokendance.space/models/wan3.0-video-prime"
+    },
+    {
+      "provider": "replicate",
+      "id": "google/nano-banana-2-lite",
+      "resolvedId": "google/nano-banana-2-lite",
+      "decision": "added",
+      "reason": "已核对 Replicate 官方模型详情、输入 schema 和按图片计价配置；图像生成与单参考图编辑接入完成，正式付费测试及独立审评另行记录。",
+      "source": "https://replicate.com/google/nano-banana-2-lite"
     }
   ],
   "latestUpdate": {
-    "scope": "GPT Image 2.5 only",
-    "reviewedAt": "2026-09-09",
-    "baselineCommit": "f565b75b2f574a0ccbe327009c88f37451415708",
-    "beforeStatic": 669,
-    "afterStatic": 677,
+    "scope": "Replicate Nano Banana 2 Lite catalog and five-model scientific evaluation integration",
+    "reviewedAt": "2026-09-16",
+    "baselineCommit": "7bfb19f5bb70e5cf0edefff63303af557b723bfc",
+    "beforeStatic": 739,
+    "afterStatic": 740,
     "addedStatic": [
-      "openai/gpt-image-2.5-sunburst",
-      "openai/gpt-image-2.5-sunburst-2026-09-08",
-      "fal/openai/gpt-image-2.5/sunburst/text-to-image",
-      "replicate/openai/gpt-image-2.5-sunburst",
-      "openai/gpt-image-2.5-flare",
-      "openai/gpt-image-2.5-flare-2026-09-08",
-      "fal/openai/gpt-image-2.5/flare/text-to-image",
-      "replicate/openai/gpt-image-2.5-flare"
+      "replicate/google/nano-banana-2-lite"
     ],
-    "addedDynamic": [
-      "openai/gpt-image-2.5-sunburst",
-      "openai/gpt-image-2.5-flare"
-    ],
+    "addedDynamic": [],
     "providerCalls": 0
   }
 }
