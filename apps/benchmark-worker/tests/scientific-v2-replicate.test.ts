@@ -8,6 +8,9 @@ import {
 } from '@paperbanana/benchmark-core'
 import { buildScientificV2Batch, verifyScientificV2BatchManifest, verifyScientificV2BatchState } from '../src/scientific-v2-manifest.js'
 import { runScientificV2Batch, ScientificConfirmedFailureError } from '../src/scientific-v2-runner.js'
+import { reconcileScientificV2UnknownNoArtifact } from '../src/scientific-v2-unknown-reconciliation.js'
+import { createScientificV2MongoRepository } from '../src/scientific-v2-production.js'
+import { productionAtomicDb } from './scientific-v2-production-fixture.js'
 import { assertReplicateAutoPriceEvidence, refreshScientificV2OfficialPriceSources, extractScientificV2OfficialPriceObservationsForOperatorUpperBound } from '../src/scientific-v2-price-refresh.js'
 import { createScientificV2OfficialSignedPriceSnapshot, verifyScientificV2SignedPriceSnapshot } from '../src/scientific-v2-price-attestation.js'
 import { buildScientificV2OperatorPriceAuthorization } from '../src/scientific-v2-price-authorization.js'
@@ -176,4 +179,52 @@ test('five Replicate request bodies keep exact model, source, resolution and no 
     if (operation === 'editing') assert.deepEqual(body[model.startsWith('openai/') ? 'input_images' : 'image_input'], ['data:image/png;base64,aGVsbG8='])
     assert.equal(JSON.stringify(body).includes('not-sent-by-builder'), false)
   }
+})
+
+
+test('a reconciled Replicate failure remains one attempt while only unexecuted slots continue', async () => {
+  const f = await fixture('google/nano-banana')
+  const png = readFileSync(new URL('../../../packages/benchmark-core/assets/scientific-edit-source-v2.png', import.meta.url))
+  const calls: string[] = []
+  const dependencies = {
+    repository: { async save() {} }, recorder: { async recordAttempt() {}, async recordUnsupported() {} },
+    lock: { async acquire() { return 'test-lock' }, async heartbeat() {}, async release() {} },
+    executor: { async execute(request: any) {
+      calls.push(request.slotId)
+      if (calls.length === 5) throw new Error('Provider outcome initially unknown')
+      return { responseClass: 'succeeded' as const, actualCny: request.estimatedCny, bytes: png }
+    } },
+  }
+  const canary = await runScientificV2Batch({ manifest: f.manifest, state: f.state,
+    attestation: { enabled: false, concurrency: 1, lockName, phase: 'canary-only' }, ...dependencies })
+  const paused = await runScientificV2Batch({ manifest: f.manifest, state: canary.state,
+    attestation: { enabled: false, concurrency: 1, lockName, phase: 'full' }, ...dependencies })
+  assert.equal(paused.state.status, 'paused')
+  assert.equal(calls.length, 5)
+  const original = structuredClone(paused.state)
+  const reconciled = reconcileScientificV2UnknownNoArtifact(paused.state, f.manifest, {
+    workflowRunId: 5, candidateCount: 0, spoolCandidateCount: 0, credentialStatus: 200,
+    reconciledAt: new Date().toISOString(),
+  })
+  assert.equal(reconciled.state.slots[4].status, 'failed')
+  assert.equal(reconciled.state.slots[4].attempts.length, 1)
+  assert.deepEqual(paused.state, original)
+  assert.deepEqual(reconciled.state.slots.slice(0, 4), paused.state.slots.slice(0, 4))
+  assert.equal(reconciled.state.providerSpentCny.replicate, paused.state.providerSpentCny.replicate)
+  const storage = productionAtomicDb({ ...f, state: structuredClone(reconciled.state) })
+  const persisted = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')![0]
+  persisted.status = 'running'
+  persisted.claimToken = 'expired-reconciled-claim'
+  persisted.claimLeaseExpiresAt = new Date(0)
+  const complete = await runScientificV2Batch({ manifest: f.manifest, state: reconciled.state,
+    attestation: { enabled: false, concurrency: 1, lockName, phase: 'full', repositoryMode: 'atomic-v2' },
+    ...dependencies, repository: createScientificV2MongoRepository(storage.db, () => new Date(), () => 'reconciled-claim') })
+  assert.equal(complete.state.status, 'completed')
+  assert.equal(calls.length, 9)
+  assert.equal(new Set(calls).size, 9)
+  assert.equal(complete.state.slots.filter(slot => slot.status === 'succeeded').length, 8)
+  assert.equal(complete.state.slots[4].status, 'failed')
+  assert.equal(complete.state.slots[4].attempts.length, 1)
+  verifyScientificV2BatchState(complete.state, f.manifest)
+  verifyScientificV2ImportedState(complete.state, f.manifest)
 })

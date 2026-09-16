@@ -83,7 +83,7 @@ export async function runScientificV2UnknownReconciliationEntry(env: Record<stri
       } finally { await session.endSession() }
       row = await batches.findOne({ manifestHash, stateHash: transformed.state.stateHash, status: 'running' })
     } else {
-      if (existingAudit.workflowRunId !== workflowRunId || existingAudit.previousStateHash !== expectedStateHash
+      if (existingAudit.evidence?.workflowRunId !== workflowRunId || existingAudit.previousStateHash !== expectedStateHash
         || !row || row.stateHash !== existingAudit.stateHash || row.status !== 'running') fail('POST')
     }
     if (!row || row.state?.status !== 'running' || row.manifest?.codeSha !== expectedCodeSha

@@ -1,5 +1,12 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-17 Scientific V2 Replicate 失败核对恢复
+
+- [x] Benchmark / 运维：核对无产物失败后按渠道最大尝试数终结题位，Replicate 首次失败不重试；仅继续未执行题目。保留原 unknown 尝试、对账审计和预算占用，实际账单费用另行核对。恢复命令从冻结清单读取模型数，支持单模型增量。
+- [x] 后端契约：沿用现有签名、状态哈希、审计、租约和事务校验；修复恢复重放读取审计内 evidence.workflowRunId 的位置。
+- [x] Web / 小程序：沿用现有失败题位与费用展示，无新增字段或端侧接入。
+- 本次针对原版 Nano Banana 数学公式题：Replicate 返回 failed、output=null；不重试该题，继续尚未执行的四题前须通过只读产物与凭据核对。
+
 ## 2026-09-16 Scientific V2 替换描述符：生产 Shell 校验补齐
 
 - [x] 后端 / 运维：与已合并的 TypeScript 和输入 staging 契约一致，仅允许 `openai/gpt-image-2` 替换 `codex:gpt-image-2`；Shell 与运行包 Python 校验继续拒绝其他替换对象及额外字段。
