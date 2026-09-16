@@ -2,7 +2,7 @@
 
 ## 2026-09-16 Scientific V2 替换描述符：生产 Shell 校验补齐
 
-- [x] 后端 / 运维：与已合并的 TypeScript 和输入 staging 契约一致，仅允许 `openai/gpt-image-2` 替换 `codex:gpt-image-2`；Shell 继续拒绝其他替换对象及额外字段。
+- [x] 后端 / 运维：与已合并的 TypeScript 和输入 staging 契约一致，仅允许 `openai/gpt-image-2` 替换 `codex:gpt-image-2`；Shell 与运行包 Python 校验继续拒绝其他替换对象及额外字段。
 - [x] Web / 小程序：无新增字段或接入待办，沿用现有费用与榜单接口。
 - 实测价格刷新在付费调用之前拒绝旧 Shell 规则；本修复不重发任何模型调用。
 
