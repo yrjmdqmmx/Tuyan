@@ -66,9 +66,9 @@ const REVIEW_ATTESTATION_SECRET = 'r'.repeat(32)
 const STATE_OPERATION_REPORT_SECRET = 's'.repeat(32)
 
 function canonicalManifest(options: {
-  providers?: Array<'bailian' | 'ark' | 'openrouter'>
+  providers?: Array<'bailian' | 'ark' | 'openrouter' | 'replicate'>
   directEdit?: boolean
-  directEditProviders?: Array<'bailian' | 'ark' | 'openrouter'>
+  directEditProviders?: Array<'bailian' | 'ark' | 'openrouter' | 'replicate'>
   modelId?: string
   canonicalModelId?: string
   modelsPerProvider?: number
@@ -162,7 +162,7 @@ function registrySnapshot(manifest: ReturnType<typeof canonicalManifest>) {
     roles: string[]
     capabilities: { imageGeneration: boolean; imageEditMode: 'direct-edit' | 'analyze-redraw' | 'none'; resolutions: string[] }
   }
-  const providers: Partial<Record<'bailian' | 'ark' | 'openrouter', { models: TestRegistryModel[] }>> = {}
+  const providers: Partial<Record<'bailian' | 'ark' | 'openrouter' | 'replicate', { models: TestRegistryModel[] }>> = {}
   for (const model of manifest.models) {
     if (model.canonicalModelId === 'codex:gpt-image-2') continue
     for (const route of model.routes) {

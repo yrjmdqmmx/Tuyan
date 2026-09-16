@@ -125,12 +125,12 @@ docker run --rm --pull=never --network none --read-only --cap-drop ALL --securit
 
 jq -e '
   (.fileSha256 | test("^[a-f0-9]{64}$")) and (.authorizationHash | test("^[a-f0-9]{64}$")) and
-  (.unresolvedCount | type) == "number" and .unresolvedCount > 0 and
-  (.providerTotals | length) == 3 and
+  (.unresolvedCount | type) == "number" and .unresolvedCount >= 0 and
+  ((.providerTotals | length) == 3 or (.providerTotals | length) == 4) and
   all(.providerTotals[]; (.baselineCny | type) == "number" and (.worstCaseCny | type) == "number" and
     .baselineCny >= 0 and .worstCaseCny >= .baselineCny and .baselineCny <= .capCny) and
   ([.providerTotals[] | {provider,capCny}] | sort_by(.provider)) ==
-    ([{provider:"bailian",capCny:180},{provider:"ark",capCny:180},{provider:"openrouter",capCny:360}] | sort_by(.provider))
+    (([{provider:"bailian",capCny:180},{provider:"ark",capCny:180},{provider:"openrouter",capCny:360}] + (if any(.providerTotals[]; .provider == "replicate") then [{provider:"replicate",capCny:40}] else [] end)) | sort_by(.provider))
 ' "$authorization_result" >/dev/null
 authorization_sha256="$(jq -r .fileSha256 "$authorization_result")"
 
@@ -147,5 +147,5 @@ jq -cn --slurpfile authorization "$authorization_result" --slurpfile signed "$si
     signedSnapshotSha256:$signed[0].fileSha256,priceSnapshotHash:$signed[0].snapshotHash,
     capturedAt:$signed[0].capturedAt,unresolvedCount:$authorization[0].unresolvedCount,
     providerTotals:$authorization[0].providerTotals,concurrency:1,
-    providerCapsCny:{bailian:180,ark:180,openrouter:360},unknownProviderOutcome:"pause_no_retry",
+    providerCapsCny:($authorization[0].providerTotals | map({key:.provider,value:.capCny}) | from_entries),unknownProviderOutcome:"pause_no_retry",
     worker:{enabled:false,concurrency:1},lockName:"/run/lock/paperbanana-hk-production.lock"}'

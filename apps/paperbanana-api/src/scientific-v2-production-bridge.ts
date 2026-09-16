@@ -66,7 +66,10 @@ function scientificRegistrySubset(registry: unknown) {
   }
   const providers = source.providers as AnyRecord
   const exactProviders: AnyRecord = {}
-  for (const provider of ['bailian', 'ark', 'openrouter']) {
+  // Replicate is optional so historical signed authority bytes still verify.
+  const selected = ['bailian', 'ark', 'openrouter', ...(Object.hasOwn(providers, 'replicate') ? ['replicate'] : [])]
+  if (selected.includes('replicate') && (Array.isArray(unavailable) ? unavailable.includes('replicate') : unavailable && Object.hasOwn(unavailable as object, 'replicate'))) fail('REGISTRY_INVALID')
+  for (const provider of selected) {
     const value = providers[provider]
     if (!value || typeof value !== 'object' || Array.isArray(value) || !Array.isArray((value as AnyRecord).models)) fail('REGISTRY_INVALID')
     exactProviders[provider] = structuredClone(value)

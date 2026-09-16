@@ -1,6 +1,6 @@
+import { scientificProviderOrder, scientificProviderBudgets, scientificProviderZeroes, scientificUsesReplicate, scientificMaxAttempts } from '@paperbanana/benchmark-core'
 import {
   PB_SCIENTIFIC_FIGURE_V2,
-  SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY,
   SCIENTIFIC_BENCHMARK_IDENTITY,
   buildScientificV2CanonicalManifest,
   canonicalHash,
@@ -14,7 +14,6 @@ import {
 } from '@paperbanana/benchmark-core'
 
 import {
-  SCIENTIFIC_V2_PROVIDERS,
   assertBoundedScientificV2PlainData,
   assertExactScientificV2Keys,
   assertScientificV2Iso,
@@ -82,8 +81,8 @@ export interface ScientificV2BatchState {
   blockReason: 'provider_budget_exceeded_before_attempt' | 'provider_canary_failed' | null
   createdAt: string
   updatedAt: string
-  providerSpentCny: Record<Exclude<ScientificV2Provider, 'codex'>, number>
-  providerUnreconciledCny: Record<Exclude<ScientificV2Provider, 'codex'>, number>
+  providerSpentCny: Record<string, number>
+  providerUnreconciledCny: Record<string, number>
   slots: ScientificV2SlotState[]
   stateHash: string
 }
@@ -113,7 +112,7 @@ export interface ScientificV2BatchManifest {
   cases: typeof PB_SCIENTIFIC_FIGURE_V2.cases[number][]
   executionOrder: ScientificV2ExecutionSlot[]
   providerOrder: Array<Exclude<ScientificV2Provider, 'codex'>>
-  providerBudgetsCny: Record<Exclude<ScientificV2Provider, 'codex'>, number>
+  providerBudgetsCny: Record<string, number>
   codexLimits: { modelId: 'codex:gpt-image-2'; successfulSlots: 0 | 9; maxAttemptsPerSlot: 4; maxToolCalls: 0 | 36 }
   concurrency: 1
   lockName: string
@@ -123,7 +122,7 @@ export interface ScientificV2BatchManifest {
 }
 
 function isScientificV2Provider(value: string): value is ScientificV2Provider {
-  return value === 'bailian' || value === 'ark' || value === 'openrouter' || value === 'codex'
+  return value === 'bailian' || value === 'ark' || value === 'openrouter' || value === 'replicate' || value === 'codex'
 }
 
 function assertCoreCanonicalManifest(value: CanonicalManifest) {
@@ -136,10 +135,11 @@ function assertCoreCanonicalManifest(value: CanonicalManifest) {
   if (!isScientificV2Hash(manifestHash) || canonicalHash(base) !== manifestHash) scientificV2Error('SCIENTIFIC_V2_CANONICAL_MANIFEST_HASH_MISMATCH')
   if (value.schemaVersion !== 2 || !isScientificV2Hash(value.registryHash)
     || typeof value.registryVersion !== 'string' || !value.registryVersion
-    || canonicalHash(value.routePriority) !== canonicalHash(['bailian', 'ark', 'openrouter'])
+    || !Array.isArray(value.routePriority)
+    || canonicalHash(value.routePriority) !== canonicalHash(scientificProviderOrder(value.routePriority.includes('replicate')))
     || Object.entries(SCIENTIFIC_BENCHMARK_IDENTITY).some(([key, expected]) => (value as unknown as Record<string, unknown>)[key] !== expected)
     || !Array.isArray(value.models) || value.models.length !== value.canonicalModelCount) scientificV2Error('SCIENTIFIC_V2_CANONICAL_MANIFEST_SCHEMA_INVALID')
-  const routePriority: Record<ScientificV2Provider, number> = { bailian: 0, ark: 1, openrouter: 2, codex: 3 }
+  const routePriority: Record<ScientificV2Provider, number> = { bailian: 0, ark: 1, openrouter: 2, replicate: 3, codex: 4 }
   let reconstructedRawRouteCount = 0
   const canonicalModelIds = new Set<string>()
   for (const model of value.models) {
@@ -186,7 +186,7 @@ function assertCoreCanonicalManifest(value: CanonicalManifest) {
 }
 
 function verifyRegistryAuthority(snapshot: ScientificV2RegistrySnapshot, canonicalManifest: CanonicalManifest) {
-  assertBoundedScientificV2PlainData(snapshot, { maxDepth: 8, maxNodes: 20_000, maxArrayLength: 512, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_REGISTRY_SNAPSHOT_INVALID')
+  assertBoundedScientificV2PlainData(snapshot, { maxDepth: 10, maxNodes: 100_000, maxArrayLength: 512, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_REGISTRY_SNAPSHOT_INVALID')
   assertExactScientificV2Keys(snapshot, ['registryVersion', 'registryHash', 'registry', 'snapshotHash'], 'SCIENTIFIC_V2_REGISTRY_SNAPSHOT_INVALID')
   const { snapshotHash, ...snapshotBase } = snapshot
   if (!isScientificV2Hash(snapshotHash) || snapshotHash !== canonicalHash(snapshotBase)
@@ -243,7 +243,7 @@ export function buildScientificV2Batch(input: {
   const executionCanonical = deriveScientificV2ExecutionCanonicalManifest(input.canonicalManifest, input.expansion)
   const models = structuredClone(executionCanonical.models)
   const cases: ScientificV2BatchManifest['cases'] = structuredClone([...PB_SCIENTIFIC_FIGURE_V2.cases])
-  const providerRank: Record<ScientificV2Provider, number> = { bailian: 0, ark: 1, openrouter: 2, codex: 3 }
+  const providerRank: Record<ScientificV2Provider, number> = { bailian: 0, ark: 1, openrouter: 2, replicate: 3, codex: 4 }
   const priceRequirements = new Map(deriveScientificV2PriceRequirements(executionCanonical)
     .map((requirement) => [`${requirement.provider}\0${requirement.modelId}\0${requirement.operation}`, requirement]))
   const executionOrder: ScientificV2ExecutionSlot[] = []
@@ -281,8 +281,8 @@ export function buildScientificV2Batch(input: {
   }
   const caseRank = new Map(cases.map((scientificCase, index) => [scientificCase.id, index]))
   executionOrder.sort((left, right) => {
-    const leftRank = left.provider === null ? 4 : providerRank[left.provider]
-    const rightRank = right.provider === null ? 4 : providerRank[right.provider]
+    const leftRank = left.provider === null ? 5 : providerRank[left.provider]
+    const rightRank = right.provider === null ? 5 : providerRank[right.provider]
     return leftRank - rightRank
       || compareScientificIdentifiers(left.canonicalModelId, right.canonicalModelId)
       || (caseRank.get(left.caseId)! - caseRank.get(right.caseId)!)
@@ -313,8 +313,8 @@ export function buildScientificV2Batch(input: {
     models,
     cases,
     executionOrder,
-    providerOrder: [...SCIENTIFIC_V2_PROVIDERS],
-    providerBudgetsCny: { ...SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY },
+    providerOrder: scientificProviderOrder(scientificUsesReplicate(models)),
+    providerBudgetsCny: scientificProviderBudgets(scientificUsesReplicate(models)),
     codexLimits: { modelId: 'codex:gpt-image-2' as const, successfulSlots: input.expansion ? 0 as const : 9 as const, maxAttemptsPerSlot: 4 as const, maxToolCalls: input.expansion ? 0 as const : 36 as const },
     concurrency: 1 as const,
     lockName: input.lockName,
@@ -330,8 +330,8 @@ export function buildScientificV2Batch(input: {
     blockReason: null,
     createdAt: input.createdAt,
     updatedAt: input.createdAt,
-    providerSpentCny: { bailian: 0, ark: 0, openrouter: 0 },
-    providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 },
+    providerSpentCny: scientificProviderZeroes(scientificUsesReplicate(models)),
+    providerUnreconciledCny: scientificProviderZeroes(scientificUsesReplicate(models)),
     slots: executionOrder.map((slot) => ({ ...slot, status: 'pending', costCny: null, attempts: [] })),
   }
   return { manifest, state: deepFreezeScientificV2({ ...stateBase, stateHash: stateHash(stateBase) }) }
@@ -363,8 +363,8 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
     || manifest.suiteHash !== PB_SCIENTIFIC_FIGURE_V2.manifestHash
     || manifest.cases.length !== 9
     || canonicalHash(manifest.cases) !== canonicalHash(PB_SCIENTIFIC_FIGURE_V2.cases)
-    || canonicalHash(manifest.providerOrder) !== canonicalHash(SCIENTIFIC_V2_PROVIDERS)
-    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY)
+    || canonicalHash(manifest.providerOrder) !== canonicalHash(scientificProviderOrder(scientificUsesReplicate(manifest.models)))
+    || canonicalHash(manifest.providerBudgetsCny) !== canonicalHash(scientificProviderBudgets(scientificUsesReplicate(manifest.models)))
     || canonicalHash(manifest.codexLimits) !== canonicalHash({ modelId: 'codex:gpt-image-2', successfulSlots: manifest.expansion ? 0 : 9, maxAttemptsPerSlot: 4, maxToolCalls: manifest.expansion ? 0 : 36 })
     || manifest.lockName !== SCIENTIFIC_V2_PRODUCTION_LOCK_NAME
     || manifest.executionOrder.length !== manifest.models.length * 9
@@ -445,15 +445,15 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
     || state.slots.length !== manifest.executionOrder.length) scientificV2Error('SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   assertScientificV2Iso(state.createdAt, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   assertScientificV2Iso(state.updatedAt, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
-  const providerTotals = { bailian: 0, ark: 0, openrouter: 0 }
-  const providerUnreconciled = { bailian: 0, ark: 0, openrouter: 0 }
+  const providerTotals = scientificProviderZeroes(scientificUsesReplicate(manifest.models))
+  const providerUnreconciled = scientificProviderZeroes(scientificUsesReplicate(manifest.models))
   const failedCanaryRoutes = new Set(state.slots
-    .filter((slot) => slot.isProviderCanary && slot.status === 'failed' && slot.attempts.length === 4
+    .filter((slot) => slot.isProviderCanary && slot.status === 'failed' && slot.attempts.length === scientificMaxAttempts(slot.provider)
       && slot.provider !== null && slot.provider !== 'codex'
       && ['confirmed_technical_failure', 'confirmed_provider_failure'].includes(slot.attempts.at(-1)?.responseClass || ''))
     .map((slot) => `${slot.provider}:${slot.canonicalModelId}`))
-  assertExactScientificV2Keys(state.providerSpentCny, ['bailian', 'ark', 'openrouter'], 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
-  assertExactScientificV2Keys(state.providerUnreconciledCny, ['bailian', 'ark', 'openrouter'], 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
+  assertExactScientificV2Keys(state.providerSpentCny, manifest.providerOrder, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
+  assertExactScientificV2Keys(state.providerUnreconciledCny, manifest.providerOrder, 'SCIENTIFIC_V2_STATE_SCHEMA_INVALID')
   for (let index = 0; index < state.slots.length; index += 1) {
     const slot = state.slots[index]
     const frozen = manifest.executionOrder[index]
@@ -468,7 +468,7 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
       || slot.isProviderCanary !== frozen.isProviderCanary
       || slot.routeStatus !== frozen.routeStatus
       || !scientificCase || !slotStatuses.includes(slot.status)
-      || !Array.isArray(slot.attempts) || slot.attempts.length > 4) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
+      || !Array.isArray(slot.attempts) || slot.attempts.length > scientificMaxAttempts(slot.provider)) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     if (slot.status === 'pending' || slot.status === 'awaiting_artifact' || slot.status === 'not_executed') {
       if (slot.costCny !== null || slot.attempts.length !== 0) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
       if (slot.status === 'awaiting_artifact' && slot.provider !== 'codex') scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
@@ -487,7 +487,7 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
       const lastClass = slot.attempts.at(-1)!.responseClass
       if ((slot.status === 'unknown' && lastClass !== 'unknown_provider_outcome')
         || (slot.status === 'retrying' && !['confirmed_technical_failure', 'confirmed_provider_failure'].includes(lastClass))
-        || (slot.status === 'failed' && (slot.attempts.length !== 4 || !['confirmed_technical_failure', 'confirmed_provider_failure'].includes(lastClass)))
+        || (slot.status === 'failed' && (slot.attempts.length !== scientificMaxAttempts(slot.provider) || !['confirmed_technical_failure', 'confirmed_provider_failure'].includes(lastClass)))
       ) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
     } else if (slot.status === 'budget_blocked') {
       if (slot.attempts.length === 0 ? slot.costCny !== null : (!Number.isFinite(slot.costCny) || (slot.costCny as number) < 0)) scientificV2Error('SCIENTIFIC_V2_STATE_SLOT_INVALID')
@@ -571,7 +571,7 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
     if (slot.costCny !== expectedCost) scientificV2Error('SCIENTIFIC_V2_STATE_BUDGET_INVALID')
     if (slot.provider && slot.provider !== 'codex') providerTotals[slot.provider] = addCny(providerTotals[slot.provider], reconstructedSlotCost)
   }
-  for (const provider of SCIENTIFIC_V2_PROVIDERS) {
+  for (const provider of manifest.providerOrder) {
     if (scientificV2CnyToUnits(providerTotals[provider]) !== scientificV2CnyToUnits(state.providerSpentCny[provider])
       || scientificV2CnyToUnits(state.providerSpentCny[provider]) > scientificV2CnyToUnits(manifest.providerBudgetsCny[provider])) {
       scientificV2Error('SCIENTIFIC_V2_STATE_BUDGET_INVALID')
@@ -582,7 +582,7 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
   if (!(state.status === 'blocked' && state.blockReason === 'provider_canary_failed')) {
     for (const failedRoute of failedCanaryRoutes) {
       if (state.slots.some((slot) => `${slot.provider}:${slot.canonicalModelId}` === failedRoute && slot.supported && (slot.isProviderCanary
-        ? slot.status !== 'failed' || slot.attempts.length !== 4
+        ? slot.status !== 'failed' || slot.attempts.length !== scientificMaxAttempts(slot.provider)
         : slot.status !== 'failed' || slot.attempts.length !== 0 || slot.costCny !== 0))) {
         scientificV2Error('SCIENTIFIC_V2_STATE_STATUS_INVALID')
       }

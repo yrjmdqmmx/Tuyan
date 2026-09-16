@@ -1,3 +1,4 @@
+import { SCIENTIFIC_REPLICATE_IMAGE25_MODELS } from '@paperbanana/benchmark-core'
 import { createHash } from 'node:crypto'
 
 import {
@@ -31,7 +32,7 @@ const ARK_PRICES = Object.freeze({
 })
 
 export interface ScientificV2OfficialPriceCapture {
-  provider: 'bailian' | 'ark' | 'openrouter' | 'fx'
+  provider: 'bailian' | 'ark' | 'openrouter' | 'replicate' | 'fx'
   kind: 'pricing-page' | 'models-api' | 'endpoints-api' | 'fx-reference'
   url: string
   mediaType: string
@@ -94,8 +95,12 @@ function expectedCaptureIdentities(requirements: ScientificV2PriceRequirement[])
       if (modelId === 'microsoft/mai-image-2.6') expected.push({ provider: 'openrouter', kind: 'endpoints-api', url: `https://openrouter.ai/api/v1/models/${modelId}/endpoints` })
       if (Object.hasOwn(KREA_PRICES, modelId)) expected.push({ provider: 'openrouter', kind: 'pricing-page', url: `https://openrouter.ai/${modelId}` })
     }
-    expected.push({ provider: 'fx', kind: 'fx-reference', url: OFFICIAL_URLS.ecbFx })
   }
+  for (const modelId of [...new Set(requirements.filter((item) => item.provider === 'replicate').map((item) => item.modelId))].sort()) {
+    if (!(SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(modelId)) scientificV2Error('SCIENTIFIC_V2_REPLICATE_MODEL_INVALID')
+    expected.push({ provider: 'replicate', kind: 'pricing-page', url: `https://replicate.com/${modelId}` })
+  }
+  if (providers.has('openrouter') || providers.has('replicate')) expected.push({ provider: 'fx', kind: 'fx-reference', url: OFFICIAL_URLS.ecbFx })
   return expected.sort((left, right) => Buffer.compare(Buffer.from(`${left.provider}\0${left.kind}\0${left.url}`), Buffer.from(`${right.provider}\0${right.kind}\0${right.url}`)))
 }
 
@@ -118,7 +123,7 @@ export function assertScientificV2OfficialPriceRefreshReport(
   assertScientificV2Iso(value.capturedAt, 'SCIENTIFIC_V2_PRICE_REFRESH_REPORT_INVALID')
   for (const capture of value.captures) {
     exactRefreshKeys(capture, ['provider', 'kind', 'url', 'mediaType', 'capturedAt', 'byteSize', 'bytesSha256'])
-    if (!['bailian', 'ark', 'openrouter', 'fx'].includes(capture.provider)
+    if (!['bailian', 'ark', 'openrouter', 'replicate', 'fx'].includes(capture.provider)
       || !['pricing-page', 'models-api', 'endpoints-api', 'fx-reference'].includes(capture.kind)
       || capture.capturedAt !== value.capturedAt || typeof capture.mediaType !== 'string' || !capture.mediaType
       || !Number.isSafeInteger(capture.byteSize) || capture.byteSize < 1 || capture.byteSize > MAX_CAPTURE_BYTES
@@ -219,10 +224,14 @@ export async function refreshScientificV2OfficialPriceSources(input: {
         capturedAt: input.capturedAt, fetchImpl,
       })
     }
-    await capture({
-      provider: 'fx', kind: 'fx-reference', url: OFFICIAL_URLS.ecbFx, capturedAt: input.capturedAt, fetchImpl,
-    })
   }
+  for (const modelId of [...new Set(requirements.filter((item) => item.provider === 'replicate').map((item) => item.modelId))].sort()) {
+    if (!(SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(modelId)) scientificV2Error('SCIENTIFIC_V2_REPLICATE_MODEL_INVALID')
+    await capture({ provider: 'replicate', kind: 'pricing-page', url: `https://replicate.com/${modelId}`, capturedAt: input.capturedAt, fetchImpl })
+  }
+  if (providers.has('openrouter') || providers.has('replicate')) await capture({
+    provider: 'fx', kind: 'fx-reference', url: OFFICIAL_URLS.ecbFx, capturedAt: input.capturedAt, fetchImpl,
+  })
   captures.sort((left, right) => Buffer.compare(Buffer.from(`${left.provider}\0${left.kind}\0${left.url}`), Buffer.from(`${right.provider}\0${right.kind}\0${right.url}`)))
   const unresolved = initialUnresolved(requirements)
   const base = {
@@ -347,6 +356,34 @@ function assertMai26ConservativePriceEvidence(imageBytes: Buffer, tokenBytes: Bu
     || imageRoute.supported_parameters?.n?.max !== 1) invalid()
 }
 
+
+export function assertReplicateAutoPriceEvidence(bytes: Buffer) {
+  const text = bytes.toString('utf8')
+  const marker = '"billingConfig":'
+  const configs: any[] = []
+  for (let start = text.indexOf(marker); start >= 0; start = text.indexOf(marker, start + marker.length)) {
+    if (configs.length >= 8) scientificV2Error('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
+    const tail = text.slice(start + marker.length).trimStart()
+    let depth = 0, quoted = false, escaped = false, end = -1
+    for (let index = 0; index < tail.length; index += 1) {
+      const char = tail[index]
+      if (quoted) { if (escaped) escaped = false; else if (char === '\\') escaped = true; else if (char === '"') quoted = false; continue }
+      if (char === '"') quoted = true
+      else if (char === '{' || char === '[') depth += 1
+      else if (char === '}' || char === ']') { depth -= 1; if (depth === 0) { end = index + 1; break } }
+    }
+    try { configs.push(JSON.parse(tail.slice(0, end))) } catch { scientificV2Error('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID') }
+  }
+  // The official page repeats the same configuration for separate UI panels.
+  if (!configs.length || configs.some((value) => canonicalHash(value) !== canonicalHash(configs[0]))) scientificV2Error('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
+  const tiers = configs[0]?.current_tiers
+  const auto = Array.isArray(tiers) ? tiers.filter((tier: any) => canonicalHash(tier.criteria) === canonicalHash([
+    { description: 'auto', subtype: 'string', title: 'model variant', type: 'equals', value: 'auto' },
+  ])) : []
+  if (auto.length !== 1 || auto[0].prices?.length !== 1 || auto[0].prices[0].metric !== 'image_output_count'
+    || auto[0].prices[0].type !== 'per-unit' || auto[0].prices[0].price !== '$0.25') scientificV2Error('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
+}
+
 export async function extractScientificV2OfficialPriceObservations(input: {
   canonicalManifest: Parameters<typeof deriveScientificV2PriceRequirements>[0]
   refreshReport: ScientificV2OfficialPriceRefreshReport
@@ -394,6 +431,17 @@ export async function extractScientificV2OfficialPriceObservations(input: {
     assertMai26ConservativePriceEvidence(imageEndpoint.bytes, tokenEndpoint.bytes)
   }
   for (const requirement of requirements) {
+    if (requirement.provider === 'replicate') {
+      const captured = await bytesFor(`https://replicate.com/${requirement.modelId}`)
+      assertReplicateAutoPriceEvidence(captured.bytes)
+      observations.push({
+        provider: 'replicate', modelId: requirement.modelId, operation: requirement.operation,
+        imageSize: requirement.imageSize, billingRegion: 'replicate-global', ...dimensions(requirement.imageSize),
+        charges: [{ billable: 'output_image', unit: 'image', rateDecimal: '0.25', quantityDecimal: '1', resolutionTier: 'quality=auto' }],
+        source: source(captured.capture), openRouterEvidence: null, fxEvidence: await fxEvidence(),
+      })
+      continue
+    }
     if (requirement.provider === 'ark' && Object.hasOwn(ARK_PRICES, requirement.modelId)) {
       const captured = await bytesFor(OFFICIAL_URLS.ark)
       assertArkPriceEvidence(captured.bytes)

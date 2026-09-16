@@ -195,9 +195,10 @@ export async function createScientificV2OfficialSignedPriceSnapshot(input: {
   const requirements = deriveScientificV2PriceRequirements(canonicalManifest)
   let operatorAuthorizationHash: string | null = null
   const observations = [...extracted.observations]
-  if (extracted.unresolved.length > 0) {
+  if (extracted.unresolved.length > 0 || input.operatorAuthorization !== undefined) {
     const authorization = input.operatorAuthorization
     if (!authorization) scientificV2Error('SCIENTIFIC_V2_PRICE_UNRESOLVED')
+    if (extracted.unresolved.length === 0 && !requirements.every((item) => item.provider === 'replicate')) scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
     assertExactScientificV2Keys(authorization, [
       'schemaVersion', 'kind', 'codeSha', 'canonicalManifestHash', 'requirementsHash', 'capturedAt',
       'confirmation', 'entries', 'authorizationHash',
@@ -239,7 +240,7 @@ export async function createScientificV2OfficialSignedPriceSnapshot(input: {
         openRouterEvidence: null, fxEvidence: null,
       })
     }
-    operatorAuthorizationHash = authorizationHash
+    operatorAuthorizationHash = extracted.unresolved.length ? authorizationHash : null
   } else if (input.operatorAuthorization !== undefined) {
     scientificV2Error('SCIENTIFIC_V2_PRICE_OPERATOR_AUTHORIZATION_INVALID')
   }

@@ -1,3 +1,4 @@
+import { scientificProviderOrder, scientificProviderBudgets, scientificMaxAttempts, SCIENTIFIC_REPLICATE_IMAGE25_MODELS } from './scientific-providers.js'
 import { canonicalHash } from './hash.js'
 import { SCIENTIFIC_EDIT_SOURCE } from './scientific-edit-source.js'
 import { PB_SCIENTIFIC_FIGURE_V2 } from './scientific-suite.js'
@@ -15,7 +16,7 @@ export const SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY = Object.freeze({
 } as const)
 
 const hash64 = /^[a-f0-9]{64}$/
-const providers = ['bailian', 'ark', 'openrouter'] as const
+const providers = ['bailian', 'ark', 'openrouter', 'replicate'] as const
 type Provider = typeof providers[number]
 type Operation = 'generation' | 'edit'
 type PricingUnit = 'image' | 'megapixel' | 'token' | 'request'
@@ -269,7 +270,7 @@ export function deriveScientificV2PriceRequirements(canonicalManifest: {
         ? '2K' as const
         : physicalRoute.resolutions.length === 1 && physicalRoute.resolutions[0] === '1K'
           ? '1K' as const
-          : physicalRoute.resolutions.length === 0
+          : (physicalRoute.resolutions.length === 0 || (route.provider === 'replicate' && physicalRoute.resolutions.length === 1 && physicalRoute.resolutions[0] === 'auto'))
             ? 'provider-default' as const
             : fail('SCIENTIFIC_V2_PRICE_OUTPUT_LANE_UNRESOLVED')
       const existing = requirements.get(key)
@@ -340,6 +341,26 @@ function validateObservation(observation: ScientificV2PriceObservation, requirem
   if (operatorUpperBound) {
     if (observation.openRouterEvidence !== null || observation.fxEvidence !== null) fail('SCIENTIFIC_V2_PRICE_OBSERVATION_INVALID')
     return { originalCurrency: 'CNY' as const, cnyAtoms: ceilDivide(total.numerator * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY, total.denominator) }
+  }
+
+  if (observation.provider === 'replicate') {
+    if (!(SCIENTIFIC_REPLICATE_IMAGE25_MODELS as readonly string[]).includes(observation.modelId)
+      || observation.imageSize !== 'provider-default' || observation.billingRegion !== 'replicate-global'
+      || observation.source.url !== `https://replicate.com/${observation.modelId}`
+      || observation.openRouterEvidence !== null || !observation.fxEvidence
+      || canonicalHash(observation.charges) !== canonicalHash([{
+        billable: 'output_image', unit: 'image', rateDecimal: '0.25', quantityDecimal: '1', resolutionTier: 'quality=auto',
+      }])) fail('SCIENTIFIC_V2_REPLICATE_PRICE_EVIDENCE_INVALID')
+    const fx = observation.fxEvidence
+    exactKeys(fx, ['source', 'rateDate', 'baseCurrency', 'usdPerBaseDecimal', 'cnyPerBaseDecimal'], 'SCIENTIFIC_V2_FX_EVIDENCE_INVALID')
+    sourceEvidence(fx.source, capturedAt)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fx.rateDate) || fx.baseCurrency !== 'EUR') fail('SCIENTIFIC_V2_FX_EVIDENCE_INVALID')
+    const usd = decimal(fx.usdPerBaseDecimal), cny = decimal(fx.cnyPerBaseDecimal)
+    if (usd.numerator === 0n || cny.numerator === 0n) fail('SCIENTIFIC_V2_FX_EVIDENCE_INVALID')
+    return { originalCurrency: 'USD' as const, cnyAtoms: ceilDivide(
+      total.numerator * cny.numerator * usd.denominator * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY,
+      total.denominator * cny.denominator * usd.numerator,
+    ) }
   }
 
   if (observation.provider !== 'openrouter') {
@@ -425,6 +446,9 @@ function validateObservation(observation: ScientificV2PriceObservation, requirem
 }
 
 function buildPreflight(requirements: ScientificV2PriceRequirement[], entries: ScientificV2AttestedPriceEntry[]) {
+  const replicate = requirements.some((item) => item.provider === 'replicate')
+  const selectedProviders = scientificProviderOrder(replicate)
+  const budgets = scientificProviderBudgets(replicate)
   const routes = requirements.map((requirement) => {
     const entry = entries.find((candidate) => requirementKey(candidate) === requirementKey(requirement))!
     const unit = BigInt(entry.unitCnyAtoms)
@@ -433,12 +457,12 @@ function buildPreflight(requirements: ScientificV2PriceRequirement[], entries: S
       canonicalModelIds: [...requirement.canonicalModelIds], slotCount: requirement.slotCount,
       unitCnyAtoms: unit.toString(),
       baselineCnyAtoms: (unit * BigInt(requirement.slotCount)).toString(),
-      worstCaseCnyAtoms: (unit * BigInt(requirement.slotCount) * BigInt(SCIENTIFIC_V2_PRICE_MAX_ATTEMPTS_PER_SLOT)).toString(),
+      worstCaseCnyAtoms: (unit * BigInt(requirement.slotCount) * BigInt(scientificMaxAttempts(requirement.provider))).toString(),
     }
     return { ...base, routeHash: canonicalHash(base) }
   })
-  const providerTotals = providers.map((provider) => {
-    const budget = BigInt(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[provider]) * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY
+  const providerTotals = selectedProviders.map((provider) => {
+    const budget = BigInt(budgets[provider]) * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY
     const relevant = routes.filter((route) => route.provider === provider)
     const baseline = relevant.reduce((sum, route) => sum + BigInt(route.baselineCnyAtoms), 0n)
     const worstCase = relevant.reduce((sum, route) => sum + BigInt(route.worstCaseCnyAtoms), 0n)
@@ -450,9 +474,9 @@ function buildPreflight(requirements: ScientificV2PriceRequirement[], entries: S
   if (providerTotals.some((item) => !item.baselineWithinBudget)) fail('SCIENTIFIC_V2_PROVIDER_BASELINE_BUDGET_EXCEEDED')
   const base = {
     maxAttemptsPerSlot: SCIENTIFIC_V2_PRICE_MAX_ATTEMPTS_PER_SLOT,
-    providerBudgetsCnyAtoms: Object.fromEntries(providers.map((provider) => [
+    providerBudgetsCnyAtoms: Object.fromEntries(selectedProviders.map((provider) => [
       provider,
-      (BigInt(SCIENTIFIC_V2_PRICE_PROVIDER_BUDGETS_CNY[provider]) * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY).toString(),
+      (BigInt(budgets[provider]) * SCIENTIFIC_V2_PRICE_ATOMS_PER_CNY).toString(),
     ])) as Record<Provider, string>,
     routes, providerTotals,
   }

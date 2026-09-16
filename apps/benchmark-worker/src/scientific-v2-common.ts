@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import sharp, { type Metadata } from 'sharp'
 
 export const SCIENTIFIC_V2_PROVIDERS = ['bailian', 'ark', 'openrouter'] as const
-export type ScientificV2Provider = typeof SCIENTIFIC_V2_PROVIDERS[number] | 'codex'
+export type ScientificV2Provider = typeof SCIENTIFIC_V2_PROVIDERS[number] | 'replicate' | 'codex'
 export type ScientificV2Operation = 'generation' | 'edit'
 export const SCIENTIFIC_V2_MAX_ARTIFACT_BYTES = 25 * 1024 * 1024
 export const SCIENTIFIC_V2_MAX_IMAGE_PIXELS = 40_000_000

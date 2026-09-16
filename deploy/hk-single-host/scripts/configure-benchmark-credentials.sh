@@ -157,7 +157,8 @@ validate_bundle() {
     /^[A-Z_][A-Z0-9_]*=.+$/ {
       key=$0
       sub(/=.*/, "", key)
-      if (!(key in required)) exit 12
+      if (!(key in required) && key != "PAPERBANANA_BENCH_REPLICATE_API_TOKEN") exit 12
+      if (seen[key]) exit 12
       seen[key]++
       next
     }
@@ -275,6 +276,7 @@ build_core_candidate() {
         key == "PAPERBANANA_BENCH_BAILIAN_API_KEY" ||
         key == "PAPERBANANA_BENCH_OPENROUTER_API_KEY" ||
         key == "PAPERBANANA_BENCH_ARK_API_KEY" ||
+        key == "PAPERBANANA_BENCH_REPLICATE_API_TOKEN" ||
         key == "PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID" ||
         key == "PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET" ||
         key == "PAPERBANANA_BENCH_OSS_BUCKET" ||
@@ -316,6 +318,7 @@ build_bench_candidate() {
         key == "PAPERBANANA_BENCH_BAILIAN_API_KEY" ||
         key == "PAPERBANANA_BENCH_OPENROUTER_API_KEY" ||
         key == "PAPERBANANA_BENCH_ARK_API_KEY" ||
+        (key == "PAPERBANANA_BENCH_REPLICATE_API_TOKEN" && key in values) ||
         key == "PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID" ||
         key == "PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET" ||
         key == "PAPERBANANA_BENCH_OSS_BUCKET" ||
@@ -336,6 +339,7 @@ build_bench_candidate() {
       print "PAPERBANANA_BENCH_BAILIAN_API_KEY=" values["PAPERBANANA_BENCH_BAILIAN_API_KEY"]
       print "PAPERBANANA_BENCH_OPENROUTER_API_KEY=" values["PAPERBANANA_BENCH_OPENROUTER_API_KEY"]
       print "PAPERBANANA_BENCH_ARK_API_KEY=" values["PAPERBANANA_BENCH_ARK_API_KEY"]
+      if ("PAPERBANANA_BENCH_REPLICATE_API_TOKEN" in values) print "PAPERBANANA_BENCH_REPLICATE_API_TOKEN=" values["PAPERBANANA_BENCH_REPLICATE_API_TOKEN"]
       print "PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID=" values["PAPERBANANA_BENCH_OSS_ACCESS_KEY_ID"]
       print "PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET=" values["PAPERBANANA_BENCH_OSS_ACCESS_KEY_SECRET"]
       print "PAPERBANANA_BENCH_OSS_BUCKET=" values["PAPERBANANA_BENCH_OSS_BUCKET"]
