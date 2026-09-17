@@ -1,3 +1,4 @@
+import { scientificSlotNeedsFreshEvidence } from '@paperbanana/benchmark-core'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 import {
   SCIENTIFIC_BENCHMARK_AXES,
@@ -167,7 +168,7 @@ function expectedSuccessfulSlots(
         || !['succeeded', 'succeeded_low_quality'].includes(String(slot.attempts.at(-1)?.responseClass))))) {
         scientificV2Error('SCIENTIFIC_V2_REVIEW_TARGET_INCOMPLETE')
       }
-      return [model.canonicalModelId, modelSlots.filter((slot) => slot.status === 'succeeded')]
+      return [model.canonicalModelId, modelSlots.filter((slot) => slot.status === 'succeeded' && scientificSlotNeedsFreshEvidence(manifest, slot))]
     }))
 }
 

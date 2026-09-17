@@ -1,3 +1,4 @@
+import { scientificSlotNeedsFreshEvidence } from '@paperbanana/benchmark-core'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -28,7 +29,7 @@ export function createScientificV2ReviewPackStagingBundle(input: ReviewPackStagi
   const cases = new Map(manifest.cases.map((item) => [item.id, item]))
   const sources = manifest.models.filter((model) => !targetSet || targetSet.has(model.canonicalModelId)).map((model) => {
     const modelKey = model.canonicalModelId
-    const slots = state.slots.filter((slot) => slot.canonicalModelId === modelKey && slot.status === 'succeeded')
+    const slots = state.slots.filter((slot) => slot.canonicalModelId === modelKey && slot.status === 'succeeded' && scientificSlotNeedsFreshEvidence(manifest, slot))
     if (slots.length === 0) return { modelKey, packet: null, signingSecret: null }
     const runHash = canonicalHash({
       batchManifestHash: manifest.manifestHash,

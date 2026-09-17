@@ -491,6 +491,28 @@ test('run-bundle stager rejects re-signed gate, schema, HMAC and frozen-hash tam
       models: [{ canonicalModelId: replacement.targetModelId }], executionOrder: replacementSlots,
       providerBudgetsCny: { ...expansionBase.providerBudgetsCny, replicate: 40 },
       providerOrder: [...expansionBase.providerOrder, 'replicate'] }
+    const retestSlots = replacementSlots.map((slot, index) => ({ ...slot, slotId: `retest-slot-${index}`, isProviderCanary: index === 0, status: index === 4 ? 'pending' : 'succeeded' }))
+    const slotRetest = { schemaVersion: 1, kind: 'confirmed_failure_slot_retest', source: expansion.baseline,
+      targetModelId: replacement.targetModelId, targetSlotIds: ['retest-slot-4'], targetSlotSetHash: canonicalHash(['retest-slot-4']) }
+    const verifyRetest = (descriptor, slots = retestSlots) => {
+      const base = { ...replacementBase, slotRetest: descriptor, executionOrder: retestSlots }
+      const manifestValue = { ...base, manifestHash: canonicalHash(base) }
+      const nextState = { ...stateBase, status: 'running', manifestHash: manifestValue.manifestHash, slots }
+      const stateValue = { ...nextState, stateHash: canonicalHash(nextState) }
+      const attestation = sign({ ...reportBase, batchManifestHash: manifestValue.manifestHash, stateHash: stateValue.stateHash,
+        slotCount: 9, codexToolCallLimit: 0, providerBudgetsCny: base.providerBudgetsCny })
+      return execute(attestation, { phase: 'full', manifestValue, stateValue, expectedManifestHash: manifestValue.manifestHash })
+    }
+    const acceptedRetest = verifyRetest(slotRetest)
+    assert.equal(acceptedRetest.status, 0, acceptedRetest.stderr)
+    for (const malformed of [{ ...slotRetest, extra: true }, { ...slotRetest, source: null },
+      { ...slotRetest, targetSlotIds: [] }, { ...slotRetest, targetSlotSetHash: '0'.repeat(64) },
+      { ...slotRetest, targetModelId: 'other' }, { ...slotRetest, targetSlotIds: ['retest-slot-0'], targetSlotSetHash: canonicalHash(['retest-slot-0']) }]) {
+      const rejected = verifyRetest(malformed)
+      assert.notEqual(rejected.status, 0)
+      assert.match(rejected.stderr, /assembly failed \[slot-retest\]/)
+    }
+    assert.notEqual(verifyRetest(slotRetest, retestSlots.map((slot, index) => index === 5 ? { ...slot, status: 'pending' } : slot)).status, 0)
     const validReplacement = verifyExpansion(replacementBase, replacementSlots)
     assert.equal(validReplacement.status, 0, validReplacement.stderr)
     for (const descriptor of [{ ...replacement, replacesModelId: 'other-model' }, { ...replacement, targetModelId: expansion.targetModelId }, { ...replacement, extra: true }]) {

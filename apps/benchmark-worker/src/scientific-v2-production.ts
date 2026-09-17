@@ -1,3 +1,4 @@
+import { scientificSlotNeedsFreshEvidence } from '@paperbanana/benchmark-core'
 import { SCIENTIFIC_EDIT_SOURCE, canonicalHash, readScientificEditSourcePng } from '@paperbanana/benchmark-core'
 import { createHash, randomUUID } from 'node:crypto'
 import { constants, readFileSync } from 'node:fs'
@@ -1231,7 +1232,8 @@ export async function renderScientificV2PublicEvidence(input: {
     targetModelIds = sorted
   }
   const targetSet = targetModelIds ? new Set(targetModelIds) : null
-  const selectedSlots = authoritative.state.slots.filter((slot) => !targetSet || targetSet.has(slot.canonicalModelId))
+  const selectedSlots = authoritative.state.slots.filter((slot) => (!targetSet || targetSet.has(slot.canonicalModelId))
+    && scientificSlotNeedsFreshEvidence(authoritative.manifest, slot))
   if (targetSet && (selectedSlots.length !== targetSet.size * 9
     || targetSet.size !== new Set(selectedSlots.map((slot) => slot.canonicalModelId)).size
     || selectedSlots.some((slot) => slot.status !== 'succeeded'
@@ -1243,7 +1245,7 @@ export async function renderScientificV2PublicEvidence(input: {
   const evidence: unknown[] = []
   const sourceObjectKey = scientificV2PrivateArtifactObjectKey(SCIENTIFIC_EDIT_SOURCE.sourceHash, 'png')
   const fixedSourceBytes = input.editSourcePng || readScientificV2ProductionEditSourcePng()
-  if (!targetSet || selectedSlots.some((slot) => slot.operation === 'edit' && slot.status === 'succeeded')) {
+  if ((!targetSet && !authoritative.manifest.slotRetest) || selectedSlots.some((slot) => slot.operation === 'edit' && slot.status === 'succeeded')) {
     await input.store.persistPrivate({
       objectKey: sourceObjectKey, imageHash: SCIENTIFIC_EDIT_SOURCE.sourceHash,
       format: 'png', contentType: 'image/png', bytes: fixedSourceBytes,

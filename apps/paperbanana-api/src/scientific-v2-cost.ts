@@ -21,6 +21,7 @@ export function scientificEvidenceCost(row: Row, batch?: Row | null): Scientific
   const slots = batch.state.slots.filter((slot: Row) => slot.canonicalModelId === row.canonicalModelId && slot.caseId === row.caseId)
   if (slots.length !== 1) return unavailable()
   const slot = slots[0]
+  if (batch.manifest.slotRetest && !batch.manifest.slotRetest.targetSlotIds.includes(slot.slotId)) return unavailable()
   if (slot.status !== row.status || slot.attempts.length !== row.attemptSummary?.count
     || canonicalHash(slot.attempts.map((attempt: Row) => attempt.responseClass)) !== canonicalHash(row.attemptSummary.responseClasses)
     || (slot.status === 'succeeded' && slot.attempts.at(-1)?.rawImageHash !== row.imageHash)) return unavailable()

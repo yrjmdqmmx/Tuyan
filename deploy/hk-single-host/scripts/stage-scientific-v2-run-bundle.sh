@@ -227,7 +227,7 @@ try:
     secrets = [line.split('=', 1)[1] for line in env_lines if line.startswith('PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET=')]
     if len(secrets) != 1 or len(secrets[0].encode('utf-8')) < 32 or len(secrets[0].encode('utf-8')) > 4096:
         raise RuntimeError('secret')
-    if not isinstance(manifest, dict) or set(manifest) != MANIFEST_KEYS | ({'expansion'} if 'expansion' in manifest else set()) or not isinstance(state, dict) or set(state) != STATE_KEYS or not isinstance(attestation, dict) or set(attestation) != ATTESTATION_KEYS or not isinstance(node_hashes, dict) or set(node_hashes) != {'manifestHash','stateHash','canonicalManifestHash','registrySnapshotHash','registryHash','priceSnapshotHash'} or any(not isinstance(value, str) or re.fullmatch(r'[a-f0-9]{64}', value) is None for value in node_hashes.values()):
+    if not isinstance(manifest, dict) or set(manifest) != MANIFEST_KEYS | ({'expansion'} if 'expansion' in manifest else set()) | ({'slotRetest'} if 'slotRetest' in manifest else set()) or not isinstance(state, dict) or set(state) != STATE_KEYS or not isinstance(attestation, dict) or set(attestation) != ATTESTATION_KEYS or not isinstance(node_hashes, dict) or set(node_hashes) != {'manifestHash','stateHash','canonicalManifestHash','registrySnapshotHash','registryHash','priceSnapshotHash'} or any(not isinstance(value, str) or re.fullmatch(r'[a-f0-9]{64}', value) is None for value in node_hashes.values()):
         raise RuntimeError('schema')
     if manifest.get('schemaVersion') != 2 or state.get('schemaVersion') != 2 or attestation.get('schemaVersion') != 2:
         raise RuntimeError('schema')
@@ -286,6 +286,23 @@ try:
                 or any(not isinstance(slot, dict) or slot.get('canonicalModelId') != expansion['targetModelId'] or slot.get('provider') == 'codex' for slot in manifest['executionOrder'] + state['slots'])
                 or manifest.get('codexLimits') != {'modelId':'codex:gpt-image-2','successfulSlots':0,'maxAttemptsPerSlot':4,'maxToolCalls':0}):
             raise RuntimeError('expansion')
+    if 'slotRetest' in manifest:
+        retest = manifest['slotRetest']
+        source = retest.get('source') if isinstance(retest, dict) else None
+        targets = retest.get('targetSlotIds') if isinstance(retest, dict) else None
+        if (not isinstance(retest, dict) or set(retest) != {'schemaVersion','kind','source','targetModelId','targetSlotIds','targetSlotSetHash'}
+                or retest.get('schemaVersion') != 1 or retest.get('kind') != 'confirmed_failure_slot_retest'
+                or not isinstance(source, dict) or set(source) != {'releaseId','releaseHash','batchId','manifestHash'}
+                or any(not isinstance(source.get(key), str) or re.fullmatch(r'[a-f0-9]{64}', source[key]) is None for key in ['releaseHash','manifestHash'])
+                or any(not isinstance(source.get(key), str) or re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{2,199}', source[key]) is None for key in ['releaseId','batchId'])
+                or not isinstance(targets, list) or len(targets) != 1 or not isinstance(targets[0], str)
+                or retest.get('targetSlotSetHash') != canonical_hash(targets)
+                or retest.get('targetModelId') != manifest.get('expansion', {}).get('targetModelId')
+                or not any(slot.get('slotId') == targets[0] and slot.get('canonicalModelId') == retest['targetModelId']
+                           and slot.get('provider') == 'replicate' and not slot.get('isProviderCanary') for slot in manifest.get('executionOrder', []))
+                or phase != 'full'
+                or any(slot.get('slotId') not in targets and slot.get('status') not in {'succeeded','failed','unsupported'} for slot in state.get('slots', []))):
+            raise RuntimeError('slot-retest')
     report = without(without(attestation, 'reportHash'), 'attestationHash')
     expected_report_hash = canonical_hash(report)
     if attestation.get('reportHash') != expected_report_hash:
@@ -356,7 +373,7 @@ except Exception as error:
         'facts', 'drift', 'hash', 'secret', 'schema', 'identity', 'manifest-hash', 'state-hash',
         'nested', 'canonical-manifest', 'registry-snapshot', 'price-snapshot', 'expected-hashes',
         'binding', 'manifest-gate', 'attestation-gate', 'attestation-counts', 'report-hash',
-        'attestation-hmac', 'phase', 'report', 'expansion',
+        'attestation-hmac', 'phase', 'report', 'expansion', 'slot-retest',
     }
     diagnostic = str(error) if isinstance(error, RuntimeError) and str(error) in allowed_diagnostics else 'unknown'
     sys.stderr.write(f'scientific v2 protected run-bundle assembly failed [{diagnostic}]\n')
