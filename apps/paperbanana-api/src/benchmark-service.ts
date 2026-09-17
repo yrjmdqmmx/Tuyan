@@ -10,6 +10,13 @@ import {
 
 type AnyRecord = Record<string, any>
 
+// Operator-requested listing withdrawal (2026-09-17). Immutable releases and
+// generation/review/cost evidence remain intact; only public visibility changes.
+const scientificWithdrawnModelIds = new Set(['sourceful/riverflow-v2-pro'])
+const isScientificModelWithdrawn = (model: AnyRecord) =>
+  scientificWithdrawnModelIds.has(String(model.canonicalModelId || ''))
+  || scientificWithdrawnModelIds.has(String(model.modelId || ''))
+
 const benchmarkLanes = new Set(['1K-standard', '2K-standard', '4K-standard', 'provider-default'])
 const arenaRankingMethod = () => ({
   id: 'equal_weight_mean_v1',
@@ -411,8 +418,14 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
   if (!storedHash || canonicalHash(releaseBase) !== storedHash) throw new Error('BENCHMARK_RELEASE_HASH_MISMATCH')
   assertScientificReleaseLineage(release)
   const releaseId = String(release._id || release.releaseId || '')
+  const arenaLeaderboard = isArenaLeaderboardRelease(release)
+  const scientificLeaderboard = isScientificLeaderboardRelease(release)
+  const models = Array.isArray(release.models) ? release.models : []
+  const visibleModels = scientificLeaderboard ? models.filter((model: AnyRecord) => !isScientificModelWithdrawn(model)) : models
+  const visibleProfiles = new Set(visibleModels.map((model: AnyRecord) => model.profileId))
   const evidence = []
   for (const item of Array.isArray(release.evidence) ? release.evidence : []) {
+    if (scientificLeaderboard && (isScientificModelWithdrawn(item) || !visibleProfiles.has(item.profileId))) continue
     const objectKey = String(item.objectKey || '')
     if (!releaseId || !objectKey.startsWith('bench/') || objectKey.includes('..')) continue
     await verifyEvidence(objectKey, String(item.imageHash || ''))
@@ -427,12 +440,9 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
       imageHash: String(item.imageHash || ''),
     })
   }
-  const arenaLeaderboard = isArenaLeaderboardRelease(release)
-  const scientificLeaderboard = isScientificLeaderboardRelease(release)
-  const models = Array.isArray(release.models) ? release.models : []
   const rankingMethod = scientificLeaderboard ? scientificRankingMethod() : arenaLeaderboard ? arenaRankingMethod() : undefined
   const publicModels: AnyRecord[] = scientificLeaderboard
-    ? models.map((model: AnyRecord) => publicModel(model, true))
+    ? visibleModels.map((model: AnyRecord) => publicModel(model, true))
     : arenaLeaderboard
     ? models.filter(isEligibleForPublicLeaderboard).map((model: AnyRecord) => ({
       ...publicModel(model, true),
@@ -448,6 +458,18 @@ export async function publicBenchmarkRelease(release: AnyRecord, signEvidence: (
       overallRank: overallRanks[index],
       dimensionRanks: Object.fromEntries(BENCHMARK_AXES.map((axis) => [axis, dimensionRanks[axis][index]])),
     }))
+  }
+  if (scientificLeaderboard && visibleModels.length !== models.length) {
+    // Preserve all stored scores; withdraw only the named model and recompute
+    // competition ranks among the remaining public models, including ties.
+    const overallRanks = competitionRanks(publicModels.map((model) => model.overallScore))
+    const dimensionRanks = Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) =>
+      [axis, competitionRanks(publicModels.map((model) => model.scores[axis]))]))
+    rankedModels = publicModels.map<AnyRecord>((model, index) => ({
+      ...model,
+      overallRank: overallRanks[index],
+      dimensionRanks: Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, dimensionRanks[axis][index]])),
+    })).sort((a, b) => a.overallRank - b.overallRank || Buffer.compare(Buffer.from(a.modelId), Buffer.from(b.modelId)))
   }
   return {
     releaseId,
@@ -539,7 +561,7 @@ export function createBenchmarkService({
           ? await repository.publicEvidenceForRelease(String(published.releaseHash || ''), { profileId: profile.profileId, limit: scientific ? 12 : 4 })
           : null
         const evidence = result ? await (scientific ? publicScientificEvidenceItems : publicEvidenceItems)({
-          rawItems: result.items, releaseHash: String(published.releaseHash || ''), eligibleProfiles: new Set(published.models.map((model: AnyRecord) => String(model.profileId || ''))),
+          rawItems: scientific ? result.items.map((item: AnyRecord) => ({ ...item, overallRank: profile.overallRank })) : result.items, releaseHash: String(published.releaseHash || ''), eligibleProfiles: new Set(published.models.map((model: AnyRecord) => String(model.profileId || ''))),
           signEvidence, verifyEvidence,
         }) : []
         const publicCases = (scientific ? publicScientificMethodologySuite() : publicArenaMethodologySuite()).cases
@@ -563,11 +585,11 @@ export function createBenchmarkService({
         const result = repository.publicEvidenceForRelease
           ? await repository.publicEvidenceForRelease(String(published.releaseHash || ''), { caseId, cursor: String(body.cursor || ''), limit })
           : { items: [], nextCursor: null }
+        const profiles = new Map(published.models.map((model: AnyRecord) => [String(model.profileId || ''), model]))
         const items = await (scientific ? publicScientificEvidenceItems : publicEvidenceItems)({
-          rawItems: result.items, releaseHash: String(published.releaseHash || ''), eligibleProfiles: new Set(published.models.map((model: AnyRecord) => String(model.profileId || ''))),
+          rawItems: scientific ? result.items.map((item: AnyRecord) => ({ ...item, overallRank: (profiles.get(item.profileId) as AnyRecord | undefined)?.overallRank })) : result.items, releaseHash: String(published.releaseHash || ''), eligibleProfiles: new Set(published.models.map((model: AnyRecord) => String(model.profileId || ''))),
           signEvidence, verifyEvidence,
         })
-        const profiles = new Map(published.models.map((model: AnyRecord) => [String(model.profileId || ''), model]))
         return {
           code: 0,
           case: structuredClone((scientific ? publicScientificMethodologySuite() : publicArenaMethodologySuite()).cases.find((item: AnyRecord) => item.id === caseId)),
