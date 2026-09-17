@@ -212,7 +212,7 @@ run_migration
     || releaseLookup.partialFilterExpression !== undefined) throw new Error("scientific_v2_release_identity_lookup differs")
   if (releaseIndexes.some(index => index.name === "scientific_v2_release_identity")) throw new Error("legacy scientific_v2_release_identity remains")
   const collectionNames = new Set(benchmark.getCollectionNames())
-  for (const collection of ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle"]) {
+  for (const collection of ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle", "paperbanana_benchmark_scientific_v2_rereviews"]) {
     if (!collectionNames.has(collection)) throw new Error(`Scientific V2 transactional collection is missing: ${collection}`)
   }
 '
@@ -254,6 +254,20 @@ docker exec "$mongo_container" mongosh --quiet \
     releaseLifecycle.insertOne({_id: "scientific-v2-api-release-lifecycle", releaseId: "scientific-v2-api-release", releaseHash: "d".repeat(64), status: "active"})
     releaseLifecycle.updateOne({_id: "scientific-v2-api-release-lifecycle"}, {$set: {updated: true}})
     if (releaseLifecycle.findOne({_id: "scientific-v2-api-release-lifecycle"})?.updated !== true) throw new Error("Scientific V2 API release lifecycle CRUD failed")
+    const rereviews = benchmark.getCollection("paperbanana_benchmark_scientific_v2_rereviews")
+    rereviews.insertOne({_id: "scientific-v2-api-review-only", providerCalls: 0})
+    rereviews.updateOne({_id: "scientific-v2-api-review-only"}, {$set: {status: "review_ready"}})
+    if (rereviews.findOne({_id: "scientific-v2-api-review-only"})?.status !== "review_ready") throw new Error("Scientific V2 API review-only session CRUD failed")
+    for (const [label, operation] of [
+      ["delete", () => rereviews.deleteOne({_id: "scientific-v2-api-review-only"})],
+      ["createIndex", () => rereviews.createIndex({status: 1})],
+      ["listIndexes", () => rereviews.getIndexes()],
+    ]) {
+      let denied = false
+      try { operation() }
+      catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") denied = true; else throw error }
+      if (!denied) throw new Error(`Scientific V2 API review-only ${label} must be rejected as Unauthorized`)
+    }
     let releaseUpdateRejected = false
     try { releases.updateOne({_id: "scientific-v2-api-release"}, {$set: {profileStatus: "draft"}}) }
     catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") releaseUpdateRejected = true; else throw error }
@@ -320,6 +334,12 @@ docker exec "$mongo_container" mongosh --quiet \
     rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_releases"), "release")
     rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_release_heads"), "release head")
     rejectWrite(db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_release_lifecycle"), "release lifecycle")
+    const rereviews = db.getSiblingDB("paperbanana_benchmark").getCollection("paperbanana_benchmark_scientific_v2_rereviews")
+    rejectWrite(rereviews, "review-only session")
+    let reviewOnlyReadRejected = false
+    try { rereviews.findOne({_id: "scientific-v2-api-review-only"}) }
+    catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") reviewOnlyReadRejected = true; else throw error }
+    if (!reviewOnlyReadRejected) throw new Error("Scientific V2 Worker review-only read must be rejected as Unauthorized")
     let scientificDeleteRejected = false
     try { scientificBatches.deleteOne({_id: "scientific-v2-worker-batch"}) }
     catch (error) { if (error.code === 13 || error.codeName === "Unauthorized") scientificDeleteRejected = true; else throw error }

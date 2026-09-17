@@ -46,7 +46,8 @@ done
   const apiWritableCollections = ["paperbanana_benchmark_suites", "paperbanana_benchmark_models", "paperbanana_benchmark_runs", "paperbanana_benchmark_samples", "paperbanana_benchmark_judgments", "paperbanana_benchmark_public_evidence", "paperbanana_benchmark_prompt_submissions", "paperbanana_benchmark_prompt_digests"]
   const scientificV2ApiWritableCollections = ["paperbanana_benchmark_scientific_v2_batches", "paperbanana_benchmark_scientific_v2_dispatches", "paperbanana_benchmark_scientific_v2_review_artifacts", "paperbanana_benchmark_scientific_v2_public_evidence"]
   const scientificV2ApiReleaseStateCollections = ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle"]
-  const scientificV2TransactionalCollections = ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle"]
+  const scientificV2ApiReviewOnlyCollections = ["paperbanana_benchmark_scientific_v2_rereviews"]
+  const scientificV2TransactionalCollections = ["paperbanana_benchmark_release_heads", "paperbanana_benchmark_release_lifecycle", "paperbanana_benchmark_scientific_v2_rereviews"]
   const scientificV2WorkerWritableCollections = ["paperbanana_benchmark_scientific_v2_batches", "paperbanana_benchmark_scientific_v2_dispatches"]
   const existingBenchmarkCollections = new Set(benchmark.getCollectionNames())
   for (const collection of scientificV2TransactionalCollections) {
@@ -134,6 +135,7 @@ done
         ...apiWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]})),
         ...scientificV2ApiWritableCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update", "createIndex", "listIndexes"]})),
         ...scientificV2ApiReleaseStateCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update"]})),
+        ...scientificV2ApiReviewOnlyCollections.map(collection => ({resource: {db: "paperbanana_benchmark", collection}, actions: ["find", "insert", "update"]})),
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_dispatches"}, actions: ["find"]},
         {resource: {db: "paperbanana_benchmark", collection: "paperbanana_benchmark_releases"}, actions: ["find", "insert"]},
       ],

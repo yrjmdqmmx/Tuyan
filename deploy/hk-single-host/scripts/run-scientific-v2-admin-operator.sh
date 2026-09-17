@@ -4,7 +4,7 @@ umask 077
 
 operation='' expected_sha='' expected_core_digest='' expected_worker_digest='' input_sha256='' confirm=''
 usage() {
-  echo 'usage: run-scientific-v2-admin-operator.sh --operation freeze|expansion-freeze|remediate-freeze|attest|diagnose|import-worker|import-codex|export-review|import-review|import-arbitration|publish --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --input-sha256 64_HEX --confirm PHRASE' >&2
+  echo 'usage: run-scientific-v2-admin-operator.sh --operation freeze|expansion-freeze|remediate-freeze|attest|diagnose|import-worker|import-codex|export-review|import-review|import-arbitration|publish|rereview --expected-sha 40_HEX --expected-core-digest 64_HEX --expected-worker-digest 64_HEX --input-sha256 64_HEX --confirm PHRASE' >&2
   exit 64
 }
 while (($#)); do
@@ -18,7 +18,7 @@ while (($#)); do
     *) usage ;;
   esac
 done
-[[ "$operation" =~ ^(freeze|expansion-freeze|remediate-freeze|attest|diagnose|import-worker|import-codex|export-review|import-review|import-arbitration|publish)$
+[[ "$operation" =~ ^(freeze|expansion-freeze|remediate-freeze|attest|diagnose|import-worker|import-codex|export-review|import-review|import-arbitration|publish|rereview)$
   && "$expected_sha" =~ ^[a-f0-9]{40}$ && "$expected_core_digest" =~ ^[a-f0-9]{64}$
   && "$expected_worker_digest" =~ ^[a-f0-9]{64}$ && "$input_sha256" =~ ^[a-f0-9]{64}$
   && "$confirm" == "$operation-scientific-v2-admin-disabled-worker" ]] || usage
@@ -125,7 +125,13 @@ const operation=process.env.PAPERBANANA_SCIENTIFIC_V2_ADMIN_OPERATION;
 const exact=(value,keys)=>{if(!value||typeof value!=="object"||Array.isArray(value)||Object.keys(value).sort().join("\0")!==[...keys].sort().join("\0"))throw new Error("SCIENTIFIC_V2_ADMIN_INPUT_SCHEMA_INVALID")};
 const exactOneOf=(value,schemas)=>{if(!schemas.some(keys=>{try{exact(value,keys);return true}catch{return false}}))throw new Error("SCIENTIFIC_V2_ADMIN_INPUT_SCHEMA_INVALID")};
 let body;
-if(operation==="freeze"){exact(input,["batchId","registryAuthority","registrySnapshot","canonicalManifest","manifest","initialState"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeBatch",...input}}
+const reviewCommands=["freeze","export","import","arbitrate","inspect","publish"];
+if(operation==="rereview"){
+  exact(input,["reviewCommand","sessionId","payload"]);
+  if(!reviewCommands.includes(input.reviewCommand)||typeof input.sessionId!=="string"||!/^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$/.test(input.sessionId)||!input.payload||typeof input.payload!=="object"||Array.isArray(input.payload))throw new Error("SCIENTIFIC_V2_ADMIN_INPUT_SCHEMA_INVALID");
+  body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"reviewOnly",...input};
+}
+else if(operation==="freeze"){exact(input,["batchId","registryAuthority","registrySnapshot","canonicalManifest","manifest","initialState"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeBatch",...input}}
 else if(operation==="expansion-freeze"){exact(input,["batchId","registryAuthority","registrySnapshot","canonicalManifest","manifest","initialState"]);if(!input.manifest?.expansion)throw new Error("SCIENTIFIC_V2_ADMIN_INPUT_SCHEMA_INVALID");body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeExpansionBatch",...input}}
 else if(operation==="remediate-freeze"){const correctionKeys=["baselineBatchId","baselineManifestHash","baselineReleaseId","baselineReleaseHash"];exactOneOf(input,[["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash","targetModelIds","targetSlotIds","targetSlotSetHash"],["batchId","sourceBatchId","sourceManifestHash","sourceReleaseHash",...correctionKeys,"targetModelIds","targetSlotIds","targetSlotSetHash"]]);if(input.sourceReleaseHash==="25b48bbfa7f8a7818adcdc088bb11ee596ab14720558f89c63c440989c8a0fbe"&&!correctionKeys.every(key=>Object.hasOwn(input,key)))throw new Error("SCIENTIFIC_V2_CORRECTION_PLAN_INVALID");body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"freezeRemediationBatch",...input}}
 else if(operation==="attest"){exact(input,["batchId","manifestHash"]);body={action:"adminBenchmarkControl",evaluationMode:"codex_scientific_v2",command:"operatorAttestation",...input}}
@@ -135,13 +141,34 @@ else if(operation==="export-review"){exact(input,["batchId","assignment","object
 else if(operation==="import-review"){exact(input,["batchId","result"]);body={action:"adminBenchmarkReviewImport",evaluationMode:"codex_scientific_v2",...input}}
 else if(operation==="import-arbitration"){exact(input,["batchId","arbitration","arbitrationHash","attestationHash"]);body={action:"adminBenchmarkReviewImport",evaluationMode:"codex_scientific_v2",...input}}
 else{exact(input,["batchId","objectBindings","evidence"]);body={action:"adminBenchmarkPublish",evaluationMode:"codex_scientific_v2",...input}}
-const response=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID,...(["freeze","expansion-freeze","remediate-freeze"].includes(operation)?{"x-paperbanana-scientific-v2-admin-operation":operation}:{})},body:JSON.stringify(body)});
+const response=await fetch("http://127.0.0.1:3000/paperbanana-api",{method:"POST",headers:{"content-type":"application/json","x-paperbanana-gateway-token":process.env.PAPERBANANA_GATEWAY_TOKEN,"x-paperbanana-admin-transport-token":process.env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN,"x-paperbanana-admin-user-id":process.env.PAPERBANANA_OPERATOR_ADMIN_USER_ID,...(["freeze","expansion-freeze","remediate-freeze","rereview"].includes(operation)?{"x-paperbanana-scientific-v2-admin-operation":operation}:{})},body:JSON.stringify(body)});
 const result=await response.json();
 if(!response.ok||result.code!==0){
   const diagnosticCode=typeof result?.diagnosticCode==="string"&&/^(?:SCIENTIFIC_V2_[A-Z0-9_]{1,96}|MONGO_[0-9]{1,5}(?:_[A-Z0-9_]{1,96})?)$/.test(result.diagnosticCode)?result.diagnosticCode:"";
   throw new Error(`SCIENTIFIC_V2_ADMIN_CORE_REJECTED${diagnosticCode?`:${diagnosticCode}`:""}`);
 }
 const data=result.run??result.packet??result.result??result.release??result;
+if(operation==="rereview"){
+  const invalid=()=>{throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID")};
+  if(!data||typeof data!=="object"||Array.isArray(data)||data.sessionId!==input.sessionId||data.reviewCommand!==input.reviewCommand||typeof data.status!=="string"||!/^[a-z][a-z0-9_-]{0,63}$/.test(data.status)||data.providerCalls!==0||Buffer.byteLength(JSON.stringify(data))>8*1024*1024)invalid();
+  const forbidden=new Set(["privateMappings","privateEnvelope","reviewerIdentity","objectKey","_objectBindings","attestationSecret"]);
+  const inspectKeys=value=>{if(!value||typeof value!=="object")return;for(const [key,nested] of Object.entries(value)){if(forbidden.has(key)||/(?:API_KEY|ACCESS_KEY|SECRET_KEY|PRIVATE_KEY)$/.test(key))invalid();inspectKeys(nested)}};
+  inspectKeys(data);
+  if(input.reviewCommand==="export"||Object.hasOwn(data,"assignment")){
+    const assignment=data.assignment;
+    if(!assignment||typeof assignment!=="object"||Array.isArray(assignment)||!["A","B","ARBITRATION"].includes(assignment.role)||!Array.isArray(assignment.items)||assignment.items.length===0)invalid();
+    if(input.reviewCommand==="export"&&!["A","B"].includes(assignment.role))invalid();
+    for(const item of assignment.items){
+      if(!item||typeof item!=="object"||Array.isArray(item)||typeof item.imageUrl!=="string"||!item.imageUrl.startsWith("https://")||typeof item.imageHash!=="string"||!/^[a-f0-9]{64}$/.test(item.imageHash))invalid();
+      if(Object.hasOwn(item,"sourceUrl")&&(typeof item.sourceUrl!=="string"||!item.sourceUrl.startsWith("https://")))invalid();
+    }
+  }
+  const safe={sessionId:data.sessionId,reviewCommand:data.reviewCommand,status:data.status,providerCalls:0};
+  for(const key of ["modelCount","targetModelCount","preservedModelCount","slotCount","successfulSlotCount","failedSlotCount","reviewCount","submissionCount","disputeCount","arbitrationCount","resultCount"]){if(Object.hasOwn(data,key)){if(!Number.isSafeInteger(data[key])||data[key]<0)invalid();safe[key]=data[key]}}
+  if(data.assignment)safe.itemCount=data.assignment.items.length;
+  await new Promise(resolve=>process.stdout.write(JSON.stringify({schemaVersion:1,operation,providerCalls:0,data:safe,allowedKeys:Object.keys(safe),requiredKeys:["sessionId","reviewCommand","status","providerCalls"],privateData:data}),resolve));
+  process.exit(0);
+}
 const allowedKeys={"expansion-freeze":["batchId","manifestHash","stateHash","replayed"],freeze:["batchId","manifestHash","stateHash","replayed"],"remediate-freeze":["batchId","manifestHash","stateHash","targetSlotCount","replayed"],attest:["batchId","batchManifestHash","stateHash","manifestCodeSha","executionCodeSha","legacyRecoveryStateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash"],diagnose:["batchId","manifestHash","stateHash","status","pauseReason","blockReason","providerSpentCny","providerUnreconciledCny","revision","providerCanaries","diagnosticHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["disputeCount","resultCount","finalHash"],"import-arbitration":["resultCount","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
 const responseRequiredKeys={"expansion-freeze":["batchId","manifestHash","stateHash","replayed"],freeze:["batchId","manifestHash","stateHash","replayed"],"remediate-freeze":["batchId","manifestHash","stateHash","targetSlotCount","replayed"],attest:["batchId","batchManifestHash","stateHash","manifestCodeSha","executionCodeSha","legacyRecoveryStateHash","modelCount","slotCount","revision","issuedAt","reportHash","attestationHash","manifestSnapshot","stateSnapshot"],diagnose:["batchId","manifestHash","stateHash","status","pauseReason","blockReason","providerSpentCny","providerUnreconciledCny","revision","providerCanaries","diagnosticHash","attestationHash"],"import-worker":["stateHash","reviewReady","replayed"],"import-codex":["stateHash","reviewReady","replayed"],"export-review":["role","packages","mappingHash","assignmentSet","assignmentAttestationHash"],"import-review":["status"],"import-arbitration":["status","results","automaticJudgeCalls","finalHash"],publish:["releaseId","releaseHash","profileStatus","replayed"]}[operation];
 if(!data||typeof data!=="object"||Array.isArray(data)||!responseRequiredKeys.every(key=>Object.hasOwn(data,key)))throw new Error("SCIENTIFIC_V2_ADMIN_RESPONSE_SCHEMA_INVALID");
@@ -172,7 +199,7 @@ const requiredKeys=operation==="attest"?allowedKeys:operation==="import-review"?
 const privateData=operation==="attest"?Object.fromEntries(Object.entries(data).filter(([key])=>!["manifestSnapshot","stateSnapshot"].includes(key))):operation==="import-review"||operation==="import-arbitration"?data:undefined;
 const privateManifest=operation==="attest"?data.manifestSnapshot:undefined;
 const privateState=operation==="attest"?data.stateSnapshot:undefined;
-process.stdout.write(JSON.stringify({schemaVersion:1,operation,data:safe,allowedKeys,requiredKeys,...(privateData?{privateData}:{}),...(privateManifest?{privateManifest}:{}),...(privateState?{privateState}:{})}));
+process.stdout.write(JSON.stringify({schemaVersion:1,operation,providerCalls:0,data:safe,allowedKeys,requiredKeys,...(privateData?{privateData}:{}),...(privateManifest?{privateManifest}:{}),...(privateState?{privateState}:{})}));
 '
 "${compose[@]}" exec -T \
   -e PAPERBANANA_OPERATOR_ADMIN_USER_ID="$admin_user_id" \
@@ -186,7 +213,7 @@ jq -e --arg operation "$operation" '.schemaVersion == 1 and .operation == $opera
   ([.data | .. | objects | keys[]] | index("privateMappings")) == null and
   ([.data | .. | objects | keys[]] | index("privateEnvelope")) == null and
   ([.data | .. | objects | keys[]] | index("reviewerIdentity")) == null' "$result" >/dev/null || exit 1
-if [[ "$operation" == attest || "$operation" == import-review || "$operation" == import-arbitration ]]; then
+if [[ "$operation" == attest || "$operation" == import-review || "$operation" == import-arbitration || "$operation" == rereview ]]; then
   private_result="$(mktemp /tmp/paperbanana-scientific-v2-admin-private.XXXXXXXXXXXX)"
   jq -c '.privateData' "$result" >"$private_result"
   chmod 0600 "$private_result"
@@ -235,5 +262,8 @@ if [[ "$operation" == attest ]]; then
   rm -f "$private_state"
   private_state=''
   jq -c --arg privateResponseSha256 "$private_response_sha256" --arg manifestBundleSha256 "$manifest_bundle_sha256" --arg stateBundleSha256 "$state_bundle_sha256" \
-    '{schemaVersion,operation,data,privateResponseSha256:$privateResponseSha256,manifestBundleSha256:$manifestBundleSha256,stateBundleSha256:$stateBundleSha256}' "$result"
-else jq -c '{schemaVersion,operation,data}' "$result"; fi
+    '{schemaVersion,operation,providerCalls:0,data,privateResponseSha256:$privateResponseSha256,manifestBundleSha256:$manifestBundleSha256,stateBundleSha256:$stateBundleSha256}' "$result"
+elif [[ "$operation" == rereview ]]; then
+  jq -c --arg privateResponseSha256 "$private_response_sha256" \
+    '{schemaVersion,operation,providerCalls:0,data,reviewData:.privateData,privateResponseSha256:$privateResponseSha256}' "$result"
+else jq -c '{schemaVersion,operation,providerCalls:0,data}' "$result"; fi

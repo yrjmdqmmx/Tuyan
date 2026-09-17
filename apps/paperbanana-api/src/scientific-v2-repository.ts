@@ -1261,7 +1261,7 @@ export function createScientificV2MongoRepository(
         const batch = await batches.findOne({ batchId: source.batchId, manifestHash: source.batchManifestHash, status: 'published' })
         for (const item of items) if (item.cost.basis === 'unavailable') item.cost = scientificEvidenceCost(item, batch)
         if (items.every(item => item.cost.basis !== 'unavailable')) break
-        const predecessor = source.slotRetest?.source || source.expansion?.baseline
+        const predecessor = source.reviewOnly?.source || source.slotRetest?.source || source.expansion?.baseline
         source = predecessor ? await releases.findOne({ _id: predecessor.releaseId, releaseHash: predecessor.releaseHash }) : null
       }
       return { items, nextCursor: page.length > limit ? String(offset + limit) : null }
