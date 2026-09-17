@@ -6,7 +6,7 @@ on:
       purpose:
         required: true
         type: choice
-        options: [expansion-descriptor, remediate-freeze, attest, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+        options: [expansion-descriptor, remediate-freeze, attest, import-worker, import-codex, export-review, import-review, import-arbitration, publish, rereview]
       expected_control_sha: { required: true }
       expected_deployed_sha: { required: true }
       release_id: { required: true }
@@ -44,7 +44,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           [[ "$GITHUB_SHA" == "$CONTROL_SHA" && "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$DEPLOYED_SHA" =~ ^[a-f0-9]{40}$ ]]
-          [[ "$PURPOSE" =~ ^(expansion-descriptor|remediate-freeze|attest|import-worker|import-codex|export-review|import-review|import-arbitration|publish)$ ]]
+          [[ "$PURPOSE" =~ ^(expansion-descriptor|remediate-freeze|attest|import-worker|import-codex|export-review|import-review|import-arbitration|publish|rereview)$ ]]
           [[ "$RELEASE_ID" =~ ^[1-9][0-9]*$ && "$ASSET_ID" =~ ^[1-9][0-9]*$ && "$ASSET_SIZE" =~ ^[1-9][0-9]*$ ]]
           [[ "$ASSET_SHA" =~ ^[a-f0-9]{64}$ && "$ASSET_SIZE" -le 67108864 ]]
           [[ "$ASSET_NAME" == "scientific-v2-$PURPOSE-$ASSET_SHA.json" ]]
@@ -102,6 +102,11 @@ jobs:
              elif $purpose == "import-review" then (keys | sort) == ["batchId","result"]
              elif $purpose == "import-arbitration" then (keys | sort) == ["arbitration","arbitrationHash","attestationHash","batchId"]
              elif $purpose == "publish" then (keys | sort) == ["batchId","evidence","objectBindings"]
+             elif $purpose == "rereview" then
+               (keys | sort) == ["payload","reviewCommand","sessionId"] and
+               (.reviewCommand | IN("freeze","export","import","arbitrate","inspect","publish")) and
+               (.sessionId | type == "string" and test("^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$")) and
+               (.payload | type) == "object"
              else false end) and
             ([.. | objects | keys[]] | index("attestationSecret") == null) and
             ([.. | objects | keys[]] | map(test("(?:API_KEY|ACCESS_KEY|SECRET_KEY|PRIVATE_KEY)$")) | any | not)

@@ -1,4 +1,5 @@
 import { mutateCommunityPrompt } from './admin-community.js'
+import { createScientificRereviewRepository } from './scientific-v2-rereview-repository.js'
 import {
   BENCHMARK_AXES,
   BENCHMARK_COLLECTIONS,
@@ -1219,6 +1220,11 @@ export function createMongoBenchmarkRepository(
     verifyReviewObject: scientificV2Options.verifyReviewEvidence,
     requireRegistryAuthority: scientificV2Options.requireRegistryAuthority,
   })
+  const rereview = createScientificRereviewRepository(db, {
+    now, codeSha: immutableCodeSha,
+    secret: () => String(scientificV2Options.operatorReportSecret || process.env.PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET || ''),
+    verifyObject: verifyEvidence,
+  })
 
   const activeScientificRelease = async () => {
     const head = await releaseHeads.findOne({ _id: SCIENTIFIC_V2_RELEASE_HEAD_ID })
@@ -1564,6 +1570,7 @@ export function createMongoBenchmarkRepository(
     },
     async control(input: AnyRecord) {
       if (input.evaluationMode === 'codex_scientific_v2') {
+        if (input.command === 'reviewOnly') return rereview.control({ reviewCommand: input.reviewCommand, sessionId: input.sessionId, payload: input.payload })
         if (input.command === 'freezeBatch') return scientificV2.freezeBatch(input)
         if (input.command === 'freezeExpansionBatch') return scientificV2.freezeExpansionBatch(input)
         if (input.command === 'freezeRemediationBatch') return scientificV2.freezeRemediationBatch({

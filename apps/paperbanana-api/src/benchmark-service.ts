@@ -608,7 +608,21 @@ export function createBenchmarkService({
       }
       if (action === 'adminBenchmarkCandidates') return { code: 0, candidates: await repository.candidates() }
       if (action === 'adminBenchmarkApprove') return { code: 0, approval: await repository.approve(body) }
-      if (action === 'adminBenchmarkControl') return { code: 0, run: await repository.control(body) }
+      if (action === 'adminBenchmarkControl') {
+        const run = await repository.control(body) as AnyRecord
+        if (body.command === 'reviewOnly' && run.assignment) {
+          const { _objectBindings, ...publicRun } = run
+          const bindings = new Map((_objectBindings || []).map((item: AnyRecord) => [item.imageHash, item.objectKey]))
+          const items = await Promise.all(run.assignment.items.map(async (item: AnyRecord) => {
+            const key = bindings.get(item.imageHash)
+            const sourceKey = item.kind === 'edit' ? bindings.get(item.sourceHash) : undefined
+            if (typeof key !== 'string' || (item.kind === 'edit' && typeof sourceKey !== 'string')) throw new Error('SCIENTIFIC_V2_REREVIEW_OBJECT_BINDING_INVALID')
+            return { ...item, imageUrl: await signEvidence(key), ...(typeof sourceKey === 'string' ? { sourceUrl: await signEvidence(sourceKey) } : {}) }
+          }))
+          return { code: 0, run: { ...publicRun, assignment: { ...run.assignment, items } } }
+        }
+        return { code: 0, run }
+      }
       if (action === 'adminBenchmarkReviewExport') {
         const packet = await repository.exportReview(body) as AnyRecord
         if (body.evaluationMode === SCIENTIFIC_BENCHMARK_IDENTITY.evaluationMode) {

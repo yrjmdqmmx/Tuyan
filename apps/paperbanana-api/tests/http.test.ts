@@ -11,6 +11,32 @@ const config = {
   version: '0.1.0',
 }
 
+test('review-only commands require the dedicated authenticated admin transport', async () => {
+  let calls = 0
+  const server = createServer({
+    handler: async () => ({ code: 0 }), readinessProbe: async () => ({ ready: true }),
+    healthSnapshot: () => ({ ready: true }), logger: { info() {}, warn() {}, error() {} },
+    config: { ...config, adminToken: 'server-admin', adminTransportToken: 'private-transport' },
+    benchmarkService: { async handle() { calls++; return { code: 0 } } },
+  })
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve))
+  const { port } = server.address() as AddressInfo
+  try {
+    for (const extra of [
+      {},
+      { 'x-paperbanana-scientific-v2-admin-operation': 'rereview' },
+      { 'x-paperbanana-admin-transport-token': 'private-transport', 'x-paperbanana-admin-user-id': 'admin-identity' },
+    ] as Record<string, string>[]) {
+      const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-paperbanana-gateway-token': config.gatewayToken, ...extra },
+        body: JSON.stringify({ action: 'adminBenchmarkControl', evaluationMode: 'codex_scientific_v2', command: 'reviewOnly', reviewCommand: 'publish', sessionId: 'session-id', payload: {} }),
+      })
+      assert.equal(response.status, 400)
+    }
+    assert.equal(calls, 0)
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())) }
+})
+
 async function withServer(
   handler: (ctx: any) => unknown | Promise<unknown>,
   run: (baseUrl: string) => Promise<void>,
@@ -159,7 +185,7 @@ test('protected scientific v2 freeze transport accepts its bounded production-si
   const { port } = server.address() as AddressInfo
   try {
     const padding = 'x'.repeat(1_700_000)
-    for (const [operation, command] of [['freeze', 'freezeBatch'], ['remediate-freeze', 'freezeRemediationBatch'], ['expansion-freeze', 'freezeExpansionBatch']]) {
+    for (const [operation, command] of [['freeze', 'freezeBatch'], ['remediate-freeze', 'freezeRemediationBatch'], ['expansion-freeze', 'freezeExpansionBatch'], ['rereview', 'reviewOnly']]) {
     const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
       method: 'POST',
       headers: {
@@ -205,7 +231,7 @@ test('scientific v2 freeze body allowance cannot be reused by a different admin 
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
   const { port } = server.address() as AddressInfo
   try {
-    for (const [operation, command] of [['freeze', 'operatorAttestation'], ['freeze', 'freezeExpansionBatch'], ['expansion-freeze', 'freezeBatch']]) {
+    for (const [operation, command] of [['freeze', 'operatorAttestation'], ['freeze', 'freezeExpansionBatch'], ['expansion-freeze', 'freezeBatch'], ['rereview', 'freezeBatch'], ['freeze', 'reviewOnly']]) {
     const response = await fetch(`http://127.0.0.1:${port}/paperbanana-api`, {
       method: 'POST',
       headers: {

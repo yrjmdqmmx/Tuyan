@@ -6,7 +6,7 @@ on:
       operation:
         required: true
         type: choice
-        options: [freeze, expansion-freeze, remediate-freeze, attest, diagnose, import-worker, import-codex, export-review, import-review, import-arbitration, publish]
+        options: [freeze, expansion-freeze, remediate-freeze, attest, diagnose, import-worker, import-codex, export-review, import-review, import-arbitration, publish, rereview]
       expected_control_sha:
         description: Exact GitHub workflow checkout SHA; may differ from the frozen deployed data-plane SHA.
         required: true
@@ -48,6 +48,7 @@ jobs:
           set -Eeuo pipefail
           [[ "$CONTROL_SHA" =~ ^[a-f0-9]{40}$ && "$GITHUB_SHA" == "$CONTROL_SHA" ]]
           [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$OPERATION" =~ ^(freeze|expansion-freeze|remediate-freeze|attest|diagnose|import-worker|import-codex|export-review|import-review|import-arbitration|publish|rereview)$ ]]
           for hash in "$CORE_DIGEST" "$WORKER_DIGEST" "$INPUT_HASH"; do [[ "$hash" =~ ^[a-f0-9]{64}$ ]]; done
           [[ "$CONFIRM" == "$OPERATION-scientific-v2-admin-disabled-worker" ]]
           bash -n deploy/hk-single-host/scripts/run-scientific-v2-admin-operator.sh
@@ -94,7 +95,24 @@ jobs:
               ([.. | objects | keys[]] | index("reviewerIdentity") == null) and
               ([.. | objects | keys[]] | index("objectKey") == null)
             ' "$review_output" >/dev/null
-            jq -c '{operation,role:.data.role,packetCount:(.data.packages|length),itemCount:([.data.packages[].items[]]|length)}' "$review_output"
+            jq -c '{operation,role:.data.role,packetCount:(.data.packages|length),itemCount:([.data.packages[].items[]]|length),providerCalls:0}' "$review_output"
+          elif [[ "$OPERATION" == rereview ]]; then
+            review_output="$RUNNER_TEMP/scientific-v2-rereview-result.json"
+            ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command" >"$review_output"
+            chmod 0600 "$review_output"
+            jq -e '
+              .schemaVersion == 1 and .operation == "rereview" and .providerCalls == 0 and
+              (.data | type) == "object" and (.reviewData | type) == "object" and
+              .data.providerCalls == 0 and .reviewData.providerCalls == 0 and
+              (.data.reviewCommand | IN("freeze","export","import","arbitrate","inspect","publish")) and
+              .data.reviewCommand == .reviewData.reviewCommand and
+              (.data.sessionId | type == "string" and test("^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$")) and
+              .data.sessionId == .reviewData.sessionId and .data.status == .reviewData.status and
+              (.privateResponseSha256 | type == "string" and test("^[a-f0-9]{64}$")) and
+              ([.data | keys[]] - ["sessionId","reviewCommand","status","providerCalls","modelCount","targetModelCount","preservedModelCount","slotCount","successfulSlotCount","failedSlotCount","reviewCount","submissionCount","disputeCount","arbitrationCount","resultCount","itemCount"] | length) == 0 and
+              ([.. | objects | keys[]] | any(IN("privateMappings","privateEnvelope","reviewerIdentity","objectKey","_objectBindings","attestationSecret")) | not)
+            ' "$review_output" >/dev/null
+            jq -c '{operation,providerCalls:0,data}' "$review_output"
           else
             ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=120 "$DEPLOY_USER@$DEPLOY_HOST" "$command"
           fi
@@ -105,5 +123,14 @@ jobs:
         with:
           name: scientific-v2-review-export-${{ inputs.input_sha256 }}
           path: ${{ runner.temp }}/scientific-v2-review-export.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload review-only result without printing review content
+        if: ${{ inputs.operation == 'rereview' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scientific-v2-rereview-result-${{ inputs.input_sha256 }}
+          path: ${{ runner.temp }}/scientific-v2-rereview-result.json
           if-no-files-found: error
           retention-days: 1
