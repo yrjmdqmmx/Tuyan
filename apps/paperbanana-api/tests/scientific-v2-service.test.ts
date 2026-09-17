@@ -276,3 +276,71 @@ test('runtime injects the configured server-side review secret into the scientif
   assert.match(main, /operatorReportSecret:\s*config\.benchmark\.reviewSigningSecret/)
   assert.doesNotMatch(main, /PAPERBANANA_BENCH_SCIENTIFIC_V2_OPERATOR_SECRET/)
 })
+
+test('Riverflow V2 Pro withdrawal removes all public entry points, preserves evidence and reranks ties without mutating history', async () => {
+  const release = scientificRelease()
+  const template = structuredClone(release.models[0])
+  const ids = ['sourceful/riverflow-v2-pro', 'sourceful/riverflow-v2.5-pro', 'sourceful/riverflow-v2-fast', 'sourceful/riverflow-v2.5-fast']
+  release.models = ids.map((modelId, index) => ({
+    ...structuredClone(template), modelId, canonicalModelId: modelId, profileId: `profile:${modelId}`,
+    scores: Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map(axis => [axis, [9, 8, 8, 7][index]])),
+    overallScore: [9, 8, 8, 7][index], overallRank: [1, 2, 2, 4][index],
+    dimensionRanks: Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map(axis => [axis, [1, 2, 2, 4][index]])),
+  }))
+  release.evidence = [{ profileId: release.models[0].profileId, modelId: ids[0], objectKey: 'bench/withdrawn.webp', imageHash: '9'.repeat(64) }]
+  const { _id, releaseHash: oldHash, ...base } = release
+  release.releaseHash = canonicalHash(base)
+  const evidenceRows = release.models.map((model: any, index: number) => {
+    const imageHash = String(index + 1).repeat(64)
+    return {
+      ...structuredClone(model.evidence.find((e: any) => e.status === 'succeeded')),
+      sourceReleaseHash: release.releaseHash, profileId: model.profileId, canonicalModelId: model.modelId,
+      overallRank: model.overallRank, imageHash, editedHash: imageHash,
+      variants: [{ kind: 'full', objectKey: `bench/scientific-v2/public/${imageHash}/full.webp`, imageHash, width: 2048, height: 1152, fileSizeBytes: 4096, mimeType: 'image/webp' }],
+      beforeVariants: [{ kind: 'full', objectKey: `bench/scientific-v2/public/${release.editCase.sourceHash}/full.webp`, imageHash: 'c'.repeat(64), width: 2048, height: 1152, fileSizeBytes: 4096, mimeType: 'image/webp' }],
+    }
+  })
+  const frozenRelease = structuredClone(release)
+  const frozenRows = structuredClone(evidenceRows)
+  let evidenceReads = 0
+  const signed: string[] = []
+  const service = createBenchmarkService({
+    repository: {
+      async latestRelease() { return release }, async releaseByModel() { return release },
+      async publicEvidenceForRelease(_hash: string, query: any) {
+        evidenceReads++
+        return { items: query.profileId ? evidenceRows.filter((row: any) => row.profileId === query.profileId) : evidenceRows, nextCursor: null }
+      },
+    } as any,
+    signEvidence: async key => { signed.push(key); return 'https://signed.example/image.webp' },
+  })
+  const board = (await service.handle({ action: 'benchmarkLeaderboard' }, false)).release
+  assert.equal(board.releaseHash, release.releaseHash)
+  assert.equal(board.eligibleModelCount, 3)
+  assert.deepEqual(board.models.map((m: any) => m.modelId), [ids[2], ids[1], ids[3]])
+  assert.deepEqual(board.models.map((m: any) => m.overallRank), [1, 1, 3])
+  assert.deepEqual(board.evidence, [])
+  for (const model of board.models) {
+    const original = release.models.find((m: any) => m.modelId === model.modelId)
+    const { overallRank, dimensionRanks, ...remaining } = model
+    const { overallRank: originalRank, dimensionRanks: originalDimensionRanks, ...originalRemaining } = original
+    assert.deepEqual(remaining, originalRemaining)
+    assert.ok(Object.values(model.dimensionRanks).every(rank => rank === model.overallRank))
+  }
+  for (const query of [{ modelId: ids[0] }, { profileId: release.models[0].profileId }]) {
+    assert.equal((await service.handle({ action: 'benchmarkModelProfile', ...query }, false)).code, 404)
+  }
+  assert.equal(evidenceReads, 0)
+  const profile = (await service.handle({ action: 'benchmarkModelProfile', profileId: release.models[1].profileId }, false)).profile
+  assert.equal(profile.overallRank, 1)
+  assert.equal(profile.evidence[0].overallRank, 1)
+  assert.deepEqual(profile.evidence[0].scores, evidenceRows[1].scores)
+  assert.deepEqual(profile.evidence[0].reviewNotes, evidenceRows[1].reviewNotes)
+  const casePage = await service.handle({ action: 'benchmarkCaseEvidence', caseId: release.editCase.id }, false)
+  assert.equal(casePage.items.length, 3)
+  assert.deepEqual(casePage.items.map((item: any) => item.overallRank), [1, 1, 3])
+  assert.ok(casePage.items.every((item: any) => item.model.modelId !== ids[0] && item.overallRank === item.model.overallRank))
+  assert.ok(signed.every(key => key !== 'bench/withdrawn.webp' && !key.includes('1'.repeat(64))))
+  assert.deepEqual(structuredClone(release), frozenRelease)
+  assert.deepEqual(evidenceRows, frozenRows)
+})
