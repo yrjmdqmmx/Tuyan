@@ -58,16 +58,12 @@ done
 jq -cn --arg deployedSha "$deployed_sha" --arg coreDigest "$core_digest" --arg workerDigest "$worker_digest" \
   --arg coreCodeSha "$core_code_sha" --arg workerCodeSha "$worker_code_sha" --argjson imageLock "$image_lock" \
   '{operation:"scientific-v2-expansion-preflight",providerCalls:0,deployedSha:$deployedSha,coreDigest:$coreDigest,workerDigest:$workerDigest,coreCodeSha:$coreCodeSha,workerCodeSha:$workerCodeSha,sameSha:($deployedSha == $coreCodeSha and $deployedSha == $workerCodeSha),imageLock:$imageLock,worker:{enabled:false,concurrency:1}}'
-docker exec -e SCIENTIFIC_V2_ACTIVE_RELEASE_HASH="$SCIENTIFIC_V2_ACTIVE_RELEASE_HASH" -i paperbanana-hk-mongodb-1 bash -lc 'exec mongosh --quiet --host 127.0.0.1 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$(cat /run/secrets/mongo_root_password)" --authenticationDatabase admin paperbanana_benchmark --file /dev/stdin' <<'JS'
-const hash = process.env.SCIENTIFIC_V2_ACTIVE_RELEASE_HASH;
-const head = db.getCollection('paperbanana_benchmark_release_heads').findOne({releaseHash: hash});
-const lifecycle = head && db.getCollection('paperbanana_benchmark_release_lifecycle').findOne({releaseId: head.releaseId, releaseHash: hash, status: 'active'});
-const release = head && lifecycle && db.getCollection('paperbanana_benchmark_releases').findOne({_id: head.releaseId, releaseHash: hash, profileStatus: 'published', suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2', evaluationEpoch: 'codex-scientific-2026-09-v1'});
-if (!release || !Array.isArray(release.models)) throw new Error('SCIENTIFIC_V2_ACTIVE_BASELINE_INVALID');
-const batch = db.getCollection('paperbanana_benchmark_scientific_v2_batches').findOne({batchId: release.batchId, manifestHash: release.batchManifestHash, status: 'published'});
-if (!batch) throw new Error('SCIENTIFIC_V2_ACTIVE_BASELINE_INVALID');
-print(JSON.stringify({operation:'scientific-v2-expansion-baseline',providerCalls:0,baseline:{releaseId:release._id,releaseHash:hash,batchId:release.batchId,manifestHash:release.batchManifestHash},modelCount:release.models.length,stateHash:batch.stateHash,manifestCodeSha:batch.manifest.codeSha}));
-JS
+# Run the same signed lineage verifier used by expansion/remediation freeze.
+# This uses Core's existing benchmark read access; no root Mongo credentials or Worker access.
+core_container_id="$(docker ps --filter label=com.docker.compose.project=paperbanana-hk --filter label=com.docker.compose.service=paperbanana-api --format '{{.ID}}')"
+[[ "$core_container_id" =~ ^[a-f0-9]+$ ]] || exit 1
+docker exec -e SCIENTIFIC_V2_ACTIVE_RELEASE_HASH="$SCIENTIFIC_V2_ACTIVE_RELEASE_HASH" \
+  "$core_container_id" node /app/dist/scientific-v2-lineage-inspector.mjs
 python3 - <<'PY'
 import hashlib, json, os, pathlib, re, stat
 root = pathlib.Path('/opt/paperbanana/operator-private/scientific-v2')

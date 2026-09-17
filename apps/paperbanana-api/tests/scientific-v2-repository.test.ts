@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
 import { createHmac } from 'node:crypto'
+import { fixture as rereviewFixture, submission as rereviewSubmission } from './fixtures/scientific-v2-rereview-fixture.js'
+import { createRereviewProtocol } from '../src/scientific-v2-rereview.js'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
 
@@ -4029,4 +4031,140 @@ test('one explicit Replicate failed-slot retest preserves eight reviews, histori
       && item.cost.basis === (item.caseId === failed.caseId ? 'official_rate_calculated' : 'invoice_reconciled')))
     assert.equal((await retestRepository.publishScientificV2({ batchId: request.batchId, ...newFacts })).replayed, true)
   } finally { billing.splice(billing.length - 1 - inheritedProofs.length) }
+})
+
+function installReviewOnlyFixture(storage: ReturnType<typeof atomicScientificDb>, original: any, secret: string) {
+  const review = rereviewFixture()
+  const models = structuredClone(review.baseline.models)
+  // Model the real release shape: an aggregate 47-model release may reference a last
+  // single-model generation batch. Its preexisting generation proof remains unchanged.
+  const originalNano = original.models.find((m: any) => m.modelId === 'google/nano-banana')
+  if (originalNano) {
+    models[models.findIndex((m: any) => m.modelId === originalNano.modelId)] = structuredClone(originalNano)
+    if (originalNano.evidence.some((e: any) => e.status === 'failed')) {
+      const empty = models[0], template = models[2]
+      empty.evidence[0] = structuredClone(template.evidence.find((e: any) => e.caseId === empty.evidence[0].caseId))
+    }
+  }
+  const { _id: _id, releaseHash: _hash, ...sourceBase } = structuredClone(original)
+  sourceBase.models = models; sourceBase.sampleCount = 406
+  const sourceHash = canonicalHash(sourceBase)
+  const source = { _id: `bench-scientific-v2-release-${sourceHash.slice(0, 20)}`, ...sourceBase, releaseHash: sourceHash }
+  const sourceRows = models.flatMap((model: any) => model.evidence.map((evidence: any) => ({
+    _id: `fixture-original:${canonicalHash([sourceHash, model.modelId, evidence.caseId])}`,
+    sourceReleaseHash: sourceHash, profileId: model.profileId, canonicalModelId: model.canonicalModelId,
+    overallRank: model.overallRank, ...structuredClone(evidence), createdAt: FIXED_NOW,
+    ...(evidence.variants ? { variants: evidence.variants.map((v: any) => ({ ...v, objectKey: `bench/scientific-v2/public/${evidence.imageHash}/${v.kind}.webp` })) } : {}),
+    ...(evidence.beforeVariants ? { beforeVariants: evidence.beforeVariants.map((v: any) => ({ ...v, objectKey: `bench/scientific-v2/public/${evidence.sourceHash}/${v.kind}.webp` })) } : {}),
+  })))
+  const scope = { ...review.scope, baselineReleaseId: source._id, baselineReleaseHash: sourceHash }
+  const protocol = createRereviewProtocol(scope)
+  const session = protocol.createRereviewSession({ baseline: source, publicEvidence: sourceRows, scope, secret,
+    issuedAt: FIXED_NOW.toISOString(), sessionId: 'signed-rereview-lineage-fixture' })
+  const reviewerA = protocol.validateRereviewSubmission({ session, role: 'A', submission: rereviewSubmission(session, 'A', 8), secret })
+  const reviewerB = protocol.validateRereviewSubmission({ session, role: 'B', submission: rereviewSubmission(session, 'B', 8), secret })
+  const final = protocol.finalizeRereview({ session, reviewerA, reviewerB, secret })
+  const projection = protocol.projectRereviewRelease({ baseline: source, publicEvidence: sourceRows, session, final, secret,
+    publishedAt: FIXED_NOW.toISOString(), publicationCodeSha: 'f'.repeat(40) })
+  const current = projection.release
+  const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!.find(row => row.batchId === original.batchId)!
+  batch.releaseId = source._id; batch.releaseHash = sourceHash
+  storage.rows.get('paperbanana_benchmark_releases')!.push(source, current)
+  storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!.push(...sourceRows, ...projection.publicEvidence)
+  const head = storage.rows.get('paperbanana_benchmark_release_heads')![0]
+  head.releaseId = current._id; head.releaseHash = current.releaseHash
+  storage.rows.get('paperbanana_benchmark_release_lifecycle')!.push(
+    { _id: `lifecycle:${source._id}`, releaseId: source._id, releaseHash: sourceHash, status: 'superseded', supersededByReleaseId: current._id, supersededByReleaseHash: current.releaseHash },
+    { _id: `lifecycle:${current._id}`, releaseId: current._id, releaseHash: current.releaseHash, status: 'active', supersedesReleaseId: source._id, supersedesReleaseHash: sourceHash },
+  )
+  storage.rows.set('paperbanana_benchmark_scientific_v2_rereviews', [{ _id: session.sessionId, session, scope, status: 'published', providerCalls: 0,
+    reviewerA, reviewerB, final, releaseId: current._id, releaseHash: current.releaseHash }])
+  return { source, current, protocol, batch }
+}
+
+test('read-only source inspection and expansion preserve current rereview scores while verifying the old generation batch', async () => {
+  const { storage, secret, baseline } = await expansionBaselineFixture()
+  const { current, source, protocol, batch } = installReviewOnlyFixture(storage, baseline, secret)
+  const originalBatchHash = canonicalHash(batch)
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'rereview-expansion', {
+    operatorReportSecret: secret, immutableCodeSha: 'a'.repeat(40), reviewOnlyProtocolForTest: protocol,
+  })
+  const before = canonicalHash([...storage.rows])
+  const inspection = await repository.inspectPublishedGenerationSource({ releaseHash: current.releaseHash })
+  assert.equal(inspection.baseline.releaseHash, current.releaseHash)
+  assert.equal(inspection.generationSource.releaseHash, source.releaseHash)
+  assert.equal(inspection.reviewOnlyDepth, 1)
+  assert.equal(canonicalHash([...storage.rows]), before)
+  const fixture = expansionFixture(current)
+  const batchId = 'expansion-after-rereview'
+  await repository.freezeExpansionBatch({ batchId, ...fixture })
+  const state = completedScientificState(fixture)
+  const facts = await preparePublishFacts(repository, fixture, state, secret, batchId)
+  const published = await repository.publishScientificV2({ batchId, ...facts })
+  const next = storage.rows.get('paperbanana_benchmark_releases')!.find(row => row.releaseHash === published.releaseHash)!
+  assert.equal(next.models.length, 48)
+  const stripRanks = (model: any) => { const { overallRank: _rank, dimensionRanks: _dims, ...rest } = model; return rest }
+  for (const prior of current.models) assert.deepEqual(stripRanks(next.models.find((m: any) => m.modelId === prior.modelId)), stripRanks(prior))
+  assert.equal(canonicalHash(batch), originalBatchHash)
+  assert.equal(next.models.some((m: any) => m.modelId === 'codex:gpt-image-2'), false)
+})
+
+test('remediation after rereview keeps the current publication as its source and retains original failure billing gates', async () => {
+  const { storage, secret, repository: initial, baseline } = await expansionBaselineFixture()
+  const fixture = replicateRetestFixture(baseline)
+  const sourceBatchId = 'rereview-nano-source'
+  await initial.freezeExpansionBatch({ batchId: sourceBatchId, ...fixture })
+  const state = completedScientificState(fixture)
+  const failed = state.slots.find((slot: any) => slot.caseId === 'scientific-gen-05-math-bilingual')!
+  const { attemptHash: _attempt, ...before } = failed.attempts[0]
+  const failure = { ...before, responseClass: 'confirmed_technical_failure', actualCny: null,
+    rawImageHash: null, byteSize: null, width: null, height: null, format: null, editedHash: null }
+  failed.attempts = [{ ...failure, attemptHash: canonicalHash(failure) }]; failed.status = 'failed'
+  const completed = refreshState(state, '2026-08-31T00:00:07.000Z')
+  const facts = await preparePublishFacts(initial, fixture, completed, secret, sourceBatchId)
+  const published = await initial.publishScientificV2({ batchId: sourceBatchId, ...facts })
+  const generation = storage.rows.get('paperbanana_benchmark_releases')!.find(row => row.releaseHash === published.releaseHash)!
+  const { current, source, protocol, batch } = installReviewOnlyFixture(storage, generation, secret)
+  const batchHash = canonicalHash(batch)
+  const repository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'after-rereview-retest', {
+    operatorReportSecret: secret, immutableCodeSha: 'b'.repeat(40), reviewOnlyProtocolForTest: protocol,
+  })
+  const request = { batchId: 'nano-after-rereview-retest', sourceBatchId, sourceManifestHash: fixture.manifest.manifestHash,
+    sourceReleaseHash: current.releaseHash, targetModelIds: ['google/nano-banana'], targetSlotIds: [failed.slotId], targetSlotSetHash: canonicalHash([failed.slotId]) }
+  await assert.rejects(() => repository.freezeRemediationBatch(request), /PRIOR_CHARGE_UNVERIFIED/)
+  const billing = SCIENTIFIC_V2_BILLING_EVIDENCE as unknown as any[]
+  billing.push({ modelId: 'google/nano-banana', caseId: failed.caseId, imageHash: null, attemptCount: 1,
+    manifestHash: fixture.manifest.manifestHash, currency: 'USD', amount: '0', verifiedAt: FIXED_NOW.toISOString(), evidenceHash: 'e'.repeat(64) })
+  try {
+    await repository.freezeRemediationBatch(request)
+    const frozen = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!.find(row => row.batchId === request.batchId)!
+    assert.equal(frozen.manifest.slotRetest.source.releaseId, current._id)
+    assert.equal(frozen.manifest.slotRetest.source.releaseHash, current.releaseHash)
+    assert.equal(frozen.remediationOf.releaseId, current._id)
+    assert.notEqual(frozen.remediationOf.releaseId, source._id)
+    assert.equal(canonicalHash(batch), batchHash)
+    assert.deepEqual(frozen.state.slots.filter((slot: any) => slot.status === 'pending').map((slot: any) => slot.slotId), [failed.slotId])
+    const retestFixture = { ...fixture, manifest: frozen.manifest, initialState: structuredClone(frozen.state) }
+    const nextState = structuredClone(frozen.state)
+    const success = completedScientificState(retestFixture).slots.find((slot: any) => slot.slotId === failed.slotId)!
+    Object.assign(nextState.slots.find((slot: any) => slot.slotId === failed.slotId), success)
+    nextState.status = 'completed'
+    nextState.providerSpentCny.replicate = Number((nextState.providerSpentCny.replicate + success.costCny).toFixed(8))
+    const nextFacts = await preparePublishFacts(repository, retestFixture, refreshState(nextState, '2026-08-31T00:00:09.000Z'), secret, request.batchId)
+    const result = await repository.publishScientificV2({ batchId: request.batchId, ...nextFacts })
+    const next = storage.rows.get('paperbanana_benchmark_releases')!.find(row => row.releaseHash === result.releaseHash)!
+    const stripRanks = (model: any) => { const { overallRank: _rank, dimensionRanks: _dims, ...rest } = model; return rest }
+    for (const prior of current.models) {
+      const inherited = next.models.find((m: any) => m.modelId === prior.modelId)
+      if (prior.modelId !== 'google/nano-banana') assert.deepEqual(stripRanks(inherited), stripRanks(prior))
+      else for (const evidence of prior.evidence) {
+        const nextEvidence = inherited.evidence.find((row: any) => row.caseId === evidence.caseId)
+        if (evidence.caseId === failed.caseId) assert.equal(nextEvidence.status, 'succeeded')
+        else assert.deepEqual(nextEvidence, evidence)
+      }
+    }
+    assert.equal(next.slotRetest.source.releaseHash, current.releaseHash)
+    assert.equal(next.models.length, 47)
+    assert.equal(canonicalHash(batch), batchHash)
+  } finally { billing.pop() }
 })

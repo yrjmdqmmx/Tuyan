@@ -27,31 +27,23 @@ test('expansion descriptor validator rejects widened schemas and Codex execution
   assert.match(helper, /sha256sum/)
 })
 
-test('read-only preflight requires an active head, matching lifecycle, release and published batch', () => {
+test('read-only preflight uses the same signed lineage inspector with existing Core database permissions', () => {
   const script = source('inspect-scientific-v2-expansion-preflight.sh')
-  const query = script.match(/<<'JS'\n([\s\S]*?)\nJS/)?.[1]
-  assert.ok(query)
-  const hash = 'a'.repeat(64)
-  const documents = {
-    paperbanana_benchmark_release_heads: { releaseId: 'release-one', releaseHash: hash },
-    paperbanana_benchmark_release_lifecycle: { releaseId: 'release-one', releaseHash: hash, status: 'active' },
-    paperbanana_benchmark_releases: { _id: 'release-one', releaseHash: hash, profileStatus: 'published', suiteId: 'pb-scientific-figure-v2', evaluationMode: 'codex_scientific_v2', evaluationEpoch: 'codex-scientific-2026-09-v1', batchId: 'batch-one', batchManifestHash: 'b'.repeat(64), models: Array.from({ length: 40 }, () => ({})) },
-    paperbanana_benchmark_scientific_v2_batches: { batchId: 'batch-one', manifestHash: 'b'.repeat(64), status: 'published', stateHash: 'c'.repeat(64), manifest: { codeSha: 'd'.repeat(40) } },
-  }
-  const run = (docs) => {
-    const lines = []
-    runInNewContext(query, { process: { env: { SCIENTIFIC_V2_ACTIVE_RELEASE_HASH: hash } }, print: (line) => lines.push(JSON.parse(line)), db: { getCollection: (name) => ({ findOne: (filter) => {
-      const doc = docs[name]
-      return doc && Object.entries(filter).every(([key, value]) => doc[key] === value) ? doc : null
-    } }) } })
-    return lines
-  }
-  assert.equal(run(documents)[0].modelCount, 40)
-  assert.deepEqual(run(documents)[0].baseline, { releaseId: 'release-one', releaseHash: hash, batchId: 'batch-one', manifestHash: 'b'.repeat(64) })
-  for (const name of Object.keys(documents)) assert.throws(() => run({ ...documents, [name]: null }), /SCIENTIFIC_V2_ACTIVE_BASELINE_INVALID/)
-  assert.throws(() => run({ ...documents, paperbanana_benchmark_release_lifecycle: { ...documents.paperbanana_benchmark_release_lifecycle, status: 'superseded' } }), /SCIENTIFIC_V2_ACTIVE_BASELINE_INVALID/)
-  assert.doesNotMatch(script, /\.insertOne\(|\.updateOne\(|\.delete|POST|dist\/scientific-v2-operator/)
+  const inspector = readFileSync(fileURLToPath(new URL('../../../apps/paperbanana-api/src/scientific-v2-lineage-inspector.ts', import.meta.url)), 'utf8')
+  const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('../../../apps/paperbanana-api/package.json', import.meta.url)), 'utf8'))
+  assert.match(script, /core_container_id=.*service=paperbanana-api/)
+  assert.match(script, /docker exec -e SCIENTIFIC_V2_ACTIVE_RELEASE_HASH=/)
+  assert.match(script, /node \/app\/dist\/scientific-v2-lineage-inspector\.mjs/)
   assert.match(script, /flock -s 9/)
+  assert.doesNotMatch(script, /MONGO_INITDB_ROOT_USERNAME|mongo_root_password|mongosh|POST/)
+  assert.match(inspector, /PAPERBANANA_BENCH_MONGODB_URI/)
+  assert.match(inspector, /PAPERBANANA_BENCH_REVIEW_SIGNING_SECRET/)
+  assert.match(inspector, /repository\.inspectPublishedGenerationSource\(\{ releaseHash \}\)/)
+  assert.doesNotMatch(inspector, /createIndex|insertOne|insertMany|updateOne|deleteOne|claimNext|beginDispatch|freezeBatch|fetch\(/)
+  assert.match(packageJson.scripts.build, /scientific-v2-lineage-inspector\.ts.*--outfile=dist\/scientific-v2-lineage-inspector\.mjs/)
+  const harness = readFileSync(fileURLToPath(new URL('./run-mongo-index-migration-integration.sh', import.meta.url)), 'utf8')
+  assert.match(harness, /lineageSession\.startTransaction\(\{readConcern: \{level: "snapshot"\}\}\)/)
+  assert.match(harness, /Scientific V2 API lineage snapshot reads passed with existing privileges/)
 })
 
 test('preflight exports exactly five validated immutable deployment inputs', () => {

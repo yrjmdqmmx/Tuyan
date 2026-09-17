@@ -1,3 +1,4 @@
+import { resolveScientificV2ReviewOnlyGenerationRelease } from './scientific-v2-review-lineage.js'
 import { scientificEvidenceCost } from './scientific-v2-cost.js'
 import { scientificProviderOrder, scientificProviderBudgets, scientificProviderZeroes, scientificUsesReplicate, scientificMaxAttempts } from '@paperbanana/benchmark-core'
 import {
@@ -911,6 +912,7 @@ export function createScientificV2MongoRepository(
     verifyReviewObject?: (objectKey: string, imageHash: string) => Promise<void>
     claimLeaseMs?: number
     requireRegistryAuthority?: boolean
+    reviewOnlyProtocolForTest?: Parameters<typeof resolveScientificV2ReviewOnlyGenerationRelease>[0]['protocolForTest']
     correctionPlanForTest?: {
       baselineReleaseHash: string
       activePredecessorReleaseHash: string
@@ -921,6 +923,7 @@ export function createScientificV2MongoRepository(
   const batches = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.batches)
   const dispatches = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.dispatches)
   const reviews = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.reviews)
+  const rereviews = db.collection<AnyRecord>('paperbanana_benchmark_scientific_v2_rereviews')
   const publicEvidence = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.publicEvidence)
   const releases = db.collection<AnyRecord>('paperbanana_benchmark_releases')
   const releaseHeads = db.collection<AnyRecord>(SCIENTIFIC_V2_COLLECTIONS.releaseHeads)
@@ -969,6 +972,41 @@ export function createScientificV2MongoRepository(
     return secret
   }
 
+  const resolveGenerationRelease = (publicationRelease: AnyRecord, session?: any) => {
+    const queryOptions = session ? { session } : undefined
+    return resolveScientificV2ReviewOnlyGenerationRelease({ publicationRelease, secret: operatorSecret(),
+      ...(options.reviewOnlyProtocolForTest ? { protocolForTest: options.reviewOnlyProtocolForTest } : {}),
+      reader: {
+        release: (releaseId, releaseHash) => releases.findOne({ _id: releaseId, releaseHash }, queryOptions as any),
+        review: (sessionId) => rereviews.findOne({ _id: sessionId }, queryOptions as any),
+        evidence: (releaseHash) => publicEvidence.find({ sourceReleaseHash: releaseHash }, queryOptions as any).toArray(),
+        lifecycle: (releaseId, releaseHash) => releaseLifecycle.findOne({ releaseId, releaseHash }, queryOptions as any),
+      },
+    })
+  }
+  const loadGenerationSource = async (publicationRelease: AnyRecord, session?: any) => {
+    const queryOptions = session ? { session } : undefined
+    const resolved = await resolveGenerationRelease(publicationRelease, session)
+    const generationRelease = resolved.generationRelease
+    const source = await batches.findOne({
+      batchId: generationRelease.batchId, manifestHash: generationRelease.batchManifestHash,
+      releaseId: generationRelease._id, releaseHash: generationRelease.releaseHash, status: 'published',
+    }, queryOptions as any)
+    if (!source || source.manifestHash !== source.manifest?.manifestHash
+      || canonicalWithoutHash(source.manifest, 'manifestHash') !== generationRelease.batchManifestHash
+      || source.stateHash !== source.state?.stateHash || source.state?.status !== 'completed'
+      || canonicalWithoutHash(source.state, 'stateHash') !== source.stateHash
+      || source.manifest?.suiteHash !== publicationRelease.suiteHash) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_INVALID')
+    assertRegistryAndManifest(source)
+    verifyScientificV2ImportedState(source.state, source.manifest)
+    const sourceReport = await reviews.findOne({ _id: `scientific-v2-state-report:${source.latestStateReportHash}` }, queryOptions as any)
+    if (!sourceReport || sourceReport.reportHash !== source.latestStateReportHash
+      || canonicalHash(sourceReport.report?.state) !== canonicalHash(source.state)
+      || generationRelease.reviewFinalHash !== source.reviewFinalHash) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_PROVENANCE_INVALID')
+    normalizeScientificV2SignedStateOperationReport({ report: sourceReport.report, reportHash: sourceReport.reportHash, attestationHash: sourceReport.attestationHash }, operatorSecret())
+    return { ...resolved, source }
+  }
+
   const loadExpansionBaseline = async (manifest: AnyRecord, session?: any) => {
     assertScientificV2ExpansionDescriptor(manifest.expansion)
     assertScientificSlotRetest(manifest)
@@ -994,17 +1032,7 @@ export function createScientificV2MongoRepository(
     if (!head || head.releaseId !== baseline.releaseId || head.releaseHash !== baseline.releaseHash || !lifecycle) {
       scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_NOT_ACTIVE')
     }
-    const source = await batches.findOne({
-      batchId: baseline.batchId, manifestHash: baseline.manifestHash,
-      releaseId: baseline.releaseId, releaseHash: baseline.releaseHash, status: 'published',
-    }, queryOptions as any)
-    if (!source || source.manifestHash !== source.manifest?.manifestHash
-      || canonicalWithoutHash(source.manifest, 'manifestHash') !== baseline.manifestHash
-      || source.stateHash !== source.state?.stateHash || source.state?.status !== 'completed'
-      || canonicalWithoutHash(source.state, 'stateHash') !== source.stateHash
-      || source.manifest?.suiteHash !== manifest.suiteHash) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_INVALID')
-    assertRegistryAndManifest(source)
-    verifyScientificV2ImportedState(source.state, source.manifest)
+    const { source } = await loadGenerationSource(release!, session)
     if (retest) {
       const { codeSha: _sourceCode, manifestHash: _sourceHash, slotRetest: _sourceRetest, ...prior } = source.manifest
       const { codeSha: _code, manifestHash: _hash, slotRetest: _retest, ...current } = manifest
@@ -1017,11 +1045,6 @@ export function createScientificV2MongoRepository(
         }
       }
     }
-    const sourceReport = await reviews.findOne({ _id: `scientific-v2-state-report:${source.latestStateReportHash}` }, queryOptions as any)
-    if (!sourceReport || sourceReport.reportHash !== source.latestStateReportHash
-      || canonicalHash(sourceReport.report?.state) !== canonicalHash(source.state)
-      || release!.reviewFinalHash !== source.reviewFinalHash) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_PROVENANCE_INVALID')
-    normalizeScientificV2SignedStateOperationReport({ report: sourceReport.report, reportHash: sourceReport.reportHash, attestationHash: sourceReport.attestationHash }, operatorSecret())
     if (manifest.models.length !== 1 || manifest.models[0].canonicalModelId !== expansion.targetModelId
       || manifest.executionOrder.length !== 9 || manifest.executionOrder.some((slot: AnyRecord) => slot.canonicalModelId !== expansion.targetModelId || slot.provider === 'codex')) {
       scientificError('SCIENTIFIC_V2_EXPANSION_ROSTER_INVALID')
@@ -1238,6 +1261,30 @@ export function createScientificV2MongoRepository(
         if (typeof (collection as any).createIndex === 'function') await (collection as any).createIndex(keys, options)
       }))
     },
+    async inspectPublishedGenerationSource(input: { releaseHash: string }) {
+      assertExactKeys(input, ['releaseHash'], 'SCIENTIFIC_V2_ACTIVE_BASELINE_INVALID')
+      if (!hashPattern.test(input.releaseHash)) scientificError('SCIENTIFIC_V2_ACTIVE_BASELINE_INVALID')
+      const session = db.client.startSession()
+      try {
+        let result: AnyRecord | undefined
+        await session.withTransaction(async () => {
+          const head = await releaseHeads.findOne({ _id: SCIENTIFIC_V2_RELEASE_HEAD_ID, releaseHash: input.releaseHash }, { session } as any)
+          const release = head && await releases.findOne({ _id: head.releaseId, releaseHash: input.releaseHash, profileStatus: 'published' }, { session } as any)
+          const lifecycle = release && await releaseLifecycle.findOne({ releaseId: release._id, releaseHash: input.releaseHash, status: 'active' }, { session } as any)
+          if (!release || !lifecycle) scientificError('SCIENTIFIC_V2_ACTIVE_BASELINE_INVALID')
+          const resolved = await loadGenerationSource(release, session)
+          result = {
+            operation: 'scientific-v2-expansion-baseline', providerCalls: 0,
+            baseline: { releaseId: release._id, releaseHash: release.releaseHash, batchId: release.batchId, manifestHash: release.batchManifestHash },
+            generationSource: { releaseId: resolved.generationRelease._id, releaseHash: resolved.generationRelease.releaseHash,
+              batchId: resolved.source.batchId, manifestHash: resolved.source.manifestHash },
+            reviewOnlyDepth: resolved.reviewOnlyDepth, modelCount: release.models.length,
+            stateHash: resolved.source.stateHash, manifestCodeSha: resolved.source.manifest.codeSha,
+          }
+        }, { readConcern: { level: 'snapshot' } })
+        return deepFreeze(result!)
+      } finally { await session.endSession() }
+    },
     async publicEvidenceForRelease(releaseHash: string, query: { profileId?: string; caseId?: string; cursor?: string; limit: number }) {
       const offset = /^\d+$/.test(String(query.cursor || '')) ? Number(query.cursor) : 0
       const limit = Math.max(1, Math.min(12, Number(query.limit) || 12))
@@ -1361,23 +1408,17 @@ export function createScientificV2MongoRepository(
         || canonicalHash(targetModelIds) !== canonicalHash(correctionPlan.targetModelIds)))) {
         scientificError('SCIENTIFIC_V2_CORRECTION_PLAN_INVALID')
       }
-      const source = await batches.findOne({
-        batchId: sourceBatchId, manifestHash: input.sourceManifestHash,
-        releaseHash: input.sourceReleaseHash, status: 'published',
-      })
-      if (!source || source.state?.status !== 'completed' || source.releaseId === undefined
-        || source.stateHash !== source.state?.stateHash
-        || source.manifestHash !== source.manifest?.manifestHash) {
-        scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
-      }
       const sourceRelease = await releases.findOne({
-        _id: source.releaseId, releaseHash: input.sourceReleaseHash,
-        batchId: sourceBatchId, batchManifestHash: input.sourceManifestHash,
-        profileStatus: 'published',
+        releaseHash: input.sourceReleaseHash, batchId: sourceBatchId,
+        batchManifestHash: input.sourceManifestHash, profileStatus: 'published',
       })
       if (!sourceRelease) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
-      const { _id: _sourceReleaseId, releaseHash: sourceReleaseHash, ...sourceReleaseBase } = sourceRelease
-      if (canonicalHash(sourceReleaseBase) !== sourceReleaseHash) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+      const { source } = await loadGenerationSource(sourceRelease).catch((error) => {
+        if (error instanceof Error && ['SCIENTIFIC_V2_EXPANSION_BASELINE_INVALID', 'SCIENTIFIC_V2_EXPANSION_BASELINE_PROVENANCE_INVALID'].includes(error.message)) {
+          scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
+        }
+        throw error
+      })
       verifyScientificV2ImportedState(source.state, source.manifest)
       const modelSet = new Set(targetModelIds)
       if (targetModelIds.some((modelId) => !source.manifest.models.some((model: AnyRecord) => model.canonicalModelId === modelId))) {
@@ -1414,7 +1455,7 @@ export function createScientificV2MongoRepository(
       }
       const slotRetest: ScientificSlotRetest | undefined = source.manifest.expansion ? {
         schemaVersion: 1, kind: 'confirmed_failure_slot_retest',
-        source: { releaseId: source.releaseId, releaseHash: input.sourceReleaseHash, batchId: sourceBatchId, manifestHash: input.sourceManifestHash },
+        source: { releaseId: sourceRelease._id, releaseHash: input.sourceReleaseHash, batchId: sourceBatchId, manifestHash: input.sourceManifestHash },
         targetModelId: source.manifest.expansion.targetModelId, targetSlotIds, targetSlotSetHash: input.targetSlotSetHash,
       } : undefined
       if (slotRetest) {
@@ -1444,7 +1485,7 @@ export function createScientificV2MongoRepository(
       const remediationOf = {
         batchId: sourceBatchId,
         manifestHash: input.sourceManifestHash,
-        releaseId: source.releaseId,
+        releaseId: sourceRelease._id,
         releaseHash: input.sourceReleaseHash,
         targetModelIds,
         targetSlotIds,
@@ -1474,7 +1515,7 @@ export function createScientificV2MongoRepository(
           ...SCIENTIFIC_BENCHMARK_IDENTITY,
         })
         const sourceLifecycle = await releaseLifecycle.findOne({
-          releaseId: source.releaseId,
+          releaseId: sourceRelease._id,
           releaseHash: input.sourceReleaseHash,
           status: 'active',
           supersedesReleaseId: input.baselineReleaseId,
@@ -1484,7 +1525,7 @@ export function createScientificV2MongoRepository(
           releaseId: input.baselineReleaseId,
           releaseHash: input.baselineReleaseHash,
           status: 'superseded',
-          supersededByReleaseId: source.releaseId,
+          supersededByReleaseId: sourceRelease._id,
           supersededByReleaseHash: input.sourceReleaseHash,
         })
         if (!baselineBatch || baselineBatch.state?.status !== 'completed' || !baselineRelease
