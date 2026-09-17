@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-17T06:20:54.276382+00:00",
+  "independent": {
+    "status": "published",
+    "scopeModels": 47,
+    "reviewedModels": 40,
+    "preservedModels": 7,
+    "reviewedSuccessfulImages": 343,
+    "independentReviews": 686,
+    "independentContexts": 76,
+    "arbitrations": 206,
+    "unchangedFailureSlots": 17,
+    "historicalCodexReleasesPreserved": 6,
+    "generationAndDispatchHistoryUnchanged": true,
+    "providerCalls": 0,
+    "recordedReviewToolIsolationAuditPassed": true,
+    "finalHash": "62ee9dd7a571976a22dc784f12582ddf2cdaf5a6759bf6661e94b223a397e483",
+    "allChecksPassed": true,
+    "allHistoricalReleaseRecordsPreserved": 71,
+    "allHistoricalPublicEvidenceRowsPreserved": 4662
+  },
+  "public": {
+    "releaseId": "bench-scientific-v2-release-8e6619b57c6979d9c568",
+    "releaseHash": "8e6619b57c6979d9c5687893afa64fa40a81b5976f49d1466506d3b4a9ddd2fc",
+    "modelsVerified": 47,
+    "rereviewedModels": 40,
+    "preservedModels": 7,
+    "evidenceRowsVerified": 423,
+    "independentScoresAndRanksMatch": true,
+    "specificReviewNotesMatch": true,
+    "costsUnchanged": true,
+    "allImageMetadataUnchanged": true,
+    "distinctFullImagesDownloadedAndHashVerified": 407,
+    "codexBuiltinImage2Absent": true,
+    "providerCalls": 0,
+    "allChecksPassed": true
+  },
+  "browser": {
+    "releaseHash": "8e6619b57c6979d9c5687893afa64fa40a81b5976f49d1466506d3b4a9ddd2fc",
+    "checkedAt": "2026-09-17T06:19:49.625919+00:00",
+    "tool": "mcp__cua_repl",
+    "publicDataVerification": "post-public-verification.json",
+    "observations": [
+      {
+        "page": "https://www.paperbanana.asia/leaderboard/",
+        "models": 47,
+        "tableRowsIncludingHeader": 48,
+        "topModel": "sourceful/riverflow-v2-pro",
+        "topDisplayedScore": "9.02",
+        "topRank": 1,
+        "retiredCodexPresent": false
+      },
+      {
+        "modelId": "qwen-image-3.0-pro",
+        "displayedScore": "8.58",
+        "rank": 6,
+        "cost": "4.56 CNY budget estimate",
+        "generationCase": "scientific-gen-01-method-flow",
+        "generationHash": "493403ac714469cdf0f4e7286de6ac5c3e0c990ad1d7b7f01987fedf044b963e",
+        "generationImageViewed": true,
+        "specificABNotesViewed": true,
+        "editCase": "scientific-edit-01-text-label",
+        "editHash": "405a6aec6952b85dab6fe5818e91a03971b60bed9d818e73c7aacd304bca64d9",
+        "editBeforeAfterViewed": true,
+        "specificArbitrationNoteViewed": true,
+        "editScores": {
+          "text_symbol_accuracy": 10,
+          "instruction_adherence": 9,
+          "readability_visual_hierarchy": 7.5,
+          "publication_aesthetics": 7.5,
+          "edit_target_accuracy": 10,
+          "non_target_preservation": 9
+        }
+      },
+      {
+        "modelId": "openai/gpt-image-2",
+        "displayedScore": "8.91",
+        "rank": 2,
+        "cost": "1.152 USD reconciled",
+        "caseId": "scientific-gen-01-method-flow",
+        "caseCost": "0.128 USD reconciled",
+        "hash": "d1ccbfafc386046cebdf57868934821634efceab0da8240edba926c354b3b44d",
+        "imageViewed": true,
+        "originalSpecificABNotesViewed": true
+      }
+    ],
+    "allChecksPassed": true
+  },
+  "auditFileSha256": {
+    "scope-freeze.json": "7734fcf462c543ed0242dc65e119360f5b7ac49a5e98d6790725440bd77aa69f",
+    "AB-validation.json": "76ab8dd16ab626d9eec47ad0b7b51c9c347fae3effed765678f9c497c7b44e19",
+    "dispute-verification.json": "f9bd924614b41634f5187ed545eff88ad0457cf55ff598ae57e927263328d195",
+    "import-provenance-verification.json": "249e358e88f7765a0a19124b60cebd2408a5faab35f9f7f1e0a845db572a2a10",
+    "review-isolation-audit.json": "6b5ed3ecf9f07b03062e06c97f7f4693f5ca9b2add85f019f1f14657520f39ac",
+    "independent-verification-published.json": "b350c015a669244ebb65dd3b09aa84c2eaaed8241b7182a4594481d631446b26",
+    "post-public-verification.json": "d384724a9ce38a954d3271bdea5e20ecef1eeb3d72e74d0009fedaf5115f160a",
+    "browser-verification.json": "f4472771b998546ead827692e34ad24bff73c8cada86877470ee05b3819d2734",
+    "model-score-comparison.csv": "2f401c7bbc0c389cdb501d6791655c0e8c0c61b496d5a9868f02de879168ac81",
+    "case-cost-preservation.csv": "fc47726c1f24bd6ca13a234199b624e41cec874d7e61ba59765b146cad019017",
+    "model-cost-preservation.csv": "77e9b2c6197381b9f14ed8109f327adc7bf8048e57a78ba9f84849e1b4943bc8"
+  },
+  "postPublicationPreflight": {
+    "workflowRunId": 35188758196,
+    "status": "success",
+    "providerCalls": 0,
+    "reviewOnlyDepth": 1,
+    "generationSourceReleaseId": "bench-scientific-v2-release-8b7dcbc5447676487a70",
+    "runtimeCodeSha": "b30315491b06c7938759d52e9ad87e3dc92336ca",
+    "workerEnabled": false,
+    "workerConcurrency": 1
+  },
+  "repositoryAttachmentSha256": {
+    "2026-09-17-scientific-v2-rereview-comparison.csv": "91e6f3a30feb02ae935025f0d4ef82d44290075473dfc1a3487e8c00706f24c4"
+  }
+}
