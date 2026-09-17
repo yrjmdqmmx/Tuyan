@@ -693,5 +693,16 @@ export const SCIENTIFIC_V2_BILLING_EVIDENCE = [
     "amount": "0.039",
     "verifiedAt": "2026-09-16T18:27:34.691062+00:00",
     "evidenceHash": "d09c089dd07766c854cb984e1acf34b253a76df29145fe2547cd4cd178676ef5"
+  },
+  {
+    "modelId": "google/nano-banana",
+    "caseId": "scientific-gen-05-math-bilingual",
+    "imageHash": "029ecc15bb2383a1491c567772a5511ae92edbc39828970df1b94c28ac8dc278",
+    "attemptCount": 1,
+    "manifestHash": "8199c9f7322c32932341faa3aabf2845531787040514e208026f1948bfdbb81b",
+    "currency": "USD",
+    "amount": "0.039",
+    "verifiedAt": "2026-09-17T00:39:07.753182+00:00",
+    "evidenceHash": "c4ecf7ef6fc2645d81556ea8db3210679354f26fc8fae6ddb63a21bcd7edf2dc"
   }
 ] as const

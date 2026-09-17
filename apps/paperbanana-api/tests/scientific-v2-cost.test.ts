@@ -64,6 +64,29 @@ test('invoice-confirmed no-output failure is zero, while a mismatched failure re
   assert.equal(scientificEvidenceCost(row, { ...batch, manifestHash: different.manifestHash,
     manifest: { manifestHash: different.manifestHash }, state: { ...different, stateHash: canonicalHash(different) } }).basis, 'budget_estimate')
 })
+test('successful single-slot retest cannot borrow the historical zero-charge failure annotation', () => {
+  const matches = SCIENTIFIC_V2_BILLING_EVIDENCE.filter(item => item.modelId === 'google/nano-banana'
+    && item.caseId === 'scientific-gen-05-math-bilingual')
+  const old = matches.find(item => item.imageHash === null)!
+  const proof = matches.find(item => item.imageHash !== null)!
+  assert.equal(old.amount, '0')
+  assert.notEqual(proof.manifestHash, old.manifestHash)
+  const attempts = [{ responseClass: 'succeeded', rawImageHash: proof.imageHash }]
+  const slot = { canonicalModelId: proof.modelId, caseId: proof.caseId, modelId: proof.modelId,
+    provider: 'replicate', operation: 'generation', imageSize: 'provider-default', status: 'succeeded', attempts, costCny: 0.26157754 }
+  const base = { manifestHash: proof.manifestHash, slots: [slot] }
+  const batch = { status: 'published', manifestHash: proof.manifestHash, manifest: { manifestHash: proof.manifestHash },
+    state: { ...base, stateHash: canonicalHash(base) } }
+  const row = { canonicalModelId: proof.modelId, caseId: proof.caseId, status: 'succeeded', imageHash: proof.imageHash,
+    attemptSummary: { count: 1, responseClasses: ['succeeded'] } }
+  const cost = scientificEvidenceCost(row, batch)
+  assert.equal(cost.basis, 'invoice_reconciled')
+  assert.equal(cost.amount, '0.039')
+  const wrongBase = { ...base, manifestHash: old.manifestHash }
+  assert.notEqual(scientificEvidenceCost(row, { ...batch, manifestHash: old.manifestHash,
+    manifest: { manifestHash: old.manifestHash }, state: { ...wrongBase, stateHash: canonicalHash(wrongBase) } }).basis, 'invoice_reconciled')
+  assert.notEqual(scientificEvidenceCost({ ...row, imageHash: null }, batch).basis, 'invoice_reconciled')
+})
 test('summary adds decimal amounts exactly and never mixes currencies or treats unknown as free', () => {
   const costs = [
     { currency: 'USD', amount: '0.034', basis: 'official_rate_calculated', evidenceHash: 'a'.repeat(64) },
