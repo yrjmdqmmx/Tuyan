@@ -1,5 +1,12 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-17 · Scientific V2 重评后的生成来源兼容
+
+- 当前公开 release 的评分与原生成 batch 分开验证：只读解析 `reviewOnly.source`，逐层核验原签名会话、双审及仲裁、不可变生成证据和发布生命周期；后续增量与重测继承当前评分，仍绑定原始生成记录。
+- [x] Core / 运维：复用同一来源验证器完成 freeze 与只读 preflight；不改既有签名会话、原批次或 Provider 调度。
+- [x] Web / 小程序：公共接口与费用回溯保持兼容，无新增端侧接入。
+- 本变更仅实现兼容性与本地验证，不包含新增模型测试、付费调用或生产发布。
+
 ## 2026-09-17 · Scientific V2 既有产物独立重评
 
 - 新增受保护 `adminBenchmarkControl / reviewOnly` 流程：冻结当前正式 release 与准确的 40 个目标、7 个保留模型；`codex:gpt-image-2` 禁止进入新榜单。仅使用已有原图，重评记录独立于生成批次与 Provider 调度，新增生图调用为零。

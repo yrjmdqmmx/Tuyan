@@ -258,6 +258,18 @@ docker exec "$mongo_container" mongosh --quiet \
     rereviews.insertOne({_id: "scientific-v2-api-review-only", providerCalls: 0})
     rereviews.updateOne({_id: "scientific-v2-api-review-only"}, {$set: {status: "review_ready"}})
     if (rereviews.findOne({_id: "scientific-v2-api-review-only"})?.status !== "review_ready") throw new Error("Scientific V2 API review-only session CRUD failed")
+    // The lineage inspector uses only these existing find privileges in a read-only snapshot.
+    const lineageSession = db.getMongo().startSession()
+    try {
+      lineageSession.startTransaction({readConcern: {level: "snapshot"}})
+      const snapshot = lineageSession.getDatabase("paperbanana_benchmark")
+      for (const collection of ["paperbanana_benchmark_releases", "paperbanana_benchmark_release_heads",
+        "paperbanana_benchmark_release_lifecycle", "paperbanana_benchmark_scientific_v2_batches",
+        "paperbanana_benchmark_scientific_v2_review_artifacts", "paperbanana_benchmark_scientific_v2_rereviews",
+        "paperbanana_benchmark_scientific_v2_public_evidence"]) snapshot.getCollection(collection).find({}).limit(1).toArray()
+      lineageSession.commitTransaction()
+    } finally { lineageSession.endSession() }
+    print("Scientific V2 API lineage snapshot reads passed with existing privileges")
     for (const [label, operation] of [
       ["delete", () => rereviews.deleteOne({_id: "scientific-v2-api-review-only"})],
       ["createIndex", () => rereviews.createIndex({status: 1})],
