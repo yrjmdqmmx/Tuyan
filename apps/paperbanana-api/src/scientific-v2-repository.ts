@@ -8,6 +8,9 @@ import {
   SCIENTIFIC_REVIEW_MAX_RED_LINES,
   SCIENTIFIC_REVIEW_RED_LINE_CODES,
   aggregateScientificFixedSlots,
+  assertScientificSlotRetest,
+  scientificSlotNeedsFreshEvidence,
+  type ScientificSlotRetest,
   buildScientificV2CanonicalManifest,
   canonicalHash,
   deriveScientificV2PriceRequirements,
@@ -23,6 +26,7 @@ import {
   assertScientificV2ExpansionDescriptor,
   assertScientificV2ExpansionBaseline,
   assertScientificV2ExpansionPreservedModels,
+  scientificV2ExpansionPreservedModelHash,
 } from './scientific-v2-expansion.js'
 
 type AnyRecord = { _id?: string; [key: string]: any }
@@ -429,6 +433,7 @@ export function verifyScientificV2ImportedState(state: AnyRecord, manifest: AnyR
   const interruptedIndex = canaryFailureIndex >= 0 ? canaryFailureIndex
     : slotStatuses.findIndex((status: string) => ['unknown', 'price_reconciliation', 'artifact_reconciliation', 'budget_blocked'].includes(status))
   const isCanaryCarryover = (slot: AnyRecord) => (slot.isProviderCanary && slot.status === 'succeeded')
+      || (manifest.slotRetest && !scientificSlotNeedsFreshEvidence(manifest, slot) && ['succeeded', 'failed', 'unsupported'].includes(slot.status))
     || (slot.status === 'failed' && failedCanaryRoutes.has(canaryRouteIdentity(slot)))
   if (interruptedIndex >= 0 && (state.slots.slice(0, interruptedIndex).some((slot: AnyRecord) => !terminal(slot.status))
     || state.slots.slice(interruptedIndex + 1).some((slot: AnyRecord) => slot.status !== 'not_executed' && !isCanaryCarryover(slot)))) {
@@ -707,6 +712,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
   }
   const manifest = input.manifest
   if (manifest?.expansion !== undefined) assertScientificV2ExpansionDescriptor(manifest.expansion)
+  assertScientificSlotRetest(manifest)
   const executionCanonical = deriveScientificV2ExecutionCanonicalManifest(canonicalManifest as any, manifest?.expansion)
   assertExactKeys(manifest, [
     'schemaVersion', 'suiteId', 'evaluationMode', 'evaluationEpoch', 'reviewProtocol', 'presentationVersion',
@@ -714,6 +720,7 @@ function assertRegistryAndManifest(input: AnyRecord) {
     'canonicalManifest', 'models', 'cases', 'executionOrder', 'providerOrder', 'providerBudgetsCny',
     'codexLimits', 'concurrency', 'lockName', 'priceSnapshot', 'createdAt', 'manifestHash',
     ...(manifest?.expansion !== undefined ? ['expansion'] : []),
+    ...(manifest?.slotRetest !== undefined ? ['slotRetest'] : []),
   ], 'SCIENTIFIC_V2_BATCH_MANIFEST_INVALID')
   assertIsoInstant(manifest.createdAt, 'SCIENTIFIC_V2_BATCH_MANIFEST_INVALID')
   if (!manifest || manifest.schemaVersion !== 2 || !hashPattern.test(String(manifest.manifestHash || ''))
@@ -830,6 +837,7 @@ export function buildScientificV2RemediationFreeze(input: {
   codeSha: string
   targetSlotIds: string[]
   zeroCallCorrection?: true
+  slotRetest?: ScientificSlotRetest
   now: Date
 }) {
   if (!codeShaPattern.test(input.codeSha) || !(input.now instanceof Date) || !Number.isFinite(input.now.getTime())) {
@@ -848,13 +856,16 @@ export function buildScientificV2RemediationFreeze(input: {
   const sourceSlots = new Map(input.sourceState.slots.map((slot: AnyRecord) => [slot.slotId, slot]))
   if (targetSlotIds.some((slotId) => {
     const slot = sourceSlots.get(slotId) as AnyRecord | undefined
-    return !slot || slot.status !== 'failed' || slot.attempts.length !== 4
+    return !slot || slot.status !== 'failed' || slot.attempts.length !== scientificMaxAttempts(slot.provider)
       || slot.attempts.some((attempt: AnyRecord) => !confirmedFailureResponseClasses.has(attempt.responseClass))
   })) scientificError('SCIENTIFIC_V2_REMEDIATION_TARGET_SET_INVALID')
 
   const manifestBase = structuredClone(input.sourceManifest)
   delete manifestBase.manifestHash
   manifestBase.codeSha = input.codeSha
+  if (input.slotRetest) manifestBase.slotRetest = structuredClone(input.slotRetest)
+  else if (manifestBase.expansion) scientificError('SCIENTIFIC_V2_SLOT_RETEST_INVALID')
+  assertScientificSlotRetest(manifestBase)
   const manifest: AnyRecord = { ...manifestBase, manifestHash: canonicalHash(manifestBase) }
   const targets = new Set(targetSlotIds)
   const slots = input.sourceState.slots.map((sourceSlot: AnyRecord) => {
@@ -863,7 +874,7 @@ export function buildScientificV2RemediationFreeze(input: {
     slot.attempts = slot.attempts.map((attempt: AnyRecord) => rebindRemediationAttempt(manifest, slot, attempt))
     return slot
   })
-  const providerSpentCny = { bailian: 0, ark: 0, openrouter: 0 }
+  const providerSpentCny = scientificProviderZeroes(scientificUsesReplicate(manifest.models))
   for (const slot of slots) if (slot.provider && slot.provider !== 'codex') {
     providerSpentCny[slot.provider as keyof typeof providerSpentCny] = Number((
       providerSpentCny[slot.provider as keyof typeof providerSpentCny]
@@ -881,7 +892,7 @@ export function buildScientificV2RemediationFreeze(input: {
     createdAt: input.sourceState.createdAt,
     updatedAt: input.now.toISOString(),
     providerSpentCny,
-    providerUnreconciledCny: { bailian: 0, ark: 0, openrouter: 0 },
+    providerUnreconciledCny: scientificProviderZeroes(scientificUsesReplicate(manifest.models)),
     slots,
   }
   const initialState = { ...stateBase, stateHash: canonicalHash(stateBase) }
@@ -921,7 +932,14 @@ export function createScientificV2MongoRepository(
   if (!Number.isInteger(claimLeaseMs) || claimLeaseMs < 1) scientificError('SCIENTIFIC_V2_CLAIM_LEASE_INVALID')
 
   const assertExactCorrectionPlanBatch = (batch: AnyRecord) => {
-    if (batch?.manifest?.expansion !== undefined && (batch.remediationOf !== undefined
+    assertScientificSlotRetest(batch.manifest)
+    if (batch.manifest.slotRetest) {
+      const retest = batch.manifest.slotRetest
+      const expected = { ...retest.source, targetModelIds: [retest.targetModelId], targetSlotIds: retest.targetSlotIds, targetSlotSetHash: retest.targetSlotSetHash }
+      if (canonicalHash(expected) !== canonicalHash(batch.remediationOf) || batch.correctionBaseline !== undefined
+        || batch.zeroCallCorrection !== undefined) scientificError('SCIENTIFIC_V2_SLOT_RETEST_INVALID')
+    }
+    if (batch?.manifest?.expansion !== undefined && !batch.manifest.slotRetest && (batch.remediationOf !== undefined
       || batch.correctionBaseline !== undefined || batch.zeroCallCorrection !== undefined)) {
       scientificError('SCIENTIFIC_V2_EXPANSION_MIXED_LINEAGE')
     }
@@ -953,11 +971,24 @@ export function createScientificV2MongoRepository(
 
   const loadExpansionBaseline = async (manifest: AnyRecord, session?: any) => {
     assertScientificV2ExpansionDescriptor(manifest.expansion)
-    const expansion = manifest.expansion
+    assertScientificSlotRetest(manifest)
+    const retest = manifest.slotRetest
+    const expansion = retest ? { baseline: retest.source, targetModelId: retest.targetModelId, replacesModelId: retest.targetModelId } : manifest.expansion
     const queryOptions = session ? { session } : undefined
     const baseline = expansion.baseline
     const release = await releases.findOne({ _id: baseline.releaseId, releaseHash: baseline.releaseHash }, queryOptions as any)
-    assertScientificV2ExpansionBaseline(expansion, release)
+    if (!retest) assertScientificV2ExpansionBaseline(expansion, release)
+    else {
+      if (!release) scientificError('SCIENTIFIC_V2_SLOT_RETEST_SOURCE_INVALID')
+      const { _id, releaseHash, ...base } = release
+      if (canonicalHash(base) !== releaseHash || release.batchId !== baseline.batchId
+        || release.batchManifestHash !== baseline.manifestHash || release.profileStatus !== 'published'
+        || Object.entries(SCIENTIFIC_BENCHMARK_IDENTITY).some(([key, value]) => release[key] !== value)
+        || release.suiteHash !== manifest.suiteHash || !Array.isArray(release.models)
+        || release.models.filter((model: AnyRecord) => model.canonicalModelId === retest.targetModelId).length !== 1) {
+        scientificError('SCIENTIFIC_V2_SLOT_RETEST_SOURCE_INVALID')
+      }
+    }
     const head = await releaseHeads.findOne({ _id: SCIENTIFIC_V2_RELEASE_HEAD_ID }, queryOptions as any)
     const lifecycle = await releaseLifecycle.findOne({ releaseId: baseline.releaseId, releaseHash: baseline.releaseHash, status: 'active' }, queryOptions as any)
     if (!head || head.releaseId !== baseline.releaseId || head.releaseHash !== baseline.releaseHash || !lifecycle) {
@@ -974,6 +1005,18 @@ export function createScientificV2MongoRepository(
       || source.manifest?.suiteHash !== manifest.suiteHash) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_INVALID')
     assertRegistryAndManifest(source)
     verifyScientificV2ImportedState(source.state, source.manifest)
+    if (retest) {
+      const { codeSha: _sourceCode, manifestHash: _sourceHash, slotRetest: _sourceRetest, ...prior } = source.manifest
+      const { codeSha: _code, manifestHash: _hash, slotRetest: _retest, ...current } = manifest
+      if (canonicalHash(prior) !== canonicalHash(current)) scientificError('SCIENTIFIC_V2_SLOT_RETEST_CONTRACT_DRIFT')
+      for (const slotId of retest.targetSlotIds) {
+        const old = source.state.slots.find((slot: AnyRecord) => slot.slotId === slotId)
+        if (!old || old.status !== 'failed' || old.attempts.length !== scientificMaxAttempts(old.provider)
+          || old.attempts.some((attempt: AnyRecord) => !confirmedFailureResponseClasses.has(attempt.responseClass))) {
+          scientificError('SCIENTIFIC_V2_SLOT_RETEST_SOURCE_INVALID')
+        }
+      }
+    }
     const sourceReport = await reviews.findOne({ _id: `scientific-v2-state-report:${source.latestStateReportHash}` }, queryOptions as any)
     if (!sourceReport || sourceReport.reportHash !== source.latestStateReportHash
       || canonicalHash(sourceReport.report?.state) !== canonicalHash(source.state)
@@ -1218,7 +1261,7 @@ export function createScientificV2MongoRepository(
         const batch = await batches.findOne({ batchId: source.batchId, manifestHash: source.batchManifestHash, status: 'published' })
         for (const item of items) if (item.cost.basis === 'unavailable') item.cost = scientificEvidenceCost(item, batch)
         if (items.every(item => item.cost.basis !== 'unavailable')) break
-        const predecessor = source.expansion?.baseline
+        const predecessor = source.slotRetest?.source || source.expansion?.baseline
         source = predecessor ? await releases.findOne({ _id: predecessor.releaseId, releaseHash: predecessor.releaseHash }) : null
       }
       return { items, nextCursor: page.length > limit ? String(offset + limit) : null }
@@ -1227,6 +1270,7 @@ export function createScientificV2MongoRepository(
       return this.freezeBatch(input, true)
     },
     async freezeBatch(input: AnyRecord, expansionMode = false): Promise<AnyRecord> {
+      if (input?.manifest?.slotRetest !== undefined) scientificError('SCIENTIFIC_V2_REMEDIATION_COMMAND_REQUIRED')
       if ((input?.manifest?.expansion !== undefined) !== expansionMode) scientificError('SCIENTIFIC_V2_EXPANSION_COMMAND_REQUIRED')
       const batchId = String(input?.batchId || '')
       if (!/^[A-Za-z0-9][A-Za-z0-9._:-]{2,199}$/.test(batchId)) scientificError('SCIENTIFIC_V2_BATCH_ID_INVALID')
@@ -1368,10 +1412,25 @@ export function createScientificV2MongoRepository(
             })) scientificError('SCIENTIFIC_V2_REMEDIATION_SOURCE_INVALID')
         }
       }
+      const slotRetest: ScientificSlotRetest | undefined = source.manifest.expansion ? {
+        schemaVersion: 1, kind: 'confirmed_failure_slot_retest',
+        source: { releaseId: source.releaseId, releaseHash: input.sourceReleaseHash, batchId: sourceBatchId, manifestHash: input.sourceManifestHash },
+        targetModelId: source.manifest.expansion.targetModelId, targetSlotIds, targetSlotSetHash: input.targetSlotSetHash,
+      } : undefined
+      if (slotRetest) {
+        if (hasCorrectionBaseline || canonicalHash(targetModelIds) !== canonicalHash([slotRetest.targetModelId])) scientificError('SCIENTIFIC_V2_SLOT_RETEST_INVALID')
+        // This first retest contract covers a confirmed zero-charge failed Replicate output.
+        // Never silently drop previously billed failures from the model's displayed total.
+        for (const slot of source.state.slots.filter((slot: AnyRecord) => targetSlotIds.includes(slot.slotId))) {
+          const evidence = sourceRelease.models.find((model: AnyRecord) => model.canonicalModelId === slot.canonicalModelId)?.evidence.find((item: AnyRecord) => item.caseId === slot.caseId)
+          const cost = scientificEvidenceCost({ ...evidence, canonicalModelId: slot.canonicalModelId }, source)
+          if (cost.basis !== 'invoice_reconciled' || Number(cost.amount) !== 0) scientificError('SCIENTIFIC_V2_SLOT_RETEST_PRIOR_CHARGE_UNVERIFIED')
+        }
+      }
       const immutableCodeSha = String(options.immutableCodeSha || '')
       const remediation = buildScientificV2RemediationFreeze({
         sourceManifest: source.manifest, sourceState: source.state, codeSha: immutableCodeSha,
-        targetSlotIds, ...(zeroCallCorrection ? { zeroCallCorrection: true as const } : {}), now: now(),
+        targetSlotIds, ...(zeroCallCorrection ? { zeroCallCorrection: true as const } : {}), ...(slotRetest ? { slotRetest } : {}), now: now(),
       })
       const derivedInput = {
         batchId,
@@ -1381,6 +1440,7 @@ export function createScientificV2MongoRepository(
         initialState: remediation.initialState,
       }
       assertRegistryAndManifest(derivedInput)
+      if (slotRetest) await loadExpansionBaseline(remediation.manifest)
       const remediationOf = {
         batchId: sourceBatchId,
         manifestHash: input.sourceManifestHash,
@@ -1752,6 +1812,13 @@ export function createScientificV2MongoRepository(
       })
       if (!batch) scientificError('SCIENTIFIC_V2_REVIEW_BATCH_NOT_READY')
       assertReviewAssignment(input.assignment, batch, operatorSecret())
+      if (batch.manifest.slotRetest) {
+        const expected = batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded' && scientificSlotNeedsFreshEvidence(batch.manifest, slot))
+          .map((slot: AnyRecord) => [slot.canonicalModelId, slot.caseId, slot.attempts.at(-1).rawImageHash]).sort()
+        const mappings = new Map(input.assignment.privateMappings.map((item: AnyRecord) => [item.itemHash, item.modelKey]))
+        const actual = input.assignment.packages.flatMap((packet: AnyRecord) => packet.items.map((item: AnyRecord) => [mappings.get(item.itemHash), item.caseId, item.imageHash])).sort()
+        if (canonicalHash(expected) !== canonicalHash(actual)) scientificError('SCIENTIFIC_V2_SLOT_RETEST_REVIEW_SCOPE_INVALID')
+      }
       if (batch.correctionBaseline) {
         const expectedTargetModels = exactSortedStrings(
           batch.remediationOf?.targetModelIds,
@@ -2054,7 +2121,8 @@ export function createScientificV2MongoRepository(
       if (batch.state.status !== 'completed' || batch.state.slots.some((slot: AnyRecord) => !['succeeded', 'failed', 'unsupported'].includes(slot.status))) {
         scientificError('SCIENTIFIC_V2_BATCH_NOT_TERMINAL')
       }
-      const expansion = batch.manifest.expansion
+      const slotRetest = batch.manifest.slotRetest
+      const expansion = slotRetest ? { baseline: slotRetest.source, targetModelId: slotRetest.targetModelId, replacesModelId: slotRetest.targetModelId } : batch.manifest.expansion
       const expansionBaselineRelease = expansion !== undefined ? await loadExpansionBaseline(batch.manifest) : null
       const expansionBaselinePublicRows = new Map<string, AnyRecord>()
       if (expansionBaselineRelease) {
@@ -2076,6 +2144,17 @@ export function createScientificV2MongoRepository(
           expansionBaselinePublicRows.set(key, structuredClone(row))
         }
       }
+      if (slotRetest) {
+        const source = await batches.findOne({ batchId: slotRetest.source.batchId, manifestHash: slotRetest.source.manifestHash, status: 'published' })
+        if (!source) scientificError('SCIENTIFIC_V2_SLOT_RETEST_SOURCE_INVALID')
+        for (const slot of batch.state.slots.filter((slot: AnyRecord) => !scientificSlotNeedsFreshEvidence(batch.manifest, slot))) {
+          const prior = source.state.slots.find((old: AnyRecord) => old.slotId === slot.slotId)
+          if (!prior) scientificError('SCIENTIFIC_V2_SLOT_RETEST_CARRIED_DRIFT')
+          const rebound = { ...structuredClone(prior), attempts: prior.attempts.map((attempt: AnyRecord) => rebindRemediationAttempt(batch.manifest, prior, attempt)) }
+          if (canonicalHash(rebound) !== canonicalHash(slot)) scientificError('SCIENTIFIC_V2_SLOT_RETEST_CARRIED_DRIFT')
+        }
+      }
+      const needsFresh = (slot: AnyRecord) => scientificSlotNeedsFreshEvidence(batch.manifest, slot)
       let correctionBaselineRelease: AnyRecord | null = null
       let correctionTargetModelIds: Set<string> | null = null
       const correctionBaselinePublicRows = new Map<string, AnyRecord>()
@@ -2324,13 +2403,13 @@ export function createScientificV2MongoRepository(
         bindingByHash.set(binding.imageHash, binding)
       }
       const requiredRawBindings = new Map<string, string>()
-      for (const slot of batch.state.slots) if (slot.status === 'succeeded'
+      for (const slot of batch.state.slots) if (slot.status === 'succeeded' && needsFresh(slot)
         && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId))) {
         const attempt = slot.attempts.at(-1)
         requiredRawBindings.set(attempt.rawImageHash, `bench/scientific-v2/private/objects/${attempt.rawImageHash}.${attempt.format}`)
       }
       for (const scientificCase of batch.manifest.cases) if (scientificCase.kind === 'edit'
-        && batch.state.slots.some((slot: AnyRecord) => slot.caseId === scientificCase.id && slot.status === 'succeeded'
+        && batch.state.slots.some((slot: AnyRecord) => slot.caseId === scientificCase.id && slot.status === 'succeeded' && needsFresh(slot)
           && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId)))) {
         requiredRawBindings.set(scientificCase.sourceHash, `bench/scientific-v2/private/objects/${scientificCase.sourceHash}.png`)
       }
@@ -2355,7 +2434,7 @@ export function createScientificV2MongoRepository(
         ], 'SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
         const attempt = slot?.attempts.at(-1)
         const actualOutputPixels = item.actualOutputPixels
-        if (!slot || !scientificCase || slot.status !== 'succeeded' || item.imageHash !== slot.attempts.at(-1).rawImageHash
+        if (!slot || !needsFresh(slot) || !scientificCase || slot.status !== 'succeeded' || item.imageHash !== slot.attempts.at(-1).rawImageHash
           || item.requestedResolution !== slot.imageSize
           || !actualOutputPixels || typeof actualOutputPixels !== 'object' || Array.isArray(actualOutputPixels)
           || canonicalHash(actualOutputPixels) !== canonicalHash({
@@ -2390,7 +2469,7 @@ export function createScientificV2MongoRepository(
         } else if (item.beforeVariants !== undefined || item.sourceHash !== undefined) scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
         evidenceBySlot.set(key, { ...item, variants, beforeVariants })
       }
-      if (evidenceBySlot.size !== batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded'
+      if (evidenceBySlot.size !== batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded' && needsFresh(slot)
         && (!correctionTargetModelIds || correctionTargetModelIds.has(slot.canonicalModelId))).length) {
         scientificError('SCIENTIFIC_V2_PUBLIC_EVIDENCE_INVALID')
       }
@@ -2411,6 +2490,11 @@ export function createScientificV2MongoRepository(
         if (slots.length !== 9) scientificError('SCIENTIFIC_V2_FIXED_SLOT_SET_INVALID')
         const fixed = slots.map((slot: AnyRecord) => {
           if (slot.status !== 'succeeded') return { caseId: slot.caseId, status: slot.status }
+          if (!needsFresh(slot)) {
+            const prior = expansionBaselineRelease!.models.find((item: AnyRecord) => item.canonicalModelId === model.canonicalModelId)?.evidence.find((item: AnyRecord) => item.caseId === slot.caseId)
+            if (!prior || prior.status !== slot.status || prior.imageHash !== slot.attempts.at(-1)?.rawImageHash) scientificError('SCIENTIFIC_V2_SLOT_RETEST_CARRIED_DRIFT')
+            return { caseId: slot.caseId, status: 'succeeded' as const, scores: structuredClone(prior.scores) }
+          }
           const review = reviewBySlot.get(`${slot.canonicalModelId}\0${slot.caseId}`)
           if (!review || review.publicItem.imageHash !== slot.attempts.at(-1).rawImageHash) scientificError('SCIENTIFIC_V2_REVIEW_COVERAGE_INVALID')
           return { caseId: slot.caseId, status: 'succeeded' as const, scores: review.result.scores }
@@ -2418,6 +2502,11 @@ export function createScientificV2MongoRepository(
         const aggregation = aggregateScientificFixedSlots(fixed)
         const scores = Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, aggregation.byAxis[axis].mean]))
         const evidence = slots.map((slot: AnyRecord) => {
+          if (!needsFresh(slot)) {
+            const prior = expansionBaselineRelease!.models.find((item: AnyRecord) => item.canonicalModelId === model.canonicalModelId)?.evidence.find((item: AnyRecord) => item.caseId === slot.caseId)
+            if (!prior) scientificError('SCIENTIFIC_V2_SLOT_RETEST_CARRIED_DRIFT')
+            return structuredClone(prior)
+          }
           const scientificCase = batch.manifest.cases.find((candidate: AnyRecord) => candidate.id === slot.caseId)
           const review = reviewBySlot.get(`${slot.canonicalModelId}\0${slot.caseId}`)
           const stored = evidenceBySlot.get(`${slot.canonicalModelId}\0${slot.caseId}`)
@@ -2497,7 +2586,21 @@ export function createScientificV2MongoRepository(
         overallRank: overallByModel.get(model.modelId)!.overallRank,
         dimensionRanks: Object.fromEntries(SCIENTIFIC_BENCHMARK_AXES.map((axis) => [axis, dimensionRanks[axis][index]])),
       })).sort((left: AnyRecord, right: AnyRecord) => left.overallRank - right.overallRank || Buffer.compare(Buffer.from(left.modelId), Buffer.from(right.modelId)))
-      if (expansionBaselineRelease) assertScientificV2ExpansionPreservedModels(expansionBaselineRelease, models, expansion.targetModelId, expansion.replacesModelId)
+      const assertPreserved = (baseline: AnyRecord) => {
+        if (!slotRetest) return assertScientificV2ExpansionPreservedModels(baseline, models, expansion.targetModelId, expansion.replacesModelId)
+        if (models.length !== baseline.models.length || models.filter((model: AnyRecord) => model.canonicalModelId === slotRetest.targetModelId).length !== 1) scientificError('SCIENTIFIC_V2_SLOT_RETEST_ROSTER_DRIFT')
+        for (const prior of baseline.models) {
+          const current = models.find((model: AnyRecord) => model.canonicalModelId === prior.canonicalModelId)
+          if (!current) scientificError('SCIENTIFIC_V2_SLOT_RETEST_ROSTER_DRIFT')
+          if (prior.canonicalModelId !== slotRetest.targetModelId) {
+            if (scientificV2ExpansionPreservedModelHash(prior) !== scientificV2ExpansionPreservedModelHash(current)) scientificError('SCIENTIFIC_V2_SLOT_RETEST_CARRIED_DRIFT')
+          } else for (const item of prior.evidence) {
+            if (!slotRetest.targetSlotIds.includes(`${prior.canonicalModelId}:${item.caseId}`)
+              && canonicalHash(item) !== canonicalHash(current.evidence.find((row: AnyRecord) => row.caseId === item.caseId))) scientificError('SCIENTIFIC_V2_SLOT_RETEST_CARRIED_DRIFT')
+          }
+        }
+      }
+      if (expansionBaselineRelease) assertPreserved(expansionBaselineRelease)
 
       // The object contract is immutable and content addressed; verify every referenced object again immediately before hashing the release.
       for (const [imageHash, binding] of bindingByHash) await verifyObject(binding.objectKey, imageHash)
@@ -2519,7 +2622,7 @@ export function createScientificV2MongoRepository(
         batchId: batch.batchId,
         batchManifestHash: batch.manifestHash,
         reviewFinalHash: batch.reviewFinalHash,
-        ...(expansion ? { expansion: structuredClone(expansion) } : {}),
+        ...(slotRetest ? { slotRetest: structuredClone(slotRetest) } : expansion ? { expansion: structuredClone(expansion) } : {}),
         sampleCount: batch.state.slots.filter((slot: AnyRecord) => slot.status === 'succeeded').length
           + (expansionBaselineRelease ? expansionBaselineRelease.models.filter((model: AnyRecord) => model.canonicalModelId !== expansion.replacesModelId).reduce((sum: number, model: AnyRecord) => sum + model.evidence.filter((item: AnyRecord) => item.status === 'succeeded').length, 0) : 0),
         automaticJudges: [] as unknown[], automaticJudgeCalls: 0,
@@ -2538,7 +2641,7 @@ export function createScientificV2MongoRepository(
           legacyRecovery: codeLineage.legacyRecoveryStateHash !== null,
           automaticJudges: [] as unknown[],
           blindReview: { reviewers: 2, arbitration: 'xhigh_on_dispute', automaticJudges: [] },
-          knownLimitations: ['fixed-nine-case-suite', 'single-production-run-per-model', 'human-codex-double-review'],
+          knownLimitations: ['fixed-nine-case-suite', slotRetest ? 'explicit-single-slot-retest-with-inherited-cases' : 'single-production-run-per-model', 'human-codex-double-review'],
           automaticJudgmentCount: 0,
         },
         publishedAt: now(),
@@ -2546,7 +2649,8 @@ export function createScientificV2MongoRepository(
       const releaseHash = canonicalHash(releaseBase)
       const releaseId = `bench-scientific-v2-release-${releaseHash.slice(0, 20)}`
       const publicRows = models.flatMap((model: AnyRecord) => model.evidence.map((item: AnyRecord) => {
-        if (expansionBaselineRelease && model.canonicalModelId !== expansion.targetModelId) {
+        if (expansionBaselineRelease && (model.canonicalModelId !== expansion.targetModelId
+          || (slotRetest && !slotRetest.targetSlotIds.includes(`${model.canonicalModelId}:${item.caseId}`)))) {
           const row = expansionBaselinePublicRows.get(`${model.canonicalModelId}\0${item.caseId}`)
           if (!row) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
           return {
@@ -2626,7 +2730,7 @@ export function createScientificV2MongoRepository(
               const original = expansionBaselinePublicRows.get(`${row.canonicalModelId}\0${row.caseId}`)
               return !original || canonicalHash(row) !== canonicalHash(original)
             })) scientificError('SCIENTIFIC_V2_EXPANSION_BASELINE_EVIDENCE_INVALID')
-            assertScientificV2ExpansionPreservedModels(verifiedBaseline, models, expansion.targetModelId, expansion.replacesModelId)
+            assertPreserved(verifiedBaseline)
           } else if (competing) {
             const targetSlotIds = remediationOf?.targetSlotIds
             if (!remediationOf

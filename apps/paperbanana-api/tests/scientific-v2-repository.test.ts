@@ -15,6 +15,9 @@ import {
 } from '@paperbanana/benchmark-core'
 
 import { createMongoBenchmarkRepository } from '../src/benchmark-repository.js'
+import { SCIENTIFIC_V2_BILLING_EVIDENCE } from '../src/scientific-v2-billing-evidence.js'
+import { createScientificV2ReviewPackStagingBundle } from '../../benchmark-worker/src/scientific-v2-review-pack-stager.js'
+import { createScientificBlindReviewPackages } from '../../benchmark-worker/src/scientific-v2-review.js'
 import { createBenchmarkService } from '../src/benchmark-service.js'
 import {
   buildScientificV2RemediationFreeze,
@@ -810,7 +813,8 @@ function signedReviewerResult(secret: string, assignment: any, score: number, re
 
 function fullReviewAssignments(secret: string, fixture: ReturnType<typeof scientificBatchFixture>, state: any, targetModelIds?: string[]) {
   const targetSet = targetModelIds ? new Set(targetModelIds) : null
-  const succeeded = state.slots.filter((slot: any) => slot.status === 'succeeded' && (!targetSet || targetSet.has(slot.canonicalModelId)))
+  const succeeded = state.slots.filter((slot: any) => slot.status === 'succeeded' && (!targetSet || targetSet.has(slot.canonicalModelId))
+    && (!(fixture.manifest as any).slotRetest || (fixture.manifest as any).slotRetest.targetSlotIds.includes(slot.slotId)))
   const sourceSetHash = canonicalHash({ manifestHash: fixture.manifest.manifestHash, stateHash: state.stateHash })
   const assignment = (role: 'A' | 'B') => {
     const ordered = role === 'A' ? succeeded : [...succeeded].reverse()
@@ -2464,7 +2468,8 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
   const claimed = await repository.claimReady({ manifestHash: fixture.manifest.manifestHash, expectedReadyStateHash: fixture.initialState.stateHash })
   assert.ok(claimed)
   let current = claimed.state as any
-  for (const finalSlot of state.slots.filter((slot: any) => slot.provider && slot.provider !== 'codex' && slot.attempts.length)) {
+  for (const finalSlot of state.slots.filter((slot: any) => slot.provider && slot.provider !== 'codex' && slot.attempts.length
+    && !fixture.initialState.slots.find((old: any) => old.slotId === slot.slotId)?.attempts.length)) {
     for (const attempt of finalSlot.attempts) {
       const next = structuredClone(current)
       const nextSlot = next.slots.find((slot: any) => slot.slotId === finalSlot.slotId)!
@@ -2540,7 +2545,7 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
   const evidence: any[] = []
   for (const slot of state.slots) {
     const scientificCase = fixture.manifest.cases.find((candidate: any) => candidate.id === slot.caseId)!
-    if (slot.status !== 'succeeded') continue
+    if (slot.status !== 'succeeded' || ((fixture.manifest as any).slotRetest && !(fixture.manifest as any).slotRetest.targetSlotIds.includes(slot.slotId))) continue
     const attempt = slot.attempts.at(-1)
     objectBindings.push({ imageHash: attempt.rawImageHash, objectKey: `bench/scientific-v2/private/objects/${attempt.rawImageHash}.${attempt.format}` })
     const renditionHash = canonicalHash(`webp:${attempt.rawImageHash}`)
@@ -2560,7 +2565,8 @@ async function preparePublishFacts(repository: ReturnType<typeof createScientifi
     })
   }
   const sourceHash = (fixture.manifest.cases.find((item: any) => item.kind === 'edit') as any)?.sourceHash
-  if (sourceHash && state.slots.some((slot: any) => slot.operation === 'edit' && slot.status === 'succeeded')) objectBindings.push({ imageHash: sourceHash, objectKey: `bench/scientific-v2/private/objects/${sourceHash}.png` })
+  if (sourceHash && state.slots.some((slot: any) => slot.operation === 'edit' && slot.status === 'succeeded'
+    && (!(fixture.manifest as any).slotRetest || (fixture.manifest as any).slotRetest.targetSlotIds.includes(slot.slotId)))) objectBindings.push({ imageHash: sourceHash, objectKey: `bench/scientific-v2/private/objects/${sourceHash}.png` })
   return { objectBindings, evidence }
 }
 
@@ -3887,4 +3893,140 @@ test('Replicate GPT Image 2 replacement preserves historical evidence and inheri
   const inherited = result.models.find((model: any) => model.modelId !== 'openai/gpt-image-2')
   const oldCosts = await repository.publicEvidenceForRelease(result.releaseHash, { profileId: inherited.profileId, limit: 12 })
   assert.ok(oldCosts.items.every(item => item.cost.amount === '1' && item.cost.basis === 'official_rate_calculated'))
+})
+
+function replicateRetestFixture(baseline: any) {
+  const template = scientificBatchFixture()
+  const expansion = {
+    schemaVersion: 1 as const, kind: 'single_model_expansion' as const,
+    baseline: { releaseId: baseline._id, releaseHash: baseline.releaseHash, batchId: baseline.batchId, manifestHash: baseline.batchManifestHash },
+    targetModelId: 'google/nano-banana',
+  }
+  const registry = { ...template.registrySnapshot.registry, providers: { ...template.registrySnapshot.registry.providers, replicate: { models: [{
+    id: 'google/nano-banana', label: 'Nano Banana', vendor: 'Google', selectable: true, roles: ['image'],
+    capabilities: { imageGeneration: true, imageEditMode: 'direct-edit' as const, resolutions: ['auto'] },
+  }] } } }
+  const base = { registryVersion: 'replacement-test', registryHash: canonicalHash(registry), registry }
+  const registrySnapshot = { ...base, snapshotHash: canonicalHash(base) }
+  const canonicalManifest = buildScientificV2CanonicalManifest(base, expansion)
+  const execution = deriveScientificV2ExecutionCanonicalManifest(canonicalManifest, expansion)
+  const source = { url: 'https://replicate.com/google/nano-banana', mediaType: 'text/html', capturedAt: FIXED_NOW.toISOString(), bytesSha256: 'a'.repeat(64) }
+  const priceSnapshot = buildScientificV2PriceSnapshot({ canonicalManifest: execution, capturedAt: FIXED_NOW.toISOString(),
+    observations: deriveScientificV2PriceRequirements(execution).map(req => ({
+      provider: req.provider, modelId: req.modelId, operation: req.operation, imageSize: req.imageSize,
+      billingRegion: 'replicate-global', outputWidth: 2048, outputHeight: 1152,
+      charges: [{ billable: 'output_image' as const, unit: 'image' as const, rateDecimal: '0.039', quantityDecimal: '1', resolutionTier: 'provider-default' }],
+      source, openRouterEvidence: null, fxEvidence: { source: { ...source, url: 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml' }, rateDate: '2026-08-31', baseCurrency: 'EUR' as const, usdPerBaseDecimal: '1', cnyPerBaseDecimal: '7' },
+    })),
+  })
+  const built = buildScientificV2Batch({ canonicalManifest, registrySnapshot, expansion, suite: PB_SCIENTIFIC_FIGURE_V2, codeSha: template.manifest.codeSha, priceSnapshot, createdAt: FIXED_NOW.toISOString(), lockName: template.manifest.lockName })
+  const fixture: any = { ...template, canonicalManifest, registrySnapshot, manifest: built.manifest, initialState: built.state }
+  return fixture
+}
+
+test('one explicit Replicate failed-slot retest preserves eight reviews, historical models, and costs', async () => {
+  const { storage, secret, repository, baseline } = await expansionBaselineFixture()
+  const fixture = replicateRetestFixture(baseline)
+  const sourceBatchId = 'nano-banana-original'
+  await repository.freezeExpansionBatch({ batchId: sourceBatchId, ...fixture })
+  const sourceState = completedScientificState(fixture)
+  const failed = sourceState.slots.find((slot: any) => slot.caseId === 'scientific-gen-05-math-bilingual')!
+  const { attemptHash: _attemptHash, ...before } = failed.attempts[0]
+  const failure = { ...before, responseClass: 'confirmed_technical_failure', actualCny: null,
+    rawImageHash: null, byteSize: null, width: null, height: null, format: null, editedHash: null }
+  failed.attempts = [{ ...failure, attemptHash: canonicalHash(failure) }]
+  failed.status = 'failed'
+  const completedSource = refreshState(sourceState, '2026-08-31T00:00:07.000Z')
+  const sourceFacts = await preparePublishFacts(repository, fixture, completedSource, secret, sourceBatchId)
+  const published = await repository.publishScientificV2({ batchId: sourceBatchId, ...sourceFacts })
+  const prior = structuredClone(storage.rows.get('paperbanana_benchmark_releases')!.find(row => row.releaseHash === published.releaseHash)!)
+  const priorRows = structuredClone(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!.filter(row => row.sourceReleaseHash === prior.releaseHash))
+  const targetSlotIds = [failed.slotId]
+  const request = { batchId: 'nano-banana-explicit-retest', sourceBatchId, sourceManifestHash: fixture.manifest.manifestHash,
+    sourceReleaseHash: published.releaseHash, targetModelIds: ['google/nano-banana'], targetSlotIds, targetSlotSetHash: canonicalHash(targetSlotIds) }
+  const retestRepository = createScientificV2MongoRepository(storage.db, () => FIXED_NOW, () => 'retest-claim', {
+    operatorReportSecret: secret, immutableCodeSha: 'b'.repeat(40),
+  })
+  await assert.rejects(() => retestRepository.freezeRemediationBatch(request), /PRIOR_CHARGE_UNVERIFIED/)
+  const proof = { modelId: 'google/nano-banana', caseId: failed.caseId, imageHash: null, attemptCount: 1,
+    manifestHash: fixture.manifest.manifestHash, currency: 'USD', amount: '0', verifiedAt: FIXED_NOW.toISOString(), evidenceHash: 'e'.repeat(64) }
+  // Synthetic invoice evidence is confined to this process; production never accepts it as input.
+  const billing = SCIENTIFIC_V2_BILLING_EVIDENCE as unknown as any[]
+  const inheritedProofs = completedSource.slots.filter((slot: any) => slot.status === 'succeeded').map((slot: any) => ({
+    ...proof, caseId: slot.caseId, imageHash: slot.attempts.at(-1).rawImageHash, amount: '0.039',
+  }))
+  billing.push(proof, ...inheritedProofs)
+  try {
+    const frozen = await retestRepository.freezeRemediationBatch(request)
+    assert.equal(frozen.targetSlotCount, 1)
+    const batch = storage.rows.get('paperbanana_benchmark_scientific_v2_batches')!.find(row => row.batchId === request.batchId)!
+    assert.deepEqual(batch.state.slots.filter((slot: any) => slot.status === 'pending').map((slot: any) => slot.slotId), targetSlotIds)
+    assert.equal(batch.carriedDispatchCount, 8)
+    assert.doesNotThrow(() => verifyWorkerScientificV2BatchManifest(batch.manifest))
+    assert.doesNotThrow(() => verifyWorkerScientificV2BatchState(batch.state, batch.manifest))
+    assert.equal((await retestRepository.freezeRemediationBatch(request)).replayed, true)
+    const retestFixture = { ...fixture, manifest: batch.manifest, initialState: structuredClone(batch.state) }
+    const newState = structuredClone(batch.state)
+    const newSuccess = completedScientificState(retestFixture).slots.find((slot: any) => slot.slotId === failed.slotId)!
+    Object.assign(newState.slots.find((slot: any) => slot.slotId === failed.slotId), newSuccess)
+    newState.status = 'completed'
+    newState.providerSpentCny.replicate = Number((newState.providerSpentCny.replicate + newSuccess.costCny).toFixed(8))
+    const finished = refreshState(newState, '2026-08-31T00:00:09.000Z')
+    let unknown = structuredClone(finished)
+    const uncertain = unknown.slots.find((slot: any) => slot.slotId === failed.slotId)
+    const { attemptHash: _unknownHash, ...newBase } = uncertain.attempts[0]
+    const unknownBase = { ...newBase, responseClass: 'unknown_provider_outcome', actualCny: null,
+      rawImageHash: null, byteSize: null, width: null, height: null, format: null, editedHash: null }
+    uncertain.attempts = [{ ...unknownBase, attemptHash: canonicalHash(unknownBase) }]
+    uncertain.status = 'unknown'
+    unknown.status = 'paused'; unknown.pauseReason = 'reconciliation_required'
+    unknown = refreshState(unknown, '2026-08-31T00:00:09.000Z')
+    assert.doesNotThrow(() => verifyWorkerScientificV2BatchState(unknown, batch.manifest))
+    assert.doesNotThrow(() => verifyScientificV2ImportedState(unknown, batch.manifest))
+    const broadened = structuredClone(batch.manifest)
+    broadened.slotRetest.targetSlotIds.push(batch.state.slots[1].slotId)
+    broadened.slotRetest.targetSlotSetHash = canonicalHash(broadened.slotRetest.targetSlotIds)
+    delete broadened.manifestHash; broadened.manifestHash = canonicalHash(broadened)
+    assert.throws(() => verifyWorkerScientificV2BatchManifest(broadened), /SLOT_RETEST_INVALID/)
+    const staging = createScientificV2ReviewPackStagingBundle({ manifest: batch.manifest, state: finished,
+      attestationSecret: secret, issuedAt: FIXED_NOW.toISOString() })
+    assert.equal(staging.input.sources[0].packet!.items.length, 1)
+    const { attestationSecret, ...reviewInput } = staging.input
+    const blind = createScientificBlindReviewPackages(reviewInput, attestationSecret)
+    assert.ok(blind)
+    const newFacts = await preparePublishFacts(retestRepository, retestFixture, finished, secret, request.batchId, { dispute: true })
+    const outOfScopeFixture = { ...retestFixture, manifest: { ...retestFixture.manifest } }
+    delete outOfScopeFixture.manifest.slotRetest
+    const outOfScope = fullReviewAssignments(secret, outOfScopeFixture, finished)
+    await assert.rejects(() => retestRepository.exportReviewAssignment({ batchId: request.batchId,
+      assignment: outOfScope.A, objectBindings: [] }), /SLOT_RETEST_REVIEW_SCOPE_INVALID/)
+    assert.equal(newFacts.evidence.length, 1)
+    assert.equal(newFacts.objectBindings.length, 1)
+    const extraInput = { ...newFacts, evidence: [...newFacts.evidence, sourceFacts.evidence[0]] }
+    await assert.rejects(() => retestRepository.publishScientificV2({ batchId: request.batchId, ...extraInput }), /PUBLIC_EVIDENCE_INVALID/)
+    const result = await retestRepository.publishScientificV2({ batchId: request.batchId, ...newFacts })
+    const release = storage.rows.get('paperbanana_benchmark_releases')!.find(row => row.releaseHash === result.releaseHash)!
+    assert.equal(release.models.length, prior.models.length)
+    assert.equal(release.sampleCount, prior.sampleCount + 1)
+    assert.equal(release.slotRetest.source.releaseHash, prior.releaseHash)
+    assert.equal(release.expansion, undefined)
+    const keep = (model: any) => { const { overallRank, dimensionRanks, ...other } = model; return other }
+    for (const old of prior.models) {
+      const current = release.models.find((model: any) => model.canonicalModelId === old.canonicalModelId)
+      if (old.canonicalModelId !== 'google/nano-banana') assert.deepEqual(keep(current), keep(old))
+      else for (const item of old.evidence) {
+        const fresh = current.evidence.find((row: any) => row.caseId === item.caseId)
+        if (item.caseId === failed.caseId) assert.equal(fresh.status, 'succeeded')
+        else assert.deepEqual(fresh, item)
+      }
+    }
+    assert.deepEqual(storage.rows.get('paperbanana_benchmark_releases')!.find(row => row.releaseHash === prior.releaseHash), prior)
+    assert.deepEqual(storage.rows.get('paperbanana_benchmark_scientific_v2_public_evidence')!.filter(row => row.sourceReleaseHash === prior.releaseHash), priorRows)
+    const profileId = release.models.find((model: any) => model.modelId === 'google/nano-banana').profileId
+    const costs = await retestRepository.publicEvidenceForRelease(result.releaseHash, { profileId, limit: 12 })
+    assert.equal(costs.items.length, 9)
+    assert.ok(costs.items.every(item => item.cost.amount === '0.039'
+      && item.cost.basis === (item.caseId === failed.caseId ? 'official_rate_calculated' : 'invoice_reconciled')))
+    assert.equal((await retestRepository.publishScientificV2({ batchId: request.batchId, ...newFacts })).replayed, true)
+  } finally { billing.splice(billing.length - 1 - inheritedProofs.length) }
 })

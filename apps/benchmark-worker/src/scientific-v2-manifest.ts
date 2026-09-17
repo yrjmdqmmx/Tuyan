@@ -8,6 +8,9 @@ import {
   deriveScientificV2PriceRequirements,
   deriveScientificV2ExecutionCanonicalManifest,
   type ScientificV2Expansion,
+  type ScientificSlotRetest,
+  assertScientificSlotRetest,
+  scientificSlotNeedsFreshEvidence,
   verifyScientificV2PriceSnapshot,
   type ScientificV2AttestedPriceEntry,
   type ScientificV2PriceSnapshotV2,
@@ -108,6 +111,7 @@ export interface ScientificV2BatchManifest {
   priceOperatorAuthorizationHash: string | null
   canonicalManifest: CanonicalManifest
   expansion?: ScientificV2Expansion
+  slotRetest?: ScientificSlotRetest
   models: CanonicalManifest['models']
   cases: typeof PB_SCIENTIFIC_FIGURE_V2.cases[number][]
   executionOrder: ScientificV2ExecutionSlot[]
@@ -344,6 +348,7 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
     'canonicalManifest', 'models', 'cases', 'executionOrder', 'providerOrder', 'providerBudgetsCny',
     'codexLimits', 'concurrency', 'lockName', 'priceSnapshot', 'createdAt', 'manifestHash',
     ...(Object.hasOwn(manifest, 'expansion') ? ['expansion'] : []),
+    ...(Object.hasOwn(manifest, 'slotRetest') ? ['slotRetest'] : []),
   ], 'SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   assertBoundedScientificV2PlainData(manifest, { maxDepth: 14, maxNodes: 200_000, maxArrayLength: 4_096, maxStringLength: 4_096 }, 'SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
   if (!manifest || typeof manifest !== 'object' || !isScientificV2Hash(manifest.manifestHash)) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
@@ -355,6 +360,7 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
   }
   if (!(manifest.priceOperatorAuthorizationHash === null || isScientificV2Hash(manifest.priceOperatorAuthorizationHash))
     || manifest.priceOperatorAuthorizationHash !== manifest.priceSnapshot.operatorAuthorizationHash) scientificV2Error('SCIENTIFIC_V2_MANIFEST_SCHEMA_INVALID')
+  assertScientificSlotRetest(manifest)
   assertCoreCanonicalManifest(manifest.canonicalManifest)
   verifyRegistryAuthority(manifest.registrySnapshot, manifest.canonicalManifest, manifest.expansion)
   if (manifest.canonicalManifest.manifestHash !== manifest.canonicalManifestHash) scientificV2Error('SCIENTIFIC_V2_CANONICAL_MANIFEST_HASH_MISMATCH')
@@ -394,7 +400,9 @@ export function verifyScientificV2BatchManifest(manifest: ScientificV2BatchManif
     createdAt: manifest.createdAt,
     lockName: manifest.lockName,
   }).manifest
-  if (canonicalHash(rebuilt) !== canonicalHash(manifest)) scientificV2Error('SCIENTIFIC_V2_MANIFEST_REBUILD_MISMATCH')
+  const { manifestHash: _rebuiltHash, ...rebuiltBase } = rebuilt
+  const expectedBase = { ...rebuiltBase, ...(manifest.slotRetest ? { slotRetest: manifest.slotRetest } : {}) }
+  if (canonicalHash(expectedBase) !== manifest.manifestHash) scientificV2Error('SCIENTIFIC_V2_MANIFEST_REBUILD_MISMATCH')
   return manifest
 }
 
@@ -600,6 +608,7 @@ export function verifyScientificV2BatchState(state: ScientificV2BatchState, mani
   if (interruptionStatus) {
     const interruptionIndexes = state.slots.flatMap((slot, index) => slot.status === interruptionStatus ? [index] : [])
     const isCanaryCarryover = (slot: ScientificV2SlotState) => (slot.isProviderCanary && slot.status === 'succeeded')
+      || (manifest.slotRetest && !scientificSlotNeedsFreshEvidence(manifest, slot) && ['succeeded', 'failed', 'unsupported'].includes(slot.status))
       || (slot.status === 'failed' && failedCanaryRoutes.has(`${slot.provider}:${slot.canonicalModelId}`))
     if (interruptionIndexes.length !== 1
       || state.slots.slice(0, interruptionIndexes[0]).some((slot) => !['succeeded', 'unsupported', 'failed'].includes(slot.status))
