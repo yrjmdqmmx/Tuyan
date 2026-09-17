@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "public": {
+    "sourceReleaseHash": "8e6619b57c6979d9c5687893afa64fa40a81b5976f49d1466506d3b4a9ddd2fc",
+    "withdrawnModelId": "sourceful/riverflow-v2-pro",
+    "publicModels": 46,
+    "publicModelRowsVerified": 46,
+    "embeddedCaseEvidenceRowsVerified": 414,
+    "detailProfilesVerified": 3,
+    "casePagesVerified": 9,
+    "sampledCaseRowsVerified": 18,
+    "removedModelProfileReturns404": true,
+    "remainingScoresNotesImagesAndCostsUnchanged": true,
+    "independentOverallAndDimensionRanksMatch": true,
+    "codexBuiltinAbsent": true,
+    "topModelId": "openai/gpt-image-2",
+    "topScore": 8.90813492063492,
+    "providerCalls": 0,
+    "reviewCalls": 0,
+    "allChecksPassed": true
+  },
+  "history": {
+    "allChecksPassed": true,
+    "allCollectionsUnchanged": true,
+    "counts": {
+      "paperbanana_benchmark_releases": 72,
+      "paperbanana_benchmark_scientific_v2_public_evidence": 5085,
+      "paperbanana_benchmark_scientific_v2_batches": 27,
+      "paperbanana_benchmark_scientific_v2_dispatches": 2950,
+      "paperbanana_benchmark_scientific_v2_review_artifacts": 70,
+      "paperbanana_benchmark_scientific_v2_rereviews": 1,
+      "paperbanana_benchmark_release_heads": 1,
+      "paperbanana_benchmark_release_lifecycle": 13
+    },
+    "providerCalls": 0,
+    "reviewCalls": 0
+  },
+  "browser": {
+    "checkedAt": "2026-09-17T07:36:41.056929+00:00",
+    "publicModelCount": 46,
+    "overallTableRowsIncludingHeader": 47,
+    "withdrawnModelAbsentFromOverallAndDimensionPages": true,
+    "structuralTopologyModelCount": 46,
+    "oldModelProfileMessage": "模型证据暂不可用：Benchmark profile not found",
+    "topModelId": "openai/gpt-image-2",
+    "topDisplayedScore": "8.91",
+    "topOverallRank": 1,
+    "allChecksPassed": true
+  },
+  "runtime": {
+    "expected_control_sha": "df2c0b33ad4c3f425eced4c68fbe98cc28c95e5e",
+    "expected_deployed_sha": "df2c0b33ad4c3f425eced4c68fbe98cc28c95e5e",
+    "expected_core_digest": "a90466547dfadf855af0e0f833dd45990d6bfea3fab1463ee81fb3f82f00424f",
+    "expected_worker_digest": "60120ab5d19e1dbb967269bf829fcd98ae7a8c010220d2997ba9024720e22e90",
+    "baseline": {
+      "releaseId": "bench-scientific-v2-release-8e6619b57c6979d9c568",
+      "releaseHash": "8e6619b57c6979d9c5687893afa64fa40a81b5976f49d1466506d3b4a9ddd2fc",
+      "batchId": "scientific-v2-nano-banana-math-retest-20260917-30b1b73385",
+      "manifestHash": "8199c9f7322c32932341faa3aabf2845531787040514e208026f1948bfdbb81b"
+    },
+    "modelCount": 47,
+    "providerCalls": 0,
+    "worker": {
+      "enabled": false,
+      "concurrency": 1
+    },
+    "withdrawnModelIds": [
+      "sourceful/riverflow-v2-pro"
+    ],
+    "publicModelCount": 46
+  },
+  "workflows": {
+    "buildCore": 35194074369,
+    "buildWorker": 35194074239,
+    "deploy": 35194175508,
+    "postDeployPreflight": 35194742953
+  },
+  "baselineProfileEvidence": "Prior full public verification was reused only after live comparison of all 47 model rows and unchanged hashes of all 72 releases and 5085 evidence rows. Current detail spot checks and all nine case-page spot checks passed using sequential requests.",
+  "readOnlyConcurrencyNote": "Four concurrent detail requests exceeded the existing gateway backend timeout. Sequential reads passed; no scoring or generation operation was retried."
+}
