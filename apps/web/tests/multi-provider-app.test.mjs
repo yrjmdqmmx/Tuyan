@@ -87,6 +87,9 @@ async function renderReadyApp(registry = registryV1, options = {}) {
   const user = userEvent.setup()
   render(React.createElement(App))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
+  await user.click(screen.getByRole('button', { name: '阿里云百炼' }))
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   const defaultImageId = registry.providers.bailian.defaults.image
   const defaultImageLabel = registry.providers.bailian.models.find((model) => model.id === defaultImageId)?.label
   await waitFor(() => assert.ok(defaultImageLabel && document.body.textContent.includes(defaultImageLabel)))

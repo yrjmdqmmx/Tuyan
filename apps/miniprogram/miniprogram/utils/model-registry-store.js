@@ -6,6 +6,7 @@ exports.loadModelRegistry = loadModelRegistry;
 const api_1 = require("./api");
 const model_registry_1 = require("./model-registry");
 let state = { registry: null, loading: false, error: '' };
+let loadedAt = 0;
 let currentRequest = null;
 const listeners = new Set();
 function getModelRegistryState() {
@@ -17,15 +18,17 @@ function subscribeModelRegistry(listener) {
     return () => listeners.delete(listener);
 }
 function loadModelRegistry(force = false) {
-    if (!force && state.registry)
+    if (!force && state.registry && Date.now() - loadedAt < 60000)
         return Promise.resolve(state);
-    if (!force && currentRequest)
+    if (currentRequest)
         return currentRequest;
     setState({ ...state, loading: true, error: '' });
     currentRequest = (0, api_1.requestJson)({ action: 'modelRegistry' }, { auth: false })
         .then((response) => {
         const registry = (0, model_registry_1.normalizeModelRegistry)(response);
-        setState({ registry, loading: false, error: '' });
+        loadedAt = Date.now();
+        const notices = [...Object.values(registry.unavailableProviders || {}), ...Object.values(registry.catalogWarnings || {})].filter(value => typeof value === 'string');
+        setState({ registry, loading: false, error: notices.join('；') });
         return state;
     })
         .catch((error) => {

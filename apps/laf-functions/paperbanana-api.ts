@@ -171,7 +171,7 @@ export function configureRuntimeFetch(fetchImpl?: typeof fetch) {
   // A transport replacement represents a new runtime boundary (or a test
   // fixture). Never reuse provider catalogs fetched through a prior transport.
   openRouterModelCache = null
-  tokenDanceLiveCache = null
+  tokenDanceCatalogCache = newTokenDanceCatalogCache()
   openRouterDedicatedImageModelCache = null
 }
 
@@ -2124,16 +2124,20 @@ export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknow
   const requestState: RequestState = hasUnknownCall || error?.uncertain ? 'unknown'
     : local || error?.requestState === 'not_sent' ? 'not_sent'
     : error?.requestState === 'rejected' || status >= 400 && status < 500 ? 'rejected' : 'unknown'
-  const reason = action === 'retry_request' && requestState === 'not_sent' ? '模型目录暂时无法读取，尚未发起本步骤的模型请求。' : local && /[\u4e00-\u9fff]/u.test(error?.message || '')
+  const catalogPreflight = error?.name === 'TokenDanceError' && error?.catalogFailure === true && action === 'retry_request' && requestState === 'not_sent'
+  const reason = catalogPreflight
+    ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 700)
+    : action === 'retry_request' && requestState === 'not_sent' ? '模型目录暂时无法读取，尚未发起本步骤的模型请求。' : local && /[\u4e00-\u9fff]/u.test(error?.message || '')
     ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 500) : copy[0]
   const billingStatus = requestState === 'unknown' ? 'unknown' : completedCalls > 0 ? 'prior_calls' : requestState === 'not_sent' ? 'not_called' : 'unconfirmed'
   const billingMessage = billingStatus === 'not_called' ? '失败步骤在模型请求发出前停止；该步骤未发起模型调用。此前费用请结合调用记录核对。'
     : billingStatus === 'prior_calls' ? '此前已有成功调用，已保存成功步骤；费用以渠道账单为准。'
     : billingStatus === 'unknown' ? '请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。'
     : '渠道已拒绝本次请求；实际费用以渠道账单为准。'
+  const suggestion = catalogPreflight ? '目录恢复后可继续原任务，已成功的步骤会复用；也可主动选择其他模型。' : copy[1]
   return { stage, stageLabel: JOB_FAILURE_STAGES[stage], category, code: 'MODEL_' + category.toUpperCase(),
-    reason, suggestion: copy[1], requestState, billingStatus, billingMessage,
-    message: `${JOB_FAILURE_STAGES[stage]}失败：${reason} ${copy[1]}` }
+    reason, suggestion, requestState, billingStatus, billingMessage,
+    message: `${JOB_FAILURE_STAGES[stage]}失败：${reason} ${suggestion}` }
 }
 
 // Selection is relevance driven. Limits are ceilings, never target counts.
@@ -2162,6 +2166,151 @@ export function relevantReferenceSelection<T extends { id: string; imageObjectKe
     }).slice(0, Math.max(0, limit)).map((row: any) => byId.get(row.id)!)
 }
 
+// Live metadata is untrusted. Never derive invocation protocols from model names.
+export type TokenDanceCatalogIssue = { id: string | null; index: number; reason: string }
+export type TokenDanceCatalogModel = { id: string; supported_protocols: string[] }
+export type TokenDanceCatalogSnapshot = {
+  models: TokenDanceCatalogModel[]; issues: TokenDanceCatalogIssue[]; total: number;
+  state: 'ready' | 'partial' | 'unavailable'; cause: string | null; checkedAt: number | null;
+  expiresAt: number | null; stale: boolean; failureCount: number; alert: 'none' | 'warning' | 'critical';
+}
+export class TokenDanceCatalogError extends Error {
+  constructor(public causeCode: string, public httpStatus?: number) { super('TokenDance catalog: ' + causeCode) }
+}
+const catalogIssueMessages: Record<string, string> = {
+  protocol_changed: '调用协议与图研已审核的协议不一致', missing_live: '当前目录未列出该模型',
+  row_type: '记录不是对象', id_missing: '缺少模型 ID', id_null: '模型 ID 为空值', id_type: '模型 ID 类型错误', id_invalid: '模型 ID 格式异常',
+  protocols_missing: '缺少 supported_protocols 字段', protocols_null: 'supported_protocols 返回 null',
+  protocols_type: 'supported_protocols 不是数组', protocols_empty: '未声明任何调用协议', protocols_item: '调用协议内容格式异常', duplicate_id: '模型 ID 重复，无法确认对应协议',
+}
+export function tokenDanceCatalogIssueMessage(reason: string) { return catalogIssueMessages[reason] || '模型目录数据异常' }
+export function parseTokenDanceCatalog(value: unknown): Pick<TokenDanceCatalogSnapshot, 'models' | 'issues' | 'total'> {
+  const data = (value as any)?.data
+  if (!Array.isArray(data) || data.length > 5000) throw new TokenDanceCatalogError('envelope')
+  const models: TokenDanceCatalogModel[] = [], issues: TokenDanceCatalogIssue[] = []
+  const ids = new Map<string, number>()
+  const safeId = (id: unknown): id is string => typeof id === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9._:/-]{0,159}$/.test(id) && !/^(sk-|Bearer|eyJ)/i.test(id)
+  for (const row of data) if (safeId(row?.id)) ids.set(row.id, (ids.get(row.id) || 0) + 1)
+  data.forEach((row, index) => {
+    let reason = ''
+    const id = safeId(row?.id) ? row.id : null
+    if (!row || typeof row !== 'object' || Array.isArray(row)) reason = 'row_type'
+    else if (!Object.hasOwn(row, 'id')) reason = 'id_missing'
+    else if (row.id === null) reason = 'id_null'
+    else if (typeof row.id !== 'string') reason = 'id_type'
+    else if (!id) reason = 'id_invalid'
+    else if (ids.get(id)! > 1) reason = 'duplicate_id'
+    else if (!Object.hasOwn(row, 'supported_protocols')) reason = 'protocols_missing'
+    else if (row.supported_protocols === null) reason = 'protocols_null'
+    else if (!Array.isArray(row.supported_protocols)) reason = 'protocols_type'
+    else if (!row.supported_protocols.length) reason = 'protocols_empty'
+    else if (row.supported_protocols.length > 32 || row.supported_protocols.some((p: unknown) => typeof p !== 'string' || p.length > 160 || !/^[a-zA-Z0-9._-]+:[a-zA-Z0-9._-]+$/.test(p))) reason = 'protocols_item'
+    if (reason) issues.push({ id, index, reason })
+    else models.push({ id: id!, supported_protocols: [...new Set<string>(row.supported_protocols)] })
+  })
+  return { models, issues, total: data.length }
+}
+
+export function tokenDanceCatalogModelReason(snapshot: TokenDanceCatalogSnapshot, id: string, expectedProtocol: string): string | null {
+  if (snapshot.stale || snapshot.cause && !['empty', 'all_invalid'].includes(snapshot.cause)) return '当前目录未能核实，已暂停调用；请稍后刷新目录。'
+  const issue = snapshot.issues.find(issue => issue.id === id)
+  if (issue) return tokenDanceCatalogIssueMessage(issue.reason) + '，已暂停调用；请等待供应商修复或主动选择其他模型。'
+  const model = snapshot.models.find(model => model.id === id)
+  if (!model) return '当前目录未列出该模型，已暂停调用；请刷新目录或主动选择其他模型。'
+  if (!model.supported_protocols.includes(expectedProtocol)) return '当前调用协议与图研已审核的协议不一致，已暂停调用；请等待适配核验或主动选择其他模型。'
+  return null
+}
+
+export function tokenDanceCatalogMessage(snapshot: TokenDanceCatalogSnapshot): string {
+  const causeMessages: Record<string, string> = {
+    envelope: '整个目录格式异常', timeout: '读取目录超时', network: '读取目录时网络连接失败',
+    rejected: '目录接口拒绝访问', rate_limit: '目录接口限流', provider: '目录服务发生供应商异常',
+    empty: '供应商返回空目录', all_invalid: '目录中的全部模型记录均异常',
+  }
+  if (snapshot.state === 'unavailable') return `观猹 TokenDance：${causeMessages[snapshot.cause || ''] || '目录暂不可用'}，暂不能确认模型可用性。${snapshot.stale ? '上次目录仅供查看，不能用于调用。' : ''}已保留原选择，请稍后重试目录或主动选择其他模型。`
+  if (snapshot.state === 'partial') {
+    const affected = [...new Set(snapshot.issues.map(issue => `${issue.id || '第 ' + (issue.index + 1) + ' 条记录'}（${tokenDanceCatalogIssueMessage(issue.reason)}）`))]
+    return `观猹 TokenDance：已隔离 ${snapshot.issues.length} 条异常记录：${affected.slice(0, 5).join('、')}${affected.length > 5 ? '等' : ''}。其他 ${snapshot.models.length} 条记录可继续核验使用；已接入的正常模型不受此异常影响。请稍后刷新，或主动选择其他可用模型。`
+  }
+  return ''
+}
+
+// Only successful refreshes establish freshness. A failure never extends it.
+// Stale data is bounded and display-only; invocation forces a read-only refresh.
+export function createTokenDanceCatalogCache(options: {
+  fetcher: (input: string, init: RequestInit) => Promise<Response>; now?: () => number;
+  report?: (event: Record<string, unknown>) => void; appUrl: string;
+  expectedModels?: { id: string; protocol: string }[];
+  freshMs?: number; staleMs?: number; retryMs?: number; timeoutMs?: number;
+}) {
+  const now = options.now || Date.now
+  const freshMs = options.freshMs ?? 60_000, staleMs = options.staleMs ?? 15 * 60_000, retryMs = options.retryMs ?? 10_000
+  let last: TokenDanceCatalogSnapshot | null = null, current: TokenDanceCatalogSnapshot | null = null
+  let pending: Promise<TokenDanceCatalogSnapshot> | null = null, retryAt = 0, count = 0, since = 0, lastReport = 0, lastSignature = ''
+  function publish(snapshot: TokenDanceCatalogSnapshot, httpStatus?: number) {
+    const unhealthy = snapshot.state !== 'ready'
+    count = unhealthy ? count + 1 : 0
+    if (!since && unhealthy) since = now()
+    if (!unhealthy) since = 0
+    snapshot.failureCount = count
+    snapshot.alert = !unhealthy ? 'none' : snapshot.state === 'unavailable' || count >= 3 || now() - since >= 300_000 ? 'critical' : 'warning'
+    const compatibleCount = options.expectedModels?.filter(expected => !tokenDanceCatalogModelReason(snapshot, expected.id, expected.protocol)).length
+    if (compatibleCount === 0) snapshot.alert = 'critical'
+    const signature = JSON.stringify([snapshot.state, snapshot.cause, snapshot.alert, snapshot.issues])
+    if (signature !== lastSignature || unhealthy && now() - lastReport >= 60_000) {
+      // No upstream body, descriptions, headers, keys, user data or exception text.
+      options.report?.({ event: 'tokendance_catalog_health', level: snapshot.alert === 'critical' ? 'error' : unhealthy ? 'warn' : 'info',
+        state: snapshot.state, cause: snapshot.cause, httpStatus, alert: snapshot.alert, consecutiveAnomalies: count,
+        anomalySince: since || null, checkedAt: snapshot.checkedAt, stale: snapshot.stale, total: snapshot.total,
+        valid: snapshot.models.length, compatibleCount, issueCount: snapshot.issues.length, issues: snapshot.issues.slice(0, 100) })
+      lastSignature = signature; lastReport = now()
+    }
+    current = snapshot
+    return snapshot
+  }
+  async function refresh() {
+    try {
+      const response = await options.fetcher('https://tokendance.space/gateway/v1/models', { headers: { 'X-App-URL': options.appUrl }, signal: AbortSignal.timeout(options.timeoutMs ?? 10_000) })
+      if (!response.ok) throw new TokenDanceCatalogError(response.status === 429 ? 'rate_limit' : response.status >= 500 ? 'provider' : 'rejected', response.status)
+      let body: unknown
+      try { body = await response.json() } catch (error: any) {
+        if (error instanceof SyntaxError) throw new TokenDanceCatalogError('envelope')
+        throw error
+      }
+      const parsed = parseTokenDanceCatalog(body), checkedAt = now()
+      for (const expected of options.expectedModels || []) {
+        if (!parsed.models.length || parsed.issues.some(issue => issue.id === expected.id)) continue
+        const live = parsed.models.find(model => model.id === expected.id)
+        if (!live || !live.supported_protocols.includes(expected.protocol)) parsed.issues.push({ id: expected.id, index: -1, reason: live ? 'protocol_changed' : 'missing_live' })
+      }
+      const snapshot: TokenDanceCatalogSnapshot = { ...parsed, state: !parsed.models.length ? 'unavailable' : parsed.issues.length ? 'partial' : 'ready',
+        cause: !parsed.total ? 'empty' : !parsed.models.length ? 'all_invalid' : null,
+        checkedAt, expiresAt: checkedAt + freshMs, stale: false, failureCount: 0, alert: 'none' }
+      last = snapshot; retryAt = 0
+      return publish(snapshot)
+    } catch (error: any) {
+      const cause = error instanceof TokenDanceCatalogError ? error.causeCode : ['AbortError', 'TimeoutError'].includes(error?.name) ? 'timeout' : 'network'
+      const retained = last && now() - last.checkedAt! <= staleMs ? last : null
+      retryAt = now() + retryMs
+      return publish({ models: retained?.models || [], issues: retained?.issues || [], total: retained?.total || 0,
+        state: 'unavailable', cause, checkedAt: retained?.checkedAt ?? null, expiresAt: retained?.expiresAt ?? null,
+        stale: Boolean(retained), failureCount: 0, alert: 'critical' }, error instanceof TokenDanceCatalogError ? error.httpStatus : undefined)
+    }
+  }
+  return {
+    async get(forCall = false): Promise<TokenDanceCatalogSnapshot> {
+      if (pending) return pending
+      if (current && now() < retryAt) {
+        if (current.checkedAt !== null && now() - current.checkedAt > staleMs) current = { ...current, models: [], issues: [], total: 0, checkedAt: null, expiresAt: null, stale: false }
+        return current
+      }
+      if (!forCall && current?.expiresAt && !current.stale && now() < current.expiresAt) return current
+      pending = refresh()
+      try { return await pending } finally { pending = null }
+    },
+  }
+}
+
 export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = [{"id":"bocha-web-search","roles":[],"protocols":["bocha:web-search"]},{"id":"deepseek-chat-v3-0324","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"deepseek-ocr-2","roles":[],"protocols":["openai:chat-completions"]},{"id":"deepseek-v3.2","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"deepseek-v4-flash","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4-flash-0731","roles":["main","optimize"],"protocols":["openai:chat-completions","openai:responses","anthropic:messages"]},{"id":"deepseek-v4-flash-vision-exp","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4-pro","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4-pro-0813","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"deepseek-v4.1-flash","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"dots-3-note-preview","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-4.5-air","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-4.6v","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"glm-4.7","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"glm-5","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.1","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.2","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.3","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5.3-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"glm-5v-turbo","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"glm-ocr","roles":[],"protocols":["zai:layout-parsing"]},{"id":"happyhorse-1.0-i2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.0-r2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.0-t2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.0-video-edit","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.1-i2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.1-r2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"happyhorse-1.1-t2v","roles":[],"protocols":["happyhorse:video-synthesis"]},{"id":"hy3","roles":["main","optimize"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"hy3-preview","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"hy4-preview","roles":["main","optimize"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"kimi-k2.5","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"kimi-k2.6","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"kimi-k2.7-code","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"kimi-k3","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"kling-3.0","roles":[],"protocols":["kling:text2video","kling:image2video"]},{"id":"kling-3.0-omni","roles":[],"protocols":["kling:omni-video"]},{"id":"kling-3.0-turbo","roles":[],"protocols":["kling:text2video","kling:image2video"]},{"id":"ling-3.0-flash","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"longcat-2.0","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"mimo-v2.5","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"mimo-v2.5-pro","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"mimo-v2.5-tts","roles":[],"protocols":["openai:chat-completions"]},{"id":"mimo-v2.5-tts-voiceclone","roles":[],"protocols":["openai:chat-completions"]},{"id":"mimo-v2.5-tts-voicedesign","roles":[],"protocols":["openai:chat-completions"]},{"id":"minimax-h3","roles":[],"protocols":["minimax:video_generation_v2"]},{"id":"minimax-h3-max","roles":[],"protocols":["minimax:video_generation_v2"]},{"id":"minimax-m2.5","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"minimax-m2.7","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"minimax-m3","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"minimax-speech-2.8-hd","roles":[],"protocols":["minimax:t2a_v2","minimax:t2a_v2_ws","minimax:voice_clone"]},{"id":"minimax-speech-2.8-turbo","roles":[],"protocols":["minimax:t2a_v2","minimax:t2a_v2_ws","minimax:voice_clone"]},{"id":"qwen-text-embedding-v4","roles":[],"protocols":["openai:embeddings"]},{"id":"qwen3-30b-a3b-instruct-2507","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"qwen3-max","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"qwen3-vl-plus","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"qwen3.5-35b-a3b","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"qwen3.5-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"qwen3.5-plus","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"qwen3.6-max-preview","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"qwen3.6-plus","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"qwen3.7-max","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"qwen3.7-plus","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"qwen3.7-text-embedding","roles":[],"protocols":["openai:embeddings"]},{"id":"qwen3.8-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses","anthropic:messages"]},{"id":"qwen3.8-max","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"qwen3.8-max-0902","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-2.0-code","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-2.0-lite","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-2.0-mini","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-2.0-pro","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-2.1-pro","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-2.1-turbo","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","openai:responses"]},{"id":"seed-evolving","roles":["main","optimize","vision"],"protocols":["openai:chat-completions"]},{"id":"seed-tts-2.0","roles":[],"protocols":["ark:tts","ark:tts_ws"]},{"id":"seedance-2.0","roles":[],"protocols":["seedance:generations"]},{"id":"seedance-2.0-fast","roles":[],"protocols":["seedance:generations"]},{"id":"seedance-2.0-mini","roles":[],"protocols":["seedance:generations"]},{"id":"seedance-2.5","roles":[],"protocols":["seedance:generations"]},{"id":"seedream-5.0-lite","roles":["image","refine"],"protocols":["ark:image-generations","openai:image-generations"]},{"id":"seedream-5.0-pro","roles":["image","refine"],"protocols":["ark:image-generations"]},{"id":"spark-x2.5-1.7b","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"spark-x2.5-4b","roles":["main","optimize"],"protocols":["openai:chat-completions","anthropic:messages"]},{"id":"step-3.5-flash","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"step-3.7-flash","roles":["main","optimize","vision"],"protocols":["openai:chat-completions","anthropic:messages","openai:responses"]},{"id":"unifuncs-s3","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-s3-pro","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-u3","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-u3-pro","roles":["main","optimize"],"protocols":["openai:chat-completions"]},{"id":"unifuncs-web-reader","roles":[],"protocols":["unifuncs:web-reader"]},{"id":"unifuncs-web-search","roles":[],"protocols":["unifuncs:web-search"]},{"id":"wan3.0-video","roles":[],"protocols":["wan3:video-synthesis"]},{"id":"wan3.0-video-prime","roles":[],"protocols":["wan3:video-synthesis"]}]
 
 
@@ -2171,6 +2320,7 @@ export const TOKENDANCE_ACTIONS = ['tokenDanceStatus', 'tokenDanceAuthorize', 't
 export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'retry_request' | 'review_request'
 
 export class TokenDanceError extends Error {
+  catalogFailure = false
   constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false, public requestState: RequestState = 'unknown') {
     super(message)
     this.name = 'TokenDanceError'
@@ -3479,25 +3629,22 @@ async function modelCapability(body: ModelCapabilityBody) {
   return ok(await referenceModelCapability(body.provider, normalizeModelName(body.provider, body.model)))
 }
 
-let tokenDanceLiveCache: { expires: number; models: any[] } | null = null
-async function tokenDanceLiveModels() {
-  if (tokenDanceLiveCache && tokenDanceLiveCache.expires > Date.now()) return tokenDanceLiveCache.models
-  const response = await runtimeFetch('https://tokendance.space/gateway/v1/models', { headers: { 'X-App-URL': TOKENDANCE_APP_URL }, signal: AbortSignal.timeout(10000) })
-  if (!response.ok) throw new TokenDanceError(503, 'TokenDance 实时目录暂不可用。')
-  const data = await tokenDanceJson(response)
-  if (!Array.isArray(data.data) || !data.data.length || data.data.some((m: any) => typeof m.id !== 'string' || !Array.isArray(m.supported_protocols)) || new Set(data.data.map((m: any) => m.id)).size !== data.data.length) throw new TokenDanceError(503, 'TokenDance 实时目录格式异常。')
-  tokenDanceLiveCache = { expires: Date.now() + 15 * 60_000, models: data.data }
-  return data.data
-}
-async function assertTokenDanceLiveModel(model: string) {
-  // This read-only preflight precedes paid transport. Its failure is safe to
-  // retry; paid request timeouts must retain their uncertain outcome instead.
-  const models = await tokenDanceLiveModels().catch(() => {
-    throw new TokenDanceError(503, '观猹 TokenDance 实时目录暂不可用，请稍后从已保存步骤继续。', 'retry_request', 5, false, 'not_sent')
-  })
-  const live = models.find((m: any) => m.id === model)
-  const expected = model.startsWith('seedream-') ? 'ark:image-generations' : 'openai:chat-completions'
-  if (!live?.supported_protocols.includes(expected)) throw tokenDanceInputError('所选 TokenDance 型号已下架或协议发生变化，请刷新目录。')
+function newTokenDanceCatalogCache() { return createTokenDanceCatalogCache({
+  fetcher: (url, init) => runtimeFetch(url, init), appUrl: TOKENDANCE_APP_URL,
+  expectedModels: publicProviderModelRegistry(staticModelRegistry.tokendance).models.map(model => ({ id: model.id, protocol: model.protocol === 'ark-images' ? 'ark:image-generations' : model.protocol === 'openai-chat-completions' ? 'openai:chat-completions' : '' })),
+  report: event => console[event.level === 'error' ? 'error' : event.level === 'warn' ? 'warn' : 'info'](JSON.stringify(event)),
+}) }
+let tokenDanceCatalogCache = newTokenDanceCatalogCache()
+async function assertTokenDanceLiveModel(model: string, expectedProtocol: string) {
+  // Refresh metadata before each paid transport; catalog failures never imply a
+  // paid request was sent. Successful workflow checkpoints remain reusable.
+  const snapshot = await tokenDanceCatalogCache.get(true)
+  const reason = snapshot.state === 'unavailable' ? tokenDanceCatalogMessage(snapshot) : tokenDanceCatalogModelReason(snapshot, model, expectedProtocol)
+  if (reason) {
+    const error = new TokenDanceError(503, `观猹 TokenDance 模型 ${model}：${reason}本步骤尚未发送模型请求。`, 'retry_request', 10, false, 'not_sent')
+    error.catalogFailure = true
+    throw error
+  }
 }
 
 async function modelRegistry(body: ModelRegistryBody) {
@@ -3508,14 +3655,26 @@ async function modelRegistry(body: ModelRegistryBody) {
 
   const providers: Partial<Record<Provider, ProviderModelRegistry>> = {}
   const unavailableProviders: Partial<Record<Provider, string>> = {}
+  const catalogHealth: Record<string, unknown> = {}
+  const catalogWarnings: Record<string, string> = {}
   for (const provider of Object.keys(staticModelRegistry) as Array<Exclude<Provider, 'openrouter'>>) {
     if (!requestedProvider || requestedProvider === provider) {
       if (provider === 'tokendance') {
-        try {
-          const live = await tokenDanceLiveModels()
-          const registry = staticModelRegistry[provider]
-          providers[provider] = publicProviderModelRegistry({ ...registry, models: registry.models.filter(model => live.some((m: any) => m.id === model.id && m.supported_protocols.includes(model.roles.includes('image') ? 'ark:image-generations' : 'openai:chat-completions'))) })
-        } catch { unavailableProviders[provider] = 'TokenDance 实时目录暂不可用，请稍后刷新。' }
+        const snapshot = await tokenDanceCatalogCache.get()
+        const registry = publicProviderModelRegistry(staticModelRegistry[provider])
+        const models = registry.models.map(model => {
+          const expected = model.protocol === 'ark-images' ? 'ark:image-generations' : model.protocol === 'openai-chat-completions' ? 'openai:chat-completions' : ''
+          const reason = tokenDanceCatalogModelReason(snapshot, model.id, expected)
+          return reason ? { ...model, selectable: false, disabledReason: reason } : model
+        })
+        providers[provider] = { ...registry, models }
+        const affectedModels = models.filter(model => !model.selectable).map(model => ({ id: model.id, reason: model.disabledReason }))
+        const usableCount = models.filter(model => model.selectable).length
+        let message = tokenDanceCatalogMessage(snapshot)
+        if (snapshot.state !== 'unavailable' && affectedModels.length) message += ` 图研已接入模型中 ${usableCount} 个目录核验通过，${affectedModels.length} 个暂停调用：${affectedModels.slice(0, 5).map(model => model.id).join('、')}${affectedModels.length > 5 ? '等' : ''}。`
+        catalogHealth[provider] = { ...snapshot, models: undefined, issues: snapshot.issues.slice(0, 100), issueCount: snapshot.issues.length, usableCount, affectedModels, message }
+        if (snapshot.state === 'unavailable' || !usableCount) unavailableProviders[provider] = message
+        else if (message) catalogWarnings[provider] = message
       } else providers[provider] = publicProviderModelRegistry(staticModelRegistry[provider])
     }
   }
@@ -3557,6 +3716,7 @@ async function modelRegistry(body: ModelRegistryBody) {
         .map(([key, route]) => [key, Math.min(maxReferenceBytes, maxProviderImageBytes, route.editing!.maxSourceBytes!)])),
     },
     supportsModelRoutes: true,
+    catalogHealth, catalogWarnings,
     providers,
     ...(Object.keys(unavailableProviders).length ? { unavailableProviders } : {}),
   })
@@ -6379,7 +6539,7 @@ async function callVisionModelRaw(
   if (!images.length) return ''
   assertVisionInputBudget(provider, model, images)
   if (provider === 'tokendance') {
-    await assertTokenDanceLiveModel(model)
+    await assertTokenDanceLiveModel(model, 'openai:chat-completions')
     checkedReferenceRequest(provider, model, tokenDanceChatBody(model, referenceVisionSystemPrompt(), referenceVisionUserPrompt(methodContent, caption), images))
     const result = await tokenDanceChat(runtimeFetch, model, apiKey, referenceVisionSystemPrompt(), referenceVisionUserPrompt(methodContent, caption), images)
     await providerWorkflow.record(result.call)
@@ -6494,7 +6654,7 @@ async function callTextModelRaw(
 ): Promise<string> {
   assertVisionInputBudget(provider, model, images)
   if (provider === 'tokendance') {
-    await assertTokenDanceLiveModel(model)
+    await assertTokenDanceLiveModel(model, 'openai:chat-completions')
     checkedReferenceRequest(provider, model, tokenDanceChatBody(model, system, user, images))
     const result = await tokenDanceChat(runtimeFetch, model, apiKey, system, user, images, policy.signal)
     await providerWorkflow.record(result.call)
@@ -6787,7 +6947,7 @@ async function callImageModelRaw(
   }
   const source = await normalizeSourceImage(sourceImage)
   if (provider === 'tokendance') {
-    await assertTokenDanceLiveModel(model)
+    await assertTokenDanceLiveModel(model, 'ark:image-generations')
     if (source) {
       const bytes = Buffer.from(source.base64, 'base64')
       const dims = pngDimensions(bytes) || jpegDimensions(bytes) || webpDimensions(bytes)

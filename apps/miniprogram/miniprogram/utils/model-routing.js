@@ -36,7 +36,7 @@ function buildModelSubmission(input) {
             const route = input.modelRoutes[role];
             const model = (_b = (_a = input.registry.providers[route.accessProvider]) === null || _a === void 0 ? void 0 : _a.models) === null || _b === void 0 ? void 0 : _b.find(entry => entry.id === route.modelId);
             if (!model || !model.selectable || !((_c = model.roles) === null || _c === void 0 ? void 0 : _c.includes(role)) || !(0, provider_regions_1.modelAvailableInRegion)(route.accessProvider, model, input.providerRegions))
-                throw new Error(`模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`);
+                throw new Error((model === null || model === void 0 ? void 0 : model.disabledReason) || `模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`);
         }
     }
     const regions = (0, provider_regions_1.normalizeProviderRegions)(input.providerRegions);

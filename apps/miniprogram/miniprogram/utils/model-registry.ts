@@ -50,6 +50,8 @@ export interface RegistryProvider {
 }
 
 export interface ModelRegistry {
+  catalogWarnings?: Record<string, string>
+  unavailableProviders?: Record<string, string>
   inputOptimizationContractVersion?: number
   inputOptimizationTargets?: string[]
   refineUpload?: RefineUploadCapability
@@ -97,7 +99,7 @@ export function normalizeModelRegistry(input: unknown): ModelRegistry {
     ? { version: Number(upload.version), mimeTypes: stringArray(upload.mimeTypes).filter(mime => ['image/png', 'image/jpeg', 'image/webp'].includes(mime)), maxBytes: Number(upload.maxBytes), maxDimension: Number(upload.maxDimension), maxPixels: Number(upload.maxPixels), modelMaxBytes: Object.fromEntries(Object.entries(asRecord(upload.modelMaxBytes)).filter(([, value]) => positive(value)).map(([key, value]) => [key, Number(value)])) }
     : undefined
   const referenceUpload = source.referenceUpload && typeof source.referenceUpload === 'object' ? asRecord(source.referenceUpload) : undefined
-  return { ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers,
+  return { catalogWarnings: asRecord(source.catalogWarnings) as Record<string, string>, unavailableProviders: asRecord(source.unavailableProviders) as Record<string, string>, ...(referenceUpload ? { referenceUpload: { version: numberValue(referenceUpload.version), platform: asRecord(referenceUpload.platform) } } : {}), registryVersion, routeContractVersion, providerRegionContractVersion: numberValue(source.providerRegionContractVersion), supportsModelRoutes: true, providers,
     inputOptimizationContractVersion: numberValue(source.inputOptimizationContractVersion),
     ...(Array.isArray(source.inputOptimizationTargets) ? { inputOptimizationTargets: stringArray(source.inputOptimizationTargets) } : {}),
     ...(refineUpload?.mimeTypes.length ? { refineUpload } : {}),
@@ -122,7 +124,8 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   for (const role of ['main', 'image', 'vision'] as const) {
     if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role))) continue
     const entry = models.find((model) => model.id === defaults[role])
-    if (!entry || entry.selectable === false || !entry.roles.includes(role)) {
+    const catalogQuarantined = providerId === 'tokendance' && entry?.selectable === false && Boolean(entry.disabledReason)
+    if (!entry || (entry.selectable === false && !catalogQuarantined) || !entry.roles.includes(role)) {
       throw new Error(`${providerId} 默认${labels[role]}无效。`)
     }
   }

@@ -9,6 +9,7 @@ export interface ModelRegistryState {
 
 type Listener = (state: ModelRegistryState) => void
 let state: ModelRegistryState = { registry: null, loading: false, error: '' }
+let loadedAt = 0
 let currentRequest: Promise<ModelRegistryState> | null = null
 const listeners = new Set<Listener>()
 
@@ -23,13 +24,15 @@ export function subscribeModelRegistry(listener: Listener): () => void {
 }
 
 export function loadModelRegistry(force = false): Promise<ModelRegistryState> {
-  if (!force && state.registry) return Promise.resolve(state)
-  if (!force && currentRequest) return currentRequest
+  if (!force && state.registry && Date.now() - loadedAt < 60_000) return Promise.resolve(state)
+  if (currentRequest) return currentRequest
   setState({ ...state, loading: true, error: '' })
   currentRequest = requestJson<unknown>({ action: 'modelRegistry' }, { auth: false })
     .then((response) => {
       const registry = normalizeModelRegistry(response)
-      setState({ registry, loading: false, error: '' })
+      loadedAt = Date.now()
+      const notices = [...Object.values(registry.unavailableProviders || {}), ...Object.values(registry.catalogWarnings || {})].filter(value => typeof value === 'string')
+      setState({ registry, loading: false, error: notices.join('；') })
       return state
     })
     .catch((error) => {

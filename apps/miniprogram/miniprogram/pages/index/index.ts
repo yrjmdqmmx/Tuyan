@@ -305,7 +305,7 @@ Component({
       this.setData({
         registryReady: true,
         registryVersion: state.registry.registryVersion,
-        registryError: '',
+        registryError: state.error,
         settings,
         settingsSummary: formatSettingsSummary(settings),
         settingsSummaryDetails: formatSettingsSummaryDetails(settings),

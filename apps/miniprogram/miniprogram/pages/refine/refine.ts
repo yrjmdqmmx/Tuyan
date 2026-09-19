@@ -81,7 +81,7 @@ Component({
       if (!state.registry) { this.setData({ registryReady: false, registryError: state.error, uploadEnabled: false }); this.refreshCanSubmit(); return }
       const current = this.data.settings as RefineSettings
       const settings = current.modelRoutes ? current : readUiSettings('refine', defaultSettings(state.registry))
-      this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings, uploadEnabled: [1, 2].includes(state.registry.refineUpload?.version || 0) })
+      this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: state.error, settings, uploadEnabled: [1, 2].includes(state.registry.refineUpload?.version || 0) })
       this.refreshCapabilities(); this.refreshCanSubmit()
     },
     async retryRegistry() { await loadModelRegistry(true) },

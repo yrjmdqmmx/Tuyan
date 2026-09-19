@@ -384,10 +384,12 @@ test('a revoked order key retries status once with the current owner key, never 
   }
 })
 
-test('catalog preflight failures resume the original workflow after retryAt without repeating completed steps or ambiguous paid transport', async () => {
-  for (const failure of ['503', 'network', 'malformed']) {
+test('catalog preflight failures resume the original workflow after retryAt without repeating completed steps or ambiguous paid transport', async (t) => {
+  for (const failure of ['503', 'network', 'malformed', 'null-protocol', 'protocol-changed']) {
+    t.mock.restoreAll()
     const f = fixture(), flow = await f.request('tokenDanceAuthorize')
     await f.request('tokenDanceExchange', { state: flow.state, code: 'fixture-code' })
+    t.mock.method(Date, 'now', f.now)
     const runtime = await createRefineRuntime()
     const workflow = createProviderWorkflow({ db: f.db as any, service: f.service, now: f.now })
     let catalogs = 0, paid = 0, previous = 0, losePaidReply = false, enqueued = 0
@@ -397,6 +399,7 @@ test('catalog preflight failures resume the original workflow after retryAt with
         if (String(url).endsWith('/gateway/v1/models')) {
           catalogs++
           if (catalogs === 1) {
+            if (failure === 'null-protocol' || failure === 'protocol-changed') return Response.json({ data: catalog.models.map((model: any) => model.id === 'qwen3.8-flash' ? { ...model, supported_protocols: failure === 'null-protocol' ? null : ['other:protocol'] } : model) })
             if (failure === 'network') throw new Error('fixture catalog timeout')
             return new Response(failure === 'malformed' ? '{' : '', { status: failure === '503' ? 503 : 200 })
           }
@@ -416,12 +419,12 @@ test('catalog preflight failures resume the original workflow after retryAt with
       assert.equal(paid, 0)
       const recovery = (await f.db.collection('paperbanana_jobs').findOne({ _id: task.jobId })).recovery
       assert.equal(recovery.canResume, true)
-      assert.equal(recovery.retryAt.getTime(), f.now() + 5000)
+      assert.equal(recovery.retryAt.getTime(), f.now() + 10000)
       const enqueue = async (restored: any) => { enqueued++; assert.equal(restored.jobId, task.jobId); return run() }
-      await assert.rejects(workflow.resume(task.jobId, 'user-one', enqueue), (error: any) => error.status === 429 && error.retryAfterSeconds === 5)
+      await assert.rejects(workflow.resume(task.jobId, 'user-one', enqueue), (error: any) => error.status === 429 && error.retryAfterSeconds === 10)
       assert.equal(enqueued, 0)
       assert.equal((await f.db.collection('paperbanana_provider_executions').findOne({ _id: task.jobId })).state, 'blocked')
-      f.advance(5000)
+      f.advance(10000)
       await workflow.resume(task.jobId, 'user-one', enqueue)
       assert.equal(previous, 1); assert.equal(paid, 1); assert.equal(catalogs, 2); assert.equal(enqueued, 1)
       losePaidReply = true

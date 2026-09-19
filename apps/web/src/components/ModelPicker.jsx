@@ -62,8 +62,8 @@ export default function ModelPicker({
   const effectiveRegistry = useMemo(() => ({ ...sourceRegistry, providers: Object.fromEntries(Object.entries(sourceRegistry.providers || {}).map(([id, entry]) => [id, { ...entry, models: entry.models.map((model) => presentRegistryModel(id, model)) }])) }), [registry, models, provider])
   const providerIds = useMemo(() => orderModelChannels(Object.keys(effectiveRegistry.providers || {})).filter((id) => {
     const available = partitionRegistryModels(effectiveRegistry.providers[id].models, { role, outputFormat })
-    return available.compatible.length > 0
-  }), [effectiveRegistry, role, outputFormat])
+    return available.compatible.length > 0 || id === effectiveRoute.accessProvider
+  }), [effectiveRegistry, role, outputFormat, effectiveRoute.accessProvider])
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [copyStatus, setCopyStatus] = useState('')
@@ -90,7 +90,7 @@ export default function ModelPicker({
   const activeVendor = availableVendors.includes(selectedVendor) ? selectedVendor
     : grouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || ''
   const rows = grouped.find((group) => group.vendor === activeVendor)?.models || []
-  const selectedModel = activeProviderRegistry.models?.find((model) => model.id === effectiveRoute.modelId)
+  const selectedModel = effectiveRegistry.providers?.[effectiveRoute.accessProvider]?.models?.find((model) => model.id === effectiveRoute.modelId)
     || models?.find((model) => model.id === value)
 
   function resetModelList() {

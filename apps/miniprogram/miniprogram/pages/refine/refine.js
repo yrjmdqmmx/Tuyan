@@ -90,7 +90,7 @@ Component({
             }
             const current = this.data.settings;
             const settings = current.modelRoutes ? current : (0, ui_settings_1.readUiSettings)('refine', defaultSettings(state.registry));
-            this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: '', settings, uploadEnabled: [1, 2].includes(((_a = state.registry.refineUpload) === null || _a === void 0 ? void 0 : _a.version) || 0) });
+            this.setData({ registryReady: true, registryVersion: state.registry.registryVersion, registryError: state.error, settings, uploadEnabled: [1, 2].includes(((_a = state.registry.refineUpload) === null || _a === void 0 ? void 0 : _a.version) || 0) });
             this.refreshCapabilities();
             this.refreshCanSubmit();
         },
