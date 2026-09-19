@@ -93,7 +93,7 @@ test('quarantined TokenDance models remain searchable with reasons and recover w
   ] }
   const view = render(React.createElement(ModelPicker, props))
   await user.click(screen.getByRole('button', { name: '主模型', exact: true }))
-  await waitFor(() => assert.equal(document.activeElement, screen.getByRole('button', { name: '关闭模型选择' })))
+  await waitFor(() => assert.ok(document.activeElement === screen.getByRole('button', { name: '关闭模型选择' })))
   await user.type(screen.getByRole('searchbox', { name: '搜索主模型' }), model.id)
   assert.equal(screen.getByRole('searchbox', { name: '搜索主模型' }).value, model.id)
   assert.match(screen.getByRole('region', { name: '暂不可用的模型' }).textContent, /supported_protocols 返回 null/)
