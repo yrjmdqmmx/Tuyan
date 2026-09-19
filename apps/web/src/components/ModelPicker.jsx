@@ -85,11 +85,16 @@ export default function ModelPicker({
     () => partitionRegistryModels(activeProviderRegistry.models, { role, query, outputFormat }),
     [activeProviderRegistry.models, role, query, outputFormat],
   )
-  const grouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
+  const catalogDisabled = useMemo(() => selectedProvider === 'tokendance'
+    ? allPartition.incompatible.filter((model) => model.selectable === false && model.roles?.includes(role))
+    : [], [allPartition.incompatible, selectedProvider, role])
+  const grouped = useMemo(() => groupRegistryModels([...allPartition.compatible, ...catalogDisabled]), [allPartition.compatible, catalogDisabled])
   const availableVendors = grouped.map((group) => group.vendor)
   const activeVendor = availableVendors.includes(selectedVendor) ? selectedVendor
     : grouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || ''
-  const rows = grouped.find((group) => group.vendor === activeVendor)?.models || []
+  const vendorModels = grouped.find((group) => group.vendor === activeVendor)?.models || []
+  const rows = vendorModels.filter((model) => !model.selectionDisabled)
+  const disabledRows = vendorModels.filter((model) => model.selectable === false)
   const selectedModel = effectiveRegistry.providers?.[effectiveRoute.accessProvider]?.models?.find((model) => model.id === effectiveRoute.modelId)
     || models?.find((model) => model.id === value)
 
@@ -284,6 +289,18 @@ export default function ModelPicker({
             onClick={revealMoreModels}
             onKeyDown={scheduleFocusFirstRevealedModel}
           >显示更多模型</button>
+        ) : null}
+        {disabledRows.length ? (
+          <section className="model-catalog-disabled" aria-label="暂不可用的模型">
+            <h3>暂不可用的模型（{disabledRows.length}）</h3>
+            {disabledRows.map((model) => (
+              <article key={model.id} className="model-option">
+                <strong>{model.label || model.id}</strong>
+                <div className="model-id-row"><code>{model.id}</code></div>
+                <p>{model.selectionDisabledReason || '当前目录未能确认该模型可用，请稍后重试目录。'}</p>
+              </article>
+            ))}
+          </section>
         ) : null}
       </div>
       <p className="model-copy-status" role="status">{copyStatus}</p>
