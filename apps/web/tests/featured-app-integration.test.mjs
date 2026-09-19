@@ -66,6 +66,9 @@ async function renderReady(options) {
   render(React.createElement(App))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'referenceLibrary')))
+  await user.click(screen.getByRole('button', { name: '打开完整设置' }))
+  await user.click(screen.getByRole('button', { name: '阿里云百炼' }))
+  await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   return { requests, user }
 }
 

@@ -59,6 +59,7 @@ config.providers.tokendance = [...tokenDanceCatalog.models].filter(m => m.roles.
 const tokenDanceModels = 'export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = ' + JSON.stringify(tokenDanceCatalog.models.map(m => ({id:m.id, roles:m.roles, protocols:m.supported_protocols}))) + '\n'
 write(path.join(root, 'packages/api/src/tokendance-models.ts'), '// Generated from config/tokendance/catalog.json\n' + tokenDanceModels)
 lines.push(fs.readFileSync(path.join(root, 'packages/api/src/execution-errors.ts'), 'utf8'), fs.readFileSync(path.join(root, 'packages/api/src/reference-selection.ts'), 'utf8'))
+lines.push(fs.readFileSync(path.join(root, 'packages/api/src/tokendance-catalog.ts'), 'utf8'))
 lines.push(tokenDanceModels, fs.readFileSync(path.join(root, 'packages/api/src/tokendance.ts'), 'utf8').replace(/^import .* from .*\n/gm, ''))
 lines.push(sizeRuntime, `const imageSizeProfiles: Record<string, ImageSizeContract> = ${JSON.stringify(sizeConfig.profiles)}`, `const imageSizeRoutes: Record<string, {generation: string | null; editing: string | null; reviewedAt: string; sources: string[]; notes: string}> = ${JSON.stringify(sizeConfig.routes)}`)
 lines.push(`export function resolveModelImageSize(provider: string, model: string, ratio: string, resolution: string, editing = false): ResolvedImageSize {

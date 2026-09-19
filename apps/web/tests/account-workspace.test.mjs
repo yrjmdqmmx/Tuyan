@@ -93,7 +93,7 @@ test('account entry keeps the actual generation/refine subtree and selected mode
   } finally { cleanup(); globalThis.fetch = original; window.scrollTo = scroll; }
 });
 
-test('catalog refresh preserves a valid channel, falls back to TokenDance for a removed channel, and keeps an explicit Lite model across account navigation', async () => {
+test('catalog refresh preserves a valid channel, preserves a removed channel until the user explicitly changes it, and keeps an explicit Lite model across account navigation', async () => {
   const original = globalThis.fetch, scroll = window.scrollTo;
   let providers = structuredClone(STATIC_MODEL_REGISTRY), registryReads = 0;
   window.scrollTo = () => {};
@@ -122,7 +122,9 @@ test('catalog refresh preserves a valid channel, falls back to TokenDance for a 
     fireEvent.click(screen.getByRole('button', { name: '重试目录' }));
     await waitFor(() => assert.equal(registryReads, 3));
     fireEvent.click(screen.getByRole('button', { name: '打开完整设置' }));
-    await waitFor(() => assert.equal(selectedChannel(), '观猹 TokenDance'));
+    await waitFor(() => assert.equal(selectedChannel(), 'OpenAI'));
+    assert.equal(screen.getByRole('button', { name: 'OpenAI', exact: true }).disabled, true);
+    fireEvent.click(screen.getByRole('button', { name: '观猹 TokenDance', exact: true }));
     fireEvent.click(screen.getByRole('button', { name: /专业模式/ }));
     fireEvent.click(screen.getByRole('button', { name: '图像生成模型', exact: true }));
     assert.equal(document.querySelector('.model-option.active code').textContent, 'seedream-5.0-pro');

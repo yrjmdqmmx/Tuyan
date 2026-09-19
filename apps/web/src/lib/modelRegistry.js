@@ -9,7 +9,6 @@ export function mergeProviderRegistry(fallback, registry) {
   const mainModels = optionsForRole('main')
   const imageModels = optionsForRole('image')
   const visionModels = optionsForRole('vision')
-  if (!mainModels.length && !imageModels.length && !visionModels.length) return fallback
 
   const safeDefault = (role, requested, options) => {
     const match = registry.models.find((model) => model.id === requested)

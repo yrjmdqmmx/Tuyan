@@ -279,7 +279,7 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     assert.equal(result.providers.openai.defaults.main, 'gpt-5.6-sol')
     assert.equal(result.providers.ark.defaults.main, 'doubao-seed-2-1-pro-260628')
     assert.equal(Object.hasOwn(result.providers, 'openrouter'), false)
-    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。', tokendance: 'TokenDance 实时目录暂不可用，请稍后刷新。' })
+    assert.deepEqual(result.unavailableProviders, { openrouter: '海外模型出口暂不可用，请稍后重试。', tokendance: '观猹 TokenDance：读取目录时网络连接失败，暂不能确认模型可用性。已保留原选择，请稍后重试目录或主动选择其他模型。' })
     assert.doesNotMatch(JSON.stringify(result), /OpenRouter model metadata|request failed/)
   } finally {
     legacy.configureRuntimeFetch()

@@ -30,7 +30,7 @@ export function buildModelSubmission(input: {
     for (const role of MODEL_ROUTE_ROLES) {
       const route = input.modelRoutes[role]
       const model = input.registry.providers[route.accessProvider as keyof ModelRegistry['providers']]?.models?.find(entry => entry.id === route.modelId)
-      if (!model || !model.selectable || !model.roles?.includes(role) || !modelAvailableInRegion(route.accessProvider, model, input.providerRegions)) throw new Error(`模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`)
+      if (!model || !model.selectable || !model.roles?.includes(role) || !modelAvailableInRegion(route.accessProvider, model, input.providerRegions)) throw new Error(model?.disabledReason || `模型路线 ${role} 已失效或在当前区域不可用，请重新选择。`)
     }
   }
   const regions = normalizeProviderRegions(input.providerRegions)

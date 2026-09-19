@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-09-19T13:41:30.446Z",
+  "upstreamHttpStatus": 200,
+  "upstreamRows": 96,
+  "sourceBase": "70aa2ff098cd4791c56642a6d6d70fe230f02c39",
+  "productionBefore": "df2c0b33ad4c3f425eced4c68fbe98cc28c95e5e",
+  "patchedCoreFixture": {
+    "modelCount": 62,
+    "usable": 60,
+    "disabled": [
+      {
+        "id": "deepseek-v4-flash-vision-exp",
+        "reason": "当前目录未列出该模型，已暂停调用；请等待供应商修复或主动选择其他模型。"
+      },
+      {
+        "id": "deepseek-chat-v3-0324",
+        "reason": "supported_protocols 返回 null，已暂停调用；请等待供应商修复或主动选择其他模型。"
+      }
+    ],
+    "health": {
+      "issues": [
+        {
+          "id": "deepseek-chat-v3-0324",
+          "index": 36,
+          "reason": "protocols_null"
+        },
+        {
+          "id": "deepseek-v4-flash-vision-exp",
+          "index": -1,
+          "reason": "missing_live"
+        }
+      ],
+      "total": 96,
+      "state": "partial",
+      "cause": null,
+      "checkedAt": 1789825290445,
+      "expiresAt": 1789825350445,
+      "stale": false,
+      "failureCount": 1,
+      "alert": "warning",
+      "issueCount": 2,
+      "usableCount": 60,
+      "affectedModels": [
+        {
+          "id": "deepseek-v4-flash-vision-exp",
+          "reason": "当前目录未列出该模型，已暂停调用；请等待供应商修复或主动选择其他模型。"
+        },
+        {
+          "id": "deepseek-chat-v3-0324",
+          "reason": "supported_protocols 返回 null，已暂停调用；请等待供应商修复或主动选择其他模型。"
+        }
+      ],
+      "message": "观猹 TokenDance：已隔离 2 条异常记录：deepseek-chat-v3-0324（supported_protocols 返回 null）、deepseek-v4-flash-vision-exp（当前目录未列出该模型）。其他 95 条记录可继续核验使用；已接入的正常模型不受此异常影响。请稍后刷新，或主动选择其他可用模型。 图研已接入模型中 60 个目录核验通过，2 个暂停调用：deepseek-v4-flash-vision-exp、deepseek-chat-v3-0324。"
+    }
+  },
+  "paidCalls": 0
+}

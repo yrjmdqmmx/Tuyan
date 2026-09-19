@@ -105,3 +105,20 @@ assert.equal(uploadPolicy.referenceUploadSelectionError(referenceFiles, qwenPoli
 const stricter = uploadPolicy.activeReferenceUploadPolicy(withUpload.referenceUpload, {accessProvider:'zhipu',modelId:'glm-4v-flash'})
 assert.match(uploadPolicy.referenceUploadSelectionError(referenceFiles, stricter), /文件已保留/)
 assert.equal(referenceFiles.length, 8)
+
+// TokenDance quarantines stay visible and preserve saved/default selections;
+// they never authorize invocation or relax validation for other providers.
+const quarantinedCatalog = registry()
+quarantinedCatalog.providers.tokendance = provider('tokendance')
+quarantinedCatalog.providers.tokendance.models.forEach(model => { model.selectable = false; model.disabledReason = 'supported_protocols 返回 null，已暂停调用。' })
+quarantinedCatalog.catalogWarnings = { tokendance: '部分模型异常，其他模型可用。' }
+const quarantine = normalizeModelRegistry(quarantinedCatalog)
+assert.equal(quarantine.providers.tokendance.defaults.main, 'tokendance-main')
+assert.equal(quarantine.providers.bailian.models[0].selectable, true)
+assert.equal(quarantine.catalogWarnings.tokendance, quarantinedCatalog.catalogWarnings.tokendance)
+const { buildModelSubmission } = require('../miniprogram/utils/model-routing.js')
+const routes = Object.fromEntries(['main', 'image', 'vision'].map(role => [role, { accessProvider: 'tokendance', modelId: 'tokendance-' + role }]))
+assert.throws(() => buildModelSubmission({ configurationMode: 'advanced', modelRoutes: routes, registry: quarantine }), /null/)
+assert.equal(routes.main.modelId, 'tokendance-main')
+quarantinedCatalog.providers.openai.models[0].selectable = false
+assert.throws(() => normalizeModelRegistry(quarantinedCatalog), /默认主模型/)

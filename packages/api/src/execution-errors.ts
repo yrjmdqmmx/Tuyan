@@ -39,14 +39,18 @@ export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknow
   const requestState: RequestState = hasUnknownCall || error?.uncertain ? 'unknown'
     : local || error?.requestState === 'not_sent' ? 'not_sent'
     : error?.requestState === 'rejected' || status >= 400 && status < 500 ? 'rejected' : 'unknown'
-  const reason = action === 'retry_request' && requestState === 'not_sent' ? '模型目录暂时无法读取，尚未发起本步骤的模型请求。' : local && /[\u4e00-\u9fff]/u.test(error?.message || '')
+  const catalogPreflight = error?.name === 'TokenDanceError' && error?.catalogFailure === true && action === 'retry_request' && requestState === 'not_sent'
+  const reason = catalogPreflight
+    ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 700)
+    : action === 'retry_request' && requestState === 'not_sent' ? '模型目录暂时无法读取，尚未发起本步骤的模型请求。' : local && /[\u4e00-\u9fff]/u.test(error?.message || '')
     ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 500) : copy[0]
   const billingStatus = requestState === 'unknown' ? 'unknown' : completedCalls > 0 ? 'prior_calls' : requestState === 'not_sent' ? 'not_called' : 'unconfirmed'
   const billingMessage = billingStatus === 'not_called' ? '失败步骤在模型请求发出前停止；该步骤未发起模型调用。此前费用请结合调用记录核对。'
     : billingStatus === 'prior_calls' ? '此前已有成功调用，已保存成功步骤；费用以渠道账单为准。'
     : billingStatus === 'unknown' ? '请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。'
     : '渠道已拒绝本次请求；实际费用以渠道账单为准。'
+  const suggestion = catalogPreflight ? '目录恢复后可继续原任务，已成功的步骤会复用；也可主动选择其他模型。' : copy[1]
   return { stage, stageLabel: JOB_FAILURE_STAGES[stage], category, code: 'MODEL_' + category.toUpperCase(),
-    reason, suggestion: copy[1], requestState, billingStatus, billingMessage,
-    message: `${JOB_FAILURE_STAGES[stage]}失败：${reason} ${copy[1]}` }
+    reason, suggestion, requestState, billingStatus, billingMessage,
+    message: `${JOB_FAILURE_STAGES[stage]}失败：${reason} ${suggestion}` }
 }

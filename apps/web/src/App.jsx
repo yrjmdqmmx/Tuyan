@@ -275,14 +275,14 @@ export default function App() {
   const selectedInfographicCategory = INFOGRAPHIC_CATEGORIES.find(([id]) => id === infographicCategory) || INFOGRAPHIC_CATEGORIES[0];
   const isAdvancedMode = configurationMode === 'advanced';
   const isPlotCategory = infographicCategory === 'data_stat';
-  const simpleModelRoutes = providerDefaultRoutes(provider, modelRegistry, PROVIDERS) || providerDefaultRoutes(provider, null, PROVIDERS);
+  const [simpleModelRoutes, setSimpleModelRoutes] = useState(() => providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS));
   const activeModelRoutes = isAdvancedMode ? modelRoutes : simpleModelRoutes;
   const providerConfig = mergeProviderRegistry(PROVIDERS[activeModelRoutes.main.accessProvider], modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]);
   const imageProviderConfig = mergeProviderRegistry(PROVIDERS[activeModelRoutes.image.accessProvider], modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]);
   const visionProviderConfig = mergeProviderRegistry(PROVIDERS[activeModelRoutes.vision.accessProvider], modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]);
-  const defaultMainModelLabel = findModelLabel(providerConfig.mainModels, activeModelRoutes.main.modelId);
-  const defaultImageModelLabel = findModelLabel(imageProviderConfig.imageModels, activeModelRoutes.image.modelId);
-  const defaultVisionModelLabel = findModelLabel(visionProviderConfig.visionModels || [], activeModelRoutes.vision.modelId);
+  const defaultMainModelLabel = modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find(model => model.id === activeModelRoutes.main.modelId)?.label || findModelLabel(providerConfig.mainModels, activeModelRoutes.main.modelId);
+  const defaultImageModelLabel = modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find(model => model.id === activeModelRoutes.image.modelId)?.label || findModelLabel(imageProviderConfig.imageModels, activeModelRoutes.image.modelId);
+  const defaultVisionModelLabel = modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find(model => model.id === activeModelRoutes.vision.modelId)?.label || findModelLabel(visionProviderConfig.visionModels || [], activeModelRoutes.vision.modelId);
   const activeMainModelName = activeModelRoutes.main.modelId;
   const activeImageGenModelName = activeModelRoutes.image.modelId;
   const activeReferenceVisionModelName = activeModelRoutes.vision.modelId;
@@ -296,6 +296,7 @@ export default function App() {
   });
   const inputOptimizationSupported = Number(modelRegistry?.inputOptimizationContractVersion) >= 1;
   const refineOptimizationSupported = inputOptimizationSupported && modelRegistry?.inputOptimizationTargets?.includes('editInstruction');
+  const selectedCatalogIssues = [...new Set([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(entry => entry?.selectable === false).map(entry => `${entry.label || entry.id}：${entry.disabledReason || '暂不可用'}`))];
   const selectedModelNotes = uniqueRegistryModels([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(Boolean));
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
   const resolutionValues = activeImageRegistryEntry?.capabilities?.resolutions?.length
@@ -408,7 +409,7 @@ export default function App() {
       .then((registry) => {
         if (cancelled) return;
         setModelRegistry({ ...registry, providers: Object.fromEntries(Object.entries(registry.providers || {}).map(([id, entry]) => [id, { ...entry, models: sortModelsNewestFirst(entry.models.map((model) => presentRegistryModel(id, model))) }])) });
-        const unavailable = Object.values(registry.unavailableProviders || {}).filter(Boolean);
+        const unavailable = [...Object.values(registry.unavailableProviders || {}), ...Object.values(registry.catalogWarnings || {})].filter(Boolean);
         setModelRegistryError(unavailable.join('；'));
       })
       .catch((registryRequestError) => {
@@ -437,15 +438,17 @@ export default function App() {
     };
   }, [apiBaseNormalized, health]);
 
+
+
   useEffect(() => {
-    if (!modelRegistry || modelRegistry.providers?.[provider]) return;
-    const available = [DEFAULT_WEB_PROVIDER, ...Object.keys(modelRegistry.providers || {})].find(id =>
-      modelRegistry.providers?.[id] && providerDefaultRoutes(id, modelRegistry, PROVIDERS));
-    if (available) setProvider(available);
-  }, [modelRegistry, provider]);
+    if (!health) return undefined;
+    const timer = setInterval(() => setModelRegistryRetryNonce(value => value + 1), 60_000);
+    return () => clearInterval(timer);
+  }, [health]);
 
   // provider / 图像生成模型变化时，若当前清晰度不再被支持则收敛到第一档。
   useEffect(() => {
+    if (!activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
     const supported = activeImageRegistryEntry?.capabilities?.resolutions?.length
       ? activeImageRegistryEntry.capabilities.resolutions
       : supportedResolutions(activeModelRoutes.image.accessProvider, activeImageGenModelName);
@@ -453,21 +456,21 @@ export default function App() {
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, imageSize, activeImageRegistryEntry]);
 
   useEffect(() => {
-    if (!activeImageRegistryEntry) return;
+    if (!activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
     const normalized = normalizeSelectedAspectRatio(aspectRatio, generationAspectRatioOptions);
     if (normalized !== aspectRatio) setAspectRatio(normalized);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, aspectRatio, imageSize]);
 
   useEffect(() => {
-    if (!activeImageRegistryEntry) return;
+    if (!activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
     const normalized = normalizeSelectedAspectRatio(refineAspectRatio, refineAspectRatioOptions);
     if (normalized !== refineAspectRatio) setRefineAspectRatio(normalized);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, refineAspectRatio, refineImageSize]);
 
   // 精修清晰度是独立执行能力；路由或目录变化时回到新模型声明的第一档。
   useEffect(() => {
-    setRefineImageSize(defaultRefineImageSize);
-  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, modelRegistry, defaultRefineImageSize]);
+    if (activeImageRegistryEntry?.selectable !== false && activeImageRegistryEntry && !refineResolutionValues.includes(refineImageSize)) setRefineImageSize(defaultRefineImageSize);
+  }, [activeImageRegistryEntry, defaultRefineImageSize, refineImageSize]);
 
   // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立识别模型。
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
@@ -835,7 +838,10 @@ export default function App() {
   function handleConfigurationModeChange(nextMode) {
     if (nextMode === configurationMode) return;
     if (nextMode === 'advanced') setModelRoutes(simpleModelRoutes);
-    if (nextMode === 'simple') setProvider(activeModelRoutes.main.accessProvider);
+    if (nextMode === 'simple') {
+      setProvider(activeModelRoutes.main.accessProvider);
+      setSimpleModelRoutes(providerDefaultRoutes(activeModelRoutes.main.accessProvider, modelRegistry, PROVIDERS));
+    }
     arkProbeGenerationRef.current += 1;
     arkActiveProbeRequestRef.current = 0;
     setIsVerifyingArk(false);
@@ -847,6 +853,7 @@ export default function App() {
 
   function handleSimpleProviderChange(nextProvider) {
     setProvider(nextProvider);
+    setSimpleModelRoutes(providerDefaultRoutes(nextProvider, modelRegistry, PROVIDERS));
     arkProbeGenerationRef.current += 1;
     arkActiveProbeRequestRef.current = 0;
     setIsVerifyingArk(false);
@@ -1583,9 +1590,10 @@ export default function App() {
       {healthError ? (
         <div className="service-alert" role="status"><AlertTriangle size={16} />后端连接异常：{formatErrorMessage(healthError)}</div>
       ) : null}
+      {selectedCatalogIssues.length > 0 && <div className="notice warning" role="status">已保留所选模型：{selectedCatalogIssues.join('；')} 输入内容保持不变，可等待目录恢复或打开完整设置主动选择其他模型。</div>}
       {modelRegistryError ? (
         <div className="service-alert" role="status">
-          <AlertTriangle size={16} />部分模型目录暂不可用：{formatErrorMessage(modelRegistryError)}
+          <AlertTriangle size={16} />模型目录提示：{formatErrorMessage(modelRegistryError)}
           <button type="button" className="inline-retry" onClick={() => setModelRegistryRetryNonce((value) => value + 1)}>重试目录</button>
         </div>
       ) : null}

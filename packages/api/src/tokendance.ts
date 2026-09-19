@@ -8,6 +8,7 @@ export const TOKENDANCE_ACTIONS = ['tokenDanceStatus', 'tokenDanceAuthorize', 't
 export type TokenDanceRecovery = 'top_up_balance' | 'reauthorize_api_key' | 'api_key_quota' | 'rate_limit' | 'retry_request' | 'review_request'
 
 export class TokenDanceError extends Error {
+  catalogFailure = false
   constructor(public status: number, message: string, public recoveryAction?: TokenDanceRecovery, public retryAfterSeconds = 0, public uncertain = false, public requestState: RequestState = 'unknown') {
     super(message)
     this.name = 'TokenDanceError'
