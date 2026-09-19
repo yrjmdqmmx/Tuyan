@@ -597,6 +597,11 @@
   font-size: 11px;
 }
 
+.model-catalog-disabled { display: grid; gap: 8px; margin-top: 12px; }
+.model-catalog-disabled h3 { margin: 0; color: var(--muted); font-size: 12px; }
+.model-catalog-disabled .model-option { background: #fff9ed; border-color: #eadbbd; }
+.model-catalog-disabled p { margin: 8px 0 0; color: #795720; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+
 .input-results {
   min-height: 720px;
 }
