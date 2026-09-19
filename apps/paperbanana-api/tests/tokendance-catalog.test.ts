@@ -131,5 +131,5 @@ test('valid vendor protocol names with underscores remain metadata, never guesse
   const parsed = parseTokenDanceCatalog({ data: [good(), { id: 'minimax-h3', supported_protocols: ['minimax:video_generation_v2'] }] })
   assert.equal(parsed.models.length, 2)
   assert.equal(parsed.issues.length, 0)
-  assert.match(tokenDanceCatalogModelReason({ ...parsed, state: 'ready', cause: null, stale: false, checkedAt: 1, expiresAt: 2, failureCount: 0, alert: 'none' }, 'minimax-h3', protocol), /协议/)
+  assert.match(tokenDanceCatalogModelReason({ ...parsed, state: 'ready', cause: null, stale: false, checkedAt: 1, expiresAt: 2, failureCount: 0, alert: 'none' }, 'minimax-h3', protocol) || '', /协议/)
 })
