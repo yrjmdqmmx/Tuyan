@@ -93,9 +93,15 @@ test('account entry keeps the actual generation/refine subtree and selected mode
   } finally { cleanup(); globalThis.fetch = original; window.scrollTo = scroll; }
 });
 
-test('catalog refresh preserves a valid channel, preserves a removed channel until the user explicitly changes it, and keeps an explicit Lite model across account navigation', async () => {
+test('catalog refresh preserves a valid channel, preserves a removed channel until the user explicitly changes it, and keeps an explicit Lite model across account navigation', async (t) => {
   const original = globalThis.fetch, scroll = window.scrollTo;
   let providers = structuredClone(STATIC_MODEL_REGISTRY), registryReads = 0;
+  let refresh;
+  const interval = globalThis.setInterval;
+  t.mock.method(globalThis, 'setInterval', (callback, delay, ...args) => {
+    if (delay === 60_000) refresh = () => callback(...args);
+    return interval(callback, delay, ...args);
+  });
   window.scrollTo = () => {};
   globalThis.fetch = async (_url, init = {}) => {
     if (!init.body) return Response.json({ code: 0, runtime: 'laf' });
@@ -113,13 +119,13 @@ test('catalog refresh preserves a valid channel, preserves a removed channel unt
     fireEvent.click(screen.getByRole('button', { name: '打开完整设置' }));
     fireEvent.click(screen.getByRole('button', { name: 'OpenAI', exact: true }));
     fireEvent.click(screen.getByRole('button', { name: '关闭生成设置' }));
-    fireEvent.click(screen.getByRole('button', { name: '重试目录' }));
+    await act(async () => { assert.ok(refresh); refresh(); });
     await waitFor(() => assert.equal(registryReads, 2));
     fireEvent.click(screen.getByRole('button', { name: '打开完整设置' }));
     assert.equal(selectedChannel(), 'OpenAI');
     fireEvent.click(screen.getByRole('button', { name: '关闭生成设置' }));
     delete providers.openai;
-    fireEvent.click(screen.getByRole('button', { name: '重试目录' }));
+    await act(async () => { assert.ok(refresh); refresh(); });
     await waitFor(() => assert.equal(registryReads, 3));
     fireEvent.click(screen.getByRole('button', { name: '打开完整设置' }));
     await waitFor(() => assert.equal(selectedChannel(), 'OpenAI'));

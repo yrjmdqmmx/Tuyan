@@ -1125,7 +1125,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 28px;
   width: 100%;
   padding: 22px 28px;
   margin-bottom: 18px;
@@ -1145,13 +1145,11 @@ button {
 }
 
 .brand-logo {
-  width: 58px;
-  height: 58px;
-  border: 1px solid rgba(217, 214, 204, 0.8);
-  border-radius: 16px;
-  object-fit: cover;
-  background: var(--surface);
-  box-shadow: 0 10px 26px rgba(55, 46, 31, 0.1);
+  width: 80px;
+  height: 80px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  background: transparent;
 }
 
 .brand h1,
@@ -1175,17 +1173,31 @@ button {
   line-height: 1.5;
 }
 
-.header-links {
+.header-navigation {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
   gap: 10px;
+}
+
+.header-links,
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  gap: 8px;
+  max-width: 100%;
 }
 
 .header-links a,
 .auth-entry-button,
 .contact-author-button,
-.header-feedback-button {
+.header-feedback-button,
+.header-agent-button,
+.header-miniprogram-button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1202,7 +1214,9 @@ button {
 
 .auth-entry-button,
 .contact-author-button,
-.header-feedback-button {
+.header-feedback-button,
+.header-agent-button,
+.header-miniprogram-button {
   cursor: pointer;
 }
 
@@ -1222,7 +1236,9 @@ button {
 .header-links a:hover,
 .auth-entry-button:hover,
 .contact-author-button:hover,
-.header-feedback-button:hover {
+.header-feedback-button:hover,
+.header-agent-button:hover,
+.header-miniprogram-button:hover {
   border-color: var(--hairline-strong);
   background: #ffffff;
   color: var(--ink);
@@ -3786,6 +3802,19 @@ figcaption {
   }
 }
 
+@media (min-width: 761px) and (max-width: 1180px) {
+  .paper-header { gap: 20px; padding-inline: 20px; }
+  .brand { gap: 12px; }
+  .brand h1 { font-size: 24px; }
+  .header-links a,
+  .header-links button { font-size: 13px; padding-inline: 10px; }
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+  .paper-header { flex-wrap: wrap; }
+  .header-navigation { flex-basis: 620px; }
+}
+
 @media (max-width: 760px) {
   .app-shell {
     width: calc(100vw - 24px);
@@ -3796,7 +3825,7 @@ figcaption {
 
   .paper-header,
   .brand {
-    align-items: flex-start;
+    align-items: center;
   }
 
   .brand {
@@ -3806,13 +3835,12 @@ figcaption {
   }
 
   .brand-logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
+    width: 64px;
+    height: 64px;
   }
 
   .brand h1 {
-    font-size: 22px;
+    font-size: 21px;
   }
 
   .paper-header {
@@ -3822,27 +3850,29 @@ figcaption {
     overflow: hidden;
   }
 
-  .header-links {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .header-navigation {
+    flex: none;
+    align-items: stretch;
     width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+  }
+
+  .header-links,
+  .header-actions {
     justify-content: flex-start;
+    width: 100%;
   }
 
   .header-links a,
   .auth-entry-button,
   .contact-author-button,
-  .header-feedback-button {
+  .header-feedback-button,
+  .header-miniprogram-button {
     justify-content: center;
-    min-width: 0;
-    width: 100%;
     padding-inline: 10px;
     white-space: nowrap;
   }
 
-  .auth-user {
+  .header-actions > .auth-user {
     max-width: 100%;
   }
 
@@ -5476,3 +5506,234 @@ figcaption {
 .universal-size-row input { width: 100%; min-width: 0; }
 .universal-size-row label { font-size: .8rem; min-width: 0; }
 @media(max-width: 640px) { .universal-size-row { grid-template-columns: 1fr 1fr; } }
+
+/* Official assets keep their original proportions and backgrounds. */
+.github-mark,
+.wechat-mark {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.header-links > a,
+.header-links > button {
+  white-space: nowrap;
+}
+
+.accessible-dialog-backdrop.miniprogram-dialog-backdrop {
+  place-items: center;
+  padding: 20px;
+}
+
+.miniprogram-dialog {
+  position: relative;
+  width: min(430px, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  padding: 56px 24px 24px;
+  border: 1px solid var(--hairline);
+  border-radius: 20px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 24px 72px rgba(23, 21, 19, .22);
+}
+
+.miniprogram-dialog h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.miniprogram-dialog p {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.miniprogram-dialog-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: var(--paper-soft);
+  color: var(--ink-soft);
+}
+
+.miniprogram-code {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-inline: auto;
+  background: #fff;
+  object-fit: contain;
+}
+
+.wechat-mark {
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 5px;
+  background: #07c160;
+}
+
+.watcha-product-badge {
+  display: block;
+  width: 240px;
+  max-width: 100%;
+  flex: 0 0 auto;
+  border-radius: 12px;
+}
+
+.watcha-product-badge img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.watcha-product-badge:focus-visible,
+.miniprogram-dialog-close:focus-visible {
+  outline: 3px solid var(--sage);
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .paper-header { gap: 18px; }
+  .header-links { gap: 8px; }
+  .header-links > a, .header-links > button { min-height: 40px; }
+  .miniprogram-dialog { padding-inline: 18px; }
+  .miniprogram-dialog h2 { font-size: 20px; }
+  .watcha-product-badge { width: 200px; }
+}
+
+@media (max-width: 380px) {
+  .brand { gap: 10px; }
+  .brand h1 { font-size: 18px; }
+}
+
+/* Agent setup is initiated in the user's own client; this dialog only copies instructions. */
+.header-agent-button {
+  color: var(--sage);
+  background: #edf5ef;
+  border-color: #c8d8cc;
+  white-space: nowrap;
+}
+
+.accessible-dialog-backdrop.agent-connection-backdrop {
+  place-items: center;
+  padding: 20px;
+}
+
+.agent-connection-dialog {
+  position: relative;
+  width: min(650px, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  padding: 28px;
+  border: 1px solid var(--hairline);
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: 0 24px 72px rgba(23, 21, 19, .22);
+}
+
+.agent-connection-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  color: var(--ink-soft);
+  background: var(--paper-soft);
+  cursor: pointer;
+}
+
+.agent-connection-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 28px;
+}
+
+.agent-connection-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--sage);
+  background: #edf5ef;
+}
+
+.agent-connection-heading h2 { margin: 0; font-size: 24px; }
+.agent-connection-dialog > p { color: var(--muted); font-size: 14px; line-height: 1.7; }
+.agent-prompt-label { display: block; margin: 18px 0 8px; font-size: 13px; font-weight: 700; }
+.agent-connection-prompt {
+  display: block;
+  width: 100%;
+  min-height: 170px;
+  padding: 14px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 12px;
+  color: var(--ink-soft);
+  background: var(--paper-soft);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.7;
+  resize: vertical;
+  overflow-wrap: anywhere;
+}
+
+.agent-copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
+  border: 1px solid var(--sage);
+  border-radius: 10px;
+  background: var(--sage);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.agent-copy-button:disabled { opacity: .65; cursor: wait; }
+.agent-copy-button:hover:not(:disabled) { filter: brightness(.94); }
+.agent-copy-feedback { min-height: 38px; padding-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.agent-copy-feedback:empty { min-height: 0; padding-top: 0; }
+.agent-copy-feedback .text-button { display: inline; margin: 0 0 0 8px; }
+.agent-capabilities { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+.agent-capabilities section { padding: 14px; border: 1px solid var(--hairline); border-radius: 12px; background: #fffefa; }
+.agent-capabilities h3 { margin: 0 0 8px; color: var(--sage); font-size: 13px; }
+.agent-capabilities p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.65; }
+.agent-document-links { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 16px; }
+.agent-document-links a { display: inline-flex; align-items: center; gap: 5px; color: var(--sage); font-size: 13px; text-underline-offset: 3px; }
+.agent-connection-dialog :focus-visible { outline: 3px solid var(--sage); outline-offset: 3px; }
+
+@media (min-width: 761px) and (max-width: 1180px) {
+  .header-actions .watcha-product-badge { width: 200px; }
+  .header-actions .auth-user { max-width: 240px; }
+}
+
+@media (max-width: 760px) {
+  .header-agent-button { min-height: 40px; padding-inline: 10px; }
+  .accessible-dialog-backdrop.agent-connection-backdrop { padding: 16px; }
+  .agent-connection-dialog { max-height: calc(100dvh - 32px); padding: 22px 18px; }
+  .agent-connection-heading { gap: 10px; }
+  .agent-connection-heading h2 { font-size: 20px; }
+  .agent-connection-prompt { min-height: 230px; font-size: 13px; }
+  .agent-capabilities { grid-template-columns: 1fr; }
+}
