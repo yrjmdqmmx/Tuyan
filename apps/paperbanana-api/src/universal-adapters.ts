@@ -1,6 +1,6 @@
 import sharp from 'sharp'
 import { randomBytes } from 'node:crypto'
-import { normalizeUniversalRoute, UniversalApiError, universalModelEntry, type UniversalRoute, type UniversalInputLimits, type UniversalOutputLimits } from '../../../packages/api/src/universal-api.js'
+import { normalizeUniversalRoute, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, UniversalApiError, universalModelEntry, type UniversalConnection, type UniversalCatalogFormat, type UniversalRoute, type UniversalInputLimits, type UniversalOutputLimits } from '../../../packages/api/src/universal-api.js'
 import { createUniversalTransport, type UniversalTransport, type UniversalTransportOptions, type UniversalTransportRequest } from './universal-transport.js'
 
 export interface UniversalInputImage { data?: Uint8Array | string; base64?: string; mimeType: string; width?: number; height?: number }
@@ -8,7 +8,13 @@ export interface UniversalTextInput { systemPrompt?: string; prompt: string; ima
 export interface UniversalImageInput { prompt: string; sourceImages?: UniversalInputImage[]; aspectRatio: string; imageSize: string; signal?: AbortSignal }
 interface UniversalImageBytes { base64: string; mimeType: string; bytes: Uint8Array }
 export interface UniversalRuntimeOptions extends UniversalTransportOptions { transport?: UniversalTransport }
-export interface UniversalCatalogResult { state: 'catalog-visible' | 'catalog-empty' | 'catalog-invalid' | 'unsupported'; verified: false; selectedModelVisible: boolean | null; models: { id: string }[]; warnings: { row: number; code: string }[]; message: string }
+export interface UniversalCatalogResult {
+  state: 'catalog-visible' | 'catalog-partial' | 'catalog-empty' | 'catalog-invalid' | 'unsupported'
+  verified: false; inferenceVerified: false; fetchedAt: string; complete: boolean; truncated: boolean
+  selectedModelVisible: boolean | null; models: { id: string }[]; warnings: { row: number; code: string }[]; message: string
+  error?: ReturnType<UniversalApiError['toJSON']>
+}
+export const UNIVERSAL_CATALOG_LIMITS = { maxPages: 10, maxRows: 10000, pageSize: 1000, maxPageBytes: 4 * 1024 * 1024, maxTotalBytes: 16 * 1024 * 1024, timeoutMs: 30000 } as const
 const universalOutputMime: Record<string, string> = { png: 'image/png', jpeg: 'image/jpeg', webp: 'image/webp' }
 function universalInvalidResponse(code: 'RESPONSE_INVALID' | 'ASYNC_UNSUPPORTED' | 'RESPONSE_LIMIT' = 'RESPONSE_INVALID'): never { throw new UniversalApiError(code, 'unknown') }
 function universalBase64(value: unknown, limit: number, output = false): Uint8Array {
@@ -69,7 +75,7 @@ async function universalImages(images: UniversalInputImage[] | undefined, route:
   return result
 }
 function universalDataUrl(image: UniversalImageBytes) { return `data:${image.mimeType};base64,${image.base64}` }
-function universalHeaders(route: UniversalRoute, key: string): Record<string, string> {
+function universalHeaders(route: { custom: Pick<UniversalConnection, 'auth' | 'protocol'> }, key: string): Record<string, string> {
   if (typeof key !== 'string' || !key || key.length > 16384 || /[^\x21-\x7e]/.test(key)) throw new UniversalApiError('CREDENTIAL_MISMATCH')
   const c = route.custom
   return { ...(c.auth === 'bearer' ? { Authorization: `Bearer ${key}` } : { [c.auth]: key }), ...(c.protocol === 'anthropic-messages' ? { 'anthropic-version': '2023-06-01' } : {}) }
@@ -224,20 +230,20 @@ function universalImageDescriptor(route: UniversalRoute, data: any): { base64?: 
   return universalInvalidResponse()
 }
 /** Isolate malformed catalog rows; directory visibility never grants model capabilities. */
-export function universalCatalogRows(data: unknown, protocol: UniversalRoute['custom']['protocol']): Pick<UniversalCatalogResult, 'models' | 'warnings'> {
-  if (!universalObject(data)) throw new UniversalApiError('RESPONSE_INVALID')
-  const raw = protocol.startsWith('gemini-') ? (data as any).models : (data as any).data
-  if (!Array.isArray(raw) || raw.length > 10000) throw new UniversalApiError('RESPONSE_INVALID')
+export function universalCatalogRows(data: unknown, protocol: UniversalRoute['custom']['protocol'], format: Exclude<UniversalCatalogFormat, 'auto' | 'none'> = protocol.startsWith('gemini-') ? 'gemini' : 'openai'): Pick<UniversalCatalogResult, 'models' | 'warnings'> {
+  if (!universalObject(data)) throw new UniversalApiError('CATALOG_RESPONSE_INVALID', 'not_sent', 502)
+  const raw = format === 'gemini' ? (data as any).models : (data as any).data
+  if (!Array.isArray(raw) || raw.length > UNIVERSAL_CATALOG_LIMITS.maxRows) throw new UniversalApiError('CATALOG_RESPONSE_INVALID', 'not_sent', 502)
   const warnings: UniversalCatalogResult['warnings'] = [], candidates: { id: string; row: number }[] = []
   const counts = new Map<string, number>()
-  for (const row of raw) { const id = protocol.startsWith('gemini-') ? row?.name : row?.id; if (typeof id === 'string') counts.set(id, (counts.get(id) || 0) + 1) }
+  for (const row of raw) { const id = format === 'gemini' ? row?.name : row?.id; if (typeof id === 'string') counts.set(id, (counts.get(id) || 0) + 1) }
   raw.forEach((value, row) => {
     if (value === null) { warnings.push({ row, code: 'row_null' }); return }
     if (!universalObject(value)) { warnings.push({ row, code: 'row_type' }); return }
-    const id = protocol.startsWith('gemini-') ? value.name : value.id
+    const id = format === 'gemini' ? value.name : value.id
     if (id === undefined) { warnings.push({ row, code: 'id_missing' }); return }
     if (id === null) { warnings.push({ row, code: 'id_null' }); return }
-    if (typeof id !== 'string' || !id || id !== id.trim() || id.length > 256 || /[\x00-\x1f\x7f]/.test(id)) { warnings.push({ row, code: 'id_type' }); return }
+    if (typeof id !== 'string' || !id || id !== id.trim() || id.length > 256 || /[\x00-\x1f\x7f]/.test(id) || /(?:^|\/)\.\.?(?:\/|$)|\\/.test(id)) { warnings.push({ row, code: 'id_type' }); return }
     if ('supported_protocols' in value && (!Array.isArray(value.supported_protocols) || !value.supported_protocols.length || value.supported_protocols.some((x: any) => typeof x !== 'string' || !x))) { warnings.push({ row, code: value.supported_protocols === null ? 'protocol_null' : 'protocol_type' }); return }
     if (Array.isArray(value.supported_protocols) && value.supported_protocols.some((p: string) => !['openai-chat', 'openai-responses', 'openai-images', 'anthropic-messages', 'gemini-generate-content', 'gemini-interactions', 'dashscope-multimodal', 'openai:chat-completions', 'openai:responses', 'openai:images', 'ark:image-generations', 'anthropic:messages', 'gemini:generate-content', 'gemini:interactions'].includes(p))) { warnings.push({ row, code: 'protocol_unsupported' }); return }
     const matchingProtocols: Record<string, string[]> = { 'openai-chat': ['openai-chat', 'openai:chat-completions'], 'openai-responses': ['openai-responses', 'openai:responses'], 'openai-images': ['openai-images', 'openai:images', 'ark:image-generations'], 'anthropic-messages': ['anthropic-messages', 'anthropic:messages'], 'gemini-generate-content': ['gemini-generate-content', 'gemini:generate-content'], 'gemini-interactions': ['gemini-interactions', 'gemini:interactions'], 'dashscope-multimodal': ['dashscope-multimodal'] }
@@ -260,6 +266,13 @@ export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
       const route = normalizeUniversalRoute(value)
       await transport.checkUrl(route.custom.baseUrl)
       return { state: 'configuration-valid' as const, verified: false as const, route, model: universalModelEntry(route) }
+    },
+    async checkConnection(value: unknown) {
+      try {
+        const connection = normalizeUniversalConnection(value)
+        await transport.checkUrl(connection.baseUrl)
+        return { state: 'connection-valid' as const, verified: false as const, inferenceVerified: false as const, connection }
+      } catch (error) { throw universalCatalogError(error) }
     },
     async text(value: unknown, key: string, input: UniversalTextInput): Promise<string> {
       const route = normalizeUniversalRoute(value)
@@ -297,15 +310,74 @@ export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
       const image = await universalValidateImage(bytes!, mimeType, limits, true)
       return { base64: image.base64, mimeType: image.mimeType }
     },
-    async catalog(value: unknown, key: string): Promise<UniversalCatalogResult> {
-      const route = normalizeUniversalRoute(value)
-      if (route.custom.protocol === 'dashscope-multimodal') return { state: 'unsupported', verified: false, selectedModelVisible: null, models: [], warnings: [], message: new UniversalApiError('CATALOG_UNSUPPORTED').reason }
-      const response = await transport.request({ url: universalEndpoint(route, 'models'), method: 'GET', headers: universalHeaders(route, key), maxResponseBytes: 4 * 1024 * 1024, kind: 'catalog' })
-      let data: unknown
-      try { data = JSON.parse(Buffer.from(response.bytes).toString('utf8')) } catch { throw new UniversalApiError('RESPONSE_INVALID') }
-      const rows = universalCatalogRows(data, route.custom.protocol)
-      const selectedModelVisible = rows.models.some(model => model.id === route.modelId)
-      return { state: rows.models.length ? 'catalog-visible' : rows.warnings.length ? 'catalog-invalid' : 'catalog-empty', verified: false, selectedModelVisible, ...rows, message: rows.models.length ? selectedModelVisible ? '账号目录中可见当前模型；能力和限额仍须手动声明，尚未验证真实调用。' : '账号目录可见，但当前页未找到所选模型；不能据此确认模型可用或无权限。' : rows.warnings.length ? '目录记录全部未通过格式校验，无法确认当前模型；尚未发送模型请求。' : '渠道返回空目录，无法确认当前模型；尚未发送模型请求。' }
+    async catalog(value: unknown, key: string, selectedModelId?: string): Promise<UniversalCatalogResult> {
+      // Keep old route-based callers strict while allowing a connection without a model ID.
+      const legacyRoute = universalObject(value) && (value as any).accessProvider === 'custom' ? normalizeUniversalRoute(value) : null
+      const connection = normalizeUniversalConnection(legacyRoute ? { ...legacyRoute.custom, catalogFormat: (value as any).custom.catalogFormat } : value)
+      const selected = selectedModelId === undefined ? legacyRoute?.modelId : selectedModelId
+      if (selected !== undefined && (typeof selected !== 'string' || selected.length > 256 || /[\x00-\x1f\x7f]/.test(selected))) throw new UniversalApiError('CATALOG_CONFIG_INVALID')
+      const headers = universalHeaders({ custom: connection }, key)
+      const strategy = resolveUniversalCatalogStrategy(connection)
+      const base = { verified: false as const, inferenceVerified: false as const, fetchedAt: new Date().toISOString() }
+      if (!strategy.supported || !strategy.format) return { ...base, state: 'unsupported', complete: false, truncated: false, selectedModelVisible: null, models: [], warnings: [], message: strategy.message }
+      const format = strategy.format, limits = UNIVERSAL_CATALOG_LIMITS
+      const raw: unknown[] = [], paginationWarnings: UniversalCatalogResult['warnings'] = [], cursors = new Set<string>()
+      let cursor: string | undefined, complete = false, truncated = false, totalBytes = 0, partialError: UniversalApiError | undefined
+      const signal = AbortSignal.timeout(limits.timeoutMs)
+      const failShape = (): never => { throw new UniversalApiError('CATALOG_RESPONSE_INVALID', 'not_sent', 502) }
+      const validCursor = (value: unknown): value is string => typeof value === 'string' && value.length > 0 && value.length <= 2048 && value.trim() === value && !/[\x00-\x1f\x7f]/.test(value)
+      for (let page = 0; page < limits.maxPages; page++) {
+        try {
+          const url = new URL(`${connection.baseUrl}/models`)
+          if (format === 'anthropic') { url.searchParams.set('limit', String(limits.pageSize)); if (cursor) url.searchParams.set('after_id', cursor) }
+          if (format === 'gemini') { url.searchParams.set('pageSize', String(limits.pageSize)); if (cursor) url.searchParams.set('pageToken', cursor) }
+          if (format === 'anthropic') headers['anthropic-version'] = '2023-06-01'
+          const response = await transport.request({ url: url.href, method: 'GET', headers, maxResponseBytes: Math.min(limits.maxPageBytes, limits.maxTotalBytes - totalBytes), signal, kind: 'catalog' })
+          if (response.status !== 200) throw new UniversalApiError(response.status === 202 ? 'CATALOG_RESPONSE_INVALID' : response.status === 404 ? 'ENDPOINT_NOT_FOUND' : 'UPSTREAM_REJECTED', 'not_sent', response.status)
+          totalBytes += response.bytes.byteLength
+          if (response.bytes.byteLength > limits.maxPageBytes || totalBytes > limits.maxTotalBytes) throw new UniversalApiError('CATALOG_RESPONSE_LIMIT', 'not_sent', 502)
+          let data: any
+          try { data = JSON.parse(Buffer.from(response.bytes).toString('utf8')) } catch { failShape() }
+          if (!universalObject(data) || 'error' in data) failShape()
+          const rows = format === 'gemini' ? data.models : data.data
+          if (!Array.isArray(rows)) failShape()
+          if (rows.length > limits.maxRows || raw.length + rows.length > limits.maxRows) throw new UniversalApiError('CATALOG_RESPONSE_LIMIT', 'not_sent', 502)
+          // Isolate bad records even when the page's pagination metadata is invalid.
+          raw.push(...rows)
+          let next: unknown
+          if (format === 'anthropic') {
+            if (typeof data.has_more !== 'boolean') failShape()
+            if (data.has_more) {
+              if (!rows.length || !validCursor(data.last_id) || rows.at(-1)?.id !== data.last_id) failShape()
+              next = data.last_id
+            }
+          } else if (format === 'gemini') {
+            if ('nextPageToken' in data && data.nextPageToken !== '' && !validCursor(data.nextPageToken)) failShape()
+            next = data.nextPageToken || undefined
+          } else if (data.has_more === true || data.nextPageToken || data.next || data.next_cursor) {
+            // OpenAI/OpenRouter list format has no supported pagination convention.
+            failShape()
+          }
+          if (next === undefined) { complete = true; break }
+          if (!validCursor(next) || cursors.has(next)) failShape()
+          cursors.add(next as string); cursor = next as string
+          if (page + 1 >= limits.maxPages || raw.length >= limits.maxRows || totalBytes >= limits.maxTotalBytes) { truncated = true; break }
+        } catch (error) {
+          partialError = universalCatalogError(error)
+          if (!raw.length) throw partialError
+          paginationWarnings.push({ row: -1, code: 'page_fetch_failed' }); break
+        }
+      }
+      if (truncated) paginationWarnings.push({ row: -1, code: 'catalog_truncated' })
+      const rows = universalCatalogRows(format === 'gemini' ? { models: raw } : { data: raw }, connection.protocol, format)
+      rows.warnings.push(...paginationWarnings)
+      const selectedModelVisible = selected ? rows.models.some(model => model.id === selected) : null
+      const state = rows.models.length ? !complete || rows.warnings.length ? 'catalog-partial' : 'catalog-visible' : raw.length ? 'catalog-invalid' : complete ? 'catalog-empty' : 'catalog-partial'
+      const message = state === 'catalog-invalid' ? '已读取的目录记录全部未通过校验；请核对目录格式或手动填写模型 ID。'
+        : state === 'catalog-empty' ? '服务返回空目录；无法据此确认模型访问权限。'
+          : state === 'catalog-partial' ? '目录仅部分可用，异常记录已隔离或分页未完成；未找到某模型不能证明它不可用。'
+            : '已读取模型目录，可选择准确 ID；能力、限额与真实调用权限仍需独立核对。'
+      return { ...base, fetchedAt: new Date().toISOString(), state, complete, truncated, selectedModelVisible, ...rows, message, ...(partialError ? { error: partialError.toJSON() } : {}) }
     },
   }
 }

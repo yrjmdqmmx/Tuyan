@@ -38,10 +38,16 @@ export function universalPublicIp(address: string): boolean {
   }
   return true
 }
-function universalTransportUrl(value: string, asset: boolean): URL {
+function universalTransportUrl(value: string, asset: boolean, catalog = false): URL {
   let url: URL
   try { url = new URL(value) } catch { throw new UniversalApiError('ENDPOINT_UNSAFE') }
-  if (url.protocol !== 'https:' || url.port && url.port !== '443' || url.username || url.password || url.hash || !asset && url.search || /[\x00-\x20\\]/.test(value)) throw new UniversalApiError('ENDPOINT_UNSAFE')
+  if (url.protocol !== 'https:' || url.port && url.port !== '443' || url.username || url.password || url.hash || !asset && !catalog && url.search || /[\x00-\x20\\]/.test(value)) throw new UniversalApiError('ENDPOINT_UNSAFE')
+  if (catalog && url.search) {
+    const entries = [...url.searchParams.entries()], keys = entries.map(([key]) => key)
+    const anthropic = keys.every(key => ['limit', 'after_id'].includes(key)), gemini = keys.every(key => ['pageSize', 'pageToken'].includes(key))
+    if (!url.pathname.endsWith('/models') || new Set(keys).size !== keys.length || !anthropic && !gemini
+      || entries.some(([key, value]) => ['limit', 'pageSize'].includes(key) ? !/^\d+$/.test(value) || Number(value) < 1 || Number(value) > 1000 : !value || value.length > 2048 || value.trim() !== value || /[\x00-\x1f\x7f]/.test(value))) throw new UniversalApiError('ENDPOINT_UNSAFE')
+  }
   const host = url.hostname.toLowerCase()
   if (!host || host.endsWith('.') || host === 'localhost' || /\.(?:localhost|local|internal|test|invalid)$/.test(host)) throw new UniversalApiError('ENDPOINT_UNSAFE')
   return url
@@ -69,8 +75,8 @@ async function universalBoundedBody(response: Response, maxBytes: number, state:
 }
 export function createUniversalTransport(options: UniversalTransportOptions = {}): UniversalTransport {
   const resolve = options.resolve || (async (host: string) => await lookup(host, { all: true, verbatim: true }))
-  async function checked(value: string, asset: boolean) {
-    const url = universalTransportUrl(value, asset), host = url.hostname.replace(/^\[|\]$/g, '')
+  async function checked(value: string, asset: boolean, catalog = false) {
+    const url = universalTransportUrl(value, asset, catalog), host = url.hostname.replace(/^\[|\]$/g, '')
     let addresses: UniversalDnsAddress[]
     let timer: ReturnType<typeof setTimeout> | undefined
     try {
@@ -85,11 +91,12 @@ export function createUniversalTransport(options: UniversalTransportOptions = {}
   return {
     async checkUrl(url, asset = false) { await checked(url, asset) },
     async request(input) {
-      const { url, addresses } = await checked(input.url, input.kind === 'asset')
+      if (input.kind === 'catalog' && (input.method !== 'GET' || input.body !== undefined)) throw new UniversalApiError('ENDPOINT_UNSAFE')
+      const { url, addresses } = await checked(input.url, input.kind === 'asset', input.kind === 'catalog')
       if (!Number.isSafeInteger(input.maxResponseBytes) || input.maxResponseBytes < 1 || input.maxResponseBytes > 128 * 1024 * 1024) throw new UniversalApiError('CONFIG_INVALID')
       const bodyBytes = typeof input.body === 'string' ? Buffer.byteLength(input.body) : input.body?.byteLength || 0
       if (bodyBytes > (input.maxRequestBytes ?? 120 * 1024 * 1024)) throw new UniversalApiError('INPUT_LIMIT')
-      if (input.signal?.aborted) throw new UniversalApiError('CONFIG_INVALID')
+      if (input.signal?.aborted) throw new UniversalApiError(input.kind === 'catalog' ? 'REQUEST_TIMEOUT' : 'CONFIG_INVALID')
       const state = input.kind === 'catalog' ? 'not_sent' : 'unknown'
       const headers = input.kind === 'asset' ? {} : { ...input.headers }
       const address = addresses[0]
@@ -125,7 +132,7 @@ export function createUniversalTransport(options: UniversalTransportOptions = {}
       } catch (error) {
         if (error instanceof UniversalApiError) throw error
         let current: any = error, timedOut = false
-        for (let depth = 0; current && depth < 4; depth++, current = current.cause) if (current.name === 'TimeoutError' || ['UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_BODY_TIMEOUT', 'ETIMEDOUT'].includes(current.code)) timedOut = true
+        for (let depth = 0; current && depth < 4; depth++, current = current.cause) if (current.name === 'TimeoutError' || input.kind === 'catalog' && input.signal?.reason?.name === 'TimeoutError' || ['UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_BODY_TIMEOUT', 'ETIMEDOUT'].includes(current.code)) timedOut = true
         throw new UniversalApiError(timedOut ? 'REQUEST_TIMEOUT' : input.signal?.aborted ? 'RESULT_UNKNOWN' : 'NETWORK_ERROR', state)
       } finally { await dispatcher.close() }
     },

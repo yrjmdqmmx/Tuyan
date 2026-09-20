@@ -10,7 +10,7 @@ export function ratioRectangle(value, bounds = { width: 48, height: 28 }) {
   return { width: width * scale, height: height * scale }
 }
 
-export default function AspectRatioPicker({ label, value, options, onChange, compact = false, maxVisible = Infinity }) {
+export default function AspectRatioPicker({ label, value, options, onChange, compact = false, maxVisible = Infinity, emptyMessage = '当前模型没有可用比例，请检查型号与清晰度。' }) {
   const buttonRefs = useRef([])
   const [expanded, setExpanded] = useState(false)
   const groupId = useId()
@@ -36,7 +36,7 @@ export default function AspectRatioPicker({ label, value, options, onChange, com
   return (
     <fieldset className={`aspect-ratio-picker${compact ? ' compact' : ''}`}>
       <legend>{label}</legend>
-      {!options.length ? <p className="model-picker-empty">当前模型没有可用比例，请检查型号与清晰度。</p> : null}
+      {!options.length ? <p className="model-picker-empty">{emptyMessage}</p> : null}
       <div id={groupId} className="aspect-ratio-options" role="group" aria-label={label}>
         {options.map((option, index) => {
           const shape = ratioRectangle(option.value)

@@ -1,5 +1,15 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-20 · 通用 API 目录选择与生成设置优化
+
+- `universalApiCheck(check=catalog)` 新增连接级 `connection` 和可选 `selectedModelId`；获取目录不再依赖模型 ID、能力或图片限额。旧 `route` 请求继续兼容，生成和恢复仍使用严格路线校验。
+- 目录规则 `catalogFormat=auto|openai|anthropic|gemini|none`：auto 只使用已核对地址；其他服务须按文档明确选择规则或手动填写。新增部分目录、完整性、读取时间和独立 `catalogError`，不将目录可见当作推理可用，不使用任务费用错误文案。
+- [x] Core / 共享 API：分页上限、逐条和跨页重复隔离、连接密钥绑定及安全传输；无新增环境变量或数据库迁移。
+- [x] Web：三行等宽使用模式、统一控件、中性空表单、失焦/主动校验、搜索目录并明确选择、手动 ID 和模式输入保留；连接/密钥变化使旧结果失效。
+- [x] 小程序 TS / JS：同步可选共享连接类型；不新增原生通用 API 配置入口，既有任务与恢复字段兼容。无需其他保留客户端迁移。
+- [ ] Web / Core 生产发布与线上只读核验：待本轮检查完成后更新。
+- 官方接口、状态及尚未实测服务见 [目录适配说明](docs/universal-api/catalog-selection.md)。本轮不触发付费生成或重跑历史任务。
+
 ## 2026-09-20 · 通用 API 自有服务接入 v1
 
 - `modelRoutes.{main,vision,image}` 新增 `accessProvider=custom` 和可选 `custom` 描述符：协议、Base URL、认证方式、连接 ID、显式能力、图片输入/输出限额与尺寸映射；型号原样传递。不同地址的同名型号不共享能力。
