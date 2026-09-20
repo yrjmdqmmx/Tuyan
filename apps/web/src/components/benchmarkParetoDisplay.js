@@ -58,12 +58,22 @@ export function zoomView(view, nextZoom, anchor = { x: .5, y: .5 }) {
 }
 export const focusView = (view, point) => clampView({ ...view, x: point.x, y: point.y })
 
+// Keep the data beneath the initial pinch midpoint beneath the moving midpoint.
+export function pinchView(view, ratio, start, current) {
+  const zoom = clamp(view.zoom * ratio, 1, 8)
+  return clampView({
+    zoom,
+    x: view.x + (start.x - .5) / view.zoom - (current.x - .5) / zoom,
+    y: view.y + (start.y - .5) / view.zoom - (current.y - .5) / zoom,
+  })
+}
+
 // Mark nearby screen coordinates as a selectable cluster; do not change data values.
-export function clusterPoints(points, selectedId) {
+export function clusterPoints(points, selectedId, minimumDistance = 0) {
   const sorted = [...points].sort((a, b) => Number(b.row.model.modelId === selectedId) - Number(a.row.model.modelId === selectedId) || Number(b.frontier) - Number(a.frontier))
   const clusters = []
   for (const point of sorted) {
-    const match = clusters.find(g => Math.hypot(point.x - g[0].x, point.y - g[0].y) < ((point.frontier || g[0].frontier || point.row.model.modelId === selectedId || g[0].row.model.modelId === selectedId) ? 25 : 18))
+    const match = clusters.find(g => Math.hypot(point.x - g[0].x, point.y - g[0].y) < Math.max(minimumDistance, (point.frontier || g[0].frontier || point.row.model.modelId === selectedId || g[0].row.model.modelId === selectedId) ? 25 : 18))
     if (match) match.push(point)
     else clusters.push([point])
   }

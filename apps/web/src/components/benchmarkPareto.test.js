@@ -64,3 +64,20 @@ test('ordinary ranking remains default; toggle is deep-linkable and history awar
   assert.equal(screen.queryByLabelText('帕累托视图'), null)
   assert.equal(new URLSearchParams(window.location.search).get('view'), null)
 })
+
+test('touch chart expansion locks page scroll and Escape restores it', () => {
+  const width = window.innerWidth, overflow = document.body.style.overflow
+  window.innerWidth = 390
+  try {
+    render(React.createElement(BenchmarkPareto, { models: [model('krea/krea-2-medium')], axes }))
+    fireEvent.click(screen.getByRole('button', { name: '展开图表', exact: true }))
+    assert.ok(screen.getByRole('dialog', { name: '帕累托前沿', exact: true }))
+    assert.equal(document.body.style.overflow, 'hidden')
+    fireEvent.keyDown(document, { key: 'Escape' })
+    assert.equal(screen.queryByRole('dialog', { name: '帕累托前沿', exact: true }), null)
+    assert.equal(document.body.style.overflow, overflow)
+    fireEvent.click(screen.getByRole('button', { name: '展开图表', exact: true }))
+    cleanup()
+    assert.equal(document.body.style.overflow, overflow)
+  } finally { window.innerWidth = width;document.body.style.overflow = overflow }
+})
