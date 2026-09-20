@@ -217,7 +217,7 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
         <output aria-label="当前缩放">{Number(view.zoom.toFixed(1))}×</output>
         <button type="button" aria-label="放大图表" disabled={view.zoom >= 8} onClick={() => zoom(view.zoom + 1)}><Plus size={17} /></button>
         <button type="button" aria-label="重置视图" onClick={reset}><RotateCcw size={16} /><span>重置</span></button>
-        {(mobile || expanded) && <button ref={expandButton} className="pareto-expand-chart" type="button" aria-label={expanded ? '收起图表' : '展开图表'} aria-pressed={expanded} onClick={() => { close();setExpanded(v => !v) }}>{expanded ? <X size={18} /> : <Maximize2 size={18} />}<span>{expanded ? '收起' : '展开'}</span></button>}
+        <button ref={expandButton} className="pareto-expand-chart" type="button" aria-label={expanded ? '收起图表' : '展开图表'} aria-pressed={expanded} onClick={() => { close();setExpanded(v => !v) }}>{expanded ? <X size={18} /> : <Maximize2 size={18} />}<span>{expanded ? '收起' : '全屏'}</span></button>
       </div>
     </header>
     {mobile && <p className="pareto-touch-hint">双指缩放 · 单指移动{expanded ? ' · 横屏更宽' : ' · 可展开查看'}</p>}
