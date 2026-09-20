@@ -123,3 +123,9 @@ test('HTTP 200 HTML, empty objects, malformed models and contradictory states ar
   assert.equal(main().queryByText(/本次获取 0 个/),null);assert.doesNotMatch(main().getByRole('alert').textContent,/maintenance-secret/)
  }
 })
+test('official Gemini catalog resource ID reuses exact capabilities but stays unchanged in requests; compatible origins do not inherit them',()=>{
+ const d=emptyUniversalDraft('main');d.custom.protocol='gemini-generate-content';d.custom.auth='x-goog-api-key';d.custom.baseUrl='https://generativelanguage.googleapis.com/v1beta';d.modelId='models/gemini-3.8-flash'
+ assert.equal(universalDraftFeedback(d,'main').tone,'success');assert.equal(universalDraftRoute(d).modelId,d.modelId)
+ assert.equal(universalDraftFeedback({...d,modelId:'models/models/gemini-3.8-flash'},'main').tone,'warning')
+ assert.equal(universalDraftFeedback({...d,custom:{...d.custom,baseUrl:'https://google-proxy.example.com/v1beta'}},'main').tone,'warning')
+})

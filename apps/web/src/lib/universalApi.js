@@ -63,7 +63,10 @@ export function officialDeclaration(draft) {
   let base
   try { base = normalizeUniversalBaseUrl(c.baseUrl, c.protocol) } catch { return null }
   const provider = base === 'https://api.openai.com/v1' ? 'openai' : base === 'https://api.anthropic.com/v1' ? 'anthropic' : base === 'https://generativelanguage.googleapis.com/v1beta' ? 'gemini' : ''
-  const entry = STATIC_MODEL_REGISTRY[provider]?.models.find(x => x.id === draft.modelId && x.selectable !== false)
+  // Google models.list uses resource names; only the exact audited Google origin
+  // can map its documented models/ prefix to the local capability registry.
+  const lookupId = provider === 'gemini' && c.protocol.startsWith('gemini-') && draft.modelId.startsWith('models/') ? draft.modelId.slice(7) : draft.modelId
+  const entry = STATIC_MODEL_REGISTRY[provider]?.models.find(x => x.id === lookupId && x.selectable !== false)
   const expected = {'openai-chat':'openai-chat-completions', 'openai-responses':'openai-responses','openai-images':'openai-images','anthropic-messages':'anthropic-messages','gemini-generate-content':'gemini-generate-content','gemini-interactions':'gemini-interactions'}[c.protocol]
   if (!entry || entry.protocol !== expected || c.compatibility !== 'standard' || c.auth !== universalDefaultAuth(c.protocol)) return null
   const policy = referenceSubmissionPolicy(provider, entry.id)
