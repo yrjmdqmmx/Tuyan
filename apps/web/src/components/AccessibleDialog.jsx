@@ -12,7 +12,7 @@ const FOCUSABLE_SELECTOR = [
 
 const dialogStack = [];
 
-export default function AccessibleDialog({ open, onClose, labelledBy, describedBy, className = '', children }) {
+export default function AccessibleDialog({ open, onClose, labelledBy, describedBy, className = '', backdropClassName = '', children }) {
   const panelRef = useRef(null);
   const previousFocusRef = useRef(null);
   const onCloseRef = useRef(onClose);
@@ -29,7 +29,7 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
     const focusFrame = window.requestAnimationFrame(() => {
       const preferred = panelRef.current?.querySelector('[data-autofocus]')
         || panelRef.current?.querySelector(FOCUSABLE_SELECTOR);
-      (preferred || panelRef.current)?.focus();
+      (preferred || panelRef.current)?.focus({ preventScroll: true });
     });
 
     const handleKeyDown = (event) => {
@@ -65,14 +65,17 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
       const stackIndex = dialogStack.indexOf(stackEntry);
       if (stackIndex >= 0) dialogStack.splice(stackIndex, 1);
       document.body.style.overflow = previousOverflow;
-      previousFocusRef.current?.focus?.();
+      previousFocusRef.current?.focus?.({ preventScroll: true });
     };
   }, [open]);
 
   if (!open) return null;
   return (
-    <div className="accessible-dialog-backdrop" onMouseDown={(event) => {
-      if (event.target === event.currentTarget) onClose();
+    <div className={`accessible-dialog-backdrop ${backdropClassName}`.trim()} onMouseDown={(event) => {
+      if (event.target === event.currentTarget) {
+        event.preventDefault();
+        onClose();
+      }
     }}>
       <div
         ref={panelRef}

@@ -14,11 +14,10 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   BarChart3,
+  Bot,
   FileText,
-  Github,
   Image as ImageIcon,
   Loader2,
-  MessageCircle,
   MessageSquare,
   QrCode,
   Send,
@@ -74,6 +73,8 @@ import AuthPanel from './components/AuthPanel';
 import AuthUnavailablePanel from './components/AuthUnavailablePanel';
 import FeaturedTemplateStudio from './components/FeaturedTemplateStudio';
 import FeedbackDialog from './components/FeedbackDialog';
+import MiniProgramDialog from './components/MiniProgramDialog';
+import AgentConnectionDialog from './components/AgentConnectionDialog';
 import GenerationSettingsDrawer from './components/GenerationSettingsDrawer';
 import GuidePanel from './components/GuidePanel';
 import InputOptimizationDialog from './components/InputOptimizationDialog';
@@ -159,6 +160,8 @@ export default function App() {
     return () => window.removeEventListener('popstate', pop);
   }, [activeTab]);
   const [showContactDialog, setShowContactDialog] = useState(false);
+  const [showMiniProgramDialog, setShowMiniProgramDialog] = useState(false);
+  const [showAgentConnection, setShowAgentConnection] = useState(false);
   const contactCloseRef = useRef(null);
   const [contactQrFailed, setContactQrFailed] = useState(false);
   const [showAuthPanel, setShowAuthPanel] = useState(() => isLoginEntry(window.location.search));
@@ -224,7 +227,6 @@ export default function App() {
   const [providerRegions, setProviderRegions] = useState({ minimax: 'global' });
   const modelRegistry = useMemo(() => registryForRegions(rawModelRegistry, providerRegions), [rawModelRegistry, providerRegions]);
   const apiKeys = useMemo(() => ({...selectRegionApiKeys(apiKeyRing, providerRegions), ...(accessMode === 'custom' ? {custom:customEnvelope} : {})}), [apiKeyRing, providerRegions, accessMode, customEnvelope]);
-  const [modelRegistryError, setModelRegistryError] = useState('');
   const [modelRegistryRetryNonce, setModelRegistryRetryNonce] = useState(0);
   const [mock, setMock] = useState(false);
   const [currentJobId, setCurrentJobId] = useState('');
@@ -418,13 +420,10 @@ export default function App() {
       .then((registry) => {
         if (cancelled) return;
         setModelRegistry({ ...registry, providers: Object.fromEntries(Object.entries(registry.providers || {}).map(([id, entry]) => [id, { ...entry, models: sortModelsNewestFirst(entry.models.map((model) => presentRegistryModel(id, model))) }])) });
-        const unavailable = [...Object.values(registry.unavailableProviders || {}), ...Object.values(registry.catalogWarnings || {})].filter(Boolean);
-        setModelRegistryError(unavailable.join('；'));
       })
-      .catch((registryRequestError) => {
+      .catch(() => {
         if (!cancelled) {
           setModelRegistry(null);
-          setModelRegistryError(registryRequestError?.message || '模型目录加载失败');
         }
       });
     return () => {
@@ -1565,44 +1564,47 @@ export default function App() {
       <header className="paper-header">
         <div className="brand">
           <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
-          <div>
-            <h1>图研Tuyan工作台</h1>
+          <h1>图研Tuyan工作台</h1>
+        </div>
+        <nav className="header-navigation" aria-label="网站导航">
+          <div className="header-links">
+            {BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
+            <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
+            <button type="button" className="contact-author-button" onClick={() => setShowContactDialog(true)}>
+              <QrCode size={16} /> 联系作者
+            </button>
+            <button type="button" className="header-feedback-button" onClick={openFeedbackDialog}>
+              <MessageSquare size={16} /> 意见反馈
+            </button>
+            <a href="https://github.com/yrjmdqmmx/Tuyan" target="_blank" rel="noreferrer">
+              <img className="github-mark" src={appPath('/brand/github-invertocat.svg')} width="18" height="18" alt="" aria-hidden="true" /> GitHub
+            </a>
+            <button type="button" className="header-miniprogram-button" aria-haspopup="dialog" onClick={() => setShowMiniProgramDialog(true)}>
+              <img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} width="22" height="22" alt="" aria-hidden="true" /> 微信小程序
+            </button>
           </div>
-        </div>
-        <div className="header-links">
-          {BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
-          <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
-          <button type="button" className="contact-author-button" onClick={() => setShowContactDialog(true)}>
-            <QrCode size={16} /> 联系作者
-          </button>
-          <button type="button" className="header-feedback-button" onClick={openFeedbackDialog}>
-            <MessageSquare size={16} /> 意见反馈
-          </button>
-          <a href="https://huggingface.co/papers/2601.23265" target="_blank" rel="noreferrer">
-            <FileText size={16} /> 论文
-          </a>
-          <a href="https://github.com/yrjmdqmmx/Tuyan" target="_blank" rel="noreferrer">
-            <Github size={16} /> GitHub
-          </a>
-          <a href="https://github.com/yrjmdqmmx/Tuyan/tree/main/apps/miniprogram" target="_blank" rel="noreferrer">
-            <MessageCircle size={16} /> 微信小程序
-          </a>
-          <a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a>
-          <a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a>
-          {AUTH_UI_ENABLED ? (
-            currentUser ? (
-              <div className="auth-user">
-                <ShieldCheck size={16} />
-                <span title={currentUser.email}>{currentUser.email}</span>
-                <button type="button" onClick={handleSignOut}>退出</button>
-              </div>
-            ) : (
-              <button type="button" className="auth-entry-button" onClick={() => setShowAuthPanel(true)}>
-                <ShieldCheck size={16} /> 登录 / 注册
-              </button>
-            )
-          ) : null}
-        </div>
+          <div className="header-actions">
+            <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={() => setShowAgentConnection(true)}>
+              <Bot size={18} /> 智能体接入
+            </button>
+            <a className="watcha-product-badge" href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer">
+              <img src={appPath('/brand/watcha-invite-light.png')} alt="去观猹点评图研 Tuyan" width="4500" height="972" />
+            </a>
+            {AUTH_UI_ENABLED ? (
+              currentUser ? (
+                <div className="auth-user">
+                  <ShieldCheck size={16} />
+                  <span title={currentUser.email}>{currentUser.email}</span>
+                  <button type="button" onClick={handleSignOut}>退出</button>
+                </div>
+              ) : (
+                <button type="button" className="auth-entry-button" onClick={() => setShowAuthPanel(true)}>
+                  <ShieldCheck size={16} /> 登录 / 注册
+                </button>
+              )
+            ) : null}
+          </div>
+        </nav>
       </header>
 
       {activeTab !== 'account' && (tokenDance.notice || tokenDance.error) && <div className="service-alert" role="status">{tokenDance.error || tokenDance.notice}<button type="button" className="account-button" onClick={openAccount}>查看账户</button></div>}
@@ -1610,12 +1612,6 @@ export default function App() {
         <div className="service-alert" role="status"><AlertTriangle size={16} />后端连接异常：{formatErrorMessage(healthError)}</div>
       ) : null}
       {selectedCatalogIssues.length > 0 && <div className="notice warning" role="status">已保留所选模型：{selectedCatalogIssues.join('；')} {accessMode === 'custom' ? '输入内容保持不变，请打开完整设置补充或修正当前接入配置。' : '输入内容保持不变，可等待目录恢复或打开完整设置主动选择其他模型。'}</div>}
-      {modelRegistryError ? (
-        <div className="service-alert" role="status">
-          <AlertTriangle size={16} />模型目录提示：{formatErrorMessage(modelRegistryError)}
-          <button type="button" className="inline-retry" onClick={() => setModelRegistryRetryNonce((value) => value + 1)}>重试目录</button>
-        </div>
-      ) : null}
       {authSession.error ? (
         <div className="service-alert" role="status"><AlertTriangle size={16} />登录状态检查失败：{formatErrorMessage(authSession.error.message || String(authSession.error))}</div>
       ) : null}
@@ -1656,6 +1652,9 @@ export default function App() {
         onRetry={retryInputOptimization}
         onAdopt={adoptInputOptimization}
       />
+
+      <MiniProgramDialog open={showMiniProgramDialog} onClose={() => setShowMiniProgramDialog(false)} />
+      <AgentConnectionDialog open={showAgentConnection} onClose={() => setShowAgentConnection(false)} />
 
       {showContactDialog ? (
         <div className="feedback-dialog-backdrop" onClick={() => setShowContactDialog(false)}>
