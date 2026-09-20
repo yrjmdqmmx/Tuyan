@@ -38,5 +38,5 @@
 ## 5. 验证与发布
 - [x] `node scripts/sync-model-catalog.mjs --check`；Core check/test/build、Web test/build、Mini compile/test、Gateway test 和相关契约检查全部通过。
 - [x] SYNC 顶部列共享变更和各端状态；无付费调用。
-- [ ] PR 完整 CI 后合并；按现有固定 SHA、镜像 digest、正常环境审批发布 Gateway/Core/配套 Worker 与 Pages。
-- [ ] 只读 readiness、实际 provenance、协议目录/配置负向校验、Chrome UI、发布产物哈希核验；记录仍未验证的真实服务与外部平台状态。
+- [x] PR 完整 CI 后合并；按现有固定 SHA、镜像 digest、正常环境审批发布 Gateway/Core/配套 Worker 与 Pages。
+- [x] 只读 readiness、实际 provenance、协议目录/配置负向校验、Chrome UI、发布产物哈希核验；记录仍未验证的真实服务与外部平台状态。
