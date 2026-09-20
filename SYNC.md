@@ -9,7 +9,7 @@
 - [x] Core / Gateway / 共享 API：实际生成链路、精修、错误和恢复桥接；本地模拟与类型/构建检查通过。
 - [x] Web：生成设置新增「通用 API」使用模式，按角色配置，保存非敏感草稿，旧渠道/型号/输入保留。密钥仅留当前页，地址改变后重新填写。
 - [x] 小程序 TS / JS：同步可选历史路线字段、通用任务恢复 action 与中文提示；自定义接入配置和新任务提交请使用 Web，本版不提供原生配置入口。
-- [ ] Web / Core / Gateway 生产发布：待固定 SHA / digest 发布及只读验收。
+- [x] Web / Core / Gateway 生产发布：PR #216、55cb505 固定镜像和 Pages 已上线；健康、运行 provenance、契约 v1、Chrome 只读配置检查及入口产物哈希通过。见 [发布记录](docs/releases/2026-09-20-universal-api.md)。
 - [ ] 微信平台上传 / 审核 / 发布：本次未操作。
 - 范围、官方文档与真实调用未验证事项见 [协议矩阵](docs/universal-api/protocol-matrix.md)。本轮不进行付费推理或历史重跑。
 
