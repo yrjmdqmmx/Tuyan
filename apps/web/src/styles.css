@@ -3994,14 +3994,6 @@ figcaption {
   }
 }
 
-@media (max-width: 520px) {
-  .app-shell {
-    width: min(calc(100vw - 24px), 366px);
-    max-width: min(calc(100vw - 24px), 366px);
-    margin-inline: auto;
-  }
-
-}
 
 /* ===== 联系作者二维码弹窗 ===== */
 .contact-dialog {
@@ -5747,3 +5739,7 @@ figcaption {
   .agent-capabilities { grid-template-columns: 1fr; }
 }
 
+
+/* The desktop summary keeps its original grid; mobile uses a disclosure. */
+.generation-summary-details { display: contents; }
+.generation-summary-details > summary { display: none; }

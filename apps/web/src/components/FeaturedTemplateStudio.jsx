@@ -1,6 +1,7 @@
-import { useEffect, useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, LayoutTemplate, X } from 'lucide-react'
 import AccessibleDialog from './AccessibleDialog'
+import useCompactLayout from '../hooks/useCompactLayout'
 
 function TemplateArtwork({ template, className = '' }) {
   if (template.imageUrl) {
@@ -19,7 +20,62 @@ function TemplateArtwork({ template, className = '' }) {
   )
 }
 
+function MobileTemplateCarousel({ templates, onPreview, reducedMotion, documentHidden }) {
+  const viewportRef = useRef(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [manualPaused, setManualPaused] = useState(false)
+
+  function nearestIndex() {
+    const viewport = viewportRef.current
+    const cards = [...(viewport?.firstElementChild?.children || [])]
+    if (!cards.length) return 0
+    const origin = cards[0].offsetLeft
+    return cards.reduce((best, card, index) => Math.abs(card.offsetLeft - origin - viewport.scrollLeft) < Math.abs(cards[best].offsetLeft - origin - viewport.scrollLeft) ? index : best, 0)
+  }
+
+  function scrollToIndex(index, behavior) {
+    const viewport = viewportRef.current
+    const cards = viewport?.firstElementChild?.children
+    if (!cards?.[index]) return
+    viewport.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior })
+  }
+
+  useEffect(() => {
+    if (manualPaused || reducedMotion || documentHidden || templates.length < 2) return undefined
+    const timer = window.setInterval(() => scrollToIndex((nearestIndex() + 1) % templates.length, 'smooth'), 5000)
+    return () => window.clearInterval(timer)
+  }, [documentHidden, manualPaused, reducedMotion, templates.length])
+
+  function move(direction) {
+    setManualPaused(true)
+    scrollToIndex(Math.max(0, Math.min(templates.length - 1, nearestIndex() + direction)), reducedMotion ? 'instant' : 'smooth')
+  }
+
+  return <div className="mobile-template-carousel" aria-label="滑动浏览精选模板">
+    <div ref={viewportRef} className="mobile-template-viewport" onScroll={() => setActiveIndex(nearestIndex())}
+      onPointerDown={() => setManualPaused(true)} onWheel={() => setManualPaused(true)} onFocusCapture={() => setManualPaused(true)}
+      onKeyDown={event => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return
+        event.preventDefault()
+        move(event.key === 'ArrowLeft' ? -1 : 1)
+      }}>
+      <div className="mobile-template-track">
+        {templates.map(template => <button type="button" className="mobile-template-card" key={template.id} aria-label={`预览模板 ${template.title}`} onClick={() => onPreview(template.id)}>
+          <TemplateArtwork template={template} />
+          <span className="mobile-template-caption"><strong>{template.title}</strong><small>{template.summary}</small></span>
+        </button>)}
+      </div>
+    </div>
+    <div className="mobile-template-controls">
+      <button type="button" aria-label="上一张模板" disabled={activeIndex === 0} onClick={() => move(-1)}><ArrowLeft size={18} /></button>
+      <span className="mobile-template-position"><span>{templates.length ? activeIndex + 1 : 0} / {templates.length}</span></span>
+      <button type="button" aria-label="下一张模板" disabled={activeIndex >= templates.length - 1} onClick={() => move(1)}><ArrowRight size={18} /></button>
+    </div>
+  </div>
+}
+
 export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) {
+  const compact = useCompactLayout()
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [visibleCount, setVisibleCount] = useState(3)
   const [paused, setPaused] = useState(false)
@@ -68,15 +124,15 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
   }, [maxIndex])
 
   useEffect(() => {
-    if (paused || documentHidden || reducedMotion || templates.length <= visibleCount) return undefined
+    if (compact || paused || documentHidden || reducedMotion || templates.length <= visibleCount) return undefined
     const timer = window.setInterval(() => {
       setCarouselIndex((current) => current >= maxIndex ? 0 : current + 1)
     }, 5000)
     return () => window.clearInterval(timer)
-  }, [documentHidden, maxIndex, paused, reducedMotion, templates.length, visibleCount])
+  }, [compact, documentHidden, maxIndex, paused, reducedMotion, templates.length, visibleCount])
 
-  function openLibrary() {
-    setSelectedId(selectedTemplate?.id || templates[0]?.id || '')
+  function openLibrary(templateId) {
+    setSelectedId(templateId || selectedTemplate?.id || templates[0]?.id || '')
     setLibraryOpen(true)
   }
 
@@ -116,13 +172,13 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
         }}
       >
         <div className="featured-template-copy">
-          <h2>从真实研究图示开始</h2>
-          <p>图研Tuyan 是开源的学术图示工作台。精选模板直接来自 306 条研究参考图库，套用后仍可完整改写你的方法、图注与排除项。</p>
-          <button type="button" className="featured-template-cta" onClick={openLibrary}>
+          <h2>{compact ? '从模板开始' : '从真实研究图示开始'}</h2>
+          <p>{compact ? '选用参考结构，或直接填写下方内容。' : '图研Tuyan 是开源的学术图示工作台。精选模板直接来自 306 条研究参考图库，套用后仍可完整改写你的方法、图注与排除项。'}</p>
+          <button type="button" className="featured-template-cta" onClick={() => openLibrary()}>
             <LayoutTemplate size={17} />浏览模板
           </button>
         </div>
-        <div className="featured-carousel">
+        {compact ? <MobileTemplateCarousel templates={templates} onPreview={openLibrary} reducedMotion={reducedMotion} documentHidden={documentHidden || libraryOpen || confirmOpen} /> : <div className="featured-carousel">
           <div className="featured-carousel-viewport">
             <div
               className="featured-carousel-track"
@@ -151,7 +207,7 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
             </div>
             <button type="button" aria-label="下一张模板" onClick={() => setCarouselIndex((current) => current >= maxIndex ? 0 : current + 1)}><ArrowRight size={17} /></button>
           </div>
-        </div>
+        </div>}
       </section>
 
       <AccessibleDialog open={libraryOpen} onClose={() => setLibraryOpen(false)} labelledBy={libraryTitleId} describedBy={libraryDescriptionId} className="featured-template-dialog">

@@ -1,3 +1,8 @@
+import GenerationWorkspace, { GenerationInputPanel } from './components/GenerationWorkspace';
+import useCompactLayout from './hooks/useCompactLayout';
+import WorkbenchHeader from './components/WorkbenchHeader';
+import GenerationSummaryDetails from './components/GenerationSummaryDetails';
+import useVisualViewport from './hooks/useVisualViewport';
 import UniversalApiSettings from './components/UniversalApiSettings.jsx';
 import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
 import { activeReferenceUploadPolicy, referenceUploadSelectionError, referenceModelDimensionsError } from './lib/referenceUploadPolicy';
@@ -13,13 +18,9 @@ import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegion
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
-  BarChart3,
-  Bot,
   FileText,
   Image as ImageIcon,
   Loader2,
-  MessageSquare,
-  QrCode,
   Send,
   Settings2,
   ShieldCheck,
@@ -50,12 +51,10 @@ import {
   AUTH_BASE_DEFAULT,
   AUTH_REQUIRED,
   AUTH_UI_ENABLED,
-  BENCH_ENABLED,
   CLIENT_VERSION,
   CUSTOM_API_BASE_ENABLED,
   LOCAL_CONSUMPTION_TEST,
   authClient,
-  logoUrl,
 } from './config';
 import {
   INFOGRAPHIC_CATEGORIES,
@@ -108,7 +107,7 @@ import {
   scopedApiKeysForRoles,
   uniqueProvidersForRoles,
 } from './lib/modelRouting';
-import { appPath, isLoginEntry } from './appPaths';
+import { isLoginEntry } from './appPaths';
 
 const AdminWorkspace = lazy(() => import('./components/admin/AdminWorkspace'));
 const AccountSettingsDialog = lazy(() => import('./components/AccountSettingsDialog'));
@@ -128,6 +127,8 @@ function emptyInputOptimizationUndos() {
 }
 
 export default function App() {
+  useVisualViewport();
+  const compactLayout = useCompactLayout();
   const authSession = useAuthSession();
   const [activeTab, setActiveTab] = useState(() => workspaceEntry(window.location.search));
   const accountReturn = useRef({ tab: 'generate', scroll: 0 });
@@ -1561,51 +1562,9 @@ export default function App() {
   return (
     <main className={`app-shell${activeTab === 'account' ? ' account-view' : ''}`}>
       {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label="本地消费测试"><strong>已连接正式图研账号服务 · 观猹 TokenDance 消费预览</strong><p>使用你已有的图研账号登录，再连接观猹 TokenDance。生成、精修和优化输入会使用真实观猹 TokenDance 余额。</p><small>本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">正式图研</a>查看。初始为 1 张候选图、0 轮评审。</small></section>}
-      <header className="paper-header">
-        <div className="brand">
-          <img className="brand-logo" src={logoUrl} alt="图研Tuyan 标志" />
-          <h1>图研Tuyan工作台</h1>
-        </div>
-        <nav className="header-navigation" aria-label="网站导航">
-          <div className="header-links">
-            {BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
-            <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
-            <button type="button" className="contact-author-button" onClick={() => setShowContactDialog(true)}>
-              <QrCode size={16} /> 联系作者
-            </button>
-            <button type="button" className="header-feedback-button" onClick={openFeedbackDialog}>
-              <MessageSquare size={16} /> 意见反馈
-            </button>
-            <a href="https://github.com/yrjmdqmmx/Tuyan" target="_blank" rel="noreferrer">
-              <img className="github-mark" src={appPath('/brand/github-invertocat.svg')} width="18" height="18" alt="" aria-hidden="true" /> GitHub
-            </a>
-            <button type="button" className="header-miniprogram-button" aria-haspopup="dialog" onClick={() => setShowMiniProgramDialog(true)}>
-              <img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} width="22" height="22" alt="" aria-hidden="true" /> 微信小程序
-            </button>
-          </div>
-          <div className="header-actions">
-            <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={() => setShowAgentConnection(true)}>
-              <Bot size={18} /> 智能体接入
-            </button>
-            <a className="watcha-product-badge" href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer">
-              <img src={appPath('/brand/watcha-invite-light.png')} alt="去观猹点评图研 Tuyan" width="4500" height="972" />
-            </a>
-            {AUTH_UI_ENABLED ? (
-              currentUser ? (
-                <div className="auth-user">
-                  <ShieldCheck size={16} />
-                  <span title={currentUser.email}>{currentUser.email}</span>
-                  <button type="button" onClick={handleSignOut}>退出</button>
-                </div>
-              ) : (
-                <button type="button" className="auth-entry-button" onClick={() => setShowAuthPanel(true)}>
-                  <ShieldCheck size={16} /> 登录 / 注册
-                </button>
-              )
-            ) : null}
-          </div>
-        </nav>
-      </header>
+      <WorkbenchHeader currentUser={currentUser} onGuide={() => selectTab('guide')} onAdmin={isAdmin ? () => selectTab('admin') : undefined} onContact={() => setShowContactDialog(true)} onFeedback={openFeedbackDialog}
+        onMiniProgram={() => setShowMiniProgramDialog(true)} onAgentConnection={() => setShowAgentConnection(true)}
+        onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} onAccount={openAccount} />
 
       {activeTab !== 'account' && (tokenDance.notice || tokenDance.error) && <div className="service-alert" role="status">{tokenDance.error || tokenDance.notice}<button type="button" className="account-button" onClick={openAccount}>查看账户</button></div>}
       {healthError ? (
@@ -1674,10 +1633,10 @@ export default function App() {
       ) : null}
 
       <nav className="paper-tabs" aria-label="主导航">
-        {WORKSPACE_TABS.map(([tab, label]) => (
+        {WORKSPACE_TABS.filter(([tab]) => !compactLayout || !['account', 'guide'].includes(tab)).map(([tab, label]) => (
           <button key={tab} type="button" className={activeTab === tab ? 'active' : ''} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => selectTab(tab)}>{label}</button>
         ))}
-        {isAdmin ? (
+        {isAdmin && !compactLayout ? (
           <button type="button" className={activeTab === 'admin' ? 'active' : ''} aria-current={activeTab === 'admin' ? 'page' : undefined} onClick={() => selectTab('admin')}>站长</button>
         ) : null}
       </nav>
@@ -1703,21 +1662,25 @@ export default function App() {
         )
       ) : null}
 
-      {['generate', 'refine'].includes(activeTab) && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') && <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} />}
+      {['generate', 'refine'].includes(activeTab) && !(compactLayout && activeTab === 'generate') && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') && <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} />}
 
       {activeTab === 'account' && (
         <AccountPage user={currentUser} controller={tokenDance} watcha={watcha} onReturn={returnFromAccount} returnLabel={accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台'} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
       )}
       <div style={{ display: activeTab === 'account' ? 'none' : 'contents' }} aria-hidden={activeTab === 'account' ? true : undefined}>
       {workspaceTab === 'generate' ? (
-        <section className="workspace">
-        <FeaturedTemplateStudio templates={featuredTemplates} isDirty={inputIsDirty} onApply={applyFeaturedTemplate} />
-        <form className="generation-form" onSubmit={submitJob}>
+        <GenerationWorkspace
+          compact={compactLayout}
+          jobId={currentJobId}
+          template={<FeaturedTemplateStudio templates={featuredTemplates} isDirty={inputIsDirty} onApply={applyFeaturedTemplate} />}
+          connection={AUTH_UI_ENABLED && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') ? <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} /> : null}
+          controls={<form className="generation-form" onSubmit={submitJob}>
           <section className="generation-settings-summary" role="region" aria-label="当前生成设置">
             <div className="generation-settings-summary-head">
               <div><span>当前生成设置</span><strong>路由与输出一眼确认</strong></div>
               <button type="button" className="generation-settings-trigger" onClick={() => { setGenerationFocusSetting(''); setShowGenerationSettings(true) }}><Settings2 size={18} /><span>打开完整设置</span></button>
             </div>
+            <GenerationSummaryDetails outputLabel={`${outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`} · ${aspectRatio === 'auto' ? '自动比例' : aspectRatio}`}>
             <div className="generation-settings-facts">
               <div><span>主模型</span><strong>{activeMainRegistryEntry?.label || activeMainModelName}</strong></div>
               <div><span>图像模型</span><strong>{activeImageRegistryEntry?.label || activeImageGenModelName}</strong></div>
@@ -1725,6 +1688,7 @@ export default function App() {
               <div><span>画面比例</span><strong>{aspectRatio === 'auto' ? '自动' : aspectRatio}</strong></div>
               <div><span>输出</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
             </div>
+            </GenerationSummaryDetails>
             <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences || isInspectingReferences}>
               {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isInspectingReferences ? '检查参考图' : isUploadingReferences ? '上传参考图' : '生成候选图'}
             </button>
@@ -1738,19 +1702,19 @@ export default function App() {
               ) : null}
             </div>
           ) : null}
-        </form>
-
-        <section className="input-results">
-          <div className="input-col">
-            <div className="section-head">
+        </form>}
+          input={<GenerationInputPanel
+            compact={compactLayout}
+            hasSupplement={Boolean(referenceImages.length || negativePrompt)}
+            supplementError={Boolean(referenceSelectionIssue || referenceUploadError)}
+            heading={<div className="section-head">
               <FileText size={20} />
               <div>
                 <h2>输入内容</h2>
                 <p>选择信息图类别，再粘贴论文方法部分和目标图注。</p>
               </div>
-            </div>
-
-            <div className="input-options">
+            </div>}
+            category={<><div className="input-options">
               <Select
                 label="信息图类别"
                 value={infographicCategory}
@@ -1763,9 +1727,8 @@ export default function App() {
               <div className="plot-note">
                 统计图由独立渲染服务生成，可能稍慢。
               </div>
-            ) : null}
-
-            <ReferenceUploadPanel
+            ) : null}</>}
+            reference={<ReferenceUploadPanel
               images={referenceImages}
               error={referenceSelectionIssue || referenceUploadError}
               policy={activeReferenceUpload}
@@ -1775,13 +1738,11 @@ export default function App() {
               retrievalBlocked={isAdvancedMode && retrievalSetting !== 'none'}
               onAddFiles={addReferenceFiles}
               onRemove={removeReferenceImage}
-            />
-
-            {inputOptimizationGuidance ? (
+            />}
+            guidance={<>{inputOptimizationGuidance ? (
               <div className="input-optimization-guidance" role="alert"><AlertTriangle size={16} />{inputOptimizationGuidance}</div>
-            ) : null}
-
-            <div className="two-col input-copy">
+            ) : null}</>}
+            fields={<div className="two-col input-copy">
               <div className="field">
                 <div className="input-field-head">
                   <label htmlFor="method-content">论文方法内容</label>
@@ -1815,8 +1776,8 @@ export default function App() {
                 <textarea id="target-caption" value={caption} onChange={(event) => handleInputValueChange('caption', event.target.value)} rows={12} maxLength={INPUT_LIMITS.caption} />
                 <small>{caption.length.toLocaleString()} / {INPUT_LIMITS.caption.toLocaleString()} 字符</small>
               </div>
-            </div>
-            <div className="field negative-prompt-field">
+            </div>}
+            extras={<div className="field negative-prompt-field">
               <div className="input-field-head">
                 <label htmlFor="negative-prompt">负向提示词（可选）</label>
                 {inputOptimizationSupported ? (
@@ -1831,10 +1792,9 @@ export default function App() {
               </div>
               <textarea id="negative-prompt" value={negativePrompt} onChange={(event) => handleInputValueChange('negativePrompt', event.target.value)} rows={4} maxLength={INPUT_LIMITS.negativePrompt} placeholder="例如：避免文字拥挤、模糊箭头、装饰性背景。" />
               <small>{negativePrompt.length.toLocaleString()} / {INPUT_LIMITS.negativePrompt.toLocaleString()} 字符</small>
-            </div>
-          </div>
-
-          <div className="results-col">
+            </div>}
+          />}
+          results={<div className="results-col">
             <div className="section-head results-head">
               <ImageIcon size={20} />
               <div>
@@ -1844,9 +1804,8 @@ export default function App() {
             </div>
             <TokenDanceRecovery customKeys={Object.values(universalKeys).some(x=>x?.apiKey) ? customEnvelope : undefined} job={job} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
             <JobStatus job={job} apiBase={apiBaseNormalized} onUseForRefine={useResultForRefine} />
-          </div>
-        </section>
-        </section>
+          </div>}
+        />
       ) : workspaceTab === 'refine' ? (
         <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
           <TokenDanceRecovery customKeys={Object.values(universalKeys).some(x=>x?.apiKey) ? customEnvelope : undefined} job={refineJob} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
