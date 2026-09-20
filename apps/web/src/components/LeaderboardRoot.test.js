@@ -5,7 +5,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import React from 'react'
 
 import { BenchmarkPromptAdminPage, BenchmarkPromptSubmissionPage } from './BenchmarkEvidencePages.jsx'
-import { BenchmarkSiteHeader, LeaderboardSessionProvider, useLeaderboardSession } from './LeaderboardRoot.jsx'
+import LeaderboardRoot, { BenchmarkSiteHeader, LeaderboardSessionProvider, useLeaderboardSession } from './LeaderboardRoot.jsx'
 
 afterEach(cleanup)
 
@@ -107,4 +107,70 @@ test('clearing session immediately clears admin rows and ignores late queue resp
   } finally {
     globalThis.fetch = previousFetch
   }
+})
+
+test('phone header keeps secondary routes and account actions in More, then restores desktop navigation', async () => {
+  const previousMedia = window.matchMedia
+  const listeners = new Set()
+  const media = { matches: true, addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) }
+  window.matchMedia = () => media
+  const actions = []
+  try {
+    render(React.createElement(LeaderboardSessionProvider, { authEnabled: true, initialSession: { user: { id: 'user-1', email: 'reader@example.com' } } },
+      React.createElement(BenchmarkSiteHeader, { route: {}, onFeedback: () => actions.push('feedback'), onLogin() {}, onAccount: () => actions.push('account'), onSignOut: () => actions.push('signout'),
+        onWorkspaceAccount: () => actions.push('wallet'), onGuide: () => actions.push('guide'), onContact: () => actions.push('contact'), onMiniProgram: () => actions.push('mini'), onAgentConnection: () => actions.push('agent') }),
+    ))
+    const more = screen.getByRole('button', { name: '更多', exact: true })
+    assert.deepEqual([...screen.getByRole('navigation', { name: '排行榜导航' }).children].map(item => item.textContent), ['排行榜', '方法说明'])
+    assert.equal(screen.queryByRole('link', { name: 'GitHub' }), null)
+    more.focus()
+    fireEvent.click(more)
+    assert.equal(screen.queryByRole('link', { name: '提交评估题' }), null)
+    assert.equal(screen.getByRole('link', { name: 'GitHub' }).getAttribute('target'), '_blank')
+    fireEvent.click(screen.getByRole('button', { name: '意见反馈' }))
+    assert.deepEqual(actions, ['feedback'])
+    assert.equal(screen.queryByRole('dialog'), null)
+    await waitFor(() => assert.equal(document.activeElement, more))
+    fireEvent.click(screen.getByRole('button', { name: '账户', exact: true }))
+    assert.deepEqual(actions, ['feedback', 'account'])
+    fireEvent.click(more)
+    fireEvent.click(screen.getByRole('button', { name: '退出', exact: true }))
+    assert.deepEqual(actions, ['feedback', 'account', 'signout'])
+    for (const [name, action] of [['账户与钱包', 'wallet'], ['使用教程', 'guide'], ['联系作者', 'contact'], ['微信小程序', 'mini'], ['智能体接入', 'agent']]) {
+      fireEvent.click(more)
+      fireEvent.click(screen.getByRole('button', { name, exact: true }))
+      assert.equal(actions.at(-1), action)
+      assert.equal(screen.queryByRole('dialog'), null)
+    }
+    fireEvent.click(more)
+    act(() => { media.matches = false; listeners.forEach(fn => fn()) })
+    assert.equal(screen.queryByRole('dialog'), null)
+    assert.equal(screen.getByRole('navigation', { name: '排行榜导航' }).children.length, 6)
+    assert.equal(document.body.style.overflow, '')
+  } finally { cleanup(); window.matchMedia = previousMedia }
+})
+
+test('phone More ignores an admin-status response that arrives after the session was cleared', async () => {
+  const previousMedia = window.matchMedia, previousFetch = globalThis.fetch
+  const response = deferred()
+  let requests = 0
+  window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} })
+  globalThis.fetch = async (_input, options = {}) => {
+    assert.equal(JSON.parse(options.body).action, 'adminStatus')
+    requests += 1
+    return response.promise
+  }
+  try {
+    render(React.createElement(LeaderboardSessionProvider, { authEnabled: true, initialSession: { user: { id: 'admin-1', email: 'admin@example.com' } } },
+      React.createElement(ClearSessionButton),
+      React.createElement(LeaderboardRoot, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: false, pathname: '/leaderboard', route: {} }),
+    ))
+    await waitFor(() => assert.equal(requests, 1))
+    fireEvent.click(screen.getByRole('button', { name: '更多', exact: true }))
+    assert.equal(screen.queryByRole('button', { name: '站长', exact: true }), null)
+    fireEvent.click(screen.getByRole('button', { name: '清除排行榜会话' }))
+    await act(async () => { response.resolve(new Response(JSON.stringify({ code: 0, isAdmin: true }), { status: 200 })); await response.promise })
+    assert.equal(screen.queryByRole('button', { name: '站长', exact: true }), null)
+    assert.ok(screen.getByRole('button', { name: '登录 / 注册', exact: true }))
+  } finally { cleanup(); window.matchMedia = previousMedia; globalThis.fetch = previousFetch }
 })

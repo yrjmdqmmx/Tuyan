@@ -1,0 +1,246 @@
+.bench-view-switch{display:flex;align-items:center;gap:3px;margin:18px 0;padding:3px;width:max-content;border-radius:8px;background:#eeebe4}
+.bench-view-switch button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:7px 16px;border:0;border-radius:6px;background:transparent;color:#535951;font:600 13px -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;cursor:pointer}
+.bench-view-switch button[aria-pressed="true"]{background:#fffefa;color:#293b30;box-shadow:0 1px 4px #332b1e14}
+.bench-pareto-shell{max-width:1600px;padding-top:8px;--pareto-ink:#27372e;--pareto-muted:#657166;--pareto-green:#377658;--pareto-line:#e5e5de}
+.bench-compact-hero{display:flex;align-items:baseline;gap:16px;padding:9px 0 4px}
+.bench-compact-hero h1{font-size:24px;letter-spacing:-.035em;margin:0;line-height:1.3;color:#26362c}
+.bench-compact-hero p{font-size:13px;color:#626c60;margin:0}
+.pareto-view{margin:12px 0 38px;font-size:13px;line-height:1.55;color:var(--pareto-ink,#27372e)}
+.pareto-view *{box-sizing:border-box}
+.pareto-view h2,.pareto-view h3,.pareto-view p{margin:0}
+.pareto-view button,.pareto-view input,.pareto-view select{font:inherit;color:inherit}
+.pareto-view button,.pareto-view summary{cursor:pointer}
+.pareto-view button:disabled{cursor:default;opacity:.35}
+.pareto-view a{color:#315f56;text-underline-offset:3px}
+.pareto-view :is(button,a,input,select,summary,[tabindex]):focus-visible,.bench-view-switch button:focus-visible{outline:3px solid #b58220;outline-offset:3px}
+.pareto-view code{display:block;font:11px/1.6 ui-monospace,SFMono-Regular,monospace;overflow-wrap:anywhere;color:#5c665b}
+.pareto-toolbar{display:flex;align-items:center;gap:10px;min-height:48px;margin-bottom:12px}
+.pareto-toolbar .bench-view-switch{margin:0;flex:none}
+.pareto-toolbar select,.pareto-filters select,.pareto-data select,.pareto-cost-controls select{min-height:40px;border:1px solid #d8dcd3;border-radius:7px;background:#fffefa;padding:8px 28px 8px 11px;max-width:100%}
+.pareto-metric-label{margin-right:auto;max-width:205px}
+.pareto-search{position:relative;display:flex;align-items:center;flex:0 1 250px;min-width:120px}
+.pareto-search>svg{position:absolute;left:11px;color:#778170}
+.pareto-search input{min-width:0;width:100%;height:40px;padding:8px 33px 8px 36px;border:1px solid #d8dcd3;border-radius:7px;background:#fffefa}
+.pareto-search button{position:absolute;right:5px;display:grid;place-items:center;width:29px;height:29px;border:0;border-radius:5px;background:transparent}
+.pareto-filter-toggle{display:flex;align-items:center;justify-content:center;gap:7px;min-height:40px;white-space:nowrap;padding:7px 12px;border:1px solid #d8dcd3;border-radius:7px;background:#fffefa}
+.pareto-filter-toggle b{font-size:11px;background:#e6edde;padding:0 5px;border-radius:4px}
+.pareto-filters{display:grid;grid-template-columns:180px minmax(200px,1fr) 210px;gap:14px 26px;padding:16px 18px;margin-bottom:14px;border:1px solid #dedfd5;border-radius:9px;background:#f5f3eb}
+.pareto-filters label,.pareto-data-settings label{display:grid;gap:5px;font-size:12px;font-weight:600}
+.pareto-filters input:not([type="range"]){min-width:0;width:100%;height:37px;border:1px solid #d4d8cd;border-radius:6px;padding:7px 9px;background:#fffefa}
+.pareto-budget{padding:0;margin:0;border:0;min-width:0}
+.pareto-budget legend{padding:0;font-size:12px;font-weight:600}
+.pareto-budget legend span{margin-left:4px;font-size:11px;color:#667360;font-weight:400}
+.pareto-budget-values{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-variant-numeric:tabular-nums;margin:3px 0 7px}
+.pareto-range-track{position:relative;height:5px;margin:0 9px;background:linear-gradient(to right,#d7dcd0 0%,#d7dcd0 var(--range-low),#62876a var(--range-low),#62876a var(--range-high),#d7dcd0 var(--range-high));border-radius:5px}
+.pareto-range-track input{appearance:none;-webkit-appearance:none;position:absolute;left:0;top:-12px;width:100%;height:30px;margin:0;background:transparent;pointer-events:none}
+.pareto-range-track input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:17px;height:17px;border:2px solid #4f7758;border-radius:50%;background:#fff;pointer-events:auto;cursor:ew-resize;box-shadow:0 0 0 6px #fff0}
+.pareto-range-track input::-moz-range-thumb{width:15px;height:15px;border:2px solid #4f7758;border-radius:50%;background:#fff;pointer-events:auto;cursor:ew-resize}
+.pareto-budget-exact{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:end}
+.pareto-budget-exact>span{padding-bottom:9px;color:#7e8979}
+.pareto-budget-presets{grid-column:1/-1;display:flex;align-items:center;gap:7px}
+.pareto-budget-presets button{border:1px solid #d7dcd0;border-radius:6px;background:transparent;padding:4px 10px;font-size:12px;min-height:30px}
+.pareto-budget-presets button[aria-pressed="true"]{border-color:#709174;background:#eaf0e3;color:#345d3a}
+.pareto-budget-presets .pareto-reset-filter{margin-left:auto;border:0;text-decoration:underline;text-underline-offset:3px}
+.pareto-error{grid-column:1/-1;color:#a0402b;font-size:12px}
+.pareto-active-filters{display:flex;align-items:center;gap:15px;margin:0 0 10px;color:#496349;font-size:12px}
+.pareto-active-filters button{display:flex;align-items:center;gap:5px;border:0;background:transparent;text-decoration:underline}
+.pareto-plot-layout{display:grid;grid-template-columns:minmax(0,1fr) 302px;align-items:stretch;border:1px solid #e0e3da;border-radius:11px;background:#fffefa;scroll-margin-top:16px}
+.pareto-chart{min-width:0;padding:13px 15px 9px;position:relative;background:#fffefa;border-radius:11px 0 0 11px}
+.pareto-chart-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px;min-height:40px}
+.pareto-chart-heading h2{font-size:16px;font-weight:650;letter-spacing:-.02em}
+.pareto-chart-heading>div>span{font-size:12px;color:#65715f}
+.pareto-chart-controls{display:flex;align-items:center;gap:3px;color:#596954}
+.pareto-chart-controls>button,.pareto-chart-settings>summary{display:flex;align-items:center;justify-content:center;gap:5px;min-width:32px;min-height:34px;padding:5px;border:0;border-radius:5px;background:transparent;list-style:none;font-size:12px}
+.pareto-chart-controls>button:hover,.pareto-chart-settings>summary:hover{background:#f0f3eb}
+.pareto-chart-controls output{font-size:11px;min-width:25px;text-align:center;font-variant-numeric:tabular-nums}
+.pareto-chart-settings{position:relative}
+.pareto-chart-settings>label,.pareto-chart-settings>small{position:absolute;right:0;z-index:12;width:220px;background:#fffefa;border:1px solid #d9dfd0;padding:12px;border-radius:8px;box-shadow:0 5px 18px #24352114}
+.pareto-chart-settings>label{top:39px;display:flex;align-items:center;gap:12px;font-size:12px}
+.pareto-chart-settings select{max-width:100%;min-height:34px;border:1px solid #d9dfd0;background:#fff;border-radius:5px;padding:4px 8px}
+.pareto-chart-settings>small{top:105px;font-size:11px;border-top:0;box-shadow:none}
+.pareto-canvas{height:clamp(330px,calc(100svh - 338px),530px);position:relative;min-width:0}
+.pareto-svg{display:block;width:100%;height:100%;overflow:visible;cursor:default}
+.pareto-svg:has([data-point]:hover){cursor:pointer}
+.pareto-canvas.is-dragging .pareto-svg{cursor:grabbing}
+.pareto-grid line{stroke:#e0e5dc;stroke-width:1;stroke-dasharray:2 5}
+.pareto-grid text{fill:#596856;font:12px -apple-system,BlinkMacSystemFont,sans-serif;font-variant-numeric:tabular-nums}
+.pareto-axis-title{fill:#65715f;font:12px -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.pareto-frontier-line{stroke:#4f8963;stroke-width:1.7;fill:none;stroke-linejoin:round}
+.pareto-point{cursor:pointer;outline:none}
+.pareto-point:focus-visible>rect{stroke:#3b6d45;stroke-width:3}
+.pareto-point text,.pareto-point image{pointer-events:none}
+.pareto-point-label{pointer-events:none}
+.pareto-point-label rect{fill:#fffefa;stroke:#dee4d9;stroke-width:.7}
+.pareto-point-label text{fill:#3b543e;font:11.5px -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;font-weight:550}
+.pareto-point-label.is-active rect{stroke:#6b9874;fill:#f1f7eb}
+.pareto-point-label.is-active text{fill:#28553a;font-weight:650}
+.pareto-point-label line{stroke:#92aa89;stroke-width:.75}
+.pareto-chart-footer{display:flex;align-items:center;justify-content:center;gap:30px;min-height:28px;font-size:12px;color:#586b54;flex-wrap:wrap}
+.pareto-cost-caption{display:flex;align-items:center;gap:6px}
+.pareto-legend{display:flex;align-items:center;gap:14px;font-size:11px;color:#687262}
+.pareto-legend span{display:flex;align-items:center;gap:5px}
+.pareto-legend i{display:inline-block;width:8px;height:8px;background:#fff;border:1.5px solid #44805b;border-radius:2px}
+.pareto-legend span:nth-child(2) i{width:6px;height:6px;border:0;background:#929e8e}
+.pareto-chart-empty{position:absolute;inset:35% 15% auto;text-align:center;background:#fffefa;padding:20px 10px;color:#61715b;font-size:13px}
+.pareto-chart-empty strong{font-size:17px;font-weight:550;color:#455d40}
+.pareto-chart-empty p{margin-top:8px;line-height:1.7}
+.pareto-cost-info{position:relative;display:inline-block;vertical-align:middle;font-size:12px;font-weight:400;line-height:1.65}
+.pareto-cost-info>summary{display:grid;place-items:center;list-style:none;width:26px;height:28px;border-radius:4px;color:#6d7865}
+.pareto-cost-info>summary::-webkit-details-marker,.pareto-chart-settings>summary::-webkit-details-marker{display:none}
+.pareto-cost-info>div{position:absolute;z-index:20;width:280px;max-width:calc(100vw - 48px);left:50%;transform:translateX(-50%);bottom:34px;padding:14px;border:1px solid #dbe1d3;border-radius:8px;background:#fffefa;box-shadow:0 6px 24px #33482d18;color:#495e41;text-align:left}
+.pareto-cost-info button{display:block;margin-top:8px;padding:0;border:0;background:transparent;color:#2d6046;text-decoration:underline}
+.pareto-frontier{padding:20px 16px 14px 18px;min-width:0;border-left:1px solid #e5e8df;border-radius:0 11px 11px 0;background:#fcfcf7}
+.pareto-frontier header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pareto-frontier h2{font-size:15px;font-weight:650}
+.pareto-frontier header>span{font-size:12px;color:#527448;background:#eaf0e4;border-radius:4px;padding:0 6px}
+.pareto-frontier>p{margin-top:3px;color:#72816b;font-size:11px}
+.pareto-frontier ol{padding:0;margin:12px -9px 16px;list-style:none}
+.pareto-frontier li{border-radius:7px;border:1px solid transparent}
+.pareto-frontier li.is-selected{background:#eef4e7;border-color:#c8d7bb}
+.pareto-frontier li>button{display:grid;grid-template-columns:26px minmax(0,1fr) 59px;align-items:center;gap:9px;width:100%;padding:7px 7px;border:0;border-radius:6px;background:transparent;text-align:left}
+.pareto-frontier li>button:hover{background:#f0f3e9}
+.pareto-frontier-name{font-size:12px;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
+.pareto-frontier-values{text-align:right;font-variant-numeric:tabular-nums}
+.pareto-frontier-values b{display:block;font-size:14px;color:#38754e;font-weight:650}
+.pareto-frontier-values small{display:block;font-size:11px;color:#697660;margin-top:2px}
+.pareto-brand{display:inline-grid;place-items:center;flex:none;width:26px;height:26px;border:1px solid #dde2d6;border-radius:7px;background:#fff;color:var(--brand-color);font:700 12px -apple-system,sans-serif}
+.pareto-brand img{width:19px;height:19px;object-fit:contain}
+.pareto-test-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#b47c28;vertical-align:middle;margin-left:5px;flex:none}
+.pareto-test-label{color:#93631e}
+.pareto-definition{border-top:1px solid #e1e5d9;padding-top:12px;font-size:11px;color:#6e7b63}
+.pareto-definition summary{font-size:11px}
+.pareto-definition p{margin-top:8px;line-height:1.7}
+.pareto-popover{position:absolute;z-index:15;width:300px;max-width:calc(100% - 10px);max-height:min(350px,calc(100% - 10px));overflow:auto;background:#fffefa;border:1px solid #a9c19e;border-radius:9px;padding:13px 14px;box-shadow:0 6px 20px #30442618;font-size:12px;line-height:1.6;overscroll-behavior:contain}
+.pareto-popover header{display:flex;align-items:center;gap:8px}
+.pareto-popover header strong{flex:1;font-size:13px;line-height:1.45}
+.pareto-popover header>button{display:grid;place-items:center;flex:none;width:29px;height:29px;border:0;background:transparent;border-radius:5px;color:#53644b}
+.pareto-popover-values{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px;font-size:11px;color:#687560}
+.pareto-popover-values b{display:block;font-size:20px;font-weight:650;line-height:1.35;font-variant-numeric:tabular-nums;color:#31543c}
+.pareto-popover-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;font-size:11px;color:#697560}
+.pareto-popover-footer button{font-size:11px;padding:0;background:transparent;border:0;color:#386143;text-decoration:underline}
+.pareto-popover-expanded{margin-top:10px;padding-top:9px;border-top:1px solid #e1e6da;color:#53634b;font-size:11px;line-height:1.8}
+.pareto-popover-expanded p{margin-top:6px}
+.pareto-popover-expanded small{display:block;margin-top:8px}
+.pareto-detail-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;margin-top:10px;font-size:11px;font-weight:600}
+.pareto-cluster-options{margin-top:8px;border-top:1px solid #e1e6da;padding-top:8px;max-height:165px;overflow:auto}
+.pareto-cluster-options p{font-size:11px;color:#6c7a60;margin-bottom:5px}
+.pareto-cluster-options button{display:flex;justify-content:space-between;gap:15px;width:100%;border:0;background:#f2f5ed;border-radius:4px;margin-top:3px;padding:7px 6px;text-align:left;font-size:11px}
+.pareto-cluster-options b{white-space:nowrap;font-weight:500}
+.pareto-cost-ranking{border:1px solid #e0e3da;border-radius:10px;padding:20px 22px 14px;background:#fffefa;margin-top:18px}
+.pareto-cost-ranking>header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+.pareto-cost-ranking h2{display:flex;align-items:center;gap:5px;font-size:18px;font-weight:650;line-height:1.3}
+.pareto-cost-ranking header p{font-size:11px;color:#6d7864;margin-top:4px}
+.pareto-cost-controls{display:flex;align-items:center;gap:20px;font-size:12px}
+.pareto-checkbox{display:flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer}
+.pareto-checkbox input{accent-color:#477853;width:15px;height:15px}
+.pareto-cost-columns{display:grid;grid-template-columns:270px minmax(60px,1fr) 88px 78px;gap:22px;font-size:11px;color:#78836e;margin-bottom:7px;padding:0 10px}
+.pareto-cost-columns>span:nth-child(2){display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pareto-cost-columns>span:nth-child(n+3){text-align:right}
+.pareto-cost-rows{list-style:none;padding:0;margin:0}
+.pareto-cost-row{display:grid;grid-template-columns:270px minmax(60px,1fr) 88px 78px;gap:22px;align-items:center;width:100%;padding:10px;border:0;border-top:1px solid #edf0e7;background:transparent;text-align:left;min-height:49px;border-radius:4px}
+.pareto-cost-row:hover,.pareto-cost-row.is-selected{background:#f0f5e9}
+.pareto-cost-model{display:flex;align-items:center;gap:9px;min-width:0}
+.pareto-cost-position{flex:0 0 17px;font-size:11px;font-variant-numeric:tabular-nums;color:#78836e;text-align:right}
+.pareto-cost-model strong{font-size:13px;line-height:1.5;font-weight:550;overflow-wrap:anywhere}
+.pareto-cost-bar-track{display:block;height:12px;border-radius:3px;background:#f1f2eb}
+.pareto-cost-bar{display:block;height:100%;background:#bbc7b0;border-radius:3px;min-width:1px}
+.pareto-cost-row.is-frontier .pareto-cost-bar{background:#75a17b}
+.pareto-cost-row.is-selected .pareto-cost-bar{background:#3f8155}
+.pareto-cost-value,.pareto-cost-score{text-align:right;font-size:13px;font-variant-numeric:tabular-nums;font-weight:550}
+.pareto-cost-score{color:#4c7050}
+.pareto-cost-score small{display:none}
+.pareto-show-more{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px auto 0;padding:9px 18px;border:1px solid #dce1d4;border-radius:7px;background:transparent;min-height:38px;font-size:12px}
+.pareto-list-empty{padding:28px 10px;text-align:center;font-size:13px;color:#6a775f}
+.pareto-data{margin-top:20px;border-top:1px solid #dce0d3;padding-top:8px;scroll-margin-top:16px}
+.pareto-data>summary{display:flex;align-items:center;justify-content:space-between;list-style:none;font-size:13px;color:#55664c;padding:10px 2px;min-height:44px}
+.pareto-data>summary::-webkit-details-marker{display:none}
+.pareto-data[open]>summary>svg{transform:rotate(180deg)}
+.pareto-data-content{padding:16px 0}
+.pareto-data-settings{display:grid;grid-template-columns:270px minmax(0,1fr);align-items:center;gap:30px;padding:17px 20px;background:#eeeee3;border-radius:8px}
+.pareto-data-settings p{font-size:12px;color:#626f57;line-height:1.8}
+.pareto-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;padding:24px 3px;font-size:12px;color:#626f57}
+.pareto-method-grid h3{font-size:13px;color:#3f573b;margin-bottom:8px;font-weight:600}
+.pareto-method-grid p{line-height:1.8;margin-top:5px}
+.pareto-exclusions,.pareto-source-details{margin-top:12px;padding:13px 15px;border:1px solid #e0e4d7;border-radius:8px;font-size:12px;background:#fafbf6}
+.pareto-exclusions ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 25px;list-style:none;padding:0;margin:20px 0 0}
+.pareto-exclusions li>a{font-weight:650;font-size:13px}
+.pareto-exclusions li p{font-size:12px;margin-top:4px;color:#67735e}
+.pareto-price-table-wrap{max-width:100%;overflow:auto;margin-top:16px;border:1px solid #dce1d4;border-radius:7px}
+.pareto-price-table{width:100%;min-width:950px;border-collapse:collapse;font-size:12px;line-height:1.75}
+.pareto-price-table th,.pareto-price-table td{padding:16px;vertical-align:top;text-align:left;border-bottom:1px solid #dce1d4;border-right:1px solid #e8ebdf}
+.pareto-price-table thead th{font-size:12px;background:#edf0e4;font-weight:600}
+.pareto-price-table tbody th{width:25%;font-weight:500}
+.pareto-price-table tbody th>a{font-weight:650}
+.pareto-price-table td:nth-child(2){width:20%}
+.pareto-price-table td:nth-child(3){width:32%}
+.pareto-price-table small{display:block;font-size:11px;line-height:1.8;color:#64705a;margin-top:7px;overflow-wrap:anywhere}
+.pareto-price-table td>strong{font-size:15px;color:#3c6846;font-variant-numeric:tabular-nums}
+.pareto-price-table .pareto-estimate{display:block;margin-top:10px;color:#926923}
+.pareto-price-table dl{font-size:11px}
+.pareto-price-table dt{font-weight:600;color:#4f6646;margin-top:8px}
+.pareto-price-table dd{margin:3px 0;color:#66755c}
+.pareto-price-table details{margin-top:10px}
+.pareto-price-table ol{padding-left:19px;font-size:11px}
+.pareto-pending{font-size:11px;background:#f2ead6;color:#825e20;padding:3px 5px;border-radius:4px}
+.pareto-sources{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;font-size:11px}
+.pareto-sources a{display:inline-flex;align-items:center;gap:3px}
+.pareto-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1050px){.pareto-plot-layout{grid-template-columns:minmax(0,1fr) 266px}.pareto-frontier{padding-inline:12px}.pareto-frontier li>button{grid-template-columns:24px minmax(0,1fr) 52px;gap:6px}.pareto-chart{padding-inline:10px}.pareto-cost-columns,.pareto-cost-row{grid-template-columns:230px minmax(60px,1fr) 77px 57px;gap:15px}.pareto-filters{grid-template-columns:160px minmax(170px,1fr) 190px;gap:13px 16px}.bench-compact-hero p{font-size:12px}}
+@media(max-width:760px){
+  .bench-pareto-shell{padding:6px 12px 30px}.bench-compact-hero{display:block;padding:7px 0 3px}.bench-compact-hero h1{font-size:21px}.bench-compact-hero p{font-size:12px;margin-top:4px}
+  .pareto-view{margin-top:10px}.pareto-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-bottom:10px}.pareto-toolbar .bench-view-switch{width:100%}.pareto-toolbar .bench-view-switch button{flex:1;min-height:40px;padding:8px 10px}.pareto-metric-label{margin:0;max-width:155px}.pareto-metric-label select{width:100%;min-height:44px;font-size:12px;padding-right:20px}.pareto-search{width:100%;min-width:0}.pareto-search input{height:44px;font-size:14px}.pareto-filter-toggle{min-height:44px;font-size:13px;padding-inline:12px}
+  .pareto-filters{grid-template-columns:1fr;gap:18px;padding:15px}.pareto-vendor-label{grid-template-columns:auto 1fr;align-items:center;gap:20px!important}.pareto-budget{padding-bottom:8px}.pareto-budget-values{margin-top:7px;margin-bottom:12px}.pareto-range-track input::-webkit-slider-thumb{width:23px;height:23px;box-shadow:0 0 0 8px #fff0}.pareto-budget-exact{grid-template-columns:1fr auto 1fr}.pareto-budget-exact input{height:44px!important;font-size:14px}.pareto-budget-presets{flex-wrap:wrap;gap:6px}.pareto-budget-presets button{min-height:38px;font-size:12px}.pareto-budget-presets .pareto-reset-filter{margin-left:0}.pareto-active-filters{font-size:11px;flex-wrap:wrap}
+  .pareto-plot-layout{grid-template-columns:1fr}.pareto-chart{padding:12px 7px 9px;border-radius:10px 10px 0 0}.pareto-chart-heading{gap:8px;padding:0 4px}.pareto-chart-heading h2{font-size:15px}.pareto-chart-heading>div>span{font-size:11px}.pareto-chart-controls{gap:0}.pareto-chart-controls>button,.pareto-chart-settings>summary{min-width:34px;min-height:44px}.pareto-chart-controls>button>span{display:none}.pareto-chart-controls output{font-size:10px;min-width:24px}.pareto-canvas{height:335px}.pareto-chart-footer{gap:12px;justify-content:center;font-size:11px}.pareto-grid text{font-size:11px}.pareto-axis-title{font-size:11px}.pareto-point-label text{font-size:11.5px}.pareto-legend{font-size:10px;gap:8px}
+  .pareto-frontier{border-left:0;border-top:1px solid #e1e5d9;padding:16px 18px 12px;border-radius:0 0 10px 10px}.pareto-frontier ol{display:grid;grid-template-columns:1fr;margin-bottom:10px}.pareto-frontier li>button{min-height:59px;grid-template-columns:28px minmax(0,1fr) 70px;gap:12px;padding:9px}.pareto-frontier-name{font-size:14px;overflow-wrap:normal}.pareto-frontier-values b{font-size:15px}.pareto-frontier-values small{font-size:12px}.pareto-definition{font-size:12px}.pareto-definition summary{min-height:30px;padding-top:4px;font-size:12px}
+  .pareto-popover.is-mobile{position:relative;inset:auto!important;width:100%;max-width:100%;max-height:360px;margin:4px 0 10px;padding:16px;border-radius:8px;box-shadow:none;background:#f3f7ed}.pareto-popover header strong{font-size:15px}.pareto-popover header>button{width:44px;height:44px}.pareto-popover-values{font-size:12px}.pareto-popover-footer{font-size:12px}.pareto-popover-footer button{font-size:12px;min-height:36px}.pareto-popover-expanded{font-size:12px}.pareto-detail-link{font-size:12px;min-height:34px}.pareto-cluster-options button{font-size:12px;min-height:44px}.pareto-cost-info>div{width:260px}.pareto-cost-ranking .pareto-cost-info>div{left:-80px;transform:none}
+  .pareto-cost-ranking{margin-top:14px;padding:17px 12px 12px}.pareto-cost-ranking>header{display:block;margin-bottom:12px}.pareto-cost-ranking h2{font-size:18px}.pareto-cost-controls{margin-top:12px;justify-content:space-between;gap:12px;font-size:12px}.pareto-cost-controls select{min-height:44px;font-size:12px;padding-right:22px}.pareto-checkbox input{width:17px;height:17px}.pareto-cost-columns{display:none}.pareto-cost-row{grid-template-columns:minmax(0,1fr) 80px;gap:6px 14px;padding:11px 2px;min-height:75px}.pareto-cost-model{grid-column:1;grid-row:1;gap:7px}.pareto-cost-position{flex-basis:14px;font-size:10px}.pareto-cost-model strong{font-size:13px}.pareto-cost-model .pareto-brand{width:23px;height:23px}.pareto-cost-model .pareto-brand img{width:17px;height:17px}.pareto-cost-value{grid-column:2;grid-row:1;font-size:14px}.pareto-cost-bar-track{grid-column:1;grid-row:2;margin-left:44px;height:9px}.pareto-cost-score{grid-column:2;grid-row:2;font-size:12px}.pareto-cost-score small{display:inline;font-size:10px;color:#7b8771}.pareto-show-more{min-height:44px;width:100%;font-size:13px}
+  .pareto-data{margin-top:16px}.pareto-data-settings{grid-template-columns:1fr;gap:12px;padding:14px}.pareto-data-settings select{min-height:44px}.pareto-method-grid{grid-template-columns:1fr;gap:20px;padding:20px 2px}.pareto-exclusions ul{grid-template-columns:1fr}.pareto-exclusions,.pareto-source-details{padding:12px}.pareto-data>summary{font-size:14px}.pareto-price-table{font-size:12px}
+}
+
+/* Keep the existing mobile navigation reachable in two compact rows on this view. */
+@media(max-width:760px){
+  .benchmark-site-shell:has(.bench-pareto-shell) .benchmark-site-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .benchmark-site-shell:has(.bench-pareto-shell) .benchmark-site-nav>a,.benchmark-site-shell:has(.bench-pareto-shell) .benchmark-site-nav>span{grid-column:auto;min-width:0;min-height:32px;padding:5px 3px;font-size:11px}
+  .benchmark-site-shell:has(.bench-pareto-shell) .benchmark-site-header{padding:10px;gap:8px}
+}
+
+.pareto-view{-webkit-tap-highlight-color:transparent}
+.pareto-cost-ranking .pareto-cost-info>div{left:-90px;transform:none}
+
+/* Touch exploration uses spaced controls and a separate full-window chart. */
+.pareto-chart.is-touch .pareto-chart-heading{flex-wrap:wrap;gap:6px}
+.pareto-chart.is-touch .pareto-chart-heading>div:first-child{width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.pareto-chart.is-touch .pareto-chart-controls{width:100%;justify-content:space-between;gap:6px;padding:5px;border:1px solid #e1e5d9;border-radius:9px;background:#f6f7f1}
+.pareto-chart.is-touch .pareto-chart-controls>button,.pareto-chart.is-touch .pareto-chart-settings>summary{min-width:44px;min-height:44px;border-radius:7px}
+.pareto-chart.is-touch .pareto-chart-controls output{min-width:38px;font-size:14px;font-weight:600}
+.pareto-chart.is-touch .pareto-chart-controls .pareto-expand-chart{padding-inline:10px;background:#e6eee1;color:#315c3c;gap:5px}
+.pareto-chart.is-touch .pareto-expand-chart>span{display:inline;font-size:13px}
+.pareto-chart.is-touch .pareto-chart-settings>label,.pareto-chart.is-touch .pareto-chart-settings>small{left:0;right:auto}
+.pareto-touch-hint{padding:5px 4px 3px;font-size:12px!important;color:#62725b}
+.pareto-chart.is-touch .pareto-canvas{height:390px}
+.pareto-chart.is-touch .pareto-cluster-options{max-height:210px}
+.pareto-chart.is-touch .pareto-cluster-options button{min-height:48px;padding:10px;font-size:14px;gap:12px;border:1px solid #dde5d5}
+.pareto-chart.is-expanded{position:fixed;inset:0;z-index:1000;border-radius:0;display:flex;flex-direction:column;padding:max(12px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));background:#fffefa;overscroll-behavior:contain}
+.pareto-chart.is-expanded .pareto-canvas{flex:1;min-height:130px;height:auto}
+.pareto-chart.is-expanded .pareto-chart-heading,.pareto-chart.is-expanded .pareto-chart-footer,.pareto-chart.is-expanded .pareto-touch-hint{flex:none}
+.pareto-chart.is-expanded .pareto-chart-footer{padding-block:5px}
+.pareto-chart.is-expanded .pareto-popover.is-mobile{flex:none;max-height:36dvh;overflow-y:auto;margin-bottom:0;overscroll-behavior:contain}
+@media(orientation:landscape) and (max-height:600px){
+  .pareto-chart.is-expanded.is-touch .pareto-chart-heading{flex-wrap:nowrap}
+  .pareto-chart.is-expanded.is-touch .pareto-chart-heading>div:first-child{width:auto;display:block;flex-shrink:0}
+  .pareto-chart.is-expanded.is-touch .pareto-chart-controls{width:auto;gap:8px;padding:2px}
+  .pareto-chart.is-expanded .pareto-touch-hint{padding-top:2px}
+  .pareto-chart.is-expanded .pareto-popover.is-mobile{position:absolute;right:12px;bottom:45px;left:auto!important;width:min(340px,45vw);max-height:65dvh;margin:0;border-color:#a9c19e;box-shadow:0 5px 20px #30442614}
+}
+
+@media(max-width:360px){
+  .pareto-chart.is-touch .pareto-chart-controls{gap:2px;padding:2px}
+  .pareto-chart.is-touch .pareto-chart-controls output{min-width:32px;font-size:13px}
+  .pareto-chart.is-touch .pareto-chart-controls .pareto-expand-chart{padding:5px}
+  .pareto-chart.is-touch .pareto-expand-chart>span{display:none}
+}
+@media(max-width:760px){
+  .bench-compact-hero{padding:4px 0 1px}
+  .bench-compact-hero p{display:none}
+  .pareto-view{margin-top:6px}
+}

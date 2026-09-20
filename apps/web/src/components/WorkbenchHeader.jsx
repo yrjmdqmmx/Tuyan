@@ -5,16 +5,9 @@ import { appPath } from '../appPaths';
 import AccessibleDialog from './AccessibleDialog';
 import useCompactLayout from '../hooks/useCompactLayout';
 
-export default function WorkbenchHeader({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onGuide, onAdmin }) {
-  const compact = useCompactLayout();
-  const [moreOpen, setMoreOpen] = useState(false);
-  const titleId = useId();
-  useEffect(() => { if (!compact) setMoreOpen(false); }, [compact]);
-  function closeAfterAction(event) {
-    if (event.target.closest('a, button')) setMoreOpen(false);
-  }
-  const navigation = (
-    <nav className="header-navigation" aria-label="网站导航" onClick={closeAfterAction}>
+export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onNavigate }) {
+  return (
+    <nav className="header-navigation" aria-label="网站导航" onClick={onNavigate}>
       <div className="header-links">
         {BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
         <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
@@ -54,6 +47,29 @@ export default function WorkbenchHeader({ currentUser, onContact, onFeedback, on
       </div>
     </nav>
   );
+}
+
+export function MobileMoreMenu({ open, onClose, onAccount, onGuide, onAdmin, ...navigationProps }) {
+  const titleId = useId();
+  function closeAfterAction(event) {
+    if (event.target.closest('a, button')) onClose();
+  }
+  return <AccessibleDialog open={open} onClose={onClose} labelledBy={titleId} className="mobile-more-dialog" backdropClassName="mobile-more-backdrop">
+    <header className="mobile-more-head"><h2 id={titleId}>更多功能</h2><button type="button" aria-label="关闭更多功能" onClick={onClose}><X size={20} /></button></header>
+    <nav className="mobile-workspace-links" aria-label="工作台入口" onClick={closeAfterAction}>
+      <button type="button" onClick={onAccount}><Wallet size={18} />账户与钱包</button>
+      <button type="button" onClick={onGuide}><BookOpen size={18} />使用教程</button>
+      {onAdmin && <button type="button" onClick={onAdmin}><ShieldCheck size={18} />站长</button>}
+    </nav>
+    <SiteNavigation {...navigationProps} onNavigate={closeAfterAction} />
+  </AccessibleDialog>;
+}
+
+export default function WorkbenchHeader(props) {
+  const { currentUser, onSignIn, onAccount } = props;
+  const compact = useCompactLayout();
+  const [moreOpen, setMoreOpen] = useState(false);
+  useEffect(() => { if (!compact) setMoreOpen(false); }, [compact]);
   return <>
     <header className="paper-header">
       <div className="brand">
@@ -63,16 +79,8 @@ export default function WorkbenchHeader({ currentUser, onContact, onFeedback, on
       {compact ? <div className="mobile-header-actions">
         {AUTH_UI_ENABLED && <button type="button" onClick={currentUser ? onAccount : onSignIn}>{currentUser ? '账户' : '登录'}</button>}
         <button type="button" aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={18} />更多</button>
-      </div> : navigation}
+      </div> : <SiteNavigation {...props} />}
     </header>
-    <AccessibleDialog open={compact && moreOpen} onClose={() => setMoreOpen(false)} labelledBy={titleId} className="mobile-more-dialog" backdropClassName="mobile-more-backdrop">
-      <header className="mobile-more-head"><h2 id={titleId}>更多功能</h2><button type="button" aria-label="关闭更多功能" onClick={() => setMoreOpen(false)}><X size={20} /></button></header>
-      <nav className="mobile-workspace-links" aria-label="工作台入口" onClick={closeAfterAction}>
-        <button type="button" onClick={onAccount}><Wallet size={18} />账户与钱包</button>
-        <button type="button" onClick={onGuide}><BookOpen size={18} />使用教程</button>
-        {onAdmin && <button type="button" onClick={onAdmin}><ShieldCheck size={18} />站长</button>}
-      </nav>
-      {navigation}
-    </AccessibleDialog>
+    <MobileMoreMenu {...props} open={compact && moreOpen} onClose={() => setMoreOpen(false)} />
   </>;
 }

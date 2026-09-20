@@ -1,0 +1,153 @@
+/* Phone styling shared by ranking, Pareto, and public evidence routes. */
+@media (max-width: 760px) {
+  body:has(.benchmark-site-shell) { background: #fcfbf7; }
+  .benchmark-site-shell { --bench-bg: #fcfbf7; --bench-paper: #fffefa; --bench-line: #dfe5d9; --bench-ink: #203c2f; --bench-muted: #6b776f; --bench-blue: #467560; padding-top: max(4px, env(safe-area-inset-top)); }
+  .benchmark-site-shell .benchmark-site-header.benchmark-phone-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; row-gap: 0; width: auto; max-width: none; margin: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+  .benchmark-phone-header .benchmark-site-brand { min-width: 0; min-height: 76px; gap: 9px; }
+  .benchmark-phone-header .benchmark-site-brand > img { flex-shrink: 0; width: 38px; height: 38px; border-radius: 0; box-shadow: none; }
+  .benchmark-phone-header .benchmark-site-brand > span { min-width: 0; gap: 2px; }
+  .benchmark-phone-header .benchmark-site-brand strong { color: var(--ink); font-size: 18px; line-height: 1.3; white-space: nowrap; }
+  .benchmark-phone-header .benchmark-site-brand small { display: block; color: var(--muted); font-size: 11px; line-height: 1.4; letter-spacing: .04em; }
+  .benchmark-mobile-nav { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px 0 10px; border-bottom: 1px solid var(--hairline); }
+  .benchmark-mobile-nav > :is(a, span) { display: flex; justify-content: center; align-items: center; min-width: 0; min-height: 48px; padding: 8px; border-radius: 9px; color: var(--muted); font-size: 14px; font-weight: 600; text-decoration: none; }
+  .benchmark-mobile-nav > [aria-current] { color: #28523f; background: #e7eee6; }
+  .benchmark-site-shell > .auth-panel { width: auto; margin: 24px max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); padding: 0 0 24px; border-bottom: 1px solid var(--bench-line); }
+  .benchmark-site-shell > .auth-panel h2 { font-size: 20px; }
+  .benchmark-site-shell > .auth-panel input { min-height: 48px; font-size: 16px; }
+  .benchmark-site-shell > .auth-panel button { min-height: 44px; }
+  .benchmark-site-shell .bench-shell { max-width: none; padding: 26px max(16px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); overflow-x: visible; }
+  .bench-phone-hero { margin-bottom: 20px; }
+  .bench-phone-hero h1 { margin: 0; color: #203c2f; font-size: 26px; line-height: 1.4; letter-spacing: -.04em; }
+  .bench-phone-hero > p { margin: 8px 0 12px; color: var(--bench-muted); font-size: 14px; line-height: 1.7; }
+  .bench-phone-method { border-bottom: 1px solid var(--bench-line); font-size: 13px; }
+  .bench-phone-method > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 0; color: #456451; cursor: pointer; list-style: none; }
+  .bench-phone-method > summary::-webkit-details-marker { display: none; }
+  .bench-phone-method > summary::after { content: '⌄'; margin-left: auto; font-size: 18px; }
+  .bench-phone-method[open] > summary::after { transform: rotate(180deg); }
+  .bench-phone-method > summary > span { color: var(--bench-muted); }
+  .bench-phone-method > div { display: grid; gap: 8px; padding: 8px 0 16px; line-height: 1.75; color: var(--bench-muted); }
+  .bench-phone-method p { margin: 0; }
+  .bench-phone-method a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sage); }
+  .benchmark-site-shell :is(a, button, input, select, summary):focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
+  .benchmark-site-shell .bench-view-switch { width: 100%; margin: 0 0 20px; padding: 4px; gap: 4px; border-radius: 10px; background: #eaf0e7; }
+  .benchmark-site-shell .bench-view-switch button { flex: 1; min-width: 0; min-height: 44px; padding: 8px 12px; font-size: 14px; border-radius: 7px; }
+  .benchmark-site-shell .bench-view-switch button[aria-pressed=true] { color: #28523f; background: #fffefa; box-shadow: 0 1px 3px #203c2f12; }
+
+  /* Give each type of control its own row instead of squeezing two selectors together. */
+  .benchmark-site-shell .pareto-view { margin: 0 0 32px; }
+  .benchmark-site-shell .pareto-toolbar { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; margin-bottom: 20px; }
+  .benchmark-site-shell .pareto-toolbar .bench-view-switch { grid-column: 1 / -1; margin: 0 0 4px; }
+  .benchmark-site-shell .pareto-metric-label { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; max-width: none; margin: 0; }
+  .benchmark-site-shell .pareto-metric-label > span { position: static; width: auto; height: auto; margin: 0; clip: auto; overflow: visible; white-space: normal; color: var(--bench-muted); font-size: 13px; }
+  .benchmark-site-shell .pareto-metric-label select { min-width: 0; min-height: 48px; font-size: 16px; border-radius: 10px; }
+  .benchmark-site-shell .pareto-search input { height: 48px; font-size: 16px; border-radius: 10px; padding-right: 42px; }
+  .benchmark-site-shell .pareto-search button { width: 44px; height: 44px; right: 2px; }
+  .benchmark-site-shell .pareto-filter-toggle { min-height: 48px; border-radius: 10px; font-size: 14px; }
+  .benchmark-site-shell .pareto-filters { padding: 16px; gap: 20px; border-radius: 12px; margin-bottom: 20px; background: #f3f6ef; }
+  .benchmark-site-shell .pareto-filters :is(select, input:not([type=range])) { min-height: 48px; font-size: 16px; border-radius: 8px; }
+  .benchmark-site-shell .pareto-filters :is(label, legend) { font-size: 14px; }
+  .benchmark-site-shell .pareto-budget-values { font-size: 13px; margin-block: 8px 16px; }
+  .benchmark-site-shell .pareto-budget-presets { gap: 8px; }
+  .benchmark-site-shell .pareto-budget-presets button { flex: 1 1 auto; min-height: 44px; font-size: 13px; }
+  .benchmark-site-shell .pareto-active-filters { gap: 8px; font-size: 13px; }
+  .benchmark-site-shell .pareto-active-filters button { min-height: 44px; }
+  .benchmark-site-shell .pareto-plot-layout { border-radius: 12px; }
+  .benchmark-site-shell .pareto-chart:not(.is-expanded) { padding: 16px 8px 12px; border-radius: 12px 12px 0 0; }
+  .benchmark-site-shell .pareto-chart-heading { padding-inline: 4px; }
+  .benchmark-site-shell .pareto-chart-heading h2 { font-size: 18px; line-height: 1.5; }
+  .benchmark-site-shell .pareto-chart.is-touch .pareto-chart-heading > div:first-child { flex-wrap: wrap; gap: 4px 12px; }
+  .benchmark-site-shell .pareto-chart-heading > div > span { font-size: 12px; }
+  .benchmark-site-shell .pareto-chart.is-touch .pareto-chart-controls { margin-top: 8px; padding: 4px; }
+  .benchmark-site-shell .pareto-chart.is-touch .pareto-chart-controls > button, .benchmark-site-shell .pareto-chart-settings > summary { min-width: 44px; min-height: 44px; }
+  .benchmark-site-shell .pareto-chart.is-touch .pareto-chart-controls output { min-width: 28px; font-size: 13px; }
+  .benchmark-site-shell .pareto-touch-hint { padding: 10px 4px 4px; line-height: 1.65; }
+  .benchmark-site-shell .pareto-chart-footer { gap: 4px 12px; padding-top: 8px; font-size: 12px; }
+  .benchmark-site-shell .pareto-legend { font-size: 11px; }
+  .benchmark-site-shell .pareto-chart-settings select { min-height: 44px; font-size: 16px; }
+  .benchmark-site-shell .pareto-popover-footer button, .benchmark-site-shell .pareto-detail-link, .benchmark-site-shell .pareto-cost-info button { min-height: 44px; font-size: 13px; }
+  .benchmark-site-shell .pareto-frontier { padding: 20px 16px 16px; background: #f5f7f1; }
+  .benchmark-site-shell .pareto-frontier h2 { font-size: 18px; }
+  .benchmark-site-shell .pareto-frontier > p { margin-top: 6px; font-size: 13px; line-height: 1.65; }
+  .benchmark-site-shell .pareto-frontier ol { margin: 12px -8px; }
+  .benchmark-site-shell .pareto-frontier li > button { grid-template-columns: 28px minmax(0, 1fr) 68px; gap: 10px; min-height: 68px; padding: 10px 8px; }
+  .benchmark-site-shell .pareto-frontier-name { overflow-wrap: anywhere; }
+  .benchmark-site-shell .pareto-definition summary { min-height: 44px; display: flex; align-items: center; padding: 0; font-size: 13px; }
+  .benchmark-site-shell .pareto-definition p { font-size: 13px; }
+  .benchmark-site-shell .pareto-cost-ranking { margin-top: 24px; padding: 20px 12px 12px; border-radius: 12px; }
+  .benchmark-site-shell .pareto-cost-ranking > header { padding-inline: 4px; }
+  .benchmark-site-shell .pareto-cost-ranking h2 { font-size: 20px; }
+  .benchmark-site-shell .pareto-cost-ranking header p { font-size: 13px; line-height: 1.65; }
+  .benchmark-site-shell .pareto-cost-controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: 16px; }
+  .benchmark-site-shell .pareto-cost-controls select { width: 100%; min-height: 48px; font-size: 16px; border-radius: 10px; }
+  .benchmark-site-shell .pareto-checkbox { min-height: 44px; font-size: 14px; }
+  .benchmark-site-shell .pareto-cost-row { grid-template-columns: minmax(0, 1fr) 86px; column-gap: 12px; row-gap: 8px; min-height: 84px; padding: 14px 4px; }
+  .benchmark-site-shell .pareto-cost-model { gap: 8px; }
+  .benchmark-site-shell .pareto-cost-model strong { font-size: 14px; line-height: 1.5; overflow: visible; white-space: normal; overflow-wrap: anywhere; }
+  .benchmark-site-shell .pareto-cost-position { flex-basis: 18px; font-size: 12px; }
+  .benchmark-site-shell .pareto-cost-model .pareto-brand { width: 26px; height: 26px; }
+  .benchmark-site-shell .pareto-cost-bar-track { margin-left: 60px; }
+  .benchmark-site-shell .pareto-cost-value { font-size: 15px; }
+  .benchmark-site-shell .pareto-cost-score { font-size: 13px; }
+  .benchmark-site-shell .pareto-cost-score small { font-size: 11px; }
+  .benchmark-site-shell .pareto-cost-info > summary { width: 44px; height: 44px; }
+  .benchmark-site-shell .pareto-cost-info > div { left: 50%; width: 248px; max-width: calc(100vw - 56px); transform: translateX(-50%); bottom: 46px; font-size: 13px; }
+  .benchmark-site-shell .pareto-cost-ranking .pareto-cost-info > div { left: -125px; transform: none; }
+  .benchmark-site-shell .pareto-data { margin-top: 24px; }
+  .benchmark-site-shell .pareto-data > summary { min-height: 52px; font-size: 14px; }
+  .benchmark-site-shell .pareto-data-settings { padding: 16px; }
+  .benchmark-site-shell .pareto-data-settings label { min-width: 0; font-size: 14px; }
+  .benchmark-site-shell .pareto-data-settings select { width: 100%; min-width: 0; min-height: 48px; font-size: 16px; white-space: normal; }
+  .benchmark-site-shell .pareto-data-settings p, .benchmark-site-shell .pareto-method-grid p { font-size: 13px; line-height: 1.75; }
+  .benchmark-site-shell .pareto-method-grid h3 { margin-bottom: 6px; font-size: 15px; }
+  .benchmark-site-shell .pareto-exclusions > summary, .benchmark-site-shell .pareto-source-details > summary { min-height: 44px; align-content: center; font-size: 13px; }
+  .benchmark-site-shell .pareto-show-more { min-height: 48px; font-size: 14px; }
+
+  /* Rank lists use the same type scale and left/right edges as the comparison view. */
+  .benchmark-site-shell .bench-section { margin-top: 28px; }
+  .benchmark-site-shell .bench-section-head { gap: 12px; margin-bottom: 16px; }
+  .benchmark-site-shell .bench-section-head h2 { margin: 0; font-size: 20px; line-height: 1.4; }
+  .benchmark-site-shell .bench-section-head p { font-size: 13px; line-height: 1.65; }
+  .benchmark-site-shell .bench-section-head .bench-eyebrow { display: none; }
+  .benchmark-site-shell .bench-dimension-grid { gap: 20px; }
+  .benchmark-site-shell .bench-dimension-card { border-radius: 12px; box-shadow: none; }
+  .benchmark-site-shell .bench-dimension-card > header { padding: 16px 12px; }
+  .benchmark-site-shell .bench-dimension-card > header span { font-size: 17px; line-height: 1.5; }
+  .benchmark-site-shell .bench-dimension-card > header small { display: none; }
+  .benchmark-site-shell .bench-mini-row { grid-template-columns: 28px minmax(0, 1fr) 44px; gap: 10px; min-height: 68px; padding: 12px; }
+  .benchmark-site-shell .bench-mini-row > i { display: none; }
+  .benchmark-site-shell .bench-mini-row > a { gap: 4px; min-height: 44px; justify-content: center; }
+  .benchmark-site-shell .bench-mini-row > a strong { font-size: 14px; font-weight: 600; line-height: 1.5; white-space: normal; overflow: visible; overflow-wrap: anywhere; }
+  .benchmark-site-shell .bench-mini-row > a small { font-size: 11px; white-space: normal; overflow-wrap: anywhere; }
+  .benchmark-site-shell .bench-mini-row > em { font-size: 13px; }
+  .benchmark-site-shell .bench-dimension-card > a { min-height: 48px; padding: 12px; font-size: 13px; background: #f3f6ef; }
+  .benchmark-site-shell .bench-search { min-width: 0; gap: 8px; }
+  .benchmark-site-shell .bench-search label { font-size: 14px; }
+  .benchmark-site-shell .bench-search > span { min-height: 48px; border-radius: 10px; }
+  .benchmark-site-shell .bench-search input { font-size: 16px; }
+  .benchmark-site-shell .bench-search small { font-size: 12px; }
+  .benchmark-site-shell .bench-matrix-scroll { border-radius: 12px; box-shadow: none; }
+  .benchmark-site-shell .bench-matrix th, .benchmark-site-shell .bench-matrix td { min-height: 52px; font-size: 12px; }
+  .benchmark-site-shell .bench-matrix thead button { min-height: 44px; }
+  .benchmark-site-shell .bench-model-column { min-width: 158px; max-width: 158px; }
+  .benchmark-site-shell .bench-model-column strong { font-size: 13px; white-space: normal; }
+  .benchmark-site-shell .bench-model-column small { font-size: 11px; white-space: normal; overflow-wrap: anywhere; }
+  .benchmark-site-shell .bench-subpage-hero, .benchmark-site-shell .bench-method-hero { margin: 0 0 24px; padding: 0; border: 0; background: transparent; box-shadow: none; overflow-wrap: anywhere; }
+  .benchmark-site-shell .bench-subpage-hero h1, .benchmark-site-shell .bench-method-hero h1 { font-size: 26px; line-height: 1.4; }
+  .benchmark-site-shell .bench-subpage-hero p, .benchmark-site-shell .bench-method-hero > p { font-size: 14px; }
+  .benchmark-site-shell .bench-dimension-full { padding: 12px 0; background: transparent; border: 0; box-shadow: none; }
+  .benchmark-site-shell .bench-dimension-table th a { overflow-wrap: anywhere; }
+  .benchmark-site-shell .bench-dimension-table th strong, .benchmark-site-shell .bench-dimension-table th small { white-space: normal; overflow-wrap: anywhere; }
+  .benchmark-site-shell .bench-dimension-table th strong { font-size: 14px; }
+  .benchmark-site-shell .bench-dimension-table th small { font-size: 11px; }
+  .benchmark-site-shell .bench-dimension-table td { font-size: 13px; }
+  .benchmark-site-shell .bench-dimension-table :is(th, td) { padding-block: 14px; }
+  .benchmark-site-shell .bench-evidence-card, .benchmark-site-shell .bench-case-evidence-item { border-radius: 12px; box-shadow: none; }
+  .benchmark-site-shell .bench-prompt-form textarea { font-size: 16px; }
+  .benchmark-site-shell .bench-prompt-form > button { width: 100%; min-height: 48px; font-size: 15px; background: var(--sage); }
+  .benchmark-site-shell .pareto-chart.is-expanded { top: var(--workbench-viewport-top, 0); bottom: auto; height: var(--workbench-viewport-height, 100dvh); }
+}
+@media (max-width: 380px) {
+  .benchmark-site-shell .pareto-chart.is-touch .pareto-chart-controls { gap: 0; padding: 2px; }
+  .benchmark-site-shell .pareto-chart.is-touch .pareto-chart-controls .pareto-expand-chart { padding-inline: 5px; }
+  .benchmark-site-shell .pareto-chart.is-touch .pareto-expand-chart > span { display: none; }
+}

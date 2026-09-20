@@ -13,6 +13,8 @@ import {
   BenchmarkPromptSubmissionPage,
 } from './BenchmarkEvidencePages.jsx'
 import { normalizeLeaderboardRelease } from './benchmarkRelease.js'
+import useCompactLayout from '../hooks/useCompactLayout.js'
+import BenchmarkPareto from './BenchmarkPareto.jsx'
 
 export { BenchmarkEvidenceImage, BenchmarkPromptSubmissionForm }
 
@@ -96,8 +98,18 @@ function LeaderboardNav() {
   )
 }
 
-function LeaderboardHero({ release }) {
+function LeaderboardHero({ release, compact = false }) {
+  const phone = useCompactLayout()
   const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
+  if (phone) return <header className="bench-phone-hero">
+    <h1>模型评测排行榜</h1>
+    <p>科研图示生成与编辑模型的能力与成本对比。</p>
+    <details className="bench-phone-method">
+      <summary>评测说明<span>{release.eligibleModelCount ?? release.models?.length ?? 0} 个模型</span></summary>
+      <div><p>面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据。</p><p>{scientific ? '固定 9 题 · 6 生成 + 3 编辑；独立双盲 + 争议仲裁；十维等权，失败记 0。' : '固定 4 题 · 每模型 4 张；Codex 双遍盲审；七维等权。'}</p><a href={METHODOLOGY_HREF}>查看完整方法说明</a></div>
+    </details>
+  </header>
+  if (compact) return <header className="bench-compact-hero"><h1>图研 Tuyan Benchmark</h1><p>科研图示生成与编辑模型评测</p></header>
   return (
     <header className="bench-hero">
       <div className="bench-eyebrow">TUYAN BENCHMARK</div>
@@ -312,17 +324,32 @@ function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname, showNav
 }
 
 export function BenchmarkObservatory({ release, pathname = '/leaderboard', showNavigation = true }) {
+  const [view, setView] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('view') === 'pareto' ? 'pareto' : 'ranking')
+  useEffect(() => {
+    const sync = () => setView(new URLSearchParams(window.location.search).get('view') === 'pareto' ? 'pareto' : 'ranking')
+    window.addEventListener('popstate', sync)
+    return () => window.removeEventListener('popstate', sync)
+  }, [])
+  const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
+  function changeView(next) {
+    setView(next)
+    const url = new URL(window.location.href)
+    if (next === 'pareto') url.searchParams.set('view', 'pareto')
+    else url.searchParams.delete('view')
+    window.history.pushState(null, '', `${url.pathname}${url.search}${url.hash}`)
+  }
   const models = Array.isArray(release.models) ? release.models : []
   const axes = axesForRelease(release)
   const route = resolveLeaderboardRoute(pathname)
   if (route.invalidSlug) return <InvalidDimension showNavigation={showNavigation} />
   if (route.dimension) return <DimensionLeaderboard axis={route.dimension} release={release} models={models} showNavigation={showNavigation} />
+  const viewSwitch = scientific ? <div className="bench-view-switch" role="group" aria-label="排行榜视图"><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />排名</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>帕累托</button></div> : null
   return (
-    <main className="bench-shell">
+    <main className={`bench-shell${scientific && view === 'pareto' ? ' bench-pareto-shell' : ''}`}>
       {showNavigation ? <LeaderboardNav /> : null}
-      <LeaderboardHero release={release} />
-      <DimensionGrid axes={axes} models={models} />
-      <LeaderboardMatrix axes={axes} release={release} models={models} />
+      <LeaderboardHero release={release} compact={scientific && view === 'pareto'} />
+
+      {scientific && view === 'pareto' ? <BenchmarkPareto models={models} axes={axes} viewSwitch={viewSwitch} /> : <>{viewSwitch}<DimensionGrid axes={axes} models={models} /><LeaderboardMatrix axes={axes} release={release} models={models} /></>}
     </main>
   )
 }
