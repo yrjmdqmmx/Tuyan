@@ -3,7 +3,7 @@ import test, { afterEach } from 'node:test'
 import React from 'react'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import BenchmarkPareto from './BenchmarkPareto.jsx'
-import { OFFICIAL_PRICES } from './benchmarkParetoMath.js'
+import { OFFICIAL_PRICES, TEST_COSTS } from './benchmarkParetoMath.js'
 import { BenchmarkObservatory } from './BenchmarkPage.jsx'
 
 afterEach(() => { cleanup();window.history.replaceState(null, '', '/') })
@@ -16,7 +16,7 @@ test('filters, dimension, linked details, zoom and price provenance work togethe
   render(React.createElement(BenchmarkPareto, { models: [model('krea/krea-2-medium', 8), model('krea/krea-2-large', 9), model('openai/gpt-image-2')], axes }))
   assert.match(screen.getByLabelText('比较范围').textContent, /2 个可比模型 · 2 个前沿模型/)
   fireEvent.change(screen.getByLabelText('评测维度'), { target: { value: 'scientific_faithfulness' } })
-  assert.match(screen.getByLabelText('比较范围').textContent, /科研忠实度2 个可比模型 · 1 个前沿模型/)
+  assert.match(screen.getByLabelText('比较范围').textContent, /科研忠实度.*2 个可比模型 · 1 个前沿模型/)
   fireEvent.change(screen.getByLabelText('最高价格'), { target: { value: '.04' } })
   assert.match(screen.getByLabelText('比较范围').textContent, /1 个可比模型/)
   fireEvent.mouseEnter(screen.getByRole('button', { name: '在图中高亮 krea/krea-2-medium' }))
@@ -36,6 +36,26 @@ test('filters, dimension, linked details, zoom and price provenance work togethe
   fireEvent.change(screen.getByLabelText('模型搜索'), { target: { value: 'krea-2-large' } })
   assert.match(screen.getByLabelText('比较范围').textContent, /1 个可比模型 · 1 个前沿模型/)
   assert.equal(screen.getAllByRole('row', { hidden: true }).length, 4)
+})
+test('seven test-cost models are visible by default, labelled, and removable with official-only filter', () => {
+  const billed = TEST_COSTS.models.map(e => ({
+    ...model(e.modelId), profileId: e.profileId,
+    evidence: e.binding.map(s => ({ ...s, actualOutputPixels: { width: s.width, height: s.height } })),
+  }))
+  render(React.createElement(BenchmarkPareto, { models: [...billed, model('krea/krea-2-medium')], axes }))
+  assert.match(screen.getByLabelText('比较范围').textContent, /8 个可比模型/)
+  fireEvent.change(screen.getByLabelText('模型搜索'), { target: { value: 'openai/gpt-image-2.5-flare' } })
+  assert.match(screen.getByLabelText('比较范围').textContent, /1 个可比模型/)
+  fireEvent.click(screen.getByRole('button', { name: '在图中高亮 openai/gpt-image-2.5-flare' }))
+  const detail = screen.getByLabelText('模型计价详情')
+  assert.match(detail.textContent, /测试费用均值\$0.25/)
+  assert.match(detail.textContent, /账单已核对/)
+  assert.match(within(detail).getByRole('link', { name: /公开逐题账单/ }).href, /leaderboard/)
+  fireEvent.change(screen.getByLabelText('成本来源'), { target: { value: 'official' } })
+  assert.match(screen.getByLabelText('比较范围').textContent, /0 个可比模型/)
+  assert.equal(screen.queryByLabelText('模型计价详情'), null)
+  fireEvent.change(screen.getByLabelText('成本来源'), { target: { value: 'combined' } })
+  assert.match(screen.getByLabelText('比较范围').textContent, /1 个可比模型/)
 })
 test('ordinary ranking remains default; toggle is deep-linkable and history aware', () => {
   const release = { models: [model('krea/krea-2-medium')], presentationVersion: 'scientific-leaderboard-v2', eligibleModelCount: 1 }

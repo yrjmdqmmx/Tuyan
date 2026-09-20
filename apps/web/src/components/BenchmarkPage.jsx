@@ -336,7 +336,7 @@ export function BenchmarkObservatory({ release, pathname = '/leaderboard', showN
     <main className="bench-shell">
       {showNavigation ? <LeaderboardNav /> : null}
       <LeaderboardHero release={release} />
-      {scientific && <div className="bench-view-switch" role="group" aria-label="排行榜视图"><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />排名</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>帕累托</button><span>当前正式评测 · 官方 API 标准定价</span></div>}
+      {scientific && <div className="bench-view-switch" role="group" aria-label="排行榜视图"><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />排名</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>帕累托</button><span>当前正式评测 · 费用来源逐项标注</span></div>}
       {scientific && view === 'pareto' ? <BenchmarkPareto models={models} axes={axes} /> : <><DimensionGrid axes={axes} models={models} /><LeaderboardMatrix axes={axes} release={release} models={models} /></>}
     </main>
   )

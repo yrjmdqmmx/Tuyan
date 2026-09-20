@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { OFFICIAL_PRICES, compareCost, costNumber, decimal, filterModels, groupPoints, megapixels, officialPrice, paretoFrontier, slotCost } from './benchmarkParetoMath.js'
+import { OFFICIAL_PRICES, TEST_COSTS, comparisonPrice, compareCost, costNumber, decimal, filterModels, groupPoints, megapixels, officialPrice, paretoFrontier, slotCost } from './benchmarkParetoMath.js'
 
 const row = (id, cost, score, detail = score) => ({ model: { modelId: id, displayName: id, developer: 'Vendor', overallScore: score, dimensions: { detail: { mean: detail } } }, price: { status: 'comparable', exact: decimal(cost), usd: Number(cost) } })
 const ids = rows => rows.map(r => r.model.modelId).sort()
@@ -87,4 +87,56 @@ test('estimated official auto pricing includes input fees but never enters verif
   assert.equal(price.status, 'estimated');assert.equal(price.usd, .07)
   assert.deepEqual(paretoFrontier([{ model, price }]), [])
   assert.equal(filterModels([{ model, price }], {}).missing.length, 1)
+})
+
+function billedModel(entry) {
+  return { modelId: entry.modelId, profileId: entry.profileId, displayName: entry.modelId, overallScore: 8,
+    evidence: entry.binding.map(s => ({ ...s, actualOutputPixels: { width: s.width, height: s.height } })) }
+}
+test('only seven authorized reconciled bills join the 28 official quotes with exact nine-slot means', () => {
+  const expected = [.034, .101, .15, .039, .128, .25, .25]
+  assert.equal(TEST_COSTS.models.length, 7)
+  TEST_COSTS.models.forEach((entry, i) => {
+    const model = billedModel(entry), price = comparisonPrice(model)
+    assert.equal(price.usd, expected[i]);assert.equal(price.costBasis, 'test')
+    assert.equal(price.slots.length, 9);assert.equal(price.status, 'comparable')
+    assert.equal(comparisonPrice(model, 'official').status, 'conditions_missing')
+    assert.equal(officialPrice(model).status, 'conditions_missing')
+    assert.deepEqual(filterModels([{ model, price }], {}).visible.map(r => r.model.modelId), [entry.modelId])
+  })
+  const rows = OFFICIAL_PRICES.models.map(entry => {
+    const billed = TEST_COSTS.models.find(m => m.modelId === entry.modelId)
+    const model = billed ? billedModel(billed) : entry.binding ? boundModel(entry.modelId) : { modelId: entry.modelId }
+    return { model, price: comparisonPrice(model) }
+  })
+  assert.equal(rows.filter(r => r.price.status === 'comparable').length, 35)
+  assert.equal(comparisonPrice({ modelId: 'sourceful/riverflow-v2-pro' }).status, 'unconfirmed')
+})
+test('incomplete, stale, unverified or mismatched bills cannot become plotted costs', () => {
+  const entry = TEST_COSTS.models[0], model = billedModel(entry)
+  for (const mutate of [
+    c => { c.models[0].binding.pop() },
+    c => { c.models[0].binding[1] = structuredClone(c.models[0].binding[0]) },
+    c => { c.models[0].binding[0].billing.basis = 'budget_estimate' },
+    c => { c.models[0].binding[0].billing.amount = null },
+    c => { c.models[0].binding[0].billing.currency = 'CNY' },
+    c => { c.models[0].binding[0].billing.evidenceHash = '' },
+    c => { c.models[0].binding[0].billing.verifiedAt = '' },
+    c => { c.models[0].total = '123' },
+  ]) {
+    const catalog = structuredClone(TEST_COSTS);mutate(catalog)
+    assert.equal(comparisonPrice(model, 'combined', catalog).status, 'conditions_missing')
+  }
+  model.evidence[0].imageHash = 'changed'
+  assert.equal(comparisonPrice(model).status, 'conditions_missing')
+})
+test('billed failures keep their recorded amount and one ninth weight; scores cannot alter bills', () => {
+  const catalog = structuredClone(TEST_COSTS), entry = catalog.models[0], model = billedModel(entry)
+  entry.binding[0].status = model.evidence[0].status = 'failed'
+  entry.binding[0].imageHash = model.evidence[0].imageHash = null
+  entry.binding[0].width = entry.binding[0].height = null;model.evidence[0].actualOutputPixels = null
+  model.overallScore = 0;model.evidence[0].reviewNotes = ['updated review']
+  assert.equal(comparisonPrice(model, 'combined', catalog).usd, .034)
+  entry.binding[0].billing.amount = '0';entry.total = '.272'
+  assert.equal(comparisonPrice(model, 'combined', catalog).usd, .272 / 9)
 })

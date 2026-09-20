@@ -47,5 +47,19 @@
     "discoveredAt": "https://docs.x.ai/developers/models/grok-imagine-image-quality",
     "date": "2026-09-20",
     "bytes": 1392
+  },
+  "google": {
+    "file": "google.png",
+    "source": "https://www.gstatic.com/devrel-devsite/prod/v826fb839c0b38141980abf47020a61dc3ff340cbde624f57178f4c01d184ef87/googledevai/images/touchicon-180-new.png",
+    "discoveredAt": "https://ai.google.dev/gemini-api/docs",
+    "date": "2026-09-20",
+    "bytes": 6289
+  },
+  "openai": {
+    "file": "openai.png",
+    "source": "https://developers.openai.com/favicon.png",
+    "discoveredAt": "https://developers.openai.com",
+    "date": "2026-09-20",
+    "bytes": 1841
   }
 }

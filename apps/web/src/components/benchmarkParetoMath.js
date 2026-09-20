@@ -1,6 +1,8 @@
 import prices from '../data/benchmarkOfficialPrices.json'
+import testCosts from '../data/benchmarkTestCosts.json'
 
 export const OFFICIAL_PRICES = prices
+export const TEST_COSTS = testCosts
 
 // Keep decimal prices and FX exact through aggregation and dominance checks.
 const gcd = (a, b) => b === 0n ? a : gcd(b, a % b)
@@ -46,6 +48,7 @@ export function slotCost(rule, slot, sourceImage) {
 function bindingMatches(model, entry, catalog) {
   const evidence = model.evidence || []
   if (evidence.length !== 9 || entry.binding?.length !== 9 || new Set(evidence.map(s => s.caseId)).size !== 9) return false
+  if (new Set(entry.binding.map(s => s.caseId)).size !== 9) return false
   if (entry.binding.filter(s => s.kind === 'generation').length !== 6 || entry.binding.filter(s => s.kind === 'edit').length !== 3) return false
   return entry.binding.every(bound => {
     const actual = evidence.find(s => s.caseId === bound.caseId)
@@ -70,6 +73,51 @@ export function officialPrice(model, catalog = prices) {
     return { ...entry, exact, usd: costNumber(exact), native: costNumber(native), slots }
   } catch {
     return { ...entry, status: 'conditions_missing', reason: '原题位的完整计费量或币种换算尚不可核验，暂不参与成本比较。' }
+  }
+}
+
+// Only the seven explicitly authorized models may use their reconciled test bills.
+// Keep this snapshot separate from the official price audit and original evidence.
+export function comparisonPrice(model, basis = 'combined', catalog = testCosts) {
+  const official = { ...officialPrice(model), costBasis: 'official' }
+  const entry = catalog.models.find(p => p.modelId === model.modelId)
+  if (basis === 'official' || !entry) return official
+  const unavailable = reason => ({ ...official, status: 'conditions_missing', reason })
+  if (model.profileId !== entry.profileId || !bindingMatches(model, entry, catalog)) {
+    return unavailable('测试账单与当前模型或九题产物不一致，需重新核对；未知费用不记为零。')
+  }
+  try {
+    const slots = entry.binding.map(s => {
+      const bill = s.billing
+      if (bill?.basis !== 'invoice_reconciled' || bill.currency !== 'USD' ||
+        !/^[a-f0-9]{64}$/.test(bill.evidenceHash || '') || !Number.isFinite(Date.parse(bill.verifiedAt))) {
+        throw new Error('Incomplete reconciled invoice')
+      }
+      return { caseId: s.caseId, kind: s.kind, cost: decimal(bill.amount), billing: bill }
+    })
+    const total = slots.reduce((sum, s) => add(sum, s.cost), decimal('0'))
+    if (entry.currency !== 'USD' || total.n <= 0n || compareCost(total, decimal(entry.total)) !== 0) throw new Error('Invoice total mismatch')
+    const exact = divide(total, decimal('9'))
+    return {
+      ...official, status: 'comparable', costBasis: 'test', reason: '', exact, usd: costNumber(exact),
+      native: costNumber(exact), currency: 'USD', slots, total: entry.total, profileId: entry.profileId,
+      channel: entry.channel, checkedAt: catalog.checkedAt,
+      generationApi: `原测试渠道：Replicate 官方模型 ${model.modelId}（生成）`,
+      editApi: `原测试渠道：Replicate 官方模型 ${model.modelId}（编辑，1 张源图）`,
+      rateText: `九题账单已核对：USD ${entry.total} ÷ 9 = ${costNumber(exact)} USD/张。`,
+      conditions: '原正式测试的 6 道生成 + 3 道编辑，9/9 题账单已核对；含题位内的调用尝试。历史渠道费用，不代表当前厂商直营标准价。',
+      calculation: '采用当前公开九题逐题 invoice_reconciled 金额之和 ÷ 9；不按成功图片数重新加权，不改写历史费用。',
+      feeBreakdown: {
+        imageOutput: '包含在已核对的完整请求账单金额中',
+        textInput: '沿用原完整账单，不将缺失的费用拆分项假定为零',
+        referenceInput: '三个编辑题的完整账单金额已纳入',
+        otherRequired: '含公开题位内调用尝试；不计审评费用，不额外补加标准价格',
+      },
+      auditNotes: [`官方定价核验另行保留：${official.reason}`, '当前比较同时含官方标准报价和历史测试实扣，两类来源已分别标注；可切换为仅官方定价。'],
+      missingFields: [], officialAudit: official,
+    }
+  } catch {
+    return unavailable('九题测试账单缺失、币种不一致或合计未通过核对，暂不参与比较。')
   }
 }
 
