@@ -6,12 +6,13 @@ const app = readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8')
 const modelPicker = readFileSync(new URL('../src/components/ModelPicker.jsx', import.meta.url), 'utf8')
 const styles = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8')
 
-test('Web fails closed until the server model registry loads and offers a retry action', () => {
+test('Web fails closed until the server model registry loads and automatically refreshes without a page-level retry action', () => {
   assert.match(app, /const missingSetting = firstMissingGenerationSetting/)
   assert.match(app, /firstInvalidRequiredRoute/)
   assert.match(app, /requiredRouteRoles: createRouteRoles/)
   assert.match(app, /setModelRegistry\(null\)/)
-  assert.match(app, /setModelRegistryRetryNonce\(\(value\) => value \+ 1\)/)
+  assert.match(app, /setInterval\(\(\) => setModelRegistryRetryNonce\(value => value \+ 1\), 60_000\)/)
+  assert.doesNotMatch(app, /模型目录提示|>重试目录</)
 })
 
 test('OpenRouter catalog scope and search changes reset the incremental list before rendering fewer rows', () => {
