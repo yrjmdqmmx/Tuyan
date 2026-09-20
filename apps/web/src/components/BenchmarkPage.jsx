@@ -97,7 +97,8 @@ function LeaderboardNav() {
   )
 }
 
-function LeaderboardHero({ release }) {
+function LeaderboardHero({ release, compact = false }) {
+  if (compact) return <header className="bench-compact-hero"><h1>图研 Tuyan Benchmark</h1><p>科研图示生成与编辑模型评测</p></header>
   const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
   return (
     <header className="bench-hero">
@@ -332,12 +333,13 @@ export function BenchmarkObservatory({ release, pathname = '/leaderboard', showN
   const route = resolveLeaderboardRoute(pathname)
   if (route.invalidSlug) return <InvalidDimension showNavigation={showNavigation} />
   if (route.dimension) return <DimensionLeaderboard axis={route.dimension} release={release} models={models} showNavigation={showNavigation} />
+  const viewSwitch = scientific ? <div className="bench-view-switch" role="group" aria-label="排行榜视图"><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />排名</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>帕累托</button></div> : null
   return (
-    <main className="bench-shell">
+    <main className={`bench-shell${scientific && view === 'pareto' ? ' bench-pareto-shell' : ''}`}>
       {showNavigation ? <LeaderboardNav /> : null}
-      <LeaderboardHero release={release} />
-      {scientific && <div className="bench-view-switch" role="group" aria-label="排行榜视图"><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />排名</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>帕累托</button><span>当前正式评测 · 费用来源逐项标注</span></div>}
-      {scientific && view === 'pareto' ? <BenchmarkPareto models={models} axes={axes} /> : <><DimensionGrid axes={axes} models={models} /><LeaderboardMatrix axes={axes} release={release} models={models} /></>}
+      <LeaderboardHero release={release} compact={scientific && view === 'pareto'} />
+
+      {scientific && view === 'pareto' ? <BenchmarkPareto models={models} axes={axes} viewSwitch={viewSwitch} /> : <>{viewSwitch}<DimensionGrid axes={axes} models={models} /><LeaderboardMatrix axes={axes} release={release} models={models} /></>}
     </main>
   )
 }
