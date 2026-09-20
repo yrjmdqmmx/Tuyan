@@ -5464,3 +5464,15 @@ figcaption {
 .job-failure-notice > div { min-width: 0; overflow-wrap: anywhere; }
 .job-failure-notice p { margin: 0; }
 .job-failure-notice p + p { margin-top: 8px; }
+
+.universal-role { border: 1px solid var(--border, #cbd8ce); border-radius: 12px; margin: 18px 0; padding: 16px; min-width: 0; }
+.universal-role legend { font-weight: 700; padding: 0 8px; }
+.universal-role details { margin: 12px 0; }
+.universal-role summary { cursor: pointer; font-weight: 600; padding: 8px 0; }
+.universal-role p, .universal-api-settings > p { font-size: .88rem; line-height: 1.6; }
+.universal-capabilities { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+.universal-capabilities label, .universal-confirm { display: flex; gap: 8px; align-items: center; font-size: .88rem; }
+.universal-size-row { display: grid; grid-template-columns: 1fr 1fr 1.5fr auto; align-items: end; gap: 8px; margin: 10px 0; }
+.universal-size-row input { width: 100%; min-width: 0; }
+.universal-size-row label { font-size: .8rem; min-width: 0; }
+@media(max-width: 640px) { .universal-size-row { grid-template-columns: 1fr 1fr; } }

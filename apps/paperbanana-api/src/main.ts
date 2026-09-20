@@ -1,3 +1,4 @@
+import { createUniversalRuntime } from './universal-adapters.js'
 import { createTokenDanceService } from './tokendance-service.js'
 import { createProviderWorkflow } from './provider-workflow.js'
 import type { Db } from 'mongodb'
@@ -45,6 +46,7 @@ async function main(): Promise<void> {
     async loadHandler() {
       const legacy = await import('./legacy-entry.mjs')
       legacy.configureRuntimeFetch(providerEgress.fetch)
+      legacy.configureUniversalRuntime(createUniversalRuntime({officialFetch: providerEgress.fetch}))
       legacy.configureJobAdmission(config.admission)
       configureDeletionCleanup = legacy.configureAccountDeletionDataCleanup
       legacy.startAccountDeletionSweep()

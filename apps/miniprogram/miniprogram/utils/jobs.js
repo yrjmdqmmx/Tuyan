@@ -112,7 +112,7 @@ function normalizeJobModelRoutes(input) {
     const source = input && typeof input === 'object' ? input : {};
     const route = (role) => {
         const item = source[role] && typeof source[role] === 'object' ? source[role] : {};
-        return { accessProvider: String(item.accessProvider || item.access_provider || ''), modelId: String(item.modelId || item.model_id || '') };
+        return { accessProvider: String(item.accessProvider || item.access_provider || ''), modelId: String(item.modelId || item.model_id || ''), ...(item.custom && typeof item.custom === 'object' ? { custom: item.custom } : {}) };
     };
     const routes = { main: route('main'), image: route('image'), vision: route('vision') };
     return routes.main.accessProvider && routes.main.modelId && routes.image.accessProvider && routes.image.modelId && routes.vision.accessProvider && routes.vision.modelId

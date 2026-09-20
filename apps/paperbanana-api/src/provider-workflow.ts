@@ -1,3 +1,4 @@
+import { normalizeUniversalRoute, universalCredential, UniversalApiError } from '../../../packages/api/src/universal-api.js'
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { createHash, randomUUID } from 'node:crypto'
 import type { Db } from 'mongodb'
@@ -20,7 +21,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   const steps = db.collection<any>('paperbanana_provider_steps')
   const chunks = db.collection<any>('paperbanana_provider_step_chunks')
   const jobs = db.collection<any>('paperbanana_jobs')
-  const isManaged = (task: Task) => Boolean(task.routeSecrets.tokendance)
+  const isManaged = (task: Task) => Boolean(task.routeSecrets.tokendance || task.routeSecrets.custom)
   const expires = () => new Date(now() + 7 * 86400_000)
   async function acceptingData(userId: string) {
     try { await service.accepting(userId) }
@@ -58,7 +59,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     const id = `${current.task.jobId}:${current.scope}:${digest}:${occurrence}`
     const existing = await steps.findOne({ _id: id })
     if (existing?.state === 'complete') return readResult(id, existing.chunks)
-    if (existing && existing.state !== 'rejected') throw new TokenDanceError(409, '上次调用结果不确定，已暂停以避免重复扣费，请核对 TokenDance 调用记录。', 'review_request', 0, true)
+    if (existing && existing.state !== 'rejected') throw new TokenDanceError(409, '上次调用结果不确定，已暂停以避免重复扣费，请核对所用渠道的调用记录。', 'review_request', 0, true)
     if (existing?.retryAt && existing.retryAt.getTime() > now()) throw new TokenDanceError(429, '限流等待时间尚未结束。', 'rate_limit', Math.ceil((existing.retryAt.getTime() - now()) / 1000))
     if (existing) {
       const claim = await steps.updateOne({ _id: id, state: 'rejected' }, { $set: { state: 'running', startedAt: new Date(now()) } })
@@ -75,7 +76,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await steps.updateOne({ _id: id, state: 'running' }, { $set: { state: 'complete', chunks: count, completedAt: new Date(now()) } })
       return result
     } catch (error: any) {
-      const rejected = isReferenceValidationError(error) || (error?.name === 'TokenDanceError' && !error.uncertain && (Boolean(error.recoveryAction) || error.requestState === 'rejected'))
+      const rejected = isReferenceValidationError(error) || (['TokenDanceError', 'UniversalApiError'].includes(error?.name) && !error.uncertain && (error.requestState === 'not_sent' || Boolean(error.recoveryAction) || error.requestState === 'rejected'))
       await steps.updateOne({ _id: id }, { $set: { state: rejected ? 'rejected' : 'unknown', retryAt: new Date(now() + (error.retryAfterSeconds || 0) * 1000) } })
       throw error
     }
@@ -83,13 +84,13 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   async function run(task: Task, operation: () => Promise<void>) {
     if (!isManaged(task)) return operation()
     const userId = task.body.userId
-    if (!service.cipher) throw new TokenDanceError(503, 'TokenDance 任务恢复服务尚未配置。')
+    if (!service.cipher) throw new TokenDanceError(503, '任务恢复加密服务尚未配置，未发起模型请求。')
     await service.accepting(userId)
     const owner = randomUUID()
     const old = await executions.findOne({ _id: task.jobId })
     if (!old) {
       const secrets = { ...task.routeSecrets }; delete secrets.tokendance
-      await executions.insertOne({ _id: task.jobId, userId, state: 'queued', instanceId, version, secret: service.cipher.seal({ task: { ...task, routeSecrets: undefined }, secrets }, task.jobId), expiresAt: expires() })
+      await executions.insertOne({ _id: task.jobId, userId, state: 'queued', instanceId, version, channel: task.routeSecrets.custom ? 'custom' : 'tokendance', needsTokenDance: Boolean(task.routeSecrets.tokendance), secret: service.cipher.seal({ task: { ...task, routeSecrets: undefined }, secrets }, task.jobId), expiresAt: expires() })
     }
     await acceptingData(userId)
     const claimed = await executions.findOneAndUpdate({ _id: task.jobId, userId, version, state: 'queued' }, { $set: { state: 'running', owner, leaseUntil: new Date(now() + 45_000) } }, { returnDocument: 'after' })
@@ -111,7 +112,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       // Keep all completed checkpoints, including on local validation failure.
       // Inputs are immutable: a deterministic bad input needs correction, not an
       // automatic replay. No old unknown claim is made safe by a later error.
-      const recovery = { channel: 'tokendance', canResume: !unsafe && !local && Boolean(error?.recoveryAction) && error.recoveryAction !== 'review_request',
+      const recovery = { channel: task.routeSecrets.custom ? 'custom' : 'tokendance', canResume: !unsafe && !local && Boolean(error?.recoveryAction) && error.recoveryAction !== 'review_request',
         action: unsafe ? 'review_request' : local ? 'change_input' : error.recoveryAction || 'check_request',
         message: local ? '本步骤在请求发出前校验失败，请调整输入或等待修复。已成功步骤保留；本次失败步骤未发起模型调用。'
           : unsafe ? '调用结果及费用尚未确认，请核对渠道记录；自动重试已停止，成功步骤已保留。' : failure.message,
@@ -128,7 +129,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     if (row.version !== version && !(row.state === 'running' && (row.leaseUntil?.getTime() || 0) > now())) {
       // Request descriptors changed when URLs became budgeted inline images.
       // Never mistake an old paid checkpoint for a new, uncalled request.
-      const recovery = { channel: 'tokendance', canResume: false, action: 'review_request', requestState: 'unknown', billingStatus: 'unknown',
+      const recovery = { channel: row.channel || 'tokendance', canResume: false, action: 'review_request', requestState: 'unknown', billingStatus: 'unknown',
         message: '该任务使用旧执行版本，已保留成功步骤。升级后不能安全自动重放，请先核对原调用记录及费用。', expiresAt: row.expiresAt }
       const changed = await executions.updateOne({ _id: jobId, version: row.version, state: row.state }, { $set: { state: 'blocked', recovery } })
       if (changed.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery, updatedAt: new Date(now()) } })
@@ -137,7 +138,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     if (row.state === 'blocked') return
     if (row.state === 'queued' ? row.instanceId === instanceId : (row.leaseUntil?.getTime() || 0) > now()) return
     const uncertain = await steps.countDocuments({ jobId, state: { $in: ['running', 'unknown'] } })
-    const recovery = { channel: 'tokendance', canResume: uncertain === 0, action: uncertain ? 'review_request' : 'resume', message: uncertain ? '服务中断时存在未确认调用，请核对记录。' : '服务曾中断，可从已保存步骤恢复。', expiresAt: row.expiresAt }
+    const recovery = { channel: row.channel || 'tokendance', canResume: uncertain === 0, action: uncertain ? 'review_request' : 'resume', message: uncertain ? '服务中断时存在未确认调用，请核对记录。' : '服务曾中断，可从已保存步骤恢复。', expiresAt: row.expiresAt }
     const updated = await executions.updateOne({ _id: jobId, state: row.state, instanceId: row.instanceId, leaseUntil: row.leaseUntil }, { $set: { state: 'blocked', recovery } })
     if (updated.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery } })
   }
@@ -154,19 +155,34 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     },
     async key(original: string) { const current = context.getStore(); return current ? (await service.credential(current.task.body.userId)).key : original },
     async record(info: unknown) { const current = context.getStore(); if (current) await jobs.updateOne({ _id: current.task.jobId }, { $push: { providerCalls: info } } as any) },
-    async resume(jobId: string, userId: string, enqueue: (task: any) => Promise<any>) {
+    async resume(jobId: string, userId: string, enqueue: (task: any) => Promise<any>, customKeys?: string) {
       await reconcile(jobId); await service.accepting(userId)
       const existing = await executions.findOne({ _id: jobId, userId })
       if (existing && existing.version !== version) throw new TokenDanceError(409, '原任务使用旧执行版本，成功步骤已保留；请核对原调用记录后处理，不能自动重放。', 'review_request', 0, true)
       const pending = await executions.findOne({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true })
       const retryAt = pending?.recovery?.retryAt?.getTime() || 0
       if (retryAt > now()) throw new TokenDanceError(429, '等待时间尚未结束，请稍后恢复原任务。', pending.recovery.action === 'retry_request' ? 'retry_request' : 'rate_limit', Math.ceil((retryAt - now()) / 1000))
-      const connected = await service.credential(userId)
+      const connected = (pending?.needsTokenDance ?? pending?.channel !== 'custom') ? await service.credential(userId) : undefined
       const row = await executions.findOneAndUpdate({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true, expiresAt: { $gt: new Date(now()) }, $or: [{ 'recovery.retryAt': { $exists: false } }, { 'recovery.retryAt': { $lte: new Date(now()) } }] }, { $set: { state: 'queued', instanceId } }, { returnDocument: 'before' })
       if (!row) throw new TokenDanceError(409, '原任务不可恢复、已过期或正在执行。')
       try {
         const snapshot = service.cipher!.open(row.secret, jobId)
-        const task = { ...snapshot.task, routeSecrets: { ...snapshot.secrets, tokendance: connected.key } }
+        if (customKeys !== undefined) {
+          let replacements: any
+          try { replacements = JSON.parse(customKeys) } catch { throw new UniversalApiError('CREDENTIAL_MISMATCH') }
+          if (!replacements || typeof replacements !== 'object' || Array.isArray(replacements)) throw new UniversalApiError('CREDENTIAL_MISMATCH')
+          const merged = JSON.parse(snapshot.secrets.custom || '{}')
+          for (const value of Object.values(snapshot.task.body.modelRoutes || {})) {
+            if ((value as any)?.accessProvider !== 'custom') continue
+            const route = normalizeUniversalRoute(value)
+            if (!Object.hasOwn(merged, route.custom.connectionId) || !Object.hasOwn(replacements, route.custom.connectionId)) continue
+            const apiKey = universalCredential(route, customKeys)
+            merged[route.custom.connectionId] = {...merged[route.custom.connectionId], apiKey}
+          }
+          snapshot.secrets.custom = JSON.stringify(merged)
+          await executions.updateOne({_id:jobId,state:'queued'},{$set:{secret:service.cipher!.seal(snapshot,jobId)}})
+        }
+        const task = { ...snapshot.task, routeSecrets: { ...snapshot.secrets, ...(connected ? { tokendance: connected.key } : {}) } }
         return await enqueue(task)
       } catch (error) { await executions.updateOne({ _id: jobId, state: 'queued' }, { $set: { state: 'blocked' } }); throw error }
     },

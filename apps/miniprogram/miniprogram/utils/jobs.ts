@@ -45,7 +45,7 @@ export interface Job {
   refine_mode: string
   refine_mode_text: string
   provider_regions_text: string
-  recovery?: { canResume: boolean; message: string; action: string; retryAt?: string } | null
+  recovery?: { canResume: boolean; message: string; action: string; retryAt?: string; channel?: string; requestState?: string; billingStatus?: string } | null
   failure?: { message: string; billingMessage: string; stageLabel: string } | null
   referenceSelection?: { selectedCount: number; imageCount: number; mode: string } | null
   providerCalls?: unknown[]
@@ -192,7 +192,7 @@ function normalizeJobModelRoutes(input: unknown): ModelRoutes | Record<string, n
   const source = input && typeof input === 'object' ? input as Record<string, any> : {}
   const route = (role: string) => {
     const item = source[role] && typeof source[role] === 'object' ? source[role] as Record<string, any> : {}
-    return { accessProvider: String(item.accessProvider || item.access_provider || ''), modelId: String(item.modelId || item.model_id || '') }
+    return { accessProvider: String(item.accessProvider || item.access_provider || ''), modelId: String(item.modelId || item.model_id || ''), ...(item.custom && typeof item.custom === 'object' ? { custom: item.custom } : {}) }
   }
   const routes = { main: route('main'), image: route('image'), vision: route('vision') }
   return routes.main.accessProvider && routes.main.modelId && routes.image.accessProvider && routes.image.modelId && routes.vision.accessProvider && routes.vision.modelId

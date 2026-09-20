@@ -35,13 +35,13 @@ const ADMIN_BACKEND_ACTIONS = new Set([
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['adminTaskFollowup', 'adminCommunityEdit', 'adminBenchmarkPromptDecision', 'importReferences', 'evaluateJob', 'initDatabase']);
 const MAINTENANCE_ACTIONS = new Set([
-  'tokenDanceResume', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDancePaymentCreate',
+  'tokenDanceResume', 'providerResume', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDancePaymentCreate',
   'createJob',
   'refineImage',
   'prepareReferenceUpload',
   'finalizeReferenceUpload',
   'abortReferenceUpload',
-  'providerAccountCatalog',
+  'providerAccountCatalog', 'universalApiCheck',
   'optimizeInputs',
   'submitFeedback',
   'benchmarkPromptSubmission',
@@ -237,7 +237,7 @@ export function createApp({
         const session = await requireAdmin(config, auth, request);
         return relay(response, await backend.call({ action }, context, { adminAction: true, adminUserId: String(session.user.id) }));
       }
-      if (['tokenDanceStatus', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDanceCancel', 'tokenDanceDisconnect', 'tokenDanceBalance', 'tokenDancePaymentCreate', 'tokenDancePaymentStatus', 'tokenDancePayments', 'tokenDanceResume'].includes(action)) {
+      if (['tokenDanceStatus', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDanceCancel', 'tokenDanceDisconnect', 'tokenDanceBalance', 'tokenDancePaymentCreate', 'tokenDancePaymentStatus', 'tokenDancePayments', 'tokenDanceResume', 'providerResume'].includes(action)) {
         const origin = request.get('origin');
         if (origin && !config.frontendOrigins.includes(origin)) return response.status(403).json({ code: 403, error: '不受信任的请求来源。' });
         if (backend.mode !== 'node') return response.status(503).json({ code: 503, error: '观猹 TokenDance 需要 Node Core 连接服务。' });
@@ -286,7 +286,7 @@ export function createApp({
       }
 
       if (action === 'optimizeInputs') {
-        const td = request.body?.mainRoute?.accessProvider === 'tokendance';
+        const td = ['tokendance','custom'].includes(request.body?.mainRoute?.accessProvider);
         const session = td ? await requireSession(auth, request) : null;
         return relay(response, await backend.call({ ...normalizeOptimizeInputsBody(request.body), ...(td ? { userId: String(session.user.id) } : {}) }, context, { timeoutMs: 50_000, ...(td ? { authUserId: String(session.user.id) } : {}) }));
       }
@@ -311,9 +311,9 @@ export function createApp({
         action === 'prepareReferenceUpload' ||
         action === 'finalizeReferenceUpload' ||
         action === 'abortReferenceUpload' ||
-        action === 'providerAccountCatalog'
+        action === 'providerAccountCatalog' || action === 'universalApiCheck'
       ) {
-        const td = request.body?.provider === 'tokendance' || Object.values(request.body?.modelRoutes || {}).some(route => route?.accessProvider === 'tokendance');
+        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.values(request.body?.modelRoutes || {}).some(route => ['tokendance', 'custom'].includes(route?.accessProvider));
         if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const body = action === 'createJob'
@@ -336,7 +336,7 @@ export function createApp({
       }
 
       if (action === 'refineImage') {
-        const td = request.body?.provider === 'tokendance' || Object.values(request.body?.modelRoutes || {}).some(route => route?.accessProvider === 'tokendance');
+        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.values(request.body?.modelRoutes || {}).some(route => ['tokendance', 'custom'].includes(route?.accessProvider));
         if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const source = normalizeRefineSource(request.body, {
@@ -578,6 +578,7 @@ function normalizeOptimizeInputsBody(body) {
     mainRoute: {
       accessProvider: body?.mainRoute?.accessProvider,
       modelId: body?.mainRoute?.modelId,
+      ...(body?.mainRoute?.accessProvider === 'custom' ? {custom: body.mainRoute.custom} : {}),
     },
     apiKey: body?.apiKey,
     ...(body?.providerRegions ? { providerRegions: { minimax: body.providerRegions.minimax } } : {}),

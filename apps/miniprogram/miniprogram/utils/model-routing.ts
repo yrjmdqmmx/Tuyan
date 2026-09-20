@@ -1,8 +1,9 @@
+import type { UniversalCustomConfig } from './universal-api'
 import { modelAvailableInRegion, normalizeProviderRegions, selectRegionApiKeys, type ProviderRegions } from './provider-regions'
 import type { ModelRegistry, ModelRole } from './model-registry'
 
 export const MODEL_ROUTE_ROLES: ModelRole[] = ['main', 'image', 'vision']
-export interface ModelRoute { accessProvider: string; modelId: string }
+export interface ModelRoute { accessProvider: string; modelId: string; custom?: UniversalCustomConfig }
 export type ModelRoutes = Record<ModelRole, ModelRoute>
 
 export function providerDefaultRoutes(provider: string, registry: ModelRegistry | { providers?: Record<string, { defaults?: Record<string, string> }> } | null): ModelRoutes {

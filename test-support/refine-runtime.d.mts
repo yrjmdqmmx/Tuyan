@@ -14,7 +14,8 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
   legacy: {
     drainJobAdmission(): Promise<void>;
     preparePlanningReferences(body: any, proposed: any[], uploaded?: any[]): Promise<{references: any[]; images: any[]; visual: boolean; limit: number; omitted: {duplicate: number; unavailable: number; budget: number}}>;
-    assertVisionInputBudget(provider: string, model: string, images: any[]): void;
+    assertVisionInputBudget(provider: string, model: string, images: any[], custom?: import('../packages/api/src/universal-api.js').UniversalCustomConfig): void;
+    configureUniversalRuntime(runtime: ReturnType<typeof import('../apps/paperbanana-api/src/universal-adapters.js').createUniversalRuntime>): void;
     configureRuntimeFetch(fetcher: (...args: any[]) => Promise<Response>): void;
     configureProviderWorkflow(workflow: ReturnType<typeof import('../apps/paperbanana-api/src/provider-workflow.js').createProviderWorkflow>): void;
     callTextModel(...args: any[]): Promise<string>;

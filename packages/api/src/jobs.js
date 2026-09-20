@@ -599,7 +599,7 @@ function normalizeModelRoutes(value) {
     if (!route || typeof route !== 'object' || Array.isArray(route)) continue;
     const accessProvider = typeof route.accessProvider === 'string' ? route.accessProvider.trim() : '';
     const modelId = typeof route.modelId === 'string' ? route.modelId.trim() : '';
-    if (accessProvider && modelId) routes[role] = { accessProvider, modelId };
+    if (accessProvider && modelId) routes[role] = { accessProvider, modelId, ...(accessProvider === 'custom' && route.custom ? {custom:route.custom} : {}) };
   }
   return Object.keys(routes).length ? routes : undefined;
 }
@@ -709,4 +709,9 @@ function normalizeFeedback(item = {}) {
     status: item.status || 'new',
     created_at: item.created_at || item.createdAt,
   };
+}
+
+export async function universalApiCheckRequest(apiBase, health, payload) {
+  if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('当前后端不支持通用 API 接入。');
+  return fetchJson(lafEndpoint(apiBase), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'universalApiCheck',route:payload.route,check:payload.check,apiKeys:payload.apiKeys})});
 }

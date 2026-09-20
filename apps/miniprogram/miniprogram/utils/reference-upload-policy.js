@@ -10,6 +10,7 @@ exports.referenceBytesLabel = referenceBytesLabel;
 exports.referencePolicyHint = referencePolicyHint;
 exports.referenceProcessingHint = referenceProcessingHint;
 exports.referenceUploadTimeout = referenceUploadTimeout;
+exports.routeReferencePolicy = routeReferencePolicy;
 // Generated from packages/api/src/reference-upload.ts.
 // Canonical upload policy. Run scripts/sync-reference-upload.mjs after editing.
 // Bytes are exact; official MB ceilings use decimal bytes, platform MiB uses 1024².
@@ -122,7 +123,7 @@ function activeReferenceUploadPolicy(contract, route, workflow = 'generation') {
         ...exports.REFERENCE_UPLOAD_PLATFORM, maxCount: 3, maxBytes: 5 * 1024 * 1024, maxTotalBytes: 15 * 1024 * 1024,
         maxPixels: 20000000,
     };
-    const submission = referenceSubmissionPolicy((route === null || route === void 0 ? void 0 : route.accessProvider) || '', (route === null || route === void 0 ? void 0 : route.modelId) || '', workflow);
+    const submission = routeReferencePolicy(route, workflow);
     const maxCount = Math.min(platform.maxCount, submission.maxCount);
     return { platform, submission, maxCount, modelLabel: (route === null || route === void 0 ? void 0 : route.modelId) || '未选择模型', workflow, version: (contract === null || contract === void 0 ? void 0 : contract.version) || 1 };
 }
@@ -167,4 +168,9 @@ function referenceProcessingHint(policy) {
 function referenceUploadTimeout(expiresAt, now = Date.now()) {
     const deadline = Number.isSafeInteger(expiresAt) && Number(expiresAt) > 0 ? Number(expiresAt) : now + 900000;
     return Math.max(0, Math.min(2147483647, deadline - now - 5000));
+}
+function routeReferencePolicy(route, workflow = 'generation') {
+    return (route === null || route === void 0 ? void 0 : route.accessProvider) === 'custom'
+        ? { ...referenceSubmissionPolicy('custom', route.modelId, workflow), maxCount: 0, note: '通用 API 配置与提交请使用网页版；小程序支持查看和恢复已有任务。' }
+        : referenceSubmissionPolicy((route === null || route === void 0 ? void 0 : route.accessProvider) || '', (route === null || route === void 0 ? void 0 : route.modelId) || '', workflow);
 }

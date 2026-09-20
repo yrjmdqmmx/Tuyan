@@ -25,7 +25,7 @@ export const REFERENCE_UPLOAD_PLATFORM = {
 export type ReferenceSubmissionPolicy = {
   maxCount: number; maxBytes: number; maxTotalBytes: number; maxDimension: number; maxPixels: number;
   minDimension: number; maxAspectRatio: number; requestMaxBytes: number;
-  mimeTypes: string[]; status: 'documented' | 'partial' | 'unconfirmed'; source: string; note: string;
+  mimeTypes: string[]; status: 'documented' | 'partial' | 'unconfirmed' | 'user-declared'; source: string; note: string;
 }
 export function referenceSubmissionPolicy(provider: string, model: string, workflow = 'generation'): ReferenceSubmissionPolicy {
   const p: ReferenceSubmissionPolicy = {
@@ -114,7 +114,7 @@ export function activeReferenceUploadPolicy(contract: any, route: any, workflow 
     ...REFERENCE_UPLOAD_PLATFORM, maxCount: 3, maxBytes: 5 * 1024 * 1024, maxTotalBytes: 15 * 1024 * 1024,
     maxPixels: 20000000,
   }
-  const submission = referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '', workflow)
+  const submission = routeReferencePolicy(route, workflow)
   const maxCount = Math.min(platform.maxCount, submission.maxCount)
   return { platform, submission, maxCount, modelLabel: route?.modelId || '未选择模型', workflow, version: contract?.version || 1 }
 }
@@ -155,6 +155,12 @@ export function referenceUploadTimeout(expiresAt?: number, now = Date.now()) {
   return Math.max(0, Math.min(2147483647, deadline - now - 5000))
 }
 
+export function routeReferencePolicy(route: any, workflow = 'generation'): ReferenceSubmissionPolicy {
+  return route?.accessProvider === 'custom'
+    ? universalReferencePolicy(route)
+    : referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '', workflow)
+}
+
 // END SHARED REFERENCE UPLOAD POLICY
 
 declare const require: any
@@ -184,7 +190,7 @@ function isProviderEgressUnavailable(error: any): boolean {
   return error?.code === providerEgressUnavailableCode
 }
 
-type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'tokendance'
+type Provider = 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'tokendance' | 'custom'
 type JobStatus = 'queued' | 'running' | 'succeeded' | 'failed'
 type OutputFormat = 'png' | 'svg'
 type TaskName = 'diagram' | 'plot'
@@ -194,7 +200,7 @@ type ReferenceImageMode = 'auto' | 'main_model' | 'vision_model'
 type ReferenceImageModeUsed = 'none' | 'main_model' | 'vision_model'
 type ModelCapabilityStatus = 'supported' | 'unsupported' | 'unknown'
 type ModelRole = 'main' | 'image' | 'vision'
-type ModelRoute = { accessProvider: Provider; modelId: string }
+type ModelRoute = { accessProvider: Provider; modelId: string; custom?: UniversalRoute['custom'] }
 type ModelRoutes = { main: ModelRoute; image: ModelRoute; vision: ModelRoute }
 type ModelRoutingMode = 'single' | 'mixed'
 type ModelRoutingSource = 'explicit' | 'legacy-derived'
@@ -389,7 +395,7 @@ export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBod
 
 const routeContractVersion = 1 as const
 const modelIdMaxLength = 120
-const recognizedRouteProviders = new Set<Provider>(['openrouter', 'gemini', 'openai', 'bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'])
+const recognizedRouteProviders = new Set<Provider>(['openrouter', 'gemini', 'openai', 'bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance', 'custom'])
 
 function modelRouteError(message: string, businessCode = 'MODEL_ROUTE_INVALID') {
   const error: any = new Error(message)
@@ -402,6 +408,7 @@ function normalizeModelRoute(value: any, role: ModelRole): ModelRoute {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw modelRouteError(`modelRoutes.${role} must be an object`)
   }
+  if (value.accessProvider === 'custom') return normalizeUniversalRoute(value)
   const accessProvider = String(value.accessProvider || '').trim() as Provider
   const rawModelId = typeof value.modelId === 'string' ? value.modelId.trim() : ''
   if (!recognizedRouteProviders.has(accessProvider)) {
@@ -462,7 +469,7 @@ export function resolveModelRouting(body: Record<string, any>): ModelRoutingMeta
   }
 
   checkedModelRegions(body.providerRegions, modelRoutes)
-  const routingMode: ModelRoutingMode = new Set(Object.values(modelRoutes).map((route) => route.accessProvider)).size === 1
+  const routingMode: ModelRoutingMode = new Set(Object.values(modelRoutes).map((route) => route.accessProvider === 'custom' ? ['custom',route.custom?.baseUrl,route.custom?.protocol,route.custom?.auth].join('|') : route.accessProvider)).size === 1
     ? 'single'
     : 'mixed'
   if (body.configurationMode === 'simple' && routingMode === 'mixed') {
@@ -512,7 +519,7 @@ export async function requiresTokenDanceCredential(body: Record<string, any>) {
   const image = routes.image
   let refineMode = 'none'
   if (body.action === 'refineImage' || normalizeTaskName(body.taskName) === 'plot') {
-    const registry = await providerModelRegistry(image.accessProvider)
+    const registry = await registryForModelRoute(image)
     refineMode = registryImageRefineCapability(image.accessProvider, registry, image.modelId).mode
   }
   const normalized = { ...body, ...routing, refineMode, imageRefineMode: refineMode,
@@ -530,8 +537,16 @@ export function selectRequiredRouteSecrets(
   const selected: RouteSecrets = {}
   for (const role of roles) {
     const provider = routes[role].accessProvider
-    const secret = selectApiKey(provider, apiKeys)
-    if (secret) selected[provider] = secret
+    if (provider === 'custom') {
+      const route = normalizeUniversalRoute(routes[role])
+      const apiKey = universalCredential(route, apiKeys.custom || '')
+      const scoped = selected.custom ? JSON.parse(selected.custom) : {}
+      scoped[route.custom.connectionId] = {baseUrl: route.custom.baseUrl, protocol: route.custom.protocol, auth: route.custom.auth, apiKey}
+      selected.custom = JSON.stringify(scoped)
+    } else {
+      const secret = selectApiKey(provider, apiKeys)
+      if (secret) selected[provider] = secret
+    }
   }
   return selected
 }
@@ -976,6 +991,7 @@ type TextRequestPolicy = {
   region?: 'cn' | 'global'
   attempts?: number
   signal?: AbortSignal
+  custom?: UniversalRoute['custom']
 }
 
 type ResvgWasmModule = {
@@ -2097,7 +2113,7 @@ export async function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, oper
 }
 export function isLocalInputFailure(error: any) {
   return !error?.uncertain && (error?.name === 'ReferenceUploadValidationError'
-    || error?.name === 'TokenDanceError' && error?.requestState === 'not_sent' && error?.status === 400)
+    || ['TokenDanceError', 'UniversalApiError'].includes(error?.name) && error?.requestState === 'not_sent' && error?.status === 400)
 }
 export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknownCall = false) {
   const status = Number(error?.status || error?.statusCode || 0)
@@ -2125,7 +2141,8 @@ export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknow
     : local || error?.requestState === 'not_sent' ? 'not_sent'
     : error?.requestState === 'rejected' || status >= 400 && status < 500 ? 'rejected' : 'unknown'
   const catalogPreflight = error?.name === 'TokenDanceError' && error?.catalogFailure === true && action === 'retry_request' && requestState === 'not_sent'
-  const reason = catalogPreflight
+  const universal = error?.name === 'UniversalApiError'
+  const reason = universal ? String(error.reason || copy[0]) : catalogPreflight
     ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 700)
     : action === 'retry_request' && requestState === 'not_sent' ? '模型目录暂时无法读取，尚未发起本步骤的模型请求。' : local && /[\u4e00-\u9fff]/u.test(error?.message || '')
     ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 500) : copy[0]
@@ -2134,7 +2151,7 @@ export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknow
     : billingStatus === 'prior_calls' ? '此前已有成功调用，已保存成功步骤；费用以渠道账单为准。'
     : billingStatus === 'unknown' ? '请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。'
     : '渠道已拒绝本次请求；实际费用以渠道账单为准。'
-  const suggestion = catalogPreflight ? '目录恢复后可继续原任务，已成功的步骤会复用；也可主动选择其他模型。' : copy[1]
+  const suggestion = universal ? String(error.suggestion || copy[1]) : catalogPreflight ? '目录恢复后可继续原任务，已成功的步骤会复用；也可主动选择其他模型。' : copy[1]
   return { stage, stageLabel: JOB_FAILURE_STAGES[stage], category, code: 'MODEL_' + category.toUpperCase(),
     reason, suggestion, requestState, billingStatus, billingMessage,
     message: `${JOB_FAILURE_STAGES[stage]}失败：${reason} ${suggestion}` }
@@ -2164,6 +2181,147 @@ export function relevantReferenceSelection<T extends { id: string; imageObjectKe
       if (ids.has(row.id) || contributions.has(contribution)) return false
       ids.add(row.id); contributions.add(contribution); return true
     }).slice(0, Math.max(0, limit)).map((row: any) => byId.get(row.id)!)
+}
+
+/** Versioned, user-declared BYOK contract. No model-name or vendor-name inference. */
+export const UNIVERSAL_PROTOCOLS = ['openai-chat', 'openai-responses', 'openai-images', 'anthropic-messages', 'gemini-generate-content', 'gemini-interactions', 'dashscope-multimodal'] as const
+export type UniversalProtocol = typeof UNIVERSAL_PROTOCOLS[number]
+export type UniversalAuth = 'bearer' | 'x-api-key' | 'x-goog-api-key'
+export type UniversalRequestState = 'not_sent' | 'rejected' | 'unknown'
+export type UniversalErrorCode = 'CONFIG_INVALID' | 'ENDPOINT_UNSAFE' | 'CREDENTIAL_MISMATCH' | 'CAPABILITY_UNSUPPORTED' | 'INPUT_LIMIT' | 'IMAGE_INVALID' | 'OUTPUT_SIZE_UNSUPPORTED' | 'UPSTREAM_REJECTED' | 'RESULT_UNKNOWN' | 'ASYNC_UNSUPPORTED' | 'RESPONSE_INVALID' | 'RESPONSE_LIMIT' | 'CATALOG_UNSUPPORTED' | 'DNS_RESOLUTION_FAILED' | 'NETWORK_ERROR' | 'REQUEST_TIMEOUT' | 'UPSTREAM_FAILURE' | 'ENDPOINT_NOT_FOUND' | 'MODEL_NOT_FOUND'
+const universalErrorMessages: Record<UniversalErrorCode, [string, string, string]> = {
+  DNS_RESOLUTION_FAILED: ['network', '无法解析 API 地址，尚未发送模型请求。', '请检查域名拼写和 DNS 服务，再重新检查连接。'],
+  NETWORK_ERROR: ['network', '模型请求发送过程中连接中断，结果尚未确认。', '请检查连接，并先到渠道核对本次请求与费用；系统不会自动重发。'],
+  REQUEST_TIMEOUT: ['timeout', '连接检查或模型请求超时。', '若请求状态为未发送，可重新检查连接；若结果未知，请先到渠道核对请求与费用。'],
+  UPSTREAM_FAILURE: ['provider', '渠道服务异常，已发送请求的结果尚未确认。', '请先到渠道核对本次请求与费用，待渠道恢复后再决定是否手动重试。'],
+  ENDPOINT_NOT_FOUND: ['configuration', '渠道未找到当前操作地址，或该地址不提供此模型。', '请核对 API 基础地址、协议和准确模型 ID。'],
+  MODEL_NOT_FOUND: ['configuration', '渠道未找到当前模型，或此账号没有该模型权益。', '请从当前账号目录核对准确模型 ID 与访问权益。'],
+  CONFIG_INVALID: ['configuration', '通用 API 配置不完整或字段无效。', '请明确填写协议、准确模型 ID、能力和输入输出限额。'],
+  ENDPOINT_UNSAFE: ['security', 'API 地址未通过公网 HTTPS 安全校验。', '请使用公网 HTTPS 443 基础地址；不要填写内网、完整操作端点或重定向地址。'],
+  CREDENTIAL_MISMATCH: ['authentication', '此密钥未绑定当前连接地址、协议和鉴权方式。', '请在当前连接中重新保存密钥。'],
+  CAPABILITY_UNSUPPORTED: ['capability', '此连接未声明或当前协议不支持本步骤所需能力。', '请选择支持该步骤的协议与模型，核对文字、识图、生图或编辑能力。'],
+  INPUT_LIMIT: ['input', '本次输入超过已声明的数量、大小、尺寸或请求额度。', '请减少输入或图片，或核对当前型号的实际限额。'],
+  IMAGE_INVALID: ['input', '图片内容、格式或尺寸无效。', '请重新导出 PNG、JPEG 或 WebP 图片后再试。'],
+  OUTPUT_SIZE_UNSUPPORTED: ['capability', '当前连接未声明所选分辨率和比例的输出尺寸。', '请补充准确的尺寸映射，或选择已声明的尺寸。'],
+  UPSTREAM_REJECTED: ['provider', '模型渠道拒绝了本次请求。', '请核对模型 ID、账号权益、额度与协议配置后再手动重试。'],
+  RESULT_UNKNOWN: ['provider', '请求已发出，但结果未确认，可能已产生费用。', '请先到渠道核对请求和费用；系统不会自动重发。'],
+  ASYNC_UNSUPPORTED: ['provider', '渠道返回异步任务或未完成结果，当前同步模式无法确认产物。', '请到渠道核对任务和费用；系统不会重新提交任务。'],
+  RESPONSE_INVALID: ['provider', '渠道响应不符合当前协议的完整产物格式。', '请核对协议与兼容选项，并到渠道确认结果和费用。'],
+  RESPONSE_LIMIT: ['provider', '渠道响应或产物超过已声明的安全额度。', '请核对输出限额，并到渠道确认已有结果；不要直接重复提交。'],
+  CATALOG_UNSUPPORTED: ['capability', '该协议暂未提供可安全使用的只读目录检查。', '可手动填写准确模型 ID；配置通过不代表模型调用已验证。'],
+}
+export class UniversalApiError extends Error {
+  readonly category: string; readonly reason: string; readonly suggestion: string; readonly uncertain: boolean; readonly status: number; readonly recoveryAction: string; readonly publicReason: string
+  constructor(readonly code: UniversalErrorCode, readonly requestState: UniversalRequestState = 'not_sent', status?: number) {
+    const [category, reason, suggestion] = universalErrorMessages[code]
+    super(reason); this.name = 'UniversalApiError'; this.category = category; this.reason = reason; this.suggestion = suggestion; this.uncertain = requestState === 'unknown'
+    this.status = status ?? (code === 'DNS_RESOLUTION_FAILED' ? 503 : code === 'REQUEST_TIMEOUT' ? 504 : requestState === 'not_sent' ? 400 : 502)
+    this.recoveryAction = requestState === 'unknown' ? 'reconcile_provider' : status === 401 || status === 403 ? 'reauthorize_api_key' : status === 402 ? 'top_up_balance' : status === 429 ? 'rate_limit' : 'review_configuration'
+    if (status === 401 || status === 403) { this.category = 'authentication'; this.reason = '渠道拒绝了密钥或当前模型的访问权限。'; this.suggestion = '请更新当前连接密钥，并核对账号中的模型访问权益。' }
+    if (status === 402) { this.category = 'billing'; this.reason = '渠道余额或计费状态不允许本次请求。'; this.suggestion = '请在渠道核对余额与计费状态后手动重试。' }
+    if (status === 429) { this.category = 'rate_limit'; this.reason = '渠道请求频率或当前额度已达到上限。'; this.suggestion = '请在渠道核对频率与额度，稍后手动重试。' }
+    this.message = this.reason; this.publicReason = this.reason
+  }
+  toJSON() { return { code: this.code, message: this.message, category: this.category, reason: this.reason, suggestion: this.suggestion, requestState: this.requestState, uncertain: this.uncertain, recoveryAction: this.recoveryAction, ...(this.status ? { status: this.status } : {}) } }
+}
+export interface UniversalInputLimits {
+  maxCount: number; maxBytes: number; maxTotalBytes: number; maxDimension: number; maxPixels: number; requestMaxBytes: number; mimeTypes: string[]
+}
+export interface UniversalOutputLimits { maxBytes: number; maxDimension: number; maxPixels: number; mimeTypes: string[] }
+export interface UniversalOutputSize { resolution: string; aspectRatio: string; value: string }
+export interface UniversalCustomConfig {
+  version: 1; connectionId: string; protocol: UniversalProtocol; baseUrl: string; auth: UniversalAuth
+  compatibility?: 'standard' | 'openrouter-image' | 'ark-images'
+  capabilities: { text: boolean; vision: boolean; imageGeneration: boolean; imageEditing: boolean }
+  inputLimits: UniversalInputLimits; outputLimits: UniversalOutputLimits; outputSizes?: UniversalOutputSize[]
+}
+export interface UniversalRoute { accessProvider: 'custom'; modelId: string; custom: UniversalCustomConfig }
+export const UNIVERSAL_PLATFORM_LIMITS = { maxCount: 8, maxBytes: 20 * 1024 * 1024, maxTotalBytes: 80 * 1024 * 1024, maxDimension: 16384, maxPixels: 32000000, requestMaxBytes: 120 * 1024 * 1024 }
+const universalMimeTypes = ['image/png', 'image/jpeg', 'image/webp']
+function universalRecord(value: unknown): value is Record<string, any> { return value !== null && typeof value === 'object' && !Array.isArray(value) }
+function universalString(value: unknown, max = 256): value is string { return typeof value === 'string' && value.length > 0 && value.length <= max && value.trim() === value && !/[\x00-\x1f\x7f]/.test(value) }
+export function universalDefaultAuth(protocol: UniversalProtocol): UniversalAuth { return protocol === 'anthropic-messages' ? 'x-api-key' : protocol.startsWith('gemini-') ? 'x-goog-api-key' : 'bearer' }
+export function normalizeUniversalBaseUrl(value: unknown, protocol: UniversalProtocol): string {
+  if (!UNIVERSAL_PROTOCOLS.includes(protocol) || !universalString(value, 2048) || /[^\x21-\x7e]|\\|%/u.test(value)) throw new UniversalApiError('ENDPOINT_UNSAFE')
+  let url: URL
+  try { url = new URL(value) } catch { throw new UniversalApiError('ENDPOINT_UNSAFE') }
+  const host = url.hostname.toLowerCase()
+  if (url.protocol !== 'https:' || url.port && url.port !== '443' || url.username || url.password || url.search || url.hash
+    || !host || host.endsWith('.') || host === 'localhost' || /\.(localhost|local|internal|test|invalid)$/.test(host)
+    || /\/(?:\.\.?)(?:\/|$)/.test(value) || /\/{2}/.test(url.pathname)) throw new UniversalApiError('ENDPOINT_UNSAFE')
+  const path = url.pathname.replace(/\/+$/, '')
+  if (/(?:\/chat\/completions|\/responses|\/images\/(?:generations|edits)|\/messages|\/interactions|:generateContent|\/multimodal-generation\/generation|\/models)$/i.test(path)) throw new UniversalApiError('ENDPOINT_UNSAFE')
+  const prefix = protocol.startsWith('gemini-') ? '/v1beta' : protocol === 'dashscope-multimodal' ? '/api/v1' : '/v1'
+  return url.origin + (path || prefix)
+}
+function universalPositive(value: unknown, cap: number, zero = false): number {
+  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < (zero ? 0 : 1)) throw new UniversalApiError('CONFIG_INVALID')
+  return Math.min(value, cap)
+}
+function universalMimes(value: unknown): string[] {
+  if (!Array.isArray(value) || !value.length || value.some(x => !universalMimeTypes.includes(x)) || new Set(value).size !== value.length) throw new UniversalApiError('CONFIG_INVALID')
+  return [...value]
+}
+export function normalizeUniversalRoute(value: unknown): UniversalRoute {
+  if (!universalRecord(value) || value.accessProvider !== 'custom' || !universalString(value.modelId) || /(?:^|\/)\.\.?(?:\/|$)|\\/.test(value.modelId) || !universalRecord(value.custom)) throw new UniversalApiError('CONFIG_INVALID')
+  const c = value.custom
+  if (c.version !== 1 || !universalString(c.connectionId, 80) || !/^[a-zA-Z0-9_-]+$/.test(c.connectionId) || !UNIVERSAL_PROTOCOLS.includes(c.protocol)) throw new UniversalApiError('CONFIG_INVALID')
+  const auth = c.auth === undefined ? universalDefaultAuth(c.protocol) : c.auth
+  if (!['bearer', 'x-api-key', 'x-goog-api-key'].includes(auth)) throw new UniversalApiError('CONFIG_INVALID')
+  const compatibility = c.compatibility === undefined ? 'standard' : c.compatibility
+  if (!['standard', 'openrouter-image', 'ark-images'].includes(compatibility)
+    || compatibility === 'openrouter-image' && c.protocol !== 'openai-chat'
+    || compatibility === 'ark-images' && c.protocol !== 'openai-images') throw new UniversalApiError('CONFIG_INVALID')
+  if (!universalRecord(c.capabilities) || ['text', 'vision', 'imageGeneration', 'imageEditing'].some(k => typeof c.capabilities[k] !== 'boolean')) throw new UniversalApiError('CONFIG_INVALID')
+  const capabilities = { text: c.capabilities.text, vision: c.capabilities.vision, imageGeneration: c.capabilities.imageGeneration, imageEditing: c.capabilities.imageEditing }
+  if (!Object.values(capabilities).some(Boolean) || capabilities.vision && !capabilities.text) throw new UniversalApiError('CONFIG_INVALID')
+  const textOnly = c.protocol === 'anthropic-messages' || c.protocol === 'openai-responses' || c.protocol === 'openai-chat' && compatibility !== 'openrouter-image'
+  if (textOnly && (capabilities.imageGeneration || capabilities.imageEditing) || c.protocol === 'openai-images' && (capabilities.text || capabilities.vision)) throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
+  if (!universalRecord(c.inputLimits) || !universalRecord(c.outputLimits)) throw new UniversalApiError('CONFIG_INVALID')
+  const i = c.inputLimits, o = c.outputLimits, caps = UNIVERSAL_PLATFORM_LIMITS
+  const inputLimits: UniversalInputLimits = {
+    maxCount: universalPositive(i.maxCount, caps.maxCount, true), maxBytes: universalPositive(i.maxBytes, caps.maxBytes), maxTotalBytes: universalPositive(i.maxTotalBytes, caps.maxTotalBytes),
+    maxDimension: universalPositive(i.maxDimension, caps.maxDimension), maxPixels: universalPositive(i.maxPixels, caps.maxPixels), requestMaxBytes: universalPositive(i.requestMaxBytes, caps.requestMaxBytes), mimeTypes: universalMimes(i.mimeTypes),
+  }
+  const outputLimits: UniversalOutputLimits = { maxBytes: universalPositive(o.maxBytes, caps.maxBytes), maxDimension: universalPositive(o.maxDimension, caps.maxDimension), maxPixels: universalPositive(o.maxPixels, caps.maxPixels), mimeTypes: universalMimes(o.mimeTypes) }
+  if ((capabilities.vision || capabilities.imageEditing) && inputLimits.maxCount < 1) throw new UniversalApiError('CONFIG_INVALID')
+  let outputSizes: UniversalOutputSize[] | undefined
+  if (c.outputSizes !== undefined) {
+    if (!Array.isArray(c.outputSizes) || c.outputSizes.length > 256) throw new UniversalApiError('CONFIG_INVALID')
+    outputSizes = c.outputSizes.map((s: any) => {
+      if (!universalRecord(s) || !universalString(s.resolution, 24) || !universalString(s.aspectRatio, 24) || !universalString(s.value, 40)
+        || !/^(?:auto|\d+(?:\.\d+)?:\d+(?:\.\d+)?)$/.test(s.aspectRatio)
+        || !/^[a-zA-Z0-9.*_-]+$/.test(s.value)) throw new UniversalApiError('CONFIG_INVALID')
+      return { resolution: s.resolution, aspectRatio: s.aspectRatio, value: s.value }
+    })
+    if (new Set(outputSizes!.map(x => `${x.resolution}|${x.aspectRatio}`)).size !== outputSizes!.length) throw new UniversalApiError('CONFIG_INVALID')
+  }
+  if ((capabilities.imageGeneration || capabilities.imageEditing) && !outputSizes?.length) throw new UniversalApiError('CONFIG_INVALID')
+  return { accessProvider: 'custom', modelId: value.modelId, custom: { version: 1, connectionId: c.connectionId, protocol: c.protocol, baseUrl: normalizeUniversalBaseUrl(c.baseUrl, c.protocol), auth, compatibility, capabilities, inputLimits, outputLimits, ...(outputSizes ? { outputSizes } : {}) } }
+}
+/** Credential envelopes are request-only; never persist them with task records. */
+export function universalCredential(routeValue: unknown, serializedCustomKeys: unknown): string {
+  const route = normalizeUniversalRoute(routeValue), c = route.custom
+  let keys: unknown
+  try { keys = typeof serializedCustomKeys === 'string' && serializedCustomKeys.length <= 256 * 1024 ? JSON.parse(serializedCustomKeys) : null } catch { throw new UniversalApiError('CREDENTIAL_MISMATCH') }
+  const entry = universalRecord(keys) && Object.prototype.hasOwnProperty.call(keys, c.connectionId) ? keys[c.connectionId] : null
+  if (!universalRecord(entry) || entry.protocol !== c.protocol || (entry.auth ?? universalDefaultAuth(c.protocol)) !== c.auth
+    || !universalString(entry.apiKey, 16384) || /[^\x21-\x7e]/.test(entry.apiKey)) throw new UniversalApiError('CREDENTIAL_MISMATCH')
+  try { if (normalizeUniversalBaseUrl(entry.baseUrl, c.protocol) !== c.baseUrl) throw new Error() } catch { throw new UniversalApiError('CREDENTIAL_MISMATCH') }
+  return entry.apiKey
+}
+export function universalReferencePolicy(routeValue: unknown) {
+  const c = normalizeUniversalRoute(routeValue).custom
+  return { ...c.inputLimits, maxCount: c.capabilities.vision || c.capabilities.imageEditing ? c.inputLimits.maxCount : 0, minDimension: 1, maxAspectRatio: 200, status: 'user-declared' as const, source: 'user', note: '用户明确声明的型号限额，已受平台上限约束；未验证真实模型调用。' }
+}
+export function universalModelEntry(routeValue: unknown) {
+  const route = normalizeUniversalRoute(routeValue), c = route.custom, image = c.capabilities.imageGeneration || c.capabilities.imageEditing
+  const roles = [...(c.capabilities.text ? ['main'] : []), ...(c.capabilities.vision ? ['vision'] : []), ...(image ? ['image'] : [])]
+  const protocol = c.protocol === 'openai-chat' ? c.compatibility === 'openrouter-image' ? 'openrouter-images' : 'openai-chat-completions' : c.protocol === 'dashscope-multimodal' ? 'bailian-multimodal-generation' : c.protocol
+  return { id: route.modelId, label: route.modelId, vendor: '自定义连接', lifecycle: 'stable', releaseKind: '', lifecycleSourceUrl: '', recommended: false, requiresEntitlement: true, entitlement: '请自行核对该连接中的模型权益与计费。',
+    inputModalities: c.capabilities.vision || c.capabilities.imageEditing ? ['text', 'image'] : ['text'], outputModalities: [...(c.capabilities.text ? ['text'] : []), ...(image ? ['image'] : [])],
+    verified: false, verificationState: 'user-declared', selectable: true, releasedAt: null, expirationDate: null, earliestRetirementDate: null, roles, protocol, roleProtocols: Object.fromEntries(roles.map(role => [role, protocol])), officialSourceUrl: '', availabilityNotes: '配置已校验；能力与限额来自用户声明，尚未验证真实调用。',
+    capabilities: { referenceImages: c.capabilities.vision || c.capabilities.imageEditing, maxReferenceImages: c.capabilities.vision || c.capabilities.imageEditing ? c.inputLimits.maxCount : 0, imageGeneration: c.capabilities.imageGeneration, imageEditing: c.capabilities.imageEditing, imageEditMode: c.capabilities.imageEditing ? 'direct-edit' : 'none', resolutions: [...new Set(c.outputSizes?.map(x => x.resolution) || [])], aspectRatios: [...new Set(c.outputSizes?.map(x => x.aspectRatio) || [])], refineResolutions: c.capabilities.imageEditing ? [...new Set(c.outputSizes?.map(x => x.resolution) || [])] : [], refineAspectRatios: c.capabilities.imageEditing ? [...new Set(c.outputSizes?.map(x => x.aspectRatio) || [])] : [], aspectRatiosByResolution: Object.fromEntries([...new Set(c.outputSizes?.map(x => x.resolution) || [])].map(resolution => [resolution, c.outputSizes!.filter(x => x.resolution === resolution).map(x => x.aspectRatio)])), refineAspectRatiosByResolution: c.capabilities.imageEditing ? Object.fromEntries([...new Set(c.outputSizes?.map(x => x.resolution) || [])].map(resolution => [resolution, c.outputSizes!.filter(x => x.resolution === resolution).map(x => x.aspectRatio)])) : {}, outputFormats: ['png'] } }
 }
 
 // Live metadata is untrusted. Never derive invocation protocols from model names.
@@ -3331,6 +3489,60 @@ const fallbackReferences: RetrievedReference[] = [
   },
 ]
 
+type UniversalRuntimeHooks = {
+  text(route: UniversalRoute, apiKey: string, input: any): Promise<string>
+  image(route: UniversalRoute, apiKey: string, input: any): Promise<{base64: string; mimeType: string}>
+  checkConfig(route: UniversalRoute): Promise<any>
+  catalog(route: UniversalRoute, apiKey: string): Promise<any>
+}
+let universalRuntime: UniversalRuntimeHooks | undefined
+export function configureUniversalRuntime(runtime?: UniversalRuntimeHooks) { universalRuntime = runtime }
+function requiredUniversalRuntime() {
+  if (!universalRuntime) throw new UniversalApiError('CONFIG_INVALID', 'not_sent', 503)
+  return universalRuntime
+}
+function customRouteRegistry(route: ModelRoute): ProviderModelRegistry {
+  const normalized = normalizeUniversalRoute(route)
+  return {accessKind: 'direct', routeContractVersion: 1, accountCatalogRequired: false,
+    defaults: {main: route.modelId, image: route.modelId, vision: route.modelId}, models: [universalModelEntry(normalized) as unknown as ModelRegistryEntry]}
+}
+function registryForRoute(route: ModelRoute, registries: Map<Provider, ProviderModelRegistry>) {
+  return route.accessProvider === 'custom' ? customRouteRegistry(route) : registries.get(route.accessProvider)
+}
+async function registryForModelRoute(route: ModelRoute) {
+  return route.accessProvider === 'custom' ? customRouteRegistry(route) : providerModelRegistry(route.accessProvider)
+}
+function assertRouteImageSize(route: ModelRoute, ratio: string, resolution: string, editing = false) {
+  if (route.accessProvider !== 'custom') return resolveModelImageSize(route.accessProvider, route.modelId, ratio, resolution, editing)
+  const c = normalizeUniversalRoute(route).custom
+  if (!(editing ? c.capabilities.imageEditing : c.capabilities.imageGeneration)) throw new UniversalApiError('CAPABILITY_UNSUPPORTED', 'not_sent', 400)
+  if (!c.outputSizes?.some(x => x.resolution === resolution && x.aspectRatio === ratio)) throw new UniversalApiError('OUTPUT_SIZE_UNSUPPORTED', 'not_sent', 400)
+}
+async function universalInputImages(images: VisionImageInput[]) {
+  return Promise.all(images.map(async image => ({base64: await visionImageBase64(image, '通用接入参考图'), mimeType: image.mimeType, width: image.width, height: image.height})))
+}
+async function universalText(routeValue: ModelRoute, apiKey: string, systemPrompt: string, prompt: string, images: VisionImageInput[], signal?: AbortSignal) {
+  const route = normalizeUniversalRoute(routeValue)
+  assertVisionInputBudget('custom', route.modelId, images, route.custom)
+  const text = await requiredUniversalRuntime().text(route, apiKey, {systemPrompt, prompt, images: await universalInputImages(images), signal})
+  await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
+  return text
+}
+async function universalImage(routeValue: ModelRoute, apiKey: string, prompt: string, aspectRatio: string, source: string, imageSize: string) {
+  const route = normalizeUniversalRoute(routeValue)
+  assertRouteImageSize(route, aspectRatio, imageSize, Boolean(source))
+  const sourceImages = source ? await universalInputImages([{filename: 'source', mimeType: inferMimeTypeFromUrl(source), url: source}]) : []
+  const output = await requiredUniversalRuntime().image(route, apiKey, {prompt, sourceImages, aspectRatio, imageSize})
+  await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
+  return output.mimeType === 'image/png' ? output.base64 : (await sharp(Buffer.from(output.base64, 'base64'), {limitInputPixels: route.custom.outputLimits.maxPixels}).png().toBuffer()).toString('base64')
+}
+async function universalApiCheck(body: any) {
+  const route = normalizeUniversalRoute(body.route)
+  await requiredUniversalRuntime().checkConfig(route)
+  if (body.check === 'catalog') return ok(await requiredUniversalRuntime().catalog(route, universalCredential(route, body.apiKeys?.custom)))
+  return ok({state: 'configuration-valid', inferenceVerified: false, message: '配置与地址校验通过；尚未验证模型权限或真实调用。'})
+}
+
 type ProviderWorkflowHooks = {
   run(task: any, operation: () => Promise<void>): Promise<void>
   call<T>(descriptor: unknown, operation: () => Promise<T>): Promise<T>
@@ -3474,6 +3686,7 @@ export default async function (ctx: FunctionContext) {
     if (action === 'modelCapability') {
       return await modelCapability(body as ModelCapabilityBody)
     }
+    if (action === 'universalApiCheck') return await universalApiCheck(body)
     if (action === 'modelRegistry') {
       return await modelRegistry(body as ModelRegistryBody)
     }
@@ -3517,6 +3730,7 @@ export default async function (ctx: FunctionContext) {
     }
     return fail(`Unknown action: ${action}`, 400)
   } catch (error: any) {
+    if (error?.name === 'UniversalApiError') return {...fail(error.message, error.status || 400), failure: publicExecutionFailure(error), requestState: error.requestState}
     if (error instanceof ReferenceUploadValidationError) return fail(error.message, 400)
     if (error?.name === 'TokenDanceError') return { ...fail(error.message, error.status), recoveryAction: error.recoveryAction, retryAfterSeconds: error.retryAfterSeconds, uncertain: error.uncertain }
     console.error(`[paperbanana-api] request failed: ${redactSecretText(error?.message || String(error))}`)
@@ -3626,7 +3840,7 @@ async function abortReferenceUpload(body: ReferenceUploadLifecycleBody) {
 async function modelCapability(body: ModelCapabilityBody) {
   if (!['openrouter', 'gemini', 'openai', 'bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'].includes(body.provider)) return fail('Invalid provider', 400)
   if (!body.model) return fail('model is required', 400)
-  return ok(await referenceModelCapability(body.provider, normalizeModelName(body.provider, body.model)))
+  return ok(await referenceModelCapability(body.provider, normalizeModelName(body.provider, body.model), (body as any).route?.custom))
 }
 
 function newTokenDanceCatalogCache() { return createTokenDanceCatalogCache({
@@ -3701,6 +3915,7 @@ async function modelRegistry(body: ModelRegistryBody) {
     registryVersion: modelRegistryVersion,
     providerRegionContractVersion: 1,
     routeContractVersion,
+    universalApiContractVersion: universalRuntime ? 1 : 0,
     inputOptimizationContractVersion,
     inputOptimizationTargets: ['methodContent', 'caption', 'negativePrompt', 'editInstruction'],
     referenceUpload: runtimeReferenceUploadContract(),
@@ -3865,7 +4080,7 @@ async function optimizeInputs(body: OptimizeInputsBody) {
   }
 
   try {
-    const registry = await providerModelRegistry(provider)
+    const registry = await registryForModelRoute(normalizeModelRoute(route, 'main'))
     const entry = registry.models.find((candidate) => candidate.id === modelId)
     if (!entry || entry.selectable !== true || !entry.roles.includes('main')) {
       return invalidInputOptimizationRoute()
@@ -3882,13 +4097,14 @@ async function optimizeInputs(body: OptimizeInputsBody) {
     rawCandidate = await callTextModel(
       provider,
       modelId,
-      body.apiKey.trim(),
+      provider === 'custom' ? universalCredential(route, body.apiKey) : body.apiKey.trim(),
       inputOptimizationSystemPrompt(target),
       inputOptimizationUserPrompt(target, target === 'editInstruction' ? { methodContent: '', caption: '', negativePrompt: '', editInstruction: inputs.editInstruction } : inputs),
       [],
-      { attempts: 1, signal: controller.signal, region: provider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined },
+      { attempts: 1, signal: controller.signal, region: provider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined, custom: route.custom },
     )
   } catch (error: any) {
+    if (error?.name === 'UniversalApiError') return {...fail(error.message, error.status || 400), failure: publicExecutionFailure(error), requestState: error.requestState}
     if (error?.name === 'TokenDanceError') return { ...fail(error.message, error.status), recoveryAction: error.recoveryAction, retryAfterSeconds: error.retryAfterSeconds, uncertain: error.uncertain }
     if (controller.signal.aborted || isInputOptimizationAbort(error)) {
       return inputOptimizationFailure(
@@ -4330,7 +4546,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       if ((normalizedBody.outputFormat === 'png' || nativeRecraftVectorRoute(normalizedBody)) && normalizedBody.taskName !== 'plot') {
         prevalidatedRegistries = await validateModelRouting(routing.modelRoutes, ['image'], prevalidatedRegistries)
       } else {
-        prevalidatedRegistries.set(imageRoute.accessProvider, await providerModelRegistry(imageRoute.accessProvider))
+        prevalidatedRegistries.set(imageRoute.accessProvider, await registryForModelRoute(imageRoute))
       }
     } catch (error: any) {
       return {
@@ -4338,7 +4554,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
         ...(error?.businessCode ? { businessCode: error.businessCode } : {}),
       }
     }
-    const imageRegistry = prevalidatedRegistries.get(imageRoute.accessProvider)!
+    const imageRegistry = registryForRoute(imageRoute, prevalidatedRegistries)!
     const refineCapability = registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
     const reachesImageRoute = (normalizedBody.outputFormat === 'png' || nativeRecraftVectorRoute(normalizedBody)) && normalizedBody.taskName !== 'plot'
       ? true
@@ -4353,7 +4569,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
         }
       }
     }
-    const imageEntry = prevalidatedRegistries.get(imageRoute.accessProvider)?.models.find((model) => model.id === imageRoute.modelId)
+    const imageEntry = registryForRoute(imageRoute, prevalidatedRegistries)?.models.find((model) => model.id === imageRoute.modelId)
     if (imageEntry?.capabilities.requiresSourceImage) return { ...fail('当前型号仅支持图像编辑，请在精修中使用或更换生图模型。', 400), businessCode: 'IMAGE_MODEL_EDIT_ONLY' }
     const supportedRatios = registryImageAspectRatios(imageRoute.accessProvider, imageRegistry, imageRoute.modelId, false)
     if (reachesImageRoute && normalizedBody.aspectRatio !== 'auto' && !supportedRatios.includes(normalizedBody.aspectRatio)) {
@@ -4368,13 +4584,13 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
   }
   if (couldReachImageRoute && normalizedBody.outputFormat === 'png' && normalizedBody.taskName !== 'plot') {
     const imageRoute = routing.modelRoutes.image
-    const entry = prevalidatedRegistries.get(imageRoute.accessProvider)?.models.find((model) => model.id === imageRoute.modelId)
+    const entry = registryForRoute(imageRoute, prevalidatedRegistries)?.models.find((model) => model.id === imageRoute.modelId)
     if (body.imageSize === undefined && entry?.capabilities.resolutions.length && !entry.capabilities.resolutions.includes(normalizedBody.imageSize)) {
       normalizedBody.imageSize = entry.capabilities.resolutions[0]
     }
     if (imageRoute.accessProvider !== 'openrouter') {
       try {
-        resolveModelImageSize(imageRoute.accessProvider, imageRoute.modelId, normalizedBody.aspectRatio, normalizedBody.imageSize)
+        assertRouteImageSize(imageRoute, normalizedBody.aspectRatio, normalizedBody.imageSize)
       } catch (error: any) {
         return { ...fail(error?.message || 'Unsupported image size combination', 400), businessCode: 'IMAGE_SIZE_UNSUPPORTED' }
       }
@@ -4412,7 +4628,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
       : capabilityAgnosticRoles
     registries = await validateModelRouting(routing.modelRoutes, registryValidationRoles)
     const imageRoute = routing.modelRoutes.image
-    const imageRegistry = registries.get(imageRoute.accessProvider)
+    const imageRegistry = registryForRoute(imageRoute, registries)
     const imageRefineCapability = imageRegistry
       ? registryImageRefineCapability(imageRoute.accessProvider, imageRegistry, imageRoute.modelId)
       : { mode: 'none' as const, reason: 'Image route is not reachable for this job' }
@@ -4433,7 +4649,7 @@ async function createJob(body: CreateJobBody, ctx: FunctionContext) {
     const imageRoute = jobBody.modelRoutes.image
     const supportedRatios = registryImageAspectRatios(
       imageRoute.accessProvider,
-      registries.get(imageRoute.accessProvider)!,
+      registryForRoute(imageRoute, registries)!,
       imageRoute.modelId,
       false,
     )
@@ -4591,7 +4807,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   const imageRoute = routing.modelRoutes.image
   const imageRefineCapability = registryImageRefineCapability(
     imageRoute.accessProvider,
-    registries.get(imageRoute.accessProvider)!,
+    registryForRoute(imageRoute, registries)!,
     imageRoute.modelId,
   )
   if (!imageRefineCapability.resolutions.includes(normalizedBodyWithSecrets.imageSize)) {
@@ -4617,7 +4833,7 @@ async function refineImage(body: RefineImageBody, ctx: FunctionContext) {
   }
   if (imageRoute.accessProvider !== 'openrouter') {
     try {
-      resolveModelImageSize(imageRoute.accessProvider, imageRoute.modelId, normalizedBodyWithSecrets.aspectRatio, normalizedBodyWithSecrets.imageSize, imageRefineCapability.mode === 'direct-edit')
+      assertRouteImageSize(imageRoute, normalizedBodyWithSecrets.aspectRatio, normalizedBodyWithSecrets.imageSize, imageRefineCapability.mode === 'direct-edit')
     } catch (error: any) {
       return { ...fail(error?.message || 'Unsupported image size combination', 400), businessCode: 'REFINE_IMAGE_SIZE_UNSUPPORTED' }
     }
@@ -5096,7 +5312,7 @@ export async function resolveReferenceImageMode(body: CreateExecutionBody & { re
   }
 
   const mainRoute = body.modelRoutes.main
-  const capability = await referenceModelCapability(mainRoute.accessProvider, mainRoute.modelId)
+  const capability = await referenceModelCapability(mainRoute.accessProvider, mainRoute.modelId, mainRoute.custom)
   if (requestedMode === 'auto') {
     return {
       referenceImageMode: requestedMode,
@@ -5105,6 +5321,7 @@ export async function resolveReferenceImageMode(body: CreateExecutionBody & { re
     }
   }
 
+  if (mainRoute.accessProvider === 'custom' && capability.status !== 'supported') return {referenceImageMode: requestedMode, referenceImageModeUsed: 'none' as ReferenceImageModeUsed, error: '所选通用主模型未声明图片理解能力，请选择识图模型或补充主模型能力配置。'}
   if (capability.status === 'unsupported') {
     // Silent fallback: the user picked 主模型直读 but the main model is text-only.
     // Serve them via the independent vision model instead of failing the request.
@@ -5179,7 +5396,7 @@ function modelRouteAccess(body: CreateExecutionBody | RefineExecutionBody, route
   }
   const apiKey = routeSecrets[route.accessProvider] || ''
   if (!apiKey) throw new Error(`Missing API key for provider ${route.accessProvider}`)
-  return { provider: route.accessProvider, model: route.modelId, apiKey, region: route.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined }
+  return { provider: route.accessProvider, model: route.modelId, apiKey: route.accessProvider === 'custom' ? universalCredential(normalizeUniversalRoute(route), apiKey) : apiKey, custom: route.custom, region: route.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined }
 }
 
 async function runJob(
@@ -5214,21 +5431,21 @@ async function runJob(
   const prepared = await atJobStage('reference_preparation', () => providerWorkflow.call(['retrieved-reference-inputs'], () => preparePlanningReferences(body, proposed, uploadedVisionInputs)))
   const retrievedReferences = prepared.references
   const referenceVisionInputs = [...uploadedVisionInputs, ...prepared.images]
-  await atJobStage('reference_preparation', async () => assertVisionInputBudget(body.modelRoutes.main.accessProvider, body.modelRoutes.main.modelId, referenceVisionInputs))
+  await atJobStage('reference_preparation', async () => assertVisionInputBudget(body.modelRoutes.main.accessProvider, body.modelRoutes.main.modelId, referenceVisionInputs, body.modelRoutes.main.custom))
   const retrievalContext = buildRetrievalContext(retrievedReferences)
   await jobs.updateOne({ _id: jobId }, { $set: {
     retrievedReferenceIds: retrievedReferences.map(item => item.id), retrievedReferences,
     referenceSelection: { proposedCount: proposed.length, selectedCount: retrievedReferences.length,
       skippedCount: proposed.length - retrievedReferences.length, imageCount: referenceVisionInputs.length,
       mode: prepared.visual ? 'images' : 'text', limit: prepared.limit, omitted: prepared.omitted,
-      policyStatus: referenceSubmissionPolicy(body.modelRoutes.main.accessProvider, body.modelRoutes.main.modelId).status }, updatedAt: new Date(),
+      policyStatus: routeReferencePolicy(body.modelRoutes.main).status }, updatedAt: new Date(),
   } })
   if (body.retrievalSetting !== 'none') await appendLog(jobId,
     `参考图选择：采用 ${retrievedReferences.length} 张，排除重复 ${prepared.omitted.duplicate} 张、无法使用 ${prepared.omitted.unavailable} 张、超出预算 ${prepared.omitted.budget} 张；${prepared.visual ? `规划请求合计 ${referenceVisionInputs.length} 张图片，上限 ${prepared.limit} 张` : '当前阶段仅使用参考文字，不发送检索图片'}。`)
   const results: any[] = []
   const candidateIndexes = Array.from({ length: numCandidates }, (_, index) => index)
   // A recoverable paid workflow stops before starting the next candidate.
-  const concurrency = routeSecrets.tokendance ? 1 : clamp(Number(process.env.PAPERBANANA_CANDIDATE_CONCURRENCY || 1), 1, numCandidates)
+  const concurrency = (routeSecrets.tokendance || routeSecrets.custom) ? 1 : clamp(Number(process.env.PAPERBANANA_CANDIDATE_CONCURRENCY || 1), 1, numCandidates)
   await runWithConcurrency(candidateIndexes, concurrency, async (i) => {
     const candidateNo = i + 1
     await appendLog(jobId, `Candidate ${candidateNo}: planning`)
@@ -5288,7 +5505,7 @@ async function runCandidate(
     const svgRenderStartedAt = new Date()
     const svg = await atJobStage('rendering', () => nativeVector
       ? callRecraftSvg(renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), body.aspectRatio || 'auto')
-      : callSvgModel(renderRoute.provider, renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), renderRoute.region))
+      : callSvgModel(renderRoute.provider, renderRoute.model, renderRoute.apiKey, withNegativePrompt(description, body.negativePrompt), renderRoute.region, renderRoute.custom))
     const stageImage = await saveStageImage(jobId, candidateId, 'svg-final', svg, 'image/svg+xml', 'utf8')
     await recordStage(jobId, {
       candidateId,
@@ -5313,7 +5530,7 @@ async function runCandidate(
     })
     await logStage('rendering PNG')
     const vanillaRenderStartedAt = new Date()
-    const base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region))
+    const base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, prompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region, imageRoute.custom))
     const stageImage = await saveStageImage(jobId, candidateId, 'vanilla-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId,
@@ -5333,7 +5550,7 @@ async function runCandidate(
   let imagePrompt = diagramPromptFromDescription(description, body.negativePrompt)
   await logStage('rendering PNG')
   const initialRenderStartedAt = new Date()
-  let base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region))
+  let base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region, imageRoute.custom))
   let stageImage = await saveStageImage(jobId, candidateId, 'render-0', base64, 'image/png', 'base64')
   await recordStage(jobId, {
     candidateId,
@@ -5360,8 +5577,8 @@ async function runCandidate(
       `critic round ${round}`,
     )
     if (criticFailure) {
-      if (criticFailure?.name === 'TokenDanceError') throw criticFailure
-    const message = redactSecretText(criticFailure?.message || String(criticFailure), Object.values(routeSecrets))
+      if (routeSecrets.custom || ['TokenDanceError', 'UniversalApiError'].includes(criticFailure?.name)) throw criticFailure
+      const message = redactSecretText(criticFailure?.message || String(criticFailure), Object.values(routeSecrets))
       await logStage(`critic round ${round} failed, keeping last render: ${message}`)
       await recordStage(jobId, {
         candidateId,
@@ -5398,7 +5615,7 @@ async function runCandidate(
     await logStage(`rerender round ${round}`)
     const rerenderStartedAt = new Date()
     try {
-      base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region))
+      base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, imagePrompt, body.aspectRatio || '16:9', '', body.imageSize || '2K', false, imageRoute.region, imageRoute.custom))
       stageImage = await saveStageImage(jobId, candidateId, `render-${round}`, base64, 'image/png', 'base64')
       await recordStage(jobId, {
         candidateId,
@@ -5415,7 +5632,7 @@ async function runCandidate(
     } catch (error: any) {
       // Re-render failed this round: roll back to the last successful
       // image+description and stop the loop rather than failing the candidate.
-      if (error?.name === 'TokenDanceError') throw error
+      if (routeSecrets.custom || ['TokenDanceError', 'UniversalApiError'].includes(error?.name)) throw error
     const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
       await logStage(`rerender round ${round} failed, rolling back: ${message}`)
       await recordStage(jobId, {
@@ -5437,7 +5654,7 @@ async function runCandidate(
   // 清晰度驱动的自动精修：1K 仅基础渲染；2K/4K 在 PNG 图（非 SVG）最终图上再跑一遍
   // 升清放大。失败时 enhanceCandidateToResolution 内部已回退到基础图。
   // Seedream renders the requested native size; avoid a redundant billed image pass.
-  if (imageRoute.provider !== 'tokendance' && (['1.5K', '2K', '3K', '4K'].includes(body.imageSize))) {
+  if (!['tokendance', 'custom'].includes(imageRoute.provider) && (['1.5K', '2K', '3K', '4K'].includes(body.imageSize))) {
     base64 = await enhanceCandidateToResolution(jobId, candidateId, body, routeSecrets, base64, description, body.imageSize, logStage)
   }
 
@@ -5460,7 +5677,7 @@ async function runCriticWithImageFetchRetry(
     return { critique: await attempt(), error: null }
   } catch (error: any) {
     if (!isRetryableCriticImageFetchError(error)) return { critique: '', error }
-    if (error?.name === 'TokenDanceError') throw error
+    if (routeSecrets.custom || ['TokenDanceError', 'UniversalApiError'].includes(error?.name)) throw error
     const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
     await logStage(`${stageLabel} image download timed out, retrying once: ${message}`)
     try {
@@ -5529,8 +5746,8 @@ async function runPlotCandidate(
       `plot critic round ${round}`,
     )
     if (criticFailure) {
-      if (criticFailure?.name === 'TokenDanceError') throw criticFailure
-    const message = redactSecretText(criticFailure?.message || String(criticFailure), Object.values(routeSecrets))
+      if (routeSecrets.custom || ['TokenDanceError', 'UniversalApiError'].includes(criticFailure?.name)) throw criticFailure
+      const message = redactSecretText(criticFailure?.message || String(criticFailure), Object.values(routeSecrets))
       await logStage(`plot critic round ${round} failed, keeping last render: ${message}`)
       await recordStage(jobId, {
         candidateId,
@@ -5606,7 +5823,7 @@ async function runPlotCandidate(
       lastGoodDescription = description
       lastGoodCode = code
     } catch (error: any) {
-      if (error?.name === 'TokenDanceError') throw error
+      if (routeSecrets.custom || ['TokenDanceError', 'UniversalApiError'].includes(error?.name)) throw error
     const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
       await logStage(`plot rerender round ${round} failed, rolling back: ${message}`)
       await recordStage(jobId, {
@@ -5670,10 +5887,10 @@ async function enhanceCandidateToResolution(
         'Upscale and sharpen this academic diagram; preserve ALL content, text, layout and colors exactly — only increase resolution and crispness.',
         targetSize,
       ), body.negativePrompt)
-      upscaled = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', 'data:image/png;base64,' + baseBase64, targetSize, true, imageRoute.region))
+      upscaled = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', 'data:image/png;base64,' + baseBase64, targetSize, true, imageRoute.region, imageRoute.custom))
     } else {
       // 无图生图能力（bailian）：用最终描述以更大的安全尺寸重渲染一次。
-      upscaled = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(baseDescription, body.negativePrompt), body.aspectRatio || '16:9', '', targetSize, true, imageRoute.region))
+      upscaled = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(baseDescription, body.negativePrompt), body.aspectRatio || '16:9', '', targetSize, true, imageRoute.region, imageRoute.custom))
     }
     if (!upscaled) throw new Error('enhance pass returned no image data')
     const stageImage = await saveStageImage(jobId, candidateId, `enhance-${targetSize}`, upscaled, 'image/png', 'base64')
@@ -5689,7 +5906,7 @@ async function enhanceCandidateToResolution(
     return upscaled
   } catch (error: any) {
     // 升清失败绝不连累整张候选图：回退到基础图并记录。
-    if (error?.name === 'TokenDanceError') throw error
+    if (routeSecrets.custom || ['TokenDanceError', 'UniversalApiError'].includes(error?.name)) throw error
     const message = redactSecretText(error?.message || String(error), Object.values(routeSecrets))
     await logStage(`enhance to ${targetSize} failed, keeping base image: ${message}`)
     await recordStage(jobId, {
@@ -5720,7 +5937,7 @@ async function buildPlotDescription(
   const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
-  const planner = await atJobStage('planning', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotPlannerSystemPrompt(), plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region }))
+  const planner = await atJobStage('planning', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotPlannerSystemPrompt(), plotPlannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region, custom: mainRoute.custom }))
   await recordStage(jobId, {
     candidateId,
     type: 'planner',
@@ -5734,7 +5951,7 @@ async function buildPlotDescription(
 
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
-    description = await atJobStage('styling', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotStylistSystemPrompt(), plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region }))
+    description = await atJobStage('styling', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotStylistSystemPrompt(), plotStylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region, custom: mainRoute.custom }))
     await recordStage(jobId, {
       candidateId,
       type: 'stylist',
@@ -5751,7 +5968,7 @@ async function buildPlotDescription(
 // Turn a plot description into self-contained matplotlib code (visualizer).
 async function generatePlotCode(body: CreateExecutionBody, routeSecrets: RouteSecrets, description: string) {
   const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
-  const raw = await atJobStage('rendering', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotVisualizerSystemPrompt(), plotVisualizerUserPrompt(description, body.negativePrompt), [], { region: mainRoute.region }))
+  const raw = await atJobStage('rendering', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plotVisualizerSystemPrompt(), plotVisualizerUserPrompt(description, body.negativePrompt), [], { region: mainRoute.region, custom: mainRoute.custom }))
   return extractPythonCode(raw)
 }
 
@@ -5857,10 +6074,10 @@ async function critiqueRenderedPlot(
         notice,
         '',
         plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt),
-      ].join('\n'), [], { region: mainRoute.region })
+      ].join('\n'), [], { region: mainRoute.region, custom: mainRoute.custom })
   }
   const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
-  return await callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, plotCriticSystemPrompt(), plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }], { region: visionRoute.region })
+  return await callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, plotCriticSystemPrompt(), plotCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }], { region: visionRoute.region, custom: visionRoute.custom })
 }
 
 async function buildVisualDescription(
@@ -5885,7 +6102,7 @@ async function buildVisualDescription(
   const mainRoute = modelRouteAccess(body, routeSecrets, 'main')
   const hasReferenceImages = referenceImages.length > 0
   const plannerStartedAt = new Date()
-  const planner = await atJobStage('planning', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plannerSystemPrompt(), plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region }))
+  const planner = await atJobStage('planning', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, plannerSystemPrompt(), plannerUserPrompt(body.methodContent, body.caption, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), referenceImages, { region: mainRoute.region, custom: mainRoute.custom }))
   await recordStage(jobId, {
     candidateId,
     type: 'planner',
@@ -5899,7 +6116,7 @@ async function buildVisualDescription(
 
   if ((body.pipelineMode || 'planner_critic') === 'full') {
     const stylistStartedAt = new Date()
-    description = await atJobStage('styling', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, stylistSystemPrompt(), stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region }))
+    description = await atJobStage('styling', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, stylistSystemPrompt(), stylistUserPrompt(body.methodContent, body.caption, planner, referenceAnalysis, retrievalContext, infographicCategory, hasReferenceImages, body.negativePrompt), [], { region: mainRoute.region, custom: mainRoute.custom }))
     await recordStage(jobId, {
       candidateId,
       type: 'stylist',
@@ -5914,7 +6131,7 @@ async function buildVisualDescription(
 
   for (let round = 1; round <= textCriticRounds; round += 1) {
     const criticStartedAt = new Date()
-    const critique = await atJobStage('review', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, criticSystemPrompt(), criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [], { region: mainRoute.region }))
+    const critique = await atJobStage('review', () => callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey, criticSystemPrompt(), criticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [], { region: mainRoute.region, custom: mainRoute.custom }))
     const decision = criticDecision(critique, description)
     const noChanges = decision.noChanges
     await recordStage(jobId, {
@@ -5958,7 +6175,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
     const editPrompt = refineEditPrompt(body.editInstruction, body.imageSize || '2K')
     description = editPrompt
     const renderStartedAt = new Date()
-    base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K', true, imageRoute.region))
+    base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, editPrompt, body.aspectRatio || '16:9', sourceUrl, body.imageSize || '2K', true, imageRoute.region, imageRoute.custom))
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -5981,7 +6198,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
     // chat models). Prefer the explicit vision model, then the main chat model.
     // For bailian the existing toBailianImageUrl + isBailianImageContentError
     // fallback to qwen-vl in callTextModel handles the image read.
-    description = await atJobStage('reference_analysis', () => callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, refineSystemPrompt(), refineUserPrompt(body.editInstruction, body.imageSize || '2K'), [sourceImage], { region: visionRoute.region }))
+    description = await atJobStage('reference_analysis', () => callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, refineSystemPrompt(), refineUserPrompt(body.editInstruction, body.imageSize || '2K'), [sourceImage], { region: visionRoute.region, custom: visionRoute.custom }))
     await recordStage(jobId, {
       candidateId: 0,
       type: 'planner',
@@ -5993,7 +6210,7 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
 
     await appendLog(jobId, 'Refine: rendering edited image')
     const renderStartedAt = new Date()
-    base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K', true, imageRoute.region))
+    base64 = await atJobStage('rendering', () => callImageModel(imageRoute.provider, imageRoute.model, imageRoute.apiKey, diagramPromptFromDescription(description), body.aspectRatio || '16:9', '', body.imageSize || '2K', true, imageRoute.region, imageRoute.custom))
     const stageImage = await saveStageImage(jobId, 0, 'refine-render', base64, 'image/png', 'base64')
     await recordStage(jobId, {
       candidateId: 0,
@@ -6030,9 +6247,10 @@ async function runRefineJob(jobId: string, body: RefineExecutionBody, routeSecre
 
 async function planningReferenceBudget(body: CreateExecutionBody) {
   const route = body.modelRoutes?.main || { accessProvider: body.provider, modelId: body.mainModelName }
-  const policy = referenceSubmissionPolicy(route.accessProvider, route.modelId)
-  const capability = route.accessProvider && route.modelId ? await referenceModelCapability(route.accessProvider, route.modelId) : { status: 'unknown' }
+  const policy = routeReferencePolicy(route)
+  const capability = route.accessProvider && route.modelId ? await referenceModelCapability(route.accessProvider, route.modelId, route.custom) : { status: 'unknown' }
   const visual = body.pipelineMode !== 'vanilla' && capability.status === 'supported'
+  if (route.accessProvider === 'custom' && body.retrievalSetting !== 'none' && !visual) throw new ReferenceUploadValidationError('参考图检索需要主模型在规划阶段接收图片。当前通用主模型未声明图片理解能力；请补充能力配置或主动关闭检索。')
   const uploads = body.referenceImageModeUsed === 'main_model' && visual ? (body.referenceImages || []).length : 0
   return { route, policy, visual, limit: visual ? Math.max(0, Math.min(maxReferenceImages, policy.maxCount) - uploads) : 8 }
 }
@@ -6052,7 +6270,7 @@ export async function resolveRetrievedReferences(body: CreateExecutionBody, secr
   const candidates = library.slice(0, 200).map(item => ({ id: item.id, title: item.title, summary: item.summary.slice(0, 1500),
     visualCategory: item.visualCategory, researchDomain: item.researchDomain, keywords: item.keywords }))
   const raw = await callTextModel(mainRoute.provider, mainRoute.model, mainRoute.apiKey,
-    retrievalSystemPrompt(budget.limit), retrievalUserPrompt(body.methodContent, body.caption, candidates, taskName), [], { region: mainRoute.region })
+    retrievalSystemPrompt(budget.limit), retrievalUserPrompt(body.methodContent, body.caption, candidates, taskName), [], { region: mainRoute.region, custom: mainRoute.custom })
   return normalizeSelectedReferenceRows(relevantReferenceSelection(parseJsonObject(raw), library, budget.limit))
 }
 
@@ -6180,7 +6398,7 @@ async function normalizeStoredReference(item: any): Promise<RetrievedReference> 
 export async function preparePlanningReferences(body: CreateExecutionBody, proposed: RetrievedReference[], uploaded: VisionImageInput[] = []) {
   const { route, policy, visual } = await planningReferenceBudget(body)
   const limit = Math.min(maxReferenceImages, policy.maxCount)
-  assertVisionInputBudget(route.accessProvider, route.modelId, uploaded)
+  assertVisionInputBudget(route.accessProvider, route.modelId, uploaded, route.custom)
   const candidates = distinctReferenceCandidates(proposed)
   if (!visual) return { references: candidates.slice(0, 8), images: [] as VisionImageInput[], visual, limit, omitted: { duplicate: proposed.length - candidates.length, unavailable: 0, budget: Math.max(0, candidates.length - 8) } }
   const references: RetrievedReference[] = [], images: VisionImageInput[] = []
@@ -6220,12 +6438,12 @@ export async function preparePlanningReferences(body: CreateExecutionBody, propo
     }
   }
   omitted.budget += Math.max(0, proposed.length - references.length - omitted.duplicate - omitted.unavailable - omitted.budget)
-  assertVisionInputBudget(route.accessProvider, route.modelId, [...uploaded, ...images])
+  assertVisionInputBudget(route.accessProvider, route.modelId, [...uploaded, ...images], route.custom)
   return { references, images, visual, limit, omitted }
 }
 
-export function assertVisionInputBudget(provider: string, model: string, images: VisionImageInput[]) {
-  const policy = referenceSubmissionPolicy(provider, model)
+export function assertVisionInputBudget(provider: string, model: string, images: VisionImageInput[], custom?: UniversalRoute['custom']) {
+  const policy = provider === 'custom' ? universalReferencePolicy(normalizeUniversalRoute({accessProvider: provider, modelId: model, custom})) : referenceSubmissionPolicy(provider, model)
   const limit = Math.min(maxReferenceImages, policy.maxCount)
   if (images.length > limit) throw new ReferenceUploadValidationError(`当前模型最多接收 ${limit} 张图片，本次合计 ${images.length} 张（含上传和检索图片）。`)
   let total = 0
@@ -6267,10 +6485,10 @@ async function critiqueRenderedDiagram(
         '[SYSTEM NOTICE] The diagram image could not be generated based on the current description. Check the description for errors and revise it.',
         '',
         imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt),
-      ].join('\n'), [], { region: mainRoute.region })
+      ].join('\n'), [], { region: mainRoute.region, custom: mainRoute.custom })
   }
   const visionRoute = modelRouteAccess(body, routeSecrets, 'vision')
-  return await callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, imageCriticSystemPrompt(), imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }], { region: visionRoute.region })
+  return await callTextModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, imageCriticSystemPrompt(), imageCriticUserPrompt(body.methodContent, body.caption, description, referenceAnalysis, retrievalContext, body.negativePrompt), [{ filename: 'candidate.png', mimeType: 'image/png', url: `data:image/png;base64,${imageBase64}` }], { region: visionRoute.region, custom: visionRoute.custom })
 }
 
 // The critic agents return strict JSON {critic_suggestions, revised_description}
@@ -6322,7 +6540,7 @@ async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, 
   await appendLog(jobId, `Analyzing ${references.length} reference image${references.length > 1 ? 's' : ''}`)
   const visionInputs = await buildVisionImageInputs(references, jobId, body.modelRoutes[role])
   const visionRoute = modelRouteAccess(body, routeSecrets, role)
-  const analysis = await callVisionModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, body.methodContent, body.caption, visionInputs, visionRoute.region)
+  const analysis = await callVisionModel(visionRoute.provider, visionRoute.model, visionRoute.apiKey, body.methodContent, body.caption, visionInputs, visionRoute.region, visionRoute.custom)
 
   const trimmed = analysis.trim()
   if (!trimmed) throw new Error('Reference vision model returned empty analysis')
@@ -6335,7 +6553,7 @@ async function analyzeReferenceImages(jobId: string, body: CreateExecutionBody, 
 
 export async function buildVisionImageInputs(referenceImages: ReferenceImageInput[], jobId = '', route?: ModelRoute) {
   const bucket = cloud.storage.bucket(bucketName)
-  const policy = referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '')
+  const policy = routeReferencePolicy(route)
   if (referenceImages.length > policy.maxCount) throw new ReferenceUploadValidationError(`当前模型最多提交 ${policy.maxCount} 张参考图；请减少图片或更换模型。`)
   assertReferenceTotalBytes(referenceImages)
   const inputs: VisionImageInput[] = []
@@ -6522,9 +6740,13 @@ async function toBailianImageUrl(url: string): Promise<string> {
   }
 }
 
+function providerCallDescriptorTail(args: any[]) {
+  // Keep historical region slot; omit only the new optional custom descriptor.
+  return args.at(-1) === undefined ? args.slice(0,-1) : args
+}
 export async function callVisionModel(...args: Parameters<typeof callVisionModelRaw>): Promise<string> {
   if (args[0] === 'tokendance') args[2] = await providerWorkflow.key(args[2])
-  return providerWorkflow.call(['vision', args[0], args[1], ...args.slice(3)], () => callVisionModelRaw(...args))
+  return providerWorkflow.call(['vision', args[0], args[1], ...(args.length === 8 ? providerCallDescriptorTail(args.slice(3)) : args.slice(3))], () => callVisionModelRaw(...args))
 }
 
 async function callVisionModelRaw(
@@ -6535,7 +6757,9 @@ async function callVisionModelRaw(
   caption: string,
   images: VisionImageInput[],
   region?: 'cn' | 'global',
+  custom?: UniversalRoute['custom'],
 ): Promise<string> {
+  if (provider === 'custom') return universalText({accessProvider: 'custom', modelId: model, custom}, apiKey, referenceVisionSystemPrompt(), referenceVisionUserPrompt(methodContent, caption), images)
   if (!images.length) return ''
   assertVisionInputBudget(provider, model, images)
   if (provider === 'tokendance') {
@@ -6652,6 +6876,7 @@ async function callTextModelRaw(
   images: VisionImageInput[] = [],
   policy: TextRequestPolicy = {},
 ): Promise<string> {
+  if (provider === 'custom') return universalText({accessProvider: 'custom', modelId: model, custom: policy.custom}, apiKey, system, user, images, policy.signal)
   assertVisionInputBudget(provider, model, images)
   if (provider === 'tokendance') {
     await assertTokenDanceLiveModel(model, 'openai:chat-completions')
@@ -6886,21 +7111,21 @@ async function callOpenAiResponses(
     .join('')
 }
 
-async function callSvgModel(provider: Provider, model: string, apiKey: string, description: string, region?: 'cn' | 'global'): Promise<string> {
+async function callSvgModel(provider: Provider, model: string, apiKey: string, description: string, region?: 'cn' | 'global', custom?: UniversalRoute['custom']): Promise<string> {
   const rawSvg = await callTextModel(
     provider,
     model,
     apiKey,
     svgSystemPrompt(),
     svgUserPrompt(description),
-    [], { region },
+    [], { region, custom },
   )
   return sanitizeSvg(rawSvg)
 }
 
 export async function callImageModel(...args: Parameters<typeof callImageModelRaw>): Promise<string> {
   if (args[0] === 'tokendance') args[2] = await providerWorkflow.key(args[2])
-  return providerWorkflow.call(['image', args[0], args[1], ...args.slice(3)], () => callImageModelRaw(...args))
+  return providerWorkflow.call(['image', args[0], args[1], ...(args.length === 10 ? providerCallDescriptorTail(args.slice(3)) : args.slice(3))], () => callImageModelRaw(...args))
 }
 
 async function callImageModelRaw(
@@ -6913,7 +7138,9 @@ async function callImageModelRaw(
   imageSize = '2K',
   strictImageSize = false,
   region?: 'cn' | 'global',
+  custom?: UniversalRoute['custom'],
 ): Promise<string> {
+  if (provider === 'custom') return universalImage({accessProvider: 'custom', modelId: model, custom}, apiKey, prompt, aspectRatio, sourceImage, imageSize)
   model = normalizeModelName(provider, model)
   assertModelRegion(provider, model, region)
   const entry = provider === 'openrouter' ? undefined : staticModelRegistry[provider].models.find((item) => item.id === model)
@@ -8160,7 +8387,11 @@ function chatUserContent(user: string, images: VisionImageInput[]) {
   ]
 }
 
-async function referenceModelCapability(provider: Provider, model: string): Promise<ModelCapabilityResult> {
+async function referenceModelCapability(provider: Provider, model: string, custom?: UniversalRoute['custom']): Promise<ModelCapabilityResult> {
+  if (provider === 'custom') {
+    const route = normalizeUniversalRoute({accessProvider: provider, modelId: model, custom})
+    return {status: route.custom.capabilities.vision ? 'supported' : 'unsupported', supportsReferenceImages: route.custom.capabilities.vision, supportsDirectEdit: route.custom.capabilities.imageEditing, reason: '按当前接入配置声明的能力校验；真实调用尚未验证。', source: 'user-declared', cached: false}
+  }
   const normalizedModel = normalizeModelName(provider, model)
   try {
     const registry = await providerModelRegistry(provider)
@@ -8588,7 +8819,7 @@ async function validateModelRouting(
 ): Promise<Map<Provider, ProviderModelRegistry>> {
   const requiredRoles = uniqueRouteRoles(roles)
   for (const provider of new Set(requiredRoles.map((role) => modelRoutes[role].accessProvider))) {
-    if (registries.has(provider)) continue
+    if (provider === 'custom' || registries.has(provider)) continue
     try {
       registries.set(provider, await providerModelRegistry(provider))
     } catch (error: any) {
@@ -8599,10 +8830,11 @@ async function validateModelRouting(
   }
   for (const role of requiredRoles) {
     const route = modelRoutes[role]
-    const error = modelRoleSelectionError(route.accessProvider, registries.get(route.accessProvider)!, [
+    if (route.accessProvider === 'custom') await requiredUniversalRuntime().checkConfig(normalizeUniversalRoute(route))
+    const error = modelRoleSelectionError(route.accessProvider, registryForRoute(route, registries)!, [
       { model: route.modelId, role },
     ])
-    if (error) throw modelRouteError(error)
+    if (error) throw modelRouteError(route.accessProvider === 'custom' ? `通用 API 的${role === 'main' ? '主模型' : role === 'vision' ? '识图模型' : '图像模型'}未声明本角色所需能力，请补充配置或主动选择其他型号。` : error)
   }
   return registries
 }
@@ -9753,7 +9985,7 @@ async function publicJob(job: any) {
 }
 
 function modelRoutingMode(routes: ModelRoutes): ModelRoutingMode {
-  return new Set(Object.values(routes).map((route) => route.accessProvider)).size === 1 ? 'single' : 'mixed'
+  return new Set(Object.values(routes).map((route) => route.accessProvider === 'custom' ? ['custom',route.custom?.baseUrl,route.custom?.protocol,route.custom?.auth].join('|') : route.accessProvider)).size === 1 ? 'single' : 'mixed'
 }
 
 function normalizeStoredModelRoutes(value: any): ModelRoutes | null {
@@ -10159,7 +10391,7 @@ async function validateRefineUploadSource(objectKey: unknown, owner: { userId?: 
     if (!Number.isSafeInteger(state.size) || state.size < 1 || state.size > maxReferenceBytes) throw new Error('原图文件超过上传大小限制。')
     const bytes = await readStoredObject(cloud.storage.bucket(bucketName), objectKey, maxReferenceBytes, 'Refine upload')
     if (bytes.length !== state.size) throw new Error('原图文件与上传记录不一致，请重新上传。')
-    const policy = route ? { ...referenceSubmissionPolicy(route.accessProvider, route.modelId, workflow), mimeTypes: ['image/png'] } : {
+    const policy = route ? { ...routeReferencePolicy(route, workflow), mimeTypes: ['image/png'] } : {
       ...referenceSubmissionPolicy('', '', 'refine'), maxBytes: maxReferenceBytes,
       maxDimension: REFERENCE_UPLOAD_PLATFORM.maxDimension, maxPixels: REFERENCE_UPLOAD_PLATFORM.maxPixels,
     }
@@ -10172,7 +10404,7 @@ async function resolveSourceImageUrl(body: RefineExecutionBody) {
   const objectKey = limitText(body.sourceImageObjectKey, 300)
   if (!objectKey) throw new Error('请先上传精修原图或选择当前账号的任务图片；不支持外部图片 URL。')
   const route = body.modelRoutes[body.refineMode === 'direct-edit' ? 'image' : 'vision']
-  const policy = referenceSubmissionPolicy(route.accessProvider, route.modelId, body.refineMode === 'direct-edit' ? 'refine' : 'generation')
+  const policy = routeReferencePolicy(route, body.refineMode === 'direct-edit' ? 'refine' : 'generation')
   return withReferenceProcessing(async () => {
     const bytes = await readStoredObject(cloud.storage.bucket(bucketName), objectKey, maxProviderImageBytes, 'Refine source image download')
     const mimeType = isPngBytes(bytes) ? 'image/png' : isJpegBytes(bytes) ? 'image/jpeg' : isWebpBytes(bytes) ? 'image/webp' : inferMimeTypeFromUrl(objectKey)

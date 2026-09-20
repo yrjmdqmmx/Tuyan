@@ -12,7 +12,7 @@ export async function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, oper
 }
 export function isLocalInputFailure(error: any) {
   return !error?.uncertain && (error?.name === 'ReferenceUploadValidationError'
-    || error?.name === 'TokenDanceError' && error?.requestState === 'not_sent' && error?.status === 400)
+    || ['TokenDanceError', 'UniversalApiError'].includes(error?.name) && error?.requestState === 'not_sent' && error?.status === 400)
 }
 export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknownCall = false) {
   const status = Number(error?.status || error?.statusCode || 0)
@@ -40,7 +40,8 @@ export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknow
     : local || error?.requestState === 'not_sent' ? 'not_sent'
     : error?.requestState === 'rejected' || status >= 400 && status < 500 ? 'rejected' : 'unknown'
   const catalogPreflight = error?.name === 'TokenDanceError' && error?.catalogFailure === true && action === 'retry_request' && requestState === 'not_sent'
-  const reason = catalogPreflight
+  const universal = error?.name === 'UniversalApiError'
+  const reason = universal ? String(error.reason || copy[0]) : catalogPreflight
     ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 700)
     : action === 'retry_request' && requestState === 'not_sent' ? '模型目录暂时无法读取，尚未发起本步骤的模型请求。' : local && /[\u4e00-\u9fff]/u.test(error?.message || '')
     ? String(error.message).replace(/https?:\/\/\S+|\bBearer\s+\S+|(?:api[_-]?key|token|secret|password)\s*[:=]\s*\S+/gi, '[已隐藏]').slice(0, 500) : copy[0]
@@ -49,7 +50,7 @@ export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknow
     : billingStatus === 'prior_calls' ? '此前已有成功调用，已保存成功步骤；费用以渠道账单为准。'
     : billingStatus === 'unknown' ? '请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。'
     : '渠道已拒绝本次请求；实际费用以渠道账单为准。'
-  const suggestion = catalogPreflight ? '目录恢复后可继续原任务，已成功的步骤会复用；也可主动选择其他模型。' : copy[1]
+  const suggestion = universal ? String(error.suggestion || copy[1]) : catalogPreflight ? '目录恢复后可继续原任务，已成功的步骤会复用；也可主动选择其他模型。' : copy[1]
   return { stage, stageLabel: JOB_FAILURE_STAGES[stage], category, code: 'MODEL_' + category.toUpperCase(),
     reason, suggestion, requestState, billingStatus, billingMessage,
     message: `${JOB_FAILURE_STAGES[stage]}失败：${reason} ${suggestion}` }
