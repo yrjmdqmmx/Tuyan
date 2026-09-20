@@ -713,5 +713,5 @@ function normalizeFeedback(item = {}) {
 
 export async function universalApiCheckRequest(apiBase, health, payload) {
   if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('当前后端不支持通用 API 接入。');
-  return fetchJson(lafEndpoint(apiBase), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'universalApiCheck',route:payload.route,check:payload.check,apiKeys:payload.apiKeys})});
+  return fetchJson(lafEndpoint(apiBase), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'universalApiCheck',route:payload.route,connection:payload.connection,selectedModelId:payload.selectedModelId,check:payload.check,apiKeys:payload.apiKeys})});
 }

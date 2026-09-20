@@ -306,7 +306,7 @@ export default function App() {
   });
   const inputOptimizationSupported = Number(modelRegistry?.inputOptimizationContractVersion) >= 1;
   const refineOptimizationSupported = inputOptimizationSupported && modelRegistry?.inputOptimizationTargets?.includes('editInstruction');
-  const selectedCatalogIssues = [...new Set([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(entry => entry?.selectable === false).map(entry => `${entry.label || entry.id}：${entry.disabledReason || '暂不可用'}`))];
+  const selectedCatalogIssues = accessMode === 'custom' ? [] : [...new Set([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(entry => entry?.selectable === false).map(entry => `${entry.label || entry.id}：${entry.disabledReason || '暂不可用'}`))];
   const selectedModelNotes = uniqueRegistryModels([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(Boolean));
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
   const resolutionValues = activeImageRegistryEntry?.capabilities?.resolutions?.length
@@ -1406,7 +1406,7 @@ export default function App() {
         universalSettings={<UniversalApiSettings drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
           onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}
-          onCopy={(role,source)=>{const from=universalDrafts[source].custom;setUniversalDrafts(current=>({...current,[role]:{...current[role],declared:false,custom:{...current[role].custom,protocol:from.protocol,baseUrl:from.baseUrl,auth:from.auth,compatibility:from.compatibility}}}));setUniversalKeys(current=>({...current,[role]:current[source]?{...current[source]}:undefined}));}}
+          onCopy={(role,source)=>{const from=universalDrafts[source].custom;setUniversalDrafts(current=>({...current,[role]:{...current[role],declared:false,custom:{...current[role].custom,protocol:from.protocol,baseUrl:from.baseUrl,auth:from.auth,compatibility:from.compatibility,catalogFormat:from.catalogFormat}}}));setUniversalKeys(current=>({...current,[role]:current[source]?{...current[source]}:undefined}));}}
           onSave={()=>saveUniversalDrafts(universalDrafts)}/> }
         onModeChange={handleConfigurationModeChange}
         simpleProvider={provider}
@@ -1451,7 +1451,7 @@ export default function App() {
             ? <div className="plot-note svg-output-note">SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。</div>
             : <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
         </div>
-        <AspectRatioPicker label="画面比例" value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
+        <AspectRatioPicker emptyMessage={accessMode === 'custom' ? !universalDrafts.image.modelId.trim() ? '配置图像模型后可选择画面比例。' : '确认图像模型的能力与尺寸映射后可选择画面比例。' : undefined} label="画面比例" value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
 
         {!isAdvancedMode ? (
         <div className="default-summary" aria-label="默认生成配置">

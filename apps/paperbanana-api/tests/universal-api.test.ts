@@ -10,7 +10,7 @@ const imageBytes = await sharp({ create: { width: 2, height: 3, channels: 3, bac
 const image = { base64: imageBytes.toString('base64'), mimeType: 'image/png' }
 const imageReply = image.base64
 function config(protocol: UniversalProtocol = 'openai-chat', imageMode = false, compatibility = 'standard'): any {
-  return { accessProvider: 'custom', modelId: 'EXACT/Unknown Model:v9', custom: { version: 1, connectionId: 'my-connection', protocol, baseUrl: 'https://api.example.com/custom/v9', compatibility,
+  return { accessProvider: 'custom', modelId: 'EXACT/Unknown Model:v9', custom: { version: 1, connectionId: 'my-connection', protocol, baseUrl: 'https://api.example.com/custom/v9', compatibility, catalogFormat: protocol === 'dashscope-multimodal' ? 'none' : protocol.startsWith('gemini-') ? 'gemini' : protocol === 'anthropic-messages' ? 'anthropic' : 'openai',
     capabilities: { text: !imageMode, vision: !imageMode, imageGeneration: imageMode, imageEditing: imageMode },
     inputLimits: { maxCount: 3, maxBytes: 1000000, maxTotalBytes: 2000000, maxDimension: 100, maxPixels: 10000, requestMaxBytes: 3000000, mimeTypes: ['image/png', 'image/jpeg', 'image/webp'] },
     outputLimits: { maxBytes: 1000000, maxDimension: 2048, maxPixels: 4000000, mimeTypes: ['image/png', 'image/jpeg', 'image/webp'] },

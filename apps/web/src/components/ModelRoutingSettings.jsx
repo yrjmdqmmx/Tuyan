@@ -57,17 +57,17 @@ export default function ModelRoutingSettings({
         <span>使用模式</span>
         <div className="mode-switch" role="group" aria-label="使用模式">
           <button type="button" aria-pressed={accessMode !== 'custom' && !isAdvancedMode} className={accessMode !== 'custom' && !isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('simple')}>
-            <Sparkles size={16} /><span>普通模式</span><small>单渠道 + 单 Key</small>
+            <Sparkles size={16} /><span>普通模式</span><small>预设渠道 · 单 Key</small>
           </button>
           <button type="button" aria-pressed={accessMode !== 'custom' && isAdvancedMode} className={accessMode !== 'custom' && isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('advanced')}>
-            <Settings2 size={16} /><span>专业模式</span><small>按角色独立路由</small>
+            <Settings2 size={16} /><span>专业模式</span><small>预设渠道 · 分角色配置</small>
           </button>
           <button type="button" aria-pressed={accessMode === 'custom'} className={accessMode === 'custom' ? 'active' : ''} onClick={()=>onAccessModeChange?.('custom')}><KeyRound size={16}/><span>通用 API</span><small>自有服务 · 按角色接入</small></button>
         </div>
         {isAdvancedMode && !routeContractSupported ? <p className="route-contract-warning">当前后端不支持专业模式的多渠道路由，提交会失败关闭。</p> : null}
       </div>
 
-      {accessMode === 'custom' ? <><p>普通／专业模式使用图研预设渠道；通用 API 按角色配置自有接入，API 协议与模型 ID 在下方分别填写。</p>{universalSettings}</> : <>
+      {accessMode === 'custom' ? universalSettings : <>
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>API 接入渠道</span>
