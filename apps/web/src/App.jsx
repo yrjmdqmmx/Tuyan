@@ -26,7 +26,6 @@ import {
   ShieldCheck,
   Sparkles,
   Undo2,
-  X,
 } from 'lucide-react';
 import {
   adminStatusRequest,
@@ -73,6 +72,7 @@ import AuthUnavailablePanel from './components/AuthUnavailablePanel';
 import FeaturedTemplateStudio from './components/FeaturedTemplateStudio';
 import FeedbackDialog from './components/FeedbackDialog';
 import MiniProgramDialog from './components/MiniProgramDialog';
+import ContactDialog from './components/ContactDialog';
 import AgentConnectionDialog from './components/AgentConnectionDialog';
 import GenerationSettingsDrawer from './components/GenerationSettingsDrawer';
 import GuidePanel from './components/GuidePanel';
@@ -163,8 +163,6 @@ export default function App() {
   const [showContactDialog, setShowContactDialog] = useState(false);
   const [showMiniProgramDialog, setShowMiniProgramDialog] = useState(false);
   const [showAgentConnection, setShowAgentConnection] = useState(false);
-  const contactCloseRef = useRef(null);
-  const [contactQrFailed, setContactQrFailed] = useState(false);
   const [showAuthPanel, setShowAuthPanel] = useState(() => isLoginEntry(window.location.search));
   const [showAccountDialog, setShowAccountDialog] = useState(false);
   const [showGenerationSettings, setShowGenerationSettings] = useState(false);
@@ -537,19 +535,6 @@ export default function App() {
     referenceImagesRef.current.forEach((image) => URL.revokeObjectURL(image.previewUrl));
   }, []);
 
-  useEffect(() => {
-    if (!showContactDialog) return undefined;
-    const previous = document.activeElement;
-    contactCloseRef.current?.focus();
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') setShowContactDialog(false);
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      previous?.focus?.();
-    };
-  }, [showContactDialog]);
 
   useEffect(() => {
     if (!currentJobId) return undefined;
@@ -1615,22 +1600,7 @@ export default function App() {
       <MiniProgramDialog open={showMiniProgramDialog} onClose={() => setShowMiniProgramDialog(false)} />
       <AgentConnectionDialog open={showAgentConnection} onClose={() => setShowAgentConnection(false)} />
 
-      {showContactDialog ? (
-        <div className="feedback-dialog-backdrop" onClick={() => setShowContactDialog(false)}>
-          <section className="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-dialog-title" onClick={(event) => event.stopPropagation()}>
-            <button ref={contactCloseRef} type="button" className="contact-dialog-close" aria-label="关闭" onClick={() => setShowContactDialog(false)}>
-              <X size={18} />
-            </button>
-            <h2 id="contact-dialog-title">联系作者</h2>
-            <p>使用中有任何问题、建议或合作意向，欢迎扫码添加作者微信。</p>
-            {contactQrFailed ? (
-              <div className="contact-qr-fallback">二维码即将上线，可先点顶栏「意见反馈」联系作者。</div>
-            ) : (
-              <img className="contact-qr" src="/contact-qr.png" alt="作者微信二维码（赵）" onError={() => setContactQrFailed(true)} />
-            )}
-          </section>
-        </div>
-      ) : null}
+      <ContactDialog open={showContactDialog} onClose={() => setShowContactDialog(false)} />
 
       <nav className="paper-tabs" aria-label="主导航">
         {WORKSPACE_TABS.filter(([tab]) => !compactLayout || !['account', 'guide'].includes(tab)).map(([tab, label]) => (
