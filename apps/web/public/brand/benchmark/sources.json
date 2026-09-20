@@ -1,0 +1,51 @@
+{
+  "bfl": {
+    "file": "bfl.png",
+    "source": "https://bfl.ai/apple-icon.png?f3e2842f59013de0",
+    "discoveredAt": "https://bfl.ai",
+    "date": "2026-09-20",
+    "bytes": 4973
+  },
+  "qwen": {
+    "file": "qwen.png",
+    "source": "https://img.alicdn.com/imgextra/i4/O1CN01OXv3EM1FN8t9W4P79_!!6000000000474-2-tps-80-80.png",
+    "discoveredAt": "https://qwen.ai",
+    "date": "2026-09-20",
+    "bytes": 1658
+  },
+  "wan": {
+    "file": "wan.ico",
+    "source": "https://g.alicdn.com/sail-web/wan-static-resources/0.0.30/images/favicon.ico",
+    "discoveredAt": "https://wan.video",
+    "date": "2026-09-20",
+    "bytes": 4861
+  },
+  "bytedance": {
+    "file": "bytedance.png",
+    "source": "https://portal.volccdn.com/obj/volcfe/misc/favicon.png",
+    "discoveredAt": "https://www.volcengine.com",
+    "date": "2026-09-20",
+    "bytes": 3400
+  },
+  "krea": {
+    "file": "krea.png",
+    "source": "https://www.krea.ai/docs/_mintlify/favicons/krea/J_qcNYUeE6R5lVvn/_generated/favicon/apple-touch-icon.png",
+    "discoveredAt": "https://www.krea.ai/docs/api-reference/krea/krea-2-medium",
+    "date": "2026-09-20",
+    "bytes": 2980
+  },
+  "recraft": {
+    "file": "recraft.png",
+    "source": "https://framerusercontent.com/images/abL15N3UiE3oDA6S807KUBarXrQ.png",
+    "discoveredAt": "https://www.recraft.ai",
+    "date": "2026-09-20",
+    "bytes": 858
+  },
+  "xai": {
+    "file": "xai.svg",
+    "source": "https://docs.x.ai/_next/static/media/favicon-light.1u6watcuoe8mg.svg?dpl=aa626e794c81ce31acbe2b9499061dd54033e9d9",
+    "discoveredAt": "https://docs.x.ai/developers/models/grok-imagine-image-quality",
+    "date": "2026-09-20",
+    "bytes": 1392
+  }
+}

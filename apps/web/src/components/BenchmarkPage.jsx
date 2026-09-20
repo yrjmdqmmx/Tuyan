@@ -13,6 +13,7 @@ import {
   BenchmarkPromptSubmissionPage,
 } from './BenchmarkEvidencePages.jsx'
 import { normalizeLeaderboardRelease } from './benchmarkRelease.js'
+import BenchmarkPareto from './BenchmarkPareto.jsx'
 
 export { BenchmarkEvidenceImage, BenchmarkPromptSubmissionForm }
 
@@ -312,6 +313,20 @@ function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname, showNav
 }
 
 export function BenchmarkObservatory({ release, pathname = '/leaderboard', showNavigation = true }) {
+  const [view, setView] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('view') === 'pareto' ? 'pareto' : 'ranking')
+  useEffect(() => {
+    const sync = () => setView(new URLSearchParams(window.location.search).get('view') === 'pareto' ? 'pareto' : 'ranking')
+    window.addEventListener('popstate', sync)
+    return () => window.removeEventListener('popstate', sync)
+  }, [])
+  const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
+  function changeView(next) {
+    setView(next)
+    const url = new URL(window.location.href)
+    if (next === 'pareto') url.searchParams.set('view', 'pareto')
+    else url.searchParams.delete('view')
+    window.history.pushState(null, '', `${url.pathname}${url.search}${url.hash}`)
+  }
   const models = Array.isArray(release.models) ? release.models : []
   const axes = axesForRelease(release)
   const route = resolveLeaderboardRoute(pathname)
@@ -321,8 +336,8 @@ export function BenchmarkObservatory({ release, pathname = '/leaderboard', showN
     <main className="bench-shell">
       {showNavigation ? <LeaderboardNav /> : null}
       <LeaderboardHero release={release} />
-      <DimensionGrid axes={axes} models={models} />
-      <LeaderboardMatrix axes={axes} release={release} models={models} />
+      {scientific && <div className="bench-view-switch" role="group" aria-label="排行榜视图"><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />排名</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>帕累托</button><span>当前正式评测 · 官方 API 标准定价</span></div>}
+      {scientific && view === 'pareto' ? <BenchmarkPareto models={models} axes={axes} /> : <><DimensionGrid axes={axes} models={models} /><LeaderboardMatrix axes={axes} release={release} models={models} /></>}
     </main>
   )
 }
