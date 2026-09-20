@@ -27,7 +27,7 @@ test('generation canvas has a prominent settings summary', () => {
 
 test('feedback lives in the top header and no floating feedback action remains', () => {
   const source = readSource('../src/App.jsx')
-  assert.match(source, /className="header-feedback-button"/u)
+  assert.match(readSource('../src/components/WorkbenchHeader.jsx'), /className="header-feedback-button"/u)
   assert.doesNotMatch(source, /className="feedback-fab"/u)
 })
 
@@ -76,8 +76,8 @@ test('model search has a visible keyboard focus indicator', () => {
   assert.match(styles, /\.model-picker-search input:focus-visible\s*\{[\s\S]*?outline-offset:/u)
 })
 
-test('mobile top tabs stay on one line and use the existing horizontal scroller', () => {
-  const styles = readSource('../src/styles.css')
-  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.paper-tabs\s*\{[\s\S]*?overflow-x:\s*auto/u)
-  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.paper-tabs button\s*\{[\s\S]*?white-space:\s*nowrap;[\s\S]*?flex:\s*0 0 auto;[\s\S]*?min-width:\s*max-content;/u)
+test('mobile top tabs fill the row with touch-sized controls', () => {
+  const styles = readSource('../src/mobile-workbench.css')
+  assert.match(styles, /\.paper-tabs\s*\{[^}]*width:\s*100%[^}]*flex-wrap:\s*wrap/u)
+  assert.match(styles, /\.paper-tabs button\s*\{[^}]*min-height:\s*(?:44|48)px/u)
 })

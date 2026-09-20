@@ -10,6 +10,7 @@ import './components/tokendance.css';
 import './components/watcha.css';
 import './components/benchmark.css';
 import './components/admin/admin.css';
+import './mobile-workbench.css';
 
 const currentAppLocation = appRelativeLocation(globalThis.location, APP_BASE_URL);
 const leaderboardLocation = canonicalizeLeaderboardLocation(currentAppLocation, globalThis.history, APP_BASE_URL);

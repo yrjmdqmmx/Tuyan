@@ -60,14 +60,21 @@ test('desktop carousel exposes four valid start positions with one current dot',
   assert.equal(screen.getByRole('button', { name: '套用到输入区' }).disabled, false)
 })
 
-test('mobile carousel exposes six valid start positions with one current dot', () => {
+test('mobile scrolling cards open the chosen template and still require confirmation before replacing edits', async () => {
   const previousMatchMedia = window.matchMedia
+  const applied = []
   try {
     installMatchMedia({ compact: true })
-    render(React.createElement(FeaturedTemplateStudio, { templates: studioTemplates(), isDirty: false, onApply() {} }))
-    const dots = screen.getAllByRole('button', { name: /查看第 \d 张模板/u })
-    assert.equal(dots.length, 6)
-    assert.equal(dots.filter((dot) => dot.getAttribute('aria-current') === 'true').length, 1)
+    render(React.createElement(FeaturedTemplateStudio, { templates: studioTemplates(), isDirty: true, onApply(template) { applied.push(template.id) } }))
+    assert.equal(screen.getAllByRole('button', { name: /^预览模板 /u }).length, 6)
+    await userEvent.click(screen.getByRole('button', { name: `预览模板 ${FEATURED_TEMPLATES[3].title}` }))
+    const dialog = screen.getByRole('dialog', { name: '精选模板库' })
+    assert.equal(dialog.querySelector('[aria-pressed="true"]').getAttribute('aria-label'), `预览模板 ${FEATURED_TEMPLATES[3].title}`)
+    await userEvent.click(screen.getByRole('button', { name: '套用到输入区' }))
+    assert.ok(screen.getByRole('dialog', { name: '替换输入内容？' }))
+    assert.deepEqual(applied, [])
+    await userEvent.click(screen.getByRole('button', { name: '确认替换' }))
+    assert.deepEqual(applied, [FEATURED_TEMPLATES[3].id])
   } finally {
     window.matchMedia = previousMatchMedia
   }
