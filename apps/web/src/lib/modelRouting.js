@@ -26,6 +26,7 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
 
 export function buildModelSubmission({ configurationMode, modelRoutes, registry, providerRegions }) {
   assertCompleteRoutes(modelRoutes)
+  if (Object.values(modelRoutes).some(route=>route.accessProvider === 'custom') && !(registry?.universalApiContractVersion >= 1)) throw new Error('当前后端尚未支持通用 API 接入；配置已保留。')
   const explicitRoutesSupported = Number(registry?.routeContractVersion || 0) >= 1
   if (configurationMode === 'advanced' && !explicitRoutesSupported) {
     throw new Error('当前后端不支持专业模式的多渠道模型路由，请切回普通模式。')

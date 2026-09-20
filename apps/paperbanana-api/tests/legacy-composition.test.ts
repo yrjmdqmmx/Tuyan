@@ -1166,8 +1166,8 @@ test('refine dispatch retains image only for direct edit and vision plus image f
       ['https://cdn.invalid/refined.png', '', ''],
     ])
     const source = fs.readFileSync(legacyPath, 'utf8')
-    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K', true, imageRoute\.region\)/)
-    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K', true, imageRoute\.region\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K', true, imageRoute\.region, imageRoute\.custom\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K', true, imageRoute\.region, imageRoute\.custom\)/)
   } finally {
     legacy.configureRuntimeFetch()
     state.ossWriteMode = previousWriteMode
@@ -4614,7 +4614,7 @@ test('create generation prompts use a separate avoidance block across PNG, criti
     (source.match(/diagramPromptFromDescription\(description, body\.negativePrompt\)/g) || []).length >= 2,
     'initial PNG and critic-driven re-render must both carry negativePrompt',
   )
-  assert.match(source, /callSvgModel\([^\n]+withNegativePrompt\(description, body\.negativePrompt\), renderRoute\.region\)/)
+  assert.match(source, /callSvgModel\([^\n]+withNegativePrompt\(description, body\.negativePrompt\), renderRoute\.region, renderRoute\.custom\)/)
   assert.match(source, /plannerUserPrompt\([^\n]+body\.negativePrompt\)/)
   assert.match(source, /imageCriticUserPrompt\([^\n]+body\.negativePrompt\)/)
   assert.match(source, /plotPlannerUserPrompt\([^\n]+body\.negativePrompt\)/)

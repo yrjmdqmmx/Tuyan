@@ -1,6 +1,8 @@
+import type { createUniversalRuntime } from './universal-adapters.js'
 import type { LegacyHandler } from './server.js'
 
 declare const handler: LegacyHandler
+export function configureUniversalRuntime(runtime?: ReturnType<typeof createUniversalRuntime>): void
 export function configureRuntimeFetch(fetchImpl?: typeof fetch): void
 export function callImageModel(
   provider: 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'tokendance',

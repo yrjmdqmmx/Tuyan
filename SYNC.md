@@ -1,5 +1,18 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-20 · 通用 API 自有服务接入 v1
+
+- `modelRoutes.{main,vision,image}` 新增 `accessProvider=custom` 和可选 `custom` 描述符：协议、Base URL、认证方式、连接 ID、显式能力、图片输入/输出限额与尺寸映射；型号原样传递。不同地址的同名型号不共享能力。
+- `modelRegistry.universalApiContractVersion=1` 仅在 Core 安全适配器可用时返回；新增认证只读 `universalApiCheck`，区分配置/目录/真实调用状态。新增 `providerResume`，兼容原 `tokenDanceResume`；`recovery.channel` 可为 custom。
+- `apiKeys.custom` 是按连接 ID 组织的地址/协议/认证绑定密钥信封，仅通过受认证请求发送，不进入公开任务字段或日志。恢复快照沿用现有加密与 7 天过期机制，成功步骤复用；可只替换原连接的部分密钥。未知结果不重放。
+- 七协议族同步适配器、OpenRouter/Ark 显式变体；目录逐行隔离、调用前能力与实际图片预算校验。自定义地址只接受公网 HTTPS，固定已校验 DNS 地址，禁止重定向及下载转发凭据。未新增环境变量或迁移。
+- [x] Core / Gateway / 共享 API：实际生成链路、精修、错误和恢复桥接；本地模拟与类型/构建检查通过。
+- [x] Web：生成设置新增「通用 API」使用模式，按角色配置，保存非敏感草稿，旧渠道/型号/输入保留。密钥仅留当前页，地址改变后重新填写。
+- [x] 小程序 TS / JS：同步可选历史路线字段、通用任务恢复 action 与中文提示；自定义接入配置和新任务提交请使用 Web，本版不提供原生配置入口。
+- [ ] Web / Core / Gateway 生产发布：待固定 SHA / digest 发布及只读验收。
+- [ ] 微信平台上传 / 审核 / 发布：本次未操作。
+- 范围、官方文档与真实调用未验证事项见 [协议矩阵](docs/universal-api/protocol-matrix.md)。本轮不进行付费推理或历史重跑。
+
 ## 2026-09-19 · 观猹 TokenDance 实时目录异常隔离
 
 - `modelRegistry` 新增可选 `catalogHealth` / `catalogWarnings`；保留 `unavailableProviders`。TokenDance 已接入的异常型号继续返回原 ID、`selectable=false`、中文 `disabledReason`，默认 ID 不重写；其他正常模型不受单条异常影响。客户端不得把不可用型号替换成另一渠道或型号。

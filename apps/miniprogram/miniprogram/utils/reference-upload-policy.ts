@@ -11,7 +11,7 @@ export const REFERENCE_UPLOAD_PLATFORM = {
 export type ReferenceSubmissionPolicy = {
   maxCount: number; maxBytes: number; maxTotalBytes: number; maxDimension: number; maxPixels: number;
   minDimension: number; maxAspectRatio: number; requestMaxBytes: number;
-  mimeTypes: string[]; status: 'documented' | 'partial' | 'unconfirmed'; source: string; note: string;
+  mimeTypes: string[]; status: 'documented' | 'partial' | 'unconfirmed' | 'user-declared'; source: string; note: string;
 }
 export function referenceSubmissionPolicy(provider: string, model: string, workflow = 'generation'): ReferenceSubmissionPolicy {
   const p: ReferenceSubmissionPolicy = {
@@ -100,7 +100,7 @@ export function activeReferenceUploadPolicy(contract: any, route: any, workflow 
     ...REFERENCE_UPLOAD_PLATFORM, maxCount: 3, maxBytes: 5 * 1024 * 1024, maxTotalBytes: 15 * 1024 * 1024,
     maxPixels: 20000000,
   }
-  const submission = referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '', workflow)
+  const submission = routeReferencePolicy(route, workflow)
   const maxCount = Math.min(platform.maxCount, submission.maxCount)
   return { platform, submission, maxCount, modelLabel: route?.modelId || '未选择模型', workflow, version: contract?.version || 1 }
 }
@@ -139,4 +139,10 @@ export function referenceProcessingHint(policy: ReturnType<typeof activeReferenc
 export function referenceUploadTimeout(expiresAt?: number, now = Date.now()) {
   const deadline = Number.isSafeInteger(expiresAt) && Number(expiresAt) > 0 ? Number(expiresAt) : now + 900000
   return Math.max(0, Math.min(2147483647, deadline - now - 5000))
+}
+
+export function routeReferencePolicy(route: any, workflow = 'generation'): ReferenceSubmissionPolicy {
+  return route?.accessProvider === 'custom'
+    ? { ...referenceSubmissionPolicy('custom', route.modelId, workflow), maxCount: 0, note: '通用 API 配置与提交请使用网页版；小程序支持查看和恢复已有任务。' }
+    : referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '', workflow)
 }

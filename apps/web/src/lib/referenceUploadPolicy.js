@@ -1,4 +1,5 @@
 // Generated from packages/api/src/reference-upload.ts.
+import { universalReferencePolicy } from './universalContract.js';
 // Canonical upload policy. Run scripts/sync-reference-upload.mjs after editing.
 // Bytes are exact; official MB ceilings use decimal bytes, platform MiB uses 1024².
 export const REFERENCE_UPLOAD_VERSION = 2;
@@ -110,7 +111,7 @@ export function activeReferenceUploadPolicy(contract, route, workflow = 'generat
         ...REFERENCE_UPLOAD_PLATFORM, maxCount: 3, maxBytes: 5 * 1024 * 1024, maxTotalBytes: 15 * 1024 * 1024,
         maxPixels: 20000000,
     };
-    const submission = referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '', workflow);
+    const submission = routeReferencePolicy(route, workflow);
     const maxCount = Math.min(platform.maxCount, submission.maxCount);
     return { platform, submission, maxCount, modelLabel: route?.modelId || '未选择模型', workflow, version: contract?.version || 1 };
 }
@@ -155,4 +156,9 @@ export function referenceProcessingHint(policy) {
 export function referenceUploadTimeout(expiresAt, now = Date.now()) {
     const deadline = Number.isSafeInteger(expiresAt) && Number(expiresAt) > 0 ? Number(expiresAt) : now + 900000;
     return Math.max(0, Math.min(2147483647, deadline - now - 5000));
+}
+export function routeReferencePolicy(route, workflow = 'generation') {
+    return route?.accessProvider === 'custom'
+        ? universalReferencePolicy(route)
+        : referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '', workflow);
 }

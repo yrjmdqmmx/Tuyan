@@ -214,7 +214,14 @@ export function createApp({
       && adminTransport
       && tokensMatch(adminTransport, config.adminTransportToken),
     )
-    const tokenDanceAction = (TOKENDANCE_ACTIONS as readonly string[]).includes(action) || action === 'adminTokenDancePricing'
+    const usesCustom = action === 'universalApiCheck' || (body.mainRoute as any)?.accessProvider === 'custom' || Object.values((body.modelRoutes || {}) as any).some((route: any) => route?.accessProvider === 'custom')
+    if (usesCustom) {
+      const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || ''
+      if (!userId) return response.status(401).json({code: 401, error: '通用 API 接入需要先登录。'})
+      body.userId = userId
+      response.setHeader('Cache-Control', 'no-store')
+    }
+    const tokenDanceAction = action === 'providerResume' || (TOKENDANCE_ACTIONS as readonly string[]).includes(action) || action === 'adminTokenDancePricing'
     const usesTokenDance = ['createJob', 'refineImage', 'optimizeInputs'].includes(action) && (body.provider === 'tokendance' || (body.mainRoute as any)?.accessProvider === 'tokendance' || Object.values((body.modelRoutes || {}) as any).some((route: any) => route?.accessProvider === 'tokendance'))
     // Client-supplied TD keys and identities are never authoritative.
     if (body.apiKeys && typeof body.apiKeys === 'object') { body.apiKeys = { ...(body.apiKeys as object) }; delete (body.apiKeys as any).tokendance }
@@ -224,9 +231,9 @@ export function createApp({
         const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || ''
         if (tokenDanceAction) {
           if (!tokenDance) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。')
-          if (action === 'tokenDanceResume') {
+          if (action === 'tokenDanceResume' || action === 'providerResume') {
             if (!providerWorkflow || !resumeTokenDanceJob) throw new TokenDanceError(503, '任务恢复服务暂不可用。')
-            return response.json(await providerWorkflow.resume(String(body.jobId || ''), userId, resumeTokenDanceJob))
+            return response.json(await providerWorkflow.resume(String(body.jobId || ''), userId, resumeTokenDanceJob, typeof (body.apiKeys as any)?.custom === 'string' ? (body.apiKeys as any).custom : undefined))
           }
           return response.json(await tokenDance.handle(body, userId, isAdminTransport && Boolean(config.adminToken)))
         }
@@ -238,8 +245,8 @@ export function createApp({
           if (action === 'optimizeInputs') body.apiKey = credential.key
         }
       } catch (error: any) {
-        const status = error?.name === 'TokenDanceError' ? error.status : 503
-        return response.status(status).json({ code: status, error: error?.name === 'TokenDanceError' ? error.message : '观猹 TokenDance 服务暂不可用。', recoveryAction: error?.recoveryAction, retryAfterSeconds: error?.retryAfterSeconds || 0, uncertain: Boolean(error?.uncertain) })
+        const status = ['TokenDanceError','UniversalApiError'].includes(error?.name) ? error.status || 400 : 503
+        return response.status(status).json({ code: status, error: ['TokenDanceError','UniversalApiError'].includes(error?.name) ? error.message : '渠道连接或任务恢复服务暂不可用。', recoveryAction: error?.recoveryAction, retryAfterSeconds: error?.retryAfterSeconds || 0, uncertain: Boolean(error?.uncertain) })
       }
     }
     if (action === 'getJob' && providerWorkflow) await providerWorkflow.reconcile(String(body.jobId || ''))

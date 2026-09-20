@@ -59,7 +59,7 @@ Component({
     methods: {
         openTokenDance: tokendance_1.openTokenDance,
         async resumeJob() {
-            var _a, _b;
+            var _a, _b, _c, _d;
             if (!((_b = (_a = this.data.job) === null || _a === void 0 ? void 0 : _a.recovery) === null || _b === void 0 ? void 0 : _b.canResume) || this.resuming)
                 return;
             this.startRecoveryCountdown();
@@ -72,7 +72,7 @@ Component({
             this.resuming = true;
             this.setData({ error: '' });
             try {
-                await (0, api_1.requestJson)({ action: 'tokenDanceResume', jobId });
+                await (0, api_1.requestJson)({ action: ((_d = (_c = this.data.job) === null || _c === void 0 ? void 0 : _c.recovery) === null || _d === void 0 ? void 0 : _d.channel) === 'custom' ? 'providerResume' : 'tokenDanceResume', jobId });
                 if (current())
                     this.startPolling();
             }

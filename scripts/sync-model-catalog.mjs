@@ -59,6 +59,11 @@ config.providers.tokendance = [...tokenDanceCatalog.models].filter(m => m.roles.
 const tokenDanceModels = 'export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = ' + JSON.stringify(tokenDanceCatalog.models.map(m => ({id:m.id, roles:m.roles, protocols:m.supported_protocols}))) + '\n'
 write(path.join(root, 'packages/api/src/tokendance-models.ts'), '// Generated from config/tokendance/catalog.json\n' + tokenDanceModels)
 lines.push(fs.readFileSync(path.join(root, 'packages/api/src/execution-errors.ts'), 'utf8'), fs.readFileSync(path.join(root, 'packages/api/src/reference-selection.ts'), 'utf8'))
+const universalRuntime = fs.readFileSync(path.join(root, 'packages/api/src/universal-api.ts'), 'utf8')
+lines.push(universalRuntime)
+write(path.join(root, 'apps/web/src/lib/universalContract.js'), '// Generated from packages/api/src/universal-api.ts\n' + ts.transpileModule(universalRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+const universalMiniTypes = universalRuntime.slice(0, universalRuntime.indexOf('const universalErrorMessages')) + universalRuntime.slice(universalRuntime.indexOf('export interface UniversalInputLimits'), universalRuntime.indexOf('export const UNIVERSAL_PLATFORM_LIMITS'))
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/universal-api.ts'), '// Generated shared history types; configuration and execution are Web/Core-only.\n' + universalMiniTypes)
 lines.push(fs.readFileSync(path.join(root, 'packages/api/src/tokendance-catalog.ts'), 'utf8'))
 lines.push(tokenDanceModels, fs.readFileSync(path.join(root, 'packages/api/src/tokendance.ts'), 'utf8').replace(/^import .* from .*\n/gm, ''))
 lines.push(sizeRuntime, `const imageSizeProfiles: Record<string, ImageSizeContract> = ${JSON.stringify(sizeConfig.profiles)}`, `const imageSizeRoutes: Record<string, {generation: string | null; editing: string | null; reviewedAt: string; sources: string[]; notes: string}> = ${JSON.stringify(sizeConfig.routes)}`)

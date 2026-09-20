@@ -118,6 +118,7 @@ export function groupRegistryModels(models) {
 
 export function modelRefinePresentation(model) {
   const serverMode = model?.capabilities?.imageEditMode || 'none'
+  if (model?.verificationState === 'user-declared' && serverMode === 'none') return {mode:'none',label:'未声明直接编辑能力',directEdit:false}
   const acceptsImages = model?.inputModalities?.includes('image') || model?.capabilities?.referenceImages === true
   if (serverMode === 'direct-edit' && acceptsImages) {
     return { mode: 'direct-edit', label: '直接编辑', directEdit: true }
