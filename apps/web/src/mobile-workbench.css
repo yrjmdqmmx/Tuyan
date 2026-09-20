@@ -11,8 +11,8 @@
   .mobile-header-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
   .mobile-header-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 44px; min-height: 44px; padding: 0 6px; border: 0; border-radius: 8px; color: var(--sage); background: transparent; font-size: 14px; font-weight: 600; }
   .paper-tabs { width: 100%; max-width: none; flex-wrap: wrap; overflow: visible; gap: 4px; padding: 4px 0 10px; margin: 0; border: 0; border-bottom: 1px solid var(--hairline); border-radius: 0; background: transparent; }
-  .paper-tabs button { flex: 1 1 auto; min-width: 44px; min-height: 48px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 600; }
-  .paper-tabs button.active { background: #e7eee6; color: #28523f; box-shadow: none; }
+  .paper-tabs > :is(button, a) { flex: 1 1 auto; min-width: 44px; min-height: 48px; padding: 0 10px; border-radius: 9px; font-size: 14px; font-weight: 600; }
+  .paper-tabs > :is(button, a).active { background: #e7eee6; color: #28523f; box-shadow: none; }
   .mobile-workspace-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-block: 8px 16px; margin-bottom: 12px; border-bottom: 1px solid var(--hairline); }
   .mobile-workspace-links button { display: flex; align-items: center; justify-content: flex-start; gap: 8px; min-height: 48px; padding: 10px; border: 0; border-radius: 8px; color: var(--sage); background: #edf3eb; font-size: 14px; }
   .service-alert, .notice { padding: 12px; margin-block: 16px; box-shadow: none; overflow-wrap: anywhere; }
@@ -197,7 +197,7 @@
   .mobile-more-dialog .header-actions { display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr); }
   .mobile-more-dialog .watcha-product-badge { width: 220px; max-width: 100%; margin: 0; }
   .mobile-more-dialog .auth-user { width: 100%; max-width: none; flex-wrap: wrap; border-radius: 8px; }
-  .mobile-more-dialog .auth-user span { overflow: visible; white-space: normal; overflow-wrap: anywhere; flex: 1; }
+  .mobile-more-dialog .auth-user .auth-user-email { overflow: visible; white-space: normal; overflow-wrap: anywhere; flex: 1; }
   .mobile-more-dialog .auth-user button { min-height: 44px; }
   .mobile-more-dialog .auth-entry-button { min-height: 44px; }
   .mobile-header-actions button:focus-visible, .generation-summary-details summary:focus-visible { outline: 2px solid var(--sage); outline-offset: -2px; }

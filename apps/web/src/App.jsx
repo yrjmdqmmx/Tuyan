@@ -1,6 +1,7 @@
 import GenerationWorkspace, { GenerationInputPanel } from './components/GenerationWorkspace';
 import useCompactLayout from './hooks/useCompactLayout';
 import WorkbenchHeader from './components/WorkbenchHeader';
+import PageNavigation from './components/PageNavigation';
 import GenerationSummaryDetails from './components/GenerationSummaryDetails';
 import useVisualViewport from './hooks/useVisualViewport';
 import UniversalApiSettings from './components/UniversalApiSettings.jsx';
@@ -1602,14 +1603,10 @@ export default function App() {
 
       <ContactDialog open={showContactDialog} onClose={() => setShowContactDialog(false)} />
 
-      <nav className="paper-tabs" aria-label="主导航">
-        {WORKSPACE_TABS.filter(([tab]) => !compactLayout || !['account', 'guide'].includes(tab)).map(([tab, label]) => (
-          <button key={tab} type="button" className={activeTab === tab ? 'active' : ''} aria-current={activeTab === tab ? 'page' : undefined} onClick={() => selectTab(tab)}>{label}</button>
-        ))}
-        {isAdmin && !compactLayout ? (
-          <button type="button" className={activeTab === 'admin' ? 'active' : ''} aria-current={activeTab === 'admin' ? 'page' : undefined} onClick={() => selectTab('admin')}>站长</button>
-        ) : null}
-      </nav>
+      <PageNavigation activeId={activeTab} onSelect={selectTab} items={[
+        ...WORKSPACE_TABS.filter(([tab]) => !compactLayout || !['account', 'guide'].includes(tab)).map(([id, label]) => ({ id, label })),
+        ...(isAdmin && !compactLayout ? [{ id: 'admin', label: '站长' }] : []),
+      ]} />
 
       {AUTH_REQUIRED && authSession.isPending ? (
         <section className="auth-panel">

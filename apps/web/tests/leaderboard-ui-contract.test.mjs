@@ -27,9 +27,8 @@ test('leaderboard headers use the 图研Tuyan brand without the retired subtitle
     assert.doesNotMatch(source, /PaperBanana 标志|>PaperBanana<|PAPERBANANA IMAGE MODEL LEADERBOARD/u)
   }
   const root = readSource('../src/components/LeaderboardRoot.jsx')
-  assert.match(root, /alt="图研Tuyan 标志"/u)
-  assert.match(root, /<strong>图研Tuyan<\/strong>/u)
-  // The phone header identifies the current section; retired product taglines stay removed.
+  assert.match(root, /<WorkbenchHeader section="leaderboard"/u)
+  // All routes share the workbench brand; retired product taglines stay removed.
   assert.doesNotMatch(root, /多智能体|学术图示生成/u)
 })
 
