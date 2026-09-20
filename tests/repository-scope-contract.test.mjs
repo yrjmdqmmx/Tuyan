@@ -42,7 +42,7 @@ test('public legal copy names only the current user clients', () => {
 
 test('retained clients link to the canonical GitHub repository', () => {
   const sources = [
-    read('apps/web/src/App.jsx'),
+    read('apps/web/src/components/WorkbenchHeader.jsx'),
     read('apps/miniprogram/miniprogram/pages/guide/guide.ts'),
     read('apps/miniprogram/miniprogram/pages/guide/guide.js'),
   ]
