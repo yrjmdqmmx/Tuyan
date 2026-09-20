@@ -29,7 +29,8 @@ test('leaderboard headers use the 图研Tuyan brand without the retired subtitle
   const root = readSource('../src/components/LeaderboardRoot.jsx')
   assert.match(root, /alt="图研Tuyan 标志"/u)
   assert.match(root, /<strong>图研Tuyan<\/strong>/u)
-  assert.doesNotMatch(root, /<small>|多智能体|学术图示生成/u)
+  // The phone header identifies the current section; retired product taglines stay removed.
+  assert.doesNotMatch(root, /多智能体|学术图示生成/u)
 })
 
 test('rendered leaderboard search keeps a visible two-pixel keyboard focus outline', () => {

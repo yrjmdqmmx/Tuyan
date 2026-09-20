@@ -4,6 +4,7 @@ import { OFFICIAL_PRICES, comparisonPrice, filterModels, metricScore, paretoFron
 import { clamp, costDomain, displayCost, modelName, sortedCosts } from './benchmarkParetoDisplay.js'
 import { Brand, CostInfo, PriceTable, profileHref } from './BenchmarkParetoDetails.jsx'
 import BenchmarkParetoScatter from './BenchmarkParetoScatter.jsx'
+import useCompactLayout from '../hooks/useCompactLayout.js'
 
 function BudgetFilters({ vendors, vendor, min, max, ceiling, error, onVendor, onBudget, onReset }) {
   const lower = clamp(Number(min) || 0, 0, ceiling), upper = clamp(max === '' || !Number.isFinite(Number(max)) ? ceiling : Number(max), 0, ceiling)
@@ -61,6 +62,7 @@ function CostRanking({ rows, frontier, metric, label, costBasis, selectedId, onS
 }
 
 export default function BenchmarkPareto({ models, axes, viewSwitch }) {
+  const compact = useCompactLayout()
   const [metric, setMetric] = useState('overall'), [query, setQuery] = useState(''), [vendor, setVendor] = useState('')
   const [min, setMin] = useState(''), [max, setMax] = useState(''), [costBasis, setCostBasis] = useState('combined')
   const [filtersOpen, setFiltersOpen] = useState(false), [selectedId, setSelectedId] = useState(null), [hoverId, setHoverId] = useState(null), [focusRequest, setFocusRequest] = useState(null)
@@ -102,7 +104,7 @@ export default function BenchmarkPareto({ models, axes, viewSwitch }) {
     </div>
     <CostRanking key={filterKey} rows={filtered.visible} frontier={frontier} metric={metric} label={label} costBasis={costBasis} selectedId={selection} onSelect={select} onHover={setHoverId} onShowData={showData} />
     <details className="pareto-data" ref={dataRef} id="pareto-pricing"><summary>数据与计费说明 <ChevronDown size={17} /></summary>
-      <div className="pareto-data-content"><div className="pareto-data-settings"><label>成本来源<select aria-label="成本来源" value={costBasis} onChange={e => { setCostBasis(e.target.value);clear() }}><option value="combined">官方报价 + 7 项已核对测试费用</option><option value="official">仅官方定价</option></select></label><p>默认包含 28 个官方报价与 7 个历史测试账单，费用来源逐模型保留。两类来源不同，不将测试费用解释为当前厂商直营价格。</p></div>
+      <div className="pareto-data-content"><div className="pareto-data-settings"><label>成本来源<select aria-label="成本来源" value={costBasis} onChange={e => { setCostBasis(e.target.value);clear() }}><option value="combined">{compact ? '官方报价 + 测试费用' : '官方报价 + 7 项已核对测试费用'}</option><option value="official">仅官方定价</option></select></label><p>默认包含 28 个官方报价与 7 个历史测试账单，费用来源逐模型保留。两类来源不同，不将测试费用解释为当前厂商直营价格。</p></div>
         <div className="pareto-method-grid"><div><h3>固定九题等权</h3><p>单张成本 =（6 道生成费用 + 3 道编辑费用）÷ 9。每题 1 张，编辑含 1 张 2048×1152 源图。沿用原分辨率和质量条件，不按成功图片数重新加权。测试费用含当前公开题位内的调用尝试，不含审评费用。</p></div><div><h3>汇率与精度</h3><p>CNY × 1.1460 ÷ 7.6755 = USD；采用 ECB {OFFICIAL_PRICES.fx.date} 参考汇率。USD 账单不换汇。前沿使用原始分数与精确价格，主界面小数位仅用于显示。</p><a href={OFFICIAL_PRICES.fx.source} target="_blank" rel="noreferrer">ECB 参考汇率</a></div><div><h3>数据与计算范围</h3><p>正式榜单 {models.length} 个模型；前沿只在当前维度、搜索、供应商与预算范围内计算。缩放只改变视窗。连线为视觉引导。缺价不记零，官方估算不进入前沿。</p><p>价格查询 / 账单读取：{OFFICIAL_PRICES.checkedAt}。原评分、评语、费用和生成证据保持不变。</p></div></div>
         <details className="pareto-exclusions"><summary>未纳入成本比较的模型 · 当前搜索与供应商范围 {filtered.missing.length} 个</summary><ul>{filtered.missing.map(({ model, price }) => <li key={model.modelId}><a href={profileHref(model)}>{model.displayName}</a><code>{model.modelId}</code><p>{price.reason || '当前评分维度无正式分数。'}</p></li>)}</ul></details>
         <details className="pareto-source-details"><summary>完整价格来源与逐题计算 · {rows.length} 个模型</summary><PriceTable rows={rows} /></details>

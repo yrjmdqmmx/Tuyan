@@ -108,3 +108,37 @@ test('clearing session immediately clears admin rows and ignores late queue resp
     globalThis.fetch = previousFetch
   }
 })
+
+test('phone header keeps secondary routes and account actions in More, then restores desktop navigation', async () => {
+  const previousMedia = window.matchMedia
+  const listeners = new Set()
+  const media = { matches: true, addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) }
+  window.matchMedia = () => media
+  const actions = []
+  try {
+    render(React.createElement(LeaderboardSessionProvider, { authEnabled: true, initialSession: { user: { id: 'user-1', email: 'reader@example.com' } } },
+      React.createElement(BenchmarkSiteHeader, { route: {}, onFeedback: () => actions.push('feedback'), onLogin() {}, onAccount: () => actions.push('account'), onSignOut: () => actions.push('signout') }),
+    ))
+    const more = screen.getByRole('button', { name: '更多', exact: true })
+    assert.equal(screen.getByRole('navigation', { name: '排行榜导航' }).children.length, 3)
+    assert.equal(screen.queryByRole('link', { name: 'GitHub' }), null)
+    more.focus()
+    fireEvent.click(more)
+    assert.equal(screen.getByRole('link', { name: '提交评估题' }).getAttribute('href'), '/leaderboard/submit-prompt')
+    assert.equal(screen.getByRole('link', { name: 'GitHub' }).getAttribute('target'), '_blank')
+    fireEvent.click(screen.getByRole('button', { name: '意见反馈' }))
+    assert.deepEqual(actions, ['feedback'])
+    assert.equal(screen.queryByRole('dialog'), null)
+    await waitFor(() => assert.equal(document.activeElement, more))
+    fireEvent.click(screen.getByRole('button', { name: '账户', exact: true }))
+    assert.deepEqual(actions, ['feedback', 'account'])
+    fireEvent.click(more)
+    fireEvent.click(screen.getByRole('button', { name: '退出登录' }))
+    assert.deepEqual(actions, ['feedback', 'account', 'signout'])
+    fireEvent.click(more)
+    act(() => { media.matches = false; listeners.forEach(fn => fn()) })
+    assert.equal(screen.queryByRole('dialog'), null)
+    assert.equal(screen.getByRole('navigation', { name: '排行榜导航' }).children.length, 6)
+    assert.equal(document.body.style.overflow, '')
+  } finally { cleanup(); window.matchMedia = previousMedia }
+})

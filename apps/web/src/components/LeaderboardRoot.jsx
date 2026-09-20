@@ -1,5 +1,5 @@
-import { Suspense, createContext, lazy, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { ExternalLink, MessageSquare, ShieldCheck } from 'lucide-react'
+import { Suspense, createContext, lazy, useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { ExternalLink, Menu, MessageSquare, ShieldCheck, X } from 'lucide-react'
 import { submitFeedbackRequest } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
@@ -8,7 +8,11 @@ import {
   AUTH_UI_ENABLED,
   CLIENT_VERSION,
   authClient,
+  logoUrl,
 } from '../config.js'
+import useCompactLayout from '../hooks/useCompactLayout.js'
+import useVisualViewport from '../hooks/useVisualViewport.js'
+import AccessibleDialog from './AccessibleDialog.jsx'
 import AuthPanel from './AuthPanel.jsx'
 import AuthUnavailablePanel from './AuthUnavailablePanel.jsx'
 import BenchmarkMethodologyPage from './BenchmarkMethodologyPage.jsx'
@@ -107,6 +111,35 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
   const auth = useLeaderboardSession()
   const user = auth.session?.user
   const active = activeNav(route)
+  const compact = useCompactLayout()
+  const [moreOpen, setMoreOpen] = useState(false)
+  const moreTitleId = useId()
+  useEffect(() => { if (!compact) setMoreOpen(false) }, [compact])
+  const navItem = item => active === item.id
+    ? <span key={item.id} aria-current="page">{item.label}</span>
+    : <a key={item.id} href={item.href} {...(item.external ? { target: '_blank', rel: 'noreferrer' } : {})}>{item.label}{item.external ? <ExternalLink size={12} /> : null}</a>
+  function closeAfterAction(event) {
+    if (event.target.closest('a, button')) setMoreOpen(false)
+  }
+  if (compact) return <>
+    <header className="benchmark-site-header benchmark-phone-header">
+      <a className="benchmark-site-brand" href={appPath('/')}><img src={logoUrl} alt="图研Tuyan 标志" /><span><strong>图研 Tuyan</strong><small>科研图示模型评测</small></span></a>
+      <div className="mobile-header-actions">
+        {AUTH_UI_ENABLED && <button type="button" onClick={user ? onAccount : onLogin}>{user ? '账户' : '登录'}</button>}
+        <button type="button" aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={18} />更多</button>
+      </div>
+      <nav className="benchmark-mobile-nav" aria-label="排行榜导航">{navItems.slice(0, 3).map(navItem)}</nav>
+    </header>
+    <AccessibleDialog open={moreOpen} onClose={() => setMoreOpen(false)} labelledBy={moreTitleId} className="mobile-more-dialog benchmark-more-dialog" backdropClassName="mobile-more-backdrop">
+      <header className="mobile-more-head"><h2 id={moreTitleId}>更多功能</h2><button type="button" aria-label="关闭更多功能" onClick={() => setMoreOpen(false)}><X size={20} /></button></header>
+      <nav className="benchmark-more-links" aria-label="更多排行榜功能" onClick={closeAfterAction}>
+        {navItems.slice(3).map(navItem)}
+        <button type="button" onClick={onFeedback}><MessageSquare size={18} />意见反馈</button>
+        {AUTH_UI_ENABLED && user && <><button type="button" onClick={onAccount}><ShieldCheck size={18} />账号设置</button><button type="button" onClick={onSignOut}>退出登录</button></>}
+      </nav>
+      {user && <p className="benchmark-more-identity">{user.email}</p>}
+    </AccessibleDialog>
+  </>
   return (
     <header className="benchmark-site-header">
       <a className="benchmark-site-brand" href={appPath('/')}>
@@ -129,6 +162,7 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
 }
 
 export default function LeaderboardRoot({ apiBase, backendMode, enabled, pathname, route }) {
+  useVisualViewport()
   const auth = useLeaderboardSession()
   const [showAuth, setShowAuth] = useState(false)
   const [showAccount, setShowAccount] = useState(false)

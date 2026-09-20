@@ -13,6 +13,7 @@ import {
   BenchmarkPromptSubmissionPage,
 } from './BenchmarkEvidencePages.jsx'
 import { normalizeLeaderboardRelease } from './benchmarkRelease.js'
+import useCompactLayout from '../hooks/useCompactLayout.js'
 import BenchmarkPareto from './BenchmarkPareto.jsx'
 
 export { BenchmarkEvidenceImage, BenchmarkPromptSubmissionForm }
@@ -98,8 +99,17 @@ function LeaderboardNav() {
 }
 
 function LeaderboardHero({ release, compact = false }) {
-  if (compact) return <header className="bench-compact-hero"><h1>图研 Tuyan Benchmark</h1><p>科研图示生成与编辑模型评测</p></header>
+  const phone = useCompactLayout()
   const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
+  if (phone) return <header className="bench-phone-hero">
+    <h1>模型评测排行榜</h1>
+    <p>科研图示生成与编辑模型的能力与成本对比。</p>
+    <details className="bench-phone-method">
+      <summary>评测说明<span>{release.eligibleModelCount ?? release.models?.length ?? 0} 个模型</span></summary>
+      <div><p>面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据。</p><p>{scientific ? '固定 9 题 · 6 生成 + 3 编辑；独立双盲 + 争议仲裁；十维等权，失败记 0。' : '固定 4 题 · 每模型 4 张；Codex 双遍盲审；七维等权。'}</p><a href={METHODOLOGY_HREF}>查看完整方法说明</a></div>
+    </details>
+  </header>
+  if (compact) return <header className="bench-compact-hero"><h1>图研 Tuyan Benchmark</h1><p>科研图示生成与编辑模型评测</p></header>
   return (
     <header className="bench-hero">
       <div className="bench-eyebrow">TUYAN BENCHMARK</div>
