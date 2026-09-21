@@ -38,8 +38,39 @@ function modelChannelCategoryOrder(channel: string): number {
   return index < 0 ? groups.length : index
 }
 
-export function modelChannelCategoryLabel(channel: string): string {
-  return ['国内聚合渠道', '国内官方直连', '国外官方直连', '国外聚合渠道'][modelChannelCategoryOrder(channel)] || '分类待确认'
+export interface ModelVersion {
+  kind: 'fixed' | 'rolling' | 'unconfirmed'
+  id: string
+  checkedAt: string
+  sourceUrl: string
+}
+
+export function normalizeModelVersion(value: unknown): ModelVersion | undefined {
+  if (!value || typeof value !== 'object') return undefined
+  const v = value as Record<string, unknown>
+  if (!['fixed', 'rolling', 'unconfirmed'].includes(String(v.kind))) return undefined
+  return { kind: v.kind as ModelVersion['kind'], id: typeof v.id === 'string' ? v.id : '',
+    checkedAt: typeof v.checkedAt === 'string' ? v.checkedAt : '',
+    sourceUrl: typeof v.sourceUrl === 'string' && /^https:\/\//.test(v.sourceUrl) ? v.sourceUrl : '' }
+}
+
+export function modelVersionLabel(model: PresentedModel): string {
+  const version = normalizeModelVersion(model.version)
+  return version?.kind === 'fixed' ? '固定版本' : version?.kind === 'rolling' ? '滚动别名' : '版本待确认'
+}
+
+export function modelVersionDetail(model: PresentedModel): string {
+  const version = normalizeModelVersion(model.version)
+  const current = version?.id ? (version.kind === 'unconfirmed' ? '目录版本：' : '已核对版本：') + version.id : '具体版本待确认'
+  return [modelVersionLabel(model), current, version?.checkedAt ? '核对于 ' + version.checkedAt : ''].filter(Boolean).join(' · ')
+}
+
+// Public catalog identity is not an immutable-weights guarantee. Never copy the
+// direct provider's alias mapping into an aggregator or cache a guessed target.
+export function openRouterModelVersion(id: string, canonicalSlug: string, checkedAt: string, image = false): ModelVersion {
+  return { kind: id.startsWith('~') ? 'rolling' : 'unconfirmed',
+    id: id.startsWith('~') ? '' : canonicalSlug, checkedAt,
+    sourceUrl: 'https://openrouter.ai/api/v1/' + (image ? 'images/' : '') + 'models' }
 }
 
 export function modelLifecycleLabel(lifecycle: string): string {
@@ -78,6 +109,7 @@ export function presentRegistryModel<T extends PresentedModel>(provider: string,
 
 function modelDisplayLabel(model: PresentedModel, developerId: string): string {
   const label = String(model.label || model.id)
+  if (model.version && label !== model.id) return label.replace(/^[^:]+: /, '')
   if (label !== model.id && !label.includes('/')) return label.replace(/^[^:]+: /, '')
   // This is display-only. Preserve the original ID, including tier and task suffixes.
   let name = model.id.replace(/^Pro\//i, '').replace(/^accounts\/fireworks\/models\//, '').replace(/^fal-ai\//, '')

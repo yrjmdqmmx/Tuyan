@@ -1,4 +1,4 @@
-import { MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelChannelCategoryLabel, modelLifecycleLabel } from '../../utils/model-presentation'
+import { MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelVersionLabel, modelVersionDetail, modelLifecycleLabel } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { registryForRegions } from '../../utils/provider-regions'
 import { MODEL_PROVIDER_IDS, groupRegistryModels, partitionRegistryModels, type ModelProviderId, type ModelRegistry, type ModelRole, type RegistryModel } from '../../utils/model-registry'
@@ -8,7 +8,7 @@ const MODEL_PAGE_SIZE = 30
 
 interface ProviderCard { id: ModelProviderId; label: string; kindText: string; count: number }
 interface VendorCard { vendor: string; count: number }
-interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'recommended' | 'requiresEntitlement' | 'availabilityNotes'> { lifecycleText: string; verificationText: string; serviceTier: string; capabilityText: string; releaseText: string; selected: boolean }
+interface ModelCard extends Pick<RegistryModel, 'id' | 'label' | 'recommended' | 'requiresEntitlement' | 'availabilityNotes'> { lifecycleText: string; verificationText: string; serviceTier: string; capabilityText: string; releaseText: string; versionLabel: string; versionText: string; apiIdentifier: string; selected: boolean }
 
 Component({
   options: { styleIsolation: 'apply-shared' },
@@ -62,7 +62,7 @@ Component({
     resetFlow() {
       const registry = this.getRegistry()
       const providerCards = orderModelChannels(MODEL_PROVIDER_IDS).map(id => ({
-        id, label: PROVIDER_LABELS[id], kindText: modelChannelCategoryLabel(id),
+        id, label: PROVIDER_LABELS[id], kindText: registry?.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连',
         count: this.compatibleModels(id).length,
       })).filter(item => item.count > 0)
       const selectedProvider = String(this.properties.selectedProvider || '') as ModelProviderId
@@ -153,7 +153,7 @@ function presentModel(model: RegistryModel, selectedProvider: unknown, selectedM
   return {
     id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
     availabilityNotes: [model.availabilityNotes, model.capabilities?.requiresSourceImage ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
-    serviceTier: model.serviceTier || '',
+    serviceTier: model.serviceTier || '', versionLabel: modelVersionLabel(model), versionText: modelVersionDetail(model), apiIdentifier: model.apiIdentifier || model.id,
     capabilityText: [model.roles.includes('main') ? '文本' : '', model.roles.includes('vision') ? '视觉理解' : '', model.roles.includes('image') && !model.capabilities?.requiresSourceImage ? '生图' : '', model.capabilities?.imageEditMode === 'direct-edit' ? '编辑' : ''].filter(Boolean).join(' · '),
     releaseText: [model.releasedAt || (model.releaseOrder ? '按官方版本排序 · 日期待确认' : '发布日期待确认'), model.releaseKind === 'snapshot' ? '日期快照' : ''].filter(Boolean).join(' · '),
     lifecycleText: modelLifecycleLabel(model.lifecycle),

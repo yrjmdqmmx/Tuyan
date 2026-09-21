@@ -1733,7 +1733,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-21.v20')
+    assert.equal(result.registryVersion, '2026-09-21.v21')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2985,7 +2985,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-21.v20')
+    assert.equal(registry.registryVersion, '2026-09-21.v21')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5323,7 +5323,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-21.v20')
+    assert.equal(registry.registryVersion, '2026-09-21.v21')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6832,4 +6832,31 @@ test('September OpenRouter discovery maps all 21 new synchronous IDs using chann
       assert.equal(model.verified, false)
     }
   } finally {legacy.configureRuntimeFetch()}
+})
+
+test('live modelRegistry preserves OpenRouter canonical versions without substituting direct DeepSeek aliases', async () => {
+  const legacy = await loadLegacy()
+  legacy.configureRuntimeFetch(async (url: any, init: any) => {
+    assert.equal(init?.method, 'GET', 'this registry check must never dispatch inference')
+    const imageCatalog = String(url).includes('/images/models')
+    const rows = imageCatalog ? [{id:'google/gemini-3.1-flash-image',name:'Gemini Flash Image',supported_parameters:{output_format:{values:['png']}}}] : [
+      {id:'google/gemini-3.1-flash-image',name:'Gemini Flash Image',canonical_slug:'google/gemini-3.1-flash-image-20260528'},
+      {id:'deepseek/deepseek-v4-pro',name:'DeepSeek: DeepSeek V4 Pro 0423',canonical_slug:'deepseek/deepseek-v4-pro-20260423'},
+      {id:'deepseek/deepseek-v4-pro-0813',name:'DeepSeek: DeepSeek V4 Pro 0813',canonical_slug:'deepseek/deepseek-v4-pro-20260813'},
+      {id:'~deepseek/deepseek-pro-latest',name:'DeepSeek Latest',canonical_slug:'~deepseek/deepseek-pro-latest'},
+      {id:'example/new-model',name:'New model'},
+    ]
+    return new Response(JSON.stringify({data:rows.map(m=>({...m,architecture:{input_modalities:['text'],output_modalities:[imageCatalog?'image':'text']}}))}), {status:200})
+  })
+  try {
+    const result = await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+    assert.equal(result.code,0)
+    assert.equal(result.providers.openrouter.models.find((m:any)=>m.id==='google/gemini-3.1-flash-image').version.id,'', 'a text canonical slug cannot prove a dedicated image endpoint version')
+    const models=result.providers.openrouter.models
+    assert.equal(models.find((m:any)=>m.id==='deepseek/deepseek-v4-pro').version.id,'deepseek/deepseek-v4-pro-20260423')
+    assert.match(models.find((m:any)=>m.id==='deepseek/deepseek-v4-pro').label,/0423/)
+    assert.equal(models.find((m:any)=>m.id==='deepseek/deepseek-v4-pro-0813').version.id,'deepseek/deepseek-v4-pro-20260813')
+    assert.equal(models.find((m:any)=>m.id==='~deepseek/deepseek-pro-latest').version.id,'')
+    assert.equal(models.find((m:any)=>m.id==='example/new-model').version.kind,'unconfirmed')
+  } finally { legacy.configureRuntimeFetch() }
 })

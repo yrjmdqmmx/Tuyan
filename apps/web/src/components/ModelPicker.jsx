@@ -1,7 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Check, ChevronDown, Copy, Search, Sparkles, X } from 'lucide-react'
 import { groupRegistryModels, partitionRegistryModels } from '../lib/modelRegistry'
-import { MODEL_CHANNEL_LABELS, presentRegistryModel, orderModelChannels, modelChannelCategoryLabel, modelLifecycleLabel } from '../lib/modelPresentation'
+import { MODEL_CHANNEL_LABELS, presentRegistryModel, orderModelChannels, modelVersionLabel, modelVersionDetail, modelLifecycleLabel } from '../lib/modelPresentation'
 
 const COMPATIBLE_PAGE_SIZE = 24
 const COMPACT_MEDIA_QUERY = '(max-width: 1076px)'
@@ -224,7 +224,7 @@ export default function ModelPicker({
       {providerIds.map((id) => (
         <button type="button" key={id} aria-label={providerDisplayName(id, providerConfigs)} aria-pressed={selectedProvider === id} className={selectedProvider === id ? 'active' : ''} onClick={() => chooseProvider(id)}>
           <strong>{providerDisplayName(id, providerConfigs)}</strong>
-          <small>{modelChannelCategoryLabel(id)}</small>
+          <small>{effectiveRegistry.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连'}</small>
         </button>
       ))}
     </div>
@@ -261,7 +261,7 @@ export default function ModelPicker({
                 <span className="model-option-meta">{capabilityLabel(model)}</span>
                 <span className="model-option-badges">
                   {model.releasedAt ? <time dateTime={model.releasedAt}>{model.releasedAt}</time> : <span>{model.releaseOrder ? '按官方版本排序' : '发布日期待确认'}</span>}
-                  <em>{modelLifecycleLabel(model.lifecycle)}</em>
+                  <em>{modelLifecycleLabel(model.lifecycle)}</em><em>{modelVersionLabel(model)}</em>
                   {model.releaseKind === 'snapshot' ? <em>日期快照</em> : null}
                   {model.serviceTier ? <em>{model.serviceTier}</em> : null}
                   {model.recommended && model.lifecycle === 'stable' ? <em>推荐</em> : null}
@@ -271,6 +271,9 @@ export default function ModelPicker({
               </button>
               <div className="model-id-row"><code title={model.id}>{model.id}</code><button type="button" className="model-id-copy" aria-label={`复制模型 ID ${model.id}`} onClick={() => copyModelId(model.id)}><Copy size={14} /><span>复制 ID</span></button></div>
               <details className="model-option-details"><summary>模型详情</summary>
+                <p>{modelVersionDetail(model)}</p>
+                {model.apiIdentifier ? <p>调用标识：{model.apiIdentifier}</p> : <p>API model ID：{model.id}</p>}
+                {model.version?.sourceUrl ? <a href={model.version.sourceUrl} target="_blank" rel="noreferrer">版本映射依据</a> : null}
                 <p>{modelLifecycleLabel(model.lifecycle)}{model.releaseKind === 'snapshot' ? ' · 日期快照' : ''} · {model.releasedAt || '发布日期待确认'}{!model.releasedAt && model.releaseOrder ? '，按官方版本顺序展示' : ''}</p>
                 <p>{verificationLabel(model)}{model.entitlement ? ` · 权益要求：${model.entitlement}` : ''}</p>
                 {model.availabilityNotes ? <p>{model.availabilityNotes}</p> : null}

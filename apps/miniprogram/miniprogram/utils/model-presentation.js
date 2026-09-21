@@ -2,7 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MODEL_CHANNEL_LABELS = exports.MODEL_PRESENTATION = void 0;
 exports.orderModelChannels = orderModelChannels;
-exports.modelChannelCategoryLabel = modelChannelCategoryLabel;
+exports.normalizeModelVersion = normalizeModelVersion;
+exports.modelVersionLabel = modelVersionLabel;
+exports.modelVersionDetail = modelVersionDetail;
+exports.openRouterModelVersion = openRouterModelVersion;
 exports.modelLifecycleLabel = modelLifecycleLabel;
 exports.modelDeveloper = modelDeveloper;
 exports.presentRegistryModel = presentRegistryModel;
@@ -36,8 +39,31 @@ function modelChannelCategoryOrder(channel) {
     const index = groups.findIndex(group => group.includes(channel));
     return index < 0 ? groups.length : index;
 }
-function modelChannelCategoryLabel(channel) {
-    return ['国内聚合渠道', '国内官方直连', '国外官方直连', '国外聚合渠道'][modelChannelCategoryOrder(channel)] || '分类待确认';
+function normalizeModelVersion(value) {
+    if (!value || typeof value !== 'object')
+        return undefined;
+    const v = value;
+    if (!['fixed', 'rolling', 'unconfirmed'].includes(String(v.kind)))
+        return undefined;
+    return { kind: v.kind, id: typeof v.id === 'string' ? v.id : '',
+        checkedAt: typeof v.checkedAt === 'string' ? v.checkedAt : '',
+        sourceUrl: typeof v.sourceUrl === 'string' && /^https:\/\//.test(v.sourceUrl) ? v.sourceUrl : '' };
+}
+function modelVersionLabel(model) {
+    const version = normalizeModelVersion(model.version);
+    return (version === null || version === void 0 ? void 0 : version.kind) === 'fixed' ? '固定版本' : (version === null || version === void 0 ? void 0 : version.kind) === 'rolling' ? '滚动别名' : '版本待确认';
+}
+function modelVersionDetail(model) {
+    const version = normalizeModelVersion(model.version);
+    const current = (version === null || version === void 0 ? void 0 : version.id) ? (version.kind === 'unconfirmed' ? '目录版本：' : '已核对版本：') + version.id : '具体版本待确认';
+    return [modelVersionLabel(model), current, (version === null || version === void 0 ? void 0 : version.checkedAt) ? '核对于 ' + version.checkedAt : ''].filter(Boolean).join(' · ');
+}
+// Public catalog identity is not an immutable-weights guarantee. Never copy the
+// direct provider's alias mapping into an aggregator or cache a guessed target.
+function openRouterModelVersion(id, canonicalSlug, checkedAt, image = false) {
+    return { kind: id.startsWith('~') ? 'rolling' : 'unconfirmed',
+        id: id.startsWith('~') ? '' : canonicalSlug, checkedAt,
+        sourceUrl: 'https://openrouter.ai/api/v1/' + (image ? 'images/' : '') + 'models' };
 }
 function modelLifecycleLabel(lifecycle) {
     return { stable: '稳定版', preview: '预览版', 'invite-only': '邀测', legacy: '旧版维护', deprecated: '即将下线' }[lifecycle] || '状态未知';
@@ -73,6 +99,8 @@ function presentRegistryModel(provider, model) {
 }
 function modelDisplayLabel(model, developerId) {
     const label = String(model.label || model.id);
+    if (model.version && label !== model.id)
+        return label.replace(/^[^:]+: /, '');
     if (label !== model.id && !label.includes('/'))
         return label.replace(/^[^:]+: /, '');
     // This is display-only. Preserve the original ID, including tier and task suffixes.

@@ -24,9 +24,9 @@
       <view class="model-list">
         <view class="model-count">{{compatibleCount}} 个匹配模型 · 点击名称选择</view>
         <view class="model-row {{item.selected ? 'selected' : ''}}" wx:for="{{visibleCompatibleModels}}" wx:key="id">
-          <button class="model-select" data-model="{{item.id}}" bindtap="choose"><view class="model-main"><view class="model-name">{{item.label}}</view><view class="model-capability">{{item.capabilityText}}{{item.requiresEntitlement ? ' · 需权益' : ''}}</view></view><view class="model-check">{{item.selected ? '✓ 已选' : '选择'}}</view></button>
+          <button class="model-select" data-model="{{item.id}}" bindtap="choose"><view class="model-main"><view class="model-name">{{item.label}}</view><view class="model-capability">{{item.capabilityText}} · {{item.versionLabel}}{{item.requiresEntitlement ? ' · 需权益' : ''}}</view></view><view class="model-check">{{item.selected ? '✓ 已选' : '选择'}}</view></button>
           <button class="model-details-toggle" data-model="{{item.id}}" bindtap="toggleDetails" aria-expanded="{{expandedModel === item.id}}">{{expandedModel === item.id ? '收起详情 −' : '型号与详情 +'}}</button>
-          <view class="model-details" wx:if="{{expandedModel === item.id}}"><text class="model-id" user-select>{{item.id}}</text><view class="card-note">{{item.releaseText}} · {{item.lifecycleText}} {{item.serviceTier}}</view><view class="card-note">{{item.verificationText}} · {{item.availabilityNotes}}</view><button class="model-copy" data-model="{{item.id}}" catchtap="copyId">复制 ID</button></view>
+          <view class="model-details" wx:if="{{expandedModel === item.id}}"><text class="model-id" user-select>配置 ID：{{item.id}}</text><view class="card-note">调用标识：{{item.apiIdentifier}}</view><view class="card-note">{{item.versionText}}</view><view class="card-note">{{item.releaseText}} · {{item.lifecycleText}} {{item.serviceTier}}</view><view class="card-note">{{item.verificationText}} · {{item.availabilityNotes}}</view><button class="model-copy" data-model="{{item.id}}" catchtap="copyId">复制 ID</button></view>
         </view>
         <button class="model-more" wx:if="{{hasMore}}" bindtap="loadMore">显示更多模型</button>
         <view class="model-empty" wx:if="{{!compatibleCount}}">没有匹配当前角色与输出格式的可用模型。</view>

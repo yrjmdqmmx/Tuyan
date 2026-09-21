@@ -1,10 +1,12 @@
-import { presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
+import { normalizeModelVersion, ModelVersion, presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
 export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
 export interface RegistryModel {
   id: string
+  version?: ModelVersion
+  apiIdentifier?: string
   label: string
   vendor: string
   lifecycle: string
@@ -146,6 +148,8 @@ function normalizeModel(input: unknown): RegistryModel {
   const roleReasonsSource = asRecord(source.roleReasons)
   return {
     id,
+    version: normalizeModelVersion(source.version),
+    apiIdentifier: stringValue(source.apiIdentifier),
     label: stringValue(source.label) || id,
     vendor: stringValue(source.vendor) || '其他',
     lifecycle: stringValue(source.lifecycle) || 'unknown',

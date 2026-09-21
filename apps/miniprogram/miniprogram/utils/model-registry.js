@@ -80,6 +80,8 @@ function normalizeModel(input) {
     const roleReasonsSource = asRecord(source.roleReasons);
     return {
         id,
+        version: (0, model_presentation_1.normalizeModelVersion)(source.version),
+        apiIdentifier: stringValue(source.apiIdentifier),
         label: stringValue(source.label) || id,
         vendor: stringValue(source.vendor) || '其他',
         lifecycle: stringValue(source.lifecycle) || 'unknown',

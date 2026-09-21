@@ -103,3 +103,20 @@ assert.equal(picker.data.incompatibleModels, undefined)
 
 delete global.Component
 console.log('model-picker-flow.test.cjs passed')
+
+// Sorting categories are internal; the visible labels retain the previous style.
+assert.ok(picker.data.providerCards.every(card => !/国内|国外/.test(card.label+' '+card.kindText)))
+assert.equal(picker.data.providerCards.find(card=>card.id==='bailian').kindText,'聚合渠道')
+registry.providers.deepseek = {accessKind:'direct',models:[{
+  ...model('deepseek-v4-pro','深度求索'), label:'DeepSeek-V4-Pro-0813',
+  version:{kind:'rolling',id:'DeepSeek-V4-Pro-0813',checkedAt:'2026-09-21',sourceUrl:'https://api-docs.deepseek.com/quick_start/pricing'},
+}]}
+picker.resetFlow()
+picker.selectProvider({currentTarget:{dataset:{provider:'deepseek'}}})
+picker.selectVendor({currentTarget:{dataset:{vendor:'深度求索'}}})
+const precise=picker.data.visibleCompatibleModels[0]
+assert.equal(precise.id,'deepseek-v4-pro')
+assert.equal(precise.label,'DeepSeek-V4-Pro-0813')
+assert.equal(precise.versionLabel,'滚动别名')
+assert.match(precise.versionText,/DeepSeek-V4-Pro-0813/)
+assert.equal(precise.apiIdentifier,'deepseek-v4-pro')

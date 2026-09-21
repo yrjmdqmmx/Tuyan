@@ -1,5 +1,19 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-21 · 具体模型版本、别名与调用 ID 对照（v21，本地未发布）
+
+- 新增可选共享字段 `model.version={kind:fixed|rolling|unconfirmed,id,checkedAt,sourceUrl}`，以及仅在端点 / version 参数与配置 ID 不同时使用的 `apiIdentifier`。展示名、具体版本、调用 ID 分离；旧客户端可忽略字段，无存储迁移。
+- 760 个静态条目逐 ID 记录证据，校准 95 个展示名称；调用 ID、默认项、角色、协议、能力、历史身份全部保留。DeepSeek 直连 `deepseek-flash` / `deepseek-v4-pro` 显示 V4.1 Flash / V4 Pro 0813，仍按原 ID 调用；聚合渠道不套用原厂别名映射。
+- DeepSeek 通用别名的原厂版本发布日期限于直连渠道；百炼 / OpenRouter 对应关系未确认时清除该日期（含旧缓存值），保留明确日期型号和 TokenDance 独立 Preview 证据。
+- OpenRouter 根据当次公开目录携带 canonical_slug；路由别名目标、字段缺失、文本 / 图片目录版本关系不能确认时保持未知，不缓存猜测目标。固定身份与滚动别名性质逐渠道审定，不从日期或系列名猜测。
+- 四类渠道优先级仅用于排序；Web、小程序名称及辅助标签恢复原有风格，不增加地域前缀。同类稳定排序，保留各入口原相对顺序；百炼 / 方舟旧技术字段 `accessKind` 保持兼容。
+- 小程序静态目录复用对象键列表以维持包体预算；解包后所有字段完整且对象不共享可变引用。
+- [x] Core / Laf / 共享类型：版本元数据、动态目录、精确 API ID 与默认配置兼容检查。
+- [x] Web：选择器及共享目录消费者展示具体版本、滚动 / 待确认标记、API ID 与来源；桌面 / 窄屏模拟目录交互通过。
+- [x] 小程序 TS / JS：相同元数据、名称与版本详情，选择事件仍返回原 ID，包体与交互回归通过。
+- [ ] Web / Core 部署、微信上传 / 审核 / 发布：用户要求本轮不执行；无 push，付费推理调用 0。
+- [完整对照表](docs/model-version-mapping.csv) · [待确认清单](docs/model-version-unconfirmed.csv) · [展示名称变更](docs/model-version-label-changes.csv) · [核对说明](docs/model-version-audit-20260921.md) · [验证记录](docs/model-version-validation-20260921.md)。
+
 ## 2026-09-21 · 模型目录核对与 API 渠道分类排序（本地完成，未发布）
 
 - 目录 v20 新增 20 个静态型号；6 个渠道明确停用的型号保留原 ID、默认配置与历史身份，但 `selectable=false` 并返回原因。`replacementModelId` 仅提示，不再自动改写过期或停用的实际型号。无任务记录迁移。

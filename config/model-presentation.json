@@ -1092,13 +1092,25 @@
       "vendorId": "deepseek",
       "pattern": "deepseek-v4-pro$",
       "releasedAt": "2026-08-13",
-      "source": "https://api-docs.deepseek.com/updates/"
+      "source": "https://api-docs.deepseek.com/updates/",
+      "channels": [
+        "deepseek"
+      ]
     },
     {
       "vendorId": "deepseek",
       "pattern": "deepseek-v4-flash$",
       "releasedAt": "2026-07-31",
-      "source": "https://api-docs.deepseek.com/updates/"
+      "source": "https://api-docs.deepseek.com/updates/",
+      "channels": [
+        "deepseek"
+      ]
+    },
+    {
+      "vendorId": "deepseek",
+      "pattern": "deepseek-v4-(?:pro|flash)$",
+      "releasedAt": null,
+      "source": ""
     },
     {
       "vendorId": "deepseek",

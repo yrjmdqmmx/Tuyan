@@ -116,6 +116,11 @@ lines.push(`for (const [key, route] of Object.entries(imageSizeRoutes)) {
     }
   }
 }`)
+const versionAudit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-version-audit.json'), 'utf8'))
+for (const row of versionAudit.models.filter(row => row.channel !== 'openrouter')) {
+  const version = {kind:row.kind, id:row.versionId, checkedAt:row.checkedAt, sourceUrl:row.sourceUrls[0]}
+  lines.push(`Object.assign(staticModelRegistry[${JSON.stringify(row.channel)}].models.find(model => model.id === ${JSON.stringify(row.apiModelId)})!, ${JSON.stringify({label:row.displayName,version,...(row.apiIdentifier ? {apiIdentifier:row.apiIdentifier} : {})})})`)
+}
 lines.push(`for (const [provider, registry] of Object.entries(staticModelRegistry)) {
   registry.models = sortModelsNewestFirst(registry.models.map(model => presentRegistryModel(provider, model)))
 }`)
