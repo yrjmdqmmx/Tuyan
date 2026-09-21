@@ -3,7 +3,7 @@ import { MODEL_PRESENTATION } from './model-presentation-data.js'
 type PresentedModel = { id: string; label?: string; vendor?: string; vendorId?: string; releasedAt?: string | null; releaseFamily?: string; releaseOrder?: number; [key: string]: any }
 const presentationAliases = new Map<string, string>()
 for (const [id, vendor] of Object.entries(MODEL_PRESENTATION.vendors)) {
-  for (const alias of [id, vendor.label, ...vendor.aliases]) presentationAliases.set(alias.toLowerCase(), id)
+  for (const alias of [id, vendor.label, vendor.labelEn || vendor.label, vendor.labelZh || vendor.label, ...vendor.aliases]) presentationAliases.set(alias.toLowerCase(), id)
 }
 const presentationRoutes = MODEL_PRESENTATION.routes.map((rule) => ({ ...rule, regex: new RegExp(rule.pattern, 'i') }))
 const presentationFamilies = MODEL_PRESENTATION.families.map((rule) => ({ ...rule, patterns: rule.newestFirst.map((pattern) => new RegExp('(?:' + pattern + ')(?![.p]\\d)', 'i')) }))
@@ -13,11 +13,70 @@ export const MODEL_CHANNEL_LABELS: Record<string, string> = MODEL_PRESENTATION.c
 
 // Display order only: never use this list to pick a default or replace a route.
 export function orderModelChannels<T extends string>(channels: readonly T[]): T[] {
-  return [...channels.filter(id => id === 'tokendance'), ...channels.filter(id => id !== 'tokendance')]
+  // Classify the API service operator, not the developer of a hosted model.
+  // TokenDance was already first; retain the previous relative order per group.
+  const previous = [...channels.filter(id => id === 'tokendance'), ...channels.filter(id => id !== 'tokendance')]
+  return previous.sort((a, b) => modelChannelCategoryOrder(a) - modelChannelCategoryOrder(b))
+}
+
+function modelChannelCategoryOrder(channel: string): number {
+  const groups: readonly (readonly string[])[] = [
+    ['tokendance', 'siliconflow'],
+    ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax'],
+    ['gemini', 'openai', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'mistral'],
+    ['openrouter', 'together', 'fireworks', 'fal', 'replicate'],
+  ]
+  const index = groups.findIndex(group => group.includes(channel))
+  return index < 0 ? groups.length : index
+}
+
+export interface ModelVersion {
+  kind: 'fixed' | 'rolling' | 'unconfirmed'
+  id: string
+  checkedAt: string
+  sourceUrl: string
+}
+
+export function normalizeModelVersion(value: unknown): ModelVersion | undefined {
+  if (!value || typeof value !== 'object') return undefined
+  const v = value as Record<string, unknown>
+  if (!['fixed', 'rolling', 'unconfirmed'].includes(String(v.kind))) return undefined
+  return { kind: v.kind as ModelVersion['kind'], id: typeof v.id === 'string' ? v.id : '',
+    checkedAt: typeof v.checkedAt === 'string' ? v.checkedAt : '',
+    sourceUrl: typeof v.sourceUrl === 'string' && /^https:\/\//.test(v.sourceUrl) ? v.sourceUrl : '' }
+}
+
+export function modelVersionLabel(model: PresentedModel): string {
+  const version = normalizeModelVersion(model.version)
+  return version?.kind === 'fixed' ? '固定版本' : version?.kind === 'rolling' ? '滚动别名' : '版本待确认'
+}
+
+export function modelVersionDetail(model: PresentedModel): string {
+  const version = normalizeModelVersion(model.version)
+  const current = version?.id ? (version.kind === 'unconfirmed' ? '目录版本：' : '已核对版本：') + version.id : '具体版本待确认'
+  return [modelVersionLabel(model), current, version?.checkedAt ? '核对于 ' + version.checkedAt : ''].filter(Boolean).join(' · ')
+}
+
+// Public catalog identity is not an immutable-weights guarantee. Never copy the
+// direct provider's alias mapping into an aggregator or cache a guessed target.
+export function openRouterModelVersion(id: string, canonicalSlug: string, checkedAt: string, image = false): ModelVersion {
+  return { kind: id.startsWith('~') ? 'rolling' : 'unconfirmed',
+    id: id.startsWith('~') ? '' : canonicalSlug, checkedAt,
+    sourceUrl: 'https://openrouter.ai/api/v1/' + (image ? 'images/' : '') + 'models' }
 }
 
 export function modelLifecycleLabel(lifecycle: string): string {
   return ({ stable: '稳定版', preview: '预览版', 'invite-only': '邀测', legacy: '旧版维护', deprecated: '即将下线' } as Record<string, string>)[lifecycle] || '状态未知'
+}
+
+export function modelDeveloperName(id: string, locale = 'zh-CN'): string {
+  const vendor = MODEL_PRESENTATION.vendors[id] || { label: '开发方待确认', labelEn: 'Developer unconfirmed', labelZh: '开发方待确认', aliases: [] }
+  return (locale === 'en' ? vendor.labelEn : vendor.labelZh) || vendor.label
+}
+
+export function modelDeveloperAliases(id: string): string[] {
+  const vendor = MODEL_PRESENTATION.vendors[id] || { label: '开发方待确认', labelEn: 'Developer unconfirmed', labelZh: '开发方待确认', aliases: [] }
+  return [id, vendor.label, vendor.labelEn || vendor.label, vendor.labelZh || vendor.label, ...vendor.aliases]
 }
 
 export function modelDeveloper(provider: string, model: PresentedModel): { id: string; label: string } {
@@ -26,7 +85,7 @@ export function modelDeveloper(provider: string, model: PresentedModel): { id: s
   const namespace = model.id.replace(/^~/, '').replace(/^Pro\//i, '').split('/')[0].toLowerCase()
   const explicit = presentationAliases.get(String(model.vendorId || model.vendor || '').toLowerCase())
   const id = route?.vendorId || (model.vendorId === 'unconfirmed' ? 'unconfirmed' : presentationAliases.get(String(model.vendorId || '').toLowerCase())) || (model.id.includes('/') ? presentationAliases.get(namespace) : undefined) || explicit || 'unconfirmed'
-  return { id, label: MODEL_PRESENTATION.vendors[id]?.label || '开发方待确认' }
+  return { id, label: modelDeveloperName(id) }
 }
 
 export function presentRegistryModel<T extends PresentedModel>(provider: string, model: T): T {
@@ -52,6 +111,7 @@ export function presentRegistryModel<T extends PresentedModel>(provider: string,
 
 function modelDisplayLabel(model: PresentedModel, developerId: string): string {
   const label = String(model.label || model.id)
+  if (model.version && label !== model.id) return label.replace(/^[^:]+: /, '')
   if (label !== model.id && !label.includes('/')) return label.replace(/^[^:]+: /, '')
   // This is display-only. Preserve the original ID, including tier and task suffixes.
   let name = model.id.replace(/^Pro\//i, '').replace(/^accounts\/fireworks\/models\//, '').replace(/^fal-ai\//, '')

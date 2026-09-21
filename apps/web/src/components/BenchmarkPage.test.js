@@ -8,7 +8,7 @@ import BenchmarkPage, { BenchmarkEvidenceImage, BenchmarkObservatory, BenchmarkP
 import { SCIENTIFIC_WEB_CONTRACT } from './scientificBenchmarkContract.js'
 import { canonicalizeLeaderboardLocation } from '../leaderboardRoutes.js'
 
-afterEach(cleanup)
+afterEach(() => { cleanup(); window.sessionStorage.clear() })
 
 const axes = [
   'faithfulness',
@@ -151,7 +151,7 @@ test('scientific v2 overview renders ten Top10 cards and a ten-dimension matrix'
 test('overview matrix shows Overall and seven dimensions with rank and two-decimal scores', () => {
   const { container } = renderPage()
   const table = screen.getByRole('table', { name: '生图模型综合排行榜' })
-  assert.ok(within(table).getByRole('columnheader', { name: /Overall/u }))
+  assert.ok(within(table).getByRole('columnheader', { name: /综合/u }))
   labels.forEach((label) => assert.ok(within(table).getByRole('columnheader', { name: new RegExp(label.replace(' / ', ' \\/ ')) })))
   const firstRow = container.querySelector('tbody tr')
   assert.match(firstRow.textContent, /#1 · 9\.91/u)
@@ -335,7 +335,7 @@ test('missing and null ranking fields render as em dashes instead of zero scores
 test('overview filters models live and sorts every metric by raw descending score', () => {
   const { container } = renderPage()
   const rows = () => [...container.querySelectorAll('.bench-matrix tbody tr')]
-  const overallButton = screen.getByRole('button', { name: '按Overall排序' })
+  const overallButton = screen.getByRole('button', { name: '按综合排序' })
   const aestheticsButton = screen.getByRole('button', { name: '按美观度排序' })
   const overallHeader = overallButton.closest('th')
   const aestheticsHeader = aestheticsButton.closest('th')
@@ -353,7 +353,7 @@ test('overview filters models live and sorts every metric by raw descending scor
   assert.equal(aestheticsHeader.getAttribute('aria-sort'), 'descending')
   assert.equal(aestheticsButton.hasAttribute('aria-pressed'), false)
 
-  fireEvent.change(screen.getByRole('searchbox', { name: '搜索综合排行榜模型' }), { target: { value: 'Pro' } })
+  fireEvent.change(screen.getByRole('searchbox', { name: '模型搜索' }), { target: { value: 'Pro' } })
   assert.equal(rows().length, 1)
   assert.match(rows()[0].textContent, /Banana Pro/u)
   assert.match(screen.getByText(/1\s*\/\s*12/u).textContent, /1\s*\/\s*12/u)
@@ -370,7 +370,7 @@ test('dimension route renders all eligible models, backend tie ranks, search, an
   assert.equal(scrollRegion.getAttribute('tabindex'), '0')
   assert.equal(scrollRegion.getAttribute('aria-label'), '可横向滚动的美观度完整排名')
 
-  fireEvent.change(screen.getByRole('searchbox', { name: '搜索美观度排名模型' }), { target: { value: 'model-12' } })
+  fireEvent.change(screen.getByRole('searchbox', { name: '模型搜索' }), { target: { value: 'model-12' } })
   assert.equal(container.querySelectorAll('.bench-dimension-table tbody tr').length, 1)
   assert.match(container.querySelector('.bench-dimension-table tbody tr').textContent, /model-12/u)
 })
@@ -421,7 +421,7 @@ test('overview requests only the leaderboard action and never methodology', asyn
     render(React.createElement(BenchmarkPage, { apiBase: 'https://gateway.example', backendMode: 'gateway', enabled: true, pathname: '/leaderboard' }))
     await screen.findByRole('heading', { name: '图研 Tuyan Benchmark' })
     assert.match(document.body.textContent, /科研图示生成与编辑模型基准评测/u)
-    assert.match(document.body.textContent, /Tuyan Benchmark for Scientific Figure Generation & Editing Models/u)
+    assert.match(document.body.textContent, /面向科研图示生成与编辑的图研基准评测/u)
     assert.match(document.body.textContent, /面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据的生成与编辑模型横向评测。/u)
     assert.deepEqual(bodies, [{ action: 'benchmarkLeaderboard' }])
     assert.equal(bodies.some((body) => body.action === 'benchmarkMethodology'), false)

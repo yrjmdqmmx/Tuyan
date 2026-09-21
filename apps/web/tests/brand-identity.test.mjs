@@ -7,8 +7,8 @@ const read = (relative) => readFileSync(new URL(`../${relative}`, import.meta.ur
 test('Web workspace exposes the 图研Tuyan工作台 brand on its primary entry points', () => {
   assert.match(read('index.html'), /<title>图研Tuyan工作台<\/title>/u)
   const app = read('src/App.jsx') + read('src/components/WorkbenchHeader.jsx')
-  assert.match(app, /<h1>图研Tuyan工作台<\/h1>/u)
-  assert.match(app, /alt="图研Tuyan 标志"/u)
+  assert.match(app, /<h1>\{t\("图研Tuyan工作台"\)\}<\/h1>/u)
+  assert.match(app, /alt=\{t\("图研Tuyan 标志"\)\}/u)
   assert.doesNotMatch(app, /Android 版|className="brand-tags"/u)
   const featured = read('src/components/FeaturedTemplateStudio.jsx')
   assert.match(featured, /图研Tuyan 是开源的学术图示工作台/u)

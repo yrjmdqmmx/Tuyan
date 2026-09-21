@@ -3030,5 +3030,86 @@
       "sourceField": "image_input",
       "sourceArray": true
     }
+  },
+  "replicate/xai/grok-imagine-image-2": {
+    "generation": {
+      "endpoint": "xai/grok-imagine-image-2",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k"
+      }
+    },
+    "editing": {
+      "endpoint": "xai/grok-imagine-image-2",
+      "promptField": "prompt",
+      "sizeMode": "none",
+      "resolutionField": "resolution",
+      "resolutionValues": {
+        "1K": "1k",
+        "2K": "2k"
+      },
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/alibaba/qwen-image-3": {
+    "generation": {
+      "endpoint": "alibaba/qwen-image-3",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "alibaba/qwen-image-3",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/alibaba/qwen-image-3-pro": {
+    "generation": {
+      "endpoint": "alibaba/qwen-image-3-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    },
+    "editing": {
+      "endpoint": "alibaba/qwen-image-3-pro",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "sourceField": "image",
+      "sourceArray": false
+    }
+  },
+  "replicate/prunaai/p-image-ideogram": {
+    "generation": {
+      "endpoint": "prunaai/p-image-ideogram",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio",
+      "resolutionField": "image_size",
+      "resolutionValues": {
+        "1K": "1K",
+        "2K": "2K"
+      },
+      "constants": {
+        "output_format": "png"
+      }
+    }
+  },
+  "replicate/krea/krea-2-medium": {
+    "generation": {
+      "endpoint": "krea/krea-2-medium",
+      "promptField": "prompt",
+      "sizeMode": "ratio",
+      "sizeField": "aspect_ratio"
+    }
   }
 }

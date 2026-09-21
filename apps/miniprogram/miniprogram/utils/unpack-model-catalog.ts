@@ -8,6 +8,11 @@ export function unpackModelCatalog(data: { root: number; nodes: CatalogNode[] })
     if (!Array.isArray(node)) return node
     if (node[0] === 1) return node.slice(1).map(expand)
     const result: Record<string, any> = {}
+    if (node[0] === 2) {
+      const keys = expand(node[1]) as string[]
+      keys.forEach((key, i) => { result[key] = expand(node[i + 2]) })
+      return result
+    }
     for (let i = 1; i < node.length; i += 2) result[expand(node[i])] = expand(node[i + 1])
     return result
   }

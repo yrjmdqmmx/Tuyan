@@ -1,7 +1,37 @@
 {
-  "version": "2026-09-16.v19",
+  "version": "2026-09-21.v21",
   "providers": {
-    "deepseek": [],
+    "deepseek": [
+      {
+        "id": "deepseek-flash",
+        "label": "deepseek-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-10"
+        }
+      }
+    ],
     "kimi": [],
     "zhipu": [
       {
@@ -577,6 +607,34 @@
           ],
           "outputModalities": [
             "image"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.3-flashx",
+        "label": "glm-5.3-flashx",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。仅思考模式，保持服务端默认采样参数。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
           ]
         }
       }
@@ -1910,6 +1968,89 @@
           ],
           "expirationDate": "2026-09-11",
           "vendor": "Qwen"
+        }
+      },
+      {
+        "id": "tencent/Hy4-preview",
+        "label": "tencent/Hy4-preview",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "lifecycle": "preview",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-08-28"
+        }
+      },
+      {
+        "id": "Qwen/Qwen3.8-27B",
+        "label": "Qwen/Qwen3.8-27B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-08-14"
+        }
+      },
+      {
+        "id": "XingChenAGI/Xing4.0-29B",
+        "label": "XingChenAGI/Xing4.0-29B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "xingchen",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-17"
         }
       }
     ],
@@ -8085,6 +8226,65 @@
           ],
           "vendor": "Alibaba"
         }
+      },
+      {
+        "id": "deepseek-v4.1-flash",
+        "label": "deepseek-v4.1-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-13",
+          "requiresEntitlement": true,
+          "entitlement": "以渠道当前账号开通权限为准"
+        }
+      },
+      {
+        "id": "ZHIPU/GLM-5.3-FlashX",
+        "label": "ZHIPU/GLM-5.3-FlashX",
+        "roles": [
+          "main"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。已核对百炼精确 ID 与仅思考模式；该渠道图像输入契约待确认，暂仅开放文本。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "以渠道当前账号开通权限为准"
+        }
       }
     ],
     "openai": [
@@ -10277,6 +10477,96 @@
           "requiresEntitlement": true,
           "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
         }
+      },
+      {
+        "id": "doubao-seed-2-1-pro-260915",
+        "label": "doubao-seed-2-1-pro-260915",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "ark-openai-chat",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "以渠道当前账号开通权限为准"
+        }
+      },
+      {
+        "id": "deepseek-v4-1-flash-260910",
+        "label": "deepseek-v4-1-flash-260910",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "ark-openai-chat",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "以渠道当前账号开通权限为准"
+        }
+      },
+      {
+        "id": "glm-5-3-flash-260828",
+        "label": "glm-5-3-flash-260828",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "ark-openai-chat",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "以渠道当前账号开通权限为准"
+        }
       }
     ],
     "bfl": [
@@ -12035,6 +12325,33 @@
           ],
           "vendor": "Mistral AI"
         }
+      },
+      {
+        "id": "zai-glm-5-3",
+        "label": "zai-glm-5-3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "lifecycle": "preview",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.mistral.ai/models/zai-glm-5-3",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-15"
+        }
       }
     ],
     "together": [
@@ -13401,6 +13718,32 @@
           ],
           "vendor": "prunaai"
         }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+        "label": "deepseek-ai/DeepSeek-V4.1-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。按渠道文本模型表开放；未将原厂视觉能力自动继承到此渠道。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "fireworks": [
@@ -14001,6 +14344,34 @@
             "text"
           ],
           "vendor": "NVIDIA"
+        }
+      },
+      {
+        "id": "accounts/fireworks/models/deepseek-v4p1-flash",
+        "label": "accounts/fireworks/models/deepseek-v4p1-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
         }
       }
     ],
@@ -18356,6 +18727,169 @@
           ],
           "vendor": "google"
         }
+      },
+      {
+        "id": "xai/grok-imagine-image-2",
+        "label": "xai/grok-imagine-image-2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "已核对 Replicate 输入 schema；真实生图未调用。原图单张直接编辑；编辑宽高比由源图决定。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "xai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/xai/grok-imagine-image-2/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "alibaba/qwen-image-3",
+        "label": "alibaba/qwen-image-3",
+        "roles": [
+          "image"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "已核对 Replicate 输入 schema；真实生图未调用。按当前渠道 schema 开放单图编辑。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/alibaba/qwen-image-3/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "alibaba/qwen-image-3-pro",
+        "label": "alibaba/qwen-image-3-pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "已核对 Replicate 输入 schema；真实生图未调用。按当前渠道 schema 开放单图编辑。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/alibaba/qwen-image-3-pro/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "prunaai/p-image-ideogram",
+        "label": "prunaai/p-image-ideogram",
+        "roles": [
+          "image"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "已核对 Replicate 输入 schema；真实生图未调用。仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "vision-redraw",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "pruna",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/prunaai/p-image-ideogram/api/schema",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "krea/krea-2-medium",
+        "label": "krea/krea-2-medium",
+        "roles": [
+          "image"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "已核对 Replicate 输入 schema；真实生图未调用。仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "vision-redraw",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/krea/krea-2-medium/api/schema",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
       }
     ]
   },
@@ -18460,6 +18994,72 @@
         "lifecycle": "legacy",
         "expirationDate": "2026-10-02",
         "replacementModelId": "gemini-3.1-flash-image"
+      }
+    },
+    "deepseek": {
+      "deepseek-v4-flash": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "disabledReason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。",
+        "expirationDate": "2026-09-10",
+        "lifecycleSourceUrl": "https://api-docs.deepseek.com/updates",
+        "replacementModelId": "deepseek-flash"
+      },
+      "deepseek-v4-flash-vision-exp": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "disabledReason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。",
+        "expirationDate": "2026-09-10",
+        "lifecycleSourceUrl": "https://api-docs.deepseek.com/updates",
+        "replacementModelId": "deepseek-flash"
+      }
+    },
+    "siliconflow": {
+      "nex-agi/Nex-N2-Pro": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+        "expirationDate": "2026-09-11",
+        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+        "replacementModelId": ""
+      },
+      "Qwen/Qwen3.5-397B-A17B": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+        "expirationDate": "2026-09-11",
+        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+        "replacementModelId": ""
+      },
+      "MiniMaxAI/MiniMax-M2.5": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+        "expirationDate": "2026-09-11",
+        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+        "replacementModelId": ""
+      },
+      "Pro/MiniMaxAI/MiniMax-M2.5": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+        "expirationDate": "2026-09-11",
+        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+        "replacementModelId": ""
+      }
+    },
+    "together": {
+      "deepseek-ai/DeepSeek-V4-Pro-0813": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-29",
+        "lifecycleSourceUrl": "https://docs.together.ai/docs/deprecations",
+        "replacementModelId": "deepseek-ai/DeepSeek-V4.1-Flash"
+      },
+      "deepseek-ai/DeepSeek-V4-Flash-0731": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-29",
+        "lifecycleSourceUrl": "https://docs.together.ai/docs/deprecations",
+        "replacementModelId": "deepseek-ai/DeepSeek-V4.1-Flash"
       }
     }
   },

@@ -601,3 +601,24 @@ test('professional model picker selects native vector routes and hides text-only
   await user.click(option)
   assert.deepEqual(choices, [{ accessProvider: 'recraft', modelId: 'recraftv4_1_vector' }])
 })
+
+test('rendered version labels remain separate from the selected API model ID', async () => {
+  const { STATIC_MODEL_REGISTRY } = await import('../src/lib/staticModelCatalog.js')
+  const changes=[]
+  const originalMatchMedia=window.matchMedia
+  window.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}})
+  try {
+    const view=render(React.createElement(ModelPicker,{
+      label:'主模型',role:'main',provider:'deepseek',value:'deepseek-v4-pro',
+      models:STATIC_MODEL_REGISTRY.deepseek.models,onChange:value=>changes.push(value),
+    }))
+    await userEvent.setup().click(screen.getByRole('button',{name:'主模型'}))
+    const selector=screen.getByRole('button',{name:'选择 DeepSeek-V4.1-Flash',exact:true})
+    assert.match(view.container.textContent,/滚动别名/)
+    assert.match(view.container.textContent,/deepseek-flash/)
+    assert.doesNotMatch(view.container.textContent,/国内|国外/)
+    assert.match(view.container.textContent,/DeepSeek-V4-Pro-0813/)
+    await userEvent.setup().click(selector)
+    assert.deepEqual(changes,['deepseek-flash'])
+  } finally {window.matchMedia=originalMatchMedia}
+})

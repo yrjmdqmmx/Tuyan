@@ -18,7 +18,7 @@ const lines = [start, '// Source: config/model-catalog-updates.json; run node sc
 const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
 const presentationData = `export const MODEL_PRESENTATION: {
   channels: Record<string, string>;
-  vendors: Record<string, {label: string; aliases: string[]; source: string; legalName?: string; parentCompany?: string}>;
+  vendors: Record<string, {label: string; labelEn?: string; labelZh?: string; nameSource?: string; aliases: string[]; source: string; legalName?: string; parentCompany?: string}>;
   routes: {channels: string[]; pattern: string; vendorId: string; source: string}[];
   families: {id: string; vendorId: string; newestFirst: string[]; source: string}[];
   releases: {vendorId: string; pattern: string; releasedAt: string | null; source: string; channels?: string[]; lifecycle?: string; releaseKind?: string}[];
@@ -28,7 +28,10 @@ write(path.join(root, 'packages/types/src/model-presentation-data.ts'), '// Gene
 const presentationRuntime = presentationData + fs.readFileSync(path.join(root, 'packages/types/src/model-presentation.ts'), 'utf8').replace(/^import .*model-presentation-data\.js'\n/m, '')
 lines.push(presentationRuntime)
 write(path.join(root, 'apps/web/src/lib/modelPresentation.js'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + ts.transpileModule(presentationRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
-write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation.ts'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + presentationRuntime)
+// Keep the dictionary once, rather than in both Mini TS and compiled JS.
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation-data.js'), '// Generated from config/model-presentation.json\nmodule.exports = ' + JSON.stringify(presentation) + '\n')
+const miniPresentation = presentationRuntime.replace(JSON.stringify(presentation), "require('./model-presentation-data.js')")
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation.ts'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + miniPresentation)
 const aspectRuntime = fs.readFileSync(path.join(root, 'packages/types/src/aspect-ratios.ts'), 'utf8')
 write(path.join(root, 'apps/web/src/lib/aspectRatios.js'), '// Generated from packages/types/src/aspect-ratios.ts\n' + ts.transpileModule(aspectRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/aspect-ratios.ts'), '// Generated from packages/types/src/aspect-ratios.ts\n' + aspectRuntime)
@@ -113,6 +116,11 @@ lines.push(`for (const [key, route] of Object.entries(imageSizeRoutes)) {
     }
   }
 }`)
+const versionAudit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-version-audit.json'), 'utf8'))
+for (const row of versionAudit.models.filter(row => row.channel !== 'openrouter')) {
+  const version = {kind:row.kind, id:row.versionId, checkedAt:row.checkedAt, sourceUrl:row.sourceUrls[0]}
+  lines.push(`Object.assign(staticModelRegistry[${JSON.stringify(row.channel)}].models.find(model => model.id === ${JSON.stringify(row.apiModelId)})!, ${JSON.stringify({label:row.displayName,version,...(row.apiIdentifier ? {apiIdentifier:row.apiIdentifier} : {})})})`)
+}
 lines.push(`for (const [provider, registry] of Object.entries(staticModelRegistry)) {
   registry.models = sortModelsNewestFirst(registry.models.map(model => presentRegistryModel(provider, model)))
 }`)

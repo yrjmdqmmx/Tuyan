@@ -33,7 +33,8 @@
         "Vanchin · DeepSeek"
       ],
       "source": "https://cdn.deepseek.com/policies/zh-CN/deepseek-terms-of-use.html",
-      "legalName": "杭州深度求索人工智能基础技术研究有限公司"
+      "legalName": "杭州深度求索人工智能基础技术研究有限公司",
+      "labelEn": "DeepSeek"
     },
     "zhipu": {
       "label": "智谱",
@@ -45,7 +46,8 @@
         "GLM",
         "智谱 GLM"
       ],
-      "source": "https://github.com/zai-org/GLM-4"
+      "source": "https://github.com/zai-org/GLM-4",
+      "labelEn": "Zhipu AI"
     },
     "moonshot": {
       "label": "月之暗面",
@@ -55,7 +57,8 @@
         "moonshotai",
         "Kimi"
       ],
-      "source": "https://www.moonshot.cn/"
+      "source": "https://www.moonshot.cn/",
+      "labelEn": "Moonshot AI"
     },
     "minimax": {
       "label": "MiniMax",
@@ -63,7 +66,8 @@
         "MiniMax",
         "MiniMaxAI"
       ],
-      "source": "https://huggingface.co/MiniMaxAI"
+      "source": "https://huggingface.co/MiniMaxAI",
+      "labelEn": "MiniMax"
     },
     "alibaba": {
       "label": "阿里巴巴",
@@ -77,7 +81,8 @@
         "Wan-Video",
         "Tongyi-MAI"
       ],
-      "source": "https://qwen.ai/apiplatform"
+      "source": "https://qwen.ai/apiplatform",
+      "labelEn": "Alibaba"
     },
     "bytedance": {
       "label": "字节跳动",
@@ -88,7 +93,8 @@
         "ByteDance Doubao",
         "ByteDance Seedream"
       ],
-      "source": "https://huggingface.co/ByteDance-Seed"
+      "source": "https://huggingface.co/ByteDance-Seed",
+      "labelEn": "ByteDance"
     },
     "spacexai": {
       "label": "SpaceXAI",
@@ -100,7 +106,8 @@
       ],
       "source": "https://x.ai/news/xai-joins-spacex",
       "parentCompany": "SpaceX",
-      "legalName": "SpaceXAI LLC"
+      "legalName": "SpaceXAI LLC",
+      "labelEn": "SpaceXAI"
     },
     "google": {
       "label": "Google",
@@ -108,21 +115,26 @@
         "Google",
         "Gemma"
       ],
-      "source": "https://ai.google.dev/gemini-api/docs/models"
+      "source": "https://ai.google.dev/gemini-api/docs/models",
+      "labelEn": "Google",
+      "labelZh": "谷歌",
+      "nameSource": "https://about.google/intl/zh-cn/"
     },
     "openai": {
       "label": "OpenAI",
       "aliases": [
         "OpenAI"
       ],
-      "source": "https://developers.openai.com/api/docs/models"
+      "source": "https://developers.openai.com/api/docs/models",
+      "labelEn": "OpenAI"
     },
     "anthropic": {
       "label": "Anthropic",
       "aliases": [
         "Anthropic"
       ],
-      "source": "https://platform.claude.com/docs/en/models/overview"
+      "source": "https://platform.claude.com/docs/en/models/overview",
+      "labelEn": "Anthropic"
     },
     "bfl": {
       "label": "Black Forest Labs",
@@ -130,7 +142,8 @@
         "Black Forest Labs",
         "black-forest-labs"
       ],
-      "source": "https://docs.bfl.ai/quick_start/introduction"
+      "source": "https://docs.bfl.ai/quick_start/introduction",
+      "labelEn": "Black Forest Labs"
     },
     "stability": {
       "label": "Stability AI",
@@ -139,7 +152,8 @@
         "stabilityai",
         "stability-ai"
       ],
-      "source": "https://stability.ai/"
+      "source": "https://stability.ai/",
+      "labelEn": "Stability AI"
     },
     "mistral": {
       "label": "Mistral AI",
@@ -148,7 +162,8 @@
         "Mistral AI",
         "mistralai"
       ],
-      "source": "https://mistral.ai/"
+      "source": "https://mistral.ai/",
+      "labelEn": "Mistral AI"
     },
     "meta": {
       "label": "Meta",
@@ -158,28 +173,32 @@
         "meta-models",
         "Muse"
       ],
-      "source": "https://ai.meta.com/"
+      "source": "https://ai.meta.com/",
+      "labelEn": "Meta"
     },
     "ant": {
       "label": "蚂蚁集团",
       "aliases": [
         "inclusionAI"
       ],
-      "source": "https://huggingface.co/inclusionAI"
+      "source": "https://huggingface.co/inclusionAI",
+      "labelEn": "Ant Group"
     },
     "baidu": {
       "label": "百度",
       "aliases": [
         "Baidu"
       ],
-      "source": "https://huggingface.co/baidu"
+      "source": "https://huggingface.co/baidu",
+      "labelEn": "Baidu"
     },
     "tencent": {
       "label": "腾讯",
       "aliases": [
         "Tencent"
       ],
-      "source": "https://huggingface.co/tencent"
+      "source": "https://huggingface.co/tencent",
+      "labelEn": "Tencent"
     },
     "meituan": {
       "label": "美团",
@@ -187,7 +206,8 @@
         "Meituan",
         "meituan-longcat"
       ],
-      "source": "https://huggingface.co/meituan-longcat"
+      "source": "https://huggingface.co/meituan-longcat",
+      "labelEn": "Meituan"
     },
     "kwai": {
       "label": "快手",
@@ -195,7 +215,8 @@
         "Kwai-Kolors",
         "Kwaipilot"
       ],
-      "source": "https://github.com/Kwai-Kolors/Kolors"
+      "source": "https://github.com/Kwai-Kolors/Kolors",
+      "labelEn": "Kuaishou"
     },
     "stepfun": {
       "label": "阶跃星辰",
@@ -204,21 +225,24 @@
         "Stepfun",
         "stepfun-ai"
       ],
-      "source": "https://github.com/stepfun-ai/Step1X-Edit"
+      "source": "https://github.com/stepfun-ai/Step1X-Edit",
+      "labelEn": "StepFun"
     },
     "xiaomi": {
       "label": "小米",
       "aliases": [
         "Xiaomi"
       ],
-      "source": "https://huggingface.co/XiaomiMiMo"
+      "source": "https://huggingface.co/XiaomiMiMo",
+      "labelEn": "Xiaomi"
     },
     "unisound": {
       "label": "云知声",
       "aliases": [
         "Unisound"
       ],
-      "source": "https://www.unisound.com/"
+      "source": "https://www.unisound.com/",
+      "labelEn": "Unisound"
     },
     "ideogram": {
       "label": "Ideogram",
@@ -226,7 +250,8 @@
         "Ideogram",
         "ideogram-ai"
       ],
-      "source": "https://ideogram.ai/"
+      "source": "https://ideogram.ai/",
+      "labelEn": "Ideogram"
     },
     "recraft": {
       "label": "Recraft",
@@ -234,21 +259,26 @@
         "Recraft",
         "recraft-ai"
       ],
-      "source": "https://www.recraft.ai/"
+      "source": "https://www.recraft.ai/",
+      "labelEn": "Recraft"
     },
     "nvidia": {
       "label": "NVIDIA",
       "aliases": [
         "Nvidia"
       ],
-      "source": "https://huggingface.co/nvidia"
+      "source": "https://huggingface.co/nvidia",
+      "labelEn": "NVIDIA"
     },
     "microsoft": {
       "label": "Microsoft",
       "aliases": [
         "Microsoft"
       ],
-      "source": "https://huggingface.co/microsoft"
+      "source": "https://huggingface.co/microsoft",
+      "labelEn": "Microsoft",
+      "labelZh": "微软",
+      "nameSource": "https://news.microsoft.com/zh-cn/home/微软中国介绍/"
     },
     "ibm": {
       "label": "IBM",
@@ -256,77 +286,88 @@
         "IBM Granite",
         "ibm-granite"
       ],
-      "source": "https://huggingface.co/ibm-granite"
+      "source": "https://huggingface.co/ibm-granite",
+      "labelEn": "IBM"
     },
     "amazon": {
       "label": "Amazon",
       "aliases": [
         "Amazon"
       ],
-      "source": "https://nova.amazon.com/"
+      "source": "https://nova.amazon.com/",
+      "labelEn": "Amazon"
     },
     "cohere": {
       "label": "Cohere",
       "aliases": [
         "Cohere"
       ],
-      "source": "https://cohere.com/"
+      "source": "https://cohere.com/",
+      "labelEn": "Cohere"
     },
     "sourceful": {
       "label": "Sourceful",
       "aliases": [
         "Sourceful"
       ],
-      "source": "https://www.sourceful.com/"
+      "source": "https://www.sourceful.com/",
+      "labelEn": "Sourceful"
     },
     "bria": {
       "label": "Bria",
       "aliases": [
         "Bria"
       ],
-      "source": "https://bria.ai/"
+      "source": "https://bria.ai/",
+      "labelEn": "Bria"
     },
     "krea": {
       "label": "Krea",
       "aliases": [
         "Krea"
       ],
-      "source": "https://www.krea.ai/"
+      "source": "https://www.krea.ai/",
+      "labelEn": "Krea"
     },
     "luma": {
       "label": "Luma",
       "aliases": [
         "Luma"
       ],
-      "source": "https://lumalabs.ai/"
+      "source": "https://lumalabs.ai/",
+      "labelEn": "Luma"
     },
     "leonardo": {
       "label": "Leonardo.Ai",
       "aliases": [
         "LeonardoAI"
       ],
-      "source": "https://leonardo.ai/"
+      "source": "https://leonardo.ai/",
+      "labelEn": "Leonardo.Ai"
     },
     "pruna": {
       "label": "Pruna AI",
       "aliases": [
         "PrunaAI"
       ],
-      "source": "https://www.pruna.ai/"
+      "source": "https://www.pruna.ai/",
+      "labelEn": "Pruna AI"
     },
     "hidream": {
       "label": "HiDream",
       "aliases": [
         "HiDream"
       ],
-      "source": "https://github.com/HiDream-ai/HiDream-I1"
+      "source": "https://github.com/HiDream-ai/HiDream-I1",
+      "labelEn": "HiDream"
     },
     "rundiffusion": {
       "label": "RunDiffusion",
       "aliases": [
         "RunDiffusion"
       ],
-      "source": "https://rundiffusion.com/"
+      "source": "https://rundiffusion.com/",
+      "labelEn": "RunDiffusion"
     },
     "thinkingmachines": {
       "label": "Thinking Machines",
@@ -334,166 +375,198 @@
         "thinkingmachines",
         "Thinking Machines"
       ],
-      "source": "https://thinkingmachines.ai/"
+      "source": "https://thinkingmachines.ai/",
+      "labelEn": "Thinking Machines"
     },
     "prism": {
       "label": "PrismML",
       "aliases": [
         "Prism-ML"
       ],
-      "source": "https://huggingface.co/Prism-ML"
+      "source": "https://huggingface.co/Prism-ML",
+      "labelEn": "PrismML"
     },
     "imagineart": {
       "label": "ImagineArt",
       "aliases": [
         "imagineart"
       ],
-      "source": "https://www.imagine.art/"
+      "source": "https://www.imagine.art/",
+      "labelEn": "ImagineArt"
     },
     "nex": {
       "label": "Nex",
       "aliases": [
         "nex-agi"
       ],
-      "source": "https://huggingface.co/nex-agi"
+      "source": "https://huggingface.co/nex-agi",
+      "labelEn": "Nex"
     },
     "sber": {
       "label": "Sber",
       "aliases": [
         "ai-forever"
       ],
-      "source": "https://github.com/ai-forever/Kandinsky-2"
+      "source": "https://github.com/ai-forever/Kandinsky-2",
+      "labelEn": "Sber"
     },
     "playground": {
       "label": "Playground",
       "aliases": [
         "playgroundai"
       ],
-      "source": "https://huggingface.co/playgroundai"
+      "source": "https://huggingface.co/playgroundai",
+      "labelEn": "Playground"
     },
     "aion-labs": {
       "label": "Aion Labs",
       "aliases": [
         "aion-labs"
       ],
-      "source": "https://aionlabs.ai/"
+      "source": "https://aionlabs.ai/",
+      "labelEn": "Aion Labs"
     },
     "arcee-ai": {
       "label": "Arcee AI",
       "aliases": [
         "arcee-ai"
       ],
-      "source": "https://www.arcee.ai/"
+      "source": "https://www.arcee.ai/",
+      "labelEn": "Arcee AI"
     },
     "inception": {
       "label": "Inception",
       "aliases": [
         "inception"
       ],
-      "source": "https://www.inceptionlabs.ai/"
+      "source": "https://www.inceptionlabs.ai/",
+      "labelEn": "Inception"
     },
     "liquid": {
       "label": "Liquid AI",
       "aliases": [
         "liquid"
       ],
-      "source": "https://www.liquid.ai/"
+      "source": "https://www.liquid.ai/",
+      "labelEn": "Liquid AI"
     },
     "morph": {
       "label": "Morph",
       "aliases": [
         "morph"
       ],
-      "source": "https://www.morphllm.com/"
+      "source": "https://www.morphllm.com/",
+      "labelEn": "Morph"
     },
     "nousresearch": {
       "label": "Nous Research",
       "aliases": [
         "nousresearch"
       ],
-      "source": "https://nousresearch.com/"
+      "source": "https://nousresearch.com/",
+      "labelEn": "Nous Research"
     },
     "perceptron": {
       "label": "Perceptron",
       "aliases": [
         "perceptron"
       ],
-      "source": "https://perceptron.inc/"
+      "source": "https://perceptron.inc/",
+      "labelEn": "Perceptron"
     },
     "perplexity": {
       "label": "Perplexity",
       "aliases": [
         "perplexity"
       ],
-      "source": "https://www.perplexity.ai/"
+      "source": "https://www.perplexity.ai/",
+      "labelEn": "Perplexity"
     },
     "poolside": {
       "label": "Poolside",
       "aliases": [
         "poolside"
       ],
-      "source": "https://poolside.ai/"
+      "source": "https://poolside.ai/",
+      "labelEn": "Poolside"
     },
     "rekaai": {
       "label": "Reka",
       "aliases": [
         "rekaai"
       ],
-      "source": "https://reka.ai/"
+      "source": "https://reka.ai/",
+      "labelEn": "Reka"
     },
     "relace": {
       "label": "Relace",
       "aliases": [
         "relace"
       ],
-      "source": "https://relace.ai/"
+      "source": "https://relace.ai/",
+      "labelEn": "Relace"
     },
     "sakana": {
       "label": "Sakana AI",
       "aliases": [
         "sakana"
       ],
-      "source": "https://sakana.ai/"
+      "source": "https://sakana.ai/",
+      "labelEn": "Sakana AI"
     },
     "upstage": {
       "label": "Upstage",
       "aliases": [
         "upstage"
       ],
-      "source": "https://www.upstage.ai/"
+      "source": "https://www.upstage.ai/",
+      "labelEn": "Upstage"
     },
     "writer": {
       "label": "Writer",
       "aliases": [
         "writer"
       ],
-      "source": "https://writer.com/"
+      "source": "https://writer.com/",
+      "labelEn": "Writer"
     },
     "segmind": {
       "label": "Segmind",
       "aliases": [
         "Segmind"
       ],
-      "source": "https://huggingface.co/segmind/SSD-1B"
+      "source": "https://huggingface.co/segmind/SSD-1B",
+      "labelEn": "Segmind"
     },
     "dots": {
       "label": "Dots Studio",
       "aliases": [
         "dots-studio"
       ],
-      "source": "https://tokendance.space/models"
+      "source": "https://tokendance.space/models",
+      "labelEn": "Dots Studio"
     },
     "unifuncs": {
       "label": "UniFuncs",
       "aliases": [],
-      "source": "https://tokendance.space/models"
+      "source": "https://tokendance.space/models",
+      "labelEn": "UniFuncs"
     },
     "xunfei": {
       "label": "讯飞星火",
       "aliases": [
         "xinghuo"
       ],
-      "source": "https://tokendance.space/models"
+      "source": "https://tokendance.space/models",
+      "labelEn": "讯飞星火"
+    },
+    "xingchen": {
+      "label": "XingChenAGI",
+      "aliases": [
+        "XingChenAGI"
+      ],
+      "source": "https://www.siliconflow.cn/models",
+      "labelEn": "XingChenAGI"
     }
   },
   "routes": [
@@ -1085,13 +1158,25 @@
       "vendorId": "deepseek",
       "pattern": "deepseek-v4-pro$",
       "releasedAt": "2026-08-13",
-      "source": "https://api-docs.deepseek.com/updates/"
+      "source": "https://api-docs.deepseek.com/updates/",
+      "channels": [
+        "deepseek"
+      ]
     },
     {
       "vendorId": "deepseek",
       "pattern": "deepseek-v4-flash$",
       "releasedAt": "2026-07-31",
-      "source": "https://api-docs.deepseek.com/updates/"
+      "source": "https://api-docs.deepseek.com/updates/",
+      "channels": [
+        "deepseek"
+      ]
+    },
+    {
+      "vendorId": "deepseek",
+      "pattern": "deepseek-v4-(?:pro|flash)$",
+      "releasedAt": null,
+      "source": ""
     },
     {
       "vendorId": "deepseek",

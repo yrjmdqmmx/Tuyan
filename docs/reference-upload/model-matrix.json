@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-09-10",
-  "registryVersion": "2026-09-16.v19",
+  "registryVersion": "2026-09-21.v21",
   "scope": "Static selectable image consumers. Application ceilings are not undocumented vendor maxima. OpenRouter is dynamic and uses the unconfirmed fallback plus its live catalog.",
   "platform": {
     "maxCount": 8,
@@ -21,7 +21,7 @@
   "models": [
     {
       "provider": "deepseek",
-      "model": "deepseek-v4-flash-vision-exp",
+      "model": "deepseek-flash",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
@@ -40,7 +40,7 @@
         ],
         "status": "documented",
         "source": "https://api-docs.deepseek.com/guides/vision/",
-        "note": "URL 输入官方单图 32MiB、合计 64MiB；模型内部约缩至 800×800，密集小字建议局部裁剪。"
+        "note": "URL 输入官方单图 32MiB、合计 64MiB；内联整包 48MiB，平台最多 8 张；当前视觉模型内部约缩至 1300×1300，密集小字建议局部裁剪。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -152,6 +152,32 @@
     {
       "provider": "zhipu",
       "model": "glm-5.3-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "zhipu",
+      "model": "glm-5.3-flashx",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
@@ -359,6 +385,32 @@
     },
     {
       "provider": "siliconflow",
+      "model": "Qwen/Qwen3.8-27B",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "siliconflow",
       "model": "Qwen/Qwen-Image-Edit-2509",
       "workflow": "refine",
       "protocol": "provider-images",
@@ -512,32 +564,6 @@
     {
       "provider": "siliconflow",
       "model": "Qwen/Qwen3.5-35B-A3B",
-      "workflow": "generation",
-      "protocol": "openai-chat-completions",
-      "policy": {
-        "maxCount": 3,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 12582912,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png",
-          "image/jpeg",
-          "image/webp"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": null,
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "siliconflow",
-      "model": "Qwen/Qwen3.5-397B-A17B",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
@@ -2145,6 +2171,32 @@
         "status": "partial",
         "source": "https://ai.google.dev/gemini-api/docs/image-understanding",
         "note": "当前使用内联图片，包含 Base64、文字及 JSON 的整包不得超过 20MB；未使用 Files API。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "bailian",
+      "model": "deepseek-v4.1-flash",
+      "workflow": "generation",
+      "protocol": "bailian-openai-chat",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -5564,7 +5616,59 @@
     },
     {
       "provider": "ark",
+      "model": "deepseek-v4-1-flash-260910",
+      "workflow": "generation",
+      "protocol": "ark-openai-chat",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "ark",
       "model": "doubao-seed-2-1-pro-260628",
+      "workflow": "generation",
+      "protocol": "ark-openai-chat",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "ark",
+      "model": "doubao-seed-2-1-pro-260915",
       "workflow": "generation",
       "protocol": "ark-openai-chat",
       "policy": {
@@ -6044,6 +6148,32 @@
         "status": "partial",
         "source": "https://tokendance.space/docs/ark-image-generations",
         "note": "单图编辑；生成尺寸与输入尺寸是不同约束。渠道未完整公布输入限额，采用保守提交额度。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "ark",
+      "model": "glm-5-3-flash-260828",
+      "workflow": "generation",
+      "protocol": "ark-openai-chat",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -6846,30 +6976,6 @@
     },
     {
       "provider": "together",
-      "model": "google/gemini-3-pro-image",
-      "workflow": "refine",
-      "protocol": "provider-images",
-      "policy": {
-        "maxCount": 1,
-        "maxBytes": 4194304,
-        "maxTotalBytes": 4194304,
-        "maxDimension": 4096,
-        "maxPixels": 8000000,
-        "minDimension": 1,
-        "maxAspectRatio": 200,
-        "requestMaxBytes": 20000000,
-        "mimeTypes": [
-          "image/png"
-        ],
-        "status": "unconfirmed",
-        "source": "",
-        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
-      },
-      "channelGuide": "https://docs.together.ai/docs/serverless/models",
-      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
-    },
-    {
-      "provider": "together",
       "model": "MiniMaxAI/MiniMax-M3",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
@@ -6971,6 +7077,30 @@
     {
       "provider": "together",
       "model": "black-forest-labs/FLUX.2-pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://docs.together.ai/docs/serverless/models",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "together",
+      "model": "google/gemini-3-pro-image",
       "workflow": "refine",
       "protocol": "provider-images",
       "policy": {
@@ -7275,6 +7405,32 @@
     {
       "provider": "fireworks",
       "model": "accounts/fireworks/models/qwen3p7-plus",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 6500000,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 10000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "https://docs.fireworks.ai/guides/querying-vision-language-models",
+        "note": "保守按官方 Base64 合计小于 10MB 收紧；所选型号数量与 URL 输入的完整限额待确认。"
+      },
+      "channelGuide": "https://docs.fireworks.ai/guides/querying-vision-language-models",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "fireworks",
+      "model": "accounts/fireworks/models/deepseek-v4p1-flash",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
@@ -7832,6 +7988,54 @@
         "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
       },
       "channelGuide": "https://fal.ai/models/fal-ai/flux-2-pro/api",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "replicate",
+      "model": "alibaba/qwen-image-3",
+      "workflow": "refine",
+      "protocol": "replicate-predictions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://replicate.com/black-forest-labs/flux-2-pro/api/schema",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "replicate",
+      "model": "alibaba/qwen-image-3-pro",
+      "workflow": "refine",
+      "protocol": "replicate-predictions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://replicate.com/black-forest-labs/flux-2-pro/api/schema",
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
     },
     {
@@ -8604,6 +8808,30 @@
     },
     {
       "provider": "replicate",
+      "model": "xai/grok-imagine-image-2",
+      "workflow": "refine",
+      "protocol": "replicate-predictions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://replicate.com/black-forest-labs/flux-2-pro/api/schema",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "replicate",
       "model": "adirik/realvisxl-v3.0-turbo",
       "workflow": "refine",
       "protocol": "provider-images",
@@ -8991,6 +9219,32 @@
     {
       "provider": "tokendance",
       "model": "glm-5.3-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://tokendance.space/docs/api-key-oauth",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokendance",
+      "model": "glm-5.3-flashx",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
@@ -9689,6 +9943,32 @@
     {
       "provider": "tokendance",
       "model": "seed-evolving",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://tokendance.space/docs/api-key-oauth",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokendance",
+      "model": "step-5-preview",
       "workflow": "generation",
       "protocol": "openai-chat-completions",
       "policy": {
