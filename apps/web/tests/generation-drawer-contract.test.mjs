@@ -79,5 +79,5 @@ test('model search has a visible keyboard focus indicator', () => {
 test('mobile top tabs fill the row with touch-sized controls', () => {
   const styles = readSource('../src/mobile-workbench.css')
   assert.match(styles, /\.paper-tabs\s*\{[^}]*width:\s*100%[^}]*flex-wrap:\s*wrap/u)
-  assert.match(styles, /\.paper-tabs button\s*\{[^}]*min-height:\s*(?:44|48)px/u)
+  assert.match(styles, /\.paper-tabs > :is\(button, a\)\s*\{[^}]*min-height:\s*(?:44|48)px/u)
 })

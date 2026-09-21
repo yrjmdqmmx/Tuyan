@@ -1259,7 +1259,7 @@ button {
   font-weight: 700;
 }
 
-.auth-user span {
+.auth-user .auth-user-email {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1277,6 +1277,25 @@ button {
 
 .auth-user button {
   padding: 3px 6px;
+}
+
+.auth-user .auth-user-email {
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.auth-user > svg,
+.auth-user > button:not(.auth-user-email) {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.paper-tabs > :is(button, a):focus-visible,
+.paper-header :is(button, a):focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 2px;
 }
 
 .text-button {
@@ -1300,7 +1319,11 @@ button {
   border-radius: 12px;
 }
 
-.paper-tabs button {
+.paper-tabs > :is(button, a) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   min-height: 38px;
   padding: 0 18px;
   border: 0;
@@ -1311,7 +1334,7 @@ button {
   font-weight: 700;
 }
 
-.paper-tabs button.active {
+.paper-tabs > :is(button, a).active {
   color: var(--ink);
   background: #ffffff;
   box-shadow: 0 8px 22px rgba(69, 57, 35, 0.08);
@@ -3869,7 +3892,7 @@ figcaption {
     overflow-x: auto;
   }
 
-  .paper-tabs button {
+  .paper-tabs > :is(button, a) {
     white-space: nowrap;
     flex: 0 0 auto;
     min-width: max-content;

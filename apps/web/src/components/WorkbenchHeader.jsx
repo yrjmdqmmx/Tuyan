@@ -1,15 +1,16 @@
 import { useEffect, useId, useState } from 'react';
-import { BarChart3, BookOpen, Bot, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
+import { BarChart3, BookOpen, Bot, LayoutDashboard, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
 import { AUTH_UI_ENABLED, BENCH_ENABLED, logoUrl } from '../config';
 import { appPath } from '../appPaths';
 import AccessibleDialog from './AccessibleDialog';
 import useCompactLayout from '../hooks/useCompactLayout';
 
-export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onNavigate }) {
+export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, section = 'workbench' }) {
   return (
     <nav className="header-navigation" aria-label="网站导航" onClick={onNavigate}>
       <div className="header-links">
-        {BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
+        {section === 'leaderboard' ? <a href={appPath('/')}><LayoutDashboard size={16} /> 工作台</a>
+          : BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
         <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
         <button type="button" className="contact-author-button" onClick={() => onContact()}>
           <QrCode size={16} /> 联系作者
@@ -35,7 +36,7 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
           currentUser ? (
             <div className="auth-user">
               <ShieldCheck size={16} />
-              <span title={currentUser.email}>{currentUser.email}</span>
+              <button type="button" className="auth-user-email" title={currentUser.email} aria-label={`${currentUser.email}，账户`} onClick={onAccount}>{currentUser.email}</button>
               <button type="button" onClick={onSignOut}>退出</button>
             </div>
           ) : (
@@ -49,7 +50,7 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
   );
 }
 
-export function MobileMoreMenu({ open, onClose, onAccount, onGuide, onAdmin, ...navigationProps }) {
+export function MobileMoreMenu({ open, onClose, onAccount, onWorkspaceAccount = onAccount, onGuide, onAdmin, ...navigationProps }) {
   const titleId = useId();
   function closeAfterAction(event) {
     if (event.target.closest('a, button')) onClose();
@@ -57,11 +58,11 @@ export function MobileMoreMenu({ open, onClose, onAccount, onGuide, onAdmin, ...
   return <AccessibleDialog open={open} onClose={onClose} labelledBy={titleId} className="mobile-more-dialog" backdropClassName="mobile-more-backdrop">
     <header className="mobile-more-head"><h2 id={titleId}>更多功能</h2><button type="button" aria-label="关闭更多功能" onClick={onClose}><X size={20} /></button></header>
     <nav className="mobile-workspace-links" aria-label="工作台入口" onClick={closeAfterAction}>
-      <button type="button" onClick={onAccount}><Wallet size={18} />账户与钱包</button>
+      <button type="button" onClick={onWorkspaceAccount}><Wallet size={18} />账户与钱包</button>
       <button type="button" onClick={onGuide}><BookOpen size={18} />使用教程</button>
       {onAdmin && <button type="button" onClick={onAdmin}><ShieldCheck size={18} />站长</button>}
     </nav>
-    <SiteNavigation {...navigationProps} onNavigate={closeAfterAction} />
+    <SiteNavigation {...navigationProps} onAccount={onAccount} onNavigate={closeAfterAction} />
   </AccessibleDialog>;
 }
 

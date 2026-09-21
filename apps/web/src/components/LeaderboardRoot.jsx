@@ -1,18 +1,16 @@
 import { Suspense, createContext, lazy, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { ExternalLink, Menu, MessageSquare, ShieldCheck } from 'lucide-react'
 import { adminStatusRequest, submitFeedbackRequest } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
 import {
   AUTH_ENABLED,
-  AUTH_UI_ENABLED,
   CLIENT_VERSION,
   authClient,
-  logoUrl,
 } from '../config.js'
 import useCompactLayout from '../hooks/useCompactLayout.js'
 import useVisualViewport from '../hooks/useVisualViewport.js'
-import { MobileMoreMenu } from './WorkbenchHeader.jsx'
+import WorkbenchHeader from './WorkbenchHeader.jsx'
+import PageNavigation from './PageNavigation.jsx'
 import ContactDialog from './ContactDialog.jsx'
 import MiniProgramDialog from './MiniProgramDialog.jsx'
 import AgentConnectionDialog from './AgentConnectionDialog.jsx'
@@ -96,12 +94,9 @@ export function useLeaderboardSession() {
 }
 
 const navItems = [
-  { id: 'workspace', label: '工作台', href: appPath('/') },
   { id: 'leaderboard', label: '排行榜', href: appPath('/leaderboard') },
   { id: 'methodology', label: '方法说明', href: appPath('/leaderboard/methodology') },
   { id: 'submit', label: '提交评估题', href: appPath('/leaderboard/submit-prompt') },
-  { id: 'openacad', label: 'OpenAcad', href: 'https://openacad.xyz/', external: true },
-  { id: 'github', label: 'GitHub', href: 'https://github.com/yrjmdqmmx/Tuyan', external: true },
 ]
 
 function activeNav(route) {
@@ -116,45 +111,12 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
 }) {
   const auth = useLeaderboardSession()
   const user = auth.session?.user
-  const active = activeNav(route)
-  const compact = useCompactLayout()
-  const [moreOpen, setMoreOpen] = useState(false)
-  useEffect(() => { if (!compact) setMoreOpen(false) }, [compact])
-  const navItem = item => active === item.id
-    ? <span key={item.id} aria-current="page">{item.label}</span>
-    : <a key={item.id} href={item.href} {...(item.external ? { target: '_blank', rel: 'noreferrer' } : {})}>{item.label}{item.external ? <ExternalLink size={12} /> : null}</a>
-  if (compact) return <>
-    <header className="benchmark-site-header benchmark-phone-header">
-      <a className="benchmark-site-brand" href={appPath('/')}><img src={logoUrl} alt="图研Tuyan 标志" /><span><strong>图研 Tuyan</strong><small>科研图示模型评测</small></span></a>
-      <div className="mobile-header-actions">
-        {AUTH_UI_ENABLED && <button type="button" onClick={user ? onAccount : onLogin}>{user ? '账户' : '登录'}</button>}
-        <button type="button" aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={18} />更多</button>
-      </div>
-      <nav className="benchmark-mobile-nav" aria-label="排行榜导航">{navItems.slice(1, 3).map(navItem)}</nav>
-    </header>
-    <MobileMoreMenu open={moreOpen} onClose={() => setMoreOpen(false)} currentUser={user}
-      onAccount={onWorkspaceAccount} onGuide={onGuide} onAdmin={onAdmin} onContact={onContact} onFeedback={onFeedback}
-      onMiniProgram={onMiniProgram} onAgentConnection={onAgentConnection} onSignIn={onLogin} onSignOut={onSignOut} />
-  </>
-  return (
-    <header className="benchmark-site-header">
-      <a className="benchmark-site-brand" href={appPath('/')}>
-        <img src={appPath('/logo.svg')} alt="图研Tuyan 标志" />
-        <span><strong>图研Tuyan</strong></span>
-      </a>
-      <nav className="benchmark-site-nav" aria-label="排行榜导航">
-        {navItems.map((item) => active === item.id
-          ? <span key={item.id} aria-current="page">{item.label}</span>
-          : <a key={item.id} href={item.href} {...(item.external ? { target: '_blank', rel: 'noreferrer' } : {})}>{item.label}{item.external ? <ExternalLink size={12} /> : null}</a>)}
-      </nav>
-      <div className="benchmark-site-actions">
-        <button className="benchmark-feedback-action" type="button" onClick={onFeedback}><MessageSquare size={15} />意见反馈</button>
-        {AUTH_UI_ENABLED ? user ? (
-          <div className="benchmark-auth-user"><ShieldCheck size={15} /><span title={user.email}>{user.email}</span><button type="button" onClick={onAccount}>账号</button><button type="button" onClick={onSignOut}>退出</button></div>
-        ) : <button type="button" onClick={onLogin}><ShieldCheck size={15} />登录 / 注册</button> : null}
-      </div>
-    </header>
-  )
+  return <div className="app-shell benchmark-navigation-shell">
+    <WorkbenchHeader section="leaderboard" currentUser={user} onSignIn={onLogin} onSignOut={onSignOut}
+      onAccount={onAccount} onWorkspaceAccount={onWorkspaceAccount} onGuide={onGuide} onAdmin={onAdmin}
+      onContact={onContact} onFeedback={onFeedback} onMiniProgram={onMiniProgram} onAgentConnection={onAgentConnection} />
+    <PageNavigation label="排行榜导航" items={navItems} activeId={activeNav(route)} />
+  </div>
 }
 
 export default function LeaderboardRoot({ apiBase, backendMode, enabled, pathname, route }) {
