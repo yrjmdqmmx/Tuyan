@@ -6,7 +6,7 @@ import BenchmarkPareto from './BenchmarkPareto.jsx'
 import { OFFICIAL_PRICES, TEST_COSTS } from './benchmarkParetoMath.js'
 import { BenchmarkObservatory } from './BenchmarkPage.jsx'
 
-afterEach(() => { cleanup();window.history.replaceState(null, '', '/') })
+afterEach(() => { cleanup();window.sessionStorage.clear();window.history.replaceState(null, '', '/') })
 function model(id, score = 8) {
   const entry = OFFICIAL_PRICES.models.find(p => p.modelId === id)
   return { modelId: id, profileId: 'profile-' + id, displayName: id, developer: id.split('/')[0], overallScore: score, overallRank: 1, dimensions: { scientific_faithfulness: { mean: 10 - score } }, evidence: entry.binding?.map(s => ({ ...s, actualOutputPixels: { width: s.width, height: s.height } })) || [] }
@@ -28,7 +28,7 @@ test('compact controls, budget, dimensions, cost bars and advanced source filter
   assert.equal(screen.getByLabelText('当前缩放').textContent, '2×')
   fireEvent.click(screen.getByRole('button', { name: '重置视图' }))
   assert.equal(screen.getByLabelText('当前缩放').textContent, '1×')
-  fireEvent.change(screen.getByLabelText('供应商'), { target: { value: 'openai' } })
+  fireEvent.change(screen.getByLabelText('模型研发厂商'), { target: { value: 'openai' } })
   assert.match(screen.getByLabelText('比较范围').textContent, /0 个模型/)
   assert.ok(screen.getByText('没有符合条件的模型'))
 })
@@ -61,7 +61,7 @@ test('ordinary ranking remains default; toggle is deep-linkable and history awar
   assert.equal(new URLSearchParams(window.location.search).get('view'), 'pareto')
   assert.ok(screen.getByLabelText('帕累托视图'))
   fireEvent.click(screen.getByRole('button', { name: '排名', exact: true }))
-  assert.equal(screen.queryByLabelText('帕累托视图'), null)
+  assert.ok(screen.getByLabelText('帕累托视图').closest('[hidden]'))
   assert.equal(new URLSearchParams(window.location.search).get('view'), null)
 })
 
@@ -80,4 +80,22 @@ test('touch chart expansion locks page scroll and Escape restores it', () => {
     cleanup()
     assert.equal(document.body.style.overflow, overflow)
   } finally { window.innerWidth = width;document.body.style.overflow = overflow }
+})
+
+test('touch selection resolves profile records while retaining the original API ID on the point', () => {
+  const first = model('krea/krea-2-medium')
+  const second = { ...first, profileId: 'another-channel-run', displayName: 'Second run' }
+  const { container } = render(React.createElement(BenchmarkPareto, { models: [first, second], axes }))
+  const point = container.querySelector('[data-point]')
+  const svg = container.querySelector('.pareto-svg')
+  svg.setPointerCapture = () => {}
+  assert.equal(point.dataset.modelIds, `${first.modelId}|${second.modelId}`)
+  assert.match(point.dataset.recordKeys, /another-channel-run/)
+  for (const type of ['pointerdown', 'pointerup']) {
+    const event = new window.Event(type, { bubbles: true })
+    Object.assign(event, { pointerId: 1, pointerType: 'touch', clientX: 80, clientY: 100 })
+    fireEvent(point, event)
+  }
+  const detail = screen.getByRole('dialog', { name: '模型计价详情' })
+  assert.equal(within(detail).getByLabelText('重叠模型选择').querySelectorAll('button').length, 2)
 })

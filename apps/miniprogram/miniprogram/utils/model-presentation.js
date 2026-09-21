@@ -7,6 +7,8 @@ exports.modelVersionLabel = modelVersionLabel;
 exports.modelVersionDetail = modelVersionDetail;
 exports.openRouterModelVersion = openRouterModelVersion;
 exports.modelLifecycleLabel = modelLifecycleLabel;
+exports.modelDeveloperName = modelDeveloperName;
+exports.modelDeveloperAliases = modelDeveloperAliases;
 exports.modelDeveloper = modelDeveloper;
 exports.presentRegistryModel = presentRegistryModel;
 exports.validModelReleaseDate = validModelReleaseDate;
@@ -15,7 +17,7 @@ exports.sortModelsNewestFirst = sortModelsNewestFirst;
 exports.MODEL_PRESENTATION = require('./model-presentation-data.js');
 const presentationAliases = new Map();
 for (const [id, vendor] of Object.entries(exports.MODEL_PRESENTATION.vendors)) {
-    for (const alias of [id, vendor.label, ...vendor.aliases])
+    for (const alias of [id, vendor.label, vendor.labelEn || vendor.label, vendor.labelZh || vendor.label, ...vendor.aliases])
         presentationAliases.set(alias.toLowerCase(), id);
 }
 const presentationRoutes = exports.MODEL_PRESENTATION.routes.map((rule) => ({ ...rule, regex: new RegExp(rule.pattern, 'i') }));
@@ -68,14 +70,21 @@ function openRouterModelVersion(id, canonicalSlug, checkedAt, image = false) {
 function modelLifecycleLabel(lifecycle) {
     return { stable: '稳定版', preview: '预览版', 'invite-only': '邀测', legacy: '旧版维护', deprecated: '即将下线' }[lifecycle] || '状态未知';
 }
+function modelDeveloperName(id, locale = 'zh-CN') {
+    const vendor = exports.MODEL_PRESENTATION.vendors[id] || { label: '开发方待确认', labelEn: 'Developer unconfirmed', labelZh: '开发方待确认', aliases: [] };
+    return (locale === 'en' ? vendor.labelEn : vendor.labelZh) || vendor.label;
+}
+function modelDeveloperAliases(id) {
+    const vendor = exports.MODEL_PRESENTATION.vendors[id] || { label: '开发方待确认', labelEn: 'Developer unconfirmed', labelZh: '开发方待确认', aliases: [] };
+    return [id, vendor.label, vendor.labelEn || vendor.label, vendor.labelZh || vendor.label, ...vendor.aliases];
+}
 function modelDeveloper(provider, model) {
-    var _a;
     const route = presentationRoutes.find((rule) => rule.channels.includes(provider) && rule.regex.test(model.id));
     // Only reviewed namespaces are aliases; Pro and deployment paths are never developers.
     const namespace = model.id.replace(/^~/, '').replace(/^Pro\//i, '').split('/')[0].toLowerCase();
     const explicit = presentationAliases.get(String(model.vendorId || model.vendor || '').toLowerCase());
     const id = (route === null || route === void 0 ? void 0 : route.vendorId) || (model.vendorId === 'unconfirmed' ? 'unconfirmed' : presentationAliases.get(String(model.vendorId || '').toLowerCase())) || (model.id.includes('/') ? presentationAliases.get(namespace) : undefined) || explicit || 'unconfirmed';
-    return { id, label: ((_a = exports.MODEL_PRESENTATION.vendors[id]) === null || _a === void 0 ? void 0 : _a.label) || '开发方待确认' };
+    return { id, label: modelDeveloperName(id) };
 }
 function presentRegistryModel(provider, model) {
     const developer = modelDeveloper(provider, model);

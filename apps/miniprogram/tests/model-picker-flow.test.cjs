@@ -85,7 +85,7 @@ assert.equal(picker.data.step, 'providers')
 
 picker.selectProvider({ currentTarget: { dataset: { provider: 'gemini' } } })
 assert.equal(picker.data.step, 'vendors')
-picker.selectVendor({ currentTarget: { dataset: { vendor: 'Google' } } })
+picker.selectVendor({ currentTarget: { dataset: { vendor: '谷歌' } } })
 assert.equal(picker.data.step, 'models')
 assert.deepEqual(picker.data.visibleCompatibleModels.map((item) => item.id), ['gemini-main'])
 

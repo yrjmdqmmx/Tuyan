@@ -104,7 +104,7 @@ test('unknown release dates keep deterministic ties regardless of recommendation
   ]
   const visible = filterRegistryModels(models, { role: 'image', query: 'image', outputFormat: 'png' })
   assert.deepEqual(visible.map((model) => model.id), ['google/gemini-image', 'openai/gpt-image', 'xai/grok-image'])
-  assert.deepEqual(groupRegistryModels(visible).map((group) => group.vendor), ['OpenAI', 'Google', 'SpaceXAI'])
+  assert.deepEqual(groupRegistryModels(visible).map((group) => group.vendor), ['OpenAI', 'SpaceXAI', '谷歌'])
 })
 
 test('role and output format filters keep incompatible entries visible but disabled', () => {

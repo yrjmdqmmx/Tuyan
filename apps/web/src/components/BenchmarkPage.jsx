@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, ArrowUpDown, BarChart3, ExternalLink, Loader2, Search } from 'lucide-react'
 import { benchmarkLeaderboardRequest } from '@paperbanana/api'
 
@@ -15,6 +15,9 @@ import {
 import { normalizeLeaderboardRelease } from './benchmarkRelease.js'
 import useCompactLayout from '../hooks/useCompactLayout.js'
 import BenchmarkPareto from './BenchmarkPareto.jsx'
+import BenchmarkRankingFilters from './BenchmarkRankingFilters.jsx'
+import { benchmarkRecordKey, benchmarkDeveloperName, matchesBenchmarkModel } from './benchmarkDevelopers.js'
+import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 
 export { BenchmarkEvidenceImage, BenchmarkPromptSubmissionForm }
 
@@ -72,12 +75,6 @@ function compareByMetric(left, right, metricId) {
   return rightValue - leftValue || modelName(left).localeCompare(modelName(right), 'zh-CN')
 }
 
-function matchesQuery(model, query) {
-  if (!query) return true
-  const haystack = `${modelName(model)} ${modelIdentity(model)}`.toLocaleLowerCase('zh-CN')
-  return haystack.includes(query.trim().toLocaleLowerCase('zh-CN'))
-}
-
 function MetricValue({ model, metricId }) {
   const value = metricValue(model, metricId)
   const rank = metricRank(model, metricId)
@@ -86,79 +83,83 @@ function MetricValue({ model, metricId }) {
 }
 
 function LeaderboardNav() {
+  const { t, locale } = useBenchmarkLocale()
   return (
-    <nav className="bench-nav" aria-label="排行榜导航">
-      <a className="bench-brand" href={WORKSPACE_HREF}><img src={LOGO_HREF} alt="" />图研Tuyan</a>
-      <a href={WORKSPACE_HREF}>工作台</a>
-      <span aria-current="page">排行榜</span>
-      <a href={METHODOLOGY_HREF}>方法说明</a>
-      <a href={SUBMIT_HREF}>提交评估题</a>
+    <nav className="bench-nav" aria-label={t("排行榜导航")}>
+      <a className="bench-brand" href={WORKSPACE_HREF}><img src={LOGO_HREF} alt="" />{t("图研Tuyan")}</a>
+      <a href={WORKSPACE_HREF}>{t("工作台")}</a>
+      <span aria-current="page">{t("排行榜")}</span>
+      <a href={METHODOLOGY_HREF}>{t("方法说明")}</a>
+      <a href={SUBMIT_HREF}>{t("提交评估题")}</a>
       <a href="https://github.com/yrjmdqmmx/Tuyan" target="_blank" rel="noreferrer">GitHub <ExternalLink size={12} /></a>
     </nav>
   )
 }
 
 function LeaderboardHero({ release, compact = false }) {
+  const { t, locale } = useBenchmarkLocale()
   const phone = useCompactLayout()
   const scientific = release.presentationVersion === 'scientific-leaderboard-v2'
   if (phone) return <header className="bench-phone-hero">
-    <h1>模型评测排行榜</h1>
-    <p>科研图示生成与编辑模型的能力与成本对比。</p>
+    <h1>{t("模型评测排行榜")}</h1>
+    <p>{t("科研图示生成与编辑模型的能力与成本对比。")}</p>
     <details className="bench-phone-method">
-      <summary>评测说明<span>{release.eligibleModelCount ?? release.models?.length ?? 0} 个模型</span></summary>
-      <div><p>面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据。</p><p>{scientific ? '固定 9 题 · 6 生成 + 3 编辑；独立双盲 + 争议仲裁；十维等权，失败记 0。' : '固定 4 题 · 每模型 4 张；Codex 双遍盲审；七维等权。'}</p><a href={METHODOLOGY_HREF}>查看完整方法说明</a></div>
+      <summary>{t("评测说明")}<span>{release.eligibleModelCount ?? release.models?.length ?? 0} {t("个模型")}</span></summary>
+      <div><p>{t("面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据。")}</p><p>{scientific ? t("固定 9 题 · 6 生成 + 3 编辑；独立双盲 + 争议仲裁；十维等权，失败记 0。") : t("固定 4 题 · 每模型 4 张；Codex 双遍盲审；七维等权。")}</p><a href={METHODOLOGY_HREF}>{t("查看完整方法说明")}</a></div>
     </details>
   </header>
-  if (compact) return <header className="bench-compact-hero"><h1>图研 Tuyan Benchmark</h1><p>科研图示生成与编辑模型评测</p></header>
+  if (compact) return <header className="bench-compact-hero"><h1>{t("图研 Tuyan Benchmark")}</h1><p>{t("科研图示生成与编辑模型评测")}</p></header>
   return (
     <header className="bench-hero">
-      <div className="bench-eyebrow">TUYAN BENCHMARK</div>
-      <h1>图研 Tuyan Benchmark</h1>
-      <p className="bench-hero-subtitle">科研图示生成与编辑模型基准评测</p>
-      <p className="bench-hero-subtitle-en"><em>Tuyan Benchmark for Scientific Figure Generation &amp; Editing Models</em></p>
-      <p className="bench-hero-description">面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据的生成与编辑模型横向评测。</p>
-      <div className="bench-meta" aria-label="排行榜方法摘要">
-        <span className="accent">{release.eligibleModelCount ?? release.models?.length ?? 0} 个合格模型</span>
-        <span>{scientific ? '固定 9 题 · 6 生成 + 3 编辑' : '固定 4 题 · 每模型 4 张'}</span>
-        <span>{scientific ? '独立双盲 + 争议仲裁' : 'Codex 双遍盲审'}</span>
-        <span>{scientific ? '十维等权 · 失败记 0' : '七维等权'}</span>
+      <div className="bench-eyebrow">{t("TUYAN BENCHMARK")}</div>
+      <h1>{t("图研 Tuyan Benchmark")}</h1>
+      <p className="bench-hero-subtitle">{t("科研图示生成与编辑模型基准评测")}</p>
+      <p className="bench-hero-subtitle-en"><em>{t("Tuyan Benchmark for Scientific Figure Generation & Editing Models")}</em></p>
+      <p className="bench-hero-description">{t("面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据的生成与编辑模型横向评测。")}</p>
+      <div className="bench-meta" aria-label={t("排行榜方法摘要")}>
+        <span className="accent">{release.eligibleModelCount ?? release.models?.length ?? 0} {t("个合格模型")}</span>
+        <span>{scientific ? t("固定 9 题 · 6 生成 + 3 编辑") : t("固定 4 题 · 每模型 4 张")}</span>
+        <span>{scientific ? t("独立双盲 + 争议仲裁") : t("Codex 双遍盲审")}</span>
+        <span>{scientific ? t("十维等权 · 失败记 0") : t("七维等权")}</span>
       </div>
     </header>
   )
 }
 
 function DimensionCard({ axis, models }) {
+  const { t, locale } = useBenchmarkLocale()
   const ranked = useMemo(() => [...models].sort((left, right) => compareByMetric(left, right, axis.id)).slice(0, 10), [axis.id, models])
   return (
     <article className="bench-dimension-card">
       <header>
-        <div><span>{axis.label}</span><small>TOP10</small></div>
-        <strong>Top10</strong>
+        <div><span>{t(axis.label)}</span><small>{t("TOP10")}</small></div>
+        <strong>{t("Top10")}</strong>
       </header>
       <ol>
         {ranked.map((model) => {
           const score = metricValue(model, axis.id)
           const rank = metricRank(model, axis.id)
           return (
-            <li className="bench-mini-row" key={modelIdentity(model)}>
+            <li className="bench-mini-row" key={benchmarkRecordKey(model)}>
               <b className={rankClass(rank)}>#{rank ?? '—'}</b>
-              <a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a>
+              <a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small><span className="bench-developer" title={t('模型研发厂商')}>{benchmarkDeveloperName(model, locale)}</span></a>
               <i aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, (score || 0) * 10))}%` }} /></i>
               <em>{formatScore(score)}</em>
             </li>
           )
         })}
       </ol>
-      <a href={appPath(`/leaderboard/${axis.slug}`)}>查看完整排名 <span aria-hidden="true">→</span></a>
+      <a href={appPath(`/leaderboard/${axis.slug}`)}>{t("查看完整排名")}<span aria-hidden="true">→</span></a>
     </article>
   )
 }
 
 function DimensionGrid({ axes, models }) {
+  const { t, locale } = useBenchmarkLocale()
   return (
     <section className="bench-section" aria-labelledby="bench-dimensions-title">
       <div className="bench-section-head">
-        <div><div className="bench-eyebrow">DIMENSION LEADERS</div><h2 id="bench-dimensions-title">{axes.length} 维 Top10</h2><p>先看各维度强项，再进入下方综合矩阵横向比较。</p></div>
+        <div><div className="bench-eyebrow">{t("DIMENSION LEADERS")}</div><h2 id="bench-dimensions-title">{axes.length} {t("维 Top10")}</h2><p>{t("先看各维度强项，再进入下方综合矩阵横向比较。")}</p></div>
       </div>
       <div className="bench-dimension-grid">
         {axes.map((axis) => <DimensionCard axis={axis} models={models} key={axis.id} />)}
@@ -168,87 +169,75 @@ function DimensionGrid({ axes, models }) {
 }
 
 function MatrixHeader({ metric, activeMetric, onSort }) {
+  const { t, locale } = useBenchmarkLocale()
   const active = metric.id === activeMetric
   return (
     <th scope="col" {...(active ? { 'aria-sort': 'descending' } : {})}>
-      <button type="button" aria-label={`按${metric.label}排序`} onClick={() => onSort(metric.id)}>
-        {metric.label}<ArrowUpDown size={13} aria-hidden="true" />
+      <button type="button" aria-label={t("按{v0}排序", {v0: t(metric.label)})} onClick={() => onSort(metric.id)}>
+        {t(metric.label)}<ArrowUpDown size={13} aria-hidden="true" />
       </button>
     </th>
   )
 }
 
-function LeaderboardMatrix({ axes, release, models }) {
-  const [query, setQuery] = useState('')
-  const [sortMetric, setSortMetric] = useState('overall')
-  const deferredQuery = useDeferredValue(query)
+function LeaderboardMatrix({ axes, models, sortMetric, setSortMetric }) {
+  const { t, locale } = useBenchmarkLocale()
   const visibleModels = useMemo(
-    () => models.filter((model) => matchesQuery(model, deferredQuery)).sort((left, right) => compareByMetric(left, right, sortMetric)),
-    [deferredQuery, models, sortMetric],
+    () => [...models].sort((left, right) => compareByMetric(left, right, sortMetric)),
+    [models, sortMetric],
   )
-  const eligibleCount = release.eligibleModelCount ?? models.length
 
   return (
     <section className="bench-section bench-matrix-section" aria-labelledby="bench-matrix-title">
       <div className="bench-section-head bench-matrix-head">
-        <div><div className="bench-eyebrow">OVERALL MATRIX</div><h2 id="bench-matrix-title">综合总矩阵</h2><p>点击指标表头即可按对应原始分数降序查看；单元格同时展示 competition rank 与得分。</p></div>
-        <div className="bench-search">
-          <label htmlFor="bench-matrix-search">搜索综合排行榜模型</label>
-          <span><Search size={15} aria-hidden="true" /><input id="bench-matrix-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} /></span>
-          <small aria-live="polite">{visibleModels.length} / {eligibleCount}</small>
-        </div>
+        <div><div className="bench-eyebrow">{t("OVERALL MATRIX")}</div><h2 id="bench-matrix-title">{t("综合总矩阵")}</h2><p>{t("点击指标表头即可按对应原始分数降序查看；单元格同时展示 competition rank 与得分。")}</p></div>
       </div>
-      <div className="bench-matrix-scroll" tabIndex="0" aria-label="可横向滚动的综合排行榜">
-        <table className="bench-matrix" aria-label="生图模型综合排行榜">
+      <div className="bench-matrix-scroll" tabIndex="0" aria-label={t("可横向滚动的综合排行榜")}>
+        <table className="bench-matrix" aria-label={t("生图模型综合排行榜")}>
           <thead><tr>
-            <th className="bench-model-column" scope="col">模型</th>
+            <th className="bench-model-column" scope="col">{t("模型")}</th>
             <MatrixHeader metric={OVERALL_METRIC} activeMetric={sortMetric} onSort={setSortMetric} />
             {axes.map((axis) => <MatrixHeader metric={axis} activeMetric={sortMetric} onSort={setSortMetric} key={axis.id} />)}
           </tr></thead>
           <tbody>
             {visibleModels.map((model) => (
-              <tr key={modelIdentity(model)}>
-                <th className="bench-model-column" scope="row"><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th>
+              <tr key={benchmarkRecordKey(model)}>
+                <th className="bench-model-column" scope="row"><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a><span className="bench-developer" title={t('模型研发厂商')}>{benchmarkDeveloperName(model, locale)}</span></th>
                 <td className={rankClass(metricRank(model, 'overall'))}><MetricValue model={model} metricId="overall" /></td>
                 {axes.map((axis) => <td className={rankClass(metricRank(model, axis.id))} key={axis.id}><MetricValue model={model} metricId={axis.id} /></td>)}
               </tr>
             ))}
           </tbody>
         </table>
-        {visibleModels.length === 0 ? <div className="bench-empty">没有匹配的合格模型。</div> : null}
+        {visibleModels.length === 0 ? <div className="bench-empty">{t("没有匹配的合格模型。")}</div> : null}
       </div>
     </section>
   )
 }
 
-function DimensionLeaderboard({ axis, release, models, showNavigation = true }) {
-  const [query, setQuery] = useState('')
-  const deferredQuery = useDeferredValue(query)
+function DimensionLeaderboard({ axis, release, models, allModels, filters, showNavigation = true }) {
+  const { t, locale } = useBenchmarkLocale()
   const ranked = useMemo(
-    () => models.filter((model) => matchesQuery(model, deferredQuery)).sort((left, right) => compareByMetric(left, right, axis.id)),
-    [axis.id, deferredQuery, models],
+    () => [...models].sort((left, right) => compareByMetric(left, right, axis.id)),
+    [axis.id, models],
   )
   return (
     <main className="bench-shell">
       {showNavigation ? <LeaderboardNav /> : null}
       <section className="bench-subpage-hero">
-        <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a>
-        <div className="bench-eyebrow">FULL DIMENSION RANKING</div>
-        <h1>{axis.label}完整排名</h1>
-        <p>全部 {release.eligibleModelCount ?? models.length} 个合格模型，按原始均分降序排列。</p>
+        <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />{t("返回综合总榜")}</a>
+        <div className="bench-eyebrow">{t("FULL DIMENSION RANKING")}</div>
+        <h1>{t(axis.label)}{t("完整排名")}</h1>
+        <p>{t("全部")}{release.eligibleModelCount ?? models.length} {t("个合格模型，按原始均分降序排列。")}</p>
       </section>
+      <BenchmarkRankingFilters models={allModels} count={models.length} {...filters} />
       <section className="bench-dimension-full">
-        <div className="bench-search">
-          <label htmlFor="bench-dimension-search">搜索{axis.label}排名模型</label>
-          <span><Search size={15} aria-hidden="true" /><input id="bench-dimension-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} /></span>
-          <small aria-live="polite">{ranked.length} / {release.eligibleModelCount ?? models.length}</small>
-        </div>
-        <div className="bench-matrix-scroll" tabIndex="0" aria-label={`可横向滚动的${axis.label}完整排名`}>
-          <table className="bench-dimension-table" aria-label={`${axis.label}完整排名`}>
-            <thead><tr><th scope="col">名次</th><th scope="col">模型</th><th scope="col">分数</th></tr></thead>
+        <div className="bench-matrix-scroll" tabIndex="0" aria-label={t("可横向滚动的{v0}完整排名", {v0: t(axis.label)})}>
+          <table className="bench-dimension-table" aria-label={t("{v0}完整排名", {v0: t(axis.label)})}>
+            <thead><tr><th scope="col">{t("名次")}</th><th scope="col">{t("模型")}</th><th scope="col">{t("分数")}</th></tr></thead>
             <tbody>{ranked.map((model) => {
               const rank = metricRank(model, axis.id)
-              return <tr key={modelIdentity(model)}><td className={rankClass(rank)}>#{rank ?? '—'}</td><th scope="row"><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a></th><td>{formatScore(metricValue(model, axis.id))}</td></tr>
+              return <tr key={benchmarkRecordKey(model)}><td className={rankClass(rank)}>#{rank ?? '—'}</td><th scope="row"><a href={leaderboardDetailHref(`/leaderboard/models/${encodeURIComponent(model.profileId)}`)}><strong>{modelName(model)}</strong><small>{modelIdentity(model)}</small></a><span className="bench-developer" title={t('模型研发厂商')}>{benchmarkDeveloperName(model, locale)}</span></th><td>{formatScore(metricValue(model, axis.id))}</td></tr>
             })}</tbody>
           </table>
         </div>
@@ -258,26 +247,28 @@ function DimensionLeaderboard({ axis, release, models, showNavigation = true }) 
 }
 
 function InvalidDimension({ showNavigation = true }) {
+  const { t, locale } = useBenchmarkLocale()
   return (
     <main className="bench-shell">
       {showNavigation ? <LeaderboardNav /> : null}
       <section className="bench-not-found">
         <BarChart3 size={30} aria-hidden="true" />
-        <h1>没有这个排行榜维度</h1>
-        <p>链接可能已失效，返回综合总榜继续浏览七个正式维度。</p>
-        <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />返回综合总榜</a>
+        <h1>{t("没有这个排行榜维度")}</h1>
+        <p>{t("链接可能已失效，返回综合总榜继续浏览七个正式维度。")}</p>
+        <a href={LEADERBOARD_HREF}><ArrowLeft size={15} />{t("返回综合总榜")}</a>
       </section>
     </main>
   )
 }
 
 function BenchmarkUnavailable() {
+  const { t, locale } = useBenchmarkLocale()
   return (
     <main className="bench-state">
       <BarChart3 size={28} />
-      <strong>排行榜尚未开放</strong>
-      <span>该页面当前受功能开关控制。</span>
-      <a href={WORKSPACE_HREF}><ArrowLeft size={15} />返回工作台</a>
+      <strong>{t("排行榜尚未开放")}</strong>
+      <span>{t("该页面当前受功能开关控制。")}</span>
+      <a href={WORKSPACE_HREF}><ArrowLeft size={15} />{t("返回工作台")}</a>
     </main>
   )
 }
@@ -294,6 +285,7 @@ export default function BenchmarkPage({ apiBase, backendMode = 'gateway', enable
 }
 
 function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname, showNavigation }) {
+  const { t, locale } = useBenchmarkLocale()
   const route = resolveLeaderboardRoute(pathname)
   const [release, setRelease] = useState(null)
   const [error, setError] = useState('')
@@ -317,13 +309,22 @@ function BenchmarkReleasePage({ apiBase, backendMode, enabled, pathname, showNav
   }, [apiBase, backendMode, enabled, route.invalidSlug])
 
   if (!enabled) return <BenchmarkUnavailable />
-  if (loading) return <div className="bench-state"><Loader2 className="spin" />正在读取排行榜…</div>
-  if (error) return <div className="bench-state bench-state-error">排行榜暂不可用：{error}</div>
-  if (!release) return <div className="bench-state">排行榜尚无已发布数据。</div>
+  if (loading) return <div className="bench-state"><Loader2 className="spin" />{t("正在读取排行榜…")}</div>
+  if (error) return <div className="bench-state bench-state-error">{t("排行榜暂不可用：")}{t(error)}</div>
+  if (!release) return <div className="bench-state">{t("排行榜尚无已发布数据。")}</div>
   return <BenchmarkObservatory release={release} pathname={pathname} showNavigation={showNavigation} />
 }
 
 export function BenchmarkObservatory({ release, pathname = '/leaderboard', showNavigation = true }) {
+  const { t, locale } = useBenchmarkLocale()
+  const [filters, setFilters] = useState(() => {
+    try { const value = JSON.parse(window.sessionStorage.getItem('tuyan.benchmark.filters.v1') || '{}'); return { query: typeof value.query === 'string' ? value.query : '', vendor: typeof value.vendor === 'string' ? value.vendor : '', sortMetric: typeof value.sortMetric === 'string' ? value.sortMetric : 'overall' } } catch { return { query: '', vendor: '', sortMetric: 'overall' } }
+  })
+  useEffect(() => { try { window.sessionStorage.setItem('tuyan.benchmark.filters.v1', JSON.stringify(filters)) } catch {} }, [filters])
+  const setQuery = query => setFilters(old => ({ ...old, query }))
+  const setVendor = vendor => setFilters(old => ({ ...old, vendor }))
+  const setSortMetric = sortMetric => setFilters(old => ({ ...old, sortMetric }))
+  const sharedFilters = { query: filters.query, vendor: filters.vendor, onQuery: setQuery, onVendor: setVendor }
   const [view, setView] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('view') === 'pareto' ? 'pareto' : 'ranking')
   useEffect(() => {
     const sync = () => setView(new URLSearchParams(window.location.search).get('view') === 'pareto' ? 'pareto' : 'ranking')
@@ -340,16 +341,23 @@ export function BenchmarkObservatory({ release, pathname = '/leaderboard', showN
   }
   const models = Array.isArray(release.models) ? release.models : []
   const axes = axesForRelease(release)
+  const filteredModels = models.filter(model => matchesBenchmarkModel(model, filters.query, filters.vendor))
+  const sortMetric = filters.sortMetric === 'overall' || axes.some(axis => axis.id === filters.sortMetric) ? filters.sortMetric : 'overall'
   const route = resolveLeaderboardRoute(pathname)
   if (route.invalidSlug) return <InvalidDimension showNavigation={showNavigation} />
-  if (route.dimension) return <DimensionLeaderboard axis={route.dimension} release={release} models={models} showNavigation={showNavigation} />
-  const viewSwitch = scientific ? <div className="bench-view-switch" role="group" aria-label="排行榜视图"><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />排名</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>帕累托</button></div> : null
+  if (route.dimension) return <DimensionLeaderboard axis={route.dimension} release={release} models={filteredModels} allModels={models} filters={sharedFilters} showNavigation={showNavigation} />
+  const viewSwitch = scientific ? <div className="bench-view-switch" role="group" aria-label={t("排行榜视图")}><button aria-pressed={view === 'ranking'} onClick={() => changeView('ranking')}><BarChart3 size={16} />{t("排名")}</button><button aria-pressed={view === 'pareto'} onClick={() => changeView('pareto')}><span aria-hidden="true">↗</span>{t("帕累托")}</button></div> : null
   return (
     <main className={`bench-shell${scientific && view === 'pareto' ? ' bench-pareto-shell' : ''}`}>
       {showNavigation ? <LeaderboardNav /> : null}
       <LeaderboardHero release={release} compact={scientific && view === 'pareto'} />
 
-      {scientific && view === 'pareto' ? <BenchmarkPareto models={models} axes={axes} viewSwitch={viewSwitch} /> : <>{viewSwitch}<DimensionGrid axes={axes} models={models} /><LeaderboardMatrix axes={axes} release={release} models={models} /></>}
+      <div hidden={scientific && view === 'pareto'}>
+        <BenchmarkRankingFilters models={models} count={filteredModels.length} {...sharedFilters} viewSwitch={viewSwitch} />
+        <DimensionGrid axes={axes} models={filteredModels} />
+        <LeaderboardMatrix axes={axes} models={filteredModels} sortMetric={sortMetric} setSortMetric={setSortMetric} />
+      </div>
+      {scientific && <div hidden={view !== 'pareto'}><BenchmarkPareto models={models} axes={axes} viewSwitch={viewSwitch} sharedFilters={sharedFilters} active={view === 'pareto'} /></div>}
     </main>
   )
 }

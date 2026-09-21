@@ -1,3 +1,4 @@
+import { matchesBenchmarkModel } from './benchmarkDevelopers.js'
 import prices from '../data/benchmarkOfficialPrices.json'
 import testCosts from '../data/benchmarkTestCosts.json'
 
@@ -127,12 +128,11 @@ export function metricScore(model, metric) {
 }
 
 export function filterModels(rows, { query = '', vendor = '', min = '', max = '', metric = 'overall' }) {
-  let low, high
-  try { low = min === '' ? null : decimal(min); high = max === '' ? null : decimal(max) } catch { return { matching: [], visible: [], missing: [], error: '请输入非负的价格数值。' } }
-  if (low && high && compareCost(low, high) > 0) return { matching: [], visible: [], missing: [], error: '最低价格不能高于最高价格。' }
-  const q = query.trim().toLocaleLowerCase()
-  const matching = rows.filter(({ model }) => (!vendor || model.developer === vendor) && `${model.displayName} ${model.modelId}`.toLocaleLowerCase().includes(q))
+  const matching = rows.filter(({ model }) => matchesBenchmarkModel(model, query, vendor))
   const missing = matching.filter(r => r.price.status !== 'comparable' || metricScore(r.model, metric) === null)
+  let low, high
+  try { low = min === '' ? null : decimal(min); high = max === '' ? null : decimal(max) } catch { return { matching, visible: [], missing, error: '请输入非负的价格数值。' } }
+  if (low && high && compareCost(low, high) > 0) return { matching, visible: [], missing, error: '最低价格不能高于最高价格。' }
   const visible = matching.filter(r => r.price.status === 'comparable' && metricScore(r.model, metric) !== null && (!low || compareCost(r.price.exact, low) >= 0) && (!high || compareCost(r.price.exact, high) <= 0))
   return { matching, visible, missing, error: '' }
 }

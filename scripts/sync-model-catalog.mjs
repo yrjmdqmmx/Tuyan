@@ -18,7 +18,7 @@ const lines = [start, '// Source: config/model-catalog-updates.json; run node sc
 const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
 const presentationData = `export const MODEL_PRESENTATION: {
   channels: Record<string, string>;
-  vendors: Record<string, {label: string; aliases: string[]; source: string; legalName?: string; parentCompany?: string}>;
+  vendors: Record<string, {label: string; labelEn?: string; labelZh?: string; nameSource?: string; aliases: string[]; source: string; legalName?: string; parentCompany?: string}>;
   routes: {channels: string[]; pattern: string; vendorId: string; source: string}[];
   families: {id: string; vendorId: string; newestFirst: string[]; source: string}[];
   releases: {vendorId: string; pattern: string; releasedAt: string | null; source: string; channels?: string[]; lifecycle?: string; releaseKind?: string}[];

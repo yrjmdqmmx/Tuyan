@@ -19,6 +19,7 @@ import AuthUnavailablePanel from './AuthUnavailablePanel.jsx'
 import BenchmarkMethodologyPage from './BenchmarkMethodologyPage.jsx'
 import BenchmarkPage from './BenchmarkPage.jsx'
 import FeedbackDialog from './FeedbackDialog.jsx'
+import { BenchmarkLocaleProvider, BenchmarkLanguageSwitch, useBenchmarkLocale } from './BenchmarkLocale.jsx'
 
 const AccountSettingsDialog = lazy(() => import('./AccountSettingsDialog.jsx'))
 
@@ -109,17 +110,23 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
   onWorkspaceAccount = () => window.location.assign(appPath('/?view=account')),
   onGuide = () => window.location.assign(appPath('/?view=guide')),
 }) {
+  const { t } = useBenchmarkLocale()
   const auth = useLeaderboardSession()
   const user = auth.session?.user
   return <div className="app-shell benchmark-navigation-shell">
     <WorkbenchHeader section="leaderboard" currentUser={user} onSignIn={onLogin} onSignOut={onSignOut}
       onAccount={onAccount} onWorkspaceAccount={onWorkspaceAccount} onGuide={onGuide} onAdmin={onAdmin}
       onContact={onContact} onFeedback={onFeedback} onMiniProgram={onMiniProgram} onAgentConnection={onAgentConnection} />
-    <PageNavigation label="排行榜导航" items={navItems} activeId={activeNav(route)} />
+    <div className="bench-page-navigation"><PageNavigation label={t('排行榜导航')} items={navItems.map(item => ({ ...item, label: t(item.label) }))} activeId={activeNav(route)} /><BenchmarkLanguageSwitch /></div>
   </div>
 }
 
-export default function LeaderboardRoot({ apiBase, backendMode, enabled, pathname, route }) {
+export default function LeaderboardRoot(props) {
+  return <BenchmarkLocaleProvider><LeaderboardContent {...props} /></BenchmarkLocaleProvider>
+}
+
+function LeaderboardContent({ apiBase, backendMode, enabled, pathname, route }) {
+  const { t, locale } = useBenchmarkLocale()
   useVisualViewport()
   const auth = useLeaderboardSession()
   const [showAuth, setShowAuth] = useState(false)
@@ -183,7 +190,7 @@ export default function LeaderboardRoot({ apiBase, backendMode, enabled, pathnam
       <ContactDialog open={showContact} onClose={() => setShowContact(false)} />
       <MiniProgramDialog open={showMiniProgram} onClose={() => setShowMiniProgram(false)} />
       <AgentConnectionDialog open={showAgentConnection} onClose={() => setShowAgentConnection(false)} />
-      {auth.error ? <div className="service-alert" role="status">登录状态检查失败：{auth.error.message || String(auth.error)}</div> : null}
+      {auth.error ? <div className="service-alert" role="status">{t("登录状态检查失败：")}{auth.error.message || String(auth.error)}</div> : null}
       {showAuth && !auth.session?.user ? (AUTH_ENABLED
         ? <AuthPanel onAuthenticated={async () => { await auth.refresh(); setShowAuth(false) }} onCancel={() => setShowAuth(false)} />
         : <AuthUnavailablePanel onCancel={() => setShowAuth(false)} />) : null}

@@ -3,7 +3,7 @@ import { MODEL_PRESENTATION } from './model-presentation-data.js'
 type PresentedModel = { id: string; label?: string; vendor?: string; vendorId?: string; releasedAt?: string | null; releaseFamily?: string; releaseOrder?: number; [key: string]: any }
 const presentationAliases = new Map<string, string>()
 for (const [id, vendor] of Object.entries(MODEL_PRESENTATION.vendors)) {
-  for (const alias of [id, vendor.label, ...vendor.aliases]) presentationAliases.set(alias.toLowerCase(), id)
+  for (const alias of [id, vendor.label, vendor.labelEn || vendor.label, vendor.labelZh || vendor.label, ...vendor.aliases]) presentationAliases.set(alias.toLowerCase(), id)
 }
 const presentationRoutes = MODEL_PRESENTATION.routes.map((rule) => ({ ...rule, regex: new RegExp(rule.pattern, 'i') }))
 const presentationFamilies = MODEL_PRESENTATION.families.map((rule) => ({ ...rule, patterns: rule.newestFirst.map((pattern) => new RegExp('(?:' + pattern + ')(?![.p]\\d)', 'i')) }))
@@ -69,13 +69,23 @@ export function modelLifecycleLabel(lifecycle: string): string {
   return ({ stable: '稳定版', preview: '预览版', 'invite-only': '邀测', legacy: '旧版维护', deprecated: '即将下线' } as Record<string, string>)[lifecycle] || '状态未知'
 }
 
+export function modelDeveloperName(id: string, locale = 'zh-CN'): string {
+  const vendor = MODEL_PRESENTATION.vendors[id] || { label: '开发方待确认', labelEn: 'Developer unconfirmed', labelZh: '开发方待确认', aliases: [] }
+  return (locale === 'en' ? vendor.labelEn : vendor.labelZh) || vendor.label
+}
+
+export function modelDeveloperAliases(id: string): string[] {
+  const vendor = MODEL_PRESENTATION.vendors[id] || { label: '开发方待确认', labelEn: 'Developer unconfirmed', labelZh: '开发方待确认', aliases: [] }
+  return [id, vendor.label, vendor.labelEn || vendor.label, vendor.labelZh || vendor.label, ...vendor.aliases]
+}
+
 export function modelDeveloper(provider: string, model: PresentedModel): { id: string; label: string } {
   const route = presentationRoutes.find((rule) => rule.channels.includes(provider) && rule.regex.test(model.id))
   // Only reviewed namespaces are aliases; Pro and deployment paths are never developers.
   const namespace = model.id.replace(/^~/, '').replace(/^Pro\//i, '').split('/')[0].toLowerCase()
   const explicit = presentationAliases.get(String(model.vendorId || model.vendor || '').toLowerCase())
   const id = route?.vendorId || (model.vendorId === 'unconfirmed' ? 'unconfirmed' : presentationAliases.get(String(model.vendorId || '').toLowerCase())) || (model.id.includes('/') ? presentationAliases.get(namespace) : undefined) || explicit || 'unconfirmed'
-  return { id, label: MODEL_PRESENTATION.vendors[id]?.label || '开发方待确认' }
+  return { id, label: modelDeveloperName(id) }
 }
 
 export function presentRegistryModel<T extends PresentedModel>(provider: string, model: T): T {

@@ -1,14 +1,18 @@
+import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { ArrowRight, Maximize2, Minus, Plus, RotateCcw, Settings2, X } from 'lucide-react'
+import { presentBenchmarkPrice } from './benchmarkPricePresentation.js'
+import { benchmarkRecordKey, benchmarkDeveloperName } from './benchmarkDevelopers.js'
 import { metricScore } from './benchmarkParetoMath.js'
 import { clamp, clampView, clusterPoints, costDomain, costTicks, displayCost, focusView, linearTicks, pinchView, tickCost, zoomView } from './benchmarkParetoDisplay.js'
 import { Brand, brand, brandIcon, CostInfo, profileHref, Sources } from './BenchmarkParetoDetails.jsx'
 
 function Popup({ points, position, metric, label, selectedId, onSelect, onClose, onEnter, onLeave, mobile }) {
+  const { t, locale } = useBenchmarkLocale()
   const root = useRef(null)
   const [size, setSize] = useState({ width: 300, height: 154 })
   const [expanded, setExpanded] = useState(false)
-  const primary = points.find(p => p.row.model.modelId === selectedId) || points[0]
+  const primary = points.find(p => benchmarkRecordKey(p.row.model) === selectedId) || points[0]
   useLayoutEffect(() => {
     if (!root.current) return
     const update = () => setSize({ width: root.current.offsetWidth || 300, height: root.current.offsetHeight || 154 })
@@ -19,20 +23,22 @@ function Popup({ points, position, metric, label, selectedId, onSelect, onClose,
   }, [expanded, points.length])
   const left = position.x + 22 + size.width <= position.width ? position.x + 22 : position.x - size.width - 22
   const top = position.y - size.height - 18 >= 4 ? position.y - size.height - 18 : position.y + 22
-  const { model, price } = primary.row
-  return <div ref={root} className={`pareto-popover${mobile ? ' is-mobile' : ''}`} role="dialog" aria-label="模型计价详情"
+  const { model } = primary.row
+  const price = presentBenchmarkPrice(primary.row.price, model, t)
+  return <div ref={root} className={`pareto-popover${mobile ? ' is-mobile' : ''}`} role="dialog" aria-label={t("模型计价详情")}
     style={mobile ? undefined : { left: clamp(left, 5, Math.max(5, position.width - size.width - 5)), top: clamp(top, 5, Math.max(5, position.height - size.height - 5)) }}
     onPointerEnter={onEnter} onPointerLeave={onLeave}>
-    <header><Brand model={model} /><strong>{model.displayName}</strong><button type="button" aria-label="关闭模型信息" onClick={onClose}><X size={17} /></button></header>
-    {points.length > 1 && <div className="pareto-cluster-options" aria-label="重叠模型选择"><p>{points.length} 个相邻或重合模型，选择具体型号</p>{points.map(({ row }) => <button key={row.model.modelId} data-model-trigger type="button" onClick={() => onSelect(row.model.modelId, true)}><span>{row.model.displayName}</span><b>{displayCost(row.price.usd)}</b></button>)}</div>}
-    <div className="pareto-popover-values"><span>{label}<b>{metricScore(model, metric).toFixed(2)}</b></span><span>USD/张<b>{displayCost(price.usd)}</b></span></div>
-    <div className="pareto-popover-footer"><span className={price.costBasis === 'test' ? 'pareto-test-label' : ''}>{price.costBasis === 'test' ? '测试费用 · 账单已核对' : '官方标准报价'}</span><button type="button" aria-expanded={expanded} onClick={() => setExpanded(v => !v)}>{expanded ? '收起依据' : '计费详情'}</button></div>
-    {expanded && <div className="pareto-popover-expanded"><code>{model.modelId}</code><p>完整精度：USD {price.usd}/张</p><p>{price.conditions}</p><p>{price.rateText}</p><p>{price.calculation}</p><small>{price.channel} · {price.checkedAt}</small><Sources price={price} /></div>}
-    <a className="pareto-detail-link" href={profileHref(model)}>查看模型评分与原图 <ArrowRight size={14} /></a>
+    <header><Brand model={model} /><strong>{model.displayName}</strong><button type="button" aria-label={t("关闭模型信息")} onClick={onClose}><X size={17} /></button></header>
+    {points.length > 1 && <div className="pareto-cluster-options" aria-label={t("重叠模型选择")}><p>{points.length} {t("个相邻或重合模型，选择具体型号")}</p>{points.map(({ row }) => <button key={benchmarkRecordKey(row.model)} data-model-trigger type="button" onClick={() => onSelect(benchmarkRecordKey(row.model), true)}><span>{row.model.displayName}</span><b>{displayCost(row.price.usd)}</b></button>)}</div>}
+    <p className="bench-developer">{t('模型研发厂商')}：{benchmarkDeveloperName(model, locale)}</p><div className="pareto-popover-values"><span>{label}<b>{metricScore(model, metric).toFixed(2)}</b></span><span>{t("USD/张")}<b>{displayCost(price.usd)}</b></span></div>
+    <div className="pareto-popover-footer"><span className={price.costBasis === 'test' ? 'pareto-test-label' : ''}>{price.costBasis === 'test' ? t("测试费用 · 账单已核对") : t("官方标准报价")}</span><button type="button" aria-expanded={expanded} onClick={() => setExpanded(v => !v)}>{expanded ? t("收起依据") : t("计费详情")}</button></div>
+    {expanded && <div className="pareto-popover-expanded"><code>{model.modelId}</code><p>{t("完整精度：USD")}{price.usd}{t("/张")}</p><p>{price.conditions}</p><p>{price.rateText}</p><p>{price.calculation}</p><small>{price.channel} · {price.checkedAt}</small><Sources price={price} /></div>}
+    <a className="pareto-detail-link" href={profileHref(model)}>{t("查看模型评分与原图")}<ArrowRight size={14} /></a>
   </div>
 }
 
-export default function BenchmarkParetoScatter({ rows, frontier, metric, label, costBasis, selectedId, hoverId, focusRequest, searching, onSelect, onHover, onClear, onShowData }) {
+export default function BenchmarkParetoScatter({ active = true, rows, frontier, metric, label, costBasis, selectedId, hoverId, focusRequest, searching, onSelect, onHover, onClear, onShowData }) {
+  const { t, locale } = useBenchmarkLocale()
   const canvas = useRef(null), svg = useRef(null), drag = useRef(null), closeTimer = useRef(null), moved = useRef(false)
   const pointers = useRef(new Map()), currentView = useRef(null), suppressClick = useRef(0), expandButton = useRef(null), root = useRef(null)
   const [size, setSize] = useState({ width: 800, height: 420 })
@@ -50,13 +56,13 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
   const position = row => ({ x: normalizedCost(row.price.usd), y: metricScore(row.model, metric) / 10 })
   const px = n => plot.left + (n - view.x + half) * view.zoom * width
   const py = n => plot.bottom - (n - view.y + half) * view.zoom * height
-  const frontierIds = new Set(frontier.map(r => r.model.modelId))
+  const frontierIds = new Set(frontier.map(r => benchmarkRecordKey(r.model)))
   const activeId = hoverId || selectedId
-  const points = rows.map(row => ({ row, x: px(position(row).x), y: py(position(row).y), frontier: frontierIds.has(row.model.modelId) }))
+  const points = rows.map(row => ({ row, x: px(position(row).x), y: py(position(row).y), frontier: frontierIds.has(benchmarkRecordKey(row.model)) }))
   const visiblePoints = points.filter(p => p.x >= plot.left - .01 && p.x <= plot.right + .01 && p.y >= plot.top - .01 && p.y <= plot.bottom + .01)
   const clusters = clusterPoints(visiblePoints, activeId, mobile ? 46 : 0)
-  const popupPoints = popup ? points.filter(p => popup.ids.includes(p.row.model.modelId)) : []
-  const anchor = popupPoints.find(p => p.row.model.modelId === selectedId) || popupPoints[0]
+  const popupPoints = popup ? points.filter(p => popup.ids.includes(benchmarkRecordKey(p.row.model))) : []
+  const anchor = popupPoints.find(p => benchmarkRecordKey(p.row.model) === selectedId) || popupPoints[0]
   const xticks = costTicks(costAt(view.x - half), costAt(view.x + half), scale)
   const yticks = linearTicks((view.y - half) * 10, (view.y + half) * 10)
   const frontPath = frontier.map((row, i) => `${i ? 'L' : 'M'}${px(position(row).x)},${py(position(row).y)}`).join(' ')
@@ -88,17 +94,19 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
   }, [expanded])
   useEffect(() => {
     if (!focusRequest) return
-    const row = rows.find(r => r.model.modelId === focusRequest.id)
+    const row = rows.find(r => benchmarkRecordKey(r.model) === focusRequest.id)
     if (row) setView(v => focusView(v, position(row)))
     setPopup(null)
   // Focus requests come from explicit list/cluster selection, never from hover or zoom.
   }, [focusRequest])
   useEffect(() => {
     function outside(event) {
+      if (!active || event.target.closest?.('[data-benchmark-language]')) return
       if (event.target.closest?.('[data-model-trigger], [data-point], .pareto-popover, [data-chart-controls]')) return
       setPopup(null);onHover(null)
     }
     function escape(event) {
+      if (!active) return
       if (event.key === 'Escape') {
         if (!popup && expanded) { setExpanded(false);expandButton.current?.focus() }
         setPopup(null);onHover(null);onClear()
@@ -113,7 +121,7 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
     document.addEventListener('pointerdown', outside)
     document.addEventListener('keydown', escape)
     return () => { document.removeEventListener('pointerdown', outside);document.removeEventListener('keydown', escape) }
-  }, [onHover, onClear, expanded, popup])
+  }, [active, onHover, onClear, expanded, popup])
   useEffect(() => {
     const element = svg.current
     function wheel(event) {
@@ -128,18 +136,18 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
   }, [size.width, size.height, mobile])
   function zoom(next) {
     close()
-    const selected = rows.find(r => r.model.modelId === selectedId)
+    const selected = rows.find(r => benchmarkRecordKey(r.model) === selectedId)
     if (selected) setView(v => focusView(zoomView(v, next), position(selected)))
     else setView(v => zoomView(v, next))
   }
   function reset() { close();setView({ zoom: 1, x: .5, y: .5 }) }
   function hover(group, event) {
     if (event.pointerType === 'touch' || drag.current) return
-    cancelClose();onHover(group[0].row.model.modelId);setPopup({ ids: group.map(p => p.row.model.modelId) })
+    cancelClose();onHover(benchmarkRecordKey(group[0].row.model));setPopup({ ids: group.map(p => benchmarkRecordKey(p.row.model)) })
   }
   function activate(group) {
     if (!group.length) return
-    cancelClose();onSelect(group[0].row.model.modelId, false);setPopup({ ids: group.map(p => p.row.model.modelId) })
+    cancelClose();onSelect(benchmarkRecordKey(group[0].row.model), false);setPopup({ ids: group.map(p => benchmarkRecordKey(p.row.model)) })
   }
   function gestureAnchor(a, b) {
     const rect = svg.current.getBoundingClientRect()
@@ -152,7 +160,7 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
     e.currentTarget.setPointerCapture(e.pointerId)
     if (pointers.current.size === 1) {
       moved.current = false
-      drag.current = { ...point, view: currentView.current, ids: e.target.closest('[data-point]')?.dataset.modelIds.split('|') || [] }
+      drag.current = { ...point, view: currentView.current, ids: e.target.closest('[data-point]')?.dataset.recordKeys.split('|') || [] }
     } else if (pointers.current.size === 2) {
       const [a, b] = [...pointers.current.values()]
       drag.current = { pinch: true, view: currentView.current, distance: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)), anchor: gestureAnchor(a, b) }
@@ -183,13 +191,13 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
       moved.current = true
     } else {
       drag.current = null;setDragging(false)
-      if (!cancelled && !moved.current && gesture?.ids?.length) activate(gesture.ids.map(id => points.find(p => p.row.model.modelId === id)).filter(Boolean))
+      if (!cancelled && !moved.current && gesture?.ids?.length) activate(gesture.ids.map(id => points.find(p => benchmarkRecordKey(p.row.model) === id)).filter(Boolean))
       else if (!cancelled && !moved.current) { close();onClear() }
     }
   }
   const placed = []
-  const labels = [...clusters].sort((a, b) => Number(b.some(p => p.row.model.modelId === activeId)) - Number(a.some(p => p.row.model.modelId === activeId))).flatMap(group => {
-    const p = group[0], active = group.some(p => p.row.model.modelId === activeId)
+  const labels = [...clusters].sort((a, b) => Number(b.some(p => benchmarkRecordKey(p.row.model) === activeId)) - Number(a.some(p => benchmarkRecordKey(p.row.model) === activeId))).flatMap(group => {
+    const p = group[0], active = group.some(p => benchmarkRecordKey(p.row.model) === activeId)
     if (!active && !searching && !p.frontier) return []
     const name = p.row.model.displayName + (group.length > 1 ? ` +${group.length - 1}` : '')
     const w = Math.min(size.width - 24, name.length * 6.5 + 14), h = 24
@@ -210,19 +218,19 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
     return []
   })
   return <div ref={root} className={`pareto-chart${mobile ? ' is-touch' : ''}${expanded ? ' is-expanded' : ''}`} role={expanded ? 'dialog' : undefined} aria-modal={expanded || undefined} aria-labelledby={expanded ? titleId : undefined}>
-    <header className="pareto-chart-heading"><div><h2 id={titleId}>帕累托前沿</h2><span aria-label="比较范围">{label} · {rows.length} 个模型</span></div>
+    <header className="pareto-chart-heading"><div><h2 id={titleId}>{t("帕累托前沿")}</h2><span aria-label={t("比较范围")}>{label} · {rows.length} {t("个模型")}</span></div>
       <div className="pareto-chart-controls" data-chart-controls>
-        <details className="pareto-chart-settings"><summary aria-label="图表设置"><Settings2 size={17} /></summary><label>成本刻度<select aria-label="成本刻度" value={scale} onChange={e => { setScale(e.target.value);reset() }}><option value="log">对数</option><option value="linear">线性</option></select></label><small>⌘ / Ctrl + 滚轮缩放，放大后拖动平移。</small></details>
-        <button type="button" aria-label="缩小图表" disabled={view.zoom <= 1} onClick={() => zoom(view.zoom - 1)}><Minus size={17} /></button>
-        <output aria-label="当前缩放">{Number(view.zoom.toFixed(1))}×</output>
-        <button type="button" aria-label="放大图表" disabled={view.zoom >= 8} onClick={() => zoom(view.zoom + 1)}><Plus size={17} /></button>
-        <button type="button" aria-label="重置视图" onClick={reset}><RotateCcw size={16} /><span>重置</span></button>
-        <button ref={expandButton} className="pareto-expand-chart" type="button" aria-label={expanded ? '收起图表' : '展开图表'} aria-pressed={expanded} onClick={() => { close();setExpanded(v => !v) }}>{expanded ? <X size={18} /> : <Maximize2 size={18} />}<span>{expanded ? '收起' : '全屏'}</span></button>
+        <details className="pareto-chart-settings"><summary aria-label={t("图表设置")}><Settings2 size={17} /></summary><label>{t("成本刻度")}<select aria-label={t("成本刻度")} value={scale} onChange={e => { setScale(e.target.value);reset() }}><option value="log">{t("对数")}</option><option value="linear">{t("线性")}</option></select></label><small>{t("⌘ / Ctrl + 滚轮缩放，放大后拖动平移。")}</small></details>
+        <button type="button" aria-label={t("缩小图表")} disabled={view.zoom <= 1} onClick={() => zoom(view.zoom - 1)}><Minus size={17} /></button>
+        <output aria-label={t("当前缩放")}>{Number(view.zoom.toFixed(1))}×</output>
+        <button type="button" aria-label={t("放大图表")} disabled={view.zoom >= 8} onClick={() => zoom(view.zoom + 1)}><Plus size={17} /></button>
+        <button type="button" aria-label={t("重置视图")} onClick={reset}><RotateCcw size={16} /><span>{t("重置")}</span></button>
+        <button ref={expandButton} className="pareto-expand-chart" type="button" aria-label={expanded ? t("收起图表") : t("展开图表")} aria-pressed={expanded} onClick={() => { close();setExpanded(v => !v) }}>{expanded ? <X size={18} /> : <Maximize2 size={18} />}<span>{expanded ? t("收起") : t("全屏")}</span></button>
       </div>
     </header>
-    {mobile && <p className="pareto-touch-hint">双指缩放 · 单指移动{expanded ? ' · 横屏更宽' : ' · 可展开查看'}</p>}
+    {mobile && <p className="pareto-touch-hint">{t("双指缩放 · 单指移动")}{expanded ? t(" · 横屏更宽") : t(" · 可展开查看")}</p>}
     <div className={`pareto-canvas${dragging ? ' is-dragging' : ''}`} ref={canvas}>
-      <svg ref={svg} className="pareto-svg" viewBox={`0 0 ${size.width} ${size.height}`} role="group" tabIndex={0} aria-label={`${label}与单张成本，${rows.length} 个模型`} aria-describedby={helpId}
+      <svg ref={svg} className="pareto-svg" viewBox={`0 0 ${size.width} ${size.height}`} role="group" tabIndex={0} aria-label={t("{v0}与单张成本，{v1} 个模型", {v0: label, v1: rows.length})} aria-describedby={helpId}
         style={{ touchAction: mobile || view.zoom > 1 ? 'none' : 'pan-y' }}
         onPointerDown={beginPointer} onPointerMove={movePointer}
         onPointerUp={e => endPointer(e)} onPointerCancel={e => endPointer(e, true)}
@@ -241,13 +249,13 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
         {yticks.map(t => <g key={t} className="pareto-grid"><line x1={plot.left} x2={plot.right} y1={py(t / 10)} y2={py(t / 10)} /><text x={plot.left - 10} y={py(t / 10) + 4} textAnchor="end">{Number(t.toFixed(2))}</text></g>)}
         {xticks.map(t => <g key={t} className="pareto-grid"><line x1={px(normalizedCost(t))} x2={px(normalizedCost(t))} y1={plot.top} y2={plot.bottom} /><text data-cost-tick x={px(normalizedCost(t))} y={plot.bottom + 27} textAnchor="middle">{tickCost(t, xticks)}</text></g>)}
         <g clipPath={`url(#${clip})`}><path d={frontPath} className="pareto-frontier-line" /></g>
-        {labels.map(l => <g key={l.point.row.model.modelId} className={`pareto-point-label${l.active ? ' is-active' : ''}`} aria-hidden="true"><line x1={l.point.x} y1={l.point.y} x2={l.x + l.w / 2} y2={l.y + 12} /><rect x={l.x} y={l.y} width={l.w} height="24" rx="4" /><text x={l.x + l.w / 2} y={l.y + 16} textAnchor="middle">{l.name}</text></g>)}
+        {labels.map(l => <g key={benchmarkRecordKey(l.point.row.model)} className={`pareto-point-label${l.active ? ' is-active' : ''}`} aria-hidden="true"><line x1={l.point.x} y1={l.point.y} x2={l.x + l.w / 2} y2={l.y + 12} /><rect x={l.x} y={l.y} width={l.w} height="24" rx="4" /><text x={l.x + l.w / 2} y={l.y + 16} textAnchor="middle">{l.name}</text></g>)}
         {clusters.map(group => {
-          const p = group[0], model = p.row.model, [, mark, color] = brand(model), active = group.some(p => p.row.model.modelId === activeId)
+          const p = group[0], model = p.row.model, [, mark, color] = brand(model), active = group.some(p => benchmarkRecordKey(p.row.model) === activeId)
           const prominent = p.frontier || active || searching, radius = prominent ? 14 : 5
-          return <g key={model.modelId} role="button" tabIndex={0} data-point data-model-ids={group.map(p => p.row.model.modelId).join('|')} data-prominent={prominent} data-selected={group.some(p => p.row.model.modelId === selectedId)}
-            transform={`translate(${p.x},${p.y})`} className={`pareto-point${active ? ' is-active' : ''}${p.frontier ? ' is-frontier' : ''}`} aria-label={group.length > 1 ? `展开 ${group.length} 个相邻模型：${group.map(p => p.row.model.displayName).join('、')}` : `${model.displayName}，${metricScore(model, metric).toFixed(2)} 分，${displayCost(p.row.price.usd)}/张`}
-            onPointerEnter={e => hover(group, e)} onPointerLeave={leave} onFocus={() => { if (pointers.current.size) return;cancelClose();onHover(model.modelId);setPopup({ ids: group.map(p => p.row.model.modelId) }) }} onBlur={e => { if (!e.relatedTarget?.closest('.pareto-popover')) leave({ pointerType: 'keyboard' }) }}
+          return <g key={benchmarkRecordKey(model)} role="button" tabIndex={0} data-point data-record-keys={group.map(p => benchmarkRecordKey(p.row.model)).join('|')} data-model-ids={group.map(p => p.row.model.modelId).join('|')} data-prominent={prominent} data-selected={group.some(p => benchmarkRecordKey(p.row.model) === selectedId)}
+            transform={`translate(${p.x},${p.y})`} className={`pareto-point${active ? ' is-active' : ''}${p.frontier ? ' is-frontier' : ''}`} aria-label={group.length > 1 ? t("展开 {v0} 个相邻模型：{v1}", {v0: group.length, v1: group.map(p => p.row.model.displayName).join('、')}) : t("{v0}，{v1} 分，{v2}/张", {v0: model.displayName, v1: metricScore(model, metric).toFixed(2), v2: displayCost(p.row.price.usd)})}
+            onPointerEnter={e => hover(group, e)} onPointerLeave={leave} onFocus={() => { if (pointers.current.size) return;cancelClose();onHover(benchmarkRecordKey(model));setPopup({ ids: group.map(p => benchmarkRecordKey(p.row.model)) }) }} onBlur={e => { if (!e.relatedTarget?.closest('.pareto-popover')) leave({ pointerType: 'keyboard' }) }}
             onClick={e => { e.stopPropagation();activate(group) }} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();activate(group) } }}>
             <circle r={mobile ? 22 : prominent ? 20 : 12} fill="transparent" />
             <rect x={-radius} y={-radius} width={radius * 2} height={radius * 2} rx={prominent ? 7 : 2} fill={prominent ? '#fff' : color} fillOpacity={prominent ? 1 : .58} stroke={prominent ? '#3d795a' : color} strokeOpacity={prominent ? 1 : .2} strokeWidth={active ? 2.5 : 1.5} />
@@ -258,11 +266,11 @@ export default function BenchmarkParetoScatter({ rows, frontier, metric, label, 
           </g>
         })}
       </svg>
-      {rows.length === 0 && <div className="pareto-chart-empty" role="status"><strong>没有符合条件的模型</strong><p>调整搜索或预算范围；缺价原因可在数据说明中查看。</p></div>}
+      {rows.length === 0 && <div className="pareto-chart-empty" role="status"><strong>{t("没有符合条件的模型")}</strong><p>{t("调整搜索或预算范围；缺价原因可在数据说明中查看。")}</p></div>}
       {anchor && !mobile && <Popup key={popup.ids.join('|')} points={popupPoints} metric={metric} label={label} selectedId={selectedId} position={{ ...anchor, ...size }} onSelect={onSelect} onClose={close} onEnter={cancelClose} onLeave={leave} />}
     </div>
     {anchor && mobile && <Popup key={popup.ids.join('|')} mobile points={popupPoints} metric={metric} label={label} selectedId={selectedId} position={{ ...anchor, ...size }} onSelect={onSelect} onClose={close} onEnter={cancelClose} onLeave={leave} />}
-    <footer className="pareto-chart-footer"><span className="pareto-cost-caption">单张成本 · USD/张 <CostInfo costBasis={costBasis} onShowData={() => { setExpanded(false);onShowData() }} /></span><div className="pareto-legend"><span><i />前沿</span><span><i />其他模型</span></div></footer>
-    <span className="pareto-sr-only" id={helpId}>成本向右增加，分数向上增加。相邻标记可展开选择；放大后可拖动或用方向键平移。缩放不改变前沿计算范围。</span>
+    <footer className="pareto-chart-footer"><span className="pareto-cost-caption">{t("单张成本 · USD/张")}<CostInfo costBasis={costBasis} onShowData={() => { setExpanded(false);onShowData() }} /></span><div className="pareto-legend"><span><i />{t("前沿")}</span><span><i />{t("其他模型")}</span></div></footer>
+    <span className="pareto-sr-only" id={helpId}>{t("成本向右增加，分数向上增加。相邻标记可展开选择；放大后可拖动或用方向键平移。缩放不改变前沿计算范围。")}</span>
   </div>
 }
