@@ -58,7 +58,7 @@ function normalizeProvider(providerId, input) {
         if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role)))
             continue;
         const entry = models.find((model) => model.id === defaults[role]);
-        const catalogQuarantined = providerId === 'tokendance' && (entry === null || entry === void 0 ? void 0 : entry.selectable) === false && Boolean(entry.disabledReason);
+        const catalogQuarantined = (entry === null || entry === void 0 ? void 0 : entry.selectable) === false && Boolean(entry.disabledReason);
         if (!entry || (entry.selectable === false && !catalogQuarantined) || !entry.roles.includes(role)) {
             throw new Error(`${providerId} 默认${labels[role]}无效。`);
         }

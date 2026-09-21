@@ -62,13 +62,10 @@ Component({
         resetFlow() {
             var _a;
             const registry = this.getRegistry();
-            const providerCards = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map(id => {
-                var _a;
-                return ({
-                    id, label: PROVIDER_LABELS[id], kindText: ((_a = registry === null || registry === void 0 ? void 0 : registry.providers[id]) === null || _a === void 0 ? void 0 : _a.accessKind) === 'aggregator' ? '聚合渠道' : '官方直连',
-                    count: this.compatibleModels(id).length,
-                });
-            }).filter(item => item.count > 0);
+            const providerCards = (0, model_presentation_1.orderModelChannels)(model_registry_1.MODEL_PROVIDER_IDS).map(id => ({
+                id, label: PROVIDER_LABELS[id], kindText: (0, model_presentation_1.modelChannelCategoryLabel)(id),
+                count: this.compatibleModels(id).length,
+            })).filter(item => item.count > 0);
             const selectedProvider = String(this.properties.selectedProvider || '');
             const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : '';
             const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : [];

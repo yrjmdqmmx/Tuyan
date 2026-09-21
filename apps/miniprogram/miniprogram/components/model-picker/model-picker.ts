@@ -1,4 +1,4 @@
-import { MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelLifecycleLabel } from '../../utils/model-presentation'
+import { MODEL_CHANNEL_LABELS, modelDeveloper, orderModelChannels, modelChannelCategoryLabel, modelLifecycleLabel } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
 import { registryForRegions } from '../../utils/provider-regions'
 import { MODEL_PROVIDER_IDS, groupRegistryModels, partitionRegistryModels, type ModelProviderId, type ModelRegistry, type ModelRole, type RegistryModel } from '../../utils/model-registry'
@@ -62,7 +62,7 @@ Component({
     resetFlow() {
       const registry = this.getRegistry()
       const providerCards = orderModelChannels(MODEL_PROVIDER_IDS).map(id => ({
-        id, label: PROVIDER_LABELS[id], kindText: registry?.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连',
+        id, label: PROVIDER_LABELS[id], kindText: modelChannelCategoryLabel(id),
         count: this.compatibleModels(id).length,
       })).filter(item => item.count > 0)
       const selectedProvider = String(this.properties.selectedProvider || '') as ModelProviderId

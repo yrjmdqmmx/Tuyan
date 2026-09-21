@@ -175,3 +175,13 @@ test('cached retirement instants honor the channel time zone', () => {
     assert.equal(partitionRegistryModels([model], { role: 'main' }).incompatible.length, 1)
   } finally { Date.now = now }
 })
+
+test('retired configured default stays identifiable and never becomes a selectable option', () => {
+  const retired = { id: 'previous', roles: ['vision'], selectable: false, disabledReason: '渠道已确认停用；请手动选择。' }
+  const registry = { defaults: { main: '', image: '', vision: 'previous' }, models: [retired, { id: 'current', roles: ['vision'], selectable: true }] }
+  const merged = mergeProviderRegistry(fallback, registry)
+  assert.equal(merged.visionModel, 'previous')
+  assert.deepEqual(merged.visionModels, [['current', 'current']])
+  assert.deepEqual(partitionRegistryModels(merged.registryModels, { role: 'vision' }).compatible.map(m => m.id), ['current'])
+  assert.equal(registry.defaults.vision, 'previous')
+})

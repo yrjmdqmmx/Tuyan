@@ -4,7 +4,7 @@ export type { ImageSizeContract, ResolvedImageSize } from './image-size-contract
 
 export type { ProviderRegions } from './provider-regions.js'
 
-export { MODEL_CHANNEL_LABELS, orderModelChannels, modelLifecycleLabel, modelDeveloper, presentRegistryModel, sortModelsNewestFirst } from './model-presentation.js'
+export { MODEL_CHANNEL_LABELS, orderModelChannels, modelChannelCategoryLabel, modelLifecycleLabel, modelDeveloper, presentRegistryModel, sortModelsNewestFirst } from './model-presentation.js'
 export { buildAspectRatioOptions, normalizeSelectedAspectRatio } from './aspect-ratios.js'
 
 /** TokenDance API v1. Wallet amounts are integer microyuan; payment amounts integer yuan. */

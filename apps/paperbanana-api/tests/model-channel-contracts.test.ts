@@ -68,7 +68,7 @@ test('all platform image selections produce requests satisfying the independent 
         const input: ImageChannelInput = {provider, model:modelId, apiKey:'fixture-only', prompt:'Scientific figure with a clear legend', resolution, aspectRatio:ratio, size:resolveImageSize(contract,ratio,resolution), source:operation==='editing'?{base64:'c291cmNl',mimeType:'image/png',dataUrl:'data:image/png;base64,c291cmNl'}:null}
         const body = await buildImageChannelBody(input, wire, {publicSource:async()=> 'https://fixture.invalid/source.png'})
         validate(body, evidence.input, evidence.schemas, `${key}/${operation}/${resolution}/${ratio}`)
-        if (provider === 'replicate' && !evidence.official) assert.equal(wire.version, evidence.version, 'Community predictions must pin the inspected version')
+        if (provider === 'replicate' && !evidence.official && !evidence.usesVersionlessApi) assert.equal(wire.version, evidence.version, 'Community predictions must pin the inspected version')
         combinations++
       }
       if (wire.maxPromptLength) await assert.rejects(buildImageChannelBody({provider,model:modelId,apiKey:'fixture',prompt:'文'.repeat(wire.maxPromptLength+1),resolution:'auto',aspectRatio:'auto',size:{}},wire,{publicSource:async()=>''}), /prompt exceeds/)

@@ -13,7 +13,25 @@ export const MODEL_CHANNEL_LABELS: Record<string, string> = MODEL_PRESENTATION.c
 
 // Display order only: never use this list to pick a default or replace a route.
 export function orderModelChannels<T extends string>(channels: readonly T[]): T[] {
-  return [...channels.filter(id => id === 'tokendance'), ...channels.filter(id => id !== 'tokendance')]
+  // Classify the API service operator, not the developer of a hosted model.
+  // TokenDance was already first; retain the previous relative order per group.
+  const previous = [...channels.filter(id => id === 'tokendance'), ...channels.filter(id => id !== 'tokendance')]
+  return previous.sort((a, b) => modelChannelCategoryOrder(a) - modelChannelCategoryOrder(b))
+}
+
+function modelChannelCategoryOrder(channel: string): number {
+  const groups: readonly (readonly string[])[] = [
+    ['tokendance', 'siliconflow'],
+    ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax'],
+    ['gemini', 'openai', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'mistral'],
+    ['openrouter', 'together', 'fireworks', 'fal', 'replicate'],
+  ]
+  const index = groups.findIndex(group => group.includes(channel))
+  return index < 0 ? groups.length : index
+}
+
+export function modelChannelCategoryLabel(channel: string): string {
+  return ['国内聚合渠道', '国内官方直连', '国外官方直连', '国外聚合渠道'][modelChannelCategoryOrder(channel)] || '分类待确认'
 }
 
 export function modelLifecycleLabel(lifecycle: string): string {

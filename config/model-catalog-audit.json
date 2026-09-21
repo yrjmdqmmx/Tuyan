@@ -1,7 +1,7 @@
 {
-  "auditDate": "2026-09-16",
-  "version": "2026-09-16.v19",
-  "incompatiblePolicy": "omit-from-catalog",
+  "auditDate": "2026-09-21",
+  "version": "2026-09-21.v20",
+  "incompatiblePolicy": "omit-incompatible-retain-retired-identities",
   "auditRows": {
     "02-native": 79,
     "03-siliconflow": 92,
@@ -12,8 +12,8 @@
     "06-tokendance": 93
   },
   "originalStaticCount": 101,
-  "staticCount": 740,
-  "selectableStaticCount": 740,
+  "staticCount": 760,
+  "selectableStaticCount": 754,
   "repositoryBaseline": {
     "commit": "800c91fc7e1d23588771bfb2703ad25a006c6e21",
     "version": "2026-09-07.v12",
@@ -3415,11 +3415,17 @@
   "channels": {
     "deepseek": {
       "before": 3,
-      "after": 3,
-      "selectable": 3,
-      "addedIds": [],
+      "after": 4,
+      "selectable": 2,
+      "addedIds": [
+        "deepseek-flash"
+      ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": [
+        "deepseek-v4-flash",
+        "deepseek-v4-flash-vision-exp"
+      ]
     },
     "kimi": {
       "before": 4,
@@ -3427,13 +3433,16 @@
       "selectable": 4,
       "addedIds": [],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "zhipu": {
       "before": 27,
-      "after": 27,
-      "selectable": 27,
-      "addedIds": [],
+      "after": 28,
+      "selectable": 28,
+      "addedIds": [
+        "glm-5.3-flashx"
+      ],
       "corrected": [
         {
           "id": "glm-image",
@@ -3460,17 +3469,21 @@
           ]
         }
       ],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "siliconflow": {
       "before": 59,
-      "after": 63,
-      "selectable": 63,
+      "after": 66,
+      "selectable": 62,
       "addedIds": [
         "nex-agi/Nex-N2-Pro",
         "MiniMaxAI/MiniMax-M2.5",
         "Pro/MiniMaxAI/MiniMax-M2.5",
-        "Qwen/Qwen3.5-397B-A17B"
+        "Qwen/Qwen3.5-397B-A17B",
+        "tencent/Hy4-preview",
+        "Qwen/Qwen3.8-27B",
+        "XingChenAGI/Xing4.0-29B"
       ],
       "corrected": [
         {
@@ -3516,7 +3529,13 @@
           ]
         }
       ],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": [
+        "nex-agi/Nex-N2-Pro",
+        "Qwen/Qwen3.5-397B-A17B",
+        "MiniMaxAI/MiniMax-M2.5",
+        "Pro/MiniMaxAI/MiniMax-M2.5"
+      ]
     },
     "anthropic": {
       "before": 11,
@@ -3524,7 +3543,8 @@
       "selectable": 11,
       "addedIds": [],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "recraft": {
       "before": 16,
@@ -3629,7 +3649,8 @@
           ]
         }
       ],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "xai": {
       "before": 7,
@@ -3653,7 +3674,8 @@
           ]
         }
       ],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "gemini": {
       "before": 15,
@@ -3689,12 +3711,13 @@
           ]
         }
       ],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "bailian": {
       "before": 118,
-      "after": 176,
-      "selectable": 176,
+      "after": 178,
+      "selectable": 178,
       "addedIds": [
         "qwen3.6-max-preview",
         "qwen3-max",
@@ -3754,7 +3777,9 @@
         "qwen-image-edit-plus",
         "qwen-image-edit-plus-2025-12-15",
         "qwen-image-edit-plus-2025-10-30",
-        "qwen-image-edit"
+        "qwen-image-edit",
+        "deepseek-v4.1-flash",
+        "ZHIPU/GLM-5.3-FlashX"
       ],
       "corrected": [
         {
@@ -3940,7 +3965,8 @@
       ],
       "removedIds": [
         "qwen3.8-max-preview"
-      ]
+      ],
+      "removedFromSelection": []
     },
     "openai": {
       "before": 25,
@@ -4027,12 +4053,13 @@
           ]
         }
       ],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "ark": {
       "before": 21,
-      "after": 29,
-      "selectable": 29,
+      "after": 32,
+      "selectable": 32,
       "addedIds": [
         "doubao-seed-1-8-251228",
         "doubao-seed-code-preview-251028",
@@ -4044,7 +4071,10 @@
         "doubao-1-5-pro-32k-250115",
         "doubao-1-5-lite-32k-250115",
         "glm-4-7-251222",
-        "doubao-1-5-vision-pro-32k-250115"
+        "doubao-1-5-vision-pro-32k-250115",
+        "doubao-seed-2-1-pro-260915",
+        "deepseek-v4-1-flash-260910",
+        "glm-5-3-flash-260828"
       ],
       "corrected": [
         {
@@ -4076,7 +4106,8 @@
         "doubao-seed-character-260628",
         "doubao-seed-character-251128",
         "doubao-seed-translation-250915"
-      ]
+      ],
+      "removedFromSelection": []
     },
     "bfl": {
       "before": 0,
@@ -4097,7 +4128,8 @@
         "flux-kontext-pro"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "stability": {
       "before": 0,
@@ -4112,7 +4144,8 @@
         "sd3.5-flash"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "ideogram": {
       "before": 0,
@@ -4134,7 +4167,8 @@
         "AUTO"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "minimax": {
       "before": 0,
@@ -4153,12 +4187,13 @@
         "image-01-live"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "mistral": {
       "before": 0,
-      "after": 15,
-      "selectable": 15,
+      "after": 16,
+      "selectable": 16,
       "addedIds": [
         "mistral-small-2603",
         "mistral-large-2512",
@@ -4174,15 +4209,17 @@
         "ministral-8b-latest",
         "ministral-3b-2512",
         "ministral-3b-latest",
-        "zai-glm-5-2"
+        "zai-glm-5-2",
+        "zai-glm-5-3"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "together": {
       "before": 0,
-      "after": 47,
-      "selectable": 47,
+      "after": 48,
+      "selectable": 48,
       "addedIds": [
         "thinkingmachines/Inkling",
         "MiniMaxAI/MiniMax-M3",
@@ -4230,15 +4267,17 @@
         "ideogram/ideogram-4.0",
         "openai/gpt-image-2",
         "google/flash-image-3.1-lite",
-        "prunaai/p-image-ideogram"
+        "prunaai/p-image-ideogram",
+        "deepseek-ai/DeepSeek-V4.1-Flash"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "fireworks": {
       "before": 0,
-      "after": 22,
-      "selectable": 22,
+      "after": 23,
+      "selectable": 23,
       "addedIds": [
         "accounts/fireworks/models/kimi-k2p5",
         "accounts/fireworks/models/kimi-k3",
@@ -4261,10 +4300,12 @@
         "accounts/fireworks/models/qwen3-8b",
         "accounts/fireworks/models/gemma-4-31b-it",
         "accounts/fireworks/models/qwen3-omni-30b-a3b-instruct",
-        "accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b"
+        "accounts/fireworks/models/nvidia-nemotron-3-nano-omni-30b-a3b",
+        "accounts/fireworks/models/deepseek-v4p1-flash"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "fal": {
       "before": 0,
@@ -4315,12 +4356,13 @@
         "openai/gpt-image-2.5/flare/text-to-image"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
     },
     "replicate": {
       "before": 0,
-      "after": 91,
-      "selectable": 91,
+      "after": 97,
+      "selectable": 97,
       "addedIds": [
         "adirik/realvisxl-v3.0-turbo",
         "ai-forever/kandinsky-2",
@@ -4412,10 +4454,25 @@
         "xai/grok-imagine-image",
         "zsxkib/step1x-edit",
         "openai/gpt-image-2.5-sunburst",
-        "openai/gpt-image-2.5-flare"
+        "openai/gpt-image-2.5-flare",
+        "xai/grok-imagine-image-2",
+        "alibaba/qwen-image-3",
+        "alibaba/qwen-image-3-pro",
+        "prunaai/p-image-ideogram",
+        "krea/krea-2-medium"
       ],
       "corrected": [],
-      "removedIds": []
+      "removedIds": [],
+      "removedFromSelection": []
+    },
+    "tokendance": {
+      "after": 64,
+      "selectable": 64,
+      "addedIds": [
+        "glm-5.3-flashx",
+        "step-5-preview"
+      ],
+      "removedFromSelection": []
     }
   },
   "decisions": [
@@ -5374,9 +5431,9 @@
       "provider": "siliconflow",
       "id": "nex-agi/Nex-N2-Pro",
       "resolvedId": "nex-agi/Nex-N2-Pro",
-      "decision": "added",
-      "reason": "重新核对官方资料后恢复：官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-      "source": "https://www.siliconflow.cn/models",
+      "decision": "disabled",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
       "previousDecision": "excluded",
       "previousReason": "官方公告 2026-09-11 下线。",
       "reviewedAt": "2026-09-07"
@@ -5486,9 +5543,9 @@
       "provider": "siliconflow",
       "id": "MiniMaxAI/MiniMax-M2.5",
       "resolvedId": "MiniMaxAI/MiniMax-M2.5",
-      "decision": "added",
-      "reason": "重新核对官方资料后恢复：官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-      "source": "https://www.siliconflow.cn/models",
+      "decision": "disabled",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
       "previousDecision": "excluded",
       "previousReason": "官方公告 2026-09-11 下线。",
       "reviewedAt": "2026-09-07"
@@ -5538,9 +5595,9 @@
       "provider": "siliconflow",
       "id": "Qwen/Qwen3.5-397B-A17B",
       "resolvedId": "Qwen/Qwen3.5-397B-A17B",
-      "decision": "added",
-      "reason": "重新核对官方资料后恢复：官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-      "source": "https://www.siliconflow.cn/models",
+      "decision": "disabled",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
       "previousDecision": "excluded",
       "previousReason": "官方公告 2026-09-11 下线。",
       "reviewedAt": "2026-09-07"
@@ -5550,9 +5607,9 @@
       "provider": "siliconflow",
       "id": "Pro/MiniMaxAI/MiniMax-M2.5",
       "resolvedId": "Pro/MiniMaxAI/MiniMax-M2.5",
-      "decision": "added",
-      "reason": "重新核对官方资料后恢复：官方目录核对日期 2026-09-07；账户权限与真实推理未验证。 服务计划于 2026-09-11 结束；到期前保留选择。",
-      "source": "https://www.siliconflow.cn/models",
+      "decision": "disabled",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
       "previousDecision": "excluded",
       "previousReason": "官方公告 2026-09-11 下线。",
       "reviewedAt": "2026-09-07"
@@ -8922,9 +8979,9 @@
       "provider": "deepseek",
       "id": "deepseek-v4-flash",
       "resolvedId": "deepseek-v4-flash",
-      "decision": "covered",
-      "reason": "当前官方资料有对应条目；未发现该 ID 的拼写错误。 Official API documentation",
-      "source": "https://api-docs.deepseek.com/guides/vision/",
+      "decision": "disabled",
+      "reason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。",
+      "source": "https://api-docs.deepseek.com/updates",
       "reviewedAt": "2026-09-07"
     },
     {
@@ -8932,9 +8989,9 @@
       "provider": "deepseek",
       "id": "deepseek-v4-flash-vision-exp",
       "resolvedId": "deepseek-v4-flash-vision-exp",
-      "decision": "covered",
-      "reason": "当前官方资料有对应条目；未发现该 ID 的拼写错误。 Official API documentation",
-      "source": "https://api-docs.deepseek.com/guides/vision/",
+      "decision": "disabled",
+      "reason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。",
+      "source": "https://api-docs.deepseek.com/updates",
       "reviewedAt": "2026-09-07"
     },
     {
@@ -9940,8 +9997,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-6-astra:batch",
       "resolvedId": "openai/gpt-6-astra:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -9960,8 +10017,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-6-astra-pro:batch",
       "resolvedId": "openai/gpt-6-astra-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10020,8 +10077,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3.8-flash:batch",
       "resolvedId": "google/gemini-3.8-flash:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10040,8 +10097,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-fable-5.1:batch",
       "resolvedId": "anthropic/claude-fable-5.1:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10130,8 +10187,8 @@
       "provider": "openrouter",
       "id": "z-ai/glm-5.3-flash:batch",
       "resolvedId": "z-ai/glm-5.3-flash:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10240,8 +10297,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3.7-flash:batch",
       "resolvedId": "google/gemini-3.7-flash:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10270,8 +10327,8 @@
       "provider": "openrouter",
       "id": "qwen/qwen3.8-2.4t-a95b:batch",
       "resolvedId": "qwen/qwen3.8-2.4t-a95b:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10300,8 +10357,8 @@
       "provider": "openrouter",
       "id": "deepseek/deepseek-v4-pro-0813:batch",
       "resolvedId": "deepseek/deepseek-v4-pro-0813:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10380,8 +10437,8 @@
       "provider": "openrouter",
       "id": "meta/muse-glimmer-30b:batch",
       "resolvedId": "meta/muse-glimmer-30b:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10420,8 +10477,8 @@
       "provider": "openrouter",
       "id": "deepseek/deepseek-v4-flash-0731:batch",
       "resolvedId": "deepseek/deepseek-v4-flash-0731:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10440,8 +10497,8 @@
       "provider": "openrouter",
       "id": "thinkingmachines/inkling-small:batch",
       "resolvedId": "thinkingmachines/inkling-small:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10480,8 +10537,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-opus-5:batch",
       "resolvedId": "anthropic/claude-opus-5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10530,8 +10587,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3.6-flash:batch",
       "resolvedId": "google/gemini-3.6-flash:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10550,8 +10607,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3.5-flash-lite:batch",
       "resolvedId": "google/gemini-3.5-flash-lite:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10580,8 +10637,8 @@
       "provider": "openrouter",
       "id": "thinkingmachines/inkling:batch",
       "resolvedId": "thinkingmachines/inkling:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10620,8 +10677,8 @@
       "provider": "openrouter",
       "id": "moonshotai/kimi-k3:batch",
       "resolvedId": "moonshotai/kimi-k3:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10660,8 +10717,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.6-luna-pro:batch",
       "resolvedId": "openai/gpt-5.6-luna-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10680,8 +10737,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.6-luna:batch",
       "resolvedId": "openai/gpt-5.6-luna:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10700,8 +10757,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.6-terra-pro:batch",
       "resolvedId": "openai/gpt-5.6-terra-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10720,8 +10777,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.6-terra:batch",
       "resolvedId": "openai/gpt-5.6-terra:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10740,8 +10797,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.6-sol-pro:batch",
       "resolvedId": "openai/gpt-5.6-sol-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10760,8 +10817,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.6-sol:batch",
       "resolvedId": "openai/gpt-5.6-sol:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10850,8 +10907,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-sonnet-5:batch",
       "resolvedId": "anthropic/claude-sonnet-5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -10970,8 +11027,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-fable-5:batch",
       "resolvedId": "anthropic/claude-fable-5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11050,8 +11107,8 @@
       "provider": "openrouter",
       "id": "minimax/minimax-m3:batch",
       "resolvedId": "minimax/minimax-m3:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11090,8 +11147,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-opus-4.8:batch",
       "resolvedId": "anthropic/claude-opus-4.8:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11130,8 +11187,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3.5-flash:batch",
       "resolvedId": "google/gemini-3.5-flash:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11160,8 +11217,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3.1-flash-lite:batch",
       "resolvedId": "google/gemini-3.1-flash-lite:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11190,8 +11247,8 @@
       "provider": "openrouter",
       "id": "x-ai/grok-4.3:batch",
       "resolvedId": "x-ai/grok-4.3:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11210,8 +11267,8 @@
       "provider": "openrouter",
       "id": "mistralai/mistral-medium-3-5:batch",
       "resolvedId": "mistralai/mistral-medium-3-5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11360,8 +11417,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.5-pro:batch",
       "resolvedId": "openai/gpt-5.5-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11380,8 +11437,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.5:batch",
       "resolvedId": "openai/gpt-5.5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11490,8 +11547,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-opus-4.7:batch",
       "resolvedId": "anthropic/claude-opus-4.7:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11540,8 +11597,8 @@
       "provider": "openrouter",
       "id": "google/gemma-4-31b-it:batch",
       "resolvedId": "google/gemma-4-31b-it:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11680,8 +11737,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.4-nano:batch",
       "resolvedId": "openai/gpt-5.4-nano:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11700,8 +11757,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.4-mini:batch",
       "resolvedId": "openai/gpt-5.4-mini:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11770,8 +11827,8 @@
       "provider": "openrouter",
       "id": "qwen/qwen3.5-9b:batch",
       "resolvedId": "qwen/qwen3.5-9b:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11790,8 +11847,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.4-pro:batch",
       "resolvedId": "openai/gpt-5.4-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11810,8 +11867,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.4:batch",
       "resolvedId": "openai/gpt-5.4:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11940,8 +11997,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3.1-pro-preview:batch",
       "resolvedId": "google/gemini-3.1-pro-preview:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -11960,8 +12017,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-sonnet-4.6:batch",
       "resolvedId": "anthropic/claude-sonnet-4.6:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12030,8 +12087,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-opus-4.6:batch",
       "resolvedId": "anthropic/claude-opus-4.6:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12200,8 +12257,8 @@
       "provider": "openrouter",
       "id": "google/gemini-3-flash-preview:batch",
       "resolvedId": "google/gemini-3-flash-preview:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12240,8 +12297,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.2-pro:batch",
       "resolvedId": "openai/gpt-5.2-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12260,8 +12317,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.2:batch",
       "resolvedId": "openai/gpt-5.2:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12390,8 +12447,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-opus-4.5:batch",
       "resolvedId": "anthropic/claude-opus-4.5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12420,8 +12477,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5.1:batch",
       "resolvedId": "openai/gpt-5.1:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12550,8 +12607,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-haiku-4.5:batch",
       "resolvedId": "anthropic/claude-haiku-4.5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12630,8 +12687,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5-pro:batch",
       "resolvedId": "openai/gpt-5-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12660,8 +12717,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-sonnet-4.5:batch",
       "resolvedId": "anthropic/claude-sonnet-4.5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12870,8 +12927,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5:batch",
       "resolvedId": "openai/gpt-5:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12890,8 +12947,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5-mini:batch",
       "resolvedId": "openai/gpt-5-mini:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12910,8 +12967,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-5-nano:batch",
       "resolvedId": "openai/gpt-5-nano:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12930,8 +12987,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-oss-120b:batch",
       "resolvedId": "openai/gpt-oss-120b:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12950,8 +13007,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-oss-20b:batch",
       "resolvedId": "openai/gpt-oss-20b:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -12970,8 +13027,8 @@
       "provider": "openrouter",
       "id": "anthropic/claude-opus-4.1:batch",
       "resolvedId": "anthropic/claude-opus-4.1:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13070,8 +13127,8 @@
       "provider": "openrouter",
       "id": "google/gemini-2.5-flash-lite:batch",
       "resolvedId": "google/gemini-2.5-flash-lite:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13180,8 +13237,8 @@
       "provider": "openrouter",
       "id": "google/gemini-2.5-flash:batch",
       "resolvedId": "google/gemini-2.5-flash:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13200,8 +13257,8 @@
       "provider": "openrouter",
       "id": "google/gemini-2.5-pro:batch",
       "resolvedId": "google/gemini-2.5-pro:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13360,8 +13417,8 @@
       "provider": "openrouter",
       "id": "openai/o3:batch",
       "resolvedId": "openai/o3:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13380,8 +13437,8 @@
       "provider": "openrouter",
       "id": "openai/o4-mini:batch",
       "resolvedId": "openai/o4-mini:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13400,8 +13457,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-4.1:batch",
       "resolvedId": "openai/gpt-4.1:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13420,8 +13477,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-4.1-mini:batch",
       "resolvedId": "openai/gpt-4.1-mini:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13440,8 +13497,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-4.1-nano:batch",
       "resolvedId": "openai/gpt-4.1-nano:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -13650,8 +13707,8 @@
       "provider": "openrouter",
       "id": "openai/o3-mini:batch",
       "resolvedId": "openai/o3-mini:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -14010,8 +14067,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-4o-mini:batch",
       "resolvedId": "openai/gpt-4o-mini:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -14050,8 +14107,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-4o:batch",
       "resolvedId": "openai/gpt-4o:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -14090,8 +14147,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-4-turbo:batch",
       "resolvedId": "openai/gpt-4-turbo:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -14210,8 +14267,8 @@
       "provider": "openrouter",
       "id": "openai/gpt-3.5-turbo:batch",
       "resolvedId": "openai/gpt-3.5-turbo:batch",
-      "decision": "dynamic",
-      "reason": "按官方实时目录枚举，保留角色及 expiration_date；不继承直连渠道的下线和别名规则。",
+      "decision": "dynamic-excluded",
+      "reason": "该 ID 属于异步 Batch API；当前同步 Chat Completions 流程未适配，不列入可选项。",
       "source": "https://openrouter.ai/api/v1/models",
       "reviewedAt": "2026-09-07"
     },
@@ -19086,18 +19143,459 @@
       "decision": "added",
       "reason": "已核对 Replicate 官方模型详情、输入 schema 和按图片计价配置；图像生成与单参考图编辑接入完成，正式付费测试及独立审评另行记录。",
       "source": "https://replicate.com/google/nano-banana-2-lite"
+    },
+    {
+      "provider": "deepseek",
+      "id": "deepseek-flash",
+      "resolvedId": "deepseek-flash",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://api-docs.deepseek.com/quick_start/pricing"
+    },
+    {
+      "provider": "zhipu",
+      "id": "glm-5.3-flashx",
+      "resolvedId": "glm-5.3-flashx",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。仅思考模式，保持服务端默认采样参数。",
+      "source": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "tencent/Hy4-preview",
+      "resolvedId": "tencent/Hy4-preview",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://www.siliconflow.cn/models"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3.8-27B",
+      "resolvedId": "Qwen/Qwen3.8-27B",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://www.siliconflow.cn/models"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "XingChenAGI/Xing4.0-29B",
+      "resolvedId": "XingChenAGI/Xing4.0-29B",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://www.siliconflow.cn/models"
+    },
+    {
+      "provider": "bailian",
+      "id": "deepseek-v4.1-flash",
+      "resolvedId": "deepseek-v4.1-flash",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash"
+    },
+    {
+      "provider": "bailian",
+      "id": "ZHIPU/GLM-5.3-FlashX",
+      "resolvedId": "ZHIPU/GLM-5.3-FlashX",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。已核对百炼精确 ID 与仅思考模式；该渠道图像输入契约待确认，暂仅开放文本。",
+      "source": "https://help.aliyun.com/zh/model-studio/model-pricing"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-1-pro-260915",
+      "resolvedId": "doubao-seed-2-1-pro-260915",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+    },
+    {
+      "provider": "ark",
+      "id": "deepseek-v4-1-flash-260910",
+      "resolvedId": "deepseek-v4-1-flash-260910",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+    },
+    {
+      "provider": "ark",
+      "id": "glm-5-3-flash-260828",
+      "resolvedId": "glm-5-3-flash-260828",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+    },
+    {
+      "provider": "together",
+      "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "resolvedId": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。按渠道文本模型表开放；未将原厂视觉能力自动继承到此渠道。",
+      "source": "https://docs.together.ai/docs/serverless/models"
+    },
+    {
+      "provider": "fireworks",
+      "id": "accounts/fireworks/models/deepseek-v4p1-flash",
+      "resolvedId": "accounts/fireworks/models/deepseek-v4p1-flash",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash"
+    },
+    {
+      "provider": "mistral",
+      "id": "zai-glm-5-3",
+      "resolvedId": "zai-glm-5-3",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。",
+      "source": "https://docs.mistral.ai/models/zai-glm-5-3"
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5.3-flashx",
+      "resolvedId": "glm-5.3-flashx",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。公开目录与协议审核；每次调用仍执行只读目录预检。",
+      "source": "https://tokendance.space/models/glm-5.3-flashx"
+    },
+    {
+      "provider": "tokendance",
+      "id": "step-5-preview",
+      "resolvedId": "step-5-preview",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。公开目录与协议审核；每次调用仍执行只读目录预检。",
+      "source": "https://tokendance.space/models/step-5-preview"
+    },
+    {
+      "provider": "replicate",
+      "id": "xai/grok-imagine-image-2",
+      "resolvedId": "xai/grok-imagine-image-2",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。原图单张直接编辑；编辑宽高比由源图决定。",
+      "source": "https://replicate.com/xai/grok-imagine-image-2/api/schema"
+    },
+    {
+      "provider": "replicate",
+      "id": "alibaba/qwen-image-3",
+      "resolvedId": "alibaba/qwen-image-3",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。按当前渠道 schema 开放单图编辑。",
+      "source": "https://replicate.com/alibaba/qwen-image-3/api/schema"
+    },
+    {
+      "provider": "replicate",
+      "id": "alibaba/qwen-image-3-pro",
+      "resolvedId": "alibaba/qwen-image-3-pro",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。按当前渠道 schema 开放单图编辑。",
+      "source": "https://replicate.com/alibaba/qwen-image-3-pro/api/schema"
+    },
+    {
+      "provider": "replicate",
+      "id": "prunaai/p-image-ideogram",
+      "resolvedId": "prunaai/p-image-ideogram",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。",
+      "source": "https://replicate.com/prunaai/p-image-ideogram/api/schema"
+    },
+    {
+      "provider": "replicate",
+      "id": "krea/krea-2-medium",
+      "resolvedId": "krea/krea-2-medium",
+      "decision": "added",
+      "reason": "2026-09-21 核对渠道官方目录及精确协议完成接入；真实调用与账号权限未验证。仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。",
+      "source": "https://replicate.com/krea/krea-2-medium/api/schema"
+    },
+    {
+      "provider": "openrouter",
+      "id": "prism-ml/ternary-bonsai-2-27b",
+      "resolvedId": "prism-ml/ternary-bonsai-2-27b",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "z-ai/glm-5.3-flashx",
+      "resolvedId": "z-ai/glm-5.3-flashx",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "unbiased/pareto",
+      "resolvedId": "unbiased/pareto",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "~deepseek/deepseek-pro-latest",
+      "resolvedId": "~deepseek/deepseek-pro-latest",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "~deepseek/deepseek-flash-latest",
+      "resolvedId": "~deepseek/deepseek-flash-latest",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "inference-net/schematron-v2-turbo",
+      "resolvedId": "inference-net/schematron-v2-turbo",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "inference-net/schematron-v2-small",
+      "resolvedId": "inference-net/schematron-v2-small",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "~openai/gpt-astra-latest",
+      "resolvedId": "~openai/gpt-astra-latest",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "~openai/gpt-sol-latest",
+      "resolvedId": "~openai/gpt-sol-latest",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "~openai/gpt-terra-latest",
+      "resolvedId": "~openai/gpt-terra-latest",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "~openai/gpt-luna-latest",
+      "resolvedId": "~openai/gpt-luna-latest",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "sakana/fugu-ultra-v2",
+      "resolvedId": "sakana/fugu-ultra-v2",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "sakana/fugu-max",
+      "resolvedId": "sakana/fugu-max",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "inclusionai/ling-3.0-flash-vl",
+      "resolvedId": "inclusionai/ling-3.0-flash-vl",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "inclusionai/ling-3.0-flash-vl:free",
+      "resolvedId": "inclusionai/ling-3.0-flash-vl:free",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "deepseek/deepseek-v4.1-flash",
+      "resolvedId": "deepseek/deepseek-v4.1-flash",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "inception/mercury-2.5",
+      "resolvedId": "inception/mercury-2.5",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "nex-agi/nex-n2.5-mini:free",
+      "resolvedId": "nex-agi/nex-n2.5-mini:free",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "nex-agi/nex-n2.5-pro:free",
+      "resolvedId": "nex-agi/nex-n2.5-pro:free",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "deepseek/deepseek-v4-flash-vision-exp:batch",
+      "resolvedId": "deepseek/deepseek-v4-flash-vision-exp:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "z-ai/glm-5.3:batch",
+      "resolvedId": "z-ai/glm-5.3:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "qwen/qwen3.8-27b:free",
+      "resolvedId": "qwen/qwen3.8-27b:free",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "z-ai/glm-5.2:batch",
+      "resolvedId": "z-ai/glm-5.2:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "z-ai/glm-5.2:free",
+      "resolvedId": "z-ai/glm-5.2:free",
+      "decision": "dynamic",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "mistralai/mistral-small-2603:batch",
+      "resolvedId": "mistralai/mistral-small-2603:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "mistralai/ministral-8b-2512:batch",
+      "resolvedId": "mistralai/ministral-8b-2512:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "mistralai/mistral-large-2512:batch",
+      "resolvedId": "mistralai/mistral-large-2512:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "mistralai/mistral-medium-3.1:batch",
+      "resolvedId": "mistralai/mistral-medium-3.1:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
+    },
+    {
+      "provider": "openrouter",
+      "id": "mistralai/codestral-2508:batch",
+      "resolvedId": "mistralai/codestral-2508:batch",
+      "decision": "dynamic-excluded",
+      "reason": "官方动态目录声明文本输入输出；按渠道模态映射视觉角色；异步 Batch 专用项不进入同步选择。",
+      "source": "https://openrouter.ai/api/v1/models"
     }
   ],
   "latestUpdate": {
-    "scope": "Replicate Nano Banana 2 Lite catalog and five-model scientific evaluation integration",
-    "reviewedAt": "2026-09-16",
-    "baselineCommit": "7bfb19f5bb70e5cf0edefff63303af557b723bfc",
-    "beforeStatic": 739,
-    "afterStatic": 740,
+    "scope": "22 渠道目录核对、明确停用隔离与四类渠道排序",
+    "reviewedAt": "2026-09-21",
+    "baselineCommit": "4a601b932a09a3f59f717a7100f1b8b51e0e0b44",
+    "beforeStatic": 740,
+    "afterStatic": 760,
     "addedStatic": [
-      "replicate/google/nano-banana-2-lite"
+      "deepseek/deepseek-flash",
+      "zhipu/glm-5.3-flashx",
+      "siliconflow/tencent/Hy4-preview",
+      "siliconflow/Qwen/Qwen3.8-27B",
+      "siliconflow/XingChenAGI/Xing4.0-29B",
+      "bailian/deepseek-v4.1-flash",
+      "bailian/ZHIPU/GLM-5.3-FlashX",
+      "ark/doubao-seed-2-1-pro-260915",
+      "ark/deepseek-v4-1-flash-260910",
+      "ark/glm-5-3-flash-260828",
+      "together/deepseek-ai/DeepSeek-V4.1-Flash",
+      "fireworks/accounts/fireworks/models/deepseek-v4p1-flash",
+      "mistral/zai-glm-5-3",
+      "tokendance/glm-5.3-flashx",
+      "tokendance/step-5-preview",
+      "replicate/xai/grok-imagine-image-2",
+      "replicate/alibaba/qwen-image-3",
+      "replicate/alibaba/qwen-image-3-pro",
+      "replicate/prunaai/p-image-ideogram",
+      "replicate/krea/krea-2-medium"
     ],
-    "addedDynamic": [],
+    "removedFromSelection": [
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp",
+      "siliconflow/nex-agi/Nex-N2-Pro",
+      "siliconflow/Qwen/Qwen3.5-397B-A17B",
+      "siliconflow/MiniMaxAI/MiniMax-M2.5",
+      "siliconflow/Pro/MiniMaxAI/MiniMax-M2.5"
+    ],
+    "addedDynamic": [
+      "prism-ml/ternary-bonsai-2-27b",
+      "z-ai/glm-5.3-flashx",
+      "unbiased/pareto",
+      "~deepseek/deepseek-pro-latest",
+      "~deepseek/deepseek-flash-latest",
+      "inference-net/schematron-v2-turbo",
+      "inference-net/schematron-v2-small",
+      "~openai/gpt-astra-latest",
+      "~openai/gpt-sol-latest",
+      "~openai/gpt-terra-latest",
+      "~openai/gpt-luna-latest",
+      "sakana/fugu-ultra-v2",
+      "sakana/fugu-max",
+      "inclusionai/ling-3.0-flash-vl",
+      "inclusionai/ling-3.0-flash-vl:free",
+      "deepseek/deepseek-v4.1-flash",
+      "inception/mercury-2.5",
+      "nex-agi/nex-n2.5-mini:free",
+      "nex-agi/nex-n2.5-pro:free",
+      "qwen/qwen3.8-27b:free",
+      "z-ai/glm-5.2:free"
+    ],
     "providerCalls": 0
   }
 }

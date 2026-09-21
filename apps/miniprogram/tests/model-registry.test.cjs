@@ -122,3 +122,11 @@ assert.throws(() => buildModelSubmission({ configurationMode: 'advanced', modelR
 assert.equal(routes.main.modelId, 'tokendance-main')
 quarantinedCatalog.providers.openai.models[0].selectable = false
 assert.throws(() => normalizeModelRegistry(quarantinedCatalog), /默认主模型/)
+
+// A retired default remains visible for existing configuration; submission is blocked separately.
+const retiredRegistry = registry()
+retiredRegistry.providers.deepseek.models[2].selectable = false
+retiredRegistry.providers.deepseek.models[2].disabledReason = '渠道已确认停用；请手动选择。'
+const withRetired = normalizeModelRegistry(retiredRegistry)
+assert.equal(withRetired.providers.deepseek.defaults.vision, 'deepseek-vision')
+assert.equal(withRetired.providers.deepseek.models.find(m => m.id === 'deepseek-vision').selectable, false)

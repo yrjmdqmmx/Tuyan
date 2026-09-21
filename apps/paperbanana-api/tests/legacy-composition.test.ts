@@ -1637,6 +1637,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   })
   const arkModels = new Map<string, any>(ark.providers.ark.models.map((model: any) => [model.id, model]))
   assert.deepEqual(new Set(arkModels.keys()), new Set([
+    'doubao-seed-2-1-pro-260915', 'deepseek-v4-1-flash-260910', 'glm-5-3-flash-260828',
     'doubao-seed-2-1-pro-260628',
     'doubao-seed-2-1-turbo-260628',
     'doubao-seed-evolving',
@@ -1732,7 +1733,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-16.v19')
+    assert.equal(result.registryVersion, '2026-09-21.v20')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2984,7 +2985,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-16.v19')
+    assert.equal(registry.registryVersion, '2026-09-21.v20')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5322,7 +5323,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-16.v19')
+    assert.equal(registry.registryVersion, '2026-09-21.v20')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6049,7 +6050,7 @@ test('native chat adapters keep model IDs, vision parts and credentials on the s
     return Response.json({ choices: [{ message: { content: 'diagram plan' } }] })
   })
   for (const [provider, model, endpoint] of [
-    ['deepseek', 'deepseek-v4-flash-vision-exp', 'https://api.deepseek.com/v1/chat/completions'],
+    ['deepseek', 'deepseek-flash', 'https://api.deepseek.com/v1/chat/completions'],
     ['kimi', 'kimi-k3', 'https://api.moonshot.cn/v1/chat/completions'],
     ['zhipu', 'glm-5v-turbo', 'https://open.bigmodel.cn/api/paas/v4/chat/completions'],
     ['siliconflow', 'Pro/moonshotai/Kimi-K2.6', 'https://api.siliconflow.cn/v1/chat/completions'],
@@ -6607,7 +6608,8 @@ test('Bailian scheduled retirement follows the official Beijing midnight boundar
     assert.equal((await inspect()).selectable, true)
     Date.now = () => Date.parse('2026-10-09T16:00:00Z')
     const retired = await inspect()
-    assert.equal(retired, undefined)
+    assert.equal(retired.selectable, false)
+    assert.match(retired.disabledReason, /2026-10-10/)
   } finally { Date.now = now }
 })
 
@@ -6672,6 +6674,8 @@ test('reviewed OpenRouter public catalog accounts for every model at its snapsho
     assert.equal(expected.size, 473)
     for (const id of ['meta/muse-image', 'recraft/recraft-v4-styles', 'recraft/recraft-v4-styles-pro', 'recraft/recraft-v4-styles-vector', 'recraft/recraft-v4-styles-pro-vector']) expected.delete(id)
     assert.equal(expected.size, 468)
+    for (const id of expected) if (id.endsWith(':batch')) expected.delete(id)
+    assert.equal(expected.size, 399)
     assert.deepEqual(new Set(registry.models.map((model: any) => model.id)), expected)
     for (const model of registry.models) {
       if (!model.selectable) assert.ok(model.disabledReason, model.id + ' needs a reason')
@@ -6764,4 +6768,68 @@ test('MiniMax regions survive routing and execution snapshots and reject incompa
   await assert.rejects(legacy.callImageModel('minimax','image-01-live','cn-fixture','figure','21:9','','1K',true,'cn'),/Unsupported (image size|aspect ratio)/)
   assert.equal(calls.length,before)
  } finally {legacy.configureRuntimeFetch()}
+})
+
+test('September retirement retains exact defaults and identities but refuses transport without silent aliases', async () => {
+  const legacy = await loadLegacy()
+  const calls: string[] = []
+  legacy.configureRuntimeFetch(async url => { calls.push(String(url)); throw new Error('unexpected network') })
+  try {
+    for (const [provider, ids] of [
+      ['deepseek', ['deepseek-v4-flash', 'deepseek-v4-flash-vision-exp']],
+      ['siliconflow', ['nex-agi/Nex-N2-Pro', 'Qwen/Qwen3.5-397B-A17B', 'MiniMaxAI/MiniMax-M2.5', 'Pro/MiniMaxAI/MiniMax-M2.5']],
+    ] as const) {
+      const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {}, response: { setHeader() {}, status() {} } })
+      if (provider === 'deepseek') {
+        assert.equal(result.providers.deepseek.defaults.vision, 'deepseek-v4-flash-vision-exp')
+        assert.equal(result.providers.deepseek.models.find((m:any) => m.id === 'deepseek-v4-pro').selectable, true)
+      }
+      for (const id of ids) {
+        const model = result.providers[provider].models.find((m:any) => m.id === id)
+        assert.equal(model.selectable, false, id)
+        assert.ok(model.disabledReason, id)
+        await assert.rejects(legacy.callTextModel(provider, id, 'unused', 'system', 'user'), /停用|到期/)
+      }
+    }
+    assert.deepEqual(calls, [])
+  } finally { legacy.configureRuntimeFetch() }
+})
+
+test('OpenRouter Batch variants are excluded from synchronous roles without changing valid modality mapping', async () => {
+  const legacy = await loadLegacy()
+  legacy.configureRuntimeFetch(async url => {
+    assert.ok(String(url).endsWith('/models'), 'discovery GET only')
+    return Response.json({ data: String(url).includes('/images/') ? [] : [
+      { id: 'fixture/live', architecture: { input_modalities: ['text','image'], output_modalities: ['text'] } },
+      { id: 'fixture/live:batch', architecture: { input_modalities: ['text','image'], output_modalities: ['text'] } },
+    ] })
+  })
+  try {
+    const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
+    const models = result.providers.openrouter.models
+    assert.deepEqual(models.find((m:any) => m.id === 'fixture/live').roles, ['main','vision'])
+    assert.equal(models.some((m:any) => m.id.endsWith(':batch')), false)
+  } finally { legacy.configureRuntimeFetch() }
+})
+
+test('September OpenRouter discovery maps all 21 new synchronous IDs using channel modalities without inference', async () => {
+  const snapshot = JSON.parse(fs.readFileSync(new URL('../../../config/openrouter-catalog-review.json', import.meta.url), 'utf8'))
+  const latest = snapshot.incrementalReviews.find((entry:any) => entry.reviewedAt === '2026-09-21')
+  const legacy = await loadLegacy()
+  legacy.configureRuntimeFetch(async (url, init) => {
+    assert.notEqual(init?.method, 'POST', 'catalog-only fixture must not submit inference')
+    assert.ok(String(url).endsWith('/models'))
+    return Response.json({data: String(url).includes('/images/') ? [] : latest.newModels})
+  })
+  try {
+    const result = await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+    const expected = latest.newModels.filter((m:any) => !m.id.endsWith(':batch'))
+    assert.equal(expected.length, 21)
+    assert.deepEqual(new Set(result.providers.openrouter.models.map((m:any) => m.id)), new Set(expected.map((m:any) => m.id)))
+    for (const card of expected) {
+      const model = result.providers.openrouter.models.find((m:any) => m.id === card.id)
+      assert.deepEqual(model.roles, card.architecture.input_modalities.includes('image') ? ['main','vision'] : ['main'])
+      assert.equal(model.verified, false)
+    }
+  } finally {legacy.configureRuntimeFetch()}
 })

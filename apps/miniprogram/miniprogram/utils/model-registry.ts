@@ -124,7 +124,7 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   for (const role of ['main', 'image', 'vision'] as const) {
     if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role))) continue
     const entry = models.find((model) => model.id === defaults[role])
-    const catalogQuarantined = providerId === 'tokendance' && entry?.selectable === false && Boolean(entry.disabledReason)
+    const catalogQuarantined = entry?.selectable === false && Boolean(entry.disabledReason)
     if (!entry || (entry.selectable === false && !catalogQuarantined) || !entry.roles.includes(role)) {
       throw new Error(`${providerId} 默认${labels[role]}无效。`)
     }

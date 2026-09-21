@@ -494,6 +494,13 @@
         "xinghuo"
       ],
       "source": "https://tokendance.space/models"
+    },
+    "xingchen": {
+      "label": "XingChenAGI",
+      "aliases": [
+        "XingChenAGI"
+      ],
+      "source": "https://www.siliconflow.cn/models"
     }
   },
   "routes": [

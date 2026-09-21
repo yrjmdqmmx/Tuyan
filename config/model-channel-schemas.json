@@ -18783,5 +18783,474 @@
     "version": "8bd4298c0f1887a53a351a0b01d46c92ac8aceff14a16c743f958b291d5e5b40",
     "official": true,
     "sourceUrl": "https://replicate.com/google/nano-banana-2-lite/api/schema"
+  },
+  "replicate/xai/grok-imagine-image-2": {
+    "input": {
+      "type": "object",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "nullable": true
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "quality": {
+          "enum": [
+            "low",
+            "medium"
+          ],
+          "type": "string",
+          "default": "medium"
+        },
+        "resolution": {
+          "enum": [
+            "1k",
+            "2k"
+          ],
+          "type": "string",
+          "default": "2k"
+        },
+        "aspect_ratio": {
+          "enum": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "2:1",
+            "1:2",
+            "19.5:9",
+            "9:19.5",
+            "20:9",
+            "9:20",
+            "auto"
+          ],
+          "type": "string",
+          "default": "1:1"
+        }
+      }
+    },
+    "output": {
+      "type": "string",
+      "format": "uri"
+    },
+    "schemas": {
+      "quality": {
+        "enum": [
+          "low",
+          "medium"
+        ],
+        "type": "string"
+      },
+      "resolution": {
+        "enum": [
+          "1k",
+          "2k"
+        ],
+        "type": "string"
+      },
+      "aspect_ratio": {
+        "enum": [
+          "1:1",
+          "16:9",
+          "9:16",
+          "4:3",
+          "3:4",
+          "3:2",
+          "2:3",
+          "2:1",
+          "1:2",
+          "19.5:9",
+          "9:19.5",
+          "20:9",
+          "9:20",
+          "auto"
+        ],
+        "type": "string"
+      }
+    },
+    "version": "3fae10cf4f7f9e7805047ac00b331b5d6b4e3c227c7789c6c047db0cf8a6ffab",
+    "official": false,
+    "sourceUrl": "https://replicate.com/xai/grok-imagine-image-2/api/schema",
+    "usesVersionlessApi": true
+  },
+  "replicate/alibaba/qwen-image-3": {
+    "input": {
+      "type": "object",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "nullable": true
+        },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "nullable": true
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "aspect_ratio": {
+          "enum": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "2:1",
+            "1:2"
+          ],
+          "type": "string",
+          "default": "1:1"
+        },
+        "negative_prompt": {
+          "type": "string",
+          "default": ""
+        },
+        "match_input_image": {
+          "type": "boolean",
+          "default": false
+        },
+        "enable_prompt_expansion": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "output": {
+      "type": "string",
+      "format": "uri"
+    },
+    "schemas": {
+      "aspect_ratio": {
+        "enum": [
+          "1:1",
+          "16:9",
+          "9:16",
+          "4:3",
+          "3:4",
+          "3:2",
+          "2:3",
+          "2:1",
+          "1:2"
+        ],
+        "type": "string"
+      }
+    },
+    "version": "23d66ab3d19a34710503d4fed5d1995b421d4663825fddf7b92073433a53ebba",
+    "official": false,
+    "sourceUrl": "https://replicate.com/alibaba/qwen-image-3/api/schema",
+    "usesVersionlessApi": true
+  },
+  "replicate/alibaba/qwen-image-3-pro": {
+    "input": {
+      "type": "object",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "nullable": true
+        },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "nullable": true
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "aspect_ratio": {
+          "enum": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "2:1",
+            "1:2"
+          ],
+          "type": "string",
+          "default": "1:1"
+        },
+        "negative_prompt": {
+          "type": "string",
+          "default": ""
+        },
+        "match_input_image": {
+          "type": "boolean",
+          "default": false
+        },
+        "enable_prompt_expansion": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "output": {
+      "type": "string",
+      "format": "uri"
+    },
+    "schemas": {
+      "aspect_ratio": {
+        "enum": [
+          "1:1",
+          "16:9",
+          "9:16",
+          "4:3",
+          "3:4",
+          "3:2",
+          "2:3",
+          "2:1",
+          "1:2"
+        ],
+        "type": "string"
+      }
+    },
+    "version": "ff0fecb672d6fab3ce3ece8264b525b74a4cdae2655eaab5bbdc9799a170845d",
+    "official": false,
+    "sourceUrl": "https://replicate.com/alibaba/qwen-image-3-pro/api/schema",
+    "usesVersionlessApi": true
+  },
+  "replicate/prunaai/p-image-ideogram": {
+    "input": {
+      "type": "object",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "nullable": true
+        },
+        "width": {
+          "type": "integer",
+          "default": 1024,
+          "maximum": 2560,
+          "minimum": 0
+        },
+        "height": {
+          "type": "integer",
+          "default": 1024,
+          "maximum": 2560,
+          "minimum": 0
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "thinking": {
+          "enum": [
+            "very low",
+            "low",
+            "medium",
+            "high",
+            "very high"
+          ],
+          "type": "string",
+          "default": "high"
+        },
+        "image_size": {
+          "enum": [
+            "1K",
+            "2K"
+          ],
+          "type": "string",
+          "default": "1K"
+        },
+        "aspect_ratio": {
+          "enum": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3",
+            "custom"
+          ],
+          "type": "string",
+          "default": "1:1"
+        },
+        "output_format": {
+          "enum": [
+            "png",
+            "jpg",
+            "webp"
+          ],
+          "type": "string",
+          "default": "jpg"
+        },
+        "output_quality": {
+          "type": "integer",
+          "default": 80,
+          "maximum": 100,
+          "minimum": 0
+        },
+        "prompt_upsampling": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "output": {
+      "type": "string",
+      "format": "uri"
+    },
+    "schemas": {
+      "thinking": {
+        "enum": [
+          "very low",
+          "low",
+          "medium",
+          "high",
+          "very high"
+        ],
+        "type": "string"
+      },
+      "image_size": {
+        "enum": [
+          "1K",
+          "2K"
+        ],
+        "type": "string"
+      },
+      "aspect_ratio": {
+        "enum": [
+          "1:1",
+          "16:9",
+          "9:16",
+          "4:3",
+          "3:4",
+          "3:2",
+          "2:3",
+          "custom"
+        ],
+        "type": "string"
+      },
+      "output_format": {
+        "enum": [
+          "png",
+          "jpg",
+          "webp"
+        ],
+        "type": "string"
+      }
+    },
+    "version": "c04e2a38bd6773283f9144c528805ba1f96daecc4f7560243ebd7ee1cfd80c16",
+    "official": false,
+    "sourceUrl": "https://replicate.com/prunaai/p-image-ideogram/api/schema",
+    "usesVersionlessApi": true
+  },
+  "replicate/krea/krea-2-medium": {
+    "input": {
+      "type": "object",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "nullable": true
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "creativity": {
+          "enum": [
+            "raw",
+            "low",
+            "medium",
+            "high"
+          ],
+          "type": "string",
+          "default": "medium"
+        },
+        "aspect_ratio": {
+          "enum": [
+            "1:1",
+            "4:3",
+            "3:2",
+            "16:9",
+            "2.35:1",
+            "4:5",
+            "2:3",
+            "9:16"
+          ],
+          "type": "string",
+          "default": "1:1"
+        },
+        "moodboard_id": {
+          "type": "string",
+          "nullable": true
+        },
+        "moodboard_strength": {
+          "type": "number",
+          "default": 0.35,
+          "maximum": 1,
+          "minimum": 0
+        },
+        "style_reference_images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "default": []
+        },
+        "style_reference_strength": {
+          "type": "number",
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0
+        }
+      }
+    },
+    "output": {
+      "type": "string",
+      "format": "uri"
+    },
+    "schemas": {
+      "creativity": {
+        "enum": [
+          "raw",
+          "low",
+          "medium",
+          "high"
+        ],
+        "type": "string"
+      },
+      "aspect_ratio": {
+        "enum": [
+          "1:1",
+          "4:3",
+          "3:2",
+          "16:9",
+          "2.35:1",
+          "4:5",
+          "2:3",
+          "9:16"
+        ],
+        "type": "string"
+      }
+    },
+    "version": "29b5a1a76584fe27a7499a7d9eef7f956a363a99bbebf0d836a04b9a10baf0ea",
+    "official": false,
+    "sourceUrl": "https://replicate.com/krea/krea-2-medium/api/schema",
+    "usesVersionlessApi": true
   }
 }

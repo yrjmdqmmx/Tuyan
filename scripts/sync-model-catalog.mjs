@@ -28,7 +28,10 @@ write(path.join(root, 'packages/types/src/model-presentation-data.ts'), '// Gene
 const presentationRuntime = presentationData + fs.readFileSync(path.join(root, 'packages/types/src/model-presentation.ts'), 'utf8').replace(/^import .*model-presentation-data\.js'\n/m, '')
 lines.push(presentationRuntime)
 write(path.join(root, 'apps/web/src/lib/modelPresentation.js'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + ts.transpileModule(presentationRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
-write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation.ts'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + presentationRuntime)
+// Keep the dictionary once, rather than in both Mini TS and compiled JS.
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation-data.js'), '// Generated from config/model-presentation.json\nmodule.exports = ' + JSON.stringify(presentation) + '\n')
+const miniPresentation = presentationRuntime.replace(JSON.stringify(presentation), "require('./model-presentation-data.js')")
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation.ts'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + miniPresentation)
 const aspectRuntime = fs.readFileSync(path.join(root, 'packages/types/src/aspect-ratios.ts'), 'utf8')
 write(path.join(root, 'apps/web/src/lib/aspectRatios.js'), '// Generated from packages/types/src/aspect-ratios.ts\n' + ts.transpileModule(aspectRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/aspect-ratios.ts'), '// Generated from packages/types/src/aspect-ratios.ts\n' + aspectRuntime)

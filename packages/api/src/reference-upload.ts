@@ -67,10 +67,10 @@ export function referenceSubmissionPolicy(provider: string, model: string, workf
     Object.assign(p, { maxCount: 8, maxBytes: 12000000, maxTotalBytes: 13000000, maxDimension: 8192, maxPixels: 16000000,
       requestMaxBytes: 20000000, status: 'partial', source: 'https://ai.google.dev/gemini-api/docs/image-understanding',
       note: '当前使用内联图片，包含 Base64、文字及 JSON 的整包不得超过 20MB；未使用 Files API。' })
-  } else if (provider === 'deepseek' && model === 'deepseek-v4-flash-vision-exp') {
+  } else if (provider === 'deepseek' && ['deepseek-flash', 'deepseek-v4-flash-vision-exp'].includes(model)) {
     Object.assign(p, { maxCount: 8, maxBytes: 20 * 1024 * 1024, maxTotalBytes: 48 * 1024 * 1024, maxDimension: 8192,
       maxPixels: 32000000, requestMaxBytes: 48 * 1024 * 1024, status: 'documented', source: 'https://api-docs.deepseek.com/guides/vision/',
-      note: 'URL 输入官方单图 32MiB、合计 64MiB；模型内部约缩至 800×800，密集小字建议局部裁剪。' })
+      note: 'URL 输入官方单图 32MiB、合计 64MiB；内联整包 48MiB，平台最多 8 张；当前视觉模型内部约缩至 1300×1300，密集小字建议局部裁剪。' })
   } else if (provider === 'openai') {
     Object.assign(p, { maxCount: 8, maxBytes: 16000000, maxTotalBytes: 48000000, maxDimension: 8192, maxPixels: 32000000,
       requestMaxBytes: 50000000, status: 'partial', source: 'https://developers.openai.com/api/docs/guides/images-vision',

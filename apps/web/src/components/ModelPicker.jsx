@@ -1,7 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Check, ChevronDown, Copy, Search, Sparkles, X } from 'lucide-react'
 import { groupRegistryModels, partitionRegistryModels } from '../lib/modelRegistry'
-import { MODEL_CHANNEL_LABELS, presentRegistryModel, orderModelChannels, modelLifecycleLabel } from '../lib/modelPresentation'
+import { MODEL_CHANNEL_LABELS, presentRegistryModel, orderModelChannels, modelChannelCategoryLabel, modelLifecycleLabel } from '../lib/modelPresentation'
 
 const COMPATIBLE_PAGE_SIZE = 24
 const COMPACT_MEDIA_QUERY = '(max-width: 1076px)'
@@ -224,7 +224,7 @@ export default function ModelPicker({
       {providerIds.map((id) => (
         <button type="button" key={id} aria-label={providerDisplayName(id, providerConfigs)} aria-pressed={selectedProvider === id} className={selectedProvider === id ? 'active' : ''} onClick={() => chooseProvider(id)}>
           <strong>{providerDisplayName(id, providerConfigs)}</strong>
-          <small>{effectiveRegistry.providers[id].accessKind === 'aggregator' ? '聚合渠道' : '官方直连'}</small>
+          <small>{modelChannelCategoryLabel(id)}</small>
         </button>
       ))}
     </div>
@@ -319,6 +319,9 @@ export default function ModelPicker({
         </span>
         <ChevronDown size={17} />
       </button>
+      {selectedModel?.selectable === false && selectedModel.disabledReason ? (
+        <p className="model-picker-empty" role="status">{selectedModel.disabledReason}</p>
+      ) : null}
       {open ? (
         <div className="model-route-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
           <aside ref={panelRef} className="model-route-drawer" role="dialog" aria-modal="true" aria-labelledby={dialogTitleId}>
