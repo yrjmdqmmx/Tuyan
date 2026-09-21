@@ -11,3 +11,16 @@ test('Figure Studio uses one authenticated request and preserves billing failure
     assert.throws(() => figureStudioRequest('/paperbanana-api', 'arbitraryAction'));
   } finally { globalThis.fetch = previous; }
 });
+
+test('oversized source fails locally and request cancellation uses the shared transport', async () => {
+  const previous = globalThis.fetch; const calls = [];
+  globalThis.fetch = async (url, options) => { calls.push({ url, options }); return Response.json({ code: 0 }); };
+  try {
+    assert.throws(() => figureStudioRequest('/paperbanana-api', 'figureStudioExport', { data: 'x'.repeat(768 * 1024) }), error => error.details.requestState === 'not_sent');
+    assert.equal(calls.length, 0);
+    const controller = new AbortController();
+    await figureStudioRequest('/paperbanana-api', 'figureStudioCapabilities', {}, { signal: controller.signal });
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].options.signal, controller.signal);
+  } finally { globalThis.fetch = previous; }
+});

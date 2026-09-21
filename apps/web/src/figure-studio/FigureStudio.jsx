@@ -1,8 +1,8 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { ArrowUpRight, Circle, Download, FilePlus2, FolderOpen, Image, Layers3, MousePointer2, Redo2, Save, Square, SquareDashed, Type, Undo2, X } from 'lucide-react';
 import { applyCommands, createDocument, createExampleDocument, documentFromPlan } from '@paperbanana/figure-core';
-import { appPath } from '../appPaths.js';
-import { BENCH_ENABLED, logoUrl } from '../config.js';
+import { API_BASE_DEFAULT, BACKEND_MODE } from '../config.js';
+import SitePageShell from '../components/SitePageShell.jsx';
 import FigureCanvas from './FigureCanvas.jsx';
 import Inspector, { TYPE_LABELS } from './Inspector.jsx';
 import RulesPanel from './RulesPanel.jsx';
@@ -12,7 +12,8 @@ import { getCapabilities, requestEdit, requestPlan } from './api.js';
 import { downloadBlob, filename, historyReducer, initialHistory, makeElement, MAX_SOURCE_BYTES, parseSource, STORAGE_KEY } from './state.js';
 import { validateSourceAssets } from './sourceAssets.js';
 import { selectedEditScope } from './editScope.js';
-import './figure-studio.css';
+
+const EMPTY_MODEL = Object.freeze({ provider: '', modelId: '', key: '', valid: false });
 
 function useReadOnlyViewport() {
   const [readOnly, setReadOnly] = useState(() => globalThis.matchMedia?.('(max-width: 900px)').matches ?? false);
@@ -41,6 +42,18 @@ function readImage(file) {
 }
 
 export default function FigureStudio() {
+  return <SitePageShell section="figure-studio" apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} className="figure-site-shell">
+    {(page) => <FigureStudioEditor {...page} />}
+  </SitePageShell>;
+}
+
+export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn }) {
+  const authIdentity = `${currentUser?.id || 'anonymous'}:${authGeneration}`;
+  const authIdentityRef = useRef(authIdentity); authIdentityRef.current = authIdentity;
+  useEffect(() => {
+    authIdentityRef.current = authIdentity;
+    return () => { authIdentityRef.current = null; };
+  }, [authIdentity]);
   const [history, dispatch] = useReducer(historyReducer, undefined, () => initialHistory());
   const { document: doc } = history;
   const documentRef = useRef(doc); documentRef.current = doc;
@@ -55,8 +68,18 @@ export default function FigureStudio() {
   const [instruction, setInstruction] = useState('');
   const [editBusy, setEditBusy] = useState(false);
   const [patch, setPatch] = useState(null);
-  const [model, setModel] = useState({ provider: '', modelId: '', key: '', valid: false });
-  const [capabilities, setCapabilities] = useState(null);
+  const [model, setModel] = useState(EMPTY_MODEL);
+  // A newly mounted settings panel must never see the previous account's key,
+  // including the render before the account-change cleanup effect runs.
+  const safeModel = model.authIdentity === authIdentity ? model : EMPTY_MODEL;
+  const updateModel = useCallback((next) => setModel((previous) => {
+    if (authIdentityRef.current !== authIdentity) return previous;
+    const current = previous.authIdentity === authIdentity ? previous : EMPTY_MODEL;
+    const updated = typeof next === 'function' ? next(current) : next;
+    return updated === current && current === previous ? previous : { ...updated, authIdentity };
+  }), [authIdentity]);
+  const [capabilityState, setCapabilities] = useState(null);
+  const capabilities = capabilityState?.authIdentity === authIdentity ? capabilityState.value : null;
   const [serviceError, setServiceError] = useState('');
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -68,12 +91,23 @@ export default function FigureStudio() {
   const selected = doc.elements.find((element) => element.id === selectedId);
   const editScope = selectedEditScope(doc, selectedId, capabilities?.limits?.maxSelectedObjects);
 
-  useEffect(() => { document.title = '图稿编辑 · 图研 Tuyan'; }, []);
+  useEffect(() => { document.title = '论文画布 · 图研 Tuyan'; }, []);
   useEffect(() => {
-    let cancelled = false;
-    getCapabilities().then((result) => { if (!cancelled) { setCapabilities(result); setServiceError(''); } }).catch(() => { if (!cancelled) setServiceError('服务能力暂不可用。可继续本机编辑与导出 SVG；模型功能和 PDF / EPS 需要登录且服务可用。'); });
-    return () => { cancelled = true; };
-  }, []);
+    setModel({ ...EMPTY_MODEL, authIdentity });
+    setPlan(null); setPatch(null); setPlanBusy(false); setEditBusy(false); setExportOpen(false);
+  }, [authIdentity]);
+  useEffect(() => {
+    setCapabilities(null);
+    if (auth.isPending) { setServiceError('正在检查登录状态…'); return undefined; }
+    if (!currentUser?.id) { setServiceError('登录后可使用结构规划、语言编辑和服务端导出。本机编辑、源稿与 SVG 导出可直接使用。'); return undefined; }
+    const controller = new AbortController();
+    getCapabilities({ signal: controller.signal }).then((result) => {
+      if (!controller.signal.aborted && authIdentityRef.current === authIdentity) { setCapabilities({ authIdentity, value: result }); setServiceError(''); }
+    }).catch(() => {
+      if (!controller.signal.aborted && authIdentityRef.current === authIdentity) setServiceError('论文画布服务暂不可用。可继续本机编辑与导出 SVG；请稍后重试。');
+    });
+    return () => controller.abort();
+  }, [auth.isPending, authIdentity, currentUser?.id]);
   useEffect(() => {
     if (history.recoveryError) { setError(history.recoveryError); return; }
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(doc)); setSaveStatus('已保存在此浏览器'); }
@@ -154,22 +188,24 @@ export default function FigureStudio() {
     } catch (error) { setError(error.message); }
   }
   function context() {
-    if (!capabilities?.modelPlanning) throw new Error('模型服务尚不可用。请先登录工作台，并确认图稿服务已启用。');
-    if (!model.valid || !model.provider || !model.modelId) throw new Error('请展开下方模型设置，从当前目录中明确选择可用的主文本模型。');
-    if (!model.key.trim()) throw new Error('请填写所选渠道的 API Key。密钥只在当前页面使用。');
-    return { mainRoute: { accessProvider: model.provider, modelId: model.modelId }, apiKeys: { [model.provider]: model.key.trim() } };
+    if (authIdentityRef.current !== authIdentity || !currentUser?.id || auth.isPending) throw new Error('请先登录图研，再使用模型规划或语言编辑。');
+    if (!capabilities?.modelPlanning) throw new Error('论文画布模型服务尚不可用，请稍后重试。');
+    if (!safeModel.valid || !safeModel.provider || !safeModel.modelId) throw new Error('请展开下方模型设置，从当前目录中明确选择可用的主文本模型。');
+    if (!safeModel.key.trim()) throw new Error('请填写所选渠道的 API Key。密钥只在当前页面使用。');
+    return { mainRoute: { accessProvider: safeModel.provider, modelId: safeModel.modelId }, apiKeys: { [safeModel.provider]: safeModel.key.trim() }, ...(safeModel.provider === 'minimax' ? { providerRegions: safeModel.providerRegions } : {}) };
   }
   async function buildPlan() {
     let payload;
     try { payload = { materials, ...context() }; } catch (error) { setError(error.message); return; }
-    const requestDocument = { id: doc.id, revision: doc.revision, session: documentSession.current };
+    const requestDocument = { id: doc.id, revision: doc.revision, session: documentSession.current, authIdentity };
     setPlanBusy(true); setError('');
     try {
       const result = await requestPlan(payload);
+      if (authIdentityRef.current !== requestDocument.authIdentity) return;
       if (documentSession.current !== requestDocument.session || documentRef.current.id !== requestDocument.id || documentRef.current.revision !== requestDocument.revision) { setNotice('请求期间图稿已更改，旧结构方案未写入。当前图稿已保留。'); return; }
       setPlan(result.plan); setNotice('结构方案已返回。请核对节点与关系，确认后再生成图稿。');
     }
-    catch (error) { setError(modelError(error)); } finally { setPlanBusy(false); }
+    catch (error) { if (authIdentityRef.current === requestDocument.authIdentity) setError(modelError(error)); } finally { if (authIdentityRef.current === requestDocument.authIdentity) setPlanBusy(false); }
   }
   function confirmPlan() {
     try {
@@ -186,19 +222,21 @@ export default function FigureStudio() {
       payload = { document: doc, instruction, objectIds: scope.objectIds, baseRevision: doc.revision, ...context() };
     } catch (error) { setError(error.message); return; }
     const requestSession = documentSession.current;
+    const requestAuthIdentity = authIdentity;
     setEditBusy(true); setError(''); setPatch(null);
     try {
       const result = await requestEdit(payload);
+      if (authIdentityRef.current !== requestAuthIdentity) return;
       if (documentSession.current !== requestSession || documentRef.current.id !== payload.document.id) { setNotice('请求期间已切换图稿，旧修改方案已丢弃。'); return; }
       if (result.baseRevision !== payload.baseRevision) throw new Error('修改方案的版本不匹配，未应用。');
       applyCommands(payload.document, result.commands, { baseRevision: result.baseRevision });
       setPatch({ ...result, documentId: payload.document.id, objectIds: payload.objectIds }); setNotice('修改方案已返回。确认应用后才会改变当前图稿。');
-    } catch (error) { setError(modelError(error)); } finally { setEditBusy(false); }
+    } catch (error) { if (authIdentityRef.current === requestAuthIdentity) setError(modelError(error)); } finally { if (authIdentityRef.current === requestAuthIdentity) setEditBusy(false); }
   }
 
   return <div className={`figure-studio ${readOnly ? 'fs-readonly' : ''}`}>
-    <header className="fs-header"><a className="fs-brand" href={appPath('/')}><img src={logoUrl} alt="图研 Tuyan" /><strong>图研 Tuyan</strong></a><nav aria-label="网站导航"><a href={appPath('/')}>工作台</a><a className="active" aria-current="page" href={appPath('/figure-studio/')}>图稿编辑</a>{BENCH_ENABLED && <a href={appPath('/leaderboard/')}>排行榜</a>}</nav><a className="fs-login-link" href={appPath('/?auth=sign-in')}>账户与登录 <ArrowUpRight size={13} /></a></header>
-    <div className="fs-document-bar"><div className="fs-document-name"><input aria-label="图稿标题" readOnly={readOnly} key={`${doc.id}-${doc.title}`} defaultValue={doc.title} onBlur={(event) => { if (event.target.value.trim() && event.target.value !== doc.title) commands([{ type: 'title', title: event.target.value.trim() }]); }} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); }} /><span className={saveStatus.includes('失败') ? 'fs-error' : ''}>{saveStatus}</span></div><div className="fs-document-actions">{!readOnly && <><button aria-label="撤销" title="撤销 ⌘Z" disabled={!history.past.length} onClick={() => dispatch({ type: 'undo' })}><Undo2 size={17} /></button><button aria-label="重做" title="重做 ⇧⌘Z" disabled={!history.future.length} onClick={() => dispatch({ type: 'redo' })}><Redo2 size={17} /></button><span className="fs-separator" /></>}<button onClick={() => sourceInput.current.click()}><FolderOpen size={16} /><span>打开源稿</span></button><button className="fs-source-save" onClick={saveSource}><Save size={16} /><span>保存源稿</span></button><button className="fs-primary" onClick={() => setExportOpen(true)}><Download size={16} />导出</button></div></div>
+
+    <div className="fs-document-bar"><div className="fs-document-name"><input aria-label="图稿标题" readOnly={readOnly} key={`${doc.id}-${doc.title}`} defaultValue={doc.title} onBlur={(event) => { if (event.target.value.trim() && event.target.value !== doc.title) commands([{ type: 'title', title: event.target.value.trim() }]); }} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); }} /><span className={saveStatus.includes('失败') ? 'fs-error' : ''}>{saveStatus}</span></div><div className="fs-document-actions">{!readOnly && <><button aria-label="撤销" title="撤销 ⌘Z" disabled={!history.past.length} onClick={() => dispatch({ type: 'undo' })}><Undo2 size={17} /></button><button aria-label="重做" title="重做 ⇧⌘Z" disabled={!history.future.length} onClick={() => dispatch({ type: 'redo' })}><Redo2 size={17} /></button><span className="fs-separator" /></>}<button onClick={() => sourceInput.current.click()}><FolderOpen size={16} /><span>打开源稿</span></button><button className="fs-source-save" onClick={saveSource}><Save size={16} /><span>保存源稿</span></button><button className="primary-button fs-primary" onClick={() => setExportOpen(true)}><Download size={16} />导出</button></div></div>
     <input className="fs-file-input" type="file" ref={sourceInput} accept=".json,.tuyan.json,application/json" onChange={importSource} />
     <input className="fs-file-input" type="file" ref={imageInput} accept="image/png,image/jpeg,image/webp" onChange={uploadImage} />
     {(error || notice) && <div className={`fs-banner ${error ? 'is-error' : ''}`} role={error ? 'alert' : 'status'}><span>{error || notice}</span><button aria-label="关闭提示" onClick={() => { setError(''); setNotice(''); }}><X size={14} /></button></div>}
@@ -207,12 +245,12 @@ export default function FigureStudio() {
       {leftTab === 'plan' && <PlanPanel materials={materials} setMaterials={setMaterials} plan={plan} setPlan={setPlan} busy={planBusy} onPlan={buildPlan} onConfirm={confirmPlan} limits={capabilities?.limits} />}
       {leftTab === 'layers' && <div className="fs-panel-content"><div className="fs-section-heading"><h3>对象与图层</h3><span>{doc.elements.length}</span></div><p className="fs-muted">点击选择对象。在画布中拖动，或在右侧精确调整。</p>{!doc.elements.length && <div className="fs-empty-list"><Layers3 size={25} /><p>还没有对象</p><span>用上方工具添加第一个对象。</span></div>}<ol className="fs-layers">{[...doc.elements].reverse().map((element) => <li key={element.id}><button className={selectedId === element.id ? 'selected' : ''} onClick={() => select(element.id)}><span className="fs-layer-type">{TYPE_LABELS[element.type]}</span><span>{element.text || (element.type === 'panel' ? '分组面板' : element.id.slice(-6))}</span>{element.parentId && <span className="fs-layer-child">↳</span>}</button></li>)}</ol></div>}
       {leftTab === 'edit' && <EditPanel instruction={instruction} setInstruction={setInstruction} selected={selected} scope={editScope} busy={editBusy} onEdit={buildEdit} patch={patch} onApply={() => { if (patch.documentId !== doc.id) { setError('修改方案属于另一份图稿，未应用。'); setPatch(null); return; } if (commands(patch.commands, patch.baseRevision)) { setPatch(null); setNotice('修改已应用，可使用撤销恢复。'); } }} onDismiss={() => setPatch(null)} revision={doc.revision} limits={capabilities?.limits} />}
-      {(leftTab === 'plan' || leftTab === 'edit') && <ModelSettings value={model} onChange={setModel} capabilities={capabilities} />}
-      {serviceError && leftTab !== 'layers' && <p className="fs-service-note">{serviceError}</p>}
+      <div hidden={leftTab === 'layers'}><ModelSettings key={authIdentity} value={safeModel} onChange={updateModel} capabilities={capabilities} onSignIn={onSignIn} signedIn={Boolean(currentUser)} /></div>
+      {serviceError && leftTab !== 'layers' && <div className="fs-service-note"><p>{serviceError}</p>{!currentUser && !auth.isPending && <button type="button" onClick={onSignIn}>登录图研</button>}</div>}
     </div><div className="fs-local-footer"><button onClick={() => newDocument()}><FilePlus2 size={14} />空白图稿</button><button onClick={() => newDocument(true)}>打开示例</button><p>仅保存在此浏览器 · 不会同步到云端</p></div></aside>}
     <div className="fs-center-panel">{!readOnly && <div className="fs-tool-bar" aria-label="添加对象"><span className="fs-tool-select"><MousePointer2 size={17} /></span>{[["text", Type, "文字"], ["rect", Square, "矩形"], ["ellipse", Circle, "椭圆"], ["arrow", ArrowUpRight, "箭头"], ["line", MinusLine, "线段"], ["panel", SquareDashed, "面板"]].map(([type, Icon, label]) => <button key={type} aria-label={`添加${label}`} title={`添加${label}`} onClick={() => addObject(type)}><Icon size={17} /><span>{label}</span></button>)}<button onClick={() => imageInput.current.click()}><Image size={17} /><span>图片</span></button></div>}<FigureCanvas document={doc} selectedId={selectedId} onSelect={select} onCommands={commands} readOnly={readOnly} /></div>
     {(!readOnly || mobileRules) && <aside className="fs-right-panel">{!readOnly && <div className="fs-panel-tabs" role="tablist" aria-label="图稿属性与检查"><button role="tab" aria-selected={rightTab === 'properties'} className={rightTab === 'properties' ? 'active' : ''} onClick={() => setRightTab('properties')}>属性</button><button role="tab" aria-selected={rightTab === 'rules'} className={rightTab === 'rules' ? 'active' : ''} onClick={() => setRightTab('rules')}>期刊规则</button></div>}<div className="fs-panel-scroll">{rightTab === 'properties' && !readOnly ? <Inspector document={doc} selectedId={selectedId} onCommands={commands} onDelete={removeSelected} /> : <RulesPanel document={doc} onCommands={commands} readOnly={readOnly} />}</div></aside>}
-    </main><ExportDialog open={exportOpen} onClose={() => setExportOpen(false)} document={doc} capabilities={capabilities} saveSource={saveSource} />
+    </main><ExportDialog key={authIdentity} open={exportOpen} onClose={() => setExportOpen(false)} document={doc} capabilities={capabilities} saveSource={saveSource} />
   </div>;
 }
 

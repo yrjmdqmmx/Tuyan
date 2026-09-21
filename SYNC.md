@@ -1,5 +1,18 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-21 · 论文画布与公共 UI / 账号 / 模型能力统一（本地完成，未发布）
+
+- 已同步隔壁会话的 PR #224：`origin/main=0d8b0b4500eb9ca6d8b1b5180450276c7f78b2fb`，目录 v21、模型版本映射、排行榜双语与共享筛选均已合入；隔壁发布记录确认该 SHA 的 Web/Core 发布。下方目录和排行榜条目中的“本地未发布”是当时记录，已被这次发布状态更新；微信上传仍未执行。
+- 当前图稿分支 `codex/figure-studio-20260921` 保留原实现 `0374995`，以合并提交 `9ebba0f` 接入 main；论文画布本身仍在独立分支，未合入 main、未部署。未改其他会话工作树。
+- 名称统一为“论文画布”（英文 Figure Canvas），保留 `/figure-studio/` 地址。复用 WorkbenchHeader、移动更多菜单、公共设计变量、表单/主按钮、AccessibleDialog、GenerationSettingsDrawer / ModelPicker、NativeCredentialFields；原工作台生成、精修与设置流程保留。
+- 独立页面与排行榜共用 SitePageShell / SiteSessionProvider；工作台和独立页面共用 useAuthSession、既有登录/账号组件及模型目录展示链。模型选择不自动替换；Key 只在页面内存中保存，按账号和 MiniMax 区域隔离。
+- 共享 SDK `figureStudioRequest` 统一 768 KiB 请求预检，并新增可选第四参数 `{ signal }`；不改后端 action、请求字段或环境变量。账号切换使旧模型响应和导出结果失效。
+- [x] Web：518 项测试、生产 build、目录 760 项一致性检查通过；桌面与 390px 手机浏览器交互通过，修复手机导出弹窗溢出。
+- [x] 共享 API：665 项测试通过，含请求预检、凭据携带和取消信号；均为本地/模拟验证。
+- [x] 小程序 / Android / Windows / macOS / Core / Gateway：本条无接口迁移，不要求改现有消费者。
+- [ ] 论文画布生产发布、真实登录与模型调用、联网 PDF/EPS 导出：本轮未执行。仍仅支持受支持渠道的自带 Key 模型；观猹和通用 API 需适配其授权、连接凭据和任务恢复契约。
+- 复用映射、分支核对和剩余差异见 [本轮记录](docs/figure-studio/2026-09-21-product-integration.md)。
+
 ## 2026-09-21 · 独立论文图稿页面（本地完成，尚未发布）
 
 - 新增 Web 同级入口 `/figure-studio/`，复用账号与受保护 API；原工作台任务、生成与精修流程保留。图稿采用独立 `tuyan.figure/v1` 源文件，与已有 PNG 任务记录分开；本阶段草稿仅保存在本机及用户下载的源文件中。

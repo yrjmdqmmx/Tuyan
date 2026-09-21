@@ -14,7 +14,8 @@ import { TokenDanceRecovery, TokenDanceStatus } from './components/TokenDancePan
 import AccountPage from './components/AccountPage';
 import TokenDancePricing from './components/admin/TokenDancePricing';
 import { workspaceEntry, selectWorkspaceEntry } from './lib/adminEntry';
-import { presentRegistryModel, sortModelsNewestFirst, orderModelChannels } from './lib/modelPresentation'
+import { orderModelChannels } from './lib/modelPresentation'
+import { loadPresentedModelRegistry } from './lib/modelCatalog.js'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -35,7 +36,6 @@ import {
   fetchBackendHealth,
   getJobRequest,
   modelCapabilityRequest,
-  modelRegistryRequest,
   optimizeInputsRequest,
   providerAccountCatalogRequest,
   finalizeReferenceUploadRequest,
@@ -416,10 +416,10 @@ export default function App() {
   useEffect(() => {
     if (!health) return undefined;
     let cancelled = false;
-    modelRegistryRequest(apiBaseNormalized, health)
+    loadPresentedModelRegistry(apiBaseNormalized, health)
       .then((registry) => {
         if (cancelled) return;
-        setModelRegistry({ ...registry, providers: Object.fromEntries(Object.entries(registry.providers || {}).map(([id, entry]) => [id, { ...entry, models: sortModelsNewestFirst(entry.models.map((model) => presentRegistryModel(id, model))) }])) });
+        setModelRegistry(registry);
       })
       .catch(() => {
         if (!cancelled) {
@@ -1218,8 +1218,7 @@ export default function App() {
 
   async function handleSignOut() {
     clearPrivateWorkspace();
-    await authClient.signOut();
-    await authSession.refresh();
+    await authSession.signOut();
     setShowAuthPanel(false);
     setShowAccountDialog(false);
     setAdminIdentity('');

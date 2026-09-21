@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Download, Loader2, X } from 'lucide-react';
 import { evaluateRules, renderSvg } from '@paperbanana/figure-core';
 import AccessibleDialog from '../components/AccessibleDialog.jsx';
@@ -16,6 +16,12 @@ export default function ExportDialog({ open, onClose, document, capabilities, sa
   const [report, setReport] = useState(null);
   const [reportName, setReportName] = useState('');
   const [reportSnapshot, setReportSnapshot] = useState('');
+  const active = useRef(true);
+  const request = useRef(null);
+  useEffect(() => {
+    active.current = true;
+    return () => { active.current = false; request.current?.abort(); };
+  }, []);
   const documentSnapshot = useMemo(() => JSON.stringify(document), [document]);
   const results = evaluateRules(document);
   const baselineWarnings = results.baseline.filter((rule) => ['problem', 'fail', 'failed', 'warning', 'warn'].includes(rule.status)).length;
@@ -25,19 +31,23 @@ export default function ExportDialog({ open, onClose, document, capabilities, sa
       if (format === 'svg') {
         const svg = renderSvg(document);
         const verification = await svgVerification(document, svg);
+        if (!active.current) return;
         const name = filename(document.title, 'svg');
         downloadBlob(new Blob([svg], { type: 'image/svg+xml' }), name);
         setReport(verification); setReportSnapshot(documentSnapshot); setReportName(`${name}.verification.json`);
         setMessage('SVG 已下载，保留源稿中的文字与对象。尚未在你的目标软件验证编辑与保存后重开。');
       } else {
-        const result = await requestExport({ document, format });
+        request.current = new AbortController();
+        const result = await requestExport({ document, format }, { signal: request.current.signal });
+        if (!active.current) return;
         const bytes = Uint8Array.from(atob(result.file.base64), (value) => value.charCodeAt(0));
         const verification = await validateReturnedReport(document, bytes, result.verification);
+        if (!active.current) return;
         downloadBlob(new Blob([bytes], { type: result.file.mimeType }), result.file.name || filename(document.title, format));
         setReport(verification); setReportSnapshot(documentSnapshot); setReportName(`${result.file.name || filename(document.title, format)}.verification.json`);
         setMessage(`${format.toUpperCase()} 已转换并下载。转换成功不代表对象可编辑或满足投稿要求；请在目标软件中检查。`);
       }
-    } catch (error) { setError(error.message || '导出失败，当前图稿已保留。'); } finally { setBusy(''); }
+    } catch (error) { if (active.current) setError(error.message || '导出失败，当前图稿已保留。'); } finally { if (active.current) setBusy(''); }
   }
   return <AccessibleDialog open={open} onClose={onClose} labelledBy="fs-export-title" className="fs-export-dialog" backdropClassName="fs-dialog-backdrop"><header><div><h2 id="fs-export-title">导出图稿</h2><p>版本 {document.revision} · {document.canvas.widthMm} × {document.canvas.heightMm} mm</p></div><button aria-label="关闭导出" onClick={onClose}><X size={18} /></button></header>
     <div className="fs-export-body"><div className="fs-note">{baselineWarnings ? `官方基线有 ${baselineWarnings} 项需留意。` : '自动检查未发现需调整的技术项。'}科学内容、AI 使用政策与外部软件兼容性仍需人工核验。</div>

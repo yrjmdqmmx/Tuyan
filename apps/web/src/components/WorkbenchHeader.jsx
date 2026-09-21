@@ -1,19 +1,19 @@
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useState } from 'react';
-import { BarChart3, BookOpen, Bot, LayoutDashboard, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
+import { BarChart3, BookOpen, Bot, LayoutDashboard, Menu, MessageSquare, PenTool, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
 import { AUTH_UI_ENABLED, BENCH_ENABLED, logoUrl } from '../config';
 import { appPath } from '../appPaths';
 import AccessibleDialog from './AccessibleDialog';
 import useCompactLayout from '../hooks/useCompactLayout';
 
-export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, section = 'workbench' }) {
+export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onWorkspaceAccount, onGuide, onAdmin, onNavigate, showWorkspaceLinks = false, section = 'workbench' }) {
   const { t, locale } = useBenchmarkLocale()
   return (
     <nav className="header-navigation" aria-label={t("网站导航")} onClick={onNavigate}>
       <div className="header-links">
-        <a href={appPath('/figure-studio/')}><BookOpen size={16} /> 图稿编辑</a>
-        {section === 'leaderboard' ? <a href={appPath('/')}><LayoutDashboard size={16} /> {t("工作台")}</a>
-          : BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> {t("排行榜")}</a> : null}
+        {section !== 'workbench' && <a href={appPath('/')}><LayoutDashboard size={16} /> {t("工作台")}</a>}
+        <a href={appPath('/figure-studio/')} aria-current={section === 'figure-studio' ? 'page' : undefined}><PenTool size={16} /> {t("论文画布")}</a>
+        {BENCH_ENABLED && section !== 'leaderboard' && <a href={appPath('/leaderboard')}><BarChart3 size={16} /> {t("排行榜")}</a>}
         <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
         <button type="button" className="contact-author-button" onClick={() => onContact()}>
           <QrCode size={16} /> {t("联系作者")}</button>
@@ -26,6 +26,11 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
           <img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} width="22" height="22" alt="" aria-hidden="true" /> {t("微信小程序")}</button>
       </div>
       <div className="header-actions">
+        {showWorkspaceLinks && <>
+          {onWorkspaceAccount && <button type="button" className="auth-entry-button" onClick={onWorkspaceAccount}><Wallet size={16} /> {t("账户与钱包")}</button>}
+          {onGuide && <button type="button" className="auth-entry-button" onClick={onGuide}><BookOpen size={16} /> {t("使用教程")}</button>}
+          {onAdmin && <button type="button" className="auth-entry-button" onClick={onAdmin}><ShieldCheck size={16} /> {t("站长")}</button>}
+        </>}
         <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={() => onAgentConnection()}>
           <Bot size={18} /> {t("智能体接入")}</button>
         <a className="watcha-product-badge" href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer">
@@ -49,7 +54,7 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
 }
 
 export function MobileMoreMenu({ open, onClose, onAccount, onWorkspaceAccount = onAccount, onGuide, onAdmin, ...navigationProps }) {
-  const { t, locale } = useBenchmarkLocale()
+  const { t } = useBenchmarkLocale()
   const titleId = useId();
   function closeAfterAction(event) {
     if (event.target.closest('a, button')) onClose();
@@ -66,8 +71,9 @@ export function MobileMoreMenu({ open, onClose, onAccount, onWorkspaceAccount = 
 }
 
 export default function WorkbenchHeader(props) {
-  const { t, locale } = useBenchmarkLocale()
-  const { currentUser, onSignIn, onAccount } = props;
+  const { t } = useBenchmarkLocale()
+  const { currentUser, onSignIn, onAccount, section = 'workbench' } = props;
+  const figureStudio = section === 'figure-studio';
   const compact = useCompactLayout();
   const [moreOpen, setMoreOpen] = useState(false);
   useEffect(() => { if (!compact) setMoreOpen(false); }, [compact]);
@@ -75,12 +81,12 @@ export default function WorkbenchHeader(props) {
     <header className="paper-header">
       <div className="brand">
         <img className="brand-logo" src={logoUrl} alt={t("图研Tuyan 标志")} />
-        {compact ? <div className="mobile-brand-copy"><h1>{t("图研 Tuyan")}</h1><span>{t("学术图示工作台")}</span></div> : <h1>{t("图研Tuyan工作台")}</h1>}
+        {compact ? <div className="mobile-brand-copy"><h1>{t("图研 Tuyan")}</h1><span>{t(figureStudio ? "论文画布" : "学术图示工作台")}</span></div> : figureStudio ? <h1>{t("图研 · 论文画布")}</h1> : <h1>{t("图研Tuyan工作台")}</h1>}
       </div>
       {compact ? <div className="mobile-header-actions">
         {AUTH_UI_ENABLED && <button type="button" onClick={currentUser ? onAccount : onSignIn}>{currentUser ? t("账户") : t("登录")}</button>}
         <button type="button" aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={18} />{t("更多")}</button>
-      </div> : <SiteNavigation {...props} />}
+      </div> : <SiteNavigation {...props} showWorkspaceLinks={section !== 'workbench'} />}
     </header>
     <MobileMoreMenu {...props} open={compact && moreOpen} onClose={() => setMoreOpen(false)} />
   </>;

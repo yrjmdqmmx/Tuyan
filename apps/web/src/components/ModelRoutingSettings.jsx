@@ -1,8 +1,7 @@
 import { TokenDanceStatus } from './TokenDancePanel'
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../lib/modelPresentation'
-import { MINIMAX_REGIONS, minimaxRegion } from '../lib/providerRegions'
 import { KeyRound, Loader2, Settings2, ShieldCheck, Sparkles } from 'lucide-react'
-import ApiKeyGuide from './ApiKeyGuide'
+import NativeCredentialFields from './NativeCredentialFields'
 import ModelPicker from './ModelPicker'
 import { arkVerificationKey, providerDefaultRoutes } from '../lib/modelRouting'
 
@@ -117,32 +116,12 @@ export default function ModelRoutingSettings({
           const config = providerConfigs[provider]
           if (!config) return null
           if (provider === 'tokendance') return tokenDance ? <TokenDanceStatus key={provider} controller={tokenDance} onOpenAccount={onOpenAccount} /> : <p key={provider}>请连接观猹 TokenDance 账户。</p>
-          const label = providerLabel(provider, providerConfigs)
           return (
-            <div className="credential-provider" key={provider}>
-              {provider === 'minimax' ? <label className="field">
-                <span>MiniMax 区域</span>
-                <select aria-label="MiniMax 区域" value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
-                  {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{region.label}</option>)}
-                </select>
-                <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase} · 请填写该区域平台的 Key</small>
-              </label> : null}
-              <label className="field">
-                <span>{label} 接入密钥</span>
-                <div className="key-input">
-                  <KeyRound size={18} />
-                  <input
-                    type="password"
-                    aria-label={`${label} 接入密钥`}
-                    value={apiKeys[provider] || ''}
-                    onChange={(event) => onApiKeyChange(provider, event.target.value)}
-                    placeholder={config.keyPlaceholder}
-                    autoComplete="off"
-                  />
-                </div>
-              </label>
-              <ApiKeyGuide recoverable={credentialProviders.includes('tokendance')} providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 MiniMax 开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
-            </div>
+            <NativeCredentialFields key={provider} provider={provider} providerConfig={config}
+              value={apiKeys[provider]} onChange={(value) => onApiKeyChange(provider, value)}
+              providerRegions={providerRegions} onMiniMaxRegionChange={onMiniMaxRegionChange}
+              regionContractSupported={Boolean(modelRegistry?.providerRegionContractVersion)}
+              recoverable={credentialProviders.includes('tokendance')} />
           )
         })}
         {!credentialProviders.length ? <p className="credential-empty">当前配置没有需要由浏览器提供的模型凭据。</p> : null}
