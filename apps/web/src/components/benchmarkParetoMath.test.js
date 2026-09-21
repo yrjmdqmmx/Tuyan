@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { OFFICIAL_PRICES, TEST_COSTS, comparisonPrice, compareCost, costNumber, decimal, filterModels, groupPoints, megapixels, officialPrice, paretoFrontier, slotCost } from './benchmarkParetoMath.js'
 
-const row = (id, cost, score, detail = score) => ({ model: { modelId: id, displayName: id, developer: 'Vendor', overallScore: score, dimensions: { detail: { mean: detail } } }, price: { status: 'comparable', exact: decimal(cost), usd: Number(cost) } })
+const row = (id, cost, score, detail = score) => ({ model: { modelId: id, displayName: id, developer: 'OpenAI', overallScore: score, dimensions: { detail: { mean: detail } } }, price: { status: 'comparable', exact: decimal(cost), usd: Number(cost) } })
 const ids = rows => rows.map(r => r.model.modelId).sort()
 function boundModel(id) {
   const entry = OFFICIAL_PRICES.models.find(p => p.modelId === id)
@@ -28,9 +28,10 @@ test('dimension, vendor, text and inclusive price boundaries recompute visible f
   assert.deepEqual(ids(paretoFrontier(rows)), ['Alpha', 'Gamma'])
   assert.deepEqual(ids(paretoFrontier(rows, 'detail')), ['Alpha', 'Beta', 'Gamma'])
   assert.deepEqual(ids(filterModels(rows, { query: 'BEta' }).visible), ['Beta'])
-  assert.deepEqual(ids(filterModels(rows, { vendor: 'Vendor', min: '.1', max: '.1' }).visible), ['Alpha'])
+  assert.deepEqual(ids(filterModels(rows, { vendor: 'openai', min: '.1', max: '.1' }).visible), ['Alpha'])
   assert.equal(filterModels(rows, { min: '.3', max: '.1' }).visible.length, 0)
   assert.match(filterModels(rows, { min: '-1' }).error, /非负/)
+  assert.equal(filterModels(rows, { min: '-1' }).matching.length, rows.length)
   assert.equal(filterModels([...rows, { model: { modelId: 'missing', displayName: 'Missing' }, price: { status: 'unconfirmed' } }], { min: '.5' }).missing.length, 1)
 })
 test('binary megapixels are rounded separately; output tier boundary is inclusive', () => {

@@ -12,7 +12,8 @@ export function mergeProviderRegistry(fallback, registry) {
 
   const safeDefault = (role, requested, options) => {
     const match = registry.models.find((model) => model.id === requested)
-    return match?.selectable !== false && match?.roles?.includes(role) ? requested : options[0]?.[0] || ''
+    // An unavailable configured default remains visible until the user chooses.
+    return match?.roles?.includes(role) && (match.selectable !== false || match.disabledReason) ? requested : options[0]?.[0] || ''
   }
 
   return {

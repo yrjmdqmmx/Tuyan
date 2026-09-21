@@ -21295,6 +21295,1099 @@
         "openai/gpt-image-2.5-sunburst",
         "openai/gpt-image-2.5-flare"
       ]
+    },
+    {
+      "reviewedAt": "2026-09-21",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedCount": 446,
+      "newModels": [
+        {
+          "id": "prism-ml/ternary-bonsai-2-27b",
+          "name": "PrismML: Ternary Bonsai 2 27B",
+          "created": 1789754046,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Qwen",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logprobs",
+            "max_tokens",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "z-ai/glm-5.3-flashx",
+          "name": "Z.ai: GLM 5.3 FlashX",
+          "created": 1789744020,
+          "context_length": 1048576,
+          "architecture": {
+            "modality": "text+image+video->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "unbiased/pareto",
+          "name": "Pareto",
+          "created": 1789686178,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "max_tokens",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "~deepseek/deepseek-pro-latest",
+          "name": "DeepSeek: DeepSeek Pro Latest",
+          "created": 1789399174,
+          "context_length": 1048576,
+          "architecture": {
+            "modality": "text->text",
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Router",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logit_bias",
+            "logprobs",
+            "max_tokens",
+            "min_p",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "~deepseek/deepseek-flash-latest",
+          "name": "DeepSeek: DeepSeek Flash Latest",
+          "created": 1789399150,
+          "context_length": 1048576,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Router",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logit_bias",
+            "logprobs",
+            "max_tokens",
+            "min_p",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "inference-net/schematron-v2-turbo",
+          "name": "Inference.net: Schematron V2 Turbo",
+          "created": 1789176949,
+          "context_length": 128000,
+          "architecture": {
+            "modality": "text->text",
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "logit_bias",
+            "max_tokens",
+            "min_p",
+            "presence_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "top_k",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "inference-net/schematron-v2-small",
+          "name": "Inference.net: Schematron V2 Small",
+          "created": 1789176933,
+          "context_length": 128000,
+          "architecture": {
+            "modality": "text->text",
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "logit_bias",
+            "max_tokens",
+            "min_p",
+            "presence_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "top_k",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "~openai/gpt-astra-latest",
+          "name": "OpenAI: GPT Astra Latest",
+          "created": 1789130932,
+          "context_length": 1050000,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "file",
+              "image",
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Router",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "max_completion_tokens",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "seed",
+            "structured_outputs",
+            "tool_choice",
+            "tools"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "~openai/gpt-sol-latest",
+          "name": "OpenAI: GPT Sol Latest",
+          "created": 1789130928,
+          "context_length": 1050000,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "file",
+              "image",
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Router",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "max_completion_tokens",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "seed",
+            "structured_outputs",
+            "tool_choice",
+            "tools"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "~openai/gpt-terra-latest",
+          "name": "OpenAI: GPT Terra Latest",
+          "created": 1789130925,
+          "context_length": 1050000,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "file",
+              "image",
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Router",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "max_completion_tokens",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "seed",
+            "structured_outputs",
+            "tool_choice",
+            "tools"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "~openai/gpt-luna-latest",
+          "name": "OpenAI: GPT Luna Latest",
+          "created": 1789130922,
+          "context_length": 1050000,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "file",
+              "image",
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Router",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "max_completion_tokens",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "seed",
+            "structured_outputs",
+            "tool_choice",
+            "tools"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "sakana/fugu-ultra-v2",
+          "name": "Sakana: Fugu Ultra v2",
+          "created": 1789105383,
+          "context_length": 1000000,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "file"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "reasoning",
+            "reasoning_effort",
+            "structured_outputs",
+            "tool_choice",
+            "tools",
+            "web_search_options"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "sakana/fugu-max",
+          "name": "Sakana: Fugu Max",
+          "created": 1789104771,
+          "context_length": 1000000,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "file"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "reasoning",
+            "reasoning_effort",
+            "structured_outputs",
+            "tool_choice",
+            "tools",
+            "web_search_options"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "inclusionai/ling-3.0-flash-vl",
+          "name": "inclusionAI: Ling 3.0 Flash VL",
+          "created": 1789056114,
+          "context_length": 131072,
+          "architecture": {
+            "modality": "text+image+video->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logit_bias",
+            "max_tokens",
+            "min_p",
+            "presence_penalty",
+            "reasoning",
+            "repetition_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "inclusionai/ling-3.0-flash-vl:free",
+          "name": "inclusionAI: Ling 3.0 Flash VL (free)",
+          "created": 1789056114,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image+video->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logprobs",
+            "max_tokens",
+            "presence_penalty",
+            "reasoning",
+            "repetition_penalty",
+            "seed",
+            "stop",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "deepseek/deepseek-v4.1-flash",
+          "name": "DeepSeek: DeepSeek V4.1 Flash",
+          "created": 1789021285,
+          "context_length": 1048576,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "DeepSeek",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logit_bias",
+            "logprobs",
+            "max_tokens",
+            "min_p",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "inception/mercury-2.5",
+          "name": "Inception: Mercury 2.5",
+          "created": 1788892137,
+          "context_length": 260000,
+          "architecture": {
+            "modality": "text->text",
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "nex-agi/nex-n2.5-mini:free",
+          "name": "Nex AGI: Nex-N2.5-Mini (free)",
+          "created": 1788890061,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Qwen3",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "logprobs",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "nex-agi/nex-n2.5-pro:free",
+          "name": "Nex AGI: Nex-N2.5-Pro (free)",
+          "created": 1788890050,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Qwen3",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "include_reasoning",
+            "logprobs",
+            "max_tokens",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "deepseek/deepseek-v4-flash-vision-exp:batch",
+          "name": "DeepSeek: DeepSeek V4 Flash Vision Exp (batch)",
+          "created": 1787311563,
+          "context_length": 1048576,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "DeepSeek",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logit_bias",
+            "logprobs",
+            "max_tokens",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "response_format",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "z-ai/glm-5.3:batch",
+          "name": "Z.ai: GLM 5.3 (batch)",
+          "created": 1787086655,
+          "context_length": 1048576,
+          "architecture": {
+            "modality": "text->text",
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logit_bias",
+            "logprobs",
+            "max_tokens",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "response_format",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "qwen/qwen3.8-27b:free",
+          "name": "Qwen: Qwen3.8 27B (free)",
+          "created": 1786722910,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image+video->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Qwen",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "max_tokens",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "z-ai/glm-5.2:batch",
+          "name": "Z.ai: GLM 5.2 (batch)",
+          "created": 1781631930,
+          "context_length": 1048576,
+          "architecture": {
+            "modality": "text->text",
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "logit_bias",
+            "logprobs",
+            "max_tokens",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "response_format",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_k",
+            "top_logprobs",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "z-ai/glm-5.2:free",
+          "name": "Z.ai: GLM 5.2 (free)",
+          "created": 1781631930,
+          "context_length": 32768,
+          "architecture": {
+            "modality": "text->text",
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Other",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "max_tokens",
+            "min_p",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "repetition_penalty",
+            "seed",
+            "stop",
+            "temperature",
+            "top_k",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "mistralai/mistral-small-2603:batch",
+          "name": "Mistral: Mistral Small 4 (batch)",
+          "created": 1773695685,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Mistral",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "include_reasoning",
+            "max_tokens",
+            "presence_penalty",
+            "reasoning",
+            "reasoning_effort",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "mistralai/ministral-8b-2512:batch",
+          "name": "Mistral: Ministral 3 8B 2512 (batch)",
+          "created": 1764681654,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image->text",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Mistral",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "max_tokens",
+            "presence_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "mistralai/mistral-large-2512:batch",
+          "name": "Mistral: Mistral Large 3 2512 (batch)",
+          "created": 1764624472,
+          "context_length": 262144,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "file"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Mistral",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "max_tokens",
+            "presence_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "mistralai/mistral-medium-3.1:batch",
+          "name": "Mistral: Mistral Medium 3.1 (batch)",
+          "created": 1755095639,
+          "context_length": 131072,
+          "architecture": {
+            "modality": "text+image+file->text",
+            "input_modalities": [
+              "text",
+              "image",
+              "file"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Mistral",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "max_tokens",
+            "presence_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_p"
+          ],
+          "expiration_date": null
+        },
+        {
+          "id": "mistralai/codestral-2508:batch",
+          "name": "Mistral: Codestral 2508 (batch)",
+          "created": 1754079630,
+          "context_length": 256000,
+          "architecture": {
+            "modality": "text+file->text",
+            "input_modalities": [
+              "text",
+              "file"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "tokenizer": "Mistral",
+            "instruct_type": null
+          },
+          "supported_parameters": [
+            "frequency_penalty",
+            "max_tokens",
+            "prediction",
+            "presence_penalty",
+            "response_format",
+            "seed",
+            "stop",
+            "structured_outputs",
+            "temperature",
+            "tool_choice",
+            "tools",
+            "top_p"
+          ],
+          "expiration_date": null
+        }
+      ],
+      "missingIds": [
+        "google/gemini-2.5-pro-preview-05-06",
+        "google/gemma-4-31b-it:batch",
+        "inception/mercury-2.5-preview",
+        "minimax/minimax-m2.7:free",
+        "minimax/minimax-m3:free",
+        "mistralai/mistral-large-2512",
+        "nex-agi/nex-n2-mini",
+        "nex-agi/nex-n2-pro",
+        "nousresearch/hermes-4-70b",
+        "openai/gpt-4-turbo-preview",
+        "openai/gpt-oss-20b:batch",
+        "thinkingmachines/inkling-small:batch",
+        "~openai/gpt-latest"
+      ],
+      "missingPolicy": "目录缺失不等于下架；不修改历史 ID 或静默替换。",
+      "excludedBatchIds": [
+        "openai/gpt-6-astra:batch",
+        "openai/gpt-6-astra-pro:batch",
+        "google/gemini-3.8-flash:batch",
+        "anthropic/claude-fable-5.1:batch",
+        "z-ai/glm-5.3-flash:batch",
+        "deepseek/deepseek-v4-flash-vision-exp:batch",
+        "z-ai/glm-5.3:batch",
+        "google/gemini-3.7-flash:batch",
+        "qwen/qwen3.8-2.4t-a95b:batch",
+        "deepseek/deepseek-v4-pro-0813:batch",
+        "meta/muse-glimmer-30b:batch",
+        "deepseek/deepseek-v4-flash-0731:batch",
+        "anthropic/claude-opus-5:batch",
+        "google/gemini-3.6-flash:batch",
+        "google/gemini-3.5-flash-lite:batch",
+        "thinkingmachines/inkling:batch",
+        "moonshotai/kimi-k3:batch",
+        "openai/gpt-5.6-luna-pro:batch",
+        "openai/gpt-5.6-luna:batch",
+        "openai/gpt-5.6-terra-pro:batch",
+        "openai/gpt-5.6-terra:batch",
+        "openai/gpt-5.6-sol-pro:batch",
+        "openai/gpt-5.6-sol:batch",
+        "anthropic/claude-sonnet-5:batch",
+        "z-ai/glm-5.2:batch",
+        "anthropic/claude-fable-5:batch",
+        "minimax/minimax-m3:batch",
+        "anthropic/claude-opus-4.8:batch",
+        "google/gemini-3.5-flash:batch",
+        "google/gemini-3.1-flash-lite:batch",
+        "x-ai/grok-4.3:batch",
+        "mistralai/mistral-medium-3-5:batch",
+        "openai/gpt-5.5-pro:batch",
+        "openai/gpt-5.5:batch",
+        "anthropic/claude-opus-4.7:batch",
+        "openai/gpt-5.4-nano:batch",
+        "openai/gpt-5.4-mini:batch",
+        "mistralai/mistral-small-2603:batch",
+        "qwen/qwen3.5-9b:batch",
+        "openai/gpt-5.4-pro:batch",
+        "openai/gpt-5.4:batch",
+        "google/gemini-3.1-pro-preview:batch",
+        "anthropic/claude-sonnet-4.6:batch",
+        "anthropic/claude-opus-4.6:batch",
+        "google/gemini-3-flash-preview:batch",
+        "openai/gpt-5.2-pro:batch",
+        "openai/gpt-5.2:batch",
+        "mistralai/ministral-8b-2512:batch",
+        "mistralai/mistral-large-2512:batch",
+        "anthropic/claude-opus-4.5:batch",
+        "openai/gpt-5.1:batch",
+        "anthropic/claude-haiku-4.5:batch",
+        "openai/gpt-5-pro:batch",
+        "anthropic/claude-sonnet-4.5:batch",
+        "mistralai/mistral-medium-3.1:batch",
+        "openai/gpt-5:batch",
+        "openai/gpt-5-mini:batch",
+        "openai/gpt-5-nano:batch",
+        "openai/gpt-oss-120b:batch",
+        "anthropic/claude-opus-4.1:batch",
+        "mistralai/codestral-2508:batch",
+        "google/gemini-2.5-flash-lite:batch",
+        "google/gemini-2.5-flash:batch",
+        "google/gemini-2.5-pro:batch",
+        "openai/o3:batch",
+        "openai/o4-mini:batch",
+        "openai/gpt-4.1:batch",
+        "openai/gpt-4.1-mini:batch",
+        "openai/gpt-4.1-nano:batch",
+        "openai/o3-mini:batch",
+        "openai/gpt-4o-mini:batch",
+        "openai/gpt-4o:batch",
+        "openai/gpt-4-turbo:batch",
+        "openai/gpt-3.5-turbo:batch"
+      ],
+      "batchSource": "https://openrouter.ai/openai/gpt-5.4-20260305%3Abatch",
+      "providerCalls": 0
     }
   ]
 }

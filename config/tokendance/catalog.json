@@ -1,8 +1,8 @@
 {
-  "version": "2026-09-09.1",
+  "version": "2026-09-21.1",
   "appUrl": "https://www.paperbanana.asia/",
   "apiSource": "https://tokendance.space/gateway/v1/models",
-  "reviewedAt": "2026-09-09",
+  "reviewedAt": "2026-09-21",
   "models": [
     {
       "id": "bocha-web-search",
@@ -2735,6 +2735,68 @@
       "verification": "catalog",
       "selectedProtocol": null,
       "vendorId": "unconfirmed"
+    },
+    {
+      "id": "glm-5.3-flashx",
+      "name": "GLM: GLM 5.3 FlashX",
+      "created": 1789708125,
+      "description": "原生多模态模型，推理速度最高可达 200 tokens/s，更快、更流畅的交互体验",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "excludedReason": "",
+      "conflicts": [],
+      "sourceUrl": "https://tokendance.space/models/glm-5.3-flashx",
+      "reviewedAt": "2026-09-21",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "zhipu",
+      "lifecycle": "stable"
+    },
+    {
+      "id": "step-5-preview",
+      "name": "StepFun: Step 5 Preview",
+      "created": 1789874823,
+      "description": "Step 5 Preview 是 StepFun 面向真实任务的新一代旗舰基模，重点覆盖编程与专业知识工作。模型原生支持文本、图片和视频输入，提供 1M tokens 上下文窗口，适合需要处理大量信息、调用工具，并持续推进到交付结果的任务。 ​",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "excludedReason": "",
+      "conflicts": [],
+      "sourceUrl": "https://tokendance.space/models/step-5-preview",
+      "reviewedAt": "2026-09-21",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "stepfun",
+      "lifecycle": "preview"
     }
   ]
 }

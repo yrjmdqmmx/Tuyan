@@ -1,6 +1,6 @@
 {
-  "version": "2026-09-09.v16",
-  "reviewedAt": "2026-09-09",
+  "version": "2026-09-21.v17",
+  "reviewedAt": "2026-09-21",
   "profiles": {
     "qwen": {
       "mode": "pixels",
@@ -4389,6 +4389,108 @@
       "alignment": 1,
       "separator": "x",
       "auto": "tier"
+    },
+    "replicate_xai_grok-imagine-image-2_ratios": {
+      "mode": "ratio",
+      "ratios": [
+        "1:1",
+        "16:9",
+        "9:16",
+        "4:3",
+        "3:4",
+        "3:2",
+        "2:3",
+        "2:1",
+        "1:2",
+        "19.5:9",
+        "9:19.5",
+        "20:9",
+        "9:20"
+      ],
+      "tiers": {
+        "1K": {},
+        "2K": {}
+      },
+      "auto": "square"
+    },
+    "replicate_xai_grok-imagine-image-2_ratios_edit": {
+      "mode": "inherit",
+      "tiers": {
+        "auto": {},
+        "1K": {},
+        "2K": {}
+      },
+      "auto": "omit"
+    },
+    "replicate_alibaba_qwen-image-3_ratios": {
+      "mode": "ratio",
+      "ratios": [
+        "1:1",
+        "16:9",
+        "9:16",
+        "4:3",
+        "3:4",
+        "3:2",
+        "2:3",
+        "2:1",
+        "1:2"
+      ],
+      "tiers": {
+        "auto": {}
+      },
+      "auto": "square"
+    },
+    "replicate_alibaba_qwen-image-3-pro_ratios": {
+      "mode": "ratio",
+      "ratios": [
+        "1:1",
+        "16:9",
+        "9:16",
+        "4:3",
+        "3:4",
+        "3:2",
+        "2:3",
+        "2:1",
+        "1:2"
+      ],
+      "tiers": {
+        "auto": {}
+      },
+      "auto": "square"
+    },
+    "replicate_prunaai_p-image-ideogram_ratios": {
+      "mode": "ratio",
+      "ratios": [
+        "1:1",
+        "16:9",
+        "9:16",
+        "4:3",
+        "3:4",
+        "3:2",
+        "2:3"
+      ],
+      "tiers": {
+        "1K": {},
+        "2K": {}
+      },
+      "auto": "square"
+    },
+    "replicate_krea_krea-2-medium_ratios": {
+      "mode": "ratio",
+      "ratios": [
+        "1:1",
+        "4:3",
+        "3:2",
+        "16:9",
+        "2.35:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "tiers": {
+        "auto": {}
+      },
+      "auto": "square"
     }
   },
   "routes": {
@@ -7014,6 +7116,51 @@
         "https://replicate.com/google/nano-banana-2-lite/api/schema"
       ],
       "notes": "直接编辑。"
+    },
+    "replicate/xai/grok-imagine-image-2": {
+      "generation": "replicate_xai_grok-imagine-image-2_ratios",
+      "editing": "replicate_xai_grok-imagine-image-2_ratios_edit",
+      "reviewedAt": "2026-09-21",
+      "sources": [
+        "https://replicate.com/xai/grok-imagine-image-2/api/schema"
+      ],
+      "notes": "原图单张直接编辑；编辑宽高比由源图决定。"
+    },
+    "replicate/alibaba/qwen-image-3": {
+      "generation": "replicate_alibaba_qwen-image-3_ratios",
+      "editing": "replicate_alibaba_qwen-image-3_ratios",
+      "reviewedAt": "2026-09-21",
+      "sources": [
+        "https://replicate.com/alibaba/qwen-image-3/api/schema"
+      ],
+      "notes": "按当前渠道 schema 开放单图编辑。"
+    },
+    "replicate/alibaba/qwen-image-3-pro": {
+      "generation": "replicate_alibaba_qwen-image-3-pro_ratios",
+      "editing": "replicate_alibaba_qwen-image-3-pro_ratios",
+      "reviewedAt": "2026-09-21",
+      "sources": [
+        "https://replicate.com/alibaba/qwen-image-3-pro/api/schema"
+      ],
+      "notes": "按当前渠道 schema 开放单图编辑。"
+    },
+    "replicate/prunaai/p-image-ideogram": {
+      "generation": "replicate_prunaai_p-image-ideogram_ratios",
+      "editing": null,
+      "reviewedAt": "2026-09-21",
+      "sources": [
+        "https://replicate.com/prunaai/p-image-ideogram/api/schema"
+      ],
+      "notes": "仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。"
+    },
+    "replicate/krea/krea-2-medium": {
+      "generation": "replicate_krea_krea-2-medium_ratios",
+      "editing": null,
+      "reviewedAt": "2026-09-21",
+      "sources": [
+        "https://replicate.com/krea/krea-2-medium/api/schema"
+      ],
+      "notes": "仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。"
     }
   }
 }

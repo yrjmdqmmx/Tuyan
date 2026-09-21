@@ -1,0 +1,1390 @@
+{
+  "reviewedAt": "2026-09-21",
+  "baselineCommit": "4a601b932a09a3f59f717a7100f1b8b51e0e0b44",
+  "providerInferenceCalls": 0,
+  "deploymentPerformed": false,
+  "scope": "22 个已支持接入渠道的通用文本、视觉和图片流程；不等于接入各托管市场全部专用模型。",
+  "sourceVerification": "公开文档/目录与精确 schema；retrieved 表示取回字节，不代表账号或推理成功。Ark 官方 JS 内容另以官方搜索索引交叉核对。",
+  "sources": [
+    {
+      "key": "openrouter",
+      "url": "https://openrouter.ai/api/v1/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 738853,
+      "sha256": "781756dcd1fbc6f38a312f5ef13953cc48ca325b4d3530ccefade8be1ba4fda5",
+      "checkedAt": "2026-09-21T10:02:51.404626+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "tokendance",
+      "url": "https://tokendance.space/gateway/v1/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 51272,
+      "sha256": "56163c25f354af60da7d8c462e443ee98d984111db7ca931ad9e9498c7e84fd0",
+      "checkedAt": "2026-09-21T10:02:50.066342+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "siliconflow",
+      "url": "https://www.siliconflow.cn/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 525399,
+      "sha256": "368748228360ee2492c70cfa43ee917f6884b14a738b168a2378de9484f5c7b8",
+      "checkedAt": "2026-09-21T10:02:50.403690+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "deepseek",
+      "url": "https://api-docs.deepseek.com/updates",
+      "status": "200",
+      "exit": 0,
+      "bytes": 50934,
+      "sha256": "bcffc00d0744287c90d173e266369215d3bc95c1fde3f80d6892a9011af3c5c1",
+      "checkedAt": "2026-09-21T10:02:50.246686+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "deepseek_models",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing",
+      "status": "200",
+      "exit": 0,
+      "bytes": 23149,
+      "sha256": "2fecee48bf6ad791bce38d1d5504d8ad5c8b0fd4da93e6dc198ae88ff1a4506a",
+      "checkedAt": "2026-09-21T10:02:50.248910+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "kimi",
+      "url": "https://platform.kimi.com/docs/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 279541,
+      "sha256": "167c6b2d83dbd1cbe79f514980a1efcb53d3a5778f20229c5680955fab2d0362",
+      "checkedAt": "2026-09-21T10:02:50.643931+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "zhipu",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+      "status": "200",
+      "exit": 0,
+      "bytes": 873744,
+      "sha256": "0b0f74cf9cd68d55fe47d75cc97a2e0b4c08f50d33454c53910b0bce88ca9f08",
+      "checkedAt": "2026-09-21T10:02:50.480946+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "bailian",
+      "url": "https://help.aliyun.com/zh/model-studio/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 94792,
+      "sha256": "16733267bb8e784bf6fd7a762b21d336b0878930bdb151f869bc92eb009db339",
+      "checkedAt": "2026-09-21T10:02:50.933827+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "bailian_pricing",
+      "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "status": "200",
+      "exit": 0,
+      "bytes": 1924649,
+      "sha256": "2bda9bbd3567c909a91ee17fe04fd9d56586a38f3847f4b9cc38d1b4971ec104",
+      "checkedAt": "2026-09-21T10:02:51.514309+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "ark",
+      "url": "https://www.volcengine.com/docs/82379/1330310",
+      "status": "200",
+      "exit": 0,
+      "bytes": 11083,
+      "sha256": "804ea0a82802c145cb5cd3b634434d87db8cf7d04a808e2ae010b07f301dc595",
+      "checkedAt": "2026-09-21T10:02:52.185085+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "openai",
+      "url": "https://developers.openai.com/api/docs/models.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 12163,
+      "sha256": "390c10d748d3d65bc2151245bb1f98820eafe5fa848e5fca726763c82f8e6ba1",
+      "checkedAt": "2026-09-21T10:02:51.324432+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "openai_retired",
+      "url": "https://developers.openai.com/api/docs/deprecations.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 37596,
+      "sha256": "dfdfac83f084aceebe8dfef1697fee36263eb6fb2ffe9f2069ae61e546aa663f",
+      "checkedAt": "2026-09-21T10:02:51.560821+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "anthropic",
+      "url": "https://platform.claude.com/docs/en/models/overview.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 16849,
+      "sha256": "24cee96a02abd68ca1bae07a6791fc1a9f4ba66fbbc3f6385369d7f9d4ebd7e1",
+      "checkedAt": "2026-09-21T10:02:51.927892+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "anthropic_retired",
+      "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 13826,
+      "sha256": "3a2df47b1dd8818789c13f72c5e81c2cd58b539087ee855d52e9e47527075a07",
+      "checkedAt": "2026-09-21T10:02:52.214690+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "gemini",
+      "url": "https://ai.google.dev/gemini-api/docs/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 149857,
+      "sha256": "5715939336e74567b48e0dbfafa36f85e8fdcad5db7d65206d98b755d42a5b88",
+      "checkedAt": "2026-09-21T10:02:52.911724+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "gemini_retired",
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "status": "200",
+      "exit": 0,
+      "bytes": 115821,
+      "sha256": "a4e2f57317c2dba1b72dbc214d5605987b67bdb3b1103de3d99b18a04791be6e",
+      "checkedAt": "2026-09-21T10:02:52.888282+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "recraft",
+      "url": "https://www.recraft.ai/docs/api-reference/appendix.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 6868,
+      "sha256": "50b3ada74646cb238cc0cacbfae0b0943bdc062a711d46132e9af6e160ca3996",
+      "checkedAt": "2026-09-21T10:02:52.580850+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "xai",
+      "url": "https://docs.x.ai/developers/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 407967,
+      "sha256": "cf220dede0e8436b09124597cdbc163cada70546915564eb98f3f1808eaff7b4",
+      "checkedAt": "2026-09-21T10:02:53.604446+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "bfl",
+      "url": "https://api.bfl.ai/openapi.json",
+      "status": "200",
+      "exit": 0,
+      "bytes": 84971,
+      "sha256": "63d11365e56b138a56f3918ba528a7b0240c8957f48d3c0d55ad908b78969ce1",
+      "checkedAt": "2026-09-21T10:02:53.774002+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "stability",
+      "url": "https://platform.stability.ai/docs/api-reference",
+      "status": "200",
+      "exit": 0,
+      "bytes": 1644,
+      "sha256": "73921e8ee5e28d03da82cba81e35c98e126b864c9795de508fb16a7054689459",
+      "checkedAt": "2026-09-21T10:02:52.980422+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "ideogram",
+      "url": "https://developer.ideogram.ai/llms.txt",
+      "status": "200",
+      "exit": 0,
+      "bytes": 7090,
+      "sha256": "faeb014858b732f66d3a93490cfc969ae4ca823349b88e59706f856fd2cfdac3",
+      "checkedAt": "2026-09-21T10:02:53.637666+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "minimax",
+      "url": "https://platform.minimax.io/docs/api-reference/text-openai-api.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 14160,
+      "sha256": "843901ed9bb23eaf3cbedff886db9b37cb0838e360dd6c8375cd11a92005c41c",
+      "checkedAt": "2026-09-21T10:02:54.389030+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "mistral",
+      "url": "https://docs.mistral.ai/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 1290486,
+      "sha256": "75db4776a3cbab301761a7a6e0801c54e5826ded90910888a3f733b8ebbeba18",
+      "checkedAt": "2026-09-21T10:02:54.634155+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "together",
+      "url": "https://docs.together.ai/docs/serverless/models.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 24041,
+      "sha256": "d26465b18e188ee9e552f68b906f9e29d0ebb7623f481d9a8d4cc68cabc4165d",
+      "checkedAt": "2026-09-21T10:02:54.041244+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "together_retired",
+      "url": "https://docs.together.ai/docs/deprecations.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 52454,
+      "sha256": "ecf6413680a923ecf954d08959eaafe38af674af48b7571e8b24eb8c2dbcbbea",
+      "checkedAt": "2026-09-21T10:02:54.802231+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "fireworks",
+      "url": "https://fireworks.ai/models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 2818161,
+      "sha256": "ffc670d32180da9f0d94f08873c96cec43327228ffce384801d7eff421e00a4e",
+      "checkedAt": "2026-09-21T10:02:56.229439+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "fal",
+      "url": "https://fal.ai/explore",
+      "status": "200",
+      "exit": 0,
+      "bytes": 3785839,
+      "sha256": "22ff3897f8d835c8d2f8a0fc4d82eef0c8c303f2f46f1b0c47c7161034a77a0e",
+      "checkedAt": "2026-09-21T10:02:56.293691+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "replicate",
+      "url": "https://replicate.com/explore",
+      "status": "200",
+      "exit": 0,
+      "bytes": 319031,
+      "sha256": "b65fa312582897fe02ee513ad8fd0dc0a782fb0e78e55d3311d100d428c88c9a",
+      "checkedAt": "2026-09-21T10:02:56.719344+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "sf_releases",
+      "url": "https://docs.siliconflow.cn/docs/release-notes/overview.md",
+      "status": "404",
+      "exit": 0,
+      "bytes": 61466,
+      "sha256": "88f6831436ab41f8473850870e8d2bb00559274bd67756af2594482a663bf6a0",
+      "checkedAt": "2026-09-21T10:05:50.588010+00:00",
+      "evidenceStatus": "attempt-only"
+    },
+    {
+      "key": "ark_releases",
+      "url": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "status": "200",
+      "exit": 0,
+      "bytes": 11083,
+      "sha256": "7bfb7ed50cd5aff2620431b488603656528e5f4528ace48dbc298d3d731bb8ab",
+      "checkedAt": "2026-09-21T10:05:51.474976+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "ark_new_models",
+      "url": "https://docs.volcengine.com/docs/82379/1330310?lang=zh",
+      "status": "200",
+      "exit": 0,
+      "bytes": 11083,
+      "sha256": "7bfb7ed50cd5aff2620431b488603656528e5f4528ace48dbc298d3d731bb8ab",
+      "checkedAt": "2026-09-21T10:05:51.712628+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "glm_flash",
+      "url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 20700,
+      "sha256": "7e83558c739a50cf74c771032c5edb8c455bd561d697887a354f088072ea866c",
+      "checkedAt": "2026-09-21T10:05:50.852698+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "bailian_new",
+      "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "status": "200",
+      "exit": 0,
+      "bytes": 1149370,
+      "sha256": "c6b16f549fc2e43775633467cef004e272e758d88b84d47485674d8fc3342413",
+      "checkedAt": "2026-09-21T10:05:51.301690+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "bailian_retired",
+      "url": "https://help.aliyun.com/zh/model-studio/model-deprecation",
+      "status": "200",
+      "exit": 0,
+      "bytes": 24893,
+      "sha256": "3b7fcce4b2eede29b43a6981e23dadd717c344909aa2658a8f172c380793f471",
+      "checkedAt": "2026-09-21T10:05:50.966900+00:00",
+      "evidenceStatus": "attempt-only"
+    },
+    {
+      "key": "bailian_deepseek",
+      "url": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+      "status": "200",
+      "exit": 0,
+      "bytes": 92832,
+      "sha256": "7f11367a12ce0c63160053d55c46244c56191411e8cf57693d2f475b5c4291df",
+      "checkedAt": "2026-09-21T10:05:51.604769+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "bailian_glm",
+      "url": "https://help.aliyun.com/zh/model-studio/zhipu-api",
+      "status": "200",
+      "exit": 0,
+      "bytes": 24893,
+      "sha256": "3b7fcce4b2eede29b43a6981e23dadd717c344909aa2658a8f172c380793f471",
+      "checkedAt": "2026-09-21T10:05:51.358051+00:00",
+      "evidenceStatus": "attempt-only"
+    },
+    {
+      "key": "deepseek_vision",
+      "url": "https://api-docs.deepseek.com/guides/vision/",
+      "status": "200",
+      "exit": 0,
+      "bytes": 78174,
+      "sha256": "a805d8a40388ee238c626b83419c2cf786ac3002187c072699710132fc77dac7",
+      "checkedAt": "2026-09-21T10:05:51.571283+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "fw_deepseek",
+      "url": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash",
+      "status": "200",
+      "exit": 0,
+      "bytes": 279450,
+      "sha256": "683d7b476bdcbd7b08706c19ca15a3629daf937ca5baa7ef63d15a6ee72617a8",
+      "checkedAt": "2026-09-21T10:05:53.603148+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "fw_serverless",
+      "url": "https://docs.fireworks.ai/guides/serverless-models.md",
+      "status": "404",
+      "exit": 0,
+      "bytes": 632,
+      "sha256": "af89da91a0ec294fc9973c887d2d6e3b46cd069cc6a92b3f46bee4ae62e62143",
+      "checkedAt": "2026-09-21T10:05:52.609555+00:00",
+      "evidenceStatus": "attempt-only"
+    },
+    {
+      "key": "fw_retired",
+      "url": "https://docs.fireworks.ai/deprecations.md",
+      "status": "404",
+      "exit": 0,
+      "bytes": 720,
+      "sha256": "b0c2108d589ba06d538c65473e9d83b1e98e2226736b223e6ba7deb4a6bbf341",
+      "checkedAt": "2026-09-21T10:05:52.687144+00:00",
+      "evidenceStatus": "attempt-only"
+    },
+    {
+      "key": "replicate_grok2",
+      "url": "https://replicate.com/xai/grok-imagine-image-2/api/schema",
+      "status": "200",
+      "exit": 0,
+      "bytes": 143378,
+      "sha256": "cd649f366edc647d5aa2de97847366c719becdd3ea0dbbab62b36fbd738be75f",
+      "checkedAt": "2026-09-21T10:05:52.930343+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "replicate_qwen3",
+      "url": "https://replicate.com/alibaba/qwen-image-3/api/schema",
+      "status": "200",
+      "exit": 0,
+      "bytes": 148241,
+      "sha256": "44adbf633c1667e96c717eb3383f1d6219e447c3933b83a8774a70a34777d1a5",
+      "checkedAt": "2026-09-21T10:05:53.014505+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "replicate_qwen3pro",
+      "url": "https://replicate.com/alibaba/qwen-image-3-pro/api/schema",
+      "status": "200",
+      "exit": 0,
+      "bytes": 148641,
+      "sha256": "b3b302a62a4fdfbf8330b83879d17792d234a8d66eb2ce6edbec034680ddd965",
+      "checkedAt": "2026-09-21T10:05:53.970333+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "replicate_ideogram",
+      "url": "https://replicate.com/prunaai/p-image-ideogram/api/schema",
+      "status": "200",
+      "exit": 0,
+      "bytes": 162821,
+      "sha256": "042c26f18fd43629ef443636872b8c1342003b2e6d73484165cfbfd71deb73ce",
+      "checkedAt": "2026-09-21T10:05:54.226158+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "replicate_krea",
+      "url": "https://replicate.com/krea/krea-2-medium/api/schema",
+      "status": "200",
+      "exit": 0,
+      "bytes": 158543,
+      "sha256": "b55658bee1f6ef1ae75934237fb90649e2e0be344c1b0752831f1dfd51ce29a8",
+      "checkedAt": "2026-09-21T10:05:54.380584+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "recraft_endpoints",
+      "url": "https://www.recraft.ai/docs/api-reference/endpoints.md",
+      "status": "200",
+      "exit": 0,
+      "bytes": 116468,
+      "sha256": "4d8a37054ad49448d3c5c58dbe28f406e9e682332617d49fe8256e8fc85cad07",
+      "checkedAt": "2026-09-21T10:05:54.349575+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "token_changelog",
+      "url": "https://tokendance.space/docs/changelog",
+      "status": "200",
+      "exit": 0,
+      "bytes": 2122,
+      "sha256": "94d585aeb3b0bd70ce4226b9741aa1f04b28897a82242f4ed26d16f431da1160",
+      "checkedAt": "2026-09-21T10:05:53.733236+00:00",
+      "evidenceStatus": "attempt-only"
+    },
+    {
+      "key": "sf_releases_verified",
+      "url": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "status": "200",
+      "exit": 0,
+      "bytes": 292903,
+      "sha256": "493c3a9581c8c2709359767c8681999d149bcce58263a750792a1c4069fc8341",
+      "checkedAt": "2026-09-21T10:12:54.268044+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "mistral_glm53",
+      "url": "https://docs.mistral.ai/models/zai-glm-5-3",
+      "status": "200",
+      "exit": 0,
+      "bytes": 1175441,
+      "sha256": "19e2f58095e2870e2771617e0a9688ba46b60d500a1282883114cbdf2acf1c01",
+      "checkedAt": "2026-09-21T10:12:55.649140+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "fw_glm",
+      "url": "https://fireworks.ai/models/fireworks/glm-5p3-flash",
+      "status": "200",
+      "exit": 0,
+      "bytes": 286474,
+      "sha256": "82f9bbc70ae2126afa39939f384bf4f210c5dc49979fa479f8d380fc6ff79ad6",
+      "checkedAt": "2026-09-21T10:12:55.412038+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "fw_qwen",
+      "url": "https://fireworks.ai/models/fireworks/qwen3p8-flash-next-fp8",
+      "status": "200",
+      "exit": 0,
+      "bytes": 274894,
+      "sha256": "c288ecf12c0fdfa2ce06f7dcf6971afce379eb9b661932c305015267f0eb4c1a",
+      "checkedAt": "2026-09-21T10:12:55.360553+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "fw_qwen_nv",
+      "url": "https://fireworks.ai/models/fireworks/qwen3p8-flash-next-nvfp4",
+      "status": "200",
+      "exit": 0,
+      "bytes": 274958,
+      "sha256": "8cb4dc42b9344ae24f8e54caf7fd099e5af6f4548f16c69c77b2b0166ebe03b7",
+      "checkedAt": "2026-09-21T10:12:55.360447+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "stability_bundle",
+      "url": "https://platform.stability.ai/assets/index-eklWmhUz.js",
+      "status": "200",
+      "exit": 0,
+      "bytes": 4000932,
+      "sha256": "ded1dbe893e52ef58ffce25713219fa4750a31ec90c711b61fad2f3286eb2c16",
+      "checkedAt": "2026-09-21T10:23:53.487223+00:00",
+      "evidenceStatus": "retrieved"
+    },
+    {
+      "key": "stability_openapi",
+      "url": "https://api.stability.ai/openapi.json",
+      "status": "404",
+      "exit": 0,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "checkedAt": "2026-09-21T10:25:15.037384+00:00",
+      "evidenceStatus": "attempt-only"
+    },
+    {
+      "key": "stability_api",
+      "url": "https://api.stability.ai/v2alpha/openapi",
+      "status": "200",
+      "exit": 0,
+      "bytes": 228110,
+      "sha256": "1ea5455da5ce2efef103daa142cc44a3e70b4fb3cfcdfa0c9a6a6f46d93912ea",
+      "checkedAt": "2026-09-21T10:25:57.352410+00:00",
+      "evidenceStatus": "retrieved"
+    }
+  ],
+  "coverage": {
+    "tokendance": {
+      "sourceKeys": [
+        "tokendance"
+      ],
+      "conclusion": "公开 Models API 96 项；审核表保留 95 项（含先前排除项），64 项有当前流程角色。公开目录缺失 3 项，其中 2 项原有可选角色；由现有实时预检隔离，不认定下架。"
+    },
+    "siliconflow": {
+      "sourceKeys": [
+        "siliconflow",
+        "sf_releases_verified"
+      ],
+      "conclusion": "官网目录是分页展示；页面未出现不推断下架。4 项明确公告 9 月 11 日停用；本次新增 3 项。"
+    },
+    "deepseek": {
+      "sourceKeys": [
+        "deepseek",
+        "deepseek_models",
+        "deepseek_vision"
+      ],
+      "conclusion": "新 Flash 和视觉协议已核对；旧 Flash/vision-exp 明确退役。较新说明保留 V4 Pro，覆盖早先跳转计划。"
+    },
+    "kimi": {
+      "sourceKeys": [
+        "kimi"
+      ],
+      "conclusion": "4 个现有通用型号仍有文档支持；较早 K2.5/moonshot 退役项原目录已不提供。"
+    },
+    "zhipu": {
+      "sourceKeys": [
+        "zhipu",
+        "glm_flash"
+      ],
+      "conclusion": "新增 FlashX 文本与图片输入；仅思考模式，沿用官方默认采样。"
+    },
+    "bailian": {
+      "sourceKeys": [
+        "bailian_pricing",
+        "bailian_deepseek",
+        "bailian_new"
+      ],
+      "conclusion": "新增两个北京渠道 ID；FlashX 该渠道的图片输入契约待确认，先开放文本。10 月 10 日到期项保留到期前可选。"
+    },
+    "ark": {
+      "sourceKeys": [
+        "ark_new_models",
+        "ark_releases"
+      ],
+      "conclusion": "官网 JS 页面及搜索索引的同一官方公告交叉核对，新增三项；账号开通状态未验证。"
+    },
+    "minimax": {
+      "sourceKeys": [
+        "minimax"
+      ],
+      "conclusion": "现有文本及 image-01 契约保持；区域不改变渠道服务归属。"
+    },
+    "gemini": {
+      "sourceKeys": [
+        "gemini",
+        "gemini_retired"
+      ],
+      "conclusion": "现有通用/图片型号无本轮确认停用；Live、音频、机器人接口不适用当前任务。"
+    },
+    "openai": {
+      "sourceKeys": [
+        "openai",
+        "openai_retired"
+      ],
+      "conclusion": "现有通用/图片型号保留；受限 cyber 型号不作为通用入口。gpt-4-1106-preview 的两处官方停用日期冲突，列待确认。"
+    },
+    "anthropic": {
+      "sourceKeys": [
+        "anthropic",
+        "anthropic_retired"
+      ],
+      "conclusion": "现有 11 项无本轮确认停用；Mythos 权限限制不等同退役，暂不新增。"
+    },
+    "recraft": {
+      "sourceKeys": [
+        "recraft",
+        "recraft_endpoints"
+      ],
+      "conclusion": "现有图片/vector 接口保留；Styles 四项需要专门 style 输入契约，未加入当前选择。"
+    },
+    "xai": {
+      "sourceKeys": [
+        "xai"
+      ],
+      "conclusion": "直连现有文本/图片版本保持；不得把 Replicate 的 ID 当成原厂直连 ID。"
+    },
+    "bfl": {
+      "sourceKeys": [
+        "bfl"
+      ],
+      "conclusion": "公开 OpenAPI 核对；视频、擦除、虚拟试衣等专用接口不作为通用绘图型号新增。"
+    },
+    "stability": {
+      "sourceKeys": [
+        "stability",
+        "stability_bundle",
+        "stability_api"
+      ],
+      "conclusion": "当前前端配置指向 v2alpha/openapi，公开 spec 可读取；sd3.5-flash 费用描述与 model 枚举不一致，列待确认。"
+    },
+    "ideogram": {
+      "sourceKeys": [
+        "ideogram"
+      ],
+      "conclusion": "官方文档索引及现有端点，未取得现有型号的停用依据；不推断下架。"
+    },
+    "mistral": {
+      "sourceKeys": [
+        "mistral",
+        "mistral_glm53"
+      ],
+      "conclusion": "新增第三方托管文本模型 zai-glm-5-3；渠道仍按 Mistral 服务运营方分类。"
+    },
+    "openrouter": {
+      "sourceKeys": [
+        "openrouter"
+      ],
+      "conclusion": "公开 API 446 项；相对上次 text 快照新增 29（21 同步 + 8 Batch），缺失 13；当前 74 个 Batch 项不适配同步接口。"
+    },
+    "together": {
+      "sourceKeys": [
+        "together",
+        "together_retired"
+      ],
+      "conclusion": "新增 DeepSeek V4.1 Flash 文本接入；两项未来 9 月 29 日退役；SDXL 文档仍在可用表又在退役表，列待确认。"
+    },
+    "fireworks": {
+      "sourceKeys": [
+        "fireworks",
+        "fw_deepseek",
+        "fw_glm",
+        "fw_qwen",
+        "fw_qwen_nv"
+      ],
+      "conclusion": "新增 DeepSeek V4.1 Flash，页面明确 Serverless + Vision；Qwen Flash Next 两量化版本仅专属部署，不添加。"
+    },
+    "fal": {
+      "sourceKeys": [
+        "fal"
+      ],
+      "conclusion": "官方 Explore 近期通用图片目录与现有审核范围对照；新增视频/工具不进入绘图选择。未把完整托管市场当成已适配目录。"
+    },
+    "replicate": {
+      "sourceKeys": [
+        "replicate",
+        "replicate_grok2",
+        "replicate_qwen3",
+        "replicate_qwen3pro",
+        "replicate_ideogram",
+        "replicate_krea"
+      ],
+      "conclusion": "五个通用图片模型的公开版本、versionless API 与输入 schema 均核对；只开放平台已有输入合同能够表达的能力。"
+    }
+  },
+  "added": [
+    {
+      "provider": "deepseek",
+      "id": "deepseek-flash",
+      "source": "https://api-docs.deepseek.com/quick_start/pricing",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "zhipu",
+      "id": "glm-5.3-flashx",
+      "source": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": "仅思考模式，保持服务端默认采样参数。"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "tencent/Hy4-preview",
+      "source": "https://www.siliconflow.cn/models",
+      "roles": [
+        "main"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3.8-27B",
+      "source": "https://www.siliconflow.cn/models",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "siliconflow",
+      "id": "XingChenAGI/Xing4.0-29B",
+      "source": "https://www.siliconflow.cn/models",
+      "roles": [
+        "main"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "bailian",
+      "id": "deepseek-v4.1-flash",
+      "source": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "bailian",
+      "id": "ZHIPU/GLM-5.3-FlashX",
+      "source": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "roles": [
+        "main"
+      ],
+      "note": "已核对百炼精确 ID 与仅思考模式；该渠道图像输入契约待确认，暂仅开放文本。"
+    },
+    {
+      "provider": "ark",
+      "id": "doubao-seed-2-1-pro-260915",
+      "source": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "ark",
+      "id": "deepseek-v4-1-flash-260910",
+      "source": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "ark",
+      "id": "glm-5-3-flash-260828",
+      "source": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "together",
+      "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "source": "https://docs.together.ai/docs/serverless/models",
+      "roles": [
+        "main"
+      ],
+      "note": "按渠道文本模型表开放；未将原厂视觉能力自动继承到此渠道。"
+    },
+    {
+      "provider": "fireworks",
+      "id": "accounts/fireworks/models/deepseek-v4p1-flash",
+      "source": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "mistral",
+      "id": "zai-glm-5-3",
+      "source": "https://docs.mistral.ai/models/zai-glm-5-3",
+      "roles": [
+        "main"
+      ],
+      "note": ""
+    },
+    {
+      "provider": "tokendance",
+      "id": "glm-5.3-flashx",
+      "source": "https://tokendance.space/models/glm-5.3-flashx",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": "公开目录与协议审核；每次调用仍执行只读目录预检。"
+    },
+    {
+      "provider": "tokendance",
+      "id": "step-5-preview",
+      "source": "https://tokendance.space/models/step-5-preview",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "note": "公开目录与协议审核；每次调用仍执行只读目录预检。"
+    },
+    {
+      "provider": "replicate",
+      "id": "xai/grok-imagine-image-2",
+      "source": "https://replicate.com/xai/grok-imagine-image-2/api/schema",
+      "roles": [
+        "image"
+      ],
+      "note": "原图单张直接编辑；编辑宽高比由源图决定。"
+    },
+    {
+      "provider": "replicate",
+      "id": "alibaba/qwen-image-3",
+      "source": "https://replicate.com/alibaba/qwen-image-3/api/schema",
+      "roles": [
+        "image"
+      ],
+      "note": "按当前渠道 schema 开放单图编辑。"
+    },
+    {
+      "provider": "replicate",
+      "id": "alibaba/qwen-image-3-pro",
+      "source": "https://replicate.com/alibaba/qwen-image-3-pro/api/schema",
+      "roles": [
+        "image"
+      ],
+      "note": "按当前渠道 schema 开放单图编辑。"
+    },
+    {
+      "provider": "replicate",
+      "id": "prunaai/p-image-ideogram",
+      "source": "https://replicate.com/prunaai/p-image-ideogram/api/schema",
+      "roles": [
+        "image"
+      ],
+      "note": "仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。"
+    },
+    {
+      "provider": "replicate",
+      "id": "krea/krea-2-medium",
+      "source": "https://replicate.com/krea/krea-2-medium/api/schema",
+      "roles": [
+        "image"
+      ],
+      "note": "仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。"
+    }
+  ],
+  "retired": [
+    {
+      "provider": "deepseek",
+      "id": "deepseek-v4-flash",
+      "retiredAt": "2026-09-10",
+      "source": "https://api-docs.deepseek.com/updates",
+      "replacementModelId": "deepseek-flash",
+      "reason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。"
+    },
+    {
+      "provider": "deepseek",
+      "id": "deepseek-v4-flash-vision-exp",
+      "retiredAt": "2026-09-10",
+      "source": "https://api-docs.deepseek.com/updates",
+      "replacementModelId": "deepseek-flash",
+      "reason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "nex-agi/Nex-N2-Pro",
+      "retiredAt": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "replacementModelId": "",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Qwen/Qwen3.5-397B-A17B",
+      "retiredAt": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "replacementModelId": "",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "MiniMaxAI/MiniMax-M2.5",
+      "retiredAt": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "replacementModelId": "",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。"
+    },
+    {
+      "provider": "siliconflow",
+      "id": "Pro/MiniMaxAI/MiniMax-M2.5",
+      "retiredAt": "2026-09-11",
+      "source": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "replacementModelId": "",
+      "reason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。"
+    }
+  ],
+  "dynamicNew": [
+    "prism-ml/ternary-bonsai-2-27b",
+    "z-ai/glm-5.3-flashx",
+    "unbiased/pareto",
+    "~deepseek/deepseek-pro-latest",
+    "~deepseek/deepseek-flash-latest",
+    "inference-net/schematron-v2-turbo",
+    "inference-net/schematron-v2-small",
+    "~openai/gpt-astra-latest",
+    "~openai/gpt-sol-latest",
+    "~openai/gpt-terra-latest",
+    "~openai/gpt-luna-latest",
+    "sakana/fugu-ultra-v2",
+    "sakana/fugu-max",
+    "inclusionai/ling-3.0-flash-vl",
+    "inclusionai/ling-3.0-flash-vl:free",
+    "deepseek/deepseek-v4.1-flash",
+    "inception/mercury-2.5",
+    "nex-agi/nex-n2.5-mini:free",
+    "nex-agi/nex-n2.5-pro:free",
+    "qwen/qwen3.8-27b:free",
+    "z-ai/glm-5.2:free"
+  ],
+  "dynamicNewBatch": [
+    "deepseek/deepseek-v4-flash-vision-exp:batch",
+    "z-ai/glm-5.3:batch",
+    "z-ai/glm-5.2:batch",
+    "mistralai/mistral-small-2603:batch",
+    "mistralai/ministral-8b-2512:batch",
+    "mistralai/mistral-large-2512:batch",
+    "mistralai/mistral-medium-3.1:batch",
+    "mistralai/codestral-2508:batch"
+  ],
+  "dynamicAllBatch": [
+    "openai/gpt-6-astra:batch",
+    "openai/gpt-6-astra-pro:batch",
+    "google/gemini-3.8-flash:batch",
+    "anthropic/claude-fable-5.1:batch",
+    "z-ai/glm-5.3-flash:batch",
+    "deepseek/deepseek-v4-flash-vision-exp:batch",
+    "z-ai/glm-5.3:batch",
+    "google/gemini-3.7-flash:batch",
+    "qwen/qwen3.8-2.4t-a95b:batch",
+    "deepseek/deepseek-v4-pro-0813:batch",
+    "meta/muse-glimmer-30b:batch",
+    "deepseek/deepseek-v4-flash-0731:batch",
+    "anthropic/claude-opus-5:batch",
+    "google/gemini-3.6-flash:batch",
+    "google/gemini-3.5-flash-lite:batch",
+    "thinkingmachines/inkling:batch",
+    "moonshotai/kimi-k3:batch",
+    "openai/gpt-5.6-luna-pro:batch",
+    "openai/gpt-5.6-luna:batch",
+    "openai/gpt-5.6-terra-pro:batch",
+    "openai/gpt-5.6-terra:batch",
+    "openai/gpt-5.6-sol-pro:batch",
+    "openai/gpt-5.6-sol:batch",
+    "anthropic/claude-sonnet-5:batch",
+    "z-ai/glm-5.2:batch",
+    "anthropic/claude-fable-5:batch",
+    "minimax/minimax-m3:batch",
+    "anthropic/claude-opus-4.8:batch",
+    "google/gemini-3.5-flash:batch",
+    "google/gemini-3.1-flash-lite:batch",
+    "x-ai/grok-4.3:batch",
+    "mistralai/mistral-medium-3-5:batch",
+    "openai/gpt-5.5-pro:batch",
+    "openai/gpt-5.5:batch",
+    "anthropic/claude-opus-4.7:batch",
+    "openai/gpt-5.4-nano:batch",
+    "openai/gpt-5.4-mini:batch",
+    "mistralai/mistral-small-2603:batch",
+    "qwen/qwen3.5-9b:batch",
+    "openai/gpt-5.4-pro:batch",
+    "openai/gpt-5.4:batch",
+    "google/gemini-3.1-pro-preview:batch",
+    "anthropic/claude-sonnet-4.6:batch",
+    "anthropic/claude-opus-4.6:batch",
+    "google/gemini-3-flash-preview:batch",
+    "openai/gpt-5.2-pro:batch",
+    "openai/gpt-5.2:batch",
+    "mistralai/ministral-8b-2512:batch",
+    "mistralai/mistral-large-2512:batch",
+    "anthropic/claude-opus-4.5:batch",
+    "openai/gpt-5.1:batch",
+    "anthropic/claude-haiku-4.5:batch",
+    "openai/gpt-5-pro:batch",
+    "anthropic/claude-sonnet-4.5:batch",
+    "mistralai/mistral-medium-3.1:batch",
+    "openai/gpt-5:batch",
+    "openai/gpt-5-mini:batch",
+    "openai/gpt-5-nano:batch",
+    "openai/gpt-oss-120b:batch",
+    "anthropic/claude-opus-4.1:batch",
+    "mistralai/codestral-2508:batch",
+    "google/gemini-2.5-flash-lite:batch",
+    "google/gemini-2.5-flash:batch",
+    "google/gemini-2.5-pro:batch",
+    "openai/o3:batch",
+    "openai/o4-mini:batch",
+    "openai/gpt-4.1:batch",
+    "openai/gpt-4.1-mini:batch",
+    "openai/gpt-4.1-nano:batch",
+    "openai/o3-mini:batch",
+    "openai/gpt-4o-mini:batch",
+    "openai/gpt-4o:batch",
+    "openai/gpt-4-turbo:batch",
+    "openai/gpt-3.5-turbo:batch"
+  ],
+  "dynamicMissing": [
+    "google/gemini-2.5-pro-preview-05-06",
+    "google/gemma-4-31b-it:batch",
+    "inception/mercury-2.5-preview",
+    "minimax/minimax-m2.7:free",
+    "minimax/minimax-m3:free",
+    "mistralai/mistral-large-2512",
+    "nex-agi/nex-n2-mini",
+    "nex-agi/nex-n2-pro",
+    "nousresearch/hermes-4-70b",
+    "openai/gpt-4-turbo-preview",
+    "openai/gpt-oss-20b:batch",
+    "thinkingmachines/inkling-small:batch",
+    "~openai/gpt-latest"
+  ],
+  "renamed": [],
+  "renamePolicy": "无确认需要本地改写的 ID；DeepSeek 旧别名退役并被上游重定向，不当作兼容别名静默替换。",
+  "pending": [
+    {
+      "provider": "tokendance",
+      "ids": [
+        "deepseek-chat-v3-0324",
+        "deepseek-v4-flash-vision-exp",
+        "deepseek-ocr-2"
+      ],
+      "reason": "实时目录未出现；未取得该聚合渠道的明确停用公告，保留审核/历史 ID。OCR-2 本来就未接入；另两项实时调用预检会阻止发送。",
+      "sources": [
+        "https://tokendance.space/gateway/v1/models"
+      ]
+    },
+    {
+      "provider": "tokendance",
+      "ids": [
+        "cogevol-base",
+        "cogevol-slide-0828",
+        "cogevol-interactive-0828"
+      ],
+      "reason": "新 ID 可见；开发方身份与平台适用范围尚未完成审核。后两项是专用幻灯片/交互内容模型，本轮不加入通用选择。",
+      "sources": [
+        "https://tokendance.space/gateway/v1/models"
+      ]
+    },
+    {
+      "provider": "bailian",
+      "ids": [
+        "ZHIPU/GLM-5.3-FlashX"
+      ],
+      "reason": "精确 ID、文本与仅思考模式已确认；该渠道视觉输入契约未确认，未开放视觉角色。",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "provider": "openai",
+      "ids": [
+        "gpt-4-1106-preview"
+      ],
+      "reason": "同一官方退役文档出现 2026-03-26 与 2026-10-23 两个冲突日期；不据此移除。",
+      "sources": [
+        "https://developers.openai.com/api/docs/deprecations"
+      ]
+    },
+    {
+      "provider": "together",
+      "ids": [
+        "stabilityai/stable-diffusion-xl-base-1.0"
+      ],
+      "reason": "当前 Serverless 可用表仍列出，退役历史又记载 2025-04-14；保留并列待确认。",
+      "sources": [
+        "https://docs.together.ai/docs/serverless/models",
+        "https://docs.together.ai/docs/deprecations"
+      ]
+    },
+    {
+      "provider": "stability",
+      "ids": [
+        "sd3.5-flash"
+      ],
+      "reason": "当前 OpenAPI 的费用文字包含该型号，model 枚举未列出；保留原配置，需渠道澄清。",
+      "sources": [
+        "https://api.stability.ai/v2alpha/openapi"
+      ]
+    },
+    {
+      "provider": "openrouter",
+      "ids": [
+        "google/gemini-2.5-pro-preview-05-06",
+        "google/gemma-4-31b-it:batch",
+        "inception/mercury-2.5-preview",
+        "minimax/minimax-m2.7:free",
+        "minimax/minimax-m3:free",
+        "mistralai/mistral-large-2512",
+        "nex-agi/nex-n2-mini",
+        "nex-agi/nex-n2-pro",
+        "nousresearch/hermes-4-70b",
+        "openai/gpt-4-turbo-preview",
+        "openai/gpt-oss-20b:batch",
+        "thinkingmachines/inkling-small:batch",
+        "~openai/gpt-latest"
+      ],
+      "reason": "本次公开目录缺失，仅记录目录差异；不推断停用/更名，不改历史 ID。动态可选项跟随实际可用目录。",
+      "sources": [
+        "https://openrouter.ai/api/v1/models"
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "provider": "fireworks",
+      "ids": [
+        "accounts/fireworks/models/qwen3p8-flash-next-fp8",
+        "accounts/fireworks/models/qwen3p8-flash-next-nvfp4"
+      ],
+      "reason": "页面明确 Serverless Not supported，需要专属部署。"
+    },
+    {
+      "provider": "tokendance",
+      "ids": [
+        "qwen3.5-ocr"
+      ],
+      "reason": "专用 OCR/文档解析，不等同通用视觉与科研图示规划。"
+    },
+    {
+      "provider": "openrouter",
+      "ids": [
+        "openai/gpt-6-astra:batch",
+        "openai/gpt-6-astra-pro:batch",
+        "google/gemini-3.8-flash:batch",
+        "anthropic/claude-fable-5.1:batch",
+        "z-ai/glm-5.3-flash:batch",
+        "deepseek/deepseek-v4-flash-vision-exp:batch",
+        "z-ai/glm-5.3:batch",
+        "google/gemini-3.7-flash:batch",
+        "qwen/qwen3.8-2.4t-a95b:batch",
+        "deepseek/deepseek-v4-pro-0813:batch",
+        "meta/muse-glimmer-30b:batch",
+        "deepseek/deepseek-v4-flash-0731:batch",
+        "anthropic/claude-opus-5:batch",
+        "google/gemini-3.6-flash:batch",
+        "google/gemini-3.5-flash-lite:batch",
+        "thinkingmachines/inkling:batch",
+        "moonshotai/kimi-k3:batch",
+        "openai/gpt-5.6-luna-pro:batch",
+        "openai/gpt-5.6-luna:batch",
+        "openai/gpt-5.6-terra-pro:batch",
+        "openai/gpt-5.6-terra:batch",
+        "openai/gpt-5.6-sol-pro:batch",
+        "openai/gpt-5.6-sol:batch",
+        "anthropic/claude-sonnet-5:batch",
+        "z-ai/glm-5.2:batch",
+        "anthropic/claude-fable-5:batch",
+        "minimax/minimax-m3:batch",
+        "anthropic/claude-opus-4.8:batch",
+        "google/gemini-3.5-flash:batch",
+        "google/gemini-3.1-flash-lite:batch",
+        "x-ai/grok-4.3:batch",
+        "mistralai/mistral-medium-3-5:batch",
+        "openai/gpt-5.5-pro:batch",
+        "openai/gpt-5.5:batch",
+        "anthropic/claude-opus-4.7:batch",
+        "openai/gpt-5.4-nano:batch",
+        "openai/gpt-5.4-mini:batch",
+        "mistralai/mistral-small-2603:batch",
+        "qwen/qwen3.5-9b:batch",
+        "openai/gpt-5.4-pro:batch",
+        "openai/gpt-5.4:batch",
+        "google/gemini-3.1-pro-preview:batch",
+        "anthropic/claude-sonnet-4.6:batch",
+        "anthropic/claude-opus-4.6:batch",
+        "google/gemini-3-flash-preview:batch",
+        "openai/gpt-5.2-pro:batch",
+        "openai/gpt-5.2:batch",
+        "mistralai/ministral-8b-2512:batch",
+        "mistralai/mistral-large-2512:batch",
+        "anthropic/claude-opus-4.5:batch",
+        "openai/gpt-5.1:batch",
+        "anthropic/claude-haiku-4.5:batch",
+        "openai/gpt-5-pro:batch",
+        "anthropic/claude-sonnet-4.5:batch",
+        "mistralai/mistral-medium-3.1:batch",
+        "openai/gpt-5:batch",
+        "openai/gpt-5-mini:batch",
+        "openai/gpt-5-nano:batch",
+        "openai/gpt-oss-120b:batch",
+        "anthropic/claude-opus-4.1:batch",
+        "mistralai/codestral-2508:batch",
+        "google/gemini-2.5-flash-lite:batch",
+        "google/gemini-2.5-flash:batch",
+        "google/gemini-2.5-pro:batch",
+        "openai/o3:batch",
+        "openai/o4-mini:batch",
+        "openai/gpt-4.1:batch",
+        "openai/gpt-4.1-mini:batch",
+        "openai/gpt-4.1-nano:batch",
+        "openai/o3-mini:batch",
+        "openai/gpt-4o-mini:batch",
+        "openai/gpt-4o:batch",
+        "openai/gpt-4-turbo:batch",
+        "openai/gpt-3.5-turbo:batch"
+      ],
+      "reason": "仅异步 Batch API，当前同步生成/规划未适配。"
+    },
+    {
+      "provider": "recraft",
+      "ids": [
+        "recraftv4_styles",
+        "recraftv4_styles_pro",
+        "recraftv4_styles_vector",
+        "recraftv4_styles_pro_vector"
+      ],
+      "reason": "必须提供 style 输入；现有提示词与单参考图合同不足，不声称已适配。"
+    }
+  ],
+  "accountVerification": "未使用密钥或执行账号开通/推理探针；所有新增模型 verified=false, verificationState=catalog。",
+  "baselineDefaults": {
+    "deepseek": {
+      "main": "deepseek-v4-pro",
+      "image": "",
+      "vision": "deepseek-v4-flash-vision-exp"
+    },
+    "kimi": {
+      "main": "kimi-k3",
+      "image": "",
+      "vision": "kimi-k3"
+    },
+    "zhipu": {
+      "main": "glm-5.2",
+      "image": "glm-image",
+      "vision": "glm-5v-turbo"
+    },
+    "siliconflow": {
+      "main": "Pro/moonshotai/Kimi-K2.6",
+      "image": "Qwen/Qwen-Image",
+      "vision": "Pro/moonshotai/Kimi-K2.6"
+    },
+    "anthropic": {
+      "main": "claude-fable-5-1",
+      "image": "",
+      "vision": "claude-fable-5-1"
+    },
+    "recraft": {
+      "main": "",
+      "image": "recraftv4_1",
+      "vision": ""
+    },
+    "xai": {
+      "main": "grok-4.6",
+      "image": "grok-imagine-image-2.0",
+      "vision": "grok-4.6"
+    },
+    "gemini": {
+      "main": "gemini-3.7-flash",
+      "image": "gemini-3.1-flash-image",
+      "vision": "gemini-3.7-flash"
+    },
+    "bailian": {
+      "main": "qwen3.8-max",
+      "image": "wan2.7-image-pro",
+      "vision": "qwen3.7-plus"
+    },
+    "openai": {
+      "main": "gpt-5.6-sol",
+      "image": "gpt-image-2",
+      "vision": "gpt-5.6-sol"
+    },
+    "ark": {
+      "main": "doubao-seed-2-1-pro-260628",
+      "image": "doubao-seedream-5-0-pro-260628",
+      "vision": "doubao-seed-2-1-pro-260628"
+    },
+    "bfl": {
+      "main": "",
+      "image": "flux-2-pro",
+      "vision": ""
+    },
+    "stability": {
+      "main": "",
+      "image": "stable-image-ultra",
+      "vision": ""
+    },
+    "ideogram": {
+      "main": "",
+      "image": "ideogram-v4",
+      "vision": ""
+    },
+    "minimax": {
+      "main": "MiniMax-M3",
+      "image": "image-01",
+      "vision": "MiniMax-M3"
+    },
+    "mistral": {
+      "main": "mistral-small-2603",
+      "image": "",
+      "vision": "mistral-small-2603"
+    },
+    "together": {
+      "main": "moonshotai/Kimi-K3",
+      "image": "black-forest-labs/FLUX.2-pro",
+      "vision": "moonshotai/Kimi-K3"
+    },
+    "fireworks": {
+      "main": "accounts/fireworks/models/kimi-k2p5",
+      "image": "",
+      "vision": "accounts/fireworks/models/kimi-k2p5"
+    },
+    "fal": {
+      "main": "",
+      "image": "fal-ai/flux-2-pro",
+      "vision": ""
+    },
+    "replicate": {
+      "main": "",
+      "image": "black-forest-labs/flux-2-pro",
+      "vision": ""
+    },
+    "tokendance": {
+      "main": "qwen3.8-flash",
+      "image": "seedream-5.0-lite",
+      "vision": "qwen3.8-flash"
+    }
+  }
+}

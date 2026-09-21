@@ -352,3 +352,53 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .bench-model-cost p { font-size: 13px; line-height: 1.7; color: #63717c; margin: 9px 0 0; }
 .bench-case-cost { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin: 0 0 16px; font-size: 14px; font-variant-numeric: tabular-nums; }
 .bench-case-cost span { font-size: 12px; color: #63717c; }
+
+/* Locale and filters use the existing paper / green control language. */
+.bench-page-navigation { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.bench-page-navigation .paper-tabs { flex: 1; min-width: 0; }
+.bench-language-switch { display: flex; gap: 2px; flex: none; padding: 3px; border: 1px solid #d8dcd3; border-radius: 8px; background: #eeebe4; }
+.bench-language-switch button { min-height: 38px; padding: 7px 12px; border: 0; border-radius: 5px; background: transparent; color: #535951; font: inherit; font-size: 12px; cursor: pointer; }
+.bench-language-switch button[aria-pressed="true"] { background: #fffefa; color: #293b30; box-shadow: 0 1px 4px #332b1e14; }
+.bench-language-switch button:focus-visible { outline: 3px solid #b58220; outline-offset: 2px; }
+.bench-ranking-filters { margin: 22px 0 26px; font-size: 13px; }
+.bench-ranking-filters .pareto-toolbar { flex-wrap: wrap; }
+.bench-ranking-filters .pareto-search { flex: 1 1 300px; margin-left: auto; max-width: 480px; }
+.bench-ranking-filters button, .bench-ranking-filters input, .bench-ranking-filters select { font: inherit; }
+.bench-ranking-filter-panel { grid-template-columns: minmax(180px, 320px); }
+.bench-ranking-summary, .pareto-active-filters { flex-wrap: wrap; }
+.bench-filter-chip { padding: 4px 9px; border: 1px solid #d7dfd1; border-radius: 6px; background: #f0f4eb; overflow-wrap: anywhere; }
+.bench-ranking-scope { margin: 8px 0 14px; color: #657166; font-size: 12px; line-height: 1.75; }
+.bench-developer { display: block; margin-top: 4px; color: #657166; font-size: 11px; line-height: 1.55; font-weight: 400; white-space: normal; overflow-wrap: anywhere; }
+.bench-original-note { margin: 8px 0; color: #737a78; font-size: 12px; line-height: 1.6; }
+.bench-mini-row > a strong, .bench-mini-row > a small, .bench-model-column strong, .bench-model-column small,
+.bench-case-evidence-item > header strong, .bench-case-evidence-item > header small { white-space: normal; overflow: visible; overflow-wrap: anywhere; text-overflow: clip; }
+.bench-mini-row { min-height: 66px; height: auto; padding-block: 9px; }
+.bench-model-column { min-width: 230px; max-width: 320px; }
+.bench-matrix thead button { white-space: normal; min-width: 85px; line-height: 1.5; }
+.bench-evidence-scores dt { white-space: normal; overflow: visible; }
+.bench-evidence-card > header, .bench-case-evidence-item > header { flex-wrap: wrap; }
+.bench-evidence-card > header small, .bench-case-evidence-item > header > span { white-space: normal; }
+.bench-shell [hidden] { display: none !important; }
+.pareto-chart-heading, .pareto-cost-ranking > header { flex-wrap: wrap; }
+.pareto-budget-presets { flex-wrap: wrap; }
+.pareto-popover { max-width: calc(100% - 10px); }
+@media (max-width: 760px) {
+  .bench-page-navigation { gap: 8px; padding-bottom: 10px; }
+  .bench-page-navigation .paper-tabs { flex-basis: 100%; margin-bottom: 0; }
+  .bench-language-switch { margin-left: auto; }
+  .bench-language-switch button { min-height: 44px; padding-inline: 16px; }
+  .bench-ranking-filters .pareto-toolbar { display: flex; flex-wrap: wrap; }
+  .bench-ranking-filters .bench-view-switch { flex-basis: 100%; width: 100%; }
+  .bench-ranking-filters .pareto-search { flex: 1; margin-left: 0; max-width: none; }
+  .bench-ranking-filters .pareto-search input, .bench-ranking-filters select { min-height: 48px; font-size: 16px; }
+  .bench-ranking-filters .pareto-filter-toggle, .bench-ranking-summary button, .bench-ranking-filters .bench-empty button { min-height: 44px; }
+  .bench-ranking-filter-panel { grid-template-columns: minmax(0, 1fr); }
+  .bench-ranking-scope { font-size: 13px; }
+  .benchmark-site-shell .bench-model-column { min-width: 200px; max-width: 250px; }
+  .benchmark-site-shell .pareto-chart.is-expanded.is-touch .pareto-chart-heading { flex-wrap: wrap; }
+}
+.bench-watcha-link { display: flex; min-height: 44px; padding: 10px 14px; align-items: center; justify-content: center; font-size: 13px; }
+.pareto-frontier-name .bench-developer { font-size: 10px; }
+.pareto-cost-model strong .bench-developer { text-overflow: clip; overflow: visible; }
+.pareto-price-table small, .pareto-popover-expanded p { overflow-wrap: anywhere; }
+.watcha-product-badge:has(.bench-watcha-link) { color: #35644f; text-decoration: none; border: 1px solid #cad8cd; background: #eff5ef; }

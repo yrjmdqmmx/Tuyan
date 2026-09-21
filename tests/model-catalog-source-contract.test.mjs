@@ -29,8 +29,9 @@ test('backend and both bundled catalogs are generated from the same reviewed sou
 test('every original audit row has an explicit implementation or exclusion decision', () => {
   assert.deepEqual(audit.auditRows, { '02-native': 79, '03-siliconflow': 92, '04-bailian': 262, '01-existing': 101, '05-openrouter-text': 430, '05-openrouter-images': 50, '06-tokendance': 93 })
   assert.equal(audit.originalStaticCount, 101)
-  assert.equal(audit.staticCount, 740)
-  assert.equal(audit.incompatiblePolicy, 'omit-from-catalog')
+  assert.equal(audit.staticCount, 760)
+  assert.equal(audit.selectableStaticCount, 754)
+  assert.equal(audit.incompatiblePolicy, 'omit-incompatible-retain-retired-identities')
   for (const row of audit.decisions) {
     assert.ok(row.reason.trim().length > 10, `${row.provider}/${row.id}: missing rationale`)
     assert.match(row.source, /^https:\/\//)
@@ -43,7 +44,10 @@ test('every original audit row has an explicit implementation or exclusion decis
   for (const [provider, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
     assert.equal(new Set(registry.models.map((m) => m.id)).size, registry.models.length)
     for (const model of registry.models) {
-      assert.equal(model.selectable, true, `${provider}/${model.id} incompatible entries must be omitted`)
+      if (!model.selectable) {
+        assert.ok(model.disabledReason && model.lifecycleSourceUrl, `${provider}/${model.id} needs an official retirement reason`)
+        assert.ok(audit.latestUpdate.removedFromSelection.includes(`${provider}/${model.id}`))
+      }
       assert.ok(audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id), `${provider}/${model.id} lacks audit evidence`)
     }
   }
@@ -65,5 +69,23 @@ test('regional, realtime, edit-only and reference-count boundaries remain channe
   for (const [provider, id] of [['siliconflow', 'Qwen/Qwen-Image-Edit'], ['siliconflow', 'Qwen/Qwen-Image-Edit-2509'], ['bailian', 'wan2.5-i2i-preview'], ['bailian', 'wanx2.1-imageedit']]) {
     const cap = STATIC_MODEL_REGISTRY[provider].models.find((m) => m.id === id).capabilities
     assert.equal(cap.imageGeneration, false); assert.equal(cap.imageEditing, true); assert.equal(cap.requiresSourceImage, true)
+  }
+})
+
+test('September refresh keeps all previous provider defaults and exact retired identities', () => {
+  const review = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-review-20260921.json'), 'utf8'))
+  for (const [provider, defaults] of Object.entries(review.baselineDefaults)) assert.deepEqual(STATIC_MODEL_REGISTRY[provider].defaults, defaults, provider)
+  assert.equal(review.added.length, 20)
+  assert.equal(review.retired.length, 6)
+  for (const item of review.retired) {
+    const model = STATIC_MODEL_REGISTRY[item.provider].models.find(m => m.id === item.id)
+    assert.equal(model.selectable, false)
+    assert.ok(model.disabledReason)
+  }
+  for (const item of review.added) {
+    const model = STATIC_MODEL_REGISTRY[item.provider].models.find(m => m.id === item.id)
+    assert.deepEqual(model.roles, item.roles)
+    assert.equal(model.verified, false)
+    assert.equal(model.verificationState, 'catalog')
   }
 })

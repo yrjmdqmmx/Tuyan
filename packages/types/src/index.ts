@@ -19,7 +19,7 @@ export type { ImageSizeContract, ResolvedImageSize } from './image-size-contract
 
 export type { ProviderRegions } from './provider-regions.js'
 
-export { MODEL_CHANNEL_LABELS, orderModelChannels, modelLifecycleLabel, modelDeveloper, presentRegistryModel, sortModelsNewestFirst } from './model-presentation.js'
+export { MODEL_CHANNEL_LABELS, orderModelChannels, modelVersionLabel, modelVersionDetail, normalizeModelVersion, modelLifecycleLabel, modelDeveloper, modelDeveloperName, modelDeveloperAliases, presentRegistryModel, sortModelsNewestFirst } from './model-presentation.js'
 export { buildAspectRatioOptions, normalizeSelectedAspectRatio } from './aspect-ratios.js'
 
 /** TokenDance API v1. Wallet amounts are integer microyuan; payment amounts integer yuan. */
@@ -34,3 +34,5 @@ export interface TokenDancePaymentAttempt { attemptId: string; amount: number; s
 
 /** Optional custom routes use the strict, versioned BYOK descriptor. Existing preset routes remain unchanged. */
 export type { UniversalRoute, UniversalCustomConfig, UniversalProtocol, UniversalInputLimits, UniversalOutputLimits } from '../../api/src/universal-api.js'
+
+export type { ModelVersion } from './model-presentation.js'

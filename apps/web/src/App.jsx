@@ -14,7 +14,7 @@ import { TokenDanceRecovery, TokenDanceStatus } from './components/TokenDancePan
 import AccountPage from './components/AccountPage';
 import TokenDancePricing from './components/admin/TokenDancePricing';
 import { workspaceEntry, selectWorkspaceEntry } from './lib/adminEntry';
-import { presentRegistryModel, sortModelsNewestFirst } from './lib/modelPresentation'
+import { presentRegistryModel, sortModelsNewestFirst, orderModelChannels } from './lib/modelPresentation'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -1825,7 +1825,7 @@ export default function App() {
           onStart={() => selectTab('generate')}
           onContact={() => setShowContactDialog(true)}
           registryVersion={modelRegistry?.registryVersion || '等待服务端目录'}
-          providerLabels={Object.keys(modelRegistry?.providers || {}).map((id) => PROVIDERS[id]?.label || id)}
+          providerLabels={orderModelChannels(Object.keys(modelRegistry?.providers || {})).map((id) => PROVIDERS[id]?.label || id)}
           routeSummary={{
             main: activeMainRegistryEntry?.label || activeMainModelName,
             image: activeImageRegistryEntry?.label || activeImageGenModelName,

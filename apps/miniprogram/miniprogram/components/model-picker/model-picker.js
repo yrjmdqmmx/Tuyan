@@ -171,7 +171,7 @@ function presentModel(model, selectedProvider, selectedModel, providerId) {
     return {
         id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
         availabilityNotes: [model.availabilityNotes, ((_a = model.capabilities) === null || _a === void 0 ? void 0 : _a.requiresSourceImage) ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
-        serviceTier: model.serviceTier || '',
+        serviceTier: model.serviceTier || '', versionLabel: (0, model_presentation_1.modelVersionLabel)(model), versionText: (0, model_presentation_1.modelVersionDetail)(model), apiIdentifier: model.apiIdentifier || model.id,
         capabilityText: [model.roles.includes('main') ? '文本' : '', model.roles.includes('vision') ? '视觉理解' : '', model.roles.includes('image') && !((_b = model.capabilities) === null || _b === void 0 ? void 0 : _b.requiresSourceImage) ? '生图' : '', ((_c = model.capabilities) === null || _c === void 0 ? void 0 : _c.imageEditMode) === 'direct-edit' ? '编辑' : ''].filter(Boolean).join(' · '),
         releaseText: [model.releasedAt || (model.releaseOrder ? '按官方版本排序 · 日期待确认' : '发布日期待确认'), model.releaseKind === 'snapshot' ? '日期快照' : ''].filter(Boolean).join(' · '),
         lifecycleText: (0, model_presentation_1.modelLifecycleLabel)(model.lifecycle),
