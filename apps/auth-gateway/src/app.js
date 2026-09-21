@@ -34,6 +34,7 @@ const ADMIN_BACKEND_ACTIONS = new Set([
   'adminBenchmarkPromptDecision',
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['adminTaskFollowup', 'adminCommunityEdit', 'adminBenchmarkPromptDecision', 'importReferences', 'evaluateJob', 'initDatabase']);
+const FIGURE_STUDIO_ACTIONS = new Set(['figureStudioCapabilities', 'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport']);
 const MAINTENANCE_ACTIONS = new Set([
   'tokenDanceResume', 'providerResume', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDancePaymentCreate',
   'createJob',
@@ -43,6 +44,7 @@ const MAINTENANCE_ACTIONS = new Set([
   'abortReferenceUpload',
   'providerAccountCatalog', 'universalApiCheck',
   'optimizeInputs',
+  'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport',
   'submitFeedback',
   'benchmarkPromptSubmission',
   ...ADMIN_MUTATING_ACTIONS,
@@ -198,7 +200,7 @@ export function createApp({
       }
 
       const context = requestContext(request);
-      if (auth.deletionStore && ['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission', 'optimizeInputs'].includes(action)) {
+      if (auth.deletionStore && ['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission', 'optimizeInputs', ...FIGURE_STUDIO_ACTIONS].includes(action)) {
         const session = await auth.optionalSession(request);
         const operation = session?.user?.id ? await auth.deletionStore.get(String(session.user.id)) : null;
         if (operation) return response.status(409).json({ code: 409, error: operation.status === 'review_required' ? 'ACCOUNT_DELETION_REVIEW_REQUIRED' : 'ACCOUNT_DELETION_PROCESSING' });
@@ -283,6 +285,15 @@ export function createApp({
             context,
           ),
         );
+      }
+
+      if (FIGURE_STUDIO_ACTIONS.has(action)) {
+        const origin = request.get('origin');
+        if (origin && !config.frontendOrigins.includes(origin)) return response.status(403).json({ code: 403, error: '不受信任的请求来源。' });
+        const session = await requireSession(auth, request);
+        response.set('Cache-Control', 'no-store');
+        if (backend.mode !== 'node') return response.status(503).json({ code: 503, error: '图稿工作室需要 Node Core 服务。' });
+        return relay(response, await backend.call(normalizeFigureStudioBody(request.body), context, { authUserId: String(session.user.id), timeoutMs: 55_000 }));
       }
 
       if (action === 'optimizeInputs') {
@@ -562,6 +573,20 @@ function normalizeProviderAccountCatalogBody(body) {
     apiKeys: arkKey === undefined ? {} : { ark: arkKey },
     probes: body?.probes,
     confirmPaidImageProbe: body?.confirmPaidImageProbe,
+  };
+}
+
+function normalizeFigureStudioBody(body) {
+  const action = body.action;
+  if (action === 'figureStudioCapabilities') return { action };
+  if (action === 'figureStudioExport') return { action, document: body.document, format: body.format };
+  const provider = body.mainRoute?.accessProvider;
+  return {
+    action,
+    ...(action === 'figureStudioPlan' ? { materials: body.materials } : { document: body.document, instruction: body.instruction, objectIds: body.objectIds, baseRevision: body.baseRevision }),
+    mainRoute: { accessProvider: provider, modelId: body.mainRoute?.modelId },
+    apiKeys: typeof provider === 'string' && typeof body.apiKeys?.[provider] === 'string' ? { [provider]: body.apiKeys[provider] } : {},
+    ...(body.providerRegions ? { providerRegions: { minimax: body.providerRegions.minimax } } : {}),
   };
 }
 

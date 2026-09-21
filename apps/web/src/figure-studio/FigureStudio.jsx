@@ -1,0 +1,224 @@
+import { useEffect, useReducer, useRef, useState } from 'react';
+import { ArrowUpRight, Circle, Download, FilePlus2, FolderOpen, Image, Layers3, MousePointer2, Redo2, Save, Square, SquareDashed, Type, Undo2, X } from 'lucide-react';
+import { applyCommands, createDocument, createExampleDocument, documentFromPlan } from '@paperbanana/figure-core';
+import { appPath } from '../appPaths.js';
+import { BENCH_ENABLED, logoUrl } from '../config.js';
+import FigureCanvas from './FigureCanvas.jsx';
+import Inspector, { TYPE_LABELS } from './Inspector.jsx';
+import RulesPanel from './RulesPanel.jsx';
+import { EditPanel, ModelSettings, PlanPanel } from './ModelPanel.jsx';
+import ExportDialog from './ExportDialog.jsx';
+import { getCapabilities, requestEdit, requestPlan } from './api.js';
+import { downloadBlob, filename, historyReducer, initialHistory, makeElement, MAX_SOURCE_BYTES, parseSource, STORAGE_KEY } from './state.js';
+import { validateSourceAssets } from './sourceAssets.js';
+import { selectedEditScope } from './editScope.js';
+import './figure-studio.css';
+
+function useReadOnlyViewport() {
+  const [readOnly, setReadOnly] = useState(() => globalThis.matchMedia?.('(max-width: 900px)').matches ?? false);
+  useEffect(() => {
+    const media = globalThis.matchMedia?.('(max-width: 900px)');
+    if (!media) return undefined;
+    const update = () => setReadOnly(media.matches);
+    media.addEventListener('change', update); update();
+    return () => media.removeEventListener('change', update);
+  }, []);
+  return readOnly;
+}
+
+function readImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('图片读取失败。'));
+    reader.onload = () => {
+      const image = new globalThis.Image();
+      image.onload = () => resolve({ dataUrl: reader.result, pixelWidth: image.naturalWidth, pixelHeight: image.naturalHeight, mimeType: file.type });
+      image.onerror = () => reject(new Error('这不是可读取的 PNG、JPEG 或 WebP 图片。'));
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+export default function FigureStudio() {
+  const [history, dispatch] = useReducer(historyReducer, undefined, () => initialHistory());
+  const { document: doc } = history;
+  const documentRef = useRef(doc); documentRef.current = doc;
+  const documentSession = useRef(0);
+  const readOnly = useReadOnlyViewport();
+  const [selectedId, setSelectedId] = useState(null);
+  const [leftTab, setLeftTab] = useState('plan');
+  const [rightTab, setRightTab] = useState('properties');
+  const [materials, setMaterials] = useState('');
+  const [plan, setPlan] = useState(null);
+  const [planBusy, setPlanBusy] = useState(false);
+  const [instruction, setInstruction] = useState('');
+  const [editBusy, setEditBusy] = useState(false);
+  const [patch, setPatch] = useState(null);
+  const [model, setModel] = useState({ provider: '', modelId: '', key: '', valid: false });
+  const [capabilities, setCapabilities] = useState(null);
+  const [serviceError, setServiceError] = useState('');
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [saveStatus, setSaveStatus] = useState('尚未保存');
+  const [exportOpen, setExportOpen] = useState(false);
+  const [mobileRules, setMobileRules] = useState(false);
+  const sourceInput = useRef(null);
+  const imageInput = useRef(null);
+  const selected = doc.elements.find((element) => element.id === selectedId);
+  const editScope = selectedEditScope(doc, selectedId, capabilities?.limits?.maxSelectedObjects);
+
+  useEffect(() => { document.title = '图稿编辑 · 图研 Tuyan'; }, []);
+  useEffect(() => {
+    let cancelled = false;
+    getCapabilities().then((result) => { if (!cancelled) { setCapabilities(result); setServiceError(''); } }).catch(() => { if (!cancelled) setServiceError('服务能力暂不可用。可继续本机编辑与导出 SVG；模型功能和 PDF / EPS 需要登录且服务可用。'); });
+    return () => { cancelled = true; };
+  }, []);
+  useEffect(() => {
+    if (history.recoveryError) { setError(history.recoveryError); return; }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(doc)); setSaveStatus('已保存在此浏览器'); }
+    catch { setSaveStatus('本机保存失败，请下载源稿'); }
+  }, [doc, history.recoveryError]);
+  useEffect(() => { if (selectedId && !selected) setSelectedId(null); }, [selectedId, selected]);
+
+  function commands(items, baseRevision = documentRef.current.revision) {
+    if (readOnly) return false;
+    try {
+      applyCommands(documentRef.current, items, { baseRevision });
+      dispatch({ type: 'commands', commands: items, baseRevision }); setError(''); return true;
+    } catch (error) { setError(error.message || '这次修改未应用。'); return false; }
+  }
+  function select(id) { setSelectedId(id); if (id) setRightTab('properties'); }
+  function removeSelected() { if (selectedId && commands([{ type: 'remove', id: selectedId }])) setSelectedId(null); }
+  useEffect(() => {
+    if (readOnly) return undefined;
+    const keydown = (event) => {
+      const target = event.target;
+      if (target?.closest('input, textarea, select, [contenteditable="true"], [role="dialog"]')) return;
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); dispatch({ type: event.shiftKey ? 'redo' : 'undo' }); }
+      if (event.key === 'Delete' || event.key === 'Backspace') { event.preventDefault(); removeSelected(); }
+      if (event.key === 'Escape') setSelectedId(null);
+    };
+    window.addEventListener('keydown', keydown);
+    return () => window.removeEventListener('keydown', keydown);
+  }, [readOnly, selectedId]);
+
+  function saveSource() {
+    downloadBlob(new Blob([JSON.stringify(doc, null, 2)], { type: 'application/json' }), filename(doc.title, 'tuyan.json'));
+    setNotice('源稿已下载。可用「打开源稿」恢复完整对象与图片。');
+  }
+  function openDocument(document, message) {
+    documentSession.current += 1;
+    dispatch({ type: 'open', document }); setSelectedId(null); setPatch(null); setPlan(null); setError(''); setNotice(message);
+  }
+  async function importSource(event) {
+    const file = event.target.files?.[0]; event.target.value = '';
+    if (!file) return;
+    const current = { id: doc.id, revision: doc.revision, session: documentSession.current };
+    try {
+      if (file.size > MAX_SOURCE_BYTES) throw new Error('源稿不能超过 12 MB。');
+      const document = parseSource(await file.text());
+      await validateSourceAssets(document);
+      if (current.id !== documentRef.current.id || current.revision !== documentRef.current.revision || current.session !== documentSession.current) throw new Error('读取源稿期间当前图稿已更改，请重新打开文件。');
+      if (doc.elements.length) saveSource();
+      openDocument(document, doc.elements.length ? '源稿已打开。已发起原图稿备份下载，请确认文件已保存。' : '源稿已打开。');
+    } catch (error) { setError(`无法打开源稿：${error.message} 当前图稿保持不变。`); }
+  }
+  function newDocument(example = false) {
+    if (doc.elements.length) saveSource();
+    openDocument(example ? createExampleDocument() : createDocument({ title: '未命名图稿' }), example ? '已打开示例图稿，用于体验对象编辑；不是模型生成结果。' : '已新建空白图稿。');
+  }
+  function addObject(type) {
+    const element = makeElement(type, doc.elements.length);
+    if (type === 'text') {
+      const size = doc.ruleOverrides['text-size'];
+      if (size?.enabled !== false && size?.value) element.fontSize = Math.max(size.value.min, Math.min(size.value.max, element.fontSize));
+      const font = doc.ruleOverrides['standard-font'];
+      if (font?.enabled !== false && font?.value?.length) element.fontFamily = font.value[0];
+    }
+    if (commands([{ type: 'add', element }])) { select(element.id); setLeftTab('layers'); }
+  }
+  async function uploadImage(event) {
+    const file = event.target.files?.[0]; event.target.value = '';
+    if (!file) return;
+    const current = { id: doc.id, revision: doc.revision, session: documentSession.current };
+    try {
+      if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) throw new Error('仅支持 PNG、JPEG 和 WebP。');
+      if (file.size > 5 * 1024 * 1024) throw new Error('单张图片请控制在 5 MB 内。');
+      const asset = await readImage(file);
+      const assetId = `asset-${crypto.randomUUID()}`;
+      await validateSourceAssets({ assets: { ...doc.assets, [assetId]: asset } });
+      if (current.id !== documentRef.current.id || current.revision !== documentRef.current.revision || current.session !== documentSession.current) throw new Error('读取图片期间图稿已更改，请重新添加图片。');
+      const element = { id: `image-${crypto.randomUUID()}`, type: 'image', assetId, x: 15, y: 15, width: 60, height: 60 * asset.pixelHeight / asset.pixelWidth };
+      if (commands([{ type: 'asset', id: assetId, asset }, { type: 'add', element }])) select(element.id);
+    } catch (error) { setError(error.message); }
+  }
+  function context() {
+    if (!capabilities?.modelPlanning) throw new Error('模型服务尚不可用。请先登录工作台，并确认图稿服务已启用。');
+    if (!model.valid || !model.provider || !model.modelId) throw new Error('请展开下方模型设置，从当前目录中明确选择可用的主文本模型。');
+    if (!model.key.trim()) throw new Error('请填写所选渠道的 API Key。密钥只在当前页面使用。');
+    return { mainRoute: { accessProvider: model.provider, modelId: model.modelId }, apiKeys: { [model.provider]: model.key.trim() } };
+  }
+  async function buildPlan() {
+    let payload;
+    try { payload = { materials, ...context() }; } catch (error) { setError(error.message); return; }
+    const requestDocument = { id: doc.id, revision: doc.revision, session: documentSession.current };
+    setPlanBusy(true); setError('');
+    try {
+      const result = await requestPlan(payload);
+      if (documentSession.current !== requestDocument.session || documentRef.current.id !== requestDocument.id || documentRef.current.revision !== requestDocument.revision) { setNotice('请求期间图稿已更改，旧结构方案未写入。当前图稿已保留。'); return; }
+      setPlan(result.plan); setNotice('结构方案已返回。请核对节点与关系，确认后再生成图稿。');
+    }
+    catch (error) { setError(modelError(error)); } finally { setPlanBusy(false); }
+  }
+  function confirmPlan() {
+    try {
+      const next = documentFromPlan(plan, { profileId: doc.profileId, canvas: doc.canvas, ruleOverrides: doc.ruleOverrides, customRules: doc.customRules });
+      if (commands([{ type: 'replace-content', title: next.title, elements: next.elements, assets: next.assets }])) { setPlan(null); setSelectedId(null); setLeftTab('layers'); setNotice('已按确认的结构生成对象图稿，可继续编辑或撤销。'); }
+    } catch (error) { setError(error.message); }
+  }
+  async function buildEdit() {
+    let payload;
+    try {
+      if (!selectedId) throw new Error('请先选择一个已有对象。当前语言编辑仅修改所选对象，新增与删除请使用画布工具。');
+      const scope = selectedEditScope(doc, selectedId, capabilities?.limits?.maxSelectedObjects);
+      if (scope.error) throw new Error(scope.error);
+      payload = { document: doc, instruction, objectIds: scope.objectIds, baseRevision: doc.revision, ...context() };
+    } catch (error) { setError(error.message); return; }
+    const requestSession = documentSession.current;
+    setEditBusy(true); setError(''); setPatch(null);
+    try {
+      const result = await requestEdit(payload);
+      if (documentSession.current !== requestSession || documentRef.current.id !== payload.document.id) { setNotice('请求期间已切换图稿，旧修改方案已丢弃。'); return; }
+      if (result.baseRevision !== payload.baseRevision) throw new Error('修改方案的版本不匹配，未应用。');
+      applyCommands(payload.document, result.commands, { baseRevision: result.baseRevision });
+      setPatch({ ...result, documentId: payload.document.id, objectIds: payload.objectIds }); setNotice('修改方案已返回。确认应用后才会改变当前图稿。');
+    } catch (error) { setError(modelError(error)); } finally { setEditBusy(false); }
+  }
+
+  return <div className={`figure-studio ${readOnly ? 'fs-readonly' : ''}`}>
+    <header className="fs-header"><a className="fs-brand" href={appPath('/')}><img src={logoUrl} alt="图研 Tuyan" /><strong>图研 Tuyan</strong></a><nav aria-label="网站导航"><a href={appPath('/')}>工作台</a><a className="active" aria-current="page" href={appPath('/figure-studio/')}>图稿编辑</a>{BENCH_ENABLED && <a href={appPath('/leaderboard/')}>排行榜</a>}</nav><a className="fs-login-link" href={appPath('/?auth=sign-in')}>账户与登录 <ArrowUpRight size={13} /></a></header>
+    <div className="fs-document-bar"><div className="fs-document-name"><input aria-label="图稿标题" readOnly={readOnly} key={`${doc.id}-${doc.title}`} defaultValue={doc.title} onBlur={(event) => { if (event.target.value.trim() && event.target.value !== doc.title) commands([{ type: 'title', title: event.target.value.trim() }]); }} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); }} /><span className={saveStatus.includes('失败') ? 'fs-error' : ''}>{saveStatus}</span></div><div className="fs-document-actions">{!readOnly && <><button aria-label="撤销" title="撤销 ⌘Z" disabled={!history.past.length} onClick={() => dispatch({ type: 'undo' })}><Undo2 size={17} /></button><button aria-label="重做" title="重做 ⇧⌘Z" disabled={!history.future.length} onClick={() => dispatch({ type: 'redo' })}><Redo2 size={17} /></button><span className="fs-separator" /></>}<button onClick={() => sourceInput.current.click()}><FolderOpen size={16} /><span>打开源稿</span></button><button className="fs-source-save" onClick={saveSource}><Save size={16} /><span>保存源稿</span></button><button className="fs-primary" onClick={() => setExportOpen(true)}><Download size={16} />导出</button></div></div>
+    <input className="fs-file-input" type="file" ref={sourceInput} accept=".json,.tuyan.json,application/json" onChange={importSource} />
+    <input className="fs-file-input" type="file" ref={imageInput} accept="image/png,image/jpeg,image/webp" onChange={uploadImage} />
+    {(error || notice) && <div className={`fs-banner ${error ? 'is-error' : ''}`} role={error ? 'alert' : 'status'}><span>{error || notice}</span><button aria-label="关闭提示" onClick={() => { setError(''); setNotice(''); }}><X size={14} /></button></div>}
+    {readOnly && <div className="fs-mobile-notice">手机支持查看与导出。对象编辑请在宽屏电脑上进行。<button onClick={() => setMobileRules(!mobileRules)}>{mobileRules ? '收起检查' : '查看规则检查'}</button></div>}
+    <main className="fs-workspace">{!readOnly && <aside className="fs-left-panel"><div className="fs-panel-tabs" role="tablist" aria-label="图稿工作流程">{[['plan', '材料与结构'], ['layers', '对象'], ['edit', '语言编辑']].map(([id, label]) => <button role="tab" aria-selected={leftTab === id} className={leftTab === id ? 'active' : ''} key={id} onClick={() => setLeftTab(id)}>{label}</button>)}</div><div className="fs-panel-scroll">
+      {leftTab === 'plan' && <PlanPanel materials={materials} setMaterials={setMaterials} plan={plan} setPlan={setPlan} busy={planBusy} onPlan={buildPlan} onConfirm={confirmPlan} limits={capabilities?.limits} />}
+      {leftTab === 'layers' && <div className="fs-panel-content"><div className="fs-section-heading"><h3>对象与图层</h3><span>{doc.elements.length}</span></div><p className="fs-muted">点击选择对象。在画布中拖动，或在右侧精确调整。</p>{!doc.elements.length && <div className="fs-empty-list"><Layers3 size={25} /><p>还没有对象</p><span>用上方工具添加第一个对象。</span></div>}<ol className="fs-layers">{[...doc.elements].reverse().map((element) => <li key={element.id}><button className={selectedId === element.id ? 'selected' : ''} onClick={() => select(element.id)}><span className="fs-layer-type">{TYPE_LABELS[element.type]}</span><span>{element.text || (element.type === 'panel' ? '分组面板' : element.id.slice(-6))}</span>{element.parentId && <span className="fs-layer-child">↳</span>}</button></li>)}</ol></div>}
+      {leftTab === 'edit' && <EditPanel instruction={instruction} setInstruction={setInstruction} selected={selected} scope={editScope} busy={editBusy} onEdit={buildEdit} patch={patch} onApply={() => { if (patch.documentId !== doc.id) { setError('修改方案属于另一份图稿，未应用。'); setPatch(null); return; } if (commands(patch.commands, patch.baseRevision)) { setPatch(null); setNotice('修改已应用，可使用撤销恢复。'); } }} onDismiss={() => setPatch(null)} revision={doc.revision} limits={capabilities?.limits} />}
+      {(leftTab === 'plan' || leftTab === 'edit') && <ModelSettings value={model} onChange={setModel} capabilities={capabilities} />}
+      {serviceError && leftTab !== 'layers' && <p className="fs-service-note">{serviceError}</p>}
+    </div><div className="fs-local-footer"><button onClick={() => newDocument()}><FilePlus2 size={14} />空白图稿</button><button onClick={() => newDocument(true)}>打开示例</button><p>仅保存在此浏览器 · 不会同步到云端</p></div></aside>}
+    <div className="fs-center-panel">{!readOnly && <div className="fs-tool-bar" aria-label="添加对象"><span className="fs-tool-select"><MousePointer2 size={17} /></span>{[["text", Type, "文字"], ["rect", Square, "矩形"], ["ellipse", Circle, "椭圆"], ["arrow", ArrowUpRight, "箭头"], ["line", MinusLine, "线段"], ["panel", SquareDashed, "面板"]].map(([type, Icon, label]) => <button key={type} aria-label={`添加${label}`} title={`添加${label}`} onClick={() => addObject(type)}><Icon size={17} /><span>{label}</span></button>)}<button onClick={() => imageInput.current.click()}><Image size={17} /><span>图片</span></button></div>}<FigureCanvas document={doc} selectedId={selectedId} onSelect={select} onCommands={commands} readOnly={readOnly} /></div>
+    {(!readOnly || mobileRules) && <aside className="fs-right-panel">{!readOnly && <div className="fs-panel-tabs" role="tablist" aria-label="图稿属性与检查"><button role="tab" aria-selected={rightTab === 'properties'} className={rightTab === 'properties' ? 'active' : ''} onClick={() => setRightTab('properties')}>属性</button><button role="tab" aria-selected={rightTab === 'rules'} className={rightTab === 'rules' ? 'active' : ''} onClick={() => setRightTab('rules')}>期刊规则</button></div>}<div className="fs-panel-scroll">{rightTab === 'properties' && !readOnly ? <Inspector document={doc} selectedId={selectedId} onCommands={commands} onDelete={removeSelected} /> : <RulesPanel document={doc} onCommands={commands} readOnly={readOnly} />}</div></aside>}
+    </main><ExportDialog open={exportOpen} onClose={() => setExportOpen(false)} document={doc} capabilities={capabilities} saveSource={saveSource} />
+  </div>;
+}
+
+function MinusLine({ size }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="M4 20 20 4" /></svg>; }
+function modelError(error) {
+  const message = error.message || '模型请求未完成。';
+  const state = error.details?.requestState || error.details?.callState || error.details?.billingState || error.details?.providerCallState;
+  return state === 'unknown' ? `${message} 渠道结果未知，未自动重试；请先核对渠道记录。当前图稿已保留。` : state === 'not_sent' ? `${message} 尚未发送至模型。当前图稿已保留。` : `${message} 当前图稿已保留，未自动重试。`;
+}

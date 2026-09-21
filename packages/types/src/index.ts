@@ -1,5 +1,20 @@
 export type PaperBananaClientPlatform = "web" | "desktop" | "android";
 
+/** Figure Studio v1 is independent of legacy image jobs; drafts remain local. */
+export interface FigureStudioPlan {
+  title: string; summary: string;
+  nodes: Array<{ id: string; label: string; detail?: string }>;
+  edges: Array<{ from: string; to: string; label?: string }>;
+  notes: string[];
+}
+export interface FigureStudioCapabilities {
+  code: 0; formats: { svg: true; pdf: boolean; eps: boolean }; modelPlanning: boolean;
+  supportedModelModes: ['api-key']; supportedProviders: string[]; unsupportedProviders: string[];
+  formatReasons: { pdf: string; eps: string }; limitations: string[];
+  limits: { maxDocumentBytes: number; materialsChars: number; instructionChars: number; maxSelectedObjects: number; maxExportBytes: number };
+}
+export interface FigureStudioExportFile { name: string; mimeType: 'application/pdf' | 'application/postscript'; base64: string }
+
 export type { ImageSizeContract, ResolvedImageSize } from './image-size-contract.js'
 
 export type { ProviderRegions } from './provider-regions.js'

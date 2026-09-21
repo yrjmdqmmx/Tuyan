@@ -9,6 +9,7 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
   return (
     <nav className="header-navigation" aria-label="网站导航" onClick={onNavigate}>
       <div className="header-links">
+        <a href={appPath('/figure-studio/')}><BookOpen size={16} /> 图稿编辑</a>
         {section === 'leaderboard' ? <a href={appPath('/')}><LayoutDashboard size={16} /> 工作台</a>
           : BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> 排行榜</a> : null}
         <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>

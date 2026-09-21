@@ -8,6 +8,7 @@ import http from 'node:http'
 import express, { type Express, type NextFunction, type Request, type Response } from 'express'
 
 import { redactLogValue } from './redaction.js'
+import { FIGURE_STUDIO_ACTIONS } from './figure-studio.js'
 
 export type LegacyContext = {
   request: { method: string }
@@ -38,6 +39,7 @@ export type AppConfig = {
 }
 
 type AppDependencies = {
+  figureStudio?: { handle(body: Record<string, any>): Promise<Record<string, any>> }
   tokenDance?: ReturnType<typeof createTokenDanceService>
   providerWorkflow?: ReturnType<typeof createProviderWorkflow>
   resumeTokenDanceJob?: (task: any) => Promise<any>
@@ -140,7 +142,7 @@ function legacyHeaders(request: Request): Request['headers'] {
 
 export function createApp({
   handler, readinessProbe, healthSnapshot, config, logger, benchmarkService, adminOperations,
-  prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential,
+  prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential, figureStudio,
 }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
@@ -207,6 +209,14 @@ export function createApp({
     const action = String(body.action || '')
     if (discoveryTransport && !gatewayTransport && action !== 'modelRegistry') {
       return response.status(403).json({ code: 403, error: 'Discovery transport is read-only' })
+    }
+    if ((FIGURE_STUDIO_ACTIONS as readonly string[]).includes(action)) {
+      response.setHeader('Cache-Control', 'no-store')
+      const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200)
+      if (!userId) return response.status(401).json({ code: 401, error: '请先登录后使用图稿工作室。' })
+      if (!figureStudio) return response.status(503).json({ code: 503, error: '图稿工作室服务尚未配置。' })
+      // Only the already authenticated gateway transport can assert this identity.
+      return response.json(await figureStudio.handle({ ...body, userId }))
     }
     const adminTransport = request.get('x-paperbanana-admin-transport-token') || ''
     const isAdminTransport = Boolean(

@@ -9,6 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
+        'figure-studio': resolve(import.meta.dirname, 'figure-studio/index.html'),
         'not-found': resolve(import.meta.dirname, '404.html'),
         bench: resolve(import.meta.dirname, 'bench/index.html'),
         leaderboard: resolve(import.meta.dirname, 'leaderboard/index.html'),

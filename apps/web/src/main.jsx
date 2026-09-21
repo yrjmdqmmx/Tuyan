@@ -14,6 +14,7 @@ import './mobile-workbench.css';
 import './components/leaderboard-mobile.css';
 
 const currentAppLocation = appRelativeLocation(globalThis.location, APP_BASE_URL);
+const FigureStudio = React.lazy(() => import('./figure-studio/FigureStudio.jsx'));
 const leaderboardLocation = canonicalizeLeaderboardLocation(currentAppLocation, globalThis.history, APP_BASE_URL);
 const leaderboardRoute = resolveLeaderboardRoute(leaderboardLocation?.pathname);
 const TUYAN_BENCHMARK_TITLE = '图研 Tuyan Benchmark · 科研图示生成与编辑模型基准评测';
@@ -25,7 +26,9 @@ else if (leaderboardRoute.caseId) document.title = '同题模型对比 · 图研
 else if (leaderboardRoute.isLeaderboard) document.title = TUYAN_BENCHMARK_TITLE;
 
 createRoot(document.getElementById('root')).render(
-  leaderboardRoute.isLeaderboard
+  /^\/figure-studio(?:\/index\.html)?\/?$/.test(currentAppLocation.pathname)
+    ? <React.Suspense fallback={<p style={{ padding: 24 }}>正在打开图稿编辑器…</p>}><FigureStudio /></React.Suspense>
+    : leaderboardRoute.isLeaderboard
     ? <LeaderboardSessionProvider><LeaderboardRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} enabled={BENCH_ENABLED} pathname={leaderboardLocation.pathname} route={leaderboardRoute} /></LeaderboardSessionProvider>
     : <App />,
 );

@@ -1,5 +1,17 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-21 · 独立论文图稿页面（本地完成，尚未发布）
+
+- 新增 Web 同级入口 `/figure-studio/`，复用账号与受保护 API；原工作台任务、生成与精修流程保留。图稿采用独立 `tuyan.figure/v1` 源文件，与已有 PNG 任务记录分开；本阶段草稿仅保存在本机及用户下载的源文件中。
+- 新增共享 `@paperbanana/figure-core`：对象文档、带版本检查的编辑命令、安全 SVG、Nature 主图最终制作规则及独立官方核验基线。关闭工作规则不会关闭官方基线；结构和格式检查不代表科学内容或 AI 政策通过。
+- 新增认证 action：`figureStudioCapabilities`、`figureStudioPlan`、`figureStudioEdit`、`figureStudioExport`。模型仅使用用户明确选择并提供 Key 的受支持原生主模型；本版不支持观猹或通用 API，也不自动重试付费请求。PDF/EPS 仅接收经验证的对象文档，不接收任意 SVG 或远程资源。
+- 新增可选 Core 环境变量 `PAPERBANANA_INKSCAPE_PATH`（默认 `inkscape`）。运行环境未安装转换器时能力接口明确返回 PDF/EPS 不可用；本地 SVG 与源稿导出仍可使用。本次不修改生产镜像的软件安装或环境配置。
+- [x] Core / Gateway / 共享契约：实现及本地验证完成；Core 37、API 全量 661、最终针对测试 16、Gateway 45、HTTP 23、MCP 10、共享请求 1 项通过（范围有重叠）。模型仅 mock；鉴权、转换服务与浏览器验证分别记录。
+- [x] Web：独立页面、基础编辑与撤销、源稿保存重开、官方/工作规则、个人预设及带文件身份的四状态导出报告完成；最终 479 项测试及 build 通过，桌面/手机本地交互已验收。
+- [x] 小程序 / Android / Windows / macOS：本轮没有原生页面或既有接口迁移；保持原功能，后续接入新图稿功能时单独适配版本契约。
+- [ ] 生产发布、真实付费模型调用、联网端到端、Illustrator、PDF/EPS 同格式保存重开及外部改稿重导入：本轮未验证。
+- 真实 Inkscape 1.4.4：SVG 单文字/对象编辑保存重开通过；PDF/EPS 可改文字/路径，但部分标签合并、原分组丢失。PDF 科学符号精确提取通过，EPS 失败。不能将转换成功或视觉一致等同于完整编辑保真。详见 [本地验收记录](docs/figure-studio/2026-09-21-local-acceptance.md)。
+
 ## 2026-09-20 · 通用 API 目录选择与生成设置优化
 
 - `universalApiCheck(check=catalog)` 新增连接级 `connection` 和可选 `selectedModelId`；获取目录不再依赖模型 ID、能力或图片限额。旧 `route` 请求继续兼容，生成和恢复仍使用严格路线校验。

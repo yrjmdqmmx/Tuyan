@@ -4221,6 +4221,34 @@ async function optimizeInputs(body: OptimizeInputsBody) {
   return { code: 0, target, optimizedText: candidate }
 }
 
+// Called only by the authenticated Node Figure Studio service. No server key,
+// managed TokenDance credential, custom endpoint, image model or retry fallback.
+export async function figureStudioTextModel(body: any, system: string, user: string, signal: AbortSignal): Promise<string> {
+  const invalid = (message: string): never => {
+    throw Object.assign(new Error(message), { status: 400, code: 'FIGURE_STUDIO_ROUTE_INVALID', requestState: 'not_sent' })
+  }
+  const route = body?.mainRoute
+  if (!route || typeof route !== 'object' || Array.isArray(route)
+    || Object.keys(route).some(key => !['accessProvider', 'modelId'].includes(key))
+    || typeof route.accessProvider !== 'string' || typeof route.modelId !== 'string'
+    || ['tokendance', 'custom'].includes(route.accessProvider)) invalid('图稿模型仅支持明确选择的原生 API Key 主模型。')
+  let normalized: ModelRoute
+  try { normalized = normalizeModelRoute(route, 'main'); checkedModelRegions(body.providerRegions, { main: normalized }) }
+  catch { return invalid('所选主模型或地区配置不受支持。') }
+  const key = body.apiKeys?.[normalized!.accessProvider]
+  if (typeof key !== 'string' || !key.trim() || key.length > 8192 || /[\r\n\0]/.test(key)) invalid('请提供当前渠道的有效个人 API Key。')
+  try {
+    const registry = await registryForModelRoute(normalized!)
+    const entry = registry.models.find(candidate => candidate.id === normalized!.modelId)
+    if (!entry || entry.selectable !== true || !entry.roles.includes('main')) invalid('所选模型当前不可用于图稿规划。')
+  } catch { return invalid('所选模型当前不可用于图稿规划。') }
+  try {
+    return await callTextModel(normalized!.accessProvider, normalized!.modelId, key.trim(), system, user, [], {
+      attempts: 1, signal, region: normalized!.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined,
+    })
+  } catch (error: any) { if (error && typeof error === 'object') error.failureStage = 'planning'; throw error }
+}
+
 function publicProviderModelRegistry(registry: ProviderModelRegistry): ProviderModelRegistry {
   return {
     ...registry,

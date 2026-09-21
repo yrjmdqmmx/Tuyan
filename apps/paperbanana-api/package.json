@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@paperbanana/benchmark-core": "workspace:*",
+    "@paperbanana/figure-core": "workspace:*",
     "@resvg/resvg-wasm": "2.6.2",
     "ali-oss": "^6.23.0",
     "express": "^5.1.0",

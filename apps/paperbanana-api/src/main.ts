@@ -5,6 +5,7 @@ import type { Db } from 'mongodb'
 import { createAdminOperations } from './admin-operations.js'
 import path from 'node:path'
 import { createHash } from 'node:crypto'
+import { createFigureStudioService } from './figure-studio.js'
 
 import { loadConfig } from './config.js'
 import { loadBuildProvenance } from './build-provenance.js'
@@ -161,6 +162,7 @@ async function main(): Promise<void> {
     throw error
   }
   const server = createServer({
+    figureStudio: createFigureStudioService({ modelText: legacy.figureStudioTextModel }),
     adminOperations,
     tokenDance, providerWorkflow, resumeTokenDanceJob: legacy.resumeTokenDanceJob, requiresTokenDanceCredential: legacy.requiresTokenDanceCredential,
     handler: runtime.handler,

@@ -342,6 +342,34 @@ test('maintenance blocks optimizeInputs before it reaches the backend', async ()
   });
 });
 
+test('Figure Studio requires login, strips forged identity/unused keys and asserts the session over trusted transport', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    for (const action of ['figureStudioCapabilities', 'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport']) {
+      assert.equal((await post(baseUrl, { action, userId: 'forged' }, { 'x-paperbanana-auth-user-id': 'forged' })).status, 401);
+    }
+    assert.equal(backend.calls.length, 0);
+    const response = await post(baseUrl, { action: 'figureStudioPlan', materials: 'source', userId: 'forged', gatewayToken: 'forged', mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol', baseUrl: 'https://unsafe.invalid' }, apiKeys: { openai: 'selected-key', tokendance: 'forged-managed-key', gemini: 'unused' }, arbitrarySvg: '<svg/>' }, { 'x-test-session': 'actual-user|user@example.com' });
+    assert.equal(response.status, 200); assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.deepEqual(backend.calls[0].body, { action: 'figureStudioPlan', materials: 'source', mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' }, apiKeys: { openai: 'selected-key' } });
+    assert.deepEqual(backend.calls[0].options, { authUserId: 'actual-user', timeoutMs: 55_000 });
+  });
+});
+
+test('Figure Studio maintenance, untrusted origin and pending deletion stop model/export dispatch', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend, isMaintenance: () => true }, async ({ baseUrl }) => {
+    assert.equal((await post(baseUrl, { action: 'figureStudioExport' }, { 'x-test-session': 'actual-user|user@example.com' })).status, 503);
+  });
+  await withApp({ backend }, async ({ baseUrl }) => {
+    assert.equal((await post(baseUrl, { action: 'figureStudioPlan' }, { 'x-test-session': 'actual-user|user@example.com', origin: 'https://untrusted.invalid' })).status, 403);
+  });
+  await withApp({ backend, auth: fakeAuth({ deletionStore: { async get() { return { status: 'deleting' }; } } }) }, async ({ baseUrl }) => {
+    assert.equal((await post(baseUrl, { action: 'figureStudioPlan' }, { 'x-test-session': 'actual-user|user@example.com' })).status, 409);
+  });
+  assert.equal(backend.calls.length, 0);
+});
+
 test('modelRegistry is a public read-only backend action', async () => {
   const backend = fakeBackend(async (body) => ({
     status: 200,
