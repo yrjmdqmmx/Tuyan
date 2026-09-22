@@ -8,7 +8,7 @@ export function formatErrorMessage(error, context = '') {
   if (!error) return '';
   const code = typeof error === 'object' ? String(error.code || '') : '';
   const status = typeof error === 'object' ? Number(error.status || 0) : 0;
-  const message = typeof error === 'string' ? error : String(error.message || error);
+  const message = (typeof error === 'string' ? error : String(error.message || error)).replaceAll('服务商默认', '默认');
   if (code === 'ACCOUNT_LIFECYCLE_CLOSED' || message.includes('no longer accepting credential')) return '该账号正在注销或已失效，无法建立新的登录会话。';
   if (code === 'EMAIL_NOT_VERIFIED') return '邮箱尚未验证，请先完成验证。';
   if (code === 'ACCOUNT_EMAIL_RATE_LIMITED' || status === 429) return '请求过于频繁，请稍后重试。';

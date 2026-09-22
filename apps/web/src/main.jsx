@@ -16,6 +16,7 @@ import './components/admin/admin.css';
 import './mobile-workbench.css';
 import './components/leaderboard-mobile.css';
 import './components/changelog.css';
+import './components/header-navigation.css';
 
 const ChangelogRoot = lazy(() => import('./components/ChangelogRoot.jsx'));
 

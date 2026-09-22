@@ -141,7 +141,10 @@
   "会按所选图片模型的最低支持分辨率产生一次图片调用费用": "This incurs one image generation charge at the selected model's lowest supported resolution.",
   "验证所选模型": "Verify selected models",
   "{v0}思考设置": "{v0} reasoning settings",
-  "服务商默认": "Provider default",
+  "服务商默认": {
+    "zh-CN": "默认",
+    "en": "Default"
+  },
   "尚未选择型号": "No model selected",
   "官方默认：": "Official default: ",
   "未公开，交由服务商决定": "Not published; determined by the provider",
@@ -814,5 +817,20 @@
     "zh-CN": "优化",
     "en": "Improved"
   },
-  "{value}（映射为 {alias}）": "{value} (mapped to {alias})"
+  "{value}（映射为 {alias}）": "{value} (mapped to {alias})",
+  "页面导航": "Pages",
+  "工具与生态": "Tools & ecosystem",
+  "支持与交流": "Support & community",
+  "语言与账户": "Language & account",
+  "观猹点评": "Review on Watcha",
+  "默认": "Default",
+  "{label}说明": "About {label}",
+  "默认不发送此参数。更多思考可能增加耗时和费用。": "Default omits this parameter. More reasoning may increase time and cost.",
+  "范围：{min}–{max} tokens。": "Range: {min}–{max} tokens.",
+  "特殊值：{values}。": "Special values: {values}.",
+  "接口默认：{value}。": "API default: {value}.",
+  "开启思考时须同时填写预算；自适应模式不能同时指定固定预算。": "Enabled mode requires a budget. Adaptive mode cannot be combined with a fixed budget.",
+  "思考强度与预算不能同时设置。": "Reasoning effort and budget cannot be set together.",
+  "此接口的思考设置仅适用于不带参考图的生成请求。": "Reasoning controls apply only to generation requests without reference images.",
+  "思考预算（tokens）": "Reasoning budget (tokens)"
 }

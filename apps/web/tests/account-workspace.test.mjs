@@ -6,6 +6,41 @@ import App from '../src/App.jsx';
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js';
 import { workspaceEntry, selectWorkspaceEntry } from '../src/lib/adminEntry.js';
 
+test('access mode switches retain the complete ordinary preset and allow incomplete custom drafts to be edited', async () => {
+  const original=globalThis.fetch, actions=[];
+  globalThis.fetch=async(_url,init={})=>{
+    if(!init.body)return Response.json({code:0,runtime:'laf'});
+    const {action}=JSON.parse(init.body);actions.push(action);
+    if(action==='modelRegistry')return Response.json({code:0,routeContractVersion:1,thinkingContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY});
+    return Response.json({code:0,jobs:[],references:[]});
+  };
+  try {
+    render(React.createElement(App));
+    await waitFor(()=>assert.ok(actions.includes('modelRegistry')));
+    fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));
+    fireEvent.click(screen.getByRole('button',{name:'Google',exact:true}));
+    fireEvent.change(screen.getByLabelText('视觉识别思考强度'),{target:{value:'"high"'}});
+    fireEvent.click(screen.getByRole('button',{name:/专业模式/}));
+    fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}));
+    fireEvent.click(within(document.querySelector('.model-provider-rail')).getByRole('button',{name:'Kimi',exact:true}));
+    fireEvent.click(screen.getByRole('button',{name:'选择 Kimi K2.6',exact:true}));
+    fireEvent.click(screen.getByRole('button',{name:/普通模式/}));
+    assert.equal(screen.getByRole('button',{name:'Google',exact:true}).getAttribute('aria-pressed'),'true');
+    assert.equal(screen.getByLabelText('视觉识别思考强度').value,'"high"');
+    assert.equal(document.querySelectorAll('[data-model-role]').length,3);
+    fireEvent.click(screen.getByRole('button',{name:/通用 API/}));
+    assert.equal(document.querySelectorAll('.universal-role').length,3);
+    assert.equal(document.querySelectorAll('[data-thinking-role]').length,0);
+    const customModel=document.querySelector('.universal-role input[placeholder="从目录选择，或粘贴服务提供的准确 ID"]');
+    fireEvent.change(customModel,{target:{value:'draft-model'}});
+    assert.equal(customModel.value,'draft-model');
+    fireEvent.click(screen.getByRole('button',{name:/普通模式/}));
+    assert.equal(screen.getByRole('button',{name:'Google',exact:true}).getAttribute('aria-pressed'),'true');
+    assert.equal(screen.getByLabelText('视觉识别思考强度').value,'"high"');
+    assert.equal(actions.some(action=>/createJob|refineImage|resume/i.test(action)),false);
+  } finally {cleanup();globalThis.fetch=original;window.localStorage.clear();}
+});
+
 test('generation waits for selected image dimensions instead of submitting the old reference list', async () => {
   const original = {fetch:globalThis.fetch,Image:globalThis.Image,create:URL.createObjectURL,revoke:URL.revokeObjectURL};
   const actions = [], pending = [];

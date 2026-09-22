@@ -44,7 +44,7 @@ export function buildThinkingSubmission(settings, registry, roles, operation) {
   const selected = Object.fromEntries(roles.map(role => {
     const selection = settings.roles[role], profile = roleThinkingProfile(role, selection)
     validateThinkingOptions(profile, selection.options)
-    if (role === 'image' && operation === 'editing' && Object.keys(selection.options).length && !profile?.operations?.includes('editing')) throw new Error('此图片接口只在纯文生图时支持思考设置，精修请使用服务商默认。')
+    if (role === 'image' && operation === 'editing' && Object.keys(selection.options).length && !profile?.operations?.includes('editing')) throw new Error('此图片接口只在纯文生图时支持思考设置，精修请使用默认。')
     return [role, selection]
   }))
   return {thinkingConfig: {version: 1, roles: selected}}

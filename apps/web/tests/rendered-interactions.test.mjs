@@ -571,6 +571,7 @@ test('ordinary mode offers only complete providers', async () => {
   } }
   const { container } = render(React.createElement(ModelRoutingSettings, {
     configurationMode: 'simple', simpleProvider: 'xai', modelRegistry, providerConfigs: PROVIDERS,
+    modelRoutes: Object.fromEntries(Object.entries(modelRegistry.providers.xai.defaults).map(([role,modelId])=>[role,{accessProvider:'xai',modelId}])),
     credentialProviders: [], apiKeys: {}, arkProbes: [], arkVerification: {},
   }))
   assert.ok(screen.getByRole('button', { name: 'SpaceXAI' }))

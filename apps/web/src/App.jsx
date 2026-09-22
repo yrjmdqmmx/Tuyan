@@ -301,10 +301,6 @@ export default function App() {
   const activeModelRoutes = accessMode === 'custom' ? customRoutes : isAdvancedMode ? modelRoutes : simpleModelRoutes;
   const providerConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.main.accessProvider], modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]);
   const imageProviderConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.image.accessProvider], modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]);
-  const visionProviderConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.vision.accessProvider], modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]);
-  const defaultMainModelLabel = modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find(model => model.id === activeModelRoutes.main.modelId)?.label || findModelLabel(providerConfig.mainModels, activeModelRoutes.main.modelId);
-  const defaultImageModelLabel = modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find(model => model.id === activeModelRoutes.image.modelId)?.label || findModelLabel(imageProviderConfig.imageModels, activeModelRoutes.image.modelId);
-  const defaultVisionModelLabel = modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find(model => model.id === activeModelRoutes.vision.modelId)?.label || findModelLabel(visionProviderConfig.visionModels || [], activeModelRoutes.vision.modelId);
   const activeMainModelName = activeModelRoutes.main.modelId;
   const activeImageGenModelName = activeModelRoutes.image.modelId;
   const activeReferenceVisionModelName = activeModelRoutes.vision.modelId;
@@ -333,7 +329,7 @@ export default function App() {
     apiBase: apiBaseNormalized, health, limits: activeRefineUploadLimits, authReady, ownerId: currentUser?.id || '',
   });
   const refineControls = Number(modelRegistry?.refineControlsContractVersion) >= 1 ? activeImageRegistryEntry?.capabilities?.refineControls : null;
-  const refineReferencePolicy = activeReferenceUploadPolicy(modelRegistry?.referenceUpload,activeModelRoutes.image,'refine');
+  const refineReferencePolicy = activeReferenceUploadPolicy(modelRegistry?.referenceUpload,accessMode === 'custom' && !customEntries.image.selectable ? undefined : activeModelRoutes.image,'refine');
   refineReferencePolicy.maxCount = Math.min(refineReferencePolicy.platform.maxCount,Math.max(0,(refineControls?.maxImages || 1)-1));
   const refineReferences = useRefineReferences({apiBase:apiBaseNormalized,health,ownerId:currentUser?.id || '',policy:refineReferencePolicy});
   const refineInputDraft = {version:1,references:refineReferences.images.map(image=>({objectKey:image.id,purpose:image.purpose,note:image.note})),...(refineMask?.strokes?.length ? {mask:{objectKey:'pending-mask'}} : {}),...(refineStructuredEnabled ? {structured:refineStructured} : {})};
@@ -868,8 +864,12 @@ export default function App() {
     if (nextMode === configurationMode) return;
     if (nextMode === 'advanced') setModelRoutes(simpleModelRoutes);
     if (nextMode === 'simple') {
-      setProvider(activeModelRoutes.main.accessProvider);
-      setSimpleModelRoutes(providerDefaultRoutes(activeModelRoutes.main.accessProvider, modelRegistry, PROVIDERS));
+      const defaults = providerDefaultRoutes(activeModelRoutes.main.accessProvider, modelRegistry, PROVIDERS);
+      // A text-only channel cannot supply a simple preset; retain the previous complete preset.
+      if (defaults) {
+        setProvider(activeModelRoutes.main.accessProvider);
+        setSimpleModelRoutes(defaults);
+      }
     }
     arkProbeGenerationRef.current += 1;
     arkActiveProbeRequestRef.current = 0;
@@ -1422,14 +1422,16 @@ export default function App() {
     await loadUserJobs();
   }
 
+  const renderThinkingSettings = role => <ThinkingSettings role={role} settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking} />;
+
   const settingsDrawer = (
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
       <ModelRoutingSettings
         configurationMode={configurationMode}
         accessMode={accessMode}
         onAccessModeChange={setAccessMode}
-        thinkingSettings={<ThinkingSettings settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking}/>}
-        universalSettings={<UniversalApiSettings drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
+        renderThinkingSettings={renderThinkingSettings}
+        universalSettings={<UniversalApiSettings renderThinkingSettings={renderThinkingSettings} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
           onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}
           onCopy={(role,source)=>{const from=universalDrafts[source].custom;setUniversalDrafts(current=>({...current,[role]:{...current[role],declared:false,custom:{...current[role].custom,protocol:from.protocol,baseUrl:from.baseUrl,auth:from.auth,compatibility:from.compatibility,catalogFormat:from.catalogFormat}}}));setUniversalKeys(current=>({...current,[role]:current[source]?{...current[source]}:undefined}));}}
@@ -1481,9 +1483,6 @@ export default function App() {
 
         {!isAdvancedMode ? (
         <div className="default-summary" aria-label={t("默认生成配置")}>
-          <span>{t("主模型：")}{defaultMainModelLabel}</span>
-          <span>{t("图像：")}{defaultImageModelLabel}</span>
-          <span>{t("识别：")}{defaultVisionModelLabel}</span>
           <span>{t("规划器 + 评审器")}</span>
           <span>{t(aspectRatio === 'auto' ? '自动比例' : aspectRatio)}</span>
           <span>{t(formatOutputFormat(outputFormat))}</span>
@@ -1910,11 +1909,6 @@ function extensionForMimeType(mimeType) {
   if (mimeType === 'image/webp') return 'webp';
   if (mimeType === 'image/svg+xml') return 'svg';
   return 'png';
-}
-
-function findModelLabel(options, value) {
-  const option = options.find(([id]) => id === value);
-  return option ? option[1] : value;
 }
 
 function formatLifecycle(value) {

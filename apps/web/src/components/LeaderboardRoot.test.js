@@ -47,7 +47,7 @@ test('benchmark header preserves nav labels, hrefs, external targets, and active
   const github = screen.getByRole('link', { name: 'GitHub' })
   assert.equal(github.getAttribute('href'), 'https://github.com/yrjmdqmmx/Tuyan')
   assert.equal(github.getAttribute('target'), '_blank')
-  const openacad = screen.getByRole('link', { name: 'OpenAcad' })
+  const openacad = screen.getByRole('link', { name: 'openacad' })
   assert.equal(openacad.getAttribute('href'), 'https://openacad.xyz/')
   assert.equal(openacad.getAttribute('target'), '_blank')
 })

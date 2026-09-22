@@ -9,7 +9,7 @@ export default function LanguageSwitch({ compact = false }) {
     lang={english ? 'zh-CN' : 'en'} aria-label={english ? '切换到中文' : 'Switch to English'}
     title={english ? 'Current language: English · 切换到中文' : '当前语言：中文 · Switch to English'}
     onClick={() => setLocale(english ? 'zh-CN' : 'en')}>
-    <Languages size={17} aria-hidden="true" />
+    <Languages size={16} aria-hidden="true" />
     <span>{english ? '中文' : compact ? 'EN' : 'English'}</span>
   </button>
 }

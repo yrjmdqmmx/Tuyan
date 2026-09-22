@@ -20,7 +20,7 @@ function probeRoleLabel(role) {
 
 export default function ModelRoutingSettings({
   configurationMode,
-  accessMode = 'preset', onAccessModeChange, universalSettings, thinkingSettings,
+  accessMode = 'preset', onAccessModeChange, universalSettings, renderThinkingSettings,
   onModeChange,
   simpleProvider,
   onSimpleProviderChange,
@@ -70,7 +70,7 @@ export default function ModelRoutingSettings({
         {isAdvancedMode && !routeContractSupported ? <p className="route-contract-warning">{t("当前后端不支持专业模式的多渠道路由，提交会失败关闭。")}</p> : null}
       </div>
 
-      {accessMode === 'custom' ? <>{universalSettings}{thinkingSettings}</> : <>
+      {accessMode === 'custom' ? <>{universalSettings}</> : <>
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>{t("API 接入渠道")}</span>
@@ -93,27 +93,21 @@ export default function ModelRoutingSettings({
             </div>
           </div>
         </div>
-      ) : (
-        <div className="model-grid model-route-grid">
-          <ModelPicker
-            label={t("主模型")} role="main" route={modelRoutes.main} outputFormat={outputFormat}
-            registry={modelRegistry} providerConfigs={providerConfigs}
-            onRouteChange={(route) => onRouteChange('main', route)} focusSetting="main-model"
-          />
-          <ModelPicker
-            label={t("图像生成模型")} role="image" route={modelRoutes.image} outputFormat={executionRouteRoles.includes('image') ? outputFormat : ''}
-            registry={modelRegistry} providerConfigs={providerConfigs}
-            onRouteChange={(route) => onRouteChange('image', route)} focusSetting="image-model"
-          />
-          <ModelPicker
-            label={t("参考图识别模型")} role="vision" route={modelRoutes.vision} outputFormat={outputFormat}
-            registry={modelRegistry} providerConfigs={providerConfigs}
-            onRouteChange={(route) => onRouteChange('vision', route)} focusSetting="vision-model"
-          />
-        </div>
-      )}
-
-      {thinkingSettings}
+      ) : null}
+      <div className="model-grid model-route-grid">
+        {[['main','主模型','main-model'],['image','图像生成模型','image-model'],['vision','参考图识别模型','vision-model']].map(([role,label,focusSetting]) => {
+          const route = modelRoutes[role]
+          const model = modelRegistry?.providers?.[route.accessProvider]?.models?.find(entry => entry.id === route.modelId)
+          return <div className="model-role-settings" data-model-role={role} key={role}>
+            {isAdvancedMode ? <ModelPicker label={t(label)} role={role} route={route}
+              outputFormat={role === 'image' && !executionRouteRoles.includes('image') ? '' : outputFormat}
+              registry={modelRegistry} providerConfigs={providerConfigs}
+              onRouteChange={next => onRouteChange(role,next)} focusSetting={focusSetting} />
+              : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong></div>}
+            {renderThinkingSettings?.(role)}
+          </div>
+        })}
+      </div>
 
       <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
         <summary><KeyRound size={17} />{t(" 接入凭据")}</summary>
