@@ -1,57 +1,56 @@
-# Web 更新日志维护
+# 按图研版本维护更新日志
 
-正式入口为 `/changelog`。桌面导航顺序是「工作台 → 排行榜 → 更新日志」；手机入口位于「更多」。页面复用排行榜的 `SitePageShell`、会话 Provider、账户和反馈动作，不发起第二套登录状态请求。
+唯一公开数据源是 `apps/web/src/data/changelog.json`，当前 schemaVersion 为 2；页面 `/changelog` 复用原页面外壳、导航、搜索、账户和移动端“更多”。本轮只整理与本地验证，没有部署。内容以图研版本号组织，不再把提交、模型目录版本或内部发布批次作为页面版本。
 
-## 唯一数据源与收录范围
+## 本轮范围与版本边界
 
-`apps/web/src/data/changelog.json` 是正式页面的唯一内容源，按日期倒序排列；页面按日期分组，自动支持搜索和条目锚点。`schemaVersion=1`。不要复制一份内容到组件、Markdown 页面或后端。
+用户提供的《图研_Tuyan_项目更新日志.docx》是微信宣发公告整理稿，记录 2026-05-14 至 09-17。它用于保留原有版本号和公告日期；上线状态另由 GitHub 实现、部署和已有验收记录核对。本次整理截止 2026-09-22，源码基线为本地 `0884129`，只读核对的远端 main 为 `d651519`。
 
-首次整理收录 **2026-09-07 至 2026-09-22 的 17 条主要 Web 更新**，不是所有历史版本的穷举，也不代表当前小程序已发布这些能力。日期沿用可追溯发布记录的日历日期，不把提交日、PR 合并日、文档补记日或供应商发布日期当作产品发布日期。未在此范围内找到可确认发布材料的历史继续待整理，不造日期或版本号。
+- 保留 1.0.0、1.1.0、1.3.0、1.4.0、2.0.0、3.0.0、3.0.2、3.5.0、3.5.1、3.6.0、3.7.0、3.7.1；不补造缺号。
+- 3.7.1 由公告内容交叉重建为观猹身份登录：后端 `3405f8c`、最后 Web 标识补发 `bc6b444`，2026-09-10。不存在同名语义版本标签；详见[历史审计](changelog-audit/2026-09-22-history.md)。
+- 该边界之后、本轮已完成的相关改进统一归入 3.8.0，包含此前分批上线和本地已验证条目。整体状态仍为 `unreleased`，发布日期为 null。
+- 只排除独立“论文绘图／论文画布”模块及其专属改动。保留原 AI 图示生成、精修和排行榜；OpenAcad 不在范围内。旧 Benchmark 独立版本号仅作为审计来源，不直接转换为图研版本号。
+- 无法确定图研旧版本归属的历史保留在 `unassigned`，页面独立显示“版本归属待核实”，不凭日历日期塞进相邻版本。
 
-当前记录的来源：
+[本轮差异与 3.8.0 清单](changelog-audit/2026-09-22-versioning.md)包含初稿取舍、来源和未确认事项；[完整版本正文](changelog-audit/2026-09-22-version-log.md)由同一 JSON 导出供审阅，不作为第二份可独立维护的源。
 
-| 记录 ID | 发布证据 / 内容来源 |
+## 数据字段
+
+| 字段 | 含义 |
 | --- | --- |
-| refine-catalog-v23 | `releases/2026-09-22-refine-v23.md`；PR #226；Pages 35684170270 与配套发布 35683970466 |
-| catalog-leaderboard-language | PR #224（合并 SHA `0d8b0b4500eb9ca6d8b1b5180450276c7f78b2fb`）；Pages 35603884753、配套发布 35601906465 |
-| mobile-navigation-pareto | PR #221 / #222 / #223；Pages 35561997844，固定 SHA `4a601b932a09a3f59f717a7100f1b8b51e0e0b44` |
-| settings-catalog | `releases/2026-09-20-settings-catalog.md` |
-| universal-api | `releases/2026-09-20-universal-api.md` |
-| tokendance-catalog-isolation | `releases/2026-09-19-tokendance-catalog-isolation.md`，只采用首轮已确认上线行为 |
-| riverflow-withdrawal | `releases/2026-09-17-riverflow-v2-pro-withdrawal.md` |
-| scientific-rereview | `releases/2026-09-17-scientific-v2-rereview.md` |
-| benchmark-model-costs | `releases/2026-09-17-replicate-five-models.md` |
-| reference-budget | `releases/2026-09-16-reference-budget.md` |
-| watcha-login | `releases/2026-09-10-watcha-oauth.md` |
-| reference-upload | `releases/2026-09-10-reference-upload.md` |
-| tokendance-account | `releases/2026-09-09-tokendance.md` |
-| gpt-image-25 | `releases/2026-09-09-image25.md` |
-| refine-upload | `releases/2026-09-08-refine-upload.md`，Web 与上传修复的不同发布版本分别有证据 |
-| email-confirmation | `releases/2026-09-08-email-confirmation.md` |
-| account-lifecycle | `releases/2026-09-07-account-lifecycle-v3.md`，仅提炼产品行为，不复制账号恢复现场细节 |
+| `version` / `id` | 产品语义版本及稳定锚点，例如 `3.8.0` / `v3-8-0`，按数字而非字符串倒序 |
+| `announcementDate` | 公告整理稿的日期；没有则 null，不能用作未核实的发布日期 |
+| `release.status` | `released` 已发布、`unreleased` 待发布、`unverified` 发布信息待核实 |
+| `release.date` | 已核实发布日；未知或尚未发布必须 null；有分批上线时在 notes 说明归并规则 |
+| `release.surfaces` | 已确认发布该版本的客户端；待发布/未知为 []，Web 发布不得自动包含微信小程序 |
+| `surfaces` | 本版条目涉及的客户端，包含源码完成但尚未发布的端；逐条状态仍独立判断 |
+| `changes` | `kind` 仅新增/优化/修复；用户可感知的 `text`；`state` 及逐条 `sourceIds`；必要时单独列 `surfaces` |
+| `changes[].state` | `released` 此前已上线、`local-verified` 本地已验证、`code-complete` 开发完成、`unconfirmed` 待核实 |
+| `sources` | 公开 GitHub commit/PR/部署/固定提交文档；公告和本地验收可以是无 URL 的明确来源标签，不能造可点击的发布链接 |
+| `notes` | 对日期、客户端或能力边界的简洁解释；详细 SHA 与运维过程留在维护文档 |
+| `legacyAnchors` | 原先按批次的锚点，映射到归并后的版本；旧链接不失效 |
 
-2026-09-22 只读核查了 9 月 21 日的两个 Pages 工作流：均为 `completed / success`，`headSha` 与表中版本一致，完成日期均为 9 月 21 日；v21 配套发布工作流也为 success。其余条目根据仓库已归档的发布验收记录整理。本次整理未重新验证生产功能或任何模型推理，自动数据校验也不能代替上线证据审阅。
+正式页面将未发布版本与历史版本分区。历史记录中的未知日期、待核实内容均保留标签。搜索完整版本号（可带 v）精确匹配版本，避免 3.8.0 正文提及“3.7.1 之后”而误命中 3.7.1；其他词按内容、日期、客户端等查找。
 
-当前本地 v24、尚未发布的导航调整、论文画布等不进入正式数据，也不要以隐藏字段或 `draft` 条目打进客户端包。小程序源码同步、上传、审核、正式发布是不同状态，本页目前只收录 Web 行为。
+## 后续追加及发布
 
-## 新增一条记录
+1. 复制[条目模板](changelog-entry.template.json)，只填写已由项目确定的版本号；不填假日期。新增功能先标代码完成或本地验证，未发布版本进入独立区域。
+2. 每项对照实现及已有记录，把重复提交合并为用户功能。准确区分 API 渠道、模型研发方和品牌，目录接入不等于全部模型真实调用通过。
+3. 为每项填写真实来源 ID。PR/commit 能证明代码；上线需对应端的部署及验收证据。只填一个部署链接不能自动证明条目内容真实性，维护者仍须交叉核对。
+4. 公告与记录有差异时保留公告日期，说明实际部署或内容差异；无法确认的条目放 `unassigned` 或显示待核实，不编造归属。
+5. **3.8.0 发布收尾**：用户另行授权后，实际部署本轮更新、核对 Web 产物及所需后端能力；成功后将对应 Web 条目改为 released，补充该批次公开记录，再设置版本 `release.status=released`、实际 `release.date` 和 `release.surfaces=["Web"]`。这个步骤本轮未执行。微信仍按自身平台证据保留原状态，不随 Web 版本发布自动改成已发布。
+6. 如果实际发布范围缺少某项，先修正版本内容/范围，不能仅为通过数据校验统一勾选所有条目。更新日志页面上线本身也不能证明后端思考参数或新渠道已上线。
+7. 维护历史时保留稳定 id 和旧锚点；明确修正原记录，禁止新增虚构发布日期。用用户文案写功能，避免内部模型目录批次、容器、地址或账号细节。
+8. 可公开 URL 限本仓库 commit、PR、Actions 或固定提交文档。未推送提交不得构造 GitHub 链接；无 URL 的“本地验证”标签不得标成正式发布。不得加入密钥、账号、邮箱、内部地址或机器路径。
 
-1. 先核对实际发布日期、范围和最终结果。代码合并、CI 通过、截图或本地验收均不能单独证明上线。保留公开发布工作流或已有生产核验记录，并补充准确 PR 来源。
-2. 从 [条目模板](changelog-entry.template.json) 复制结构。未发布内容留在文档草稿；确认发布后再加入正式 JSON，并将 `status` 改为 `released`。一次功能可有多条来源；不同端状态不要合并成已上线。
-3. 使用唯一、稳定、全小写的 `id`，它会成为 `/changelog#id` 链接。标题说明用户得到的改进，`summary` 为一句概述，`changes` 仅用「新增 / 改进 / 修复 / 调整」。历史更正修改原条目并保留来源，不新增假发布日期。
-4. 日期倒序放置（同日保持手工编辑顺序），更新 `coverage.from / through / description`。公开来源仅允许本仓库 PR、发布 Actions 或固定提交的发布记录，禁止可变 `main` 文档链接和私有资料链接。
-5. 公开文字不得含内网地址、账号、邮箱、机器路径、密钥或运维实施细节。提供方目录接入、账号权益、真实推理和账单仍分别陈述，不暗示全部已验证。
-6. 运行下面的内容与交互检查，并用桌面和手机看一次页面。页面和历史数据按现有 Web 流程发布；此维护说明和本次实现不授权任何部署。
+## 验证
 
 ```sh
-cd apps/web
-node --test src/changelog.test.js
-node --import tsx --import ./tests/dom-setup.mjs --test src/components/ChangelogRoot.test.js src/components/LeaderboardRoot.test.js tests/leaderboard-ui-contract.test.mjs tests/mobile-workbench.test.mjs
-pnpm build
+pnpm --filter @paperbanana/web exec node --import tsx --import ./tests/dom-setup.mjs --test src/changelog.test.js src/components/ChangelogRoot.test.js
+pnpm --filter @paperbanana/web test
+pnpm --filter @paperbanana/web build
 ```
 
-全量 `pnpm --filter @paperbanana/web test` 会自动包含这些检查。内容校验覆盖日期、唯一锚点、倒序、覆盖范围、正式状态、来源类别和安全公开地址；检出 draft、只有 PR 没有发布依据、私有地址等常见错误。证据内容真实性仍须维护者核对。
+数据校验覆盖数字版本排序、唯一身份/旧锚点、合法日期、未发布版本日期、逐项来源、来源类型与 URL、发布客户端隔离、未发布条目不能冒充已发布客户端、安全公开字段及排除范围。组件检查覆盖分区、状态与日期、搜索/清除、来源、旧锚点、共享导航和移动更多。
 
-## 本地交互检查
-
-直接打开和刷新 `/changelog`、`/changelog/`、`/changelog/index.html`；构建包含独立静态 HTML，兼容部署 base path。检查桌面导航顺序与当前高亮，手机初始页无更新日志快捷项，打开「更多」后可见入口。搜索功能词和日期、清空、空结果恢复、展开来源及链接、条目锚点、反馈/账号入口均应可用。不要为验收提交反馈、创建账号或发起真实生成。
+浏览器检查 `/changelog`、`/changelog/` 和 `/changelog/index.html` 的直接打开和刷新；搜索版本与功能、检查无结果恢复；展开公开来源；确认旧锚点跳至对应版本；在桌面、390px 和 320px 检查顺序、状态、溢出、更多菜单及当前页高亮。不得为验收发起付费推理、充值或重跑任务。

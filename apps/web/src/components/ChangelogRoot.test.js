@@ -14,17 +14,20 @@ test('a direct entry fragment scrolls to its article after the lazy route mounts
   try {
     window.history.replaceState({}, '', '/changelog#reference-budget')
     render(React.createElement(ChangelogPage))
-    assert.equal(target, 'reference-budget')
+    assert.equal(target, 'v3-8-0')
   } finally { HTMLElement.prototype.scrollIntoView = original }
 })
 
 test('readers can search the archive, recover from no results, and inspect public sources', () => {
   render(React.createElement(ChangelogPage))
-  assert.match(screen.getByText(/目前收录/).textContent, /2026 年 9 月 7 日至 9 月 22 日/)
+  assert.match(screen.getByText(/^按图研版本整理，截至/).textContent, /2026 年 9 月 22 日/)
+  assert.ok(screen.getByRole('region', {name:'待发布版本'}))
+  assert.ok(screen.getByRole('region', {name:'历史版本'}))
+  assert.ok(screen.getByRole('region', {name:'版本归属待核实'}))
   const search = screen.getByRole('searchbox', { name: '搜索更新日志' })
-  fireEvent.change(search, { target: { value: 'Runware 遮罩' } })
+  fireEvent.change(search, { target: { value: '3.8.0 Runware 遮罩' } })
   assert.equal(screen.getAllByRole('article').length, 1)
-  assert.equal(screen.getByRole('status').textContent, '找到 1 条更新')
+  assert.equal(screen.getByRole('status').textContent, '找到 1 个版本')
   const source = screen.getByText('查看来源')
   fireEvent.click(source)
   assert.equal(source.parentElement.open, true)
@@ -68,4 +71,17 @@ test('mobile changelog link appears only inside More and marks the active page',
     fireEvent.click(dialog.getByRole('button', { name: '关闭更多功能' }))
     await waitFor(() => assert.equal(document.activeElement, more))
   } finally { cleanup(); window.matchMedia = original }
+})
+
+
+test('unknown dates and mixed client publication remain explicit', () => {
+  render(React.createElement(ChangelogPage))
+  const oldest = document.getElementById('v1-0-0')
+  assert.match(oldest.textContent, /发布信息待核实/)
+  assert.match(oldest.textContent, /公告记录 2026-05-14/)
+  const next = document.getElementById('v3-8-0')
+  assert.match(next.textContent, /正式发布日期待定/)
+  assert.match(next.textContent, /本地已验证/)
+  assert.match(next.textContent, /此前已上线/)
+  assert.match(document.getElementById('v3-7-1').textContent, /已发布 · Web/)
 })

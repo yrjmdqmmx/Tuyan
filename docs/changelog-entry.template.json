@@ -1,16 +1,17 @@
 {
-  "id": "replace-with-stable-entry-id",
-  "date": "YYYY-MM-DD",
-  "status": "draft",
-  "title": "简述用户可见的改进",
-  "summary": "用一句话说明这次变化。",
+  "id": "vMAJOR-MINOR-PATCH",
+  "version": "MAJOR.MINOR.PATCH",
+  "announcementDate": null,
+  "release": { "status": "unreleased", "date": null, "surfaces": [] },
+  "title": "概括本版本的用户变化",
+  "summary": "说明这次更新的主要内容。",
   "surfaces": ["Web"],
+  "notes": ["开发完成并本地验证，尚未正式发布。"],
   "changes": [
-    { "kind": "新增", "text": "确认已经发布的用户可见行为。" },
-    { "kind": "修复", "text": "具体问题和修复后的行为。" }
+    { "kind": "新增", "text": "用户可感知的新功能与必要边界。", "state": "local-verified", "surfaces": ["Web"], "sourceIds": ["local-check"] }
   ],
   "sources": [
-    { "kind": "pull-request", "label": "变更 #待填", "url": "https://github.com/yrjmdqmmx/Tuyan/pull/待填" },
-    { "kind": "deployment", "label": "发布结果", "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/待填" }
-  ]
+    { "id": "local-check", "kind": "local-verification", "label": "本地验收（公开发布记录待补）" }
+  ],
+  "legacyAnchors": []
 }
